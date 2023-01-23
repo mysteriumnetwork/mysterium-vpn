@@ -20,7 +20,6 @@ class MyApp extends HookConsumerWidget {
       return ReactionBuilder(
         builder: (context) {
           return reaction((_) => authStore.authStatus, (result) {
-            print(result);
             routeDelegate.update();
           });
         },
