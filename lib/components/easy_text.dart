@@ -43,7 +43,9 @@ class EasyText extends StatelessWidget {
         style: TextStyle(
           decoration: textDecoration,
           decorationColor: colorDecoration,
-          color: color ?? Theme.of(context).primaryTextTheme.bodyText1?.color ?? Palette.black,
+          color: color ??
+              Theme.of(context).primaryTextTheme.bodyText1?.color ??
+              Palette.black,
           fontSize: fontSize ?? 14,
           letterSpacing: letterSpacing,
           fontWeight: fontWeight,

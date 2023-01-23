@@ -10,7 +10,9 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ColoredScaffold(body: LayoutBuilder(
       builder: (ctx, constaints) {
-        return constaints.maxWidth > 650 ? const LoginDesktopView() : const LoginMobileView();
+        return constaints.maxWidth > 650
+            ? const LoginDesktopView()
+            : const LoginMobileView();
       },
     ));
   }
