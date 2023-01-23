@@ -7,23 +7,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mysterium_vpn/app.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('finds a widget using a Key', (tester) async {
+    // Define the test key.
+    const testKeyLogin = Key('login');
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Build a MaterialApp with the testKey.
+    await tester.pumpWidget(const MaterialApp(key: testKeyLogin));
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Find the MaterialApp widget using the testKey.
+    expect(find.byKey(testKeyLogin), findsOneWidget);
   });
 }

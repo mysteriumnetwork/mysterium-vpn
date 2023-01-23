@@ -5,7 +5,8 @@ import 'package:styled_widget/styled_widget.dart';
 // Project imports:
 
 class SvgIcon extends StatelessWidget {
-  const SvgIcon({Key? key, required this.asset, required this.onPressed}) : super(key: key);
+  const SvgIcon({Key? key, required this.asset, required this.onPressed})
+      : super(key: key);
 
   final String asset;
   final VoidCallback onPressed;
