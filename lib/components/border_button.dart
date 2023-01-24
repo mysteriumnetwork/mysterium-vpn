@@ -4,7 +4,9 @@ import 'package:mysterium_vpn/common/styles/palette.dart';
 // Project imports:
 
 class BorderButton extends StatelessWidget {
-  const BorderButton({Key? key, this.color, required this.child, required this.onPressed}) : super(key: key);
+  const BorderButton(
+      {Key? key, this.color, required this.child, required this.onPressed})
+      : super(key: key);
 
   final Widget child;
   final VoidCallback onPressed;

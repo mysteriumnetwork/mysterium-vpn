@@ -24,6 +24,6 @@ extension StorageKeysEx on Enum {
   }
 
   String get toRoute {
-    return "/${toDashCase}";
+    return "/$toDashCase";
   }
 }

@@ -15,7 +15,8 @@ class SignUpPage extends HookConsumerWidget {
         initializeFromParent: false,
         updateFromParent: false,
         updateParent: false,
-        locationBuilder: (routeInformation, _) => SignUpBeamerLocations(routeInformation),
+        locationBuilder: (routeInformation, _) =>
+            SignUpBeamerLocations(routeInformation),
       ),
     );
   }
