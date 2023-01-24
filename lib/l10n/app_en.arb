@@ -18,5 +18,17 @@
     "terms_and_conditions": "terms and conditions",
     "email": "Email",
     "email_is_required": "Email is required",
-    "email_is_not_valid": "Email is not valid"
+    "email_is_not_valid": "Email is not valid",
+    "check_your_email": "Check your email",
+    "link_expires":"The link expires in 24 hours, so be sure to use it soon",
+    "go_check_your_email": "Go check your email",
+    "email_sent_to": "We sent an email to {email}",
+    "@email_sent_to": {
+        "description": "A message with a single parameter",
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    }
 }
