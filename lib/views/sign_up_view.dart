@@ -62,8 +62,10 @@ class SignUpView extends HookConsumerWidget {
                           decoration: InputDecoration(labelText: loco.email),
                           formControlName: 'email',
                           validationMessages: {
-                            ValidationMessage.required: (_) => loco.email_is_required,
-                            ValidationMessage.email: (_) => loco.email_is_not_valid,
+                            ValidationMessage.required: (_) =>
+                                loco.email_is_required,
+                            ValidationMessage.email: (_) =>
+                                loco.email_is_not_valid,
                           },
                         ).padding(bottom: 20),
                         ReactiveFormConsumer(
@@ -74,10 +76,12 @@ class SignUpView extends HookConsumerWidget {
                                 useSystemColor: false,
                                 onPressed: form.valid
                                     ? () {
-                                        context.beamToNamed('/check-your-email');
+                                        context
+                                            .beamToNamed('/check-your-email');
                                       }
                                     : () => form.markAllAsTouched(),
-                                child: EasyText(loco.continue_with_email, color: Palette.white),
+                                child: EasyText(loco.continue_with_email,
+                                    color: Palette.white),
                               ),
                             );
                           },
@@ -87,24 +91,30 @@ class SignUpView extends HookConsumerWidget {
                           child: BorderButton(
                             color: Palette.lightBlue,
                             onPressed: () {},
-                            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                              const SvgIcon(asset: Assets.googleLogo).padding(right: 10),
-                              EasyText(
-                                loco.continue_with_google,
-                              ),
-                            ]),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const SvgIcon(asset: Assets.googleLogo)
+                                      .padding(right: 10),
+                                  EasyText(
+                                    loco.continue_with_google,
+                                  ),
+                                ]),
                           ),
                         ).padding(bottom: 20),
                         SizedBox(
                           width: double.infinity,
                           child: BorderButton(
                             onPressed: () {},
-                            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                              const SvgIcon(asset: Assets.appleLogo).padding(right: 10),
-                              EasyText(
-                                loco.continue_with_apple,
-                              ),
-                            ]),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const SvgIcon(asset: Assets.appleLogo)
+                                      .padding(right: 10),
+                                  EasyText(
+                                    loco.continue_with_apple,
+                                  ),
+                                ]),
                           ),
                         ).padding(bottom: 20),
                         Row(
@@ -115,7 +125,8 @@ class SignUpView extends HookConsumerWidget {
                             ),
                             RichText(
                               text: TextSpan(
-                                style: const TextStyle(color: Palette.lightBlack),
+                                style:
+                                    const TextStyle(color: Palette.lightBlack),
                                 children: [
                                   TextSpan(text: "${loco.accept} "),
                                   TextSpan(
@@ -124,8 +135,10 @@ class SignUpView extends HookConsumerWidget {
                                         color: Palette.lightBlack,
                                         decoration: TextDecoration.underline,
                                       ),
-                                      mouseCursor: MaterialStateMouseCursor.clickable,
-                                      recognizer: TapGestureRecognizer()..onTap = () {}),
+                                      mouseCursor:
+                                          MaterialStateMouseCursor.clickable,
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {}),
                                 ],
                               ),
                             ),

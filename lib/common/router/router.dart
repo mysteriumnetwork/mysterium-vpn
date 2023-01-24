@@ -40,10 +40,12 @@ class BeamerLocations extends BeamLocation<BeamState> {
 }
 
 class SignUpBeamerLocations extends BeamLocation<BeamState> {
-  SignUpBeamerLocations(RouteInformation routeInformation) : super(routeInformation);
+  SignUpBeamerLocations(RouteInformation routeInformation)
+      : super(routeInformation);
 
   @override
-  List<Pattern> get pathPatterns => [Routes.signUp.toRoute, Routes.checkYourEmail.toRoute];
+  List<Pattern> get pathPatterns =>
+      [Routes.signUp.toRoute, Routes.checkYourEmail.toRoute];
 
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
