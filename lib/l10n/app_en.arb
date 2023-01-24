@@ -14,5 +14,9 @@
     "continue_with_email": "Continue with Email",
     "continue_with_google": "Continue with Google",
     "continue_with_apple": "Continue with Apple",
-    "accept_terms": "Accept terms and conditions"
+    "accept": "Accept",
+    "terms_and_conditions": "terms and conditions",
+    "email": "Email",
+    "email_is_required": "Email is required",
+    "email_is_not_valid": "Email is not valid"
 }
