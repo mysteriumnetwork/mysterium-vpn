@@ -2,6 +2,7 @@
 
 import 'package:beamer/beamer.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/router/router.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
@@ -32,17 +33,15 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
   return BeamerDelegate(
     guards: [
       BeamGuard(
-          pathPatterns: ['/home'],
-          check: (context, state) =>
-              authStore.authStatus == AuthStatus.authenticated,
-          beamToNamed: (_, __) => '/login'),
+          pathPatterns: [Routes.home.toRoute],
+          check: (context, state) => authStore.authStatus == AuthStatus.authenticated,
+          beamToNamed: (_, __) => Routes.login.toRoute),
       BeamGuard(
-          pathPatterns: ['/login'],
-          check: (context, state) =>
-              authStore.authStatus != AuthStatus.authenticated,
-          beamToNamed: (_, __) => '/home'),
+          pathPatterns: [Routes.login.toRoute],
+          check: (context, state) => authStore.authStatus != AuthStatus.authenticated,
+          beamToNamed: (_, __) => Routes.home.toRoute),
     ],
-    initialPath: '/login',
+    initialPath: Routes.login.toRoute,
     locationBuilder: (routeInformation, _) => BeamerLocations(routeInformation),
   );
 });
