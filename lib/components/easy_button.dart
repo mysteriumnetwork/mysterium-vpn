@@ -18,7 +18,7 @@ class EasyButton extends HookConsumerWidget {
 
   final String? text;
   final Widget? child;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Color? color;
   final bool useSystemColor;
   final bool isDisabled;
@@ -31,10 +31,7 @@ class EasyButton extends HookConsumerWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: useSystemColor
             ? null
-            : color ??
-                (themeStore.themeType == ThemeType.light
-                    ? Palette.black
-                    : Palette.lightBlack),
+            : color ?? (themeStore.themeType == ThemeType.light ? Palette.black : Palette.lightBlack),
       ),
       child: text != null ? EasyText(text!, color: Palette.white) : child,
     );

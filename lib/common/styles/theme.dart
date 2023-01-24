@@ -23,10 +23,8 @@ class MysteriumVPNTheme {
       //cardColor:
       //canvasColor: isDarkTheme ? Colors.black : Colors.grey[50],
       brightness: palette is LightPalette ? Brightness.light : Brightness.dark,
-      buttonTheme: ButtonThemeData(
-          colorScheme: palette is LightPalette
-              ? const ColorScheme.dark()
-              : const ColorScheme.light()),
+      buttonTheme:
+          ButtonThemeData(colorScheme: palette is LightPalette ? const ColorScheme.dark() : const ColorScheme.light()),
       appBarTheme: const AppBarTheme(
         elevation: 0.0,
       ),
@@ -36,7 +34,33 @@ class MysteriumVPNTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
+          minimumSize: const Size(200, 40),
           backgroundColor: palette.highlightColor,
+        ),
+      ),
+      checkboxTheme: CheckboxThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(3.0),
+        ),
+        fillColor: MaterialStateProperty.all(Palette.pink),
+        overlayColor: MaterialStateProperty.all(Palette.pink),
+        checkColor: MaterialStateProperty.all(Palette.white),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
         ),
       ),
     );

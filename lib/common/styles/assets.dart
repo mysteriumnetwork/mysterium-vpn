@@ -8,7 +8,7 @@ abstract class Assets {
   static const String logoBlackSvg = 'assets/logo/logo_black.svg';
   static const String logoWhiteSvg = 'assets/logo/logo_white.svg';
   static const String messageSvg = 'assets/icons/message.svg';
-  static const String googleLogo = 'assets/icons/google_logo.svg';
-  static const String appleLogo = 'assets/icons/apple_logo.svg';
+  static const String googleLogo = 'assets/icons/google.svg';
+  static const String appleLogo = 'assets/icons/apple.svg';
   static const String checkEmail = 'assets/images/check_email.svg';
 }
