@@ -5,8 +5,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 // Project imports:
 
 class ColoredScaffold extends StatelessWidget {
-  const ColoredScaffold({Key? key, required this.body, this.backgroundColor})
-      : super(key: key);
+  const ColoredScaffold({Key? key, required this.body, this.backgroundColor}) : super(key: key);
 
   final Widget body;
   final Color? backgroundColor;

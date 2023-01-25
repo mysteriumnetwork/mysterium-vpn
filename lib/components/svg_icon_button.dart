@@ -4,8 +4,7 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 // Project imports:
 
 class SvgIconButton extends StatelessWidget {
-  const SvgIconButton({Key? key, required this.asset, required this.onPressed})
-      : super(key: key);
+  const SvgIconButton({Key? key, required this.asset, required this.onPressed}) : super(key: key);
 
   final String asset;
   final VoidCallback onPressed;

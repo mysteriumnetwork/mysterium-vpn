@@ -32,9 +32,7 @@ class EasyButton extends HookConsumerWidget {
         backgroundColor: useSystemColor
             ? null
             : color ??
-                (themeStore.themeType == ThemeType.light
-                    ? Palette.black
-                    : Palette.lightBlack),
+                (themeStore.themeType == ThemeType.light ? Palette.black : Palette.lightBlack),
       ),
       child: text != null ? EasyText(text!, color: Palette.white) : child,
     );

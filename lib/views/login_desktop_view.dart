@@ -41,40 +41,38 @@ class LoginDesktopView extends HookConsumerWidget {
               ).padding(bottom: 20),
               Expanded(
                 child: Center(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Expanded(child: LoginHeadlines()),
-                        LayoutBuilder(builder: (ctx, con) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: con.maxWidth * 0.45,
-                                height: 40,
-                                child: EasyButton(
-                                  text: loco.sign_in,
-                                  onPressed: () {
-                                    authStore.login();
-                                  },
-                                ),
-                              ),
-                              SizedBox(
-                                width: con.maxWidth * 0.45,
-                                height: 40,
-                                child: EasyButton(
-                                  useSystemColor: false,
-                                  text: loco.get_started,
-                                  onPressed: () {},
-                                ),
-                              ),
-                            ],
-                          ).padding(vertical: 10);
-                        }),
-                        AppVersion(
-                          headerText: loco.app_version,
-                        )
-                      ]),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    const Expanded(child: LoginHeadlines()),
+                    LayoutBuilder(builder: (ctx, con) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: con.maxWidth * 0.45,
+                            height: 40,
+                            child: EasyButton(
+                              text: loco.sign_in,
+                              onPressed: () {
+                                authStore.login();
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: con.maxWidth * 0.45,
+                            height: 40,
+                            child: EasyButton(
+                              useSystemColor: false,
+                              text: loco.get_started,
+                              onPressed: () {},
+                            ),
+                          ),
+                        ],
+                      ).padding(vertical: 10);
+                    }),
+                    AppVersion(
+                      headerText: loco.app_version,
+                    )
+                  ]),
                 ),
               ),
             ],
