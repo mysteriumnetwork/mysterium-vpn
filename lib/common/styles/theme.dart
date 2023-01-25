@@ -9,13 +9,16 @@ class MysteriumVPNTheme {
     return ThemeData(
       primarySwatch: palette.swatchColor,
       primaryColor: palette.primaryColor,
-      backgroundColor: palette.backgroundGolor,
+      colorScheme: ColorScheme.fromSwatch().copyWith(
+        background: palette.backgroundGolor,
+        surface: palette.surfaceColor,
+      ),
       indicatorColor: palette.highlightColor,
       hintColor: palette.darkTextColor,
       highlightColor: palette.highlightColor,
       primaryTextTheme: TextTheme(
-        headline6: TextStyle(color: palette.secondaryColor),
-        bodyText1: TextStyle(color: palette.secondaryColor),
+        titleLarge: TextStyle(color: palette.secondaryColor),
+        bodyLarge: TextStyle(color: palette.secondaryColor),
       ),
       //hoverColor: palette.secondaryColor,
       focusColor: Palette.pink,
@@ -23,10 +26,8 @@ class MysteriumVPNTheme {
       //cardColor:
       //canvasColor: isDarkTheme ? Colors.black : Colors.grey[50],
       brightness: palette is LightPalette ? Brightness.light : Brightness.dark,
-      buttonTheme: ButtonThemeData(
-          colorScheme: palette is LightPalette
-              ? const ColorScheme.dark()
-              : const ColorScheme.light()),
+      buttonTheme:
+          ButtonThemeData(colorScheme: palette is LightPalette ? const ColorScheme.dark() : const ColorScheme.light()),
       appBarTheme: const AppBarTheme(
         elevation: 0.0,
       ),
