@@ -44,6 +44,6 @@ jobs:
           # channel: beta
 
       - run: flutter pub get
-      - run: flutter format --set-exit-if-changed .
+      - run: dart format --line-length 100 --set-exit-if-changed .
       - run: flutter analyze .
       - run: flutter test

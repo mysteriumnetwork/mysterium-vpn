@@ -24,8 +24,7 @@ mixin _$LocaleStore on _LocaleStore, Store {
     });
   }
 
-  late final _$currentLocaleAtom =
-      Atom(name: '_LocaleStore.currentLocale', context: context);
+  late final _$currentLocaleAtom = Atom(name: '_LocaleStore.currentLocale', context: context);
 
   @override
   ui.Locale get currentLocale {
@@ -40,8 +39,7 @@ mixin _$LocaleStore on _LocaleStore, Store {
     });
   }
 
-  late final _$setLocaleAsyncAction =
-      AsyncAction('_LocaleStore.setLocale', context: context);
+  late final _$setLocaleAsyncAction = AsyncAction('_LocaleStore.setLocale', context: context);
 
   @override
   Future<void> setLocale(ui.Locale locale) {
