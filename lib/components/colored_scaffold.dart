@@ -16,7 +16,7 @@ class ColoredScaffold extends StatelessWidget {
         extendBody: true,
         backgroundColor: checkMediaWidth(context, 650)
             ? Palette.black
-            : Theme.of(context).backgroundColor,
+            : Theme.of(context).colorScheme.background,
         body: SafeArea(
           bottom: false,
           child: body,
