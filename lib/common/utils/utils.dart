@@ -15,3 +15,4 @@ double getMediaWidth(BuildContext context) {
 double getMediaHeight(BuildContext context) {
   return MediaQuery.of(context).size.height;
 }
+
