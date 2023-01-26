@@ -19,6 +19,9 @@ abstract class _AuthStore with Store {
   @readonly
   AuthStatus _authStatus = AuthStatus.loading;
 
+  @readonly
+  String? _email = '';
+
   @action
   Future<void> checkUserAuth() async {
     _authStatus = AuthStatus.unauthenticated;
@@ -32,5 +35,10 @@ abstract class _AuthStore with Store {
   @action
   Future<void> logout() async {
     _authStatus = AuthStatus.unauthenticated;
+  }
+
+  @action
+  Future<void> signUp({required String email}) async {
+    _email = email;
   }
 }

@@ -12,8 +12,7 @@ class LocaleStore = _LocaleStore with _$LocaleStore;
 
 abstract class _LocaleStore with Store {
   _LocaleStore() {
-    currentLocale =
-        SharedPreferenceService.getLocale() ?? const ui.Locale('en', 'US');
+    currentLocale = SharedPreferenceService.getLocale() ?? const ui.Locale('en', 'US');
 
     loco = lookupAppLocalizations(currentLocale);
   }

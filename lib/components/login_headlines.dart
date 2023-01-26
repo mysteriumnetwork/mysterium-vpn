@@ -6,8 +6,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class LoginHeadlines extends HookConsumerWidget {
-  const LoginHeadlines(
-      {super.key, this.crossAxisAlignment = CrossAxisAlignment.start});
+  const LoginHeadlines({super.key, this.crossAxisAlignment = CrossAxisAlignment.start});
   final CrossAxisAlignment crossAxisAlignment;
   @override
   Widget build(BuildContext context, WidgetRef ref) {

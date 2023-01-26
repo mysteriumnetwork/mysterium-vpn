@@ -18,8 +18,7 @@ class AppLogo extends HookConsumerWidget {
     final themeStore = ref.watch(themeStorePOD);
 
     return Observer(builder: (context) {
-      final asset = themeStore.themeType == ThemeType.dark ||
-              checkMediaWidth(context, 650)
+      final asset = themeStore.themeType == ThemeType.dark || checkMediaWidth(context, 650)
           ? Assets.logoWhiteSvg
           : Assets.logoBlackSvg;
       return Directionality(

@@ -18,8 +18,7 @@ abstract class _WireguardStore with Store {
 
   @computed
   bool get hasResults =>
-      setupTunelFuture != null &&
-      setupTunelFuture?.status == FutureStatus.fulfilled;
+      setupTunelFuture != null && setupTunelFuture?.status == FutureStatus.fulfilled;
 
   @observable
   int value = 0;
