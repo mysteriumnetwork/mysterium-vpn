@@ -46,28 +46,24 @@ class LoginMobileView extends HookConsumerWidget {
                   ),
                   child: Column(
                     children: [
-                      SizedBox(
+                      EasyButton(
                         width: getMediaWidth(context) * 0.8,
-                        height: 40,
-                        child: EasyButton(
-                          text: loco.sign_in,
-                          onPressed: () {
-                            authStore.login();
-                          },
-                        ),
+                        height: 60,
+                        text: loco.sign_in,
+                        onPressed: () {
+                          authStore.login();
+                        },
                       ).padding(bottom: 20),
-                      SizedBox(
+                      EasyButton(
                         width: getMediaWidth(context) * 0.8,
-                        height: 40,
-                        child: EasyButton(
-                          useSystemColor: false,
-                          text: loco.get_started,
-                          onPressed: () {
-                            if (Platform.isAndroid || Platform.isIOS) {
-                              _showSignInView(context);
-                            }
-                          },
-                        ),
+                        height: 60,
+                        useSystemColor: false,
+                        text: loco.get_started,
+                        onPressed: () {
+                          if (Platform.isAndroid || Platform.isIOS) {
+                            _showSignInView(context);
+                          }
+                        },
                       ).padding(bottom: 30),
                       TextButton(
                         onPressed: () {},

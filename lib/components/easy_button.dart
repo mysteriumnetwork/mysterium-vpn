@@ -4,6 +4,7 @@ import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class EasyButton extends HookConsumerWidget {
   const EasyButton({
@@ -14,6 +15,8 @@ class EasyButton extends HookConsumerWidget {
     this.color,
     this.useSystemColor = true,
     this.isDisabled = false,
+    this.width,
+    this.height
   }) : super(key: key);
 
   final String? text;
@@ -22,6 +25,8 @@ class EasyButton extends HookConsumerWidget {
   final Color? color;
   final bool useSystemColor;
   final bool isDisabled;
+  final double? width;
+  final double? height;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.watch(themeStorePOD);
@@ -31,10 +36,9 @@ class EasyButton extends HookConsumerWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: useSystemColor
             ? null
-            : color ??
-                (themeStore.themeType == ThemeType.light ? Palette.black : Palette.lightBlack),
+            : color ?? (themeStore.themeType == ThemeType.light ? Palette.black : Palette.lightBlack),
       ),
       child: text != null ? EasyText(text!, color: Palette.white) : child,
-    );
+    ).width(width ?? double.infinity).height(height ?? 40);
   }
 }

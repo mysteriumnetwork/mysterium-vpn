@@ -42,7 +42,7 @@ class SignUpForm extends StatelessWidget {
                       }
                     : () => form.markAllAsTouched(),
                 child: EasyText(loco.continue_with_email, color: Palette.white),
-              ).width(double.infinity);
+              );
             },
           ).padding(bottom: 50),
           BorderButton(
@@ -54,7 +54,7 @@ class SignUpForm extends StatelessWidget {
                 loco.continue_with_google,
               ),
             ]),
-          ).width(double.infinity).padding(bottom: 20),
+          ),
           BorderButton(
             onPressed: () {},
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -63,7 +63,7 @@ class SignUpForm extends StatelessWidget {
                 loco.continue_with_apple,
               ),
             ]),
-          ).width(double.infinity).padding(bottom: 20),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
