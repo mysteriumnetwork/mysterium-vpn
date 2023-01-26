@@ -4,7 +4,7 @@ import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/pages/home_page.dart';
 import 'package:mysterium_vpn/pages/login_page.dart';
 import 'package:mysterium_vpn/views/check_email_view.dart';
-import 'package:mysterium_vpn/views/sign_up_view.dart';
+import 'package:mysterium_vpn/views/sign_up/sign_up_view.dart';
 
 enum Routes {
   login,
