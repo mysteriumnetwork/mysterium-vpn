@@ -6,7 +6,7 @@ import 'package:mysterium_vpn/components/app_version.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/fill_container.dart';
 import 'package:mysterium_vpn/components/login_headlines.dart';
-import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -32,7 +32,7 @@ class LoginDesktopView extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const AppLogo(),
-                  SvgIcon(
+                  SvgIconButton(
                       asset: Assets.messageSvg,
                       onPressed: () {
                         themeStore.switchTheme();
@@ -41,40 +41,38 @@ class LoginDesktopView extends HookConsumerWidget {
               ).padding(bottom: 20),
               Expanded(
                 child: Center(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Expanded(child: LoginHeadlines()),
-                        LayoutBuilder(builder: (ctx, con) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: con.maxWidth * 0.45,
-                                height: 40,
-                                child: EasyButton(
-                                  text: loco.sign_in,
-                                  onPressed: () {
-                                    authStore.login();
-                                  },
-                                ),
-                              ),
-                              SizedBox(
-                                width: con.maxWidth * 0.45,
-                                height: 40,
-                                child: EasyButton(
-                                  useSystemColor: false,
-                                  text: loco.get_started,
-                                  onPressed: () {},
-                                ),
-                              ),
-                            ],
-                          ).padding(vertical: 10);
-                        }),
-                        AppVersion(
-                          headerText: loco.app_version,
-                        )
-                      ]),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    const Expanded(child: LoginHeadlines()),
+                    LayoutBuilder(builder: (ctx, con) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: con.maxWidth * 0.45,
+                            height: 40,
+                            child: EasyButton(
+                              text: loco.sign_in,
+                              onPressed: () {
+                                authStore.login();
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: con.maxWidth * 0.45,
+                            height: 40,
+                            child: EasyButton(
+                              useSystemColor: false,
+                              text: loco.get_started,
+                              onPressed: () {},
+                            ),
+                          ),
+                        ],
+                      ).padding(vertical: 10);
+                    }),
+                    AppVersion(
+                      headerText: loco.app_version,
+                    )
+                  ]),
                 ),
               ),
             ],

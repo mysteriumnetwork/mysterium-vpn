@@ -31,8 +31,8 @@ abstract class _ThemeStore with Store {
   }
 
   @computed
-  ThemeData get currentTheme => MysteriumVPNTheme.themeData(
-      themeType == ThemeType.dark ? DarkPalette() : LightPalette());
+  ThemeData get currentTheme =>
+      MysteriumVPNTheme.themeData(themeType == ThemeType.dark ? DarkPalette() : LightPalette());
 
   @observable
   ThemeType themeType = ThemeType.light;
@@ -45,8 +45,7 @@ abstract class _ThemeStore with Store {
 
   @action
   Future<void> switchTheme() async {
-    final type =
-        themeType == ThemeType.light ? ThemeType.dark : ThemeType.light;
+    final type = themeType == ThemeType.light ? ThemeType.dark : ThemeType.light;
     await SharedPreferenceService.setThemeType(type);
     themeType = type;
   }

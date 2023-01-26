@@ -12,13 +12,11 @@ mixin _$ThemeStore on _ThemeStore, Store {
   Computed<ThemeData>? _$currentThemeComputed;
 
   @override
-  ThemeData get currentTheme =>
-      (_$currentThemeComputed ??= Computed<ThemeData>(() => super.currentTheme,
-              name: '_ThemeStore.currentTheme'))
-          .value;
+  ThemeData get currentTheme => (_$currentThemeComputed ??=
+          Computed<ThemeData>(() => super.currentTheme, name: '_ThemeStore.currentTheme'))
+      .value;
 
-  late final _$themeTypeAtom =
-      Atom(name: '_ThemeStore.themeType', context: context);
+  late final _$themeTypeAtom = Atom(name: '_ThemeStore.themeType', context: context);
 
   @override
   ThemeType get themeType {
@@ -33,16 +31,14 @@ mixin _$ThemeStore on _ThemeStore, Store {
     });
   }
 
-  late final _$setThemeTypeAsyncAction =
-      AsyncAction('_ThemeStore.setThemeType', context: context);
+  late final _$setThemeTypeAsyncAction = AsyncAction('_ThemeStore.setThemeType', context: context);
 
   @override
   Future<void> setThemeType(ThemeType type) {
     return _$setThemeTypeAsyncAction.run(() => super.setThemeType(type));
   }
 
-  late final _$switchThemeAsyncAction =
-      AsyncAction('_ThemeStore.switchTheme', context: context);
+  late final _$switchThemeAsyncAction = AsyncAction('_ThemeStore.switchTheme', context: context);
 
   @override
   Future<void> switchTheme() {
