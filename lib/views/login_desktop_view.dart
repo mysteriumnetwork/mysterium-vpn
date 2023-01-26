@@ -47,24 +47,20 @@ class LoginDesktopView extends HookConsumerWidget {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(
+                          EasyButton(
                             width: con.maxWidth * 0.45,
-                            height: 40,
-                            child: EasyButton(
-                              text: loco.sign_in,
-                              onPressed: () {
-                                authStore.login();
-                              },
-                            ),
+                            height: 60,
+                            text: loco.sign_in,
+                            onPressed: () {
+                              authStore.login();
+                            },
                           ),
-                          SizedBox(
+                          EasyButton(
+                            height: 60,
                             width: con.maxWidth * 0.45,
-                            height: 40,
-                            child: EasyButton(
-                              useSystemColor: false,
-                              text: loco.get_started,
-                              onPressed: () {},
-                            ),
+                            useSystemColor: false,
+                            text: loco.get_started,
+                            onPressed: () {},
                           ),
                         ],
                       ).padding(vertical: 10);

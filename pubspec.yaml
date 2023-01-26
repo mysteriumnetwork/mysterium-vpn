@@ -24,7 +24,12 @@ dependencies:
   import_sorter: ^4.6.0
   intl: ^0.17.0
   mobx: ^2.1.3
-  modal_bottom_sheet: ^2.1.2
+  #modal_bottom_sheet: ^2.1.2
+  modal_bottom_sheet:
+    git:
+      url: https://github.com/eli1stark/modal_bottom_sheet.git
+      ref: 2b3f9f84f46418c1b337968c88883995f65f47e7
+      path: modal_bottom_sheet
   package_info_plus: ^3.0.2
   reactive_forms: ^14.1.0
   shared_preferences: ^2.0.16
