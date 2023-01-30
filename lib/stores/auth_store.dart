@@ -6,7 +6,7 @@ import 'package:mobx/mobx.dart';
 
 part 'auth_store.g.dart';
 
-enum AuthStatus { loading, authenticated, unauthenticated }
+enum AuthStatus { loading, authenticated, unauthenticated, unknown }
 
 // ignore: library_private_types_in_public_api
 class AuthStore = _AuthStore with _$AuthStore;
@@ -17,13 +17,14 @@ abstract class _AuthStore with Store {
   }
 
   @readonly
-  AuthStatus _authStatus = AuthStatus.loading;
+  AuthStatus _authStatus = AuthStatus.unknown;
 
   @readonly
   String? _email = '';
 
   @action
   Future<void> checkUserAuth() async {
+    await Future.delayed(const Duration(seconds: 5));
     _authStatus = AuthStatus.unauthenticated;
   }
 
