@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_breakpoints.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_size_breakpoints.dart';
 import 'package:mysterium_vpn/common/configurations/breakpoint_configuration.dart';
-import 'package:mysterium_vpn/common/enums/screen_type.dart';
-import 'package:mysterium_vpn/common/enums/size_type.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 
 bool checkMediaWidth(BuildContext context, double width) {
   return MediaQuery.of(context).size.width < width;

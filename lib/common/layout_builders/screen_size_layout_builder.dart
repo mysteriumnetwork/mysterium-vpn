@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_size_breakpoints.dart';
-import 'package:mysterium_vpn/common/enums/size_type.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/layout_builders/responsive_layout_builder.dart';
 
 /// Each builder will get built based on the current device width.

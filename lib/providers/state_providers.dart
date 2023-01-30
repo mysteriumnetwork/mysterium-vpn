@@ -2,12 +2,12 @@
 
 import 'package:beamer/beamer.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/router/router.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
-
 // final wireguardStorePOD = Provider<WireguardStore>((ref) {
 //   final wireguardService = ref.read(wireguardServicePOD);
 //   return WireguardStore(wireguardService: wireguardService);
@@ -29,7 +29,6 @@ final routeInformationParserPOD = Provider((ref) => BeamerParser());
 
 final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
   final authStore = ref.read(authStorePOD);
-  print(authStore.authStatus);
   return BeamerDelegate(
     guards: [
       BeamGuard(

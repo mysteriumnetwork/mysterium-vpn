@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_breakpoints.dart';
 
-import '../enums/screen_type.dart';
+import '../enums/enums.dart';
 import 'responsive_layout_builder.dart';
 
 /// Provides a builder function for different screen types

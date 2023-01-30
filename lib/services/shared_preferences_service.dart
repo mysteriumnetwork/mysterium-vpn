@@ -4,9 +4,8 @@ import 'dart:async' show Future;
 import 'package:collection/collection.dart';
 // Package imports:
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
-import 'package:mysterium_vpn/shared/storage_keys.dart';
-import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceService {
