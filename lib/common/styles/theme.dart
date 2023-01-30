@@ -12,6 +12,7 @@ class MysteriumVPNTheme {
         background: palette.backgroundGolor,
         surface: palette.surfaceColor,
         primary: palette.swatchColor,
+        brightness: palette is LightPalette ? Brightness.light : Brightness.dark,
       ),
       indicatorColor: palette.highlightColor,
       hintColor: palette.darkTextColor,
@@ -25,7 +26,6 @@ class MysteriumVPNTheme {
       disabledColor: palette.darkTextColor,
       //cardColor:
       //canvasColor: isDarkTheme ? Colors.black : Colors.grey[50],
-      brightness: palette is LightPalette ? Brightness.light : Brightness.dark,
       buttonTheme:
           ButtonThemeData(colorScheme: palette is LightPalette ? const ColorScheme.dark() : const ColorScheme.light()),
 

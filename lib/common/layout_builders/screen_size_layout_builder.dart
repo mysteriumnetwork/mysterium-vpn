@@ -5,10 +5,10 @@ import 'package:mysterium_vpn/common/layout_builders/responsive_layout_builder.d
 
 /// Each builder will get built based on the current device width.
 /// [screenSizeBreakpoint] define your own custom device resolutions
-/// [extraLarge] will be built if width is greater than 2160 on Desktops, 1280 on Tablets, and 600 on Mobiles
+/// [extraLarge] will be built if width is greater than 2160 on Desktops, 1280 on Tablets, and 650 on Mobiles
 /// [large] will be built when width is greater than 1440 on Desktops, 1024 on Tablets, and 414 on Mobiles
 /// [normal] will be built when width is greater than 1080 on Desktops, 768 on Tablets, and 375 on Mobiles
-/// [small] will be built if width is less than 720 on Desktops, 600 on Tablets, and 320 on Mobiles
+/// [small] will be built if width is less than 720 on Desktops, 650 on Tablets, and 320 on Mobiles
 class ScreenSizeLayoutBuilder extends StatelessWidget {
   final ScreenSizeBreakpoint? screenSizeBreakpoint;
 

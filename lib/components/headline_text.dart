@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
@@ -27,9 +28,7 @@ class HeadlineText extends HookConsumerWidget {
     final themeStore = ref.watch(themeStorePOD);
     return Observer(builder: (context) {
       final themeColor =
-          themeStore.themeType == ThemeType.dark || MediaQuery.of(context).size.width < 650
-              ? Palette.white
-              : Palette.darkBlue;
+          themeStore.themeType == ThemeType.dark || checkMediaWidth(context, 650) ? Palette.white : Palette.darkBlue;
       return EasyText(
         text,
         color: color ?? themeColor,

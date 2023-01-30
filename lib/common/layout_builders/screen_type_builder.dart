@@ -10,7 +10,7 @@ import 'responsive_layout_builder.dart';
 /// [breakpoints] define your own custom device resolutions
 /// [watch] will be built and shown when width is less than 300
 /// [mobile] will be built when width greater than 300
-/// [tablet] will be built when width is greater than 600
+/// [tablet] will be built when width is greater than 650
 /// [desktop] will be built if width is greater than 950
 class ScreenTypeLayoutBuilder extends StatelessWidget {
   final ScreenBreakpoint? breakpoints;
@@ -56,7 +56,7 @@ class ScreenTypeLayoutBuilder extends StatelessWidget {
           }
 
           // If none of the layouts above are supplied or we're on the mobile layout then we show the mobile layout
-          return mobile != null ? mobile!(context) : const SizedBox();
+          return mobile != null ? mobile!(context) : const SizedBox.shrink();
         },
       );
 }
