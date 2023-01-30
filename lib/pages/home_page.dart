@@ -18,7 +18,7 @@ class HomePage extends HookConsumerWidget {
     return Observer(builder: (context) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(
+        title: Text(
             localStore.loco.title,
           ),
         ),

@@ -7,11 +7,11 @@ class MysteriumVPNTheme {
     Palette palette,
   ) {
     return ThemeData(
-      primarySwatch: palette.swatchColor,
       primaryColor: palette.primaryColor,
       colorScheme: ColorScheme.fromSwatch().copyWith(
         background: palette.backgroundGolor,
         surface: palette.surfaceColor,
+        primary: palette.swatchColor,
       ),
       indicatorColor: palette.highlightColor,
       hintColor: palette.darkTextColor,
@@ -28,9 +28,7 @@ class MysteriumVPNTheme {
       brightness: palette is LightPalette ? Brightness.light : Brightness.dark,
       buttonTheme:
           ButtonThemeData(colorScheme: palette is LightPalette ? const ColorScheme.dark() : const ColorScheme.light()),
-      appBarTheme: const AppBarTheme(
-        elevation: 0.0,
-      ),
+
       textTheme: GoogleFonts.lexendTextTheme(),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
