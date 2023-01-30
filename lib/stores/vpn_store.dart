@@ -22,8 +22,9 @@ abstract class _VpnStore with Store {
   @readonly
   VpnConnection _vpnConnection = _emptyConnection;
 
-  @readonly
-  String? _countryFlag;
+  @computed
+  String? get countryFlag =>
+      availableFlags.firstWhereOrNull((element) => element.contains(_vpnConnection.location.toLowerCase()));
 
   @action
   Future<void> connect() async {
@@ -39,12 +40,5 @@ abstract class _VpnStore with Store {
   Future<void> disconnect() async {
     await Future.delayed(const Duration(seconds: 1));
     _vpnConnection = _emptyConnection;
-  }
-
-  @action
-  void setCountryFlag() {
-    _countryFlag = availableFlags.firstWhereOrNull(
-      (element) => element.contains(_vpnConnection.location.toLowerCase()),
-    );
   }
 }
