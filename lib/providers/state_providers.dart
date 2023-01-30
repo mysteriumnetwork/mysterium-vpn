@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/common/router/router.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
+import 'package:mysterium_vpn/stores/vpn_store.dart';
 // final wireguardStorePOD = Provider<WireguardStore>((ref) {
 //   final wireguardService = ref.read(wireguardServicePOD);
 //   return WireguardStore(wireguardService: wireguardService);
@@ -23,6 +24,10 @@ final authStorePOD = Provider<AuthStore>((ref) {
 
 final themeStorePOD = Provider<ThemeStore>((ref) {
   return ThemeStore();
+});
+
+final vpnStorePOD = Provider<VpnStore>((ref) {
+  return VpnStore();
 });
 
 final routeInformationParserPOD = Provider((ref) => BeamerParser());

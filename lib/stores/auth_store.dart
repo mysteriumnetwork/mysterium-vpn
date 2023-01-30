@@ -2,10 +2,10 @@
 // Package imports:
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+
 // Project imports:
 
 part 'auth_store.g.dart';
-
 
 // ignore: library_private_types_in_public_api
 class AuthStore = _AuthStore with _$AuthStore;
@@ -23,7 +23,7 @@ abstract class _AuthStore with Store {
 
   @action
   Future<void> checkUserAuth() async {
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 8));
     _authStatus = AuthStatus.unauthenticated;
   }
 

@@ -1,5 +1,5 @@
 export 'auth_status.dart';
-export 'connection_type.dart';
+export 'connection_status.dart';
 export 'orientation_type.dart';
 export 'routes.dart';
 export 'screen_type.dart';

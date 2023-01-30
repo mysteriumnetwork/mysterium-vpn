@@ -20,6 +20,7 @@ abstract class Assets {
   static const String settings = 'assets/icons/settings.svg';
   static const String uploadActive = 'assets/icons/upload.svg';
   static const String upload = 'assets/icons/upload.svg';
+  static const String connectButton = 'assets/icons/connect_button.svg';
 
   //FLAGS
   static const String austria = 'assets/flags/austria.svg';
