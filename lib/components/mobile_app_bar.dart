@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
@@ -17,7 +16,7 @@ class MobileAppBar extends HookConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SvgIconButton(
-         onPressed: (){},
+          onPressed: () {},
           asset: Assets.report,
         ),
         const AppLogo(),

@@ -34,7 +34,7 @@ class MobileConnectionBar extends HookConsumerWidget {
             label: loco.location,
             text: vpnConnection.location,
             leading: vpnStore.countryFlag != null ? SvgIcon(asset: vpnStore.countryFlag!) : null,
-          ),
+          )
         ],
       ).padding(vertical: 30);
     });
