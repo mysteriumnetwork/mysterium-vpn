@@ -12,9 +12,10 @@ mixin _$WireguardStore on _WireguardStore, Store {
   Computed<bool>? _$hasResultsComputed;
 
   @override
-  bool get hasResults => (_$hasResultsComputed ??=
-          Computed<bool>(() => super.hasResults, name: '_WireguardStore.hasResults'))
-      .value;
+  bool get hasResults =>
+      (_$hasResultsComputed ??= Computed<bool>(() => super.hasResults,
+              name: '_WireguardStore.hasResults'))
+          .value;
 
   late final _$setupTunelFutureAtom =
       Atom(name: '_WireguardStore.setupTunelFuture', context: context);
@@ -32,7 +33,8 @@ mixin _$WireguardStore on _WireguardStore, Store {
     });
   }
 
-  late final _$valueAtom = Atom(name: '_WireguardStore.value', context: context);
+  late final _$valueAtom =
+      Atom(name: '_WireguardStore.value', context: context);
 
   @override
   int get value {
@@ -52,8 +54,8 @@ mixin _$WireguardStore on _WireguardStore, Store {
 
   @override
   void increment() {
-    final _$actionInfo =
-        _$_WireguardStoreActionController.startAction(name: '_WireguardStore.increment');
+    final _$actionInfo = _$_WireguardStoreActionController.startAction(
+        name: '_WireguardStore.increment');
     try {
       return super.increment();
     } finally {

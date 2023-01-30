@@ -5,7 +5,7 @@ import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/theme_store.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class HeadlineText extends HookConsumerWidget {

@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class EasyButton extends HookConsumerWidget {
-  const EasyButton({
-    Key? key,
-    this.text,
-    this.child,
-    required this.onPressed,
-    this.color,
-    this.useSystemColor = true,
-    this.isDisabled = false,
-    this.width,
-    this.height
-  }) : super(key: key);
+  const EasyButton(
+      {Key? key,
+      this.text,
+      this.child,
+      required this.onPressed,
+      this.color,
+      this.useSystemColor = true,
+      this.isDisabled = false,
+      this.width,
+      this.height})
+      : super(key: key);
 
   final String? text;
   final Widget? child;

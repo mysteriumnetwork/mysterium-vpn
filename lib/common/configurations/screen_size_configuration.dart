@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../enums/screen_type.dart';
-import '../enums/size_type.dart';
+import '../enums/enums.dart';
 
 /// Contains sizing information to make responsive choices for the current screen
 class ScreenSizeConfiguration {

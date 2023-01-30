@@ -1,12 +1,11 @@
 // Flutter imports:
 // Package imports:
 import 'package:mobx/mobx.dart';
-
+import 'package:mysterium_vpn/common/enums/enums.dart';
 // Project imports:
 
 part 'auth_store.g.dart';
 
-enum AuthStatus { loading, authenticated, unauthenticated, unknown }
 
 // ignore: library_private_types_in_public_api
 class AuthStore = _AuthStore with _$AuthStore;
