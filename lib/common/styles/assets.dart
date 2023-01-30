@@ -15,6 +15,6 @@ abstract class Assets {
   static const String circlesGrey = 'assets/animations/circles_grey.json';
   static const String circlesPurple = 'assets/animations/circles_purple.json';
   static const String slideUp = 'assets/animations/slide_up.json';
-  static const String startLogo = 'assets/animations/start_logo.json';
+  static const String splashLogo = 'assets/animations/start_logo.json';
   static const String circlesLogo = 'assets/animations/circles_logo.json';
 }

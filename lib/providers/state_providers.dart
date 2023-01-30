@@ -29,7 +29,7 @@ final routeInformationParserPOD = Provider((ref) => BeamerParser());
 
 final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
   final authStore = ref.read(authStorePOD);
-
+  print(authStore.authStatus);
   return BeamerDelegate(
     guards: [
       BeamGuard(
@@ -38,10 +38,17 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
           beamToNamed: (_, __) => Routes.login.toRoute),
       BeamGuard(
           pathPatterns: [Routes.login.toRoute],
-          check: (context, state) => authStore.authStatus != AuthStatus.authenticated,
+          check: (context, state) =>
+              authStore.authStatus == AuthStatus.unauthenticated || authStore.authStatus == AuthStatus.loading,
           beamToNamed: (_, __) => Routes.home.toRoute),
+      BeamGuard(
+        pathPatterns: [Routes.splash.toRoute],
+        check: (context, state) => authStore.authStatus == AuthStatus.unknown,
+        beamToNamed: (_, __) =>
+            authStore.authStatus == AuthStatus.authenticated ? Routes.home.toRoute : Routes.login.toRoute,
+      ),
     ],
-    initialPath: Routes.login.toRoute,
+    initialPath: Routes.splash.toRoute,
     locationBuilder: (routeInformation, _) => BeamerLocations(routeInformation),
   );
 });
