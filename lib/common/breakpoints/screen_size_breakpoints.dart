@@ -20,7 +20,7 @@ class ScreenSizeBreakpoint {
     this.mobileNormal = 375,
     this.mobileLarge = 414,
     this.mobileExtraLarge = 480,
-    this.tabletSmall = 600,
+    this.tabletSmall = 650,
     this.tabletNormal = 768,
     this.tabletLarge = 850,
     this.tabletExtraLarge = 900,

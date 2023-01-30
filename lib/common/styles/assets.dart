@@ -11,4 +11,10 @@ abstract class Assets {
   static const String googleLogo = 'assets/icons/google.svg';
   static const String appleLogo = 'assets/icons/apple.svg';
   static const String checkEmail = 'assets/images/check_email.svg';
+  static const String backgroundElements = 'assets/animations/background_elements.json';
+  static const String circlesGrey = 'assets/animations/circles_grey.json';
+  static const String circlesPurple = 'assets/animations/circles_purple.json';
+  static const String slideUp = 'assets/animations/slide_up.json';
+  static const String startLogo = 'assets/animations/start_logo.json';
+  static const String circlesLogo = 'assets/animations/circles_logo.json';
 }
