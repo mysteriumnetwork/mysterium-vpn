@@ -11,7 +11,7 @@ class ConnectButton extends StatelessWidget {
   final VoidCallback callback;
   @override
   Widget build(BuildContext context) {
-    final radius = ((getMediaHeight(context) + getMediaWidth(context)) / 2) * 0.09;
+    final radius = ((getMediaHeight(context) + getMediaWidth(context)) / 2) * 0.13;
     return Container(
       height: radius,
       width: radius,
