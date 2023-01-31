@@ -3,7 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/connect_button.dart';
 import 'package:mysterium_vpn/components/connection_bar.dart';
 import 'package:mysterium_vpn/components/mobile_app_bar.dart';
@@ -26,7 +25,7 @@ class HomeMobileView extends HookConsumerWidget {
               child: Lottie.asset(
             isConnected ? Assets.circlesPurple : Assets.circlesGrey,
             alignment: Alignment.center,
-            width: getMediaWidth(context) * 0.8,
+            // width: getMediaWidth(context) * 0.8,
           )),
           Column(
             children: const [
