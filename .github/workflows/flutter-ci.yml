@@ -44,6 +44,7 @@ jobs:
           # channel: beta
 
       - run: flutter pub get
+      - run: flutter pub run build_runner build --verbose --delete-conflicting-outputs
       - run: dart format --line-length 100 --set-exit-if-changed .
       - run: flutter analyze .
       - run: flutter test
