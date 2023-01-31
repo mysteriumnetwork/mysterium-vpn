@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/connect_button.dart';
 import 'package:mysterium_vpn/components/connection_bar.dart';
 import 'package:mysterium_vpn/components/mobile_app_bar.dart';
@@ -18,10 +18,16 @@ class HomeMobileView extends HookConsumerWidget {
     final vpnStore = ref.watch(vpnStorePOD);
 
     return Observer(builder: (context) {
+      bool isConnected = vpnStore.isConnected;
       return Stack(
         children: [
           Lottie.asset(Assets.backgroundElements),
-          Lottie.asset(Assets.circlesGrey).padding(top: 50),
+          Center(
+              child: Lottie.asset(
+            isConnected ? Assets.circlesPurple : Assets.circlesGrey,
+            alignment: Alignment.center,
+            width: getMediaWidth(context) * 0.8,
+          )),
           Column(
             children: const [
               MobileAppBar(),
@@ -31,11 +37,9 @@ class HomeMobileView extends HookConsumerWidget {
           Center(
             child: ConnectButton(
               callback: () {
-                vpnStore.vpnConnection.connectionStatus == ConnectionStatus.connected
-                    ? vpnStore.disconnect()
-                    : vpnStore.connect();
+                isConnected ? vpnStore.disconnect() : vpnStore.connect();
               },
-              connectionStatus: vpnStore.vpnConnection.connectionStatus,
+              isConnected: isConnected,
             ),
           ),
         ],

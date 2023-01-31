@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 
 class ConnectButton extends StatelessWidget {
-  const ConnectButton({required this.connectionStatus, required this.callback, super.key});
+  const ConnectButton({required this.isConnected, required this.callback, super.key});
 
-  final ConnectionStatus connectionStatus;
+  final bool isConnected;
   final VoidCallback callback;
   @override
   Widget build(BuildContext context) {
+    final radius = ((getMediaHeight(context) + getMediaWidth(context)) / 2) * 0.09;
     return Container(
-      height: 70,
-      width: 70,
+      height: radius,
+      width: radius,
       decoration: BoxDecoration(
-        color: connectionStatus == ConnectionStatus.disconnected ? Palette.lightBlack : Palette.purple,
+        color: isConnected ? Palette.purple : Palette.lightBlack,
         shape: BoxShape.circle,
       ),
       child: SvgIconButton(
