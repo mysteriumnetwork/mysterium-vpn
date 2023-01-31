@@ -16,15 +16,15 @@ class VpnStore = _VpnStore with _$VpnStore;
 abstract class _VpnStore with Store {
   _VpnStore();
 
-  static const VpnConnection _emptyConnection =
-      VpnConnection(connectionIP: '--', connectionStatus: ConnectionStatus.disconnected, location: '--');
+  static const VpnConnection _emptyConnection = VpnConnection(
+      connectionIP: '--', connectionStatus: ConnectionStatus.disconnected, location: '--');
 
   @readonly
   VpnConnection _vpnConnection = _emptyConnection;
 
   @computed
-  String? get countryFlag =>
-      availableFlags.firstWhereOrNull((element) => element.contains(_vpnConnection.location.toLowerCase()));
+  String? get countryFlag => availableFlags
+      .firstWhereOrNull((element) => element.contains(_vpnConnection.location.toLowerCase()));
 
   @computed
   bool get isConnected => _vpnConnection.connectionStatus == ConnectionStatus.connected;

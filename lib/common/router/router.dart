@@ -8,7 +8,6 @@ import 'package:mysterium_vpn/pages/static/splash_page.dart';
 import 'package:mysterium_vpn/views/check_email_view.dart';
 import 'package:mysterium_vpn/views/sign_up/sign_up_view.dart';
 
-
 class BeamerLocations extends BeamLocation<BeamState> {
   BeamerLocations(RouteInformation routeInformation) : super(routeInformation);
 

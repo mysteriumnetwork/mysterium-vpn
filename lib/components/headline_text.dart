@@ -27,8 +27,9 @@ class HeadlineText extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.watch(themeStorePOD);
     return Observer(builder: (context) {
-      final themeColor =
-          themeStore.themeType == ThemeType.dark || checkMediaWidth(context, 650) ? Palette.white : Palette.darkBlue;
+      final themeColor = themeStore.themeType == ThemeType.dark || checkMediaWidth(context, 650)
+          ? Palette.white
+          : Palette.darkBlue;
       return EasyText(
         text,
         color: color ?? themeColor,
