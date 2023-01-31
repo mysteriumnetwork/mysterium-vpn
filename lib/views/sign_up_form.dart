@@ -1,7 +1,7 @@
 import 'package:beamer/beamer.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/forms/forms.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
@@ -10,12 +10,12 @@ import 'package:mysterium_vpn/components/border_button.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SignUpForm extends StatelessWidget {
-  const SignUpForm({super.key, required this.loco});
-  final AppLocalizations loco;
+  const SignUpForm({super.key});
   @override
   Widget build(BuildContext context) {
     final signUpForm = useMemoized(() => AppForms.singUp());
@@ -25,11 +25,11 @@ class SignUpForm extends StatelessWidget {
       child: Column(
         children: [
           ReactiveTextField(
-            decoration: InputDecoration(labelText: loco.email),
+            decoration: InputDecoration(labelText: LocaleKeys.email.tr()),
             formControlName: 'email',
             validationMessages: {
-              ValidationMessage.required: (_) => loco.email_is_required,
-              ValidationMessage.email: (_) => loco.email_is_not_valid,
+              ValidationMessage.required: (_) => LocaleKeys.emailIsRequired.tr(),
+              ValidationMessage.email: (_) => LocaleKeys.emailIsNotValid.tr(),
             },
           ).padding(bottom: 20),
           ReactiveFormConsumer(
@@ -41,7 +41,7 @@ class SignUpForm extends StatelessWidget {
                         context.beamToNamed('/check-your-email');
                       }
                     : () => form.markAllAsTouched(),
-                child: EasyText(loco.continue_with_email, color: Palette.white),
+                child: EasyText(LocaleKeys.continueWithEmail.tr(), color: Palette.white),
               ).width(double.infinity);
             },
           ).padding(bottom: 50),
@@ -51,7 +51,7 @@ class SignUpForm extends StatelessWidget {
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               const SvgIcon(asset: Assets.googleLogo).padding(right: 10),
               EasyText(
-                loco.continue_with_google,
+                LocaleKeys.continueWithGoogle.tr(),
               ),
             ]),
           ).width(double.infinity).padding(bottom: 20),
@@ -60,7 +60,7 @@ class SignUpForm extends StatelessWidget {
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               const SvgIcon(asset: Assets.appleLogo).padding(right: 10),
               EasyText(
-                loco.continue_with_apple,
+                LocaleKeys.continueWithApple.tr(),
               ),
             ]),
           ).width(double.infinity).padding(bottom: 20),
@@ -74,9 +74,9 @@ class SignUpForm extends StatelessWidget {
                 text: TextSpan(
                   style: const TextStyle(color: Palette.lightBlack),
                   children: [
-                    TextSpan(text: "${loco.accept} "),
+                    TextSpan(text: "${LocaleKeys.accept.tr()} "),
                     TextSpan(
-                        text: loco.terms_and_conditions,
+                        text: LocaleKeys.termsAndConditions.tr(),
                         style: const TextStyle(
                           color: Palette.lightBlack,
                           decoration: TextDecoration.underline,

@@ -7,12 +7,15 @@ class MysteriumVPNTheme {
     Palette palette,
   ) {
     return ThemeData(
-      primarySwatch: palette.swatchColor,
+      useMaterial3: true,
       primaryColor: palette.primaryColor,
       colorScheme: ColorScheme.fromSwatch().copyWith(
         background: palette.backgroundGolor,
         surface: palette.surfaceColor,
+        primary: palette.swatchColor,
+        brightness: palette is LightPalette ? Brightness.light : Brightness.dark,
       ),
+      splashFactory: NoSplash.splashFactory,
       indicatorColor: palette.highlightColor,
       hintColor: palette.darkTextColor,
       highlightColor: palette.highlightColor,
@@ -21,17 +24,13 @@ class MysteriumVPNTheme {
         bodyLarge: TextStyle(color: palette.secondaryColor),
       ),
       //hoverColor: palette.secondaryColor,
-      focusColor: Palette.pink,
       disabledColor: palette.darkTextColor,
       //cardColor:
       //canvasColor: isDarkTheme ? Colors.black : Colors.grey[50],
-      brightness: palette is LightPalette ? Brightness.light : Brightness.dark,
       buttonTheme: ButtonThemeData(
           colorScheme:
               palette is LightPalette ? const ColorScheme.dark() : const ColorScheme.light()),
-      appBarTheme: const AppBarTheme(
-        elevation: 0.0,
-      ),
+
       textTheme: GoogleFonts.lexendTextTheme(),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
