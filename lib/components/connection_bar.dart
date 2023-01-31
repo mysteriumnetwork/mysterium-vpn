@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/connection_indicator.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
@@ -25,9 +24,9 @@ class MobileConnectionBar extends HookConsumerWidget {
           _BarItem(label: loco.connection_ip, text: vpnConnection.connectionIP),
           _BarItem(
             label: loco.status,
-            text: vpnConnection.connectionStatus == ConnectionStatus.connected ? loco.connected : loco.disconnected,
+            text: vpnStore.isConnected ? loco.connected : loco.disconnected,
             leading: ConnectionIndicator(
-              connectionStatus: vpnConnection.connectionStatus,
+              isConnected: vpnStore.isConnected,
             ),
           ),
           _BarItem(

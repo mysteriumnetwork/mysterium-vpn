@@ -26,6 +26,9 @@ abstract class _VpnStore with Store {
   String? get countryFlag =>
       availableFlags.firstWhereOrNull((element) => element.contains(_vpnConnection.location.toLowerCase()));
 
+  @computed
+  bool get isConnected => _vpnConnection.connectionStatus == ConnectionStatus.connected;
+
   @action
   Future<void> connect() async {
     await Future.delayed(const Duration(seconds: 1));
