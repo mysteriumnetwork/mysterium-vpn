@@ -35,5 +35,6 @@ class ScreenSizeConfiguration {
   });
 
   @override
-  String toString() => 'DeviceType:$screenType RefinedSize:$sizeType ScreenSize:$screenSize LocalWidgetSize:$localWidgetSize';
+  String toString() =>
+      'DeviceType:$screenType RefinedSize:$sizeType ScreenSize:$screenSize LocalWidgetSize:$localWidgetSize';
 }

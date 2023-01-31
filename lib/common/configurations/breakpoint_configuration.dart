@@ -51,5 +51,6 @@ class BreakpointConfiguration {
 
   ScreenBreakpoint get screenBreakpoints => _customScreenBreakpoints ?? _defaultScreenBreakpoints;
 
-  ScreenSizeBreakpoint get screenSizeBreakpoints => _customScreenSizeBreakpoints ?? _deafultScreenSizeBreakpoints;
+  ScreenSizeBreakpoint get screenSizeBreakpoints =>
+      _customScreenSizeBreakpoints ?? _deafultScreenSizeBreakpoints;
 }

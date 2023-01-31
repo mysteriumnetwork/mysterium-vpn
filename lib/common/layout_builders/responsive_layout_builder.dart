@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_breakpoints.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_size_breakpoints.dart';
 import 'package:mysterium_vpn/common/configurations/screen_size_configuration.dart';
@@ -8,7 +8,8 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 ///
 /// This widget is used by the ScreenTypeLayoutBuilder to provide different widget builders
 class ResponsiveLayoutBuilder extends StatelessWidget {
-  final Widget Function(BuildContext context, ScreenSizeConfiguration screenSizeConfiguration) builder;
+  final Widget Function(BuildContext context, ScreenSizeConfiguration screenSizeConfiguration)
+      builder;
   final ScreenBreakpoint? screenBreakpoints;
   final ScreenSizeBreakpoint? screenSizeBreakpoints;
 

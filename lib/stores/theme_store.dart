@@ -18,7 +18,9 @@ class ThemeStore = _ThemeStore with _$ThemeStore;
 abstract class _ThemeStore with Store {
   _ThemeStore() {
     themeType = SharedPreferenceService.getThemeType() ??
-        (SchedulerBinding.instance.window.platformBrightness == Brightness.dark ? ThemeType.dark : ThemeType.light);
+        (SchedulerBinding.instance.window.platformBrightness == Brightness.dark
+            ? ThemeType.dark
+            : ThemeType.light);
   }
 
   @computed

@@ -6,7 +6,8 @@ import 'package:styled_widget/styled_widget.dart';
 // Project imports:
 
 class BorderButton extends StatelessWidget {
-  const BorderButton({Key? key, this.color, this.width, required this.child, required this.onPressed})
+  const BorderButton(
+      {Key? key, this.color, this.width, required this.child, required this.onPressed})
       : super(key: key);
 
   final Widget child;
