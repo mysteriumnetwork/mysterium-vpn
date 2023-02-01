@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/extensions/string.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class LanguagePicker extends ConsumerWidget {
@@ -9,25 +11,25 @@ class LanguagePicker extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final localeStore = ref.watch(localeStorePOD);
-
+    final localStore = ref.watch(localeStorePOD);
     return Observer(builder: (context) {
       return DropdownButton<Locale>(
           isDense: true,
-          value: localeStore.currentLocale,
+          value: context.locale,
           icon: const Icon(Icons.arrow_drop_down),
           underline: Container(
             height: 1,
             color: Colors.black26,
           ),
-          onChanged: (Locale? newLocale) {
+          onChanged: (Locale? newLocale) async {
             if (newLocale == null) {
               return;
             }
-            localeStore.setLocale(newLocale);
+            await context.setLocale(newLocale);
+            localStore.setLocale(newLocale);
             return;
           },
-          items: localeStore.supportedLocales
+          items: supportedLocales
               .map<DropdownMenuItem<Locale>>(
                 (locale) => DropdownMenuItem<Locale>(
                   value: locale,
