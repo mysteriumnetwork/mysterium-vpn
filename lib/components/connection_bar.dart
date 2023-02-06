@@ -10,8 +10,8 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class MobileConnectionBar extends HookConsumerWidget {
-  const MobileConnectionBar({super.key});
+class MobileConnectionStatusBar extends HookConsumerWidget {
+  const MobileConnectionStatusBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,7 +36,7 @@ class MobileConnectionBar extends HookConsumerWidget {
             leading: vpnStore.countryFlag != null ? SvgIcon(asset: vpnStore.countryFlag!) : null,
           )
         ],
-      ).padding(vertical: 30);
+      ).padding(vertical: 20);
     });
   }
 }
