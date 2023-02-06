@@ -21,26 +21,36 @@ class HomeMobileView extends HookConsumerWidget {
       return Stack(
         children: [
           Lottie.asset(Assets.backgroundElements),
-          Center(
-              child: Lottie.asset(
-            isConnected ? Assets.circlesPurple : Assets.circlesGrey,
-            alignment: Alignment.center,
-            // width: getMediaWidth(context) * 0.8,
-          )),
           Column(
-            children: const [
-              MobileAppBar(),
-              MobileConnectionBar(),
+            children: [
+              const MobileAppBar(),
+              const MobileConnectionBar(),
+              Expanded(
+                child: LayoutBuilder(builder: (context, con) {
+                  return Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: [
+                      Lottie.asset(
+                        isConnected ? Assets.circlesPurple : Assets.circlesGrey,
+                        alignment: Alignment.center,
+                      ),
+                      ConnectButton(
+                        callback: () {
+                          isConnected ? vpnStore.disconnect() : vpnStore.connect();
+                        },
+                        isConnected: isConnected,
+                        height: con.maxHeight,
+                        width: con.maxWidth,
+                      ),
+                    ],
+                  );
+                }),
+              ),
+              Container(
+                height: 300,
+              ),
             ],
           ).padding(horizontal: 20, top: 30),
-          Center(
-            child: ConnectButton(
-              callback: () {
-                isConnected ? vpnStore.disconnect() : vpnStore.connect();
-              },
-              isConnected: isConnected,
-            ),
-          ),
         ],
       );
     });
