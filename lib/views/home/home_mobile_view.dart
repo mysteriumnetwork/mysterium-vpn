@@ -29,8 +29,7 @@ class HomeMobileView extends HookConsumerWidget {
         color: Theme.of(context).primaryColor,
         isDraggable: true,
         panelBuilder: (sc) => LocationsSliderMobileView(sc: sc),
-        borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
         body: Stack(
           children: [
             Lottie.asset(Assets.backgroundElements),
@@ -57,9 +56,9 @@ class HomeMobileView extends HookConsumerWidget {
                     ],
                   ).padding(bottom: 20);
                 }).expanded(),
-                const ConnectionInfoPanel().height(90)
+                const ConnectionInfoPanel().height(95)
               ],
-            ).height(getMediaHeight(context) * 0.65 - getWindowPadding().top),
+            ).height(getMediaHeight(context) * 0.66 - getWindowPadding().top),
           ],
         ),
       );
