@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -5,6 +6,7 @@ import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/connection_indicator.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -13,7 +15,6 @@ class MobileConnectionBar extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loco = ref.watch(localeStorePOD).loco;
     final vpnStore = ref.watch(vpnStorePOD);
 
     return Observer(builder: (context) {
@@ -21,16 +22,16 @@ class MobileConnectionBar extends HookConsumerWidget {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _BarItem(label: loco.connection_ip, text: vpnConnection.connectionIP),
+          _BarItem(label: LocaleKeys.connection_ip.tr(), text: vpnConnection.connectionIP),
           _BarItem(
-            label: loco.status,
-            text: vpnStore.isConnected ? loco.connected : loco.disconnected,
+            label: LocaleKeys.status.tr(),
+            text: vpnStore.isConnected ? LocaleKeys.connected.tr() : LocaleKeys.disconnected.tr(),
             leading: ConnectionIndicator(
               isConnected: vpnStore.isConnected,
             ),
           ),
           _BarItem(
-            label: loco.location,
+            label: LocaleKeys.location.tr(),
             text: vpnConnection.location,
             leading: vpnStore.countryFlag != null ? SvgIcon(asset: vpnStore.countryFlag!) : null,
           )
