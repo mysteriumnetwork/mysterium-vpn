@@ -22,6 +22,57 @@ mixin _$VpnStore on _VpnStore, Store {
           Computed<bool>(() => super.isConnected, name: '_VpnStore.isConnected'))
       .value;
 
+  late final _$_durationAtom = Atom(name: '_VpnStore._duration', context: context);
+
+  Duration? get duration {
+    _$_durationAtom.reportRead();
+    return super._duration;
+  }
+
+  @override
+  Duration? get _duration => duration;
+
+  @override
+  set _duration(Duration? value) {
+    _$_durationAtom.reportWrite(value, super._duration, () {
+      super._duration = value;
+    });
+  }
+
+  late final _$_uploadSpeedAtom = Atom(name: '_VpnStore._uploadSpeed', context: context);
+
+  double? get uploadSpeed {
+    _$_uploadSpeedAtom.reportRead();
+    return super._uploadSpeed;
+  }
+
+  @override
+  double? get _uploadSpeed => uploadSpeed;
+
+  @override
+  set _uploadSpeed(double? value) {
+    _$_uploadSpeedAtom.reportWrite(value, super._uploadSpeed, () {
+      super._uploadSpeed = value;
+    });
+  }
+
+  late final _$_downloadSpeedAtom = Atom(name: '_VpnStore._downloadSpeed', context: context);
+
+  double? get downloadSpeed {
+    _$_downloadSpeedAtom.reportRead();
+    return super._downloadSpeed;
+  }
+
+  @override
+  double? get _downloadSpeed => downloadSpeed;
+
+  @override
+  set _downloadSpeed(double? value) {
+    _$_downloadSpeedAtom.reportWrite(value, super._downloadSpeed, () {
+      super._downloadSpeed = value;
+    });
+  }
+
   late final _$_vpnConnectionAtom = Atom(name: '_VpnStore._vpnConnection', context: context);
 
   VpnConnection get vpnConnection {
@@ -44,6 +95,13 @@ mixin _$VpnStore on _VpnStore, Store {
   @override
   Future<void> connect() {
     return _$connectAsyncAction.run(() => super.connect());
+  }
+
+  late final _$startTrackingAsyncAction = AsyncAction('_VpnStore.startTracking', context: context);
+
+  @override
+  Future<void> startTracking() {
+    return _$startTrackingAsyncAction.run(() => super.startTracking());
   }
 
   late final _$disconnectAsyncAction = AsyncAction('_VpnStore.disconnect', context: context);

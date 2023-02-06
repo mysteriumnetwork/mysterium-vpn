@@ -1,5 +1,8 @@
 // Flutter imports:
 // Package imports:
+import 'dart:async';
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
@@ -19,6 +22,17 @@ abstract class _VpnStore with Store {
   static const VpnConnection _emptyConnection = VpnConnection(
       connectionIP: '--', connectionStatus: ConnectionStatus.disconnected, location: '--');
 
+  final random = Random();
+
+  Timer? _timer;
+
+  @readonly
+  Duration? _duration;
+  @readonly
+  double? _uploadSpeed;
+  @readonly
+  double? _downloadSpeed;
+
   @readonly
   VpnConnection _vpnConnection = _emptyConnection;
 
@@ -37,11 +51,29 @@ abstract class _VpnStore with Store {
       connectionStatus: ConnectionStatus.connected,
       location: 'Austria',
     );
+    startTracking();
+  }
+
+  @action
+  Future<void> startTracking() async {
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      _duration = Duration(seconds: (_duration?.inSeconds ?? 0) + 1);
+      _uploadSpeed = random.nextDouble() * 600;
+      _downloadSpeed = random.nextDouble() * 600;
+    });
   }
 
   @action
   Future<void> disconnect() async {
     await Future.delayed(const Duration(seconds: 1));
     _vpnConnection = _emptyConnection;
+    _timer?.cancel();
+    _downloadSpeed = null;
+    _uploadSpeed = null;
+    _duration = null;
+  }
+
+  void dispose() async {
+    _timer?.cancel();
   }
 }

@@ -11,16 +11,16 @@ part of 'locale_store.dart';
 mixin _$LocaleStore on _LocaleStore, Store {
   late final _$_currentLocaleAtom = Atom(name: '_LocaleStore._currentLocale', context: context);
 
-  ui.Locale get currentLocale {
+  Locale get currentLocale {
     _$_currentLocaleAtom.reportRead();
     return super._currentLocale;
   }
 
   @override
-  ui.Locale get _currentLocale => currentLocale;
+  Locale get _currentLocale => currentLocale;
 
   @override
-  set _currentLocale(ui.Locale value) {
+  set _currentLocale(dynamic value) {
     _$_currentLocaleAtom.reportWrite(value, super._currentLocale, () {
       super._currentLocale = value;
     });
@@ -29,7 +29,7 @@ mixin _$LocaleStore on _LocaleStore, Store {
   late final _$setLocaleAsyncAction = AsyncAction('_LocaleStore.setLocale', context: context);
 
   @override
-  Future<void> setLocale(ui.Locale locale) {
+  Future<void> setLocale(dynamic locale) {
     return _$setLocaleAsyncAction.run(() => super.setLocale(locale));
   }
 
