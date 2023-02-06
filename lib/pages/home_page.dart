@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/common/layout_builders/screen_type_builder.dart';
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/views/home/home_desktop_view.dart';
@@ -10,14 +9,12 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(builder: (context) {
-      return ColoredScaffold(
-        body: ScreenTypeLayoutBuilder(
-          mobile: (BuildContext context) => const HomeMobileView(),
-          tablet: (BuildContext context) => const HomeDesktopView(),
-          desktop: (BuildContext context) => const HomeDesktopView(),
-        ),
-      );
-    });
+    return ColoredScaffold(
+      body: ScreenTypeLayoutBuilder(
+        mobile: (BuildContext context) => const HomeMobileView(),
+        tablet: (BuildContext context) => const HomeDesktopView(),
+        desktop: (BuildContext context) => const HomeDesktopView(),
+      ),
+    );
   }
 }
