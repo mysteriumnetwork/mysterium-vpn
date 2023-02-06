@@ -9,16 +9,17 @@ import 'package:mysterium_vpn/components/app_logo.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/login_headlines.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/sign_up_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class LoginMobileView extends HookConsumerWidget {
   const LoginMobileView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loco = ref.watch(localeStorePOD).loco;
     final authStore = ref.watch(authStorePOD);
 
     return Column(
@@ -68,7 +69,7 @@ class LoginMobileView extends HookConsumerWidget {
                       TextButton(
                         onPressed: () {},
                         child: EasyText(
-                          loco.get_help,
+                          LocaleKeys.getHelp.tr(),
                           color: Palette.lightBlack,
                           fontSize: 12,
                         ),

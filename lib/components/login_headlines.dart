@@ -1,8 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/headline_text.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class LoginHeadlines extends HookConsumerWidget {
@@ -10,7 +11,6 @@ class LoginHeadlines extends HookConsumerWidget {
   final CrossAxisAlignment crossAxisAlignment;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loco = ref.watch(localeStorePOD).loco;
     return Center(
       child: SingleChildScrollView(
         child: Column(
@@ -19,20 +19,20 @@ class LoginHeadlines extends HookConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             HeadlineText(
-              text: loco.anonymous,
+              text: LocaleKeys.anonymous.tr(),
               color: Palette.purple,
             ),
             HeadlineText(
-              text: loco.affordable,
+              text: LocaleKeys.affordable.tr(),
             ),
             HeadlineText(
-              text: loco.fast,
+              text: LocaleKeys.fast.tr(),
             ),
             HeadlineText(
-              text: loco.secure,
+              text: LocaleKeys.secure.tr(),
             ),
             HeadlineText(
-              text: loco.login_quote,
+              text: LocaleKeys.loginQuote.tr(),
               maxLines: 2,
               fontSize: 12,
               fontWeight: FontWeight.w500,
