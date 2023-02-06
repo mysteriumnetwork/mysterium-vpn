@@ -18,7 +18,7 @@ abstract class Assets {
   static const String report = 'assets/icons/report.svg';
   static const String search = 'assets/icons/search.svg';
   static const String settings = 'assets/icons/settings.svg';
-  static const String uploadActive = 'assets/icons/upload.svg';
+  static const String uploadActive = 'assets/icons/upload_active.svg';
   static const String upload = 'assets/icons/upload.svg';
   static const String connectButton = 'assets/icons/connect_button.svg';
 

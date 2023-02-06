@@ -1,9 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_breakpoints.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_size_breakpoints.dart';
 import 'package:mysterium_vpn/common/configurations/breakpoint_configuration.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/styles/assets.dart';
 
 bool checkMediaWidth(BuildContext context, double width) {
   return MediaQuery.of(context).size.width < width;
@@ -19,6 +22,10 @@ double getMediaWidth(BuildContext context) {
 
 double getMediaHeight(BuildContext context) {
   return MediaQuery.of(context).size.height;
+}
+
+EdgeInsets getWindowPadding() {
+  return MediaQueryData.fromWindow(window).padding;
 }
 
 /// Returns the [ScreenType] that the application is currently running on
@@ -250,4 +257,23 @@ T getValueForSizeType<T>({
 
   // If none of the layouts above are supplied or we're on the normal size layout then we show the normal layout
   return normal;
+}
+
+String getCountryFlag(String countryName) {
+  switch (countryName.toLowerCase()) {
+    case 'france':
+      return Assets.france;
+    case 'germany':
+      return Assets.germany;
+    case 'italy':
+      return Assets.italy;
+    case 'ukraine':
+      return Assets.ukraine;
+    case 'austria':
+      return Assets.austria;
+    case 'poland':
+      return Assets.poland;
+    default:
+      return Assets.france;
+  }
 }

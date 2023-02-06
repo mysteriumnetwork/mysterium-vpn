@@ -29,7 +29,6 @@ extension StorageKeysEx on Enum {
   }
 }
 
-
 extension LanguageName on Locale {
   String get languageName {
     switch (languageCode) {
