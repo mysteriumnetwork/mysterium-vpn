@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
@@ -7,6 +8,7 @@ import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/fill_container.dart';
 import 'package:mysterium_vpn/components/login_headlines.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -17,7 +19,6 @@ class LoginDesktopView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.read(themeStorePOD);
     final authStore = ref.read(authStorePOD);
-    final loco = ref.read(localeStorePOD).loco;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,7 +67,7 @@ class LoginDesktopView extends HookConsumerWidget {
                       ).padding(vertical: 10);
                     }),
                     AppVersion(
-                      headerText: loco.app_version,
+                      headerText: LocaleKeys.appVersion.tr(),
                     )
                   ]),
                 ),

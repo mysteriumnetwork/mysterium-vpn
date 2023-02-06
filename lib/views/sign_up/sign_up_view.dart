@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
@@ -11,8 +12,6 @@ class SignUpView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loco = ref.watch(localeStorePOD).loco;
-
     return Scaffold(
       body: SafeArea(
         bottom: false,
@@ -22,7 +21,7 @@ class SignUpView extends HookConsumerWidget {
             child: Column(
               children: [
                 EasyText(
-                  loco.sign_up,
+                  LocaleKeys.signUp.tr(),
                   fontWeight: FontWeight.w900,
                   fontSize: 20,
                 ).padding(bottom: 30),
@@ -31,21 +30,19 @@ class SignUpView extends HookConsumerWidget {
                   runSpacing: 4,
                   children: [
                     EasyText(
-                      loco.already_have_account,
+                      LocaleKeys.alreadyHaveAccount.tr(),
                       color: Palette.lightBlack,
                     ),
                     InkWell(
                       child: EasyText(
-                        loco.sign_in,
+                        LocaleKeys.signIn.tr(),
                         color: Palette.pink,
                       ),
                       onTap: () {},
                     ),
                   ],
                 ).padding(bottom: 30),
-                SignUpForm(
-                  loco: loco,
-                ),
+                const SignUpForm(),
               ],
             ),
           ),
