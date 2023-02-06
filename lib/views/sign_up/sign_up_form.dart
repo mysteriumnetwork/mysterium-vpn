@@ -41,7 +41,7 @@ class SignUpForm extends StatelessWidget {
                         context.beamToNamed('/check-your-email');
                       }
                     : () => form.markAllAsTouched(),
-                child: EasyText(loco.continue_with_email, color: Palette.white),
+                child: EasyText(LocaleKeys.continueWithEmail.tr(), color: Palette.white),
               );
             },
           ).padding(bottom: 50),

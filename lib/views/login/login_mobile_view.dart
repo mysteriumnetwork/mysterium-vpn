@@ -50,7 +50,7 @@ class LoginMobileView extends HookConsumerWidget {
                       EasyButton(
                         width: getMediaWidth(context) * 0.8,
                         height: 60,
-                        text: loco.sign_in,
+                        text: LocaleKeys.signIn.tr(),
                         onPressed: () {
                           authStore.login();
                         },
@@ -59,7 +59,7 @@ class LoginMobileView extends HookConsumerWidget {
                         width: getMediaWidth(context) * 0.8,
                         height: 60,
                         useSystemColor: false,
-                        text: loco.get_started,
+                        text: LocaleKeys.getStarted.tr(),
                         onPressed: () {
                           if (Platform.isAndroid || Platform.isIOS) {
                             _showSignInView(context);

@@ -51,7 +51,7 @@ class LoginDesktopView extends HookConsumerWidget {
                           EasyButton(
                             width: con.maxWidth * 0.45,
                             height: 60,
-                            text: loco.sign_in,
+                            text: LocaleKeys.signIn.tr(),
                             onPressed: () {
                               authStore.login();
                             },
@@ -60,7 +60,7 @@ class LoginDesktopView extends HookConsumerWidget {
                             height: 60,
                             width: con.maxWidth * 0.45,
                             useSystemColor: false,
-                            text: loco.get_started,
+                            text: LocaleKeys.getStarted.tr(),
                             onPressed: () {},
                           ),
                         ],
