@@ -28,6 +28,10 @@ EdgeInsets getWindowPadding() {
   return MediaQueryData.fromWindow(window).padding;
 }
 
+double getWindowHeight() {
+  return MediaQueryData.fromWindow(window).size.height;
+}
+
 /// Returns the [ScreenType] that the application is currently running on
 ScreenType getScreenType(
   Size size, [

@@ -27,7 +27,6 @@ class HomeMobileView extends HookConsumerWidget {
         parallaxEnabled: true,
         parallaxOffset: .1,
         color: Theme.of(context).primaryColor,
-        isDraggable: true,
         panelBuilder: (sc) => LocationsSliderMobileView(sc: sc),
         borderRadius:
             const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),

@@ -42,6 +42,6 @@ class RecentLocationItem extends StatelessWidget {
           ),
         ],
       ).padding(horizontal: 12),
-    ).paddingDirectional(end: 40);
+    ).paddingDirectional(end: 15);
   }
 }
