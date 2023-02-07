@@ -47,7 +47,7 @@ class HomeMobileView extends HookConsumerWidget {
                       ),
                       ConnectButton(
                         callback: () {
-                          isConnected ? vpnStore.disconnect() : vpnStore.connect();
+                          isConnected ? vpnStore.disconnect() : vpnStore.connect(null);
                         },
                         isConnected: isConnected,
                         height: con.maxHeight,

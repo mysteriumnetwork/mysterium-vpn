@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/connection_indicator.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/components/flag.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -33,7 +33,7 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
           _BarItem(
             label: LocaleKeys.location.tr(),
             text: vpnConnection.location,
-            leading: vpnStore.countryFlag != null ? SvgIcon(asset: vpnStore.countryFlag!) : null,
+            leading: Flag(country: vpnStore.vpnConnection.location),
           )
         ],
       ).padding(vertical: 20);

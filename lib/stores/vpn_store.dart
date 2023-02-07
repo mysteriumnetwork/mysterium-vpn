@@ -3,9 +3,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 
@@ -37,19 +35,19 @@ abstract class _VpnStore with Store {
   VpnConnection _vpnConnection = _emptyConnection;
 
   @computed
-  String? get countryFlag => availableFlags
-      .firstWhereOrNull((element) => element.contains(_vpnConnection.location.toLowerCase()));
-
-  @computed
   bool get isConnected => _vpnConnection.connectionStatus == ConnectionStatus.connected;
 
   @action
-  Future<void> connect() async {
+  Future<void> connect(String? country) async {
+    if (_vpnConnection.location == country) return;
+    if (_vpnConnection != _emptyConnection) {
+      await disconnect();
+    }
     await Future.delayed(const Duration(seconds: 1));
-    _vpnConnection = const VpnConnection(
+    _vpnConnection = VpnConnection(
       connectionIP: '185.358.45.304',
       connectionStatus: ConnectionStatus.connected,
-      location: 'Austria',
+      location: country ?? 'Austria',
     );
     startTracking();
   }
