@@ -263,7 +263,7 @@ T getValueForSizeType<T>({
   return normal;
 }
 
-String getCountryFlag(String countryName) {
+String? getCountryFlag(String countryName) {
   switch (countryName.toLowerCase()) {
     case 'france':
       return Assets.france;
@@ -278,6 +278,6 @@ String getCountryFlag(String countryName) {
     case 'poland':
       return Assets.poland;
     default:
-      return Assets.france;
+      return null;
   }
 }

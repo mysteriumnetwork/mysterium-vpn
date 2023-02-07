@@ -15,6 +15,8 @@ class LocationsSliderMobileView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsStore = ref.watch(locationsStorePOD);
+    final vpnStore = ref.watch(vpnStorePOD);
+
     return MediaQuery.removePadding(
         context: context,
         removeTop: true,
@@ -38,6 +40,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
             ).padding(bottom: 20),
             RecentLocationsList(
               locationsStore: locationsStore,
+              vpnStore: vpnStore,
             ).padding(bottom: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -52,6 +55,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
             ).padding(bottom: 20),
             TopLocationsList(
               locationsStore: locationsStore,
+              vpnStore: vpnStore,
             ),
           ],
         ).paddingDirectional(horizontal: 20));
