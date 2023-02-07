@@ -37,6 +37,7 @@ class RecentLocationItem extends StatelessWidget {
           ],
         )
             .padding(horizontal: 12)
+            .width(100)
             .card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
