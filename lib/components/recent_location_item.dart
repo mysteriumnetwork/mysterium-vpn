@@ -8,7 +8,8 @@ import 'package:mysterium_vpn/models/recent_location.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class RecentLocationItem extends StatelessWidget {
-  const RecentLocationItem({Key? key, required this.location, required this.onTap}) : super(key: key);
+  const RecentLocationItem({Key? key, required this.location, required this.onTap})
+      : super(key: key);
 
   final RecentLocation location;
   final VoidCallback onTap;
