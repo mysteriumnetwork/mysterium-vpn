@@ -8,8 +8,7 @@ import 'package:mysterium_vpn/models/recent_location.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class RecentLocationItem extends StatelessWidget {
-  const RecentLocationItem({Key? key, required this.location, required this.onTap})
-      : super(key: key);
+  const RecentLocationItem({Key? key, required this.location, required this.onTap}) : super(key: key);
 
   final RecentLocation location;
   final VoidCallback onTap;
@@ -17,13 +16,7 @@ class RecentLocationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
-      child: Container(
-        width: 100,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(20),
-        ),
+        onTap: onTap,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -42,8 +35,13 @@ class RecentLocationItem extends StatelessWidget {
               location.duration.toHoursMinutes(),
             ),
           ],
-        ).padding(horizontal: 12),
-      ).paddingDirectional(end: 15),
-    );
+        )
+            .padding(horizontal: 12)
+            .card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            )
+            .padding(right: 15));
   }
 }

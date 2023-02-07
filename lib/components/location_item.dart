@@ -16,23 +16,17 @@ class LocationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          children: [
-            Flag(country: location.name).padding(right: 20),
-            EasyText(
-              location.name,
-              fontWeight: FontWeight.w700,
-            ),
-            const Spacer(),
-            SvgIconButton(onPressed: onTap, asset: Assets.next),
-          ],
-        ).padding(horizontal: 20),
-      ).paddingDirectional(bottom: 10),
+      child: Row(
+        children: [
+          Flag(country: location.name).padding(right: 20),
+          EasyText(
+            location.name,
+            fontWeight: FontWeight.w700,
+          ),
+          const Spacer(),
+          SvgIconButton(onPressed: onTap, asset: Assets.next),
+        ],
+      ).padding(horizontal: 20, vertical: 4).card().paddingDirectional(bottom: 10),
     );
   }
 }
