@@ -1,0 +1,114 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'vpn_store.dart';
+
+// **************************************************************************
+// StoreGenerator
+// **************************************************************************
+
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
+
+mixin _$VpnStore on _VpnStore, Store {
+  Computed<bool>? _$isConnectedComputed;
+
+  @override
+  bool get isConnected => (_$isConnectedComputed ??=
+          Computed<bool>(() => super.isConnected, name: '_VpnStore.isConnected'))
+      .value;
+
+  late final _$_durationAtom = Atom(name: '_VpnStore._duration', context: context);
+
+  Duration? get duration {
+    _$_durationAtom.reportRead();
+    return super._duration;
+  }
+
+  @override
+  Duration? get _duration => duration;
+
+  @override
+  set _duration(Duration? value) {
+    _$_durationAtom.reportWrite(value, super._duration, () {
+      super._duration = value;
+    });
+  }
+
+  late final _$_uploadSpeedAtom = Atom(name: '_VpnStore._uploadSpeed', context: context);
+
+  double? get uploadSpeed {
+    _$_uploadSpeedAtom.reportRead();
+    return super._uploadSpeed;
+  }
+
+  @override
+  double? get _uploadSpeed => uploadSpeed;
+
+  @override
+  set _uploadSpeed(double? value) {
+    _$_uploadSpeedAtom.reportWrite(value, super._uploadSpeed, () {
+      super._uploadSpeed = value;
+    });
+  }
+
+  late final _$_downloadSpeedAtom = Atom(name: '_VpnStore._downloadSpeed', context: context);
+
+  double? get downloadSpeed {
+    _$_downloadSpeedAtom.reportRead();
+    return super._downloadSpeed;
+  }
+
+  @override
+  double? get _downloadSpeed => downloadSpeed;
+
+  @override
+  set _downloadSpeed(double? value) {
+    _$_downloadSpeedAtom.reportWrite(value, super._downloadSpeed, () {
+      super._downloadSpeed = value;
+    });
+  }
+
+  late final _$_vpnConnectionAtom = Atom(name: '_VpnStore._vpnConnection', context: context);
+
+  VpnConnection get vpnConnection {
+    _$_vpnConnectionAtom.reportRead();
+    return super._vpnConnection;
+  }
+
+  @override
+  VpnConnection get _vpnConnection => vpnConnection;
+
+  @override
+  set _vpnConnection(VpnConnection value) {
+    _$_vpnConnectionAtom.reportWrite(value, super._vpnConnection, () {
+      super._vpnConnection = value;
+    });
+  }
+
+  late final _$connectAsyncAction = AsyncAction('_VpnStore.connect', context: context);
+
+  @override
+  Future<void> connect(String? country) {
+    return _$connectAsyncAction.run(() => super.connect(country));
+  }
+
+  late final _$startTrackingAsyncAction = AsyncAction('_VpnStore.startTracking', context: context);
+
+  @override
+  Future<void> startTracking() {
+    return _$startTrackingAsyncAction.run(() => super.startTracking());
+  }
+
+  late final _$disconnectAsyncAction = AsyncAction('_VpnStore.disconnect', context: context);
+
+  @override
+  Future<void> disconnect() {
+    return _$disconnectAsyncAction.run(() => super.disconnect());
+  }
+
+  @override
+  String toString() {
+    return '''
+isConnected: ${isConnected}
+    ''';
+  }
+}

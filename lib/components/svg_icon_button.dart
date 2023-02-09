@@ -10,9 +10,9 @@ class SvgIconButton extends StatelessWidget {
   final VoidCallback onPressed;
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed,
-      child: SvgIcon(asset: asset),
+    return IconButton(
+      onPressed: onPressed,
+      icon: SvgIcon(asset: asset),
     );
   }
 }

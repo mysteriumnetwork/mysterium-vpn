@@ -48,24 +48,20 @@ class LoginDesktopView extends HookConsumerWidget {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(
+                          EasyButton(
                             width: con.maxWidth * 0.45,
-                            height: 40,
-                            child: EasyButton(
-                              text: LocaleKeys.signIn.tr(),
-                              onPressed: () {
-                                authStore.login();
-                              },
-                            ),
+                            height: 60,
+                            text: LocaleKeys.signIn.tr(),
+                            onPressed: () {
+                              authStore.login();
+                            },
                           ),
-                          SizedBox(
+                          EasyButton(
+                            height: 60,
                             width: con.maxWidth * 0.45,
-                            height: 40,
-                            child: EasyButton(
-                              useSystemColor: false,
-                              text: LocaleKeys.getStarted.tr(),
-                              onPressed: () {},
-                            ),
+                            useSystemColor: false,
+                            text: LocaleKeys.getStarted.tr(),
+                            onPressed: () {},
                           ),
                         ],
                       ).padding(vertical: 10);

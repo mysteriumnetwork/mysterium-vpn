@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/styles/theme.dart';
 import 'package:mysterium_vpn/services/shared_preferences_service.dart';
@@ -10,14 +11,6 @@ import 'package:mysterium_vpn/services/shared_preferences_service.dart';
 // Project imports:
 
 part 'theme_store.g.dart';
-
-enum ThemeType {
-  light("Light Theme"),
-  dark("Dark Theme");
-
-  const ThemeType(this.label);
-  final String label;
-}
 
 // ignore: library_private_types_in_public_api
 class ThemeStore = _ThemeStore with _$ThemeStore;
