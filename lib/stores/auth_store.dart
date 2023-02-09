@@ -1,12 +1,11 @@
 // Flutter imports:
 // Package imports:
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 
 // Project imports:
 
 part 'auth_store.g.dart';
-
-enum AuthStatus { loading, authenticated, unauthenticated }
 
 // ignore: library_private_types_in_public_api
 class AuthStore = _AuthStore with _$AuthStore;
@@ -17,13 +16,14 @@ abstract class _AuthStore with Store {
   }
 
   @readonly
-  AuthStatus _authStatus = AuthStatus.loading;
+  AuthStatus _authStatus = AuthStatus.unknown;
 
   @readonly
   String? _email = '';
 
   @action
   Future<void> checkUserAuth() async {
+    await Future.delayed(const Duration(seconds: 8));
     _authStatus = AuthStatus.unauthenticated;
   }
 

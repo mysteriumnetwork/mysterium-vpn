@@ -1,5 +1,4 @@
-import 'dart:ui' as ui;
-
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/services/shared_preferences_service.dart';
@@ -12,14 +11,14 @@ class LocaleStore = _LocaleStore with _$LocaleStore;
 
 abstract class _LocaleStore with Store {
   _LocaleStore() {
-    _currentLocale = SharedPreferenceService.getLocale() ?? const ui.Locale('en');
+    _currentLocale = SharedPreferenceService.getLocale() ?? const Locale('en');
   }
 
   @readonly
-  ui.Locale _currentLocale = const ui.Locale('en');
+  Locale _currentLocale = const Locale('en');
 
   @action
-  Future<void> setLocale(ui.Locale locale) async {
+  Future<void> setLocale(Locale locale) async {
     // Set the locale if it's in our list of supported locales
     if (supportedLocales.contains(locale)) {
       await SharedPreferenceService.setLocale(locale);

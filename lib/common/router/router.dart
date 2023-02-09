@@ -1,18 +1,12 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/pages/home_page.dart';
 import 'package:mysterium_vpn/pages/login_page.dart';
+import 'package:mysterium_vpn/pages/static/splash_page.dart';
 import 'package:mysterium_vpn/views/check_email_view.dart';
-import 'package:mysterium_vpn/views/sign_up_view.dart';
-
-enum Routes {
-  login,
-  home,
-  unauthenticated,
-  signUp,
-  checkYourEmail,
-}
+import 'package:mysterium_vpn/views/sign_up/sign_up_view.dart';
 
 class BeamerLocations extends BeamLocation<BeamState> {
   BeamerLocations(RouteInformation routeInformation) : super(routeInformation);
@@ -34,6 +28,12 @@ class BeamerLocations extends BeamLocation<BeamState> {
           key: ValueKey(Routes.home.toDashCase),
           title: Routes.home.value,
           child: const HomePage(),
+        ),
+      if (state.uri.pathSegments.contains(Routes.splash.toDashCase))
+        BeamPage(
+          key: ValueKey(Routes.splash.toDashCase),
+          title: Routes.splash.value,
+          child: const SplashPage(),
         ),
     ];
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import './string.dart';
 
@@ -25,5 +26,18 @@ extension StorageKeysEx on Enum {
 
   String get toRoute {
     return "/$toDashCase";
+  }
+}
+
+extension LanguageName on Locale {
+  String get languageName {
+    switch (languageCode) {
+      case 'en':
+        return 'English';
+
+      case 'es':
+        return 'Español';
+    }
+    return '';
   }
 }

@@ -20,9 +20,27 @@
     "emailIsRequired": "Email is required",
     "emailIsNotValid": "Email is not valid",
     "checkYourEmail": "Check your email",
-    "linkExpires":"The link expires in 24 hours, so be sure to use it soon",
+    "linkExpires": "The link expires in 24 hours, so be sure to use it soon",
     "goCheckYourEmail": "Go check your email",
-    "emailSentTo": "We sent an email to {email}"
-    
-    
+    "emailSentTo": "We sent an email to {email}",
+    "connection_ip": "Connection IP",
+    "status": "Status",
+    "location": "Location",
+    "disconnected": "Disconnected",
+    "connected": "Connected",
+    "duration": "Duration",
+    "download": "Download",
+    "upload": "Upload",
+    "search_for_locations": "Search for locations",
+    "recent_locations": "Recent locations",
+    "connection_duration": "{duration} min",
+    "austria": "Austria",
+    "france": "France",
+    "poland": "Poland",
+    "italy": "Italy",
+    "ukraine": "Ukraine",
+    "germany": "Germany",
+    "history": "History",
+    "browse_all": "Browse all",
+    "top_locations": "Top locations"
 }
