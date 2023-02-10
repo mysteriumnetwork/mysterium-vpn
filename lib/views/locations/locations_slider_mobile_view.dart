@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/components/all_locations_list.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/recent_locations_list.dart';
 import 'package:mysterium_vpn/components/search_field.dart';
@@ -20,46 +22,66 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     return MediaQuery.removePadding(
         context: context,
         removeTop: true,
-        child: ListView(
-          controller: sc,
-          children: <Widget>[
-            Align(
-              child: Container(
-                width: 30,
-                height: 5,
-                decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: const BorderRadius.all(Radius.circular(12.0))),
-              ),
-            ).padding(bottom: 10, top: 10),
-            SearchField(locationsStore).padding(bottom: 20),
-            EasyText(
-              LocaleKeys.recent_locations.tr(),
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ).padding(bottom: 20),
-            RecentLocationsList(
-              themeStore: themeStore,
-              locationsStore: locationsStore,
-              vpnStore: vpnStore,
-            ).padding(bottom: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+        child: Observer(builder: (context) {
+          final showAllLocations = locationsStore.showAllLocations;
+          return ListView(
+            controller: sc,
+            children: <Widget>[
+              Align(
+                child: Container(
+                  width: 30,
+                  height: 5,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: const BorderRadius.all(Radius.circular(12.0))),
+                ),
+              ).padding(bottom: 10, top: 10),
+              SearchField(locationsStore).padding(bottom: 20),
+              if (!showAllLocations) ...[
                 EasyText(
-                  LocaleKeys.top_locations.tr(),
+                  LocaleKeys.recent_locations.tr(),
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
-                ),
-                EasyText(LocaleKeys.browse_all.tr())
+                ).padding(bottom: 20),
+                RecentLocationsList(
+                  themeStore: themeStore,
+                  locationsStore: locationsStore,
+                  vpnStore: vpnStore,
+                ).padding(bottom: 20),
               ],
-            ).padding(bottom: 20),
-            TopLocationsList(
-              locationsStore: locationsStore,
-              vpnStore: vpnStore,
-              themeStore: themeStore,
-            ),
-          ],
-        ).paddingDirectional(horizontal: 20));
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  EasyText(
+                    showAllLocations
+                        ? LocaleKeys.all_locations.tr()
+                        : LocaleKeys.top_locations.tr(),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  TextButton(
+                    onPressed: () => locationsStore.toggleShowAllLocations(),
+                    child: EasyText(
+                      locationsStore.showAllLocations
+                          ? LocaleKeys.browse_top.tr()
+                          : LocaleKeys.browse_all.tr(),
+                    ),
+                  ),
+                ],
+              ).padding(bottom: 20),
+              showAllLocations
+                  ? AllLocationsList(
+                      themeStore: themeStore,
+                      locationsStore: locationsStore,
+                      vpnStore: vpnStore,
+                    )
+                  : TopLocationsList(
+                      locationsStore: locationsStore,
+                      vpnStore: vpnStore,
+                      themeStore: themeStore,
+                    ),
+            ],
+          ).paddingDirectional(horizontal: 20);
+        }));
   }
 }
