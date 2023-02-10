@@ -1,21 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
+import 'package:mysterium_vpn/components/loading_placeholders.dart';
 import 'package:mysterium_vpn/components/location_item.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
+import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 
 class TopLocationsList extends StatelessWidget {
-  const TopLocationsList({Key? key, required this.vpnStore, required this.locationsStore})
+  const TopLocationsList(
+      {Key? key, required this.themeStore, required this.vpnStore, required this.locationsStore})
       : super(key: key);
   final LocationsStore locationsStore;
   final VpnStore vpnStore;
-
+  final ThemeStore themeStore;
   @override
   Widget build(BuildContext context) => Observer(
         builder: (_) {
           if (!locationsStore.hasLocationsResults) {
-            return const SizedBox.shrink();
+            return ListView.builder(
+                controller: ScrollController(),
+                shrinkWrap: true,
+                itemCount: 10,
+                itemBuilder: (_, int index) {
+                  return TopLocationPlaceholder(
+                    color: themeStore.currentPalette.placeholderColor,
+                  );
+                });
           }
 
           if (locationsStore.locations.isEmpty) {

@@ -1,0 +1,93 @@
+import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:styled_widget/styled_widget.dart';
+
+class RecentLocationPlaceholder extends StatelessWidget {
+  const RecentLocationPlaceholder({Key? key, required this.color}) : super(key: key);
+  final Color color;
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+            baseColor: color,
+            highlightColor: color.darken(20),
+            direction: ShimmerDirection.ltr,
+            enabled: true,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 16,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: color,
+                  ),
+                ).paddingDirectional(bottom: 24),
+                Container(
+                  width: double.infinity,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: color,
+                  ),
+                ).paddingDirectional(bottom: 12),
+                Container(
+                  width: MediaQuery.of(context).size.width / 2,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: color,
+                  ),
+                )
+              ],
+            ).padding(horizontal: 10, vertical: 4).width(100))
+        .card()
+        .padding(right: 15);
+  }
+}
+
+class TopLocationPlaceholder extends StatelessWidget {
+  const TopLocationPlaceholder({Key? key, required this.color}) : super(key: key);
+  final Color color;
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+            baseColor: color,
+            highlightColor: color.darken(20),
+            direction: ShimmerDirection.ltr,
+            enabled: true,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: color,
+                  ),
+                ).paddingDirectional(end: 12),
+                Container(
+                  width: 78,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: color,
+                  ),
+                ),
+                const Spacer(),
+                Container(
+                  width: 16,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: color,
+                  ),
+                )
+              ],
+            ).padding(all: 15))
+        .card();
+  }
+}
