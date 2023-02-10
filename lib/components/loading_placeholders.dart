@@ -48,8 +48,8 @@ class RecentLocationPlaceholder extends StatelessWidget {
   }
 }
 
-class TopLocationPlaceholder extends StatelessWidget {
-  const TopLocationPlaceholder({Key? key, required this.color}) : super(key: key);
+class LocationPlaceholder extends StatelessWidget {
+  const LocationPlaceholder({Key? key, required this.color}) : super(key: key);
   final Color color;
   @override
   Widget build(BuildContext context) {
@@ -87,7 +87,8 @@ class TopLocationPlaceholder extends StatelessWidget {
                   ),
                 )
               ],
-            ).padding(all: 15))
-        .card();
+            ).padding(horizontal: 15, vertical: 20))
+        .card()
+        .padding(bottom: 10);
   }
 }

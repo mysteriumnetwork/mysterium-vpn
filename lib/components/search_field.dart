@@ -39,7 +39,7 @@ class SearchField extends HookWidget {
         suffixIcon: SvgIconButton(
           onPressed: () {
             store.fetchRecentLocations();
-            store.fetchLocations();
+            store.fetchTopLocations();
           },
           asset: Assets.search,
         ).width(20),
