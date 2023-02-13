@@ -62,10 +62,10 @@ abstract class _LocationsStore with Store {
     topLocations = [];
     final future = Future.delayed(const Duration(seconds: 3), () {
       return searchKeyword.isNotEmpty
-          ? locationsMock
+          ? topLocationsMock
               .where((element) => element.name.toLowerCase().contains(searchKeyword.toLowerCase()))
               .toList()
-          : locationsMock;
+          : topLocationsMock;
     });
     fetchTopLocationsFuture = ObservableFuture(future);
 
@@ -77,10 +77,10 @@ abstract class _LocationsStore with Store {
     allLocations = [];
     final future = Future.delayed(const Duration(seconds: 3), () {
       return searchKeyword.isNotEmpty
-          ? locationsMock
+          ? allLocationsMock
               .where((element) => element.name.toLowerCase().contains(searchKeyword.toLowerCase()))
               .toList()
-          : locationsMock;
+          : allLocationsMock;
     });
     fetchAllLocationsFuture = ObservableFuture(future);
 
@@ -105,22 +105,18 @@ abstract class _LocationsStore with Store {
   @action
   void toggleShowAllLocations() {
     showAllLocations = !showAllLocations;
-    if (showAllLocations) {
-      fetchAllLocations();
-    } else {
-      fetchTopLocations();
-      fetchRecentLocations();
-    }
+    setLocationKeyword('', 0);
   }
 
   @action
-  void setLocationKeyword(String text) {
+  void setLocationKeyword(String text, [int duration = 500]) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
-      fetchTopLocationsFuture = emptyLocations;
-      fetchRecentLocationsFeature = emptyRecentLocations;
-      fetchAllLocationsFuture = emptyLocations;
+    _debounce = Timer(Duration(milliseconds: duration), () {
       searchKeyword = text;
+      if (showAllLocations) {
+        fetchAllLocations();
+        return;
+      }
       fetchRecentLocations();
       fetchTopLocations();
     });
