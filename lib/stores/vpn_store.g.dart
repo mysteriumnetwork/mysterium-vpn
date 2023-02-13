@@ -67,6 +67,40 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_protocolAtom = Atom(name: '_VpnStore._protocol', context: context);
+
+  String get protocol {
+    _$_protocolAtom.reportRead();
+    return super._protocol;
+  }
+
+  @override
+  String get _protocol => protocol;
+
+  @override
+  set _protocol(String value) {
+    _$_protocolAtom.reportWrite(value, super._protocol, () {
+      super._protocol = value;
+    });
+  }
+
+  late final _$_killSwitchAtom = Atom(name: '_VpnStore._killSwitch', context: context);
+
+  bool get killSwitch {
+    _$_killSwitchAtom.reportRead();
+    return super._killSwitch;
+  }
+
+  @override
+  bool get _killSwitch => killSwitch;
+
+  @override
+  set _killSwitch(bool value) {
+    _$_killSwitchAtom.reportWrite(value, super._killSwitch, () {
+      super._killSwitch = value;
+    });
+  }
+
   late final _$_vpnConnectionAtom = Atom(name: '_VpnStore._vpnConnection', context: context);
 
   VpnConnection get vpnConnection {
@@ -89,6 +123,22 @@ mixin _$VpnStore on _VpnStore, Store {
   @override
   Future<void> connect(String? country) {
     return _$connectAsyncAction.run(() => super.connect(country));
+  }
+
+  late final _$changeProtocolAsyncAction =
+      AsyncAction('_VpnStore.changeProtocol', context: context);
+
+  @override
+  Future<void> changeProtocol(String protocol) {
+    return _$changeProtocolAsyncAction.run(() => super.changeProtocol(protocol));
+  }
+
+  late final _$toggleKillSwitchAsyncAction =
+      AsyncAction('_VpnStore.toggleKillSwitch', context: context);
+
+  @override
+  Future<void> toggleKillSwitch() {
+    return _$toggleKillSwitchAsyncAction.run(() => super.toggleKillSwitch());
   }
 
   late final _$startTrackingAsyncAction = AsyncAction('_VpnStore.startTracking', context: context);

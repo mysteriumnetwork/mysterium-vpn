@@ -28,16 +28,16 @@ mixin _$AuthStore on _AuthStore, Store {
 
   late final _$_emailAtom = Atom(name: '_AuthStore._email', context: context);
 
-  String? get email {
+  String get email {
     _$_emailAtom.reportRead();
     return super._email;
   }
 
   @override
-  String? get _email => email;
+  String get _email => email;
 
   @override
-  set _email(String? value) {
+  set _email(String value) {
     _$_emailAtom.reportWrite(value, super._email, () {
       super._email = value;
     });
