@@ -70,9 +70,9 @@ class DarkPalette implements Palette {
   Color get darkTextColor => Palette.lightBlack;
 
   @override
-  Color get backgroundGolor => Palette.black;
+  Color get backgroundGolor => Palette.darkBlue;
   @override
-  Color get primaryColor => Palette.darkBlue;
+  Color get primaryColor => Palette.black;
   @override
   MaterialColor get swatchColor => MaterialColor(0xffF44D89, color);
 
