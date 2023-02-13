@@ -1,0 +1,91 @@
+import 'package:beamer/beamer.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/components/easy_button.dart';
+import 'package:mysterium_vpn/components/easy_text.dart';
+import 'package:mysterium_vpn/components/header.dart';
+import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/stores/auth_store.dart';
+import 'package:styled_widget/styled_widget.dart';
+
+void shownDeleteAccountDialog(BuildContext context, AuthStore store) {
+  showBarModalBottomSheet(
+    clipBehavior: Clip.none,
+    expand: false,
+    topControl: const SizedBox.shrink(),
+    isDismissible: true,
+    context: context,
+    backgroundColor: Theme.of(context).primaryColor,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+    ),
+    builder: (context) => _DeleteAccountDialog(store: store),
+  );
+}
+
+class _DeleteAccountDialog extends HookWidget {
+  const _DeleteAccountDialog({required this.store});
+  final AuthStore store;
+  @override
+  Widget build(BuildContext context) {
+    final confirmationMessage = useState('');
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: Alignment.center,
+      children: [
+        const Positioned(
+          top: -15,
+          child: SvgIcon(
+            asset: Assets.warning,
+          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Header(
+              text: LocaleKeys.deleteAccountQuestion.tr(),
+            ).padding(bottom: 20),
+            EasyText(LocaleKeys.typeDelete.tr(), fontSize: 14).padding(bottom: 30),
+            TextField(
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.brightness == Brightness.light
+                    ? Palette.black
+                    : Palette.veryLightGrey,
+              ),
+              decoration: InputDecoration(
+                filled: true,
+                contentPadding: const EdgeInsets.only(left: 20),
+                fillColor: Theme.of(context).colorScheme.surface,
+                enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+              ),
+              onChanged: (val) => confirmationMessage.value = val,
+              autocorrect: false,
+            ).height(40).padding(bottom: 30),
+            EasyButton(
+              useSystemColor: false,
+              width: 160,
+              color: Palette.pink,
+              text: LocaleKeys.confirm.tr(),
+              onPressed: confirmationMessage.value.toLowerCase() == 'delete'
+                  ? () {
+                      Beamer.of(context).popRoute();
+                    }
+                  : null,
+            ),
+          ],
+        ).padding(horizontal: 20, bottom: 30, top: 60),
+      ],
+    );
+  }
+}
