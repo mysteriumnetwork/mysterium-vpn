@@ -111,7 +111,7 @@ class SettingsMobileView extends HookConsumerWidget {
                           color: isDarkTheme ? Palette.pink : Palette.lightBlue,
                           text: LocaleKeys.deleteAccount.tr(),
                           onPressed: () {
-                            shownDeleteAccountDialog(context, authStore, isDarkTheme);
+                            shownDeleteAccountDialog(context, authStore);
                           },
                         ),
                       ),
