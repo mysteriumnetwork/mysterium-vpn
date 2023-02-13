@@ -27,6 +27,9 @@ abstract class _ThemeStore with Store {
   ThemeData get currentTheme =>
       MysteriumVPNTheme.themeData(themeType == ThemeType.dark ? DarkPalette() : LightPalette());
 
+  @computed
+  Palette get currentPalette => themeType == ThemeType.dark ? DarkPalette() : LightPalette();
+
   @observable
   ThemeType themeType = ThemeType.light;
 

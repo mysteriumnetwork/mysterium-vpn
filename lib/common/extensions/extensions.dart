@@ -4,3 +4,4 @@ export 'error.dart';
 export 'number.dart';
 export 'string.dart';
 export 'date.dart';
+export 'color.dart';

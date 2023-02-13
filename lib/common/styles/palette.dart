@@ -22,6 +22,8 @@ abstract class Palette {
   Color get darkTextColor;
   Color get primaryColor;
   Color get surfaceColor;
+  Color get placeholderColor;
+
   MaterialColor get swatchColor;
 }
 
@@ -49,6 +51,9 @@ class LightPalette implements Palette {
 
   @override
   Color get surfaceColor => Palette.lightGrey;
+
+  @override
+  Color get placeholderColor => const Color(0xffEEEDFB);
 }
 
 class DarkPalette implements Palette {
@@ -73,6 +78,9 @@ class DarkPalette implements Palette {
 
   @override
   Color get surfaceColor => Palette.mediumBlack;
+
+  @override
+  Color get placeholderColor => Palette.black;
 }
 
 Map<int, Color> color = const {

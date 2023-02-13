@@ -7,8 +7,8 @@ import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 
-class TopLocationsList extends StatelessWidget {
-  const TopLocationsList(
+class AllLocationsList extends StatelessWidget {
+  const AllLocationsList(
       {Key? key, required this.themeStore, required this.vpnStore, required this.locationsStore})
       : super(key: key);
   final LocationsStore locationsStore;
@@ -17,7 +17,7 @@ class TopLocationsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Observer(
         builder: (_) {
-          if (!locationsStore.hasTopLocationsResults) {
+          if (!locationsStore.hasAllLocationsResults) {
             return ListView.builder(
                 controller: ScrollController(),
                 shrinkWrap: true,
@@ -29,7 +29,7 @@ class TopLocationsList extends StatelessWidget {
                 });
           }
 
-          if (locationsStore.topLocations.isEmpty) {
+          if (locationsStore.allLocations.isEmpty) {
             return EasyText(
               'We could not find any locations for keyword: ${locationsStore.searchKeyword}',
               color: Theme.of(context).colorScheme.error,
@@ -39,9 +39,9 @@ class TopLocationsList extends StatelessWidget {
           return ListView.builder(
               controller: ScrollController(),
               shrinkWrap: true,
-              itemCount: locationsStore.topLocations.length,
+              itemCount: locationsStore.allLocations.length,
               itemBuilder: (_, int index) {
-                final location = locationsStore.topLocations[index];
+                final location = locationsStore.allLocations[index];
 
                 return LocationItem(
                   location: location,
