@@ -21,6 +21,21 @@ abstract class Assets {
   static const String uploadActive = 'assets/icons/upload_active.svg';
   static const String upload = 'assets/icons/upload.svg';
   static const String connectButton = 'assets/icons/connect_button.svg';
+  static const String navigateBack = 'assets/icons/back.svg';
+  static const String accountNameDark = 'assets/icons/account_name_dark.svg';
+  static const String accountNameLight = 'assets/icons/account_name_light.svg';
+  static const String billingDark = 'assets/icons/billing_dark.svg';
+  static const String billingLight = 'assets/icons/billing_light.svg';
+  static const String deleteAccountDark = 'assets/icons/delete_account_dark.svg';
+  static const String deleteAccountLight = 'assets/icons/delete_account_light.svg';
+  static const String killSwitchDark = 'assets/icons/kill_switch_dark.svg';
+  static const String killSwitchLight = 'assets/icons/kill_switch_light.svg';
+  static const String languageDark = 'assets/icons/language_dark.svg';
+  static const String languageLight = 'assets/icons/language_light.svg';
+  static const String protocolDark = 'assets/icons/protocol_dark.svg';
+  static const String protocolLight = 'assets/icons/protocol_light.svg';
+  static const String themeDark = 'assets/icons/theme_dark.svg';
+  static const String themeLight = 'assets/icons/theme_light.svg';
 
   //FLAGS
   static const String austria = 'assets/flags/austria.svg';
