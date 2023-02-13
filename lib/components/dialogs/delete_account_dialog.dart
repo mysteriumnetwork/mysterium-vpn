@@ -63,9 +63,11 @@ class _DeleteAccountDialog extends HookWidget {
                 contentPadding: const EdgeInsets.only(left: 20),
                 fillColor: Theme.of(context).colorScheme.surface,
                 enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(20))),
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
                 focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(20))),
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
               ),
               onChanged: (val) => confirmationMessage.value = val,
               autocorrect: false,
