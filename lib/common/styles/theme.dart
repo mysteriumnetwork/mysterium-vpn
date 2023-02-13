@@ -16,6 +16,7 @@ class MysteriumVPNTheme {
         brightness: palette is LightPalette ? Brightness.light : Brightness.dark,
         error: Palette.pink,
       ),
+
       indicatorColor: palette.highlightColor,
       hintColor: palette.darkTextColor,
       highlightColor: palette.highlightColor,
@@ -48,6 +49,23 @@ class MysteriumVPNTheme {
         fillColor: MaterialStateProperty.all(Palette.pink),
         overlayColor: MaterialStateProperty.all(Palette.pink),
         checkColor: MaterialStateProperty.all(Palette.white),
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: MaterialStateProperty.all(
+          Palette.lightGrey,
+        ),
+        trackColor: MaterialStateProperty.resolveWith(
+          (states) {
+            return states.contains(MaterialState.selected) ? Palette.purple : Palette.lightBlue;
+          },
+        ),
+        thumbIcon: MaterialStateProperty.resolveWith(
+          (states) {
+            return states.contains(MaterialState.selected)
+                ? const Icon(Icons.check, color: Palette.purple)
+                : const Icon(Icons.close, color: Palette.lightBlue);
+          },
+        ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
