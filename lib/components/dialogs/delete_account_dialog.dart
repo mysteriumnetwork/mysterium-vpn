@@ -50,7 +50,7 @@ class _DeleteAccountDialog extends HookWidget {
           children: [
             Header(
               text: LocaleKeys.deleteAccountQuestion.tr(),
-            ).padding(bottom: 20),
+            ),
             EasyText(LocaleKeys.typeDelete.tr(), fontSize: 14).padding(bottom: 30),
             TextField(
               style: TextStyle(
@@ -63,11 +63,9 @@ class _DeleteAccountDialog extends HookWidget {
                 contentPadding: const EdgeInsets.only(left: 20),
                 fillColor: Theme.of(context).colorScheme.surface,
                 enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                    borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(20))),
                 focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                    borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(20))),
               ),
               onChanged: (val) => confirmationMessage.value = val,
               autocorrect: false,
@@ -84,7 +82,7 @@ class _DeleteAccountDialog extends HookWidget {
                   : null,
             ),
           ],
-        ).padding(horizontal: 20, bottom: 30, top: 60),
+        ).padding(horizontal: 20, vertical: 40),
       ],
     );
   }
