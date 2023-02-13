@@ -7,8 +7,8 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/connect_button.dart';
 import 'package:mysterium_vpn/components/connection_bar.dart';
 import 'package:mysterium_vpn/components/connection_info_panel.dart';
-import 'package:mysterium_vpn/components/mobile_app_bar.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/home/home_app_bar.dart';
 import 'package:mysterium_vpn/views/locations/locations_slider_mobile_view.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -35,7 +35,7 @@ class HomeMobileView extends HookConsumerWidget {
             Lottie.asset(Assets.backgroundElements),
             Column(
               children: [
-                const MobileAppBar(),
+                const HomeAppBar(),
                 const MobileConnectionStatusBar(),
                 LayoutBuilder(builder: (context, con) {
                   return Stack(

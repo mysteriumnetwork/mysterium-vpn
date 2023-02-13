@@ -19,21 +19,23 @@ abstract class _AuthStore with Store {
   AuthStatus _authStatus = AuthStatus.unknown;
 
   @readonly
-  String? _email = '';
+  String _email = '';
 
   @action
   Future<void> checkUserAuth() async {
-    await Future.delayed(const Duration(seconds: 8));
+    await Future.delayed(const Duration(seconds: 1));
     _authStatus = AuthStatus.unauthenticated;
   }
 
   @action
   Future<void> login() async {
+    _email = 'kmitrikjeski@gmail.com';
     _authStatus = AuthStatus.authenticated;
   }
 
   @action
   Future<void> logout() async {
+    _email = '';
     _authStatus = AuthStatus.unauthenticated;
   }
 
