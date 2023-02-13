@@ -15,6 +15,12 @@ mixin _$ThemeStore on _ThemeStore, Store {
   ThemeData get currentTheme => (_$currentThemeComputed ??=
           Computed<ThemeData>(() => super.currentTheme, name: '_ThemeStore.currentTheme'))
       .value;
+  Computed<Palette>? _$currentPaletteComputed;
+
+  @override
+  Palette get currentPalette => (_$currentPaletteComputed ??=
+          Computed<Palette>(() => super.currentPalette, name: '_ThemeStore.currentPalette'))
+      .value;
 
   late final _$themeTypeAtom = Atom(name: '_ThemeStore.themeType', context: context);
 
@@ -49,7 +55,8 @@ mixin _$ThemeStore on _ThemeStore, Store {
   String toString() {
     return '''
 themeType: ${themeType},
-currentTheme: ${currentTheme}
+currentTheme: ${currentTheme},
+currentPalette: ${currentPalette}
     ''';
   }
 }

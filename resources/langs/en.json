@@ -41,6 +41,9 @@
     "ukraine": "Ukraine",
     "germany": "Germany",
     "history": "History",
-    "browse_all": "Browse all",
-    "top_locations": "Top locations"
+    "browse_all": "Browse All",
+    "top_locations": "Top locations",
+    "all_locations": "All locations",
+    "browse_top": "Browse Top"
+
 }

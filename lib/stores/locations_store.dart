@@ -13,50 +13,78 @@ class LocationsStore = _LocationsStore with _$LocationsStore;
 abstract class _LocationsStore with Store {
   _LocationsStore() {
     fetchRecentLocations();
-    fetchLocations();
+    fetchTopLocations();
   }
 
-  List<Location> locations = [];
+  @observable
+  bool showAllLocations = false;
+
+  List<Location> topLocations = [];
 
   List<RecentLocation> recentLocations = [];
+
+  List<Location> allLocations = [];
 
   Timer? _debounce;
 
   @observable
-  ObservableFuture<List<Location>> fetchLocationsFuture = emptyResponse;
+  ObservableFuture<List<Location>> fetchTopLocationsFuture = emptyLocations;
 
   @observable
-  ObservableFuture<List<RecentLocation>> fetchRecentLocationsFeature = emptyRecentResponse;
+  ObservableFuture<List<RecentLocation>> fetchRecentLocationsFeature = emptyRecentLocations;
+
+  @observable
+  ObservableFuture<List<Location>> fetchAllLocationsFuture = emptyLocations;
 
   @observable
   String searchKeyword = '';
 
   @computed
-  bool get hasLocationsResults =>
-      fetchLocationsFuture != emptyResponse &&
-      fetchLocationsFuture.status == FutureStatus.fulfilled;
+  bool get hasTopLocationsResults =>
+      fetchTopLocationsFuture != emptyLocations &&
+      fetchTopLocationsFuture.status == FutureStatus.fulfilled;
+
+  @computed
+  bool get hasAllLocationsResults =>
+      fetchAllLocationsFuture != emptyLocations &&
+      fetchAllLocationsFuture.status == FutureStatus.fulfilled;
 
   @computed
   bool get hasRecentLocationsResults =>
-      fetchRecentLocationsFeature != emptyRecentResponse &&
+      fetchRecentLocationsFeature != emptyRecentLocations &&
       fetchRecentLocationsFeature.status == FutureStatus.fulfilled;
 
-  static ObservableFuture<List<Location>> emptyResponse = ObservableFuture.value([]);
-  static ObservableFuture<List<RecentLocation>> emptyRecentResponse = ObservableFuture.value([]);
+  static ObservableFuture<List<Location>> emptyLocations = ObservableFuture.value([]);
+  static ObservableFuture<List<RecentLocation>> emptyRecentLocations = ObservableFuture.value([]);
 
   @action
-  Future<List<Location>> fetchLocations() async {
-    locations = [];
+  Future<List<Location>> fetchTopLocations() async {
+    topLocations = [];
     final future = Future.delayed(const Duration(seconds: 3), () {
       return searchKeyword.isNotEmpty
-          ? locationsMock
+          ? topLocationsMock
               .where((element) => element.name.toLowerCase().contains(searchKeyword.toLowerCase()))
               .toList()
-          : locationsMock;
+          : topLocationsMock;
     });
-    fetchLocationsFuture = ObservableFuture(future);
+    fetchTopLocationsFuture = ObservableFuture(future);
 
-    return locations = await future;
+    return topLocations = await future;
+  }
+
+  @action
+  Future<List<Location>> fetchAllLocations() async {
+    allLocations = [];
+    final future = Future.delayed(const Duration(seconds: 3), () {
+      return searchKeyword.isNotEmpty
+          ? allLocationsMock
+              .where((element) => element.name.toLowerCase().contains(searchKeyword.toLowerCase()))
+              .toList()
+          : allLocationsMock;
+    });
+    fetchAllLocationsFuture = ObservableFuture(future);
+
+    return allLocations = await future;
   }
 
   @action
@@ -75,14 +103,22 @@ abstract class _LocationsStore with Store {
   }
 
   @action
-  void setLocationKeyword(String text) {
+  void toggleShowAllLocations() {
+    showAllLocations = !showAllLocations;
+    setLocationKeyword('', 0);
+  }
+
+  @action
+  void setLocationKeyword(String text, [int duration = 500]) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
-      fetchLocationsFuture = emptyResponse;
-      fetchRecentLocationsFeature = emptyRecentResponse;
+    _debounce = Timer(Duration(milliseconds: duration), () {
       searchKeyword = text;
+      if (showAllLocations) {
+        fetchAllLocations();
+        return;
+      }
       fetchRecentLocations();
-      fetchLocations();
+      fetchTopLocations();
     });
   }
 
