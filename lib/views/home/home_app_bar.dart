@@ -1,17 +1,17 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/routes.dart';
+import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
 
-class MobileAppBar extends HookConsumerWidget {
-  const MobileAppBar({super.key});
+class HomeAppBar extends HookConsumerWidget {
+  const HomeAppBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeStore = ref.watch(themeStorePOD);
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -22,7 +22,7 @@ class MobileAppBar extends HookConsumerWidget {
         const AppLogo(),
         SvgIconButton(
           onPressed: () {
-            themeStore.switchTheme();
+            context.beamToNamed(Routes.settings.toRoute);
           },
           asset: Assets.settings,
         ),
