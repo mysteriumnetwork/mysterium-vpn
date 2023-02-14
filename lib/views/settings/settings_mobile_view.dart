@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -28,7 +27,6 @@ class SettingsMobileView extends HookConsumerWidget {
     final vpnStore = ref.read(vpnStorePOD);
     final localeStore = ref.read(localeStorePOD);
     final authStore = ref.watch(authStorePOD);
-    final killSwitchValue = useState(true);
 
     return Column(
       children: [
