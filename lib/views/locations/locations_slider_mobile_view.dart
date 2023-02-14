@@ -39,7 +39,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
               SearchField(locationsStore).padding(bottom: 20),
               if (!showAllLocations) ...[
                 EasyText(
-                  LocaleKeys.recent_locations.tr(),
+                  LocaleKeys.recentLocations.tr(),
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
                 ).padding(bottom: 20),
@@ -63,8 +63,8 @@ class LocationsSliderMobileView extends HookConsumerWidget {
                     onPressed: () => locationsStore.toggleShowAllLocations(),
                     child: EasyText(
                       locationsStore.showAllLocations
-                          ? LocaleKeys.browse_top.tr()
-                          : LocaleKeys.browse_all.tr(),
+                          ? LocaleKeys.browseTop.tr()
+                          : LocaleKeys.browseAll.tr(),
                     ),
                   ),
                 ],

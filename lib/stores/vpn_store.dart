@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/constants/mock.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 
@@ -30,6 +31,10 @@ abstract class _VpnStore with Store {
   double? _uploadSpeed;
   @readonly
   double? _downloadSpeed;
+  @readonly
+  String _protocol = protocols.first;
+  @readonly
+  bool _killSwitch = true;
 
   @readonly
   VpnConnection _vpnConnection = _emptyConnection;
@@ -50,6 +55,16 @@ abstract class _VpnStore with Store {
       location: country ?? 'Austria',
     );
     startTracking();
+  }
+
+  @action
+  Future<void> changeProtocol(String protocol) async {
+    _protocol = protocol;
+  }
+
+  @action
+  Future<void> toggleKillSwitch() async {
+    _killSwitch = !_killSwitch;
   }
 
   @action

@@ -4,7 +4,6 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class EasyButton extends HookConsumerWidget {
   const EasyButton(
@@ -31,15 +30,18 @@ class EasyButton extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.watch(themeStorePOD);
 
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: useSystemColor
-            ? null
-            : color ??
-                (themeStore.themeType == ThemeType.light ? Palette.black : Palette.lightBlack),
-      ),
-      child: text != null ? EasyText(text!, color: Palette.white) : child,
-    ).width(width ?? double.infinity).height(height ?? 40);
+    return SizedBox(
+        width: width,
+        height: height,
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: useSystemColor
+                ? null
+                : color ??
+                    (themeStore.themeType == ThemeType.light ? Palette.black : Palette.lightBlack),
+          ),
+          child: text != null ? EasyText(text!, color: Palette.white) : child,
+        ));
   }
 }
