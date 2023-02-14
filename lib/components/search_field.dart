@@ -35,7 +35,7 @@ class SearchField extends HookWidget {
             filled: true,
             contentPadding: const EdgeInsets.only(left: 20),
             fillColor: Theme.of(context).colorScheme.surface,
-            hintText: LocaleKeys.search_for_locations.tr(),
+            hintText: LocaleKeys.searchForLocations.tr(),
             enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(20))),
             focusedBorder: const OutlineInputBorder(
