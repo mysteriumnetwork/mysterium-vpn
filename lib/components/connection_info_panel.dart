@@ -57,7 +57,12 @@ class ConnectionInfoPanel extends HookConsumerWidget {
 }
 
 class _InfoItem extends StatelessWidget {
-  const _InfoItem({required this.label, required this.isConnected, required this.icon, required this.text, Key? key})
+  const _InfoItem(
+      {required this.label,
+      required this.isConnected,
+      required this.icon,
+      required this.text,
+      Key? key})
       : super(key: key);
   final String label;
   final String text;
