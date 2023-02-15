@@ -48,13 +48,15 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
       BeamGuard(
           pathPatterns: [Routes.login.toRoute],
           check: (context, state) =>
-              authStore.authStatus == AuthStatus.unauthenticated || authStore.authStatus == AuthStatus.loading,
+              authStore.authStatus == AuthStatus.unauthenticated ||
+              authStore.authStatus == AuthStatus.loading,
           beamToNamed: (_, __) => Routes.home.toRoute),
       BeamGuard(
         pathPatterns: [Routes.splash.toRoute],
         check: (context, state) => authStore.authStatus == AuthStatus.unknown,
-        beamToNamed: (_, __) =>
-            authStore.authStatus == AuthStatus.authenticated ? Routes.home.toRoute : Routes.login.toRoute,
+        beamToNamed: (_, __) => authStore.authStatus == AuthStatus.authenticated
+            ? Routes.home.toRoute
+            : Routes.login.toRoute,
       ),
     ],
     initialPath: Routes.splash.toRoute,
