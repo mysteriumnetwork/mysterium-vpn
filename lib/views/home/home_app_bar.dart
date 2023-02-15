@@ -16,7 +16,9 @@ class HomeAppBar extends HookConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SvgIconButton(
-          onPressed: () {},
+          onPressed: () {
+            context.beamToNamed(Routes.reportIssue.toRoute);
+          },
           asset: Assets.report,
         ),
         const AppLogo(),
