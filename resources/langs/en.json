@@ -68,5 +68,8 @@
     "describeYourIssue":"Describe your issue",
     "sendToUs":"Send to us",
     "typeIssueHere":"Type your issue here..",
-    "fieldRequired":"This field is required"
+    "fieldRequired":"This field is required",
+    "system":"Use prefered system theme",
+    "dark":"Dark Theme",
+    "light":"Light Theme"
 }

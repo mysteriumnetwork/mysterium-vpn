@@ -1,5 +1,5 @@
 enum StorageKeys {
   countryCode,
   languageCode,
-  themeType,
+  themeMype,
 }

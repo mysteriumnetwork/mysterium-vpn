@@ -17,7 +17,6 @@ class LoginDesktopView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeStore = ref.read(themeStorePOD);
     final authStore = ref.read(authStorePOD);
 
     return Row(
@@ -33,11 +32,7 @@ class LoginDesktopView extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const AppLogo(),
-                  SvgIconButton(
-                      asset: Assets.messageSvg,
-                      onPressed: () {
-                        themeStore.switchTheme();
-                      }),
+                  SvgIconButton(asset: Assets.messageSvg, onPressed: () {}),
                 ],
               ).padding(bottom: 20),
               Expanded(

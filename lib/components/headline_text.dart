@@ -5,10 +5,9 @@ import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class HeadlineText extends HookConsumerWidget {
+class HeadlineText extends ConsumerWidget {
   const HeadlineText(
       {Key? key,
       required this.text,
@@ -25,11 +24,10 @@ class HeadlineText extends HookConsumerWidget {
   final int maxLines;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeStore = ref.watch(themeStorePOD);
+    final themeStore = ref.read(themeStorePOD);
     return Observer(builder: (context) {
-      final themeColor = themeStore.themeType == ThemeType.dark || checkMediaWidth(context, 650)
-          ? Palette.white
-          : Palette.darkBlue;
+      final themeColor =
+          themeStore.isDarkMode || checkMediaWidth(context, 650) ? Palette.white : Palette.darkBlue;
       return EasyText(
         text,
         color: color ?? themeColor,
