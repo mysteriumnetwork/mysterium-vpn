@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/base_layout.dart';
@@ -27,11 +26,10 @@ class SettingsMobileView extends HookConsumerWidget {
     final vpnStore = ref.read(vpnStorePOD);
     final localeStore = ref.read(localeStorePOD);
     final authStore = ref.watch(authStorePOD);
-
     return BaseLayout(
       headerTitle: LocaleKeys.settings.tr(),
       child: Observer(builder: (context) {
-        final isDarkTheme = themeStore.themeType == ThemeType.dark;
+        bool isDarkTheme = themeStore.isDarkMode;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

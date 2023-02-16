@@ -24,7 +24,7 @@ class TopLocationsList extends StatelessWidget {
                 itemCount: 10,
                 itemBuilder: (_, int index) {
                   return LocationPlaceholder(
-                    color: themeStore.currentPalette.placeholderColor,
+                    color: Theme.of(context).colorScheme.secondary,
                   );
                 });
           }

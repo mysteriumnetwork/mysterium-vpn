@@ -55,7 +55,7 @@ class ReportIssueForm extends HookWidget {
             );
           }),
         ],
-      ),
+      ).scrollable(),
     );
   }
 }

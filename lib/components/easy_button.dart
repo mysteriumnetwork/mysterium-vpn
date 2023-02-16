@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
-class EasyButton extends HookConsumerWidget {
+class EasyButton extends ConsumerWidget {
   const EasyButton(
       {Key? key,
       this.text,
@@ -28,8 +27,7 @@ class EasyButton extends HookConsumerWidget {
   final double? height;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeStore = ref.watch(themeStorePOD);
-
+    final themeStore = ref.read(themeStorePOD);
     return SizedBox(
         width: width,
         height: height,
@@ -38,8 +36,7 @@ class EasyButton extends HookConsumerWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: useSystemColor
                 ? null
-                : color ??
-                    (themeStore.themeType == ThemeType.light ? Palette.black : Palette.lightBlack),
+                : color ?? (themeStore.isDarkMode ? Palette.lightBlack : Palette.black),
           ),
           child: text != null ? EasyText(text!, color: Palette.white) : child,
         ));

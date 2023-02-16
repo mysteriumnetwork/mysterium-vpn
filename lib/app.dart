@@ -26,7 +26,9 @@ class MyApp extends HookConsumerWidget {
       child: Observer(builder: (context) {
         return MaterialApp.router(
           key: UniqueKey(),
-          theme: themeStore.currentTheme,
+          theme: themeStore.lightTheme,
+          darkTheme: themeStore.darkTheme,
+          themeMode: themeStore.themeMode,
           routerDelegate: routeDelegate,
           routeInformationParser: routeInformationParser,
           localizationsDelegates: context.localizationDelegates,
