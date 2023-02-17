@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class MyApp extends HookConsumerWidget {
@@ -24,17 +25,19 @@ class MyApp extends HookConsumerWidget {
         });
       },
       child: Observer(builder: (context) {
-        return MaterialApp.router(
-          key: UniqueKey(),
-          theme: themeStore.lightTheme,
-          darkTheme: themeStore.darkTheme,
-          themeMode: themeStore.themeMode,
-          routerDelegate: routeDelegate,
-          routeInformationParser: routeInformationParser,
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: localStore.currentLocale,
-          backButtonDispatcher: BeamerBackButtonDispatcher(delegate: routeDelegate),
+        return RetakeFocusOnTap(
+          child: MaterialApp.router(
+            key: UniqueKey(),
+            theme: themeStore.lightTheme,
+            darkTheme: themeStore.darkTheme,
+            themeMode: themeStore.themeMode,
+            routerDelegate: routeDelegate,
+            routeInformationParser: routeInformationParser,
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: localStore.currentLocale,
+            backButtonDispatcher: BeamerBackButtonDispatcher(delegate: routeDelegate),
+          ),
         );
       }),
     );
