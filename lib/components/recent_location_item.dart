@@ -16,7 +16,11 @@ class RecentLocationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return Material(
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      clipBehavior: Clip.hardEdge,
+      child: InkWell(
         onTap: onTap,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,14 +40,13 @@ class RecentLocationItem extends StatelessWidget {
               location.duration.toHoursMinutes(),
             ),
           ],
+        ).padding(horizontal: 12).width(100),
+      ),
+    )
+        .card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         )
-            .padding(horizontal: 12)
-            .width(100)
-            .card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-            )
-            .padding(right: 15));
+        .paddingDirectional(end: 10);
   }
 }
