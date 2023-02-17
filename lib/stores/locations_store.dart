@@ -41,11 +41,13 @@ abstract class _LocationsStore with Store {
 
   @computed
   bool get hasTopLocationsResults =>
-      fetchTopLocationsFuture != emptyLocations && fetchTopLocationsFuture.status == FutureStatus.fulfilled;
+      fetchTopLocationsFuture != emptyLocations &&
+      fetchTopLocationsFuture.status == FutureStatus.fulfilled;
 
   @computed
   bool get hasAllLocationsResults =>
-      fetchAllLocationsFuture != emptyLocations && fetchAllLocationsFuture.status == FutureStatus.fulfilled;
+      fetchAllLocationsFuture != emptyLocations &&
+      fetchAllLocationsFuture.status == FutureStatus.fulfilled;
 
   @computed
   bool get hasRecentLocationsResults =>
