@@ -23,8 +23,9 @@ class MysteriumVPNTheme {
       disabledColor: palette.darkTextColor,
       //cardColor:
       //canvasColor: isDarkTheme ? Colors.black : Colors.grey[50],
-      buttonTheme:
-          ButtonThemeData(colorScheme: palette is LightPalette ? const ColorScheme.dark() : const ColorScheme.light()),
+      buttonTheme: ButtonThemeData(
+          colorScheme:
+              palette is LightPalette ? const ColorScheme.dark() : const ColorScheme.light()),
       textTheme: GoogleFonts.montserratTextTheme().apply(
         bodyColor: palette.secondaryColor,
         displayColor: palette.secondaryColor,
