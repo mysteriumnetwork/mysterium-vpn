@@ -4,6 +4,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/pages/home_page.dart';
 import 'package:mysterium_vpn/pages/login_page.dart';
+import 'package:mysterium_vpn/pages/report_issue_page.dart';
 import 'package:mysterium_vpn/pages/settings_page.dart';
 import 'package:mysterium_vpn/pages/static/splash_page.dart';
 import 'package:mysterium_vpn/views/check_email_view.dart';
@@ -41,6 +42,12 @@ class BeamerLocations extends BeamLocation<BeamState> {
           key: ValueKey(Routes.settings.toDashCase),
           title: Routes.settings.value,
           child: const SettingsPage(),
+        ),
+      if (state.uri.pathSegments.contains(Routes.reportIssue.toDashCase))
+        BeamPage(
+          key: ValueKey(Routes.reportIssue.toDashCase),
+          title: Routes.reportIssue.value,
+          child: const ReportIssuePage(),
         ),
     ];
   }

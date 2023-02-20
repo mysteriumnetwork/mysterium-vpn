@@ -63,5 +63,13 @@
     "deleteAccount":"Delete account",
     "deleteAccountQuestion":"Delete Account?",
     "typeDelete":"Type DELETE in the text field below to confirm!",
-    "confirm":"Confirm"
+    "confirm":"Confirm",
+    "reportAnIssue":"Report an issue",
+    "describeYourIssue":"Describe your issue",
+    "sendToUs":"Send to us",
+    "typeIssueHere":"Type your issue here..",
+    "fieldRequired":"This field is required",
+    "system":"Use prefered system theme",
+    "dark":"Dark Theme",
+    "light":"Light Theme"
 }

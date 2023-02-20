@@ -27,11 +27,11 @@ final themeStorePOD = Provider<ThemeStore>((ref) {
   return ThemeStore();
 });
 
-final vpnStorePOD = Provider<VpnStore>((ref) {
+final vpnStorePOD = Provider.autoDispose<VpnStore>((ref) {
   return VpnStore();
 });
 
-final locationsStorePOD = Provider<LocationsStore>((ref) {
+final locationsStorePOD = Provider.autoDispose<LocationsStore>((ref) {
   return LocationsStore();
 });
 
@@ -42,7 +42,7 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
   return BeamerDelegate(
     guards: [
       BeamGuard(
-          pathPatterns: [Routes.home.toRoute, Routes.settings.toRoute],
+          pathPatterns: [Routes.home.toRoute, Routes.settings.toRoute, Routes.reportIssue.toRoute],
           check: (context, state) => authStore.authStatus == AuthStatus.authenticated,
           beamToNamed: (_, __) => Routes.login.toRoute),
       BeamGuard(
