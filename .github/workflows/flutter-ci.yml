@@ -46,6 +46,6 @@ jobs:
       - run: flutter pub get
       - run: dart format --line-length 100 --set-exit-if-changed .
       - run: flutter packages pub run build_runner build --delete-conflicting-outputs
-      - run: flutter pub run easy_localization:generate  -f keys -o locale_keys.g.dart
+      - run: flutter pub run easy_localization:generate --source-dir ./resources/langs -f keys -o locale_keys.g.dart
       - run: flutter analyze .
       - run: flutter test

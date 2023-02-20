@@ -4,6 +4,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/app.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/generated/codegen_loader.g.dart';
 import 'package:mysterium_vpn/services/shared_preferences_service.dart';
 
 void main() async {
@@ -18,6 +19,7 @@ void main() async {
         supportedLocales: supportedLocales,
         path: 'resources/langs',
         fallbackLocale: fallbackLocale,
+        assetLoader: const CodegenLoader(),
         child: const MyApp(),
       ),
     ),
