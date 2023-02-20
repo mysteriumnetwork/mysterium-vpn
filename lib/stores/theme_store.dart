@@ -1,9 +1,9 @@
 // Flutter imports:
 // Package imports:
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/styles/theme.dart';
 import 'package:mysterium_vpn/services/shared_preferences_service.dart';
@@ -17,32 +17,23 @@ class ThemeStore = _ThemeStore with _$ThemeStore;
 
 abstract class _ThemeStore with Store {
   _ThemeStore() {
-    themeType = SharedPreferenceService.getThemeType() ??
-        (SchedulerBinding.instance.window.platformBrightness == Brightness.dark
-            ? ThemeType.dark
-            : ThemeType.light);
+    themeMode = SharedPreferenceService.getThemeType() ?? ThemeMode.system;
   }
 
-  @computed
-  ThemeData get currentTheme =>
-      MysteriumVPNTheme.themeData(themeType == ThemeType.dark ? DarkPalette() : LightPalette());
-
-  @computed
-  Palette get currentPalette => themeType == ThemeType.dark ? DarkPalette() : LightPalette();
+  final darkTheme = MysteriumVPNTheme.themeData(DarkPalette());
+  final lightTheme = MysteriumVPNTheme.themeData(LightPalette());
 
   @observable
-  ThemeType themeType = ThemeType.light;
+  ThemeMode themeMode = ThemeMode.system;
+
+  @computed
+  bool get isDarkMode => themeMode == ThemeMode.system
+      ? window.platformBrightness == Brightness.dark
+      : themeMode == ThemeMode.dark;
 
   @action
-  Future<void> setThemeType(ThemeType type) async {
-    await SharedPreferenceService.setThemeType(type);
-    themeType = type;
-  }
-
-  @action
-  Future<void> switchTheme() async {
-    final type = themeType == ThemeType.light ? ThemeType.dark : ThemeType.light;
-    await SharedPreferenceService.setThemeType(type);
-    themeType = type;
+  Future<void> setThemeType(ThemeMode mode) async {
+    await SharedPreferenceService.setThemeType(mode);
+    themeMode = mode;
   }
 }

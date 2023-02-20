@@ -6,4 +6,5 @@ enum Routes {
   checkYourEmail,
   splash,
   settings,
+  reportIssue,
 }

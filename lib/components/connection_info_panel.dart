@@ -43,7 +43,7 @@ class ConnectionInfoPanel extends HookConsumerWidget {
           ).expanded(),
         ],
       ).card(
-        color: Palette.darkBlue,
+        color: Palette.black,
         elevation: 0,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(

@@ -14,7 +14,7 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class SignUpForm extends StatelessWidget {
+class SignUpForm extends HookWidget {
   const SignUpForm({super.key});
   @override
   Widget build(BuildContext context) {
@@ -31,10 +31,11 @@ class SignUpForm extends StatelessWidget {
               ValidationMessage.required: (_) => LocaleKeys.emailIsRequired.tr(),
               ValidationMessage.email: (_) => LocaleKeys.emailIsNotValid.tr(),
             },
-          ).padding(bottom: 20),
+          ).height(40).padding(bottom: 20),
           ReactiveFormConsumer(
             builder: (context, form, child) {
               return EasyButton(
+                width: double.infinity,
                 useSystemColor: false,
                 onPressed: form.valid
                     ? () {

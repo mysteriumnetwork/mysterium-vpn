@@ -112,7 +112,7 @@ abstract class _LocationsStore with Store {
   void setLocationKeyword(String text, [int duration = 500]) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(Duration(milliseconds: duration), () {
-      searchKeyword = text;
+      searchKeyword = text.trim();
       if (showAllLocations) {
         fetchAllLocations();
         return;
