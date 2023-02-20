@@ -6,4 +6,7 @@ abstract class AppForms {
         'terms_acceptance':
             FormControl<bool>(validators: [Validators.required, Validators.requiredTrue]),
       });
+  static FormGroup reportIssue() => FormGroup({
+        'report_issue': FormControl<String>(validators: [Validators.required]),
+      });
 }

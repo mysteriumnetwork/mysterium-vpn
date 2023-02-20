@@ -1,17 +1,16 @@
 import 'package:beamer/beamer.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/app_version.dart';
-import 'package:mysterium_vpn/components/header.dart';
+import 'package:mysterium_vpn/components/header_title.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class SettingsAppBar extends HookConsumerWidget {
-  const SettingsAppBar({super.key});
-
+class PageHeader extends HookConsumerWidget {
+  const PageHeader({super.key, required this.headerTitle});
+  final String headerTitle;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Row(
@@ -23,9 +22,9 @@ class SettingsAppBar extends HookConsumerWidget {
           },
           asset: Assets.navigateBack,
         ),
-        Header(text: LocaleKeys.settings.tr()),
+        HeaderTitle(text: headerTitle, color: Palette.white),
         const AppVersion(),
       ],
-    ).padding(horizontal: 20, top: 20);
+    ).padding(horizontal: 20);
   }
 }

@@ -25,7 +25,7 @@ class RecentLocationsList extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: 4,
                 itemBuilder: (_, __) => RecentLocationPlaceholder(
-                      color: themeStore.currentPalette.placeholderColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     )).height(100);
           }
           if (locationsStore.recentLocations.isEmpty) {

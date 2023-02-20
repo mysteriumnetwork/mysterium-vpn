@@ -1,6 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -11,26 +11,26 @@ class ThemePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
-      return DropdownButton<ThemeType>(
+      return DropdownButton<ThemeMode>(
         isExpanded: true,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
-        value: store.themeType,
+        value: store.themeMode,
         icon: const Icon(Icons.arrow_drop_down),
         underline: const SizedBox.shrink(),
-        onChanged: (ThemeType? newThemeType) {
-          if (newThemeType == null) {
+        onChanged: (ThemeMode? newThemeMode) {
+          if (newThemeMode == null) {
             return;
           }
-          store.setThemeType(newThemeType);
+          store.setThemeType(newThemeMode);
           return;
         },
-        items: ThemeType.values
-            .map<DropdownMenuItem<ThemeType>>(
-              (themeType) => DropdownMenuItem<ThemeType>(
-                  value: themeType,
+        items: ThemeMode.values
+            .map<DropdownMenuItem<ThemeMode>>(
+              (themeMode) => DropdownMenuItem<ThemeMode>(
+                  value: themeMode,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: EasyText(themeType.label),
+                    child: EasyText(themeMode.name.tr()),
                   )),
             )
             .toList(),
