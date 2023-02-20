@@ -10,12 +10,13 @@ class MysteriumVPNTheme {
       useMaterial3: true,
       primaryColor: palette.primaryColor,
       colorScheme: ColorScheme.fromSwatch().copyWith(
-        background: palette.backgroundGolor,
-        surface: palette.surfaceColor,
-        primary: palette.swatchColor,
-        brightness: palette is LightPalette ? Brightness.light : Brightness.dark,
-        error: Palette.pink,
-      ),
+          background: palette.backgroundGolor,
+          surface: palette.surfaceColor,
+          primary: palette.swatchColor,
+          tertiary: palette.tertiaryColor,
+          brightness: palette is LightPalette ? Brightness.light : Brightness.dark,
+          error: Palette.pink,
+          secondary: palette.placeholderColor),
 
       indicatorColor: palette.highlightColor,
       hintColor: palette.darkTextColor,
@@ -35,12 +36,12 @@ class MysteriumVPNTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          minimumSize: const Size(200, 40),
-          backgroundColor: palette.highlightColor,
-        ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            minimumSize: const Size(200, 40),
+            backgroundColor: palette.highlightColor,
+            disabledBackgroundColor: palette.highlightColor.withOpacity(0.4)),
       ),
       checkboxTheme: CheckboxThemeData(
         shape: RoundedRectangleBorder(

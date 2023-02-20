@@ -29,12 +29,12 @@ class SearchField extends HookWidget {
           style: TextStyle(
             color: Theme.of(context).colorScheme.brightness == Brightness.light
                 ? Palette.black
-                : Palette.veryLightGrey,
+                : Palette.lightGrey,
           ),
           decoration: InputDecoration(
             filled: true,
             contentPadding: const EdgeInsets.only(left: 20),
-            fillColor: Theme.of(context).colorScheme.surface,
+            fillColor: Theme.of(context).colorScheme.tertiary,
             hintText: LocaleKeys.searchForLocations.tr(),
             enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(20))),

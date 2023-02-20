@@ -64,12 +64,12 @@ class SharedPreferenceService {
     return await setString(StorageKeys.languageCode.value, locale.languageCode);
   }
 
-  static ThemeType? getThemeType() {
-    final String? themeType = getString(StorageKeys.themeType.value);
-    return ThemeType.values.firstWhereOrNull((e) => e.value == themeType);
+  static ThemeMode? getThemeType() {
+    final String? themeType = getString(StorageKeys.themeMype.value);
+    return ThemeMode.values.firstWhereOrNull((e) => e.value == themeType);
   }
 
-  static Future<bool> setThemeType(ThemeType themeType) async {
-    return await setString(StorageKeys.themeType.value, themeType.value);
+  static Future<bool> setThemeType(ThemeMode themeMode) async {
+    return await setString(StorageKeys.themeMype.value, themeMode.value);
   }
 }

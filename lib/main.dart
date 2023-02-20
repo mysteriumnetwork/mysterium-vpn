@@ -14,7 +14,7 @@ void main() async {
     ProviderScope(
       child: EasyLocalization(
         supportedLocales: supportedLocales,
-        path: 'resources/langs', // <-- change the path of the translation files
+        path: 'resources/langs',
         fallbackLocale: fallbackLocale,
         child: const MyApp(),
       ),

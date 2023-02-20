@@ -29,6 +29,6 @@ abstract class _WireguardStore with Store {
   }
 
   Future<void> setupTunel() async {
-    // setupTunelFuture = ObservableFuture(wireguardService.setupTunnel(bundleId: 'com.example.mysteriumVpn.'));
+    // setupTunelFuture = ObservableFuture(wireguardService.setupTunnel(bundleId: 'com.mysterium.mysteriumVpn.'));
   }
 }

@@ -7,7 +7,7 @@ import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/components/header.dart';
+import 'package:mysterium_vpn/components/header_title.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
@@ -48,7 +48,7 @@ class _DeleteAccountDialog extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Header(
+            HeaderTitle(
               text: LocaleKeys.deleteAccountQuestion.tr(),
             ),
             EasyText(LocaleKeys.typeDelete.tr(), fontSize: 14).padding(bottom: 30),
@@ -63,10 +63,10 @@ class _DeleteAccountDialog extends HookWidget {
                 contentPadding: const EdgeInsets.only(left: 20),
                 fillColor: Theme.of(context).colorScheme.surface,
                 enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
+                    borderSide: BorderSide(color: Palette.lightBlue),
                     borderRadius: BorderRadius.all(Radius.circular(20))),
                 focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
+                    borderSide: BorderSide(color: Palette.lightBlue),
                     borderRadius: BorderRadius.all(Radius.circular(20))),
               ),
               onChanged: (val) => confirmationMessage.value = val,

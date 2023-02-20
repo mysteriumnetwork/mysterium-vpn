@@ -9,54 +9,40 @@ part of 'theme_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$ThemeStore on _ThemeStore, Store {
-  Computed<ThemeData>? _$currentThemeComputed;
+  Computed<bool>? _$isDarkModeComputed;
 
   @override
-  ThemeData get currentTheme => (_$currentThemeComputed ??=
-          Computed<ThemeData>(() => super.currentTheme, name: '_ThemeStore.currentTheme'))
-      .value;
-  Computed<Palette>? _$currentPaletteComputed;
-
-  @override
-  Palette get currentPalette => (_$currentPaletteComputed ??=
-          Computed<Palette>(() => super.currentPalette, name: '_ThemeStore.currentPalette'))
+  bool get isDarkMode => (_$isDarkModeComputed ??=
+          Computed<bool>(() => super.isDarkMode, name: '_ThemeStore.isDarkMode'))
       .value;
 
-  late final _$themeTypeAtom = Atom(name: '_ThemeStore.themeType', context: context);
+  late final _$themeModeAtom = Atom(name: '_ThemeStore.themeMode', context: context);
 
   @override
-  ThemeType get themeType {
-    _$themeTypeAtom.reportRead();
-    return super.themeType;
+  ThemeMode get themeMode {
+    _$themeModeAtom.reportRead();
+    return super.themeMode;
   }
 
   @override
-  set themeType(ThemeType value) {
-    _$themeTypeAtom.reportWrite(value, super.themeType, () {
-      super.themeType = value;
+  set themeMode(ThemeMode value) {
+    _$themeModeAtom.reportWrite(value, super.themeMode, () {
+      super.themeMode = value;
     });
   }
 
   late final _$setThemeTypeAsyncAction = AsyncAction('_ThemeStore.setThemeType', context: context);
 
   @override
-  Future<void> setThemeType(ThemeType type) {
-    return _$setThemeTypeAsyncAction.run(() => super.setThemeType(type));
-  }
-
-  late final _$switchThemeAsyncAction = AsyncAction('_ThemeStore.switchTheme', context: context);
-
-  @override
-  Future<void> switchTheme() {
-    return _$switchThemeAsyncAction.run(() => super.switchTheme());
+  Future<void> setThemeType(ThemeMode mode) {
+    return _$setThemeTypeAsyncAction.run(() => super.setThemeType(mode));
   }
 
   @override
   String toString() {
     return '''
-themeType: ${themeType},
-currentTheme: ${currentTheme},
-currentPalette: ${currentPalette}
+themeMode: ${themeMode},
+isDarkMode: ${isDarkMode}
     ''';
   }
 }

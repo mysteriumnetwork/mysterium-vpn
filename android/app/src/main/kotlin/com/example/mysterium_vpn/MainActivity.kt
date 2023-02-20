@@ -1,4 +1,4 @@
-package com.example.mysterium_vpn
+package com.mysteriumvpn.android
 
 import io.flutter.embedding.android.FlutterActivity
 
