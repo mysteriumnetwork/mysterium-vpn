@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/all_locations_list.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/recent_locations_list.dart';
@@ -65,6 +66,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
                       locationsStore.showAllLocations
                           ? LocaleKeys.browseTop.tr()
                           : LocaleKeys.browseAll.tr(),
+                      color: Palette.pink,
                     ),
                   ),
                 ],
@@ -79,7 +81,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
                       locationsStore: locationsStore,
                       vpnStore: vpnStore,
                       themeStore: themeStore,
-                    ),
+                    )
             ],
           ).paddingDirectional(horizontal: 20);
         }));
