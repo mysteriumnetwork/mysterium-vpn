@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -13,7 +14,6 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/sign_up_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class LoginMobileView extends HookConsumerWidget {
   const LoginMobileView({Key? key}) : super(key: key);
@@ -65,7 +65,7 @@ class LoginMobileView extends HookConsumerWidget {
                             _showSignInView(context);
                           }
                         },
-                      ).padding(bottom: 30),
+                      ).padding(bottom: 20),
                       TextButton(
                         onPressed: () {},
                         child: EasyText(
@@ -75,7 +75,7 @@ class LoginMobileView extends HookConsumerWidget {
                         ),
                       )
                     ],
-                  ).padding(bottom: 20, top: 30),
+                  ).padding(top: 20),
                 ),
               ],
             ),
