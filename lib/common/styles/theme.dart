@@ -3,9 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 
 class MysteriumVPNTheme {
-  static ThemeData themeData(
-    Palette palette,
-  ) {
+  static ThemeData themeData(Palette palette) {
     return ThemeData(
       useMaterial3: true,
       primaryColor: palette.primaryColor,
@@ -13,15 +11,14 @@ class MysteriumVPNTheme {
           background: palette.backgroundGolor,
           surface: palette.surfaceColor,
           primary: palette.swatchColor,
-          tertiary: palette.tertiaryColor,
           brightness: palette is LightPalette ? Brightness.light : Brightness.dark,
           error: Palette.pink,
+          tertiary: palette.tertiaryColor,
           secondary: palette.placeholderColor),
 
       indicatorColor: palette.highlightColor,
       hintColor: palette.darkTextColor,
-      highlightColor: palette.highlightColor,
-
+      highlightColor: palette.highlightColor.withOpacity(0.4),
       //hoverColor: palette.secondaryColor,
       disabledColor: palette.darkTextColor,
       //cardColor:
@@ -29,8 +26,7 @@ class MysteriumVPNTheme {
       buttonTheme: ButtonThemeData(
           colorScheme:
               palette is LightPalette ? const ColorScheme.dark() : const ColorScheme.light()),
-
-      primaryTextTheme: GoogleFonts.lexendTextTheme().apply(
+      textTheme: GoogleFonts.montserratTextTheme().apply(
         bodyColor: palette.secondaryColor,
         displayColor: palette.secondaryColor,
       ),
