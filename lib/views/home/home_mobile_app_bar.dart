@@ -5,6 +5,7 @@ import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class HomeMobileAppBar extends StatelessWidget {
   const HomeMobileAppBar({super.key});
@@ -28,6 +29,6 @@ class HomeMobileAppBar extends StatelessWidget {
           asset: Assets.settings,
         )
       ],
-    );
+    ).padding(horizontal: 20, top: 10);
   }
 }
