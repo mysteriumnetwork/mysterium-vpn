@@ -8,8 +8,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 ///
 /// This widget is used by the ScreenTypeLayoutBuilder to provide different widget builders
 class ResponsiveLayoutBuilder extends StatelessWidget {
-  final Widget Function(BuildContext context, ScreenSizeConfiguration screenSizeConfiguration)
-      builder;
+  final Widget Function(BuildContext context, ScreenSizeConfiguration screenSizeConfiguration) builder;
   final ScreenBreakpoint? screenBreakpoints;
   final ScreenSizeBreakpoint? screenSizeBreakpoints;
 
