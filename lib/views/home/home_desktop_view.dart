@@ -11,11 +11,11 @@ class HomeDesktopView extends HookConsumerWidget {
     return Row(
       children: const [
         Flexible(
-          flex: 5,
+          flex: 6,
           child: HomeDesktopLeftPanel(),
         ),
         Flexible(
-          flex: 4,
+          flex: 5,
           child: HomeDesktopRightPanel(),
         ),
       ],
