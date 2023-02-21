@@ -33,7 +33,7 @@ class LoginMobileView extends HookConsumerWidget {
               children: <Widget>[
                 const Expanded(
                   child: LoginHeadlines(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    alignment: Alignment.center,
                   ),
                 ),
                 Container(
@@ -75,7 +75,7 @@ class LoginMobileView extends HookConsumerWidget {
                         ),
                       )
                     ],
-                  ).padding(top: 20),
+                  ).padding(top: 30, bottom: 10),
                 ),
               ],
             ),
