@@ -11,7 +11,7 @@ class BreakpointConfiguration {
 
   static const ScreenBreakpoint _defaultScreenBreakpoints = ScreenBreakpoint(
     desktop: 950,
-    tablet: 650,
+    tablet: 700,
     mobile: 420,
     watch: 300,
   );
@@ -51,6 +51,5 @@ class BreakpointConfiguration {
 
   ScreenBreakpoint get screenBreakpoints => _customScreenBreakpoints ?? _defaultScreenBreakpoints;
 
-  ScreenSizeBreakpoint get screenSizeBreakpoints =>
-      _customScreenSizeBreakpoints ?? _deafultScreenSizeBreakpoints;
+  ScreenSizeBreakpoint get screenSizeBreakpoints => _customScreenSizeBreakpoints ?? _deafultScreenSizeBreakpoints;
 }
