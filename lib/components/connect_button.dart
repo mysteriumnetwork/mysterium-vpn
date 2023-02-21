@@ -5,11 +5,7 @@ import 'package:mysterium_vpn/components/svg_icon_button.dart';
 
 class ConnectButton extends StatelessWidget {
   const ConnectButton(
-      {required this.isConnected,
-      required this.callback,
-      required this.height,
-      required this.width,
-      super.key});
+      {required this.isConnected, required this.callback, required this.height, required this.width, super.key});
 
   final bool isConnected;
   final VoidCallback callback;
@@ -17,7 +13,7 @@ class ConnectButton extends StatelessWidget {
   final double height;
   @override
   Widget build(BuildContext context) {
-    final radius = ((height + width) / 2) * 0.2;
+    final radius = ((height + width) / 2) * 0.23;
     return Container(
       height: radius,
       width: radius,

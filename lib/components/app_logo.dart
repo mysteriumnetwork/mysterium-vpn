@@ -15,7 +15,7 @@ class AppLogo extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.read(themeStorePOD);
     return Observer(builder: (context) {
-      final asset = themeStore.isDarkMode || checkMediaWidth(context, 650)
+      final asset = themeStore.isDarkMode || checkMediaWidth(context, 700)
           ? Assets.logoWhiteSvg
           : Assets.logoBlackSvg;
       return SvgIcon(
