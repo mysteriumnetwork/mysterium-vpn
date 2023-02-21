@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/views/home/desktop_left_panel.dart';
+import 'package:mysterium_vpn/views/home/desktop_right_panel.dart';
 
 class HomeDesktopView extends HookConsumerWidget {
   const HomeDesktopView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Center(
-      child: Text('Home Desktop View'),
+    return Row(
+      children: const [
+        Flexible(
+          flex: 5,
+          child: HomeDesktopLeftPanel(),
+        ),
+        Flexible(
+          flex: 4,
+          child: HomeDesktopRightPanel(),
+        ),
+      ],
     );
   }
 }

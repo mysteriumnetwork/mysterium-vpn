@@ -11,8 +11,8 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class ConnectionInfoPanel extends HookConsumerWidget {
-  const ConnectionInfoPanel({Key? key}) : super(key: key);
+class ConnectionInfoPanelDesktop extends HookConsumerWidget {
+  const ConnectionInfoPanelDesktop({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -46,10 +46,7 @@ class ConnectionInfoPanel extends HookConsumerWidget {
         color: Palette.black,
         elevation: 0,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
-          ),
+          borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
       );
     });
@@ -57,12 +54,7 @@ class ConnectionInfoPanel extends HookConsumerWidget {
 }
 
 class _InfoItem extends StatelessWidget {
-  const _InfoItem(
-      {required this.label,
-      required this.isConnected,
-      required this.icon,
-      required this.text,
-      Key? key})
+  const _InfoItem({required this.label, required this.isConnected, required this.icon, required this.text, Key? key})
       : super(key: key);
   final String label;
   final String text;
@@ -70,36 +62,24 @@ class _InfoItem extends StatelessWidget {
   final bool isConnected;
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      alignment: Alignment.center,
+    return Column(
       children: [
-        Positioned(
-          top: -7,
-          child: SvgIcon(
-            asset: icon,
-          ),
-        ),
-        Positioned(
-          top: 5,
-          child: Column(
-            children: [
-              EasyText(
-                label,
-                fontSize: 10,
-                fontWeight: FontWeight.w400,
-                color: isConnected ? Palette.white : Palette.lightBlack,
-              ).padding(bottom: 6),
-              EasyText(
-                text,
-                fontSize: 16,
-                fontWeight: FontWeight.w900,
-                color: isConnected ? Palette.white : Palette.lightBlack,
-              )
-            ],
-          ).padding(vertical: 16),
-        ),
+        SvgIcon(
+          asset: icon,
+        ).padding(bottom: 20),
+        EasyText(
+          label,
+          fontSize: 10,
+          fontWeight: FontWeight.w400,
+          color: isConnected ? Palette.white : Palette.lightBlack,
+        ).padding(bottom: 16),
+        EasyText(
+          text,
+          fontSize: 16,
+          fontWeight: FontWeight.w900,
+          color: isConnected ? Palette.white : Palette.lightBlack,
+        )
       ],
-    );
+    ).padding(vertical: 20);
   }
 }
