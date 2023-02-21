@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
@@ -39,7 +40,7 @@ ScreenType getScreenType(
 ]) {
   double deviceWidth = size.shortestSide;
 
-  if (kIsWeb) {
+  if (kIsWeb || isDekstop()) {
     deviceWidth = size.width;
   }
 
@@ -78,12 +79,11 @@ ScreenType getScreenType(
 SizeType getSizeType(
   Size size, {
   ScreenSizeBreakpoint? screenSizeBreakpoint,
-  bool isWebOrDesktop = kIsWeb,
 }) {
   final ScreenType deviceScreenType = getScreenType(size);
   double deviceWidth = size.shortestSide;
 
-  if (isWebOrDesktop) {
+  if (kIsWeb || isDekstop()) {
     deviceWidth = size.width;
   }
 
@@ -280,4 +280,12 @@ String? getCountryFlag(String countryName) {
     default:
       return null;
   }
+}
+
+bool isDekstop() {
+  return (Platform.isWindows || Platform.isLinux || Platform.isMacOS);
+}
+
+bool isMobile() {
+  return (Platform.isAndroid || Platform.isIOS);
 }
