@@ -56,7 +56,9 @@ class HomeDesktopLeftPanel extends ConsumerWidget {
                 TextButton(
                   onPressed: () => locationsStore.toggleShowAllLocations(),
                   child: EasyText(
-                    locationsStore.showAllLocations ? LocaleKeys.browseTop.tr() : LocaleKeys.browseAll.tr(),
+                    locationsStore.showAllLocations
+                        ? LocaleKeys.browseTop.tr()
+                        : LocaleKeys.browseAll.tr(),
                     color: Palette.pink,
                   ),
                 ),

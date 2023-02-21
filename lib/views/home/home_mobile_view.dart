@@ -28,7 +28,8 @@ class HomeMobileView extends HookConsumerWidget {
         parallaxOffset: .1,
         color: Theme.of(context).primaryColor,
         panelBuilder: (sc) => LocationsSliderMobileView(sc: sc),
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+        borderRadius:
+            const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
         body: Stack(
           children: [
             Lottie.asset(Assets.backgroundElements),
