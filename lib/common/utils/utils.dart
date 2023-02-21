@@ -38,7 +38,7 @@ ScreenType getScreenType(
   Size size, [
   ScreenBreakpoint? breakpoint,
 ]) {
-  double deviceWidth = size.shortestSide;
+  double deviceWidth = size.width;
 
   if (kIsWeb || isDekstop()) {
     deviceWidth = size.width;
@@ -81,11 +81,7 @@ SizeType getSizeType(
   ScreenSizeBreakpoint? screenSizeBreakpoint,
 }) {
   final ScreenType deviceScreenType = getScreenType(size);
-  double deviceWidth = size.shortestSide;
-
-  if (kIsWeb || isDekstop()) {
-    deviceWidth = size.width;
-  }
+  double deviceWidth = size.width;
 
   // Replaces the defaults with the user defined definitions
   if (screenSizeBreakpoint != null) {
