@@ -1,17 +1,16 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/routes.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 
-class HomeAppBar extends HookConsumerWidget {
-  const HomeAppBar({super.key});
+class HomeMobileAppBar extends StatelessWidget {
+  const HomeMobileAppBar({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -27,7 +26,7 @@ class HomeAppBar extends HookConsumerWidget {
             context.beamToNamed(Routes.settings.toRoute);
           },
           asset: Assets.settings,
-        ),
+        )
       ],
     );
   }

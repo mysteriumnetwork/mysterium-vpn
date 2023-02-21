@@ -9,8 +9,7 @@ import 'package:mysterium_vpn/stores/vpn_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class RecentLocationsList extends StatelessWidget {
-  const RecentLocationsList(
-      {Key? key, required this.themeStore, required this.vpnStore, required this.locationsStore})
+  const RecentLocationsList({Key? key, required this.themeStore, required this.vpnStore, required this.locationsStore})
       : super(key: key);
   final LocationsStore locationsStore;
   final VpnStore vpnStore;
@@ -23,7 +22,7 @@ class RecentLocationsList extends StatelessWidget {
                 shrinkWrap: true,
                 controller: ScrollController(),
                 scrollDirection: Axis.horizontal,
-                itemCount: 4,
+                itemCount: 7,
                 itemBuilder: (_, __) => RecentLocationPlaceholder(
                       color: Theme.of(context).colorScheme.secondary,
                     )).height(100);
