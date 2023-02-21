@@ -27,6 +27,7 @@ class MyApp extends HookConsumerWidget {
       child: Observer(builder: (context) {
         return RetakeFocusOnTap(
           child: MaterialApp.router(
+            title: 'Mysterium VPN',
             key: UniqueKey(),
             theme: themeStore.lightTheme,
             darkTheme: themeStore.darkTheme,
