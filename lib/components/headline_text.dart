@@ -28,7 +28,8 @@ class HeadlineText extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.read(themeStorePOD);
     return Observer(builder: (context) {
-      final themeColor = themeStore.isDarkMode || checkMediaWidth(context, 700) ? Palette.white : Palette.darkBlue;
+      final themeColor =
+          themeStore.isDarkMode || checkMediaWidth(context, 700) ? Palette.white : Palette.darkBlue;
       return EasyText(
         text,
         color: color ?? themeColor,
