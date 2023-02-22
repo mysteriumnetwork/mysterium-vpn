@@ -8,13 +8,11 @@ class ReportIssuePage extends StatelessWidget {
   const ReportIssuePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ColoredScaffold(
-      body: ScreenTypeLayoutBuilder(
-        mobile: (BuildContext context) => const ReportIssueMobileView(),
-        tablet: (BuildContext context) => const ReportIssueDesktopView(),
-        desktop: (BuildContext context) => const ReportIssueDesktopView(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ColoredScaffold(
+        body: ScreenTypeLayoutBuilder(
+          mobile: (BuildContext context) => const ReportIssueMobileView(),
+          tablet: (BuildContext context) => const ReportIssueDesktopView(),
+          desktop: (BuildContext context) => const ReportIssueDesktopView(),
+        ),
+      );
 }

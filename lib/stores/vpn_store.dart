@@ -19,7 +19,10 @@ abstract class _VpnStore with Store {
   _VpnStore();
 
   static const VpnConnection _emptyConnection = VpnConnection(
-      connectionIP: '--', connectionStatus: ConnectionStatus.disconnected, location: '--');
+    connectionIP: '--',
+    connectionStatus: ConnectionStatus.disconnected,
+    location: '--',
+  );
 
   final random = Random();
 
@@ -44,7 +47,9 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> connect(String? country) async {
-    if (_vpnConnection.location == country) return;
+    if (_vpnConnection.location == country) {
+      return;
+    }
     if (_vpnConnection != _emptyConnection) {
       await disconnect();
     }
@@ -54,7 +59,7 @@ abstract class _VpnStore with Store {
       connectionStatus: ConnectionStatus.connected,
       location: country ?? 'Austria',
     );
-    startTracking();
+    await startTracking();
   }
 
   @action
@@ -86,7 +91,7 @@ abstract class _VpnStore with Store {
     _duration = null;
   }
 
-  void dispose() async {
+  Future<void> dispose() async {
     _timer?.cancel();
   }
 }

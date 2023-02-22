@@ -10,21 +10,20 @@ import 'package:mysterium_vpn/common/layout_builders/responsive_layout_builder.d
 /// [normal] will be built when width is greater than 1080 on Desktops, 768 on Tablets, and 375 on Mobiles
 /// [small] will be built if width is less than 720 on Desktops, 650 on Tablets, and 320 on Mobiles
 class ScreenSizeLayoutBuilder extends StatelessWidget {
-  final ScreenSizeBreakpoint? screenSizeBreakpoint;
-
-  final WidgetBuilder? extraLarge;
-  final WidgetBuilder? large;
-  final WidgetBuilder normal;
-  final WidgetBuilder? small;
-
   const ScreenSizeLayoutBuilder({
     required this.normal,
     this.screenSizeBreakpoint,
     this.extraLarge,
     this.large,
     this.small,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
+  final ScreenSizeBreakpoint? screenSizeBreakpoint;
+
+  final WidgetBuilder? extraLarge;
+  final WidgetBuilder? large;
+  final WidgetBuilder normal;
+  final WidgetBuilder? small;
 
   @override
   Widget build(BuildContext context) => ResponsiveLayoutBuilder(

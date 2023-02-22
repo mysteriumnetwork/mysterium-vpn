@@ -26,58 +26,63 @@ class HomeDesktopLeftPanel extends ConsumerWidget {
       color: Palette.black,
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Observer(builder: (context) {
-        final showAllLocations = locationsStore.showAllLocations;
+      child: Observer(
+        builder: (context) {
+          final showAllLocations = locationsStore.showAllLocations;
 
-        return ListView(
-          children: [
-            const HomeDesktopAppBar(),
-            SearchField(locationsStore).padding(bottom: 20),
-            if (!showAllLocations) ...[
-              EasyText(
-                LocaleKeys.recentLocations.tr(),
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ).padding(bottom: 20),
-              RecentLocationsList(
-                themeStore: themeStore,
-                locationsStore: locationsStore,
-                vpnStore: vpnStore,
-              ).padding(bottom: 20),
-            ],
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+          return ListView(
+            children: [
+              const HomeDesktopAppBar(),
+              SearchField(locationsStore).padding(bottom: 20),
+              if (!showAllLocations) ...[
                 EasyText(
-                  showAllLocations ? LocaleKeys.all_locations.tr() : LocaleKeys.top_locations.tr(),
+                  LocaleKeys.recentLocations.tr(),
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
-                ),
-                TextButton(
-                  onPressed: () => locationsStore.toggleShowAllLocations(),
-                  child: EasyText(
-                    locationsStore.showAllLocations
-                        ? LocaleKeys.browseTop.tr()
-                        : LocaleKeys.browseAll.tr(),
-                    color: Palette.pink,
-                  ),
-                ),
+                ).padding(bottom: 20),
+                RecentLocationsList(
+                  themeStore: themeStore,
+                  locationsStore: locationsStore,
+                  vpnStore: vpnStore,
+                ).padding(bottom: 20),
               ],
-            ).padding(bottom: 20),
-            showAllLocations
-                ? AllLocationsList(
-                    themeStore: themeStore,
-                    locationsStore: locationsStore,
-                    vpnStore: vpnStore,
-                  )
-                : TopLocationsList(
-                    locationsStore: locationsStore,
-                    vpnStore: vpnStore,
-                    themeStore: themeStore,
-                  )
-          ],
-        );
-      }),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  EasyText(
+                    showAllLocations
+                        ? LocaleKeys.all_locations.tr()
+                        : LocaleKeys.top_locations.tr(),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  TextButton(
+                    onPressed: locationsStore.toggleShowAllLocations,
+                    child: EasyText(
+                      locationsStore.showAllLocations
+                          ? LocaleKeys.browseTop.tr()
+                          : LocaleKeys.browseAll.tr(),
+                      color: Palette.pink,
+                    ),
+                  ),
+                ],
+              ).padding(bottom: 20),
+              if (showAllLocations)
+                AllLocationsList(
+                  themeStore: themeStore,
+                  locationsStore: locationsStore,
+                  vpnStore: vpnStore,
+                )
+              else
+                TopLocationsList(
+                  locationsStore: locationsStore,
+                  vpnStore: vpnStore,
+                  themeStore: themeStore,
+                )
+            ],
+          );
+        },
+      ),
     );
   }
 }

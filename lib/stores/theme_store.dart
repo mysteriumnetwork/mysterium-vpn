@@ -17,11 +17,11 @@ class ThemeStore = _ThemeStore with _$ThemeStore;
 
 abstract class _ThemeStore with Store {
   _ThemeStore() {
-    themeMode = SharedPreferenceService.getThemeType() ?? ThemeMode.system;
+    themeMode = _sharedPrefs.getThemeType() ?? ThemeMode.system;
   }
-
-  final darkTheme = MysteriumVPNTheme.themeData(DarkPalette());
-  final lightTheme = MysteriumVPNTheme.themeData(LightPalette());
+  final _sharedPrefs = SharedPreferenceService();
+  final darkTheme = themeData(DarkPalette());
+  final lightTheme = themeData(LightPalette());
 
   @observable
   ThemeMode themeMode = ThemeMode.system;
@@ -33,7 +33,7 @@ abstract class _ThemeStore with Store {
 
   @action
   Future<void> setThemeType(ThemeMode mode) async {
-    await SharedPreferenceService.setThemeType(mode);
+    await _sharedPrefs.setThemeType(mode);
     themeMode = mode;
   }
 }

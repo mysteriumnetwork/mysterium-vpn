@@ -13,7 +13,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class LocationsSliderMobileView extends HookConsumerWidget {
-  const LocationsSliderMobileView({required this.sc, Key? key}) : super(key: key);
+  const LocationsSliderMobileView({required this.sc, super.key});
   final ScrollController sc;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,9 +21,10 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     final vpnStore = ref.watch(vpnStorePOD);
     final themeStore = ref.watch(themeStorePOD);
     return MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: Observer(builder: (context) {
+      context: context,
+      removeTop: true,
+      child: Observer(
+        builder: (context) {
           final showAllLocations = locationsStore.showAllLocations;
           return ListView(
             controller: sc,
@@ -33,8 +34,9 @@ class LocationsSliderMobileView extends HookConsumerWidget {
                   width: 30,
                   height: 5,
                   decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: const BorderRadius.all(Radius.circular(12.0))),
+                    color: Colors.grey[300],
+                    borderRadius: const BorderRadius.all(Radius.circular(12)),
+                  ),
                 ),
               ).padding(bottom: 10, top: 10),
               SearchField(locationsStore).padding(bottom: 20),
@@ -61,7 +63,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
                     fontWeight: FontWeight.w700,
                   ),
                   TextButton(
-                    onPressed: () => locationsStore.toggleShowAllLocations(),
+                    onPressed: locationsStore.toggleShowAllLocations,
                     child: EasyText(
                       locationsStore.showAllLocations
                           ? LocaleKeys.browseTop.tr()
@@ -71,19 +73,22 @@ class LocationsSliderMobileView extends HookConsumerWidget {
                   ),
                 ],
               ).padding(bottom: 20),
-              showAllLocations
-                  ? AllLocationsList(
-                      themeStore: themeStore,
-                      locationsStore: locationsStore,
-                      vpnStore: vpnStore,
-                    )
-                  : TopLocationsList(
-                      locationsStore: locationsStore,
-                      vpnStore: vpnStore,
-                      themeStore: themeStore,
-                    )
+              if (showAllLocations)
+                AllLocationsList(
+                  themeStore: themeStore,
+                  locationsStore: locationsStore,
+                  vpnStore: vpnStore,
+                )
+              else
+                TopLocationsList(
+                  locationsStore: locationsStore,
+                  vpnStore: vpnStore,
+                  themeStore: themeStore,
+                )
             ],
           ).paddingDirectional(horizontal: 20);
-        }));
+        },
+      ),
+    );
   }
 }

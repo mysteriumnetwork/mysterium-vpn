@@ -28,82 +28,86 @@ class SettingsMobileView extends HookConsumerWidget {
     final authStore = ref.watch(authStorePOD);
     return BaseLayout(
       headerTitle: LocaleKeys.settings.tr(),
-      child: Observer(builder: (context) {
-        bool isDarkTheme = themeStore.isDarkMode;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            HeaderTitle(text: LocaleKeys.connection.tr()),
-            KillSwitchItem(
-              asset: isDarkTheme ? Assets.killSwitchDark : Assets.killSwitchLight,
-              title: LocaleKeys.killSwitch.tr(),
-              subtitle: LocaleKeys.shortDesc.tr(),
-              store: vpnStore,
-            ),
-            SettingItem(
+      child: Observer(
+        builder: (context) {
+          final isDarkTheme = themeStore.isDarkMode;
+          return Column(
+            children: [
+              HeaderTitle(text: LocaleKeys.connection.tr()),
+              KillSwitchItem(
+                asset: isDarkTheme ? Assets.killSwitchDark : Assets.killSwitchLight,
+                title: LocaleKeys.killSwitch.tr(),
+                subtitle: LocaleKeys.shortDesc.tr(),
+                store: vpnStore,
+              ),
+              SettingItem(
                 asset: isDarkTheme ? Assets.protocolDark : Assets.protocolLight,
                 title: LocaleKeys.protocol.tr(),
                 subtitle: LocaleKeys.shortDesc.tr(),
                 actionWidget: ProtocolPicker(
                   store: vpnStore,
-                )),
-            HeaderTitle(text: LocaleKeys.application.tr()),
-            SettingItem(
+                ),
+              ),
+              HeaderTitle(text: LocaleKeys.application.tr()),
+              SettingItem(
                 asset: isDarkTheme ? Assets.languageDark : Assets.languageLight,
                 title: LocaleKeys.appLang.tr(),
                 subtitle: LocaleKeys.shortDesc.tr(),
                 actionWidget: LanguagePicker(
                   store: localeStore,
-                )),
-            SettingItem(
+                ),
+              ),
+              SettingItem(
                 asset: isDarkTheme ? Assets.themeDark : Assets.themeLight,
                 title: LocaleKeys.theme.tr(),
                 subtitle: LocaleKeys.theme.tr(),
                 actionWidget: ThemePicker(
                   store: themeStore,
-                )),
-            HeaderTitle(text: LocaleKeys.account.tr()),
-            SettingItem(
-              asset: isDarkTheme ? Assets.billingDark : Assets.billingLight,
-              title: LocaleKeys.myBillingPackage.tr(),
-              subtitle: LocaleKeys.shortDesc.tr(),
-              actionWidget: EasyButton(
-                width: 160,
-                useSystemColor: false,
-                color: Palette.black,
-                text: LocaleKeys.goToBillingPage.tr(),
-                onPressed: () {},
+                ),
               ),
-            ),
-            SettingItem(
-              asset: isDarkTheme ? Assets.accountNameDark : Assets.accountNameLight,
-              title: authStore.email,
-              subtitle: LocaleKeys.shortDesc.tr(),
-              actionWidget: EasyButton(
-                useSystemColor: false,
-                color: Palette.black,
-                text: LocaleKeys.logout,
-                width: 100,
-                onPressed: authStore.logout,
+              HeaderTitle(text: LocaleKeys.account.tr()),
+              SettingItem(
+                asset: isDarkTheme ? Assets.billingDark : Assets.billingLight,
+                title: LocaleKeys.myBillingPackage.tr(),
+                subtitle: LocaleKeys.shortDesc.tr(),
+                actionWidget: EasyButton(
+                  width: 160,
+                  useSystemColor: false,
+                  color: Palette.black,
+                  text: LocaleKeys.goToBillingPage.tr(),
+                  onPressed: () {},
+                ),
               ),
-            ),
-            SettingItem(
-              asset: isDarkTheme ? Assets.deleteAccountDark : Assets.deleteAccountLight,
-              title: LocaleKeys.cancelMyAccount.tr(),
-              subtitle: LocaleKeys.shortDesc.tr(),
-              actionWidget: EasyButton(
-                useSystemColor: false,
-                width: 160,
-                color: isDarkTheme ? Palette.pink : Palette.lightBlue,
-                text: LocaleKeys.deleteAccount.tr(),
-                onPressed: () {
-                  shownDeleteAccountDialog(context, authStore);
-                },
+              SettingItem(
+                asset: isDarkTheme ? Assets.accountNameDark : Assets.accountNameLight,
+                title: authStore.email,
+                subtitle: LocaleKeys.shortDesc.tr(),
+                actionWidget: EasyButton(
+                  useSystemColor: false,
+                  color: Palette.black,
+                  text: LocaleKeys.logout,
+                  width: 100,
+                  onPressed: authStore.logout,
+                ),
               ),
-            ),
-          ],
-        ).scrollable();
-      }),
+              SettingItem(
+                asset: isDarkTheme ? Assets.deleteAccountDark : Assets.deleteAccountLight,
+                title: LocaleKeys.cancelMyAccount.tr(),
+                subtitle: LocaleKeys.shortDesc.tr(),
+                actionWidget: EasyButton(
+                  useSystemColor: false,
+                  width: 160,
+                  color: isDarkTheme ? Palette.pink : Palette.lightBlue,
+                  text: LocaleKeys.deleteAccount.tr(),
+                  onPressed: () {
+                    shownDeleteAccountDialog(context, authStore);
+                  },
+                ),
+              ),
+            ],
+          ).scrollable();
+        },
+      ),
     );
   }
 }

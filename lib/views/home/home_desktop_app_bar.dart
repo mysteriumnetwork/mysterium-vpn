@@ -21,8 +21,8 @@ class HomeDesktopAppBar extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const AppLogo(),
-        Observer(builder: (context) {
-          return Row(
+        Observer(
+          builder: (context) => Row(
             children: [
               SvgIconButton(
                 onPressed: () {
@@ -37,8 +37,8 @@ class HomeDesktopAppBar extends ConsumerWidget {
                 asset: themeStore.isDarkMode ? Assets.settingsLightBlack : Assets.settings,
               )
             ],
-          );
-        }),
+          ),
+        ),
       ],
     ).padding(vertical: 20);
   }

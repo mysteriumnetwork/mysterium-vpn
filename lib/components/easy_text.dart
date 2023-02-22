@@ -7,7 +7,7 @@ import 'package:mysterium_vpn/common/styles/palette.dart';
 class EasyText extends StatelessWidget {
   const EasyText(
     this.text, {
-    Key? key,
+    super.key,
     this.fontSize,
     this.maxLines = 1,
     this.letterSpacing,
@@ -18,7 +18,7 @@ class EasyText extends StatelessWidget {
     this.color,
     this.cursor,
     this.colorDecoration,
-  }) : super(key: key);
+  });
 
   final String text;
   final double? fontSize;
@@ -32,23 +32,21 @@ class EasyText extends StatelessWidget {
   final Color? color;
   final Color? colorDecoration;
   @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: cursor ?? MouseCursor.defer,
-      child: AutoSizeText(
-        text,
-        textAlign: textAlign,
-        overflow: overflow,
-        maxLines: maxLines,
-        style: TextStyle(
-          decoration: textDecoration,
-          decorationColor: colorDecoration,
-          color: color ?? Theme.of(context).textTheme.bodyLarge?.color ?? Palette.black,
-          fontSize: fontSize ?? 12,
-          letterSpacing: letterSpacing,
-          fontWeight: fontWeight,
+  Widget build(BuildContext context) => MouseRegion(
+        cursor: cursor ?? MouseCursor.defer,
+        child: AutoSizeText(
+          text,
+          textAlign: textAlign,
+          overflow: overflow,
+          maxLines: maxLines,
+          style: TextStyle(
+            decoration: textDecoration,
+            decorationColor: colorDecoration,
+            color: color ?? Theme.of(context).textTheme.bodyLarge?.color ?? Palette.black,
+            fontSize: fontSize ?? 12,
+            letterSpacing: letterSpacing,
+            fontWeight: fontWeight,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

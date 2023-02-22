@@ -1,16 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import './string.dart';
+import 'package:mysterium_vpn/common/extensions/string.dart';
 
 extension StorageKeysEx on Enum {
   String get value => describeEnum(this);
 
   String get toDashCase {
-    var sb = StringBuffer();
+    final sb = StringBuffer();
     var first = true;
-    for (var rune in value.runes) {
-      var char = String.fromCharCode(rune);
+    for (final rune in value.runes) {
+      final char = String.fromCharCode(rune);
       if (char.isUpperCase() && !first) {
         if (char != '-') {
           sb.write('-');
@@ -24,9 +24,7 @@ extension StorageKeysEx on Enum {
     return sb.toString();
   }
 
-  String get toRoute {
-    return "/$toDashCase";
-  }
+  String get toRoute => '/$toDashCase';
 }
 
 extension LanguageName on Locale {

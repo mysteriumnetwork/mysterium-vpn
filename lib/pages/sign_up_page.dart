@@ -8,15 +8,13 @@ class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Beamer(
-      routerDelegate: BeamerDelegate(
-        initialPath: Routes.signUp.toRoute,
-        initializeFromParent: false,
-        updateFromParent: false,
-        updateParent: false,
-        locationBuilder: (routeInformation, _) => SignUpBeamerLocations(routeInformation),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Beamer(
+        routerDelegate: BeamerDelegate(
+          initialPath: Routes.signUp.toRoute,
+          initializeFromParent: false,
+          updateFromParent: false,
+          updateParent: false,
+          locationBuilder: (routeInformation, _) => SignUpBeamerLocations(routeInformation),
+        ),
+      );
 }

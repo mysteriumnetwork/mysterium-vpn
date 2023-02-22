@@ -9,18 +9,20 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 // Project imports:
 
 class AppLogo extends ConsumerWidget {
-  const AppLogo({Key? key}) : super(key: key);
+  const AppLogo({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.read(themeStorePOD);
-    return Observer(builder: (context) {
-      final asset = themeStore.isDarkMode || checkMediaWidth(context, 700)
-          ? Assets.logoWhiteSvg
-          : Assets.logoBlackSvg;
-      return SvgIcon(
-        asset: asset,
-      );
-    });
+    return Observer(
+      builder: (context) {
+        final asset = themeStore.isDarkMode || checkMediaWidth(context, 750)
+            ? Assets.logoWhiteSvg
+            : Assets.logoBlackSvg;
+        return SvgIcon(
+          asset: asset,
+        );
+      },
+    );
   }
 }

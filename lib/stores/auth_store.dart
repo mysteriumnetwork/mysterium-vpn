@@ -1,5 +1,7 @@
 // Flutter imports:
 // Package imports:
+import 'dart:async';
+
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 
