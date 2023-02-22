@@ -16,7 +16,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class LoginMobileView extends HookConsumerWidget {
-  const LoginMobileView({Key? key}) : super(key: key);
+  const LoginMobileView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -51,9 +51,7 @@ class LoginMobileView extends HookConsumerWidget {
                         width: getMediaWidth(context) * 0.8,
                         height: 60,
                         text: LocaleKeys.signIn.tr(),
-                        onPressed: () {
-                          authStore.login();
-                        },
+                        onPressed: authStore.login,
                       ).padding(bottom: 20),
                       EasyButton(
                         width: getMediaWidth(context) * 0.8,

@@ -11,24 +11,22 @@ class HomeMobileAppBar extends StatelessWidget {
   const HomeMobileAppBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SvgIconButton(
-          onPressed: () {
-            context.beamToNamed(Routes.reportIssue.toRoute);
-          },
-          asset: Assets.report,
-        ),
-        const AppLogo(),
-        SvgIconButton(
-          onPressed: () {
-            context.beamToNamed(Routes.settings.toRoute);
-          },
-          asset: Assets.settings,
-        )
-      ],
-    ).padding(horizontal: 20, top: 10);
-  }
+  Widget build(BuildContext context) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SvgIconButton(
+            onPressed: () {
+              context.beamToNamed(Routes.reportIssue.toRoute);
+            },
+            asset: Assets.report,
+          ),
+          const AppLogo(),
+          SvgIconButton(
+            onPressed: () {
+              context.beamToNamed(Routes.settings.toRoute);
+            },
+            asset: Assets.settings,
+          )
+        ],
+      ).padding(horizontal: 20, top: 10);
 }

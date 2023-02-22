@@ -6,40 +6,42 @@ import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ThemePicker extends StatelessWidget {
-  const ThemePicker({Key? key, required this.store}) : super(key: key);
+  const ThemePicker({
+    required this.store,
+    super.key,
+  });
   final ThemeStore store;
   @override
-  Widget build(BuildContext context) {
-    return Observer(builder: (context) {
-      return DropdownButton<ThemeMode>(
-        isExpanded: true,
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        value: store.themeMode,
-        icon: const Icon(Icons.arrow_drop_down),
-        underline: const SizedBox.shrink(),
-        onChanged: (ThemeMode? newThemeMode) {
-          if (newThemeMode == null) {
+  Widget build(BuildContext context) => Observer(
+        builder: (context) => DropdownButton<ThemeMode>(
+          isExpanded: true,
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          value: store.themeMode,
+          icon: const Icon(Icons.arrow_drop_down),
+          underline: const SizedBox.shrink(),
+          onChanged: (ThemeMode? newThemeMode) {
+            if (newThemeMode == null) {
+              return;
+            }
+            store.setThemeType(newThemeMode);
             return;
-          }
-          store.setThemeType(newThemeMode);
-          return;
-        },
-        items: ThemeMode.values
-            .map<DropdownMenuItem<ThemeMode>>(
-              (themeMode) => DropdownMenuItem<ThemeMode>(
+          },
+          items: ThemeMode.values
+              .map<DropdownMenuItem<ThemeMode>>(
+                (themeMode) => DropdownMenuItem<ThemeMode>(
                   value: themeMode,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: EasyText(themeMode.name.tr()),
-                  )),
-            )
-            .toList(),
-      ).padding(horizontal: 10).decorated(
-            color: Theme.of(context).primaryColor,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10),
+                  ),
+                ),
+              )
+              .toList(),
+        ).padding(horizontal: 10).decorated(
+              color: Theme.of(context).primaryColor,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(10),
+              ),
             ),
-          );
-    });
-  }
+      );
 }

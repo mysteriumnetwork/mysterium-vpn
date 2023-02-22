@@ -9,22 +9,23 @@ import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class PageHeader extends HookConsumerWidget {
-  const PageHeader({super.key, required this.headerTitle});
+  const PageHeader({
+    required this.headerTitle,
+    super.key,
+  });
   final String headerTitle;
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SvgIconButton(
-          onPressed: () {
-            context.beamBack();
-          },
-          asset: Assets.navigateBack,
-        ),
-        HeaderTitle(text: headerTitle, color: Palette.white),
-        const AppVersion(),
-      ],
-    ).padding(horizontal: 20);
-  }
+  Widget build(BuildContext context, WidgetRef ref) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SvgIconButton(
+            onPressed: () {
+              context.beamBack();
+            },
+            asset: Assets.navigateBack,
+          ),
+          HeaderTitle(text: headerTitle, color: Palette.white),
+          const AppVersion(),
+        ],
+      ).padding(horizontal: 20);
 }

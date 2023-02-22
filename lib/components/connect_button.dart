@@ -4,12 +4,13 @@ import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 
 class ConnectButton extends StatelessWidget {
-  const ConnectButton(
-      {required this.isConnected,
-      required this.callback,
-      required this.height,
-      required this.width,
-      super.key});
+  const ConnectButton({
+    required this.isConnected,
+    required this.callback,
+    required this.height,
+    required this.width,
+    super.key,
+  });
 
   final bool isConnected;
   final VoidCallback callback;

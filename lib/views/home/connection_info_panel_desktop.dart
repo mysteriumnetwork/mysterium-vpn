@@ -12,79 +12,77 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ConnectionInfoPanelDesktop extends HookConsumerWidget {
-  const ConnectionInfoPanelDesktop({Key? key}) : super(key: key);
+  const ConnectionInfoPanelDesktop({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
-    return Observer(builder: (context) {
-      final isConnected = vpnStore.isConnected;
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _InfoItem(
-            label: LocaleKeys.duration.tr(),
-            text: vpnStore.duration?.toHoursMinutesSeconds() ?? '--',
-            icon: isConnected ? Assets.durationActive : Assets.duration,
-            isConnected: isConnected,
-          ).expanded(),
-          _InfoItem(
-            label: LocaleKeys.download,
-            text: vpnStore.downloadSpeed?.toStringAsFixed(2) ?? '--',
-            icon: isConnected ? Assets.downloadActive : Assets.download,
-            isConnected: isConnected,
-          ).expanded(),
-          _InfoItem(
-            label: LocaleKeys.upload,
-            text: vpnStore.uploadSpeed?.toStringAsFixed(2) ?? '--',
-            icon: isConnected ? Assets.uploadActive : Assets.upload,
-            isConnected: isConnected,
-          ).expanded(),
-        ],
-      ).card(
-        color: Palette.black,
-        elevation: 0,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-      );
-    });
+    return Observer(
+      builder: (context) {
+        final isConnected = vpnStore.isConnected;
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _InfoItem(
+              label: LocaleKeys.duration.tr(),
+              text: vpnStore.duration?.toHoursMinutesSeconds() ?? '--',
+              icon: isConnected ? Assets.durationActive : Assets.duration,
+              isConnected: isConnected,
+            ).expanded(),
+            _InfoItem(
+              label: LocaleKeys.download,
+              text: vpnStore.downloadSpeed?.toStringAsFixed(2) ?? '--',
+              icon: isConnected ? Assets.downloadActive : Assets.download,
+              isConnected: isConnected,
+            ).expanded(),
+            _InfoItem(
+              label: LocaleKeys.upload,
+              text: vpnStore.uploadSpeed?.toStringAsFixed(2) ?? '--',
+              icon: isConnected ? Assets.uploadActive : Assets.upload,
+              isConnected: isConnected,
+            ).expanded(),
+          ],
+        ).card(
+          color: Palette.black,
+          elevation: 0,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+        );
+      },
+    );
   }
 }
 
 class _InfoItem extends StatelessWidget {
-  const _InfoItem(
-      {required this.label,
-      required this.isConnected,
-      required this.icon,
-      required this.text,
-      Key? key})
-      : super(key: key);
+  const _InfoItem({
+    required this.label,
+    required this.isConnected,
+    required this.icon,
+    required this.text,
+  });
   final String label;
   final String text;
   final String icon;
   final bool isConnected;
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SvgIcon(
-          asset: icon,
-        ).padding(bottom: 20),
-        EasyText(
-          label,
-          fontSize: 10,
-          fontWeight: FontWeight.w400,
-          color: isConnected ? Palette.white : Palette.lightBlack,
-        ).padding(bottom: 16),
-        EasyText(
-          text,
-          fontSize: 16,
-          fontWeight: FontWeight.w900,
-          color: isConnected ? Palette.white : Palette.lightBlack,
-        )
-      ],
-    ).padding(vertical: 20);
-  }
+  Widget build(BuildContext context) => Column(
+        children: [
+          SvgIcon(
+            asset: icon,
+          ).padding(bottom: 20),
+          EasyText(
+            label,
+            fontSize: 10,
+            fontWeight: FontWeight.w400,
+            color: isConnected ? Palette.white : Palette.lightBlack,
+          ).padding(bottom: 16),
+          EasyText(
+            text,
+            fontSize: 16,
+            fontWeight: FontWeight.w900,
+            color: isConnected ? Palette.white : Palette.lightBlack,
+          )
+        ],
+      ).padding(vertical: 20);
 }

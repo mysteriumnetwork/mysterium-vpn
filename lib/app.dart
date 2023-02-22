@@ -7,11 +7,13 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
+/// My app
 class MyApp extends HookConsumerWidget {
+  ///asd
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(final BuildContext context, WidgetRef ref) {
     final themeStore = ref.read(themeStorePOD);
     final routeInformationParser = ref.read(routeInformationParserPOD);
     final authStore = ref.read(authStorePOD);
@@ -19,13 +21,11 @@ class MyApp extends HookConsumerWidget {
     final localStore = ref.read(localeStorePOD);
 
     return ReactionBuilder(
-      builder: (context) {
-        return reaction((_) => authStore.authStatus, (result) {
-          routeDelegate.update();
-        });
-      },
-      child: Observer(builder: (context) {
-        return RetakeFocusOnTap(
+      builder: (context) => reaction((_) => authStore.authStatus, (result) {
+        routeDelegate.update();
+      }),
+      child: Observer(
+        builder: (context) => RetakeFocusOnTap(
           child: MaterialApp.router(
             title: 'Mysterium VPN',
             key: UniqueKey(),
@@ -39,8 +39,8 @@ class MyApp extends HookConsumerWidget {
             locale: localStore.currentLocale,
             backButtonDispatcher: BeamerBackButtonDispatcher(delegate: routeDelegate),
           ),
-        );
-      }),
+        ),
+      ),
     );
   }
 }

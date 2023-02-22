@@ -8,13 +8,11 @@ class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ColoredScaffold(
-      body: ScreenTypeLayoutBuilder(
-        mobile: (BuildContext context) => const SettingsMobileView(),
-        tablet: (BuildContext context) => const SettingsDesktopView(),
-        desktop: (BuildContext context) => const SettingsDesktopView(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ColoredScaffold(
+        body: ScreenTypeLayoutBuilder(
+          mobile: (BuildContext context) => const SettingsMobileView(),
+          tablet: (BuildContext context) => const SettingsDesktopView(),
+          desktop: (BuildContext context) => const SettingsDesktopView(),
+        ),
+      );
 }

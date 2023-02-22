@@ -8,9 +8,12 @@ import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 
 class AllLocationsList extends StatelessWidget {
-  const AllLocationsList(
-      {Key? key, required this.themeStore, required this.vpnStore, required this.locationsStore})
-      : super(key: key);
+  const AllLocationsList({
+    required this.themeStore,
+    required this.vpnStore,
+    required this.locationsStore,
+    super.key,
+  });
   final LocationsStore locationsStore;
   final VpnStore vpnStore;
   final ThemeStore themeStore;
@@ -19,14 +22,13 @@ class AllLocationsList extends StatelessWidget {
         builder: (_) {
           if (!locationsStore.hasAllLocationsResults) {
             return ListView.builder(
-                controller: ScrollController(),
-                shrinkWrap: true,
-                itemCount: 10,
-                itemBuilder: (_, int index) {
-                  return LocationPlaceholder(
-                    color: Theme.of(context).colorScheme.secondary,
-                  );
-                });
+              controller: ScrollController(),
+              shrinkWrap: true,
+              itemCount: 10,
+              itemBuilder: (_, int index) => LocationPlaceholder(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            );
           }
 
           if (locationsStore.allLocations.isEmpty) {
@@ -37,17 +39,18 @@ class AllLocationsList extends StatelessWidget {
           }
 
           return ListView.builder(
-              controller: ScrollController(),
-              shrinkWrap: true,
-              itemCount: locationsStore.allLocations.length,
-              itemBuilder: (_, int index) {
-                final location = locationsStore.allLocations[index];
+            controller: ScrollController(),
+            shrinkWrap: true,
+            itemCount: locationsStore.allLocations.length,
+            itemBuilder: (_, int index) {
+              final location = locationsStore.allLocations[index];
 
-                return LocationItem(
-                  location: location,
-                  onTap: () => vpnStore.connect(location.name),
-                );
-              });
+              return LocationItem(
+                location: location,
+                onTap: () async => vpnStore.connect(location.name),
+              );
+            },
+          );
         },
       );
 }

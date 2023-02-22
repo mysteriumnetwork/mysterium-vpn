@@ -5,9 +5,7 @@ class ReportIssueDesktopView extends HookConsumerWidget {
   const ReportIssueDesktopView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return const Center(
-      child: Text('Report issue Desktop View'),
-    );
-  }
+  Widget build(BuildContext context, WidgetRef ref) => const Center(
+        child: Text('Report issue Desktop View'),
+      );
 }

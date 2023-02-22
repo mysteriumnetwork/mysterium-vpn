@@ -10,37 +10,35 @@ class LoginHeadlines extends HookConsumerWidget {
   const LoginHeadlines({super.key, this.alignment = Alignment.centerLeft});
   final Alignment alignment;
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Center(
-      child: ListView(
-        shrinkWrap: true,
-        children: [
-          HeadlineText(
-            text: LocaleKeys.anonymous.tr(),
-            color: Palette.purple,
-            alignment: alignment,
-          ),
-          HeadlineText(
-            text: LocaleKeys.affordable.tr(),
-            alignment: alignment,
-          ),
-          HeadlineText(
-            text: LocaleKeys.fast.tr(),
-            alignment: alignment,
-          ),
-          HeadlineText(
-            text: LocaleKeys.secure.tr(),
-            alignment: alignment,
-          ),
-          HeadlineText(
-            text: LocaleKeys.loginQuote.tr(),
-            alignment: alignment,
-            maxLines: 2,
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-          ).padding(vertical: 20),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context, WidgetRef ref) => Center(
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            HeadlineText(
+              text: LocaleKeys.anonymous.tr(),
+              color: Palette.purple,
+              alignment: alignment,
+            ),
+            HeadlineText(
+              text: LocaleKeys.affordable.tr(),
+              alignment: alignment,
+            ),
+            HeadlineText(
+              text: LocaleKeys.fast.tr(),
+              alignment: alignment,
+            ),
+            HeadlineText(
+              text: LocaleKeys.secure.tr(),
+              alignment: alignment,
+            ),
+            HeadlineText(
+              text: LocaleKeys.loginQuote.tr(),
+              alignment: alignment,
+              maxLines: 2,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ).padding(vertical: 20),
+          ],
+        ),
+      );
 }

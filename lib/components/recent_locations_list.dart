@@ -9,9 +9,12 @@ import 'package:mysterium_vpn/stores/vpn_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class RecentLocationsList extends StatelessWidget {
-  const RecentLocationsList(
-      {Key? key, required this.themeStore, required this.vpnStore, required this.locationsStore})
-      : super(key: key);
+  const RecentLocationsList({
+    required this.themeStore,
+    required this.vpnStore,
+    required this.locationsStore,
+    super.key,
+  });
   final LocationsStore locationsStore;
   final VpnStore vpnStore;
   final ThemeStore themeStore;
@@ -20,13 +23,14 @@ class RecentLocationsList extends StatelessWidget {
         builder: (_) {
           if (!locationsStore.hasRecentLocationsResults) {
             return ListView.builder(
-                shrinkWrap: true,
-                controller: ScrollController(),
-                scrollDirection: Axis.horizontal,
-                itemCount: 7,
-                itemBuilder: (_, __) => RecentLocationPlaceholder(
-                      color: Theme.of(context).colorScheme.secondary,
-                    )).height(100);
+              shrinkWrap: true,
+              controller: ScrollController(),
+              scrollDirection: Axis.horizontal,
+              itemCount: 7,
+              itemBuilder: (_, __) => RecentLocationPlaceholder(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ).height(100);
           }
           if (locationsStore.recentLocations.isEmpty) {
             return EasyText(
@@ -36,18 +40,19 @@ class RecentLocationsList extends StatelessWidget {
           }
 
           return ListView.builder(
-              shrinkWrap: true,
-              controller: ScrollController(),
-              scrollDirection: Axis.horizontal,
-              itemCount: locationsStore.recentLocations.length,
-              itemBuilder: (_, int index) {
-                final location = locationsStore.recentLocations[index];
+            shrinkWrap: true,
+            controller: ScrollController(),
+            scrollDirection: Axis.horizontal,
+            itemCount: locationsStore.recentLocations.length,
+            itemBuilder: (_, int index) {
+              final location = locationsStore.recentLocations[index];
 
-                return RecentLocationItem(
-                  location: location,
-                  onTap: () => vpnStore.connect(location.name),
-                );
-              }).height(100);
+              return RecentLocationItem(
+                location: location,
+                onTap: () async => vpnStore.connect(location.name),
+              );
+            },
+          ).height(100);
         },
       );
 }

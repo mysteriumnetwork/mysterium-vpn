@@ -14,7 +14,7 @@ class ReportIssueForm extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final reportIssueForm = useMemoized(() => AppForms.reportIssue());
+    final reportIssueForm = useMemoized(reportIssue);
 
     return ReactiveForm(
       formGroup: reportIssueForm,
@@ -38,22 +38,24 @@ class ReportIssueForm extends HookWidget {
             decoration: InputDecoration(
               hintText: LocaleKeys.typeIssueHere.tr(),
               enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Palette.lightBlack),
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
+                borderSide: BorderSide(color: Palette.lightBlack),
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
               focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Palette.lightBlack),
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
+                borderSide: BorderSide(color: Palette.lightBlack),
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
             ),
             minLines: 5,
             maxLines: 5,
           ).padding(bottom: 20),
-          ReactiveFormConsumer(builder: (context, form, child) {
-            return EasyButton(
+          ReactiveFormConsumer(
+            builder: (context, form, child) => EasyButton(
               useSystemColor: false,
               text: LocaleKeys.sendToUs.tr(),
               onPressed: form.valid ? () {} : () => form.markAllAsTouched(),
-            );
-          }),
+            ),
+          ),
         ],
       ).scrollable(),
     );

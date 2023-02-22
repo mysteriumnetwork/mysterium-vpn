@@ -16,38 +16,40 @@ class HomeDesktopRightPanel extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
-    return Observer(builder: (context) {
-      bool isConnected = vpnStore.isConnected;
-      return Stack(
-        children: [
-          Lottie.asset(Assets.backgroundElements),
-          Column(
-            children: [
-              const MobileConnectionStatusBar(),
-              LayoutBuilder(builder: (context, con) {
-                return Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Lottie.asset(
-                      isConnected ? Assets.circlesPurple : Assets.circlesGrey,
-                      alignment: Alignment.center,
-                    ),
-                    ConnectButton(
-                      callback: () {
-                        isConnected ? vpnStore.disconnect() : vpnStore.connect(null);
-                      },
-                      isConnected: isConnected,
-                      height: con.maxHeight,
-                      width: con.maxHeight,
-                    )
-                  ],
-                ).padding(vertical: 40);
-              }).expanded(),
-              const ConnectionInfoPanelDesktop().height(148),
-            ],
-          ).padding(horizontal: 40, vertical: 20),
-        ],
-      ).backgroundColor(Palette.darkBlue);
-    });
+    return Observer(
+      builder: (context) {
+        final isConnected = vpnStore.isConnected;
+        return Stack(
+          children: [
+            Lottie.asset(Assets.backgroundElements),
+            Column(
+              children: [
+                const MobileConnectionStatusBar(),
+                LayoutBuilder(
+                  builder: (context, con) => Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Lottie.asset(
+                        isConnected ? Assets.circlesPurple : Assets.circlesGrey,
+                        alignment: Alignment.center,
+                      ),
+                      ConnectButton(
+                        callback: () {
+                          isConnected ? vpnStore.disconnect() : vpnStore.connect(null);
+                        },
+                        isConnected: isConnected,
+                        height: con.maxHeight,
+                        width: con.maxHeight,
+                      )
+                    ],
+                  ).padding(vertical: 40),
+                ).expanded(),
+                const ConnectionInfoPanelDesktop().height(148),
+              ],
+            ).padding(horizontal: 40, vertical: 20),
+          ],
+        ).backgroundColor(Palette.darkBlue);
+      },
+    );
   }
 }

@@ -13,8 +13,8 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-void shownDeleteAccountDialog(BuildContext context, AuthStore store) {
-  showBarModalBottomSheet(
+Future<void> shownDeleteAccountDialog(BuildContext context, AuthStore store) async {
+  await showBarModalBottomSheet(
     clipBehavior: Clip.none,
     expand: false,
     topControl: const SizedBox.shrink(),
@@ -45,7 +45,6 @@ class _DeleteAccountDialog extends HookWidget {
           ),
         ),
         Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             HeaderTitle(
@@ -63,11 +62,13 @@ class _DeleteAccountDialog extends HookWidget {
                 contentPadding: const EdgeInsets.only(left: 20),
                 fillColor: Theme.of(context).colorScheme.surface,
                 enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Palette.lightBlue),
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                  borderSide: BorderSide(color: Palette.lightBlue),
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
                 focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Palette.lightBlue),
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                  borderSide: BorderSide(color: Palette.lightBlue),
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
               ),
               onChanged: (val) => confirmationMessage.value = val,
               autocorrect: false,
@@ -78,9 +79,7 @@ class _DeleteAccountDialog extends HookWidget {
               color: Palette.pink,
               text: LocaleKeys.confirm.tr(),
               onPressed: confirmationMessage.value.toLowerCase() == 'delete'
-                  ? () {
-                      Beamer.of(context).popRoute();
-                    }
+                  ? () async => Beamer.of(context).popRoute()
                   : null,
             ),
           ],

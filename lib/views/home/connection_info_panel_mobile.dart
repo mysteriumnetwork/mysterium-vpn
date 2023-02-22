@@ -12,94 +12,92 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ConnectionInfoPanelMobile extends HookConsumerWidget {
-  const ConnectionInfoPanelMobile({Key? key}) : super(key: key);
+  const ConnectionInfoPanelMobile({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
-    return Observer(builder: (context) {
-      final isConnected = vpnStore.isConnected;
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _InfoItem(
-            label: LocaleKeys.duration.tr(),
-            text: vpnStore.duration?.toHoursMinutesSeconds() ?? '--',
-            icon: isConnected ? Assets.durationActive : Assets.duration,
-            isConnected: isConnected,
-          ).expanded(),
-          _InfoItem(
-            label: LocaleKeys.download,
-            text: vpnStore.downloadSpeed?.toStringAsFixed(2) ?? '--',
-            icon: isConnected ? Assets.downloadActive : Assets.download,
-            isConnected: isConnected,
-          ).expanded(),
-          _InfoItem(
-            label: LocaleKeys.upload,
-            text: vpnStore.uploadSpeed?.toStringAsFixed(2) ?? '--',
-            icon: isConnected ? Assets.uploadActive : Assets.upload,
-            isConnected: isConnected,
-          ).expanded(),
-        ],
-      ).card(
-        color: Palette.black,
-        elevation: 0,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
+    return Observer(
+      builder: (context) {
+        final isConnected = vpnStore.isConnected;
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _InfoItem(
+              label: LocaleKeys.duration.tr(),
+              text: vpnStore.duration?.toHoursMinutesSeconds() ?? '--',
+              icon: isConnected ? Assets.durationActive : Assets.duration,
+              isConnected: isConnected,
+            ).expanded(),
+            _InfoItem(
+              label: LocaleKeys.download,
+              text: vpnStore.downloadSpeed?.toStringAsFixed(2) ?? '--',
+              icon: isConnected ? Assets.downloadActive : Assets.download,
+              isConnected: isConnected,
+            ).expanded(),
+            _InfoItem(
+              label: LocaleKeys.upload,
+              text: vpnStore.uploadSpeed?.toStringAsFixed(2) ?? '--',
+              icon: isConnected ? Assets.uploadActive : Assets.upload,
+              isConnected: isConnected,
+            ).expanded(),
+          ],
+        ).card(
+          color: Palette.black,
+          elevation: 0,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }
 
 class _InfoItem extends StatelessWidget {
-  const _InfoItem(
-      {required this.label,
-      required this.isConnected,
-      required this.icon,
-      required this.text,
-      Key? key})
-      : super(key: key);
+  const _InfoItem({
+    required this.label,
+    required this.isConnected,
+    required this.icon,
+    required this.text,
+  });
   final String label;
   final String text;
   final String icon;
   final bool isConnected;
   @override
-  Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      alignment: Alignment.center,
-      children: [
-        Positioned(
-          top: -7,
-          child: SvgIcon(
-            asset: icon,
+  Widget build(BuildContext context) => Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.center,
+        children: [
+          Positioned(
+            top: -7,
+            child: SvgIcon(
+              asset: icon,
+            ),
           ),
-        ),
-        Positioned(
-          top: 5,
-          child: Column(
-            children: [
-              EasyText(
-                label,
-                fontSize: 10,
-                fontWeight: FontWeight.w400,
-                color: isConnected ? Palette.white : Palette.lightBlack,
-              ).padding(bottom: 6),
-              EasyText(
-                text,
-                fontSize: 16,
-                fontWeight: FontWeight.w900,
-                color: isConnected ? Palette.white : Palette.lightBlack,
-              )
-            ],
-          ).padding(vertical: 16),
-        ),
-      ],
-    );
-  }
+          Positioned(
+            top: 5,
+            child: Column(
+              children: [
+                EasyText(
+                  label,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                  color: isConnected ? Palette.white : Palette.lightBlack,
+                ).padding(bottom: 6),
+                EasyText(
+                  text,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w900,
+                  color: isConnected ? Palette.white : Palette.lightBlack,
+                )
+              ],
+            ).padding(vertical: 16),
+          ),
+        ],
+      );
 }

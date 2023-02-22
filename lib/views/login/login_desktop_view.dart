@@ -13,7 +13,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class LoginDesktopView extends HookConsumerWidget {
-  const LoginDesktopView({Key? key}) : super(key: key);
+  const LoginDesktopView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,7 +26,6 @@ class LoginDesktopView extends HookConsumerWidget {
           flex: 3,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,38 +36,39 @@ class LoginDesktopView extends HookConsumerWidget {
               ).padding(bottom: 20),
               Expanded(
                 child: Center(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    const Expanded(child: LoginHeadlines()),
-                    LayoutBuilder(builder: (ctx, con) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          EasyButton(
-                            width: con.maxWidth * 0.45,
-                            height: 60,
-                            text: LocaleKeys.signIn.tr(),
-                            onPressed: () {
-                              authStore.login();
-                            },
-                          ),
-                          EasyButton(
-                            height: 60,
-                            width: con.maxWidth * 0.45,
-                            useSystemColor: false,
-                            text: LocaleKeys.getStarted.tr(),
-                            onPressed: () {},
-                          ),
-                        ],
-                      ).padding(vertical: 10);
-                    }),
-                    AppVersion(
-                      headerText: LocaleKeys.appVersion.tr(),
-                    )
-                  ]),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Expanded(child: LoginHeadlines()),
+                      LayoutBuilder(
+                        builder: (ctx, con) => Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            EasyButton(
+                              width: con.maxWidth * 0.45,
+                              height: 60,
+                              text: LocaleKeys.signIn.tr(),
+                              onPressed: authStore.login,
+                            ),
+                            EasyButton(
+                              height: 60,
+                              width: con.maxWidth * 0.45,
+                              useSystemColor: false,
+                              text: LocaleKeys.getStarted.tr(),
+                              onPressed: () {},
+                            ),
+                          ],
+                        ).padding(vertical: 10),
+                      ),
+                      AppVersion(
+                        headerText: LocaleKeys.appVersion.tr(),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ],
-          ).paddingDirectional(horizontal: 55.0, vertical: 40),
+          ).paddingDirectional(horizontal: 55, vertical: 40),
         ),
         const FillContainer(),
       ],

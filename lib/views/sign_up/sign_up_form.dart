@@ -18,7 +18,7 @@ class SignUpForm extends HookWidget {
   const SignUpForm({super.key});
   @override
   Widget build(BuildContext context) {
-    final signUpForm = useMemoized(() => AppForms.singUp());
+    final signUpForm = useMemoized(singUp);
 
     return ReactiveForm(
       formGroup: signUpForm,
@@ -33,37 +33,41 @@ class SignUpForm extends HookWidget {
             },
           ).height(40).padding(bottom: 20),
           ReactiveFormConsumer(
-            builder: (context, form, child) {
-              return EasyButton(
-                width: double.infinity,
-                useSystemColor: false,
-                onPressed: form.valid
-                    ? () {
-                        context.beamToNamed('/check-your-email');
-                      }
-                    : () => form.markAllAsTouched(),
-                child: EasyText(LocaleKeys.continueWithEmail.tr(), color: Palette.white),
-              );
-            },
+            builder: (context, form, child) => EasyButton(
+              width: double.infinity,
+              useSystemColor: false,
+              onPressed: form.valid
+                  ? () {
+                      context.beamToNamed('/check-your-email');
+                    }
+                  : () => form.markAllAsTouched(),
+              child: EasyText(LocaleKeys.continueWithEmail.tr(), color: Palette.white),
+            ),
           ).padding(bottom: 50),
           BorderButton(
             color: Palette.lightBlue,
             onPressed: () {},
-            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              const SvgIcon(asset: Assets.googleLogo).padding(right: 10),
-              EasyText(
-                LocaleKeys.continueWithGoogle.tr(),
-              ),
-            ]),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SvgIcon(asset: Assets.googleLogo).padding(right: 10),
+                EasyText(
+                  LocaleKeys.continueWithGoogle.tr(),
+                ),
+              ],
+            ),
           ),
           BorderButton(
             onPressed: () {},
-            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              const SvgIcon(asset: Assets.appleLogo).padding(right: 10),
-              EasyText(
-                LocaleKeys.continueWithApple.tr(),
-              ),
-            ]),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SvgIcon(asset: Assets.appleLogo).padding(right: 10),
+                EasyText(
+                  LocaleKeys.continueWithApple.tr(),
+                ),
+              ],
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -75,15 +79,16 @@ class SignUpForm extends HookWidget {
                 text: TextSpan(
                   style: const TextStyle(color: Palette.lightBlack),
                   children: [
-                    TextSpan(text: "${LocaleKeys.accept.tr()} "),
+                    TextSpan(text: '${LocaleKeys.accept.tr()} '),
                     TextSpan(
-                        text: LocaleKeys.termsAndConditions.tr(),
-                        style: const TextStyle(
-                          color: Palette.lightBlack,
-                          decoration: TextDecoration.underline,
-                        ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        recognizer: TapGestureRecognizer()..onTap = () {}),
+                      text: LocaleKeys.termsAndConditions.tr(),
+                      style: const TextStyle(
+                        color: Palette.lightBlack,
+                        decoration: TextDecoration.underline,
+                      ),
+                      mouseCursor: MaterialStateMouseCursor.clickable,
+                      recognizer: TapGestureRecognizer()..onTap = () {},
+                    ),
                   ],
                 ),
               ),

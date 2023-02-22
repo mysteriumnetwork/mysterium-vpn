@@ -8,10 +8,8 @@ class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ColoredScaffold(
-      backgroundColor: Palette.black,
-      body: Center(child: Lottie.asset(Assets.splashLogo)),
-    );
-  }
+  Widget build(BuildContext context) => ColoredScaffold(
+        backgroundColor: Palette.black,
+        body: Center(child: Lottie.asset(Assets.splashLogo)),
+      );
 }

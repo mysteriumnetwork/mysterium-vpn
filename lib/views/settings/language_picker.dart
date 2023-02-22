@@ -7,41 +7,41 @@ import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class LanguagePicker extends StatelessWidget {
-  const LanguagePicker({Key? key, required this.store}) : super(key: key);
+  const LanguagePicker({
+    required this.store,
+    super.key,
+  });
   final LocaleStore store;
   @override
-  Widget build(BuildContext context) {
-    return DropdownButton<Locale>(
-            isExpanded: true,
-            value: context.locale,
-            icon: const Icon(Icons.arrow_drop_down),
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            underline: const SizedBox.shrink(),
-            onChanged: (Locale? newLocale) async {
-              if (newLocale == null) {
-                return;
-              }
-              await context.setLocale(newLocale);
-              store.setLocale(newLocale);
-              return;
-            },
-            items: supportedLocales
-                .map<DropdownMenuItem<Locale>>(
-                  (locale) => DropdownMenuItem<Locale>(
-                    value: locale,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: EasyText(locale.languageName),
-                    ),
-                  ),
-                )
-                .toList())
-        .padding(horizontal: 10)
-        .decorated(
-          color: Theme.of(context).primaryColor,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(10),
-          ),
-        );
-  }
+  Widget build(BuildContext context) => DropdownButton<Locale>(
+        isExpanded: true,
+        value: context.locale,
+        icon: const Icon(Icons.arrow_drop_down),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        underline: const SizedBox.shrink(),
+        onChanged: (Locale? newLocale) async {
+          if (newLocale == null) {
+            return;
+          }
+          await context.setLocale(newLocale);
+          await store.setLocale(newLocale);
+          return;
+        },
+        items: supportedLocales
+            .map<DropdownMenuItem<Locale>>(
+              (locale) => DropdownMenuItem<Locale>(
+                value: locale,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: EasyText(locale.languageName),
+                ),
+              ),
+            )
+            .toList(),
+      ).padding(horizontal: 10).decorated(
+            color: Theme.of(context).primaryColor,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(10),
+            ),
+          );
 }
