@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
@@ -8,38 +9,28 @@ import 'package:mysterium_vpn/common/configurations/breakpoint_configuration.dar
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 
-bool checkMediaWidth(BuildContext context, double width) {
-  return MediaQuery.of(context).size.width < width;
-}
+bool checkMediaWidth(BuildContext context, double width) =>
+    MediaQuery.of(context).size.width < width;
 
-bool checkMediaHeight(BuildContext context, double height) {
-  return MediaQuery.of(context).size.height < height;
-}
+bool checkMediaHeight(BuildContext context, double height) =>
+    MediaQuery.of(context).size.height < height;
 
-double getMediaWidth(BuildContext context) {
-  return MediaQuery.of(context).size.width;
-}
+double getMediaWidth(BuildContext context) => MediaQuery.of(context).size.width;
 
-double getMediaHeight(BuildContext context) {
-  return MediaQuery.of(context).size.height;
-}
+double getMediaHeight(BuildContext context) => MediaQuery.of(context).size.height;
 
-EdgeInsets getWindowPadding() {
-  return MediaQueryData.fromWindow(window).padding;
-}
+EdgeInsets getWindowPadding() => MediaQueryData.fromWindow(window).padding;
 
-double getWindowHeight() {
-  return MediaQueryData.fromWindow(window).size.height;
-}
+double getWindowHeight() => MediaQueryData.fromWindow(window).size.height;
 
 /// Returns the [ScreenType] that the application is currently running on
 ScreenType getScreenType(
   Size size, [
   ScreenBreakpoint? breakpoint,
 ]) {
-  double deviceWidth = size.shortestSide;
+  var deviceWidth = size.width;
 
-  if (kIsWeb) {
+  if (kIsWeb || isDekstop()) {
     deviceWidth = size.width;
   }
 
@@ -58,15 +49,15 @@ ScreenType getScreenType(
     }
   } else {
     // If no user defined definitions are passed through use the defaults
-    if (deviceWidth >= BreakpointConfiguration.instance.screenBreakpoints.desktop) {
+    if (deviceWidth >= BreakpointConfiguration.screenBreakpoints.desktop) {
       return ScreenType.desktop;
     }
 
-    if (deviceWidth >= BreakpointConfiguration.instance.screenBreakpoints.tablet) {
+    if (deviceWidth >= BreakpointConfiguration.screenBreakpoints.tablet) {
       return ScreenType.tablet;
     }
 
-    if (deviceWidth < BreakpointConfiguration.instance.screenBreakpoints.watch) {
+    if (deviceWidth < BreakpointConfiguration.screenBreakpoints.watch) {
       return ScreenType.watch;
     }
   }
@@ -78,14 +69,9 @@ ScreenType getScreenType(
 SizeType getSizeType(
   Size size, {
   ScreenSizeBreakpoint? screenSizeBreakpoint,
-  bool isWebOrDesktop = kIsWeb,
 }) {
-  final ScreenType deviceScreenType = getScreenType(size);
-  double deviceWidth = size.shortestSide;
-
-  if (isWebOrDesktop) {
-    deviceWidth = size.width;
-  }
+  final deviceScreenType = getScreenType(size);
+  final deviceWidth = size.width;
 
   // Replaces the defaults with the user defined definitions
   if (screenSizeBreakpoint != null) {
@@ -139,45 +125,45 @@ SizeType getSizeType(
 
     // Desktop
     if (deviceScreenType == ScreenType.desktop) {
-      if (deviceWidth >= BreakpointConfiguration.instance.screenSizeBreakpoints.desktopExtraLarge) {
+      if (deviceWidth >= BreakpointConfiguration.screenSizeBreakpoints.desktopExtraLarge) {
         return SizeType.extraLarge;
       }
 
-      if (deviceWidth >= BreakpointConfiguration.instance.screenSizeBreakpoints.desktopLarge) {
+      if (deviceWidth >= BreakpointConfiguration.screenSizeBreakpoints.desktopLarge) {
         return SizeType.large;
       }
 
-      if (deviceWidth >= BreakpointConfiguration.instance.screenSizeBreakpoints.desktopNormal) {
+      if (deviceWidth >= BreakpointConfiguration.screenSizeBreakpoints.desktopNormal) {
         return SizeType.normal;
       }
     }
 
     // Tablet
     if (deviceScreenType == ScreenType.tablet) {
-      if (deviceWidth >= BreakpointConfiguration.instance.screenSizeBreakpoints.tabletExtraLarge) {
+      if (deviceWidth >= BreakpointConfiguration.screenSizeBreakpoints.tabletExtraLarge) {
         return SizeType.extraLarge;
       }
 
-      if (deviceWidth >= BreakpointConfiguration.instance.screenSizeBreakpoints.tabletLarge) {
+      if (deviceWidth >= BreakpointConfiguration.screenSizeBreakpoints.tabletLarge) {
         return SizeType.large;
       }
 
-      if (deviceWidth >= BreakpointConfiguration.instance.screenSizeBreakpoints.tabletNormal) {
+      if (deviceWidth >= BreakpointConfiguration.screenSizeBreakpoints.tabletNormal) {
         return SizeType.normal;
       }
     }
 
     // Mobile
     if (deviceScreenType == ScreenType.mobile) {
-      if (deviceWidth >= BreakpointConfiguration.instance.screenSizeBreakpoints.mobileExtraLarge) {
+      if (deviceWidth >= BreakpointConfiguration.screenSizeBreakpoints.mobileExtraLarge) {
         return SizeType.extraLarge;
       }
 
-      if (deviceWidth >= BreakpointConfiguration.instance.screenSizeBreakpoints.mobileLarge) {
+      if (deviceWidth >= BreakpointConfiguration.screenSizeBreakpoints.mobileLarge) {
         return SizeType.large;
       }
 
-      if (deviceWidth >= BreakpointConfiguration.instance.screenSizeBreakpoints.mobileNormal) {
+      if (deviceWidth >= BreakpointConfiguration.screenSizeBreakpoints.mobileNormal) {
         return SizeType.normal;
       }
     }
@@ -281,3 +267,7 @@ String? getCountryFlag(String countryName) {
       return null;
   }
 }
+
+bool isDekstop() => Platform.isWindows || Platform.isLinux || Platform.isMacOS;
+
+bool isMobile() => Platform.isAndroid || Platform.isIOS;

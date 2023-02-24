@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_breakpoints.dart';
 
-import '../enums/enums.dart';
-import 'responsive_layout_builder.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/layout_builders/responsive_layout_builder.dart';
 
 /// Provides a builder function for different screen types
 ///
@@ -13,21 +13,20 @@ import 'responsive_layout_builder.dart';
 /// [tablet] will be built when width is greater than 650
 /// [desktop] will be built if width is greater than 950
 class ScreenTypeLayoutBuilder extends StatelessWidget {
-  final ScreenBreakpoint? breakpoints;
-
-  final WidgetBuilder? watch;
-  final WidgetBuilder? mobile;
-  final WidgetBuilder? tablet;
-  final WidgetBuilder? desktop;
-
   const ScreenTypeLayoutBuilder({
     required this.mobile,
     this.breakpoints,
     this.watch,
     this.tablet,
     this.desktop,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
+  final ScreenBreakpoint? breakpoints;
+
+  final WidgetBuilder? watch;
+  final WidgetBuilder? mobile;
+  final WidgetBuilder? tablet;
+  final WidgetBuilder? desktop;
 
   @override
   Widget build(BuildContext context) => ResponsiveLayoutBuilder(

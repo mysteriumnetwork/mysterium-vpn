@@ -8,13 +8,11 @@ class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ColoredScaffold(
-      body: ScreenTypeLayoutBuilder(
-        mobile: (BuildContext context) => const HomeMobileView(),
-        tablet: (BuildContext context) => const HomeDesktopView(),
-        desktop: (BuildContext context) => const HomeDesktopView(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ColoredScaffold(
+        body: ScreenTypeLayoutBuilder(
+          mobile: (BuildContext context) => const HomeMobileView(),
+          tablet: (BuildContext context) => const HomeDesktopView(),
+          desktop: (BuildContext context) => const HomeDesktopView(),
+        ),
+      );
 }

@@ -60,13 +60,14 @@ abstract class _LocationsStore with Store {
   @action
   Future<List<Location>> fetchTopLocations() async {
     topLocations = [];
-    final future = Future.delayed(const Duration(seconds: 3), () {
-      return searchKeyword.isNotEmpty
+    final future = Future.delayed(
+      const Duration(seconds: 3),
+      () => searchKeyword.isNotEmpty
           ? topLocationsMock
               .where((element) => element.name.toLowerCase().contains(searchKeyword.toLowerCase()))
               .toList()
-          : topLocationsMock;
-    });
+          : topLocationsMock,
+    );
     fetchTopLocationsFuture = ObservableFuture(future);
 
     return topLocations = await future;
@@ -75,13 +76,14 @@ abstract class _LocationsStore with Store {
   @action
   Future<List<Location>> fetchAllLocations() async {
     allLocations = [];
-    final future = Future.delayed(const Duration(seconds: 3), () {
-      return searchKeyword.isNotEmpty
+    final future = Future.delayed(
+      const Duration(seconds: 3),
+      () => searchKeyword.isNotEmpty
           ? allLocationsMock
               .where((element) => element.name.toLowerCase().contains(searchKeyword.toLowerCase()))
               .toList()
-          : allLocationsMock;
-    });
+          : allLocationsMock,
+    );
     fetchAllLocationsFuture = ObservableFuture(future);
 
     return allLocations = await future;
@@ -90,13 +92,14 @@ abstract class _LocationsStore with Store {
   @action
   Future<List<RecentLocation>> fetchRecentLocations() async {
     recentLocations = [];
-    final future = Future.delayed(const Duration(seconds: 3), () {
-      return searchKeyword.isNotEmpty
+    final future = Future.delayed(
+      const Duration(seconds: 3),
+      () => searchKeyword.isNotEmpty
           ? recentLocationsMock
               .where((element) => element.name.toLowerCase().contains(searchKeyword.toLowerCase()))
               .toList()
-          : recentLocationsMock;
-    });
+          : recentLocationsMock,
+    );
     fetchRecentLocationsFeature = ObservableFuture(future);
 
     return recentLocations = await future;
@@ -110,7 +113,9 @@ abstract class _LocationsStore with Store {
 
   @action
   void setLocationKeyword(String text, [int duration = 500]) {
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    if (_debounce?.isActive ?? false) {
+      _debounce?.cancel();
+    }
     _debounce = Timer(Duration(milliseconds: duration), () {
       searchKeyword = text.trim();
       if (showAllLocations) {

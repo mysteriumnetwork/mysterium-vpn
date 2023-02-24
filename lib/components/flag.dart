@@ -4,9 +4,11 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class Flag extends StatelessWidget {
+  const Flag({
+    required this.country,
+    super.key,
+  });
   final String country;
-
-  const Flag({super.key, required this.country});
   @override
   Widget build(BuildContext context) {
     final flag = getCountryFlag(country);

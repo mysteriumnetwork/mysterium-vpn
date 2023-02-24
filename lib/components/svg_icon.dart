@@ -5,17 +5,18 @@ import 'package:styled_widget/styled_widget.dart';
 // Project imports:
 
 class SvgIcon extends StatelessWidget {
-  const SvgIcon({Key? key, required this.asset}) : super(key: key);
+  const SvgIcon({
+    required this.asset,
+    super.key,
+  });
 
   final String asset;
   @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: SvgPicture.asset(
-        asset,
-        matchTextDirection: true,
-      ),
-    ).center();
-  }
+  Widget build(BuildContext context) => Directionality(
+        textDirection: TextDirection.ltr,
+        child: SvgPicture.asset(
+          asset,
+          matchTextDirection: true,
+        ),
+      ).center();
 }
