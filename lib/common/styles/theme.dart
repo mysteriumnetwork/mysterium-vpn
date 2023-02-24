@@ -13,10 +13,11 @@ ThemeData themeData(Palette palette) => ThemeData(
         error: Palette.pink,
         tertiary: palette.tertiaryColor,
         secondary: palette.placeholderColor,
+        scrim: palette.scrimColor,
       ),
-
-      indicatorColor: palette.highlightColor,
+      indicatorColor: palette.secondaryColor,
       hintColor: palette.darkTextColor,
+      secondaryHeaderColor: palette.lightTextColor,
       highlightColor: palette.highlightColor.withOpacity(0.4),
       //hoverColor: palette.secondaryColor,
       disabledColor: palette.darkTextColor,

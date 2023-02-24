@@ -24,6 +24,7 @@ abstract class Assets {
   static const String upload = 'assets/icons/upload.svg';
   static const String connectButton = 'assets/icons/connect_button.svg';
   static const String navigateBack = 'assets/icons/navigate_back.svg';
+  static const String navigateBackLightBlack = 'assets/icons/navigate_back_light_grey.svg';
   static const String accountNameDark = 'assets/icons/account_name_dark.svg';
   static const String accountNameLight = 'assets/icons/account_name_light.svg';
   static const String billingDark = 'assets/icons/billing_dark.svg';

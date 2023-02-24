@@ -7,7 +7,7 @@ abstract class Palette {
   static const Color darkBlue = Color(0xff2D2A49);
   static const Color lightBlack = Color(0xff6A678E);
   static const Color lightBlue = Color(0xffC4C1DD);
-  static const Color veryLightGrey = Color(0xffE2E1EF);
+  static const Color veryLightGrey = Color(0xffF5F5F5);
   static const Color lightGrey = Color(0xffF8F9FD);
   static const Color purple = Color(0xffC574D9);
   static const Color pink = Color(0xffF44D89);
@@ -24,6 +24,7 @@ abstract class Palette {
   Color get surfaceColor;
   Color get placeholderColor;
   Color get tertiaryColor;
+  Color get scrimColor;
   MaterialColor get swatchColor;
 }
 
@@ -41,7 +42,7 @@ class LightPalette implements Palette {
   Color get darkTextColor => Palette.lightBlack;
 
   @override
-  Color get backgroundGolor => Palette.white;
+  Color get backgroundGolor => Palette.veryLightGrey;
 
   @override
   Color get primaryColor => Palette.white;
@@ -57,6 +58,9 @@ class LightPalette implements Palette {
 
   @override
   Color get tertiaryColor => Palette.lightGrey;
+
+  @override
+  Color get scrimColor => Palette.black;
 }
 
 class DarkPalette implements Palette {
@@ -67,7 +71,7 @@ class DarkPalette implements Palette {
   Color get secondaryColor => Palette.white;
 
   @override
-  Color get lightTextColor => Palette.lightBlue;
+  Color get lightTextColor => Palette.lightBlack;
 
   @override
   Color get darkTextColor => Palette.lightBlack;
@@ -87,6 +91,9 @@ class DarkPalette implements Palette {
 
   @override
   Color get tertiaryColor => Palette.black;
+
+  @override
+  Color get scrimColor => Palette.lightBlack;
 }
 
 Map<int, Color> color = const {
