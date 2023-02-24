@@ -74,4 +74,5 @@ abstract class LocaleKeys {
   static const system = 'system';
   static const dark = 'dark';
   static const light = 'light';
+  static const back = 'back';
 }
