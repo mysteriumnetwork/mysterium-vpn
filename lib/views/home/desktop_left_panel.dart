@@ -23,7 +23,7 @@ class HomeDesktopLeftPanel extends ConsumerWidget {
     final vpnStore = ref.read(vpnStorePOD);
 
     return Container(
-      color: Palette.black,
+      color: Theme.of(context).primaryColor,
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Observer(

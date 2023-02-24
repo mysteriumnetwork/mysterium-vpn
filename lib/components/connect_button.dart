@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
+import 'package:mysterium_vpn/components/circle_box.dart';
 
 class ConnectButton extends StatelessWidget {
   const ConnectButton({
@@ -19,13 +20,9 @@ class ConnectButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final radius = ((height + width) / 2) * 0.23;
-    return Container(
-      height: radius,
-      width: radius,
-      decoration: BoxDecoration(
-        color: isConnected ? Palette.purple : Palette.lightBlack,
-        shape: BoxShape.circle,
-      ),
+    return CircleBox(
+      size: radius,
+      color: isConnected ? Palette.purple : Palette.lightBlack,
       child: SvgIconButton(
         onPressed: callback,
         asset: Assets.connectButton,

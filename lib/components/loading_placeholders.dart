@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/components/circle_box.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -17,13 +18,9 @@ class RecentLocationPlaceholder extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 16,
-              height: 16,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: color,
-              ),
+            CircleBox(
+              size: 16,
+              color: color,
             ).paddingDirectional(bottom: 24),
             Container(
               width: double.infinity,
@@ -58,13 +55,9 @@ class LocationPlaceholder extends StatelessWidget {
         highlightColor: color.darken(20),
         child: Row(
           children: [
-            Container(
-              width: 10,
-              height: 10,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: color,
-              ),
+            CircleBox(
+              size: 10,
+              color: color,
             ).paddingDirectional(end: 12),
             Container(
               width: 78,
@@ -75,14 +68,10 @@ class LocationPlaceholder extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            Container(
-              width: 16,
-              height: 16,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: color,
-              ),
-            )
+            CircleBox(
+              size: 16,
+              color: color,
+            ),
           ],
         ).padding(horizontal: 15, vertical: 20),
       ).card().padding(bottom: 10);
