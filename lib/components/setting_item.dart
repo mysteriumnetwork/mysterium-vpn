@@ -31,16 +31,35 @@ class SettingItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SvgIcon(asset: asset).padding(right: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                EasyText(title, fontSize: 14).padding(bottom: 8),
-                EasyText(
-                  subtitle,
-                  color: Palette.lightBlack,
-                ).padding(bottom: 8),
-                actionWidget,
-              ],
+            LayoutBuilder(
+              builder: (_, constraints) => constraints.maxWidth > 500
+                  ? Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            EasyText(title, fontSize: 14).padding(bottom: 8),
+                            EasyText(
+                              subtitle,
+                              color: Palette.lightBlack,
+                            ).padding(bottom: 11),
+                          ],
+                        ),
+                        actionWidget
+                      ],
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        EasyText(title, fontSize: 14).padding(bottom: 8),
+                        EasyText(
+                          subtitle,
+                          color: Palette.lightBlack,
+                        ).padding(bottom: 11),
+                        actionWidget
+                      ],
+                    ),
             ).expanded(),
           ],
         ),
