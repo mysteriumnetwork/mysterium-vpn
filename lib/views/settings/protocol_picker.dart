@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/common/constants/mock.dart';
+import 'package:mysterium_vpn/components/easy_dropdown.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class ProtocolPicker extends StatelessWidget {
   const ProtocolPicker({
@@ -14,12 +14,8 @@ class ProtocolPicker extends StatelessWidget {
   final VpnStore store;
   @override
   Widget build(BuildContext context) => Observer(
-        builder: (context) => DropdownButton<String>(
-          isExpanded: true,
+        builder: (context) => EasyDropdown<String>(
           value: store.protocol,
-          underline: const SizedBox.shrink(),
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          icon: const Icon(Icons.arrow_drop_down),
           onChanged: (String? newProtocol) async {
             if (newProtocol == null) {
               return;
@@ -38,11 +34,6 @@ class ProtocolPicker extends StatelessWidget {
                 ),
               )
               .toList(),
-        ).padding(horizontal: 10).decorated(
-              color: Theme.of(context).primaryColor,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(10),
-              ),
-            ),
+        ),
       );
 }
