@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class EasyDropdown<T> extends StatelessWidget {
-  const EasyDropdown(
-      {required this.items, required this.onChanged, required this.value, super.key});
+  const EasyDropdown({
+    required this.items,
+    required this.onChanged,
+    required this.value,
+    super.key,
+  });
 
   final List<DropdownMenuItem<T>> items;
   final void Function(T?)? onChanged;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
-import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/components/circle_box.dart';
+import 'package:mysterium_vpn/components/svg_icon_button.dart';
 
 class ConnectButton extends StatelessWidget {
   const ConnectButton({
