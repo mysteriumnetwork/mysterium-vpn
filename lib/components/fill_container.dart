@@ -5,7 +5,7 @@ import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 
 class FillContainer extends HookWidget {
-  const FillContainer({Key? key}) : super(key: key);
+  const FillContainer({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -87,7 +87,8 @@ class CodegenLoader extends AssetLoader {
     "fieldRequired": "This field is required",
     "system": "Use prefered system theme",
     "dark": "Dark Theme",
-    "light": "Light Theme"
+    "light": "Light Theme",
+    "back": "Back"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../enums/enums.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 
 /// Contains sizing information to make responsive choices for the current screen
 class ScreenSizeConfiguration {
+  ScreenSizeConfiguration({
+    required this.screenType,
+    required this.sizeType,
+    required this.screenSize,
+    required this.localWidgetSize,
+  });
   final ScreenType screenType;
   final SizeType sizeType;
   final Size screenSize;
@@ -26,13 +32,6 @@ class ScreenSizeConfiguration {
   bool get isNormal => sizeType == SizeType.normal;
 
   bool get isSmall => sizeType == SizeType.small;
-
-  ScreenSizeConfiguration({
-    required this.screenType,
-    required this.sizeType,
-    required this.screenSize,
-    required this.localWidgetSize,
-  });
 
   @override
   String toString() =>

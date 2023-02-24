@@ -5,16 +5,14 @@ import 'package:mysterium_vpn/views/login/login_desktop_view.dart';
 import 'package:mysterium_vpn/views/login/login_mobile_view.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ColoredScaffold(
-      body: ScreenTypeLayoutBuilder(
-        mobile: (BuildContext context) => const LoginMobileView(),
-        tablet: (BuildContext context) => const LoginDesktopView(),
-        desktop: (BuildContext context) => const LoginDesktopView(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ColoredScaffold(
+        body: ScreenTypeLayoutBuilder(
+          mobile: (BuildContext context) => const LoginMobileView(),
+          tablet: (BuildContext context) => const LoginDesktopView(),
+          desktop: (BuildContext context) => const LoginDesktopView(),
+        ),
+      );
 }

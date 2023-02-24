@@ -1,20 +1,5 @@
 // Manually define refined breakpoints
 class ScreenSizeBreakpoint {
-  final double mobileSmall;
-  final double mobileNormal;
-  final double mobileLarge;
-  final double mobileExtraLarge;
-
-  final double tabletSmall;
-  final double tabletNormal;
-  final double tabletLarge;
-  final double tabletExtraLarge;
-
-  final double desktopSmall;
-  final double desktopNormal;
-  final double desktopLarge;
-  final double desktopExtraLarge;
-
   const ScreenSizeBreakpoint({
     this.mobileSmall = 320,
     this.mobileNormal = 375,
@@ -29,6 +14,20 @@ class ScreenSizeBreakpoint {
     this.desktopLarge = 3840,
     this.desktopExtraLarge = 4096,
   });
+  final double mobileSmall;
+  final double mobileNormal;
+  final double mobileLarge;
+  final double mobileExtraLarge;
+
+  final double tabletSmall;
+  final double tabletNormal;
+  final double tabletLarge;
+  final double tabletExtraLarge;
+
+  final double desktopSmall;
+  final double desktopNormal;
+  final double desktopLarge;
+  final double desktopExtraLarge;
 
   @override
   String toString() =>

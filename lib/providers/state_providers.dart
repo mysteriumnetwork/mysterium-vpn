@@ -15,25 +15,15 @@ import 'package:mysterium_vpn/stores/vpn_store.dart';
 //   return WireguardStore(wireguardService: wireguardService);
 // });
 
-final localeStorePOD = Provider<LocaleStore>((ref) {
-  return LocaleStore();
-});
+final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
-final authStorePOD = Provider<AuthStore>((ref) {
-  return AuthStore();
-});
+final authStorePOD = Provider<AuthStore>((ref) => AuthStore());
 
-final themeStorePOD = Provider<ThemeStore>((ref) {
-  return ThemeStore();
-});
+final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
 
-final vpnStorePOD = Provider.autoDispose<VpnStore>((ref) {
-  return VpnStore();
-});
+final vpnStorePOD = Provider.autoDispose<VpnStore>((ref) => VpnStore());
 
-final locationsStorePOD = Provider.autoDispose<LocationsStore>((ref) {
-  return LocationsStore();
-});
+final locationsStorePOD = Provider<LocationsStore>((ref) => LocationsStore());
 
 final routeInformationParserPOD = Provider((ref) => BeamerParser());
 
@@ -42,15 +32,17 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
   return BeamerDelegate(
     guards: [
       BeamGuard(
-          pathPatterns: [Routes.home.toRoute, Routes.settings.toRoute, Routes.reportIssue.toRoute],
-          check: (context, state) => authStore.authStatus == AuthStatus.authenticated,
-          beamToNamed: (_, __) => Routes.login.toRoute),
+        pathPatterns: [Routes.home.toRoute, Routes.settings.toRoute, Routes.reportIssue.toRoute],
+        check: (context, state) => authStore.authStatus == AuthStatus.authenticated,
+        beamToNamed: (_, __) => Routes.login.toRoute,
+      ),
       BeamGuard(
-          pathPatterns: [Routes.login.toRoute],
-          check: (context, state) =>
-              authStore.authStatus == AuthStatus.unauthenticated ||
-              authStore.authStatus == AuthStatus.loading,
-          beamToNamed: (_, __) => Routes.home.toRoute),
+        pathPatterns: [Routes.login.toRoute],
+        check: (context, state) =>
+            authStore.authStatus == AuthStatus.unauthenticated ||
+            authStore.authStatus == AuthStatus.loading,
+        beamToNamed: (_, __) => Routes.home.toRoute,
+      ),
       BeamGuard(
         pathPatterns: [Routes.splash.toRoute],
         check: (context, state) => authStore.authStatus == AuthStatus.unknown,

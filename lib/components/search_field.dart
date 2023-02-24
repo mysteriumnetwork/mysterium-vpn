@@ -11,7 +11,7 @@ import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SearchField extends HookWidget {
-  const SearchField(this.store, {Key? key}) : super(key: key);
+  const SearchField(this.store, {super.key});
 
   final LocationsStore store;
 
@@ -19,44 +19,46 @@ class SearchField extends HookWidget {
   Widget build(BuildContext context) {
     final controller = useTextEditingController(text: store.searchKeyword);
     return ReactionBuilder(
-        builder: (context) {
-          return reaction((_) => store.showAllLocations, (_) {
-            controller.text = '';
-          });
-        },
-        child: TextField(
-          controller: controller,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.brightness == Brightness.light
-                ? Palette.black
-                : Palette.lightGrey,
+      builder: (context) => reaction((_) => store.showAllLocations, (_) {
+        controller.text = '';
+      }),
+      child: TextField(
+        controller: controller,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.brightness == Brightness.light
+              ? Palette.black
+              : Palette.lightGrey,
+        ),
+        decoration: InputDecoration(
+          filled: true,
+          contentPadding: const EdgeInsets.only(left: 20),
+          fillColor: Theme.of(context).colorScheme.surface,
+          hintText: LocaleKeys.searchForLocations.tr(),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
-          decoration: InputDecoration(
-            filled: true,
-            contentPadding: const EdgeInsets.only(left: 20),
-            fillColor: Theme.of(context).colorScheme.tertiary,
-            hintText: LocaleKeys.searchForLocations.tr(),
-            enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(20))),
-            focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(20))),
-            suffixIcon: SvgIconButton(
-              onPressed: () {
-                if (store.showAllLocations) {
-                  store.fetchAllLocations();
-                  return;
-                }
-                store.fetchRecentLocations();
-                store.fetchTopLocations();
-              },
-              asset: Assets.search,
-            ).width(20),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
-          autocorrect: false,
-          onChanged: (value) => store.setLocationKeyword(value),
-          onSubmitted: (String value) {
-            store.setLocationKeyword(value);
-          },
-        ).height(40));
+          suffixIcon: SvgIconButton(
+            onPressed: () {
+              if (store.showAllLocations) {
+                store.fetchAllLocations();
+                return;
+              }
+              store
+                ..fetchRecentLocations()
+                ..fetchTopLocations();
+            },
+            asset: Assets.search,
+          ).width(20),
+        ),
+        autocorrect: false,
+        onChanged: store.setLocationKeyword,
+        onSubmitted: store.setLocationKeyword,
+      ).height(40),
+    );
   }
 }

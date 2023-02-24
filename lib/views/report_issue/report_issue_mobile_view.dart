@@ -10,22 +10,22 @@ class ReportIssueMobileView extends HookConsumerWidget {
   const ReportIssueMobileView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return BaseLayout(
-      headerTitle: LocaleKeys.reportAnIssue.tr(),
-      child: Column(children: [
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(20),
-            ),
-          ),
-          child: const ReportIssueForm(),
-        ).paddingDirectional(all: 20),
-      ]),
-    );
-  }
+  Widget build(BuildContext context, WidgetRef ref) => BaseLayout(
+        headerTitle: LocaleKeys.reportAnIssue.tr(),
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(20),
+                ),
+              ),
+              child: const ReportIssueForm(),
+            ).paddingDirectional(all: 20),
+          ],
+        ),
+      );
 }

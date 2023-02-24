@@ -5,17 +5,17 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class EasyButton extends ConsumerWidget {
-  const EasyButton(
-      {Key? key,
-      this.text,
-      this.child,
-      required this.onPressed,
-      this.color,
-      this.useSystemColor = true,
-      this.isDisabled = false,
-      this.width,
-      this.height})
-      : super(key: key);
+  const EasyButton({
+    required this.onPressed,
+    this.text,
+    this.child,
+    this.color,
+    this.useSystemColor = true,
+    this.isDisabled = false,
+    this.width,
+    this.height,
+    super.key,
+  });
 
   final String? text;
   final Widget? child;
@@ -29,16 +29,17 @@ class EasyButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.read(themeStorePOD);
     return SizedBox(
-        width: width,
-        height: height,
-        child: ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: useSystemColor
-                ? null
-                : color ?? (themeStore.isDarkMode ? Palette.lightBlack : Palette.black),
-          ),
-          child: text != null ? EasyText(text!, color: Palette.white) : child,
-        ));
+      width: width,
+      height: height,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: useSystemColor
+              ? null
+              : color ?? (themeStore.isDarkMode ? Palette.lightBlack : Palette.black),
+        ),
+        child: text != null ? EasyText(text!, color: Palette.white) : child,
+      ),
+    );
   }
 }

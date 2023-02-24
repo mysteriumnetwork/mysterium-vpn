@@ -17,27 +17,29 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
 
-    return Observer(builder: (context) {
-      final vpnConnection = vpnStore.vpnConnection;
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _BarItem(label: LocaleKeys.connection_ip.tr(), text: vpnConnection.connectionIP),
-          _BarItem(
-            label: LocaleKeys.status.tr(),
-            text: vpnStore.isConnected ? LocaleKeys.connected.tr() : LocaleKeys.disconnected.tr(),
-            leading: ConnectionIndicator(
-              isConnected: vpnStore.isConnected,
+    return Observer(
+      builder: (context) {
+        final vpnConnection = vpnStore.vpnConnection;
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _BarItem(label: LocaleKeys.connection_ip.tr(), text: vpnConnection.connectionIP),
+            _BarItem(
+              label: LocaleKeys.status.tr(),
+              text: vpnStore.isConnected ? LocaleKeys.connected.tr() : LocaleKeys.disconnected.tr(),
+              leading: ConnectionIndicator(
+                isConnected: vpnStore.isConnected,
+              ),
             ),
-          ),
-          _BarItem(
-            label: LocaleKeys.location.tr(),
-            text: vpnConnection.location,
-            leading: Flag(country: vpnStore.vpnConnection.location),
-          )
-        ],
-      ).padding(vertical: 20);
-    });
+            _BarItem(
+              label: LocaleKeys.location.tr(),
+              text: vpnConnection.location,
+              leading: Flag(country: vpnStore.vpnConnection.location),
+            )
+          ],
+        ).padding(vertical: 20);
+      },
+    );
   }
 }
 
@@ -53,27 +55,25 @@ class _BarItem extends StatelessWidget {
   final String text;
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        EasyText(
-          label,
-          color: Palette.lightBlue,
-          fontWeight: FontWeight.w400,
-          fontSize: 10,
-        ).padding(bottom: 4),
-        Row(
-          children: [
-            if (leading != null) leading!.padding(right: 4),
-            EasyText(
-              text,
-              color: Palette.white,
-              fontWeight: FontWeight.w500,
-              fontSize: 12,
-            ),
-          ],
-        ),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        children: [
+          EasyText(
+            label,
+            color: Palette.lightBlue,
+            fontWeight: FontWeight.w400,
+            fontSize: 10,
+          ).padding(bottom: 4),
+          Row(
+            children: [
+              if (leading != null) leading!.padding(right: 4),
+              EasyText(
+                text,
+                color: Palette.white,
+                fontWeight: FontWeight.w500,
+                fontSize: 12,
+              ),
+            ],
+          ),
+        ],
+      );
 }
