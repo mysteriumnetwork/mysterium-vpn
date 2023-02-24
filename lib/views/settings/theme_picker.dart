@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mysterium_vpn/components/easy_dropdown.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class ThemePicker extends StatelessWidget {
   const ThemePicker({
@@ -13,12 +13,8 @@ class ThemePicker extends StatelessWidget {
   final ThemeStore store;
   @override
   Widget build(BuildContext context) => Observer(
-        builder: (context) => DropdownButton<ThemeMode>(
-          isExpanded: true,
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+        builder: (context) => EasyDropdown<ThemeMode>(
           value: store.themeMode,
-          icon: const Icon(Icons.arrow_drop_down),
-          underline: const SizedBox.shrink(),
           onChanged: (ThemeMode? newThemeMode) {
             if (newThemeMode == null) {
               return;
@@ -37,11 +33,6 @@ class ThemePicker extends StatelessWidget {
                 ),
               )
               .toList(),
-        ).padding(horizontal: 10).decorated(
-              color: Theme.of(context).primaryColor,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(10),
-              ),
-            ),
+        ),
       );
 }

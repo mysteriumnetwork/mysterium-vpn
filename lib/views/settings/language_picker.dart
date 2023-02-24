@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/components/easy_dropdown.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class LanguagePicker extends StatelessWidget {
   const LanguagePicker({
@@ -13,12 +13,8 @@ class LanguagePicker extends StatelessWidget {
   });
   final LocaleStore store;
   @override
-  Widget build(BuildContext context) => DropdownButton<Locale>(
-        isExpanded: true,
+  Widget build(BuildContext context) => EasyDropdown<Locale>(
         value: context.locale,
-        icon: const Icon(Icons.arrow_drop_down),
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        underline: const SizedBox.shrink(),
         onChanged: (Locale? newLocale) async {
           if (newLocale == null) {
             return;
@@ -38,10 +34,5 @@ class LanguagePicker extends StatelessWidget {
               ),
             )
             .toList(),
-      ).padding(horizontal: 10).decorated(
-            color: Theme.of(context).primaryColor,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10),
-            ),
-          );
+      );
 }
