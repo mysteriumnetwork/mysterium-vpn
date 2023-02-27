@@ -35,7 +35,7 @@ ThemeData themeData(Palette palette) => ThemeData(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          minimumSize: const Size(200, 40),
+          minimumSize: const Size(200, 50),
           backgroundColor: palette.highlightColor,
           disabledBackgroundColor: palette.highlightColor.withOpacity(0.4),
         ),
@@ -62,19 +62,42 @@ ThemeData themeData(Palette palette) => ThemeData(
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
+        hintStyle: TextStyle(
+          color: palette.secondaryColor,
+        ),
+        labelStyle: TextStyle(
+          color: palette.secondaryColor,
+        ),
+        filled: true,
+        contentPadding: const EdgeInsets.only(left: 20),
+        fillColor: palette.surfaceColor,
+        outlineBorder: BorderSide(color: palette.lightTextColor),
         border: OutlineInputBorder(
+          borderSide: BorderSide(color: palette.lightTextColor),
           borderRadius: BorderRadius.circular(10),
         ),
         enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: palette.lightTextColor,
+          ),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: palette.lightTextColor,
+          ),
           borderRadius: BorderRadius.circular(10),
         ),
         errorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Palette.pink,
+          ),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedErrorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Palette.pink,
+          ),
           borderRadius: BorderRadius.circular(10),
         ),
       ),
