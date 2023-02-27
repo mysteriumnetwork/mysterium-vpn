@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/routes.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
 import 'package:mysterium_vpn/components/app_version.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
@@ -42,6 +43,8 @@ class LoginDesktopViewLeftPanel extends ConsumerWidget {
               EasyButton(
                 width: con.maxWidth * 0.45,
                 height: 60,
+                useSystemColor: false,
+                color: Palette.purple,
                 text: LocaleKeys.signIn.tr(),
                 onPressed: authStore.login,
               ),

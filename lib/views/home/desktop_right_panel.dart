@@ -29,18 +29,34 @@ class HomeDesktopRightPanel extends ConsumerWidget {
                   builder: (context, con) => Stack(
                     alignment: Alignment.center,
                     children: [
-                      Lottie.asset(
-                        isConnected ? Assets.circlesPurple : Assets.circlesGrey,
-                        alignment: Alignment.center,
+                      Material(
+                        color: Colors.transparent,
+                        shape: const CircleBorder(),
+                        clipBehavior: Clip.hardEdge,
+                        shadowColor: Colors.transparent,
+                        child: InkWell(
+                          highlightColor: Palette.purple.withOpacity(0.2),
+                          splashColor: Palette.purple.withOpacity(0.1),
+                          splashFactory: InkSparkle.splashFactory,
+                          onTap: () => isConnected ? vpnStore.disconnect() : vpnStore.connect(null),
+                          child: Lottie.asset(
+                            isConnected ? Assets.circlesPurple : Assets.circlesGrey,
+                            alignment: Alignment.center,
+                          ),
+                        ),
                       ),
-                      ConnectButton(
-                        callback: () {
-                          isConnected ? vpnStore.disconnect() : vpnStore.connect(null);
-                        },
-                        isConnected: isConnected,
-                        height: con.maxHeight,
-                        width: con.maxHeight,
-                      )
+                      SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: ConnectButton(
+                          callback: () {
+                            isConnected ? vpnStore.disconnect() : vpnStore.connect(null);
+                          },
+                          isConnected: isConnected,
+                          height: con.maxHeight,
+                          width: con.maxHeight,
+                        ),
+                      ),
                     ],
                   ).padding(vertical: 40),
                 ).expanded(),
