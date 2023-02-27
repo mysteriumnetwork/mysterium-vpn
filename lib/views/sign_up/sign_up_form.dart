@@ -31,7 +31,38 @@ class SignUpForm extends HookWidget {
               ValidationMessage.required: (_) => LocaleKeys.emailIsRequired.tr(),
               ValidationMessage.email: (_) => LocaleKeys.emailIsNotValid.tr(),
             },
-          ).height(40).padding(bottom: 20),
+          ).padding(bottom: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ReactiveCheckbox(
+                formControlName: 'terms_acceptance',
+              ),
+              RichText(
+                text: TextSpan(
+                  style: TextStyle(
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  children: [
+                    TextSpan(text: '${LocaleKeys.accept.tr()} '),
+                    TextSpan(
+                      text: LocaleKeys.termsAndConditions.tr(),
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                        decoration: TextDecoration.underline,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      mouseCursor: MaterialStateMouseCursor.clickable,
+                      recognizer: TapGestureRecognizer()..onTap = () {},
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ).padding(bottom: 20),
           ReactiveFormConsumer(
             builder: (context, form, child) => EasyButton(
               width: double.infinity,
@@ -53,10 +84,11 @@ class SignUpForm extends HookWidget {
                 const SvgIcon(asset: Assets.googleLogo).padding(right: 10),
                 EasyText(
                   LocaleKeys.continueWithGoogle.tr(),
+                  color: Palette.black,
                 ),
               ],
             ),
-          ),
+          ).padding(bottom: 20),
           BorderButton(
             onPressed: () {},
             child: Row(
@@ -65,34 +97,10 @@ class SignUpForm extends HookWidget {
                 const SvgIcon(asset: Assets.appleLogo).padding(right: 10),
                 EasyText(
                   LocaleKeys.continueWithApple.tr(),
+                  color: Palette.black,
                 ),
               ],
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ReactiveCheckbox(
-                formControlName: 'terms_acceptance',
-              ),
-              RichText(
-                text: TextSpan(
-                  style: const TextStyle(color: Palette.lightBlack),
-                  children: [
-                    TextSpan(text: '${LocaleKeys.accept.tr()} '),
-                    TextSpan(
-                      text: LocaleKeys.termsAndConditions.tr(),
-                      style: const TextStyle(
-                        color: Palette.lightBlack,
-                        decoration: TextDecoration.underline,
-                      ),
-                      mouseCursor: MaterialStateMouseCursor.clickable,
-                      recognizer: TapGestureRecognizer()..onTap = () {},
-                    ),
-                  ],
-                ),
-              ),
-            ],
           ),
         ],
       ),

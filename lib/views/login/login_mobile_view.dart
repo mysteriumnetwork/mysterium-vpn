@@ -60,7 +60,7 @@ class LoginMobileView extends HookConsumerWidget {
                         text: LocaleKeys.getStarted.tr(),
                         onPressed: () {
                           if (Platform.isAndroid || Platform.isIOS) {
-                            _showSignInView(context);
+                            _showSignUpView(context);
                           }
                         },
                       ).padding(bottom: 20),
@@ -83,7 +83,7 @@ class LoginMobileView extends HookConsumerWidget {
     );
   }
 
-  void _showSignInView(BuildContext context) {
+  void _showSignUpView(BuildContext context) {
     showBarModalBottomSheet(
       expand: false,
       context: context,
@@ -91,7 +91,7 @@ class LoginMobileView extends HookConsumerWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
       ),
-      builder: (context) => const SignUpPage(),
+      builder: (context) => const SignUpPage().height(getMediaHeight(context) * 0.85),
     );
   }
 }

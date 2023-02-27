@@ -34,9 +34,7 @@ class EasyButton extends ConsumerWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: useSystemColor
-              ? null
-              : color ?? (themeStore.isDarkMode ? Palette.lightBlack : Palette.black),
+          backgroundColor: useSystemColor ? null : color ?? (themeStore.isDarkMode ? Palette.purple : Palette.darkBlue),
         ),
         child: text != null ? EasyText(text!, color: Palette.white) : child,
       ),
