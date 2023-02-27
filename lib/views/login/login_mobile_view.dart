@@ -33,7 +33,7 @@ class LoginMobileView extends HookConsumerWidget {
               children: <Widget>[
                 const Expanded(
                   child: LoginHeadlines(
-                    alignment: Alignment.center,
+                    alignment: CrossAxisAlignment.center,
                   ),
                 ),
                 Container(
@@ -50,6 +50,8 @@ class LoginMobileView extends HookConsumerWidget {
                       EasyButton(
                         width: getMediaWidth(context) * 0.8,
                         height: 60,
+                        useSystemColor: false,
+                        color: Palette.purple,
                         text: LocaleKeys.signIn.tr(),
                         onPressed: authStore.login,
                       ).padding(bottom: 20),
