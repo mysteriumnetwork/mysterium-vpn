@@ -66,7 +66,6 @@ class SignUpForm extends HookWidget {
           ReactiveFormConsumer(
             builder: (context, form, child) => EasyButton(
               width: double.infinity,
-              useSystemColor: false,
               onPressed: form.valid
                   ? () {
                       context.beamToNamed('/check-your-email');
