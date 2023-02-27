@@ -5,6 +5,8 @@ abstract class Assets {
 
   //IMAGES
   static const String checkEmail = 'assets/images/check_email.svg';
+  static const String reportDark = 'assets/images/report_dark.svg';
+  static const String reportLight = 'assets/images/report_light.svg';
 
   //ICONS
   static const String messageSvg = 'assets/icons/message.svg';
