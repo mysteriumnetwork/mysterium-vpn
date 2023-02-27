@@ -2,6 +2,7 @@ abstract class Assets {
   //LOGO
   static const String logoBlackSvg = 'assets/logo/logo_black.svg';
   static const String logoWhiteSvg = 'assets/logo/logo_white.svg';
+  static const String logoGrey = 'assets/logo/logo_grey.svg';
 
   //IMAGES
   static const String checkEmail = 'assets/images/check_email.svg';

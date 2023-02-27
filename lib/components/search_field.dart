@@ -25,7 +25,9 @@ class SearchField extends HookWidget {
       child: TextField(
         controller: controller,
         style: TextStyle(
-          color: Theme.of(context).colorScheme.brightness == Brightness.light ? Palette.black : Palette.lightGrey,
+          color: Theme.of(context).colorScheme.brightness == Brightness.light
+              ? Palette.black
+              : Palette.lightGrey,
         ),
         decoration: InputDecoration(
           filled: true,
