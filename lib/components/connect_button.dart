@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 
+// TODO(kristijan): Add correct svg asset for the connect button
 class ConnectButton extends StatelessWidget {
   const ConnectButton({
     required this.isConnected,
