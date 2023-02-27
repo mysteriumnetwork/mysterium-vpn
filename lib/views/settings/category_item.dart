@@ -33,9 +33,9 @@ class CategoryItem extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 fontSize: 18,
                 color: isSelected ? Palette.purple : Theme.of(context).indicatorColor,
-              )
+              ).expanded()
             ],
-          ).width(190).height(38).padding(horizontal: 14, vertical: 10),
+          ).width(190).height(38).padding(horizontal: 20, vertical: 10),
         ),
       )
           .decorated(
