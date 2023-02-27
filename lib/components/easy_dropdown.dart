@@ -22,7 +22,10 @@ class EasyDropdown<T> extends StatelessWidget {
         underline: const SizedBox.shrink(),
         onChanged: onChanged,
         items: items,
-      ).width(checkMediaWidth(context, 750) ? double.infinity : 220).padding(horizontal: 10).decorated(
+      )
+          .width(checkMediaWidth(context, 750) ? double.infinity : 220)
+          .padding(horizontal: 10)
+          .decorated(
             color: Theme.of(context).primaryColor,
             borderRadius: const BorderRadius.all(
               Radius.circular(10),

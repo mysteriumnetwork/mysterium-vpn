@@ -36,7 +36,7 @@ ThemeData themeData(Palette palette) => ThemeData(
             borderRadius: BorderRadius.circular(10),
           ),
           minimumSize: const Size(200, 50),
-          backgroundColor: palette.highlightColor,
+          backgroundColor: palette.buttonBackgroundColor,
           disabledBackgroundColor: palette.highlightColor.withOpacity(0.4),
         ),
       ),
