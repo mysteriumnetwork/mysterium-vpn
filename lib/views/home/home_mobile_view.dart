@@ -3,7 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/connect_button.dart';
 import 'package:mysterium_vpn/components/connection_bar.dart';
@@ -47,9 +46,6 @@ class HomeMobileView extends HookConsumerWidget {
                           shape: const CircleBorder(),
                           clipBehavior: Clip.hardEdge,
                           child: InkWell(
-                            highlightColor: Palette.purple.withOpacity(0.2),
-                            splashColor: Palette.purple.withOpacity(0.1),
-                            splashFactory: InkRipple.splashFactory,
                             onTap: () =>
                                 isConnected ? vpnStore.disconnect() : vpnStore.connect(null),
                             child: Lottie.asset(
@@ -58,17 +54,13 @@ class HomeMobileView extends HookConsumerWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          width: 100,
-                          height: 100,
-                          child: ConnectButton(
-                            callback: () =>
-                                isConnected ? vpnStore.disconnect() : vpnStore.connect(null),
-                            isConnected: isConnected,
-                            height: con.maxHeight,
-                            width: con.maxHeight,
-                          ),
-                        )
+                        ConnectButton(
+                          callback: () =>
+                              isConnected ? vpnStore.disconnect() : vpnStore.connect(null),
+                          isConnected: isConnected,
+                          height: con.maxHeight,
+                          width: con.maxHeight,
+                        ),
                       ],
                     ).padding(bottom: 20),
                   ).expanded(),
