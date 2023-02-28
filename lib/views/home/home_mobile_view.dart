@@ -29,7 +29,8 @@ class HomeMobileView extends HookConsumerWidget {
           parallaxEnabled: true,
           color: Theme.of(context).primaryColor,
           panelBuilder: (sc) => LocationsSliderMobileView(sc: sc),
-          borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+          borderRadius:
+              const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
           body: Stack(
             children: [
               Lottie.asset(Assets.backgroundElements),
@@ -49,7 +50,8 @@ class HomeMobileView extends HookConsumerWidget {
                             highlightColor: Palette.purple.withOpacity(0.2),
                             splashColor: Palette.purple.withOpacity(0.1),
                             splashFactory: InkRipple.splashFactory,
-                            onTap: () => isConnected ? vpnStore.disconnect() : vpnStore.connect(null),
+                            onTap: () =>
+                                isConnected ? vpnStore.disconnect() : vpnStore.connect(null),
                             child: Lottie.asset(
                               isConnected ? Assets.circlesPurple : Assets.circlesGrey,
                               alignment: Alignment.center,
@@ -60,7 +62,8 @@ class HomeMobileView extends HookConsumerWidget {
                           width: 100,
                           height: 100,
                           child: ConnectButton(
-                            callback: () => isConnected ? vpnStore.disconnect() : vpnStore.connect(null),
+                            callback: () =>
+                                isConnected ? vpnStore.disconnect() : vpnStore.connect(null),
                             isConnected: isConnected,
                             height: con.maxHeight,
                             width: con.maxHeight,
