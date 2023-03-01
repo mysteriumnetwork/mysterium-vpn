@@ -15,6 +15,12 @@ mixin _$VpnStore on _VpnStore, Store {
   bool get isConnected => (_$isConnectedComputed ??=
           Computed<bool>(() => super.isConnected, name: '_VpnStore.isConnected'))
       .value;
+  Computed<bool>? _$isLoadingComputed;
+
+  @override
+  bool get isLoading =>
+      (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading, name: '_VpnStore.isLoading'))
+          .value;
 
   late final _$_durationAtom = Atom(name: '_VpnStore._duration', context: context);
 
@@ -118,11 +124,47 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_connectionStatusAtom = Atom(name: '_VpnStore._connectionStatus', context: context);
+
+  ConnectionStatus get connectionStatus {
+    _$_connectionStatusAtom.reportRead();
+    return super._connectionStatus;
+  }
+
+  @override
+  ConnectionStatus get _connectionStatus => connectionStatus;
+
+  @override
+  set _connectionStatus(ConnectionStatus value) {
+    _$_connectionStatusAtom.reportWrite(value, super._connectionStatus, () {
+      super._connectionStatus = value;
+    });
+  }
+
+  late final _$_connectingLocationCodeAtom =
+      Atom(name: '_VpnStore._connectingLocationCode', context: context);
+
+  String get connectingLocationCode {
+    _$_connectingLocationCodeAtom.reportRead();
+    return super._connectingLocationCode;
+  }
+
+  @override
+  String get _connectingLocationCode => connectingLocationCode;
+
+  @override
+  set _connectingLocationCode(String value) {
+    _$_connectingLocationCodeAtom.reportWrite(value, super._connectingLocationCode, () {
+      super._connectingLocationCode = value;
+    });
+  }
+
   late final _$connectAsyncAction = AsyncAction('_VpnStore.connect', context: context);
 
   @override
-  Future<void> connect(String? country) {
-    return _$connectAsyncAction.run(() => super.connect(country));
+  Future<void> connect(
+      {Location location = const Location(countryName: 'Austria', countryCode: 'at')}) {
+    return _$connectAsyncAction.run(() => super.connect(location: location));
   }
 
   late final _$changeProtocolAsyncAction =
@@ -158,7 +200,8 @@ mixin _$VpnStore on _VpnStore, Store {
   @override
   String toString() {
     return '''
-isConnected: ${isConnected}
+isConnected: ${isConnected},
+isLoading: ${isLoading}
     ''';
   }
 }

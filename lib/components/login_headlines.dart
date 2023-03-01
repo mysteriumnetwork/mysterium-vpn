@@ -7,35 +7,32 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class LoginHeadlines extends HookConsumerWidget {
-  const LoginHeadlines({super.key, this.alignment = Alignment.centerLeft});
-  final Alignment alignment;
+  const LoginHeadlines({super.key, this.alignment = CrossAxisAlignment.start});
+  final CrossAxisAlignment alignment;
   @override
-  Widget build(BuildContext context, WidgetRef ref) => Center(
-        child: ListView(
-          shrinkWrap: true,
+  Widget build(BuildContext context, WidgetRef ref) => FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: alignment,
           children: [
             HeadlineText(
               text: LocaleKeys.anonymous.tr(),
               color: Palette.purple,
-              alignment: alignment,
             ),
             HeadlineText(
               text: LocaleKeys.affordable.tr(),
-              alignment: alignment,
             ),
             HeadlineText(
               text: LocaleKeys.fast.tr(),
-              alignment: alignment,
             ),
             HeadlineText(
               text: LocaleKeys.secure.tr(),
-              alignment: alignment,
             ),
             HeadlineText(
               text: LocaleKeys.loginQuote.tr(),
-              alignment: alignment,
-              maxLines: 2,
-              fontSize: 12,
+              maxLines: 3,
+              fontSize: 14,
               fontWeight: FontWeight.w500,
             ).padding(vertical: 20),
           ],

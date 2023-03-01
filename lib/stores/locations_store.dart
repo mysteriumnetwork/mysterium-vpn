@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/mock.dart';
 import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/models/recent_location.dart';
 
 part 'locations_store.g.dart';
 
@@ -21,7 +20,7 @@ abstract class _LocationsStore with Store {
 
   List<Location> topLocations = [];
 
-  List<RecentLocation> recentLocations = [];
+  List<Location> recentLocations = [];
 
   List<Location> allLocations = [];
 
@@ -31,7 +30,7 @@ abstract class _LocationsStore with Store {
   ObservableFuture<List<Location>> fetchTopLocationsFuture = emptyLocations;
 
   @observable
-  ObservableFuture<List<RecentLocation>> fetchRecentLocationsFeature = emptyRecentLocations;
+  ObservableFuture<List<Location>> fetchRecentLocationsFeature = emptyRecentLocations;
 
   @observable
   ObservableFuture<List<Location>> fetchAllLocationsFuture = emptyLocations;
@@ -55,7 +54,7 @@ abstract class _LocationsStore with Store {
       fetchRecentLocationsFeature.status == FutureStatus.fulfilled;
 
   static ObservableFuture<List<Location>> emptyLocations = ObservableFuture.value([]);
-  static ObservableFuture<List<RecentLocation>> emptyRecentLocations = ObservableFuture.value([]);
+  static ObservableFuture<List<Location>> emptyRecentLocations = ObservableFuture.value([]);
 
   @action
   Future<List<Location>> fetchTopLocations() async {
@@ -64,7 +63,10 @@ abstract class _LocationsStore with Store {
       const Duration(seconds: 3),
       () => searchKeyword.isNotEmpty
           ? topLocationsMock
-              .where((element) => element.name.toLowerCase().contains(searchKeyword.toLowerCase()))
+              .where(
+                (element) =>
+                    element.countryName.toLowerCase().contains(searchKeyword.toLowerCase()),
+              )
               .toList()
           : topLocationsMock,
     );
@@ -80,7 +82,10 @@ abstract class _LocationsStore with Store {
       const Duration(seconds: 3),
       () => searchKeyword.isNotEmpty
           ? allLocationsMock
-              .where((element) => element.name.toLowerCase().contains(searchKeyword.toLowerCase()))
+              .where(
+                (element) =>
+                    element.countryName.toLowerCase().contains(searchKeyword.toLowerCase()),
+              )
               .toList()
           : allLocationsMock,
     );
@@ -90,13 +95,16 @@ abstract class _LocationsStore with Store {
   }
 
   @action
-  Future<List<RecentLocation>> fetchRecentLocations() async {
+  Future<List<Location>> fetchRecentLocations() async {
     recentLocations = [];
     final future = Future.delayed(
       const Duration(seconds: 3),
       () => searchKeyword.isNotEmpty
           ? recentLocationsMock
-              .where((element) => element.name.toLowerCase().contains(searchKeyword.toLowerCase()))
+              .where(
+                (element) =>
+                    element.countryName.toLowerCase().contains(searchKeyword.toLowerCase()),
+              )
               .toList()
           : recentLocationsMock,
     );

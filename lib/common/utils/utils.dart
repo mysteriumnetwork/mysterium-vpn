@@ -7,7 +7,6 @@ import 'package:mysterium_vpn/common/breakpoints/screen_breakpoints.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_size_breakpoints.dart';
 import 'package:mysterium_vpn/common/configurations/breakpoint_configuration.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
 
 bool checkMediaWidth(BuildContext context, double width) =>
     MediaQuery.of(context).size.width < width;
@@ -247,25 +246,6 @@ T getValueForSizeType<T>({
 
   // If none of the layouts above are supplied or we're on the normal size layout then we show the normal layout
   return normal;
-}
-
-String? getCountryFlag(String countryName) {
-  switch (countryName.toLowerCase()) {
-    case 'france':
-      return Assets.france;
-    case 'germany':
-      return Assets.germany;
-    case 'italy':
-      return Assets.italy;
-    case 'ukraine':
-      return Assets.ukraine;
-    case 'austria':
-      return Assets.austria;
-    case 'poland':
-      return Assets.poland;
-    default:
-      return null;
-  }
 }
 
 bool isDekstop() => Platform.isWindows || Platform.isLinux || Platform.isMacOS;

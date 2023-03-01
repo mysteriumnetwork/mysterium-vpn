@@ -1,17 +1,15 @@
+import 'package:circle_flags/circle_flags.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/svg_icon.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class Flag extends StatelessWidget {
   const Flag({
-    required this.country,
+    required this.countryCode,
     super.key,
   });
-  final String country;
+  final String countryCode;
   @override
-  Widget build(BuildContext context) {
-    final flag = getCountryFlag(country);
-    return flag == null ? const SizedBox.shrink() : SvgIcon(asset: flag).clipOval();
-  }
+  Widget build(BuildContext context) => CircleFlag(
+        countryCode,
+        size: 20,
+      );
 }

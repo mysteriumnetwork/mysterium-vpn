@@ -25,25 +25,20 @@ class HomeDesktopRightPanel extends ConsumerWidget {
             Column(
               children: [
                 const MobileConnectionStatusBar(),
-                LayoutBuilder(
-                  builder: (context, con) => Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Lottie.asset(
-                        isConnected ? Assets.circlesPurple : Assets.circlesGrey,
-                        alignment: Alignment.center,
-                      ),
-                      ConnectButton(
-                        callback: () {
-                          isConnected ? vpnStore.disconnect() : vpnStore.connect(null);
-                        },
-                        isConnected: isConnected,
-                        height: con.maxHeight,
-                        width: con.maxHeight,
-                      )
-                    ],
-                  ).padding(vertical: 40),
-                ).expanded(),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Lottie.asset(
+                      isConnected ? Assets.circlesPurple : Assets.circlesGrey,
+                      alignment: Alignment.center,
+                    ),
+                    ConnectButton(
+                      onPressed: () {
+                        isConnected ? vpnStore.disconnect() : vpnStore.connect();
+                      },
+                    ),
+                  ],
+                ).padding(vertical: 40).expanded(),
                 const ConnectionInfoPanelDesktop().height(148),
               ],
             ).padding(horizontal: 40, vertical: 20),

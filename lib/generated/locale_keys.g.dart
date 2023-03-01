@@ -30,6 +30,8 @@ abstract class LocaleKeys {
   static const location = 'location';
   static const disconnected = 'disconnected';
   static const connected = 'connected';
+  static const disconnecting = 'disconnecting';
+  static const connecting = 'connecting';
   static const duration = 'duration';
   static const download = 'download';
   static const upload = 'upload';

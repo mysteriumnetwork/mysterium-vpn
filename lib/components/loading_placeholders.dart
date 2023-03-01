@@ -39,7 +39,7 @@ class RecentLocationPlaceholder extends StatelessWidget {
               ),
             )
           ],
-        ).padding(horizontal: 10, vertical: 4).width(100),
+        ).padding(horizontal: 10, vertical: 4).width(110),
       ).card().padding(right: 15);
 }
 

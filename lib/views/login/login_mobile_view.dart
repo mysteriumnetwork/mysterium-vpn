@@ -33,7 +33,7 @@ class LoginMobileView extends HookConsumerWidget {
               children: <Widget>[
                 const Expanded(
                   child: LoginHeadlines(
-                    alignment: Alignment.center,
+                    alignment: CrossAxisAlignment.center,
                   ),
                 ),
                 Container(
@@ -50,6 +50,8 @@ class LoginMobileView extends HookConsumerWidget {
                       EasyButton(
                         width: getMediaWidth(context) * 0.8,
                         height: 60,
+                        useSystemColor: false,
+                        color: Palette.purple,
                         text: LocaleKeys.signIn.tr(),
                         onPressed: authStore.login,
                       ).padding(bottom: 20),
@@ -60,7 +62,7 @@ class LoginMobileView extends HookConsumerWidget {
                         text: LocaleKeys.getStarted.tr(),
                         onPressed: () {
                           if (Platform.isAndroid || Platform.isIOS) {
-                            _showSignInView(context);
+                            _showSignUpView(context);
                           }
                         },
                       ).padding(bottom: 20),
@@ -83,7 +85,7 @@ class LoginMobileView extends HookConsumerWidget {
     );
   }
 
-  void _showSignInView(BuildContext context) {
+  void _showSignUpView(BuildContext context) {
     showBarModalBottomSheet(
       expand: false,
       context: context,
@@ -91,7 +93,7 @@ class LoginMobileView extends HookConsumerWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
       ),
-      builder: (context) => const SignUpPage(),
+      builder: (context) => const SignUpPage().height(getMediaHeight(context) * 0.85),
     );
   }
 }
