@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 
 ThemeData themeData(Palette palette) => ThemeData(
@@ -19,10 +20,7 @@ ThemeData themeData(Palette palette) => ThemeData(
       hintColor: palette.darkTextColor,
       secondaryHeaderColor: palette.lightTextColor,
       highlightColor: palette.highlightColor.withOpacity(0.4),
-      //hoverColor: palette.secondaryColor,
-      disabledColor: palette.darkTextColor,
-      //cardColor:
-      //canvasColor: isDarkTheme ? Colors.black : Colors.grey[50],
+      disabledColor: palette.disabledColor.darken(palette is LightPalette ? 10 : 30),
       buttonTheme: ButtonThemeData(
         colorScheme: palette is LightPalette ? const ColorScheme.dark() : const ColorScheme.light(),
       ),
