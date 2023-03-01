@@ -37,33 +37,18 @@ class HomeMobileView extends HookConsumerWidget {
                 children: [
                   const HomeMobileAppBar(),
                   const MobileConnectionStatusBar(),
-                  LayoutBuilder(
-                    builder: (context, con) => Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Material(
-                          color: Colors.transparent,
-                          shape: const CircleBorder(),
-                          clipBehavior: Clip.hardEdge,
-                          child: InkWell(
-                            onTap: () =>
-                                isConnected ? vpnStore.disconnect() : vpnStore.connect(null),
-                            child: Lottie.asset(
-                              isConnected ? Assets.circlesPurple : Assets.circlesGrey,
-                              alignment: Alignment.center,
-                            ),
-                          ),
-                        ),
-                        ConnectButton(
-                          callback: () =>
-                              isConnected ? vpnStore.disconnect() : vpnStore.connect(null),
-                          isConnected: isConnected,
-                          height: con.maxHeight,
-                          width: con.maxHeight,
-                        ),
-                      ],
-                    ).padding(bottom: 20),
-                  ).expanded(),
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Lottie.asset(
+                        isConnected ? Assets.circlesPurple : Assets.circlesGrey,
+                        alignment: Alignment.center,
+                      ),
+                      ConnectButton(
+                        onPressed: () => isConnected ? vpnStore.disconnect() : vpnStore.connect(),
+                      ),
+                    ],
+                  ).padding(bottom: 20).expanded(),
                   const ConnectionInfoPanelMobile().height(95),
                 ],
               ).height(getMediaHeight(context) * 0.66 - getWindowPadding().top),

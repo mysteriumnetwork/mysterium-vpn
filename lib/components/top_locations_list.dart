@@ -47,7 +47,7 @@ class TopLocationsList extends StatelessWidget {
 
               return LocationItem(
                 location: location,
-                onTap: () => vpnStore.connect(location.name),
+                onTap: () => vpnStore.connect(location: location),
               );
             },
           );

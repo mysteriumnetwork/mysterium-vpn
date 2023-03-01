@@ -26,11 +26,11 @@ class RecentLocationsList extends StatelessWidget {
               shrinkWrap: true,
               controller: ScrollController(),
               scrollDirection: Axis.horizontal,
-              itemCount: 7,
+              itemCount: 4,
               itemBuilder: (_, __) => RecentLocationPlaceholder(
                 color: Theme.of(context).colorScheme.secondary,
               ),
-            ).height(100);
+            ).height(110);
           }
           if (locationsStore.recentLocations.isEmpty) {
             return EasyText(
@@ -49,10 +49,11 @@ class RecentLocationsList extends StatelessWidget {
 
               return RecentLocationItem(
                 location: location,
-                onTap: () async => vpnStore.connect(location.name),
+                vpnStore: vpnStore,
+                onTap: () async => vpnStore.connect(location: location),
               );
             },
-          ).height(100);
+          ).height(110);
         },
       );
 }
