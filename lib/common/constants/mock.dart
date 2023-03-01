@@ -5,7 +5,7 @@ const List<Location> recentLocationsMock = [
   Location(countryName: 'Germany', countryCode: 'de', duration: Duration(minutes: 45)),
   Location(countryName: 'Italy', countryCode: 'it', duration: Duration(hours: 1, minutes: 30)),
   Location(
-      countryName: 'France', countryCode: 'fr', duration: Duration(days: 1, hours: 1, minutes: 30)),
+      countryName: 'France', countryCode: 'fr', duration: Duration(days: 1, hours: 1, minutes: 30),),
 ];
 
 const List<Location> topLocationsMock = [
