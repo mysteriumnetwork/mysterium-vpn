@@ -49,7 +49,8 @@ abstract class _VpnStore with Store {
   bool get isConnected => _connectionStatus == ConnectionStatus.connected;
   @computed
   bool get isLoading =>
-      _connectionStatus == ConnectionStatus.disconnecting || _connectionStatus == ConnectionStatus.connecting;
+      _connectionStatus == ConnectionStatus.disconnecting ||
+      _connectionStatus == ConnectionStatus.connecting;
   @readonly
   String _connectingLocationCode = '';
   @action
