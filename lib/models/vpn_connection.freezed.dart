@@ -21,8 +21,7 @@ VpnConnection _$VpnConnectionFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$VpnConnection {
   String get connectionIP => throw _privateConstructorUsedError;
-  ConnectionStatus get connectionStatus => throw _privateConstructorUsedError;
-  String get location => throw _privateConstructorUsedError;
+  Location get location => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +33,9 @@ abstract class $VpnConnectionCopyWith<$Res> {
   factory $VpnConnectionCopyWith(VpnConnection value, $Res Function(VpnConnection) then) =
       _$VpnConnectionCopyWithImpl<$Res, VpnConnection>;
   @useResult
-  $Res call({String connectionIP, ConnectionStatus connectionStatus, String location});
+  $Res call({String connectionIP, Location location});
+
+  $LocationCopyWith<$Res> get location;
 }
 
 /// @nodoc
@@ -51,7 +52,6 @@ class _$VpnConnectionCopyWithImpl<$Res, $Val extends VpnConnection>
   @override
   $Res call({
     Object? connectionIP = null,
-    Object? connectionStatus = null,
     Object? location = null,
   }) {
     return _then(_value.copyWith(
@@ -59,15 +59,19 @@ class _$VpnConnectionCopyWithImpl<$Res, $Val extends VpnConnection>
           ? _value.connectionIP
           : connectionIP // ignore: cast_nullable_to_non_nullable
               as String,
-      connectionStatus: null == connectionStatus
-          ? _value.connectionStatus
-          : connectionStatus // ignore: cast_nullable_to_non_nullable
-              as ConnectionStatus,
       location: null == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Location,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $LocationCopyWith<$Res> get location {
+    return $LocationCopyWith<$Res>(_value.location, (value) {
+      return _then(_value.copyWith(location: value) as $Val);
+    });
   }
 }
 
@@ -77,7 +81,10 @@ abstract class _$$_VpnConnectionCopyWith<$Res> implements $VpnConnectionCopyWith
       __$$_VpnConnectionCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String connectionIP, ConnectionStatus connectionStatus, String location});
+  $Res call({String connectionIP, Location location});
+
+  @override
+  $LocationCopyWith<$Res> get location;
 }
 
 /// @nodoc
@@ -91,7 +98,6 @@ class __$$_VpnConnectionCopyWithImpl<$Res>
   @override
   $Res call({
     Object? connectionIP = null,
-    Object? connectionStatus = null,
     Object? location = null,
   }) {
     return _then(_$_VpnConnection(
@@ -99,14 +105,10 @@ class __$$_VpnConnectionCopyWithImpl<$Res>
           ? _value.connectionIP
           : connectionIP // ignore: cast_nullable_to_non_nullable
               as String,
-      connectionStatus: null == connectionStatus
-          ? _value.connectionStatus
-          : connectionStatus // ignore: cast_nullable_to_non_nullable
-              as ConnectionStatus,
       location: null == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Location,
     ));
   }
 }
@@ -114,21 +116,18 @@ class __$$_VpnConnectionCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_VpnConnection implements _VpnConnection {
-  const _$_VpnConnection(
-      {required this.connectionIP, required this.connectionStatus, required this.location});
+  const _$_VpnConnection({required this.connectionIP, required this.location});
 
   factory _$_VpnConnection.fromJson(Map<String, dynamic> json) => _$$_VpnConnectionFromJson(json);
 
   @override
   final String connectionIP;
   @override
-  final ConnectionStatus connectionStatus;
-  @override
-  final String location;
+  final Location location;
 
   @override
   String toString() {
-    return 'VpnConnection(connectionIP: $connectionIP, connectionStatus: $connectionStatus, location: $location)';
+    return 'VpnConnection(connectionIP: $connectionIP, location: $location)';
   }
 
   @override
@@ -137,14 +136,12 @@ class _$_VpnConnection implements _VpnConnection {
         (other.runtimeType == runtimeType &&
             other is _$_VpnConnection &&
             (identical(other.connectionIP, connectionIP) || other.connectionIP == connectionIP) &&
-            (identical(other.connectionStatus, connectionStatus) ||
-                other.connectionStatus == connectionStatus) &&
             (identical(other.location, location) || other.location == location));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, connectionIP, connectionStatus, location);
+  int get hashCode => Object.hash(runtimeType, connectionIP, location);
 
   @JsonKey(ignore: true)
   @override
@@ -162,18 +159,14 @@ class _$_VpnConnection implements _VpnConnection {
 
 abstract class _VpnConnection implements VpnConnection {
   const factory _VpnConnection(
-      {required final String connectionIP,
-      required final ConnectionStatus connectionStatus,
-      required final String location}) = _$_VpnConnection;
+      {required final String connectionIP, required final Location location}) = _$_VpnConnection;
 
   factory _VpnConnection.fromJson(Map<String, dynamic> json) = _$_VpnConnection.fromJson;
 
   @override
   String get connectionIP;
   @override
-  ConnectionStatus get connectionStatus;
-  @override
-  String get location;
+  Location get location;
   @override
   @JsonKey(ignore: true)
   _$$_VpnConnectionCopyWith<_$_VpnConnection> get copyWith => throw _privateConstructorUsedError;

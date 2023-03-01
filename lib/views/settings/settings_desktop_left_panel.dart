@@ -1,5 +1,9 @@
+import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/enums/routes.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/app_version.dart';
 import 'package:mysterium_vpn/components/desktop_page_header.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -17,7 +21,12 @@ class SettingsDesktopLeftPanel extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const DesktopPageHeader().padding(bottom: 40),
+          DesktopPageHeader(
+            onPressed: () {
+              context.beamToReplacementNamed(Routes.reportIssue.toRoute);
+            },
+            asset: Assets.reportPurple,
+          ).padding(bottom: 40),
           ListView(
             shrinkWrap: true,
             children: [
@@ -27,14 +36,14 @@ class SettingsDesktopLeftPanel extends StatelessWidget {
                 onTap: () => settingCategory.value = SettingCategory.connection,
               ),
               CategoryItem(
-                isSelected: settingCategory.value == SettingCategory.account,
-                title: SettingCategory.account.trKey.tr(),
-                onTap: () => settingCategory.value = SettingCategory.account,
-              ),
-              CategoryItem(
                 isSelected: settingCategory.value == SettingCategory.application,
                 title: SettingCategory.application.trKey.tr(),
                 onTap: () => settingCategory.value = SettingCategory.application,
+              ),
+              CategoryItem(
+                isSelected: settingCategory.value == SettingCategory.account,
+                title: SettingCategory.account.trKey.tr(),
+                onTap: () => settingCategory.value = SettingCategory.account,
               ),
             ],
           ).expanded(),

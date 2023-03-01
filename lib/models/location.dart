@@ -6,7 +6,9 @@ part 'location.g.dart';
 @freezed
 class Location with _$Location {
   const factory Location({
-    required String name,
+    required String countryCode,
+    required String countryName,
+    Duration? duration,
   }) = _Location;
 
   factory Location.fromJson(Map<String, Object?> json) => _$LocationFromJson(json);

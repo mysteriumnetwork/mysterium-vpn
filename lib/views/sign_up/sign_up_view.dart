@@ -11,6 +11,7 @@ class SignUpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        backgroundColor: Theme.of(context).primaryColor,
         body: SafeArea(
           bottom: false,
           child: Padding(
@@ -22,7 +23,7 @@ class SignUpView extends StatelessWidget {
                     LocaleKeys.signUp.tr(),
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
-                  ).padding(bottom: 30),
+                  ).padding(bottom: 20),
                   Wrap(
                     spacing: 4,
                     runSpacing: 4,
@@ -39,12 +40,12 @@ class SignUpView extends StatelessWidget {
                         onTap: () {},
                       ),
                     ],
-                  ).padding(bottom: 30),
+                  ).padding(bottom: 50),
                   const SignUpForm(),
                 ],
               ),
             ),
           ),
         ),
-      ).height(MediaQuery.of(context).size.height * .8);
+      );
 }

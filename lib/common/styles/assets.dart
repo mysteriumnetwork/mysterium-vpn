@@ -2,9 +2,12 @@ abstract class Assets {
   //LOGO
   static const String logoBlackSvg = 'assets/logo/logo_black.svg';
   static const String logoWhiteSvg = 'assets/logo/logo_white.svg';
+  static const String logoGrey = 'assets/logo/logo_grey.svg';
 
   //IMAGES
   static const String checkEmail = 'assets/images/check_email.svg';
+  static const String reportDark = 'assets/images/report_dark.svg';
+  static const String reportLight = 'assets/images/report_light.svg';
 
   //ICONS
   static const String messageSvg = 'assets/icons/message.svg';
@@ -22,7 +25,11 @@ abstract class Assets {
   static const String settingsLightBlack = 'assets/icons/settings_light_black.svg';
   static const String uploadActive = 'assets/icons/upload_active.svg';
   static const String upload = 'assets/icons/upload.svg';
-  static const String connectButton = 'assets/icons/connect_button.svg';
+  static const String powerOn = 'assets/icons/power_on.svg';
+  static const String powerOff = 'assets/icons/power_off.svg';
+  static const String powerConnecting = 'assets/icons/power_connecting.svg';
+  static const String nodePowerOff = 'assets/icons/node_power_off.svg';
+  static const String nodePowerOn = 'assets/icons/node_power_on.svg';
   static const String navigateBack = 'assets/icons/navigate_back.svg';
   static const String navigateBackLightBlack = 'assets/icons/navigate_back_light_grey.svg';
   static const String accountNameDark = 'assets/icons/account_name_dark.svg';
@@ -40,14 +47,6 @@ abstract class Assets {
   static const String themeDark = 'assets/icons/theme_dark.svg';
   static const String themeLight = 'assets/icons/theme_light.svg';
   static const String warning = 'assets/icons/warning.svg';
-
-  //FLAGS
-  static const String austria = 'assets/flags/austria.svg';
-  static const String france = 'assets/flags/france.svg';
-  static const String germany = 'assets/flags/germany.svg';
-  static const String italy = 'assets/flags/italy.svg';
-  static const String poland = 'assets/flags/poland.svg';
-  static const String ukraine = 'assets/flags/ukraine.svg';
 
   //Animations
   static const String backgroundElements = 'assets/animations/background_elements.json';

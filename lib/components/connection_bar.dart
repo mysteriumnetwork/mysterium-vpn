@@ -22,19 +22,23 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
         final vpnConnection = vpnStore.vpnConnection;
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _BarItem(label: LocaleKeys.connection_ip.tr(), text: vpnConnection.connectionIP),
             _BarItem(
               label: LocaleKeys.status.tr(),
-              text: vpnStore.isConnected ? LocaleKeys.connected.tr() : LocaleKeys.disconnected.tr(),
+              text: vpnStore.connectionStatus.name.tr(),
+              isConnected: vpnStore.isConnected,
               leading: ConnectionIndicator(
                 isConnected: vpnStore.isConnected,
               ),
             ),
             _BarItem(
               label: LocaleKeys.location.tr(),
-              text: vpnConnection.location,
-              leading: Flag(country: vpnStore.vpnConnection.location),
+              text: vpnConnection.location.countryName,
+              leading: vpnStore.isConnected
+                  ? Flag(countryCode: vpnStore.vpnConnection.location.countryCode)
+                  : null,
             )
           ],
         ).padding(vertical: 20);
@@ -47,12 +51,14 @@ class _BarItem extends StatelessWidget {
   const _BarItem({
     required this.label,
     required this.text,
+    this.isConnected = false,
     this.leading,
   });
 
   final String label;
   final Widget? leading;
   final String text;
+  final bool isConnected;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -63,17 +69,26 @@ class _BarItem extends StatelessWidget {
             fontWeight: FontWeight.w400,
             fontSize: 10,
           ).padding(bottom: 4),
-          Row(
-            children: [
-              if (leading != null) leading!.padding(right: 4),
-              EasyText(
-                text,
-                color: Palette.white,
-                fontWeight: FontWeight.w500,
-                fontSize: 12,
-              ),
-            ],
-          ),
+          if (isConnected)
+            EasyText(
+              text,
+              color: Palette.white,
+            ).padding(horizontal: 8, vertical: 2).decorated(
+                  color: Palette.green,
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                )
+          else
+            Row(
+              children: [
+                if (leading != null) leading!.padding(right: 4),
+                EasyText(
+                  text,
+                  color: Palette.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 12,
+                ),
+              ],
+            ),
         ],
       );
 }

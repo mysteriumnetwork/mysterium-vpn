@@ -10,11 +10,10 @@ import 'package:styled_widget/styled_widget.dart';
 class HeadlineText extends ConsumerWidget {
   const HeadlineText({
     required this.text,
-    required this.alignment,
     this.color,
     this.maxLines = 1,
-    this.fontSize = 40,
-    this.fontWeight = FontWeight.w800,
+    this.fontSize = 50,
+    this.fontWeight = FontWeight.w900,
     super.key,
   });
 
@@ -23,7 +22,7 @@ class HeadlineText extends ConsumerWidget {
   final double fontSize;
   final FontWeight fontWeight;
   final int maxLines;
-  final Alignment alignment;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.read(themeStorePOD);
@@ -38,7 +37,7 @@ class HeadlineText extends ConsumerWidget {
           fontSize: fontSize,
           fontWeight: fontWeight,
           maxLines: maxLines,
-        ).alignment(alignment).padding(vertical: 6);
+        ).padding(vertical: 6);
       },
     );
   }

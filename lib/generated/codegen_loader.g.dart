@@ -44,6 +44,8 @@ class CodegenLoader extends AssetLoader {
     "location": "Location",
     "disconnected": "Disconnected",
     "connected": "Connected",
+    "disconnecting": "Disconnecting",
+    "connecting": "Connecting",
     "duration": "Duration",
     "download": "Download",
     "upload": "Upload",
