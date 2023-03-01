@@ -63,8 +63,10 @@ abstract class _LocationsStore with Store {
       const Duration(seconds: 3),
       () => searchKeyword.isNotEmpty
           ? topLocationsMock
-              .where((element) =>
-                  element.countryName.toLowerCase().contains(searchKeyword.toLowerCase()),)
+              .where(
+                (element) =>
+                    element.countryName.toLowerCase().contains(searchKeyword.toLowerCase()),
+              )
               .toList()
           : topLocationsMock,
     );
@@ -80,8 +82,10 @@ abstract class _LocationsStore with Store {
       const Duration(seconds: 3),
       () => searchKeyword.isNotEmpty
           ? allLocationsMock
-              .where((element) =>
-                  element.countryName.toLowerCase().contains(searchKeyword.toLowerCase()),)
+              .where(
+                (element) =>
+                    element.countryName.toLowerCase().contains(searchKeyword.toLowerCase()),
+              )
               .toList()
           : allLocationsMock,
     );
@@ -97,8 +101,10 @@ abstract class _LocationsStore with Store {
       const Duration(seconds: 3),
       () => searchKeyword.isNotEmpty
           ? recentLocationsMock
-              .where((element) =>
-                  element.countryName.toLowerCase().contains(searchKeyword.toLowerCase()),)
+              .where(
+                (element) =>
+                    element.countryName.toLowerCase().contains(searchKeyword.toLowerCase()),
+              )
               .toList()
           : recentLocationsMock,
     );
