@@ -13,7 +13,7 @@ abstract class Palette {
   static const Color pink = Color(0xffF44D89);
   static const Color lightPurple = Color(0xffD89DE7);
   static const Color mediumBlack = Color(0xff3E3B5F);
-  static const Color green = Color(0xff93F05A);
+  static const Color green = Color(0xff4DC800);
 
   Color get highlightColor;
   Color get secondaryColor;

@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/mock.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 
 // Project imports:
@@ -20,8 +21,7 @@ abstract class _VpnStore with Store {
 
   static const VpnConnection _emptyConnection = VpnConnection(
     connectionIP: '--',
-    connectionStatus: ConnectionStatus.disconnected,
-    location: '--',
+    location: Location(countryName: '--', countryCode: '--'),
   );
 
   final random = Random();
@@ -42,23 +42,34 @@ abstract class _VpnStore with Store {
   @readonly
   VpnConnection _vpnConnection = _emptyConnection;
 
-  @computed
-  bool get isConnected => _vpnConnection.connectionStatus == ConnectionStatus.connected;
+  @readonly
+  ConnectionStatus _connectionStatus = ConnectionStatus.disconnected;
 
+  @computed
+  bool get isConnected => _connectionStatus == ConnectionStatus.connected;
+  @computed
+  bool get isLoading =>
+      _connectionStatus == ConnectionStatus.disconnecting ||
+      _connectionStatus == ConnectionStatus.connecting;
+  @readonly
+  String _connectingLocationCode = '';
   @action
-  Future<void> connect(String? country) async {
-    if (_vpnConnection.location == country) {
+  Future<void> connect(
+      {Location location = const Location(countryName: '--', countryCode: '--')}) async {
+    if (_vpnConnection.location == location) {
       return;
     }
+    _connectingLocationCode = location.countryCode;
     if (_vpnConnection != _emptyConnection) {
       await disconnect();
     }
-    await Future.delayed(const Duration(seconds: 1));
+    _connectionStatus = ConnectionStatus.connecting;
+    await Future.delayed(const Duration(seconds: 3));
     _vpnConnection = VpnConnection(
       connectionIP: '185.358.45.304',
-      connectionStatus: ConnectionStatus.connected,
-      location: country ?? 'Austria',
+      location: location,
     );
+    _connectionStatus = ConnectionStatus.connected;
     await startTracking();
   }
 
@@ -74,7 +85,7 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> startTracking() async {
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+    _timer = Timer.periodic(const Duration(seconds: 3), (_) {
       _duration = Duration(seconds: (_duration?.inSeconds ?? 0) + 1);
       _uploadSpeed = random.nextDouble() * 600;
       _downloadSpeed = random.nextDouble() * 600;
@@ -83,12 +94,14 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> disconnect() async {
+    _connectionStatus = ConnectionStatus.disconnecting;
     await Future.delayed(const Duration(seconds: 1));
     _vpnConnection = _emptyConnection;
     _timer?.cancel();
     _downloadSpeed = null;
     _uploadSpeed = null;
     _duration = null;
+    _connectionStatus = ConnectionStatus.disconnected;
   }
 
   Future<void> dispose() async {
