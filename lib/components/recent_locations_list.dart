@@ -34,7 +34,7 @@ class RecentLocationsList extends StatelessWidget {
           }
           if (locationsStore.recentLocations.isEmpty) {
             return EasyText(
-              'We could not find any recent locations for keyword: ${locationsStore.searchKeyword} ',
+              'We could not find any recent locations for keyword: ${locationsStore.searchTopKeyword} ',
               color: Theme.of(context).colorScheme.error,
             );
           }

@@ -33,7 +33,7 @@ class TopLocationsList extends StatelessWidget {
 
           if (locationsStore.topLocations.isEmpty) {
             return EasyText(
-              'We could not find any locations for keyword: ${locationsStore.searchKeyword}',
+              'We could not find any locations for keyword: ${locationsStore.searchTopKeyword}',
               color: Theme.of(context).colorScheme.error,
             );
           }
@@ -47,6 +47,7 @@ class TopLocationsList extends StatelessWidget {
 
               return LocationItem(
                 location: location,
+                vpnStore: vpnStore,
                 onTap: () => vpnStore.connect(location: location),
               );
             },

@@ -68,7 +68,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
                       locationsStore.showAllLocations
                           ? LocaleKeys.browseTop.tr()
                           : LocaleKeys.browseAll.tr(),
-                      color: Palette.pink,
+                      color: Palette.purple,
                     ),
                   ),
                 ],
