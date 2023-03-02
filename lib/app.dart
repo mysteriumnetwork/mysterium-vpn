@@ -37,7 +37,9 @@ class MyApp extends HookConsumerWidget {
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: localStore.currentLocale,
-            backButtonDispatcher: BeamerBackButtonDispatcher(delegate: routeDelegate),
+            backButtonDispatcher: BeamerBackButtonDispatcher(
+              delegate: routeDelegate,
+            ),
           ),
         ),
       ),

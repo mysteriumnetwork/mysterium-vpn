@@ -18,7 +18,8 @@ class SearchField extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final controller = useTextEditingController(
-        text: store.showAllLocations ? store.searchAllKeyword : store.searchTopKeyword);
+      text: store.showAllLocations ? store.searchAllKeyword : store.searchTopKeyword,
+    );
     return ReactionBuilder(
       builder: (context) => reaction((_) => store.showAllLocations, (value) {
         controller.text = store.showAllLocations ? store.searchAllKeyword : store.searchTopKeyword;
