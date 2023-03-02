@@ -59,7 +59,10 @@ class RecentLocationItem extends StatelessWidget {
           ).padding(left: 12, right: 6, bottom: 4).width(110),
         )
             .card(
-              elevation: 4,
+              elevation: 1,
+              color: vpnStore.isLoading
+                  ? Theme.of(context).disabledColor
+                  : Theme.of(context).cardColor,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             )
             .paddingDirectional(end: 10),

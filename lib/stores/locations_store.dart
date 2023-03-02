@@ -13,6 +13,7 @@ abstract class _LocationsStore with Store {
   _LocationsStore() {
     fetchRecentLocations();
     fetchTopLocations();
+    fetchAllLocations();
   }
 
   @observable
@@ -36,7 +37,9 @@ abstract class _LocationsStore with Store {
   ObservableFuture<List<Location>> fetchAllLocationsFuture = emptyLocations;
 
   @observable
-  String searchKeyword = '';
+  String searchTopKeyword = '';
+  @observable
+  String searchAllKeyword = '';
 
   @computed
   bool get hasTopLocationsResults =>
@@ -61,11 +64,11 @@ abstract class _LocationsStore with Store {
     topLocations = [];
     final future = Future.delayed(
       const Duration(seconds: 3),
-      () => searchKeyword.isNotEmpty
+      () => searchTopKeyword.isNotEmpty
           ? topLocationsMock
               .where(
                 (element) =>
-                    element.countryName.toLowerCase().contains(searchKeyword.toLowerCase()),
+                    element.countryName.toLowerCase().contains(searchTopKeyword.toLowerCase()),
               )
               .toList()
           : topLocationsMock,
@@ -80,11 +83,11 @@ abstract class _LocationsStore with Store {
     allLocations = [];
     final future = Future.delayed(
       const Duration(seconds: 3),
-      () => searchKeyword.isNotEmpty
+      () => searchAllKeyword.isNotEmpty
           ? allLocationsMock
               .where(
                 (element) =>
-                    element.countryName.toLowerCase().contains(searchKeyword.toLowerCase()),
+                    element.countryName.toLowerCase().contains(searchAllKeyword.toLowerCase()),
               )
               .toList()
           : allLocationsMock,
@@ -99,11 +102,11 @@ abstract class _LocationsStore with Store {
     recentLocations = [];
     final future = Future.delayed(
       const Duration(seconds: 3),
-      () => searchKeyword.isNotEmpty
+      () => searchTopKeyword.isNotEmpty
           ? recentLocationsMock
               .where(
                 (element) =>
-                    element.countryName.toLowerCase().contains(searchKeyword.toLowerCase()),
+                    element.countryName.toLowerCase().contains(searchTopKeyword.toLowerCase()),
               )
               .toList()
           : recentLocationsMock,
@@ -116,7 +119,6 @@ abstract class _LocationsStore with Store {
   @action
   void toggleShowAllLocations() {
     showAllLocations = !showAllLocations;
-    setLocationKeyword('', 0);
   }
 
   @action
@@ -125,11 +127,12 @@ abstract class _LocationsStore with Store {
       _debounce?.cancel();
     }
     _debounce = Timer(Duration(milliseconds: duration), () {
-      searchKeyword = text.trim();
       if (showAllLocations) {
+        searchAllKeyword = text.trim();
         fetchAllLocations();
         return;
       }
+      searchTopKeyword = text.trim();
       fetchRecentLocations();
       fetchTopLocations();
     });
