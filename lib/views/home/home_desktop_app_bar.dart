@@ -1,4 +1,5 @@
 import 'package:beamer/beamer.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -24,6 +25,13 @@ class HomeDesktopAppBar extends ConsumerWidget {
         Observer(
           builder: (context) => Row(
             children: [
+              if (kDebugMode)
+                SvgIconButton(
+                  onPressed: () {
+                    context.beamToNamed(Routes.subscription.toRoute);
+                  },
+                  asset: Assets.subscriptionItem,
+                ),
               SvgIconButton(
                 onPressed: () {
                   context.beamToNamed(Routes.reportIssue.toRoute);
