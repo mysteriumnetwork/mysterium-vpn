@@ -90,7 +90,38 @@ class CodegenLoader extends AssetLoader {
     "system": "Use prefered system theme",
     "dark": "Dark Theme",
     "light": "Light Theme",
-    "back": "Back"
+    "back": "Back",
+    "subscription_desktop":
+        "We are currently handling our subscription plan on macos/windows through our website. Please visit our website to subscribe to our plans.",
+    "subscripton": "Subscription",
+    "selectPackage": "Select your Package",
+    "monthlyPlan": "Monthly Plan",
+    "semiAnnualPlan": "Semi-Annual Plan",
+    "annualPlan": "Annual Plan",
+    "price": "${price} /Month",
+    "discount": "${discount}",
+    "freeTrialTittle": "7-Day Free Trial - No Commitment",
+    "freeTrialDesc": "Start your trial today and cancel at any time  before the 7-day period ends",
+    "startTrialBtn": "Start 7-day Free Trial",
+    "popular": "Popular",
+    "continueBtn": "Continue",
+    "emailCommunication": "Email Communication",
+    "emailCommunicationDesc1":
+        "We'd like to be able to send you occasional, informative emails related specifically to the Moleskine Digital Studio suite of apps. ",
+    "emailCommunicationDesc2":
+        "You can change your decision at any time via the Accounts menu in the app, or within the emails themselves.",
+    "questions": "Questions?",
+    "tap": "Tap ",
+    "here": "here",
+    "moreInfo": " for more informations",
+    "almostThere": "Almost there!",
+    "dontMissOut": "Don't miss out on what's new!",
+    "freeBlinks": "Free Blinks just for you",
+    "showUpdates": "Shortcast show updates & reminders",
+    "handyFeatures": "News on handy features",
+    "recommendations": "Content recommendations just for you",
+    "turnOnNotificationsBtn": "Turn on notifications",
+    "maybeLaterBtn": "Maybe later"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
