@@ -7,4 +7,5 @@ enum Routes {
   splash,
   settings,
   reportIssue,
+  subscription,
 }
