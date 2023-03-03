@@ -35,6 +35,7 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
         pathPatterns: [
           Routes.home.toRoute,
           Routes.settings.toRoute,
+          Routes.subscription.toRoute,
         ],
         check: (context, state) => authStore.authStatus == AuthStatus.authenticated,
         beamToNamed: (_, __) => Routes.login.toRoute,
