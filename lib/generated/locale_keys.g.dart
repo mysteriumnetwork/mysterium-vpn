@@ -25,7 +25,7 @@ abstract class LocaleKeys {
   static const linkExpires = 'linkExpires';
   static const goCheckYourEmail = 'goCheckYourEmail';
   static const emailSentTo = 'emailSentTo';
-  static const connection_ip = 'connection_ip';
+  static const connectionIp = 'connectionIp';
   static const status = 'status';
   static const location = 'location';
   static const disconnected = 'disconnected';
@@ -46,8 +46,8 @@ abstract class LocaleKeys {
   static const germany = 'germany';
   static const history = 'history';
   static const browseAll = 'browseAll';
-  static const top_locations = 'top_locations';
-  static const all_locations = 'all_locations';
+  static const topLocations = 'topLocations';
+  static const allLocations = 'allLocations';
   static const browseTop = 'browseTop';
   static const settings = 'settings';
   static const connection = 'connection';
@@ -60,7 +60,7 @@ abstract class LocaleKeys {
   static const account = 'account';
   static const myBillingPackage = 'myBillingPackage';
   static const goToBillingPage = 'goToBillingPage';
-  static const open_billing_plans = 'open_billing_plans';
+  static const openBillingPlans = 'openBillingPlans';
   static const accountName = 'accountName';
   static const logout = 'logout';
   static const cancelMyAccount = 'cancelMyAccount';
@@ -77,14 +77,14 @@ abstract class LocaleKeys {
   static const dark = 'dark';
   static const light = 'light';
   static const back = 'back';
-  static const subscription_desktop = 'subscription_desktop';
+  static const subscriptionDesktop = 'subscriptionDesktop';
   static const subscripton = 'subscripton';
   static const selectPackage = 'selectPackage';
-  static const monthlyPlan = 'monthlyPlan';
-  static const semiAnnualPlan = 'semiAnnualPlan';
-  static const annualPlan = 'annualPlan';
-  static const price = 'price';
-  static const discount = 'discount';
+  static const monthly_plan = 'monthly_plan';
+  static const semi_annual_plan = 'semi_annual_plan';
+  static const annual_plan = 'annual_plan';
+  static const currentPrice = 'currentPrice';
+  static const originalMonthlyPrice = 'originalMonthlyPrice';
   static const freeTrialTittle = 'freeTrialTittle';
   static const freeTrialDesc = 'freeTrialDesc';
   static const startTrialBtn = 'startTrialBtn';
@@ -105,4 +105,17 @@ abstract class LocaleKeys {
   static const recommendations = 'recommendations';
   static const turnOnNotificationsBtn = 'turnOnNotificationsBtn';
   static const maybeLaterBtn = 'maybeLaterBtn';
+  static const connectingToPaymentProcesor = 'connectingToPaymentProcesor';
+  static const unableToConnectToPaymentProcesor = 'unableToConnectToPaymentProcesor';
+  static const gettingYourPlan = 'gettingYourPlan';
+  static const unableToGetPlans = 'unableToGetPlans';
+  static const tryAgainBtn = 'tryAgainBtn';
+  static const billedInTotal = 'billedInTotal';
+  static const monthly = 'monthly';
+  static const semiAnnual = 'semiAnnual';
+  static const yearly = 'yearly';
+  static const productsNotAvailable = 'productsNotAvailable';
+  static const purchased = 'purchased';
+  static const manageBtn = 'manageBtn';
+  static const changeSubPlan = 'changeSubPlan';
 }
