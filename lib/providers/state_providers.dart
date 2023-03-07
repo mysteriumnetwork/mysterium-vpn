@@ -5,9 +5,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/router/router.dart';
+import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
+import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 // final wireguardStorePOD = Provider<WireguardStore>((ref) {
@@ -24,6 +26,15 @@ final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
 final vpnStorePOD = Provider.autoDispose<VpnStore>((ref) => VpnStore());
 
 final locationsStorePOD = Provider<LocationsStore>((ref) => LocationsStore());
+
+final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
+  final inAppPurchase = ref.read(inAppPurchasePOD);
+  final subscriptionService = ref.read(subscriptionServicePOD);
+  return SubscriptionStore(
+    inAppPurchase: inAppPurchase,
+    subscriptionService: subscriptionService,
+  );
+});
 
 final routeInformationParserPOD = Provider((ref) => BeamerParser());
 

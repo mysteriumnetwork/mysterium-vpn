@@ -53,4 +53,16 @@ class SharedPreferenceService {
 
   Future<bool> setThemeType(ThemeMode themeMode) async =>
       setString(StorageKeys.themeMype.value, themeMode.value);
+
+  //Only for testing
+  Future<bool> setSubscriptionPlan(
+    String productId,
+    String purchaseId,
+  ) async {
+    await setString(StorageKeys.subscriptionPlanProductId.value, productId);
+    return setString(StorageKeys.subscriptionPlanPurchaseId.value, purchaseId);
+  }
+
+  String? getSubscriptionProductId() => getString(StorageKeys.subscriptionPlanProductId.value);
+  String? getSubscriptionPurchaseId() => getString(StorageKeys.subscriptionPlanProductId.value);
 }
