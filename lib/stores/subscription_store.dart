@@ -150,6 +150,7 @@ abstract class _SubscriptionStore with Store {
               ? ProductStatus.purchased
               : ProductStatus.purchasable;
         }
+        _purchasedProductId = purchaseDetails.productID;
       }
     }
 
