@@ -30,7 +30,7 @@ class HomeMobileAppBar extends StatelessWidget {
                     context.beamToNamed(Routes.subscription.toRoute);
                   },
                   asset: Assets.subscriptionItem,
-                ),
+                ).width(40),
               SvgIconButton(
                 onPressed: () {
                   context.beamToNamed(Routes.settings.toRoute);

@@ -20,7 +20,7 @@ class SubscriptionAppBar extends StatelessWidget {
             asset: Assets.navigateBack,
           ),
           const AppLogo(),
-          const SizedBox(),
+          const SizedBox(width: 40)
         ],
-      ).padding(horizontal: 20, top: 10);
+      ).padding(horizontal: 10, top: 10);
 }
