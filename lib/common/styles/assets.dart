@@ -49,6 +49,7 @@ abstract class Assets {
   static const String themeLight = 'assets/icons/theme_light.svg';
   static const String warning = 'assets/icons/warning.svg';
   static const String subscriptionItem = 'assets/icons/subscription_item.svg';
+  static const String checkmark = 'assets/icons/checkmark.svg';
 
   //Animations
   static const String backgroundElements = 'assets/animations/background_elements.json';
