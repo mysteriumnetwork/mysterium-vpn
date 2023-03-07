@@ -20,7 +20,7 @@ class SubscriptionDesktopView extends ConsumerWidget {
       header: SubscriptionAppBar(authStore: authStore),
       child: Center(
         child: EasyText(
-          LocaleKeys.subscription_desktop.tr(),
+          LocaleKeys.subscriptionDesktop.tr(),
           maxLines: 4,
           color: Palette.purple,
           textAlign: TextAlign.center,
