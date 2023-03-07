@@ -56,8 +56,9 @@ class RestSubscriptionService extends SubscriptionService {
         final androidAddition =
             _inAppPurchase.getPlatformAddition<InAppPurchaseAndroidPlatformAddition>();
         final oldPurchases = await androidAddition.queryPastPurchases();
-        details = oldPurchases.pastPurchases.firstWhereOrNull((element) =>
-            element.productID == purchasedProductId && element.purchaseID == purchaseId);
+        details = oldPurchases.pastPurchases.firstWhereOrNull(
+          (element) => element.productID == purchasedProductId && element.purchaseID == purchaseId,
+        );
       }
 
       purchaseParam = GooglePlayPurchaseParam(
