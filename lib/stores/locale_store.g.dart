@@ -20,7 +20,7 @@ mixin _$LocaleStore on _LocaleStore, Store {
   Locale get _currentLocale => currentLocale;
 
   @override
-  set _currentLocale(dynamic value) {
+  set _currentLocale(Locale value) {
     _$_currentLocaleAtom.reportWrite(value, super._currentLocale, () {
       super._currentLocale = value;
     });
@@ -29,7 +29,7 @@ mixin _$LocaleStore on _LocaleStore, Store {
   late final _$setLocaleAsyncAction = AsyncAction('_LocaleStore.setLocale', context: context);
 
   @override
-  Future<void> setLocale(dynamic locale) {
+  Future<void> setLocale(Locale locale) {
     return _$setLocaleAsyncAction.run(() => super.setLocale(locale));
   }
 
