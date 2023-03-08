@@ -31,12 +31,14 @@ class SubscriptionForm extends HookConsumerWidget {
         ).padding(bottom: getMediaHeight(context) * 0.02),
         Observer(
           builder: (context) {
-            if (!store.hasProductsDetailsResults) {
+            final featureStatus = store.productsDetailsFuture?.status;
+
+            if (featureStatus == FutureStatus.pending) {
               return LoadingIndicator(
                 message: LocaleKeys.gettingYourPlan.tr(),
               );
-            } else if (store.isAvailableFuture.status == FutureStatus.rejected) {
-              RetryOnErrorWidget(
+            } else if (featureStatus == FutureStatus.rejected) {
+              return RetryOnErrorWidget(
                 error: LocaleKeys.unableToGetPlans.tr(),
                 onRetry: store.getProductsDetails,
               );
@@ -83,6 +85,6 @@ class SubscriptionForm extends HookConsumerWidget {
           },
         ),
       ],
-    ).scrollable().padding(horizontal: 20);
+    );
   }
 }

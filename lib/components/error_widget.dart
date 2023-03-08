@@ -16,17 +16,20 @@ class RetryOnErrorWidget extends StatelessWidget {
   final VoidCallback onRetry;
   @override
   Widget build(BuildContext context) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           EasyText(
             error,
             maxLines: 4,
             color: Palette.pink,
             textAlign: TextAlign.center,
+            fontWeight: FontWeight.w700,
           ).padding(bottom: 20),
           EasyButton(
+            width: 200,
             text: LocaleKeys.tryAgainBtn.tr(),
             onPressed: onRetry,
-          ),
+          )
         ],
       ).paddingDirectional(all: 20).center();
 }

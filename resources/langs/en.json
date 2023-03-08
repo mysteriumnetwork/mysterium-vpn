@@ -106,7 +106,7 @@
   "connectingToPaymentProcesor": "Connecting to payment procesor...",
   "unableToConnectToPaymentProcesor": "Unable to connect to payment procesor! Please try again.",
   "gettingYourPlan": "Fetching payment plans...",
-  "unableToGetPlans": "Unable to connect to payment procesor! Please try again.",
+  "unableToGetPlans": "Unable to get subscription plans! Please try again.",
   "tryAgainBtn": "Try again",
   "billedInTotal":"{amount} - Billed {period}",
   "monthly": "Monthly",
