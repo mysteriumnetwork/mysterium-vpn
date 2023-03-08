@@ -21,12 +21,22 @@ class HomeMobileAppBar extends StatelessWidget {
             asset: Assets.report,
           ),
           const AppLogo(),
-          SvgIconButton(
-            onPressed: () {
-              context.beamToNamed(Routes.settings.toRoute);
-            },
-            asset: Assets.settings,
-          )
+          Row(
+            children: [
+              SvgIconButton(
+                onPressed: () {
+                  context.beamToNamed(Routes.subscription.toRoute);
+                },
+                asset: Assets.subscriptionItem,
+              ).width(40),
+              SvgIconButton(
+                onPressed: () {
+                  context.beamToNamed(Routes.settings.toRoute);
+                },
+                asset: Assets.settings,
+              )
+            ],
+          ),
         ],
       ).padding(horizontal: 20, top: 10);
 }

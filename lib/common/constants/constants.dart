@@ -1,8 +1,30 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-final List<Locale> supportedLocales = [
-  fallbackLocale,
+final List<Locale> kSupportedLocales = [
+  kFallbackLocale,
   const Locale('es'),
 ];
 
-const fallbackLocale = Locale('en');
+const kFallbackLocale = Locale('en');
+
+const String ksemiAnnualPlan = 'semi_annual_plan';
+const String kMonthlyPlan = 'monthly_plan';
+const String kAnnualPlan = 'annual_plan';
+const String ksemiAnnualPlanAndroid = 'semi-annual-plan';
+const String kMonthlyPlanAndroid = 'monthly-plan';
+const String kAnnualPlanAndroid = 'annual-plan';
+const String kPopularPlan = ksemiAnnualPlan;
+List<String> kProductIds = <String>[
+  if (defaultTargetPlatform == TargetPlatform.iOS) ...[
+    kMonthlyPlan,
+    ksemiAnnualPlan,
+    kAnnualPlan,
+  ] else if (defaultTargetPlatform == TargetPlatform.android) ...[
+    kMonthlyPlanAndroid,
+    ksemiAnnualPlanAndroid,
+    kAnnualPlanAndroid,
+  ],
+];
+
+const baseUrl = 'https://thanaa.kfshrc.edu.sa/api';

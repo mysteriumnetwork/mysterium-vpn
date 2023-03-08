@@ -8,6 +8,7 @@ abstract class Assets {
   static const String checkEmail = 'assets/images/check_email.svg';
   static const String reportDark = 'assets/images/report_dark.svg';
   static const String reportLight = 'assets/images/report_light.svg';
+  static const String notifications = 'assets/images/notifications.svg';
 
   //ICONS
   static const String messageSvg = 'assets/icons/message.svg';
@@ -47,6 +48,8 @@ abstract class Assets {
   static const String themeDark = 'assets/icons/theme_dark.svg';
   static const String themeLight = 'assets/icons/theme_light.svg';
   static const String warning = 'assets/icons/warning.svg';
+  static const String subscriptionItem = 'assets/icons/subscription_item.svg';
+  static const String checkmark = 'assets/icons/checkmark.svg';
 
   //Animations
   static const String backgroundElements = 'assets/animations/background_elements.json';

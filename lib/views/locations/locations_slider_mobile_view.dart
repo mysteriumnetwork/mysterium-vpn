@@ -56,9 +56,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   EasyText(
-                    showAllLocations
-                        ? LocaleKeys.all_locations.tr()
-                        : LocaleKeys.top_locations.tr(),
+                    showAllLocations ? LocaleKeys.allLocations.tr() : LocaleKeys.topLocations.tr(),
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                   ),

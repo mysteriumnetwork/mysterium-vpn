@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/connection_indicator.dart';
+import 'package:mysterium_vpn/components/decorated_label.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/flag.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -24,7 +25,7 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _BarItem(label: LocaleKeys.connection_ip.tr(), text: vpnConnection.connectionIP),
+            _BarItem(label: LocaleKeys.connectionIp.tr(), text: vpnConnection.connectionIP),
             _BarItem(
               label: LocaleKeys.status.tr(),
               text: vpnStore.connectionStatus.name.tr(),
@@ -70,13 +71,10 @@ class _BarItem extends StatelessWidget {
             fontSize: 10,
           ).padding(bottom: 4),
           if (isConnected)
-            EasyText(
-              text,
-              color: Palette.white,
-            ).padding(horizontal: 8, vertical: 2).decorated(
-                  color: Palette.green,
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                )
+            DecoratedLabel(
+              text: text,
+              color: Palette.green,
+            )
           else
             Row(
               children: [

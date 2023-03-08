@@ -32,9 +32,9 @@ void main() async {
   runApp(
     ProviderScope(
       child: EasyLocalization(
-        supportedLocales: supportedLocales,
+        supportedLocales: kSupportedLocales,
         path: Assets.langs,
-        fallbackLocale: fallbackLocale,
+        fallbackLocale: kFallbackLocale,
         assetLoader: const CodegenLoader(),
         child: const MyApp(),
       ),

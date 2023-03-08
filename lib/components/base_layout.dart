@@ -5,26 +5,27 @@ import 'package:styled_widget/styled_widget.dart';
 class BaseLayout extends StatelessWidget {
   const BaseLayout({
     required this.child,
-    required this.headerTitle,
+    this.headerTitle = '',
+    this.header,
     super.key,
   });
   final Widget child;
   final String headerTitle;
-
+  final Widget? header;
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          PageHeader(headerTitle: headerTitle).padding(bottom: 40),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-              ),
-            ),
-            child: child,
-          ).expanded(),
+          if (header != null) header! else PageHeader(headerTitle: headerTitle),
+          child
+              .decorated(
+                color: Theme.of(context).primaryColor,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
+              )
+              .padding(top: 40)
+              .expanded(),
         ],
       );
 }
