@@ -26,6 +26,12 @@ class HomeDesktopAppBar extends ConsumerWidget {
             children: [
               SvgIconButton(
                 onPressed: () {
+                  context.beamToNamed(Routes.subscription.toRoute);
+                },
+                asset: Assets.subscriptionItem,
+              ),
+              SvgIconButton(
+                onPressed: () {
                   context.beamToNamed(Routes.reportIssue.toRoute);
                 },
                 asset: Assets.reportPurple,

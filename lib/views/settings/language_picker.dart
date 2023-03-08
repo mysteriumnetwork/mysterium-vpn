@@ -23,7 +23,7 @@ class LanguagePicker extends StatelessWidget {
           await store.setLocale(newLocale);
           return;
         },
-        items: supportedLocales
+        items: kSupportedLocales
             .map<DropdownMenuItem<Locale>>(
               (locale) => DropdownMenuItem<Locale>(
                 value: locale,

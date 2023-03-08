@@ -21,7 +21,7 @@ abstract class _LocaleStore with Store {
   @action
   Future<void> setLocale(Locale locale) async {
     // Set the locale if it's in our list of supported locales
-    if (supportedLocales.contains(locale)) {
+    if (kSupportedLocales.contains(locale)) {
       await _sharedPrefs.setLocale(locale);
       _currentLocale = locale;
     }

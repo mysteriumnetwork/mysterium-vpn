@@ -1,3 +1,5 @@
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/models/location.dart';
 
 const List<Location> recentLocationsMock = [
@@ -53,4 +55,35 @@ final List<String> protocols = [
   'Protocol 3',
   'Protocol 4',
   'Protocol 5',
+];
+
+ProductDetailsResponse productDetailsResponse = ProductDetailsResponse(
+  productDetails: products,
+  notFoundIDs: [],
+);
+List<ProductDetails> products = [
+  ProductDetails(
+    currencyCode: 'USD',
+    price: r'$9.99',
+    title: 'Monthly Plan',
+    description: 'Monthly',
+    id: kMonthlyPlan,
+    rawPrice: 9.99,
+  ),
+  ProductDetails(
+    currencyCode: 'USD',
+    price: r'$49.99',
+    title: 'Semi-Annual Plan',
+    description: 'Semi-Annual Plan',
+    id: ksemiAnnualPlan,
+    rawPrice: 49.99,
+  ),
+  ProductDetails(
+    currencyCode: 'USD',
+    price: r'$759.98',
+    title: 'Annual Plan',
+    description: 'Annual Plan',
+    id: kAnnualPlan,
+    rawPrice: 59.98,
+  ),
 ];
