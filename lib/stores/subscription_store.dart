@@ -41,9 +41,6 @@ abstract class _SubscriptionStore with Store {
   @observable
   ObservableFuture<List<PurchasableProduct>>? productsDetailsFuture;
 
-  @computed
-  bool get hasProductsDetailsResults => productsDetailsFuture?.status == FutureStatus.fulfilled;
-
   @readonly
   StoreState _isAvailable = StoreState.loading;
 
@@ -58,9 +55,7 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<void> checkAvailability() async {
-    isAvailableFuture = ObservableFuture(
-      Future.delayed(const Duration(seconds: 2), _inAppPurchase.isAvailable),
-    );
+    isAvailableFuture = ObservableFuture(_inAppPurchase.isAvailable());
     final res = await isAvailableFuture;
     if (res) {
       getProductsDetails();
@@ -115,9 +110,7 @@ abstract class _SubscriptionStore with Store {
 
   @action
   void _updateStreamOnError(error) {
-    if (kDebugMode) {
-      print(error);
-    }
+    _subscription.cancel();
   }
 
   @action

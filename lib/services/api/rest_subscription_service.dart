@@ -80,22 +80,26 @@ class RestSubscriptionService extends SubscriptionService {
 
   @override
   Future<List<PurchasableProduct>> getProductsDetails() async {
-    final purchasedProductId = _sharedPrefs.getSubscriptionPurchaseId();
+    try {
+      final purchasedProductId = _sharedPrefs.getSubscriptionPurchaseId();
 
-    final res = await _inAppPurchase.queryProductDetails(kProductIds.toSet());
+      final res = await _inAppPurchase.queryProductDetails(kProductIds.toSet());
 
-    if (res.notFoundIDs.isNotEmpty) {
-      throw PackageNotFoundException();
+      if (res.notFoundIDs.isNotEmpty) {
+        throw PackageNotFoundException();
+      }
+      res.productDetails.sortByCompare((e) => e.rawPrice, (a, b) => a.compareTo(b));
+      return res.productDetails
+          .map(
+            (e) => PurchasableProduct(
+              productDetails: e,
+              status:
+                  purchasedProductId == e.id ? ProductStatus.purchased : ProductStatus.purchasable,
+            ),
+          )
+          .toList();
+    } on Exception catch (_) {
+      rethrow;
     }
-    res.productDetails.sortByCompare((e) => e.rawPrice, (a, b) => a.compareTo(b));
-    return res.productDetails
-        .map(
-          (e) => PurchasableProduct(
-            productDetails: e,
-            status:
-                purchasedProductId == e.id ? ProductStatus.purchased : ProductStatus.purchasable,
-          ),
-        )
-        .toList();
   }
 }

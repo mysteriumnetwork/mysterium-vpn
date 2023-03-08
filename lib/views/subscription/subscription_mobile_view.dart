@@ -10,7 +10,6 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/subscription/subscription_app_bar.dart';
 import 'package:mysterium_vpn/views/subscription/subscription_form.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class SubscriptionMobileView extends ConsumerWidget {
   const SubscriptionMobileView({super.key});
@@ -23,24 +22,22 @@ class SubscriptionMobileView extends ConsumerWidget {
     return BaseLayout(
       header: SubscriptionAppBar(authStore: authStore),
       child: Observer(
-        builder: (context) => Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (subscriptionStore.isAvailable == StoreState.loading)
-              LoadingIndicator(
-                message: LocaleKeys.connectingToPaymentProcesor.tr(),
-              )
-            else if (subscriptionStore.isAvailable == StoreState.notAvailable)
-              RetryOnErrorWidget(
-                error: LocaleKeys.unableToConnectToPaymentProcesor.tr(),
-                onRetry: subscriptionStore.checkAvailability,
-              )
-            else
-              SubscriptionForm(
-                store: subscriptionStore,
-              ).expanded()
-          ],
-        ),
+        builder: (context) {
+          if (subscriptionStore.isAvailable == StoreState.loading) {
+            return LoadingIndicator(
+              message: LocaleKeys.connectingToPaymentProcesor.tr(),
+            );
+          } else if (subscriptionStore.isAvailable == StoreState.notAvailable) {
+            return RetryOnErrorWidget(
+              error: LocaleKeys.unableToConnectToPaymentProcesor.tr(),
+              onRetry: subscriptionStore.checkAvailability,
+            );
+          } else {
+            return SubscriptionForm(
+              store: subscriptionStore,
+            );
+          }
+        },
       ),
     );
   }
