@@ -10,8 +10,8 @@ import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
-import 'package:mysterium_vpn/services/api/subscription_service.dart';
 import 'package:mysterium_vpn/services/shared_preferences_service.dart';
+import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 
 const kGetInfo = '$baseUrl/accounts/invitation_code';
 
@@ -84,6 +84,7 @@ class RestSubscriptionService extends SubscriptionService {
       final purchasedProductId = _sharedPrefs.getSubscriptionPurchaseId();
 
       final res = await _inAppPurchase.queryProductDetails(kProductIds.toSet());
+      //final res = await Future.delayed(const Duration(seconds: 3), () => productDetailsResponse);
 
       if (res.notFoundIDs.isNotEmpty) {
         throw PackageNotFoundException();
