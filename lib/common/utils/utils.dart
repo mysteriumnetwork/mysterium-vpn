@@ -251,3 +251,17 @@ T getValueForSizeType<T>({
 bool isDekstop() => Platform.isWindows || Platform.isLinux || Platform.isMacOS;
 
 bool isMobile() => Platform.isAndroid || Platform.isIOS;
+
+TargetPlatform getPlatform() {
+  if (Platform.isAndroid) {
+    return TargetPlatform.android;
+  } else if (Platform.isIOS) {
+    return TargetPlatform.iOS;
+  } else if (Platform.isMacOS) {
+    return TargetPlatform.macOS;
+  } else if (Platform.isWindows) {
+    return TargetPlatform.windows;
+  } else {
+    return defaultTargetPlatform;
+  }
+}
