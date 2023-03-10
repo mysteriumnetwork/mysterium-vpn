@@ -6,7 +6,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
-import 'package:mysterium_vpn/services/api/subscription_service.dart';
+import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 
 // Include generated file
 part 'subscription_store.g.dart';
