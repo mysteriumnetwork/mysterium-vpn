@@ -8,3 +8,7 @@ FormGroup singUp() => FormGroup({
 FormGroup reportIssue() => FormGroup({
       'report_issue': FormControl<String>(validators: [Validators.required]),
     });
+
+FormGroup approval() => FormGroup({
+      'approval': FormControl<bool>(value: true),
+    });

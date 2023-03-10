@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 final List<Locale> kSupportedLocales = [
@@ -16,14 +17,14 @@ const String kMonthlyPlanAndroid = 'monthly-plan';
 const String kAnnualPlanAndroid = 'annual-plan';
 const String kPopularPlan = ksemiAnnualPlan;
 List<String> kProductIds = <String>[
-  if (defaultTargetPlatform == TargetPlatform.iOS) ...[
-    kMonthlyPlan,
-    ksemiAnnualPlan,
-    kAnnualPlan,
-  ] else if (defaultTargetPlatform == TargetPlatform.android) ...[
+  if (Platform.isAndroid) ...[
     kMonthlyPlanAndroid,
     ksemiAnnualPlanAndroid,
     kAnnualPlanAndroid,
+  ] else ...[
+    kMonthlyPlan,
+    ksemiAnnualPlan,
+    kAnnualPlan,
   ],
 ];
 
