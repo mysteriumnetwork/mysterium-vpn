@@ -43,22 +43,26 @@ abstract class _RestStore with Store {
   @action
   Future<void> checkEmailCommunicationApproval() async {
     emailCommunicationApprovalFuture = ObservableFuture(
-        Future.delayed(const Duration(seconds: 3), _apiService.getEmailCommunicationApproval),);
+      Future.delayed(const Duration(seconds: 3), _apiService.getEmailCommunicationApproval),
+    );
     _emailCommunicationApproval = await emailCommunicationApprovalFuture!;
   }
 
   @action
   Future<void> checkNotificationsApproval() async {
     notificationsApprovalFuture = ObservableFuture(
-        Future.delayed(const Duration(seconds: 3), _apiService.geNotificationsApproval),);
+      Future.delayed(const Duration(seconds: 3), _apiService.geNotificationsApproval),
+    );
     _notificationsApproval = await notificationsApprovalFuture!;
   }
 
   @action
   Future<void> setEmailCommunicationApproval({required bool status}) async {
     setEmailCommunicationApprovalFuture = ObservableFuture(
-      Future.delayed(const Duration(seconds: 3),
-          () => _apiService.setEmailCommunicationApproval(approval: status),),
+      Future.delayed(
+        const Duration(seconds: 3),
+        () => _apiService.setEmailCommunicationApproval(approval: status),
+      ),
     );
     await setEmailCommunicationApprovalFuture;
   }
@@ -66,8 +70,10 @@ abstract class _RestStore with Store {
   @action
   Future<void> setNotificationsApproval({required bool status}) async {
     setNotificationsApprovalFuture = ObservableFuture(
-      Future.delayed(const Duration(seconds: 3),
-          () => _apiService.setEmailCommunicationApproval(approval: status),),
+      Future.delayed(
+        const Duration(seconds: 3),
+        () => _apiService.setEmailCommunicationApproval(approval: status),
+      ),
     );
     await setNotificationsApprovalFuture;
   }

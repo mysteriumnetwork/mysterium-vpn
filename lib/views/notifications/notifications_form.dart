@@ -63,7 +63,11 @@ class NotificationsForm extends HookConsumerWidget {
                   onPressed: status != FutureStatus.pending
                       ? () async {
                           setNotificationApproval(
-                              store: store, status: true, context: context, isMounted: isMounted,);
+                            store: store,
+                            status: true,
+                            context: context,
+                            isMounted: isMounted,
+                          );
                         }
                       : null,
                   child: status != FutureStatus.pending
@@ -81,7 +85,11 @@ class NotificationsForm extends HookConsumerWidget {
                     child: EasyText(LocaleKeys.maybeLaterBtn.tr()),
                     onPressed: () {
                       setNotificationApproval(
-                          store: store, status: false, context: context, isMounted: isMounted,);
+                        store: store,
+                        status: false,
+                        context: context,
+                        isMounted: isMounted,
+                      );
                     },
                   ),
               ],
