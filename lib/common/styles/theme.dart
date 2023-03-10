@@ -43,7 +43,7 @@ ThemeData themeData(Palette palette) => ThemeData(
           borderRadius: BorderRadius.circular(3),
         ),
         fillColor: MaterialStateProperty.all(Palette.pink),
-        overlayColor: MaterialStateProperty.all(Palette.pink),
+        overlayColor: MaterialStateProperty.all(Palette.transparent),
         checkColor: MaterialStateProperty.all(Palette.white),
       ),
       switchTheme: SwitchThemeData(
