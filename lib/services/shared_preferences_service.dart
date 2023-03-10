@@ -65,4 +65,12 @@ class SharedPreferenceService {
 
   String? getSubscriptionProductId() => getString(StorageKeys.subscriptionPlanProductId.value);
   String? getSubscriptionPurchaseId() => getString(StorageKeys.subscriptionPlanProductId.value);
+
+  Future<bool> setEmailCommunicationApproval({required bool approval}) async =>
+      setBool(StorageKeys.emailCommunicationApproval.value, value: approval);
+
+  Future<bool> setNotificationsApproval({required bool approval}) async =>
+      setBool(StorageKeys.notificationsApproval.value, value: approval);
+  bool? getEmailCommunicationApproval() => getBool(StorageKeys.emailCommunicationApproval.value);
+  bool? getNotificationsApproval() => getBool(StorageKeys.notificationsApproval.value);
 }
