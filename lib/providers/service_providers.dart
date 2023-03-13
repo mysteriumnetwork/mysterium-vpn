@@ -8,8 +8,10 @@
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:mysterium_vpn/services/api/rest_subscription_service.dart';
-import 'package:mysterium_vpn/services/api/subscription_service.dart';
+import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/api/rest_api_service.dart';
+import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
+import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 
 final inAppPurchasePOD = Provider(
   (ref) => InAppPurchase.instance,
@@ -28,4 +30,9 @@ final subscriptionServicePOD = Provider<SubscriptionService>((ref) {
   final dio = ref.read(dioPOD);
   final inAppPurchase = ref.read(inAppPurchasePOD);
   return RestSubscriptionService(dio: dio, inAppPurchase: inAppPurchase);
+});
+
+final apiServicePOD = Provider<ApiService>((ref) {
+  final dio = ref.read(dioPOD);
+  return RestApiService(dio: dio);
 });

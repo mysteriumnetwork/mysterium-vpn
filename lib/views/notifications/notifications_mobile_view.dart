@@ -2,44 +2,42 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/components/base_app_bar.dart';
 import 'package:mysterium_vpn/components/base_layout.dart';
 import 'package:mysterium_vpn/components/error_widget.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/views/subscription/subscription_form.dart';
+import 'package:mysterium_vpn/views/notifications/notifications_form.dart';
 
-class SubscriptionMobileView extends ConsumerWidget {
-  const SubscriptionMobileView({super.key});
+class NotificationsMobileView extends HookConsumerWidget {
+  const NotificationsMobileView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authStore = ref.watch(authStorePOD);
-    final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final apiStore = ref.watch(restApiStorePOD);
 
     return BaseLayout(
       header: BaseAppBar(
         authStore: authStore,
-        onBackButtonPressed: authStore.logout,
       ),
       child: Observer(
         builder: (context) {
-          if (subscriptionStore.isAvailable == StoreState.loading) {
+          final status = apiStore.notificationsApprovalFuture?.status;
+
+          if (status == FutureStatus.pending) {
             return LoadingIndicator(
-              message: LocaleKeys.connectingToPaymentProcesor.tr(),
+              message: LocaleKeys.checkingNotificationsApproval.tr(),
             );
-          } else if (subscriptionStore.isAvailable == StoreState.notAvailable) {
+          } else if (status == FutureStatus.rejected) {
             return RetryOnErrorWidget(
-              error: LocaleKeys.unableToConnectToPaymentProcesor.tr(),
-              onRetry: subscriptionStore.checkAvailability,
-            );
-          } else {
-            return SubscriptionForm(
-              store: subscriptionStore,
+              error: LocaleKeys.emailIsRequired.tr(),
+              onRetry: apiStore.checkNotificationsApproval,
             );
           }
+          return const NotificationsForm();
         },
       ),
     );

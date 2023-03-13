@@ -93,6 +93,10 @@ class CodegenLoader extends AssetLoader {
     "back": "Back",
     "subscriptionDesktop":
         "We are currently handling our subscription plan on macos/windows through our website. Please visit our website to subscribe to our plans.",
+    "emailCommunicationsDesktop":
+        "We are currently handling email communications through our website. Please visit our website to make changes.",
+    "notificationsDesktop":
+        "We are currently handling our notifications through our website. Please visit our website to make changes.",
     "subscripton": "Subscription",
     "selectPackage": "Select your Package",
     "monthly_plan": "Monthly Plan",
@@ -105,7 +109,7 @@ class CodegenLoader extends AssetLoader {
     "startTrialBtn": "Start 7-day Free Trial",
     "popular": "Popular",
     "continueBtn": "Continue",
-    "emailCommunication": "Email Communication",
+    "emailCommunications": "Email Communications",
     "emailCommunicationDesc1":
         "We'd like to be able to send you occasional, informative emails related specifically to the Moleskine Digital Studio suite of apps. ",
     "emailCommunicationDesc2":
@@ -125,7 +129,7 @@ class CodegenLoader extends AssetLoader {
     "connectingToPaymentProcesor": "Connecting to payment procesor...",
     "unableToConnectToPaymentProcesor": "Unable to connect to payment procesor! Please try again.",
     "gettingYourPlan": "Fetching payment plans...",
-    "unableToGetPlans": "Unable to connect to payment procesor! Please try again.",
+    "unableToGetPlans": "Unable to get subscription plans! Please try again.",
     "tryAgainBtn": "Try again",
     "billedInTotal": "{amount} - Billed {period}",
     "monthly": "Monthly",
@@ -135,7 +139,13 @@ class CodegenLoader extends AssetLoader {
         "There are no available products at the moment. Please try again later.",
     "purchased": "Purchased",
     "manageBtn": "Mange/Cancel",
-    "changeSubPlan": "Change subscription plan"
+    "changeSubPlan": "Change subscription plan",
+    "nextBtn": "Next",
+    "emaillCommunicationsApproval": "Yes, I would like to recieve communications by email",
+    "checkingEmaillCommunicationsApproval": "Checking Email communication status...",
+    "checkingNotificationsApproval": "Checking Notifications status...",
+    "errorEmaillCommunicationsApproval": "Unable to check Email communication status!",
+    "errorNotificationsApproval": "Unable to check Notifications status!"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",

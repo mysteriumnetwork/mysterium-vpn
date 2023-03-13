@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_breakpoints.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_size_breakpoints.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 
 /// A widget with a builder that provides you with the platform
 ///
@@ -21,7 +21,7 @@ class PlatformLayoutBuilder extends StatelessWidget {
   Widget build(BuildContext context) => LayoutBuilder(
         builder: (context, boxConstraints) => builder(
           context,
-          defaultTargetPlatform,
+          getPlatform(),
         ),
       );
 }

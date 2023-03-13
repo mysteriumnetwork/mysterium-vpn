@@ -9,23 +9,21 @@ class LoadingIndicator extends StatelessWidget {
   final double? radius;
   final double strokeWidth;
   @override
-  Widget build(BuildContext context) => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (message != null)
-              EasyText(
-                message!,
-                fontSize: 16,
-                fontWeight: FontWeight.w900,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-              ).padding(bottom: 15),
-            CircularProgressIndicator(
-              color: Palette.pink,
-              strokeWidth: strokeWidth,
-            ).width(radius ?? 30).height(radius ?? 30),
-          ],
-        ),
-      );
+  Widget build(BuildContext context) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (message != null)
+            EasyText(
+              message!,
+              fontSize: 16,
+              fontWeight: FontWeight.w900,
+              maxLines: 2,
+              textAlign: TextAlign.center,
+            ).padding(bottom: 15),
+          CircularProgressIndicator(
+            color: Palette.pink,
+            strokeWidth: strokeWidth,
+          ).width(radius ?? 30).height(radius ?? 30),
+        ],
+      ).center();
 }

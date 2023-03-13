@@ -4,4 +4,6 @@ enum StorageKeys {
   themeMype,
   subscriptionPlanProductId,
   subscriptionPlanPurchaseId,
+  emailCommunicationApproval,
+  notificationsApproval,
 }
