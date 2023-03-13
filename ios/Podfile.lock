@@ -11,14 +11,14 @@ PODS:
   - Firebase/Crashlytics (10.3.0):
     - Firebase/CoreOnly
     - FirebaseCrashlytics (~> 10.3.0)
-  - firebase_analytics (10.1.4):
+  - firebase_analytics (10.1.5):
     - Firebase/Analytics (= 10.3.0)
     - firebase_core
     - Flutter
-  - firebase_core (2.7.0):
+  - firebase_core (2.7.1):
     - Firebase/CoreOnly (= 10.3.0)
     - Flutter
-  - firebase_crashlytics (3.0.15):
+  - firebase_crashlytics (3.0.16):
     - Firebase/Crashlytics (= 10.3.0)
     - firebase_core
     - Flutter
@@ -173,9 +173,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   app_links: ab4ba54d10a13d45825336bc9707b5eadee81191
   Firebase: f92fc551ead69c94168d36c2b26188263860acd9
-  firebase_analytics: 4f57c422c9c6225cd5ddd5fca28f92bde5fb21b5
-  firebase_core: 128d8c43c3a453a4a67463314fc3761bedff860b
-  firebase_crashlytics: 0a99d06e38030d769021340b551d8ac4b27345fc
+  firebase_analytics: e409b2098cace68b28209f9238cce19fce542c1b
+  firebase_core: 1ae9f9aa76e6e1edc14fb181637ad466fd6c6fa4
+  firebase_crashlytics: 7fa4fcb9ebd555ac0546fd4ac9f16b4bea5c5218
   FirebaseAnalytics: 036232b6a1e2918e5f67572417be1173576245f3
   FirebaseCore: 988754646ab3bd4bdcb740f1bfe26b9f6c0d5f2a
   FirebaseCoreInternal: 29b76f784d607df8b2a1259d73c3f04f1210137b
@@ -193,6 +193,6 @@ SPEC CHECKSUMS:
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   shared_preferences_foundation: 986fc17f3d3251412d18b0265f9c64113a8c2472
 
-PODFILE CHECKSUM: 6f0526ecb8fedc4dae837f2d3adffbb877b157d5
+PODFILE CHECKSUM: 5b1dc84ad9ffbc4cb0bcea74c013e609bd5fa8f4
 
 COCOAPODS: 1.11.3

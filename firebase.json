@@ -1,0 +1,58 @@
+{
+  "flutter": {
+    "platforms": {
+      "ios": {
+        "buildConfigurations": {
+          "Debug-dev": {
+            "projectId": "mysterium-vpn-test",
+            "appId": "1:139303438361:ios:cc0a667a11731afab7c288",
+            "uploadDebugSymbols": true,
+            "serviceFileOutput": "config/dev/GoogleService-Info.plist"
+          },
+          "Release-dev": {
+            "projectId": "mysterium-vpn-test",
+            "appId": "1:139303438361:ios:cc0a667a11731afab7c288",
+            "uploadDebugSymbols": true,
+            "serviceFileOutput": "config/dev/GoogleService-Info.plist"
+          },
+          "Profile-dev": {
+            "projectId": "mysterium-vpn-test",
+            "appId": "1:139303438361:ios:cc0a667a11731afab7c288",
+            "uploadDebugSymbols": true,
+            "serviceFileOutput": "config/dev/GoogleService-Info.plist"
+          },
+          "Debug-production": {
+            "projectId": "new-mysterium-vpn",
+            "appId": "1:104590535697:ios:caac04df7c37b40af355b0",
+            "uploadDebugSymbols": true,
+            "serviceFileOutput": "config/production/GoogleService-Info.plist"
+          },
+          "Release-production": {
+            "projectId": "new-mysterium-vpn",
+            "appId": "1:104590535697:ios:caac04df7c37b40af355b0",
+            "uploadDebugSymbols": true,
+            "serviceFileOutput": "config/production/GoogleService-Info.plist"
+          },
+          "Profile-production": {
+            "projectId": "new-mysterium-vpn",
+            "appId": "1:104590535697:ios:caac04df7c37b40af355b0",
+            "uploadDebugSymbols": true,
+            "serviceFileOutput": "config/production/GoogleService-Info.plist"
+          }
+        },
+        "targets": {},
+        "default": {}
+      },
+      "macos": {
+        "buildConfigurations": {},
+        "targets": {},
+        "default": {
+          "projectId": "new-mysterium-vpn",
+          "appId": "1:104590535697:ios:caac04df7c37b40af355b0",
+          "uploadDebugSymbols": true,
+          "serviceFileOutput": "macos/Runner/GoogleService-Info.plist"
+        }
+      }
+    }
+  }
+}

@@ -194,6 +194,7 @@
 				3399D490228B24CF009A79C7 /* Run Script */,
 				7B9E9E70684397CE501A1336 /* [CP] Embed Pods Frameworks */,
 				96349604B345CA6972A6E4E1 /* [firebase_crashlytics] Crashlytics Upload Symbols */,
+				83BE6B793A1E93227092F878 /* FlutterFire: "flutterfire upload-crashlytics-symbols" */,
 			);
 			buildRules = (
 			);
@@ -319,6 +320,24 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		83BE6B793A1E93227092F878 /* FlutterFire: "flutterfire upload-crashlytics-symbols" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "FlutterFire: \"flutterfire upload-crashlytics-symbols\"";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\n#!/bin/bash\nPATH=${PATH}:/Users/kristijanmitrikeski/development/flutter/bin:/Users/kristijanmitrikeski/.pub-cache/bin:/Users/kristijanmitrikeski/development/flutter/bin:/Users/kristijanmitrikeski/.pub-cache/bin\nflutterfire upload-crashlytics-symbols --upload-symbols-script-path=$PODS_ROOT/FirebaseCrashlytics/upload-symbols --debug-symbols-path=${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME} --info-plist-path=${SRCROOT}/${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH} --platform=macos --apple-project-path=${SRCROOT} --default-config=default\n";
 		};
 		96349604B345CA6972A6E4E1 /* [firebase_crashlytics] Crashlytics Upload Symbols */ = {
 			isa = PBXShellScriptBuildPhase;
