@@ -18,7 +18,7 @@ abstract class _PurchasableProduct with Store {
   ProductStatus status;
 
   @computed
-  String get id => productDetails.id;
+  String get id => productDetails.id.replaceAll('-', '_');
   @computed
   String get title => productDetails.title;
   @computed

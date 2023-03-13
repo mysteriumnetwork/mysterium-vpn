@@ -1,8 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-package="@string/authority">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="@string/app_name"
+        android:label="Mysterium VPN"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
