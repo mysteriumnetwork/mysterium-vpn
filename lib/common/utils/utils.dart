@@ -8,9 +8,11 @@ import 'package:mysterium_vpn/common/breakpoints/screen_size_breakpoints.dart';
 import 'package:mysterium_vpn/common/configurations/breakpoint_configuration.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 
-bool checkMediaWidth(BuildContext context, double width) => MediaQuery.of(context).size.width < width;
+bool checkMediaWidth(BuildContext context, double width) =>
+    MediaQuery.of(context).size.width < width;
 
-bool checkMediaHeight(BuildContext context, double height) => MediaQuery.of(context).size.height < height;
+bool checkMediaHeight(BuildContext context, double height) =>
+    MediaQuery.of(context).size.height < height;
 
 double getMediaWidth(BuildContext context) => MediaQuery.of(context).size.width;
 

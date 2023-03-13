@@ -2,13 +2,12 @@ name: mysterium_vpn
 description: Mysterium VPN app descripton.
 
 publish_to: 'none'
-version: 1.0.7+10
+version: 1.0.6+9
 
 environment:
   sdk: '>=2.19.0 <3.0.0'
 
 dependencies:
-  app_links: ^3.4.2
   auto_size_text: ^3.0.0
   beamer: ^1.5.3
   circle_flags: ^1.0.3

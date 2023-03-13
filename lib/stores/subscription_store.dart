@@ -118,7 +118,8 @@ abstract class _SubscriptionStore with Store {
     final index = _products.indexWhere((element) => element.id == purchaseDetails.productID);
     _isSubscribing = purchaseDetails.status == PurchaseStatus.pending;
 
-    if (purchaseDetails.status == PurchaseStatus.error || purchaseDetails.status == PurchaseStatus.canceled) {
+    if (purchaseDetails.status == PurchaseStatus.error ||
+        purchaseDetails.status == PurchaseStatus.canceled) {
       _products[index].status = ProductStatus.purchasable;
       return;
     }
