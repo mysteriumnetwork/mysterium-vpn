@@ -2,8 +2,10 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
+import 'package:mysterium_vpn/pages/email_communication_page.dart';
 import 'package:mysterium_vpn/pages/home_page.dart';
 import 'package:mysterium_vpn/pages/login_page.dart';
+import 'package:mysterium_vpn/pages/notifications_page.dart';
 import 'package:mysterium_vpn/pages/report_issue_page.dart';
 import 'package:mysterium_vpn/pages/settings_page.dart';
 import 'package:mysterium_vpn/pages/static/splash_page.dart';
@@ -54,6 +56,18 @@ class BeamerLocations extends BeamLocation<BeamState> {
             key: ValueKey(Routes.subscription.toDashCase),
             title: Routes.subscription.value,
             child: const SubscriptionPage(),
+          ),
+        if (state.uri.pathSegments.contains(Routes.emailCommunications.toDashCase))
+          BeamPage(
+            key: ValueKey(Routes.emailCommunications.toDashCase),
+            title: Routes.emailCommunications.value,
+            child: const EmailCommunicationPage(),
+          ),
+        if (state.uri.pathSegments.contains(Routes.notifications.toDashCase))
+          BeamPage(
+            key: ValueKey(Routes.notifications.toDashCase),
+            title: Routes.notifications.value,
+            child: const NotificationsPage(),
           ),
       ];
 }

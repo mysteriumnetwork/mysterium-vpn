@@ -8,4 +8,6 @@ enum Routes {
   settings,
   reportIssue,
   subscription,
+  emailCommunications,
+  notifications,
 }

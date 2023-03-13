@@ -78,6 +78,8 @@ abstract class LocaleKeys {
   static const light = 'light';
   static const back = 'back';
   static const subscriptionDesktop = 'subscriptionDesktop';
+  static const emailCommunicationsDesktop = 'emailCommunicationsDesktop';
+  static const notificationsDesktop = 'notificationsDesktop';
   static const subscripton = 'subscripton';
   static const selectPackage = 'selectPackage';
   static const monthly_plan = 'monthly_plan';
@@ -90,7 +92,7 @@ abstract class LocaleKeys {
   static const startTrialBtn = 'startTrialBtn';
   static const popular = 'popular';
   static const continueBtn = 'continueBtn';
-  static const emailCommunication = 'emailCommunication';
+  static const emailCommunications = 'emailCommunications';
   static const emailCommunicationDesc1 = 'emailCommunicationDesc1';
   static const emailCommunicationDesc2 = 'emailCommunicationDesc2';
   static const questions = 'questions';
@@ -118,4 +120,10 @@ abstract class LocaleKeys {
   static const purchased = 'purchased';
   static const manageBtn = 'manageBtn';
   static const changeSubPlan = 'changeSubPlan';
+  static const nextBtn = 'nextBtn';
+  static const emaillCommunicationsApproval = 'emaillCommunicationsApproval';
+  static const checkingEmaillCommunicationsApproval = 'checkingEmaillCommunicationsApproval';
+  static const checkingNotificationsApproval = 'checkingNotificationsApproval';
+  static const errorEmaillCommunicationsApproval = 'errorEmaillCommunicationsApproval';
+  static const errorNotificationsApproval = 'errorNotificationsApproval';
 }

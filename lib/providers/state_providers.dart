@@ -9,6 +9,7 @@ import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
+import 'package:mysterium_vpn/stores/rest_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
@@ -36,6 +37,11 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   );
 });
 
+final restApiStorePOD = Provider<RestStore>((ref) {
+  final apiService = ref.read(apiServicePOD);
+  return RestStore(apiService: apiService);
+});
+
 final routeInformationParserPOD = Provider((ref) => BeamerParser());
 
 final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
@@ -47,6 +53,8 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
           Routes.home.toRoute,
           Routes.settings.toRoute,
           Routes.subscription.toRoute,
+          Routes.emailCommunications.toRoute,
+          Routes.notifications.toRoute,
         ],
         check: (context, state) => authStore.authStatus == AuthStatus.authenticated,
         beamToNamed: (_, __) => Routes.login.toRoute,
