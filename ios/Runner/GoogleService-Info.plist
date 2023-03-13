@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>104590535697-321dcucindetpslpqcgjl3t0j6d68sf1.apps.googleusercontent.com</string>
+	<string>139303438361-h8a0q4erpab3aov2dunb8bsne6bf52r3.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.104590535697-321dcucindetpslpqcgjl3t0j6d68sf1</string>
+	<string>com.googleusercontent.apps.139303438361-h8a0q4erpab3aov2dunb8bsne6bf52r3</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDfpAxPxcYK5BfP_9z2aT2-avOI3qZ5Py0</string>
+	<string>AIzaSyD_Z7KPJJDOEFgIeGue8IFZdBkmq_6cv4U</string>
 	<key>GCM_SENDER_ID</key>
-	<string>104590535697</string>
+	<string>139303438361</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.mysterium.vpn</string>
+	<string>com.mysterium.vpn.dev</string>
 	<key>PROJECT_ID</key>
-	<string>new-mysterium-vpn</string>
+	<string>mysterium-vpn-test</string>
 	<key>STORAGE_BUCKET</key>
-	<string>new-mysterium-vpn.appspot.com</string>
+	<string>mysterium-vpn-test.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:104590535697:ios:caac04df7c37b40af355b0</string>
+	<string>1:139303438361:ios:cc0a667a11731afab7c288</string>
 </dict>
 </plist>
