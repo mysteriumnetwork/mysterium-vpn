@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "139303438361",
+    "project_id": "mysterium-vpn-test",
+    "storage_bucket": "mysterium-vpn-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139303438361:android:83ba42de41fde6f3b7c288",
+        "android_client_info": {
+          "package_name": "com.mysteriumvpn.android.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "139303438361-d9b6k5bib0dhpaksrmq998f5p0q1rlj5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWAD1DgEGtBxYtCcZ-WCfkk6iDL7KniA4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "139303438361-d9b6k5bib0dhpaksrmq998f5p0q1rlj5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "139303438361-09n597vlncsgq7j5qqrc2c2buucjke86.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mysterium.vpn"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -53,8 +53,7 @@ class RestSubscriptionService extends SubscriptionService {
       final purchaseId = _sharedPrefs.getSubscriptionPurchaseId();
       GooglePlayPurchaseDetails? details;
       if (purchasedProductId != null && purchaseId != null) {
-        final androidAddition =
-            _inAppPurchase.getPlatformAddition<InAppPurchaseAndroidPlatformAddition>();
+        final androidAddition = _inAppPurchase.getPlatformAddition<InAppPurchaseAndroidPlatformAddition>();
         final oldPurchases = await androidAddition.queryPastPurchases();
         details = oldPurchases.pastPurchases.firstWhereOrNull(
           (element) => element.productID == purchasedProductId && element.purchaseID == purchaseId,
@@ -82,7 +81,6 @@ class RestSubscriptionService extends SubscriptionService {
   Future<List<PurchasableProduct>> getProductsDetails() async {
     try {
       final purchasedProductId = _sharedPrefs.getSubscriptionPurchaseId();
-
       final res = await _inAppPurchase.queryProductDetails(kProductIds.toSet());
       //final res = await Future.delayed(const Duration(seconds: 3), () => productDetailsResponse);
 
@@ -94,8 +92,7 @@ class RestSubscriptionService extends SubscriptionService {
           .map(
             (e) => PurchasableProduct(
               productDetails: e,
-              status:
-                  purchasedProductId == e.id ? ProductStatus.purchased : ProductStatus.purchasable,
+              status: purchasedProductId == e.id ? ProductStatus.purchased : ProductStatus.purchasable,
             ),
           )
           .toList();

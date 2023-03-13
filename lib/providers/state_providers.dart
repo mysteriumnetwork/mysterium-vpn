@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/router/router.dart';
+import 'package:mysterium_vpn/flavor_config.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
@@ -62,19 +63,24 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
       BeamGuard(
         pathPatterns: [Routes.login.toRoute],
         check: (context, state) =>
-            authStore.authStatus == AuthStatus.unauthenticated ||
-            authStore.authStatus == AuthStatus.loading,
+            authStore.authStatus == AuthStatus.unauthenticated || authStore.authStatus == AuthStatus.loading,
         beamToNamed: (_, __) => Routes.home.toRoute,
       ),
       BeamGuard(
         pathPatterns: [Routes.splash.toRoute],
         check: (context, state) => authStore.authStatus == AuthStatus.unknown,
-        beamToNamed: (_, __) => authStore.authStatus == AuthStatus.authenticated
-            ? Routes.home.toRoute
-            : Routes.login.toRoute,
+        beamToNamed: (_, __) =>
+            authStore.authStatus == AuthStatus.authenticated ? Routes.home.toRoute : Routes.login.toRoute,
       ),
     ],
     initialPath: Routes.splash.toRoute,
     locationBuilder: (routeInformation, _) => BeamerLocations(routeInformation),
   );
 });
+
+final environmentPOD = StateProvider<FlavorConfig>(
+  (ref) => FlavorConfig(
+    flavor: Flavor.production,
+    values: FlavorValues(baseUrl: 'https://api.mysterium.network/v1'),
+  ),
+);
