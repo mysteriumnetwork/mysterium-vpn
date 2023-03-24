@@ -1,0 +1,99 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/models/auth_data.dart';
+import 'package:mysterium_vpn/services/auth/auth_service.dart';
+import 'package:mysterium_vpn/services/secured_storage_service.dart';
+
+const kAuthCheck = '/auth/check';
+const kLogin = '/auth/login';
+const kCompleteLogin = '/auth/login-complete';
+
+class RestAuthService extends AuthService {
+  RestAuthService({
+    required Dio apiClient,
+    required String scheme,
+  })  : _apiClient = apiClient,
+        _scheme = scheme;
+
+  final Dio _apiClient;
+  final String _scheme;
+  final _securedStorage = SecureStorageService();
+
+  @override
+  Future<AuthData> checkUserAuth() async {
+    try {
+      await Future.delayed(const Duration(seconds: 2));
+      final authToken = await _securedStorage.getAccessToken();
+      final username = await _securedStorage.getUsername();
+      final userId = await _securedStorage.getUserId();
+      await _apiClient.get(
+        kAuthCheck,
+        options: Options(headers: {'Authorization': 'Bearer $authToken'}),
+      );
+      return AuthData(
+        authToken: authToken,
+        username: username,
+        userId: userId,
+      );
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      removeLocalData();
+      throw handleException(e, message: 'Authenticating failed.Please try again');
+    }
+  }
+
+  @override
+  Future<AuthData> completeLogin({
+    required String authToken,
+  }) async {
+    try {
+      await Future.delayed(const Duration(seconds: 2));
+      final result = await _apiClient.post<Map<String, dynamic>>(
+        kCompleteLogin,
+        data: {'token': authToken},
+      );
+      if (result.data == null) {
+        throw Exception('No data');
+      }
+
+      final authData = AuthData.fromJson(result.data!);
+      await _securedStorage.saveAccessToken(accessToken: authData.authToken);
+      await _securedStorage.saveUsername(username: authData.username);
+      await _securedStorage.saveUserId(userId: authData.userId);
+      return authData;
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      removeLocalData();
+      throw handleException(e, message: 'Authenticating failed.Please try again');
+    }
+  }
+
+  @override
+  Future<void> login({required String email}) async {
+    try {
+      final result = await _apiClient.post<Map<String, dynamic>>(
+        kLogin,
+        data: {'email': email, 'scheme': _scheme},
+      );
+
+      if (result.data?['status'] != 'ok') {
+        throw Exception('Login failed');
+      }
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      throw handleException(e, message: 'Authenticating failed.Please try again');
+    }
+  }
+
+  @override
+  Future<void> logout() async {
+    await removeLocalData();
+  }
+
+  Future<void> removeLocalData() async {
+    await _securedStorage.removeAccessToken();
+    await _securedStorage.removeUsername();
+    await _securedStorage.removeUserId();
+  }
+}
