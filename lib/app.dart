@@ -4,14 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/auth_store.dart';
 
 /// My app
 class MyApp extends HookConsumerWidget {
   ///asd
   const MyApp({super.key});
-
   @override
   Widget build(final BuildContext context, WidgetRef ref) {
     final themeStore = ref.read(themeStorePOD);
@@ -21,14 +24,18 @@ class MyApp extends HookConsumerWidget {
     final localStore = ref.read(localeStorePOD);
 
     return ReactionBuilder(
-      builder: (context) => reaction((_) => authStore.authStatus, (result) {
-        routeDelegate.update();
-      }),
+      builder: (context) => reaction(
+        (_) => authStore.authStatus,
+        (status) {
+          authenticationReaction(status, routeDelegate, authStore, ref);
+        },
+      ),
       child: Observer(
         builder: (context) => RetakeFocusOnTap(
           child: MaterialApp.router(
             title: 'Mysterium VPN',
             key: UniqueKey(),
+            scaffoldMessengerKey: snackbarKey,
             theme: themeStore.lightTheme,
             darkTheme: themeStore.darkTheme,
             themeMode: themeStore.themeMode,
@@ -44,5 +51,23 @@ class MyApp extends HookConsumerWidget {
         ),
       ),
     );
+  }
+
+  void authenticationReaction(
+    AuthStatus status,
+    BeamerDelegate routeDelegate,
+    AuthStore authStore,
+    WidgetRef ref,
+  ) {
+    routeDelegate.update();
+    if (authStore.authenticateFeature.status == FutureStatus.rejected) {
+      showSnackbar(authStore.authenticateFeature.error.toString());
+    }
+    if (status == AuthStatus.unauthenticated) {
+      ref
+        ..invalidate(subscriptionStorePOD)
+        ..invalidate(vpnStorePOD)
+        ..invalidate(locationsStorePOD);
+    }
   }
 }
