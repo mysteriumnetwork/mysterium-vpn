@@ -1,10 +1,14 @@
 //state providers
 
+import 'dart:async';
+
 import 'package:beamer/beamer.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/router/router.dart';
+import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
@@ -20,20 +24,41 @@ import 'package:mysterium_vpn/stores/vpn_store.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
-final authStorePOD = Provider<AuthStore>((ref) => AuthStore());
+final authStorePOD = Provider<AuthStore>((ref) {
+  final authService = ref.watch(authServicePOD);
+  final appLinks = ref.watch(appLinksPOD);
+  final localDb = ref.watch(localDBPOD);
+  return AuthStore(
+    authService: authService,
+    appLinks: appLinks,
+    localDb: localDb,
+  );
+});
 
 final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
 
-final vpnStorePOD = Provider.autoDispose<VpnStore>((ref) => VpnStore());
+final vpnStorePOD = Provider.autoDispose<VpnStore>((ref) {
+  final apiService = ref.read(apiServicePOD);
+  final locationsStore = ref.watch(locationsStorePOD);
+  return VpnStore(apiService: apiService, locationsStore: locationsStore);
+});
 
-final locationsStorePOD = Provider<LocationsStore>((ref) => LocationsStore());
+final locationsStorePOD = Provider<LocationsStore>((ref) {
+  final apiService = ref.read(apiServicePOD);
+
+  return LocationsStore(apiService: apiService);
+});
 
 final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   final inAppPurchase = ref.read(inAppPurchasePOD);
   final subscriptionService = ref.read(subscriptionServicePOD);
+  final authStore = ref.read(authStorePOD);
+  final localDb = ref.read(localDBPOD);
   return SubscriptionStore(
     inAppPurchase: inAppPurchase,
     subscriptionService: subscriptionService,
+    authStore: authStore,
+    localDb: localDb,
   );
 });
 
@@ -46,6 +71,7 @@ final routeInformationParserPOD = Provider((ref) => BeamerParser());
 
 final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
   final authStore = ref.read(authStorePOD);
+
   return BeamerDelegate(
     guards: [
       BeamGuard(
@@ -63,7 +89,7 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
         pathPatterns: [Routes.login.toRoute],
         check: (context, state) =>
             authStore.authStatus == AuthStatus.unauthenticated ||
-            authStore.authStatus == AuthStatus.loading,
+            authStore.authStatus == AuthStatus.authenticating,
         beamToNamed: (_, __) => Routes.home.toRoute,
       ),
       BeamGuard(
@@ -77,4 +103,29 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
     initialPath: Routes.splash.toRoute,
     locationBuilder: (routeInformation, _) => BeamerLocations(routeInformation),
   );
+});
+
+final environmentPOD = StateProvider<FlavorConfig>(
+  (ref) => FlavorConfig(
+    flavor: Flavor.production,
+    values: FlavorValues.production(),
+  ),
+);
+
+final isSignedInPOD = StateProvider<bool>((ref) => true);
+
+final tokenStreamPOD = StreamProvider<String>((ref) {
+  final authStore = ref.watch(authStorePOD);
+  final streamController = StreamController<String>();
+  final autorunDisposer = autorun((_) {
+    if (authStore.authData != null) {
+      streamController.add(authStore.authData!.authToken);
+    }
+  });
+  ref.onDispose(() {
+    autorunDisposer();
+    streamController.close();
+  });
+
+  return streamController.stream;
 });

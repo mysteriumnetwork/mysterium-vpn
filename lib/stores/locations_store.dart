@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/constants/mock.dart';
 import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/services/api/api_service.dart';
 
 part 'locations_store.g.dart';
 
@@ -10,11 +10,13 @@ part 'locations_store.g.dart';
 class LocationsStore = _LocationsStore with _$LocationsStore;
 
 abstract class _LocationsStore with Store {
-  _LocationsStore() {
+  _LocationsStore({required ApiService apiService}) : _apiService = apiService {
     fetchRecentLocations();
     fetchTopLocations();
     fetchAllLocations();
   }
+
+  final ApiService _apiService;
 
   @observable
   bool showAllLocations = false;
@@ -53,7 +55,6 @@ abstract class _LocationsStore with Store {
 
   @computed
   bool get hasRecentLocationsResults =>
-      fetchRecentLocationsFeature != emptyRecentLocations &&
       fetchRecentLocationsFeature.status == FutureStatus.fulfilled;
 
   static ObservableFuture<List<Location>> emptyLocations = ObservableFuture.value([]);
@@ -62,58 +63,34 @@ abstract class _LocationsStore with Store {
   @action
   Future<List<Location>> fetchTopLocations() async {
     topLocations = [];
-    final future = Future.delayed(
-      const Duration(seconds: 3),
-      () => searchTopKeyword.isNotEmpty
-          ? topLocationsMock
-              .where(
-                (element) =>
-                    element.countryName.toLowerCase().contains(searchTopKeyword.toLowerCase()),
-              )
-              .toList()
-          : topLocationsMock,
-    );
-    fetchTopLocationsFuture = ObservableFuture(future);
 
-    return topLocations = await future;
+    fetchTopLocationsFuture = ObservableFuture(
+      _apiService.fetchTopLocations(
+        keyword: searchTopKeyword,
+      ),
+    );
+
+    return topLocations = await fetchTopLocationsFuture;
   }
 
   @action
   Future<List<Location>> fetchAllLocations() async {
     allLocations = [];
-    final future = Future.delayed(
-      const Duration(seconds: 3),
-      () => searchAllKeyword.isNotEmpty
-          ? allLocationsMock
-              .where(
-                (element) =>
-                    element.countryName.toLowerCase().contains(searchAllKeyword.toLowerCase()),
-              )
-              .toList()
-          : allLocationsMock,
-    );
-    fetchAllLocationsFuture = ObservableFuture(future);
 
-    return allLocations = await future;
+    fetchAllLocationsFuture =
+        ObservableFuture(_apiService.fetchAllLocations(keyword: searchAllKeyword));
+
+    return allLocations = await fetchAllLocationsFuture;
   }
 
   @action
   Future<List<Location>> fetchRecentLocations() async {
     recentLocations = [];
-    final future = Future.delayed(
-      const Duration(seconds: 3),
-      () => searchTopKeyword.isNotEmpty
-          ? recentLocationsMock
-              .where(
-                (element) =>
-                    element.countryName.toLowerCase().contains(searchTopKeyword.toLowerCase()),
-              )
-              .toList()
-          : recentLocationsMock,
-    );
-    fetchRecentLocationsFeature = ObservableFuture(future);
 
-    return recentLocations = await future;
+    fetchRecentLocationsFeature =
+        ObservableFuture(_apiService.getRecentLocations(keyword: searchTopKeyword));
+
+    return recentLocations = await fetchRecentLocationsFeature;
   }
 
   @action
