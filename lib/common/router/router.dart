@@ -11,6 +11,7 @@ import 'package:mysterium_vpn/pages/settings_page.dart';
 import 'package:mysterium_vpn/pages/static/splash_page.dart';
 import 'package:mysterium_vpn/pages/subscription_page.dart';
 import 'package:mysterium_vpn/views/check_email_view.dart';
+import 'package:mysterium_vpn/views/sign_in/sign_in_view.dart';
 import 'package:mysterium_vpn/views/sign_up/sign_up_view.dart';
 
 class BeamerLocations extends BeamLocation<BeamState> {
@@ -72,14 +73,24 @@ class BeamerLocations extends BeamLocation<BeamState> {
       ];
 }
 
-class SignUpBeamerLocations extends BeamLocation<BeamState> {
-  SignUpBeamerLocations(RouteInformation super.routeInformation);
+class AuthBeamerLocations extends BeamLocation<BeamState> {
+  AuthBeamerLocations(RouteInformation super.routeInformation);
 
   @override
-  List<Pattern> get pathPatterns => [Routes.signUp.toRoute, Routes.checkYourEmail.toRoute];
+  List<Pattern> get pathPatterns => [
+        Routes.signUp.toRoute,
+        Routes.checkYourEmail.toRoute,
+        Routes.signIn.toRoute,
+      ];
 
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
+        if (state.uri.pathSegments.contains(Routes.signIn.toDashCase))
+          BeamPage(
+            key: ValueKey(Routes.signIn.toDashCase),
+            title: Routes.signIn.value,
+            child: const SignInView(),
+          ),
         if (state.uri.pathSegments.contains(Routes.signUp.toDashCase))
           BeamPage(
             key: ValueKey(Routes.signUp.toDashCase),

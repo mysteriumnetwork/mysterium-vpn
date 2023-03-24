@@ -5,6 +5,9 @@ FormGroup singUp() => FormGroup({
       'terms_acceptance':
           FormControl<bool>(validators: [Validators.required, Validators.requiredTrue]),
     });
+FormGroup singIn() => FormGroup({
+      'email': FormControl<String>(validators: [Validators.required, Validators.email]),
+    });
 FormGroup reportIssue() => FormGroup({
       'report_issue': FormControl<String>(validators: [Validators.required]),
     });
