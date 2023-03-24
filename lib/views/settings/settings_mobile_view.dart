@@ -80,7 +80,7 @@ class SettingsMobileView extends HookConsumerWidget {
               ),
               SettingItem(
                 asset: isDarkTheme ? Assets.accountNameDark : Assets.accountNameLight,
-                title: authStore.email,
+                title: authStore.authData?.username ?? '',
                 subtitle: LocaleKeys.shortDesc.tr(),
                 actionWidget: EasyButton(
                   useSystemColor: false,

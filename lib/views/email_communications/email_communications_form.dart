@@ -62,7 +62,7 @@ class EmailCommunicationsForm extends HookConsumerWidget {
               EasyText(
                 LocaleKeys.emaillCommunicationsApproval.tr(),
                 fontWeight: FontWeight.w700,
-              )
+              ).fittedBox().expanded()
             ],
           ).padding(bottom: height * 0.04),
           RichText(
