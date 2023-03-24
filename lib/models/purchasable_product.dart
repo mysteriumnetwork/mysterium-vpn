@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/models/plan_details.dart';
 
 part 'purchasable_product.g.dart';
 
@@ -12,7 +12,7 @@ class PurchasableProduct = _PurchasableProduct with _$PurchasableProduct;
 abstract class _PurchasableProduct with Store {
   _PurchasableProduct({required this.productDetails, required this.status});
 
-  final ProductDetails productDetails;
+  final PlanDetails productDetails;
 
   @observable
   ProductStatus status;
@@ -20,11 +20,7 @@ abstract class _PurchasableProduct with Store {
   @computed
   String get id => productDetails.id.replaceAll('-', '_');
   @computed
-  String get title => productDetails.title;
-  @computed
-  String get description => productDetails.description;
-  @computed
-  String get fullPrice => productDetails.price;
+  String get fullPrice => '\$${productDetails.price.usd.toStringAsFixed(2)}';
   @computed
   String get originalMonthlyPrice => productDetails.id != kMonthlyPlan ? r'$9.99  ' : '';
   @computed
