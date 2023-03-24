@@ -1,6 +1,5 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -22,16 +21,16 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class SignUpForm extends HookConsumerWidget {
-  const SignUpForm({super.key});
+class SignInForm extends HookConsumerWidget {
+  const SignInForm({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final signUpForm = useMemoized(singUp);
+    final signInForm = useMemoized(singIn);
     final isMounted = useIsMounted();
     final store = ref.watch(authStorePOD);
 
     return ReactiveForm(
-      formGroup: signUpForm,
+      formGroup: signInForm,
       child: Column(
         children: [
           AutofillGroup(
@@ -47,37 +46,6 @@ class SignUpForm extends HookConsumerWidget {
               },
             ).padding(bottom: 20),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ReactiveCheckbox(
-                formControlName: 'terms_acceptance',
-              ),
-              RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                    color: Theme.of(context).textTheme.bodyLarge?.color,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  children: [
-                    TextSpan(text: '${LocaleKeys.accept.tr()} '),
-                    TextSpan(
-                      text: LocaleKeys.termsAndConditions.tr(),
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyLarge?.color,
-                        decoration: TextDecoration.underline,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      mouseCursor: MaterialStateMouseCursor.clickable,
-                      recognizer: TapGestureRecognizer()..onTap = () {},
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ).padding(bottom: 20),
           Observer(
             builder: (_) {
               final status = store.loginFeature.status;
