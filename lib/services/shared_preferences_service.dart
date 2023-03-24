@@ -16,6 +16,8 @@ class SharedPreferenceService {
 
   String? getString(String key) => _prefsInstance!.getString(key);
 
+  List<String>? getStringList(String key) => _prefsInstance!.getStringList(key);
+
   int? getInt(String key) => _prefsInstance!.getInt(key);
 
   bool? getBool(String key) => _prefsInstance!.getBool(key);
@@ -23,6 +25,9 @@ class SharedPreferenceService {
   Future<bool> setString(String key, String value) async => _prefsInstance!.setString(key, value);
 
   Future<bool> setInt(String key, int value) async => _prefsInstance!.setInt(key, value);
+
+  Future<bool> setStringList(String key, List<String> value) async =>
+      _prefsInstance!.setStringList(key, value);
 
   Future<bool> setBool(String key, {required bool value}) async =>
       _prefsInstance!.setBool(key, value);
@@ -53,24 +58,4 @@ class SharedPreferenceService {
 
   Future<bool> setThemeType(ThemeMode themeMode) async =>
       setString(StorageKeys.themeMype.value, themeMode.value);
-
-  //Only for testing
-  Future<bool> setSubscriptionPlan(
-    String productId,
-    String purchaseId,
-  ) async {
-    await setString(StorageKeys.subscriptionPlanProductId.value, productId);
-    return setString(StorageKeys.subscriptionPlanPurchaseId.value, purchaseId);
-  }
-
-  String? getSubscriptionProductId() => getString(StorageKeys.subscriptionPlanProductId.value);
-  String? getSubscriptionPurchaseId() => getString(StorageKeys.subscriptionPlanProductId.value);
-
-  Future<bool> setEmailCommunicationApproval({required bool approval}) async =>
-      setBool(StorageKeys.emailCommunicationApproval.value, value: approval);
-
-  Future<bool> setNotificationsApproval({required bool approval}) async =>
-      setBool(StorageKeys.notificationsApproval.value, value: approval);
-  bool? getEmailCommunicationApproval() => getBool(StorageKeys.emailCommunicationApproval.value);
-  bool? getNotificationsApproval() => getBool(StorageKeys.notificationsApproval.value);
 }
