@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/circle_box.dart';
 import 'package:mysterium_vpn/components/dialogs/delete_account_dialog.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
@@ -88,7 +89,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
               ),
               SettingItem(
                 asset: isDarkTheme ? Assets.accountNameDark : Assets.accountNameLight,
-                title: authStore.email,
+                title: authStore.authData?.username ?? '',
                 subtitle: LocaleKeys.shortDesc.tr(),
                 actionWidget: EasyButton(
                   useSystemColor: false,
@@ -115,7 +116,9 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
             ],
           ],
         )
+            .scrollable()
             .padding(horizontal: 40, vertical: 40)
+            .height(getMediaHeight(context))
             .backgroundColor(Theme.of(context).colorScheme.background);
       },
     );
