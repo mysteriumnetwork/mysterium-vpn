@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>104590535697-321dcucindetpslpqcgjl3t0j6d68sf1.apps.googleusercontent.com</string>
+	<string>104590535697-qlqv1si8krj17nvto6mrfgujhm81inti.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.104590535697-321dcucindetpslpqcgjl3t0j6d68sf1</string>
+	<string>com.googleusercontent.apps.104590535697-qlqv1si8krj17nvto6mrfgujhm81inti</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDfpAxPxcYK5BfP_9z2aT2-avOI3qZ5Py0</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.mysterium.vpn</string>
+	<string>com.mysteriumvpn</string>
 	<key>PROJECT_ID</key>
 	<string>new-mysterium-vpn</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:104590535697:ios:caac04df7c37b40af355b0</string>
+	<string>1:104590535697:ios:30362bcd1ee53392f355b0</string>
 </dict>
 </plist>
