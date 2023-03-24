@@ -8,7 +8,7 @@ part of 'vpn_connection.dart';
 
 _$_VpnConnection _$$_VpnConnectionFromJson(Map<String, dynamic> json) => _$_VpnConnection(
       connectionIP: json['connectionIP'] as String,
-      location: Location.fromJson(json['location'] as Map<String, dynamic>),
+      location: json['location'] as String,
     );
 
 Map<String, dynamic> _$$_VpnConnectionToJson(_$_VpnConnection instance) => <String, dynamic>{
