@@ -257,6 +257,8 @@ bool isDekstop() => Platform.isWindows || Platform.isLinux || Platform.isMacOS;
 
 bool isMobile() => Platform.isAndroid || Platform.isIOS;
 
+bool isWindowsOrLinux() => Platform.isWindows || Platform.isLinux;
+
 TargetPlatform getPlatform() {
   if (Platform.isAndroid) {
     return TargetPlatform.android;

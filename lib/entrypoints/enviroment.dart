@@ -12,19 +12,23 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/app.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/firebase_options.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/shared_preferences_service.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
+import 'package:url_protocol/url_protocol.dart';
 
 class Enviroment {
   Future<void> launch({
     required String flavor,
-    required FirebaseOptions firebaseOptions,
   }) async {
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+    if (Platform.isWindows) {
+      registerProtocolHandler('mysteriumvpn');
+    }
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.light.copyWith(statusBarIconBrightness: Brightness.light),
     );
@@ -36,10 +40,9 @@ class Enviroment {
       SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
     );
-    final needsWeb = Platform.isLinux || Platform.isWindows;
-    await Firebase.initializeApp(
-      options: needsWeb ? DefaultFirebaseOptions.web : firebaseOptions,
-    );
+
+    final windowsOrLinux = isWindowsOrLinux();
+
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
     FlutterError.demangleStackTrace = (StackTrace stack) {
       if (stack is stack_trace.Trace) {
@@ -50,14 +53,18 @@ class Enviroment {
       }
       return stack;
     };
-    FlutterError.onError = (errorDetails) {
-      FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-    };
-    PlatformDispatcher.instance.onError = (error, stack) {
-      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-      return true;
-    };
-
+    if (!windowsOrLinux) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+      FlutterError.onError = (errorDetails) {
+        FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+      };
+      PlatformDispatcher.instance.onError = (error, stack) {
+        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+        return true;
+      };
+    }
     await SharedPreferenceService.init();
     await EasyLocalization.ensureInitialized();
     await Hive.initFlutter();
