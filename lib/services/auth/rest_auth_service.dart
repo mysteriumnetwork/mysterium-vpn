@@ -30,15 +30,15 @@ class RestAuthService extends AuthService {
         kAuthCheck,
         options: Options(headers: {'Authorization': 'Bearer $authToken'}),
       );
-      final data = res.data as Map<String, String>;
-      final username = data['username']!;
-      final userId = data['user_id']!;
+      final data = res.data as Map<String, dynamic>;
+      final username = data['username'] as String;
+      final userId = data['user_id'] as String;
       await _securedStorage.saveUserId(userId: userId);
       await _securedStorage.saveUsername(username: username);
       return AuthData(
         authToken: authToken,
         username: username,
-        userId: userId,
+        userId: data['user_id'] as String,
       );
     } on Exception catch (e) {
       debugPrint(e.toString());
