@@ -25,12 +25,16 @@ class RestAuthService extends AuthService {
     try {
       await Future.delayed(const Duration(seconds: 2));
       final authToken = await _securedStorage.getAccessToken();
-      final username = await _securedStorage.getUsername();
-      final userId = await _securedStorage.getUserId();
-      await _apiClient.get(
+
+      final res = await _apiClient.get(
         kAuthCheck,
         options: Options(headers: {'Authorization': 'Bearer $authToken'}),
       );
+      final data = res.data as Map<String, String>;
+      final username = data['username']!;
+      final userId = data['user_id']!;
+      await _securedStorage.saveUserId(userId: userId);
+      await _securedStorage.saveUsername(username: username);
       return AuthData(
         authToken: authToken,
         username: username,
