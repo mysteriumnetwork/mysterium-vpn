@@ -57,7 +57,9 @@ class Enviroment {
     await SharedPreferenceService.init();
     await EasyLocalization.ensureInitialized();
     await Hive.initFlutter();
-    Hive.registerAdapter(UserDataAdapter());
+    Hive
+      ..registerAdapter(UserDataAdapter())
+      ..registerAdapter(ApprovalAdapter());
     await Hive.openBox<UserData>('user_data');
     FlutterNativeSplash.remove();
 
