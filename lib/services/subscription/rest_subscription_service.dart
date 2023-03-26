@@ -47,14 +47,24 @@ class RestSubscriptionService extends SubscriptionService {
     required String productId,
     required String purchaseId,
   }) async {
-    final res = await fetchSubscriptionDetails();
-    if (res.active) {
-      await _localDb.setSubscriptionPlan(
-        subscriptionPlan: productId,
-        subscriptionPurchaseId: purchaseId,
-      );
-    }
-    return res;
+    var retryCount = 0;
+    Subscription? subscription;
+    await Future.doWhile(() async {
+      retryCount++;
+      subscription = await fetchSubscriptionDetails();
+      if (retryCount == 3 || subscription!.active) {
+        if (subscription!.active) {
+          await _localDb.setSubscriptionPlan(
+            subscriptionPlan: productId,
+            subscriptionPurchaseId: purchaseId,
+          );
+        }
+        return false;
+      }
+      return true;
+    });
+
+    return subscription!;
   }
 
   @override
@@ -175,7 +185,6 @@ class RestSubscriptionService extends SubscriptionService {
       if (subscriptionProductId == null) {
         throw PackageNotFoundException();
       }
-      // const subscriptionProductId = 'monthly_vpn_plan';
 
       final productDetails = await _inAppPurchase.queryProductDetails({subscriptionProductId});
       final product = productDetails.productDetails
