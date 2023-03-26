@@ -179,7 +179,6 @@ abstract class _SubscriptionStore with Store {
       }
       return;
     }
-    await Future.delayed(const Duration(seconds: 3));
     _subscription = await _verifyPurchase(_purchasedProductId ?? '', purchaseDetails);
     _purchasedProductId = _localDb.getSubscriptionPlan();
     _products[index].status =
