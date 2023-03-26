@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -10,6 +12,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/app.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/firebase_options.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -33,8 +36,9 @@ class Enviroment {
       SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
     );
+    final needsWeb = Platform.isLinux || Platform.isWindows;
     await Firebase.initializeApp(
-      options: firebaseOptions,
+      options: needsWeb ? DefaultFirebaseOptions.web : firebaseOptions,
     );
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
     FlutterError.demangleStackTrace = (StackTrace stack) {
