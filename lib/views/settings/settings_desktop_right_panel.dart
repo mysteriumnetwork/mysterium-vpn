@@ -1,7 +1,10 @@
+import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/routes.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -84,7 +87,9 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                   useSystemColor: false,
                   color: Palette.black,
                   text: LocaleKeys.goToBillingPage.tr(),
-                  onPressed: () {},
+                  onPressed: () {
+                    context.beamToNamed(Routes.subscription.toRoute);
+                  },
                 ),
               ),
               SettingItem(
