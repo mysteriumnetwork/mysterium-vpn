@@ -187,7 +187,7 @@ abstract class _SubscriptionStore with Store {
     if (purchaseDetails.status == PurchaseStatus.purchased) {
       if (index != -1) {
         for (final product in _products) {
-          product.status = product.productDetails.id == purchaseDetails.productID
+          product.status = product.productDetails.id == _purchasedProductId
               ? ProductStatus.purchased
               : ProductStatus.purchasable;
         }
