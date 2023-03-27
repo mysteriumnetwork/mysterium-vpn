@@ -6,4 +6,9 @@ enum StorageKeys {
   subscriptionPlanPurchaseId,
   emailCommunicationApproval,
   notificationsApproval,
+  accessToken,
+  username,
+  userId,
+  appLink,
+  recentLocations,
 }

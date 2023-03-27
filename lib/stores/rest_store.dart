@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 
 // Project imports:
@@ -23,22 +24,22 @@ abstract class _RestStore with Store {
   final ApiService _apiService;
 
   @observable
-  ObservableFuture<bool>? emailCommunicationApprovalFuture;
+  ObservableFuture<Approval>? emailCommunicationApprovalFuture;
 
   @observable
   ObservableFuture<void> setEmailCommunicationApprovalFuture = ObservableFuture.value(null);
 
   @observable
-  ObservableFuture<bool>? notificationsApprovalFuture;
+  ObservableFuture<Approval>? notificationsApprovalFuture;
 
   @observable
   ObservableFuture<void> setNotificationsApprovalFuture = ObservableFuture.value(null);
 
   @readonly
-  bool _emailCommunicationApproval = false;
+  Approval _emailCommunicationApproval = Approval.notSet;
 
   @readonly
-  bool _notificationsApproval = false;
+  Approval _notificationsApproval = Approval.notSet;
 
   @action
   Future<void> checkEmailCommunicationApproval() async {
@@ -72,7 +73,7 @@ abstract class _RestStore with Store {
     setNotificationsApprovalFuture = ObservableFuture(
       Future.delayed(
         const Duration(seconds: 3),
-        () => _apiService.setEmailCommunicationApproval(approval: status),
+        () => _apiService.setNotificationsApproval(approval: status),
       ),
     );
     await setNotificationsApprovalFuture;

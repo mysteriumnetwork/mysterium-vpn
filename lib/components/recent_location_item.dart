@@ -53,7 +53,7 @@ class RecentLocationItem extends StatelessWidget {
                 )
               else
                 EasyText(
-                  location.duration?.toHoursMinutes() ?? '',
+                  const Duration(hours: 1, minutes: 30).toHoursMinutes(),
                 ),
             ],
           ).padding(left: 12, right: 6, bottom: 4).width(110),

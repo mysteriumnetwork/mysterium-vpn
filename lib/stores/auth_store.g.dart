@@ -43,18 +43,81 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$checkUserAuthAsyncAction = AsyncAction('_AuthStore.checkUserAuth', context: context);
+  late final _$_authDataAtom = Atom(name: '_AuthStore._authData', context: context);
 
-  @override
-  Future<void> checkUserAuth() {
-    return _$checkUserAuthAsyncAction.run(() => super.checkUserAuth());
+  AuthData? get authData {
+    _$_authDataAtom.reportRead();
+    return super._authData;
   }
 
-  late final _$loginAsyncAction = AsyncAction('_AuthStore.login', context: context);
+  @override
+  AuthData? get _authData => authData;
 
   @override
-  Future<void> login() {
-    return _$loginAsyncAction.run(() => super.login());
+  set _authData(AuthData? value) {
+    _$_authDataAtom.reportWrite(value, super._authData, () {
+      super._authData = value;
+    });
+  }
+
+  late final _$loginFeatureAtom = Atom(name: '_AuthStore.loginFeature', context: context);
+
+  @override
+  ObservableFuture<void> get loginFeature {
+    _$loginFeatureAtom.reportRead();
+    return super.loginFeature;
+  }
+
+  @override
+  set loginFeature(ObservableFuture<void> value) {
+    _$loginFeatureAtom.reportWrite(value, super.loginFeature, () {
+      super.loginFeature = value;
+    });
+  }
+
+  late final _$logoutFeatureAtom = Atom(name: '_AuthStore.logoutFeature', context: context);
+
+  @override
+  ObservableFuture<void> get logoutFeature {
+    _$logoutFeatureAtom.reportRead();
+    return super.logoutFeature;
+  }
+
+  @override
+  set logoutFeature(ObservableFuture<void> value) {
+    _$logoutFeatureAtom.reportWrite(value, super.logoutFeature, () {
+      super.logoutFeature = value;
+    });
+  }
+
+  late final _$authenticateFeatureAtom =
+      Atom(name: '_AuthStore.authenticateFeature', context: context);
+
+  @override
+  ObservableFuture<AuthData?> get authenticateFeature {
+    _$authenticateFeatureAtom.reportRead();
+    return super.authenticateFeature;
+  }
+
+  @override
+  set authenticateFeature(ObservableFuture<AuthData?> value) {
+    _$authenticateFeatureAtom.reportWrite(value, super.authenticateFeature, () {
+      super.authenticateFeature = value;
+    });
+  }
+
+  late final _$initAuthAsyncAction = AsyncAction('_AuthStore.initAuth', context: context);
+
+  @override
+  Future<void> initAuth() {
+    return _$initAuthAsyncAction.run(() => super.initAuth());
+  }
+
+  late final _$authenticateAsyncAction = AsyncAction('_AuthStore.authenticate', context: context);
+
+  @override
+  Future<void> authenticate(Uri? appLink) {
+    return _$authenticateAsyncAction.run(() => super.authenticate(appLink));
   }
 
   late final _$logoutAsyncAction = AsyncAction('_AuthStore.logout', context: context);
@@ -64,17 +127,19 @@ mixin _$AuthStore on _AuthStore, Store {
     return _$logoutAsyncAction.run(() => super.logout());
   }
 
-  late final _$signUpAsyncAction = AsyncAction('_AuthStore.signUp', context: context);
+  late final _$loginAsyncAction = AsyncAction('_AuthStore.login', context: context);
 
   @override
-  Future<void> signUp({required String email}) {
-    return _$signUpAsyncAction.run(() => super.signUp(email: email));
+  Future<void> login({required String email}) {
+    return _$loginAsyncAction.run(() => super.login(email: email));
   }
 
   @override
   String toString() {
     return '''
-
+loginFeature: ${loginFeature},
+logoutFeature: ${logoutFeature},
+authenticateFeature: ${authenticateFeature}
     ''';
   }
 }

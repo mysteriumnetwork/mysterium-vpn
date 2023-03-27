@@ -35,7 +35,9 @@ class ReportIssueForm extends HookWidget {
               ValidationMessage.required: (_) => LocaleKeys.fieldRequired.tr(),
             },
             formControlName: 'report_issue',
+            keyboardType: TextInputType.multiline,
             decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               hintText: LocaleKeys.typeIssueHere.tr(),
               enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Palette.lightBlack),

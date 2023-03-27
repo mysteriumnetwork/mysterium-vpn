@@ -1,12 +1,17 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_breakpoints.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_size_breakpoints.dart';
 import 'package:mysterium_vpn/common/configurations/breakpoint_configuration.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/components/easy_text.dart';
 
 bool checkMediaWidth(BuildContext context, double width) =>
     MediaQuery.of(context).size.width < width;
@@ -263,5 +268,50 @@ TargetPlatform getPlatform() {
     return TargetPlatform.windows;
   } else {
     return defaultTargetPlatform;
+  }
+}
+
+String getPlatformGateway() {
+  if (Platform.isAndroid) {
+    return 'google';
+  } else if (Platform.isIOS) {
+    return 'apple';
+  } else {
+    return '';
+  }
+}
+
+void showSnackbar(String message) {
+  final snackBar = SnackBar(
+    elevation: 4,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20),
+    ),
+    behavior: SnackBarBehavior.floating,
+    backgroundColor: Palette.pink,
+    content: Center(
+      child: EasyText(
+        message,
+        maxLines: 2,
+        color: Palette.white,
+        fontWeight: FontWeight.w900,
+      ),
+    ),
+  );
+
+  snackbarKey.currentState?.showSnackBar(snackBar);
+}
+
+ApiException handleException(Exception e, {String? message}) {
+  if (e is DioError) {
+    final data = (e.response?.data as Map<String, dynamic>)['error'];
+    if (data is Map<String, dynamic> && data.containsKey('message')) {
+      return ApiException(data['message'] as String? ?? 'Something went wrong');
+    }
+    return ApiException(e.message ?? 'Something went wrong');
+  } else {
+    return ApiException(
+      message ?? 'Something went wrong',
+    );
   }
 }

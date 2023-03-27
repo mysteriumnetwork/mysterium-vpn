@@ -1,5 +1,8 @@
+import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -37,7 +40,9 @@ class SignUpView extends StatelessWidget {
                           LocaleKeys.signIn.tr(),
                           color: Palette.pink,
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          context.beamToReplacementNamed(Routes.signIn.toRoute);
+                        },
                       ),
                     ],
                   ).padding(bottom: 50),

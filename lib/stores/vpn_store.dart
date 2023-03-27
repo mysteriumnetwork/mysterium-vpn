@@ -3,11 +3,14 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/mock.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
+import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/stores/locations_store.dart';
 
 // Project imports:
 
@@ -17,13 +20,26 @@ part 'vpn_store.g.dart';
 class VpnStore = _VpnStore with _$VpnStore;
 
 abstract class _VpnStore with Store {
-  _VpnStore();
+  _VpnStore({required ApiService apiService, required LocationsStore locationsStore})
+      : _apiService = apiService,
+        _locationsStore = locationsStore {
+    _vpnConnection = _emptyConnection;
+    _connectionStatus = ConnectionStatus.disconnected;
+    _duration = Duration.zero;
+    _uploadSpeed = 0;
+    _downloadSpeed = 0;
+    _protocol = protocols.first;
+    _killSwitch = true;
+    _connectingLocationCode = '';
+  }
 
   static const VpnConnection _emptyConnection = VpnConnection(
     connectionIP: '--',
-    location: Location(countryName: '--', countryCode: '--'),
+    location: '--',
   );
 
+  final ApiService _apiService;
+  final LocationsStore _locationsStore;
   final random = Random();
 
   Timer? _timer;
@@ -55,11 +71,15 @@ abstract class _VpnStore with Store {
   String _connectingLocationCode = '';
   @action
   Future<void> connect({
-    Location location = const Location(countryName: '--', countryCode: '--'),
+    Location? location,
   }) async {
-    if (_vpnConnection.location == location) {
+    if (_vpnConnection.location == location?.countryCode) {
       return;
     }
+    location ??= Location(
+      countryCode: 'DE',
+      countryName: 'DE'.tr(),
+    );
     _connectingLocationCode = location.countryCode;
     if (_vpnConnection != _emptyConnection) {
       await disconnect();
@@ -68,9 +88,11 @@ abstract class _VpnStore with Store {
     await Future.delayed(const Duration(seconds: 3));
     _vpnConnection = VpnConnection(
       connectionIP: '185.358.45.304',
-      location: location,
+      location: location.countryCode,
     );
     _connectionStatus = ConnectionStatus.connected;
+    _apiService.setRecentLocation(location: location.countryCode);
+    Future.delayed(const Duration(seconds: 1), _locationsStore.fetchRecentLocations);
     await startTracking();
   }
 

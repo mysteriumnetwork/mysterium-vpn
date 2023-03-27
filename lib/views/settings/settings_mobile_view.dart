@@ -1,7 +1,10 @@
+import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/routes.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/base_layout.dart';
@@ -75,12 +78,14 @@ class SettingsMobileView extends HookConsumerWidget {
                   useSystemColor: false,
                   color: Palette.black,
                   text: LocaleKeys.goToBillingPage.tr(),
-                  onPressed: () {},
+                  onPressed: () {
+                    context.beamToNamed(Routes.subscription.toRoute);
+                  },
                 ),
               ),
               SettingItem(
                 asset: isDarkTheme ? Assets.accountNameDark : Assets.accountNameLight,
-                title: authStore.email,
+                title: authStore.authData?.username ?? '',
                 subtitle: LocaleKeys.shortDesc.tr(),
                 actionWidget: EasyButton(
                   useSystemColor: false,
