@@ -1,0 +1,1 @@
+class StoreNotAvailableException implements Exception {}

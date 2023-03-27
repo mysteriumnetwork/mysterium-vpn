@@ -162,7 +162,7 @@ mixin _$VpnStore on _VpnStore, Store {
   late final _$connectAsyncAction = AsyncAction('_VpnStore.connect', context: context);
 
   @override
-  Future<void> connect({Location location = const Location(countryName: '--', countryCode: '--')}) {
+  Future<void> connect({Location? location}) {
     return _$connectAsyncAction.run(() => super.connect(location: location));
   }
 

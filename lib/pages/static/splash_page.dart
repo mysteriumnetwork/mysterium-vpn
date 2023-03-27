@@ -10,6 +10,12 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ColoredScaffold(
         backgroundColor: Palette.darkBlue,
-        body: Center(child: Lottie.asset(Assets.splashLogo)),
+        body: Center(
+          child: Lottie.asset(
+            Assets.splashLogo,
+            repeat: false,
+            reverse: false,
+          ),
+        ),
       );
 }

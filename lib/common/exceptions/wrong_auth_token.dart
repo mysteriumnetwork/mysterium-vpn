@@ -1,0 +1,1 @@
+class WrongAuthTokenException implements Exception {}

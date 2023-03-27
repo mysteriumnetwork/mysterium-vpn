@@ -1,5 +1,5 @@
 enum AuthStatus {
-  loading,
+  authenticating,
   authenticated,
   unauthenticated,
   unknown,

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 final List<Locale> kSupportedLocales = [
@@ -9,23 +7,16 @@ final List<Locale> kSupportedLocales = [
 
 const kFallbackLocale = Locale('en');
 
-const String ksemiAnnualPlan = 'semi_annual_plan';
-const String kMonthlyPlan = 'monthly_plan';
-const String kAnnualPlan = 'annual_plan';
-const String ksemiAnnualPlanAndroid = 'semi-annual-plan';
-const String kMonthlyPlanAndroid = 'monthly-plan';
-const String kAnnualPlanAndroid = 'annual-plan';
+const String ksemiAnnualPlan = 'plan_6_months';
+const String kMonthlyPlan = 'plan_monthly';
+const String kAnnualPlan = 'plan_1_year';
+
 const String kPopularPlan = ksemiAnnualPlan;
 List<String> kProductIds = <String>[
-  if (Platform.isAndroid) ...[
-    kMonthlyPlanAndroid,
-    ksemiAnnualPlanAndroid,
-    kAnnualPlanAndroid,
-  ] else ...[
-    kMonthlyPlan,
-    ksemiAnnualPlan,
-    kAnnualPlan,
-  ],
+  kMonthlyPlan,
+  ksemiAnnualPlan,
+  kAnnualPlan,
 ];
 
-const baseUrl = 'https://thanaa.kfshrc.edu.sa/api';
+//scaffold messenger key used globally
+final GlobalKey<ScaffoldMessengerState> snackbarKey = GlobalKey<ScaffoldMessengerState>();

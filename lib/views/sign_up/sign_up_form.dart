@@ -2,36 +2,51 @@ import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/forms/forms.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/border_button.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
+import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class SignUpForm extends HookWidget {
+class SignUpForm extends HookConsumerWidget {
   const SignUpForm({super.key});
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final signUpForm = useMemoized(singUp);
+    final isMounted = useIsMounted();
+    final store = ref.watch(authStorePOD);
 
     return ReactiveForm(
       formGroup: signUpForm,
       child: Column(
         children: [
-          ReactiveTextField(
-            decoration: InputDecoration(labelText: LocaleKeys.email.tr()),
-            formControlName: 'email',
-            validationMessages: {
-              ValidationMessage.required: (_) => LocaleKeys.emailIsRequired.tr(),
-              ValidationMessage.email: (_) => LocaleKeys.emailIsNotValid.tr(),
-            },
-          ).padding(bottom: 20),
+          AutofillGroup(
+            child: ReactiveTextField(
+              decoration: InputDecoration(labelText: LocaleKeys.email.tr()),
+              formControlName: 'email',
+              autofillHints: const [AutofillHints.email],
+              keyboardType: TextInputType.emailAddress,
+              onEditingComplete: (_) => TextInput.finishAutofillContext(),
+              validationMessages: {
+                ValidationMessage.required: (_) => LocaleKeys.emailIsRequired.tr(),
+                ValidationMessage.email: (_) => LocaleKeys.emailIsNotValid.tr(),
+              },
+            ).padding(bottom: 20),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -63,17 +78,35 @@ class SignUpForm extends HookWidget {
               ),
             ],
           ).padding(bottom: 20),
-          ReactiveFormConsumer(
-            builder: (context, form, child) => EasyButton(
-              width: double.infinity,
-              onPressed: form.valid
-                  ? () {
-                      context.beamToNamed('/check-your-email');
-                    }
-                  : () => form.markAllAsTouched(),
-              child: EasyText(LocaleKeys.continueWithEmail.tr(), color: Palette.white),
-            ),
-          ).padding(bottom: 50),
+          Observer(
+            builder: (_) {
+              final status = store.loginFeature.status;
+
+              return ReactiveFormConsumer(
+                builder: (_, form, child) => EasyButton(
+                  width: double.infinity,
+                  onPressed: status != FutureStatus.pending
+                      ? form.valid
+                          ? () async {
+                              final email = form.control('email').value as String;
+                              await store.login(email: email);
+                              if (isMounted()) {
+                                // ignore: use_build_context_synchronously
+                                context.beamToNamed(Routes.checkYourEmail.toRoute);
+                              }
+                            }
+                          : () => form.markAllAsTouched()
+                      : null,
+                  child: status != FutureStatus.pending
+                      ? EasyText(LocaleKeys.continueWithEmail.tr(), color: Palette.white)
+                      : const LoadingIndicator(
+                          radius: 20,
+                          strokeWidth: 1.5,
+                        ),
+                ),
+              ).padding(bottom: 50);
+            },
+          ),
           BorderButton(
             color: Palette.lightBlue,
             onPressed: () {},
