@@ -124,6 +124,23 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_vpnConfigAtom = Atom(name: '_VpnStore._vpnConfig', context: context);
+
+  VpnConfig? get vpnConfig {
+    _$_vpnConfigAtom.reportRead();
+    return super._vpnConfig;
+  }
+
+  @override
+  VpnConfig? get _vpnConfig => vpnConfig;
+
+  @override
+  set _vpnConfig(VpnConfig? value) {
+    _$_vpnConfigAtom.reportWrite(value, super._vpnConfig, () {
+      super._vpnConfig = value;
+    });
+  }
+
   late final _$_connectionStatusAtom = Atom(name: '_VpnStore._connectionStatus', context: context);
 
   ConnectionStatus get connectionStatus {
@@ -157,6 +174,28 @@ mixin _$VpnStore on _VpnStore, Store {
     _$_connectingLocationCodeAtom.reportWrite(value, super._connectingLocationCode, () {
       super._connectingLocationCode = value;
     });
+  }
+
+  late final _$setupTunnelAsyncAction = AsyncAction('_VpnStore.setupTunnel', context: context);
+
+  @override
+  Future<void> setupTunnel() {
+    return _$setupTunnelAsyncAction.run(() => super.setupTunnel());
+  }
+
+  late final _$generateKeyAsyncAction = AsyncAction('_VpnStore.generateKey', context: context);
+
+  @override
+  Future<void> generateKey() {
+    return _$generateKeyAsyncAction.run(() => super.generateKey());
+  }
+
+  late final _$connectWireguardAsyncAction =
+      AsyncAction('_VpnStore.connectWireguard', context: context);
+
+  @override
+  Future<void> connectWireguard() {
+    return _$connectWireguardAsyncAction.run(() => super.connectWireguard());
   }
 
   late final _$connectAsyncAction = AsyncAction('_VpnStore.connect', context: context);

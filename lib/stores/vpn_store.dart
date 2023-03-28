@@ -4,13 +4,16 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/mock.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
+import 'package:wireguard_dart/wireguard_dart.dart';
 
 // Project imports:
 
@@ -20,9 +23,13 @@ part 'vpn_store.g.dart';
 class VpnStore = _VpnStore with _$VpnStore;
 
 abstract class _VpnStore with Store {
-  _VpnStore({required ApiService apiService, required LocationsStore locationsStore})
-      : _apiService = apiService,
-        _locationsStore = locationsStore {
+  _VpnStore({
+    required ApiService apiService,
+    required LocationsStore locationsStore,
+    required WireguardDart wireguardService,
+  })  : _apiService = apiService,
+        _locationsStore = locationsStore,
+        _wireguardService = wireguardService {
     _vpnConnection = _emptyConnection;
     _connectionStatus = ConnectionStatus.disconnected;
     _duration = Duration.zero;
@@ -31,6 +38,7 @@ abstract class _VpnStore with Store {
     _protocol = protocols.first;
     _killSwitch = true;
     _connectingLocationCode = '';
+    setupTunnel();
   }
 
   static const VpnConnection _emptyConnection = VpnConnection(
@@ -40,6 +48,7 @@ abstract class _VpnStore with Store {
 
   final ApiService _apiService;
   final LocationsStore _locationsStore;
+  final WireguardDart _wireguardService;
   final random = Random();
 
   Timer? _timer;
@@ -59,6 +68,9 @@ abstract class _VpnStore with Store {
   VpnConnection _vpnConnection = _emptyConnection;
 
   @readonly
+  VpnConfig? _vpnConfig;
+
+  @readonly
   ConnectionStatus _connectionStatus = ConnectionStatus.disconnected;
 
   @computed
@@ -69,6 +81,48 @@ abstract class _VpnStore with Store {
       _connectionStatus == ConnectionStatus.connecting;
   @readonly
   String _connectingLocationCode = '';
+
+  final wireguardConfig = '''
+    [Interface]
+      PrivateKey = CD+RJ5YOaff004qq4BZCAx1QwD07qOKxJ9zSaTs/Olc=
+      Address = 172.21.123.5/32
+      DNS = 172.21.123.1
+    [Peer]
+      PublicKey = xo72tCDvCDjMxNZJ4buAWOlfhI0L4fPIxhcvpZwc/hs=
+      AllowedIPs = 0.0.0.0/0
+      Endpoint = 157.90.228.151:26611
+      PersistentKeepalive = 15
+    ''';
+
+  @action
+  Future<void> setupTunnel() async {
+    try {
+      await _wireguardService.setupTunnel(bundleId: 'network.mysterium.wireguardDartExample.tun');
+      connectWireguard();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @action
+  Future<void> generateKey() async {
+    try {
+      final res = await _wireguardService.generatePrivateKey();
+      debugPrint(res.toString());
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @action
+  Future<void> connectWireguard() async {
+    try {
+      await _wireguardService.connect(cfg: wireguardConfig);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @action
   Future<void> connect({
     Location? location,
@@ -85,7 +139,13 @@ abstract class _VpnStore with Store {
       await disconnect();
     }
     _connectionStatus = ConnectionStatus.connecting;
-    await Future.delayed(const Duration(seconds: 3));
+    _vpnConfig = await _apiService.fetchVpnConfig(
+      input: VpnConfigInput(
+        publicKey: 'aJxmamM5IUbxkevqSGcOIASETCxeRl71iXPVbqT1gz0=',
+        country: location.countryCode,
+      ),
+    );
+    print(_vpnConfig);
     _vpnConnection = VpnConnection(
       connectionIP: '185.358.45.304',
       location: location.countryCode,
