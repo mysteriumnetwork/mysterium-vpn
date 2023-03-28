@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
+import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 
 const kGetInfo = '/accounts/invitation_code';
-const kGetAllLocations = '/connection/config';
+const kFetchAllLocations = '/connection/config';
+const kCreateConnectionConfig = '/connection/connect';
 
 class RestApiService extends ApiService {
   RestApiService({
@@ -37,7 +39,7 @@ class RestApiService extends ApiService {
   @override
   Future<List<Location>> fetchAllLocations({required String keyword}) async {
     try {
-      final response = await _apiClient.get<Map<String, dynamic>>(kGetAllLocations);
+      final response = await _apiClient.get<Map<String, dynamic>>(kFetchAllLocations);
       if (response.data == null || !response.data!.containsKey('countries')) {
         throw Exception('No data found');
       }
@@ -62,7 +64,7 @@ class RestApiService extends ApiService {
   @override
   Future<List<Location>> fetchTopLocations({required String keyword}) async {
     try {
-      final response = await _apiClient.get<Map<String, dynamic>>(kGetAllLocations);
+      final response = await _apiClient.get<Map<String, dynamic>>(kFetchAllLocations);
       if (response.data == null || !response.data!.containsKey('countries')) {
         throw Exception('No data found');
       }
@@ -112,5 +114,22 @@ class RestApiService extends ApiService {
       recentLocations.removeLast();
     }
     return _localDb.setRecentLocation(recentLocations);
+  }
+
+  @override
+  Future<VpnConfig> fetchVpnConfig({required VpnConfigInput input}) async {
+    try {
+      final response = await _apiClient.post<Map<String, dynamic>>(
+        kCreateConnectionConfig,
+        data: input.toJson(),
+      );
+      if (response.data == null || !response.data!.containsKey('wg_config')) {
+        throw Exception("config wasn't created");
+      }
+      return VpnConfig.fromJson(response.data!);
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      throw handleException(e);
+    }
   }
 }
