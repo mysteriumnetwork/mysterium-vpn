@@ -4,14 +4,15 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/mock.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
@@ -39,6 +40,7 @@ abstract class _VpnStore with Store {
     _killSwitch = true;
     _connectingLocationCode = '';
     setupTunnel();
+    generateKey();
   }
 
   static const VpnConnection _emptyConnection = VpnConnection(
@@ -49,6 +51,8 @@ abstract class _VpnStore with Store {
   final ApiService _apiService;
   final LocationsStore _locationsStore;
   final WireguardDart _wireguardService;
+  final _securedStorage = SecureStorageService();
+
   final random = Random();
 
   Timer? _timer;
@@ -69,6 +73,12 @@ abstract class _VpnStore with Store {
 
   @readonly
   VpnConfig? _vpnConfig;
+
+  @readonly
+  String _privateKey = '';
+
+  @readonly
+  String _publicKey = '';
 
   @readonly
   ConnectionStatus _connectionStatus = ConnectionStatus.disconnected;
@@ -94,8 +104,17 @@ abstract class _VpnStore with Store {
   @action
   Future<void> generateKey() async {
     try {
-      final res = await _wireguardService.generatePrivateKey();
-      debugPrint(res.toString());
+      if (await _securedStorage.checkExistance(StorageKeys.wireguardPrivateKey.value) &&
+          await _securedStorage.checkExistance(StorageKeys.wireguardPublicKey.value)) {
+        _privateKey = await _securedStorage.read(StorageKeys.wireguardPrivateKey.value);
+        _publicKey = await _securedStorage.read(StorageKeys.wireguardPublicKey.value);
+      } else {
+        final res = await _wireguardService.generateKeyPair();
+        _privateKey = res['privateKey'] ?? '';
+        _publicKey = res['publicKey'] ?? '';
+        await _securedStorage.write(StorageKeys.wireguardPrivateKey.value, _privateKey);
+        await _securedStorage.write(StorageKeys.wireguardPublicKey.value, _publicKey);
+      }
     } catch (e) {
       print(e);
     }
@@ -135,17 +154,20 @@ abstract class _VpnStore with Store {
       countryName: 'DE'.tr(),
     );
     _connectingLocationCode = location.countryCode;
-    if (_vpnConnection != _emptyConnection) {
-      await disconnect();
-    }
-    _connectionStatus = ConnectionStatus.connecting;
-    // _vpnConfig = await _apiService.fetchVpnConfig(
-    //   input: VpnConfigInput(
-    //     publicKey: 'aJxmamM5IUbxkevqSGcOIASETCxeRl71iXPVbqT1gz0=',
-    //     country: location.countryCode,
-    //   ),
-    // );
-    const staticConfig = '''
+    try {
+      if (_vpnConnection != _emptyConnection) {
+        await disconnect();
+      }
+      _connectionStatus = ConnectionStatus.connecting;
+      // final res = await _apiService.fetchVpnConfig(
+      //   input: VpnConfigInput(
+      //     publicKey: _publicKey,
+      //     country: location.countryCode,
+      //     ipType: 'residential',
+      //   ),
+      // );
+      // print(res);
+      const staticConfig = '''
     [Interface]
       PrivateKey = CD+RJ5YOaff004qq4BZCAx1QwD07qOKxJ9zSaTs/Olc=
       Address = 172.21.123.5/32
@@ -156,18 +178,21 @@ abstract class _VpnStore with Store {
       Endpoint = 157.90.228.151:26611
       PersistentKeepalive = 15
     ''';
-    _vpnConfig = const VpnConfig(config: staticConfig);
-    print(_vpnConfig);
-    connectWireguard();
+      _vpnConfig = const VpnConfig(config: staticConfig);
+      print(_vpnConfig);
+      await connectWireguard();
 
-    _vpnConnection = VpnConnection(
-      connectionIP: '185.358.45.304',
-      location: location.countryCode,
-    );
-    _connectionStatus = ConnectionStatus.connected;
-    _apiService.setRecentLocation(location: location.countryCode);
-    Future.delayed(const Duration(seconds: 1), _locationsStore.fetchRecentLocations);
-    await startTracking();
+      _vpnConnection = VpnConnection(
+        connectionIP: '185.358.45.304',
+        location: location.countryCode,
+      );
+      _connectionStatus = ConnectionStatus.connected;
+      startTracking();
+      _apiService.setRecentLocation(location: location.countryCode);
+      _locationsStore.fetchRecentLocations();
+    } catch (e) {
+      _connectionStatus = ConnectionStatus.disconnected;
+    }
   }
 
   @action
@@ -191,9 +216,9 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> disconnect() async {
-    disconnectWireguard();
     _connectionStatus = ConnectionStatus.disconnecting;
     await Future.delayed(const Duration(seconds: 1));
+    await disconnectWireguard();
     _vpnConnection = _emptyConnection;
     _timer?.cancel();
     _downloadSpeed = null;

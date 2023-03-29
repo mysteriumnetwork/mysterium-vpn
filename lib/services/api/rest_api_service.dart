@@ -8,7 +8,6 @@ import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 
-const kGetInfo = '/accounts/invitation_code';
 const kFetchAllLocations = '/connection/config';
 const kCreateConnectionConfig = '/connection/connect';
 

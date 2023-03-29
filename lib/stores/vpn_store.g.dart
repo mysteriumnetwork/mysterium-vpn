@@ -141,6 +141,40 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_privateKeyAtom = Atom(name: '_VpnStore._privateKey', context: context);
+
+  String get privateKey {
+    _$_privateKeyAtom.reportRead();
+    return super._privateKey;
+  }
+
+  @override
+  String get _privateKey => privateKey;
+
+  @override
+  set _privateKey(String value) {
+    _$_privateKeyAtom.reportWrite(value, super._privateKey, () {
+      super._privateKey = value;
+    });
+  }
+
+  late final _$_publicKeyAtom = Atom(name: '_VpnStore._publicKey', context: context);
+
+  String get publicKey {
+    _$_publicKeyAtom.reportRead();
+    return super._publicKey;
+  }
+
+  @override
+  String get _publicKey => publicKey;
+
+  @override
+  set _publicKey(String value) {
+    _$_publicKeyAtom.reportWrite(value, super._publicKey, () {
+      super._publicKey = value;
+    });
+  }
+
   late final _$_connectionStatusAtom = Atom(name: '_VpnStore._connectionStatus', context: context);
 
   ConnectionStatus get connectionStatus {
@@ -196,6 +230,14 @@ mixin _$VpnStore on _VpnStore, Store {
   @override
   Future<void> connectWireguard() {
     return _$connectWireguardAsyncAction.run(() => super.connectWireguard());
+  }
+
+  late final _$disconnectWireguardAsyncAction =
+      AsyncAction('_VpnStore.disconnectWireguard', context: context);
+
+  @override
+  Future<void> disconnectWireguard() {
+    return _$disconnectWireguardAsyncAction.run(() => super.disconnectWireguard());
   }
 
   late final _$connectAsyncAction = AsyncAction('_VpnStore.connect', context: context);
