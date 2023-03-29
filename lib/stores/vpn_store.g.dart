@@ -22,6 +22,21 @@ mixin _$VpnStore on _VpnStore, Store {
       (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading, name: '_VpnStore.isLoading'))
           .value;
 
+  late final _$setupTunnelFutureAtom = Atom(name: '_VpnStore.setupTunnelFuture', context: context);
+
+  @override
+  ObservableFuture<void> get setupTunnelFuture {
+    _$setupTunnelFutureAtom.reportRead();
+    return super.setupTunnelFuture;
+  }
+
+  @override
+  set setupTunnelFuture(ObservableFuture<void> value) {
+    _$setupTunnelFutureAtom.reportWrite(value, super.setupTunnelFuture, () {
+      super.setupTunnelFuture = value;
+    });
+  }
+
   late final _$_durationAtom = Atom(name: '_VpnStore._duration', context: context);
 
   Duration? get duration {
@@ -280,6 +295,7 @@ mixin _$VpnStore on _VpnStore, Store {
   @override
   String toString() {
     return '''
+setupTunnelFuture: ${setupTunnelFuture},
 isConnected: ${isConnected},
 isLoading: ${isLoading}
     ''';
