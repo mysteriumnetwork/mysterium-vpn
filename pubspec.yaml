@@ -1,5 +1,5 @@
 name: mysterium_vpn
-description: Mysterium VPN app descripton.
+description: Next-gen Mysterium VPN client for mobile (iOS/Android) and desktop (Windows/MacOS/Linux).
 
 publish_to: 'none'
 version: 1.0.9+12
@@ -52,8 +52,8 @@ dependencies:
   wireguard_dart:
     git:
       url: https://github.com/mysteriumnetwork/wireguard_dart.git
-      ref: master
-  
+      ref: 0.3.1
+
 
 
 dev_dependencies:
