@@ -10,5 +10,6 @@ enum StorageKeys {
   username,
   userId,
   appLink,
-  recentLocations,
+  wireguardPublicKey,
+  wireguardPrivateKey,
 }
