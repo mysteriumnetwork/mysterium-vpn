@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/mock.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -104,20 +105,16 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> generateKey() async {
-    try {
-      if (await _securedStorage.checkExistance(StorageKeys.wireguardPrivateKey.value) &&
-          await _securedStorage.checkExistance(StorageKeys.wireguardPublicKey.value)) {
-        _privateKey = await _securedStorage.read(StorageKeys.wireguardPrivateKey.value);
-        _publicKey = await _securedStorage.read(StorageKeys.wireguardPublicKey.value);
-      } else {
-        final res = await _wireguardService.generateKeyPair();
-        _privateKey = res['privateKey'] ?? '';
-        _publicKey = res['publicKey'] ?? '';
-        await _securedStorage.write(StorageKeys.wireguardPrivateKey.value, _privateKey);
-        await _securedStorage.write(StorageKeys.wireguardPublicKey.value, _publicKey);
-      }
-    } catch (e) {
-      print(e);
+    if (await _securedStorage.checkExistance(StorageKeys.wireguardPrivateKey.value) &&
+        await _securedStorage.checkExistance(StorageKeys.wireguardPublicKey.value)) {
+      _privateKey = await _securedStorage.read(StorageKeys.wireguardPrivateKey.value);
+      _publicKey = await _securedStorage.read(StorageKeys.wireguardPublicKey.value);
+    } else {
+      final res = await _wireguardService.generateKeyPair();
+      _privateKey = res['privateKey'] ?? '';
+      _publicKey = res['publicKey'] ?? '';
+      await _securedStorage.write(StorageKeys.wireguardPrivateKey.value, _privateKey);
+      await _securedStorage.write(StorageKeys.wireguardPublicKey.value, _publicKey);
     }
   }
 
@@ -127,20 +124,12 @@ abstract class _VpnStore with Store {
     if (config == null) {
       return;
     }
-    try {
-      await _wireguardService.connect(cfg: config);
-    } catch (e) {
-      print(e);
-    }
+    await _wireguardService.connect(cfg: config);
   }
 
   @action
   Future<void> disconnectWireguard() async {
-    try {
-      await _wireguardService.disconnect();
-    } catch (e) {
-      print(e);
-    }
+    await _wireguardService.disconnect();
   }
 
   @action
@@ -180,7 +169,7 @@ abstract class _VpnStore with Store {
       PersistentKeepalive = 15
     ''';
       _vpnConfig = const VpnConfig(config: staticConfig);
-      print(_vpnConfig);
+      debugPrint(_vpnConfig.toString());
       await connectWireguard();
 
       _vpnConnection = VpnConnection(
