@@ -57,6 +57,9 @@ abstract class _VpnStore with Store {
 
   Timer? _timer;
 
+  @observable
+  ObservableFuture<void> setupTunnelFuture = ObservableFuture.value(null);
+
   @readonly
   Duration? _duration;
   @readonly
@@ -94,11 +97,9 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> setupTunnel() async {
-    try {
-      await _wireguardService.setupTunnel(bundleId: 'com.mysteriumvpn.tun');
-    } catch (e) {
-      print(e);
-    }
+    setupTunnelFuture =
+        ObservableFuture(_wireguardService.setupTunnel(bundleId: 'com.mysteriumvpn.tun'));
+    await setupTunnelFuture;
   }
 
   @action
