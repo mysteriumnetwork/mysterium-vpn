@@ -82,23 +82,10 @@ abstract class _VpnStore with Store {
   @readonly
   String _connectingLocationCode = '';
 
-  final wireguardConfig = '''
-    [Interface]
-      PrivateKey = CD+RJ5YOaff004qq4BZCAx1QwD07qOKxJ9zSaTs/Olc=
-      Address = 172.21.123.5/32
-      DNS = 172.21.123.1
-    [Peer]
-      PublicKey = xo72tCDvCDjMxNZJ4buAWOlfhI0L4fPIxhcvpZwc/hs=
-      AllowedIPs = 0.0.0.0/0
-      Endpoint = 157.90.228.151:26611
-      PersistentKeepalive = 15
-    ''';
-
   @action
   Future<void> setupTunnel() async {
     try {
-      await _wireguardService.setupTunnel(bundleId: 'network.mysterium.wireguardDartExample.tun');
-      connectWireguard();
+      await _wireguardService.setupTunnel(bundleId: 'com.mysteriumvpn.tun');
     } catch (e) {
       print(e);
     }
@@ -116,8 +103,21 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> connectWireguard() async {
+    final config = _vpnConfig?.config;
+    if (config == null) {
+      return;
+    }
     try {
-      await _wireguardService.connect(cfg: wireguardConfig);
+      await _wireguardService.connect(cfg: config);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @action
+  Future<void> disconnectWireguard() async {
+    try {
+      await _wireguardService.disconnect();
     } catch (e) {
       print(e);
     }
@@ -139,13 +139,27 @@ abstract class _VpnStore with Store {
       await disconnect();
     }
     _connectionStatus = ConnectionStatus.connecting;
-    _vpnConfig = await _apiService.fetchVpnConfig(
-      input: VpnConfigInput(
-        publicKey: 'aJxmamM5IUbxkevqSGcOIASETCxeRl71iXPVbqT1gz0=',
-        country: location.countryCode,
-      ),
-    );
+    // _vpnConfig = await _apiService.fetchVpnConfig(
+    //   input: VpnConfigInput(
+    //     publicKey: 'aJxmamM5IUbxkevqSGcOIASETCxeRl71iXPVbqT1gz0=',
+    //     country: location.countryCode,
+    //   ),
+    // );
+    const staticConfig = '''
+    [Interface]
+      PrivateKey = CD+RJ5YOaff004qq4BZCAx1QwD07qOKxJ9zSaTs/Olc=
+      Address = 172.21.123.5/32
+      DNS = 172.21.123.1
+    [Peer]
+      PublicKey = xo72tCDvCDjMxNZJ4buAWOlfhI0L4fPIxhcvpZwc/hs=
+      AllowedIPs = 0.0.0.0/0
+      Endpoint = 157.90.228.151:26611
+      PersistentKeepalive = 15
+    ''';
+    _vpnConfig = const VpnConfig(config: staticConfig);
     print(_vpnConfig);
+    connectWireguard();
+
     _vpnConnection = VpnConnection(
       connectionIP: '185.358.45.304',
       location: location.countryCode,
@@ -177,6 +191,7 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> disconnect() async {
+    disconnectWireguard();
     _connectionStatus = ConnectionStatus.disconnecting;
     await Future.delayed(const Duration(seconds: 1));
     _vpnConnection = _emptyConnection;
