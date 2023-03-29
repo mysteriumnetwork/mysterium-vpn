@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/services/api/rest_api_service.dart';
 import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
 
 List<String> _getAuthPaths() => [
       kFetchSubscriptionInfo,
+      kCreateConnectionConfig,
     ];
 
 class AppendTokenInterceptor extends Interceptor {
