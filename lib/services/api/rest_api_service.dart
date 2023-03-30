@@ -116,7 +116,10 @@ class RestApiService extends ApiService {
   }
 
   @override
-  Future<VpnConfig> fetchVpnConfig({required VpnConfigInput input}) async {
+  Future<VpnConfig> fetchVpnConfig({
+    required VpnConfigInput input,
+    required String privateKey,
+  }) async {
     try {
       final response = await _apiClient.post<Map<String, dynamic>>(
         kCreateConnectionConfig,
@@ -125,7 +128,9 @@ class RestApiService extends ApiService {
       if (response.data == null || !response.data!.containsKey('wg_config')) {
         throw Exception("config wasn't created");
       }
-      return VpnConfig.fromJson(response.data!);
+      final config =
+          (response.data!['wg_config'] as String).replaceFirst('%private_key%', privateKey);
+      return VpnConfig(config: config);
     } on Exception catch (e) {
       debugPrint(e.toString());
       throw handleException(e);
