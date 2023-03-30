@@ -86,7 +86,7 @@ abstract class _AuthStore with Store {
 
       _authStatus = AuthStatus.authenticating;
       if (appLink != null) {
-        if (appLink.pathSegments.length != 2 && !appLink.pathSegments[1].isUUID()) {
+        if (appLink.pathSegments.length != 2 || !appLink.pathSegments[1].isUUID()) {
           throw WrongAuthTokenException();
         }
         authenticateFeature = ObservableFuture(
