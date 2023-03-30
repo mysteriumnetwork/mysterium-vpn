@@ -9,34 +9,39 @@ import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceService {
-  static SharedPreferences? _prefsInstance;
+  factory SharedPreferenceService() => _instance;
+  SharedPreferenceService._internal();
+  static final SharedPreferenceService _instance = SharedPreferenceService._internal();
 
-  static Future<SharedPreferences> init() async =>
-      _prefsInstance ??= await SharedPreferences.getInstance();
+  late SharedPreferences _prefsInstance;
 
-  String? getString(String key) => _prefsInstance!.getString(key);
+  Future<void> init() async {
+    _prefsInstance = await SharedPreferences.getInstance();
+  }
 
-  List<String>? getStringList(String key) => _prefsInstance!.getStringList(key);
+  String? getString(String key) => _prefsInstance.getString(key);
 
-  int? getInt(String key) => _prefsInstance!.getInt(key);
+  List<String>? getStringList(String key) => _prefsInstance.getStringList(key);
 
-  bool? getBool(String key) => _prefsInstance!.getBool(key);
+  int? getInt(String key) => _prefsInstance.getInt(key);
 
-  Future<bool> setString(String key, String value) async => _prefsInstance!.setString(key, value);
+  bool? getBool(String key) => _prefsInstance.getBool(key);
 
-  Future<bool> setInt(String key, int value) async => _prefsInstance!.setInt(key, value);
+  Future<bool> setString(String key, String value) async => _prefsInstance.setString(key, value);
+
+  Future<bool> setInt(String key, int value) async => _prefsInstance.setInt(key, value);
 
   Future<bool> setStringList(String key, List<String> value) async =>
-      _prefsInstance!.setStringList(key, value);
+      _prefsInstance.setStringList(key, value);
 
   Future<bool> setBool(String key, {required bool value}) async =>
-      _prefsInstance!.setBool(key, value);
+      _prefsInstance.setBool(key, value);
 
-  Future<bool> remove(String key) async => _prefsInstance!.remove(key);
+  Future<bool> remove(String key) async => _prefsInstance.remove(key);
 
-  Future<bool> clear() async => _prefsInstance!.clear();
+  Future<bool> clear() async => _prefsInstance.clear();
 
-  bool containsKey(String key) => _prefsInstance!.containsKey(key);
+  bool containsKey(String key) => _prefsInstance.containsKey(key);
 
   Locale? getLocale() {
     final languageCode = getString(StorageKeys.languageCode.value);

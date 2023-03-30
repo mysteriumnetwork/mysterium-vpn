@@ -17,6 +17,7 @@ import 'package:mysterium_vpn/firebase_options.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/services/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/shared_preferences_service.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:url_protocol/url_protocol.dart';
@@ -65,7 +66,8 @@ class Enviroment {
         return true;
       };
     }
-    await SharedPreferenceService.init();
+    await SharedPreferenceService().init();
+    await SecureStorageService().init();
     await EasyLocalization.ensureInitialized();
     await Hive.initFlutter();
     Hive
