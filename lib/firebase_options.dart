@@ -16,10 +16,7 @@ import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb, Tar
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -44,6 +41,16 @@ class DefaultFirebaseOptions {
         );
     }
   }
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyATOAJHXgab-vtJILPhVeREmsD8Dc8-EZY',
+    appId: '1:104590535697:web:f7b7ea7844bbec59f355b0',
+    messagingSenderId: '104590535697',
+    projectId: 'new-mysterium-vpn',
+    authDomain: 'new-mysterium-vpn.firebaseapp.com',
+    storageBucket: 'new-mysterium-vpn.appspot.com',
+    measurementId: 'G-NRGS9M0J5Q',
+  );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBqmRjjve4OlKZ4UBx9vGAzOwfkEbQw4j8',

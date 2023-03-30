@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 
 class CustomLogInterceptor extends Interceptor {
   CustomLogInterceptor({
@@ -71,13 +72,15 @@ class CustomLogInterceptor extends Interceptor {
 
   @override
   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
-    FirebaseCrashlytics.instance.recordError(
-      err,
-      StackTrace.fromString('ApiClient'),
-      reason: 'API EXCEPTION',
-      fatal: true,
-      printDetails: true,
-    );
+    if (!isWindowsOrLinux()) {
+      FirebaseCrashlytics.instance.recordError(
+        err,
+        StackTrace.fromString('ApiClient'),
+        reason: 'API EXCEPTION',
+        fatal: true,
+        printDetails: true,
+      );
+    }
     if (error) {
       logPrint('*** DioError ***:');
       logPrint('uri: ${err.requestOptions.uri}');

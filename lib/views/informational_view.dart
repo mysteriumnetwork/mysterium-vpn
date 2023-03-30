@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -16,7 +17,7 @@ class InformationalView extends ConsumerWidget {
     final authStore = ref.watch(authStorePOD);
 
     return BaseLayout(
-      header: BaseAppBar(authStore: authStore, onBackButtonPressed: authStore.logout),
+      header: BaseAppBar(authStore: authStore, onBackButtonPressed: context.beamBack),
       child: Center(
         child: EasyText(
           translationKey.tr(),
