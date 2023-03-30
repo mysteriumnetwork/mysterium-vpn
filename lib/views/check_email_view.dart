@@ -49,7 +49,7 @@ class CheckYourEmailView extends HookConsumerWidget {
                 ],
               ).scrollable(),
               if (authStore.authStatus == AuthStatus.authenticating)
-                const LoadingBarrier(color: Palette.white),
+                LoadingBarrier(color: Theme.of(context).primaryColor),
             ],
           ),
         ),
