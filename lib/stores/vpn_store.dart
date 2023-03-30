@@ -120,15 +120,11 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> connectWireguard() async {
-    try {
-      final config = _vpnConfig?.config;
-      if (config == null) {
-        return;
-      }
-      await _wireguardService.connect(cfg: config);
-    } catch (e) {
-      print(e);
+    final config = _vpnConfig?.config;
+    if (config == null) {
+      return;
     }
+    await _wireguardService.connect(cfg: config);
   }
 
   @action
