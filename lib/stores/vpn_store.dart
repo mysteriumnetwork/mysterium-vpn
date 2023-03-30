@@ -120,11 +120,15 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> connectWireguard() async {
-    final config = _vpnConfig?.config;
-    if (config == null) {
-      return;
+    try {
+      final config = _vpnConfig?.config;
+      if (config == null) {
+        return;
+      }
+      await _wireguardService.connect(cfg: config);
+    } catch (e) {
+      print(e);
     }
-    await _wireguardService.connect(cfg: config);
   }
 
   @action
@@ -149,27 +153,15 @@ abstract class _VpnStore with Store {
         await disconnect();
       }
       _connectionStatus = ConnectionStatus.connecting;
-      // final res = await _apiService.fetchVpnConfig(
-      //   input: VpnConfigInput(
-      //     publicKey: _publicKey,
-      //     country: location.countryCode,
-      //     ipType: 'residential',
-      //   ),
-      // );
-      // print(res);
-      const staticConfig = '''
-    [Interface]
-      PrivateKey = CD+RJ5YOaff004qq4BZCAx1QwD07qOKxJ9zSaTs/Olc=
-      Address = 172.21.123.5/32
-      DNS = 172.21.123.1
-    [Peer]
-      PublicKey = xo72tCDvCDjMxNZJ4buAWOlfhI0L4fPIxhcvpZwc/hs=
-      AllowedIPs = 0.0.0.0/0
-      Endpoint = 157.90.228.151:26611
-      PersistentKeepalive = 15
-    ''';
-      _vpnConfig = const VpnConfig(config: staticConfig);
-      debugPrint(_vpnConfig.toString());
+      _vpnConfig = await _apiService.fetchVpnConfig(
+        input: VpnConfigInput(
+          publicKey: _publicKey,
+          country: location.countryCode,
+        ),
+        privateKey: _privateKey,
+      );
+
+      debugPrint(_vpnConfig?.config);
       await connectWireguard();
 
       _vpnConnection = VpnConnection(
