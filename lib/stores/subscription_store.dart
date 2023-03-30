@@ -160,7 +160,6 @@ abstract class _SubscriptionStore with Store {
   @action
   Future<void> _handlePurchase(PurchaseDetails purchaseDetails) async {
     final index = _products.indexWhere((element) => element.id == _purchasedProductId);
-    _isSubscribing = purchaseDetails.status;
 
     if (purchaseDetails.status == PurchaseStatus.error ||
         purchaseDetails.status == PurchaseStatus.canceled) {
@@ -197,6 +196,7 @@ abstract class _SubscriptionStore with Store {
     if (purchaseDetails.pendingCompletePurchase) {
       _inAppPurchase.completePurchase(purchaseDetails);
     }
+    _isSubscribing = purchaseDetails.status;
   }
 
   @action
