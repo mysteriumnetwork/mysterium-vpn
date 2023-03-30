@@ -9,6 +9,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/mock.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
@@ -169,6 +170,9 @@ abstract class _VpnStore with Store {
       _apiService.setRecentLocation(location: location.countryCode);
       _locationsStore.fetchRecentLocations();
     } catch (e) {
+      showSnackbar(
+        'Error connecting to ${location.countryName}. Please try again later.',
+      );
       _connectionStatus = ConnectionStatus.disconnected;
     }
   }
