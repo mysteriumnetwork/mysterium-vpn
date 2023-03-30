@@ -283,14 +283,14 @@ String getPlatformGateway() {
   }
 }
 
-void showSnackbar(String message) {
+void showSnackbar(String message, {MessageType type = MessageType.error}) {
   final snackBar = SnackBar(
     elevation: 4,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20),
     ),
     behavior: SnackBarBehavior.floating,
-    backgroundColor: Palette.pink,
+    backgroundColor: type == MessageType.error ? Palette.pink : Palette.green,
     content: Center(
       child: EasyText(
         message,
