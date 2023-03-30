@@ -51,6 +51,10 @@ dependencies:
   stack_trace: ^1.11.0
   styled_widget: ^0.4.1
   url_launcher: ^6.1.10
+  url_protocol: 
+    git:
+      url: https://github.com/KristijanMitrik/flutter_url_protocol
+      ref: main
   
 
 
