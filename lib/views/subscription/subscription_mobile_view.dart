@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/components/base_app_bar.dart';
 import 'package:mysterium_vpn/components/base_layout.dart';
 import 'package:mysterium_vpn/components/error_widget.dart';
@@ -25,8 +26,9 @@ class SubscriptionMobileView extends ConsumerWidget {
       header: Observer(
         builder: (context) => BaseAppBar(
           authStore: authStore,
-          onBackButtonPressed:
-              subscriptionStore.isSubscribed == false ? authStore.logout : context.beamBack,
+          onBackButtonPressed: subscriptionStore.isSubscribed == false
+              ? authStore.logout
+              : () => context.beamToReplacementNamed(Routes.home.toRoute),
         ),
       ),
       child: Observer(
