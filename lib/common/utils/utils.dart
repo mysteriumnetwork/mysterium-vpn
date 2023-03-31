@@ -308,15 +308,19 @@ ApiException handleException(Exception e, {String? message}) {
   if (e is DioError) {
     final data = e.response?.data as Map<String, dynamic>;
     if (!data.containsKey('error')) {
-      return ApiException(e.message ?? 'Something went wrong');
+      return ApiException(
+        e.message ?? 'Something went wrong. Please give it another try. 😕',
+      );
     }
     if ((data['error'] as Map<String, dynamic>).containsKey('message')) {
       return ApiException(data['message'] as String? ?? 'Something went wrong');
     }
-    return ApiException(e.message ?? 'Something went wrong');
+    return ApiException(
+      e.message ?? 'Something went wrong at our server. Please give it another try. 😕',
+    );
   } else {
     return ApiException(
-      message ?? 'Something went wrong',
+      message ?? 'Something went wrong with. Please give it another try. 😕',
     );
   }
 }
