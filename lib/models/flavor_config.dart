@@ -6,12 +6,12 @@ class FlavorValues {
   factory FlavorValues.production() => FlavorValues(
         baseUrl: 'https://app.mysteriumvpn.com/api/v1',
         scheme: 'mysteriumvpn',
-        webAppUrl: 'https://app-testnet.mysteriumvpn.com',
+        webAppUrl: 'https://app.mysteriumvpn.com/login?scheme=mysteriumvpn',
       );
   factory FlavorValues.dev() => FlavorValues(
         baseUrl: 'https://app-testnet.mysteriumvpn.com/api/v1',
         scheme: 'mysteriumvpn',
-        webAppUrl: 'https://app-testnet.mysteriumvpn.com',
+        webAppUrl: 'https://app-testnet.mysteriumvpn.com/login?scheme=mysteriumvpn',
       );
 
   final String baseUrl;
