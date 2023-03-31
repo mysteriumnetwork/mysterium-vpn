@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/common/enums/routes.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -62,13 +62,23 @@ class SubscriptionForm extends HookConsumerWidget {
                 ).padding(bottom: getMediaHeight(context) * 0.025),
                 ReactionBuilder(
                   builder: (context) => reaction((_) => store.isSubscribing, (result) {
-                    if (result == PurchaseStatus.purchased &&
-                        isMounted() &&
-                        localDb.getEmailCommunicationApproval() == Approval.notSet) {
-                      context.beamToNamed(Routes.emailCommunications.toRoute);
+                    if (result == PurchaseStatus.purchased && isMounted()) {
+                      showSnackbar(
+                        'Great news! Your subscription is now active. 🎉',
+                        type: MessageType.success,
+                      );
+
+                      if (localDb.getEmailCommunicationApproval() == Approval.notSet) {
+                        context.beamToNamed(Routes.emailCommunications.toRoute);
+                      }
                     }
-                    if (result == PurchaseStatus.canceled || result == PurchaseStatus.error) {
-                      showSnackbar('Error Occured. Please try again.');
+                    if (result == PurchaseStatus.canceled) {
+                      showSnackbar('Process Canceled.😕');
+                    }
+                    if (result == PurchaseStatus.error) {
+                      showSnackbar(
+                        'Something went wrong with your subscription. Please give it another try. 😕',
+                      );
                     }
                   }),
                   child: EasyButton(
