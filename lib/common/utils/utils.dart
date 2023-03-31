@@ -257,6 +257,8 @@ bool isDekstop() => Platform.isWindows || Platform.isLinux || Platform.isMacOS;
 
 bool isMobile() => Platform.isAndroid || Platform.isIOS;
 
+bool isWindowsOrLinux() => Platform.isWindows || Platform.isLinux;
+
 TargetPlatform getPlatform() {
   if (Platform.isAndroid) {
     return TargetPlatform.android;
@@ -304,8 +306,11 @@ void showSnackbar(String message) {
 
 ApiException handleException(Exception e, {String? message}) {
   if (e is DioError) {
-    final data = (e.response?.data as Map<String, dynamic>)['error'];
-    if (data is Map<String, dynamic> && data.containsKey('message')) {
+    final data = e.response?.data as Map<String, dynamic>;
+    if (!data.containsKey('error')) {
+      return ApiException(e.message ?? 'Something went wrong');
+    }
+    if ((data['error'] as Map<String, dynamic>).containsKey('message')) {
       return ApiException(data['message'] as String? ?? 'Something went wrong');
     }
     return ApiException(e.message ?? 'Something went wrong');

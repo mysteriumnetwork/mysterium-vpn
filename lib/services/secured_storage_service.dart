@@ -9,11 +9,19 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 // Project imports:
 
 class SecureStorageService {
-  static const FlutterSecureStorage _securedStorage = FlutterSecureStorage(
-    aOptions: AndroidOptions(
-      encryptedSharedPreferences: true,
-    ),
-  );
+  factory SecureStorageService() => _instance;
+  SecureStorageService._internal();
+  late FlutterSecureStorage _securedStorage;
+
+  static final SecureStorageService _instance = SecureStorageService._internal();
+
+  Future<void> init() async {
+    _securedStorage = const FlutterSecureStorage(
+      aOptions: AndroidOptions(
+        encryptedSharedPreferences: true,
+      ),
+    );
+  }
 
   Future<String> read(String key) async {
     if (!await _securedStorage.containsKey(key: key)) {
@@ -75,4 +83,12 @@ class SecureStorageService {
   Future<String?> getAppLink() async => readOrNull(StorageKeys.appLink.value);
   Future<void> saveAppLink({required String appLink}) async =>
       write(StorageKeys.appLink.value, appLink);
+  Future<String> getWireguardPublicKey() async => read(StorageKeys.wireguardPublicKey.value);
+  Future<void> saveWireguardPublicKey({required String publicKey}) async =>
+      write(StorageKeys.accessToken.value, publicKey);
+  Future<void> removeWireguardPublicKey() async => remove(StorageKeys.wireguardPrivateKey.value);
+  Future<String> getWireguardPrivateKey() async => read(StorageKeys.wireguardPrivateKey.value);
+  Future<void> saveWireguardPrivateKey({required String publicKey}) async =>
+      write(StorageKeys.accessToken.value, publicKey);
+  Future<void> removeWireguardPrivateKey() async => remove(StorageKeys.wireguardPrivateKey.value);
 }

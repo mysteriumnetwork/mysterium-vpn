@@ -15,9 +15,14 @@ import 'package:mysterium_vpn/services/auth/rest_auth_service.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
+import 'package:wireguard_dart/wireguard_dart.dart';
 
 final inAppPurchasePOD = Provider(
   (ref) => InAppPurchase.instance,
+);
+
+final wireguardServicePOD = Provider(
+  (ref) => WireguardDart(),
 );
 
 final appLinksPOD = Provider(
