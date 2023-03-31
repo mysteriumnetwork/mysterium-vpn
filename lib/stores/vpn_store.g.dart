@@ -22,6 +22,21 @@ mixin _$VpnStore on _VpnStore, Store {
       (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading, name: '_VpnStore.isLoading'))
           .value;
 
+  late final _$setupTunnelFutureAtom = Atom(name: '_VpnStore.setupTunnelFuture', context: context);
+
+  @override
+  ObservableFuture<void> get setupTunnelFuture {
+    _$setupTunnelFutureAtom.reportRead();
+    return super.setupTunnelFuture;
+  }
+
+  @override
+  set setupTunnelFuture(ObservableFuture<void> value) {
+    _$setupTunnelFutureAtom.reportWrite(value, super.setupTunnelFuture, () {
+      super.setupTunnelFuture = value;
+    });
+  }
+
   late final _$_durationAtom = Atom(name: '_VpnStore._duration', context: context);
 
   Duration? get duration {
@@ -124,6 +139,57 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_vpnConfigAtom = Atom(name: '_VpnStore._vpnConfig', context: context);
+
+  VpnConfig? get vpnConfig {
+    _$_vpnConfigAtom.reportRead();
+    return super._vpnConfig;
+  }
+
+  @override
+  VpnConfig? get _vpnConfig => vpnConfig;
+
+  @override
+  set _vpnConfig(VpnConfig? value) {
+    _$_vpnConfigAtom.reportWrite(value, super._vpnConfig, () {
+      super._vpnConfig = value;
+    });
+  }
+
+  late final _$_privateKeyAtom = Atom(name: '_VpnStore._privateKey', context: context);
+
+  String get privateKey {
+    _$_privateKeyAtom.reportRead();
+    return super._privateKey;
+  }
+
+  @override
+  String get _privateKey => privateKey;
+
+  @override
+  set _privateKey(String value) {
+    _$_privateKeyAtom.reportWrite(value, super._privateKey, () {
+      super._privateKey = value;
+    });
+  }
+
+  late final _$_publicKeyAtom = Atom(name: '_VpnStore._publicKey', context: context);
+
+  String get publicKey {
+    _$_publicKeyAtom.reportRead();
+    return super._publicKey;
+  }
+
+  @override
+  String get _publicKey => publicKey;
+
+  @override
+  set _publicKey(String value) {
+    _$_publicKeyAtom.reportWrite(value, super._publicKey, () {
+      super._publicKey = value;
+    });
+  }
+
   late final _$_connectionStatusAtom = Atom(name: '_VpnStore._connectionStatus', context: context);
 
   ConnectionStatus get connectionStatus {
@@ -157,6 +223,36 @@ mixin _$VpnStore on _VpnStore, Store {
     _$_connectingLocationCodeAtom.reportWrite(value, super._connectingLocationCode, () {
       super._connectingLocationCode = value;
     });
+  }
+
+  late final _$setupTunnelAsyncAction = AsyncAction('_VpnStore.setupTunnel', context: context);
+
+  @override
+  Future<void> setupTunnel() {
+    return _$setupTunnelAsyncAction.run(() => super.setupTunnel());
+  }
+
+  late final _$generateKeyAsyncAction = AsyncAction('_VpnStore.generateKey', context: context);
+
+  @override
+  Future<void> generateKey() {
+    return _$generateKeyAsyncAction.run(() => super.generateKey());
+  }
+
+  late final _$connectWireguardAsyncAction =
+      AsyncAction('_VpnStore.connectWireguard', context: context);
+
+  @override
+  Future<void> connectWireguard() {
+    return _$connectWireguardAsyncAction.run(() => super.connectWireguard());
+  }
+
+  late final _$disconnectWireguardAsyncAction =
+      AsyncAction('_VpnStore.disconnectWireguard', context: context);
+
+  @override
+  Future<void> disconnectWireguard() {
+    return _$disconnectWireguardAsyncAction.run(() => super.disconnectWireguard());
   }
 
   late final _$connectAsyncAction = AsyncAction('_VpnStore.connect', context: context);
@@ -199,6 +295,7 @@ mixin _$VpnStore on _VpnStore, Store {
   @override
   String toString() {
     return '''
+setupTunnelFuture: ${setupTunnelFuture},
 isConnected: ${isConnected},
 isLoading: ${isLoading}
     ''';
