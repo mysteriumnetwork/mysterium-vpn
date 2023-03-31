@@ -63,17 +63,22 @@ class SubscriptionForm extends HookConsumerWidget {
                 ReactionBuilder(
                   builder: (context) => reaction((_) => store.isSubscribing, (result) {
                     if (result == PurchaseStatus.purchased && isMounted()) {
-                      showSnackbar('Successfully Subscribed', type: MessageType.success);
+                      showSnackbar(
+                        'Great news! Your subscription is now active. 🎉',
+                        type: MessageType.success,
+                      );
 
                       if (localDb.getEmailCommunicationApproval() == Approval.notSet) {
                         context.beamToNamed(Routes.emailCommunications.toRoute);
                       }
                     }
                     if (result == PurchaseStatus.canceled) {
-                      showSnackbar('Process Canceled');
+                      showSnackbar('Process Canceled.😕');
                     }
                     if (result == PurchaseStatus.error) {
-                      showSnackbar('Subscription process failed. Please try again later.');
+                      showSnackbar(
+                        'Something went wrong with your subscription. Please give it another try. 😕',
+                      );
                     }
                   }),
                   child: EasyButton(

@@ -171,7 +171,7 @@ abstract class _VpnStore with Store {
       _locationsStore.fetchRecentLocations();
     } catch (e) {
       showSnackbar(
-        'Error connecting to ${location.countryName}. Please try again later.',
+        'Something went wrong while connecting to ${location.countryName}. Please give it another try. 😕',
       );
       _connectionStatus = ConnectionStatus.disconnected;
     }
