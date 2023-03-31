@@ -9,8 +9,8 @@ flutter_icons:
   adaptive_icon_foreground: "assets/logo/playstore.png"
   windows:
     generate: true
-    image_path: "assets/logo/playstore.png"
+    image_path: "assets/logo/desktop.png"
     icon_size: 48
   macos:
     generate: true
-    image_path: "assets/logo/appstore.png"
+    image_path: "assets/logo/desktop.png"
