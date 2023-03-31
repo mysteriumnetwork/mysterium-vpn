@@ -101,7 +101,7 @@ abstract class _AuthStore with Store {
       _authStatus = AuthStatus.authenticated;
       _localDb.setUserId(_authData!.userId);
       debugPrint(_localDb.userData.toString());
-    } on Exception catch (e) {
+    } catch (e) {
       debugPrint(e.toString());
       _authStatus = AuthStatus.unauthenticated;
     }
