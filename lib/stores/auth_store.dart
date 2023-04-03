@@ -8,6 +8,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/wrong_auth_token.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
@@ -72,7 +73,8 @@ abstract class _AuthStore with Store {
           }
         },
       );
-    } on Exception catch (e) {
+    } catch (e) {
+      showSnackbar('Error while initializing authentication.Please give it another try. 😕');
       debugPrint(e.toString());
     }
   }
@@ -101,7 +103,8 @@ abstract class _AuthStore with Store {
       _authStatus = AuthStatus.authenticated;
       _localDb.setUserId(_authData!.userId);
       debugPrint(_localDb.userData.toString());
-    } on Exception catch (e) {
+    } catch (e) {
+      showSnackbar('Error while authenticating. Please give it another try. 😕');
       debugPrint(e.toString());
       _authStatus = AuthStatus.unauthenticated;
     }

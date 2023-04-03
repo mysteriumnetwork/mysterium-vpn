@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
@@ -60,9 +59,6 @@ class MyApp extends HookConsumerWidget {
     WidgetRef ref,
   ) {
     routeDelegate.update();
-    if (authStore.authenticateFeature.status == FutureStatus.rejected) {
-      showSnackbar(authStore.authenticateFeature.error.toString());
-    }
     if (status == AuthStatus.unauthenticated) {
       ref
         ..invalidate(subscriptionStorePOD)
