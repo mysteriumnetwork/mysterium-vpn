@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/connect_button.dart';
 import 'package:mysterium_vpn/components/connection_bar.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -36,10 +37,10 @@ class HomeDesktopRightPanel extends ConsumerWidget {
                       onPressed: () {
                         isConnected ? vpnStore.disconnect() : vpnStore.connect();
                       },
-                    ),
+                    ).width((getMediaWidth(context) + getMediaHeight(context)) * 0.06),
                   ],
                 ).padding(vertical: 40).expanded(),
-                const ConnectionInfoPanelDesktop().height(148),
+                const ConnectionInfoPanelDesktop(),
               ],
             ).padding(horizontal: 40, vertical: 20),
           ],
