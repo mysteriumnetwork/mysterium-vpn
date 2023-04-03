@@ -46,10 +46,10 @@ class HomeMobileView extends HookConsumerWidget {
                       ),
                       ConnectButton(
                         onPressed: () => isConnected ? vpnStore.disconnect() : vpnStore.connect(),
-                      ),
+                      ).width((getMediaWidth(context) + getMediaHeight(context)) * 0.065),
                     ],
                   ).padding(bottom: 20).expanded(),
-                  const ConnectionInfoPanelMobile().height(95),
+                  const ConnectionInfoPanelMobile(),
                 ],
               ).height(getMediaHeight(context) * 0.66 - getWindowPadding().top),
             ],
