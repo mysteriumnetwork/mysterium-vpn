@@ -79,25 +79,22 @@ class _InfoItem extends StatelessWidget {
               asset: icon,
             ),
           ),
-          Positioned(
-            top: 5,
-            child: Column(
-              children: [
-                EasyText(
-                  label,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400,
-                  color: isConnected ? Palette.white : Palette.lightBlack,
-                ).padding(bottom: 6),
-                EasyText(
-                  text,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w900,
-                  color: isConnected ? Palette.white : Palette.lightBlack,
-                )
-              ],
-            ).padding(vertical: 16),
-          ),
+          Column(
+            children: [
+              EasyText(
+                label,
+                fontSize: 10,
+                fontWeight: FontWeight.w400,
+                color: isConnected ? Palette.white : Palette.lightBlack,
+              ),
+              EasyText(
+                text,
+                fontSize: 16,
+                fontWeight: FontWeight.w900,
+                color: isConnected ? Palette.white : Palette.lightBlack,
+              )
+            ],
+          ).padding(top: 16, bottom: 10),
         ],
       );
 }
