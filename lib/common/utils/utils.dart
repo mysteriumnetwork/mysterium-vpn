@@ -297,6 +297,7 @@ void showSnackbar(String message, {MessageType type = MessageType.error}) {
         maxLines: 2,
         color: Palette.white,
         fontWeight: FontWeight.w900,
+        textAlign: TextAlign.center,
       ),
     ),
   );
