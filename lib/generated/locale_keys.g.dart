@@ -129,6 +129,7 @@ abstract class  LocaleKeys {
   static const errorNotificationsApproval = 'errorNotificationsApproval';
   static const noInternetConnection = 'noInternetConnection';
   static const noInternetConnectionSub = 'noInternetConnectionSub';
+  static const retryBtn = 'retryBtn';
   static const BD = 'BD';
   static const BE = 'BE';
   static const BF = 'BF';
