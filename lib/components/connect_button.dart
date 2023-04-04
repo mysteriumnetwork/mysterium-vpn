@@ -46,15 +46,13 @@ class ConnectButton extends HookConsumerWidget {
                   ),
                 ).fittedBox()
               : SvgIconButton(
-                  asset: powerOff,
+                  asset:
+                      vpnStore.connectionStatus == ConnectionStatus.connected ? powerOn : powerOff,
                   onPressed: null,
                 ).fittedBox()
           : SvgIconButton(
               onPressed: onPressed,
-              asset: locationCode == vpnStore.connectingLocationCode &&
-                      vpnStore.connectionStatus == ConnectionStatus.connected
-                  ? powerOn
-                  : powerOff,
+              asset: vpnStore.connectionStatus == ConnectionStatus.connected ? powerOn : powerOff,
             ).fittedBox(),
     );
   }
