@@ -127,6 +127,7 @@
   "errorNotificationsApproval": "Unable to check Notifications status!",
   "noInternetConnection": "No internet connection",
   "noInternetConnectionSub":"Please check your internet connection and try again.",
+  "internetConnectionRestored":"Your internet connection has been restored.",
   "retryBtn": "Retry",
   "BD": "Bangladesh",
   "BE": "Belgium",
