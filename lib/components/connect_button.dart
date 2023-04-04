@@ -1,9 +1,11 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/components/dialogs/no_internet_connection_dialog.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -27,6 +29,7 @@ class ConnectButton extends HookConsumerWidget {
   late final String powerConnecting;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final connectivityStore = ref.watch(connectivityStorePOD);
     final controller = useAnimationController(
       duration: const Duration(seconds: 10),
     )..repeat();
@@ -51,7 +54,14 @@ class ConnectButton extends HookConsumerWidget {
                   onPressed: null,
                 ).fittedBox()
           : SvgIconButton(
-              onPressed: onPressed,
+              onPressed: () {
+                if (connectivityStore.connectivityStream.value == ConnectivityResult.none &&
+                    vpnStore.connectionStatus == ConnectionStatus.disconnected) {
+                  shownNoInternetConnectionDialog(context);
+                } else {
+                  onPressed();
+                }
+              },
               asset: vpnStore.connectionStatus == ConnectionStatus.connected ? powerOn : powerOff,
             ).fittedBox(),
     );

@@ -127,6 +127,11 @@ abstract class LocaleKeys {
   static const checkingNotificationsApproval = 'checkingNotificationsApproval';
   static const errorEmaillCommunicationsApproval = 'errorEmaillCommunicationsApproval';
   static const errorNotificationsApproval = 'errorNotificationsApproval';
+  static const noInternetConnection = 'noInternetConnection';
+  static const noInternetConnectionSub = 'noInternetConnectionSub';
+  static const currentlyOffline = 'currentlyOffline';
+  static const internetConnectionRestored = 'internetConnectionRestored';
+  static const retryBtn = 'retryBtn';
   static const BD = 'BD';
   static const BE = 'BE';
   static const BF = 'BF';

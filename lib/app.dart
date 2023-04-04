@@ -1,4 +1,5 @@
 import 'package:beamer/beamer.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -6,7 +7,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 
@@ -21,30 +24,43 @@ class MyApp extends HookConsumerWidget {
     final authStore = ref.read(authStorePOD);
     final routeDelegate = ref.read(routerDelegatePOD);
     final localStore = ref.read(localeStorePOD);
+    final connectivityStore = ref.read(connectivityStorePOD);
 
     return ReactionBuilder(
-      builder: (context) => reaction(
-        (_) => authStore.authStatus,
-        (status) {
-          authenticationReaction(status, routeDelegate, authStore, ref);
+      builder: (_) => reaction(
+        (_) => connectivityStore.connectivityStream.value,
+        (result) {
+          if (result == ConnectivityResult.none) {
+            showSnackbar(LocaleKeys.currentlyOffline.tr());
+          } else {
+            showSnackbar(LocaleKeys.internetConnectionRestored.tr(), type: MessageType.success);
+          }
         },
       ),
-      child: Observer(
-        builder: (context) => RetakeFocusOnTap(
-          child: MaterialApp.router(
-            title: 'Mysterium VPN',
-            key: UniqueKey(),
-            scaffoldMessengerKey: snackbarKey,
-            theme: themeStore.lightTheme,
-            darkTheme: themeStore.darkTheme,
-            themeMode: themeStore.themeMode,
-            routerDelegate: routeDelegate,
-            routeInformationParser: routeInformationParser,
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: localStore.currentLocale,
-            backButtonDispatcher: BeamerBackButtonDispatcher(
-              delegate: routeDelegate,
+      child: ReactionBuilder(
+        builder: (_) => reaction(
+          (_) => authStore.authStatus,
+          (status) {
+            authenticationReaction(status, routeDelegate, authStore, ref);
+          },
+        ),
+        child: Observer(
+          builder: (context) => RetakeFocusOnTap(
+            child: MaterialApp.router(
+              title: 'Mysterium VPN',
+              key: UniqueKey(),
+              scaffoldMessengerKey: snackbarKey,
+              theme: themeStore.lightTheme,
+              darkTheme: themeStore.darkTheme,
+              themeMode: themeStore.themeMode,
+              routerDelegate: routeDelegate,
+              routeInformationParser: routeInformationParser,
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: localStore.currentLocale,
+              backButtonDispatcher: BeamerBackButtonDispatcher(
+                delegate: routeDelegate,
+              ),
             ),
           ),
         ),
