@@ -50,6 +50,7 @@ abstract class Assets {
   static const String warning = 'assets/icons/warning.svg';
   static const String subscriptionItem = 'assets/icons/subscription_item.svg';
   static const String checkmark = 'assets/icons/checkmark.svg';
+  static const String noInternetConnection = 'assets/icons/no_internet_connection.svg';
 
   //Animations
   static const String backgroundElements = 'assets/animations/background_elements.json';
