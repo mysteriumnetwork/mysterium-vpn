@@ -88,6 +88,7 @@ class SignUpForm extends HookConsumerWidget {
                   onPressed: status != FutureStatus.pending
                       ? form.valid
                           ? () async {
+                              TextInput.finishAutofillContext();
                               final email = form.control('email').value as String;
                               await store.login(email: email);
                               if (isMounted()) {
