@@ -125,6 +125,8 @@
   "checkingNotificationsApproval": "Checking Notifications status...",
   "errorEmaillCommunicationsApproval": "Unable to check Email communication status!",
   "errorNotificationsApproval": "Unable to check Notifications status!",
+  "noInternetConnection": "No internet connection",
+  "noInternetConnectionSub":"Please check your internet connection and try again.",
   "BD": "Bangladesh",
   "BE": "Belgium",
   "BF": "Burkina Faso",
