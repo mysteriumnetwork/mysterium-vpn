@@ -22,12 +22,12 @@ Future<void> shownNoInternetConnectionDialog(BuildContext context) async {
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
     ),
-    builder: (context) => const _NoInternetConnectionDialog(),
+    builder: (context) => const NoInternetConnectionDialog(),
   );
 }
 
-class _NoInternetConnectionDialog extends StatelessWidget {
-  const _NoInternetConnectionDialog();
+class NoInternetConnectionDialog extends StatelessWidget {
+  const NoInternetConnectionDialog({super.key});
   @override
   Widget build(BuildContext context) => Stack(
         clipBehavior: Clip.none,
