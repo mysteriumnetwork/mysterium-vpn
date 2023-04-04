@@ -51,7 +51,7 @@ class RestSubscriptionService extends SubscriptionService {
     Subscription? subscription;
     await Future.doWhile(() async {
       retryCount++;
-      subscription = await fetchSubscriptionDetails();
+      subscription = await Future.delayed(const Duration(seconds: 3), fetchSubscriptionDetails);
       if (retryCount == 3 || subscription!.active) {
         if (subscription!.active) {
           await _localDb.setSubscriptionPlan(
@@ -177,15 +177,15 @@ class RestSubscriptionService extends SubscriptionService {
   @override
   Future<ProductDetails> createSubscriptionRequest(SubscriptionRequest subscriptionRequest) async {
     try {
-      final res = await _apiClient.post<Map<String, dynamic>>(
-        kCreateSubscriptionRequest,
-        data: subscriptionRequest.toJson(),
-      );
-      final subscriptionProductId = res.data?['subscription_product_id'] as String?;
-      if (subscriptionProductId == null) {
-        throw PackageNotFoundException();
-      }
-
+      // final res = await _apiClient.post<Map<String, dynamic>>(
+      //   kCreateSubscriptionRequest,
+      //   data: subscriptionRequest.toJson(),
+      // );
+      // final subscriptionProductId = res.data?['subscription_product_id'] as String?;
+      // if (subscriptionProductId == null) {
+      //   throw PackageNotFoundException();
+      // }
+      const subscriptionProductId = 'monthly_vpn_plan';
       final productDetails = await _inAppPurchase.queryProductDetails({subscriptionProductId});
       final product = productDetails.productDetails
           .firstWhereOrNull((element) => element.id == subscriptionProductId);

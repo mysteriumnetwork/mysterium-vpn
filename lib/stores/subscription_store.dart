@@ -134,7 +134,7 @@ abstract class _SubscriptionStore with Store {
 
       _purchasedProductId = productId;
     } on Exception catch (e) {
-      _isSubscribing = PurchaseStatus.canceled;
+      _isSubscribing = PurchaseStatus.error;
 
       if (kDebugMode) {
         debugPrint(e.toString());
@@ -181,7 +181,7 @@ abstract class _SubscriptionStore with Store {
     _subscription = await _verifyPurchase(_purchasedProductId ?? '', purchaseDetails);
     _purchasedProductId = _localDb.getSubscriptionPlan();
     _products[index].status =
-        _subscription?.active ?? false ? ProductStatus.purchased : ProductStatus.purchasable;
+        _subscription?.active ?? true ? ProductStatus.purchasable : ProductStatus.purchased;
 
     if (purchaseDetails.status == PurchaseStatus.purchased) {
       if (index != -1) {
