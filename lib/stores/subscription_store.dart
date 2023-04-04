@@ -180,8 +180,6 @@ abstract class _SubscriptionStore with Store {
     }
     _subscription = await _verifyPurchase(_purchasedProductId ?? '', purchaseDetails);
     _purchasedProductId = _localDb.getSubscriptionPlan();
-    _products[index].status =
-        _subscription?.active ?? true ? ProductStatus.purchasable : ProductStatus.purchased;
 
     if (purchaseDetails.status == PurchaseStatus.purchased) {
       if (index != -1) {
