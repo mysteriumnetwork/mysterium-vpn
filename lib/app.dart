@@ -31,7 +31,7 @@ class MyApp extends HookConsumerWidget {
         (_) => connectivityStore.connectivityStream.value,
         (result) {
           if (result == ConnectivityResult.none) {
-            showSnackbar(LocaleKeys.noInternetConnection.tr());
+            showSnackbar(LocaleKeys.currentlyOffline.tr());
           } else {
             showSnackbar(LocaleKeys.internetConnectionRestored.tr(), type: MessageType.success);
           }
