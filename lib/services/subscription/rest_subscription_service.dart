@@ -185,7 +185,11 @@ class RestSubscriptionService extends SubscriptionService {
       // if (subscriptionProductId == null) {
       //   throw PackageNotFoundException();
       // }
-      const subscriptionProductId = 'monthly_vpn_plan';
+
+      // TODO(Kristijan): Remove this later
+      final subscriptionProductId = subscriptionRequest.planId == 'plan_6_months'
+          ? 'semi_annual_vpn_plan'
+          : 'monthly_vpn_plan';
       final productDetails = await _inAppPurchase.queryProductDetails({subscriptionProductId});
       final product = productDetails.productDetails
           .firstWhereOrNull((element) => element.id == subscriptionProductId);
