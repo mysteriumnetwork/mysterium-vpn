@@ -149,6 +149,7 @@ class CodegenLoader extends AssetLoader {
     "errorNotificationsApproval": "Unable to check Notifications status!",
     "noInternetConnection": "No internet connection",
     "noInternetConnectionSub": "Please check your internet connection and try again.",
+    "currentlyOffline": "You are currently offline.",
     "internetConnectionRestored": "Your internet connection has been restored.",
     "retryBtn": "Retry",
     "BD": "Bangladesh",
