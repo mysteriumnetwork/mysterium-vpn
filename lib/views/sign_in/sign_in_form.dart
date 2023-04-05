@@ -44,12 +44,11 @@ class SignInForm extends HookConsumerWidget {
                 ValidationMessage.required: (_) => LocaleKeys.emailIsRequired.tr(),
                 ValidationMessage.email: (_) => LocaleKeys.emailIsNotValid.tr(),
               },
-            ).padding(bottom: 20),
+            ).padding(bottom: 40),
           ),
           Observer(
             builder: (_) {
               final status = store.loginFeature.status;
-
               return ReactiveFormConsumer(
                 builder: (_, form, child) => EasyButton(
                   width: double.infinity,
@@ -73,11 +72,26 @@ class SignInForm extends HookConsumerWidget {
                           strokeWidth: 1.5,
                         ),
                 ),
-              ).padding(bottom: 50);
+              );
             },
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Divider(
+                color: Theme.of(context).textTheme.bodyLarge?.color,
+              ).width(100),
+              EasyText(
+                LocaleKeys.or.tr(),
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+              ).padding(horizontal: 10),
+              Divider(
+                color: Theme.of(context).textTheme.bodyLarge?.color,
+              ).width(100),
+            ],
+          ).padding(vertical: 25),
           BorderButton(
-            color: Palette.lightBlue,
             onPressed: () {},
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
