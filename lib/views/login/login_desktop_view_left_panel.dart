@@ -30,7 +30,6 @@ class LoginDesktopViewLeftPanel extends ConsumerWidget {
       builder: (context) => Stack(
         children: [
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -43,34 +42,21 @@ class LoginDesktopViewLeftPanel extends ConsumerWidget {
                 ],
               ).padding(bottom: 20),
               const LoginHeadlines().expanded(),
-              LayoutBuilder(
-                builder: (ctx, con) => Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    EasyButton(
-                      width: con.maxWidth * 0.45,
-                      height: 60,
-                      useSystemColor: false,
-                      color: Palette.purple,
-                      text: LocaleKeys.signIn.tr(),
-                      onPressed: () {
-                        launchUrl(Uri.parse(environment.values.webAppUrl));
-                      },
-                    ),
-                    EasyButton(
-                      height: 60,
-                      width: con.maxWidth * 0.45,
-                      useSystemColor: false,
-                      text: LocaleKeys.getStarted.tr(),
-                      onPressed: () {
-                        launchUrl(Uri.parse(environment.values.webAppUrl));
-                      },
-                    ),
-                  ],
-                ).padding(vertical: 10),
+              EasyButton(
+                height: 60,
+                width: 300,
+                useSystemColor: false,
+                color: Palette.purple,
+                text: LocaleKeys.signIn.tr(),
+                onPressed: () {
+                  launchUrl(Uri.parse(environment.values.webAppUrl));
+                },
               ),
-              AppVersion(
-                headerText: LocaleKeys.appVersion.tr(),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: AppVersion(
+                  headerText: LocaleKeys.appVersion.tr(),
+                ),
               )
             ],
           ).paddingDirectional(horizontal: 55, vertical: 40),
