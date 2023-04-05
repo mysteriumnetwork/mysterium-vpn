@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/connect_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/flag.dart';
 import 'package:mysterium_vpn/components/ripple.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/stores/connectivity_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -17,17 +19,26 @@ class RecentLocationItem extends StatelessWidget {
     required this.location,
     required this.onTap,
     required this.vpnStore,
+    required this.connectivityStore,
     super.key,
   });
 
   final Location location;
   final VoidCallback onTap;
   final VpnStore vpnStore;
+  final ConnectivityStore connectivityStore;
   @override
   Widget build(BuildContext context) => Observer(
         builder: (context) => RippleWidget(
           radius: 20,
-          onTap: vpnStore.isLoading ? null : onTap,
+          onTap: vpnStore.isLoading
+              ? null
+              : () => onConnectButtonPressed(
+                    connectivityStore.connectionStatus,
+                    vpnStore.connectionStatus,
+                    context,
+                    onTap,
+                  ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,

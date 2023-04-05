@@ -34,7 +34,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
 
 final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
 
-final connectivityStorePOD = Provider.autoDispose<ConnectivityStore>((ref) => ConnectivityStore());
+final connectivityStorePOD = Provider<ConnectivityStore>((ref) => ConnectivityStore());
 
 final vpnStorePOD = Provider.autoDispose<VpnStore>((ref) {
   final apiService = ref.read(apiServicePOD);
