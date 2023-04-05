@@ -117,8 +117,6 @@ final environmentPOD = StateProvider<FlavorConfig>(
   ),
 );
 
-final isSignedInPOD = StateProvider<bool>((ref) => true);
-
 final tokenStreamPOD = StreamProvider<String>((ref) {
   final authStore = ref.watch(authStorePOD);
   final streamController = StreamController<String>();
