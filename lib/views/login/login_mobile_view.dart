@@ -63,33 +63,19 @@ class LoginMobileView extends ConsumerWidget {
                               text: LocaleKeys.signIn.tr(),
                               onPressed: () {
                                 if (Platform.isAndroid || Platform.isIOS) {
-                                  ref.read(isSignedInPOD.notifier).state = true;
                                   _showAuthView(context);
                                 }
                               },
-                            ).padding(bottom: 20),
-                            EasyButton(
-                              width: getMediaWidth(context) * 0.8,
-                              height: 60,
-                              useSystemColor: false,
-                              text: LocaleKeys.getStarted.tr(),
-                              onPressed: () {
-                                if (Platform.isAndroid || Platform.isIOS) {
-                                  ref.read(isSignedInPOD.notifier).state = false;
-                                  _showAuthView(context);
-                                }
-                              },
-                            ).padding(bottom: 20),
+                            ).padding(bottom: 10),
                             TextButton(
                               onPressed: () {},
                               child: EasyText(
                                 LocaleKeys.getHelp.tr(),
-                                color: Palette.lightBlack,
-                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
                               ),
                             )
                           ],
-                        ).padding(top: 30, bottom: 10),
+                        ).padding(top: 30, bottom: 30),
                       ),
                     ],
                   ),
