@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/components/dialogs/no_internet_connection_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 
 bool checkMediaWidth(BuildContext context, double width) =>
@@ -323,5 +325,18 @@ ApiException handleException(Exception e, {String? message}) {
     return ApiException(
       message ?? 'Something went wrong with. Please give it another try. 😕',
     );
+  }
+}
+
+void onConnectButtonPressed(
+  ConnectivityResult connectivityStatus,
+  ConnectionStatus vpnStatus,
+  BuildContext context,
+  VoidCallback onPressed,
+) {
+  if (connectivityStatus == ConnectivityResult.none && vpnStatus == ConnectionStatus.disconnected) {
+    shownNoInternetConnectionDialog(context);
+  } else {
+    onPressed();
   }
 }
