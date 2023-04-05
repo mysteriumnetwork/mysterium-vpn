@@ -15,7 +15,6 @@ import 'package:mysterium_vpn/stores/auth_store.dart';
 
 /// My app
 class MyApp extends HookConsumerWidget {
-  ///asd
   const MyApp({super.key});
   @override
   Widget build(final BuildContext context, WidgetRef ref) {
@@ -28,13 +27,12 @@ class MyApp extends HookConsumerWidget {
 
     return ReactionBuilder(
       builder: (_) => reaction(
-        (_) => connectivityStore.connectivityStream.value,
+        (_) => connectivityStore.connectionStatus,
         (result) {
-          if (result == ConnectivityResult.none) {
-            showSnackbar(LocaleKeys.currentlyOffline.tr());
-          } else {
-            showSnackbar(LocaleKeys.internetConnectionRestored.tr(), type: MessageType.success);
-          }
+          handleConectivityStatusChanged(
+            connectivityStatus: result,
+            prevConnectivityStatus: connectivityStore.prevConnectionStatus,
+          );
         },
       ),
       child: ReactionBuilder(
@@ -80,6 +78,18 @@ class MyApp extends HookConsumerWidget {
         ..invalidate(subscriptionStorePOD)
         ..invalidate(vpnStorePOD)
         ..invalidate(locationsStorePOD);
+    }
+  }
+
+  void handleConectivityStatusChanged({
+    required ConnectivityResult connectivityStatus,
+    required ConnectivityResult prevConnectivityStatus,
+  }) {
+    if (connectivityStatus == ConnectivityResult.none) {
+      showSnackbar(LocaleKeys.currentlyOffline.tr());
+    } else if (prevConnectivityStatus == ConnectivityResult.none &&
+        connectivityStatus != ConnectivityResult.none) {
+      showSnackbar(LocaleKeys.internetConnectionRestored.tr(), type: MessageType.success);
     }
   }
 }

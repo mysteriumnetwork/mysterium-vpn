@@ -55,7 +55,7 @@ class ConnectButton extends HookConsumerWidget {
                 ).fittedBox()
           : SvgIconButton(
               onPressed: () {
-                if (connectivityStore.connectivityStream.value == ConnectivityResult.none &&
+                if (connectivityStore.connectionStatus == ConnectivityResult.none &&
                     vpnStore.connectionStatus == ConnectionStatus.disconnected) {
                   shownNoInternetConnectionDialog(context);
                 } else {
