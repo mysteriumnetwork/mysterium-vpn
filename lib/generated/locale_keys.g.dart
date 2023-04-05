@@ -380,4 +380,5 @@ abstract class LocaleKeys {
   static const UA = 'UA';
   static const QA = 'QA';
   static const MZ = 'MZ';
+  static const or = 'or';
 }

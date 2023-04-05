@@ -399,7 +399,8 @@ class CodegenLoader extends AssetLoader {
     "ID": "Indonesia",
     "UA": "Ukraine",
     "QA": "Qatar",
-    "MZ": "Mozambique"
+    "MZ": "Mozambique",
+    "or": "OR"
   };
   static const Map<String, dynamic> es = {
     "title": "Hello Sir",
