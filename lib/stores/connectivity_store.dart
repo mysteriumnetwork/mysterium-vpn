@@ -7,9 +7,18 @@ part 'connectivity_store.g.dart';
 class ConnectivityStore = _ConnectivityStore with _$ConnectivityStore;
 
 abstract class _ConnectivityStore with Store {
-  @observable
-  ObservableStream<ConnectivityResult> connectivityStream =
-      ObservableStream(Connectivity().onConnectivityChanged);
+  _ConnectivityStore() {
+    Connectivity().onConnectivityChanged.listen(_updateConnectionStatus);
+  }
 
-  void dispose() {}
+  @readonly
+  ConnectivityResult _connectionStatus = ConnectivityResult.none;
+
+  @readonly
+  ConnectivityResult _prevConnectionStatus = ConnectivityResult.none;
+
+  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+    _prevConnectionStatus = _connectionStatus;
+    _connectionStatus = result;
+  }
 }
