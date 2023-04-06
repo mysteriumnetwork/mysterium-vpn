@@ -65,30 +65,33 @@ class EmailCommunicationsForm extends HookConsumerWidget {
               ).fittedBox().expanded()
             ],
           ).padding(bottom: height * 0.04),
-          RichText(
-            text: TextSpan(
-              style: TextStyle(
-                color: Theme.of(context).textTheme.bodyLarge?.color,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-              children: [
-                TextSpan(text: '${LocaleKeys.questions.tr()} ${LocaleKeys.tap.tr()}'),
-                TextSpan(
-                  text: LocaleKeys.here.tr(),
-                  style: const TextStyle(
-                    color: Palette.purple,
-                    decoration: TextDecoration.underline,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  mouseCursor: MaterialStateMouseCursor.clickable,
-                  recognizer: TapGestureRecognizer()..onTap = () {},
+          Visibility(
+            visible: false,
+            child: RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
                 ),
-                TextSpan(text: LocaleKeys.moreInfo.tr()),
-              ],
-            ),
-          ).padding(bottom: height * 0.06),
+                children: [
+                  TextSpan(text: '${LocaleKeys.questions.tr()} ${LocaleKeys.tap.tr()}'),
+                  TextSpan(
+                    text: LocaleKeys.here.tr(),
+                    style: const TextStyle(
+                      color: Palette.purple,
+                      decoration: TextDecoration.underline,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    mouseCursor: MaterialStateMouseCursor.clickable,
+                    recognizer: TapGestureRecognizer()..onTap = () {},
+                  ),
+                  TextSpan(text: LocaleKeys.moreInfo.tr()),
+                ],
+              ),
+            ).padding(bottom: height * 0.06),
+          ),
           Observer(
             builder: (context) {
               final status = store.setEmailCommunicationApprovalFuture.status;
