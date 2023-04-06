@@ -93,7 +93,7 @@ class ProductItem extends StatelessWidget {
               ).padding(left: 14),
             ),
           ],
-        ).padding(all: 14).height(95).decorated(
+        ).padding(all: 14).height(105).decorated(
               border: Border.all(color: Theme.of(context).hintColor),
               borderRadius: const BorderRadius.all(
                 Radius.circular(20),
