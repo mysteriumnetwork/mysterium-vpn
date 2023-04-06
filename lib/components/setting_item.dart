@@ -39,7 +39,7 @@ class SettingItem extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            EasyText(title, fontSize: 14).padding(bottom: 8),
+                            EasyText(title, fontSize: 18).padding(bottom: 8),
                             EasyText(
                               subtitle,
                               color: Palette.lightBlack,
