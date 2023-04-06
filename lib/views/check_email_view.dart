@@ -4,7 +4,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
@@ -37,17 +36,14 @@ class CheckYourEmailView extends HookConsumerWidget {
                   EasyText(
                     LocaleKeys.emailSentTo.tr(namedArgs: {'email': authStore.email}),
                     maxLines: 2,
-                    color: Palette.lightBlack,
                   ).padding(bottom: 30),
                   EasyText(
                     LocaleKeys.linkExpires.tr(),
                     maxLines: 2,
+                    textAlign: TextAlign.center,
                   ).padding(bottom: 10),
-                  EasyText(
-                    LocaleKeys.goCheckYourEmail.tr(),
-                  ),
                 ],
-              ).scrollable(),
+              ).scrollable().padding(all: 20),
               if (authStore.authStatus == AuthStatus.authenticating)
                 LoadingBarrier(color: Theme.of(context).primaryColor),
             ],
