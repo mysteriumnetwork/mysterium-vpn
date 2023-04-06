@@ -38,7 +38,14 @@ class EasyButton extends ConsumerWidget {
               ? null
               : color ?? (themeStore.isDarkMode ? Palette.lightBlack : Palette.black),
         ),
-        child: text != null ? EasyText(text!, color: Palette.white) : child,
+        child: text != null
+            ? EasyText(
+                text!,
+                color: Palette.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+              )
+            : child,
       ),
     );
   }
