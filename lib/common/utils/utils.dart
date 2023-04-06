@@ -340,3 +340,14 @@ void onConnectButtonPressed(
     onPressed();
   }
 }
+
+String? getVpnAddress(String config) {
+  final exp = RegExp(r'\b(?:\d{1,3}\.){3}\d{1,3}\b');
+  final matches = exp.allMatches(config);
+  final ips = matches.map((m) => m.group(0)).toList();
+  if (ips.isNotEmpty) {
+    return ips.first;
+  } else {
+    return null;
+  }
+}
