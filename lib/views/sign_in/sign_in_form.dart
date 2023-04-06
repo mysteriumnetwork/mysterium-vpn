@@ -66,7 +66,12 @@ class SignInForm extends HookConsumerWidget {
                           : () => form.markAllAsTouched()
                       : null,
                   child: status != FutureStatus.pending
-                      ? EasyText(LocaleKeys.continueWithEmail.tr(), color: Palette.white)
+                      ? EasyText(
+                          LocaleKeys.continueWithEmail.tr(),
+                          color: Palette.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        )
                       : const LoadingIndicator(
                           radius: 20,
                           strokeWidth: 1.5,
@@ -75,44 +80,55 @@ class SignInForm extends HookConsumerWidget {
               );
             },
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Divider(
-                color: Theme.of(context).textTheme.bodyLarge?.color,
-              ).width(100),
-              EasyText(
-                LocaleKeys.or.tr(),
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-              ).padding(horizontal: 10),
-              Divider(
-                color: Theme.of(context).textTheme.bodyLarge?.color,
-              ).width(100),
-            ],
-          ).padding(vertical: 25),
-          BorderButton(
-            onPressed: () {},
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+          Visibility(
+            visible: false,
+            child: Column(
               children: [
-                const SvgIcon(asset: Assets.googleLogo).padding(right: 10),
-                EasyText(
-                  LocaleKeys.continueWithGoogle.tr(),
-                  color: Palette.black,
-                ),
-              ],
-            ),
-          ).padding(bottom: 20),
-          BorderButton(
-            onPressed: () {},
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SvgIcon(asset: Assets.appleLogo).padding(right: 10),
-                EasyText(
-                  LocaleKeys.continueWithApple.tr(),
-                  color: Palette.black,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Divider(
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                    ).width(100),
+                    EasyText(
+                      LocaleKeys.or.tr(),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ).padding(horizontal: 10),
+                    Divider(
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                    ).width(100),
+                  ],
+                ).padding(vertical: 25),
+                BorderButton(
+                  onPressed: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SvgIcon(asset: Assets.googleLogo).padding(right: 10),
+                      EasyText(
+                        LocaleKeys.continueWithGoogle.tr(),
+                        color: Palette.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ],
+                  ),
+                ).padding(bottom: 20),
+                BorderButton(
+                  onPressed: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SvgIcon(asset: Assets.appleLogo).padding(right: 10),
+                      EasyText(
+                        LocaleKeys.continueWithApple.tr(),
+                        color: Palette.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
