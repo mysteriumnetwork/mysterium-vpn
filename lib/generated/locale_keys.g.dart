@@ -22,7 +22,6 @@ abstract class LocaleKeys {
   static const emailIsNotValid = 'emailIsNotValid';
   static const checkYourEmail = 'checkYourEmail';
   static const linkExpires = 'linkExpires';
-  static const goCheckYourEmail = 'goCheckYourEmail';
   static const emailSentTo = 'emailSentTo';
   static const connectionIp = 'connectionIp';
   static const status = 'status';
