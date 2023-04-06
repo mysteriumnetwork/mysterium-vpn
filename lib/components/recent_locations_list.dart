@@ -1,8 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/components/loading_placeholders.dart';
 import 'package:mysterium_vpn/components/recent_location_item.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/stores/connectivity_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
@@ -24,42 +25,43 @@ class RecentLocationsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Observer(
         builder: (_) {
-          if (!locationsStore.hasRecentLocationsResults) {
-            return ListView.builder(
-              shrinkWrap: true,
-              controller: ScrollController(),
-              scrollDirection: Axis.horizontal,
-              itemCount: 4,
-              itemBuilder: (_, __) => RecentLocationPlaceholder(
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ).height(110);
-          }
-          if (locationsStore.recentLocations.isEmpty) {
-            return EasyText(
-              locationsStore.searchTopKeyword.isNotEmpty
-                  ? 'We could not find any recent locations for keyword: ${locationsStore.searchTopKeyword} '
-                  : 'Recent locations will appear here',
-              color: Theme.of(context).colorScheme.error,
+          if (locationsStore.recentLocations.isEmpty && locationsStore.searchTopKeyword.isEmpty) {
+            return const SizedBox.shrink();
+          } else {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                EasyText(
+                  LocaleKeys.recentLocations.tr(),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ).padding(bottom: 20),
+                if (locationsStore.recentLocations.isEmpty &&
+                    locationsStore.searchTopKeyword.isNotEmpty)
+                  EasyText(
+                    'We could not find any recent locations for keyword: ${locationsStore.searchTopKeyword} ',
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                if (locationsStore.recentLocations.isNotEmpty)
+                  ListView.builder(
+                    shrinkWrap: true,
+                    controller: ScrollController(),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: locationsStore.recentLocations.length,
+                    itemBuilder: (_, int index) {
+                      final location = locationsStore.recentLocations[index];
+
+                      return RecentLocationItem(
+                        location: location,
+                        vpnStore: vpnStore,
+                        onTap: () async => vpnStore.connect(location: location),
+                        connectivityStore: connectivityStore,
+                      );
+                    },
+                  ).height(110),
+              ],
             );
           }
-
-          return ListView.builder(
-            shrinkWrap: true,
-            controller: ScrollController(),
-            scrollDirection: Axis.horizontal,
-            itemCount: locationsStore.recentLocations.length,
-            itemBuilder: (_, int index) {
-              final location = locationsStore.recentLocations[index];
-
-              return RecentLocationItem(
-                location: location,
-                vpnStore: vpnStore,
-                onTap: () async => vpnStore.connect(location: location),
-                connectivityStore: connectivityStore,
-              );
-            },
-          ).height(110);
         },
       );
 }

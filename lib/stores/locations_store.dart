@@ -23,7 +23,7 @@ abstract class _LocationsStore with Store {
 
   List<Location> topLocations = [];
 
-  List<Location> recentLocations = [];
+  ObservableList<Location> recentLocations = ObservableList();
 
   List<Location> allLocations = [];
 
@@ -31,9 +31,6 @@ abstract class _LocationsStore with Store {
 
   @observable
   ObservableFuture<List<Location>> fetchTopLocationsFuture = emptyLocations;
-
-  @observable
-  ObservableFuture<List<Location>> fetchRecentLocationsFeature = emptyRecentLocations;
 
   @observable
   ObservableFuture<List<Location>> fetchAllLocationsFuture = emptyLocations;
@@ -53,12 +50,7 @@ abstract class _LocationsStore with Store {
       fetchAllLocationsFuture != emptyLocations &&
       fetchAllLocationsFuture.status == FutureStatus.fulfilled;
 
-  @computed
-  bool get hasRecentLocationsResults =>
-      fetchRecentLocationsFeature.status == FutureStatus.fulfilled;
-
   static ObservableFuture<List<Location>> emptyLocations = ObservableFuture.value([]);
-  static ObservableFuture<List<Location>> emptyRecentLocations = ObservableFuture.value([]);
 
   @action
   Future<List<Location>> fetchTopLocations() async {
@@ -84,13 +76,10 @@ abstract class _LocationsStore with Store {
   }
 
   @action
-  Future<List<Location>> fetchRecentLocations() async {
-    recentLocations = [];
-
-    fetchRecentLocationsFeature =
-        ObservableFuture(_apiService.getRecentLocations(keyword: searchTopKeyword));
-
-    return recentLocations = await fetchRecentLocationsFeature;
+  void fetchRecentLocations() {
+    recentLocations
+      ..clear()
+      ..addAll(_apiService.getRecentLocations(keyword: searchTopKeyword));
   }
 
   @action
