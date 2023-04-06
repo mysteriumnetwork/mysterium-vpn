@@ -34,19 +34,13 @@ class HomeDesktopLeftPanel extends ConsumerWidget {
             children: [
               const HomeDesktopAppBar(),
               SearchField(locationsStore).padding(bottom: 20),
-              if (!showAllLocations) ...[
-                EasyText(
-                  LocaleKeys.recentLocations.tr(),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                ).padding(bottom: 20),
+              if (!showAllLocations)
                 RecentLocationsList(
                   themeStore: themeStore,
                   locationsStore: locationsStore,
                   vpnStore: vpnStore,
                   connectivityStore: connectivityStore,
                 ).padding(bottom: 20),
-              ],
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
