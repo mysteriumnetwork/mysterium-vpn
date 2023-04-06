@@ -36,7 +36,7 @@ final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
 
 final connectivityStorePOD = Provider<ConnectivityStore>((ref) => ConnectivityStore());
 
-final vpnStorePOD = Provider.autoDispose<VpnStore>((ref) {
+final vpnStorePOD = Provider<VpnStore>((ref) {
   final apiService = ref.read(apiServicePOD);
   final locationsStore = ref.watch(locationsStorePOD);
   final wireguardService = ref.watch(wireguardServicePOD);
