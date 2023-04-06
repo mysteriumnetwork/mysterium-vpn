@@ -35,9 +35,6 @@ abstract class _VpnStore with Store {
         _wireguardService = wireguardService {
     _vpnConnection = _emptyConnection;
     _connectionStatus = ConnectionStatus.disconnected;
-    _duration = Duration.zero;
-    _uploadSpeed = 0;
-    _downloadSpeed = 0;
     _protocol = protocols.first;
     _killSwitch = true;
     _connectingLocationCode = '';
