@@ -51,13 +51,14 @@ abstract class Assets {
   static const String subscriptionItem = 'assets/icons/subscription_item.svg';
   static const String checkmark = 'assets/icons/checkmark.svg';
   static const String noInternetConnection = 'assets/icons/no_internet_connection.svg';
+  static const String splashLogo = 'assets/logo/splash_logo.svg';
 
   //Animations
   static const String backgroundElements = 'assets/animations/background_elements.json';
   static const String circlesGrey = 'assets/animations/circles_grey.json';
   static const String circlesPurple = 'assets/animations/circles_purple.json';
   static const String slideUp = 'assets/animations/slide_up.json';
-  static const String splashLogo = 'assets/animations/start_logo.json';
+  // static const String splashLogo = 'assets/animations/start_logo.json';
   static const String circlesLogo = 'assets/animations/circles_logo.json';
 
   //Langs
