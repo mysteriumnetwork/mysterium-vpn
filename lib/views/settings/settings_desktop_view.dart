@@ -14,7 +14,7 @@ enum SettingCategory {
   final String trKey;
 }
 
-const _initialCategory = SettingCategory.connection;
+const _initialCategory = SettingCategory.application;
 
 class SettingsDesktopView extends HookWidget {
   const SettingsDesktopView({super.key});

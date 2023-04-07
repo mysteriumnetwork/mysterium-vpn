@@ -30,10 +30,13 @@ class SettingsDesktopLeftPanel extends StatelessWidget {
           ListView(
             shrinkWrap: true,
             children: [
-              CategoryItem(
-                isSelected: settingCategory.value == SettingCategory.connection,
-                title: SettingCategory.connection.trKey.tr(),
-                onTap: () => settingCategory.value = SettingCategory.connection,
+              Visibility(
+                visible: false,
+                child: CategoryItem(
+                  isSelected: settingCategory.value == SettingCategory.connection,
+                  title: SettingCategory.connection.trKey.tr(),
+                  onTap: () => settingCategory.value = SettingCategory.connection,
+                ),
               ),
               CategoryItem(
                 isSelected: settingCategory.value == SettingCategory.application,
