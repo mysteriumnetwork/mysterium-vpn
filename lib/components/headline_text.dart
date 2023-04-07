@@ -14,6 +14,7 @@ class HeadlineText extends ConsumerWidget {
     this.maxLines = 1,
     this.fontSize = 50,
     this.fontWeight = FontWeight.w900,
+    this.textAlign = TextAlign.start,
     super.key,
   });
 
@@ -22,6 +23,7 @@ class HeadlineText extends ConsumerWidget {
   final double fontSize;
   final FontWeight fontWeight;
   final int maxLines;
+  final TextAlign textAlign;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,6 +39,7 @@ class HeadlineText extends ConsumerWidget {
           fontSize: fontSize,
           fontWeight: fontWeight,
           maxLines: maxLines,
+          textAlign: textAlign,
         ).padding(vertical: 6);
       },
     );
