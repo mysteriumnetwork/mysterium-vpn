@@ -35,7 +35,7 @@ class CodegenLoader extends AssetLoader {
     "emailIsRequired": "Email is required",
     "emailIsNotValid": "Email is not valid",
     "checkYourEmail": "Check your email",
-    "linkExpires": "The link expires in 24 hours, so be sure to use it soon. Go check your email",
+    "linkExpires": "The link expires in 30 minutes, so be sure to use it soon. Go check your email",
     "emailSentTo": "We sent an email to {email}",
     "connectionIp": "Connection IP",
     "status": "Status",
