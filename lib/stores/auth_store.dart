@@ -86,9 +86,8 @@ abstract class _AuthStore with Store {
       if (_authStatus == AuthStatus.authenticating) {
         return;
       }
-
-      _authStatus = AuthStatus.authenticating;
       if (appLink != null) {
+        _authStatus = AuthStatus.authenticating;
         if (appLink.pathSegments.length != 2 || !appLink.pathSegments[1].isUUID()) {
           throw WrongAuthTokenException();
         }
