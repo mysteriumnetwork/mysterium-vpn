@@ -36,19 +36,26 @@ class SettingsMobileView extends HookConsumerWidget {
           final isDarkTheme = themeStore.isDarkMode;
           return Column(
             children: [
-              HeaderTitle(text: LocaleKeys.connection.tr()),
-              KillSwitchItem(
-                asset: isDarkTheme ? Assets.killSwitchDark : Assets.killSwitchLight,
-                title: LocaleKeys.killSwitch.tr(),
-                subtitle: LocaleKeys.shortDesc.tr(),
-                store: vpnStore,
-              ),
-              SettingItem(
-                asset: isDarkTheme ? Assets.protocolDark : Assets.protocolLight,
-                title: LocaleKeys.protocol.tr(),
-                subtitle: LocaleKeys.shortDesc.tr(),
-                actionWidget: ProtocolPicker(
-                  store: vpnStore,
+              Visibility(
+                visible: false,
+                child: Column(
+                  children: [
+                    HeaderTitle(text: LocaleKeys.connection.tr()),
+                    KillSwitchItem(
+                      asset: isDarkTheme ? Assets.killSwitchDark : Assets.killSwitchLight,
+                      title: LocaleKeys.killSwitch.tr(),
+                      subtitle: LocaleKeys.shortDesc.tr(),
+                      store: vpnStore,
+                    ),
+                    SettingItem(
+                      asset: isDarkTheme ? Assets.protocolDark : Assets.protocolLight,
+                      title: LocaleKeys.protocol.tr(),
+                      subtitle: LocaleKeys.shortDesc.tr(),
+                      actionWidget: ProtocolPicker(
+                        store: vpnStore,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               HeaderTitle(text: LocaleKeys.application.tr()),
@@ -75,6 +82,7 @@ class SettingsMobileView extends HookConsumerWidget {
                 subtitle: LocaleKeys.shortDesc.tr(),
                 actionWidget: EasyButton(
                   width: 160,
+                  height: 40,
                   useSystemColor: false,
                   color: Palette.black,
                   text: LocaleKeys.goToBillingPage.tr(),
@@ -90,8 +98,9 @@ class SettingsMobileView extends HookConsumerWidget {
                 actionWidget: EasyButton(
                   useSystemColor: false,
                   color: Palette.black,
-                  text: LocaleKeys.logout,
+                  text: LocaleKeys.logout.tr(),
                   width: 100,
+                  height: 40,
                   onPressed: authStore.logout,
                 ),
               ),
@@ -102,6 +111,7 @@ class SettingsMobileView extends HookConsumerWidget {
                 actionWidget: EasyButton(
                   useSystemColor: false,
                   width: 160,
+                  height: 40,
                   color: isDarkTheme ? Palette.pink : Palette.lightBlue,
                   text: LocaleKeys.deleteAccount.tr(),
                   onPressed: () {
