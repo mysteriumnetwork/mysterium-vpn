@@ -44,39 +44,28 @@ class LoginMobileView extends ConsumerWidget {
                           alignment: CrossAxisAlignment.center,
                         ),
                       ),
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
+                      EasyButton(
+                        width: getMediaWidth(context) * 0.8,
+                        height: 60,
+                        useSystemColor: false,
+                        color: Palette.purple,
+                        text: LocaleKeys.signIn.tr(),
+                        onPressed: () {
+                          if (Platform.isAndroid || Platform.isIOS) {
+                            _showAuthView(context);
+                          }
+                        },
+                      ).padding(bottom: 60),
+                      Visibility(
+                        visible: false,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: EasyText(
+                            LocaleKeys.getHelp.tr(),
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
-                        child: Column(
-                          children: [
-                            EasyButton(
-                              width: getMediaWidth(context) * 0.8,
-                              height: 60,
-                              useSystemColor: false,
-                              color: Palette.purple,
-                              text: LocaleKeys.signIn.tr(),
-                              onPressed: () {
-                                if (Platform.isAndroid || Platform.isIOS) {
-                                  _showAuthView(context);
-                                }
-                              },
-                            ).padding(bottom: 10),
-                            TextButton(
-                              onPressed: () {},
-                              child: EasyText(
-                                LocaleKeys.getHelp.tr(),
-                                fontWeight: FontWeight.w700,
-                              ),
-                            )
-                          ],
-                        ).padding(top: 30, bottom: 30),
-                      ),
+                      )
                     ],
                   ),
                 ),
