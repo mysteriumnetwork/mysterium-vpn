@@ -61,6 +61,7 @@ abstract class LocaleKeys {
   static const openBillingPlans = 'openBillingPlans';
   static const accountName = 'accountName';
   static const logout = 'logout';
+  static const LoggingYouIn = 'LoggingYouIn';
   static const cancelMyAccount = 'cancelMyAccount';
   static const deleteAccount = 'deleteAccount';
   static const deleteAccountQuestion = 'deleteAccountQuestion';
@@ -85,6 +86,7 @@ abstract class LocaleKeys {
   static const plan_1_year = 'plan_1_year';
   static const currentPrice = 'currentPrice';
   static const originalMonthlyPrice = 'originalMonthlyPrice';
+  static const perMonth = 'perMonth';
   static const freeTrialTittle = 'freeTrialTittle';
   static const freeTrialDesc = 'freeTrialDesc';
   static const startTrialBtn = 'startTrialBtn';
@@ -99,10 +101,10 @@ abstract class LocaleKeys {
   static const moreInfo = 'moreInfo';
   static const almostThere = 'almostThere';
   static const dontMissOut = 'dontMissOut';
-  static const freeBlinks = 'freeBlinks';
-  static const showUpdates = 'showUpdates';
-  static const handyFeatures = 'handyFeatures';
-  static const recommendations = 'recommendations';
+  static const productUpdates = 'productUpdates';
+  static const newServers = 'newServers';
+  static const getTips = 'getTips';
+  static const monitorStatus = 'monitorStatus';
   static const turnOnNotificationsBtn = 'turnOnNotificationsBtn';
   static const maybeLaterBtn = 'maybeLaterBtn';
   static const connectingToPaymentProcesor = 'connectingToPaymentProcesor';
