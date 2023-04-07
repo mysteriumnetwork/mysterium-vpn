@@ -5,7 +5,6 @@ import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/circle_box.dart';
-import 'package:mysterium_vpn/components/decorated_label.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/ripple.dart';
@@ -47,22 +46,30 @@ class ProductItem extends StatelessWidget {
                     EasyText(
                       productDetails.originalMonthlyPrice,
                       color: Theme.of(context).secondaryHeaderColor,
-                      fontSize: 16,
+                      fontSize: 20,
                       fontWeight: FontWeight.w900,
                     ),
                     EasyText(
-                      LocaleKeys.currentPrice
-                          .tr(namedArgs: {'amount': productDetails.monthlyPrice}),
+                      LocaleKeys.currentPrice.tr(
+                        namedArgs: {
+                          'amount': productDetails.monthlyPrice,
+                        },
+                      ),
                       color: Palette.purple,
-                      fontSize: 16,
+                      fontSize: 20,
                       fontWeight: FontWeight.w900,
+                    ),
+                    EasyText(
+                      LocaleKeys.perMonth.tr(),
+                      color: Palette.purple,
+                      fontWeight: FontWeight.w400,
                     ),
                   ],
                 ).fittedBox(),
                 EasyText(
                   productDetails.billedInTotal,
-                  color: Theme.of(context).secondaryHeaderColor,
-                ).fittedBox()
+                  fontSize: 14,
+                )
               ],
             ).expanded(),
             Observer(
@@ -79,15 +86,6 @@ class ProductItem extends StatelessWidget {
                     _CheckMark(
                       isSelected: productDetails.id == selectedProduct.value,
                     ),
-                    if (productDetails.status == ProductStatus.purchased)
-                      DecoratedLabel(
-                        text: LocaleKeys.purchased.tr(),
-                        color: Palette.green,
-                      ).padding(top: 8)
-                    else if (productDetails.isPupular)
-                      DecoratedLabel(
-                        text: LocaleKeys.popular.tr(),
-                      ).padding(top: 8)
                   ],
                 ],
               ).padding(left: 14),
