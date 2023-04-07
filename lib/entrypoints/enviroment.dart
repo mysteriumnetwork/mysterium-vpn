@@ -27,6 +27,8 @@ class Enviroment {
     required String flavor,
   }) async {
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
     if (Platform.isWindows) {
       registerProtocolHandler('mysteriumvpn');
     }
@@ -44,7 +46,6 @@ class Enviroment {
 
     final windowsOrLinux = isWindowsOrLinux();
 
-    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
     FlutterError.demangleStackTrace = (StackTrace stack) {
       if (stack is stack_trace.Trace) {
         return stack.vmTrace;
@@ -74,12 +75,11 @@ class Enviroment {
       ..registerAdapter(UserDataAdapter())
       ..registerAdapter(ApprovalAdapter());
     await Hive.openBox<UserData>('user_data');
-    FlutterNativeSplash.remove();
 
     final flavorConfig = setupFlavor(flavor);
     debugPrint('App started in ${flavorConfig.flavor} mode');
     debugPrint('Base URL ${flavorConfig.values.baseUrl}');
-
+    FlutterNativeSplash.remove();
     runApp(
       ProviderScope(
         overrides: [environmentPOD.overrideWith((ref) => flavorConfig)],
