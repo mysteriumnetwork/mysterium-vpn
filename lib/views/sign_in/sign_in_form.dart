@@ -28,6 +28,7 @@ class SignInForm extends HookConsumerWidget {
     final signInForm = useMemoized(singIn);
     final isMounted = useIsMounted();
     final store = ref.watch(authStorePOD);
+    final form = useMemoized(approval);
 
     return ReactiveForm(
       formGroup: signInForm,
@@ -44,7 +45,23 @@ class SignInForm extends HookConsumerWidget {
                 ValidationMessage.required: (_) => LocaleKeys.emailIsRequired.tr(),
                 ValidationMessage.email: (_) => LocaleKeys.emailIsNotValid.tr(),
               },
-            ).padding(bottom: 40),
+            ).padding(bottom: 10),
+          ),
+          ReactiveForm(
+            formGroup: form,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ReactiveCheckbox(
+                  formControlName: 'approval',
+                ),
+                EasyText(
+                  LocaleKeys.emaillCommunicationsApproval.tr(),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                ).expanded()
+              ],
+            ).padding(bottom: 10),
           ),
           Observer(
             builder: (_) {
