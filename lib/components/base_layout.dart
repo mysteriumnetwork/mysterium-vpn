@@ -24,7 +24,7 @@ class BaseLayout extends StatelessWidget {
                   topRight: Radius.circular(30),
                 ),
               )
-              .padding(top: 40)
+              .padding(top: 20)
               .expanded(),
         ],
       );
