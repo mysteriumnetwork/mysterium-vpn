@@ -77,7 +77,8 @@ class MyApp extends HookConsumerWidget {
       ref
         ..invalidate(subscriptionStorePOD)
         ..invalidate(vpnStorePOD)
-        ..invalidate(locationsStorePOD);
+        ..invalidate(locationsStorePOD)
+        ..invalidate(vpnStorePOD);
     }
   }
 

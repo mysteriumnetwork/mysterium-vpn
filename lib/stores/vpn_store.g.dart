@@ -210,16 +210,16 @@ mixin _$VpnStore on _VpnStore, Store {
   late final _$_connectingLocationCodeAtom =
       Atom(name: '_VpnStore._connectingLocationCode', context: context);
 
-  String get connectingLocationCode {
+  String? get connectingLocationCode {
     _$_connectingLocationCodeAtom.reportRead();
     return super._connectingLocationCode;
   }
 
   @override
-  String get _connectingLocationCode => connectingLocationCode;
+  String? get _connectingLocationCode => connectingLocationCode;
 
   @override
-  set _connectingLocationCode(String value) {
+  set _connectingLocationCode(String? value) {
     _$_connectingLocationCodeAtom.reportWrite(value, super._connectingLocationCode, () {
       super._connectingLocationCode = value;
     });

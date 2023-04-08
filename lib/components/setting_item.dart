@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -37,26 +36,26 @@ class SettingItem extends StatelessWidget {
                       alignment: WrapAlignment.spaceBetween,
                       children: [
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            EasyText(title, fontSize: 14).padding(bottom: 8),
-                            EasyText(
-                              subtitle,
-                              color: Palette.lightBlack,
-                            ).padding(bottom: 11),
+                            EasyText(title, fontSize: 16).padding(bottom: 8),
+                            // EasyText(
+                            //   subtitle,
+                            // ).padding(bottom: 11),
                           ],
-                        ),
+                        ).padding(top: 4),
                         actionWidget
                       ],
                     )
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        EasyText(title, fontSize: 14).padding(bottom: 8),
                         EasyText(
-                          subtitle,
-                          color: Palette.lightBlack,
-                        ).padding(bottom: 11),
+                          title,
+                        ).padding(bottom: 8),
+                        // EasyText(
+                        //   subtitle,
+                        //   color: Palette.lightBlack,
+                        // ).padding(bottom: 11),
                         actionWidget
                       ],
                     ),

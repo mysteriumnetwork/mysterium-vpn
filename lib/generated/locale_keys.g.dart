@@ -7,24 +7,21 @@ abstract class LocaleKeys {
   static const fast = 'fast';
   static const secure = 'secure';
   static const loginQuote = 'loginQuote';
-  static const getStarted = 'getStarted';
   static const signIn = 'signIn';
   static const appVersion = 'appVersion';
   static const getHelp = 'getHelp';
-  static const signUp = 'signUp';
-  static const alreadyHaveAccount = 'alreadyHaveAccount';
-  static const dontHaveAccount = 'dontHaveAccount';
   static const continueWithEmail = 'continueWithEmail';
   static const continueWithGoogle = 'continueWithGoogle';
   static const continueWithApple = 'continueWithApple';
-  static const accept = 'accept';
+  static const signInDisclaimer = 'signInDisclaimer';
   static const termsAndConditions = 'termsAndConditions';
+  static const and = 'and';
+  static const privacyPolicy = 'privacyPolicy';
   static const email = 'email';
   static const emailIsRequired = 'emailIsRequired';
   static const emailIsNotValid = 'emailIsNotValid';
   static const checkYourEmail = 'checkYourEmail';
   static const linkExpires = 'linkExpires';
-  static const goCheckYourEmail = 'goCheckYourEmail';
   static const emailSentTo = 'emailSentTo';
   static const connectionIp = 'connectionIp';
   static const status = 'status';
@@ -64,6 +61,7 @@ abstract class LocaleKeys {
   static const openBillingPlans = 'openBillingPlans';
   static const accountName = 'accountName';
   static const logout = 'logout';
+  static const LoggingYouIn = 'LoggingYouIn';
   static const cancelMyAccount = 'cancelMyAccount';
   static const deleteAccount = 'deleteAccount';
   static const deleteAccountQuestion = 'deleteAccountQuestion';
@@ -88,6 +86,7 @@ abstract class LocaleKeys {
   static const plan_1_year = 'plan_1_year';
   static const currentPrice = 'currentPrice';
   static const originalMonthlyPrice = 'originalMonthlyPrice';
+  static const perMonth = 'perMonth';
   static const freeTrialTittle = 'freeTrialTittle';
   static const freeTrialDesc = 'freeTrialDesc';
   static const startTrialBtn = 'startTrialBtn';
@@ -102,10 +101,10 @@ abstract class LocaleKeys {
   static const moreInfo = 'moreInfo';
   static const almostThere = 'almostThere';
   static const dontMissOut = 'dontMissOut';
-  static const freeBlinks = 'freeBlinks';
-  static const showUpdates = 'showUpdates';
-  static const handyFeatures = 'handyFeatures';
-  static const recommendations = 'recommendations';
+  static const productUpdates = 'productUpdates';
+  static const newServers = 'newServers';
+  static const getTips = 'getTips';
+  static const monitorStatus = 'monitorStatus';
   static const turnOnNotificationsBtn = 'turnOnNotificationsBtn';
   static const maybeLaterBtn = 'maybeLaterBtn';
   static const connectingToPaymentProcesor = 'connectingToPaymentProcesor';
@@ -382,4 +381,5 @@ abstract class LocaleKeys {
   static const UA = 'UA';
   static const QA = 'QA';
   static const MZ = 'MZ';
+  static const or = 'or';
 }

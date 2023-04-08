@@ -86,21 +86,20 @@ class RestApiService extends ApiService {
   }
 
   @override
-  Future<List<Location>> getRecentLocations({required String keyword}) async =>
-      Future.delayed(const Duration(seconds: 1), () {
-        final countryCodes = _localDb.getRecentLocations();
-        final locations = countryCodes
-            .map(
-              (e) => Location(countryCode: e, countryName: e.tr()),
-            )
-            .toList();
-        if (keyword.isNotEmpty) {
-          return locations
-              .where((location) => location.countryName.tr().toLowerCase().contains(keyword))
-              .toList();
-        }
-        return locations;
-      });
+  List<Location> getRecentLocations({required String keyword}) {
+    final countryCodes = _localDb.getRecentLocations();
+    final locations = countryCodes
+        .map(
+          (e) => Location(countryCode: e, countryName: e.tr()),
+        )
+        .toList();
+    if (keyword.isNotEmpty) {
+      return locations
+          .where((location) => location.countryName.tr().toLowerCase().contains(keyword))
+          .toList();
+    }
+    return locations;
+  }
 
   @override
   Future<void> setRecentLocation({required String location}) {

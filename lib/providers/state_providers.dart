@@ -34,9 +34,9 @@ final authStorePOD = Provider<AuthStore>((ref) {
 
 final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
 
-final connectivityStorePOD = Provider.autoDispose<ConnectivityStore>((ref) => ConnectivityStore());
+final connectivityStorePOD = Provider<ConnectivityStore>((ref) => ConnectivityStore());
 
-final vpnStorePOD = Provider.autoDispose<VpnStore>((ref) {
+final vpnStorePOD = Provider<VpnStore>((ref) {
   final apiService = ref.read(apiServicePOD);
   final locationsStore = ref.watch(locationsStorePOD);
   final wireguardService = ref.watch(wireguardServicePOD);
@@ -116,8 +116,6 @@ final environmentPOD = StateProvider<FlavorConfig>(
     values: FlavorValues.production(),
   ),
 );
-
-final isSignedInPOD = StateProvider<bool>((ref) => true);
 
 final tokenStreamPOD = StreamProvider<String>((ref) {
   final authStore = ref.watch(authStorePOD);

@@ -1,13 +1,13 @@
-import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/enum.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/views/sign_in/sign_in_form.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignInView extends StatelessWidget {
   const SignInView({super.key});
@@ -17,40 +17,52 @@ class SignInView extends StatelessWidget {
         backgroundColor: Theme.of(context).primaryColor,
         body: SafeArea(
           bottom: false,
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  EasyText(
-                    LocaleKeys.signIn.tr(),
-                    fontWeight: FontWeight.w900,
-                    fontSize: 20,
-                  ).padding(bottom: 20),
-                  Wrap(
-                    spacing: 4,
-                    runSpacing: 4,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                EasyText(
+                  LocaleKeys.signIn.tr(),
+                  fontWeight: FontWeight.w900,
+                  fontSize: 20,
+                ).padding(top: 10, bottom: 30),
+                const SignInForm().padding(bottom: 30),
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
                     children: [
-                      EasyText(
-                        LocaleKeys.dontHaveAccount.tr(),
-                        color: Palette.lightBlack,
-                      ),
-                      InkWell(
-                        child: EasyText(
-                          LocaleKeys.signUp.tr(),
+                      TextSpan(text: '${LocaleKeys.signInDisclaimer.tr()} '),
+                      TextSpan(
+                        text: LocaleKeys.termsAndConditions.tr(),
+                        style: const TextStyle(
                           color: Palette.pink,
+                          decoration: TextDecoration.underline,
                         ),
-                        onTap: () {
-                          context.beamToReplacementNamed(Routes.signUp.toRoute);
-                        },
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => launchUrl(Uri.parse(termsOfServiceUrl)),
+                      ),
+                      TextSpan(text: '${LocaleKeys.and.tr()} '),
+                      TextSpan(
+                        text: LocaleKeys.privacyPolicy.tr(),
+                        style: const TextStyle(
+                          color: Palette.pink,
+                          decoration: TextDecoration.underline,
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => launchUrl(Uri.parse(privacyPolicyUrl)),
                       ),
                     ],
-                  ).padding(bottom: 50),
-                  const SignInForm(),
-                ],
-              ),
+                  ),
+                ),
+              ],
             ),
-          ),
+          ).paddingDirectional(all: 20),
         ),
       );
 }

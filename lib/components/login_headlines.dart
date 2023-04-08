@@ -34,6 +34,7 @@ class LoginHeadlines extends HookConsumerWidget {
               maxLines: 3,
               fontSize: 14,
               fontWeight: FontWeight.w500,
+              textAlign: TextAlign.center,
             ).padding(vertical: 20),
           ],
         ),

@@ -2,7 +2,6 @@ enum Routes {
   login,
   home,
   unauthenticated,
-  signUp,
   signIn,
   checkYourEmail,
   splash,

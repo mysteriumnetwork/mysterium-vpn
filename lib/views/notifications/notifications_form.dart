@@ -44,10 +44,10 @@ class NotificationsForm extends HookConsumerWidget {
         ).padding(bottom: height * 0.05),
         Column(
           children: [
-            _BulletItem(text: LocaleKeys.freeBlinks.tr()),
-            _BulletItem(text: LocaleKeys.showUpdates.tr()),
-            _BulletItem(text: LocaleKeys.handyFeatures.tr()),
-            _BulletItem(text: LocaleKeys.recommendations.tr()),
+            _BulletItem(text: LocaleKeys.productUpdates.tr()),
+            _BulletItem(text: LocaleKeys.newServers.tr()),
+            _BulletItem(text: LocaleKeys.getTips.tr()),
+            _BulletItem(text: LocaleKeys.monitorStatus.tr()),
           ],
         ).padding(bottom: height * 0.03),
         Observer(
@@ -72,7 +72,7 @@ class NotificationsForm extends HookConsumerWidget {
                       : null,
                   child: status != FutureStatus.pending
                       ? EasyText(
-                          LocaleKeys.nextBtn.tr(),
+                          LocaleKeys.turnOnNotificationsBtn.tr(),
                           color: Palette.white,
                         )
                       : const LoadingIndicator(

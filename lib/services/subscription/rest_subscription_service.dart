@@ -177,19 +177,22 @@ class RestSubscriptionService extends SubscriptionService {
   @override
   Future<ProductDetails> createSubscriptionRequest(SubscriptionRequest subscriptionRequest) async {
     try {
-      // final res = await _apiClient.post<Map<String, dynamic>>(
-      //   kCreateSubscriptionRequest,
-      //   data: subscriptionRequest.toJson(),
-      // );
-      // final subscriptionProductId = res.data?['subscription_product_id'] as String?;
-      // if (subscriptionProductId == null) {
-      //   throw PackageNotFoundException();
-      // }
-
       // TODO(Kristijan): Remove this later
-      final subscriptionProductId = subscriptionRequest.planId == 'plan_6_months'
-          ? 'semi_annual_vpn_plan'
-          : 'monthly_vpn_plan';
+      String? subscriptionProductId;
+      if (Platform.isAndroid) {
+        final res = await _apiClient.post<Map<String, dynamic>>(
+          kCreateSubscriptionRequest,
+          data: subscriptionRequest.toJson(),
+        );
+        subscriptionProductId = res.data?['subscription_product_id'] as String?;
+        if (subscriptionProductId == null) {
+          throw PackageNotFoundException();
+        }
+      } else {
+        subscriptionProductId = subscriptionRequest.planId == 'plan_6_months'
+            ? 'semi_annual_vpn_plan'
+            : 'monthly_vpn_plan';
+      }
       final productDetails = await _inAppPurchase.queryProductDetails({subscriptionProductId});
       final product = productDetails.productDetails
           .firstWhereOrNull((element) => element.id == subscriptionProductId);

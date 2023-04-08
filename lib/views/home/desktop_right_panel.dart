@@ -40,7 +40,10 @@ class HomeDesktopRightPanel extends ConsumerWidget {
                     ).width((getMediaWidth(context) + getMediaHeight(context)) * 0.06),
                   ],
                 ).padding(vertical: 40).expanded(),
-                const ConnectionInfoPanelDesktop(),
+                const Visibility(
+                  visible: false,
+                  child: ConnectionInfoPanelDesktop(),
+                ),
               ],
             ).padding(horizontal: 40, vertical: 20),
           ],
