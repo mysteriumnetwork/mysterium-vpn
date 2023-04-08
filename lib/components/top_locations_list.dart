@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_placeholders.dart';
 import 'package:mysterium_vpn/components/location_item.dart';
+import 'package:mysterium_vpn/stores/connectivity_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
@@ -12,11 +13,13 @@ class TopLocationsList extends StatelessWidget {
     required this.themeStore,
     required this.vpnStore,
     required this.locationsStore,
+    required this.connectivityStore,
     super.key,
   });
   final LocationsStore locationsStore;
   final VpnStore vpnStore;
   final ThemeStore themeStore;
+  final ConnectivityStore connectivityStore;
   @override
   Widget build(BuildContext context) => Observer(
         builder: (_) {
@@ -48,6 +51,7 @@ class TopLocationsList extends StatelessWidget {
               return LocationItem(
                 location: location,
                 vpnStore: vpnStore,
+                connectivityStore: connectivityStore,
                 onTap: () => vpnStore.connect(location: location),
               );
             },

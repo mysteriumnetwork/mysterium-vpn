@@ -28,6 +28,7 @@ class SignInForm extends HookConsumerWidget {
     final signInForm = useMemoized(singIn);
     final isMounted = useIsMounted();
     final store = ref.watch(authStorePOD);
+    final form = useMemoized(approval);
 
     return ReactiveForm(
       formGroup: signInForm,
@@ -44,12 +45,27 @@ class SignInForm extends HookConsumerWidget {
                 ValidationMessage.required: (_) => LocaleKeys.emailIsRequired.tr(),
                 ValidationMessage.email: (_) => LocaleKeys.emailIsNotValid.tr(),
               },
-            ).padding(bottom: 20),
+            ).padding(bottom: 10),
+          ),
+          ReactiveForm(
+            formGroup: form,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ReactiveCheckbox(
+                  formControlName: 'approval',
+                ),
+                EasyText(
+                  LocaleKeys.emaillCommunicationsApproval.tr(),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                ).expanded()
+              ],
+            ).padding(bottom: 10),
           ),
           Observer(
             builder: (_) {
               final status = store.loginFeature.status;
-
               return ReactiveFormConsumer(
                 builder: (_, form, child) => EasyButton(
                   width: double.infinity,
@@ -67,38 +83,69 @@ class SignInForm extends HookConsumerWidget {
                           : () => form.markAllAsTouched()
                       : null,
                   child: status != FutureStatus.pending
-                      ? EasyText(LocaleKeys.continueWithEmail.tr(), color: Palette.white)
+                      ? EasyText(
+                          LocaleKeys.continueWithEmail.tr(),
+                          color: Palette.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        )
                       : const LoadingIndicator(
                           radius: 20,
                           strokeWidth: 1.5,
                         ),
                 ),
-              ).padding(bottom: 50);
+              );
             },
           ),
-          BorderButton(
-            color: Palette.lightBlue,
-            onPressed: () {},
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+          Visibility(
+            visible: false,
+            child: Column(
               children: [
-                const SvgIcon(asset: Assets.googleLogo).padding(right: 10),
-                EasyText(
-                  LocaleKeys.continueWithGoogle.tr(),
-                  color: Palette.black,
-                ),
-              ],
-            ),
-          ).padding(bottom: 20),
-          BorderButton(
-            onPressed: () {},
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SvgIcon(asset: Assets.appleLogo).padding(right: 10),
-                EasyText(
-                  LocaleKeys.continueWithApple.tr(),
-                  color: Palette.black,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Divider(
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                    ).width(100),
+                    EasyText(
+                      LocaleKeys.or.tr(),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ).padding(horizontal: 10),
+                    Divider(
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                    ).width(100),
+                  ],
+                ).padding(vertical: 25),
+                BorderButton(
+                  onPressed: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SvgIcon(asset: Assets.googleLogo).padding(right: 10),
+                      EasyText(
+                        LocaleKeys.continueWithGoogle.tr(),
+                        color: Palette.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ],
+                  ),
+                ).padding(bottom: 20),
+                BorderButton(
+                  onPressed: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SvgIcon(asset: Assets.appleLogo).padding(right: 10),
+                      EasyText(
+                        LocaleKeys.continueWithApple.tr(),
+                        color: Palette.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

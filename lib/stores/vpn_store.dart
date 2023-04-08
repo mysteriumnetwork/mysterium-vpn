@@ -3,7 +3,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/mock.dart';
@@ -35,9 +34,6 @@ abstract class _VpnStore with Store {
         _wireguardService = wireguardService {
     _vpnConnection = _emptyConnection;
     _connectionStatus = ConnectionStatus.disconnected;
-    _duration = Duration.zero;
-    _uploadSpeed = 0;
-    _downloadSpeed = 0;
     _protocol = protocols.first;
     _killSwitch = true;
     _connectingLocationCode = '';
@@ -95,7 +91,7 @@ abstract class _VpnStore with Store {
       _connectionStatus == ConnectionStatus.disconnecting ||
       _connectionStatus == ConnectionStatus.connecting;
   @readonly
-  String _connectingLocationCode = '';
+  String? _connectingLocationCode;
 
   @action
   Future<void> setupTunnel() async {
@@ -140,11 +136,12 @@ abstract class _VpnStore with Store {
     if (_vpnConnection.location == location?.countryCode) {
       return;
     }
-    location ??= Location(
-      countryCode: 'DE',
-      countryName: 'DE'.tr(),
-    );
-    _connectingLocationCode = location.countryCode;
+    location ??= _locationsStore.recentLocations.isNotEmpty
+        ? _locationsStore.recentLocations.first
+        : _locationsStore.allLocations.isNotEmpty
+            ? _locationsStore.allLocations.first
+            : null;
+    _connectingLocationCode = location?.countryCode;
     try {
       if (_vpnConnection != _emptyConnection) {
         await disconnect();
@@ -153,7 +150,7 @@ abstract class _VpnStore with Store {
       _vpnConfig = await _apiService.fetchVpnConfig(
         input: VpnConfigInput(
           publicKey: _publicKey,
-          country: location.countryCode,
+          country: location?.countryCode,
         ),
         privateKey: _privateKey,
       );
@@ -162,16 +159,18 @@ abstract class _VpnStore with Store {
       await connectWireguard();
 
       _vpnConnection = VpnConnection(
-        connectionIP: '185.358.45.304',
-        location: location.countryCode,
+        connectionIP: getVpnAddress(_vpnConfig?.config ?? '') ?? '--',
+        location: location?.countryCode ?? '--',
       );
       _connectionStatus = ConnectionStatus.connected;
       startTracking();
-      _apiService.setRecentLocation(location: location.countryCode);
-      _locationsStore.fetchRecentLocations();
+      if (location != null) {
+        _apiService.setRecentLocation(location: location.countryCode);
+        _locationsStore.fetchRecentLocations();
+      }
     } catch (e) {
       showSnackbar(
-        'Something went wrong while connecting to ${location.countryName}. Please give it another try. 😕',
+        'Something went wrong while connecting to ${location?.countryName}. Please give it another try. 😕',
       );
       _connectionStatus = ConnectionStatus.disconnected;
     }

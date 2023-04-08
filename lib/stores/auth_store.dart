@@ -6,6 +6,7 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/exceptions/key_does_not_exists.dart';
 import 'package:mysterium_vpn/common/exceptions/wrong_auth_token.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -85,9 +86,8 @@ abstract class _AuthStore with Store {
       if (_authStatus == AuthStatus.authenticating) {
         return;
       }
-
-      _authStatus = AuthStatus.authenticating;
       if (appLink != null) {
+        _authStatus = AuthStatus.authenticating;
         if (appLink.pathSegments.length != 2 || !appLink.pathSegments[1].isUUID()) {
           throw WrongAuthTokenException();
         }
@@ -103,6 +103,8 @@ abstract class _AuthStore with Store {
       _authStatus = AuthStatus.authenticated;
       _localDb.setUserId(_authData!.userId);
       debugPrint(_localDb.userData.toString());
+    } on KeyDoesntExistsException {
+      _authStatus = AuthStatus.unauthenticated;
     } catch (e) {
       showSnackbar('Error while authenticating. Please give it another try. 😕');
       debugPrint(e.toString());

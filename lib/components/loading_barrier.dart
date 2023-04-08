@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 
 class LoadingBarrier extends StatelessWidget {
   const LoadingBarrier({required this.color, super.key});
@@ -13,11 +15,11 @@ class LoadingBarrier extends StatelessWidget {
             opacity: 0.9,
             child: ModalBarrier(dismissible: false, color: color),
           ),
-          const Center(
+          Center(
             child: LoadingIndicator(
               radius: 30,
               strokeWidth: 3,
-              message: 'Authenticating',
+              message: LocaleKeys.LoggingYouIn.tr(),
               messageColor: Palette.pink,
             ),
           ),
