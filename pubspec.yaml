@@ -45,6 +45,8 @@ dependencies:
   package_info_plus: ^3.0.2
   path_provider: ^2.0.13
   reactive_forms: ^14.1.0
+  sentry_dio: ^7.4.2
+  sentry_flutter: ^7.4.1
   shared_preferences: ^2.0.18
   shimmer: ^2.0.0
   sliding_up_panel: ^2.0.0+1
