@@ -19,7 +19,9 @@ class BaseAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SvgIconButton(
-            onPressed: onBackButtonPressed ?? context.beamBack,
+            onPressed: () {
+              Beamer.of(context).popRoute();
+            },
             asset: Assets.navigateBack,
           ),
           const AppLogo(),
