@@ -19,6 +19,7 @@ import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/shared_preferences_service.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:url_protocol/url_protocol.dart';
 
@@ -80,16 +81,32 @@ class Enviroment {
     debugPrint('App started in ${flavorConfig.flavor} mode');
     debugPrint('Base URL ${flavorConfig.values.baseUrl}');
     FlutterNativeSplash.remove();
-    runApp(
-      ProviderScope(
-        overrides: [environmentPOD.overrideWith((ref) => flavorConfig)],
-        child: EasyLocalization(
-          supportedLocales: kSupportedLocales,
-          path: Assets.langs,
-          fallbackLocale: kFallbackLocale,
-          child: const MyApp(),
-        ),
-      ),
+    await SentryFlutter.init(
+      (options) {
+        options
+          ..dsn =
+              'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200'
+          ..tracesSampleRate = 1.0
+          ..sendClientReports = true
+          ..maxRequestBodySize = MaxRequestBodySize.small
+          ..maxResponseBodySize = MaxResponseBodySize.small
+          ..attachScreenshot = true
+          ..screenshotQuality = SentryScreenshotQuality.low;
+      },
+      appRunner: () {
+        FlutterNativeSplash.remove();
+        runApp(
+          ProviderScope(
+            overrides: [environmentPOD.overrideWith((ref) => flavorConfig)],
+            child: EasyLocalization(
+              supportedLocales: kSupportedLocales,
+              path: Assets.langs,
+              fallbackLocale: kFallbackLocale,
+              child: const SentryScreenshotWidget(child: MyApp()),
+            ),
+          ),
+        );
+      },
     );
   }
 
