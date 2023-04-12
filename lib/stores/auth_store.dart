@@ -75,7 +75,6 @@ abstract class _AuthStore with Store {
         },
       );
     } catch (e) {
-      showSnackbar('Error while initializing authentication.Please give it another try. 😕');
       debugPrint(e.toString());
     }
   }
