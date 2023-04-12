@@ -65,10 +65,7 @@ class SubscriptionForm extends HookConsumerWidget {
                     if (result == PurchaseStatus.purchased && isMounted()) {
                       if (store.subscription?.active == false) {
                         shownVerificationFailedDialog(
-                          () async => store.verifyPurchase(
-                            store.purchasedProductId!,
-                            store.lastPurchase!,
-                          ),
+                          () async => store.retryVerificationProcess(),
                           context,
                         );
                       } else {
