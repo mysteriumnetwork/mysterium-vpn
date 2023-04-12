@@ -6,7 +6,7 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/exceptions/key_does_not_exists.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/wrong_auth_token.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -14,6 +14,7 @@ import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 // Project imports:
 
@@ -71,6 +72,9 @@ abstract class _AuthStore with Store {
           if (appLink.toString() != storedLink) {
             await _secureStorageService.saveAppLink(appLink: appLink.toString());
             authenticate(appLink);
+          } else {
+            Sentry.captureException(TokenAlreadyUsedException());
+            showSnackbar('Token already used. Please try again. 😕');
           }
         },
       );

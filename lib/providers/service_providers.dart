@@ -15,6 +15,7 @@ import 'package:mysterium_vpn/services/auth/rest_auth_service.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
+import 'package:sentry_dio/sentry_dio.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
 final inAppPurchasePOD = Provider(
@@ -39,7 +40,8 @@ final authorizedApiClientPOD = Provider<Dio>((ref) {
       connectTimeout: const Duration(seconds: 15),
       receiveTimeout: const Duration(seconds: 15),
     ),
-  )..interceptors.addAll([
+  )
+    ..interceptors.addAll([
       AppendTokenInterceptor(ref),
       CustomLogInterceptor(
         responseHeader: false,
@@ -47,7 +49,8 @@ final authorizedApiClientPOD = Provider<Dio>((ref) {
         requestBody: true,
         responseBody: true,
       )
-    ]);
+    ])
+    ..addSentry();
 });
 
 final unauthorizedApiClientPOD = Provider<Dio>((ref) {
@@ -59,14 +62,16 @@ final unauthorizedApiClientPOD = Provider<Dio>((ref) {
       connectTimeout: const Duration(seconds: 15),
       receiveTimeout: const Duration(seconds: 15),
     ),
-  )..interceptors.add(
+  )
+    ..interceptors.add(
       CustomLogInterceptor(
         responseHeader: false,
         requestHeader: false,
         requestBody: true,
         responseBody: true,
       ),
-    );
+    )
+    ..addSentry();
 });
 
 final subscriptionServicePOD = Provider<SubscriptionService>((ref) {
