@@ -1,0 +1,1 @@
+class TokenAlreadyUsedException implements Exception {}
