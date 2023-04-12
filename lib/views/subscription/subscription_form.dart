@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -7,8 +8,10 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/dialogs/veirification_failed_dialog.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/error_widget.dart';
@@ -58,16 +61,23 @@ class SubscriptionForm extends HookConsumerWidget {
                   textAlign: TextAlign.center,
                 ).padding(bottom: getMediaHeight(context) * 0.025),
                 ReactionBuilder(
-                  builder: (context) => reaction((_) => store.isSubscribing, (result) {
+                  builder: (context) => reaction((_) => store.purchaseStatus, (result) {
                     if (result == PurchaseStatus.purchased && isMounted()) {
-                      showSnackbar(
-                        'Great news! Your subscription is now active. 🎉',
-                        type: MessageType.success,
-                      );
-
-                      // if (localDb.getEmailCommunicationApproval() == Approval.notSet) {
-                      //   context.beamToNamed(Routes.emailCommunications.toRoute);
-                      // }
+                      if (store.subscription?.active == false) {
+                        shownVerificationFailedDialog(
+                          () async => store.verifyPurchase(
+                            store.purchasedProductId!,
+                            store.lastPurchase!,
+                          ),
+                          context,
+                        );
+                      } else {
+                        showSnackbar(
+                          'Great news! Your subscription is now active. 🎉',
+                          type: MessageType.success,
+                        );
+                        context.beamToReplacementNamed(Routes.home.toRoute);
+                      }
                     }
                     if (result == PurchaseStatus.canceled) {
                       showSnackbar('Process Canceled.😕');
@@ -81,17 +91,17 @@ class SubscriptionForm extends HookConsumerWidget {
                   child: EasyButton(
                     width: getMediaWidth(context) * 0.8,
                     useSystemColor: false,
-                    color: store.isSubscribing == PurchaseStatus.pending
+                    color: store.purchaseStatus == PurchaseStatus.pending
                         ? Theme.of(context).disabledColor
                         : Palette.purple,
-                    onPressed: store.isSubscribing == PurchaseStatus.pending
+                    onPressed: store.purchaseStatus == PurchaseStatus.pending
                         ? null
                         : () async {
                             if (selectedProduct.value.isNotEmpty) {
                               store.subscribeToPackage(selectedProduct.value);
                             }
                           },
-                    child: store.isSubscribing == PurchaseStatus.pending
+                    child: store.purchaseStatus == PurchaseStatus.pending
                         ? const LoadingIndicator(
                             radius: 20,
                             strokeWidth: 1.5,
