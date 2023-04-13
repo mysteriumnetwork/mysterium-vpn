@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:beamer/beamer.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -10,6 +11,7 @@ import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/router/router.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
+import 'package:mysterium_vpn/stores/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/connectivity_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
@@ -18,6 +20,7 @@ import 'package:mysterium_vpn/stores/rest_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
@@ -25,10 +28,13 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final authService = ref.watch(authServicePOD);
   final appLinks = ref.watch(appLinksPOD);
   final localDb = ref.watch(localDBPOD);
+  final analyticsStore = ref.watch(analyticsStorePOD);
+
   return AuthStore(
     authService: authService,
     appLinks: appLinks,
     localDb: localDb,
+    analyticsStore: analyticsStore,
   );
 });
 
@@ -76,8 +82,15 @@ final routeInformationParserPOD = Provider((ref) => BeamerParser());
 
 final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
   final authStore = ref.read(authStorePOD);
-
+  final firebaseAnalytics = ref.read(firebaseAnalyticsPOD);
   return BeamerDelegate(
+    navigatorObservers: [
+      FirebaseAnalyticsObserver(
+        analytics: firebaseAnalytics,
+        nameExtractor: (settings) => settings.name,
+      ),
+      SentryNavigatorObserver(),
+    ],
     guards: [
       BeamGuard(
         pathPatterns: [
@@ -131,4 +144,14 @@ final tokenStreamPOD = StreamProvider<String>((ref) {
   });
 
   return streamController.stream;
+});
+
+final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
+  final localDb = ref.watch(localDBPOD);
+  final firebaseAnalytics = ref.watch(firebaseAnalyticsPOD);
+
+  return AnalyticsStore(
+    localDb: localDb,
+    analytics: firebaseAnalytics,
+  );
 });
