@@ -130,7 +130,13 @@ abstract class LocaleKeys {
   static const noInternetConnectionSub = 'noInternetConnectionSub';
   static const currentlyOffline = 'currentlyOffline';
   static const internetConnectionRestored = 'internetConnectionRestored';
+  static const subscriptionVerificationFailed = 'subscriptionVerificationFailed';
+  static const failedToVerifySubs = 'failedToVerifySubs';
   static const retryBtn = 'retryBtn';
+  static const areYouSure = 'areYouSure';
+  static const logoutDescription = 'logoutDescription';
+  static const goBackButton = 'goBackButton';
+  static const stayButton = 'stayButton';
   static const BD = 'BD';
   static const BE = 'BE';
   static const BF = 'BF';
