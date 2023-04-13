@@ -14,6 +14,7 @@ import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
+import 'package:mysterium_vpn/stores/analytics_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 // Project imports:
@@ -28,9 +29,11 @@ abstract class _AuthStore with Store {
     required AuthService authService,
     required AppLinks appLinks,
     required LocalDBService localDb,
+    required AnalyticsStore analyticsStore,
   })  : _authService = authService,
         _appLinks = appLinks,
-        _localDb = localDb {
+        _localDb = localDb,
+        _analyticsStore = analyticsStore {
     initAuth();
   }
 
@@ -38,6 +41,7 @@ abstract class _AuthStore with Store {
   final LocalDBService _localDb;
   final AppLinks _appLinks;
   final SecureStorageService _secureStorageService = SecureStorageService();
+  final AnalyticsStore _analyticsStore;
 
   @readonly
   AuthStatus _authStatus = AuthStatus.unknown;
@@ -104,7 +108,10 @@ abstract class _AuthStore with Store {
       }
       _authData = await authenticateFeature;
       _authStatus = AuthStatus.authenticated;
-      _localDb.setUserId(_authData!.userId);
+      _localDb.setUserId(_authData!.username);
+      _analyticsStore
+        ..setUserId(_authData!.username)
+        ..setLogin();
       debugPrint(_localDb.userData.toString());
     } on KeyDoesntExistsException {
       _authStatus = AuthStatus.unauthenticated;
@@ -120,6 +127,7 @@ abstract class _AuthStore with Store {
     logoutFeature = ObservableFuture(_authService.logout());
 
     await logoutFeature;
+    _analyticsStore.setLogOut(_authData?.username ?? '');
     _authStatus = AuthStatus.unauthenticated;
     _authData = null;
   }
@@ -128,6 +136,7 @@ abstract class _AuthStore with Store {
   Future<void> login({required String email}) async {
     loginFeature = ObservableFuture(_authService.login(email: email));
     await loginFeature;
+    _analyticsStore.setSignUp(email);
     _email = email;
   }
 }
