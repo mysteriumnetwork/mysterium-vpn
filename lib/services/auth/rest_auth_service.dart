@@ -3,11 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:mysterium_vpn/common/exceptions/key_does_not_exists.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/auth_data.dart';
+import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
 
 const kAuthCheck = '/auth/check';
-const kLogin = '/auth/login';
+const kLogin = '/magic-link';
 const kCompleteLogin = '/auth/login-complete';
 
 class RestAuthService extends AuthService {
@@ -78,14 +79,22 @@ class RestAuthService extends AuthService {
   }
 
   @override
-  Future<void> login({required String email}) async {
+  Future<void> login({
+    required String email,
+    required PkcePair pkcePair,
+  }) async {
     try {
       final result = await _apiClient.post<Map<String, dynamic>>(
         kLogin,
-        data: {'email': email, 'scheme': _scheme},
+        data: {
+          'email': email,
+          'client_id': _scheme,
+          'code_challenge': pkcePair.codeChallenge,
+          'code_challenge_method': 'S256',
+        },
       );
 
-      if (result.data?['status'] != 'ok') {
+      if (result.statusCode != 200) {
         throw Exception('Login failed');
       }
     } on Exception catch (e) {
