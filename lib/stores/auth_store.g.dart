@@ -80,13 +80,13 @@ mixin _$AuthStore on _AuthStore, Store {
   late final _$loginFeatureAtom = Atom(name: '_AuthStore.loginFeature', context: context);
 
   @override
-  ObservableFuture<void> get loginFeature {
+  ObservableFuture<String?> get loginFeature {
     _$loginFeatureAtom.reportRead();
     return super.loginFeature;
   }
 
   @override
-  set loginFeature(ObservableFuture<void> value) {
+  set loginFeature(ObservableFuture<String?> value) {
     _$loginFeatureAtom.reportWrite(value, super.loginFeature, () {
       super.loginFeature = value;
     });
@@ -133,8 +133,8 @@ mixin _$AuthStore on _AuthStore, Store {
   late final _$authenticateAsyncAction = AsyncAction('_AuthStore.authenticate', context: context);
 
   @override
-  Future<void> authenticate(Uri? appLink) {
-    return _$authenticateAsyncAction.run(() => super.authenticate(appLink));
+  Future<void> authenticate({Uri? appLink, String? code}) {
+    return _$authenticateAsyncAction.run(() => super.authenticate(appLink: appLink, code: code));
   }
 
   late final _$logoutAsyncAction = AsyncAction('_AuthStore.logout', context: context);
@@ -147,7 +147,7 @@ mixin _$AuthStore on _AuthStore, Store {
   late final _$loginAsyncAction = AsyncAction('_AuthStore.login', context: context);
 
   @override
-  Future<void> login({required String email}) {
+  Future<String?> login({required String email}) {
     return _$loginAsyncAction.run(() => super.login(email: email));
   }
 

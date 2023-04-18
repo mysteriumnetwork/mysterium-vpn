@@ -3,7 +3,7 @@ import 'package:mysterium_vpn/models/pkce.dart';
 
 abstract class AuthService {
   Future<AuthData> checkUserAuth();
-  Future<void> login({required String email, required PkcePair pkcePair});
+  Future<String?> login({required String email, required PkcePair pkcePair});
   Future<void> logout();
   Future<AuthData> completeLogin({
     required String authToken,
