@@ -16,11 +16,14 @@ class RestAuthService extends AuthService {
   RestAuthService({
     required Dio apiClient,
     required String scheme,
+    required String testEmail,
   })  : _apiClient = apiClient,
-        _scheme = scheme;
+        _scheme = scheme,
+        _testEmail = testEmail;
 
   final Dio _apiClient;
   final String _scheme;
+  final String _testEmail;
   final _securedStorage = SecureStorageService();
 
   @override
@@ -101,7 +104,7 @@ class RestAuthService extends AuthService {
   }
 
   @override
-  Future<void> login({
+  Future<String?> login({
     required String email,
     required PkcePair pkcePair,
   }) async {
@@ -119,10 +122,15 @@ class RestAuthService extends AuthService {
       if (result.statusCode != 200) {
         throw Exception('Login failed');
       }
+
+      if (email == _testEmail && result.data != null && result.data!.containsKey('code')) {
+        return result.data!['code'] as String;
+      }
     } on Exception catch (e) {
       debugPrint(e.toString());
       throw handleException(e, message: 'Authenticating failed.Please try again');
     }
+    return null;
   }
 
   @override

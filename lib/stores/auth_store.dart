@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/exceptions/incorrect_code.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
@@ -52,7 +51,7 @@ abstract class _AuthStore with Store {
   AuthData? _authData;
 
   @observable
-  ObservableFuture<void> loginFeature = ObservableFuture.value(null);
+  ObservableFuture<String?> loginFeature = ObservableFuture.value(null);
   @observable
   ObservableFuture<void> logoutFeature = ObservableFuture.value(null);
   @observable
@@ -66,16 +65,16 @@ abstract class _AuthStore with Store {
       final storedLink = await _secureStorageService.getAppLink();
       if (appLink != null && appLink.toString() != storedLink) {
         await _secureStorageService.saveAppLink(appLink: appLink.toString());
-        authenticate(appLink);
+        authenticate(appLink: appLink);
       } else {
-        authenticate(null);
+        authenticate();
       }
       _appLinks.uriLinkStream.listen(
         (appLink) async {
           final storedLink = await _secureStorageService.getAppLink();
           if (appLink.toString() != storedLink) {
             await _secureStorageService.saveAppLink(appLink: appLink.toString());
-            authenticate(appLink);
+            authenticate(appLink: appLink);
           } else {
             Sentry.captureException(TokenAlreadyUsedException());
             showSnackbar('Token already used. Please try again. 😕');
@@ -88,7 +87,10 @@ abstract class _AuthStore with Store {
   }
 
   @action
-  Future<void> authenticate(Uri? appLink) async {
+  Future<void> authenticate({
+    Uri? appLink,
+    String? code,
+  }) async {
     try {
       if (_authStatus == AuthStatus.authenticating) {
         return;
@@ -102,6 +104,14 @@ abstract class _AuthStore with Store {
         if (code == null) {
           throw IncorrectCodeException();
         }
+        authenticateFeature = ObservableFuture(
+          _authService.completeLogin(
+            authToken: code,
+            pkcePair: _pkcePair!,
+          ),
+        );
+      } else if (code != null) {
+        _authStatus = AuthStatus.authenticating;
         authenticateFeature = ObservableFuture(
           _authService.completeLogin(
             authToken: code,
@@ -142,7 +152,7 @@ abstract class _AuthStore with Store {
   }
 
   @action
-  Future<void> login({required String email}) async {
+  Future<String?> login({required String email}) async {
     _pkcePair = PkcePair.generate();
     _secureStorageService.savePkcePair(
       codeChallenge: _pkcePair!.codeChallenge,
@@ -154,7 +164,11 @@ abstract class _AuthStore with Store {
         pkcePair: _pkcePair!,
       ),
     );
-    await loginFeature;
+    final code = await loginFeature;
+    if (code != null) {
+      authenticate(code: code);
+    }
     _email = email;
+    return code;
   }
 }
