@@ -58,4 +58,107 @@ abstract class _AnalyticsStore with Store {
   Future<void> setLogOut(String userId) async {
     await logEvent(AnalyticsEvent.logout, {'user_email': userId});
   }
+
+  @action
+  Future<void> setSearchEvent(String searchTerm) async {
+    await _analytics.logSearch(searchTerm: searchTerm);
+  }
+
+  @action
+  Future<void> setVpnConnect({
+    required String vpnServer,
+    required Duration vpnProcessingTime,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.vpnConnect,
+      {
+        'user_email': _localDb.userData.userId,
+        'vpn_server': vpnServer,
+        'vpn_processing_time': vpnProcessingTime,
+      },
+    );
+  }
+
+  @action
+  Future<void> setVpnDisconnect({required String vpnServer}) async {
+    await logEvent(
+      AnalyticsEvent.vpnDisconnect,
+      {
+        'user_email': _localDb.userData.userId,
+        'vpn_server': vpnServer,
+      },
+    );
+  }
+
+  @action
+  Future<void> setVpnError({
+    required int errorCode,
+    required String errorMessage,
+    required String errorSource,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.vpnConnect,
+      {
+        'user_email': _localDb.userData.userId,
+        'error_code': errorCode,
+        'error_message': errorMessage,
+        'error_source': errorSource,
+      },
+    );
+  }
+
+  @action
+  Future<void> setPaymentSuccessful({
+    required String paymentGateway,
+    required String planType,
+    required double planPrice,
+    required String transactionId,
+    required String transactionDate,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.paymentSuccessful,
+      {
+        'user_email': _localDb.userData.userId,
+        'payment_gateway': paymentGateway,
+        'plan_type': planType,
+        'plan_price': planPrice,
+        'transaction_id': transactionId,
+        'transaction_date': transactionDate,
+      },
+    );
+  }
+
+  @action
+  Future<void> setPaymentInitiated({
+    required String paymentGateway,
+    required String planType,
+    required double planPrice,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.paymentInitiated,
+      {
+        'user_email': _localDb.userData.userId,
+        'payment_gateway': paymentGateway,
+        'plan_type': planType,
+        'plan_price': planPrice,
+      },
+    );
+  }
+
+  @action
+  Future<void> setManageSubscription({
+    required String paymentGateway,
+    required String planType,
+    required double planPrice,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.paymentInitiated,
+      {
+        'user_email': _localDb.userData.userId,
+        'payment_gateway': paymentGateway,
+        'plan_type': planType,
+        'plan_price': planPrice,
+      },
+    );
+  }
 }

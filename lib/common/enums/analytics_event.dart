@@ -4,7 +4,6 @@ enum AnalyticsEvent {
   manageSubscription,
   vpnConnect,
   vpnDisconnect,
-  vpnProcessingTime,
   vpnError,
   vpnFeedback,
   logout,

@@ -46,18 +46,19 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final apiService = ref.read(apiServicePOD);
   final locationsStore = ref.watch(locationsStorePOD);
   final wireguardService = ref.watch(wireguardServicePOD);
-
+  final analyticsStore = ref.watch(analyticsStorePOD);
   return VpnStore(
     apiService: apiService,
     locationsStore: locationsStore,
     wireguardService: wireguardService,
+    analyticsStore: analyticsStore,
   );
 });
 
 final locationsStorePOD = Provider<LocationsStore>((ref) {
   final apiService = ref.read(apiServicePOD);
-
-  return LocationsStore(apiService: apiService);
+  final analyticsStore = ref.watch(analyticsStorePOD);
+  return LocationsStore(apiService: apiService, analyticsStore: analyticsStore);
 });
 
 final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
@@ -65,11 +66,13 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   final subscriptionService = ref.read(subscriptionServicePOD);
   final authStore = ref.read(authStorePOD);
   final localDb = ref.read(localDBPOD);
+  final analyticsStore = ref.watch(analyticsStorePOD);
   return SubscriptionStore(
     inAppPurchase: inAppPurchase,
     subscriptionService: subscriptionService,
     authStore: authStore,
     localDb: localDb,
+    analyticsStore: analyticsStore,
   );
 });
 
