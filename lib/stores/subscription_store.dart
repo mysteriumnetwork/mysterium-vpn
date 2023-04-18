@@ -12,6 +12,7 @@ import 'package:mysterium_vpn/models/subscription_config.dart';
 import 'package:mysterium_vpn/models/subscription_request.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
+import 'package:mysterium_vpn/stores/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 
 // Include generated file
@@ -26,10 +27,12 @@ abstract class _SubscriptionStore with Store {
     required SubscriptionService subscriptionService,
     required AuthStore authStore,
     required LocalDBService localDb,
+    required AnalyticsStore analyticsStore,
   })  : _inAppPurchase = inAppPurchase,
         _subscriptionService = subscriptionService,
         _authStore = authStore,
-        _localDb = localDb {
+        _localDb = localDb,
+        _analyticsStore = analyticsStore {
     initStore();
   }
 
@@ -39,6 +42,7 @@ abstract class _SubscriptionStore with Store {
   final SubscriptionService _subscriptionService;
   final AuthStore _authStore;
   final LocalDBService _localDb;
+  final AnalyticsStore _analyticsStore;
 
   @observable
   ObservableFuture<SubscriptionConfig>? isAvailableFuture;
@@ -137,6 +141,19 @@ abstract class _SubscriptionStore with Store {
       );
 
       _purchasedProductId = productId;
+      if (_purchasedProductId != null && _purchasedProductId == productId) {
+        _analyticsStore.setManageSubscription(
+          paymentGateway: getPlatformGateway(),
+          planPrice: item.rawPrice,
+          planType: productId,
+        );
+      } else {
+        _analyticsStore.setPaymentInitiated(
+          paymentGateway: getPlatformGateway(),
+          planPrice: item.rawPrice,
+          planType: productId,
+        );
+      }
     } on Exception catch (e) {
       _purchaseStatus = PurchaseStatus.error;
 
@@ -173,6 +190,7 @@ abstract class _SubscriptionStore with Store {
       if (purchaseDetails.status == PurchaseStatus.canceled) {
         _subscriptionService.clearPendingTransactions();
       }
+      _purchaseStatus = purchaseDetails.status;
       return;
     }
 
@@ -195,6 +213,13 @@ abstract class _SubscriptionStore with Store {
     }
 
     if (purchaseDetails.pendingCompletePurchase) {
+      _analyticsStore.setPaymentSuccessful(
+        paymentGateway: getPlatformGateway(),
+        planPrice: _products[index].productDetails.price.usd,
+        planType: _purchasedProductId ?? '',
+        transactionId: purchaseDetails.verificationData.serverVerificationData,
+        transactionDate: purchaseDetails.transactionDate ?? '',
+      );
       _inAppPurchase.completePurchase(purchaseDetails);
     }
     _lastPurchase = purchaseDetails;
