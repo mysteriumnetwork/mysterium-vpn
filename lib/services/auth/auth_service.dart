@@ -7,5 +7,6 @@ abstract class AuthService {
   Future<void> logout();
   Future<AuthData> completeLogin({
     required String authToken,
+    required PkcePair pkcePair,
   });
 }
