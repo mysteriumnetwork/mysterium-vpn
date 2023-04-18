@@ -74,8 +74,8 @@ class SignInForm extends HookConsumerWidget {
                           ? () async {
                               TextInput.finishAutofillContext();
                               final email = form.control('email').value as String;
-                              await store.login(email: email);
-                              if (isMounted()) {
+                              final result = await store.login(email: email);
+                              if (isMounted() && result == null) {
                                 // ignore: use_build_context_synchronously
                                 context.beamToNamed(Routes.checkYourEmail.toRoute);
                               }
