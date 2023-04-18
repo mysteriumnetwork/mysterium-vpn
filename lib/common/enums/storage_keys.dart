@@ -12,4 +12,6 @@ enum StorageKeys {
   appLink,
   wireguardPublicKey,
   wireguardPrivateKey,
+  codeChallenge,
+  codeVerifier,
 }

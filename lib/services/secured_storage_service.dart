@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mysterium_vpn/common/enums/storage_keys.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/models/pkce.dart';
 // Project imports:
 
 class SecureStorageService {
@@ -91,4 +92,26 @@ class SecureStorageService {
   Future<void> saveWireguardPrivateKey({required String publicKey}) async =>
       write(StorageKeys.accessToken.value, publicKey);
   Future<void> removeWireguardPrivateKey() async => remove(StorageKeys.wireguardPrivateKey.value);
+  Future<PkcePair?> getPkcePair() async {
+    try {
+      final codeChallenge = await read(StorageKeys.codeChallenge.value);
+      final codeVerifier = await read(StorageKeys.codeVerifier.value);
+      return PkcePair.fromStorage(codeChallenge: codeChallenge, codeVerifier: codeVerifier);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<void> savePkcePair({
+    required String codeChallenge,
+    required String codeVerifier,
+  }) async {
+    write(StorageKeys.codeChallenge.value, codeChallenge);
+    write(StorageKeys.codeVerifier.value, codeVerifier);
+  }
+
+  Future<void> removePkcePair() async {
+    remove(StorageKeys.codeChallenge.value);
+    remove(StorageKeys.codeVerifier.value);
+  }
 }

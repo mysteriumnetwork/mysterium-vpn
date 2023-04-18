@@ -20,6 +20,10 @@ class PkcePair {
     return PkcePair._(verifier, challenge);
   }
 
+  ///[PkcePair] from secured storage.
+  factory PkcePair.fromStorage({required String codeChallenge, required String codeVerifier}) =>
+      PkcePair._(codeVerifier, codeChallenge);
+
   const PkcePair._(this.codeVerifier, this.codeChallenge);
 
   /// The code verifier.
