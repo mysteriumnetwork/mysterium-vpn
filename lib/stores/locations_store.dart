@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/stores/analytics_store.dart';
 
 part 'locations_store.g.dart';
 
@@ -10,13 +11,18 @@ part 'locations_store.g.dart';
 class LocationsStore = _LocationsStore with _$LocationsStore;
 
 abstract class _LocationsStore with Store {
-  _LocationsStore({required ApiService apiService}) : _apiService = apiService {
+  _LocationsStore({
+    required ApiService apiService,
+    required AnalyticsStore analyticsStore,
+  })  : _apiService = apiService,
+        _analyticsStore = analyticsStore {
     fetchRecentLocations();
     fetchTopLocations();
     fetchAllLocations();
   }
 
   final ApiService _apiService;
+  final AnalyticsStore _analyticsStore;
 
   @observable
   bool showAllLocations = false;
@@ -93,6 +99,7 @@ abstract class _LocationsStore with Store {
       _debounce?.cancel();
     }
     _debounce = Timer(Duration(milliseconds: duration), () {
+      _analyticsStore.setSearchEvent(text.trim());
       if (showAllLocations) {
         searchAllKeyword = text.trim();
         fetchAllLocations();
