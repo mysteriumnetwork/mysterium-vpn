@@ -26,6 +26,23 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
+  late final _$_pkcePairAtom = Atom(name: '_AuthStore._pkcePair', context: context);
+
+  PkcePair? get pkcePair {
+    _$_pkcePairAtom.reportRead();
+    return super._pkcePair;
+  }
+
+  @override
+  PkcePair? get _pkcePair => pkcePair;
+
+  @override
+  set _pkcePair(PkcePair? value) {
+    _$_pkcePairAtom.reportWrite(value, super._pkcePair, () {
+      super._pkcePair = value;
+    });
+  }
+
   late final _$_emailAtom = Atom(name: '_AuthStore._email', context: context);
 
   String get email {
