@@ -7,6 +7,8 @@ import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/mock.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/location.dart';
@@ -14,6 +16,7 @@ import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
+import 'package:mysterium_vpn/stores/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
@@ -29,9 +32,11 @@ abstract class _VpnStore with Store {
     required ApiService apiService,
     required LocationsStore locationsStore,
     required WireguardDart wireguardService,
+    required AnalyticsStore analyticsStore,
   })  : _apiService = apiService,
         _locationsStore = locationsStore,
-        _wireguardService = wireguardService {
+        _wireguardService = wireguardService,
+        _analyticsStore = analyticsStore {
     _vpnConnection = _emptyConnection;
     _connectionStatus = ConnectionStatus.disconnected;
     _protocol = protocols.first;
@@ -49,6 +54,7 @@ abstract class _VpnStore with Store {
   final ApiService _apiService;
   final LocationsStore _locationsStore;
   final WireguardDart _wireguardService;
+  final AnalyticsStore _analyticsStore;
   final _securedStorage = SecureStorageService();
 
   final random = Random();
@@ -121,7 +127,11 @@ abstract class _VpnStore with Store {
     if (config == null) {
       return;
     }
-    await _wireguardService.connect(cfg: config);
+    try {
+      await _wireguardService.connect(cfg: config);
+    } catch (e) {
+      throw WireguardConnectException(e.toString());
+    }
   }
 
   @action
@@ -146,6 +156,7 @@ abstract class _VpnStore with Store {
       if (_vpnConnection != _emptyConnection) {
         await disconnect();
       }
+      final stopwatch = Stopwatch()..start();
       _connectionStatus = ConnectionStatus.connecting;
       _vpnConfig = await _apiService.fetchVpnConfig(
         input: VpnConfigInput(
@@ -163,6 +174,11 @@ abstract class _VpnStore with Store {
         location: location?.countryCode ?? '--',
       );
       _connectionStatus = ConnectionStatus.connected;
+      stopwatch.stop();
+      _analyticsStore.setVpnConnect(
+        vpnServer: _vpnConnection.location,
+        vpnProcessingTime: stopwatch.elapsed,
+      );
       startTracking();
       if (location != null) {
         _apiService.setRecentLocation(location: location.countryCode);
@@ -173,6 +189,25 @@ abstract class _VpnStore with Store {
         'Something went wrong while connecting to ${location?.countryName}. Please give it another try. 😕',
       );
       _connectionStatus = ConnectionStatus.disconnected;
+      if (e is WireguardConnectException) {
+        _analyticsStore.setVpnError(
+          errorCode: e.code,
+          errorMessage: e.message,
+          errorSource: 'wireguard',
+        );
+      } else if (e is ApiException) {
+        _analyticsStore.setVpnError(
+          errorCode: e.code,
+          errorMessage: e.message,
+          errorSource: 'backend',
+        );
+      } else {
+        _analyticsStore.setVpnError(
+          errorCode: 500,
+          errorMessage: e.toString(),
+          errorSource: 'internal',
+        );
+      }
     }
   }
 
@@ -200,6 +235,7 @@ abstract class _VpnStore with Store {
     _connectionStatus = ConnectionStatus.disconnecting;
     await Future.delayed(const Duration(seconds: 1));
     await disconnectWireguard();
+    _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection.location);
     _vpnConnection = _emptyConnection;
     _timer?.cancel();
     _downloadSpeed = null;

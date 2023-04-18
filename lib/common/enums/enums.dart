@@ -1,3 +1,5 @@
+export 'analytics_event.dart';
+export 'auth_method.dart';
 export 'auth_status.dart';
 export 'connection_status.dart';
 export 'message_type.dart';
