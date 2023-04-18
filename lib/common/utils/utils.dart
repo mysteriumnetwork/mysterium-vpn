@@ -11,6 +11,7 @@ import 'package:mysterium_vpn/common/configurations/breakpoint_configuration.dar
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/dialogs/no_internet_connection_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
@@ -350,4 +351,12 @@ String? getVpnAddress(String config) {
   } else {
     return null;
   }
+}
+
+String? getMagicLinkCode(String query) {
+  if (!query.contains('code=') ||
+      !query.substring(query.indexOf('code=') + 5, query.length).isUUID()) {
+    return null;
+  }
+  return query.substring(query.indexOf('code=') + 5, query.length);
 }
