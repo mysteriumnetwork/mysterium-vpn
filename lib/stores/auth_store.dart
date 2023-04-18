@@ -11,6 +11,7 @@ import 'package:mysterium_vpn/common/exceptions/wrong_auth_token.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/auth_data.dart';
+import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
@@ -41,6 +42,9 @@ abstract class _AuthStore with Store {
 
   @readonly
   AuthStatus _authStatus = AuthStatus.unknown;
+
+  @readonly
+  PkcePair? _pkcePair;
 
   @readonly
   String _email = '';
@@ -126,7 +130,13 @@ abstract class _AuthStore with Store {
 
   @action
   Future<void> login({required String email}) async {
-    loginFeature = ObservableFuture(_authService.login(email: email));
+    _pkcePair = PkcePair.generate();
+    loginFeature = ObservableFuture(
+      _authService.login(
+        email: email,
+        pkcePair: _pkcePair!,
+      ),
+    );
     await loginFeature;
     _email = email;
   }
