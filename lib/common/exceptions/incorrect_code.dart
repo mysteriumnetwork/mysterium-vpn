@@ -1,0 +1,1 @@
+class IncorrectCodeException implements Exception {}

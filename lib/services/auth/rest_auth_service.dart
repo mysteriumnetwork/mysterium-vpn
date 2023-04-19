@@ -3,33 +3,38 @@ import 'package:flutter/foundation.dart';
 import 'package:mysterium_vpn/common/exceptions/key_does_not_exists.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/auth_data.dart';
+import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
 
 const kAuthCheck = '/auth/check';
-const kLogin = '/auth/login';
-const kCompleteLogin = '/auth/login-complete';
+const kLogin = '/magic-link';
+const kCompleteLogin = '/oauth/token';
+const kAuthIntrospect = '/oauth/introspect';
 
 class RestAuthService extends AuthService {
   RestAuthService({
     required Dio apiClient,
     required String scheme,
+    required String testEmail,
   })  : _apiClient = apiClient,
-        _scheme = scheme;
+        _scheme = scheme,
+        _testEmail = testEmail;
 
   final Dio _apiClient;
   final String _scheme;
+  final String _testEmail;
   final _securedStorage = SecureStorageService();
 
   @override
   Future<AuthData> checkUserAuth() async {
     try {
       await Future.delayed(const Duration(seconds: 2));
-      final authToken = await _securedStorage.getAccessToken();
+      final accessToken = await _securedStorage.getAccessToken();
 
       final res = await _apiClient.get(
         kAuthCheck,
-        options: Options(headers: {'Authorization': 'Bearer $authToken'}),
+        options: Options(headers: {'Authorization': 'Bearer $accessToken'}),
       );
       final data = res.data as Map<String, dynamic>;
       final username = data['username'] as String;
@@ -37,7 +42,7 @@ class RestAuthService extends AuthService {
       await _securedStorage.saveUserId(userId: userId);
       await _securedStorage.saveUsername(username: username);
       return AuthData(
-        authToken: authToken,
+        accessToken: accessToken,
         username: username,
         userId: data['user_id'] as String,
       );
@@ -54,19 +59,40 @@ class RestAuthService extends AuthService {
   @override
   Future<AuthData> completeLogin({
     required String authToken,
+    required PkcePair pkcePair,
   }) async {
     try {
       await Future.delayed(const Duration(seconds: 2));
-      final result = await _apiClient.post<Map<String, dynamic>>(
+      final authTokenResult = await _apiClient.post<Map<String, dynamic>>(
         kCompleteLogin,
-        data: {'token': authToken},
+        data: {
+          'grant_type': 'authorization_code',
+          'client_id': _scheme,
+          'code': authToken,
+          'code_verifier': pkcePair.codeVerifier,
+        },
+        options: Options(contentType: 'application/x-www-form-urlencoded'),
       );
-      if (result.data == null) {
+      if (authTokenResult.data == null) {
         throw Exception('No data');
       }
 
-      final authData = AuthData.fromJson(result.data!);
-      await _securedStorage.saveAccessToken(accessToken: authData.authToken);
+      if (authTokenResult.data == null) {
+        throw Exception('No data');
+      }
+      final accessToken = authTokenResult.data!['access_token'] as String;
+      final tokenIntrospectResult = await _apiClient.post<Map<String, dynamic>>(
+        kAuthIntrospect,
+        data: {
+          'token': accessToken,
+        },
+      );
+      final authData = AuthData(
+        accessToken: authTokenResult.data!['access_token'] as String,
+        username: tokenIntrospectResult.data!['username'] as String,
+        userId: tokenIntrospectResult.data!['sub'] as String,
+      );
+      await _securedStorage.saveAccessToken(accessToken: authData.accessToken);
       await _securedStorage.saveUsername(username: authData.username);
       await _securedStorage.saveUserId(userId: authData.userId);
       return authData;
@@ -78,20 +104,33 @@ class RestAuthService extends AuthService {
   }
 
   @override
-  Future<void> login({required String email}) async {
+  Future<String?> login({
+    required String email,
+    required PkcePair pkcePair,
+  }) async {
     try {
       final result = await _apiClient.post<Map<String, dynamic>>(
         kLogin,
-        data: {'email': email, 'scheme': _scheme},
+        data: {
+          'email': email,
+          'client_id': _scheme,
+          'code_challenge': pkcePair.codeChallenge,
+          'code_challenge_method': 'S256',
+        },
       );
 
-      if (result.data?['status'] != 'ok') {
+      if (result.statusCode != 200) {
         throw Exception('Login failed');
+      }
+
+      if (email == _testEmail && result.data != null && result.data!.containsKey('code')) {
+        return result.data!['code'] as String;
       }
     } on Exception catch (e) {
       debugPrint(e.toString());
       throw handleException(e, message: 'Authenticating failed.Please try again');
     }
+    return null;
   }
 
   @override
@@ -103,5 +142,6 @@ class RestAuthService extends AuthService {
     await _securedStorage.removeAccessToken();
     await _securedStorage.removeUsername();
     await _securedStorage.removeUserId();
+    await _securedStorage.removePkcePair();
   }
 }

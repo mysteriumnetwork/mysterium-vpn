@@ -2,7 +2,7 @@ name: mysterium_vpn
 description: Next-gen Mysterium VPN client for mobile (iOS/Android) and desktop (Windows/MacOS/Linux).
 
 publish_to: 'none'
-version: 1.1.7+17
+version: 1.1.9+19
 
 environment:
   sdk: '>=2.19.0 <3.0.0'
@@ -14,6 +14,7 @@ dependencies:
   circle_flags: ^1.0.3
   collection: ^1.16.0
   connectivity_plus: ^3.0.3
+  crypto: ^3.0.2
   cupertino_icons: ^1.0.2
   dio: ^5.0.1
   easy_localization: ^3.0.1

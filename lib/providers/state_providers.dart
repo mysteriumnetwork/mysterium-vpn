@@ -138,7 +138,7 @@ final tokenStreamPOD = StreamProvider<String>((ref) {
   final streamController = StreamController<String>();
   final autorunDisposer = autorun((_) {
     if (authStore.authData != null) {
-      streamController.add(authStore.authData!.authToken);
+      streamController.add(authStore.authData!.accessToken);
     }
   });
   ref.onDispose(() {
