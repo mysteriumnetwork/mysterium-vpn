@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   app_links: ^3.4.2
+  appsflyer_sdk: ^6.9.3
   auto_size_text: ^3.0.0
   beamer: ^1.5.3
   circle_flags: ^1.0.3

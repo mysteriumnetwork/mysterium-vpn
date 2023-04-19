@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/app.dart';
+import 'package:mysterium_vpn/appsflyer_options.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -67,6 +69,14 @@ class Enviroment {
         FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
         return true;
       };
+    }
+    if (isMobile()) {
+      final a = AppsflyerSdk(appsFlyerOptions);
+      await a.initSdk(
+        registerConversionDataCallback: true,
+        registerOnAppOpenAttributionCallback: true,
+      );
+      a.setDisableAdvertisingIdentifiers(false);
     }
     await SharedPreferenceService().init();
     await SecureStorageService().init();
