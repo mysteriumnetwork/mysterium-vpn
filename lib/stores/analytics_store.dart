@@ -74,7 +74,7 @@ abstract class _AnalyticsStore with Store {
       {
         'user_email': _localDb.userData.userId,
         'vpn_server': vpnServer,
-        'vpn_processing_time': vpnProcessingTime,
+        'vpn_processing_time': vpnProcessingTime.inSeconds,
       },
     );
   }
