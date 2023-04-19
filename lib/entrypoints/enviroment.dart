@@ -71,12 +71,10 @@ class Enviroment {
       };
     }
     if (isMobile()) {
-      final a = AppsflyerSdk(appsFlyerOptions);
-      await a.initSdk(
+      await AppsflyerSdk(appsFlyerOptions).initSdk(
         registerConversionDataCallback: true,
         registerOnAppOpenAttributionCallback: true,
       );
-      a.setDisableAdvertisingIdentifiers(false);
     }
     await SharedPreferenceService().init();
     await SecureStorageService().init();
