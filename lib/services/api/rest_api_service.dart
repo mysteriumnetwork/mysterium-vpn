@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/services/local_db_service.dart';
 
 const kFetchAllLocations = '/connection/config';
 const kCreateConnectionConfig = '/connection/connect';
+const kFetchIP = 'https://location.mysterium.network/api/v1/ip';
 
 class RestApiService extends ApiService {
   RestApiService({
@@ -133,6 +134,21 @@ class RestApiService extends ApiService {
     } on Exception catch (e) {
       debugPrint(e.toString());
       throw handleException(e);
+    }
+  }
+
+  @override
+  Future<String?> getIPAdress() async {
+    try {
+      final res = await _apiClient.fetch<Map<String, dynamic>>(
+        RequestOptions(baseUrl: kFetchIP),
+      );
+      if (res.data != null && res.data!.containsKey('ip')) {
+        return res.data!['ip'] as String;
+      }
+      return null;
+    } catch (e) {
+      return null;
     }
   }
 }

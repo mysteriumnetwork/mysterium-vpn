@@ -168,9 +168,8 @@ abstract class _VpnStore with Store {
 
       debugPrint(_vpnConfig?.config);
       await connectWireguard();
-
       _vpnConnection = VpnConnection(
-        connectionIP: getVpnAddress(_vpnConfig?.config ?? '') ?? '--',
+        connectionIP: await _apiService.getIPAdress() ?? '--',
         location: location?.countryCode ?? '--',
       );
       _connectionStatus = ConnectionStatus.connected;
