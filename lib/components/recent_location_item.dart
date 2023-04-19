@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/connect_button.dart';
@@ -62,10 +61,10 @@ class RecentLocationItem extends StatelessWidget {
                   LocaleKeys.connected.tr(),
                   color: Palette.purple,
                 )
-              else
-                EasyText(
-                  const Duration(hours: 1, minutes: 30).toHoursMinutes(),
-                ),
+              // else
+              //   EasyText(
+              //     const Duration(hours: 1, minutes: 30).toHoursMinutes(),
+              //   ),
             ],
           ).padding(left: 12, right: 6, bottom: 4).width(110),
         )
