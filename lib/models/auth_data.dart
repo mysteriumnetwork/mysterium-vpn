@@ -7,9 +7,9 @@ part 'auth_data.g.dart';
 @freezed
 class AuthData with _$AuthData {
   factory AuthData({
-    @JsonKey(name: 'auth_token') required String authToken,
+    @JsonKey(name: 'access_token') required String accessToken,
     @JsonKey(name: 'username') required String username,
-    @JsonKey(name: 'user_id') required String userId,
+    @JsonKey(name: 'sub') required String userId,
   }) = _AuthData;
 
   factory AuthData.fromJson(Map<String, dynamic> json) => _$AuthDataFromJson(json);
