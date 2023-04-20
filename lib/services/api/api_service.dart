@@ -12,4 +12,5 @@ abstract class ApiService {
   Future<void> setRecentLocation({required String location});
   List<Location> getRecentLocations({required String keyword});
   Future<VpnConfig> fetchVpnConfig({required VpnConfigInput input, required String privateKey});
+  Future<String?> getIPAdress();
 }
