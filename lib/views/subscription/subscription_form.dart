@@ -9,9 +9,10 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
+import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/dialogs/veirification_failed_dialog.dart';
+import 'package:mysterium_vpn/components/dialogs/retry_dialog.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/error_widget.dart';
@@ -64,9 +65,12 @@ class SubscriptionForm extends HookConsumerWidget {
                   builder: (context) => reaction((_) => store.purchaseStatus, (result) {
                     if (result == PurchaseStatus.purchased && isMounted()) {
                       if (store.subscription?.active == false) {
-                        shownVerificationFailedDialog(
-                          () async => store.retryVerificationProcess(),
-                          context,
+                        shownRetryDialog(
+                          onRetry: () async => store.retryVerificationProcess(),
+                          context: context,
+                          asset: Assets.subscription,
+                          title: LocaleKeys.subscriptionVerificationFailed.tr(),
+                          subtitle: LocaleKeys.failedToVerifySubs.tr(),
                         );
                       } else {
                         showSnackbar(
