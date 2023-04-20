@@ -18,6 +18,7 @@ import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
+import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
 // Project imports:
@@ -33,10 +34,12 @@ abstract class _VpnStore with Store {
     required LocationsStore locationsStore,
     required WireguardDart wireguardService,
     required AnalyticsStore analyticsStore,
+    required SubscriptionStore subscriptionStore,
   })  : _apiService = apiService,
         _locationsStore = locationsStore,
         _wireguardService = wireguardService,
-        _analyticsStore = analyticsStore {
+        _analyticsStore = analyticsStore,
+        _subscriptionStore = subscriptionStore {
     _vpnConnection = _emptyConnection;
     _connectionStatus = ConnectionStatus.disconnected;
     _protocol = protocols.first;
@@ -55,6 +58,7 @@ abstract class _VpnStore with Store {
   final LocationsStore _locationsStore;
   final WireguardDart _wireguardService;
   final AnalyticsStore _analyticsStore;
+  final SubscriptionStore _subscriptionStore;
   final _securedStorage = SecureStorageService();
 
   final random = Random();
@@ -143,6 +147,12 @@ abstract class _VpnStore with Store {
   Future<void> connect({
     Location? location,
   }) async {
+    if (_subscriptionStore.subscription?.active == false ||
+        _subscriptionStore.subscriptionFuture?.status == FutureStatus.rejected ||
+        _subscriptionStore.subscriptionFuture?.status == FutureStatus.pending) {
+      showSnackbar('Please activate your subscription to connect to VPN!');
+      return;
+    }
     if (_vpnConnection.location == location?.countryCode) {
       return;
     }
