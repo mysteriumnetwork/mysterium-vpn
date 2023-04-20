@@ -80,7 +80,6 @@ class Enviroment {
     final flavorConfig = setupFlavor(flavor);
     debugPrint('App started in ${flavorConfig.flavor} mode');
     debugPrint('Base URL ${flavorConfig.values.baseUrl}');
-    FlutterNativeSplash.remove();
     await SentryFlutter.init(
       (options) {
         options
