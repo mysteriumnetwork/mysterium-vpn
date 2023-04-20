@@ -1,0 +1,109 @@
+import 'package:beamer/beamer.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/components/easy_button.dart';
+import 'package:mysterium_vpn/components/easy_text.dart';
+import 'package:mysterium_vpn/components/header_title.dart';
+import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:styled_widget/styled_widget.dart';
+
+Future<void> shownRetryDialog({
+  required AsyncCallback onRetry,
+  required BuildContext context,
+  required String title,
+  required String subtitle,
+  required String asset,
+  AsyncCallback? onDismiss,
+}) async {
+  await showBarModalBottomSheet(
+    clipBehavior: Clip.none,
+    expand: false,
+    topControl: const SizedBox.shrink(),
+    isDismissible: true,
+    context: context,
+    backgroundColor: Theme.of(context).primaryColor,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+    ),
+    builder: (context) => VerificationFailedDialog(
+      onRetry: onRetry,
+      title: title,
+      subtitle: subtitle,
+      asset: asset,
+      onDismiss: onDismiss,
+    ),
+  );
+}
+
+class VerificationFailedDialog extends StatelessWidget {
+  const VerificationFailedDialog({
+    required this.onRetry,
+    required this.title,
+    required this.subtitle,
+    required this.asset,
+    this.onDismiss,
+    super.key,
+  });
+  final AsyncCallback onRetry;
+  final String title;
+  final String subtitle;
+  final String asset;
+  final AsyncCallback? onDismiss;
+  @override
+  Widget build(BuildContext context) => Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.center,
+        children: [
+          Positioned(
+            top: -15,
+            child: SvgIcon(
+              asset: asset,
+            ),
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              HeaderTitle(
+                text: title,
+              ),
+              EasyText(
+                subtitle,
+                fontSize: 14,
+                maxLines: 4,
+                textAlign: TextAlign.center,
+              ).padding(bottom: 30),
+              Row(
+                mainAxisAlignment:
+                    onDismiss != null ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
+                children: [
+                  if (onDismiss != null)
+                    EasyButton(
+                      useSystemColor: false,
+                      color: Palette.lightBlack,
+                      text: LocaleKeys.goBackButton.tr(),
+                      onPressed: () {
+                        onDismiss!();
+                      },
+                      width: 160,
+                    ),
+                  EasyButton(
+                    useSystemColor: false,
+                    color: Palette.purple,
+                    text: LocaleKeys.retryBtn.tr(),
+                    onPressed: () {
+                      onRetry();
+                      Beamer.of(context).popRoute();
+                    },
+                    width: onDismiss != null ? 160 : 200,
+                  )
+                ],
+              )
+            ],
+          ).padding(horizontal: 20, vertical: 40),
+        ],
+      );
+}
