@@ -26,6 +26,8 @@ abstract class LocaleKeys {
   static const consumeLink = 'consumeLink';
   static const openEmailApp = 'openEmailApp';
   static const noEmailApp = 'noEmailApp';
+  static const fetchSubsFailed = 'fetchSubsFailed';
+  static const fetchSubsFailedDesc = 'fetchSubsFailedDesc';
   static const cancelBtn = 'cancelBtn';
   static const connectionIp = 'connectionIp';
   static const status = 'status';
