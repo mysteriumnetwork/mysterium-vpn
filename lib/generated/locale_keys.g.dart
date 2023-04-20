@@ -23,6 +23,10 @@ abstract class LocaleKeys {
   static const checkYourEmail = 'checkYourEmail';
   static const linkExpires = 'linkExpires';
   static const emailSentTo = 'emailSentTo';
+  static const consumeLink = 'consumeLink';
+  static const openEmailApp = 'openEmailApp';
+  static const noEmailApp = 'noEmailApp';
+  static const cancelBtn = 'cancelBtn';
   static const connectionIp = 'connectionIp';
   static const status = 'status';
   static const location = 'location';
@@ -136,6 +140,7 @@ abstract class LocaleKeys {
   static const areYouSure = 'areYouSure';
   static const logoutDescription = 'logoutDescription';
   static const goBackButton = 'goBackButton';
+  static const selectEmailApp = 'selectEmailApp';
   static const stayButton = 'stayButton';
   static const BD = 'BD';
   static const BE = 'BE';
