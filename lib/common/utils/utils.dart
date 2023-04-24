@@ -286,6 +286,13 @@ String getPlatformGateway() {
   }
 }
 
+bool isMobilePaymentGateway(String? gateway) {
+  if (gateway == 'google' || gateway == 'apple') {
+    return true;
+  }
+  return false;
+}
+
 void showSnackbar(String message, {MessageType type = MessageType.error}) {
   final snackBar = SnackBar(
     elevation: 4,

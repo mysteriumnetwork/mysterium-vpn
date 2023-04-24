@@ -1,5 +1,5 @@
 extension NumberExtensions on double {
   String pricePerMonth({required int months}) => '\$${(this / months).toStringAsFixed(2)}';
 
-  String price() => '\$$this';
+  String price() => '\$${toStringAsFixed(2)}';
 }

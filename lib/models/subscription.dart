@@ -8,6 +8,8 @@ part 'subscription.g.dart';
 class Subscription with _$Subscription {
   factory Subscription({
     required bool active,
+    @JsonKey(name: 'plan_id') required String? planId,
+    @JsonKey(name: 'gateway') required String? gateway,
   }) = _Subscription;
 
   factory Subscription.fromJson(Map<String, dynamic> json) => _$SubscriptionFromJson(json);
