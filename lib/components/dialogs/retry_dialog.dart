@@ -18,6 +18,7 @@ Future<void> shownRetryDialog({
   required String subtitle,
   required String asset,
   AsyncCallback? onDismiss,
+  String? dismissText,
 }) async {
   await showBarModalBottomSheet(
     clipBehavior: Clip.none,
@@ -35,6 +36,7 @@ Future<void> shownRetryDialog({
       subtitle: subtitle,
       asset: asset,
       onDismiss: onDismiss,
+      dismissText: dismissText,
     ),
   );
 }
@@ -46,6 +48,7 @@ class VerificationFailedDialog extends StatelessWidget {
     required this.subtitle,
     required this.asset,
     this.onDismiss,
+    this.dismissText,
     super.key,
   });
   final AsyncCallback onRetry;
@@ -53,6 +56,7 @@ class VerificationFailedDialog extends StatelessWidget {
   final String subtitle;
   final String asset;
   final AsyncCallback? onDismiss;
+  final String? dismissText;
   @override
   Widget build(BuildContext context) => Stack(
         clipBehavior: Clip.none,
@@ -84,7 +88,7 @@ class VerificationFailedDialog extends StatelessWidget {
                     EasyButton(
                       useSystemColor: false,
                       color: Palette.lightBlack,
-                      text: LocaleKeys.goBackButton.tr(),
+                      text: dismissText ?? LocaleKeys.goBackButton.tr(),
                       onPressed: () {
                         onDismiss!();
                       },

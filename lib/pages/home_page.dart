@@ -36,6 +36,7 @@ class HomePage extends ConsumerWidget {
             title: LocaleKeys.fetchSubsFailed.tr(),
             subtitle: LocaleKeys.fetchSubsFailedDesc.tr(),
             onDismiss: authStore.logout,
+            dismissText: LocaleKeys.logout.tr(),
           );
         }
       }),
