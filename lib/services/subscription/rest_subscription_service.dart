@@ -49,9 +49,14 @@ class RestSubscriptionService extends SubscriptionService {
     Subscription? subscription;
     await Future.doWhile(() async {
       retryCount++;
-      subscription = await Future.delayed(const Duration(seconds: 3), fetchSubscriptionDetails);
-      if (retryCount == 5 || subscription!.active) {
-        if (subscription!.active) {
+      subscription = await Future.delayed(const Duration(seconds: 3), () async {
+        try {
+          await fetchSubscriptionDetails();
+        } catch (_) {}
+        return null;
+      });
+      if (retryCount == 5 || (subscription?.active ?? false)) {
+        if (subscription?.active ?? false) {
           await _localDb.setSubscriptionPurchase(
             subscriptionPlan: subscription!.planId ?? planId,
             subscriptionPurchaseId: purchaseId,
