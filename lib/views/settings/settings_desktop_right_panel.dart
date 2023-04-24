@@ -82,7 +82,6 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                 title: LocaleKeys.myBillingPackage.tr(),
                 subtitle: LocaleKeys.shortDesc.tr(),
                 actionWidget: EasyButton(
-                  width: 160,
                   useSystemColor: false,
                   color: Palette.black,
                   text: LocaleKeys.goToBillingPage.tr(),
@@ -99,7 +98,6 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                   useSystemColor: false,
                   color: Palette.black,
                   text: LocaleKeys.logout,
-                  width: 100,
                   onPressed: authStore.logout,
                 ),
               ),
@@ -109,7 +107,6 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                 subtitle: LocaleKeys.shortDesc.tr(),
                 actionWidget: EasyButton(
                   useSystemColor: false,
-                  width: 160,
                   color: isDarkTheme ? Palette.pink : Palette.lightBlue,
                   text: LocaleKeys.deleteAccount.tr(),
                   onPressed: () {
