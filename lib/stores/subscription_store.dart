@@ -137,7 +137,8 @@ abstract class _SubscriptionStore with Store {
   Future<void> subscribeToPackage(String productId) async {
     try {
       _purchaseStatus = PurchaseStatus.pending;
-      final item = await _subscriptionService.createSubscriptionRequest(
+      final item = _products.firstWhere((element) => element.id == productId).productDetails;
+      _subscriptionService.createSubscriptionRequest(
         SubscriptionRequest(gatewayId: getPlatformGateway(), planId: productId),
       );
       await _subscriptionService.subscribeToPackage(
