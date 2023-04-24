@@ -108,21 +108,29 @@ class RestSubscriptionService extends SubscriptionService {
   }
 
   @override
-  List<PurchasableProduct> getProductsDetails(SubscriptionConfig subscriptionConfig) {
+  Future<List<PurchasableProduct>> getProductsDetails(SubscriptionConfig subscriptionConfig) async {
     try {
       final purchasedProductId = _localDb.getSubscriptionPlan();
-
-      final plans = subscriptionConfig.plans
-        ..sortByCompare((e) => e.price.euro, (a, b) => a.compareTo(b));
-      return plans
+      final storePlans = await _inAppPurchase.queryProductDetails(
+        subscriptionConfig.plans
+            .map((e) => Platform.isAndroid ? e.googleProductId : e.appleProductId)
+            .toSet(),
+      );
+      return subscriptionConfig.plans
           .map(
             (e) => PurchasableProduct(
-              productDetails: e,
+              planDetails: e,
+              productDetails: storePlans.productDetails.firstWhere(
+                (element) => Platform.isAndroid
+                    ? element.id == e.googleProductId
+                    : element.id == e.appleProductId,
+              ),
               status:
                   purchasedProductId == e.id ? ProductStatus.purchased : ProductStatus.purchasable,
             ),
           )
-          .toList();
+          .toList()
+        ..sortByCompare((e) => e.productDetails.rawPrice, (a, b) => a.compareTo(b));
     } on Exception catch (e) {
       throw handleException(e);
     }

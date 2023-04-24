@@ -21,7 +21,7 @@ abstract class SubscriptionService {
     required String userId,
   });
 
-  List<PurchasableProduct> getProductsDetails(SubscriptionConfig subscriptionConfig);
+  Future<List<PurchasableProduct>> getProductsDetails(SubscriptionConfig subscriptionConfig);
 
   Future<SubscriptionConfig> fetchSubscriptionConfig();
 
