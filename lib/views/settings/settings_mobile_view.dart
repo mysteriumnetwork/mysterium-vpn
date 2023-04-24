@@ -85,17 +85,17 @@ class SettingsMobileView extends HookConsumerWidget {
                 title: LocaleKeys.myBillingPackage.tr(),
                 subtitle: LocaleKeys.shortDesc.tr(),
                 actionWidget: EasyButton(
-                  width: 160,
                   height: 40,
                   useSystemColor: false,
                   color: Palette.black,
                   text: LocaleKeys.goToBillingPage.tr(),
                   onPressed: () {
                     if ((subscriptionStore.subscription?.active ?? false) &&
-                        isMobilePaymentGateway(subscriptionStore.subscription?.gateway)) {
+                        !isMobilePaymentGateway(subscriptionStore.subscription?.gateway)) {
                       launchUrl(Uri.parse(environment.values.billingPage));
+                    } else {
+                      context.beamToNamed(Routes.subscription.toRoute);
                     }
-                    context.beamToNamed(Routes.subscription.toRoute);
                   },
                 ),
               ),
@@ -107,7 +107,6 @@ class SettingsMobileView extends HookConsumerWidget {
                   useSystemColor: false,
                   color: Palette.black,
                   text: LocaleKeys.logout.tr(),
-                  width: 100,
                   height: 40,
                   onPressed: authStore.logout,
                 ),
@@ -118,7 +117,6 @@ class SettingsMobileView extends HookConsumerWidget {
                 subtitle: LocaleKeys.shortDesc.tr(),
                 actionWidget: EasyButton(
                   useSystemColor: false,
-                  width: 160,
                   height: 40,
                   color: isDarkTheme ? Palette.pink : Palette.lightBlue,
                   text: LocaleKeys.deleteAccount.tr(),
