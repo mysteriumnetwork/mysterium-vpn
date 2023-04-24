@@ -233,7 +233,7 @@ abstract class _SubscriptionStore with Store {
   }
 
   @action
-  Future<Subscription> verifyPurchase(String productId, PurchaseDetails purchaseDetails) async {
+  Future<Subscription?> verifyPurchase(String productId, PurchaseDetails purchaseDetails) async {
     final result = await _subscriptionService.verifyPurchase(
       source: purchaseDetails.verificationData.source,
       verificationData: purchaseDetails.verificationData.serverVerificationData,

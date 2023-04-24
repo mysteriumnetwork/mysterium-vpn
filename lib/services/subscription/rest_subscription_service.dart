@@ -39,7 +39,7 @@ class RestSubscriptionService extends SubscriptionService {
 
   @override
   @override
-  Future<Subscription> verifyPurchase({
+  Future<Subscription?> verifyPurchase({
     required String source,
     required String verificationData,
     required String planId,
@@ -67,7 +67,7 @@ class RestSubscriptionService extends SubscriptionService {
       return true;
     });
 
-    return subscription!;
+    return subscription;
   }
 
   @override
