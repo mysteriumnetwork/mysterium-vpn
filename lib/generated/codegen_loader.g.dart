@@ -107,7 +107,7 @@ class CodegenLoader extends AssetLoader {
     "subscripton": "Subscription",
     "selectPackage": "Select your Package",
     "plan_monthly": "Monthly Plan",
-    "plan_6_months": "6-months Plan",
+    "plan_6_months": "6-Months Plan",
     "plan_1_year": "Annual Plan",
     "currentPrice": "{amount}",
     "originalMonthlyPrice": "{amount}",
