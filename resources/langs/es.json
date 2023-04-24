@@ -87,7 +87,7 @@
   "selectPackage": "Seleccione su paquete",
   "plan_monthly": "Plan mensual",
   "plan_6_months": "Plan de 6 meses",
-  "plan_1_year": "Plan Anual",
+  "plan_yearly": "Plan Anual",
   "currentPrice": "{amount}",
   "originalMonthlyPrice": "{amount}",
   "perMonth": " /mes",

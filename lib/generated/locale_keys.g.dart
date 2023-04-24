@@ -89,7 +89,7 @@ abstract class LocaleKeys {
   static const selectPackage = 'selectPackage';
   static const plan_monthly = 'plan_monthly';
   static const plan_6_months = 'plan_6_months';
-  static const plan_1_year = 'plan_1_year';
+  static const plan_yearly = 'plan_yearly';
   static const currentPrice = 'currentPrice';
   static const originalMonthlyPrice = 'originalMonthlyPrice';
   static const perMonth = 'perMonth';
