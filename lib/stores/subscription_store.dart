@@ -104,8 +104,8 @@ abstract class _SubscriptionStore with Store {
     try {
       isAvailableFuture = ObservableFuture(_subscriptionService.fetchSubscriptionConfig());
       _subscriptionConfig = await isAvailableFuture;
+      await getProductsDetails();
       _isAvailable = StoreState.available;
-      getProductsDetails();
     } on StoreNotAvailableException catch (_) {
       _isAvailable = StoreState.notAvailable;
     } on Exception catch (_) {
@@ -114,11 +114,11 @@ abstract class _SubscriptionStore with Store {
   }
 
   @action
-  void getProductsDetails() {
+  Future<void> getProductsDetails() async {
     try {
       if (_subscriptionConfig != null) {
         _products =
-            ObservableList.of(_subscriptionService.getProductsDetails(_subscriptionConfig!));
+            ObservableList.of(await _subscriptionService.getProductsDetails(_subscriptionConfig!));
       }
     } on Exception catch (e) {
       if (kDebugMode) {
@@ -205,7 +205,7 @@ abstract class _SubscriptionStore with Store {
     if (purchaseDetails.status == PurchaseStatus.purchased && (_subscription?.active ?? false)) {
       if (index != -1) {
         for (final product in _products) {
-          product.status = product.productDetails.id == _purchasedProductId
+          product.status = product.planDetails.id == _purchasedProductId
               ? ProductStatus.purchased
               : ProductStatus.purchasable;
         }
@@ -215,7 +215,7 @@ abstract class _SubscriptionStore with Store {
     if (purchaseDetails.pendingCompletePurchase) {
       _analyticsStore.setPaymentSuccessful(
         paymentGateway: getPlatformGateway(),
-        planPrice: _products[index].productDetails.price.usd,
+        planPrice: _products[index].productDetails.rawPrice,
         planType: _purchasedProductId ?? '',
         transactionId: purchaseDetails.verificationData.serverVerificationData,
         transactionDate: purchaseDetails.transactionDate ?? '',
