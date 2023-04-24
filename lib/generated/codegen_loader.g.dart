@@ -43,7 +43,7 @@ class CodegenLoader extends AssetLoader {
     "noEmailApp": "There is no mail apps installed on the phone.",
     "fetchSubsFailed": "Unable to fetch subscription",
     "fetchSubsFailedDesc":
-        "We couldn't fetch your subscription package. Click the button below to retry subscriptions.",
+        "We couldn't fetch your subscription package. Click the button below to retry.",
     "cancelBtn": "Cancel",
     "connectionIp": "Connection IP",
     "status": "Status",

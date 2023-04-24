@@ -38,13 +38,11 @@ class RestSubscriptionService extends SubscriptionService {
   final LocalDBService _localDb;
 
   @override
-  String? getSubscriptionPlan() => _localDb.getSubscriptionPlan();
-
   @override
   Future<Subscription> verifyPurchase({
     required String source,
     required String verificationData,
-    required String productId,
+    required String planId,
     required String purchaseId,
   }) async {
     var retryCount = 0;
@@ -54,8 +52,8 @@ class RestSubscriptionService extends SubscriptionService {
       subscription = await Future.delayed(const Duration(seconds: 3), fetchSubscriptionDetails);
       if (retryCount == 5 || subscription!.active) {
         if (subscription!.active) {
-          await _localDb.setSubscriptionPlan(
-            subscriptionPlan: productId,
+          await _localDb.setSubscriptionPurchase(
+            subscriptionPlan: subscription!.planId ?? planId,
             subscriptionPurchaseId: purchaseId,
           );
         }
@@ -108,9 +106,11 @@ class RestSubscriptionService extends SubscriptionService {
   }
 
   @override
-  Future<List<PurchasableProduct>> getProductsDetails(SubscriptionConfig subscriptionConfig) async {
+  Future<List<PurchasableProduct>> getProductsDetails(
+    SubscriptionConfig subscriptionConfig,
+    String? purchasedProductId,
+  ) async {
     try {
-      final purchasedProductId = _localDb.getSubscriptionPlan();
       final storePlans = await _inAppPurchase.queryProductDetails(
         subscriptionConfig.plans
             .map((e) => Platform.isAndroid ? e.googleProductId : e.appleProductId)
