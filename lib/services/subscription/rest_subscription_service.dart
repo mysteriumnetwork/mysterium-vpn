@@ -51,7 +51,7 @@ class RestSubscriptionService extends SubscriptionService {
       retryCount++;
       subscription = await Future.delayed(const Duration(seconds: 3), () async {
         try {
-          await fetchSubscriptionDetails();
+          return await fetchSubscriptionDetails();
         } catch (_) {}
         return null;
       });
