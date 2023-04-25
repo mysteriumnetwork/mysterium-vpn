@@ -9,7 +9,7 @@ const kFallbackLocale = Locale('en');
 
 const String ksemiAnnualPlan = 'plan_6_months';
 const String kMonthlyPlan = 'plan_monthly';
-const String kAnnualPlan = 'plan_1_year';
+const String kAnnualPlan = 'plan_yearly';
 
 const String kPopularPlan = ksemiAnnualPlan;
 List<String> kProductIds = <String>[

@@ -80,15 +80,13 @@ abstract class _SubscriptionStore with Store {
       if (_authStore.authData != null) {
         final purchaseUpdated = _inAppPurchase.purchaseStream;
         _purchasedProductId = _localDb.getSubscriptionPlan();
-        fetchSubscription();
+        fetchSubscription().whenComplete(getSubscriptionsConfig);
         _purchaseStream = purchaseUpdated.listen(
           _onPurchaseUpdate,
           onDone: _updateStreamOnDone,
           onError: _updateStreamOnError,
         );
-        getSubscriptionsConfig();
         _subscriptionService.clearPendingTransactions();
-        _purchasedProductId = _subscriptionService.getSubscriptionPlan();
       }
     });
   }
@@ -97,6 +95,10 @@ abstract class _SubscriptionStore with Store {
   Future<void> fetchSubscription() async {
     subscriptionFuture = ObservableFuture(_subscriptionService.fetchSubscriptionDetails());
     _subscription = await subscriptionFuture;
+    if (_subscription?.planId != null) {
+      _localDb.setSubscriptionPlan(_subscription!.planId!);
+      _purchasedProductId = _subscription!.planId;
+    }
   }
 
   @action
@@ -104,8 +106,8 @@ abstract class _SubscriptionStore with Store {
     try {
       isAvailableFuture = ObservableFuture(_subscriptionService.fetchSubscriptionConfig());
       _subscriptionConfig = await isAvailableFuture;
+      await getProductsDetails();
       _isAvailable = StoreState.available;
-      getProductsDetails();
     } on StoreNotAvailableException catch (_) {
       _isAvailable = StoreState.notAvailable;
     } on Exception catch (_) {
@@ -114,11 +116,15 @@ abstract class _SubscriptionStore with Store {
   }
 
   @action
-  void getProductsDetails() {
+  Future<void> getProductsDetails() async {
     try {
       if (_subscriptionConfig != null) {
-        _products =
-            ObservableList.of(_subscriptionService.getProductsDetails(_subscriptionConfig!));
+        _products = ObservableList.of(
+          await _subscriptionService.getProductsDetails(
+            _subscriptionConfig!,
+            _purchasedProductId,
+          ),
+        );
       }
     } on Exception catch (e) {
       if (kDebugMode) {
@@ -131,7 +137,8 @@ abstract class _SubscriptionStore with Store {
   Future<void> subscribeToPackage(String productId) async {
     try {
       _purchaseStatus = PurchaseStatus.pending;
-      final item = await _subscriptionService.createSubscriptionRequest(
+      final item = _products.firstWhere((element) => element.id == productId).productDetails;
+      _subscriptionService.createSubscriptionRequest(
         SubscriptionRequest(gatewayId: getPlatformGateway(), planId: productId),
       );
       await _subscriptionService.subscribeToPackage(
@@ -205,7 +212,7 @@ abstract class _SubscriptionStore with Store {
     if (purchaseDetails.status == PurchaseStatus.purchased && (_subscription?.active ?? false)) {
       if (index != -1) {
         for (final product in _products) {
-          product.status = product.productDetails.id == _purchasedProductId
+          product.status = product.planDetails.id == _purchasedProductId
               ? ProductStatus.purchased
               : ProductStatus.purchasable;
         }
@@ -215,7 +222,7 @@ abstract class _SubscriptionStore with Store {
     if (purchaseDetails.pendingCompletePurchase) {
       _analyticsStore.setPaymentSuccessful(
         paymentGateway: getPlatformGateway(),
-        planPrice: _products[index].productDetails.price.usd,
+        planPrice: _products[index].productDetails.rawPrice,
         planType: _purchasedProductId ?? '',
         transactionId: purchaseDetails.verificationData.serverVerificationData,
         transactionDate: purchaseDetails.transactionDate ?? '',
@@ -227,11 +234,11 @@ abstract class _SubscriptionStore with Store {
   }
 
   @action
-  Future<Subscription> verifyPurchase(String productId, PurchaseDetails purchaseDetails) async {
+  Future<Subscription?> verifyPurchase(String productId, PurchaseDetails purchaseDetails) async {
     final result = await _subscriptionService.verifyPurchase(
       source: purchaseDetails.verificationData.source,
       verificationData: purchaseDetails.verificationData.serverVerificationData,
-      productId: productId,
+      planId: productId,
       purchaseId: purchaseDetails.purchaseID ?? '',
     );
     return result;
@@ -244,7 +251,7 @@ abstract class _SubscriptionStore with Store {
       _subscription = await _subscriptionService.verifyPurchase(
         source: _lastPurchase!.verificationData.source,
         verificationData: _lastPurchase!.verificationData.serverVerificationData,
-        productId: _purchasedProductId!,
+        planId: _purchasedProductId!,
         purchaseId: _lastPurchase!.purchaseID ?? '',
       );
       _purchaseStatus = PurchaseStatus.purchased;

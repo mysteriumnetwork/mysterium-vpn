@@ -80,7 +80,10 @@ Future<T?> _showCupertinoBottomSheet<T>(
         actions: actions
             .map(
               (action) => CupertinoActionSheetAction(
-                onPressed: () => action.onPressed(coxt),
+                onPressed: () {
+                  action.onPressed(coxt);
+                  Beamer.of(coxt).popRoute();
+                },
                 child: Text(
                   action.title,
                   textAlign: TextAlign.center,
@@ -154,7 +157,10 @@ Future<T?> _showMaterialBottomSheet<T>(
                 ],
                 ...actions.map<Widget>(
                   (action) => InkWell(
-                    onTap: () => action.onPressed(coxt),
+                    onTap: () {
+                      action.onPressed(coxt);
+                      Beamer.of(coxt).popRoute();
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Text(

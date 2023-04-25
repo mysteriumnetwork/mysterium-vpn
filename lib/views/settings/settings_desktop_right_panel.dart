@@ -1,10 +1,7 @@
-import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/routes.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -21,6 +18,7 @@ import 'package:mysterium_vpn/views/settings/protocol_picker.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
 import 'package:mysterium_vpn/views/settings/theme_picker.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsDesktopRightPanel extends HookConsumerWidget {
   const SettingsDesktopRightPanel({
@@ -35,6 +33,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
     final vpnStore = ref.read(vpnStorePOD);
     final localeStore = ref.read(localeStorePOD);
     final authStore = ref.watch(authStorePOD);
+    final environment = ref.watch(environmentPOD);
     return Observer(
       builder: (context) {
         final isDarkTheme = themeStore.isDarkMode;
@@ -83,12 +82,11 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                 title: LocaleKeys.myBillingPackage.tr(),
                 subtitle: LocaleKeys.shortDesc.tr(),
                 actionWidget: EasyButton(
-                  width: 160,
                   useSystemColor: false,
                   color: Palette.black,
                   text: LocaleKeys.goToBillingPage.tr(),
                   onPressed: () {
-                    context.beamToNamed(Routes.subscription.toRoute);
+                    launchUrl(Uri.parse(environment.values.billingPage));
                   },
                 ),
               ),
@@ -100,7 +98,6 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                   useSystemColor: false,
                   color: Palette.black,
                   text: LocaleKeys.logout,
-                  width: 100,
                   onPressed: authStore.logout,
                 ),
               ),
@@ -110,7 +107,6 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                 subtitle: LocaleKeys.shortDesc.tr(),
                 actionWidget: EasyButton(
                   useSystemColor: false,
-                  width: 160,
                   color: isDarkTheme ? Palette.pink : Palette.lightBlue,
                   text: LocaleKeys.deleteAccount.tr(),
                   onPressed: () {
