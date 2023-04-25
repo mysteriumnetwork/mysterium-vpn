@@ -85,12 +85,9 @@ class Enviroment {
         options
           ..dsn =
               'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200'
-          ..tracesSampleRate = 1.0
           ..sendClientReports = true
           ..maxRequestBodySize = MaxRequestBodySize.small
-          ..maxResponseBodySize = MaxResponseBodySize.small
-          ..attachScreenshot = true
-          ..screenshotQuality = SentryScreenshotQuality.low;
+          ..maxResponseBodySize = MaxResponseBodySize.small;
       },
       appRunner: () {
         FlutterNativeSplash.remove();
@@ -101,7 +98,7 @@ class Enviroment {
               supportedLocales: kSupportedLocales,
               path: Assets.langs,
               fallbackLocale: kFallbackLocale,
-              child: const SentryScreenshotWidget(child: MyApp()),
+              child: const MyApp(),
             ),
           ),
         );

@@ -38,24 +38,27 @@ class RestSubscriptionService extends SubscriptionService {
   final LocalDBService _localDb;
 
   @override
-  String? getSubscriptionPlan() => _localDb.getSubscriptionPlan();
-
   @override
-  Future<Subscription> verifyPurchase({
+  Future<Subscription?> verifyPurchase({
     required String source,
     required String verificationData,
-    required String productId,
+    required String planId,
     required String purchaseId,
   }) async {
     var retryCount = 0;
     Subscription? subscription;
     await Future.doWhile(() async {
       retryCount++;
-      subscription = await Future.delayed(const Duration(seconds: 3), fetchSubscriptionDetails);
-      if (retryCount == 5 || subscription!.active) {
-        if (subscription!.active) {
-          await _localDb.setSubscriptionPlan(
-            subscriptionPlan: productId,
+      subscription = await Future.delayed(const Duration(seconds: 3), () async {
+        try {
+          return await fetchSubscriptionDetails();
+        } catch (_) {}
+        return null;
+      });
+      if (retryCount == 5 || (subscription?.active ?? false)) {
+        if (subscription?.active ?? false) {
+          await _localDb.setSubscriptionPurchase(
+            subscriptionPlan: subscription!.planId ?? planId,
             subscriptionPurchaseId: purchaseId,
           );
         }
@@ -64,7 +67,7 @@ class RestSubscriptionService extends SubscriptionService {
       return true;
     });
 
-    return subscription!;
+    return subscription;
   }
 
   @override
@@ -108,21 +111,31 @@ class RestSubscriptionService extends SubscriptionService {
   }
 
   @override
-  List<PurchasableProduct> getProductsDetails(SubscriptionConfig subscriptionConfig) {
+  Future<List<PurchasableProduct>> getProductsDetails(
+    SubscriptionConfig subscriptionConfig,
+    String? purchasedProductId,
+  ) async {
     try {
-      final purchasedProductId = _localDb.getSubscriptionPlan();
-
-      final plans = subscriptionConfig.plans
-        ..sortByCompare((e) => e.price.euro, (a, b) => a.compareTo(b));
-      return plans
+      final storePlans = await _inAppPurchase.queryProductDetails(
+        subscriptionConfig.plans
+            .map((e) => Platform.isAndroid ? e.googleProductId : e.appleProductId)
+            .toSet(),
+      );
+      return subscriptionConfig.plans
           .map(
             (e) => PurchasableProduct(
-              productDetails: e,
+              planDetails: e,
+              productDetails: storePlans.productDetails.firstWhere(
+                (element) => Platform.isAndroid
+                    ? element.id == e.googleProductId
+                    : element.id == e.appleProductId,
+              ),
               status:
                   purchasedProductId == e.id ? ProductStatus.purchased : ProductStatus.purchasable,
             ),
           )
-          .toList();
+          .toList()
+        ..sortByCompare((e) => e.productDetails.rawPrice, (a, b) => a.compareTo(b));
     } on Exception catch (e) {
       throw handleException(e);
     }

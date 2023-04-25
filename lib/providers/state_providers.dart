@@ -47,11 +47,13 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final locationsStore = ref.watch(locationsStorePOD);
   final wireguardService = ref.watch(wireguardServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
+  final subscriptionStore = ref.watch(subscriptionStorePOD);
   return VpnStore(
     apiService: apiService,
     locationsStore: locationsStore,
     wireguardService: wireguardService,
     analyticsStore: analyticsStore,
+    subscriptionStore: subscriptionStore,
   );
 });
 

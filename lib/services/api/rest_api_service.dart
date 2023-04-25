@@ -65,10 +65,10 @@ class RestApiService extends ApiService {
   Future<List<Location>> fetchTopLocations({required String keyword}) async {
     try {
       final response = await _apiClient.get<Map<String, dynamic>>(kFetchAllLocations);
-      if (response.data == null || !response.data!.containsKey('countries')) {
+      if (response.data == null || !response.data!.containsKey('top_countries')) {
         throw Exception('No data found');
       }
-      final countryCodes = List<String>.from(response.data!['countries'] as List<dynamic>);
+      final countryCodes = List<String>.from(response.data!['top_countries'] as List<dynamic>);
       final locations = countryCodes
           .map(
             (e) => Location(countryCode: e, countryName: e.tr()),
