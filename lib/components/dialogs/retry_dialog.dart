@@ -19,12 +19,13 @@ Future<void> shownRetryDialog({
   required String asset,
   AsyncCallback? onDismiss,
   String? dismissText,
+  bool? isDismissible,
 }) async {
   await showBarModalBottomSheet(
     clipBehavior: Clip.none,
     expand: false,
     topControl: const SizedBox.shrink(),
-    isDismissible: true,
+    isDismissible: isDismissible ?? true,
     context: context,
     backgroundColor: Theme.of(context).primaryColor,
     shape: const RoundedRectangleBorder(
