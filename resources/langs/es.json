@@ -122,7 +122,7 @@
   "unableToGetPlans": "¡No se pueden obtener planes de suscripción! Inténtalo de nuevo.",
   "tryAgainBtn": "Vuelve a intentarlo",
   "billedInTotal": "{amount} - Facturado {period}",
-  "monthly": ",onthly",
+  "monthly": "mensual",
   "semiAnnual": "semestralmente",
   "yearly": "anual",
   "productsNotAvailable": "No hay productos disponibles en este momento. Inténtalo de nuevo más tarde.",
