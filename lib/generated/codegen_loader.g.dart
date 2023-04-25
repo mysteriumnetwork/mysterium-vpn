@@ -145,7 +145,7 @@ class CodegenLoader extends AssetLoader {
     "unableToGetPlans": "Unable to get subscription plans! Please try again.",
     "tryAgainBtn": "Try again",
     "billedInTotal": "{amount} - Billed {period}",
-    "monthly": ",onthly",
+    "monthly": "monthly",
     "semiAnnual": "semi-annually",
     "yearly": "yearly",
     "productsNotAvailable":
@@ -558,7 +558,7 @@ class CodegenLoader extends AssetLoader {
     "unableToGetPlans": "¡No se pueden obtener planes de suscripción! Inténtalo de nuevo.",
     "tryAgainBtn": "Vuelve a intentarlo",
     "billedInTotal": "{amount} - Facturado {period}",
-    "monthly": ",onthly",
+    "monthly": "mensual",
     "semiAnnual": "semestralmente",
     "yearly": "anual",
     "productsNotAvailable":
