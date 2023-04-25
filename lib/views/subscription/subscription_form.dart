@@ -38,14 +38,13 @@ class SubscriptionForm extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedProduct = useState(store.purchasedProductId ?? kPopularPlan);
     final isMounted = useIsMounted();
-    final subsStatus = store.subscription?.active ?? false;
 
     final subsFormStatus = useMemoized(
       () => getSubscriptionFormStatus(
-        active: subsStatus,
+        active: store.subscription?.active ?? false,
         purchaseProductId: store.purchasedProductId,
       ),
-      [subsStatus],
+      [store.subscription?.active],
     );
     return Column(
       children: [
@@ -87,7 +86,7 @@ class SubscriptionForm extends HookConsumerWidget {
                 ReactionBuilder(
                   builder: (context) => reaction((_) => store.purchaseStatus, (result) {
                     if (result == PurchaseStatus.purchased && isMounted()) {
-                      if (subsStatus == false) {
+                      if (store.subscription?.active == false) {
                         shownRetryDialog(
                           onRetry: () async => store.retryVerificationProcess(),
                           context: context,
