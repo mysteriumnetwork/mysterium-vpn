@@ -197,9 +197,9 @@ abstract class _VpnStore with Store {
       }
     } catch (e) {
       showSnackbar(
-        LocaleKeys.currentPrice.tr(
+        LocaleKeys.failedToConnect.tr(
           namedArgs: {
-            'country': location?.countryName ?? '',
+            'countryName': location?.countryName ?? '',
           },
         ),
       );

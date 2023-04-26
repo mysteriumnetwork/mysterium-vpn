@@ -399,7 +399,7 @@
   "MZ": "Mozambique",
   "or": "OR",
   "failedToLoadLocations": "We failed to load the locations. Please give it another try. 😕",
-  "failedToConnect": "Something went wrong while connecting to ${countryName}. Please give it another try. 😕",
+  "failedToConnect": "Something went wrong while connecting to {countryName}. Please give it another try. 😕",
   "activateSubscription":"Please activate your subscription to connect to VPN!",
   "tokenAlreadyUsed":"Token already used. Please try again. 😕",
   "incorrectMagicLink":"Incorrect magic link. Please try again. 😕",
