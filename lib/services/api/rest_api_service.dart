@@ -46,7 +46,9 @@ class RestApiService extends ApiService {
       final countryCodes = List<String>.from(response.data!['countries'] as List<dynamic>);
       final locations = countryCodes
           .map(
-            (e) => Location(countryCode: e, countryName: e.tr()),
+            (e) => Location(
+              countryCode: e,
+            ),
           )
           .toList();
       if (keyword.isNotEmpty) {
@@ -71,7 +73,9 @@ class RestApiService extends ApiService {
       final countryCodes = List<String>.from(response.data!['top_countries'] as List<dynamic>);
       final locations = countryCodes
           .map(
-            (e) => Location(countryCode: e, countryName: e.tr()),
+            (e) => Location(
+              countryCode: e,
+            ),
           )
           .toList();
       if (keyword.isNotEmpty) {
@@ -91,7 +95,9 @@ class RestApiService extends ApiService {
     final countryCodes = _localDb.getRecentLocations();
     final locations = countryCodes
         .map(
-          (e) => Location(countryCode: e, countryName: e.tr()),
+          (e) => Location(
+            countryCode: e,
+          ),
         )
         .toList();
     if (keyword.isNotEmpty) {
