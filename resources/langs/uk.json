@@ -399,7 +399,7 @@
   "MZ": "Мозамбік",
   "or": "АБО",
   "failedToLoadLocations": "Не вдалося завантажити локації. 😕",
-  "failedToConnect": "Під час підключення до ${countryName} сталася помилка. 😕",
+  "failedToConnect": "Під час підключення до {countryName} сталася помилка. 😕",
   "activateSubscription": "Будь ласка, активуйте свою підписку, щоб підключитися до VPN!",
   "tokenAlreadyUsed": "Токен уже використано. 😕",
   "incorrectMagicLink": "Невірне магічне посилання. 😕",
