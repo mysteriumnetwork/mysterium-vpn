@@ -399,7 +399,7 @@
   "MZ": "Mozambik",
   "or": "VEYA",
   "failedToLoadLocations": "Konumları yükleyemedik. 😕",
-  "failedToConnect": "${countryName} ile bağlantı kurulurken bir sorun oluştu. 😕",
+  "failedToConnect": "{countryName} ile bağlantı kurulurken bir sorun oluştu. 😕",
   "activateSubscription": "Lütfen VPN'e bağlanmak için aboneliğinizi etkinleştirin!",
   "tokenAlreadyUsed": "Belirteç zaten kullanılıyor. 😕",
   "incorrectMagicLink": "Yanlış sihirli bağlantı. 😕",
