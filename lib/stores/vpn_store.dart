@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/mock.dart';
@@ -11,6 +12,7 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
@@ -150,7 +152,7 @@ abstract class _VpnStore with Store {
     if (_subscriptionStore.subscription?.active == false ||
         _subscriptionStore.subscriptionFuture?.status == FutureStatus.rejected ||
         _subscriptionStore.subscriptionFuture?.status == FutureStatus.pending) {
-      showSnackbar('Please activate your subscription to connect to VPN!');
+      showSnackbar(LocaleKeys.activateSubscription.tr());
       return;
     }
     if (_vpnConnection.location == location?.countryCode) {
@@ -188,14 +190,18 @@ abstract class _VpnStore with Store {
         vpnServer: _vpnConnection.location,
         vpnProcessingTime: stopwatch.elapsed,
       );
-      startTracking();
+      //startTracking();
       if (location != null) {
         _apiService.setRecentLocation(location: location.countryCode);
         _locationsStore.fetchRecentLocations();
       }
     } catch (e) {
       showSnackbar(
-        'Something went wrong while connecting to ${location?.countryName}. Please give it another try. 😕',
+        LocaleKeys.currentPrice.tr(
+          namedArgs: {
+            'country': location?.countryName ?? '',
+          },
+        ),
       );
       _connectionStatus = ConnectionStatus.disconnected;
       if (e is WireguardConnectException) {

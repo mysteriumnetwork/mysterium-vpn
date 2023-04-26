@@ -1,6 +1,6 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-abstract class LocaleKeys {
+abstract class  LocaleKeys {
   static const title = 'title';
   static const anonymous = 'anonymous';
   static const affordable = 'affordable';
@@ -400,4 +400,16 @@ abstract class LocaleKeys {
   static const QA = 'QA';
   static const MZ = 'MZ';
   static const or = 'or';
+  static const failedToLoadLocations = 'failedToLoadLocations';
+  static const failedToConnect = 'failedToConnect';
+  static const activateSubscription = 'activateSubscription';
+  static const tokenAlreadyUsed = 'tokenAlreadyUsed';
+  static const incorrectMagicLink = 'incorrectMagicLink';
+  static const incorrectCode = 'incorrectCode';
+  static const authenticationFailed = 'authenticationFailed';
+  static const subscriptionActive = 'subscriptionActive';
+  static const subscriptionProcessCanceled = 'subscriptionProcessCanceled';
+  static const failedToSubscribe = 'failedToSubscribe';
+  static const somethingWentWrong = 'somethingWentWrong';
+
 }
