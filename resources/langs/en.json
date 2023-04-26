@@ -122,7 +122,7 @@
   "unableToGetPlans": "Unable to get subscription plans! Please try again.",
   "tryAgainBtn": "Try again",
   "billedInTotal": "{amount} - Billed {period}",
-  "monthly": ",onthly",
+  "monthly": "monthly",
   "semiAnnual": "semi-annually",
   "yearly": "yearly",
   "productsNotAvailable": "There are no available products at the moment. Please try again later.",
