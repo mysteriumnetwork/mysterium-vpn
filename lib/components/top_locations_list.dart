@@ -1,8 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_placeholders.dart';
 import 'package:mysterium_vpn/components/location_item.dart';
+import 'package:mysterium_vpn/components/retry_widget.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/stores/connectivity_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
@@ -23,7 +28,7 @@ class TopLocationsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Observer(
         builder: (_) {
-          if (!locationsStore.hasTopLocationsResults) {
+          if (locationsStore.topLocationsFutureStatus == FutureStatus.pending) {
             return ListView.builder(
               controller: ScrollController(),
               shrinkWrap: true,
@@ -31,6 +36,14 @@ class TopLocationsList extends StatelessWidget {
               itemBuilder: (_, int index) => LocationPlaceholder(
                 color: Theme.of(context).colorScheme.secondary,
               ),
+            );
+          }
+
+          if (locationsStore.topLocationsFutureStatus == FutureStatus.rejected) {
+            return RetryWdiget(
+              asset: Assets.globe,
+              onRetry: locationsStore.fetchTopLocations,
+              text: LocaleKeys.failedToLoadLocations.tr(),
             );
           }
 

@@ -47,14 +47,10 @@ abstract class _LocationsStore with Store {
   String searchAllKeyword = '';
 
   @computed
-  bool get hasTopLocationsResults =>
-      fetchTopLocationsFuture != emptyLocations &&
-      fetchTopLocationsFuture.status == FutureStatus.fulfilled;
+  FutureStatus get topLocationsFutureStatus => fetchTopLocationsFuture.status;
 
   @computed
-  bool get hasAllLocationsResults =>
-      fetchAllLocationsFuture != emptyLocations &&
-      fetchAllLocationsFuture.status == FutureStatus.fulfilled;
+  FutureStatus get allLocationsFutureStatus => fetchAllLocationsFuture.status;
 
   static ObservableFuture<List<Location>> emptyLocations = ObservableFuture.value([]);
 
