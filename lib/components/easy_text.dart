@@ -39,6 +39,7 @@ class EasyText extends StatelessWidget {
           textAlign: textAlign,
           overflow: overflow,
           maxLines: maxLines,
+          minFontSize: 10,
           style: TextStyle(
             decoration: textDecoration,
             decorationColor: colorDecoration,
