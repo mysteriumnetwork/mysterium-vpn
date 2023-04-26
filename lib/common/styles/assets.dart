@@ -53,6 +53,7 @@ abstract class Assets {
   static const String checkmark = 'assets/icons/checkmark.svg';
   static const String noInternetConnection = 'assets/icons/no_internet_connection.svg';
   static const String subscription = 'assets/icons/subscription.svg';
+  static const String globe = 'assets/icons/globe.svg';
 
   //Animations
   static const String backgroundElements = 'assets/animations/background_elements.json';
