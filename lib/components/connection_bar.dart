@@ -22,10 +22,10 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
       builder: (context) {
         final vpnConnection = vpnStore.vpnConnection;
         return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _BarItem(label: LocaleKeys.connectionIp.tr(), text: vpnConnection.connectionIP),
+            _BarItem(label: LocaleKeys.connectionIp.tr(), text: vpnConnection.connectionIP)
+                .expanded(),
             _BarItem(
               label: LocaleKeys.status.tr(),
               text: vpnStore.connectionStatus.name.tr(),
@@ -33,13 +33,13 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
               leading: ConnectionIndicator(
                 isConnected: vpnStore.isConnected,
               ),
-            ),
+            ).expanded(),
             _BarItem(
               label: LocaleKeys.location.tr(),
               text: vpnConnection.location.tr(),
               leading:
                   vpnStore.isConnected ? Flag(countryCode: vpnStore.vpnConnection.location) : null,
-            )
+            ).expanded(),
           ],
         ).padding(vertical: 20);
       },
@@ -76,6 +76,8 @@ class _BarItem extends StatelessWidget {
             )
           else
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (leading != null) leading!.padding(right: 4),
                 EasyText(
@@ -83,7 +85,9 @@ class _BarItem extends StatelessWidget {
                   color: Palette.white,
                   fontWeight: FontWeight.w500,
                   fontSize: 12,
-                ),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                ).expanded(),
               ],
             ),
         ],

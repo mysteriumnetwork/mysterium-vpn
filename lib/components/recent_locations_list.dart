@@ -58,7 +58,7 @@ class RecentLocationsList extends StatelessWidget {
                         connectivityStore: connectivityStore,
                       );
                     },
-                  ).height(120),
+                  ).height(130),
               ],
             );
           }
