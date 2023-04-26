@@ -18,6 +18,16 @@
 	<array>
 		<string>en</string>
 		<string>es</string>
+		<string>de</string>
+		<string>et</string>
+		<string>fr</string>
+		<string>it</string>
+		<string>lt</string>
+		<string>mk</string>
+		<string>pt</string>
+		<string>sr</string>
+		<string>tr</string>
+		<string>uk</string>
 	</array>
 	<key>CFBundleName</key>
 	<string>Mysterium VPN</string>

@@ -2,10 +2,19 @@ import 'package:flutter/material.dart';
 
 final List<Locale> kSupportedLocales = [
   kFallbackLocale,
-  const Locale('es'),
+  const Locale('es', 'ES'),
+  const Locale('de', 'DE'),
+  const Locale('et', 'EE'),
+  const Locale('fr', 'FR'),
+  const Locale('it', 'IT'),
+  const Locale('lt', 'LT'),
+  const Locale('mk', 'MK'),
+  const Locale('pt', 'PT'),
+  const Locale('sr', 'RS'),
+  const Locale('uk', 'UA'),
 ];
 
-const kFallbackLocale = Locale('en');
+const kFallbackLocale = Locale('en', 'US');
 
 const String ksemiAnnualPlan = 'plan_6_months';
 const String kMonthlyPlan = 'plan_monthly';
