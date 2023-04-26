@@ -3,11 +3,13 @@
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
@@ -81,7 +83,7 @@ abstract class _AuthStore with Store {
             authenticate(appLink: appLink);
           } else {
             Sentry.captureException(TokenAlreadyUsedException());
-            showSnackbar('Token already used. Please try again. 😕');
+            showSnackbar(LocaleKeys.tokenAlreadyUsed.tr());
           }
         },
       );
@@ -138,11 +140,11 @@ abstract class _AuthStore with Store {
       _authStatus = AuthStatus.unauthenticated;
     } catch (e) {
       if (e is IncorrectMagicLinkException) {
-        showSnackbar('Incorrect magic link. Please try again. 😕');
+        showSnackbar(LocaleKeys.incorrectMagicLink.tr());
       } else if (e is IncorrectCodeException) {
-        showSnackbar('Incorrect code. Please try again. 😕');
+        showSnackbar(LocaleKeys.incorrectMagicLink.tr());
       } else {
-        showSnackbar('Error while authenticating. Please give it another try. 😕');
+        showSnackbar(LocaleKeys.authenticationFailed.tr());
       }
       debugPrint(e.toString());
       _authStatus = AuthStatus.unauthenticated;
