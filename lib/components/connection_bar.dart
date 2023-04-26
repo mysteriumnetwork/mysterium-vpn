@@ -11,6 +11,12 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
+enum LeadingPosition {
+  left,
+  right,
+  bottom,
+}
+
 class MobileConnectionStatusBar extends HookConsumerWidget {
   const MobileConnectionStatusBar({super.key});
 
@@ -39,10 +45,10 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
               leading:
                   vpnStore.isConnected ? Flag(countryCode: vpnStore.vpnConnection.location) : null,
               text: vpnConnection.location.tr(),
-              crossAxisAlignment: CrossAxisAlignment.start,
+              leadingPosition: LeadingPosition.bottom,
             ).expanded(),
           ],
-        ).padding(vertical: 20);
+        ).padding(vertical: 20, horizontal: 4);
       },
     );
   }
@@ -52,16 +58,16 @@ class _BarItem extends StatelessWidget {
   const _BarItem({
     required this.label,
     required this.text,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
     this.isConnected = false,
     this.leading,
+    this.leadingPosition = LeadingPosition.left,
   });
 
   final String label;
   final Widget? leading;
   final String text;
   final bool isConnected;
-  final CrossAxisAlignment crossAxisAlignment;
+  final LeadingPosition leadingPosition;
   @override
   Widget build(BuildContext context) => Column(
         children: [
@@ -79,9 +85,9 @@ class _BarItem extends StatelessWidget {
           else
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: crossAxisAlignment,
               children: [
-                if (leading != null) leading!.padding(right: 4),
+                if (leadingPosition == LeadingPosition.left && leading != null)
+                  leading!.padding(right: 4),
                 EasyText(
                   text,
                   color: Palette.white,
@@ -89,9 +95,10 @@ class _BarItem extends StatelessWidget {
                   fontSize: 12,
                   textAlign: TextAlign.center,
                   maxLines: 2,
-                ).flexible()
+                ).flexible(),
               ],
-            )
+            ),
+          if (leadingPosition == LeadingPosition.bottom && leading != null) leading!.padding(top: 4)
         ],
       );
 }
