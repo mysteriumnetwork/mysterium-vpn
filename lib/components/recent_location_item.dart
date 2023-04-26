@@ -61,12 +61,12 @@ class RecentLocationItem extends StatelessWidget {
                   LocaleKeys.connected.tr(),
                   color: Palette.purple,
                 )
-              // else
-              //   EasyText(
-              //     const Duration(hours: 1, minutes: 30).toHoursMinutes(),
-              //   ),
+              else
+                const EasyText(
+                  '',
+                ),
             ],
-          ).padding(left: 12, right: 6, bottom: 4).width(110),
+          ).padding(left: 8, right: 8).width(130),
         )
             .card(
               elevation: 1,
