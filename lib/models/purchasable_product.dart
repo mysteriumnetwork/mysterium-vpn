@@ -25,20 +25,33 @@ abstract class _PurchasableProduct with Store {
 
   @computed
   String get id => planDetails.id;
-  @computed
-  String get originalMonthlyPrice => planDetails.id != kMonthlyPlan ? r'$9.99  ' : '';
+
   @computed
   String get monthlyPrice => planDetails.id == kMonthlyPlan
-      ? productDetails.rawPrice.price()
+      ? productDetails.rawPrice.price(
+          currencySymbol: productDetails.currencySymbol,
+          currencyCode: productDetails.currencyCode,
+        )
       : planDetails.id == kAnnualPlan
-          ? productDetails.rawPrice.pricePerMonth(months: 12)
-          : productDetails.rawPrice.pricePerMonth(months: 6);
+          ? productDetails.rawPrice.pricePerMonth(
+              months: 12,
+              currencySymbol: productDetails.currencySymbol,
+              currencyCode: productDetails.currencyCode,
+            )
+          : productDetails.rawPrice.pricePerMonth(
+              months: 6,
+              currencySymbol: productDetails.currencySymbol,
+              currencyCode: productDetails.currencyCode,
+            );
   @computed
   bool get isPupular => planDetails.id == kPopularPlan;
   @computed
   String get billedInTotal => LocaleKeys.billedInTotal.tr(
         namedArgs: {
-          'amount': productDetails.rawPrice.price(),
+          'amount': productDetails.rawPrice.price(
+            currencySymbol: productDetails.currencySymbol,
+            currencyCode: productDetails.currencyCode,
+          ),
           'period': planDetails.id == kMonthlyPlan
               ? LocaleKeys.monthly.tr()
               : planDetails.id == ksemiAnnualPlan

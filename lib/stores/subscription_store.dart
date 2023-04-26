@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -73,6 +74,8 @@ abstract class _SubscriptionStore with Store {
 
   @readonly
   ObservableList<PurchasableProduct> _products = ObservableList<PurchasableProduct>.of([]);
+  @readonly
+  double _originalPrice = 0;
 
   @action
   Future<void> initStore() async {
@@ -125,6 +128,7 @@ abstract class _SubscriptionStore with Store {
             _purchasedProductId,
           ),
         );
+        _originalPrice = _products.firstWhere((e) => e.id == kMonthlyPlan).productDetails.rawPrice;
       }
     } on Exception catch (e) {
       if (kDebugMode) {
