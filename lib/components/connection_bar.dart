@@ -36,9 +36,10 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
             ).expanded(),
             _BarItem(
               label: LocaleKeys.location.tr(),
-              text: vpnConnection.location.tr(),
               leading:
                   vpnStore.isConnected ? Flag(countryCode: vpnStore.vpnConnection.location) : null,
+              text: vpnConnection.location.tr(),
+              crossAxisAlignment: CrossAxisAlignment.start,
             ).expanded(),
           ],
         ).padding(vertical: 20);
@@ -51,6 +52,7 @@ class _BarItem extends StatelessWidget {
   const _BarItem({
     required this.label,
     required this.text,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
     this.isConnected = false,
     this.leading,
   });
@@ -59,7 +61,7 @@ class _BarItem extends StatelessWidget {
   final Widget? leading;
   final String text;
   final bool isConnected;
-
+  final CrossAxisAlignment crossAxisAlignment;
   @override
   Widget build(BuildContext context) => Column(
         children: [
@@ -77,7 +79,7 @@ class _BarItem extends StatelessWidget {
           else
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: crossAxisAlignment,
               children: [
                 if (leading != null) leading!.padding(right: 4),
                 EasyText(
@@ -87,9 +89,9 @@ class _BarItem extends StatelessWidget {
                   fontSize: 12,
                   textAlign: TextAlign.center,
                   maxLines: 2,
-                ).expanded(),
+                ).flexible()
               ],
-            ),
+            )
         ],
       );
 }
