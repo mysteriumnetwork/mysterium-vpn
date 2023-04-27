@@ -17,76 +17,43 @@ abstract class _LocationsStore with Store {
   })  : _apiService = apiService,
         _analyticsStore = analyticsStore {
     fetchRecentLocations();
-    fetchTopLocations();
-    fetchAllLocations();
+    fetchVPNLocations();
   }
 
   final ApiService _apiService;
   final AnalyticsStore _analyticsStore;
 
-  @observable
-  bool showAllLocations = false;
-
-  List<Location> topLocations = [];
-
   ObservableList<Location> recentLocations = ObservableList();
 
-  List<Location> allLocations = [];
+  VPNLocations vpnLocations = VPNLocations(allLocations: [], topLocations: []);
 
   Timer? _debounce;
 
   @observable
-  ObservableFuture<List<Location>> fetchTopLocationsFuture = emptyLocations;
+  ObservableFuture<VPNLocations> fetchVPNLocationsFuture = emptyLocations;
 
   @observable
-  ObservableFuture<List<Location>> fetchAllLocationsFuture = emptyLocations;
-
-  @observable
-  String searchTopKeyword = '';
-  @observable
-  String searchAllKeyword = '';
+  String searchKeyword = '';
 
   @computed
-  FutureStatus get topLocationsFutureStatus => fetchTopLocationsFuture.status;
+  FutureStatus get vpnLocationsFutureStatus => fetchVPNLocationsFuture.status;
 
-  @computed
-  FutureStatus get allLocationsFutureStatus => fetchAllLocationsFuture.status;
-
-  static ObservableFuture<List<Location>> emptyLocations = ObservableFuture.value([]);
+  static ObservableFuture<VPNLocations> emptyLocations =
+      ObservableFuture.value(VPNLocations(allLocations: [], topLocations: []));
 
   @action
-  Future<List<Location>> fetchTopLocations() async {
-    topLocations = [];
+  Future<VPNLocations> fetchVPNLocations() async {
+    fetchVPNLocationsFuture =
+        ObservableFuture(_apiService.fetchVPNLocations(keyword: searchKeyword));
 
-    fetchTopLocationsFuture = ObservableFuture(
-      _apiService.fetchTopLocations(
-        keyword: searchTopKeyword,
-      ),
-    );
-
-    return topLocations = await fetchTopLocationsFuture;
-  }
-
-  @action
-  Future<List<Location>> fetchAllLocations() async {
-    allLocations = [];
-
-    fetchAllLocationsFuture =
-        ObservableFuture(_apiService.fetchAllLocations(keyword: searchAllKeyword));
-
-    return allLocations = await fetchAllLocationsFuture;
+    return vpnLocations = await fetchVPNLocationsFuture;
   }
 
   @action
   void fetchRecentLocations() {
     recentLocations
       ..clear()
-      ..addAll(_apiService.getRecentLocations(keyword: searchTopKeyword));
-  }
-
-  @action
-  void toggleShowAllLocations() {
-    showAllLocations = !showAllLocations;
+      ..addAll(_apiService.getRecentLocations(keyword: searchKeyword));
   }
 
   @action
@@ -95,15 +62,10 @@ abstract class _LocationsStore with Store {
       _debounce?.cancel();
     }
     _debounce = Timer(Duration(milliseconds: duration), () {
-      _analyticsStore.setSearchEvent(text.trim());
-      if (showAllLocations) {
-        searchAllKeyword = text.trim();
-        fetchAllLocations();
-        return;
-      }
-      searchTopKeyword = text.trim();
+      searchKeyword = text.toLowerCase().trim();
       fetchRecentLocations();
-      fetchTopLocations();
+      fetchVPNLocations();
+      _analyticsStore.setSearchEvent(searchKeyword);
     });
   }
 

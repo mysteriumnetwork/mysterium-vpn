@@ -25,7 +25,7 @@ class RecentLocationsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Observer(
         builder: (_) {
-          if (locationsStore.recentLocations.isEmpty && locationsStore.searchTopKeyword.isEmpty) {
+          if (locationsStore.recentLocations.isEmpty && locationsStore.searchKeyword.isEmpty) {
             return const SizedBox.shrink();
           } else {
             return Column(
@@ -37,9 +37,9 @@ class RecentLocationsList extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ).padding(bottom: 20),
                 if (locationsStore.recentLocations.isEmpty &&
-                    locationsStore.searchTopKeyword.isNotEmpty)
+                    locationsStore.searchKeyword.isNotEmpty)
                   EasyText(
-                    'We could not find any recent locations for keyword: ${locationsStore.searchTopKeyword} ',
+                    'We could not find any recent locations for keyword: ${locationsStore.searchKeyword} ',
                     color: Theme.of(context).colorScheme.error,
                   ),
                 if (locationsStore.recentLocations.isNotEmpty)
