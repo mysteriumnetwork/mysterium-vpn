@@ -180,8 +180,9 @@ abstract class _VpnStore with Store {
 
       debugPrint(_vpnConfig?.config);
       await connectWireguard();
+      final ipAddress = await _apiService.getIPAdress();
       _vpnConnection = VpnConnection(
-        connectionIP: await _apiService.getIPAdress() ?? '--',
+        connectionIP: ipAddress ?? '--',
         location: location?.countryCode ?? '--',
       );
       _connectionStatus = ConnectionStatus.connected;
