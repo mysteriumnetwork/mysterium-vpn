@@ -1,5 +1,11 @@
+import 'dart:async';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 
 part 'connectivity_store.g.dart';
 
@@ -14,11 +20,29 @@ abstract class _ConnectivityStore with Store {
   @readonly
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
 
-  @readonly
-  ConnectivityResult _prevConnectionStatus = ConnectivityResult.none;
+  @observable
+  bool isInitState = true;
+
+  Timer? _debounce;
 
   Future<void> _updateConnectionStatus(ConnectivityResult result) async {
-    _prevConnectionStatus = _connectionStatus;
-    _connectionStatus = result;
+    if (_debounce?.isActive ?? false) {
+      _debounce?.cancel();
+    }
+    _debounce = Timer(const Duration(seconds: 4), () {
+      _connectionStatus = result;
+      if (!isInitState) {
+        handleConectivityStatusChanged(result);
+        isInitState = false;
+      }
+    });
+  }
+
+  void handleConectivityStatusChanged(
+    ConnectivityResult connectivityStatus,
+  ) {
+    connectivityStatus == ConnectivityResult.none
+        ? showSnackbar(LocaleKeys.currentlyOffline.tr())
+        : showSnackbar(LocaleKeys.internetConnectionRestored.tr(), type: MessageType.success);
   }
 }

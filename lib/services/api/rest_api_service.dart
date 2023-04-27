@@ -146,8 +146,11 @@ class RestApiService extends ApiService {
   @override
   Future<String?> getIPAdress() async {
     try {
-      final res = await _apiClient.fetch<Map<String, dynamic>>(
-        RequestOptions(baseUrl: kFetchIP),
+      final res = await Future.delayed(
+        const Duration(seconds: 2),
+        () async => _apiClient.fetch<Map<String, dynamic>>(
+          RequestOptions(baseUrl: kFetchIP),
+        ),
       );
       if (res.data != null && res.data!.containsKey('ip')) {
         return res.data!['ip'] as String;
