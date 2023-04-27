@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 
 extension StorageKeysEx on Enum {
@@ -42,17 +41,4 @@ extension StorageKeysEx on Enum {
   }
 
   String get toRoute => '/$toDashCase';
-}
-
-extension LanguageName on Locale {
-  String get languageName {
-    switch (languageCode) {
-      case 'en':
-        return 'English';
-
-      case 'es':
-        return 'Español';
-    }
-    return '';
-  }
 }

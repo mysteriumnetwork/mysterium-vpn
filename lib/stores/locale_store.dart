@@ -11,12 +11,12 @@ class LocaleStore = _LocaleStore with _$LocaleStore;
 
 abstract class _LocaleStore with Store {
   _LocaleStore() {
-    _currentLocale = _sharedPrefs.getLocale() ?? const Locale('en');
+    _currentLocale = _sharedPrefs.getLocale() ?? kFallbackLocale;
   }
 
   final _sharedPrefs = SharedPreferenceService();
   @readonly
-  Locale _currentLocale = const Locale('en');
+  Locale _currentLocale = kFallbackLocale;
 
   @action
   Future<void> setLocale(Locale locale) async {

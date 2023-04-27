@@ -39,7 +39,6 @@ class RecentLocationItem extends StatelessWidget {
                     onTap,
                   ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -51,22 +50,23 @@ class RecentLocationItem extends StatelessWidget {
                     locationCode: location.countryCode,
                   ),
                 ],
-              ).padding(bottom: 4),
+              ).paddingDirectional(horizontal: 4),
               EasyText(
                 location.countryName,
                 fontWeight: FontWeight.w700,
+                maxLines: 2,
               ),
               if (location.countryCode == vpnStore.connectingLocationCode && vpnStore.isConnected)
                 EasyText(
                   LocaleKeys.connected.tr(),
                   color: Palette.purple,
                 )
-              // else
-              //   EasyText(
-              //     const Duration(hours: 1, minutes: 30).toHoursMinutes(),
-              //   ),
+              else
+                const EasyText(
+                  '',
+                ),
             ],
-          ).padding(left: 12, right: 6, bottom: 4).width(110),
+          ).padding(left: 6, right: 6).width(130),
         )
             .card(
               elevation: 1,

@@ -2,7 +2,6 @@ import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
@@ -14,17 +13,19 @@ import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 Future<void> shownDeleteAccountDialog(BuildContext context, AuthStore store) async {
-  await showBarModalBottomSheet(
+  await showModalBottomSheet(
     clipBehavior: Clip.none,
-    expand: false,
-    topControl: const SizedBox.shrink(),
+    isScrollControlled: true,
     isDismissible: true,
     context: context,
     backgroundColor: Theme.of(context).primaryColor,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
     ),
-    builder: (context) => _DeleteAccountDialog(store: store),
+    builder: (context) => Padding(
+      padding: MediaQuery.of(context).viewInsets,
+      child: _DeleteAccountDialog(store: store),
+    ),
   );
 }
 

@@ -17,7 +17,9 @@
 	<key>CFBundleLocalizations</key>
 	<array>
 		<string>en</string>
-		<string>es</string>
+		<string>fr</string>
+		<string>pt</string>
+		<string>tr</string>
 	</array>
 	<key>CFBundleName</key>
 	<string>Mysterium VPN</string>

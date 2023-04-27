@@ -95,9 +95,11 @@ class Enviroment {
           ProviderScope(
             overrides: [environmentPOD.overrideWith((ref) => flavorConfig)],
             child: EasyLocalization(
+              useOnlyLangCode: true,
               supportedLocales: kSupportedLocales,
               path: Assets.langs,
               fallbackLocale: kFallbackLocale,
+              startLocale: kFallbackLocale,
               child: const MyApp(),
             ),
           ),

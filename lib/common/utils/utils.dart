@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_breakpoints.dart';
@@ -15,6 +16,7 @@ import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/dialogs/no_internet_connection_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 
 bool checkMediaWidth(BuildContext context, double width) =>
     MediaQuery.of(context).size.width < width;
@@ -323,17 +325,15 @@ ApiException handleException(Exception e, {String? message}) {
       e.response?.statusCode ?? 402,
     );
     if (!data.containsKey('error')) {
-      return exception
-        ..message = e.message ?? 'Something went wrong. Please give it another try. 😕';
+      return exception..message = e.message ?? LocaleKeys.somethingWentWrong.tr();
     }
     if ((data['error'] as Map<String, dynamic>).containsKey('message')) {
-      return exception..message = data['message'] as String? ?? 'Something went wrong';
+      return exception..message = data['message'] as String? ?? LocaleKeys.somethingWentWrong.tr();
     }
-    return exception
-      ..message = e.message ?? 'Something went wrong at our server. Please give it another try. 😕';
+    return exception..message = e.message ?? LocaleKeys.somethingWentWrong.tr();
   } else {
     return ApiException(
-      message ?? 'Something went wrong with. Please give it another try. 😕',
+      message ?? LocaleKeys.somethingWentWrong.tr(),
       500,
     );
   }

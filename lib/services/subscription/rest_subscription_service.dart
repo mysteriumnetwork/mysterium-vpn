@@ -58,7 +58,7 @@ class RestSubscriptionService extends SubscriptionService {
       if (retryCount == 5 || (subscription?.active ?? false)) {
         if (subscription?.active ?? false) {
           await _localDb.setSubscriptionPurchase(
-            subscriptionPlan: subscription!.planId ?? planId,
+            subscriptionPlan: subscription?.planId ?? planId,
             subscriptionPurchaseId: purchaseId,
           );
         }
