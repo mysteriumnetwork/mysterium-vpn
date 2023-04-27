@@ -64,6 +64,7 @@ class SubscriptionForm extends HookConsumerWidget {
                 SubscriptionProductsList(
                   products: store.products,
                   selectedProduct: selectedProduct,
+                  originalPrice: store.originalPrice,
                 ).padding(bottom: getMediaHeight(context) * 0.03),
                 EasyText(
                   subsFormStatus == SubscriptionFormStatus.manage
@@ -96,18 +97,18 @@ class SubscriptionForm extends HookConsumerWidget {
                         );
                       } else {
                         showSnackbar(
-                          'Great news! Your subscription is now active. 🎉',
+                          LocaleKeys.subscriptionActive.tr(),
                           type: MessageType.success,
                         );
                         context.beamToReplacementNamed(Routes.home.toRoute);
                       }
                     }
                     if (result == PurchaseStatus.canceled) {
-                      showSnackbar('Process Canceled.😕');
+                      showSnackbar(LocaleKeys.subscriptionProcessCanceled.tr());
                     }
                     if (result == PurchaseStatus.error) {
                       showSnackbar(
-                        'Something went wrong with your subscription. Please give it another try. 😕',
+                        LocaleKeys.failedToSubscribe.tr(),
                       );
                     }
                   }),

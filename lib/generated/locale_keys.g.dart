@@ -400,4 +400,27 @@ abstract class LocaleKeys {
   static const QA = 'QA';
   static const MZ = 'MZ';
   static const or = 'or';
+  static const failedToLoadLocations = 'failedToLoadLocations';
+  static const failedToConnect = 'failedToConnect';
+  static const activateSubscription = 'activateSubscription';
+  static const tokenAlreadyUsed = 'tokenAlreadyUsed';
+  static const incorrectMagicLink = 'incorrectMagicLink';
+  static const incorrectCode = 'incorrectCode';
+  static const authenticationFailed = 'authenticationFailed';
+  static const subscriptionActive = 'subscriptionActive';
+  static const subscriptionProcessCanceled = 'subscriptionProcessCanceled';
+  static const failedToSubscribe = 'failedToSubscribe';
+  static const somethingWentWrong = 'somethingWentWrong';
+  static const de = 'de';
+  static const en = 'en';
+  static const es = 'es';
+  static const et = 'et';
+  static const tr = 'tr';
+  static const fr = 'fr';
+  static const it = 'it';
+  static const lt = 'lt';
+  static const mk = 'mk';
+  static const pt = 'pt';
+  static const sr = 'sr';
+  static const uk = 'uk';
 }

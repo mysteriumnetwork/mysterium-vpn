@@ -6,10 +6,12 @@ class SubscriptionProductsList extends StatelessWidget {
   const SubscriptionProductsList({
     required this.products,
     required this.selectedProduct,
+    required this.originalPrice,
     super.key,
   });
   final List<PurchasableProduct> products;
   final ValueNotifier<String> selectedProduct;
+  final double originalPrice;
   @override
   Widget build(BuildContext context) => ListView.separated(
         itemCount: products.length,
@@ -17,6 +19,7 @@ class SubscriptionProductsList extends StatelessWidget {
         itemBuilder: (context, index) => ProductItem(
           productDetails: products[index],
           selectedProduct: selectedProduct,
+          originalPirce: originalPrice,
         ),
         separatorBuilder: (context, index) => const SizedBox(height: 20),
       );

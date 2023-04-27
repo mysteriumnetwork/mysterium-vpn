@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -17,12 +19,13 @@ class ProductItem extends StatelessWidget {
   const ProductItem({
     required this.productDetails,
     required this.selectedProduct,
+    required this.originalPirce,
     super.key,
   });
 
   final PurchasableProduct productDetails;
   final ValueNotifier<String> selectedProduct;
-
+  final double originalPirce;
   @override
   Widget build(BuildContext context) => RippleWidget(
         radius: 20,
@@ -44,7 +47,12 @@ class ProductItem extends StatelessWidget {
                 Row(
                   children: [
                     EasyText(
-                      productDetails.originalMonthlyPrice,
+                      productDetails.id != kMonthlyPlan
+                          ? '${originalPirce.price(
+                              currencyCode: productDetails.productDetails.currencyCode,
+                              currencySymbol: productDetails.productDetails.currencySymbol,
+                            )} '
+                          : '',
                       color: Theme.of(context).secondaryHeaderColor,
                       fontSize: 20,
                       fontWeight: FontWeight.w900,
