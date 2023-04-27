@@ -26,7 +26,7 @@ class RecentLocationsList extends StatelessWidget {
   Widget build(BuildContext context) => Observer(
         builder: (_) => Visibility(
           visible:
-              locationsStore.recentLocations.isNotEmpty || locationsStore.searchKeyword.isEmpty,
+              locationsStore.recentLocations.isNotEmpty && locationsStore.searchKeyword.isEmpty,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
