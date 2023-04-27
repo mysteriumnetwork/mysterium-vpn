@@ -405,7 +405,7 @@
   "incorrectMagicLink": "Невірне магічне посилання. 😕",
   "incorrectCode": "Невірний код. 😕",
   "authenticationFailed": "Помилка під час автентифікації. 😕",
-  "subscriptionActive": "'Відмінна новина! 🎉",
+  "subscriptionActive": "Відмінна новина! 🎉",
   "subscriptionProcessCanceled": "Процес підписки скасовано. 😕",
   "failedToSubscribe": "Щось пішло не так із вашою підпискою. 😕",
   "somethingWentWrong": "Щось пішло не так. 😕",
@@ -420,5 +420,6 @@
   "mk": "македонська",
   "pt": "португальська",
   "sr": "сербська",
-  "uk": "українська"
+  "uk": "українська",
+  "coudntFindLocations": "Нам не вдалося знайти жодного місця для \"{searchKeyword}\". 😕"
 }

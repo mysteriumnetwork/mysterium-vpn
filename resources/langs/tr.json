@@ -405,7 +405,7 @@
   "incorrectMagicLink": "Yanlış sihirli bağlantı. 😕",
   "incorrectCode": "Yanlış kod. 😕",
   "authenticationFailed": "Kimlik doğrulaması yapılırken hata oluştu. 😕",
-  "subscriptionActive": "'Harika haber! 🎉",
+  "subscriptionActive": "Harika haber! 🎉",
   "subscriptionProcessCanceled": "Abonelik İşlemi İptal Edildi. 😕",
   "failedToSubscribe": "Aboneliğinizle ilgili bir sorun oluştu. 😕",
   "somethingWentWrong": "Bir şeyler yanlış gitti. 😕",
@@ -420,5 +420,6 @@
   "mk": "Makedonca",
   "pt": "Portekizce",
   "sr": "Sırpça",
-  "uk": "Ukraynaca"
+  "uk": "Ukraynaca",
+  "coudntFindLocations": "\"{searchKeyword}\" için herhangi bir yer bulamadık. 😕"
 }

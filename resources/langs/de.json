@@ -420,5 +420,6 @@
   "mk": "Mazedonisch",
   "pt": "Portugiesisch",
   "sr": "Serbisch",
-  "uk": "Ukrainisch"
+  "uk": "Ukrainisch",
+  "coudntFindLocations": "Wir konnten keine Standorte für \"{searchKeyword}\" finden. 😕"
 }

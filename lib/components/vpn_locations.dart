@@ -52,7 +52,11 @@ class AllLocationsList extends StatelessWidget {
           final allLocations = locationsStore.vpnLocations.allLocations;
           if (topLocations.isEmpty && allLocations.isEmpty) {
             return EasyText(
-              'We could not find any locations for keyword: ${locationsStore.searchKeyword}',
+              LocaleKeys.coudntFindLocations.tr(
+                namedArgs: {
+                  'searchKeyword': locationsStore.searchKeyword,
+                },
+              ),
               color: Theme.of(context).colorScheme.error,
             );
           }
