@@ -405,7 +405,7 @@
   "incorrectMagicLink": "Neteisinga stebuklinga nuoroda. Prašau, pabandykite dar kartą. 😕",
   "incorrectCode": "Neteisingas kodas. Prašau, pabandykite dar kartą. 😕",
   "authenticationFailed": "Klaida autentifikuojant. Prašau dar kartą pabandyti. 😕",
-  "subscriptionActive": "'Puiki naujiena! Dabar jūsų prenumerata yra aktyvi. 🎉 '",
+  "subscriptionActive": "Puiki naujiena! Dabar jūsų prenumerata yra aktyvi. 🎉 ",
   "subscriptionProcessCanceled": "Prenumeratos procesas atšauktas.😕",
   "failedToSubscribe": "Kažkas nutiko su jūsų prenumerata. Prašau dar kartą pabandyti. 😕",
   "somethingWentWrong": "Kažkas nutiko ne taip. Prašau dar kartą pabandyti. 😕",
@@ -420,5 +420,6 @@
   "mk": "Makedonietis",
   "pt": "Portugalų",
   "sr": "Serbų",
-  "uk": "Ukrainiečių"
+  "uk": "Ukrainiečių",
+  "coudntFindLocations": "Nepavyko rasti jokių vietų pagal „{searchKeyword}“. 😕"
 }

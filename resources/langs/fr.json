@@ -405,7 +405,7 @@
   "incorrectMagicLink": "Lien magique incorrect. Veuillez réessayer. 😕",
   "incorrectCode": "Code incorrect. Veuillez réessayer. 😕",
   "authenticationFailed": "Erreur tout en s'authentifie. Veuillez essayer un autre essai. 😕",
-  "subscriptionActive": "'Bonne nouvelle! Votre abonnement est maintenant actif. 🎉 '",
+  "subscriptionActive": "Bonne nouvelle! Votre abonnement est maintenant actif. 🎉 ",
   "subscriptionProcessCanceled": "Processus d'abonnement annulé.😕",
   "failedToSubscribe": "Quelque chose a mal tourné avec votre abonnement. Veuillez essayer un autre essai. 😕",
   "somethingWentWrong": "Quelque chose s'est mal passé. Veuillez essayer un autre essai. 😕",
@@ -420,5 +420,6 @@
   "mk": "Macédonien",
   "pt": "Portugais",
   "sr": "Serbe",
-  "uk": "Ukrainien"
+  "uk": "Ukrainien",
+  "coudntFindLocations": "Nous n'avons trouvé aucun emplacement pour \"{searchKeyword}\". 😕"
 }
