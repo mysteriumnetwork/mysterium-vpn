@@ -160,8 +160,8 @@ abstract class _VpnStore with Store {
     }
     location ??= _locationsStore.recentLocations.isNotEmpty
         ? _locationsStore.recentLocations.first
-        : _locationsStore.allLocations.isNotEmpty
-            ? _locationsStore.allLocations.first
+        : _locationsStore.vpnLocations.allLocations.isNotEmpty
+            ? _locationsStore.vpnLocations.allLocations.first
             : null;
     _connectingLocationCode = location?.countryCode;
     try {
@@ -180,8 +180,9 @@ abstract class _VpnStore with Store {
 
       debugPrint(_vpnConfig?.config);
       await connectWireguard();
+      final ipAddress = await _apiService.getIPAdress();
       _vpnConnection = VpnConnection(
-        connectionIP: await _apiService.getIPAdress() ?? '--',
+        connectionIP: ipAddress ?? '--',
         location: location?.countryCode ?? '--',
       );
       _connectionStatus = ConnectionStatus.connected;
