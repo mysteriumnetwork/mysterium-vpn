@@ -23,22 +23,20 @@ class HomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final subscriptionStore = ref.watch(subscriptionStorePOD);
     final authStore = ref.watch(authStorePOD);
-    final appLifecycleState = useAppLifecycleState();
     final vpnStore = ref.watch(vpnStorePOD);
 
-    useEffect(
-      () {
-        debugPrint(appLifecycleState?.name);
-        if (appLifecycleState == AppLifecycleState.resumed) {
+    useOnAppLifecycleStateChange(
+      (previous, current) {
+        if (previous == AppLifecycleState.inactive && current == AppLifecycleState.resumed) {
           subscriptionStore.fetchSubscription();
         }
-        if (appLifecycleState == AppLifecycleState.detached) {
+        if (current == AppLifecycleState.detached) {
           vpnStore.disconnect();
         }
         return null;
       },
-      [appLifecycleState],
     );
+
     return ReactionBuilder(
       builder: (context) => reaction((_) => subscriptionStore.subscriptionFuture?.status, (result) {
         debugPrint(result.toString());
