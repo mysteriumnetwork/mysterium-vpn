@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:app_links/app_links.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -135,6 +136,7 @@ abstract class _AuthStore with Store {
       _analyticsStore
         ..setUserId(_authData!.username)
         ..setLogin();
+      FirebaseCrashlytics.instance.setUserIdentifier(_authData!.username);
       debugPrint(_localDb.userData.toString());
     } on KeyDoesntExistsException {
       _authStatus = AuthStatus.unauthenticated;
