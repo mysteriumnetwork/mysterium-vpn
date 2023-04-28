@@ -27,6 +27,7 @@ class HomePage extends HookConsumerWidget {
 
     useOnAppLifecycleStateChange(
       (previous, current) {
+        debugPrint('App Lifecycle: $previous -> $current');
         if (previous == AppLifecycleState.inactive && current == AppLifecycleState.resumed) {
           subscriptionStore.fetchSubscription();
         }
