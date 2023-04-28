@@ -73,6 +73,7 @@ class MyApp extends HookConsumerWidget {
     routeDelegate.update();
     if (status == AuthStatus.unauthenticated) {
       ref
+        ..read(vpnStorePOD).disconnect()
         ..invalidate(subscriptionStorePOD)
         ..invalidate(vpnStorePOD)
         ..invalidate(locationsStorePOD)

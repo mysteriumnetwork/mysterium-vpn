@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_breakpoints.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_size_breakpoints.dart';
 import 'package:mysterium_vpn/common/configurations/breakpoint_configuration.dart';
@@ -17,6 +18,8 @@ import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/dialogs/no_internet_connection_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/pages/auth_page.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 bool checkMediaWidth(BuildContext context, double width) =>
     MediaQuery.of(context).size.width < width;
@@ -369,4 +372,25 @@ String? getMagicLinkCode(String query) {
     return null;
   }
   return query.substring(query.indexOf('code=') + 5, query.length);
+}
+
+void showAuthView(BuildContext context) {
+  showBarModalBottomSheet(
+    context: context,
+    animationCurve: Curves.easeInOut,
+    backgroundColor: Palette.transparent,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+    ),
+    builder: (context) => Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
+      child: SingleChildScrollView(
+        controller: ModalScrollController.of(context),
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: const SignUpPage().height(getMediaHeight(context) * 0.9),
+      ),
+    ),
+  );
 }
