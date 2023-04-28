@@ -405,7 +405,7 @@
   "incorrectMagicLink": "Vale võluvink. Palun proovi uuesti. 😕",
   "incorrectCode": "Vale kood. Palun proovi uuesti. 😕",
   "authenticationFailed": "Viga autentimisel. Palun proovige veel ühte. 😕",
-  "subscriptionActive": "'Hea uudis! Teie tellimus on nüüd aktiivne. 🎉 '",
+  "subscriptionActive": "Hea uudis! Teie tellimus on nüüd aktiivne. 🎉 ",
   "subscriptionProcessCanceled": "Tellimisprotsess tühistati.😕",
   "failedToSubscribe": "Teie tellimusega läks midagi valesti. Palun proovige veel ühte.",
   "somethingWentWrong": "Midagi läks valesti. Palun proovige veel ühte. 😕",
@@ -420,5 +420,6 @@
   "mk": "Makedoonlane",
   "pt": "Portugali keel",
   "sr": "Serblane",
-  "uk": "Ukraina"
+  "uk": "Ukraina",
+  "coudntFindLocations": "Me ei leidnud ühtegi asukohta päringule \"{searchKeyword}\". "
 }

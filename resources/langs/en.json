@@ -405,7 +405,7 @@
   "incorrectMagicLink":"Incorrect magic link. Please try again. 😕",
   "incorrectCode":"Incorrect code. Please try again. 😕",
   "authenticationFailed":"Error while authenticating. Please give it another try. 😕",
-  "subscriptionActive":"'Great news! Your subscription is now active. 🎉'",
+  "subscriptionActive":"Great news! Your subscription is now active. 🎉",
   "subscriptionProcessCanceled":"Subscription Process Canceled.😕",
   "failedToSubscribe":"Something went wrong with your subscription. Please give it another try. 😕",
   "somethingWentWrong":"Something went wrong. Please give it another try. 😕",
@@ -420,5 +420,6 @@
   "mk": "Macedonian",
   "pt": "Portuguese",
   "sr": "Serbian",
-  "uk": "Ukrainian"
+  "uk": "Ukrainian",
+  "coudntFindLocations": "We could not find any locations for \"{searchKeyword}\". 😕"
 }

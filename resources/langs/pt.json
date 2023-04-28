@@ -405,7 +405,7 @@
   "incorrectMagicLink": "Link mágico incorreto. Por favor, tente novamente. 😕",
   "incorrectCode": "Código incorreto. Por favor, tente novamente. 😕",
   "authenticationFailed": "Erro enquanto autentica. Por favor, experimente. 😕",
-  "subscriptionActive": "'Boas notícias! Sua assinatura agora está ativa. ''",
+  "subscriptionActive": "Boas notícias! Sua assinatura agora está ativa. 🎉",
   "subscriptionProcessCanceled": "Processo de assinatura cancelado",
   "failedToSubscribe": "Algo deu errado com sua assinatura. Por favor, experimente. 😕",
   "somethingWentWrong": "Algo deu errado. Por favor, experimente. 😕",
@@ -420,5 +420,6 @@
   "mk": "Macedônio",
   "pt": "Português",
   "sr": "Sérvio",
-  "uk": "Ucraniano"
+  "uk": "Ucraniano",
+  "coudntFindLocations": "Não foi possível encontrar nenhum local para \"{searchKeyword}\". 😕"
 }

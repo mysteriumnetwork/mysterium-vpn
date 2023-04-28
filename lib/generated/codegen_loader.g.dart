@@ -427,7 +427,7 @@ class CodegenLoader extends AssetLoader {
     "incorrectMagicLink": "Yanlış sihirli bağlantı. 😕",
     "incorrectCode": "Yanlış kod. 😕",
     "authenticationFailed": "Kimlik doğrulaması yapılırken hata oluştu. 😕",
-    "subscriptionActive": "'Harika haber! 🎉",
+    "subscriptionActive": "Harika haber! 🎉",
     "subscriptionProcessCanceled": "Abonelik İşlemi İptal Edildi. 😕",
     "failedToSubscribe": "Aboneliğinizle ilgili bir sorun oluştu. 😕",
     "somethingWentWrong": "Bir şeyler yanlış gitti. 😕",
@@ -442,7 +442,8 @@ class CodegenLoader extends AssetLoader {
     "mk": "Makedonca",
     "pt": "Portekizce",
     "sr": "Sırpça",
-    "uk": "Ukraynaca"
+    "uk": "Ukraynaca",
+    "coudntFindLocations": "\"{searchKeyword}\" için herhangi bir yer bulamadık. 😕"
   };
   static const Map<String, dynamic> mk = {
     "title": "Здраво господине",
@@ -867,7 +868,7 @@ class CodegenLoader extends AssetLoader {
     "incorrectMagicLink": "Неточна магична врска. Ве молиме, обидете се повторно. 😕",
     "incorrectCode": "Неточен код. Ве молиме, обидете се повторно. 😕",
     "authenticationFailed": "Грешка при автентикација. Ве молиме, пробајте уште еден обид. 😕",
-    "subscriptionActive": "'Одлични вести! Вашата претплата сега е активна. 🎉 '",
+    "subscriptionActive": "Одлични вести! Вашата претплата сега е активна. 🎉 ",
     "subscriptionProcessCanceled": "Процесот на претплата е откажан.😕",
     "failedToSubscribe":
         "Нешто тргна наопаку со вашата претплата. Ве молиме, пробајте уште еден обид. 😕",
@@ -883,7 +884,8 @@ class CodegenLoader extends AssetLoader {
     "mk": "Македонски",
     "pt": "Португалски",
     "sr": "Српски",
-    "uk": "Украински"
+    "uk": "Украински",
+    "coudntFindLocations": "Не можевме да најдеме локации за „{searchKeyword}“. 😕"
   };
   static const Map<String, dynamic> lt = {
     "title": "Sveiki pone",
@@ -1304,7 +1306,7 @@ class CodegenLoader extends AssetLoader {
     "incorrectMagicLink": "Neteisinga stebuklinga nuoroda. Prašau, pabandykite dar kartą. 😕",
     "incorrectCode": "Neteisingas kodas. Prašau, pabandykite dar kartą. 😕",
     "authenticationFailed": "Klaida autentifikuojant. Prašau dar kartą pabandyti. 😕",
-    "subscriptionActive": "'Puiki naujiena! Dabar jūsų prenumerata yra aktyvi. 🎉 '",
+    "subscriptionActive": "Puiki naujiena! Dabar jūsų prenumerata yra aktyvi. 🎉 ",
     "subscriptionProcessCanceled": "Prenumeratos procesas atšauktas.😕",
     "failedToSubscribe": "Kažkas nutiko su jūsų prenumerata. Prašau dar kartą pabandyti. 😕",
     "somethingWentWrong": "Kažkas nutiko ne taip. Prašau dar kartą pabandyti. 😕",
@@ -1319,7 +1321,8 @@ class CodegenLoader extends AssetLoader {
     "mk": "Makedonietis",
     "pt": "Portugalų",
     "sr": "Serbų",
-    "uk": "Ukrainiečių"
+    "uk": "Ukrainiečių",
+    "coudntFindLocations": "Nepavyko rasti jokių vietų pagal „{searchKeyword}“. 😕"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1763,7 +1766,8 @@ class CodegenLoader extends AssetLoader {
     "mk": "Mazedonisch",
     "pt": "Portugiesisch",
     "sr": "Serbisch",
-    "uk": "Ukrainisch"
+    "uk": "Ukrainisch",
+    "coudntFindLocations": "Wir konnten keine Standorte für \"{searchKeyword}\" finden. 😕"
   };
   static const Map<String, dynamic> uk = {
     "title": "Вітаю, сер",
@@ -2179,7 +2183,7 @@ class CodegenLoader extends AssetLoader {
     "incorrectMagicLink": "Невірне магічне посилання. 😕",
     "incorrectCode": "Невірний код. 😕",
     "authenticationFailed": "Помилка під час автентифікації. 😕",
-    "subscriptionActive": "'Відмінна новина! 🎉",
+    "subscriptionActive": "Відмінна новина! 🎉",
     "subscriptionProcessCanceled": "Процес підписки скасовано. 😕",
     "failedToSubscribe": "Щось пішло не так із вашою підпискою. 😕",
     "somethingWentWrong": "Щось пішло не так. 😕",
@@ -2194,7 +2198,8 @@ class CodegenLoader extends AssetLoader {
     "mk": "македонська",
     "pt": "португальська",
     "sr": "сербська",
-    "uk": "українська"
+    "uk": "українська",
+    "coudntFindLocations": "Нам не вдалося знайти жодного місця для \"{searchKeyword}\". 😕"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2616,7 +2621,7 @@ class CodegenLoader extends AssetLoader {
     "incorrectMagicLink": "Link mágico incorreto. Por favor, tente novamente. 😕",
     "incorrectCode": "Código incorreto. Por favor, tente novamente. 😕",
     "authenticationFailed": "Erro enquanto autentica. Por favor, experimente. 😕",
-    "subscriptionActive": "'Boas notícias! Sua assinatura agora está ativa. ''",
+    "subscriptionActive": "Boas notícias! Sua assinatura agora está ativa. 🎉",
     "subscriptionProcessCanceled": "Processo de assinatura cancelado",
     "failedToSubscribe": "Algo deu errado com sua assinatura. Por favor, experimente. 😕",
     "somethingWentWrong": "Algo deu errado. Por favor, experimente. 😕",
@@ -2631,7 +2636,8 @@ class CodegenLoader extends AssetLoader {
     "mk": "Macedônio",
     "pt": "Português",
     "sr": "Sérvio",
-    "uk": "Ucraniano"
+    "uk": "Ucraniano",
+    "coudntFindLocations": "Não foi possível encontrar nenhum local para \"{searchKeyword}\". 😕"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -3050,7 +3056,7 @@ class CodegenLoader extends AssetLoader {
     "incorrectMagicLink": "Incorrect magic link. Please try again. 😕",
     "incorrectCode": "Incorrect code. Please try again. 😕",
     "authenticationFailed": "Error while authenticating. Please give it another try. 😕",
-    "subscriptionActive": "'Great news! Your subscription is now active. 🎉'",
+    "subscriptionActive": "Great news! Your subscription is now active. 🎉",
     "subscriptionProcessCanceled": "Subscription Process Canceled.😕",
     "failedToSubscribe":
         "Something went wrong with your subscription. Please give it another try. 😕",
@@ -3066,7 +3072,8 @@ class CodegenLoader extends AssetLoader {
     "mk": "Macedonian",
     "pt": "Portuguese",
     "sr": "Serbian",
-    "uk": "Ukrainian"
+    "uk": "Ukrainian",
+    "coudntFindLocations": "We could not find any locations for \"{searchKeyword}\". 😕"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3491,7 +3498,7 @@ class CodegenLoader extends AssetLoader {
     "incorrectCode": "Codice non corretto. Per favore riprova. 😕",
     "authenticationFailed":
         "Errore durante l'autenticazione. Per favore, fai un altro tentativo. 😕",
-    "subscriptionActive": "'Grandi notizie! Il tuo abbonamento è ora attivo. 🎉 '",
+    "subscriptionActive": "Grandi notizie! Il tuo abbonamento è ora attivo. 🎉 ",
     "subscriptionProcessCanceled": "Processo di abbonamento annullato. 😕",
     "failedToSubscribe":
         "Qualcosa è andato storto con il tuo abbonamento. Per favore, fai un altro tentativo. 😕",
@@ -3507,7 +3514,8 @@ class CodegenLoader extends AssetLoader {
     "mk": "Macedone",
     "pt": "Portoghese",
     "sr": "Serbo",
-    "uk": "Ucraino"
+    "uk": "Ucraino",
+    "coudntFindLocations": "Non siamo riusciti a trovare posizioni per \"{searchKeyword}\". 😕"
   };
   static const Map<String, dynamic> sr = {
     "title": "Здраво господине",
@@ -3931,7 +3939,7 @@ class CodegenLoader extends AssetLoader {
     "incorrectCode": "Нетачан број. Молим вас, покушајте поново. 😕",
     "authenticationFailed":
         "Грешка приликом аутентификације. Молим вас дајте још један покушај. 😕",
-    "subscriptionActive": "'Сјајна вест! Ваша претплата је сада активна. 🎉 '",
+    "subscriptionActive": "Сјајна вест! Ваша претплата је сада активна. 🎉 ",
     "subscriptionProcessCanceled": "Поступак претплате отказан.😕",
     "failedToSubscribe":
         "Нешто је пошло по злу са вашом претплатом. Молим вас дајте још један покушај. 😕",
@@ -3947,7 +3955,8 @@ class CodegenLoader extends AssetLoader {
     "mk": "Македонски",
     "pt": "Португалски",
     "sr": "Српски",
-    "uk": "Украјински"
+    "uk": "Украјински",
+    "coudntFindLocations": "Нисмо могли да пронађемо ниједну локацију за \"{searchKeyword}\". 😕"
   };
   static const Map<String, dynamic> et = {
     "title": "Tere, härra",
@@ -4367,7 +4376,7 @@ class CodegenLoader extends AssetLoader {
     "incorrectMagicLink": "Vale võluvink. Palun proovi uuesti. 😕",
     "incorrectCode": "Vale kood. Palun proovi uuesti. 😕",
     "authenticationFailed": "Viga autentimisel. Palun proovige veel ühte. 😕",
-    "subscriptionActive": "'Hea uudis! Teie tellimus on nüüd aktiivne. 🎉 '",
+    "subscriptionActive": "Hea uudis! Teie tellimus on nüüd aktiivne. 🎉 ",
     "subscriptionProcessCanceled": "Tellimisprotsess tühistati.😕",
     "failedToSubscribe": "Teie tellimusega läks midagi valesti. Palun proovige veel ühte.",
     "somethingWentWrong": "Midagi läks valesti. Palun proovige veel ühte. 😕",
@@ -4382,7 +4391,8 @@ class CodegenLoader extends AssetLoader {
     "mk": "Makedoonlane",
     "pt": "Portugali keel",
     "sr": "Serblane",
-    "uk": "Ukraina"
+    "uk": "Ukraina",
+    "coudntFindLocations": "Me ei leidnud ühtegi asukohta päringule \"{searchKeyword}\". "
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -4808,7 +4818,7 @@ class CodegenLoader extends AssetLoader {
     "incorrectMagicLink": "Lien magique incorrect. Veuillez réessayer. 😕",
     "incorrectCode": "Code incorrect. Veuillez réessayer. 😕",
     "authenticationFailed": "Erreur tout en s'authentifie. Veuillez essayer un autre essai. 😕",
-    "subscriptionActive": "'Bonne nouvelle! Votre abonnement est maintenant actif. 🎉 '",
+    "subscriptionActive": "Bonne nouvelle! Votre abonnement est maintenant actif. 🎉 ",
     "subscriptionProcessCanceled": "Processus d'abonnement annulé.😕",
     "failedToSubscribe":
         "Quelque chose a mal tourné avec votre abonnement. Veuillez essayer un autre essai. 😕",
@@ -4824,7 +4834,8 @@ class CodegenLoader extends AssetLoader {
     "mk": "Macédonien",
     "pt": "Portugais",
     "sr": "Serbe",
-    "uk": "Ukrainien"
+    "uk": "Ukrainien",
+    "coudntFindLocations": "Nous n'avons trouvé aucun emplacement pour \"{searchKeyword}\". 😕"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -5247,7 +5258,7 @@ class CodegenLoader extends AssetLoader {
     "incorrectMagicLink": "Enlace mágico incorrecto. 😕",
     "incorrectCode": "Code incorrecto. 😕",
     "authenticationFailed": "Error al autenticarse. 😕",
-    "subscriptionActive": "\"¡Buenas noticias! Su suscripción ya está activa. 🎉\"",
+    "subscriptionActive": "¡Buenas noticias! Su suscripción ya está activa. 🎉",
     "subscriptionProcessCanceled": "Proceso de suscripción cancelado. 😕",
     "failedToSubscribe": "Algo salió mal con su suscripción. 😕",
     "somethingWentWrong": "Algo salió mal. 😕",
@@ -5262,7 +5273,8 @@ class CodegenLoader extends AssetLoader {
     "mk": "Macedónio",
     "pt": "Portugués",
     "sr": "Serbio",
-    "uk": "Ucraniano"
+    "uk": "Ucraniano",
+    "coudntFindLocations": "No pudimos encontrar ninguna ubicación para \"{searchKeyword}\". 😕"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "tr": tr,
