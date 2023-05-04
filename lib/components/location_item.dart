@@ -27,7 +27,7 @@ class LocationItem extends StatelessWidget {
   Widget build(BuildContext context) => Observer(
         builder: (context) => RippleWidget(
           onTap: vpnStore.isLoading
-              ? null
+              ? vpnStore.cancelConnection
               : () => onConnectButtonPressed(
                     connectivityStore.connectionStatus,
                     vpnStore.connectionStatus,

@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:async/async.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
@@ -70,6 +71,8 @@ abstract class _VpnStore with Store {
   @observable
   ObservableFuture<void> setupTunnelFuture = ObservableFuture.value(null);
 
+  CancelableOperation<void>? _cancelableOperation;
+
   @readonly
   Duration? _duration;
   @readonly
@@ -105,6 +108,9 @@ abstract class _VpnStore with Store {
   @readonly
   String? _connectingLocationCode;
 
+  @observable
+  bool _isCanceled = false;
+
   @action
   Future<void> setupTunnel() async {
     setupTunnelFuture =
@@ -124,6 +130,14 @@ abstract class _VpnStore with Store {
       _publicKey = res['publicKey'] ?? '';
       await _securedStorage.write(StorageKeys.wireguardPrivateKey.value, _privateKey);
       await _securedStorage.write(StorageKeys.wireguardPublicKey.value, _publicKey);
+    }
+  }
+
+  @action
+  Future<void> cancelConnection() async {
+    if (_connectionStatus == ConnectionStatus.connecting) {
+      await _cancelableOperation?.cancel();
+      _isCanceled = true;
     }
   }
 
@@ -148,16 +162,22 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> disconnectWireguard() async {
-    await _wireguardService.disconnect();
+    await _wireguardService.disconnect().timeout(
+          const Duration(seconds: 10),
+          onTimeout: () => throw TimeoutException('Wireguard disconnection timeout'),
+        );
   }
 
   @action
   Future<void> connect({
     Location? location,
   }) async {
+    if (_subscriptionStore.subscriptionFuture?.status == FutureStatus.pending) {
+      showSnackbar('We are checking your subscription status. Please wait.');
+      return;
+    }
     if (_subscriptionStore.subscription?.active == false ||
-        _subscriptionStore.subscriptionFuture?.status == FutureStatus.rejected ||
-        _subscriptionStore.subscriptionFuture?.status == FutureStatus.pending) {
+        _subscriptionStore.subscriptionFuture?.status == FutureStatus.rejected) {
       showSnackbar(LocaleKeys.activateSubscription.tr());
       return;
     }
@@ -177,32 +197,17 @@ abstract class _VpnStore with Store {
       }
       final stopwatch = Stopwatch()..start();
       _connectionStatus = ConnectionStatus.connecting;
-      _vpnConfig = await _apiService.fetchVpnConfig(
-        input: VpnConfigInput(
-          publicKey: _publicKey,
-          country: location?.countryCode,
-        ),
-        privateKey: _privateKey,
+      _isCanceled = false;
+      // ignore: void_checks
+      _cancelableOperation = CancelableOperation.fromFuture(
+        _completeConnection(location, stopwatch),
+        onCancel: () async {
+          stopwatch.stop();
+          await disconnectWireguard();
+          _connectionStatus = ConnectionStatus.disconnected;
+        },
       );
-
-      debugPrint(_vpnConfig?.config);
-      await connectWireguard();
-      final ipAddress = await _apiService.getIPAdress();
-      _vpnConnection = VpnConnection(
-        connectionIP: ipAddress ?? '--',
-        location: location?.countryCode ?? '--',
-      );
-      _connectionStatus = ConnectionStatus.connected;
-      stopwatch.stop();
-      _analyticsStore.setVpnConnect(
-        vpnServer: _vpnConnection.location,
-        vpnProcessingTime: stopwatch.elapsed,
-      );
-      //startTracking();
-      if (location != null) {
-        _apiService.setRecentLocation(location: location.countryCode);
-        _locationsStore.fetchRecentLocations();
-      }
+      await _cancelableOperation?.value;
     } on TimeoutException {
       await disconnectWireguard();
       showSnackbar(
@@ -236,6 +241,37 @@ abstract class _VpnStore with Store {
           errorMessage: e.toString(),
           errorSource: 'internal',
         );
+      }
+    }
+  }
+
+  @action
+  Future<void> _completeConnection(Location? location, Stopwatch stopwatch) async {
+    _vpnConfig = await _apiService.fetchVpnConfig(
+      input: VpnConfigInput(
+        publicKey: _publicKey,
+        country: location?.countryCode,
+      ),
+      privateKey: _privateKey,
+    );
+    debugPrint(_vpnConfig?.config);
+    if (!_isCanceled) {
+      await connectWireguard();
+      final ipAddress = await _apiService.getIPAdress();
+      _vpnConnection = VpnConnection(
+        connectionIP: ipAddress ?? '--',
+        location: location?.countryCode ?? '--',
+      );
+      _connectionStatus = ConnectionStatus.connected;
+      stopwatch.stop();
+      _analyticsStore.setVpnConnect(
+        vpnServer: _vpnConnection.location,
+        vpnProcessingTime: stopwatch.elapsed,
+      );
+      //startTracking();
+      if (location != null) {
+        _apiService.setRecentLocation(location: location.countryCode);
+        _locationsStore.fetchRecentLocations();
       }
     }
   }
