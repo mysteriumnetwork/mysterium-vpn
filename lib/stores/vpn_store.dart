@@ -134,7 +134,13 @@ abstract class _VpnStore with Store {
       return;
     }
     try {
-      await _wireguardService.connect(cfg: config);
+      await _wireguardService.connect(cfg: config).timeout(
+            const Duration(seconds: 10),
+            onTimeout: () => throw TimeoutException('Wireguard connection timeout'),
+          );
+    } on TimeoutException {
+      debugPrint('Wireguard connection timeout');
+      rethrow;
     } catch (e) {
       throw WireguardConnectException(e.toString());
     }
@@ -156,6 +162,7 @@ abstract class _VpnStore with Store {
       return;
     }
     if (_vpnConnection.location == location?.countryCode) {
+      await disconnect();
       return;
     }
     location ??= _locationsStore.recentLocations.isNotEmpty
@@ -196,6 +203,12 @@ abstract class _VpnStore with Store {
         _apiService.setRecentLocation(location: location.countryCode);
         _locationsStore.fetchRecentLocations();
       }
+    } on TimeoutException {
+      await disconnectWireguard();
+      showSnackbar(
+        'Connection timeout. Please try again later. If the problem persists, please contact support.',
+      );
+      _connectionStatus = ConnectionStatus.disconnected;
     } catch (e) {
       showSnackbar(
         LocaleKeys.failedToConnect.tr(
