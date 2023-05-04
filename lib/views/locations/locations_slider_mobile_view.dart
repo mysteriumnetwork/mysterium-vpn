@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/recent_locations_list.dart';
@@ -23,41 +22,39 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     return MediaQuery.removePadding(
       context: context,
       removeTop: true,
-      child: Observer(
-        builder: (context) => ListView(
-          controller: sc,
-          children: <Widget>[
-            Align(
-              child: Container(
-                width: 30,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: const BorderRadius.all(Radius.circular(12)),
-                ),
+      child: ListView(
+        controller: sc,
+        children: <Widget>[
+          Align(
+            child: Container(
+              width: 30,
+              height: 5,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
               ),
-            ).padding(bottom: 10, top: 10),
-            SearchField(locationsStore).padding(bottom: 20),
-            RecentLocationsList(
-              themeStore: themeStore,
-              locationsStore: locationsStore,
-              vpnStore: vpnStore,
-              connectivityStore: connectivityStore,
-            ).padding(bottom: 20),
-            EasyText(
-              LocaleKeys.allLocations.tr(),
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ).padding(bottom: 20),
-            AllLocationsList(
-              themeStore: themeStore,
-              locationsStore: locationsStore,
-              vpnStore: vpnStore,
-              connectivityStore: connectivityStore,
-            )
-          ],
-        ).paddingDirectional(horizontal: 20),
-      ),
+            ),
+          ).padding(bottom: 10, top: 10),
+          SearchField(locationsStore).padding(bottom: 20),
+          RecentLocationsList(
+            themeStore: themeStore,
+            locationsStore: locationsStore,
+            vpnStore: vpnStore,
+            connectivityStore: connectivityStore,
+          ).padding(bottom: 20),
+          EasyText(
+            LocaleKeys.allLocations.tr(),
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+          ).padding(bottom: 20),
+          AllLocationsList(
+            themeStore: themeStore,
+            locationsStore: locationsStore,
+            vpnStore: vpnStore,
+            connectivityStore: connectivityStore,
+          )
+        ],
+      ).paddingDirectional(horizontal: 20),
     );
   }
 }
