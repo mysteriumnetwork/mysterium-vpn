@@ -28,9 +28,10 @@ class HomePage extends HookConsumerWidget {
     useOnAppLifecycleStateChange(
       (previous, current) {
         debugPrint('App Lifecycle: $previous -> $current');
-        if (previous == AppLifecycleState.inactive && current == AppLifecycleState.resumed) {
-          subscriptionStore.fetchSubscription();
-        }
+        // TODO(Kristijan): ADD THIS BACK WHEN WE GO LIVE
+        // if (previous == AppLifecycleState.inactive && current == AppLifecycleState.resumed) {
+        //   subscriptionStore.fetchSubscription();
+        // }
         if (current == AppLifecycleState.detached) {
           vpnStore.disconnect();
         }
