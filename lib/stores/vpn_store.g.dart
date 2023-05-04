@@ -239,6 +239,14 @@ mixin _$VpnStore on _VpnStore, Store {
     return _$generateKeyAsyncAction.run(() => super.generateKey());
   }
 
+  late final _$cancelConnectionAsyncAction =
+      AsyncAction('_VpnStore.cancelConnection', context: context);
+
+  @override
+  Future<void> cancelConnection() {
+    return _$cancelConnectionAsyncAction.run(() => super.cancelConnection());
+  }
+
   late final _$connectWireguardAsyncAction =
       AsyncAction('_VpnStore.connectWireguard', context: context);
 

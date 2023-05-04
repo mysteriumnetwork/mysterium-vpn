@@ -46,7 +46,9 @@ class RecentLocationsList extends StatelessWidget {
                   return RecentLocationItem(
                     location: location,
                     vpnStore: vpnStore,
-                    onTap: () async => vpnStore.connect(location: location),
+                    onTap: () => vpnStore.vpnConnection.location == location.countryCode
+                        ? vpnStore.disconnect()
+                        : vpnStore.connect(location: location),
                     connectivityStore: connectivityStore,
                   );
                 },
