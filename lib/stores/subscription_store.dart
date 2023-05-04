@@ -220,17 +220,17 @@ abstract class _SubscriptionStore with Store {
               ? ProductStatus.purchased
               : ProductStatus.purchasable;
         }
+        _analyticsStore.setPaymentSuccessful(
+          paymentGateway: getPlatformGateway(),
+          planPrice: _products[index].productDetails.rawPrice,
+          planType: _purchasedProductId ?? '',
+          transactionId: purchaseDetails.verificationData.serverVerificationData,
+          transactionDate: purchaseDetails.transactionDate ?? '',
+        );
       }
     }
 
     if (purchaseDetails.pendingCompletePurchase) {
-      _analyticsStore.setPaymentSuccessful(
-        paymentGateway: getPlatformGateway(),
-        planPrice: _products[index].productDetails.rawPrice,
-        planType: _purchasedProductId ?? '',
-        transactionId: purchaseDetails.verificationData.serverVerificationData,
-        transactionDate: purchaseDetails.transactionDate ?? '',
-      );
       _inAppPurchase.completePurchase(purchaseDetails);
     }
     _lastPurchase = purchaseDetails;

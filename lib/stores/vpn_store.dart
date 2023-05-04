@@ -248,6 +248,9 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> disconnect() async {
+    if (_connectionStatus != ConnectionStatus.connected) {
+      return;
+    }
     _connectionStatus = ConnectionStatus.disconnecting;
     await Future.delayed(const Duration(seconds: 1));
     await disconnectWireguard();
