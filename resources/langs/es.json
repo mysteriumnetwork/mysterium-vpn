@@ -421,5 +421,7 @@
   "pt": "Portugués",
   "sr": "Serbio",
   "uk": "Ucraniano",
-  "coudntFindLocations": "No pudimos encontrar ninguna ubicación para \"{searchKeyword}\". 😕"
+  "coudntFindLocations": "No pudimos encontrar ninguna ubicación para \"{searchKeyword}\". 😕",
+  "checkingSubsStatus": "Estamos revisando el estado de su suscripción. Espere.",
+  "connectionTimeout": "Se agotó el tiempo de conexión. Vuelva a intentarlo más tarde. Si el problema persiste, póngase en contacto con el servicio de asistencia."
 }

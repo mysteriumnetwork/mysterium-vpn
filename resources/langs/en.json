@@ -421,5 +421,7 @@
   "pt": "Portuguese",
   "sr": "Serbian",
   "uk": "Ukrainian",
-  "coudntFindLocations": "We could not find any locations for \"{searchKeyword}\". 😕"
+  "coudntFindLocations": "We could not find any locations for \"{searchKeyword}\". 😕",
+  "checkingSubsStatus":"We are checking your subscription status. Please wait.",
+  "connectionTimeout":"Connection timeout. Please try again later. If the problem persists, please contact support"
 }

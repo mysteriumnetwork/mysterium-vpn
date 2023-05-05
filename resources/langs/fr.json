@@ -421,5 +421,7 @@
   "pt": "Portugais",
   "sr": "Serbe",
   "uk": "Ukrainien",
-  "coudntFindLocations": "Nous n'avons trouvé aucun emplacement pour \"{searchKeyword}\". 😕"
+  "coudntFindLocations": "Nous n'avons trouvé aucun emplacement pour \"{searchKeyword}\". 😕",
+  "checkingSubsStatus": "Nous vérifions l'état de votre abonnement.Veuillez patienter.",
+  "connectionTimeout": "Délai de connexion expiré.Veuillez réessayer plus tard.Si le problème persiste, veuillez contacter le support"
 }
