@@ -29,12 +29,14 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final appLinks = ref.watch(appLinksPOD);
   final localDb = ref.watch(localDBPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
+  final env = ref.watch(environmentPOD);
 
   return AuthStore(
     authService: authService,
     appLinks: appLinks,
     localDb: localDb,
     analyticsStore: analyticsStore,
+    env: env,
   );
 });
 

@@ -13,7 +13,7 @@ class FlavorValues {
   factory FlavorValues.production() => FlavorValues(
         baseUrl: 'https://app.mysteriumvpn.com/api/v1',
         scheme: 'app',
-        webAppUrl: 'https://app.mysteriumvpn.com/login?scheme=mysteriumvpn',
+        webAppUrl: 'app.mysteriumvpn.com',
         sentryDsn:
             'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200',
         testEmail: 'Yet7ej38fcBf3pzrE6xK.S3xFjgNn8rRzrkmLoag8@mysteriumvpn.com',
@@ -22,7 +22,7 @@ class FlavorValues {
   factory FlavorValues.dev() => FlavorValues(
         baseUrl: 'https://app-testnet.mysteriumvpn.com/api/v1',
         scheme: 'app',
-        webAppUrl: 'https://app-testnet.mysteriumvpn.com/login?scheme=mysteriumvpn',
+        webAppUrl: 'app-testnet.mysteriumvpn.com',
         sentryDsn:
             'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200',
         testEmail: 'ttcdELfiaq8sgA4D6Y8A.iMC9Y5QyDLrxJnr5cXXC@mysteriumvpn.com',
