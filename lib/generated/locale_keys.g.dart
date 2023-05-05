@@ -424,4 +424,6 @@ abstract class LocaleKeys {
   static const sr = 'sr';
   static const uk = 'uk';
   static const coudntFindLocations = 'coudntFindLocations';
+  static const checkingSubsStatus = 'checkingSubsStatus';
+  static const connectionTimeout = 'connectionTimeout';
 }

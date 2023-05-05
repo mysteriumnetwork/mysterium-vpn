@@ -421,5 +421,7 @@
   "pt": "Portugalų",
   "sr": "Serbų",
   "uk": "Ukrainiečių",
-  "coudntFindLocations": "Nepavyko rasti jokių vietų pagal „{searchKeyword}“. 😕"
+  "coudntFindLocations": "Nepavyko rasti jokių vietų pagal „{searchKeyword}“. 😕",
+  "checkingSubsStatus": "Mes tikriname jūsų prenumeratos būseną. Palaukite.",
+  "connectionTimeout": "Baigėsi ryšio skirtasis laikas. Vėliau bandykite dar kartą.Jei problema išlieka, susisiekite su palaikymo komanda"
 }

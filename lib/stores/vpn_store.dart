@@ -153,7 +153,6 @@ abstract class _VpnStore with Store {
             onTimeout: () => throw TimeoutException('Wireguard connection timeout'),
           );
     } on TimeoutException {
-      debugPrint('Wireguard connection timeout');
       rethrow;
     } catch (e) {
       throw WireguardConnectException(e.toString());
@@ -173,7 +172,9 @@ abstract class _VpnStore with Store {
     Location? location,
   }) async {
     if (_subscriptionStore.subscriptionFuture?.status == FutureStatus.pending) {
-      showSnackbar('We are checking your subscription status. Please wait.');
+      showSnackbar(
+        LocaleKeys.checkingSubsStatus.tr(),
+      );
       return;
     }
     if (_subscriptionStore.subscription?.active == false ||
@@ -211,7 +212,7 @@ abstract class _VpnStore with Store {
     } on TimeoutException {
       await disconnectWireguard();
       showSnackbar(
-        'Connection timeout. Please try again later. If the problem persists, please contact support.',
+        LocaleKeys.connectionTimeout.tr(),
       );
       _connectionStatus = ConnectionStatus.disconnected;
     } catch (e) {

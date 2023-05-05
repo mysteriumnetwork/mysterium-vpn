@@ -443,7 +443,10 @@ class CodegenLoader extends AssetLoader {
     "pt": "Portekizce",
     "sr": "Sırpça",
     "uk": "Ukraynaca",
-    "coudntFindLocations": "\"{searchKeyword}\" için herhangi bir yer bulamadık. 😕"
+    "coudntFindLocations": "\"{searchKeyword}\" için herhangi bir yer bulamadık. 😕",
+    "checkingSubsStatus": "Abonelik durumunuzu kontrol ediyoruz. Lütfen bekleyin.",
+    "connectionTimeout":
+        "Bağlantı zaman aşımına uğradı.Lütfen daha sonra tekrar deneyin.Sorun devam ederse, lütfen destek ile iletişime geçin."
   };
   static const Map<String, dynamic> mk = {
     "title": "Здраво господине",
@@ -885,7 +888,10 @@ class CodegenLoader extends AssetLoader {
     "pt": "Португалски",
     "sr": "Српски",
     "uk": "Украински",
-    "coudntFindLocations": "Не можевме да најдеме локации за „{searchKeyword}“. 😕"
+    "coudntFindLocations": "Не можевме да најдеме локации за „{searchKeyword}“. 😕",
+    "checkingSubsStatus": "Го проверуваме статусот на вашата претплата. Ве молиме почекајте.",
+    "connectionTimeout":
+        "Истече време на врската. Обидете се повторно подоцна. Доколку проблемот опстојува, ве молиме контактирајте со поддршката"
   };
   static const Map<String, dynamic> lt = {
     "title": "Sveiki pone",
@@ -1322,7 +1328,10 @@ class CodegenLoader extends AssetLoader {
     "pt": "Portugalų",
     "sr": "Serbų",
     "uk": "Ukrainiečių",
-    "coudntFindLocations": "Nepavyko rasti jokių vietų pagal „{searchKeyword}“. 😕"
+    "coudntFindLocations": "Nepavyko rasti jokių vietų pagal „{searchKeyword}“. 😕",
+    "checkingSubsStatus": "Mes tikriname jūsų prenumeratos būseną. Palaukite.",
+    "connectionTimeout":
+        "Baigėsi ryšio skirtasis laikas. Vėliau bandykite dar kartą.Jei problema išlieka, susisiekite su palaikymo komanda"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1767,7 +1776,10 @@ class CodegenLoader extends AssetLoader {
     "pt": "Portugiesisch",
     "sr": "Serbisch",
     "uk": "Ukrainisch",
-    "coudntFindLocations": "Wir konnten keine Standorte für \"{searchKeyword}\" finden. 😕"
+    "coudntFindLocations": "Wir konnten keine Standorte für \"{searchKeyword}\" finden. 😕",
+    "checkingSubsStatus": "Wir prüfen Ihren Abonnementstatus. Bitte warten Sie.",
+    "connectionTimeout":
+        "Verbindungszeitüberschreitung. Bitte versuchen Sie es später erneut. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an den Support."
   };
   static const Map<String, dynamic> uk = {
     "title": "Вітаю, сер",
@@ -2199,7 +2211,10 @@ class CodegenLoader extends AssetLoader {
     "pt": "португальська",
     "sr": "сербська",
     "uk": "українська",
-    "coudntFindLocations": "Нам не вдалося знайти жодного місця для \"{searchKeyword}\". 😕"
+    "coudntFindLocations": "Нам не вдалося знайти жодного місця для \"{searchKeyword}\". 😕",
+    "checkingSubsStatus": "Ми перевіряємо статус вашої підписки. Зачекайте.",
+    "connectionTimeout":
+        "Час очікування підключення. Спробуйте пізніше. Якщо проблема не зникне, зверніться до служби підтримки"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2637,7 +2652,10 @@ class CodegenLoader extends AssetLoader {
     "pt": "Português",
     "sr": "Sérvio",
     "uk": "Ucraniano",
-    "coudntFindLocations": "Não foi possível encontrar nenhum local para \"{searchKeyword}\". 😕"
+    "coudntFindLocations": "Não foi possível encontrar nenhum local para \"{searchKeyword}\". 😕",
+    "checkingSubsStatus": "Estamos verificando o status da sua assinatura. Aguarde.",
+    "connectionTimeout":
+        "Tempo limite de conexão. Tente novamente mais tarde. Se o problema persistir, entre em contato com o suporte"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -3073,7 +3091,10 @@ class CodegenLoader extends AssetLoader {
     "pt": "Portuguese",
     "sr": "Serbian",
     "uk": "Ukrainian",
-    "coudntFindLocations": "We could not find any locations for \"{searchKeyword}\". 😕"
+    "coudntFindLocations": "We could not find any locations for \"{searchKeyword}\". 😕",
+    "checkingSubsStatus": "We are checking your subscription status. Please wait.",
+    "connectionTimeout":
+        "Connection timeout. Please try again later. If the problem persists, please contact support"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3515,7 +3536,10 @@ class CodegenLoader extends AssetLoader {
     "pt": "Portoghese",
     "sr": "Serbo",
     "uk": "Ucraino",
-    "coudntFindLocations": "Non siamo riusciti a trovare posizioni per \"{searchKeyword}\". 😕"
+    "coudntFindLocations": "Non siamo riusciti a trovare posizioni per \"{searchKeyword}\". 😕",
+    "checkingSubsStatus": "Stiamo controllando lo stato della tua iscrizione. Attendi.",
+    "connectionTimeout":
+        "Timeout della connessione. Riprova più tardi. Se il problema persiste, contatta l'assistenza"
   };
   static const Map<String, dynamic> sr = {
     "title": "Здраво господине",
@@ -3956,7 +3980,10 @@ class CodegenLoader extends AssetLoader {
     "pt": "Португалски",
     "sr": "Српски",
     "uk": "Украјински",
-    "coudntFindLocations": "Нисмо могли да пронађемо ниједну локацију за \"{searchKeyword}\". 😕"
+    "coudntFindLocations": "Нисмо могли да пронађемо ниједну локацију за \"{searchKeyword}\". 😕",
+    "checkingSubsStatus": "Проверавамо ваш статус претплате. Сачекајте.",
+    "connectionTimeout":
+        "Време је истекло везе. Покушајте поново касније. Ако се проблем настави, контактирајте подршку"
   };
   static const Map<String, dynamic> et = {
     "title": "Tere, härra",
@@ -4392,7 +4419,10 @@ class CodegenLoader extends AssetLoader {
     "pt": "Portugali keel",
     "sr": "Serblane",
     "uk": "Ukraina",
-    "coudntFindLocations": "Me ei leidnud ühtegi asukohta päringule \"{searchKeyword}\". "
+    "coudntFindLocations": "Me ei leidnud ühtegi asukohta päringule \"{searchKeyword}\". ",
+    "checkingSubsStatus": "Kontrollime teie tellimuse olekut. Palun oodake.",
+    "connectionTimeout":
+        "Ühenduse ajalõpp.Proovige hiljem uuesti.Kui probleem püsib, võtke ühendust toega"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -4835,7 +4865,10 @@ class CodegenLoader extends AssetLoader {
     "pt": "Portugais",
     "sr": "Serbe",
     "uk": "Ukrainien",
-    "coudntFindLocations": "Nous n'avons trouvé aucun emplacement pour \"{searchKeyword}\". 😕"
+    "coudntFindLocations": "Nous n'avons trouvé aucun emplacement pour \"{searchKeyword}\". 😕",
+    "checkingSubsStatus": "Nous vérifions l'état de votre abonnement.Veuillez patienter.",
+    "connectionTimeout":
+        "Délai de connexion expiré.Veuillez réessayer plus tard.Si le problème persiste, veuillez contacter le support"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -5274,7 +5307,10 @@ class CodegenLoader extends AssetLoader {
     "pt": "Portugués",
     "sr": "Serbio",
     "uk": "Ucraniano",
-    "coudntFindLocations": "No pudimos encontrar ninguna ubicación para \"{searchKeyword}\". 😕"
+    "coudntFindLocations": "No pudimos encontrar ninguna ubicación para \"{searchKeyword}\". 😕",
+    "checkingSubsStatus": "Estamos revisando el estado de su suscripción. Espere.",
+    "connectionTimeout":
+        "Se agotó el tiempo de conexión. Vuelva a intentarlo más tarde. Si el problema persiste, póngase en contacto con el servicio de asistencia."
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "tr": tr,
