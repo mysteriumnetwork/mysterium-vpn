@@ -321,7 +321,7 @@ void showSnackbar(String message, {MessageType type = MessageType.error}) {
 }
 
 ApiException handleException(Exception e, {String? message}) {
-  if (e is DioError) {
+  if (e is DioError && e.response?.data != null && e.response?.data is Map<String, dynamic>) {
     final data = e.response?.data as Map<String, dynamic>;
     final exception = ApiException(
       '',

@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   app_links: ^3.4.2
+  async: ^2.10.0
   auto_size_text: ^3.0.0
   beamer: ^1.5.3
   circle_flags: ^1.0.3
@@ -21,6 +22,7 @@ dependencies:
   firebase_analytics: ^10.1.6
   firebase_core: ^2.8.0
   firebase_crashlytics: ^3.0.17
+  firebase_performance: ^0.9.1+2
   flutter:
     sdk: flutter
   flutter_hooks: ^0.18.6

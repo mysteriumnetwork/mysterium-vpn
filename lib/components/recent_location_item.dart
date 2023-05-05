@@ -31,7 +31,7 @@ class RecentLocationItem extends StatelessWidget {
         builder: (context) => RippleWidget(
           radius: 20,
           onTap: vpnStore.isLoading
-              ? null
+              ? vpnStore.cancelConnection
               : () => onConnectButtonPressed(
                     connectivityStore.connectionStatus,
                     vpnStore.connectionStatus,
@@ -56,7 +56,7 @@ class RecentLocationItem extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 maxLines: 2,
               ),
-              if (location.countryCode == vpnStore.connectingLocationCode && vpnStore.isConnected)
+              if (location.countryCode == vpnStore.vpnConnection.location && vpnStore.isConnected)
                 EasyText(
                   LocaleKeys.connected.tr(),
                   color: Palette.purple,

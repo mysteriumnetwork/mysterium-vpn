@@ -10,10 +10,19 @@ class UnauthorizedInterceptor extends Interceptor {
   final AuthStore authStore;
   @override
   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
-    if ((err.response?.statusCode == 401 ||
-            (err.response?.data as Map<String, dynamic>?)?['status'] == 401) &&
-        authStore.authStatus == AuthStatus.authenticated) {
+    if (_isUnauthorizedError(err) && authStore.authStatus == AuthStatus.authenticated) {
       await authStore.logout();
     }
   }
+}
+
+bool _isUnauthorizedError(DioError err) {
+  if (err.response?.statusCode == 401) {
+    return true;
+  }
+  final data = err.response?.data;
+  if (data is Map<String, dynamic> && data.containsKey('status') && data['status'] == 401) {
+    return true;
+  }
+  return false;
 }

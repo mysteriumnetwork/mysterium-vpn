@@ -421,5 +421,7 @@
   "pt": "Portoghese",
   "sr": "Serbo",
   "uk": "Ucraino",
-  "coudntFindLocations": "Non siamo riusciti a trovare posizioni per \"{searchKeyword}\". 😕"
+  "coudntFindLocations": "Non siamo riusciti a trovare posizioni per \"{searchKeyword}\". 😕",
+  "checkingSubsStatus": "Stiamo controllando lo stato della tua iscrizione. Attendi.",
+  "connectionTimeout": "Timeout della connessione. Riprova più tardi. Se il problema persiste, contatta l'assistenza"
 }
