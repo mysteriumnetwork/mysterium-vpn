@@ -5,19 +5,21 @@ import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/auth_data.dart';
+import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Project imports:
 
@@ -32,10 +34,12 @@ abstract class _AuthStore with Store {
     required AppLinks appLinks,
     required LocalDBService localDb,
     required AnalyticsStore analyticsStore,
+    required FlavorConfig env,
   })  : _authService = authService,
         _appLinks = appLinks,
         _localDb = localDb,
-        _analyticsStore = analyticsStore {
+        _analyticsStore = analyticsStore,
+        _env = env {
     initAuth();
   }
 
@@ -44,6 +48,7 @@ abstract class _AuthStore with Store {
   final AppLinks _appLinks;
   final SecureStorageService _secureStorageService = SecureStorageService();
   final AnalyticsStore _analyticsStore;
+  final FlavorConfig _env;
 
   @readonly
   AuthStatus _authStatus = AuthStatus.unknown;
@@ -191,5 +196,27 @@ abstract class _AuthStore with Store {
     }
     _email = email;
     return code;
+  }
+
+  @action
+  Future<void> loginDesktop() async {
+    _pkcePair = PkcePair.generate();
+    _secureStorageService.savePkcePair(
+      codeChallenge: _pkcePair!.codeChallenge,
+      codeVerifier: _pkcePair!.codeVerifier,
+    );
+    final authUri = Uri(
+      scheme: 'https',
+      host: _env.values.webAppUrl,
+      path: '/oauth/authorize',
+      queryParameters: {
+        'client_id': 'app',
+        'response_type': 'code',
+        'code_challenge': _pkcePair!.codeChallenge,
+        'code_challenge_method': 's256',
+      },
+    );
+    await launchUrl(authUri);
+    return;
   }
 }

@@ -151,6 +151,13 @@ mixin _$AuthStore on _AuthStore, Store {
     return _$loginAsyncAction.run(() => super.login(email: email));
   }
 
+  late final _$loginDesktopAsyncAction = AsyncAction('_AuthStore.loginDesktop', context: context);
+
+  @override
+  Future<void> loginDesktop() {
+    return _$loginDesktopAsyncAction.run(() => super.loginDesktop());
+  }
+
   @override
   String toString() {
     return '''
