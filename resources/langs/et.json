@@ -421,5 +421,7 @@
   "pt": "Portugali keel",
   "sr": "Serblane",
   "uk": "Ukraina",
-  "coudntFindLocations": "Me ei leidnud ühtegi asukohta päringule \"{searchKeyword}\". "
+  "coudntFindLocations": "Me ei leidnud ühtegi asukohta päringule \"{searchKeyword}\". ",
+  "checkingSubsStatus": "Kontrollime teie tellimuse olekut. Palun oodake.",
+  "connectionTimeout": "Ühenduse ajalõpp.Proovige hiljem uuesti.Kui probleem püsib, võtke ühendust toega"
 }
