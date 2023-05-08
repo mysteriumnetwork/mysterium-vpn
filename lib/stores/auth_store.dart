@@ -17,6 +17,7 @@ import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics_store.dart';
+import 'package:mysterium_vpn/stores/intercom_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 // Project imports:
@@ -32,10 +33,12 @@ abstract class _AuthStore with Store {
     required AppLinks appLinks,
     required LocalDBService localDb,
     required AnalyticsStore analyticsStore,
+    required IntercomStore intercomStore,
   })  : _authService = authService,
         _appLinks = appLinks,
         _localDb = localDb,
-        _analyticsStore = analyticsStore {
+        _analyticsStore = analyticsStore,
+        _intercomStore = intercomStore {
     initAuth();
   }
 
@@ -44,6 +47,7 @@ abstract class _AuthStore with Store {
   final AppLinks _appLinks;
   final SecureStorageService _secureStorageService = SecureStorageService();
   final AnalyticsStore _analyticsStore;
+  final IntercomStore _intercomStore;
 
   @readonly
   AuthStatus _authStatus = AuthStatus.unknown;
@@ -136,6 +140,7 @@ abstract class _AuthStore with Store {
       _analyticsStore
         ..setUserId(_authData!.username)
         ..setLogin();
+      _intercomStore.registerUser(_authData!.username, _authData!.userId);
       FirebaseCrashlytics.instance.setUserIdentifier(_authData!.username);
       debugPrint(_localDb.userData.toString());
     } on KeyDoesntExistsException {
@@ -159,6 +164,7 @@ abstract class _AuthStore with Store {
 
     await logoutFeature;
     _analyticsStore.setLogOut(_authData?.username ?? '');
+    _intercomStore.logout();
     _authStatus = AuthStatus.unauthenticated;
     _authData = null;
   }
