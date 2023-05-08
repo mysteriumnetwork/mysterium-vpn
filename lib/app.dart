@@ -23,7 +23,7 @@ class MyApp extends HookConsumerWidget {
     final localStore = ref.read(localeStorePOD);
     final connectivityStore = ref.read(connectivityStorePOD);
     final appLifecycleState = useAppLifecycleState();
-
+    var prevAuthStatus = usePrevious<AuthStatus?>(AuthStatus.unknown);
     useEffect(
       () {
         debugPrint(appLifecycleState?.name);
@@ -38,7 +38,8 @@ class MyApp extends HookConsumerWidget {
       builder: (_) => reaction(
         (_) => authStore.authStatus,
         (status) {
-          authenticationReaction(status, routeDelegate, authStore, ref);
+          prevAuthStatus = status;
+          authenticationReaction(status, routeDelegate, authStore, ref, prevAuthStatus);
         },
       ),
       child: Observer(
@@ -65,19 +66,19 @@ class MyApp extends HookConsumerWidget {
   }
 
   void authenticationReaction(
-    AuthStatus status,
+    AuthStatus authStatus,
     BeamerDelegate routeDelegate,
     AuthStore authStore,
     WidgetRef ref,
+    AuthStatus? prevAuthStatus,
   ) {
     routeDelegate.update();
-    if (status == AuthStatus.unauthenticated) {
+    if (authStatus == AuthStatus.unauthenticated && prevAuthStatus == AuthStatus.authenticated) {
       ref
         ..read(vpnStorePOD).disconnect()
         ..invalidate(subscriptionStorePOD)
         ..invalidate(vpnStorePOD)
-        ..invalidate(locationsStorePOD)
-        ..invalidate(vpnStorePOD);
+        ..invalidate(locationsStorePOD);
     }
   }
 }
