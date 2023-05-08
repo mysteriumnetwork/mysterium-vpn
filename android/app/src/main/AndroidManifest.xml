@@ -14,6 +14,7 @@
     </queries>
 
     <application
+        android:name=".MyApp"
         android:label="Mysterium VPN"
         android:icon="@mipmap/ic_launcher">
         <activity
