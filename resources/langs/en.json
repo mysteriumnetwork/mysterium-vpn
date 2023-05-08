@@ -423,5 +423,8 @@
   "uk": "Ukrainian",
   "coudntFindLocations": "We could not find any locations for \"{searchKeyword}\". 😕",
   "checkingSubsStatus":"We are checking your subscription status. Please wait.",
-  "connectionTimeout":"Connection timeout. Please try again later. If the problem persists, please contact support"
+  "connectionTimeout":"Connection timeout. Please try again later. If the problem persists, please contact support",
+  "cancelYourSubsMess":"Please CANCEL YOUR SUBSCRIPTION on the billing page before deleting your account.",
+  "accountSuccessfullyDeleted":"Your account has been successfully deleted. We are sorry to see you go. 😢",
+  "redirectToLoginPage":"You will be redirected to the login page."
 }

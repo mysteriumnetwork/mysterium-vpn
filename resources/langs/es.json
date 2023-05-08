@@ -423,5 +423,8 @@
   "uk": "Ucraniano",
   "coudntFindLocations": "No pudimos encontrar ninguna ubicación para \"{searchKeyword}\". 😕",
   "checkingSubsStatus": "Estamos revisando el estado de su suscripción. Espere.",
-  "connectionTimeout": "Se agotó el tiempo de conexión. Vuelva a intentarlo más tarde. Si el problema persiste, póngase en contacto con el servicio de asistencia."
+  "connectionTimeout": "Se agotó el tiempo de conexión. Vuelva a intentarlo más tarde. Si el problema persiste, póngase en contacto con el servicio de asistencia.",
+  "cancelYourSubsMess": "CANCELE SU SUSCRIPCIÓN en la página de facturación antes de eliminar su cuenta.",
+  "accountSuccessfullyDeleted": "Su cuenta ha sido eliminada con éxito. Lamentamos que se vaya.😢",
+  "redirectToLoginPage": "Será redirigido a la página de inicio de sesión."
 }
