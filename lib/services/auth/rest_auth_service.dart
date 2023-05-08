@@ -144,4 +144,9 @@ class RestAuthService extends AuthService {
     await _securedStorage.removeUserId();
     await _securedStorage.removePkcePair();
   }
+
+  @override
+  Future<void> deleteAccount({required String email}) async {
+    await Future.delayed(const Duration(seconds: 4));
+  }
 }
