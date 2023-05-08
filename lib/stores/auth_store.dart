@@ -6,6 +6,7 @@ import 'package:app_links/app_links.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -65,6 +66,8 @@ abstract class _AuthStore with Store {
   ObservableFuture<String?> loginFeature = ObservableFuture.value(null);
   @observable
   ObservableFuture<void> logoutFeature = ObservableFuture.value(null);
+  @observable
+  ObservableFuture<void> deleteAccountFeature = ObservableFuture.value(null);
   @observable
   ObservableFuture<AuthData?> authenticateFeature = ObservableFuture.value(null);
 
@@ -189,5 +192,18 @@ abstract class _AuthStore with Store {
     }
     _email = email;
     return code;
+  }
+
+  @action
+  Future<void> deleteAccount() async {
+    try {
+      deleteAccountFeature = ObservableFuture(
+        _authService.deleteAccount(email: _authData?.username ?? ''),
+      );
+
+      await deleteAccountFeature;
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 }
