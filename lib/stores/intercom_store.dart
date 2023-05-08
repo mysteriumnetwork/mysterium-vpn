@@ -1,6 +1,5 @@
 import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/services/local_db_service.dart';
 
 part 'intercom_store.g.dart';
 
@@ -12,9 +11,7 @@ const String intercomIosApiKey = 'ios_sdk-13bd499b260981778455ba0235d7ca612b3305
 class IntercomStore = _IntercomStore with _$IntercomStore;
 
 abstract class _IntercomStore with Store {
-  _IntercomStore({required Intercom intercom, required LocalDBService localDb})
-      : _intercom = intercom,
-        _localDb = localDb;
+  _IntercomStore({required Intercom intercom}) : _intercom = intercom;
 
   @action
   Future<void> initialize() async {
@@ -25,6 +22,42 @@ abstract class _IntercomStore with Store {
     );
   }
 
+  @action
+  Future<void> registerUser(
+    String email,
+    String userId,
+  ) async {
+    await _intercom.loginIdentifiedUser(
+      email: email,
+      userId: userId,
+    );
+  }
+
+  @action
+  Future<void> logout() async {
+    await _intercom.logout();
+  }
+
+  @action
+  Future<void> updateUser(
+    String email,
+    String userId,
+  ) async {
+    await _intercom.updateUser(
+      email: email,
+      userId: userId,
+    );
+  }
+
+  @action
+  Future<void> displayMessenger() async {
+    await _intercom.displayMessenger();
+  }
+
+  @action
+  Future<void> displayHelpCenter() async {
+    await _intercom.displayHelpCenter();
+  }
+
   final Intercom _intercom;
-  final LocalDBService _localDb;
 }
