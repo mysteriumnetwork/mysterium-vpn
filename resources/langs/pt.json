@@ -423,5 +423,8 @@
   "uk": "Ucraniano",
   "coudntFindLocations": "Não foi possível encontrar nenhum local para \"{searchKeyword}\". 😕",
   "checkingSubsStatus": "Estamos verificando o status da sua assinatura. Aguarde.",
-  "connectionTimeout": "Tempo limite de conexão. Tente novamente mais tarde. Se o problema persistir, entre em contato com o suporte"
+  "connectionTimeout": "Tempo limite de conexão. Tente novamente mais tarde. Se o problema persistir, entre em contato com o suporte",
+  "cancelYourSubsMess": "CANCELE SUA ASSINATURA na página de cobrança antes de excluir sua conta.",
+  "accountSuccessfullyDeleted": "Sua conta foi excluída com sucesso. Lamentamos sua partida.😢",
+  "redirectToLoginPage": "Você será redirecionado para a página de login."
 }

@@ -446,7 +446,11 @@ class CodegenLoader extends AssetLoader {
     "coudntFindLocations": "\"{searchKeyword}\" için herhangi bir yer bulamadık. 😕",
     "checkingSubsStatus": "Abonelik durumunuzu kontrol ediyoruz. Lütfen bekleyin.",
     "connectionTimeout":
-        "Bağlantı zaman aşımına uğradı.Lütfen daha sonra tekrar deneyin.Sorun devam ederse, lütfen destek ile iletişime geçin."
+        "Bağlantı zaman aşımına uğradı.Lütfen daha sonra tekrar deneyin.Sorun devam ederse, lütfen destek ile iletişime geçin.",
+    "cancelYourSubsMess":
+        "Lütfen hesabınızı silmeden önce faturalandırma sayfasında ABONELİĞİNİZİ İPTAL EDİN.",
+    "accountSuccessfullyDeleted": "Hesabınız başarıyla silindi.Gittiğiniz için üzgünüz.😢",
+    "redirectToLoginPage": "Giriş sayfasına yönlendirileceksiniz."
   };
   static const Map<String, dynamic> mk = {
     "title": "Здраво господине",
@@ -891,7 +895,12 @@ class CodegenLoader extends AssetLoader {
     "coudntFindLocations": "Не можевме да најдеме локации за „{searchKeyword}“. 😕",
     "checkingSubsStatus": "Го проверуваме статусот на вашата претплата. Ве молиме почекајте.",
     "connectionTimeout":
-        "Истече време на врската. Обидете се повторно подоцна. Доколку проблемот опстојува, ве молиме контактирајте со поддршката"
+        "Истече време на врската. Обидете се повторно подоцна. Доколку проблемот опстојува, ве молиме контактирајте со поддршката",
+    "cancelYourSubsMess":
+        "ОТКАЖЕТЕ ЈА ВАШАТА ПРЕТПЛАТА на страницата за наплата пред да ја избришете вашата сметка.",
+    "accountSuccessfullyDeleted":
+        "Вашата сметка е успешно избришана. Жал ни е што ве гледаме дека одите.😢",
+    "redirectToLoginPage": "Ќе бидете пренасочени на страната за најавување."
   };
   static const Map<String, dynamic> lt = {
     "title": "Sveiki pone",
@@ -1331,7 +1340,12 @@ class CodegenLoader extends AssetLoader {
     "coudntFindLocations": "Nepavyko rasti jokių vietų pagal „{searchKeyword}“. 😕",
     "checkingSubsStatus": "Mes tikriname jūsų prenumeratos būseną. Palaukite.",
     "connectionTimeout":
-        "Baigėsi ryšio skirtasis laikas. Vėliau bandykite dar kartą.Jei problema išlieka, susisiekite su palaikymo komanda"
+        "Baigėsi ryšio skirtasis laikas. Vėliau bandykite dar kartą.Jei problema išlieka, susisiekite su palaikymo komanda",
+    "cancelYourSubsMess":
+        "Prieš ištrindami paskyrą, atsiskaitymo puslapyje ATŠAUKTI PRENUMERACIJĄ.",
+    "accountSuccessfullyDeleted":
+        "Jūsų paskyra sėkmingai ištrinta. Apgailestaujame, kad išeinate.😢",
+    "redirectToLoginPage": "Būsite nukreipti į prisijungimo puslapį."
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1779,7 +1793,12 @@ class CodegenLoader extends AssetLoader {
     "coudntFindLocations": "Wir konnten keine Standorte für \"{searchKeyword}\" finden. 😕",
     "checkingSubsStatus": "Wir prüfen Ihren Abonnementstatus. Bitte warten Sie.",
     "connectionTimeout":
-        "Verbindungszeitüberschreitung. Bitte versuchen Sie es später erneut. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an den Support."
+        "Verbindungszeitüberschreitung. Bitte versuchen Sie es später erneut. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an den Support.",
+    "cancelYourSubsMess":
+        "Bitte KÜNDIGEN SIE IHR ABONNEMENT auf der Abrechnungsseite, bevor Sie Ihr Konto löschen.",
+    "accountSuccessfullyDeleted":
+        "Ihr Konto wurde erfolgreich gelöscht. Es tut uns leid, dass Sie gehen.😢",
+    "redirectToLoginPage": "Sie werden auf die Anmeldeseite weitergeleitet."
   };
   static const Map<String, dynamic> uk = {
     "title": "Вітаю, сер",
@@ -2214,7 +2233,11 @@ class CodegenLoader extends AssetLoader {
     "coudntFindLocations": "Нам не вдалося знайти жодного місця для \"{searchKeyword}\". 😕",
     "checkingSubsStatus": "Ми перевіряємо статус вашої підписки. Зачекайте.",
     "connectionTimeout":
-        "Час очікування підключення. Спробуйте пізніше. Якщо проблема не зникне, зверніться до служби підтримки"
+        "Час очікування підключення. Спробуйте пізніше. Якщо проблема не зникне, зверніться до служби підтримки",
+    "cancelYourSubsMess":
+        "Будь ласка, СКАСУЙТЕ СВОЮ ПІДПИСКУ на сторінці платежів перед видаленням свого облікового запису.",
+    "accountSuccessfullyDeleted": "Ваш обліковий запис успішно видалено. Нам шкода, що ви йдете.😢",
+    "redirectToLoginPage": "Ви будете перенаправлені на сторінку входу."
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2655,7 +2678,11 @@ class CodegenLoader extends AssetLoader {
     "coudntFindLocations": "Não foi possível encontrar nenhum local para \"{searchKeyword}\". 😕",
     "checkingSubsStatus": "Estamos verificando o status da sua assinatura. Aguarde.",
     "connectionTimeout":
-        "Tempo limite de conexão. Tente novamente mais tarde. Se o problema persistir, entre em contato com o suporte"
+        "Tempo limite de conexão. Tente novamente mais tarde. Se o problema persistir, entre em contato com o suporte",
+    "cancelYourSubsMess":
+        "CANCELE SUA ASSINATURA na página de cobrança antes de excluir sua conta.",
+    "accountSuccessfullyDeleted": "Sua conta foi excluída com sucesso. Lamentamos sua partida.😢",
+    "redirectToLoginPage": "Você será redirecionado para a página de login."
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -3094,7 +3121,12 @@ class CodegenLoader extends AssetLoader {
     "coudntFindLocations": "We could not find any locations for \"{searchKeyword}\". 😕",
     "checkingSubsStatus": "We are checking your subscription status. Please wait.",
     "connectionTimeout":
-        "Connection timeout. Please try again later. If the problem persists, please contact support"
+        "Connection timeout. Please try again later. If the problem persists, please contact support",
+    "cancelYourSubsMess":
+        "Please CANCEL YOUR SUBSCRIPTION on the billing page before deleting your account.",
+    "accountSuccessfullyDeleted":
+        "Your account has been successfully deleted. We are sorry to see you go. 😢",
+    "redirectToLoginPage": "You will be redirected to the login page."
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3539,7 +3571,12 @@ class CodegenLoader extends AssetLoader {
     "coudntFindLocations": "Non siamo riusciti a trovare posizioni per \"{searchKeyword}\". 😕",
     "checkingSubsStatus": "Stiamo controllando lo stato della tua iscrizione. Attendi.",
     "connectionTimeout":
-        "Timeout della connessione. Riprova più tardi. Se il problema persiste, contatta l'assistenza"
+        "Timeout della connessione. Riprova più tardi. Se il problema persiste, contatta l'assistenza",
+    "cancelYourSubsMess":
+        "ANNULLA L'ABBONAMENTO nella pagina di fatturazione prima di eliminare il tuo account.",
+    "accountSuccessfullyDeleted":
+        "Il tuo account è stato eliminato con successo. Ci dispiace vederti andare via.😢",
+    "redirectToLoginPage": "Verrai reindirizzato alla pagina di accesso."
   };
   static const Map<String, dynamic> sr = {
     "title": "Здраво господине",
@@ -3983,7 +4020,11 @@ class CodegenLoader extends AssetLoader {
     "coudntFindLocations": "Нисмо могли да пронађемо ниједну локацију за \"{searchKeyword}\". 😕",
     "checkingSubsStatus": "Проверавамо ваш статус претплате. Сачекајте.",
     "connectionTimeout":
-        "Време је истекло везе. Покушајте поново касније. Ако се проблем настави, контактирајте подршку"
+        "Време је истекло везе. Покушајте поново касније. Ако се проблем настави, контактирајте подршку",
+    "cancelYourSubsMess":
+        "Откажите претплату на страници за обрачун пре него што избришете свој налог.",
+    "accountSuccessfullyDeleted": "Ваш налог је успешно избрисан. Жао нам је што одлазите.😢",
+    "redirectToLoginPage": "Бићете преусмерени на страницу за пријаву."
   };
   static const Map<String, dynamic> et = {
     "title": "Tere, härra",
@@ -4422,7 +4463,10 @@ class CodegenLoader extends AssetLoader {
     "coudntFindLocations": "Me ei leidnud ühtegi asukohta päringule \"{searchKeyword}\". ",
     "checkingSubsStatus": "Kontrollime teie tellimuse olekut. Palun oodake.",
     "connectionTimeout":
-        "Ühenduse ajalõpp.Proovige hiljem uuesti.Kui probleem püsib, võtke ühendust toega"
+        "Ühenduse ajalõpp.Proovige hiljem uuesti.Kui probleem püsib, võtke ühendust toega",
+    "cancelYourSubsMess": "Enne konto kustutamist TÜHISTAGE OMA TELLEMUS arvelduslehel.",
+    "accountSuccessfullyDeleted": "Teie konto kustutamine õnnestus. Meil ​​on kahju, et lahkute.😢",
+    "redirectToLoginPage": "Teid suunatakse sisselogimislehele."
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -4868,7 +4912,12 @@ class CodegenLoader extends AssetLoader {
     "coudntFindLocations": "Nous n'avons trouvé aucun emplacement pour \"{searchKeyword}\". 😕",
     "checkingSubsStatus": "Nous vérifions l'état de votre abonnement.Veuillez patienter.",
     "connectionTimeout":
-        "Délai de connexion expiré.Veuillez réessayer plus tard.Si le problème persiste, veuillez contacter le support"
+        "Délai de connexion expiré.Veuillez réessayer plus tard.Si le problème persiste, veuillez contacter le support",
+    "cancelYourSubsMess":
+        "Veuillez ANNULER VOTRE ABONNEMENT sur la page de facturation avant de supprimer votre compte.",
+    "accountSuccessfullyDeleted":
+        "Votre compte a été supprimé avec succès.Nous sommes désolés de vous voir partir.😢",
+    "redirectToLoginPage": "Vous serez redirigé vers la page de connexion."
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -5310,7 +5359,12 @@ class CodegenLoader extends AssetLoader {
     "coudntFindLocations": "No pudimos encontrar ninguna ubicación para \"{searchKeyword}\". 😕",
     "checkingSubsStatus": "Estamos revisando el estado de su suscripción. Espere.",
     "connectionTimeout":
-        "Se agotó el tiempo de conexión. Vuelva a intentarlo más tarde. Si el problema persiste, póngase en contacto con el servicio de asistencia."
+        "Se agotó el tiempo de conexión. Vuelva a intentarlo más tarde. Si el problema persiste, póngase en contacto con el servicio de asistencia.",
+    "cancelYourSubsMess":
+        "CANCELE SU SUSCRIPCIÓN en la página de facturación antes de eliminar su cuenta.",
+    "accountSuccessfullyDeleted":
+        "Su cuenta ha sido eliminada con éxito. Lamentamos que se vaya.😢",
+    "redirectToLoginPage": "Será redirigido a la página de inicio de sesión."
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "tr": tr,
