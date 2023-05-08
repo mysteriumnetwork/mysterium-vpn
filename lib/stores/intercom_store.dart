@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mobx/mobx.dart';
 
@@ -15,22 +16,39 @@ abstract class _IntercomStore with Store {
 
   @action
   Future<void> initialize() async {
-    await _intercom.initialize(
-      intercomAppId,
-      androidApiKey: intercomAndroidApiKey,
-      iosApiKey: intercomIosApiKey,
-    );
+    try {
+      if (isIntercomInitialized) {
+        return;
+      }
+      await _intercom.initialize(
+        intercomAppId,
+        androidApiKey: intercomAndroidApiKey,
+        iosApiKey: intercomIosApiKey,
+      );
+      isIntercomInitialized = true;
+    } catch (e) {
+      isIntercomInitialized = false;
+
+      debugPrint(e.toString());
+    }
   }
+
+  @observable
+  bool isIntercomInitialized = false;
 
   @action
   Future<void> registerUser(
     String email,
     String userId,
   ) async {
-    await _intercom.loginIdentifiedUser(
-      email: email,
-      userId: userId,
-    );
+    try {
+      await initialize();
+      await _intercom.loginIdentifiedUser(
+        email: email,
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   @action
@@ -50,8 +68,17 @@ abstract class _IntercomStore with Store {
   }
 
   @action
+  Future<void> displayMessageComposer(String message) async {
+    await _intercom.displayMessageComposer(message);
+  }
+
+  @action
   Future<void> displayMessenger() async {
-    await _intercom.displayMessenger();
+    try {
+      await _intercom.displayMessenger();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   @action
