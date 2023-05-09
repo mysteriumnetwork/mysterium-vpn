@@ -423,5 +423,8 @@
   "uk": "Ukraynaca",
   "coudntFindLocations": "\"{searchKeyword}\" için herhangi bir yer bulamadık. 😕",
   "checkingSubsStatus": "Abonelik durumunuzu kontrol ediyoruz. Lütfen bekleyin.",
-  "connectionTimeout": "Bağlantı zaman aşımına uğradı.Lütfen daha sonra tekrar deneyin.Sorun devam ederse, lütfen destek ile iletişime geçin."
+  "connectionTimeout": "Bağlantı zaman aşımına uğradı.Lütfen daha sonra tekrar deneyin.Sorun devam ederse, lütfen destek ile iletişime geçin.",
+  "cancelYourSubsMess": "Lütfen hesabınızı silmeden önce faturalandırma sayfasında ABONELİĞİNİZİ İPTAL EDİN.",
+  "accountSuccessfullyDeleted": "Hesabınız başarıyla silindi.Gittiğiniz için üzgünüz.😢",
+  "redirectToLoginPage": "Giriş sayfasına yönlendirileceksiniz."
 }
