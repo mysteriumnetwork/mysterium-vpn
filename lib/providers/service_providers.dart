@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mysterium_vpn/common/interceptors/append_auth_token.dart';
 import 'package:mysterium_vpn/common/interceptors/log_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/unauthorized.dart';
@@ -26,6 +27,10 @@ final inAppPurchasePOD = Provider(
 
 final firebaseAnalyticsPOD = Provider(
   (ref) => FirebaseAnalytics.instance,
+);
+
+final intercomPOD = Provider(
+  (ref) => Intercom.instance,
 );
 
 final wireguardServicePOD = Provider(
