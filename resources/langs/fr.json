@@ -423,5 +423,8 @@
   "uk": "Ukrainien",
   "coudntFindLocations": "Nous n'avons trouvé aucun emplacement pour \"{searchKeyword}\". 😕",
   "checkingSubsStatus": "Nous vérifions l'état de votre abonnement.Veuillez patienter.",
-  "connectionTimeout": "Délai de connexion expiré.Veuillez réessayer plus tard.Si le problème persiste, veuillez contacter le support"
+  "connectionTimeout": "Délai de connexion expiré.Veuillez réessayer plus tard.Si le problème persiste, veuillez contacter le support",
+  "cancelYourSubsMess": "Veuillez ANNULER VOTRE ABONNEMENT sur la page de facturation avant de supprimer votre compte.",
+  "accountSuccessfullyDeleted": "Votre compte a été supprimé avec succès.Nous sommes désolés de vous voir partir.😢",
+  "redirectToLoginPage": "Vous serez redirigé vers la page de connexion."
 }

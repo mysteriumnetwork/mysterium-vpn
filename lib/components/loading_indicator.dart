@@ -9,18 +9,20 @@ class LoadingIndicator extends StatelessWidget {
     this.radius,
     this.strokeWidth = 3.5,
     this.messageColor,
+    this.indicatorColor,
     super.key,
   });
   final String? message;
   final double? radius;
   final double strokeWidth;
   final Color? messageColor;
+  final Color? indicatorColor;
   @override
   Widget build(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularProgressIndicator(
-            color: Palette.pink,
+            color: indicatorColor ?? Palette.pink,
             strokeWidth: strokeWidth,
           ).width(radius ?? 30).height(radius ?? 30),
           if (message != null)

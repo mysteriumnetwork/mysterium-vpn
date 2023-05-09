@@ -423,5 +423,8 @@
   "uk": "Ukrainisch",
   "coudntFindLocations": "Wir konnten keine Standorte für \"{searchKeyword}\" finden. 😕",
   "checkingSubsStatus": "Wir prüfen Ihren Abonnementstatus. Bitte warten Sie.",
-  "connectionTimeout": "Verbindungszeitüberschreitung. Bitte versuchen Sie es später erneut. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an den Support."
+  "connectionTimeout": "Verbindungszeitüberschreitung. Bitte versuchen Sie es später erneut. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an den Support.",
+  "cancelYourSubsMess": "Bitte KÜNDIGEN SIE IHR ABONNEMENT auf der Abrechnungsseite, bevor Sie Ihr Konto löschen.",
+  "accountSuccessfullyDeleted": "Ihr Konto wurde erfolgreich gelöscht. Es tut uns leid, dass Sie gehen.😢",
+  "redirectToLoginPage": "Sie werden auf die Anmeldeseite weitergeleitet."
 }

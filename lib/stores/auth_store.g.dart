@@ -107,6 +107,22 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
+  late final _$deleteAccountFeatureAtom =
+      Atom(name: '_AuthStore.deleteAccountFeature', context: context);
+
+  @override
+  ObservableFuture<void> get deleteAccountFeature {
+    _$deleteAccountFeatureAtom.reportRead();
+    return super.deleteAccountFeature;
+  }
+
+  @override
+  set deleteAccountFeature(ObservableFuture<void> value) {
+    _$deleteAccountFeatureAtom.reportWrite(value, super.deleteAccountFeature, () {
+      super.deleteAccountFeature = value;
+    });
+  }
+
   late final _$authenticateFeatureAtom =
       Atom(name: '_AuthStore.authenticateFeature', context: context);
 
@@ -151,11 +167,19 @@ mixin _$AuthStore on _AuthStore, Store {
     return _$loginAsyncAction.run(() => super.login(email: email));
   }
 
+  late final _$deleteAccountAsyncAction = AsyncAction('_AuthStore.deleteAccount', context: context);
+
+  @override
+  Future<void> deleteAccount() {
+    return _$deleteAccountAsyncAction.run(() => super.deleteAccount());
+  }
+
   @override
   String toString() {
     return '''
 loginFeature: ${loginFeature},
 logoutFeature: ${logoutFeature},
+deleteAccountFeature: ${deleteAccountFeature},
 authenticateFeature: ${authenticateFeature}
     ''';
   }
