@@ -225,6 +225,21 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_isCanceledAtom = Atom(name: '_VpnStore._isCanceled', context: context);
+
+  @override
+  bool get _isCanceled {
+    _$_isCanceledAtom.reportRead();
+    return super._isCanceled;
+  }
+
+  @override
+  set _isCanceled(bool value) {
+    _$_isCanceledAtom.reportWrite(value, super._isCanceled, () {
+      super._isCanceled = value;
+    });
+  }
+
   late final _$setupTunnelAsyncAction = AsyncAction('_VpnStore.setupTunnel', context: context);
 
   @override
@@ -268,6 +283,15 @@ mixin _$VpnStore on _VpnStore, Store {
   @override
   Future<void> connect({Location? location}) {
     return _$connectAsyncAction.run(() => super.connect(location: location));
+  }
+
+  late final _$_completeConnectionAsyncAction =
+      AsyncAction('_VpnStore._completeConnection', context: context);
+
+  @override
+  Future<void> _completeConnection(Location? location, Stopwatch stopwatch) {
+    return _$_completeConnectionAsyncAction
+        .run(() => super._completeConnection(location, stopwatch));
   }
 
   late final _$changeProtocolAsyncAction =
