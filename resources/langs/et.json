@@ -423,5 +423,8 @@
   "uk": "Ukraina",
   "coudntFindLocations": "Me ei leidnud ühtegi asukohta päringule \"{searchKeyword}\". ",
   "checkingSubsStatus": "Kontrollime teie tellimuse olekut. Palun oodake.",
-  "connectionTimeout": "Ühenduse ajalõpp.Proovige hiljem uuesti.Kui probleem püsib, võtke ühendust toega"
+  "connectionTimeout": "Ühenduse ajalõpp.Proovige hiljem uuesti.Kui probleem püsib, võtke ühendust toega",
+  "cancelYourSubsMess": "Enne konto kustutamist TÜHISTAGE OMA TELLEMUS arvelduslehel.",
+  "accountSuccessfullyDeleted": "Teie konto kustutamine õnnestus. Meil ​​on kahju, et lahkute.😢",
+  "redirectToLoginPage": "Teid suunatakse sisselogimislehele."
 }

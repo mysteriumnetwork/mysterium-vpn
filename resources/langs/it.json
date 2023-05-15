@@ -423,5 +423,8 @@
   "uk": "Ucraino",
   "coudntFindLocations": "Non siamo riusciti a trovare posizioni per \"{searchKeyword}\". 😕",
   "checkingSubsStatus": "Stiamo controllando lo stato della tua iscrizione. Attendi.",
-  "connectionTimeout": "Timeout della connessione. Riprova più tardi. Se il problema persiste, contatta l'assistenza"
+  "connectionTimeout": "Timeout della connessione. Riprova più tardi. Se il problema persiste, contatta l'assistenza",
+  "cancelYourSubsMess": "ANNULLA L'ABBONAMENTO nella pagina di fatturazione prima di eliminare il tuo account.",
+  "accountSuccessfullyDeleted": "Il tuo account è stato eliminato con successo. Ci dispiace vederti andare via.😢",
+  "redirectToLoginPage": "Verrai reindirizzato alla pagina di accesso."
 }

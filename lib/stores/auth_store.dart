@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -18,6 +19,7 @@ import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics_store.dart';
+import 'package:mysterium_vpn/stores/intercom_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -35,11 +37,13 @@ abstract class _AuthStore with Store {
     required LocalDBService localDb,
     required AnalyticsStore analyticsStore,
     required FlavorConfig env,
+    required IntercomStore intercomStore,
   })  : _authService = authService,
         _appLinks = appLinks,
         _localDb = localDb,
         _analyticsStore = analyticsStore,
-        _env = env {
+        _env = env,
+        _intercomStore = intercomStore {
     initAuth();
   }
 
@@ -49,6 +53,7 @@ abstract class _AuthStore with Store {
   final SecureStorageService _secureStorageService = SecureStorageService();
   final AnalyticsStore _analyticsStore;
   final FlavorConfig _env;
+  final IntercomStore _intercomStore;
 
   @readonly
   AuthStatus _authStatus = AuthStatus.unknown;
@@ -66,6 +71,8 @@ abstract class _AuthStore with Store {
   ObservableFuture<String?> loginFeature = ObservableFuture.value(null);
   @observable
   ObservableFuture<void> logoutFeature = ObservableFuture.value(null);
+  @observable
+  ObservableFuture<void> deleteAccountFeature = ObservableFuture.value(null);
   @observable
   ObservableFuture<AuthData?> authenticateFeature = ObservableFuture.value(null);
 
@@ -141,6 +148,7 @@ abstract class _AuthStore with Store {
       _analyticsStore
         ..setUserId(_authData!.username)
         ..setLogin();
+      _intercomStore.registerUser(_authData!.username, _authData!.userId);
       FirebaseCrashlytics.instance.setUserIdentifier(_authData!.username);
       Sentry.configureScope(
         (scope) => scope.setUser(
@@ -172,6 +180,7 @@ abstract class _AuthStore with Store {
 
     await logoutFeature;
     _analyticsStore.setLogOut(_authData?.username ?? '');
+    _intercomStore.logout();
     _authStatus = AuthStatus.unauthenticated;
     _authData = null;
   }
@@ -218,5 +227,17 @@ abstract class _AuthStore with Store {
     );
     await launchUrl(authUri);
     return;
+  }
+
+  Future<void> deleteAccount() async {
+    try {
+      deleteAccountFeature = ObservableFuture(
+        _authService.deleteAccount(email: _authData?.username ?? ''),
+      );
+
+      await deleteAccountFeature;
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 }
