@@ -36,9 +36,7 @@ class LoginMobileView extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       const Expanded(
-                        child: LoginHeadlines(
-                          alignment: CrossAxisAlignment.center,
-                        ),
+                        child: LoginHeadlines(),
                       ),
                       EasyButton(
                         width: getMediaWidth(context) * 0.8,

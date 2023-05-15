@@ -40,7 +40,8 @@ class LoginDesktopViewLeftPanel extends ConsumerWidget {
                   ),
                 ],
               ).padding(bottom: 20),
-              const LoginHeadlines().expanded(),
+              const LoginHeadlines(
+              ).expanded(),
               EasyButton(
                 height: 60,
                 width: 300,
