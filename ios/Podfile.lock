@@ -1,6 +1,12 @@
 PODS:
   - app_links (0.0.1):
     - Flutter
+  - appsflyer_sdk (6.8.0):
+    - AppsFlyerFramework (= 6.9.1)
+    - Flutter
+  - AppsFlyerFramework (6.9.1):
+    - AppsFlyerFramework/Main (= 6.9.1)
+  - AppsFlyerFramework/Main (6.9.1)
   - connectivity_plus (0.0.1):
     - Flutter
     - ReachabilitySwift
@@ -188,6 +194,7 @@ PODS:
 
 DEPENDENCIES:
   - app_links (from `.symlinks/plugins/app_links/ios`)
+  - appsflyer_sdk (from `.symlinks/plugins/appsflyer_sdk/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -208,6 +215,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AppsFlyerFramework
     - Firebase
     - FirebaseABTesting
     - FirebaseAnalytics
@@ -234,6 +242,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   app_links:
     :path: ".symlinks/plugins/app_links/ios"
+  appsflyer_sdk:
+    :path: ".symlinks/plugins/appsflyer_sdk/ios"
   connectivity_plus:
     :path: ".symlinks/plugins/connectivity_plus/ios"
   firebase_analytics:
@@ -271,6 +281,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   app_links: ab4ba54d10a13d45825336bc9707b5eadee81191
+  appsflyer_sdk: f420e5007d635511073ed8c63b2c6fcedefb4cba
+  AppsFlyerFramework: dc9aa675faa8e1a2ed40fb295d3c5408ee2b972a
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
   Firebase: 0219acf760880eeec8ce479895bd7767466d9f81
   firebase_analytics: 216977fc8c05f54c2c4935181e3f1a368949c5cd
