@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
@@ -31,9 +30,11 @@ double getMediaWidth(BuildContext context) => MediaQuery.of(context).size.width;
 
 double getMediaHeight(BuildContext context) => MediaQuery.of(context).size.height;
 
-EdgeInsets getWindowPadding() => MediaQueryData.fromWindow(window).padding;
+EdgeInsets getWindowPadding() =>
+    MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.first).padding;
 
-double getWindowHeight() => MediaQueryData.fromWindow(window).size.height;
+double getWindowHeight() =>
+    MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.first).size.height;
 
 /// Returns the [ScreenType] that the application is currently running on
 ScreenType getScreenType(

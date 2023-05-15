@@ -7,8 +7,8 @@ class HomeDesktopView extends HookConsumerWidget {
   const HomeDesktopView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => Row(
-        children: const [
+  Widget build(BuildContext context, WidgetRef ref) => const Row(
+        children: [
           Flexible(
             flex: 6,
             child: HomeDesktopLeftPanel(),
