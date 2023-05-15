@@ -426,4 +426,7 @@ abstract class LocaleKeys {
   static const coudntFindLocations = 'coudntFindLocations';
   static const checkingSubsStatus = 'checkingSubsStatus';
   static const connectionTimeout = 'connectionTimeout';
+  static const cancelYourSubsMess = 'cancelYourSubsMess';
+  static const accountSuccessfullyDeleted = 'accountSuccessfullyDeleted';
+  static const redirectToLoginPage = 'redirectToLoginPage';
 }

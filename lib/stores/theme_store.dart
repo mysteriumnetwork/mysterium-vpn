@@ -1,6 +1,5 @@
 // Flutter imports:
 // Package imports:
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -28,7 +27,7 @@ abstract class _ThemeStore with Store {
 
   @computed
   bool get isDarkMode => themeMode == ThemeMode.system
-      ? window.platformBrightness == Brightness.dark
+      ? WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark
       : themeMode == ThemeMode.dark;
 
   @action

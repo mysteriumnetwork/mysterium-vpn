@@ -64,7 +64,7 @@ class CustomLogInterceptor extends Interceptor {
   }
 
   @override
-  Future<void> onResponse(Response response, ResponseInterceptorHandler handler) async {
+  Future<void> onResponse(Response<dynamic> response, ResponseInterceptorHandler handler) async {
     logPrint('*** Response ***');
     _printResponse(response);
     handler.next(response);
@@ -93,7 +93,7 @@ class CustomLogInterceptor extends Interceptor {
     handler.next(err);
   }
 
-  void _printResponse(Response response) {
+  void _printResponse(Response<dynamic> response) {
     _printKV('uri', response.requestOptions.uri);
     if (responseHeader) {
       _printKV('statusCode', response.statusCode);

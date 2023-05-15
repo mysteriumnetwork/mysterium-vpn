@@ -9,4 +9,7 @@ abstract class AuthService {
     required String authToken,
     required PkcePair pkcePair,
   });
+  Future<void> deleteAccount({
+    required String email,
+  });
 }
