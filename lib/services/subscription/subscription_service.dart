@@ -5,13 +5,12 @@ import 'package:mysterium_vpn/models/subscription_config.dart';
 import 'package:mysterium_vpn/models/subscription_request.dart';
 
 abstract class SubscriptionService {
-  Future<Subscription> verifyPurchase({
+  Future<Subscription?> verifyPurchase({
     required String source,
     required String verificationData,
-    required String productId,
+    required String planId,
     required String purchaseId,
   });
-  String? getSubscriptionPlan();
 
   Future<Subscription> fetchSubscriptionDetails();
 
@@ -21,7 +20,10 @@ abstract class SubscriptionService {
     required String userId,
   });
 
-  List<PurchasableProduct> getProductsDetails(SubscriptionConfig subscriptionConfig);
+  Future<List<PurchasableProduct>> getProductsDetails(
+    SubscriptionConfig subscriptionConfig,
+    String? purchasedProductId,
+  );
 
   Future<SubscriptionConfig> fetchSubscriptionConfig();
 

@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/connect_button.dart';
@@ -32,7 +31,7 @@ class RecentLocationItem extends StatelessWidget {
         builder: (context) => RippleWidget(
           radius: 20,
           onTap: vpnStore.isLoading
-              ? null
+              ? vpnStore.cancelConnection
               : () => onConnectButtonPressed(
                     connectivityStore.connectionStatus,
                     vpnStore.connectionStatus,
@@ -40,7 +39,6 @@ class RecentLocationItem extends StatelessWidget {
                     onTap,
                   ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -52,22 +50,23 @@ class RecentLocationItem extends StatelessWidget {
                     locationCode: location.countryCode,
                   ),
                 ],
-              ).padding(bottom: 4),
+              ).paddingDirectional(horizontal: 4),
               EasyText(
                 location.countryName,
                 fontWeight: FontWeight.w700,
+                maxLines: 2,
               ),
-              if (location.countryCode == vpnStore.connectingLocationCode && vpnStore.isConnected)
+              if (location.countryCode == vpnStore.vpnConnection.location && vpnStore.isConnected)
                 EasyText(
                   LocaleKeys.connected.tr(),
                   color: Palette.purple,
                 )
               else
-                EasyText(
-                  const Duration(hours: 1, minutes: 30).toHoursMinutes(),
+                const EasyText(
+                  '',
                 ),
             ],
-          ).padding(left: 12, right: 6, bottom: 4).width(110),
+          ).padding(left: 6, right: 6).width(130),
         )
             .card(
               elevation: 1,

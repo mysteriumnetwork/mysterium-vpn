@@ -24,44 +24,37 @@ class RecentLocationsList extends StatelessWidget {
   final ThemeStore themeStore;
   @override
   Widget build(BuildContext context) => Observer(
-        builder: (_) {
-          if (locationsStore.recentLocations.isEmpty && locationsStore.searchTopKeyword.isEmpty) {
-            return const SizedBox.shrink();
-          } else {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                EasyText(
-                  LocaleKeys.recentLocations.tr(),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                ).padding(bottom: 20),
-                if (locationsStore.recentLocations.isEmpty &&
-                    locationsStore.searchTopKeyword.isNotEmpty)
-                  EasyText(
-                    'We could not find any recent locations for keyword: ${locationsStore.searchTopKeyword} ',
-                    color: Theme.of(context).colorScheme.error,
-                  ),
-                if (locationsStore.recentLocations.isNotEmpty)
-                  ListView.builder(
-                    shrinkWrap: true,
-                    controller: ScrollController(),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: locationsStore.recentLocations.length,
-                    itemBuilder: (_, int index) {
-                      final location = locationsStore.recentLocations[index];
+        builder: (_) => Visibility(
+          visible:
+              locationsStore.recentLocations.isNotEmpty && locationsStore.searchKeyword.isEmpty,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              EasyText(
+                LocaleKeys.recentLocations.tr(),
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+              ).padding(bottom: 20),
+              ListView.builder(
+                shrinkWrap: true,
+                controller: ScrollController(),
+                scrollDirection: Axis.horizontal,
+                itemCount: locationsStore.recentLocations.length,
+                itemBuilder: (_, int index) {
+                  final location = locationsStore.recentLocations[index];
 
-                      return RecentLocationItem(
-                        location: location,
-                        vpnStore: vpnStore,
-                        onTap: () async => vpnStore.connect(location: location),
-                        connectivityStore: connectivityStore,
-                      );
-                    },
-                  ).height(110),
-              ],
-            );
-          }
-        },
+                  return RecentLocationItem(
+                    location: location,
+                    vpnStore: vpnStore,
+                    onTap: () => vpnStore.vpnConnection.location == location.countryCode
+                        ? vpnStore.disconnect()
+                        : vpnStore.connect(location: location),
+                    connectivityStore: connectivityStore,
+                  );
+                },
+              ).height(130),
+            ],
+          ),
+        ),
       );
 }

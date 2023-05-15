@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/services/local_db_service.dart';
 
 const kFetchAllLocations = '/connection/config';
 const kCreateConnectionConfig = '/connection/connect';
+const kFetchIP = 'https://location.mysterium.network/api/v1/ip';
 
 class RestApiService extends ApiService {
   RestApiService({
@@ -36,49 +37,43 @@ class RestApiService extends ApiService {
   Approval getEmailCommunicationApproval() => _localDb.getEmailCommunicationApproval();
 
   @override
-  Future<List<Location>> fetchAllLocations({required String keyword}) async {
+  Future<VPNLocations> fetchVPNLocations({required String keyword}) async {
     try {
       final response = await _apiClient.get<Map<String, dynamic>>(kFetchAllLocations);
       if (response.data == null || !response.data!.containsKey('countries')) {
         throw Exception('No data found');
       }
-      final countryCodes = List<String>.from(response.data!['countries'] as List<dynamic>);
-      final locations = countryCodes
-          .map(
-            (e) => Location(countryCode: e, countryName: e.tr()),
-          )
-          .toList();
+      final topCountryCodes = List<String>.from(response.data!['top_countries'] as List<dynamic>)
+        ..sort(
+          (a, b) => a.tr().compareTo(b.tr()),
+        );
+      final allCountryCodes = List<String>.from(response.data!['countries'] as List<dynamic>)
+        ..removeWhere(
+          topCountryCodes.contains,
+        )
+        ..sort(
+          (a, b) => a.tr().compareTo(b.tr()),
+        );
       if (keyword.isNotEmpty) {
-        return locations
-            .where((location) => location.countryName.tr().toLowerCase().contains(keyword))
-            .toList();
+        topCountryCodes.removeWhere((element) => !element.tr().toLowerCase().contains(keyword));
+        allCountryCodes.removeWhere((element) => !element.tr().toLowerCase().contains(keyword));
       }
-      return locations;
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      throw handleException(e);
-    }
-  }
-
-  @override
-  Future<List<Location>> fetchTopLocations({required String keyword}) async {
-    try {
-      final response = await _apiClient.get<Map<String, dynamic>>(kFetchAllLocations);
-      if (response.data == null || !response.data!.containsKey('countries')) {
-        throw Exception('No data found');
-      }
-      final countryCodes = List<String>.from(response.data!['countries'] as List<dynamic>);
-      final locations = countryCodes
-          .map(
-            (e) => Location(countryCode: e, countryName: e.tr()),
-          )
-          .toList();
-      if (keyword.isNotEmpty) {
-        return locations
-            .where((location) => location.countryName.tr().toLowerCase().contains(keyword))
-            .toList();
-      }
-      return locations;
+      return VPNLocations(
+        allLocations: allCountryCodes
+            .map(
+              (e) => Location(
+                countryCode: e,
+              ),
+            )
+            .toList(),
+        topLocations: topCountryCodes
+            .map(
+              (e) => Location(
+                countryCode: e,
+              ),
+            )
+            .toList(),
+      );
     } on Exception catch (e) {
       debugPrint(e.toString());
       throw handleException(e);
@@ -90,7 +85,9 @@ class RestApiService extends ApiService {
     final countryCodes = _localDb.getRecentLocations();
     final locations = countryCodes
         .map(
-          (e) => Location(countryCode: e, countryName: e.tr()),
+          (e) => Location(
+            countryCode: e,
+          ),
         )
         .toList();
     if (keyword.isNotEmpty) {
@@ -133,6 +130,24 @@ class RestApiService extends ApiService {
     } on Exception catch (e) {
       debugPrint(e.toString());
       throw handleException(e);
+    }
+  }
+
+  @override
+  Future<String?> getIPAdress() async {
+    try {
+      final res = await Future.delayed(
+        const Duration(seconds: 2),
+        () async => _apiClient.fetch<Map<String, dynamic>>(
+          RequestOptions(baseUrl: kFetchIP),
+        ),
+      );
+      if (res.data != null && res.data!.containsKey('ip')) {
+        return res.data!['ip'] as String;
+      }
+      return null;
+    } catch (e) {
+      return null;
     }
   }
 }

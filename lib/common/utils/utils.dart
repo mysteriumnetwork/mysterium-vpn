@@ -3,8 +3,10 @@ import 'dart:ui';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_breakpoints.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_size_breakpoints.dart';
 import 'package:mysterium_vpn/common/configurations/breakpoint_configuration.dart';
@@ -15,6 +17,9 @@ import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/dialogs/no_internet_connection_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/pages/auth_page.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 bool checkMediaWidth(BuildContext context, double width) =>
     MediaQuery.of(context).size.width < width;
@@ -286,6 +291,13 @@ String getPlatformGateway() {
   }
 }
 
+bool isMobilePaymentGateway(String? gateway) {
+  if (gateway == 'google' || gateway == 'apple') {
+    return true;
+  }
+  return false;
+}
+
 void showSnackbar(String message, {MessageType type = MessageType.error}) {
   final snackBar = SnackBar(
     elevation: 4,
@@ -309,24 +321,22 @@ void showSnackbar(String message, {MessageType type = MessageType.error}) {
 }
 
 ApiException handleException(Exception e, {String? message}) {
-  if (e is DioError) {
+  if (e is DioError && e.response?.data != null && e.response?.data is Map<String, dynamic>) {
     final data = e.response?.data as Map<String, dynamic>;
     final exception = ApiException(
       '',
       e.response?.statusCode ?? 402,
     );
     if (!data.containsKey('error')) {
-      return exception
-        ..message = e.message ?? 'Something went wrong. Please give it another try. 😕';
+      return exception..message = e.message ?? LocaleKeys.somethingWentWrong.tr();
     }
     if ((data['error'] as Map<String, dynamic>).containsKey('message')) {
-      return exception..message = data['message'] as String? ?? 'Something went wrong';
+      return exception..message = data['message'] as String? ?? LocaleKeys.somethingWentWrong.tr();
     }
-    return exception
-      ..message = e.message ?? 'Something went wrong at our server. Please give it another try. 😕';
+    return exception..message = e.message ?? LocaleKeys.somethingWentWrong.tr();
   } else {
     return ApiException(
-      message ?? 'Something went wrong with. Please give it another try. 😕',
+      message ?? LocaleKeys.somethingWentWrong.tr(),
       500,
     );
   }
@@ -362,4 +372,25 @@ String? getMagicLinkCode(String query) {
     return null;
   }
   return query.substring(query.indexOf('code=') + 5, query.length);
+}
+
+void showAuthView(BuildContext context) {
+  showBarModalBottomSheet(
+    context: context,
+    animationCurve: Curves.easeInOut,
+    backgroundColor: Palette.transparent,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+    ),
+    builder: (context) => Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
+      child: SingleChildScrollView(
+        controller: ModalScrollController.of(context),
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: const SignUpPage().height(getMediaHeight(context) * 0.9),
+      ),
+    ),
+  );
 }

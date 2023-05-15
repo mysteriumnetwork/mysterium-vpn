@@ -6,8 +6,10 @@ import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mysterium_vpn/common/interceptors/append_auth_token.dart';
 import 'package:mysterium_vpn/common/interceptors/log_errors.dart';
+import 'package:mysterium_vpn/common/interceptors/unauthorized.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/api/rest_api_service.dart';
@@ -27,6 +29,10 @@ final firebaseAnalyticsPOD = Provider(
   (ref) => FirebaseAnalytics.instance,
 );
 
+final intercomPOD = Provider(
+  (ref) => Intercom.instance,
+);
+
 final wireguardServicePOD = Provider(
   (ref) => WireguardDart(),
 );
@@ -39,6 +45,7 @@ final localDBPOD = Provider((ref) => LocalDBService());
 
 final authorizedApiClientPOD = Provider<Dio>((ref) {
   final environment = ref.watch(environmentPOD);
+  final authStore = ref.watch(authStorePOD);
   return Dio(
     BaseOptions(
       baseUrl: environment.values.baseUrl,
@@ -48,6 +55,7 @@ final authorizedApiClientPOD = Provider<Dio>((ref) {
   )
     ..interceptors.addAll([
       AppendTokenInterceptor(ref),
+      UnauthorizedInterceptor(authStore),
       CustomLogInterceptor(
         responseHeader: false,
         requestHeader: false,

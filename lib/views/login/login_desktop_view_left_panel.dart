@@ -7,6 +7,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
 import 'package:mysterium_vpn/components/app_version.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
@@ -49,7 +50,11 @@ class LoginDesktopViewLeftPanel extends ConsumerWidget {
                 color: Palette.purple,
                 text: LocaleKeys.signIn.tr(),
                 onPressed: () {
-                  launchUrl(Uri.parse(environment.values.webAppUrl));
+                  if (isMobile()) {
+                    showAuthView(context);
+                  } else {
+                    launchUrl(Uri.parse(environment.values.webAppUrl));
+                  }
                 },
               ),
               Align(

@@ -1,15 +1,13 @@
 import 'package:beamer/beamer.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 
@@ -24,41 +22,41 @@ class MyApp extends HookConsumerWidget {
     final routeDelegate = ref.read(routerDelegatePOD);
     final localStore = ref.read(localeStorePOD);
     final connectivityStore = ref.read(connectivityStorePOD);
+    final appLifecycleState = useAppLifecycleState();
 
+    useEffect(
+      () {
+        debugPrint(appLifecycleState?.name);
+        if (appLifecycleState == AppLifecycleState.resumed) {
+          connectivityStore.isInitState = true;
+        }
+        return null;
+      },
+      [appLifecycleState],
+    );
     return ReactionBuilder(
       builder: (_) => reaction(
-        (_) => connectivityStore.connectionStatus,
-        (result) {
-          handleConectivityStatusChanged(
-            connectivityStatus: result,
-            prevConnectivityStatus: connectivityStore.prevConnectionStatus,
-          );
+        (_) => authStore.authStatus,
+        (status) {
+          authenticationReaction(status, routeDelegate, authStore, ref);
         },
       ),
-      child: ReactionBuilder(
-        builder: (_) => reaction(
-          (_) => authStore.authStatus,
-          (status) {
-            authenticationReaction(status, routeDelegate, authStore, ref);
-          },
-        ),
-        child: Observer(
-          builder: (context) => RetakeFocusOnTap(
-            child: MaterialApp.router(
-              title: 'Mysterium VPN',
-              key: UniqueKey(),
-              scaffoldMessengerKey: snackbarKey,
-              theme: themeStore.lightTheme,
-              darkTheme: themeStore.darkTheme,
-              themeMode: themeStore.themeMode,
-              routerDelegate: routeDelegate,
-              routeInformationParser: routeInformationParser,
-              localizationsDelegates: context.localizationDelegates,
-              supportedLocales: context.supportedLocales,
-              locale: localStore.currentLocale,
-              backButtonDispatcher: BeamerBackButtonDispatcher(
-                delegate: routeDelegate,
-              ),
+      child: Observer(
+        builder: (context) => RetakeFocusOnTap(
+          child: MaterialApp.router(
+            title: 'Mysterium VPN',
+            key: UniqueKey(),
+            scaffoldMessengerKey: snackbarKey,
+            theme: themeStore.lightTheme,
+            darkTheme: themeStore.darkTheme,
+            themeMode: themeStore.themeMode,
+            routerDelegate: routeDelegate,
+            routeInformationParser: routeInformationParser,
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: localStore.currentLocale,
+            backButtonDispatcher: BeamerBackButtonDispatcher(
+              delegate: routeDelegate,
             ),
           ),
         ),
@@ -75,22 +73,11 @@ class MyApp extends HookConsumerWidget {
     routeDelegate.update();
     if (status == AuthStatus.unauthenticated) {
       ref
+        ..read(vpnStorePOD).disconnect()
         ..invalidate(subscriptionStorePOD)
         ..invalidate(vpnStorePOD)
         ..invalidate(locationsStorePOD)
         ..invalidate(vpnStorePOD);
-    }
-  }
-
-  void handleConectivityStatusChanged({
-    required ConnectivityResult connectivityStatus,
-    required ConnectivityResult prevConnectivityStatus,
-  }) {
-    if (connectivityStatus == ConnectivityResult.none) {
-      showSnackbar(LocaleKeys.currentlyOffline.tr());
-    } else if (prevConnectivityStatus == ConnectivityResult.none &&
-        connectivityStatus != ConnectivityResult.none) {
-      showSnackbar(LocaleKeys.internetConnectionRestored.tr(), type: MessageType.success);
     }
   }
 }

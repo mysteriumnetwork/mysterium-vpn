@@ -3,17 +3,22 @@
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics_store.dart';
+import 'package:mysterium_vpn/stores/intercom_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 // Project imports:
@@ -29,10 +34,12 @@ abstract class _AuthStore with Store {
     required AppLinks appLinks,
     required LocalDBService localDb,
     required AnalyticsStore analyticsStore,
+    required IntercomStore intercomStore,
   })  : _authService = authService,
         _appLinks = appLinks,
         _localDb = localDb,
-        _analyticsStore = analyticsStore {
+        _analyticsStore = analyticsStore,
+        _intercomStore = intercomStore {
     initAuth();
   }
 
@@ -41,6 +48,7 @@ abstract class _AuthStore with Store {
   final AppLinks _appLinks;
   final SecureStorageService _secureStorageService = SecureStorageService();
   final AnalyticsStore _analyticsStore;
+  final IntercomStore _intercomStore;
 
   @readonly
   AuthStatus _authStatus = AuthStatus.unknown;
@@ -58,6 +66,8 @@ abstract class _AuthStore with Store {
   ObservableFuture<String?> loginFeature = ObservableFuture.value(null);
   @observable
   ObservableFuture<void> logoutFeature = ObservableFuture.value(null);
+  @observable
+  ObservableFuture<void> deleteAccountFeature = ObservableFuture.value(null);
   @observable
   ObservableFuture<AuthData?> authenticateFeature = ObservableFuture.value(null);
 
@@ -81,7 +91,7 @@ abstract class _AuthStore with Store {
             authenticate(appLink: appLink);
           } else {
             Sentry.captureException(TokenAlreadyUsedException());
-            showSnackbar('Token already used. Please try again. 😕');
+            showSnackbar(LocaleKeys.tokenAlreadyUsed.tr());
           }
         },
       );
@@ -133,16 +143,18 @@ abstract class _AuthStore with Store {
       _analyticsStore
         ..setUserId(_authData!.username)
         ..setLogin();
+      _intercomStore.registerUser(_authData!.username, _authData!.userId);
+      FirebaseCrashlytics.instance.setUserIdentifier(_authData!.username);
       debugPrint(_localDb.userData.toString());
     } on KeyDoesntExistsException {
       _authStatus = AuthStatus.unauthenticated;
     } catch (e) {
       if (e is IncorrectMagicLinkException) {
-        showSnackbar('Incorrect magic link. Please try again. 😕');
+        showSnackbar(LocaleKeys.incorrectMagicLink.tr());
       } else if (e is IncorrectCodeException) {
-        showSnackbar('Incorrect code. Please try again. 😕');
+        showSnackbar(LocaleKeys.incorrectMagicLink.tr());
       } else {
-        showSnackbar('Error while authenticating. Please give it another try. 😕');
+        showSnackbar(LocaleKeys.authenticationFailed.tr());
       }
       debugPrint(e.toString());
       _authStatus = AuthStatus.unauthenticated;
@@ -155,6 +167,7 @@ abstract class _AuthStore with Store {
 
     await logoutFeature;
     _analyticsStore.setLogOut(_authData?.username ?? '');
+    _intercomStore.logout();
     _authStatus = AuthStatus.unauthenticated;
     _authData = null;
   }
@@ -179,5 +192,18 @@ abstract class _AuthStore with Store {
     }
     _email = email;
     return code;
+  }
+
+  @action
+  Future<void> deleteAccount() async {
+    try {
+      deleteAccountFeature = ObservableFuture(
+        _authService.deleteAccount(email: _authData?.username ?? ''),
+      );
+
+      await deleteAccountFeature;
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 }

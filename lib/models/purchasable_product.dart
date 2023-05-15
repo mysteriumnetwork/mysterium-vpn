@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/plan_details.dart';
 
@@ -10,34 +12,49 @@ part 'purchasable_product.g.dart';
 class PurchasableProduct = _PurchasableProduct with _$PurchasableProduct;
 
 abstract class _PurchasableProduct with Store {
-  _PurchasableProduct({required this.productDetails, required this.status});
+  _PurchasableProduct({
+    required this.planDetails,
+    required this.productDetails,
+    required this.status,
+  });
 
-  final PlanDetails productDetails;
-
+  final PlanDetails planDetails;
+  final ProductDetails productDetails;
   @observable
   ProductStatus status;
 
   @computed
-  String get id => productDetails.id.replaceAll('-', '_');
+  String get id => planDetails.id;
+
   @computed
-  String get fullPrice => '\$${productDetails.price.usd.toStringAsFixed(2)}';
+  String get monthlyPrice => planDetails.id == kMonthlyPlan
+      ? productDetails.rawPrice.price(
+          currencySymbol: productDetails.currencySymbol,
+          currencyCode: productDetails.currencyCode,
+        )
+      : planDetails.id == kAnnualPlan
+          ? productDetails.rawPrice.pricePerMonth(
+              months: 12,
+              currencySymbol: productDetails.currencySymbol,
+              currencyCode: productDetails.currencyCode,
+            )
+          : productDetails.rawPrice.pricePerMonth(
+              months: 6,
+              currencySymbol: productDetails.currencySymbol,
+              currencyCode: productDetails.currencyCode,
+            );
   @computed
-  String get originalMonthlyPrice => productDetails.id != kMonthlyPlan ? r'$9.99  ' : '';
-  @computed
-  String get monthlyPrice => productDetails.id == kMonthlyPlan
-      ? r'$9.99'
-      : productDetails.id == kAnnualPlan
-          ? r'$4.99'
-          : r'$6.99';
-  @computed
-  bool get isPupular => productDetails.id == kPopularPlan;
+  bool get isPupular => planDetails.id == kPopularPlan;
   @computed
   String get billedInTotal => LocaleKeys.billedInTotal.tr(
         namedArgs: {
-          'amount': fullPrice,
-          'period': productDetails.id == kMonthlyPlan
+          'amount': productDetails.rawPrice.price(
+            currencySymbol: productDetails.currencySymbol,
+            currencyCode: productDetails.currencyCode,
+          ),
+          'period': planDetails.id == kMonthlyPlan
               ? LocaleKeys.monthly.tr()
-              : productDetails.id == ksemiAnnualPlan
+              : planDetails.id == ksemiAnnualPlan
                   ? LocaleKeys.semiAnnual.tr()
                   : LocaleKeys.yearly.tr(),
         },

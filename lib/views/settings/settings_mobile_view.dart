@@ -7,6 +7,7 @@ import 'package:mysterium_vpn/common/enums/routes.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/base_layout.dart';
 import 'package:mysterium_vpn/components/dialogs/delete_account_dialog.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
@@ -19,6 +20,7 @@ import 'package:mysterium_vpn/views/settings/language_picker.dart';
 import 'package:mysterium_vpn/views/settings/protocol_picker.dart';
 import 'package:mysterium_vpn/views/settings/theme_picker.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsMobileView extends HookConsumerWidget {
   const SettingsMobileView({super.key});
@@ -29,6 +31,8 @@ class SettingsMobileView extends HookConsumerWidget {
     final vpnStore = ref.read(vpnStorePOD);
     final localeStore = ref.read(localeStorePOD);
     final authStore = ref.watch(authStorePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final environment = ref.watch(environmentPOD);
     return BaseLayout(
       headerTitle: LocaleKeys.settings.tr(),
       child: Observer(
@@ -81,13 +85,17 @@ class SettingsMobileView extends HookConsumerWidget {
                 title: LocaleKeys.myBillingPackage.tr(),
                 subtitle: LocaleKeys.shortDesc.tr(),
                 actionWidget: EasyButton(
-                  width: 160,
                   height: 40,
                   useSystemColor: false,
                   color: Palette.black,
                   text: LocaleKeys.goToBillingPage.tr(),
                   onPressed: () {
-                    context.beamToNamed(Routes.subscription.toRoute);
+                    if ((subscriptionStore.subscription?.active ?? false) &&
+                        !isMobilePaymentGateway(subscriptionStore.subscription?.gateway)) {
+                      launchUrl(Uri.parse(environment.values.billingPage));
+                    } else {
+                      context.beamToNamed(Routes.subscription.toRoute);
+                    }
                   },
                 ),
               ),
@@ -99,7 +107,6 @@ class SettingsMobileView extends HookConsumerWidget {
                   useSystemColor: false,
                   color: Palette.black,
                   text: LocaleKeys.logout.tr(),
-                  width: 100,
                   height: 40,
                   onPressed: authStore.logout,
                 ),
@@ -110,7 +117,6 @@ class SettingsMobileView extends HookConsumerWidget {
                 subtitle: LocaleKeys.shortDesc.tr(),
                 actionWidget: EasyButton(
                   useSystemColor: false,
-                  width: 160,
                   height: 40,
                   color: isDarkTheme ? Palette.pink : Palette.lightBlue,
                   text: LocaleKeys.deleteAccount.tr(),

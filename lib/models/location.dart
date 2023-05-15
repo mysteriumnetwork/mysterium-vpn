@@ -1,15 +1,29 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:mobx/mobx.dart';
 
-part 'location.freezed.dart';
 part 'location.g.dart';
 
-@freezed
-class Location with _$Location {
-  const factory Location({
-    required String countryCode,
-    required String countryName,
-    Duration? duration,
-  }) = _Location;
+class VPNLocations {
+  VPNLocations({
+    required this.allLocations,
+    required this.topLocations,
+  });
 
-  factory Location.fromJson(Map<String, Object?> json) => _$LocationFromJson(json);
+  final List<Location> allLocations;
+  final List<Location> topLocations;
+}
+
+class Location extends _Location with _$Location {
+  Location({
+    required super.countryCode,
+  });
+}
+
+abstract class _Location with Store {
+  _Location({required this.countryCode});
+
+  final String countryCode;
+
+  @computed
+  String get countryName => countryCode.tr();
 }
