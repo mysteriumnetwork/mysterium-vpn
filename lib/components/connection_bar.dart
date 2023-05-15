@@ -11,6 +11,12 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
+enum LeadingPosition {
+  left,
+  right,
+  bottom,
+}
+
 class MobileConnectionStatusBar extends HookConsumerWidget {
   const MobileConnectionStatusBar({super.key});
 
@@ -22,10 +28,10 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
       builder: (context) {
         final vpnConnection = vpnStore.vpnConnection;
         return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _BarItem(label: LocaleKeys.connectionIp.tr(), text: vpnConnection.connectionIP),
+            _BarItem(label: LocaleKeys.connectionIp.tr(), text: vpnConnection.connectionIP)
+                .expanded(),
             _BarItem(
               label: LocaleKeys.status.tr(),
               text: vpnStore.connectionStatus.name.tr(),
@@ -33,15 +39,16 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
               leading: ConnectionIndicator(
                 isConnected: vpnStore.isConnected,
               ),
-            ),
+            ).expanded(),
             _BarItem(
               label: LocaleKeys.location.tr(),
-              text: vpnConnection.location.tr(),
               leading:
                   vpnStore.isConnected ? Flag(countryCode: vpnStore.vpnConnection.location) : null,
-            )
+              text: vpnConnection.location.tr(),
+              leadingPosition: LeadingPosition.bottom,
+            ).expanded(),
           ],
-        ).padding(vertical: 20);
+        ).padding(vertical: 20, horizontal: 4);
       },
     );
   }
@@ -53,13 +60,14 @@ class _BarItem extends StatelessWidget {
     required this.text,
     this.isConnected = false,
     this.leading,
+    this.leadingPosition = LeadingPosition.left,
   });
 
   final String label;
   final Widget? leading;
   final String text;
   final bool isConnected;
-
+  final LeadingPosition leadingPosition;
   @override
   Widget build(BuildContext context) => Column(
         children: [
@@ -76,16 +84,21 @@ class _BarItem extends StatelessWidget {
             )
           else
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (leading != null) leading!.padding(right: 4),
+                if (leadingPosition == LeadingPosition.left && leading != null)
+                  leading!.padding(right: 4),
                 EasyText(
                   text,
                   color: Palette.white,
                   fontWeight: FontWeight.w500,
                   fontSize: 12,
-                ),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                ).flexible(),
               ],
             ),
+          if (leadingPosition == LeadingPosition.bottom && leading != null) leading!.padding(top: 4)
         ],
       );
 }

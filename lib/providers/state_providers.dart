@@ -14,6 +14,7 @@ import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/stores/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/connectivity_store.dart';
+import 'package:mysterium_vpn/stores/intercom_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/rest_store.dart';
@@ -29,12 +30,14 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final appLinks = ref.watch(appLinksPOD);
   final localDb = ref.watch(localDBPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
+  final intercomStore = ref.watch(intercomStorePOD);
 
   return AuthStore(
     authService: authService,
     appLinks: appLinks,
     localDb: localDb,
     analyticsStore: analyticsStore,
+    intercomStore: intercomStore,
   );
 });
 
@@ -47,11 +50,13 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final locationsStore = ref.watch(locationsStorePOD);
   final wireguardService = ref.watch(wireguardServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
+  final subscriptionStore = ref.watch(subscriptionStorePOD);
   return VpnStore(
     apiService: apiService,
     locationsStore: locationsStore,
     wireguardService: wireguardService,
     analyticsStore: analyticsStore,
+    subscriptionStore: subscriptionStore,
   );
 });
 
@@ -156,5 +161,13 @@ final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
   return AnalyticsStore(
     localDb: localDb,
     analytics: firebaseAnalytics,
+  );
+});
+
+final intercomStorePOD = StateProvider<IntercomStore>((ref) {
+  final intercom = ref.watch(intercomPOD);
+
+  return IntercomStore(
+    intercom: intercom,
   );
 });

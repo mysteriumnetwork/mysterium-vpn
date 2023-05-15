@@ -34,32 +34,32 @@ class ConnectButton extends HookConsumerWidget {
       duration: const Duration(seconds: 10),
     )..repeat();
     return Observer(
-      builder: (context) => vpnStore.isLoading
-          ? locationCode == vpnStore.connectingLocationCode || locationCode == null
-              ? AnimatedBuilder(
-                  animation: controller,
-                  builder: (_, child) => Transform.rotate(
-                    angle: controller.value * 40,
-                    child: child,
-                  ),
-                  child: SvgIconButton(
-                    asset: powerConnecting,
-                    onPressed: null,
-                  ),
-                ).fittedBox()
-              : SvgIconButton(
-                  asset:
-                      vpnStore.connectionStatus == ConnectionStatus.connected ? powerOn : powerOff,
-                  onPressed: null,
-                ).fittedBox()
+      builder: (context) => vpnStore.isLoading &&
+              (locationCode == vpnStore.connectingLocationCode || locationCode == null)
+          ? AnimatedBuilder(
+              animation: controller,
+              builder: (_, child) => Transform.rotate(
+                angle: controller.value * 40,
+                child: child,
+              ),
+              child: SvgIconButton(
+                asset: powerConnecting,
+                onPressed: () => onConnectButtonPressed(
+                  connectivityStore.connectionStatus,
+                  vpnStore.connectionStatus,
+                  context,
+                  onPressed,
+                ),
+              ),
+            ).fittedBox()
           : SvgIconButton(
+              asset: vpnStore.connectionStatus == ConnectionStatus.connected ? powerOn : powerOff,
               onPressed: () => onConnectButtonPressed(
                 connectivityStore.connectionStatus,
                 vpnStore.connectionStatus,
                 context,
                 onPressed,
               ),
-              asset: vpnStore.connectionStatus == ConnectionStatus.connected ? powerOn : powerOff,
             ).fittedBox(),
     );
   }

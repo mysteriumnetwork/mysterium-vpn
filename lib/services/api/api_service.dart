@@ -7,9 +7,9 @@ abstract class ApiService {
   Future<void> setNotificationsApproval({required bool approval});
   Approval geNotificationsApproval();
   Approval getEmailCommunicationApproval();
-  Future<List<Location>> fetchAllLocations({required String keyword});
-  Future<List<Location>> fetchTopLocations({required String keyword});
+  Future<VPNLocations> fetchVPNLocations({required String keyword});
   Future<void> setRecentLocation({required String location});
   List<Location> getRecentLocations({required String keyword});
   Future<VpnConfig> fetchVpnConfig({required VpnConfigInput input, required String privateKey});
+  Future<String?> getIPAdress();
 }

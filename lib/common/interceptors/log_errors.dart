@@ -77,7 +77,6 @@ class CustomLogInterceptor extends Interceptor {
         err,
         StackTrace.fromString('ApiClient'),
         reason: 'API EXCEPTION',
-        fatal: true,
         printDetails: true,
       );
     }

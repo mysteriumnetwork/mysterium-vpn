@@ -62,9 +62,8 @@ class Enviroment {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
-      FlutterError.onError = (errorDetails) {
-        FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-      };
+      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
       PlatformDispatcher.instance.onError = (error, stack) {
         FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
         return true;
@@ -88,18 +87,14 @@ class Enviroment {
     final flavorConfig = setupFlavor(flavor);
     debugPrint('App started in ${flavorConfig.flavor} mode');
     debugPrint('Base URL ${flavorConfig.values.baseUrl}');
-    FlutterNativeSplash.remove();
     await SentryFlutter.init(
       (options) {
         options
           ..dsn =
               'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200'
-          ..tracesSampleRate = 1.0
           ..sendClientReports = true
           ..maxRequestBodySize = MaxRequestBodySize.small
-          ..maxResponseBodySize = MaxResponseBodySize.small
-          ..attachScreenshot = true
-          ..screenshotQuality = SentryScreenshotQuality.low;
+          ..maxResponseBodySize = MaxResponseBodySize.small;
       },
       appRunner: () {
         FlutterNativeSplash.remove();
@@ -107,10 +102,12 @@ class Enviroment {
           ProviderScope(
             overrides: [environmentPOD.overrideWith((ref) => flavorConfig)],
             child: EasyLocalization(
+              useOnlyLangCode: true,
               supportedLocales: kSupportedLocales,
               path: Assets.langs,
               fallbackLocale: kFallbackLocale,
-              child: const SentryScreenshotWidget(child: MyApp()),
+              startLocale: kFallbackLocale,
+              child: const MyApp(),
             ),
           ),
         );

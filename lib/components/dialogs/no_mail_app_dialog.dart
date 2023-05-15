@@ -1,6 +1,5 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
@@ -12,7 +11,7 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-Future<void> shownVerificationFailedDialog(AsyncCallback onRetry, BuildContext context) async {
+Future<void> shownNoMailAppDialog(BuildContext context) async {
   await showBarModalBottomSheet(
     clipBehavior: Clip.none,
     expand: false,
@@ -23,13 +22,12 @@ Future<void> shownVerificationFailedDialog(AsyncCallback onRetry, BuildContext c
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
     ),
-    builder: (context) => VerificationFailedDialog(onRetry: onRetry),
+    builder: (context) => const NoMailAppDialog(),
   );
 }
 
-class VerificationFailedDialog extends StatelessWidget {
-  const VerificationFailedDialog({required this.onRetry, super.key});
-  final AsyncCallback onRetry;
+class NoMailAppDialog extends StatelessWidget {
+  const NoMailAppDialog({super.key});
   @override
   Widget build(BuildContext context) => Stack(
         clipBehavior: Clip.none,
@@ -38,17 +36,17 @@ class VerificationFailedDialog extends StatelessWidget {
           const Positioned(
             top: -15,
             child: SvgIcon(
-              asset: Assets.subscription,
+              asset: Assets.messageSvg,
             ),
           ),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               HeaderTitle(
-                text: LocaleKeys.subscriptionVerificationFailed.tr(),
+                text: LocaleKeys.openEmailApp.tr(),
               ),
               EasyText(
-                LocaleKeys.failedToVerifySubs.tr(),
+                LocaleKeys.noEmailApp.tr(),
                 fontSize: 14,
                 maxLines: 4,
                 textAlign: TextAlign.center,
@@ -57,9 +55,8 @@ class VerificationFailedDialog extends StatelessWidget {
                 useSystemColor: false,
                 width: 200,
                 color: Palette.purple,
-                text: LocaleKeys.retryBtn.tr(),
+                text: LocaleKeys.goBackButton.tr(),
                 onPressed: () {
-                  onRetry();
                   Beamer.of(context).popRoute();
                 },
               ),

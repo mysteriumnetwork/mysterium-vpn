@@ -4,6 +4,7 @@ import 'dart:async' show Future;
 import 'package:collection/collection.dart';
 // Package imports:
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,16 +46,15 @@ class SharedPreferenceService {
 
   Locale? getLocale() {
     final languageCode = getString(StorageKeys.languageCode.value);
-    final countryCode = getString(StorageKeys.countryCode.value);
-    return languageCode != null ? Locale(languageCode, countryCode) : null;
+    return languageCode != null
+        ? kSupportedLocales.firstWhereOrNull(
+            (e) => e.languageCode == languageCode,
+          )
+        : null;
   }
 
-  Future<bool> setLocale(Locale locale) async {
-    if (locale.countryCode != null) {
-      await setString(StorageKeys.countryCode.value, locale.countryCode!);
-    }
-    return setString(StorageKeys.languageCode.value, locale.languageCode);
-  }
+  Future<bool> setLocale(Locale locale) async =>
+      setString(StorageKeys.languageCode.value, locale.languageCode);
 
   ThemeMode? getThemeType() {
     final themeType = getString(StorageKeys.themeMype.value);
