@@ -430,5 +430,6 @@
   "installVpnProfile": "Norėdami pradėti naudoti Mysterium VPN, mums reikia jūsų leidimo įdiegti VPN profilį.",
   "anonimityIsSafe": "Jūsų anonimiškumas yra saugus. Mes neperžiūrime, nerenkame ir nesaugome jokios jūsų naršymo veiklos.",
   "readOur": "Skaitykite mūsų ",
-  "moreInfo": " norėdami gauti daugiau informacijos."
+  "moreInfo": " norėdami gauti daugiau informacijos.",
+  "acceptAndContinue": "Priimk ir tęsk"
 }
