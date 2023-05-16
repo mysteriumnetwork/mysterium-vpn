@@ -107,6 +107,7 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
           Routes.subscription.toRoute,
           Routes.emailCommunications.toRoute,
           Routes.notifications.toRoute,
+          Routes.vpnConfigConsent.toRoute,
         ],
         check: (context, state) => authStore.authStatus == AuthStatus.authenticated,
         beamToNamed: (_, __) => Routes.login.toRoute,

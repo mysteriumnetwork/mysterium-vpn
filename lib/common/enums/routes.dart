@@ -10,4 +10,5 @@ enum Routes {
   subscription,
   emailCommunications,
   notifications,
+  vpnConfigConsent,
 }
