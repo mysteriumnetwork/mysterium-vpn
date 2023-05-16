@@ -63,4 +63,9 @@ class SharedPreferenceService {
 
   Future<bool> setThemeType(ThemeMode themeMode) async =>
       setString(StorageKeys.themeMype.value, themeMode.value);
+
+  bool? getVpnConfigConsent() => getBool(StorageKeys.vpnConfigConsent.value);
+
+  Future<bool> setVpnConfigConsent({required bool vpnConfigConsent}) async =>
+      setBool(StorageKeys.vpnConfigConsent.value, value: vpnConfigConsent);
 }
