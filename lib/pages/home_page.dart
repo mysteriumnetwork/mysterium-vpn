@@ -21,9 +21,9 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final subscriptionStore = ref.watch(subscriptionStorePOD);
-    final authStore = ref.watch(authStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
+    final authStore = ref.watch(authStorePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
 
     useOnAppLifecycleStateChange(
       (previous, current) {
@@ -40,9 +40,11 @@ class HomePage extends HookConsumerWidget {
     );
 
     return ReactionBuilder(
-      builder: (context) => reaction((_) => subscriptionStore.subscriptionFuture?.status, (result) {
+      builder: (_) => reaction((_) => subscriptionStore.subscriptionFuture?.status, (result) {
         debugPrint(result.toString());
-        if (result == FutureStatus.fulfilled && subscriptionStore.subscription?.active == false) {
+        if (result == FutureStatus.fulfilled &&
+            subscriptionStore.subscription?.active == false &&
+            (vpnStore.vpnConfigConsent ?? true)) {
           context.beamToNamed(Routes.subscription.toRoute);
         }
         if (result == FutureStatus.rejected) {
@@ -58,11 +60,21 @@ class HomePage extends HookConsumerWidget {
           );
         }
       }),
-      child: ColoredScaffold(
-        body: ScreenTypeLayoutBuilder(
-          mobile: (BuildContext context) => const HomeMobileView(),
-          tablet: (BuildContext context) => const HomeDesktopView(),
-          desktop: (BuildContext context) => const HomeDesktopView(),
+      child: ReactionBuilder(
+        builder: (_) => when(
+          (_) => vpnStore.vpnConfigConsent == false,
+          () {
+            WidgetsBinding.instance.addPostFrameCallback(
+              (_) => Beamer.of(context).beamToNamed(Routes.vpnConfigConsent.toRoute),
+            );
+          },
+        ),
+        child: ColoredScaffold(
+          body: ScreenTypeLayoutBuilder(
+            mobile: (BuildContext context) => const HomeMobileView(),
+            tablet: (BuildContext context) => const HomeDesktopView(),
+            desktop: (BuildContext context) => const HomeDesktopView(),
+          ),
         ),
       ),
     );
