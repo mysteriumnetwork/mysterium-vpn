@@ -433,4 +433,5 @@ abstract class LocaleKeys {
   static const anonimityIsSafe = 'anonimityIsSafe';
   static const readOur = 'readOur';
   static const moreInfo = 'moreInfo';
+  static const acceptAndContinue = 'acceptAndContinue';
 }

@@ -456,7 +456,8 @@ class CodegenLoader extends AssetLoader {
     "anonimityIsSafe":
         "Anonimliğiniz güvende. Göz atma etkinliğinizin hiçbirini görüntülemiyor, toplamıyor veya saklamıyoruz.",
     "readOur": "bizim okuyun ",
-    "moreInfo": " daha fazla bilgi için"
+    "moreInfo": " daha fazla bilgi için",
+    "acceptAndContinue": "Kabul et ve devam et"
   };
   static const Map<String, dynamic> mk = {
     "title": "Здраво господине",
@@ -912,7 +913,8 @@ class CodegenLoader extends AssetLoader {
     "anonimityIsSafe":
         "Вашата анонимност е безбедна. Ние не прикажуваме, собираме или складираме некоја од вашите активности на прелистување.",
     "readOur": "Прочитајте го нашиот ",
-    "moreInfo": " за повеќе информации."
+    "moreInfo": " за повеќе информации.",
+    "acceptAndContinue": "Прифатете и продолжете"
   };
   static const Map<String, dynamic> lt = {
     "title": "Sveiki pone",
@@ -1363,7 +1365,8 @@ class CodegenLoader extends AssetLoader {
     "anonimityIsSafe":
         "Jūsų anonimiškumas yra saugus. Mes neperžiūrime, nerenkame ir nesaugome jokios jūsų naršymo veiklos.",
     "readOur": "Skaitykite mūsų ",
-    "moreInfo": " norėdami gauti daugiau informacijos."
+    "moreInfo": " norėdami gauti daugiau informacijos.",
+    "acceptAndContinue": "Priimk ir tęsk"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1822,7 +1825,8 @@ class CodegenLoader extends AssetLoader {
     "anonimityIsSafe":
         "Ihre Anonymität ist sicher. Wir sehen, sammeln oder speichern keine Ihrer Browsing-Aktivitäten.",
     "readOur": "Lesen Sie unsere ",
-    "moreInfo": " für weitere Informationen."
+    "moreInfo": " für weitere Informationen.",
+    "acceptAndContinue": "Akzeptieren und fortfahren"
   };
   static const Map<String, dynamic> uk = {
     "title": "Вітаю, сер",
@@ -2267,7 +2271,8 @@ class CodegenLoader extends AssetLoader {
     "anonimityIsSafe":
         "Ваша анонімність у безпеці. Ми не переглядаємо, не збираємо та не зберігаємо вашу діяльність у веб-переглядачі.",
     "readOur": "Читайте наш ",
-    "moreInfo": " для отримання додаткової інформації."
+    "moreInfo": " для отримання додаткової інформації.",
+    "acceptAndContinue": "Прийняти та продовжити"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2718,7 +2723,8 @@ class CodegenLoader extends AssetLoader {
     "anonimityIsSafe":
         "Seu anonimato é seguro. Não visualizamos, coletamos ou armazenamos nenhuma de suas atividades de navegação.",
     "readOur": "Leia nosso ",
-    "moreInfo": " para mais informações."
+    "moreInfo": " para mais informações.",
+    "acceptAndContinue": "Aceitar e continuar"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -3168,7 +3174,8 @@ class CodegenLoader extends AssetLoader {
     "anonimityIsSafe":
         "Your anonymity is safe. We don't view, collect or store any of your browsing activity.",
     "readOur": "Read our ",
-    "moreInfo": " for more informations."
+    "moreInfo": " for more informations.",
+    "acceptAndContinue": "Accept and continue"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3624,7 +3631,8 @@ class CodegenLoader extends AssetLoader {
     "anonimityIsSafe":
         "Il tuo anonimato è al sicuro. Non visualizziamo, raccogliamo o memorizziamo nessuna delle tue attività di navigazione.",
     "readOur": "Leggi il nostro ",
-    "moreInfo": " per maggiori informazioni."
+    "moreInfo": " per maggiori informazioni.",
+    "acceptAndContinue": "Accetta e continua"
   };
   static const Map<String, dynamic> sr = {
     "title": "Здраво господине",
@@ -4078,7 +4086,8 @@ class CodegenLoader extends AssetLoader {
     "anonimityIsSafe":
         "Ваша анонимност је безбедна. Не прегледавамо, не прикупљамо нити чувамо било коју вашу активност прегледања.",
     "readOur": "Прочитајте наше ",
-    "moreInfo": " за више информација."
+    "moreInfo": " за више информација.",
+    "acceptAndContinue": "Прихватите и наставите"
   };
   static const Map<String, dynamic> et = {
     "title": "Tere, härra",
@@ -4526,7 +4535,8 @@ class CodegenLoader extends AssetLoader {
     "anonimityIsSafe":
         "Teie anonüümsus on ohutu. Me ei vaata, kogu ega salvesta teie sirvimistegevust.",
     "readOur": "Lugege meie ",
-    "moreInfo": " lisateabe saamiseks."
+    "moreInfo": " lisateabe saamiseks.",
+    "acceptAndContinue": "Nõustu ja jätka"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -4983,7 +4993,8 @@ class CodegenLoader extends AssetLoader {
     "anonimityIsSafe":
         "Votre anonymat est protégé. Nous ne visualisons, ne collectons ni ne stockons aucune de vos activités de navigation.",
     "readOur": "Lisez notre ",
-    "moreInfo": " pour plus d'informations."
+    "moreInfo": " pour plus d'informations.",
+    "acceptAndContinue": "Accepter et continuer"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -5436,7 +5447,8 @@ class CodegenLoader extends AssetLoader {
     "anonimityIsSafe":
         "Su anonimato está seguro. No vemos, recopilamos ni almacenamos nada de su actividad de navegación.",
     "readOur": "Lea nuestro ",
-    "moreInfo": " para más información."
+    "moreInfo": " para más información.",
+    "acceptAndContinue": "Aceptar y continuar"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "tr": tr,

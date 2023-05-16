@@ -430,5 +430,6 @@
   "installVpnProfile": "Um Mysterium VPN nutzen zu können, benötigen wir Ihre Erlaubnis zur Installation eines VPN-Profils.",
   "anonimityIsSafe": "Ihre Anonymität ist sicher. Wir sehen, sammeln oder speichern keine Ihrer Browsing-Aktivitäten.",
   "readOur": "Lesen Sie unsere ",
-  "moreInfo": " für weitere Informationen."
+  "moreInfo": " für weitere Informationen.",
+  "acceptAndContinue": "Akzeptieren und fortfahren"
 }
