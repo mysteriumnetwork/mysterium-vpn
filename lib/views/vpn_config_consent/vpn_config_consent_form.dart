@@ -34,6 +34,8 @@ class VpnConfigConsentForm extends HookConsumerWidget {
     final height = getMediaHeight(context);
     final isMounted = useIsMounted();
     final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final environment = ref.watch(environmentPOD);
+
     return Column(
       children: [
         HeaderTitle(
@@ -89,7 +91,9 @@ class VpnConfigConsentForm extends HookConsumerWidget {
               await vpnStore.setVpnConfigConsent(value: true);
               if (isMounted()) {
                 subscriptionStore.isSubscribed == false
-                    ? context.beamToNamed(Routes.subscription.toRoute)
+                    ? !isMobilePaymentGateway(subscriptionStore.subscription?.gateway)
+                        ? launchUrl(Uri.parse(environment.values.billingPage))
+                        : context.beamToNamed(Routes.subscription.toRoute)
                     : context.beamBack();
               }
             },
