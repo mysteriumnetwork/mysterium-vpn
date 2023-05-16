@@ -14,7 +14,7 @@
   "signInDisclaimer": "Pasirašę jūs sutinkate su mūsų",
   "termsAndConditions": "Sąlygos ir sąlygos",
   "and": "ir",
-  "privacyPolicy": "Privatumo politika.",
+  "privacyPolicy": "Privatumo politika",
   "email": "Elektroninio pašto adresas",
   "emailIsRequired": "Reikalingas el. Pašto adresas",
   "emailIsNotValid": "El. Pašto adresas negalioja",
@@ -107,7 +107,6 @@
   "questions": "Klausimai?",
   "tap": "Bakstelėkite",
   "here": "čia",
-  "moreInfo": "Norėdami gauti daugiau informacijos",
   "almostThere": "Beveik ten!",
   "dontMissOut": "Nepraleiskite, kas naujo!",
   "productUpdates": "Gaukite produktų atnaujinimus",
@@ -426,5 +425,10 @@
   "connectionTimeout": "Baigėsi ryšio skirtasis laikas. Vėliau bandykite dar kartą.Jei problema išlieka, susisiekite su palaikymo komanda",
   "cancelYourSubsMess": "Prieš ištrindami paskyrą, atsiskaitymo puslapyje ATŠAUKTI PRENUMERACIJĄ.",
   "accountSuccessfullyDeleted": "Jūsų paskyra sėkmingai ištrinta. Apgailestaujame, kad išeinate.😢",
-  "redirectToLoginPage": "Būsite nukreipti į prisijungimo puslapį."
+  "redirectToLoginPage": "Būsite nukreipti į prisijungimo puslapį.",
+  "weNeedPermission": "Mums reikia jūsų leidimo",
+  "installVpnProfile": "Norėdami pradėti naudoti Mysterium VPN, mums reikia jūsų leidimo įdiegti VPN profilį.",
+  "anonimityIsSafe": "Jūsų anonimiškumas yra saugus. Mes neperžiūrime, nerenkame ir nesaugome jokios jūsų naršymo veiklos.",
+  "readOur": "Skaitykite mūsų ",
+  "moreInfo": " Norėdami gauti daugiau informacijos."
 }

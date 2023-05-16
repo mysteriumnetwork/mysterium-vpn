@@ -14,7 +14,7 @@
   "signInDisclaimer": "Durch Anmelden stimmen Sie unserem zu",
   "termsAndConditions": "Geschäftsbedingungen",
   "and": "Und",
-  "privacyPolicy": "Datenschutz-Bestimmungen.",
+  "privacyPolicy": "Datenschutz-Bestimmungen",
   "email": "E-Mail-Addresse",
   "emailIsRequired": "E-Mailadresse wird benötigt",
   "emailIsNotValid": "Email Adresse ist nicht gültig",
@@ -107,7 +107,6 @@
   "questions": "Fragen?",
   "tap": "Klopfen",
   "here": "Hier",
-  "moreInfo": "für weitere Informationen",
   "almostThere": "Fast dort!",
   "dontMissOut": "Verpassen Sie nicht, was neu ist!",
   "productUpdates": "Holen Sie sich Produktaktualisierungen",
@@ -426,5 +425,10 @@
   "connectionTimeout": "Verbindungszeitüberschreitung. Bitte versuchen Sie es später erneut. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an den Support.",
   "cancelYourSubsMess": "Bitte KÜNDIGEN SIE IHR ABONNEMENT auf der Abrechnungsseite, bevor Sie Ihr Konto löschen.",
   "accountSuccessfullyDeleted": "Ihr Konto wurde erfolgreich gelöscht. Es tut uns leid, dass Sie gehen.😢",
-  "redirectToLoginPage": "Sie werden auf die Anmeldeseite weitergeleitet."
+  "redirectToLoginPage": "Sie werden auf die Anmeldeseite weitergeleitet.",
+  "weNeedPermission": "Wir benötigen Ihre Erlaubnis",
+  "installVpnProfile": "Um Mysterium VPN nutzen zu können, benötigen wir Ihre Erlaubnis zur Installation eines VPN-Profils.",
+  "anonimityIsSafe": "Ihre Anonymität ist sicher. Wir sehen, sammeln oder speichern keine Ihrer Browsing-Aktivitäten.",
+  "readOur": "Lesen Sie unsere ",
+  "moreInfo": " Für weitere Informationen."
 }

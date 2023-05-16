@@ -14,7 +14,7 @@
   "signInDisclaimer": "Sisse logides nõustute meiega",
   "termsAndConditions": "Tingimused",
   "and": "ja",
-  "privacyPolicy": "Privaatsuspoliitika.",
+  "privacyPolicy": "Privaatsuspoliitika",
   "email": "E-posti aadress",
   "emailIsRequired": "E -posti aadress on vajalik",
   "emailIsNotValid": "E -posti aadress ei kehti",
@@ -107,7 +107,6 @@
   "questions": "Küsimused?",
   "tap": "Koputus",
   "here": "siin",
-  "moreInfo": "Lisateabe saamiseks",
   "almostThere": "Peaaegu kohal!",
   "dontMissOut": "Ära jäta kasutamata seda, mis uut on!",
   "productUpdates": "Hankige tootevärskendusi",
@@ -426,5 +425,10 @@
   "connectionTimeout": "Ühenduse ajalõpp.Proovige hiljem uuesti.Kui probleem püsib, võtke ühendust toega",
   "cancelYourSubsMess": "Enne konto kustutamist TÜHISTAGE OMA TELLEMUS arvelduslehel.",
   "accountSuccessfullyDeleted": "Teie konto kustutamine õnnestus. Meil ​​on kahju, et lahkute.😢",
-  "redirectToLoginPage": "Teid suunatakse sisselogimislehele."
+  "redirectToLoginPage": "Teid suunatakse sisselogimislehele.",
+  "weNeedPermission": "Vajame teie luba",
+  "installVpnProfile": "Mysterium VPN-i kasutamise alustamiseks vajame teie luba VPN-i profiili installimiseks.",
+  "anonimityIsSafe": "Teie anonüümsus on ohutu. Me ei vaata, kogu ega salvesta teie sirvimistegevust.",
+  "readOur": "Lugege meie ",
+  "moreInfo": " Lisateabe saamiseks."
 }
