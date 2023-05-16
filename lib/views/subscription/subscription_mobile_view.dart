@@ -38,25 +38,19 @@ class SubscriptionMobileView extends ConsumerWidget {
         },
         child: BaseLayout(
           header: const BaseAppBar(),
-          child: Observer(
-            builder: (context) {
-              if (subscriptionStore.isAvailable == StoreState.loading) {
-                return LoadingIndicator(
+          child: subscriptionStore.isAvailable == StoreState.loading
+              ? LoadingIndicator(
                   message: LocaleKeys.connectingToPaymentProcesor.tr(),
-                );
-              } else if (subscriptionStore.isAvailable == StoreState.notAvailable) {
-                return RetryOnErrorWidget(
-                  error: LocaleKeys.unableToConnectToPaymentProcesor.tr(),
-                  onRetry: subscriptionStore.getSubscriptionsConfig,
-                );
-              } else {
-                return SubscriptionForm(
-                  store: subscriptionStore,
-                  localDb: localDb,
-                );
-              }
-            },
-          ),
+                )
+              : subscriptionStore.isAvailable == StoreState.notAvailable
+                  ? RetryOnErrorWidget(
+                      error: LocaleKeys.unableToConnectToPaymentProcesor.tr(),
+                      onRetry: subscriptionStore.getSubscriptionsConfig,
+                    )
+                  : SubscriptionForm(
+                      store: subscriptionStore,
+                      localDb: localDb,
+                    ),
         ),
       ),
     );
