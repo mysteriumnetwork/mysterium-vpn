@@ -16,6 +16,7 @@ abstract class LocaleKeys {
   static const signInDisclaimer = 'signInDisclaimer';
   static const termsAndConditions = 'termsAndConditions';
   static const and = 'and';
+  static const privacyPolicy = 'privacyPolicy';
   static const email = 'email';
   static const emailIsRequired = 'emailIsRequired';
   static const emailIsNotValid = 'emailIsNotValid';

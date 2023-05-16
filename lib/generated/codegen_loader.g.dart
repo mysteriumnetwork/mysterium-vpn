@@ -30,6 +30,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Oturum açarak şunları kabul etmiş olursunuz:",
     "termsAndConditions": "Şartlar ve koşullar",
     "and": " Ve ",
+    "privacyPolicy": "Gizlilik Politikası",
     "email": "E-posta adresi",
     "emailIsRequired": "E-posta adresi gerekli",
     "emailIsNotValid": "E-posta adresi geçerli değil",
