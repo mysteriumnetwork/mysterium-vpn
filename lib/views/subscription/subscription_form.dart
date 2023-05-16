@@ -87,7 +87,13 @@ class SubscriptionForm extends HookConsumerWidget {
                 ReactionBuilder(
                   builder: (context) => reaction((_) => store.purchaseStatus, (result) {
                     if (result == PurchaseStatus.purchased && isMounted()) {
-                      if (store.subscription?.active == false) {
+                      if (store.subscription?.active ?? false) {
+                        showSnackbar(
+                          LocaleKeys.subscriptionActive.tr(),
+                          type: MessageType.success,
+                        );
+                        context.beamToReplacementNamed(Routes.home.toRoute);
+                      } else {
                         shownRetryDialog(
                           onRetry: () async => store.retryVerificationProcess(),
                           context: context,
@@ -95,12 +101,6 @@ class SubscriptionForm extends HookConsumerWidget {
                           title: LocaleKeys.subscriptionVerificationFailed.tr(),
                           subtitle: LocaleKeys.failedToVerifySubs.tr(),
                         );
-                      } else {
-                        showSnackbar(
-                          LocaleKeys.subscriptionActive.tr(),
-                          type: MessageType.success,
-                        );
-                        context.beamToReplacementNamed(Routes.home.toRoute);
                       }
                     }
                     if (result == PurchaseStatus.canceled) {
