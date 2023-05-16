@@ -425,5 +425,10 @@
   "connectionTimeout": "Timeout della connessione. Riprova più tardi. Se il problema persiste, contatta l'assistenza",
   "cancelYourSubsMess": "ANNULLA L'ABBONAMENTO nella pagina di fatturazione prima di eliminare il tuo account.",
   "accountSuccessfullyDeleted": "Il tuo account è stato eliminato con successo. Ci dispiace vederti andare via.😢",
-  "redirectToLoginPage": "Verrai reindirizzato alla pagina di accesso."
+  "redirectToLoginPage": "Verrai reindirizzato alla pagina di accesso.",
+  "weNeedPermission": "Abbiamo bisogno del tuo permesso",
+  "installVpnProfile": "Per iniziare a utilizzare Mysterium VPN, abbiamo bisogno della tua autorizzazione per installare un profilo VPN.",
+  "anonimityIsSafe": "Il tuo anonimato è al sicuro. Non visualizziamo, raccogliamo o memorizziamo nessuna delle tue attività di navigazione.",
+  "readOur": "Leggi il nostro ",
+  "moreInfo": " per maggiori informazioni."
 }
