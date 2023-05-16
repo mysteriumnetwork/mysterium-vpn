@@ -30,7 +30,6 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Oturum açarak şunları kabul etmiş olursunuz:",
     "termsAndConditions": "Şartlar ve koşullar",
     "and": " Ve ",
-    "privacyPolicy": "Gizlilik Politikası.",
     "email": "E-posta adresi",
     "emailIsRequired": "E-posta adresi gerekli",
     "emailIsNotValid": "E-posta adresi geçerli değil",
@@ -129,7 +128,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Sorular?",
     "tap": "Musluk ",
     "here": "Burada",
-    "moreInfo": " daha fazla bilgi için",
     "almostThere": "Neredeyse!",
     "dontMissOut": "Yenilikleri kaçırmayın!",
     "productUpdates": "Ürün güncellemelerini alın",
@@ -450,7 +448,14 @@ class CodegenLoader extends AssetLoader {
     "cancelYourSubsMess":
         "Lütfen hesabınızı silmeden önce faturalandırma sayfasında ABONELİĞİNİZİ İPTAL EDİN.",
     "accountSuccessfullyDeleted": "Hesabınız başarıyla silindi.Gittiğiniz için üzgünüz.😢",
-    "redirectToLoginPage": "Giriş sayfasına yönlendirileceksiniz."
+    "redirectToLoginPage": "Giriş sayfasına yönlendirileceksiniz.",
+    "weNeedPermission": "izninize ihtiyacımız var",
+    "installVpnProfile":
+        "Mysterium VPN'i kullanmaya başlamak için, bir VPN Profili kurmak için izninize ihtiyacımız var.",
+    "anonimityIsSafe":
+        "Anonimliğiniz güvende. Göz atma etkinliğinizin hiçbirini görüntülemiyor, toplamıyor veya saklamıyoruz.",
+    "readOur": "bizim okuyun ",
+    "moreInfo": " Daha fazla bilgi için"
   };
   static const Map<String, dynamic> mk = {
     "title": "Здраво господине",
@@ -468,7 +473,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Со пријавување, вие се согласувате со нашите",
     "termsAndConditions": "Правила и услови",
     "and": "и",
-    "privacyPolicy": "Политика за приватност.",
+    "privacyPolicy": "Политика за приватност",
     "email": "И-мејл адреса",
     "emailIsRequired": "Потребна е адреса за е -пошта",
     "emailIsNotValid": "Адресата за е -пошта не е валидна",
@@ -570,7 +575,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Прашања?",
     "tap": "Допрете",
     "here": "Еве",
-    "moreInfo": "За повеќе информации",
     "almostThere": "Скоро таму!",
     "dontMissOut": "Не пропуштајте што е ново!",
     "productUpdates": "Добијте ажурирања на производи",
@@ -900,7 +904,14 @@ class CodegenLoader extends AssetLoader {
         "ОТКАЖЕТЕ ЈА ВАШАТА ПРЕТПЛАТА на страницата за наплата пред да ја избришете вашата сметка.",
     "accountSuccessfullyDeleted":
         "Вашата сметка е успешно избришана. Жал ни е што ве гледаме дека одите.😢",
-    "redirectToLoginPage": "Ќе бидете пренасочени на страната за најавување."
+    "redirectToLoginPage": "Ќе бидете пренасочени на страната за најавување.",
+    "weNeedPermission": "Ни треба ваша дозвола",
+    "installVpnProfile":
+        "За да започнеме со користење на Mysterium VPN, потребна ни е ваша дозвола да инсталираме VPN профил.",
+    "anonimityIsSafe":
+        "Вашата анонимност е безбедна. Ние не прикажуваме, собираме или складираме некоја од вашите активности на прелистување.",
+    "readOur": "Прочитајте го нашиот ",
+    "moreInfo": " За повеќе информации."
   };
   static const Map<String, dynamic> lt = {
     "title": "Sveiki pone",
@@ -918,7 +929,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Pasirašę jūs sutinkate su mūsų",
     "termsAndConditions": "Sąlygos ir sąlygos",
     "and": "ir",
-    "privacyPolicy": "Privatumo politika.",
+    "privacyPolicy": "Privatumo politika",
     "email": "Elektroninio pašto adresas",
     "emailIsRequired": "Reikalingas el. Pašto adresas",
     "emailIsNotValid": "El. Pašto adresas negalioja",
@@ -1020,7 +1031,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Klausimai?",
     "tap": "Bakstelėkite",
     "here": "čia",
-    "moreInfo": "Norėdami gauti daugiau informacijos",
     "almostThere": "Beveik ten!",
     "dontMissOut": "Nepraleiskite, kas naujo!",
     "productUpdates": "Gaukite produktų atnaujinimus",
@@ -1345,7 +1355,14 @@ class CodegenLoader extends AssetLoader {
         "Prieš ištrindami paskyrą, atsiskaitymo puslapyje ATŠAUKTI PRENUMERACIJĄ.",
     "accountSuccessfullyDeleted":
         "Jūsų paskyra sėkmingai ištrinta. Apgailestaujame, kad išeinate.😢",
-    "redirectToLoginPage": "Būsite nukreipti į prisijungimo puslapį."
+    "redirectToLoginPage": "Būsite nukreipti į prisijungimo puslapį.",
+    "weNeedPermission": "Mums reikia jūsų leidimo",
+    "installVpnProfile":
+        "Norėdami pradėti naudoti Mysterium VPN, mums reikia jūsų leidimo įdiegti VPN profilį.",
+    "anonimityIsSafe":
+        "Jūsų anonimiškumas yra saugus. Mes neperžiūrime, nerenkame ir nesaugome jokios jūsų naršymo veiklos.",
+    "readOur": "Skaitykite mūsų ",
+    "moreInfo": " Norėdami gauti daugiau informacijos."
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1363,7 +1380,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Durch Anmelden stimmen Sie unserem zu",
     "termsAndConditions": "Geschäftsbedingungen",
     "and": "Und",
-    "privacyPolicy": "Datenschutz-Bestimmungen.",
+    "privacyPolicy": "Datenschutz-Bestimmungen",
     "email": "E-Mail-Addresse",
     "emailIsRequired": "E-Mailadresse wird benötigt",
     "emailIsNotValid": "Email Adresse ist nicht gültig",
@@ -1466,7 +1483,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Fragen?",
     "tap": "Klopfen",
     "here": "Hier",
-    "moreInfo": "für weitere Informationen",
     "almostThere": "Fast dort!",
     "dontMissOut": "Verpassen Sie nicht, was neu ist!",
     "productUpdates": "Holen Sie sich Produktaktualisierungen",
@@ -1798,7 +1814,14 @@ class CodegenLoader extends AssetLoader {
         "Bitte KÜNDIGEN SIE IHR ABONNEMENT auf der Abrechnungsseite, bevor Sie Ihr Konto löschen.",
     "accountSuccessfullyDeleted":
         "Ihr Konto wurde erfolgreich gelöscht. Es tut uns leid, dass Sie gehen.😢",
-    "redirectToLoginPage": "Sie werden auf die Anmeldeseite weitergeleitet."
+    "redirectToLoginPage": "Sie werden auf die Anmeldeseite weitergeleitet.",
+    "weNeedPermission": "Wir benötigen Ihre Erlaubnis",
+    "installVpnProfile":
+        "Um Mysterium VPN nutzen zu können, benötigen wir Ihre Erlaubnis zur Installation eines VPN-Profils.",
+    "anonimityIsSafe":
+        "Ihre Anonymität ist sicher. Wir sehen, sammeln oder speichern keine Ihrer Browsing-Aktivitäten.",
+    "readOur": "Lesen Sie unsere ",
+    "moreInfo": " Für weitere Informationen."
   };
   static const Map<String, dynamic> uk = {
     "title": "Вітаю, сер",
@@ -1816,7 +1839,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Увійшовши, ви погоджуєтеся з нашими",
     "termsAndConditions": "Правила та умови",
     "and": " і ",
-    "privacyPolicy": "Політика конфіденційності.",
+    "privacyPolicy": "Політика конфіденційності",
     "email": "Адреса електронної пошти",
     "emailIsRequired": "Необхідно вказати адресу електронної пошти",
     "emailIsNotValid": "Адреса електронної пошти недійсна",
@@ -1915,7 +1938,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Запитання?",
     "tap": "Торкніться ",
     "here": "тут",
-    "moreInfo": " для отримання додаткової інформації",
     "almostThere": "Майже там!",
     "dontMissOut": "Не пропустіть новинки!",
     "productUpdates": "Отримуйте оновлення продукту",
@@ -2237,7 +2259,14 @@ class CodegenLoader extends AssetLoader {
     "cancelYourSubsMess":
         "Будь ласка, СКАСУЙТЕ СВОЮ ПІДПИСКУ на сторінці платежів перед видаленням свого облікового запису.",
     "accountSuccessfullyDeleted": "Ваш обліковий запис успішно видалено. Нам шкода, що ви йдете.😢",
-    "redirectToLoginPage": "Ви будете перенаправлені на сторінку входу."
+    "redirectToLoginPage": "Ви будете перенаправлені на сторінку входу.",
+    "weNeedPermission": "Нам потрібен ваш дозвіл",
+    "installVpnProfile":
+        "Щоб почати використовувати Mysterium VPN, нам потрібен ваш дозвіл на встановлення профілю VPN.",
+    "anonimityIsSafe":
+        "Ваша анонімність у безпеці. Ми не переглядаємо, не збираємо та не зберігаємо вашу діяльність у веб-переглядачі.",
+    "readOur": "Читайте наш ",
+    "moreInfo": " Для отримання додаткової інформації."
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2255,7 +2284,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Ao fazer login, você concorda com o nosso",
     "termsAndConditions": "Termos e Condições",
     "and": "e",
-    "privacyPolicy": "Política de Privacidade.",
+    "privacyPolicy": "Política de Privacidade",
     "email": "Endereço de email",
     "emailIsRequired": "É necessário um endereço de e-mail",
     "emailIsNotValid": "o endereço de email não é válido",
@@ -2357,7 +2386,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Questões?",
     "tap": "Tocar",
     "here": "aqui",
-    "moreInfo": "Para mais informações",
     "almostThere": "Quase lá!",
     "dontMissOut": "Não perca o que há de novo!",
     "productUpdates": "Obtenha atualizações do produto",
@@ -2682,7 +2710,14 @@ class CodegenLoader extends AssetLoader {
     "cancelYourSubsMess":
         "CANCELE SUA ASSINATURA na página de cobrança antes de excluir sua conta.",
     "accountSuccessfullyDeleted": "Sua conta foi excluída com sucesso. Lamentamos sua partida.😢",
-    "redirectToLoginPage": "Você será redirecionado para a página de login."
+    "redirectToLoginPage": "Você será redirecionado para a página de login.",
+    "weNeedPermission": "Precisamos da sua permissão",
+    "installVpnProfile":
+        "Para começar a usar o Mysterium VPN, precisamos da sua permissão para instalar um perfil VPN.",
+    "anonimityIsSafe":
+        "Seu anonimato é seguro. Não visualizamos, coletamos ou armazenamos nenhuma de suas atividades de navegação.",
+    "readOur": "Leia nosso ",
+    "moreInfo": " Para mais informações."
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -2700,7 +2735,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "By signing in, you agree to our",
     "termsAndConditions": "Terms and Conditions",
     "and": " and ",
-    "privacyPolicy": "Privacy Policy.",
+    "privacyPolicy": "Privacy Policy",
     "email": "Email address",
     "emailIsRequired": "Email address is required",
     "emailIsNotValid": "Email address is not valid",
@@ -2800,7 +2835,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Questions?",
     "tap": "Tap ",
     "here": "here",
-    "moreInfo": " for more informations",
     "almostThere": "Almost there!",
     "dontMissOut": "Don't miss out on what's new!",
     "productUpdates": "Get product updates",
@@ -3126,7 +3160,14 @@ class CodegenLoader extends AssetLoader {
         "Please CANCEL YOUR SUBSCRIPTION on the billing page before deleting your account.",
     "accountSuccessfullyDeleted":
         "Your account has been successfully deleted. We are sorry to see you go. 😢",
-    "redirectToLoginPage": "You will be redirected to the login page."
+    "redirectToLoginPage": "You will be redirected to the login page.",
+    "weNeedPermission": "We need your permission",
+    "installVpnProfile":
+        "To start using Mysterium VPN, we need your permission to install a VPN Profile.",
+    "anonimityIsSafe":
+        "Your anonymity is safe. We don't view, collect or store any of your browsing activity.",
+    "readOur": "Read our ",
+    "moreInfo": " For more informations."
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3144,7 +3185,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Accettando, accetti il nostro",
     "termsAndConditions": "Termini e Condizioni",
     "and": "E",
-    "privacyPolicy": "Politica sulla riservatezza.",
+    "privacyPolicy": "Politica sulla riservatezza",
     "email": "Indirizzo e-mail",
     "emailIsRequired": "È richiesto l'indirizzo e -mail",
     "emailIsNotValid": "Indirizzo email non valido",
@@ -3246,7 +3287,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Domande?",
     "tap": "Rubinetto",
     "here": "Qui",
-    "moreInfo": "Per ulteriori informazioni",
     "almostThere": "Quasi lì!",
     "dontMissOut": "Non perdere le novità!",
     "productUpdates": "Ottieni aggiornamenti sul prodotto",
@@ -3594,7 +3634,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Потписивањем, слажете се са нашим",
     "termsAndConditions": "Услови",
     "and": "и",
-    "privacyPolicy": "Правила о приватности.",
+    "privacyPolicy": "Правила о приватности",
     "email": "Адреса Е-поште",
     "emailIsRequired": "Потребна је адреса е-поште",
     "emailIsNotValid": "Адреса е-поште није важећа",
@@ -3696,7 +3736,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Питања?",
     "tap": "Славина",
     "here": "овде",
-    "moreInfo": "За више информација",
     "almostThere": "Скоро тамо!",
     "dontMissOut": "Не пропустите оно што је ново!",
     "productUpdates": "Добијте ажурирања производа",
@@ -4024,7 +4063,14 @@ class CodegenLoader extends AssetLoader {
     "cancelYourSubsMess":
         "Откажите претплату на страници за обрачун пре него што избришете свој налог.",
     "accountSuccessfullyDeleted": "Ваш налог је успешно избрисан. Жао нам је што одлазите.😢",
-    "redirectToLoginPage": "Бићете преусмерени на страницу за пријаву."
+    "redirectToLoginPage": "Бићете преусмерени на страницу за пријаву.",
+    "weNeedPermission": "Треба нам твоја дозвола",
+    "installVpnProfile":
+        "Да бисмо почели да користимо Мистериум ВПН, потребна нам је ваша дозвола да инсталирамо ВПН профил.",
+    "anonimityIsSafe":
+        "Ваша анонимност је безбедна. Не прегледавамо, не прикупљамо нити чувамо било коју вашу активност прегледања.",
+    "readOur": "Прочитајте наше ",
+    "moreInfo": " За више информација."
   };
   static const Map<String, dynamic> et = {
     "title": "Tere, härra",
@@ -4042,7 +4088,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Sisse logides nõustute meiega",
     "termsAndConditions": "Tingimused",
     "and": "ja",
-    "privacyPolicy": "Privaatsuspoliitika.",
+    "privacyPolicy": "Privaatsuspoliitika",
     "email": "E-posti aadress",
     "emailIsRequired": "E -posti aadress on vajalik",
     "emailIsNotValid": "E -posti aadress ei kehti",
@@ -4144,7 +4190,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Küsimused?",
     "tap": "Koputus",
     "here": "siin",
-    "moreInfo": "Lisateabe saamiseks",
     "almostThere": "Peaaegu kohal!",
     "dontMissOut": "Ära jäta kasutamata seda, mis uut on!",
     "productUpdates": "Hankige tootevärskendusi",
@@ -4466,7 +4511,14 @@ class CodegenLoader extends AssetLoader {
         "Ühenduse ajalõpp.Proovige hiljem uuesti.Kui probleem püsib, võtke ühendust toega",
     "cancelYourSubsMess": "Enne konto kustutamist TÜHISTAGE OMA TELLEMUS arvelduslehel.",
     "accountSuccessfullyDeleted": "Teie konto kustutamine õnnestus. Meil ​​on kahju, et lahkute.😢",
-    "redirectToLoginPage": "Teid suunatakse sisselogimislehele."
+    "redirectToLoginPage": "Teid suunatakse sisselogimislehele.",
+    "weNeedPermission": "Vajame teie luba",
+    "installVpnProfile":
+        "Mysterium VPN-i kasutamise alustamiseks vajame teie luba VPN-i profiili installimiseks.",
+    "anonimityIsSafe":
+        "Teie anonüümsus on ohutu. Me ei vaata, kogu ega salvesta teie sirvimistegevust.",
+    "readOur": "Lugege meie ",
+    "moreInfo": " Lisateabe saamiseks."
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -4484,7 +4536,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "En vous connectant, vous acceptez notre",
     "termsAndConditions": "Termes et conditions",
     "and": "et",
-    "privacyPolicy": "Politique de confidentialité.",
+    "privacyPolicy": "Politique de confidentialité",
     "email": "Adresse e-mail",
     "emailIsRequired": "Adresse e-mail est nécessaire",
     "emailIsNotValid": "l'adresse email n'est pas valide",
@@ -4587,7 +4639,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Des questions?",
     "tap": "Robinet",
     "here": "ici",
-    "moreInfo": "Pour plus d'informations",
     "almostThere": "Presque là!",
     "dontMissOut": "Ne manquez pas ce qui est nouveau!",
     "productUpdates": "Obtenez des mises à jour de produit",
@@ -4917,7 +4968,14 @@ class CodegenLoader extends AssetLoader {
         "Veuillez ANNULER VOTRE ABONNEMENT sur la page de facturation avant de supprimer votre compte.",
     "accountSuccessfullyDeleted":
         "Votre compte a été supprimé avec succès.Nous sommes désolés de vous voir partir.😢",
-    "redirectToLoginPage": "Vous serez redirigé vers la page de connexion."
+    "redirectToLoginPage": "Vous serez redirigé vers la page de connexion.",
+    "weNeedPermission": "Nous avons besoin de votre autorisation",
+    "installVpnProfile":
+        "Pour commencer à utiliser Mysterium VPN, nous avons besoin de votre permission pour installer un profil VPN.",
+    "anonimityIsSafe":
+        "Votre anonymat est protégé. Nous ne visualisons, ne collectons ni ne stockons aucune de vos activités de navigation.",
+    "readOur": "Lisez notre ",
+    "moreInfo": " Pour plus d'informations."
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -4935,7 +4993,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Al iniciar sesión, usted acepta nuestro",
     "termsAndConditions": "Términos y Condiciones",
     "and": " y ",
-    "privacyPolicy": "Política de privacidad.",
+    "privacyPolicy": "Política de privacidad",
     "email": "Dirección de correo electrónico",
     "emailIsRequired": "Se requiere una dirección de correo electrónico",
     "emailIsNotValid": "La dirección de correo electrónico no es válida",
@@ -5037,7 +5095,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "¿Preguntas?",
     "tap": "Grifo ",
     "here": "aquí",
-    "moreInfo": " Para más información",
     "almostThere": "¡Ya casi está!",
     "dontMissOut": "¡No te pierdas las novedades!",
     "productUpdates": "Obtener actualizaciones de productos",
@@ -5364,7 +5421,14 @@ class CodegenLoader extends AssetLoader {
         "CANCELE SU SUSCRIPCIÓN en la página de facturación antes de eliminar su cuenta.",
     "accountSuccessfullyDeleted":
         "Su cuenta ha sido eliminada con éxito. Lamentamos que se vaya.😢",
-    "redirectToLoginPage": "Será redirigido a la página de inicio de sesión."
+    "redirectToLoginPage": "Será redirigido a la página de inicio de sesión.",
+    "weNeedPermission": "Necesitamos tu permiso",
+    "installVpnProfile":
+        "Para comenzar a usar Mysterium VPN, necesitamos su permiso para instalar un perfil de VPN.",
+    "anonimityIsSafe":
+        "Su anonimato está seguro. No vemos, recopilamos ni almacenamos nada de su actividad de navegación.",
+    "readOur": "Lea nuestro ",
+    "moreInfo": " Para más información."
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "tr": tr,

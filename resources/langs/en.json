@@ -14,7 +14,7 @@
   "signInDisclaimer": "By signing in, you agree to our",
   "termsAndConditions": "Terms and Conditions",
   "and": " and ",
-  "privacyPolicy": "Privacy Policy.",
+  "privacyPolicy": "Privacy Policy",
   "email": "Email address",
   "emailIsRequired": "Email address is required",
   "emailIsNotValid": "Email address is not valid",
@@ -107,7 +107,6 @@
   "questions": "Questions?",
   "tap": "Tap ",
   "here": "here",
-  "moreInfo": " for more informations",
   "almostThere": "Almost there!",
   "dontMissOut": "Don't miss out on what's new!",
   "productUpdates": "Get product updates",
@@ -426,5 +425,10 @@
   "connectionTimeout":"Connection timeout. Please try again later. If the problem persists, please contact support",
   "cancelYourSubsMess":"Please CANCEL YOUR SUBSCRIPTION on the billing page before deleting your account.",
   "accountSuccessfullyDeleted":"Your account has been successfully deleted. We are sorry to see you go. 😢",
-  "redirectToLoginPage":"You will be redirected to the login page."
+  "redirectToLoginPage":"You will be redirected to the login page.",
+  "weNeedPermission":"We need your permission",
+  "installVpnProfile":"To start using Mysterium VPN, we need your permission to install a VPN Profile.",
+  "anonimityIsSafe":"Your anonymity is safe. We don't view, collect or store any of your browsing activity.",
+  "readOur":"Read our ",
+  "moreInfo":" For more informations."
 }
