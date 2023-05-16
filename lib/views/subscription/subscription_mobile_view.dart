@@ -37,9 +37,7 @@ class SubscriptionMobileView extends ConsumerWidget {
           }
         },
         child: BaseLayout(
-          header: BaseAppBar(
-            authStore: authStore,
-          ),
+          header: const BaseAppBar(),
           child: Observer(
             builder: (context) {
               if (subscriptionStore.isAvailable == StoreState.loading) {
