@@ -145,6 +145,14 @@ abstract class _AuthStore with Store {
         ..setLogin();
       _intercomStore.registerUser(_authData!.username, _authData!.userId);
       FirebaseCrashlytics.instance.setUserIdentifier(_authData!.username);
+      Sentry.configureScope(
+        (scope) => scope.setUser(
+          SentryUser(
+            id: _authData!.userId,
+            email: _authData!.username,
+          ),
+        ),
+      );
       debugPrint(_localDb.userData.toString());
     } on KeyDoesntExistsException {
       _authStatus = AuthStatus.unauthenticated;
