@@ -19,6 +19,7 @@ import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
+import 'package:mysterium_vpn/services/shared_preferences_service.dart';
 import 'package:mysterium_vpn/stores/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
@@ -48,8 +49,11 @@ abstract class _VpnStore with Store {
     _protocol = protocols.first;
     _killSwitch = true;
     _connectingLocationCode = '';
-    setupTunnel();
-    generateKey();
+    _vpnConfigConsent = _sharedPrefs.getVpnConfigConsent() ?? false;
+    if (_vpnConfigConsent ?? true) {
+      setupTunnel();
+      generateKey();
+    }
   }
 
   static const VpnConnection _emptyConnection = VpnConnection(
@@ -63,7 +67,7 @@ abstract class _VpnStore with Store {
   final AnalyticsStore _analyticsStore;
   final SubscriptionStore _subscriptionStore;
   final _securedStorage = SecureStorageService();
-
+  final _sharedPrefs = SharedPreferenceService();
   final random = Random();
 
   Timer? _timer;
@@ -83,6 +87,9 @@ abstract class _VpnStore with Store {
   String _protocol = protocols.first;
   @readonly
   bool _killSwitch = true;
+
+  @readonly
+  bool? _vpnConfigConsent;
 
   @readonly
   VpnConnection _vpnConnection = _emptyConnection;
@@ -116,6 +123,16 @@ abstract class _VpnStore with Store {
     setupTunnelFuture =
         ObservableFuture(_wireguardService.setupTunnel(bundleId: 'com.mysteriumvpn.tun'));
     await setupTunnelFuture;
+  }
+
+  @action
+  Future<void> setVpnConfigConsent({required bool value}) async {
+    await _sharedPrefs.setVpnConfigConsent(vpnConfigConsent: value);
+    _vpnConfigConsent = value;
+    if (_vpnConfigConsent ?? true) {
+      setupTunnel();
+      generateKey();
+    }
   }
 
   @action
