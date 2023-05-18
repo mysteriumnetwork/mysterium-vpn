@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:beamer/beamer.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -12,13 +13,14 @@ import 'package:mysterium_vpn/common/configurations/breakpoint_configuration.dar
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/extensions/string.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/dialogs/no_internet_connection_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/auth_page.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 bool checkMediaWidth(BuildContext context, double width) =>
     MediaQuery.of(context).size.width < width;
@@ -394,4 +396,25 @@ void showAuthView(BuildContext context) {
       ),
     ),
   );
+}
+
+void handleOnBillingPage({
+  required BuildContext context,
+  required bool subscriptionActive,
+  required String billingPage,
+  required String? gateway,
+}) {
+  final isMobilePlatform = isMobile();
+  final isMobileGateway = isMobilePaymentGateway(gateway);
+
+  if (subscriptionActive && isMobileGateway) {
+    context.beamToNamed(billingPage);
+    return;
+  }
+
+  if (isMobilePlatform) {
+    context.beamToNamed(billingPage);
+  } else {
+    launchUrl(Uri.parse(billingPage));
+  }
 }
