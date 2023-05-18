@@ -41,8 +41,7 @@ class LocationItem extends StatelessWidget {
               EasyText(
                 location.countryName,
                 fontWeight: FontWeight.w700,
-              ),
-              const Spacer(),
+              ).expanded(),
               ConnectButton(
                 onPressed: onTap,
                 locationCode: location.countryCode,

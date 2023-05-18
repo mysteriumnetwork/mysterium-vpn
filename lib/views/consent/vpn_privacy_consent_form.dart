@@ -28,14 +28,14 @@ class VpnPrivacyConsentForm extends HookConsumerWidget {
       children: [
         HeaderTitle(
           text: LocaleKeys.privacyPriority.tr(),
-        ).padding(bottom: height * 0.02),
+        ),
         EasyText(
           ' ${LocaleKeys.privacyPriorityText.tr()}',
           fontWeight: FontWeight.w700,
           maxLines: 30,
           fontSize: 14,
         ).expanded(),
-        const Agreements().padding(bottom: height * 0.03, top: height * 0.02),
+        const Agreements().padding(bottom: height * 0.02, top: height * 0.02),
         EasyButton(
           useSystemColor: false,
           color: Palette.purple,

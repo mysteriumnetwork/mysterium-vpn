@@ -40,7 +40,7 @@ class Agreements extends StatelessWidget {
               ),
               mouseCursor: MaterialStateMouseCursor.clickable,
               recognizer: TapGestureRecognizer()
-                ..onTap = () => launchUrl(Uri.parse(privacyPolicyUrl)),
+                ..onTap = () => launchUrl(Uri.parse(termsOfServiceUrl)),
             ),
             TextSpan(text: LocaleKeys.moreInfo.tr()),
           ],
