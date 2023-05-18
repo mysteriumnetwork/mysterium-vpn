@@ -49,10 +49,10 @@ abstract class _VpnStore with Store {
     _protocol = protocols.first;
     _killSwitch = true;
     _connectingLocationCode = '';
+    generateKey();
     _vpnConfigConsent = _sharedPrefs.getVpnConfigConsent() ?? false;
     if (_vpnConfigConsent ?? true) {
       setupTunnel();
-      generateKey();
     }
   }
 
@@ -131,7 +131,6 @@ abstract class _VpnStore with Store {
     _vpnConfigConsent = value;
     if (_vpnConfigConsent ?? true) {
       setupTunnel();
-      generateKey();
     }
   }
 
@@ -265,6 +264,9 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> _completeConnection(Location? location, Stopwatch stopwatch) async {
+    if (_publicKey.isEmpty || _privateKey.isEmpty) {
+      await generateKey();
+    }
     _vpnConfig = await _apiService.fetchVpnConfig(
       input: VpnConfigInput(
         publicKey: _publicKey,
