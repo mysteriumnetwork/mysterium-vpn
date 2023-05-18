@@ -75,6 +75,7 @@ class MyApp extends HookConsumerWidget {
     if (status == AuthStatus.unauthenticated) {
       if (ref.exists(vpnStorePOD)) {
         ref.read(vpnStorePOD).disconnect();
+        ref.invalidate(vpnStorePOD);
       }
     }
   }

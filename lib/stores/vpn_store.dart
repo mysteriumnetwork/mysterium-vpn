@@ -18,8 +18,8 @@ import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
-import 'package:mysterium_vpn/services/shared_preferences_service.dart';
 import 'package:mysterium_vpn/stores/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
@@ -39,19 +39,21 @@ abstract class _VpnStore with Store {
     required WireguardDart wireguardService,
     required AnalyticsStore analyticsStore,
     required SubscriptionStore subscriptionStore,
+    required LocalDBService localDBService,
   })  : _apiService = apiService,
         _locationsStore = locationsStore,
         _wireguardService = wireguardService,
         _analyticsStore = analyticsStore,
-        _subscriptionStore = subscriptionStore {
+        _subscriptionStore = subscriptionStore,
+        _localDBService = localDBService {
     _vpnConnection = _emptyConnection;
     _connectionStatus = ConnectionStatus.disconnected;
     _protocol = protocols.first;
     _killSwitch = true;
     _connectingLocationCode = '';
     generateKey();
-    _vpnConfigConsent = _sharedPrefs.getVpnConfigConsent() ?? false;
-    if (_vpnConfigConsent ?? true) {
+    _vpnConfigConsent = _localDBService.getVpnConsentApproval() ?? false;
+    if (_vpnConfigConsent) {
       setupTunnel();
     }
   }
@@ -67,7 +69,7 @@ abstract class _VpnStore with Store {
   final AnalyticsStore _analyticsStore;
   final SubscriptionStore _subscriptionStore;
   final _securedStorage = SecureStorageService();
-  final _sharedPrefs = SharedPreferenceService();
+  final LocalDBService _localDBService;
   final random = Random();
 
   Timer? _timer;
@@ -89,7 +91,7 @@ abstract class _VpnStore with Store {
   bool _killSwitch = true;
 
   @readonly
-  bool? _vpnConfigConsent;
+  bool _vpnConfigConsent = false;
 
   @readonly
   VpnConnection _vpnConnection = _emptyConnection;
@@ -127,9 +129,9 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> setVpnConfigConsent({required bool value}) async {
-    await _sharedPrefs.setVpnConfigConsent(vpnConfigConsent: value);
+    await _localDBService.setVpnConsentApproval(approval: value);
     _vpnConfigConsent = value;
-    if (_vpnConfigConsent ?? true) {
+    if (_vpnConfigConsent) {
       setupTunnel();
     }
   }
