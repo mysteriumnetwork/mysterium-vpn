@@ -430,6 +430,8 @@
   "installVpnProfile": "Um Mysterium VPN nutzen zu können, benötigen wir Ihre Erlaubnis zur Installation eines VPN-Profils.",
   "anonimityIsSafe": "Ihre Anonymität ist sicher. Wir sehen, sammeln oder speichern keine Ihrer Browsing-Aktivitäten.",
   "readOur": "Lesen Sie unsere ",
-  "moreInfo": " für weitere Informationen.",
-  "acceptAndContinue": "Akzeptieren und fortfahren"
+  "moreInfo": " für mehr Informationen.",
+  "acceptAndContinue": "Akzeptieren und weiter",
+  "privacyPriority": "Ihre Privatsphäre ist unsere",
+  "privacyPriorityText":"Um Ihnen einen schnellen und zuverlässigen VPN-Dienst zu bieten, erfassen wir eine Mindestmenge an Daten.\n\nWir erfassen:\n\n1. Ihre E-Mail-Adresse, um Sie anzumelden und um kontobezogene Probleme zu beheben.\n\n2. Gerätespezifische Informationen wie Betriebssystemversion, Hardwaremodell und anonyme Nutzungsdaten zur Optimierung unserer Anwendung verbessern das Benutzererlebnis. Wir speichern oder protokollieren Ihre IP-Adresse nicht.\n\nWir führen keine Protokolle Ihrer Online-Aktivitäten und verknüpfen sie niemals mit anderen alle Domänen oder Anwendungen, die Sie mit Ihnen, Ihrem Gerät, Ihrer IP-Adresse oder E-Mail verwenden."
 }

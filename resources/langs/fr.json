@@ -431,5 +431,8 @@
   "anonimityIsSafe": "Votre anonymat est protégé. Nous ne visualisons, ne collectons ni ne stockons aucune de vos activités de navigation.",
   "readOur": "Lisez notre ",
   "moreInfo": " pour plus d'informations.",
-  "acceptAndContinue": "Accepter et continuer"
+  "acceptAndContinue": "Accepter et continuer",
+  "privacyPriority": "Votre vie privée est notre",
+  "privacyPriorityText":"Pour vous fournir un service VPN rapide et fiable, nous collectons un minimum de données.\n\nNous collectons :\n\n1. Votre adresse e-mail pour vous connecter et résoudre les problèmes liés au compte.\n\n2. Des informations spécifiques à l'appareil telles que la version du système d'exploitation, le modèle de matériel et les données d'utilisation anonymes pour optimiser notre application améliorent l'expérience utilisateur. Nous ne stockons ni n'enregistrons votre adresse IP.\n\nNous ne conservons pas de journaux de vos activités en ligne et ne les associons jamais tous les domaines ou applications que vous utilisez avec vous, votre appareil, votre adresse IP ou votre adresse e-mail."
+
 }

@@ -430,6 +430,9 @@
   "installVpnProfile": "Norėdami pradėti naudoti Mysterium VPN, mums reikia jūsų leidimo įdiegti VPN profilį.",
   "anonimityIsSafe": "Jūsų anonimiškumas yra saugus. Mes neperžiūrime, nerenkame ir nesaugome jokios jūsų naršymo veiklos.",
   "readOur": "Skaitykite mūsų ",
-  "moreInfo": " norėdami gauti daugiau informacijos.",
-  "acceptAndContinue": "Priimk ir tęsk"
+  "moreInfo": " Daugiau informacijos.",
+  "acceptAndContinue": "Priimk ir tęsk",
+  "privacyPriority": "Jūsų privatumas yra mūsų",
+  "privacyPriorityText":"Siekdami suteikti jums greitą ir patikimą VPN paslaugą, renkame minimalų duomenų kiekį.\n\nRenkame:\n\n1. Jūsų el. pašto adresą, kad galėtumėte prisijungti ir pašalinti su paskyra susijusias problemas.\n\n2. Informacija apie įrenginį, pvz., OS versija, aparatinės įrangos modelis ir anoniminiai naudojimo duomenys, skirti optimizuoti mūsų programą, pagerina naudotojo patirtį. Mes nesaugome ir neregistruojame jūsų IP adreso.\n\nNesaugome jūsų veiklos internete žurnalų ir niekada nesusiejame bet kokius domenus ar programas, kurias naudojate su savimi, savo įrenginiu, IP adresu ar el."
+
 }
