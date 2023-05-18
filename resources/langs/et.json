@@ -139,7 +139,7 @@
   "currentlyOffline": "Olete praegu võrguühenduseta.",
   "internetConnectionRestored": "Teie Interneti -ühendus on taastatud.",
   "subscriptionVerificationFailed": "Uuesti kinnitamine",
-  "failedToVerifySubs": "Me ei saanud kontrollida teie viimast tellimispaketi ostu. Kinnitamiseks klõpsake alloleval nupul.",
+  "failedToVerifySubs": "Me ei saanud kinnitada teie viimast ostu meie tellimuspaketi jaoks. Kinnitamise uuesti proovimiseks klõpsake alloleval nupul.",
   "retryBtn": "Uuesti proovima",
   "areYouSure": "Kas olete kindel, et soovite tagasi minna?",
   "logoutDescription": "Tagasi minek logib teid rakendusest välja.",

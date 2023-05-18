@@ -139,7 +139,7 @@
   "currentlyOffline": "Actualmente está sin conexión.",
   "internetConnectionRestored": "Su conexión a Internet ha sido restaurada.",
   "subscriptionVerificationFailed": "Verificación de reintentos",
-  "failedToVerifySubs": "No hemos podido verificar tu última compra para nuestro paquete de suscripción. Haga clic en el botón de abajo para volver a intentar la verificación.",
+  "failedToVerifySubs": "No pudimos verificar su última compra para nuestro paquete de suscripción. Haga clic en el botón a continuación para volver a intentar la verificación.",
   "retryBtn": "Reintentar",
   "areYouSure": "¿Estás seguro de que quieres volver?",
   "logoutDescription": "Al volver atrás, se cerrará la sesión de la aplicación.",

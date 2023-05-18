@@ -161,7 +161,8 @@ class CodegenLoader extends AssetLoader {
     "currentlyOffline": "Şu anda çevrimdışısınız.",
     "internetConnectionRestored": "İnternet bağlantınız geri yüklendi.",
     "subscriptionVerificationFailed": "Doğrulamayı Yeniden Dene",
-    "failedToVerifySubs": "Abonelik dışı paket için son satın alma işleminizi doğrulayamadık. ",
+    "failedToVerifySubs":
+        "Abonelik paketimiz için son satın alma işleminizi doğrulayamadık. Doğrulamayı yeniden denemek için aşağıdaki düğmeyi tıklayın.",
     "retryBtn": "yeniden dene",
     "areYouSure": "Geri dönmek istediğinden emin misin?",
     "logoutDescription": "Geri dönmek, uygulamadan çıkmanıza neden olur.",
@@ -617,7 +618,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Вашата Интернет врска е обновена.",
     "subscriptionVerificationFailed": "Повторно обидете се со верификација",
     "failedToVerifySubs":
-        "Не можеме да го потврдиме последното купување за пакет за претплата. Кликнете на копчето подолу за да ја обидете повторното верификација.",
+        "Не можевме да го потврдиме вашето последно купување за нашиот пакет за претплата. Кликнете на копчето подолу за повторно да се обидете со потврдата.",
     "retryBtn": "Повторно обидете се",
     "areYouSure": "Дали сте сигурни дека сакате да се вратите назад?",
     "logoutDescription": "Враќањето назад ќе ве одјави од апликацијата.",
@@ -1074,7 +1075,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Jūsų interneto ryšys buvo atkurtas.",
     "subscriptionVerificationFailed": "Bandymo patikrinimas",
     "failedToVerifySubs":
-        "Negalėjome patikrinti jūsų paskutinio pirkimo už prenumeratos paketą. Spustelėkite žemiau esantį mygtuką, kad pakartotinai patikrintumėte.",
+        "Nepavyko patvirtinti jūsų paskutinio prenumeratos paketo pirkinio. Spustelėkite toliau esantį mygtuką, kad patvirtintumėte dar kartą.",
     "retryBtn": "Bandyti",
     "areYouSure": "Ar tikrai norite grįžti?",
     "logoutDescription": "Grįžimas jus atsijungs nuo programos.",
@@ -1533,7 +1534,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Ihre Internetverbindung wurde wiederhergestellt.",
     "subscriptionVerificationFailed": "Überprüfung wiederholen",
     "failedToVerifySubs":
-        "Wir konnten Ihren letzten Kauf für ein Abonnementpaket nicht überprüfen. Klicken Sie auf die Schaltfläche unten, um die Überprüfung erneut zu machen.",
+        "Wir konnten Ihren letzten Kauf für unser Abonnementpaket nicht bestätigen. Klicken Sie auf die Schaltfläche unten, um die Bestätigung erneut zu versuchen.",
     "retryBtn": "Wiederholen",
     "areYouSure": "Bist du sicher, dass du zurückkehren willst?",
     "logoutDescription": "Wenn Sie zurück gehen, protokollieren Sie Sie aus der Anwendung.",
@@ -1988,7 +1989,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Ваше підключення до Інтернету відновлено.",
     "subscriptionVerificationFailed": "Повторіть перевірку",
     "failedToVerifySubs":
-        "Нам не вдалося підтвердити вашу останню покупку нашого пакета підписки. ",
+        "Нам не вдалося підтвердити вашу останню покупку нашого пакета підписки. Натисніть кнопку нижче, щоб повторити перевірку.",
     "retryBtn": "Повторіть спробу",
     "areYouSure": "Ви впевнені, що хочете повернутися?",
     "logoutDescription": "Повернувшись назад, ви вийдете з програми.",
@@ -2443,7 +2444,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Sua conexão com a Internet foi restaurada.",
     "subscriptionVerificationFailed": "VERIFICAÇÃO DE ALTIMAÇÃO",
     "failedToVerifySubs":
-        "Não foi possível verificar sua última compra para o pacote de assinatura de saída. Clique no botão abaixo para repetir a verificação.",
+        "Não foi possível verificar sua última compra de nosso pacote de assinatura.Clique no botão abaixo para tentar a verificação novamente.",
     "retryBtn": "Tente novamente",
     "areYouSure": "Tem certeza de que deseja voltar?",
     "logoutDescription": "Voltar irá registrar você fora do aplicativo.",
@@ -2894,7 +2895,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Your internet connection has been restored.",
     "subscriptionVerificationFailed": "Retry Verification",
     "failedToVerifySubs":
-        "We couldn't verify your last purchase for out subscription package. Click the button below to retry verification.",
+        "We couldn't verify your last purchase for our subscription package. Click the button below to retry verification.",
     "retryBtn": "Retry",
     "areYouSure": "Are you sure you want to go back?",
     "logoutDescription": "Going back will log you out of the application.",
@@ -3352,7 +3353,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "La tua connessione Internet è stata ripristinata.",
     "subscriptionVerificationFailed": "Retry Verification",
     "failedToVerifySubs":
-        "Non siamo riusciti a verificare il tuo ultimo acquisto per il pacchetto di abbonamento. Fai clic sul pulsante in basso per riprovare la verifica.",
+        "Non siamo riusciti a verificare il tuo ultimo acquisto per il nostro pacchetto di abbonamento.Fai clic sul pulsante in basso per ritentare la verifica.",
     "retryBtn": "Riprovare",
     "areYouSure": "Sei sicuro di voler tornare indietro?",
     "logoutDescription": "Tornare indietro ti registrerà dall'applicazione.",
@@ -3811,7 +3812,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Ваша интернетска веза је обновљена.",
     "subscriptionVerificationFailed": "Потражите верификацију",
     "failedToVerifySubs":
-        "Нисмо могли да проверимо вашу последњу куповину за пакет претплате. Кликните на дугме испод да бисте покушали поново да покушате поново.",
+        "Нисмо могли да верификујемо вашу последњу куповину за наш пакет претплате. Кликните на дугме испод да бисте поново покушали да верификујете.",
     "retryBtn": "Покушај поново",
     "areYouSure": "Јесте ли сигурни да се желите вратити?",
     "logoutDescription": "Вратиће се назад, одјавиће вас из апликације.",
@@ -4267,7 +4268,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Teie Interneti -ühendus on taastatud.",
     "subscriptionVerificationFailed": "Uuesti kinnitamine",
     "failedToVerifySubs":
-        "Me ei saanud kontrollida teie viimast tellimispaketi ostu. Kinnitamiseks klõpsake alloleval nupul.",
+        "Me ei saanud kinnitada teie viimast ostu meie tellimuspaketi jaoks. Kinnitamise uuesti proovimiseks klõpsake alloleval nupul.",
     "retryBtn": "Uuesti proovima",
     "areYouSure": "Kas olete kindel, et soovite tagasi minna?",
     "logoutDescription": "Tagasi minek logib teid rakendusest välja.",
@@ -4724,7 +4725,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Votre connexion Internet a été restaurée.",
     "subscriptionVerificationFailed": "Vérification de réessayer",
     "failedToVerifySubs":
-        "Nous n'avons pas pu vérifier votre dernier achat pour le package d'abonnement. Cliquez sur le bouton ci-dessous pour réessayer la vérification.",
+        "Nous n'avons pas pu vérifier votre dernier achat pour notre forfait d'abonnement.Cliquez sur le bouton ci-dessous pour réessayer la vérification.",
     "retryBtn": "Recommencez",
     "areYouSure": "Êtes-vous sûr de vouloir y retourner?",
     "logoutDescription": "REVOIR vous déconnectera de l'application.",
@@ -5184,7 +5185,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Su conexión a Internet ha sido restaurada.",
     "subscriptionVerificationFailed": "Verificación de reintentos",
     "failedToVerifySubs":
-        "No hemos podido verificar tu última compra para nuestro paquete de suscripción. Haga clic en el botón de abajo para volver a intentar la verificación.",
+        "No pudimos verificar su última compra para nuestro paquete de suscripción. Haga clic en el botón a continuación para volver a intentar la verificación.",
     "retryBtn": "Reintentar",
     "areYouSure": "¿Estás seguro de que quieres volver?",
     "logoutDescription": "Al volver atrás, se cerrará la sesión de la aplicación.",

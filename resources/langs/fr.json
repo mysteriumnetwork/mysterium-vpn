@@ -139,7 +139,7 @@
   "currentlyOffline": "Vous êtes actuellement hors ligne.",
   "internetConnectionRestored": "Votre connexion Internet a été restaurée.",
   "subscriptionVerificationFailed": "Vérification de réessayer",
-  "failedToVerifySubs": "Nous n'avons pas pu vérifier votre dernier achat pour le package d'abonnement. Cliquez sur le bouton ci-dessous pour réessayer la vérification.",
+  "failedToVerifySubs": "Nous n'avons pas pu vérifier votre dernier achat pour notre forfait d'abonnement.Cliquez sur le bouton ci-dessous pour réessayer la vérification.",
   "retryBtn": "Recommencez",
   "areYouSure": "Êtes-vous sûr de vouloir y retourner?",
   "logoutDescription": "REVOIR vous déconnectera de l'application.",
