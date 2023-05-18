@@ -139,7 +139,7 @@
   "currentlyOffline": "Šiuo metu esate neprisijungę.",
   "internetConnectionRestored": "Jūsų interneto ryšys buvo atkurtas.",
   "subscriptionVerificationFailed": "Bandymo patikrinimas",
-  "failedToVerifySubs": "Negalėjome patikrinti jūsų paskutinio pirkimo už prenumeratos paketą. Spustelėkite žemiau esantį mygtuką, kad pakartotinai patikrintumėte.",
+  "failedToVerifySubs": "Nepavyko patvirtinti jūsų paskutinio prenumeratos paketo pirkinio. Spustelėkite toliau esantį mygtuką, kad patvirtintumėte dar kartą.",
   "retryBtn": "Bandyti",
   "areYouSure": "Ar tikrai norite grįžti?",
   "logoutDescription": "Grįžimas jus atsijungs nuo programos.",

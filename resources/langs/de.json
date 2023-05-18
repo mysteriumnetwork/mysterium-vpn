@@ -139,7 +139,7 @@
   "currentlyOffline": "Sie sind derzeit offline.",
   "internetConnectionRestored": "Ihre Internetverbindung wurde wiederhergestellt.",
   "subscriptionVerificationFailed": "Überprüfung wiederholen",
-  "failedToVerifySubs": "Wir konnten Ihren letzten Kauf für ein Abonnementpaket nicht überprüfen. Klicken Sie auf die Schaltfläche unten, um die Überprüfung erneut zu machen.",
+  "failedToVerifySubs": "Wir konnten Ihren letzten Kauf für unser Abonnementpaket nicht bestätigen. Klicken Sie auf die Schaltfläche unten, um die Bestätigung erneut zu versuchen.",
   "retryBtn": "Wiederholen",
   "areYouSure": "Bist du sicher, dass du zurückkehren willst?",
   "logoutDescription": "Wenn Sie zurück gehen, protokollieren Sie Sie aus der Anwendung.",
@@ -433,5 +433,5 @@
   "moreInfo": " für mehr Informationen.",
   "acceptAndContinue": "Akzeptieren und weiter",
   "privacyPriority": "Ihre Privatsphäre ist unsere",
-  "privacyPriorityText":"Um Ihnen einen schnellen und zuverlässigen VPN-Dienst zu bieten, erfassen wir eine Mindestmenge an Daten.\n\nWir erfassen:\n\n1. Ihre E-Mail-Adresse, um Sie anzumelden und um kontobezogene Probleme zu beheben.\n\n2. Gerätespezifische Informationen wie Betriebssystemversion, Hardwaremodell und anonyme Nutzungsdaten zur Optimierung unserer Anwendung verbessern das Benutzererlebnis. Wir speichern oder protokollieren Ihre IP-Adresse nicht.\n\nWir führen keine Protokolle Ihrer Online-Aktivitäten und verknüpfen sie niemals mit anderen alle Domänen oder Anwendungen, die Sie mit Ihnen, Ihrem Gerät, Ihrer IP-Adresse oder E-Mail verwenden."
+  "privacyPriorityText": "Um Ihnen einen schnellen und zuverlässigen VPN-Dienst zu bieten, erfassen wir eine Mindestmenge an Daten.\n\nWir erfassen:\n\n1. Ihre E-Mail-Adresse, um Sie anzumelden und um kontobezogene Probleme zu beheben.\n\n2. Gerätespezifische Informationen wie Betriebssystemversion, Hardwaremodell und anonyme Nutzungsdaten zur Optimierung unserer Anwendung verbessern das Benutzererlebnis. Wir speichern oder protokollieren Ihre IP-Adresse nicht.\n\nWir führen keine Protokolle Ihrer Online-Aktivitäten und verknüpfen sie niemals mit anderen alle Domänen oder Anwendungen, die Sie mit Ihnen, Ihrem Gerät, Ihrer IP-Adresse oder E-Mail verwenden."
 }

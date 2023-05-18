@@ -139,7 +139,7 @@
   "currentlyOffline": "Şu anda çevrimdışısınız.",
   "internetConnectionRestored": "İnternet bağlantınız geri yüklendi.",
   "subscriptionVerificationFailed": "Doğrulamayı Yeniden Dene",
-  "failedToVerifySubs": "Abonelik dışı paket için son satın alma işleminizi doğrulayamadık. ",
+  "failedToVerifySubs": "Abonelik paketimiz için son satın alma işleminizi doğrulayamadık. Doğrulamayı yeniden denemek için aşağıdaki düğmeyi tıklayın.",
   "retryBtn": "yeniden dene",
   "areYouSure": "Geri dönmek istediğinden emin misin?",
   "logoutDescription": "Geri dönmek, uygulamadan çıkmanıza neden olur.",

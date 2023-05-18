@@ -139,7 +139,7 @@
   "currentlyOffline": "Você está atualmente offline.",
   "internetConnectionRestored": "Sua conexão com a Internet foi restaurada.",
   "subscriptionVerificationFailed": "VERIFICAÇÃO DE ALTIMAÇÃO",
-  "failedToVerifySubs": "Não foi possível verificar sua última compra para o pacote de assinatura de saída. Clique no botão abaixo para repetir a verificação.",
+  "failedToVerifySubs": "Não foi possível verificar sua última compra de nosso pacote de assinatura.Clique no botão abaixo para tentar a verificação novamente.",
   "retryBtn": "Tente novamente",
   "areYouSure": "Tem certeza de que deseja voltar?",
   "logoutDescription": "Voltar irá registrar você fora do aplicativo.",
