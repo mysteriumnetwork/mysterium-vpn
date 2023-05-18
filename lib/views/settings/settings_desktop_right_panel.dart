@@ -18,7 +18,6 @@ import 'package:mysterium_vpn/views/settings/protocol_picker.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
 import 'package:mysterium_vpn/views/settings/theme_picker.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingsDesktopRightPanel extends HookConsumerWidget {
   const SettingsDesktopRightPanel({
@@ -33,6 +32,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
     final vpnStore = ref.read(vpnStorePOD);
     final localeStore = ref.read(localeStorePOD);
     final authStore = ref.watch(authStorePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
     final environment = ref.watch(environmentPOD);
     return Observer(
       builder: (context) {
@@ -85,9 +85,12 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                   useSystemColor: false,
                   color: Palette.black,
                   text: LocaleKeys.goToBillingPage.tr(),
-                  onPressed: () {
-                    launchUrl(Uri.parse(environment.values.billingPage));
-                  },
+                  onPressed: () => handleOnBillingPage(
+                    billingPage: environment.values.billingPage,
+                    context: context,
+                    gateway: subscriptionStore.subscription?.gateway,
+                    subscriptionActive: subscriptionStore.subscription?.active ?? false,
+                  ),
                 ),
               ),
               SettingItem(
