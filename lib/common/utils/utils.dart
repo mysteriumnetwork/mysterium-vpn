@@ -408,12 +408,12 @@ void handleOnBillingPage({
   final isMobileGateway = isMobilePaymentGateway(gateway);
 
   if (subscriptionActive && isMobileGateway) {
-    context.beamToNamed(billingPage);
+    context.beamToNamed(Routes.subscription.toRoute);
     return;
   }
 
   if (isMobilePlatform) {
-    context.beamToNamed(billingPage);
+    context.beamToNamed(Routes.subscription.toRoute);
   } else {
     launchUrl(Uri.parse(billingPage));
   }

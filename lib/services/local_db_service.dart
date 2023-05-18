@@ -17,6 +17,7 @@ class LocalDBService {
       userData = box.get(userId)!;
     } else {
       await _setInitUserData(userId);
+      userData = box.get(userId)!;
     }
   }
 
@@ -33,6 +34,13 @@ class LocalDBService {
     userData.notifications = approval ? Approval.approved : Approval.declined;
     await box.put(_userId, userData);
   }
+
+  Future<void> setVpnConsentApproval({required bool approval}) async {
+    userData.vpnConfigConsent = approval;
+    await box.put(_userId, userData);
+  }
+
+  bool? getVpnConsentApproval() => userData.vpnConfigConsent;
 
   Approval getNotificationsApproval() => userData.notifications;
 

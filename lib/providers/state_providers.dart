@@ -45,12 +45,14 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final wireguardService = ref.watch(wireguardServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
+  final localDBService = ref.watch(localDBPOD);
   return VpnStore(
     apiService: apiService,
     locationsStore: locationsStore,
     wireguardService: wireguardService,
     analyticsStore: analyticsStore,
     subscriptionStore: subscriptionStore,
+    localDBService: localDBService,
   );
 });
 
