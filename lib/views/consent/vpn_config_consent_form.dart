@@ -34,32 +34,33 @@ class VpnConfigConsentForm extends HookConsumerWidget {
     final isMounted = useIsMounted();
     final subscriptionStore = ref.watch(subscriptionStorePOD);
     final environment = ref.watch(environmentPOD);
+
     return Column(
       children: [
         HeaderTitle(
           text: LocaleKeys.weNeedPermission.tr(),
-        ).padding(bottom: height * 0.02),
+        ).padding(bottom: height * 0.01),
         Column(
           children: [
             const SvgIcon(
               asset: Assets.settingsImg,
-            ).padding(bottom: height * 0.03),
+            ).padding(bottom: height * 0.02),
             EasyText(
               LocaleKeys.installVpnProfile.tr(),
               fontSize: 16,
               fontWeight: FontWeight.w700,
               maxLines: 3,
               textAlign: TextAlign.center,
-            ).padding(bottom: height * 0.05),
+            ).padding(bottom: height * 0.03),
             EasyText(
               LocaleKeys.anonimityIsSafe.tr(),
               fontSize: 16,
               maxLines: 3,
               textAlign: TextAlign.center,
-            ).padding(bottom: height * 0.05),
+            ).padding(bottom: height * 0.03),
           ],
         ).scrollable().expanded(),
-        const Agreements().padding(vertical: height * 0.03),
+        const Agreements().padding(vertical: height * 0.02),
         Observer(
           builder: (context) => EasyButton(
             useSystemColor: false,

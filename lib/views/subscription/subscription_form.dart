@@ -50,7 +50,7 @@ class SubscriptionForm extends HookConsumerWidget {
       children: [
         HeaderTitle(
           text: LocaleKeys.selectPackage.tr(),
-        ).padding(bottom: getMediaHeight(context) * 0.02),
+        ),
         Observer(
           builder: (context) {
             if (store.products.isEmpty) {
@@ -65,7 +65,7 @@ class SubscriptionForm extends HookConsumerWidget {
                   products: store.products,
                   selectedProduct: selectedProduct,
                   originalPrice: store.originalPrice,
-                ).padding(bottom: getMediaHeight(context) * 0.03),
+                ).padding(bottom: getMediaHeight(context) * 0.02),
                 EasyText(
                   subsFormStatus == SubscriptionFormStatus.manage
                       ? LocaleKeys.manageSubsTittle.tr()

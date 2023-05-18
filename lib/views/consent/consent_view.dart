@@ -37,7 +37,7 @@ class ConsentView extends HookConsumerWidget {
         header: const BaseAppBar(),
         child: Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             borderRadius: const BorderRadius.all(

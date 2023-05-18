@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/product_item.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 
@@ -21,6 +22,6 @@ class SubscriptionProductsList extends StatelessWidget {
           selectedProduct: selectedProduct,
           originalPirce: originalPrice,
         ),
-        separatorBuilder: (context, index) => const SizedBox(height: 20),
+        separatorBuilder: (context, index) => SizedBox(height: getWindowHeight() * 0.02),
       );
 }
