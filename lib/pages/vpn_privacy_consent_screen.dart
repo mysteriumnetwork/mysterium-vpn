@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/views/consent/consent_view.dart';
-import 'package:mysterium_vpn/views/consent/vpn_config_consent_form.dart';
+import 'package:mysterium_vpn/views/consent/vpn_privacy_consent_form.dart';
 
-class VpnConfigConsentPage extends HookConsumerWidget {
-  const VpnConfigConsentPage({super.key});
+class VpnPrivacyConsentPage extends HookConsumerWidget {
+  const VpnPrivacyConsentPage({super.key});
 
   @override
   Widget build(
@@ -14,7 +14,7 @@ class VpnConfigConsentPage extends HookConsumerWidget {
   ) =>
       const ColoredScaffold(
         body: ConsentView(
-          child: VpnConfigConsentForm(),
+          child: VpnPrivacyConsentForm(),
         ),
       );
 }

@@ -1,0 +1,49 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class Agreements extends StatelessWidget {
+  const Agreements({super.key});
+
+  @override
+  Widget build(BuildContext context) => RichText(
+        maxLines: 2,
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodyLarge?.color,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+          children: [
+            TextSpan(text: LocaleKeys.readOur.tr()),
+            TextSpan(
+              text: LocaleKeys.privacyPolicy.tr(),
+              style: const TextStyle(
+                color: Palette.pink,
+                decoration: TextDecoration.underline,
+              ),
+              mouseCursor: MaterialStateMouseCursor.clickable,
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => launchUrl(Uri.parse(privacyPolicyUrl)),
+            ),
+            TextSpan(text: LocaleKeys.and.tr()),
+            TextSpan(
+              text: LocaleKeys.termsAndConditions.tr(),
+              style: const TextStyle(
+                color: Palette.pink,
+                decoration: TextDecoration.underline,
+              ),
+              mouseCursor: MaterialStateMouseCursor.clickable,
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => launchUrl(Uri.parse(privacyPolicyUrl)),
+            ),
+            TextSpan(text: LocaleKeys.moreInfo.tr()),
+          ],
+        ),
+      );
+}

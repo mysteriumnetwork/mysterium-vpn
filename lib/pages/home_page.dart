@@ -65,7 +65,7 @@ class HomePage extends HookConsumerWidget {
           (_) => vpnStore.vpnConfigConsent == false,
           () {
             WidgetsBinding.instance.addPostFrameCallback(
-              (_) => Beamer.of(context).beamToNamed(Routes.vpnConfigConsent.toRoute),
+              (_) => Beamer.of(context).beamToNamed(Routes.vpnPrivacyConsent.toRoute),
             );
           },
         ),
