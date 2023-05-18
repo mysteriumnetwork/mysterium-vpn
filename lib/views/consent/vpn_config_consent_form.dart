@@ -84,7 +84,7 @@ class VpnConfigConsentForm extends HookConsumerWidget {
               LocaleKeys.acceptAndContinue.tr(),
               color: Palette.white,
             ),
-          ).padding(bottom: height * 0.03),
+          ).padding(bottom: height * 0.045),
         ),
       ],
     ).padding(horizontal: 20);

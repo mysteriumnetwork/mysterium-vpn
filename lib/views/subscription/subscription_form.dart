@@ -6,7 +6,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
@@ -36,7 +35,6 @@ class SubscriptionForm extends HookConsumerWidget {
   final LocalDBService localDb;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedProduct = useState(store.purchasedProductId ?? kPopularPlan);
     final isMounted = useIsMounted();
 
     final subsFormStatus = useMemoized(
@@ -63,7 +61,6 @@ class SubscriptionForm extends HookConsumerWidget {
               children: [
                 SubscriptionProductsList(
                   products: store.products,
-                  selectedProduct: selectedProduct,
                   originalPrice: store.originalPrice,
                 ).padding(bottom: getMediaHeight(context) * 0.02),
                 EasyText(
@@ -121,9 +118,7 @@ class SubscriptionForm extends HookConsumerWidget {
                     onPressed: store.purchaseStatus == PurchaseStatus.pending
                         ? null
                         : () async {
-                            if (selectedProduct.value.isNotEmpty) {
-                              store.subscribeToPackage(selectedProduct.value);
-                            }
+                            store.subscribeToPackage();
                           },
                     child: store.purchaseStatus == PurchaseStatus.pending
                         ? const LoadingIndicator(
@@ -132,7 +127,7 @@ class SubscriptionForm extends HookConsumerWidget {
                           )
                         : EasyText(
                             subsFormStatus == SubscriptionFormStatus.manage
-                                ? selectedProduct.value == store.purchasedProductId
+                                ? store.selectedProductId == store.purchasedProductId
                                     ? LocaleKeys.manageBtn.tr()
                                     : LocaleKeys.changeSubPlan.tr()
                                 : subsFormStatus == SubscriptionFormStatus.expired
