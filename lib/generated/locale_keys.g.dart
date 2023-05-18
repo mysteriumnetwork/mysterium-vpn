@@ -434,4 +434,6 @@ abstract class LocaleKeys {
   static const readOur = 'readOur';
   static const moreInfo = 'moreInfo';
   static const acceptAndContinue = 'acceptAndContinue';
+  static const privacyPriority = 'privacyPriority';
+  static const privacyPriorityText = 'privacyPriorityText';
 }

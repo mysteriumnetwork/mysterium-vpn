@@ -430,6 +430,9 @@
   "installVpnProfile": "Mysterium VPN-i kasutamise alustamiseks vajame teie luba VPN-i profiili installimiseks.",
   "anonimityIsSafe": "Teie anonüümsus on ohutu. Me ei vaata, kogu ega salvesta teie sirvimistegevust.",
   "readOur": "Lugege meie ",
-  "moreInfo": " lisateabe saamiseks.",
-  "acceptAndContinue": "Nõustu ja jätka"
+  "moreInfo": " rohkem informatsiooni.",
+  "acceptAndContinue": "Nõustu ja jätka",
+  "privacyPriority": "Teie privaatsus on meie",
+  "privacyPriorityText":"Teile kiire ja usaldusväärse VPN-teenuse pakkumiseks kogume minimaalsel hulgal andmeid.\n\nKogume:\n\n1. Teie e-posti aadressi teie sisselogimiseks ja kontoga seotud probleemide tõrkeotsinguks.\n\n2. Seadmespetsiifiline teave, nagu OS-i versioon, riistvaramudel ja anonüümsed kasutusandmed meie rakenduse optimeerimiseks, parandavad kasutajakogemust. Me ei salvesta ega logi teie IP-aadressi.\n\nMe ei pea teie võrgutegevuste logisid ega seosta kunagi mis tahes domeenid või rakendused, mida teie, teie seadme, IP-aadressi või e-postiga koos kasutate."
+
 }

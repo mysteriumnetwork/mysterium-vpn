@@ -430,6 +430,8 @@
   "installVpnProfile": "Mysterium VPN'i kullanmaya başlamak için, bir VPN Profili kurmak için izninize ihtiyacımız var.",
   "anonimityIsSafe": "Anonimliğiniz güvende. Göz atma etkinliğinizin hiçbirini görüntülemiyor, toplamıyor veya saklamıyoruz.",
   "readOur": "bizim okuyun ",
-  "moreInfo": " daha fazla bilgi için",
-  "acceptAndContinue": "Kabul et ve devam et"
+  "moreInfo": " daha fazla bilgi için.",
+  "acceptAndContinue": "Kabul et ve devam et",
+  "privacyPriority": "Gizliliğiniz bizim",
+  "privacyPriorityText":"Size hızlı ve güvenilir bir VPN hizmeti sunmak için minimum miktarda veri topluyoruz.\n\nToplarız:\n\n1. Oturum açmanız ve hesapla ilgili sorunları gidermeniz için E-posta adresiniz.\n\n2. Uygulamamızı optimize etmek için işletim sistemi sürümü, donanım modeli ve anonim kullanım verileri gibi cihaza özgü bilgiler, kullanıcı deneyimini iyileştirir. IP adresinizi saklamıyoruz veya günlüğe kaydetmiyoruz.\n\nÇevrimiçi etkinliklerinizin günlüklerini tutmuyoruz ve asla ilişkilendirmiyoruz sizinle, cihazınızla, IP adresinizle veya e-postanızla kullandığınız tüm etki alanları veya uygulamalar."
 }
