@@ -64,6 +64,9 @@ abstract class _SubscriptionStore with Store {
   @readonly
   String? _purchasedProductId;
 
+  @observable
+  String selectedProductId = kPopularPlan;
+
   @readonly
   SubscriptionConfig? _subscriptionConfig;
 
@@ -84,6 +87,7 @@ abstract class _SubscriptionStore with Store {
       if (_authStore.authData != null) {
         final purchaseUpdated = _inAppPurchase.purchaseStream;
         _purchasedProductId = _localDb.getSubscriptionPlan();
+        selectedProductId = _purchasedProductId ?? kPopularPlan;
         fetchSubscription().whenComplete(getSubscriptionsConfig);
         _purchaseStream = purchaseUpdated.listen(
           _onPurchaseUpdate,
@@ -139,12 +143,13 @@ abstract class _SubscriptionStore with Store {
   }
 
   @action
-  Future<void> subscribeToPackage(String productId) async {
+  Future<void> subscribeToPackage() async {
     try {
       _purchaseStatus = PurchaseStatus.pending;
-      final item = _products.firstWhere((element) => element.id == productId).productDetails;
+      final item =
+          _products.firstWhere((element) => element.id == selectedProductId).productDetails;
       _subscriptionService.createSubscriptionRequest(
-        SubscriptionRequest(gatewayId: getPlatformGateway(), planId: productId),
+        SubscriptionRequest(gatewayId: getPlatformGateway(), planId: selectedProductId),
       );
       await _subscriptionService.subscribeToPackage(
         productDetails: item,
@@ -152,18 +157,17 @@ abstract class _SubscriptionStore with Store {
         userId: _authStore.authData!.userId,
       );
 
-      _purchasedProductId = productId;
-      if (_purchasedProductId != null && _purchasedProductId == productId) {
+      if (_purchasedProductId != null && _purchasedProductId == selectedProductId) {
         _analyticsStore.setManageSubscription(
           paymentGateway: getPlatformGateway(),
           planPrice: item.rawPrice,
-          planType: productId,
+          planType: selectedProductId,
         );
       } else {
         _analyticsStore.setPaymentInitiated(
           paymentGateway: getPlatformGateway(),
           planPrice: item.rawPrice,
-          planType: productId,
+          planType: selectedProductId,
         );
       }
     } on Exception catch (e) {
@@ -229,6 +233,7 @@ abstract class _SubscriptionStore with Store {
           transactionId: purchaseDetails.verificationData.serverVerificationData,
           transactionDate: purchaseDetails.transactionDate ?? '',
         );
+        _purchasedProductId = _subscription?.planId;
       }
     }
 
