@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/routes.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -25,10 +26,9 @@ class HomeDesktopAppBar extends ConsumerWidget {
           builder: (context) => Row(
             children: [
               SvgIconButton(
-                onPressed: () {
-                  context.beamToNamed(Routes.reportIssue.toRoute);
-                },
-                asset: Assets.reportPurple,
+                onPressed: () =>
+                    handleOnReportPage(context: context, intetcomStore: ref.read(intercomStorePOD)),
+                asset: themeStore.isDarkMode ? Assets.reportPurple : Assets.report,
               ),
               SvgIconButton(
                 onPressed: () {

@@ -217,9 +217,11 @@ abstract class _SubscriptionStore with Store {
       }
       return;
     }
+
     _subscription = await verifyPurchase(_purchasedProductId ?? '', purchaseDetails);
 
     if (purchaseDetails.status == PurchaseStatus.purchased && (_subscription?.active ?? false)) {
+      _purchasedProductId = _subscription?.planId;
       if (product != null) {
         for (final product in _products) {
           product.status = product.planDetails.id == _purchasedProductId
@@ -233,7 +235,6 @@ abstract class _SubscriptionStore with Store {
           transactionId: purchaseDetails.verificationData.serverVerificationData,
           transactionDate: purchaseDetails.transactionDate ?? '',
         );
-        _purchasedProductId = _subscription?.planId;
       }
     }
 

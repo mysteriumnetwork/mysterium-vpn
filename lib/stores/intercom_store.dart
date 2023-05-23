@@ -17,7 +17,7 @@ abstract class _IntercomStore with Store {
   @action
   Future<void> initialize() async {
     try {
-      if (isIntercomInitialized) {
+      if (_isIntercomInitialized) {
         return;
       }
       await _intercom.initialize(
@@ -25,27 +25,32 @@ abstract class _IntercomStore with Store {
         androidApiKey: intercomAndroidApiKey,
         iosApiKey: intercomIosApiKey,
       );
-      isIntercomInitialized = true;
+      _isIntercomInitialized = true;
     } catch (e) {
-      isIntercomInitialized = false;
+      _isIntercomInitialized = false;
 
       debugPrint(e.toString());
     }
   }
 
   @observable
-  bool isIntercomInitialized = false;
+  bool _isIntercomInitialized = false;
+
+  @observable
+  bool _isUserLoggedIn = false;
 
   @action
-  Future<void> registerUser(
-    String email,
-    String userId,
-  ) async {
+  Future<void> registerUser({
+    String? email,
+  }) async {
     try {
       await initialize();
-      await _intercom.loginIdentifiedUser(
-        email: email,
-      );
+      email != null
+          ? await _intercom.loginIdentifiedUser(
+              email: email,
+            )
+          : await _intercom.loginUnidentifiedUser();
+      _isUserLoggedIn = true;
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -75,6 +80,9 @@ abstract class _IntercomStore with Store {
   @action
   Future<void> displayMessenger() async {
     try {
+      if (!_isUserLoggedIn) {
+        await registerUser();
+      }
       await _intercom.displayMessenger();
     } catch (e) {
       debugPrint(e.toString());
