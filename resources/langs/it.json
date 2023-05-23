@@ -433,5 +433,6 @@
   "moreInfo": " per maggiori informazioni.",
   "acceptAndContinue": "Accetta e continua",
   "privacyPriority": "La tua privacy è la nostra",
-  "privacyPriorityText":"Per fornirti un servizio VPN veloce e affidabile, raccogliamo una quantità minima di dati.\n\nRaccogliamo:\n\n1. Il tuo indirizzo e-mail per accedere e risolvere i problemi relativi all'account.\n\n2. Le informazioni specifiche del dispositivo come la versione del sistema operativo, il modello hardware e i dati di utilizzo anonimi per ottimizzare la nostra applicazione migliorano l'esperienza dell'utente. Non memorizziamo né registriamo il tuo indirizzo IP.\n\nNon conserviamo registri delle tue attività online e non associamo mai qualsiasi dominio o applicazione che usi con te, il tuo dispositivo, indirizzo IP o e-mail."
+  "privacyPriorityText":"Per fornirti un servizio VPN veloce e affidabile, raccogliamo una quantità minima di dati.\n\nRaccogliamo:\n\n1. Il tuo indirizzo e-mail per accedere e risolvere i problemi relativi all'account.\n\n2. Le informazioni specifiche del dispositivo come la versione del sistema operativo, il modello hardware e i dati di utilizzo anonimi per ottimizzare la nostra applicazione migliorano l'esperienza dell'utente. Non memorizziamo né registriamo il tuo indirizzo IP.\n\nNon conserviamo registri delle tue attività online e non associamo mai qualsiasi dominio o applicazione che usi con te, il tuo dispositivo, indirizzo IP o e-mail.",
+  "processingPayment": "Stiamo elaborando il tuo pagamento. A breve sarai pronto..."
 }
