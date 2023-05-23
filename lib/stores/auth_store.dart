@@ -143,7 +143,7 @@ abstract class _AuthStore with Store {
       _analyticsStore
         ..setUserId(res.username)
         ..setLogin();
-      _intercomStore.registerUser(res.username, res.userId);
+      _intercomStore.registerUser(email: res.username);
       FirebaseCrashlytics.instance.setUserIdentifier(res.username);
       Sentry.configureScope(
         (scope) => scope.setUser(

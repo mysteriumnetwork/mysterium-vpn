@@ -18,11 +18,10 @@ class HomeMobileAppBar extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SvgIconButton(
-            onPressed: () {
-              isMobile()
-                  ? ref.read(intercomStorePOD).displayMessenger()
-                  : context.beamToNamed(Routes.reportIssue.toRoute);
-            },
+            onPressed: () => handleOnReportPage(
+              context: context,
+              intetcomStore: ref.read(intercomStorePOD),
+            ),
             asset: Assets.report,
           ),
           const AppLogo(),

@@ -19,6 +19,7 @@ import 'package:mysterium_vpn/components/dialogs/no_internet_connection_dialog.d
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/auth_page.dart';
+import 'package:mysterium_vpn/stores/intercom_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -417,4 +418,11 @@ void handleOnBillingPage({
   } else {
     launchUrl(Uri.parse(billingPage));
   }
+}
+
+void handleOnReportPage({
+  required BuildContext context,
+  required IntercomStore intetcomStore,
+}) {
+  isMobile() ? intetcomStore.displayMessenger() : context.beamToNamed(Routes.reportIssue.toRoute);
 }

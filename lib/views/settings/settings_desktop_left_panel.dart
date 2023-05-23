@@ -1,30 +1,31 @@
-import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/enums/routes.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/app_version.dart';
 import 'package:mysterium_vpn/components/desktop_page_header.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/category_item.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class SettingsDesktopLeftPanel extends StatelessWidget {
+class SettingsDesktopLeftPanel extends ConsumerWidget {
   const SettingsDesktopLeftPanel({
     required this.settingCategory,
     super.key,
   });
   final ValueNotifier<SettingCategory> settingCategory;
   @override
-  Widget build(BuildContext context) => Column(
+  Widget build(BuildContext context, WidgetRef ref) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           DesktopPageHeader(
-            onPressed: () {
-              context.beamToReplacementNamed(Routes.reportIssue.toRoute);
-            },
+            onPressed: () => handleOnReportPage(
+              context: context,
+              intetcomStore: ref.read(intercomStorePOD),
+            ),
             asset: Assets.reportPurple,
           ).padding(bottom: 40),
           ListView(
