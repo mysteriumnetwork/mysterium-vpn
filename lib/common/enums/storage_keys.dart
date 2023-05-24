@@ -13,4 +13,5 @@ enum StorageKeys {
   wireguardPrivateKey,
   codeChallenge,
   codeVerifier,
+  vpnConfigConsent,
 }

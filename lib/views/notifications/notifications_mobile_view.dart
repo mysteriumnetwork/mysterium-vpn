@@ -16,13 +16,10 @@ class NotificationsMobileView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authStore = ref.watch(authStorePOD);
     final apiStore = ref.watch(restApiStorePOD);
 
     return BaseLayout(
-      header: BaseAppBar(
-        authStore: authStore,
-      ),
+      header: const BaseAppBar(),
       child: Observer(
         builder: (context) {
           final status = apiStore.notificationsApprovalFuture?.status;

@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/router/route_delegate.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
@@ -72,12 +73,10 @@ class MyApp extends HookConsumerWidget {
   ) {
     routeDelegate.update();
     if (status == AuthStatus.unauthenticated) {
-      ref
-        ..read(vpnStorePOD).disconnect()
-        ..invalidate(subscriptionStorePOD)
-        ..invalidate(vpnStorePOD)
-        ..invalidate(locationsStorePOD)
-        ..invalidate(vpnStorePOD);
+      if (ref.exists(vpnStorePOD)) {
+        ref.read(vpnStorePOD).disconnect();
+        ref.invalidate(vpnStorePOD);
+      }
     }
   }
 }

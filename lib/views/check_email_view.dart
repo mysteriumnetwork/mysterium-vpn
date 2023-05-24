@@ -6,6 +6,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:mysterium_vpn/components/dialogs/no_mail_app_dialog.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
@@ -24,6 +25,7 @@ class CheckYourEmailView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authStore = ref.watch(authStorePOD);
     final isMounted = useIsMounted();
+    final height = getMediaHeight(context);
 
     return Scaffold(
       body: SafeArea(
@@ -37,25 +39,25 @@ class CheckYourEmailView extends HookConsumerWidget {
                     LocaleKeys.checkYourEmail.tr(),
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
-                  ).padding(bottom: 60, top: 20),
+                  ).padding(bottom: height * .03, top: height * .02),
                   const SvgIcon(
                     asset: Assets.checkEmail,
-                  ).padding(bottom: 40),
+                  ).padding(bottom: height * .03),
                   EasyText(
                     LocaleKeys.emailSentTo.tr(namedArgs: {'email': authStore.email}),
                     maxLines: 2,
                     textAlign: TextAlign.center,
-                  ).padding(bottom: 20),
+                  ).padding(bottom: height * .02),
                   EasyText(
                     LocaleKeys.linkExpires.tr(),
                     maxLines: 2,
                     textAlign: TextAlign.center,
-                  ).padding(bottom: 20),
+                  ).padding(bottom: height * .02),
                   EasyText(
                     LocaleKeys.consumeLink.tr(),
                     maxLines: 5,
                     textAlign: TextAlign.center,
-                  ).padding(bottom: 50),
+                  ).padding(bottom: height * .05),
                   EasyButton(
                     text: LocaleKeys.openEmailApp.tr(),
                     onPressed: () => openEmailApp(context, isMounted),

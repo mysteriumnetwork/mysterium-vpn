@@ -14,7 +14,7 @@
   "signInDisclaimer": "Pasirašę jūs sutinkate su mūsų",
   "termsAndConditions": "Sąlygos ir sąlygos",
   "and": "ir",
-  "privacyPolicy": "Privatumo politika.",
+  "privacyPolicy": "Privatumo politika",
   "email": "Elektroninio pašto adresas",
   "emailIsRequired": "Reikalingas el. Pašto adresas",
   "emailIsNotValid": "El. Pašto adresas negalioja",
@@ -107,7 +107,6 @@
   "questions": "Klausimai?",
   "tap": "Bakstelėkite",
   "here": "čia",
-  "moreInfo": "Norėdami gauti daugiau informacijos",
   "almostThere": "Beveik ten!",
   "dontMissOut": "Nepraleiskite, kas naujo!",
   "productUpdates": "Gaukite produktų atnaujinimus",
@@ -140,7 +139,7 @@
   "currentlyOffline": "Šiuo metu esate neprisijungę.",
   "internetConnectionRestored": "Jūsų interneto ryšys buvo atkurtas.",
   "subscriptionVerificationFailed": "Bandymo patikrinimas",
-  "failedToVerifySubs": "Negalėjome patikrinti jūsų paskutinio pirkimo už prenumeratos paketą. Spustelėkite žemiau esantį mygtuką, kad pakartotinai patikrintumėte.",
+  "failedToVerifySubs": "Nepavyko patvirtinti jūsų paskutinio prenumeratos paketo pirkinio. Spustelėkite toliau esantį mygtuką, kad patvirtintumėte dar kartą.",
   "retryBtn": "Bandyti",
   "areYouSure": "Ar tikrai norite grįžti?",
   "logoutDescription": "Grįžimas jus atsijungs nuo programos.",
@@ -426,5 +425,14 @@
   "connectionTimeout": "Baigėsi ryšio skirtasis laikas. Vėliau bandykite dar kartą.Jei problema išlieka, susisiekite su palaikymo komanda",
   "cancelYourSubsMess": "Prieš ištrindami paskyrą, atsiskaitymo puslapyje ATŠAUKTI PRENUMERACIJĄ.",
   "accountSuccessfullyDeleted": "Jūsų paskyra sėkmingai ištrinta. Apgailestaujame, kad išeinate.😢",
-  "redirectToLoginPage": "Būsite nukreipti į prisijungimo puslapį."
+  "redirectToLoginPage": "Būsite nukreipti į prisijungimo puslapį.",
+  "weNeedPermission": "Mums reikia jūsų leidimo",
+  "installVpnProfile": "Norėdami pradėti naudoti Mysterium VPN, mums reikia jūsų leidimo įdiegti VPN profilį.",
+  "anonimityIsSafe": "Jūsų anonimiškumas yra saugus. Mes neperžiūrime, nerenkame ir nesaugome jokios jūsų naršymo veiklos.",
+  "readOur": "Skaitykite mūsų ",
+  "moreInfo": " Daugiau informacijos.",
+  "acceptAndContinue": "Priimk ir tęsk",
+  "privacyPriority": "Jūsų privatumas yra mūsų",
+  "privacyPriorityText":"Siekdami suteikti jums greitą ir patikimą VPN paslaugą, renkame minimalų duomenų kiekį.\n\nRenkame:\n\n1. Jūsų el. pašto adresą, kad galėtumėte prisijungti ir pašalinti su paskyra susijusias problemas.\n\n2. Informacija apie įrenginį, pvz., OS versija, aparatinės įrangos modelis ir anoniminiai naudojimo duomenys, skirti optimizuoti mūsų programą, pagerina naudotojo patirtį. Mes nesaugome ir neregistruojame jūsų IP adreso.\n\nNesaugome jūsų veiklos internete žurnalų ir niekada nesusiejame bet kokius domenus ar programas, kurias naudojate su savimi, savo įrenginiu, IP adresu ar el."
+
 }
