@@ -6,7 +6,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
@@ -36,7 +35,6 @@ class SubscriptionForm extends HookConsumerWidget {
   final LocalDBService localDb;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedProduct = useState(store.purchasedProductId ?? kPopularPlan);
     final isMounted = useIsMounted();
 
     final subsFormStatus = useMemoized(
@@ -50,7 +48,7 @@ class SubscriptionForm extends HookConsumerWidget {
       children: [
         HeaderTitle(
           text: LocaleKeys.selectPackage.tr(),
-        ).padding(bottom: getMediaHeight(context) * 0.02),
+        ),
         Observer(
           builder: (context) {
             if (store.products.isEmpty) {
@@ -63,9 +61,8 @@ class SubscriptionForm extends HookConsumerWidget {
               children: [
                 SubscriptionProductsList(
                   products: store.products,
-                  selectedProduct: selectedProduct,
                   originalPrice: store.originalPrice,
-                ).padding(bottom: getMediaHeight(context) * 0.03),
+                ).padding(bottom: getMediaHeight(context) * 0.02),
                 EasyText(
                   subsFormStatus == SubscriptionFormStatus.manage
                       ? LocaleKeys.manageSubsTittle.tr()
@@ -87,7 +84,13 @@ class SubscriptionForm extends HookConsumerWidget {
                 ReactionBuilder(
                   builder: (context) => reaction((_) => store.purchaseStatus, (result) {
                     if (result == PurchaseStatus.purchased && isMounted()) {
-                      if (store.subscription?.active == false) {
+                      if (store.subscription?.active ?? false) {
+                        showSnackbar(
+                          LocaleKeys.subscriptionActive.tr(),
+                          type: MessageType.success,
+                        );
+                        context.beamToReplacementNamed(Routes.home.toRoute);
+                      } else {
                         shownRetryDialog(
                           onRetry: () async => store.retryVerificationProcess(),
                           context: context,
@@ -95,12 +98,6 @@ class SubscriptionForm extends HookConsumerWidget {
                           title: LocaleKeys.subscriptionVerificationFailed.tr(),
                           subtitle: LocaleKeys.failedToVerifySubs.tr(),
                         );
-                      } else {
-                        showSnackbar(
-                          LocaleKeys.subscriptionActive.tr(),
-                          type: MessageType.success,
-                        );
-                        context.beamToReplacementNamed(Routes.home.toRoute);
                       }
                     }
                     if (result == PurchaseStatus.canceled) {
@@ -121,9 +118,7 @@ class SubscriptionForm extends HookConsumerWidget {
                     onPressed: store.purchaseStatus == PurchaseStatus.pending
                         ? null
                         : () async {
-                            if (selectedProduct.value.isNotEmpty) {
-                              store.subscribeToPackage(selectedProduct.value);
-                            }
+                            store.subscribeToPackage();
                           },
                     child: store.purchaseStatus == PurchaseStatus.pending
                         ? const LoadingIndicator(
@@ -132,7 +127,7 @@ class SubscriptionForm extends HookConsumerWidget {
                           )
                         : EasyText(
                             subsFormStatus == SubscriptionFormStatus.manage
-                                ? selectedProduct.value == store.purchasedProductId
+                                ? store.selectedProductId == store.purchasedProductId
                                     ? LocaleKeys.manageBtn.tr()
                                     : LocaleKeys.changeSubPlan.tr()
                                 : subsFormStatus == SubscriptionFormStatus.expired

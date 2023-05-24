@@ -30,7 +30,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Oturum açarak şunları kabul etmiş olursunuz:",
     "termsAndConditions": "Şartlar ve koşullar",
     "and": " Ve ",
-    "privacyPolicy": "Gizlilik Politikası.",
+    "privacyPolicy": "Gizlilik Politikası",
     "email": "E-posta adresi",
     "emailIsRequired": "E-posta adresi gerekli",
     "emailIsNotValid": "E-posta adresi geçerli değil",
@@ -129,7 +129,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Sorular?",
     "tap": "Musluk ",
     "here": "Burada",
-    "moreInfo": " daha fazla bilgi için",
     "almostThere": "Neredeyse!",
     "dontMissOut": "Yenilikleri kaçırmayın!",
     "productUpdates": "Ürün güncellemelerini alın",
@@ -162,7 +161,8 @@ class CodegenLoader extends AssetLoader {
     "currentlyOffline": "Şu anda çevrimdışısınız.",
     "internetConnectionRestored": "İnternet bağlantınız geri yüklendi.",
     "subscriptionVerificationFailed": "Doğrulamayı Yeniden Dene",
-    "failedToVerifySubs": "Abonelik dışı paket için son satın alma işleminizi doğrulayamadık. ",
+    "failedToVerifySubs":
+        "Abonelik paketimiz için son satın alma işleminizi doğrulayamadık. Doğrulamayı yeniden denemek için aşağıdaki düğmeyi tıklayın.",
     "retryBtn": "yeniden dene",
     "areYouSure": "Geri dönmek istediğinden emin misin?",
     "logoutDescription": "Geri dönmek, uygulamadan çıkmanıza neden olur.",
@@ -450,7 +450,18 @@ class CodegenLoader extends AssetLoader {
     "cancelYourSubsMess":
         "Lütfen hesabınızı silmeden önce faturalandırma sayfasında ABONELİĞİNİZİ İPTAL EDİN.",
     "accountSuccessfullyDeleted": "Hesabınız başarıyla silindi.Gittiğiniz için üzgünüz.😢",
-    "redirectToLoginPage": "Giriş sayfasına yönlendirileceksiniz."
+    "redirectToLoginPage": "Giriş sayfasına yönlendirileceksiniz.",
+    "weNeedPermission": "izninize ihtiyacımız var",
+    "installVpnProfile":
+        "Mysterium VPN'i kullanmaya başlamak için, bir VPN Profili kurmak için izninize ihtiyacımız var.",
+    "anonimityIsSafe":
+        "Anonimliğiniz güvende. Göz atma etkinliğinizin hiçbirini görüntülemiyor, toplamıyor veya saklamıyoruz.",
+    "readOur": "bizim okuyun ",
+    "moreInfo": " daha fazla bilgi için.",
+    "acceptAndContinue": "Kabul et ve devam et",
+    "privacyPriority": "Gizliliğiniz bizim",
+    "privacyPriorityText":
+        "Size hızlı ve güvenilir bir VPN hizmeti sunmak için minimum miktarda veri topluyoruz.\n\nToplarız:\n\n1. Oturum açmanız ve hesapla ilgili sorunları gidermeniz için E-posta adresiniz.\n\n2. Uygulamamızı optimize etmek için işletim sistemi sürümü, donanım modeli ve anonim kullanım verileri gibi cihaza özgü bilgiler, kullanıcı deneyimini iyileştirir. IP adresinizi saklamıyoruz veya günlüğe kaydetmiyoruz.\n\nÇevrimiçi etkinliklerinizin günlüklerini tutmuyoruz ve asla ilişkilendirmiyoruz sizinle, cihazınızla, IP adresinizle veya e-postanızla kullandığınız tüm etki alanları veya uygulamalar."
   };
   static const Map<String, dynamic> mk = {
     "title": "Здраво господине",
@@ -468,7 +479,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Со пријавување, вие се согласувате со нашите",
     "termsAndConditions": "Правила и услови",
     "and": "и",
-    "privacyPolicy": "Политика за приватност.",
+    "privacyPolicy": "Политика за приватност",
     "email": "И-мејл адреса",
     "emailIsRequired": "Потребна е адреса за е -пошта",
     "emailIsNotValid": "Адресата за е -пошта не е валидна",
@@ -570,7 +581,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Прашања?",
     "tap": "Допрете",
     "here": "Еве",
-    "moreInfo": "За повеќе информации",
     "almostThere": "Скоро таму!",
     "dontMissOut": "Не пропуштајте што е ново!",
     "productUpdates": "Добијте ажурирања на производи",
@@ -608,7 +618,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Вашата Интернет врска е обновена.",
     "subscriptionVerificationFailed": "Повторно обидете се со верификација",
     "failedToVerifySubs":
-        "Не можеме да го потврдиме последното купување за пакет за претплата. Кликнете на копчето подолу за да ја обидете повторното верификација.",
+        "Не можевме да го потврдиме вашето последно купување за нашиот пакет за претплата. Кликнете на копчето подолу за повторно да се обидете со потврдата.",
     "retryBtn": "Повторно обидете се",
     "areYouSure": "Дали сте сигурни дека сакате да се вратите назад?",
     "logoutDescription": "Враќањето назад ќе ве одјави од апликацијата.",
@@ -900,7 +910,18 @@ class CodegenLoader extends AssetLoader {
         "ОТКАЖЕТЕ ЈА ВАШАТА ПРЕТПЛАТА на страницата за наплата пред да ја избришете вашата сметка.",
     "accountSuccessfullyDeleted":
         "Вашата сметка е успешно избришана. Жал ни е што ве гледаме дека одите.😢",
-    "redirectToLoginPage": "Ќе бидете пренасочени на страната за најавување."
+    "redirectToLoginPage": "Ќе бидете пренасочени на страната за најавување.",
+    "weNeedPermission": "Ни треба ваша дозвола",
+    "installVpnProfile":
+        "За да започнеме со користење на Mysterium VPN, потребна ни е ваша дозвола да инсталираме VPN профил.",
+    "anonimityIsSafe":
+        "Вашата анонимност е безбедна. Ние не прикажуваме, собираме или складираме некоја од вашите активности на прелистување.",
+    "readOur": "Прочитајте го нашиот ",
+    "moreInfo": " за повеќе информации.",
+    "acceptAndContinue": "Прифатете и продолжете",
+    "privacyPriority": "Вашата приватност е наша",
+    "privacyPriorityText":
+        "За да ви обезбедиме брза и сигурна VPN услуга, собираме минимална количина на податоци.\n\nСобираме:\n\n1. Вашата адреса на е-пошта за да ве најавиме и да ги решиме проблемите поврзани со сметката.\n\n2. Информациите специфични за уредот, како што се верзијата на оперативниот систем, моделот на хардверот и анонимните податоци за користење за оптимизирање на нашата апликација, го подобруваат корисничкото искуство. Ние не ја складираме или евидентираме вашата IP адреса.\n\nНе водиме дневници за вашите онлајн активности и никогаш не се поврзуваме сите домени или апликации што ги користите со вас, вашиот уред, IP адреса или е-пошта."
   };
   static const Map<String, dynamic> lt = {
     "title": "Sveiki pone",
@@ -918,7 +939,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Pasirašę jūs sutinkate su mūsų",
     "termsAndConditions": "Sąlygos ir sąlygos",
     "and": "ir",
-    "privacyPolicy": "Privatumo politika.",
+    "privacyPolicy": "Privatumo politika",
     "email": "Elektroninio pašto adresas",
     "emailIsRequired": "Reikalingas el. Pašto adresas",
     "emailIsNotValid": "El. Pašto adresas negalioja",
@@ -1020,7 +1041,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Klausimai?",
     "tap": "Bakstelėkite",
     "here": "čia",
-    "moreInfo": "Norėdami gauti daugiau informacijos",
     "almostThere": "Beveik ten!",
     "dontMissOut": "Nepraleiskite, kas naujo!",
     "productUpdates": "Gaukite produktų atnaujinimus",
@@ -1055,7 +1075,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Jūsų interneto ryšys buvo atkurtas.",
     "subscriptionVerificationFailed": "Bandymo patikrinimas",
     "failedToVerifySubs":
-        "Negalėjome patikrinti jūsų paskutinio pirkimo už prenumeratos paketą. Spustelėkite žemiau esantį mygtuką, kad pakartotinai patikrintumėte.",
+        "Nepavyko patvirtinti jūsų paskutinio prenumeratos paketo pirkinio. Spustelėkite toliau esantį mygtuką, kad patvirtintumėte dar kartą.",
     "retryBtn": "Bandyti",
     "areYouSure": "Ar tikrai norite grįžti?",
     "logoutDescription": "Grįžimas jus atsijungs nuo programos.",
@@ -1345,7 +1365,18 @@ class CodegenLoader extends AssetLoader {
         "Prieš ištrindami paskyrą, atsiskaitymo puslapyje ATŠAUKTI PRENUMERACIJĄ.",
     "accountSuccessfullyDeleted":
         "Jūsų paskyra sėkmingai ištrinta. Apgailestaujame, kad išeinate.😢",
-    "redirectToLoginPage": "Būsite nukreipti į prisijungimo puslapį."
+    "redirectToLoginPage": "Būsite nukreipti į prisijungimo puslapį.",
+    "weNeedPermission": "Mums reikia jūsų leidimo",
+    "installVpnProfile":
+        "Norėdami pradėti naudoti Mysterium VPN, mums reikia jūsų leidimo įdiegti VPN profilį.",
+    "anonimityIsSafe":
+        "Jūsų anonimiškumas yra saugus. Mes neperžiūrime, nerenkame ir nesaugome jokios jūsų naršymo veiklos.",
+    "readOur": "Skaitykite mūsų ",
+    "moreInfo": " Daugiau informacijos.",
+    "acceptAndContinue": "Priimk ir tęsk",
+    "privacyPriority": "Jūsų privatumas yra mūsų",
+    "privacyPriorityText":
+        "Siekdami suteikti jums greitą ir patikimą VPN paslaugą, renkame minimalų duomenų kiekį.\n\nRenkame:\n\n1. Jūsų el. pašto adresą, kad galėtumėte prisijungti ir pašalinti su paskyra susijusias problemas.\n\n2. Informacija apie įrenginį, pvz., OS versija, aparatinės įrangos modelis ir anoniminiai naudojimo duomenys, skirti optimizuoti mūsų programą, pagerina naudotojo patirtį. Mes nesaugome ir neregistruojame jūsų IP adreso.\n\nNesaugome jūsų veiklos internete žurnalų ir niekada nesusiejame bet kokius domenus ar programas, kurias naudojate su savimi, savo įrenginiu, IP adresu ar el."
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1363,7 +1394,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Durch Anmelden stimmen Sie unserem zu",
     "termsAndConditions": "Geschäftsbedingungen",
     "and": "Und",
-    "privacyPolicy": "Datenschutz-Bestimmungen.",
+    "privacyPolicy": "Datenschutz-Bestimmungen",
     "email": "E-Mail-Addresse",
     "emailIsRequired": "E-Mailadresse wird benötigt",
     "emailIsNotValid": "Email Adresse ist nicht gültig",
@@ -1466,7 +1497,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Fragen?",
     "tap": "Klopfen",
     "here": "Hier",
-    "moreInfo": "für weitere Informationen",
     "almostThere": "Fast dort!",
     "dontMissOut": "Verpassen Sie nicht, was neu ist!",
     "productUpdates": "Holen Sie sich Produktaktualisierungen",
@@ -1504,7 +1534,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Ihre Internetverbindung wurde wiederhergestellt.",
     "subscriptionVerificationFailed": "Überprüfung wiederholen",
     "failedToVerifySubs":
-        "Wir konnten Ihren letzten Kauf für ein Abonnementpaket nicht überprüfen. Klicken Sie auf die Schaltfläche unten, um die Überprüfung erneut zu machen.",
+        "Wir konnten Ihren letzten Kauf für unser Abonnementpaket nicht bestätigen. Klicken Sie auf die Schaltfläche unten, um die Bestätigung erneut zu versuchen.",
     "retryBtn": "Wiederholen",
     "areYouSure": "Bist du sicher, dass du zurückkehren willst?",
     "logoutDescription": "Wenn Sie zurück gehen, protokollieren Sie Sie aus der Anwendung.",
@@ -1798,7 +1828,18 @@ class CodegenLoader extends AssetLoader {
         "Bitte KÜNDIGEN SIE IHR ABONNEMENT auf der Abrechnungsseite, bevor Sie Ihr Konto löschen.",
     "accountSuccessfullyDeleted":
         "Ihr Konto wurde erfolgreich gelöscht. Es tut uns leid, dass Sie gehen.😢",
-    "redirectToLoginPage": "Sie werden auf die Anmeldeseite weitergeleitet."
+    "redirectToLoginPage": "Sie werden auf die Anmeldeseite weitergeleitet.",
+    "weNeedPermission": "Wir benötigen Ihre Erlaubnis",
+    "installVpnProfile":
+        "Um Mysterium VPN nutzen zu können, benötigen wir Ihre Erlaubnis zur Installation eines VPN-Profils.",
+    "anonimityIsSafe":
+        "Ihre Anonymität ist sicher. Wir sehen, sammeln oder speichern keine Ihrer Browsing-Aktivitäten.",
+    "readOur": "Lesen Sie unsere ",
+    "moreInfo": " für mehr Informationen.",
+    "acceptAndContinue": "Akzeptieren und weiter",
+    "privacyPriority": "Ihre Privatsphäre ist unsere",
+    "privacyPriorityText":
+        "Um Ihnen einen schnellen und zuverlässigen VPN-Dienst zu bieten, erfassen wir eine Mindestmenge an Daten.\n\nWir erfassen:\n\n1. Ihre E-Mail-Adresse, um Sie anzumelden und um kontobezogene Probleme zu beheben.\n\n2. Gerätespezifische Informationen wie Betriebssystemversion, Hardwaremodell und anonyme Nutzungsdaten zur Optimierung unserer Anwendung verbessern das Benutzererlebnis. Wir speichern oder protokollieren Ihre IP-Adresse nicht.\n\nWir führen keine Protokolle Ihrer Online-Aktivitäten und verknüpfen sie niemals mit anderen alle Domänen oder Anwendungen, die Sie mit Ihnen, Ihrem Gerät, Ihrer IP-Adresse oder E-Mail verwenden."
   };
   static const Map<String, dynamic> uk = {
     "title": "Вітаю, сер",
@@ -1816,7 +1857,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Увійшовши, ви погоджуєтеся з нашими",
     "termsAndConditions": "Правила та умови",
     "and": " і ",
-    "privacyPolicy": "Політика конфіденційності.",
+    "privacyPolicy": "Політика конфіденційності",
     "email": "Адреса електронної пошти",
     "emailIsRequired": "Необхідно вказати адресу електронної пошти",
     "emailIsNotValid": "Адреса електронної пошти недійсна",
@@ -1915,7 +1956,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Запитання?",
     "tap": "Торкніться ",
     "here": "тут",
-    "moreInfo": " для отримання додаткової інформації",
     "almostThere": "Майже там!",
     "dontMissOut": "Не пропустіть новинки!",
     "productUpdates": "Отримуйте оновлення продукту",
@@ -1949,7 +1989,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Ваше підключення до Інтернету відновлено.",
     "subscriptionVerificationFailed": "Повторіть перевірку",
     "failedToVerifySubs":
-        "Нам не вдалося підтвердити вашу останню покупку нашого пакета підписки. ",
+        "Нам не вдалося підтвердити вашу останню покупку нашого пакета підписки. Натисніть кнопку нижче, щоб повторити перевірку.",
     "retryBtn": "Повторіть спробу",
     "areYouSure": "Ви впевнені, що хочете повернутися?",
     "logoutDescription": "Повернувшись назад, ви вийдете з програми.",
@@ -2237,7 +2277,18 @@ class CodegenLoader extends AssetLoader {
     "cancelYourSubsMess":
         "Будь ласка, СКАСУЙТЕ СВОЮ ПІДПИСКУ на сторінці платежів перед видаленням свого облікового запису.",
     "accountSuccessfullyDeleted": "Ваш обліковий запис успішно видалено. Нам шкода, що ви йдете.😢",
-    "redirectToLoginPage": "Ви будете перенаправлені на сторінку входу."
+    "redirectToLoginPage": "Ви будете перенаправлені на сторінку входу.",
+    "weNeedPermission": "Нам потрібен ваш дозвіл",
+    "installVpnProfile":
+        "Щоб почати використовувати Mysterium VPN, нам потрібен ваш дозвіл на встановлення профілю VPN.",
+    "anonimityIsSafe":
+        "Ваша анонімність у безпеці. Ми не переглядаємо, не збираємо та не зберігаємо вашу діяльність у веб-переглядачі.",
+    "readOur": "Читайте наш ",
+    "moreInfo": " для отримання додаткової інформації.",
+    "acceptAndContinue": "Прийняти та продовжити",
+    "privacyPriority": "Ваша конфіденційність - наша",
+    "privacyPriorityText":
+        "Щоб надати вам швидку та надійну службу VPN, ми збираємо мінімальну кількість даних.\n\nМи збираємо:\n\n1. Вашу електронну адресу для входу та вирішення проблем, пов’язаних з обліковим записом.\n\n2. Інформація про пристрій, як-от версія ОС, модель апаратного забезпечення та анонімні дані про використання, щоб оптимізувати нашу програму, покращує взаємодію з користувачем. Ми не зберігаємо та не реєструємо вашу IP-адресу.\n\nМи не зберігаємо журнали вашої онлайн-діяльності та ніколи не пов’язуємо будь-які домени чи програми, якими ви користуєтеся, ваш пристрій, IP-адреса чи електронна пошта."
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2255,7 +2306,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Ao fazer login, você concorda com o nosso",
     "termsAndConditions": "Termos e Condições",
     "and": "e",
-    "privacyPolicy": "Política de Privacidade.",
+    "privacyPolicy": "Política de Privacidade",
     "email": "Endereço de email",
     "emailIsRequired": "É necessário um endereço de e-mail",
     "emailIsNotValid": "o endereço de email não é válido",
@@ -2357,7 +2408,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Questões?",
     "tap": "Tocar",
     "here": "aqui",
-    "moreInfo": "Para mais informações",
     "almostThere": "Quase lá!",
     "dontMissOut": "Não perca o que há de novo!",
     "productUpdates": "Obtenha atualizações do produto",
@@ -2394,7 +2444,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Sua conexão com a Internet foi restaurada.",
     "subscriptionVerificationFailed": "VERIFICAÇÃO DE ALTIMAÇÃO",
     "failedToVerifySubs":
-        "Não foi possível verificar sua última compra para o pacote de assinatura de saída. Clique no botão abaixo para repetir a verificação.",
+        "Não foi possível verificar sua última compra de nosso pacote de assinatura.Clique no botão abaixo para tentar a verificação novamente.",
     "retryBtn": "Tente novamente",
     "areYouSure": "Tem certeza de que deseja voltar?",
     "logoutDescription": "Voltar irá registrar você fora do aplicativo.",
@@ -2682,7 +2732,18 @@ class CodegenLoader extends AssetLoader {
     "cancelYourSubsMess":
         "CANCELE SUA ASSINATURA na página de cobrança antes de excluir sua conta.",
     "accountSuccessfullyDeleted": "Sua conta foi excluída com sucesso. Lamentamos sua partida.😢",
-    "redirectToLoginPage": "Você será redirecionado para a página de login."
+    "redirectToLoginPage": "Você será redirecionado para a página de login.",
+    "weNeedPermission": "Precisamos da sua permissão",
+    "installVpnProfile":
+        "Para começar a usar o Mysterium VPN, precisamos da sua permissão para instalar um perfil VPN.",
+    "anonimityIsSafe":
+        "Seu anonimato é seguro. Não visualizamos, coletamos ou armazenamos nenhuma de suas atividades de navegação.",
+    "readOur": "Leia nosso ",
+    "moreInfo": " Para maiores informações.",
+    "acceptAndContinue": "Aceitar e continuar",
+    "privacyPriority": "Sua privacidade é nossa",
+    "privacyPriorityText":
+        "Para fornecer a você um serviço VPN rápido e confiável, coletamos uma quantidade mínima de dados.\n\nNós coletamos:\n\n1. Seu endereço de e-mail para fazer login e solucionar problemas relacionados à conta.\n\n2. Informações específicas do dispositivo, como versão do sistema operacional, modelo de hardware e dados de uso anônimos para otimizar nosso aplicativo, melhoram a experiência do usuário. Não armazenamos nem registramos seu endereço IP.\n\nNão mantemos registros de suas atividades online e nunca associamos quaisquer domínios ou aplicativos que você usa com você, seu dispositivo, endereço IP ou e-mail."
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -2700,7 +2761,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "By signing in, you agree to our",
     "termsAndConditions": "Terms and Conditions",
     "and": " and ",
-    "privacyPolicy": "Privacy Policy.",
+    "privacyPolicy": "Privacy Policy",
     "email": "Email address",
     "emailIsRequired": "Email address is required",
     "emailIsNotValid": "Email address is not valid",
@@ -2800,7 +2861,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Questions?",
     "tap": "Tap ",
     "here": "here",
-    "moreInfo": " for more informations",
     "almostThere": "Almost there!",
     "dontMissOut": "Don't miss out on what's new!",
     "productUpdates": "Get product updates",
@@ -2835,7 +2895,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Your internet connection has been restored.",
     "subscriptionVerificationFailed": "Retry Verification",
     "failedToVerifySubs":
-        "We couldn't verify your last purchase for out subscription package. Click the button below to retry verification.",
+        "We couldn't verify your last purchase for our subscription package. Click the button below to retry verification.",
     "retryBtn": "Retry",
     "areYouSure": "Are you sure you want to go back?",
     "logoutDescription": "Going back will log you out of the application.",
@@ -3126,7 +3186,18 @@ class CodegenLoader extends AssetLoader {
         "Please CANCEL YOUR SUBSCRIPTION on the billing page before deleting your account.",
     "accountSuccessfullyDeleted":
         "Your account has been successfully deleted. We are sorry to see you go. 😢",
-    "redirectToLoginPage": "You will be redirected to the login page."
+    "redirectToLoginPage": "You will be redirected to the login page.",
+    "weNeedPermission": "We need your permission",
+    "installVpnProfile":
+        "To start using Mysterium VPN, we need your permission to install a VPN Profile.",
+    "anonimityIsSafe":
+        "Your anonymity is safe. We don't view, collect or store any of your browsing activity.",
+    "readOur": "Read our ",
+    "moreInfo": " for more information.",
+    "acceptAndContinue": "Accept and continue",
+    "privacyPriority": "Your privacy is our #1 priority",
+    "privacyPriorityText":
+        "To provide you with a fast and reliable VPN service, we collect a minimum amount of data.\n\nWe Collect:\n\n1. Your Email address to log you in and to troubleshoot account related issues.\n\n2. Device-specific information such as OS version, hardware model, and anonymous usage data to optimize our application improve the user experience. We do not store or log your IP address.\n\nWe do not keep logs of your online activities and never associate any domains or applications that you use with you, your device, IP address, or email."
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3144,7 +3215,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Accettando, accetti il nostro",
     "termsAndConditions": "Termini e Condizioni",
     "and": "E",
-    "privacyPolicy": "Politica sulla riservatezza.",
+    "privacyPolicy": "Politica sulla riservatezza",
     "email": "Indirizzo e-mail",
     "emailIsRequired": "È richiesto l'indirizzo e -mail",
     "emailIsNotValid": "Indirizzo email non valido",
@@ -3246,7 +3317,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Domande?",
     "tap": "Rubinetto",
     "here": "Qui",
-    "moreInfo": "Per ulteriori informazioni",
     "almostThere": "Quasi lì!",
     "dontMissOut": "Non perdere le novità!",
     "productUpdates": "Ottieni aggiornamenti sul prodotto",
@@ -3283,7 +3353,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "La tua connessione Internet è stata ripristinata.",
     "subscriptionVerificationFailed": "Retry Verification",
     "failedToVerifySubs":
-        "Non siamo riusciti a verificare il tuo ultimo acquisto per il pacchetto di abbonamento. Fai clic sul pulsante in basso per riprovare la verifica.",
+        "Non siamo riusciti a verificare il tuo ultimo acquisto per il nostro pacchetto di abbonamento.Fai clic sul pulsante in basso per ritentare la verifica.",
     "retryBtn": "Riprovare",
     "areYouSure": "Sei sicuro di voler tornare indietro?",
     "logoutDescription": "Tornare indietro ti registrerà dall'applicazione.",
@@ -3576,7 +3646,18 @@ class CodegenLoader extends AssetLoader {
         "ANNULLA L'ABBONAMENTO nella pagina di fatturazione prima di eliminare il tuo account.",
     "accountSuccessfullyDeleted":
         "Il tuo account è stato eliminato con successo. Ci dispiace vederti andare via.😢",
-    "redirectToLoginPage": "Verrai reindirizzato alla pagina di accesso."
+    "redirectToLoginPage": "Verrai reindirizzato alla pagina di accesso.",
+    "weNeedPermission": "Abbiamo bisogno del tuo permesso",
+    "installVpnProfile":
+        "Per iniziare a utilizzare Mysterium VPN, abbiamo bisogno della tua autorizzazione per installare un profilo VPN.",
+    "anonimityIsSafe":
+        "Il tuo anonimato è al sicuro. Non visualizziamo, raccogliamo o memorizziamo nessuna delle tue attività di navigazione.",
+    "readOur": "Leggi il nostro ",
+    "moreInfo": " per maggiori informazioni.",
+    "acceptAndContinue": "Accetta e continua",
+    "privacyPriority": "La tua privacy è la nostra",
+    "privacyPriorityText":
+        "Per fornirti un servizio VPN veloce e affidabile, raccogliamo una quantità minima di dati.\n\nRaccogliamo:\n\n1. Il tuo indirizzo e-mail per accedere e risolvere i problemi relativi all'account.\n\n2. Le informazioni specifiche del dispositivo come la versione del sistema operativo, il modello hardware e i dati di utilizzo anonimi per ottimizzare la nostra applicazione migliorano l'esperienza dell'utente. Non memorizziamo né registriamo il tuo indirizzo IP.\n\nNon conserviamo registri delle tue attività online e non associamo mai qualsiasi dominio o applicazione che usi con te, il tuo dispositivo, indirizzo IP o e-mail."
   };
   static const Map<String, dynamic> sr = {
     "title": "Здраво господине",
@@ -3594,7 +3675,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Потписивањем, слажете се са нашим",
     "termsAndConditions": "Услови",
     "and": "и",
-    "privacyPolicy": "Правила о приватности.",
+    "privacyPolicy": "Правила о приватности",
     "email": "Адреса Е-поште",
     "emailIsRequired": "Потребна је адреса е-поште",
     "emailIsNotValid": "Адреса е-поште није важећа",
@@ -3696,7 +3777,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Питања?",
     "tap": "Славина",
     "here": "овде",
-    "moreInfo": "За више информација",
     "almostThere": "Скоро тамо!",
     "dontMissOut": "Не пропустите оно што је ново!",
     "productUpdates": "Добијте ажурирања производа",
@@ -3732,7 +3812,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Ваша интернетска веза је обновљена.",
     "subscriptionVerificationFailed": "Потражите верификацију",
     "failedToVerifySubs":
-        "Нисмо могли да проверимо вашу последњу куповину за пакет претплате. Кликните на дугме испод да бисте покушали поново да покушате поново.",
+        "Нисмо могли да верификујемо вашу последњу куповину за наш пакет претплате. Кликните на дугме испод да бисте поново покушали да верификујете.",
     "retryBtn": "Покушај поново",
     "areYouSure": "Јесте ли сигурни да се желите вратити?",
     "logoutDescription": "Вратиће се назад, одјавиће вас из апликације.",
@@ -4024,7 +4104,18 @@ class CodegenLoader extends AssetLoader {
     "cancelYourSubsMess":
         "Откажите претплату на страници за обрачун пре него што избришете свој налог.",
     "accountSuccessfullyDeleted": "Ваш налог је успешно избрисан. Жао нам је што одлазите.😢",
-    "redirectToLoginPage": "Бићете преусмерени на страницу за пријаву."
+    "redirectToLoginPage": "Бићете преусмерени на страницу за пријаву.",
+    "weNeedPermission": "Треба нам твоја дозвола",
+    "installVpnProfile":
+        "Да бисмо почели да користимо Мистериум ВПН, потребна нам је ваша дозвола да инсталирамо ВПН профил.",
+    "anonimityIsSafe":
+        "Ваша анонимност је безбедна. Не прегледавамо, не прикупљамо нити чувамо било коју вашу активност прегледања.",
+    "readOur": "Прочитајте наше ",
+    "moreInfo": " за више информација.",
+    "acceptAndContinue": "Прихватите и наставите",
+    "privacyPriority": "Ваша приватност је наша",
+    "privacyPriorityText":
+        "Да бисмо вам пружили брзу и поуздану ВПН услугу, прикупљамо минималну количину података.\n\nПрикупљамо:\n\n1. Вашу адресу е-поште да бисте се пријавили и решили проблеме у вези са налогом.\n\n2. Информације специфичне за уређај као што су верзија ОС-а, модел хардвера и анонимни подаци о коришћењу ради оптимизације наше апликације побољшавају корисничко искуство. Не чувамо нити евидентирамо вашу ИП адресу.\n\nНе водимо евиденцију ваших онлајн активности и никада се не повезујемо све домене или апликације које користите са вама, вашим уређајем, ИП адресом или е-поштом."
   };
   static const Map<String, dynamic> et = {
     "title": "Tere, härra",
@@ -4042,7 +4133,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Sisse logides nõustute meiega",
     "termsAndConditions": "Tingimused",
     "and": "ja",
-    "privacyPolicy": "Privaatsuspoliitika.",
+    "privacyPolicy": "Privaatsuspoliitika",
     "email": "E-posti aadress",
     "emailIsRequired": "E -posti aadress on vajalik",
     "emailIsNotValid": "E -posti aadress ei kehti",
@@ -4144,7 +4235,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Küsimused?",
     "tap": "Koputus",
     "here": "siin",
-    "moreInfo": "Lisateabe saamiseks",
     "almostThere": "Peaaegu kohal!",
     "dontMissOut": "Ära jäta kasutamata seda, mis uut on!",
     "productUpdates": "Hankige tootevärskendusi",
@@ -4178,7 +4268,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Teie Interneti -ühendus on taastatud.",
     "subscriptionVerificationFailed": "Uuesti kinnitamine",
     "failedToVerifySubs":
-        "Me ei saanud kontrollida teie viimast tellimispaketi ostu. Kinnitamiseks klõpsake alloleval nupul.",
+        "Me ei saanud kinnitada teie viimast ostu meie tellimuspaketi jaoks. Kinnitamise uuesti proovimiseks klõpsake alloleval nupul.",
     "retryBtn": "Uuesti proovima",
     "areYouSure": "Kas olete kindel, et soovite tagasi minna?",
     "logoutDescription": "Tagasi minek logib teid rakendusest välja.",
@@ -4466,7 +4556,18 @@ class CodegenLoader extends AssetLoader {
         "Ühenduse ajalõpp.Proovige hiljem uuesti.Kui probleem püsib, võtke ühendust toega",
     "cancelYourSubsMess": "Enne konto kustutamist TÜHISTAGE OMA TELLEMUS arvelduslehel.",
     "accountSuccessfullyDeleted": "Teie konto kustutamine õnnestus. Meil ​​on kahju, et lahkute.😢",
-    "redirectToLoginPage": "Teid suunatakse sisselogimislehele."
+    "redirectToLoginPage": "Teid suunatakse sisselogimislehele.",
+    "weNeedPermission": "Vajame teie luba",
+    "installVpnProfile":
+        "Mysterium VPN-i kasutamise alustamiseks vajame teie luba VPN-i profiili installimiseks.",
+    "anonimityIsSafe":
+        "Teie anonüümsus on ohutu. Me ei vaata, kogu ega salvesta teie sirvimistegevust.",
+    "readOur": "Lugege meie ",
+    "moreInfo": " rohkem informatsiooni.",
+    "acceptAndContinue": "Nõustu ja jätka",
+    "privacyPriority": "Teie privaatsus on meie",
+    "privacyPriorityText":
+        "Teile kiire ja usaldusväärse VPN-teenuse pakkumiseks kogume minimaalsel hulgal andmeid.\n\nKogume:\n\n1. Teie e-posti aadressi teie sisselogimiseks ja kontoga seotud probleemide tõrkeotsinguks.\n\n2. Seadmespetsiifiline teave, nagu OS-i versioon, riistvaramudel ja anonüümsed kasutusandmed meie rakenduse optimeerimiseks, parandavad kasutajakogemust. Me ei salvesta ega logi teie IP-aadressi.\n\nMe ei pea teie võrgutegevuste logisid ega seosta kunagi mis tahes domeenid või rakendused, mida teie, teie seadme, IP-aadressi või e-postiga koos kasutate."
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -4484,7 +4585,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "En vous connectant, vous acceptez notre",
     "termsAndConditions": "Termes et conditions",
     "and": "et",
-    "privacyPolicy": "Politique de confidentialité.",
+    "privacyPolicy": "Politique de confidentialité",
     "email": "Adresse e-mail",
     "emailIsRequired": "Adresse e-mail est nécessaire",
     "emailIsNotValid": "l'adresse email n'est pas valide",
@@ -4587,7 +4688,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "Des questions?",
     "tap": "Robinet",
     "here": "ici",
-    "moreInfo": "Pour plus d'informations",
     "almostThere": "Presque là!",
     "dontMissOut": "Ne manquez pas ce qui est nouveau!",
     "productUpdates": "Obtenez des mises à jour de produit",
@@ -4625,7 +4725,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Votre connexion Internet a été restaurée.",
     "subscriptionVerificationFailed": "Vérification de réessayer",
     "failedToVerifySubs":
-        "Nous n'avons pas pu vérifier votre dernier achat pour le package d'abonnement. Cliquez sur le bouton ci-dessous pour réessayer la vérification.",
+        "Nous n'avons pas pu vérifier votre dernier achat pour notre forfait d'abonnement.Cliquez sur le bouton ci-dessous pour réessayer la vérification.",
     "retryBtn": "Recommencez",
     "areYouSure": "Êtes-vous sûr de vouloir y retourner?",
     "logoutDescription": "REVOIR vous déconnectera de l'application.",
@@ -4917,7 +5017,18 @@ class CodegenLoader extends AssetLoader {
         "Veuillez ANNULER VOTRE ABONNEMENT sur la page de facturation avant de supprimer votre compte.",
     "accountSuccessfullyDeleted":
         "Votre compte a été supprimé avec succès.Nous sommes désolés de vous voir partir.😢",
-    "redirectToLoginPage": "Vous serez redirigé vers la page de connexion."
+    "redirectToLoginPage": "Vous serez redirigé vers la page de connexion.",
+    "weNeedPermission": "Nous avons besoin de votre autorisation",
+    "installVpnProfile":
+        "Pour commencer à utiliser Mysterium VPN, nous avons besoin de votre permission pour installer un profil VPN.",
+    "anonimityIsSafe":
+        "Votre anonymat est protégé. Nous ne visualisons, ne collectons ni ne stockons aucune de vos activités de navigation.",
+    "readOur": "Lisez notre ",
+    "moreInfo": " pour plus d'informations.",
+    "acceptAndContinue": "Accepter et continuer",
+    "privacyPriority": "Votre vie privée est notre",
+    "privacyPriorityText":
+        "Pour vous fournir un service VPN rapide et fiable, nous collectons un minimum de données.\n\nNous collectons :\n\n1. Votre adresse e-mail pour vous connecter et résoudre les problèmes liés au compte.\n\n2. Des informations spécifiques à l'appareil telles que la version du système d'exploitation, le modèle de matériel et les données d'utilisation anonymes pour optimiser notre application améliorent l'expérience utilisateur. Nous ne stockons ni n'enregistrons votre adresse IP.\n\nNous ne conservons pas de journaux de vos activités en ligne et ne les associons jamais tous les domaines ou applications que vous utilisez avec vous, votre appareil, votre adresse IP ou votre adresse e-mail."
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -4935,7 +5046,7 @@ class CodegenLoader extends AssetLoader {
     "signInDisclaimer": "Al iniciar sesión, usted acepta nuestro",
     "termsAndConditions": "Términos y Condiciones",
     "and": " y ",
-    "privacyPolicy": "Política de privacidad.",
+    "privacyPolicy": "Política de privacidad",
     "email": "Dirección de correo electrónico",
     "emailIsRequired": "Se requiere una dirección de correo electrónico",
     "emailIsNotValid": "La dirección de correo electrónico no es válida",
@@ -5037,7 +5148,6 @@ class CodegenLoader extends AssetLoader {
     "questions": "¿Preguntas?",
     "tap": "Grifo ",
     "here": "aquí",
-    "moreInfo": " Para más información",
     "almostThere": "¡Ya casi está!",
     "dontMissOut": "¡No te pierdas las novedades!",
     "productUpdates": "Obtener actualizaciones de productos",
@@ -5075,7 +5185,7 @@ class CodegenLoader extends AssetLoader {
     "internetConnectionRestored": "Su conexión a Internet ha sido restaurada.",
     "subscriptionVerificationFailed": "Verificación de reintentos",
     "failedToVerifySubs":
-        "No hemos podido verificar tu última compra para nuestro paquete de suscripción. Haga clic en el botón de abajo para volver a intentar la verificación.",
+        "No pudimos verificar su última compra para nuestro paquete de suscripción. Haga clic en el botón a continuación para volver a intentar la verificación.",
     "retryBtn": "Reintentar",
     "areYouSure": "¿Estás seguro de que quieres volver?",
     "logoutDescription": "Al volver atrás, se cerrará la sesión de la aplicación.",
@@ -5364,7 +5474,18 @@ class CodegenLoader extends AssetLoader {
         "CANCELE SU SUSCRIPCIÓN en la página de facturación antes de eliminar su cuenta.",
     "accountSuccessfullyDeleted":
         "Su cuenta ha sido eliminada con éxito. Lamentamos que se vaya.😢",
-    "redirectToLoginPage": "Será redirigido a la página de inicio de sesión."
+    "redirectToLoginPage": "Será redirigido a la página de inicio de sesión.",
+    "weNeedPermission": "Necesitamos tu permiso",
+    "installVpnProfile":
+        "Para comenzar a usar Mysterium VPN, necesitamos su permiso para instalar un perfil de VPN.",
+    "anonimityIsSafe":
+        "Su anonimato está seguro. No vemos, recopilamos ni almacenamos nada de su actividad de navegación.",
+    "readOur": "Lea nuestro ",
+    "moreInfo": " para más información.",
+    "acceptAndContinue": "Aceptar y continuar",
+    "privacyPriority": "Tu privacidad es nuestra",
+    "privacyPriorityText":
+        "Para brindarle un servicio VPN rápido y confiable, recopilamos una cantidad mínima de datos.\n\nRecopilamos:\n\n1. Su dirección de correo electrónico para iniciar sesión y solucionar problemas relacionados con la cuenta.\n\n2. Información específica del dispositivo, como la versión del sistema operativo, el modelo de hardware y los datos de uso anónimos para optimizar nuestra aplicación y mejorar la experiencia del usuario. No almacenamos ni registramos su dirección IP.\n\nNo guardamos registros de sus actividades en línea y nunca asociamos cualquier dominio o aplicación que utilice con usted, su dispositivo, dirección IP o correo electrónico."
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "tr": tr,

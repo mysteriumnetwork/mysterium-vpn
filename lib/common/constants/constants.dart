@@ -31,5 +31,5 @@ List<String> kProductIds = <String>[
 //scaffold messenger key used globally
 final GlobalKey<ScaffoldMessengerState> snackbarKey = GlobalKey<ScaffoldMessengerState>();
 
-const privacyPolicyUrl = 'https://www.mysteriumvpn.com/privacy-policy';
-const termsOfServiceUrl = 'https://www.mysteriumvpn.com/terms-conditions';
+const privacyPolicyUrl = 'https://www.mysteriumvpn.com/privacy-policy-vpn';
+const termsOfServiceUrl = 'https://www.mysteriumvpn.com/terms-conditions-vpn';

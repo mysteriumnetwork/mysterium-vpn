@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mobx/mobx.dart';
@@ -63,6 +64,9 @@ abstract class _SubscriptionStore with Store {
   @readonly
   String? _purchasedProductId;
 
+  @observable
+  String selectedProductId = kPopularPlan;
+
   @readonly
   SubscriptionConfig? _subscriptionConfig;
 
@@ -83,6 +87,7 @@ abstract class _SubscriptionStore with Store {
       if (_authStore.authData != null) {
         final purchaseUpdated = _inAppPurchase.purchaseStream;
         _purchasedProductId = _localDb.getSubscriptionPlan();
+        selectedProductId = _purchasedProductId ?? kPopularPlan;
         fetchSubscription().whenComplete(getSubscriptionsConfig);
         _purchaseStream = purchaseUpdated.listen(
           _onPurchaseUpdate,
@@ -138,12 +143,13 @@ abstract class _SubscriptionStore with Store {
   }
 
   @action
-  Future<void> subscribeToPackage(String productId) async {
+  Future<void> subscribeToPackage() async {
     try {
       _purchaseStatus = PurchaseStatus.pending;
-      final item = _products.firstWhere((element) => element.id == productId).productDetails;
+      final item =
+          _products.firstWhere((element) => element.id == selectedProductId).productDetails;
       _subscriptionService.createSubscriptionRequest(
-        SubscriptionRequest(gatewayId: getPlatformGateway(), planId: productId),
+        SubscriptionRequest(gatewayId: getPlatformGateway(), planId: selectedProductId),
       );
       await _subscriptionService.subscribeToPackage(
         productDetails: item,
@@ -151,18 +157,17 @@ abstract class _SubscriptionStore with Store {
         userId: _authStore.authData!.userId,
       );
 
-      _purchasedProductId = productId;
-      if (_purchasedProductId != null && _purchasedProductId == productId) {
+      if (_purchasedProductId != null && _purchasedProductId == selectedProductId) {
         _analyticsStore.setManageSubscription(
           paymentGateway: getPlatformGateway(),
           planPrice: item.rawPrice,
-          planType: productId,
+          planType: selectedProductId,
         );
       } else {
         _analyticsStore.setPaymentInitiated(
           paymentGateway: getPlatformGateway(),
           planPrice: item.rawPrice,
-          planType: productId,
+          planType: selectedProductId,
         );
       }
     } on Exception catch (e) {
@@ -191,12 +196,13 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<void> _handlePurchase(PurchaseDetails purchaseDetails) async {
-    final index = _products.indexWhere((element) => element.id == _purchasedProductId);
+    final product = _products
+        .firstWhereOrNull((element) => element.productDetails.id == purchaseDetails.productID);
 
     if (purchaseDetails.status == PurchaseStatus.error ||
         purchaseDetails.status == PurchaseStatus.canceled) {
-      if (index != -1) {
-        _products[index].status = ProductStatus.purchasable;
+      if (product != null) {
+        product.status = ProductStatus.purchasable;
       }
       if (purchaseDetails.status == PurchaseStatus.canceled) {
         _subscriptionService.clearPendingTransactions();
@@ -206,15 +212,17 @@ abstract class _SubscriptionStore with Store {
     }
 
     if (purchaseDetails.status == PurchaseStatus.pending) {
-      if (index != -1) {
-        _products[index].status = ProductStatus.pending;
+      if (product != null) {
+        product.status = ProductStatus.pending;
       }
       return;
     }
+
     _subscription = await verifyPurchase(_purchasedProductId ?? '', purchaseDetails);
 
     if (purchaseDetails.status == PurchaseStatus.purchased && (_subscription?.active ?? false)) {
-      if (index != -1) {
+      _purchasedProductId = _subscription?.planId;
+      if (product != null) {
         for (final product in _products) {
           product.status = product.planDetails.id == _purchasedProductId
               ? ProductStatus.purchased
@@ -222,7 +230,7 @@ abstract class _SubscriptionStore with Store {
         }
         _analyticsStore.setPaymentSuccessful(
           paymentGateway: getPlatformGateway(),
-          planPrice: _products[index].productDetails.rawPrice,
+          planPrice: product.productDetails.rawPrice,
           planType: _purchasedProductId ?? '',
           transactionId: purchaseDetails.verificationData.serverVerificationData,
           transactionDate: purchaseDetails.transactionDate ?? '',
