@@ -327,6 +327,7 @@ abstract class _VpnStore with Store {
     await disconnectWireguard();
     _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection.location);
     _vpnConnection = _emptyConnection;
+    _connectingLocationCode = '';
     _timer?.cancel();
     _downloadSpeed = null;
     _uploadSpeed = null;

@@ -77,9 +77,6 @@ class RestAuthService extends AuthService {
         throw Exception('No data');
       }
 
-      if (authTokenResult.data == null) {
-        throw Exception('No data');
-      }
       final accessToken = authTokenResult.data!['access_token'] as String;
       await _apiClient.post<Map<String, dynamic>>(
         kAuthIntrospect,
