@@ -31,10 +31,7 @@ abstract class _ConnectivityStore with Store {
     }
     _debounce = Timer(const Duration(seconds: 4), () {
       _connectionStatus = result;
-      if (!isInitState) {
-        handleConectivityStatusChanged(result);
-        isInitState = false;
-      }
+      //handleConectivityStatusChanged(result);
     });
   }
 
