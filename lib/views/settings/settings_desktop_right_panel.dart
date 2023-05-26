@@ -100,7 +100,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                 actionWidget: EasyButton(
                   useSystemColor: false,
                   color: Palette.black,
-                  text: LocaleKeys.logout,
+                  text: LocaleKeys.logout.tr(),
                   onPressed: authStore.logout,
                 ),
               ),

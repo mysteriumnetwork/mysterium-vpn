@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -21,10 +22,10 @@ class LoadingIndicator extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(
-            color: indicatorColor ?? Palette.pink,
-            strokeWidth: strokeWidth,
-          ).width(radius ?? 30).height(radius ?? 30),
+          SpinKitSpinningLines(
+            color: Palette.pink,
+            size: radius ?? 30,
+          ),
           if (message != null)
             EasyText(
               message!,
