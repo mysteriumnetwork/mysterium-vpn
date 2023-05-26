@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_breakpoints.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_size_breakpoints.dart';
@@ -425,4 +426,19 @@ void handleOnReportPage({
   required IntercomStore intetcomStore,
 }) {
   isMobile() ? intetcomStore.displayMessenger() : context.beamToNamed(Routes.reportIssue.toRoute);
+}
+
+SubscriptionStatus getSubscriptionStatus(PurchaseStatus status) {
+  switch (status) {
+    case PurchaseStatus.purchased:
+      return SubscriptionStatus.purchased;
+    case PurchaseStatus.pending:
+      return SubscriptionStatus.pending;
+    case PurchaseStatus.error:
+      return SubscriptionStatus.error;
+    case PurchaseStatus.restored:
+      return SubscriptionStatus.restored;
+    case PurchaseStatus.canceled:
+      return SubscriptionStatus.canceled;
+  }
 }
