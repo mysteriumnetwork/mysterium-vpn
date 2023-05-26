@@ -250,7 +250,9 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<void> verifyPurchase(String productId, PurchaseDetails purchaseDetails) async {
-    _subscriptonStatus = SubscriptionStatus.verifying;
+    if (_subscriptonStatus == SubscriptionStatus.pending) {
+      _subscriptonStatus = SubscriptionStatus.verifying;
+    }
     try {
       _subscription = await _subscriptionService.verifyPurchase(
         source: purchaseDetails.verificationData.source,
