@@ -437,4 +437,5 @@ abstract class LocaleKeys {
   static const privacyPriority = 'privacyPriority';
   static const privacyPriorityText = 'privacyPriorityText';
   static const processingPayment = 'processingPayment';
+  static const serviceUnavailableError = 'serviceUnavailableError';
 }
