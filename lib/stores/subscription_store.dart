@@ -218,34 +218,40 @@ abstract class _SubscriptionStore with Store {
       }
       return;
     }
+    try {
+      await verifyPurchase(_purchasedProductId ?? '', purchaseDetails);
 
-    await verifyPurchase(_purchasedProductId ?? '', purchaseDetails);
-
-    if (purchaseDetails.status == PurchaseStatus.purchased && (_subscription?.active ?? false)) {
-      _purchasedProductId = _subscription?.planId;
-      if (product != null) {
-        for (final product in _products) {
-          product.status = product.planDetails.id == _purchasedProductId
-              ? ProductStatus.purchased
-              : ProductStatus.purchasable;
+      if (purchaseDetails.status == PurchaseStatus.purchased && (_subscription?.active ?? false)) {
+        _purchasedProductId = _subscription?.planId;
+        if (product != null) {
+          for (final product in _products) {
+            product.status = product.planDetails.id == _purchasedProductId
+                ? ProductStatus.purchased
+                : ProductStatus.purchasable;
+          }
+          _analyticsStore.setPaymentSuccessful(
+            paymentGateway: getPlatformGateway(),
+            planPrice: product.productDetails.rawPrice,
+            planType: _purchasedProductId ?? '',
+            transactionId: purchaseDetails.verificationData.serverVerificationData,
+            transactionDate: purchaseDetails.transactionDate ?? '',
+          );
         }
-        _analyticsStore.setPaymentSuccessful(
-          paymentGateway: getPlatformGateway(),
-          planPrice: product.productDetails.rawPrice,
-          planType: _purchasedProductId ?? '',
-          transactionId: purchaseDetails.verificationData.serverVerificationData,
-          transactionDate: purchaseDetails.transactionDate ?? '',
-        );
+        _subscriptonStatus = SubscriptionStatus.purchased;
+      } else {
+        _subscriptonStatus = SubscriptionStatus.notVerified;
       }
-      _subscriptonStatus = SubscriptionStatus.purchased;
-    } else {
-      _subscriptonStatus = SubscriptionStatus.notVerified;
-    }
 
-    if (purchaseDetails.pendingCompletePurchase) {
-      _inAppPurchase.completePurchase(purchaseDetails);
+      if (purchaseDetails.pendingCompletePurchase) {
+        _inAppPurchase.completePurchase(purchaseDetails);
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    } finally {
+      _lastPurchase = purchaseDetails;
     }
-    _lastPurchase = purchaseDetails;
   }
 
   @action
