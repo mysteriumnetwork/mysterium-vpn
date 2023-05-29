@@ -80,6 +80,7 @@ class RestAuthService extends AuthService {
       final accessToken = authTokenResult.data!['access_token'] as String;
       await _apiClient.post<Map<String, dynamic>>(
         kAuthIntrospect,
+        options: Options(headers: {'Authorization': 'Bearer $accessToken'}),
         data: {
           'token': accessToken,
         },
