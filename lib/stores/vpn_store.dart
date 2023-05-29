@@ -205,7 +205,10 @@ abstract class _VpnStore with Store {
       return;
     }
     location ??= _locationsStore.vpnLocations.allLocations.isNotEmpty
-        ? _locationsStore.vpnLocations.allLocations.randomItem()
+        ? [
+            ..._locationsStore.vpnLocations.allLocations,
+            ..._locationsStore.vpnLocations.topLocations
+          ].randomItem()
         : null;
     _connectingLocationCode = location?.countryCode;
     try {
