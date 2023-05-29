@@ -11,6 +11,7 @@ class UserData {
     this.emailCommunication = Approval.notSet,
     this.notifications = Approval.notSet,
     this.subscriptionPlan,
+    this.vpnConfigConsent,
   });
   @HiveField(0)
   String userId;
@@ -30,6 +31,9 @@ class UserData {
   @HiveField(5)
   String? subscriptionPurchaseId;
 
+  @HiveField(6)
+  bool? vpnConfigConsent;
+
   @override
   String toString() => '''
 UserData : 
@@ -38,7 +42,9 @@ emailCommunicationApproval: ${emailCommunication.value},
 recentLocations: $recentLocations,
 notificationsApproval: ${notifications.value},
 subscriptionPlan: $subscriptionPlan,
-subscriptionPurchaseId: $subscriptionPurchaseId''';
+subscriptionPurchaseId: $subscriptionPurchaseId
+vpnConfigConsent: $vpnConfigConsent
+''';
 }
 
 @HiveType(typeId: 2)

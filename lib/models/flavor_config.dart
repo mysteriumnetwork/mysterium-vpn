@@ -20,7 +20,7 @@ class FlavorValues {
         billingPage: 'https://app.mysteriumvpn.com/dashboard/billing',
       );
   factory FlavorValues.dev() => FlavorValues(
-        baseUrl: 'https://app-testnet.mysteriumvpn.com/api/v1',
+        baseUrl: 'https://api-test.mysteriumvpn.com/api/v1',
         scheme: 'app',
         webAppUrl: 'app-testnet.mysteriumvpn.com',
         sentryDsn:

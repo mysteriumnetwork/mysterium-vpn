@@ -142,22 +142,24 @@ abstract class _AuthStore with Store {
           _authService.checkUserAuth(),
         );
       }
-      _authData = await authenticateFeature;
-      _authStatus = AuthStatus.authenticated;
-      _localDb.setUserId(_authData!.username);
+      final res = await authenticateFeature;
+
+      await _localDb.setUserId(res!.username);
       _analyticsStore
-        ..setUserId(_authData!.username)
+        ..setUserId(res.username)
         ..setLogin();
-      _intercomStore.registerUser(_authData!.username, _authData!.userId);
-      FirebaseCrashlytics.instance.setUserIdentifier(_authData!.username);
+      _intercomStore.registerUser(email: res.username);
+      FirebaseCrashlytics.instance.setUserIdentifier(res.username);
       Sentry.configureScope(
         (scope) => scope.setUser(
           SentryUser(
-            id: _authData!.userId,
-            email: _authData!.username,
+            id: res.userId,
+            email: res.username,
           ),
         ),
       );
+      _authData = res;
+      _authStatus = AuthStatus.authenticated;
       debugPrint(_localDb.userData.toString());
     } on KeyDoesntExistsException {
       _authStatus = AuthStatus.unauthenticated;

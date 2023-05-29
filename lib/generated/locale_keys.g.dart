@@ -109,7 +109,6 @@ abstract class LocaleKeys {
   static const questions = 'questions';
   static const tap = 'tap';
   static const here = 'here';
-  static const moreInfo = 'moreInfo';
   static const almostThere = 'almostThere';
   static const dontMissOut = 'dontMissOut';
   static const productUpdates = 'productUpdates';
@@ -429,4 +428,13 @@ abstract class LocaleKeys {
   static const cancelYourSubsMess = 'cancelYourSubsMess';
   static const accountSuccessfullyDeleted = 'accountSuccessfullyDeleted';
   static const redirectToLoginPage = 'redirectToLoginPage';
+  static const weNeedPermission = 'weNeedPermission';
+  static const installVpnProfile = 'installVpnProfile';
+  static const anonimityIsSafe = 'anonimityIsSafe';
+  static const readOur = 'readOur';
+  static const moreInfo = 'moreInfo';
+  static const acceptAndContinue = 'acceptAndContinue';
+  static const privacyPriority = 'privacyPriority';
+  static const privacyPriorityText = 'privacyPriorityText';
+  static const processingPayment = 'processingPayment';
 }

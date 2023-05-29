@@ -29,13 +29,8 @@ abstract class _ConnectivityStore with Store {
     if (_debounce?.isActive ?? false) {
       _debounce?.cancel();
     }
-    _debounce = Timer(const Duration(seconds: 4), () {
-      _connectionStatus = result;
-      if (!isInitState) {
-        handleConectivityStatusChanged(result);
-        isInitState = false;
-      }
-    });
+    _connectionStatus = result;
+    //handleConectivityStatusChanged(result);
   }
 
   void handleConectivityStatusChanged(

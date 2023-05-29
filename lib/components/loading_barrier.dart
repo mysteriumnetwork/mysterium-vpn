@@ -5,9 +5,11 @@ import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 
 class LoadingBarrier extends StatelessWidget {
-  const LoadingBarrier({required this.color, super.key});
+  const LoadingBarrier({required this.color, this.child, this.radius = 30, super.key});
 
   final Color color;
+  final Widget? child;
+  final double radius;
   @override
   Widget build(BuildContext context) => Stack(
         children: <Widget>[
@@ -15,14 +17,15 @@ class LoadingBarrier extends StatelessWidget {
             opacity: 0.9,
             child: ModalBarrier(dismissible: false, color: color),
           ),
-          Center(
-            child: LoadingIndicator(
-              radius: 30,
-              strokeWidth: 3,
-              message: LocaleKeys.LoggingYouIn.tr(),
-              messageColor: Palette.pink,
-            ),
-          ),
+          child ??
+              Center(
+                child: LoadingIndicator(
+                  radius: radius,
+                  strokeWidth: 3,
+                  message: LocaleKeys.LoggingYouIn.tr(),
+                  messageColor: Palette.pink,
+                ),
+              ),
         ],
       );
 }
