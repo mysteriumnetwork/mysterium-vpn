@@ -222,7 +222,7 @@ abstract class _VpnStore with Store {
         _completeConnection(location, stopwatch),
         onCancel: () async {
           stopwatch.stop();
-          await disconnectWireguard();
+          await Future.delayed(const Duration(seconds: 2), disconnectWireguard);
           _connectionStatus = ConnectionStatus.disconnected;
         },
       );
