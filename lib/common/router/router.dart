@@ -10,6 +10,8 @@ import 'package:mysterium_vpn/pages/report_issue_page.dart';
 import 'package:mysterium_vpn/pages/settings_page.dart';
 import 'package:mysterium_vpn/pages/static/splash_page.dart';
 import 'package:mysterium_vpn/pages/subscription_page.dart';
+import 'package:mysterium_vpn/pages/vpn_config_consent_page.dart';
+import 'package:mysterium_vpn/pages/vpn_privacy_consent_screen.dart';
 import 'package:mysterium_vpn/views/check_email_view.dart';
 import 'package:mysterium_vpn/views/sign_in/sign_in_view.dart';
 
@@ -68,6 +70,18 @@ class BeamerLocations extends BeamLocation<BeamState> {
             key: ValueKey(Routes.notifications.toDashCase),
             title: Routes.notifications.value,
             child: const NotificationsPage(),
+          ),
+        if (state.uri.pathSegments.contains(Routes.vpnConfigConsent.toDashCase))
+          BeamPage(
+            key: ValueKey(Routes.vpnConfigConsent.toDashCase),
+            title: Routes.vpnConfigConsent.value,
+            child: const VpnConfigConsentPage(),
+          ),
+        if (state.uri.pathSegments.contains(Routes.vpnPrivacyConsent.toDashCase))
+          BeamPage(
+            key: ValueKey(Routes.vpnPrivacyConsent.toDashCase),
+            title: Routes.vpnPrivacyConsent.value,
+            child: const VpnPrivacyConsentPage(),
           ),
       ];
 }

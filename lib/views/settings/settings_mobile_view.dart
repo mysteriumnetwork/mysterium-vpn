@@ -1,10 +1,7 @@
-import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/routes.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -20,7 +17,6 @@ import 'package:mysterium_vpn/views/settings/language_picker.dart';
 import 'package:mysterium_vpn/views/settings/protocol_picker.dart';
 import 'package:mysterium_vpn/views/settings/theme_picker.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingsMobileView extends HookConsumerWidget {
   const SettingsMobileView({super.key});
@@ -89,14 +85,12 @@ class SettingsMobileView extends HookConsumerWidget {
                   useSystemColor: false,
                   color: Palette.black,
                   text: LocaleKeys.goToBillingPage.tr(),
-                  onPressed: () {
-                    if ((subscriptionStore.subscription?.active ?? false) &&
-                        !isMobilePaymentGateway(subscriptionStore.subscription?.gateway)) {
-                      launchUrl(Uri.parse(environment.values.billingPage));
-                    } else {
-                      context.beamToNamed(Routes.subscription.toRoute);
-                    }
-                  },
+                  onPressed: () => handleOnBillingPage(
+                    billingPage: environment.values.billingPage,
+                    context: context,
+                    gateway: subscriptionStore.subscription?.gateway,
+                    subscriptionActive: subscriptionStore.subscription?.active ?? false,
+                  ),
                 ),
               ),
               SettingItem(

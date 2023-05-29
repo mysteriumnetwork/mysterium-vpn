@@ -77,20 +77,25 @@ class RestAuthService extends AuthService {
         throw Exception('No data');
       }
 
-      if (authTokenResult.data == null) {
-        throw Exception('No data');
-      }
       final accessToken = authTokenResult.data!['access_token'] as String;
-      final tokenIntrospectResult = await _apiClient.post<Map<String, dynamic>>(
+      await _apiClient.post<Map<String, dynamic>>(
         kAuthIntrospect,
+        options: Options(headers: {'Authorization': 'Bearer $accessToken'}),
         data: {
           'token': accessToken,
         },
       );
+      final res = await _apiClient.get(
+        kAuthCheck,
+        options: Options(headers: {'Authorization': 'Bearer $accessToken'}),
+      );
+      final data = res.data as Map<String, dynamic>;
+      final username = data['username'] as String;
+      final userId = data['user_id'] as String;
       final authData = AuthData(
         accessToken: authTokenResult.data!['access_token'] as String,
-        username: tokenIntrospectResult.data!['username'] as String,
-        userId: tokenIntrospectResult.data!['sub'] as String,
+        username: username,
+        userId: userId,
       );
       await _securedStorage.saveAccessToken(accessToken: authData.accessToken);
       await _securedStorage.saveUsername(username: authData.username);

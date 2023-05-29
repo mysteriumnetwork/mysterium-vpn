@@ -18,14 +18,11 @@ import 'package:mysterium_vpn/views/settings/protocol_picker.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
 import 'package:mysterium_vpn/views/settings/theme_picker.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingsDesktopRightPanel extends HookConsumerWidget {
   const SettingsDesktopRightPanel({
-    required this.settingCategory,
     super.key,
   });
-  final ValueNotifier<SettingCategory> settingCategory;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,16 +30,18 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
     final vpnStore = ref.read(vpnStorePOD);
     final localeStore = ref.read(localeStorePOD);
     final authStore = ref.watch(authStorePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
     final environment = ref.watch(environmentPOD);
+    final settingCategory = ref.watch(selectedCategoryProvider);
     return Observer(
       builder: (context) {
         final isDarkTheme = themeStore.isDarkMode;
         return Column(
           children: [
             _HeaderTitle(
-              title: settingCategory.value.trKey.tr(),
+              title: settingCategory.trKey.tr(),
             ).padding(bottom: 80),
-            if (settingCategory.value == SettingCategory.connection) ...[
+            if (settingCategory == SettingCategory.connection) ...[
               KillSwitchItem(
                 asset: isDarkTheme ? Assets.killSwitchDark : Assets.killSwitchLight,
                 title: LocaleKeys.killSwitch.tr(),
@@ -58,7 +57,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                 ),
               ),
             ],
-            if (settingCategory.value == SettingCategory.application) ...[
+            if (settingCategory == SettingCategory.application) ...[
               SettingItem(
                 asset: isDarkTheme ? Assets.languageDark : Assets.languageLight,
                 title: LocaleKeys.appLang.tr(),
@@ -76,7 +75,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                 ),
               ),
             ],
-            if (settingCategory.value == SettingCategory.account) ...[
+            if (settingCategory == SettingCategory.account) ...[
               SettingItem(
                 asset: isDarkTheme ? Assets.billingDark : Assets.billingLight,
                 title: LocaleKeys.myBillingPackage.tr(),
@@ -85,9 +84,12 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                   useSystemColor: false,
                   color: Palette.black,
                   text: LocaleKeys.goToBillingPage.tr(),
-                  onPressed: () {
-                    launchUrl(Uri.parse(environment.values.billingPage));
-                  },
+                  onPressed: () => handleOnBillingPage(
+                    billingPage: environment.values.billingPage,
+                    context: context,
+                    gateway: subscriptionStore.subscription?.gateway,
+                    subscriptionActive: subscriptionStore.subscription?.active ?? false,
+                  ),
                 ),
               ),
               SettingItem(
@@ -97,7 +99,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                 actionWidget: EasyButton(
                   useSystemColor: false,
                   color: Palette.black,
-                  text: LocaleKeys.logout,
+                  text: LocaleKeys.logout.tr(),
                   onPressed: authStore.logout,
                 ),
               ),

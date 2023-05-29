@@ -18,6 +18,7 @@ import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
@@ -38,18 +39,23 @@ abstract class _VpnStore with Store {
     required WireguardDart wireguardService,
     required AnalyticsStore analyticsStore,
     required SubscriptionStore subscriptionStore,
+    required LocalDBService localDBService,
   })  : _apiService = apiService,
         _locationsStore = locationsStore,
         _wireguardService = wireguardService,
         _analyticsStore = analyticsStore,
-        _subscriptionStore = subscriptionStore {
+        _subscriptionStore = subscriptionStore,
+        _localDBService = localDBService {
     _vpnConnection = _emptyConnection;
     _connectionStatus = ConnectionStatus.disconnected;
     _protocol = protocols.first;
     _killSwitch = true;
     _connectingLocationCode = '';
-    setupTunnel();
     generateKey();
+    _vpnConfigConsent = _localDBService.getVpnConsentApproval() ?? false;
+    if (_vpnConfigConsent ?? false) {
+      setupTunnel();
+    }
   }
 
   static const VpnConnection _emptyConnection = VpnConnection(
@@ -63,7 +69,7 @@ abstract class _VpnStore with Store {
   final AnalyticsStore _analyticsStore;
   final SubscriptionStore _subscriptionStore;
   final _securedStorage = SecureStorageService();
-
+  final LocalDBService _localDBService;
   final random = Random();
 
   Timer? _timer;
@@ -83,6 +89,9 @@ abstract class _VpnStore with Store {
   String _protocol = protocols.first;
   @readonly
   bool _killSwitch = true;
+
+  @readonly
+  bool? _vpnConfigConsent;
 
   @readonly
   VpnConnection _vpnConnection = _emptyConnection;
@@ -116,6 +125,15 @@ abstract class _VpnStore with Store {
     setupTunnelFuture =
         ObservableFuture(_wireguardService.setupTunnel(bundleId: 'com.mysteriumvpn.tun'));
     await setupTunnelFuture;
+  }
+
+  @action
+  Future<void> setVpnConfigConsent({required bool value}) async {
+    await _localDBService.setVpnConsentApproval(approval: value);
+    _vpnConfigConsent = value;
+    if (_vpnConfigConsent ?? false) {
+      setupTunnel();
+    }
   }
 
   @action
@@ -204,7 +222,7 @@ abstract class _VpnStore with Store {
         _completeConnection(location, stopwatch),
         onCancel: () async {
           stopwatch.stop();
-          await disconnectWireguard();
+          await Future.delayed(const Duration(seconds: 2), disconnectWireguard);
           _connectionStatus = ConnectionStatus.disconnected;
         },
       );
@@ -248,6 +266,9 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> _completeConnection(Location? location, Stopwatch stopwatch) async {
+    if (_publicKey.isEmpty || _privateKey.isEmpty) {
+      await generateKey();
+    }
     _vpnConfig = await _apiService.fetchVpnConfig(
       input: VpnConfigInput(
         publicKey: _publicKey,
@@ -306,6 +327,7 @@ abstract class _VpnStore with Store {
     await disconnectWireguard();
     _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection.location);
     _vpnConnection = _emptyConnection;
+    _connectingLocationCode = '';
     _timer?.cancel();
     _downloadSpeed = null;
     _uploadSpeed = null;

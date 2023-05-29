@@ -1,12 +1,12 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/router/route_delegate.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
@@ -21,25 +21,11 @@ class MyApp extends HookConsumerWidget {
     final authStore = ref.read(authStorePOD);
     final routeDelegate = ref.read(routerDelegatePOD);
     final localStore = ref.read(localeStorePOD);
-    final connectivityStore = ref.read(connectivityStorePOD);
-    final appLifecycleState = useAppLifecycleState();
-    var prevAuthStatus = usePrevious<AuthStatus?>(AuthStatus.unknown);
-    useEffect(
-      () {
-        debugPrint(appLifecycleState?.name);
-        if (appLifecycleState == AppLifecycleState.resumed) {
-          connectivityStore.isInitState = true;
-        }
-        return null;
-      },
-      [appLifecycleState],
-    );
     return ReactionBuilder(
       builder: (_) => reaction(
         (_) => authStore.authStatus,
         (status) {
-          prevAuthStatus = status;
-          authenticationReaction(status, routeDelegate, authStore, ref, prevAuthStatus);
+          authenticationReaction(status, routeDelegate, authStore, ref);
         },
       ),
       child: Observer(
@@ -70,15 +56,19 @@ class MyApp extends HookConsumerWidget {
     BeamerDelegate routeDelegate,
     AuthStore authStore,
     WidgetRef ref,
-    AuthStatus? prevAuthStatus,
   ) {
     routeDelegate.update();
-    if (authStatus == AuthStatus.unauthenticated && prevAuthStatus == AuthStatus.authenticated) {
-      ref
-        ..read(vpnStorePOD).disconnect()
-        ..invalidate(subscriptionStorePOD)
-        ..invalidate(vpnStorePOD)
-        ..invalidate(locationsStorePOD);
+    if (authStatus == AuthStatus.unauthenticated) {
+      if (ref.exists(vpnStorePOD)) {
+        ref.read(vpnStorePOD).disconnect();
+        ref.invalidate(vpnStorePOD);
+      }
+      if (ref.exists(locationsStorePOD)) {
+        ref.invalidate(locationsStorePOD);
+      }
+      if (ref.exists(subscriptionStorePOD)) {
+        ref.invalidate(subscriptionStorePOD);
+      }
     }
   }
 }

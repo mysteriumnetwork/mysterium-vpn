@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -17,5 +18,5 @@ class HeaderTitle extends StatelessWidget {
         fontSize: 20,
         fontWeight: FontWeight.w900,
         color: color,
-      ).fittedBox().padding(vertical: 20);
+      ).fittedBox().padding(vertical: getMediaHeight(context) * .025);
 }
