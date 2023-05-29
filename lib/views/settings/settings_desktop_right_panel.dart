@@ -21,10 +21,8 @@ import 'package:styled_widget/styled_widget.dart';
 
 class SettingsDesktopRightPanel extends HookConsumerWidget {
   const SettingsDesktopRightPanel({
-    required this.settingCategory,
     super.key,
   });
-  final ValueNotifier<SettingCategory> settingCategory;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,15 +32,16 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
     final authStore = ref.watch(authStorePOD);
     final subscriptionStore = ref.watch(subscriptionStorePOD);
     final environment = ref.watch(environmentPOD);
+    final settingCategory = ref.watch(selectedCategoryProvider);
     return Observer(
       builder: (context) {
         final isDarkTheme = themeStore.isDarkMode;
         return Column(
           children: [
             _HeaderTitle(
-              title: settingCategory.value.trKey.tr(),
+              title: settingCategory.trKey.tr(),
             ).padding(bottom: 80),
-            if (settingCategory.value == SettingCategory.connection) ...[
+            if (settingCategory == SettingCategory.connection) ...[
               KillSwitchItem(
                 asset: isDarkTheme ? Assets.killSwitchDark : Assets.killSwitchLight,
                 title: LocaleKeys.killSwitch.tr(),
@@ -58,7 +57,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                 ),
               ),
             ],
-            if (settingCategory.value == SettingCategory.application) ...[
+            if (settingCategory == SettingCategory.application) ...[
               SettingItem(
                 asset: isDarkTheme ? Assets.languageDark : Assets.languageLight,
                 title: LocaleKeys.appLang.tr(),
@@ -76,7 +75,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                 ),
               ),
             ],
-            if (settingCategory.value == SettingCategory.account) ...[
+            if (settingCategory == SettingCategory.account) ...[
               SettingItem(
                 asset: isDarkTheme ? Assets.billingDark : Assets.billingLight,
                 title: LocaleKeys.myBillingPackage.tr(),
@@ -100,7 +99,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                 actionWidget: EasyButton(
                   useSystemColor: false,
                   color: Palette.black,
-                  text: LocaleKeys.logout,
+                  text: LocaleKeys.logout.tr(),
                   onPressed: authStore.logout,
                 ),
               ),

@@ -30,8 +30,11 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _BarItem(label: LocaleKeys.connectionIp.tr(), text: vpnConnection.connectionIP)
-                .expanded(),
+            _BarItem(
+              label: LocaleKeys.connectionIp.tr(),
+              text: vpnConnection.connectionIP,
+              maxLines: 1,
+            ).expanded(),
             _BarItem(
               label: LocaleKeys.status.tr(),
               text: vpnStore.connectionStatus.name.tr(),
@@ -39,6 +42,7 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
               leading: ConnectionIndicator(
                 isConnected: vpnStore.isConnected,
               ),
+              maxLines: 1,
             ).expanded(),
             _BarItem(
               label: LocaleKeys.location.tr(),
@@ -46,6 +50,7 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
                   vpnStore.isConnected ? Flag(countryCode: vpnStore.vpnConnection.location) : null,
               text: vpnConnection.location.tr(),
               leadingPosition: LeadingPosition.bottom,
+              maxLines: 2,
             ).expanded(),
           ],
         ).padding(vertical: 20, horizontal: 4);
@@ -58,6 +63,7 @@ class _BarItem extends StatelessWidget {
   const _BarItem({
     required this.label,
     required this.text,
+    required this.maxLines,
     this.isConnected = false,
     this.leading,
     this.leadingPosition = LeadingPosition.left,
@@ -68,6 +74,7 @@ class _BarItem extends StatelessWidget {
   final String text;
   final bool isConnected;
   final LeadingPosition leadingPosition;
+  final int maxLines;
   @override
   Widget build(BuildContext context) => Column(
         children: [
@@ -94,7 +101,7 @@ class _BarItem extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   fontSize: 12,
                   textAlign: TextAlign.center,
-                  maxLines: 2,
+                  maxLines: maxLines,
                 ).flexible(),
               ],
             ),

@@ -124,16 +124,16 @@ mixin _$VpnStore on _VpnStore, Store {
 
   late final _$_vpnConfigConsentAtom = Atom(name: '_VpnStore._vpnConfigConsent', context: context);
 
-  bool get vpnConfigConsent {
+  bool? get vpnConfigConsent {
     _$_vpnConfigConsentAtom.reportRead();
     return super._vpnConfigConsent;
   }
 
   @override
-  bool get _vpnConfigConsent => vpnConfigConsent;
+  bool? get _vpnConfigConsent => vpnConfigConsent;
 
   @override
-  set _vpnConfigConsent(bool value) {
+  set _vpnConfigConsent(bool? value) {
     _$_vpnConfigConsentAtom.reportWrite(value, super._vpnConfigConsent, () {
       super._vpnConfigConsent = value;
     });

@@ -44,7 +44,7 @@ class HomePage extends HookConsumerWidget {
         debugPrint(result.toString());
         if (result == FutureStatus.fulfilled &&
             subscriptionStore.subscription?.active == false &&
-            vpnStore.vpnConfigConsent) {
+            (vpnStore.vpnConfigConsent ?? false)) {
           context.beamToNamed(Routes.subscription.toRoute);
         }
         if (result == FutureStatus.rejected) {
