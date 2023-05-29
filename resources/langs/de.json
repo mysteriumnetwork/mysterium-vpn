@@ -434,5 +434,6 @@
   "acceptAndContinue": "Akzeptieren und weiter",
   "privacyPriority": "Ihre Privatsphäre ist unsere",
   "privacyPriorityText": "Um Ihnen einen schnellen und zuverlässigen VPN-Dienst zu bieten, erfassen wir eine Mindestmenge an Daten.\n\nWir erfassen:\n\n1. Ihre E-Mail-Adresse, um Sie anzumelden und um kontobezogene Probleme zu beheben.\n\n2. Gerätespezifische Informationen wie Betriebssystemversion, Hardwaremodell und anonyme Nutzungsdaten zur Optimierung unserer Anwendung verbessern das Benutzererlebnis. Wir speichern oder protokollieren Ihre IP-Adresse nicht.\n\nWir führen keine Protokolle Ihrer Online-Aktivitäten und verknüpfen sie niemals mit anderen alle Domänen oder Anwendungen, die Sie mit Ihnen, Ihrem Gerät, Ihrer IP-Adresse oder E-Mail verwenden.",
-  "processingPayment": "Wir bearbeiten Ihre Zahlung. Sie werden in Kürze fertig sein ..."
+  "processingPayment": "Wir bearbeiten Ihre Zahlung. Sie werden in Kürze fertig sein ...",
+  "serviceUnavailableError": "Es treten vorübergehende Netzwerkprobleme auf. Bitte versuchen Sie es später noch einmal."
 }
