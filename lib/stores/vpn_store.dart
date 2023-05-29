@@ -53,7 +53,7 @@ abstract class _VpnStore with Store {
     _connectingLocationCode = '';
     generateKey();
     _vpnConfigConsent = _localDBService.getVpnConsentApproval() ?? false;
-    if (_vpnConfigConsent) {
+    if (_vpnConfigConsent ?? false) {
       setupTunnel();
     }
   }
@@ -91,7 +91,7 @@ abstract class _VpnStore with Store {
   bool _killSwitch = true;
 
   @readonly
-  bool _vpnConfigConsent = false;
+  bool? _vpnConfigConsent;
 
   @readonly
   VpnConnection _vpnConnection = _emptyConnection;
@@ -131,7 +131,7 @@ abstract class _VpnStore with Store {
   Future<void> setVpnConfigConsent({required bool value}) async {
     await _localDBService.setVpnConsentApproval(approval: value);
     _vpnConfigConsent = value;
-    if (_vpnConfigConsent) {
+    if (_vpnConfigConsent ?? false) {
       setupTunnel();
     }
   }
@@ -222,7 +222,7 @@ abstract class _VpnStore with Store {
         _completeConnection(location, stopwatch),
         onCancel: () async {
           stopwatch.stop();
-          await disconnectWireguard();
+          await Future.delayed(const Duration(seconds: 2), disconnectWireguard);
           _connectionStatus = ConnectionStatus.disconnected;
         },
       );
@@ -327,6 +327,7 @@ abstract class _VpnStore with Store {
     await disconnectWireguard();
     _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection.location);
     _vpnConnection = _emptyConnection;
+    _connectingLocationCode = '';
     _timer?.cancel();
     _downloadSpeed = null;
     _uploadSpeed = null;
