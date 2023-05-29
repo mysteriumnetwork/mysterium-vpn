@@ -64,6 +64,12 @@ class MyApp extends HookConsumerWidget {
         ref.read(vpnStorePOD).disconnect();
         ref.invalidate(vpnStorePOD);
       }
+      if (ref.exists(locationsStorePOD)) {
+        ref.invalidate(locationsStorePOD);
+      }
+      if (ref.exists(subscriptionStorePOD)) {
+        ref.invalidate(subscriptionStorePOD);
+      }
     }
   }
 }
