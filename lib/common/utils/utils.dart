@@ -327,11 +327,19 @@ void showSnackbar(String message, {MessageType type = MessageType.error}) {
 
 ApiException handleException(Exception e, {String? message}) {
   if (e is DioError && e.response?.data != null && e.response?.data is Map<String, dynamic>) {
-    final data = e.response?.data as Map<String, dynamic>;
     final exception = ApiException(
       '',
       e.response?.statusCode ?? 402,
     );
+    if (e.response?.statusCode == 503) {
+      return exception..message = e.message ?? LocaleKeys.serviceUnavailableError.tr();
+    }
+    final data = e.response?.data as Map<String, dynamic>;
+
+    if (data.containsKey('status') && data['status'] == 503) {
+      return exception..message = e.message ?? LocaleKeys.serviceUnavailableError.tr();
+    }
+
     if (!data.containsKey('error')) {
       return exception..message = e.message ?? LocaleKeys.somethingWentWrong.tr();
     }
