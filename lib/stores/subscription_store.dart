@@ -50,6 +50,9 @@ abstract class _SubscriptionStore with Store {
   ObservableFuture<SubscriptionConfig>? isAvailableFuture;
 
   @observable
+  ObservableFuture<Subscription>? verifySubscriptionFuture;
+
+  @observable
   ObservableFuture<Subscription>? subscriptionFuture;
 
   @readonly
@@ -219,7 +222,7 @@ abstract class _SubscriptionStore with Store {
       return;
     }
     try {
-      await verifyPurchase(_purchasedProductId ?? '', purchaseDetails);
+      await verifyPurchase(product?.productDetails.id ?? '', purchaseDetails);
 
       if (purchaseDetails.status == PurchaseStatus.purchased && (_subscription?.active ?? false)) {
         _purchasedProductId = _subscription?.planId;
@@ -256,16 +259,22 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<void> verifyPurchase(String productId, PurchaseDetails purchaseDetails) async {
+    if (verifySubscriptionFuture?.status == FutureStatus.pending) {
+      return;
+    }
     if (_subscriptonStatus == SubscriptionStatus.pending) {
       _subscriptonStatus = SubscriptionStatus.verifying;
     }
     try {
-      _subscription = await _subscriptionService.verifyPurchase(
-        source: purchaseDetails.verificationData.source,
-        verificationData: purchaseDetails.verificationData.serverVerificationData,
-        planId: productId,
-        purchaseId: purchaseDetails.purchaseID ?? '',
+      verifySubscriptionFuture = ObservableFuture(
+        _subscriptionService.verifyPurchase(
+          gatewayId: getPlatformGateway(),
+          paymentToken: purchaseDetails.verificationData.serverVerificationData,
+          planId: productId,
+          purchaseId: purchaseDetails.purchaseID ?? '',
+        ),
       );
+      _subscription = await verifySubscriptionFuture;
     } catch (_) {
       _subscriptonStatus = SubscriptionStatus.verifyingError;
       rethrow;
@@ -274,15 +283,22 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<void> retryVerificationProcess() async {
+    if (verifySubscriptionFuture?.status == FutureStatus.pending) {
+      return;
+    }
     if (_lastPurchase != null && _purchasedProductId != null) {
       try {
         _subscriptonStatus = SubscriptionStatus.verifying;
-        _subscription = await _subscriptionService.verifyPurchase(
-          source: _lastPurchase!.verificationData.source,
-          verificationData: _lastPurchase!.verificationData.serverVerificationData,
-          planId: _purchasedProductId!,
-          purchaseId: _lastPurchase!.purchaseID ?? '',
+        verifySubscriptionFuture = ObservableFuture(
+          _subscriptionService.verifyPurchase(
+            gatewayId: getPlatformGateway(),
+            paymentToken: _lastPurchase!.verificationData.serverVerificationData,
+            planId: _purchasedProductId!,
+            purchaseId: _lastPurchase!.purchaseID ?? '',
+          ),
         );
+
+        _subscription = await verifySubscriptionFuture;
         _subscriptonStatus = _subscription?.active ?? false
             ? SubscriptionStatus.purchased
             : SubscriptionStatus.notVerified;
