@@ -13,6 +13,7 @@ class UnauthorizedInterceptor extends Interceptor {
     if (_isUnauthorizedError(err) && authStore.authStatus == AuthStatus.authenticated) {
       await authStore.logout();
     }
+    handler.next(err);
   }
 }
 
