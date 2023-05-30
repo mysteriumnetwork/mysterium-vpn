@@ -10,6 +10,7 @@ class Subscription with _$Subscription {
     required bool active,
     @JsonKey(name: 'plan_id') String? planId,
     @JsonKey(name: 'gateway') String? gateway,
+    @JsonKey(name: 'active_until') DateTime? activeUntil,
   }) = _Subscription;
 
   factory Subscription.fromJson(Map<String, dynamic> json) => _$SubscriptionFromJson(json);
