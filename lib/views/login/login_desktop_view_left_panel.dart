@@ -15,14 +15,12 @@ import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class LoginDesktopViewLeftPanel extends ConsumerWidget {
   const LoginDesktopViewLeftPanel({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final environment = ref.read(environmentPOD);
     final authStore = ref.watch(authStorePOD);
 
     return Observer(
@@ -51,11 +49,7 @@ class LoginDesktopViewLeftPanel extends ConsumerWidget {
                 color: Palette.purple,
                 text: LocaleKeys.signIn.tr(),
                 onPressed: () {
-                  if (isMobile()) {
-                    showAuthView(context);
-                  } else {
-                    launchUrl(Uri.parse(environment.values.webAppUrl));
-                  }
+                  isMobile() ? showAuthView(context) : authStore.loginDesktop();
                 },
               ),
               Align(

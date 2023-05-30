@@ -21,7 +21,6 @@ class MyApp extends HookConsumerWidget {
     final authStore = ref.read(authStorePOD);
     final routeDelegate = ref.read(routerDelegatePOD);
     final localStore = ref.read(localeStorePOD);
-
     return ReactionBuilder(
       builder: (_) => reaction(
         (_) => authStore.authStatus,
@@ -53,13 +52,13 @@ class MyApp extends HookConsumerWidget {
   }
 
   void authenticationReaction(
-    AuthStatus status,
+    AuthStatus authStatus,
     BeamerDelegate routeDelegate,
     AuthStore authStore,
     WidgetRef ref,
   ) {
     routeDelegate.update();
-    if (status == AuthStatus.unauthenticated) {
+    if (authStatus == AuthStatus.unauthenticated) {
       if (ref.exists(vpnStorePOD)) {
         ref.read(vpnStorePOD).disconnect();
         ref.invalidate(vpnStorePOD);

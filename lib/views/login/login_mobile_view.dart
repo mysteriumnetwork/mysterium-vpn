@@ -13,7 +13,6 @@ import 'package:mysterium_vpn/components/login_headlines.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class LoginMobileView extends ConsumerWidget {
   const LoginMobileView({super.key});
@@ -23,7 +22,6 @@ class LoginMobileView extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) {
-    final environment = ref.read(environmentPOD);
     final authStore = ref.watch(authStorePOD);
     return Observer(
       builder: (context) => Stack(
@@ -38,9 +36,7 @@ class LoginMobileView extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       const Expanded(
-                        child: LoginHeadlines(
-                          alignment: CrossAxisAlignment.center,
-                        ),
+                        child: LoginHeadlines(),
                       ),
                       EasyButton(
                         width: getMediaWidth(context) * 0.8,
@@ -49,11 +45,7 @@ class LoginMobileView extends ConsumerWidget {
                         color: Palette.purple,
                         text: LocaleKeys.signIn.tr(),
                         onPressed: () {
-                          if (isMobile()) {
-                            showAuthView(context);
-                          } else {
-                            launchUrl(Uri.parse(environment.values.webAppUrl));
-                          }
+                          isMobile() ? showAuthView(context) : authStore.loginDesktop();
                         },
                       ).padding(bottom: 60),
                       Visibility(

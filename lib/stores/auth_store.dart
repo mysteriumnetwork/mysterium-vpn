@@ -13,6 +13,7 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/auth_data.dart';
+import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
@@ -20,6 +21,7 @@ import 'package:mysterium_vpn/services/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Project imports:
 
@@ -34,11 +36,13 @@ abstract class _AuthStore with Store {
     required AppLinks appLinks,
     required LocalDBService localDb,
     required AnalyticsStore analyticsStore,
+    required FlavorConfig env,
     required IntercomStore intercomStore,
   })  : _authService = authService,
         _appLinks = appLinks,
         _localDb = localDb,
         _analyticsStore = analyticsStore,
+        _env = env,
         _intercomStore = intercomStore {
     initAuth();
   }
@@ -48,6 +52,7 @@ abstract class _AuthStore with Store {
   final AppLinks _appLinks;
   final SecureStorageService _secureStorageService = SecureStorageService();
   final AnalyticsStore _analyticsStore;
+  final FlavorConfig _env;
   final IntercomStore _intercomStore;
 
   @readonly
@@ -215,6 +220,27 @@ abstract class _AuthStore with Store {
   }
 
   @action
+  Future<void> loginDesktop() async {
+    _pkcePair = PkcePair.generate();
+    _secureStorageService.savePkcePair(
+      codeChallenge: _pkcePair!.codeChallenge,
+      codeVerifier: _pkcePair!.codeVerifier,
+    );
+    final authUri = Uri(
+      scheme: 'https',
+      host: _env.values.webAppUrl,
+      path: '/oauth/authorize',
+      queryParameters: {
+        'client_id': 'app',
+        'response_type': 'code',
+        'code_challenge': _pkcePair!.codeChallenge,
+        'code_challenge_method': 's256',
+      },
+    );
+    await launchUrl(authUri);
+    return;
+  }
+
   Future<void> deleteAccount() async {
     try {
       deleteAccountFeature = ObservableFuture(
