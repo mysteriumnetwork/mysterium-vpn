@@ -259,9 +259,6 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<void> verifyPurchase(String productId, PurchaseDetails purchaseDetails) async {
-    if (verifySubscriptionFuture?.status == FutureStatus.pending) {
-      return;
-    }
     if (_subscriptonStatus == SubscriptionStatus.pending) {
       _subscriptonStatus = SubscriptionStatus.verifying;
     }
@@ -283,9 +280,6 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<void> retryVerificationProcess() async {
-    if (verifySubscriptionFuture?.status == FutureStatus.pending) {
-      return;
-    }
     if (_lastPurchase != null && _purchasedProductId != null) {
       try {
         _subscriptonStatus = SubscriptionStatus.verifying;
