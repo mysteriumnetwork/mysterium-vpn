@@ -23,6 +23,7 @@ import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 const kFetchSubscriptionInfo = '/subscription';
 const kFetchSubscriptionConfig = '/subscription/config';
 const kCreateSubscriptionRequest = '/subscription';
+const kVerifySubscription = '/subscription/user-callback';
 
 class RestSubscriptionService extends SubscriptionService {
   RestSubscriptionService({
@@ -38,36 +39,43 @@ class RestSubscriptionService extends SubscriptionService {
   final LocalDBService _localDb;
 
   @override
-  @override
-  Future<Subscription?> verifyPurchase({
-    required String source,
-    required String verificationData,
+  Future<Subscription> verifyPurchase({
+    required String gatewayId,
+    required String paymentToken,
     required String planId,
     required String purchaseId,
   }) async {
-    var retryCount = 0;
-    Subscription? subscription;
-    await Future.doWhile(() async {
-      retryCount++;
-      subscription = await Future.delayed(const Duration(seconds: 3), () async {
+    try {
+      final res = await _apiClient.post<Map<String, dynamic>>(
+        kVerifySubscription,
+        data: {
+          'gateway_id': gatewayId,
+          'payload': paymentToken,
+        },
+      );
+
+      if (res.statusCode == 200) {
         try {
-          return await fetchSubscriptionDetails();
-        } catch (_) {}
-        return null;
-      });
-      if (retryCount == 10 || (subscription?.active ?? false)) {
-        if (subscription?.active ?? false) {
+          final subs = await fetchSubscriptionDetails();
+          planId = subs.planId ?? planId;
+          return subs;
+        } catch (e) {
+          return Subscription(
+            planId: planId,
+            active: true,
+          );
+        } finally {
           await _localDb.setSubscriptionPurchase(
-            subscriptionPlan: subscription?.planId ?? planId,
+            subscriptionPlan: planId,
             subscriptionPurchaseId: purchaseId,
           );
         }
-        return false;
+      } else {
+        throw SubscriptionVerificationException();
       }
-      return true;
-    });
-
-    return subscription;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
