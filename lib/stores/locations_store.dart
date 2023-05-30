@@ -4,6 +4,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/stores/analytics_store.dart';
+import 'package:mysterium_vpn/stores/auth_store.dart';
 
 part 'locations_store.g.dart';
 
@@ -14,14 +15,21 @@ abstract class _LocationsStore with Store {
   _LocationsStore({
     required ApiService apiService,
     required AnalyticsStore analyticsStore,
+    required AuthStore authStore,
   })  : _apiService = apiService,
-        _analyticsStore = analyticsStore {
-    fetchRecentLocations();
-    fetchVPNLocations();
+        _analyticsStore = analyticsStore,
+        _authStore = authStore {
+    autorun((_) {
+      if (_authStore.authData != null) {
+        fetchRecentLocations();
+        fetchVPNLocations();
+      }
+    });
   }
 
   final ApiService _apiService;
   final AnalyticsStore _analyticsStore;
+  final AuthStore _authStore;
 
   ObservableList<Location> recentLocations = ObservableList();
 

@@ -9,6 +9,7 @@ import 'package:mysterium_vpn/common/enums/routes.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/layout_builders/screen_type_builder.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/components/dialogs/retry_dialog.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -24,6 +25,7 @@ class HomePage extends HookConsumerWidget {
     final vpnStore = ref.watch(vpnStorePOD);
     final authStore = ref.watch(authStorePOD);
     final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final environment = ref.watch(environmentPOD);
 
     useOnAppLifecycleStateChange(
       (previous, current) {
@@ -45,7 +47,12 @@ class HomePage extends HookConsumerWidget {
         if (result == FutureStatus.fulfilled &&
             subscriptionStore.subscription?.active == false &&
             (vpnStore.vpnConfigConsent ?? false)) {
-          context.beamToNamed(Routes.subscription.toRoute);
+          handleOnBillingPage(
+            billingPage: environment.values.billingPage,
+            context: context,
+            gateway: subscriptionStore.subscription?.gateway,
+            subscriptionActive: subscriptionStore.subscription?.active ?? false,
+          );
         }
         if (result == FutureStatus.rejected) {
           shownRetryDialog(
