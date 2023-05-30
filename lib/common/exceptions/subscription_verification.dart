@@ -1,0 +1,1 @@
+class SubscriptionVerificationException implements Exception {}
