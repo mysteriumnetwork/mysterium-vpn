@@ -204,11 +204,12 @@ abstract class _VpnStore with Store {
       await disconnect();
       return;
     }
-    location ??= _locationsStore.recentLocations.isNotEmpty
-        ? _locationsStore.recentLocations.first
-        : _locationsStore.vpnLocations.allLocations.isNotEmpty
-            ? _locationsStore.vpnLocations.allLocations.first
-            : null;
+    location ??= _locationsStore.vpnLocations.allLocations.isNotEmpty
+        ? [
+            ..._locationsStore.vpnLocations.allLocations,
+            ..._locationsStore.vpnLocations.topLocations
+          ].randomItem()
+        : null;
     _connectingLocationCode = location?.countryCode;
     try {
       if (_vpnConnection != _emptyConnection) {
@@ -234,6 +235,9 @@ abstract class _VpnStore with Store {
       );
       _connectionStatus = ConnectionStatus.disconnected;
     } catch (e) {
+      if (e is ApiException) {
+        showSnackbar(e.message);
+      }
       showSnackbar(
         LocaleKeys.failedToConnect.tr(
           namedArgs: {

@@ -163,6 +163,8 @@ abstract class _AuthStore with Store {
         showSnackbar(LocaleKeys.incorrectMagicLink.tr());
       } else if (e is IncorrectCodeException) {
         showSnackbar(LocaleKeys.incorrectMagicLink.tr());
+      } else if (e is ApiException) {
+        showSnackbar(e.message);
       } else {
         showSnackbar(LocaleKeys.authenticationFailed.tr());
       }
@@ -189,19 +191,27 @@ abstract class _AuthStore with Store {
       codeChallenge: _pkcePair!.codeChallenge,
       codeVerifier: _pkcePair!.codeVerifier,
     );
-    loginFeature = ObservableFuture(
-      _authService.login(
-        email: email,
-        pkcePair: _pkcePair!,
-      ),
-    );
-    final code = await loginFeature;
-    _analyticsStore.setSignUp(email);
-    if (code != null) {
-      authenticate(code: code);
+    try {
+      loginFeature = ObservableFuture(
+        _authService.login(
+          email: email,
+          pkcePair: _pkcePair!,
+        ),
+      );
+      final code = await loginFeature;
+      _analyticsStore.setSignUp(email);
+      if (code != null) {
+        authenticate(code: code);
+      }
+      _email = email;
+      return code;
+    } catch (e) {
+      if (e is ApiException) {
+        showSnackbar(e.message);
+      }
+      showSnackbar(LocaleKeys.authenticationFailed.tr());
+      rethrow;
     }
-    _email = email;
-    return code;
   }
 
   @action
