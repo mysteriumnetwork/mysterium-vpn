@@ -45,11 +45,7 @@ class HomeMobileView extends HookConsumerWidget {
                         alignment: Alignment.center,
                       ),
                       ConnectButton(
-                        onPressed: () => vpnStore.isLoading
-                            ? vpnStore.cancelConnection()
-                            : isConnected
-                                ? vpnStore.disconnect()
-                                : vpnStore.connect(),
+                        onPressed: vpnStore.connect,
                       ).width((getMediaWidth(context) + getMediaHeight(context)) * 0.085),
                     ],
                   ).padding(bottom: 20).expanded(),

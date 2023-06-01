@@ -26,9 +26,7 @@ class LocationsList extends StatelessWidget {
             location: location,
             vpnStore: vpnStore,
             connectivityStore: connectivityStore,
-            onTap: () => vpnStore.connectingLocationCode == location.countryCode
-                ? vpnStore.disconnect()
-                : vpnStore.connect(location: location),
+            onTap: () => vpnStore.connect(location: location),
           );
         },
       );
