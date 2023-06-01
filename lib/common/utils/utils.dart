@@ -413,6 +413,7 @@ void handleOnBillingPage({
   required bool subscriptionActive,
   required String billingPage,
   required String? gateway,
+  required String? accessToken,
 }) {
   final isMobilePlatform = isMobile();
   final isMobileGateway = isMobilePaymentGateway(gateway);
@@ -425,7 +426,17 @@ void handleOnBillingPage({
   if (isMobilePlatform) {
     context.beamToNamed(Routes.subscription.toRoute);
   } else {
-    launchUrl(Uri.parse(billingPage));
+    final uri = Uri.parse(billingPage);
+    final httpsUri = Uri(
+      scheme: uri.scheme,
+      host: uri.host,
+      path: uri.path,
+      queryParameters: {
+        'access_token': accessToken ?? '',
+      },
+    );
+
+    launchUrl(httpsUri);
   }
 }
 

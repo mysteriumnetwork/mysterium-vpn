@@ -89,6 +89,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                     context: context,
                     gateway: subscriptionStore.subscription?.gateway,
                     subscriptionActive: subscriptionStore.subscription?.active ?? false,
+                    accessToken: authStore.authData?.accessToken,
                   ),
                 ),
               ),
