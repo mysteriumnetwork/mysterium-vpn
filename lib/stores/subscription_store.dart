@@ -115,13 +115,18 @@ abstract class _SubscriptionStore with Store {
   @action
   Future<void> getSubscriptionsConfig() async {
     try {
+      if (isAvailableFuture?.status == FutureStatus.pending) {
+        return;
+      }
+
       isAvailableFuture = ObservableFuture(_subscriptionService.fetchSubscriptionConfig());
       _subscriptionConfig = await isAvailableFuture;
       await getProductsDetails();
       _isAvailable = StoreState.available;
     } on StoreNotAvailableException catch (_) {
       _isAvailable = StoreState.notAvailable;
-    } on Exception catch (_) {
+    } catch (_) {
+      _isAvailable = StoreState.notAvailable;
       rethrow;
     }
   }
@@ -138,10 +143,11 @@ abstract class _SubscriptionStore with Store {
         );
         _originalPrice = _products.firstWhere((e) => e.id == kMonthlyPlan).productDetails.rawPrice;
       }
-    } on Exception catch (e) {
+    } catch (e) {
       if (kDebugMode) {
         print(e);
       }
+      rethrow;
     }
   }
 
