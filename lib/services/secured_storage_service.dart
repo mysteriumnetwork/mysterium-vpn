@@ -21,6 +21,12 @@ class SecureStorageService {
       aOptions: AndroidOptions(
         encryptedSharedPreferences: true,
       ),
+      iOptions: IOSOptions(
+        accountName: 'mysterium_vpn',
+      ),
+      mOptions: MacOsOptions(
+        accountName: 'mysterium_vpn',
+      ),
     );
   }
 
@@ -66,8 +72,13 @@ class SecureStorageService {
 
   Future<bool> checkExistance(String key) async => _securedStorage.containsKey(key: key);
 
-  Future<void> write(String key, String value) async =>
+  Future<void> write(String key, String value) async {
+    try {
       _securedStorage.write(key: key, value: value);
+    } catch (e) {
+      print(e);
+    }
+  }
 
   Future<String> getAccessToken() async => read(StorageKeys.accessToken.value);
   Future<void> saveAccessToken({required String accessToken}) async =>
