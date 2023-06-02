@@ -38,19 +38,20 @@ class SignInView extends ConsumerWidget {
                   RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyLarge?.color,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
                       children: [
                         TextSpan(text: '${LocaleKeys.signInDisclaimer.tr()} '),
                         TextSpan(
                           text: LocaleKeys.termsAndConditions.tr(),
-                          style: const TextStyle(
-                            color: Palette.pink,
-                            decoration: TextDecoration.underline,
-                          ),
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                color: Palette.pink,
+                                decoration: TextDecoration.underline,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                              ),
                           mouseCursor: MaterialStateMouseCursor.clickable,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () => launchUrl(Uri.parse(termsOfServiceUrl)),
@@ -58,10 +59,12 @@ class SignInView extends ConsumerWidget {
                         TextSpan(text: '${LocaleKeys.and.tr()} '),
                         TextSpan(
                           text: LocaleKeys.privacyPolicy.tr(),
-                          style: const TextStyle(
-                            color: Palette.pink,
-                            decoration: TextDecoration.underline,
-                          ),
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                color: Palette.pink,
+                                decoration: TextDecoration.underline,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                              ),
                           mouseCursor: MaterialStateMouseCursor.clickable,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () => launchUrl(Uri.parse(privacyPolicyUrl)),

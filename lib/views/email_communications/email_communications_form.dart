@@ -69,21 +69,20 @@ class EmailCommunicationsForm extends HookConsumerWidget {
             visible: false,
             child: RichText(
               text: TextSpan(
-                style: TextStyle(
-                  color: Theme.of(context).textTheme.bodyLarge?.color,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
                 children: [
                   TextSpan(text: '${LocaleKeys.questions.tr()} ${LocaleKeys.tap.tr()}'),
                   TextSpan(
                     text: LocaleKeys.here.tr(),
-                    style: const TextStyle(
-                      color: Palette.purple,
-                      decoration: TextDecoration.underline,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Palette.pink,
+                          decoration: TextDecoration.underline,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
                     mouseCursor: MaterialStateMouseCursor.clickable,
                     recognizer: TapGestureRecognizer()..onTap = () {},
                   ),
