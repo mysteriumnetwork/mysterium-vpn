@@ -423,21 +423,22 @@ void handleOnBillingPage({
     return;
   }
 
-  if (isMobilePlatform) {
+  if (!subscriptionActive && isMobilePlatform) {
     context.beamToNamed(Routes.subscription.toRoute);
-  } else {
-    final uri = Uri.parse(billingPage);
-    final httpsUri = Uri(
-      scheme: uri.scheme,
-      host: uri.host,
-      path: uri.path,
-      queryParameters: {
-        'access_token': accessToken ?? '',
-      },
-    );
-
-    launchUrl(httpsUri);
+    return;
   }
+
+  final uri = Uri.parse(billingPage);
+  final httpsUri = Uri(
+    scheme: uri.scheme,
+    host: uri.host,
+    path: uri.path,
+    queryParameters: {
+      'access_token': accessToken ?? '',
+    },
+  );
+
+  launchUrl(httpsUri);
 }
 
 void handleOnReportPage({
