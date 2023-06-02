@@ -17,16 +17,17 @@ class Agreements extends StatelessWidget {
           style: TextStyle(
             color: Theme.of(context).textTheme.bodyLarge?.color,
             fontSize: 14,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w700,
           ),
           children: [
             TextSpan(text: LocaleKeys.readOur.tr()),
             TextSpan(
               text: LocaleKeys.privacyPolicy.tr(),
-              style: const TextStyle(
-                color: Palette.pink,
-                decoration: TextDecoration.underline,
-              ),
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Palette.pink,
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.w700,
+                  ),
               mouseCursor: MaterialStateMouseCursor.clickable,
               recognizer: TapGestureRecognizer()
                 ..onTap = () => launchUrl(Uri.parse(privacyPolicyUrl)),
@@ -34,10 +35,11 @@ class Agreements extends StatelessWidget {
             TextSpan(text: LocaleKeys.and.tr()),
             TextSpan(
               text: LocaleKeys.termsAndConditions.tr(),
-              style: const TextStyle(
-                color: Palette.pink,
-                decoration: TextDecoration.underline,
-              ),
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Palette.pink,
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.w700,
+                  ),
               mouseCursor: MaterialStateMouseCursor.clickable,
               recognizer: TapGestureRecognizer()
                 ..onTap = () => launchUrl(Uri.parse(termsOfServiceUrl)),
