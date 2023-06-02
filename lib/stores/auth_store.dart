@@ -120,7 +120,7 @@ abstract class _AuthStore with Store {
           throw IncorrectMagicLinkException();
         }
         final code = getMagicLinkCode(appLink.query);
-        if (code == null) {
+        if (code == null || _pkcePair == null) {
           throw IncorrectCodeException();
         }
         authenticateFeature = ObservableFuture(
