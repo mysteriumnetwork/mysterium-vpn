@@ -72,9 +72,8 @@ class SecureStorageService {
 
   Future<bool> checkExistance(String key) async => _securedStorage.containsKey(key: key);
 
-  Future<void> write(String key, String value) async {
-    _securedStorage.write(key: key, value: value);
-  }
+  Future<void> write(String key, String value) async =>
+      _securedStorage.write(key: key, value: value);
 
   Future<String> getAccessToken() async => read(StorageKeys.accessToken.value);
   Future<void> saveAccessToken({required String accessToken}) async =>
