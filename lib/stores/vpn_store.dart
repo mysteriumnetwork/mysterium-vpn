@@ -204,6 +204,10 @@ abstract class _VpnStore with Store {
       cancelConnection();
       return;
     }
+    if (location == null && _connectionStatus == ConnectionStatus.connected) {
+      await disconnect();
+      return;
+    }
     if (_vpnConnection.location == location?.countryCode) {
       await disconnect();
       return;
