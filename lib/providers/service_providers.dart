@@ -111,6 +111,5 @@ final authServicePOD = Provider<AuthService>((ref) {
   return RestAuthService(
     apiClient: apiClient,
     scheme: environment.values.scheme,
-    testEmail: environment.values.testEmail,
   );
 });
