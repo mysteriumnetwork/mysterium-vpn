@@ -31,9 +31,12 @@ class HomePage extends HookConsumerWidget {
       (previous, current) {
         debugPrint('App Lifecycle: $previous -> $current');
         // TODO(Kristijan): ADD THIS BACK WHEN WE GO LIVE
-        // if (previous == AppLifecycleState.inactive && current == AppLifecycleState.resumed) {
-        //   subscriptionStore.fetchSubscription();
-        // }
+        if (isDekstop() &&
+            subscriptionStore.isSubscribed == false &&
+            previous == AppLifecycleState.inactive &&
+            current == AppLifecycleState.resumed) {
+          subscriptionStore.fetchSubscription();
+        }
         if (current == AppLifecycleState.detached) {
           vpnStore.disconnect();
         }
@@ -52,6 +55,7 @@ class HomePage extends HookConsumerWidget {
             context: context,
             gateway: subscriptionStore.subscription?.gateway,
             subscriptionActive: subscriptionStore.subscription?.active ?? false,
+            accessToken: authStore.authData?.accessToken,
           );
         }
         if (result == FutureStatus.rejected) {

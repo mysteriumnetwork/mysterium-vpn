@@ -1,6 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -14,7 +15,7 @@ import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/subscription/subscription_form.dart';
 
-class SubscriptionMobileView extends ConsumerWidget {
+class SubscriptionMobileView extends HookConsumerWidget {
   const SubscriptionMobileView({super.key});
 
   @override
@@ -22,6 +23,14 @@ class SubscriptionMobileView extends ConsumerWidget {
     final authStore = ref.watch(authStorePOD);
     final subscriptionStore = ref.watch(subscriptionStorePOD);
     final localDb = ref.watch(localDBPOD);
+
+    useEffect(
+      () {
+        subscriptionStore.getSubscriptionsConfig();
+        return null;
+      },
+      [],
+    );
     return Observer(
       builder: (context) => WillPopScope(
         onWillPop: () async {

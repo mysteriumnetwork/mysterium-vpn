@@ -200,6 +200,14 @@ abstract class _VpnStore with Store {
       showSnackbar(LocaleKeys.activateSubscription.tr());
       return;
     }
+    if (isLoading) {
+      cancelConnection();
+      return;
+    }
+    if (location == null && _connectionStatus == ConnectionStatus.connected) {
+      await disconnect();
+      return;
+    }
     if (_vpnConnection.location == location?.countryCode) {
       await disconnect();
       return;
@@ -223,7 +231,7 @@ abstract class _VpnStore with Store {
         _completeConnection(location, stopwatch),
         onCancel: () async {
           stopwatch.stop();
-          await Future.delayed(const Duration(seconds: 2), disconnectWireguard);
+          await Future.delayed(const Duration(seconds: 2), disconnect);
           _connectionStatus = ConnectionStatus.disconnected;
         },
       );

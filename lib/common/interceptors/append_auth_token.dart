@@ -9,6 +9,7 @@ import 'package:mysterium_vpn/services/subscription/rest_subscription_service.da
 List<String> _getAuthPaths() => [
       kFetchSubscriptionInfo,
       kCreateConnectionConfig,
+      kVerifySubscription,
     ];
 
 class AppendTokenInterceptor extends Interceptor {

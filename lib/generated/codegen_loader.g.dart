@@ -2883,7 +2883,7 @@ class CodegenLoader extends AssetLoader {
     "monitorStatus": "Monitor your VPN status",
     "turnOnNotificationsBtn": "Turn on notifications",
     "maybeLaterBtn": "Maybe later",
-    "connectingToPaymentProcesor": "Connecting to payment procesor...",
+    "connectingToPaymentProcesor": "Connecting to payment processor...",
     "unableToConnectToPaymentProcesor": "Unable to connect to payment procesor! Please try again.",
     "gettingYourPlan": "Fetching payment plans...",
     "unableToGetPlans": "Unable to get subscription plans! Please try again.",
