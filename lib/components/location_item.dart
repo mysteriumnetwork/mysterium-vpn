@@ -26,14 +26,12 @@ class LocationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Observer(
         builder: (context) => RippleWidget(
-          onTap: vpnStore.isLoading
-              ? vpnStore.cancelConnection
-              : () => onConnectButtonPressed(
-                    connectivityStore.connectionStatus,
-                    vpnStore.connectionStatus,
-                    context,
-                    onTap,
-                  ),
+          onTap: () => onConnectButtonPressed(
+            connectivityStore.connectionStatus,
+            vpnStore.connectionStatus,
+            context,
+            onTap,
+          ),
           radius: 15,
           child: Row(
             children: [

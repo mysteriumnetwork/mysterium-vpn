@@ -5,9 +5,9 @@ import 'package:mysterium_vpn/models/subscription_config.dart';
 import 'package:mysterium_vpn/models/subscription_request.dart';
 
 abstract class SubscriptionService {
-  Future<Subscription?> verifyPurchase({
-    required String source,
-    required String verificationData,
+  Future<Subscription> verifyPurchase({
+    required String gatewayId,
+    required String paymentToken,
     required String planId,
     required String purchaseId,
   });

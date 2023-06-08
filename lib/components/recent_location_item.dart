@@ -30,14 +30,12 @@ class RecentLocationItem extends StatelessWidget {
   Widget build(BuildContext context) => Observer(
         builder: (context) => RippleWidget(
           radius: 20,
-          onTap: vpnStore.isLoading
-              ? vpnStore.cancelConnection
-              : () => onConnectButtonPressed(
-                    connectivityStore.connectionStatus,
-                    vpnStore.connectionStatus,
-                    context,
-                    onTap,
-                  ),
+          onTap: () => onConnectButtonPressed(
+            connectivityStore.connectionStatus,
+            vpnStore.connectionStatus,
+            context,
+            onTap,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

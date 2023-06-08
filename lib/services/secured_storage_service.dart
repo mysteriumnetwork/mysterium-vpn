@@ -21,6 +21,12 @@ class SecureStorageService {
       aOptions: AndroidOptions(
         encryptedSharedPreferences: true,
       ),
+      iOptions: IOSOptions(
+        accountName: 'mysterium_vpn',
+      ),
+      mOptions: MacOsOptions(
+        accountName: 'mysterium_vpn',
+      ),
     );
   }
 
