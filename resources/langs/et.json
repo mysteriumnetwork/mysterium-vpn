@@ -433,9 +433,10 @@
   "moreInfo": " rohkem informatsiooni.",
   "acceptAndContinue": "Nõustu ja jätka",
   "privacyPriority": "Teie privaatsus on meie",
-  "privacyPriorityText":"Teile kiire ja usaldusväärse VPN-teenuse pakkumiseks kogume minimaalsel hulgal andmeid.\n\nKogume:\n\n1. Teie e-posti aadressi teie sisselogimiseks ja kontoga seotud probleemide tõrkeotsinguks.\n\n2. Seadmespetsiifiline teave, nagu OS-i versioon, riistvaramudel ja anonüümsed kasutusandmed meie rakenduse optimeerimiseks, parandavad kasutajakogemust. Me ei salvesta ega logi teie IP-aadressi.\n\nMe ei pea teie võrgutegevuste logisid ega seosta kunagi mis tahes domeenid või rakendused, mida teie, teie seadme, IP-aadressi või e-postiga koos kasutate.",
+  "privacyPriorityText": "Teile kiire ja usaldusväärse VPN-teenuse pakkumiseks kogume minimaalsel hulgal andmeid.\n\nKogume:\n\n1. Teie e-posti aadressi teie sisselogimiseks ja kontoga seotud probleemide tõrkeotsinguks.\n\n2. Seadmespetsiifiline teave, nagu OS-i versioon, riistvaramudel ja anonüümsed kasutusandmed meie rakenduse optimeerimiseks, parandavad kasutajakogemust. Me ei salvesta ega logi teie IP-aadressi.\n\nMe ei pea teie võrgutegevuste logisid ega seosta kunagi mis tahes domeenid või rakendused, mida teie, teie seadme, IP-aadressi või e-postiga koos kasutate.",
   "processingPayment": "Töötleme teie makset. Peagi on kõik valmis…",
-  "serviceUnavailableError": "Meil on ajutised võrguprobleemid. Proovige hiljem uuesti."
-
-
+  "serviceUnavailableError": "Meil on ajutised võrguprobleemid. Proovige hiljem uuesti.",
+  "activeSubsPaidVia": "Teil on juba {store} kaudu tasutud aktiivne tellimus. Tellimuses muudatuste tegemiseks külastage {store}.",
+  "nextBilling": "Järgmine arveldus: {date}",
+  "paymentMethod": "Makseviis: {method}"
 }

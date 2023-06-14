@@ -463,7 +463,11 @@ class CodegenLoader extends AssetLoader {
     "privacyPriorityText":
         "Size hızlı ve güvenilir bir VPN hizmeti sunmak için minimum miktarda veri topluyoruz.\n\nToplarız:\n\n1. Oturum açmanız ve hesapla ilgili sorunları gidermeniz için E-posta adresiniz.\n\n2. Uygulamamızı optimize etmek için işletim sistemi sürümü, donanım modeli ve anonim kullanım verileri gibi cihaza özgü bilgiler, kullanıcı deneyimini iyileştirir. IP adresinizi saklamıyoruz veya günlüğe kaydetmiyoruz.\n\nÇevrimiçi etkinliklerinizin günlüklerini tutmuyoruz ve asla ilişkilendirmiyoruz sizinle, cihazınızla, IP adresinizle veya e-postanızla kullandığınız tüm etki alanları veya uygulamalar.",
     "processingPayment": "Ödemenizi işleme alıyoruz. Kısa süre içinde hazır olacaksınız...",
-    "serviceUnavailableError": "Geçici ağ sorunları yaşıyoruz. Lütfen daha sonra tekrar deneyin.."
+    "serviceUnavailableError": "Geçici ağ sorunları yaşıyoruz. Lütfen daha sonra tekrar deneyin..",
+    "activeSubsPaidVia":
+        "Halihazırda {store} aracılığıyla ödenen etkin bir aboneliğiniz var. Aboneliğinizde değişiklik yapmak için lütfen {store} adresini ziyaret edin.",
+    "nextBilling": "Sonraki Faturalandırma: {date}",
+    "paymentMethod": "Ödeme Yöntemi: {method}"
   };
   static const Map<String, dynamic> mk = {
     "title": "Здраво господине",
@@ -925,7 +929,12 @@ class CodegenLoader extends AssetLoader {
     "privacyPriorityText":
         "За да ви обезбедиме брза и сигурна VPN услуга, собираме минимална количина на податоци.\n\nСобираме:\n\n1. Вашата адреса на е-пошта за да ве најавиме и да ги решиме проблемите поврзани со сметката.\n\n2. Информациите специфични за уредот, како што се верзијата на оперативниот систем, моделот на хардверот и анонимните податоци за користење за оптимизирање на нашата апликација, го подобруваат корисничкото искуство. Ние не ја складираме или евидентираме вашата IP адреса.\n\nНе водиме дневници за вашите онлајн активности и никогаш не се поврзуваме сите домени или апликации што ги користите со вас, вашиот уред, IP адреса или е-пошта.",
     "processingPayment": "Ја обработуваме вашата уплата. Наскоро ќе бидете подготвени…",
-    "serviceUnavailableError": "Имаме привремени проблеми со мрежата. Обидете се повторно подоцна.."
+    "serviceUnavailableError":
+        "Имаме привремени проблеми со мрежата. Обидете се повторно подоцна..",
+    "activeSubsPaidVia":
+        "Веќе имате активна претплата платена преку {store}. Ве молиме посетете ја {store} за да направите промени на вашата претплата.",
+    "nextBilling": "Следна наплата: {date}",
+    "paymentMethod": "Начин на плаќање: {method}"
   };
   static const Map<String, dynamic> lt = {
     "title": "Sveiki pone",
@@ -1382,7 +1391,11 @@ class CodegenLoader extends AssetLoader {
     "privacyPriorityText":
         "Siekdami suteikti jums greitą ir patikimą VPN paslaugą, renkame minimalų duomenų kiekį.\n\nRenkame:\n\n1. Jūsų el. pašto adresą, kad galėtumėte prisijungti ir pašalinti su paskyra susijusias problemas.\n\n2. Informacija apie įrenginį, pvz., OS versija, aparatinės įrangos modelis ir anoniminiai naudojimo duomenys, skirti optimizuoti mūsų programą, pagerina naudotojo patirtį. Mes nesaugome ir neregistruojame jūsų IP adreso.\n\nNesaugome jūsų veiklos internete žurnalų ir niekada nesusiejame bet kokius domenus ar programas, kurias naudojate su savimi, savo įrenginiu, IP adresu ar el.",
     "processingPayment": "Apdorojame jūsų mokėjimą. Greitai viskas bus nustatyta…",
-    "serviceUnavailableError": "Iškilo laikinų tinklo problemų. Vėliau bandykite dar kartą."
+    "serviceUnavailableError": "Iškilo laikinų tinklo problemų. Vėliau bandykite dar kartą.",
+    "activeSubsPaidVia":
+        "Jau turite aktyvią prenumeratą, sumokėtą per {store}. Apsilankykite {store}, kad pakeistumėte prenumeratą.",
+    "nextBilling": "Kitas atsiskaitymas: {date}",
+    "paymentMethod": "Mokėjimo būdas: {method}"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1848,7 +1861,11 @@ class CodegenLoader extends AssetLoader {
         "Um Ihnen einen schnellen und zuverlässigen VPN-Dienst zu bieten, erfassen wir eine Mindestmenge an Daten.\n\nWir erfassen:\n\n1. Ihre E-Mail-Adresse, um Sie anzumelden und um kontobezogene Probleme zu beheben.\n\n2. Gerätespezifische Informationen wie Betriebssystemversion, Hardwaremodell und anonyme Nutzungsdaten zur Optimierung unserer Anwendung verbessern das Benutzererlebnis. Wir speichern oder protokollieren Ihre IP-Adresse nicht.\n\nWir führen keine Protokolle Ihrer Online-Aktivitäten und verknüpfen sie niemals mit anderen alle Domänen oder Anwendungen, die Sie mit Ihnen, Ihrem Gerät, Ihrer IP-Adresse oder E-Mail verwenden.",
     "processingPayment": "Wir bearbeiten Ihre Zahlung. Sie werden in Kürze fertig sein ...",
     "serviceUnavailableError":
-        "Es treten vorübergehende Netzwerkprobleme auf. Bitte versuchen Sie es später noch einmal."
+        "Es treten vorübergehende Netzwerkprobleme auf. Bitte versuchen Sie es später noch einmal.",
+    "activeSubsPaidVia":
+        "Sie haben bereits ein aktives Abonnement, das über {store} bezahlt wird. Bitte besuchen Sie {store}, um Änderungen an Ihrem Abonnement vorzunehmen.",
+    "nextBilling": "Nächste Abrechnung: {date}",
+    "paymentMethod": "Zahlungsmethode: {method}"
   };
   static const Map<String, dynamic> uk = {
     "title": "Вітаю, сер",
@@ -2299,7 +2316,11 @@ class CodegenLoader extends AssetLoader {
     "privacyPriorityText":
         "Щоб надати вам швидку та надійну службу VPN, ми збираємо мінімальну кількість даних.\n\nМи збираємо:\n\n1. Вашу електронну адресу для входу та вирішення проблем, пов’язаних з обліковим записом.\n\n2. Інформація про пристрій, як-от версія ОС, модель апаратного забезпечення та анонімні дані про використання, щоб оптимізувати нашу програму, покращує взаємодію з користувачем. Ми не зберігаємо та не реєструємо вашу IP-адресу.\n\nМи не зберігаємо журнали вашої онлайн-діяльності та ніколи не пов’язуємо будь-які домени чи програми, якими ви користуєтеся, ваш пристрій, IP-адреса чи електронна пошта.",
     "processingPayment": "Ми обробляємо ваш платіж. Незабаром усе буде готово…",
-    "serviceUnavailableError": "У нас виникли тимчасові проблеми з мережею. Спробуйте пізніше."
+    "serviceUnavailableError": "У нас виникли тимчасові проблеми з мережею. Спробуйте пізніше.",
+    "activeSubsPaidVia":
+        "У вас уже є активна підписка, оплачена через {store}. Будь ласка, відвідайте {store}, щоб внести зміни у свою підписку.",
+    "nextBilling": "Наступний платіж: {date}",
+    "paymentMethod": "Спосіб оплати: {method}"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2757,7 +2778,11 @@ class CodegenLoader extends AssetLoader {
         "Para fornecer a você um serviço VPN rápido e confiável, coletamos uma quantidade mínima de dados.\n\nNós coletamos:\n\n1. Seu endereço de e-mail para fazer login e solucionar problemas relacionados à conta.\n\n2. Informações específicas do dispositivo, como versão do sistema operacional, modelo de hardware e dados de uso anônimos para otimizar nosso aplicativo, melhoram a experiência do usuário. Não armazenamos nem registramos seu endereço IP.\n\nNão mantemos registros de suas atividades online e nunca associamos quaisquer domínios ou aplicativos que você usa com você, seu dispositivo, endereço IP ou e-mail.",
     "processingPayment": "Estamos processando seu pagamento. Em breve tudo estará pronto...",
     "serviceUnavailableError":
-        "Estamos com problemas temporários de rede. Tente novamente mais tarde."
+        "Estamos com problemas temporários de rede. Tente novamente mais tarde.",
+    "activeSubsPaidVia":
+        "Você já tem uma assinatura ativa paga via {store}. Visite {store} para fazer alterações em sua assinatura.",
+    "nextBilling": "Próxima cobrança: {date}",
+    "paymentMethod": "Método de pagamento: {method}"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -3213,7 +3238,11 @@ class CodegenLoader extends AssetLoader {
         "To provide you with a fast and reliable VPN service, we collect a minimum amount of data.\n\nWe Collect:\n\n1. Your Email address to log you in and to troubleshoot account related issues.\n\n2. Device-specific information such as OS version, hardware model, and anonymous usage data to optimize our application improve the user experience. We do not store or log your IP address.\n\nWe do not keep logs of your online activities and never associate any domains or applications that you use with you, your device, IP address, or email.",
     "processingPayment": "We’re processing your payment. You’ll be all set shortly…",
     "serviceUnavailableError":
-        "We’re experiencing temporary network issues. Please try again later.."
+        "We’re experiencing temporary network issues. Please try again later..",
+    "activeSubsPaidVia":
+        "You already have an active subscription paid via {store}. Please visit {store} to make changes to your subscription.",
+    "nextBilling": "Next Billing: {date}",
+    "paymentMethod": "Payment Method: {method}"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3676,7 +3705,11 @@ class CodegenLoader extends AssetLoader {
         "Per fornirti un servizio VPN veloce e affidabile, raccogliamo una quantità minima di dati.\n\nRaccogliamo:\n\n1. Il tuo indirizzo e-mail per accedere e risolvere i problemi relativi all'account.\n\n2. Le informazioni specifiche del dispositivo come la versione del sistema operativo, il modello hardware e i dati di utilizzo anonimi per ottimizzare la nostra applicazione migliorano l'esperienza dell'utente. Non memorizziamo né registriamo il tuo indirizzo IP.\n\nNon conserviamo registri delle tue attività online e non associamo mai qualsiasi dominio o applicazione che usi con te, il tuo dispositivo, indirizzo IP o e-mail.",
     "processingPayment": "Stiamo elaborando il tuo pagamento. A breve sarai pronto...",
     "serviceUnavailableError":
-        "Stiamo riscontrando problemi di rete temporanei. Riprova più tardi.."
+        "Stiamo riscontrando problemi di rete temporanei. Riprova più tardi..",
+    "activeSubsPaidVia":
+        "Hai già un abbonamento attivo pagato tramite {store}. Visita {store} per apportare modifiche al tuo abbonamento.",
+    "nextBilling": "Prossima fatturazione: {date}",
+    "paymentMethod": "Metodo di pagamento: {method}"
   };
   static const Map<String, dynamic> sr = {
     "title": "Здраво господине",
@@ -4136,7 +4169,11 @@ class CodegenLoader extends AssetLoader {
     "privacyPriorityText":
         "Да бисмо вам пружили брзу и поуздану ВПН услугу, прикупљамо минималну количину података.\n\nПрикупљамо:\n\n1. Вашу адресу е-поште да бисте се пријавили и решили проблеме у вези са налогом.\n\n2. Информације специфичне за уређај као што су верзија ОС-а, модел хардвера и анонимни подаци о коришћењу ради оптимизације наше апликације побољшавају корисничко искуство. Не чувамо нити евидентирамо вашу ИП адресу.\n\nНе водимо евиденцију ваших онлајн активности и никада се не повезујемо све домене или апликације које користите са вама, вашим уређајем, ИП адресом или е-поштом.",
     "processingPayment": "Обрађујемо вашу уплату. Ускоро ћете бити спремни…",
-    "serviceUnavailableError": "Имамо привремене проблеме са мрежом. Покушајте поново касније.."
+    "serviceUnavailableError": "Имамо привремене проблеме са мрежом. Покушајте поново касније..",
+    "activeSubsPaidVia":
+        "Већ имате активну претплату плаћену преко {store}. Посетите {store} да бисте унели измене у своју претплату.",
+    "nextBilling": "Следећи обрачун: {date}",
+    "paymentMethod": "Начин плаћања: {method}"
   };
   static const Map<String, dynamic> et = {
     "title": "Tere, härra",
@@ -4590,7 +4627,11 @@ class CodegenLoader extends AssetLoader {
     "privacyPriorityText":
         "Teile kiire ja usaldusväärse VPN-teenuse pakkumiseks kogume minimaalsel hulgal andmeid.\n\nKogume:\n\n1. Teie e-posti aadressi teie sisselogimiseks ja kontoga seotud probleemide tõrkeotsinguks.\n\n2. Seadmespetsiifiline teave, nagu OS-i versioon, riistvaramudel ja anonüümsed kasutusandmed meie rakenduse optimeerimiseks, parandavad kasutajakogemust. Me ei salvesta ega logi teie IP-aadressi.\n\nMe ei pea teie võrgutegevuste logisid ega seosta kunagi mis tahes domeenid või rakendused, mida teie, teie seadme, IP-aadressi või e-postiga koos kasutate.",
     "processingPayment": "Töötleme teie makset. Peagi on kõik valmis…",
-    "serviceUnavailableError": "Meil on ajutised võrguprobleemid. Proovige hiljem uuesti."
+    "serviceUnavailableError": "Meil on ajutised võrguprobleemid. Proovige hiljem uuesti.",
+    "activeSubsPaidVia":
+        "Teil on juba {store} kaudu tasutud aktiivne tellimus. Tellimuses muudatuste tegemiseks külastage {store}.",
+    "nextBilling": "Järgmine arveldus: {date}",
+    "paymentMethod": "Makseviis: {method}"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -5054,7 +5095,11 @@ class CodegenLoader extends AssetLoader {
         "Pour vous fournir un service VPN rapide et fiable, nous collectons un minimum de données.\n\nNous collectons :\n\n1. Votre adresse e-mail pour vous connecter et résoudre les problèmes liés au compte.\n\n2. Des informations spécifiques à l'appareil telles que la version du système d'exploitation, le modèle de matériel et les données d'utilisation anonymes pour optimiser notre application améliorent l'expérience utilisateur. Nous ne stockons ni n'enregistrons votre adresse IP.\n\nNous ne conservons pas de journaux de vos activités en ligne et ne les associons jamais tous les domaines ou applications que vous utilisez avec vous, votre appareil, votre adresse IP ou votre adresse e-mail.",
     "processingPayment": "Nous traitons votre paiement. Vous serez prêt sous peu…",
     "serviceUnavailableError":
-        "Nous rencontrons des problèmes de réseau temporaires.Veuillez réessayer plus tard.."
+        "Nous rencontrons des problèmes de réseau temporaires.Veuillez réessayer plus tard..",
+    "activeSubsPaidVia":
+        "Vous avez déjà un abonnement actif payé via {store}.Veuillez visiter {store} pour apporter des modifications à votre abonnement.",
+    "nextBilling": "Prochaine facturation : {date}",
+    "paymentMethod": "Méthode de paiement : {method}"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -5514,7 +5559,11 @@ class CodegenLoader extends AssetLoader {
         "Para brindarle un servicio VPN rápido y confiable, recopilamos una cantidad mínima de datos.\n\nRecopilamos:\n\n1. Su dirección de correo electrónico para iniciar sesión y solucionar problemas relacionados con la cuenta.\n\n2. Información específica del dispositivo, como la versión del sistema operativo, el modelo de hardware y los datos de uso anónimos para optimizar nuestra aplicación y mejorar la experiencia del usuario. No almacenamos ni registramos su dirección IP.\n\nNo guardamos registros de sus actividades en línea y nunca asociamos cualquier dominio o aplicación que utilice con usted, su dispositivo, dirección IP o correo electrónico.",
     "processingPayment": "Estamos procesando su pago. En breve estará todo listo...",
     "serviceUnavailableError":
-        "Estamos experimentando problemas de red temporales. Vuelva a intentarlo más tarde."
+        "Estamos experimentando problemas de red temporales. Vuelva a intentarlo más tarde.",
+    "activeSubsPaidVia":
+        "Ya tiene una suscripción activa pagada a través de {store}. Visite {store} para realizar cambios en su suscripción.",
+    "nextBilling": "Próxima facturación: {date}",
+    "paymentMethod": "Método de pago: {method}"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "tr": tr,
