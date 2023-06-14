@@ -4,12 +4,10 @@ class CircleBox extends StatelessWidget {
   const CircleBox({
     required this.color,
     required this.size,
-    this.child,
     super.key,
   });
   final Color color;
   final double size;
-  final Widget? child;
   @override
   Widget build(BuildContext context) => Container(
         width: size,
@@ -18,6 +16,5 @@ class CircleBox extends StatelessWidget {
           shape: BoxShape.circle,
           color: color,
         ),
-        child: child,
       );
 }
