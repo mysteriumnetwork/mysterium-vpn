@@ -17,7 +17,6 @@ class Agreements extends StatelessWidget {
           style: TextStyle(
             color: Theme.of(context).textTheme.bodyLarge?.color,
             fontSize: 14,
-            fontWeight: FontWeight.w700,
           ),
           children: [
             TextSpan(text: LocaleKeys.readOur.tr()),
@@ -26,7 +25,8 @@ class Agreements extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Palette.pink,
                     decoration: TextDecoration.underline,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
                   ),
               mouseCursor: MaterialStateMouseCursor.clickable,
               recognizer: TapGestureRecognizer()
@@ -38,7 +38,8 @@ class Agreements extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Palette.pink,
                     decoration: TextDecoration.underline,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
                   ),
               mouseCursor: MaterialStateMouseCursor.clickable,
               recognizer: TapGestureRecognizer()
