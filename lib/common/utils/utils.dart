@@ -429,6 +429,8 @@ void handleOnBillingPage({
       );
       return;
     }
+    context.beamToNamed(Routes.subscription.toRoute);
+    return;
   }
 
   if (!subscriptionActive && isMobilePlatform) {

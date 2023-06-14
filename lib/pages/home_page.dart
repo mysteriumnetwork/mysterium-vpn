@@ -13,6 +13,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/components/dialogs/retry_dialog.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_desktop_view.dart';
 import 'package:mysterium_vpn/views/home/home_mobile_view.dart';
@@ -30,9 +31,8 @@ class HomePage extends HookConsumerWidget {
     useOnAppLifecycleStateChange(
       (previous, current) {
         debugPrint('App Lifecycle: $previous -> $current');
-        // TODO(Kristijan): ADD THIS BACK WHEN WE GO LIVE
-        if (isDekstop() &&
-            subscriptionStore.isSubscribed == false &&
+        if ((subscriptionStore.isSubscribed == false ||
+                (subscriptionStore.subscription?.isExpired ?? false)) &&
             previous == AppLifecycleState.inactive &&
             current == AppLifecycleState.resumed) {
           subscriptionStore.fetchSubscription();
