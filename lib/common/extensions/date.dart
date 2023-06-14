@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 extension DurationExtension on Duration {
   String toHoursMinutesSeconds() {
     final hours = inHours;
@@ -11,4 +13,8 @@ extension DurationExtension on Duration {
     final minutes = inMinutes - hours * 60;
     return '${hours.toString().padLeft(2, '0')}h ${minutes.toString().padLeft(2, '0')}m';
   }
+}
+
+extension DateExtension on DateTime {
+  String formatWithDay() => DateFormat('EEEE, d MMM, yyyy').format(this);
 }
