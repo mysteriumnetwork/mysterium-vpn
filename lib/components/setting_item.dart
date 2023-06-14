@@ -9,6 +9,7 @@ class SettingItem extends StatelessWidget {
     required this.actionWidget,
     required this.title,
     required this.subtitle,
+    this.description,
     super.key,
   });
 
@@ -16,6 +17,7 @@ class SettingItem extends StatelessWidget {
   final String title;
   final String subtitle;
   final Widget actionWidget;
+  final Widget? description;
   @override
   Widget build(BuildContext context) => Container(
         width: double.infinity,
@@ -38,6 +40,7 @@ class SettingItem extends StatelessWidget {
                         Column(
                           children: [
                             EasyText(title, fontSize: 16).padding(bottom: 8),
+                            description ?? const SizedBox.shrink(),
                             // EasyText(
                             //   subtitle,
                             // ).padding(bottom: 11),
@@ -49,9 +52,11 @@ class SettingItem extends StatelessWidget {
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        EasyText(
-                          title,
-                        ).padding(bottom: 8),
+                        description ??
+                            EasyText(
+                              title,
+                            ).padding(bottom: 8),
+
                         // EasyText(
                         //   subtitle,
                         //   color: Palette.lightBlack,
