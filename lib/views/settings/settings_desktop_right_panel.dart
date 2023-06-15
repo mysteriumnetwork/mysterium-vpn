@@ -15,6 +15,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/kill_switch.dart';
 import 'package:mysterium_vpn/views/settings/language_picker.dart';
 import 'package:mysterium_vpn/views/settings/protocol_picker.dart';
+import 'package:mysterium_vpn/views/settings/purchased_plan.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
 import 'package:mysterium_vpn/views/settings/theme_picker.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -80,6 +81,9 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
                 asset: isDarkTheme ? Assets.billingDark : Assets.billingLight,
                 title: LocaleKeys.myBillingPackage.tr(),
                 subtitle: LocaleKeys.shortDesc.tr(),
+                description: subscriptionStore.subscription != null
+                    ? PurchasedPlan(subscription: subscriptionStore.subscription!)
+                    : null,
                 actionWidget: EasyButton(
                   useSystemColor: false,
                   color: Palette.black,

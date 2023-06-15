@@ -435,5 +435,8 @@
   "privacyPriority": "Votre vie privée est notre",
   "privacyPriorityText":"Pour vous fournir un service VPN rapide et fiable, nous collectons un minimum de données.\n\nNous collectons :\n\n1. Votre adresse e-mail pour vous connecter et résoudre les problèmes liés au compte.\n\n2. Des informations spécifiques à l'appareil telles que la version du système d'exploitation, le modèle de matériel et les données d'utilisation anonymes pour optimiser notre application améliorent l'expérience utilisateur. Nous ne stockons ni n'enregistrons votre adresse IP.\n\nNous ne conservons pas de journaux de vos activités en ligne et ne les associons jamais tous les domaines ou applications que vous utilisez avec vous, votre appareil, votre adresse IP ou votre adresse e-mail.",
   "processingPayment": "Nous traitons votre paiement. Vous serez prêt sous peu…",
-  "serviceUnavailableError": "Nous rencontrons des problèmes de réseau temporaires.Veuillez réessayer plus tard.."
+  "serviceUnavailableError": "Nous rencontrons des problèmes de réseau temporaires.Veuillez réessayer plus tard..",
+  "activeSubsPaidVia": "Vous avez déjà un abonnement actif payé via {store}.Veuillez visiter {store} pour apporter des modifications à votre abonnement.",
+  "nextBilling": "Prochaine facturation : {date}",
+  "paymentMethod": "Méthode de paiement : {method}"
 }

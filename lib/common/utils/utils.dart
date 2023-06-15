@@ -314,7 +314,7 @@ void showSnackbar(String message, {MessageType type = MessageType.error}) {
     content: Center(
       child: EasyText(
         message,
-        maxLines: 2,
+        maxLines: 3,
         color: Palette.white,
         fontWeight: FontWeight.w900,
         textAlign: TextAlign.center,
@@ -419,6 +419,16 @@ void handleOnBillingPage({
   final isMobileGateway = isMobilePaymentGateway(gateway);
 
   if (subscriptionActive && isMobileGateway) {
+    if (gateway != getPlatformGateway()) {
+      showSnackbar(
+        LocaleKeys.activeSubsPaidVia.tr(
+          namedArgs: {
+            'store': Platform.isIOS ? 'Google Play Store' : 'Apple App Store',
+          },
+        ),
+      );
+      return;
+    }
     context.beamToNamed(Routes.subscription.toRoute);
     return;
   }

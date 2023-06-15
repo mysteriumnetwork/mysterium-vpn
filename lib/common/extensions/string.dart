@@ -4,4 +4,6 @@ extension StringExtensions on String {
   bool isUpperCase() => this == toUpperCase();
 
   bool isUUID() => _uuidRegex.hasMatch(toUpperCase());
+
+  String capitalize() => '${this[0].toUpperCase()}${substring(1).toLowerCase()}';
 }
