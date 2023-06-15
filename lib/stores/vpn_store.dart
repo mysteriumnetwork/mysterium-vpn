@@ -7,6 +7,7 @@ import 'package:async/async.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/constants/mock.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -122,9 +123,13 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> setupTunnel() async {
-    setupTunnelFuture =
-        ObservableFuture(_wireguardService.setupTunnel(bundleId: 'com.mysteriumvpn.tun'));
-    await setupTunnelFuture;
+    try {
+      setupTunnelFuture = ObservableFuture(_wireguardService.setupTunnel(bundleId: bundleId));
+      await setupTunnelFuture;
+    } catch (e) {
+      debugPrint(e.toString());
+      showSnackbar('Error occured while setting up tunnel');
+    }
   }
 
   @action

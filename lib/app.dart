@@ -51,16 +51,16 @@ class MyApp extends HookConsumerWidget {
     );
   }
 
-  void authenticationReaction(
+  Future<void> authenticationReaction(
     AuthStatus authStatus,
     BeamerDelegate routeDelegate,
     AuthStore authStore,
     WidgetRef ref,
-  ) {
+  ) async {
     routeDelegate.update();
     if (authStatus == AuthStatus.unauthenticated) {
       if (ref.exists(vpnStorePOD)) {
-        ref.read(vpnStorePOD).disconnect();
+        await ref.read(vpnStorePOD).disconnect();
         ref.invalidate(vpnStorePOD);
       }
       if (ref.exists(locationsStorePOD)) {

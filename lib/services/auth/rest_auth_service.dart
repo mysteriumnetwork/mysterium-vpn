@@ -16,14 +16,11 @@ class RestAuthService extends AuthService {
   RestAuthService({
     required Dio apiClient,
     required String scheme,
-    required String testEmail,
   })  : _apiClient = apiClient,
-        _scheme = scheme,
-        _testEmail = testEmail;
+        _scheme = scheme;
 
   final Dio _apiClient;
   final String _scheme;
-  final String _testEmail;
   final _securedStorage = SecureStorageService();
 
   @override
@@ -128,7 +125,7 @@ class RestAuthService extends AuthService {
         throw Exception('Login failed');
       }
 
-      if (email == _testEmail && result.data != null && result.data!.containsKey('code')) {
+      if (result.data != null && result.data!.containsKey('code')) {
         return result.data!['code'] as String;
       }
     } on Exception catch (e) {

@@ -71,7 +71,7 @@ class CustomLogInterceptor extends Interceptor {
   }
 
   @override
-  Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
+  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
     if (!isWindowsOrLinux()) {
       FirebaseCrashlytics.instance.recordError(
         err,
