@@ -40,7 +40,6 @@ class SignInView extends ConsumerWidget {
                     text: TextSpan(
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             fontSize: 14,
-                            fontWeight: FontWeight.w700,
                           ),
                       children: [
                         TextSpan(text: '${LocaleKeys.signInDisclaimer.tr()} '),
@@ -50,7 +49,7 @@ class SignInView extends ConsumerWidget {
                                 color: Palette.pink,
                                 decoration: TextDecoration.underline,
                                 fontSize: 14,
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.bold,
                               ),
                           mouseCursor: MaterialStateMouseCursor.clickable,
                           recognizer: TapGestureRecognizer()
@@ -63,7 +62,7 @@ class SignInView extends ConsumerWidget {
                                 color: Palette.pink,
                                 decoration: TextDecoration.underline,
                                 fontSize: 14,
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.bold,
                               ),
                           mouseCursor: MaterialStateMouseCursor.clickable,
                           recognizer: TapGestureRecognizer()
