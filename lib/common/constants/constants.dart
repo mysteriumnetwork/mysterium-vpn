@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 final List<Locale> kSupportedLocales = [
@@ -33,3 +35,5 @@ final GlobalKey<ScaffoldMessengerState> snackbarKey = GlobalKey<ScaffoldMessenge
 
 const privacyPolicyUrl = 'https://www.mysteriumvpn.com/privacy-policy-vpn';
 const termsOfServiceUrl = 'https://www.mysteriumvpn.com/terms-conditions-vpn';
+
+String bundleId = Platform.isAndroid ? 'mysteriumvpn' : 'com.mysteriumvpn.tun';
