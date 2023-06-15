@@ -86,14 +86,13 @@ class RestSubscriptionService extends SubscriptionService {
   }) async {
     late PurchaseParam purchaseParam;
     if (Platform.isAndroid) {
-      final purchaseId = _localDb.getSubscriptionPurchaseId();
       GooglePlayPurchaseDetails? details;
-      if (purchasedProductId != null && purchaseId != null) {
+      if (purchasedProductId != null) {
         final androidAddition =
             _inAppPurchase.getPlatformAddition<InAppPurchaseAndroidPlatformAddition>();
         final oldPurchases = await androidAddition.queryPastPurchases();
         final oldPurchase = oldPurchases.pastPurchases.where(
-          (element) => element.productID == purchasedProductId && element.transactionDate !=null,
+          (element) => element.productID == purchasedProductId && element.transactionDate != null,
         );
         if (oldPurchase.isNotEmpty) {
           details = oldPurchase.sortedBy((e) => e.transactionDate!).last;
