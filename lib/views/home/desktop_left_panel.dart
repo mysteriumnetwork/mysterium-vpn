@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/recent_locations_list.dart';
@@ -24,30 +23,28 @@ class HomeDesktopLeftPanel extends ConsumerWidget {
       color: Theme.of(context).primaryColor,
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Observer(
-        builder: (context) => ListView(
-          children: [
-            const HomeDesktopAppBar(),
-            SearchField(locationsStore).padding(bottom: 20),
-            RecentLocationsList(
-              themeStore: themeStore,
-              locationsStore: locationsStore,
-              vpnStore: vpnStore,
-              connectivityStore: connectivityStore,
-            ).padding(bottom: 20),
-            EasyText(
-              LocaleKeys.allLocations.tr(),
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ).padding(bottom: 20),
-            AllLocationsList(
-              themeStore: themeStore,
-              locationsStore: locationsStore,
-              vpnStore: vpnStore,
-              connectivityStore: connectivityStore,
-            )
-          ],
-        ),
+      child: ListView(
+        children: [
+          const HomeDesktopAppBar(),
+          SearchField(locationsStore).padding(bottom: 20),
+          RecentLocationsList(
+            themeStore: themeStore,
+            locationsStore: locationsStore,
+            vpnStore: vpnStore,
+            connectivityStore: connectivityStore,
+          ).padding(bottom: 20),
+          EasyText(
+            LocaleKeys.allLocations.tr(),
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+          ).padding(bottom: 20),
+          AllLocationsList(
+            themeStore: themeStore,
+            locationsStore: locationsStore,
+            vpnStore: vpnStore,
+            connectivityStore: connectivityStore,
+          )
+        ],
       ),
     );
   }
