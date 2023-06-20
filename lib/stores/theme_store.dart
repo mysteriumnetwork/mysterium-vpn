@@ -18,7 +18,7 @@ abstract class _ThemeStore with Store {
   _ThemeStore() {
     themeMode = _sharedPrefs.getThemeType() ?? ThemeMode.system;
   }
-  final _sharedPrefs = SharedPreferenceService();
+  final _sharedPrefs = SharedPreferenceService.instance;
   final darkTheme = themeData(DarkPalette());
   final lightTheme = themeData(LightPalette());
 
