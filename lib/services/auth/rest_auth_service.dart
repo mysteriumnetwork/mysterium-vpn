@@ -21,7 +21,7 @@ class RestAuthService extends AuthService {
 
   final Dio _apiClient;
   final String _scheme;
-  final _securedStorage = SecureStorageService();
+  final _securedStorage = SecureStorageService.instance;
 
   @override
   Future<AuthData> checkUserAuth() async {

@@ -75,8 +75,8 @@ class Enviroment {
         registerOnAppOpenAttributionCallback: true,
       );
     }
-    await SharedPreferenceService().init();
-    await SecureStorageService().init();
+    await SharedPreferenceService.instance.init();
+    await SecureStorageService.instance.init();
     await EasyLocalization.ensureInitialized();
     await Hive.initFlutter();
     Hive
