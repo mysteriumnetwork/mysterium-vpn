@@ -438,5 +438,8 @@
   "serviceUnavailableError": "Имамо привремене проблеме са мрежом. Покушајте поново касније..",
   "activeSubsPaidVia": "Већ имате активну претплату плаћену преко {store}. Посетите {store} да бисте унели измене у своју претплату.",
   "nextBilling": "Следећи обрачун: {date}",
-  "paymentMethod": "Начин плаћања: {method}"
+  "paymentMethod": "Начин плаћања: {method}",
+  "refreshIP": "Освежите ИП",
+  "refreshIPAddress": "Освежите ИП адресу",
+  "getNewIPAddress": "Добијте нову ИП адресу при свакој конекцији"
 }

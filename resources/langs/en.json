@@ -438,5 +438,8 @@
   "serviceUnavailableError":"We’re experiencing temporary network issues. Please try again later..",
   "activeSubsPaidVia":"You already have an active subscription paid via {store}. Please visit {store} to make changes to your subscription.",
   "nextBilling":"Next Billing: {date}",
-  "paymentMethod":"Payment Method: {method}"
+  "paymentMethod":"Payment Method: {method}",
+  "refreshIP":"Refresh IP",
+  "refreshIPAddress":"Refresh IP Address",
+  "getNewIPAddress":"Get a new IP address at every connection"
 }

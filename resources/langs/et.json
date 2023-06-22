@@ -438,5 +438,8 @@
   "serviceUnavailableError": "Meil on ajutised võrguprobleemid. Proovige hiljem uuesti.",
   "activeSubsPaidVia": "Teil on juba {store} kaudu tasutud aktiivne tellimus. Tellimuses muudatuste tegemiseks külastage {store}.",
   "nextBilling": "Järgmine arveldus: {date}",
-  "paymentMethod": "Makseviis: {method}"
+  "paymentMethod": "Makseviis: {method}",
+  "refreshIP": "Värskenda IP-d",
+  "refreshIPAddress": "Värskenda IP-aadress",
+  "getNewIPAddress": "Hankige igal ühendusel uus IP-aadress"
 }
