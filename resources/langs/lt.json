@@ -438,5 +438,8 @@
   "serviceUnavailableError": "Iškilo laikinų tinklo problemų. Vėliau bandykite dar kartą.",
   "activeSubsPaidVia": "Jau turite aktyvią prenumeratą, sumokėtą per {store}. Apsilankykite {store}, kad pakeistumėte prenumeratą.",
   "nextBilling": "Kitas atsiskaitymas: {date}",
-  "paymentMethod": "Mokėjimo būdas: {method}"
+  "paymentMethod": "Mokėjimo būdas: {method}",
+  "refreshIP": "Atnaujinti IP",
+  "refreshIPAddress": "Atnaujinkite IP adresą",
+  "getNewIPAddress": "Kiekvieną kartą prisijungdami gaukite naują IP adresą"
 }

@@ -438,5 +438,8 @@
   "serviceUnavailableError": "Geçici ağ sorunları yaşıyoruz. Lütfen daha sonra tekrar deneyin..",
   "activeSubsPaidVia": "Halihazırda {store} aracılığıyla ödenen etkin bir aboneliğiniz var. Aboneliğinizde değişiklik yapmak için lütfen {store} adresini ziyaret edin.",
   "nextBilling": "Sonraki Faturalandırma: {date}",
-  "paymentMethod": "Ödeme Yöntemi: {method}"
+  "paymentMethod": "Ödeme Yöntemi: {method}",
+  "refreshIP": "IP'yi yenile",
+  "refreshIPAddress": "IP Adresini Yenile",
+  "getNewIPAddress": "Her bağlantıda yeni bir IP adresi alın"
 }

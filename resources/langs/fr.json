@@ -438,5 +438,8 @@
   "serviceUnavailableError": "Nous rencontrons des problèmes de réseau temporaires.Veuillez réessayer plus tard..",
   "activeSubsPaidVia": "Vous avez déjà un abonnement actif payé via {store}.Veuillez visiter {store} pour apporter des modifications à votre abonnement.",
   "nextBilling": "Prochaine facturation : {date}",
-  "paymentMethod": "Méthode de paiement : {method}"
+  "paymentMethod": "Méthode de paiement : {method}",
+  "refreshIP": "Actualiser l'IP",
+  "refreshIPAddress": "Actualiser l'adresse IP",
+  "getNewIPAddress": "Obtenez une nouvelle adresse IP à chaque connexion"
 }

@@ -438,5 +438,8 @@
   "serviceUnavailableError": "Имаме привремени проблеми со мрежата. Обидете се повторно подоцна..",
   "activeSubsPaidVia": "Веќе имате активна претплата платена преку {store}. Ве молиме посетете ја {store} за да направите промени на вашата претплата.",
   "nextBilling": "Следна наплата: {date}",
-  "paymentMethod": "Начин на плаќање: {method}"
+  "paymentMethod": "Начин на плаќање: {method}",
+  "refreshIP": "Освежете ја IP адресата",
+  "refreshIPAddress": "Освежете ја IP адресата",
+  "getNewIPAddress": "Добијте нова IP адреса при секоја врска"
 }
