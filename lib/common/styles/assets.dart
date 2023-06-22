@@ -55,6 +55,9 @@ abstract class Assets {
   static const String noInternetConnection = 'assets/icons/no_internet_connection.svg';
   static const String subscription = 'assets/icons/subscription.svg';
   static const String globe = 'assets/icons/globe.svg';
+  static const String refreshDark = 'assets/icons/refresh_dark.svg';
+  static const String refreshLight = 'assets/icons/refresh_light.svg';
+  static const String refreshConn = 'assets/icons/refresh.svg';
 
   //Animations
   static const String backgroundElements = 'assets/animations/background_elements.json';
