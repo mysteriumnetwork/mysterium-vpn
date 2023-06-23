@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
-import 'package:mysterium_vpn/stores/vpn_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class KillSwitchItem extends StatelessWidget {
-  const KillSwitchItem({
+class SwitchItem extends StatelessWidget {
+  const SwitchItem({
     required this.asset,
     required this.title,
     required this.subtitle,
-    required this.store,
+    required this.actionWidget,
     super.key,
   });
 
   final String asset;
   final String title;
   final String subtitle;
-  final VpnStore store;
+  final Widget actionWidget;
   @override
   Widget build(BuildContext context) => Container(
         width: double.infinity,
@@ -36,21 +34,19 @@ class KillSwitchItem extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                EasyText(title, fontSize: 16).padding(bottom: 8),
+                EasyText(
+                  title,
+                  fontSize: 16,
+                ).padding(bottom: 4),
                 EasyText(
                   subtitle,
                   color: Palette.lightBlack,
-                ).padding(bottom: 8),
+                  fontSize: 12,
+                  maxLines: 3,
+                ).padding(bottom: 4),
               ],
             ).expanded(),
-            Observer(
-              builder: (context) => Switch(
-                value: store.killSwitch,
-                onChanged: (val) async {
-                  store.toggleKillSwitch();
-                },
-              ),
-            ),
+            actionWidget,
           ],
         ),
       ).paddingDirectional(bottom: 10, horizontal: 20);
