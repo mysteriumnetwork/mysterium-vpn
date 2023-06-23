@@ -35,7 +35,7 @@ class UserData {
   @HiveField(6)
   bool? vpnConfigConsent;
 
-  @HiveField(7)
+  @HiveField(7, defaultValue: true)
   bool resetConnection;
 
   @override
