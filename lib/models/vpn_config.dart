@@ -16,6 +16,7 @@ class VpnConfig with _$VpnConfig {
 class VpnConfigInput with _$VpnConfigInput {
   const factory VpnConfigInput({
     @JsonKey(name: 'public_key') required String publicKey,
+    @JsonKey(name: 'reset_connection') required bool resetConnection,
     String? country,
     @JsonKey(name: 'ip_type') String? ipType,
   }) = _VpnConfigInput;

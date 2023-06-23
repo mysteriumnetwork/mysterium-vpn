@@ -14,16 +14,11 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-VpnConnection _$VpnConnectionFromJson(Map<String, dynamic> json) {
-  return _VpnConnection.fromJson(json);
-}
-
 /// @nodoc
 mixin _$VpnConnection {
   String get connectionIP => throw _privateConstructorUsedError;
-  String get location => throw _privateConstructorUsedError;
+  Location get location => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $VpnConnectionCopyWith<VpnConnection> get copyWith => throw _privateConstructorUsedError;
 }
@@ -33,7 +28,7 @@ abstract class $VpnConnectionCopyWith<$Res> {
   factory $VpnConnectionCopyWith(VpnConnection value, $Res Function(VpnConnection) then) =
       _$VpnConnectionCopyWithImpl<$Res, VpnConnection>;
   @useResult
-  $Res call({String connectionIP, String location});
+  $Res call({String connectionIP, Location location});
 }
 
 /// @nodoc
@@ -60,7 +55,7 @@ class _$VpnConnectionCopyWithImpl<$Res, $Val extends VpnConnection>
       location: null == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Location,
     ) as $Val);
   }
 }
@@ -71,7 +66,7 @@ abstract class _$$_VpnConnectionCopyWith<$Res> implements $VpnConnectionCopyWith
       __$$_VpnConnectionCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String connectionIP, String location});
+  $Res call({String connectionIP, Location location});
 }
 
 /// @nodoc
@@ -95,22 +90,20 @@ class __$$_VpnConnectionCopyWithImpl<$Res>
       location: null == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Location,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$_VpnConnection implements _VpnConnection {
   const _$_VpnConnection({required this.connectionIP, required this.location});
-
-  factory _$_VpnConnection.fromJson(Map<String, dynamic> json) => _$$_VpnConnectionFromJson(json);
 
   @override
   final String connectionIP;
   @override
-  final String location;
+  final Location location;
 
   @override
   String toString() {
@@ -126,7 +119,6 @@ class _$_VpnConnection implements _VpnConnection {
             (identical(other.location, location) || other.location == location));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, connectionIP, location);
 
@@ -135,25 +127,16 @@ class _$_VpnConnection implements _VpnConnection {
   @pragma('vm:prefer-inline')
   _$$_VpnConnectionCopyWith<_$_VpnConnection> get copyWith =>
       __$$_VpnConnectionCopyWithImpl<_$_VpnConnection>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_VpnConnectionToJson(
-      this,
-    );
-  }
 }
 
 abstract class _VpnConnection implements VpnConnection {
   const factory _VpnConnection(
-      {required final String connectionIP, required final String location}) = _$_VpnConnection;
-
-  factory _VpnConnection.fromJson(Map<String, dynamic> json) = _$_VpnConnection.fromJson;
+      {required final String connectionIP, required final Location location}) = _$_VpnConnection;
 
   @override
   String get connectionIP;
   @override
-  String get location;
+  Location get location;
   @override
   @JsonKey(ignore: true)
   _$$_VpnConnectionCopyWith<_$_VpnConnection> get copyWith => throw _privateConstructorUsedError;
