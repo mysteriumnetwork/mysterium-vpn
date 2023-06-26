@@ -10,9 +10,9 @@ import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceService {
-  factory SharedPreferenceService() => _instance;
+  factory SharedPreferenceService() => instance;
   SharedPreferenceService._internal();
-  static final SharedPreferenceService _instance = SharedPreferenceService._internal();
+  static final SharedPreferenceService instance = SharedPreferenceService._internal();
 
   late SharedPreferences _prefsInstance;
 

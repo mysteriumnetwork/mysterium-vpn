@@ -162,7 +162,12 @@ abstract class _SubscriptionStore with Store {
       );
       await _subscriptionService.subscribeToPackage(
         productDetails: item,
-        purchasedProductId: _purchasedProductId,
+        purchasedProductId: ((_subscription?.active ?? false) && _subscription?.gateway == 'google')
+            ? _products
+                .firstWhereOrNull((element) => element.id == _purchasedProductId)
+                ?.productDetails
+                .id
+            : null,
         userId: _authStore.authData!.userId,
       );
 

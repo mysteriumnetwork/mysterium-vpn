@@ -50,7 +50,7 @@ abstract class _AuthStore with Store {
   final AuthService _authService;
   final LocalDBService _localDb;
   final AppLinks _appLinks;
-  final SecureStorageService _secureStorageService = SecureStorageService();
+  final SecureStorageService _secureStorageService = SecureStorageService.instance;
   final AnalyticsStore _analyticsStore;
   final FlavorConfig _env;
   final IntercomStore _intercomStore;
