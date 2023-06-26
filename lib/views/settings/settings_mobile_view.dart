@@ -81,9 +81,10 @@ class SettingsMobileView extends HookConsumerWidget {
                 asset: isDarkTheme ? Assets.billingDark : Assets.billingLight,
                 title: LocaleKeys.myBillingPackage.tr(),
                 subtitle: LocaleKeys.shortDesc.tr(),
-                description: subscriptionStore.subscription != null
-                    ? PurchasedPlan(subscription: subscriptionStore.subscription!)
-                    : null,
+                description:
+                    subscriptionStore.subscription != null && subscriptionStore.subscription!.active
+                        ? PurchasedPlan(subscription: subscriptionStore.subscription!)
+                        : null,
                 actionWidget: EasyButton(
                   height: 40,
                   useSystemColor: false,

@@ -69,7 +69,7 @@ abstract class _VpnStore with Store {
   final WireguardDart _wireguardService;
   final AnalyticsStore _analyticsStore;
   final SubscriptionStore _subscriptionStore;
-  final _securedStorage = SecureStorageService();
+  final _securedStorage = SecureStorageService.instance;
   final LocalDBService _localDBService;
   final random = Random();
 

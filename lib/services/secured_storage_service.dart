@@ -10,11 +10,11 @@ import 'package:mysterium_vpn/models/pkce.dart';
 // Project imports:
 
 class SecureStorageService {
-  factory SecureStorageService() => _instance;
+  factory SecureStorageService() => instance;
   SecureStorageService._internal();
   late FlutterSecureStorage _securedStorage;
 
-  static final SecureStorageService _instance = SecureStorageService._internal();
+  static final SecureStorageService instance = SecureStorageService._internal();
 
   Future<void> init() async {
     _securedStorage = const FlutterSecureStorage(
