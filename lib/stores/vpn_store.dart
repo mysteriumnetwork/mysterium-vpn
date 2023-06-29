@@ -7,7 +7,6 @@ import 'package:async/async.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/constants/mock.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -15,6 +14,7 @@ import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
@@ -41,12 +41,14 @@ abstract class _VpnStore with Store {
     required AnalyticsStore analyticsStore,
     required SubscriptionStore subscriptionStore,
     required LocalDBService localDBService,
+    required FlavorConfig env,
   })  : _apiService = apiService,
         _locationsStore = locationsStore,
         _wireguardService = wireguardService,
         _analyticsStore = analyticsStore,
         _subscriptionStore = subscriptionStore,
-        _localDBService = localDBService {
+        _localDBService = localDBService,
+        _env = env {
     _connectionStatus = ConnectionStatus.disconnected;
     _protocol = protocols.first;
     _killSwitch = true;
@@ -64,6 +66,7 @@ abstract class _VpnStore with Store {
   final WireguardDart _wireguardService;
   final AnalyticsStore _analyticsStore;
   final SubscriptionStore _subscriptionStore;
+  final FlavorConfig _env;
   final _securedStorage = SecureStorageService.instance;
   final LocalDBService _localDBService;
   final random = Random();
@@ -122,7 +125,9 @@ abstract class _VpnStore with Store {
   @action
   Future<void> setupTunnel() async {
     try {
-      setupTunnelFuture = ObservableFuture(_wireguardService.setupTunnel(bundleId: bundleId));
+      final bundleId = _env.getBundleId();
+      setupTunnelFuture =
+          ObservableFuture(_wireguardService.setupTunnel(bundleId: bundleId));
       await setupTunnelFuture;
     } catch (e) {
       debugPrint(e.toString());
@@ -207,6 +212,7 @@ abstract class _VpnStore with Store {
     }
     if (_subscriptionStore.subscription?.active == false ||
         _subscriptionStore.subscriptionFuture?.status == FutureStatus.rejected) {
+      _subscriptionStore.fetchSubscription();
       showSnackbar(LocaleKeys.activateSubscription.tr());
       return;
     }
