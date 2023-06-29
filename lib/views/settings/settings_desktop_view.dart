@@ -6,7 +6,7 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_left_panel.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_right_panel.dart';
 
-const _initialCategory = SettingCategory.application;
+const _initialCategory = SettingCategory.connection;
 
 final selectedCategoryProvider = StateProvider<SettingCategory>((ref) => _initialCategory);
 
