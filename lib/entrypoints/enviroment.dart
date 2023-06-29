@@ -15,7 +15,6 @@ import 'package:mysterium_vpn/appsflyer_options.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/firebase_options.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -29,6 +28,7 @@ import 'package:window_manager/window_manager.dart';
 class Enviroment {
   Future<void> launch({
     required String flavor,
+    required FirebaseOptions firebaseOptions,
   }) async {
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
     if (isDekstop()) {
@@ -64,7 +64,7 @@ class Enviroment {
     };
     if (!windowsOrLinux) {
       await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
+        options: firebaseOptions,
       );
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
@@ -128,7 +128,7 @@ class Enviroment {
         return FlavorConfig(flavor: Flavor.production, values: FlavorValues.production());
 
       default:
-        return FlavorConfig(flavor: Flavor.production, values: FlavorValues.production());
+        return FlavorConfig(flavor: Flavor.dev, values: FlavorValues.dev());
     }
   }
 }

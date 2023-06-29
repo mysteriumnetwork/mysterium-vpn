@@ -48,6 +48,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final analyticsStore = ref.watch(analyticsStorePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
   final localDBService = ref.watch(localDBPOD);
+  final env = ref.watch(environmentPOD);
   return VpnStore(
     apiService: apiService,
     locationsStore: locationsStore,
@@ -55,6 +56,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     analyticsStore: analyticsStore,
     subscriptionStore: subscriptionStore,
     localDBService: localDBService,
+    env: env,
   );
 });
 
@@ -91,8 +93,8 @@ final restApiStorePOD = Provider<RestStore>((ref) {
 
 final environmentPOD = StateProvider<FlavorConfig>(
   (ref) => FlavorConfig(
-    flavor: Flavor.production,
-    values: FlavorValues.production(),
+    flavor: Flavor.dev,
+    values: FlavorValues.dev(),
   ),
 );
 
