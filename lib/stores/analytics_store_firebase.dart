@@ -1,4 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
@@ -18,6 +19,14 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   final FirebaseAnalytics _analytics;
   final LocalDBService _localDb;
   
+  @override
+  List<NavigatorObserver> navigationObservers() => [
+      FirebaseAnalyticsObserver(
+        analytics: _analytics,
+        nameExtractor: (settings) => settings.name,
+      ),
+    ];
+
   @override
   @action
   Future<void> logEvent(AnalyticsEvent event, Map<String, dynamic> parameters) async {
