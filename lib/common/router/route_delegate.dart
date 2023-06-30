@@ -1,18 +1,27 @@
 import 'package:beamer/beamer.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/auth_status.dart';
 import 'package:mysterium_vpn/common/enums/routes.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/router/router.dart';
+import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 final routeInformationParserPOD = Provider((ref) => BeamerParser());
 
 final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
   final authStore = ref.read(authStorePOD);
-  final navigatorObservers = ref.read(navigatorObserversPOD);
+  final firebaseAnalytics = ref.read(firebaseAnalyticsPOD);
   return BeamerDelegate(
-    navigatorObservers: navigatorObservers,
+    navigatorObservers: [
+      FirebaseAnalyticsObserver(
+        analytics: firebaseAnalytics,
+        nameExtractor: (settings) => settings.name,
+      ),
+      SentryNavigatorObserver(),
+    ],
     guards: [
       BeamGuard(
         pathPatterns: [

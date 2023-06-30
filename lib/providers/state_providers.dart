@@ -2,11 +2,8 @@
 
 import 'dart:async';
 
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/stores/analytics_store.dart';
@@ -19,7 +16,6 @@ import 'package:mysterium_vpn/stores/rest_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
@@ -119,10 +115,12 @@ final tokenStreamPOD = StreamProvider<String>((ref) {
 });
 
 final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
-  final analyticsService = ref.watch(analyticsServicePOD);
+  final localDb = ref.watch(localDBPOD);
+  final firebaseAnalytics = ref.watch(firebaseAnalyticsPOD);
 
   return AnalyticsStore(
-    analyticsService: analyticsService,
+    localDb: localDb,
+    analytics: firebaseAnalytics,
   );
 });
 
@@ -132,19 +130,4 @@ final intercomStorePOD = StateProvider<IntercomStore>((ref) {
   return IntercomStore(
     intercom: intercom,
   );
-});
-
-final navigatorObserversPOD = Provider<List<NavigatorObserver>>((ref) {
-  final navigatorObservers = <NavigatorObserver>[SentryNavigatorObserver()];
-
-  if (!isWindowsOrLinux()) {
-    navigatorObservers.add(
-      FirebaseAnalyticsObserver(
-        analytics: ref.read(firebaseAnalyticsPOD),
-        nameExtractor: (settings) => settings.name,
-      ),
-    );
-  }
-
-  return navigatorObservers;
 });
