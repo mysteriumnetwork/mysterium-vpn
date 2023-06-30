@@ -10,7 +10,11 @@ import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mysterium_vpn/common/interceptors/append_auth_token.dart';
 import 'package:mysterium_vpn/common/interceptors/log_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/unauthorized.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/services/analytics/analytics_service.dart';
+import 'package:mysterium_vpn/services/analytics/firebase_analytics_service.dart';
+import 'package:mysterium_vpn/services/analytics/rest_analytics_service.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/api/rest_api_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
@@ -112,4 +116,13 @@ final authServicePOD = Provider<AuthService>((ref) {
     apiClient: apiClient,
     scheme: environment.values.scheme,
   );
+});
+
+final analyticsServicePOD = Provider<AnalyticsService>((ref) {
+  final localDb = ref.watch(localDBPOD);
+  final firebaseAnalytics = ref.watch(firebaseAnalyticsPOD);
+
+  return isWindowsOrLinux()
+      ? FirebaseAnalyticsService(analytics: firebaseAnalytics, localDb: localDb)
+      : RestAnalyticsService(localDb: localDb);
 });
