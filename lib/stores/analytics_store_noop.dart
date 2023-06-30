@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/stores/analytics_store.dart';
@@ -8,6 +9,9 @@ part 'analytics_store_noop.g.dart';
 class AnalyticsStoreNoop = _AnalyticsStoreNoop with _$AnalyticsStoreNoop;
 
 abstract class _AnalyticsStoreNoop extends AnalyticsStore with Store {
+
+  @override
+  List<NavigatorObserver> navigationObservers() => [];
 
   @override
   @action
