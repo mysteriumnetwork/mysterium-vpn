@@ -467,7 +467,10 @@ class CodegenLoader extends AssetLoader {
     "activeSubsPaidVia":
         "Halihazırda {store} aracılığıyla ödenen etkin bir aboneliğiniz var. Aboneliğinizde değişiklik yapmak için lütfen {store} adresini ziyaret edin.",
     "nextBilling": "Sonraki Faturalandırma: {date}",
-    "paymentMethod": "Ödeme Yöntemi: {method}"
+    "paymentMethod": "Ödeme Yöntemi: {method}",
+    "refreshIP": "IP'yi yenile",
+    "refreshIPAddress": "IP Adresini Yenile",
+    "getNewIPAddress": "Her bağlantıda yeni bir IP adresi alın"
   };
   static const Map<String, dynamic> mk = {
     "title": "Здраво господине",
@@ -934,7 +937,10 @@ class CodegenLoader extends AssetLoader {
     "activeSubsPaidVia":
         "Веќе имате активна претплата платена преку {store}. Ве молиме посетете ја {store} за да направите промени на вашата претплата.",
     "nextBilling": "Следна наплата: {date}",
-    "paymentMethod": "Начин на плаќање: {method}"
+    "paymentMethod": "Начин на плаќање: {method}",
+    "refreshIP": "Освежете ја IP адресата",
+    "refreshIPAddress": "Освежете ја IP адресата",
+    "getNewIPAddress": "Добијте нова IP адреса при секоја врска"
   };
   static const Map<String, dynamic> lt = {
     "title": "Sveiki pone",
@@ -1395,7 +1401,10 @@ class CodegenLoader extends AssetLoader {
     "activeSubsPaidVia":
         "Jau turite aktyvią prenumeratą, sumokėtą per {store}. Apsilankykite {store}, kad pakeistumėte prenumeratą.",
     "nextBilling": "Kitas atsiskaitymas: {date}",
-    "paymentMethod": "Mokėjimo būdas: {method}"
+    "paymentMethod": "Mokėjimo būdas: {method}",
+    "refreshIP": "Atnaujinti IP",
+    "refreshIPAddress": "Atnaujinkite IP adresą",
+    "getNewIPAddress": "Kiekvieną kartą prisijungdami gaukite naują IP adresą"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1865,7 +1874,10 @@ class CodegenLoader extends AssetLoader {
     "activeSubsPaidVia":
         "Sie haben bereits ein aktives Abonnement, das über {store} bezahlt wird. Bitte besuchen Sie {store}, um Änderungen an Ihrem Abonnement vorzunehmen.",
     "nextBilling": "Nächste Abrechnung: {date}",
-    "paymentMethod": "Zahlungsmethode: {method}"
+    "paymentMethod": "Zahlungsmethode: {method}",
+    "refreshIP": "IP aktualisieren",
+    "refreshIPAddress": "IP-Adresse aktualisieren",
+    "getNewIPAddress": "Erhalten Sie bei jeder Verbindung eine neue IP-Adresse"
   };
   static const Map<String, dynamic> uk = {
     "title": "Вітаю, сер",
@@ -2320,7 +2332,10 @@ class CodegenLoader extends AssetLoader {
     "activeSubsPaidVia":
         "У вас уже є активна підписка, оплачена через {store}. Будь ласка, відвідайте {store}, щоб внести зміни у свою підписку.",
     "nextBilling": "Наступний платіж: {date}",
-    "paymentMethod": "Спосіб оплати: {method}"
+    "paymentMethod": "Спосіб оплати: {method}",
+    "refreshIP": "Оновити IP",
+    "refreshIPAddress": "Оновити IP-адресу",
+    "getNewIPAddress": "Отримайте нову IP-адресу при кожному підключенні"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2782,7 +2797,10 @@ class CodegenLoader extends AssetLoader {
     "activeSubsPaidVia":
         "Você já tem uma assinatura ativa paga via {store}. Visite {store} para fazer alterações em sua assinatura.",
     "nextBilling": "Próxima cobrança: {date}",
-    "paymentMethod": "Método de pagamento: {method}"
+    "paymentMethod": "Método de pagamento: {method}",
+    "refreshIP": "Atualizar IP",
+    "refreshIPAddress": "Atualizar endereço IP",
+    "getNewIPAddress": "Obtenha um novo endereço IP a cada conexão"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -3242,7 +3260,10 @@ class CodegenLoader extends AssetLoader {
     "activeSubsPaidVia":
         "You already have an active subscription paid via {store}. Please visit {store} to make changes to your subscription.",
     "nextBilling": "Next Billing: {date}",
-    "paymentMethod": "Payment Method: {method}"
+    "paymentMethod": "Payment Method: {method}",
+    "refreshIP": "Refresh IP",
+    "refreshIPAddress": "Refresh IP Address",
+    "getNewIPAddress": "Get a new IP address at every connection"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3709,7 +3730,10 @@ class CodegenLoader extends AssetLoader {
     "activeSubsPaidVia":
         "Hai già un abbonamento attivo pagato tramite {store}. Visita {store} per apportare modifiche al tuo abbonamento.",
     "nextBilling": "Prossima fatturazione: {date}",
-    "paymentMethod": "Metodo di pagamento: {method}"
+    "paymentMethod": "Metodo di pagamento: {method}",
+    "refreshIP": "Aggiorna IP",
+    "refreshIPAddress": "Aggiorna indirizzo IP",
+    "getNewIPAddress": "Ottieni un nuovo indirizzo IP ad ogni connessione"
   };
   static const Map<String, dynamic> sr = {
     "title": "Здраво господине",
@@ -4173,7 +4197,10 @@ class CodegenLoader extends AssetLoader {
     "activeSubsPaidVia":
         "Већ имате активну претплату плаћену преко {store}. Посетите {store} да бисте унели измене у своју претплату.",
     "nextBilling": "Следећи обрачун: {date}",
-    "paymentMethod": "Начин плаћања: {method}"
+    "paymentMethod": "Начин плаћања: {method}",
+    "refreshIP": "Освежите ИП",
+    "refreshIPAddress": "Освежите ИП адресу",
+    "getNewIPAddress": "Добијте нову ИП адресу при свакој конекцији"
   };
   static const Map<String, dynamic> et = {
     "title": "Tere, härra",
@@ -4631,7 +4658,10 @@ class CodegenLoader extends AssetLoader {
     "activeSubsPaidVia":
         "Teil on juba {store} kaudu tasutud aktiivne tellimus. Tellimuses muudatuste tegemiseks külastage {store}.",
     "nextBilling": "Järgmine arveldus: {date}",
-    "paymentMethod": "Makseviis: {method}"
+    "paymentMethod": "Makseviis: {method}",
+    "refreshIP": "Värskenda IP-d",
+    "refreshIPAddress": "Värskenda IP-aadress",
+    "getNewIPAddress": "Hankige igal ühendusel uus IP-aadress"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -5099,7 +5129,10 @@ class CodegenLoader extends AssetLoader {
     "activeSubsPaidVia":
         "Vous avez déjà un abonnement actif payé via {store}.Veuillez visiter {store} pour apporter des modifications à votre abonnement.",
     "nextBilling": "Prochaine facturation : {date}",
-    "paymentMethod": "Méthode de paiement : {method}"
+    "paymentMethod": "Méthode de paiement : {method}",
+    "refreshIP": "Actualiser l'IP",
+    "refreshIPAddress": "Actualiser l'adresse IP",
+    "getNewIPAddress": "Obtenez une nouvelle adresse IP à chaque connexion"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -5563,7 +5596,10 @@ class CodegenLoader extends AssetLoader {
     "activeSubsPaidVia":
         "Ya tiene una suscripción activa pagada a través de {store}. Visite {store} para realizar cambios en su suscripción.",
     "nextBilling": "Próxima facturación: {date}",
-    "paymentMethod": "Método de pago: {method}"
+    "paymentMethod": "Método de pago: {method}",
+    "refreshIP": "Actualizar IP",
+    "refreshIPAddress": "Actualizar dirección IP",
+    "getNewIPAddress": "Obtenga una nueva dirección IP en cada conexión"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "tr": tr,

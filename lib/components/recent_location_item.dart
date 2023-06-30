@@ -54,7 +54,8 @@ class RecentLocationItem extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 maxLines: 2,
               ),
-              if (location.countryCode == vpnStore.vpnConnection.location && vpnStore.isConnected)
+              if (location.countryCode == vpnStore.vpnConnection?.location.countryCode &&
+                  vpnStore.isConnected)
                 EasyText(
                   LocaleKeys.connected.tr(),
                   color: Palette.purple,

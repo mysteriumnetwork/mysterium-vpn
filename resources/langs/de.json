@@ -438,5 +438,8 @@
   "serviceUnavailableError": "Es treten vorübergehende Netzwerkprobleme auf. Bitte versuchen Sie es später noch einmal.",
   "activeSubsPaidVia": "Sie haben bereits ein aktives Abonnement, das über {store} bezahlt wird. Bitte besuchen Sie {store}, um Änderungen an Ihrem Abonnement vorzunehmen.",
   "nextBilling": "Nächste Abrechnung: {date}",
-  "paymentMethod": "Zahlungsmethode: {method}"
+  "paymentMethod": "Zahlungsmethode: {method}",
+  "refreshIP": "IP aktualisieren",
+  "refreshIPAddress": "IP-Adresse aktualisieren",
+  "getNewIPAddress": "Erhalten Sie bei jeder Verbindung eine neue IP-Adresse"
 }

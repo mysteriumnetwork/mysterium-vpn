@@ -40,6 +40,13 @@ class LocalDBService {
     await box.put(_userId, userData);
   }
 
+  bool getResetConnection() => userData.resetConnection;
+
+  Future<void> setResetConnection({required bool resetConnection}) async {
+    userData.resetConnection = resetConnection;
+    await box.put(_userId, userData);
+  }
+
   bool? getVpnConsentApproval() => userData.vpnConfigConsent;
 
   Approval getNotificationsApproval() => userData.notifications;

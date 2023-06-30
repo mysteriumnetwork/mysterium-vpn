@@ -7,6 +7,7 @@ import 'package:mysterium_vpn/components/connection_indicator.dart';
 import 'package:mysterium_vpn/components/decorated_label.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/flag.dart';
+import 'package:mysterium_vpn/components/refresh_connection.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -32,8 +33,9 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
           children: [
             _BarItem(
               label: LocaleKeys.connectionIp.tr(),
-              text: vpnConnection.connectionIP,
+              text: vpnConnection?.connectionIP ?? '--',
               maxLines: 1,
+              action: const RefreshConnection(),
             ).expanded(),
             _BarItem(
               label: LocaleKeys.status.tr(),
@@ -46,9 +48,10 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
             ).expanded(),
             _BarItem(
               label: LocaleKeys.location.tr(),
-              leading:
-                  vpnStore.isConnected ? Flag(countryCode: vpnStore.vpnConnection.location) : null,
-              text: vpnConnection.location.tr(),
+              leading: vpnStore.isConnected
+                  ? Flag(countryCode: vpnStore.vpnConnection?.location.countryCode ?? '')
+                  : null,
+              text: vpnConnection?.location.countryCode.tr() ?? '--',
               leadingPosition: LeadingPosition.bottom,
               maxLines: 2,
             ).expanded(),
@@ -67,10 +70,12 @@ class _BarItem extends StatelessWidget {
     this.isConnected = false,
     this.leading,
     this.leadingPosition = LeadingPosition.left,
+    this.action,
   });
 
   final String label;
   final Widget? leading;
+  final Widget? action;
   final String text;
   final bool isConnected;
   final LeadingPosition leadingPosition;
@@ -105,7 +110,9 @@ class _BarItem extends StatelessWidget {
                 ).flexible(),
               ],
             ),
-          if (leadingPosition == LeadingPosition.bottom && leading != null) leading!.padding(top: 4)
+          if (leadingPosition == LeadingPosition.bottom && leading != null)
+            leading!.padding(top: 4),
+          action ?? const SizedBox()
         ],
       );
 }

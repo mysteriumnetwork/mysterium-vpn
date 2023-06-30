@@ -7,11 +7,13 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/router/route_delegate.dart';
+import 'package:mysterium_vpn/components/lifecycle_listener.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
+import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
+import 'package:mysterium_vpn/stores/subscription_store.dart';
 
-/// My app
 class MyApp extends HookConsumerWidget {
   const MyApp({super.key});
   @override
@@ -21,6 +23,7 @@ class MyApp extends HookConsumerWidget {
     final authStore = ref.read(authStorePOD);
     final routeDelegate = ref.read(routerDelegatePOD);
     final localStore = ref.read(localeStorePOD);
+
     return ReactionBuilder(
       builder: (_) => reaction(
         (_) => authStore.authStatus,
@@ -30,25 +33,44 @@ class MyApp extends HookConsumerWidget {
       ),
       child: Observer(
         builder: (context) => RetakeFocusOnTap(
-          child: MaterialApp.router(
-            title: 'Mysterium VPN',
-            key: UniqueKey(),
-            scaffoldMessengerKey: snackbarKey,
-            theme: themeStore.lightTheme,
-            darkTheme: themeStore.darkTheme,
-            themeMode: themeStore.themeMode,
-            routerDelegate: routeDelegate,
-            routeInformationParser: routeInformationParser,
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: localStore.currentLocale,
-            backButtonDispatcher: BeamerBackButtonDispatcher(
-              delegate: routeDelegate,
+          child: LifecycleListener(
+            onDetached: () => ref.read(vpnStorePOD).disconnect(),
+            onResumed: () {
+              checkSubsStatus(authStore, ref.read(subscriptionStorePOD));
+            },
+            onPaused: () {
+              checkSubsStatus(authStore, ref.read(subscriptionStorePOD));
+            },
+            child: MaterialApp.router(
+              title: 'Mysterium VPN',
+              key: UniqueKey(),
+              scaffoldMessengerKey: snackbarKey,
+              theme: themeStore.lightTheme,
+              darkTheme: themeStore.darkTheme,
+              themeMode: themeStore.themeMode,
+              routerDelegate: routeDelegate,
+              routeInformationParser: routeInformationParser,
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: localStore.currentLocale,
+              backButtonDispatcher: BeamerBackButtonDispatcher(
+                delegate: routeDelegate,
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  void checkSubsStatus(AuthStore authStore, SubscriptionStore subscriptionStore) {
+    if (authStore.authStatus != AuthStatus.authenticated) {
+      return;
+    }
+    if (subscriptionStore.isSubscribed == false ||
+        (subscriptionStore.subscription?.isExpired ?? false)) {
+      subscriptionStore.fetchSubscription();
+    }
   }
 
   Future<void> authenticationReaction(

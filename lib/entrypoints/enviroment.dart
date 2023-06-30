@@ -24,12 +24,16 @@ import 'package:mysterium_vpn/services/shared_preferences_service.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:url_protocol/url_protocol.dart';
+import 'package:window_manager/window_manager.dart';
 
 class Enviroment {
   Future<void> launch({
     required String flavor,
   }) async {
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+    if (isDekstop()) {
+      await windowManager.ensureInitialized();
+    }
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
     if (Platform.isWindows) {

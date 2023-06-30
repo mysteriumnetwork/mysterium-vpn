@@ -47,22 +47,17 @@ abstract class _VpnStore with Store {
         _analyticsStore = analyticsStore,
         _subscriptionStore = subscriptionStore,
         _localDBService = localDBService {
-    _vpnConnection = _emptyConnection;
     _connectionStatus = ConnectionStatus.disconnected;
     _protocol = protocols.first;
     _killSwitch = true;
     _connectingLocationCode = '';
     generateKey();
     _vpnConfigConsent = _localDBService.getVpnConsentApproval() ?? false;
+    _resetConnection = _localDBService.getResetConnection();
     if (_vpnConfigConsent ?? false) {
       setupTunnel();
     }
   }
-
-  static const VpnConnection _emptyConnection = VpnConnection(
-    connectionIP: '--',
-    location: '--',
-  );
 
   final ApiService _apiService;
   final LocationsStore _locationsStore;
@@ -92,10 +87,13 @@ abstract class _VpnStore with Store {
   bool _killSwitch = true;
 
   @readonly
+  bool _resetConnection = true;
+
+  @readonly
   bool? _vpnConfigConsent;
 
   @readonly
-  VpnConnection _vpnConnection = _emptyConnection;
+  VpnConnection? _vpnConnection;
 
   @readonly
   VpnConfig? _vpnConfig;
@@ -139,6 +137,12 @@ abstract class _VpnStore with Store {
     if (_vpnConfigConsent ?? false) {
       setupTunnel();
     }
+  }
+
+  @action
+  Future<void> toggleResetConnection() async {
+    await _localDBService.setResetConnection(resetConnection: !_resetConnection);
+    _resetConnection = !_resetConnection;
   }
 
   @action
@@ -193,6 +197,7 @@ abstract class _VpnStore with Store {
   @action
   Future<void> connect({
     Location? location,
+    bool? refreshIP,
   }) async {
     if (_subscriptionStore.subscriptionFuture?.status == FutureStatus.pending) {
       showSnackbar(
@@ -209,23 +214,26 @@ abstract class _VpnStore with Store {
       cancelConnection();
       return;
     }
-    if (location == null && _connectionStatus == ConnectionStatus.connected) {
+
+    if (refreshIP != true &&
+        _connectionStatus == ConnectionStatus.connected &&
+        (location == null || location.countryCode == _vpnConnection?.location.countryCode)) {
       await disconnect();
       return;
     }
-    if (_vpnConnection.location == location?.countryCode) {
-      await disconnect();
-      return;
-    }
-    location ??= _locationsStore.vpnLocations.allLocations.isNotEmpty
-        ? [
-            ..._locationsStore.vpnLocations.allLocations,
-            ..._locationsStore.vpnLocations.topLocations
-          ].randomItem()
-        : null;
+
+    location ??= refreshIP ?? false
+        ? _vpnConnection?.location
+        : _locationsStore.vpnLocations.allLocations.isNotEmpty
+            ? [
+                ..._locationsStore.vpnLocations.allLocations,
+                ..._locationsStore.vpnLocations.topLocations
+              ].randomItem()
+            : null;
     _connectingLocationCode = location?.countryCode;
+
     try {
-      if (_vpnConnection != _emptyConnection) {
+      if (_vpnConnection != null) {
         await disconnect();
       }
       final stopwatch = Stopwatch()..start();
@@ -233,7 +241,7 @@ abstract class _VpnStore with Store {
       _isCanceled = false;
       // ignore: void_checks
       _cancelableOperation = CancelableOperation.fromFuture(
-        _completeConnection(location, stopwatch),
+        _completeConnection(location, stopwatch, refreshIP),
         onCancel: () async {
           stopwatch.stop();
           await Future.delayed(const Duration(seconds: 2), disconnect);
@@ -282,7 +290,11 @@ abstract class _VpnStore with Store {
   }
 
   @action
-  Future<void> _completeConnection(Location? location, Stopwatch stopwatch) async {
+  Future<void> _completeConnection(
+    Location? location,
+    Stopwatch stopwatch,
+    bool? refreshIP,
+  ) async {
     if (_publicKey.isEmpty || _privateKey.isEmpty) {
       await generateKey();
     }
@@ -290,6 +302,7 @@ abstract class _VpnStore with Store {
       input: VpnConfigInput(
         publicKey: _publicKey,
         country: location?.countryCode,
+        resetConnection: refreshIP ?? _resetConnection,
       ),
       privateKey: _privateKey,
     );
@@ -299,19 +312,17 @@ abstract class _VpnStore with Store {
       final ipAddress = await _apiService.getIPAdress();
       _vpnConnection = VpnConnection(
         connectionIP: ipAddress ?? '--',
-        location: location?.countryCode ?? '--',
+        location: location!,
       );
       _connectionStatus = ConnectionStatus.connected;
       stopwatch.stop();
       _analyticsStore.setVpnConnect(
-        vpnServer: _vpnConnection.location,
+        vpnServer: _vpnConnection?.location.countryCode ?? '',
         vpnProcessingTime: stopwatch.elapsed,
       );
       //startTracking();
-      if (location != null) {
-        _apiService.setRecentLocation(location: location.countryCode);
-        _locationsStore.fetchRecentLocations();
-      }
+      _apiService.setRecentLocation(location: location.countryCode);
+      _locationsStore.fetchRecentLocations();
     }
   }
 
@@ -342,8 +353,8 @@ abstract class _VpnStore with Store {
     _connectionStatus = ConnectionStatus.disconnecting;
     await Future.delayed(const Duration(seconds: 1));
     await disconnectWireguard();
-    _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection.location);
-    _vpnConnection = _emptyConnection;
+    _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection?.location.countryCode ?? '');
+    _vpnConnection = null;
     _connectingLocationCode = '';
     _timer?.cancel();
     _downloadSpeed = null;

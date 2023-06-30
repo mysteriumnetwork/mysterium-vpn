@@ -64,6 +64,7 @@ dependencies:
     git:
       url: https://github.com/KristijanMitrik/flutter_url_protocol
       ref: main
+  window_manager: ^0.3.4
   wireguard_dart:
     git:
       url: https://github.com/mysteriumnetwork/wireguard_dart.git
