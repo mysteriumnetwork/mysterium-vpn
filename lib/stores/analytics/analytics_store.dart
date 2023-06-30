@@ -2,6 +2,12 @@ import 'package:flutter/widgets.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 
 abstract class AnalyticsStore {
+  Future<void> logError({
+    required Object err,
+    StackTrace? stack,
+    Object? reason,
+    bool fatal = false,
+  });
   List<NavigatorObserver> navigationObservers();
   Future<void> logEvent(AnalyticsEvent event, Map<String, dynamic> parameters);
   Future<void> setUserId(String id);
@@ -9,7 +15,10 @@ abstract class AnalyticsStore {
   Future<void> setScreenName(String name);
   Future<void> setSessionTimeoutDuration();
   Future<void> setLogin([AuthMethod loginMethod = AuthMethod.email]);
-  Future<void> setSignUp(String userId, [AuthMethod signUpMethod = AuthMethod.email]);
+  Future<void> setSignUp(
+    String userId, [
+    AuthMethod signUpMethod = AuthMethod.email,
+  ]);
   Future<void> setLogOut(String userId);
   Future<void> setSearchEvent(String searchTerm);
   Future<void> setVpnConnect({

@@ -1,4 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -12,12 +13,39 @@ part 'analytics_store_firebase.g.dart';
 class AnalyticsStoreFirebase = _AnalyticsStoreFirebase with _$AnalyticsStoreFirebase;
 
 abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
-  _AnalyticsStoreFirebase({required FirebaseAnalytics analytics, required LocalDBService localDb})
-      : _analytics = analytics,
+  _AnalyticsStoreFirebase({
+    required FirebaseAnalytics analytics,
+    required FirebaseCrashlytics crashlytics,
+    required LocalDBService localDb,
+  })  : _analytics = analytics,
+        _crashlytics = crashlytics,
         _localDb = localDb;
 
   final FirebaseAnalytics _analytics;
+  final FirebaseCrashlytics _crashlytics;
   final LocalDBService _localDb;
+
+  @override
+  Future<void> logError({
+    required Object err,
+    StackTrace? stack,
+    Object? reason,
+    bool fatal = false,
+  }) async {
+    if (fatal) {
+      _crashlytics.recordFlutterFatalError(
+        FlutterErrorDetails(exception: err, stack: stack),
+      );
+      return;
+    }
+
+    _crashlytics.recordError(
+      err,
+      stack,
+      reason: reason,
+      printDetails: true,
+    );
+  }
 
   @override
   List<NavigatorObserver> navigationObservers() => [
@@ -29,14 +57,20 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
 
   @override
   @action
-  Future<void> logEvent(AnalyticsEvent event, Map<String, dynamic> parameters) async {
+  Future<void> logEvent(
+    AnalyticsEvent event,
+    Map<String, dynamic> parameters,
+  ) async {
     await _analytics.logEvent(name: event.toSnakeCase, parameters: parameters);
   }
 
   @override
   @action
   Future<void> setUserId(String id) async {
-    await _analytics.setUserId(id: id);
+    await Future.wait([
+      _analytics.setUserId(id: id),
+      _crashlytics.setUserIdentifier(id),
+    ]);
   }
 
   @override
@@ -65,7 +99,10 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
 
   @override
   @action
-  Future<void> setSignUp(String userId, [AuthMethod signUpMethod = AuthMethod.email]) async {
+  Future<void> setSignUp(
+    String userId, [
+    AuthMethod signUpMethod = AuthMethod.email,
+  ]) async {
     if (!_localDb.checkUserExistance(userId)) {
       await _analytics.logSignUp(signUpMethod: signUpMethod.name);
     }
