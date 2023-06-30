@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 
 abstract class AnalyticsStore {
-
   List<NavigatorObserver> navigationObservers();
   Future<void> logEvent(AnalyticsEvent event, Map<String, dynamic> parameters);
   Future<void> setUserId(String id);

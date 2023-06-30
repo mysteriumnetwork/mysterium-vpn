@@ -4,7 +4,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
-import 'package:mysterium_vpn/stores/analytics_store.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 
 part 'analytics_store_firebase.g.dart';
 
@@ -18,14 +18,14 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
 
   final FirebaseAnalytics _analytics;
   final LocalDBService _localDb;
-  
+
   @override
   List<NavigatorObserver> navigationObservers() => [
-      FirebaseAnalyticsObserver(
-        analytics: _analytics,
-        nameExtractor: (settings) => settings.name,
-      ),
-    ];
+        FirebaseAnalyticsObserver(
+          analytics: _analytics,
+          nameExtractor: (settings) => settings.name,
+        ),
+      ];
 
   @override
   @action
