@@ -10,11 +10,22 @@ class AnalyticsStoreNoop = _AnalyticsStoreNoop with _$AnalyticsStoreNoop;
 
 abstract class _AnalyticsStoreNoop extends AnalyticsStore with Store {
   @override
+  Future<void> logError({
+    required Object err,
+    StackTrace? stack,
+    Object? reason,
+    bool fatal = false,
+  }) async {}
+
+  @override
   List<NavigatorObserver> navigationObservers() => [];
 
   @override
   @action
-  Future<void> logEvent(AnalyticsEvent event, Map<String, dynamic> parameters) async {}
+  Future<void> logEvent(
+    AnalyticsEvent event,
+    Map<String, dynamic> parameters,
+  ) async {}
 
   @override
   @action
@@ -38,7 +49,10 @@ abstract class _AnalyticsStoreNoop extends AnalyticsStore with Store {
 
   @override
   @action
-  Future<void> setSignUp(String userId, [AuthMethod signUpMethod = AuthMethod.email]) async {}
+  Future<void> setSignUp(
+    String userId, [
+    AuthMethod signUpMethod = AuthMethod.email,
+  ]) async {}
 
   @override
   @action

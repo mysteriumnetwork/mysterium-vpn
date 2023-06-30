@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 
 class CustomLogInterceptor extends Interceptor {
   CustomLogInterceptor({
+    required this.analyticsStore,
     this.request = true,
     this.requestHeader = true,
     this.requestBody = false,
@@ -12,6 +12,8 @@ class CustomLogInterceptor extends Interceptor {
     this.error = true,
     this.logPrint = print,
   });
+
+  AnalyticsStore analyticsStore;
 
   bool request;
 
@@ -64,22 +66,25 @@ class CustomLogInterceptor extends Interceptor {
   }
 
   @override
-  Future<void> onResponse(Response<dynamic> response, ResponseInterceptorHandler handler) async {
+  Future<void> onResponse(
+    Response<dynamic> response,
+    ResponseInterceptorHandler handler,
+  ) async {
     logPrint('*** Response ***');
     _printResponse(response);
     handler.next(response);
   }
 
   @override
-  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
-    if (!isWindowsOrLinux()) {
-      FirebaseCrashlytics.instance.recordError(
-        err,
-        StackTrace.fromString('ApiClient'),
-        reason: 'API EXCEPTION',
-        printDetails: true,
-      );
-    }
+  Future<void> onError(
+    DioException err,
+    ErrorInterceptorHandler handler,
+  ) async {
+    analyticsStore.logError(
+      err: err,
+      stack: err.stackTrace,
+      reason: 'API EXCEPTION',
+    );
     if (error) {
       logPrint('*** DioError ***:');
       logPrint('uri: ${err.requestOptions.uri}');
