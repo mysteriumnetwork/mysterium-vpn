@@ -27,7 +27,6 @@
 		33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F42044A3C60003C045 /* MainMenu.xib */; };
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
 		3E13E4E929D6C40C0008AE83 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BFA51A950D242B973B898C6 /* Pods_Runner.framework */; };
-		91E2594E7CFEFFB161611DA4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F0425E822852949D39D1D7E7 /* GoogleService-Info.plist */; };
 		97C8B25D29D46D680017C38F /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C8B25C29D46D680017C38F /* NetworkExtension.framework */; };
 		97C8B26029D46D680017C38F /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C8B25F29D46D680017C38F /* PacketTunnelProvider.swift */; };
 		97C8B26529D46D680017C38F /* tun.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 97C8B25B29D46D680017C38F /* tun.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -67,10 +66,18 @@
 
 /* Begin PBXFileReference section */
 		0BFA51A950D242B973B898C6 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		115A6BC03AF51432B1225BD4 /* Pods-tun.release prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.release prod.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.release prod.xcconfig"; sourceTree = "<group>"; };
+		1229B94953D59ECE4A6BA9BF /* Pods-tun.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.release-prod.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.release-prod.xcconfig"; sourceTree = "<group>"; };
+		1259823BE59CE38263014BC2 /* Pods-tun.debug prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.debug prod.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.debug prod.xcconfig"; sourceTree = "<group>"; };
+		17CB567AA76798D106509F75 /* Pods-Runner.debug dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug dev.xcconfig"; sourceTree = "<group>"; };
+		19A70E6BEC089D6DCAC86302 /* Pods-Runner.profile prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile prod.xcconfig"; sourceTree = "<group>"; };
 		1FED8FE0AA73898F00EC7258 /* Pods-tun.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.profile.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.profile.xcconfig"; sourceTree = "<group>"; };
+		229E00D94A6B837DFB5D8BEB /* Pods-tun.debug-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.debug-dev.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.debug-dev.xcconfig"; sourceTree = "<group>"; };
+		27780D791B477E96F38546D6 /* Pods-Runner.release dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release dev.xcconfig"; sourceTree = "<group>"; };
+		281779D8577F3E2704144C30 /* Pods-tun.debug dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.debug dev.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.debug dev.xcconfig"; sourceTree = "<group>"; };
 		333000ED22D3DE5D00554162 /* Warnings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Warnings.xcconfig; sourceTree = "<group>"; };
 		335BBD1A22A9A15E00E9071D /* GeneratedPluginRegistrant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedPluginRegistrant.swift; sourceTree = "<group>"; };
-		33CC10ED2044A3C60003C045 /* Mysterium VPN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mysterium VPN.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		33CC10ED2044A3C60003C045 /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		33CC10F02044A3C60003C045 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		33CC10F22044A3C60003C045 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Runner/Assets.xcassets; sourceTree = "<group>"; };
 		33CC10F52044A3C60003C045 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -82,9 +89,20 @@
 		33E51913231747F40026EE4D /* DebugProfile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DebugProfile.entitlements; sourceTree = "<group>"; };
 		33E51914231749380026EE4D /* Release.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Release.entitlements; sourceTree = "<group>"; };
 		33E5194F232828860026EE4D /* AppInfo.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = AppInfo.xcconfig; sourceTree = "<group>"; };
+		3C47B8CCA07C9521AD414780 /* Pods-tun.profile prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.profile prod.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.profile prod.xcconfig"; sourceTree = "<group>"; };
 		3DAD4AAF2DA85EC07DFB5F14 /* Pods-tun.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.release.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.release.xcconfig"; sourceTree = "<group>"; };
+		42002BC0DA0E2FD532D5ABA0 /* Pods-Runner.debug-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-dev.xcconfig"; sourceTree = "<group>"; };
 		4B29C76CADBCDF19F0A80362 /* Pods-tun.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.debug.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.debug.xcconfig"; sourceTree = "<group>"; };
+		4D96064F821F6DFDE36CC82B /* Pods-Runner.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-prod.xcconfig"; sourceTree = "<group>"; };
+		504BB144C44FF06F68A83533 /* Pods-Runner.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-dev.xcconfig"; sourceTree = "<group>"; };
+		56EE5FEEF1030092FF8E6183 /* Pods-Runner.profile dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile dev.xcconfig"; sourceTree = "<group>"; };
+		62E618579E963BE0816A8373 /* Pods-tun.profile-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.profile-prod.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.profile-prod.xcconfig"; sourceTree = "<group>"; };
+		68FA76871F0F0A6AAAFD0983 /* Pods-Runner.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-prod.xcconfig"; sourceTree = "<group>"; };
 		6CA046B90C23E9519A00C4E6 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
+		72286BDDE01520F85634121C /* Pods-tun.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.debug-prod.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.debug-prod.xcconfig"; sourceTree = "<group>"; };
+		762D761235A561B30883B4C0 /* Pods-Runner.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-dev.xcconfig"; sourceTree = "<group>"; };
+		77CDF2A520419F32E519D16C /* Pods-tun.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.profile-dev.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.profile-dev.xcconfig"; sourceTree = "<group>"; };
+		7A114624CD48D53865060259 /* Pods-Runner.release prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release prod.xcconfig"; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		97C8B25B29D46D680017C38F /* tun.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = tun.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,9 +111,14 @@
 		97C8B26129D46D680017C38F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97C8B26229D46D680017C38F /* tun.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = tun.entitlements; sourceTree = "<group>"; };
 		98209B67B7ACF3DAA80CB805 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
+		9ACD1539BF57F1C8B050CC6B /* Pods-tun.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.release-dev.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.release-dev.xcconfig"; sourceTree = "<group>"; };
 		9E78BECD32FC423FD3288C87 /* Pods_tun.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tun.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A257E1E6C8A39C8DB70E00C5 /* Pods-Runner.profile-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-prod.xcconfig"; sourceTree = "<group>"; };
 		ABC94764BC079AE0C4C661C4 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
+		B492CE57E95C5AFFB00A3337 /* Pods-tun.release dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.release dev.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.release dev.xcconfig"; sourceTree = "<group>"; };
+		D458B180EF2B3FC8EC86F32D /* Pods-tun.profile dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.profile dev.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.profile dev.xcconfig"; sourceTree = "<group>"; };
 		F0425E822852949D39D1D7E7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F69DD3357E6A41C9A6D82B69 /* Pods-Runner.debug prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug prod.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,7 +169,7 @@
 		33CC10EE2044A3C60003C045 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				33CC10ED2044A3C60003C045 /* Mysterium VPN.app */,
+				33CC10ED2044A3C60003C045 /* Runner.app */,
 				97C8B25B29D46D680017C38F /* tun.appex */,
 			);
 			name = Products;
@@ -206,6 +229,30 @@
 				4B29C76CADBCDF19F0A80362 /* Pods-tun.debug.xcconfig */,
 				3DAD4AAF2DA85EC07DFB5F14 /* Pods-tun.release.xcconfig */,
 				1FED8FE0AA73898F00EC7258 /* Pods-tun.profile.xcconfig */,
+				68FA76871F0F0A6AAAFD0983 /* Pods-Runner.debug-prod.xcconfig */,
+				42002BC0DA0E2FD532D5ABA0 /* Pods-Runner.debug-dev.xcconfig */,
+				4D96064F821F6DFDE36CC82B /* Pods-Runner.release-prod.xcconfig */,
+				762D761235A561B30883B4C0 /* Pods-Runner.release-dev.xcconfig */,
+				A257E1E6C8A39C8DB70E00C5 /* Pods-Runner.profile-prod.xcconfig */,
+				504BB144C44FF06F68A83533 /* Pods-Runner.profile-dev.xcconfig */,
+				72286BDDE01520F85634121C /* Pods-tun.debug-prod.xcconfig */,
+				229E00D94A6B837DFB5D8BEB /* Pods-tun.debug-dev.xcconfig */,
+				1229B94953D59ECE4A6BA9BF /* Pods-tun.release-prod.xcconfig */,
+				9ACD1539BF57F1C8B050CC6B /* Pods-tun.release-dev.xcconfig */,
+				62E618579E963BE0816A8373 /* Pods-tun.profile-prod.xcconfig */,
+				77CDF2A520419F32E519D16C /* Pods-tun.profile-dev.xcconfig */,
+				F69DD3357E6A41C9A6D82B69 /* Pods-Runner.debug prod.xcconfig */,
+				17CB567AA76798D106509F75 /* Pods-Runner.debug dev.xcconfig */,
+				7A114624CD48D53865060259 /* Pods-Runner.release prod.xcconfig */,
+				27780D791B477E96F38546D6 /* Pods-Runner.release dev.xcconfig */,
+				19A70E6BEC089D6DCAC86302 /* Pods-Runner.profile prod.xcconfig */,
+				56EE5FEEF1030092FF8E6183 /* Pods-Runner.profile dev.xcconfig */,
+				1259823BE59CE38263014BC2 /* Pods-tun.debug prod.xcconfig */,
+				281779D8577F3E2704144C30 /* Pods-tun.debug dev.xcconfig */,
+				115A6BC03AF51432B1225BD4 /* Pods-tun.release prod.xcconfig */,
+				B492CE57E95C5AFFB00A3337 /* Pods-tun.release dev.xcconfig */,
+				3C47B8CCA07C9521AD414780 /* Pods-tun.profile prod.xcconfig */,
+				D458B180EF2B3FC8EC86F32D /* Pods-tun.profile dev.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -228,6 +275,7 @@
 			buildConfigurationList = 33CC10FB2044A3C60003C045 /* Build configuration list for PBXNativeTarget "Runner" */;
 			buildPhases = (
 				DBF9419094A27DD1D96C408E /* [CP] Check Pods Manifest.lock */,
+				97E13FD52A4F23E6000F2BBF /* Copy Goole-Service plist file */,
 				33CC10E92044A3C60003C045 /* Sources */,
 				33CC10EA2044A3C60003C045 /* Frameworks */,
 				33CC10EB2044A3C60003C045 /* Resources */,
@@ -244,7 +292,7 @@
 			);
 			name = Runner;
 			productName = Runner;
-			productReference = 33CC10ED2044A3C60003C045 /* Mysterium VPN.app */;
+			productReference = 33CC10ED2044A3C60003C045 /* Runner.app */;
 			productType = "com.apple.product-type.application";
 		};
 		97C8B25A29D46D680017C38F /* tun */ = {
@@ -321,7 +369,6 @@
 			files = (
 				33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */,
 				33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */,
-				91E2594E7CFEFFB161611DA4 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,7 +477,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$PODS_ROOT/FirebaseCrashlytics/upload-symbols\" --flutter-project \"$PROJECT_DIR/firebase_app_id_file.json\" ";
+			shellScript = "if [ \"${CONFIGURATION}\" == \"Debug-prod\" ] || [ \"${CONFIGURATION}\" == \"Release-prod\" ] || [ \"${CONFIGURATION}\" == \"Profile-prod\" ] || [ \"${CONFIGURATION}\" == \"Release\" ]; then\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase --validate -ai 1:104590535697:ios:30362bcd1ee53392f355b0\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase -ai 1:104590535697:ios:30362bcd1ee53392f355b0\necho \"Production crashlytics upload\"\nelif [ \"${CONFIGURATION}\" == \"Debug-dev\" ] || [ \"${CONFIGURATION}\" == \"Release-dev\" ] || [ \"${CONFIGURATION}\" == \"Profile-dev\" ] || [ \"${CONFIGURATION}\" == \"Debug\" ]; then\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase --validate -ai 1:139303438361:ios:d2ba132c760888aeb7c288\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase -ai 1:139303438361:ios:d2ba132c760888aeb7c288\necho \"Development crashlytics upload\"\nfi\n";
+		};
+		97E13FD52A4F23E6000F2BBF /* Copy Goole-Service plist file */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Goole-Service plist file";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\n\nif [ \"${CONFIGURATION}\" == \"Debug-prod\" ] || [ \"${CONFIGURATION}\" == \"Release-prod\" ] || [ \"${CONFIGURATION}\" == \"Profile-prod\" ] || [ \"${CONFIGURATION}\" == \"Release\" ]; then\ncp \"${PROJECT_DIR}/config/prod/GoogleService-Info.plist\" \"${PLIST_DESTINATION}/GoogleService-Info.plist\"\necho \"Production plist copied\"\nelif [ \"${CONFIGURATION}\" == \"Debug-dev\" ] || [ \"${CONFIGURATION}\" == \"Release-dev\" ] || [ \"${CONFIGURATION}\" == \"Profile-dev\" ] || [ \"${CONFIGURATION}\" == \"Debug\" ]; then\ncp \"${PROJECT_DIR}/config/dev/GoogleService-Info.plist\" \"${PLIST_DESTINATION}/GoogleService-Info.plist\"\necho \"Development plist copied\"\nfi\n";
 		};
 		DBF9419094A27DD1D96C408E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -503,7 +568,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		338D0CE9231458BD00FA5F75 /* Profile */ = {
+		338D0CE9231458BD00FA5F75 /* Profile Prod */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
@@ -548,13 +613,14 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
-			name = Profile;
+			name = "Profile Prod";
 		};
-		338D0CEA231458BD00FA5F75 /* Profile */ = {
+		338D0CEA231458BD00FA5F75 /* Profile Prod */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				APP_NAME = "Mysterium VPN";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -571,20 +637,21 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn;
+				PRODUCT_NAME = Runner;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
-			name = Profile;
+			name = "Profile Prod";
 		};
-		338D0CEB231458BD00FA5F75 /* Profile */ = {
+		338D0CEB231458BD00FA5F75 /* Profile Prod */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
-			name = Profile;
+			name = "Profile Prod";
 		};
-		33CC10F92044A3C60003C045 /* Debug */ = {
+		33CC10F92044A3C60003C045 /* Debug Prod */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
@@ -636,9 +703,9 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
-			name = Debug;
+			name = "Debug Prod";
 		};
-		33CC10FA2044A3C60003C045 /* Release */ = {
+		33CC10FA2044A3C60003C045 /* Release Prod */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
@@ -683,13 +750,14 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
-			name = Release;
+			name = "Release Prod";
 		};
-		33CC10FC2044A3C60003C045 /* Debug */ = {
+		33CC10FC2044A3C60003C045 /* Debug Prod */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				APP_NAME = "Mysterium VPN";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -706,17 +774,19 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn;
+				PRODUCT_NAME = Runner;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
-			name = Debug;
+			name = "Debug Prod";
 		};
-		33CC10FD2044A3C60003C045 /* Release */ = {
+		33CC10FD2044A3C60003C045 /* Release Prod */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				APP_NAME = "Mysterium VPN";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -733,30 +803,31 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn;
+				PRODUCT_NAME = Runner;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
-			name = Release;
+			name = "Release Prod";
 		};
-		33CC111C2044C6BA0003C045 /* Debug */ = {
+		33CC111C2044C6BA0003C045 /* Debug Prod */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
-			name = Debug;
+			name = "Debug Prod";
 		};
-		33CC111D2044C6BA0003C045 /* Release */ = {
+		33CC111D2044C6BA0003C045 /* Release Prod */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
-			name = Release;
+			name = "Release Prod";
 		};
-		97C8B26729D46D680017C38F /* Debug */ = {
+		97C8B26729D46D680017C38F /* Debug Prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4B29C76CADBCDF19F0A80362 /* Pods-tun.debug.xcconfig */;
+			baseConfigurationReference = 1259823BE59CE38263014BC2 /* Pods-tun.debug prod.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -794,11 +865,11 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
-			name = Debug;
+			name = "Debug Prod";
 		};
-		97C8B26829D46D680017C38F /* Release */ = {
+		97C8B26829D46D680017C38F /* Release Prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3DAD4AAF2DA85EC07DFB5F14 /* Pods-tun.release.xcconfig */;
+			baseConfigurationReference = 115A6BC03AF51432B1225BD4 /* Pods-tun.release prod.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -834,11 +905,11 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
-			name = Release;
+			name = "Release Prod";
 		};
-		97C8B26929D46D680017C38F /* Profile */ = {
+		97C8B26929D46D680017C38F /* Profile Prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1FED8FE0AA73898F00EC7258 /* Pods-tun.profile.xcconfig */;
+			baseConfigurationReference = 3C47B8CCA07C9521AD414780 /* Pods-tun.profile prod.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -874,7 +945,386 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
-			name = Profile;
+			name = "Profile Prod";
+		};
+		97E13FC92A4F1DBD000F2BBF /* Debug Dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FLUTTER_TARGET = lib/main.dart;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = "Debug Dev";
+		};
+		97E13FCA2A4F1DBD000F2BBF /* Debug Dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				APP_NAME = "Mysterium VPN Test";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/DebugProfile.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 64RCS4PKRN;
+				FLUTTER_TARGET = lib/main.dart;
+				INFOPLIST_FILE = Runner/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.test;
+				PRODUCT_NAME = Runner;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = "Debug Dev";
+		};
+		97E13FCB2A4F1DBD000F2BBF /* Debug Dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Debug Dev";
+		};
+		97E13FCC2A4F1DBD000F2BBF /* Debug Dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 281779D8577F3E2704144C30 /* Pods-tun.debug dev.xcconfig */;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = tun/tun.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 64RCS4PKRN;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = tun/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = tun;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.test.tun;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = "Debug Dev";
+		};
+		97E13FCD2A4F1DC4000F2BBF /* Profile Dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FLUTTER_TARGET = lib/main.dart;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = "Profile Dev";
+		};
+		97E13FCE2A4F1DC4000F2BBF /* Profile Dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				APP_NAME = "Mysterium VPN Test";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/DebugProfile.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 64RCS4PKRN;
+				FLUTTER_TARGET = lib/main.dart;
+				INFOPLIST_FILE = Runner/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.test;
+				PRODUCT_NAME = Runner;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 5.0;
+			};
+			name = "Profile Dev";
+		};
+		97E13FCF2A4F1DC4000F2BBF /* Profile Dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Profile Dev";
+		};
+		97E13FD02A4F1DC4000F2BBF /* Profile Dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D458B180EF2B3FC8EC86F32D /* Pods-tun.profile dev.xcconfig */;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = tun/tun.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 64RCS4PKRN;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = tun/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = tun;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.test.tun;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = "Profile Dev";
+		};
+		97E13FD12A4F1DCC000F2BBF /* Release Dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FLUTTER_TARGET = lib/main.dart;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = "Release Dev";
+		};
+		97E13FD22A4F1DCC000F2BBF /* Release Dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				APP_NAME = "Mysterium VPN Test";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Release.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 64RCS4PKRN;
+				FLUTTER_TARGET = lib/main.dart;
+				INFOPLIST_FILE = Runner/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.test;
+				PRODUCT_NAME = Runner;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 5.0;
+			};
+			name = "Release Dev";
+		};
+		97E13FD32A4F1DCC000F2BBF /* Release Dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Release Dev";
+		};
+		97E13FD42A4F1DCC000F2BBF /* Release Dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B492CE57E95C5AFFB00A3337 /* Pods-tun.release dev.xcconfig */;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = tun/tun.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 64RCS4PKRN;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = tun/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = tun;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.test.tun;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = "Release Dev";
 		};
 /* End XCBuildConfiguration section */
 
@@ -882,42 +1332,54 @@
 		33CC10E82044A3C60003C045 /* Build configuration list for PBXProject "Runner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				33CC10F92044A3C60003C045 /* Debug */,
-				33CC10FA2044A3C60003C045 /* Release */,
-				338D0CE9231458BD00FA5F75 /* Profile */,
+				33CC10F92044A3C60003C045 /* Debug Prod */,
+				97E13FC92A4F1DBD000F2BBF /* Debug Dev */,
+				33CC10FA2044A3C60003C045 /* Release Prod */,
+				97E13FD12A4F1DCC000F2BBF /* Release Dev */,
+				338D0CE9231458BD00FA5F75 /* Profile Prod */,
+				97E13FCD2A4F1DC4000F2BBF /* Profile Dev */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "Release Prod";
 		};
 		33CC10FB2044A3C60003C045 /* Build configuration list for PBXNativeTarget "Runner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				33CC10FC2044A3C60003C045 /* Debug */,
-				33CC10FD2044A3C60003C045 /* Release */,
-				338D0CEA231458BD00FA5F75 /* Profile */,
+				33CC10FC2044A3C60003C045 /* Debug Prod */,
+				97E13FCA2A4F1DBD000F2BBF /* Debug Dev */,
+				33CC10FD2044A3C60003C045 /* Release Prod */,
+				97E13FD22A4F1DCC000F2BBF /* Release Dev */,
+				338D0CEA231458BD00FA5F75 /* Profile Prod */,
+				97E13FCE2A4F1DC4000F2BBF /* Profile Dev */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "Release Prod";
 		};
 		33CC111B2044C6BA0003C045 /* Build configuration list for PBXAggregateTarget "Flutter Assemble" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				33CC111C2044C6BA0003C045 /* Debug */,
-				33CC111D2044C6BA0003C045 /* Release */,
-				338D0CEB231458BD00FA5F75 /* Profile */,
+				33CC111C2044C6BA0003C045 /* Debug Prod */,
+				97E13FCB2A4F1DBD000F2BBF /* Debug Dev */,
+				33CC111D2044C6BA0003C045 /* Release Prod */,
+				97E13FD32A4F1DCC000F2BBF /* Release Dev */,
+				338D0CEB231458BD00FA5F75 /* Profile Prod */,
+				97E13FCF2A4F1DC4000F2BBF /* Profile Dev */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "Release Prod";
 		};
 		97C8B26A29D46D680017C38F /* Build configuration list for PBXNativeTarget "tun" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				97C8B26729D46D680017C38F /* Debug */,
-				97C8B26829D46D680017C38F /* Release */,
-				97C8B26929D46D680017C38F /* Profile */,
+				97C8B26729D46D680017C38F /* Debug Prod */,
+				97E13FCC2A4F1DBD000F2BBF /* Debug Dev */,
+				97C8B26829D46D680017C38F /* Release Prod */,
+				97E13FD42A4F1DCC000F2BBF /* Release Dev */,
+				97C8B26929D46D680017C38F /* Profile Prod */,
+				97E13FD02A4F1DC4000F2BBF /* Profile Dev */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "Release Prod";
 		};
 /* End XCConfigurationList section */
 	};
