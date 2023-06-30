@@ -4,9 +4,12 @@ import 'dart:async';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/stores/analytics_store.dart';
+import 'package:mysterium_vpn/stores/analytics_store_firebase.dart';
+import 'package:mysterium_vpn/stores/analytics_store_noop.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/connectivity_store.dart';
 import 'package:mysterium_vpn/stores/intercom_store.dart';
@@ -113,10 +116,12 @@ final tokenStreamPOD = StreamProvider<String>((ref) {
 });
 
 final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
+  if (isWindowsOrLinux()) {
+    return AnalyticsStoreNoop();
+  }
   final localDb = ref.watch(localDBPOD);
   final firebaseAnalytics = ref.watch(firebaseAnalyticsPOD);
-
-  return AnalyticsStore(
+  return AnalyticsStoreFirebase(
     localDb: localDb,
     analytics: firebaseAnalytics,
   );
