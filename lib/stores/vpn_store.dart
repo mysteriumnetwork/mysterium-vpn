@@ -125,9 +125,8 @@ abstract class _VpnStore with Store {
   @action
   Future<void> setupTunnel() async {
     try {
-      final bundleId = _env.getBundleId();
       setupTunnelFuture =
-          ObservableFuture(_wireguardService.setupTunnel(bundleId: bundleId));
+          ObservableFuture(_wireguardService.setupTunnel(bundleId: _env.getBundleId()));
       await setupTunnelFuture;
     } catch (e) {
       debugPrint(e.toString());
