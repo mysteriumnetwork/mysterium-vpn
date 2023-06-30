@@ -146,6 +146,7 @@ abstract class _AuthStore with Store {
 
       _authData = res;
       _authStatus = AuthStatus.authenticated;
+      initializeTrackingStores();
       debugPrint(_localDb.userData.toString());
     } on KeyDoesntExistsException {
       _authStatus = AuthStatus.unauthenticated;
