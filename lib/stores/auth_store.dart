@@ -144,20 +144,6 @@ abstract class _AuthStore with Store {
       }
       final res = await authenticateFeature;
 
-      await _localDb.setUserId(res!.username);
-      _analyticsStore
-        ..setUserId(res.username)
-        ..setLogin();
-      _intercomStore.registerUser(email: res.username);
-      FirebaseCrashlytics.instance.setUserIdentifier(res.username);
-      Sentry.configureScope(
-        (scope) => scope.setUser(
-          SentryUser(
-            id: res.userId,
-            email: res.username,
-          ),
-        ),
-      );
       _authData = res;
       _authStatus = AuthStatus.authenticated;
       debugPrint(_localDb.userData.toString());
@@ -176,6 +162,26 @@ abstract class _AuthStore with Store {
       debugPrint(e.toString());
       _authStatus = AuthStatus.unauthenticated;
     }
+  }
+
+  Future<void> initializeTrackingStores() async {
+    await _localDb.setUserId(_authData!.username);
+    _analyticsStore
+      ..setUserId(_authData!.username)
+      ..setLogin();
+    if (!isWindowsOrLinux()) {
+      _intercomStore.registerUser(email: _authData!.username);
+      FirebaseCrashlytics.instance.setUserIdentifier(_authData!.username);
+    }
+
+    Sentry.configureScope(
+      (scope) => scope.setUser(
+        SentryUser(
+          id: _authData!.userId,
+          email: _authData!.username,
+        ),
+      ),
+    );
   }
 
   @action
