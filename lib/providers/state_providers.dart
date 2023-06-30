@@ -2,11 +2,18 @@
 
 import 'dart:async';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/firebase_options.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
-import 'package:mysterium_vpn/stores/analytics_store.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store_firebase.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store_noop.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/connectivity_store.dart';
 import 'package:mysterium_vpn/stores/intercom_store.dart';
@@ -112,13 +119,24 @@ final tokenStreamPOD = StreamProvider<String>((ref) {
   return streamController.stream;
 });
 
-final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
-  final localDb = ref.watch(localDBPOD);
-  final firebaseAnalytics = ref.watch(firebaseAnalyticsPOD);
+final analyticsInitPOD = FutureProvider<void>((ref) async {
+  if (isWindowsOrLinux()) {
+    return;
+  }
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+});
 
-  return AnalyticsStore(
+final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
+  if (isWindowsOrLinux()) {
+    return AnalyticsStoreNoop();
+  }
+  final localDb = ref.watch(localDBPOD);
+  return AnalyticsStoreFirebase(
+    analytics: FirebaseAnalytics.instance,
+    crashlytics: FirebaseCrashlytics.instance,
     localDb: localDb,
-    analytics: firebaseAnalytics,
   );
 });
 

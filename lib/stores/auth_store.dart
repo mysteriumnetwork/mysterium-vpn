@@ -4,7 +4,6 @@ import 'dart:async';
 
 import 'package:app_links/app_links.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -18,7 +17,7 @@ import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
-import 'package:mysterium_vpn/stores/analytics_store.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -149,7 +148,6 @@ abstract class _AuthStore with Store {
         ..setUserId(res.username)
         ..setLogin();
       _intercomStore.registerUser(email: res.username);
-      FirebaseCrashlytics.instance.setUserIdentifier(res.username);
       Sentry.configureScope(
         (scope) => scope.setUser(
           SentryUser(
