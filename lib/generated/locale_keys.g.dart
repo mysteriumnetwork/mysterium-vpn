@@ -441,4 +441,7 @@ abstract class LocaleKeys {
   static const activeSubsPaidVia = 'activeSubsPaidVia';
   static const nextBilling = 'nextBilling';
   static const paymentMethod = 'paymentMethod';
+  static const refreshIP = 'refreshIP';
+  static const refreshIPAddress = 'refreshIPAddress';
+  static const getNewIPAddress = 'getNewIPAddress';
 }

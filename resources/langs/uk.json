@@ -438,5 +438,8 @@
   "serviceUnavailableError": "У нас виникли тимчасові проблеми з мережею. Спробуйте пізніше.",
   "activeSubsPaidVia": "У вас уже є активна підписка, оплачена через {store}. Будь ласка, відвідайте {store}, щоб внести зміни у свою підписку.",
   "nextBilling": "Наступний платіж: {date}",
-  "paymentMethod": "Спосіб оплати: {method}"
+  "paymentMethod": "Спосіб оплати: {method}",
+  "refreshIP": "Оновити IP",
+  "refreshIPAddress": "Оновити IP-адресу",
+  "getNewIPAddress": "Отримайте нову IP-адресу при кожному підключенні"
 }

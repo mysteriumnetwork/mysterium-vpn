@@ -122,6 +122,23 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_resetConnectionAtom = Atom(name: '_VpnStore._resetConnection', context: context);
+
+  bool get resetConnection {
+    _$_resetConnectionAtom.reportRead();
+    return super._resetConnection;
+  }
+
+  @override
+  bool get _resetConnection => resetConnection;
+
+  @override
+  set _resetConnection(bool value) {
+    _$_resetConnectionAtom.reportWrite(value, super._resetConnection, () {
+      super._resetConnection = value;
+    });
+  }
+
   late final _$_vpnConfigConsentAtom = Atom(name: '_VpnStore._vpnConfigConsent', context: context);
 
   bool? get vpnConfigConsent {
@@ -141,16 +158,16 @@ mixin _$VpnStore on _VpnStore, Store {
 
   late final _$_vpnConnectionAtom = Atom(name: '_VpnStore._vpnConnection', context: context);
 
-  VpnConnection get vpnConnection {
+  VpnConnection? get vpnConnection {
     _$_vpnConnectionAtom.reportRead();
     return super._vpnConnection;
   }
 
   @override
-  VpnConnection get _vpnConnection => vpnConnection;
+  VpnConnection? get _vpnConnection => vpnConnection;
 
   @override
-  set _vpnConnection(VpnConnection value) {
+  set _vpnConnection(VpnConnection? value) {
     _$_vpnConnectionAtom.reportWrite(value, super._vpnConnection, () {
       super._vpnConnection = value;
     });
@@ -272,6 +289,14 @@ mixin _$VpnStore on _VpnStore, Store {
     return _$setVpnConfigConsentAsyncAction.run(() => super.setVpnConfigConsent(value: value));
   }
 
+  late final _$toggleResetConnectionAsyncAction =
+      AsyncAction('_VpnStore.toggleResetConnection', context: context);
+
+  @override
+  Future<void> toggleResetConnection() {
+    return _$toggleResetConnectionAsyncAction.run(() => super.toggleResetConnection());
+  }
+
   late final _$generateKeyAsyncAction = AsyncAction('_VpnStore.generateKey', context: context);
 
   @override
@@ -306,17 +331,17 @@ mixin _$VpnStore on _VpnStore, Store {
   late final _$connectAsyncAction = AsyncAction('_VpnStore.connect', context: context);
 
   @override
-  Future<void> connect({Location? location}) {
-    return _$connectAsyncAction.run(() => super.connect(location: location));
+  Future<void> connect({Location? location, bool? refreshIP}) {
+    return _$connectAsyncAction.run(() => super.connect(location: location, refreshIP: refreshIP));
   }
 
   late final _$_completeConnectionAsyncAction =
       AsyncAction('_VpnStore._completeConnection', context: context);
 
   @override
-  Future<void> _completeConnection(Location? location, Stopwatch stopwatch) {
+  Future<void> _completeConnection(Location? location, Stopwatch stopwatch, bool? refreshIP) {
     return _$_completeConnectionAsyncAction
-        .run(() => super._completeConnection(location, stopwatch));
+        .run(() => super._completeConnection(location, stopwatch, refreshIP));
   }
 
   late final _$changeProtocolAsyncAction =
