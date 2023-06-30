@@ -146,7 +146,7 @@ abstract class _AuthStore with Store {
 
       _authData = res;
       _authStatus = AuthStatus.authenticated;
-      initializeTrackingStores();
+      initializeTrackingStores(username: _authData!.username);
       debugPrint(_localDb.userData.toString());
     } on KeyDoesntExistsException {
       _authStatus = AuthStatus.unauthenticated;
@@ -165,14 +165,14 @@ abstract class _AuthStore with Store {
     }
   }
 
-  Future<void> initializeTrackingStores() async {
-    await _localDb.setUserId(_authData!.username);
+  Future<void> initializeTrackingStores({required String username}) async {
+    await _localDb.setUserId(username);
     _analyticsStore
-      ..setUserId(_authData!.username)
+      ..setUserId(username)
       ..setLogin();
     if (!isWindowsOrLinux()) {
-      _intercomStore.registerUser(email: _authData!.username);
-      FirebaseCrashlytics.instance.setUserIdentifier(_authData!.username);
+      _intercomStore.registerUser(email: username);
+      FirebaseCrashlytics.instance.setUserIdentifier(username);
     }
 
     Sentry.configureScope(
