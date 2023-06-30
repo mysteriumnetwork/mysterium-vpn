@@ -1,6 +1,8 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/services/analytics/analytics_service.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/services/local_db_service.dart';
 
 part 'analytics_store.g.dart';
 
@@ -8,49 +10,58 @@ part 'analytics_store.g.dart';
 class AnalyticsStore = _AnalyticsStore with _$AnalyticsStore;
 
 abstract class _AnalyticsStore with Store {
-  _AnalyticsStore({required AnalyticsService analyticsService})
-      : _analyticsService = analyticsService;
+  _AnalyticsStore({required FirebaseAnalytics analytics, required LocalDBService localDb})
+      : _analytics = analytics,
+        _localDb = localDb;
 
-  final AnalyticsService _analyticsService;
+  final FirebaseAnalytics _analytics;
+  final LocalDBService _localDb;
+
+  @action
+  Future<void> logEvent(AnalyticsEvent event, Map<String, dynamic> parameters) async {
+    await _analytics.logEvent(name: event.toSnakeCase, parameters: parameters);
+  }
 
   @action
   Future<void> setUserId(String id) async {
-    await _analyticsService.setUserId(id);
+    await _analytics.setUserId(id: id);
   }
 
   @action
   Future<void> setUserProperty(String name, String value) async {
-    await _analyticsService.setUserProperty(name: name, value: value);
+    await _analytics.setUserProperty(name: name, value: value);
   }
 
   @action
   Future<void> setScreenName(String name) async {
-    await _analyticsService.setScreenName(name);
+    await _analytics.setCurrentScreen(screenName: name);
   }
 
   @action
   Future<void> setSessionTimeoutDuration() async {
-    await _analyticsService.setSessionTimeoutDuration();
+    await _analytics.logAppOpen();
   }
 
   @action
   Future<void> setLogin([AuthMethod loginMethod = AuthMethod.email]) async {
-    await _analyticsService.setLogin(loginMethod.name);
+    await _analytics.logLogin(loginMethod: loginMethod.name);
   }
 
   @action
   Future<void> setSignUp(String userId, [AuthMethod signUpMethod = AuthMethod.email]) async {
-    await _analyticsService.setSignUp(userId: userId, signUpMethod: signUpMethod.name);
+    if (!_localDb.checkUserExistance(userId)) {
+      await _analytics.logSignUp(signUpMethod: signUpMethod.name);
+    }
   }
 
   @action
   Future<void> setLogOut(String userId) async {
-    await setLogOut(userId);
+    await logEvent(AnalyticsEvent.logout, {'user_email': userId});
   }
 
   @action
   Future<void> setSearchEvent(String searchTerm) async {
-    await _analyticsService.setSearchEvent(searchTerm);
+    await _analytics.logSearch(searchTerm: searchTerm);
   }
 
   @action
@@ -58,16 +69,24 @@ abstract class _AnalyticsStore with Store {
     required String vpnServer,
     required Duration vpnProcessingTime,
   }) async {
-    await _analyticsService.setVpnConnect(
-      vpnServer: vpnServer,
-      vpnProcessingTime: vpnProcessingTime,
+    await logEvent(
+      AnalyticsEvent.vpnConnect,
+      {
+        'user_email': _localDb.userData.userId,
+        'vpn_server': vpnServer,
+        'vpn_processing_time': vpnProcessingTime.inSeconds,
+      },
     );
   }
 
   @action
   Future<void> setVpnDisconnect({required String vpnServer}) async {
-    await _analyticsService.setVpnDisconnect(
-      vpnServer: vpnServer,
+    await logEvent(
+      AnalyticsEvent.vpnDisconnect,
+      {
+        'user_email': _localDb.userData.userId,
+        'vpn_server': vpnServer,
+      },
     );
   }
 
@@ -77,10 +96,14 @@ abstract class _AnalyticsStore with Store {
     required String errorMessage,
     required String errorSource,
   }) async {
-    await _analyticsService.setVpnError(
-      errorCode: errorCode,
-      errorMessage: errorMessage,
-      errorSource: errorSource,
+    await logEvent(
+      AnalyticsEvent.vpnConnect,
+      {
+        'user_email': _localDb.userData.userId,
+        'error_code': errorCode,
+        'error_message': errorMessage,
+        'error_source': errorSource,
+      },
     );
   }
 
@@ -92,12 +115,16 @@ abstract class _AnalyticsStore with Store {
     required String transactionId,
     required String transactionDate,
   }) async {
-    await _analyticsService.setPaymentSuccessful(
-      paymentGateway: paymentGateway,
-      planType: planType,
-      planPrice: planPrice,
-      transactionId: transactionId,
-      transactionDate: transactionDate,
+    await logEvent(
+      AnalyticsEvent.paymentSuccessful,
+      {
+        'user_email': _localDb.userData.userId,
+        'payment_gateway': paymentGateway,
+        'plan_type': planType,
+        'plan_price': planPrice,
+        'transaction_id': transactionId,
+        'transaction_date': transactionDate,
+      },
     );
   }
 
@@ -107,10 +134,14 @@ abstract class _AnalyticsStore with Store {
     required String planType,
     required double planPrice,
   }) async {
-    await _analyticsService.setPaymentInitiated(
-      paymentGateway: paymentGateway,
-      planType: planType,
-      planPrice: planPrice,
+    await logEvent(
+      AnalyticsEvent.paymentInitiated,
+      {
+        'user_email': _localDb.userData.userId,
+        'payment_gateway': paymentGateway,
+        'plan_type': planType,
+        'plan_price': planPrice,
+      },
     );
   }
 
@@ -120,10 +151,14 @@ abstract class _AnalyticsStore with Store {
     required String planType,
     required double planPrice,
   }) async {
-    await _analyticsService.setManageSubscription(
-      paymentGateway: paymentGateway,
-      planType: planType,
-      planPrice: planPrice,
+    await logEvent(
+      AnalyticsEvent.paymentInitiated,
+      {
+        'user_email': _localDb.userData.userId,
+        'payment_gateway': paymentGateway,
+        'plan_type': planType,
+        'plan_price': planPrice,
+      },
     );
   }
 }
