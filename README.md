@@ -9,6 +9,7 @@ Next-gen Mysterium VPN client for mobile (iOS/Android) and desktop (Windows/MacO
 ```
 npm i -g firebase-tools
 firebase login
+dart pub global activate flutterfire_cli
 flutterfire configure
 ```
 
