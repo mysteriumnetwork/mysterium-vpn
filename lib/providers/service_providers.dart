@@ -25,10 +25,6 @@ final inAppPurchasePOD = Provider(
   (ref) => InAppPurchase.instance,
 );
 
-final firebaseAnalyticsPOD = Provider(
-  (ref) => FirebaseAnalytics.instance,
-);
-
 final intercomPOD = Provider(
   (ref) => Intercom.instance,
 );

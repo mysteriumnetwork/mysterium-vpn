@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -120,10 +121,9 @@ final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
     return AnalyticsStoreNoop();
   }
   final localDb = ref.watch(localDBPOD);
-  final firebaseAnalytics = ref.watch(firebaseAnalyticsPOD);
   return AnalyticsStoreFirebase(
     localDb: localDb,
-    analytics: firebaseAnalytics,
+    analytics: FirebaseAnalytics.instance,
   );
 });
 
