@@ -49,7 +49,6 @@ app.*.map.json
 **/*.g.dart
 **/*.freezed.dart
 !**/generated/*.g.dart
-.vscode/settings.json
 pubspec.lock
 Podfile.lock
 
