@@ -90,6 +90,39 @@
                 "--dart-define",
                 "FLAVOR=PROD",
             ]
-        }
+        },
+        {
+            "name": "Windows-debug",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "flutterMode": "debug",
+            "toolArgs": [
+                "--dart-define",
+                "FLAVOR=DEV",
+            ]
+        },
+        {
+            "name": "Windows-profile",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "flutterMode": "profile",
+            "toolArgs": [
+                "--dart-define",
+                "FLAVOR=DEV",
+            ]
+        },
+        {
+            "name": "Windows-release",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "flutterMode": "release",
+            "toolArgs": [
+                "--dart-define",
+                "FLAVOR=DEV",
+            ]
+        },
     ]
 }
