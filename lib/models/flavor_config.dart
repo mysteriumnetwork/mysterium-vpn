@@ -59,11 +59,13 @@ class FlavorConfig {
 
   bool isDev() => flavor == Flavor.dev;
 
-  String getBundleId() => Platform.isAndroid
-      ? androidBundleId
-      : Platform.isIOS || Platform.isMacOS
-          ? isDev()
-              ? iosTestBundleId
-              : iosBundleId
-          : '';
+  String getBundleId() {
+    if (Platform.isAndroid) {
+      return androidBundleId;
+    }
+    if (Platform.isIOS || Platform.isMacOS) {
+      return isDev() ? iosTestBundleId : iosBundleId;
+    }
+    return '';
+  }
 }
