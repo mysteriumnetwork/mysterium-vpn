@@ -2,11 +2,13 @@
 
 import 'dart:async';
 
+import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/appsflyer_options.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
@@ -18,6 +20,9 @@ import 'package:mysterium_vpn/stores/connectivity_store.dart';
 import 'package:mysterium_vpn/stores/intercom_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
+import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_store.dart';
+import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_store_appsflyer.dart';
+import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_store_noop.dart';
 import 'package:mysterium_vpn/stores/rest_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
@@ -32,7 +37,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final analyticsStore = ref.watch(analyticsStorePOD);
   final env = ref.watch(environmentPOD);
   final intercomStore = ref.watch(intercomStorePOD);
-
+  final marketingAnalyticsStore = ref.watch(marketingAnalyticsStorePOD);
   return AuthStore(
     authService: authService,
     appLinks: appLinks,
@@ -40,6 +45,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
     analyticsStore: analyticsStore,
     env: env,
     intercomStore: intercomStore,
+    marketingAnalyticsStore: marketingAnalyticsStore,
   );
 });
 
@@ -138,6 +144,24 @@ final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
     analytics: FirebaseAnalytics.instance,
     crashlytics: FirebaseCrashlytics.instance,
     localDb: localDb,
+  );
+});
+
+final marketingAnalyticsInitPOD = FutureProviderFamily<void, FlavorConfig>((ref, flavor) async {
+  if (isMobile() && flavor.isProduction()) {
+    await AppsflyerSdk(appsFlyerOptions).initSdk(
+      registerConversionDataCallback: true,
+      registerOnAppOpenAttributionCallback: true,
+    );
+  }
+});
+
+final marketingAnalyticsStorePOD = StateProvider<MarketingAnalyticsStore>((ref) {
+  if (isWindowsOrLinux()) {
+    return MarketingAnalyticsStoreNoop();
+  }
+  return MarketingAnalyticsStoreAppsflyer(
+    appsflyer: AppsflyerSdk(appsFlyerOptions),
   );
 });
 
