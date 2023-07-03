@@ -63,7 +63,7 @@ class Enviroment {
     final flavorConfig = setupFlavor(flavor);
     final container =
         ProviderContainer(overrides: [environmentPOD.overrideWith((ref) => flavorConfig)]);
-    await container.read(analyticsInitPOD.future);
+    await container.read(analyticsInitPOD(firebaseOptions).future);
     final analyticsStore = container.read(analyticsStorePOD);
 
     FlutterError.onError = (details) =>
