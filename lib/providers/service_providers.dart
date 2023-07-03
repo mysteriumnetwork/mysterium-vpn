@@ -3,7 +3,6 @@
 
 import 'package:app_links/app_links.dart';
 import 'package:dio/dio.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
@@ -25,10 +24,6 @@ final inAppPurchasePOD = Provider(
   (ref) => InAppPurchase.instance,
 );
 
-final firebaseAnalyticsPOD = Provider(
-  (ref) => FirebaseAnalytics.instance,
-);
-
 final intercomPOD = Provider(
   (ref) => Intercom.instance,
 );
@@ -46,6 +41,7 @@ final localDBPOD = Provider((ref) => LocalDBService());
 final authorizedApiClientPOD = Provider<Dio>((ref) {
   final environment = ref.watch(environmentPOD);
   final authStore = ref.watch(authStorePOD);
+  final analyticsStore = ref.watch(analyticsStorePOD);
   return Dio(
     BaseOptions(
       baseUrl: environment.values.baseUrl,
@@ -57,6 +53,7 @@ final authorizedApiClientPOD = Provider<Dio>((ref) {
       AppendTokenInterceptor(ref),
       UnauthorizedInterceptor(authStore),
       CustomLogInterceptor(
+        analyticsStore: analyticsStore,
         responseHeader: false,
         requestHeader: false,
         requestBody: true,
@@ -68,7 +65,7 @@ final authorizedApiClientPOD = Provider<Dio>((ref) {
 
 final unauthorizedApiClientPOD = Provider<Dio>((ref) {
   final environment = ref.watch(environmentPOD);
-
+  final analyticsStore = ref.watch(analyticsStorePOD);
   return Dio(
     BaseOptions(
       baseUrl: environment.values.baseUrl,
@@ -78,6 +75,7 @@ final unauthorizedApiClientPOD = Provider<Dio>((ref) {
   )
     ..interceptors.add(
       CustomLogInterceptor(
+        analyticsStore: analyticsStore,
         responseHeader: false,
         requestHeader: false,
         requestBody: true,

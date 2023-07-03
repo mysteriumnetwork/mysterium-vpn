@@ -13,7 +13,7 @@ import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/models/subscription_config.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
-import 'package:mysterium_vpn/stores/analytics_store.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 
 // Include generated file

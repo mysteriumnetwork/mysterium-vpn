@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -51,8 +50,6 @@ class Enviroment {
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
     );
 
-    final windowsOrLinux = isWindowsOrLinux();
-
     FlutterError.demangleStackTrace = (StackTrace stack) {
       if (stack is stack_trace.Trace) {
         return stack.vmTrace;
@@ -62,17 +59,20 @@ class Enviroment {
       }
       return stack;
     };
-    if (!windowsOrLinux) {
-      await Firebase.initializeApp(
-        options: firebaseOptions,
-      );
-      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
-      PlatformDispatcher.instance.onError = (error, stack) {
-        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-        return true;
-      };
-    }
+    final flavorConfig = setupFlavor(flavor);
+    final container =
+        ProviderContainer(overrides: [environmentPOD.overrideWith((ref) => flavorConfig)]);
+    await container.read(analyticsInitPOD.future);
+    final analyticsStore = container.read(analyticsStorePOD);
+
+    FlutterError.onError = (details) =>
+        analyticsStore.logError(err: details.exception, stack: details.stack, fatal: true);
+    PlatformDispatcher.instance.onError = (error, stack) {
+      analyticsStore.logError(err: error, stack: stack, fatal: true);
+      return true;
+    };
+
     if (isMobile()) {
       await AppsflyerSdk(appsFlyerOptions).initSdk(
         registerConversionDataCallback: true,
@@ -88,7 +88,6 @@ class Enviroment {
       ..registerAdapter(ApprovalAdapter());
     await Hive.openBox<UserData>('user_data');
 
-    final flavorConfig = setupFlavor(flavor);
     debugPrint('App started in ${flavorConfig.flavor} mode');
     debugPrint('Base URL ${flavorConfig.values.baseUrl}');
     await SentryFlutter.init(
@@ -103,8 +102,8 @@ class Enviroment {
       appRunner: () {
         FlutterNativeSplash.remove();
         runApp(
-          ProviderScope(
-            overrides: [environmentPOD.overrideWith((ref) => flavorConfig)],
+          UncontrolledProviderScope(
+            container: container,
             child: EasyLocalization(
               useOnlyLangCode: true,
               supportedLocales: kSupportedLocales,

@@ -4,7 +4,6 @@ import 'dart:async';
 
 import 'package:app_links/app_links.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -18,7 +17,7 @@ import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
-import 'package:mysterium_vpn/stores/analytics_store.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -144,9 +143,21 @@ abstract class _AuthStore with Store {
       }
       final res = await authenticateFeature;
 
+      await _localDb.setUserId(res!.username);
+      _analyticsStore
+        ..setUserId(res.username)
+        ..setLogin();
+      _intercomStore.registerUser(email: res.username);
+      Sentry.configureScope(
+        (scope) => scope.setUser(
+          SentryUser(
+            id: res.userId,
+            email: res.username,
+          ),
+        ),
+      );
       _authData = res;
       _authStatus = AuthStatus.authenticated;
-      initializeTrackingStores(username: _authData!.username);
       debugPrint(_localDb.userData.toString());
     } on KeyDoesntExistsException {
       _authStatus = AuthStatus.unauthenticated;
@@ -163,26 +174,6 @@ abstract class _AuthStore with Store {
       debugPrint(e.toString());
       _authStatus = AuthStatus.unauthenticated;
     }
-  }
-
-  Future<void> initializeTrackingStores({required String username}) async {
-    await _localDb.setUserId(username);
-    _analyticsStore
-      ..setUserId(username)
-      ..setLogin();
-    if (!isWindowsOrLinux()) {
-      _intercomStore.registerUser(email: username);
-      FirebaseCrashlytics.instance.setUserIdentifier(username);
-    }
-
-    Sentry.configureScope(
-      (scope) => scope.setUser(
-        SentryUser(
-          id: _authData!.userId,
-          email: _authData!.username,
-        ),
-      ),
-    );
   }
 
   @action
