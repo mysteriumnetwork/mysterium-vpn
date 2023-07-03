@@ -157,8 +157,7 @@ abstract class _SubscriptionStore with Store {
       final item =
           _products.firstWhere((element) => element.id == selectedProductId).productDetails;
       // _subscriptionService.createSubscriptionRequest(
-      //   SubscriptionRequest(gatewayId: getPlatformGateway(), planId: selectedProductId),
-      // );
+
       await _subscriptionService.subscribeToPackage(
         productDetails: item,
         purchasedProductId: ((_subscription?.active ?? false) && _subscription?.gateway == 'google')
