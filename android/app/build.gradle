@@ -63,6 +63,20 @@ def keystorePropertiesFile = rootProject.file('key.properties')
         versionName flutterVersionName
     }
 
+       flavorDimensions "env"
+       productFlavors {
+           create("dev") {
+               dimension "env"
+               applicationIdSuffix ".test"
+               manifestPlaceholders = [ "appLabel": "Mysterium VPN Test"]
+               versionNameSuffix "-test"
+           }
+       create("prod") {
+               dimension "env"
+               manifestPlaceholders = [ "appLabel": "Mysterium VPN"]
+           }
+       }
+
     signingConfigs {
        release {
            keyAlias keystoreProperties['keyAlias']
