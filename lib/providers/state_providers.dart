@@ -8,7 +8,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/firebase_options.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -55,6 +54,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final analyticsStore = ref.watch(analyticsStorePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
   final localDBService = ref.watch(localDBPOD);
+  final env = ref.watch(environmentPOD);
   return VpnStore(
     apiService: apiService,
     locationsStore: locationsStore,
@@ -62,6 +62,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     analyticsStore: analyticsStore,
     subscriptionStore: subscriptionStore,
     localDBService: localDBService,
+    env: env,
   );
 });
 
@@ -98,8 +99,8 @@ final restApiStorePOD = Provider<RestStore>((ref) {
 
 final environmentPOD = StateProvider<FlavorConfig>(
   (ref) => FlavorConfig(
-    flavor: Flavor.production,
-    values: FlavorValues.production(),
+    flavor: Flavor.dev,
+    values: FlavorValues.dev(),
   ),
 );
 
@@ -119,12 +120,12 @@ final tokenStreamPOD = StreamProvider<String>((ref) {
   return streamController.stream;
 });
 
-final analyticsInitPOD = FutureProvider<void>((ref) async {
+final analyticsInitPOD = FutureProviderFamily<void, FirebaseOptions>((ref, options) async {
   if (isWindowsOrLinux()) {
     return;
   }
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+    options: options,
   );
 });
 

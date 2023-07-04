@@ -1,28 +1,128 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "DEV",
+            "name": "DEV-debug",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
+            "flutterMode": "debug",
             "args": [
+                "--flavor",
+                "dev",
+            ],
+            "toolArgs": [
                 "--dart-define",
-                "FLAVOR=DEV"
+                "FLAVOR=DEV",
             ]
         },
         {
-            "name": "PROD",
+            "name": "DEV-profile",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
+            "flutterMode": "profile",
             "args": [
+                "--flavor",
+                "dev",
+            ],
+            "toolArgs": [
                 "--dart-define",
-                "FLAVOR=PROD"
+                "FLAVOR=DEV",
             ]
-        }
+        },
+        {
+            "name": "DEV-release",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "flutterMode": "release",
+            "args": [
+                "--flavor",
+                "dev",
+            ],
+            "toolArgs": [
+                "--dart-define",
+                "FLAVOR=DEV",
+            ]
+        },
+        {
+            "name": "PROD-debug",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "flutterMode": "debug",
+            "args": [
+                "--flavor",
+                "prod",
+            ],
+            "toolArgs": [
+                "--dart-define",
+                "FLAVOR=PROD",
+            ]
+        },
+        {
+            "name": "PROD-release",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "flutterMode": "release",
+            "args": [
+                "--flavor",
+                "prod",
+            ],
+            "toolArgs": [
+                "--dart-define",
+                "FLAVOR=PROD",
+            ]
+        },
+        {
+            "name": "PROD-profile",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "flutterMode": "profile",
+            "args": [
+                "--flavor",
+                "prod",
+            ],
+            "toolArgs": [
+                "--dart-define",
+                "FLAVOR=PROD",
+            ]
+        },
+        {
+            "name": "Windows-debug",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "flutterMode": "debug",
+            "toolArgs": [
+                "--dart-define",
+                "FLAVOR=DEV",
+            ]
+        },
+        {
+            "name": "Windows-profile",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "flutterMode": "profile",
+            "toolArgs": [
+                "--dart-define",
+                "FLAVOR=DEV",
+            ]
+        },
+        {
+            "name": "Windows-release",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "flutterMode": "release",
+            "toolArgs": [
+                "--dart-define",
+                "FLAVOR=DEV",
+            ]
+        },
     ]
 }

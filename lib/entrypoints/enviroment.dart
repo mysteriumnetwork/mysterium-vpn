@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,6 +27,7 @@ import 'package:window_manager/window_manager.dart';
 class Enviroment {
   Future<void> launch({
     required String flavor,
+    required FirebaseOptions firebaseOptions,
   }) async {
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
     if (isDekstop()) {
@@ -61,7 +63,7 @@ class Enviroment {
     final flavorConfig = setupFlavor(flavor);
     final container =
         ProviderContainer(overrides: [environmentPOD.overrideWith((ref) => flavorConfig)]);
-    await container.read(analyticsInitPOD.future);
+    await container.read(analyticsInitPOD(firebaseOptions).future);
     final analyticsStore = container.read(analyticsStorePOD);
 
     FlutterError.onError = (details) =>
@@ -125,7 +127,7 @@ class Enviroment {
         return FlavorConfig(flavor: Flavor.production, values: FlavorValues.production());
 
       default:
-        return FlavorConfig(flavor: Flavor.production, values: FlavorValues.production());
+        return FlavorConfig(flavor: Flavor.dev, values: FlavorValues.dev());
     }
   }
 }
