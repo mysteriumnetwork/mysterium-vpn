@@ -19,6 +19,7 @@ import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom_store.dart';
+import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -37,10 +38,12 @@ abstract class _AuthStore with Store {
     required AnalyticsStore analyticsStore,
     required FlavorConfig env,
     required IntercomStore intercomStore,
+    required MarketingAnalyticsStore marketingAnalyticsStore,
   })  : _authService = authService,
         _appLinks = appLinks,
         _localDb = localDb,
         _analyticsStore = analyticsStore,
+        _marketingAnalyticsStore = marketingAnalyticsStore,
         _env = env,
         _intercomStore = intercomStore {
     initAuth();
@@ -53,7 +56,7 @@ abstract class _AuthStore with Store {
   final AnalyticsStore _analyticsStore;
   final FlavorConfig _env;
   final IntercomStore _intercomStore;
-
+  final MarketingAnalyticsStore _marketingAnalyticsStore;
   @readonly
   AuthStatus _authStatus = AuthStatus.unknown;
 
@@ -142,20 +145,7 @@ abstract class _AuthStore with Store {
         );
       }
       final res = await authenticateFeature;
-
-      await _localDb.setUserId(res!.username);
-      _analyticsStore
-        ..setUserId(res.username)
-        ..setLogin();
-      _intercomStore.registerUser(email: res.username);
-      Sentry.configureScope(
-        (scope) => scope.setUser(
-          SentryUser(
-            id: res.userId,
-            email: res.username,
-          ),
-        ),
-      );
+      _initializeAnalyticsStores(username: res!.username, userId: res.userId);
       _authData = res;
       _authStatus = AuthStatus.authenticated;
       debugPrint(_localDb.userData.toString());
@@ -174,6 +164,26 @@ abstract class _AuthStore with Store {
       debugPrint(e.toString());
       _authStatus = AuthStatus.unauthenticated;
     }
+  }
+
+  Future<void> _initializeAnalyticsStores({
+    required String username,
+    required String userId,
+  }) async {
+    await _localDb.setUserId(username);
+    _analyticsStore
+      ..setUserId(username)
+      ..setLogin();
+    _marketingAnalyticsStore.setUserId(username);
+    _intercomStore.registerUser(email: username);
+    Sentry.configureScope(
+      (scope) => scope.setUser(
+        SentryUser(
+          id: userId,
+          email: username,
+        ),
+      ),
+    );
   }
 
   @action
@@ -202,7 +212,6 @@ abstract class _AuthStore with Store {
         ),
       );
       final code = await loginFeature;
-      _analyticsStore.setSignUp(email);
       if (code != null) {
         authenticate(code: code);
       }

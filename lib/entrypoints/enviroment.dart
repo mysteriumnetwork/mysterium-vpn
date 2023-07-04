@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -10,7 +9,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/app.dart';
-import 'package:mysterium_vpn/appsflyer_options.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -60,25 +58,6 @@ class Enviroment {
       return stack;
     };
 
-    final flavorConfig = setupFlavor(flavor);
-    final container =
-        ProviderContainer(overrides: [environmentPOD.overrideWith((ref) => flavorConfig)]);
-    await container.read(analyticsInitPOD(firebaseOptions).future);
-    final analyticsStore = container.read(analyticsStorePOD);
-
-    FlutterError.onError = (details) =>
-        analyticsStore.logError(err: details.exception, stack: details.stack, fatal: true);
-    PlatformDispatcher.instance.onError = (error, stack) {
-      analyticsStore.logError(err: error, stack: stack, fatal: true);
-      return true;
-    };
-
-    if (isMobile()) {
-      await AppsflyerSdk(appsFlyerOptions).initSdk(
-        registerConversionDataCallback: true,
-        registerOnAppOpenAttributionCallback: true,
-      );
-    }
     await SharedPreferenceService.instance.init();
     await SecureStorageService.instance.init();
     await EasyLocalization.ensureInitialized();
@@ -87,6 +66,21 @@ class Enviroment {
       ..registerAdapter(UserDataAdapter())
       ..registerAdapter(ApprovalAdapter());
     await Hive.openBox<UserData>('user_data');
+
+    final flavorConfig = setupFlavor(flavor);
+
+    final container =
+        ProviderContainer(overrides: [environmentPOD.overrideWith((ref) => flavorConfig)]);
+    await container.read(analyticsInitPOD(firebaseOptions).future);
+    final analyticsStore = container.read(analyticsStorePOD);
+    await container.read(marketingAnalyticsInitPOD(flavorConfig).future);
+
+    FlutterError.onError = (details) =>
+        analyticsStore.logError(err: details.exception, stack: details.stack, fatal: true);
+    PlatformDispatcher.instance.onError = (error, stack) {
+      analyticsStore.logError(err: error, stack: stack, fatal: true);
+      return true;
+    };
 
     debugPrint('App started in ${flavorConfig.flavor} mode');
     debugPrint('Base URL ${flavorConfig.values.baseUrl}');
