@@ -11,7 +11,6 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/models/subscription_config.dart';
-import 'package:mysterium_vpn/models/subscription_request.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -157,9 +156,8 @@ abstract class _SubscriptionStore with Store {
       _subscriptonStatus = SubscriptionStatus.pending;
       final item =
           _products.firstWhere((element) => element.id == selectedProductId).productDetails;
-      _subscriptionService.createSubscriptionRequest(
-        SubscriptionRequest(gatewayId: getPlatformGateway(), planId: selectedProductId),
-      );
+      // _subscriptionService.createSubscriptionRequest(
+
       await _subscriptionService.subscribeToPackage(
         productDetails: item,
         purchasedProductId: ((_subscription?.active ?? false) && _subscription?.gateway == 'google')

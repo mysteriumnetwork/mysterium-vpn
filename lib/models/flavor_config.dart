@@ -1,4 +1,15 @@
-enum Flavor { dev, production }
+import 'dart:io';
+
+import 'package:mysterium_vpn/common/constants/constants.dart';
+
+enum Flavor {
+  dev('DEV'),
+  production('PROD');
+
+  const Flavor(this.name);
+
+  final String name;
+}
 
 class FlavorValues {
   FlavorValues({
@@ -37,28 +48,24 @@ class FlavorConfig {
   factory FlavorConfig({
     required Flavor flavor,
     required FlavorValues values,
-  }) {
-    _instance ??= FlavorConfig._internal(
-      flavor,
-      values,
-    );
-    return _instance!;
-  }
+  }) =>
+      FlavorConfig._internal(flavor, values);
   FlavorConfig._internal(this.flavor, this.values);
   final Flavor flavor;
 
   final FlavorValues values;
 
-  static final FlavorConfig _default = FlavorConfig._internal(
-    Flavor.production,
-    FlavorValues.production(),
-  );
+  bool isProduction() => flavor == Flavor.production;
 
-  static FlavorConfig? _instance;
+  bool isDev() => flavor == Flavor.dev;
 
-  static FlavorConfig get instance => _instance ?? _default;
-
-  static bool isProduction() => instance.flavor == Flavor.production;
-
-  static bool isDev() => instance.flavor == Flavor.dev;
+  String getBundleId() {
+    if (Platform.isAndroid) {
+      return androidBundleId;
+    }
+    if (Platform.isIOS || Platform.isMacOS) {
+      return isDev() ? iosTestBundleId : iosBundleId;
+    }
+    return '';
+  }
 }

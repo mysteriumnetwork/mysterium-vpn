@@ -31,13 +31,10 @@ class SettingsDesktopLeftPanel extends ConsumerWidget {
         ListView(
           shrinkWrap: true,
           children: [
-            Visibility(
-              visible: false,
-              child: CategoryItem(
-                isSelected: settingCategory == SettingCategory.connection,
-                title: SettingCategory.connection.trKey.tr(),
-                onTap: () => updateSelectedCategory(ref, SettingCategory.connection),
-              ),
+            CategoryItem(
+              isSelected: settingCategory == SettingCategory.connection,
+              title: SettingCategory.connection.trKey.tr(),
+              onTap: () => updateSelectedCategory(ref, SettingCategory.connection),
             ),
             CategoryItem(
               isSelected: settingCategory == SettingCategory.application,
