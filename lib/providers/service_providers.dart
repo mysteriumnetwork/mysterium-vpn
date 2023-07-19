@@ -1,6 +1,3 @@
-// import 'package:hooks_riverpod/hooks_riverpod.dart';
-//import 'package:wireguard_dart/wireguard_dart.dart';
-
 import 'package:app_links/app_links.dart';
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -45,8 +42,6 @@ final authorizedApiClientPOD = Provider<Dio>((ref) {
   return Dio(
     BaseOptions(
       baseUrl: environment.values.baseUrl,
-      connectTimeout: const Duration(seconds: 15),
-      receiveTimeout: const Duration(seconds: 15),
     ),
   )
     ..interceptors.addAll([
@@ -69,8 +64,6 @@ final unauthorizedApiClientPOD = Provider<Dio>((ref) {
   return Dio(
     BaseOptions(
       baseUrl: environment.values.baseUrl,
-      connectTimeout: const Duration(seconds: 15),
-      receiveTimeout: const Duration(seconds: 15),
     ),
   )
     ..interceptors.add(
