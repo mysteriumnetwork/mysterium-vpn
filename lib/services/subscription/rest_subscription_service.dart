@@ -131,20 +131,50 @@ class RestSubscriptionService extends SubscriptionService {
             .map((e) => Platform.isAndroid ? e.googleProductId : e.appleProductId)
             .toSet(),
       );
-      return subscriptionConfig.plans
-          .map(
-            (e) => PurchasableProduct(
-              planDetails: e,
-              productDetails: storePlans.productDetails.firstWhere(
-                (element) => Platform.isAndroid
-                    ? element.id == e.googleProductId
-                    : element.id == e.appleProductId,
-              ),
-              status:
-                  purchasedProductId == e.id ? ProductStatus.purchased : ProductStatus.purchasable,
+      final productsDetails = <PurchasableProduct>[];
+
+      for (final plan in subscriptionConfig.plans) {
+        ProductDetails? productDetails;
+        ProductDetails? basePlan;
+        double? rawPrice;
+        String? currencyCode;
+        String? currencySymbol;
+        if (Platform.isAndroid) {
+          final products = storePlans.productDetails.where(
+            (element) => element.id == plan.googleProductId,
+          );
+          if (products.length > 1) {
+            basePlan = products.firstWhereOrNull((element) => element.rawPrice > 0);
+            productDetails = products.firstWhere((element) => element.rawPrice == 0);
+          } else {
+            productDetails = storePlans.productDetails.firstWhereOrNull(
+              (element) => element.id == plan.googleProductId,
+            );
+          }
+        } else {
+          productDetails = storePlans.productDetails.firstWhereOrNull(
+            (element) => element.id == plan.appleProductId,
+          );
+        }
+        rawPrice = basePlan?.rawPrice ?? productDetails?.rawPrice;
+        currencyCode = basePlan?.currencyCode ?? productDetails?.currencyCode;
+        currencySymbol = basePlan?.currencySymbol ?? productDetails?.currencySymbol;
+        if (productDetails != null) {
+          productsDetails.add(
+            PurchasableProduct(
+              planDetails: plan,
+              productDetails: productDetails,
+              status: purchasedProductId == plan.id
+                  ? ProductStatus.purchased
+                  : ProductStatus.purchasable,
+              rawPrice: rawPrice!,
+              currencyCode: currencyCode!,
+              currencySymbol: currencySymbol!,
             ),
-          )
-          .toList()
+          );
+        }
+      }
+      return productsDetails
         ..sortByCompare((e) => e.productDetails.rawPrice, (a, b) => a.compareTo(b));
     } on Exception catch (e) {
       throw handleException(e);

@@ -16,10 +16,16 @@ abstract class _PurchasableProduct with Store {
     required this.planDetails,
     required this.productDetails,
     required this.status,
+    required this.rawPrice,
+    required this.currencySymbol,
+    required this.currencyCode,
   });
 
   final PlanDetails planDetails;
   final ProductDetails productDetails;
+  final double rawPrice;
+  final String currencySymbol;
+  final String currencyCode;
   @observable
   ProductStatus status;
 
@@ -28,29 +34,29 @@ abstract class _PurchasableProduct with Store {
 
   @computed
   String get monthlyPrice => planDetails.id == kMonthlyPlan
-      ? productDetails.rawPrice.price(
-          currencySymbol: productDetails.currencySymbol,
-          currencyCode: productDetails.currencyCode,
+      ? rawPrice.price(
+          currencySymbol: currencySymbol,
+          currencyCode: currencyCode,
         )
       : planDetails.id == kAnnualPlan
-          ? productDetails.rawPrice.pricePerMonth(
+          ? rawPrice.pricePerMonth(
               months: 12,
-              currencySymbol: productDetails.currencySymbol,
-              currencyCode: productDetails.currencyCode,
+              currencySymbol: currencySymbol,
+              currencyCode: currencyCode,
             )
-          : productDetails.rawPrice.pricePerMonth(
+          : rawPrice.pricePerMonth(
               months: 6,
-              currencySymbol: productDetails.currencySymbol,
-              currencyCode: productDetails.currencyCode,
+              currencySymbol: currencySymbol,
+              currencyCode: currencyCode,
             );
   @computed
   bool get isPupular => planDetails.id == kPopularPlan;
   @computed
   String get billedInTotal => LocaleKeys.billedInTotal.tr(
         namedArgs: {
-          'amount': productDetails.rawPrice.price(
-            currencySymbol: productDetails.currencySymbol,
-            currencyCode: productDetails.currencyCode,
+          'amount': rawPrice.price(
+            currencySymbol: currencySymbol,
+            currencyCode: currencyCode,
           ),
           'period': planDetails.id == kMonthlyPlan
               ? LocaleKeys.monthly.tr()
