@@ -52,8 +52,8 @@ class ProductItem extends ConsumerWidget {
                   EasyText(
                     productDetails.id != kMonthlyPlan
                         ? '${originalPirce.price(
-                            currencyCode: productDetails.productDetails.currencyCode,
-                            currencySymbol: productDetails.productDetails.currencySymbol,
+                            currencyCode: productDetails.currencyCode,
+                            currencySymbol: productDetails.currencySymbol,
                           )} '
                         : '',
                     color: Theme.of(context).secondaryHeaderColor,
