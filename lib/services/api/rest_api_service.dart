@@ -146,8 +146,9 @@ class RestApiService extends ApiService {
         return res.data!['ip'] as String;
       }
       return null;
-    } catch (e) {
-      return null;
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      throw handleException(e);
     }
   }
 }
