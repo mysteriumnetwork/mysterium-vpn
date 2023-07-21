@@ -58,16 +58,16 @@ class Enviroment {
       return stack;
     };
 
+    final flavorConfig = setupFlavor(flavor);
+
     await SharedPreferenceService.instance.init();
-    await SecureStorageService.instance.init();
+    await SecureStorageService.instance.init(flavorConfig);
     await EasyLocalization.ensureInitialized();
     await Hive.initFlutter();
     Hive
       ..registerAdapter(UserDataAdapter())
       ..registerAdapter(ApprovalAdapter());
     await Hive.openBox<UserData>('user_data');
-
-    final flavorConfig = setupFlavor(flavor);
 
     final container =
         ProviderContainer(overrides: [environmentPOD.overrideWith((ref) => flavorConfig)]);
