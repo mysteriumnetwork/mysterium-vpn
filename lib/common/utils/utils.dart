@@ -415,7 +415,6 @@ void handleOnBillingPage({
   required String? gateway,
   required String? accessToken,
 }) {
-  final isMobilePlatform = isMobile();
   final isMobileGateway = isMobilePaymentGateway(gateway);
 
   if (subscriptionActive && isMobileGateway) {
@@ -433,7 +432,7 @@ void handleOnBillingPage({
     return;
   }
 
-  if (!subscriptionActive && isMobilePlatform) {
+  if (!subscriptionActive && !Platform.isWindows) {
     context.beamToNamed(Routes.subscription.toRoute);
     return;
   }
