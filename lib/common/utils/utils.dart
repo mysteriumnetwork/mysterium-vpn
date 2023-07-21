@@ -289,7 +289,7 @@ TargetPlatform getPlatform() {
 String getPlatformGateway() {
   if (Platform.isAndroid) {
     return 'google';
-  } else if (Platform.isIOS) {
+  } else if (Platform.isIOS || Platform.isMacOS) {
     return 'apple';
   } else {
     return '';
