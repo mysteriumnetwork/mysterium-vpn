@@ -1,6 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
@@ -11,6 +12,7 @@ import 'package:mysterium_vpn/components/lifecycle_listener.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/services/in_app_review/in_app_review.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 
@@ -23,6 +25,14 @@ class MyApp extends HookConsumerWidget {
     final authStore = ref.read(authStorePOD);
     final routeDelegate = ref.read(routerDelegatePOD);
     final localStore = ref.read(localeStorePOD);
+
+    useEffect(
+      () {
+        InAppReviewObserver().monitor();
+        return null;
+      },
+      [],
+    );
 
     return ReactionBuilder(
       builder: (_) => reaction(
