@@ -7,6 +7,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/appsflyer_options.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -17,7 +18,9 @@ import 'package:mysterium_vpn/stores/analytics/analytics_store_firebase.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_noop.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/connectivity_store.dart';
-import 'package:mysterium_vpn/stores/intercom_store.dart';
+import 'package:mysterium_vpn/stores/intercom/intercom_desktop_store.dart';
+import 'package:mysterium_vpn/stores/intercom/intercom_mobile_store.dart';
+import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_store.dart';
@@ -166,9 +169,8 @@ final marketingAnalyticsStorePOD = StateProvider<MarketingAnalyticsStore>((ref) 
 });
 
 final intercomStorePOD = StateProvider<IntercomStore>((ref) {
-  final intercom = ref.watch(intercomPOD);
-
-  return IntercomStore(
-    intercom: intercom,
-  );
+  if (isWindowsOrLinux()) {
+    return IntercomDesktopStore();
+  }
+  return IntercomMobileStore(intercom: Intercom.instance);
 });
