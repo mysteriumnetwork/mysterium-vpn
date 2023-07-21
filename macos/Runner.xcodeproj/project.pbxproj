@@ -104,6 +104,7 @@
 		77CDF2A520419F32E519D16C /* Pods-tun.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.profile-dev.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.profile-dev.xcconfig"; sourceTree = "<group>"; };
 		7A114624CD48D53865060259 /* Pods-Runner.release prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release prod.xcconfig"; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		9704CC232A6A79F600FD7D99 /* tunTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "tunDebug Dev.entitlements"; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		97C8B25B29D46D680017C38F /* tun.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = tun.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		97C8B25C29D46D680017C38F /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
@@ -213,6 +214,7 @@
 		97C8B25E29D46D680017C38F /* tun */ = {
 			isa = PBXGroup;
 			children = (
+				9704CC232A6A79F600FD7D99 /* tunTest.entitlements */,
 				97C8B25F29D46D680017C38F /* PacketTunnelProvider.swift */,
 				97C8B26129D46D680017C38F /* Info.plist */,
 				97C8B26229D46D680017C38F /* tun.entitlements */,
@@ -1211,7 +1213,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = tun/tun.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "tun/tunTest.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1376,7 +1378,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = tun/tun.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "tun/tunTest.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1539,7 +1541,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = tun/tun.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "tun/tunTest.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
