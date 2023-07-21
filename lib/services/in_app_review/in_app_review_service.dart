@@ -12,14 +12,14 @@ class InAppReviewService {
   int minDaysBeforeRemind = 14;
   final _sharedPrefs = SharedPreferenceService.instance;
 
-  Future<void> monitor() async {
-    if (await _isFirstLaunch() == false) {
+  void monitor() {
+    if (!_isFirstLaunch()) {
       _setInstallDate();
     }
   }
 
-  Future<bool> showRateDialogIfMeetsConditions() async {
-    final isMeetsConditions = await _shouldShowRateDialog();
+  bool showRateDialogIfMeetsConditions() {
+    final isMeetsConditions = _shouldShowRateDialog();
     if (isMeetsConditions) {
       Future.delayed(const Duration(seconds: 5), _showDialog);
     }
@@ -34,26 +34,19 @@ class InAppReviewService {
     _setRemindTimestamp();
   }
 
-  Future<bool> _shouldShowRateDialog() async =>
-      await _isOverInstallDate() && await _isOverRemindDate();
+  bool _shouldShowRateDialog() => _isOverInstallDate() && _isOverRemindDate();
 
-  Future<bool> _isOverInstallDate() async {
-    final overInstallDate = await _isOverDate(await _getInstallTimestamp(), minDaysAfterInstall);
-    return overInstallDate;
-  }
+  bool _isOverInstallDate() => _isOverDate(_getInstallTimestamp(), minDaysAfterInstall);
 
-  Future<bool> _isOverRemindDate() async {
-    final overRemindDate = await _isOverDate(await _getRemindTimestamp(), minDaysBeforeRemind);
-    return overRemindDate;
-  }
+  bool _isOverRemindDate() => _isOverDate(_getRemindTimestamp(), minDaysBeforeRemind);
 
-  Future<bool> _isOverDate(int targetDate, int threshold) async =>
+  bool _isOverDate(int targetDate, int threshold) =>
       DateTime.now().millisecondsSinceEpoch - targetDate >= threshold * 24 * 60 * 60 * 1000;
 
-  Future<bool> _isFirstLaunch() async => _sharedPrefs.checkExistance(StorageKeys.appInstallDay);
+  bool _isFirstLaunch() => _sharedPrefs.checkExistance(StorageKeys.appInstallDay);
 
-  Future<int> _getInstallTimestamp() async {
-    final installTimestamp = await _sharedPrefs.getAppInstallDay();
+  int _getInstallTimestamp() {
+    final installTimestamp = _sharedPrefs.getAppInstallDay();
     if (installTimestamp != null) {
       return installTimestamp;
     }
@@ -63,8 +56,8 @@ class InAppReviewService {
   Future<bool> _setInstallDate() async =>
       _sharedPrefs.setAppInstallDay(DateTime.now().millisecondsSinceEpoch);
 
-  Future<int> _getRemindTimestamp() async {
-    final remindIntervalTime = await _sharedPrefs.getRemindTimeStamp();
+  int _getRemindTimestamp() {
+    final remindIntervalTime = _sharedPrefs.getRemindTimeStamp();
     if (remindIntervalTime != null) {
       return remindIntervalTime;
     }
