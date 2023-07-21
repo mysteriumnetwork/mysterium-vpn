@@ -42,7 +42,7 @@ class SharedPreferenceService {
 
   Future<bool> clear() async => _prefsInstance.clear();
 
-  bool containsKey(String key) => _prefsInstance.containsKey(key);
+  Future<bool> checkExistance(StorageKeys key) async => _prefsInstance.containsKey(key.value);
 
   Locale? getLocale() {
     final languageCode = getString(StorageKeys.languageCode.value);
@@ -63,4 +63,10 @@ class SharedPreferenceService {
 
   Future<bool> setThemeType(ThemeMode themeMode) async =>
       setString(StorageKeys.themeMype.value, themeMode.value);
+
+  Future<bool> setAppInstallDay(int value) async => setInt(StorageKeys.appInstallDay.value, value);
+  Future<int?> getAppInstallDay() async => getInt(StorageKeys.appInstallDay.value);
+  Future<int?> getRemindTimeStamp() async => getInt(StorageKeys.inAppReviewRemindInterval.value);
+  Future<bool> setRemindTimeStamp(int value) async =>
+      setInt(StorageKeys.inAppReviewRemindInterval.value, value);
 }
