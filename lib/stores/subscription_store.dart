@@ -140,7 +140,7 @@ abstract class _SubscriptionStore with Store {
             _purchasedProductId,
           ),
         );
-        _originalPrice = _products.firstWhere((e) => e.id == kMonthlyPlan).productDetails.rawPrice;
+        _originalPrice = _products.firstWhere((e) => e.id == kMonthlyPlan).rawPrice;
       }
     } catch (e) {
       if (kDebugMode) {
