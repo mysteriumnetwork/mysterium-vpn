@@ -14,8 +14,7 @@ class SubscriptionPage extends StatelessWidget {
           windows: (BuildContext context) =>
               const InformationalView(translationKey: LocaleKeys.subscriptionDesktop),
           android: (BuildContext context) => const SubscriptionMobileView(),
-          macos: (BuildContext context) =>
-              const InformationalView(translationKey: LocaleKeys.subscriptionDesktop),
+          macos: (BuildContext context) => const SubscriptionMobileView(),
           ios: (BuildContext context) => const SubscriptionMobileView(),
         ),
       );
