@@ -48,9 +48,7 @@ class LoginDesktopViewLeftPanel extends ConsumerWidget {
                 useSystemColor: false,
                 color: Palette.purple,
                 text: LocaleKeys.signIn.tr(),
-                onPressed: () {
-                  isMobile() ? showAuthView(context) : authStore.loginDesktop();
-                },
+                onPressed: () => handleOnSignIn(context, authStore),
               ),
               Align(
                 alignment: Alignment.centerLeft,
