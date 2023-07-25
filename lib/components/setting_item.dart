@@ -38,6 +38,7 @@ class SettingItem extends StatelessWidget {
                       alignment: WrapAlignment.spaceBetween,
                       children: [
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             EasyText(title, fontSize: 16).padding(bottom: 8),
                             description ?? const SizedBox.shrink(),

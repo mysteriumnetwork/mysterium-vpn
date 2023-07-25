@@ -19,17 +19,16 @@ import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 Future<void> shownDeleteAccountDialog(BuildContext context, AuthStore store) async {
-  await showModalBottomSheet(
+  showModalBottomSheet(
     clipBehavior: Clip.none,
-    isScrollControlled: true,
-    isDismissible: true,
+    constraints: const BoxConstraints.tightFor(width: double.infinity),
     context: context,
     backgroundColor: Theme.of(context).primaryColor,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
     ),
     builder: (context) => Padding(
-      padding: MediaQuery.of(context).viewInsets,
+      padding: EdgeInsets.zero,
       child: _DeleteAccountDialog(store: store),
     ),
   );
@@ -97,24 +96,24 @@ class _DeleteAccountDialog extends HookWidget {
                 useSystemColor: false,
                 width: 160,
                 color: Palette.pink,
-                onPressed: confirmationMessage.value == 'DELETE' &&
-                        store.deleteAccountFeature.status != FutureStatus.pending
-                    ? () async {
-                        await store.deleteAccount();
-                        if (isMounted()) {
-                          await Beamer.of(context).popRoute();
-                          shownInfoDialog(
-                            context,
-                            LocaleKeys.accountSuccessfullyDeleted.tr(),
-                            isDismissible: false,
-                            messages: [
-                              LocaleKeys.redirectToLoginPage.tr(),
-                            ],
-                            onConfirm: store.logout,
-                          );
-                        }
-                      }
-                    : null,
+                onPressed:
+                    confirmationMessage.value == 'DELETE' && store.deleteAccountFeature.status != FutureStatus.pending
+                        ? () async {
+                            await store.deleteAccount();
+                            if (isMounted()) {
+                              await Beamer.of(context).popRoute();
+                              shownInfoDialog(
+                                context,
+                                LocaleKeys.accountSuccessfullyDeleted.tr(),
+                                isDismissible: false,
+                                messages: [
+                                  LocaleKeys.redirectToLoginPage.tr(),
+                                ],
+                                onConfirm: store.logout,
+                              );
+                            }
+                          }
+                        : null,
                 child: store.deleteAccountFeature.status == FutureStatus.pending
                     ? const LoadingIndicator(
                         radius: 20,
