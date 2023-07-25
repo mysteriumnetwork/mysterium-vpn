@@ -49,7 +49,6 @@ class SearchField extends HookWidget {
       ),
       autocorrect: false,
       onChanged: store.setLocationKeyword,
-      onSubmitted: store.setLocationKeyword,
     ).height(40);
   }
 }

@@ -4,10 +4,7 @@ import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/routes.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -19,7 +16,6 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/consent/agreements.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class VpnConfigConsentForm extends HookConsumerWidget {
   const VpnConfigConsentForm({super.key});
@@ -32,8 +28,6 @@ class VpnConfigConsentForm extends HookConsumerWidget {
     final vpnStore = ref.watch(vpnStorePOD);
     final height = getMediaHeight(context);
     final isMounted = useIsMounted();
-    final subscriptionStore = ref.watch(subscriptionStorePOD);
-    final environment = ref.watch(environmentPOD);
 
     return Column(
       children: [
@@ -61,31 +55,22 @@ class VpnConfigConsentForm extends HookConsumerWidget {
           ],
         ).scrollable().expanded(),
         const Agreements().padding(vertical: height * 0.02),
-        Observer(
-          builder: (context) => EasyButton(
-            useSystemColor: false,
-            color: Palette.purple,
-            width: 250,
-            onPressed: () async {
-              await vpnStore.setVpnConfigConsent(value: true);
-              if (isMounted()) {
-                if (subscriptionStore.isSubscribed == false) {
-                  if (isMobile()) {
-                    context.beamToReplacementNamed(Routes.subscription.toRoute);
-                    return;
-                  }
-                  launchUrl(Uri.parse(environment.values.billingPage));
-                }
-
-                context.beamBack();
-              }
-            },
-            child: EasyText(
-              LocaleKeys.acceptAndContinue.tr(),
-              color: Palette.white,
-            ),
-          ).padding(bottom: height * 0.045),
-        ),
+        EasyButton(
+          useSystemColor: false,
+          color: Palette.purple,
+          width: 250,
+          onPressed: () async {
+            await vpnStore.setVpnConfigConsent(value: true);
+            if (isMounted()) {
+              ref.read(subscriptionStorePOD).fetchSubscription();
+              context.beamBack();
+            }
+          },
+          child: EasyText(
+            LocaleKeys.acceptAndContinue.tr(),
+            color: Palette.white,
+          ),
+        ).padding(bottom: height * 0.045),
       ],
     ).padding(horizontal: 20);
   }

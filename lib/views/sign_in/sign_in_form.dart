@@ -18,6 +18,7 @@ import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -40,6 +41,7 @@ class SignInForm extends HookConsumerWidget {
               formControlName: 'email',
               autofillHints: const [AutofillHints.email],
               keyboardType: TextInputType.emailAddress,
+              onSubmitted: (control) => _onSignInPressed(signInForm, isMounted, context, store),
               onEditingComplete: (_) => TextInput.finishAutofillContext(),
               validationMessages: {
                 ValidationMessage.required: (_) => LocaleKeys.emailIsRequired.tr(),
@@ -67,20 +69,10 @@ class SignInForm extends HookConsumerWidget {
             builder: (_) {
               final status = store.loginFeature.status;
               return ReactiveFormConsumer(
-                builder: (_, form, child) => EasyButton(
+                builder: (_, signInForm, child) => EasyButton(
                   width: double.infinity,
                   onPressed: status != FutureStatus.pending
-                      ? form.valid
-                          ? () async {
-                              TextInput.finishAutofillContext();
-                              final email = form.control('email').value as String;
-                              final result = await store.login(email: email);
-                              if (isMounted() && result == null) {
-                                // ignore: use_build_context_synchronously
-                                context.beamToNamed(Routes.checkYourEmail.toRoute);
-                              }
-                            }
-                          : () => form.markAllAsTouched()
+                      ? () => _onSignInPressed(signInForm, isMounted, context, store)
                       : null,
                   child: status != FutureStatus.pending
                       ? EasyText(
@@ -153,5 +145,25 @@ class SignInForm extends HookConsumerWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _onSignInPressed(
+    FormGroup form,
+    bool Function() isMounted,
+    BuildContext context,
+    AuthStore store,
+  ) async {
+    if (!form.valid) {
+      form.markAllAsTouched();
+      return;
+    }
+
+    TextInput.finishAutofillContext();
+    final email = form.control('email').value as String;
+    final result = await store.login(email: email);
+    if (isMounted() && result == null) {
+      // ignore: use_build_context_synchronously
+      context.beamToNamed(Routes.checkYourEmail.toRoute);
+    }
   }
 }

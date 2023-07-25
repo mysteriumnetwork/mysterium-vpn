@@ -28,7 +28,7 @@ class Enviroment {
     required FirebaseOptions firebaseOptions,
   }) async {
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-    if (isDekstop()) {
+    if (isDesktop()) {
       await windowManager.ensureInitialized();
     }
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
@@ -58,16 +58,16 @@ class Enviroment {
       return stack;
     };
 
+    final flavorConfig = setupFlavor(flavor);
+
     await SharedPreferenceService.instance.init();
-    await SecureStorageService.instance.init();
+    await SecureStorageService.instance.init(flavorConfig);
     await EasyLocalization.ensureInitialized();
     await Hive.initFlutter();
     Hive
       ..registerAdapter(UserDataAdapter())
       ..registerAdapter(ApprovalAdapter());
     await Hive.openBox<UserData>('user_data');
-
-    final flavorConfig = setupFlavor(flavor);
 
     final container =
         ProviderContainer(overrides: [environmentPOD.overrideWith((ref) => flavorConfig)]);
