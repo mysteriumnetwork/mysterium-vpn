@@ -4,7 +4,6 @@ import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
@@ -56,23 +55,22 @@ class VpnConfigConsentForm extends HookConsumerWidget {
           ],
         ).scrollable().expanded(),
         const Agreements().padding(vertical: height * 0.02),
-        Observer(
-          builder: (context) => EasyButton(
-            useSystemColor: false,
-            color: Palette.purple,
-            width: 250,
-            onPressed: () async {
-              await vpnStore.setVpnConfigConsent(value: true);
-              if (isMounted()) {
-                context.beamBack();
-              }
-            },
-            child: EasyText(
-              LocaleKeys.acceptAndContinue.tr(),
-              color: Palette.white,
-            ),
-          ).padding(bottom: height * 0.045),
-        ),
+        EasyButton(
+          useSystemColor: false,
+          color: Palette.purple,
+          width: 250,
+          onPressed: () async {
+            await vpnStore.setVpnConfigConsent(value: true);
+            if (isMounted()) {
+              ref.read(subscriptionStorePOD).fetchSubscription();
+              context.beamBack();
+            }
+          },
+          child: EasyText(
+            LocaleKeys.acceptAndContinue.tr(),
+            color: Palette.white,
+          ),
+        ).padding(bottom: height * 0.045),
       ],
     ).padding(horizontal: 20);
   }

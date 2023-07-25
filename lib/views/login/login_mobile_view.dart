@@ -44,9 +44,7 @@ class LoginMobileView extends ConsumerWidget {
                         useSystemColor: false,
                         color: Palette.purple,
                         text: LocaleKeys.signIn.tr(),
-                        onPressed: () {
-                          isMobile() ? showAuthView(context) : authStore.loginDesktop();
-                        },
+                        onPressed: () => handleOnSignIn(context, authStore),
                       ).padding(bottom: 60),
                       Visibility(
                         visible: false,
