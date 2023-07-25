@@ -25,7 +25,7 @@ import 'package:window_manager/window_manager.dart';
 class Enviroment {
   Future<void> launch({
     required String flavor,
-    required FirebaseOptions firebaseOptions,
+    required FirebaseOptions? firebaseOptions,
   }) async {
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
     if (isDekstop()) {
