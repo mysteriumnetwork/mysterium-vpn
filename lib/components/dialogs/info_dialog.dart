@@ -23,6 +23,7 @@ Future<void> shownInfoDialog(
     clipBehavior: Clip.none,
     isScrollControlled: true,
     isDismissible: isDismissible,
+    constraints: const BoxConstraints.tightFor(width: double.infinity),
     context: context,
     backgroundColor: Theme.of(context).primaryColor,
     shape: const RoundedRectangleBorder(
