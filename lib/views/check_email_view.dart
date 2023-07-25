@@ -58,9 +58,12 @@ class CheckYourEmailView extends HookConsumerWidget {
                     maxLines: 5,
                     textAlign: TextAlign.center,
                   ).padding(bottom: height * .05),
-                  EasyButton(
-                    text: LocaleKeys.openEmailApp.tr(),
-                    onPressed: () => openEmailApp(context, isMounted),
+                  Visibility(
+                    visible: isMobile(),
+                    child: EasyButton(
+                      text: LocaleKeys.openEmailApp.tr(),
+                      onPressed: () => openEmailApp(context, isMounted),
+                    ),
                   ),
                 ],
               ).scrollable().padding(all: 20),
