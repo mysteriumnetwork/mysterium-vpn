@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,6 +22,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:url_protocol/url_protocol.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:wireguard_dart/wireguard_dart.dart';
 
 class Enviroment {
   Future<void> launch({
@@ -35,6 +37,7 @@ class Enviroment {
 
     if (Platform.isWindows) {
       registerProtocolHandler('mysteriumvpn');
+      nativeWindowsInit();
     }
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.light.copyWith(statusBarIconBrightness: Brightness.light),
@@ -69,14 +72,13 @@ class Enviroment {
       ..registerAdapter(ApprovalAdapter());
     await Hive.openBox<UserData>('user_data');
 
-    final container =
-        ProviderContainer(overrides: [environmentPOD.overrideWith((ref) => flavorConfig)]);
+    final container = ProviderContainer(overrides: [environmentPOD.overrideWith((ref) => flavorConfig)]);
     await container.read(analyticsInitPOD(firebaseOptions).future);
     final analyticsStore = container.read(analyticsStorePOD);
     await container.read(marketingAnalyticsInitPOD(flavorConfig).future);
 
-    FlutterError.onError = (details) =>
-        analyticsStore.logError(err: details.exception, stack: details.stack, fatal: true);
+    FlutterError.onError =
+        (details) => analyticsStore.logError(err: details.exception, stack: details.stack, fatal: true);
     PlatformDispatcher.instance.onError = (error, stack) {
       analyticsStore.logError(err: error, stack: stack, fatal: true);
       return true;
@@ -87,8 +89,7 @@ class Enviroment {
     await SentryFlutter.init(
       (options) {
         options
-          ..dsn =
-              'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200'
+          ..dsn = 'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200'
           ..sendClientReports = true
           ..maxRequestBodySize = MaxRequestBodySize.small
           ..maxResponseBodySize = MaxResponseBodySize.small;
@@ -123,5 +124,22 @@ class Enviroment {
       default:
         return FlavorConfig(flavor: Flavor.dev, values: FlavorValues.dev());
     }
+  }
+
+  Future<void> nativeInitBackground(List<Object> args) async {
+    final rootIsolateToken = args[0] as RootIsolateToken;
+    BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
+
+    try {
+      await WireguardDart().nativeInit();
+      debugPrint('Native init done');
+    } catch (e) {
+      debugPrint('Native init error');
+    }
+  }
+
+  Future<void> nativeWindowsInit() async {
+    final rootIsolateToken = RootIsolateToken.instance!;
+    Isolate.spawn(nativeInitBackground, [rootIsolateToken]);
   }
 }

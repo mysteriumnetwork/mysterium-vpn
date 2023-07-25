@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -87,15 +88,18 @@ abstract class _SubscriptionStore with Store {
   Future<void> initStore() async {
     autorun((_) {
       if (_authStore.authData != null) {
-        final purchaseUpdated = _inAppPurchase.purchaseStream;
         _purchasedProductId = _localDb.getSubscriptionPlan();
         selectedProductId = _purchasedProductId ?? kPopularPlan;
         fetchSubscription().whenComplete(getSubscriptionsConfig);
-        _purchaseStream = purchaseUpdated.listen(
-          _onPurchaseUpdate,
-          onDone: _updateStreamOnDone,
-          onError: _updateStreamOnError,
-        );
+        if (!Platform.isWindows) {
+          final purchaseUpdated = _inAppPurchase.purchaseStream;
+          _purchaseStream = purchaseUpdated.listen(
+            _onPurchaseUpdate,
+            onDone: _updateStreamOnDone,
+            onError: _updateStreamOnError,
+          );
+        }
+
         _subscriptionService.clearPendingTransactions();
       }
     });
@@ -154,17 +158,13 @@ abstract class _SubscriptionStore with Store {
   Future<void> subscribeToPackage() async {
     try {
       _subscriptonStatus = SubscriptionStatus.pending;
-      final item =
-          _products.firstWhere((element) => element.id == selectedProductId).productDetails;
+      final item = _products.firstWhere((element) => element.id == selectedProductId).productDetails;
       // _subscriptionService.createSubscriptionRequest(
 
       await _subscriptionService.subscribeToPackage(
         productDetails: item,
         purchasedProductId: ((_subscription?.active ?? false) && _subscription?.gateway == 'google')
-            ? _products
-                .firstWhereOrNull((element) => element.id == _purchasedProductId)
-                ?.productDetails
-                .id
+            ? _products.firstWhereOrNull((element) => element.id == _purchasedProductId)?.productDetails.id
             : null,
         userId: _authStore.authData!.userId,
       );
@@ -208,11 +208,9 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<void> _handlePurchase(PurchaseDetails purchaseDetails) async {
-    final product = _products
-        .firstWhereOrNull((element) => element.productDetails.id == purchaseDetails.productID);
+    final product = _products.firstWhereOrNull((element) => element.productDetails.id == purchaseDetails.productID);
 
-    if (purchaseDetails.status == PurchaseStatus.error ||
-        purchaseDetails.status == PurchaseStatus.canceled) {
+    if (purchaseDetails.status == PurchaseStatus.error || purchaseDetails.status == PurchaseStatus.canceled) {
       if (product != null) {
         product.status = ProductStatus.purchasable;
       }
@@ -237,9 +235,8 @@ abstract class _SubscriptionStore with Store {
         _purchasedProductId = _subscription?.planId;
         if (product != null) {
           for (final product in _products) {
-            product.status = product.planDetails.id == _purchasedProductId
-                ? ProductStatus.purchased
-                : ProductStatus.purchasable;
+            product.status =
+                product.planDetails.id == _purchasedProductId ? ProductStatus.purchased : ProductStatus.purchasable;
           }
           _analyticsStore.setPaymentSuccessful(
             paymentGateway: getPlatformGateway(),
@@ -302,9 +299,8 @@ abstract class _SubscriptionStore with Store {
         );
 
         _subscription = await verifySubscriptionFuture;
-        _subscriptonStatus = _subscription?.active ?? false
-            ? SubscriptionStatus.purchased
-            : SubscriptionStatus.notVerified;
+        _subscriptonStatus =
+            _subscription?.active ?? false ? SubscriptionStatus.purchased : SubscriptionStatus.notVerified;
       } catch (e) {
         _subscriptonStatus = SubscriptionStatus.verifyingError;
       }

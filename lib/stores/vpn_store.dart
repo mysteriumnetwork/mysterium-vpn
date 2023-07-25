@@ -7,6 +7,7 @@ import 'package:async/async.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/constants/mock.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -114,8 +115,7 @@ abstract class _VpnStore with Store {
   bool get isConnected => _connectionStatus == ConnectionStatus.connected;
   @computed
   bool get isLoading =>
-      _connectionStatus == ConnectionStatus.disconnecting ||
-      _connectionStatus == ConnectionStatus.connecting;
+      _connectionStatus == ConnectionStatus.disconnecting || _connectionStatus == ConnectionStatus.connecting;
   @readonly
   String? _connectingLocationCode;
 
@@ -125,8 +125,12 @@ abstract class _VpnStore with Store {
   @action
   Future<void> setupTunnel() async {
     try {
-      setupTunnelFuture =
-          ObservableFuture(_wireguardService.setupTunnel(bundleId: _env.getBundleId()));
+      setupTunnelFuture = ObservableFuture(
+        _wireguardService.setupTunnel(
+          bundleId: _env.getBundleId(),
+          win32ServiceName: win32ServiceName,
+        ),
+      );
       await setupTunnelFuture;
     } catch (e) {
       debugPrint(e.toString());
@@ -230,10 +234,7 @@ abstract class _VpnStore with Store {
     location ??= refreshIP ?? false
         ? _vpnConnection?.location
         : _locationsStore.vpnLocations.allLocations.isNotEmpty
-            ? [
-                ..._locationsStore.vpnLocations.allLocations,
-                ..._locationsStore.vpnLocations.topLocations
-              ].randomItem()
+            ? [..._locationsStore.vpnLocations.allLocations, ..._locationsStore.vpnLocations.topLocations].randomItem()
             : null;
     _connectingLocationCode = location?.countryCode;
 
@@ -315,7 +316,10 @@ abstract class _VpnStore with Store {
     if (!_isCanceled) {
       await connectWireguard();
       try {
-        final ipAddress = await _apiService.getIPAdress();
+        final ipAddress = await _apiService.getIPAdress().timeout(
+              const Duration(seconds: 10),
+              onTimeout: () => throw TimeoutException('IP address timeout'),
+            );
         _vpnConnection = VpnConnection(
           connectionIP: ipAddress ?? '--',
           location: location!,
@@ -364,8 +368,7 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> disconnect() async {
-    if (_connectionStatus != ConnectionStatus.connected &&
-        _connectionStatus != ConnectionStatus.connecting) {
+    if (_connectionStatus != ConnectionStatus.connected && _connectionStatus != ConnectionStatus.connecting) {
       return;
     }
     _connectionStatus = ConnectionStatus.disconnecting;
