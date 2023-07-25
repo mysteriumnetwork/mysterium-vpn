@@ -28,7 +28,7 @@ class Enviroment {
     required FirebaseOptions firebaseOptions,
   }) async {
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-    if (isDekstop()) {
+    if (isDesktop()) {
       await windowManager.ensureInitialized();
     }
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
