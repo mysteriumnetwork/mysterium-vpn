@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mysterium_vpn/common/enums/storage_keys.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 // Project imports:
 
@@ -16,16 +17,16 @@ class SecureStorageService {
 
   static final SecureStorageService instance = SecureStorageService._internal();
 
-  Future<void> init() async {
-    _securedStorage = const FlutterSecureStorage(
-      aOptions: AndroidOptions(
+  Future<void> init(FlavorConfig flavor) async {
+    _securedStorage = FlutterSecureStorage(
+      aOptions: const AndroidOptions(
         encryptedSharedPreferences: true,
       ),
       iOptions: IOSOptions(
-        accountName: 'mysterium_vpn',
+        accountName: flavor.values.accountName,
       ),
       mOptions: MacOsOptions(
-        accountName: 'mysterium_vpn',
+        accountName: flavor.values.accountName,
       ),
     );
   }

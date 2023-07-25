@@ -314,18 +314,30 @@ abstract class _VpnStore with Store {
     debugPrint(_vpnConfig?.config);
     if (!_isCanceled) {
       await connectWireguard();
-      final ipAddress = await _apiService.getIPAdress();
-      _vpnConnection = VpnConnection(
-        connectionIP: ipAddress ?? '--',
-        location: location!,
-      );
+      try {
+        final ipAddress = await _apiService.getIPAdress();
+        _vpnConnection = VpnConnection(
+          connectionIP: ipAddress ?? '--',
+          location: location!,
+        );
+      } catch (e) {
+        showSnackbar(
+          LocaleKeys.failedToConnect.tr(
+            namedArgs: {
+              'countryName': location?.countryName ?? '',
+            },
+          ),
+        );
+        await disconnect();
+        return;
+      }
+
       _connectionStatus = ConnectionStatus.connected;
       stopwatch.stop();
       _analyticsStore.setVpnConnect(
         vpnServer: _vpnConnection?.location.countryCode ?? '',
         vpnProcessingTime: stopwatch.elapsed,
       );
-      //startTracking();
       _apiService.setRecentLocation(location: location.countryCode);
       _locationsStore.fetchRecentLocations();
     }
@@ -352,7 +364,8 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> disconnect() async {
-    if (_connectionStatus != ConnectionStatus.connected) {
+    if (_connectionStatus != ConnectionStatus.connected &&
+        _connectionStatus != ConnectionStatus.connecting) {
       return;
     }
     _connectionStatus = ConnectionStatus.disconnecting;
@@ -360,7 +373,6 @@ abstract class _VpnStore with Store {
     await disconnectWireguard();
     _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection?.location.countryCode ?? '');
     _vpnConnection = null;
-    _connectingLocationCode = '';
     _timer?.cancel();
     _downloadSpeed = null;
     _uploadSpeed = null;

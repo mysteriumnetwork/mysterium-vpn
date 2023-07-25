@@ -1,6 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
@@ -13,6 +14,7 @@ import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/components/dialogs/retry_dialog.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/services/in_app_review/in_app_review.dart';
 import 'package:mysterium_vpn/views/home/home_desktop_view.dart';
 import 'package:mysterium_vpn/views/home/home_mobile_view.dart';
 
@@ -25,6 +27,14 @@ class HomePage extends HookConsumerWidget {
     final authStore = ref.watch(authStorePOD);
     final subscriptionStore = ref.watch(subscriptionStorePOD);
     final environment = ref.watch(environmentPOD);
+
+    useEffect(
+      () {
+        InAppReviewObserver().monitor();
+        return null;
+      },
+      [],
+    );
 
     return ReactionBuilder(
       builder: (_) => reaction((_) => subscriptionStore.subscriptionFuture?.status, (result) {

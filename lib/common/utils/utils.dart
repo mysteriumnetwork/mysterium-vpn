@@ -20,7 +20,8 @@ import 'package:mysterium_vpn/components/dialogs/no_internet_connection_dialog.d
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/auth_page.dart';
-import 'package:mysterium_vpn/stores/intercom_store.dart';
+import 'package:mysterium_vpn/stores/auth_store.dart';
+import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -47,7 +48,7 @@ ScreenType getScreenType(
 ]) {
   var deviceWidth = size.width;
 
-  if (kIsWeb || isDekstop()) {
+  if (kIsWeb || isDesktop()) {
     deviceWidth = size.width;
   }
 
@@ -266,7 +267,7 @@ T getValueForSizeType<T>({
   return normal;
 }
 
-bool isDekstop() => Platform.isWindows || Platform.isLinux || Platform.isMacOS;
+bool isDesktop() => Platform.isWindows || Platform.isLinux || Platform.isMacOS;
 
 bool isMobile() => Platform.isAndroid || Platform.isIOS;
 
@@ -289,7 +290,7 @@ TargetPlatform getPlatform() {
 String getPlatformGateway() {
   if (Platform.isAndroid) {
     return 'google';
-  } else if (Platform.isIOS) {
+  } else if (Platform.isIOS || Platform.isMacOS) {
     return 'apple';
   } else {
     return '';
@@ -387,7 +388,11 @@ String? getMagicLinkCode(String query) {
   return query.substring(query.indexOf('code=') + 5, query.length);
 }
 
-void showAuthView(BuildContext context) {
+void handleOnSignIn(BuildContext context, AuthStore store) {
+  if (isWindowsOrLinux()) {
+    store.loginDesktop();
+    return;
+  }
   showBarModalBottomSheet(
     context: context,
     animationCurve: Curves.easeInOut,
@@ -415,7 +420,6 @@ void handleOnBillingPage({
   required String? gateway,
   required String? accessToken,
 }) {
-  final isMobilePlatform = isMobile();
   final isMobileGateway = isMobilePaymentGateway(gateway);
 
   if (subscriptionActive && isMobileGateway) {
@@ -433,7 +437,7 @@ void handleOnBillingPage({
     return;
   }
 
-  if (!subscriptionActive && isMobilePlatform) {
+  if (!subscriptionActive && !Platform.isWindows) {
     context.beamToNamed(Routes.subscription.toRoute);
     return;
   }
@@ -455,7 +459,7 @@ void handleOnReportPage({
   required BuildContext context,
   required IntercomStore intetcomStore,
 }) {
-  isMobile() ? intetcomStore.displayMessenger() : context.beamToNamed(Routes.reportIssue.toRoute);
+  intetcomStore.displayMessenger();
 }
 
 SubscriptionStatus getSubscriptionStatus(PurchaseStatus status) {
