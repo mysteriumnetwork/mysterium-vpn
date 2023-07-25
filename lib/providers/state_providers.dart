@@ -160,7 +160,7 @@ final marketingAnalyticsInitPOD = FutureProviderFamily<void, FlavorConfig>((ref,
 });
 
 final marketingAnalyticsStorePOD = StateProvider<MarketingAnalyticsStore>((ref) {
-  if (isDekstop()) {
+  if (isDesktop()) {
     return MarketingAnalyticsStoreNoop();
   }
   return MarketingAnalyticsStoreAppsflyer(
@@ -169,7 +169,7 @@ final marketingAnalyticsStorePOD = StateProvider<MarketingAnalyticsStore>((ref) 
 });
 
 final intercomStorePOD = StateProvider<IntercomStore>((ref) {
-  if (isDekstop()) {
+  if (isDesktop()) {
     return IntercomDesktopStore();
   }
   return IntercomMobileStore(intercom: Intercom.instance);

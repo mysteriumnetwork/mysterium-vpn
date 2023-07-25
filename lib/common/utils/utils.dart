@@ -48,7 +48,7 @@ ScreenType getScreenType(
 ]) {
   var deviceWidth = size.width;
 
-  if (kIsWeb || isDekstop()) {
+  if (kIsWeb || isDesktop()) {
     deviceWidth = size.width;
   }
 
@@ -267,7 +267,7 @@ T getValueForSizeType<T>({
   return normal;
 }
 
-bool isDekstop() => Platform.isWindows || Platform.isLinux || Platform.isMacOS;
+bool isDesktop() => Platform.isWindows || Platform.isLinux || Platform.isMacOS;
 
 bool isMobile() => Platform.isAndroid || Platform.isIOS;
 
