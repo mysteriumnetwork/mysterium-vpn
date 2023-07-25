@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -24,27 +26,30 @@ class AccountSettings extends HookConsumerWidget {
     return Observer(
       builder: (context) {
         final isDarkTheme = themeStore.isDarkMode;
-
+        final gateway = subscriptionStore.subscription?.gateway;
+        final active = subscriptionStore.subscription?.active ?? false;
         return Column(
           children: [
             SettingItem(
               asset: isDarkTheme ? Assets.billingDark : Assets.billingLight,
               title: LocaleKeys.myBillingPackage.tr(),
               subtitle: LocaleKeys.shortDesc.tr(),
-              description:
-                  subscriptionStore.subscription != null && subscriptionStore.subscription!.active
-                      ? PurchasedPlan(subscription: subscriptionStore.subscription!)
-                      : null,
-              actionWidget: EasyButton(
-                useSystemColor: false,
-                color: Palette.black,
-                text: LocaleKeys.goToBillingPage.tr(),
-                onPressed: () => handleOnBillingPage(
-                  billingPage: environment.values.billingPage,
-                  context: context,
-                  gateway: subscriptionStore.subscription?.gateway,
-                  subscriptionActive: subscriptionStore.subscription?.active ?? false,
-                  accessToken: authStore.authData?.accessToken,
+              description: subscriptionStore.subscription != null && active
+                  ? PurchasedPlan(subscription: subscriptionStore.subscription!)
+                  : null,
+              actionWidget: Visibility(
+                visible: !Platform.isMacOS || (isMobilePaymentGateway(gateway) || gateway == null),
+                child: EasyButton(
+                  useSystemColor: false,
+                  color: Palette.black,
+                  text: LocaleKeys.goToBillingPage.tr(),
+                  onPressed: () => handleOnBillingPage(
+                    billingPage: environment.values.billingPage,
+                    context: context,
+                    gateway: gateway,
+                    subscriptionActive: active,
+                    accessToken: authStore.authData?.accessToken,
+                  ),
                 ),
               ),
             ),

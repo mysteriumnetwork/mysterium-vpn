@@ -14,4 +14,6 @@ enum StorageKeys {
   codeChallenge,
   codeVerifier,
   vpnConfigConsent,
+  appInstallDay,
+  inAppReviewRemindInterval,
 }
