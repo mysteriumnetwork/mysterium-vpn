@@ -92,6 +92,7 @@ abstract class _AuthStore with Store {
       }
       _appLinks.uriLinkStream.listen(
         (appLink) async {
+          debugPrint(appLink.toString());
           final storedLink = await _secureStorageService.getAppLink();
           if (appLink.toString() != storedLink) {
             await _secureStorageService.saveAppLink(appLink: appLink.toString());
