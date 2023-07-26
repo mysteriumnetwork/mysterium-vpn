@@ -86,10 +86,15 @@ dev_dependencies:
   msix: ^3.15.1
 
 msix_config:
-  display_name: Mysterium VPN
+  display_name: Mysterium VPN Test
+  publisher_display_name: UAB MN Technologijos
   logo_path: assets/logo/dev/desktop.png
-  output_name: MysteriumVPN
+  identity_name: UABMNTechnologijos.MysteriumVPNTest
+  publisher: CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC
+  output_name: MysteriumVPNTest
+  language: en-us
   windows_build_args: --dart-define FLAVOR=DEV
+  store: true
 
 flutter:
   uses-material-design: true
