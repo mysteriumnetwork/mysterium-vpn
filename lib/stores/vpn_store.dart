@@ -132,6 +132,7 @@ abstract class _VpnStore with Store {
         ),
       );
       await setupTunnelFuture;
+      debugPrint('Tunnel setup done');
     } catch (e) {
       debugPrint(e.toString());
       showSnackbar('Error occured while setting up tunnel');
@@ -314,8 +315,8 @@ abstract class _VpnStore with Store {
     );
     debugPrint(_vpnConfig?.config);
     if (!_isCanceled) {
-      await connectWireguard();
       try {
+        await connectWireguard();
         final ipAddress = await _apiService.getIPAdress().timeout(
               const Duration(seconds: 10),
               onTimeout: () => throw TimeoutException('IP address timeout'),
