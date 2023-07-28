@@ -7,6 +7,7 @@ import 'package:async/async.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/constants/mock.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -125,9 +126,14 @@ abstract class _VpnStore with Store {
   @action
   Future<void> setupTunnel() async {
     try {
-      setupTunnelFuture =
-          ObservableFuture(_wireguardService.setupTunnel(bundleId: _env.getBundleId()));
+      setupTunnelFuture = ObservableFuture(
+        _wireguardService.setupTunnel(
+          bundleId: _env.getBundleId(),
+          win32ServiceName: win32ServiceName,
+        ),
+      );
       await setupTunnelFuture;
+      debugPrint('Tunnel setup done');
     } catch (e) {
       debugPrint(e.toString());
       showSnackbar('Error occured while setting up tunnel');
@@ -313,9 +319,12 @@ abstract class _VpnStore with Store {
     );
     debugPrint(_vpnConfig?.config);
     if (!_isCanceled) {
-      await connectWireguard();
       try {
-        final ipAddress = await _apiService.getIPAdress();
+        await connectWireguard();
+        final ipAddress = await _apiService.getIPAdress().timeout(
+              const Duration(seconds: 10),
+              onTimeout: () => throw TimeoutException('IP address timeout'),
+            );
         _vpnConnection = VpnConnection(
           connectionIP: ipAddress ?? '--',
           location: location!,
