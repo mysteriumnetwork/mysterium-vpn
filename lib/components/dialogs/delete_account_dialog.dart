@@ -96,24 +96,24 @@ class _DeleteAccountDialog extends HookWidget {
                 useSystemColor: false,
                 width: 160,
                 color: Palette.pink,
-                onPressed:
-                    confirmationMessage.value == 'DELETE' && store.deleteAccountFeature.status != FutureStatus.pending
-                        ? () async {
-                            await store.deleteAccount();
-                            if (isMounted()) {
-                              await Beamer.of(context).popRoute();
-                              shownInfoDialog(
-                                context,
-                                LocaleKeys.accountSuccessfullyDeleted.tr(),
-                                isDismissible: false,
-                                messages: [
-                                  LocaleKeys.redirectToLoginPage.tr(),
-                                ],
-                                onConfirm: store.logout,
-                              );
-                            }
-                          }
-                        : null,
+                onPressed: confirmationMessage.value == 'DELETE' &&
+                        store.deleteAccountFeature.status != FutureStatus.pending
+                    ? () async {
+                        await store.deleteAccount();
+                        if (isMounted()) {
+                          await Beamer.of(context).popRoute();
+                          shownInfoDialog(
+                            context,
+                            LocaleKeys.accountSuccessfullyDeleted.tr(),
+                            isDismissible: false,
+                            messages: [
+                              LocaleKeys.redirectToLoginPage.tr(),
+                            ],
+                            onConfirm: store.logout,
+                          );
+                        }
+                      }
+                    : null,
                 child: store.deleteAccountFeature.status == FutureStatus.pending
                     ? const LoadingIndicator(
                         radius: 20,

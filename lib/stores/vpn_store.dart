@@ -115,7 +115,8 @@ abstract class _VpnStore with Store {
   bool get isConnected => _connectionStatus == ConnectionStatus.connected;
   @computed
   bool get isLoading =>
-      _connectionStatus == ConnectionStatus.disconnecting || _connectionStatus == ConnectionStatus.connecting;
+      _connectionStatus == ConnectionStatus.disconnecting ||
+      _connectionStatus == ConnectionStatus.connecting;
   @readonly
   String? _connectingLocationCode;
 
@@ -235,7 +236,10 @@ abstract class _VpnStore with Store {
     location ??= refreshIP ?? false
         ? _vpnConnection?.location
         : _locationsStore.vpnLocations.allLocations.isNotEmpty
-            ? [..._locationsStore.vpnLocations.allLocations, ..._locationsStore.vpnLocations.topLocations].randomItem()
+            ? [
+                ..._locationsStore.vpnLocations.allLocations,
+                ..._locationsStore.vpnLocations.topLocations
+              ].randomItem()
             : null;
     _connectingLocationCode = location?.countryCode;
 
@@ -369,7 +373,8 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> disconnect() async {
-    if (_connectionStatus != ConnectionStatus.connected && _connectionStatus != ConnectionStatus.connecting) {
+    if (_connectionStatus != ConnectionStatus.connected &&
+        _connectionStatus != ConnectionStatus.connecting) {
       return;
     }
     _connectionStatus = ConnectionStatus.disconnecting;

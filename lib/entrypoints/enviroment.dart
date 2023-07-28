@@ -72,13 +72,14 @@ class Enviroment {
       ..registerAdapter(ApprovalAdapter());
     await Hive.openBox<UserData>('user_data');
 
-    final container = ProviderContainer(overrides: [environmentPOD.overrideWith((ref) => flavorConfig)]);
+    final container =
+        ProviderContainer(overrides: [environmentPOD.overrideWith((ref) => flavorConfig)]);
     await container.read(analyticsInitPOD(firebaseOptions).future);
     final analyticsStore = container.read(analyticsStorePOD);
     await container.read(marketingAnalyticsInitPOD(flavorConfig).future);
 
-    FlutterError.onError =
-        (details) => analyticsStore.logError(err: details.exception, stack: details.stack, fatal: true);
+    FlutterError.onError = (details) =>
+        analyticsStore.logError(err: details.exception, stack: details.stack, fatal: true);
     PlatformDispatcher.instance.onError = (error, stack) {
       analyticsStore.logError(err: error, stack: stack, fatal: true);
       return true;
@@ -89,7 +90,8 @@ class Enviroment {
     await SentryFlutter.init(
       (options) {
         options
-          ..dsn = 'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200'
+          ..dsn =
+              'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200'
           ..sendClientReports = true
           ..maxRequestBodySize = MaxRequestBodySize.small
           ..maxResponseBodySize = MaxResponseBodySize.small;
