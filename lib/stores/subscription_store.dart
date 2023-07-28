@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -87,15 +88,18 @@ abstract class _SubscriptionStore with Store {
   Future<void> initStore() async {
     autorun((_) {
       if (_authStore.authData != null) {
-        final purchaseUpdated = _inAppPurchase.purchaseStream;
         _purchasedProductId = _localDb.getSubscriptionPlan();
         selectedProductId = _purchasedProductId ?? kPopularPlan;
         fetchSubscription().whenComplete(getSubscriptionsConfig);
-        _purchaseStream = purchaseUpdated.listen(
-          _onPurchaseUpdate,
-          onDone: _updateStreamOnDone,
-          onError: _updateStreamOnError,
-        );
+        if (!Platform.isWindows) {
+          final purchaseUpdated = _inAppPurchase.purchaseStream;
+          _purchaseStream = purchaseUpdated.listen(
+            _onPurchaseUpdate,
+            onDone: _updateStreamOnDone,
+            onError: _updateStreamOnError,
+          );
+        }
+
         _subscriptionService.clearPendingTransactions();
       }
     });

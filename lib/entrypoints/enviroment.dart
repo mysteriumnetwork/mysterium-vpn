@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,11 +22,12 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:url_protocol/url_protocol.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:wireguard_dart/wireguard_dart.dart';
 
 class Enviroment {
   Future<void> launch({
     required String flavor,
-    required FirebaseOptions firebaseOptions,
+    required FirebaseOptions? firebaseOptions,
   }) async {
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
     if (isDesktop()) {
@@ -35,6 +37,7 @@ class Enviroment {
 
     if (Platform.isWindows) {
       registerProtocolHandler('mysteriumvpn');
+      nativeWindowsInit();
     }
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.light.copyWith(statusBarIconBrightness: Brightness.light),
@@ -123,5 +126,22 @@ class Enviroment {
       default:
         return FlavorConfig(flavor: Flavor.dev, values: FlavorValues.dev());
     }
+  }
+
+  Future<void> nativeInitBackground(List<Object> args) async {
+    final rootIsolateToken = args[0] as RootIsolateToken;
+    BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
+
+    try {
+      await WireguardDart().nativeInit();
+      debugPrint('Native init done');
+    } catch (e) {
+      debugPrint('Native init error');
+    }
+  }
+
+  Future<void> nativeWindowsInit() async {
+    final rootIsolateToken = RootIsolateToken.instance!;
+    Isolate.spawn(nativeInitBackground, [rootIsolateToken]);
   }
 }

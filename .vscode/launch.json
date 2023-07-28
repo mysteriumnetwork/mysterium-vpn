@@ -92,7 +92,18 @@
             ]
         },
         {
-            "name": "Windows-debug",
+            "name": "Windows-debug-prod",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "flutterMode": "debug",
+            "toolArgs": [
+                "--dart-define",
+                "FLAVOR=PROD",
+            ]
+        },
+        {
+            "name": "Windows-debug-test",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",

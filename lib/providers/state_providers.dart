@@ -129,8 +129,8 @@ final tokenStreamPOD = StreamProvider<String>((ref) {
   return streamController.stream;
 });
 
-final analyticsInitPOD = FutureProviderFamily<void, FirebaseOptions>((ref, options) async {
-  if (isWindowsOrLinux()) {
+final analyticsInitPOD = FutureProviderFamily<void, FirebaseOptions?>((ref, options) async {
+  if (options == null) {
     return;
   }
   await Firebase.initializeApp(
