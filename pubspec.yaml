@@ -95,6 +95,8 @@ msix_config:
   language: en-us
   windows_build_args: --dart-define FLAVOR=DEV
   store: true
+  capabilities: runFullTrust, allowElevation, internetClient
+  protocol_activation: mysteriumvpn
 
 flutter:
   uses-material-design: true
