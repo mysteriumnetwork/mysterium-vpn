@@ -1,5 +1,6 @@
 // Dart imports:
 import 'dart:async' show Future;
+import 'dart:io';
 
 // Package imports:
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -73,8 +74,12 @@ class SecureStorageService {
 
   Future<bool> checkExistance(String key) async => _securedStorage.containsKey(key: key);
 
-  Future<void> write(String key, String value) async =>
-      _securedStorage.write(key: key, value: value);
+  Future<void> write(String key, String value) async {
+    if (Platform.isMacOS) {
+      await remove(key);
+    }
+    return _securedStorage.write(key: key, value: value);
+  }
 
   Future<String> getAccessToken() async => read(StorageKeys.accessToken.value);
   Future<void> saveAccessToken({required String accessToken}) async =>
