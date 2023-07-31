@@ -120,7 +120,6 @@
   "gettingYourPlan": "Makseplaanide toomine ...",
   "unableToGetPlans": "Ei saa tellimisplaane saada! Palun proovi uuesti.",
   "tryAgainBtn": "Proovi uuesti",
-  "billedInTotal": "{amount} - arve {period}",
   "monthly": "igakuine",
   "semiAnnual": "poolaastas",
   "yearly": "igal aastal",
@@ -441,5 +440,10 @@
   "paymentMethod": "Makseviis: {method}",
   "refreshIP": "Värskenda IP-d",
   "refreshIPAddress": "Värskenda IP-aadress",
-  "getNewIPAddress": "Hankige igal ühendusel uus IP-aadress"
+  "getNewIPAddress": "Hankige igal ühendusel uus IP-aadress",
+  "billedPerMonth": "{amount}/kuu – arveldatud {periood}",
+  "SixMonths": "6-kuud",
+  "year": "aastal",
+  "month": "kuu",
+  "billedInTotal": "{amount} /{period}"
 }
