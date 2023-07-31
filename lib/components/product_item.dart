@@ -2,8 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -12,7 +10,6 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/ripple.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -20,12 +17,10 @@ import 'package:styled_widget/styled_widget.dart';
 class ProductItem extends ConsumerWidget {
   const ProductItem({
     required this.productDetails,
-    required this.originalPirce,
     super.key,
   });
 
   final PurchasableProduct productDetails;
-  final double originalPirce;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subsStore = ref.watch(subscriptionStorePOD);
@@ -50,37 +45,17 @@ class ProductItem extends ConsumerWidget {
               Row(
                 children: [
                   EasyText(
-                    productDetails.id != kMonthlyPlan
-                        ? '${originalPirce.price(
-                            currencyCode: productDetails.currencyCode,
-                            currencySymbol: productDetails.currencySymbol,
-                          )} '
-                        : '',
-                    color: Theme.of(context).secondaryHeaderColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w900,
-                  ),
-                  EasyText(
-                    LocaleKeys.currentPrice.tr(
-                      namedArgs: {
-                        'amount': productDetails.monthlyPrice,
-                      },
-                    ),
+                    productDetails.billedInTotal,
                     color: Palette.purple,
                     fontSize: 20,
                     fontWeight: FontWeight.w900,
-                  ),
-                  EasyText(
-                    LocaleKeys.perMonth.tr(),
-                    color: Palette.purple,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  )
                 ],
               ).fittedBox(),
               EasyText(
-                productDetails.billedInTotal,
+                productDetails.billedPerMonth,
                 fontSize: 14,
-              )
+              ),
             ],
           ).expanded(),
           Observer(
