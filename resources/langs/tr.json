@@ -120,7 +120,6 @@
   "gettingYourPlan": "Ödeme planları getiriliyor...",
   "unableToGetPlans": "Abonelik planları alınamıyor! ",
   "tryAgainBtn": "Tekrar deneyin",
-  "billedInTotal": "{amount} - Faturalandırılan {period}",
   "monthly": "aylık",
   "semiAnnual": "yarı yıllık",
   "yearly": "yıllık",
@@ -441,5 +440,10 @@
   "paymentMethod": "Ödeme Yöntemi: {method}",
   "refreshIP": "IP'yi yenile",
   "refreshIPAddress": "IP Adresini Yenile",
-  "getNewIPAddress": "Her bağlantıda yeni bir IP adresi alın"
+  "getNewIPAddress": "Her bağlantıda yeni bir IP adresi alın",
+  "billedPerMonth": "{amount}/ay - Faturalandırılan {period}",
+  "SixMonths": "6-ay",
+  "year": "yıl",
+  "month": "ay",
+  "billedInTotal": "{amount} /{period}"
 }

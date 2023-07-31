@@ -122,7 +122,6 @@ abstract class LocaleKeys {
   static const gettingYourPlan = 'gettingYourPlan';
   static const unableToGetPlans = 'unableToGetPlans';
   static const tryAgainBtn = 'tryAgainBtn';
-  static const billedInTotal = 'billedInTotal';
   static const monthly = 'monthly';
   static const semiAnnual = 'semiAnnual';
   static const yearly = 'yearly';
@@ -444,4 +443,9 @@ abstract class LocaleKeys {
   static const refreshIP = 'refreshIP';
   static const refreshIPAddress = 'refreshIPAddress';
   static const getNewIPAddress = 'getNewIPAddress';
+  static const billedPerMonth = 'billedPerMonth';
+  static const SixMonths = 'SixMonths';
+  static const year = 'year';
+  static const month = 'month';
+  static const billedInTotal = 'billedInTotal';
 }

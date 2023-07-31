@@ -120,7 +120,6 @@
   "gettingYourPlan": "Дохват плата плаћања ...",
   "unableToGetPlans": "Није могуће добити планове претплате! Молим вас, покушајте поново.",
   "tryAgainBtn": "Покушајте поново",
-  "billedInTotal": "{amount} - Наплати {period}",
   "monthly": "месечно",
   "semiAnnual": "полугодишње",
   "yearly": "годишње",
@@ -441,5 +440,10 @@
   "paymentMethod": "Начин плаћања: {method}",
   "refreshIP": "Освежите ИП",
   "refreshIPAddress": "Освежите ИП адресу",
-  "getNewIPAddress": "Добијте нову ИП адресу при свакој конекцији"
+  "getNewIPAddress": "Добијте нову ИП адресу при свакој конекцији",
+  "billedPerMonth": "{amount}/месец – наплаћено {period}",
+  "SixMonths": "6-месеци",
+  "year": "године",
+  "month": "месец дана",
+  "billedInTotal": "{amount} /{period}"
 }
