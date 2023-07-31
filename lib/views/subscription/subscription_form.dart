@@ -63,7 +63,6 @@ class SubscriptionForm extends HookConsumerWidget {
                   children: [
                     SubscriptionProductsList(
                       products: store.products,
-                      originalPrice: store.originalPrice,
                     ).padding(bottom: getMediaHeight(context) * 0.02),
                     EasyText(
                       subsFormStatus == SubscriptionFormStatus.manage
@@ -100,6 +99,8 @@ class SubscriptionForm extends HookConsumerWidget {
                               asset: Assets.subscription,
                               title: LocaleKeys.subscriptionVerificationFailed.tr(),
                               subtitle: LocaleKeys.failedToVerifySubs.tr(),
+                              dismissText: LocaleKeys.cancelBtn.tr(),
+                              onDismiss: () async => Navigator.of(context).pop(),
                             );
                           }
                         }
