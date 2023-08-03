@@ -9,6 +9,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/router/route_delegate.dart';
 import 'package:mysterium_vpn/components/lifecycle_listener.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
+import 'package:mysterium_vpn/components/shortcuts.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
@@ -41,20 +42,22 @@ class MyApp extends HookConsumerWidget {
             onPaused: () {
               checkSubsStatus(authStore, ref.read(subscriptionStorePOD));
             },
-            child: MaterialApp.router(
-              title: 'Mysterium VPN',
-              key: UniqueKey(),
-              scaffoldMessengerKey: snackbarKey,
-              theme: themeStore.lightTheme,
-              darkTheme: themeStore.darkTheme,
-              themeMode: themeStore.themeMode,
-              routerDelegate: routeDelegate,
-              routeInformationParser: routeInformationParser,
-              localizationsDelegates: context.localizationDelegates,
-              supportedLocales: context.supportedLocales,
-              locale: localStore.currentLocale,
-              backButtonDispatcher: BeamerBackButtonDispatcher(
-                delegate: routeDelegate,
+            child: ShortcutsWidget(
+              child: MaterialApp.router(
+                title: 'Mysterium VPN',
+                key: UniqueKey(),
+                scaffoldMessengerKey: snackbarKey,
+                theme: themeStore.lightTheme,
+                darkTheme: themeStore.darkTheme,
+                themeMode: themeStore.themeMode,
+                routerDelegate: routeDelegate,
+                routeInformationParser: routeInformationParser,
+                localizationsDelegates: context.localizationDelegates,
+                supportedLocales: context.supportedLocales,
+                locale: localStore.currentLocale,
+                backButtonDispatcher: BeamerBackButtonDispatcher(
+                  delegate: routeDelegate,
+                ),
               ),
             ),
           ),
