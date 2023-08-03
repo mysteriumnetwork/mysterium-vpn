@@ -148,7 +148,8 @@ abstract class _AuthStore with Store {
         );
       }
       final res = await authenticateFeature;
-      _initializeAnalyticsStores(username: res!.username, userId: res.userId);
+      await _localDb.setUserId(res!.username);
+      _initializeAnalyticsStores(username: res.username, userId: res.userId);
       _authData = res;
       _authStatus = AuthStatus.authenticated;
       debugPrint(_localDb.userData.toString());
@@ -173,7 +174,6 @@ abstract class _AuthStore with Store {
     required String username,
     required String userId,
   }) async {
-    await _localDb.setUserId(username);
     _analyticsStore
       ..setUserId(username)
       ..setLogin();

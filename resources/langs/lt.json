@@ -120,7 +120,6 @@
   "gettingYourPlan": "Mokėjimo planų gavimas ...",
   "unableToGetPlans": "Nepavyko gauti prenumeratos planų! Prašau, pabandykite dar kartą.",
   "tryAgainBtn": "Bandyk iš naujo",
-  "billedInTotal": "{amount} - apmokestinta {period}",
   "monthly": "Mėnesinis",
   "semiAnnual": "pusmetį",
   "yearly": "kasmet",
@@ -441,5 +440,10 @@
   "paymentMethod": "Mokėjimo būdas: {method}",
   "refreshIP": "Atnaujinti IP",
   "refreshIPAddress": "Atnaujinkite IP adresą",
-  "getNewIPAddress": "Kiekvieną kartą prisijungdami gaukite naują IP adresą"
+  "getNewIPAddress": "Kiekvieną kartą prisijungdami gaukite naują IP adresą",
+  "billedPerMonth": "{amount}/mėn – atsiskaitoma {period}",
+  "SixMonths": "6-mėnesiai",
+  "year": "metų",
+  "month": "mėnuo",
+  "billedInTotal": "{amount} /{period}"
 }

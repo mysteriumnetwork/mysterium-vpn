@@ -81,8 +81,6 @@ abstract class _SubscriptionStore with Store {
 
   @readonly
   ObservableList<PurchasableProduct> _products = ObservableList<PurchasableProduct>.of([]);
-  @readonly
-  double _originalPrice = 0;
 
   @action
   Future<void> initStore() async {
@@ -144,7 +142,6 @@ abstract class _SubscriptionStore with Store {
             _purchasedProductId,
           ),
         );
-        _originalPrice = _products.firstWhere((e) => e.id == kMonthlyPlan).rawPrice;
       }
     } catch (e) {
       if (kDebugMode) {
