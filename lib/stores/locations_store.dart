@@ -53,8 +53,11 @@ abstract class _LocationsStore with Store {
   Future<VPNLocations> fetchVPNLocations() async {
     fetchVPNLocationsFuture =
         ObservableFuture(_apiService.fetchVPNLocations(keyword: searchKeyword));
-
-    return vpnLocations = await fetchVPNLocationsFuture;
+    final res = await fetchVPNLocationsFuture;
+    recentLocations.removeWhere(
+      (element) => !res.allLocations.contains(element) && !res.topLocations.contains(element),
+    );
+    return vpnLocations = res;
   }
 
   @action

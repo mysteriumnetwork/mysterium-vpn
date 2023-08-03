@@ -671,6 +671,7 @@
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_review\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/tray_manager\"",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -848,6 +849,7 @@
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_review\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/tray_manager\"",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -917,6 +919,7 @@
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_review\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/tray_manager\"",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1177,6 +1180,7 @@
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_review\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/tray_manager\"",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1343,6 +1347,7 @@
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_review\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/tray_manager\"",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1506,6 +1511,7 @@
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_review\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/tray_manager\"",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
