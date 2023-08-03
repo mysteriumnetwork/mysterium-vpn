@@ -124,8 +124,12 @@ class __LifecycleDesktopState extends State<_LifecycleDesktop> with WindowListen
   }
 
   @override
-  void onWindowClose() {
-    widget.onDetached?.call();
+  Future<void> onWindowClose() async {
+    if (await windowManager.isPreventClose()) {
+      windowManager.hide();
+    } else {
+      windowManager.destroy();
+    }
   }
 
   @override
