@@ -142,7 +142,6 @@ class CodegenLoader extends AssetLoader {
     "gettingYourPlan": "Ödeme planları getiriliyor...",
     "unableToGetPlans": "Abonelik planları alınamıyor! ",
     "tryAgainBtn": "Tekrar deneyin",
-    "billedInTotal": "{amount} - Faturalandırılan {period}",
     "monthly": "aylık",
     "semiAnnual": "yarı yıllık",
     "yearly": "yıllık",
@@ -470,7 +469,12 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Ödeme Yöntemi: {method}",
     "refreshIP": "IP'yi yenile",
     "refreshIPAddress": "IP Adresini Yenile",
-    "getNewIPAddress": "Her bağlantıda yeni bir IP adresi alın"
+    "getNewIPAddress": "Her bağlantıda yeni bir IP adresi alın",
+    "billedPerMonth": "{amount}/ay - Faturalandırılan {period}",
+    "SixMonths": "6-ay",
+    "year": "yıl",
+    "month": "ay",
+    "billedInTotal": "{amount} /{period}"
   };
   static const Map<String, dynamic> mk = {
     "title": "Здраво господине",
@@ -605,7 +609,6 @@ class CodegenLoader extends AssetLoader {
     "unableToGetPlans":
         "Не може да се добијат планови за претплата! Ве молиме, обидете се повторно.",
     "tryAgainBtn": "Обиди се повторно",
-    "billedInTotal": "{amount} - Најавено {period}",
     "monthly": "месечно",
     "semiAnnual": "полу Годишно",
     "yearly": "годишно",
@@ -940,7 +943,12 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Начин на плаќање: {method}",
     "refreshIP": "Освежете ја IP адресата",
     "refreshIPAddress": "Освежете ја IP адресата",
-    "getNewIPAddress": "Добијте нова IP адреса при секоја врска"
+    "getNewIPAddress": "Добијте нова IP адреса при секоја врска",
+    "billedPerMonth": "{amount}/месец - Наплатена {period}",
+    "SixMonths": "6-месеци",
+    "year": "година",
+    "month": "месец",
+    "billedInTotal": "{amount} /{period}"
   };
   static const Map<String, dynamic> lt = {
     "title": "Sveiki pone",
@@ -1074,7 +1082,6 @@ class CodegenLoader extends AssetLoader {
     "gettingYourPlan": "Mokėjimo planų gavimas ...",
     "unableToGetPlans": "Nepavyko gauti prenumeratos planų! Prašau, pabandykite dar kartą.",
     "tryAgainBtn": "Bandyk iš naujo",
-    "billedInTotal": "{amount} - apmokestinta {period}",
     "monthly": "Mėnesinis",
     "semiAnnual": "pusmetį",
     "yearly": "kasmet",
@@ -1404,7 +1411,12 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Mokėjimo būdas: {method}",
     "refreshIP": "Atnaujinti IP",
     "refreshIPAddress": "Atnaujinkite IP adresą",
-    "getNewIPAddress": "Kiekvieną kartą prisijungdami gaukite naują IP adresą"
+    "getNewIPAddress": "Kiekvieną kartą prisijungdami gaukite naują IP adresą",
+    "billedPerMonth": "{amount}/mėn – atsiskaitoma {period}",
+    "SixMonths": "6-mėnesiai",
+    "year": "metų",
+    "month": "mėnuo",
+    "billedInTotal": "{amount} /{period}"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1539,7 +1551,6 @@ class CodegenLoader extends AssetLoader {
     "gettingYourPlan": "Zahlungspläne abrufen ...",
     "unableToGetPlans": "Abonnementpläne können nicht erhalten! Bitte versuche es erneut.",
     "tryAgainBtn": "Versuchen Sie es erneut",
-    "billedInTotal": "{amount} - gebannt {period}",
     "monthly": "monatlich",
     "semiAnnual": "halbjährlich",
     "yearly": "jährlich",
@@ -1877,7 +1888,12 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Zahlungsmethode: {method}",
     "refreshIP": "IP aktualisieren",
     "refreshIPAddress": "IP-Adresse aktualisieren",
-    "getNewIPAddress": "Erhalten Sie bei jeder Verbindung eine neue IP-Adresse"
+    "getNewIPAddress": "Erhalten Sie bei jeder Verbindung eine neue IP-Adresse",
+    "billedPerMonth": "{amount}/Monat – In Rechnung gestellt {period}",
+    "SixMonths": "6-monate",
+    "year": "jahr",
+    "month": "monat",
+    "billedInTotal": "{amount} /{period}"
   };
   static const Map<String, dynamic> uk = {
     "title": "Вітаю, сер",
@@ -2007,7 +2023,6 @@ class CodegenLoader extends AssetLoader {
     "gettingYourPlan": "Отримання планів оплати...",
     "unableToGetPlans": "Не вдалося отримати плани підписки! ",
     "tryAgainBtn": "Спробуйте знову",
-    "billedInTotal": "{amount} - виставлено рахунок {period}",
     "monthly": "щомісяця",
     "semiAnnual": "раз в півроку",
     "yearly": "щорічно",
@@ -2335,7 +2350,12 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Спосіб оплати: {method}",
     "refreshIP": "Оновити IP",
     "refreshIPAddress": "Оновити IP-адресу",
-    "getNewIPAddress": "Отримайте нову IP-адресу при кожному підключенні"
+    "getNewIPAddress": "Отримайте нову IP-адресу при кожному підключенні",
+    "billedPerMonth": "{amount}/місяць – виставлено рахунок {period}",
+    "SixMonths": "6-місяців",
+    "year": "рік",
+    "month": "місяць",
+    "billedInTotal": "{amount} /{period}"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2469,7 +2489,6 @@ class CodegenLoader extends AssetLoader {
     "gettingYourPlan": "Buscando planos de pagamento ...",
     "unableToGetPlans": "Incapaz de obter planos de assinatura! Por favor, tente novamente.",
     "tryAgainBtn": "Tente novamente",
-    "billedInTotal": "{amount} - cobrado {period}",
     "monthly": "por mês",
     "semiAnnual": "semi anualmente",
     "yearly": "anual",
@@ -2800,7 +2819,12 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Método de pagamento: {method}",
     "refreshIP": "Atualizar IP",
     "refreshIPAddress": "Atualizar endereço IP",
-    "getNewIPAddress": "Obtenha um novo endereço IP a cada conexão"
+    "getNewIPAddress": "Obtenha um novo endereço IP a cada conexão",
+    "billedPerMonth": "{amount}/mês - Cobrado {period}",
+    "SixMonths": "6-meses",
+    "year": "ano",
+    "month": "mês",
+    "billedInTotal": "{amount} /{period}"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -2931,7 +2955,6 @@ class CodegenLoader extends AssetLoader {
     "gettingYourPlan": "Fetching payment plans...",
     "unableToGetPlans": "Unable to get subscription plans! Please try again.",
     "tryAgainBtn": "Try again",
-    "billedInTotal": "{amount} - Billed {period}",
     "monthly": "monthly",
     "semiAnnual": "semi-annually",
     "yearly": "yearly",
@@ -3263,7 +3286,12 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Payment Method: {method}",
     "refreshIP": "Refresh IP",
     "refreshIPAddress": "Refresh IP Address",
-    "getNewIPAddress": "Get a new IP address at every connection"
+    "getNewIPAddress": "Get a new IP address at every connection",
+    "billedPerMonth": "{amount}/month - Billed {period}",
+    "SixMonths": "6-months",
+    "year": "year",
+    "month": "month",
+    "billedInTotal": "{amount} /{period}"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3397,7 +3425,6 @@ class CodegenLoader extends AssetLoader {
     "gettingYourPlan": "Fetching Piani di pagamento ...",
     "unableToGetPlans": "Impossibile ottenere piani di abbonamento! Per favore riprova.",
     "tryAgainBtn": "Riprova",
-    "billedInTotal": "{amount} - fatturato {period}",
     "monthly": "mensile",
     "semiAnnual": "semestrale",
     "yearly": "annuale",
@@ -3733,7 +3760,12 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Metodo di pagamento: {method}",
     "refreshIP": "Aggiorna IP",
     "refreshIPAddress": "Aggiorna indirizzo IP",
-    "getNewIPAddress": "Ottieni un nuovo indirizzo IP ad ogni connessione"
+    "getNewIPAddress": "Ottieni un nuovo indirizzo IP ad ogni connessione",
+    "billedPerMonth": "{amount}/mese - Fatturato {period}",
+    "SixMonths": "6-mesi",
+    "year": "anno",
+    "month": "mese",
+    "billedInTotal": "{amount} /{period}"
   };
   static const Map<String, dynamic> sr = {
     "title": "Здраво господине",
@@ -3867,7 +3899,6 @@ class CodegenLoader extends AssetLoader {
     "gettingYourPlan": "Дохват плата плаћања ...",
     "unableToGetPlans": "Није могуће добити планове претплате! Молим вас, покушајте поново.",
     "tryAgainBtn": "Покушајте поново",
-    "billedInTotal": "{amount} - Наплати {period}",
     "monthly": "месечно",
     "semiAnnual": "полугодишње",
     "yearly": "годишње",
@@ -4200,7 +4231,12 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Начин плаћања: {method}",
     "refreshIP": "Освежите ИП",
     "refreshIPAddress": "Освежите ИП адресу",
-    "getNewIPAddress": "Добијте нову ИП адресу при свакој конекцији"
+    "getNewIPAddress": "Добијте нову ИП адресу при свакој конекцији",
+    "billedPerMonth": "{amount}/месец – наплаћено {period}",
+    "SixMonths": "6-месеци",
+    "year": "године",
+    "month": "месец дана",
+    "billedInTotal": "{amount} /{period}"
   };
   static const Map<String, dynamic> et = {
     "title": "Tere, härra",
@@ -4333,7 +4369,6 @@ class CodegenLoader extends AssetLoader {
     "gettingYourPlan": "Makseplaanide toomine ...",
     "unableToGetPlans": "Ei saa tellimisplaane saada! Palun proovi uuesti.",
     "tryAgainBtn": "Proovi uuesti",
-    "billedInTotal": "{amount} - arve {period}",
     "monthly": "igakuine",
     "semiAnnual": "poolaastas",
     "yearly": "igal aastal",
@@ -4661,7 +4696,12 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Makseviis: {method}",
     "refreshIP": "Värskenda IP-d",
     "refreshIPAddress": "Värskenda IP-aadress",
-    "getNewIPAddress": "Hankige igal ühendusel uus IP-aadress"
+    "getNewIPAddress": "Hankige igal ühendusel uus IP-aadress",
+    "billedPerMonth": "{amount}/kuu – arveldatud {periood}",
+    "SixMonths": "6-kuud",
+    "year": "aastal",
+    "month": "kuu",
+    "billedInTotal": "{amount} /{period}"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -4796,7 +4836,6 @@ class CodegenLoader extends AssetLoader {
     "gettingYourPlan": "Recherche de plans de paiement ...",
     "unableToGetPlans": "Impossible d'obtenir des plans d'abonnement! Veuillez réessayer.",
     "tryAgainBtn": "Essayer à nouveau",
-    "billedInTotal": "{amount} - facturé {period}",
     "monthly": "mensuelle",
     "semiAnnual": "semestriellement",
     "yearly": "annuelle",
@@ -5132,7 +5171,12 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Méthode de paiement : {method}",
     "refreshIP": "Actualiser l'IP",
     "refreshIPAddress": "Actualiser l'adresse IP",
-    "getNewIPAddress": "Obtenez une nouvelle adresse IP à chaque connexion"
+    "getNewIPAddress": "Obtenez une nouvelle adresse IP à chaque connexion",
+    "billedPerMonth": "{amount}/mois - Facturé {periood}",
+    "SixMonths": "6-mois",
+    "year": "année",
+    "month": "mois",
+    "billedInTotal": "{amount} /{period}"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -5266,7 +5310,6 @@ class CodegenLoader extends AssetLoader {
     "gettingYourPlan": "Buscando planes de pago...",
     "unableToGetPlans": "¡No se pueden obtener planes de suscripción! Inténtalo de nuevo.",
     "tryAgainBtn": "Vuelve a intentarlo",
-    "billedInTotal": "{amount} - Facturado {period}",
     "monthly": "mensual",
     "semiAnnual": "semestralmente",
     "yearly": "anual",
@@ -5599,7 +5642,12 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Método de pago: {method}",
     "refreshIP": "Actualizar IP",
     "refreshIPAddress": "Actualizar dirección IP",
-    "getNewIPAddress": "Obtenga una nueva dirección IP en cada conexión"
+    "getNewIPAddress": "Obtenga una nueva dirección IP en cada conexión",
+    "billedPerMonth": "{amount}/mes - Facturado {period}",
+    "SixMonths": "6-meses",
+    "year": "año",
+    "month": "mes",
+    "billedInTotal": "{amount} /{period}"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "tr": tr,

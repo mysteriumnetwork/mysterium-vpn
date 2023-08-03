@@ -33,22 +33,27 @@ abstract class _PurchasableProduct with Store {
   String get id => planDetails.id;
 
   @computed
-  String get monthlyPrice => planDetails.id == kMonthlyPlan
-      ? rawPrice.price(
-          currencySymbol: currencySymbol,
-          currencyCode: currencyCode,
-        )
-      : planDetails.id == kAnnualPlan
-          ? rawPrice.pricePerMonth(
-              months: 12,
-              currencySymbol: currencySymbol,
-              currencyCode: currencyCode,
-            )
-          : rawPrice.pricePerMonth(
-              months: 6,
-              currencySymbol: currencySymbol,
-              currencyCode: currencyCode,
-            );
+  String get billedPerMonth => LocaleKeys.billedPerMonth.tr(
+        namedArgs: {
+          'amount': monthlyPrice,
+          'period': planDetails.id == kMonthlyPlan
+              ? LocaleKeys.monthly.tr()
+              : planDetails.id == ksemiAnnualPlan
+                  ? LocaleKeys.semiAnnual.tr()
+                  : LocaleKeys.yearly.tr(),
+        },
+      );
+  @computed
+  String get monthlyPrice => rawPrice.pricePerMonth(
+        months: planDetails.id == kMonthlyPlan
+            ? 1
+            : planDetails.id == ksemiAnnualPlan
+                ? 6
+                : 12,
+        currencySymbol: currencySymbol,
+        currencyCode: currencyCode,
+      );
+
   @computed
   bool get isPupular => planDetails.id == kPopularPlan;
   @computed
@@ -59,10 +64,10 @@ abstract class _PurchasableProduct with Store {
             currencyCode: currencyCode,
           ),
           'period': planDetails.id == kMonthlyPlan
-              ? LocaleKeys.monthly.tr()
+              ? LocaleKeys.month.tr()
               : planDetails.id == ksemiAnnualPlan
-                  ? LocaleKeys.semiAnnual.tr()
-                  : LocaleKeys.yearly.tr(),
+                  ? LocaleKeys.SixMonths.tr()
+                  : LocaleKeys.year.tr(),
         },
       );
 }

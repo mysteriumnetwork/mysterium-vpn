@@ -120,7 +120,6 @@
   "gettingYourPlan": "Отримання планів оплати...",
   "unableToGetPlans": "Не вдалося отримати плани підписки! ",
   "tryAgainBtn": "Спробуйте знову",
-  "billedInTotal": "{amount} - виставлено рахунок {period}",
   "monthly": "щомісяця",
   "semiAnnual": "раз в півроку",
   "yearly": "щорічно",
@@ -441,5 +440,10 @@
   "paymentMethod": "Спосіб оплати: {method}",
   "refreshIP": "Оновити IP",
   "refreshIPAddress": "Оновити IP-адресу",
-  "getNewIPAddress": "Отримайте нову IP-адресу при кожному підключенні"
+  "getNewIPAddress": "Отримайте нову IP-адресу при кожному підключенні",
+  "billedPerMonth": "{amount}/місяць – виставлено рахунок {period}",
+  "SixMonths": "6-місяців",
+  "year": "рік",
+  "month": "місяць",
+  "billedInTotal": "{amount} /{period}"
 }

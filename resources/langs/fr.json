@@ -120,7 +120,6 @@
   "gettingYourPlan": "Recherche de plans de paiement ...",
   "unableToGetPlans": "Impossible d'obtenir des plans d'abonnement! Veuillez réessayer.",
   "tryAgainBtn": "Essayer à nouveau",
-  "billedInTotal": "{amount} - facturé {period}",
   "monthly": "mensuelle",
   "semiAnnual": "semestriellement",
   "yearly": "annuelle",
@@ -441,5 +440,10 @@
   "paymentMethod": "Méthode de paiement : {method}",
   "refreshIP": "Actualiser l'IP",
   "refreshIPAddress": "Actualiser l'adresse IP",
-  "getNewIPAddress": "Obtenez une nouvelle adresse IP à chaque connexion"
+  "getNewIPAddress": "Obtenez une nouvelle adresse IP à chaque connexion",
+  "billedPerMonth": "{amount}/mois - Facturé {periood}",
+  "SixMonths": "6-mois",
+  "year": "année",
+  "month": "mois",
+  "billedInTotal": "{amount} /{period}"
 }

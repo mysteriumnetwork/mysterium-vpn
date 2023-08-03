@@ -183,7 +183,7 @@ class RestSubscriptionService extends SubscriptionService {
 
   @override
   Future<void> clearPendingTransactions() async {
-    if (Platform.isIOS) {
+    if (Platform.isIOS || Platform.isMacOS) {
       final transactions = await SKPaymentQueueWrapper().transactions();
       for (final transaction in transactions) {
         await SKPaymentQueueWrapper().finishTransaction(transaction);

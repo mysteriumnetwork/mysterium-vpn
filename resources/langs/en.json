@@ -120,7 +120,6 @@
   "gettingYourPlan": "Fetching payment plans...",
   "unableToGetPlans": "Unable to get subscription plans! Please try again.",
   "tryAgainBtn": "Try again",
-  "billedInTotal": "{amount} - Billed {period}",
   "monthly": "monthly",
   "semiAnnual": "semi-annually",
   "yearly": "yearly",
@@ -441,5 +440,10 @@
   "paymentMethod":"Payment Method: {method}",
   "refreshIP":"Refresh IP",
   "refreshIPAddress":"Refresh IP Address",
-  "getNewIPAddress":"Get a new IP address at every connection"
+  "getNewIPAddress":"Get a new IP address at every connection",
+  "billedPerMonth": "{amount}/month - Billed {period}",
+  "SixMonths": "6-months",
+  "year": "year",
+  "month": "month",
+  "billedInTotal": "{amount} /{period}"
 }
