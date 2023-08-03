@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
 class LifecycleListener extends StatelessWidget {
@@ -110,23 +111,25 @@ class _LifecycleDesktop extends StatefulWidget {
 }
 
 // ignore: prefer_mixin
-class __LifecycleDesktopState extends State<_LifecycleDesktop> with WindowListener {
+class __LifecycleDesktopState extends State<_LifecycleDesktop> with WindowListener, TrayListener {
   @override
   void initState() {
     super.initState();
     windowManager.addListener(this);
+    trayManager.addListener(this);
   }
 
   @override
   void dispose() {
     windowManager.removeListener(this);
+    trayManager.removeListener(this);
     super.dispose();
   }
 
   @override
   Future<void> onWindowClose() async {
     if (await windowManager.isPreventClose()) {
-      windowManager.hide();
+      await windowManager.hide();
     } else {
       windowManager.destroy();
     }
@@ -140,6 +143,29 @@ class __LifecycleDesktopState extends State<_LifecycleDesktop> with WindowListen
   @override
   void onWindowRestore() {
     widget.onResumed?.call();
+  }
+
+  @override
+  Future<void> onTrayIconMouseDown() async {
+    if (!await windowManager.isVisible()) {
+      windowManager.show();
+    }
+  }
+
+  @override
+  void onTrayIconRightMouseDown() {
+    trayManager.popUpContextMenu();
+  }
+
+  @override
+  Future<void> onTrayMenuItemClick(MenuItem menuItem) async {
+    if (menuItem.key == 'show_window') {
+      if (!await windowManager.isVisible()) {
+        windowManager.show();
+      }
+    } else if (menuItem.key == 'exit_app') {
+      windowManager.destroy();
+    }
   }
 
   @override
