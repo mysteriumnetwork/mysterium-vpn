@@ -32,6 +32,7 @@ class Enviroment {
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
     if (isDesktop()) {
       await windowManager.ensureInitialized();
+      await windowManager.setPreventClose(true);
     }
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
