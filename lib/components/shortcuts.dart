@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:window_manager/window_manager.dart';
 
 class ShortcutsWidget extends StatelessWidget {
@@ -11,8 +12,8 @@ class ShortcutsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Shortcuts(
         shortcuts: const <ShortcutActivator, Intent>{
-          CharacterActivator(
-            'w',
+          SingleActivator(
+            LogicalKeyboardKey.keyW,
             meta: true,
           ): MinimizeIntent(),
         },
