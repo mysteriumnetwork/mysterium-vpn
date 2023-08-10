@@ -28,6 +28,7 @@ class SecureStorageService {
       ),
       mOptions: MacOsOptions(
         accountName: flavor.values.accountName,
+        synchronizable: true,
       ),
     );
   }
