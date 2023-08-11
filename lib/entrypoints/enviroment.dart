@@ -4,8 +4,8 @@ import 'dart:isolate';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -20,6 +20,7 @@ import 'package:mysterium_vpn/services/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/shared_preferences_service.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
+import 'package:tray_manager/tray_manager.dart';
 import 'package:url_protocol/url_protocol.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
@@ -30,10 +31,12 @@ class Enviroment {
     required FirebaseOptions? firebaseOptions,
   }) async {
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
     if (isDesktop()) {
       await windowManager.ensureInitialized();
+      await windowManager.setPreventClose(true);
     }
-    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
     if (Platform.isWindows) {
       registerProtocolHandler('mysteriumvpn');
@@ -62,7 +65,7 @@ class Enviroment {
     };
 
     final flavorConfig = setupFlavor(flavor);
-
+    await setupTrayIcon(flavorConfig);
     await SharedPreferenceService.instance.init();
     await SecureStorageService.instance.init(flavorConfig);
     await EasyLocalization.ensureInitialized();
@@ -115,18 +118,11 @@ class Enviroment {
     );
   }
 
-  FlavorConfig setupFlavor(String flavor) {
-    switch (flavor) {
-      case 'DEV':
-        return FlavorConfig(flavor: Flavor.dev, values: FlavorValues.dev());
-
-      case 'PROD':
-        return FlavorConfig(flavor: Flavor.production, values: FlavorValues.production());
-
-      default:
-        return FlavorConfig(flavor: Flavor.dev, values: FlavorValues.dev());
-    }
-  }
+  FlavorConfig setupFlavor(String flavor) => switch (flavor) {
+        'DEV' => FlavorConfig(flavor: Flavor.dev, values: FlavorValues.dev()),
+        'PROD' => FlavorConfig(flavor: Flavor.production, values: FlavorValues.production()),
+        _ => FlavorConfig(flavor: Flavor.dev, values: FlavorValues.dev())
+      };
 
   Future<void> nativeInitBackground(List<Object> args) async {
     final rootIsolateToken = args[0] as RootIsolateToken;
@@ -143,5 +139,30 @@ class Enviroment {
   Future<void> nativeWindowsInit() async {
     final rootIsolateToken = RootIsolateToken.instance!;
     Isolate.spawn(nativeInitBackground, [rootIsolateToken]);
+  }
+
+  Future<void> setupTrayIcon(FlavorConfig flavor) async {
+    if (!Platform.isWindows) {
+      return;
+    }
+    await trayManager.setIcon(
+      flavor.isDev() ? 'assets/logo/dev/app_icon.ico' : 'assets/logo/prod/app_icon.ico',
+      iconPosition: TrayIconPositon.right,
+    );
+    final items = Menu(
+      items: <MenuItem>[
+        MenuItem(
+          key: 'show_window',
+          label: 'Open',
+        ),
+        MenuItem.separator(),
+        MenuItem(
+          key: 'exit_app',
+          label: 'Exit MysteriumVPN',
+        ),
+      ],
+    );
+
+    await trayManager.setContextMenu(items);
   }
 }

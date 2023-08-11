@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$VpnConnection {
   String get connectionIP => throw _privateConstructorUsedError;
-  Location get location => throw _privateConstructorUsedError;
+  String get location => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $VpnConnectionCopyWith<VpnConnection> get copyWith => throw _privateConstructorUsedError;
@@ -28,7 +28,7 @@ abstract class $VpnConnectionCopyWith<$Res> {
   factory $VpnConnectionCopyWith(VpnConnection value, $Res Function(VpnConnection) then) =
       _$VpnConnectionCopyWithImpl<$Res, VpnConnection>;
   @useResult
-  $Res call({String connectionIP, Location location});
+  $Res call({String connectionIP, String location});
 }
 
 /// @nodoc
@@ -55,7 +55,7 @@ class _$VpnConnectionCopyWithImpl<$Res, $Val extends VpnConnection>
       location: null == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
-              as Location,
+              as String,
     ) as $Val);
   }
 }
@@ -66,7 +66,7 @@ abstract class _$$_VpnConnectionCopyWith<$Res> implements $VpnConnectionCopyWith
       __$$_VpnConnectionCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String connectionIP, Location location});
+  $Res call({String connectionIP, String location});
 }
 
 /// @nodoc
@@ -90,7 +90,7 @@ class __$$_VpnConnectionCopyWithImpl<$Res>
       location: null == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
-              as Location,
+              as String,
     ));
   }
 }
@@ -103,7 +103,7 @@ class _$_VpnConnection implements _VpnConnection {
   @override
   final String connectionIP;
   @override
-  final Location location;
+  final String location;
 
   @override
   String toString() {
@@ -131,12 +131,12 @@ class _$_VpnConnection implements _VpnConnection {
 
 abstract class _VpnConnection implements VpnConnection {
   const factory _VpnConnection(
-      {required final String connectionIP, required final Location location}) = _$_VpnConnection;
+      {required final String connectionIP, required final String location}) = _$_VpnConnection;
 
   @override
   String get connectionIP;
   @override
-  Location get location;
+  String get location;
   @override
   @JsonKey(ignore: true)
   _$$_VpnConnectionCopyWith<_$_VpnConnection> get copyWith => throw _privateConstructorUsedError;

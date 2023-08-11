@@ -8,7 +8,6 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/flag.dart';
 import 'package:mysterium_vpn/components/ripple.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/stores/connectivity_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -22,7 +21,7 @@ class RecentLocationItem extends StatelessWidget {
     super.key,
   });
 
-  final Location location;
+  final String location;
   final VoidCallback onTap;
   final VpnStore vpnStore;
   final ConnectivityStore connectivityStore;
@@ -42,20 +41,19 @@ class RecentLocationItem extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Flag(countryCode: location.countryCode),
+                  Flag(countryCode: location),
                   ConnectButton(
                     onPressed: onTap,
-                    locationCode: location.countryCode,
+                    locationCode: location,
                   ),
                 ],
               ).paddingDirectional(horizontal: 4),
               EasyText(
-                location.countryName,
+                location.tr(),
                 fontWeight: FontWeight.w700,
                 maxLines: 2,
               ),
-              if (location.countryCode == vpnStore.vpnConnection?.location.countryCode &&
-                  vpnStore.isConnected)
+              if (location == vpnStore.vpnConnection?.location && vpnStore.isConnected)
                 EasyText(
                   LocaleKeys.connected.tr(),
                   color: Palette.purple,
