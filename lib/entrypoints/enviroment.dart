@@ -118,18 +118,11 @@ class Enviroment {
     );
   }
 
-  FlavorConfig setupFlavor(String flavor) {
-    switch (flavor) {
-      case 'DEV':
-        return FlavorConfig(flavor: Flavor.dev, values: FlavorValues.dev());
-
-      case 'PROD':
-        return FlavorConfig(flavor: Flavor.production, values: FlavorValues.production());
-
-      default:
-        return FlavorConfig(flavor: Flavor.dev, values: FlavorValues.dev());
-    }
-  }
+  FlavorConfig setupFlavor(String flavor) => switch (flavor) {
+        'DEV' => FlavorConfig(flavor: Flavor.dev, values: FlavorValues.dev()),
+        'PROD' => FlavorConfig(flavor: Flavor.production, values: FlavorValues.production()),
+        _ => FlavorConfig(flavor: Flavor.dev, values: FlavorValues.dev())
+      };
 
   Future<void> nativeInitBackground(List<Object> args) async {
     final rootIsolateToken = args[0] as RootIsolateToken;
