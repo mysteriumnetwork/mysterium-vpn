@@ -151,7 +151,7 @@ final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
 });
 
 final marketingAnalyticsInitPOD = FutureProviderFamily<void, FlavorConfig>((ref, flavor) async {
-  if (isMobile()) {
+  if (isMobile() && flavor.isProduction()) {
     await AppsflyerSdk(appsFlyerOptions).initSdk();
   }
 });
