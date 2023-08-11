@@ -14,4 +14,5 @@ abstract class MarketingAnalyticsStore {
     required String price,
     required String currency,
   });
+  Future<void> setLogin();
 }

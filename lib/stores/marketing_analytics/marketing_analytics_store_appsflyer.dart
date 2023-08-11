@@ -32,6 +32,12 @@ abstract class _MarketingAnalyticsStoreAppsflyer extends MarketingAnalyticsStore
 
   @override
   @action
+  Future<void> setLogin() async {
+    logEvent(MarketingAnalyticsEvent.afLogin);
+  }
+
+  @override
+  @action
   Future<void> setSignUP() async {
     logEvent(MarketingAnalyticsEvent.afCompleteRegistration);
   }
