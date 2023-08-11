@@ -62,11 +62,11 @@ abstract class _LocationsStore with Store {
       ..clear()
       ..addAll(
         _apiService.getRecentLocations(keyword: searchKeyword)
-          ..removeWhere((element) {
-            print(element);
-            return !vpnLocations.allLocations.contains(element) &&
-                !vpnLocations.topLocations.contains(element);
-          }),
+          ..removeWhere(
+            (element) =>
+                !vpnLocations.allLocations.contains(element) &&
+                !vpnLocations.topLocations.contains(element),
+          ),
       );
   }
 
