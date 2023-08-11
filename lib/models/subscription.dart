@@ -18,20 +18,12 @@ class Subscription with _$Subscription {
 
 extension SubscriptionExtension on Subscription {
   bool get isExpired => activeUntil != null && activeUntil!.isBefore(DateTime.now());
-  String get gatewayName {
-    switch (gateway?.toLowerCase()) {
-      case null:
-        return '';
-      case 'stripe':
-        return 'Credit Card';
-      case 'apple':
-        return 'Apple';
-      case 'google':
-        return 'Google';
-      case 'paypal':
-        return 'PayPal';
-      default:
-        return gateway!.capitalize();
-    }
-  }
+  String get gatewayName => switch (gateway?.toLowerCase()) {
+        null => '',
+        'stripe' => 'Credit Card',
+        'apple' => 'Apple',
+        'google' => 'Google',
+        'paypal' => 'PayPal',
+        _ => gateway!.capitalize()
+      };
 }
