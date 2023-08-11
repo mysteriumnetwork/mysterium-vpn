@@ -39,10 +39,8 @@ class SearchField extends HookWidget {
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
         suffixIcon: SvgIconButton(
-          onPressed: () {
-            store
-              ..fetchRecentLocations()
-              ..fetchVPNLocations();
+          onPressed: () async {
+            store.fetchVPNLocations().whenComplete(store.fetchRecentLocations);
           },
           asset: Assets.search,
         ).width(20),
