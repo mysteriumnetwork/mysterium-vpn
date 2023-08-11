@@ -7,5 +7,4 @@ AppsFlyerOptions appsFlyerOptions = AppsFlyerOptions(
   appId: Platform.isIOS ? '6446624307' : '',
   disableAdvertisingIdentifier: true,
   disableCollectASA: true,
-  showDebug: true,
 );

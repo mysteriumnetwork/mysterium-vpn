@@ -21,6 +21,10 @@ abstract class _MarketingAnalyticsStoreNoop extends MarketingAnalyticsStore with
 
   @override
   @action
+  Future<void> setLogin() async {}
+
+  @override
+  @action
   Future<void> setSignUP() async {}
 
   @override
