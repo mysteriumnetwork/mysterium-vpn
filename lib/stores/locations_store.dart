@@ -19,10 +19,9 @@ abstract class _LocationsStore with Store {
   })  : _apiService = apiService,
         _analyticsStore = analyticsStore,
         _authStore = authStore {
-    autorun((_) {
+    autorun((_) async {
       if (_authStore.authData != null) {
-        fetchRecentLocations();
-        fetchVPNLocations();
+        fetchVPNLocations().whenComplete(fetchRecentLocations);
       }
     });
   }
@@ -31,7 +30,7 @@ abstract class _LocationsStore with Store {
   final AnalyticsStore _analyticsStore;
   final AuthStore _authStore;
 
-  ObservableList<Location> recentLocations = ObservableList();
+  ObservableList<String> recentLocations = ObservableList();
 
   VPNLocations vpnLocations = VPNLocations(allLocations: [], topLocations: []);
 
@@ -54,9 +53,6 @@ abstract class _LocationsStore with Store {
     fetchVPNLocationsFuture =
         ObservableFuture(_apiService.fetchVPNLocations(keyword: searchKeyword));
     final res = await fetchVPNLocationsFuture;
-    recentLocations.removeWhere(
-      (element) => !res.allLocations.contains(element) && !res.topLocations.contains(element),
-    );
     return vpnLocations = res;
   }
 
@@ -64,7 +60,20 @@ abstract class _LocationsStore with Store {
   void fetchRecentLocations() {
     recentLocations
       ..clear()
-      ..addAll(_apiService.getRecentLocations(keyword: searchKeyword));
+      ..addAll(
+        _apiService.getRecentLocations(keyword: searchKeyword)
+          ..removeWhere((element) {
+            print(element);
+            return !vpnLocations.allLocations.contains(element) &&
+                !vpnLocations.topLocations.contains(element);
+          }),
+      );
+  }
+
+  @action
+  void addRecentLocation(String location) {
+    _apiService.addRecentLocation(location);
+    fetchRecentLocations();
   }
 
   @action
@@ -74,8 +83,7 @@ abstract class _LocationsStore with Store {
     }
     _debounce = Timer(Duration(milliseconds: duration), () {
       searchKeyword = text.toLowerCase().trim();
-      fetchRecentLocations();
-      fetchVPNLocations();
+      fetchVPNLocations().whenComplete(fetchRecentLocations);
       _analyticsStore.setSearchEvent(searchKeyword);
     });
   }

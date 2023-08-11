@@ -16,7 +16,6 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
-import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
@@ -206,7 +205,7 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> connect({
-    Location? location,
+    String? location,
     bool? refreshIP,
   }) async {
     if (_subscriptionStore.subscriptionFuture?.status == FutureStatus.pending) {
@@ -228,7 +227,7 @@ abstract class _VpnStore with Store {
 
     if (refreshIP != true &&
         _connectionStatus == ConnectionStatus.connected &&
-        (location == null || location.countryCode == _vpnConnection?.location.countryCode)) {
+        (location == null || location == _vpnConnection?.location)) {
       await disconnect();
       return;
     }
@@ -241,7 +240,7 @@ abstract class _VpnStore with Store {
                 ..._locationsStore.vpnLocations.topLocations
               ].randomItem()
             : null;
-    _connectingLocationCode = location?.countryCode;
+    _connectingLocationCode = location;
 
     try {
       if (_vpnConnection != null) {
@@ -273,7 +272,7 @@ abstract class _VpnStore with Store {
       showSnackbar(
         LocaleKeys.failedToConnect.tr(
           namedArgs: {
-            'countryName': location?.countryName ?? '',
+            'countryName': location?.tr() ?? '',
           },
         ),
       );
@@ -302,7 +301,7 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> _completeConnection(
-    Location? location,
+    String? location,
     Stopwatch stopwatch,
     bool? refreshIP,
   ) async {
@@ -312,7 +311,7 @@ abstract class _VpnStore with Store {
     _vpnConfig = await _apiService.fetchVpnConfig(
       input: VpnConfigInput(
         publicKey: _publicKey,
-        country: location?.countryCode,
+        country: location,
         resetConnection: refreshIP ?? _resetConnection,
       ),
       privateKey: _privateKey,
@@ -333,7 +332,7 @@ abstract class _VpnStore with Store {
         showSnackbar(
           LocaleKeys.failedToConnect.tr(
             namedArgs: {
-              'countryName': location?.countryName ?? '',
+              'countryName': location?.tr() ?? '',
             },
           ),
         );
@@ -344,11 +343,10 @@ abstract class _VpnStore with Store {
       _connectionStatus = ConnectionStatus.connected;
       stopwatch.stop();
       _analyticsStore.setVpnConnect(
-        vpnServer: _vpnConnection?.location.countryCode ?? '',
+        vpnServer: _vpnConnection?.location ?? '',
         vpnProcessingTime: stopwatch.elapsed,
       );
-      _apiService.setRecentLocation(location: location.countryCode);
-      _locationsStore.fetchRecentLocations();
+      _locationsStore.addRecentLocation(location);
     }
   }
 
@@ -380,7 +378,7 @@ abstract class _VpnStore with Store {
     _connectionStatus = ConnectionStatus.disconnecting;
     await Future.delayed(const Duration(seconds: 1));
     await disconnectWireguard();
-    _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection?.location.countryCode ?? '');
+    _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection?.location ?? '');
     _vpnConnection = null;
     _timer?.cancel();
     _downloadSpeed = null;

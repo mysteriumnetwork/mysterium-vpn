@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -5,7 +6,6 @@ import 'package:mysterium_vpn/components/connect_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/flag.dart';
 import 'package:mysterium_vpn/components/ripple.dart';
-import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/stores/connectivity_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -19,7 +19,7 @@ class LocationItem extends StatelessWidget {
     super.key,
   });
 
-  final Location location;
+  final String location;
   final VoidCallback onTap;
   final VpnStore vpnStore;
   final ConnectivityStore connectivityStore;
@@ -35,14 +35,14 @@ class LocationItem extends StatelessWidget {
           radius: 15,
           child: Row(
             children: [
-              Flag(countryCode: location.countryCode).padding(right: 20),
+              Flag(countryCode: location).padding(right: 20),
               EasyText(
-                location.countryName,
+                location.tr(),
                 fontWeight: FontWeight.w700,
               ).expanded(),
               ConnectButton(
                 onPressed: onTap,
-                locationCode: location.countryCode,
+                locationCode: location,
               ),
             ],
           ).padding(horizontal: 20, vertical: 4),

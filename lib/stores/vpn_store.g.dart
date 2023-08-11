@@ -331,7 +331,7 @@ mixin _$VpnStore on _VpnStore, Store {
   late final _$connectAsyncAction = AsyncAction('_VpnStore.connect', context: context);
 
   @override
-  Future<void> connect({Location? location, bool? refreshIP}) {
+  Future<void> connect({String? location, bool? refreshIP}) {
     return _$connectAsyncAction.run(() => super.connect(location: location, refreshIP: refreshIP));
   }
 
@@ -339,7 +339,7 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore._completeConnection', context: context);
 
   @override
-  Future<void> _completeConnection(Location? location, Stopwatch stopwatch, bool? refreshIP) {
+  Future<void> _completeConnection(String? location, Stopwatch stopwatch, bool? refreshIP) {
     return _$_completeConnectionAsyncAction
         .run(() => super._completeConnection(location, stopwatch, refreshIP));
   }
