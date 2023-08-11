@@ -59,20 +59,8 @@ class RestApiService extends ApiService {
         allCountryCodes.removeWhere((element) => !element.tr().toLowerCase().contains(keyword));
       }
       return VPNLocations(
-        allLocations: allCountryCodes
-            .map(
-              (e) => Location(
-                countryCode: e,
-              ),
-            )
-            .toList(),
-        topLocations: topCountryCodes
-            .map(
-              (e) => Location(
-                countryCode: e,
-              ),
-            )
-            .toList(),
+        allLocations: allCountryCodes,
+        topLocations: topCountryCodes,
       );
     } on Exception catch (e) {
       debugPrint(e.toString());
@@ -81,25 +69,18 @@ class RestApiService extends ApiService {
   }
 
   @override
-  List<Location> getRecentLocations({required String keyword}) {
+  List<String> getRecentLocations({required String keyword}) {
     final countryCodes = _localDb.getRecentLocations();
-    final locations = countryCodes
-        .map(
-          (e) => Location(
-            countryCode: e,
-          ),
-        )
-        .toList();
     if (keyword.isNotEmpty) {
-      return locations
-          .where((location) => location.countryName.tr().toLowerCase().contains(keyword))
-          .toList();
+      final res =
+          countryCodes.where((location) => location.tr().toLowerCase().contains(keyword)).toList();
+      return res;
     }
-    return locations;
+    return countryCodes;
   }
 
   @override
-  Future<void> setRecentLocation({required String location}) {
+  void addRecentLocation(String location) {
     final recentLocations = _localDb.getRecentLocations();
     if (recentLocations.contains(location)) {
       recentLocations.remove(location);
@@ -108,7 +89,7 @@ class RestApiService extends ApiService {
     if (recentLocations.length > 5) {
       recentLocations.removeLast();
     }
-    return _localDb.setRecentLocation(recentLocations);
+    _localDb.setRecentLocation(recentLocations);
   }
 
   @override

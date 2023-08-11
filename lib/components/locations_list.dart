@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/components/location_item.dart';
-import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/stores/connectivity_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 
@@ -11,7 +10,7 @@ class LocationsList extends StatelessWidget {
     required this.connectivityStore,
     super.key,
   });
-  final List<Location> locations;
+  final List<String> locations;
   final VpnStore vpnStore;
   final ConnectivityStore connectivityStore;
   @override

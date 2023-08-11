@@ -8,8 +8,8 @@ abstract class ApiService {
   Approval geNotificationsApproval();
   Approval getEmailCommunicationApproval();
   Future<VPNLocations> fetchVPNLocations({required String keyword});
-  Future<void> setRecentLocation({required String location});
-  List<Location> getRecentLocations({required String keyword});
+  void addRecentLocation(String location);
+  List<String> getRecentLocations({required String keyword});
   Future<VpnConfig> fetchVpnConfig({required VpnConfigInput input, required String privateKey});
   Future<String?> getIPAdress();
 }
