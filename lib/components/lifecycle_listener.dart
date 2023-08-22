@@ -162,8 +162,10 @@ class __LifecycleDesktopState extends State<_LifecycleDesktop> with WindowListen
     if (menuItem.key == 'show_window') {
       if (!await windowManager.isVisible()) {
         windowManager.show();
+        trayManager.popUpContextMenu();
       }
     } else if (menuItem.key == 'exit_app') {
+      trayManager.destroy();
       windowManager.destroy();
     }
   }
