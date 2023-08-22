@@ -7,11 +7,13 @@ import 'package:mysterium_vpn/components/search_field.dart';
 import 'package:mysterium_vpn/components/vpn_locations.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:sliding_up_panel2/sliding_up_panel2.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class LocationsSliderMobileView extends HookConsumerWidget {
-  const LocationsSliderMobileView({required this.sc, super.key});
+  const LocationsSliderMobileView({required this.sc, required this.pc, super.key});
   final ScrollController sc;
+  final PanelController pc;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsStore = ref.watch(locationsStorePOD);
@@ -23,6 +25,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
       context: context,
       removeTop: true,
       child: ListView(
+        physics: PanelScrollPhysics(controller: pc),
         controller: sc,
         children: <Widget>[
           Align(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
@@ -10,7 +11,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/connection_info_panel_mobile.dart';
 import 'package:mysterium_vpn/views/home/home_mobile_app_bar.dart';
 import 'package:mysterium_vpn/views/locations/locations_slider_mobile_view.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:sliding_up_panel2/sliding_up_panel2.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class HomeMobileView extends HookConsumerWidget {
@@ -19,6 +20,9 @@ class HomeMobileView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
+    final pc = useMemoized(PanelController.new);
+    final sc = useScrollController();
+
     return Observer(
       builder: (context) {
         final isConnected = vpnStore.isConnected;
@@ -26,8 +30,14 @@ class HomeMobileView extends HookConsumerWidget {
           maxHeight: getMediaHeight(context) * 0.8,
           minHeight: getMediaHeight(context) * 0.35,
           parallaxEnabled: true,
+          parallaxOffset: .15,
+          controller: pc,
+          scrollController: sc,
           color: Theme.of(context).primaryColor,
-          panelBuilder: (sc) => LocationsSliderMobileView(sc: sc),
+          panelBuilder: () => LocationsSliderMobileView(
+            sc: sc,
+            pc: pc,
+          ),
           borderRadius:
               const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
           body: Stack(

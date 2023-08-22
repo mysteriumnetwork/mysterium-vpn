@@ -58,7 +58,7 @@ dependencies:
   sentry_flutter: ^7.5.1
   shared_preferences: ^2.0.18
   shimmer: ^2.0.0
-  sliding_up_panel: ^2.0.0+1
+  sliding_up_panel2: ^3.3.0+1
   stack_trace: ^1.11.0
   styled_widget: ^0.4.1
   tray_manager: ^0.2.0
@@ -67,7 +67,7 @@ dependencies:
     git:
       url: https://github.com/KristijanMitrik/flutter_url_protocol
       ref: main
-  window_manager: ^0.3.4
+  window_manager: ^0.3.5
   wireguard_dart:
     git:
       url: https://github.com/mysteriumnetwork/wireguard_dart.git
