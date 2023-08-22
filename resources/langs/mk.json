@@ -445,5 +445,8 @@
   "SixMonths": "6-месеци",
   "year": "година",
   "month": "месец",
-  "billedInTotal": "{amount} /{period}"
+  "billedInTotal": "{amount} /{period}",
+  "connectionLimitExceededTitle": "Предупредување за ограничување на врската",
+  "connectionLimitExceededDesc": "Го достигнавте ограничувањето од 6 уреди. Еден од вашите уреди беше исклучен за да се дозволи оваа врска.",
+  "iUnderstandBtn": "разбирам"
 }

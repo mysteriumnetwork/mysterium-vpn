@@ -39,16 +39,16 @@ class HomePage extends HookConsumerWidget {
     );
 
     useAutorun(() {
-      if (vpnStore.vpnConfig?.limitExceeded == true &&
+      if ((vpnStore.vpnConfig?.limitExceeded ?? false) &&
           vpnStore.connectionStatus == ConnectionStatus.connected) {
         shownInfoDialog(
           context,
-          'Connection Limit Alert',
+          LocaleKeys.connectionLimitExceededTitle.tr(),
           messages: [
-            'You’ve reached the 6-device limit. One of your devices was disconnected to allow this connection.'
+            LocaleKeys.connectionLimitExceededDesc.tr(),
           ],
           isDismissible: true,
-          confirmText: 'I understand',
+          confirmText: LocaleKeys.iUnderstandBtn.tr(),
         );
       }
     });
