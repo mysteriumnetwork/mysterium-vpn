@@ -18,6 +18,7 @@ Future<void> shownInfoDialog(
   required bool isDismissible,
   List<String>? messages,
   AsyncCallback? onConfirm,
+  String? confirmText,
 }) async {
   await showModalBottomSheet(
     clipBehavior: Clip.none,
@@ -35,6 +36,7 @@ Future<void> shownInfoDialog(
         title: title,
         messages: messages,
         onConfirm: onConfirm,
+        confirmText: confirmText,
       ),
     ),
   );
@@ -45,10 +47,12 @@ class _InfoDialog extends HookWidget {
     required this.title,
     this.messages,
     this.onConfirm,
+    this.confirmText,
   });
   final String title;
   final List<String>? messages;
   final AsyncCallback? onConfirm;
+  final String? confirmText;
   @override
   Widget build(BuildContext context) => Stack(
         clipBehavior: Clip.none,
@@ -87,7 +91,7 @@ class _InfoDialog extends HookWidget {
                   width: 160,
                   color: Palette.pink,
                   onPressed: onConfirm ?? () => Beamer.of(context).popRoute(),
-                  text: LocaleKeys.continueBtn.tr(),
+                  text: confirmText ?? LocaleKeys.continueBtn.tr(),
                 ),
               ],
             ).padding(horizontal: 20, vertical: 40),

@@ -1,6 +1,7 @@
 // Flutter imports:
 // Package imports:
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:async/async.dart';
@@ -313,6 +314,7 @@ abstract class _VpnStore with Store {
         publicKey: _publicKey,
         country: location,
         resetConnection: refreshIP ?? _resetConnection,
+        osType: Platform.operatingSystem,
       ),
       privateKey: _privateKey,
     );
@@ -380,6 +382,7 @@ abstract class _VpnStore with Store {
     await disconnectWireguard();
     _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection?.location ?? '');
     _vpnConnection = null;
+    _vpnConfig = null;
     _timer?.cancel();
     _downloadSpeed = null;
     _uploadSpeed = null;

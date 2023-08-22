@@ -96,9 +96,8 @@ abstract class _SubscriptionStore with Store {
             onDone: _updateStreamOnDone,
             onError: _updateStreamOnError,
           );
+          _subscriptionService.clearPendingTransactions();
         }
-
-        _subscriptionService.clearPendingTransactions();
       }
     });
   }
@@ -115,11 +114,13 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<void> getSubscriptionsConfig() async {
+    if (Platform.isWindows) {
+      return;
+    }
+    if (isAvailableFuture?.status == FutureStatus.pending) {
+      return;
+    }
     try {
-      if (isAvailableFuture?.status == FutureStatus.pending) {
-        return;
-      }
-
       isAvailableFuture = ObservableFuture(_subscriptionService.fetchSubscriptionConfig());
       _subscriptionConfig = await isAvailableFuture;
       await getProductsDetails();
