@@ -448,4 +448,7 @@ abstract class LocaleKeys {
   static const year = 'year';
   static const month = 'month';
   static const billedInTotal = 'billedInTotal';
+  static const connectionLimitExceededTitle = 'connectionLimitExceededTitle';
+  static const connectionLimitExceededDesc = 'connectionLimitExceededDesc';
+  static const iUnderstandBtn = 'iUnderstandBtn';
 }

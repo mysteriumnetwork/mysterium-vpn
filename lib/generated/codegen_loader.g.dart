@@ -474,7 +474,11 @@ class CodegenLoader extends AssetLoader {
     "SixMonths": "6-ay",
     "year": "yıl",
     "month": "ay",
-    "billedInTotal": "{amount} /{period}"
+    "billedInTotal": "{amount} /{period}",
+    "connectionLimitExceededTitle": "Bağlantı Sınırı Uyarısı",
+    "connectionLimitExceededDesc":
+        "6 cihaz sınırına ulaştınız. Bu bağlantıya izin verebilmek için cihazlarınızdan birinin bağlantısı kesildi.",
+    "iUnderstandBtn": "Anladım"
   };
   static const Map<String, dynamic> mk = {
     "title": "Здраво господине",
@@ -948,7 +952,11 @@ class CodegenLoader extends AssetLoader {
     "SixMonths": "6-месеци",
     "year": "година",
     "month": "месец",
-    "billedInTotal": "{amount} /{period}"
+    "billedInTotal": "{amount} /{period}",
+    "connectionLimitExceededTitle": "Предупредување за ограничување на врската",
+    "connectionLimitExceededDesc":
+        "Го достигнавте ограничувањето од 6 уреди. Еден од вашите уреди беше исклучен за да се дозволи оваа врска.",
+    "iUnderstandBtn": "разбирам"
   };
   static const Map<String, dynamic> lt = {
     "title": "Sveiki pone",
@@ -1416,7 +1424,11 @@ class CodegenLoader extends AssetLoader {
     "SixMonths": "6-mėnesiai",
     "year": "metų",
     "month": "mėnuo",
-    "billedInTotal": "{amount} /{period}"
+    "billedInTotal": "{amount} /{period}",
+    "connectionLimitExceededTitle": "Ryšio apribojimo įspėjimas",
+    "connectionLimitExceededDesc":
+        "Pasiekėte 6 įrenginių apribojimą. Vienas iš jūsų įrenginių buvo atjungtas, kad būtų galima prisijungti.",
+    "iUnderstandBtn": "aš suprantu"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1893,7 +1905,11 @@ class CodegenLoader extends AssetLoader {
     "SixMonths": "6-monate",
     "year": "jahr",
     "month": "monat",
-    "billedInTotal": "{amount} /{period}"
+    "billedInTotal": "{amount} /{period}",
+    "connectionLimitExceededTitle": "Warnung zur Verbindungsbeschränkung",
+    "connectionLimitExceededDesc":
+        "Sie haben das Limit von 6 Geräten erreicht. Eines Ihrer Geräte wurde getrennt, um diese Verbindung zu ermöglichen.",
+    "iUnderstandBtn": "Ich verstehe"
   };
   static const Map<String, dynamic> uk = {
     "title": "Вітаю, сер",
@@ -2355,7 +2371,11 @@ class CodegenLoader extends AssetLoader {
     "SixMonths": "6-місяців",
     "year": "рік",
     "month": "місяць",
-    "billedInTotal": "{amount} /{period}"
+    "billedInTotal": "{amount} /{period}",
+    "connectionLimitExceededTitle": "Сповіщення про обмеження підключення",
+    "connectionLimitExceededDesc":
+        "Ви досягли ліміту з 6 пристроїв. Один із ваших пристроїв було відключено, щоб дозволити це з’єднання.",
+    "iUnderstandBtn": "Я розумію"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2824,7 +2844,11 @@ class CodegenLoader extends AssetLoader {
     "SixMonths": "6-meses",
     "year": "ano",
     "month": "mês",
-    "billedInTotal": "{amount} /{period}"
+    "billedInTotal": "{amount} /{period}",
+    "connectionLimitExceededTitle": "Alerta de limite de conexão",
+    "connectionLimitExceededDesc":
+        "Você atingiu o limite de seis dispositivos. Um dos seus dispositivos foi desconectado para permitir esta conexão.",
+    "iUnderstandBtn": "Eu entendo"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -3291,7 +3315,11 @@ class CodegenLoader extends AssetLoader {
     "SixMonths": "6-months",
     "year": "year",
     "month": "month",
-    "billedInTotal": "{amount} /{period}"
+    "billedInTotal": "{amount} /{period}",
+    "connectionLimitExceededTitle": "Connection Limit Alert",
+    "connectionLimitExceededDesc":
+        "You’ve reached the 6-device limit. One of your devices was disconnected to allow this connection.",
+    "iUnderstandBtn": "I understand"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3765,7 +3793,11 @@ class CodegenLoader extends AssetLoader {
     "SixMonths": "6-mesi",
     "year": "anno",
     "month": "mese",
-    "billedInTotal": "{amount} /{period}"
+    "billedInTotal": "{amount} /{period}",
+    "connectionLimitExceededTitle": "Avviso limite di connessione",
+    "connectionLimitExceededDesc":
+        "Hai raggiunto il limite di 6 dispositivi. Uno dei tuoi dispositivi è stato disconnesso per consentire questa connessione.",
+    "iUnderstandBtn": "Capisco"
   };
   static const Map<String, dynamic> sr = {
     "title": "Здраво господине",
@@ -4236,7 +4268,11 @@ class CodegenLoader extends AssetLoader {
     "SixMonths": "6-месеци",
     "year": "године",
     "month": "месец дана",
-    "billedInTotal": "{amount} /{period}"
+    "billedInTotal": "{amount} /{period}",
+    "connectionLimitExceededTitle": "Упозорење о ограничењу везе",
+    "connectionLimitExceededDesc":
+        "Достигли сте ограничење од 6 уређаја. Један од ваших уређаја је прекинут да бисте дозволили ову везу.",
+    "iUnderstandBtn": "разумем"
   };
   static const Map<String, dynamic> et = {
     "title": "Tere, härra",
@@ -4701,7 +4737,11 @@ class CodegenLoader extends AssetLoader {
     "SixMonths": "6-kuud",
     "year": "aastal",
     "month": "kuu",
-    "billedInTotal": "{amount} /{period}"
+    "billedInTotal": "{amount} /{period}",
+    "connectionLimitExceededTitle": "Ühendusepiirangu hoiatus",
+    "connectionLimitExceededDesc":
+        "Olete jõudnud 6 seadme limiidini. Ühenduse lubamiseks katkestati üks teie seadmetest.",
+    "iUnderstandBtn": "ma saan aru"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -5176,7 +5216,11 @@ class CodegenLoader extends AssetLoader {
     "SixMonths": "6-mois",
     "year": "année",
     "month": "mois",
-    "billedInTotal": "{amount} /{period}"
+    "billedInTotal": "{amount} /{period}",
+    "connectionLimitExceededTitle": "Alerte de limite de connexion",
+    "connectionLimitExceededDesc":
+        "Vous avez atteint la limite de 6 appareils. L'un de vos appareils a été déconnecté pour permettre cette connexion.",
+    "iUnderstandBtn": "Je comprends"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -5647,7 +5691,11 @@ class CodegenLoader extends AssetLoader {
     "SixMonths": "6-meses",
     "year": "año",
     "month": "mes",
-    "billedInTotal": "{amount} /{period}"
+    "billedInTotal": "{amount} /{period}",
+    "connectionLimitExceededTitle": "Alerta de límite de conexión",
+    "connectionLimitExceededDesc":
+        "Has alcanzado el límite de 6 dispositivos. Uno de tus dispositivos se desconectó para permitir esta conexión.",
+    "iUnderstandBtn": "Entiendo"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "tr": tr,
