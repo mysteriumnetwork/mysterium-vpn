@@ -43,7 +43,7 @@ class HomeDesktopLeftPanel extends ConsumerWidget {
             locationsStore: locationsStore,
             vpnStore: vpnStore,
             connectivityStore: connectivityStore,
-          )
+          ),
         ],
       ),
     );

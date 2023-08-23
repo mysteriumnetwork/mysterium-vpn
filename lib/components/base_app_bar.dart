@@ -23,7 +23,7 @@ class BaseAppBar extends StatelessWidget {
             asset: Assets.navigateBack,
           ),
           const AppLogo(),
-          const SizedBox(width: 40)
+          const SizedBox(width: 40),
         ],
       ).padding(horizontal: 10, top: 10);
 }

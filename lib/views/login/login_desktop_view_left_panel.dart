@@ -55,13 +55,13 @@ class LoginDesktopViewLeftPanel extends ConsumerWidget {
                 child: AppVersion(
                   headerText: LocaleKeys.appVersion.tr(),
                 ),
-              )
+              ),
             ],
           ).paddingDirectional(horizontal: 55, vertical: 40),
           if (authStore.authStatus == AuthStatus.authenticating)
             LoadingBarrier(
               color: Theme.of(context).primaryColor,
-            )
+            ),
         ],
       ),
     );
