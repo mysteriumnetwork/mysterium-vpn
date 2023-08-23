@@ -55,7 +55,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
           locationsStore: locationsStore,
           vpnStore: vpnStore,
           connectivityStore: connectivityStore,
-        )
+        ),
       ],
     );
   }

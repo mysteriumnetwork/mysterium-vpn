@@ -166,7 +166,7 @@ class SubscriptionForm extends HookConsumerWidget {
                     .padding(all: 20)
                     .constrained(width: getMediaWidth(context) * 0.8, height: 200),
               ),
-            )
+            ),
         ],
       ),
     );

@@ -238,7 +238,7 @@ abstract class _VpnStore with Store {
         : _locationsStore.vpnLocations.allLocations.isNotEmpty
             ? [
                 ..._locationsStore.vpnLocations.allLocations,
-                ..._locationsStore.vpnLocations.topLocations
+                ..._locationsStore.vpnLocations.topLocations,
               ].randomItem()
             : null;
     _connectingLocationCode = location;

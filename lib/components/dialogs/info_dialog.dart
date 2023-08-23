@@ -77,7 +77,7 @@ class _InfoDialog extends HookWidget {
                 ),
                 const SizedBox(height: 20),
                 if (messages != null && messages!.isNotEmpty) ...[
-                  for (var message in messages!)
+                  for (final message in messages!)
                     EasyText(
                       message,
                       fontSize: 14,

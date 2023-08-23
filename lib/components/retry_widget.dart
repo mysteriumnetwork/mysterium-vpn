@@ -38,7 +38,7 @@ class RetryWdiget extends StatelessWidget {
             color: Palette.lightBlack,
             text: LocaleKeys.retryBtn.tr(),
             onPressed: onRetry,
-          )
+          ),
         ],
       );
 }

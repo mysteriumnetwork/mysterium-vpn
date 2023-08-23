@@ -49,7 +49,7 @@ class ProductItem extends ConsumerWidget {
                     color: Palette.purple,
                     fontSize: 20,
                     fontWeight: FontWeight.w900,
-                  )
+                  ),
                 ],
               ).fittedBox(),
               EasyText(
