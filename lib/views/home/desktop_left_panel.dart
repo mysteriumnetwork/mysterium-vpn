@@ -22,8 +22,8 @@ class HomeDesktopLeftPanel extends ConsumerWidget {
     return Container(
       color: Theme.of(context).primaryColor,
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         children: [
           const HomeDesktopAppBar(),
           SearchField(locationsStore).padding(bottom: 20),
@@ -37,7 +37,7 @@ class HomeDesktopLeftPanel extends ConsumerWidget {
             LocaleKeys.allLocations.tr(),
             fontSize: 16,
             fontWeight: FontWeight.w700,
-          ).padding(bottom: 20),
+          ).padding(bottom: 10),
           AllLocationsList(
             themeStore: themeStore,
             locationsStore: locationsStore,

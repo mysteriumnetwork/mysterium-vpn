@@ -11,7 +11,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/connection_info_panel_mobile.dart';
 import 'package:mysterium_vpn/views/home/home_mobile_app_bar.dart';
 import 'package:mysterium_vpn/views/locations/locations_slider_mobile_view.dart';
-import 'package:sliding_up_panel2/sliding_up_panel2.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class HomeMobileView extends HookConsumerWidget {
@@ -21,7 +21,6 @@ class HomeMobileView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
     final pc = useMemoized(PanelController.new);
-    final sc = useScrollController();
 
     return Observer(
       builder: (context) {
@@ -29,12 +28,10 @@ class HomeMobileView extends HookConsumerWidget {
         return SlidingUpPanel(
           maxHeight: getMediaHeight(context) * 0.8,
           minHeight: getMediaHeight(context) * 0.35,
-          parallaxEnabled: true,
-          parallaxOffset: .15,
           controller: pc,
-          scrollController: sc,
+          panelSnapping: false,
           color: Theme.of(context).primaryColor,
-          panelBuilder: () => LocationsSliderMobileView(
+          panelBuilder: (sc) => LocationsSliderMobileView(
             sc: sc,
             pc: pc,
           ),

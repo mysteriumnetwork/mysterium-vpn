@@ -32,7 +32,7 @@ class AllLocationsList extends StatelessWidget {
         builder: (_) {
           if (locationsStore.vpnLocationsFutureStatus == FutureStatus.pending) {
             return ListView.builder(
-              controller: ScrollController(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: 10,
               itemBuilder: (_, int index) => LocationPlaceholder(
@@ -61,7 +61,10 @@ class AllLocationsList extends StatelessWidget {
             );
           }
 
-          return Column(
+          return ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            physics: const NeverScrollableScrollPhysics(),
             children: [
               if (topLocations.isNotEmpty)
                 LocationsList(

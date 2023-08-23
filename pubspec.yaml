@@ -58,7 +58,7 @@ dependencies:
   sentry_flutter: ^7.5.1
   shared_preferences: ^2.0.18
   shimmer: ^2.0.0
-  sliding_up_panel2: ^3.3.0+1
+  sliding_up_panel: ^2.0.0+1
   stack_trace: ^1.11.0
   styled_widget: ^0.4.1
   tray_manager: ^0.2.0
@@ -87,35 +87,18 @@ dev_dependencies:
   mobx_codegen: ^2.1.1
   msix: ^3.15.1
 
-
-# PROD Configuration
 msix_config:
-  display_name: Mysterium VPN
+  display_name: Mysterium VPN Test
   publisher_display_name: UAB MN Technologijos
-  logo_path: assets/logo/prod/desktop.png
-  identity_name: UABMNTechnologijos.MysteriumVPN
+  logo_path: assets/logo/dev/desktop.png
+  identity_name: UABMNTechnologijos.MysteriumVPNTest
   publisher: CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC
-  output_name: MysteriumVPN
+  output_name: MysteriumVPNTest
   language: en-us
-  windows_build_args: --dart-define FLAVOR=PROD
+  windows_build_args: --dart-define FLAVOR=DEV
   store: true
   capabilities: runFullTrust, allowElevation, internetClient
   protocol_activation: mysteriumvpn
-
-
-# DEV Configuration
-# msix_config:
-#   display_name: Mysterium VPN Test
-#   publisher_display_name: UAB MN Technologijos
-#   logo_path: assets/logo/dev/desktop.png
-#   identity_name: UABMNTechnologijos.MysteriumVPNTest
-#   publisher: CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC
-#   output_name: MysteriumVPNTest
-#   language: en-us
-#   windows_build_args: --dart-define FLAVOR=DEV
-#   store: true
-#   capabilities: runFullTrust, allowElevation, internetClient
-#   protocol_activation: mysteriumvpn
 
 flutter:
   uses-material-design: true

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/components/location_item.dart';
 import 'package:mysterium_vpn/stores/connectivity_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 
-class LocationsList extends StatelessWidget {
+class LocationsList extends HookWidget {
   const LocationsList({
     required this.locations,
     required this.vpnStore,
@@ -14,19 +15,24 @@ class LocationsList extends StatelessWidget {
   final VpnStore vpnStore;
   final ConnectivityStore connectivityStore;
   @override
-  Widget build(BuildContext context) => ListView.builder(
-        controller: ScrollController(),
-        shrinkWrap: true,
-        itemCount: locations.length,
-        itemBuilder: (_, int index) {
-          final location = locations[index];
+  Widget build(BuildContext context) {
+    final sc = useScrollController();
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      controller: sc,
+      itemCount: locations.length,
+      itemBuilder: (_, int index) {
+        final location = locations[index];
 
-          return LocationItem(
-            location: location,
-            vpnStore: vpnStore,
-            connectivityStore: connectivityStore,
-            onTap: () => vpnStore.connect(location: location),
-          );
-        },
-      );
+        return LocationItem(
+          location: location,
+          vpnStore: vpnStore,
+          connectivityStore: connectivityStore,
+          onTap: () => vpnStore.connect(location: location),
+        );
+      },
+    );
+  }
 }
