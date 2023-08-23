@@ -105,9 +105,11 @@ class RestApiService extends ApiService {
       if (response.data == null || !response.data!.containsKey('wg_config')) {
         throw Exception("config wasn't created");
       }
-      final config =
-          (response.data!['wg_config'] as String).replaceFirst('%private_key%', privateKey);
-      return VpnConfig(config: config);
+      final vpnConfig = VpnConfig.fromJson(response.data!);
+
+      return vpnConfig.copyWith(
+        config: vpnConfig.config.replaceFirst('%private_key%', privateKey),
+      );
     } on Exception catch (e) {
       debugPrint(e.toString());
       throw handleException(e);

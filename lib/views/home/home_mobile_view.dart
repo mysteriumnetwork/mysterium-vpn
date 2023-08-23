@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
@@ -19,15 +20,21 @@ class HomeMobileView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
+    final pc = useMemoized(PanelController.new);
+
     return Observer(
       builder: (context) {
         final isConnected = vpnStore.isConnected;
         return SlidingUpPanel(
           maxHeight: getMediaHeight(context) * 0.8,
           minHeight: getMediaHeight(context) * 0.35,
-          parallaxEnabled: true,
+          controller: pc,
+          panelSnapping: false,
           color: Theme.of(context).primaryColor,
-          panelBuilder: (sc) => LocationsSliderMobileView(sc: sc),
+          panelBuilder: (sc) => LocationsSliderMobileView(
+            sc: sc,
+            pc: pc,
+          ),
           borderRadius:
               const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
           body: Stack(

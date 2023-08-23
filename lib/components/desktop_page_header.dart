@@ -40,14 +40,14 @@ class DesktopPageHeader extends ConsumerWidget {
                   LocaleKeys.back.tr(),
                   fontSize: 14,
                 ),
-              )
+              ),
             ],
           ),
           if (showNavigationButton)
             SvgIconButton(
               onPressed: onPressed,
               asset: asset,
-            )
+            ),
         ],
       ),
     );

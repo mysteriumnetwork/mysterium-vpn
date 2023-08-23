@@ -7,11 +7,13 @@ import 'package:mysterium_vpn/components/search_field.dart';
 import 'package:mysterium_vpn/components/vpn_locations.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class LocationsSliderMobileView extends HookConsumerWidget {
-  const LocationsSliderMobileView({required this.sc, super.key});
+  const LocationsSliderMobileView({required this.sc, required this.pc, super.key});
   final ScrollController sc;
+  final PanelController pc;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsStore = ref.watch(locationsStorePOD);
@@ -19,42 +21,42 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     final themeStore = ref.watch(themeStorePOD);
     final connectivityStore = ref.watch(connectivityStorePOD);
 
-    return MediaQuery.removePadding(
-      context: context,
-      removeTop: true,
-      child: ListView(
-        controller: sc,
-        children: <Widget>[
-          Align(
+    return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      controller: sc,
+      children: <Widget>[
+        Align(
+          child: GestureDetector(
+            onTap: () => pc.isPanelOpen ? pc.close() : pc.open(),
             child: Container(
               width: 30,
-              height: 5,
+              height: 8,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: Colors.grey[400],
                 borderRadius: const BorderRadius.all(Radius.circular(12)),
               ),
             ),
-          ).padding(bottom: 10, top: 10),
-          SearchField(locationsStore).padding(bottom: 20),
-          RecentLocationsList(
-            themeStore: themeStore,
-            locationsStore: locationsStore,
-            vpnStore: vpnStore,
-            connectivityStore: connectivityStore,
-          ).padding(bottom: 20),
-          EasyText(
-            LocaleKeys.allLocations.tr(),
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-          ).padding(bottom: 20),
-          AllLocationsList(
-            themeStore: themeStore,
-            locationsStore: locationsStore,
-            vpnStore: vpnStore,
-            connectivityStore: connectivityStore,
-          )
-        ],
-      ).paddingDirectional(horizontal: 20),
+          ),
+        ).padding(bottom: 12, top: 12),
+        SearchField(locationsStore).padding(bottom: 20),
+        RecentLocationsList(
+          themeStore: themeStore,
+          locationsStore: locationsStore,
+          vpnStore: vpnStore,
+          connectivityStore: connectivityStore,
+        ).padding(bottom: 20),
+        EasyText(
+          LocaleKeys.allLocations.tr(),
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+        ).padding(bottom: 20),
+        AllLocationsList(
+          themeStore: themeStore,
+          locationsStore: locationsStore,
+          vpnStore: vpnStore,
+          connectivityStore: connectivityStore,
+        ),
+      ],
     );
   }
 }

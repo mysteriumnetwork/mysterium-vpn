@@ -445,5 +445,8 @@
   "SixMonths": "6-monate",
   "year": "jahr",
   "month": "monat",
-  "billedInTotal": "{amount} /{period}"
+  "billedInTotal": "{amount} /{period}",
+  "connectionLimitExceededTitle": "Warnung zur Verbindungsbeschränkung",
+  "connectionLimitExceededDesc": "Sie haben das Limit von 6 Geräten erreicht. Eines Ihrer Geräte wurde getrennt, um diese Verbindung zu ermöglichen.",
+  "iUnderstandBtn": "Ich verstehe"
 }

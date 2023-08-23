@@ -35,7 +35,7 @@ class HomeDesktopAppBar extends ConsumerWidget {
                   context.beamToNamed(Routes.settings.toRoute);
                 },
                 asset: themeStore.isDarkMode ? Assets.settingsLightBlack : Assets.settings,
-              )
+              ),
             ],
           ),
         ),

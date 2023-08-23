@@ -35,7 +35,7 @@ const privacyPolicyUrl = 'https://www.mysteriumvpn.com/privacy-policy-vpn';
 const termsOfServiceUrl = 'https://www.mysteriumvpn.com/terms-conditions-vpn';
 
 const String bundleId = 'mysteriumvpn';
-const String testBundleId = 'mysteriumvpntest';
+const String testBundleId = 'mysteriumtest';
 const String iosBundleId = 'com.mysteriumvpn.tun';
 const String iosTestBundleId = 'com.mysteriumvpn.test.tun';
 const String win32ServiceName = 'MysteriumVPN_Wireguard';

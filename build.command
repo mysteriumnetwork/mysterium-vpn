@@ -1,1 +1,1 @@
-flutter pub run build_runner build --verbose --delete-conflicting-outputs
+dart run build_runner build --verbose --delete-conflicting-outputs

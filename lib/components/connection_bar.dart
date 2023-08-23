@@ -112,7 +112,7 @@ class _BarItem extends StatelessWidget {
             ),
           if (leadingPosition == LeadingPosition.bottom && leading != null)
             leading!.padding(top: 4),
-          action ?? const SizedBox()
+          action ?? const SizedBox(),
         ],
       );
 }

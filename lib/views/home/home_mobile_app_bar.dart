@@ -30,7 +30,7 @@ class HomeMobileAppBar extends ConsumerWidget {
               context.beamToNamed(Routes.settings.toRoute);
             },
             asset: Assets.settings,
-          )
+          ),
         ],
       ).padding(horizontal: 20, top: 10);
 }

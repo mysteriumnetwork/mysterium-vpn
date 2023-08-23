@@ -55,7 +55,7 @@ class LoginMobileView extends ConsumerWidget {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -65,7 +65,7 @@ class LoginMobileView extends ConsumerWidget {
           if (authStore.authStatus == AuthStatus.authenticating)
             const LoadingBarrier(
               color: Palette.darkBlue,
-            )
+            ),
         ],
       ),
     );

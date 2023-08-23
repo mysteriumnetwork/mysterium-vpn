@@ -26,24 +26,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   project.set_dart_entrypoint_arguments(std::move(command_line_arguments));
 
 
-  HWND hwnd = ::FindWindow(L"FLUTTER_RUNNER_WIN32_WINDOW", L"Mysterium VPN");
-   if (hwnd != NULL) {
-  ::ShowWindow(hwnd, SW_NORMAL);
-    ::SetForegroundWindow(hwnd);
-    return EXIT_FAILURE;
-  }
-
-  HWND hwndTest = ::FindWindow(L"FLUTTER_RUNNER_WIN32_WINDOW", L"Mysterium VPN Test");
-   if (hwndTest != NULL) {
-  ::ShowWindow(hwndTest, SW_NORMAL);
-    ::SetForegroundWindow(hwndTest);
-    return EXIT_FAILURE;
-  }
-
   FlutterWindow window(project);
   Win32Window::Point origin(10, 10);
   Win32Window::Size size(1280, 720);
-  if (!window.CreateAndShow(L"Mysterium VPN Test", origin, size)) {
+  if (!window.CreateAndShow(L"Mysterium VPN", origin, size)) {
     return EXIT_FAILURE;
   }
   window.SetQuitOnClose(true);

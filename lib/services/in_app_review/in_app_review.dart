@@ -2,7 +2,11 @@ import 'package:flutter/widgets.dart';
 import 'package:mysterium_vpn/services/in_app_review/in_app_review_service.dart';
 
 class InAppReviewObserver with WidgetsBindingObserver {
+  factory InAppReviewObserver() => _singleton;
+
+  InAppReviewObserver._internal();
   final InAppReviewService _service = InAppReviewService();
+  static final InAppReviewObserver _singleton = InAppReviewObserver._internal();
 
   /// Start monitoring conditions to decide wheter a view attemp is made or not
   void monitor() {

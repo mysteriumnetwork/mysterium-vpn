@@ -10,6 +10,7 @@ class LifecycleListener extends StatelessWidget {
     this.onPaused,
     this.onInactive,
     this.onDetached,
+    this.onHidden,
     super.key,
   });
 
@@ -18,6 +19,7 @@ class LifecycleListener extends StatelessWidget {
   final VoidCallback? onPaused;
   final VoidCallback? onInactive;
   final VoidCallback? onDetached;
+  final VoidCallback? onHidden;
 
   @override
   Widget build(BuildContext context) => isMobile()
@@ -26,6 +28,7 @@ class LifecycleListener extends StatelessWidget {
           onPaused: onPaused,
           onInactive: onInactive,
           onDetached: onDetached,
+          onHidden: onHidden,
           child: child,
         )
       : _LifecycleDesktop(
@@ -44,6 +47,7 @@ class _LifecycleMobile extends StatefulWidget {
     this.onPaused,
     this.onInactive,
     this.onDetached,
+    this.onHidden,
   });
 
   final Widget child;
@@ -51,6 +55,7 @@ class _LifecycleMobile extends StatefulWidget {
   final VoidCallback? onPaused;
   final VoidCallback? onInactive;
   final VoidCallback? onDetached;
+  final VoidCallback? onHidden;
 
   @override
   State<_LifecycleMobile> createState() => __LifecycleMobileState();
@@ -83,6 +88,9 @@ class __LifecycleMobileState extends State<_LifecycleMobile> with WidgetsBinding
         break;
       case AppLifecycleState.detached:
         widget.onDetached?.call();
+        break;
+      case AppLifecycleState.hidden:
+        widget.onHidden?.call();
         break;
     }
   }
@@ -162,8 +170,10 @@ class __LifecycleDesktopState extends State<_LifecycleDesktop> with WindowListen
     if (menuItem.key == 'show_window') {
       if (!await windowManager.isVisible()) {
         windowManager.show();
+        trayManager.popUpContextMenu();
       }
     } else if (menuItem.key == 'exit_app') {
+      trayManager.destroy();
       windowManager.destroy();
     }
   }

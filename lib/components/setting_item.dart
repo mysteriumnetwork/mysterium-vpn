@@ -47,7 +47,7 @@ class SettingItem extends StatelessWidget {
                             // ).padding(bottom: 11),
                           ],
                         ).padding(top: 4),
-                        actionWidget
+                        actionWidget,
                       ],
                     )
                   : Column(
@@ -62,7 +62,7 @@ class SettingItem extends StatelessWidget {
                         //   subtitle,
                         //   color: Palette.lightBlack,
                         // ).padding(bottom: 11),
-                        actionWidget
+                        actionWidget,
                       ],
                     ),
             ).expanded(),

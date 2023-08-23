@@ -82,7 +82,7 @@ class _InfoItem extends StatelessWidget {
             fontSize: 16,
             fontWeight: FontWeight.w900,
             color: isConnected ? Palette.white : Palette.lightBlack,
-          )
+          ),
         ],
       ).padding(vertical: 20);
 }

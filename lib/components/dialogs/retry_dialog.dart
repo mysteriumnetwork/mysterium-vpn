@@ -104,9 +104,9 @@ class VerificationFailedDialog extends StatelessWidget {
                       Beamer.of(context).popRoute();
                     },
                     width: onDismiss != null ? 160 : 200,
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ).padding(horizontal: 20, vertical: 40),
         ],

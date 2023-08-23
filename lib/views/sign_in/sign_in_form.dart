@@ -61,7 +61,7 @@ class SignInForm extends HookConsumerWidget {
                   LocaleKeys.emaillCommunicationsApproval.tr(),
                   fontWeight: FontWeight.w400,
                   fontSize: 14,
-                ).expanded()
+                ).expanded(),
               ],
             ).padding(bottom: 10),
           ),

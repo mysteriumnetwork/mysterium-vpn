@@ -7,6 +7,7 @@ part 'vpn_config.g.dart';
 class VpnConfig with _$VpnConfig {
   const factory VpnConfig({
     @JsonKey(name: 'wg_config') required String config,
+    @JsonKey(name: 'limit_exceeded') required bool limitExceeded,
   }) = _VpnConfig;
 
   factory VpnConfig.fromJson(Map<String, Object?> json) => _$VpnConfigFromJson(json);
@@ -17,6 +18,7 @@ class VpnConfigInput with _$VpnConfigInput {
   const factory VpnConfigInput({
     @JsonKey(name: 'public_key') required String publicKey,
     @JsonKey(name: 'reset_connection') required bool resetConnection,
+    @JsonKey(name: 'os_type') required String osType,
     String? country,
     @JsonKey(name: 'ip_type') String? ipType,
   }) = _VpnConfigInput;
