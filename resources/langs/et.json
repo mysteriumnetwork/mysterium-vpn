@@ -445,5 +445,8 @@
   "SixMonths": "6-kuud",
   "year": "aastal",
   "month": "kuu",
-  "billedInTotal": "{amount} /{period}"
+  "billedInTotal": "{amount} /{period}",
+  "connectionLimitExceededTitle": "Ühendusepiirangu hoiatus",
+  "connectionLimitExceededDesc": "Olete jõudnud 6 seadme limiidini. Ühenduse lubamiseks katkestati üks teie seadmetest.",
+  "iUnderstandBtn": "ma saan aru"
 }

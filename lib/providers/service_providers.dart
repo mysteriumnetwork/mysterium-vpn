@@ -48,7 +48,7 @@ final authorizedApiClientPOD = Provider<Dio>((ref) {
         requestHeader: false,
         requestBody: true,
         responseBody: true,
-      )
+      ),
     ])
     ..addSentry();
 });

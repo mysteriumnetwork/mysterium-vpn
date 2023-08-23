@@ -5,12 +5,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/enums/routes.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/layout_builders/screen_type_builder.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
+import 'package:mysterium_vpn/components/dialogs/info_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/retry_dialog.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -35,6 +37,21 @@ class HomePage extends HookConsumerWidget {
       },
       [],
     );
+
+    useAutorun(() {
+      if ((vpnStore.vpnConfig?.limitExceeded ?? false) &&
+          vpnStore.connectionStatus == ConnectionStatus.connected) {
+        shownInfoDialog(
+          context,
+          LocaleKeys.connectionLimitExceededTitle.tr(),
+          messages: [
+            LocaleKeys.connectionLimitExceededDesc.tr(),
+          ],
+          isDismissible: true,
+          confirmText: LocaleKeys.iUnderstandBtn.tr(),
+        );
+      }
+    });
 
     return ReactionBuilder(
       builder: (_) => reaction((_) => subscriptionStore.subscriptionFuture?.status, (result) {

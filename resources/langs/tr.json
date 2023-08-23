@@ -445,5 +445,8 @@
   "SixMonths": "6-ay",
   "year": "yıl",
   "month": "ay",
-  "billedInTotal": "{amount} /{period}"
+  "billedInTotal": "{amount} /{period}",
+  "connectionLimitExceededTitle": "Bağlantı Sınırı Uyarısı",
+  "connectionLimitExceededDesc": "6 cihaz sınırına ulaştınız. Bu bağlantıya izin verebilmek için cihazlarınızdan birinin bağlantısı kesildi.",
+  "iUnderstandBtn": "Anladım"
 }

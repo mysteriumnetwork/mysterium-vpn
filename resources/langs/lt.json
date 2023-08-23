@@ -445,5 +445,8 @@
   "SixMonths": "6-mėnesiai",
   "year": "metų",
   "month": "mėnuo",
-  "billedInTotal": "{amount} /{period}"
+  "billedInTotal": "{amount} /{period}",
+  "connectionLimitExceededTitle": "Ryšio apribojimo įspėjimas",
+  "connectionLimitExceededDesc": "Pasiekėte 6 įrenginių apribojimą. Vienas iš jūsų įrenginių buvo atjungtas, kad būtų galima prisijungti.",
+  "iUnderstandBtn": "aš suprantu"
 }

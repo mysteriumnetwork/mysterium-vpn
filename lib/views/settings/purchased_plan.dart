@@ -28,7 +28,7 @@ class PurchasedPlan extends StatelessWidget {
               ).padding(right: 4),
               const SvgIcon(
                 asset: Assets.subscription,
-              ).height(25).width(25)
+              ).height(25).width(25),
             ],
           ),
           EasyText(

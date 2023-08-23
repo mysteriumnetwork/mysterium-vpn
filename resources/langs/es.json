@@ -445,5 +445,8 @@
   "SixMonths": "6-meses",
   "year": "año",
   "month": "mes",
-  "billedInTotal": "{amount} /{period}"
+  "billedInTotal": "{amount} /{period}",
+  "connectionLimitExceededTitle": "Alerta de límite de conexión",
+  "connectionLimitExceededDesc": "Has alcanzado el límite de 6 dispositivos. Uno de tus dispositivos se desconectó para permitir esta conexión.",
+  "iUnderstandBtn": "Entiendo"
 }

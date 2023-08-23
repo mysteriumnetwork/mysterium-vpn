@@ -26,7 +26,7 @@ class LoginDesktopViewRightPanel extends HookWidget {
                   ..forward();
               },
             ),
-          )
+          ),
         ],
       ),
     );

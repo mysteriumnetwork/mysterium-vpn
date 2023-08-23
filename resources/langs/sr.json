@@ -445,5 +445,8 @@
   "SixMonths": "6-месеци",
   "year": "године",
   "month": "месец дана",
-  "billedInTotal": "{amount} /{period}"
+  "billedInTotal": "{amount} /{period}",
+  "connectionLimitExceededTitle": "Упозорење о ограничењу везе",
+  "connectionLimitExceededDesc": "Достигли сте ограничење од 6 уређаја. Један од ваших уређаја је прекинут да бисте дозволили ову везу.",
+  "iUnderstandBtn": "разумем"
 }

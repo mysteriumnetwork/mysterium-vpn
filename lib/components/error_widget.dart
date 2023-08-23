@@ -29,7 +29,7 @@ class RetryOnErrorWidget extends StatelessWidget {
             width: 200,
             text: LocaleKeys.tryAgainBtn.tr(),
             onPressed: onRetry,
-          )
+          ),
         ],
       ).paddingDirectional(all: 20).center();
 }
