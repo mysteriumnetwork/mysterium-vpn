@@ -92,12 +92,14 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   final authStore = ref.read(authStorePOD);
   final localDb = ref.read(localDBPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
+  final marketingAnalyticsStore = ref.watch(marketingAnalyticsStorePOD);
   return SubscriptionStore(
     inAppPurchase: inAppPurchase,
     subscriptionService: subscriptionService,
     authStore: authStore,
     localDb: localDb,
     analyticsStore: analyticsStore,
+    marketingAnalyticsStore: marketingAnalyticsStore,
   );
 });
 
@@ -151,13 +153,14 @@ final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
 });
 
 final marketingAnalyticsInitPOD = FutureProviderFamily<void, FlavorConfig>((ref, flavor) async {
-  if (isMobile()) {
+  if (isMobile() && flavor.isProduction()) {
     await AppsflyerSdk(appsFlyerOptions).initSdk();
   }
 });
 
 final marketingAnalyticsStorePOD = StateProvider<MarketingAnalyticsStore>((ref) {
-  if (isDesktop()) {
+  final flavor = ref.watch(environmentPOD);
+  if (isDesktop() || !flavor.isProduction()) {
     return MarketingAnalyticsStoreNoop();
   }
   return MarketingAnalyticsStoreAppsflyer(
