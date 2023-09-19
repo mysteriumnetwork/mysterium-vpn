@@ -16,6 +16,7 @@ import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
+import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_store.dart';
 
 // Include generated file
 part 'subscription_store.g.dart';
@@ -30,11 +31,13 @@ abstract class _SubscriptionStore with Store {
     required AuthStore authStore,
     required LocalDBService localDb,
     required AnalyticsStore analyticsStore,
+    required MarketingAnalyticsStore marketingAnalyticsStore,
   })  : _inAppPurchase = inAppPurchase,
         _subscriptionService = subscriptionService,
         _authStore = authStore,
         _localDb = localDb,
-        _analyticsStore = analyticsStore {
+        _analyticsStore = analyticsStore,
+        _marketingAnalyticsStore = marketingAnalyticsStore {
     initStore();
   }
 
@@ -45,7 +48,7 @@ abstract class _SubscriptionStore with Store {
   final AuthStore _authStore;
   final LocalDBService _localDb;
   final AnalyticsStore _analyticsStore;
-
+  final MarketingAnalyticsStore _marketingAnalyticsStore;
   @observable
   ObservableFuture<SubscriptionConfig>? isAvailableFuture;
 
@@ -57,6 +60,9 @@ abstract class _SubscriptionStore with Store {
 
   @readonly
   Subscription? _subscription;
+
+  @readonly
+  bool? _expired;
 
   @computed
   bool? get isSubscribed => _subscription?.active;
@@ -106,6 +112,7 @@ abstract class _SubscriptionStore with Store {
   Future<void> fetchSubscription() async {
     subscriptionFuture = ObservableFuture(_subscriptionService.fetchSubscriptionDetails());
     _subscription = await subscriptionFuture;
+    _expired = _subscription?.expired;
     if (_subscription?.planId != null) {
       _localDb.setSubscriptionPlan(_subscription!.planId!);
       _purchasedProductId = _subscription!.planId;
@@ -114,10 +121,7 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<void> getSubscriptionsConfig() async {
-    if (Platform.isWindows) {
-      return;
-    }
-    if (isAvailableFuture?.status == FutureStatus.pending) {
+    if (Platform.isWindows || isAvailableFuture?.status == FutureStatus.pending) {
       return;
     }
     try {
@@ -158,8 +162,6 @@ abstract class _SubscriptionStore with Store {
       _subscriptonStatus = SubscriptionStatus.pending;
       final item =
           _products.firstWhere((element) => element.id == selectedProductId).productDetails;
-      // _subscriptionService.createSubscriptionRequest(
-
       await _subscriptionService.subscribeToPackage(
         productDetails: item,
         purchasedProductId: ((_subscription?.active ?? false) && _subscription?.gateway == 'google')
@@ -186,7 +188,6 @@ abstract class _SubscriptionStore with Store {
       }
     } on Exception catch (e) {
       _subscriptonStatus = SubscriptionStatus.error;
-
       if (kDebugMode) {
         debugPrint(e.toString());
       }
@@ -250,6 +251,12 @@ abstract class _SubscriptionStore with Store {
             transactionId: purchaseDetails.verificationData.serverVerificationData,
             transactionDate: purchaseDetails.transactionDate ?? '',
           );
+          if (_expired == false) {
+            _marketingAnalyticsStore.setStartTrial(
+              planType: _purchasedProductId ?? '',
+              price: product.productDetails.rawPrice.toString(),
+            );
+          }
         }
         _subscriptonStatus = SubscriptionStatus.purchased;
       } else {
