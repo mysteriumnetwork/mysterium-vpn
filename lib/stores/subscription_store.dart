@@ -235,7 +235,7 @@ abstract class _SubscriptionStore with Store {
     }
     try {
       await verifyPurchase(product?.productDetails.id ?? '', purchaseDetails);
-
+      _expired = _subscription?.expired;
       if (purchaseDetails.status == PurchaseStatus.purchased && (_subscription?.active ?? false)) {
         _purchasedProductId = _subscription?.planId;
         if (product != null) {
