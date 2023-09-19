@@ -104,7 +104,7 @@
 		77CDF2A520419F32E519D16C /* Pods-tun.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.profile-dev.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.profile-dev.xcconfig"; sourceTree = "<group>"; };
 		7A114624CD48D53865060259 /* Pods-Runner.release prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release prod.xcconfig"; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
-		9704CC232A6A79F600FD7D99 /* tunTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "tunDebug Dev.entitlements"; sourceTree = "<group>"; };
+		9704CC232A6A79F600FD7D99 /* tunDebug Dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "tunDebug Dev.entitlements"; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		97C8B25B29D46D680017C38F /* tun.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = tun.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		97C8B25C29D46D680017C38F /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
@@ -214,7 +214,7 @@
 		97C8B25E29D46D680017C38F /* tun */ = {
 			isa = PBXGroup;
 			children = (
-				9704CC232A6A79F600FD7D99 /* tunTest.entitlements */,
+				9704CC232A6A79F600FD7D99 /* tunDebug Dev.entitlements */,
 				97C8B25F29D46D680017C38F /* PacketTunnelProvider.swift */,
 				97C8B26129D46D680017C38F /* Info.plist */,
 				97C8B26229D46D680017C38F /* tun.entitlements */,
@@ -277,7 +277,7 @@
 			buildConfigurationList = 33CC10FB2044A3C60003C045 /* Build configuration list for PBXNativeTarget "Runner" */;
 			buildPhases = (
 				DBF9419094A27DD1D96C408E /* [CP] Check Pods Manifest.lock */,
-				97E13FD52A4F23E6000F2BBF /* Copy Goole-Service plist file */,
+				97E13FD52A4F23E6000F2BBF /* Copy Goole-Service info */,
 				33CC10E92044A3C60003C045 /* Sources */,
 				33CC10EA2044A3C60003C045 /* Frameworks */,
 				33CC10EB2044A3C60003C045 /* Resources */,
@@ -322,7 +322,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1300;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					33CC10EC2044A3C60003C045 = {
@@ -481,7 +481,7 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ \"${CONFIGURATION}\" == \"Debug-prod\" ] || [ \"${CONFIGURATION}\" == \"Release-prod\" ] || [ \"${CONFIGURATION}\" == \"Profile-prod\" ] || [ \"${CONFIGURATION}\" == \"Release\" ]; then\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase --validate -ai 1:104590535697:ios:30362bcd1ee53392f355b0\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase -ai 1:104590535697:ios:30362bcd1ee53392f355b0\necho \"Production crashlytics upload\"\nelif [ \"${CONFIGURATION}\" == \"Debug-dev\" ] || [ \"${CONFIGURATION}\" == \"Release-dev\" ] || [ \"${CONFIGURATION}\" == \"Profile-dev\" ] || [ \"${CONFIGURATION}\" == \"Debug\" ]; then\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase --validate -ai 1:139303438361:ios:d2ba132c760888aeb7c288\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase -ai 1:139303438361:ios:d2ba132c760888aeb7c288\necho \"Development crashlytics upload\"\nfi\n";
 		};
-		97E13FD52A4F23E6000F2BBF /* Copy Goole-Service plist file */ = {
+		97E13FD52A4F23E6000F2BBF /* Copy Goole-Service info */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -490,14 +490,14 @@
 			);
 			inputPaths = (
 			);
-			name = "Copy Goole-Service plist file";
+			name = "Copy Goole-Service info";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\n\nif [ \"${CONFIGURATION}\" == \"Debug-prod\" ] || [ \"${CONFIGURATION}\" == \"Release-prod\" ] || [ \"${CONFIGURATION}\" == \"Profile-prod\" ] || [ \"${CONFIGURATION}\" == \"Release\" ]; then\ncp \"${PROJECT_DIR}/config/prod/GoogleService-Info.plist\" \"${PLIST_DESTINATION}/GoogleService-Info.plist\"\necho \"Production plist copied\"\nelif [ \"${CONFIGURATION}\" == \"Debug-dev\" ] || [ \"${CONFIGURATION}\" == \"Release-dev\" ] || [ \"${CONFIGURATION}\" == \"Profile-dev\" ] || [ \"${CONFIGURATION}\" == \"Debug\" ]; then\ncp \"${PROJECT_DIR}/config/dev/GoogleService-Info.plist\" \"${PLIST_DESTINATION}/GoogleService-Info.plist\"\necho \"Development plist copied\"\nfi\n";
+			shellScript = "\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\n\nif [ \"${CONFIGURATION}\" == \"Debug-prod\" ] || [ \"${CONFIGURATION}\" == \"Release-prod\" ] || [ \"${CONFIGURATION}\" == \"Profile-prod\" ] || [ \"${CONFIGURATION}\" == \"Release\" ]; then\ncp \"${PROJECT_DIR}/config/prod/GoogleService-Info.plist\" \"${PLIST_DESTINATION}/Runner/GoogleService-Info.plist\"\necho \"Production plist copied\"\nelif [ \"${CONFIGURATION}\" == \"Debug-dev\" ] || [ \"${CONFIGURATION}\" == \"Release-dev\" ] || [ \"${CONFIGURATION}\" == \"Profile-dev\" ] || [ \"${CONFIGURATION}\" == \"Debug\" ]; then\ncp \"${PROJECT_DIR}/config/dev/GoogleService-Info.plist\" \"${PLIST_DESTINATION}/Runner/GoogleService-Info.plist\"\necho \"Development plist copied\"\nfi\n";
 		};
 		DBF9419094A27DD1D96C408E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -570,7 +570,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		338D0CE9231458BD00FA5F75 /* Profile Prod */ = {
+		338D0CE9231458BD00FA5F75 /* Profile-prod */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
@@ -615,9 +615,9 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
-			name = "Profile Prod";
+			name = "Profile-prod";
 		};
-		338D0CEA231458BD00FA5F75 /* Profile Prod */ = {
+		338D0CEA231458BD00FA5F75 /* Profile-prod */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
 			buildSettings = {
@@ -684,17 +684,17 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Profile Prod";
+			name = "Profile-prod";
 		};
-		338D0CEB231458BD00FA5F75 /* Profile Prod */ = {
+		338D0CEB231458BD00FA5F75 /* Profile-prod */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
-			name = "Profile Prod";
+			name = "Profile-prod";
 		};
-		33CC10F92044A3C60003C045 /* Debug Prod */ = {
+		33CC10F92044A3C60003C045 /* Debug-prod */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
@@ -746,9 +746,9 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
-			name = "Debug Prod";
+			name = "Debug-prod";
 		};
-		33CC10FA2044A3C60003C045 /* Release Prod */ = {
+		33CC10FA2044A3C60003C045 /* Release-prod */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
@@ -793,9 +793,9 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
-			name = "Release Prod";
+			name = "Release-prod";
 		};
-		33CC10FC2044A3C60003C045 /* Debug Prod */ = {
+		33CC10FC2044A3C60003C045 /* Debug-prod */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
 			buildSettings = {
@@ -863,9 +863,9 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Debug Prod";
+			name = "Debug-prod";
 		};
-		33CC10FD2044A3C60003C045 /* Release Prod */ = {
+		33CC10FD2044A3C60003C045 /* Release-prod */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
 			buildSettings = {
@@ -932,27 +932,27 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Release Prod";
+			name = "Release-prod";
 		};
-		33CC111C2044C6BA0003C045 /* Debug Prod */ = {
+		33CC111C2044C6BA0003C045 /* Debug-prod */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
-			name = "Debug Prod";
+			name = "Debug-prod";
 		};
-		33CC111D2044C6BA0003C045 /* Release Prod */ = {
+		33CC111D2044C6BA0003C045 /* Release-prod */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
-			name = "Release Prod";
+			name = "Release-prod";
 		};
-		97C8B26729D46D680017C38F /* Debug Prod */ = {
+		97C8B26729D46D680017C38F /* Debug-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1259823BE59CE38263014BC2 /* Pods-tun.debug prod.xcconfig */;
+			baseConfigurationReference = 72286BDDE01520F85634121C /* Pods-tun.debug-prod.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -990,11 +990,11 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Debug Prod";
+			name = "Debug-prod";
 		};
-		97C8B26829D46D680017C38F /* Release Prod */ = {
+		97C8B26829D46D680017C38F /* Release-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 115A6BC03AF51432B1225BD4 /* Pods-tun.release prod.xcconfig */;
+			baseConfigurationReference = 1229B94953D59ECE4A6BA9BF /* Pods-tun.release-prod.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -1030,11 +1030,11 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Release Prod";
+			name = "Release-prod";
 		};
-		97C8B26929D46D680017C38F /* Profile Prod */ = {
+		97C8B26929D46D680017C38F /* Profile-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3C47B8CCA07C9521AD414780 /* Pods-tun.profile prod.xcconfig */;
+			baseConfigurationReference = 62E618579E963BE0816A8373 /* Pods-tun.profile-prod.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -1070,9 +1070,9 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Profile Prod";
+			name = "Profile-prod";
 		};
-		97E13FC92A4F1DBD000F2BBF /* Debug Dev */ = {
+		97E13FC92A4F1DBD000F2BBF /* Debug-dev */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
@@ -1124,9 +1124,9 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
-			name = "Debug Dev";
+			name = "Debug-dev";
 		};
-		97E13FCA2A4F1DBD000F2BBF /* Debug Dev */ = {
+		97E13FCA2A4F1DBD000F2BBF /* Debug-dev */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
 			buildSettings = {
@@ -1194,19 +1194,19 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Debug Dev";
+			name = "Debug-dev";
 		};
-		97E13FCB2A4F1DBD000F2BBF /* Debug Dev */ = {
+		97E13FCB2A4F1DBD000F2BBF /* Debug-dev */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
-			name = "Debug Dev";
+			name = "Debug-dev";
 		};
-		97E13FCC2A4F1DBD000F2BBF /* Debug Dev */ = {
+		97E13FCC2A4F1DBD000F2BBF /* Debug-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 281779D8577F3E2704144C30 /* Pods-tun.debug dev.xcconfig */;
+			baseConfigurationReference = 229E00D94A6B837DFB5D8BEB /* Pods-tun.debug-dev.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -1217,7 +1217,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = "tun/tunTest.entitlements";
+				CODE_SIGN_ENTITLEMENTS = tun/tunTest.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1244,9 +1244,9 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Debug Dev";
+			name = "Debug-dev";
 		};
-		97E13FCD2A4F1DC4000F2BBF /* Profile Dev */ = {
+		97E13FCD2A4F1DC4000F2BBF /* Profile-dev */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
@@ -1291,9 +1291,9 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
-			name = "Profile Dev";
+			name = "Profile-dev";
 		};
-		97E13FCE2A4F1DC4000F2BBF /* Profile Dev */ = {
+		97E13FCE2A4F1DC4000F2BBF /* Profile-dev */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
 			buildSettings = {
@@ -1360,19 +1360,19 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Profile Dev";
+			name = "Profile-dev";
 		};
-		97E13FCF2A4F1DC4000F2BBF /* Profile Dev */ = {
+		97E13FCF2A4F1DC4000F2BBF /* Profile-dev */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
-			name = "Profile Dev";
+			name = "Profile-dev";
 		};
-		97E13FD02A4F1DC4000F2BBF /* Profile Dev */ = {
+		97E13FD02A4F1DC4000F2BBF /* Profile-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D458B180EF2B3FC8EC86F32D /* Pods-tun.profile dev.xcconfig */;
+			baseConfigurationReference = 77CDF2A520419F32E519D16C /* Pods-tun.profile-dev.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -1383,7 +1383,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = "tun/tunTest.entitlements";
+				CODE_SIGN_ENTITLEMENTS = tun/tunTest.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1408,9 +1408,9 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Profile Dev";
+			name = "Profile-dev";
 		};
-		97E13FD12A4F1DCC000F2BBF /* Release Dev */ = {
+		97E13FD12A4F1DCC000F2BBF /* Release-dev */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
@@ -1455,9 +1455,9 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
-			name = "Release Dev";
+			name = "Release-dev";
 		};
-		97E13FD22A4F1DCC000F2BBF /* Release Dev */ = {
+		97E13FD22A4F1DCC000F2BBF /* Release-dev */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
 			buildSettings = {
@@ -1524,19 +1524,19 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Release Dev";
+			name = "Release-dev";
 		};
-		97E13FD32A4F1DCC000F2BBF /* Release Dev */ = {
+		97E13FD32A4F1DCC000F2BBF /* Release-dev */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
-			name = "Release Dev";
+			name = "Release-dev";
 		};
-		97E13FD42A4F1DCC000F2BBF /* Release Dev */ = {
+		97E13FD42A4F1DCC000F2BBF /* Release-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B492CE57E95C5AFFB00A3337 /* Pods-tun.release dev.xcconfig */;
+			baseConfigurationReference = 9ACD1539BF57F1C8B050CC6B /* Pods-tun.release-dev.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -1547,7 +1547,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = "tun/tunTest.entitlements";
+				CODE_SIGN_ENTITLEMENTS = tun/tunTest.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1572,7 +1572,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Release Dev";
+			name = "Release-dev";
 		};
 /* End XCBuildConfiguration section */
 
@@ -1580,54 +1580,54 @@
 		33CC10E82044A3C60003C045 /* Build configuration list for PBXProject "Runner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				33CC10F92044A3C60003C045 /* Debug Prod */,
-				97E13FC92A4F1DBD000F2BBF /* Debug Dev */,
-				33CC10FA2044A3C60003C045 /* Release Prod */,
-				97E13FD12A4F1DCC000F2BBF /* Release Dev */,
-				338D0CE9231458BD00FA5F75 /* Profile Prod */,
-				97E13FCD2A4F1DC4000F2BBF /* Profile Dev */,
+				33CC10F92044A3C60003C045 /* Debug-prod */,
+				97E13FC92A4F1DBD000F2BBF /* Debug-dev */,
+				33CC10FA2044A3C60003C045 /* Release-prod */,
+				97E13FD12A4F1DCC000F2BBF /* Release-dev */,
+				338D0CE9231458BD00FA5F75 /* Profile-prod */,
+				97E13FCD2A4F1DC4000F2BBF /* Profile-dev */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release Prod";
+			defaultConfigurationName = "Release-prod";
 		};
 		33CC10FB2044A3C60003C045 /* Build configuration list for PBXNativeTarget "Runner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				33CC10FC2044A3C60003C045 /* Debug Prod */,
-				97E13FCA2A4F1DBD000F2BBF /* Debug Dev */,
-				33CC10FD2044A3C60003C045 /* Release Prod */,
-				97E13FD22A4F1DCC000F2BBF /* Release Dev */,
-				338D0CEA231458BD00FA5F75 /* Profile Prod */,
-				97E13FCE2A4F1DC4000F2BBF /* Profile Dev */,
+				33CC10FC2044A3C60003C045 /* Debug-prod */,
+				97E13FCA2A4F1DBD000F2BBF /* Debug-dev */,
+				33CC10FD2044A3C60003C045 /* Release-prod */,
+				97E13FD22A4F1DCC000F2BBF /* Release-dev */,
+				338D0CEA231458BD00FA5F75 /* Profile-prod */,
+				97E13FCE2A4F1DC4000F2BBF /* Profile-dev */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release Prod";
+			defaultConfigurationName = "Release-prod";
 		};
 		33CC111B2044C6BA0003C045 /* Build configuration list for PBXAggregateTarget "Flutter Assemble" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				33CC111C2044C6BA0003C045 /* Debug Prod */,
-				97E13FCB2A4F1DBD000F2BBF /* Debug Dev */,
-				33CC111D2044C6BA0003C045 /* Release Prod */,
-				97E13FD32A4F1DCC000F2BBF /* Release Dev */,
-				338D0CEB231458BD00FA5F75 /* Profile Prod */,
-				97E13FCF2A4F1DC4000F2BBF /* Profile Dev */,
+				33CC111C2044C6BA0003C045 /* Debug-prod */,
+				97E13FCB2A4F1DBD000F2BBF /* Debug-dev */,
+				33CC111D2044C6BA0003C045 /* Release-prod */,
+				97E13FD32A4F1DCC000F2BBF /* Release-dev */,
+				338D0CEB231458BD00FA5F75 /* Profile-prod */,
+				97E13FCF2A4F1DC4000F2BBF /* Profile-dev */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release Prod";
+			defaultConfigurationName = "Release-prod";
 		};
 		97C8B26A29D46D680017C38F /* Build configuration list for PBXNativeTarget "tun" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				97C8B26729D46D680017C38F /* Debug Prod */,
-				97E13FCC2A4F1DBD000F2BBF /* Debug Dev */,
-				97C8B26829D46D680017C38F /* Release Prod */,
-				97E13FD42A4F1DCC000F2BBF /* Release Dev */,
-				97C8B26929D46D680017C38F /* Profile Prod */,
-				97E13FD02A4F1DC4000F2BBF /* Profile Dev */,
+				97C8B26729D46D680017C38F /* Debug-prod */,
+				97E13FCC2A4F1DBD000F2BBF /* Debug-dev */,
+				97C8B26829D46D680017C38F /* Release-prod */,
+				97E13FD42A4F1DCC000F2BBF /* Release-dev */,
+				97C8B26929D46D680017C38F /* Profile-prod */,
+				97E13FD02A4F1DC4000F2BBF /* Profile-dev */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release Prod";
+			defaultConfigurationName = "Release-prod";
 		};
 /* End XCConfigurationList section */
 	};
