@@ -12,6 +12,8 @@ class Subscription with _$Subscription {
     @JsonKey(name: 'plan_id') String? planId,
     @JsonKey(name: 'gateway') String? gateway,
     @JsonKey(name: 'active_until') DateTime? activeUntil,
+    @JsonKey(name: 'expired') bool? expired,
+    @JsonKey(name: 'recurring') bool? recurring,
   }) = _Subscription;
   factory Subscription.fromJson(Map<String, dynamic> json) => _$SubscriptionFromJson(json);
 }

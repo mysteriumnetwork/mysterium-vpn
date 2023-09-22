@@ -13,9 +13,9 @@ class LoadingBarrier extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Stack(
         children: <Widget>[
-          Opacity(
-            opacity: 0.9,
-            child: ModalBarrier(dismissible: false, color: color),
+          ModalBarrier(
+            dismissible: false,
+            color: color.withOpacity(0.8),
           ),
           child ??
               Center(
