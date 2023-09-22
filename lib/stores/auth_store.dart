@@ -177,7 +177,9 @@ abstract class _AuthStore with Store {
     _analyticsStore
       ..setUserId(username)
       ..setLogin();
-    _marketingAnalyticsStore.setUserId(username);
+    _marketingAnalyticsStore
+      ..setUserId(username)
+      ..setLogin();
     _intercomStore.registerUser(email: username);
     Sentry.configureScope(
       (scope) => scope.setUser(
