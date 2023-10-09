@@ -23,8 +23,8 @@ class SwitchItem extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.brightness == Brightness.dark
-            ? Palette.mediumBlack
-            : Palette.white,
+              ? Palette.mediumBlack
+              : Palette.white,
           borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),
