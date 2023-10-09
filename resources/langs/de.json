@@ -54,6 +54,7 @@
   "settings": "Einstellungen",
   "connection": "Verbindung",
   "killSwitch": "Notausschalter",
+  "killSwitchDesc": "Stoppt den Internetzugang, wenn die VPN-Verbindung unterbrochen wird, um die Offenlegung Ihrer IP-Adresse zu verhindern.",
   "shortDesc": "Kurze Beschreibung",
   "protocol": "Protokoll",
   "application": "Anwendung",

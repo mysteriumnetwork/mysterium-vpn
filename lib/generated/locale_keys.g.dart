@@ -56,6 +56,7 @@ abstract class LocaleKeys {
   static const settings = 'settings';
   static const connection = 'connection';
   static const killSwitch = 'killSwitch';
+  static const killSwitchDesc = 'killSwitchDesc';
   static const shortDesc = 'shortDesc';
   static const protocol = 'protocol';
   static const application = 'application';

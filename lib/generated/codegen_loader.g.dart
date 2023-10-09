@@ -71,6 +71,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Ayarlar",
     "connection": "Bağlantı",
     "killSwitch": "Kapatma anahtarı",
+    "killSwitchDesc":
+        "IP adresinizin açığa çıkmasını önlemek için VPN bağlantısı kesilirse internet erişimini durdurur.",
     "shortDesc": "Kısa Açıklama",
     "protocol": "Protokol",
     "application": "Başvuru",
@@ -539,6 +541,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Поставки",
     "connection": "Врска",
     "killSwitch": "Убие-прекинувач",
+    "killSwitchDesc":
+        "Го запира пристапот до интернет ако VPN се исклучи, за да спречи откривање на вашата IP адреса.",
     "shortDesc": "Краток опис",
     "protocol": "Протокол",
     "application": "Апликација",
@@ -1017,6 +1021,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Nustatymai",
     "connection": "Ryšys",
     "killSwitch": "Nužudyk perjungimą",
+    "killSwitchDesc":
+        "Sustabdo prieigą prie interneto, jei VPN atsijungia, kad nebūtų atskleistas jūsų IP adresas.",
     "shortDesc": "Trumpas aprašymas",
     "protocol": "Protokolas",
     "application": "Paraiška",
@@ -1489,6 +1495,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Einstellungen",
     "connection": "Verbindung",
     "killSwitch": "Notausschalter",
+    "killSwitchDesc":
+        "Stoppt den Internetzugang, wenn die VPN-Verbindung unterbrochen wird, um die Offenlegung Ihrer IP-Adresse zu verhindern.",
     "shortDesc": "Kurze Beschreibung",
     "protocol": "Protokoll",
     "application": "Anwendung",
@@ -1968,6 +1976,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Налаштування",
     "connection": "Підключення",
     "killSwitch": "Вимикач",
+    "killSwitchDesc":
+        "Припиняє доступ до Інтернету, якщо VPN відключається, щоб запобігти розкриттю вашої IP-адреси.",
     "shortDesc": "Короткий опис",
     "protocol": "Протокол",
     "application": "застосування",
@@ -2436,6 +2446,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Configurações",
     "connection": "Conexão",
     "killSwitch": "Botão de desligar",
+    "killSwitchDesc":
+        "Interrompe o acesso à Internet se a VPN for desconectada, para evitar a exposição do seu endereço IP.",
     "shortDesc": "Pequena descrição",
     "protocol": "Protocolo",
     "application": "Aplicativa",
@@ -2906,7 +2918,9 @@ class CodegenLoader extends AssetLoader {
     "browseTop": "Browse Top",
     "settings": "Settings",
     "connection": "Connection",
-    "killSwitch": "Kill-switch",
+    "killSwitch": "Kill-Switch",
+    "killSwitchDesc":
+        "Stops internet access if VPN disconnects, to prevent exposing your IP address.",
     "shortDesc": "Short description",
     "protocol": "Protocol",
     "application": "Application",
@@ -3380,6 +3394,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Impostazioni",
     "connection": "Connessione",
     "killSwitch": "Uccidere switch",
+    "killSwitchDesc":
+        "Interrompe l'accesso a Internet se la VPN si disconnette, per evitare di esporre il tuo indirizzo IP.",
     "shortDesc": "Breve descrizione",
     "protocol": "Protocollo",
     "application": "Applicazione",
@@ -3858,6 +3874,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Подешавања",
     "connection": "Прикључак",
     "killSwitch": "Прекидач за убијање",
+    "killSwitchDesc":
+        "Зауставља приступ интернету ако се ВПН прекине да би се спречило откривање ваше ИП адресе.",
     "shortDesc": "Кратак опис",
     "protocol": "Протокол",
     "application": "Апликација",
@@ -4332,7 +4350,9 @@ class CodegenLoader extends AssetLoader {
     "browseTop": "Sirvima ülaosa",
     "settings": "Sätted",
     "connection": "Ühendus",
-    "killSwitch": "Tapmislüliti",
+    "killSwitch": "Tap-lüliti",
+    "killSwitchDesc":
+        "Peatab Interneti-juurdepääsu, kui VPN katkeb, et vältida teie IP-aadressi paljastamist.",
     "shortDesc": "Lühike kirjeldus",
     "protocol": "Protokoll",
     "application": "Rakendus",
@@ -4802,6 +4822,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Paramètres",
     "connection": "Connexion",
     "killSwitch": "Antidémarreur",
+    "killSwitchDesc":
+        "Arrête l'accès à Internet si le VPN se déconnecte, pour éviter d'exposer votre adresse IP.",
     "shortDesc": "Brève description",
     "protocol": "Protocole",
     "application": "Application",
@@ -5280,7 +5302,9 @@ class CodegenLoader extends AssetLoader {
     "browseTop": "Explorar arriba",
     "settings": "Configuración",
     "connection": "Conexión",
-    "killSwitch": "Interruptor de apagado",
+    "killSwitch": "interruptor de apagado",
+    "killSwitchDesc":
+        "Detiene el acceso a Internet si la VPN se desconecta, para evitar exponer su dirección IP.",
     "shortDesc": "Breve descripción",
     "protocol": "Protocolo",
     "application": "Aplicación",

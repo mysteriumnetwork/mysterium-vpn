@@ -54,6 +54,7 @@
   "settings": "Nustatymai",
   "connection": "Ryšys",
   "killSwitch": "Nužudyk perjungimą",
+  "killSwitchDesc": "Sustabdo prieigą prie interneto, jei VPN atsijungia, kad nebūtų atskleistas jūsų IP adresas.",
   "shortDesc": "Trumpas aprašymas",
   "protocol": "Protokolas",
   "application": "Paraiška",
