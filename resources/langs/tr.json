@@ -54,6 +54,7 @@
   "settings": "Ayarlar",
   "connection": "Bağlantı",
   "killSwitch": "Kapatma anahtarı",
+  "killSwitchDesc": "IP adresinizin açığa çıkmasını önlemek için VPN bağlantısı kesilirse internet erişimini durdurur.",
   "shortDesc": "Kısa Açıklama",
   "protocol": "Protokol",
   "application": "Başvuru",

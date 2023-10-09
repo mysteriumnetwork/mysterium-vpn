@@ -54,6 +54,7 @@
   "settings": "Impostazioni",
   "connection": "Connessione",
   "killSwitch": "Uccidere switch",
+  "killSwitchDesc": "Interrompe l'accesso a Internet se la VPN si disconnette, per evitare di esporre il tuo indirizzo IP.",
   "shortDesc": "Breve descrizione",
   "protocol": "Protocollo",
   "application": "Applicazione",

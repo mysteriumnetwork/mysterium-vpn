@@ -54,6 +54,7 @@
   "settings": "Paramètres",
   "connection": "Connexion",
   "killSwitch": "Antidémarreur",
+  "killSwitchDesc": "Arrête l'accès à Internet si le VPN se déconnecte, pour éviter d'exposer votre adresse IP.",
   "shortDesc": "Brève description",
   "protocol": "Protocole",
   "application": "Application",
