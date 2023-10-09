@@ -449,5 +449,7 @@
   "billedInTotal": "{amount} /{period}",
   "connectionLimitExceededTitle": "Предупредување за ограничување на врската",
   "connectionLimitExceededDesc": "Го достигнавте ограничувањето од 6 уреди. Еден од вашите уреди беше исклучен за да се дозволи оваа врска.",
-  "iUnderstandBtn": "разбирам"
+  "iUnderstandBtn": "разбирам",
+  "on": "Уклучено",
+  "off": "Исклучено"
 }

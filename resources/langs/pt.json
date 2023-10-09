@@ -449,5 +449,7 @@
   "billedInTotal": "{amount} /{period}",
   "connectionLimitExceededTitle": "Alerta de limite de conexão",
   "connectionLimitExceededDesc": "Você atingiu o limite de seis dispositivos. Um dos seus dispositivos foi desconectado para permitir esta conexão.",
-  "iUnderstandBtn": "Eu entendo"
+  "iUnderstandBtn": "Eu entendo",
+  "on": "Sobre",
+  "off": "Desligado"
 }
