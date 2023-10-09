@@ -22,7 +22,9 @@ class SwitchItem extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: Theme.of(context).colorScheme.brightness == Brightness.dark
+            ? Palette.mediumBlack
+            : Palette.white,
           borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),
@@ -40,7 +42,7 @@ class SwitchItem extends StatelessWidget {
                 ).padding(bottom: 4),
                 EasyText(
                   subtitle,
-                  color: Palette.lightBlack,
+                  color: Palette.lightBlue,
                   fontSize: 12,
                   maxLines: 3,
                 ).padding(bottom: 4),

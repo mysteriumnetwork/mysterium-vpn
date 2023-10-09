@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -8,14 +9,12 @@ class SettingItem extends StatelessWidget {
     required this.asset,
     required this.actionWidget,
     required this.title,
-    required this.subtitle,
     this.description,
     super.key,
   });
 
   final String asset;
   final String title;
-  final String subtitle;
   final Widget actionWidget;
   final Widget? description;
   @override
@@ -23,7 +22,9 @@ class SettingItem extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: Theme.of(context).colorScheme.brightness == Brightness.dark
+              ? Palette.mediumBlack
+              : Palette.white,
           borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),
@@ -42,9 +43,6 @@ class SettingItem extends StatelessWidget {
                           children: [
                             EasyText(title, fontSize: 16).padding(bottom: 8),
                             description ?? const SizedBox.shrink(),
-                            // EasyText(
-                            //   subtitle,
-                            // ).padding(bottom: 11),
                           ],
                         ).padding(top: 4),
                         actionWidget,
@@ -57,11 +55,6 @@ class SettingItem extends StatelessWidget {
                             EasyText(
                               title,
                             ).padding(bottom: 8),
-
-                        // EasyText(
-                        //   subtitle,
-                        //   color: Palette.lightBlack,
-                        // ).padding(bottom: 11),
                         actionWidget,
                       ],
                     ),
