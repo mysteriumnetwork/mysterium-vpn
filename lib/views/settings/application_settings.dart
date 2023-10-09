@@ -25,7 +25,6 @@ class ApplicationSettings extends HookConsumerWidget {
             SettingItem(
               asset: isDarkTheme ? Assets.languageDark : Assets.languageLight,
               title: LocaleKeys.appLang.tr(),
-              subtitle: LocaleKeys.shortDesc.tr(),
               actionWidget: LanguagePicker(
                 store: localeStore,
               ),
@@ -33,7 +32,6 @@ class ApplicationSettings extends HookConsumerWidget {
             SettingItem(
               asset: isDarkTheme ? Assets.themeDark : Assets.themeLight,
               title: LocaleKeys.theme.tr(),
-              subtitle: LocaleKeys.theme.tr(),
               actionWidget: ThemePicker(
                 store: themeStore,
               ),
