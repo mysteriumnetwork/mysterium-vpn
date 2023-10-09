@@ -449,5 +449,7 @@
   "billedInTotal": "{amount} /{period}",
   "connectionLimitExceededTitle": "Сповіщення про обмеження підключення",
   "connectionLimitExceededDesc": "Ви досягли ліміту з 6 пристроїв. Один із ваших пристроїв було відключено, щоб дозволити це з’єднання.",
-  "iUnderstandBtn": "Я розумію"
+  "iUnderstandBtn": "Я розумію",
+  "on": "Увімкнено",
+  "off": "Вимкнено"
 }

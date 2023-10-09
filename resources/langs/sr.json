@@ -449,5 +449,7 @@
   "billedInTotal": "{amount} /{period}",
   "connectionLimitExceededTitle": "Упозорење о ограничењу везе",
   "connectionLimitExceededDesc": "Достигли сте ограничење од 6 уређаја. Један од ваших уређаја је прекинут да бисте дозволили ову везу.",
-  "iUnderstandBtn": "разумем"
+  "iUnderstandBtn": "разумем",
+  "on": "Укључено",
+  "off":"Искључено"
 }
