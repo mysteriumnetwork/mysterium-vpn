@@ -28,8 +28,8 @@ class EasyDropdown<T> extends StatelessWidget {
           .padding(horizontal: 10)
           .decorated(
             color: Theme.of(context).colorScheme.brightness == Brightness.dark
-            ? Palette.black
-            : Palette.lightGrey,
+                ? Palette.black
+                : Palette.lightGrey,
             borderRadius: const BorderRadius.all(
               Radius.circular(10),
             ),
