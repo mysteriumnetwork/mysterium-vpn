@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
@@ -11,8 +10,8 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class ConnectionInfoPanelDesktop extends HookConsumerWidget {
-  const ConnectionInfoPanelDesktop({super.key});
+class ConnectionInfoPanel extends HookConsumerWidget {
+  const ConnectionInfoPanel({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,19 +24,19 @@ class ConnectionInfoPanelDesktop extends HookConsumerWidget {
           children: [
             _InfoItem(
               label: LocaleKeys.duration.tr(),
-              text: vpnStore.duration?.toHoursMinutesSeconds() ?? '--',
+              text: '--',
               icon: isConnected ? Assets.durationActive : Assets.duration,
               isConnected: isConnected,
             ).expanded(),
             _InfoItem(
               label: LocaleKeys.download,
-              text: vpnStore.downloadSpeed?.toStringAsFixed(2) ?? '--',
+              text: '--',
               icon: isConnected ? Assets.downloadActive : Assets.download,
               isConnected: isConnected,
             ).expanded(),
             _InfoItem(
               label: LocaleKeys.upload,
-              text: vpnStore.uploadSpeed?.toStringAsFixed(2) ?? '--',
+              text: '--',
               icon: isConnected ? Assets.uploadActive : Assets.upload,
               isConnected: isConnected,
             ).expanded(),
