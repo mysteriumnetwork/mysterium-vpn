@@ -71,6 +71,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Ayarlar",
     "connection": "Bağlantı",
     "killSwitch": "Kapatma anahtarı",
+    "killSwitchDesc":
+        "IP adresinizin açığa çıkmasını önlemek için VPN bağlantısı kesilirse internet erişimini durdurur.",
     "shortDesc": "Kısa Açıklama",
     "protocol": "Protokol",
     "application": "Başvuru",
@@ -478,7 +480,9 @@ class CodegenLoader extends AssetLoader {
     "connectionLimitExceededTitle": "Bağlantı Sınırı Uyarısı",
     "connectionLimitExceededDesc":
         "6 cihaz sınırına ulaştınız. Bu bağlantıya izin verebilmek için cihazlarınızdan birinin bağlantısı kesildi.",
-    "iUnderstandBtn": "Anladım"
+    "iUnderstandBtn": "Anladım",
+    "on": "Açık",
+    "off": "Kapalı"
   };
   static const Map<String, dynamic> mk = {
     "title": "Здраво господине",
@@ -539,6 +543,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Поставки",
     "connection": "Врска",
     "killSwitch": "Убие-прекинувач",
+    "killSwitchDesc":
+        "Го запира пристапот до интернет ако VPN се исклучи, за да спречи откривање на вашата IP адреса.",
     "shortDesc": "Краток опис",
     "protocol": "Протокол",
     "application": "Апликација",
@@ -956,7 +962,9 @@ class CodegenLoader extends AssetLoader {
     "connectionLimitExceededTitle": "Предупредување за ограничување на врската",
     "connectionLimitExceededDesc":
         "Го достигнавте ограничувањето од 6 уреди. Еден од вашите уреди беше исклучен за да се дозволи оваа врска.",
-    "iUnderstandBtn": "разбирам"
+    "iUnderstandBtn": "разбирам",
+    "on": "Уклучено",
+    "off": "Исклучено"
   };
   static const Map<String, dynamic> lt = {
     "title": "Sveiki pone",
@@ -1017,6 +1025,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Nustatymai",
     "connection": "Ryšys",
     "killSwitch": "Nužudyk perjungimą",
+    "killSwitchDesc":
+        "Sustabdo prieigą prie interneto, jei VPN atsijungia, kad nebūtų atskleistas jūsų IP adresas.",
     "shortDesc": "Trumpas aprašymas",
     "protocol": "Protokolas",
     "application": "Paraiška",
@@ -1428,7 +1438,9 @@ class CodegenLoader extends AssetLoader {
     "connectionLimitExceededTitle": "Ryšio apribojimo įspėjimas",
     "connectionLimitExceededDesc":
         "Pasiekėte 6 įrenginių apribojimą. Vienas iš jūsų įrenginių buvo atjungtas, kad būtų galima prisijungti.",
-    "iUnderstandBtn": "aš suprantu"
+    "iUnderstandBtn": "aš suprantu",
+    "on": "Įjungta",
+    "off": "Išjungta"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1489,6 +1501,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Einstellungen",
     "connection": "Verbindung",
     "killSwitch": "Notausschalter",
+    "killSwitchDesc":
+        "Stoppt den Internetzugang, wenn die VPN-Verbindung unterbrochen wird, um die Offenlegung Ihrer IP-Adresse zu verhindern.",
     "shortDesc": "Kurze Beschreibung",
     "protocol": "Protokoll",
     "application": "Anwendung",
@@ -1909,7 +1923,9 @@ class CodegenLoader extends AssetLoader {
     "connectionLimitExceededTitle": "Warnung zur Verbindungsbeschränkung",
     "connectionLimitExceededDesc":
         "Sie haben das Limit von 6 Geräten erreicht. Eines Ihrer Geräte wurde getrennt, um diese Verbindung zu ermöglichen.",
-    "iUnderstandBtn": "Ich verstehe"
+    "iUnderstandBtn": "Ich verstehe",
+    "on": "An",
+    "off": "Aus"
   };
   static const Map<String, dynamic> uk = {
     "title": "Вітаю, сер",
@@ -1968,6 +1984,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Налаштування",
     "connection": "Підключення",
     "killSwitch": "Вимикач",
+    "killSwitchDesc":
+        "Припиняє доступ до Інтернету, якщо VPN відключається, щоб запобігти розкриттю вашої IP-адреси.",
     "shortDesc": "Короткий опис",
     "protocol": "Протокол",
     "application": "застосування",
@@ -2375,7 +2393,9 @@ class CodegenLoader extends AssetLoader {
     "connectionLimitExceededTitle": "Сповіщення про обмеження підключення",
     "connectionLimitExceededDesc":
         "Ви досягли ліміту з 6 пристроїв. Один із ваших пристроїв було відключено, щоб дозволити це з’єднання.",
-    "iUnderstandBtn": "Я розумію"
+    "iUnderstandBtn": "Я розумію",
+    "on": "Увімкнено",
+    "off": "Вимкнено"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2436,6 +2456,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Configurações",
     "connection": "Conexão",
     "killSwitch": "Botão de desligar",
+    "killSwitchDesc":
+        "Interrompe o acesso à Internet se a VPN for desconectada, para evitar a exposição do seu endereço IP.",
     "shortDesc": "Pequena descrição",
     "protocol": "Protocolo",
     "application": "Aplicativa",
@@ -2848,7 +2870,9 @@ class CodegenLoader extends AssetLoader {
     "connectionLimitExceededTitle": "Alerta de limite de conexão",
     "connectionLimitExceededDesc":
         "Você atingiu o limite de seis dispositivos. Um dos seus dispositivos foi desconectado para permitir esta conexão.",
-    "iUnderstandBtn": "Eu entendo"
+    "iUnderstandBtn": "Eu entendo",
+    "on": "Sobre",
+    "off": "Desligado"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -2906,7 +2930,9 @@ class CodegenLoader extends AssetLoader {
     "browseTop": "Browse Top",
     "settings": "Settings",
     "connection": "Connection",
-    "killSwitch": "Kill-switch",
+    "killSwitch": "Kill-Switch",
+    "killSwitchDesc":
+        "Stops internet access if VPN disconnects, to prevent exposing your IP address.",
     "shortDesc": "Short description",
     "protocol": "Protocol",
     "application": "Application",
@@ -3319,7 +3345,9 @@ class CodegenLoader extends AssetLoader {
     "connectionLimitExceededTitle": "Connection Limit Alert",
     "connectionLimitExceededDesc":
         "You’ve reached the 6-device limit. One of your devices was disconnected to allow this connection.",
-    "iUnderstandBtn": "I understand"
+    "iUnderstandBtn": "I understand",
+    "on": "On",
+    "off": "Off"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3380,6 +3408,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Impostazioni",
     "connection": "Connessione",
     "killSwitch": "Uccidere switch",
+    "killSwitchDesc":
+        "Interrompe l'accesso a Internet se la VPN si disconnette, per evitare di esporre il tuo indirizzo IP.",
     "shortDesc": "Breve descrizione",
     "protocol": "Protocollo",
     "application": "Applicazione",
@@ -3797,7 +3827,9 @@ class CodegenLoader extends AssetLoader {
     "connectionLimitExceededTitle": "Avviso limite di connessione",
     "connectionLimitExceededDesc":
         "Hai raggiunto il limite di 6 dispositivi. Uno dei tuoi dispositivi è stato disconnesso per consentire questa connessione.",
-    "iUnderstandBtn": "Capisco"
+    "iUnderstandBtn": "Capisco",
+    "on": "SU",
+    "off": "Spento"
   };
   static const Map<String, dynamic> sr = {
     "title": "Здраво господине",
@@ -3858,6 +3890,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Подешавања",
     "connection": "Прикључак",
     "killSwitch": "Прекидач за убијање",
+    "killSwitchDesc":
+        "Зауставља приступ интернету ако се ВПН прекине да би се спречило откривање ваше ИП адресе.",
     "shortDesc": "Кратак опис",
     "protocol": "Протокол",
     "application": "Апликација",
@@ -4272,7 +4306,9 @@ class CodegenLoader extends AssetLoader {
     "connectionLimitExceededTitle": "Упозорење о ограничењу везе",
     "connectionLimitExceededDesc":
         "Достигли сте ограничење од 6 уређаја. Један од ваших уређаја је прекинут да бисте дозволили ову везу.",
-    "iUnderstandBtn": "разумем"
+    "iUnderstandBtn": "разумем",
+    "on": "Укључено",
+    "off": "Искључено"
   };
   static const Map<String, dynamic> et = {
     "title": "Tere, härra",
@@ -4332,7 +4368,9 @@ class CodegenLoader extends AssetLoader {
     "browseTop": "Sirvima ülaosa",
     "settings": "Sätted",
     "connection": "Ühendus",
-    "killSwitch": "Tapmislüliti",
+    "killSwitch": "Tap-lüliti",
+    "killSwitchDesc":
+        "Peatab Interneti-juurdepääsu, kui VPN katkeb, et vältida teie IP-aadressi paljastamist.",
     "shortDesc": "Lühike kirjeldus",
     "protocol": "Protokoll",
     "application": "Rakendus",
@@ -4741,7 +4779,9 @@ class CodegenLoader extends AssetLoader {
     "connectionLimitExceededTitle": "Ühendusepiirangu hoiatus",
     "connectionLimitExceededDesc":
         "Olete jõudnud 6 seadme limiidini. Ühenduse lubamiseks katkestati üks teie seadmetest.",
-    "iUnderstandBtn": "ma saan aru"
+    "iUnderstandBtn": "ma saan aru",
+    "on": "Peal",
+    "off": "Väljas"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -4802,6 +4842,8 @@ class CodegenLoader extends AssetLoader {
     "settings": "Paramètres",
     "connection": "Connexion",
     "killSwitch": "Antidémarreur",
+    "killSwitchDesc":
+        "Arrête l'accès à Internet si le VPN se déconnecte, pour éviter d'exposer votre adresse IP.",
     "shortDesc": "Brève description",
     "protocol": "Protocole",
     "application": "Application",
@@ -5220,7 +5262,9 @@ class CodegenLoader extends AssetLoader {
     "connectionLimitExceededTitle": "Alerte de limite de connexion",
     "connectionLimitExceededDesc":
         "Vous avez atteint la limite de 6 appareils. L'un de vos appareils a été déconnecté pour permettre cette connexion.",
-    "iUnderstandBtn": "Je comprends"
+    "iUnderstandBtn": "Je comprends",
+    "on": "Sur",
+    "off": "Désactivé"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -5280,7 +5324,9 @@ class CodegenLoader extends AssetLoader {
     "browseTop": "Explorar arriba",
     "settings": "Configuración",
     "connection": "Conexión",
-    "killSwitch": "Interruptor de apagado",
+    "killSwitch": "interruptor de apagado",
+    "killSwitchDesc":
+        "Detiene el acceso a Internet si la VPN se desconecta, para evitar exponer su dirección IP.",
     "shortDesc": "Breve descripción",
     "protocol": "Protocolo",
     "application": "Aplicación",
@@ -5695,7 +5741,9 @@ class CodegenLoader extends AssetLoader {
     "connectionLimitExceededTitle": "Alerta de límite de conexión",
     "connectionLimitExceededDesc":
         "Has alcanzado el límite de 6 dispositivos. Uno de tus dispositivos se desconectó para permitir esta conexión.",
-    "iUnderstandBtn": "Entiendo"
+    "iUnderstandBtn": "Entiendo",
+    "on": "En",
+    "off": "Apagado"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "tr": tr,

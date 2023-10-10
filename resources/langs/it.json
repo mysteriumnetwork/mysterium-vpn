@@ -54,6 +54,7 @@
   "settings": "Impostazioni",
   "connection": "Connessione",
   "killSwitch": "Uccidere switch",
+  "killSwitchDesc": "Interrompe l'accesso a Internet se la VPN si disconnette, per evitare di esporre il tuo indirizzo IP.",
   "shortDesc": "Breve descrizione",
   "protocol": "Protocollo",
   "application": "Applicazione",
@@ -448,5 +449,7 @@
   "billedInTotal": "{amount} /{period}",
   "connectionLimitExceededTitle": "Avviso limite di connessione",
   "connectionLimitExceededDesc": "Hai raggiunto il limite di 6 dispositivi. Uno dei tuoi dispositivi è stato disconnesso per consentire questa connessione.",
-  "iUnderstandBtn": "Capisco"
+  "iUnderstandBtn": "Capisco",
+  "on": "SU",
+  "off": "Spento"
 }

@@ -53,7 +53,8 @@
   "browseTop": "Sirvima ülaosa",
   "settings": "Sätted",
   "connection": "Ühendus",
-  "killSwitch": "Tapmislüliti",
+  "killSwitch": "Tap-lüliti",
+  "killSwitchDesc": "Peatab Interneti-juurdepääsu, kui VPN katkeb, et vältida teie IP-aadressi paljastamist.",
   "shortDesc": "Lühike kirjeldus",
   "protocol": "Protokoll",
   "application": "Rakendus",
@@ -448,5 +449,7 @@
   "billedInTotal": "{amount} /{period}",
   "connectionLimitExceededTitle": "Ühendusepiirangu hoiatus",
   "connectionLimitExceededDesc": "Olete jõudnud 6 seadme limiidini. Ühenduse lubamiseks katkestati üks teie seadmetest.",
-  "iUnderstandBtn": "ma saan aru"
+  "iUnderstandBtn": "ma saan aru",
+  "on": "Peal",
+  "off": "Väljas"
 }

@@ -54,6 +54,7 @@
   "settings": "Einstellungen",
   "connection": "Verbindung",
   "killSwitch": "Notausschalter",
+  "killSwitchDesc": "Stoppt den Internetzugang, wenn die VPN-Verbindung unterbrochen wird, um die Offenlegung Ihrer IP-Adresse zu verhindern.",
   "shortDesc": "Kurze Beschreibung",
   "protocol": "Protokoll",
   "application": "Anwendung",
@@ -448,5 +449,7 @@
   "billedInTotal": "{amount} /{period}",
   "connectionLimitExceededTitle": "Warnung zur Verbindungsbeschränkung",
   "connectionLimitExceededDesc": "Sie haben das Limit von 6 Geräten erreicht. Eines Ihrer Geräte wurde getrennt, um diese Verbindung zu ermöglichen.",
-  "iUnderstandBtn": "Ich verstehe"
+  "iUnderstandBtn": "Ich verstehe",
+  "on": "An",
+  "off": "Aus"
 }

@@ -54,6 +54,7 @@
   "settings": "Подешавања",
   "connection": "Прикључак",
   "killSwitch": "Прекидач за убијање",
+  "killSwitchDesc": "Зауставља приступ интернету ако се ВПН прекине да би се спречило откривање ваше ИП адресе.",
   "shortDesc": "Кратак опис",
   "protocol": "Протокол",
   "application": "Апликација",
@@ -448,5 +449,7 @@
   "billedInTotal": "{amount} /{period}",
   "connectionLimitExceededTitle": "Упозорење о ограничењу везе",
   "connectionLimitExceededDesc": "Достигли сте ограничење од 6 уређаја. Један од ваших уређаја је прекинут да бисте дозволили ову везу.",
-  "iUnderstandBtn": "разумем"
+  "iUnderstandBtn": "разумем",
+  "on": "Укључено",
+  "off":"Искључено"
 }

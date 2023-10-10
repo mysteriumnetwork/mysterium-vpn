@@ -33,7 +33,6 @@ class AccountSettings extends HookConsumerWidget {
             SettingItem(
               asset: isDarkTheme ? Assets.billingDark : Assets.billingLight,
               title: LocaleKeys.myBillingPackage.tr(),
-              subtitle: LocaleKeys.shortDesc.tr(),
               description: subscriptionStore.subscription != null && active
                   ? PurchasedPlan(subscription: subscriptionStore.subscription!)
                   : null,
@@ -56,7 +55,6 @@ class AccountSettings extends HookConsumerWidget {
             SettingItem(
               asset: isDarkTheme ? Assets.accountNameDark : Assets.accountNameLight,
               title: authStore.authData?.username ?? '',
-              subtitle: LocaleKeys.shortDesc.tr(),
               actionWidget: EasyButton(
                 useSystemColor: false,
                 color: Palette.black,
@@ -67,7 +65,6 @@ class AccountSettings extends HookConsumerWidget {
             SettingItem(
               asset: isDarkTheme ? Assets.deleteAccountDark : Assets.deleteAccountLight,
               title: LocaleKeys.cancelMyAccount.tr(),
-              subtitle: LocaleKeys.shortDesc.tr(),
               actionWidget: EasyButton(
                 useSystemColor: false,
                 color: isDarkTheme ? Palette.pink : Palette.lightBlue,
