@@ -54,6 +54,7 @@
   "settings": "Поставки",
   "connection": "Врска",
   "killSwitch": "Убие-прекинувач",
+  "killSwitchDesc": "Го запира пристапот до интернет ако VPN се исклучи, за да спречи откривање на вашата IP адреса.",
   "shortDesc": "Краток опис",
   "protocol": "Протокол",
   "application": "Апликација",
@@ -448,5 +449,7 @@
   "billedInTotal": "{amount} /{period}",
   "connectionLimitExceededTitle": "Предупредување за ограничување на врската",
   "connectionLimitExceededDesc": "Го достигнавте ограничувањето од 6 уреди. Еден од вашите уреди беше исклучен за да се дозволи оваа врска.",
-  "iUnderstandBtn": "разбирам"
+  "iUnderstandBtn": "разбирам",
+  "on": "Уклучено",
+  "off": "Исклучено"
 }

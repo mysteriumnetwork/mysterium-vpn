@@ -53,7 +53,8 @@
   "browseTop": "Explorar arriba",
   "settings": "Configuración",
   "connection": "Conexión",
-  "killSwitch": "Interruptor de apagado",
+  "killSwitch": "interruptor de apagado",
+  "killSwitchDesc": "Detiene el acceso a Internet si la VPN se desconecta, para evitar exponer su dirección IP.",
   "shortDesc": "Breve descripción",
   "protocol": "Protocolo",
   "application": "Aplicación",
@@ -448,5 +449,7 @@
   "billedInTotal": "{amount} /{period}",
   "connectionLimitExceededTitle": "Alerta de límite de conexión",
   "connectionLimitExceededDesc": "Has alcanzado el límite de 6 dispositivos. Uno de tus dispositivos se desconectó para permitir esta conexión.",
-  "iUnderstandBtn": "Entiendo"
+  "iUnderstandBtn": "Entiendo",
+  "on": "En",
+  "off": "Apagado"
 }

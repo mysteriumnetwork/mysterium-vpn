@@ -54,6 +54,7 @@
   "settings": "Nustatymai",
   "connection": "Ryšys",
   "killSwitch": "Nužudyk perjungimą",
+  "killSwitchDesc": "Sustabdo prieigą prie interneto, jei VPN atsijungia, kad nebūtų atskleistas jūsų IP adresas.",
   "shortDesc": "Trumpas aprašymas",
   "protocol": "Protokolas",
   "application": "Paraiška",
@@ -448,5 +449,7 @@
   "billedInTotal": "{amount} /{period}",
   "connectionLimitExceededTitle": "Ryšio apribojimo įspėjimas",
   "connectionLimitExceededDesc": "Pasiekėte 6 įrenginių apribojimą. Vienas iš jūsų įrenginių buvo atjungtas, kad būtų galima prisijungti.",
-  "iUnderstandBtn": "aš suprantu"
+  "iUnderstandBtn": "aš suprantu",
+  "on": "Įjungta",
+  "off": "Išjungta"
 }

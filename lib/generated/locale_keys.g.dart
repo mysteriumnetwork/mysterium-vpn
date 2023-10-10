@@ -56,6 +56,7 @@ abstract class LocaleKeys {
   static const settings = 'settings';
   static const connection = 'connection';
   static const killSwitch = 'killSwitch';
+  static const killSwitchDesc = 'killSwitchDesc';
   static const shortDesc = 'shortDesc';
   static const protocol = 'protocol';
   static const application = 'application';
@@ -451,4 +452,6 @@ abstract class LocaleKeys {
   static const connectionLimitExceededTitle = 'connectionLimitExceededTitle';
   static const connectionLimitExceededDesc = 'connectionLimitExceededDesc';
   static const iUnderstandBtn = 'iUnderstandBtn';
+  static const on = 'on';
+  static const off = 'off';
 }
