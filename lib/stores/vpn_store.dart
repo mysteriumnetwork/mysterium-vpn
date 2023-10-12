@@ -213,14 +213,7 @@ abstract class _VpnStore with Store {
       return;
     }
 
-    location ??= refreshIP ?? false
-        ? _vpnConnection?.location
-        : _locationsStore.vpnLocations.allLocations.isNotEmpty
-            ? [
-                ..._locationsStore.vpnLocations.allLocations,
-                ..._locationsStore.vpnLocations.topLocations,
-              ].randomItem()
-            : null;
+    location ??= refreshIP ?? false ? _vpnConnection?.location : selectLocation();
     _connectingLocationCode = location;
 
     try {
@@ -230,7 +223,6 @@ abstract class _VpnStore with Store {
       final stopwatch = Stopwatch()..start();
       _connectionStatus = ConnectionStatus.connecting;
       _isCanceled = false;
-      // ignore: void_checks
       _cancelableOperation = CancelableOperation.fromFuture(
         _completeConnection(location, stopwatch, refreshIP),
         onCancel: () async {
@@ -253,13 +245,11 @@ abstract class _VpnStore with Store {
       showSnackbar(
         LocaleKeys.connectionTimeout.tr(),
       );
-      disconnect();
       setVpnError(
         errorCode: 408,
         errorMessage: e.message ?? '',
         errorSource: 'wireguard',
       );
-      _connectionStatus = ConnectionStatus.disconnected;
     } on OperationCancelledException {
       debugPrint('Operation cancelled by user');
     } catch (e) {
@@ -289,6 +279,20 @@ abstract class _VpnStore with Store {
       );
       _connectionStatus = ConnectionStatus.disconnected;
     }
+  }
+
+  String? selectLocation() {
+    if (_locationsStore.vpnLocations.allLocations.isEmpty ||
+        _locationsStore.vpnLocations.topLocations.isEmpty) {
+      return null;
+    }
+    if (_locationsStore.recentLocations.isNotEmpty) {
+      return _locationsStore.recentLocations.first;
+    }
+    if (_locationsStore.vpnLocations.topLocations.isNotEmpty) {
+      return _locationsStore.vpnLocations.topLocations.randomItem();
+    }
+    return _locationsStore.vpnLocations.allLocations.randomItem();
   }
 
   Future<void> setVpnError({
@@ -327,15 +331,18 @@ abstract class _VpnStore with Store {
         await connectWireguard();
         final ipAddress = await _apiService.getIPAdress().timeout(
               const Duration(seconds: 10),
-              onTimeout: () => throw TimeoutException('IP address timeout'),
+              onTimeout: () => throw BrokenNodeException(),
             );
         return VpnConnection(
           connectionIP: ipAddress ?? '--',
-          location: location!,
+          location: location ?? '',
         );
       } else {
         throw OperationCancelledException();
       }
+    } on BrokenNodeException {
+      disconnect();
+      rethrow;
     } catch (e) {
       rethrow;
     }

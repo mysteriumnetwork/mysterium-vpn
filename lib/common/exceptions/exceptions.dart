@@ -1,4 +1,5 @@
 export 'api.dart';
+export 'broken_node.dart';
 export 'incorrect_code.dart';
 export 'incorrect_magic_link.dart';
 export 'key_does_not_exists.dart';
