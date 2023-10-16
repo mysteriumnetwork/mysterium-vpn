@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'dart:ui';
+
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/services/shared_preferences_service.dart';
@@ -11,7 +12,7 @@ class LocaleStore = _LocaleStore with _$LocaleStore;
 
 abstract class _LocaleStore with Store {
   _LocaleStore() {
-    _currentLocale = _sharedPrefs.getLocale() ?? kFallbackLocale;
+    _currentLocale = _sharedPrefs.getLocale();
   }
 
   final _sharedPrefs = SharedPreferenceService.instance;
