@@ -114,7 +114,7 @@ class SignInForm extends HookConsumerWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SvgIcon(asset: Assets.googleLogo).padding(right: 10),
+                      const SvgIcon(asset: Assets.googleLogo).paddingDirectional(end: 10),
                       EasyText(
                         LocaleKeys.continueWithGoogle.tr(),
                         color: Palette.black,
@@ -129,7 +129,7 @@ class SignInForm extends HookConsumerWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SvgIcon(asset: Assets.appleLogo).padding(right: 10),
+                      const SvgIcon(asset: Assets.appleLogo).paddingDirectional(end: 10),
                       EasyText(
                         LocaleKeys.continueWithApple.tr(),
                         color: Palette.black,

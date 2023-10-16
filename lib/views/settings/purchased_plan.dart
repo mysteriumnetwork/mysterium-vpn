@@ -25,7 +25,7 @@ class PurchasedPlan extends StatelessWidget {
                 subscription.planId?.tr() ?? '',
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-              ).padding(right: 4),
+              ).paddingDirectional(end: 4),
               const SvgIcon(
                 asset: Assets.subscription,
               ).height(25).width(25),

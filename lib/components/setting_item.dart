@@ -32,7 +32,7 @@ class SettingItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SvgIcon(asset: asset).padding(right: 20),
+            SvgIcon(asset: asset).paddingDirectional(end: 20),
             LayoutBuilder(
               builder: (_, constraints) => constraints.maxWidth > 500
                   ? Wrap(

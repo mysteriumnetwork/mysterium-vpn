@@ -119,7 +119,7 @@ class _DeleteAccountDialog extends HookWidget {
                         radius: 20,
                         strokeWidth: 1.5,
                         indicatorColor: Palette.white,
-                      ).padding(right: 4)
+                      ).paddingDirectional(end: 4)
                     : EasyText(
                         LocaleKeys.confirm.tr(),
                         color: Palette.white,

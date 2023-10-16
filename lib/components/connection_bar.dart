@@ -99,7 +99,7 @@ class _BarItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (leadingPosition == LeadingPosition.left && leading != null)
-                  leading!.padding(right: 4),
+                  leading!.paddingDirectional(end: 4),
                 EasyText(
                   text,
                   color: Palette.white,
