@@ -8,7 +8,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/connect_button.dart';
 import 'package:mysterium_vpn/components/connection_bar.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/views/home/connection_info_panel_desktop.dart';
+import 'package:mysterium_vpn/views/home/connection_info_panel.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class HomeDesktopRightPanel extends ConsumerWidget {
@@ -40,7 +40,7 @@ class HomeDesktopRightPanel extends ConsumerWidget {
                 ).padding(vertical: 40).expanded(),
                 const Visibility(
                   visible: false,
-                  child: ConnectionInfoPanelDesktop(),
+                  child: ConnectionInfoPanel(),
                 ),
               ],
             ).padding(horizontal: 40, vertical: 20),

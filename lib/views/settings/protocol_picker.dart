@@ -15,12 +15,11 @@ class ProtocolPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Observer(
         builder: (context) => EasyDropdown<String>(
-          value: store.protocol,
+          value: '',
           onChanged: (String? newProtocol) async {
             if (newProtocol == null) {
               return;
             }
-            store.changeProtocol(newProtocol);
             return;
           },
           items: protocols
