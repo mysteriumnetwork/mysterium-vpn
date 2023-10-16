@@ -5,6 +5,7 @@ import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
+import 'package:mysterium_vpn/stores/locale_store.dart';
 
 part 'locations_store.g.dart';
 
@@ -16,12 +17,19 @@ abstract class _LocationsStore with Store {
     required ApiService apiService,
     required AnalyticsStore analyticsStore,
     required AuthStore authStore,
+    required LocaleStore localeStore,
   })  : _apiService = apiService,
         _analyticsStore = analyticsStore,
         _authStore = authStore {
     autorun((_) async {
       if (_authStore.authData != null) {
         fetchVPNLocations().whenComplete(fetchRecentLocations);
+      }
+    });
+
+    reaction((_) => localeStore.currentLocale, (locale) {
+      if (searchKeyword.isNotEmpty) {
+        setLocationKeyword('');
       }
     });
   }
