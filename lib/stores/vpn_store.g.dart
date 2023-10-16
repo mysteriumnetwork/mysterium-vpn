@@ -22,106 +22,6 @@ mixin _$VpnStore on _VpnStore, Store {
       (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading, name: '_VpnStore.isLoading'))
           .value;
 
-  late final _$setupTunnelFutureAtom = Atom(name: '_VpnStore.setupTunnelFuture', context: context);
-
-  @override
-  ObservableFuture<void> get setupTunnelFuture {
-    _$setupTunnelFutureAtom.reportRead();
-    return super.setupTunnelFuture;
-  }
-
-  @override
-  set setupTunnelFuture(ObservableFuture<void> value) {
-    _$setupTunnelFutureAtom.reportWrite(value, super.setupTunnelFuture, () {
-      super.setupTunnelFuture = value;
-    });
-  }
-
-  late final _$_durationAtom = Atom(name: '_VpnStore._duration', context: context);
-
-  Duration? get duration {
-    _$_durationAtom.reportRead();
-    return super._duration;
-  }
-
-  @override
-  Duration? get _duration => duration;
-
-  @override
-  set _duration(Duration? value) {
-    _$_durationAtom.reportWrite(value, super._duration, () {
-      super._duration = value;
-    });
-  }
-
-  late final _$_uploadSpeedAtom = Atom(name: '_VpnStore._uploadSpeed', context: context);
-
-  double? get uploadSpeed {
-    _$_uploadSpeedAtom.reportRead();
-    return super._uploadSpeed;
-  }
-
-  @override
-  double? get _uploadSpeed => uploadSpeed;
-
-  @override
-  set _uploadSpeed(double? value) {
-    _$_uploadSpeedAtom.reportWrite(value, super._uploadSpeed, () {
-      super._uploadSpeed = value;
-    });
-  }
-
-  late final _$_downloadSpeedAtom = Atom(name: '_VpnStore._downloadSpeed', context: context);
-
-  double? get downloadSpeed {
-    _$_downloadSpeedAtom.reportRead();
-    return super._downloadSpeed;
-  }
-
-  @override
-  double? get _downloadSpeed => downloadSpeed;
-
-  @override
-  set _downloadSpeed(double? value) {
-    _$_downloadSpeedAtom.reportWrite(value, super._downloadSpeed, () {
-      super._downloadSpeed = value;
-    });
-  }
-
-  late final _$_protocolAtom = Atom(name: '_VpnStore._protocol', context: context);
-
-  String get protocol {
-    _$_protocolAtom.reportRead();
-    return super._protocol;
-  }
-
-  @override
-  String get _protocol => protocol;
-
-  @override
-  set _protocol(String value) {
-    _$_protocolAtom.reportWrite(value, super._protocol, () {
-      super._protocol = value;
-    });
-  }
-
-  late final _$_killSwitchAtom = Atom(name: '_VpnStore._killSwitch', context: context);
-
-  bool get killSwitch {
-    _$_killSwitchAtom.reportRead();
-    return super._killSwitch;
-  }
-
-  @override
-  bool get _killSwitch => killSwitch;
-
-  @override
-  set _killSwitch(bool value) {
-    _$_killSwitchAtom.reportWrite(value, super._killSwitch, () {
-      super._killSwitch = value;
-    });
-  }
-
   late final _$_resetConnectionAtom = Atom(name: '_VpnStore._resetConnection', context: context);
 
   bool get resetConnection {
@@ -339,32 +239,10 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore._completeConnection', context: context);
 
   @override
-  Future<void> _completeConnection(String? location, Stopwatch stopwatch, bool? refreshIP) {
+  Future<VpnConnection> _completeConnection(
+      String? location, Stopwatch stopwatch, bool? refreshIP) {
     return _$_completeConnectionAsyncAction
         .run(() => super._completeConnection(location, stopwatch, refreshIP));
-  }
-
-  late final _$changeProtocolAsyncAction =
-      AsyncAction('_VpnStore.changeProtocol', context: context);
-
-  @override
-  Future<void> changeProtocol(String protocol) {
-    return _$changeProtocolAsyncAction.run(() => super.changeProtocol(protocol));
-  }
-
-  late final _$toggleKillSwitchAsyncAction =
-      AsyncAction('_VpnStore.toggleKillSwitch', context: context);
-
-  @override
-  Future<void> toggleKillSwitch() {
-    return _$toggleKillSwitchAsyncAction.run(() => super.toggleKillSwitch());
-  }
-
-  late final _$startTrackingAsyncAction = AsyncAction('_VpnStore.startTracking', context: context);
-
-  @override
-  Future<void> startTracking() {
-    return _$startTrackingAsyncAction.run(() => super.startTracking());
   }
 
   late final _$disconnectAsyncAction = AsyncAction('_VpnStore.disconnect', context: context);
@@ -377,7 +255,6 @@ mixin _$VpnStore on _VpnStore, Store {
   @override
   String toString() {
     return '''
-setupTunnelFuture: ${setupTunnelFuture},
 isConnected: ${isConnected},
 isLoading: ${isLoading}
     ''';

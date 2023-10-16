@@ -106,7 +106,6 @@ class RestApiService extends ApiService {
         throw Exception("config wasn't created");
       }
       final vpnConfig = VpnConfig.fromJson(response.data!);
-
       return vpnConfig.copyWith(
         config: vpnConfig.config.replaceFirst('%private_key%', privateKey),
       );
