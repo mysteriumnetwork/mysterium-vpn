@@ -40,17 +40,18 @@ class RestSubscriptionService extends SubscriptionService {
 
   @override
   Future<Subscription> verifyPurchase({
-    required String gatewayId,
-    required String paymentToken,
+    required String serverVerificationData,
     required String planId,
-    required String purchaseId,
+    required String transactionId,
   }) async {
     try {
+      final gatewayId = getPlatformGateway();
       final res = await _apiClient.post<Map<String, dynamic>>(
         kVerifySubscription,
         data: {
           'gateway_id': gatewayId,
-          'payload': paymentToken,
+          if (gatewayId == 'google') 'payload': serverVerificationData,
+          if (gatewayId == 'apple') 'transaction_id': transactionId,
         },
       );
 
@@ -67,7 +68,7 @@ class RestSubscriptionService extends SubscriptionService {
         } finally {
           await _localDb.setSubscriptionPurchase(
             subscriptionPlan: planId,
-            subscriptionPurchaseId: purchaseId,
+            subscriptionPurchaseId: transactionId,
           );
         }
       } else {

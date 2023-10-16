@@ -283,10 +283,9 @@ abstract class _SubscriptionStore with Store {
     try {
       verifySubscriptionFuture = ObservableFuture(
         _subscriptionService.verifyPurchase(
-          gatewayId: getPlatformGateway(),
-          paymentToken: purchaseDetails.verificationData.serverVerificationData,
+          serverVerificationData: purchaseDetails.verificationData.serverVerificationData,
           planId: productId,
-          purchaseId: purchaseDetails.purchaseID ?? '',
+          transactionId: purchaseDetails.purchaseID ?? '',
         ),
       );
       _subscription = await verifySubscriptionFuture;
@@ -303,10 +302,9 @@ abstract class _SubscriptionStore with Store {
         _subscriptonStatus = SubscriptionStatus.verifying;
         verifySubscriptionFuture = ObservableFuture(
           _subscriptionService.verifyPurchase(
-            gatewayId: getPlatformGateway(),
-            paymentToken: _lastPurchase!.verificationData.serverVerificationData,
+            serverVerificationData: _lastPurchase!.verificationData.serverVerificationData,
             planId: _purchasedProductId!,
-            purchaseId: _lastPurchase!.purchaseID ?? '',
+            transactionId: _lastPurchase!.purchaseID ?? '',
           ),
         );
 
