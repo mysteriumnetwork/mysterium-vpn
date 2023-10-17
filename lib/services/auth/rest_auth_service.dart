@@ -49,7 +49,7 @@ class RestAuthService extends AuthService {
       debugPrint(e.toString());
       removeLocalData();
       final error = handleException(e, message: 'Authenticating failed.Please try again');
-      if (error.message == 'Unauthorized' && error.code == 401) {
+      if (error.code == 401) {
         throw AuthenticationRequiredException();
       }
       throw error;
