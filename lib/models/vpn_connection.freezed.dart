@@ -61,19 +61,21 @@ class _$VpnConnectionCopyWithImpl<$Res, $Val extends VpnConnection>
 }
 
 /// @nodoc
-abstract class _$$_VpnConnectionCopyWith<$Res> implements $VpnConnectionCopyWith<$Res> {
-  factory _$$_VpnConnectionCopyWith(_$_VpnConnection value, $Res Function(_$_VpnConnection) then) =
-      __$$_VpnConnectionCopyWithImpl<$Res>;
+abstract class _$$VpnConnectionImplCopyWith<$Res> implements $VpnConnectionCopyWith<$Res> {
+  factory _$$VpnConnectionImplCopyWith(
+          _$VpnConnectionImpl value, $Res Function(_$VpnConnectionImpl) then) =
+      __$$VpnConnectionImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String connectionIP, String location});
 }
 
 /// @nodoc
-class __$$_VpnConnectionCopyWithImpl<$Res>
-    extends _$VpnConnectionCopyWithImpl<$Res, _$_VpnConnection>
-    implements _$$_VpnConnectionCopyWith<$Res> {
-  __$$_VpnConnectionCopyWithImpl(_$_VpnConnection _value, $Res Function(_$_VpnConnection) _then)
+class __$$VpnConnectionImplCopyWithImpl<$Res>
+    extends _$VpnConnectionCopyWithImpl<$Res, _$VpnConnectionImpl>
+    implements _$$VpnConnectionImplCopyWith<$Res> {
+  __$$VpnConnectionImplCopyWithImpl(
+      _$VpnConnectionImpl _value, $Res Function(_$VpnConnectionImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -82,7 +84,7 @@ class __$$_VpnConnectionCopyWithImpl<$Res>
     Object? connectionIP = null,
     Object? location = null,
   }) {
-    return _then(_$_VpnConnection(
+    return _then(_$VpnConnectionImpl(
       connectionIP: null == connectionIP
           ? _value.connectionIP
           : connectionIP // ignore: cast_nullable_to_non_nullable
@@ -97,8 +99,8 @@ class __$$_VpnConnectionCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_VpnConnection implements _VpnConnection {
-  const _$_VpnConnection({required this.connectionIP, required this.location});
+class _$VpnConnectionImpl implements _VpnConnection {
+  const _$VpnConnectionImpl({required this.connectionIP, required this.location});
 
   @override
   final String connectionIP;
@@ -114,7 +116,7 @@ class _$_VpnConnection implements _VpnConnection {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_VpnConnection &&
+            other is _$VpnConnectionImpl &&
             (identical(other.connectionIP, connectionIP) || other.connectionIP == connectionIP) &&
             (identical(other.location, location) || other.location == location));
   }
@@ -125,13 +127,13 @@ class _$_VpnConnection implements _VpnConnection {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_VpnConnectionCopyWith<_$_VpnConnection> get copyWith =>
-      __$$_VpnConnectionCopyWithImpl<_$_VpnConnection>(this, _$identity);
+  _$$VpnConnectionImplCopyWith<_$VpnConnectionImpl> get copyWith =>
+      __$$VpnConnectionImplCopyWithImpl<_$VpnConnectionImpl>(this, _$identity);
 }
 
 abstract class _VpnConnection implements VpnConnection {
   const factory _VpnConnection(
-      {required final String connectionIP, required final String location}) = _$_VpnConnection;
+      {required final String connectionIP, required final String location}) = _$VpnConnectionImpl;
 
   @override
   String get connectionIP;
@@ -139,5 +141,6 @@ abstract class _VpnConnection implements VpnConnection {
   String get location;
   @override
   @JsonKey(ignore: true)
-  _$$_VpnConnectionCopyWith<_$_VpnConnection> get copyWith => throw _privateConstructorUsedError;
+  _$$VpnConnectionImplCopyWith<_$VpnConnectionImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

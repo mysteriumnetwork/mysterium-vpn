@@ -465,17 +465,10 @@ void handleOnReportPage({
   intetcomStore.displayMessenger();
 }
 
-SubscriptionStatus getSubscriptionStatus(PurchaseStatus status) {
-  switch (status) {
-    case PurchaseStatus.purchased:
-      return SubscriptionStatus.purchased;
-    case PurchaseStatus.pending:
-      return SubscriptionStatus.pending;
-    case PurchaseStatus.error:
-      return SubscriptionStatus.error;
-    case PurchaseStatus.restored:
-      return SubscriptionStatus.restored;
-    case PurchaseStatus.canceled:
-      return SubscriptionStatus.canceled;
-  }
-}
+SubscriptionStatus getSubscriptionStatus(PurchaseStatus status) => switch (status) {
+      PurchaseStatus.purchased => SubscriptionStatus.purchased,
+      PurchaseStatus.pending => SubscriptionStatus.pending,
+      PurchaseStatus.error => SubscriptionStatus.error,
+      PurchaseStatus.restored => SubscriptionStatus.restored,
+      PurchaseStatus.canceled => SubscriptionStatus.canceled
+    };

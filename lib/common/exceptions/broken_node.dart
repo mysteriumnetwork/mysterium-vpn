@@ -1,0 +1,1 @@
+class BrokenNodeException implements Exception {}
