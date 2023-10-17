@@ -344,8 +344,11 @@ ApiException handleException(Exception e, {String? message}) {
     if (!data.containsKey('error')) {
       return exception..message = e.message ?? LocaleKeys.somethingWentWrong.tr();
     }
-    if ((data['error'] as Map<String, dynamic>).containsKey('message')) {
-      return exception..message = data['message'] as String? ?? LocaleKeys.somethingWentWrong.tr();
+    if (data['error'] is Map<String, dynamic> &&
+        (data['error'] as Map<String, dynamic>).containsKey('message')) {
+      return exception
+        // ignore: avoid_dynamic_calls
+        ..message = data['error']['message'] as String? ?? LocaleKeys.somethingWentWrong.tr();
     }
     return exception..message = e.message ?? LocaleKeys.somethingWentWrong.tr();
   } else {

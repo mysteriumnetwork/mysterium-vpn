@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:mysterium_vpn/common/exceptions/key_does_not_exists.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
@@ -26,12 +26,11 @@ class RestAuthService extends AuthService {
   @override
   Future<AuthData> checkUserAuth() async {
     try {
-      await Future.delayed(const Duration(seconds: 2));
       final accessToken = await _securedStorage.getAccessToken();
 
       final res = await _apiClient.get(
         kAuthCheck,
-        options: Options(headers: {'Authorization': 'Bearer $accessToken'}),
+        options: Options(headers: {'Authorization': 'Bearer ${accessToken}asd'}),
       );
       final data = res.data as Map<String, dynamic>;
       final username = data['username'] as String;
@@ -49,7 +48,11 @@ class RestAuthService extends AuthService {
       }
       debugPrint(e.toString());
       removeLocalData();
-      throw handleException(e, message: 'Authenticating failed.Please try again');
+      final error = handleException(e, message: 'Authenticating failed.Please try again');
+      if (error.message == 'Unauthorized' && error.code == 401) {
+        throw AuthenticationRequiredException();
+      }
+      throw error;
     }
   }
 
