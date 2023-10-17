@@ -123,7 +123,7 @@ class _BulletItem extends StatelessWidget {
         children: [
           const SvgIcon(
             asset: Assets.checkmark,
-          ).padding(right: 16),
+          ).paddingDirectional(end: 16),
           EasyText(
             text,
             maxLines: 3,

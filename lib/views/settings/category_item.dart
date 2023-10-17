@@ -27,7 +27,7 @@ class CategoryItem extends StatelessWidget {
             children: [
               _SelectionIndicator(
                 isSelected: isSelected,
-              ).padding(right: 14),
+              ).paddingDirectional(end: 14),
               EasyText(
                 title,
                 fontWeight: FontWeight.w700,
