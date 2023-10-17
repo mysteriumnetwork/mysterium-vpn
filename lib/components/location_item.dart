@@ -35,7 +35,7 @@ class LocationItem extends StatelessWidget {
           radius: 15,
           child: Row(
             children: [
-              Flag(countryCode: location).padding(right: 20),
+              Flag(countryCode: location).paddingDirectional(end: 20),
               EasyText(
                 location.tr(),
                 fontWeight: FontWeight.w700,

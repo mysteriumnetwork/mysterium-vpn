@@ -32,7 +32,7 @@ class ProductItem extends ConsumerWidget {
         children: [
           const SvgIcon(
             asset: Assets.subscriptionItem,
-          ).padding(right: getMediaWidth(context) * 0.05),
+          ).paddingDirectional(end: getMediaWidth(context) * 0.05),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
