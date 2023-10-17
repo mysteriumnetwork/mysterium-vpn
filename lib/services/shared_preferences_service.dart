@@ -2,6 +2,7 @@
 import 'dart:async' show Future;
 
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 // Package imports:
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
@@ -44,13 +45,14 @@ class SharedPreferenceService {
 
   bool checkExistance(StorageKeys key) => _prefsInstance.containsKey(key.value);
 
-  Locale? getLocale() {
-    final languageCode = getString(StorageKeys.languageCode.value);
-    return languageCode != null
-        ? kSupportedLocales.firstWhereOrNull(
-            (e) => e.languageCode == languageCode,
-          )
-        : null;
+  Locale getLocale() {
+    final languageCode =
+        getString(StorageKeys.languageCode.value) ?? PlatformDispatcher.instance.locale;
+
+    return kSupportedLocales.firstWhereOrNull(
+          (e) => e.languageCode == languageCode,
+        ) ??
+        kFallbackLocale;
   }
 
   Future<bool> setLocale(Locale locale) async =>
