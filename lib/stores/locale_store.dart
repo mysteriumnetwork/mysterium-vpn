@@ -11,7 +11,7 @@ class LocaleStore = _LocaleStore with _$LocaleStore;
 
 abstract class _LocaleStore with Store {
   _LocaleStore() {
-    _currentLocale = _sharedPrefs.getLocale() ?? kFallbackLocale;
+    _currentLocale = _sharedPrefs.getLocale();
   }
 
   final _sharedPrefs = SharedPreferenceService.instance;
