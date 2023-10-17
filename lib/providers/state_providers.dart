@@ -79,10 +79,13 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final authStore = ref.watch(authStorePOD);
+  final localeStore = ref.watch(localeStorePOD);
+
   return LocationsStore(
     apiService: apiService,
     analyticsStore: analyticsStore,
     authStore: authStore,
+    localeStore: localeStore,
   );
 });
 
