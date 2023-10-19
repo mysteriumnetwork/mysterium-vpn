@@ -63,7 +63,11 @@ class RecentLocationItem extends StatelessWidget {
                   '',
                 ),
             ],
-          ).padding(left: 6, right: 6).width(130),
+          )
+              .padding(
+                horizontal: 6,
+              )
+              .width(130),
         )
             .card(
               elevation: 1,

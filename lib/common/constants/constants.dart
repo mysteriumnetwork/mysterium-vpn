@@ -5,14 +5,17 @@ final List<Locale> kSupportedLocales = [
   const Locale('fr', 'FR'),
   const Locale('pt', 'PT'),
   const Locale('tr', 'TR'),
-  // const Locale('es', 'ES'),
-  // const Locale('de', 'DE'),
-  // const Locale('et', 'EE'),
-  // const Locale('it', 'IT'),
-  // const Locale('lt', 'LT'),
-  // const Locale('mk', 'MK'),
-  // const Locale('sr', 'RS'),
-  // const Locale('uk', 'UA'),
+  const Locale('de', 'DE'),
+  const Locale('ar', 'AR'),
+  const Locale('es', 'ES'),
+  const Locale('id', 'ID'),
+  const Locale('it', 'IT'),
+  const Locale('ja', 'JP'),
+  const Locale.fromSubtags(
+    languageCode: 'zh',
+    scriptCode: 'Hant',
+    countryCode: 'CN',
+  ),
 ];
 
 const kFallbackLocale = Locale('en', 'US');

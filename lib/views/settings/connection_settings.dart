@@ -48,7 +48,7 @@ class ConnectionSettings extends HookConsumerWidget {
                   EasyText(
                     LocaleKeys.on.tr(),
                     color: Palette.lightBlue,
-                  ).padding(right: 5),
+                  ).paddingDirectional(end: 5),
                   const SvgIcon(
                     asset: Assets.checkmark,
                   ),

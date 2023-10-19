@@ -56,7 +56,6 @@ abstract class LocaleKeys {
   static const settings = 'settings';
   static const connection = 'connection';
   static const killSwitch = 'killSwitch';
-  static const killSwitchDesc = 'killSwitchDesc';
   static const shortDesc = 'shortDesc';
   static const protocol = 'protocol';
   static const application = 'application';
@@ -123,6 +122,7 @@ abstract class LocaleKeys {
   static const gettingYourPlan = 'gettingYourPlan';
   static const unableToGetPlans = 'unableToGetPlans';
   static const tryAgainBtn = 'tryAgainBtn';
+  static const billedInTotal = 'billedInTotal';
   static const monthly = 'monthly';
   static const semiAnnual = 'semiAnnual';
   static const yearly = 'yearly';
@@ -422,6 +422,10 @@ abstract class LocaleKeys {
   static const pt = 'pt';
   static const sr = 'sr';
   static const uk = 'uk';
+  static const zh = 'zh';
+  static const ar = 'ar';
+  static const id = 'id';
+  static const ja = 'ja';
   static const coudntFindLocations = 'coudntFindLocations';
   static const checkingSubsStatus = 'checkingSubsStatus';
   static const connectionTimeout = 'connectionTimeout';
@@ -444,11 +448,11 @@ abstract class LocaleKeys {
   static const refreshIP = 'refreshIP';
   static const refreshIPAddress = 'refreshIPAddress';
   static const getNewIPAddress = 'getNewIPAddress';
+  static const killSwitchDesc = 'killSwitchDesc';
   static const billedPerMonth = 'billedPerMonth';
   static const SixMonths = 'SixMonths';
   static const year = 'year';
   static const month = 'month';
-  static const billedInTotal = 'billedInTotal';
   static const connectionLimitExceededTitle = 'connectionLimitExceededTitle';
   static const connectionLimitExceededDesc = 'connectionLimitExceededDesc';
   static const iUnderstandBtn = 'iUnderstandBtn';
