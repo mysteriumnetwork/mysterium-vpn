@@ -153,20 +153,19 @@ abstract class _AuthStore with Store {
       _authData = res;
       _authStatus = AuthStatus.authenticated;
       debugPrint(_localDb.userData.toString());
-    } on KeyDoesntExistsException {
-      _authStatus = AuthStatus.unauthenticated;
     } catch (e) {
-      if (e is IncorrectMagicLinkException) {
-        showSnackbar(LocaleKeys.incorrectMagicLink.tr());
-      } else if (e is IncorrectCodeException) {
-        showSnackbar(LocaleKeys.incorrectMagicLink.tr());
-      } else if (e is ApiException) {
-        showSnackbar(e.message);
-      } else {
-        showSnackbar(LocaleKeys.authenticationFailed.tr());
-      }
       debugPrint(e.toString());
       _authStatus = AuthStatus.unauthenticated;
+      if (e is KeyDoesntExistsException || e is AuthenticationRequiredException) {
+        return;
+      }
+      var message = LocaleKeys.authenticationFailed.tr();
+      if (e is IncorrectMagicLinkException || e is IncorrectCodeException) {
+        message = LocaleKeys.incorrectMagicLink.tr();
+      } else if (e is ApiException) {
+        message = e.message;
+      }
+      showSnackbar(message);
     }
   }
 

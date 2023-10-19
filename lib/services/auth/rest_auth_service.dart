@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:mysterium_vpn/common/exceptions/key_does_not_exists.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
@@ -49,7 +49,11 @@ class RestAuthService extends AuthService {
       }
       debugPrint(e.toString());
       removeLocalData();
-      throw handleException(e, message: 'Authenticating failed.Please try again');
+      final error = handleException(e, message: 'Authenticating failed.Please try again');
+      if (error.message == 'Unauthorized' && error.code == 401) {
+        throw AuthenticationRequiredException();
+      }
+      throw error;
     }
   }
 
