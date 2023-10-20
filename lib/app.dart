@@ -7,6 +7,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/router/route_delegate.dart';
+import 'package:mysterium_vpn/components/custom_platform_menu.dart';
 import 'package:mysterium_vpn/components/lifecycle_listener.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/components/shortcuts.dart';
@@ -24,6 +25,7 @@ class MyApp extends HookConsumerWidget {
     final authStore = ref.read(authStorePOD);
     final routeDelegate = ref.read(routerDelegatePOD);
     final localStore = ref.read(localeStorePOD);
+    final appName = ref.watch(environmentPOD).values.appName;
 
     return ReactionBuilder(
       builder: (_) => reaction(
@@ -43,20 +45,23 @@ class MyApp extends HookConsumerWidget {
               checkSubsStatus(authStore, ref.read(subscriptionStorePOD));
             },
             child: ShortcutsWidget(
-              child: MaterialApp.router(
-                title: 'Mysterium VPN',
-                key: UniqueKey(),
-                scaffoldMessengerKey: snackbarKey,
-                theme: themeStore.lightTheme,
-                darkTheme: themeStore.darkTheme,
-                themeMode: themeStore.themeMode,
-                routerDelegate: routeDelegate,
-                routeInformationParser: routeInformationParser,
-                localizationsDelegates: context.localizationDelegates,
-                supportedLocales: context.supportedLocales,
-                locale: localStore.currentLocale,
-                backButtonDispatcher: BeamerBackButtonDispatcher(
-                  delegate: routeDelegate,
+              child: CustomPlatformMenu(
+                appName: appName,
+                child: MaterialApp.router(
+                  title: appName,
+                  key: UniqueKey(),
+                  scaffoldMessengerKey: snackbarKey,
+                  theme: themeStore.lightTheme,
+                  darkTheme: themeStore.darkTheme,
+                  themeMode: themeStore.themeMode,
+                  routerDelegate: routeDelegate,
+                  routeInformationParser: routeInformationParser,
+                  localizationsDelegates: context.localizationDelegates,
+                  supportedLocales: context.supportedLocales,
+                  locale: localStore.currentLocale,
+                  backButtonDispatcher: BeamerBackButtonDispatcher(
+                    delegate: routeDelegate,
+                  ),
                 ),
               ),
             ),
