@@ -125,7 +125,7 @@ class CustomPlatformMenu extends ConsumerWidget {
                   PlatformMenuItemGroup(
                     members: <PlatformMenuItem>[
                       PlatformMenu(
-                        label: 'Speach',
+                        label: 'Speech',
                         menus: <PlatformMenuItem>[
                           PlatformMenuItemGroup(
                             members: <PlatformMenuItem>[
