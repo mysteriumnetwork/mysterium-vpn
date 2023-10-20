@@ -19,6 +19,7 @@ class FlavorValues {
     required this.sentryDsn,
     required this.billingPage,
     required this.accountName,
+    required this.appName,
   });
 
   factory FlavorValues.production() => FlavorValues(
@@ -29,6 +30,7 @@ class FlavorValues {
             'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200',
         billingPage: 'https://app.mysteriumvpn.com/dashboard/billing',
         accountName: 'mysterium_vpn',
+        appName: 'Mysterium VPN',
       );
   factory FlavorValues.dev() => FlavorValues(
         baseUrl: 'https://api-test.mysteriumvpn.com/api/v1',
@@ -38,6 +40,7 @@ class FlavorValues {
             'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200',
         billingPage: 'https://app-testnet.mysteriumvpn.com/dashboard/billing',
         accountName: 'mysterium_vpn_test',
+        appName: 'Mysterium VPN Test',
       );
 
   final String baseUrl;
@@ -46,6 +49,7 @@ class FlavorValues {
   final String sentryDsn;
   final String billingPage;
   final String accountName;
+  final String appName;
 }
 
 class FlavorConfig {
