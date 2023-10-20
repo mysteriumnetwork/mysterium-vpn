@@ -177,3 +177,5 @@ final intercomStorePOD = StateProvider<IntercomStore>((ref) {
   }
   return IntercomMobileStore(intercom: Intercom.instance);
 });
+
+final isAppWindowFocused = StateProvider<bool>((_) => true);
