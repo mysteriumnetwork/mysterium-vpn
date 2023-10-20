@@ -1,5 +1,9 @@
+// ignore_for_file: prefer_mixin
+
 import 'package:flutter/widgets.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -99,7 +103,7 @@ class __LifecycleMobileState extends State<_LifecycleMobile> with WidgetsBinding
   Widget build(BuildContext context) => widget.child;
 }
 
-class _LifecycleDesktop extends StatefulWidget {
+class _LifecycleDesktop extends ConsumerStatefulWidget {
   const _LifecycleDesktop({
     required this.child,
     this.onResumed,
@@ -115,11 +119,11 @@ class _LifecycleDesktop extends StatefulWidget {
   final VoidCallback? onDetached;
 
   @override
-  State<_LifecycleDesktop> createState() => __LifecycleDesktopState();
+  ConsumerState<_LifecycleDesktop> createState() => __LifecycleDesktopState();
 }
 
-// ignore: prefer_mixin
-class __LifecycleDesktopState extends State<_LifecycleDesktop> with WindowListener, TrayListener {
+class __LifecycleDesktopState extends ConsumerState<_LifecycleDesktop>
+    with WindowListener, TrayListener {
   @override
   void initState() {
     super.initState();
@@ -175,6 +179,17 @@ class __LifecycleDesktopState extends State<_LifecycleDesktop> with WindowListen
     } else if (menuItem.key == 'exit_app') {
       trayManager.destroy();
       windowManager.destroy();
+    }
+  }
+
+  @override
+  void onWindowEvent(String eventType) {
+    debugPrint(eventType);
+    if (eventType == 'closed' || eventType == 'minimized' || eventType == 'blur') {
+      ref.read(isAppWindowFocused.notifier).state = false;
+    }
+    if (eventType == 'restored' || eventType == 'focus') {
+      ref.read(isAppWindowFocused.notifier).state = true;
     }
   }
 
