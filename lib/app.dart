@@ -26,7 +26,7 @@ class MyApp extends HookConsumerWidget {
     final routeDelegate = ref.read(routerDelegatePOD);
     final localStore = ref.read(localeStorePOD);
     final appName = ref.watch(environmentPOD).values.appName;
-    
+
     return ReactionBuilder(
       builder: (_) => reaction(
         (_) => authStore.authStatus,
