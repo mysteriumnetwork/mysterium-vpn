@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
@@ -64,38 +63,36 @@ class _InfoDialog extends HookWidget {
               asset: Assets.warning,
             ),
           ),
-          Observer(
-            builder: (context) => Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                EasyText(
-                  title,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w900,
-                  maxLines: 3,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-                if (messages != null && messages!.isNotEmpty) ...[
-                  for (final message in messages!)
-                    EasyText(
-                      message,
-                      fontSize: 14,
-                      maxLines: 4,
-                      textAlign: TextAlign.center,
-                    ).padding(bottom: 6),
-                  const SizedBox(height: 30),
-                ],
-                EasyButton(
-                  useSystemColor: false,
-                  width: 160,
-                  color: Palette.pink,
-                  onPressed: onConfirm ?? () => Beamer.of(context).popRoute(),
-                  text: confirmText ?? LocaleKeys.continueBtn.tr(),
-                ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              EasyText(
+                title,
+                fontSize: 18,
+                fontWeight: FontWeight.w900,
+                maxLines: 3,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              if (messages != null && messages!.isNotEmpty) ...[
+                for (final message in messages!)
+                  EasyText(
+                    message,
+                    fontSize: 14,
+                    maxLines: 4,
+                    textAlign: TextAlign.center,
+                  ).padding(bottom: 6),
+                const SizedBox(height: 30),
               ],
-            ).padding(horizontal: 20, vertical: 40),
-          ),
+              EasyButton(
+                useSystemColor: false,
+                width: 160,
+                color: Palette.pink,
+                onPressed: onConfirm ?? () => Beamer.of(context).popRoute(),
+                text: confirmText ?? LocaleKeys.continueBtn.tr(),
+              ),
+            ],
+          ).padding(horizontal: 20, vertical: 40),
         ],
       );
 }

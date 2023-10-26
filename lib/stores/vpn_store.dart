@@ -227,7 +227,7 @@ abstract class _VpnStore with Store {
         _completeConnection(location, stopwatch, refreshIP),
         onCancel: () async {
           stopwatch.stop();
-          await Future.delayed(const Duration(seconds: 2), disconnect);
+          await Future.delayed(const Duration(seconds: 2), disconnectWireguard);
           _connectionStatus = ConnectionStatus.disconnected;
         },
       );
@@ -282,7 +282,7 @@ abstract class _VpnStore with Store {
   }
 
   String? selectLocation() {
-    if (_locationsStore.vpnLocations.allLocations.isEmpty ||
+    if (_locationsStore.vpnLocations.allLocations.isEmpty &&
         _locationsStore.vpnLocations.topLocations.isEmpty) {
       return null;
     }
@@ -341,7 +341,7 @@ abstract class _VpnStore with Store {
         throw OperationCancelledException();
       }
     } on BrokenNodeException {
-      disconnect();
+      disconnectWireguard();
       rethrow;
     } catch (e) {
       rethrow;
