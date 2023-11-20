@@ -458,4 +458,6 @@ abstract class LocaleKeys {
   static const iUnderstandBtn = 'iUnderstandBtn';
   static const on = 'on';
   static const off = 'off';
+  static const redeemCode = 'redeemCode';
+  static const isThisYou = 'isThisYou';
 }
