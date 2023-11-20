@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
@@ -91,6 +94,11 @@ class SubscriptionForm extends HookConsumerWidget {
                               type: MessageType.success,
                             );
                             context.beamToReplacementNamed(Routes.home.toRoute);
+                          } else if (store.verifySubscriptionFuture?.error is ApiException &&
+                              (store.verifySubscriptionFuture?.error as ApiException).code == 409) {
+                            showSnackbar(
+                              (store.verifySubscriptionFuture?.error as ApiException).message,
+                            );
                           } else if (status == SubscriptionStatus.notVerified ||
                               status == SubscriptionStatus.verifyingError) {
                             shownRetryDialog(
@@ -144,6 +152,16 @@ class SubscriptionForm extends HookConsumerWidget {
                                 color: Palette.white,
                               ),
                       ),
+                    ),
+                    Visibility(
+                      visible: Platform.isIOS,
+                      child: TextButton(
+                        onPressed: store.redeemCode,
+                        child: const EasyText(
+                          'Redeem Code',
+                          color: Palette.purple,
+                        ),
+                      ).padding(top: 10),
                     ),
                   ],
                 ),
