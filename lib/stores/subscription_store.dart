@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -210,6 +211,16 @@ abstract class _SubscriptionStore with Store {
   }
 
   @action
+  Future<void> redeemCode() async {
+    if (!Platform.isIOS) {
+      return;
+    }
+    InAppPurchase.instance
+        .getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>()
+        .presentCodeRedemptionSheet();
+  }
+
+  @action
   Future<void> _handlePurchase(PurchaseDetails purchaseDetails) async {
     final product = _products
         .firstWhereOrNull((element) => element.productDetails.id == purchaseDetails.productID);
@@ -219,7 +230,9 @@ abstract class _SubscriptionStore with Store {
       if (product != null) {
         product.status = ProductStatus.purchasable;
       }
-      if (purchaseDetails.status == PurchaseStatus.canceled) {
+      if (purchaseDetails.status == PurchaseStatus.canceled ||
+          (purchaseDetails.status == PurchaseStatus.error &&
+              purchaseDetails.error?.code == 'purchase_error')) {
         _subscriptionService.clearPendingTransactions();
       }
       _subscriptonStatus = getSubscriptionStatus(purchaseDetails.status);
@@ -234,13 +247,13 @@ abstract class _SubscriptionStore with Store {
       return;
     }
     try {
-      await verifyPurchase(product?.productDetails.id ?? '', purchaseDetails);
+      await verifyPurchase(product?.id ?? '', purchaseDetails);
       _expired = _subscription?.expired;
       if (purchaseDetails.status == PurchaseStatus.purchased && (_subscription?.active ?? false)) {
         _purchasedProductId = _subscription?.planId;
         if (product != null) {
           for (final product in _products) {
-            product.status = product.planDetails.id == _purchasedProductId
+            product.status = product.id == _purchasedProductId
                 ? ProductStatus.purchased
                 : ProductStatus.purchasable;
           }
