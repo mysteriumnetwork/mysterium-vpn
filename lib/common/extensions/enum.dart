@@ -1,13 +1,10 @@
-import 'package:flutter/foundation.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 
 extension StorageKeysEx on Enum {
-  String get value => describeEnum(this);
-
   String get toDashCase {
     final sb = StringBuffer();
     var first = true;
-    for (final rune in value.runes) {
+    for (final rune in name.runes) {
       final char = String.fromCharCode(rune);
       if (char.isUpperCase() && !first) {
         if (char != '-') {
@@ -25,7 +22,7 @@ extension StorageKeysEx on Enum {
   String get toSnakeCase {
     final sb = StringBuffer();
     var first = true;
-    for (final rune in value.runes) {
+    for (final rune in name.runes) {
       final char = String.fromCharCode(rune);
       if (char.isUpperCase() && !first) {
         if (char != '_') {

@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 
 part 'user_data.g.dart';
 
@@ -42,9 +41,9 @@ class UserData {
   String toString() => '''
 UserData : 
 userId: $userId,
-emailCommunicationApproval: ${emailCommunication.value},
+emailCommunicationApproval: ${emailCommunication.name},
 recentLocations: $recentLocations,
-notificationsApproval: ${notifications.value},
+notificationsApproval: ${notifications.name},
 subscriptionPlan: $subscriptionPlan,
 subscriptionPurchaseId: $subscriptionPurchaseId
 vpnConfigConsent: $vpnConfigConsent

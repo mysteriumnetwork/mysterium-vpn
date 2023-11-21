@@ -26,61 +26,61 @@ class BeamerLocations extends BeamLocation<BeamState> {
         if (state.uri.pathSegments.contains(Routes.login.toDashCase))
           BeamPage(
             key: ValueKey(Routes.login.toDashCase),
-            title: Routes.login.value,
+            title: Routes.login.name,
             child: const LoginPage(),
           ),
         if (state.uri.pathSegments.contains(Routes.home.toDashCase))
           BeamPage(
             key: ValueKey(Routes.home.toDashCase),
-            title: Routes.home.value,
+            title: Routes.home.name,
             child: const HomePage(),
           ),
         if (state.uri.pathSegments.contains(Routes.splash.toDashCase))
           BeamPage(
             key: ValueKey(Routes.splash.toDashCase),
-            title: Routes.splash.value,
+            title: Routes.splash.name,
             child: const SplashPage(),
           ),
         if (state.uri.pathSegments.contains(Routes.settings.toDashCase))
           BeamPage(
             key: ValueKey(Routes.settings.toDashCase),
-            title: Routes.settings.value,
+            title: Routes.settings.name,
             child: const SettingsPage(),
           ),
         if (state.uri.pathSegments.contains(Routes.reportIssue.toDashCase))
           BeamPage(
             key: ValueKey(Routes.reportIssue.toDashCase),
-            title: Routes.reportIssue.value,
+            title: Routes.reportIssue.name,
             child: const ReportIssuePage(),
           ),
         if (state.uri.pathSegments.contains(Routes.subscription.toDashCase))
           BeamPage(
             key: ValueKey(Routes.subscription.toDashCase),
-            title: Routes.subscription.value,
+            title: Routes.subscription.name,
             child: const SubscriptionPage(),
           ),
         if (state.uri.pathSegments.contains(Routes.emailCommunications.toDashCase))
           BeamPage(
             key: ValueKey(Routes.emailCommunications.toDashCase),
-            title: Routes.emailCommunications.value,
+            title: Routes.emailCommunications.name,
             child: const EmailCommunicationPage(),
           ),
         if (state.uri.pathSegments.contains(Routes.notifications.toDashCase))
           BeamPage(
             key: ValueKey(Routes.notifications.toDashCase),
-            title: Routes.notifications.value,
+            title: Routes.notifications.name,
             child: const NotificationsPage(),
           ),
         if (state.uri.pathSegments.contains(Routes.vpnConfigConsent.toDashCase))
           BeamPage(
             key: ValueKey(Routes.vpnConfigConsent.toDashCase),
-            title: Routes.vpnConfigConsent.value,
+            title: Routes.vpnConfigConsent.name,
             child: const VpnConfigConsentPage(),
           ),
         if (state.uri.pathSegments.contains(Routes.vpnPrivacyConsent.toDashCase))
           BeamPage(
             key: ValueKey(Routes.vpnPrivacyConsent.toDashCase),
-            title: Routes.vpnPrivacyConsent.value,
+            title: Routes.vpnPrivacyConsent.name,
             child: const VpnPrivacyConsentPage(),
           ),
       ];
@@ -100,13 +100,13 @@ class AuthBeamerLocations extends BeamLocation<BeamState> {
         if (state.uri.pathSegments.contains(Routes.signIn.toDashCase))
           BeamPage(
             key: ValueKey(Routes.signIn.toDashCase),
-            title: Routes.signIn.value,
+            title: Routes.signIn.name,
             child: const SignInView(),
           ),
         if (state.uri.pathSegments.contains(Routes.checkYourEmail.toDashCase))
           BeamPage(
             key: ValueKey(Routes.checkYourEmail.toDashCase),
-            title: Routes.checkYourEmail.value,
+            title: Routes.checkYourEmail.name,
             child: const CheckYourEmailView(),
           ),
       ];
