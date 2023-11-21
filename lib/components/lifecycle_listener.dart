@@ -177,9 +177,12 @@ class __LifecycleDesktopState extends ConsumerState<_LifecycleDesktop>
         trayManager.popUpContextMenu();
       }
     } else if (menuItem.key == 'exit_app') {
-      ref.read(vpnStorePOD).disconnect();
-      await trayManager.destroy();
-      await windowManager.destroy();
+      ref.read(vpnStorePOD).disconnect().whenComplete(
+        () async {
+          await trayManager.destroy();
+          await windowManager.destroy();
+        },
+      );
     }
   }
 

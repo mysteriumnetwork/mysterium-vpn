@@ -73,7 +73,10 @@ class Enviroment {
     Hive
       ..registerAdapter(UserDataAdapter())
       ..registerAdapter(ApprovalAdapter());
-    await Hive.openBox<UserData>('user_data');
+    await Hive.openBox<UserData>(
+      'user_data',
+      compactionStrategy: (entries, deletedEntries) => false,
+    );
 
     final container =
         ProviderContainer(overrides: [environmentPOD.overrideWith((ref) => flavorConfig)]);

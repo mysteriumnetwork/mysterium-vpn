@@ -6,7 +6,6 @@ import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mysterium_vpn/common/enums/storage_keys.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 // Project imports:
@@ -82,33 +81,32 @@ class SecureStorageService {
     return _securedStorage.write(key: key, value: value);
   }
 
-  Future<String> getAccessToken() async => read(StorageKeys.accessToken.value);
+  Future<String> getAccessToken() async => read(StorageKeys.accessToken.name);
   Future<void> saveAccessToken({required String accessToken}) async =>
-      write(StorageKeys.accessToken.value, accessToken);
-  Future<void> removeAccessToken() async => remove(StorageKeys.accessToken.value);
-  Future<String> getUsername() async => read(StorageKeys.username.value);
+      write(StorageKeys.accessToken.name, accessToken);
+  Future<void> removeAccessToken() async => remove(StorageKeys.accessToken.name);
+  Future<String> getUsername() async => read(StorageKeys.username.name);
   Future<void> saveUsername({required String username}) async =>
-      write(StorageKeys.username.value, username);
-  Future<void> removeUsername() async => remove(StorageKeys.username.value);
-  Future<String> getUserId() async => read(StorageKeys.userId.value);
-  Future<void> saveUserId({required String userId}) async =>
-      write(StorageKeys.userId.value, userId);
-  Future<void> removeUserId() async => remove(StorageKeys.userId.value);
-  Future<String?> getAppLink() async => readOrNull(StorageKeys.appLink.value);
+      write(StorageKeys.username.name, username);
+  Future<void> removeUsername() async => remove(StorageKeys.username.name);
+  Future<String> getUserId() async => read(StorageKeys.userId.name);
+  Future<void> saveUserId({required String userId}) async => write(StorageKeys.userId.name, userId);
+  Future<void> removeUserId() async => remove(StorageKeys.userId.name);
+  Future<String?> getAppLink() async => readOrNull(StorageKeys.appLink.name);
   Future<void> saveAppLink({required String appLink}) async =>
-      write(StorageKeys.appLink.value, appLink);
-  Future<String> getWireguardPublicKey() async => read(StorageKeys.wireguardPublicKey.value);
+      write(StorageKeys.appLink.name, appLink);
+  Future<String> getWireguardPublicKey() async => read(StorageKeys.wireguardPublicKey.name);
   Future<void> saveWireguardPublicKey({required String publicKey}) async =>
-      write(StorageKeys.accessToken.value, publicKey);
-  Future<void> removeWireguardPublicKey() async => remove(StorageKeys.wireguardPrivateKey.value);
-  Future<String> getWireguardPrivateKey() async => read(StorageKeys.wireguardPrivateKey.value);
+      write(StorageKeys.accessToken.name, publicKey);
+  Future<void> removeWireguardPublicKey() async => remove(StorageKeys.wireguardPrivateKey.name);
+  Future<String> getWireguardPrivateKey() async => read(StorageKeys.wireguardPrivateKey.name);
   Future<void> saveWireguardPrivateKey({required String publicKey}) async =>
-      write(StorageKeys.accessToken.value, publicKey);
-  Future<void> removeWireguardPrivateKey() async => remove(StorageKeys.wireguardPrivateKey.value);
+      write(StorageKeys.accessToken.name, publicKey);
+  Future<void> removeWireguardPrivateKey() async => remove(StorageKeys.wireguardPrivateKey.name);
   Future<PkcePair?> getPkcePair() async {
     try {
-      final codeChallenge = await read(StorageKeys.codeChallenge.value);
-      final codeVerifier = await read(StorageKeys.codeVerifier.value);
+      final codeChallenge = await read(StorageKeys.codeChallenge.name);
+      final codeVerifier = await read(StorageKeys.codeVerifier.name);
       return PkcePair.fromStorage(codeChallenge: codeChallenge, codeVerifier: codeVerifier);
     } catch (e) {
       return null;
@@ -119,12 +117,12 @@ class SecureStorageService {
     required String codeChallenge,
     required String codeVerifier,
   }) async {
-    write(StorageKeys.codeChallenge.value, codeChallenge);
-    write(StorageKeys.codeVerifier.value, codeVerifier);
+    write(StorageKeys.codeChallenge.name, codeChallenge);
+    write(StorageKeys.codeVerifier.name, codeVerifier);
   }
 
   Future<void> removePkcePair() async {
-    remove(StorageKeys.codeChallenge.value);
-    remove(StorageKeys.codeVerifier.value);
+    remove(StorageKeys.codeChallenge.name);
+    remove(StorageKeys.codeVerifier.name);
   }
 }
