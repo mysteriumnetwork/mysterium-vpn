@@ -14,6 +14,7 @@ import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/models/subscription_config.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
+import 'package:mysterium_vpn/services/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
@@ -50,6 +51,8 @@ abstract class _SubscriptionStore with Store {
   final LocalDBService _localDb;
   final AnalyticsStore _analyticsStore;
   final MarketingAnalyticsStore _marketingAnalyticsStore;
+  final SecureStorageService _secureStorageService = SecureStorageService.instance;
+
   @observable
   ObservableFuture<SubscriptionConfig>? isAvailableFuture;
 
@@ -272,6 +275,10 @@ abstract class _SubscriptionStore with Store {
           }
         }
         _subscriptonStatus = SubscriptionStatus.purchased;
+        _secureStorageService.saveSubscriptionPaymentInfo(
+          email: _authStore.authData!.username,
+          activeUntil: _subscription!.activeUntil,
+        );
       } else {
         _subscriptonStatus = SubscriptionStatus.notVerified;
       }
@@ -328,6 +335,22 @@ abstract class _SubscriptionStore with Store {
       } catch (e) {
         _subscriptonStatus = SubscriptionStatus.verifyingError;
       }
+    }
+  }
+
+  Future<(bool, String?)> checkForExistingSubscription() async {
+    try {
+      if (_subscription?.active ?? false) {
+        return (false, null);
+      }
+      final (String email, DateTime activeUntil) =
+          await _secureStorageService.getSubscriptionPaymentInfo();
+      if (email != _authStore.authData!.username && activeUntil.isAfter(DateTime.now())) {
+        return (true, email);
+      }
+      return (false, null);
+    } catch (e) {
+      return (false, null);
     }
   }
 
