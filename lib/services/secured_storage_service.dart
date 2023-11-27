@@ -1,5 +1,6 @@
 // Dart imports:
 import 'dart:async' show Future;
+import 'dart:convert';
 import 'dart:io';
 
 // Package imports:
@@ -124,5 +125,30 @@ class SecureStorageService {
   Future<void> removePkcePair() async {
     remove(StorageKeys.codeChallenge.name);
     remove(StorageKeys.codeVerifier.name);
+  }
+
+  Future<void> saveSubscriptionPaymentInfo({
+    required String email,
+    required DateTime? activeUntil,
+  }) async {
+    if (activeUntil == null) {
+      return;
+    }
+    final value = {'email': email, 'activeUntil': activeUntil.toIso8601String()};
+    write(StorageKeys.subscriptionPaymentInfo.value, jsonEncode(value));
+  }
+
+  Future<(String, DateTime)> getSubscriptionPaymentInfo() async {
+    try {
+      final subscriptionPaymentInfo = await read(StorageKeys.subscriptionPaymentInfo.value);
+      final a = jsonDecode(subscriptionPaymentInfo) as Map<String, dynamic>;
+      return (a['email']! as String, DateTime.parse(a['activeUntil']! as String));
+    } catch (e) {
+      throw KeyDoesntExistsException();
+    }
+  }
+
+  Future<void> removeSubscriptionPaymentInfo() async {
+    remove(StorageKeys.subscriptionPaymentInfo.value);
   }
 }

@@ -13,6 +13,7 @@ import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/retry_dialog.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
@@ -20,7 +21,9 @@ import 'package:mysterium_vpn/components/error_widget.dart';
 import 'package:mysterium_vpn/components/header_title.dart';
 import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
+import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/views/subscription/product_list.dart';
@@ -46,6 +49,14 @@ class SubscriptionForm extends HookConsumerWidget {
         purchaseProductId: store.purchasedProductId,
       ),
       [store.subscription?.active],
+    );
+
+    useEffect(
+      () {
+        checkForExistingSubscription(store, context, ref);
+        return null;
+      },
+      [],
     );
 
     return Observer(
@@ -188,6 +199,39 @@ class SubscriptionForm extends HookConsumerWidget {
         ],
       ),
     );
+  }
+
+  Future<void> checkForExistingSubscription(
+    SubscriptionStore store,
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final (exists, email) = await store.checkForExistingSubscription();
+    if (!exists) {
+      return;
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      shownConfirmationDialog(
+        context,
+        confirmText: LocaleKeys.logout.tr(),
+        cancelText: LocaleKeys.stayButton.tr(),
+        dismissible: false,
+        icon: const SvgIcon(
+          asset: Assets.warning,
+        ),
+        content: Text(
+          LocaleKeys.existingSubscriptionTitle.tr(),
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+          maxLines: 2,
+          textAlign: TextAlign.center,
+        ),
+        title: LocaleKeys.existingSubscriptionDesc.tr(namedArgs: {'email': email ?? ''}),
+        onConfirm: () => ref.read(authStorePOD).logout(email: email),
+      );
+    });
   }
 }
 
