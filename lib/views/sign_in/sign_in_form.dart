@@ -26,9 +26,13 @@ class SignInForm extends HookConsumerWidget {
   const SignInForm({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final signInForm = useMemoized(singIn);
-    final isMounted = useIsMounted();
     final store = ref.watch(authStorePOD);
+    final signInForm = useMemoized(() {
+      final form = singIn();
+      form.control('email').value = store.email;
+      return form;
+    });
+    final isMounted = useIsMounted();
     final form = useMemoized(approval);
 
     return ReactiveForm(

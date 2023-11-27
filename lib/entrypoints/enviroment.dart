@@ -73,11 +73,7 @@ class Enviroment {
     Hive
       ..registerAdapter(UserDataAdapter())
       ..registerAdapter(ApprovalAdapter());
-    await Hive.openBox<UserData>(
-      'user_data',
-      compactionStrategy: (entries, deletedEntries) => false,
-    );
-
+    await Hive.openBox<UserData>('user_data', compactionStrategy: (e, d) => false);
     final container =
         ProviderContainer(overrides: [environmentPOD.overrideWith((ref) => flavorConfig)]);
     await container.read(analyticsInitPOD(firebaseOptions).future);
