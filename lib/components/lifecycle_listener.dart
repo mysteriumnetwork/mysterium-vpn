@@ -177,14 +177,17 @@ class __LifecycleDesktopState extends ConsumerState<_LifecycleDesktop>
         trayManager.popUpContextMenu();
       }
     } else if (menuItem.key == 'exit_app') {
-      trayManager.destroy();
-      windowManager.destroy();
+      ref.read(vpnStorePOD).disconnect().whenComplete(
+        () async {
+          await trayManager.destroy();
+          await windowManager.destroy();
+        },
+      );
     }
   }
 
   @override
   void onWindowEvent(String eventType) {
-    debugPrint(eventType);
     if (eventType == 'closed' || eventType == 'minimized' || eventType == 'blur') {
       ref.read(isAppWindowFocused.notifier).state = false;
     }

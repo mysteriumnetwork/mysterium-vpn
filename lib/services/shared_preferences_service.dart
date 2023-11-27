@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceService {
@@ -43,11 +42,11 @@ class SharedPreferenceService {
 
   Future<bool> clear() async => _prefsInstance.clear();
 
-  bool checkExistance(StorageKeys key) => _prefsInstance.containsKey(key.value);
+  bool checkExistance(StorageKeys key) => _prefsInstance.containsKey(key.name);
 
   Locale getLocale() {
     final languageCode =
-        getString(StorageKeys.languageCode.value) ?? PlatformDispatcher.instance.locale;
+        getString(StorageKeys.languageCode.name) ?? PlatformDispatcher.instance.locale;
 
     return kSupportedLocales.firstWhereOrNull(
           (e) => e.languageCode == languageCode,
@@ -56,19 +55,19 @@ class SharedPreferenceService {
   }
 
   Future<bool> setLocale(Locale locale) async =>
-      setString(StorageKeys.languageCode.value, locale.languageCode);
+      setString(StorageKeys.languageCode.name, locale.languageCode);
 
   ThemeMode? getThemeType() {
-    final themeType = getString(StorageKeys.themeMype.value);
-    return ThemeMode.values.firstWhereOrNull((e) => e.value == themeType);
+    final themeType = getString(StorageKeys.themeMype.name);
+    return ThemeMode.values.firstWhereOrNull((e) => e.name == themeType);
   }
 
   Future<bool> setThemeType(ThemeMode themeMode) async =>
-      setString(StorageKeys.themeMype.value, themeMode.value);
+      setString(StorageKeys.themeMype.name, themeMode.name);
 
-  Future<bool> setAppInstallDay(int value) async => setInt(StorageKeys.appInstallDay.value, value);
-  int? getAppInstallDay() => getInt(StorageKeys.appInstallDay.value);
-  int? getRemindTimeStamp() => getInt(StorageKeys.inAppReviewRemindInterval.value);
+  Future<bool> setAppInstallDay(int value) async => setInt(StorageKeys.appInstallDay.name, value);
+  int? getAppInstallDay() => getInt(StorageKeys.appInstallDay.name);
+  int? getRemindTimeStamp() => getInt(StorageKeys.inAppReviewRemindInterval.name);
   Future<bool> setRemindTimeStamp(int value) async =>
-      setInt(StorageKeys.inAppReviewRemindInterval.value, value);
+      setInt(StorageKeys.inAppReviewRemindInterval.name, value);
 }
