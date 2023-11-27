@@ -137,16 +137,16 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> generateKey() async {
-    if (await _securedStorage.checkExistance(StorageKeys.wireguardPrivateKey.value) &&
-        await _securedStorage.checkExistance(StorageKeys.wireguardPublicKey.value)) {
-      _privateKey = await _securedStorage.read(StorageKeys.wireguardPrivateKey.value);
-      _publicKey = await _securedStorage.read(StorageKeys.wireguardPublicKey.value);
+    if (await _securedStorage.checkExistance(StorageKeys.wireguardPrivateKey.name) &&
+        await _securedStorage.checkExistance(StorageKeys.wireguardPublicKey.name)) {
+      _privateKey = await _securedStorage.read(StorageKeys.wireguardPrivateKey.name);
+      _publicKey = await _securedStorage.read(StorageKeys.wireguardPublicKey.name);
     } else {
       final res = await _wireguardService.generateKeyPair();
       _privateKey = res['privateKey'] ?? '';
       _publicKey = res['publicKey'] ?? '';
-      await _securedStorage.write(StorageKeys.wireguardPrivateKey.value, _privateKey);
-      await _securedStorage.write(StorageKeys.wireguardPublicKey.value, _publicKey);
+      await _securedStorage.write(StorageKeys.wireguardPrivateKey.name, _privateKey);
+      await _securedStorage.write(StorageKeys.wireguardPublicKey.name, _publicKey);
     }
   }
 
@@ -227,7 +227,7 @@ abstract class _VpnStore with Store {
         _completeConnection(location, stopwatch, refreshIP),
         onCancel: () async {
           stopwatch.stop();
-          await Future.delayed(const Duration(seconds: 2), disconnect);
+          await Future.delayed(const Duration(seconds: 2), disconnectWireguard);
           _connectionStatus = ConnectionStatus.disconnected;
         },
       );
@@ -282,7 +282,7 @@ abstract class _VpnStore with Store {
   }
 
   String? selectLocation() {
-    if (_locationsStore.vpnLocations.allLocations.isEmpty ||
+    if (_locationsStore.vpnLocations.allLocations.isEmpty &&
         _locationsStore.vpnLocations.topLocations.isEmpty) {
       return null;
     }
@@ -341,7 +341,7 @@ abstract class _VpnStore with Store {
         throw OperationCancelledException();
       }
     } on BrokenNodeException {
-      disconnect();
+      disconnectWireguard();
       rethrow;
     } catch (e) {
       rethrow;
