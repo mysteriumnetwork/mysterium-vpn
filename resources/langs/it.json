@@ -457,5 +457,9 @@
   "on": "SU",
   "off": "Spento",
   "redeemCode": "Riscatta codice",
-  "isThisYou": "Sei tu ?"
+  "isThisYou": "Sei tu ?",
+  "yes": "Sì",
+  "no": "No",
+  "existingSubscriptionTitle": "Puoi disconnetterti e provare con la tua email o ignorare questo avviso",
+  "existingSubscriptionDesc": "Potresti già avere un abbonamento a pagamento con “{email}”"
 }

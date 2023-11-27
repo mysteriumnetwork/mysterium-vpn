@@ -457,5 +457,9 @@
   "on": "An",
   "off": "Aus",
   "redeemCode": "Code einlösen",
-  "isThisYou": "Bist du das ?"
+  "isThisYou": "Bist du das ?",
+  "yes": "Ja",
+  "no": "Nein",
+  "existingSubscriptionTitle": "Sie können sich abmelden und es mit Ihrer E-Mail versuchen oder diese Warnung ignorieren",
+  "existingSubscriptionDesc": "Sie haben möglicherweise bereits ein kostenpflichtiges Abonnement mit „{email}“"
 }

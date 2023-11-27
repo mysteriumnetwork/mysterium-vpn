@@ -457,5 +457,9 @@
   "on": "Sobre",
   "off": "Desligado",
   "redeemCode": "Resgatar código",
-  "isThisYou": "Este é você?"
+  "isThisYou": "Este é você?",
+  "yes": "sim",
+  "no": "Não",
+  "existingSubscriptionTitle": "Você pode sair e tentar com seu email ou ignorar este aviso",
+  "existingSubscriptionDesc": "Você já pode ter uma assinatura paga com “{email}”"
 }

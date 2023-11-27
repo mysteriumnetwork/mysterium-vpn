@@ -457,5 +457,9 @@
   "on": "Açık",
   "off": "Kapalı",
   "redeemCode": "Kodu Kullan",
-  "isThisYou": "Bu sen misin ?"
+  "isThisYou": "Bu sen misin ?",
+  "yes": "Evet",
+  "no": "Hayır",
+  "existingSubscriptionTitle": "Oturumu kapatabilir ve e-postanızla deneyebilir veya bu uyarıyı yoksayabilirsiniz",
+  "existingSubscriptionDesc": "Zaten “{email}” ile ödeme yaptığınız bir aboneliğiniz olabilir"
 }

@@ -457,5 +457,9 @@
   "on": "Sur",
   "off": "Désactivé",
   "redeemCode": "Utiliser le code",
-  "isThisYou": "Est-ce toi ?"
+  "isThisYou": "Est-ce toi ?",
+  "yes": "Oui",
+  "no": "Non",
+  "existingSubscriptionTitle": "Vous pouvez vous déconnecter et essayer avec votre email ou ignorer cet avertissement",
+  "existingSubscriptionDesc": "Vous avez peut-être déjà un abonnement payant avec “{email}”"
 }

@@ -457,5 +457,9 @@
   "on": "在",
   "off": "离开",
   "redeemCode": "兑换代码",
-  "isThisYou": "这是你吗 ？"
+  "isThisYou": "这是你吗 ？",
+  "yes": "是",
+  "no": "没有",
+  "existingSubscriptionTitle": "您可以登出并尝试使用您的电子邮件，或者忽略此警告",
+  "existingSubscriptionDesc": "您可能已经使用“{email}”购买了付费订阅"
 }

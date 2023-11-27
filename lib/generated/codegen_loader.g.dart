@@ -474,7 +474,11 @@ class CodegenLoader extends AssetLoader {
     "on": "在",
     "off": "离开",
     "redeemCode": "兑换代码",
-    "isThisYou": "这是你吗 ？"
+    "isThisYou": "这是你吗 ？",
+    "yes": "是",
+    "no": "没有",
+    "existingSubscriptionTitle": "您可以登出并尝试使用您的电子邮件，或者忽略此警告",
+    "existingSubscriptionDesc": "您可能已经使用“{email}”购买了付费订阅"
   };
   static const Map<String, dynamic> tr = {
     "title": "Merhaba efendim",
@@ -950,7 +954,12 @@ class CodegenLoader extends AssetLoader {
     "on": "Açık",
     "off": "Kapalı",
     "redeemCode": "Kodu Kullan",
-    "isThisYou": "Bu sen misin ?"
+    "isThisYou": "Bu sen misin ?",
+    "yes": "Evet",
+    "no": "Hayır",
+    "existingSubscriptionTitle":
+        "Oturumu kapatabilir ve e-postanızla deneyebilir veya bu uyarıyı yoksayabilirsiniz",
+    "existingSubscriptionDesc": "Zaten “{email}” ile ödeme yaptığınız bir aboneliğiniz olabilir"
   };
   static const Map<String, dynamic> ja = {
     "title": "こんにちは。",
@@ -1414,7 +1423,11 @@ class CodegenLoader extends AssetLoader {
     "on": "の上",
     "off": "オフ",
     "redeemCode": "コードを引き換える",
-    "isThisYou": "あなたですが ？"
+    "isThisYou": "あなたですが ？",
+    "yes": "はい",
+    "no": "いいえ",
+    "existingSubscriptionTitle": "ログアウトしてメールで試すか、この警告を無視することができます",
+    "existingSubscriptionDesc": "すでに“{email}”で有料サブスクリプションを持っている可能性があります"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1905,7 +1918,13 @@ class CodegenLoader extends AssetLoader {
     "on": "An",
     "off": "Aus",
     "redeemCode": "Code einlösen",
-    "isThisYou": "Bist du das ?"
+    "isThisYou": "Bist du das ?",
+    "yes": "Ja",
+    "no": "Nein",
+    "existingSubscriptionTitle":
+        "Sie können sich abmelden und es mit Ihrer E-Mail versuchen oder diese Warnung ignorieren",
+    "existingSubscriptionDesc":
+        "Sie haben möglicherweise bereits ein kostenpflichtiges Abonnement mit „{email}“"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2388,7 +2407,11 @@ class CodegenLoader extends AssetLoader {
     "on": "Sobre",
     "off": "Desligado",
     "redeemCode": "Resgatar código",
-    "isThisYou": "Este é você?"
+    "isThisYou": "Este é você?",
+    "yes": "sim",
+    "no": "Não",
+    "existingSubscriptionTitle": "Você pode sair e tentar com seu email ou ignorar este aviso",
+    "existingSubscriptionDesc": "Você já pode ter uma assinatura paga com “{email}”"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -2869,7 +2892,11 @@ class CodegenLoader extends AssetLoader {
     "on": "On",
     "off": "Off",
     "redeemCode": "Redeem Code",
-    "isThisYou": "Is this you ?"
+    "isThisYou": "Is this you ?",
+    "yes": "Yes",
+    "no": "No",
+    "existingSubscriptionTitle": "You can logout and try with your email or ignore this warning",
+    "existingSubscriptionDesc": "You may already have a paid subscription with “{email}”"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3355,7 +3382,12 @@ class CodegenLoader extends AssetLoader {
     "on": "SU",
     "off": "Spento",
     "redeemCode": "Riscatta codice",
-    "isThisYou": "Sei tu ?"
+    "isThisYou": "Sei tu ?",
+    "yes": "Sì",
+    "no": "No",
+    "existingSubscriptionTitle":
+        "Puoi disconnetterti e provare con la tua email o ignorare questo avviso",
+    "existingSubscriptionDesc": "Potresti già avere un abbonamento a pagamento con “{email}”"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -3844,7 +3876,12 @@ class CodegenLoader extends AssetLoader {
     "on": "Sur",
     "off": "Désactivé",
     "redeemCode": "Utiliser le code",
-    "isThisYou": "Est-ce toi ?"
+    "isThisYou": "Est-ce toi ?",
+    "yes": "Oui",
+    "no": "Non",
+    "existingSubscriptionTitle":
+        "Vous pouvez vous déconnecter et essayer avec votre email ou ignorer cet avertissement",
+    "existingSubscriptionDesc": "Vous avez peut-être déjà un abonnement payant avec “{email}”"
   };
   static const Map<String, dynamic> id = {
     "title": "Halo Pak",
@@ -4326,7 +4363,12 @@ class CodegenLoader extends AssetLoader {
     "on": "Pada",
     "off": "Mati",
     "redeemCode": "Menebus kode",
-    "isThisYou": "Apakah ini Anda ?"
+    "isThisYou": "Apakah ini Anda ?",
+    "yes": "Iya",
+    "no": "Tidak",
+    "existingSubscriptionTitle":
+        "Anda dapat keluar dan mencoba dengan email Anda atau mengabaikan peringatan ini",
+    "existingSubscriptionDesc": "Anda mungkin sudah memiliki langganan berbayar dengan “{email}”"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -4810,7 +4852,12 @@ class CodegenLoader extends AssetLoader {
     "on": "En",
     "off": "Apagado",
     "redeemCode": "Canjear código",
-    "isThisYou": "Este Eres tu ?"
+    "isThisYou": "Este Eres tu ?",
+    "yes": "Sí",
+    "no": "No",
+    "existingSubscriptionTitle":
+        "Puedes cerrar sesión e intentarlo con tu correo electrónico o ignorar esta advertencia",
+    "existingSubscriptionDesc": "Es posible que ya tengas una suscripción pagada con “{email}”"
   };
   static const Map<String, dynamic> ar = {
     "title": "أهلاً سيدي",
@@ -5287,7 +5334,12 @@ class CodegenLoader extends AssetLoader {
     "on": "على",
     "off": "عن",
     "redeemCode": "استرداد الرمز",
-    "isThisYou": "هل هذا انت ؟"
+    "isThisYou": "هل هذا انت ؟",
+    "yes": "نعم",
+    "no": "لا",
+    "existingSubscriptionTitle":
+        "يمكنك تسجيل الخروج والمحاولة مع بريدك الإلكتروني أو تجاهل هذا التحذير",
+    "existingSubscriptionDesc": "قد يكون لديك بالفعل اشتراك مدفوع مع “{email}”"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,
