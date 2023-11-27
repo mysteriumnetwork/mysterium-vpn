@@ -457,5 +457,9 @@
   "on": "En",
   "off": "Apagado",
   "redeemCode": "Canjear código",
-  "isThisYou": "Este Eres tu ?"
+  "isThisYou": "Este Eres tu ?",
+  "yes": "Sí",
+  "no": "No",
+  "existingSubscriptionTitle": "Puedes cerrar sesión e intentarlo con tu correo electrónico o ignorar esta advertencia",
+"existingSubscriptionDesc": "Es posible que ya tengas una suscripción pagada con “{email}”"
 }

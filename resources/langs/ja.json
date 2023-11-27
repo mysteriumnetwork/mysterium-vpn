@@ -457,5 +457,9 @@
   "on": "の上",
   "off": "オフ",
   "redeemCode": "コードを引き換える",
-  "isThisYou": "あなたですが ？"
+  "isThisYou": "あなたですが ？",
+  "yes": "はい",
+  "no": "いいえ",
+  "existingSubscriptionTitle": "ログアウトしてメールで試すか、この警告を無視することができます",
+  "existingSubscriptionDesc": "すでに“{email}”で有料サブスクリプションを持っている可能性があります"
 }

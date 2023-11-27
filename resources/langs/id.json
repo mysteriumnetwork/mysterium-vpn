@@ -457,5 +457,9 @@
   "on": "Pada",
   "off": "Mati",
   "redeemCode": "Menebus kode",
-  "isThisYou": "Apakah ini Anda ?"
+  "isThisYou": "Apakah ini Anda ?",
+  "yes": "Iya",
+  "no": "Tidak",
+  "existingSubscriptionTitle": "Anda dapat keluar dan mencoba dengan email Anda atau mengabaikan peringatan ini",
+  "existingSubscriptionDesc": "Anda mungkin sudah memiliki langganan berbayar dengan “{email}”"
 }
