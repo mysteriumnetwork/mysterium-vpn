@@ -135,12 +135,12 @@ class SecureStorageService {
       return;
     }
     final value = {'email': email, 'activeUntil': activeUntil.toIso8601String()};
-    write(StorageKeys.subscriptionPaymentInfo.value, jsonEncode(value));
+    write(StorageKeys.subscriptionPaymentInfo.name, jsonEncode(value));
   }
 
   Future<(String, DateTime)> getSubscriptionPaymentInfo() async {
     try {
-      final subscriptionPaymentInfo = await read(StorageKeys.subscriptionPaymentInfo.value);
+      final subscriptionPaymentInfo = await read(StorageKeys.subscriptionPaymentInfo.name);
       final a = jsonDecode(subscriptionPaymentInfo) as Map<String, dynamic>;
       return (a['email']! as String, DateTime.parse(a['activeUntil']! as String));
     } catch (e) {
@@ -149,6 +149,6 @@ class SecureStorageService {
   }
 
   Future<void> removeSubscriptionPaymentInfo() async {
-    remove(StorageKeys.subscriptionPaymentInfo.value);
+    remove(StorageKeys.subscriptionPaymentInfo.name);
   }
 }
