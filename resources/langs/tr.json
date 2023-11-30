@@ -461,5 +461,8 @@
   "yes": "Evet",
   "no": "Hayır",
   "existingSubscriptionTitle": "Oturumu kapatabilir ve e-postanızla deneyebilir veya bu uyarıyı yoksayabilirsiniz",
-  "existingSubscriptionDesc": "Zaten “{email}” ile ödeme yaptığınız bir aboneliğiniz olabilir"
+  "existingSubscriptionDesc": "Zaten “{email}” ile ödeme yaptığınız bir aboneliğiniz olabilir",
+  "copyLink": "Bağlantıyı kopyalayın ve tarayıcınıza yapıştırın",
+  "linkCopied": "Bağlantı panoya kopyalandı!",
+  "copyBtn": "Kopyala"
 }

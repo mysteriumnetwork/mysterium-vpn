@@ -461,5 +461,8 @@
   "yes": "はい",
   "no": "いいえ",
   "existingSubscriptionTitle": "ログアウトしてメールで試すか、この警告を無視することができます",
-  "existingSubscriptionDesc": "すでに“{email}”で有料サブスクリプションを持っている可能性があります"
+  "existingSubscriptionDesc": "すでに“{email}”で有料サブスクリプションを持っている可能性があります",
+  "copyLink": "リンクをコピーしてブラウザに貼り付けてください",
+  "linkCopied": "リンクをクリップボードにコピーしました！",
+  "copyBtn": "コピー"
 }

@@ -478,7 +478,10 @@ class CodegenLoader extends AssetLoader {
     "yes": "是",
     "no": "没有",
     "existingSubscriptionTitle": "您可以登出并尝试使用您的电子邮件，或者忽略此警告",
-    "existingSubscriptionDesc": "您可能已经使用“{email}”购买了付费订阅"
+    "existingSubscriptionDesc": "您可能已经使用“{email}”购买了付费订阅",
+    "copyLink": "复制链接并粘贴到您的浏览器中",
+    "linkCopied": "链接已复制到剪贴板！",
+    "copyBtn": "复制"
   };
   static const Map<String, dynamic> tr = {
     "title": "Merhaba efendim",
@@ -959,7 +962,10 @@ class CodegenLoader extends AssetLoader {
     "no": "Hayır",
     "existingSubscriptionTitle":
         "Oturumu kapatabilir ve e-postanızla deneyebilir veya bu uyarıyı yoksayabilirsiniz",
-    "existingSubscriptionDesc": "Zaten “{email}” ile ödeme yaptığınız bir aboneliğiniz olabilir"
+    "existingSubscriptionDesc": "Zaten “{email}” ile ödeme yaptığınız bir aboneliğiniz olabilir",
+    "copyLink": "Bağlantıyı kopyalayın ve tarayıcınıza yapıştırın",
+    "linkCopied": "Bağlantı panoya kopyalandı!",
+    "copyBtn": "Kopyala"
   };
   static const Map<String, dynamic> ja = {
     "title": "こんにちは。",
@@ -1427,7 +1433,10 @@ class CodegenLoader extends AssetLoader {
     "yes": "はい",
     "no": "いいえ",
     "existingSubscriptionTitle": "ログアウトしてメールで試すか、この警告を無視することができます",
-    "existingSubscriptionDesc": "すでに“{email}”で有料サブスクリプションを持っている可能性があります"
+    "existingSubscriptionDesc": "すでに“{email}”で有料サブスクリプションを持っている可能性があります",
+    "copyLink": "リンクをコピーしてブラウザに貼り付けてください",
+    "linkCopied": "リンクをクリップボードにコピーしました！",
+    "copyBtn": "コピー"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1924,7 +1933,10 @@ class CodegenLoader extends AssetLoader {
     "existingSubscriptionTitle":
         "Sie können sich abmelden und es mit Ihrer E-Mail versuchen oder diese Warnung ignorieren",
     "existingSubscriptionDesc":
-        "Sie haben möglicherweise bereits ein kostenpflichtiges Abonnement mit „{email}“"
+        "Sie haben möglicherweise bereits ein kostenpflichtiges Abonnement mit „{email}“",
+    "copyLink": "Kopieren Sie den Link und fügen Sie ihn in Ihren Browser ein",
+    "linkCopied": "Link in die Zwischenablage kopiert!",
+    "copyBtn": "Kopieren"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2411,7 +2423,10 @@ class CodegenLoader extends AssetLoader {
     "yes": "sim",
     "no": "Não",
     "existingSubscriptionTitle": "Você pode sair e tentar com seu email ou ignorar este aviso",
-    "existingSubscriptionDesc": "Você já pode ter uma assinatura paga com “{email}”"
+    "existingSubscriptionDesc": "Você já pode ter uma assinatura paga com “{email}”",
+    "copyLink": "Copie o link e cole no seu navegador",
+    "linkCopied": "Link copiado para a área de transferência!",
+    "copyBtn": "Copiar"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -2896,7 +2911,10 @@ class CodegenLoader extends AssetLoader {
     "yes": "Yes",
     "no": "No",
     "existingSubscriptionTitle": "You can logout and try with your email or ignore this warning",
-    "existingSubscriptionDesc": "You may already have a paid subscription with “{email}”"
+    "existingSubscriptionDesc": "You may already have a paid subscription with “{email}”",
+    "copyLink": "Copy the link and paste it on your browser",
+    "linkCopied": "Link copied to clipboard!",
+    "copyBtn": "Copy"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3387,7 +3405,10 @@ class CodegenLoader extends AssetLoader {
     "no": "No",
     "existingSubscriptionTitle":
         "Puoi disconnetterti e provare con la tua email o ignorare questo avviso",
-    "existingSubscriptionDesc": "Potresti già avere un abbonamento a pagamento con “{email}”"
+    "existingSubscriptionDesc": "Potresti già avere un abbonamento a pagamento con “{email}”",
+    "copyLink": "Copia il link e incollalo nel tuo browser",
+    "linkCopied": "Link copiato negli appunti!",
+    "copyBtn": "Copia"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -3881,7 +3902,10 @@ class CodegenLoader extends AssetLoader {
     "no": "Non",
     "existingSubscriptionTitle":
         "Vous pouvez vous déconnecter et essayer avec votre email ou ignorer cet avertissement",
-    "existingSubscriptionDesc": "Vous avez peut-être déjà un abonnement payant avec “{email}”"
+    "existingSubscriptionDesc": "Vous avez peut-être déjà un abonnement payant avec “{email}”",
+    "copyLink": "Copiez le lien et collez-le dans votre navigateur",
+    "linkCopied": "Lien copié dans le presse-papiers!",
+    "copyBtn": "Copier"
   };
   static const Map<String, dynamic> id = {
     "title": "Halo Pak",
@@ -4368,7 +4392,10 @@ class CodegenLoader extends AssetLoader {
     "no": "Tidak",
     "existingSubscriptionTitle":
         "Anda dapat keluar dan mencoba dengan email Anda atau mengabaikan peringatan ini",
-    "existingSubscriptionDesc": "Anda mungkin sudah memiliki langganan berbayar dengan “{email}”"
+    "existingSubscriptionDesc": "Anda mungkin sudah memiliki langganan berbayar dengan “{email}”",
+    "copyLink": "Salin tautan dan tempelkan di browser Anda",
+    "linkCopied": "Tautan disalin ke papan klip!",
+    "copyBtn": "Salin"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -4857,7 +4884,10 @@ class CodegenLoader extends AssetLoader {
     "no": "No",
     "existingSubscriptionTitle":
         "Puedes cerrar sesión e intentarlo con tu correo electrónico o ignorar esta advertencia",
-    "existingSubscriptionDesc": "Es posible que ya tengas una suscripción pagada con “{email}”"
+    "existingSubscriptionDesc": "Es posible que ya tengas una suscripción pagada con “{email}”",
+    "copyLink": "Copia el enlace y pégalo en tu navegador",
+    "linkCopied": "¡Enlace copiado al portapapeles!",
+    "copyBtn": "Copiar"
   };
   static const Map<String, dynamic> ar = {
     "title": "أهلاً سيدي",
@@ -5339,7 +5369,10 @@ class CodegenLoader extends AssetLoader {
     "no": "لا",
     "existingSubscriptionTitle":
         "يمكنك تسجيل الخروج والمحاولة مع بريدك الإلكتروني أو تجاهل هذا التحذير",
-    "existingSubscriptionDesc": "قد يكون لديك بالفعل اشتراك مدفوع مع “{email}”"
+    "existingSubscriptionDesc": "قد يكون لديك بالفعل اشتراك مدفوع مع “{email}”",
+    "copyLink": "انسخ الرابط والصقه في متصفحك",
+    "linkCopied": "تم نسخ الرابط إلى الحافظة!",
+    "copyBtn": "نسخ"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,
