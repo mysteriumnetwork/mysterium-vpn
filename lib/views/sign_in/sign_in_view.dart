@@ -6,13 +6,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/sign_in/sign_in_form.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SignInView extends ConsumerWidget {
   const SignInView({super.key});
@@ -53,7 +53,7 @@ class SignInView extends ConsumerWidget {
                               ),
                           mouseCursor: MaterialStateMouseCursor.clickable,
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => launchUrl(Uri.parse(termsOfServiceUrl)),
+                            ..onTap = () => openUrlLink(Uri.parse(termsOfServiceUrl)),
                         ),
                         TextSpan(text: '${LocaleKeys.and.tr()} '),
                         TextSpan(
@@ -66,7 +66,7 @@ class SignInView extends ConsumerWidget {
                               ),
                           mouseCursor: MaterialStateMouseCursor.clickable,
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => launchUrl(Uri.parse(privacyPolicyUrl)),
+                            ..onTap = () => openUrlLink(Uri.parse(privacyPolicyUrl)),
                         ),
                       ],
                     ),
