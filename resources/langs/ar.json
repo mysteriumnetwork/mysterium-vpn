@@ -461,5 +461,8 @@
   "yes": "نعم",
   "no": "لا",
   "existingSubscriptionTitle": "يمكنك تسجيل الخروج والمحاولة مع بريدك الإلكتروني أو تجاهل هذا التحذير",
-  "existingSubscriptionDesc": "قد يكون لديك بالفعل اشتراك مدفوع مع “{email}”"
+  "existingSubscriptionDesc": "قد يكون لديك بالفعل اشتراك مدفوع مع “{email}”",
+  "copyLink": "انسخ الرابط والصقه في متصفحك",
+  "linkCopied": "تم نسخ الرابط إلى الحافظة!",
+  "copyBtn": "نسخ"
 }

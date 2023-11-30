@@ -461,5 +461,8 @@
   "yes": "Iya",
   "no": "Tidak",
   "existingSubscriptionTitle": "Anda dapat keluar dan mencoba dengan email Anda atau mengabaikan peringatan ini",
-  "existingSubscriptionDesc": "Anda mungkin sudah memiliki langganan berbayar dengan “{email}”"
+  "existingSubscriptionDesc": "Anda mungkin sudah memiliki langganan berbayar dengan “{email}”",
+  "copyLink": "Salin tautan dan tempelkan di browser Anda",
+  "linkCopied": "Tautan disalin ke papan klip!",
+  "copyBtn": "Salin"
 }

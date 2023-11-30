@@ -461,5 +461,8 @@
   "yes": "是",
   "no": "没有",
   "existingSubscriptionTitle": "您可以登出并尝试使用您的电子邮件，或者忽略此警告",
-  "existingSubscriptionDesc": "您可能已经使用“{email}”购买了付费订阅"
+  "existingSubscriptionDesc": "您可能已经使用“{email}”购买了付费订阅",
+  "copyLink": "复制链接并粘贴到您的浏览器中",
+  "linkCopied": "链接已复制到剪贴板！",
+  "copyBtn": "复制"
 }
