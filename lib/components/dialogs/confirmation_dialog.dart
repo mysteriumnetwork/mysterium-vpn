@@ -60,6 +60,7 @@ class _SuggestLoginDialog extends StatelessWidget {
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w800,
+              color: Palette.black,
             ),
           ),
           actions: [

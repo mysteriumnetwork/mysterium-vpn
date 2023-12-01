@@ -59,6 +59,7 @@ class LoginPage extends HookConsumerWidget {
           style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
+            color: Palette.black,
           ),
           maxLines: 2,
           textAlign: TextAlign.center,
