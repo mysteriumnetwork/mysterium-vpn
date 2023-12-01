@@ -314,7 +314,7 @@ void showSnackbar(String message, {SnackBarAction? action, MessageType type = Me
     behavior: SnackBarBehavior.floating,
     backgroundColor: switch (type) {
       MessageType.error => Palette.pink,
-      MessageType.info => Palette.black,
+      MessageType.info => Palette.darkBlue,
       MessageType.success => Palette.green,
     },
     content: Center(
