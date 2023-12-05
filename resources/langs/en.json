@@ -455,5 +455,11 @@
     "connectionLimitExceededDesc": "You’ve reached the 6-device limit. One of your devices was disconnected to allow this connection.",
     "iUnderstandBtn": "I understand",
     "on":"On",
-    "off":"Off"
+    "off":"Off",
+    "redeemCode": "Redeem Code",
+    "isThisYou":"Is this you ?",
+    "yes":"Yes",
+    "no":"No",
+    "existingSubscriptionTitle":"You can logout and try with your email or ignore this warning",
+    "existingSubscriptionDesc":"You may already have a paid subscription with “{email}”"
   }

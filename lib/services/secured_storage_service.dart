@@ -1,5 +1,6 @@
 // Dart imports:
 import 'dart:async' show Future;
+import 'dart:convert';
 import 'dart:io';
 
 // Package imports:
@@ -85,7 +86,7 @@ class SecureStorageService {
   Future<void> saveAccessToken({required String accessToken}) async =>
       write(StorageKeys.accessToken.name, accessToken);
   Future<void> removeAccessToken() async => remove(StorageKeys.accessToken.name);
-  Future<String> getUsername() async => read(StorageKeys.username.name);
+  Future<String?> getUsername() async => readOrNull(StorageKeys.username.name);
   Future<void> saveUsername({required String username}) async =>
       write(StorageKeys.username.name, username);
   Future<void> removeUsername() async => remove(StorageKeys.username.name);
@@ -124,5 +125,30 @@ class SecureStorageService {
   Future<void> removePkcePair() async {
     remove(StorageKeys.codeChallenge.name);
     remove(StorageKeys.codeVerifier.name);
+  }
+
+  Future<void> saveSubscriptionPaymentInfo({
+    required String email,
+    required DateTime? activeUntil,
+  }) async {
+    if (activeUntil == null) {
+      return;
+    }
+    final value = {'email': email, 'activeUntil': activeUntil.toIso8601String()};
+    write(StorageKeys.subscriptionPaymentInfo.name, jsonEncode(value));
+  }
+
+  Future<(String, DateTime)> getSubscriptionPaymentInfo() async {
+    try {
+      final subscriptionPaymentInfo = await read(StorageKeys.subscriptionPaymentInfo.name);
+      final a = jsonDecode(subscriptionPaymentInfo) as Map<String, dynamic>;
+      return (a['email']! as String, DateTime.parse(a['activeUntil']! as String));
+    } catch (e) {
+      throw KeyDoesntExistsException();
+    }
+  }
+
+  Future<void> removeSubscriptionPaymentInfo() async {
+    remove(StorageKeys.subscriptionPaymentInfo.name);
   }
 }

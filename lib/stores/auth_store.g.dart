@@ -43,20 +43,33 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$_emailAtom = Atom(name: '_AuthStore._email', context: context);
+  late final _$emailAtom = Atom(name: '_AuthStore.email', context: context);
 
+  @override
   String get email {
-    _$_emailAtom.reportRead();
-    return super._email;
+    _$emailAtom.reportRead();
+    return super.email;
   }
 
   @override
-  String get _email => email;
+  set email(String value) {
+    _$emailAtom.reportWrite(value, super.email, () {
+      super.email = value;
+    });
+  }
+
+  late final _$temporaryEmailAtom = Atom(name: '_AuthStore.temporaryEmail', context: context);
 
   @override
-  set _email(String value) {
-    _$_emailAtom.reportWrite(value, super._email, () {
-      super._email = value;
+  String get temporaryEmail {
+    _$temporaryEmailAtom.reportRead();
+    return super.temporaryEmail;
+  }
+
+  @override
+  set temporaryEmail(String value) {
+    _$temporaryEmailAtom.reportWrite(value, super.temporaryEmail, () {
+      super.temporaryEmail = value;
     });
   }
 
@@ -156,8 +169,8 @@ mixin _$AuthStore on _AuthStore, Store {
   late final _$logoutAsyncAction = AsyncAction('_AuthStore.logout', context: context);
 
   @override
-  Future<void> logout() {
-    return _$logoutAsyncAction.run(() => super.logout());
+  Future<void> logout({String? email}) {
+    return _$logoutAsyncAction.run(() => super.logout(email: email));
   }
 
   late final _$loginAsyncAction = AsyncAction('_AuthStore.login', context: context);
@@ -177,6 +190,8 @@ mixin _$AuthStore on _AuthStore, Store {
   @override
   String toString() {
     return '''
+email: ${email},
+temporaryEmail: ${temporaryEmail},
 loginFeature: ${loginFeature},
 logoutFeature: ${logoutFeature},
 deleteAccountFeature: ${deleteAccountFeature},

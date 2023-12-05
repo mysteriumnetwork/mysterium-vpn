@@ -63,8 +63,11 @@ abstract class _AuthStore with Store {
   @readonly
   PkcePair? _pkcePair;
 
-  @readonly
-  String _email = '';
+  @observable
+  String email = '';
+
+  @observable
+  String temporaryEmail = '';
 
   @readonly
   AuthData? _authData;
@@ -82,6 +85,8 @@ abstract class _AuthStore with Store {
   Future<void> initAuth() async {
     try {
       _pkcePair = await _secureStorageService.getPkcePair();
+      email = await _secureStorageService.getUsername() ?? '';
+      temporaryEmail = email;
       final appLink = await _appLinks.getLatestAppLink();
       final storedLink = await _secureStorageService.getAppLink();
       if (appLink != null && appLink.toString() != storedLink) {
@@ -191,7 +196,7 @@ abstract class _AuthStore with Store {
   }
 
   @action
-  Future<void> logout() async {
+  Future<void> logout({String? email}) async {
     logoutFeature = ObservableFuture(_authService.logout());
 
     await logoutFeature;
@@ -199,6 +204,9 @@ abstract class _AuthStore with Store {
     _intercomStore.logout();
     _authStatus = AuthStatus.unauthenticated;
     _authData = null;
+    if (email != null) {
+      temporaryEmail = email;
+    }
   }
 
   @action
@@ -219,7 +227,7 @@ abstract class _AuthStore with Store {
       if (code != null) {
         authenticate(code: code);
       }
-      _email = email;
+      this.email = email;
       return code;
     } catch (e) {
       if (e is ApiException) {

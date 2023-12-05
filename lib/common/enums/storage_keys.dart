@@ -16,4 +16,5 @@ enum StorageKeys {
   vpnConfigConsent,
   appInstallDay,
   inAppReviewRemindInterval,
+  subscriptionPaymentInfo,
 }
