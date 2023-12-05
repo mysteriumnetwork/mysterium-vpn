@@ -464,4 +464,7 @@ abstract class LocaleKeys {
   static const no = 'no';
   static const existingSubscriptionTitle = 'existingSubscriptionTitle';
   static const existingSubscriptionDesc = 'existingSubscriptionDesc';
+  static const copyLink = 'copyLink';
+  static const linkCopied = 'linkCopied';
+  static const copyBtn = 'copyBtn';
 }

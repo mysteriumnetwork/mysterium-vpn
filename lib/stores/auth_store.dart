@@ -21,7 +21,6 @@ import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 // Project imports:
 
@@ -256,7 +255,7 @@ abstract class _AuthStore with Store {
         'code_challenge_method': 's256',
       },
     );
-    await launchUrl(authUri);
+    await openUrlLink(authUri);
     return;
   }
 

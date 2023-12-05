@@ -461,5 +461,8 @@
   "yes": "Oui",
   "no": "Non",
   "existingSubscriptionTitle": "Vous pouvez vous déconnecter et essayer avec votre email ou ignorer cet avertissement",
-  "existingSubscriptionDesc": "Vous avez peut-être déjà un abonnement payant avec “{email}”"
+  "existingSubscriptionDesc": "Vous avez peut-être déjà un abonnement payant avec “{email}”",
+  "copyLink": "Copiez le lien et collez-le dans votre navigateur",
+  "linkCopied": "Lien copié dans le presse-papiers!",
+  "copyBtn": "Copier"
 }

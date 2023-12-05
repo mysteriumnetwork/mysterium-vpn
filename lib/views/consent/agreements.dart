@@ -3,8 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class Agreements extends StatelessWidget {
   const Agreements({super.key});
@@ -30,7 +30,7 @@ class Agreements extends StatelessWidget {
                   ),
               mouseCursor: MaterialStateMouseCursor.clickable,
               recognizer: TapGestureRecognizer()
-                ..onTap = () => launchUrl(Uri.parse(privacyPolicyUrl)),
+                ..onTap = () => openUrlLink(Uri.parse(privacyPolicyUrl)),
             ),
             TextSpan(text: LocaleKeys.and.tr()),
             TextSpan(
@@ -43,7 +43,7 @@ class Agreements extends StatelessWidget {
                   ),
               mouseCursor: MaterialStateMouseCursor.clickable,
               recognizer: TapGestureRecognizer()
-                ..onTap = () => launchUrl(Uri.parse(termsOfServiceUrl)),
+                ..onTap = () => openUrlLink(Uri.parse(termsOfServiceUrl)),
             ),
             TextSpan(text: LocaleKeys.moreInfo.tr()),
           ],

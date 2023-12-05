@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:beamer/beamer.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -304,14 +305,18 @@ bool isMobilePaymentGateway(String? gateway) {
   return false;
 }
 
-void showSnackbar(String message, {MessageType type = MessageType.error}) {
+void showSnackbar(String message, {SnackBarAction? action, MessageType type = MessageType.error}) {
   final snackBar = SnackBar(
-    elevation: 4,
+    elevation: 8,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(12),
     ),
     behavior: SnackBarBehavior.floating,
-    backgroundColor: type == MessageType.error ? Palette.pink : Palette.green,
+    backgroundColor: switch (type) {
+      MessageType.error => Palette.pink,
+      MessageType.info => Palette.darkBlue,
+      MessageType.success => Palette.green,
+    },
     content: Center(
       child: EasyText(
         message,
@@ -321,9 +326,12 @@ void showSnackbar(String message, {MessageType type = MessageType.error}) {
         textAlign: TextAlign.center,
       ),
     ),
+    action: action,
   );
 
-  snackbarKey.currentState?.showSnackBar(snackBar);
+  snackbarKey.currentState
+    ?..clearSnackBars()
+    ..showSnackBar(snackBar);
 }
 
 ApiException handleException(Exception e, {String? message}) {
@@ -472,3 +480,28 @@ SubscriptionStatus getSubscriptionStatus(PurchaseStatus status) => switch (statu
       PurchaseStatus.restored => SubscriptionStatus.restored,
       PurchaseStatus.canceled => SubscriptionStatus.canceled
     };
+
+Future<void> openUrlLink(Uri url) async {
+  try {
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw Exception('Could not launch $url');
+    }
+  } catch (e) {
+    showSnackbar(
+      LocaleKeys.copyLink.tr(),
+      action: SnackBarAction(
+        textColor: Palette.purple,
+        label: LocaleKeys.copyBtn.tr(),
+        onPressed: () => FlutterClipboard.copy(url.toString()).then(
+          (value) => showSnackbar(
+            LocaleKeys.linkCopied.tr(),
+            type: MessageType.success,
+          ),
+        ),
+      ),
+      type: MessageType.info,
+    );
+  }
+}

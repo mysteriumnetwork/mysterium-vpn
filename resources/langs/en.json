@@ -461,5 +461,8 @@
     "yes":"Yes",
     "no":"No",
     "existingSubscriptionTitle":"You can logout and try with your email or ignore this warning",
-    "existingSubscriptionDesc":"You may already have a paid subscription with “{email}”"
+    "existingSubscriptionDesc":"You may already have a paid subscription with “{email}”",
+    "copyLink":"Copy the link and paste it on your browser",
+    "linkCopied":"Link copied to clipboard!",
+    "copyBtn":"Copy"
   }
