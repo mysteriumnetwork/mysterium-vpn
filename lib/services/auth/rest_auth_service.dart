@@ -146,7 +146,6 @@ class RestAuthService extends AuthService {
 
   Future<void> removeLocalData() async {
     await _securedStorage.removeAccessToken();
-    await _securedStorage.removeUsername();
     await _securedStorage.removeUserId();
     await _securedStorage.removePkcePair();
   }

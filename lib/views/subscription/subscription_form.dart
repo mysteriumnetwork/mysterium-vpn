@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +8,12 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/retry_dialog.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
@@ -17,7 +21,9 @@ import 'package:mysterium_vpn/components/error_widget.dart';
 import 'package:mysterium_vpn/components/header_title.dart';
 import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
+import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/views/subscription/product_list.dart';
@@ -43,6 +49,14 @@ class SubscriptionForm extends HookConsumerWidget {
         purchaseProductId: store.purchasedProductId,
       ),
       [store.subscription?.active],
+    );
+
+    useEffect(
+      () {
+        checkForExistingSubscription(store, context, ref);
+        return null;
+      },
+      [],
     );
 
     return Observer(
@@ -91,6 +105,11 @@ class SubscriptionForm extends HookConsumerWidget {
                               type: MessageType.success,
                             );
                             context.beamToReplacementNamed(Routes.home.toRoute);
+                          } else if (store.verifySubscriptionFuture?.error is ApiException &&
+                              (store.verifySubscriptionFuture?.error as ApiException).code == 409) {
+                            showSnackbar(
+                              (store.verifySubscriptionFuture?.error as ApiException).message,
+                            );
                           } else if (status == SubscriptionStatus.notVerified ||
                               status == SubscriptionStatus.verifyingError) {
                             shownRetryDialog(
@@ -145,6 +164,16 @@ class SubscriptionForm extends HookConsumerWidget {
                               ),
                       ),
                     ),
+                    Visibility(
+                      visible: Platform.isIOS,
+                      child: TextButton(
+                        onPressed: store.redeemCode,
+                        child: const EasyText(
+                          'Redeem Code',
+                          color: Palette.purple,
+                        ),
+                      ).padding(top: 10),
+                    ),
                   ],
                 ),
             ],
@@ -170,6 +199,40 @@ class SubscriptionForm extends HookConsumerWidget {
         ],
       ),
     );
+  }
+
+  Future<void> checkForExistingSubscription(
+    SubscriptionStore store,
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final (exists, email) = await store.checkForExistingSubscription();
+    if (!exists) {
+      return;
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      shownConfirmationDialog(
+        context,
+        confirmText: LocaleKeys.logout.tr(),
+        cancelText: LocaleKeys.stayButton.tr(),
+        dismissible: false,
+        icon: const SvgIcon(
+          asset: Assets.warning,
+        ),
+        content: Text(
+          LocaleKeys.existingSubscriptionTitle.tr(),
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: Palette.black,
+          ),
+          maxLines: 2,
+          textAlign: TextAlign.center,
+        ),
+        title: LocaleKeys.existingSubscriptionDesc.tr(namedArgs: {'email': email ?? ''}),
+        onConfirm: () => ref.read(authStorePOD).logout(email: email),
+      );
+    });
   }
 }
 

@@ -11,6 +11,7 @@ class SubscriptionProductsList extends StatelessWidget {
   final List<PurchasableProduct> products;
   @override
   Widget build(BuildContext context) => ListView.separated(
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: products.length,
         shrinkWrap: true,
         itemBuilder: (context, index) => ProductItem(
