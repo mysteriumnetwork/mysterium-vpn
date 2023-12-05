@@ -461,5 +461,8 @@
   "yes": "Sí",
   "no": "No",
   "existingSubscriptionTitle": "Puedes cerrar sesión e intentarlo con tu correo electrónico o ignorar esta advertencia",
-"existingSubscriptionDesc": "Es posible que ya tengas una suscripción pagada con “{email}”"
+  "existingSubscriptionDesc": "Es posible que ya tengas una suscripción pagada con “{email}”",
+  "copyLink": "Copia el enlace y pégalo en tu navegador",
+  "linkCopied": "¡Enlace copiado al portapapeles!",
+  "copyBtn": "Copiar"
 }
