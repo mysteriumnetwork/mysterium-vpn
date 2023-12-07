@@ -41,6 +41,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final env = ref.watch(environmentPOD);
   final intercomStore = ref.watch(intercomStorePOD);
   final marketingAnalyticsStore = ref.watch(marketingAnalyticsStorePOD);
+  final logger = ref.watch(loggerPOD);
   return AuthStore(
     authService: authService,
     appLinks: appLinks,
@@ -49,6 +50,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
     env: env,
     intercomStore: intercomStore,
     marketingAnalyticsStore: marketingAnalyticsStore,
+    logger: logger,
   );
 });
 
@@ -64,6 +66,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final subscriptionStore = ref.watch(subscriptionStorePOD);
   final localDBService = ref.watch(localDBPOD);
   final env = ref.watch(environmentPOD);
+  final logger = ref.watch(loggerPOD);
   return VpnStore(
     apiService: apiService,
     locationsStore: locationsStore,
@@ -72,6 +75,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     subscriptionStore: subscriptionStore,
     localDBService: localDBService,
     env: env,
+    logger: logger,
   );
 });
 

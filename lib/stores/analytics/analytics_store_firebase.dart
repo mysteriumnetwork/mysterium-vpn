@@ -57,6 +57,12 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
 
   @override
   @action
+  Future<void> logMessage(String message) async {
+    _crashlytics.log(message);
+  }
+
+  @override
+  @action
   Future<void> logEvent(
     AnalyticsEvent event,
     Map<String, dynamic> parameters,

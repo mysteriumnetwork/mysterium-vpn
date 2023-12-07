@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/local_db_service.dart';
+import 'package:talker/talker.dart';
 
 const kFetchAllLocations = '/connection/config';
 const kCreateConnectionConfig = '/connection/connect';
@@ -16,11 +16,14 @@ class RestApiService extends ApiService {
   RestApiService({
     required Dio apiClient,
     required LocalDBService localDb,
+    required Talker logger,
   })  : _apiClient = apiClient,
-        _localDb = localDb;
+        _localDb = localDb,
+        _logger = logger;
 
   final Dio _apiClient;
   final LocalDBService _localDb;
+  final Talker _logger;
 
   @override
   Future<void> setEmailCommunicationApproval({required bool approval}) async =>
@@ -62,9 +65,9 @@ class RestApiService extends ApiService {
         allLocations: allCountryCodes,
         topLocations: topCountryCodes,
       );
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      throw handleException(e);
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      throw handleException(e, kFetchAllLocations);
     }
   }
 
@@ -109,9 +112,9 @@ class RestApiService extends ApiService {
       return vpnConfig.copyWith(
         config: vpnConfig.config.replaceFirst('%private_key%', privateKey),
       );
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      throw handleException(e);
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      throw handleException(e, kCreateConnectionConfig);
     }
   }
 
@@ -128,9 +131,9 @@ class RestApiService extends ApiService {
         return res.data!['ip'] as String;
       }
       return null;
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      throw handleException(e);
+    } catch (e) {
+      _logger.handle(e);
+      throw handleException(e, kFetchIP);
     }
   }
 }
