@@ -21,6 +21,7 @@ import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:talker/talker.dart';
 
 // Project imports:
 
@@ -38,13 +39,15 @@ abstract class _AuthStore with Store {
     required FlavorConfig env,
     required IntercomStore intercomStore,
     required MarketingAnalyticsStore marketingAnalyticsStore,
+    required Talker logger,
   })  : _authService = authService,
         _appLinks = appLinks,
         _localDb = localDb,
         _analyticsStore = analyticsStore,
         _marketingAnalyticsStore = marketingAnalyticsStore,
         _env = env,
-        _intercomStore = intercomStore {
+        _intercomStore = intercomStore,
+        _logger = logger {
     initAuth();
   }
 
@@ -56,6 +59,7 @@ abstract class _AuthStore with Store {
   final FlavorConfig _env;
   final IntercomStore _intercomStore;
   final MarketingAnalyticsStore _marketingAnalyticsStore;
+  final Talker _logger;
   @readonly
   AuthStatus _authStatus = AuthStatus.unknown;
 
@@ -110,7 +114,7 @@ abstract class _AuthStore with Store {
         },
       );
     } catch (e) {
-      debugPrint(e.toString());
+      _logger.handle(e);
     }
   }
 
@@ -156,15 +160,16 @@ abstract class _AuthStore with Store {
       _initializeAnalyticsStores(username: res.username, userId: res.userId);
       _authData = res;
       _authStatus = AuthStatus.authenticated;
-      debugPrint(_localDb.userData.toString());
+      _logger.info(_localDb.userData.toString());
     } catch (e) {
-      debugPrint(e.toString());
       _authStatus = AuthStatus.unauthenticated;
       if (e is KeyDoesntExistsException || e is AuthenticationRequiredException) {
+        _logger.info('User token expired or not found');
         return;
       }
       var message = LocaleKeys.authenticationFailed.tr();
       if (e is IncorrectMagicLinkException || e is IncorrectCodeException) {
+        _logger.info('Incorrect magic link used to open the app');
         message = LocaleKeys.incorrectMagicLink.tr();
       } else if (e is ApiException) {
         message = e.message;
@@ -229,10 +234,9 @@ abstract class _AuthStore with Store {
       this.email = email;
       return code;
     } catch (e) {
-      if (e is ApiException) {
-        showSnackbar(e.message);
-      }
-      showSnackbar(LocaleKeys.authenticationFailed.tr());
+      e is ApiException
+          ? showSnackbar(e.message)
+          : showSnackbar(LocaleKeys.authenticationFailed.tr());
       rethrow;
     }
   }

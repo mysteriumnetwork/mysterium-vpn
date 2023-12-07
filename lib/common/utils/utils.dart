@@ -334,37 +334,56 @@ void showSnackbar(String message, {SnackBarAction? action, MessageType type = Me
     ..showSnackBar(snackBar);
 }
 
-ApiException handleException(Exception e, {String? message}) {
-  if (e is DioException && e.response?.data != null && e.response?.data is Map<String, dynamic>) {
-    final exception = ApiException(
-      '',
-      e.response?.statusCode ?? 402,
-    );
-    if (e.response?.statusCode == 503) {
-      return exception..message = e.message ?? LocaleKeys.serviceUnavailableError.tr();
-    }
-    final data = e.response?.data as Map<String, dynamic>;
+ApiException handleException(Object e, [String endpoint = '']) {
+  var message = '';
+  var identifier = '';
+  var statusCode = 0;
+  switch (e.runtimeType) {
+    case SocketException:
+      e as SocketException;
+      message = 'Unable to connect to the server.';
+      statusCode = 0;
+      identifier = 'Socket Exception ${e.message} \nat  $endpoint';
+      break;
 
-    if (data.containsKey('status') && data['status'] == 503) {
-      return exception..message = e.message ?? LocaleKeys.serviceUnavailableError.tr();
-    }
+    case DioException:
+      e as DioException;
+      if (e.error is SocketException) {
+        message =
+            'Unable to connect to the server. Please check your internet connection and try again.';
+        statusCode = 0;
+        identifier = 'Socket Exception ${e.message} \nat  $endpoint';
+      } else if (e.response?.data != null && e.response?.data is Map<String, dynamic>) {
+        statusCode = e.response?.statusCode ?? 402;
+        identifier = 'Dio Exception ${e.message} \nat  $endpoint';
+        final data = e.response?.data as Map<String, dynamic>;
 
-    if (!data.containsKey('error')) {
-      return exception..message = e.message ?? LocaleKeys.somethingWentWrong.tr();
-    }
-    if (data['error'] is Map<String, dynamic> &&
-        (data['error'] as Map<String, dynamic>).containsKey('message')) {
-      return exception
-        // ignore: avoid_dynamic_calls
-        ..message = data['error']['message'] as String? ?? LocaleKeys.somethingWentWrong.tr();
-    }
-    return exception..message = e.message ?? LocaleKeys.somethingWentWrong.tr();
-  } else {
-    return ApiException(
-      message ?? LocaleKeys.somethingWentWrong.tr(),
-      500,
-    );
+        if (e.response?.statusCode == 503) {
+          message = e.message ?? LocaleKeys.serviceUnavailableError.tr();
+        } else if (data.containsKey('status') && data['status'] == 503) {
+          message = e.message ?? LocaleKeys.serviceUnavailableError.tr();
+        } else if (!data.containsKey('error')) {
+          message = e.message ?? LocaleKeys.somethingWentWrong.tr();
+        } else if (data['error'] is Map<String, dynamic> &&
+            (data['error'] as Map<String, dynamic>).containsKey('message')) {
+          // ignore: avoid_dynamic_calls
+          message = data['error']['message'] as String? ?? LocaleKeys.somethingWentWrong.tr();
+        } else {
+          message = e.message ?? LocaleKeys.somethingWentWrong.tr();
+        }
+      } else {
+        message = LocaleKeys.somethingWentWrong.tr();
+        statusCode = 500;
+        identifier = 'Dio Exception ${e.message} \nat  $endpoint';
+      }
+      break;
+
+    default:
+      message = 'Unknown error occurred';
+      statusCode = 2;
+      identifier = 'Unknown error $e\n at $endpoint';
   }
+  return ApiException(message, statusCode, identifier);
 }
 
 void onConnectButtonPressed(

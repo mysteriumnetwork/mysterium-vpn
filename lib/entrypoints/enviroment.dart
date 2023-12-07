@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 
@@ -15,6 +16,7 @@ import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
+import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/shared_preferences_service.dart';
@@ -77,18 +79,17 @@ class Enviroment {
     final container =
         ProviderContainer(overrides: [environmentPOD.overrideWith((ref) => flavorConfig)]);
     await container.read(analyticsInitPOD(firebaseOptions).future);
-    final analyticsStore = container.read(analyticsStorePOD);
+    final logger = container.read(loggerPOD);
     await container.read(marketingAnalyticsInitPOD(flavorConfig).future);
 
-    FlutterError.onError = (details) =>
-        analyticsStore.logError(err: details.exception, stack: details.stack, fatal: true);
+    FlutterError.onError = (details) => logger.handle(details.exception, details.stack, 'fatal');
     PlatformDispatcher.instance.onError = (error, stack) {
-      analyticsStore.logError(err: error, stack: stack, fatal: true);
+      logger.handle(error, stack, 'fatal');
       return true;
     };
 
-    debugPrint('App started in ${flavorConfig.flavor} mode');
-    debugPrint('Base URL ${flavorConfig.values.baseUrl}');
+    logger
+        .log('App started in ${flavorConfig.flavor} mode\nBase URL ${flavorConfig.values.baseUrl}');
     await SentryFlutter.init(
       (options) {
         options

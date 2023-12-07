@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/secured_storage_service.dart';
+import 'package:talker/talker.dart';
 
 const kAuthCheck = '/auth/check';
 const kLogin = '/magic-link';
@@ -16,12 +16,15 @@ class RestAuthService extends AuthService {
   RestAuthService({
     required Dio apiClient,
     required String scheme,
+    required Talker logger,
   })  : _apiClient = apiClient,
-        _scheme = scheme;
+        _scheme = scheme,
+        _logger = logger;
 
   final Dio _apiClient;
   final String _scheme;
   final _securedStorage = SecureStorageService.instance;
+  final Talker _logger;
 
   @override
   Future<AuthData> checkUserAuth() async {
@@ -43,13 +46,13 @@ class RestAuthService extends AuthService {
         username: username,
         userId: data['user_id'] as String,
       );
-    } on Exception catch (e) {
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
       if (e is KeyDoesntExistsException) {
         rethrow;
       }
-      debugPrint(e.toString());
       removeLocalData();
-      final error = handleException(e, message: 'Authenticating failed.Please try again');
+      final error = handleException(e, kAuthCheck);
       if (error.message == 'Unauthorized' && error.code == 401) {
         throw AuthenticationRequiredException();
       }
@@ -102,10 +105,10 @@ class RestAuthService extends AuthService {
       await _securedStorage.saveUsername(username: authData.username);
       await _securedStorage.saveUserId(userId: authData.userId);
       return authData;
-    } on Exception catch (e) {
-      debugPrint(e.toString());
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
       removeLocalData();
-      throw handleException(e, message: 'Authenticating failed.Please try again');
+      throw handleException(e, kCompleteLogin);
     }
   }
 
@@ -132,9 +135,9 @@ class RestAuthService extends AuthService {
       if (result.data != null && result.data!.containsKey('code')) {
         return result.data!['code'] as String;
       }
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      throw handleException(e, message: 'Authenticating failed.Please try again');
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      throw handleException(e, kLogin);
     }
     return null;
   }
