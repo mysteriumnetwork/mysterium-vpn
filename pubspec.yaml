@@ -9,7 +9,7 @@ environment:
   flutter: ">=3.7.0"
 
 dependencies:
-  app_links: ^3.4.5
+  app_links: ^3.5.0-beta.2
   appsflyer_sdk: ^6.12.2
   async: ^2.11.0
   auto_size_text: ^3.0.0
@@ -54,14 +54,16 @@ dependencies:
   modal_bottom_sheet: ^3.0.0-pre
   open_mail_app: ^0.4.5
   package_info_plus: ^4.2.0
+  path_provider: ^2.0.13
   reactive_forms: ^15.0.0
-  sentry_dio: ^7.11.0
   sentry_flutter: ^7.11.0
   shared_preferences: ^2.2.2
   shimmer: ^3.0.0
   sliding_up_panel: ^2.0.0+1
   stack_trace: ^1.11.0
   styled_widget: ^0.4.1
+  talker: ^3.1.4
+  talker_dio_logger: ^2.3.1
   tray_manager: ^0.2.0
   url_launcher: ^6.2.1
   url_protocol:
