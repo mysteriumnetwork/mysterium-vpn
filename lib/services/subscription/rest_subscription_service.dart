@@ -3,7 +3,6 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:dio/dio.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/billing_client_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
@@ -15,7 +14,8 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/models/subscription_config.dart';
-import 'package:mysterium_vpn/services/local_db_service.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
+import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:talker/talker.dart';
 
@@ -26,16 +26,16 @@ const kVerifySubscription = '/subscription/user-callback';
 
 class RestSubscriptionService extends SubscriptionService {
   RestSubscriptionService({
-    required Dio apiClient,
+    required NetworkService networkService,
     required InAppPurchase inAppPurchase,
     required LocalDBService localDb,
     required Talker logger,
-  })  : _apiClient = apiClient,
+  })  : _networkService = networkService,
         _inAppPurchase = inAppPurchase,
         _localDb = localDb,
         _logger = logger;
 
-  final Dio _apiClient;
+  final NetworkService _networkService;
   final InAppPurchase _inAppPurchase;
   final LocalDBService _localDb;
   final Talker _logger;
@@ -48,7 +48,7 @@ class RestSubscriptionService extends SubscriptionService {
   }) async {
     try {
       final gatewayId = getPlatformGateway();
-      final res = await _apiClient.post<Map<String, dynamic>>(
+      final res = await _networkService.post(
         kVerifySubscription,
         data: {
           'gateway_id': gatewayId,
@@ -78,7 +78,7 @@ class RestSubscriptionService extends SubscriptionService {
       }
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
-      throw handleException(e, kVerifySubscription);
+      rethrow;
     }
   }
 
@@ -120,7 +120,7 @@ class RestSubscriptionService extends SubscriptionService {
           applicationUserName: userId,
         );
       }
-      return _inAppPurchase.buyNonConsumable(
+      return await _inAppPurchase.buyNonConsumable(
         purchaseParam: purchaseParam,
       );
     } catch (e, stackTrace) {
@@ -185,6 +185,8 @@ class RestSubscriptionService extends SubscriptionService {
       }
       return productsDetails
         ..sortByCompare((e) => e.productDetails.rawPrice, (a, b) => a.compareTo(b));
+    } on ApiException {
+      rethrow;
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
@@ -204,12 +206,17 @@ class RestSubscriptionService extends SubscriptionService {
   @override
   Future<Subscription> fetchSubscriptionDetails() async {
     try {
-      final res = await _apiClient.get(kFetchSubscriptionInfo);
-      // return Subscription(active: true);
-      return Subscription.fromJson(res.data as Map<String, dynamic>);
+      final data =
+          (await _networkService.get(kFetchSubscriptionInfo)).data as Map<String, dynamic>?;
+      if (data == null) {
+        throw Exception('No data found');
+      }
+      return Subscription.fromJson(data);
+    } on ApiException {
+      rethrow;
     } on Exception catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
-      throw handleException(e, kFetchSubscriptionInfo);
+      rethrow;
     }
   }
 
@@ -220,9 +227,12 @@ class RestSubscriptionService extends SubscriptionService {
       if (!isStoreAvailable) {
         throw StoreNotAvailableException();
       }
-      final res = await _apiClient.get(kFetchSubscriptionConfig);
-
-      final config = SubscriptionConfig.fromJson(res.data as Map<String, dynamic>);
+      final data =
+          (await _networkService.get(kFetchSubscriptionConfig)).data as Map<String, dynamic>?;
+      if (data == null) {
+        throw Exception('No data found');
+      }
+      final config = SubscriptionConfig.fromJson(data);
       final gateway =
           config.gateways.firstWhereOrNull((element) => element.name == getPlatformGateway());
       if (gateway == null || !gateway.enabled) {
@@ -231,9 +241,11 @@ class RestSubscriptionService extends SubscriptionService {
       return config;
     } on StoreNotAvailableException catch (_) {
       rethrow;
+    } on ApiException {
+      rethrow;
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
-      throw handleException(e, kFetchSubscriptionConfig);
+      rethrow;
     }
   }
 }

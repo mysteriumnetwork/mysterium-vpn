@@ -4,5 +4,5 @@ class ApiException implements Exception {
   String identifier;
   final int code;
   @override
-  String toString() => '$message!';
+  String toString() => message;
 }

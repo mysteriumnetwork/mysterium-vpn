@@ -15,8 +15,8 @@ import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
-import 'package:mysterium_vpn/services/local_db_service.dart';
-import 'package:mysterium_vpn/services/secured_storage_service.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
+import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_store.dart';
@@ -208,9 +208,7 @@ abstract class _AuthStore with Store {
     _intercomStore.logout();
     _authStatus = AuthStatus.unauthenticated;
     _authData = null;
-    if (email != null) {
-      temporaryEmail = email;
-    }
+    temporaryEmail = email ?? '';
   }
 
   @action
@@ -236,7 +234,8 @@ abstract class _AuthStore with Store {
     } catch (e) {
       e is ApiException
           ? showSnackbar(e.message)
-          : showSnackbar(LocaleKeys.authenticationFailed.tr());
+          : showSnackbar(LocaleKeys.somethingWentWrong.tr());
+
       rethrow;
     }
   }
