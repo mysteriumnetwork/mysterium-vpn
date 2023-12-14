@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/styles/theme.dart';
-import 'package:mysterium_vpn/services/shared_preferences_service.dart';
+import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 
 // Project imports:
 
