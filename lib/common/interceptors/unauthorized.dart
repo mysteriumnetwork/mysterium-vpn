@@ -1,17 +1,17 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:mysterium_vpn/common/enums/auth_status.dart';
-import 'package:mysterium_vpn/stores/auth_store.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/providers/service_providers.dart';
 
 class UnauthorizedInterceptor extends Interceptor {
-  UnauthorizedInterceptor(this.authStore);
+  UnauthorizedInterceptor(this.ref);
 
-  final AuthStore authStore;
+  final Ref ref;
   @override
   Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
-    if (_isUnauthorizedError(err) && authStore.authStatus == AuthStatus.authenticated) {
-      await authStore.logout();
+    if (_isUnauthorizedError(err)) {
+      ref.invalidate(logoutFunction);
     }
     handler.next(err);
   }

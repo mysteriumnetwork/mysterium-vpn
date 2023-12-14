@@ -1,14 +1,11 @@
 //state providers
 
-import 'dart:async';
-
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
-import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/appsflyer_options.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
@@ -17,7 +14,6 @@ import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_firebase.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_noop.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
-import 'package:mysterium_vpn/stores/connectivity_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_desktop_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_mobile_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
@@ -56,8 +52,6 @@ final authStorePOD = Provider<AuthStore>((ref) {
 
 final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
 
-final connectivityStorePOD = Provider<ConnectivityStore>((ref) => ConnectivityStore());
-
 final vpnStorePOD = Provider<VpnStore>((ref) {
   final apiService = ref.read(apiServicePOD);
   final locationsStore = ref.watch(locationsStorePOD);
@@ -82,9 +76,8 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
 final locationsStorePOD = Provider<LocationsStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
-  final authStore = ref.watch(authStorePOD);
   final localeStore = ref.watch(localeStorePOD);
-
+  final authStore = ref.watch(authStorePOD);
   return LocationsStore(
     apiService: apiService,
     analyticsStore: analyticsStore,
@@ -121,22 +114,6 @@ final environmentPOD = StateProvider<FlavorConfig>(
     values: FlavorValues.dev(),
   ),
 );
-
-final tokenStreamPOD = StreamProvider<String>((ref) {
-  final authStore = ref.watch(authStorePOD);
-  final streamController = StreamController<String>();
-  final autorunDisposer = autorun((_) {
-    if (authStore.authData != null) {
-      streamController.add(authStore.authData!.accessToken);
-    }
-  });
-  ref.onDispose(() {
-    autorunDisposer();
-    streamController.close();
-  });
-
-  return streamController.stream;
-});
 
 final analyticsInitPOD = FutureProviderFamily<void, FirebaseOptions?>((ref, options) async {
   if (options == null) {
