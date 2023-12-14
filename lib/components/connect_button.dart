@@ -4,7 +4,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -28,7 +27,6 @@ class ConnectButton extends HookConsumerWidget {
   late final String powerConnecting;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final connectivityStore = ref.watch(connectivityStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
     final controller = useAnimationController(
       duration: const Duration(seconds: 10),
@@ -44,22 +42,12 @@ class ConnectButton extends HookConsumerWidget {
               ),
               child: SvgIconButton(
                 asset: powerConnecting,
-                onPressed: () => onConnectButtonPressed(
-                  connectivityStore.connectionStatus,
-                  vpnStore.connectionStatus,
-                  context,
-                  onPressed,
-                ),
+                onPressed: onPressed,
               ),
             ).fittedBox()
           : SvgIconButton(
               asset: vpnStore.connectionStatus == ConnectionStatus.connected ? powerOn : powerOff,
-              onPressed: () => onConnectButtonPressed(
-                connectivityStore.connectionStatus,
-                vpnStore.connectionStatus,
-                context,
-                onPressed,
-              ),
+              onPressed: onPressed,
             ).fittedBox(),
     );
   }

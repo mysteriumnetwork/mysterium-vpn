@@ -5,7 +5,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/recent_location_item.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/stores/connectivity_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
@@ -16,11 +15,9 @@ class RecentLocationsList extends HookWidget {
     required this.themeStore,
     required this.vpnStore,
     required this.locationsStore,
-    required this.connectivityStore,
     super.key,
   });
   final LocationsStore locationsStore;
-  final ConnectivityStore connectivityStore;
   final VpnStore vpnStore;
   final ThemeStore themeStore;
   @override
@@ -50,7 +47,6 @@ class RecentLocationsList extends HookWidget {
                   location: location,
                   vpnStore: vpnStore,
                   onTap: () => vpnStore.connect(location: location),
-                  connectivityStore: connectivityStore,
                 );
               },
             ).height(130),

@@ -46,19 +46,21 @@ class SubscriptionMobileView extends HookConsumerWidget {
         },
         child: BaseLayout(
           header: const BaseAppBar(),
-          child: subscriptionStore.isAvailable == StoreState.loading
-              ? LoadingIndicator(
-                  message: LocaleKeys.connectingToPaymentProcesor.tr(),
-                )
-              : subscriptionStore.isAvailable == StoreState.notAvailable
-                  ? RetryOnErrorWidget(
-                      error: LocaleKeys.unableToConnectToPaymentProcesor.tr(),
-                      onRetry: subscriptionStore.getSubscriptionsConfig,
-                    )
-                  : SubscriptionForm(
-                      store: subscriptionStore,
-                      localDb: localDb,
-                    ),
+          child: Observer(
+            builder: (context) => subscriptionStore.isAvailable == StoreState.loading
+                ? LoadingIndicator(
+                    message: LocaleKeys.connectingToPaymentProcesor.tr(),
+                  )
+                : subscriptionStore.isAvailable == StoreState.notAvailable
+                    ? RetryOnErrorWidget(
+                        error: LocaleKeys.unableToConnectToPaymentProcesor.tr(),
+                        onRetry: subscriptionStore.getSubscriptionsConfig,
+                      )
+                    : SubscriptionForm(
+                        store: subscriptionStore,
+                        localDb: localDb,
+                      ),
+          ),
         ),
       ),
     );
