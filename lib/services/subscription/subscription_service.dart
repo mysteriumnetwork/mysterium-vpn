@@ -2,7 +2,6 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/models/subscription_config.dart';
-import 'package:mysterium_vpn/models/subscription_request.dart';
 
 abstract class SubscriptionService {
   Future<Subscription> verifyPurchase({
@@ -26,6 +25,5 @@ abstract class SubscriptionService {
 
   Future<SubscriptionConfig> fetchSubscriptionConfig();
 
-  Future<ProductDetails> createSubscriptionRequest(SubscriptionRequest subscriptionRequest);
   Future<void> clearPendingTransactions();
 }

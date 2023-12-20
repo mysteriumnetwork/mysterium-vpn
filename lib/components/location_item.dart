@@ -1,12 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/connect_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/flag.dart';
 import 'package:mysterium_vpn/components/ripple.dart';
-import 'package:mysterium_vpn/stores/connectivity_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -15,23 +13,16 @@ class LocationItem extends StatelessWidget {
     required this.location,
     required this.onTap,
     required this.vpnStore,
-    required this.connectivityStore,
     super.key,
   });
 
   final String location;
   final VoidCallback onTap;
   final VpnStore vpnStore;
-  final ConnectivityStore connectivityStore;
   @override
   Widget build(BuildContext context) => Observer(
         builder: (context) => RippleWidget(
-          onTap: () => onConnectButtonPressed(
-            connectivityStore.connectionStatus,
-            vpnStore.connectionStatus,
-            context,
-            onTap,
-          ),
+          onTap: onTap,
           radius: 15,
           child: Row(
             children: [

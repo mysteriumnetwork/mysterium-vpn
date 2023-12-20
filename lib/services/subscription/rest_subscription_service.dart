@@ -3,8 +3,6 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/billing_client_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
@@ -16,9 +14,10 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/models/subscription_config.dart';
-import 'package:mysterium_vpn/models/subscription_request.dart';
-import 'package:mysterium_vpn/services/local_db_service.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
+import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
+import 'package:talker/talker.dart';
 
 const kFetchSubscriptionInfo = '/subscription';
 const kFetchSubscriptionConfig = '/subscription/config';
@@ -27,16 +26,19 @@ const kVerifySubscription = '/subscription/user-callback';
 
 class RestSubscriptionService extends SubscriptionService {
   RestSubscriptionService({
-    required Dio apiClient,
+    required NetworkService networkService,
     required InAppPurchase inAppPurchase,
     required LocalDBService localDb,
-  })  : _apiClient = apiClient,
+    required Talker logger,
+  })  : _networkService = networkService,
         _inAppPurchase = inAppPurchase,
-        _localDb = localDb;
+        _localDb = localDb,
+        _logger = logger;
 
-  final Dio _apiClient;
+  final NetworkService _networkService;
   final InAppPurchase _inAppPurchase;
   final LocalDBService _localDb;
+  final Talker _logger;
 
   @override
   Future<Subscription> verifyPurchase({
@@ -46,7 +48,7 @@ class RestSubscriptionService extends SubscriptionService {
   }) async {
     try {
       final gatewayId = getPlatformGateway();
-      final res = await _apiClient.post<Map<String, dynamic>>(
+      final res = await _networkService.post(
         kVerifySubscription,
         data: {
           'gateway_id': gatewayId,
@@ -74,7 +76,8 @@ class RestSubscriptionService extends SubscriptionService {
       } else {
         throw SubscriptionVerificationException();
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
       rethrow;
     }
   }
@@ -85,40 +88,45 @@ class RestSubscriptionService extends SubscriptionService {
     required String? purchasedProductId,
     required String userId,
   }) async {
-    late PurchaseParam purchaseParam;
-    if (Platform.isAndroid) {
-      GooglePlayPurchaseDetails? details;
-      if (purchasedProductId != null) {
-        final androidAddition =
-            _inAppPurchase.getPlatformAddition<InAppPurchaseAndroidPlatformAddition>();
-        final oldPurchases = await androidAddition.queryPastPurchases();
-        final oldPurchase = oldPurchases.pastPurchases.where(
-          (element) => element.productID == purchasedProductId && element.transactionDate != null,
-        );
-        if (oldPurchase.isNotEmpty) {
-          details = oldPurchase.sortedBy((e) => e.transactionDate!).last;
+    try {
+      late PurchaseParam purchaseParam;
+      if (Platform.isAndroid) {
+        GooglePlayPurchaseDetails? details;
+        if (purchasedProductId != null) {
+          final androidAddition =
+              _inAppPurchase.getPlatformAddition<InAppPurchaseAndroidPlatformAddition>();
+          final oldPurchases = await androidAddition.queryPastPurchases();
+          final oldPurchase = oldPurchases.pastPurchases.where(
+            (element) => element.productID == purchasedProductId && element.transactionDate != null,
+          );
+          if (oldPurchase.isNotEmpty) {
+            details = oldPurchase.sortedBy((e) => e.transactionDate!).last;
+          }
         }
-      }
 
-      purchaseParam = GooglePlayPurchaseParam(
-        productDetails: productDetails,
-        applicationUserName: userId,
-        changeSubscriptionParam: (details != null)
-            ? ChangeSubscriptionParam(
-                oldPurchaseDetails: details,
-                prorationMode: ProrationMode.immediateWithTimeProration,
-              )
-            : null,
+        purchaseParam = GooglePlayPurchaseParam(
+          productDetails: productDetails,
+          applicationUserName: userId,
+          changeSubscriptionParam: (details != null)
+              ? ChangeSubscriptionParam(
+                  oldPurchaseDetails: details,
+                  prorationMode: ProrationMode.immediateWithTimeProration,
+                )
+              : null,
+        );
+      } else {
+        purchaseParam = AppStorePurchaseParam(
+          productDetails: productDetails,
+          applicationUserName: userId,
+        );
+      }
+      return await _inAppPurchase.buyNonConsumable(
+        purchaseParam: purchaseParam,
       );
-    } else {
-      purchaseParam = AppStorePurchaseParam(
-        productDetails: productDetails,
-        applicationUserName: userId,
-      );
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
     }
-    return _inAppPurchase.buyNonConsumable(
-      purchaseParam: purchaseParam,
-    );
   }
 
   @override
@@ -177,8 +185,11 @@ class RestSubscriptionService extends SubscriptionService {
       }
       return productsDetails
         ..sortByCompare((e) => e.productDetails.rawPrice, (a, b) => a.compareTo(b));
-    } on Exception catch (e) {
-      throw handleException(e);
+    } on ApiException {
+      rethrow;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
     }
   }
 
@@ -195,12 +206,17 @@ class RestSubscriptionService extends SubscriptionService {
   @override
   Future<Subscription> fetchSubscriptionDetails() async {
     try {
-      final res = await _apiClient.get(kFetchSubscriptionInfo);
-      // return Subscription(active: true);
-      return Subscription.fromJson(res.data as Map<String, dynamic>);
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      throw handleException(e);
+      final data =
+          (await _networkService.get(kFetchSubscriptionInfo)).data as Map<String, dynamic>?;
+      if (data == null) {
+        throw Exception('No data found');
+      }
+      return Subscription.fromJson(data);
+    } on ApiException {
+      rethrow;
+    } on Exception catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
     }
   }
 
@@ -211,9 +227,12 @@ class RestSubscriptionService extends SubscriptionService {
       if (!isStoreAvailable) {
         throw StoreNotAvailableException();
       }
-      final res = await _apiClient.get(kFetchSubscriptionConfig);
-
-      final config = SubscriptionConfig.fromJson(res.data as Map<String, dynamic>);
+      final data =
+          (await _networkService.get(kFetchSubscriptionConfig)).data as Map<String, dynamic>?;
+      if (data == null) {
+        throw Exception('No data found');
+      }
+      final config = SubscriptionConfig.fromJson(data);
       final gateway =
           config.gateways.firstWhereOrNull((element) => element.name == getPlatformGateway());
       if (gateway == null || !gateway.enabled) {
@@ -222,41 +241,11 @@ class RestSubscriptionService extends SubscriptionService {
       return config;
     } on StoreNotAvailableException catch (_) {
       rethrow;
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      throw handleException(e);
-    }
-  }
-
-  @override
-  Future<ProductDetails> createSubscriptionRequest(SubscriptionRequest subscriptionRequest) async {
-    try {
-      // TODO(Kristijan): Remove this later
-      String? subscriptionProductId;
-      if (Platform.isAndroid) {
-        final res = await _apiClient.post<Map<String, dynamic>>(
-          kCreateSubscriptionRequest,
-          data: subscriptionRequest.toJson(),
-        );
-        subscriptionProductId = res.data?['subscription_product_id'] as String?;
-        if (subscriptionProductId == null) {
-          throw PackageNotFoundException();
-        }
-      } else {
-        subscriptionProductId = subscriptionRequest.planId == 'plan_6_months'
-            ? 'semi_annual_vpn_plan'
-            : 'monthly_vpn_plan';
-      }
-      final productDetails = await _inAppPurchase.queryProductDetails({subscriptionProductId});
-      final product = productDetails.productDetails
-          .firstWhereOrNull((element) => element.id == subscriptionProductId);
-      if (product == null) {
-        throw PackageNotFoundException();
-      }
-      return product;
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      throw handleException(e);
+    } on ApiException {
+      rethrow;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
     }
   }
 }

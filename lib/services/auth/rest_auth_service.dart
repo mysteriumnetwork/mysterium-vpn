@@ -1,11 +1,10 @@
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
-import 'package:mysterium_vpn/services/secured_storage_service.dart';
+import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
+import 'package:mysterium_vpn/services/data/network/network_service.dart';
+import 'package:talker/talker.dart';
 
 const kAuthCheck = '/auth/check';
 const kLogin = '/magic-link';
@@ -14,14 +13,17 @@ const kAuthIntrospect = '/oauth/introspect';
 
 class RestAuthService extends AuthService {
   RestAuthService({
-    required Dio apiClient,
+    required NetworkService networkService,
     required String scheme,
-  })  : _apiClient = apiClient,
-        _scheme = scheme;
+    required Talker logger,
+  })  : _networkService = networkService,
+        _scheme = scheme,
+        _logger = logger;
 
-  final Dio _apiClient;
+  final NetworkService _networkService;
   final String _scheme;
   final _securedStorage = SecureStorageService.instance;
+  final Talker _logger;
 
   @override
   Future<AuthData> checkUserAuth() async {
@@ -29,13 +31,19 @@ class RestAuthService extends AuthService {
       await Future.delayed(const Duration(seconds: 2));
       final accessToken = await _securedStorage.getAccessToken();
 
-      final res = await _apiClient.get(
+      final data = (await _networkService.get(
         kAuthCheck,
-        options: Options(headers: {'Authorization': 'Bearer $accessToken'}),
-      );
-      final data = res.data as Map<String, dynamic>;
+        headers: {'Authorization': 'Bearer $accessToken'},
+      ))
+          .data as Map<String, dynamic>?;
+      if (data == null) {
+        throw Exception('No data');
+      }
       final username = data['username'] as String;
       final userId = data['user_id'] as String;
+      _networkService.updateHeader(
+        {'Authorization': 'Bearer $accessToken'},
+      );
       await _securedStorage.saveUserId(userId: userId);
       await _securedStorage.saveUsername(username: username);
       return AuthData(
@@ -43,17 +51,16 @@ class RestAuthService extends AuthService {
         username: username,
         userId: data['user_id'] as String,
       );
-    } on Exception catch (e) {
+    } catch (e, stackTrace) {
+      removeLocalData();
+      if (e is ApiException && e.message == 'Unauthorized' && e.code == 401) {
+        throw AuthenticationRequiredException();
+      }
+      _logger.handle(e, stackTrace);
       if (e is KeyDoesntExistsException) {
         rethrow;
       }
-      debugPrint(e.toString());
-      removeLocalData();
-      final error = handleException(e, message: 'Authenticating failed.Please try again');
-      if (error.message == 'Unauthorized' && error.code == 401) {
-        throw AuthenticationRequiredException();
-      }
-      throw error;
+      rethrow;
     }
   }
 
@@ -64,7 +71,7 @@ class RestAuthService extends AuthService {
   }) async {
     try {
       await Future.delayed(const Duration(seconds: 2));
-      final authTokenResult = await _apiClient.post<Map<String, dynamic>>(
+      final tokenData = (await _networkService.post(
         kCompleteLogin,
         data: {
           'grant_type': 'authorization_code',
@@ -72,40 +79,47 @@ class RestAuthService extends AuthService {
           'code': authToken,
           'code_verifier': pkcePair.codeVerifier,
         },
-        options: Options(contentType: 'application/x-www-form-urlencoded'),
-      );
-      if (authTokenResult.data == null) {
+        headers: {'content-type': 'application/x-www-form-urlencoded'},
+      ))
+          .data as Map<String, dynamic>?;
+      if (tokenData == null) {
         throw Exception('No data');
       }
 
-      final accessToken = authTokenResult.data!['access_token'] as String;
-      await _apiClient.post<Map<String, dynamic>>(
+      final accessToken = tokenData['access_token'] as String;
+      await _networkService.post(
         kAuthIntrospect,
-        options: Options(headers: {'Authorization': 'Bearer $accessToken'}),
+        headers: {'Authorization': 'Bearer $accessToken'},
         data: {
           'token': accessToken,
         },
       );
-      final res = await _apiClient.get(
+      final userData = (await _networkService.get(
         kAuthCheck,
-        options: Options(headers: {'Authorization': 'Bearer $accessToken'}),
-      );
-      final data = res.data as Map<String, dynamic>;
-      final username = data['username'] as String;
-      final userId = data['user_id'] as String;
+        headers: {'Authorization': 'Bearer $accessToken'},
+      ))
+          .data as Map<String, dynamic>?;
+
+      final username = userData!['username'] as String;
+      final userId = userData['user_id'] as String;
       final authData = AuthData(
-        accessToken: authTokenResult.data!['access_token'] as String,
+        accessToken: tokenData['access_token'] as String,
         username: username,
         userId: userId,
+      );
+      _networkService.updateHeader(
+        {'Authorization': 'Bearer ${authData.accessToken}'},
       );
       await _securedStorage.saveAccessToken(accessToken: authData.accessToken);
       await _securedStorage.saveUsername(username: authData.username);
       await _securedStorage.saveUserId(userId: authData.userId);
       return authData;
-    } on Exception catch (e) {
-      debugPrint(e.toString());
+    } on ApiException {
+      rethrow;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
       removeLocalData();
-      throw handleException(e, message: 'Authenticating failed.Please try again');
+      rethrow;
     }
   }
 
@@ -115,7 +129,7 @@ class RestAuthService extends AuthService {
     required PkcePair pkcePair,
   }) async {
     try {
-      final result = await _apiClient.post<Map<String, dynamic>>(
+      final result = await _networkService.post(
         kLogin,
         data: {
           'email': email,
@@ -124,19 +138,22 @@ class RestAuthService extends AuthService {
           'code_challenge_method': 'S256',
         },
       );
+      final data = result.data as Map<String, dynamic>?;
 
       if (result.statusCode != 200) {
         throw Exception('Login failed');
       }
 
-      if (result.data != null && result.data!.containsKey('code')) {
-        return result.data!['code'] as String;
+      if (data != null && data.containsKey('code')) {
+        return data['code'] as String;
       }
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      throw handleException(e, message: 'Authenticating failed.Please try again');
+      return null;
+    } on ApiException {
+      rethrow;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
     }
-    return null;
   }
 
   @override

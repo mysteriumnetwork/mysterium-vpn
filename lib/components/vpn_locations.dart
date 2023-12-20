@@ -9,7 +9,6 @@ import 'package:mysterium_vpn/components/loading_placeholders.dart';
 import 'package:mysterium_vpn/components/locations_list.dart';
 import 'package:mysterium_vpn/components/retry_widget.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/stores/connectivity_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
@@ -20,11 +19,9 @@ class AllLocationsList extends StatelessWidget {
     required this.themeStore,
     required this.vpnStore,
     required this.locationsStore,
-    required this.connectivityStore,
     super.key,
   });
   final LocationsStore locationsStore;
-  final ConnectivityStore connectivityStore;
   final VpnStore vpnStore;
   final ThemeStore themeStore;
   @override
@@ -45,7 +42,7 @@ class AllLocationsList extends StatelessWidget {
             return RetryWdiget(
               asset: Assets.globe,
               onRetry: locationsStore.fetchVPNLocations,
-              text: LocaleKeys.failedToLoadLocations.tr(),
+              text: locationsStore.fetchVPNLocationsFuture.error.toString(),
             );
           }
           final topLocations = locationsStore.vpnLocations.topLocations;
@@ -70,7 +67,6 @@ class AllLocationsList extends StatelessWidget {
                 LocationsList(
                   locations: topLocations,
                   vpnStore: vpnStore,
-                  connectivityStore: connectivityStore,
                 ),
               if (topLocations.isNotEmpty && allLocations.isNotEmpty)
                 const Divider(thickness: 0.5, color: Palette.lightBlue)
@@ -79,7 +75,6 @@ class AllLocationsList extends StatelessWidget {
                 LocationsList(
                   locations: allLocations,
                   vpnStore: vpnStore,
-                  connectivityStore: connectivityStore,
                 ),
             ],
           );

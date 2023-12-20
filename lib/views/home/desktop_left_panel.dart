@@ -18,7 +18,6 @@ class HomeDesktopLeftPanel extends ConsumerWidget {
     final locationsStore = ref.read(locationsStorePOD);
     final themeStore = ref.read(themeStorePOD);
     final vpnStore = ref.read(vpnStorePOD);
-    final connectivityStore = ref.watch(connectivityStorePOD);
     return Container(
       color: Theme.of(context).primaryColor,
       width: double.infinity,
@@ -31,7 +30,6 @@ class HomeDesktopLeftPanel extends ConsumerWidget {
             themeStore: themeStore,
             locationsStore: locationsStore,
             vpnStore: vpnStore,
-            connectivityStore: connectivityStore,
           ).padding(bottom: 20),
           EasyText(
             LocaleKeys.allLocations.tr(),
@@ -42,7 +40,6 @@ class HomeDesktopLeftPanel extends ConsumerWidget {
             themeStore: themeStore,
             locationsStore: locationsStore,
             vpnStore: vpnStore,
-            connectivityStore: connectivityStore,
           ),
         ],
       ),

@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
-import 'package:mysterium_vpn/services/local_db_service.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 
 part 'analytics_store_firebase.g.dart';
@@ -54,6 +54,12 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
           nameExtractor: (settings) => settings.name,
         ),
       ];
+
+  @override
+  @action
+  Future<void> logMessage(String message) async {
+    _crashlytics.log(message);
+  }
 
   @override
   @action
