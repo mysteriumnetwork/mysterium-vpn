@@ -13,8 +13,8 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/models/subscription_config.dart';
-import 'package:mysterium_vpn/services/local_db_service.dart';
-import 'package:mysterium_vpn/services/secured_storage_service.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
+import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
@@ -129,6 +129,7 @@ abstract class _SubscriptionStore with Store {
       return;
     }
     try {
+      _isAvailable = StoreState.loading;
       isAvailableFuture = ObservableFuture(_subscriptionService.fetchSubscriptionConfig());
       _subscriptionConfig = await isAvailableFuture;
       await getProductsDetails();
@@ -190,7 +191,7 @@ abstract class _SubscriptionStore with Store {
           planType: selectedProductId,
         );
       }
-    } on Exception catch (e) {
+    } catch (e) {
       _subscriptonStatus = SubscriptionStatus.error;
       if (kDebugMode) {
         debugPrint(e.toString());

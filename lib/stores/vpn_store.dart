@@ -6,7 +6,6 @@ import 'dart:math';
 
 import 'package:async/async.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -19,11 +18,12 @@ import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/services/local_db_service.dart';
-import 'package:mysterium_vpn/services/secured_storage_service.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
+import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
+import 'package:talker/talker.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
 // Project imports:
@@ -42,13 +42,15 @@ abstract class _VpnStore with Store {
     required SubscriptionStore subscriptionStore,
     required LocalDBService localDBService,
     required FlavorConfig env,
+    required Talker logger,
   })  : _apiService = apiService,
         _locationsStore = locationsStore,
         _wireguardService = wireguardService,
         _analyticsStore = analyticsStore,
         _subscriptionStore = subscriptionStore,
         _localDBService = localDBService,
-        _env = env {
+        _env = env,
+        _logger = logger {
     _connectionStatus = ConnectionStatus.disconnected;
     _connectingLocationCode = '';
     generateKey();
@@ -68,6 +70,7 @@ abstract class _VpnStore with Store {
   final _securedStorage = SecureStorageService.instance;
   final LocalDBService _localDBService;
   final random = Random();
+  final Talker _logger;
 
   Timer? _timer;
 
@@ -113,9 +116,9 @@ abstract class _VpnStore with Store {
         bundleId: _env.getBundleId(),
         win32ServiceName: win32ServiceName,
       );
-      debugPrint('Tunnel setup done');
-    } catch (e) {
-      debugPrint(e.toString());
+      _logger.info('Tunnel setup done');
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
       showSnackbar('Error occured while setting up tunnel');
     }
   }
@@ -169,9 +172,11 @@ abstract class _VpnStore with Store {
             const Duration(seconds: 10),
             onTimeout: () => throw TimeoutException('Wireguard connection timeout'),
           );
-    } on TimeoutException {
+    } on TimeoutException catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
       rethrow;
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
       throw WireguardConnectException(e.toString());
     }
   }
@@ -242,6 +247,7 @@ abstract class _VpnStore with Store {
       );
       _locationsStore.addRecentLocation(vpnConnection!.location);
     } on TimeoutException catch (e) {
+      _logger.handle(e);
       showSnackbar(
         LocaleKeys.connectionTimeout.tr(),
       );
@@ -251,8 +257,9 @@ abstract class _VpnStore with Store {
         errorSource: 'wireguard',
       );
     } on OperationCancelledException {
-      debugPrint('Operation cancelled by user');
-    } catch (e) {
+      _logger.info('Operation cancelled by user');
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
       final errorMessage = e is ApiException
           ? e.message
           : LocaleKeys.failedToConnect.tr(
@@ -326,7 +333,6 @@ abstract class _VpnStore with Store {
         ),
         privateKey: _privateKey,
       );
-      debugPrint(_vpnConfig?.config);
       if (!_isCanceled) {
         await connectWireguard();
         final ipAddress = await _apiService.getIPAdress().timeout(
@@ -344,6 +350,7 @@ abstract class _VpnStore with Store {
       disconnectWireguard();
       rethrow;
     } catch (e) {
+      _logger.handle(e);
       rethrow;
     }
   }

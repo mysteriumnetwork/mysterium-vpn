@@ -19,7 +19,6 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     final locationsStore = ref.watch(locationsStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
     final themeStore = ref.watch(themeStorePOD);
-    final connectivityStore = ref.watch(connectivityStorePOD);
 
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -43,7 +42,6 @@ class LocationsSliderMobileView extends HookConsumerWidget {
           themeStore: themeStore,
           locationsStore: locationsStore,
           vpnStore: vpnStore,
-          connectivityStore: connectivityStore,
         ).padding(bottom: 20),
         EasyText(
           LocaleKeys.allLocations.tr(),
@@ -54,7 +52,6 @@ class LocationsSliderMobileView extends HookConsumerWidget {
           themeStore: themeStore,
           locationsStore: locationsStore,
           vpnStore: vpnStore,
-          connectivityStore: connectivityStore,
         ),
       ],
     );

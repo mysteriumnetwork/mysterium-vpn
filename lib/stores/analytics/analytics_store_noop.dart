@@ -106,4 +106,8 @@ abstract class _AnalyticsStoreNoop extends AnalyticsStore with Store {
     required String planType,
     required double planPrice,
   }) async {}
+
+  @override
+  @action
+  Future<void> logMessage(String message) async {}
 }

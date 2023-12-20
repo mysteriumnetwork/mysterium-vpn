@@ -4,6 +4,7 @@ export 'broken_node.dart';
 export 'incorrect_code.dart';
 export 'incorrect_magic_link.dart';
 export 'key_does_not_exists.dart';
+export 'no_internet_connection.dart';
 export 'operation_cancelled.dart';
 export 'package_not_found.dart';
 export 'subscription_verification.dart';

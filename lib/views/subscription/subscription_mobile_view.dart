@@ -32,34 +32,35 @@ class SubscriptionMobileView extends HookConsumerWidget {
       [],
     );
     return Observer(
-      builder: (context) => WillPopScope(
-        onWillPop: () async {
+      builder: (context) => PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) async {
           if (subscriptionStore.isSubscribed == false) {
             final shouldPop = await shownDismissPageDialog(context);
             if (shouldPop ?? false) {
               authStore.logout();
             }
-            return Future.value(false);
           } else {
             Beamer.of(context).beamBack();
-            return Future.value(false);
           }
         },
         child: BaseLayout(
           header: const BaseAppBar(),
-          child: subscriptionStore.isAvailable == StoreState.loading
-              ? LoadingIndicator(
-                  message: LocaleKeys.connectingToPaymentProcesor.tr(),
-                )
-              : subscriptionStore.isAvailable == StoreState.notAvailable
-                  ? RetryOnErrorWidget(
-                      error: LocaleKeys.unableToConnectToPaymentProcesor.tr(),
-                      onRetry: subscriptionStore.getSubscriptionsConfig,
-                    )
-                  : SubscriptionForm(
-                      store: subscriptionStore,
-                      localDb: localDb,
-                    ),
+          child: Observer(
+            builder: (context) => subscriptionStore.isAvailable == StoreState.loading
+                ? LoadingIndicator(
+                    message: LocaleKeys.connectingToPaymentProcesor.tr(),
+                  )
+                : subscriptionStore.isAvailable == StoreState.notAvailable
+                    ? RetryOnErrorWidget(
+                        error: LocaleKeys.unableToConnectToPaymentProcesor.tr(),
+                        onRetry: subscriptionStore.getSubscriptionsConfig,
+                      )
+                    : SubscriptionForm(
+                        store: subscriptionStore,
+                        localDb: localDb,
+                      ),
+          ),
         ),
       ),
     );

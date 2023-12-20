@@ -138,8 +138,8 @@ Future<T?> _showMaterialBottomSheet<T>(
     ),
     builder: (BuildContext coxt) {
       final screenHeight = MediaQuery.of(context).size.height;
-      return WillPopScope(
-        onWillPop: () async => isDismissible,
+      return PopScope(
+        canPop: isDismissible,
         child: ConstrainedBox(
           constraints: BoxConstraints(
             maxHeight: screenHeight - (screenHeight / 10),

@@ -20,17 +20,16 @@ class ConsentView extends HookConsumerWidget {
     final authStore = ref.watch(authStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
         if (vpnStore.vpnConfigConsent == false) {
           final shouldPop = await shownDismissPageDialog(context);
           if (shouldPop ?? false) {
             authStore.logout();
           }
-          return Future.value(false);
         } else {
           Beamer.of(context).beamBack();
-          return Future.value(false);
         }
       },
       child: BaseLayout(

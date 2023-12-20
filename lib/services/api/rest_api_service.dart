@@ -1,12 +1,12 @@
-import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/services/local_db_service.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
+import 'package:mysterium_vpn/services/data/network/network_service.dart';
+import 'package:talker/talker.dart';
 
 const kFetchAllLocations = '/connection/config';
 const kCreateConnectionConfig = '/connection/connect';
@@ -14,13 +14,16 @@ const kFetchIP = 'https://location.mysterium.network/api/v1/ip';
 
 class RestApiService extends ApiService {
   RestApiService({
-    required Dio apiClient,
+    required NetworkService networkService,
     required LocalDBService localDb,
-  })  : _apiClient = apiClient,
-        _localDb = localDb;
+    required Talker logger,
+  })  : _networkService = networkService,
+        _localDb = localDb,
+        _logger = logger;
 
-  final Dio _apiClient;
+  final NetworkService _networkService;
   final LocalDBService _localDb;
+  final Talker _logger;
 
   @override
   Future<void> setEmailCommunicationApproval({required bool approval}) async =>
@@ -39,15 +42,16 @@ class RestApiService extends ApiService {
   @override
   Future<VPNLocations> fetchVPNLocations({required String keyword}) async {
     try {
-      final response = await _apiClient.get<Map<String, dynamic>>(kFetchAllLocations);
-      if (response.data == null || !response.data!.containsKey('countries')) {
+      final data = (await _networkService.get(kFetchAllLocations)).data as Map<String, dynamic>?;
+
+      if (data == null || !data.containsKey('countries')) {
         throw Exception('No data found');
       }
-      final topCountryCodes = List<String>.from(response.data!['top_countries'] as List<dynamic>)
+      final topCountryCodes = List<String>.from(data['top_countries'] as List<dynamic>)
         ..sort(
           (a, b) => a.tr().compareTo(b.tr()),
         );
-      final allCountryCodes = List<String>.from(response.data!['countries'] as List<dynamic>)
+      final allCountryCodes = List<String>.from(data['countries'] as List<dynamic>)
         ..removeWhere(
           topCountryCodes.contains,
         )
@@ -62,9 +66,11 @@ class RestApiService extends ApiService {
         allLocations: allCountryCodes,
         topLocations: topCountryCodes,
       );
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      throw handleException(e);
+    } on ApiException {
+      rethrow;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
     }
   }
 
@@ -98,39 +104,45 @@ class RestApiService extends ApiService {
     required String privateKey,
   }) async {
     try {
-      final response = await _apiClient.post<Map<String, dynamic>>(
+      final data = (await _networkService.post(
         kCreateConnectionConfig,
         data: input.toJson(),
-      );
-      if (response.data == null || !response.data!.containsKey('wg_config')) {
+      ))
+          .data as Map<String, dynamic>?;
+      if (data == null || !data.containsKey('wg_config')) {
         throw Exception("config wasn't created");
       }
-      final vpnConfig = VpnConfig.fromJson(response.data!);
+      final vpnConfig = VpnConfig.fromJson(data);
       return vpnConfig.copyWith(
         config: vpnConfig.config.replaceFirst('%private_key%', privateKey),
       );
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      throw handleException(e);
+    } on ApiException {
+      rethrow;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
     }
   }
 
   @override
   Future<String?> getIPAdress() async {
     try {
-      final res = await Future.delayed(
+      final data = (await Future.delayed(
         const Duration(seconds: 2),
-        () async => _apiClient.fetch<Map<String, dynamic>>(
-          RequestOptions(baseUrl: kFetchIP),
+        () async => _networkService.fetch(
+          kFetchIP,
         ),
-      );
-      if (res.data != null && res.data!.containsKey('ip')) {
-        return res.data!['ip'] as String;
+      ))
+          .data as Map<String, dynamic>?;
+      if (data != null && data.containsKey('ip')) {
+        return data['ip'] as String;
       }
       return null;
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      throw handleException(e);
+    } on ApiException {
+      rethrow;
+    } catch (e) {
+      _logger.handle(e);
+      rethrow;
     }
   }
 }

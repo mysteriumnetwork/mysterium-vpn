@@ -48,4 +48,7 @@ abstract class AnalyticsStore {
     required String planType,
     required double planPrice,
   });
+  Future<void> logMessage(
+    String message,
+  );
 }

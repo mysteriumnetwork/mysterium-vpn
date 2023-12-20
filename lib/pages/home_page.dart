@@ -55,7 +55,6 @@ class HomePage extends HookConsumerWidget {
 
     return ReactionBuilder(
       builder: (_) => reaction((_) => subscriptionStore.subscriptionFuture?.status, (result) {
-        debugPrint(result.toString());
         if (result == FutureStatus.fulfilled &&
             subscriptionStore.subscription?.active == false &&
             (vpnStore.vpnConfigConsent ?? false)) {
