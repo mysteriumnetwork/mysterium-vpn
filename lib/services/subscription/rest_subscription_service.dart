@@ -225,7 +225,7 @@ class RestSubscriptionService extends SubscriptionService {
     try {
       final isStoreAvailable = await _inAppPurchase.isAvailable();
       if (!isStoreAvailable) {
-        throw StoreNotAvailableException();
+        throw NotAvailableException();
       }
       final data =
           (await _networkService.get(kFetchSubscriptionConfig)).data as Map<String, dynamic>?;
@@ -236,10 +236,10 @@ class RestSubscriptionService extends SubscriptionService {
       final gateway =
           config.gateways.firstWhereOrNull((element) => element.name == getPlatformGateway());
       if (gateway == null || !gateway.enabled) {
-        throw StoreNotAvailableException();
+        throw NotAvailableException();
       }
       return config;
-    } on StoreNotAvailableException catch (_) {
+    } on NotAvailableException catch (_) {
       rethrow;
     } on ApiException {
       rethrow;

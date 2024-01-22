@@ -1,9 +1,14 @@
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/models/auth_data.dart';
+import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
+import 'package:mysterium_vpn/models/token_request.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:talker/talker.dart';
 
 const kAuthCheck = '/auth/check';
@@ -14,16 +19,16 @@ const kAuthIntrospect = '/oauth/introspect';
 class RestAuthService extends AuthService {
   RestAuthService({
     required NetworkService networkService,
-    required String scheme,
     required Talker logger,
+    required FlavorValues env,
   })  : _networkService = networkService,
-        _scheme = scheme,
-        _logger = logger;
+        _logger = logger,
+        _env = env;
 
   final NetworkService _networkService;
-  final String _scheme;
   final _securedStorage = SecureStorageService.instance;
   final Talker _logger;
+  final FlavorValues _env;
 
   @override
   Future<AuthData> checkUserAuth() async {
@@ -66,19 +71,14 @@ class RestAuthService extends AuthService {
 
   @override
   Future<AuthData> completeLogin({
-    required String authToken,
-    required PkcePair pkcePair,
+    required TokenRequest tokenRequest,
   }) async {
     try {
+      final reqBode = tokenRequest.toJson();
       await Future.delayed(const Duration(seconds: 2));
       final tokenData = (await _networkService.post(
         kCompleteLogin,
-        data: {
-          'grant_type': 'authorization_code',
-          'client_id': _scheme,
-          'code': authToken,
-          'code_verifier': pkcePair.codeVerifier,
-        },
+        data: reqBode,
         headers: {'content-type': 'application/x-www-form-urlencoded'},
       ))
           .data as Map<String, dynamic>?;
@@ -124,7 +124,7 @@ class RestAuthService extends AuthService {
   }
 
   @override
-  Future<String?> login({
+  Future<String?> signInWithEmail({
     required String email,
     required PkcePair pkcePair,
   }) async {
@@ -133,7 +133,7 @@ class RestAuthService extends AuthService {
         kLogin,
         data: {
           'email': email,
-          'client_id': _scheme,
+          'client_id': 'app',
           'code_challenge': pkcePair.codeChallenge,
           'code_challenge_method': 'S256',
         },
@@ -170,5 +170,55 @@ class RestAuthService extends AuthService {
   @override
   Future<void> deleteAccount({required String email}) async {
     await Future.delayed(const Duration(seconds: 4));
+  }
+
+  @override
+  Future<String> signInWithApple() async {
+    try {
+      if (!await SignInWithApple.isAvailable()) {
+        throw NotAvailableException();
+      }
+
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        webAuthenticationOptions: WebAuthenticationOptions(
+          clientId: _env.appleClientId,
+          redirectUri: Uri.parse(
+            _env.appleRedirectUri,
+          ),
+        ),
+      );
+      return credential.identityToken!;
+    } catch (e, stackTrace) {
+      if (e is SignInWithAppleAuthorizationException && e.code == AuthorizationErrorCode.canceled) {
+        throw SignInAborted();
+      }
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> signInWithGoogle() async {
+    final googleSignIn = GoogleSignIn(
+      scopes: ['email'],
+    );
+    try {
+      if (await googleSignIn.isSignedIn()) {
+        await googleSignIn.signOut();
+      }
+      final googleUser = await googleSignIn.signIn();
+      if (googleUser == null) {
+        throw SignInAborted();
+      }
+      final googleAuth = await googleUser.authentication;
+      return googleAuth.idToken!;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
   }
 }

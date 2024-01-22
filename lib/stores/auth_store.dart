@@ -9,11 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
+import 'package:mysterium_vpn/models/token_request.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
@@ -66,6 +68,9 @@ abstract class _AuthStore with Store {
   @readonly
   PkcePair? _pkcePair;
 
+  @readonly
+  GrantType? _authenticatingType;
+
   @observable
   String email = '';
 
@@ -76,7 +81,7 @@ abstract class _AuthStore with Store {
   AuthData? _authData;
 
   @observable
-  ObservableFuture<String?> loginFeature = ObservableFuture.value(null);
+  ObservableFuture<String?> signInFeatureFeature = ObservableFuture.value(null);
   @observable
   ObservableFuture<void> logoutFeature = ObservableFuture.value(null);
   @observable
@@ -94,9 +99,9 @@ abstract class _AuthStore with Store {
       final storedLink = await _secureStorageService.getAppLink();
       if (appLink != null && appLink.toString() != storedLink) {
         await _secureStorageService.saveAppLink(appLink: appLink.toString());
-        authenticate(appLink: appLink);
+        verifyMagicLinkAndAuthenticate(appLink);
       } else {
-        authenticate();
+        authenticate(grantType: GrantType.savedToken);
       }
       _appLinks.uriLinkStream.listen(
         (appLink) async {
@@ -106,7 +111,7 @@ abstract class _AuthStore with Store {
           final storedLink = await _secureStorageService.getAppLink();
           if (appLink.toString() != storedLink) {
             await _secureStorageService.saveAppLink(appLink: appLink.toString());
-            authenticate(appLink: appLink);
+            verifyMagicLinkAndAuthenticate(appLink);
           } else {
             Sentry.captureException(TokenAlreadyUsedException());
             showSnackbar(LocaleKeys.tokenAlreadyUsed.tr());
@@ -118,36 +123,40 @@ abstract class _AuthStore with Store {
     }
   }
 
+  void verifyMagicLinkAndAuthenticate(Uri appLink) {
+    try {
+      if (appLink.query.isEmpty) {
+        throw IncorrectMagicLinkException();
+      }
+      final code = getMagicLinkCode(appLink.query);
+      if (code == null || _pkcePair == null) {
+        throw IncorrectCodeException();
+      }
+      authenticate(code: code, grantType: GrantType.email);
+    } catch (e) {
+      showSnackbar(LocaleKeys.incorrectMagicLink.tr());
+    }
+  }
+
   @action
   Future<void> authenticate({
-    Uri? appLink,
+    required GrantType grantType,
     String? code,
   }) async {
     try {
       if (_authStatus == AuthStatus.authenticating) {
         return;
-      }
-      if (appLink != null) {
-        _authStatus = AuthStatus.authenticating;
-        if (appLink.query.isEmpty) {
-          throw IncorrectMagicLinkException();
-        }
-        final code = getMagicLinkCode(appLink.query);
-        if (code == null || _pkcePair == null) {
-          throw IncorrectCodeException();
-        }
-        authenticateFeature = ObservableFuture(
-          _authService.completeLogin(
-            authToken: code,
-            pkcePair: _pkcePair!,
-          ),
-        );
       } else if (code != null) {
         _authStatus = AuthStatus.authenticating;
         authenticateFeature = ObservableFuture(
           _authService.completeLogin(
-            authToken: code,
-            pkcePair: _pkcePair!,
+            tokenRequest: TokenRequest(
+              grantType: grantType,
+              code: grantType == GrantType.email ? code : null,
+              googleIdToken: grantType == GrantType.google ? code : null,
+              codeVerifier: grantType == GrantType.email ? _pkcePair!.codeVerifier : null,
+              authorization: grantType == GrantType.apple ? code : null,
+            ),
           ),
         );
       } else {
@@ -168,10 +177,7 @@ abstract class _AuthStore with Store {
         return;
       }
       var message = LocaleKeys.authenticationFailed.tr();
-      if (e is IncorrectMagicLinkException || e is IncorrectCodeException) {
-        _logger.info('Incorrect magic link used to open the app');
-        message = LocaleKeys.incorrectMagicLink.tr();
-      } else if (e is ApiException) {
+      if (e is ApiException) {
         message = e.message;
       }
       showSnackbar(message);
@@ -212,22 +218,23 @@ abstract class _AuthStore with Store {
   }
 
   @action
-  Future<String?> login({required String email}) async {
+  Future<String?> signInwithEmail({required String email}) async {
     _pkcePair = PkcePair.generate();
     _secureStorageService.savePkcePair(
       codeChallenge: _pkcePair!.codeChallenge,
       codeVerifier: _pkcePair!.codeVerifier,
     );
     try {
-      loginFeature = ObservableFuture(
-        _authService.login(
+      _authenticatingType = GrantType.email;
+      signInFeatureFeature = ObservableFuture(
+        _authService.signInWithEmail(
           email: email,
           pkcePair: _pkcePair!,
         ),
       );
-      final code = await loginFeature;
+      final code = await signInFeatureFeature;
       if (code != null) {
-        authenticate(code: code);
+        authenticate(code: code, grantType: GrantType.email);
       }
       this.email = email;
       return code;
@@ -235,6 +242,48 @@ abstract class _AuthStore with Store {
       e is ApiException
           ? showSnackbar(e.message)
           : showSnackbar(LocaleKeys.somethingWentWrong.tr());
+
+      rethrow;
+    }
+  }
+
+  @action
+  Future<void> signInWithGoogle() async {
+    try {
+      _authenticatingType = GrantType.google;
+      signInFeatureFeature = ObservableFuture(
+        _authService.signInWithGoogle(),
+      );
+      final code = await signInFeatureFeature;
+      if (code != null) {
+        authenticate(code: code, grantType: GrantType.google);
+      }
+    } catch (e) {
+      e is SignInAborted
+          ? showSnackbar('Sign in aborted')
+          : showSnackbar(LocaleKeys.somethingWentWrong.tr());
+
+      rethrow;
+    }
+  }
+
+  @action
+  Future<void> signInWithApple() async {
+    try {
+      _authenticatingType = GrantType.apple;
+      signInFeatureFeature = ObservableFuture(
+        _authService.signInWithApple(),
+      );
+      final code = await signInFeatureFeature;
+      if (code != null) {
+        authenticate(code: code, grantType: GrantType.apple);
+      }
+    } catch (e) {
+      e is NotAvailableException
+          ? showSnackbar('Not available')
+          : e is SignInAborted
+              ? showSnackbar('Sign in aborted')
+              : showSnackbar(LocaleKeys.somethingWentWrong.tr());
 
       rethrow;
     }
