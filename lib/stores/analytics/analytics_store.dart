@@ -14,10 +14,10 @@ abstract class AnalyticsStore {
   Future<void> setUserProperty(String name, String value);
   Future<void> setScreenName(String name);
   Future<void> setSessionTimeoutDuration();
-  Future<void> setLogin([AuthMethod loginMethod = AuthMethod.email]);
+  Future<void> setLogin([GrantType loginMethod = GrantType.email]);
   Future<void> setSignUp(
     String userId, [
-    AuthMethod signUpMethod = AuthMethod.email,
+    GrantType signUpMethod = GrantType.email,
   ]);
   Future<void> setLogOut(String userId);
   Future<void> setSearchEvent(String searchTerm);

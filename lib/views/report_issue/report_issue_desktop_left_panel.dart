@@ -33,7 +33,7 @@ class ReportIssueDesktopLeftPanel extends ConsumerWidget {
         SvgIcon(
           asset: themeStore.isDarkMode ? Assets.reportDark : Assets.reportLight,
         ).expanded(),
-        const SvgIcon(asset: Assets.logoGrey).width(160),
+        const SizedBox(width: 160, child: SvgIcon(asset: Assets.logoGrey)),
         AppVersion(
           headerText: LocaleKeys.appVersion.tr(),
         ),
