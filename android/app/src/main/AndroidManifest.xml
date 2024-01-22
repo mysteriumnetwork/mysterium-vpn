@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mysteriumvpn.android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET"/>
     <permission
         android:name="${applicationId}.permission.CONTROL_TUNNELS"
@@ -20,7 +19,8 @@
 
     <application
         android:label="${appLabel}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -46,6 +46,18 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.aboutyou.dart_packages.sign_in_with_apple.SignInWithAppleCallback"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="signinwithapple" />
+                <data android:path="callback" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
