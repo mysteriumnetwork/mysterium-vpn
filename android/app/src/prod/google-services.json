@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "104590535697-49lfa7b0iacp1tffnaglogbajihn4pse.apps.googleusercontent.com",
+          "client_id": "104590535697-k84j592oupcfetbvmt5ri10bhbeoggaa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mysteriumvpn.android",
+            "certificate_hash": "45faef6b700b6e6470f794093cdb04580bc7e2ad"
+          }
+        },
+        {
+          "client_id": "104590535697-0ckgm93t9m9q9sdj07t3mk32hlgljrsp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,14 +35,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "104590535697-49lfa7b0iacp1tffnaglogbajihn4pse.apps.googleusercontent.com",
+              "client_id": "104590535697-0ckgm93t9m9q9sdj07t3mk32hlgljrsp.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "104590535697-24pmcrndecf8jk6n9hmkgucb701f9l81.apps.googleusercontent.com",
+              "client_id": "104590535697-0d81n4o4etsnhrt3ajjp6v1btspqkknj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.mysterium.mysteriumVpn"
+                "bundle_id": "com.mysteriumvpn",
+                "app_store_id": "6446624307"
               }
             }
           ]

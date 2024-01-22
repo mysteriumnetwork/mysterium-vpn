@@ -249,6 +249,7 @@
 				97C146EC1CF9000F007C117D /* Resources */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				439EFABEAA2BB584300F3B81 /* [firebase_crashlytics] Crashlytics Upload Symbols */,
+				A6A4F1FAEC4EE922063352A0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -469,6 +470,23 @@
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
 		};
+		A6A4F1FAEC4EE922063352A0 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -585,6 +603,7 @@
 				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 64RCS4PKRN;
 				ENABLE_BITCODE = NO;
+				GOOGLE_CLIENT_ID = "104590535697-qlqv1si8krj17nvto6mrfgujhm81inti.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Mysterium VPN";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -596,6 +615,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn;
 				PRODUCT_NAME = Runner;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				REVERSED_GOOGLE_CLIENT_ID = "com.googleusercontent.apps.104590535697-qlqv1si8krj17nvto6mrfgujhm81inti";
+				SERVER_CLIENT_ID = "104590535697-0ckgm93t9m9q9sdj07t3mk32hlgljrsp.apps.googleusercontent.com";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -786,6 +807,7 @@
 				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 64RCS4PKRN;
 				ENABLE_BITCODE = NO;
+				GOOGLE_CLIENT_ID = "139303438361-qi0fhvfmd6jeqef86q0b20dqq5ind2nd.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Mysterium VPN Test";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -797,6 +819,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.test;
 				PRODUCT_NAME = Runner;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				REVERSED_GOOGLE_CLIENT_ID = "com.googleusercontent.apps.139303438361-qi0fhvfmd6jeqef86q0b20dqq5ind2nd";
+				SERVER_CLIENT_ID = "139303438361-d9b6k5bib0dhpaksrmq998f5p0q1rlj5.apps.googleusercontent.com";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -913,6 +937,7 @@
 				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 64RCS4PKRN;
 				ENABLE_BITCODE = NO;
+				GOOGLE_CLIENT_ID = "139303438361-qi0fhvfmd6jeqef86q0b20dqq5ind2nd.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Mysterium VPN Test";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -924,6 +949,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.test;
 				PRODUCT_NAME = Runner;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				REVERSED_GOOGLE_CLIENT_ID = "com.googleusercontent.apps.139303438361-qi0fhvfmd6jeqef86q0b20dqq5ind2nd";
+				SERVER_CLIENT_ID = "139303438361-d9b6k5bib0dhpaksrmq998f5p0q1rlj5.apps.googleusercontent.com";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1032,6 +1059,7 @@
 				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 64RCS4PKRN;
 				ENABLE_BITCODE = NO;
+				GOOGLE_CLIENT_ID = "139303438361-qi0fhvfmd6jeqef86q0b20dqq5ind2nd.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Mysterium VPN Test";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -1043,6 +1071,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.test;
 				PRODUCT_NAME = Runner;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				REVERSED_GOOGLE_CLIENT_ID = "com.googleusercontent.apps.139303438361-qi0fhvfmd6jeqef86q0b20dqq5ind2nd";
+				SERVER_CLIENT_ID = "139303438361-d9b6k5bib0dhpaksrmq998f5p0q1rlj5.apps.googleusercontent.com";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1210,6 +1240,7 @@
 				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 64RCS4PKRN;
 				ENABLE_BITCODE = NO;
+				GOOGLE_CLIENT_ID = "104590535697-qlqv1si8krj17nvto6mrfgujhm81inti.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Mysterium VPN";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -1221,6 +1252,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn;
 				PRODUCT_NAME = Runner;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				REVERSED_GOOGLE_CLIENT_ID = "com.googleusercontent.apps.104590535697-qlqv1si8krj17nvto6mrfgujhm81inti";
+				SERVER_CLIENT_ID = "104590535697-0ckgm93t9m9q9sdj07t3mk32hlgljrsp.apps.googleusercontent.com";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1242,6 +1275,7 @@
 				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 64RCS4PKRN;
 				ENABLE_BITCODE = NO;
+				GOOGLE_CLIENT_ID = "104590535697-qlqv1si8krj17nvto6mrfgujhm81inti.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Mysterium VPN";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -1253,6 +1287,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn;
 				PRODUCT_NAME = Runner;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				REVERSED_GOOGLE_CLIENT_ID = "com.googleusercontent.apps.104590535697-qlqv1si8krj17nvto6mrfgujhm81inti";
+				SERVER_CLIENT_ID = "104590535697-0ckgm93t9m9q9sdj07t3mk32hlgljrsp.apps.googleusercontent.com";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

@@ -61,6 +61,7 @@ def keystorePropertiesFile = rootProject.file('key.properties')
         targetSdkVersion localProperties.getProperty('flutter.targetSdkVersion').toInteger()
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
        flavorDimensions "env"

@@ -2,14 +2,14 @@ name: mysterium_vpn
 description: Next-gen Mysterium VPN client for mobile (iOS/Android) and desktop (Windows/MacOS/Linux).
 
 publish_to: 'none'
-version: 1.5.1+57
+version: 1.5.3+65
 
 environment:
   sdk: '^3.0.0'
   flutter: ">=3.7.0"
 
 dependencies:
-  app_links: ^3.5.0-beta.2
+  app_links: ^3.5.0
   appsflyer_sdk: ^6.12.2
   async: ^2.11.0
   auto_size_text: ^3.0.0
@@ -39,6 +39,7 @@ dependencies:
   flutter_svg: ^2.0.8
   freezed_annotation: ^2.4.1
   google_fonts: ^6.1.0
+  google_sign_in: ^6.2.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   hooks_riverpod: ^2.4.5
@@ -52,13 +53,17 @@ dependencies:
   lottie: ^2.7.0
   mobx: ^2.2.1
   modal_bottom_sheet: ^3.0.0-pre
-  open_mail_app: ^0.4.5
+  open_mail_app:
+    git:
+        url: https://github.com/KristijanMitrik/open-mail-app-flutter.git
+        ref: upgrade-dependencies
   package_info_plus: ^4.2.0
   path_provider: ^2.0.13
   reactive_forms: ^15.0.0
   sentry_flutter: ^7.11.0
   shared_preferences: ^2.2.2
   shimmer: ^3.0.0
+  sign_in_with_apple: ^5.0.0
   sliding_up_panel: ^2.0.0+1
   stack_trace: ^1.11.0
   styled_widget: ^0.4.1
