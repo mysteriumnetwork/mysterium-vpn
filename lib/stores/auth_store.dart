@@ -160,13 +160,14 @@ abstract class _AuthStore with Store {
           ),
         );
       } else {
+        grantType = GrantType.savedToken;
         authenticateFeature = ObservableFuture(
           _authService.checkUserAuth(),
         );
       }
       final res = await authenticateFeature;
       await _localDb.setUserId(res!.username);
-      _initializeAnalyticsStores(username: res.username, userId: res.userId);
+      _initializeAnalyticsStores(username: res.username, userId: res.userId, grantType: grantType);
       _authData = res;
       _authStatus = AuthStatus.authenticated;
       _logger.info(_localDb.userData.toString());
@@ -187,13 +188,14 @@ abstract class _AuthStore with Store {
   Future<void> _initializeAnalyticsStores({
     required String username,
     required String userId,
+    required GrantType grantType,
   }) async {
-    _analyticsStore
-      ..setUserId(username)
-      ..setLogin();
-    _marketingAnalyticsStore
-      ..setUserId(username)
-      ..setLogin();
+    if (grantType != GrantType.savedToken) {
+      _analyticsStore.setLogin(grantType);
+      _marketingAnalyticsStore.setLogin();
+    }
+    _analyticsStore.setUserId(username);
+    _marketingAnalyticsStore.setUserId(username);
     _intercomStore.registerUser(email: username);
     Sentry.configureScope(
       (scope) => scope.setUser(
