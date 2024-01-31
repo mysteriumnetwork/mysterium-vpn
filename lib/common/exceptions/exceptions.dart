@@ -7,5 +7,6 @@ export 'key_does_not_exists.dart';
 export 'no_internet_connection.dart';
 export 'operation_cancelled.dart';
 export 'package_not_found.dart';
+export 'sign_in_aborted.dart';
 export 'subscription_verification.dart';
 export 'token_already_used.dart';

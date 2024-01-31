@@ -99,7 +99,7 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
 
   @override
   @action
-  Future<void> setLogin([AuthMethod loginMethod = AuthMethod.email]) async {
+  Future<void> setLogin([GrantType loginMethod = GrantType.email]) async {
     await _analytics.logLogin(loginMethod: loginMethod.name);
   }
 
@@ -107,7 +107,7 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   @action
   Future<void> setSignUp(
     String userId, [
-    AuthMethod signUpMethod = AuthMethod.email,
+    GrantType signUpMethod = GrantType.email,
   ]) async {
     if (!_localDb.checkUserExistance(userId)) {
       await _analytics.logSignUp(signUpMethod: signUpMethod.name);

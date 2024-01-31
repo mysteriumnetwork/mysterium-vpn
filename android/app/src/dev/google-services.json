@@ -1,3 +1,4 @@
+
 {
   "project_info": {
     "project_number": "139303438361",
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "139303438361-ushviicb5o6ac29krbaum18s1sqp5si5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mysteriumvpn.android.test",
+            "certificate_hash": "45faef6b700b6e6470f794093cdb04580bc7e2ad"
+          }
+        },
         {
           "client_id": "139303438361-d9b6k5bib0dhpaksrmq998f5p0q1rlj5.apps.googleusercontent.com",
           "client_type": 3

@@ -134,7 +134,7 @@ abstract class _SubscriptionStore with Store {
       _subscriptionConfig = await isAvailableFuture;
       await getProductsDetails();
       _isAvailable = StoreState.available;
-    } on StoreNotAvailableException catch (_) {
+    } on NotAvailableException catch (_) {
       _isAvailable = StoreState.notAvailable;
     } catch (_) {
       _isAvailable = StoreState.notAvailable;
