@@ -45,13 +45,13 @@ abstract class _AnalyticsStoreNoop extends AnalyticsStore with Store {
 
   @override
   @action
-  Future<void> setLogin([AuthMethod loginMethod = AuthMethod.email]) async {}
+  Future<void> setLogin([GrantType loginMethod = GrantType.email]) async {}
 
   @override
   @action
   Future<void> setSignUp(
     String userId, [
-    AuthMethod signUpMethod = AuthMethod.email,
+    GrantType signUpMethod = GrantType.email,
   ]) async {}
 
   @override

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class LoadingBarrier extends StatelessWidget {
   const LoadingBarrier({required this.color, this.child, this.radius = 30, super.key});
@@ -11,21 +12,23 @@ class LoadingBarrier extends StatelessWidget {
   final Widget? child;
   final double radius;
   @override
-  Widget build(BuildContext context) => Stack(
-        children: <Widget>[
-          ModalBarrier(
-            dismissible: false,
-            color: color.withOpacity(0.8),
-          ),
-          child ??
-              Center(
-                child: LoadingIndicator(
-                  radius: radius,
-                  strokeWidth: 3,
-                  message: LocaleKeys.LoggingYouIn.tr(),
-                  messageColor: Palette.pink,
+  Widget build(BuildContext context) => LayoutBuilder(
+        builder: (context, constraints) => Stack(
+          children: <Widget>[
+            ModalBarrier(
+              dismissible: false,
+              color: color.withOpacity(0.8),
+            ).height(constraints.maxHeight),
+            child ??
+                Center(
+                  child: LoadingIndicator(
+                    radius: radius,
+                    strokeWidth: 3,
+                    message: LocaleKeys.LoggingYouIn.tr(),
+                    messageColor: Palette.pink,
+                  ),
                 ),
-              ),
-        ],
+          ],
+        ).height(constraints.maxHeight),
       );
 }

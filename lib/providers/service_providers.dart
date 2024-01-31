@@ -77,12 +77,12 @@ final apiServicePOD = Provider<ApiService>((ref) {
 
 final authServicePOD = Provider<AuthService>((ref) {
   final networkService = ref.watch(networkServicePOD);
-  final environment = ref.watch(environmentPOD);
+  final env = ref.watch(environmentPOD).values;
   final logger = ref.watch(loggerPOD);
   return RestAuthService(
     networkService: networkService,
-    scheme: environment.values.scheme,
     logger: logger,
+    env: env,
   );
 });
 final loggerPOD = Provider<Talker>((ref) {

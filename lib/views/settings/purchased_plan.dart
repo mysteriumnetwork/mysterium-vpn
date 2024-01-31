@@ -26,9 +26,7 @@ class PurchasedPlan extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ).paddingDirectional(end: 4),
-              const SvgIcon(
-                asset: Assets.subscription,
-              ).height(25).width(25),
+              const SizedBox(width: 25, height: 25, child: SvgIcon(asset: Assets.subscription)),
             ],
           ),
           EasyText(

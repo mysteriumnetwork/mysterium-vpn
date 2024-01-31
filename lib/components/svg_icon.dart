@@ -8,15 +8,21 @@ class SvgIcon extends StatelessWidget {
   const SvgIcon({
     required this.asset,
     super.key,
+    this.width,
+    this.height,
   });
 
   final String asset;
+  final double? width;
+  final double? height;
   @override
   Widget build(BuildContext context) => Directionality(
         textDirection: TextDirection.ltr,
         child: SvgPicture.asset(
           asset,
           matchTextDirection: true,
+          width: width,
+          height: height,
         ),
       ).center();
 }

@@ -43,6 +43,24 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
+  late final _$_authenticatingTypeAtom =
+      Atom(name: '_AuthStore._authenticatingType', context: context);
+
+  GrantType? get authenticatingType {
+    _$_authenticatingTypeAtom.reportRead();
+    return super._authenticatingType;
+  }
+
+  @override
+  GrantType? get _authenticatingType => authenticatingType;
+
+  @override
+  set _authenticatingType(GrantType? value) {
+    _$_authenticatingTypeAtom.reportWrite(value, super._authenticatingType, () {
+      super._authenticatingType = value;
+    });
+  }
+
   late final _$emailAtom = Atom(name: '_AuthStore.email', context: context);
 
   @override
@@ -90,18 +108,19 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$loginFeatureAtom = Atom(name: '_AuthStore.loginFeature', context: context);
+  late final _$signInFeatureFeatureAtom =
+      Atom(name: '_AuthStore.signInFeatureFeature', context: context);
 
   @override
-  ObservableFuture<String?> get loginFeature {
-    _$loginFeatureAtom.reportRead();
-    return super.loginFeature;
+  ObservableFuture<String?> get signInFeatureFeature {
+    _$signInFeatureFeatureAtom.reportRead();
+    return super.signInFeatureFeature;
   }
 
   @override
-  set loginFeature(ObservableFuture<String?> value) {
-    _$loginFeatureAtom.reportWrite(value, super.loginFeature, () {
-      super.loginFeature = value;
+  set signInFeatureFeature(ObservableFuture<String?> value) {
+    _$signInFeatureFeatureAtom.reportWrite(value, super.signInFeatureFeature, () {
+      super.signInFeatureFeature = value;
     });
   }
 
@@ -162,8 +181,9 @@ mixin _$AuthStore on _AuthStore, Store {
   late final _$authenticateAsyncAction = AsyncAction('_AuthStore.authenticate', context: context);
 
   @override
-  Future<void> authenticate({Uri? appLink, String? code}) {
-    return _$authenticateAsyncAction.run(() => super.authenticate(appLink: appLink, code: code));
+  Future<void> authenticate({required GrantType grantType, String? code}) {
+    return _$authenticateAsyncAction
+        .run(() => super.authenticate(grantType: grantType, code: code));
   }
 
   late final _$logoutAsyncAction = AsyncAction('_AuthStore.logout', context: context);
@@ -173,11 +193,28 @@ mixin _$AuthStore on _AuthStore, Store {
     return _$logoutAsyncAction.run(() => super.logout(email: email));
   }
 
-  late final _$loginAsyncAction = AsyncAction('_AuthStore.login', context: context);
+  late final _$signInwithEmailAsyncAction =
+      AsyncAction('_AuthStore.signInwithEmail', context: context);
 
   @override
-  Future<String?> login({required String email}) {
-    return _$loginAsyncAction.run(() => super.login(email: email));
+  Future<String?> signInwithEmail({required String email}) {
+    return _$signInwithEmailAsyncAction.run(() => super.signInwithEmail(email: email));
+  }
+
+  late final _$signInWithGoogleAsyncAction =
+      AsyncAction('_AuthStore.signInWithGoogle', context: context);
+
+  @override
+  Future<void> signInWithGoogle() {
+    return _$signInWithGoogleAsyncAction.run(() => super.signInWithGoogle());
+  }
+
+  late final _$signInWithAppleAsyncAction =
+      AsyncAction('_AuthStore.signInWithApple', context: context);
+
+  @override
+  Future<void> signInWithApple() {
+    return _$signInWithAppleAsyncAction.run(() => super.signInWithApple());
   }
 
   late final _$loginDesktopAsyncAction = AsyncAction('_AuthStore.loginDesktop', context: context);
@@ -192,7 +229,7 @@ mixin _$AuthStore on _AuthStore, Store {
     return '''
 email: ${email},
 temporaryEmail: ${temporaryEmail},
-loginFeature: ${loginFeature},
+signInFeatureFeature: ${signInFeatureFeature},
 logoutFeature: ${logoutFeature},
 deleteAccountFeature: ${deleteAccountFeature},
 authenticateFeature: ${authenticateFeature}
