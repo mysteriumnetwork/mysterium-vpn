@@ -88,7 +88,7 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   @override
   @action
   Future<void> setScreenName(String name) async {
-    await _analytics.setCurrentScreen(screenName: name);
+    await _analytics.logScreenView(screenName: name);
   }
 
   @override
