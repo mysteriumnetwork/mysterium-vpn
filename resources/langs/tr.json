@@ -89,6 +89,7 @@
   "plan_monthly": "Aylık plan",
   "plan_6_months": "6 Aylık Plan",
   "plan_yearly": "Yıllık Plan",
+  "plan_2_years": "İki Yıllık Plan",
   "currentPrice": "{amount}",
   "originalMonthlyPrice": "{amount}",
   "perMonth": " /ay",
