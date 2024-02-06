@@ -27,7 +27,7 @@ class CrashlitycsLoggerObserver extends TalkerObserver {
     analyticsStore.logError(
       err: err.exception,
       stack: err.stackTrace,
-      reason: err.message,
+      reason: err.exception.toString(),
       fatal: true,
     );
   }
