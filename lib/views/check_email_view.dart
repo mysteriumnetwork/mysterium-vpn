@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -23,7 +22,6 @@ class CheckYourEmailView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authStore = ref.watch(authStorePOD);
-    final isMounted = useIsMounted();
     final height = getMediaHeight(context);
 
     return Scaffold(
@@ -61,7 +59,7 @@ class CheckYourEmailView extends HookConsumerWidget {
                     visible: isMobile(),
                     child: EasyButton(
                       text: LocaleKeys.openEmailApp.tr(),
-                      onPressed: () => openEmailApp(context, isMounted),
+                      onPressed: () => openEmailApp(context),
                     ),
                   ),
                 ],
@@ -77,15 +75,13 @@ class CheckYourEmailView extends HookConsumerWidget {
 
   Future<void> openEmailApp(
     BuildContext context,
-    bool Function() isMounted,
   ) async {
     final result = await OpenMailApp.openMailApp(
       nativePickerTitle: LocaleKeys.selectEmailApp.tr(),
     );
-    if (!result.didOpen && !result.canOpen && isMounted()) {
-      // ignore: use_build_context_synchronously
+    if (!result.didOpen && !result.canOpen && context.mounted) {
       shownNoMailAppDialog(context);
-    } else if (!result.didOpen && result.canOpen && isMounted()) {
+    } else if (!result.didOpen && result.canOpen && context.mounted) {
       final actions = result.options
           .map(
             (option) => BottomSheetAction(
@@ -94,7 +90,6 @@ class CheckYourEmailView extends HookConsumerWidget {
             ),
           )
           .toList();
-      // ignore: use_build_context_synchronously
       showAdaptiveActionSheet(
         title: Text(LocaleKeys.selectEmailApp.tr()),
         context: context,

@@ -1,7 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
@@ -26,7 +25,6 @@ class NotificationsForm extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(restApiStorePOD);
-    final isMounted = useIsMounted();
     final height = getMediaHeight(context);
 
     return Column(
@@ -66,7 +64,6 @@ class NotificationsForm extends HookConsumerWidget {
                             store: store,
                             status: true,
                             context: context,
-                            isMounted: isMounted,
                           );
                         }
                       : null,
@@ -88,7 +85,6 @@ class NotificationsForm extends HookConsumerWidget {
                         store: store,
                         status: false,
                         context: context,
-                        isMounted: isMounted,
                       );
                     },
                   ),
@@ -104,11 +100,9 @@ class NotificationsForm extends HookConsumerWidget {
     required bool status,
     required RestStore store,
     required BuildContext context,
-    required bool Function() isMounted,
   }) async {
     await store.setNotificationsApproval(status: status);
-    if (isMounted()) {
-      // ignore: use_build_context_synchronously
+    if (context.mounted) {
       context.beamToReplacementNamed(Routes.home.toRoute);
     }
   }
