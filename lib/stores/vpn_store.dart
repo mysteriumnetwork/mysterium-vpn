@@ -115,6 +115,7 @@ abstract class _VpnStore with Store {
       await _wireguardService.setupTunnel(
         bundleId: _env.getBundleId(),
         win32ServiceName: win32ServiceName,
+        tunnelName: 'WiregardDart',
       );
       _logger.info('Tunnel setup done');
     } catch (e, stackTrace) {
@@ -140,16 +141,21 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> generateKey() async {
-    if (await _securedStorage.checkExistance(StorageKeys.wireguardPrivateKey.name) &&
-        await _securedStorage.checkExistance(StorageKeys.wireguardPublicKey.name)) {
+    final res = await Future.wait([
+      _securedStorage.checkExistance(StorageKeys.wireguardPrivateKey.name),
+      _securedStorage.checkExistance(StorageKeys.wireguardPublicKey.name),
+    ]);
+    if (res.contains(false)) {
+      final res = await _wireguardService.generateKeyPair();
+      _privateKey = res.privateKey;
+      _publicKey = res.publicKey;
+      await Future.wait([
+        _securedStorage.write(StorageKeys.wireguardPrivateKey.name, _privateKey),
+        _securedStorage.write(StorageKeys.wireguardPublicKey.name, _publicKey),
+      ]);
+    } else {
       _privateKey = await _securedStorage.read(StorageKeys.wireguardPrivateKey.name);
       _publicKey = await _securedStorage.read(StorageKeys.wireguardPublicKey.name);
-    } else {
-      final res = await _wireguardService.generateKeyPair();
-      _privateKey = res['privateKey'] ?? '';
-      _publicKey = res['publicKey'] ?? '';
-      await _securedStorage.write(StorageKeys.wireguardPrivateKey.name, _privateKey);
-      await _securedStorage.write(StorageKeys.wireguardPublicKey.name, _publicKey);
     }
   }
 
