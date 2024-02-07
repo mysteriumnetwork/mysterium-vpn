@@ -37,7 +37,7 @@ class MyApp extends HookConsumerWidget {
       child: Observer(
         builder: (context) => RetakeFocusOnTap(
           child: LifecycleListener(
-            onDetached: () => ref.read(vpnStorePOD).disconnect(),
+            onDetached: () => ref.read(vpnStorePOD).disconnectWireguard(),
             onResumed: () {
               checkSubsStatus(authStore, ref.read(subscriptionStorePOD));
             },
@@ -90,7 +90,7 @@ class MyApp extends HookConsumerWidget {
     routeDelegate.update();
     if (authStatus == AuthStatus.unauthenticated) {
       if (ref.exists(vpnStorePOD)) {
-        await ref.read(vpnStorePOD).disconnect();
+        await ref.read(vpnStorePOD).disconnectWireguard();
         ref.invalidate(vpnStorePOD);
       }
       if (ref.exists(locationsStorePOD)) {

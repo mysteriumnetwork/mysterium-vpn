@@ -32,9 +32,9 @@ class ConnectionSettings extends HookConsumerWidget {
               subtitle: LocaleKeys.getNewIPAddress.tr(),
               actionWidget: Observer(
                 builder: (context) => Switch(
-                  value: vpnStore.resetConnection,
+                  value: vpnStore.refreshIPConnection,
                   onChanged: (val) async {
-                    vpnStore.toggleResetConnection();
+                    vpnStore.toggleRefreshIPWhenConnecting();
                   },
                 ),
               ),

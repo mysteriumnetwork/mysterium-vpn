@@ -34,7 +34,7 @@ class HomeDesktopRightPanel extends ConsumerWidget {
                       alignment: Alignment.center,
                     ),
                     ConnectButton(
-                      onPressed: vpnStore.connect,
+                      onPressed: vpnStore.toggleConnection,
                     ).width((getMediaWidth(context) + getMediaHeight(context)) * 0.06),
                   ],
                 ).padding(vertical: 40).expanded(),
