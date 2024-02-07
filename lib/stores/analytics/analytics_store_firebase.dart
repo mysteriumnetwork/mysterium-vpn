@@ -32,18 +32,12 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
     Object? reason,
     bool fatal = false,
   }) async {
-    if (fatal) {
-      _crashlytics.recordFlutterFatalError(
-        FlutterErrorDetails(exception: err, stack: stack),
-      );
-      return;
-    }
-
     _crashlytics.recordError(
       err,
       stack,
       reason: reason,
       printDetails: true,
+      fatal: fatal,
     );
   }
 
@@ -88,7 +82,7 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   @override
   @action
   Future<void> setScreenName(String name) async {
-    await _analytics.setCurrentScreen(screenName: name);
+    await _analytics.logScreenView(screenName: name);
   }
 
   @override

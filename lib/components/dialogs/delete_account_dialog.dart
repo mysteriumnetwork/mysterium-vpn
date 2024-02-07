@@ -40,7 +40,6 @@ class _DeleteAccountDialog extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final confirmationMessage = useState('');
-    final isMounted = useIsMounted();
     return Stack(
       clipBehavior: Clip.none,
       alignment: Alignment.center,
@@ -100,7 +99,7 @@ class _DeleteAccountDialog extends HookWidget {
                         store.deleteAccountFeature.status != FutureStatus.pending
                     ? () async {
                         await store.deleteAccount();
-                        if (isMounted()) {
+                        if (context.mounted) {
                           await Beamer.of(context).popRoute();
                           shownInfoDialog(
                             context,
