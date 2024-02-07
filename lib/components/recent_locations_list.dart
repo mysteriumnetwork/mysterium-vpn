@@ -46,7 +46,7 @@ class RecentLocationsList extends HookWidget {
                 return RecentLocationItem(
                   location: location,
                   vpnStore: vpnStore,
-                  onTap: () => vpnStore.connect(location: location),
+                  onTap: () => vpnStore.toggleConnection(location: location),
                 );
               },
             ).height(130),

@@ -11,7 +11,7 @@ class UserData {
     this.notifications = Approval.notSet,
     this.subscriptionPlan,
     this.vpnConfigConsent,
-    this.resetConnection = true,
+    this.refreshIPConnection = true,
   });
   @HiveField(0)
   String userId;
@@ -35,7 +35,7 @@ class UserData {
   bool? vpnConfigConsent;
 
   @HiveField(7, defaultValue: true)
-  bool resetConnection;
+  bool refreshIPConnection;
 
   @override
   String toString() => '''
@@ -47,7 +47,7 @@ notificationsApproval: ${notifications.name},
 subscriptionPlan: $subscriptionPlan,
 subscriptionPurchaseId: $subscriptionPurchaseId
 vpnConfigConsent: $vpnConfigConsent
-resetConnection: $resetConnection
+resetConnection: $refreshIPConnection
 ''';
 }
 

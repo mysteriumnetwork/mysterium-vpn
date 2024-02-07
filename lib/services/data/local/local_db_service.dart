@@ -40,10 +40,10 @@ class LocalDBService {
     await box.put(_userId, userData);
   }
 
-  bool getResetConnection() => userData.resetConnection;
+  bool getRefreshIPConnection() => userData.refreshIPConnection;
 
-  Future<void> setResetConnection({required bool resetConnection}) async {
-    userData.resetConnection = resetConnection;
+  Future<void> setRefreshIPConnection({required bool refreshIPConnection}) async {
+    userData.refreshIPConnection = refreshIPConnection;
     await box.put(_userId, userData);
   }
 

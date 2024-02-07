@@ -22,20 +22,21 @@ mixin _$VpnStore on _VpnStore, Store {
       (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading, name: '_VpnStore.isLoading'))
           .value;
 
-  late final _$_resetConnectionAtom = Atom(name: '_VpnStore._resetConnection', context: context);
+  late final _$_refreshIPConnectionAtom =
+      Atom(name: '_VpnStore._refreshIPConnection', context: context);
 
-  bool get resetConnection {
-    _$_resetConnectionAtom.reportRead();
-    return super._resetConnection;
+  bool get refreshIPConnection {
+    _$_refreshIPConnectionAtom.reportRead();
+    return super._refreshIPConnection;
   }
 
   @override
-  bool get _resetConnection => resetConnection;
+  bool get _refreshIPConnection => refreshIPConnection;
 
   @override
-  set _resetConnection(bool value) {
-    _$_resetConnectionAtom.reportWrite(value, super._resetConnection, () {
-      super._resetConnection = value;
+  set _refreshIPConnection(bool value) {
+    _$_refreshIPConnectionAtom.reportWrite(value, super._refreshIPConnection, () {
+      super._refreshIPConnection = value;
     });
   }
 
@@ -90,40 +91,6 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$_privateKeyAtom = Atom(name: '_VpnStore._privateKey', context: context);
-
-  String get privateKey {
-    _$_privateKeyAtom.reportRead();
-    return super._privateKey;
-  }
-
-  @override
-  String get _privateKey => privateKey;
-
-  @override
-  set _privateKey(String value) {
-    _$_privateKeyAtom.reportWrite(value, super._privateKey, () {
-      super._privateKey = value;
-    });
-  }
-
-  late final _$_publicKeyAtom = Atom(name: '_VpnStore._publicKey', context: context);
-
-  String get publicKey {
-    _$_publicKeyAtom.reportRead();
-    return super._publicKey;
-  }
-
-  @override
-  String get _publicKey => publicKey;
-
-  @override
-  set _publicKey(String value) {
-    _$_publicKeyAtom.reportWrite(value, super._publicKey, () {
-      super._publicKey = value;
-    });
-  }
-
   late final _$_connectionStatusAtom = Atom(name: '_VpnStore._connectionStatus', context: context);
 
   ConnectionStatus get connectionStatus {
@@ -174,6 +141,23 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$createVPNConnectingLocaitonFutureAtom =
+      Atom(name: '_VpnStore.createVPNConnectingLocaitonFuture', context: context);
+
+  @override
+  ObservableFuture<VpnConnection>? get createVPNConnectingLocaitonFuture {
+    _$createVPNConnectingLocaitonFutureAtom.reportRead();
+    return super.createVPNConnectingLocaitonFuture;
+  }
+
+  @override
+  set createVPNConnectingLocaitonFuture(ObservableFuture<VpnConnection>? value) {
+    _$createVPNConnectingLocaitonFutureAtom
+        .reportWrite(value, super.createVPNConnectingLocaitonFuture, () {
+      super.createVPNConnectingLocaitonFuture = value;
+    });
+  }
+
   late final _$setupTunnelAsyncAction = AsyncAction('_VpnStore.setupTunnel', context: context);
 
   @override
@@ -189,12 +173,13 @@ mixin _$VpnStore on _VpnStore, Store {
     return _$setVpnConfigConsentAsyncAction.run(() => super.setVpnConfigConsent(value: value));
   }
 
-  late final _$toggleResetConnectionAsyncAction =
-      AsyncAction('_VpnStore.toggleResetConnection', context: context);
+  late final _$toggleRefreshIPWhenConnectingAsyncAction =
+      AsyncAction('_VpnStore.toggleRefreshIPWhenConnecting', context: context);
 
   @override
-  Future<void> toggleResetConnection() {
-    return _$toggleResetConnectionAsyncAction.run(() => super.toggleResetConnection());
+  Future<void> toggleRefreshIPWhenConnecting() {
+    return _$toggleRefreshIPWhenConnectingAsyncAction
+        .run(() => super.toggleRefreshIPWhenConnecting());
   }
 
   late final _$generateKeyAsyncAction = AsyncAction('_VpnStore.generateKey', context: context);
@@ -228,11 +213,13 @@ mixin _$VpnStore on _VpnStore, Store {
     return _$disconnectWireguardAsyncAction.run(() => super.disconnectWireguard());
   }
 
-  late final _$connectAsyncAction = AsyncAction('_VpnStore.connect', context: context);
+  late final _$toggleConnectionAsyncAction =
+      AsyncAction('_VpnStore.toggleConnection', context: context);
 
   @override
-  Future<void> connect({String? location, bool? refreshIP}) {
-    return _$connectAsyncAction.run(() => super.connect(location: location, refreshIP: refreshIP));
+  Future<void> toggleConnection({String? location, bool? refreshIP}) {
+    return _$toggleConnectionAsyncAction
+        .run(() => super.toggleConnection(location: location, refreshIP: refreshIP));
   }
 
   late final _$_completeConnectionAsyncAction =
@@ -245,16 +232,10 @@ mixin _$VpnStore on _VpnStore, Store {
         .run(() => super._completeConnection(location, stopwatch, refreshIP));
   }
 
-  late final _$disconnectAsyncAction = AsyncAction('_VpnStore.disconnect', context: context);
-
-  @override
-  Future<void> disconnect() {
-    return _$disconnectAsyncAction.run(() => super.disconnect());
-  }
-
   @override
   String toString() {
     return '''
+createVPNConnectingLocaitonFuture: ${createVPNConnectingLocaitonFuture},
 isConnected: ${isConnected},
 isLoading: ${isLoading}
     ''';
