@@ -337,7 +337,7 @@ abstract class _VpnStore with Store {
         await connectWireguard();
         final ipAddress = await _apiService.getIPAdress().timeout(
               const Duration(seconds: 10),
-              onTimeout: () => throw BrokenNodeException(),
+              onTimeout: () => throw BrokenNodeException(location ?? ''),
             );
         return VpnConnection(
           connectionIP: ipAddress ?? '--',

@@ -41,8 +41,6 @@ class SubscriptionForm extends HookConsumerWidget {
   final LocalDBService localDb;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isMounted = useIsMounted();
-
     final subsFormStatus = useMemoized(
       () => getSubscriptionFormStatus(
         active: store.subscription?.active ?? false,
@@ -98,7 +96,7 @@ class SubscriptionForm extends HookConsumerWidget {
                     ).padding(bottom: getMediaHeight(context) * 0.025),
                     ReactionBuilder(
                       builder: (context) => reaction((_) => store.subscriptonStatus, (status) {
-                        if (isMounted()) {
+                        if (context.mounted) {
                           if (status == SubscriptionStatus.purchased) {
                             showSnackbar(
                               LocaleKeys.subscriptionActive.tr(),

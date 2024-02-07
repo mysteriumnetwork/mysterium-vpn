@@ -135,11 +135,11 @@ class RestSubscriptionService extends SubscriptionService {
     String? purchasedProductId,
   ) async {
     try {
-      final storePlans = await _inAppPurchase.queryProductDetails(
-        subscriptionConfig.plans
-            .map((e) => Platform.isAndroid ? e.googleProductId : e.appleProductId)
-            .toSet(),
-      );
+      final plans = (subscriptionConfig.plans
+          .map((e) => Platform.isAndroid ? e.googleProductId : e.appleProductId)
+          .toSet())
+        ..removeWhere((element) => element.isEmpty || element == 'not_supported');
+      final storePlans = await _inAppPurchase.queryProductDetails(plans);
       final productsDetails = <PurchasableProduct>[];
 
       for (final plan in subscriptionConfig.plans) {

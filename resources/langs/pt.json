@@ -89,6 +89,7 @@
   "plan_monthly": "Plano mensal",
   "plan_6_months": "Plano de 6 meses",
   "plan_yearly": "Planejamento anual",
+  "plan_2_years": "Plano de 2 anos",
   "currentPrice": "{amount}",
   "originalMonthlyPrice": "{amount}",
   "perMonth": "/mês",

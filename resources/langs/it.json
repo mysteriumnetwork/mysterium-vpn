@@ -88,6 +88,7 @@
   "plan_monthly": "Piano mensile",
   "plan_6_months": "Piano semestrale",
   "plan_yearly": "Piano annuale",
+  "plan_2_years": "Piano biennale",
   "currentPrice": "{amount}",
   "originalMonthlyPrice": "{amount}",
   "perMonth": "/mese",

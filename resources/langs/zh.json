@@ -88,6 +88,7 @@
   "plan_monthly": "月度计划",
   "plan_6_months": "6 个月计划",
   "plan_yearly": "年度计划",
+  "plan_2_years": "2年计划",
   "currentPrice": "{amount}",
   "originalMonthlyPrice": "{amount}",
   "perMonth": "/月",

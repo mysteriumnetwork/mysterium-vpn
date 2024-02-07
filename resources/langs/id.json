@@ -88,6 +88,7 @@
   "plan_monthly": "Rencana bulanan",
   "plan_6_months": "Paket 6 Bulan",
   "plan_yearly": "Rencana tahunan",
+  "plan_2_years": "Paket 2 Tahun",
   "currentPrice": "{amount}",
   "originalMonthlyPrice": "{amount}",
   "perMonth": "/bulan",

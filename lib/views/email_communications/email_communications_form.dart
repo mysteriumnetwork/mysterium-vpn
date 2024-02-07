@@ -29,7 +29,6 @@ class EmailCommunicationsForm extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(restApiStorePOD);
     final form = useMemoized(approval);
-    final isMounted = useIsMounted();
     final height = getMediaHeight(context);
 
     return ReactiveForm(
@@ -103,8 +102,7 @@ class EmailCommunicationsForm extends HookConsumerWidget {
                       ? () async {
                           final status = form.control('approval').value as bool;
                           await store.setEmailCommunicationApproval(status: status);
-                          if (isMounted()) {
-                            // ignore: use_build_context_synchronously
+                          if (context.mounted) {
                             context.beamToNamed(Routes.notifications.toRoute);
                           }
                         }

@@ -31,7 +31,6 @@ class SignInForm extends HookConsumerWidget {
       form.control('email').value = store.email;
       return form;
     });
-    final isMounted = useIsMounted();
     final form = useMemoized(approval);
 
     return Observer(
@@ -51,7 +50,7 @@ class SignInForm extends HookConsumerWidget {
                       autofillHints: const [AutofillHints.email],
                       keyboardType: TextInputType.emailAddress,
                       onSubmitted: (control) =>
-                          _onSignInWithEmailPressed(signInForm, isMounted, context, store),
+                          _onSignInWithEmailPressed(signInForm, context, store),
                       onEditingComplete: (_) => TextInput.finishAutofillContext(),
                       validationMessages: {
                         ValidationMessage.required: (_) => LocaleKeys.emailIsRequired.tr(),
@@ -79,7 +78,7 @@ class SignInForm extends HookConsumerWidget {
                     builder: (_, signInForm, child) => EasyButton(
                       width: double.infinity,
                       onPressed: signInStatus != FutureStatus.pending
-                          ? () => _onSignInWithEmailPressed(signInForm, isMounted, context, store)
+                          ? () => _onSignInWithEmailPressed(signInForm, context, store)
                           : null,
                       child: signInStatus == FutureStatus.pending &&
                               store.authenticatingType == GrantType.email
@@ -147,7 +146,6 @@ class SignInForm extends HookConsumerWidget {
 
   Future<void> _onSignInWithEmailPressed(
     FormGroup form,
-    bool Function() isMounted,
     BuildContext context,
     AuthStore store,
   ) async {
@@ -159,8 +157,7 @@ class SignInForm extends HookConsumerWidget {
     TextInput.finishAutofillContext();
     final email = form.control('email').value as String;
     final result = await store.signInwithEmail(email: email);
-    if (isMounted() && result == null) {
-      // ignore: use_build_context_synchronously
+    if (context.mounted && result == null) {
       context.beamToNamed(Routes.checkYourEmail.toRoute);
     }
   }
