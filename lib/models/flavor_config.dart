@@ -21,6 +21,7 @@ class FlavorValues {
     required this.appName,
     required this.appleClientId,
     required this.appleRedirectUri,
+    required this.tunnelName,
   });
 
   factory FlavorValues.production() => FlavorValues(
@@ -33,6 +34,7 @@ class FlavorValues {
         appName: 'Mysterium VPN',
         appleClientId: 'com.mysteriumvpn.app',
         appleRedirectUri: 'https://app.mysteriumvpn.com/api/v1/callbacks/apple-sign-in',
+        tunnelName: 'MysteriumVPN',
       );
   factory FlavorValues.dev() => FlavorValues(
         baseUrl: 'https://app-testnet.mysteriumvpn.com/api/v1',
@@ -44,6 +46,7 @@ class FlavorValues {
         appName: 'Mysterium VPN Test',
         appleClientId: 'com.mysteriumvpn.app-testnet',
         appleRedirectUri: 'https://app-testnet.mysteriumvpn.com/api/v1/callbacks/apple-sign-in',
+        tunnelName: 'MysteriumVPNTest',
       );
 
   final String baseUrl;
@@ -54,6 +57,7 @@ class FlavorValues {
   final String appName;
   final String appleClientId;
   final String appleRedirectUri;
+  final String tunnelName;
 }
 
 class FlavorConfig {
