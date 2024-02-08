@@ -158,11 +158,20 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$setupTunnelAsyncAction = AsyncAction('_VpnStore.setupTunnel', context: context);
+  late final _$_setupAndListenToConnectionStatusAsyncAction =
+      AsyncAction('_VpnStore._setupAndListenToConnectionStatus', context: context);
 
   @override
-  Future<void> setupTunnel() {
-    return _$setupTunnelAsyncAction.run(() => super.setupTunnel());
+  Future<void> _setupAndListenToConnectionStatus() {
+    return _$_setupAndListenToConnectionStatusAsyncAction
+        .run(() => super._setupAndListenToConnectionStatus());
+  }
+
+  late final _$_setupTunnelAsyncAction = AsyncAction('_VpnStore._setupTunnel', context: context);
+
+  @override
+  Future<void> _setupTunnel() {
+    return _$_setupTunnelAsyncAction.run(() => super._setupTunnel());
   }
 
   late final _$setVpnConfigConsentAsyncAction =
@@ -182,27 +191,27 @@ mixin _$VpnStore on _VpnStore, Store {
         .run(() => super.toggleRefreshIPWhenConnecting());
   }
 
-  late final _$generateKeyAsyncAction = AsyncAction('_VpnStore.generateKey', context: context);
+  late final _$_generateKeyAsyncAction = AsyncAction('_VpnStore._generateKey', context: context);
 
   @override
-  Future<void> generateKey() {
-    return _$generateKeyAsyncAction.run(() => super.generateKey());
+  Future<void> _generateKey() {
+    return _$_generateKeyAsyncAction.run(() => super._generateKey());
   }
 
-  late final _$cancelConnectionAsyncAction =
-      AsyncAction('_VpnStore.cancelConnection', context: context);
+  late final _$_cancelConnectionAsyncAction =
+      AsyncAction('_VpnStore._cancelConnection', context: context);
 
   @override
-  Future<void> cancelConnection() {
-    return _$cancelConnectionAsyncAction.run(() => super.cancelConnection());
+  Future<void> _cancelConnection() {
+    return _$_cancelConnectionAsyncAction.run(() => super._cancelConnection());
   }
 
-  late final _$connectWireguardAsyncAction =
-      AsyncAction('_VpnStore.connectWireguard', context: context);
+  late final _$_connectWireguardAsyncAction =
+      AsyncAction('_VpnStore._connectWireguard', context: context);
 
   @override
-  Future<void> connectWireguard() {
-    return _$connectWireguardAsyncAction.run(() => super.connectWireguard());
+  Future<void> _connectWireguard() {
+    return _$_connectWireguardAsyncAction.run(() => super._connectWireguard());
   }
 
   late final _$disconnectWireguardAsyncAction =

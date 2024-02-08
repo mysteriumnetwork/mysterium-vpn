@@ -53,13 +53,7 @@ abstract class _VpnStore with Store {
         _localDBService = localDBService,
         _env = env,
         _logger = logger {
-    generateKey();
-    _vpnConfigConsent = _localDBService.getVpnConsentApproval() ?? false;
-    _refreshIPConnection = _localDBService.getRefreshIPConnection();
-    if (_vpnConfigConsent ?? false) {
-      setupTunnel();
-    }
-    setupAndListenToConnectionStatus();
+    _init();
   }
 
   final ApiService _apiService;
@@ -79,6 +73,9 @@ abstract class _VpnStore with Store {
 
   @readonly
   bool _refreshIPConnection = true;
+
+  @readonly
+  bool? _requestedRefreshIP;
 
   @readonly
   bool? _vpnConfigConsent;
@@ -110,21 +107,32 @@ abstract class _VpnStore with Store {
   @observable
   ObservableFuture<VpnConnection>? createVPNConnectingLocaitonFuture;
 
+  Future<void> _init() async {
+    await _generateKey();
+    _vpnConfigConsent = _localDBService.getVpnConsentApproval() ?? false;
+    _refreshIPConnection = _localDBService.getRefreshIPConnection();
+    if (_vpnConfigConsent ?? false) {
+      await _setupTunnel();
+    }
+    await _setupAndListenToConnectionStatus();
+  }
+
   /// Setup initial connection status and listen to connection status changes
-  Future<void> setupAndListenToConnectionStatus() async {
+  @action
+  Future<void> _setupAndListenToConnectionStatus() async {
     _connectingLocationCode = '';
     final status = await _wireguardService.status();
     if (status == ConnectionStatus.connected) {
       _connectionStatus = ConnectionStatus.connecting;
       final location = _sharedPrefs.getLocationCode();
-      createVPNConnectingLocaitonFuture = ObservableFuture(createVPNConnectionLocaiton(location));
+      createVPNConnectingLocaitonFuture = ObservableFuture(_createVPNConnectionLocaiton(location));
       _vpnConnection = await createVPNConnectingLocaitonFuture;
     }
     _connectionStatus = status;
 
     _wireguardService.statusStream().listen((event) {
       if (!(createVPNConnectingLocaitonFuture?.status == FutureStatus.pending ||
-          (_refreshIPConnection == true && _connectionStatus == ConnectionStatus.connecting))) {
+          (_requestedRefreshIP ?? true && _connectionStatus == ConnectionStatus.connecting))) {
         _connectionStatus = event;
       }
       if (event == ConnectionStatus.disconnected) {
@@ -137,7 +145,7 @@ abstract class _VpnStore with Store {
 
   /// Setup Wireguard tunnel
   @action
-  Future<void> setupTunnel() async {
+  Future<void> _setupTunnel() async {
     try {
       if (_isTunnelSetup) {
         return;
@@ -161,7 +169,7 @@ abstract class _VpnStore with Store {
     await _localDBService.setVpnConsentApproval(approval: value);
     _vpnConfigConsent = value;
     if (_vpnConfigConsent ?? false) {
-      setupTunnel();
+      _setupTunnel();
     }
   }
 
@@ -173,7 +181,7 @@ abstract class _VpnStore with Store {
   }
 
   @action
-  Future<void> generateKey() async {
+  Future<void> _generateKey() async {
     final res = await Future.wait([
       _securedStorage.checkExistance(StorageKeys.wireguardPrivateKey.name),
       _securedStorage.checkExistance(StorageKeys.wireguardPublicKey.name),
@@ -194,7 +202,7 @@ abstract class _VpnStore with Store {
   }
 
   @action
-  Future<void> cancelConnection() async {
+  Future<void> _cancelConnection() async {
     if (_connectionStatus == ConnectionStatus.connecting) {
       await _cancelableOperation?.cancel();
       _isCanceled = true;
@@ -203,14 +211,14 @@ abstract class _VpnStore with Store {
 
   /// Connect to Wireguard tunnel
   @action
-  Future<void> connectWireguard() async {
+  Future<void> _connectWireguard() async {
     final config = _vpnConfig?.config;
     if (config == null) {
       return;
     }
     try {
       await Future.wait([
-        setupTunnel(),
+        _setupTunnel(),
         _wireguardService.connect(cfg: config).timeout(
               const Duration(seconds: 10),
               onTimeout: () => throw TimeoutException('Wireguard connection timeout'),
@@ -252,8 +260,9 @@ abstract class _VpnStore with Store {
       showSnackbar(LocaleKeys.activateSubscription.tr());
       return;
     }
+    _requestedRefreshIP = refreshIP;
     if (isLoading) {
-      cancelConnection();
+      _cancelConnection();
       return;
     }
 
@@ -264,7 +273,7 @@ abstract class _VpnStore with Store {
       return;
     }
 
-    location ??= refreshIP ?? false ? _vpnConnection!.location : selectLocation();
+    location ??= refreshIP ?? false ? _vpnConnection!.location : _selectLocation();
     _connectingLocationCode = location;
 
     try {
@@ -296,7 +305,7 @@ abstract class _VpnStore with Store {
       showSnackbar(
         LocaleKeys.connectionTimeout.tr(),
       );
-      setVpnError(
+      _setVpnError(
         errorCode: 408,
         errorMessage: e.message ?? '',
         errorSource: 'wireguard',
@@ -324,7 +333,7 @@ abstract class _VpnStore with Store {
               : 'internal';
 
       showSnackbar(errorMessage);
-      setVpnError(
+      _setVpnError(
         errorCode: errorCode,
         errorMessage: errorMessage,
         errorSource: errorSource,
@@ -333,7 +342,7 @@ abstract class _VpnStore with Store {
     }
   }
 
-  String? selectLocation() {
+  String? _selectLocation() {
     if (_locationsStore.vpnLocations.allLocations.isEmpty &&
         _locationsStore.vpnLocations.topLocations.isEmpty) {
       return null;
@@ -347,7 +356,7 @@ abstract class _VpnStore with Store {
     return _locationsStore.vpnLocations.allLocations.randomItem();
   }
 
-  Future<void> setVpnError({
+  Future<void> _setVpnError({
     required int errorCode,
     required String errorMessage,
     required String errorSource,
@@ -367,7 +376,7 @@ abstract class _VpnStore with Store {
   ) async {
     try {
       if (_wireguardKey == null) {
-        await generateKey();
+        await _generateKey();
       }
       _vpnConfig = await _apiService.fetchVpnConfig(
         input: VpnConfigInput(
@@ -379,8 +388,9 @@ abstract class _VpnStore with Store {
         privateKey: _wireguardKey!.privateKey,
       );
       if (!_isCanceled) {
-        await connectWireguard();
-        createVPNConnectingLocaitonFuture = ObservableFuture(createVPNConnectionLocaiton(location));
+        await _connectWireguard();
+        createVPNConnectingLocaitonFuture =
+            ObservableFuture(_createVPNConnectionLocaiton(location));
         return await createVPNConnectingLocaitonFuture!;
       } else {
         throw OperationCancelledException();
@@ -391,7 +401,7 @@ abstract class _VpnStore with Store {
     }
   }
 
-  Future<VpnConnection> createVPNConnectionLocaiton(String? location) async {
+  Future<VpnConnection> _createVPNConnectionLocaiton(String? location) async {
     try {
       final ipAddress = await _apiService.getIPAdress().timeout(
             const Duration(seconds: 10),
