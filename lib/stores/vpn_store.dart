@@ -145,7 +145,7 @@ abstract class _VpnStore with Store {
       await _wireguardService.setupTunnel(
         bundleId: _env.getBundleId(),
         win32ServiceName: win32ServiceName,
-        tunnelName: _env.values.appName,
+        tunnelName: _env.values.tunnelName,
       );
       _isTunnelSetup = true;
       _logger.info('Tunnel setup done');
@@ -208,7 +208,6 @@ abstract class _VpnStore with Store {
     if (config == null) {
       return;
     }
-
     try {
       await Future.wait([
         setupTunnel(),

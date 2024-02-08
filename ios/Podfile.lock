@@ -213,6 +213,7 @@ PODS:
     - Flutter
   - wireguard_dart (0.0.1):
     - Flutter
+    - FlutterMacOS
     - WireGuardKit (= 0.3)
   - WireGuardKit (0.3)
 
@@ -238,7 +239,7 @@ DEPENDENCIES:
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
-  - wireguard_dart (from `.symlinks/plugins/wireguard_dart/ios`)
+  - wireguard_dart (from `.symlinks/plugins/wireguard_dart/darwin`)
 
 SPEC REPOS:
   trunk:
@@ -315,7 +316,7 @@ EXTERNAL SOURCES:
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
   wireguard_dart:
-    :path: ".symlinks/plugins/wireguard_dart/ios"
+    :path: ".symlinks/plugins/wireguard_dart/darwin"
 
 SPEC CHECKSUMS:
   app_links: 5ef33d0d295a89d9d16bb81b0e3b0d5f70d6c875
@@ -349,7 +350,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
   GTMAppAuth: 99fb010047ba3973b7026e45393f51f27ab965ae
   GTMSessionFetcher: 41b9ef0b4c08a6db4b7eb51a21ae5183ec99a2c8
-  in_app_purchase_storekit: 9e9931234f0adcf71ae323f8c83785b96030edf1
+  in_app_purchase_storekit: 0e4b3c2e43ba1e1281f4f46dd71b0593ce529892
   in_app_review: 318597b3a06c22bb46dc454d56828c85f444f99d
   Intercom: 5e6500e73a51edf6a4b4ad33f09bfe38962b774c
   intercom_flutter: b593e282c9276346367d9e54cedaaf21bb112307
@@ -366,7 +367,7 @@ SPEC CHECKSUMS:
   shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   url_launcher_ios: bbd758c6e7f9fd7b5b1d4cde34d2b95fcce5e812
-  wireguard_dart: c7f8a0327a1f19dc67146f47f5dc3f5d9e05bf19
+  wireguard_dart: e9f4586e6433f14a16864e80abbdb63239e1aa12
   WireGuardKit: 8b9e7f28441b67aafe60d59c15b8c70bed5ab092
 
 PODFILE CHECKSUM: cde9483c85255791ca41817453f1c1583f2bd972
