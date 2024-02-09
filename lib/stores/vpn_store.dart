@@ -112,9 +112,8 @@ abstract class _VpnStore with Store {
     _vpnConfigConsent = _localDBService.getVpnConsentApproval() ?? false;
     _refreshIPConnection = _localDBService.getRefreshIPConnection();
     if (_vpnConfigConsent ?? false) {
-      await _setupTunnel();
+      await _setupTunnel().whenComplete(_setupAndListenToConnectionStatus);
     }
-    await _setupAndListenToConnectionStatus();
   }
 
   /// Setup initial connection status and listen to connection status changes
@@ -169,7 +168,7 @@ abstract class _VpnStore with Store {
     await _localDBService.setVpnConsentApproval(approval: value);
     _vpnConfigConsent = value;
     if (_vpnConfigConsent ?? false) {
-      _setupTunnel();
+      await _setupTunnel().whenComplete(_setupAndListenToConnectionStatus);
     }
   }
 
@@ -217,13 +216,10 @@ abstract class _VpnStore with Store {
       return;
     }
     try {
-      await Future.wait([
-        _setupTunnel(),
-        _wireguardService.connect(cfg: config).timeout(
-              const Duration(seconds: 10),
-              onTimeout: () => throw TimeoutException('Wireguard connection timeout'),
-            ),
-      ]);
+      await _wireguardService.connect(cfg: config).timeout(
+            const Duration(seconds: 10),
+            onTimeout: () => throw TimeoutException('Wireguard connection timeout'),
+          );
     } on TimeoutException catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
