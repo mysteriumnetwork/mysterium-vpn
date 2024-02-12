@@ -105,7 +105,7 @@ abstract class _VpnStore with Store {
   bool _isTunnelSetup = false;
 
   @observable
-  ObservableFuture<VpnConnection>? fetchVPNConnectingIPFuture;
+  ObservableFuture<VpnConnection>? resolveConnectionLocationFuture;
 
   Future<void> _init() async {
     await _generateKey();
@@ -124,13 +124,13 @@ abstract class _VpnStore with Store {
     if (status == ConnectionStatus.connected) {
       _connectionStatus = ConnectionStatus.connecting;
       final location = _sharedPrefs.getLocationCode();
-      fetchVPNConnectingIPFuture = ObservableFuture(_fetchVPNConnectionIP(location));
-      _vpnConnection = await fetchVPNConnectingIPFuture;
+      resolveConnectionLocationFuture = ObservableFuture(_resolveConnectionLocation(location));
+      _vpnConnection = await resolveConnectionLocationFuture;
     }
     _connectionStatus = status;
 
     _wireguardService.statusStream().listen((event) {
-      if (!(fetchVPNConnectingIPFuture?.status == FutureStatus.pending ||
+      if (!(resolveConnectionLocationFuture?.status == FutureStatus.pending ||
           (_requestedRefreshIP ?? true && _connectionStatus == ConnectionStatus.connecting))) {
         _connectionStatus = event;
       }
@@ -389,8 +389,8 @@ abstract class _VpnStore with Store {
       );
       if (!_isCanceled) {
         await _connectWireguard();
-        fetchVPNConnectingIPFuture = ObservableFuture(_fetchVPNConnectionIP(location));
-        return await fetchVPNConnectingIPFuture!;
+        resolveConnectionLocationFuture = ObservableFuture(_resolveConnectionLocation(location));
+        return await resolveConnectionLocationFuture!;
       } else {
         throw OperationCancelledException();
       }
@@ -400,7 +400,7 @@ abstract class _VpnStore with Store {
     }
   }
 
-  Future<VpnConnection> _fetchVPNConnectionIP(String? location) async {
+  Future<VpnConnection> _resolveConnectionLocation(String? location) async {
     try {
       final ipAddress = await _apiService.getIPAdress().timeout(
             const Duration(seconds: 10),
