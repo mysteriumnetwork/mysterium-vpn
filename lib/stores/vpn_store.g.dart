@@ -159,19 +159,20 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$fetchVPNConnectingIPFutureAtom =
-      Atom(name: '_VpnStore.fetchVPNConnectingIPFuture', context: context);
+  late final _$resolveConnectionLocationFutureAtom =
+      Atom(name: '_VpnStore.resolveConnectionLocationFuture', context: context);
 
   @override
-  ObservableFuture<VpnConnection>? get fetchVPNConnectingIPFuture {
-    _$fetchVPNConnectingIPFutureAtom.reportRead();
-    return super.fetchVPNConnectingIPFuture;
+  ObservableFuture<VpnConnection>? get resolveConnectionLocationFuture {
+    _$resolveConnectionLocationFutureAtom.reportRead();
+    return super.resolveConnectionLocationFuture;
   }
 
   @override
-  set fetchVPNConnectingIPFuture(ObservableFuture<VpnConnection>? value) {
-    _$fetchVPNConnectingIPFutureAtom.reportWrite(value, super.fetchVPNConnectingIPFuture, () {
-      super.fetchVPNConnectingIPFuture = value;
+  set resolveConnectionLocationFuture(ObservableFuture<VpnConnection>? value) {
+    _$resolveConnectionLocationFutureAtom.reportWrite(value, super.resolveConnectionLocationFuture,
+        () {
+      super.resolveConnectionLocationFuture = value;
     });
   }
 
@@ -261,7 +262,7 @@ mixin _$VpnStore on _VpnStore, Store {
   @override
   String toString() {
     return '''
-fetchVPNConnectingIPFuture: ${fetchVPNConnectingIPFuture},
+resolveConnectionLocationFuture: ${resolveConnectionLocationFuture},
 isConnected: ${isConnected},
 isLoading: ${isLoading}
     ''';
