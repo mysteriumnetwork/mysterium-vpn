@@ -105,7 +105,7 @@ abstract class _VpnStore with Store {
   bool _isTunnelSetup = false;
 
   @observable
-  ObservableFuture<VpnConnection>? createVPNConnectingLocaitonFuture;
+  ObservableFuture<VpnConnection>? fetchVPNConnectingIPFuture;
 
   Future<void> _init() async {
     await _generateKey();
@@ -124,13 +124,13 @@ abstract class _VpnStore with Store {
     if (status == ConnectionStatus.connected) {
       _connectionStatus = ConnectionStatus.connecting;
       final location = _sharedPrefs.getLocationCode();
-      createVPNConnectingLocaitonFuture = ObservableFuture(_createVPNConnectionLocaiton(location));
-      _vpnConnection = await createVPNConnectingLocaitonFuture;
+      fetchVPNConnectingIPFuture = ObservableFuture(_fetchVPNConnectionIP(location));
+      _vpnConnection = await fetchVPNConnectingIPFuture;
     }
     _connectionStatus = status;
 
     _wireguardService.statusStream().listen((event) {
-      if (!(createVPNConnectingLocaitonFuture?.status == FutureStatus.pending ||
+      if (!(fetchVPNConnectingIPFuture?.status == FutureStatus.pending ||
           (_requestedRefreshIP ?? true && _connectionStatus == ConnectionStatus.connecting))) {
         _connectionStatus = event;
       }
@@ -389,9 +389,8 @@ abstract class _VpnStore with Store {
       );
       if (!_isCanceled) {
         await _connectWireguard();
-        createVPNConnectingLocaitonFuture =
-            ObservableFuture(_createVPNConnectionLocaiton(location));
-        return await createVPNConnectingLocaitonFuture!;
+        fetchVPNConnectingIPFuture = ObservableFuture(_fetchVPNConnectionIP(location));
+        return await fetchVPNConnectingIPFuture!;
       } else {
         throw OperationCancelledException();
       }
@@ -401,7 +400,7 @@ abstract class _VpnStore with Store {
     }
   }
 
-  Future<VpnConnection> _createVPNConnectionLocaiton(String? location) async {
+  Future<VpnConnection> _fetchVPNConnectionIP(String? location) async {
     try {
       final ipAddress = await _apiService.getIPAdress().timeout(
             const Duration(seconds: 10),
