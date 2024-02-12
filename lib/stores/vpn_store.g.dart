@@ -40,6 +40,24 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_requestedRefreshIPAtom =
+      Atom(name: '_VpnStore._requestedRefreshIP', context: context);
+
+  bool? get requestedRefreshIP {
+    _$_requestedRefreshIPAtom.reportRead();
+    return super._requestedRefreshIP;
+  }
+
+  @override
+  bool? get _requestedRefreshIP => requestedRefreshIP;
+
+  @override
+  set _requestedRefreshIP(bool? value) {
+    _$_requestedRefreshIPAtom.reportWrite(value, super._requestedRefreshIP, () {
+      super._requestedRefreshIP = value;
+    });
+  }
+
   late final _$_vpnConfigConsentAtom = Atom(name: '_VpnStore._vpnConfigConsent', context: context);
 
   bool? get vpnConfigConsent {
@@ -141,20 +159,19 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$createVPNConnectingLocaitonFutureAtom =
-      Atom(name: '_VpnStore.createVPNConnectingLocaitonFuture', context: context);
+  late final _$fetchVPNConnectingIPFutureAtom =
+      Atom(name: '_VpnStore.fetchVPNConnectingIPFuture', context: context);
 
   @override
-  ObservableFuture<VpnConnection>? get createVPNConnectingLocaitonFuture {
-    _$createVPNConnectingLocaitonFutureAtom.reportRead();
-    return super.createVPNConnectingLocaitonFuture;
+  ObservableFuture<VpnConnection>? get fetchVPNConnectingIPFuture {
+    _$fetchVPNConnectingIPFutureAtom.reportRead();
+    return super.fetchVPNConnectingIPFuture;
   }
 
   @override
-  set createVPNConnectingLocaitonFuture(ObservableFuture<VpnConnection>? value) {
-    _$createVPNConnectingLocaitonFutureAtom
-        .reportWrite(value, super.createVPNConnectingLocaitonFuture, () {
-      super.createVPNConnectingLocaitonFuture = value;
+  set fetchVPNConnectingIPFuture(ObservableFuture<VpnConnection>? value) {
+    _$fetchVPNConnectingIPFutureAtom.reportWrite(value, super.fetchVPNConnectingIPFuture, () {
+      super.fetchVPNConnectingIPFuture = value;
     });
   }
 
@@ -244,7 +261,7 @@ mixin _$VpnStore on _VpnStore, Store {
   @override
   String toString() {
     return '''
-createVPNConnectingLocaitonFuture: ${createVPNConnectingLocaitonFuture},
+fetchVPNConnectingIPFuture: ${fetchVPNConnectingIPFuture},
 isConnected: ${isConnected},
 isLoading: ${isLoading}
     ''';
