@@ -139,6 +139,10 @@ abstract class _VpnStore with Store {
         _vpnConfig = null;
         _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection?.location ?? '');
       }
+      if (event == ConnectionStatus.unknown) {
+        _isTunnelSetup = false;
+        _setupTunnel();
+      }
     });
   }
 
