@@ -46,7 +46,7 @@ class FlavorValues {
         appName: 'Mysterium VPN Test',
         appleClientId: 'com.mysteriumvpn.app-testnet',
         appleRedirectUri: 'https://app-testnet.mysteriumvpn.com/api/v1/callbacks/apple-sign-in',
-        tunnelName: 'MysteriumVPNTest',
+        tunnelName: 'MysteriumTest',
       );
 
   final String baseUrl;
