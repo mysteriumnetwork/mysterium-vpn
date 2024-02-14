@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 
 part 'intercom_desktop_store.g.dart';
@@ -36,7 +37,11 @@ abstract class _IntercomDesktopStore extends IntercomStore with Store {
 
   @override
   @action
-  Future<void> displayMessenger() async {}
+  Future<void> displayMessenger() async {
+    openUrlLink(
+      Uri.parse('https://help.mysteriumvpn.com/'),
+    );
+  }
 
   @override
   @action
