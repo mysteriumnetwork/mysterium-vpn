@@ -24,7 +24,7 @@ class RefreshConnection extends HookConsumerWidget {
             backgroundColor: Palette.blue,
             padding: EdgeInsets.zero,
           ),
-          onPressed: () => vpnStore.connect(refreshIP: true),
+          onPressed: () => vpnStore.toggleConnection(refreshIP: true),
           label: EasyText(
             LocaleKeys.refreshIP.tr(),
             fontSize: 12,

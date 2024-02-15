@@ -70,4 +70,8 @@ class SharedPreferenceService {
   int? getRemindTimeStamp() => getInt(StorageKeys.inAppReviewRemindInterval.name);
   Future<bool> setRemindTimeStamp(int value) async =>
       setInt(StorageKeys.inAppReviewRemindInterval.name, value);
+
+  String? getLocationCode() => getString(StorageKeys.locationCode.name);
+  Future<bool> setLocationCode(String value) async =>
+      setString(StorageKeys.locationCode.name, value);
 }

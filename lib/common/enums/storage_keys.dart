@@ -17,4 +17,5 @@ enum StorageKeys {
   appInstallDay,
   inAppReviewRemindInterval,
   subscriptionPaymentInfo,
+  locationCode,
 }
