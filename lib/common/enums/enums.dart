@@ -1,6 +1,5 @@
 export 'analytics_event.dart';
 export 'auth_status.dart';
-export 'connection_status.dart';
 export 'grant_type.dart';
 export 'marketing_analytics_event.dart';
 export 'message_type.dart';

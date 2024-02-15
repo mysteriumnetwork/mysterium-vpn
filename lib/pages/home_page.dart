@@ -19,6 +19,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/in_app_review/in_app_review.dart';
 import 'package:mysterium_vpn/views/home/home_desktop_view.dart';
 import 'package:mysterium_vpn/views/home/home_mobile_view.dart';
+import 'package:wireguard_dart/connection_status.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});

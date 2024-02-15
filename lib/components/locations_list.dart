@@ -26,7 +26,7 @@ class LocationsList extends HookWidget {
         return LocationItem(
           location: location,
           vpnStore: vpnStore,
-          onTap: () => vpnStore.connect(location: location),
+          onTap: () => vpnStore.toggleConnection(location: location),
         );
       },
     );
