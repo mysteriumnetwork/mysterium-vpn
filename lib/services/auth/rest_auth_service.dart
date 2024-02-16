@@ -33,7 +33,6 @@ class RestAuthService extends AuthService {
   @override
   Future<AuthData> checkUserAuth() async {
     try {
-      await Future.delayed(const Duration(seconds: 2));
       final accessToken = await _securedStorage.getAccessToken();
 
       final data = (await _networkService.get(
@@ -75,7 +74,6 @@ class RestAuthService extends AuthService {
   }) async {
     try {
       final reqBode = tokenRequest.toJson();
-      await Future.delayed(const Duration(seconds: 2));
       final tokenData = (await _networkService.post(
         kCompleteLogin,
         data: reqBode,
