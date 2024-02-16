@@ -258,7 +258,7 @@ abstract class _VpnStore with Store {
         _subscriptionStore.subscriptionFuture?.status == FutureStatus.rejected) {
       _subscriptionStore.fetchSubscription();
       showSnackbar(LocaleKeys.activateSubscription.tr());
-      return;
+      //return;
     }
     _requestedRefreshIP = refreshIP;
     if (isLoading) {
@@ -314,23 +314,25 @@ abstract class _VpnStore with Store {
       _logger.info('Operation cancelled by user');
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
-      final errorMessage = e is ApiException
-          ? e.message
-          : LocaleKeys.failedToConnect.tr(
-              namedArgs: {
-                'countryName': location?.tr() ?? '',
-              },
-            );
       final errorCode = e is WireguardConnectException
           ? e.code
           : e is ApiException
               ? e.code
-              : 500;
+              : e is BrokenNodeException
+                  ? e.code
+                  : 1113;
+      final errorMessage = LocaleKeys.failedToConnectError.tr(
+        namedArgs: {
+          'errorCode': errorCode.toString(),
+        },
+      );
       final errorSource = e is WireguardConnectException
           ? 'wireguard'
           : e is ApiException
               ? 'backend'
-              : 'internal';
+              : e is BrokenNodeException?
+                  ? 'broken_node'
+                  : 'internal';
 
       showSnackbar(errorMessage);
       _setVpnError(
