@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 
 class SplashPage extends StatelessWidget {
@@ -10,8 +11,17 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) => const Scaffold(
         backgroundColor: Palette.darkBlue,
         body: Center(
-          child: SvgIcon(
-            asset: Assets.splashLogo,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgIcon(
+                asset: Assets.splashLogo,
+              ),
+              SizedBox(height: 20),
+              LoadingIndicator(
+                indicatorColor: Palette.purple,
+              ),
+            ],
           ),
         ),
       );
