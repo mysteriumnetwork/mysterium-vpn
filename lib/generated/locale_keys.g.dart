@@ -468,4 +468,5 @@ abstract class LocaleKeys {
   static const copyLink = 'copyLink';
   static const linkCopied = 'linkCopied';
   static const copyBtn = 'copyBtn';
+  static const failedToConnectError = 'failedToConnectError';
 }

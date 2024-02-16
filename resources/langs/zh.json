@@ -465,5 +465,6 @@
   "existingSubscriptionDesc": "您可能已经使用“{email}”购买了付费订阅",
   "copyLink": "复制链接并粘贴到您的浏览器中",
   "linkCopied": "链接已复制到剪贴板！",
-  "copyBtn": "复制"
+  "copyBtn": "复制",
+  "failedToConnectError": "连接失败。请重试 [错误：{errorCode}]"
 }

@@ -465,5 +465,6 @@
     "existingSubscriptionDesc":"You may already have a paid subscription with “{email}”",
     "copyLink":"Copy the link and paste it on your browser",
     "linkCopied":"Link copied to clipboard!",
-    "copyBtn":"Copy"
+    "copyBtn":"Copy",
+    "failedToConnectError":"Failed to connect. Please try again [error: {errorCode}]"
   }

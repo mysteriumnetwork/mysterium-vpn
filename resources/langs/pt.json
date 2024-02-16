@@ -465,5 +465,6 @@
   "existingSubscriptionDesc": "Você já pode ter uma assinatura paga com “{email}”",
   "copyLink": "Copie o link e cole no seu navegador",
   "linkCopied": "Link copiado para a área de transferência!",
-  "copyBtn": "Copiar"
+  "copyBtn": "Copiar",
+  "failedToConnectError": "Falha ao conectar. Tente novamente [error: {errorCode}]"
 }

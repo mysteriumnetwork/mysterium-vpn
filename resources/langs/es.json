@@ -465,5 +465,6 @@
   "existingSubscriptionDesc": "Es posible que ya tengas una suscripción pagada con “{email}”",
   "copyLink": "Copia el enlace y pégalo en tu navegador",
   "linkCopied": "¡Enlace copiado al portapapeles!",
-  "copyBtn": "Copiar"
+  "copyBtn": "Copiar",
+  "failedToConnectError": "No se pudo conectar. Inténtelo de nuevo [error: {errorCode}]"
 }

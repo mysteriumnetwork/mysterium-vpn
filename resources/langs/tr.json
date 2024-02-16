@@ -465,5 +465,6 @@
   "existingSubscriptionDesc": "Zaten “{email}” ile ödeme yaptığınız bir aboneliğiniz olabilir",
   "copyLink": "Bağlantıyı kopyalayın ve tarayıcınıza yapıştırın",
   "linkCopied": "Bağlantı panoya kopyalandı!",
-  "copyBtn": "Kopyala"
+  "copyBtn": "Kopyala",
+  "failedToConnectError": "Bağlantı başarısız oldu. Lütfen tekrar deneyin [hata: {errorCode}]"
 }

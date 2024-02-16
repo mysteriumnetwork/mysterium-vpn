@@ -465,5 +465,6 @@
   "existingSubscriptionDesc": "قد يكون لديك بالفعل اشتراك مدفوع مع “{email}”",
   "copyLink": "انسخ الرابط والصقه في متصفحك",
   "linkCopied": "تم نسخ الرابط إلى الحافظة!",
-  "copyBtn": "نسخ"
+  "copyBtn": "نسخ",
+  "failedToConnectError": "فشل الاتصال. يرجى المحاولة مرة أخرى [الخطأ: {errorCode}]"
 }
