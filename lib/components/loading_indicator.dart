@@ -23,7 +23,7 @@ class LoadingIndicator extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SpinKitSpinningLines(
-            color: Palette.pink,
+            color: indicatorColor ?? Palette.pink,
             size: radius ?? 30,
           ),
           if (message != null)
