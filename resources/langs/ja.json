@@ -465,5 +465,6 @@
   "existingSubscriptionDesc": "すでに“{email}”で有料サブスクリプションを持っている可能性があります",
   "copyLink": "リンクをコピーしてブラウザに貼り付けてください",
   "linkCopied": "リンクをクリップボードにコピーしました！",
-  "copyBtn": "コピー"
+  "copyBtn": "コピー",
+  "failedToConnectError": "接続に失敗しました。もう一度お試しください [エラー: {errorCode}]"
 }

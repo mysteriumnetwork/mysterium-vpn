@@ -465,5 +465,6 @@
   "existingSubscriptionDesc": "Potresti già avere un abbonamento a pagamento con “{email}”",
   "copyLink": "Copia il link e incollalo nel tuo browser",
   "linkCopied": "Link copiato negli appunti!",
-  "copyBtn": "Copia"
+  "copyBtn": "Copia",
+  "failedToConnectError": "Impossibile connettersi. Riprova [errore: {errorCode}]"
 }
