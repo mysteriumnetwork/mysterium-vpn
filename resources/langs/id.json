@@ -465,5 +465,6 @@
   "existingSubscriptionDesc": "Anda mungkin sudah memiliki langganan berbayar dengan “{email}”",
   "copyLink": "Salin tautan dan tempelkan di browser Anda",
   "linkCopied": "Tautan disalin ke papan klip!",
-  "copyBtn": "Salin"
+  "copyBtn": "Salin",
+  "failedToConnectError": "Gagal terhubung. Silakan coba lagi [kesalahan: {errorCode}]"
 }

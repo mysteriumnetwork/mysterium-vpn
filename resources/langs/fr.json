@@ -465,5 +465,6 @@
   "existingSubscriptionDesc": "Vous avez peut-être déjà un abonnement payant avec “{email}”",
   "copyLink": "Copiez le lien et collez-le dans votre navigateur",
   "linkCopied": "Lien copié dans le presse-papiers!",
-  "copyBtn": "Copier"
+  "copyBtn": "Copier",
+  "failedToConnectError": "Échec de la connexion. Veuillez réessayer [erreur : {errorCode}]"
 }
