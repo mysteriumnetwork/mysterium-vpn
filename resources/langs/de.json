@@ -465,5 +465,6 @@
   "existingSubscriptionDesc": "Sie haben möglicherweise bereits ein kostenpflichtiges Abonnement mit „{email}“",
   "copyLink": "Kopieren Sie den Link und fügen Sie ihn in Ihren Browser ein",
   "linkCopied": "Link in die Zwischenablage kopiert!",
-  "copyBtn": "Kopieren"
+  "copyBtn": "Kopieren",
+  "failedToConnectError": "Die Verbindung konnte nicht hergestellt werden. Bitte versuchen Sie es erneut [Fehler: {errorCode}]"
 }

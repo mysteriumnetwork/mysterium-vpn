@@ -482,7 +482,8 @@ class CodegenLoader extends AssetLoader {
     "existingSubscriptionDesc": "您可能已经使用“{email}”购买了付费订阅",
     "copyLink": "复制链接并粘贴到您的浏览器中",
     "linkCopied": "链接已复制到剪贴板！",
-    "copyBtn": "复制"
+    "copyBtn": "复制",
+    "failedToConnectError": "连接失败。请重试 [错误：{errorCode}]"
   };
   static const Map<String, dynamic> tr = {
     "title": "Merhaba efendim",
@@ -967,7 +968,8 @@ class CodegenLoader extends AssetLoader {
     "existingSubscriptionDesc": "Zaten “{email}” ile ödeme yaptığınız bir aboneliğiniz olabilir",
     "copyLink": "Bağlantıyı kopyalayın ve tarayıcınıza yapıştırın",
     "linkCopied": "Bağlantı panoya kopyalandı!",
-    "copyBtn": "Kopyala"
+    "copyBtn": "Kopyala",
+    "failedToConnectError": "Bağlantı başarısız oldu. Lütfen tekrar deneyin [hata: {errorCode}]"
   };
   static const Map<String, dynamic> ja = {
     "title": "こんにちは。",
@@ -1439,7 +1441,8 @@ class CodegenLoader extends AssetLoader {
     "existingSubscriptionDesc": "すでに“{email}”で有料サブスクリプションを持っている可能性があります",
     "copyLink": "リンクをコピーしてブラウザに貼り付けてください",
     "linkCopied": "リンクをクリップボードにコピーしました！",
-    "copyBtn": "コピー"
+    "copyBtn": "コピー",
+    "failedToConnectError": "接続に失敗しました。もう一度お試しください [エラー: {errorCode}]"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1940,7 +1943,9 @@ class CodegenLoader extends AssetLoader {
         "Sie haben möglicherweise bereits ein kostenpflichtiges Abonnement mit „{email}“",
     "copyLink": "Kopieren Sie den Link und fügen Sie ihn in Ihren Browser ein",
     "linkCopied": "Link in die Zwischenablage kopiert!",
-    "copyBtn": "Kopieren"
+    "copyBtn": "Kopieren",
+    "failedToConnectError":
+        "Die Verbindung konnte nicht hergestellt werden. Bitte versuchen Sie es erneut [Fehler: {errorCode}]"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2431,7 +2436,8 @@ class CodegenLoader extends AssetLoader {
     "existingSubscriptionDesc": "Você já pode ter uma assinatura paga com “{email}”",
     "copyLink": "Copie o link e cole no seu navegador",
     "linkCopied": "Link copiado para a área de transferência!",
-    "copyBtn": "Copiar"
+    "copyBtn": "Copiar",
+    "failedToConnectError": "Falha ao conectar. Tente novamente [error: {errorCode}]"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -2920,7 +2926,8 @@ class CodegenLoader extends AssetLoader {
     "existingSubscriptionDesc": "You may already have a paid subscription with “{email}”",
     "copyLink": "Copy the link and paste it on your browser",
     "linkCopied": "Link copied to clipboard!",
-    "copyBtn": "Copy"
+    "copyBtn": "Copy",
+    "failedToConnectError": "Failed to connect. Please try again [error: {errorCode}]"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3415,7 +3422,8 @@ class CodegenLoader extends AssetLoader {
     "existingSubscriptionDesc": "Potresti già avere un abbonamento a pagamento con “{email}”",
     "copyLink": "Copia il link e incollalo nel tuo browser",
     "linkCopied": "Link copiato negli appunti!",
-    "copyBtn": "Copia"
+    "copyBtn": "Copia",
+    "failedToConnectError": "Impossibile connettersi. Riprova [errore: {errorCode}]"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -3913,7 +3921,8 @@ class CodegenLoader extends AssetLoader {
     "existingSubscriptionDesc": "Vous avez peut-être déjà un abonnement payant avec “{email}”",
     "copyLink": "Copiez le lien et collez-le dans votre navigateur",
     "linkCopied": "Lien copié dans le presse-papiers!",
-    "copyBtn": "Copier"
+    "copyBtn": "Copier",
+    "failedToConnectError": "Échec de la connexion. Veuillez réessayer [erreur : {errorCode}]"
   };
   static const Map<String, dynamic> id = {
     "title": "Halo Pak",
@@ -4404,7 +4413,8 @@ class CodegenLoader extends AssetLoader {
     "existingSubscriptionDesc": "Anda mungkin sudah memiliki langganan berbayar dengan “{email}”",
     "copyLink": "Salin tautan dan tempelkan di browser Anda",
     "linkCopied": "Tautan disalin ke papan klip!",
-    "copyBtn": "Salin"
+    "copyBtn": "Salin",
+    "failedToConnectError": "Gagal terhubung. Silakan coba lagi [kesalahan: {errorCode}]"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -4897,7 +4907,8 @@ class CodegenLoader extends AssetLoader {
     "existingSubscriptionDesc": "Es posible que ya tengas una suscripción pagada con “{email}”",
     "copyLink": "Copia el enlace y pégalo en tu navegador",
     "linkCopied": "¡Enlace copiado al portapapeles!",
-    "copyBtn": "Copiar"
+    "copyBtn": "Copiar",
+    "failedToConnectError": "No se pudo conectar. Inténtelo de nuevo [error: {errorCode}]"
   };
   static const Map<String, dynamic> ar = {
     "title": "أهلاً سيدي",
@@ -5383,7 +5394,8 @@ class CodegenLoader extends AssetLoader {
     "existingSubscriptionDesc": "قد يكون لديك بالفعل اشتراك مدفوع مع “{email}”",
     "copyLink": "انسخ الرابط والصقه في متصفحك",
     "linkCopied": "تم نسخ الرابط إلى الحافظة!",
-    "copyBtn": "نسخ"
+    "copyBtn": "نسخ",
+    "failedToConnectError": "فشل الاتصال. يرجى المحاولة مرة أخرى [الخطأ: {errorCode}]"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,
