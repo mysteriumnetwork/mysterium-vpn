@@ -53,7 +53,7 @@ mixin ExceptionHandlerMixin on NetworkService {
                 (data['error'] as Map).containsKey('code')) {
               statusCode =
                   // ignore: avoid_dynamic_calls
-                int.tryParse(data['error']['code'].toString()) ?? statusCode;
+                  int.tryParse(data['error']['code'].toString()) ?? statusCode;
             }
             if (e.response?.statusCode == 503) {
               message = e.message ?? LocaleKeys.serviceUnavailableError.tr();
