@@ -45,10 +45,16 @@ mixin ExceptionHandlerMixin on NetworkService {
             statusCode = 0;
             identifier = 'Socket Exception ${e.message} \nat  $endpoint';
           } else if (e.response?.data != null && e.response?.data is Map<String, dynamic>) {
-            statusCode = e.response?.statusCode ?? 402;
             identifier = 'Dio Exception ${e.message} \nat  $endpoint';
             final data = e.response?.data as Map<String, dynamic>;
-
+            statusCode = e.response?.statusCode ?? 500;
+            if (data.containsKey('error') &&
+                data['error'] is Map &&
+                (data['error'] as Map).containsKey('code')) {
+              statusCode =
+                  // ignore: avoid_dynamic_calls
+                int.tryParse(data['error']['code'].toString()) ?? statusCode;
+            }
             if (e.response?.statusCode == 503) {
               message = e.message ?? LocaleKeys.serviceUnavailableError.tr();
             } else if (data.containsKey('status') && data['status'] == 503) {

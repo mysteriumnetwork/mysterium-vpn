@@ -258,7 +258,7 @@ abstract class _VpnStore with Store {
         _subscriptionStore.subscriptionFuture?.status == FutureStatus.rejected) {
       _subscriptionStore.fetchSubscription();
       showSnackbar(LocaleKeys.activateSubscription.tr());
-      //return;
+      return;
     }
     _requestedRefreshIP = refreshIP;
     if (isLoading) {
