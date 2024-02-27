@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -161,9 +162,17 @@ abstract class _VpnStore with Store {
       _isTunnelSetup = true;
       _logger.info('Tunnel setup done');
     } catch (e, stackTrace) {
+      var message = 'Error occured while setting up tunnel';
+      if (e is PlatformException) {
+        if ((e.message?.contains('Permissions are not given') ?? false) ||
+            (e.message?.contains('permission denied') ?? false)) {
+          message = 'You need to grant permission to start VPN tunnel.';
+        }
+      }
+
       _isTunnelSetup = false;
       _logger.handle(e, stackTrace);
-      showSnackbar('Error occured while setting up tunnel');
+      showSnackbar(message);
     }
   }
 
@@ -220,6 +229,9 @@ abstract class _VpnStore with Store {
       return;
     }
     try {
+      if (!_isTunnelSetup) {
+        await _setupTunnel();
+      }
       await _wireguardService.connect(cfg: config).timeout(
             const Duration(seconds: 10),
             onTimeout: () => throw TimeoutException('Wireguard connection timeout'),
@@ -228,6 +240,13 @@ abstract class _VpnStore with Store {
       _logger.handle(e, stackTrace);
       rethrow;
     } catch (e, stackTrace) {
+      if (e is PlatformException) {
+        if ((e.message?.contains('Permissions are not given') ?? false) ||
+            (e.message?.contains('permission denied') ?? false) ||
+            (e.message?.contains('tunnel not initialized') ?? false)) {
+          _setupTunnel();
+        }
+      }
       _logger.handle(e, stackTrace);
       throw WireguardConnectException(e.toString());
     }
