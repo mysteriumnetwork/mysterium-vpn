@@ -436,9 +436,9 @@ abstract class _VpnStore with Store {
         throw BrokenNodeException(location ?? '');
       }
       await _sharedPrefs.setLocationCode(location ?? '');
-      final ipAddress = await _resolveIPAddress(location);
+      _resolveIPAddress();
       return VpnConnection(
-        connectionIP: ipAddress,
+        connectionIP: '',
         location: location ?? '',
       );
     } on BrokenNodeException {
@@ -449,7 +449,7 @@ abstract class _VpnStore with Store {
     }
   }
 
-  Future<String> _resolveIPAddress(String? location) async {
+  Future<void> _resolveIPAddress() async {
     var counter = 0;
     var resolvedIPAddress = '';
     await Future.doWhile(() async {
@@ -466,9 +466,9 @@ abstract class _VpnStore with Store {
       return true;
     });
     if (resolvedIPAddress.isNotEmpty) {
-      return resolvedIPAddress;
+      _vpnConnection = _vpnConnection?.copyWith(connectionIP: resolvedIPAddress);
     } else {
-      throw BrokenNodeException(location ?? '');
+      disconnectWireguard();
     }
   }
 

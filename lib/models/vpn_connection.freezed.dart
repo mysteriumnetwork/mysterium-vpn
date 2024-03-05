@@ -12,7 +12,7 @@ part of 'vpn_connection.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$VpnConnection {
@@ -99,8 +99,8 @@ class __$$VpnConnectionImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$VpnConnectionImpl implements _VpnConnection {
-  const _$VpnConnectionImpl({required this.connectionIP, required this.location});
+class _$VpnConnectionImpl extends _VpnConnection {
+  const _$VpnConnectionImpl({required this.connectionIP, required this.location}) : super._();
 
   @override
   final String connectionIP;
@@ -131,9 +131,10 @@ class _$VpnConnectionImpl implements _VpnConnection {
       __$$VpnConnectionImplCopyWithImpl<_$VpnConnectionImpl>(this, _$identity);
 }
 
-abstract class _VpnConnection implements VpnConnection {
+abstract class _VpnConnection extends VpnConnection {
   const factory _VpnConnection(
       {required final String connectionIP, required final String location}) = _$VpnConnectionImpl;
+  const _VpnConnection._() : super._();
 
   @override
   String get connectionIP;
