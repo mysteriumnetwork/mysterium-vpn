@@ -450,7 +450,7 @@ Future<bool> hasNetwork() async {
   var isOnline = false;
   await Future.doWhile(() async {
     counter++;
-    if (counter == 3 || isOnline) {
+    if (counter == 5 || isOnline) {
       return false;
     }
     await Future.delayed(const Duration(seconds: 1));
