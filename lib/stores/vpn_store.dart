@@ -264,10 +264,13 @@ abstract class _VpnStore with Store {
   /// Disconnect from Wireguard tunnel
   @action
   Future<void> disconnectWireguard() async {
-    await _wireguardService.disconnect().timeout(
-          const Duration(seconds: 10),
-          onTimeout: () => throw TimeoutException('Wireguard disconnection timeout'),
-        );
+    if (_connectionStatus == ConnectionStatus.connected ||
+        _connectionStatus == ConnectionStatus.connecting) {
+      await _wireguardService.disconnect().timeout(
+            const Duration(seconds: 10),
+            onTimeout: () => throw TimeoutException('Wireguard disconnection timeout'),
+          );
+    }
   }
 
   /// Connect/Disconnect from VPN
@@ -458,7 +461,7 @@ abstract class _VpnStore with Store {
         return false;
       }
       final ipAdress = await _apiService.getIPAdress() ?? '';
-      if (ipAdress.isNotEmpty || ipAdress != _clientIpAdress) {
+      if (ipAdress.isNotEmpty && ipAdress != _clientIpAdress) {
         resolvedIPAddress = ipAdress;
       } else {
         await Future.delayed(const Duration(seconds: 1));
