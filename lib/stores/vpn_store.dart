@@ -141,13 +141,15 @@ abstract class _VpnStore with Store {
         _connectionStatus = event;
       }
       if (event == ConnectionStatus.disconnected) {
+        _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection?.location ?? '');
         _vpnConnection = null;
         _vpnConfig = null;
-        _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection?.location ?? '');
-        _clientIpAdress = await Future.delayed(
-          const Duration(seconds: 2),
-          () async => await _apiService.getIPAdress() ?? '',
-        );
+        if (_clientIpAdress.isEmpty && _requestedRefreshIP == false) {
+          _clientIpAdress = await Future.delayed(
+            const Duration(seconds: 2),
+            () async => await _apiService.getIPAdress() ?? '',
+          );
+        }
       }
       if (event == ConnectionStatus.unknown) {
         _isTunnelSetup = false;
@@ -463,9 +465,9 @@ abstract class _VpnStore with Store {
       final ipAdress = await _apiService.getIPAdress() ?? '';
       if (ipAdress.isNotEmpty && ipAdress != _clientIpAdress) {
         resolvedIPAddress = ipAdress;
-      } else {
-        await Future.delayed(const Duration(seconds: 1));
+        return false;
       }
+      await Future.delayed(const Duration(seconds: 1));
       return true;
     });
     if (resolvedIPAddress.isNotEmpty) {
