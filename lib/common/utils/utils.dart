@@ -455,12 +455,13 @@ Future<bool> hasNetwork() async {
     }
     await Future.delayed(const Duration(seconds: 1));
     try {
-      final result = await InternetAddress.lookup('example.com');
+      final result = await InternetAddress.lookup('google.com');
       isOnline = result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+      return false;
     } on SocketException catch (_) {
       isOnline = false;
     }
-    return false;
+    return true;
   });
   return isOnline;
 }
