@@ -75,15 +75,15 @@ class SubscriptionForm extends HookConsumerWidget {
                   children: [
                     SubscriptionProductsList(
                       products: store.products,
-                    ).padding(bottom: getMediaHeight(context) * 0.02),
+                    ).padding(bottom: getMediaHeight(context) * 0.03),
                     EasyText(
                       subsFormStatus == SubscriptionFormStatus.manage
                           ? LocaleKeys.manageSubsTittle.tr()
                           : subsFormStatus == SubscriptionFormStatus.expired
                               ? LocaleKeys.subsExpiredTittle.tr()
                               : LocaleKeys.freeTrialTitle.tr(),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
                     ).padding(bottom: getMediaHeight(context) * 0.005),
                     EasyText(
                       subsFormStatus == SubscriptionFormStatus.manage
@@ -92,6 +92,7 @@ class SubscriptionForm extends HookConsumerWidget {
                               ? LocaleKeys.subsExpiredDesc.tr()
                               : LocaleKeys.freeTrialDesc.tr(),
                       maxLines: 3,
+                      fontSize: 14,
                       textAlign: TextAlign.center,
                     ).padding(bottom: getMediaHeight(context) * 0.025),
                     ReactionBuilder(
