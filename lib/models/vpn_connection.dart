@@ -8,4 +8,8 @@ class VpnConnection with _$VpnConnection {
     required String connectionIP,
     required String location,
   }) = _VpnConnection;
+
+  const VpnConnection._();
+
+  bool get isResolvingconnectionIP => connectionIP.isEmpty;
 }

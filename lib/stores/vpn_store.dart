@@ -108,6 +108,8 @@ abstract class _VpnStore with Store {
   @observable
   ObservableFuture<VpnConnection>? resolveConnectionLocationFuture;
 
+  String _clientIpAdress = '';
+
   Future<void> _init() async {
     await _generateKey();
     _vpnConfigConsent = _localDBService.getVpnConsentApproval() ?? false;
@@ -128,17 +130,26 @@ abstract class _VpnStore with Store {
       resolveConnectionLocationFuture = ObservableFuture(_resolveConnectionLocation(location));
       _vpnConnection = await resolveConnectionLocationFuture;
     }
+    if (status == ConnectionStatus.disconnected) {
+      _clientIpAdress = await _apiService.getIPAdress() ?? '';
+    }
     _connectionStatus = status;
 
-    _wireguardService.statusStream().listen((event) {
+    _wireguardService.statusStream().listen((event) async {
       if (!(resolveConnectionLocationFuture?.status == FutureStatus.pending ||
           (_requestedRefreshIP ?? true && _connectionStatus == ConnectionStatus.connecting))) {
         _connectionStatus = event;
       }
       if (event == ConnectionStatus.disconnected) {
+        _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection?.location ?? '');
         _vpnConnection = null;
         _vpnConfig = null;
-        _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection?.location ?? '');
+        if (_clientIpAdress.isEmpty && _requestedRefreshIP == false) {
+          _clientIpAdress = await Future.delayed(
+            const Duration(seconds: 2),
+            () async => await _apiService.getIPAdress() ?? '',
+          );
+        }
       }
       if (event == ConnectionStatus.unknown) {
         _isTunnelSetup = false;
@@ -255,10 +266,13 @@ abstract class _VpnStore with Store {
   /// Disconnect from Wireguard tunnel
   @action
   Future<void> disconnectWireguard() async {
-    await _wireguardService.disconnect().timeout(
-          const Duration(seconds: 10),
-          onTimeout: () => throw TimeoutException('Wireguard disconnection timeout'),
-        );
+    if (_connectionStatus == ConnectionStatus.connected ||
+        _connectionStatus == ConnectionStatus.connecting) {
+      await _wireguardService.disconnect().timeout(
+            const Duration(seconds: 10),
+            onTimeout: () => throw TimeoutException('Wireguard disconnection timeout'),
+          );
+    }
   }
 
   /// Connect/Disconnect from VPN
@@ -423,13 +437,13 @@ abstract class _VpnStore with Store {
 
   Future<VpnConnection> _resolveConnectionLocation(String? location) async {
     try {
-      final ipAddress = await _apiService.getIPAdress().timeout(
-            const Duration(seconds: 10),
-            onTimeout: () => throw BrokenNodeException(location ?? ''),
-          );
+      if (!await hasNetwork()) {
+        throw BrokenNodeException(location ?? '');
+      }
       await _sharedPrefs.setLocationCode(location ?? '');
+      _resolveIPAddress();
       return VpnConnection(
-        connectionIP: ipAddress ?? '--',
+        connectionIP: '',
         location: location ?? '',
       );
     } on BrokenNodeException {
@@ -437,6 +451,29 @@ abstract class _VpnStore with Store {
       rethrow;
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<void> _resolveIPAddress() async {
+    var counter = 0;
+    var resolvedIPAddress = '';
+    await Future.doWhile(() async {
+      counter++;
+      if (counter == 5 || resolvedIPAddress.isNotEmpty) {
+        return false;
+      }
+      final ipAdress = await _apiService.getIPAdress() ?? '';
+      if (ipAdress.isNotEmpty && ipAdress != _clientIpAdress) {
+        resolvedIPAddress = ipAdress;
+        return false;
+      }
+      await Future.delayed(const Duration(seconds: 1));
+      return true;
+    });
+    if (resolvedIPAddress.isNotEmpty) {
+      _vpnConnection = _vpnConnection?.copyWith(connectionIP: resolvedIPAddress);
+    } else {
+      disconnectWireguard();
     }
   }
 

@@ -28,17 +28,15 @@ mixin ExceptionHandlerMixin on NetworkService {
       var message = '';
       var identifier = '';
       var statusCode = 0;
-      switch (e.runtimeType) {
-        case SocketException:
-          e as SocketException;
+      switch (e) {
+        case SocketException _:
           message =
               'Internet connection unavailable. Please verify your network settings and retry.';
           statusCode = 0;
           identifier = 'Socket Exception ${e.message} \nat  $endpoint';
-          break;
+          throw ApiException(message, statusCode, identifier);
 
-        case DioException:
-          e as DioException;
+        case DioException _:
           if (e.error is SocketException) {
             message =
                 'Unable to connect to the server. Please check your internet connection and try again.';
@@ -73,14 +71,14 @@ mixin ExceptionHandlerMixin on NetworkService {
             statusCode = 500;
             identifier = 'Dio Exception ${e.message} \nat  $endpoint';
           }
-          break;
+          throw ApiException(message, statusCode, identifier);
 
         default:
           message = 'Unknown error occurred';
           statusCode = 2;
           identifier = 'Unknown error $e\n at $endpoint';
+          throw ApiException(message, statusCode, identifier);
       }
-      throw ApiException(message, statusCode, identifier);
     }
   }
 }

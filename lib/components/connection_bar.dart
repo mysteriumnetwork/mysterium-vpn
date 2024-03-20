@@ -7,6 +7,7 @@ import 'package:mysterium_vpn/components/connection_indicator.dart';
 import 'package:mysterium_vpn/components/decorated_label.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/flag.dart';
+import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/refresh_connection.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -36,6 +37,14 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
               text: vpnConnection?.connectionIP ?? '--',
               maxLines: 1,
               action: const RefreshConnection(),
+              indicator: vpnConnection?.isResolvingconnectionIP ?? false
+                  ? const Padding(
+                      padding: EdgeInsets.all(4),
+                      child: LoadingIndicator(
+                        radius: 14,
+                      ),
+                    )
+                  : null,
             ).expanded(),
             _BarItem(
               label: LocaleKeys.status.tr(),
@@ -71,6 +80,7 @@ class _BarItem extends StatelessWidget {
     this.leading,
     this.leadingPosition = LeadingPosition.left,
     this.action,
+    this.indicator,
   });
 
   final String label;
@@ -80,6 +90,7 @@ class _BarItem extends StatelessWidget {
   final bool isConnected;
   final LeadingPosition leadingPosition;
   final int maxLines;
+  final Widget? indicator;
   @override
   Widget build(BuildContext context) => Column(
         children: [
@@ -100,14 +111,17 @@ class _BarItem extends StatelessWidget {
               children: [
                 if (leadingPosition == LeadingPosition.left && leading != null)
                   leading!.paddingDirectional(end: 4),
-                EasyText(
-                  text,
-                  color: Palette.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 12,
-                  textAlign: TextAlign.center,
-                  maxLines: maxLines,
-                ).flexible(),
+                if (indicator != null)
+                  indicator!
+                else
+                  EasyText(
+                    text,
+                    color: Palette.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
+                    textAlign: TextAlign.center,
+                    maxLines: maxLines,
+                  ).flexible(),
               ],
             ),
           if (leadingPosition == LeadingPosition.bottom && leading != null)

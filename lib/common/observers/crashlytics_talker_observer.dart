@@ -9,14 +9,14 @@ class CrashlitycsLoggerObserver extends TalkerObserver {
   final AnalyticsStore analyticsStore;
 
   @override
-  void onLog(TalkerDataInterface log) {
+  void onLog(TalkerData log) {
     analyticsStore.logMessage(log.generateTextMessage());
   }
 
   @override
   Future<void> onError(TalkerError err) async {
     analyticsStore.logError(
-      err: err.error,
+      err: err.error ?? Error(),
       stack: err.stackTrace,
       fatal: true,
     );
@@ -25,7 +25,7 @@ class CrashlitycsLoggerObserver extends TalkerObserver {
   @override
   Future<void> onException(TalkerException err) async {
     analyticsStore.logError(
-      err: err.exception,
+      err: err.exception ?? Exception('Unknown exception'),
       stack: err.stackTrace,
       reason: err.exception.toString(),
       fatal: true,
