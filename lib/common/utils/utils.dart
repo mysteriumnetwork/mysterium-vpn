@@ -330,17 +330,6 @@ void showSnackbar(String message, {SnackBarAction? action, MessageType type = Me
     ..showSnackBar(snackBar);
 }
 
-String? getVpnAddress(String config) {
-  final exp = RegExp(r'\b(?:\d{1,3}\.){3}\d{1,3}\b');
-  final matches = exp.allMatches(config);
-  final ips = matches.map((m) => m.group(0)).toList();
-  if (ips.isNotEmpty) {
-    return ips.first;
-  } else {
-    return null;
-  }
-}
-
 String? getMagicLinkCode(String query) {
   if (!query.contains('code=') ||
       !query.substring(query.indexOf('code=') + 5, query.length).isUUID()) {
@@ -454,4 +443,25 @@ Future<void> openUrlLink(Uri url) async {
       type: MessageType.info,
     );
   }
+}
+
+Future<bool> hasNetwork() async {
+  var counter = 0;
+  var isOnline = false;
+  await Future.doWhile(() async {
+    counter++;
+    if (counter == 5 || isOnline) {
+      return false;
+    }
+    await Future.delayed(const Duration(seconds: 1));
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      isOnline = result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+      return false;
+    } on SocketException catch (_) {
+      isOnline = false;
+    }
+    return true;
+  });
+  return isOnline;
 }
