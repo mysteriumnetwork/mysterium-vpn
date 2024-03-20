@@ -52,7 +52,7 @@ dependencies:
   json_annotation: ^4.8.1
   lottie: ^3.1.0
   mobx: ^2.3.0+1
-  modal_bottom_sheet: ^3.0.0-pre
+  modal_bottom_sheet: ^3.0.0
   open_mail_app:
     git:
         url: https://github.com/KristijanMitrik/open-mail-app-flutter.git

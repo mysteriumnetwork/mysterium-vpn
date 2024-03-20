@@ -357,7 +357,7 @@ void handleOnSignIn(BuildContext context, AuthStore store) {
       child: SingleChildScrollView(
         controller: ModalScrollController.of(context),
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        child: const SignUpPage().height(getMediaHeight(context) * 0.9),
+        child: const SignUpPage().height(getMediaHeight(context) * 0.85),
       ),
     ),
   );
