@@ -5,6 +5,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/response.dart' as response;
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
@@ -15,7 +16,8 @@ mixin ExceptionHandlerMixin on NetworkService {
     String endpoint = '',
   }) async {
     try {
-      if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
+      if (await Connectivity().checkConnectivity() == ConnectivityResult.none ||
+          !(await hasNetwork())) {
         throw const SocketException('No internet connection');
       }
       final res = await handler();

@@ -139,10 +139,10 @@ class RestApiService extends ApiService {
       }
       return null;
     } on ApiException {
-      rethrow;
+      return null;
     } catch (e) {
       _logger.handle(e);
-      rethrow;
+      return null;
     }
   }
 }
