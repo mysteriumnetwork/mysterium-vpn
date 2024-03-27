@@ -96,11 +96,11 @@ abstract class LocaleKeys {
   static const perMonth = 'perMonth';
   static const freeTrialTitle = 'freeTrialTitle';
   static const freeTrialDesc = 'freeTrialDesc';
+  static const startTrialBtn = 'startTrialBtn';
   static const subsExpiredTittle = 'subsExpiredTittle';
   static const subsExpiredDesc = 'subsExpiredDesc';
   static const manageSubsTittle = 'manageSubsTittle';
   static const manageSubsDesc = 'manageSubsDesc';
-  static const startTrialBtn = 'startTrialBtn';
   static const renewSubsBtn = 'renewSubsBtn';
   static const popular = 'popular';
   static const continueBtn = 'continueBtn';
