@@ -23,12 +23,13 @@ Future<void> shownDeleteAccountDialog(BuildContext context, AuthStore store) asy
     clipBehavior: Clip.none,
     constraints: const BoxConstraints.tightFor(width: double.infinity),
     context: context,
+    isScrollControlled: true,
     backgroundColor: Theme.of(context).primaryColor,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
     ),
     builder: (context) => Padding(
-      padding: EdgeInsets.zero,
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: _DeleteAccountDialog(store: store),
     ),
   );
