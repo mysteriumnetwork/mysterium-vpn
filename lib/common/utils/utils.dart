@@ -453,7 +453,6 @@ Future<bool> hasNetwork() async {
     if (counter == 5 || isOnline) {
       return false;
     }
-    await Future.delayed(const Duration(seconds: 1));
     try {
       final result = await InternetAddress.lookup('google.com');
       isOnline = result.isNotEmpty && result[0].rawAddress.isNotEmpty;
@@ -461,6 +460,7 @@ Future<bool> hasNetwork() async {
     } on SocketException catch (_) {
       isOnline = false;
     }
+    await Future.delayed(const Duration(seconds: 1));
     return true;
   });
   return isOnline;
