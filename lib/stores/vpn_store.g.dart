@@ -176,22 +176,6 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$resolveClientIPAddressFeatureAtom =
-      Atom(name: '_VpnStore.resolveClientIPAddressFeature', context: context);
-
-  @override
-  ObservableFuture<String?>? get resolveClientIPAddressFeature {
-    _$resolveClientIPAddressFeatureAtom.reportRead();
-    return super.resolveClientIPAddressFeature;
-  }
-
-  @override
-  set resolveClientIPAddressFeature(ObservableFuture<String?>? value) {
-    _$resolveClientIPAddressFeatureAtom.reportWrite(value, super.resolveClientIPAddressFeature, () {
-      super.resolveClientIPAddressFeature = value;
-    });
-  }
-
   late final _$_setupAndListenToConnectionStatusAsyncAction =
       AsyncAction('_VpnStore._setupAndListenToConnectionStatus', context: context);
 
@@ -279,7 +263,6 @@ mixin _$VpnStore on _VpnStore, Store {
   String toString() {
     return '''
 resolveConnectionLocationFuture: ${resolveConnectionLocationFuture},
-resolveClientIPAddressFeature: ${resolveClientIPAddressFeature},
 isConnected: ${isConnected},
 isLoading: ${isLoading}
     ''';
