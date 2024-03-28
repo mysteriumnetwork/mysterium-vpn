@@ -1,3 +1,4 @@
+import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/models/vpn_config.dart';
@@ -11,5 +12,5 @@ abstract class ApiService {
   void addRecentLocation(String location);
   List<String> getRecentLocations({required String keyword});
   Future<VpnConfig> fetchVpnConfig({required VpnConfigInput input, required String privateKey});
-  Future<String?> getIPAdress();
+  Future<IPInfo?> getIPAdress();
 }

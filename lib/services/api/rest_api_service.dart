@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/models/vpn_config.dart';
@@ -10,7 +11,8 @@ import 'package:talker/talker.dart';
 
 const kFetchAllLocations = '/connection/config';
 const kCreateConnectionConfig = '/connection/connect';
-const kFetchIP = 'https://location.mysterium.network/api/v1/ip';
+const kFetchIP = 'https://location.mysterium.network/api/v1/location';
+const kFetchIPFallback = 'https://ipinfo.io/json';
 
 class RestApiService extends ApiService {
   RestApiService({
@@ -125,24 +127,26 @@ class RestApiService extends ApiService {
   }
 
   @override
-  Future<String?> getIPAdress() async {
+  Future<IPInfo?> getIPAdress() async {
     try {
-      final data = (await Future.delayed(
-        const Duration(seconds: 2),
-        () async => _networkService.fetch(
-          kFetchIP,
-        ),
-      ))
-          .data as Map<String, dynamic>?;
-      if (data != null && data.containsKey('ip')) {
-        return data['ip'] as String;
+      final response = await _networkService.fetch(kFetchIP);
+
+      if (response.statusCode == 200) {
+        return IPInfo.fromJson(response.data as Map<String, dynamic>);
+      } else {
+        throw Exception('Failed to load IP info');
       }
-      return null;
-    } on ApiException {
-      return null;
     } catch (e) {
-      _logger.handle(e);
-      return null;
+      try {
+        final fallbackResponse = await _networkService.fetch(kFetchIPFallback);
+        if (fallbackResponse.statusCode == 200) {
+          return IPInfo.fromJson(fallbackResponse.data as Map<String, dynamic>);
+        } else {
+          throw Exception('Failed to load IP info from fallback service');
+        }
+      } catch (fallbackError) {
+        return null;
+      }
     }
   }
 }

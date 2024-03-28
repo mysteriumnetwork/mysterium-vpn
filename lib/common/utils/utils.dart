@@ -450,18 +450,13 @@ Future<bool> hasNetwork() async {
   var isOnline = false;
   await Future.doWhile(() async {
     counter++;
-    if (counter == 5 || isOnline) {
-      return false;
-    }
     try {
-      final result = await InternetAddress.lookup('google.com');
+      final result = await InternetAddress.lookup('google.com').timeout(const Duration(seconds: 5));
       isOnline = result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-      return false;
-    } on SocketException catch (_) {
+    } catch (_) {
       isOnline = false;
     }
-    await Future.delayed(const Duration(seconds: 1));
-    return true;
+    return counter < 5 && !isOnline;
   });
   return isOnline;
 }

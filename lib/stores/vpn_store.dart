@@ -93,9 +93,13 @@ abstract class _VpnStore with Store {
   ConnectionStatus _connectionStatus = ConnectionStatus.disconnected;
 
   @computed
-  bool get isConnected => _connectionStatus == ConnectionStatus.connected;
+  bool get isConnected =>
+      _connectionStatus == ConnectionStatus.connected &&
+      resolveConnectionLocationFuture?.status != FutureStatus.pending;
   @computed
-  bool get isLoading => _connectionStatus == ConnectionStatus.connecting;
+  bool get isLoading =>
+      _connectionStatus == ConnectionStatus.connecting ||
+      resolveConnectionLocationFuture?.status == FutureStatus.pending;
 
   @readonly
   String? _connectingLocationCode;
@@ -107,11 +111,6 @@ abstract class _VpnStore with Store {
 
   @observable
   ObservableFuture<VpnConnection>? resolveConnectionLocationFuture;
-
-  @observable
-  ObservableFuture<String?>? resolveClientIPAddressFeature;
-
-  String _clientIpAdress = '';
 
   Future<void> _init() async {
     await _generateKey();
@@ -133,11 +132,7 @@ abstract class _VpnStore with Store {
       resolveConnectionLocationFuture = ObservableFuture(_resolveConnectionLocation(location));
       _vpnConnection = await resolveConnectionLocationFuture;
     }
-    if (status == ConnectionStatus.disconnected) {
-      resolveClientIPAddressFeature =
-          ObservableFuture(_apiService.getIPAdress().timeout(const Duration(seconds: 10)));
-      _clientIpAdress = await resolveClientIPAddressFeature ?? '';
-    }
+
     _connectionStatus = status;
 
     _wireguardService.statusStream().listen((event) async {
@@ -147,15 +142,16 @@ abstract class _VpnStore with Store {
       }
       if (event == ConnectionStatus.disconnected) {
         _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection?.location ?? '');
-        if ((_connectingLocationCode?.isEmpty ?? true) || _clientIpAdress.isEmpty) {
-          resolveClientIPAddressFeature =
-              ObservableFuture(_apiService.getIPAdress().timeout(const Duration(seconds: 10)));
-          _clientIpAdress = await resolveClientIPAddressFeature ?? '';
-        }
       }
       if (event == ConnectionStatus.unknown) {
         _isTunnelSetup = false;
         _setupTunnel();
+      }
+      if (event == ConnectionStatus.disconnecting ||
+          event == ConnectionStatus.disconnected &&
+              ((_connectingLocationCode?.isNotEmpty ?? false) &&
+                  _connectionStatus == ConnectionStatus.connecting)) {
+        return;
       }
       _connectionStatus = event;
     });
@@ -314,9 +310,6 @@ abstract class _VpnStore with Store {
     _connectingLocationCode = location;
 
     try {
-      if (resolveClientIPAddressFeature?.status == FutureStatus.pending) {
-        await resolveClientIPAddressFeature;
-      }
       if (_vpnConnection != null) {
         await disconnectWireguard();
       }
@@ -446,7 +439,7 @@ abstract class _VpnStore with Store {
         throw BrokenNodeException(location ?? '');
       }
       await _sharedPrefs.setLocationCode(location ?? '');
-      _resolveIPAddress();
+      _resolveIPAddress(location);
       return VpnConnection(
         connectionIP: '',
         location: location ?? '',
@@ -459,24 +452,17 @@ abstract class _VpnStore with Store {
     }
   }
 
-  Future<void> _resolveIPAddress() async {
+  Future<void> _resolveIPAddress(String? country) async {
     var counter = 0;
     var resolvedIPAddress = '';
     await Future.doWhile(() async {
       counter++;
-      if (counter == 5 || resolvedIPAddress.isNotEmpty) {
-        return false;
-      }
-      final ipAdress = await _apiService.getIPAdress().timeout(
-                const Duration(seconds: 10),
-              ) ??
-          '';
-      if (ipAdress.isNotEmpty && ipAdress != _clientIpAdress) {
-        resolvedIPAddress = ipAdress;
-        return false;
-      }
       await Future.delayed(const Duration(seconds: 3));
-      return true;
+      final ipInfo = await _apiService.getIPAdress();
+      if (ipInfo != null && ipInfo.country == country) {
+        resolvedIPAddress = ipInfo.ip;
+      }
+      return counter < 5 && resolvedIPAddress.isEmpty;
     });
     if (resolvedIPAddress.isNotEmpty) {
       _vpnConnection = _vpnConnection?.copyWith(connectionIP: resolvedIPAddress);

@@ -12,6 +12,7 @@ import 'package:mysterium_vpn/components/refresh_connection.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:wireguard_dart/connection_status.dart';
 
 enum LeadingPosition {
   left,
@@ -29,6 +30,8 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
     return Observer(
       builder: (context) {
         final vpnConnection = vpnStore.vpnConnection;
+        final isResolvingconnectionIP = vpnConnection?.isResolvingconnectionIP ?? false;
+
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -36,8 +39,8 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
               label: LocaleKeys.connectionIp.tr(),
               text: vpnConnection?.connectionIP ?? '--',
               maxLines: 1,
-              action: const RefreshConnection(),
-              indicator: vpnConnection?.isResolvingconnectionIP ?? false
+              action: vpnStore.isLoading ? null : const RefreshConnection(),
+              indicator: isResolvingconnectionIP
                   ? const Padding(
                       padding: EdgeInsets.all(4),
                       child: LoadingIndicator(
@@ -48,7 +51,9 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
             ).expanded(),
             _BarItem(
               label: LocaleKeys.status.tr(),
-              text: vpnStore.connectionStatus.name.tr(),
+              text: vpnStore.isLoading
+                  ? ConnectionStatus.connecting.name.tr()
+                  : vpnStore.connectionStatus.name.tr(),
               isConnected: vpnStore.isConnected,
               leading: ConnectionIndicator(
                 isConnected: vpnStore.isConnected,
@@ -57,7 +62,7 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
             ).expanded(),
             _BarItem(
               label: LocaleKeys.location.tr(),
-              leading: vpnStore.isConnected
+              leading: vpnStore.isConnected && (vpnConnection?.location.isNotEmpty ?? false)
                   ? Flag(countryCode: vpnStore.vpnConnection?.location ?? '')
                   : null,
               text: vpnConnection?.location.tr() ?? '--',
