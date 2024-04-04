@@ -7,7 +7,6 @@ import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/components/login_headlines.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -28,37 +27,22 @@ class LoginMobileView extends ConsumerWidget {
         children: [
           Column(
             children: [
-              const AppLogo().padding(top: 30, bottom: 10),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      const Expanded(
-                        child: LoginHeadlines(),
-                      ),
-                      EasyButton(
-                        width: getMediaWidth(context) * 0.8,
-                        height: 60,
-                        useSystemColor: false,
-                        color: Palette.purple,
-                        text: LocaleKeys.signIn.tr(),
-                        onPressed: () => handleOnSignIn(context, authStore),
-                      ).padding(bottom: 60),
-                      Visibility(
-                        visible: false,
-                        child: TextButton(
-                          onPressed: () {},
-                          child: EasyText(
-                            LocaleKeys.getHelp.tr(),
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              const AppLogo().padding(
+                top: getMediaHeight(context) * 0.03,
+                bottom: getMediaHeight(context) * 0.02,
+              ),
+              const Expanded(
+                child: LoginHeadlines(),
+              ),
+              EasyButton(
+                width: getMediaWidth(context) * 0.8,
+                height: 60,
+                useSystemColor: false,
+                color: Palette.purple,
+                text: LocaleKeys.signIn.tr(),
+                onPressed: () => handleOnSignIn(context, authStore),
+              ).padding(
+                bottom: getMediaHeight(context) * 0.05,
               ),
             ],
           ),
