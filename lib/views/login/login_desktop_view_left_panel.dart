@@ -40,7 +40,7 @@ class LoginDesktopViewLeftPanel extends ConsumerWidget {
                     ),
                   ),
                 ],
-              ).padding(bottom: 20),
+              ).padding(bottom: getMediaHeight(context) * 0.02),
               const LoginHeadlines().expanded(),
               EasyButton(
                 height: 60,
@@ -57,7 +57,7 @@ class LoginDesktopViewLeftPanel extends ConsumerWidget {
                 ),
               ),
             ],
-          ).paddingDirectional(horizontal: 55, vertical: 40),
+          ).paddingDirectional(horizontal: 55, vertical: getMediaHeight(context) * 0.05),
           if (authStore.authStatus == AuthStatus.authenticating)
             LoadingBarrier(
               color: Theme.of(context).primaryColor,
