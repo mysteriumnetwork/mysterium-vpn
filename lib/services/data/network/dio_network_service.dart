@@ -16,8 +16,9 @@ class DioNetworkService extends NetworkService with ExceptionHandlerMixin {
   BaseOptions get dioBaseOptions => BaseOptions(
         baseUrl: baseUrl,
         headers: headers,
-        connectTimeout: const Duration(seconds: 10),
-        receiveTimeout: const Duration(seconds: 10),
+        connectTimeout: const Duration(seconds: 5),
+        receiveTimeout: const Duration(seconds: 3),
+        sendTimeout: const Duration(seconds: 5),
       );
 
   @override
