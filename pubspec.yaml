@@ -20,6 +20,8 @@ dependencies:
   connectivity_plus: ^5.0.2
   crypto: ^3.0.3
   cupertino_icons: ^1.0.2
+  dart_ping: ^9.0.1
+  dart_ping_ios: ^4.0.2
   dio: ^5.4.1
   easy_localization: ^3.0.5
   firebase_analytics: ^10.8.8
