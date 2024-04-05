@@ -2,16 +2,17 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 
+import 'package:dart_ping_ios/dart_ping_ios.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/app.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
@@ -32,12 +33,14 @@ class Enviroment {
     required String flavor,
     required FirebaseOptions? firebaseOptions,
   }) async {
-    final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+    WidgetsFlutterBinding.ensureInitialized();
 
     if (isDesktop()) {
       await windowManager.ensureInitialized();
       await windowManager.setPreventClose(true);
+    }
+    if (Platform.isIOS) {
+      DartPingIOS.register();
     }
 
     if (Platform.isWindows) {
@@ -82,7 +85,12 @@ class Enviroment {
     final logger = container.read(loggerPOD);
     await container.read(marketingAnalyticsInitPOD(flavorConfig).future);
 
-    FlutterError.onError = (details) => logger.handle(details.exception, details.stack, 'fatal');
+    FlutterError.onError = (details) {
+      logger.handle(
+        details.exception,
+        details.stack,
+      );
+    };
     PlatformDispatcher.instance.onError = (error, stack) {
       logger.handle(error, stack, 'fatal');
       return true;
@@ -97,10 +105,19 @@ class Enviroment {
               'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200'
           ..sendClientReports = true
           ..maxRequestBodySize = MaxRequestBodySize.small
-          ..maxResponseBodySize = MaxResponseBodySize.small;
+          ..maxResponseBodySize = MaxResponseBodySize.small
+          ..beforeSend = (event, {hint}) {
+            debugPrint(event.throwable.toString());
+            if (event.throwable is ApiException ||
+                event.throwable is SignInAborted ||
+                event.throwable is KeyDoesntExistsException ||
+                event.throwable is TimeoutException) {
+              return null;
+            }
+            return event;
+          };
       },
       appRunner: () {
-        FlutterNativeSplash.remove();
         runApp(
           UncontrolledProviderScope(
             container: container,

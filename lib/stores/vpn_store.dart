@@ -112,6 +112,9 @@ abstract class _VpnStore with Store {
   @observable
   ObservableFuture<VpnConnection>? resolveConnectionLocationFuture;
 
+  int _retryCount = 0;
+  bool _isRetrying = false;
+
   Future<void> _init() async {
     await _generateKey();
     _vpnConfigConsent = _localDBService.getVpnConsentApproval() ?? false;
@@ -292,10 +295,14 @@ abstract class _VpnStore with Store {
       showSnackbar(LocaleKeys.activateSubscription.tr());
       return;
     }
+
     _requestedRefreshIP = refreshIP;
-    if (isLoading) {
+
+    if (isLoading && _connectingLocationCode == location && !_isRetrying) {
       _cancelConnection();
-      return;
+      if (_connectingLocationCode == location) {
+        return;
+      }
     }
 
     if (refreshIP != true &&
@@ -364,7 +371,9 @@ abstract class _VpnStore with Store {
               : e is BrokenNodeException?
                   ? 'broken_node'
                   : 'internal';
-
+      if (_isRetrying == true) {
+        return;
+      }
       showSnackbar(errorMessage);
       _setVpnError(
         errorCode: errorCode,
@@ -435,39 +444,57 @@ abstract class _VpnStore with Store {
 
   Future<VpnConnection> _resolveConnectionLocation(String? location) async {
     try {
-      if (!await hasNetwork()) {
+      if (!await hasNetwork(count: 5, interval: 5, timeout: 10)) {
         throw BrokenNodeException(location ?? '');
       }
       await _sharedPrefs.setLocationCode(location ?? '');
       _resolveIPAddress(location);
+      _retryCount = 0;
+      _isRetrying = false;
       return VpnConnection(
         connectionIP: '',
         location: location ?? '',
       );
     } on BrokenNodeException {
-      disconnectWireguard();
+      _retryCount++;
+      _isRetrying = true;
+      await disconnectWireguard();
+
+      if (_retryCount < 3) {
+        toggleConnection(location: location);
+      }
       rethrow;
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<void> _resolveIPAddress(String? country) async {
+  Future<void> _resolveIPAddress(String? countryCode) async {
     var counter = 0;
     var resolvedIPAddress = '';
     await Future.doWhile(() async {
+      // If user changed location while resolving IP, stop the process
+      if (countryCode != _connectingLocationCode &&
+          (_connectingLocationCode?.isNotEmpty ?? false)) {
+        return false;
+      }
       counter++;
       await Future.delayed(const Duration(seconds: 3));
       final ipInfo = await _apiService.getIPAdress();
-      if (ipInfo != null && ipInfo.country == country) {
+      if (ipInfo != null && ipInfo.country == countryCode) {
         resolvedIPAddress = ipInfo.ip;
       }
       return counter < 5 && resolvedIPAddress.isEmpty;
     });
     if (resolvedIPAddress.isNotEmpty) {
       _vpnConnection = _vpnConnection?.copyWith(connectionIP: resolvedIPAddress);
-    } else {
+    }
+    // If IP address is not resolved, disconnect the connection
+    // Skip if user changed location while resolving IP
+    else if ((_vpnConnection?.connectionIP.isEmpty ?? true) &&
+        _connectingLocationCode == countryCode) {
       disconnectWireguard();
+      _vpnConnection = null;
     }
   }
 
