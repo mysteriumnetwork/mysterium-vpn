@@ -29,18 +29,18 @@ PODS:
   - Firebase/Performance (10.22.0):
     - Firebase/CoreOnly
     - FirebasePerformance (~> 10.22.0)
-  - firebase_analytics (10.8.8):
+  - firebase_analytics (10.8.9):
     - Firebase/Analytics (= 10.22.0)
     - firebase_core
     - Flutter
-  - firebase_core (2.26.0):
+  - firebase_core (2.27.0):
     - Firebase/CoreOnly (= 10.22.0)
     - Flutter
-  - firebase_crashlytics (3.4.17):
+  - firebase_crashlytics (3.4.18):
     - Firebase/Crashlytics (= 10.22.0)
     - firebase_core
     - Flutter
-  - firebase_performance (0.9.3-16):
+  - firebase_performance (0.9.3-17):
     - Firebase/Performance (= 10.22.0)
     - firebase_core
     - Flutter
@@ -112,6 +112,8 @@ PODS:
     - PromisesSwift (~> 2.1)
   - FirebaseSharedSwift (10.22.0)
   - Flutter (1.0.0)
+  - flutter_icmp_ping (0.0.1):
+    - Flutter
   - flutter_native_splash (0.0.1):
     - Flutter
   - flutter_secure_storage (6.0.0):
@@ -236,6 +238,7 @@ DEPENDENCIES:
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
   - firebase_performance (from `.symlinks/plugins/firebase_performance/ios`)
   - Flutter (from `Flutter`)
+  - flutter_icmp_ping (from `.symlinks/plugins/flutter_icmp_ping/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/darwin`)
@@ -299,6 +302,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_performance/ios"
   Flutter:
     :path: Flutter
+  flutter_icmp_ping:
+    :path: ".symlinks/plugins/flutter_icmp_ping/ios"
   flutter_native_splash:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
   flutter_secure_storage:
@@ -335,10 +340,10 @@ SPEC CHECKSUMS:
   AppsFlyerFramework: cb54b4f27d2da2b3e2b286800476ce3b2007c75f
   connectivity_plus: bf0076dd84a130856aa636df1c71ccaff908fa1d
   Firebase: 797fd7297b7e1be954432743a0b3f90038e45a71
-  firebase_analytics: d00f42e1cfb2a75e62150e6a1e03236dc949f0d3
-  firebase_core: 8e100adc478919c6f3224f854ce8fa0bd98e36fd
-  firebase_crashlytics: 8fde34b3b9e4d69a06395ce1630514eded1a7180
-  firebase_performance: 96bba18922dca0d04ddc11de447634f7e7b90626
+  firebase_analytics: b9ce200bfc2c54629076bb22d6a510f31c296ab8
+  firebase_core: 100945864b4aedce3cfef0c62ab864858bf013cf
+  firebase_crashlytics: 2b9ca6246501a03427eb43280be7615027e32142
+  firebase_performance: e08a33d300315eb2031d48c42611514c902d33c9
   FirebaseABTesting: 66d2594b36d4ff6e7d3c8719802100990de05857
   FirebaseAnalytics: 8d0ff929c63b7f72260f332b86ccf569776b75d3
   FirebaseCore: 0326ec9b05fbed8f8716cddbf0e36894a13837f7
@@ -351,7 +356,8 @@ SPEC CHECKSUMS:
   FirebaseSessions: cd97fb07674f3906619c871eefbd260a1546c9d3
   FirebaseSharedSwift: 48076404e6e52372290d15a07d2ed1d2f1754023
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
+  flutter_icmp_ping: 2b159955eee0c487c766ad83fec224ae35e7c935
+  flutter_native_splash: edf599c81f74d093a4daf8e17bd7a018854bc778
   flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
   google_sign_in_ios: 989eea5abe94af62050782714daf920be883d4a2
   GoogleAppMeasurement: ccefe3eac9b0aa27f96066809fb1a7fe4b462626
@@ -376,10 +382,10 @@ SPEC CHECKSUMS:
   SentryPrivate: 006b24af16828441f70e2ab6adf241bd0a8ad130
   shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
-  url_launcher_ios: 6116280ddcfe98ab8820085d8d76ae7449447586
+  url_launcher_ios: bbd758c6e7f9fd7b5b1d4cde34d2b95fcce5e812
   wireguard_dart: e9f4586e6433f14a16864e80abbdb63239e1aa12
   WireGuardKit: 8b9e7f28441b67aafe60d59c15b8c70bed5ab092
 
 PODFILE CHECKSUM: cde9483c85255791ca41817453f1c1583f2bd972
 
-COCOAPODS: 1.13.0
+COCOAPODS: 1.15.2
