@@ -308,7 +308,7 @@ abstract class _VpnStore with Store {
       return;
     }
 
-    location ??= refreshIP ?? false ? _vpnConnection!.location : _selectLocation();
+    location ??= refreshIP ?? false ? _vpnConnection?.location : _selectLocation();
     _connectingLocationCode = location;
 
     try {

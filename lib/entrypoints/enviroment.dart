@@ -79,6 +79,7 @@ class Enviroment {
       ..registerAdapter(UserDataAdapter())
       ..registerAdapter(ApprovalAdapter());
     await Hive.openBox<UserData>('user_data', compactionStrategy: (e, d) => false);
+
     final container =
         ProviderContainer(overrides: [environmentPOD.overrideWith((ref) => flavorConfig)]);
     await container.read(analyticsInitPOD(firebaseOptions).future);
@@ -111,7 +112,8 @@ class Enviroment {
             if (event.throwable is ApiException ||
                 event.throwable is SignInAborted ||
                 event.throwable is KeyDoesntExistsException ||
-                event.throwable is TimeoutException) {
+                event.throwable is TimeoutException ||
+                event.throwable is TokenAlreadyUsedException) {
               return null;
             }
             return event;
