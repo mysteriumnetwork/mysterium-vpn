@@ -158,6 +158,21 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$fetchConfigFutureAtom = Atom(name: '_VpnStore.fetchConfigFuture', context: context);
+
+  @override
+  ObservableFuture<VpnConfig>? get fetchConfigFuture {
+    _$fetchConfigFutureAtom.reportRead();
+    return super.fetchConfigFuture;
+  }
+
+  @override
+  set fetchConfigFuture(ObservableFuture<VpnConfig>? value) {
+    _$fetchConfigFutureAtom.reportWrite(value, super.fetchConfigFuture, () {
+      super.fetchConfigFuture = value;
+    });
+  }
+
   late final _$_setupAndListenToConnectionStatusAsyncAction =
       AsyncAction('_VpnStore._setupAndListenToConnectionStatus', context: context);
 
@@ -236,15 +251,16 @@ mixin _$VpnStore on _VpnStore, Store {
 
   @override
   Future<VpnConnection> _completeConnection(
-      String? location, Stopwatch stopwatch, bool? refreshIP) {
+      String? location, Stopwatch stopwatch, bool? refreshIP, String nonce) {
     return _$_completeConnectionAsyncAction
-        .run(() => super._completeConnection(location, stopwatch, refreshIP));
+        .run(() => super._completeConnection(location, stopwatch, refreshIP, nonce));
   }
 
   @override
   String toString() {
     return '''
 resolveConnectionLocationFuture: ${resolveConnectionLocationFuture},
+fetchConfigFuture: ${fetchConfigFuture},
 isConnected: ${isConnected},
 isLoading: ${isLoading}
     ''';

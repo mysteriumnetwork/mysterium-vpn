@@ -27,7 +27,7 @@ class HomeMobileView extends HookConsumerWidget {
         final isConnected = vpnStore.isConnected;
         return SlidingUpPanel(
           maxHeight: getMediaHeight(context) * 0.8,
-          minHeight: getMediaHeight(context) * 0.35,
+          minHeight: getMediaHeight(context) * 0.4,
           controller: pc,
           panelSnapping: false,
           color: Theme.of(context).primaryColor,
