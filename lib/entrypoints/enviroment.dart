@@ -113,7 +113,8 @@ class Enviroment {
                 event.throwable is SignInAborted ||
                 event.throwable is KeyDoesntExistsException ||
                 event.throwable is TimeoutException ||
-                event.throwable is TokenAlreadyUsedException) {
+                event.throwable is TokenAlreadyUsedException ||
+                event.throwable is OperationCancelledException) {
               return null;
             }
             return event;

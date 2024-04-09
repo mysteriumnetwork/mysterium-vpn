@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:beamer/beamer.dart';
 import 'package:clipboard/clipboard.dart';
@@ -446,7 +447,11 @@ Future<void> openUrlLink(Uri url) async {
   }
 }
 
-Future<bool> hasNetwork({int count = 3, int timeout = 2, int interval = 1}) async {
+Future<bool> hasNetwork({
+  int count = 3,
+  int timeout = 2,
+  int interval = 1,
+}) async {
   final ping = Ping(
     'google.com',
     count: count,
@@ -461,4 +466,9 @@ Future<bool> hasNetwork({int count = 3, int timeout = 2, int interval = 1}) asyn
     }
   }
   return isConnected;
+}
+
+String generateRandomString(int len) {
+  final r = Random();
+  return String.fromCharCodes(List.generate(len, (index) => r.nextInt(33) + 89));
 }
