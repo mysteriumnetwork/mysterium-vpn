@@ -76,9 +76,6 @@ abstract class _VpnStore with Store {
   bool _refreshIPConnection = true;
 
   @readonly
-  bool? _requestedRefreshIP;
-
-  @readonly
   bool? _vpnConfigConsent;
 
   @readonly
@@ -296,9 +293,7 @@ abstract class _VpnStore with Store {
       return;
     }
 
-    _requestedRefreshIP = refreshIP;
-
-    if (isLoading && _connectingLocationCode == location && !_isRetrying) {
+    if (isLoading && _connectingLocationCode == location && !_isRetrying && refreshIP != true) {
       _cancelConnection();
       if (_connectingLocationCode == location) {
         return;

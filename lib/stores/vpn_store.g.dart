@@ -40,24 +40,6 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$_requestedRefreshIPAtom =
-      Atom(name: '_VpnStore._requestedRefreshIP', context: context);
-
-  bool? get requestedRefreshIP {
-    _$_requestedRefreshIPAtom.reportRead();
-    return super._requestedRefreshIP;
-  }
-
-  @override
-  bool? get _requestedRefreshIP => requestedRefreshIP;
-
-  @override
-  set _requestedRefreshIP(bool? value) {
-    _$_requestedRefreshIPAtom.reportWrite(value, super._requestedRefreshIP, () {
-      super._requestedRefreshIP = value;
-    });
-  }
-
   late final _$_vpnConfigConsentAtom = Atom(name: '_VpnStore._vpnConfigConsent', context: context);
 
   bool? get vpnConfigConsent {
