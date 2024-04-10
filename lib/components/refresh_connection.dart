@@ -19,6 +19,9 @@ class RefreshConnection extends HookConsumerWidget {
     return Observer(
       builder: (context) => Visibility(
         visible: vpnStore.isConnected,
+        replacement: SizedBox.fromSize(
+          size: const Size.fromHeight(32),
+        ),
         child: ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
             backgroundColor: Palette.blue,

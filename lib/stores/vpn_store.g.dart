@@ -40,24 +40,6 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$_requestedRefreshIPAtom =
-      Atom(name: '_VpnStore._requestedRefreshIP', context: context);
-
-  bool? get requestedRefreshIP {
-    _$_requestedRefreshIPAtom.reportRead();
-    return super._requestedRefreshIP;
-  }
-
-  @override
-  bool? get _requestedRefreshIP => requestedRefreshIP;
-
-  @override
-  set _requestedRefreshIP(bool? value) {
-    _$_requestedRefreshIPAtom.reportWrite(value, super._requestedRefreshIP, () {
-      super._requestedRefreshIP = value;
-    });
-  }
-
   late final _$_vpnConfigConsentAtom = Atom(name: '_VpnStore._vpnConfigConsent', context: context);
 
   bool? get vpnConfigConsent {
@@ -144,21 +126,6 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$_isCanceledAtom = Atom(name: '_VpnStore._isCanceled', context: context);
-
-  @override
-  bool get _isCanceled {
-    _$_isCanceledAtom.reportRead();
-    return super._isCanceled;
-  }
-
-  @override
-  set _isCanceled(bool value) {
-    _$_isCanceledAtom.reportWrite(value, super._isCanceled, () {
-      super._isCanceled = value;
-    });
-  }
-
   late final _$resolveConnectionLocationFutureAtom =
       Atom(name: '_VpnStore.resolveConnectionLocationFuture', context: context);
 
@@ -173,6 +140,21 @@ mixin _$VpnStore on _VpnStore, Store {
     _$resolveConnectionLocationFutureAtom.reportWrite(value, super.resolveConnectionLocationFuture,
         () {
       super.resolveConnectionLocationFuture = value;
+    });
+  }
+
+  late final _$fetchConfigFutureAtom = Atom(name: '_VpnStore.fetchConfigFuture', context: context);
+
+  @override
+  ObservableFuture<VpnConfig>? get fetchConfigFuture {
+    _$fetchConfigFutureAtom.reportRead();
+    return super.fetchConfigFuture;
+  }
+
+  @override
+  set fetchConfigFuture(ObservableFuture<VpnConfig>? value) {
+    _$fetchConfigFutureAtom.reportWrite(value, super.fetchConfigFuture, () {
+      super.fetchConfigFuture = value;
     });
   }
 
@@ -254,15 +236,29 @@ mixin _$VpnStore on _VpnStore, Store {
 
   @override
   Future<VpnConnection> _completeConnection(
-      String? location, Stopwatch stopwatch, bool? refreshIP) {
+      String? location, Stopwatch stopwatch, bool? refreshIP, String nonce) {
     return _$_completeConnectionAsyncAction
-        .run(() => super._completeConnection(location, stopwatch, refreshIP));
+        .run(() => super._completeConnection(location, stopwatch, refreshIP, nonce));
+  }
+
+  late final _$_VpnStoreActionController = ActionController(name: '_VpnStore', context: context);
+
+  @override
+  void _checkOperationCancel(String nonce) {
+    final _$actionInfo =
+        _$_VpnStoreActionController.startAction(name: '_VpnStore._checkOperationCancel');
+    try {
+      return super._checkOperationCancel(nonce);
+    } finally {
+      _$_VpnStoreActionController.endAction(_$actionInfo);
+    }
   }
 
   @override
   String toString() {
     return '''
 resolveConnectionLocationFuture: ${resolveConnectionLocationFuture},
+fetchConfigFuture: ${fetchConfigFuture},
 isConnected: ${isConnected},
 isLoading: ${isLoading}
     ''';

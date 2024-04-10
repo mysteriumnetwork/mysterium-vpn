@@ -8,7 +8,6 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/connect_button.dart';
 import 'package:mysterium_vpn/components/connection_bar.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/views/home/connection_info_panel.dart';
 import 'package:mysterium_vpn/views/home/home_mobile_app_bar.dart';
 import 'package:mysterium_vpn/views/locations/locations_slider_mobile_view.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -27,7 +26,7 @@ class HomeMobileView extends HookConsumerWidget {
         final isConnected = vpnStore.isConnected;
         return SlidingUpPanel(
           maxHeight: getMediaHeight(context) * 0.8,
-          minHeight: getMediaHeight(context) * 0.35,
+          minHeight: getMediaHeight(context) * 0.4,
           controller: pc,
           panelSnapping: false,
           color: Theme.of(context).primaryColor,
@@ -53,10 +52,10 @@ class HomeMobileView extends HookConsumerWidget {
                       ),
                       ConnectButton(
                         onPressed: vpnStore.toggleConnection,
-                      ).width((getMediaWidth(context) + getMediaHeight(context)) * 0.085),
+                      ).width((getMediaWidth(context) + getMediaHeight(context)) * 0.08),
                     ],
-                  ).padding(bottom: 20).expanded(),
-                  const Visibility(visible: false, child: ConnectionInfoPanel()),
+                  ).padding(bottom: getMediaHeight(context) * 0.08).expanded(),
+                  // const Visibility(visible: false, child: ConnectionInfoPanel()),
                 ],
               ).height(getMediaHeight(context) * 0.66 - getWindowPadding().top),
             ],

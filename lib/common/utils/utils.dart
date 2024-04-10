@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:beamer/beamer.dart';
 import 'package:clipboard/clipboard.dart';
+import 'package:dart_ping/dart_ping.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -445,18 +447,28 @@ Future<void> openUrlLink(Uri url) async {
   }
 }
 
-Future<bool> hasNetwork() async {
-  var counter = 0;
-  var isOnline = false;
-  await Future.doWhile(() async {
-    counter++;
-    try {
-      final result = await InternetAddress.lookup('google.com').timeout(const Duration(seconds: 5));
-      isOnline = result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-    } catch (_) {
-      isOnline = false;
+Future<bool> hasNetwork({
+  int count = 3,
+  int timeout = 2,
+  int interval = 1,
+}) async {
+  final ping = Ping(
+    'bing.com',
+    count: count,
+    timeout: timeout,
+    interval: interval,
+  );
+  var isConnected = false;
+  await for (final PingData event in ping.stream) {
+    if (event.response != null) {
+      isConnected = true;
+      break;
     }
-    return counter < 5 && !isOnline;
-  });
-  return isOnline;
+  }
+  return isConnected;
+}
+
+String generateRandomString(int len) {
+  final r = Random();
+  return String.fromCharCodes(List.generate(len, (index) => r.nextInt(33) + 89));
 }

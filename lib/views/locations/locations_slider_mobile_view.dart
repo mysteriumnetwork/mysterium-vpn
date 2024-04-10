@@ -20,39 +20,43 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     final vpnStore = ref.watch(vpnStorePOD);
     final themeStore = ref.watch(themeStorePOD);
 
-    return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      controller: sc,
-      children: <Widget>[
+    return Column(
+      children: [
         Align(
-          child: GestureDetector(
+          child: InkWell(
             onTap: () => pc.isPanelOpen ? pc.close() : pc.open(),
             child: Container(
-              width: 30,
-              height: 8,
+              width: 45,
+              height: 10,
               decoration: BoxDecoration(
                 color: Colors.grey[400],
                 borderRadius: const BorderRadius.all(Radius.circular(12)),
               ),
             ),
           ),
-        ).padding(bottom: 12, top: 12),
-        SearchField(locationsStore).padding(bottom: 20),
-        RecentLocationsList(
-          themeStore: themeStore,
-          locationsStore: locationsStore,
-          vpnStore: vpnStore,
-        ).padding(bottom: 20),
-        EasyText(
-          LocaleKeys.allLocations.tr(),
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
-        ).padding(bottom: 20),
-        AllLocationsList(
-          themeStore: themeStore,
-          locationsStore: locationsStore,
-          vpnStore: vpnStore,
-        ),
+        ).padding(bottom: 10, top: 10),
+        ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          controller: sc,
+          children: <Widget>[
+            SearchField(locationsStore).padding(bottom: 20),
+            RecentLocationsList(
+              themeStore: themeStore,
+              locationsStore: locationsStore,
+              vpnStore: vpnStore,
+            ).padding(bottom: 20),
+            EasyText(
+              LocaleKeys.allLocations.tr(),
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+            ).padding(bottom: 20),
+            AllLocationsList(
+              themeStore: themeStore,
+              locationsStore: locationsStore,
+              vpnStore: vpnStore,
+            ),
+          ],
+        ).expanded(),
       ],
     );
   }
