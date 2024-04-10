@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -7,7 +9,6 @@ import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-// TODO(kristijan): Add correct svg asset for the connect button
 class ConnectButton extends HookConsumerWidget {
   ConnectButton({
     required this.onPressed,
@@ -28,15 +29,16 @@ class ConnectButton extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
     final controller = useAnimationController(
-      duration: const Duration(seconds: 10),
+      duration: const Duration(seconds: 2),
     )..repeat();
+
     return Observer(
       builder: (context) => vpnStore.isLoading &&
               (locationCode == vpnStore.connectingLocationCode || locationCode == null)
           ? AnimatedBuilder(
               animation: controller,
               builder: (_, child) => Transform.rotate(
-                angle: controller.value * 40,
+                angle: controller.value * 2 * pi,
                 child: child,
               ),
               child: SvgIconButton(

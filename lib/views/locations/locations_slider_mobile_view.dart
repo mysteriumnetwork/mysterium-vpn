@@ -23,18 +23,18 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     return Column(
       children: [
         Align(
-          child: GestureDetector(
+          child: InkWell(
             onTap: () => pc.isPanelOpen ? pc.close() : pc.open(),
             child: Container(
-              width: 30,
-              height: 8,
+              width: 45,
+              height: 10,
               decoration: BoxDecoration(
                 color: Colors.grey[400],
                 borderRadius: const BorderRadius.all(Radius.circular(12)),
               ),
             ),
           ),
-        ).padding(bottom: 12, top: 12),
+        ).padding(bottom: 10, top: 10),
         ListView(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           controller: sc,

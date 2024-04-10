@@ -39,12 +39,12 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
               label: LocaleKeys.connectionIp.tr(),
               text: vpnConnection?.connectionIP ?? '--',
               maxLines: 1,
-              action: vpnStore.isLoading ? null : const RefreshConnection(),
+              action: const RefreshConnection(),
               indicator: isResolvingconnectionIP
                   ? const Padding(
-                      padding: EdgeInsets.all(4),
+                      padding: EdgeInsets.only(top: 2),
                       child: LoadingIndicator(
-                        radius: 14,
+                        radius: 15,
                       ),
                     )
                   : null,
