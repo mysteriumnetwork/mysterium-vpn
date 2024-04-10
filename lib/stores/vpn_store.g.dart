@@ -126,21 +126,6 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$_isCanceledAtom = Atom(name: '_VpnStore._isCanceled', context: context);
-
-  @override
-  bool get _isCanceled {
-    _$_isCanceledAtom.reportRead();
-    return super._isCanceled;
-  }
-
-  @override
-  set _isCanceled(bool value) {
-    _$_isCanceledAtom.reportWrite(value, super._isCanceled, () {
-      super._isCanceled = value;
-    });
-  }
-
   late final _$resolveConnectionLocationFutureAtom =
       Atom(name: '_VpnStore.resolveConnectionLocationFuture', context: context);
 
@@ -254,6 +239,19 @@ mixin _$VpnStore on _VpnStore, Store {
       String? location, Stopwatch stopwatch, bool? refreshIP, String nonce) {
     return _$_completeConnectionAsyncAction
         .run(() => super._completeConnection(location, stopwatch, refreshIP, nonce));
+  }
+
+  late final _$_VpnStoreActionController = ActionController(name: '_VpnStore', context: context);
+
+  @override
+  void _checkOperationCancel(String nonce) {
+    final _$actionInfo =
+        _$_VpnStoreActionController.startAction(name: '_VpnStore._checkOperationCancel');
+    try {
+      return super._checkOperationCancel(nonce);
+    } finally {
+      _$_VpnStoreActionController.endAction(_$actionInfo);
+    }
   }
 
   @override
