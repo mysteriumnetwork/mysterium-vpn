@@ -478,9 +478,11 @@ abstract class _VpnStore with Store {
   ) async {
     try {
       await Future.doWhile(
-        () async => !(await _wireguardService.status() == ConnectionStatus.connected),
+        () async =>
+            !(await _wireguardService.status() == ConnectionStatus.connected) &&
+            _connectingNonce == nonce,
       );
-
+      _checkOperationCancel(nonce);
       if (!await hasNetwork(count: 5, interval: 5, timeout: 5)) {
         throw BrokenNodeException(location ?? '');
       }
