@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/headline_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -33,7 +34,7 @@ class LoginHeadlines extends HookConsumerWidget {
               fontSize: 14,
               fontWeight: FontWeight.w500,
               textAlign: TextAlign.center,
-            ).padding(vertical: 20),
+            ).padding(vertical: getMediaHeight(context) * 0.02),
           ],
         ),
       );
