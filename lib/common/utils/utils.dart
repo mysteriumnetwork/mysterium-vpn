@@ -453,7 +453,7 @@ Future<bool> hasNetwork({
   int interval = 1,
 }) async {
   final ping = Ping(
-    'google.com',
+    'bing.com',
     count: count,
     timeout: timeout,
     interval: interval,
