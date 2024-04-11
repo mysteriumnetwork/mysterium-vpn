@@ -131,6 +131,7 @@ abstract class _VpnStore with Store {
   Future<void> _setupAndListenToConnectionStatus() async {
     _connectingLocationCode = '';
     final status = await _wireguardService.status();
+
     if (status == ConnectionStatus.connected) {
       _connectionStatus = ConnectionStatus.connecting;
       try {
@@ -279,8 +280,8 @@ abstract class _VpnStore with Store {
   /// Disconnect from Wireguard tunnel
   @action
   Future<void> disconnectWireguard() async {
-    if (_connectionStatus == ConnectionStatus.connected ||
-        _connectionStatus == ConnectionStatus.connecting) {
+    final tunnelStatus = await _wireguardService.status();
+    if (tunnelStatus == ConnectionStatus.connected || tunnelStatus == ConnectionStatus.connecting) {
       await _wireguardService.disconnect().timeout(
             const Duration(seconds: 10),
             onTimeout: () => throw TimeoutException('Wireguard disconnection timeout'),
@@ -313,7 +314,6 @@ abstract class _VpnStore with Store {
     }
 
     _connectingNonce = generateRandomString(8);
-
     if (isLoading &&
         (_connectingLocationCode?.isNotEmpty ?? false) &&
         !_isRetrying &&
@@ -457,6 +457,7 @@ abstract class _VpnStore with Store {
       );
       _vpnConfig = await fetchConfigFuture;
       _checkOperationCancel(nonce);
+      _connectionStatus = ConnectionStatus.connecting;
       await _connectWireguard();
       _checkOperationCancel(nonce);
       resolveConnectionLocationFuture = ObservableFuture(
@@ -484,7 +485,9 @@ abstract class _VpnStore with Store {
       );
       _checkOperationCancel(nonce);
       if (!await hasNetwork(count: 5, interval: 5, timeout: 5)) {
-        throw BrokenNodeException(location ?? '');
+        if (_connectingNonce == nonce) {
+          throw BrokenNodeException(location ?? '');
+        }
       }
       _checkOperationCancel(nonce);
       await _sharedPrefs.setLocationCode(location ?? '');
