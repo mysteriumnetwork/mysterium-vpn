@@ -3,7 +3,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:async/async.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
@@ -69,8 +68,6 @@ abstract class _VpnStore with Store {
   final Talker _logger;
 
   Timer? _timer;
-
-  CancelableOperation<VpnConnection>? _cancelableOperation;
 
   @readonly
   bool _refreshIPConnection = true;
@@ -233,14 +230,11 @@ abstract class _VpnStore with Store {
     }
   }
 
-  @action
-  Future<void> _cancelConnection() async {
-    await _cancelableOperation?.cancel();
-  }
-
   /// Connect to Wireguard tunnel
   @action
-  Future<void> _connectWireguard() async {
+  Future<void> _connectWireguard(
+    String nonce,
+  ) async {
     final config = _vpnConfig?.config;
     if (config == null) {
       return;
@@ -257,6 +251,9 @@ abstract class _VpnStore with Store {
       await Future.doWhile(
         () async => !(await _wireguardService.status() == ConnectionStatus.disconnected),
       );
+      if (_connectingNonce != nonce) {
+        return;
+      }
       await _wireguardService.connect(cfg: config).timeout(
             const Duration(seconds: 10),
             onTimeout: () => throw TimeoutException('Wireguard connection timeout'),
@@ -318,10 +315,19 @@ abstract class _VpnStore with Store {
         (_connectingLocationCode?.isNotEmpty ?? false) &&
         !_isRetrying &&
         refreshIP != true) {
-      _cancelConnection();
       if (_connectingLocationCode == location || location == null) {
-        _connectingLocationCode = '';
-        disconnectWireguard();
+        var counter = 0;
+        Future.doWhile(() async {
+          counter++;
+          final status = await _wireguardService.status();
+          if (status == ConnectionStatus.connected) {
+            disconnectWireguard();
+          } else if (_connectionStatus == ConnectionStatus.connecting &&
+              status != _connectionStatus) {
+            _connectionStatus = ConnectionStatus.disconnected;
+          }
+          return counter < 5 && status != ConnectionStatus.connected;
+        });
         return;
       }
     }
@@ -342,10 +348,8 @@ abstract class _VpnStore with Store {
         await disconnectWireguard();
       }
       final stopwatch = Stopwatch()..start();
-      _cancelableOperation = CancelableOperation.fromFuture(
-        _completeConnection(location, stopwatch, refreshIP, _connectingNonce),
-      );
-      await _cancelableOperation?.value.then((value) {
+
+      _completeConnection(location, stopwatch, refreshIP, _connectingNonce).then((value) {
         _vpnConnection = value;
         stopwatch.stop();
         _analyticsStore.setVpnConnect(
@@ -458,7 +462,7 @@ abstract class _VpnStore with Store {
       _vpnConfig = await fetchConfigFuture;
       _checkOperationCancel(nonce);
       _connectionStatus = ConnectionStatus.connecting;
-      await _connectWireguard();
+      await _connectWireguard(nonce);
       _checkOperationCancel(nonce);
       resolveConnectionLocationFuture = ObservableFuture(
         _resolveConnectionLocation(

@@ -198,20 +198,12 @@ mixin _$VpnStore on _VpnStore, Store {
     return _$_generateKeyAsyncAction.run(() => super._generateKey());
   }
 
-  late final _$_cancelConnectionAsyncAction =
-      AsyncAction('_VpnStore._cancelConnection', context: context);
-
-  @override
-  Future<void> _cancelConnection() {
-    return _$_cancelConnectionAsyncAction.run(() => super._cancelConnection());
-  }
-
   late final _$_connectWireguardAsyncAction =
       AsyncAction('_VpnStore._connectWireguard', context: context);
 
   @override
-  Future<void> _connectWireguard() {
-    return _$_connectWireguardAsyncAction.run(() => super._connectWireguard());
+  Future<void> _connectWireguard(String nonce) {
+    return _$_connectWireguardAsyncAction.run(() => super._connectWireguard(nonce));
   }
 
   late final _$disconnectWireguardAsyncAction =
