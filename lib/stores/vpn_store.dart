@@ -3,7 +3,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:async/async.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
@@ -70,8 +69,6 @@ abstract class _VpnStore with Store {
 
   Timer? _timer;
 
-  CancelableOperation<VpnConnection>? _cancelableOperation;
-
   @readonly
   bool _refreshIPConnection = true;
 
@@ -131,6 +128,7 @@ abstract class _VpnStore with Store {
   Future<void> _setupAndListenToConnectionStatus() async {
     _connectingLocationCode = '';
     final status = await _wireguardService.status();
+
     if (status == ConnectionStatus.connected) {
       _connectionStatus = ConnectionStatus.connecting;
       try {
@@ -232,14 +230,11 @@ abstract class _VpnStore with Store {
     }
   }
 
-  @action
-  Future<void> _cancelConnection() async {
-    await _cancelableOperation?.cancel();
-  }
-
   /// Connect to Wireguard tunnel
   @action
-  Future<void> _connectWireguard() async {
+  Future<void> _connectWireguard(
+    String nonce,
+  ) async {
     final config = _vpnConfig?.config;
     if (config == null) {
       return;
@@ -256,6 +251,9 @@ abstract class _VpnStore with Store {
       await Future.doWhile(
         () async => !(await _wireguardService.status() == ConnectionStatus.disconnected),
       );
+      if (_connectingNonce != nonce) {
+        return;
+      }
       await _wireguardService.connect(cfg: config).timeout(
             const Duration(seconds: 10),
             onTimeout: () => throw TimeoutException('Wireguard connection timeout'),
@@ -279,8 +277,8 @@ abstract class _VpnStore with Store {
   /// Disconnect from Wireguard tunnel
   @action
   Future<void> disconnectWireguard() async {
-    if (_connectionStatus == ConnectionStatus.connected ||
-        _connectionStatus == ConnectionStatus.connecting) {
+    final tunnelStatus = await _wireguardService.status();
+    if (tunnelStatus == ConnectionStatus.connected || tunnelStatus == ConnectionStatus.connecting) {
       await _wireguardService.disconnect().timeout(
             const Duration(seconds: 10),
             onTimeout: () => throw TimeoutException('Wireguard disconnection timeout'),
@@ -313,15 +311,23 @@ abstract class _VpnStore with Store {
     }
 
     _connectingNonce = generateRandomString(8);
-
     if (isLoading &&
         (_connectingLocationCode?.isNotEmpty ?? false) &&
         !_isRetrying &&
         refreshIP != true) {
-      _cancelConnection();
       if (_connectingLocationCode == location || location == null) {
-        _connectingLocationCode = '';
-        disconnectWireguard();
+        var counter = 0;
+        Future.doWhile(() async {
+          counter++;
+          final status = await _wireguardService.status();
+          if (status == ConnectionStatus.connected) {
+            disconnectWireguard();
+          } else if (_connectionStatus == ConnectionStatus.connecting &&
+              status != _connectionStatus) {
+            _connectionStatus = ConnectionStatus.disconnected;
+          }
+          return counter < 5 && status != ConnectionStatus.connected;
+        });
         return;
       }
     }
@@ -342,10 +348,8 @@ abstract class _VpnStore with Store {
         await disconnectWireguard();
       }
       final stopwatch = Stopwatch()..start();
-      _cancelableOperation = CancelableOperation.fromFuture(
-        _completeConnection(location, stopwatch, refreshIP, _connectingNonce),
-      );
-      await _cancelableOperation?.value.then((value) {
+
+      _completeConnection(location, stopwatch, refreshIP, _connectingNonce).then((value) {
         _vpnConnection = value;
         stopwatch.stop();
         _analyticsStore.setVpnConnect(
@@ -457,7 +461,8 @@ abstract class _VpnStore with Store {
       );
       _vpnConfig = await fetchConfigFuture;
       _checkOperationCancel(nonce);
-      await _connectWireguard();
+      _connectionStatus = ConnectionStatus.connecting;
+      await _connectWireguard(nonce);
       _checkOperationCancel(nonce);
       resolveConnectionLocationFuture = ObservableFuture(
         _resolveConnectionLocation(
@@ -484,7 +489,9 @@ abstract class _VpnStore with Store {
       );
       _checkOperationCancel(nonce);
       if (!await hasNetwork(count: 5, interval: 5, timeout: 5)) {
-        throw BrokenNodeException(location ?? '');
+        if (_connectingNonce == nonce) {
+          throw BrokenNodeException(location ?? '');
+        }
       }
       _checkOperationCancel(nonce);
       await _sharedPrefs.setLocationCode(location ?? '');
