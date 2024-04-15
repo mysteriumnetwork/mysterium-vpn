@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_mixin
+import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -143,7 +144,7 @@ class __LifecycleDesktopState extends ConsumerState<_LifecycleDesktop>
     if (await windowManager.isPreventClose()) {
       await windowManager.hide();
     } else {
-      windowManager.destroy();
+      exit(0);
     }
   }
 
@@ -180,7 +181,7 @@ class __LifecycleDesktopState extends ConsumerState<_LifecycleDesktop>
       ref.read(vpnStorePOD).disconnectWireguard().whenComplete(
         () async {
           await trayManager.destroy();
-          await windowManager.destroy();
+          exit(0);
         },
       );
     }
