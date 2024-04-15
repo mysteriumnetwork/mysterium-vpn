@@ -512,6 +512,9 @@ abstract class _VpnStore with Store {
 
       if (_retryCount < 3) {
         toggleConnection(location: location);
+      } else {
+        _retryCount = 0;
+        _isRetrying = false;
       }
       rethrow;
     } catch (e) {
