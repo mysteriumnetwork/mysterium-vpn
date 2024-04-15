@@ -89,11 +89,11 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.mysterium" "\0"
+            VALUE "CompanyName", "com.mysteriumvpn" "\0"
             VALUE "FileDescription", "mysterium_vpn" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "mysterium_vpn" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 com.mysterium. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2024 com.mysteriumvpn. All rights reserved." "\0"
             VALUE "OriginalFilename", "mysterium_vpn.exe" "\0"
             VALUE "ProductName", "mysterium_vpn" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
