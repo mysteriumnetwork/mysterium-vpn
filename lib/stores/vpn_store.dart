@@ -154,7 +154,9 @@ abstract class _VpnStore with Store {
         _vpnConfig = null;
       }
       if (event == ConnectionStatus.disconnected) {
-        _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection?.location ?? '');
+        _analyticsStore.setVpnDisconnect(
+          vpnServer: _vpnConnection?.location ?? '',
+        );
       }
       if (event == ConnectionStatus.unknown) {
         _isTunnelSetup = false;
@@ -205,7 +207,9 @@ abstract class _VpnStore with Store {
   ///
   @action
   Future<void> toggleRefreshIPWhenConnecting() async {
-    await _localDBService.setRefreshIPConnection(refreshIPConnection: !_refreshIPConnection);
+    await _localDBService.setRefreshIPConnection(
+      refreshIPConnection: !_refreshIPConnection,
+    );
     _refreshIPConnection = !_refreshIPConnection;
   }
 
@@ -218,8 +222,14 @@ abstract class _VpnStore with Store {
     if (res.contains(false)) {
       _wireguardKey = await _wireguardService.generateKeyPair();
       await Future.wait([
-        _securedStorage.write(StorageKeys.wireguardPrivateKey.name, _wireguardKey!.privateKey),
-        _securedStorage.write(StorageKeys.wireguardPublicKey.name, _wireguardKey!.publicKey),
+        _securedStorage.write(
+          StorageKeys.wireguardPrivateKey.name,
+          _wireguardKey!.privateKey,
+        ),
+        _securedStorage.write(
+          StorageKeys.wireguardPublicKey.name,
+          _wireguardKey!.publicKey,
+        ),
       ]);
     } else {
       final res = await Future.wait([
@@ -349,15 +359,20 @@ abstract class _VpnStore with Store {
       }
       final stopwatch = Stopwatch()..start();
 
-      _completeConnection(location, stopwatch, refreshIP, _connectingNonce).then((value) {
-        _vpnConnection = value;
-        stopwatch.stop();
-        _analyticsStore.setVpnConnect(
-          vpnServer: _vpnConnection?.location ?? '',
-          vpnProcessingTime: stopwatch.elapsed,
-        );
-        _locationsStore.addRecentLocation(value.location);
-      });
+      final value = await _completeConnection(
+        location,
+        stopwatch,
+        refreshIP,
+        _connectingNonce,
+      );
+
+      _vpnConnection = value;
+      stopwatch.stop();
+      _analyticsStore.setVpnConnect(
+        vpnServer: _vpnConnection?.location ?? '',
+        vpnProcessingTime: stopwatch.elapsed,
+      );
+      _locationsStore.addRecentLocation(value.location);
     } on TimeoutException catch (e) {
       _logger.handle(e);
       showSnackbar(
@@ -371,6 +386,9 @@ abstract class _VpnStore with Store {
     } on OperationCancelledException {
       _logger.info('Operation cancelled by user');
     } catch (e, stackTrace) {
+      if (e is BrokenNodeException && _isRetrying == true) {
+        return;
+      }
       _logger.handle(e, stackTrace);
       final errorCode = e is WireguardConnectException
           ? e.code
