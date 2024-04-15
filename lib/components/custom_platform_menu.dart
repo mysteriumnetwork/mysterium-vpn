@@ -218,13 +218,14 @@ class CustomPlatformMenu extends ConsumerWidget {
                   ),
                   PlatformMenuItemGroup(
                     members: <PlatformMenuItem>[
-                      if (PlatformProvidedMenuItem.hasMenu(
-                        PlatformProvidedMenuItemType.arrangeWindowsInFront,
-                      ))
-                        PlatformProvidedMenuItem(
-                          type: PlatformProvidedMenuItemType.arrangeWindowsInFront,
-                          enabled: isVisible,
-                        ),
+                      PlatformMenuItem(
+                        label: 'Bring All to Front',
+                        onSelected: () async {
+                          if (!(await windowManager.isVisible())) {
+                            windowManager.show();
+                          }
+                        },
+                      ),
                     ],
                   ),
                 ],
