@@ -448,8 +448,8 @@ Future<void> openUrlLink(Uri url) async {
 }
 
 Future<bool> hasNetwork({
-  int count = 3,
-  int timeout = 2,
+  int count = 2,
+  int timeout = 1,
   int interval = 1,
 }) async {
   final ping = Ping(
