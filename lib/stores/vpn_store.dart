@@ -506,7 +506,7 @@ abstract class _VpnStore with Store {
             _connectingNonce == nonce,
       );
       _checkOperationCancel(nonce);
-      if (!await hasNetwork(count: 2, interval: 5, timeout: 1)) {
+      if (!await hasNetwork(interval: 5)) {
         if (_connectingNonce == nonce) {
           throw BrokenNodeException(location ?? '');
         }
