@@ -315,6 +315,7 @@ abstract class _VpnStore with Store {
   Future<void> toggleConnection({
     String? location,
     bool? refreshIP,
+    bool isRetrying = false,
   }) async {
     if (!await _checkSubscriptionStatus()) {
       return;
@@ -323,7 +324,7 @@ abstract class _VpnStore with Store {
     _connectingNonce = generateRandomString(8);
     if (isLoading &&
         (_connectingLocationCode?.isNotEmpty ?? false) &&
-        !_isRetrying &&
+        !isRetrying &&
         refreshIP != true) {
       if (_connectingLocationCode == location || location == null) {
         var counter = 0;
@@ -529,7 +530,7 @@ abstract class _VpnStore with Store {
       await disconnectWireguard();
 
       if (_retryCount < 3) {
-        toggleConnection(location: location);
+        toggleConnection(location: location, isRetrying: true);
       } else {
         _retryCount = 0;
         _isRetrying = false;
