@@ -154,7 +154,9 @@ abstract class _VpnStore with Store {
         _vpnConfig = null;
       }
       if (event == ConnectionStatus.disconnected) {
-        _analyticsStore.setVpnDisconnect(vpnServer: _vpnConnection?.location ?? '');
+        _analyticsStore.setVpnDisconnect(
+          vpnServer: _vpnConnection?.location ?? '',
+        );
       }
       if (event == ConnectionStatus.unknown) {
         _isTunnelSetup = false;
@@ -205,7 +207,9 @@ abstract class _VpnStore with Store {
   ///
   @action
   Future<void> toggleRefreshIPWhenConnecting() async {
-    await _localDBService.setRefreshIPConnection(refreshIPConnection: !_refreshIPConnection);
+    await _localDBService.setRefreshIPConnection(
+      refreshIPConnection: !_refreshIPConnection,
+    );
     _refreshIPConnection = !_refreshIPConnection;
   }
 
@@ -218,8 +222,14 @@ abstract class _VpnStore with Store {
     if (res.contains(false)) {
       _wireguardKey = await _wireguardService.generateKeyPair();
       await Future.wait([
-        _securedStorage.write(StorageKeys.wireguardPrivateKey.name, _wireguardKey!.privateKey),
-        _securedStorage.write(StorageKeys.wireguardPublicKey.name, _wireguardKey!.publicKey),
+        _securedStorage.write(
+          StorageKeys.wireguardPrivateKey.name,
+          _wireguardKey!.privateKey,
+        ),
+        _securedStorage.write(
+          StorageKeys.wireguardPublicKey.name,
+          _wireguardKey!.publicKey,
+        ),
       ]);
     } else {
       final res = await Future.wait([
@@ -305,6 +315,7 @@ abstract class _VpnStore with Store {
   Future<void> toggleConnection({
     String? location,
     bool? refreshIP,
+    bool isRetrying = false,
   }) async {
     if (!await _checkSubscriptionStatus()) {
       return;
@@ -313,7 +324,7 @@ abstract class _VpnStore with Store {
     _connectingNonce = generateRandomString(8);
     if (isLoading &&
         (_connectingLocationCode?.isNotEmpty ?? false) &&
-        !_isRetrying &&
+        !isRetrying &&
         refreshIP != true) {
       if (_connectingLocationCode == location || location == null) {
         var counter = 0;
@@ -349,15 +360,20 @@ abstract class _VpnStore with Store {
       }
       final stopwatch = Stopwatch()..start();
 
-      _completeConnection(location, stopwatch, refreshIP, _connectingNonce).then((value) {
-        _vpnConnection = value;
-        stopwatch.stop();
-        _analyticsStore.setVpnConnect(
-          vpnServer: _vpnConnection?.location ?? '',
-          vpnProcessingTime: stopwatch.elapsed,
-        );
-        _locationsStore.addRecentLocation(value.location);
-      });
+      final value = await _completeConnection(
+        location,
+        stopwatch,
+        refreshIP,
+        _connectingNonce,
+      );
+
+      _vpnConnection = value;
+      stopwatch.stop();
+      _analyticsStore.setVpnConnect(
+        vpnServer: _vpnConnection?.location ?? '',
+        vpnProcessingTime: stopwatch.elapsed,
+      );
+      _locationsStore.addRecentLocation(value.location);
     } on TimeoutException catch (e) {
       _logger.handle(e);
       showSnackbar(
@@ -371,6 +387,9 @@ abstract class _VpnStore with Store {
     } on OperationCancelledException {
       _logger.info('Operation cancelled by user');
     } catch (e, stackTrace) {
+      if (e is BrokenNodeException && _isRetrying == true) {
+        return;
+      }
       _logger.handle(e, stackTrace);
       final errorCode = e is WireguardConnectException
           ? e.code
@@ -488,7 +507,7 @@ abstract class _VpnStore with Store {
             _connectingNonce == nonce,
       );
       _checkOperationCancel(nonce);
-      if (!await hasNetwork(count: 5, interval: 5, timeout: 5)) {
+      if (!await hasNetwork(interval: 5)) {
         if (_connectingNonce == nonce) {
           throw BrokenNodeException(location ?? '');
         }
@@ -511,7 +530,10 @@ abstract class _VpnStore with Store {
       await disconnectWireguard();
 
       if (_retryCount < 3) {
-        toggleConnection(location: location);
+        toggleConnection(location: location, isRetrying: true);
+      } else {
+        _retryCount = 0;
+        _isRetrying = false;
       }
       rethrow;
     } catch (e) {

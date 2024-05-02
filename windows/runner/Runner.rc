@@ -93,7 +93,7 @@ BEGIN
             VALUE "FileDescription", "mysterium_vpn" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "mysterium_vpn" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 com.mysterium. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2024 com.mysterium. All rights reserved." "\0"
             VALUE "OriginalFilename", "mysterium_vpn.exe" "\0"
             VALUE "ProductName", "mysterium_vpn" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
