@@ -218,9 +218,9 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore.toggleConnection', context: context);
 
   @override
-  Future<void> toggleConnection({String? location, bool? refreshIP}) {
-    return _$toggleConnectionAsyncAction
-        .run(() => super.toggleConnection(location: location, refreshIP: refreshIP));
+  Future<void> toggleConnection({String? location, bool? refreshIP, bool isRetrying = false}) {
+    return _$toggleConnectionAsyncAction.run(() =>
+        super.toggleConnection(location: location, refreshIP: refreshIP, isRetrying: isRetrying));
   }
 
   late final _$_completeConnectionAsyncAction =
