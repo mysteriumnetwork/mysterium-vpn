@@ -156,12 +156,9 @@ class RestApiService extends ApiService {
   Future<void> reportBrokenNode({required ReportBrokenNodeRequest request}) async {
     try {
       //
-      await Future.delayed(
-        const Duration(seconds: 90),
-        () => _networkService.post(
-          kReportBrokenNode,
-          data: request.toJson(),
-        ),
+      await _networkService.post(
+        kReportBrokenNode,
+        data: request.toJson(),
       );
       _logger.info('Broken node reported');
     } catch (e, stackTrace) {
