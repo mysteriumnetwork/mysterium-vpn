@@ -23,7 +23,6 @@ Future<void> shownRetryDialog({
 }) async {
   await showBarModalBottomSheet(
     clipBehavior: Clip.none,
-    expand: false,
     topControl: const SizedBox.shrink(),
     isDismissible: isDismissible ?? true,
     context: context,

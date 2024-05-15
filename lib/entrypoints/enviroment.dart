@@ -107,7 +107,7 @@ class Enviroment {
           ..sendClientReports = true
           ..maxRequestBodySize = MaxRequestBodySize.small
           ..maxResponseBodySize = MaxResponseBodySize.small
-          ..beforeSend = (event, {hint}) {
+          ..beforeSend = (event, hint) {
             debugPrint(event.throwable.toString());
             if (event.throwable is ApiException ||
                 event.throwable is SignInAborted ||

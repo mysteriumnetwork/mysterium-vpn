@@ -28,7 +28,7 @@ class Agreements extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),
-              mouseCursor: MaterialStateMouseCursor.clickable,
+              mouseCursor: WidgetStateMouseCursor.clickable,
               recognizer: TapGestureRecognizer()
                 ..onTap = () => openUrlLink(Uri.parse(privacyPolicyUrl)),
             ),
@@ -41,7 +41,7 @@ class Agreements extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),
-              mouseCursor: MaterialStateMouseCursor.clickable,
+              mouseCursor: WidgetStateMouseCursor.clickable,
               recognizer: TapGestureRecognizer()
                 ..onTap = () => openUrlLink(Uri.parse(termsOfServiceUrl)),
             ),
