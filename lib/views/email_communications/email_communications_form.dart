@@ -81,7 +81,7 @@ class EmailCommunicationsForm extends HookConsumerWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
-                    mouseCursor: MaterialStateMouseCursor.clickable,
+                    mouseCursor: WidgetStateMouseCursor.clickable,
                     recognizer: TapGestureRecognizer()..onTap = () {},
                   ),
                   TextSpan(text: LocaleKeys.moreInfo.tr()),

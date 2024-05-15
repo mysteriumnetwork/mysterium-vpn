@@ -51,7 +51,7 @@ class SignInView extends ConsumerWidget {
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
-                          mouseCursor: MaterialStateMouseCursor.clickable,
+                          mouseCursor: WidgetStateMouseCursor.clickable,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () => openUrlLink(Uri.parse(termsOfServiceUrl)),
                         ),
@@ -64,7 +64,7 @@ class SignInView extends ConsumerWidget {
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
-                          mouseCursor: MaterialStateMouseCursor.clickable,
+                          mouseCursor: WidgetStateMouseCursor.clickable,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () => openUrlLink(Uri.parse(privacyPolicyUrl)),
                         ),

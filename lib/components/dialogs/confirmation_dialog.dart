@@ -66,7 +66,7 @@ class _SuggestLoginDialog extends StatelessWidget {
           actions: [
             TextButton(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all(Palette.lightBlack),
+                foregroundColor: WidgetStateProperty.all(Palette.lightBlack),
               ),
               child: Text(cancelText ?? LocaleKeys.no.tr()),
               onPressed: () => Navigator.pop(context),
