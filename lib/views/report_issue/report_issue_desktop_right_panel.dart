@@ -85,7 +85,7 @@ class ReportIssueDesktopRightPanel extends HookConsumerWidget {
     )
         .height(getMediaHeight(context))
         .padding(horizontal: 40, vertical: 40)
-        .backgroundColor(Theme.of(context).colorScheme.background)
+        .backgroundColor(Theme.of(context).colorScheme.onSurface)
         .scrollable();
   }
 }

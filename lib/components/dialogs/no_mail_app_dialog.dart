@@ -14,9 +14,7 @@ import 'package:styled_widget/styled_widget.dart';
 Future<void> shownNoMailAppDialog(BuildContext context) async {
   await showBarModalBottomSheet(
     clipBehavior: Clip.none,
-    expand: false,
     topControl: const SizedBox.shrink(),
-    isDismissible: true,
     context: context,
     backgroundColor: Theme.of(context).primaryColor,
     shape: const RoundedRectangleBorder(

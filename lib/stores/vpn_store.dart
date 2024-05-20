@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
@@ -14,6 +15,7 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
+import 'package:mysterium_vpn/models/report_broken_node_request.dart';
 import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
@@ -23,6 +25,7 @@ import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dar
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:talker/talker.dart';
 import 'package:wireguard_dart/connection_status.dart';
 import 'package:wireguard_dart/key_pair.dart';
@@ -113,6 +116,7 @@ abstract class _VpnStore with Store {
 
   int _retryCount = 0;
   bool _isRetrying = false;
+  String? originCountry;
 
   Future<void> _init() async {
     await _generateKey();
@@ -136,14 +140,17 @@ abstract class _VpnStore with Store {
         _connectingNonce = generateRandomString(8);
         resolveConnectionLocationFuture = ObservableFuture(
           _resolveConnectionLocation(
-            location,
-            _connectingNonce,
+            location: location,
+            nonce: _connectingNonce,
+            hash: _vpnConfig?.hashValue ?? '',
           ),
         );
         _vpnConnection = await resolveConnectionLocationFuture;
       } catch (e) {
         disconnectWireguard();
       }
+    } else {
+      originCountry = (await _apiService.getIPAdress())?.country;
     }
 
     _connectionStatus = status;
@@ -485,8 +492,9 @@ abstract class _VpnStore with Store {
       _checkOperationCancel(nonce);
       resolveConnectionLocationFuture = ObservableFuture(
         _resolveConnectionLocation(
-          location,
-          nonce,
+          location: location,
+          nonce: nonce,
+          hash: _vpnConfig?.hashValue ?? '',
         ),
       );
       return await resolveConnectionLocationFuture!;
@@ -496,10 +504,11 @@ abstract class _VpnStore with Store {
     }
   }
 
-  Future<VpnConnection> _resolveConnectionLocation(
-    String? location,
-    String nonce,
-  ) async {
+  Future<VpnConnection> _resolveConnectionLocation({
+    required String? location,
+    required String nonce,
+    required String hash,
+  }) async {
     try {
       await Future.doWhile(
         () async =>
@@ -535,6 +544,19 @@ abstract class _VpnStore with Store {
         _retryCount = 0;
         _isRetrying = false;
       }
+      unawaited(
+        _apiService.reportBrokenNode(
+          request: ReportBrokenNodeRequest(
+            publicKey: _wireguardKey!.publicKey,
+            destinationCountry: location ?? '',
+            osType: Platform.operatingSystem,
+            appVersion: (await PackageInfo.fromPlatform()).version,
+            originCountry: originCountry,
+            connectivityType: await Connectivity().checkConnectivity(),
+            hashValue: _vpnConfig!.hashValue,
+          ),
+        ),
+      );
       rethrow;
     } catch (e) {
       rethrow;
