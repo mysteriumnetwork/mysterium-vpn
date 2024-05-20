@@ -550,6 +550,7 @@ abstract class _VpnStore with Store {
             appVersion: (await PackageInfo.fromPlatform()).version,
             originCountry: originCountry,
             connectivityType: await Connectivity().checkConnectivity(),
+            hashValue: _vpnConfig!.hashValue,
           ),
         ),
       );
