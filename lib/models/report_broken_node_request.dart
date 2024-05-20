@@ -12,6 +12,7 @@ class ReportBrokenNodeRequest with _$ReportBrokenNodeRequest {
     @JsonKey(name: 'destination_country') required String destinationCountry,
     @JsonKey(name: 'os_type') required String osType,
     @JsonKey(name: 'app_version') required String appVersion,
+    @JsonKey(name: 'hash') required String hashValue,
     @JsonKey(name: 'origin_country') String? originCountry,
     @JsonKey(name: 'internet_type') ConnectivityResult? connectivityType,
   }) = _ReportBrokenNodeRequest;
