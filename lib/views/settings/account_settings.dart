@@ -7,9 +7,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/delete_account_dialog.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';
+import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/purchased_plan.dart';
@@ -55,11 +57,67 @@ class AccountSettings extends HookConsumerWidget {
             SettingItem(
               asset: isDarkTheme ? Assets.accountNameDark : Assets.accountNameLight,
               title: authStore.authData?.username ?? '',
-              actionWidget: EasyButton(
-                useSystemColor: false,
-                color: Palette.black,
-                text: LocaleKeys.logout.tr(),
-                onPressed: authStore.logout,
+              actionWidget: Wrap(
+                runSpacing: 10,
+                spacing: 10,
+                children: [
+                  EasyButton(
+                    useSystemColor: false,
+                    color: Palette.black,
+                    width: 100,
+                    text: LocaleKeys.logout.tr(),
+                    onPressed: () {
+                      shownConfirmationDialog(
+                        context,
+                        confirmText: LocaleKeys.confirm.tr(),
+                        cancelText: LocaleKeys.cancelBtn.tr(),
+                        icon: const SvgIcon(
+                          asset: Assets.warning,
+                        ),
+                        title: LocaleKeys.logoutConfirmationTitle.tr(),
+                        content: Text(
+                          LocaleKeys.logoutConfirmationDesc.tr(),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Palette.black,
+                          ),
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                        ),
+                        onConfirm: authStore.logout,
+                      );
+                    },
+                  ),
+                  EasyButton(
+                    useSystemColor: false,
+                    color: Palette.black,
+                    text: LocaleKeys.logoutAllDevices.tr(),
+                    width: 200,
+                    onPressed: () {
+                      shownConfirmationDialog(
+                        context,
+                        confirmText: LocaleKeys.confirm.tr(),
+                        cancelText: LocaleKeys.cancelBtn.tr(),
+                        icon: const SvgIcon(
+                          asset: Assets.warning,
+                        ),
+                        title: LocaleKeys.logoutAllDevicesConfirmationTitle.tr(),
+                        content: Text(
+                          LocaleKeys.logoutAllDevicesConfirmationDesc.tr(),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Palette.black,
+                          ),
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                        ),
+                        onConfirm: authStore.logoutFromAllDevices,
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
             SettingItem(
