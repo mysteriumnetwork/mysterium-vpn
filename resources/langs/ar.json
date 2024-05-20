@@ -466,5 +466,11 @@
   "copyLink": "انسخ الرابط والصقه في متصفحك",
   "linkCopied": "تم نسخ الرابط إلى الحافظة!",
   "copyBtn": "نسخ",
-  "failedToConnectError": "فشل الاتصال. يرجى المحاولة مرة أخرى [الخطأ: {errorCode}]"
+  "failedToConnectError": "فشل الاتصال. يرجى المحاولة مرة أخرى [الخطأ: {errorCode}]",
+  "logoutAllDevices": "تسجيل الخروج من جميع الأجهزة",
+  "failedToLogoutAllDevices": "فشل تسجيل الخروج من جميع الأجهزة. الرجاء المحاولة مرة أخرى",
+  "logoutAllDevicesConfirmationTitle": "تسجيل الخروج من جميع الأجهزة",
+  "logoutAllDevicesConfirmationDesc": "أنت على وشك تسجيل الخروج من جميع أجهزتك. هل أنت متأكد؟",
+  "logoutConfirmationTitle": "تسجيل خروج",
+  "logoutConfirmationDesc": "أنت على وشك تسجيل الخروج. هل أنت متأكد؟"
 }

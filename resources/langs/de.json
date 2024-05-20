@@ -466,5 +466,11 @@
   "copyLink": "Kopieren Sie den Link und fügen Sie ihn in Ihren Browser ein",
   "linkCopied": "Link in die Zwischenablage kopiert!",
   "copyBtn": "Kopieren",
-  "failedToConnectError": "Die Verbindung konnte nicht hergestellt werden. Bitte versuchen Sie es erneut [Fehler: {errorCode}]"
+  "failedToConnectError": "Die Verbindung konnte nicht hergestellt werden. Bitte versuchen Sie es erneut [Fehler: {errorCode}]",
+  "logoutAllDevices": "Aus allen Geräten abmelden",
+  "failedToLogoutAllDevices": "Abmeldung von allen Geräten fehlgeschlagen. Bitte versuchen Sie es erneut",
+  "logoutAllDevicesConfirmationTitle": "Melden Sie sich von allen Geräten ab",
+  "logoutAllDevicesConfirmationDesc": "Sie sind dabei, sich von allen Ihren Geräten abzumelden. Sind Sie sicher?",
+  "logoutConfirmationTitle": "Ausloggen",
+  "logoutConfirmationDesc": "Sie sind dabei, sich abzumelden. Sind Sie sicher?"
 }

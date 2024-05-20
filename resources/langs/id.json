@@ -466,5 +466,11 @@
   "copyLink": "Salin tautan dan tempelkan di browser Anda",
   "linkCopied": "Tautan disalin ke papan klip!",
   "copyBtn": "Salin",
-  "failedToConnectError": "Gagal terhubung. Silakan coba lagi [kesalahan: {errorCode}]"
+  "failedToConnectError": "Gagal terhubung. Silakan coba lagi [kesalahan: {errorCode}]",
+  "logoutAllDevices": "Keluar dari semua perangkat",
+  "failedToLogoutAllDevices": "Gagal keluar dari semua perangkat. Silakan coba lagi",
+  "logoutAllDevicesConfirmationTitle": "Keluar dari semua perangkat",
+  "logoutAllDevicesConfirmationDesc": "Anda akan keluar dari semua perangkat Anda. Apakah Anda yakin?",
+  "logoutConfirmationTitle": "Keluar",
+  "logoutConfirmationDesc": "Anda akan logout. Apakah Anda yakin?"
 }

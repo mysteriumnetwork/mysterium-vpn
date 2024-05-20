@@ -466,5 +466,11 @@
   "copyLink": "Bağlantıyı kopyalayın ve tarayıcınıza yapıştırın",
   "linkCopied": "Bağlantı panoya kopyalandı!",
   "copyBtn": "Kopyala",
-  "failedToConnectError": "Bağlantı başarısız oldu. Lütfen tekrar deneyin [hata: {errorCode}]"
+  "failedToConnectError": "Bağlantı başarısız oldu. Lütfen tekrar deneyin [hata: {errorCode}]",
+  "logoutAllDevices": "Tüm cihazlardan çıkış yap",
+  "failedToLogoutAllDevices": "Tüm cihazlardan çıkış yapılamadı. Lütfen tekrar deneyin",
+  "logoutAllDevicesConfirmationTitle": "Tüm cihazlardan çıkış yapın",
+  "logoutAllDevicesConfirmationDesc": "Tüm cihazlarınızdan çıkış yapmak üzeresiniz.Emin misiniz?",
+  "logoutConfirmationTitle": "Çıkış Yap",
+  "logoutConfirmationDesc": "Oturumu kapatmak üzeresiniz.Emin misiniz?"
 }

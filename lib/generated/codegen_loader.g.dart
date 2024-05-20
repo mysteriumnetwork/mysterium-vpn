@@ -483,7 +483,13 @@ class CodegenLoader extends AssetLoader {
     "copyLink": "复制链接并粘贴到您的浏览器中",
     "linkCopied": "链接已复制到剪贴板！",
     "copyBtn": "复制",
-    "failedToConnectError": "连接失败。请重试 [错误：{errorCode}]"
+    "failedToConnectError": "连接失败。请重试 [错误：{errorCode}]",
+    "logoutAllDevices": "从所有设备注销",
+    "failedToLogoutAllDevices": "无法从所有设备注销。请再试一次",
+    "logoutAllDevicesConfirmationTitle": "从所有设备注销",
+    "logoutAllDevicesConfirmationDesc": "您即将从所有设备注销。您确定吗？",
+    "logoutConfirmationTitle": "登出",
+    "logoutConfirmationDesc": "您即将退出。您确定吗？"
   };
   static const Map<String, dynamic> tr = {
     "title": "Merhaba efendim",
@@ -969,7 +975,13 @@ class CodegenLoader extends AssetLoader {
     "copyLink": "Bağlantıyı kopyalayın ve tarayıcınıza yapıştırın",
     "linkCopied": "Bağlantı panoya kopyalandı!",
     "copyBtn": "Kopyala",
-    "failedToConnectError": "Bağlantı başarısız oldu. Lütfen tekrar deneyin [hata: {errorCode}]"
+    "failedToConnectError": "Bağlantı başarısız oldu. Lütfen tekrar deneyin [hata: {errorCode}]",
+    "logoutAllDevices": "Tüm cihazlardan çıkış yap",
+    "failedToLogoutAllDevices": "Tüm cihazlardan çıkış yapılamadı. Lütfen tekrar deneyin",
+    "logoutAllDevicesConfirmationTitle": "Tüm cihazlardan çıkış yapın",
+    "logoutAllDevicesConfirmationDesc": "Tüm cihazlarınızdan çıkış yapmak üzeresiniz.Emin misiniz?",
+    "logoutConfirmationTitle": "Çıkış Yap",
+    "logoutConfirmationDesc": "Oturumu kapatmak üzeresiniz.Emin misiniz?"
   };
   static const Map<String, dynamic> ja = {
     "title": "こんにちは。",
@@ -1442,7 +1454,13 @@ class CodegenLoader extends AssetLoader {
     "copyLink": "リンクをコピーしてブラウザに貼り付けてください",
     "linkCopied": "リンクをクリップボードにコピーしました！",
     "copyBtn": "コピー",
-    "failedToConnectError": "接続に失敗しました。もう一度お試しください [エラー: {errorCode}]"
+    "failedToConnectError": "接続に失敗しました。もう一度お試しください [エラー: {errorCode}]",
+    "logoutAllDevices": "すべてのデバイスからログアウト",
+    "failedToLogoutAllDevices": "すべてのデバイスからのログアウトに失敗しました。もう一度お試しください",
+    "logoutAllDevicesConfirmationTitle": "すべてのデバイスからログアウトする",
+    "logoutAllDevicesConfirmationDesc": "すべてのデバイスからログアウトしようとしています。よろしいですか?",
+    "logoutConfirmationTitle": "ログアウト",
+    "logoutConfirmationDesc": "ログアウトしようとしています。よろしいですか?"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1945,7 +1963,15 @@ class CodegenLoader extends AssetLoader {
     "linkCopied": "Link in die Zwischenablage kopiert!",
     "copyBtn": "Kopieren",
     "failedToConnectError":
-        "Die Verbindung konnte nicht hergestellt werden. Bitte versuchen Sie es erneut [Fehler: {errorCode}]"
+        "Die Verbindung konnte nicht hergestellt werden. Bitte versuchen Sie es erneut [Fehler: {errorCode}]",
+    "logoutAllDevices": "Aus allen Geräten abmelden",
+    "failedToLogoutAllDevices":
+        "Abmeldung von allen Geräten fehlgeschlagen. Bitte versuchen Sie es erneut",
+    "logoutAllDevicesConfirmationTitle": "Melden Sie sich von allen Geräten ab",
+    "logoutAllDevicesConfirmationDesc":
+        "Sie sind dabei, sich von allen Ihren Geräten abzumelden. Sind Sie sicher?",
+    "logoutConfirmationTitle": "Ausloggen",
+    "logoutConfirmationDesc": "Sie sind dabei, sich abzumelden. Sind Sie sicher?"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2436,7 +2462,15 @@ class CodegenLoader extends AssetLoader {
     "copyLink": "Copie o link e cole no seu navegador",
     "linkCopied": "Link copiado para a área de transferência!",
     "copyBtn": "Copiar",
-    "failedToConnectError": "Falha ao conectar. Tente novamente [error: {errorCode}]"
+    "failedToConnectError": "Falha ao conectar. Tente novamente [error: {errorCode}]",
+    "logoutAllDevices": "Sair de todos os dispositivos",
+    "failedToLogoutAllDevices":
+        "Falha ao sair de todos os dispositivos. Por favor, tente novamente",
+    "logoutAllDevicesConfirmationTitle": "Sair de todos os dispositivos",
+    "logoutAllDevicesConfirmationDesc":
+        "Você está prestes a sair de todos os seus dispositivos.Tem certeza?",
+    "logoutConfirmationTitle": "Sair",
+    "logoutConfirmationDesc": "Você está prestes a sair. Tem certeza?"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -2927,7 +2961,14 @@ class CodegenLoader extends AssetLoader {
     "copyLink": "Copy the link and paste it on your browser",
     "linkCopied": "Link copied to clipboard!",
     "copyBtn": "Copy",
-    "failedToConnectError": "Failed to connect. Please try again [error: {errorCode}]"
+    "failedToConnectError": "Failed to connect. Please try again [error: {errorCode}]",
+    "logoutAllDevices": "Log out from all devices",
+    "failedToLogoutAllDevices": "Failed to logout from all devices. Please try again",
+    "logoutAllDevicesConfirmationTitle": "Log out from all devices",
+    "logoutAllDevicesConfirmationDesc":
+        "You’re about to log out from all your devices. Are you sure?",
+    "logoutConfirmationTitle": "Log out",
+    "logoutConfirmationDesc": "You’re about to log out. Are you sure?"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3423,7 +3464,15 @@ class CodegenLoader extends AssetLoader {
     "copyLink": "Copia il link e incollalo nel tuo browser",
     "linkCopied": "Link copiato negli appunti!",
     "copyBtn": "Copia",
-    "failedToConnectError": "Impossibile connettersi. Riprova [errore: {errorCode}]"
+    "failedToConnectError": "Impossibile connettersi. Riprova [errore: {errorCode}]",
+    "logoutAllDevices": "Disconnetti da tutti i dispositivi",
+    "failedToLogoutAllDevices":
+        "Impossibile disconnettersi da tutti i dispositivi. Per favore, riprova",
+    "logoutAllDevicesConfirmationTitle": "Disconnettersi da tutti i dispositivi",
+    "logoutAllDevicesConfirmationDesc":
+        "Stai per disconnetterti da tutti i tuoi dispositivi.Sei sicuro?",
+    "logoutConfirmationTitle": "Disconnettersi",
+    "logoutConfirmationDesc": "Stai per disconnetterti.Sei sicuro?"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -3922,7 +3971,14 @@ class CodegenLoader extends AssetLoader {
     "copyLink": "Copiez le lien et collez-le dans votre navigateur",
     "linkCopied": "Lien copié dans le presse-papiers!",
     "copyBtn": "Copier",
-    "failedToConnectError": "Échec de la connexion. Veuillez réessayer [erreur : {errorCode}]"
+    "failedToConnectError": "Échec de la connexion. Veuillez réessayer [erreur : {errorCode}]",
+    "logoutAllDevices": "Se déconnecter de tous les appareils",
+    "failedToLogoutAllDevices": "Échec de la déconnexion de tous les appareils. Veuillez réessayer",
+    "logoutAllDevicesConfirmationTitle": "Déconnectez-vous de tous les appareils",
+    "logoutAllDevicesConfirmationDesc":
+        "Vous êtes sur le point de vous déconnecter de tous vos appareils. Êtes-vous sûr ?",
+    "logoutConfirmationTitle": "Se déconnecter",
+    "logoutConfirmationDesc": "Vous êtes sur le point de vous déconnecter. Êtes-vous sûr ?"
   };
   static const Map<String, dynamic> id = {
     "title": "Halo Pak",
@@ -4413,7 +4469,14 @@ class CodegenLoader extends AssetLoader {
     "copyLink": "Salin tautan dan tempelkan di browser Anda",
     "linkCopied": "Tautan disalin ke papan klip!",
     "copyBtn": "Salin",
-    "failedToConnectError": "Gagal terhubung. Silakan coba lagi [kesalahan: {errorCode}]"
+    "failedToConnectError": "Gagal terhubung. Silakan coba lagi [kesalahan: {errorCode}]",
+    "logoutAllDevices": "Keluar dari semua perangkat",
+    "failedToLogoutAllDevices": "Gagal keluar dari semua perangkat. Silakan coba lagi",
+    "logoutAllDevicesConfirmationTitle": "Keluar dari semua perangkat",
+    "logoutAllDevicesConfirmationDesc":
+        "Anda akan keluar dari semua perangkat Anda. Apakah Anda yakin?",
+    "logoutConfirmationTitle": "Keluar",
+    "logoutConfirmationDesc": "Anda akan logout. Apakah Anda yakin?"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -4907,7 +4970,15 @@ class CodegenLoader extends AssetLoader {
     "copyLink": "Copia el enlace y pégalo en tu navegador",
     "linkCopied": "¡Enlace copiado al portapapeles!",
     "copyBtn": "Copiar",
-    "failedToConnectError": "No se pudo conectar. Inténtelo de nuevo [error: {errorCode}]"
+    "failedToConnectError": "No se pudo conectar. Inténtelo de nuevo [error: {errorCode}]",
+    "logoutAllDevices": "Cerrar sesión en todos los dispositivos",
+    "failedToLogoutAllDevices":
+        "Error al cerrar sesión en todos los dispositivos. Por favor, inténtalo de nuevo",
+    "logoutAllDevicesConfirmationTitle": "Cerrar sesión en todos los dispositivos",
+    "logoutAllDevicesConfirmationDesc":
+        "Estás a punto de cerrar sesión en todos tus dispositivos. ¿Estás seguro?",
+    "logoutConfirmationTitle": "Cerrar sesión",
+    "logoutConfirmationDesc": "Estás a punto de cerrar sesión. ¿Estás seguro?"
   };
   static const Map<String, dynamic> ar = {
     "title": "أهلاً سيدي",
@@ -5394,7 +5465,13 @@ class CodegenLoader extends AssetLoader {
     "copyLink": "انسخ الرابط والصقه في متصفحك",
     "linkCopied": "تم نسخ الرابط إلى الحافظة!",
     "copyBtn": "نسخ",
-    "failedToConnectError": "فشل الاتصال. يرجى المحاولة مرة أخرى [الخطأ: {errorCode}]"
+    "failedToConnectError": "فشل الاتصال. يرجى المحاولة مرة أخرى [الخطأ: {errorCode}]",
+    "logoutAllDevices": "تسجيل الخروج من جميع الأجهزة",
+    "failedToLogoutAllDevices": "فشل تسجيل الخروج من جميع الأجهزة. الرجاء المحاولة مرة أخرى",
+    "logoutAllDevicesConfirmationTitle": "تسجيل الخروج من جميع الأجهزة",
+    "logoutAllDevicesConfirmationDesc": "أنت على وشك تسجيل الخروج من جميع أجهزتك. هل أنت متأكد؟",
+    "logoutConfirmationTitle": "تسجيل خروج",
+    "logoutConfirmationDesc": "أنت على وشك تسجيل الخروج. هل أنت متأكد؟"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,

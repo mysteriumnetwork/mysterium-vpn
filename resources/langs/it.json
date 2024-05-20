@@ -466,5 +466,11 @@
   "copyLink": "Copia il link e incollalo nel tuo browser",
   "linkCopied": "Link copiato negli appunti!",
   "copyBtn": "Copia",
-  "failedToConnectError": "Impossibile connettersi. Riprova [errore: {errorCode}]"
+  "failedToConnectError": "Impossibile connettersi. Riprova [errore: {errorCode}]",
+  "logoutAllDevices": "Disconnetti da tutti i dispositivi",
+  "failedToLogoutAllDevices": "Impossibile disconnettersi da tutti i dispositivi. Per favore, riprova",
+  "logoutAllDevicesConfirmationTitle": "Disconnettersi da tutti i dispositivi",
+  "logoutAllDevicesConfirmationDesc": "Stai per disconnetterti da tutti i tuoi dispositivi.Sei sicuro?",
+  "logoutConfirmationTitle": "Disconnettersi",
+  "logoutConfirmationDesc": "Stai per disconnetterti.Sei sicuro?"
 }
