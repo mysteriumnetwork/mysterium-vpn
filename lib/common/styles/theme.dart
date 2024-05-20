@@ -7,7 +7,7 @@ ThemeData themeData(Palette palette) => ThemeData(
       useMaterial3: true,
       primaryColor: palette.primaryColor,
       colorScheme: ColorScheme.fromSwatch().copyWith(
-        background: palette.backgroundGolor,
+        onSurface: palette.backgroundGolor,
         surface: palette.surfaceColor,
         primary: palette.swatchColor,
         brightness: palette is LightPalette ? Brightness.light : Brightness.dark,
@@ -42,19 +42,19 @@ ThemeData themeData(Palette palette) => ThemeData(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(3),
         ),
-        fillColor: MaterialStateProperty.all(Palette.pink),
-        overlayColor: MaterialStateProperty.all(Palette.transparent),
-        checkColor: MaterialStateProperty.all(Palette.white),
+        fillColor: WidgetStateProperty.all(Palette.pink),
+        overlayColor: WidgetStateProperty.all(Palette.transparent),
+        checkColor: WidgetStateProperty.all(Palette.white),
       ),
       switchTheme: SwitchThemeData(
-        thumbColor: MaterialStateProperty.all(
+        thumbColor: WidgetStateProperty.all(
           Palette.lightGrey,
         ),
-        trackColor: MaterialStateProperty.resolveWith(
-          (states) => states.contains(MaterialState.selected) ? Palette.purple : Palette.lightBlue,
+        trackColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected) ? Palette.purple : Palette.lightBlue,
         ),
-        thumbIcon: MaterialStateProperty.resolveWith(
-          (states) => states.contains(MaterialState.selected)
+        thumbIcon: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected)
               ? const Icon(Icons.check, color: Palette.purple)
               : const Icon(Icons.close, color: Palette.lightBlue),
         ),

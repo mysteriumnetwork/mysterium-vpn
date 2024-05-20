@@ -95,7 +95,7 @@ abstract class _AuthStore with Store {
       _pkcePair = await _secureStorageService.getPkcePair();
       email = await _secureStorageService.getUsername() ?? '';
       temporaryEmail = email;
-      final appLink = await _appLinks.getLatestAppLink();
+      final appLink = await _appLinks.getLatestLink();
       final storedLink = await _secureStorageService.getAppLink();
       if (appLink != null && appLink.toString() != storedLink) {
         await _secureStorageService.saveAppLink(appLink: appLink.toString());

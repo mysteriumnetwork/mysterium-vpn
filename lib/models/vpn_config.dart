@@ -8,6 +8,7 @@ class VpnConfig with _$VpnConfig {
   const factory VpnConfig({
     @JsonKey(name: 'wg_config') required String config,
     @JsonKey(name: 'limit_exceeded') required bool limitExceeded,
+    @JsonKey(name: 'hash') required String hashValue,
   }) = _VpnConfig;
 
   factory VpnConfig.fromJson(Map<String, Object?> json) => _$VpnConfigFromJson(json);
