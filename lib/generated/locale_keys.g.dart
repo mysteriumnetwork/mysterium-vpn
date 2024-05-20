@@ -469,4 +469,10 @@ abstract class LocaleKeys {
   static const linkCopied = 'linkCopied';
   static const copyBtn = 'copyBtn';
   static const failedToConnectError = 'failedToConnectError';
+  static const logoutAllDevices = 'logoutAllDevices';
+  static const failedToLogoutAllDevices = 'failedToLogoutAllDevices';
+  static const logoutAllDevicesConfirmationTitle = 'logoutAllDevicesConfirmationTitle';
+  static const logoutAllDevicesConfirmationDesc = 'logoutAllDevicesConfirmationDesc';
+  static const logoutConfirmationTitle = 'logoutConfirmationTitle';
+  static const logoutConfirmationDesc = 'logoutConfirmationDesc';
 }

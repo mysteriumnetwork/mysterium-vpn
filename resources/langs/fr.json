@@ -466,5 +466,11 @@
   "copyLink": "Copiez le lien et collez-le dans votre navigateur",
   "linkCopied": "Lien copié dans le presse-papiers!",
   "copyBtn": "Copier",
-  "failedToConnectError": "Échec de la connexion. Veuillez réessayer [erreur : {errorCode}]"
+  "failedToConnectError": "Échec de la connexion. Veuillez réessayer [erreur : {errorCode}]",
+  "logoutAllDevices": "Se déconnecter de tous les appareils",
+  "failedToLogoutAllDevices": "Échec de la déconnexion de tous les appareils. Veuillez réessayer",
+  "logoutAllDevicesConfirmationTitle": "Déconnectez-vous de tous les appareils",
+  "logoutAllDevicesConfirmationDesc": "Vous êtes sur le point de vous déconnecter de tous vos appareils. Êtes-vous sûr ?",
+  "logoutConfirmationTitle": "Se déconnecter",
+  "logoutConfirmationDesc": "Vous êtes sur le point de vous déconnecter. Êtes-vous sûr ?"
 }
