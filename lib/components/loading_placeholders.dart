@@ -74,5 +74,5 @@ class LocationPlaceholder extends StatelessWidget {
             ),
           ],
         ).padding(horizontal: 15, vertical: 20),
-      ).card().padding(bottom: 10);
+      ).card(color: Theme.of(context).cardColor).padding(bottom: 10);
 }
