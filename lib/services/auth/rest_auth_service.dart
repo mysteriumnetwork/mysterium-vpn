@@ -15,6 +15,7 @@ const kAuthCheck = '/auth/check';
 const kLogin = '/magic-link';
 const kCompleteLogin = '/oauth/token';
 const kAuthIntrospect = '/oauth/introspect';
+const kDisconnectAllDevices = '/connection/disconnect-all';
 
 class RestAuthService extends AuthService {
   RestAuthService({
@@ -217,6 +218,18 @@ class RestAuthService extends AuthService {
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
+    }
+  }
+
+  @override
+  Future<void> disconnectAllDevices() async {
+    try {
+      await _networkService.get(
+        kDisconnectAllDevices,
+      );
+      _logger.info('All devices disconnected');
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
     }
   }
 }
