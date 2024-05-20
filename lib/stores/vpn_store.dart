@@ -140,8 +140,9 @@ abstract class _VpnStore with Store {
         _connectingNonce = generateRandomString(8);
         resolveConnectionLocationFuture = ObservableFuture(
           _resolveConnectionLocation(
-            location,
-            _connectingNonce,
+            location: location,
+            nonce: _connectingNonce,
+            hash: _vpnConfig?.hashValue ?? '',
           ),
         );
         _vpnConnection = await resolveConnectionLocationFuture;
@@ -491,8 +492,9 @@ abstract class _VpnStore with Store {
       _checkOperationCancel(nonce);
       resolveConnectionLocationFuture = ObservableFuture(
         _resolveConnectionLocation(
-          location,
-          nonce,
+          location: location,
+          nonce: nonce,
+          hash: _vpnConfig?.hashValue ?? '',
         ),
       );
       return await resolveConnectionLocationFuture!;
@@ -502,10 +504,11 @@ abstract class _VpnStore with Store {
     }
   }
 
-  Future<VpnConnection> _resolveConnectionLocation(
-    String? location,
-    String nonce,
-  ) async {
+  Future<VpnConnection> _resolveConnectionLocation({
+    required String? location,
+    required String nonce,
+    required String hash,
+  }) async {
     try {
       await Future.doWhile(
         () async =>
