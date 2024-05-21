@@ -466,5 +466,11 @@
   "copyLink": "リンクをコピーしてブラウザに貼り付けてください",
   "linkCopied": "リンクをクリップボードにコピーしました！",
   "copyBtn": "コピー",
-  "failedToConnectError": "接続に失敗しました。もう一度お試しください [エラー: {errorCode}]"
+  "failedToConnectError": "接続に失敗しました。もう一度お試しください [エラー: {errorCode}]",
+  "logoutAllDevices": "すべてのデバイスからログアウト",
+  "failedToLogoutAllDevices": "すべてのデバイスからのログアウトに失敗しました。もう一度お試しください",
+  "logoutAllDevicesConfirmationTitle": "すべてのデバイスからログアウトする",
+  "logoutAllDevicesConfirmationDesc": "すべてのデバイスからログアウトしようとしています。よろしいですか?",
+  "logoutConfirmationTitle": "ログアウト",
+  "logoutConfirmationDesc": "ログアウトしようとしています。よろしいですか?"
 }

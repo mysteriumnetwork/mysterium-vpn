@@ -466,5 +466,11 @@
   "copyLink": "Copia el enlace y pégalo en tu navegador",
   "linkCopied": "¡Enlace copiado al portapapeles!",
   "copyBtn": "Copiar",
-  "failedToConnectError": "No se pudo conectar. Inténtelo de nuevo [error: {errorCode}]"
+  "failedToConnectError": "No se pudo conectar. Inténtelo de nuevo [error: {errorCode}]",
+  "logoutAllDevices": "Cerrar sesión en todos los dispositivos",
+  "failedToLogoutAllDevices": "Error al cerrar sesión en todos los dispositivos. Por favor, inténtalo de nuevo",
+  "logoutAllDevicesConfirmationTitle": "Cerrar sesión en todos los dispositivos",
+  "logoutAllDevicesConfirmationDesc": "Estás a punto de cerrar sesión en todos tus dispositivos. ¿Estás seguro?",
+  "logoutConfirmationTitle": "Cerrar sesión",
+  "logoutConfirmationDesc": "Estás a punto de cerrar sesión. ¿Estás seguro?"
 }
