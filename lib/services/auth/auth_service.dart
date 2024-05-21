@@ -14,4 +14,5 @@ abstract class AuthService {
   Future<void> deleteAccount({
     required String email,
   });
+  Future<void> disconnectAllDevices();
 }

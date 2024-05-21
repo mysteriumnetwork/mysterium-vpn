@@ -466,5 +466,11 @@
     "copyLink":"Copy the link and paste it on your browser",
     "linkCopied":"Link copied to clipboard!",
     "copyBtn":"Copy",
-    "failedToConnectError":"Failed to connect. Please try again [error: {errorCode}]"
+    "failedToConnectError":"Failed to connect. Please try again [error: {errorCode}]",
+    "logoutAllDevices":"Log out from all devices",
+    "failedToLogoutAllDevices":"Failed to logout from all devices. Please try again",
+    "logoutAllDevicesConfirmationTitle":"Log out from all devices",
+    "logoutAllDevicesConfirmationDesc":"You’re about to log out from all your devices. Are you sure?",
+    "logoutConfirmationTitle":"Log out",
+    "logoutConfirmationDesc":"You’re about to log out. Are you sure?"
   }

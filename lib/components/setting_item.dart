@@ -33,31 +33,15 @@ class SettingItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SvgIcon(asset: asset).paddingDirectional(end: 20),
-            LayoutBuilder(
-              builder: (_, constraints) => constraints.maxWidth > 500
-                  ? Wrap(
-                      alignment: WrapAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            EasyText(title, fontSize: 16).padding(bottom: 8),
-                            description ?? const SizedBox.shrink(),
-                          ],
-                        ).padding(top: 4),
-                        actionWidget,
-                      ],
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        description ??
-                            EasyText(
-                              title,
-                            ).padding(bottom: 8),
-                        actionWidget,
-                      ],
-                    ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                description ??
+                    EasyText(
+                      title,
+                    ).padding(bottom: 8),
+                actionWidget,
+              ],
             ).expanded(),
           ],
         ),
