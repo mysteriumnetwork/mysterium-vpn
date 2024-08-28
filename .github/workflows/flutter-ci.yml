@@ -82,3 +82,11 @@ jobs:
         dart run build_runner build --verbose --delete-conflicting-outputs
         dart run msix:build
         dart run msix:pack
+
+    - name: Upload
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        prerelease: true
+        files: |
+          build/windows/x64/runner/Release/MysteriumVPNTest.msix
