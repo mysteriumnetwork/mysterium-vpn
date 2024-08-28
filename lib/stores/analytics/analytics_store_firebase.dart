@@ -10,8 +10,7 @@ import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 part 'analytics_store_firebase.g.dart';
 
 // ignore: library_private_types_in_public_api
-class AnalyticsStoreFirebase = _AnalyticsStoreFirebase
-    with _$AnalyticsStoreFirebase;
+class AnalyticsStoreFirebase = _AnalyticsStoreFirebase with _$AnalyticsStoreFirebase;
 
 abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   _AnalyticsStoreFirebase({
