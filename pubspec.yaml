@@ -102,7 +102,7 @@ msix_config:
   publisher: CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC
   output_name: MysteriumVPNTest
   language: en-us
-  windows_build_args: --dart-define FLAVOR=PROD
+  windows_build_args: --dart-define FLAVOR=DEV
   store: true
   capabilities: runFullTrust, allowElevation, internetClient
   protocol_activation: mysteriumvpn
