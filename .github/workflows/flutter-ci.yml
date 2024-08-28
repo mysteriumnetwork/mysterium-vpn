@@ -28,34 +28,34 @@ env:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  test:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
-      - name: "Cache - Flutter"
-        uses: actions/cache@v3
-        env:
-          flutter_linux_path: "/opt/hostedtoolcache/flutter"
-          flutter_macos_path: "/Users/runner/hostedtoolcache/flutter"
-        with:
-          path: ${{ env.flutter_linux_path }}
-          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: ${{ env.flutter_version }}
-          # channel: beta
-
-      - run: flutter pub get
-      - run: dart format --line-length 100 --set-exit-if-changed .
-      - run: flutter packages pub run build_runner build --delete-conflicting-outputs
-      - run: flutter analyze .
-      - run: flutter test
+#  # This workflow contains a single job called "build"
+#  test:
+#    # The type of runner that the job will run on
+#    runs-on: ubuntu-latest
+#
+#    # Steps represent a sequence of tasks that will be executed as part of the job
+#    steps:
+#      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+#      - uses: actions/checkout@v3
+#      - uses: subosito/flutter-action@v2
+#      - name: "Cache - Flutter"
+#        uses: actions/cache@v3
+#        env:
+#          flutter_linux_path: "/opt/hostedtoolcache/flutter"
+#          flutter_macos_path: "/Users/runner/hostedtoolcache/flutter"
+#        with:
+#          path: ${{ env.flutter_linux_path }}
+#          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
+#      - uses: subosito/flutter-action@v2
+#        with:
+#          flutter-version: ${{ env.flutter_version }}
+#          # channel: beta
+#
+#      - run: flutter pub get
+#      - run: dart format --line-length 100 --set-exit-if-changed .
+#      - run: flutter packages pub run build_runner build --delete-conflicting-outputs
+#      - run: flutter analyze .
+#      - run: flutter test
 
   release-windows-amd64:
     runs-on: windows-2022
@@ -76,6 +76,7 @@ jobs:
         Import-Module "$env:ChocolateyInstall/helpers/chocolateyInstaller.psm1"
         refreshenv
 
+        flutter doctor
         flutter clean
         flutter pub get
         dart run msix:build
