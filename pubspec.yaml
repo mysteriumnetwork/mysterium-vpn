@@ -24,10 +24,10 @@ dependencies:
   dart_ping_ios: ^4.0.2
   dio: ^5.4.3+1
   easy_localization: ^3.0.7
-  firebase_analytics: ^10.8.8
-  firebase_core: ^2.26.0
-  firebase_crashlytics: ^3.4.17
-  firebase_performance: ^0.9.3+16
+  firebase_analytics: ^11.2.1
+  firebase_core: ^3.3.0
+  firebase_crashlytics: ^4.0.4
+  firebase_performance: ^0.10.0+4
   flutter:
     sdk: flutter
   flutter_hooks: ^0.20.5
@@ -102,7 +102,7 @@ msix_config:
   publisher: CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC
   output_name: MysteriumVPNTest
   language: en-us
-  windows_build_args: --dart-define FLAVOR=DEV
+  windows_build_args: --dart-define FLAVOR=PROD
   store: true
   capabilities: runFullTrust, allowElevation, internetClient
   protocol_activation: mysteriumvpn

@@ -78,6 +78,5 @@ jobs:
 
         flutter clean
         flutter pub get
-        dart run build_runner build --verbose --delete-conflicting-outputs
         dart run msix:build
         dart run msix:pack
