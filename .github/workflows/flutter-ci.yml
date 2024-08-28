@@ -58,7 +58,7 @@ jobs:
       - run: flutter test
 
   release-windows-amd64:
-    runs-on: windows-2019
+    runs-on: windows-2022
     steps:
     - uses: actions/checkout@v2
 
@@ -76,6 +76,7 @@ jobs:
         Import-Module "$env:ChocolateyInstall/helpers/chocolateyInstaller.psm1"
         refreshenv
 
+        flutter doctor
         flutter clean
         flutter pub get
         dart run build_runner build --verbose --delete-conflicting-outputs
