@@ -23,7 +23,7 @@ on:
       - '*.*.*'
 
 env:
-  flutter_version: "3.x"
+  flutter_version: "3.22.2"
   java_version: "17.x"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -69,7 +69,7 @@ jobs:
 
     - name: Install
       run: |
-        choco install flutter --version 3.22.2 -y
+        choco install flutter --version ${{ env.flutter_version }} -y
 
     - name: Build
       run: |
