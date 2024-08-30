@@ -6,16 +6,24 @@ name: CI
 # events but only for the develop branch
 
 # Disabled for now
+# on:
+#   push:
+#     branches:
+#     - master
+#   pull_request:
+#     branches:
+#     - master
 on:
   push:
-    branches:
-    - master
-  pull_request:
-    branches:
-    - master
+    # Publish semver tags as releases.
+    tags:
+      - '!dbg*'
+      - '!*-dbg*'
+      - '!*-fix*'
+      - '*.*.*'
 
 env:
-  flutter_version: "3.x"
+  flutter_version: "3.22.2"
   java_version: "17.x"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -48,3 +56,53 @@ jobs:
       - run: flutter packages pub run build_runner build --delete-conflicting-outputs
       - run: flutter analyze .
       - run: flutter test
+
+  release-windows-amd64:
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Choco help
+      uses: crazy-max/ghaction-chocolatey@v2
+      with:
+        args: -h
+
+    - name: Install
+      run: |
+        choco install flutter --version ${{ env.flutter_version }} -y
+
+    - name: Build (store)
+      run: |
+        Import-Module "$env:ChocolateyInstall/helpers/chocolateyInstaller.psm1"
+        refreshenv
+
+        flutter doctor
+        flutter clean
+        flutter pub get
+        dart run build_runner build --verbose --delete-conflicting-outputs
+        dart run msix:build
+        dart run msix:pack
+        Copy-Item build/windows/x64/runner/Release/MysteriumVPNTest_store.msix ./
+
+    - name: Build (standalone)
+      run: |
+        Import-Module "$env:ChocolateyInstall/helpers/chocolateyInstaller.psm1"
+        refreshenv
+
+        Copy-Item pubspec_standalone.yaml pubspec.yaml
+        flutter doctor
+        flutter clean
+        flutter pub get
+        dart run build_runner build --verbose --delete-conflicting-outputs
+        dart run msix:build
+        dart run msix:pack
+        Copy-Item build/windows/x64/runner/Release/MysteriumVPN.msix ./
+
+    - name: Upload
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        prerelease: true
+        files: |
+          MysteriumVPNTest_store.msix
+          MysteriumVPN.msix

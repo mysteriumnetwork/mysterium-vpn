@@ -61,7 +61,7 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
     AnalyticsEvent event,
     Map<String, dynamic> parameters,
   ) async {
-    await _analytics.logEvent(name: event.toSnakeCase, parameters: parameters);
+    await _analytics.logEvent(name: event.toSnakeCase);
   }
 
   @override
