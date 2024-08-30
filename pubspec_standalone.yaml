@@ -97,14 +97,11 @@ dev_dependencies:
 msix_config:
   publisher: CN=BlockDev AG, O=BlockDev AG, STREET=Alpenstrasse 14, PostalCode=6300, L=Zug, S=Zug, C=CH, SERIALNUMBER=CHE-464.393.106, OID.1.3.6.1.4.1.311.60.2.1.2=Zug, OID.1.3.6.1.4.1.311.60.2.1.3=CH, OID.2.5.4.15=Private Organization
   sign_msix: false
-  display_name: Mysterium VPN Test
-  publisher_display_name: UAB MN Technologijos
+  display_name: Mysterium VPN
   logo_path: assets/logo/dev/desktop.png
-  identity_name: UABMNTechnologijos.MysteriumVPNTest
-  output_name: MysteriumVPNTest
+  output_name: MysteriumVPN
   language: en-us
   windows_build_args: --dart-define FLAVOR=PROD
-  #store: true
   capabilities: runFullTrust, allowElevation, internetClient
   protocol_activation: mysteriumvpn
 

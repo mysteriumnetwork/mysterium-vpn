@@ -84,19 +84,19 @@ jobs:
         dart run msix:pack
         Copy-Item build/windows/x64/runner/Release/MysteriumVPNTest_store.msix ./
 
-    - name: Build (autonomous)
+    - name: Build (standalone)
       run: |
         Import-Module "$env:ChocolateyInstall/helpers/chocolateyInstaller.psm1"
         refreshenv
 
-        Copy-Item pubspec_autonomous.yaml pubspec.yaml
+        Copy-Item pubspec_standalone.yaml pubspec.yaml
         flutter doctor
         flutter clean
         flutter pub get
         dart run build_runner build --verbose --delete-conflicting-outputs
         dart run msix:build
         dart run msix:pack
-        Copy-Item build/windows/x64/runner/Release/MysteriumVPNTest.msix ./
+        Copy-Item build/windows/x64/runner/Release/MysteriumVPN.msix ./
 
     - name: Upload
       uses: softprops/action-gh-release@v1
@@ -105,4 +105,4 @@ jobs:
         prerelease: true
         files: |
           MysteriumVPNTest_store.msix
-          MysteriumVPNTest.msix
+          MysteriumVPN.msix
