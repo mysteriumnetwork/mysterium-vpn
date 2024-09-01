@@ -1,16 +1,20 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/components/easy_dropdown.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
 
 class ThemePicker extends StatelessWidget {
   const ThemePicker({
     required this.store,
+    required this.analyticsStore,
     super.key,
   });
   final ThemeStore store;
+  final AnalyticsStore analyticsStore;
   @override
   Widget build(BuildContext context) => Observer(
         builder: (context) => EasyDropdown<ThemeMode>(
@@ -20,6 +24,10 @@ class ThemePicker extends StatelessWidget {
               return;
             }
             store.setThemeType(newThemeMode);
+            analyticsStore.logEvent(
+              AnalyticsEvent.setTheme,
+              parameters: {'theme': newThemeMode.name},
+            );
             return;
           },
           items: ThemeMode.values

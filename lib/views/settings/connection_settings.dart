@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
@@ -20,6 +21,7 @@ class ConnectionSettings extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.read(themeStorePOD);
     final vpnStore = ref.read(vpnStorePOD);
+    final analyticsStore = ref.read(analyticsStorePOD);
     return Observer(
       builder: (context) {
         final isDarkTheme = themeStore.isDarkMode;
@@ -35,6 +37,11 @@ class ConnectionSettings extends HookConsumerWidget {
                   value: vpnStore.refreshIPConnection,
                   onChanged: (val) async {
                     vpnStore.toggleRefreshIPWhenConnecting();
+                    if (val) {
+                      analyticsStore.logEvent(AnalyticsEvent.refreshIpEnable);
+                    } else {
+                      analyticsStore.logEvent(AnalyticsEvent.refreshIpDisable);
+                    }
                   },
                 ),
               ),

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/dialogs/info_dialog.dart';
@@ -15,10 +16,16 @@ import 'package:mysterium_vpn/components/header_title.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-Future<void> shownDeleteAccountDialog(BuildContext context, AuthStore store) async {
+Future<void> shownDeleteAccountDialog(
+  BuildContext context,
+  AuthStore store,
+  AnalyticsStore analyticsStore,
+) async {
+  analyticsStore.logEvent(AnalyticsEvent.deleteAccountPopup);
   showModalBottomSheet(
     clipBehavior: Clip.none,
     constraints: const BoxConstraints.tightFor(width: double.infinity),
@@ -30,14 +37,21 @@ Future<void> shownDeleteAccountDialog(BuildContext context, AuthStore store) asy
     ),
     builder: (context) => Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: _DeleteAccountDialog(store: store),
+      child: _DeleteAccountDialog(
+        store: store,
+        analyticsStore: analyticsStore,
+      ),
     ),
   );
 }
 
 class _DeleteAccountDialog extends HookWidget {
-  const _DeleteAccountDialog({required this.store});
+  const _DeleteAccountDialog({
+    required this.store,
+    required this.analyticsStore,
+  });
   final AuthStore store;
+  final AnalyticsStore analyticsStore;
   @override
   Widget build(BuildContext context) {
     final confirmationMessage = useState('');
@@ -91,6 +105,9 @@ class _DeleteAccountDialog extends HookWidget {
                 ),
                 onChanged: (val) => confirmationMessage.value = val,
                 autocorrect: false,
+                onTap: () {
+                  analyticsStore.logEvent(AnalyticsEvent.deleteAccountInput);
+                },
               ).height(40).padding(bottom: 30),
               EasyButton(
                 useSystemColor: false,
@@ -99,6 +116,7 @@ class _DeleteAccountDialog extends HookWidget {
                 onPressed: confirmationMessage.value == 'DELETE' &&
                         store.deleteAccountFeature.status != FutureStatus.pending
                     ? () async {
+                        analyticsStore.logEvent(AnalyticsEvent.deleteAccountConfirm);
                         await store.deleteAccount();
                         if (context.mounted) {
                           await Beamer.of(context).popRoute();
