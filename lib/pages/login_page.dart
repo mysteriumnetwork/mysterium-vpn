@@ -48,16 +48,22 @@ class LoginPage extends HookConsumerWidget {
                   analyticsStore.logEvent(AnalyticsEvent.signInButton);
                   handleOnSignIn(context, authStore);
                 },
-                onReport: () =>
-                    handleOnReportPage(context: context, intetcomStore: ref.read(intercomStorePOD)),
+                onReport: () => handleOnReportPage(
+                  context: context,
+                  intetcomStore: ref.read(intercomStorePOD),
+                  analyticsStore: analyticsStore,
+                ),
               ),
               desktop: (BuildContext context) => LoginDesktopView(
                 onSignIn: () {
                   analyticsStore.logEvent(AnalyticsEvent.signInButton);
                   handleOnSignIn(context, authStore);
                 },
-                onReport: () =>
-                    handleOnReportPage(context: context, intetcomStore: ref.read(intercomStorePOD)),
+                onReport: () => handleOnReportPage(
+                  context: context,
+                  intetcomStore: ref.read(intercomStorePOD),
+                  analyticsStore: analyticsStore,
+                ),
               ),
             ),
             if (authStore.authStatus == AuthStatus.authenticating)

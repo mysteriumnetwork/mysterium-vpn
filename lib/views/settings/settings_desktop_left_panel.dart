@@ -25,6 +25,7 @@ class SettingsDesktopLeftPanel extends ConsumerWidget {
           onPressed: () => handleOnReportPage(
             context: context,
             intetcomStore: ref.read(intercomStorePOD),
+            analyticsStore: ref.read(analyticsStorePOD),
           ),
           asset: Assets.reportPurple,
         ).padding(bottom: 40),

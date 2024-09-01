@@ -17,6 +17,7 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -381,7 +382,9 @@ void handleOnBillingPage({
 void handleOnReportPage({
   required BuildContext context,
   required IntercomStore intetcomStore,
+  required AnalyticsStore analyticsStore,
 }) {
+  analyticsStore.logEvent(AnalyticsEvent.openSupport);
   intetcomStore.displayMessenger();
 }
 

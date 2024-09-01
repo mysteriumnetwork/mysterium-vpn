@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -25,6 +26,7 @@ class AccountSettings extends HookConsumerWidget {
     final subscriptionStore = ref.read(subscriptionStorePOD);
     final environment = ref.watch(environmentPOD);
     final authStore = ref.watch(authStorePOD);
+    final analyticsStore = ref.read(analyticsStorePOD);
     return Observer(
       builder: (context) {
         final isDarkTheme = themeStore.isDarkMode;
@@ -44,13 +46,16 @@ class AccountSettings extends HookConsumerWidget {
                   useSystemColor: false,
                   color: Palette.black,
                   text: LocaleKeys.goToBillingPage.tr(),
-                  onPressed: () => handleOnBillingPage(
-                    billingPage: environment.values.billingPage,
-                    context: context,
-                    gateway: gateway,
-                    subscriptionActive: active,
-                    accessToken: authStore.authData?.accessToken,
-                  ),
+                  onPressed: () {
+                    analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
+                    handleOnBillingPage(
+                      billingPage: environment.values.billingPage,
+                      context: context,
+                      gateway: gateway,
+                      subscriptionActive: active,
+                      accessToken: authStore.authData?.accessToken,
+                    );
+                  },
                 ),
               ),
             ),
@@ -67,6 +72,8 @@ class AccountSettings extends HookConsumerWidget {
                     width: 100,
                     text: LocaleKeys.logout.tr(),
                     onPressed: () {
+                      analyticsStore.logEvent(AnalyticsEvent.logout);
+                      analyticsStore.logEvent(AnalyticsEvent.logOutPopup);
                       shownConfirmationDialog(
                         context,
                         confirmText: LocaleKeys.confirm.tr(),
@@ -85,7 +92,13 @@ class AccountSettings extends HookConsumerWidget {
                           maxLines: 2,
                           textAlign: TextAlign.center,
                         ),
-                        onConfirm: authStore.logout,
+                        onConfirm: () {
+                          analyticsStore.logEvent(AnalyticsEvent.logOutConfirm);
+                          authStore.logout();
+                        },
+                        onCancel: () {
+                          analyticsStore.logEvent(AnalyticsEvent.logOutCancel);
+                        },
                       );
                     },
                   ),
@@ -95,6 +108,7 @@ class AccountSettings extends HookConsumerWidget {
                     text: LocaleKeys.logoutAllDevices.tr(),
                     width: 200,
                     onPressed: () {
+                      analyticsStore.logEvent(AnalyticsEvent.logOutAll);
                       shownConfirmationDialog(
                         context,
                         confirmText: LocaleKeys.confirm.tr(),
@@ -128,7 +142,8 @@ class AccountSettings extends HookConsumerWidget {
                 color: isDarkTheme ? Palette.pink : Palette.lightBlue,
                 text: LocaleKeys.deleteAccount.tr(),
                 onPressed: () {
-                  shownDeleteAccountDialog(context, authStore);
+                  analyticsStore.logEvent(AnalyticsEvent.deleteAccount);
+                  shownDeleteAccountDialog(context, authStore, analyticsStore);
                 },
               ),
             ),
