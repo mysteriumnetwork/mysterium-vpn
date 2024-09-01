@@ -103,7 +103,7 @@ class SubscriptionForm extends HookConsumerWidget {
                               LocaleKeys.subscriptionActive.tr(),
                               type: MessageType.success,
                             );
-                            context.beamToReplacementNamed(Routes.home.toRoute);
+                            context.beamToReplacementNamed(Routes.main.toRoute);
                           } else if (store.verifySubscriptionFuture?.error is ApiException &&
                               (store.verifySubscriptionFuture?.error as ApiException).code == 409) {
                             showSnackbar(

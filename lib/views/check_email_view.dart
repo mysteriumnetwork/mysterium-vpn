@@ -13,6 +13,7 @@ import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -22,6 +23,7 @@ class CheckYourEmailView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authStore = ref.watch(authStorePOD);
+    final analyticsStore = ref.watch(analyticsStorePOD);
     final height = getMediaHeight(context);
 
     return Scaffold(
@@ -60,7 +62,10 @@ class CheckYourEmailView extends HookConsumerWidget {
                     visible: isMobile(),
                     child: EasyButton(
                       text: LocaleKeys.openEmailApp.tr(),
-                      onPressed: () => openEmailApp(context),
+                      onPressed: () {
+                        analyticsStore.logEvent(AnalyticsEvent.openEmailClicked);
+                        openEmailApp(context, analyticsStore);
+                      },
                     ),
                   ),
                 ],
@@ -76,6 +81,7 @@ class CheckYourEmailView extends HookConsumerWidget {
 
   Future<void> openEmailApp(
     BuildContext context,
+    AnalyticsStore analyticsStore,
   ) async {
     final result = await OpenMailApp.openMailApp(
       nativePickerTitle: LocaleKeys.selectEmailApp.tr(),
@@ -87,7 +93,13 @@ class CheckYourEmailView extends HookConsumerWidget {
           .map(
             (option) => BottomSheetAction(
               title: option.name,
-              onPressed: (_) => OpenMailApp.openSpecificMailApp(option),
+              onPressed: (_) {
+                OpenMailApp.openSpecificMailApp(option);
+                analyticsStore.logEvent(
+                  AnalyticsEvent.emailProviderClicked,
+                  parameters: {'provider': option.name},
+                );
+              },
             ),
           )
           .toList();
@@ -95,7 +107,13 @@ class CheckYourEmailView extends HookConsumerWidget {
         title: Text(LocaleKeys.selectEmailApp.tr()),
         context: context,
         actions: [...actions],
-        cancelAction: CancelAction(title: LocaleKeys.cancelBtn.tr()),
+        cancelAction: CancelAction(
+          title: LocaleKeys.cancelBtn.tr(),
+          onPressed: (ctx) {
+            analyticsStore.logEvent(AnalyticsEvent.emailProviderCancel);
+            Navigator.of(ctx).pop();
+          },
+        ),
       );
     }
   }

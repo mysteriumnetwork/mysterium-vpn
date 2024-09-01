@@ -20,6 +20,7 @@ class SignInView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authStore = ref.watch(authStorePOD);
+    final analyticsStore = ref.watch(analyticsStorePOD);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
@@ -53,7 +54,10 @@ class SignInView extends ConsumerWidget {
                               ),
                           mouseCursor: WidgetStateMouseCursor.clickable,
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => openUrlLink(Uri.parse(termsOfServiceUrl)),
+                            ..onTap = () {
+                              openUrlLink(Uri.parse(termsOfServiceUrl));
+                              analyticsStore.logEvent(AnalyticsEvent.tcsClickLoginScreen);
+                            },
                         ),
                         TextSpan(text: '${LocaleKeys.and.tr()} '),
                         TextSpan(
@@ -66,7 +70,10 @@ class SignInView extends ConsumerWidget {
                               ),
                           mouseCursor: WidgetStateMouseCursor.clickable,
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => openUrlLink(Uri.parse(privacyPolicyUrl)),
+                            ..onTap = () {
+                              openUrlLink(Uri.parse(privacyPolicyUrl));
+                              analyticsStore.logEvent(AnalyticsEvent.ppClickLoginScreen);
+                            },
                         ),
                       ],
                     ),

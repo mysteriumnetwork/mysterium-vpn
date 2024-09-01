@@ -41,7 +41,7 @@ class VpnPrivacyConsentForm extends HookConsumerWidget {
           color: Palette.purple,
           width: 250,
           onPressed: () {
-            context.beamToReplacementNamed(Routes.vpnConfigConsent.toRoute);
+            context.beamToReplacementNamed(Routes.permissions.toRoute);
           },
           child: EasyText(
             LocaleKeys.acceptAndContinue.tr(),

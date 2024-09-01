@@ -1,15 +1,15 @@
 enum Routes {
-  login,
-  home,
+  welcome,
+  main,
   unauthenticated,
-  signIn,
+  login,
   checkYourEmail,
   splash,
   settings,
   reportIssue,
-  subscription,
+  payment,
   emailCommunications,
   notifications,
-  vpnConfigConsent,
-  vpnPrivacyConsent
+  permissions,
+  privacyPolicy;
 }
