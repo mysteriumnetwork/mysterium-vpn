@@ -58,6 +58,10 @@ class FlavorValues {
   final String appleClientId;
   final String appleRedirectUri;
   final String tunnelName;
+
+  @override
+  String toString() =>
+      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, billingPage: $billingPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName';
 }
 
 class FlavorConfig {
