@@ -103,7 +103,7 @@ class NotificationsForm extends HookConsumerWidget {
   }) async {
     await store.setNotificationsApproval(status: status);
     if (context.mounted) {
-      context.beamToReplacementNamed(Routes.home.toRoute);
+      context.beamToReplacementNamed(Routes.main.toRoute);
     }
   }
 }

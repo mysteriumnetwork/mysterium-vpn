@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/common/observers/navigator_observer.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 
@@ -47,6 +48,7 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
           analytics: _analytics,
           nameExtractor: (settings) => settings.name,
         ),
+        MystNavigationObserver(analyticsStore: this),
       ];
 
   @override
@@ -58,9 +60,9 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   @override
   @action
   Future<void> logEvent(
-    AnalyticsEvent event,
-    Map<String, dynamic> parameters,
-  ) async {
+    AnalyticsEvent event, {
+    Map<String, dynamic>? parameters,
+  }) async {
     await _analytics.logEvent(name: event.toSnakeCase);
   }
 
@@ -111,7 +113,7 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   @override
   @action
   Future<void> setLogOut(String userId) async {
-    await logEvent(AnalyticsEvent.logout, {'user_email': userId});
+    await logEvent(AnalyticsEvent.logout, parameters: {'user_email': userId});
   }
 
   @override
@@ -128,7 +130,7 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   }) async {
     await logEvent(
       AnalyticsEvent.vpnConnect,
-      {
+      parameters: {
         'user_email': _localDb.userData.userId,
         'vpn_server': vpnServer,
         'vpn_processing_time': vpnProcessingTime.inSeconds,
@@ -141,7 +143,7 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   Future<void> setVpnDisconnect({required String vpnServer}) async {
     await logEvent(
       AnalyticsEvent.vpnDisconnect,
-      {
+      parameters: {
         'user_email': _localDb.userData.userId,
         'vpn_server': vpnServer,
       },
@@ -157,7 +159,7 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   }) async {
     await logEvent(
       AnalyticsEvent.vpnConnect,
-      {
+      parameters: {
         'user_email': _localDb.userData.userId,
         'error_code': errorCode,
         'error_message': errorMessage,
@@ -177,7 +179,7 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   }) async {
     await logEvent(
       AnalyticsEvent.paymentSuccessful,
-      {
+      parameters: {
         'user_email': _localDb.userData.userId,
         'payment_gateway': paymentGateway,
         'plan_type': planType,
@@ -197,7 +199,7 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   }) async {
     await logEvent(
       AnalyticsEvent.paymentInitiated,
-      {
+      parameters: {
         'user_email': _localDb.userData.userId,
         'payment_gateway': paymentGateway,
         'plan_type': planType,
@@ -215,12 +217,18 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   }) async {
     await logEvent(
       AnalyticsEvent.paymentInitiated,
-      {
+      parameters: {
         'user_email': _localDb.userData.userId,
         'payment_gateway': paymentGateway,
         'plan_type': planType,
         'plan_price': planPrice,
       },
     );
+  }
+
+  @override
+  @action
+  Future<void> logScreenViewed(String screenName) async {
+    await _analytics.logEvent(name: screenName);
   }
 }
