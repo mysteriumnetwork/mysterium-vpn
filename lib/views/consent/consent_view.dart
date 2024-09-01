@@ -22,7 +22,7 @@ class ConsentView extends HookConsumerWidget {
 
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) async {
+      onPopInvokedWithResult: (didPop, _) async {
         if (vpnStore.vpnConfigConsent == false) {
           final shouldPop = await shownDismissPageDialog(context);
           if (shouldPop ?? false) {

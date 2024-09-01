@@ -30,6 +30,9 @@ class SecureStorageService {
         accountName: flavor.values.accountName,
         synchronizable: true,
       ),
+      wOptions: const WindowsOptions(
+        useBackwardCompatibility: true,
+      ),
     );
   }
 
