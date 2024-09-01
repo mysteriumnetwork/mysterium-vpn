@@ -13,6 +13,7 @@ import 'package:mysterium_vpn/services/auth/rest_auth_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/network/dio_network_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
+import 'package:mysterium_vpn/services/dio_network_logger/dio_network_logger.dart';
 import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:talker/talker.dart';
@@ -46,10 +47,12 @@ final networkServicePOD = Provider<NetworkService>((ref) {
     [
       UnauthorizedInterceptor(ref),
       RetryRequestInterceptor(dio: dio),
-      if (kDebugMode)
+      if (kDebugMode) ...[
         TalkerDioLogger(
           talker: logger,
         ),
+        DioNetworkLoggerInterceptor(),
+      ],
     ],
     environment.values.baseUrl,
   );
