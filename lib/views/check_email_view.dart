@@ -25,6 +25,7 @@ class CheckYourEmailView extends HookConsumerWidget {
     final height = getMediaHeight(context);
 
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
         child: Observer(
           builder: (context) => Stack(

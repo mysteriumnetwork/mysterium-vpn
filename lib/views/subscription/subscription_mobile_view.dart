@@ -34,7 +34,7 @@ class SubscriptionMobileView extends HookConsumerWidget {
     return Observer(
       builder: (context) => PopScope(
         canPop: false,
-        onPopInvoked: (didPop) async {
+        onPopInvokedWithResult: (didPop, _) async {
           if (subscriptionStore.isSubscribed == false) {
             final shouldPop = await shownDismissPageDialog(context);
             if (shouldPop ?? false) {

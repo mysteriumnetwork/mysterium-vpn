@@ -19,7 +19,9 @@ mixin _$VpnConnection {
   String get connectionIP => throw _privateConstructorUsedError;
   String get location => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of VpnConnection
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $VpnConnectionCopyWith<VpnConnection> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -41,6 +43,8 @@ class _$VpnConnectionCopyWithImpl<$Res, $Val extends VpnConnection>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of VpnConnection
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -78,6 +82,8 @@ class __$$VpnConnectionImplCopyWithImpl<$Res>
       _$VpnConnectionImpl _value, $Res Function(_$VpnConnectionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of VpnConnection
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -124,7 +130,9 @@ class _$VpnConnectionImpl extends _VpnConnection {
   @override
   int get hashCode => Object.hash(runtimeType, connectionIP, location);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of VpnConnection
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$VpnConnectionImplCopyWith<_$VpnConnectionImpl> get copyWith =>
@@ -140,8 +148,11 @@ abstract class _VpnConnection extends VpnConnection {
   String get connectionIP;
   @override
   String get location;
+
+  /// Create a copy of VpnConnection
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VpnConnectionImplCopyWith<_$VpnConnectionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

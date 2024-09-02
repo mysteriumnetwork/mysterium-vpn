@@ -16,8 +16,8 @@ mixin ExceptionHandlerMixin on NetworkService {
     String endpoint = '',
   }) async {
     try {
-      if (await Connectivity().checkConnectivity() == ConnectivityResult.none &&
-          !(await hasNetwork())) {
+      final connectivityStatus = (await Connectivity().checkConnectivity()).lastOrNull;
+      if (connectivityStatus == ConnectivityResult.none && !(await hasNetwork())) {
         throw const SocketException('No internet connection');
       }
       final res = await handler();
