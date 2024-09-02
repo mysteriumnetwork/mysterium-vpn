@@ -1,0 +1,76 @@
+import 'package:beamer/beamer.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/models/flavor_config.dart';
+import 'package:mysterium_vpn/services/dio_network_logger/dio_network_logger.dart';
+
+class NetworkLoggerOverlayView extends StatefulWidget {
+  const NetworkLoggerOverlayView({
+    required this.child,
+    required this.flavor,
+    super.key,
+  });
+  final Widget child;
+  final Flavor flavor;
+
+  @override
+  State<NetworkLoggerOverlayView> createState() => _NetworkLoggerOverlayViewState();
+}
+
+class _NetworkLoggerOverlayViewState extends State<NetworkLoggerOverlayView> {
+  double _xPosition = 0;
+  double _yPosition = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _xPosition = MediaQuery.of(context).size.width - 64;
+    _yPosition = MediaQuery.of(context).size.height - 128;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final shouldShowLogger = !kReleaseMode || !(widget.flavor == Flavor.production);
+
+    if (shouldShowLogger) {
+      return Stack(
+        children: [
+          widget.child,
+          if (_xPosition != 0 && _yPosition != 0) ...[
+            Positioned(
+              top: _yPosition,
+              left: _xPosition,
+              child: GestureDetector(
+                onPanUpdate: (tapInfo) {
+                  if (mounted) {
+                    setState(() {
+                      _xPosition += tapInfo.delta.dx;
+                      _yPosition += tapInfo.delta.dy;
+                    });
+                  }
+                },
+                child: NetworkLoggerButton(
+                  color: Palette.purple,
+                  globalNavKey: Beamer.of(context).navigatorKey,
+                ),
+              ),
+            ),
+          ],
+        ],
+      );
+    } else {
+      return widget.child;
+    }
+  }
+}

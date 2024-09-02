@@ -9,6 +9,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/router/route_delegate.dart';
 import 'package:mysterium_vpn/components/custom_platform_menu.dart';
 import 'package:mysterium_vpn/components/lifecycle_listener.dart';
+import 'package:mysterium_vpn/components/network_logger_overlay.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/components/shortcuts.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
@@ -25,7 +26,9 @@ class MyApp extends HookConsumerWidget {
     final authStore = ref.read(authStorePOD);
     final routeDelegate = ref.read(routerDelegatePOD);
     final localStore = ref.read(localeStorePOD);
-    final appName = ref.watch(environmentPOD).values.appName;
+    final env = ref.read(environmentPOD);
+    final appName = env.values.appName;
+    final flavor = env.flavor;
 
     return ReactionBuilder(
       builder: (_) => reaction(
@@ -47,20 +50,27 @@ class MyApp extends HookConsumerWidget {
             child: ShortcutsWidget(
               child: CustomPlatformMenu(
                 appName: appName,
-                child: MaterialApp.router(
-                  title: appName,
-                  key: UniqueKey(),
-                  scaffoldMessengerKey: snackbarKey,
-                  theme: themeStore.lightTheme,
-                  darkTheme: themeStore.darkTheme,
-                  themeMode: themeStore.themeMode,
+                child: BeamerProvider(
                   routerDelegate: routeDelegate,
-                  routeInformationParser: routeInformationParser,
-                  localizationsDelegates: context.localizationDelegates,
-                  supportedLocales: context.supportedLocales,
-                  locale: localStore.currentLocale,
-                  backButtonDispatcher: BeamerBackButtonDispatcher(
-                    delegate: routeDelegate,
+                  child: MaterialApp.router(
+                    title: appName,
+                    key: UniqueKey(),
+                    scaffoldMessengerKey: snackbarKey,
+                    theme: themeStore.lightTheme,
+                    darkTheme: themeStore.darkTheme,
+                    themeMode: themeStore.themeMode,
+                    routerDelegate: routeDelegate,
+                    routeInformationParser: routeInformationParser,
+                    localizationsDelegates: context.localizationDelegates,
+                    supportedLocales: context.supportedLocales,
+                    locale: localStore.currentLocale,
+                    backButtonDispatcher: BeamerBackButtonDispatcher(
+                      delegate: routeDelegate,
+                    ),
+                    builder: (context, child) => NetworkLoggerOverlayView(
+                      flavor: flavor,
+                      child: child!,
+                    ),
                   ),
                 ),
               ),
