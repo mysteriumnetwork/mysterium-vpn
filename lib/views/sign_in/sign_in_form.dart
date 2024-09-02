@@ -158,7 +158,7 @@ class SignInForm extends HookConsumerWidget {
     final email = form.control('email').value as String;
     final result = await store.signInwithEmail(email: email);
     if (context.mounted && result == null) {
-      context.beamToNamed(Routes.checkYourEmail.toRoute);
+      context.beamToNamed(Routes.checkYourEmail.toRoute, beamBackOnPop: true);
     }
   }
 }
