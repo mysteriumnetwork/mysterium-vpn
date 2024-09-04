@@ -2,7 +2,7 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/routes.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -17,7 +17,7 @@ class HomeDesktopAppBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.read(themeStorePOD);
-
+    final analyticsStore = ref.read(analyticsStorePOD);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -26,12 +26,16 @@ class HomeDesktopAppBar extends ConsumerWidget {
           builder: (context) => Row(
             children: [
               SvgIconButton(
-                onPressed: () =>
-                    handleOnReportPage(context: context, intetcomStore: ref.read(intercomStorePOD)),
+                onPressed: () => handleOnReportPage(
+                  context: context,
+                  intetcomStore: ref.read(intercomStorePOD),
+                  analyticsStore: analyticsStore,
+                ),
                 asset: themeStore.isDarkMode ? Assets.reportPurple : Assets.report,
               ),
               SvgIconButton(
                 onPressed: () {
+                  analyticsStore.logEvent(AnalyticsEvent.openSettings);
                   context.beamToNamed(Routes.settings.toRoute);
                 },
                 asset: themeStore.isDarkMode ? Assets.settingsLightBlack : Assets.settings,

@@ -4,7 +4,7 @@ import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/routes.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -12,6 +12,7 @@ import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/header_title.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/consent/agreements.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -24,6 +25,7 @@ class VpnPrivacyConsentForm extends HookConsumerWidget {
     WidgetRef ref,
   ) {
     final height = getMediaHeight(context);
+    final analyticsStore = ref.read(analyticsStorePOD);
     return Column(
       children: [
         HeaderTitle(
@@ -35,13 +37,16 @@ class VpnPrivacyConsentForm extends HookConsumerWidget {
           maxLines: 30,
           fontSize: 14,
         ).expanded(),
-        const Agreements().padding(bottom: height * 0.02, top: height * 0.02),
+        Agreements(
+          analyticsStore: analyticsStore,
+        ).padding(bottom: height * 0.02, top: height * 0.02),
         EasyButton(
           useSystemColor: false,
           color: Palette.purple,
           width: 250,
           onPressed: () {
-            context.beamToReplacementNamed(Routes.vpnConfigConsent.toRoute);
+            analyticsStore.logEvent(AnalyticsEvent.ppAcceptClick);
+            context.beamToReplacementNamed(Routes.permissions.toRoute);
           },
           child: EasyText(
             LocaleKeys.acceptAndContinue.tr(),

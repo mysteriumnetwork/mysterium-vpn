@@ -286,6 +286,7 @@
 		33CC10E52044A3C60003C045 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = NO;
 				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1510;
 				ORGANIZATIONNAME = "";
@@ -788,7 +789,7 @@
 		};
 		33CC10FC2044A3C60003C045 /* Debug-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
+			baseConfigurationReference = 7992B301DE97FDC5C94719E3 /* Pods-Runner.debug-prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_NAME = "Mysterium VPN";
@@ -867,7 +868,7 @@
 		};
 		33CC10FD2044A3C60003C045 /* Release-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
+			baseConfigurationReference = 390386498A1EB506C0362F4D /* Pods-Runner.release-prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_NAME = "Mysterium VPN";
@@ -1486,7 +1487,7 @@
 		};
 		97E13FD22A4F1DCC000F2BBF /* Release-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
+			baseConfigurationReference = 4858BF13E46FB883F063E725 /* Pods-Runner.release-dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_NAME = "Mysterium VPN Test";

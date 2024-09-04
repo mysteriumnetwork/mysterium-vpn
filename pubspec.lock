@@ -1741,8 +1741,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.6.1"
-      resolved-ref: ee9dca0140a0ba6aac1b8991ffdf165828f70ce7
+      ref: "0.6.2"
+      resolved-ref: "41f9215276ee7c543df2bd19d73d17407b03b0b1"
       url: "https://github.com/mysteriumnetwork/wireguard_dart.git"
     source: git
     version: "0.4.5"

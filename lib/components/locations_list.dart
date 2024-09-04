@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/components/location_item.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 
-class LocationsList extends HookWidget {
+class LocationsList extends HookConsumerWidget {
   const LocationsList({
     required this.locations,
     required this.vpnStore,
@@ -12,8 +13,9 @@ class LocationsList extends HookWidget {
   final List<String> locations;
   final VpnStore vpnStore;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final sc = useScrollController();
+
     return ListView.builder(
       padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),

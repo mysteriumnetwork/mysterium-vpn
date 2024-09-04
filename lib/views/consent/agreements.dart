@@ -2,13 +2,19 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 
 class Agreements extends StatelessWidget {
-  const Agreements({super.key});
+  const Agreements({
+    required this.analyticsStore,
+    super.key,
+  });
 
+  final AnalyticsStore analyticsStore;
   @override
   Widget build(BuildContext context) => RichText(
         maxLines: 2,
@@ -30,7 +36,10 @@ class Agreements extends StatelessWidget {
                   ),
               mouseCursor: WidgetStateMouseCursor.clickable,
               recognizer: TapGestureRecognizer()
-                ..onTap = () => openUrlLink(Uri.parse(privacyPolicyUrl)),
+                ..onTap = () {
+                  analyticsStore.logEvent(AnalyticsEvent.ppClick);
+                  openUrlLink(Uri.parse(privacyPolicyUrl));
+                },
             ),
             TextSpan(text: LocaleKeys.and.tr()),
             TextSpan(
@@ -43,7 +52,10 @@ class Agreements extends StatelessWidget {
                   ),
               mouseCursor: WidgetStateMouseCursor.clickable,
               recognizer: TapGestureRecognizer()
-                ..onTap = () => openUrlLink(Uri.parse(termsOfServiceUrl)),
+                ..onTap = () {
+                  analyticsStore.logEvent(AnalyticsEvent.tcsClick);
+                  openUrlLink(Uri.parse(termsOfServiceUrl));
+                },
             ),
             TextSpan(text: LocaleKeys.moreInfo.tr()),
           ],

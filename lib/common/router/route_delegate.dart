@@ -20,30 +20,30 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
     guards: [
       BeamGuard(
         pathPatterns: [
-          Routes.home.toRoute,
+          Routes.main.toRoute,
           Routes.settings.toRoute,
-          Routes.subscription.toRoute,
+          Routes.payment.toRoute,
           Routes.emailCommunications.toRoute,
           Routes.notifications.toRoute,
-          Routes.vpnConfigConsent.toRoute,
-          Routes.vpnPrivacyConsent.toRoute,
+          Routes.permissions.toRoute,
+          Routes.privacyPolicy.toRoute,
         ],
         check: (context, state) => authStore.authStatus == AuthStatus.authenticated,
-        beamToNamed: (_, __) => Routes.login.toRoute,
+        beamToNamed: (_, __) => Routes.welcome.toRoute,
       ),
       BeamGuard(
-        pathPatterns: [Routes.login.toRoute],
+        pathPatterns: [Routes.welcome.toRoute],
         check: (context, state) =>
             authStore.authStatus == AuthStatus.unauthenticated ||
             authStore.authStatus == AuthStatus.authenticating,
-        beamToNamed: (_, __) => Routes.home.toRoute,
+        beamToNamed: (_, __) => Routes.main.toRoute,
       ),
       BeamGuard(
         pathPatterns: [Routes.splash.toRoute],
         check: (context, state) => authStore.authStatus == AuthStatus.unknown,
         beamToNamed: (_, __) => authStore.authStatus == AuthStatus.authenticated
-            ? Routes.home.toRoute
-            : Routes.login.toRoute,
+            ? Routes.main.toRoute
+            : Routes.welcome.toRoute,
       ),
     ],
     initialPath: Routes.splash.toRoute,

@@ -25,6 +25,7 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/views/subscription/product_list.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -36,9 +37,15 @@ enum SubscriptionFormStatus {
 }
 
 class SubscriptionForm extends HookConsumerWidget {
-  const SubscriptionForm({required this.store, required this.localDb, super.key});
+  const SubscriptionForm({
+    required this.store,
+    required this.localDb,
+    required this.analyticsStore,
+    super.key,
+  });
   final SubscriptionStore store;
   final LocalDBService localDb;
+  final AnalyticsStore analyticsStore;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subsFormStatus = useMemoized(
@@ -103,7 +110,7 @@ class SubscriptionForm extends HookConsumerWidget {
                               LocaleKeys.subscriptionActive.tr(),
                               type: MessageType.success,
                             );
-                            context.beamToReplacementNamed(Routes.home.toRoute);
+                            context.beamToReplacementNamed(Routes.main.toRoute);
                           } else if (store.verifySubscriptionFuture?.error is ApiException &&
                               (store.verifySubscriptionFuture?.error as ApiException).code == 409) {
                             showSnackbar(
@@ -143,6 +150,18 @@ class SubscriptionForm extends HookConsumerWidget {
                                 store.subscriptonStatus == SubscriptionStatus.verifying
                             ? null
                             : () async {
+                                if (subsFormStatus == SubscriptionFormStatus.expired) {
+                                  analyticsStore.logEvent(AnalyticsEvent.renewSubscriptionClick);
+                                } else if (subsFormStatus == SubscriptionFormStatus.manage) {
+                                  store.selectedProductId == store.purchasedProductId
+                                      ? analyticsStore
+                                          .logEvent(AnalyticsEvent.manageSubscriptionClick)
+                                      : analyticsStore
+                                          .logEvent(AnalyticsEvent.changeSubscriptionClick);
+                                } else {
+                                  analyticsStore
+                                      .logEvent(AnalyticsEvent.getStartedSubscriptionClick);
+                                }
                                 store.subscribeToPackage();
                               },
                         child: store.subscriptonStatus == SubscriptionStatus.pending ||
@@ -166,7 +185,10 @@ class SubscriptionForm extends HookConsumerWidget {
                     Visibility(
                       visible: Platform.isIOS,
                       child: TextButton(
-                        onPressed: store.redeemCode,
+                        onPressed: () {
+                          analyticsStore.logEvent(AnalyticsEvent.redeemClick);
+                          store.redeemCode();
+                        },
                         child: const EasyText(
                           'Redeem Code',
                           color: Palette.purple,
@@ -239,7 +261,7 @@ SubscriptionFormStatus getSubscriptionFormStatus({
   required String? purchaseProductId,
   required bool active,
 }) {
-  if (purchaseProductId != null) {
+  if (purchaseProductId != null && purchaseProductId.isNotEmpty) {
     return active ? SubscriptionFormStatus.manage : SubscriptionFormStatus.expired;
   }
   return SubscriptionFormStatus.freeTrial;

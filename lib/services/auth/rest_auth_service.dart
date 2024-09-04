@@ -30,6 +30,9 @@ class RestAuthService extends AuthService {
   final _securedStorage = SecureStorageService.instance;
   final Talker _logger;
   final FlavorValues _env;
+  final googleSignIn = GoogleSignIn(
+    scopes: ['email'],
+  );
 
   @override
   Future<AuthData> checkUserAuth() async {
@@ -128,6 +131,7 @@ class RestAuthService extends AuthService {
     required PkcePair pkcePair,
   }) async {
     try {
+      await removeLocalData();
       final result = await _networkService.post(
         kLogin,
         data: {
@@ -158,6 +162,9 @@ class RestAuthService extends AuthService {
   @override
   Future<void> logout() async {
     await removeLocalData();
+    if (await googleSignIn.isSignedIn()) {
+      await googleSignIn.signOut();
+    }
   }
 
   Future<void> removeLocalData() async {
@@ -202,9 +209,6 @@ class RestAuthService extends AuthService {
 
   @override
   Future<String> signInWithGoogle() async {
-    final googleSignIn = GoogleSignIn(
-      scopes: ['email'],
-    );
     try {
       if (await googleSignIn.isSignedIn()) {
         await googleSignIn.signOut();

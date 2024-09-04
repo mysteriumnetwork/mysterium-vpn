@@ -1,69 +1,54 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
 import 'package:mysterium_vpn/components/app_version.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
-import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/components/login_headlines.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class LoginDesktopViewLeftPanel extends ConsumerWidget {
-  const LoginDesktopViewLeftPanel({super.key});
+class LoginDesktopViewLeftPanel extends StatelessWidget {
+  const LoginDesktopViewLeftPanel({
+    required this.onSignInPressed,
+    required this.onReportPressed,
+    super.key,
+  });
+
+  final VoidCallback onSignInPressed;
+  final VoidCallback onReportPressed;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authStore = ref.watch(authStorePOD);
-
-    return Observer(
-      builder: (context) => Stack(
+  Widget build(BuildContext context) => Column(
         children: [
-          Column(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const AppLogo(),
-                  SvgIconButton(
-                    asset: Assets.messageSvg,
-                    onPressed: () => handleOnReportPage(
-                      context: context,
-                      intetcomStore: ref.read(intercomStorePOD),
-                    ),
-                  ),
-                ],
-              ).padding(bottom: getMediaHeight(context) * 0.02),
-              const LoginHeadlines().expanded(),
-              EasyButton(
-                height: 60,
-                width: 300,
-                useSystemColor: false,
-                color: Palette.purple,
-                text: LocaleKeys.signIn.tr(),
-                onPressed: () => handleOnSignIn(context, authStore),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: AppVersion(
-                  headerText: LocaleKeys.appVersion.tr(),
-                ),
+              const AppLogo(),
+              SvgIconButton(
+                asset: Assets.messageSvg,
+                onPressed: onReportPressed,
               ),
             ],
-          ).paddingDirectional(horizontal: 55, vertical: getMediaHeight(context) * 0.05),
-          if (authStore.authStatus == AuthStatus.authenticating)
-            LoadingBarrier(
-              color: Theme.of(context).primaryColor,
+          ).padding(bottom: getMediaHeight(context) * 0.02),
+          const LoginHeadlines().expanded(),
+          EasyButton(
+            height: 60,
+            width: 300,
+            useSystemColor: false,
+            color: Palette.purple,
+            text: LocaleKeys.signIn.tr(),
+            onPressed: onSignInPressed,
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: AppVersion(
+              headerText: LocaleKeys.appVersion.tr(),
             ),
+          ),
         ],
-      ),
-    );
-  }
+      ).paddingDirectional(horizontal: 55, vertical: getMediaHeight(context) * 0.05);
 }

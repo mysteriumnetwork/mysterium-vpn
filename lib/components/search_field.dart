@@ -1,17 +1,20 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SearchField extends HookWidget {
-  const SearchField(this.store, {super.key});
+  const SearchField(this.store, this.analyticsStore, {super.key});
 
   final LocationsStore store;
+  final AnalyticsStore analyticsStore;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +43,7 @@ class SearchField extends HookWidget {
         ),
         suffixIcon: SvgIconButton(
           onPressed: () async {
+            analyticsStore.logEvent(AnalyticsEvent.search);
             store.fetchVPNLocations().whenComplete(store.fetchRecentLocations);
           },
           asset: Assets.search,
