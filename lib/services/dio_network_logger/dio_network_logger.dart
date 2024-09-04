@@ -445,6 +445,7 @@ class NetworkLoggerEventScreen extends StatelessWidget {
         },
         child: EasyText(
           text,
+          maxLines: 100,
         ),
       ),
     );
@@ -550,6 +551,7 @@ class NetworkLoggerEventScreen extends StatelessWidget {
               child: EasyText(
                 event.error.toString(),
                 color: Palette.pink,
+                maxLines: 100,
               ),
             ),
           ],

@@ -9,7 +9,10 @@ abstract class AnalyticsStore {
     bool fatal = false,
   });
   List<NavigatorObserver> navigationObservers();
-  Future<void> logEvent(AnalyticsEvent event, Map<String, dynamic> parameters);
+  Future<void> logEvent(
+    AnalyticsEvent event, {
+    Map<String, dynamic>? parameters,
+  });
   Future<void> setUserId(String id);
   Future<void> setUserProperty(String name, String value);
   Future<void> setScreenName(String name);
@@ -51,4 +54,8 @@ abstract class AnalyticsStore {
   Future<void> logMessage(
     String message,
   );
+  Future<void> logScreenViewed(String screenName);
+  Future<void> connectToVpn(String countryCode);
+  Future<void> disconnectFromVpn(String countryCode);
+  Future<void> logLocationsListScroll();
 }

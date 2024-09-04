@@ -8,7 +8,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_breakpoints.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_size_breakpoints.dart';
 import 'package:mysterium_vpn/common/configurations/breakpoint_configuration.dart';
@@ -18,10 +17,8 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/pages/auth_page.dart';
-import 'package:mysterium_vpn/stores/auth_store.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
-import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 bool checkMediaWidth(BuildContext context, double width) =>
@@ -340,31 +337,6 @@ String? getMagicLinkCode(String query) {
   return query.substring(query.indexOf('code=') + 5, query.length);
 }
 
-void handleOnSignIn(BuildContext context, AuthStore store) {
-  if (isWindowsOrLinux()) {
-    store.loginDesktop();
-    return;
-  }
-  showBarModalBottomSheet(
-    context: context,
-    animationCurve: Curves.easeInOut,
-    backgroundColor: Palette.transparent,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-    ),
-    builder: (context) => Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-      ),
-      child: SingleChildScrollView(
-        controller: ModalScrollController.of(context),
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        child: const SignUpPage().height(getMediaHeight(context) * 0.85),
-      ),
-    ),
-  );
-}
-
 void handleOnBillingPage({
   required BuildContext context,
   required bool subscriptionActive,
@@ -385,12 +357,12 @@ void handleOnBillingPage({
       );
       return;
     }
-    context.beamToNamed(Routes.subscription.toRoute);
+    context.beamToNamed(Routes.payment.toRoute);
     return;
   }
 
   if (!subscriptionActive && !Platform.isWindows) {
-    context.beamToNamed(Routes.subscription.toRoute);
+    context.beamToNamed(Routes.payment.toRoute);
     return;
   }
 
@@ -410,7 +382,9 @@ void handleOnBillingPage({
 void handleOnReportPage({
   required BuildContext context,
   required IntercomStore intetcomStore,
+  required AnalyticsStore analyticsStore,
 }) {
+  analyticsStore.logEvent(AnalyticsEvent.openSupport);
   intetcomStore.displayMessenger();
 }
 

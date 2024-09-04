@@ -1,6 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/components/base_app_bar.dart';
 import 'package:mysterium_vpn/components/base_layout.dart';
 import 'package:mysterium_vpn/components/dialogs/dismiss_page_dialog.dart';
@@ -19,6 +20,7 @@ class ConsentView extends HookConsumerWidget {
   ) {
     final authStore = ref.watch(authStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
+    final analyticsStore = ref.read(analyticsStorePOD);
 
     return PopScope(
       canPop: false,
@@ -29,6 +31,7 @@ class ConsentView extends HookConsumerWidget {
             authStore.logout();
           }
         } else {
+          analyticsStore.logEvent(AnalyticsEvent.backButtonClick);
           Beamer.of(context).beamBack();
         }
       },

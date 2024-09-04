@@ -16,6 +16,7 @@ class ApplicationSettings extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.read(themeStorePOD);
     final localeStore = ref.read(localeStorePOD);
+    final analyticsStore = ref.read(analyticsStorePOD);
     return Observer(
       builder: (context) {
         final isDarkTheme = themeStore.isDarkMode;
@@ -27,6 +28,7 @@ class ApplicationSettings extends HookConsumerWidget {
               title: LocaleKeys.appLang.tr(),
               actionWidget: LanguagePicker(
                 store: localeStore,
+                analyticsStore: analyticsStore,
               ),
             ),
             SettingItem(
@@ -34,6 +36,7 @@ class ApplicationSettings extends HookConsumerWidget {
               title: LocaleKeys.theme.tr(),
               actionWidget: ThemePicker(
                 store: themeStore,
+                analyticsStore: analyticsStore,
               ),
             ),
           ],
