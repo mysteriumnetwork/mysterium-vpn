@@ -15,7 +15,7 @@ on:
       - '*.*.*'
 
 env:
-  flutter_version: "3.24.1"
+  flutter_version: "3.22.2"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
