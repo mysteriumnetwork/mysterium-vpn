@@ -131,6 +131,7 @@ class RestAuthService extends AuthService {
     required PkcePair pkcePair,
   }) async {
     try {
+      await removeLocalData();
       final result = await _networkService.post(
         kLogin,
         data: {
