@@ -19,6 +19,8 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     final locationsStore = ref.watch(locationsStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
     final themeStore = ref.watch(themeStorePOD);
+    final analyticsStore = ref.watch(analyticsStorePOD);
+    sc.addListener(analyticsStore.logLocationsListScroll);
 
     return Column(
       children: [
@@ -39,11 +41,12 @@ class LocationsSliderMobileView extends HookConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12),
           controller: sc,
           children: <Widget>[
-            SearchField(locationsStore).padding(bottom: 20),
+            SearchField(locationsStore, analyticsStore).padding(bottom: 20),
             RecentLocationsList(
               themeStore: themeStore,
               locationsStore: locationsStore,
               vpnStore: vpnStore,
+              analyticsStore: analyticsStore,
             ).padding(bottom: 20),
             EasyText(
               LocaleKeys.allLocations.tr(),

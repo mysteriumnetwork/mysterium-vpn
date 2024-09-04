@@ -11,7 +11,7 @@ import 'package:mysterium_vpn/pages/settings_page.dart';
 import 'package:mysterium_vpn/pages/static/splash_page.dart';
 import 'package:mysterium_vpn/pages/subscription_page.dart';
 import 'package:mysterium_vpn/pages/vpn_config_consent_page.dart';
-import 'package:mysterium_vpn/pages/vpn_privacy_consent_screen.dart';
+import 'package:mysterium_vpn/pages/vpn_privacy_consent_page.dart';
 import 'package:mysterium_vpn/views/check_email_view.dart';
 import 'package:mysterium_vpn/views/sign_in/sign_in_view.dart';
 

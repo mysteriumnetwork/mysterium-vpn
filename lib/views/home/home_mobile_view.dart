@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/connect_button.dart';
@@ -19,6 +20,7 @@ class HomeMobileView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
+    final analyticsStore = ref.watch(analyticsStorePOD);
     final pc = useMemoized(PanelController.new);
 
     return Observer(
@@ -51,7 +53,14 @@ class HomeMobileView extends HookConsumerWidget {
                         alignment: Alignment.center,
                       ),
                       ConnectButton(
-                        onPressed: vpnStore.toggleConnection,
+                        onPressed: () {
+                          analyticsStore.logEvent(
+                            isConnected
+                                ? AnalyticsEvent.disconnectMain
+                                : AnalyticsEvent.connectMain,
+                          );
+                          vpnStore.toggleConnection();
+                        },
                       ).width((getMediaWidth(context) + getMediaHeight(context)) * 0.08),
                     ],
                   ).padding(bottom: getMediaHeight(context) * 0.08).expanded(),

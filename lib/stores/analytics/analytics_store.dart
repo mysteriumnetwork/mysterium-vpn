@@ -55,4 +55,7 @@ abstract class AnalyticsStore {
     String message,
   );
   Future<void> logScreenViewed(String screenName);
+  Future<void> connectToVpn(String countryCode);
+  Future<void> disconnectFromVpn(String countryCode);
+  Future<void> logLocationsListScroll();
 }

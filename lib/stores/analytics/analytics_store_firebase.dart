@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/widgets.dart';
@@ -25,6 +27,7 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   final FirebaseAnalytics _analytics;
   final FirebaseCrashlytics _crashlytics;
   final LocalDBService _localDb;
+  Timer? _timer;
 
   @override
   Future<void> logError({
@@ -230,5 +233,32 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   @action
   Future<void> logScreenViewed(String screenName) async {
     await _analytics.logEvent(name: screenName);
+  }
+
+  @override
+  @action
+  Future<void> connectToVpn(String countryCode) async {
+    await _analytics.logEvent(name: 'connect_$countryCode');
+  }
+
+  @override
+  @action
+  Future<void> disconnectFromVpn(String countryCode) async {
+    await _analytics.logEvent(name: 'disconnect_$countryCode');
+  }
+
+  @override
+  @action
+  Future<void> logLocationsListScroll() async {
+    if (_timer?.isActive ?? false) {
+      _timer?.cancel();
+    }
+    _timer = Timer(const Duration(milliseconds: 800), () {
+      logEvent(AnalyticsEvent.scrollLocations);
+    });
+  }
+
+  Future<void> dispose() async {
+    _timer?.cancel();
   }
 }
