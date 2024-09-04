@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -24,10 +26,19 @@ class ProductItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subsStore = ref.watch(subscriptionStorePOD);
-
+    final analyticsStore = ref.watch(analyticsStorePOD);
     return RippleWidget(
       radius: 20,
-      onTap: () => subsStore.selectedProductId = productDetails.id,
+      onTap: () {
+        subsStore.selectedProductId = productDetails.id;
+        if (productDetails.id == kAnnualPlan) {
+          analyticsStore.logEvent(AnalyticsEvent.select12);
+        } else if (productDetails.id == kMonthlyPlan) {
+          analyticsStore.logEvent(AnalyticsEvent.select1);
+        } else if (productDetails.id == ksemiAnnualPlan) {
+          analyticsStore.logEvent(AnalyticsEvent.select6);
+        }
+      },
       child: Row(
         children: [
           const SvgIcon(

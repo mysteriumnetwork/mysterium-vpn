@@ -11,6 +11,7 @@ Future<void> shownConfirmationDialog(
   required Widget content,
   required VoidCallback onConfirm,
   required Widget icon,
+  VoidCallback? onCancel,
   bool dismissible = true,
   String? confirmText,
   String? cancelText,
@@ -25,6 +26,7 @@ Future<void> shownConfirmationDialog(
       icon: icon,
       confirmText: confirmText,
       cancelText: cancelText,
+      onCancel: onCancel,
     ),
   );
 }
@@ -37,11 +39,13 @@ class _SuggestLoginDialog extends StatelessWidget {
     required this.icon,
     this.confirmText,
     this.cancelText,
+    this.onCancel,
   });
   final String title;
   final Widget content;
   final Widget icon;
   final VoidCallback onConfirm;
+  final VoidCallback? onCancel;
   final String? confirmText;
   final String? cancelText;
   @override
@@ -69,7 +73,10 @@ class _SuggestLoginDialog extends StatelessWidget {
                 foregroundColor: WidgetStateProperty.all(Palette.lightBlack),
               ),
               child: Text(cancelText ?? LocaleKeys.no.tr()),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.pop(context);
+                onCancel?.call();
+              },
             ),
             TextButton(
               child: Text(confirmText ?? LocaleKeys.yes.tr()),

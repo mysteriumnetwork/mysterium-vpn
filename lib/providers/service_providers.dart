@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mysterium_vpn/common/interceptors/interceptors.dart';
 import 'package:mysterium_vpn/common/observers/crashlytics_talker_observer.dart';
+import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/api/rest_api_service.dart';
@@ -47,12 +48,11 @@ final networkServicePOD = Provider<NetworkService>((ref) {
     [
       UnauthorizedInterceptor(ref),
       RetryRequestInterceptor(dio: dio),
-      if (kDebugMode) ...[
+      if (kDebugMode)
         TalkerDioLogger(
           talker: logger,
         ),
-        DioNetworkLoggerInterceptor(),
-      ],
+      if (kDebugMode || environment.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
     ],
     environment.values.baseUrl,
   );

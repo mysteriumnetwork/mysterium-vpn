@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/recent_locations_list.dart';
@@ -10,7 +11,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_desktop_app_bar.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class HomeDesktopLeftPanel extends ConsumerWidget {
+class HomeDesktopLeftPanel extends HookConsumerWidget {
   const HomeDesktopLeftPanel({super.key});
 
   @override
@@ -18,18 +19,22 @@ class HomeDesktopLeftPanel extends ConsumerWidget {
     final locationsStore = ref.read(locationsStorePOD);
     final themeStore = ref.read(themeStorePOD);
     final vpnStore = ref.read(vpnStorePOD);
+    final analyticsStore = ref.read(analyticsStorePOD);
+    final sc = useScrollController()..addListener(analyticsStore.logLocationsListScroll);
     return Container(
       color: Theme.of(context).primaryColor,
       width: double.infinity,
       child: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 15),
+        controller: sc,
         children: [
           const HomeDesktopAppBar(),
-          SearchField(locationsStore).padding(bottom: 20),
+          SearchField(locationsStore, analyticsStore).padding(bottom: 20),
           RecentLocationsList(
             themeStore: themeStore,
             locationsStore: locationsStore,
             vpnStore: vpnStore,
+            analyticsStore: analyticsStore,
           ).padding(bottom: 20),
           EasyText(
             LocaleKeys.allLocations.tr(),

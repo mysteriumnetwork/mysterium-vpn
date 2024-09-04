@@ -11,7 +11,7 @@ import 'package:mysterium_vpn/pages/settings_page.dart';
 import 'package:mysterium_vpn/pages/static/splash_page.dart';
 import 'package:mysterium_vpn/pages/subscription_page.dart';
 import 'package:mysterium_vpn/pages/vpn_config_consent_page.dart';
-import 'package:mysterium_vpn/pages/vpn_privacy_consent_screen.dart';
+import 'package:mysterium_vpn/pages/vpn_privacy_consent_page.dart';
 import 'package:mysterium_vpn/views/check_email_view.dart';
 import 'package:mysterium_vpn/views/sign_in/sign_in_view.dart';
 
@@ -19,20 +19,20 @@ class BeamerLocations extends BeamLocation<BeamState> {
   BeamerLocations(RouteInformation super.routeInformation);
 
   @override
-  List<Pattern> get pathPatterns => [Routes.home.toRoute, Routes.login.toRoute];
+  List<Pattern> get pathPatterns => [Routes.main.toRoute, Routes.welcome.toRoute];
 
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
-        if (state.uri.pathSegments.contains(Routes.login.toDashCase))
+        if (state.uri.pathSegments.contains(Routes.welcome.toDashCase))
           BeamPage(
-            key: ValueKey(Routes.login.toDashCase),
-            title: Routes.login.name,
+            key: ValueKey(Routes.welcome.toDashCase),
+            title: Routes.welcome.name,
             child: const LoginPage(),
           ),
-        if (state.uri.pathSegments.contains(Routes.home.toDashCase))
+        if (state.uri.pathSegments.contains(Routes.main.toDashCase))
           BeamPage(
-            key: ValueKey(Routes.home.toDashCase),
-            title: Routes.home.name,
+            key: ValueKey(Routes.main.toDashCase),
+            title: Routes.main.name,
             child: const HomePage(),
           ),
         if (state.uri.pathSegments.contains(Routes.splash.toDashCase))
@@ -53,10 +53,10 @@ class BeamerLocations extends BeamLocation<BeamState> {
             title: Routes.reportIssue.name,
             child: const ReportIssuePage(),
           ),
-        if (state.uri.pathSegments.contains(Routes.subscription.toDashCase))
+        if (state.uri.pathSegments.contains(Routes.payment.toDashCase))
           BeamPage(
-            key: ValueKey(Routes.subscription.toDashCase),
-            title: Routes.subscription.name,
+            key: ValueKey(Routes.payment.toDashCase),
+            title: Routes.payment.name,
             child: const SubscriptionPage(),
           ),
         if (state.uri.pathSegments.contains(Routes.emailCommunications.toDashCase))
@@ -71,16 +71,16 @@ class BeamerLocations extends BeamLocation<BeamState> {
             title: Routes.notifications.name,
             child: const NotificationsPage(),
           ),
-        if (state.uri.pathSegments.contains(Routes.vpnConfigConsent.toDashCase))
+        if (state.uri.pathSegments.contains(Routes.permissions.toDashCase))
           BeamPage(
-            key: ValueKey(Routes.vpnConfigConsent.toDashCase),
-            title: Routes.vpnConfigConsent.name,
+            key: ValueKey(Routes.permissions.toDashCase),
+            title: Routes.permissions.name,
             child: const VpnConfigConsentPage(),
           ),
-        if (state.uri.pathSegments.contains(Routes.vpnPrivacyConsent.toDashCase))
+        if (state.uri.pathSegments.contains(Routes.privacyPolicy.toDashCase))
           BeamPage(
-            key: ValueKey(Routes.vpnPrivacyConsent.toDashCase),
-            title: Routes.vpnPrivacyConsent.name,
+            key: ValueKey(Routes.privacyPolicy.toDashCase),
+            title: Routes.privacyPolicy.name,
             child: const VpnPrivacyConsentPage(),
           ),
       ];
@@ -92,15 +92,15 @@ class AuthBeamerLocations extends BeamLocation<BeamState> {
   @override
   List<Pattern> get pathPatterns => [
         Routes.checkYourEmail.toRoute,
-        Routes.signIn.toRoute,
+        Routes.login.toRoute,
       ];
 
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
-        if (state.uri.pathSegments.contains(Routes.signIn.toDashCase))
+        if (state.uri.pathSegments.contains(Routes.login.toDashCase))
           BeamPage(
-            key: ValueKey(Routes.signIn.toDashCase),
-            title: Routes.signIn.name,
+            key: ValueKey(Routes.login.toDashCase),
+            title: Routes.login.name,
             child: const SignInView(),
           ),
         if (state.uri.pathSegments.contains(Routes.checkYourEmail.toDashCase))

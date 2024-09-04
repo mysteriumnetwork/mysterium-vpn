@@ -4,6 +4,7 @@ import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -26,6 +27,7 @@ class VpnConfigConsentForm extends HookConsumerWidget {
   ) {
     final vpnStore = ref.watch(vpnStorePOD);
     final height = getMediaHeight(context);
+    final analyticsStore = ref.read(analyticsStorePOD);
 
     return Column(
       children: [
@@ -52,13 +54,16 @@ class VpnConfigConsentForm extends HookConsumerWidget {
             ).padding(bottom: height * 0.03),
           ],
         ).scrollable().expanded(),
-        const Agreements().padding(vertical: height * 0.02),
+        Agreements(
+          analyticsStore: analyticsStore,
+        ).padding(vertical: height * 0.02),
         EasyButton(
           useSystemColor: false,
           color: Palette.purple,
           width: 250,
           onPressed: () async {
             await vpnStore.setVpnConfigConsent(value: true);
+            analyticsStore.logEvent(AnalyticsEvent.permissionsAcceptClick);
             if (context.mounted) {
               ref.read(subscriptionStorePOD).fetchSubscription();
               context.beamBack();
