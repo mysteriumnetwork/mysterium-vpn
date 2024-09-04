@@ -72,8 +72,9 @@ class AccountSettings extends HookConsumerWidget {
                     width: 100,
                     text: LocaleKeys.logout.tr(),
                     onPressed: () {
-                      analyticsStore.logEvent(AnalyticsEvent.logout);
-                      analyticsStore.logEvent(AnalyticsEvent.logOutPopup);
+                      analyticsStore
+                        ..logEvent(AnalyticsEvent.logout)
+                        ..logEvent(AnalyticsEvent.logOutPopup);
                       shownConfirmationDialog(
                         context,
                         confirmText: LocaleKeys.confirm.tr(),

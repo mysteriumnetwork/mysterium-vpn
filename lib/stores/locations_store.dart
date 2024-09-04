@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -92,7 +93,9 @@ abstract class _LocationsStore with Store {
     _debounce = Timer(Duration(milliseconds: duration), () {
       searchKeyword = text.toLowerCase().trim();
       fetchVPNLocations().whenComplete(fetchRecentLocations);
-      _analyticsStore.setSearchEvent(searchKeyword);
+      _analyticsStore
+        ..setSearchEvent(searchKeyword)
+        ..logEvent(AnalyticsEvent.search);
     });
   }
 

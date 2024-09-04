@@ -114,4 +114,16 @@ abstract class _AnalyticsStoreNoop extends AnalyticsStore with Store {
   @override
   @action
   Future<void> logScreenViewed(String screenName) async {}
+
+  @override
+  @action
+  Future<void> connectToVpn(String countryCode) async {}
+
+  @override
+  @action
+  Future<void> disconnectFromVpn(String countryCode) async {}
+
+  @override
+  @action
+  Future<void> logLocationsListScroll() async {}
 }
