@@ -23,6 +23,7 @@ class SubscriptionMobileView extends HookConsumerWidget {
     final authStore = ref.watch(authStorePOD);
     final subscriptionStore = ref.watch(subscriptionStorePOD);
     final localDb = ref.watch(localDBPOD);
+    final analyticsStore = ref.read(analyticsStorePOD);
 
     useEffect(
       () {
@@ -36,11 +37,16 @@ class SubscriptionMobileView extends HookConsumerWidget {
         canPop: false,
         onPopInvokedWithResult: (didPop, _) async {
           if (subscriptionStore.isSubscribed == false) {
+            analyticsStore.logEvent(AnalyticsEvent.paymentExitPopup);
             final shouldPop = await shownDismissPageDialog(context);
             if (shouldPop ?? false) {
+              analyticsStore.logEvent(AnalyticsEvent.paymentExitConfirm);
               authStore.logout();
+            } else {
+              analyticsStore.logEvent(AnalyticsEvent.paymentExitCancel);
             }
           } else {
+            analyticsStore.logEvent(AnalyticsEvent.backButtonClick);
             Beamer.of(context).beamBack();
           }
         },
@@ -59,6 +65,7 @@ class SubscriptionMobileView extends HookConsumerWidget {
                     : SubscriptionForm(
                         store: subscriptionStore,
                         localDb: localDb,
+                        analyticsStore: analyticsStore,
                       ),
           ),
         ),

@@ -1,16 +1,20 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/components/easy_dropdown.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 
 class LanguagePicker extends StatelessWidget {
   const LanguagePicker({
     required this.store,
+    required this.analyticsStore,
     super.key,
   });
   final LocaleStore store;
+  final AnalyticsStore analyticsStore;
   @override
   Widget build(BuildContext context) => EasyDropdown<Locale>(
         value: store.currentLocale,
@@ -20,6 +24,10 @@ class LanguagePicker extends StatelessWidget {
           }
           await context.setLocale(newLocale);
           await store.setLocale(newLocale);
+          analyticsStore.logEvent(
+            AnalyticsEvent.setLanguage,
+            parameters: {'language': newLocale.languageCode},
+          );
           return;
         },
         items: kSupportedLocales
