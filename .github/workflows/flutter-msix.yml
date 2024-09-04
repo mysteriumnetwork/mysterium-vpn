@@ -1,0 +1,70 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the develop branch
+
+on:
+  push:
+    # Publish semver tags as releases.
+    tags:
+      - '!dbg*'
+      - '!*-dbg*'
+      - '!*-fix*'
+      - '*.*.*'
+
+env:
+  flutter_version: "3.24.1"
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  release-windows-amd64:
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Choco help
+      uses: crazy-max/ghaction-chocolatey@v2
+      with:
+        args: -h
+
+    - name: Install
+      run: |
+        choco install flutter --version ${{ env.flutter_version }} -y
+
+    - name: Build (store)
+      run: |
+        Import-Module "$env:ChocolateyInstall/helpers/chocolateyInstaller.psm1"
+        refreshenv
+
+        flutter doctor
+        flutter clean
+        flutter pub get
+        dart run build_runner build --verbose --delete-conflicting-outputs
+        dart run msix:build
+        dart run msix:pack
+        Copy-Item build/windows/x64/runner/Release/MysteriumVPNTest_store.msix ./
+
+    - name: Build (standalone)
+      run: |
+        Import-Module "$env:ChocolateyInstall/helpers/chocolateyInstaller.psm1"
+        refreshenv
+
+        Copy-Item pubspec_standalone.yaml pubspec.yaml
+        flutter doctor
+        flutter clean
+        flutter pub get
+        dart run build_runner build --verbose --delete-conflicting-outputs
+        dart run msix:build
+        dart run msix:pack
+        Copy-Item build/windows/x64/runner/Release/MysteriumVPN.msix ./
+
+    - name: Upload
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        prerelease: true
+        files: |
+          MysteriumVPNTest_store.msix
+          MysteriumVPN.msix
