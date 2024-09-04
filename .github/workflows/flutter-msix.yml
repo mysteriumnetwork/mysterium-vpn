@@ -31,19 +31,22 @@ jobs:
 
     - name: Install
       run: |
-        choco install flutter --version ${{ env.flutter_version }} -y
+        # choco install flutter --version ${{ env.flutter_version }} -y
+        choco install fvm -y
+        fvm install ${{ env.flutter_version }}
+        fvm use ${{ env.flutter_version }} -f
 
     - name: Build (store)
       run: |
         Import-Module "$env:ChocolateyInstall/helpers/chocolateyInstaller.psm1"
         refreshenv
 
-        flutter doctor
-        flutter clean
-        flutter pub get
-        dart run build_runner build --verbose --delete-conflicting-outputs
-        dart run msix:build
-        dart run msix:pack
+        fvm flutter doctor
+        fvm flutter clean
+        fvm flutter pub get
+        fvm dart run build_runner build --verbose --delete-conflicting-outputs
+        fvm dart run msix:build
+        fvm dart run msix:pack
         Copy-Item build/windows/x64/runner/Release/MysteriumVPNTest_store.msix ./
 
     - name: Build (standalone)
@@ -52,12 +55,12 @@ jobs:
         refreshenv
 
         Copy-Item pubspec_standalone.yaml pubspec.yaml
-        flutter doctor
-        flutter clean
-        flutter pub get
-        dart run build_runner build --verbose --delete-conflicting-outputs
-        dart run msix:build
-        dart run msix:pack
+        fvm flutter doctor
+        fvm flutter clean
+        fvm flutter pub get
+        fvm dart run build_runner build --verbose --delete-conflicting-outputs
+        fvm dart run msix:build
+        fvm dart run msix:pack
         Copy-Item build/windows/x64/runner/Release/MysteriumVPN.msix ./
 
     - name: Upload
