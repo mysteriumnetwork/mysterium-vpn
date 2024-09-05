@@ -15,6 +15,9 @@ const kCreateConnectionConfig = '/connection/connect';
 const kFetchIP = 'https://location.mysterium.network/api/v1/location';
 const kFetchIPFallback = 'https://ipinfo.io/json';
 const kReportBrokenNode = '/connection/report-broken-node';
+const kSetMarketingConsent = '/user-preferences/marketing-consent';
+const kGetMarketingConsent = '/user-preferences/marketing-consent';
+const kGetUserPreferences = '/user-preferences';
 
 class RestApiService extends ApiService {
   RestApiService({
@@ -166,6 +169,39 @@ class RestApiService extends ApiService {
       _logger.info('Broken node reported');
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
+    }
+  }
+
+  @override
+  Future<void> setMarketingConsent({required bool consent}) async {
+    try {
+      await _networkService.post(
+        kSetMarketingConsent,
+        data: {
+          'consent': consent,
+        },
+      );
+    } on ApiException {
+      rethrow;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> getMarketingConsent() async {
+    try {
+      final data = (await _networkService.get(kGetMarketingConsent)).data as Map<String, dynamic>?;
+      if (data == null || !data.containsKey('marketing_consent')) {
+        throw Exception('No data found');
+      }
+      return data['marketing_consent'] as bool;
+    } on ApiException {
+      rethrow;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
     }
   }
 }
