@@ -22,6 +22,7 @@ import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_store.dart';
+import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
 
@@ -42,6 +43,7 @@ abstract class _AuthStore with Store {
     required IntercomStore intercomStore,
     required MarketingAnalyticsStore marketingAnalyticsStore,
     required Talker logger,
+    required UserPreferencesStore userPreferencesStore,
   })  : _authService = authService,
         _appLinks = appLinks,
         _localDb = localDb,
@@ -49,7 +51,8 @@ abstract class _AuthStore with Store {
         _marketingAnalyticsStore = marketingAnalyticsStore,
         _env = env,
         _intercomStore = intercomStore,
-        _logger = logger {
+        _logger = logger,
+        _userPreferencesStore = userPreferencesStore {
     initAuth();
   }
 
@@ -62,6 +65,7 @@ abstract class _AuthStore with Store {
   final IntercomStore _intercomStore;
   final MarketingAnalyticsStore _marketingAnalyticsStore;
   final Talker _logger;
+  final UserPreferencesStore _userPreferencesStore;
   @readonly
   AuthStatus _authStatus = AuthStatus.unknown;
 
@@ -79,6 +83,9 @@ abstract class _AuthStore with Store {
 
   @readonly
   AuthData? _authData;
+
+  @observable
+  bool marketingConsent = true;
 
   @observable
   ObservableFuture<String?> signInFeatureFeature = ObservableFuture.value(null);
@@ -165,12 +172,19 @@ abstract class _AuthStore with Store {
           _authService.checkUserAuth(),
         );
       }
+
       final res = await authenticateFeature;
       await _localDb.setUserId(res!.username);
       _initializeAnalyticsStores(username: res.username, userId: res.userId, grantType: grantType);
       _authData = res;
       _authStatus = AuthStatus.authenticated;
       _logger.info(_localDb.userData.toString());
+      if (grantType != GrantType.savedToken) {
+        Future.delayed(
+          const Duration(seconds: 5),
+          () => _userPreferencesStore.setMarketingConsent(consent: marketingConsent),
+        );
+      }
     } catch (e) {
       _authStatus = AuthStatus.unauthenticated;
       if (e is KeyDoesntExistsException || e is AuthenticationRequiredException) {
