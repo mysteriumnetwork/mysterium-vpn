@@ -7,6 +7,9 @@ FormGroup reportIssue() => FormGroup({
       'report_issue': FormControl<String>(validators: [Validators.required]),
     });
 
-FormGroup approval() => FormGroup({
-      'approval': FormControl<bool>(value: true),
+FormGroup marketingConsent() => FormGroup({
+      'consent': FormControl<bool>(value: true),
+    });
+FormGroup emailConsent() => FormGroup({
+      'consent': FormControl<bool>(value: true),
     });

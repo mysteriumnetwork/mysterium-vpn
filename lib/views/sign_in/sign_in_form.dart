@@ -33,7 +33,7 @@ class SignInForm extends HookConsumerWidget {
       form.control('email').value = store.email;
       return form;
     });
-    final form = useMemoized(approval);
+    final marketingConsentForm = useMemoized(marketingConsent);
 
     return Observer(
       builder: (context) {
@@ -64,19 +64,22 @@ class SignInForm extends HookConsumerWidget {
                     ).padding(bottom: 10),
                   ),
                   ReactiveForm(
-                    formGroup: form,
+                    formGroup: marketingConsentForm,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ReactiveCheckbox(
-                          formControlName: 'approval',
+                          formControlName: 'consent',
                           onChanged: (control) {
-                            analyticsStore.logEvent(
-                              AnalyticsEvent.marketingConsentClicked,
-                              parameters: {
-                                'approval': control.value,
-                              },
-                            );
+                            if (control.value != null) {
+                              analyticsStore.logEvent(
+                                AnalyticsEvent.marketingConsentClicked,
+                                parameters: {
+                                  'consent': control.value,
+                                },
+                              );
+                              store.marketingConsent = control.value!;
+                            }
                           },
                         ),
                         EasyText(
