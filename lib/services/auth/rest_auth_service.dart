@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
@@ -162,7 +164,7 @@ class RestAuthService extends AuthService {
   @override
   Future<void> logout() async {
     await removeLocalData();
-    if (await googleSignIn.isSignedIn()) {
+    if (!Platform.isWindows && await googleSignIn.isSignedIn()) {
       await googleSignIn.signOut();
     }
   }
@@ -171,6 +173,9 @@ class RestAuthService extends AuthService {
     await _securedStorage.removeAccessToken();
     await _securedStorage.removeUserId();
     await _securedStorage.removePkcePair();
+    await _securedStorage.removeUsername();
+    await _securedStorage.removeWireguardPrivateKey();
+    await _securedStorage.removeWireguardPublicKey();
   }
 
   @override
