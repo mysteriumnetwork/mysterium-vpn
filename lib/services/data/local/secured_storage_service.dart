@@ -76,13 +76,23 @@ class SecureStorageService {
     }
   }
 
-  Future<bool> checkExistance(String key) async => _securedStorage.containsKey(key: key);
+  Future<bool> checkExistance(String key) async {
+    try {
+      return await _securedStorage.containsKey(key: key);
+    } catch (e) {
+      return false;
+    }
+  }
 
   Future<void> write(String key, String value) async {
-    if (Platform.isMacOS) {
-      await remove(key);
+    try {
+      if (Platform.isMacOS || Platform.isWindows) {
+        await remove(key);
+      }
+      await _securedStorage.write(key: key, value: value);
+    } catch (e) {
+      rethrow;
     }
-    return _securedStorage.write(key: key, value: value);
   }
 
   Future<String> getAccessToken() async => read(StorageKeys.accessToken.name);
@@ -101,17 +111,20 @@ class SecureStorageService {
       write(StorageKeys.appLink.name, appLink);
   Future<String> getWireguardPublicKey() async => read(StorageKeys.wireguardPublicKey.name);
   Future<void> saveWireguardPublicKey({required String publicKey}) async =>
-      write(StorageKeys.accessToken.name, publicKey);
-  Future<void> removeWireguardPublicKey() async => remove(StorageKeys.wireguardPrivateKey.name);
+      write(StorageKeys.wireguardPublicKey.name, publicKey);
+  Future<void> removeWireguardPublicKey() async => remove(StorageKeys.wireguardPublicKey.name);
   Future<String> getWireguardPrivateKey() async => read(StorageKeys.wireguardPrivateKey.name);
-  Future<void> saveWireguardPrivateKey({required String publicKey}) async =>
-      write(StorageKeys.accessToken.name, publicKey);
+  Future<void> saveWireguardPrivateKey({required String privateKey}) async =>
+      write(StorageKeys.wireguardPrivateKey.name, privateKey);
   Future<void> removeWireguardPrivateKey() async => remove(StorageKeys.wireguardPrivateKey.name);
   Future<PkcePair?> getPkcePair() async {
     try {
       final codeChallenge = await read(StorageKeys.codeChallenge.name);
       final codeVerifier = await read(StorageKeys.codeVerifier.name);
-      return PkcePair.fromStorage(codeChallenge: codeChallenge, codeVerifier: codeVerifier);
+      return PkcePair.fromStorage(
+        codeChallenge: codeChallenge,
+        codeVerifier: codeVerifier,
+      );
     } catch (e) {
       return null;
     }
@@ -137,7 +150,10 @@ class SecureStorageService {
     if (activeUntil == null) {
       return;
     }
-    final value = {'email': email, 'activeUntil': activeUntil.toIso8601String()};
+    final value = {
+      'email': email,
+      'activeUntil': activeUntil.toIso8601String(),
+    };
     write(StorageKeys.subscriptionPaymentInfo.name, jsonEncode(value));
   }
 
