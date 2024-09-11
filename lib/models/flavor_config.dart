@@ -1,6 +1,4 @@
-import 'dart:io';
-
-import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 enum Flavor {
   dev('DEV'),
@@ -79,10 +77,8 @@ class FlavorConfig {
 
   bool isDev() => flavor == Flavor.dev;
 
-  String getBundleId() {
-    if (Platform.isIOS || Platform.isMacOS) {
-      return isDev() ? iosTestBundleId : iosBundleId;
-    }
-    return isDev() ? testBundleId : bundleId;
+  Future<String> getBundleId() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo.packageName;
   }
 }

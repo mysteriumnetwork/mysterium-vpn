@@ -158,7 +158,6 @@ abstract class _VpnStore with Store {
     _wireguardService.statusStream().listen((event) async {
       if (event == ConnectionStatus.disconnecting) {
         _vpnConnection = null;
-        _vpnConfig = null;
       }
       if (event == ConnectionStatus.disconnected) {
         _analyticsStore.setVpnDisconnect(
@@ -181,7 +180,7 @@ abstract class _VpnStore with Store {
         return;
       }
       await _wireguardService.setupTunnel(
-        bundleId: _env.getBundleId(),
+        bundleId: await _env.getBundleId(),
         win32ServiceName: win32ServiceName,
         tunnelName: _env.values.tunnelName,
       );
@@ -222,28 +221,29 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> _generateKey() async {
-    final res = await Future.wait([
-      _securedStorage.checkExistance(StorageKeys.wireguardPrivateKey.name),
-      _securedStorage.checkExistance(StorageKeys.wireguardPublicKey.name),
-    ]);
-    if (res.contains(false)) {
-      _wireguardKey = await _wireguardService.generateKeyPair();
-      await Future.wait([
-        _securedStorage.write(
-          StorageKeys.wireguardPrivateKey.name,
-          _wireguardKey!.privateKey,
-        ),
-        _securedStorage.write(
-          StorageKeys.wireguardPublicKey.name,
-          _wireguardKey!.publicKey,
-        ),
-      ]);
-    } else {
+    try {
       final res = await Future.wait([
-        _securedStorage.read(StorageKeys.wireguardPublicKey.name),
-        _securedStorage.read(StorageKeys.wireguardPrivateKey.name),
+        _securedStorage.checkExistance(StorageKeys.wireguardPrivateKey.name),
+        _securedStorage.checkExistance(StorageKeys.wireguardPublicKey.name),
       ]);
-      _wireguardKey = KeyPair(res[0], res[1]);
+      if (res.contains(false)) {
+        _wireguardKey = await _wireguardService.generateKeyPair();
+        await Future.wait([
+          _securedStorage.saveWireguardPublicKey(
+            publicKey: _wireguardKey!.publicKey,
+          ),
+          _securedStorage.saveWireguardPrivateKey(
+            privateKey: _wireguardKey!.privateKey,
+          ),
+        ]);
+      } else {
+        final publicKey = await _securedStorage.getWireguardPublicKey();
+        final privateKey = await _securedStorage.getWireguardPrivateKey();
+        _wireguardKey = KeyPair(publicKey, privateKey);
+      }
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
     }
   }
 
@@ -544,19 +544,21 @@ abstract class _VpnStore with Store {
         _retryCount = 0;
         _isRetrying = false;
       }
-      unawaited(
-        _apiService.reportBrokenNode(
-          request: ReportBrokenNodeRequest(
-            publicKey: _wireguardKey!.publicKey,
-            destinationCountry: location ?? '',
-            osType: Platform.operatingSystem,
-            appVersion: (await PackageInfo.fromPlatform()).version,
-            originCountry: originCountry,
-            connectivityType: (await Connectivity().checkConnectivity()).lastOrNull,
-            hashValue: _vpnConfig!.hashValue,
+      if (_vpnConfig?.hashCode != null) {
+        unawaited(
+          _apiService.reportBrokenNode(
+            request: ReportBrokenNodeRequest(
+              publicKey: _wireguardKey!.publicKey,
+              destinationCountry: location ?? '',
+              osType: Platform.operatingSystem,
+              appVersion: (await PackageInfo.fromPlatform()).version,
+              originCountry: originCountry,
+              connectivityType: (await Connectivity().checkConnectivity()).lastOrNull,
+              hashValue: _vpnConfig!.hashValue,
+            ),
           ),
-        ),
-      );
+        );
+      }
       rethrow;
     } catch (e) {
       rethrow;
