@@ -37,16 +37,9 @@ class MyApp extends HookConsumerWidget {
           authenticationReaction(status, routeDelegate, authStore, ref);
         },
       ),
-      child: Observer(
-        builder: (context) => RetakeFocusOnTap(
-          child: LifecycleListener(
-            onDetached: () => ref.read(vpnStorePOD).disconnectWireguard(),
-            onResumed: () {
-              checkSubsStatus(authStore, ref.read(subscriptionStorePOD));
-            },
-            onPaused: () {
-              checkSubsStatus(authStore, ref.read(subscriptionStorePOD));
-            },
+      child: LifecycleListener(
+        child: Observer(
+          builder: (context) => RetakeFocusOnTap(
             child: ShortcutsWidget(
               child: CustomPlatformMenu(
                 appName: appName,
@@ -81,7 +74,10 @@ class MyApp extends HookConsumerWidget {
     );
   }
 
-  void checkSubsStatus(AuthStore authStore, SubscriptionStore subscriptionStore) {
+  void checkSubsStatus(
+    AuthStore authStore,
+    SubscriptionStore subscriptionStore,
+  ) {
     if (authStore.authStatus != AuthStatus.authenticated) {
       return;
     }

@@ -160,9 +160,7 @@ class __LifecycleDesktopState extends ConsumerState<_LifecycleDesktop>
 
   @override
   Future<void> onTrayIconMouseDown() async {
-    if (!await windowManager.isVisible()) {
-      windowManager.show();
-    }
+    windowManager.show();
   }
 
   @override
