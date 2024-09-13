@@ -22,35 +22,8 @@ abstract class AnalyticsStore {
     String userId, [
     GrantType signUpMethod = GrantType.email,
   ]);
-  Future<void> setLogOut(String userId);
   Future<void> setSearchEvent(String searchTerm);
-  Future<void> setVpnConnect({
-    required String vpnServer,
-    required Duration vpnProcessingTime,
-  });
-  Future<void> setVpnDisconnect({required String vpnServer});
-  Future<void> setVpnError({
-    required int errorCode,
-    required String errorMessage,
-    required String errorSource,
-  });
-  Future<void> setPaymentSuccessful({
-    required String paymentGateway,
-    required String planType,
-    required double planPrice,
-    required String transactionId,
-    required String transactionDate,
-  });
-  Future<void> setPaymentInitiated({
-    required String paymentGateway,
-    required String planType,
-    required double planPrice,
-  });
-  Future<void> setManageSubscription({
-    required String paymentGateway,
-    required String planType,
-    required double planPrice,
-  });
+
   Future<void> logMessage(
     String message,
   );

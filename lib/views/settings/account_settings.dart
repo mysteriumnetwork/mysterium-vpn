@@ -47,7 +47,6 @@ class AccountSettings extends HookConsumerWidget {
                   color: Palette.black,
                   text: LocaleKeys.goToBillingPage.tr(),
                   onPressed: () {
-                    analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
                     handleOnBillingPage(
                       billingPage: environment.values.billingPage,
                       context: context,
@@ -72,9 +71,7 @@ class AccountSettings extends HookConsumerWidget {
                     width: 100,
                     text: LocaleKeys.logout.tr(),
                     onPressed: () {
-                      analyticsStore
-                        ..logEvent(AnalyticsEvent.logout)
-                        ..logEvent(AnalyticsEvent.logOutPopup);
+                      analyticsStore.logEvent(AnalyticsEvent.logOutPopup);
                       shownConfirmationDialog(
                         context,
                         confirmText: LocaleKeys.confirm.tr(),
