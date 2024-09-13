@@ -212,7 +212,6 @@ abstract class _AuthStore with Store {
     logoutFeature = ObservableFuture(_authService.logout());
 
     await logoutFeature;
-    _analyticsStore.setLogOut(_authData?.username ?? '');
     _intercomStore.logout();
     _authStatus = AuthStatus.unauthenticated;
     _authData = null;
