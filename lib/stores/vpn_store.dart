@@ -172,7 +172,7 @@ abstract class _VpnStore with Store {
         return;
       }
       await _wireguardService.setupTunnel(
-        bundleId: await _env.getBundleId(),
+        bundleId: _env.getBundleId(),
         win32ServiceName: win32ServiceName,
         tunnelName: _env.values.tunnelName,
       );
