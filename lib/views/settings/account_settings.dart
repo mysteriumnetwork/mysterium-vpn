@@ -125,7 +125,13 @@ class AccountSettings extends HookConsumerWidget {
                           maxLines: 2,
                           textAlign: TextAlign.center,
                         ),
-                        onConfirm: authStore.logoutFromAllDevices,
+                        onConfirm: () {
+                          analyticsStore.logEvent(AnalyticsEvent.logOutAllConfirm);
+                          authStore.logoutFromAllDevices();
+                        },
+                        onCancel: () {
+                          analyticsStore.logEvent(AnalyticsEvent.logOutAllCancel);
+                        },
                       );
                     },
                   ),

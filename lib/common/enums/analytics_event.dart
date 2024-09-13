@@ -25,6 +25,8 @@ enum AnalyticsEvent {
   backButtonClick,
   logOut,
   logOutAll,
+  logOutAllCancel,
+  logOutAllConfirm,
   refreshIpDisable,
   refreshIpEnable,
   setLanguage,

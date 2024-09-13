@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/components/location_item.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 
 class LocationsList extends HookConsumerWidget {
@@ -15,7 +16,7 @@ class LocationsList extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sc = useScrollController();
-
+    final analyticsStore = ref.watch(analyticsStorePOD);
     return ListView.builder(
       padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
@@ -28,7 +29,13 @@ class LocationsList extends HookConsumerWidget {
         return LocationItem(
           location: location,
           vpnStore: vpnStore,
-          onTap: () => vpnStore.toggleConnection(location: location),
+          onTap: () {
+            vpnStore.isConnected
+                ? analyticsStore.disconnectFromVpn(location.toLowerCase())
+                : analyticsStore.connectToVpn(location.toLowerCase());
+
+            vpnStore.toggleConnection(location: location);
+          },
         );
       },
     );
