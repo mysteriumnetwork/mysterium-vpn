@@ -56,56 +56,7 @@ abstract class _AnalyticsStoreNoop extends AnalyticsStore with Store {
 
   @override
   @action
-  Future<void> setLogOut(String userId) async {}
-
-  @override
-  @action
   Future<void> setSearchEvent(String searchTerm) async {}
-
-  @override
-  @action
-  Future<void> setVpnConnect({
-    required String vpnServer,
-    required Duration vpnProcessingTime,
-  }) async {}
-
-  @override
-  @action
-  Future<void> setVpnDisconnect({required String vpnServer}) async {}
-
-  @override
-  @action
-  Future<void> setVpnError({
-    required int errorCode,
-    required String errorMessage,
-    required String errorSource,
-  }) async {}
-
-  @override
-  @action
-  Future<void> setPaymentSuccessful({
-    required String paymentGateway,
-    required String planType,
-    required double planPrice,
-    required String transactionId,
-    required String transactionDate,
-  }) async {}
-
-  @override
-  @action
-  Future<void> setPaymentInitiated({
-    required String paymentGateway,
-    required String planType,
-    required double planPrice,
-  }) async {}
-
-  @override
-  @action
-  Future<void> setManageSubscription({
-    required String paymentGateway,
-    required String planType,
-    required double planPrice,
-  }) async {}
 
   @override
   @action

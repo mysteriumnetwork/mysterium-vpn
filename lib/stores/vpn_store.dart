@@ -22,7 +22,6 @@ import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -43,7 +42,6 @@ abstract class _VpnStore with Store {
     required ApiService apiService,
     required LocationsStore locationsStore,
     required WireguardDart wireguardService,
-    required AnalyticsStore analyticsStore,
     required SubscriptionStore subscriptionStore,
     required LocalDBService localDBService,
     required FlavorConfig env,
@@ -51,7 +49,6 @@ abstract class _VpnStore with Store {
   })  : _apiService = apiService,
         _locationsStore = locationsStore,
         _wireguardService = wireguardService,
-        _analyticsStore = analyticsStore,
         _subscriptionStore = subscriptionStore,
         _localDBService = localDBService,
         _env = env,
@@ -62,7 +59,6 @@ abstract class _VpnStore with Store {
   final ApiService _apiService;
   final LocationsStore _locationsStore;
   final WireguardDart _wireguardService;
-  final AnalyticsStore _analyticsStore;
   final SubscriptionStore _subscriptionStore;
   final FlavorConfig _env;
   final _securedStorage = SecureStorageService.instance;
@@ -159,11 +155,7 @@ abstract class _VpnStore with Store {
       if (event == ConnectionStatus.disconnecting) {
         _vpnConnection = null;
       }
-      if (event == ConnectionStatus.disconnected) {
-        _analyticsStore.setVpnDisconnect(
-          vpnServer: _vpnConnection?.location ?? '',
-        );
-      }
+
       if (event == ConnectionStatus.unknown) {
         _isTunnelSetup = false;
         _setupTunnel();
@@ -180,7 +172,7 @@ abstract class _VpnStore with Store {
         return;
       }
       await _wireguardService.setupTunnel(
-        bundleId: await _env.getBundleId(),
+        bundleId: _env.getBundleId(),
         win32ServiceName: win32ServiceName,
         tunnelName: _env.values.tunnelName,
       );
@@ -376,20 +368,12 @@ abstract class _VpnStore with Store {
 
       _vpnConnection = value;
       stopwatch.stop();
-      _analyticsStore.setVpnConnect(
-        vpnServer: _vpnConnection?.location ?? '',
-        vpnProcessingTime: stopwatch.elapsed,
-      );
+
       _locationsStore.addRecentLocation(value.location);
     } on TimeoutException catch (e) {
       _logger.handle(e);
       showSnackbar(
         LocaleKeys.connectionTimeout.tr(),
-      );
-      _setVpnError(
-        errorCode: 408,
-        errorMessage: e.message ?? '',
-        errorSource: 'wireguard',
       );
     } on OperationCancelledException {
       _logger.info('Operation cancelled by user');
@@ -410,22 +394,11 @@ abstract class _VpnStore with Store {
           'errorCode': errorCode.toString(),
         },
       );
-      final errorSource = e is WireguardConnectException
-          ? 'wireguard'
-          : e is ApiException
-              ? 'backend'
-              : e is BrokenNodeException?
-                  ? 'broken_node'
-                  : 'internal';
       if (_isRetrying == true) {
         return;
       }
       showSnackbar(errorMessage);
-      _setVpnError(
-        errorCode: errorCode,
-        errorMessage: errorMessage,
-        errorSource: errorSource,
-      );
+
       _connectionStatus = ConnectionStatus.disconnected;
     }
   }
@@ -442,18 +415,6 @@ abstract class _VpnStore with Store {
       return _locationsStore.vpnLocations.topLocations.randomItem();
     }
     return _locationsStore.vpnLocations.allLocations.randomItem();
-  }
-
-  Future<void> _setVpnError({
-    required int errorCode,
-    required String errorMessage,
-    required String errorSource,
-  }) async {
-    await _analyticsStore.setVpnError(
-      errorCode: errorCode,
-      errorMessage: errorMessage,
-      errorSource: errorSource,
-    );
   }
 
   @action

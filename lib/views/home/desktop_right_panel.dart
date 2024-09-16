@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -17,6 +18,7 @@ class HomeDesktopRightPanel extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
+    final analyticsStore = ref.watch(analyticsStorePOD);
     return Observer(
       builder: (context) {
         final isConnected = vpnStore.isConnected;
@@ -34,7 +36,12 @@ class HomeDesktopRightPanel extends ConsumerWidget {
                       alignment: Alignment.center,
                     ),
                     ConnectButton(
-                      onPressed: vpnStore.toggleConnection,
+                      onPressed: () {
+                        analyticsStore.logEvent(
+                          isConnected ? AnalyticsEvent.disconnectMain : AnalyticsEvent.connectMain,
+                        );
+                        vpnStore.toggleConnection();
+                      },
                     ).width((getMediaWidth(context) + getMediaHeight(context)) * 0.06),
                   ],
                 ).padding(vertical: 40).expanded(),
