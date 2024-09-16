@@ -16,7 +16,6 @@ import 'package:mysterium_vpn/models/subscription_config.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_store.dart';
 
@@ -32,13 +31,11 @@ abstract class _SubscriptionStore with Store {
     required SubscriptionService subscriptionService,
     required AuthStore authStore,
     required LocalDBService localDb,
-    required AnalyticsStore analyticsStore,
     required MarketingAnalyticsStore marketingAnalyticsStore,
   })  : _inAppPurchase = inAppPurchase,
         _subscriptionService = subscriptionService,
         _authStore = authStore,
         _localDb = localDb,
-        _analyticsStore = analyticsStore,
         _marketingAnalyticsStore = marketingAnalyticsStore {
     initStore();
   }
@@ -49,7 +46,6 @@ abstract class _SubscriptionStore with Store {
   final SubscriptionService _subscriptionService;
   final AuthStore _authStore;
   final LocalDBService _localDb;
-  final AnalyticsStore _analyticsStore;
   final MarketingAnalyticsStore _marketingAnalyticsStore;
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
 
@@ -177,20 +173,6 @@ abstract class _SubscriptionStore with Store {
             : null,
         userId: _authStore.authData!.userId,
       );
-
-      if (_purchasedProductId != null && _purchasedProductId == selectedProductId) {
-        _analyticsStore.setManageSubscription(
-          paymentGateway: getPlatformGateway(),
-          planPrice: item.rawPrice,
-          planType: selectedProductId,
-        );
-      } else {
-        _analyticsStore.setPaymentInitiated(
-          paymentGateway: getPlatformGateway(),
-          planPrice: item.rawPrice,
-          planType: selectedProductId,
-        );
-      }
     } catch (e) {
       _subscriptonStatus = SubscriptionStatus.error;
       if (kDebugMode) {
@@ -261,13 +243,7 @@ abstract class _SubscriptionStore with Store {
                 ? ProductStatus.purchased
                 : ProductStatus.purchasable;
           }
-          _analyticsStore.setPaymentSuccessful(
-            paymentGateway: getPlatformGateway(),
-            planPrice: product.productDetails.rawPrice,
-            planType: _purchasedProductId ?? '',
-            transactionId: purchaseDetails.verificationData.serverVerificationData,
-            transactionDate: purchaseDetails.transactionDate ?? '',
-          );
+
           if (_expired == false) {
             _marketingAnalyticsStore.setStartTrial(
               planType: _purchasedProductId ?? '',
