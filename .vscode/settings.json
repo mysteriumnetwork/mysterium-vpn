@@ -1,8 +1,9 @@
 {
-    "editor.wordWrapColumn": 100,
-    "files.insertFinalNewline": true,
-    "files.associations": {
-        "*.yaml": "yaml",
-        "xstring": "cpp"
-    }
+  "editor.wordWrapColumn": 100,
+  "files.insertFinalNewline": true,
+  "files.associations": {
+    "*.yaml": "yaml",
+    "xstring": "cpp"
+  },
+  "dart.flutterSdkPath": ".fvm/versions/3.24.1"
 }
