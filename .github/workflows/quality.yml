@@ -65,9 +65,8 @@ jobs:
 
       # 3. Build Check (iOS)
       - name: Install Pods
-        run: |
-          cd ios
-          pod install
+        run: pod install
+        working-directory: ios
       - run: git status
       - name: Build
         run: flutter build ios --no-pub --debug --no-codesign --flavor "dev" --dart-define FLAVOR=DEV
