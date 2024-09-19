@@ -46,7 +46,12 @@ jobs:
   prebuilt_ios:
     name: Prebuild Check (iOS)
     needs: [quality_checks]
-    runs-on: macos-12
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-12, macos-14]
+    # Allow macOS 12 to fail without stopping the entire workflow
+    continue-on-error: ${{ matrix.os == 'macos-12' }}
     steps:
       - uses: actions/checkout@v2
 
