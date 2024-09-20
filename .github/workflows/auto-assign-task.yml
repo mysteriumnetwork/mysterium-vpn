@@ -5,9 +5,10 @@ jobs:
   auto-assign:
     runs-on: ubuntu-latest
     steps:
-      - name: Get the column ID
+      - name: Get the In Progress column ID
+        id: get_col_id
         run: |
-          gh api graphql -f query='{
+          echo "id=$(gh api graphql -f query='{
             organization(login: "mysteriumnetwork") {
               projectV2(number: 28) {
                 fields(first: 100) {
@@ -37,6 +38,10 @@ jobs:
                   }
                 }
               }
-            }'
+            }' | jq '.data.organization.projectV2.fields.nodes[] | select(.name == "Status") | .options[] | select(.name == "🏗 In progress") | .id')" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GH_PROJECTS_RO_TOKEN }}
+      - name: Set env value
+        run: echo "$IN_PROGRESS_COL_ID=${{ steps.get_col_id.outputs.id }}"  >> $GITHUB_ENV
+      - name: Print ID
+        run: echo $IN_PROGRESS_COL_ID
