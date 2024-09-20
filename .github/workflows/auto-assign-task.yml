@@ -4,7 +4,8 @@ on:
 jobs:
   auto-assign:
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions:
+      repository-projects: read
     steps:
       - name: Get the column ID
         run: |
