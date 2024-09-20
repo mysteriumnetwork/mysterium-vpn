@@ -10,10 +10,16 @@ jobs:
           gh api graphql -f query='                                                                                                  
             query{
             organization(login: "mysteriumnetwork"){
-                                  projectV2(number: 28) {
-                                    id title
+              projectV2(number: 28) {
+                id 
+                title
+                columns(first: 100) {
+                  nodes {
+                    id
+                    name
+                  }
+                }
             }
-          }
           }'
         env:
           GH_TOKEN: ${{ secrets.GH_PROJECTS_RO_TOKEN }}
