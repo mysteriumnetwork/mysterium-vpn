@@ -15,10 +15,8 @@ import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/retry_dialog.dart';
-import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/error_widget.dart';
-import 'package:mysterium_vpn/components/header_title.dart';
 import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
@@ -27,7 +25,9 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
+import 'package:mysterium_vpn/views/consent/agreements.dart';
 import 'package:mysterium_vpn/views/subscription/product_list.dart';
+import 'package:mysterium_vpn/views/subscription/subscription_button.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 enum SubscriptionFormStatus {
@@ -69,134 +69,70 @@ class SubscriptionForm extends HookConsumerWidget {
         children: [
           Column(
             children: [
-              HeaderTitle(
-                text: LocaleKeys.selectPackage.tr(),
+              EasyText(
+                LocaleKeys.selectPackage.tr(),
+                fontSize: 20,
+                fontWeight: FontWeight.w900,
               ),
+              SizedBox(height: getMediaHeight(context) * 0.01),
               if (store.products.isEmpty)
                 RetryOnErrorWidget(
                   error: LocaleKeys.productsNotAvailable.tr(),
                   onRetry: store.getSubscriptionsConfig,
                 )
               else
-                Column(
-                  children: [
-                    SubscriptionProductsList(
-                      products: store.products,
-                    ).padding(bottom: getMediaHeight(context) * 0.03),
-                    EasyText(
-                      subsFormStatus == SubscriptionFormStatus.manage
-                          ? LocaleKeys.manageSubsTittle.tr()
-                          : subsFormStatus == SubscriptionFormStatus.expired
-                              ? LocaleKeys.subsExpiredTittle.tr()
-                              : LocaleKeys.freeTrialTitle.tr(),
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
-                    ).padding(bottom: getMediaHeight(context) * 0.005),
-                    EasyText(
-                      subsFormStatus == SubscriptionFormStatus.manage
-                          ? LocaleKeys.manageSubsDesc.tr()
-                          : subsFormStatus == SubscriptionFormStatus.expired
-                              ? LocaleKeys.subsExpiredDesc.tr()
-                              : LocaleKeys.freeTrialDesc.tr(),
-                      maxLines: 3,
-                      fontSize: 14,
-                      textAlign: TextAlign.center,
-                    ).padding(bottom: getMediaHeight(context) * 0.025),
-                    ReactionBuilder(
-                      builder: (context) => reaction((_) => store.subscriptonStatus, (status) {
-                        if (context.mounted) {
-                          if (status == SubscriptionStatus.purchased) {
-                            showSnackbar(
-                              LocaleKeys.subscriptionActive.tr(),
-                              type: MessageType.success,
-                            );
-                            context.beamToReplacementNamed(Routes.main.toRoute);
-                          } else if (store.verifySubscriptionFuture?.error is ApiException &&
-                              (store.verifySubscriptionFuture?.error as ApiException).code == 409) {
-                            showSnackbar(
-                              (store.verifySubscriptionFuture?.error as ApiException).message,
-                            );
-                          } else if (status == SubscriptionStatus.notVerified ||
-                              status == SubscriptionStatus.verifyingError) {
-                            shownRetryDialog(
-                              onRetry: () async => store.retryVerificationProcess(),
-                              context: context,
-                              asset: Assets.subscription,
-                              title: LocaleKeys.subscriptionVerificationFailed.tr(),
-                              subtitle: LocaleKeys.failedToVerifySubs.tr(),
-                              dismissText: LocaleKeys.cancelBtn.tr(),
-                              onDismiss: () async => Navigator.of(context).pop(),
-                            );
-                          }
-                        }
-
-                        if (status == SubscriptionStatus.canceled) {
-                          showSnackbar(LocaleKeys.subscriptionProcessCanceled.tr());
-                        }
-                        if (status == SubscriptionStatus.error) {
-                          showSnackbar(
-                            LocaleKeys.failedToSubscribe.tr(),
-                          );
-                        }
-                      }),
-                      child: EasyButton(
-                        width: getMediaWidth(context) * 0.8,
-                        useSystemColor: false,
-                        color: store.subscriptonStatus == SubscriptionStatus.pending ||
-                                store.subscriptonStatus == SubscriptionStatus.verifying
-                            ? Theme.of(context).disabledColor
-                            : Palette.purple,
-                        onPressed: store.subscriptonStatus == SubscriptionStatus.pending ||
-                                store.subscriptonStatus == SubscriptionStatus.verifying
-                            ? null
-                            : () async {
-                                if (subsFormStatus == SubscriptionFormStatus.expired) {
-                                  analyticsStore.logEvent(AnalyticsEvent.renewSubscriptionClick);
-                                } else if (subsFormStatus == SubscriptionFormStatus.manage) {
-                                  store.selectedProductId == store.purchasedProductId
-                                      ? analyticsStore
-                                          .logEvent(AnalyticsEvent.manageSubscriptionClick)
-                                      : analyticsStore
-                                          .logEvent(AnalyticsEvent.changeSubscriptionClick);
-                                } else {
-                                  analyticsStore
-                                      .logEvent(AnalyticsEvent.getStartedSubscriptionClick);
-                                }
-                                store.subscribeToPackage();
-                              },
-                        child: store.subscriptonStatus == SubscriptionStatus.pending ||
-                                store.subscriptonStatus == SubscriptionStatus.verifying
-                            ? const LoadingIndicator(
-                                radius: 20,
-                                strokeWidth: 1.5,
-                              )
-                            : EasyText(
-                                subsFormStatus == SubscriptionFormStatus.manage
-                                    ? store.selectedProductId == store.purchasedProductId
-                                        ? LocaleKeys.manageBtn.tr()
-                                        : LocaleKeys.changeSubPlan.tr()
-                                    : subsFormStatus == SubscriptionFormStatus.expired
-                                        ? LocaleKeys.renewSubsBtn.tr()
-                                        : LocaleKeys.startTrialBtn.tr(),
-                                color: Palette.white,
-                              ),
-                      ),
-                    ),
-                    Visibility(
-                      visible: Platform.isIOS,
-                      child: TextButton(
-                        onPressed: () {
-                          analyticsStore.logEvent(AnalyticsEvent.redeemClick);
-                          store.redeemCode();
-                        },
-                        child: const EasyText(
-                          'Redeem Code',
-                          color: Palette.purple,
-                        ),
-                      ).padding(top: 10),
-                    ),
-                  ],
+                SubscriptionProductsList(
+                  products: store.products,
+                ).padding(bottom: getMediaHeight(context) * 0.02),
+              EasyText(
+                subsFormStatus == SubscriptionFormStatus.manage
+                    ? LocaleKeys.manageSubsTittle.tr()
+                    : subsFormStatus == SubscriptionFormStatus.expired
+                        ? LocaleKeys.subsExpiredTittle.tr()
+                        : LocaleKeys.freeTrialTitle.tr(),
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+              ).padding(bottom: getMediaHeight(context) * 0.005),
+              EasyText(
+                subsFormStatus == SubscriptionFormStatus.manage
+                    ? LocaleKeys.manageSubsDesc.tr()
+                    : subsFormStatus == SubscriptionFormStatus.expired
+                        ? LocaleKeys.subsExpiredDesc.tr()
+                        : LocaleKeys.freeTrialDesc.tr(),
+                maxLines: 3,
+                fontSize: 14,
+                textAlign: TextAlign.center,
+              ).padding(bottom: getMediaHeight(context) * 0.025),
+              ReactionBuilder(
+                builder: (context) => reaction((_) => store.subscriptonStatus, (status) {
+                  subscriptionStatusReaction(context, status);
+                }),
+                child: SubscriptionButton(
+                  onPressed: subscribeToPackage,
+                  isLoading: store.subscriptonStatus == SubscriptionStatus.verifying,
+                  subsFormStatus: subsFormStatus,
+                  selectedProductId: store.selectedProductId,
+                  purchasedProductId: store.purchasedProductId,
                 ),
+              ),
+              Visibility(
+                visible: Platform.isIOS,
+                child: TextButton(
+                  onPressed: () {
+                    analyticsStore.logEvent(AnalyticsEvent.redeemOpen);
+                    store.redeemCode();
+                  },
+                  child: const EasyText(
+                    'Redeem Code',
+                    color: Palette.purple,
+                  ),
+                ).padding(top: 10),
+              ),
+              SizedBox(height: getMediaHeight(context) * 0.025),
+              Agreements(
+                analyticsStore: analyticsStore,
+              ),
+              SizedBox(height: getMediaHeight(context) * 0.025),
             ],
           ).scrollable().padding(horizontal: 20),
           if (store.subscriptonStatus == SubscriptionStatus.verifying)
@@ -220,6 +156,66 @@ class SubscriptionForm extends HookConsumerWidget {
         ],
       ),
     );
+  }
+
+  void subscriptionStatusReaction(BuildContext context, SubscriptionStatus? status) {
+    if (context.mounted) {
+      if (status == SubscriptionStatus.purchased) {
+        showSnackbar(
+          LocaleKeys.subscriptionActive.tr(),
+          type: MessageType.success,
+        );
+        context.beamToReplacementNamed(Routes.main.toRoute);
+      } else if (store.verifySubscriptionFuture?.error is ApiException &&
+          (store.verifySubscriptionFuture?.error as ApiException).code == 409) {
+        showSnackbar(
+          (store.verifySubscriptionFuture?.error as ApiException).message,
+        );
+      } else if (status == SubscriptionStatus.notVerified ||
+          status == SubscriptionStatus.verifyingError) {
+        shownRetryDialog(
+          onRetry: () async => store.retryVerificationProcess(),
+          context: context,
+          asset: Assets.subscription,
+          title: LocaleKeys.subscriptionVerificationFailed.tr(),
+          subtitle: LocaleKeys.failedToVerifySubs.tr(),
+          dismissText: LocaleKeys.cancelBtn.tr(),
+          onDismiss: () async => Navigator.of(context).pop(),
+        );
+      }
+    }
+
+    if (status == SubscriptionStatus.canceled) {
+      showSnackbar(LocaleKeys.subscriptionProcessCanceled.tr());
+    }
+    if (status == SubscriptionStatus.error) {
+      showSnackbar(
+        LocaleKeys.failedToSubscribe.tr(),
+      );
+    }
+  }
+
+  SubscriptionFormStatus getSubscriptionFormStatus({
+    required String? purchaseProductId,
+    required bool active,
+  }) {
+    if (purchaseProductId != null && purchaseProductId.isNotEmpty) {
+      return active ? SubscriptionFormStatus.manage : SubscriptionFormStatus.expired;
+    }
+    return SubscriptionFormStatus.freeTrial;
+  }
+
+  Future<void> subscribeToPackage(SubscriptionFormStatus subsFormStatus) async {
+    if (subsFormStatus == SubscriptionFormStatus.expired) {
+      analyticsStore.logEvent(AnalyticsEvent.subscriptionRenew);
+    } else if (subsFormStatus == SubscriptionFormStatus.manage) {
+      store.selectedProductId == store.purchasedProductId
+          ? analyticsStore.logEvent(AnalyticsEvent.subscriptionManage)
+          : analyticsStore.logEvent(AnalyticsEvent.subscriptionChange);
+    } else {
+      analyticsStore.logEvent(AnalyticsEvent.subscriptionNew);
+    }
+    store.subscribeToPackage();
   }
 
   Future<void> checkForExistingSubscription(
@@ -255,14 +251,4 @@ class SubscriptionForm extends HookConsumerWidget {
       );
     });
   }
-}
-
-SubscriptionFormStatus getSubscriptionFormStatus({
-  required String? purchaseProductId,
-  required bool active,
-}) {
-  if (purchaseProductId != null && purchaseProductId.isNotEmpty) {
-    return active ? SubscriptionFormStatus.manage : SubscriptionFormStatus.expired;
-  }
-  return SubscriptionFormStatus.freeTrial;
 }

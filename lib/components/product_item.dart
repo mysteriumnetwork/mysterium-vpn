@@ -51,15 +51,15 @@ class ProductItem extends ConsumerWidget {
               EasyText(
                 productDetails.id.tr(),
                 fontSize: 16,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w500,
               ),
               Row(
                 children: [
                   EasyText(
                     productDetails.billedInTotal,
                     color: Palette.purple,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w900,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
                   ),
                 ],
               ).fittedBox(),
@@ -90,7 +90,7 @@ class ProductItem extends ConsumerWidget {
             ).padding(left: 14),
           ),
         ],
-      ).padding(all: 14).height(105).decorated(
+      ).padding(horizontal: 14, vertical: 8).decorated(
             border: Border.all(color: Theme.of(context).hintColor),
             borderRadius: const BorderRadius.all(
               Radius.circular(20),
