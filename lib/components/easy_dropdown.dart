@@ -8,12 +8,15 @@ class EasyDropdown<T> extends StatelessWidget {
     required this.items,
     required this.onChanged,
     required this.value,
+    this.onTap,
     super.key,
   });
 
   final List<DropdownMenuItem<T>> items;
   final void Function(T?)? onChanged;
   final T value;
+  final VoidCallback? onTap;
+
   @override
   Widget build(BuildContext context) => DropdownButton<T>(
         isExpanded: true,
@@ -22,6 +25,7 @@ class EasyDropdown<T> extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         underline: const SizedBox.shrink(),
         onChanged: onChanged,
+        onTap: onTap,
         items: items,
       )
           .width(checkMediaWidth(context, 750) ? double.infinity : 220)

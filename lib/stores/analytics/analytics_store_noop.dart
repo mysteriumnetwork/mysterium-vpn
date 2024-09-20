@@ -77,4 +77,12 @@ abstract class _AnalyticsStoreNoop extends AnalyticsStore with Store {
   @override
   @action
   Future<void> logLocationsListScroll() async {}
+
+  @override
+  @action
+  Future<void> logThemeChange(String themeMode) async {}
+
+  @override
+  @action
+  Future<void> logLanguageChange(String language) async {}
 }
