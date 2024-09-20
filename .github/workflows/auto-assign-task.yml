@@ -7,6 +7,8 @@ jobs:
     steps:
       - name: Get the In Progress column ID
         id: get_col_id
+        env:
+          GH_TOKEN: ${{ secrets.GH_PROJECTS_RO_TOKEN }}
         run: |
           echo "id=$(gh api graphql -f query='{
             organization(login: "mysteriumnetwork") {
@@ -39,9 +41,7 @@ jobs:
                 }
               }
             }' | jq '.data.organization.projectV2.fields.nodes[] | select(.name == "Status") | .options[] | select(.name == "🏗 In progress") | .id')" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.GH_PROJECTS_RO_TOKEN }}
       - name: Set env value
-        run: echo "$IN_PROGRESS_COL_ID=${{ steps.get_col_id.outputs.id }}"  >> $GITHUB_ENV
+        run: echo "IN_PROGRESS_COL_ID=${{ steps.get_col_id.outputs.id }}"  >> $GITHUB_ENV
       - name: Print ID
         run: echo $IN_PROGRESS_COL_ID
