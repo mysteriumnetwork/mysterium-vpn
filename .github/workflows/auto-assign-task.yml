@@ -1,6 +1,7 @@
 name: Auto Assign Task
 on:
-  push:
+  project_card:
+    types: [moved]
 jobs:
   auto-assign:
     runs-on: ubuntu-latest
@@ -43,5 +44,36 @@ jobs:
             }' | jq '.data.organization.projectV2.fields.nodes[] | select(.name == "Status") | .options[] | select(.name == "🏗 In progress") | .id')" >> $GITHUB_OUTPUT
       - name: Set env value
         run: echo "IN_PROGRESS_COL_ID=${{ steps.get_col_id.outputs.id }}"  >> $GITHUB_ENV
-      - name: Print ID
-        run: echo $IN_PROGRESS_COL_ID
+      - name: Check if card moved to In Progress
+        if: github.event.project_card.column_id == ${{ env.IN_PROGRESS_COL_ID }}
+        run: echo "Card moved to In Progress"
+      - name: Get card details
+        id: get-card
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const cardId = context.payload.project_card.id;
+            const { data: card } = await github.projects.getCard({ card_id: cardId });
+            return card;
+      - name: Get issue details
+        id: get-issue
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issueUrl = steps.get-card.outputs.data.content_url;
+            const { data: issue } = await github.request(issueUrl);
+            return issue;
+      - name: Assign issue to user
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const assignee = context.actor;
+            const issueNumber = steps.get-issue.outputs.data.number;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            await github.issues.addAssignees({
+              owner,
+              repo,
+              issue_number: issueNumber,
+              assignees: [assignee]
+            });
