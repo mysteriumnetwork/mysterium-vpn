@@ -90,12 +90,14 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   final authStore = ref.read(authStorePOD);
   final localDb = ref.read(localDBPOD);
   final marketingAnalyticsStore = ref.watch(marketingAnalyticsStorePOD);
+  final analyticsStore = ref.watch(analyticsStorePOD);
   return SubscriptionStore(
     inAppPurchase: inAppPurchase,
     subscriptionService: subscriptionService,
     authStore: authStore,
     localDb: localDb,
     marketingAnalyticsStore: marketingAnalyticsStore,
+    analyticsStore: analyticsStore,
   );
 });
 

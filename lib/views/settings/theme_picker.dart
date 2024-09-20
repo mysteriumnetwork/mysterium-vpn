@@ -19,15 +19,17 @@ class ThemePicker extends StatelessWidget {
   Widget build(BuildContext context) => Observer(
         builder: (context) => EasyDropdown<ThemeMode>(
           value: store.themeMode,
+          onTap: () {
+            analyticsStore.logEvent(
+              AnalyticsEvent.setTheme,
+            );
+          },
           onChanged: (ThemeMode? newThemeMode) {
             if (newThemeMode == null) {
               return;
             }
             store.setThemeType(newThemeMode);
-            analyticsStore.logEvent(
-              AnalyticsEvent.setTheme,
-              parameters: {'theme': newThemeMode.name},
-            );
+            analyticsStore.logThemeChange(newThemeMode.name);
             return;
           },
           items: ThemeMode.values

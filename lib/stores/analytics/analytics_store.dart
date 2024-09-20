@@ -31,4 +31,6 @@ abstract class AnalyticsStore {
   Future<void> connectToVpn(String countryCode);
   Future<void> disconnectFromVpn(String countryCode);
   Future<void> logLocationsListScroll();
+  Future<void> logThemeChange(String themeMode);
+  Future<void> logLanguageChange(String language);
 }
