@@ -7,19 +7,6 @@ jobs:
     steps:
       - name: Get the column ID
         run: |
-          gh api graphql -f query='                                                                                                  
-            query{
-            organization(login: "mysteriumnetwork"){
-              projectV2(number: 28) {
-                id 
-                title
-                columns(first: 100) {
-                  nodes {
-                    id
-                    name
-                  }
-                }
-            }
-          }'
+          gh project field-list 28 --owner ${{ github.repository_owner }} --format json
         env:
           GH_TOKEN: ${{ secrets.GH_PROJECTS_RO_TOKEN }}
