@@ -1,0 +1,47 @@
+name: Auto Assign Task
+on:
+  push:
+jobs:
+  auto-assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the In Progress column ID
+        id: get_col_id
+        env:
+          GH_TOKEN: ${{ secrets.GH_PROJECTS_RO_TOKEN }}
+        run: |
+          echo "id=$(gh api graphql -f query='{
+            organization(login: "mysteriumnetwork") {
+              projectV2(number: 28) {
+                fields(first: 100) {
+                  nodes {
+                    ... on ProjectV2FieldCommon {
+                    name
+                    }
+                    ... on ProjectV2SingleSelectField {
+                    name
+                    options {
+                      id
+                      name
+                      }
+                    }
+                    ... on ProjectV2IterationField {
+                      name
+                      configuration {
+                        duration
+                        iterations {
+                          id
+                          startDate
+                          title
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }' | jq '.data.organization.projectV2.fields.nodes[] | select(.name == "Status") | .options[] | select(.name == "🏗 In progress") | .id')" >> $GITHUB_OUTPUT
+      - name: Set env value
+        run: echo "IN_PROGRESS_COL_ID=${{ steps.get_col_id.outputs.id }}"  >> $GITHUB_ENV
+      - name: Print ID
+        run: echo $IN_PROGRESS_COL_ID
