@@ -5,8 +5,6 @@ jobs:
   auto-assign:
     runs-on: ubuntu-latest
     steps:
-      - name: Authenticate GitHub CLI
-        run: echo "${{ secrets.GH_PROJECTS_RO_TOKEN }}" | gh auth login --with-token
       - name: Get the column ID
         run: |
           gh api graphql -f query='                                                                                                  
