@@ -18,16 +18,18 @@ class LanguagePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) => EasyDropdown<Locale>(
         value: store.currentLocale,
+        onTap: () {
+          analyticsStore.logEvent(
+            AnalyticsEvent.setLanguage,
+          );
+        },
         onChanged: (Locale? newLocale) async {
           if (newLocale == null) {
             return;
           }
           await context.setLocale(newLocale);
           await store.setLocale(newLocale);
-          analyticsStore.logEvent(
-            AnalyticsEvent.setLanguage,
-            parameters: {'language': newLocale.languageCode},
-          );
+          analyticsStore.logLanguageChange(newLocale.languageCode);
           return;
         },
         items: kSupportedLocales

@@ -16,6 +16,7 @@ import 'package:mysterium_vpn/models/subscription_config.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_store.dart';
 
@@ -32,11 +33,13 @@ abstract class _SubscriptionStore with Store {
     required AuthStore authStore,
     required LocalDBService localDb,
     required MarketingAnalyticsStore marketingAnalyticsStore,
+    required AnalyticsStore analyticsStore,
   })  : _inAppPurchase = inAppPurchase,
         _subscriptionService = subscriptionService,
         _authStore = authStore,
         _localDb = localDb,
-        _marketingAnalyticsStore = marketingAnalyticsStore {
+        _marketingAnalyticsStore = marketingAnalyticsStore,
+        _analyticsStore = analyticsStore {
     initStore();
   }
 
@@ -48,6 +51,7 @@ abstract class _SubscriptionStore with Store {
   final LocalDBService _localDb;
   final MarketingAnalyticsStore _marketingAnalyticsStore;
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
+  final AnalyticsStore _analyticsStore;
 
   @observable
   ObservableFuture<SubscriptionConfig>? isAvailableFuture;
@@ -87,6 +91,11 @@ abstract class _SubscriptionStore with Store {
 
   @readonly
   ObservableList<PurchasableProduct> _products = ObservableList<PurchasableProduct>.of([]);
+
+  @computed
+  bool get isLoading =>
+      _subscriptonStatus == SubscriptionStatus.pending ||
+      _subscriptonStatus == SubscriptionStatus.verifying;
 
   @action
   Future<void> initStore() async {
@@ -163,6 +172,13 @@ abstract class _SubscriptionStore with Store {
       _subscriptonStatus = SubscriptionStatus.pending;
       final item =
           _products.firstWhere((element) => element.id == selectedProductId).productDetails;
+      _analyticsStore.logEvent(
+        AnalyticsEvent.paymentConfirm,
+        parameters: {
+          'planType': item.id,
+          'price': item.rawPrice.toString(),
+        },
+      );
       await _subscriptionService.subscribeToPackage(
         productDetails: item,
         purchasedProductId: ((_subscription?.active ?? false) && _subscription?.gateway == 'google')
@@ -173,8 +189,21 @@ abstract class _SubscriptionStore with Store {
             : null,
         userId: _authStore.authData!.userId,
       );
+      _analyticsStore.logEvent(
+        AnalyticsEvent.paymentSuccess,
+        parameters: {
+          'planType': item.id,
+          'price': item.rawPrice.toString(),
+        },
+      );
     } catch (e) {
       _subscriptonStatus = SubscriptionStatus.error;
+      _analyticsStore.logEvent(
+        AnalyticsEvent.paymentRejected,
+        parameters: {
+          'planType': selectedProductId,
+        },
+      );
       if (kDebugMode) {
         debugPrint(e.toString());
       }
