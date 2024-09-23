@@ -148,6 +148,18 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
     });
   }
 
+  @override
+  @action
+  Future<void> logThemeChange(String themeMode) async {
+    await _analytics.logEvent(name: 'set_theme_$themeMode');
+  }
+
+  @override
+  @action
+  Future<void> logLanguageChange(String language) async {
+    await _analytics.logEvent(name: 'set_language_$language');
+  }
+
   Future<void> dispose() async {
     _timer?.cancel();
   }
