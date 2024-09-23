@@ -68,3 +68,6 @@ Podfile.lock
 **/macos/Flutter/GeneratedPluginRegistrant.swift
 **/macos/Flutter/ephemeral
 **/xcuserdata/
+
+# FVM Version Cache
+.fvm/
