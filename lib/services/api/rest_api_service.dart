@@ -18,6 +18,7 @@ const kReportBrokenNode = '/connection/report-broken-node';
 const kSetMarketingConsent = '/user-preferences/marketing-consent';
 const kGetMarketingConsent = '/user-preferences/marketing-consent';
 const kGetUserPreferences = '/user-preferences';
+const kSetEmailMarketingConsent = '/email-marketing/marketing-consent';
 
 class RestApiService extends ApiService {
   RestApiService({
@@ -173,7 +174,7 @@ class RestApiService extends ApiService {
   }
 
   @override
-  Future<void> setMarketingConsent({required bool consent}) async {
+  Future<void> setUserPrefsMarketingConsent({required bool consent}) async {
     try {
       await _networkService.post(
         kSetMarketingConsent,
@@ -190,7 +191,7 @@ class RestApiService extends ApiService {
   }
 
   @override
-  Future<bool> getMarketingConsent() async {
+  Future<bool> getUserPrefsMarketingConsent() async {
     try {
       final data = (await _networkService.get(kGetMarketingConsent)).data as Map<String, dynamic>?;
       if (data == null || !data.containsKey('marketing_consent')) {
@@ -198,6 +199,24 @@ class RestApiService extends ApiService {
       }
       return data['marketing_consent'] as bool;
     } on ApiException {
+      rethrow;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> setEmailMarketingConsent({required bool consent}) async {
+    try {
+      await _networkService.post(
+        kSetEmailMarketingConsent,
+        data: {
+          'consent': consent,
+        },
+      );
+    } on ApiException catch (e) {
+      print(e);
       rethrow;
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);

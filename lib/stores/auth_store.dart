@@ -182,7 +182,7 @@ abstract class _AuthStore with Store {
       if (grantType != GrantType.savedToken) {
         Future.delayed(
           const Duration(seconds: 5),
-          () => _userPreferencesStore.setMarketingConsent(consent: marketingConsent),
+          () => _userPreferencesStore.setEmailMarketingConsent(consent: marketingConsent),
         );
       }
     } catch (e) {
