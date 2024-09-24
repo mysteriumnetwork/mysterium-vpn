@@ -1,0 +1,40 @@
+name: Build (iOS)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  # iOS Build
+  build_ios:
+    name: Build iOS
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
+
+      - name: Install Pods
+        run: pod install
+        working-directory: ios
+
+      - name: Build iOS App
+        run: flutter build ipa --no-pub --release --flavor "dev" --dart-define FLAVOR=DEV
+
+      - name: Upload iOS Build to GitHub Release
+        uses: actions/upload-artifact@v3
+        with:
+          name: iOS App (IPA)
+          path: build/ios/ipa/*.ipa
