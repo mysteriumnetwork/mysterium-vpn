@@ -8,6 +8,8 @@ on:
 jobs:
 
   # iOS Build
+  # Base on documentation https://docs.flutter.dev/deployment/ios#create-a-build-archive-with-codemagic-cli-tools
+  # And tutorial at https://blog.codemagic.io/deploy-your-app-to-app-store-with-codemagic-cli-tools-and-github-actions/
   build_ios:
     name: Build iOS
     runs-on: macos-14
@@ -25,6 +27,30 @@ jobs:
       - run: codemagic-cli-tools version
       - run: codemagic-cli-tools installed-tools
 
+      - name: Set up keychain
+        run: keychain initialize
+
+      - name: Fetch signing files
+        env:
+          APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
+        run: app-store-connect fetch-signing-files "com.mysteriumvpn.test" --platform IOS --type IOS_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
+
+      # Signing files are imported to keychain from:
+      #  ls -la ~/Library/MobileDevice/Provisioning\ Profiles
+      #  ls -la ~/Library/MobileDevice/Certificates/
+      - name: Set up signing certificates
+        run: keychain add-certificates
+      - run: keychain get-default
+      - run: keychain list-certificates
+
+      - name: Set up signing preferences on Xcode project
+        run: xcode-project use-profiles --project ios/Runner.xcodeproj --export-options-plist ios/export_options.plist
+      - run: git status
+      - run: git diff
+      - run: cat ios/export_options.plist
+
       - name: Install dependencies
         run: flutter pub get
 
@@ -36,10 +62,19 @@ jobs:
         working-directory: ios
 
       - name: Build iOS App
-        run: flutter build ipa --no-pub --release --flavor "dev" --dart-define FLAVOR=DEV
+        run: flutter build ipa --no-pub --release --flavor "dev" --dart-define FLAVOR=DEV --export-options-plist=ios/export_options.plist
+      - run: cat build/ios/ipa/ExportOptions.plist
 
       - name: Upload iOS Build to GitHub Release
         uses: actions/upload-artifact@v3
         with:
           name: iOS App (IPA)
-          path: build/ios/ipa/*.ipa
+          path: build/ios/ipa/*
+          if-no-files-found: error
+
+#      - name: Publish the app to App Store Connect
+#        run: app-store-connect publish --path build/ios/ipa/Mysterium VPN.ipa
+
+      - name: Restore keychain
+        run: keychain use-login
+        if: always()
