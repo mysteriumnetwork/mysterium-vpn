@@ -20,6 +20,11 @@ jobs:
           flutter-version-file: pubspec.yaml
           cache: true
 
+      - name: Install Codemagic CLI tools
+        run: python -m pip install codemagic-cli-tools
+      - run: codemagic-cli-tools version
+      - run: codemagic-cli-tools installed-tools
+
       - name: Install dependencies
         run: flutter pub get
 
