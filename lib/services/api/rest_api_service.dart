@@ -215,8 +215,7 @@ class RestApiService extends ApiService {
           'consent': consent,
         },
       );
-    } on ApiException catch (e) {
-      print(e);
+    } on ApiException catch (_) {
       rethrow;
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
