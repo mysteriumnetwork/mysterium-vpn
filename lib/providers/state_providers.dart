@@ -25,6 +25,7 @@ import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_sto
 import 'package:mysterium_vpn/stores/rest_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
+import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
@@ -38,6 +39,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final intercomStore = ref.watch(intercomStorePOD);
   final marketingAnalyticsStore = ref.watch(marketingAnalyticsStorePOD);
   final logger = ref.watch(loggerPOD);
+  final userPreferencesStore = ref.watch(userPreferencesStorePOD);
   return AuthStore(
     authService: authService,
     appLinks: appLinks,
@@ -47,6 +49,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
     intercomStore: intercomStore,
     marketingAnalyticsStore: marketingAnalyticsStore,
     logger: logger,
+    userPreferencesStore: userPreferencesStore,
   );
 });
 
@@ -158,3 +161,10 @@ final intercomStorePOD = StateProvider<IntercomStore>((ref) {
 });
 
 final isAppWindowFocused = StateProvider<bool>((_) => true);
+
+final userPreferencesStorePOD = StateProvider<UserPreferencesStore>((ref) {
+  final apiService = ref.watch(apiServicePOD);
+  return UserPreferencesStore(
+    apiService: apiService,
+  );
+});
