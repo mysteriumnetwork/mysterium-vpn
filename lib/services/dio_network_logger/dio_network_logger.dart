@@ -334,13 +334,6 @@ class _NetworkLoggerScreenState extends State<NetworkLoggerScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                         const SizedBox(width: 4),
-                        Icon(
-                          item.error == null
-                              ? (item.response == null ? Icons.hourglass_empty : Icons.done)
-                              : Icons.error,
-                          size: 16,
-                        ),
-                        const SizedBox(width: 4),
                         _AutoUpdate(
                           duration: const Duration(seconds: 1),
                           builder: (context) => EasyText(
@@ -356,6 +349,23 @@ class _NetworkLoggerScreenState extends State<NetworkLoggerScreen> {
                             fontSize: 9,
                           ),
                         ],
+                        const SizedBox(width: 8),
+                        EasyText(
+                          "sc: ${item.response?.statusCode ?? ''}",
+                          fontSize: 9,
+                          fontWeight: FontWeight.w700,
+                          color: Palette.purple,
+                        ),
+                        const SizedBox(width: 4),
+                        Tooltip(
+                          message: item.error?.message ?? '',
+                          child: Icon(
+                            item.error == null
+                                ? (item.response == null ? Icons.hourglass_empty : Icons.done)
+                                : Icons.error,
+                            size: 16,
+                          ),
+                        ),
                       ],
                     ),
                     subtitle: EasyText(

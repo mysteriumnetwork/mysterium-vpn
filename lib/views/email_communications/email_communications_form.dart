@@ -28,7 +28,7 @@ class EmailCommunicationsForm extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(restApiStorePOD);
-    final form = useMemoized(approval);
+    final form = useMemoized(emailConsent);
     final height = getMediaHeight(context);
 
     return ReactiveForm(
@@ -56,7 +56,7 @@ class EmailCommunicationsForm extends HookConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ReactiveCheckbox(
-                formControlName: 'approval',
+                formControlName: 'consent',
               ),
               EasyText(
                 LocaleKeys.emaillCommunicationsApproval.tr(),
@@ -100,7 +100,7 @@ class EmailCommunicationsForm extends HookConsumerWidget {
                   width: 250,
                   onPressed: status != FutureStatus.pending
                       ? () async {
-                          final status = form.control('approval').value as bool;
+                          final status = form.control('consent').value as bool;
                           await store.setEmailCommunicationApproval(status: status);
                           if (context.mounted) {
                             context.beamToNamed(Routes.notifications.toRoute);

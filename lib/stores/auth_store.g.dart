@@ -108,6 +108,21 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
+  late final _$marketingConsentAtom = Atom(name: '_AuthStore.marketingConsent', context: context);
+
+  @override
+  bool get marketingConsent {
+    _$marketingConsentAtom.reportRead();
+    return super.marketingConsent;
+  }
+
+  @override
+  set marketingConsent(bool value) {
+    _$marketingConsentAtom.reportWrite(value, super.marketingConsent, () {
+      super.marketingConsent = value;
+    });
+  }
+
   late final _$signInFeatureFeatureAtom =
       Atom(name: '_AuthStore.signInFeatureFeature', context: context);
 
@@ -237,6 +252,7 @@ mixin _$AuthStore on _AuthStore, Store {
     return '''
 email: ${email},
 temporaryEmail: ${temporaryEmail},
+marketingConsent: ${marketingConsent},
 signInFeatureFeature: ${signInFeatureFeature},
 logoutFeature: ${logoutFeature},
 deleteAccountFeature: ${deleteAccountFeature},

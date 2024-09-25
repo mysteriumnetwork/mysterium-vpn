@@ -15,4 +15,7 @@ abstract class ApiService {
   Future<VpnConfig> fetchVpnConfig({required VpnConfigInput input, required String privateKey});
   Future<IPInfo?> getIPAdress();
   Future<void> reportBrokenNode({required ReportBrokenNodeRequest request});
+  Future<void> setUserPrefsMarketingConsent({required bool consent});
+  Future<bool> getUserPrefsMarketingConsent();
+  Future<void> setEmailMarketingConsent({required bool consent});
 }
