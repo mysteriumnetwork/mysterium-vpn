@@ -1,0 +1,78 @@
+name: Build (macOS)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  # macOS Build
+  # Based on documentation https://docs.flutter.dev/deployment/macos#create-a-build-archive-with-codemagic-cli-tools
+  build_ios:
+    name: Publish macOS app to TestFlight
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - name: Install Codemagic CLI tools
+        run: python -m pip install codemagic-cli-tools
+      - run: codemagic-cli-tools version
+      - run: codemagic-cli-tools installed-tools
+
+      - name: Fetch signing files
+        env:
+          APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
+        run: app-store-connect fetch-signing-files "com.mysteriumvpn.test" --platform MAC_OS --type MAC_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
+
+      # Signing files are imported to keychain from:
+      #  ls -la ~/Library/MobileDevice/Provisioning\ Profiles
+      #  ls -la ~/Library/MobileDevice/Certificates/
+      - name: Set up keychain
+        run: keychain initialize
+      - name: Set up signing certificates
+        run: keychain add-certificates
+      - run: keychain get-default
+      - run: keychain list-certificates
+
+      - name: Set up signing preferences on Xcode project
+        run: xcode-project use-profiles --project macos/Runner.xcodeproj --export-options-plist macos/export_options.plist
+        #run: xcode-project use-profiles --project macos/Runner.xcodeproj --archive-method app-store --export-options-plist macos/export_options.plist
+      - run: git status
+      - run: git diff
+      - run: cat macos/export_options.plist
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
+
+      - name: Install Pods
+        run: pod install
+        working-directory: macos
+
+      - name: Build macOS App
+        run: flutter build macos --no-pub --release --flavor "dev" --dart-define FLAVOR=DEV
+
+      - name: Upload macOS Build to GitHub Release
+        uses: actions/upload-artifact@v3
+        with:
+          name: Mysterium VPN Test.app
+          path: build/macos/Build/Products/Release-dev/Mysterium VPN Test.app
+          if-no-files-found: error
+
+      #      - name: Publish the app to App Store Connect
+      #        run: app-store-connect publish --path build/macos/Build/Products/Release-dev/Mysterium VPN Test.app
+
+      - name: Restore keychain
+        run: keychain use-login
+        if: always()
