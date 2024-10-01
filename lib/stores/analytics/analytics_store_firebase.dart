@@ -22,7 +22,9 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
     required LocalDBService localDb,
   })  : _analytics = analytics,
         _crashlytics = crashlytics,
-        _localDb = localDb;
+        _localDb = localDb {
+    setConsents();
+  }
 
   final FirebaseAnalytics _analytics;
   final FirebaseCrashlytics _crashlytics;
@@ -162,5 +164,18 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
 
   Future<void> dispose() async {
     _timer?.cancel();
+  }
+
+  @override
+  @action
+  Future<void> setConsents() async {
+    try {
+      await _analytics.setConsent(
+        adPersonalizationSignalsConsentGranted: true,
+        adUserDataConsentGranted: true,
+      );
+    } catch (e) {
+      logError(err: e);
+    }
   }
 }
