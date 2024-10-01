@@ -33,4 +33,5 @@ abstract class AnalyticsStore {
   Future<void> logLocationsListScroll();
   Future<void> logThemeChange(String themeMode);
   Future<void> logLanguageChange(String language);
+  Future<void> setConsents();
 }
