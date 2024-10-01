@@ -16,7 +16,7 @@ enum AnalyticsEvent {
   appleLogin,
   emailInput,
   emailLogin,
-  googleLogin,
+  gLogin,
   loginSignupScreen,
   marketingConsentClicked,
   ppClickLoginScreen,
