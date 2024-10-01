@@ -150,7 +150,7 @@ class SignInForm extends HookConsumerWidget {
                         onPressed: signInStatus == FutureStatus.pending
                             ? null
                             : () {
-                                analyticsStore.logEvent(AnalyticsEvent.googleLogin);
+                                analyticsStore.logEvent(AnalyticsEvent.gLogin);
                                 store.signInWithGoogle();
                               },
                         isLoading: signInStatus == FutureStatus.pending &&
