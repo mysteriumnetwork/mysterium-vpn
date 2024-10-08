@@ -11,7 +11,7 @@ jobs:
   # Base on documentation https://docs.flutter.dev/deployment/ios#create-a-build-archive-with-codemagic-cli-tools
   # And tutorial at https://blog.codemagic.io/deploy-your-app-to-app-store-with-codemagic-cli-tools-and-github-actions/
   build_ios:
-    name: Build iOS
+    name: Publish iOS app to TestFlight
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v2
@@ -27,9 +27,6 @@ jobs:
       - run: codemagic-cli-tools version
       - run: codemagic-cli-tools installed-tools
 
-      - name: Set up keychain
-        run: keychain initialize
-
       - name: Fetch signing files
         env:
           APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
@@ -40,6 +37,8 @@ jobs:
       # Signing files are imported to keychain from:
       #  ls -la ~/Library/MobileDevice/Provisioning\ Profiles
       #  ls -la ~/Library/MobileDevice/Certificates/
+      - name: Set up keychain
+        run: keychain initialize
       - name: Set up signing certificates
         run: keychain add-certificates
       - run: keychain get-default
@@ -61,19 +60,24 @@ jobs:
         run: pod install
         working-directory: ios
 
-      - name: Build iOS App
+      - name: Build iOS app
         run: flutter build ipa --no-pub --release --flavor "dev" --dart-define FLAVOR=DEV --export-options-plist=ios/export_options.plist
       - run: cat build/ios/ipa/ExportOptions.plist
 
-      - name: Upload iOS Build to GitHub Release
+      - name: Upload to Github
         uses: actions/upload-artifact@v3
         with:
           name: iOS App (IPA)
           path: build/ios/ipa/*
           if-no-files-found: error
 
-#      - name: Publish the app to App Store Connect
-#        run: app-store-connect publish --path build/ios/ipa/Mysterium VPN.ipa
+      # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
+      - name: Publish to TestFlight
+        env:
+          APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
+        run: app-store-connect publish --path "build/ios/ipa/Mysterium VPN.ipa" --platform IOS
 
       - name: Restore keychain
         run: keychain use-login
