@@ -50,6 +50,11 @@ jobs:
       - run: git diff
       - run: cat macos/export_options.plist
 
+      - name: Replace version
+        run: |
+          sed -i.bak "s/^version:.*/version: 0.0.0-dev+${{ github.run_number }}/" pubspec.yaml
+      - run: git diff
+
       - name: Install dependencies
         run: flutter pub get
 
