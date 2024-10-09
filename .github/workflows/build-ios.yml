@@ -69,13 +69,6 @@ jobs:
         run: flutter build ipa --no-pub --release --flavor "dev" --dart-define FLAVOR=DEV --export-options-plist=ios/export_options.plist
       - run: cat build/ios/ipa/ExportOptions.plist
 
-      - name: Upload to Github
-        uses: actions/upload-artifact@v3
-        with:
-          name: iOS App (IPA)
-          path: build/ios/ipa/*
-          if-no-files-found: error
-
       # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
       - name: Publish to TestFlight
         env:
