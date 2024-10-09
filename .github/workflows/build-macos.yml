@@ -81,7 +81,7 @@ jobs:
       - name: Build macOS installer
         run: |
           xcrun productbuild --component "Mysterium VPN Test.app" /Applications/ unsigned.pkg \
-          && xcrun productsign --sign "3rd Party Mac Developer Installer: MN TECHNOLOGIJOS, UAB (64RCS4PKRN)" unsigned.pkg "Mysterium VPN Test.pkg"
+          && xcrun productsign --sign "$(keychain list-certificates | jq '[.[] | select(.common_name | contains("Mac Developer Installer")) | .common_name][0]' | xargs)" unsigned.pkg "Mysterium VPN Test.pkg"
         working-directory: build/macos/Build/Products/Release-dev
 
         # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
