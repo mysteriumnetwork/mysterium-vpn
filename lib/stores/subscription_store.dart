@@ -18,7 +18,6 @@ import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
-import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_store.dart';
 
 // Include generated file
 part 'subscription_store.g.dart';
@@ -32,13 +31,11 @@ abstract class _SubscriptionStore with Store {
     required SubscriptionService subscriptionService,
     required AuthStore authStore,
     required LocalDBService localDb,
-    required MarketingAnalyticsStore marketingAnalyticsStore,
     required AnalyticsStore analyticsStore,
   })  : _inAppPurchase = inAppPurchase,
         _subscriptionService = subscriptionService,
         _authStore = authStore,
         _localDb = localDb,
-        _marketingAnalyticsStore = marketingAnalyticsStore,
         _analyticsStore = analyticsStore {
     initStore();
   }
@@ -49,7 +46,6 @@ abstract class _SubscriptionStore with Store {
   final SubscriptionService _subscriptionService;
   final AuthStore _authStore;
   final LocalDBService _localDb;
-  final MarketingAnalyticsStore _marketingAnalyticsStore;
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
   final AnalyticsStore _analyticsStore;
 
@@ -271,13 +267,6 @@ abstract class _SubscriptionStore with Store {
             product.status = product.id == _purchasedProductId
                 ? ProductStatus.purchased
                 : ProductStatus.purchasable;
-          }
-
-          if (_expired == false) {
-            _marketingAnalyticsStore.setStartTrial(
-              planType: _purchasedProductId ?? '',
-              price: product.productDetails.rawPrice.toString(),
-            );
           }
         }
         _subscriptonStatus = SubscriptionStatus.purchased;
