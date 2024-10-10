@@ -64,7 +64,7 @@ jobs:
 
       - name: Replace version
         run: |
-          sed -i.bak "s/^version:.*/version: 0.0.0-dev+${{ github.run_number }}/" pubspec.yaml
+          sed -i.bak "s/^version:.*/version: 0.0.0+${{ github.run_number }}/" pubspec.yaml
           git diff
 
       - name: Install dependencies
