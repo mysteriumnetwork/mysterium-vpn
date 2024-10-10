@@ -23,9 +23,10 @@ jobs:
           cache: true
 
       - name: Install Codemagic CLI tools
-        run: python -m pip install codemagic-cli-tools
-      - run: codemagic-cli-tools version
-      - run: codemagic-cli-tools installed-tools
+        run: |
+          python -m pip install codemagic-cli-tools
+          codemagic-cli-tools version
+          codemagic-cli-tools installed-tools
 
       - name: Fetch signing files
         env:
@@ -38,22 +39,23 @@ jobs:
       #  ls -la ~/Library/MobileDevice/Provisioning\ Profiles
       #  ls -la ~/Library/MobileDevice/Certificates/
       - name: Set up keychain
-        run: keychain initialize
-      - name: Set up signing certificates
-        run: keychain add-certificates
-      - run: keychain get-default
-      - run: keychain list-certificates
+        run: |
+          keychain initialize
+          keychain add-certificates
+          keychain get-default
+          keychain list-certificates
 
       - name: Set up signing preferences on Xcode project
-        run: xcode-project use-profiles --project ios/Runner.xcodeproj --export-options-plist ios/export_options.plist
-      - run: git status
-      - run: git diff
-      - run: cat ios/export_options.plist
+        run: |
+          xcode-project use-profiles --project ios/Runner.xcodeproj --export-options-plist ios/export_options.plist
+          git status
+          git diff
+          cat ios/export_options.plist
 
       - name: Replace version
         run: |
           sed -i.bak "s/^version:.*/version: 0.0.0-dev+${{ github.run_number }}/" pubspec.yaml
-      - run: git diff
+          git diff
 
       - name: Install dependencies
         run: flutter pub get
@@ -66,8 +68,9 @@ jobs:
         working-directory: ios
 
       - name: Build iOS app
-        run: flutter build ipa --no-pub --release --flavor "dev" --dart-define FLAVOR=DEV --export-options-plist=ios/export_options.plist
-      - run: cat build/ios/ipa/ExportOptions.plist
+        run: |
+          flutter build ipa --no-pub --release --flavor "dev" --dart-define FLAVOR=DEV --export-options-plist=ios/export_options.plist
+          cat build/ios/ipa/ExportOptions.plist
 
       # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
       - name: Publish to TestFlight
