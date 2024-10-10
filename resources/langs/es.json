@@ -472,5 +472,6 @@
   "logoutAllDevicesConfirmationTitle": "Cerrar sesión en todos los dispositivos",
   "logoutAllDevicesConfirmationDesc": "Estás a punto de cerrar sesión en todos tus dispositivos. ¿Estás seguro?",
   "logoutConfirmationTitle": "Cerrar sesión",
-  "logoutConfirmationDesc": "Estás a punto de cerrar sesión. ¿Estás seguro?"
+  "logoutConfirmationDesc": "Estás a punto de cerrar sesión. ¿Estás seguro?",
+  "loginSessionExpired": "Su sesión ha caducado. Inicie sesión nuevamente."
 }
