@@ -11,7 +11,7 @@ class UnauthorizedInterceptor extends Interceptor {
   @override
   Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
     if (_isUnauthorizedError(err)) {
-      ref.invalidate(logoutFunction);
+      ref.invalidate(invalidateExpiredToken);
     }
     handler.next(err);
   }

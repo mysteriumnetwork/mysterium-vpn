@@ -64,13 +64,13 @@ mixin _$AuthStore on _AuthStore, Store {
   late final _$emailAtom = Atom(name: '_AuthStore.email', context: context);
 
   @override
-  String get email {
+  String? get email {
     _$emailAtom.reportRead();
     return super.email;
   }
 
   @override
-  set email(String value) {
+  set email(String? value) {
     _$emailAtom.reportWrite(value, super.email, () {
       super.email = value;
     });
@@ -79,13 +79,13 @@ mixin _$AuthStore on _AuthStore, Store {
   late final _$temporaryEmailAtom = Atom(name: '_AuthStore.temporaryEmail', context: context);
 
   @override
-  String get temporaryEmail {
+  String? get temporaryEmail {
     _$temporaryEmailAtom.reportRead();
     return super.temporaryEmail;
   }
 
   @override
-  set temporaryEmail(String value) {
+  set temporaryEmail(String? value) {
     _$temporaryEmailAtom.reportWrite(value, super.temporaryEmail, () {
       super.temporaryEmail = value;
     });
@@ -204,8 +204,9 @@ mixin _$AuthStore on _AuthStore, Store {
   late final _$logoutAsyncAction = AsyncAction('_AuthStore.logout', context: context);
 
   @override
-  Future<void> logout({String? email}) {
-    return _$logoutAsyncAction.run(() => super.logout(email: email));
+  Future<void> logout({String? email, bool? invalidateExpiredToken}) {
+    return _$logoutAsyncAction
+        .run(() => super.logout(email: email, invalidateExpiredToken: invalidateExpiredToken));
   }
 
   late final _$logoutFromAllDevicesAsyncAction =

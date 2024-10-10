@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/layout_builders/screen_type_builder.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -77,9 +78,10 @@ class LoginPage extends HookConsumerWidget {
   }
 
   void _suggestLogin(BuildContext context, AuthStore authStore, AnalyticsStore analyticsStore) {
-    if (authStore.temporaryEmail.isEmpty) {
+    if (authStore.temporaryEmail.isNullOrEmpty) {
       return;
     }
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (authStore.temporaryEmail != authStore.email) {
         authStore.email = authStore.temporaryEmail;
@@ -88,7 +90,7 @@ class LoginPage extends HookConsumerWidget {
         analyticsStore.logEvent(AnalyticsEvent.loginPopup);
         _showConfirmationDialog(context, authStore, analyticsStore);
       }
-      authStore.temporaryEmail = '';
+      authStore.temporaryEmail = null;
     });
   }
 
@@ -100,7 +102,7 @@ class LoginPage extends HookConsumerWidget {
     shownConfirmationDialog(
       context,
       content: Text(
-        authStore.email,
+        '${authStore.temporaryEmail}',
         style: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w600,
