@@ -472,5 +472,6 @@
     "logoutAllDevicesConfirmationTitle":"Log out from all devices",
     "logoutAllDevicesConfirmationDesc":"You’re about to log out from all your devices. Are you sure?",
     "logoutConfirmationTitle":"Log out",
-    "logoutConfirmationDesc":"You’re about to log out. Are you sure?"
+    "logoutConfirmationDesc":"You’re about to log out. Are you sure?",
+    "loginSessionExpired":"Your session has expired. Please log in again."
   }
