@@ -54,7 +54,7 @@ class SecureStorageService {
   }
 
   Future<String?> readOrNull(String key) async {
-    if (!await _securedStorage.containsKey(key: key)) {
+    if (!await checkExistance(key)) {
       return null;
     }
     final result = await _securedStorage.read(
@@ -71,9 +71,18 @@ class SecureStorageService {
   }
 
   Future<void> remove(String key) async {
-    if (await _securedStorage.containsKey(key: key)) {
+    if (await checkExistance(key)) {
       await _securedStorage.delete(key: key);
     }
+  }
+
+  Future<String?> removeAndReturnValue(String key) async {
+    if (await checkExistance(key)) {
+      final value = await _securedStorage.read(key: key);
+      await _securedStorage.delete(key: key);
+      return value;
+    }
+    return null;
   }
 
   Future<bool> checkExistance(String key) async {
@@ -102,7 +111,11 @@ class SecureStorageService {
   Future<String?> getUsername() async => readOrNull(StorageKeys.username.name);
   Future<void> saveUsername({required String username}) async =>
       write(StorageKeys.username.name, username);
-  Future<void> removeUsername() async => remove(StorageKeys.username.name);
+  Future<String?> removeUsername() async => removeAndReturnValue(StorageKeys.username.name);
+  Future<void> saveLastLoggedInUser({required String username}) async =>
+      write(StorageKeys.lastLoggedInUser.name, username);
+  Future<String?> getLastLoggedInUser() async => readOrNull(StorageKeys.lastLoggedInUser.name);
+  Future<void> removeLastLoggedInUser() async => remove(StorageKeys.lastLoggedInUser.name);
   Future<String> getUserId() async => read(StorageKeys.userId.name);
   Future<void> saveUserId({required String userId}) async => write(StorageKeys.userId.name, userId);
   Future<void> removeUserId() async => remove(StorageKeys.userId.name);
