@@ -28,25 +28,26 @@ jobs:
           codemagic-cli-tools version
           codemagic-cli-tools installed-tools
 
+      - name: Set up keychain
+        run: |
+          keychain initialize
+          keychain get-default
+
+      # Signing files are imported to keychain from:
+      #  ls -la ~/Library/MobileDevice/Provisioning\ Profiles
+      #  ls -la ~/Library/MobileDevice/Certificates/
       - name: Fetch signing files
         env:
           APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
-        run: app-store-connect fetch-signing-files "com.mysteriumvpn.test" --platform IOS --type IOS_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
-
-      # Signing files are imported to keychain from:
-      #  ls -la ~/Library/MobileDevice/Provisioning\ Profiles
-      #  ls -la ~/Library/MobileDevice/Certificates/
-      - name: Set up keychain
         run: |
-          keychain initialize
+          app-store-connect fetch-signing-files "com.mysteriumvpn.test" --platform IOS --type IOS_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
           keychain add-certificates
-          keychain get-default
-          keychain list-certificates
 
       - name: Set up signing preferences on Xcode project
         run: |
+          keychain list-certificates
           xcode-project use-profiles --project ios/Runner.xcodeproj --export-options-plist ios/export_options.plist
           git status
           git diff
@@ -80,6 +81,9 @@ jobs:
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: app-store-connect publish --path "build/ios/ipa/Mysterium VPN.ipa" --platform IOS
 
-      - name: Restore keychain
-        run: keychain use-login
+      - name: Post Set up keychain
+        run: |
+          keychain delete
+          keychain use-login
+          keychain list-certificates
         if: always()

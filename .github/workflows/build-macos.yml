@@ -28,12 +28,22 @@ jobs:
           codemagic-cli-tools version
           codemagic-cli-tools installed-tools
 
+      - name: Set up keychain
+        run: |
+          keychain initialize
+          keychain get-default
+
+      # Signing files are imported to keychain from:
+      #  ls -la ~/Library/MobileDevice/Provisioning\ Profiles
+      #  ls -la ~/Library/MobileDevice/Certificates/
       - name: Fetch signing files
         env:
           APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
-        run: app-store-connect fetch-signing-files "com.mysteriumvpn.test" --platform MAC_OS --type MAC_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
+        run: |
+          app-store-connect fetch-signing-files "com.mysteriumvpn.test" --platform MAC_OS --type MAC_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
+          keychain add-certificates
 
       - name: Fetch Installer Distribution certificates
         env:
@@ -43,19 +53,11 @@ jobs:
         run: |
           app-store-connect certificates list --type MAC_INSTALLER_DISTRIBUTION --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --save \
           || app-store-connect certificates create --type MAC_INSTALLER_DISTRIBUTION --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --save
-
-      # Signing files are imported to keychain from:
-      #  ls -la ~/Library/MobileDevice/Provisioning\ Profiles
-      #  ls -la ~/Library/MobileDevice/Certificates/
-      - name: Set up keychain
-        run: |
-          keychain initialize
           keychain add-certificates
-          keychain get-default
-          keychain list-certificates
 
       - name: Set up signing preferences on Xcode project
         run: |
+          keychain list-certificates
           xcode-project use-profiles --project macos/Runner.xcodeproj --export-options-plist macos/export_options.plist
           git status
           git diff
@@ -92,6 +94,9 @@ jobs:
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: app-store-connect publish --path "build/macos/Build/Products/Release-dev/Mysterium VPN Test.pkg" --platform MAC_OS
 
-      - name: Restore keychain
-        run: keychain use-login
+      - name: Post Set up keychain
+        run: |
+          keychain delete
+          keychain use-login
+          keychain list-certificates
         if: always()
