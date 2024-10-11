@@ -22,6 +22,12 @@ jobs:
           java-version: "17.x"
           cache: "gradle"
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        # Enable caching on feature branches
+        #with:
+        #  cache-read-only: false
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
