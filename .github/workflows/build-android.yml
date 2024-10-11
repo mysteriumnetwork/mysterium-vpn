@@ -52,6 +52,14 @@ jobs:
       - name: Build Android app
         run: flutter build appbundle --no-pub --release --flavor "dev" --dart-define FLAVOR=DEV
 
+      - name: Publish to Play Store (Internal testing)
+        uses: r0adkll/upload-google-play@v1
+        with:
+          releaseFiles: build/app/outputs/bundle/devRelease/app-dev-release.aab
+          serviceAccountJsonPlainText: ${{ secrets.ANDROID_GCLOUD_SERVICE_ACCOUNT_CREDENTIALS_BASE64 }} | base64 --decode
+          packageName: com.mysteriumvpn.android.test
+          track: internal
+
       - name: Post Setup keystore
         run: rm android/app/keystore.jks android/key.properties
         if: always()
