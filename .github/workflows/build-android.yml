@@ -56,6 +56,7 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           releaseFiles: build/app/outputs/bundle/devRelease/app-dev-release.aab
+          mappingFile: build/app/outputs/mapping/devRelease/mapping.txt
           serviceAccountJsonPlainText: ${{ secrets.ANDROID_GCLOUD_SERVICE_ACCOUNT_CREDENTIALS_BASE64 }} | base64 --decode
           packageName: com.mysteriumvpn.android.test
           track: internal
