@@ -28,6 +28,16 @@ jobs:
           flutter-version-file: pubspec.yaml
           cache: true
 
+      - name: Setup keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
+
+          echo "storeFile=keystore.jks" > android/key.properties
+          echo "storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> android/key.properties
+          echo "keyPassword=${{ secrets.ANDROID_KEYSTORE_KEY_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.ANDROID_KEYSTORE_KEY_ALIAS }}" >> android/key.properties
+          cat android/key.properties
+
       - name: Replace version
         run: |
           sed -i.bak "s/^version:.*/version: 0.0.0+${{ github.run_number }}/" pubspec.yaml
@@ -40,4 +50,8 @@ jobs:
         run: flutter packages pub run build_runner build --delete-conflicting-outputs
 
       - name: Build Android app
-        run: flutter build appbundle --no-pub --debug --flavor "dev" --dart-define FLAVOR=DEV
+        run: flutter build appbundle --no-pub --release --flavor "dev" --dart-define FLAVOR=DEV
+
+      - name: Post Setup keystore
+        run: rm android/app/keystore.jks android/key.properties
+        if: always()
