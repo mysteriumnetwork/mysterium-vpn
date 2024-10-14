@@ -44,7 +44,7 @@ class CheckYourEmailView extends HookConsumerWidget {
                     asset: Assets.checkEmail,
                   ).padding(bottom: height * .03),
                   EasyText(
-                    LocaleKeys.emailSentTo.tr(namedArgs: {'email': authStore.email}),
+                    LocaleKeys.emailSentTo.tr(namedArgs: {'email': '${authStore.email}'}),
                     maxLines: 2,
                     textAlign: TextAlign.center,
                   ).padding(bottom: height * .02),

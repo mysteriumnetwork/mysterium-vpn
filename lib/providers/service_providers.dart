@@ -35,8 +35,10 @@ final appLinksPOD = Provider(
 
 final localDBPOD = Provider((ref) => LocalDBService());
 
-final logoutFunction = FutureProvider<void>((ref) async {
-  await ref.read(authStorePOD).logout();
+final invalidateExpiredToken = FutureProvider<void>((ref) async {
+  await ref.read(authStorePOD).logout(
+        invalidateExpiredToken: true,
+      );
 });
 
 final networkServicePOD = Provider<NetworkService>((ref) {

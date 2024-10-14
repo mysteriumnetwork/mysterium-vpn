@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:google_sign_in/google_sign_in.dart';
@@ -40,26 +41,24 @@ class RestAuthService extends AuthService {
   Future<AuthData> checkUserAuth() async {
     try {
       final accessToken = await _securedStorage.getAccessToken();
-
-      final data = (await _networkService.get(
-        kAuthCheck,
-        headers: {'Authorization': 'Bearer $accessToken'},
-      ))
-          .data as Map<String, dynamic>?;
-      if (data == null) {
-        throw Exception('No data');
-      }
-      final username = data['username'] as String;
-      final userId = data['user_id'] as String;
+      final userName = await _securedStorage.getUsername() ?? '';
+      final userId = await _securedStorage.getUserId();
       _networkService.updateHeader(
         {'Authorization': 'Bearer $accessToken'},
       );
-      await _securedStorage.saveUserId(userId: userId);
-      await _securedStorage.saveUsername(username: username);
+      // Proceed with token introspection in order to check if token is valid
+      // If token is invalid, UnauthorizedInterceptor will catch it and it will be handled
+      unawaited(
+        _networkService.get(
+          kAuthCheck,
+          headers: {'Authorization': 'Bearer $accessToken'},
+        ),
+      );
+
       return AuthData(
         accessToken: accessToken,
-        username: username,
-        userId: data['user_id'] as String,
+        username: userName,
+        userId: userId,
       );
     } catch (e, stackTrace) {
       removeLocalData();
@@ -173,9 +172,13 @@ class RestAuthService extends AuthService {
     await _securedStorage.removeAccessToken();
     await _securedStorage.removeUserId();
     await _securedStorage.removePkcePair();
-    await _securedStorage.removeUsername();
     await _securedStorage.removeWireguardPrivateKey();
     await _securedStorage.removeWireguardPublicKey();
+    final val = await _securedStorage.removeUsername();
+    if (val != null && val.isNotEmpty) {
+      _logger.info('User $val logged out');
+      await _securedStorage.saveLastLoggedInUser(username: val);
+    }
   }
 
   @override
