@@ -58,12 +58,17 @@ jobs:
       - name: Build Android app
         run: flutter build appbundle --no-pub --release --flavor "dev" --dart-define FLAVOR=DEV
 
+      - name: Authenticate to Play Store
+        id: google-play-auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.ANDROID_GCLOUD_SERVICE_ACCOUNT_CREDENTIALS_BASE64 }}
       - name: Publish to Play Store (Internal testing)
         uses: r0adkll/upload-google-play@v1
         with:
           releaseFiles: build/app/outputs/bundle/devRelease/app-dev-release.aab
           mappingFile: build/app/outputs/mapping/devRelease/mapping.txt
-          serviceAccountJsonPlainText: ${{ secrets.ANDROID_GCLOUD_SERVICE_ACCOUNT_CREDENTIALS_BASE64 }} | base64 --decode
+          serviceAccountJson: ${{ steps.google-play-auth.outputs.credentials_file_path }}
           packageName: com.mysteriumvpn.android.test
           track: internal
 
