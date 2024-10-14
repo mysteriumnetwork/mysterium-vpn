@@ -472,5 +472,6 @@
   "logoutAllDevicesConfirmationTitle": "تسجيل الخروج من جميع الأجهزة",
   "logoutAllDevicesConfirmationDesc": "أنت على وشك تسجيل الخروج من جميع أجهزتك. هل أنت متأكد؟",
   "logoutConfirmationTitle": "تسجيل خروج",
-  "logoutConfirmationDesc": "أنت على وشك تسجيل الخروج. هل أنت متأكد؟"
+  "logoutConfirmationDesc": "أنت على وشك تسجيل الخروج. هل أنت متأكد؟",
+  "loginSessionExpired": "لقد انتهت جلستك. الرجاء تسجيل الدخول مرة أخرى."
 }

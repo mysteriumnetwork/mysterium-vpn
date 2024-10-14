@@ -472,5 +472,6 @@
   "logoutAllDevicesConfirmationTitle": "すべてのデバイスからログアウトする",
   "logoutAllDevicesConfirmationDesc": "すべてのデバイスからログアウトしようとしています。よろしいですか?",
   "logoutConfirmationTitle": "ログアウト",
-  "logoutConfirmationDesc": "ログアウトしようとしています。よろしいですか?"
+  "logoutConfirmationDesc": "ログアウトしようとしています。よろしいですか?",
+  "loginSessionExpired": "セッションの有効期限が切れました。再度ログインしてください。"
 }

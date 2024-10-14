@@ -472,5 +472,6 @@
   "logoutAllDevicesConfirmationTitle": "Disconnettersi da tutti i dispositivi",
   "logoutAllDevicesConfirmationDesc": "Stai per disconnetterti da tutti i tuoi dispositivi.Sei sicuro?",
   "logoutConfirmationTitle": "Disconnettersi",
-  "logoutConfirmationDesc": "Stai per disconnetterti.Sei sicuro?"
+  "logoutConfirmationDesc": "Stai per disconnetterti.Sei sicuro?",
+  "loginSessionExpired": "La tua sessione è scaduta. Effettua nuovamente l'accesso."
 }

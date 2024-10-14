@@ -489,7 +489,8 @@ class CodegenLoader extends AssetLoader {
     "logoutAllDevicesConfirmationTitle": "从所有设备注销",
     "logoutAllDevicesConfirmationDesc": "您即将从所有设备注销。您确定吗？",
     "logoutConfirmationTitle": "登出",
-    "logoutConfirmationDesc": "您即将退出。您确定吗？"
+    "logoutConfirmationDesc": "您即将退出。您确定吗？",
+    "loginSessionExpired": "您的会话已过期。请重新登录。"
   };
   static const Map<String, dynamic> tr = {
     "title": "Merhaba efendim",
@@ -981,7 +982,8 @@ class CodegenLoader extends AssetLoader {
     "logoutAllDevicesConfirmationTitle": "Tüm cihazlardan çıkış yapın",
     "logoutAllDevicesConfirmationDesc": "Tüm cihazlarınızdan çıkış yapmak üzeresiniz.Emin misiniz?",
     "logoutConfirmationTitle": "Çıkış Yap",
-    "logoutConfirmationDesc": "Oturumu kapatmak üzeresiniz.Emin misiniz?"
+    "logoutConfirmationDesc": "Oturumu kapatmak üzeresiniz.Emin misiniz?",
+    "loginSessionExpired": "Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın."
   };
   static const Map<String, dynamic> ja = {
     "title": "こんにちは。",
@@ -1460,7 +1462,8 @@ class CodegenLoader extends AssetLoader {
     "logoutAllDevicesConfirmationTitle": "すべてのデバイスからログアウトする",
     "logoutAllDevicesConfirmationDesc": "すべてのデバイスからログアウトしようとしています。よろしいですか?",
     "logoutConfirmationTitle": "ログアウト",
-    "logoutConfirmationDesc": "ログアウトしようとしています。よろしいですか?"
+    "logoutConfirmationDesc": "ログアウトしようとしています。よろしいですか?",
+    "loginSessionExpired": "セッションの有効期限が切れました。再度ログインしてください。"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1971,7 +1974,8 @@ class CodegenLoader extends AssetLoader {
     "logoutAllDevicesConfirmationDesc":
         "Sie sind dabei, sich von allen Ihren Geräten abzumelden. Sind Sie sicher?",
     "logoutConfirmationTitle": "Ausloggen",
-    "logoutConfirmationDesc": "Sie sind dabei, sich abzumelden. Sind Sie sicher?"
+    "logoutConfirmationDesc": "Sie sind dabei, sich abzumelden. Sind Sie sicher?",
+    "loginSessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an."
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2470,7 +2474,8 @@ class CodegenLoader extends AssetLoader {
     "logoutAllDevicesConfirmationDesc":
         "Você está prestes a sair de todos os seus dispositivos.Tem certeza?",
     "logoutConfirmationTitle": "Sair",
-    "logoutConfirmationDesc": "Você está prestes a sair. Tem certeza?"
+    "logoutConfirmationDesc": "Você está prestes a sair. Tem certeza?",
+    "loginSessionExpired": "Sua sessão expirou. Faça login novamente."
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -2968,7 +2973,8 @@ class CodegenLoader extends AssetLoader {
     "logoutAllDevicesConfirmationDesc":
         "You’re about to log out from all your devices. Are you sure?",
     "logoutConfirmationTitle": "Log out",
-    "logoutConfirmationDesc": "You’re about to log out. Are you sure?"
+    "logoutConfirmationDesc": "You’re about to log out. Are you sure?",
+    "loginSessionExpired": "Your session has expired. Please log in again."
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3472,7 +3478,8 @@ class CodegenLoader extends AssetLoader {
     "logoutAllDevicesConfirmationDesc":
         "Stai per disconnetterti da tutti i tuoi dispositivi.Sei sicuro?",
     "logoutConfirmationTitle": "Disconnettersi",
-    "logoutConfirmationDesc": "Stai per disconnetterti.Sei sicuro?"
+    "logoutConfirmationDesc": "Stai per disconnetterti.Sei sicuro?",
+    "loginSessionExpired": "La tua sessione è scaduta. Effettua nuovamente l'accesso."
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -3978,7 +3985,8 @@ class CodegenLoader extends AssetLoader {
     "logoutAllDevicesConfirmationDesc":
         "Vous êtes sur le point de vous déconnecter de tous vos appareils. Êtes-vous sûr ?",
     "logoutConfirmationTitle": "Se déconnecter",
-    "logoutConfirmationDesc": "Vous êtes sur le point de vous déconnecter. Êtes-vous sûr ?"
+    "logoutConfirmationDesc": "Vous êtes sur le point de vous déconnecter. Êtes-vous sûr ?",
+    "loginSessionExpired": "Votre session a expiré. Veuillez vous reconnecter."
   };
   static const Map<String, dynamic> id = {
     "title": "Halo Pak",
@@ -4476,7 +4484,8 @@ class CodegenLoader extends AssetLoader {
     "logoutAllDevicesConfirmationDesc":
         "Anda akan keluar dari semua perangkat Anda. Apakah Anda yakin?",
     "logoutConfirmationTitle": "Keluar",
-    "logoutConfirmationDesc": "Anda akan logout. Apakah Anda yakin?"
+    "logoutConfirmationDesc": "Anda akan logout. Apakah Anda yakin?",
+    "loginSessionExpired": "Sesi Anda telah kedaluwarsa. Silakan login kembali."
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -4978,7 +4987,8 @@ class CodegenLoader extends AssetLoader {
     "logoutAllDevicesConfirmationDesc":
         "Estás a punto de cerrar sesión en todos tus dispositivos. ¿Estás seguro?",
     "logoutConfirmationTitle": "Cerrar sesión",
-    "logoutConfirmationDesc": "Estás a punto de cerrar sesión. ¿Estás seguro?"
+    "logoutConfirmationDesc": "Estás a punto de cerrar sesión. ¿Estás seguro?",
+    "loginSessionExpired": "Su sesión ha caducado. Inicie sesión nuevamente."
   };
   static const Map<String, dynamic> ar = {
     "title": "أهلاً سيدي",
@@ -5471,7 +5481,8 @@ class CodegenLoader extends AssetLoader {
     "logoutAllDevicesConfirmationTitle": "تسجيل الخروج من جميع الأجهزة",
     "logoutAllDevicesConfirmationDesc": "أنت على وشك تسجيل الخروج من جميع أجهزتك. هل أنت متأكد؟",
     "logoutConfirmationTitle": "تسجيل خروج",
-    "logoutConfirmationDesc": "أنت على وشك تسجيل الخروج. هل أنت متأكد؟"
+    "logoutConfirmationDesc": "أنت على وشك تسجيل الخروج. هل أنت متأكد؟",
+    "loginSessionExpired": "لقد انتهت جلستك. الرجاء تسجيل الدخول مرة أخرى."
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,

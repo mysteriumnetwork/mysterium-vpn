@@ -76,10 +76,10 @@ abstract class _AuthStore with Store {
   GrantType? _authenticatingType;
 
   @observable
-  String email = '';
+  String? email;
 
   @observable
-  String temporaryEmail = '';
+  String? temporaryEmail;
 
   @readonly
   AuthData? _authData;
@@ -100,7 +100,7 @@ abstract class _AuthStore with Store {
   Future<void> initAuth() async {
     try {
       _pkcePair = await _secureStorageService.getPkcePair();
-      email = await _secureStorageService.getUsername() ?? '';
+      email = await _secureStorageService.getLastLoggedInUser();
       temporaryEmail = email;
       final appLink = await _appLinks.getLatestLink();
       final storedLink = await _secureStorageService.getAppLink();
@@ -222,14 +222,20 @@ abstract class _AuthStore with Store {
   }
 
   @action
-  Future<void> logout({String? email}) async {
+  Future<void> logout({
+    String? email,
+    bool? invalidateExpiredToken,
+  }) async {
+    if (invalidateExpiredToken ?? false) {
+      showSnackbar(LocaleKeys.loginSessionExpired.tr());
+    }
     logoutFeature = ObservableFuture(_authService.logout());
 
     await logoutFeature;
     _intercomStore.logout();
     _authStatus = AuthStatus.unauthenticated;
     _authData = null;
-    temporaryEmail = email ?? '';
+    temporaryEmail = email;
   }
 
   @action
