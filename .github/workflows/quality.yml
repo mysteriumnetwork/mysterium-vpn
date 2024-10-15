@@ -1,4 +1,4 @@
-name: Quality Checks
+name: CI
 
 on:
   workflow_dispatch:
@@ -42,18 +42,28 @@ jobs:
       - name: Build Check (Linux, fast and cheap)
         run: flutter build linux --no-pub --debug --dart-define FLAVOR=DEV
 
+  # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
   build_ios:
     name: Publish iOS app to TestFlight
     needs: [quality_checks]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     uses: ./.github/workflows/_build-ios.yml
+    with:
+      bundle_id: com.mysteriumvpn.test
+      flavor: "dev"
+      flavor_dart: "DEV"
     secrets: inherit
 
+  # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
   build_macos:
     name: Publish macOS app to TestFlight
     needs: [quality_checks]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     uses: ./.github/workflows/_build-macos.yml
+    with:
+      bundle_id: com.mysteriumvpn.test
+      flavor: "dev"
+      flavor_dart: "DEV"
     secrets: inherit
 
   build_android:
@@ -61,4 +71,9 @@ jobs:
     needs: [quality_checks]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     uses: ./.github/workflows/_build-android.yml
+    with:
+      package_name: com.mysteriumvpn.android.test
+      package_track: internal
+      flavor: "dev"
+      flavor_dart: "DEV"
     secrets: inherit
