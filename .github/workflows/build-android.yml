@@ -1,0 +1,77 @@
+name: Build (iOS)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  # Android Build
+  # Based on documentation https://docs.flutter.dev/deployment/android#sign-the-app
+  # And tutorial at https://medium.com/lodgify-technology-blog/deploy-your-flutter-app-to-google-play-with-github-actions-f13a11c4492e
+  build_android:
+    name: Publish Android app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: "17.x"
+          cache: "gradle"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        # Enable caching on feature branches
+        #with:
+        #  cache-read-only: false
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - name: Setup keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
+
+          echo "storeFile=keystore.jks" > android/key.properties
+          echo "storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> android/key.properties
+          echo "keyPassword=${{ secrets.ANDROID_KEYSTORE_KEY_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.ANDROID_KEYSTORE_KEY_ALIAS }}" >> android/key.properties
+          cat android/key.properties
+
+      - name: Replace version
+        run: |
+          sed -i.bak "s/^version:.*/version: 0.0.0+${{ github.run_number }}/" pubspec.yaml
+          git diff
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
+
+      - name: Build Android app
+        run: flutter build appbundle --no-pub --release --flavor "dev" --dart-define FLAVOR=DEV
+
+      - name: Authenticate to Play Store
+        id: google-play-auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.ANDROID_GCLOUD_SERVICE_ACCOUNT_CREDENTIALS_BASE64 }}
+      - name: Publish to Play Store (Internal testing)
+        uses: r0adkll/upload-google-play@v1
+        with:
+          releaseFiles: build/app/outputs/bundle/devRelease/app-dev-release.aab
+          mappingFile: build/app/outputs/mapping/devRelease/mapping.txt
+          serviceAccountJson: ${{ steps.google-play-auth.outputs.credentials_file_path }}
+          packageName: com.mysteriumvpn.android.test
+          track: internal
+
+      - name: Post Setup keystore
+        run: rm android/app/keystore.jks android/key.properties
+        if: always()
