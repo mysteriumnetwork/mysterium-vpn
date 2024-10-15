@@ -1,6 +1,7 @@
 name: Quality Checks
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
@@ -41,35 +42,23 @@ jobs:
       - name: Build Check (Linux, fast and cheap)
         run: flutter build linux --no-pub --debug --dart-define FLAVOR=DEV
 
-  prebuilt_ios:
-    name: Prebuild Check (iOS)
+  build_ios:
+    name: Publish iOS app to TestFlight
     needs: [quality_checks]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-12, macos-14]
-    # Allow macOS 12 to fail without stopping the entire workflow
-    continue-on-error: ${{ matrix.os == 'macos-12' }}
-    steps:
-      - uses: actions/checkout@v4
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    uses: ./.github/workflows/_build-ios.yml
+    secrets: inherit
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version-file: pubspec.yaml
-          cache: true
+  build_macos:
+    name: Publish macOS app to TestFlight
+    needs: [quality_checks]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    uses: ./.github/workflows/_build-macos.yml
+    secrets: inherit
 
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Generate
-        run: |
-          flutter packages pub run build_runner build --delete-conflicting-outputs
-          git status
-
-      - name: Install Pods
-        run: pod install
-        working-directory: ios
-
-      - name: Build
-        run: flutter build ios --no-pub --debug --no-codesign --flavor "dev" --dart-define FLAVOR=DEV
+  build_android:
+    name: Publish Android app to Internal Testing
+    needs: [quality_checks]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    uses: ./.github/workflows/_build-android.yml
+    secrets: inherit

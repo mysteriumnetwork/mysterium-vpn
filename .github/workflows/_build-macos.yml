@@ -1,17 +1,13 @@
-name: Build (macOS)
-
 on:
-  push:
-    branches:
-      - master
+  workflow_call:
 
 jobs:
 
   # macOS Build
   # Based on documentation https://docs.flutter.dev/deployment/macos#create-a-build-archive-with-codemagic-cli-tools
   # And tutorial https://docs.codemagic.io/yaml-quick-start/building-a-flutter-app/#code-signing
-  build_ios:
-    name: Publish macOS app to TestFlight
+  release:
+    name: Build & Publish
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
