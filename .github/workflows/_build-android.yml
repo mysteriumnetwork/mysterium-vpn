@@ -1,5 +1,20 @@
 on:
   workflow_call:
+    inputs:
+      package_name:
+        required: true
+        type: string
+      package_track:
+        required: true
+        type: string
+      flavor:
+        required: true
+        type: string
+        default: "dev"
+      flavor_dart:
+        required: true
+        type: string
+        default: "DEV"
 
 jobs:
 
@@ -52,21 +67,21 @@ jobs:
         run: flutter packages pub run build_runner build --delete-conflicting-outputs
 
       - name: Build Android app
-        run: flutter build appbundle --no-pub --release --flavor "dev" --dart-define FLAVOR=DEV
+        run: flutter build appbundle --no-pub --release --flavor "${{ github.event.inputs.flavor }}" --dart-define FLAVOR=${{ github.event.inputs.flavor_dart }}
 
       - name: Authenticate to Play Store
         id: google-play-auth
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.ANDROID_GCLOUD_SERVICE_ACCOUNT_CREDENTIALS_BASE64 }}
-      - name: Publish to Play Store (Internal testing)
+      - name: Publish to Play Store
         uses: r0adkll/upload-google-play@v1
         with:
-          releaseFiles: build/app/outputs/bundle/devRelease/app-dev-release.aab
-          mappingFile: build/app/outputs/mapping/devRelease/mapping.txt
+          releaseFiles: build/app/outputs/bundle/${{ github.event.inputs.flavor }}Release/app-${{ github.event.inputs.flavor }}-release.aab
+          mappingFile: build/app/outputs/mapping/${{ github.event.inputs.flavor }}Release/mapping.txt
           serviceAccountJson: ${{ steps.google-play-auth.outputs.credentials_file_path }}
-          packageName: com.mysteriumvpn.android.test
-          track: internal
+          packageName: ${{ github.event.inputs.package_name }}
+          track: ${{ github.event.inputs.package_track }}
 
       - name: Post Setup keystore
         run: rm android/app/keystore.jks android/key.properties

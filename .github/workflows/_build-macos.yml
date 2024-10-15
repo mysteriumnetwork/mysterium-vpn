@@ -1,5 +1,17 @@
 on:
   workflow_call:
+    inputs:
+      bundle_id:
+        required: true
+        type: string
+      flavor:
+        required: true
+        type: string
+        default: "dev"
+      flavor_dart:
+        required: true
+        type: string
+        default: "DEV"
 
 jobs:
 
@@ -38,7 +50,7 @@ jobs:
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
-          app-store-connect fetch-signing-files "com.mysteriumvpn.test" --platform MAC_OS --type MAC_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
+          app-store-connect fetch-signing-files "${{ github.event.inputs.bundle_id }}" --platform MAC_OS --type MAC_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
           keychain add-certificates
 
       - name: Fetch Installer Distribution certificates
@@ -74,21 +86,20 @@ jobs:
         working-directory: macos
 
       - name: Build macOS app
-        run: flutter build macos --no-pub --release --flavor "dev" --dart-define FLAVOR=DEV
+        run: flutter build macos --no-pub --release --flavor "${{ github.event.inputs.flavor }}" --dart-define FLAVOR=${{ github.event.inputs.flavor_dart }}
 
       - name: Build macOS installer
         run: |
-          xcrun productbuild --component "Mysterium VPN Test.app" /Applications/ unsigned.pkg
-          xcrun productsign --sign "$(keychain list-certificates | jq '[.[] | select(.common_name | contains("Mac Developer Installer")) | .common_name][0]' | xargs)" unsigned.pkg "Mysterium VPN Test.pkg"
-        working-directory: build/macos/Build/Products/Release-dev
+          xcrun productbuild --component "Mysterium VPN.app" /Applications/ unsigned.pkg
+          xcrun productsign --sign "$(keychain list-certificates | jq '[.[] | select(.common_name | contains("Mac Developer Installer")) | .common_name][0]' | xargs)" unsigned.pkg "Mysterium VPN.pkg"
+        working-directory: build/macos/Build/Products/Release-${{ github.event.inputs.flavor }}
 
-        # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
-      - name: Publish to TestFlight
+      - name: Publish to Apple Store
         env:
           APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
-        run: app-store-connect publish --path "build/macos/Build/Products/Release-dev/Mysterium VPN Test.pkg" --platform MAC_OS
+        run: app-store-connect publish --path "build/macos/Build/Products/Release-${{ github.event.inputs.flavor }}/Mysterium VPN.pkg" --platform MAC_OS
 
       - name: Post Set up keychain
         run: |
