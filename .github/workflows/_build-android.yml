@@ -1,6 +1,12 @@
 on:
   workflow_call:
     inputs:
+      build_version:
+        required: true
+        type: string
+      build_number:
+        required: true
+        type: string
       package_name:
         required: true
         type: string
@@ -55,13 +61,13 @@ jobs:
           echo "keyAlias=${{ secrets.ANDROID_KEYSTORE_KEY_ALIAS }}" >> android/key.properties
           cat android/key.properties
 
-      - name: Replace version
-        run: |
-          sed -i.bak "s/^version:.*/version: 0.0.0+${{ github.run_number }}/" pubspec.yaml
-          git diff
-
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Replace version
+        run: |
+          dart run cider version "${{ inputs.build_version }}+${{ inputs.build_number }}"
+          git diff
 
       - name: Generate
         run: flutter packages pub run build_runner build --delete-conflicting-outputs
