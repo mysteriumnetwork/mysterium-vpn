@@ -27,6 +27,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Check formating
+        run: dart format --line-length=100 --output=none --set-exit-if-changed .
+
       - name: Generate
         run: |
           flutter packages pub run build_runner build --delete-conflicting-outputs
