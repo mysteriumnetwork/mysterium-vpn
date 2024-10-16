@@ -75,9 +75,6 @@ jobs:
           dart run cider version "${{ inputs.build_version }}+${{ inputs.build_number }}"
           git diff
 
-      - name: Generate
-        run: flutter packages pub run build_runner build --delete-conflicting-outputs
-
       - name: Install Pods
         run: pod install
         working-directory: ios
