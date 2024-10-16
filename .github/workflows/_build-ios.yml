@@ -1,17 +1,25 @@
-name: Build (iOS)
-
 on:
-  push:
-    branches:
-      - master
+  workflow_call:
+    inputs:
+      bundle_id:
+        required: true
+        type: string
+      flavor:
+        required: true
+        type: string
+        default: "dev"
+      flavor_dart:
+        required: true
+        type: string
+        default: "DEV"
 
 jobs:
 
   # iOS Build
   # Base on documentation https://docs.flutter.dev/deployment/ios#create-a-build-archive-with-codemagic-cli-tools
   # And tutorial at https://blog.codemagic.io/deploy-your-app-to-app-store-with-codemagic-cli-tools-and-github-actions/
-  build_ios:
-    name: Publish iOS app to TestFlight
+  release:
+    name: Build & Publish
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
@@ -42,7 +50,7 @@ jobs:
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
-          app-store-connect fetch-signing-files "com.mysteriumvpn.test" --platform IOS --type IOS_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
+          app-store-connect fetch-signing-files "${{ github.event.inputs.bundle_id }}" --platform IOS --type IOS_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
           keychain add-certificates
 
       - name: Set up signing preferences on Xcode project
@@ -70,11 +78,10 @@ jobs:
 
       - name: Build iOS app
         run: |
-          flutter build ipa --no-pub --release --flavor "dev" --dart-define FLAVOR=DEV --export-options-plist=ios/export_options.plist
+          flutter build ipa --no-pub --release --flavor "${{ github.event.inputs.flavor }}" --dart-define FLAVOR=${{ github.event.inputs.flavor_dart }} --export-options-plist=ios/export_options.plist
           cat build/ios/ipa/ExportOptions.plist
 
-      # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
-      - name: Publish to TestFlight
+      - name: Publish to Apple Store
         env:
           APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
