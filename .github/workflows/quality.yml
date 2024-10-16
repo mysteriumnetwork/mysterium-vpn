@@ -62,6 +62,7 @@ jobs:
     uses: ./.github/workflows/_build-macos.yml
     with:
       bundle_id: com.mysteriumvpn.test
+      product_name: "Mysterium VPN Test"
       flavor: "dev"
       flavor_dart: "DEV"
     secrets: inherit

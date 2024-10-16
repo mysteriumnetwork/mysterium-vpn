@@ -4,6 +4,10 @@ on:
       bundle_id:
         required: true
         type: string
+      product_name:
+        required: true
+        type: string
+        default: "Mysterium VPN Test"
       flavor:
         required: true
         type: string
@@ -90,7 +94,7 @@ jobs:
 
       - name: Build macOS installer
         run: |
-          xcrun productbuild --component "Mysterium VPN.app" /Applications/ unsigned.pkg
+          xcrun productbuild --component "${{ inputs.product_name }}.app" /Applications/ unsigned.pkg
           xcrun productsign --sign "$(keychain list-certificates | jq '[.[] | select(.common_name | contains("Mac Developer Installer")) | .common_name][0]' | xargs)" unsigned.pkg "Mysterium VPN.pkg"
         working-directory: build/macos/Build/Products/Release-${{ inputs.flavor }}
 
