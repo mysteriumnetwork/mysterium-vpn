@@ -67,7 +67,7 @@ jobs:
         run: flutter packages pub run build_runner build --delete-conflicting-outputs
 
       - name: Build Android app
-        run: flutter build appbundle --no-pub --release --flavor "${{ github.event.inputs.flavor }}" --dart-define FLAVOR=${{ github.event.inputs.flavor_dart }}
+        run: flutter build appbundle --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define "FLAVOR=${{ inputs.flavor_dart }}"
 
       - name: Authenticate to Play Store
         id: google-play-auth
@@ -77,11 +77,11 @@ jobs:
       - name: Publish to Play Store
         uses: r0adkll/upload-google-play@v1
         with:
-          releaseFiles: build/app/outputs/bundle/${{ github.event.inputs.flavor }}Release/app-${{ github.event.inputs.flavor }}-release.aab
-          mappingFile: build/app/outputs/mapping/${{ github.event.inputs.flavor }}Release/mapping.txt
+          releaseFiles: build/app/outputs/bundle/${{ inputs.flavor }}Release/app-${{ inputs.flavor }}-release.aab
+          mappingFile: build/app/outputs/mapping/${{ inputs.flavor }}Release/mapping.txt
           serviceAccountJson: ${{ steps.google-play-auth.outputs.credentials_file_path }}
-          packageName: ${{ github.event.inputs.package_name }}
-          track: ${{ github.event.inputs.package_track }}
+          packageName: ${{ inputs.package_name }}
+          track: ${{ inputs.package_track }}
 
       - name: Post Setup keystore
         run: rm android/app/keystore.jks android/key.properties
