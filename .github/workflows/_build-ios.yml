@@ -1,6 +1,12 @@
 on:
   workflow_call:
     inputs:
+      build_version:
+        required: true
+        type: string
+      build_number:
+        required: true
+        type: string
       bundle_id:
         required: true
         type: string
@@ -50,7 +56,7 @@ jobs:
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
-          app-store-connect fetch-signing-files "${{ github.event.inputs.bundle_id }}" --platform IOS --type IOS_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
+          app-store-connect fetch-signing-files "${{ inputs.bundle_id }}" --platform IOS --type IOS_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
           keychain add-certificates
 
       - name: Set up signing preferences on Xcode project
@@ -61,13 +67,13 @@ jobs:
           git diff
           cat ios/export_options.plist
 
-      - name: Replace version
-        run: |
-          sed -i.bak "s/^version:.*/version: 0.0.0+${{ github.run_number }}/" pubspec.yaml
-          git diff
-
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Replace version
+        run: |
+          dart run cider version "${{ inputs.build_version }}+${{ inputs.build_number }}"
+          git diff
 
       - name: Generate
         run: flutter packages pub run build_runner build --delete-conflicting-outputs
@@ -78,7 +84,7 @@ jobs:
 
       - name: Build iOS app
         run: |
-          flutter build ipa --no-pub --release --flavor "${{ github.event.inputs.flavor }}" --dart-define FLAVOR=${{ github.event.inputs.flavor_dart }} --export-options-plist=ios/export_options.plist
+          flutter build ipa --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define "FLAVOR=${{ inputs.flavor_dart }}" --export-options-plist=ios/export_options.plist
           cat build/ios/ipa/ExportOptions.plist
 
       - name: Publish to Apple Store
