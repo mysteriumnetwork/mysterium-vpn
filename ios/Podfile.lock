@@ -7,12 +7,6 @@ PODS:
   - AppAuth/Core (1.7.5)
   - AppAuth/ExternalUserAgent (1.7.5):
     - AppAuth/Core
-  - appsflyer_sdk (6.14.3):
-    - AppsFlyerFramework (= 6.14.3)
-    - Flutter
-  - AppsFlyerFramework (6.14.3):
-    - AppsFlyerFramework/Main (= 6.14.3)
-  - AppsFlyerFramework/Main (6.14.3)
   - connectivity_plus (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -234,7 +228,6 @@ PODS:
 
 DEPENDENCIES:
   - app_links (from `.symlinks/plugins/app_links/ios`)
-  - appsflyer_sdk (from `.symlinks/plugins/appsflyer_sdk/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/darwin`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -261,7 +254,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AppAuth
-    - AppsFlyerFramework
     - Firebase
     - FirebaseABTesting
     - FirebaseAnalytics
@@ -290,8 +282,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   app_links:
     :path: ".symlinks/plugins/app_links/ios"
-  appsflyer_sdk:
-    :path: ".symlinks/plugins/appsflyer_sdk/ios"
   connectivity_plus:
     :path: ".symlinks/plugins/connectivity_plus/darwin"
   firebase_analytics:
@@ -340,8 +330,6 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   app_links: e7a6750a915a9e161c58d91bc610e8cd1d4d0ad0
   AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
-  appsflyer_sdk: e59c6b99ce2f28b93fe6b3045a97e8e1a20bce97
-  AppsFlyerFramework: 0a68f5b72bbbadfa71d4ae3eaf040e82d62e8518
   connectivity_plus: ddd7f30999e1faaef5967c23d5b6d503d10434db
   Firebase: 9f574c08c2396885b5e7e100ed4293d956218af9
   firebase_analytics: 1a66fe8d4375eccff44671ea37897683a78b2675

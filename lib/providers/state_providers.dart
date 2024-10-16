@@ -1,12 +1,10 @@
 //state providers
 
-import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
-import 'package:mysterium_vpn/appsflyer_options.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
@@ -19,9 +17,6 @@ import 'package:mysterium_vpn/stores/intercom/intercom_mobile_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
-import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_store.dart';
-import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_store_appsflyer.dart';
-import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_store_noop.dart';
 import 'package:mysterium_vpn/stores/rest_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
@@ -37,7 +32,6 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final analyticsStore = ref.watch(analyticsStorePOD);
   final env = ref.watch(environmentPOD);
   final intercomStore = ref.watch(intercomStorePOD);
-  final marketingAnalyticsStore = ref.watch(marketingAnalyticsStorePOD);
   final logger = ref.watch(loggerPOD);
   final userPreferencesStore = ref.watch(userPreferencesStorePOD);
   return AuthStore(
@@ -47,7 +41,6 @@ final authStorePOD = Provider<AuthStore>((ref) {
     analyticsStore: analyticsStore,
     env: env,
     intercomStore: intercomStore,
-    marketingAnalyticsStore: marketingAnalyticsStore,
     logger: logger,
     userPreferencesStore: userPreferencesStore,
   );
@@ -92,14 +85,12 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   final subscriptionService = ref.read(subscriptionServicePOD);
   final authStore = ref.read(authStorePOD);
   final localDb = ref.read(localDBPOD);
-  final marketingAnalyticsStore = ref.watch(marketingAnalyticsStorePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   return SubscriptionStore(
     inAppPurchase: inAppPurchase,
     subscriptionService: subscriptionService,
     authStore: authStore,
     localDb: localDb,
-    marketingAnalyticsStore: marketingAnalyticsStore,
     analyticsStore: analyticsStore,
   );
 });
@@ -134,22 +125,6 @@ final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
     analytics: FirebaseAnalytics.instance,
     crashlytics: FirebaseCrashlytics.instance,
     localDb: localDb,
-  );
-});
-
-final marketingAnalyticsInitPOD = FutureProviderFamily<void, FlavorConfig>((ref, flavor) async {
-  if (isMobile() && flavor.isProduction()) {
-    await AppsflyerSdk(appsFlyerOptions).initSdk();
-  }
-});
-
-final marketingAnalyticsStorePOD = StateProvider<MarketingAnalyticsStore>((ref) {
-  final flavor = ref.watch(environmentPOD);
-  if (isDesktop() || !flavor.isProduction()) {
-    return MarketingAnalyticsStoreNoop();
-  }
-  return MarketingAnalyticsStoreAppsflyer(
-    appsflyer: AppsflyerSdk(appsFlyerOptions),
   );
 });
 

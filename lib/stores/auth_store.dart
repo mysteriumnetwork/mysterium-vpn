@@ -21,7 +21,6 @@ import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
-import 'package:mysterium_vpn/stores/marketing_analytics/marketing_analytics_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
@@ -41,14 +40,12 @@ abstract class _AuthStore with Store {
     required AnalyticsStore analyticsStore,
     required FlavorConfig env,
     required IntercomStore intercomStore,
-    required MarketingAnalyticsStore marketingAnalyticsStore,
     required Talker logger,
     required UserPreferencesStore userPreferencesStore,
   })  : _authService = authService,
         _appLinks = appLinks,
         _localDb = localDb,
         _analyticsStore = analyticsStore,
-        _marketingAnalyticsStore = marketingAnalyticsStore,
         _env = env,
         _intercomStore = intercomStore,
         _logger = logger,
@@ -63,7 +60,6 @@ abstract class _AuthStore with Store {
   final AnalyticsStore _analyticsStore;
   final FlavorConfig _env;
   final IntercomStore _intercomStore;
-  final MarketingAnalyticsStore _marketingAnalyticsStore;
   final Talker _logger;
   final UserPreferencesStore _userPreferencesStore;
   @readonly
@@ -206,10 +202,8 @@ abstract class _AuthStore with Store {
   }) async {
     if (grantType != GrantType.savedToken) {
       _analyticsStore.setLogin(grantType);
-      _marketingAnalyticsStore.setLogin();
     }
     _analyticsStore.setUserId(username);
-    _marketingAnalyticsStore.setUserId(username);
     _intercomStore.registerUser(email: username);
     Sentry.configureScope(
       (scope) => scope.setUser(
