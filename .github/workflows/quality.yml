@@ -30,10 +30,17 @@ jobs:
       - name: Check formating
         run: dart format --line-length=100 --output=none --set-exit-if-changed .
 
-      - name: Generate
+      - name: Check generated files
         run: |
-          flutter packages pub run build_runner build --delete-conflicting-outputs
-          git status
+          dart run build_runner build --delete-conflicting-outputs
+          dart format --line-length 100 .
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Uncommitted changes detected! Please run `dart run build_runner build --delete-conflicting-outputs` and commit the changes."
+            git status
+            exit 1
+          else
+            echo "No uncommitted changes. All generated files are properly committed."
+          fi
 
       - name: Run Flutter Analyze (Lint)
         run: flutter analyze
