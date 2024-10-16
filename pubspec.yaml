@@ -10,7 +10,6 @@ environment:
 
 dependencies:
   app_links: 6.3.1
-  appsflyer_sdk: 6.14.3
   async: 2.11.0
   auto_size_text: 3.0.0
   beamer: 1.6.1
