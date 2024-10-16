@@ -1,9 +1,19 @@
 on:
   workflow_call:
     inputs:
+      build_version:
+        required: true
+        type: string
+      build_number:
+        required: true
+        type: string
       bundle_id:
         required: true
         type: string
+      product_name:
+        required: true
+        type: string
+        default: "Mysterium VPN Test"
       flavor:
         required: true
         type: string
@@ -50,7 +60,7 @@ jobs:
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
-          app-store-connect fetch-signing-files "${{ github.event.inputs.bundle_id }}" --platform MAC_OS --type MAC_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
+          app-store-connect fetch-signing-files "${{ inputs.bundle_id }}" --platform MAC_OS --type MAC_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
           keychain add-certificates
 
       - name: Fetch Installer Distribution certificates
@@ -70,13 +80,13 @@ jobs:
           git status
           git diff
 
-      - name: Replace version
-        run: |
-          sed -i.bak "s/^version:.*/version: 0.0.0+${{ github.run_number }}/" pubspec.yaml
-          git diff
-
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Replace version
+        run: |
+          dart run cider version "${{ inputs.build_version }}+${{ inputs.build_number }}"
+          git diff
 
       - name: Generate
         run: flutter packages pub run build_runner build --delete-conflicting-outputs
@@ -86,20 +96,20 @@ jobs:
         working-directory: macos
 
       - name: Build macOS app
-        run: flutter build macos --no-pub --release --flavor "${{ github.event.inputs.flavor }}" --dart-define FLAVOR=${{ github.event.inputs.flavor_dart }}
+        run: flutter build macos --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define "FLAVOR=${{ inputs.flavor_dart }}"
 
       - name: Build macOS installer
         run: |
-          xcrun productbuild --component "Mysterium VPN.app" /Applications/ unsigned.pkg
+          xcrun productbuild --component "${{ inputs.product_name }}.app" /Applications/ unsigned.pkg
           xcrun productsign --sign "$(keychain list-certificates | jq '[.[] | select(.common_name | contains("Mac Developer Installer")) | .common_name][0]' | xargs)" unsigned.pkg "Mysterium VPN.pkg"
-        working-directory: build/macos/Build/Products/Release-${{ github.event.inputs.flavor }}
+        working-directory: build/macos/Build/Products/Release-${{ inputs.flavor }}
 
       - name: Publish to Apple Store
         env:
           APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
-        run: app-store-connect publish --path "build/macos/Build/Products/Release-${{ github.event.inputs.flavor }}/Mysterium VPN.pkg" --platform MAC_OS
+        run: app-store-connect publish --path "build/macos/Build/Products/Release-${{ inputs.flavor }}/Mysterium VPN.pkg" --platform MAC_OS
 
       - name: Post Set up keychain
         run: |

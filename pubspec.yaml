@@ -2,7 +2,7 @@ name: mysterium_vpn
 description: Next-gen Mysterium VPN client for mobile (iOS/Android) and desktop (Windows/MacOS/Linux).
 
 publish_to: "none"
-version: 1.7.4+105
+version: 1.7.5-dev
 
 environment:
   sdk: "^3.0.0"
@@ -84,6 +84,7 @@ dependencies:
 
 dev_dependencies:
   build_runner: 2.4.12
+  cider: 0.2.8
   flutter_lints: 4.0.0
   flutter_test:
     sdk: flutter
