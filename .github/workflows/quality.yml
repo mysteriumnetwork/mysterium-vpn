@@ -12,6 +12,8 @@ jobs:
   quality_checks:
     name: Quality Checks (Lint, Test, Build Check)
     runs-on: ubuntu-latest
+    outputs:
+      dev_version: ${{ steps.calculate-version.outputs.version }}
 
     steps:
       - uses: actions/checkout@v4
@@ -25,10 +27,20 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Generate
+      - name: Check formating
+        run: dart format --line-length=100 --output=none --set-exit-if-changed .
+
+      - name: Check generated files
         run: |
-          flutter packages pub run build_runner build --delete-conflicting-outputs
-          git status
+          dart run build_runner build --delete-conflicting-outputs
+          dart format --line-length 100 .
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Uncommitted changes detected! Please run `dart run build_runner build --delete-conflicting-outputs` and commit the changes."
+            git status
+            exit 1
+          else
+            echo "No uncommitted changes. All generated files are properly committed."
+          fi
 
       - name: Run Flutter Analyze (Lint)
         run: flutter analyze
@@ -42,6 +54,11 @@ jobs:
       - name: Build Check (Linux, fast and cheap)
         run: flutter build linux --no-pub --debug --dart-define FLAVOR=DEV
 
+      # We assume that version for DEV builds is commited
+      - name: Decide build version
+        id: calculate-version
+        run: echo "version=`dart run cider version`" >> "$GITHUB_OUTPUT"
+
   # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
   build_ios:
     name: Publish iOS app to TestFlight
@@ -49,6 +66,8 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     uses: ./.github/workflows/_build-ios.yml
     with:
+      build_version: ${{ needs.quality_checks.outputs.dev_version }}
+      build_number: ${{ github.run_number }}
       bundle_id: com.mysteriumvpn.test
       flavor: "dev"
       flavor_dart: "DEV"
@@ -61,7 +80,10 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     uses: ./.github/workflows/_build-macos.yml
     with:
+      build_version: ${{ needs.quality_checks.outputs.dev_version }}
+      build_number: ${{ github.run_number }}
       bundle_id: com.mysteriumvpn.test
+      product_name: "Mysterium VPN Test"
       flavor: "dev"
       flavor_dart: "DEV"
     secrets: inherit
@@ -72,6 +94,8 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     uses: ./.github/workflows/_build-android.yml
     with:
+      build_version: ${{ needs.quality_checks.outputs.dev_version }}
+      build_number: ${{ github.run_number }}
       package_name: com.mysteriumvpn.android.test
       package_track: internal
       flavor: "dev"

@@ -1,0 +1,68 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'purchasable_product.dart';
+
+// **************************************************************************
+// StoreGenerator
+// **************************************************************************
+
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
+
+mixin _$PurchasableProduct on _PurchasableProduct, Store {
+  Computed<String>? _$idComputed;
+
+  @override
+  String get id =>
+      (_$idComputed ??= Computed<String>(() => super.id, name: '_PurchasableProduct.id')).value;
+  Computed<String>? _$billedPerMonthComputed;
+
+  @override
+  String get billedPerMonth => (_$billedPerMonthComputed ??=
+          Computed<String>(() => super.billedPerMonth, name: '_PurchasableProduct.billedPerMonth'))
+      .value;
+  Computed<String>? _$monthlyPriceComputed;
+
+  @override
+  String get monthlyPrice => (_$monthlyPriceComputed ??=
+          Computed<String>(() => super.monthlyPrice, name: '_PurchasableProduct.monthlyPrice'))
+      .value;
+  Computed<bool>? _$isPupularComputed;
+
+  @override
+  bool get isPupular => (_$isPupularComputed ??=
+          Computed<bool>(() => super.isPupular, name: '_PurchasableProduct.isPupular'))
+      .value;
+  Computed<String>? _$billedInTotalComputed;
+
+  @override
+  String get billedInTotal => (_$billedInTotalComputed ??=
+          Computed<String>(() => super.billedInTotal, name: '_PurchasableProduct.billedInTotal'))
+      .value;
+
+  late final _$statusAtom = Atom(name: '_PurchasableProduct.status', context: context);
+
+  @override
+  ProductStatus get status {
+    _$statusAtom.reportRead();
+    return super.status;
+  }
+
+  @override
+  set status(ProductStatus value) {
+    _$statusAtom.reportWrite(value, super.status, () {
+      super.status = value;
+    });
+  }
+
+  @override
+  String toString() {
+    return '''
+status: ${status},
+id: ${id},
+billedPerMonth: ${billedPerMonth},
+monthlyPrice: ${monthlyPrice},
+isPupular: ${isPupular},
+billedInTotal: ${billedInTotal}
+    ''';
+  }
+}
