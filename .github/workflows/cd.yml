@@ -6,13 +6,24 @@ on:
 
 jobs:
 
+  setup:
+    name: Setup release
+    runs-on: ubuntu-latest
+    outputs:
+      release_build: ${{ steps.calculate-build.outputs.build }}
+    steps:
+      - name: Decide build number
+        id: calculate-build
+        run: echo "build=$(( ${{ github.run_number }} + 100 ))" >> "$GITHUB_OUTPUT"
+
   # Publish build of application to https://appstoreconnect.apple.com/apps/6446624307/distribution/ios/version/inflight
   release_ios:
+    needs: [setup]
     name: Release iOS app
     uses: ./.github/workflows/_build-ios.yml
     with:
       build_version: ${{ github.event.release.tag_name }}
-      build_number: ${{ github.run_number }}
+      build_number: ${{ needs.setup.outputs.release_build }}
       bundle_id: com.mysteriumvpn
       flavor: "prod"
       flavor_dart: "PROD"
@@ -20,11 +31,12 @@ jobs:
 
   # Publish build of application to https://appstoreconnect.apple.com/apps/6446624307/distribution/macos/version/inflight
   release_macos:
+    needs: [setup]
     name: Release macOS app
     uses: ./.github/workflows/_build-macos.yml
     with:
       build_version: ${{ github.event.release.tag_name }}
-      build_number: ${{ github.run_number }}
+      build_number: ${{ needs.setup.outputs.release_build }}
       bundle_id: com.mysteriumvpn
       product_name: "Mysterium VPN"
       flavor: "prod"
@@ -33,11 +45,12 @@ jobs:
 
   # Publish build of application to https://play.google.com/console/u/0/developers/7955390843158584488/app/4973980590971676436/bundle-explorer-selector
   release_android:
+    needs: [setup]
     name: Release Android app
     uses: ./.github/workflows/_build-android.yml
     with:
       build_version: ${{ github.event.release.tag_name }}
-      build_number: ${{ github.run_number }}
+      build_number: ${{ needs.setup.outputs.release_build }}
       package_name: com.mysteriumvpn.android
       package_track: internal
       package_status: draft
