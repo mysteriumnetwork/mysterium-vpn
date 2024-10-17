@@ -13,6 +13,10 @@ on:
       package_track:
         required: true
         type: string
+      package_status:
+        required: true
+        type: string
+        default: "completed"
       flavor:
         required: true
         type: string
@@ -85,6 +89,7 @@ jobs:
           serviceAccountJson: ${{ steps.google-play-auth.outputs.credentials_file_path }}
           packageName: ${{ inputs.package_name }}
           track: ${{ inputs.package_track }}
+          status: ${{ inputs.package_status }}
 
       - name: Post Setup keystore
         run: rm android/app/keystore.jks android/key.properties
