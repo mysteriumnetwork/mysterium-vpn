@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: CI (Windows)
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the develop branch
@@ -20,7 +20,6 @@ on:
       - '!dbg*'
       - '!*-dbg*'
       - '!*-fix*'
-      - '*.*.*'
 
 env:
   flutter_version: "3.24.1"
