@@ -305,7 +305,7 @@ abstract class _SubscriptionStore with Store {
       _subscriptonStatus = SubscriptionStatus.verifying;
     }
     try {
-      verifySubscriptionFuture =  ObservableFuture(
+      verifySubscriptionFuture = ObservableFuture(
         _subscriptionService.verifyPurchase(
           serverVerificationData: purchaseDetails.verificationData.serverVerificationData,
           planId: productId,
