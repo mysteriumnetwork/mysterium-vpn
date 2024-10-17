@@ -95,20 +95,11 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<void> initStore() async {
-    autorun((_) {
+    when((_) => _authStore.authData != null, () {
       if (_authStore.authData != null) {
         _purchasedProductId = _localDb.getSubscriptionPlan();
         selectedProductId = _purchasedProductId ?? kPopularPlan;
         fetchSubscription().whenComplete(getSubscriptionsConfig);
-        if (!Platform.isWindows) {
-          final purchaseUpdated = _inAppPurchase.purchaseStream;
-          _purchaseStream = purchaseUpdated.listen(
-            _onPurchaseUpdate,
-            onDone: _updateStreamOnDone,
-            onError: _updateStreamOnError,
-          );
-          _subscriptionService.clearPendingTransactions();
-        }
       }
     });
   }
@@ -118,7 +109,7 @@ abstract class _SubscriptionStore with Store {
     subscriptionFuture = ObservableFuture(_subscriptionService.fetchSubscriptionDetails());
     _subscription = await subscriptionFuture;
     _expired = _subscription?.expired;
-    if (_subscription?.planId != null) {
+    if (_subscription?.planId != null && _subscription!.planId!.isNotEmpty) {
       _localDb.setSubscriptionPlan(_subscription!.planId!);
       _purchasedProductId = _subscription!.planId;
     }
@@ -135,6 +126,15 @@ abstract class _SubscriptionStore with Store {
       _subscriptionConfig = await isAvailableFuture;
       await getProductsDetails();
       _isAvailable = StoreState.available;
+      if (!Platform.isWindows) {
+        final purchaseUpdated = _inAppPurchase.purchaseStream;
+        _purchaseStream = purchaseUpdated.listen(
+          _onPurchaseUpdate,
+          onDone: _updateStreamOnDone,
+          onError: _updateStreamOnError,
+        );
+        _subscriptionService.clearPendingTransactions();
+      }
     } on NotAvailableException catch (_) {
       _isAvailable = StoreState.notAvailable;
     } catch (_) {
@@ -164,17 +164,16 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<void> subscribeToPackage() async {
+    final item =
+        _products.firstWhereOrNull((element) => element.id == selectedProductId)?.productDetails;
+    if (item == null) {
+      return;
+    }
     try {
       _subscriptonStatus = SubscriptionStatus.pending;
       final item =
           _products.firstWhere((element) => element.id == selectedProductId).productDetails;
-      _analyticsStore.logEvent(
-        AnalyticsEvent.paymentConfirm,
-        parameters: {
-          'planType': item.id,
-          'price': item.rawPrice.toString(),
-        },
-      );
+
       await _subscriptionService.subscribeToPackage(
         productDetails: item,
         purchasedProductId: ((_subscription?.active ?? false) && _subscription?.gateway == 'google')
@@ -186,7 +185,7 @@ abstract class _SubscriptionStore with Store {
         userId: _authStore.authData!.userId,
       );
       _analyticsStore.logEvent(
-        AnalyticsEvent.paymentSuccess,
+        AnalyticsEvent.paymentConfirm,
         parameters: {
           'planType': item.id,
           'price': item.rawPrice.toString(),
@@ -195,9 +194,11 @@ abstract class _SubscriptionStore with Store {
     } catch (e) {
       _subscriptonStatus = SubscriptionStatus.error;
       _analyticsStore.logEvent(
-        AnalyticsEvent.paymentRejected,
+        AnalyticsEvent.paymentError,
         parameters: {
           'planType': selectedProductId,
+          'price': item.rawPrice.toString(),
+          'error': e.toString(),
         },
       );
       if (kDebugMode) {
@@ -221,6 +222,7 @@ abstract class _SubscriptionStore with Store {
     _purchaseStream.cancel();
   }
 
+  ///Available on devices running iOS 14 and iPadOS 14 and later.
   @action
   Future<void> redeemCode() async {
     if (!Platform.isIOS) {
@@ -235,11 +237,11 @@ abstract class _SubscriptionStore with Store {
   Future<void> _handlePurchase(PurchaseDetails purchaseDetails) async {
     final product = _products
         .firstWhereOrNull((element) => element.productDetails.id == purchaseDetails.productID);
-
     if (purchaseDetails.status == PurchaseStatus.error ||
         purchaseDetails.status == PurchaseStatus.canceled) {
       if (product != null) {
         product.status = ProductStatus.purchasable;
+        selectedProductId = _purchasedProductId ?? product.id;
       }
       if (purchaseDetails.status == PurchaseStatus.canceled ||
           (purchaseDetails.status == PurchaseStatus.error &&
@@ -247,7 +249,6 @@ abstract class _SubscriptionStore with Store {
         _subscriptionService.clearPendingTransactions();
       }
       _subscriptonStatus = getSubscriptionStatus(purchaseDetails.status);
-
       return;
     }
 
@@ -258,7 +259,11 @@ abstract class _SubscriptionStore with Store {
       return;
     }
     try {
-      await verifyPurchase(product?.id ?? '', purchaseDetails);
+      await verifyPurchase(
+        product?.id ?? '',
+        product?.productDetails.rawPrice.toString() ?? '',
+        purchaseDetails,
+      );
       _expired = _subscription?.expired;
       if (purchaseDetails.status == PurchaseStatus.purchased && (_subscription?.active ?? false)) {
         _purchasedProductId = _subscription?.planId;
@@ -291,12 +296,16 @@ abstract class _SubscriptionStore with Store {
   }
 
   @action
-  Future<void> verifyPurchase(String productId, PurchaseDetails purchaseDetails) async {
+  Future<void> verifyPurchase(
+    String productId,
+    String price,
+    PurchaseDetails purchaseDetails,
+  ) async {
     if (_subscriptonStatus == SubscriptionStatus.pending) {
       _subscriptonStatus = SubscriptionStatus.verifying;
     }
     try {
-      verifySubscriptionFuture = ObservableFuture(
+      verifySubscriptionFuture =  ObservableFuture(
         _subscriptionService.verifyPurchase(
           serverVerificationData: purchaseDetails.verificationData.serverVerificationData,
           planId: productId,
@@ -304,21 +313,41 @@ abstract class _SubscriptionStore with Store {
         ),
       );
       _subscription = await verifySubscriptionFuture;
-    } catch (_) {
+      _analyticsStore.logEvent(
+        AnalyticsEvent.paymentSuccess,
+        parameters: {
+          'planType': productId,
+          'price': price,
+        },
+      );
+    } catch (e) {
       _subscriptonStatus = SubscriptionStatus.verifyingError;
+      _analyticsStore.logEvent(
+        AnalyticsEvent.paymentVerificationError,
+        parameters: {
+          'planType': selectedProductId,
+          'price': price,
+          'error': e.toString(),
+        },
+      );
       rethrow;
     }
   }
 
   @action
   Future<void> retryVerificationProcess() async {
-    if (_lastPurchase != null && _purchasedProductId != null) {
+    if (_lastPurchase != null) {
+      final product = _products
+          .firstWhereOrNull((element) => element.productDetails.id == _lastPurchase!.productID);
+      if (product == null) {
+        return;
+      }
       try {
         _subscriptonStatus = SubscriptionStatus.verifying;
         verifySubscriptionFuture = ObservableFuture(
           _subscriptionService.verifyPurchase(
             serverVerificationData: _lastPurchase!.verificationData.serverVerificationData,
-            planId: _purchasedProductId!,
+            planId: product.id,
             transactionId: _lastPurchase!.purchaseID ?? '',
           ),
         );
@@ -327,8 +356,23 @@ abstract class _SubscriptionStore with Store {
         _subscriptonStatus = _subscription?.active ?? false
             ? SubscriptionStatus.purchased
             : SubscriptionStatus.notVerified;
+        _analyticsStore.logEvent(
+          AnalyticsEvent.paymentSuccess,
+          parameters: {
+            'planType': _purchasedProductId,
+            'price': product.productDetails.rawPrice.toString(),
+          },
+        );
       } catch (e) {
         _subscriptonStatus = SubscriptionStatus.verifyingError;
+        _analyticsStore.logEvent(
+          AnalyticsEvent.paymentVerificationError,
+          parameters: {
+            'planType': selectedProductId,
+            'price': product.productDetails.rawPrice.toString(),
+            'error': e.toString(),
+          },
+        );
       }
     }
   }

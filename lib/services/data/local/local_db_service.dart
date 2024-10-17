@@ -77,7 +77,13 @@ class LocalDBService {
 
   List<String> getRecentLocations() => userData.recentLocations;
 
-  String? getSubscriptionPlan() => userData.subscriptionPlan;
+  String? getSubscriptionPlan() {
+    final subPlan = userData.subscriptionPlan;
+    if (subPlan != null && subPlan.isNotEmpty) {
+      return subPlan;
+    }
+    return null;
+  }
 
   String? getSubscriptionPurchaseId() => userData.subscriptionPurchaseId;
 

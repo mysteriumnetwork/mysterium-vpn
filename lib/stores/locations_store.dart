@@ -22,7 +22,7 @@ abstract class _LocationsStore with Store {
   })  : _apiService = apiService,
         _analyticsStore = analyticsStore,
         _authStore = authStore {
-    autorun((_) async {
+    when((_) => _authStore.authData != null, () async {
       if (_authStore.authData != null) {
         fetchVPNLocations().whenComplete(fetchRecentLocations);
       }
