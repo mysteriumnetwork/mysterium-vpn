@@ -40,6 +40,7 @@ jobs:
       build_number: ${{ github.run_number }}
       package_name: com.mysteriumvpn.android
       package_track: internal
+      package_status: draft
       flavor: "prod"
       flavor_dart: "PROD"
     secrets: inherit
