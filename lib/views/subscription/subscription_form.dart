@@ -74,7 +74,7 @@ class SubscriptionForm extends HookConsumerWidget {
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
               ),
-              SizedBox(height: getMediaHeight(context) * 0.01),
+              SizedBox(height: getMediaHeight(context) * 0.015),
               if (store.products.isEmpty)
                 RetryOnErrorWidget(
                   error: LocaleKeys.productsNotAvailable.tr(),
