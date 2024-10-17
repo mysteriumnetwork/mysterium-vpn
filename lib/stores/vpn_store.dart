@@ -397,6 +397,9 @@ abstract class _VpnStore with Store {
       if (_isRetrying == true) {
         return;
       }
+      if (errorCode == 7040) {
+        _checkSubscriptionStatus();
+      }
       showSnackbar(errorMessage);
 
       _connectionStatus = ConnectionStatus.disconnected;
