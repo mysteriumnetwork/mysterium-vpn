@@ -1,0 +1,33 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'token_request.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_$TokenRequestImpl _$$TokenRequestImplFromJson(Map<String, dynamic> json) => _$TokenRequestImpl(
+      grantType: $enumDecode(_$GrantTypeEnumMap, json['grant_type']),
+      clientId: json['client_id'] as String? ?? 'app',
+      codeVerifier: json['code_verifier'] as String?,
+      code: json['code'] as String?,
+      googleIdToken: json['google_id_token'] as String?,
+      idToken: json['id_token'] as String?,
+      authorization: json['authorization'] as String?,
+    );
+
+Map<String, dynamic> _$$TokenRequestImplToJson(_$TokenRequestImpl instance) => <String, dynamic>{
+      'grant_type': grantTypeToJson(instance.grantType),
+      'client_id': instance.clientId,
+      'code_verifier': instance.codeVerifier,
+      'code': instance.code,
+      'google_id_token': instance.googleIdToken,
+      'authorization': authorizationToJson(instance.authorization),
+    };
+
+const _$GrantTypeEnumMap = {
+  GrantType.email: 'email',
+  GrantType.apple: 'apple',
+  GrantType.google: 'google',
+  GrantType.savedToken: 'savedToken',
+};
