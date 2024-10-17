@@ -46,9 +46,6 @@ app.*.map.json
 
 
 # Generated files
-**/*.g.dart
-**/*.freezed.dart
-!**/generated/*.g.dart
 Podfile.lock
 
 
