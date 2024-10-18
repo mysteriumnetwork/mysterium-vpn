@@ -118,6 +118,5 @@ jobs:
     with:
       build_version: ${{ needs.quality_checks.outputs.dev_version }}
       build_number: ${{ github.run_number }}
-      flavor: "dev"
       flavor_dart: "DEV"
     secrets: inherit

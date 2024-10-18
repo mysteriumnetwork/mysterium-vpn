@@ -7,10 +7,6 @@ on:
       build_number:
         required: true
         type: string
-      flavor:
-        required: true
-        type: string
-        default: "dev"
       flavor_dart:
         required: true
         type: string
@@ -40,3 +36,22 @@ jobs:
         run: |
           dart run cider version "${{ inputs.build_version }}+${{ inputs.build_number }}"
           git diff
+
+      - name: Build Windows app
+        run: flutter build windows --no-pub --release --dart-define "FLAVOR=${{ inputs.flavor_dart }}"
+
+      - name: Build Windows installer
+        run: |
+          dart run msix:create `
+            --build-windows false --install-certificate false --output-name "Mysterium VPN" `
+            --display-name "Mysterium VPN Test" --logo-path "assets/logo/dev/desktop.png" `
+            --store --identity-name "UABMNTechnologijos.MysteriumVPNTest" --publisher "CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC" --publisher-display-name "UAB MN Technologijos"
+
+      - name: Upload to Github
+        uses: actions/upload-artifact@v3
+        with:
+          name: Windows app (Store)
+          path: |
+            build/windows/x64/runner/Release/mysterium_vpn.exe
+            build/windows/x64/runner/Release/Mysterium VPN.msix
+          if-no-files-found: error
