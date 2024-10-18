@@ -1,0 +1,39 @@
+on:
+  workflow_call:
+    inputs:
+      build_version:
+        required: true
+        type: string
+      build_number:
+        required: true
+        type: string
+      flavor:
+        required: true
+        type: string
+        default: "dev"
+      flavor_dart:
+        required: true
+        type: string
+        default: "DEV"
+
+jobs:
+
+  release:
+    name: Build & Publish
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Replace version
+        run: |
+          dart run cider version "${{ inputs.build_version }}+${{ inputs.build_number }}"
+          git diff
