@@ -284,8 +284,9 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
       AsyncAction('_SubscriptionStore.verifyPurchase', context: context);
 
   @override
-  Future<void> verifyPurchase(String productId, PurchaseDetails purchaseDetails) {
-    return _$verifyPurchaseAsyncAction.run(() => super.verifyPurchase(productId, purchaseDetails));
+  Future<void> verifyPurchase(String productId, String price, PurchaseDetails purchaseDetails) {
+    return _$verifyPurchaseAsyncAction
+        .run(() => super.verifyPurchase(productId, price, purchaseDetails));
   }
 
   late final _$retryVerificationProcessAsyncAction =

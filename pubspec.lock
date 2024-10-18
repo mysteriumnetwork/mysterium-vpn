@@ -106,10 +106,10 @@ packages:
     dependency: "direct main"
     description:
       name: beamer
-      sha256: c32c5dea11c178fca271f2cce8f3bce4bc0ad761a2b69978573c4e75e991abf9
+      sha256: "4abb83a74f27c84fd0b59675eb0f6448f5e0c431f857bd2d0bc244c52b15893b"
       url: "https://pub.dev"
     source: hosted
-    version: "1.6.1"
+    version: "1.7.0"
   boolean_selector:
     dependency: transitive
     description:

@@ -33,9 +33,12 @@ class SubscriptionMobileView extends HookConsumerWidget {
       [],
     );
     return Observer(
-      builder: (context) => PopScope(
+      builder: (_) => PopScope(
         canPop: false,
         onPopInvokedWithResult: (didPop, _) async {
+          if (didPop) {
+            return;
+          }
           if (subscriptionStore.isSubscribed == false) {
             analyticsStore.logEvent(AnalyticsEvent.paymentExitPopup);
             final shouldPop = await shownDismissPageDialog(context);
@@ -51,7 +54,9 @@ class SubscriptionMobileView extends HookConsumerWidget {
           }
         },
         child: BaseLayout(
-          header: const BaseAppBar(),
+          header: BaseAppBar(
+            showBackButton: subscriptionStore.subscriptonStatus != SubscriptionStatus.verifying,
+          ),
           child: Observer(
             builder: (context) => subscriptionStore.isAvailable == StoreState.loading
                 ? LoadingIndicator(
