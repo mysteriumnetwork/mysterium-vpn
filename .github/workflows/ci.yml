@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       dev_version: ${{ steps.calculate-version.outputs.version }}
+      dev_build: ${{ steps.calculate-build.outputs.build }}
 
     steps:
       - uses: actions/checkout@v4
@@ -59,6 +60,10 @@ jobs:
         id: calculate-version
         run: echo "version=`dart run cider version`" >> "$GITHUB_OUTPUT"
 
+      - name: Decide build number
+        id: calculate-build
+        run: echo "build=$(( ${{ github.run_number }} + 120 ))" >> "$GITHUB_OUTPUT"
+
   # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
   build_ios:
     name: Publish iOS app to TestFlight
@@ -67,7 +72,7 @@ jobs:
     uses: ./.github/workflows/_build-ios.yml
     with:
       build_version: ${{ needs.quality_checks.outputs.dev_version }}
-      build_number: ${{ github.run_number }}
+      build_number: ${{ needs.quality_checks.outputs.dev_build }}
       bundle_id: com.mysteriumvpn.test
       flavor: "dev"
       flavor_dart: "DEV"
@@ -81,7 +86,7 @@ jobs:
     uses: ./.github/workflows/_build-macos.yml
     with:
       build_version: ${{ needs.quality_checks.outputs.dev_version }}
-      build_number: ${{ github.run_number }}
+      build_number: ${{ needs.quality_checks.outputs.dev_build }}
       bundle_id: com.mysteriumvpn.test
       product_name: "Mysterium VPN Test"
       flavor: "dev"
@@ -96,7 +101,7 @@ jobs:
     uses: ./.github/workflows/_build-android.yml
     with:
       build_version: ${{ needs.quality_checks.outputs.dev_version }}
-      build_number: ${{ github.run_number }}
+      build_number: ${{ needs.quality_checks.outputs.dev_build }}
       package_name: com.mysteriumvpn.android.test
       package_track: internal
       package_status: completed
