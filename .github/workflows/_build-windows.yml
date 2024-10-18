@@ -55,3 +55,12 @@ jobs:
             build/windows/x64/runner/Release/mysterium_vpn.exe
             build/windows/x64/runner/Release/Mysterium VPN.msix
           if-no-files-found: error
+
+      - name: Download Microsoft Store Developer CLI
+        uses: microsoft/setup-msstore-cli@v1
+      - name: Setup Microsoft Store Developer CLI
+        run: |
+          msstore reconfigure --tenantId "${{ vars.MICROSOFT_AZURE_AD_TENANT_ID }}" --clientId "${{ vars.MICROSOFT_AZURE_AD_ClIENT_ID }}" --clientSecret "${{ secrets.MICROSOFT_AZURE_AD_CLIENT_SECRET }}" --sellerId "${{ vars.MICROSOFT_PARTNER_CENTER_SELLER_ID }}"
+          msstore info
+      - name: Publish to Microsoft Store
+        run: msstore publish --inputDirectory "build/windows/x64/runner/Release" --appId 9MZRX8P6FXC4 --noCommit
