@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
@@ -21,7 +22,6 @@ import 'package:talker/talker.dart';
 const kFetchSubscriptionInfo = '/subscription';
 const kFetchSubscriptionConfig = '/subscription/config';
 const kCreateSubscriptionRequest = '/subscription';
-const kVerifySubscription = '/subscription/user-callback';
 
 class RestSubscriptionService extends SubscriptionService {
   RestSubscriptionService({
@@ -39,6 +39,53 @@ class RestSubscriptionService extends SubscriptionService {
   final LocalDBService _localDb;
   final Talker _logger;
 
+  /// Experiment on verifying purchase using server side verification (webhooks)
+  /// Downside: It's taking too long to verify the purchase (1-2min)
+  /// Upside: It's more secure and reliable
+  /// Might need to be optimized and used in the future
+  // @override
+  // Future<Subscription> verifyPurchase({
+  //   required String serverVerificationData,
+  //   required String planId,
+  //   required String transactionId,
+  // }) async {
+  //   try {
+  //     late Subscription subs;
+  //     var retries = 0;
+  //     await Future.doWhile(
+  //       () async {
+  //         subs = await fetchSubscriptionDetails();
+  //         if (subs.active && subs.planId == planId) {
+  //           return false;
+  //         }
+  //         if (retries >= 15) {
+  //           return false;
+  //         }
+  //         await Future.delayed(
+  //           const Duration(
+  //             milliseconds: 1500,
+  //           ),
+  //         );
+  //         retries++;
+  //         return true;
+  //       },
+  //     );
+  //     if (!subs.active || subs.planId != planId) {
+  //       throw SubscriptionVerificationException();
+  //     }
+
+  //     unawaited(
+  //       _localDb.setSubscriptionPurchase(
+  //         subscriptionPlan: subs.planId!,
+  //         subscriptionPurchaseId: transactionId,
+  //       ),
+  //     );
+  //     return subs;
+  //   } catch (e) {
+  //     throw SubscriptionVerificationException();
+  //   }
+  // }
+
   @override
   Future<Subscription> verifyPurchase({
     required String serverVerificationData,
@@ -48,28 +95,26 @@ class RestSubscriptionService extends SubscriptionService {
     try {
       final gatewayId = getPlatformGateway();
       final res = await _networkService.post(
-        kVerifySubscription,
+        '/subscription/user-callback',
         data: {
           'gateway_id': gatewayId,
           if (gatewayId == 'google') 'payload': serverVerificationData,
           if (gatewayId == 'apple') 'transaction_id': transactionId,
         },
       );
-
       if (res.statusCode == 200) {
         try {
           final subs = await fetchSubscriptionDetails();
           planId = subs.planId ?? planId;
+          _localDb.setSubscriptionPurchase(
+            subscriptionPlan: planId,
+            subscriptionPurchaseId: transactionId,
+          );
           return subs;
         } catch (e) {
           return Subscription(
             planId: planId,
             active: true,
-          );
-        } finally {
-          await _localDb.setSubscriptionPurchase(
-            subscriptionPlan: planId,
-            subscriptionPurchaseId: transactionId,
           );
         }
       } else {
@@ -196,7 +241,9 @@ class RestSubscriptionService extends SubscriptionService {
     if (Platform.isIOS || Platform.isMacOS) {
       final transactions = await SKPaymentQueueWrapper().transactions();
       for (final transaction in transactions) {
-        await SKPaymentQueueWrapper().finishTransaction(transaction);
+        if (transaction.transactionState != SKPaymentTransactionStateWrapper.purchasing) {
+          await SKPaymentQueueWrapper().finishTransaction(transaction);
+        }
       }
     }
   }

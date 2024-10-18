@@ -1,4 +1,3 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
@@ -8,20 +7,25 @@ import 'package:styled_widget/styled_widget.dart';
 class BaseAppBar extends StatelessWidget {
   const BaseAppBar({
     this.onBackButtonPressed,
+    this.showBackButton = true,
     super.key,
   });
   final VoidCallback? onBackButtonPressed;
+  final bool showBackButton;
   @override
   Widget build(BuildContext context) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SvgIconButton(
-            onPressed: onBackButtonPressed ??
-                () {
-                  Beamer.of(context).popRoute();
-                },
-            asset: Assets.navigateBack,
-          ),
+          if (showBackButton)
+            SvgIconButton(
+              onPressed: onBackButtonPressed ??
+                  () {
+                    Navigator.of(context).maybePop();
+                  },
+              asset: Assets.navigateBack,
+            )
+          else
+            const SizedBox.shrink(),
           const AppLogo(),
           const SizedBox(width: 40),
         ],
