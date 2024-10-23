@@ -80,3 +80,6 @@ jobs:
           msstore info
       - name: Publish to Microsoft Store
         run: msstore publish --inputDirectory "build/windows/x64/runner/Release" --appId 9MZRX8P6FXC4 --noCommit
+      - name: Publish to Microsoft Store (commit right away)
+        run: msstore submission publish 9MZRX8P6FXC4
+        continue-on-error: true
