@@ -7,6 +7,16 @@ on:
       build_number:
         required: true
         type: string
+      product_store_id:
+        required: true
+        type: string
+      product_identity:
+        required: true
+        type: string
+      application_name:
+        required: true
+        type: string
+        default: "Mysterium VPN Test"
       flavor_dart:
         required: true
         type: string
@@ -47,7 +57,7 @@ jobs:
         run: |
           dart run msix:create `
             --build-windows false --install-certificate false --output-name "Mysterium VPN" `
-            --display-name "Mysterium VPN Test" --logo-path "assets/logo/dev/desktop.png" `
+            --display-name "${{ inputs.application_name }}" --logo-path "assets/logo/dev/desktop.png" `
             --sign-msix "true"
 
       # Requirements to Sign RELEASE builds:
@@ -72,8 +82,8 @@ jobs:
         run: |
           dart run msix:create `
             --build-windows false --install-certificate false --output-name "Mysterium VPN" `
-            --display-name "Mysterium VPN Test" --logo-path "assets/logo/dev/desktop.png" `
-            --store --identity-name "UABMNTechnologijos.MysteriumVPNTest" --publisher "CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC" --publisher-display-name "UAB MN Technologijos"
+            --display-name "${{ inputs.application_name }}" --logo-path "assets/logo/dev/desktop.png" `
+            --store --identity-name "${{ inputs.product_identity }}" --publisher "CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC" --publisher-display-name "UAB MN Technologijos"
 
       - name: Upload to Github
         uses: actions/upload-artifact@v3
@@ -91,5 +101,5 @@ jobs:
       - name: Publish to Microsoft Store
         run: msstore publish --inputDirectory "build/windows/x64/runner/Release" --appId 9MZRX8P6FXC4 --noCommit
       - name: Publish to Microsoft Store (commit right away)
-        run: msstore submission publish 9MZRX8P6FXC4
+        run: msstore submission publish ${{ inputs.product_store_id }}
         continue-on-error: true
