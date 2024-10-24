@@ -118,5 +118,8 @@ jobs:
     with:
       build_version: ${{ needs.quality_checks.outputs.dev_version }}
       build_number: ${{ github.run_number }}
+      product_store_id: "9MZRX8P6FXC4"
+      product_identity: "UABMNTechnologijos.MysteriumVPNTest"
+      application_name: "Mysterium VPN Test"
       flavor_dart: "DEV"
     secrets: inherit
