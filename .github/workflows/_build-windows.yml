@@ -40,12 +40,15 @@ jobs:
       - name: Build Windows app
         run: flutter build windows --no-pub --release --dart-define "FLAVOR=${{ inputs.flavor_dart }}"
 
+      # Sign DEV builds with self-signed test certificate for QA process.
+      # Documentation: https://github.com/YehudaKremer/msix?tab=readme-ov-file#%EF%B8%8F-signing-options
+      # Instructions how to use installer which such certificate: https://medium.com/flutter-community/publishing-flutter-windows-apps-to-microsoft-partner-center-with-codemagic-b1962575510c#f083
       - name: Build Windows installer
         run: |
           dart run msix:create `
             --build-windows false --install-certificate false --output-name "Mysterium VPN" `
             --display-name "Mysterium VPN Test" --logo-path "assets/logo/dev/desktop.png" `
-            --sign-msix false --publisher CN="UAB MN Technologijos, O=UAB MN Technologijos, STREET=Konstitucijos pr. 21A, PostalCode=LT-08105, L=Vilnius, S=Vilniaus apskritis, C=LT, SERIALNUMBER=304869871, OID.1.3.6.1.4.1.311.60.2.1.3=LT, OID.2.5.4.15=Private Organization"
+            --sign-msix "true"
 
       - name: Upload to Github
         uses: actions/upload-artifact@v3
