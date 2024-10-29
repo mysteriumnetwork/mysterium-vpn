@@ -51,9 +51,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Windows app (Standalone)
-          path: |
-            build/windows/x64/runner/Release/mysterium_vpn.exe
-            build/windows/x64/runner/Release/Mysterium VPN.msix
+          path: build/windows/x64/runner/Release/Mysterium VPN.msix
           if-no-files-found: error
 
       - name: Build Windows installer
@@ -67,9 +65,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Windows app (Store)
-          path: |
-            build/windows/x64/runner/Release/mysterium_vpn.exe
-            build/windows/x64/runner/Release/Mysterium VPN.msix
+          path: build/windows/x64/runner/Release/Mysterium VPN.msix
           if-no-files-found: error
 
       - name: Download Microsoft Store Developer CLI
