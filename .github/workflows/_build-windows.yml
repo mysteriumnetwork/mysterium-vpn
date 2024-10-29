@@ -50,6 +50,17 @@ jobs:
             --display-name "Mysterium VPN Test" --logo-path "assets/logo/dev/desktop.png" `
             --sign-msix "true"
 
+      # Requirements to Sign RELEASE builds:
+      # 1. Certum DER file from https://certmanager.certum.pl/certificate/107036750
+      # 2. Certum SimplySign Desktop application installed from https://support.certum.eu/en/cert-offer-software-and-libraries/
+      # SimplySign Desktop application works with 2FA to unlock private keys for certificate in Windows keystore
+      # - name: Build Windows installer
+      #  run: |
+      #    dart run msix:create `
+      #      --build-windows false --install-certificate false --output-name "Mysterium VPN" `
+      #      --display-name "Mysterium VPN Test" --logo-path "assets/logo/dev/desktop.png" `
+      #      --sign-msix "true" --certificate-path " /z/69a0bfe490c4fa06080c8aa2f3d5330c.cer"
+
       - name: Upload to Github
         uses: actions/upload-artifact@v3
         with:
