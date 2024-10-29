@@ -1,0 +1,95 @@
+on:
+  workflow_call:
+    inputs:
+      build_version:
+        required: true
+        type: string
+      build_number:
+        required: true
+        type: string
+      flavor_dart:
+        required: true
+        type: string
+        default: "DEV"
+
+jobs:
+
+  release:
+    name: Build & Publish
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install yq using Chocolatey
+        run: choco install yq -y
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Replace version
+        run: |
+          dart run cider version "${{ inputs.build_version }}+${{ inputs.build_number }}"
+          git diff
+
+      - name: Build Windows app
+        run: flutter build windows --no-pub --release --dart-define "FLAVOR=${{ inputs.flavor_dart }}"
+
+      # Sign DEV builds with self-signed test certificate for QA process.
+      # Documentation: https://github.com/YehudaKremer/msix?tab=readme-ov-file#%EF%B8%8F-signing-options
+      # Instructions how to use installer which such certificate: https://medium.com/flutter-community/publishing-flutter-windows-apps-to-microsoft-partner-center-with-codemagic-b1962575510c#f083
+      - name: Build Windows installer
+        run: |
+          dart run msix:create `
+            --build-windows false --install-certificate false --output-name "Mysterium VPN" `
+            --display-name "Mysterium VPN Test" --logo-path "assets/logo/dev/desktop.png" `
+            --sign-msix "true"
+
+      # Requirements to Sign RELEASE builds:
+      # 1. Certum DER file from https://certmanager.certum.pl/certificate/107036750
+      # 2. Certum SimplySign Desktop application installed from https://support.certum.eu/en/cert-offer-software-and-libraries/
+      # SimplySign Desktop application works with 2FA to unlock private keys for certificate in Windows keystore
+      # - name: Build Windows installer
+      #  run: |
+      #    dart run msix:create `
+      #      --build-windows false --install-certificate false --output-name "Mysterium VPN" `
+      #      --display-name "Mysterium VPN Test" --logo-path "assets/logo/dev/desktop.png" `
+      #      --sign-msix "true" --certificate-path " /z/69a0bfe490c4fa06080c8aa2f3d5330c.cer"
+
+      - name: Upload to Github
+        uses: actions/upload-artifact@v3
+        with:
+          name: Windows app (Standalone)
+          path: build/windows/x64/runner/Release/Mysterium VPN.msix
+          if-no-files-found: error
+
+      - name: Build Windows installer
+        run: |
+          dart run msix:create `
+            --build-windows false --install-certificate false --output-name "Mysterium VPN" `
+            --display-name "Mysterium VPN Test" --logo-path "assets/logo/dev/desktop.png" `
+            --store --identity-name "UABMNTechnologijos.MysteriumVPNTest" --publisher "CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC" --publisher-display-name "UAB MN Technologijos"
+
+      - name: Upload to Github
+        uses: actions/upload-artifact@v3
+        with:
+          name: Windows app (Store)
+          path: build/windows/x64/runner/Release/Mysterium VPN.msix
+          if-no-files-found: error
+
+      - name: Download Microsoft Store Developer CLI
+        uses: microsoft/setup-msstore-cli@v1
+      - name: Setup Microsoft Store Developer CLI
+        run: |
+          msstore reconfigure --tenantId "${{ vars.MICROSOFT_AZURE_AD_TENANT_ID }}" --clientId "${{ vars.MICROSOFT_AZURE_AD_ClIENT_ID }}" --clientSecret "${{ secrets.MICROSOFT_AZURE_AD_CLIENT_SECRET }}" --sellerId "${{ vars.MICROSOFT_PARTNER_CENTER_SELLER_ID }}"
+          msstore info
+      - name: Publish to Microsoft Store
+        run: msstore publish --inputDirectory "build/windows/x64/runner/Release" --appId 9MZRX8P6FXC4 --noCommit
+      - name: Publish to Microsoft Store (commit right away)
+        run: msstore submission publish 9MZRX8P6FXC4
+        continue-on-error: true

@@ -108,3 +108,15 @@ jobs:
       flavor: "dev"
       flavor_dart: "DEV"
     secrets: inherit
+
+  # Published as build of separate application to https://partner.microsoft.com/en-us/dashboard/apps/9MZRX8P6FXC4/managepackages
+  build_windows:
+    name: Publish Windows app
+    needs: [quality_checks]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    uses: ./.github/workflows/_build-windows.yml
+    with:
+      build_version: ${{ needs.quality_checks.outputs.dev_version }}
+      build_number: ${{ github.run_number }}
+      flavor_dart: "DEV"
+    secrets: inherit
