@@ -68,7 +68,7 @@ abstract class RemoteConfigStoreBase with Store {
     if (config.containsKey(_FeatureToggleKey.isServiceAvailable.name)) {
       return config[_FeatureToggleKey.isServiceAvailable.name] as bool;
     }
-    return false;
+    return true;
   }
 
   @computed
