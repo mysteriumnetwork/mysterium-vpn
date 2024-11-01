@@ -27,6 +27,8 @@ class AccountSettings extends HookConsumerWidget {
     final environment = ref.watch(environmentPOD);
     final authStore = ref.watch(authStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
+    final remoteConfigStore = ref.read(remoteConfigStorePOD);
+
     return Observer(
       builder: (context) {
         final isDarkTheme = themeStore.isDarkMode;
@@ -138,19 +140,20 @@ class AccountSettings extends HookConsumerWidget {
                 ],
               ),
             ),
-            SettingItem(
-              asset: isDarkTheme ? Assets.deleteAccountDark : Assets.deleteAccountLight,
-              title: LocaleKeys.cancelMyAccount.tr(),
-              actionWidget: EasyButton(
-                useSystemColor: false,
-                color: isDarkTheme ? Palette.pink : Palette.lightBlue,
-                text: LocaleKeys.deleteAccount.tr(),
-                onPressed: () {
-                  analyticsStore.logEvent(AnalyticsEvent.deleteAccount);
-                  shownDeleteAccountDialog(context, authStore, analyticsStore);
-                },
+            if (!remoteConfigStore.hideDeleteAccount)
+              SettingItem(
+                asset: isDarkTheme ? Assets.deleteAccountDark : Assets.deleteAccountLight,
+                title: LocaleKeys.cancelMyAccount.tr(),
+                actionWidget: EasyButton(
+                  useSystemColor: false,
+                  color: isDarkTheme ? Palette.pink : Palette.lightBlue,
+                  text: LocaleKeys.deleteAccount.tr(),
+                  onPressed: () {
+                    analyticsStore.logEvent(AnalyticsEvent.deleteAccount);
+                    shownDeleteAccountDialog(context, authStore, analyticsStore);
+                  },
+                ),
               ),
-            ),
           ],
         );
       },
