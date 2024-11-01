@@ -473,5 +473,7 @@
   "logoutAllDevicesConfirmationDesc": "Sie sind dabei, sich von allen Ihren Geräten abzumelden. Sind Sie sicher?",
   "logoutConfirmationTitle": "Ausloggen",
   "logoutConfirmationDesc": "Sie sind dabei, sich abzumelden. Sind Sie sicher?",
-  "loginSessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an."
+  "loginSessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+  "featureToggleMinVersionNotSatisfied": "Ihre App-Version ist veraltet. Bitte aktualisieren Sie die App, um sie weiterhin verwenden zu können.",
+  "buttonUpdateApp": "Jetzt aktualisieren"
 }

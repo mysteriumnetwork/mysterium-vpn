@@ -13,6 +13,7 @@ import 'package:mysterium_vpn/components/network_logger_overlay.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/components/shortcuts.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
+import 'package:mysterium_vpn/pages/static/ft_checkers/ft_checkers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
@@ -60,9 +61,11 @@ class MyApp extends HookConsumerWidget {
                     backButtonDispatcher: BeamerBackButtonDispatcher(
                       delegate: routeDelegate,
                     ),
-                    builder: (context, child) => NetworkLoggerOverlayView(
-                      flavor: flavor,
-                      child: child!,
+                    builder: (context, child) => FTCheckers(
+                      child: NetworkLoggerOverlayView(
+                        flavor: flavor,
+                        child: child!,
+                      ),
                     ),
                   ),
                 ),

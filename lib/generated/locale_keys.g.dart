@@ -476,4 +476,6 @@ abstract class LocaleKeys {
   static const logoutConfirmationTitle = 'logoutConfirmationTitle';
   static const logoutConfirmationDesc = 'logoutConfirmationDesc';
   static const loginSessionExpired = 'loginSessionExpired';
+  static const featureToggleMinVersionNotSatisfied = 'featureToggleMinVersionNotSatisfied';
+  static const buttonUpdateApp = 'buttonUpdateApp';
 }
