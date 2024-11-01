@@ -1,0 +1,101 @@
+import 'package:configcat_client/configcat_client.dart';
+import 'package:mobx/mobx.dart';
+import 'package:talker/talker.dart';
+
+part 'remote_config_store.g.dart';
+
+enum _FeatureToggleKey {
+  isServiceAvailable,
+  minBuildNumber,
+  isServiceAvailableMessage,
+  hideDeleteAccount,
+  hideKillSwitch,
+}
+
+class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
+
+abstract class RemoteConfigStoreBase with Store {
+  RemoteConfigStoreBase({
+    required this.client,
+    required this.logger,
+  }) {
+    getAllRemoteConfigValues();
+  }
+  final ConfigCatClient client;
+  final Talker logger;
+
+  @observable
+  ObservableMap<String, dynamic> config = ObservableMap();
+
+  @action
+  Future<void> setDefaultUser({
+    required String email,
+    required String userId,
+  }) async {
+    client.setDefaultUser(
+      ConfigCatUser(
+        identifier: userId,
+        email: email,
+      ),
+    );
+  }
+
+  @action
+  Future<void> getAllRemoteConfigValues() async {
+    try {
+      config = ObservableMap.of(await client.getAllValues());
+    } catch (e, st) {
+      logger.handle(e, st);
+      config = ObservableMap();
+    } finally {
+      refreshRemoteConfigValues();
+    }
+  }
+
+  @action
+  Future<void> refreshRemoteConfigValues() async {
+    client.hooks.addOnConfigChanged((flags) async {
+      config = ObservableMap.of(await client.getAllValues());
+    });
+  }
+
+  @computed
+  bool get isServiceAvailable {
+    if (config.containsKey(_FeatureToggleKey.isServiceAvailable.name)) {
+      return config[_FeatureToggleKey.isServiceAvailable.name] as bool;
+    }
+    return false;
+  }
+
+  @computed
+  String get minBuildNumber {
+    if (config.containsKey(_FeatureToggleKey.minBuildNumber.name)) {
+      return config[_FeatureToggleKey.minBuildNumber.name] as String;
+    }
+    return '0';
+  }
+
+  @computed
+  String get isServiceAvailableMessage {
+    if (config.containsKey(_FeatureToggleKey.isServiceAvailableMessage.name)) {
+      return config[_FeatureToggleKey.isServiceAvailableMessage.name] as String;
+    }
+    return 'Service is not available. Please try again later.';
+  }
+
+  @computed
+  bool get hideDeleteAccount {
+    if (config.containsKey(_FeatureToggleKey.hideDeleteAccount.name)) {
+      return config[_FeatureToggleKey.hideDeleteAccount.name] as bool;
+    }
+    return false;
+  }
+
+  @computed
+  bool get hideKillSwitch {
+    if (config.containsKey(_FeatureToggleKey.hideKillSwitch.name)) {
+      return config[_FeatureToggleKey.hideKillSwitch.name] as bool;
+    }
+    return false;
+  }
+}

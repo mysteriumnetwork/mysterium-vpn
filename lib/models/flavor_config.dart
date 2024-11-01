@@ -22,6 +22,8 @@ class FlavorValues {
     required this.appleClientId,
     required this.appleRedirectUri,
     required this.tunnelName,
+    required this.remoteConfigSdkKey,
+    required this.abTestingSdkKey,
   });
 
   factory FlavorValues.production() => FlavorValues(
@@ -35,6 +37,8 @@ class FlavorValues {
         appleClientId: 'com.mysteriumvpn.app',
         appleRedirectUri: 'https://app.mysteriumvpn.com/api/v1/callbacks/apple-sign-in',
         tunnelName: 'MysteriumVPN',
+        remoteConfigSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/ZKdEmBGd9EukTUz4fPL6mw',
+        abTestingSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/X1h2DjWhpEq7P2KXA2WymA',
       );
   factory FlavorValues.dev() => FlavorValues(
         baseUrl: 'https://app-testnet.mysteriumvpn.com/api/v1',
@@ -47,6 +51,8 @@ class FlavorValues {
         appleClientId: 'com.mysteriumvpn.app-testnet',
         appleRedirectUri: 'https://app-testnet.mysteriumvpn.com/api/v1/callbacks/apple-sign-in',
         tunnelName: 'MysteriumTest',
+        remoteConfigSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/fEG0yLr3KEed9BjXRuQvgA',
+        abTestingSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/_PK9Imkd8EG-w8NiPpc5bw',
       );
 
   final String baseUrl;
@@ -58,6 +64,8 @@ class FlavorValues {
   final String appleClientId;
   final String appleRedirectUri;
   final String tunnelName;
+  final String remoteConfigSdkKey;
+  final String abTestingSdkKey;
 
   @override
   String toString() =>
@@ -68,12 +76,18 @@ class FlavorConfig {
   factory FlavorConfig({
     required Flavor flavor,
     required FlavorValues values,
+    required BuildInfo buildInfo,
   }) =>
-      FlavorConfig._internal(flavor, values);
-  FlavorConfig._internal(this.flavor, this.values);
+      FlavorConfig._internal(flavor, values, buildInfo);
+  FlavorConfig._internal(
+    this.flavor,
+    this.values,
+    this.buildInfo,
+  );
   final Flavor flavor;
 
   final FlavorValues values;
+  final BuildInfo buildInfo;
 
   bool isProduction() => flavor == Flavor.production;
 
@@ -85,4 +99,17 @@ class FlavorConfig {
     }
     return isDev() ? testBundleId : bundleId;
   }
+}
+
+class BuildInfo {
+  BuildInfo({
+    required this.buildNumber,
+    required this.buildVersion,
+  });
+
+  final int buildNumber;
+  final String buildVersion;
+
+  @override
+  String toString() => 'buildNumber: $buildNumber, buildVersion: $buildVersion';
 }
