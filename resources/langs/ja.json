@@ -473,5 +473,7 @@
   "logoutAllDevicesConfirmationDesc": "すべてのデバイスからログアウトしようとしています。よろしいですか?",
   "logoutConfirmationTitle": "ログアウト",
   "logoutConfirmationDesc": "ログアウトしようとしています。よろしいですか?",
-  "loginSessionExpired": "セッションの有効期限が切れました。再度ログインしてください。"
+  "loginSessionExpired": "セッションの有効期限が切れました。再度ログインしてください。",
+  "featureToggleMinVersionNotSatisfied": "アプリのバージョンが古いです。引き続き使用するには、アプリを更新してください。",
+  "buttonUpdateApp": "今すぐアップデートしてください"
 }

@@ -473,5 +473,7 @@
   "logoutAllDevicesConfirmationDesc": "Tüm cihazlarınızdan çıkış yapmak üzeresiniz.Emin misiniz?",
   "logoutConfirmationTitle": "Çıkış Yap",
   "logoutConfirmationDesc": "Oturumu kapatmak üzeresiniz.Emin misiniz?",
-  "loginSessionExpired": "Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın."
+  "loginSessionExpired": "Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın.",
+   "featureToggleMinVersionNotSatisfied": "Uygulama sürümünüz eski. Kullanmaya devam etmek için lütfen uygulamayı güncelleyin.",
+  "buttonUpdateApp": "Şimdi güncelle"
 }

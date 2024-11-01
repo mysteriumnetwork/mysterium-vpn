@@ -490,7 +490,9 @@ class CodegenLoader extends AssetLoader {
     "logoutAllDevicesConfirmationDesc": "您即将从所有设备注销。您确定吗？",
     "logoutConfirmationTitle": "登出",
     "logoutConfirmationDesc": "您即将退出。您确定吗？",
-    "loginSessionExpired": "您的会话已过期。请重新登录。"
+    "loginSessionExpired": "您的会话已过期。请重新登录。",
+    "featureToggleMinVersionNotSatisfied": "您的应用程序版本已过时。请更新应用程序以继续使用。",
+    "buttonUpdateApp": "立即更新"
   };
   static const Map<String, dynamic> tr = {
     "title": "Merhaba efendim",
@@ -983,7 +985,10 @@ class CodegenLoader extends AssetLoader {
     "logoutAllDevicesConfirmationDesc": "Tüm cihazlarınızdan çıkış yapmak üzeresiniz.Emin misiniz?",
     "logoutConfirmationTitle": "Çıkış Yap",
     "logoutConfirmationDesc": "Oturumu kapatmak üzeresiniz.Emin misiniz?",
-    "loginSessionExpired": "Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın."
+    "loginSessionExpired": "Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın.",
+    "featureToggleMinVersionNotSatisfied":
+        "Uygulama sürümünüz eski. Kullanmaya devam etmek için lütfen uygulamayı güncelleyin.",
+    "buttonUpdateApp": "Şimdi güncelle"
   };
   static const Map<String, dynamic> ja = {
     "title": "こんにちは。",
@@ -1463,7 +1468,9 @@ class CodegenLoader extends AssetLoader {
     "logoutAllDevicesConfirmationDesc": "すべてのデバイスからログアウトしようとしています。よろしいですか?",
     "logoutConfirmationTitle": "ログアウト",
     "logoutConfirmationDesc": "ログアウトしようとしています。よろしいですか?",
-    "loginSessionExpired": "セッションの有効期限が切れました。再度ログインしてください。"
+    "loginSessionExpired": "セッションの有効期限が切れました。再度ログインしてください。",
+    "featureToggleMinVersionNotSatisfied": "アプリのバージョンが古いです。引き続き使用するには、アプリを更新してください。",
+    "buttonUpdateApp": "今すぐアップデートしてください"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1975,7 +1982,10 @@ class CodegenLoader extends AssetLoader {
         "Sie sind dabei, sich von allen Ihren Geräten abzumelden. Sind Sie sicher?",
     "logoutConfirmationTitle": "Ausloggen",
     "logoutConfirmationDesc": "Sie sind dabei, sich abzumelden. Sind Sie sicher?",
-    "loginSessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an."
+    "loginSessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+    "featureToggleMinVersionNotSatisfied":
+        "Ihre App-Version ist veraltet. Bitte aktualisieren Sie die App, um sie weiterhin verwenden zu können.",
+    "buttonUpdateApp": "Jetzt aktualisieren"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2475,7 +2485,10 @@ class CodegenLoader extends AssetLoader {
         "Você está prestes a sair de todos os seus dispositivos.Tem certeza?",
     "logoutConfirmationTitle": "Sair",
     "logoutConfirmationDesc": "Você está prestes a sair. Tem certeza?",
-    "loginSessionExpired": "Sua sessão expirou. Faça login novamente."
+    "loginSessionExpired": "Sua sessão expirou. Faça login novamente.",
+    "featureToggleMinVersionNotSatisfied":
+        "A versão do seu aplicativo está desatualizada. Atualize o aplicativo para continuar a usá-lo.",
+    "buttonUpdateApp": "Atualizar agora"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -2974,7 +2987,10 @@ class CodegenLoader extends AssetLoader {
         "You’re about to log out from all your devices. Are you sure?",
     "logoutConfirmationTitle": "Log out",
     "logoutConfirmationDesc": "You’re about to log out. Are you sure?",
-    "loginSessionExpired": "Your session has expired. Please log in again."
+    "loginSessionExpired": "Your session has expired. Please log in again.",
+    "featureToggleMinVersionNotSatisfied":
+        "Your app version is outdated.Please update the app to continue using it.",
+    "buttonUpdateApp": "Update now"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3479,7 +3495,10 @@ class CodegenLoader extends AssetLoader {
         "Stai per disconnetterti da tutti i tuoi dispositivi.Sei sicuro?",
     "logoutConfirmationTitle": "Disconnettersi",
     "logoutConfirmationDesc": "Stai per disconnetterti.Sei sicuro?",
-    "loginSessionExpired": "La tua sessione è scaduta. Effettua nuovamente l'accesso."
+    "loginSessionExpired": "La tua sessione è scaduta. Effettua nuovamente l'accesso.",
+    "featureToggleMinVersionNotSatisfied":
+        "La versione dell'app è obsoleta. Aggiorna l'app per continuare a utilizzarla.",
+    "buttonUpdateApp": "Aggiorna ora"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -3986,7 +4005,10 @@ class CodegenLoader extends AssetLoader {
         "Vous êtes sur le point de vous déconnecter de tous vos appareils. Êtes-vous sûr ?",
     "logoutConfirmationTitle": "Se déconnecter",
     "logoutConfirmationDesc": "Vous êtes sur le point de vous déconnecter. Êtes-vous sûr ?",
-    "loginSessionExpired": "Votre session a expiré. Veuillez vous reconnecter."
+    "loginSessionExpired": "Votre session a expiré. Veuillez vous reconnecter.",
+    "featureToggleMinVersionNotSatisfied":
+        "La version de votre application est obsolète. Veuillez mettre à jour l'application pour continuer à l'utiliser.",
+    "buttonUpdateApp": "Mettre à jour maintenant"
   };
   static const Map<String, dynamic> id = {
     "title": "Halo Pak",
@@ -4485,7 +4507,10 @@ class CodegenLoader extends AssetLoader {
         "Anda akan keluar dari semua perangkat Anda. Apakah Anda yakin?",
     "logoutConfirmationTitle": "Keluar",
     "logoutConfirmationDesc": "Anda akan logout. Apakah Anda yakin?",
-    "loginSessionExpired": "Sesi Anda telah kedaluwarsa. Silakan login kembali."
+    "loginSessionExpired": "Sesi Anda telah kedaluwarsa. Silakan login kembali.",
+    "featureToggleMinVersionNotSatisfied":
+        "Versi aplikasi Anda sudah usang. Harap perbarui aplikasi untuk terus menggunakannya.",
+    "buttonUpdateApp": "Perbarui sekarang"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -4988,7 +5013,10 @@ class CodegenLoader extends AssetLoader {
         "Estás a punto de cerrar sesión en todos tus dispositivos. ¿Estás seguro?",
     "logoutConfirmationTitle": "Cerrar sesión",
     "logoutConfirmationDesc": "Estás a punto de cerrar sesión. ¿Estás seguro?",
-    "loginSessionExpired": "Su sesión ha caducado. Inicie sesión nuevamente."
+    "loginSessionExpired": "Su sesión ha caducado. Inicie sesión nuevamente.",
+    "featureToggleMinVersionNotSatisfied":
+        "La versión de tu aplicación está desactualizada. Actualízala para continuar usándola.",
+    "buttonUpdateApp": "Actualizar ahora"
   };
   static const Map<String, dynamic> ar = {
     "title": "أهلاً سيدي",
@@ -5482,7 +5510,10 @@ class CodegenLoader extends AssetLoader {
     "logoutAllDevicesConfirmationDesc": "أنت على وشك تسجيل الخروج من جميع أجهزتك. هل أنت متأكد؟",
     "logoutConfirmationTitle": "تسجيل خروج",
     "logoutConfirmationDesc": "أنت على وشك تسجيل الخروج. هل أنت متأكد؟",
-    "loginSessionExpired": "لقد انتهت جلستك. الرجاء تسجيل الدخول مرة أخرى."
+    "loginSessionExpired": "لقد انتهت جلستك. الرجاء تسجيل الدخول مرة أخرى.",
+    "featureToggleMinVersionNotSatisfied":
+        "إصدار تطبيقك قديم. يُرجى تحديث التطبيق لمواصلة استخدامه.",
+    "buttonUpdateApp": "قم بالتحديث الآن"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,
