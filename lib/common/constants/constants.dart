@@ -36,7 +36,8 @@ final GlobalKey<ScaffoldMessengerState> snackbarKey = GlobalKey<ScaffoldMessenge
 
 const privacyPolicyUrl = 'https://www.mysteriumvpn.com/privacy-policy-vpn';
 const termsOfServiceUrl = 'https://www.mysteriumvpn.com/terms-conditions-vpn';
-
+const windowsGithubDownloadLink =
+    'https://github.com/mysteriumnetwork/mysterium-vpn-release/releases/latest/download/MysteriumVPN.msix';
 const String bundleId = 'mysteriumvpn';
 const String testBundleId = 'mysteriumtest';
 const String iosBundleId = 'com.mysteriumvpn.tun';

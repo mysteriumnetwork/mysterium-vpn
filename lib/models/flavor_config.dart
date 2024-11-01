@@ -75,17 +75,19 @@ class FlavorValues {
 class FlavorConfig {
   factory FlavorConfig({
     required Flavor flavor,
+    required bool isStoreVersion,
     required FlavorValues values,
     required BuildInfo buildInfo,
   }) =>
-      FlavorConfig._internal(flavor, values, buildInfo);
+      FlavorConfig._internal(flavor, values, buildInfo, isStoreVersion);
   FlavorConfig._internal(
     this.flavor,
     this.values,
     this.buildInfo,
+    this.isStoreVersion,
   );
   final Flavor flavor;
-
+  final bool isStoreVersion;
   final FlavorValues values;
   final BuildInfo buildInfo;
 

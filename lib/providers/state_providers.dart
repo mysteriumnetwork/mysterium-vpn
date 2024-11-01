@@ -110,6 +110,7 @@ final environmentPOD = StateProvider<FlavorConfig>(
       buildNumber: 0,
       buildVersion: '0',
     ),
+    isStoreVersion: true,
   ),
 );
 

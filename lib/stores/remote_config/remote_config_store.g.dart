@@ -16,13 +16,6 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$isServiceAvailableComputed ??= Computed<bool>(() => super.isServiceAvailable,
               name: 'RemoteConfigStoreBase.isServiceAvailable'))
           .value;
-  Computed<String>? _$minBuildNumberComputed;
-
-  @override
-  String get minBuildNumber =>
-      (_$minBuildNumberComputed ??= Computed<String>(() => super.minBuildNumber,
-              name: 'RemoteConfigStoreBase.minBuildNumber'))
-          .value;
   Computed<String>? _$isServiceAvailableMessageComputed;
 
   @override
@@ -43,6 +36,41 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   bool get hideKillSwitch => (_$hideKillSwitchComputed ??=
           Computed<bool>(() => super.hideKillSwitch, name: 'RemoteConfigStoreBase.hideKillSwitch'))
       .value;
+  Computed<String>? _$minMacosBuildNumberComputed;
+
+  @override
+  String get minMacosBuildNumber =>
+      (_$minMacosBuildNumberComputed ??= Computed<String>(() => super.minMacosBuildNumber,
+              name: 'RemoteConfigStoreBase.minMacosBuildNumber'))
+          .value;
+  Computed<String>? _$minWindowsStandAloneBuildNumberComputed;
+
+  @override
+  String get minWindowsStandAloneBuildNumber => (_$minWindowsStandAloneBuildNumberComputed ??=
+          Computed<String>(() => super.minWindowsStandAloneBuildNumber,
+              name: 'RemoteConfigStoreBase.minWindowsStandAloneBuildNumber'))
+      .value;
+  Computed<String>? _$minWindowsBuildNumberComputed;
+
+  @override
+  String get minWindowsBuildNumber =>
+      (_$minWindowsBuildNumberComputed ??= Computed<String>(() => super.minWindowsBuildNumber,
+              name: 'RemoteConfigStoreBase.minWindowsBuildNumber'))
+          .value;
+  Computed<String>? _$minAndroidBuildNumberComputed;
+
+  @override
+  String get minAndroidBuildNumber =>
+      (_$minAndroidBuildNumberComputed ??= Computed<String>(() => super.minAndroidBuildNumber,
+              name: 'RemoteConfigStoreBase.minAndroidBuildNumber'))
+          .value;
+  Computed<String>? _$minIosBuildNumberComputed;
+
+  @override
+  String get minIosBuildNumber =>
+      (_$minIosBuildNumberComputed ??= Computed<String>(() => super.minIosBuildNumber,
+              name: 'RemoteConfigStoreBase.minIosBuildNumber'))
+          .value;
 
   late final _$configAtom = Atom(name: 'RemoteConfigStoreBase.config', context: context);
 
@@ -89,10 +117,14 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
     return '''
 config: ${config},
 isServiceAvailable: ${isServiceAvailable},
-minBuildNumber: ${minBuildNumber},
 isServiceAvailableMessage: ${isServiceAvailableMessage},
 hideDeleteAccount: ${hideDeleteAccount},
-hideKillSwitch: ${hideKillSwitch}
+hideKillSwitch: ${hideKillSwitch},
+minMacosBuildNumber: ${minMacosBuildNumber},
+minWindowsStandAloneBuildNumber: ${minWindowsStandAloneBuildNumber},
+minWindowsBuildNumber: ${minWindowsBuildNumber},
+minAndroidBuildNumber: ${minAndroidBuildNumber},
+minIosBuildNumber: ${minIosBuildNumber}
     ''';
   }
 }

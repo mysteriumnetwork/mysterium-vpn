@@ -1,15 +1,20 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:open_store/open_store.dart';
 
 /// Checks if the current app version is greater than or equal to the minimum required app version.
@@ -27,7 +32,10 @@ class MinAppVersionChecker extends HookConsumerWidget {
     return Observer(
       builder: (context) {
         final currentBuildVersion = env.buildInfo.buildVersion;
-        final minAppBuildNumber = remoteConfigStore.minBuildNumber;
+        final minAppBuildNumber = getMinAppBuildNumber(
+          remoteConfigStore: remoteConfigStore,
+          isStoreVersion: env.isStoreVersion,
+        );
         if (currentBuildVersion.compareTo(minAppBuildNumber) >= 0 || canContinue.value) {
           return child;
         } else {
@@ -53,12 +61,16 @@ class MinAppVersionChecker extends HookConsumerWidget {
                     EasyButton(
                       onPressed: () async {
                         try {
-                          OpenStore.instance.open(
-                            appStoreId: '6446624307',
-                            appStoreIdMacOS: '6446624307',
-                            androidAppBundleId: 'com.mysteriumvpn.android',
-                            windowsProductId: '9NGWJCZSB5MK',
-                          );
+                          if (env.isStoreVersion) {
+                            openUrlLink(Uri.parse(windowsGithubDownloadLink));
+                          } else {
+                            OpenStore.instance.open(
+                              appStoreId: '6446624307',
+                              appStoreIdMacOS: '6446624307',
+                              androidAppBundleId: 'com.mysteriumvpn.android',
+                              windowsProductId: '9NGWJCZSB5MK',
+                            );
+                          }
                         } catch (e) {
                           // Unable to open the store, unblock the user
                           canContinue.value = true;
@@ -76,5 +88,24 @@ class MinAppVersionChecker extends HookConsumerWidget {
         }
       },
     );
+  }
+
+  String getMinAppBuildNumber({
+    required RemoteConfigStore remoteConfigStore,
+    required bool isStoreVersion,
+  }) {
+    if (Platform.isAndroid) {
+      return remoteConfigStore.minAndroidBuildNumber;
+    } else if (Platform.isIOS) {
+      return remoteConfigStore.minIosBuildNumber;
+    } else if (Platform.isMacOS) {
+      return remoteConfigStore.minMacosBuildNumber;
+    } else if (Platform.isWindows) {
+      if (isStoreVersion) {
+        return remoteConfigStore.minWindowsBuildNumber;
+      }
+      return remoteConfigStore.minWindowsBuildNumber;
+    }
+    return '0';
   }
 }
