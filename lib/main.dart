@@ -15,7 +15,7 @@ void main() async {
 }
 
 bool _isStoreVersion() {
-  if (const   bool.hasEnvironment('STORE')) {
+  if (const bool.hasEnvironment('STORE')) {
     return const bool.fromEnvironment('STORE');
   }
   return true;
