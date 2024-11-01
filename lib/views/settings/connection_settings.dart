@@ -22,6 +22,7 @@ class ConnectionSettings extends HookConsumerWidget {
     final themeStore = ref.read(themeStorePOD);
     final vpnStore = ref.read(vpnStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
+    final remoteConfigStore = ref.read(remoteConfigStorePOD);
     return Observer(
       builder: (context) {
         final isDarkTheme = themeStore.isDarkMode;
@@ -46,22 +47,23 @@ class ConnectionSettings extends HookConsumerWidget {
                 ),
               ),
             ),
-            SwitchItem(
-              asset: isDarkTheme ? Assets.refreshDark : Assets.refreshLight,
-              title: LocaleKeys.killSwitch.tr(),
-              subtitle: LocaleKeys.killSwitchDesc.tr(),
-              actionWidget: Row(
-                children: [
-                  EasyText(
-                    LocaleKeys.on.tr(),
-                    color: Palette.lightBlue,
-                  ).paddingDirectional(end: 5),
-                  const SvgIcon(
-                    asset: Assets.checkmark,
-                  ),
-                ],
+            if (!remoteConfigStore.hideKillSwitch)
+              SwitchItem(
+                asset: isDarkTheme ? Assets.refreshDark : Assets.refreshLight,
+                title: LocaleKeys.killSwitch.tr(),
+                subtitle: LocaleKeys.killSwitchDesc.tr(),
+                actionWidget: Row(
+                  children: [
+                    EasyText(
+                      LocaleKeys.on.tr(),
+                      color: Palette.lightBlue,
+                    ).paddingDirectional(end: 5),
+                    const SvgIcon(
+                      asset: Assets.checkmark,
+                    ),
+                  ],
+                ),
               ),
-            ),
             Visibility(
               visible: false,
               child: SettingItem(
