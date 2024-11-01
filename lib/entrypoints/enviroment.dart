@@ -21,6 +21,7 @@ import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:tray_manager/tray_manager.dart';
@@ -69,7 +70,7 @@ class Enviroment {
       return stack;
     };
 
-    final flavorConfig = setupFlavor(flavor);
+    final flavorConfig = await setupFlavor(flavor);
     await setupTrayIcon(flavorConfig);
     await SharedPreferenceService.instance.init();
     await SecureStorageService.instance.init(flavorConfig);
@@ -137,11 +138,39 @@ class Enviroment {
     );
   }
 
-  FlavorConfig setupFlavor(String flavor) => switch (flavor) {
-        'DEV' => FlavorConfig(flavor: Flavor.dev, values: FlavorValues.dev()),
-        'PROD' => FlavorConfig(flavor: Flavor.production, values: FlavorValues.production()),
-        _ => FlavorConfig(flavor: Flavor.dev, values: FlavorValues.dev())
-      };
+  Future<FlavorConfig> setupFlavor(String flavor) async {
+    var buildInfo = BuildInfo(
+      buildNumber: 0,
+      buildVersion: '0',
+    );
+    try {
+      final info = await PackageInfo.fromPlatform();
+      buildInfo = BuildInfo(
+        buildNumber: int.tryParse(info.buildNumber) ?? 0,
+        buildVersion: info.version,
+      );
+    } catch (e) {
+      debugPrint('Error getting package info');
+    }
+
+    return switch (flavor) {
+      'DEV' => FlavorConfig(
+          flavor: Flavor.dev,
+          values: FlavorValues.dev(),
+          buildInfo: buildInfo,
+        ),
+      'PROD' => FlavorConfig(
+          flavor: Flavor.production,
+          values: FlavorValues.production(),
+          buildInfo: buildInfo,
+        ),
+      _ => FlavorConfig(
+          flavor: Flavor.dev,
+          values: FlavorValues.dev(),
+          buildInfo: buildInfo,
+        ),
+    };
+  }
 
   Future<void> nativeInitBackground(List<Object> args) async {
     final rootIsolateToken = args[0] as RootIsolateToken;
