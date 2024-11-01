@@ -135,5 +135,18 @@
                 "FLAVOR=DEV",
             ]
         },
+        {
+            "name": "Windows-stand-alone",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "flutterMode": "release",
+            "toolArgs": [
+                "--dart-define",
+                "FLAVOR=DEV",
+                "--dart-define",
+                "STORE=FALSE"
+            ]
+        },
     ]
 }

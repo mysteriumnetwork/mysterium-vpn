@@ -6,10 +6,14 @@ part 'remote_config_store.g.dart';
 
 enum _FeatureToggleKey {
   isServiceAvailable,
-  minBuildNumber,
   isServiceAvailableMessage,
   hideDeleteAccount,
   hideKillSwitch,
+  minAndroidBuildNumber,
+  minIosBuildNumber,
+  minWindowsBuildNumber,
+  minWindowsStandAloneBuildNumber,
+  minMacosBuildNumber,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -68,14 +72,6 @@ abstract class RemoteConfigStoreBase with Store {
   }
 
   @computed
-  String get minBuildNumber {
-    if (config.containsKey(_FeatureToggleKey.minBuildNumber.name)) {
-      return config[_FeatureToggleKey.minBuildNumber.name] as String;
-    }
-    return '0';
-  }
-
-  @computed
   String get isServiceAvailableMessage {
     if (config.containsKey(_FeatureToggleKey.isServiceAvailableMessage.name)) {
       return config[_FeatureToggleKey.isServiceAvailableMessage.name] as String;
@@ -97,5 +93,45 @@ abstract class RemoteConfigStoreBase with Store {
       return config[_FeatureToggleKey.hideKillSwitch.name] as bool;
     }
     return false;
+  }
+
+  @computed
+  String get minMacosBuildNumber {
+    if (config.containsKey(_FeatureToggleKey.minMacosBuildNumber.name)) {
+      return config[_FeatureToggleKey.minMacosBuildNumber.name] as String;
+    }
+    return '0';
+  }
+
+  @computed
+  String get minWindowsStandAloneBuildNumber {
+    if (config.containsKey(_FeatureToggleKey.minWindowsStandAloneBuildNumber.name)) {
+      return config[_FeatureToggleKey.minWindowsStandAloneBuildNumber.name] as String;
+    }
+    return '0';
+  }
+
+  @computed
+  String get minWindowsBuildNumber {
+    if (config.containsKey(_FeatureToggleKey.minWindowsBuildNumber.name)) {
+      return config[_FeatureToggleKey.minWindowsBuildNumber.name] as String;
+    }
+    return '0';
+  }
+
+  @computed
+  String get minAndroidBuildNumber {
+    if (config.containsKey(_FeatureToggleKey.minAndroidBuildNumber.name)) {
+      return config[_FeatureToggleKey.minAndroidBuildNumber.name] as String;
+    }
+    return '0';
+  }
+
+  @computed
+  String get minIosBuildNumber {
+    if (config.containsKey(_FeatureToggleKey.minIosBuildNumber.name)) {
+      return config[_FeatureToggleKey.minIosBuildNumber.name] as String;
+    }
+    return '0';
   }
 }
