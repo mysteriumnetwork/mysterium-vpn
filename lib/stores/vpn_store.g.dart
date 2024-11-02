@@ -227,10 +227,9 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore._completeConnection', context: context);
 
   @override
-  Future<VpnConnection> _completeConnection(
-      String? location, Stopwatch stopwatch, bool? refreshIP, String nonce) {
+  Future<VpnConnection> _completeConnection(String? location, bool? refreshIP, String nonce) {
     return _$_completeConnectionAsyncAction
-        .run(() => super._completeConnection(location, stopwatch, refreshIP, nonce));
+        .run(() => super._completeConnection(location, refreshIP, nonce));
   }
 
   late final _$_VpnStoreActionController = ActionController(name: '_VpnStore', context: context);
