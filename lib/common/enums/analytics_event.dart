@@ -59,4 +59,6 @@ enum AnalyticsEvent {
   paymentSuccess,
   paymentError,
   paymentVerificationError,
+  connectSuccess,
+  connectError,
 }
