@@ -1,9 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -13,91 +10,85 @@ import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/ripple.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class ProductItem extends ConsumerWidget {
+class ProductItem extends StatelessWidget {
   const ProductItem({
     required this.productDetails,
+    required this.onProductSelected,
+    required this.selectedProductId,
+    required this.purchasedProductId,
+    required this.isSusbActive,
     super.key,
   });
 
   final PurchasableProduct productDetails;
+  final Function(String productId) onProductSelected;
+  final String selectedProductId;
+  final String? purchasedProductId;
+  final bool isSusbActive;
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final subsStore = ref.watch(subscriptionStorePOD);
-    final analyticsStore = ref.watch(analyticsStorePOD);
-    return RippleWidget(
-      radius: 20,
-      onTap: () {
-        subsStore.selectedProductId = productDetails.id;
-        if (productDetails.id == kAnnualPlan) {
-          analyticsStore.logEvent(AnalyticsEvent.select12);
-        } else if (productDetails.id == kMonthlyPlan) {
-          analyticsStore.logEvent(AnalyticsEvent.select1);
-        } else if (productDetails.id == ksemiAnnualPlan) {
-          analyticsStore.logEvent(AnalyticsEvent.select6);
-        }
-      },
-      child: Row(
-        children: [
-          const SvgIcon(
-            asset: Assets.subscriptionItem,
-          ).paddingDirectional(end: getMediaWidth(context) * 0.05),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              EasyText(
-                productDetails.id.tr(),
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-              Row(
-                children: [
-                  EasyText(
-                    productDetails.billedInTotal,
-                    color: Palette.purple,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ],
-              ).fittedBox(),
-              EasyText(
-                productDetails.billedPerMonth,
-                fontSize: 14,
-              ),
-            ],
-          ).expanded(),
-          Observer(
-            builder: (context) => Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+  Widget build(BuildContext context) => RippleWidget(
+        radius: 20,
+        onTap: () => onProductSelected(productDetails.id),
+        child: Row(
+          children: [
+            const SvgIcon(
+              asset: Assets.subscriptionItem,
+            ).paddingDirectional(end: getMediaWidth(context) * 0.05),
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (productDetails.status == ProductStatus.pending)
-                  const LoadingIndicator(
-                    radius: 18,
-                    strokeWidth: 1.5,
-                  )
-                else ...[
-                  _CheckMark(
-                    isSelected: productDetails.id == subsStore.selectedProductId,
-                    isPurchased: productDetails.id == subsStore.purchasedProductId,
-                    isSusbActive: subsStore.isSubscribed ?? false,
-                  ),
-                ],
+                EasyText(
+                  productDetails.id.tr(),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+                Row(
+                  children: [
+                    EasyText(
+                      productDetails.billedInTotal,
+                      color: Palette.purple,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ],
+                ).fittedBox(),
+                EasyText(
+                  productDetails.billedPerMonth,
+                  fontSize: 14,
+                ),
               ],
-            ).padding(left: 14),
-          ),
-        ],
-      ).padding(horizontal: 14, vertical: 8).decorated(
-            border: Border.all(color: Theme.of(context).hintColor),
-            borderRadius: const BorderRadius.all(
-              Radius.circular(20),
+            ).expanded(),
+            Observer(
+              builder: (context) => Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (productDetails.status == ProductStatus.pending)
+                    const LoadingIndicator(
+                      radius: 18,
+                      strokeWidth: 1.5,
+                    )
+                  else ...[
+                    _CheckMark(
+                      isSelected: productDetails.id == selectedProductId,
+                      isPurchased: productDetails.id == purchasedProductId,
+                      isSusbActive: isSusbActive,
+                    ),
+                  ],
+                ],
+              ).padding(left: 14),
             ),
-          ),
-    );
-  }
+          ],
+        ).padding(horizontal: 14, vertical: 8).decorated(
+              border: Border.all(color: Theme.of(context).hintColor),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+      );
 }
 
 class _CheckMark extends StatelessWidget {

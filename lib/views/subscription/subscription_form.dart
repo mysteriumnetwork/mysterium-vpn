@@ -108,7 +108,8 @@ class SubscriptionForm extends HookConsumerWidget {
                   subscriptionStatusReaction(context, status);
                 }),
                 child: SubscriptionButton(
-                  onPressed: subscribeToPackage,
+                  onPressed: (status) =>
+                      subscribeToPackage(status, store.products.map((e) => e.id).toList()),
                   isLoading: store.subscriptonStatus == SubscriptionStatus.verifying,
                   subsFormStatus: subsFormStatus,
                   selectedProductId: store.selectedProductId,
@@ -205,7 +206,10 @@ class SubscriptionForm extends HookConsumerWidget {
     return SubscriptionFormStatus.freeTrial;
   }
 
-  Future<void> subscribeToPackage(SubscriptionFormStatus subsFormStatus) async {
+  Future<void> subscribeToPackage(
+    SubscriptionFormStatus subsFormStatus,
+    List<String> productIds,
+  ) async {
     if (subsFormStatus == SubscriptionFormStatus.expired) {
       analyticsStore.logEvent(AnalyticsEvent.subscriptionRenew);
     } else if (subsFormStatus == SubscriptionFormStatus.manage) {
@@ -213,7 +217,12 @@ class SubscriptionForm extends HookConsumerWidget {
           ? analyticsStore.logEvent(AnalyticsEvent.subscriptionManage)
           : analyticsStore.logEvent(AnalyticsEvent.subscriptionChange);
     } else {
-      analyticsStore.logEvent(AnalyticsEvent.subscriptionNew);
+      analyticsStore.logEvent(
+        AnalyticsEvent.subscriptionNew,
+        parameters: {
+          'item_ids': productIds,
+        },
+      );
     }
     store.subscribeToPackage();
   }
