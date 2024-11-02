@@ -47,7 +47,6 @@ class CrashlitycsLoggerObserver extends TalkerObserver {
         exception is SignInAborted ||
         exception is KeyDoesntExistsException ||
         exception is TimeoutException ||
-        exception is TokenAlreadyUsedException ||
         exception is OperationCancelledException) {
       return true;
     }

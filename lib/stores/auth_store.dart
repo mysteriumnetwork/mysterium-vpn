@@ -123,6 +123,7 @@ abstract class _AuthStore with Store {
       );
     } catch (e) {
       _logger.handle(e);
+      _authStatus = AuthStatus.unauthenticated;
     }
   }
 
@@ -138,6 +139,7 @@ abstract class _AuthStore with Store {
       authenticate(code: code, grantType: GrantType.email);
     } catch (e) {
       showSnackbar(LocaleKeys.incorrectMagicLink.tr());
+      rethrow;
     }
   }
 
