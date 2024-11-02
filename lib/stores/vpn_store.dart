@@ -22,6 +22,7 @@ import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -46,18 +47,21 @@ abstract class _VpnStore with Store {
     required LocalDBService localDBService,
     required FlavorConfig env,
     required Talker logger,
+    required AnalyticsStore analyticsStore,
   })  : _apiService = apiService,
         _locationsStore = locationsStore,
         _wireguardService = wireguardService,
         _subscriptionStore = subscriptionStore,
         _localDBService = localDBService,
         _env = env,
+        _analyticsStore = analyticsStore,
         _logger = logger {
     _init();
   }
 
   final ApiService _apiService;
   final LocationsStore _locationsStore;
+  final AnalyticsStore _analyticsStore;
   final WireguardDart _wireguardService;
   final SubscriptionStore _subscriptionStore;
   final FlavorConfig _env;
@@ -65,8 +69,7 @@ abstract class _VpnStore with Store {
   final _sharedPrefs = SharedPreferenceService.instance;
   final LocalDBService _localDBService;
   final Talker _logger;
-
-  Timer? _timer;
+  final Stopwatch _stopwatch = Stopwatch();
 
   @readonly
   bool _refreshIPConnection = true;
@@ -357,24 +360,38 @@ abstract class _VpnStore with Store {
       if (_connectionStatus == ConnectionStatus.connected) {
         await disconnectWireguard();
       }
-      final stopwatch = Stopwatch()..start();
 
       final value = await _completeConnection(
         location,
-        stopwatch,
         refreshIP,
         _connectingNonce,
       );
 
       _vpnConnection = value;
-      stopwatch.stop();
-
+      _stopwatch.stop();
+      _analyticsStore.logEvent(
+        AnalyticsEvent.connectSuccess,
+        parameters: {
+          'location': value.location,
+          'time': _stopwatch.elapsed.inSeconds,
+          'refresh_ip': refreshIP,
+        },
+      );
       _locationsStore.addRecentLocation(value.location);
     } on TimeoutException catch (e) {
       _logger.handle(e);
       showSnackbar(
         LocaleKeys.connectionTimeout.tr(),
       );
+      _analyticsStore.logEvent(
+        AnalyticsEvent.connectError,
+        parameters: {
+          'time': _stopwatch.elapsed.inSeconds,
+          'error': e.message,
+          'error_type': e.runtimeType.toString(),
+        },
+      );
+      _stopwatch.stop();
     } on OperationCancelledException {
       _logger.info('Operation cancelled by user');
     } catch (e, stackTrace) {
@@ -401,8 +418,20 @@ abstract class _VpnStore with Store {
         _checkSubscriptionStatus();
       }
       showSnackbar(errorMessage);
+      _analyticsStore.logEvent(
+        AnalyticsEvent.connectError,
+        parameters: {
+          'time': _stopwatch.elapsed.inSeconds,
+          'error': e.toString(),
+          'error_type': e.runtimeType.toString(),
+          'error_code': errorCode,
+          'error_message': errorMessage,
+        },
+      );
 
       _connectionStatus = ConnectionStatus.disconnected;
+    } finally {
+      _stopwatch.stop();
     }
   }
 
@@ -430,11 +459,13 @@ abstract class _VpnStore with Store {
   @action
   Future<VpnConnection> _completeConnection(
     String? location,
-    Stopwatch stopwatch,
     bool? refreshIP,
     String nonce,
   ) async {
     try {
+      _stopwatch
+        ..reset()
+        ..start();
       if (_wireguardKey == null) {
         await _generateKey();
       }
@@ -560,9 +591,5 @@ abstract class _VpnStore with Store {
       disconnectWireguard();
       _vpnConnection = null;
     }
-  }
-
-  Future<void> dispose() async {
-    _timer?.cancel();
   }
 }

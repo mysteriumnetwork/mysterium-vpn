@@ -189,6 +189,7 @@ abstract class _SubscriptionStore with Store {
         parameters: {
           'planType': item.id,
           'price': item.rawPrice.toString(),
+          'item_ids': _products.map((e) => e.id).toList(),
         },
       );
     } catch (e) {
@@ -318,6 +319,7 @@ abstract class _SubscriptionStore with Store {
         parameters: {
           'planType': productId,
           'price': price,
+          'item_ids': _products.map((e) => e.id).toList(),
         },
       );
     } catch (e) {
