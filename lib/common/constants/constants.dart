@@ -43,3 +43,9 @@ const String testBundleId = 'mysteriumtest';
 const String iosBundleId = 'com.mysteriumvpn.tun';
 const String iosTestBundleId = 'com.mysteriumvpn.test.tun';
 const String win32ServiceName = 'MysteriumVPN_Wireguard';
+
+// app ids
+const appStoreId = '6446624307';
+const appStoreIdMacOS = '6446624307';
+const androidAppBundleId = 'com.mysteriumvpn.android';
+const windowsProductId = '9NGWJCZSB5MK';

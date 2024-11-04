@@ -70,6 +70,8 @@ abstract class _AuthStore with Store {
   final UserPreferencesStore _userPreferencesStore;
   final RemoteConfigStore _remoteConfigStore;
   final ABTestingStore _abTestingStore;
+
+  @readonly
   AuthStatus _authStatus = AuthStatus.unknown;
 
   @readonly

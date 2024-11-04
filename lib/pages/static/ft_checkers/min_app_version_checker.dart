@@ -65,10 +65,10 @@ class MinAppVersionChecker extends HookConsumerWidget {
                             openUrlLink(Uri.parse(windowsGithubDownloadLink));
                           } else {
                             OpenStore.instance.open(
-                              appStoreId: '6446624307',
-                              appStoreIdMacOS: '6446624307',
-                              androidAppBundleId: 'com.mysteriumvpn.android',
-                              windowsProductId: '9NGWJCZSB5MK',
+                              appStoreId: appStoreId,
+                              appStoreIdMacOS: appStoreIdMacOS,
+                              androidAppBundleId: androidAppBundleId,
+                              windowsProductId: windowsProductId,
                             );
                           }
                         } catch (e) {
@@ -104,7 +104,7 @@ class MinAppVersionChecker extends HookConsumerWidget {
       if (isStoreVersion) {
         return remoteConfigStore.minWindowsBuildNumber;
       }
-      return remoteConfigStore.minWindowsBuildNumber;
+      return remoteConfigStore.minWindowsStandAloneBuildNumber;
     }
     return '0';
   }
