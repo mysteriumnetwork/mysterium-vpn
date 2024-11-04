@@ -1,0 +1,14 @@
+name: store_checker_windows
+description: Store Checker for Windows
+version: 0.0.1
+
+environment:
+  sdk: ^3.4.3
+
+# Add regular dependencies here.
+dependencies:
+  win32: ^5.5.1
+
+dev_dependencies:
+  lints: ^3.0.0
+  test: ^1.24.0
