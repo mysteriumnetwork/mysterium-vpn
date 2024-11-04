@@ -32,7 +32,6 @@ import 'package:wireguard_dart/wireguard_dart.dart';
 class Enviroment {
   Future<void> launch({
     required String flavor,
-    required bool isStoreVersion,
     required FirebaseOptions? firebaseOptions,
   }) async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -71,7 +70,7 @@ class Enviroment {
       return stack;
     };
 
-    final flavorConfig = await setupFlavor(flavor: flavor, isStoreVersion: isStoreVersion);
+    final flavorConfig = await setupFlavor(flavor: flavor);
     await setupTrayIcon(flavorConfig);
     await SharedPreferenceService.instance.init();
     await SecureStorageService.instance.init(flavorConfig);
@@ -139,7 +138,7 @@ class Enviroment {
     );
   }
 
-  Future<FlavorConfig> setupFlavor({required String flavor, required bool isStoreVersion}) async {
+  Future<FlavorConfig> setupFlavor({required String flavor}) async {
     var buildInfo = BuildInfo(
       buildNumber: 0,
       buildVersion: '0',
@@ -149,6 +148,7 @@ class Enviroment {
       buildInfo = BuildInfo(
         buildNumber: int.tryParse(info.buildNumber) ?? 0,
         buildVersion: info.version,
+        installerStore: info.installerStore,
       );
     } catch (e) {
       debugPrint('Error getting package info');
@@ -159,19 +159,16 @@ class Enviroment {
           flavor: Flavor.dev,
           values: FlavorValues.dev(),
           buildInfo: buildInfo,
-          isStoreVersion: isStoreVersion,
         ),
       'PROD' => FlavorConfig(
           flavor: Flavor.production,
           values: FlavorValues.production(),
           buildInfo: buildInfo,
-          isStoreVersion: isStoreVersion,
         ),
       _ => FlavorConfig(
           flavor: Flavor.dev,
           values: FlavorValues.dev(),
           buildInfo: buildInfo,
-          isStoreVersion: isStoreVersion,
         ),
     };
   }

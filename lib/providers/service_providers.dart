@@ -105,7 +105,7 @@ final remoteConfigClientPOD = Provider<ConfigCatClient>((ref) {
   return ConfigCatClient.get(
     sdkKey: environment.values.remoteConfigSdkKey,
     options: ConfigCatOptions(
-      pollingMode: PollingMode.autoPoll(autoPollInterval: Duration(seconds: isTestEnv ? 10 : 120)),
+      pollingMode: PollingMode.autoPoll(autoPollInterval: Duration(seconds: isTestEnv ? 30 : 120)),
       logger: isTestEnv ? ConfigCatLogger() : null,
       cache: ConfigCatPreferencesCache(),
     ),
@@ -119,7 +119,7 @@ final abTestingClientPOD = Provider<ConfigCatClient>((ref) {
   return ConfigCatClient.get(
     sdkKey: environment.values.abTestingSdkKey,
     options: ConfigCatOptions(
-      pollingMode: PollingMode.autoPoll(autoPollInterval: Duration(seconds: isTestEnv ? 10 : 120)),
+      pollingMode: PollingMode.autoPoll(autoPollInterval: Duration(seconds: isTestEnv ? 30 : 120)),
       logger: isTestEnv ? ConfigCatLogger() : null,
       cache: ConfigCatPreferencesCache(),
     ),

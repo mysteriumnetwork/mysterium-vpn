@@ -23,7 +23,7 @@ abstract class RemoteConfigStoreBase with Store {
     required this.client,
     required this.logger,
   }) {
-    getAllRemoteConfigValues();
+    getAllRemoteConfigValues().whenComplete(refreshRemoteConfigValues);
   }
   final ConfigCatClient client;
   final Talker logger;
@@ -42,6 +42,7 @@ abstract class RemoteConfigStoreBase with Store {
         email: email,
       ),
     );
+    getAllRemoteConfigValues();
   }
 
   @action
@@ -51,8 +52,6 @@ abstract class RemoteConfigStoreBase with Store {
     } catch (e, st) {
       logger.handle(e, st);
       config = ObservableMap();
-    } finally {
-      refreshRemoteConfigValues();
     }
   }
 

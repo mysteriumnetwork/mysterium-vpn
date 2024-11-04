@@ -9,16 +9,8 @@ void main() async {
 
   Enviroment().launch(
     flavor: flavor,
-    isStoreVersion: _isStoreVersion(),
     firebaseOptions: _getFirebaseOptions(flavor),
   );
-}
-
-bool _isStoreVersion() {
-  if (const bool.hasEnvironment('STORE')) {
-    return const bool.fromEnvironment('STORE');
-  }
-  return true;
 }
 
 FirebaseOptions? _getFirebaseOptions(String flavor) {

@@ -75,19 +75,16 @@ class FlavorValues {
 class FlavorConfig {
   factory FlavorConfig({
     required Flavor flavor,
-    required bool isStoreVersion,
     required FlavorValues values,
     required BuildInfo buildInfo,
   }) =>
-      FlavorConfig._internal(flavor, values, buildInfo, isStoreVersion);
+      FlavorConfig._internal(flavor, values, buildInfo);
   FlavorConfig._internal(
     this.flavor,
     this.values,
     this.buildInfo,
-    this.isStoreVersion,
   );
   final Flavor flavor;
-  final bool isStoreVersion;
   final FlavorValues values;
   final BuildInfo buildInfo;
 
@@ -107,10 +104,12 @@ class BuildInfo {
   BuildInfo({
     required this.buildNumber,
     required this.buildVersion,
+    this.installerStore,
   });
 
   final int buildNumber;
   final String buildVersion;
+  final String? installerStore;
 
   @override
   String toString() => 'buildNumber: $buildNumber, buildVersion: $buildVersion';
