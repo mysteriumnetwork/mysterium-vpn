@@ -15,7 +15,7 @@ abstract class ABTestingStoreBase with Store {
     required this.client,
     required this.logger,
   }) {
-    getAllABTestingValues();
+    getAllABTestingValues().whenComplete(refreshABTestingValues);
   }
   final ConfigCatClient client;
   final Talker logger;
@@ -34,6 +34,7 @@ abstract class ABTestingStoreBase with Store {
         email: email,
       ),
     );
+    getAllABTestingValues();
   }
 
   @action
@@ -43,8 +44,6 @@ abstract class ABTestingStoreBase with Store {
     } catch (e, st) {
       logger.handle(e, st);
       config = ObservableMap();
-    } finally {
-      refreshABTestingValues();
     }
   }
 

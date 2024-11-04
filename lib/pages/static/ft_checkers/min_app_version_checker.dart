@@ -34,7 +34,7 @@ class MinAppVersionChecker extends HookConsumerWidget {
         final currentBuildVersion = env.buildInfo.buildVersion;
         final minAppBuildNumber = getMinAppBuildNumber(
           remoteConfigStore: remoteConfigStore,
-          isStoreVersion: env.isStoreVersion,
+          installerStore: env.buildInfo.installerStore,
         );
         if (currentBuildVersion.compareTo(minAppBuildNumber) >= 0 || canContinue.value) {
           return child;
@@ -61,7 +61,7 @@ class MinAppVersionChecker extends HookConsumerWidget {
                     EasyButton(
                       onPressed: () async {
                         try {
-                          if (env.isStoreVersion) {
+                          if (env.buildInfo.installerStore == 'microsoft') {
                             openUrlLink(Uri.parse(windowsGithubDownloadLink));
                           } else {
                             OpenStore.instance.open(
@@ -92,7 +92,7 @@ class MinAppVersionChecker extends HookConsumerWidget {
 
   String getMinAppBuildNumber({
     required RemoteConfigStore remoteConfigStore,
-    required bool isStoreVersion,
+    required String? installerStore,
   }) {
     if (Platform.isAndroid) {
       return remoteConfigStore.minAndroidBuildNumber;
@@ -101,7 +101,7 @@ class MinAppVersionChecker extends HookConsumerWidget {
     } else if (Platform.isMacOS) {
       return remoteConfigStore.minMacosBuildNumber;
     } else if (Platform.isWindows) {
-      if (isStoreVersion) {
+      if (installerStore == 'microsoft') {
         return remoteConfigStore.minWindowsBuildNumber;
       }
       return remoteConfigStore.minWindowsStandAloneBuildNumber;
