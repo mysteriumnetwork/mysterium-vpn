@@ -36,6 +36,9 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final intercomStore = ref.watch(intercomStorePOD);
   final logger = ref.watch(loggerPOD);
   final userPreferencesStore = ref.watch(userPreferencesStorePOD);
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+  final abTestingStore = ref.watch(abTestingStorePOD);
+
   return AuthStore(
     authService: authService,
     appLinks: appLinks,
@@ -45,6 +48,8 @@ final authStorePOD = Provider<AuthStore>((ref) {
     intercomStore: intercomStore,
     logger: logger,
     userPreferencesStore: userPreferencesStore,
+    remoteConfigStore: remoteConfigStore,
+    abTestingStore: abTestingStore,
   );
 });
 
