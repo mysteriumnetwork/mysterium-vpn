@@ -474,6 +474,6 @@
     "logoutConfirmationTitle":"Log out",
     "logoutConfirmationDesc":"You’re about to log out. Are you sure?",
     "loginSessionExpired":"Your session has expired. Please log in again.",
-    "featureToggleMinVersionNotSatisfied":"Your app version is outdated.Please update the app to continue using it.",
+    "featureToggleMinVersionNotSatisfied":"Your app version is outdated. Please update the app to continue using it.",
     "buttonUpdateApp":"Update now"
   }
