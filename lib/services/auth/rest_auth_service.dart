@@ -88,8 +88,11 @@ class RestAuthService extends AuthService {
       if (tokenData == null) {
         throw Exception('No data');
       }
-
+      // TODO(Waldz): Introduce DTO models, layer of serialization/deserialization is missing
+      // TODO(Waldz): Generate API client from API documentation openapi.yaml
       final accessToken = tokenData['access_token'] as String;
+      final refreshToken = tokenData['refresh_token'] as String;
+
       await _networkService.post(
         kAuthIntrospect,
         headers: {'Authorization': 'Bearer $accessToken'},
@@ -102,18 +105,19 @@ class RestAuthService extends AuthService {
         headers: {'Authorization': 'Bearer $accessToken'},
       ))
           .data as Map<String, dynamic>?;
-
       final username = userData!['username'] as String;
       final userId = userData['user_id'] as String;
+
       final authData = AuthData(
-        accessToken: tokenData['access_token'] as String,
+        accessToken: accessToken,
         username: username,
         userId: userId,
       );
       _networkService.updateHeader(
         {'Authorization': 'Bearer ${authData.accessToken}'},
       );
-      await _securedStorage.saveAccessToken(accessToken: authData.accessToken);
+      await _securedStorage.saveAccessToken(authData.accessToken);
+      await _securedStorage.saveRefreshToken(refreshToken);
       await _securedStorage.saveUsername(username: authData.username);
       await _securedStorage.saveUserId(userId: authData.userId);
       return authData;
@@ -170,6 +174,7 @@ class RestAuthService extends AuthService {
 
   Future<void> removeLocalData() async {
     await _securedStorage.removeAccessToken();
+    await _securedStorage.removeRefreshToken();
     await _securedStorage.removeUserId();
     await _securedStorage.removePkcePair();
     await _securedStorage.removeWireguardPrivateKey();
