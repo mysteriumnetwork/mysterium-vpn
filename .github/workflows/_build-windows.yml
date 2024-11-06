@@ -72,7 +72,7 @@ jobs:
       #      --sign-msix "true" --certificate-path " /z/69a0bfe490c4fa06080c8aa2f3d5330c.cer"
 
       - name: Upload to Github
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Windows app (Standalone)
           path: build/windows/x64/runner/Release/Mysterium VPN.msix
@@ -86,7 +86,7 @@ jobs:
             --store --identity-name "${{ inputs.product_identity }}" --publisher "CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC" --publisher-display-name "UAB MN Technologijos"
 
       - name: Upload to Github
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Windows app (Store)
           path: build/windows/x64/runner/Release/Mysterium VPN.msix
