@@ -8,7 +8,6 @@ import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/models/token_request.dart';
-import 'package:mysterium_vpn/models/token_response.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
@@ -16,9 +15,8 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:talker/talker.dart';
 
 const kAuthCheck = '/auth/check';
-const kLogin = '/magic-link';
-const kCompleteLogin = '/oauth/token';
-const kAuthIntrospect = '/oauth/introspect';
+const kMagicLink = '/magic-link';
+const kOAuthIntrospect = '/oauth/introspect';
 const kDisconnectAllDevices = '/connection/disconnect-all';
 
 class RestAuthService extends AuthService {
@@ -75,19 +73,14 @@ class RestAuthService extends AuthService {
   }
 
   @override
-  Future<AuthData> completeLogin({
+  Future<AuthData> singInComplete({
     required TokenRequest tokenRequest,
   }) async {
     try {
-      final res = await _networkService.post(
-        kCompleteLogin,
-        data: tokenRequest.toJson(),
-        headers: {'content-type': 'application/x-www-form-urlencoded'},
-      );
-      final authTokens = TokenResponse.fromJson(res.data as Map<String, dynamic>);
+      final authTokens = await _networkService.token(tokenRequest);
 
       await _networkService.post(
-        kAuthIntrospect,
+        kOAuthIntrospect,
         headers: {'Authorization': 'Bearer ${authTokens.accessToken}'},
         data: {
           'token': authTokens.accessToken,
@@ -133,7 +126,7 @@ class RestAuthService extends AuthService {
     try {
       await removeLocalData();
       final result = await _networkService.post(
-        kLogin,
+        kMagicLink,
         data: {
           'email': email,
           'client_id': 'app',
