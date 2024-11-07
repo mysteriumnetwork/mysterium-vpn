@@ -203,9 +203,8 @@ mixin _$AuthStore on _AuthStore, Store {
   late final _$logoutAsyncAction = AsyncAction('_AuthStore.logout', context: context);
 
   @override
-  Future<void> logout({String? email, bool? invalidateExpiredToken}) {
-    return _$logoutAsyncAction
-        .run(() => super.logout(email: email, invalidateExpiredToken: invalidateExpiredToken));
+  Future<void> logout({String? email}) {
+    return _$logoutAsyncAction.run(() => super.logout(email: email));
   }
 
   late final _$logoutFromAllDevicesAsyncAction =
