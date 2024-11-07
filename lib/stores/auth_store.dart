@@ -10,6 +10,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
+import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/auth_data.dart';
@@ -57,6 +58,7 @@ abstract class _AuthStore with Store {
         _remoteConfigStore = remoteConfigStore,
         _abTestingStore = abTestingStore {
     initAuth();
+    refreshTokenCallback = refreshAuthToken;
   }
 
   final AuthService _authService;
@@ -223,11 +225,7 @@ abstract class _AuthStore with Store {
   @action
   Future<void> logout({
     String? email,
-    bool? invalidateExpiredToken,
   }) async {
-    if (invalidateExpiredToken ?? false) {
-      showSnackbar(LocaleKeys.loginSessionExpired.tr());
-    }
     logoutFeature = ObservableFuture(_authService.logout());
 
     await logoutFeature;
@@ -375,6 +373,25 @@ abstract class _AuthStore with Store {
       await deleteAccountFeature;
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  Future<String> refreshAuthToken() async {
+    try {
+      final refreshToken = await _secureStorageService.getRefreshToken();
+      final authDta = await _authService.singInComplete(
+          tokenRequest: TokenRequest(
+          grantType: GrantType.refreshToken,
+          refreshToken: refreshToken,
+        ),
+      );
+
+      return authDta.accessToken;
+    } catch (e) {
+      showSnackbar(LocaleKeys.loginSessionExpired.tr());
+      await logout();
+
+      rethrow;
     }
   }
 }

@@ -37,12 +37,6 @@ final appLinksPOD = Provider(
 
 final localDBPOD = Provider((ref) => LocalDBService());
 
-final invalidateExpiredToken = FutureProvider<void>((ref) async {
-  await ref.read(authStorePOD).logout(
-        invalidateExpiredToken: true,
-      );
-});
-
 final networkServicePOD = Provider<NetworkService>((ref) {
   final environment = ref.watch(environmentPOD);
   final logger = ref.watch(loggerPOD);
@@ -50,7 +44,7 @@ final networkServicePOD = Provider<NetworkService>((ref) {
   return DioNetworkService(
     dio,
     [
-      UnauthorizedInterceptor(ref),
+      RefreshTokenInterceptor(),
       RetryRequestInterceptor(dio: dio),
       if (kDebugMode)
         TalkerDioLogger(
