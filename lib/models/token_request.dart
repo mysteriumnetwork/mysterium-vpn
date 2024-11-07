@@ -10,6 +10,7 @@ class TokenRequest with _$TokenRequest {
   factory TokenRequest({
     @JsonKey(name: 'grant_type', toJson: grantTypeToJson) required GrantType grantType,
     @JsonKey(name: 'client_id') @Default('app') String clientId,
+    @JsonKey(name: 'refresh_token') String? refreshToken,
     @JsonKey(name: 'code_verifier') String? codeVerifier,
     String? code,
     @JsonKey(name: 'google_id_token') String? googleIdToken,

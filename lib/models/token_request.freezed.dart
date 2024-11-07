@@ -24,6 +24,8 @@ mixin _$TokenRequest {
   GrantType get grantType => throw _privateConstructorUsedError;
   @JsonKey(name: 'client_id')
   String get clientId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'refresh_token')
+  String? get refreshToken => throw _privateConstructorUsedError;
   @JsonKey(name: 'code_verifier')
   String? get codeVerifier => throw _privateConstructorUsedError;
   String? get code => throw _privateConstructorUsedError;
@@ -51,6 +53,7 @@ abstract class $TokenRequestCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'grant_type', toJson: grantTypeToJson) GrantType grantType,
       @JsonKey(name: 'client_id') String clientId,
+      @JsonKey(name: 'refresh_token') String? refreshToken,
       @JsonKey(name: 'code_verifier') String? codeVerifier,
       String? code,
       @JsonKey(name: 'google_id_token') String? googleIdToken,
@@ -75,6 +78,7 @@ class _$TokenRequestCopyWithImpl<$Res, $Val extends TokenRequest>
   $Res call({
     Object? grantType = null,
     Object? clientId = null,
+    Object? refreshToken = freezed,
     Object? codeVerifier = freezed,
     Object? code = freezed,
     Object? googleIdToken = freezed,
@@ -90,6 +94,10 @@ class _$TokenRequestCopyWithImpl<$Res, $Val extends TokenRequest>
           ? _value.clientId
           : clientId // ignore: cast_nullable_to_non_nullable
               as String,
+      refreshToken: freezed == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
+              as String?,
       codeVerifier: freezed == codeVerifier
           ? _value.codeVerifier
           : codeVerifier // ignore: cast_nullable_to_non_nullable
@@ -124,6 +132,7 @@ abstract class _$$TokenRequestImplCopyWith<$Res> implements $TokenRequestCopyWit
   $Res call(
       {@JsonKey(name: 'grant_type', toJson: grantTypeToJson) GrantType grantType,
       @JsonKey(name: 'client_id') String clientId,
+      @JsonKey(name: 'refresh_token') String? refreshToken,
       @JsonKey(name: 'code_verifier') String? codeVerifier,
       String? code,
       @JsonKey(name: 'google_id_token') String? googleIdToken,
@@ -146,6 +155,7 @@ class __$$TokenRequestImplCopyWithImpl<$Res>
   $Res call({
     Object? grantType = null,
     Object? clientId = null,
+    Object? refreshToken = freezed,
     Object? codeVerifier = freezed,
     Object? code = freezed,
     Object? googleIdToken = freezed,
@@ -161,6 +171,10 @@ class __$$TokenRequestImplCopyWithImpl<$Res>
           ? _value.clientId
           : clientId // ignore: cast_nullable_to_non_nullable
               as String,
+      refreshToken: freezed == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
+              as String?,
       codeVerifier: freezed == codeVerifier
           ? _value.codeVerifier
           : codeVerifier // ignore: cast_nullable_to_non_nullable
@@ -191,6 +205,7 @@ class _$TokenRequestImpl implements _TokenRequest {
   _$TokenRequestImpl(
       {@JsonKey(name: 'grant_type', toJson: grantTypeToJson) required this.grantType,
       @JsonKey(name: 'client_id') this.clientId = 'app',
+      @JsonKey(name: 'refresh_token') this.refreshToken,
       @JsonKey(name: 'code_verifier') this.codeVerifier,
       this.code,
       @JsonKey(name: 'google_id_token') this.googleIdToken,
@@ -206,6 +221,9 @@ class _$TokenRequestImpl implements _TokenRequest {
   @override
   @JsonKey(name: 'client_id')
   final String clientId;
+  @override
+  @JsonKey(name: 'refresh_token')
+  final String? refreshToken;
   @override
   @JsonKey(name: 'code_verifier')
   final String? codeVerifier;
@@ -223,7 +241,7 @@ class _$TokenRequestImpl implements _TokenRequest {
 
   @override
   String toString() {
-    return 'TokenRequest(grantType: $grantType, clientId: $clientId, codeVerifier: $codeVerifier, code: $code, googleIdToken: $googleIdToken, idToken: $idToken, authorization: $authorization)';
+    return 'TokenRequest(grantType: $grantType, clientId: $clientId, refreshToken: $refreshToken, codeVerifier: $codeVerifier, code: $code, googleIdToken: $googleIdToken, idToken: $idToken, authorization: $authorization)';
   }
 
   @override
@@ -233,6 +251,7 @@ class _$TokenRequestImpl implements _TokenRequest {
             other is _$TokenRequestImpl &&
             (identical(other.grantType, grantType) || other.grantType == grantType) &&
             (identical(other.clientId, clientId) || other.clientId == clientId) &&
+            (identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken) &&
             (identical(other.codeVerifier, codeVerifier) || other.codeVerifier == codeVerifier) &&
             (identical(other.code, code) || other.code == code) &&
             (identical(other.googleIdToken, googleIdToken) ||
@@ -244,8 +263,8 @@ class _$TokenRequestImpl implements _TokenRequest {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, grantType, clientId, codeVerifier, code, googleIdToken, idToken, authorization);
+  int get hashCode => Object.hash(runtimeType, grantType, clientId, refreshToken, codeVerifier,
+      code, googleIdToken, idToken, authorization);
 
   /// Create a copy of TokenRequest
   /// with the given fields replaced by the non-null parameter values.
@@ -267,6 +286,7 @@ abstract class _TokenRequest implements TokenRequest {
   factory _TokenRequest(
       {@JsonKey(name: 'grant_type', toJson: grantTypeToJson) required final GrantType grantType,
       @JsonKey(name: 'client_id') final String clientId,
+      @JsonKey(name: 'refresh_token') final String? refreshToken,
       @JsonKey(name: 'code_verifier') final String? codeVerifier,
       final String? code,
       @JsonKey(name: 'google_id_token') final String? googleIdToken,
@@ -282,6 +302,9 @@ abstract class _TokenRequest implements TokenRequest {
   @override
   @JsonKey(name: 'client_id')
   String get clientId;
+  @override
+  @JsonKey(name: 'refresh_token')
+  String? get refreshToken;
   @override
   @JsonKey(name: 'code_verifier')
   String? get codeVerifier;

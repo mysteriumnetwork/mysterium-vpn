@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/models/token_request.dart';
+import 'package:mysterium_vpn/models/token_response.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
@@ -78,46 +79,40 @@ class RestAuthService extends AuthService {
     required TokenRequest tokenRequest,
   }) async {
     try {
-      final reqBode = tokenRequest.toJson();
-      final tokenData = (await _networkService.post(
+      final res = await _networkService.post(
         kCompleteLogin,
-        data: reqBode,
+        data: tokenRequest.toJson(),
         headers: {'content-type': 'application/x-www-form-urlencoded'},
-      ))
-          .data as Map<String, dynamic>?;
-      if (tokenData == null) {
-        throw Exception('No data');
-      }
-      // TODO(Waldz): Introduce DTO models, layer of serialization/deserialization is missing
-      // TODO(Waldz): Generate API client from API documentation openapi.yaml
-      final accessToken = tokenData['access_token'] as String;
-      final refreshToken = tokenData['refresh_token'] as String;
+      );
+      final authTokens = TokenResponse.fromJson(res.data as Map<String, dynamic>);
 
       await _networkService.post(
         kAuthIntrospect,
-        headers: {'Authorization': 'Bearer $accessToken'},
+        headers: {'Authorization': 'Bearer ${authTokens.accessToken}'},
         data: {
-          'token': accessToken,
+          'token': authTokens.accessToken,
         },
       );
       final userData = (await _networkService.get(
         kAuthCheck,
-        headers: {'Authorization': 'Bearer $accessToken'},
+        headers: {'Authorization': 'Bearer ${authTokens.accessToken}'},
       ))
           .data as Map<String, dynamic>?;
+      // TODO(Waldz): Introduce DTO models, layer of serialization/deserialization is missing
       final username = userData!['username'] as String;
-      final userId = userData['user_id'] as String;
 
       final authData = AuthData(
-        accessToken: accessToken,
+        accessToken: authTokens.accessToken,
         username: username,
-        userId: userId,
+        userId: authTokens.userId,
       );
       _networkService.updateHeader(
         {'Authorization': 'Bearer ${authData.accessToken}'},
       );
       await _securedStorage.saveAccessToken(authData.accessToken);
-      await _securedStorage.saveRefreshToken(refreshToken);
+      if (authTokens.refreshToken != null) {
+        await _securedStorage.saveRefreshToken(authTokens.refreshToken!);
+      }
       await _securedStorage.saveUsername(username: authData.username);
       await _securedStorage.saveUserId(userId: authData.userId);
       return authData;
@@ -153,6 +148,7 @@ class RestAuthService extends AuthService {
       }
 
       if (data != null && data.containsKey('code')) {
+        // TODO(Waldz): Introduce DTO models, layer of serialization/deserialization is missing
         return data['code'] as String;
       }
       return null;
