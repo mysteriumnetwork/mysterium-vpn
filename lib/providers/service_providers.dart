@@ -1,4 +1,5 @@
 import 'package:app_links/app_links.dart';
+import 'package:configcat_client/configcat_client.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,6 +12,7 @@ import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/api/rest_api_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/auth/rest_auth_service.dart';
+import 'package:mysterium_vpn/services/data/local/config_cat_cache.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/network/dio_network_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
@@ -94,5 +96,32 @@ final loggerPOD = Provider<Talker>((ref) {
   final analyticsStore = ref.watch(analyticsStorePOD);
   return Talker(
     observer: CrashlitycsLoggerObserver(analyticsStore: analyticsStore),
+  );
+});
+
+final remoteConfigClientPOD = Provider<ConfigCatClient>((ref) {
+  final environment = ref.watch(environmentPOD);
+  final isTestEnv = environment.flavor == Flavor.dev;
+  return ConfigCatClient.get(
+    sdkKey: environment.values.remoteConfigSdkKey,
+    options: ConfigCatOptions(
+      pollingMode: PollingMode.autoPoll(autoPollInterval: Duration(seconds: isTestEnv ? 30 : 120)),
+      logger: isTestEnv ? ConfigCatLogger() : null,
+      cache: ConfigCatPreferencesCache(),
+    ),
+  );
+});
+
+final abTestingClientPOD = Provider<ConfigCatClient>((ref) {
+  final environment = ref.watch(environmentPOD);
+  final isTestEnv = environment.flavor == Flavor.dev;
+
+  return ConfigCatClient.get(
+    sdkKey: environment.values.abTestingSdkKey,
+    options: ConfigCatOptions(
+      pollingMode: PollingMode.autoPoll(autoPollInterval: Duration(seconds: isTestEnv ? 30 : 120)),
+      logger: isTestEnv ? ConfigCatLogger() : null,
+      cache: ConfigCatPreferencesCache(),
+    ),
   );
 });

@@ -21,6 +21,8 @@ import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
+import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
@@ -42,6 +44,8 @@ abstract class _AuthStore with Store {
     required IntercomStore intercomStore,
     required Talker logger,
     required UserPreferencesStore userPreferencesStore,
+    required RemoteConfigStore remoteConfigStore,
+    required ABTestingStore abTestingStore,
   })  : _authService = authService,
         _appLinks = appLinks,
         _localDb = localDb,
@@ -49,7 +53,9 @@ abstract class _AuthStore with Store {
         _env = env,
         _intercomStore = intercomStore,
         _logger = logger,
-        _userPreferencesStore = userPreferencesStore {
+        _userPreferencesStore = userPreferencesStore,
+        _remoteConfigStore = remoteConfigStore,
+        _abTestingStore = abTestingStore {
     initAuth();
   }
 
@@ -62,6 +68,9 @@ abstract class _AuthStore with Store {
   final IntercomStore _intercomStore;
   final Talker _logger;
   final UserPreferencesStore _userPreferencesStore;
+  final RemoteConfigStore _remoteConfigStore;
+  final ABTestingStore _abTestingStore;
+
   @readonly
   AuthStatus _authStatus = AuthStatus.unknown;
 
@@ -215,6 +224,8 @@ abstract class _AuthStore with Store {
         ),
       ),
     );
+    _remoteConfigStore.setDefaultUser(email: username, userId: userId);
+    _abTestingStore.setDefaultUser(email: username, userId: userId);
   }
 
   @action

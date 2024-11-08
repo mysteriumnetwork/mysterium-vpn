@@ -473,5 +473,7 @@
   "logoutAllDevicesConfirmationDesc": "Stai per disconnetterti da tutti i tuoi dispositivi.Sei sicuro?",
   "logoutConfirmationTitle": "Disconnettersi",
   "logoutConfirmationDesc": "Stai per disconnetterti.Sei sicuro?",
-  "loginSessionExpired": "La tua sessione è scaduta. Effettua nuovamente l'accesso."
+  "loginSessionExpired": "La tua sessione è scaduta. Effettua nuovamente l'accesso.",
+  "featureToggleMinVersionNotSatisfied": "La versione dell'app è obsoleta. Aggiorna l'app per continuare a utilizzarla.",
+  "buttonUpdateApp": "Aggiorna ora"
 }

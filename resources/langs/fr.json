@@ -473,5 +473,7 @@
   "logoutAllDevicesConfirmationDesc": "Vous êtes sur le point de vous déconnecter de tous vos appareils. Êtes-vous sûr ?",
   "logoutConfirmationTitle": "Se déconnecter",
   "logoutConfirmationDesc": "Vous êtes sur le point de vous déconnecter. Êtes-vous sûr ?",
-  "loginSessionExpired": "Votre session a expiré. Veuillez vous reconnecter."
+  "loginSessionExpired": "Votre session a expiré. Veuillez vous reconnecter.",
+  "featureToggleMinVersionNotSatisfied": "La version de votre application est obsolète. Veuillez mettre à jour l'application pour continuer à l'utiliser.",
+  "buttonUpdateApp": "Mettre à jour maintenant"
 }

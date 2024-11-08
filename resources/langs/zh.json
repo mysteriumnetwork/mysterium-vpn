@@ -473,5 +473,7 @@
   "logoutAllDevicesConfirmationDesc": "您即将从所有设备注销。您确定吗？",
   "logoutConfirmationTitle": "登出",
   "logoutConfirmationDesc": "您即将退出。您确定吗？",
-  "loginSessionExpired": "您的会话已过期。请重新登录。"
+  "loginSessionExpired": "您的会话已过期。请重新登录。",
+  "featureToggleMinVersionNotSatisfied": "您的应用程序版本已过时。请更新应用程序以继续使用。",
+  "buttonUpdateApp": "立即更新"
 }

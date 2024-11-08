@@ -28,7 +28,7 @@ class SettingsDesktopLeftPanel extends ConsumerWidget {
             analyticsStore: ref.read(analyticsStorePOD),
           ),
           asset: Assets.reportPurple,
-        ).padding(bottom: 40),
+        ).padding(bottom: 10),
         ListView(
           shrinkWrap: true,
           children: [

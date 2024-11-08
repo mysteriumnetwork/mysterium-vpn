@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/models/flavor_config.dart';
 
 void main() async {
   const flavor = String.fromEnvironment('FLAVOR');
+
   Enviroment().launch(
     flavor: flavor,
     firebaseOptions: _getFirebaseOptions(flavor),

@@ -23,7 +23,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
       children: [
         _HeaderTitle(
           title: settingCategory.trKey.tr(),
-        ).padding(bottom: 80),
+        ).padding(bottom: 50),
         if (settingCategory == SettingCategory.connection) const ConnectionSettings(),
         if (settingCategory == SettingCategory.application) const ApplicationSettings(),
         if (settingCategory == SettingCategory.account) const AccountSettings(),
