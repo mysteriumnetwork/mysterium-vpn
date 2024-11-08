@@ -49,3 +49,4 @@ const appStoreId = '6446624307';
 const appStoreIdMacOS = '6446624307';
 const androidAppBundleId = 'com.mysteriumvpn.android';
 const windowsProductId = '9NGWJCZSB5MK';
+const windowsStandAloneProductId = 'te4cyv5h340wa';

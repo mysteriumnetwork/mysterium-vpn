@@ -69,6 +69,8 @@ dependencies:
   sign_in_with_apple: 6.1.2
   sliding_up_panel: 2.0.0+1
   stack_trace: 1.11.1
+  store_checker_windows: 
+    path: ./packages/store_checker_windows
   styled_widget: 0.4.1
   talker: 4.4.1
   talker_dio_logger: 4.4.1
@@ -78,7 +80,7 @@ dependencies:
     git:
       url: https://github.com/KristijanMitrik/flutter_url_protocol
       ref: main
-  window_manager: 0.4.2
+  window_manager: 0.4.3
   wireguard_dart:
     git:
       url: https://github.com/mysteriumnetwork/wireguard_dart.git

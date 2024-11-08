@@ -101,10 +101,10 @@ class MinAppVersionChecker extends HookConsumerWidget {
     } else if (Platform.isMacOS) {
       return remoteConfigStore.minMacosBuildNumber;
     } else if (Platform.isWindows) {
-      if (installerStore == 'microsoft') {
-        return remoteConfigStore.minWindowsBuildNumber;
+      if (installerStore == windowsStandAloneProductId) {
+        return remoteConfigStore.minWindowsStandAloneBuildNumber;
       }
-      return remoteConfigStore.minWindowsStandAloneBuildNumber;
+      return remoteConfigStore.minWindowsBuildNumber;
     }
     return '0';
   }

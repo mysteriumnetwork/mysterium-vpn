@@ -68,3 +68,6 @@ Podfile.lock
 
 # FVM Version Cache
 .fvm/
+
+# Certificate files
+/assets/certificates
