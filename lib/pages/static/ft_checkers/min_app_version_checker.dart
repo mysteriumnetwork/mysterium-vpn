@@ -61,7 +61,7 @@ class MinAppVersionChecker extends HookConsumerWidget {
                     EasyButton(
                       onPressed: () async {
                         try {
-                          if (env.buildInfo.installerStore == 'microsoft') {
+                          if (env.buildInfo.installerStore == windowsStandAloneProductId) {
                             openUrlLink(Uri.parse(windowsGithubDownloadLink));
                           } else {
                             OpenStore.instance.open(
