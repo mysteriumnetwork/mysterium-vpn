@@ -17,6 +17,8 @@ import 'package:mysterium_vpn/stores/intercom/intercom_mobile_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
+import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/rest_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
@@ -34,6 +36,9 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final intercomStore = ref.watch(intercomStorePOD);
   final logger = ref.watch(loggerPOD);
   final userPreferencesStore = ref.watch(userPreferencesStorePOD);
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+  final abTestingStore = ref.watch(abTestingStorePOD);
+
   return AuthStore(
     authService: authService,
     appLinks: appLinks,
@@ -43,6 +48,8 @@ final authStorePOD = Provider<AuthStore>((ref) {
     intercomStore: intercomStore,
     logger: logger,
     userPreferencesStore: userPreferencesStore,
+    remoteConfigStore: remoteConfigStore,
+    abTestingStore: abTestingStore,
   );
 });
 
@@ -106,6 +113,10 @@ final environmentPOD = StateProvider<FlavorConfig>(
   (ref) => FlavorConfig(
     flavor: Flavor.dev,
     values: FlavorValues.dev(),
+    buildInfo: BuildInfo(
+      buildNumber: 0,
+      buildVersion: '0',
+    ),
   ),
 );
 
@@ -144,4 +155,16 @@ final userPreferencesStorePOD = StateProvider<UserPreferencesStore>((ref) {
   return UserPreferencesStore(
     apiService: apiService,
   );
+});
+
+final remoteConfigStorePOD = Provider<RemoteConfigStore>((ref) {
+  final logger = ref.watch(loggerPOD);
+  final configCatClient = ref.watch(remoteConfigClientPOD);
+  return RemoteConfigStore(client: configCatClient, logger: logger);
+});
+
+final abTestingStorePOD = Provider<ABTestingStore>((ref) {
+  final logger = ref.watch(loggerPOD);
+  final configCatClient = ref.watch(abTestingClientPOD);
+  return ABTestingStore(client: configCatClient, logger: logger);
 });

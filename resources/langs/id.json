@@ -473,5 +473,7 @@
   "logoutAllDevicesConfirmationDesc": "Anda akan keluar dari semua perangkat Anda. Apakah Anda yakin?",
   "logoutConfirmationTitle": "Keluar",
   "logoutConfirmationDesc": "Anda akan logout. Apakah Anda yakin?",
-  "loginSessionExpired": "Sesi Anda telah kedaluwarsa. Silakan login kembali."
+  "loginSessionExpired": "Sesi Anda telah kedaluwarsa. Silakan login kembali.",
+  "featureToggleMinVersionNotSatisfied": "Versi aplikasi Anda sudah usang. Harap perbarui aplikasi untuk terus menggunakannya.",
+  "buttonUpdateApp": "Perbarui sekarang"
 }

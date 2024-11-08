@@ -473,5 +473,7 @@
   "logoutAllDevicesConfirmationDesc": "Você está prestes a sair de todos os seus dispositivos.Tem certeza?",
   "logoutConfirmationTitle": "Sair",
   "logoutConfirmationDesc": "Você está prestes a sair. Tem certeza?",
-  "loginSessionExpired": "Sua sessão expirou. Faça login novamente."
+  "loginSessionExpired": "Sua sessão expirou. Faça login novamente.",
+  "featureToggleMinVersionNotSatisfied": "A versão do seu aplicativo está desatualizada. Atualize o aplicativo para continuar a usá-lo.",
+  "buttonUpdateApp": "Atualizar agora"
 }

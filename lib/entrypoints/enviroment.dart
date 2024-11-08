@@ -21,8 +21,10 @@ import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
+import 'package:store_checker_windows/store_checker_windows.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:url_protocol/url_protocol.dart';
 import 'package:window_manager/window_manager.dart';
@@ -69,7 +71,7 @@ class Enviroment {
       return stack;
     };
 
-    final flavorConfig = setupFlavor(flavor);
+    final flavorConfig = await setupFlavor(flavor: flavor);
     await setupTrayIcon(flavorConfig);
     await SharedPreferenceService.instance.init();
     await SecureStorageService.instance.init(flavorConfig);
@@ -78,10 +80,14 @@ class Enviroment {
     Hive
       ..registerAdapter(UserDataAdapter())
       ..registerAdapter(ApprovalAdapter());
-    await Hive.openBox<UserData>('user_data', compactionStrategy: (e, d) => false);
+    await Hive.openBox<UserData>(
+      'user_data',
+      compactionStrategy: (e, d) => false,
+    );
 
-    final container =
-        ProviderContainer(overrides: [environmentPOD.overrideWith((ref) => flavorConfig)]);
+    final container = ProviderContainer(
+      overrides: [environmentPOD.overrideWith((ref) => flavorConfig)],
+    );
     await container.read(analyticsInitPOD(firebaseOptions).future);
     final logger = container.read(loggerPOD);
 
@@ -96,8 +102,9 @@ class Enviroment {
       return true;
     };
 
-    logger
-        .log('App started in ${flavorConfig.flavor} mode\nBase URL ${flavorConfig.values.baseUrl}');
+    logger.log(
+      'App started in ${flavorConfig.flavor} mode\nBase URL ${flavorConfig.values.baseUrl}',
+    );
     await SentryFlutter.init(
       (options) {
         options
@@ -137,11 +144,44 @@ class Enviroment {
     );
   }
 
-  FlavorConfig setupFlavor(String flavor) => switch (flavor) {
-        'DEV' => FlavorConfig(flavor: Flavor.dev, values: FlavorValues.dev()),
-        'PROD' => FlavorConfig(flavor: Flavor.production, values: FlavorValues.production()),
-        _ => FlavorConfig(flavor: Flavor.dev, values: FlavorValues.dev())
-      };
+  Future<FlavorConfig> setupFlavor({required String flavor}) async {
+    var buildInfo = BuildInfo(
+      buildNumber: 0,
+      buildVersion: '0',
+    );
+    try {
+      final info = await PackageInfo.fromPlatform();
+      var installerStore = info.installerStore;
+      if (Platform.isWindows) {
+        installerStore = getCurrentPackageFullName();
+      }
+      buildInfo = BuildInfo(
+        buildNumber: int.tryParse(info.buildNumber) ?? 0,
+        buildVersion: info.version,
+        installerStore: installerStore,
+      );
+    } catch (e) {
+      debugPrint('Error getting package info');
+    }
+
+    return switch (flavor) {
+      'DEV' => FlavorConfig(
+          flavor: Flavor.dev,
+          values: FlavorValues.dev(),
+          buildInfo: buildInfo,
+        ),
+      'PROD' => FlavorConfig(
+          flavor: Flavor.production,
+          values: FlavorValues.production(),
+          buildInfo: buildInfo,
+        ),
+      _ => FlavorConfig(
+          flavor: Flavor.dev,
+          values: FlavorValues.dev(),
+          buildInfo: buildInfo,
+        ),
+    };
+  }
 
   Future<void> nativeInitBackground(List<Object> args) async {
     final rootIsolateToken = args[0] as RootIsolateToken;
