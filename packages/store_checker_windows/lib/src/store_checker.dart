@@ -3,44 +3,51 @@ import 'dart:ffi';
 import 'package:ffi/ffi.dart';
 import 'package:win32/win32.dart';
 
+final _kernel32 = DynamicLibrary.open('kernel32.dll');
+
+// Define the GetCurrentPackageFullName function
 typedef GetCurrentPackageFullNameC = Int32 Function(
     Pointer<Uint32> packageFullNameLength, Pointer<Utf16> packageFullName);
 typedef GetCurrentPackageFullNameDart = int Function(
     Pointer<Uint32> packageFullNameLength, Pointer<Utf16> packageFullName);
 
-final kernel32 = DynamicLibrary.open('kernel32.dll');
+final _getCurrentPackageFullName =
+    _kernel32.lookupFunction<GetCurrentPackageFullNameC, GetCurrentPackageFullNameDart>(
+  'GetCurrentPackageFullName',
+);
 
-final getWindowsCurrentPackageFullName =
-    kernel32.lookupFunction<GetCurrentPackageFullNameC, GetCurrentPackageFullNameDart>(
-        'GetCurrentPackageFullName');
+String? getCurrentPackageFullName() {
+  final length = calloc<Uint32>();
+  final result = _getCurrentPackageFullName(length, nullptr);
 
-String getCurrentPackageFullName() {
-  final packageFullNameLength = calloc<Uint32>();
-  final packageFullName = calloc<Uint16>(MAX_PATH).cast<Utf16>();
-
-  try {
-    final hr = getWindowsCurrentPackageFullName(packageFullNameLength, packageFullName);
-
-    if (hr == WIN32_ERROR.ERROR_INSUFFICIENT_BUFFER) {
-      final newLength = packageFullNameLength.value;
-      calloc.free(packageFullName);
-      final newPackageFullName = calloc<Uint16>(newLength).cast<Utf16>();
-
-      final newHr = getWindowsCurrentPackageFullName(packageFullNameLength, newPackageFullName);
-      if (newHr == S_OK) {
-        return newPackageFullName.toDartString();
-      }
-    } else if (hr == S_OK) {
-      return packageFullName.toDartString();
-    } else if (hr == WIN32_ERROR.APPMODEL_ERROR_NO_PACKAGE) {
-      return 'App is not a packaged app';
+  if (result != WIN32_ERROR.ERROR_INSUFFICIENT_BUFFER) {
+    if (result == WIN32_ERROR.APPMODEL_ERROR_NO_PACKAGE) {
+      print('Process has no package identity');
+      calloc.free(length);
+      return null;
+    } else {
+      print('Error $result in GetCurrentPackageFullName');
+      calloc.free(length);
+      return null;
     }
-  } finally {
-    calloc.free(packageFullNameLength);
-    calloc.free(packageFullName);
   }
 
-  return 'Failed to get package full name';
+  final fullName = calloc<Uint16>(length.value).cast<Utf16>();
+  final result2 = _getCurrentPackageFullName(length, fullName);
+
+  if (result2 != WIN32_ERROR.ERROR_SUCCESS) {
+    print('Error $result2 retrieving PackageFullName');
+    calloc.free(fullName);
+    calloc.free(length);
+    return null;
+  }
+
+  final packageFullName = fullName.toDartString();
+
+  calloc.free(fullName);
+  calloc.free(length);
+
+  return packageFullName;
 }
 
 void main() {

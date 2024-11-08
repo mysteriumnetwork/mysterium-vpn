@@ -24,6 +24,7 @@ import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dar
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
+import 'package:store_checker_windows/store_checker_windows.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:url_protocol/url_protocol.dart';
 import 'package:window_manager/window_manager.dart';
@@ -79,10 +80,14 @@ class Enviroment {
     Hive
       ..registerAdapter(UserDataAdapter())
       ..registerAdapter(ApprovalAdapter());
-    await Hive.openBox<UserData>('user_data', compactionStrategy: (e, d) => false);
+    await Hive.openBox<UserData>(
+      'user_data',
+      compactionStrategy: (e, d) => false,
+    );
 
-    final container =
-        ProviderContainer(overrides: [environmentPOD.overrideWith((ref) => flavorConfig)]);
+    final container = ProviderContainer(
+      overrides: [environmentPOD.overrideWith((ref) => flavorConfig)],
+    );
     await container.read(analyticsInitPOD(firebaseOptions).future);
     final logger = container.read(loggerPOD);
 
@@ -97,8 +102,9 @@ class Enviroment {
       return true;
     };
 
-    logger
-        .log('App started in ${flavorConfig.flavor} mode\nBase URL ${flavorConfig.values.baseUrl}');
+    logger.log(
+      'App started in ${flavorConfig.flavor} mode\nBase URL ${flavorConfig.values.baseUrl}',
+    );
     await SentryFlutter.init(
       (options) {
         options
@@ -145,10 +151,14 @@ class Enviroment {
     );
     try {
       final info = await PackageInfo.fromPlatform();
+      var installerStore = info.installerStore;
+      if (Platform.isWindows) {
+        installerStore = getCurrentPackageFullName();
+      }
       buildInfo = BuildInfo(
         buildNumber: int.tryParse(info.buildNumber) ?? 0,
         buildVersion: info.version,
-        installerStore: info.installerStore,
+        installerStore: installerStore,
       );
     } catch (e) {
       debugPrint('Error getting package info');
