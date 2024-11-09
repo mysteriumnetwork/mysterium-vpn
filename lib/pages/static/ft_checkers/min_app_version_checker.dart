@@ -61,7 +61,10 @@ class MinAppVersionChecker extends HookConsumerWidget {
                     EasyButton(
                       onPressed: () async {
                         try {
-                          if (env.buildInfo.installerStore == windowsStandAloneProductId) {
+                          if (env.buildInfo.installerStore
+                                  ?.toLowerCase()
+                                  .contains(windowsStandAloneProductId.toLowerCase()) ??
+                              false) {
                             openUrlLink(Uri.parse(windowsGithubDownloadLink));
                           } else {
                             OpenStore.instance.open(
@@ -101,7 +104,8 @@ class MinAppVersionChecker extends HookConsumerWidget {
     } else if (Platform.isMacOS) {
       return remoteConfigStore.minMacosBuildNumber;
     } else if (Platform.isWindows) {
-      if (installerStore == windowsStandAloneProductId) {
+      if (installerStore?.toLowerCase().contains(windowsStandAloneProductId.toLowerCase()) ??
+          false) {
         return remoteConfigStore.minWindowsStandAloneBuildNumber;
       }
       return remoteConfigStore.minWindowsBuildNumber;
