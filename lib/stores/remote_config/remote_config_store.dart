@@ -1,5 +1,6 @@
 import 'package:configcat_client/configcat_client.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:talker/talker.dart';
 
 part 'remote_config_store.g.dart';
@@ -133,4 +134,7 @@ abstract class RemoteConfigStoreBase with Store {
     }
     return '0';
   }
+
+  Map<String, String> get asUserProperties =>
+      config.map((key, value) => MapEntry(key.toSnakeCase, value.toString()));
 }
