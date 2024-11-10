@@ -33,7 +33,26 @@ abstract class _PurchasableProduct with Store {
   String get id => planDetails.id;
 
   @computed
+  int get duration => planDetails.id == kMonthlyPlan
+      ? 1
+      : planDetails.id == ksemiAnnualPlan
+          ? 6
+          : 12;
+
+  @computed
   String get billedPerMonth => LocaleKeys.billedPerMonth.tr(
+        namedArgs: {
+          'amount': monthlyPrice,
+          'period': planDetails.id == kMonthlyPlan
+              ? LocaleKeys.monthly.tr()
+              : planDetails.id == ksemiAnnualPlan
+                  ? LocaleKeys.semiAnnual.tr()
+                  : LocaleKeys.yearly.tr(),
+        },
+      );
+
+  @computed
+  String get billedPerMonthShort => LocaleKeys.billedInTotal.tr(
         namedArgs: {
           'amount': monthlyPrice,
           'period': planDetails.id == kMonthlyPlan
