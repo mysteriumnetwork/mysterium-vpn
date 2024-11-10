@@ -84,6 +84,7 @@ class _FeatureItem extends StatelessWidget {
                   child: EasyText(
                     title,
                     fontSize: 14,
+                    color: isDarkTheme ? const Color(0xffC4C1DD) : const Color(0xff716F8A),
                   ),
                 ),
               ],
@@ -94,7 +95,7 @@ class _FeatureItem extends StatelessWidget {
                   vertical: 8,
                 ),
                 child: Divider(
-                  color: isDarkTheme ? const Color(0xff6a678e) : const Color(0xffF5F3FD),
+                  color: isDarkTheme ? const Color(0xff6a678e) : const Color.fromRGBO(166, 163, 201, 0.4),
                   thickness: 1,
                   height: 1,
                 ),

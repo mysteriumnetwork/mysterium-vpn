@@ -10,12 +10,16 @@ import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/bottom_spacer.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
+import 'package:mysterium_vpn/components/ripple.dart';
+import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/views/subscription/subscription_button.dart';
+import 'package:mysterium_vpn/views/subscription/widgets/billing_text.dart';
+import 'package:mysterium_vpn/views/subscription/widgets/discount_tag.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/highlighted_product.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -97,24 +101,16 @@ class _ProductPickerDialog extends HookWidget {
               ),
               SizedBox(height: getMediaHeight(context) * 0.02),
               if (seeAllPlans.value)
-                ...products.reversed.map(
-                  (product) => HighlightedProduct(
-                    selectProdcut: () {
-                      selectedProductId.value = product.id;
-                    },
-                    product: product,
-                    isDarkTheme: isDarkTheme,
-                    monthlyRawPrice: products.first.rawPrice,
-                    isHighlighted: false,
-                    showDiscountTag: product.id == products.last.id,
-                    isSelected: selectedProductId.value == product.id,
-                  ),
+                _ProductsContainer(
+                  products: products,
+                  selectedProductId: selectedProductId,
+                  isDarkTheme: isDarkTheme,
                 )
               else
                 HighlightedProduct(
-                  product: products.last,
+                  product: products.first,
                   isDarkTheme: isDarkTheme,
-                  monthlyRawPrice: products.first.rawPrice,
+                  monthlyRawPrice: products.last.rawPrice,
                   showDiscountTag: true,
                   isHighlighted: false,
                 ),
@@ -122,7 +118,7 @@ class _ProductPickerDialog extends HookWidget {
               SubscriptionButton(
                 onPressed: () => subscribeToPackage(selectedProductId.value),
                 isLoading: subscriptionStore.subscriptonStatus == SubscriptionStatus.verifying,
-                label: LocaleKeys.startTrialBtn.tr(),
+                label: LocaleKeys.letsGoBtn.tr(),
               ),
               if (!seeAllPlans.value)
                 TextButton(
@@ -141,4 +137,120 @@ class _ProductPickerDialog extends HookWidget {
       ),
     );
   }
+}
+
+class _ProductsContainer extends StatelessWidget {
+  const _ProductsContainer({
+    required this.products,
+    required this.selectedProductId,
+    required this.isDarkTheme,
+  });
+  final List<PurchasableProduct> products;
+  final ValueNotifier<String> selectedProductId;
+  final bool isDarkTheme;
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+        decoration: BoxDecoration(
+          color: isDarkTheme ? const Color(0xff23222D) : const Color(0xff363355),
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          border: Border.all(color: Palette.purple, width: 1.5),
+        ),
+        child: ListView.separated(
+          shrinkWrap: true,
+          padding: EdgeInsets.zero,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: products.length,
+          itemBuilder: (context, index) => ContaineredProduct(
+            selectProdcut: () {
+              selectedProductId.value = products[index].id;
+            },
+            product: products[index],
+            monthlyRawPrice: products.last.rawPrice,
+            showDiscountTag: products[index].id == products.first.id,
+            isSelected: selectedProductId.value == products[index].id,
+            isDarkTheme: false,
+          ),
+          separatorBuilder: (context, index) => const Divider(
+            color: Color.fromRGBO(106, 103, 142, 0.4),
+            thickness: 1,
+            height: 1,
+          ),
+        ),
+      );
+}
+
+class ContaineredProduct extends StatelessWidget {
+  const ContaineredProduct({
+    required this.product,
+    required this.isDarkTheme,
+    required this.monthlyRawPrice,
+    required this.showDiscountTag,
+    required this.isSelected,
+    this.selectProdcut,
+    super.key,
+  });
+  final PurchasableProduct product;
+  final double monthlyRawPrice;
+  final bool isDarkTheme;
+  final VoidCallback? selectProdcut;
+  final bool showDiscountTag;
+  final bool isSelected;
+
+  @override
+  Widget build(BuildContext context) => RippleWidget(
+        onTap: selectProdcut,
+        radius: 0,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                EasyText(
+                  product.id.tr(),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: !isDarkTheme ? Palette.white : null,
+                ),
+                const SizedBox(width: 8),
+                if (showDiscountTag)
+                  DiscountTag(
+                    monthlyRawPrice: monthlyRawPrice,
+                    product: product,
+                  ),
+                if (isSelected) ...[
+                  const Spacer(),
+                  const SvgIcon(
+                    asset: Assets.checkmark,
+                  ),
+                ],
+              ],
+            ),
+            RichText(
+              text: TextSpan(
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontSize: 14,
+                    ),
+                children: [
+                  TextSpan(
+                    text: product.monthlyPrice,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Palette.purple,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  TextSpan(
+                    text: LocaleKeys.perMonth.tr(),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Palette.purple,
+                          fontSize: 14,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+            BillingText(product: product, isDarkTheme: isDarkTheme),
+          ],
+        ).padding(horizontal: 16, vertical: 12).width(double.infinity),
+      );
 }
