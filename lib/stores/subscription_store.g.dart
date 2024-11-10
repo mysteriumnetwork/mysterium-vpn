@@ -12,15 +12,17 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
   Computed<bool?>? _$isSubscribedComputed;
 
   @override
-  bool? get isSubscribed => (_$isSubscribedComputed ??=
-          Computed<bool?>(() => super.isSubscribed, name: '_SubscriptionStore.isSubscribed'))
-      .value;
+  bool? get isSubscribed =>
+      (_$isSubscribedComputed ??= Computed<bool?>(() => super.isSubscribed,
+              name: '_SubscriptionStore.isSubscribed'))
+          .value;
   Computed<bool>? _$isLoadingComputed;
 
   @override
-  bool get isLoading => (_$isLoadingComputed ??=
-          Computed<bool>(() => super.isLoading, name: '_SubscriptionStore.isLoading'))
-      .value;
+  bool get isLoading =>
+      (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading,
+              name: '_SubscriptionStore.isLoading'))
+          .value;
 
   late final _$isAvailableFutureAtom =
       Atom(name: '_SubscriptionStore.isAvailableFuture', context: context);
@@ -38,8 +40,8 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     });
   }
 
-  late final _$verifySubscriptionFutureAtom =
-      Atom(name: '_SubscriptionStore.verifySubscriptionFuture', context: context);
+  late final _$verifySubscriptionFutureAtom = Atom(
+      name: '_SubscriptionStore.verifySubscriptionFuture', context: context);
 
   @override
   ObservableFuture<Subscription>? get verifySubscriptionFuture {
@@ -49,7 +51,8 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
 
   @override
   set verifySubscriptionFuture(ObservableFuture<Subscription>? value) {
-    _$verifySubscriptionFutureAtom.reportWrite(value, super.verifySubscriptionFuture, () {
+    _$verifySubscriptionFutureAtom
+        .reportWrite(value, super.verifySubscriptionFuture, () {
       super.verifySubscriptionFuture = value;
     });
   }
@@ -70,7 +73,8 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     });
   }
 
-  late final _$_subscriptionAtom = Atom(name: '_SubscriptionStore._subscription', context: context);
+  late final _$_subscriptionAtom =
+      Atom(name: '_SubscriptionStore._subscription', context: context);
 
   Subscription? get subscription {
     _$_subscriptionAtom.reportRead();
@@ -87,7 +91,8 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     });
   }
 
-  late final _$_expiredAtom = Atom(name: '_SubscriptionStore._expired', context: context);
+  late final _$_expiredAtom =
+      Atom(name: '_SubscriptionStore._expired', context: context);
 
   bool? get expired {
     _$_expiredAtom.reportRead();
@@ -104,7 +109,8 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     });
   }
 
-  late final _$_isAvailableAtom = Atom(name: '_SubscriptionStore._isAvailable', context: context);
+  late final _$_isAvailableAtom =
+      Atom(name: '_SubscriptionStore._isAvailable', context: context);
 
   StoreState get isAvailable {
     _$_isAvailableAtom.reportRead();
@@ -136,22 +142,6 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
   set _purchasedProductId(String? value) {
     _$_purchasedProductIdAtom.reportWrite(value, super._purchasedProductId, () {
       super._purchasedProductId = value;
-    });
-  }
-
-  late final _$selectedProductIdAtom =
-      Atom(name: '_SubscriptionStore.selectedProductId', context: context);
-
-  @override
-  String get selectedProductId {
-    _$selectedProductIdAtom.reportRead();
-    return super.selectedProductId;
-  }
-
-  @override
-  set selectedProductId(String value) {
-    _$selectedProductIdAtom.reportWrite(value, super.selectedProductId, () {
-      super.selectedProductId = value;
     });
   }
 
@@ -191,7 +181,8 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     });
   }
 
-  late final _$_lastPurchaseAtom = Atom(name: '_SubscriptionStore._lastPurchase', context: context);
+  late final _$_lastPurchaseAtom =
+      Atom(name: '_SubscriptionStore._lastPurchase', context: context);
 
   PurchaseDetails? get lastPurchase {
     _$_lastPurchaseAtom.reportRead();
@@ -208,7 +199,8 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     });
   }
 
-  late final _$_productsAtom = Atom(name: '_SubscriptionStore._products', context: context);
+  late final _$_productsAtom =
+      Atom(name: '_SubscriptionStore._products', context: context);
 
   ObservableList<PurchasableProduct> get products {
     _$_productsAtom.reportRead();
@@ -225,7 +217,8 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     });
   }
 
-  late final _$initStoreAsyncAction = AsyncAction('_SubscriptionStore.initStore', context: context);
+  late final _$initStoreAsyncAction =
+      AsyncAction('_SubscriptionStore.initStore', context: context);
 
   @override
   Future<void> initStore() {
@@ -240,12 +233,14 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     return _$fetchSubscriptionAsyncAction.run(() => super.fetchSubscription());
   }
 
-  late final _$getSubscriptionsConfigAsyncAction =
-      AsyncAction('_SubscriptionStore.getSubscriptionsConfig', context: context);
+  late final _$getSubscriptionsConfigAsyncAction = AsyncAction(
+      '_SubscriptionStore.getSubscriptionsConfig',
+      context: context);
 
   @override
   Future<void> getSubscriptionsConfig() {
-    return _$getSubscriptionsConfigAsyncAction.run(() => super.getSubscriptionsConfig());
+    return _$getSubscriptionsConfigAsyncAction
+        .run(() => super.getSubscriptionsConfig());
   }
 
   late final _$getProductsDetailsAsyncAction =
@@ -253,15 +248,17 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
 
   @override
   Future<void> getProductsDetails() {
-    return _$getProductsDetailsAsyncAction.run(() => super.getProductsDetails());
+    return _$getProductsDetailsAsyncAction
+        .run(() => super.getProductsDetails());
   }
 
   late final _$subscribeToPackageAsyncAction =
       AsyncAction('_SubscriptionStore.subscribeToPackage', context: context);
 
   @override
-  Future<void> subscribeToPackage() {
-    return _$subscribeToPackageAsyncAction.run(() => super.subscribeToPackage());
+  Future<void> subscribeToPackage({required ProductDetails product}) {
+    return _$subscribeToPackageAsyncAction
+        .run(() => super.subscribeToPackage(product: product));
   }
 
   late final _$redeemCodeAsyncAction =
@@ -277,24 +274,28 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
 
   @override
   Future<void> _handlePurchase(PurchaseDetails purchaseDetails) {
-    return _$_handlePurchaseAsyncAction.run(() => super._handlePurchase(purchaseDetails));
+    return _$_handlePurchaseAsyncAction
+        .run(() => super._handlePurchase(purchaseDetails));
   }
 
   late final _$verifyPurchaseAsyncAction =
       AsyncAction('_SubscriptionStore.verifyPurchase', context: context);
 
   @override
-  Future<void> verifyPurchase(String productId, String price, PurchaseDetails purchaseDetails) {
+  Future<void> verifyPurchase(
+      String productId, String price, PurchaseDetails purchaseDetails) {
     return _$verifyPurchaseAsyncAction
         .run(() => super.verifyPurchase(productId, price, purchaseDetails));
   }
 
-  late final _$retryVerificationProcessAsyncAction =
-      AsyncAction('_SubscriptionStore.retryVerificationProcess', context: context);
+  late final _$retryVerificationProcessAsyncAction = AsyncAction(
+      '_SubscriptionStore.retryVerificationProcess',
+      context: context);
 
   @override
   Future<void> retryVerificationProcess() {
-    return _$retryVerificationProcessAsyncAction.run(() => super.retryVerificationProcess());
+    return _$retryVerificationProcessAsyncAction
+        .run(() => super.retryVerificationProcess());
   }
 
   late final _$_SubscriptionStoreActionController =
@@ -339,7 +340,6 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
 isAvailableFuture: ${isAvailableFuture},
 verifySubscriptionFuture: ${verifySubscriptionFuture},
 subscriptionFuture: ${subscriptionFuture},
-selectedProductId: ${selectedProductId},
 isSubscribed: ${isSubscribed},
 isLoading: ${isLoading}
     ''';
