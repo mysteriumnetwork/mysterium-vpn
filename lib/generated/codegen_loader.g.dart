@@ -492,7 +492,33 @@ class CodegenLoader extends AssetLoader {
     "logoutConfirmationDesc": "您即将退出。您确定吗？",
     "loginSessionExpired": "您的会话已过期。请重新登录。",
     "featureToggleMinVersionNotSatisfied": "您的应用程序版本已过时。请更新应用程序以继续使用。",
-    "buttonUpdateApp": "立即更新"
+    "buttonUpdateApp": "立即更新",
+    "pricingPlanTitle": "选择您的计划",
+    "pricingPlanFeatures": "功能",
+    "pricingPlanFeatures1": "覆盖135+个国家",
+    "pricingPlanFeatures2": "超过25,000个虚拟服务器",
+    "pricingPlanFeatures3": "所有IP都是住宅IP",
+    "pricingPlanFeatures4": "军用级加密",
+    "pricingPlanFeatures5": "24/7实时聊天客户支持",
+    "pricingPlanFeatures6": "7天退款保证",
+    "pricingPlanDiscountTitle": "那折扣呢？",
+    "pricingPlanDiscountDesc": "完全隐私而不昂贵——此计划为您的购买提供43%的折扣！",
+    "pricingPlanJoinNowBtn": "立即加入可节省49%",
+    "pricingPlanSeePlansBtn": "查看所有计划",
+    "pricingPlanLetsGoBtn": "走吧！",
+    "pricingPlanPunchLineTitle": "准备好无国界的互联网了吗？",
+    "pricingPlanPunchLineDesc": "隐私、安全和在线自由近在咫尺。无论你在哪里，无论你什么时候。",
+    "mostPopularTag": "最受欢迎",
+    "discountTag": "{discount}折扣",
+    "sixMonthsBonus": "支付6个月，获得6个月的奖励",
+    "yearlyPlanFullPrice": "{amount}",
+    "yearlyPlanDiscountPrice": "全年{amount}。",
+    "selectYourSubscription": "选择您的订阅",
+    "letsGoBtn": "走吧！",
+    "semiAnnualPlanDiscountPrice": "半年{amount}。",
+    "billedEveryYear": "{amount} 每年计费",
+    "billedEvery6Months": "{amount} 每 6 个月计费一次",
+    "billedEveryMonth": "{amount} 每月计费"
   };
   static const Map<String, dynamic> tr = {
     "title": "Merhaba efendim",
@@ -988,7 +1014,35 @@ class CodegenLoader extends AssetLoader {
     "loginSessionExpired": "Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın.",
     "featureToggleMinVersionNotSatisfied":
         "Uygulama sürümünüz eski. Kullanmaya devam etmek için lütfen uygulamayı güncelleyin.",
-    "buttonUpdateApp": "Şimdi güncelle"
+    "buttonUpdateApp": "Şimdi güncelle",
+    "pricingPlanTitle": "Önerilen planımız",
+    "pricingPlanFeatures": "Özellikler",
+    "pricingPlanFeatures1": "135+ ülke kapsanıyor",
+    "pricingPlanFeatures2": "25.000'den fazla sanal sunucu",
+    "pricingPlanFeatures3": "Tüm IP'ler konut IP'leridir",
+    "pricingPlanFeatures4": "Askeri düzeyde şifreleme",
+    "pricingPlanFeatures5": "7/24 canlı sohbet müşteri desteği",
+    "pricingPlanFeatures6": "7 günlük para iade garantisi",
+    "pricingPlanDiscountTitle": "Peki ya indirim?",
+    "pricingPlanDiscountDesc":
+        "Pahalı olmadan tam gizlilik - bu plan, satın alımınızda %43 indirim sunar!",
+    "pricingPlanJoinNowBtn": "Şimdi katılarak %49 tasarruf edin",
+    "pricingPlanSeePlansBtn": "Tüm planları gör",
+    "pricingPlanLetsGoBtn": "Hadi gidelim!",
+    "pricingPlanPunchLineTitle": "Sınırsız internet için hazır mısınız?",
+    "pricingPlanPunchLineDesc":
+        "Gizlilik, güvenlik ve çevrimiçi özgürlük sadece bir adım ötede. Nerede olursanız olun, ne zaman olursanız olun.",
+    "mostPopularTag": "En Popüler",
+    "discountTag": "{discount} indirim",
+    "sixMonthsBonus": "6 ay ödeyin, 6 BONUS kazanın",
+    "yearlyPlanFullPrice": "{amount}",
+    "yearlyPlanDiscountPrice": "Yıl için {amount}.",
+    "selectYourSubscription": "Aboneliğinizi seçin",
+    "letsGoBtn": "Hadi gidelim!",
+    "semiAnnualPlanDiscountPrice": "Yarı yıllık {amount}",
+    "billedEveryYear": "{amount} Her yıl faturalandırılır",
+    "billedEvery6Months": "{amount} 6 ayda bir faturalandırılır",
+    "billedEveryMonth": "{amount} Her ay faturalandırılır"
   };
   static const Map<String, dynamic> ja = {
     "title": "こんにちは。",
@@ -1470,7 +1524,33 @@ class CodegenLoader extends AssetLoader {
     "logoutConfirmationDesc": "ログアウトしようとしています。よろしいですか?",
     "loginSessionExpired": "セッションの有効期限が切れました。再度ログインしてください。",
     "featureToggleMinVersionNotSatisfied": "アプリのバージョンが古いです。引き続き使用するには、アプリを更新してください。",
-    "buttonUpdateApp": "今すぐアップデートしてください"
+    "buttonUpdateApp": "今すぐアップデートしてください",
+    "pricingPlanTitle": "おすすめのプラン",
+    "pricingPlanFeatures": "特徴",
+    "pricingPlanFeatures1": "135以上の国をカバー",
+    "pricingPlanFeatures2": "25,000以上の仮想サーバー",
+    "pricingPlanFeatures3": "すべてのIPは住宅用",
+    "pricingPlanFeatures4": "軍用グレードの暗号化",
+    "pricingPlanFeatures5": "24/7ライブチャットカスタマーサポート",
+    "pricingPlanFeatures6": "7日間の返金保証",
+    "pricingPlanDiscountTitle": "割引についてはどうですか？",
+    "pricingPlanDiscountDesc": "高価ではない完全なプライバシー - このプランは購入に43％の割引を提供します！",
+    "pricingPlanJoinNowBtn": "今すぐ参加して49％節約",
+    "pricingPlanSeePlansBtn": "すべてのプランを見る",
+    "pricingPlanLetsGoBtn": "行こう！",
+    "pricingPlanPunchLineTitle": "国境のないインターネットの準備はできましたか？",
+    "pricingPlanPunchLineDesc": "プライバシー、セキュリティ、オンラインの自由はすぐそこにあります。どこにいても、いつでも。",
+    "mostPopularTag": "最も人気のある",
+    "discountTag": "{discount}オフ",
+    "sixMonthsBonus": "6ヶ月分を支払い、6ヶ月のボーナスを獲得",
+    "yearlyPlanFullPrice": "{amount}",
+    "yearlyPlanDiscountPrice": "年間{amount}。",
+    "selectYourSubscription": "サブスクリプションを選択してください",
+    "letsGoBtn": "行こう！",
+    "semiAnnualPlanDiscountPrice": "6ヶ月{amount}。",
+    "billedEveryYear": "{amount} 毎年請求される",
+    "billedEvery6Months": "{amount} 6 か月ごとに請求されます",
+    "billedEveryMonth": "{amount} 毎月請求される"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1985,7 +2065,35 @@ class CodegenLoader extends AssetLoader {
     "loginSessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
     "featureToggleMinVersionNotSatisfied":
         "Ihre App-Version ist veraltet. Bitte aktualisieren Sie die App, um sie weiterhin verwenden zu können.",
-    "buttonUpdateApp": "Jetzt aktualisieren"
+    "buttonUpdateApp": "Jetzt aktualisieren",
+    "pricingPlanTitle": "Wählen Sie Ihren Plan",
+    "pricingPlanFeatures": "Eigenschaften",
+    "pricingPlanFeatures1": "135+ Länder abgedeckt",
+    "pricingPlanFeatures2": "Über 25 000 virtuelle Server",
+    "pricingPlanFeatures3": "Alle IPs sind Wohnadressen",
+    "pricingPlanFeatures4": "Verschlüsselung in Militärqualität",
+    "pricingPlanFeatures5": "24/7 Live-Chat-Kundensupport",
+    "pricingPlanFeatures6": "7-Tage-Geld-zurück-Garantie",
+    "pricingPlanDiscountTitle": "Und was ist mit einem Rabatt?",
+    "pricingPlanDiscountDesc":
+        "Volle Privatsphäre ohne teuer zu sein - dieser Plan bietet einen Rabatt von 43% auf Ihren Kauf!",
+    "pricingPlanJoinNowBtn": "Sparen Sie 49%, indem Sie jetzt beitreten",
+    "pricingPlanSeePlansBtn": "Alle Pläne anzeigen",
+    "pricingPlanLetsGoBtn": "Los geht's!",
+    "pricingPlanPunchLineTitle": "Bereit für grenzenloses Internet?",
+    "pricingPlanPunchLineDesc":
+        "Privatsphäre, Sicherheit und Online-Freiheit sind gleich um die Ecke. Wo auch immer Sie sind, wann auch immer Sie sind.",
+    "mostPopularTag": "Am beliebtesten",
+    "discountTag": "{discount} Rabatt",
+    "sixMonthsBonus": "Zahlen Sie für 6 Monate, erhalten Sie 6 BONUS",
+    "yearlyPlanFullPrice": "{amount}",
+    "yearlyPlanDiscountPrice": "{amount} für das Jahr.",
+    "selectYourSubscription": "Wählen Sie Ihr Abonnement",
+    "letsGoBtn": "Los geht's",
+    "semiAnnualPlanDiscountPrice": "{amount} für 6 Monate.",
+    "billedEveryYear": "{amount} Wird jedes Jahr in Rechnung gestellt",
+    "billedEvery6Months": "{amount} Wird alle 6 Monate in Rechnung gestellt",
+    "billedEveryMonth": "{amount} Wird jeden Monat in Rechnung gestellt"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2488,7 +2596,35 @@ class CodegenLoader extends AssetLoader {
     "loginSessionExpired": "Sua sessão expirou. Faça login novamente.",
     "featureToggleMinVersionNotSatisfied":
         "A versão do seu aplicativo está desatualizada. Atualize o aplicativo para continuar a usá-lo.",
-    "buttonUpdateApp": "Atualizar agora"
+    "buttonUpdateApp": "Atualizar agora",
+    "pricingPlanTitle": "Nosso plano recomendado",
+    "pricingPlanFeatures": "Recursos",
+    "pricingPlanFeatures1": "135+ países cobertos",
+    "pricingPlanFeatures2": "Mais de 25.000 servidores virtuais",
+    "pricingPlanFeatures3": "Todos os IPs são residenciais",
+    "pricingPlanFeatures4": "Criptografia de nível militar",
+    "pricingPlanFeatures5": "Suporte ao cliente via chat ao vivo 24/7",
+    "pricingPlanFeatures6": "Garantia de devolução do dinheiro em 7 dias",
+    "pricingPlanDiscountTitle": "E quanto a um desconto?",
+    "pricingPlanDiscountDesc":
+        "Privacidade total sem ser caro - este plano oferece um desconto de 43% na sua compra!",
+    "pricingPlanJoinNowBtn": "Economize 49% ao se juntar agora",
+    "pricingPlanSeePlansBtn": "Veja todos os planos",
+    "pricingPlanLetsGoBtn": "Vamos!",
+    "pricingPlanPunchLineTitle": "Pronto para uma internet sem fronteiras?",
+    "pricingPlanPunchLineDesc":
+        "Privacidade, segurança e liberdade online estão ao seu alcance. Onde quer que você esteja, a qualquer momento.",
+    "mostPopularTag": "Mais Popular",
+    "discountTag": "{discount} de desconto",
+    "sixMonthsBonus": "Pague por 6 meses, ganhe 6 BÔNUS",
+    "yearlyPlanFullPrice": "{amount}",
+    "yearlyPlanDiscountPrice": "{amount} por ano.",
+    "selectYourSubscription": "Selecione sua assinatura",
+    "letsGoBtn": "Vamos!",
+    "semiAnnualPlanDiscountPrice": "{amount} por 6 meses.",
+    "billedEveryYear": "{amount} Faturado anualmente",
+    "billedEvery6Months": "{amount} Faturado a cada 6 meses",
+    "billedEveryMonth": "{amount} Faturado todo mês"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -2989,8 +3125,36 @@ class CodegenLoader extends AssetLoader {
     "logoutConfirmationDesc": "You’re about to log out. Are you sure?",
     "loginSessionExpired": "Your session has expired. Please log in again.",
     "featureToggleMinVersionNotSatisfied":
-        "Your app version is outdated.Please update the app to continue using it.",
-    "buttonUpdateApp": "Update now"
+        "Your app version is outdated. Please update the app to continue using it.",
+    "buttonUpdateApp": "Update now",
+    "pricingPlanTitle": "Our recommended plan",
+    "pricingPlanFeatures": "Features",
+    "pricingPlanFeatures1": "135+ countries covered",
+    "pricingPlanFeatures2": "Over 25 000 virtual servers",
+    "pricingPlanFeatures3": "All IPs are residential",
+    "pricingPlanFeatures4": "Military-grade encryption",
+    "pricingPlanFeatures5": "24/7 live chat customer support",
+    "pricingPlanFeatures6": "7-day money-back guarantee",
+    "pricingPlanDiscountTitle": "And what about a discount?",
+    "pricingPlanDiscountDesc":
+        "Full privacy without being pricy—this plan offers a 43% discount on your purchase!",
+    "pricingPlanJoinNowBtn": "Save 49% by joining now",
+    "pricingPlanSeePlansBtn": "See all plans",
+    "pricingPlanLetsGoBtn": "Let’s go!",
+    "pricingPlanPunchLineTitle": "Ready for borderless internet?",
+    "pricingPlanPunchLineDesc":
+        "Privacy, security, and online freedom are just around the corner. Wherever you are, whenever you are.",
+    "mostPopularTag": "Most Popular",
+    "discountTag": "{discount} off",
+    "sixMonthsBonus": "Pay for 6 months,get 6 BONUS",
+    "yearlyPlanFullPrice": "{amount}",
+    "yearlyPlanDiscountPrice": "{amount} for the year.",
+    "semiAnnualPlanDiscountPrice": "{amount} for 6 months.",
+    "selectYourSubscription": "Select your subscription",
+    "letsGoBtn": "Let's go",
+    "billedEveryYear": "{amount} Billed every year",
+    "billedEvery6Months": "{amount} Billed every 6 months",
+    "billedEveryMonth": "{amount} Billed every month"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3498,7 +3662,35 @@ class CodegenLoader extends AssetLoader {
     "loginSessionExpired": "La tua sessione è scaduta. Effettua nuovamente l'accesso.",
     "featureToggleMinVersionNotSatisfied":
         "La versione dell'app è obsoleta. Aggiorna l'app per continuare a utilizzarla.",
-    "buttonUpdateApp": "Aggiorna ora"
+    "buttonUpdateApp": "Aggiorna ora",
+    "pricingPlanTitle": "Il nostro piano consigliato",
+    "pricingPlanFeatures": "Caratteristiche",
+    "pricingPlanFeatures1": "135+ paesi coperti",
+    "pricingPlanFeatures2": "Oltre 25.000 server virtuali",
+    "pricingPlanFeatures3": "Tutti gli IP sono residenziali",
+    "pricingPlanFeatures4": "Crittografia di livello militare",
+    "pricingPlanFeatures5": "Supporto clienti tramite chat live 24/7",
+    "pricingPlanFeatures6": "Garanzia di rimborso di 7 giorni",
+    "pricingPlanDiscountTitle": "E per quanto riguarda uno sconto?",
+    "pricingPlanDiscountDesc":
+        "Privacy totale senza essere costoso - questo piano offre uno sconto del 43% sul tuo acquisto!",
+    "pricingPlanJoinNowBtn": "Risparmia il 49% unendoti ora",
+    "pricingPlanSeePlansBtn": "Vedi tutti i piani",
+    "pricingPlanLetsGoBtn": "Andiamo!",
+    "pricingPlanPunchLineTitle": "Pronto per un internet senza confini?",
+    "pricingPlanPunchLineDesc":
+        "Privacy, sicurezza e libertà online sono a portata di mano. Ovunque tu sia, in qualsiasi momento.",
+    "mostPopularTag": "Più Popolare",
+    "discountTag": "Sconto del {discount}%",
+    "sixMonthsBonus": "Paga per 6 mesi, ottieni 6 BONUS",
+    "yearlyPlanFullPrice": "{amount}",
+    "yearlyPlanDiscountPrice": "{amount} per l'anno.",
+    "selectYourSubscription": "Seleziona il tuo abbonamento",
+    "letsGoBtn": "Andiamo!",
+    "semiAnnualPlanDiscountPrice": "{amount} per 6 mesi.",
+    "billedEveryYear": "{importo} Fatturato ogni anno",
+    "billedEvery6Months": "{importo} Fatturato ogni 6 mesi",
+    "billedEveryMonth": "{importo} Fatturato ogni mese"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -4008,7 +4200,35 @@ class CodegenLoader extends AssetLoader {
     "loginSessionExpired": "Votre session a expiré. Veuillez vous reconnecter.",
     "featureToggleMinVersionNotSatisfied":
         "La version de votre application est obsolète. Veuillez mettre à jour l'application pour continuer à l'utiliser.",
-    "buttonUpdateApp": "Mettre à jour maintenant"
+    "buttonUpdateApp": "Mettre à jour maintenant",
+    "pricingPlanTitle": "Plans de tarification",
+    "pricingPlanFeatures": "Caractéristiques",
+    "pricingPlanFeatures1": "135+ pays couverts",
+    "pricingPlanFeatures2": "Plus de 25 000 serveurs virtuels",
+    "pricingPlanFeatures3": "Toutes les IP sont résidentielles",
+    "pricingPlanFeatures4": "Cryptage de qualité militaire",
+    "pricingPlanFeatures5": "Support client en direct 24/7",
+    "pricingPlanFeatures6": "Garantie de remboursement de 7 jours",
+    "pricingPlanDiscountTitle": "Et qu'en est-il d'une réduction?",
+    "pricingPlanDiscountDesc":
+        "Confidentialité totale sans être cher: ce plan offre une réduction de 43% sur votre achat!",
+    "pricingPlanJoinNowBtn": "Économisez 49% en rejoignant maintenant",
+    "pricingPlanSeePlansBtn": "Voir tous les plans",
+    "pricingPlanLetsGoBtn": "Allons-y!",
+    "pricingPlanPunchLineTitle": "Prêt pour un internet sans frontières?",
+    "pricingPlanPunchLineDesc":
+        "Confidentialité, sécurité et liberté en ligne sont à portée de main. Où que vous soyez, quand que ce soit.",
+    "mostPopularTag": "Le Plus Populaire",
+    "discountTag": "{discount} de réduction",
+    "sixMonthsBonus": "Payez pour 6 mois, obtenez 6 BONUS",
+    "yearlyPlanFullPrice": "{amount}",
+    "yearlyPlanDiscountPrice": "{amount} pour l'année.",
+    "selectYourSubscription": "Sélectionnez votre abonnement",
+    "letsGoBtn": "Allons-y!",
+    "semiAnnualPlanDiscountPrice": "{amount} pour 6 mois.",
+    "billedEveryYear": "{amount} Facturé chaque année",
+    "billedEvery6Months": "{amount} Facturé tous les 6 mois",
+    "billedEveryMonth": "{amount} Facturé chaque mois"
   };
   static const Map<String, dynamic> id = {
     "title": "Halo Pak",
@@ -4510,7 +4730,35 @@ class CodegenLoader extends AssetLoader {
     "loginSessionExpired": "Sesi Anda telah kedaluwarsa. Silakan login kembali.",
     "featureToggleMinVersionNotSatisfied":
         "Versi aplikasi Anda sudah usang. Harap perbarui aplikasi untuk terus menggunakannya.",
-    "buttonUpdateApp": "Perbarui sekarang"
+    "buttonUpdateApp": "Perbarui sekarang",
+    "pricingPlanTitle": "Rencana yang kami rekomendasikan",
+    "pricingPlanFeatures": "Fitur",
+    "pricingPlanFeatures1": "135+ negara tercakup",
+    "pricingPlanFeatures2": "Lebih dari 25.000 server virtual",
+    "pricingPlanFeatures3": "Semua IP adalah IP residensial",
+    "pricingPlanFeatures4": "Enkripsi tingkat militer",
+    "pricingPlanFeatures5": "Dukungan pelanggan obrolan langsung 24/7",
+    "pricingPlanFeatures6": "Jaminan uang kembali 7 hari",
+    "pricingPlanDiscountTitle": "Bagaimana dengan diskon?",
+    "pricingPlanDiscountDesc":
+        "Privasi penuh tanpa mahal - rencana ini menawarkan diskon 43% untuk pembelian Anda!",
+    "pricingPlanJoinNowBtn": "Hemat 49% dengan bergabung sekarang",
+    "pricingPlanSeePlansBtn": "Lihat semua rencana",
+    "pricingPlanLetsGoBtn": "Ayo pergi!",
+    "pricingPlanPunchLineTitle": "Siap untuk internet tanpa batas?",
+    "pricingPlanPunchLineDesc":
+        "Privasi, keamanan, dan kebebasan online hanya beberapa langkah lagi. Di mana pun Anda berada, kapan pun Anda berada.",
+    "mostPopularTag": "Paling Populer",
+    "discountTag": "Diskon {discount}",
+    "sixMonthsBonus": "Bayar untuk 6 bulan, dapatkan 6 BONUS",
+    "yearlyPlanFullPrice": "{amount}",
+    "yearlyPlanDiscountPrice": "{amount} untuk tahun.",
+    "selectYourSubscription": "Pilih langganan Anda",
+    "letsGoBtn": "Ayo pergi!",
+    "semiAnnualPlanDiscountPrice": "{amount} untuk 6 bulan.",
+    "billedEveryYear": "{amount} Ditagih setiap tahun",
+    "billedEvery6Months": "{amount} Ditagih setiap 6 bulan",
+    "billedEveryMonth": "{amount} Ditagih setiap bulan"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -5016,7 +5264,35 @@ class CodegenLoader extends AssetLoader {
     "loginSessionExpired": "Su sesión ha caducado. Inicie sesión nuevamente.",
     "featureToggleMinVersionNotSatisfied":
         "La versión de tu aplicación está desactualizada. Actualízala para continuar usándola.",
-    "buttonUpdateApp": "Actualizar ahora"
+    "buttonUpdateApp": "Actualizar ahora",
+    "pricingPlanTitle": "Planes de precios",
+    "pricingPlanFeatures": "Características",
+    "pricingPlanFeatures1": "135+ países cubiertos",
+    "pricingPlanFeatures2": "Más de 25 000 servidores virtuales",
+    "pricingPlanFeatures3": "Todas las IPs son residenciales",
+    "pricingPlanFeatures4": "Cifrado de grado militar",
+    "pricingPlanFeatures5": "Soporte al cliente en vivo 24/7",
+    "pricingPlanFeatures6": "Garantía de devolución de dinero de 7 días",
+    "pricingPlanDiscountTitle": "¿Y qué hay de un descuento?",
+    "pricingPlanDiscountDesc":
+        "Privacidad total sin ser caro: ¡este plan ofrece un 43% de descuento en tu compra!",
+    "pricingPlanJoinNowBtn": "Ahorra un 49% uniéndote ahora",
+    "pricingPlanSeePlansBtn": "Ver todos los planes",
+    "pricingPlanLetsGoBtn": "¡Vamos!",
+    "pricingPlanPunchLineTitle": "¿Listo para un internet sin fronteras?",
+    "pricingPlanPunchLineDesc":
+        "Privacidad, seguridad y libertad en línea están a la vuelta de la esquina. Dondequiera que estés, cuando sea.",
+    "mostPopularTag": "Más Popular",
+    "discountTag": "{discount} de descuento",
+    "sixMonthsBonus": "Paga por 6 meses, obtén 6 de BONO",
+    "yearlyPlanFullPrice": "{amount}",
+    "yearlyPlanDiscountPrice": "{amount} por el año.",
+    "selectYourSubscription": "Selecciona tu suscripción",
+    "letsGoBtn": "¡Vamos!",
+    "semiAnnualPlanDiscountPrice": "{amount} por 6 meses.",
+    "billedEveryYear": "{cantidad} Facturado cada año",
+    "billedEvery6Months": "{amount} Facturado cada 6 meses",
+    "billedEveryMonth": "{amount} facturado cada mes"
   };
   static const Map<String, dynamic> ar = {
     "title": "أهلاً سيدي",
@@ -5114,7 +5390,7 @@ class CodegenLoader extends AssetLoader {
     "plan_6_months": "خطة 6 أشهر",
     "plan_yearly": "الخطة السنوية",
     "plan_2_years": "خطة لمدة عامين",
-    "currentPrice": "{كمية}",
+    "currentPrice": "{amount}",
     "originalMonthlyPrice": "{amount}",
     "perMonth": "/شهر",
     "freeTrialTitle": "ابدأ مع Mysterium VPN",
@@ -5513,7 +5789,33 @@ class CodegenLoader extends AssetLoader {
     "loginSessionExpired": "لقد انتهت جلستك. الرجاء تسجيل الدخول مرة أخرى.",
     "featureToggleMinVersionNotSatisfied":
         "إصدار تطبيقك قديم. يُرجى تحديث التطبيق لمواصلة استخدامه.",
-    "buttonUpdateApp": "قم بالتحديث الآن"
+    "pricingPlanTitle": "خطتنا الموصى بها",
+    "pricingPlanFeatures": "سمات",
+    "pricingPlanFeatures1": "تمت تغطية أكثر من 135 دولة",
+    "pricingPlanFeatures2": "أكثر من 25000 خادم افتراضي",
+    "pricingPlanFeatures3": "جميع عناوين IP سكنية",
+    "pricingPlanFeatures4": "التشفير من الدرجة العسكرية",
+    "pricingPlanFeatures5": "دعم العملاء عبر الدردشة المباشرة على مدار 24 ساعة طوال أيام الأسبوع",
+    "pricingPlanFeatures6": "ضمان استعادة الأموال لمدة 7 أيام",
+    "pricingPlanDiscountTitle": "وماذا عن الخصم؟",
+    "pricingPlanDiscountDesc":
+        "خصوصية كاملة دون أن تكون باهظة الثمن — توفر هذه الخطة خصمًا بنسبة 43% على عملية الشراء الخاصة بك!",
+    "pricingPlanJoinNowBtn": "وفر 49% من خلال الانضمام الآن",
+    "pricingPlanSeePlansBtn": "شاهد جميع الخطط",
+    "pricingPlanLetsGoBtn": "دعنا نذهب!",
+    "pricingPlanPunchLineTitle": "هل أنت مستعد للإنترنت بلا حدود؟",
+    "pricingPlanPunchLineDesc": "الخصوصية والأمان والحرية عبر الإنترنت أصبحت قاب قوسين أو أدنى. ",
+    "mostPopularTag": "الأكثر شعبية",
+    "discountTag": "{discount} قبالة",
+    "sixMonthsBonus": "ادفع لمدة 6 أشهر واحصل على 6 مكافآت",
+    "yearlyPlanFullPrice": "{amount}",
+    "yearlyPlanDiscountPrice": "{المبلغ} للسنة.",
+    "selectYourSubscription": "حدد اشتراكك",
+    "letsGoBtn": "دعنا نذهب",
+    "semiAnnualPlanDiscountPrice": "{amount} لمدة 6 أشهر",
+    "billedEveryYear": "{amount} يتم إصدار فاتورة به كل عام",
+    "billedEvery6Months": "{amount} يتم إصدار فاتورة به كل 6 أشهر",
+    "billedEveryMonth": "{amount} يتم إصدار فاتورة به كل شهر"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,
