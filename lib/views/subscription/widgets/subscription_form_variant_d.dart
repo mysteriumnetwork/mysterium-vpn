@@ -89,7 +89,7 @@ class SubscriptionFormVariantD extends HookConsumerWidget {
                       color: theme.isDarkMode ? Palette.veryLightGrey : Palette.darkGrey,
                     ).padding(bottom: getMediaHeight(context) * 0.025),
                     SubscriptionButton(
-                      onPressed: () => subscribeToPackage(store.products.last.id),
+                      onPressed: () => subscribeToPackage(selectedProductId.value),
                       isLoading: store.subscriptonStatus == SubscriptionStatus.verifying,
                       label: LocaleKeys.letsGoBtn.tr(),
                     ),
