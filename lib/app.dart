@@ -39,6 +39,9 @@ class MyApp extends HookConsumerWidget {
         },
       ),
       child: LifecycleListener(
+        onResumed: () {
+          checkSubsStatus(authStore, ref.read(subscriptionStorePOD));
+        },
         child: Observer(
           builder: (context) => RetakeFocusOnTap(
             child: ShortcutsWidget(
