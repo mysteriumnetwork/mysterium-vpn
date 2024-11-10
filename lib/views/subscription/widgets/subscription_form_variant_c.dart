@@ -75,7 +75,7 @@ class SubscriptionFormVariantC extends ConsumerWidget {
               ).padding(bottom: getMediaHeight(context) * 0.025),
               SubscriptionButton(
                 onPressed: () => subscribeToPackage(store.products.last.id),
-                isLoading: store.subscriptonStatus == SubscriptionStatus.verifying,
+                isLoading: store.isLoading,
                 label: LocaleKeys.letsGoBtn.tr(),
               ),
               Visibility(
