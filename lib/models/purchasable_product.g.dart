@@ -12,54 +12,47 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
   Computed<String>? _$idComputed;
 
   @override
-  String get id => (_$idComputed ??=
-          Computed<String>(() => super.id, name: '_PurchasableProduct.id'))
-      .value;
+  String get id =>
+      (_$idComputed ??= Computed<String>(() => super.id, name: '_PurchasableProduct.id')).value;
   Computed<int>? _$durationComputed;
 
   @override
-  int get duration =>
-      (_$durationComputed ??= Computed<int>(() => super.duration,
-              name: '_PurchasableProduct.duration'))
-          .value;
+  int get duration => (_$durationComputed ??=
+          Computed<int>(() => super.duration, name: '_PurchasableProduct.duration'))
+      .value;
   Computed<String>? _$billedPerMonthComputed;
 
   @override
-  String get billedPerMonth =>
-      (_$billedPerMonthComputed ??= Computed<String>(() => super.billedPerMonth,
-              name: '_PurchasableProduct.billedPerMonth'))
-          .value;
+  String get billedPerMonth => (_$billedPerMonthComputed ??=
+          Computed<String>(() => super.billedPerMonth, name: '_PurchasableProduct.billedPerMonth'))
+      .value;
   Computed<String>? _$billedPerMonthShortComputed;
 
   @override
-  String get billedPerMonthShort => (_$billedPerMonthShortComputed ??=
-          Computed<String>(() => super.billedPerMonthShort,
+  String get billedPerMonthShort =>
+      (_$billedPerMonthShortComputed ??= Computed<String>(() => super.billedPerMonthShort,
               name: '_PurchasableProduct.billedPerMonthShort'))
-      .value;
+          .value;
   Computed<String>? _$monthlyPriceComputed;
 
   @override
-  String get monthlyPrice =>
-      (_$monthlyPriceComputed ??= Computed<String>(() => super.monthlyPrice,
-              name: '_PurchasableProduct.monthlyPrice'))
-          .value;
+  String get monthlyPrice => (_$monthlyPriceComputed ??=
+          Computed<String>(() => super.monthlyPrice, name: '_PurchasableProduct.monthlyPrice'))
+      .value;
   Computed<bool>? _$isPupularComputed;
 
   @override
-  bool get isPupular =>
-      (_$isPupularComputed ??= Computed<bool>(() => super.isPupular,
-              name: '_PurchasableProduct.isPupular'))
-          .value;
+  bool get isPupular => (_$isPupularComputed ??=
+          Computed<bool>(() => super.isPupular, name: '_PurchasableProduct.isPupular'))
+      .value;
   Computed<String>? _$billedInTotalComputed;
 
   @override
-  String get billedInTotal =>
-      (_$billedInTotalComputed ??= Computed<String>(() => super.billedInTotal,
-              name: '_PurchasableProduct.billedInTotal'))
-          .value;
+  String get billedInTotal => (_$billedInTotalComputed ??=
+          Computed<String>(() => super.billedInTotal, name: '_PurchasableProduct.billedInTotal'))
+      .value;
 
-  late final _$statusAtom =
-      Atom(name: '_PurchasableProduct.status', context: context);
+  late final _$statusAtom = Atom(name: '_PurchasableProduct.status', context: context);
 
   @override
   ProductStatus get status {
