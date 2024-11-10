@@ -61,6 +61,7 @@ abstract class ABTestingStoreBase with Store {
 
   @computed
   String get subscriptionFlowVariant {
+    return 'D';
     if (config.containsKey(_ABKey.subscriptionFlow.name)) {
       return config[_ABKey.subscriptionFlow.name] as String;
     }

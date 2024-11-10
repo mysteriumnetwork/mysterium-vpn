@@ -90,7 +90,7 @@ class SubscriptionFormVariantD extends HookConsumerWidget {
                     ).padding(bottom: getMediaHeight(context) * 0.025),
                     SubscriptionButton(
                       onPressed: () => subscribeToPackage(selectedProductId.value),
-                      isLoading: store.subscriptonStatus == SubscriptionStatus.verifying,
+                      isLoading: store.isLoading,
                       label: LocaleKeys.letsGoBtn.tr(),
                     ),
                     Visibility(
