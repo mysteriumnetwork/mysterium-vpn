@@ -1,12 +1,17 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/models/purchasable_product.dart';
 
 class DiscountTag extends StatelessWidget {
   const DiscountTag({
-    required this.discountLabel,
+    required this.monthlyRawPrice,
+    required this.product,
     super.key,
   });
-  final String discountLabel;
+  final double monthlyRawPrice;
+  final PurchasableProduct product;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -21,8 +26,23 @@ class DiscountTag extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         child: EasyText(
-          discountLabel,
+          product.duration == 12
+              ? LocaleKeys.discountTag.tr(
+                  namedArgs: {
+                    'discount': '49%',
+                  },
+                )
+              : LocaleKeys.discountTag.tr(
+                  namedArgs: {
+                    'discount': '${_calculateDiscountPercentage()}%',
+                  },
+                ),
           fontSize: 12,
         ),
       );
+
+  int _calculateDiscountPercentage() => (((monthlyRawPrice * product.duration) - product.rawPrice) /
+          (monthlyRawPrice * product.duration) *
+          100)
+      .round();
 }

@@ -1,13 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/extensions/number.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/ripple.dart';
-import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
+import 'package:mysterium_vpn/views/subscription/widgets/billing_text.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/discount_tag.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -19,7 +18,6 @@ class HighlightedProduct extends StatelessWidget {
     required this.showDiscountTag,
     required this.isHighlighted,
     this.selectProdcut,
-    this.isSelected = false,
     super.key,
   });
   final PurchasableProduct product;
@@ -28,7 +26,6 @@ class HighlightedProduct extends StatelessWidget {
   final VoidCallback? selectProdcut;
   final bool showDiscountTag;
   final bool isHighlighted;
-  final bool isSelected;
 
   @override
   Widget build(BuildContext context) => RippleWidget(
@@ -43,28 +40,14 @@ class HighlightedProduct extends StatelessWidget {
                   product.id.tr(),
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
+                  color: !isDarkTheme ? Palette.white : null,
                 ),
                 const SizedBox(width: 8),
                 if (showDiscountTag)
                   DiscountTag(
-                    discountLabel: product.duration == 12
-                        ? LocaleKeys.discountTag.tr(
-                            namedArgs: {
-                              'discount': '49%',
-                            },
-                          )
-                        : LocaleKeys.discountTag.tr(
-                            namedArgs: {
-                              'discount': '${_calculateDiscountPercentage()}%',
-                            },
-                          ),
+                    monthlyRawPrice: monthlyRawPrice,
+                    product: product,
                   ),
-                if (isSelected) ...[
-                  const Spacer(),
-                  const SvgIcon(
-                    asset: Assets.checkmark,
-                  ),
-                ],
               ],
             ),
             RichText(
@@ -94,19 +77,18 @@ class HighlightedProduct extends StatelessWidget {
             if (isHighlighted)
               _HighlighterText(monthlyRawPrice: monthlyRawPrice, product: product)
             else
-              EasyText(
-                _getBillingText(),
-                fontSize: 14,
-              ),
+              BillingText(product: product, isDarkTheme: isDarkTheme),
             if (product.duration == 12 && isHighlighted)
               EasyText(
                 LocaleKeys.sixMonthsBonus.tr(),
                 fontSize: 12,
+                color: !isDarkTheme ? Palette.white : null,
               ),
           ],
         )
             .padding(horizontal: 16, vertical: 12)
             .card(
+              margin: const EdgeInsets.symmetric(vertical: 8),
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 side: BorderSide(
@@ -117,38 +99,6 @@ class HighlightedProduct extends StatelessWidget {
             )
             .width(double.infinity),
       );
-
-  String _getBillingText() => switch (product.duration) {
-        12 => LocaleKeys.billedEveryYear.tr(
-            namedArgs: {
-              'amount': product.rawPrice.price(
-                currencySymbol: product.currencySymbol,
-                currencyCode: product.currencyCode,
-              ),
-            },
-          ),
-        6 => LocaleKeys.billedEvery6Months.tr(
-            namedArgs: {
-              'amount': product.rawPrice.price(
-                currencySymbol: product.currencySymbol,
-                currencyCode: product.currencyCode,
-              ),
-            },
-          ),
-        _ => LocaleKeys.billedEveryMonth.tr(
-            namedArgs: {
-              'amount': product.rawPrice.price(
-                currencySymbol: product.currencySymbol,
-                currencyCode: product.currencyCode,
-              ),
-            },
-          ),
-      };
-
-  int _calculateDiscountPercentage() => (((monthlyRawPrice * product.duration) - product.rawPrice) /
-          (monthlyRawPrice * product.duration) *
-          100)
-      .round();
 }
 
 class _HighlighterText extends StatelessWidget {

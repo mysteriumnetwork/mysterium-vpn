@@ -96,7 +96,7 @@ class SubscriptionFormVariantC extends ConsumerWidget {
                   shownProductPickerDialog(
                     context: context,
                     analyticsStore: analyticsStore,
-                    products: store.products,
+                    products: store.products.reversed.toList(),
                     subscribeToPackage: subscribeToPackage,
                     isDarkTheme: theme.isDarkMode,
                     subscriptionStore: store,

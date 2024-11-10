@@ -65,7 +65,7 @@ class HomePage extends HookConsumerWidget {
             gateway: subscriptionStore.subscription?.gateway,
             subscriptionActive: subscriptionStore.subscription?.active ?? false,
             accessToken: authStore.authData?.accessToken,
-            onManageSubscription: () {}
+            onManageSubscription: () {},
           );
         }
         if (result == FutureStatus.rejected) {

@@ -61,6 +61,7 @@ class ProductItemVariantD extends StatelessWidget {
                   product.id.tr(),
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
+                  color: isSelected && !isDarkTheme ? Palette.white : null,
                 ),
                 const SizedBox(width: 8),
                 RichText(
@@ -90,6 +91,7 @@ class ProductItemVariantD extends StatelessWidget {
                 EasyText(
                   _getBillingText(),
                   fontSize: 12,
+                  color: isSelected && !isDarkTheme ? Palette.white : null,
                 ),
               ],
             ).padding(horizontal: 16, vertical: 12).width(260),
