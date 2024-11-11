@@ -2,35 +2,48 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 
-typedef RefreshTokenCallback = Future<String> Function();
-
-late final RefreshTokenCallback refreshTokenCallback;
+late final Future<void> Function() refreshTokenCallback;
 
 class RefreshTokenInterceptor extends Interceptor {
-  RefreshTokenInterceptor();
-  List<Map<dynamic, dynamic>> failedRequests = [];
-  bool isRefreshing = false;
+  RefreshTokenInterceptor({
+    required this.dio,
+  });
+
+  final Dio dio;
 
   @override
   Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
-    if (_isUnauthorizedError(err)) {
-      try {
-        if (!isRefreshing) {
-          isRefreshing = true;
-          // Initiating token refresh
-          final authToken = await refreshTokenCallback();
-          // Retrying failed requests
-          retryRequests(authToken);
-        } else {
-          // Adding errored request to the queue
-          failedRequests.add({'err': err, 'handler': handler});
-        }
-      } catch (e) {
-        return handler.reject(err);
-      }
-    } else {
+    if (!_isUnauthorizedError(err)) {
       return handler.next(err);
     }
+
+    await refreshTokenCallback();
+
+    // Retry the request.
+    try {
+      return handler.resolve(await _retry(err.requestOptions));
+    } on DioException catch (e) {
+      // If the request fails again, pass the error to the next interceptor in the chain.
+      return handler.next(e);
+    }
+  }
+
+  Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
+    // Create a new `RequestOptions` object with the same method, path, data, and query parameters as the original request.
+    final options = Options(
+      method: requestOptions.method,
+      headers: {
+        'Retry': 'Yes',
+      },
+    );
+
+    // Retry the request with the new `RequestOptions` object.
+    return dio.request<dynamic>(
+      requestOptions.path,
+      data: requestOptions.data,
+      queryParameters: requestOptions.queryParameters,
+      options: options,
+    );
   }
 
   bool _isUnauthorizedError(DioException err) {
@@ -42,23 +55,5 @@ class RefreshTokenInterceptor extends Interceptor {
       return true;
     }
     return false;
-  }
-
-  Future<void> retryRequests(String authToken) async {
-    final retryDio = Dio();
-    for (var i = 0; i < failedRequests.length; i++) {
-      final requestOptions = (failedRequests[i]['err'] as DioException).requestOptions;
-
-      requestOptions.headers.addAll({'Authorization': 'Bearer $authToken'});
-
-      await retryDio.fetch(requestOptions).then(
-        (failedRequests[i]['handler'] as ErrorInterceptorHandler).resolve,
-        onError: (error) async {
-          (failedRequests[i]['handler'] as ErrorInterceptorHandler).reject(error as DioException);
-        },
-      );
-    }
-    isRefreshing = false;
-    failedRequests = [];
   }
 }
