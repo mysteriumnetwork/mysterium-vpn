@@ -44,7 +44,7 @@ final networkServicePOD = Provider<NetworkService>((ref) {
   return DioNetworkService(
     dio,
     [
-      RefreshTokenInterceptor(),
+      RefreshTokenInterceptor(dio: dio),
       RetryRequestInterceptor(dio: dio),
       if (kDebugMode)
         TalkerDioLogger(

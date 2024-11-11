@@ -376,17 +376,15 @@ abstract class _AuthStore with Store {
     }
   }
 
-  Future<String> refreshAuthToken() async {
+  Future<void> refreshAuthToken() async {
     try {
       final refreshToken = await _secureStorageService.getRefreshToken();
-      final authDta = await _authService.singInComplete(
-          tokenRequest: TokenRequest(
+      await _authService.singInComplete(
+        tokenRequest: TokenRequest(
           grantType: GrantType.refreshToken,
           refreshToken: refreshToken,
         ),
       );
-
-      return authDta.accessToken;
     } catch (e) {
       showSnackbar(LocaleKeys.loginSessionExpired.tr());
       await logout();
