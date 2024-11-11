@@ -135,6 +135,15 @@ mixin _$AnalyticsStoreNoop on _AnalyticsStoreNoop, Store {
     return _$setConsentsAsyncAction.run(() => super.setConsents());
   }
 
+  late final _$logProductSelectedAsyncAction =
+      AsyncAction('_AnalyticsStoreNoop.logProductSelected', context: context);
+
+  @override
+  Future<void> logProductSelected(String productId, List<String> productIds) {
+    return _$logProductSelectedAsyncAction
+        .run(() => super.logProductSelected(productId, productIds));
+  }
+
   @override
   String toString() {
     return '''

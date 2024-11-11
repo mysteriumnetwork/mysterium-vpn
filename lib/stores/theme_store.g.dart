@@ -31,6 +31,21 @@ mixin _$ThemeStore on _ThemeStore, Store {
     });
   }
 
+  late final _$systemThemeAtom = Atom(name: '_ThemeStore.systemTheme', context: context);
+
+  @override
+  bool get systemTheme {
+    _$systemThemeAtom.reportRead();
+    return super.systemTheme;
+  }
+
+  @override
+  set systemTheme(bool value) {
+    _$systemThemeAtom.reportWrite(value, super.systemTheme, () {
+      super.systemTheme = value;
+    });
+  }
+
   late final _$setThemeTypeAsyncAction = AsyncAction('_ThemeStore.setThemeType', context: context);
 
   @override
@@ -38,10 +53,19 @@ mixin _$ThemeStore on _ThemeStore, Store {
     return _$setThemeTypeAsyncAction.run(() => super.setThemeType(mode));
   }
 
+  late final _$updateSystemThemeAsyncAction =
+      AsyncAction('_ThemeStore.updateSystemTheme', context: context);
+
+  @override
+  Future<void> updateSystemTheme() {
+    return _$updateSystemThemeAsyncAction.run(() => super.updateSystemTheme());
+  }
+
   @override
   String toString() {
     return '''
 themeMode: ${themeMode},
+systemTheme: ${systemTheme},
 isDarkMode: ${isDarkMode}
     ''';
   }

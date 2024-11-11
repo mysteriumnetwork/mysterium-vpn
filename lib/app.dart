@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,7 @@ import 'package:mysterium_vpn/stores/subscription_store.dart';
 
 class MyApp extends HookConsumerWidget {
   const MyApp({super.key});
+
   @override
   Widget build(final BuildContext context, WidgetRef ref) {
     final themeStore = ref.read(themeStorePOD);
@@ -42,6 +45,7 @@ class MyApp extends HookConsumerWidget {
         onResumed: () {
           checkSubsStatus(authStore, ref.read(subscriptionStorePOD));
         },
+        onThemeChanged: themeStore.updateSystemTheme,
         child: Observer(
           builder: (context) => RetakeFocusOnTap(
             child: ShortcutsWidget(
@@ -64,10 +68,18 @@ class MyApp extends HookConsumerWidget {
                     backButtonDispatcher: BeamerBackButtonDispatcher(
                       delegate: routeDelegate,
                     ),
-                    builder: (context, child) => FTCheckers(
-                      child: NetworkLoggerOverlayView(
-                        flavor: flavor,
-                        child: child!,
+                    builder: (context, child) => ScrollConfiguration(
+                      behavior: ScrollConfiguration.of(context).copyWith(
+                        dragDevices: PointerDeviceKind.values.toSet(),
+                        scrollbars: false,
+                        overscroll: true,
+                        physics: const BouncingScrollPhysics(),
+                      ),
+                      child: FTCheckers(
+                        child: NetworkLoggerOverlayView(
+                          flavor: flavor,
+                          child: child!,
+                        ),
                       ),
                     ),
                   ),

@@ -16,6 +16,7 @@ class LifecycleListener extends StatelessWidget {
     this.onInactive,
     this.onDetached,
     this.onHidden,
+    this.onThemeChanged,
     super.key,
   });
 
@@ -25,6 +26,7 @@ class LifecycleListener extends StatelessWidget {
   final VoidCallback? onInactive;
   final VoidCallback? onDetached;
   final VoidCallback? onHidden;
+  final VoidCallback? onThemeChanged;
 
   @override
   Widget build(BuildContext context) => isMobile()
@@ -34,6 +36,7 @@ class LifecycleListener extends StatelessWidget {
           onInactive: onInactive,
           onDetached: onDetached,
           onHidden: onHidden,
+          onThemeChanged: onThemeChanged,
           child: child,
         )
       : _LifecycleDesktop(
@@ -41,6 +44,7 @@ class LifecycleListener extends StatelessWidget {
           onPaused: onPaused,
           onInactive: onInactive,
           onDetached: onDetached,
+          onThemeChanged: onThemeChanged,
           child: child,
         );
 }
@@ -53,6 +57,7 @@ class _LifecycleMobile extends StatefulWidget {
     this.onInactive,
     this.onDetached,
     this.onHidden,
+    this.onThemeChanged,
   });
 
   final Widget child;
@@ -61,7 +66,7 @@ class _LifecycleMobile extends StatefulWidget {
   final VoidCallback? onInactive;
   final VoidCallback? onDetached;
   final VoidCallback? onHidden;
-
+  final VoidCallback? onThemeChanged;
   @override
   State<_LifecycleMobile> createState() => __LifecycleMobileState();
 }
@@ -77,6 +82,13 @@ class __LifecycleMobileState extends State<_LifecycleMobile> with WidgetsBinding
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+
+    widget.onThemeChanged?.call();
   }
 
   @override
@@ -111,6 +123,7 @@ class _LifecycleDesktop extends ConsumerStatefulWidget {
     this.onPaused,
     this.onInactive,
     this.onDetached,
+    this.onThemeChanged,
   });
 
   final Widget child;
@@ -118,24 +131,33 @@ class _LifecycleDesktop extends ConsumerStatefulWidget {
   final VoidCallback? onPaused;
   final VoidCallback? onInactive;
   final VoidCallback? onDetached;
-
+  final VoidCallback? onThemeChanged;
   @override
   ConsumerState<_LifecycleDesktop> createState() => __LifecycleDesktopState();
 }
 
 class __LifecycleDesktopState extends ConsumerState<_LifecycleDesktop>
-    with WindowListener, TrayListener {
+    with WindowListener, TrayListener, WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
     windowManager.addListener(this);
     trayManager.addListener(this);
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+
+    widget.onThemeChanged?.call();
   }
 
   @override
   void dispose() {
     windowManager.removeListener(this);
     trayManager.removeListener(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 

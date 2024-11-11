@@ -137,6 +137,15 @@ mixin _$AnalyticsStoreFirebase on _AnalyticsStoreFirebase, Store {
     return _$setConsentsAsyncAction.run(() => super.setConsents());
   }
 
+  late final _$logProductSelectedAsyncAction =
+      AsyncAction('_AnalyticsStoreFirebase.logProductSelected', context: context);
+
+  @override
+  Future<void> logProductSelected(String productId, List<String> productIds) {
+    return _$logProductSelectedAsyncAction
+        .run(() => super.logProductSelected(productId, productIds));
+  }
+
   @override
   String toString() {
     return '''

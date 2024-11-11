@@ -214,6 +214,8 @@ abstract class _AuthStore with Store {
     if (grantType != GrantType.savedToken) {
       _analyticsStore.setLogin(grantType);
     }
+    await _remoteConfigStore.setDefaultUser(email: username, userId: userId);
+    await _abTestingStore.setDefaultUser(email: username, userId: userId);
     _analyticsStore.setUserId(username);
     _intercomStore.registerUser(email: username);
     Sentry.configureScope(
@@ -224,8 +226,6 @@ abstract class _AuthStore with Store {
         ),
       ),
     );
-    _remoteConfigStore.setDefaultUser(email: username, userId: userId);
-    _abTestingStore.setDefaultUser(email: username, userId: userId);
   }
 
   @action
