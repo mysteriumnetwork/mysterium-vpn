@@ -36,9 +36,12 @@ class SubscriptionMobileView extends HookConsumerWidget {
     final localDb = ref.watch(localDBPOD);
     final analyticsStore = ref.read(analyticsStorePOD);
     final abTestingStore = ref.read(abTestingStorePOD);
+    final themeStore = ref.watch(themeStorePOD);
     useEffect(
       () {
-        subscriptionStore.getSubscriptionsConfig();
+        if (subscriptionStore.products.isEmpty) {
+          subscriptionStore.getSubscriptionsConfig();
+        }
         checkForExistingSubscription(subscriptionStore, context, ref);
         return null;
       },
@@ -70,38 +73,45 @@ class SubscriptionMobileView extends HookConsumerWidget {
             showBackButton: subscriptionStore.subscriptonStatus != SubscriptionStatus.verifying,
           ),
           child: Observer(
-            builder: (context) => subscriptionStore.isAvailable == StoreState.loading
-                ? LoadingIndicator(
-                    message: LocaleKeys.connectingToPaymentProcesor.tr(),
-                  )
-                : subscriptionStore.isAvailable == StoreState.notAvailable
-                    ? RetryOnErrorWidget(
-                        error: LocaleKeys.unableToConnectToPaymentProcesor.tr(),
-                        onRetry: subscriptionStore.getSubscriptionsConfig,
-                      )
-                    : subscriptionStore.products.isEmpty
-                        ? RetryOnErrorWidget(
-                            error: LocaleKeys.productsNotAvailable.tr(),
-                            onRetry: subscriptionStore.getSubscriptionsConfig,
-                          )
-                        : ReactionBuilder(
-                            builder: (context) =>
-                                reaction((_) => subscriptionStore.subscriptonStatus, (status) {
-                              subscriptionStatusReaction(context, status, subscriptionStore);
-                            }),
-                            child: SubscriptionFormVariantContainer(
-                              subscriptionStore: subscriptionStore,
-                              localDb: localDb,
-                              analyticsStore: analyticsStore,
-                              subscribeToPackage: (String selectedProductId) => subscribeToPackage(
-                                analyticsStore,
-                                subscriptionStore,
-                                subscriptionStore.products.map((e) => e.id).toList(),
-                                selectedProductId,
+            builder: (context) {
+              final isDarkMode = themeStore.isDarkMode;
+              return subscriptionStore.isAvailable == StoreState.loading
+                  ? LoadingIndicator(
+                      message: LocaleKeys.connectingToPaymentProcesor.tr(),
+                    )
+                  : subscriptionStore.isAvailable == StoreState.notAvailable
+                      ? RetryOnErrorWidget(
+                          error: LocaleKeys.unableToConnectToPaymentProcesor.tr(),
+                          onRetry: subscriptionStore.getSubscriptionsConfig,
+                        )
+                      : subscriptionStore.products.isEmpty
+                          ? RetryOnErrorWidget(
+                              error: LocaleKeys.productsNotAvailable.tr(),
+                              onRetry: subscriptionStore.getSubscriptionsConfig,
+                            )
+                          : ReactionBuilder(
+                              builder: (context) =>
+                                  reaction((_) => subscriptionStore.subscriptonStatus, (status) {
+                                subscriptionStatusReaction(context, status, subscriptionStore);
+                              }),
+                              child: SubscriptionFormVariantContainer(
+                                subscriptionStore: subscriptionStore,
+                                localDb: localDb,
+                                analyticsStore: analyticsStore,
+                                subscribeToPackage: (String selectedProductId) =>
+                                    subscribeToPackage(
+                                  analyticsStore,
+                                  subscriptionStore,
+                                  subscriptionStore.products.map((e) => e.id).toList(),
+                                  selectedProductId,
+                                ),
+                                variant: abTestingStore.subscriptionFlowVariant,
+                                isDarkMode: isDarkMode,
+                                isVerifingPayment: subscriptionStore.subscriptonStatus ==
+                                    SubscriptionStatus.verifying,
                               ),
-                              variant: abTestingStore.subscriptionFlowVariant,
-                            ),
-                          ),
+                            );
+            },
           ),
         ),
       ),

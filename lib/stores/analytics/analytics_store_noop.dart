@@ -89,4 +89,8 @@ abstract class _AnalyticsStoreNoop extends AnalyticsStore with Store {
   @override
   @action
   Future<void> setConsents() async {}
+
+  @override
+  @action
+  Future<void> logProductSelected(String productId, List<String> productIds) async {}
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -47,21 +45,9 @@ class SubscriptionProductsListVariantA extends ConsumerWidget {
     ValueNotifier<String> selectedProductId,
   ) {
     selectedProductId.value = productId;
-    AnalyticsEvent? event;
-    if (productId == kAnnualPlan) {
-      event = AnalyticsEvent.select12;
-    } else if (productId == kMonthlyPlan) {
-      event = AnalyticsEvent.select1;
-    } else if (productId == ksemiAnnualPlan) {
-      event = AnalyticsEvent.select6;
-    }
-    if (event != null) {
-      analyticsStore.logEvent(
-        event,
-        parameters: {
-          'item_ids': productIds,
-        },
-      );
-    }
+    analyticsStore.logProductSelected(
+      productId,
+      productIds,
+    );
   }
 }

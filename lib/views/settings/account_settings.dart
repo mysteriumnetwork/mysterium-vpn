@@ -47,8 +47,7 @@ class AccountSettings extends HookConsumerWidget {
               actionWidget: Visibility(
                 visible: !Platform.isMacOS || (isMobilePaymentGateway(gateway) || gateway == null),
                 child: subscriptionStore.isLoading
-                    ? const LoadingIndicator(
-                    )
+                    ? const LoadingIndicator()
                     : EasyButton(
                         useSystemColor: false,
                         color: Palette.black,
@@ -56,6 +55,7 @@ class AccountSettings extends HookConsumerWidget {
                         onPressed: subscriptionStore.isLoading
                             ? null
                             : () {
+                                analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
                                 handleOnBillingPage(
                                   billingPage: environment.values.billingPage,
                                   context: context,

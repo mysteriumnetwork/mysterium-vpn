@@ -19,23 +19,5 @@ extension StorageKeysEx on Enum {
     return sb.toString();
   }
 
-  String get toSnakeCase {
-    final sb = StringBuffer();
-    var first = true;
-    for (final rune in name.runes) {
-      final char = String.fromCharCode(rune);
-      if (char.isUpperCase() && !first) {
-        if (char != '_') {
-          sb.write('_');
-        }
-        sb.write(char.toLowerCase());
-      } else {
-        first = false;
-        sb.write(char.toLowerCase());
-      }
-    }
-    return sb.toString();
-  }
-
   String get toRoute => '/$toDashCase';
 }

@@ -4,6 +4,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/observers/navigator_observer.dart';
@@ -68,7 +69,7 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
     AnalyticsEvent event, {
     Map<String, dynamic>? parameters,
   }) async {
-    await _analytics.logEvent(name: event.toSnakeCase);
+    await _analytics.logEvent(name: event.name.toSnakeCase);
   }
 
   @override
@@ -176,6 +177,27 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
       );
     } catch (e) {
       logError(err: e);
+    }
+  }
+
+  @override
+  @action
+  Future<void> logProductSelected(String productId, List<String> productIds) async {
+    AnalyticsEvent? event;
+    if (productId == kAnnualPlan) {
+      event = AnalyticsEvent.click1YearPlan;
+    } else if (productId == kMonthlyPlan) {
+      event = AnalyticsEvent.click1MonthPlan;
+    } else if (productId == ksemiAnnualPlan) {
+      event = AnalyticsEvent.click6MonthsPlan;
+    }
+    if (event != null) {
+      logEvent(
+        event,
+        parameters: {
+          'item_ids': productIds,
+        },
+      );
     }
   }
 }

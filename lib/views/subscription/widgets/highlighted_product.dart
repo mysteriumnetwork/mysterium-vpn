@@ -75,7 +75,11 @@ class HighlightedProduct extends StatelessWidget {
               ),
             ),
             if (isHighlighted)
-              _HighlighterText(monthlyRawPrice: monthlyRawPrice, product: product)
+              _HighlighterText(
+                monthlyRawPrice: monthlyRawPrice,
+                product: product,
+                isDarkTheme: isDarkTheme,
+              )
             else
               BillingText(product: product, isDarkTheme: isDarkTheme),
             if (product.duration == 12 && isHighlighted)
@@ -105,16 +109,19 @@ class _HighlighterText extends StatelessWidget {
   const _HighlighterText({
     required this.monthlyRawPrice,
     required this.product,
+    required this.isDarkTheme,
   });
 
   final double monthlyRawPrice;
   final PurchasableProduct product;
+  final bool isDarkTheme;
 
   @override
   Widget build(BuildContext context) => RichText(
         text: TextSpan(
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 fontSize: 12,
+                color: !isDarkTheme ? Palette.white : null,
               ),
           children: [
             TextSpan(
@@ -129,6 +136,7 @@ class _HighlighterText extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     decoration: TextDecoration.lineThrough,
                     decorationColor: Palette.white,
+                    color: !isDarkTheme ? Palette.white : null,
                     fontSize: 12,
                   ),
             ),

@@ -25,14 +25,21 @@ abstract class _ThemeStore with Store {
   @observable
   ThemeMode themeMode = ThemeMode.system;
 
+  @observable
+  bool systemTheme =
+      WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark;
+
   @computed
-  bool get isDarkMode => themeMode == ThemeMode.system
-      ? WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark
-      : themeMode == ThemeMode.dark;
+  bool get isDarkMode => themeMode == ThemeMode.system ? systemTheme : themeMode == ThemeMode.dark;
 
   @action
   Future<void> setThemeType(ThemeMode mode) async {
     await _sharedPrefs.setThemeType(mode);
     themeMode = mode;
+  }
+
+  @action
+  Future<void> updateSystemTheme() async {
+    systemTheme = WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark;
   }
 }

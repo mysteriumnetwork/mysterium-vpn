@@ -31,6 +31,7 @@ Future<void> shownProductPickerDialog({
   required void Function(String selectedProductId) subscribeToPackage,
   required bool isDarkTheme,
 }) async {
+  analyticsStore.logEvent(AnalyticsEvent.paymentSelectProductPopup);
   showModalBottomSheet(
     clipBehavior: Clip.none,
     constraints: const BoxConstraints.tightFor(width: double.infinity),
@@ -47,7 +48,7 @@ Future<void> shownProductPickerDialog({
         products: products,
         subscriptionStore: subscriptionStore,
         subscribeToPackage: subscribeToPackage,
-        isDarkTheme: isDarkTheme,
+        isDarkMode: isDarkTheme,
       ),
     ),
   );
@@ -59,13 +60,13 @@ class _ProductPickerDialog extends HookWidget {
     required this.analyticsStore,
     required this.products,
     required this.subscribeToPackage,
-    required this.isDarkTheme,
+    required this.isDarkMode,
   });
   final SubscriptionStore subscriptionStore;
   final AnalyticsStore analyticsStore;
   final List<PurchasableProduct> products;
   final void Function(String selectedProductId) subscribeToPackage;
-  final bool isDarkTheme;
+  final bool isDarkMode;
   @override
   Widget build(BuildContext context) {
     final selectedProductId = useState<String>(
@@ -84,55 +85,81 @@ class _ProductPickerDialog extends HookWidget {
               width: 40,
               height: 40,
               child: SvgIconButton(
-                asset: isDarkTheme ? Assets.deleteAccountDark : Assets.deleteAccountLight,
+                asset: isDarkMode ? Assets.closeDark : Assets.closeLight,
                 onPressed: Navigator.of(context).pop,
               ),
             ),
           ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              EasyText(
-                seeAllPlans.value
-                    ? LocaleKeys.selectYourSubscription.tr()
-                    : LocaleKeys.pricingPlanTitle.tr(),
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-              ),
-              SizedBox(height: getMediaHeight(context) * 0.02),
-              if (seeAllPlans.value)
-                _ProductsContainer(
-                  products: products,
-                  selectedProductId: selectedProductId,
-                  isDarkTheme: isDarkTheme,
-                )
-              else
-                HighlightedProduct(
-                  product: products.first,
-                  isDarkTheme: isDarkTheme,
-                  monthlyRawPrice: products.last.rawPrice,
-                  showDiscountTag: true,
-                  isHighlighted: false,
+          Container(
+            width: double.infinity,
+            padding: getMediaWidth(context) > 950
+                ? const EdgeInsets.symmetric(
+                    horizontal: 150,
+                    vertical: 20,
+                  )
+                : getMediaWidth(context) > 650
+                    ? const EdgeInsets.symmetric(
+                        horizontal: 80,
+                        vertical: 20,
+                      )
+                    : const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                EasyText(
+                  seeAllPlans.value
+                      ? LocaleKeys.selectYourSubscription.tr()
+                      : LocaleKeys.pricingPlanTitle.tr(),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
                 ),
-              SizedBox(height: getMediaHeight(context) * 0.04),
-              SubscriptionButton(
-                onPressed: () => subscribeToPackage(selectedProductId.value),
-                isLoading: subscriptionStore.subscriptonStatus == SubscriptionStatus.verifying,
-                label: LocaleKeys.letsGoBtn.tr(),
-              ),
-              if (!seeAllPlans.value)
-                TextButton(
-                  onPressed: () {
-                    seeAllPlans.value = !seeAllPlans.value;
-                  },
-                  child: EasyText(
-                    LocaleKeys.pricingPlanSeePlansBtn.tr(),
-                    color: Palette.purple,
+                SizedBox(height: getMediaHeight(context) * 0.02),
+                if (seeAllPlans.value)
+                  _ProductsContainer(
+                    products: products,
+                    selectedProductId: selectedProductId,
+                    isDarkTheme: isDarkMode,
+                    analyticsStore: analyticsStore,
+                  )
+                else
+                  HighlightedProduct(
+                    product: products.first,
+                    isDarkTheme: isDarkMode,
+                    monthlyRawPrice: products.last.rawPrice,
+                    showDiscountTag: true,
+                    isHighlighted: false,
                   ),
-                ).padding(top: getMediaHeight(context) * 0.01),
-              const BottomSpacer(),
-            ],
-          ).padding(horizontal: 20, vertical: 20),
+                SizedBox(height: getMediaHeight(context) * 0.04),
+                SubscriptionButton(
+                  onPressed: () {
+                    analyticsStore.logEvent(AnalyticsEvent.clickLetsgoPaymentSelectProductPopup);
+                    Navigator.of(context).pop();
+                    subscribeToPackage(selectedProductId.value);
+                  },
+                  isLoading: subscriptionStore.isLoading,
+                  label: LocaleKeys.letsGoBtn.tr(),
+                ),
+                Visibility(
+                  visible: !seeAllPlans.value && !subscriptionStore.isLoading,
+                  child: TextButton(
+                    onPressed: () {
+                      analyticsStore
+                          .logEvent(AnalyticsEvent.clickSeeAllPlansPaymentSelectProductPopup);
+                      seeAllPlans.value = !seeAllPlans.value;
+                    },
+                    child: EasyText(
+                      LocaleKeys.pricingPlanSeePlansBtn.tr(),
+                      color: Palette.purple,
+                    ),
+                  ).padding(top: getMediaHeight(context) * 0.01),
+                ),
+                const BottomSpacer(),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -144,10 +171,12 @@ class _ProductsContainer extends StatelessWidget {
     required this.products,
     required this.selectedProductId,
     required this.isDarkTheme,
+    required this.analyticsStore,
   });
   final List<PurchasableProduct> products;
   final ValueNotifier<String> selectedProductId;
   final bool isDarkTheme;
+  final AnalyticsStore analyticsStore;
   @override
   Widget build(BuildContext context) => DecoratedBox(
         decoration: BoxDecoration(
@@ -162,6 +191,10 @@ class _ProductsContainer extends StatelessWidget {
           itemCount: products.length,
           itemBuilder: (context, index) => ContaineredProduct(
             selectProdcut: () {
+              analyticsStore.logProductSelected(
+                products[index].id,
+                products.map((e) => e.id).toList(),
+              );
               selectedProductId.value = products[index].id;
             },
             product: products[index],

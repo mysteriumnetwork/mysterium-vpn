@@ -18,7 +18,7 @@ class ProductFeatures extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(
-          vertical: 8,
+          vertical: 12,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +49,7 @@ class ProductFeatures extends StatelessWidget {
                     ),
                   )
                   .toList(),
-            ).padding(horizontal: 16, vertical: 8).card(
+            ).padding(all: 16).card(
                   color: isDarkTheme ? const Color(0xff353355) : const Color(0xffF5F3FD),
                 ),
           ],
@@ -84,7 +84,7 @@ class _FeatureItem extends StatelessWidget {
                   child: EasyText(
                     title,
                     fontSize: 14,
-                    color: isDarkTheme ? const Color(0xffC4C1DD) : const Color(0xff716F8A),
+                    color: isDarkTheme ? const Color(0xffC4C1DD) : const Color(0xFF716F8A),
                   ),
                 ),
               ],
@@ -95,7 +95,7 @@ class _FeatureItem extends StatelessWidget {
                   vertical: 8,
                 ),
                 child: Divider(
-                  color: isDarkTheme ? const Color(0xff6a678e) : const Color.fromRGBO(166, 163, 201, 0.4),
+                  color: isDarkTheme ? const Color(0xFF6a678e) : const Color(0x66A6A3C9),
                   thickness: 1,
                   height: 1,
                 ),
