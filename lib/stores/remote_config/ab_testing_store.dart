@@ -45,17 +45,16 @@ abstract class ABTestingStoreBase with Store {
   Future<void> getAllABTestingValues() async {
     try {
       config = ObservableMap.of(await client.getAllValues());
+      asUserProperties.forEach(analytics.setUserProperty);
     } catch (e, st) {
       logger.handle(e, st);
-      config = ObservableMap();
     }
   }
 
   @action
   Future<void> refreshABTestingValues() async {
     client.hooks.addOnConfigChanged((flags) async {
-      config = ObservableMap.of(await client.getAllValues());
-      asUserProperties.forEach(analytics.setUserProperty);
+      getAllABTestingValues();
     });
   }
 

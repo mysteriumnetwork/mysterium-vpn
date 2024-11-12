@@ -52,7 +52,6 @@ abstract class RemoteConfigStoreBase with Store {
       config = ObservableMap.of(await client.getAllValues());
     } catch (e, st) {
       logger.handle(e, st);
-      config = ObservableMap();
     }
   }
 

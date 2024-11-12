@@ -23,6 +23,7 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/subscription_variants_container.dart';
 
@@ -51,22 +52,7 @@ class SubscriptionMobileView extends HookConsumerWidget {
       builder: (_) => PopScope(
         canPop: false,
         onPopInvokedWithResult: (didPop, _) async {
-          if (didPop) {
-            return;
-          }
-          if (subscriptionStore.isSubscribed == false) {
-            analyticsStore.logEvent(AnalyticsEvent.paymentExitPopup);
-            final shouldPop = await shownDismissPageDialog(context);
-            if (shouldPop ?? false) {
-              analyticsStore.logEvent(AnalyticsEvent.paymentExitConfirm);
-              authStore.logout();
-            } else {
-              analyticsStore.logEvent(AnalyticsEvent.paymentExitCancel);
-            }
-          } else {
-            analyticsStore.logEvent(AnalyticsEvent.backButtonClick);
-            Beamer.of(context).beamBack();
-          }
+          await onPop(subscriptionStore, context, analyticsStore, authStore, didPop: didPop);
         },
         child: BaseLayout(
           header: BaseAppBar(
@@ -75,47 +61,70 @@ class SubscriptionMobileView extends HookConsumerWidget {
           child: Observer(
             builder: (context) {
               final isDarkMode = themeStore.isDarkMode;
-              return subscriptionStore.isAvailable == StoreState.loading
-                  ? LoadingIndicator(
-                      message: LocaleKeys.connectingToPaymentProcesor.tr(),
-                    )
-                  : subscriptionStore.isAvailable == StoreState.notAvailable
-                      ? RetryOnErrorWidget(
-                          error: LocaleKeys.unableToConnectToPaymentProcesor.tr(),
-                          onRetry: subscriptionStore.getSubscriptionsConfig,
-                        )
-                      : subscriptionStore.products.isEmpty
-                          ? RetryOnErrorWidget(
-                              error: LocaleKeys.productsNotAvailable.tr(),
-                              onRetry: subscriptionStore.getSubscriptionsConfig,
-                            )
-                          : ReactionBuilder(
-                              builder: (context) =>
-                                  reaction((_) => subscriptionStore.subscriptonStatus, (status) {
-                                subscriptionStatusReaction(context, status, subscriptionStore);
-                              }),
-                              child: SubscriptionFormVariantContainer(
-                                subscriptionStore: subscriptionStore,
-                                localDb: localDb,
-                                analyticsStore: analyticsStore,
-                                subscribeToPackage: (String selectedProductId) =>
-                                    subscribeToPackage(
-                                  analyticsStore,
-                                  subscriptionStore,
-                                  subscriptionStore.products.map((e) => e.id).toList(),
-                                  selectedProductId,
-                                ),
-                                variant: abTestingStore.subscriptionFlowVariant,
-                                isDarkMode: isDarkMode,
-                                isVerifingPayment: subscriptionStore.subscriptonStatus ==
-                                    SubscriptionStatus.verifying,
-                              ),
-                            );
+              if (subscriptionStore.isAvailable == StoreState.loading) {
+                return LoadingIndicator(
+                  message: LocaleKeys.connectingToPaymentProcesor.tr(),
+                );
+              } else if ([StoreState.loading, StoreState.notAvailable]
+                  .contains(subscriptionStore.isAvailable)) {
+                RetryOnErrorWidget(
+                  error: subscriptionStore.isAvailable == StoreState.loading
+                      ? LocaleKeys.unableToConnectToPaymentProcesor.tr()
+                      : LocaleKeys.productsNotAvailable.tr(),
+                  onRetry: subscriptionStore.getSubscriptionsConfig,
+                );
+              }
+              return ReactionBuilder(
+                builder: (context) =>
+                    reaction((_) => subscriptionStore.subscriptonStatus, (status) {
+                  subscriptionStatusReaction(context, status, subscriptionStore);
+                }),
+                child: SubscriptionFormVariantContainer(
+                  subscriptionStore: subscriptionStore,
+                  localDb: localDb,
+                  analyticsStore: analyticsStore,
+                  subscribeToPackage: (String selectedProductId) => subscribeToPackage(
+                    analyticsStore,
+                    subscriptionStore,
+                    subscriptionStore.products.map((e) => e.id).toList(),
+                    selectedProductId,
+                  ),
+                  variant: abTestingStore.subscriptionFlowVariant,
+                  isDarkMode: isDarkMode,
+                  isVerifingPayment:
+                      subscriptionStore.subscriptonStatus == SubscriptionStatus.verifying,
+                ),
+              );
             },
           ),
         ),
       ),
     );
+  }
+
+  Future<void> onPop(
+    SubscriptionStore subscriptionStore,
+    BuildContext context,
+    AnalyticsStore analyticsStore,
+    AuthStore authStore, {
+    required bool didPop,
+  }) async {
+    if (didPop) {
+      return;
+    }
+    if (subscriptionStore.isSubscribed == false) {
+      analyticsStore.logEvent(AnalyticsEvent.paymentExitPopup);
+      final shouldPop = await shownDismissPageDialog(context);
+      if (shouldPop ?? false) {
+        analyticsStore.logEvent(AnalyticsEvent.paymentExitConfirm);
+        authStore.logout();
+      } else {
+        analyticsStore.logEvent(AnalyticsEvent.paymentExitCancel);
+      }
+    } else {
+      analyticsStore.logEvent(AnalyticsEvent.backButtonClick);
+      Beamer.of(context).beamBack();
+    }
   }
 
   void subscriptionStatusReaction(
