@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/models/token_request.dart';
 import 'package:mysterium_vpn/models/token_response.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -23,13 +24,16 @@ const kDisconnectAllDevices = '/connection/disconnect-all';
 class RestAuthService extends AuthService {
   RestAuthService({
     required NetworkService networkService,
+    required AuthSessionStore authSessionStore,
     required Talker logger,
     required FlavorValues env,
   })  : _networkService = networkService,
+        _authSessionStore = authSessionStore,
         _logger = logger,
         _env = env;
 
   final NetworkService _networkService;
+  final AuthSessionStore _authSessionStore;
   final _securedStorage = SecureStorageService.instance;
   final Talker _logger;
   final FlavorValues _env;
@@ -41,22 +45,19 @@ class RestAuthService extends AuthService {
   Future<AuthData> checkUserAuth() async {
     try {
       final accessToken = await _securedStorage.getAccessToken();
+      final refreshToken = await _securedStorage.getRefreshToken();
       final userName = await _securedStorage.getUsername() ?? '';
       final userId = await _securedStorage.getUserId();
-      _networkService.updateHeader(
-        {'Authorization': 'Bearer $accessToken'},
-      );
+
       // Proceed with token introspection in order to check if token is valid
       // If token is invalid, UnauthorizedInterceptor will catch it and it will be handled
       unawaited(
-        _networkService.get(
-          kAuthCheck,
-          headers: {'Authorization': 'Bearer $accessToken'},
-        ),
+        _networkService.get(kAuthCheck),
       );
 
       return AuthData(
         accessToken: accessToken,
+        refreshToken: refreshToken,
         username: userName,
         userId: userId,
       );
@@ -89,17 +90,17 @@ class RestAuthService extends AuthService {
   }) async {
     try {
       final authTokens = await signIn(tokenRequest);
+      _authSessionStore.login(authTokens.accessToken, authTokens.refreshToken);
 
       await _networkService.post(
         kOAuthIntrospect,
-        headers: {'Authorization': 'Bearer ${authTokens.accessToken}'},
         data: {
           'token': authTokens.accessToken,
         },
       );
+
       final userData = (await _networkService.get(
         kAuthCheck,
-        headers: {'Authorization': 'Bearer ${authTokens.accessToken}'},
       ))
           .data as Map<String, dynamic>?;
       // TODO(Waldz): Introduce DTO models, layer of serialization/deserialization is missing
@@ -107,11 +108,9 @@ class RestAuthService extends AuthService {
 
       final authData = AuthData(
         accessToken: authTokens.accessToken,
+        refreshToken: authTokens.refreshToken,
         username: username,
         userId: authTokens.userId,
-      );
-      _networkService.updateHeader(
-        {'Authorization': 'Bearer ${authData.accessToken}'},
       );
       await _securedStorage.saveAccessToken(authData.accessToken);
       if (authTokens.refreshToken != null) {

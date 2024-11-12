@@ -10,6 +10,7 @@ class AuthData with _$AuthData {
     @JsonKey(name: 'access_token') required String accessToken,
     @JsonKey(name: 'username') required String username,
     @JsonKey(name: 'sub') required String userId,
+    @JsonKey(name: 'refresh_token') required String? refreshToken,
   }) = _AuthData;
 
   factory AuthData.fromJson(Map<String, dynamic> json) => _$AuthDataFromJson(json);
