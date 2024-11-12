@@ -30,7 +30,6 @@ class Agreements extends StatelessWidget {
               text: LocaleKeys.privacyPolicy.tr(),
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Palette.pink,
-                    decoration: TextDecoration.underline,
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),
@@ -46,7 +45,6 @@ class Agreements extends StatelessWidget {
               text: LocaleKeys.termsAndConditions.tr(),
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Palette.pink,
-                    decoration: TextDecoration.underline,
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),

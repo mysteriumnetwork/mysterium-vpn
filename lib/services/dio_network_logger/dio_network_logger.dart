@@ -278,6 +278,7 @@ class _NetworkLoggerScreenState extends State<NetworkLoggerScreen> {
           onPressed: Navigator.of(context).pop,
           color: Theme.of(context).textTheme.bodyLarge?.color,
         ),
+        forceMaterialTransparency: true,
         title: const EasyText(
           'Network Logs',
         ),
@@ -947,7 +948,8 @@ class _ConfigPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final config = ref.watch(environmentPOD);
-
+    final remoteConfigs = ref.watch(remoteConfigStorePOD);
+    final abTesting = ref.watch(abTestingStorePOD);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -955,14 +957,45 @@ class _ConfigPage extends ConsumerWidget {
           onPressed: Navigator.of(context).pop,
           color: Theme.of(context).textTheme.bodyLarge?.color,
         ),
+        forceMaterialTransparency: true,
         title: const EasyText('Current Configs'),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: EasyText(
-            config.values.toString(),
-            maxLines: 100,
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const EasyText(
+                'Environment: ',
+                fontWeight: FontWeight.bold,
+                color: Palette.purple,
+              ),
+              EasyText(
+                config.values.toString(),
+                maxLines: 20,
+              ),
+              const SizedBox(height: 8),
+              const EasyText(
+                'Remote Configs: ',
+                fontWeight: FontWeight.bold,
+                color: Palette.purple,
+              ),
+              EasyText(
+                remoteConfigs.asUserProperties.toString(),
+                maxLines: 20,
+              ),
+              const SizedBox(height: 8),
+              const EasyText(
+                'AB Testing: ',
+                fontWeight: FontWeight.bold,
+                color: Palette.purple,
+              ),
+              EasyText(
+                abTesting.asUserProperties.toString(),
+                maxLines: 20,
+              ),
+            ],
           ),
         ),
       ),

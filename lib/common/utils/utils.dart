@@ -343,6 +343,7 @@ void handleOnBillingPage({
   required String billingPage,
   required String? gateway,
   required String? accessToken,
+  VoidCallback? onManageSubscription,
 }) {
   final isMobileGateway = isMobilePaymentGateway(gateway);
 
@@ -357,7 +358,7 @@ void handleOnBillingPage({
       );
       return;
     }
-    context.beamToNamed(Routes.payment.toRoute);
+    onManageSubscription?.call();
     return;
   }
 

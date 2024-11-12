@@ -108,9 +108,9 @@
 		</array>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>This app requires access to the photo library.</string>
-		<key>NSAdvertisingAttributionReportEndpoint</key>
-		<string>https://appsflyer-skadnetwork.com/</string>
-		<key>GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_USER_DATA</key> <true/>
-		<key>GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_PERSONALIZATION_SIGNALS</key> <true/>
+		<key>GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_USER_DATA</key>
+		 <true/>
+		<key>GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_PERSONALIZATION_SIGNALS</key>
+		<true/>
 	</dict>
 </plist>

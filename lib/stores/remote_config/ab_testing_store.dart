@@ -1,5 +1,7 @@
 import 'package:configcat_client/configcat_client.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/extensions/string.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:talker/talker.dart';
 
 part 'ab_testing_store.g.dart';
@@ -14,11 +16,13 @@ abstract class ABTestingStoreBase with Store {
   ABTestingStoreBase({
     required this.client,
     required this.logger,
+    required this.analytics,
   }) {
     getAllABTestingValues().whenComplete(refreshABTestingValues);
   }
   final ConfigCatClient client;
   final Talker logger;
+  final AnalyticsStore analytics;
 
   @observable
   ObservableMap<String, dynamic> config = ObservableMap();
@@ -34,31 +38,34 @@ abstract class ABTestingStoreBase with Store {
         email: email,
       ),
     );
-    getAllABTestingValues();
+    await getAllABTestingValues();
   }
 
   @action
   Future<void> getAllABTestingValues() async {
     try {
       config = ObservableMap.of(await client.getAllValues());
+      asUserProperties.forEach(analytics.setUserProperty);
     } catch (e, st) {
       logger.handle(e, st);
-      config = ObservableMap();
     }
   }
 
   @action
   Future<void> refreshABTestingValues() async {
     client.hooks.addOnConfigChanged((flags) async {
-      config = ObservableMap.of(await client.getAllValues());
+      getAllABTestingValues();
     });
   }
 
   @computed
-  String get subscriptionFlow {
+  String get subscriptionFlowVariant {
     if (config.containsKey(_ABKey.subscriptionFlow.name)) {
       return config[_ABKey.subscriptionFlow.name] as String;
     }
     return 'A';
   }
+
+  Map<String, String> get asUserProperties =>
+      config.map((key, value) => MapEntry('group_${key.toSnakeCase}', value.toString()));
 }

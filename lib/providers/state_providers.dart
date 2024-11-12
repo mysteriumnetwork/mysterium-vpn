@@ -166,5 +166,10 @@ final remoteConfigStorePOD = Provider<RemoteConfigStore>((ref) {
 final abTestingStorePOD = Provider<ABTestingStore>((ref) {
   final logger = ref.watch(loggerPOD);
   final configCatClient = ref.watch(abTestingClientPOD);
-  return ABTestingStore(client: configCatClient, logger: logger);
+  final analyticsStore = ref.watch(analyticsStorePOD);
+  return ABTestingStore(
+    client: configCatClient,
+    logger: logger,
+    analytics: analyticsStore,
+  );
 });

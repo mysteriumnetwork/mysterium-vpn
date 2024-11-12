@@ -139,22 +139,6 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     });
   }
 
-  late final _$selectedProductIdAtom =
-      Atom(name: '_SubscriptionStore.selectedProductId', context: context);
-
-  @override
-  String get selectedProductId {
-    _$selectedProductIdAtom.reportRead();
-    return super.selectedProductId;
-  }
-
-  @override
-  set selectedProductId(String value) {
-    _$selectedProductIdAtom.reportWrite(value, super.selectedProductId, () {
-      super.selectedProductId = value;
-    });
-  }
-
   late final _$_subscriptionConfigAtom =
       Atom(name: '_SubscriptionStore._subscriptionConfig', context: context);
 
@@ -260,8 +244,8 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
       AsyncAction('_SubscriptionStore.subscribeToPackage', context: context);
 
   @override
-  Future<void> subscribeToPackage() {
-    return _$subscribeToPackageAsyncAction.run(() => super.subscribeToPackage());
+  Future<void> subscribeToPackage({required ProductDetails product}) {
+    return _$subscribeToPackageAsyncAction.run(() => super.subscribeToPackage(product: product));
   }
 
   late final _$redeemCodeAsyncAction =
@@ -339,7 +323,6 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
 isAvailableFuture: ${isAvailableFuture},
 verifySubscriptionFuture: ${verifySubscriptionFuture},
 subscriptionFuture: ${subscriptionFuture},
-selectedProductId: ${selectedProductId},
 isSubscribed: ${isSubscribed},
 isLoading: ${isLoading}
     ''';
