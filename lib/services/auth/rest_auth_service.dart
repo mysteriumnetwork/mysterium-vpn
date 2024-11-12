@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/models/token_request.dart';
+import 'package:mysterium_vpn/models/token_response.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
@@ -72,12 +73,22 @@ class RestAuthService extends AuthService {
     }
   }
 
+  Future<TokenResponse> signIn(TokenRequest request) async {
+    final response = await _networkService.post(
+      '/oauth/token',
+      data: request.toJson(),
+      headers: {'content-type': 'application/x-www-form-urlencoded'},
+    );
+
+    return TokenResponse.fromJson(response.data as Map<String, dynamic>);
+  }
+
   @override
   Future<AuthData> singInComplete({
     required TokenRequest tokenRequest,
   }) async {
     try {
-      final authTokens = await _networkService.token(tokenRequest);
+      final authTokens = await signIn(tokenRequest);
 
       await _networkService.post(
         kOAuthIntrospect,
