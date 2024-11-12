@@ -9,6 +9,7 @@ part of 'token_request.dart';
 _$TokenRequestImpl _$$TokenRequestImplFromJson(Map<String, dynamic> json) => _$TokenRequestImpl(
       grantType: $enumDecode(_$GrantTypeEnumMap, json['grant_type']),
       clientId: json['client_id'] as String? ?? 'app',
+      refreshToken: json['refresh_token'] as String?,
       codeVerifier: json['code_verifier'] as String?,
       code: json['code'] as String?,
       googleIdToken: json['google_id_token'] as String?,
@@ -19,6 +20,7 @@ _$TokenRequestImpl _$$TokenRequestImplFromJson(Map<String, dynamic> json) => _$T
 Map<String, dynamic> _$$TokenRequestImplToJson(_$TokenRequestImpl instance) => <String, dynamic>{
       'grant_type': grantTypeToJson(instance.grantType),
       'client_id': instance.clientId,
+      'refresh_token': instance.refreshToken,
       'code_verifier': instance.codeVerifier,
       'code': instance.code,
       'google_id_token': instance.googleIdToken,
@@ -26,6 +28,7 @@ Map<String, dynamic> _$$TokenRequestImplToJson(_$TokenRequestImpl instance) => <
     };
 
 const _$GrantTypeEnumMap = {
+  GrantType.refreshToken: 'refreshToken',
   GrantType.email: 'email',
   GrantType.apple: 'apple',
   GrantType.google: 'google',

@@ -6,6 +6,7 @@ enum StorageKeys {
   emailCommunicationApproval,
   notificationsApproval,
   accessToken,
+  refreshToken,
   username,
   userId,
   appLink,

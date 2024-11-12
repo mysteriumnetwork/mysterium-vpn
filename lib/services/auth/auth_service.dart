@@ -7,10 +7,10 @@ abstract class AuthService {
   Future<String?> signInWithEmail({required String email, required PkcePair pkcePair});
   Future<String> signInWithGoogle();
   Future<String> signInWithApple();
-  Future<void> logout();
-  Future<AuthData> completeLogin({
+  Future<AuthData> singInComplete({
     required TokenRequest tokenRequest,
   });
+  Future<void> logout();
   Future<void> deleteAccount({
     required String email,
   });

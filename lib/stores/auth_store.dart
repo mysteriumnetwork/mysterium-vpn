@@ -10,6 +10,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
+import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/auth_data.dart';
@@ -57,6 +58,7 @@ abstract class _AuthStore with Store {
         _remoteConfigStore = remoteConfigStore,
         _abTestingStore = abTestingStore {
     initAuth();
+    refreshTokenCallback = refreshAuthToken;
   }
 
   final AuthService _authService;
@@ -113,7 +115,7 @@ abstract class _AuthStore with Store {
         await _secureStorageService.saveAppLink(appLink: appLink.toString());
         verifyMagicLinkAndAuthenticate(appLink);
       } else {
-        authenticate(grantType: GrantType.savedToken);
+        authenticate(GrantType.savedToken, _authService.checkUserAuth());
       }
       _appLinks.uriLinkStream.listen(
         (appLink) async {
@@ -145,7 +147,16 @@ abstract class _AuthStore with Store {
       if (code == null || _pkcePair == null) {
         throw IncorrectCodeException();
       }
-      authenticate(code: code, grantType: GrantType.email);
+      authenticate(
+        GrantType.email,
+        _authService.singInComplete(
+          tokenRequest: TokenRequest(
+            grantType: GrantType.email,
+            code: code,
+            codeVerifier: _pkcePair!.codeVerifier,
+          ),
+        ),
+      );
     } catch (e) {
       showSnackbar(LocaleKeys.incorrectMagicLink.tr());
       rethrow;
@@ -153,32 +164,15 @@ abstract class _AuthStore with Store {
   }
 
   @action
-  Future<void> authenticate({
-    required GrantType grantType,
-    String? code,
-  }) async {
+  Future<void> authenticate(
+    GrantType grantType,
+    Future<AuthData?> authenticateFeature,
+  ) async {
     try {
       if (_authStatus == AuthStatus.authenticating) {
         return;
-      } else if (code != null) {
-        _authStatus = AuthStatus.authenticating;
-        authenticateFeature = ObservableFuture(
-          _authService.completeLogin(
-            tokenRequest: TokenRequest(
-              grantType: grantType,
-              code: grantType == GrantType.email ? code : null,
-              googleIdToken: grantType == GrantType.google ? code : null,
-              codeVerifier: grantType == GrantType.email ? _pkcePair!.codeVerifier : null,
-              authorization: grantType == GrantType.apple ? code : null,
-            ),
-          ),
-        );
-      } else {
-        grantType = GrantType.savedToken;
-        authenticateFeature = ObservableFuture(
-          _authService.checkUserAuth(),
-        );
       }
+      _authStatus = AuthStatus.authenticating;
 
       final res = await authenticateFeature;
       await _localDb.setUserId(res!.username);
@@ -231,11 +225,7 @@ abstract class _AuthStore with Store {
   @action
   Future<void> logout({
     String? email,
-    bool? invalidateExpiredToken,
   }) async {
-    if (invalidateExpiredToken ?? false) {
-      showSnackbar(LocaleKeys.loginSessionExpired.tr());
-    }
     logoutFeature = ObservableFuture(_authService.logout());
 
     await logoutFeature;
@@ -272,7 +262,16 @@ abstract class _AuthStore with Store {
       );
       final code = await signInFeatureFeature;
       if (code != null) {
-        authenticate(code: code, grantType: GrantType.email);
+        authenticate(
+          GrantType.email,
+          _authService.singInComplete(
+            tokenRequest: TokenRequest(
+              grantType: GrantType.email,
+              code: code,
+              codeVerifier: _pkcePair!.codeVerifier,
+            ),
+          ),
+        );
       }
       this.email = email;
       return code;
@@ -294,7 +293,15 @@ abstract class _AuthStore with Store {
       );
       final code = await signInFeatureFeature;
       if (code != null) {
-        authenticate(code: code, grantType: GrantType.google);
+        authenticate(
+          GrantType.google,
+          _authService.singInComplete(
+            tokenRequest: TokenRequest(
+              grantType: GrantType.google,
+              googleIdToken: code,
+            ),
+          ),
+        );
       }
     } catch (e) {
       e is SignInAborted
@@ -314,7 +321,15 @@ abstract class _AuthStore with Store {
       );
       final code = await signInFeatureFeature;
       if (code != null) {
-        authenticate(code: code, grantType: GrantType.apple);
+        authenticate(
+          GrantType.apple,
+          _authService.singInComplete(
+            tokenRequest: TokenRequest(
+              grantType: GrantType.apple,
+              authorization: code,
+            ),
+          ),
+        );
       }
     } catch (e) {
       e is NotAvailableException
@@ -358,6 +373,23 @@ abstract class _AuthStore with Store {
       await deleteAccountFeature;
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  Future<void> refreshAuthToken() async {
+    try {
+      final refreshToken = await _secureStorageService.getRefreshToken();
+      await _authService.singInComplete(
+        tokenRequest: TokenRequest(
+          grantType: GrantType.refreshToken,
+          refreshToken: refreshToken,
+        ),
+      );
+    } catch (e) {
+      showSnackbar(LocaleKeys.loginSessionExpired.tr());
+      await logout();
+
+      rethrow;
     }
   }
 }

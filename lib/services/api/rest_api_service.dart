@@ -20,6 +20,7 @@ const kGetMarketingConsent = '/user-preferences/marketing-consent';
 const kGetUserPreferences = '/user-preferences';
 const kSetEmailMarketingConsent = '/email-marketing/marketing-consent';
 
+// TODO(Waldz): Generate API client from API documentation openapi.yaml
 class RestApiService extends ApiService {
   RestApiService({
     required NetworkService networkService,
