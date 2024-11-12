@@ -26,6 +26,8 @@ mixin _$AuthData {
   String get username => throw _privateConstructorUsedError;
   @JsonKey(name: 'sub')
   String get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'refresh_token')
+  String? get refreshToken => throw _privateConstructorUsedError;
 
   /// Serializes this AuthData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,7 +46,8 @@ abstract class $AuthDataCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'access_token') String accessToken,
       @JsonKey(name: 'username') String username,
-      @JsonKey(name: 'sub') String userId});
+      @JsonKey(name: 'sub') String userId,
+      @JsonKey(name: 'refresh_token') String? refreshToken});
 }
 
 /// @nodoc
@@ -64,6 +67,7 @@ class _$AuthDataCopyWithImpl<$Res, $Val extends AuthData> implements $AuthDataCo
     Object? accessToken = null,
     Object? username = null,
     Object? userId = null,
+    Object? refreshToken = freezed,
   }) {
     return _then(_value.copyWith(
       accessToken: null == accessToken
@@ -78,6 +82,10 @@ class _$AuthDataCopyWithImpl<$Res, $Val extends AuthData> implements $AuthDataCo
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
+      refreshToken: freezed == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -91,7 +99,8 @@ abstract class _$$AuthDataImplCopyWith<$Res> implements $AuthDataCopyWith<$Res> 
   $Res call(
       {@JsonKey(name: 'access_token') String accessToken,
       @JsonKey(name: 'username') String username,
-      @JsonKey(name: 'sub') String userId});
+      @JsonKey(name: 'sub') String userId,
+      @JsonKey(name: 'refresh_token') String? refreshToken});
 }
 
 /// @nodoc
@@ -108,6 +117,7 @@ class __$$AuthDataImplCopyWithImpl<$Res> extends _$AuthDataCopyWithImpl<$Res, _$
     Object? accessToken = null,
     Object? username = null,
     Object? userId = null,
+    Object? refreshToken = freezed,
   }) {
     return _then(_$AuthDataImpl(
       accessToken: null == accessToken
@@ -122,6 +132,10 @@ class __$$AuthDataImplCopyWithImpl<$Res> extends _$AuthDataCopyWithImpl<$Res, _$
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
+      refreshToken: freezed == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -132,7 +146,8 @@ class _$AuthDataImpl implements _AuthData {
   _$AuthDataImpl(
       {@JsonKey(name: 'access_token') required this.accessToken,
       @JsonKey(name: 'username') required this.username,
-      @JsonKey(name: 'sub') required this.userId});
+      @JsonKey(name: 'sub') required this.userId,
+      @JsonKey(name: 'refresh_token') required this.refreshToken});
 
   factory _$AuthDataImpl.fromJson(Map<String, dynamic> json) => _$$AuthDataImplFromJson(json);
 
@@ -145,10 +160,13 @@ class _$AuthDataImpl implements _AuthData {
   @override
   @JsonKey(name: 'sub')
   final String userId;
+  @override
+  @JsonKey(name: 'refresh_token')
+  final String? refreshToken;
 
   @override
   String toString() {
-    return 'AuthData(accessToken: $accessToken, username: $username, userId: $userId)';
+    return 'AuthData(accessToken: $accessToken, username: $username, userId: $userId, refreshToken: $refreshToken)';
   }
 
   @override
@@ -158,12 +176,13 @@ class _$AuthDataImpl implements _AuthData {
             other is _$AuthDataImpl &&
             (identical(other.accessToken, accessToken) || other.accessToken == accessToken) &&
             (identical(other.username, username) || other.username == username) &&
-            (identical(other.userId, userId) || other.userId == userId));
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, accessToken, username, userId);
+  int get hashCode => Object.hash(runtimeType, accessToken, username, userId, refreshToken);
 
   /// Create a copy of AuthData
   /// with the given fields replaced by the non-null parameter values.
@@ -185,7 +204,8 @@ abstract class _AuthData implements AuthData {
   factory _AuthData(
       {@JsonKey(name: 'access_token') required final String accessToken,
       @JsonKey(name: 'username') required final String username,
-      @JsonKey(name: 'sub') required final String userId}) = _$AuthDataImpl;
+      @JsonKey(name: 'sub') required final String userId,
+      @JsonKey(name: 'refresh_token') required final String? refreshToken}) = _$AuthDataImpl;
 
   factory _AuthData.fromJson(Map<String, dynamic> json) = _$AuthDataImpl.fromJson;
 
@@ -198,6 +218,9 @@ abstract class _AuthData implements AuthData {
   @override
   @JsonKey(name: 'sub')
   String get userId;
+  @override
+  @JsonKey(name: 'refresh_token')
+  String? get refreshToken;
 
   /// Create a copy of AuthData
   /// with the given fields replaced by the non-null parameter values.

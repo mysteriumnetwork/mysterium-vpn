@@ -8,6 +8,8 @@ import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
+import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_firebase.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_noop.dart';
@@ -26,6 +28,10 @@ import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
+
+final authSessionStorePOD = Provider<AuthSessionStore>(
+  (ref) => AuthSessionStore(secureStorage: SecureStorageService.instance),
+);
 
 final authStorePOD = Provider<AuthStore>((ref) {
   final authService = ref.watch(authServicePOD);
