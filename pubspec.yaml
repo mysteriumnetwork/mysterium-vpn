@@ -46,7 +46,7 @@ dependencies:
   hive_flutter: 1.1.0
   hooks_riverpod: 2.5.2
   import_sorter: 4.6.0
-  in_app_purchase: 3.2.0
+  in_app_purchase: 3.1.13
   in_app_purchase_storekit: 0.3.18+1
   in_app_review: 2.0.9
   intercom_flutter: 9.0.9
