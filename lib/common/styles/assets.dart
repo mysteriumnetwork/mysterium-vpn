@@ -1,3 +1,4 @@
+// TODO(Kristijan): Deprecate and use library to generate assets
 abstract class Assets {
   //LOGO
   static const String logoBlackSvg = 'assets/logo/logo_black.svg';
@@ -58,6 +59,8 @@ abstract class Assets {
   static const String refreshDark = 'assets/icons/refresh_dark.svg';
   static const String refreshLight = 'assets/icons/refresh_light.svg';
   static const String refreshConn = 'assets/icons/refresh.svg';
+  static const String closeDark = 'assets/icons/close_dark.svg';
+  static const String closeLight = 'assets/icons/close_light.svg';
 
   //Animations
   static const String backgroundElements = 'assets/animations/background_elements.json';

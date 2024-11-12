@@ -12,21 +12,17 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class ProductItem extends StatelessWidget {
-  const ProductItem({
+class ProductItemVariantA extends StatelessWidget {
+  const ProductItemVariantA({
     required this.productDetails,
     required this.onProductSelected,
     required this.selectedProductId,
-    required this.purchasedProductId,
-    required this.isSusbActive,
     super.key,
   });
 
   final PurchasableProduct productDetails;
   final Function(String productId) onProductSelected;
   final String selectedProductId;
-  final String? purchasedProductId;
-  final bool isSusbActive;
   @override
   Widget build(BuildContext context) => RippleWidget(
         radius: 20,
@@ -71,13 +67,10 @@ class ProductItem extends StatelessWidget {
                       radius: 18,
                       strokeWidth: 1.5,
                     )
-                  else ...[
+                  else
                     _CheckMark(
                       isSelected: productDetails.id == selectedProductId,
-                      isPurchased: productDetails.id == purchasedProductId,
-                      isSusbActive: isSusbActive,
                     ),
-                  ],
                 ],
               ).padding(left: 14),
             ),
@@ -94,22 +87,16 @@ class ProductItem extends StatelessWidget {
 class _CheckMark extends StatelessWidget {
   const _CheckMark({
     required this.isSelected,
-    required this.isPurchased,
-    required this.isSusbActive,
   });
 
   final bool isSelected;
-  final bool isPurchased;
-  final bool isSusbActive;
   @override
-  Widget build(BuildContext context) => isPurchased && isSelected && isSusbActive
-      ? const Icon(Icons.check_circle, color: Palette.green)
-      : isSelected
-          ? const SvgIcon(
-              asset: Assets.checkmark,
-            )
-          : CircleBox(
-              color: Theme.of(context).secondaryHeaderColor,
-              size: 20,
-            );
+  Widget build(BuildContext context) => isSelected
+      ? const SvgIcon(
+          asset: Assets.checkmark,
+        )
+      : CircleBox(
+          color: Theme.of(context).secondaryHeaderColor,
+          size: 20,
+        );
 }

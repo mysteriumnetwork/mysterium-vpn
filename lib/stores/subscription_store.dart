@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -73,9 +72,6 @@ abstract class _SubscriptionStore with Store {
   @readonly
   String? _purchasedProductId;
 
-  @observable
-  String selectedProductId = kPopularPlan;
-
   @readonly
   SubscriptionConfig? _subscriptionConfig;
 
@@ -97,8 +93,6 @@ abstract class _SubscriptionStore with Store {
   Future<void> initStore() async {
     when((_) => _authStore.authData != null, () {
       if (_authStore.authData != null) {
-        _purchasedProductId = _localDb.getSubscriptionPlan();
-        selectedProductId = _purchasedProductId ?? kPopularPlan;
         fetchSubscription().whenComplete(getSubscriptionsConfig);
       }
     });
@@ -109,7 +103,7 @@ abstract class _SubscriptionStore with Store {
     subscriptionFuture = ObservableFuture(_subscriptionService.fetchSubscriptionDetails());
     _subscription = await subscriptionFuture;
     _expired = _subscription?.expired;
-    if (_subscription?.planId != null && _subscription!.planId!.isNotEmpty) {
+    if (_subscription!.active && (_subscription!.planId?.isNotEmpty ?? false)) {
       _localDb.setSubscriptionPlan(_subscription!.planId!);
       _purchasedProductId = _subscription!.planId;
     }
@@ -163,19 +157,12 @@ abstract class _SubscriptionStore with Store {
   }
 
   @action
-  Future<void> subscribeToPackage() async {
-    final item =
-        _products.firstWhereOrNull((element) => element.id == selectedProductId)?.productDetails;
-    if (item == null) {
-      return;
-    }
+  Future<void> subscribeToPackage({required ProductDetails product}) async {
     try {
       _subscriptonStatus = SubscriptionStatus.pending;
-      final item =
-          _products.firstWhere((element) => element.id == selectedProductId).productDetails;
 
       await _subscriptionService.subscribeToPackage(
-        productDetails: item,
+        productDetails: product,
         purchasedProductId: ((_subscription?.active ?? false) && _subscription?.gateway == 'google')
             ? _products
                 .firstWhereOrNull((element) => element.id == _purchasedProductId)
@@ -187,8 +174,8 @@ abstract class _SubscriptionStore with Store {
       _analyticsStore.logEvent(
         AnalyticsEvent.paymentConfirm,
         parameters: {
-          'planType': item.id,
-          'price': item.rawPrice.toString(),
+          'planType': product.id,
+          'price': product.rawPrice.toString(),
           'item_ids': _products.map((e) => e.id).toList(),
         },
       );
@@ -198,8 +185,8 @@ abstract class _SubscriptionStore with Store {
       _analyticsStore.logEvent(
         AnalyticsEvent.paymentError,
         parameters: {
-          'planType': selectedProductId,
-          'price': item.rawPrice.toString(),
+          'planType': product.id,
+          'price': product.rawPrice.toString(),
           'error': e.toString(),
         },
       );
@@ -243,7 +230,6 @@ abstract class _SubscriptionStore with Store {
         purchaseDetails.status == PurchaseStatus.canceled) {
       if (product != null) {
         product.status = ProductStatus.purchasable;
-        selectedProductId = _purchasedProductId ?? product.id;
       }
       if (purchaseDetails.status == PurchaseStatus.canceled ||
           (purchaseDetails.status == PurchaseStatus.error &&
@@ -328,7 +314,7 @@ abstract class _SubscriptionStore with Store {
       _analyticsStore.logEvent(
         AnalyticsEvent.paymentVerificationError,
         parameters: {
-          'planType': selectedProductId,
+          'planType': productId,
           'price': price,
           'error': e.toString(),
         },
@@ -362,7 +348,7 @@ abstract class _SubscriptionStore with Store {
         _analyticsStore.logEvent(
           AnalyticsEvent.paymentSuccess,
           parameters: {
-            'planType': _purchasedProductId,
+            'planType': _lastPurchase!.productID,
             'price': product.productDetails.rawPrice.toString(),
           },
         );
@@ -371,7 +357,7 @@ abstract class _SubscriptionStore with Store {
         _analyticsStore.logEvent(
           AnalyticsEvent.paymentVerificationError,
           parameters: {
-            'planType': selectedProductId,
+            'planType': _lastPurchase!.productID,
             'price': product.productDetails.rawPrice.toString(),
             'error': e.toString(),
           },

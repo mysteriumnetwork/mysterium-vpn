@@ -7,14 +7,15 @@ abstract class Palette {
   static const Color darkBlue = Color(0xff2D2A49);
   static const Color lightBlack = Color(0xff6A678E);
   static const Color lightBlue = Color(0xffC4C1DD);
-  static const Color veryLightGrey = Color(0xffF5F5F5);
   static const Color lightGrey = Color(0xffF8F9FD);
+  static const Color veryLightGrey = Color(0xffE2E1EF);
   static const Color purple = Color(0xffC574D9);
   static const Color pink = Color(0xffF44D89);
   static const Color lightPurple = Color(0xffD89DE7);
   static const Color mediumBlack = Color(0xff3E3B5F);
   static const Color green = Color(0xff4DC800);
   static const Color blue = Color(0xff236EFF);
+  static const Color darkGrey = Color(0xff908EA6);
 
   Color get highlightColor;
   Color get secondaryColor;

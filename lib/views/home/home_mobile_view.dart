@@ -22,7 +22,6 @@ class HomeMobileView extends HookConsumerWidget {
     final vpnStore = ref.watch(vpnStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
     final pc = useMemoized(PanelController.new);
-
     return Observer(
       builder: (context) {
         final isConnected = vpnStore.isConnected;
@@ -30,11 +29,11 @@ class HomeMobileView extends HookConsumerWidget {
           maxHeight: getMediaHeight(context) * 0.8,
           minHeight: getMediaHeight(context) * 0.4,
           controller: pc,
-          panelSnapping: false,
+          isDraggable: !isDesktop(),
           color: Theme.of(context).primaryColor,
           panelBuilder: (sc) => LocationsSliderMobileView(
-            sc: sc,
             pc: pc,
+            sc: sc,
           ),
           borderRadius:
               const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),

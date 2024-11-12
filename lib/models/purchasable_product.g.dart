@@ -14,12 +14,25 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
   @override
   String get id =>
       (_$idComputed ??= Computed<String>(() => super.id, name: '_PurchasableProduct.id')).value;
+  Computed<int>? _$durationComputed;
+
+  @override
+  int get duration => (_$durationComputed ??=
+          Computed<int>(() => super.duration, name: '_PurchasableProduct.duration'))
+      .value;
   Computed<String>? _$billedPerMonthComputed;
 
   @override
   String get billedPerMonth => (_$billedPerMonthComputed ??=
           Computed<String>(() => super.billedPerMonth, name: '_PurchasableProduct.billedPerMonth'))
       .value;
+  Computed<String>? _$billedPerMonthShortComputed;
+
+  @override
+  String get billedPerMonthShort =>
+      (_$billedPerMonthShortComputed ??= Computed<String>(() => super.billedPerMonthShort,
+              name: '_PurchasableProduct.billedPerMonthShort'))
+          .value;
   Computed<String>? _$monthlyPriceComputed;
 
   @override
@@ -59,7 +72,9 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
     return '''
 status: ${status},
 id: ${id},
+duration: ${duration},
 billedPerMonth: ${billedPerMonth},
+billedPerMonthShort: ${billedPerMonthShort},
 monthlyPrice: ${monthlyPrice},
 isPupular: ${isPupular},
 billedInTotal: ${billedInTotal}
