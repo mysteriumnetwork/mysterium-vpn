@@ -182,49 +182,43 @@ class RestSubscriptionService extends SubscriptionService {
           .map((e) => Platform.isAndroid ? e.googleProductId : e.appleProductId)
           .toSet())
         ..removeWhere((element) => element.isEmpty || element == 'not_supported');
-      final storePlans = await _inAppPurchase.queryProductDetails(plans);
+      final storePlans = (await _inAppPurchase.queryProductDetails(plans)).productDetails
+        ..removeWhere((element) => element.rawPrice <= 0 || element.price.toLowerCase() == 'free');
       final productsDetails = <PurchasableProduct>[];
 
       for (final plan in subscriptionConfig.plans) {
         ProductDetails? productDetails;
-        ProductDetails? basePlan;
-        double? rawPrice;
-        String? currencyCode;
-        String? currencySymbol;
+
         if (Platform.isAndroid) {
-          final products = storePlans.productDetails.where(
+          final products = storePlans.where(
             (element) => element.id == plan.googleProductId,
           );
           if (products.length > 1) {
-            basePlan = products.firstWhereOrNull((element) => element.rawPrice > 0);
-            productDetails = products.firstWhere((element) => element.rawPrice == 0);
+            productDetails = products.firstWhereOrNull((element) => element.rawPrice == 0);
           } else {
-            productDetails = storePlans.productDetails.firstWhereOrNull(
+            productDetails = storePlans.firstWhereOrNull(
               (element) => element.id == plan.googleProductId,
             );
           }
         } else {
-          productDetails = storePlans.productDetails.firstWhereOrNull(
+          productDetails = storePlans.firstWhereOrNull(
             (element) => element.id == plan.appleProductId,
           );
         }
-        rawPrice = basePlan?.rawPrice ?? productDetails?.rawPrice;
-        currencyCode = basePlan?.currencyCode ?? productDetails?.currencyCode;
-        currencySymbol = basePlan?.currencySymbol ?? productDetails?.currencySymbol;
-        if (productDetails != null) {
-          productsDetails.add(
-            PurchasableProduct(
-              planDetails: plan,
-              productDetails: productDetails,
-              status: purchasedProductId == plan.id
-                  ? ProductStatus.purchased
-                  : ProductStatus.purchasable,
-              rawPrice: rawPrice!,
-              currencyCode: currencyCode!,
-              currencySymbol: currencySymbol!,
-            ),
-          );
+        if (productDetails == null) {
+          continue;
         }
+        productsDetails.add(
+          PurchasableProduct(
+            planDetails: plan,
+            productDetails: productDetails,
+            status:
+                purchasedProductId == plan.id ? ProductStatus.purchased : ProductStatus.purchasable,
+            rawPrice: productDetails.rawPrice,
+            currencyCode: productDetails.currencyCode,
+            currencySymbol: productDetails.currencySymbol,
+          ),
+        );
       }
       return productsDetails
         ..sortByCompare((e) => e.productDetails.rawPrice, (a, b) => a.compareTo(b));
