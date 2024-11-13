@@ -15,6 +15,7 @@ enum _FeatureToggleKey {
   minWindowsBuildNumber,
   minWindowsStandAloneBuildNumber,
   minMacosBuildNumber,
+  hideReedemCode,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -132,6 +133,14 @@ abstract class RemoteConfigStoreBase with Store {
       return config[_FeatureToggleKey.minIosBuildNumber.name] as String;
     }
     return '0';
+  }
+
+  @computed
+  bool get hideReedemCode {
+    if (config.containsKey(_FeatureToggleKey.hideReedemCode.name)) {
+      return config[_FeatureToggleKey.hideReedemCode.name] as bool;
+    }
+    return false;
   }
 
   Map<String, String> get asUserProperties =>
