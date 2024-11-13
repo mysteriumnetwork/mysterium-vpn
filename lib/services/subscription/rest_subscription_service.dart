@@ -5,7 +5,6 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:in_app_purchase_android/billing_client_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
@@ -191,15 +190,19 @@ class RestSubscriptionService extends SubscriptionService {
 
       for (final plan in subscriptionConfig.plans) {
         ProductDetails? productDetails;
+        double? rawPrice;
         double? introductoryPrice;
         if (Platform.isAndroid) {
-          final products = storePlans.where(
-            (element) => element.id == plan.googleProductId,
-          );
+          final products = storePlans
+              .where(
+                (element) => element.id == plan.googleProductId,
+              )
+              .toList();
           if (products.length > 1) {
-            productDetails = products
-                .sorted((a, b) => a.rawPrice.compareTo(b.rawPrice))
-                .firstWhereOrNull((element) => element.rawPrice > 0);
+            products.sort((a, b) => a.rawPrice.compareTo(b.rawPrice));
+            productDetails = products.firstOrNull;
+            rawPrice = products.lastOrNull?.rawPrice;
+            introductoryPrice = productDetails?.rawPrice;
           } else {
             productDetails = storePlans.firstWhereOrNull(
               (element) => element.id == plan.googleProductId,
@@ -225,7 +228,7 @@ class RestSubscriptionService extends SubscriptionService {
             productDetails: productDetails,
             status:
                 purchasedProductId == plan.id ? ProductStatus.purchased : ProductStatus.purchasable,
-            rawPrice: productDetails.rawPrice,
+            rawPrice: rawPrice ?? productDetails.rawPrice,
             currencyCode: productDetails.currencyCode,
             currencySymbol: productDetails.currencySymbol,
             introductoryPrice: introductoryPrice,
@@ -239,21 +242,6 @@ class RestSubscriptionService extends SubscriptionService {
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
-    }
-  }
-
-  void handleIntroductoryPricePeriod(ProductDetails productDetails) {
-    if (productDetails is GooglePlayProductDetails) {
-      final product = productDetails.productDetails;
-      if (product.productType == ProductType.subs) {
-        // Unwrapping is safe because the product is a subscription.
-        final offer = product.subscriptionOfferDetails![productDetails.subscriptionIndex!];
-        final pricingPhases = offer.pricingPhases;
-        if (pricingPhases.length >= 2 &&
-            pricingPhases.first.priceAmountMicros < pricingPhases[1].priceAmountMicros) {
-          // Introductory pricing period logic.
-        }
-      }
     }
   }
 
