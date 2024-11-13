@@ -19,7 +19,7 @@ abstract class _PurchasableProduct with Store {
     required this.rawPrice,
     required this.currencySymbol,
     required this.currencyCode,
-    this.introductoryPrice,
+    required this.introductoryPrice,
   });
 
   final PlanDetails planDetails;
