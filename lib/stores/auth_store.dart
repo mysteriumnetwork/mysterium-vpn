@@ -172,7 +172,11 @@ abstract class _AuthStore with Store {
       if (_authStatus == AuthStatus.authenticating) {
         return;
       }
-      _authStatus = AuthStatus.authenticating;
+
+      //When app is opened initially, we want the user to stay on the splash screen
+      if (grantType != GrantType.savedToken) {
+        _authStatus = AuthStatus.authenticating;
+      }
 
       final res = await authenticateFeature;
       await _localDb.setUserId(res!.username);
