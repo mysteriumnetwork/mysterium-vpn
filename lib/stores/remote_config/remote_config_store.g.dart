@@ -71,6 +71,12 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$minIosBuildNumberComputed ??= Computed<String>(() => super.minIosBuildNumber,
               name: 'RemoteConfigStoreBase.minIosBuildNumber'))
           .value;
+  Computed<bool>? _$hideReedemCodeComputed;
+
+  @override
+  bool get hideReedemCode => (_$hideReedemCodeComputed ??=
+          Computed<bool>(() => super.hideReedemCode, name: 'RemoteConfigStoreBase.hideReedemCode'))
+      .value;
 
   late final _$configAtom = Atom(name: 'RemoteConfigStoreBase.config', context: context);
 
@@ -124,7 +130,8 @@ minMacosBuildNumber: ${minMacosBuildNumber},
 minWindowsStandAloneBuildNumber: ${minWindowsStandAloneBuildNumber},
 minWindowsBuildNumber: ${minWindowsBuildNumber},
 minAndroidBuildNumber: ${minAndroidBuildNumber},
-minIosBuildNumber: ${minIosBuildNumber}
+minIosBuildNumber: ${minIosBuildNumber},
+hideReedemCode: ${hideReedemCode}
     ''';
   }
 }

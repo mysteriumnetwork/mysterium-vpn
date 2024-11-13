@@ -19,6 +19,7 @@ abstract class _PurchasableProduct with Store {
     required this.rawPrice,
     required this.currencySymbol,
     required this.currencyCode,
+    this.introductoryPrice,
   });
 
   final PlanDetails planDetails;
@@ -26,11 +27,19 @@ abstract class _PurchasableProduct with Store {
   final double rawPrice;
   final String currencySymbol;
   final String currencyCode;
+  final double? introductoryPrice;
+
   @observable
   ProductStatus status;
 
   @computed
   String get id => planDetails.id;
+
+  @computed
+  bool get isDiscounted => introductoryPrice != null;
+
+  @computed
+  double get productPrice => introductoryPrice ?? rawPrice;
 
   @computed
   int get duration => planDetails.id == kMonthlyPlan
@@ -63,7 +72,7 @@ abstract class _PurchasableProduct with Store {
         },
       );
   @computed
-  String get monthlyPrice => rawPrice.pricePerMonth(
+  String get monthlyPrice => productPrice.pricePerMonth(
         months: planDetails.id == kMonthlyPlan
             ? 1
             : planDetails.id == ksemiAnnualPlan
@@ -78,7 +87,7 @@ abstract class _PurchasableProduct with Store {
   @computed
   String get billedInTotal => LocaleKeys.billedInTotal.tr(
         namedArgs: {
-          'amount': rawPrice.price(
+          'amount': productPrice.price(
             currencySymbol: currencySymbol,
             currencyCode: currencyCode,
           ),
