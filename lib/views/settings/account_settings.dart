@@ -83,7 +83,7 @@ class AccountSettings extends HookConsumerWidget {
             ),
             SettingItem(
               asset: isDarkTheme ? Assets.accountNameDark : Assets.accountNameLight,
-              title: authStore.authData?.username ?? '',
+              title: authSessionStore.user?.username ?? '',
               actionWidget: Wrap(
                 runSpacing: 10,
                 spacing: 10,
