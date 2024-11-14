@@ -72,15 +72,7 @@ class SubscriptionFormVariantC extends StatelessWidget {
               SubscriptionButton(
                 onPressed: () {
                   analyticsStore.logEvent(AnalyticsEvent.clickLetsgo);
-                  shownProductPickerDialog(
-                    context: context,
-                    analyticsStore: analyticsStore,
-                    products: store.products.reversed.toList(),
-                    subscribeToPackage: subscribeToPackage,
-                    isDarkTheme: isDarkMode,
-                    subscriptionStore: store,
-                    seeAllPlans: false,
-                  );
+                  subscribeToPackage(store.products.last.id);
                 },
                 isLoading: store.isLoading,
                 label: LocaleKeys.letsGoBtn.tr(),
