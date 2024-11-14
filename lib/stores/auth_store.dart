@@ -13,11 +13,11 @@ import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/models/token_request.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
+import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -89,7 +89,7 @@ abstract class _AuthStore with Store {
   String? temporaryEmail;
 
   @readonly
-  AuthData? _authData;
+  AuthUser? _authData;
 
   @observable
   bool marketingConsent = true;
@@ -101,7 +101,7 @@ abstract class _AuthStore with Store {
   @observable
   ObservableFuture<void> deleteAccountFeature = ObservableFuture.value(null);
   @observable
-  ObservableFuture<AuthData?> authenticateFeature = ObservableFuture.value(null);
+  ObservableFuture<AuthUser?> authenticateFeature = ObservableFuture.value(null);
 
   @action
   Future<void> initAuth() async {
@@ -166,7 +166,7 @@ abstract class _AuthStore with Store {
   @action
   Future<void> authenticate(
     GrantType grantType,
-    Future<AuthData?> authenticateFeature,
+    Future<AuthUser?> authenticateFeature,
   ) async {
     try {
       if (_authStatus == AuthStatus.authenticating) {
