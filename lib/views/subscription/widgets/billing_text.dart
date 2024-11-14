@@ -26,7 +26,7 @@ class BillingText extends StatelessWidget {
   String _getBillingText() => switch (product.duration) {
         12 => LocaleKeys.billedEveryYear.tr(
             namedArgs: {
-              'amount': product.rawPrice.price(
+              'amount': product.productPrice.price(
                 currencySymbol: product.currencySymbol,
                 currencyCode: product.currencyCode,
               ),
@@ -34,7 +34,7 @@ class BillingText extends StatelessWidget {
           ),
         6 => LocaleKeys.billedEvery6Months.tr(
             namedArgs: {
-              'amount': product.rawPrice.price(
+              'amount': product.productPrice.price(
                 currencySymbol: product.currencySymbol,
                 currencyCode: product.currencyCode,
               ),
@@ -42,7 +42,7 @@ class BillingText extends StatelessWidget {
           ),
         _ => LocaleKeys.billedEveryMonth.tr(
             namedArgs: {
-              'amount': product.rawPrice.price(
+              'amount': product.productPrice.price(
                 currencySymbol: product.currencySymbol,
                 currencyCode: product.currencyCode,
               ),

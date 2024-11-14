@@ -74,7 +74,7 @@ class HighlightedProduct extends StatelessWidget {
                 ],
               ),
             ),
-            if (isHighlighted)
+            if (isHighlighted && product.isDiscounted)
               _HighlighterText(
                 monthlyRawPrice: monthlyRawPrice,
                 product: product,
@@ -82,7 +82,7 @@ class HighlightedProduct extends StatelessWidget {
               )
             else
               BillingText(product: product, isDarkTheme: isDarkTheme),
-            if (product.duration == 12 && isHighlighted)
+            if (product.duration == 12 && isHighlighted && product.isDiscounted)
               EasyText(
                 LocaleKeys.sixMonthsBonus.tr(),
                 fontSize: 12,
@@ -147,7 +147,7 @@ class _HighlighterText extends StatelessWidget {
               TextSpan(
                 text: LocaleKeys.semiAnnualPlanDiscountPrice.tr(
                   namedArgs: {
-                    'amount': product.rawPrice.price(
+                    'amount': product.productPrice.price(
                       currencySymbol: product.currencySymbol,
                       currencyCode: product.currencyCode,
                     ),
@@ -158,7 +158,7 @@ class _HighlighterText extends StatelessWidget {
               TextSpan(
                 text: LocaleKeys.yearlyPlanDiscountPrice.tr(
                   namedArgs: {
-                    'amount': product.rawPrice.price(
+                    'amount': product.productPrice.price(
                       currencySymbol: product.currencySymbol,
                       currencyCode: product.currencyCode,
                     ),
