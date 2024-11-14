@@ -17,6 +17,7 @@ import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/models/token_request.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
@@ -38,6 +39,7 @@ class AuthStore = _AuthStore with _$AuthStore;
 abstract class _AuthStore with Store {
   _AuthStore({
     required AuthService authService,
+    required AuthSessionStore authSessionStore,
     required AppLinks appLinks,
     required LocalDBService localDb,
     required AnalyticsStore analyticsStore,
@@ -48,6 +50,7 @@ abstract class _AuthStore with Store {
     required RemoteConfigStore remoteConfigStore,
     required ABTestingStore abTestingStore,
   })  : _authService = authService,
+        _authSessionStore = authSessionStore,
         _appLinks = appLinks,
         _localDb = localDb,
         _analyticsStore = analyticsStore,
@@ -62,6 +65,7 @@ abstract class _AuthStore with Store {
   }
 
   final AuthService _authService;
+  final AuthSessionStore _authSessionStore;
   final LocalDBService _localDb;
   final AppLinks _appLinks;
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
@@ -377,7 +381,11 @@ abstract class _AuthStore with Store {
 
   Future<void> refreshAuthToken() async {
     try {
-      final refreshToken = await _secureStorageService.getRefreshToken();
+      final refreshToken = _authSessionStore.refreshToken;
+      if (refreshToken == null) {
+        return;
+      }
+
       await _authService.singInComplete(
         tokenRequest: TokenRequest(
           grantType: GrantType.refreshToken,

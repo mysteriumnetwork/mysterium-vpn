@@ -35,6 +35,7 @@ final authSessionStorePOD = Provider<AuthSessionStore>(
 
 final authStorePOD = Provider<AuthStore>((ref) {
   final authService = ref.watch(authServicePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
   final appLinks = ref.watch(appLinksPOD);
   final localDb = ref.watch(localDBPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
@@ -47,6 +48,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
 
   return AuthStore(
     authService: authService,
+    authSessionStore: authSessionStore,
     appLinks: appLinks,
     localDb: localDb,
     analyticsStore: analyticsStore,
