@@ -91,23 +91,6 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$_authDataAtom = Atom(name: '_AuthStore._authData', context: context);
-
-  AuthUser? get authData {
-    _$_authDataAtom.reportRead();
-    return super._authData;
-  }
-
-  @override
-  AuthUser? get _authData => authData;
-
-  @override
-  set _authData(AuthUser? value) {
-    _$_authDataAtom.reportWrite(value, super._authData, () {
-      super._authData = value;
-    });
-  }
-
   late final _$marketingConsentAtom = Atom(name: '_AuthStore.marketingConsent', context: context);
 
   @override

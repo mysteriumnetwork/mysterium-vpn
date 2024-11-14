@@ -88,9 +88,6 @@ abstract class _AuthStore with Store {
   @observable
   String? temporaryEmail;
 
-  @readonly
-  AuthUser? _authData;
-
   @observable
   bool marketingConsent = true;
 
@@ -181,7 +178,6 @@ abstract class _AuthStore with Store {
       final res = await authenticateFeature;
       await _localDb.setUserId(res.username);
       _initializeAnalyticsStores(username: res.username, userId: res.userId, grantType: grantType);
-      _authData = res;
       _authStatus = AuthStatus.authenticated;
       _logger.info(_localDb.userData.toString());
       if (grantType != GrantType.savedToken) {
@@ -235,7 +231,6 @@ abstract class _AuthStore with Store {
     await logoutFeature;
     _intercomStore.logout();
     _authStatus = AuthStatus.unauthenticated;
-    _authData = null;
     temporaryEmail = email;
   }
 

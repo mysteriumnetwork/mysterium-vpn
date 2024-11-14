@@ -12,11 +12,11 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/models/subscription_config.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/auth_store.dart';
 
 // Include generated file
 part 'subscription_store.g.dart';
@@ -28,12 +28,12 @@ abstract class _SubscriptionStore with Store {
   _SubscriptionStore({
     required InAppPurchase inAppPurchase,
     required SubscriptionService subscriptionService,
-    required AuthStore authStore,
+    required AuthSessionStore authSessionStore,
     required LocalDBService localDb,
     required AnalyticsStore analyticsStore,
   })  : _inAppPurchase = inAppPurchase,
         _subscriptionService = subscriptionService,
-        _authStore = authStore,
+        _authSessionStore = authSessionStore,
         _localDb = localDb,
         _analyticsStore = analyticsStore {
     initStore();
@@ -43,7 +43,7 @@ abstract class _SubscriptionStore with Store {
 
   final InAppPurchase _inAppPurchase;
   final SubscriptionService _subscriptionService;
-  final AuthStore _authStore;
+  final AuthSessionStore _authSessionStore;
   final LocalDBService _localDb;
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
   final AnalyticsStore _analyticsStore;
@@ -91,8 +91,8 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<void> initStore() async {
-    when((_) => _authStore.authData != null, () {
-      if (_authStore.authData != null) {
+    when((_) => _authSessionStore.user != null, () {
+      if (_authSessionStore.user != null) {
         fetchSubscription().whenComplete(getSubscriptionsConfig);
       }
     });
@@ -169,7 +169,7 @@ abstract class _SubscriptionStore with Store {
                 ?.productDetails
                 .id
             : null,
-        userId: _authStore.authData!.userId,
+        userId: _authSessionStore.user!.userId,
       );
       _analyticsStore.logEvent(
         AnalyticsEvent.paymentConfirm,
@@ -265,7 +265,7 @@ abstract class _SubscriptionStore with Store {
         }
         _subscriptonStatus = SubscriptionStatus.purchased;
         _secureStorageService.saveSubscriptionPaymentInfo(
-          email: _authStore.authData!.username,
+          email: _authSessionStore.user!.username,
           activeUntil: _subscription!.activeUntil,
         );
       } else {
@@ -374,7 +374,7 @@ abstract class _SubscriptionStore with Store {
       }
       final (String email, DateTime activeUntil) =
           await _secureStorageService.getSubscriptionPaymentInfo();
-      if (email != _authStore.authData!.username && activeUntil.isAfter(DateTime.now())) {
+      if (email != _authSessionStore.user!.username && activeUntil.isAfter(DateTime.now())) {
         return (true, email);
       }
       return (false, null);

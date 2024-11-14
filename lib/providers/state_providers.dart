@@ -86,11 +86,12 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final localeStore = ref.watch(localeStorePOD);
-  final authStore = ref.watch(authStorePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
+
   return LocationsStore(
     apiService: apiService,
     analyticsStore: analyticsStore,
-    authStore: authStore,
+    authSessionStore: authSessionStore,
     localeStore: localeStore,
   );
 });
@@ -98,13 +99,14 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
 final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   final inAppPurchase = ref.read(inAppPurchasePOD);
   final subscriptionService = ref.read(subscriptionServicePOD);
-  final authStore = ref.read(authStorePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
   final localDb = ref.read(localDBPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
+
   return SubscriptionStore(
     inAppPurchase: inAppPurchase,
     subscriptionService: subscriptionService,
-    authStore: authStore,
+    authSessionStore: authSessionStore,
     localDb: localDb,
     analyticsStore: analyticsStore,
   );
