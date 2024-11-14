@@ -22,7 +22,7 @@ abstract class _AuthSessionStore with Store {
   String? _refreshToken;
 
   @action
-  void login(String accessToken, String? refreshToken) {
+  void setAuthenticated(String accessToken, String? refreshToken) {
     _accessToken = accessToken;
     _refreshToken = refreshToken;
 
@@ -30,7 +30,7 @@ abstract class _AuthSessionStore with Store {
   }
 
   @action
-  void logout() {
+  void setUnauthenticated() {
     _accessToken = null;
     _refreshToken = null;
 

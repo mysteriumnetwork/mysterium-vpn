@@ -58,7 +58,6 @@ class RestAuthService extends AuthService {
         userId: userId,
       );
     } catch (e, stackTrace) {
-      removeLocalData();
       if (e is ApiException && e.message == 'Unauthorized' && e.code == 401) {
         throw AuthenticationRequiredException();
       }
@@ -86,7 +85,7 @@ class RestAuthService extends AuthService {
   }) async {
     try {
       final authTokens = await signIn(tokenRequest);
-      _authSessionStore.login(authTokens.accessToken, authTokens.refreshToken);
+      _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
 
       await _networkService.post(
         kOAuthIntrospect,
@@ -162,8 +161,7 @@ class RestAuthService extends AuthService {
   }
 
   Future<void> removeLocalData() async {
-    await _securedStorage.removeAccessToken();
-    await _securedStorage.removeRefreshToken();
+    _authSessionStore.setUnauthenticated();
     await _securedStorage.removeUserId();
     await _securedStorage.removePkcePair();
     await _securedStorage.removeWireguardPrivateKey();
