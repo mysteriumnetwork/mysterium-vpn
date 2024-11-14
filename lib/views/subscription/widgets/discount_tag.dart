@@ -15,7 +15,7 @@ class DiscountTag extends StatelessWidget {
   final PurchasableProduct product;
 
   @override
-  Widget build(BuildContext context) => product.isDiscounted
+  Widget build(BuildContext context) => product.isDiscounted(monthlyRawPrice)
       ? Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(
