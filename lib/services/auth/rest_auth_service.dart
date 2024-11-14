@@ -172,7 +172,7 @@ class RestAuthService extends AuthService {
   }
 
   @override
-  Future<void> deleteAccount({required String email}) async {
+  Future<void> deleteAccount() async {
     await Future.delayed(const Duration(seconds: 4));
   }
 

@@ -11,8 +11,6 @@ abstract class AuthService {
     required TokenRequest tokenRequest,
   });
   Future<void> logout();
-  Future<void> deleteAccount({
-    required String email,
-  });
+  Future<void> deleteAccount();
   Future<void> disconnectAllDevices();
 }
