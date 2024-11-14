@@ -74,7 +74,7 @@ class HighlightedProduct extends StatelessWidget {
                 ],
               ),
             ),
-            if (isHighlighted && product.isDiscounted)
+            if (isHighlighted && product.isDiscounted(monthlyRawPrice))
               _HighlighterText(
                 monthlyRawPrice: monthlyRawPrice,
                 product: product,
@@ -82,7 +82,7 @@ class HighlightedProduct extends StatelessWidget {
               )
             else
               BillingText(product: product, isDarkTheme: isDarkTheme),
-            if (product.duration == 12 && isHighlighted && product.isDiscounted)
+            if (product.duration == 12 && isHighlighted && product.isDiscounted(monthlyRawPrice))
               EasyText(
                 LocaleKeys.sixMonthsBonus.tr(),
                 fontSize: 12,
