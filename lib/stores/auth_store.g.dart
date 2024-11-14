@@ -174,13 +174,13 @@ mixin _$AuthStore on _AuthStore, Store {
       Atom(name: '_AuthStore.authenticateFeature', context: context);
 
   @override
-  ObservableFuture<AuthUser?> get authenticateFeature {
+  ObservableFuture<AuthUser>? get authenticateFeature {
     _$authenticateFeatureAtom.reportRead();
     return super.authenticateFeature;
   }
 
   @override
-  set authenticateFeature(ObservableFuture<AuthUser?> value) {
+  set authenticateFeature(ObservableFuture<AuthUser>? value) {
     _$authenticateFeatureAtom.reportWrite(value, super.authenticateFeature, () {
       super.authenticateFeature = value;
     });
@@ -196,7 +196,7 @@ mixin _$AuthStore on _AuthStore, Store {
   late final _$authenticateAsyncAction = AsyncAction('_AuthStore.authenticate', context: context);
 
   @override
-  Future<void> authenticate(GrantType grantType, Future<AuthUser?> authenticateFeature) {
+  Future<void> authenticate(GrantType grantType, Future<AuthUser> authenticateFeature) {
     return _$authenticateAsyncAction.run(() => super.authenticate(grantType, authenticateFeature));
   }
 

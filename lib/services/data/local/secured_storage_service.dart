@@ -112,17 +112,20 @@ class SecureStorageService {
   Future<void> saveRefreshToken(String token) async => write(StorageKeys.refreshToken.name, token);
   Future<void> removeRefreshToken() async => remove(StorageKeys.refreshToken.name);
 
+  Future<String> getUserId() async => read(StorageKeys.userId.name);
+  Future<void> saveUserId({required String userId}) async => write(StorageKeys.userId.name, userId);
+  Future<void> removeUserId() async => remove(StorageKeys.userId.name);
+
   Future<String?> getUsername() async => readOrNull(StorageKeys.username.name);
   Future<void> saveUsername({required String username}) async =>
       write(StorageKeys.username.name, username);
-  Future<String?> removeUsername() async => removeAndReturnValue(StorageKeys.username.name);
+  Future<void> removeUsername() async => remove(StorageKeys.username.name);
+
   Future<void> saveLastLoggedInUser({required String username}) async =>
       write(StorageKeys.lastLoggedInUser.name, username);
   Future<String?> getLastLoggedInUser() async => readOrNull(StorageKeys.lastLoggedInUser.name);
   Future<void> removeLastLoggedInUser() async => remove(StorageKeys.lastLoggedInUser.name);
-  Future<String> getUserId() async => read(StorageKeys.userId.name);
-  Future<void> saveUserId({required String userId}) async => write(StorageKeys.userId.name, userId);
-  Future<void> removeUserId() async => remove(StorageKeys.userId.name);
+
   Future<String?> getAppLink() async => readOrNull(StorageKeys.appLink.name);
   Future<void> saveAppLink({required String appLink}) async =>
       write(StorageKeys.appLink.name, appLink);

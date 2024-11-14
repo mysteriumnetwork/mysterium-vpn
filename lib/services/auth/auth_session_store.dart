@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 
 // Include generated file
@@ -21,6 +22,9 @@ abstract class _AuthSessionStore with Store {
   @readonly
   String? _refreshToken;
 
+  @readonly
+  AuthUser? _user;
+
   @action
   void setAuthenticated(String accessToken, String? refreshToken) {
     _accessToken = accessToken;
@@ -30,9 +34,17 @@ abstract class _AuthSessionStore with Store {
   }
 
   @action
+  void setAuthenticatedUser(AuthUser user) {
+    _user = user;
+
+    _storageUpdate();
+  }
+
+  @action
   void setUnauthenticated() {
     _accessToken = null;
     _refreshToken = null;
+    _user = null;
 
     _storageCleanup();
   }
@@ -53,10 +65,16 @@ abstract class _AuthSessionStore with Store {
     if (_refreshToken != null) {
       await _secureStorage.saveRefreshToken(_refreshToken!);
     }
+    if (_user != null) {
+      await _secureStorage.saveUserId(userId: _user!.userId);
+      await _secureStorage.saveUsername(username: _user!.username);
+    }
   }
 
   Future<void> _storageCleanup() async {
     await _secureStorage.removeAccessToken();
     await _secureStorage.removeRefreshToken();
+    await _secureStorage.removeUserId();
+    await _secureStorage.removeUsername();
   }
 }
