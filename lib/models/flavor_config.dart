@@ -98,6 +98,9 @@ class FlavorConfig {
     }
     return isDev() ? testBundleId : bundleId;
   }
+
+  String appUserAgent() =>
+      '${values.appName} ${Platform.operatingSystem} ${buildInfo.buildVersion} (${buildInfo.buildNumber})';
 }
 
 class BuildInfo {
