@@ -14,12 +14,13 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
   @override
   String get id =>
       (_$idComputed ??= Computed<String>(() => super.id, name: '_PurchasableProduct.id')).value;
-  Computed<bool>? _$isDiscountedComputed;
+  Computed<bool>? _$hasIntroductoryPriceComputed;
 
   @override
-  bool get isDiscounted => (_$isDiscountedComputed ??=
-          Computed<bool>(() => super.isDiscounted, name: '_PurchasableProduct.isDiscounted'))
-      .value;
+  bool get hasIntroductoryPrice =>
+      (_$hasIntroductoryPriceComputed ??= Computed<bool>(() => super.hasIntroductoryPrice,
+              name: '_PurchasableProduct.hasIntroductoryPrice'))
+          .value;
   Computed<double>? _$productPriceComputed;
 
   @override
@@ -84,7 +85,7 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
     return '''
 status: ${status},
 id: ${id},
-isDiscounted: ${isDiscounted},
+hasIntroductoryPrice: ${hasIntroductoryPrice},
 productPrice: ${productPrice},
 duration: ${duration},
 billedPerMonth: ${billedPerMonth},
