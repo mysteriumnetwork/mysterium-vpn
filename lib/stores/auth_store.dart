@@ -101,7 +101,7 @@ abstract class _AuthStore with Store {
   @observable
   ObservableFuture<void> deleteAccountFeature = ObservableFuture.value(null);
   @observable
-  ObservableFuture<AuthUser?> authenticateFeature = ObservableFuture.value(null);
+  ObservableFuture<AuthUser>? authenticateFeature;
 
   @action
   Future<void> initAuth() async {
@@ -166,7 +166,7 @@ abstract class _AuthStore with Store {
   @action
   Future<void> authenticate(
     GrantType grantType,
-    Future<AuthUser?> authenticateFeature,
+    Future<AuthUser> authenticateFeature,
   ) async {
     try {
       if (_authStatus == AuthStatus.authenticating) {
@@ -179,7 +179,7 @@ abstract class _AuthStore with Store {
       }
 
       final res = await authenticateFeature;
-      await _localDb.setUserId(res!.username);
+      await _localDb.setUserId(res.username);
       _initializeAnalyticsStores(username: res.username, userId: res.userId, grantType: grantType);
       _authData = res;
       _authStatus = AuthStatus.authenticated;

@@ -44,19 +44,12 @@ class RestAuthService extends AuthService {
   @override
   Future<AuthUser> checkUserAuth() async {
     try {
-      final userName = await _securedStorage.getUsername() ?? '';
-      final userId = await _securedStorage.getUserId();
-
       // Proceed with token introspection in order to check if token is valid
       // If token is invalid, UnauthorizedInterceptor will catch it and it will be handled
-      unawaited(
-        _networkService.get(kAuthCheck),
-      );
+      final user = await currentUser();
+      _authSessionStore.setAuthenticatedUser(user);
 
-      return AuthUser(
-        username: userName,
-        userId: userId,
-      );
+      return user;
     } catch (e, stackTrace) {
       if (e is ApiException && e.message == 'Unauthorized' && e.code == 401) {
         throw AuthenticationRequiredException();
@@ -76,7 +69,21 @@ class RestAuthService extends AuthService {
       headers: {'content-type': 'application/x-www-form-urlencoded'},
     );
 
+    // TODO(Waldz): Introduce DTO models, layer of serialization/deserialization is missing
     return TokenResponse.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  /*
+  Checks current authorisation session + retrieves currently authorized user.
+   */
+  Future<AuthUser> currentUser() async {
+    // TODO(Waldz): Introduce DTO models, layer of serialization/deserialization is missing
+    final response = (await _networkService.get(kAuthCheck)).data as Map<String, dynamic>;
+
+    return AuthUser(
+      userId: response['user_id'] as String,
+      username: response['username'] as String,
+    );
   }
 
   @override
@@ -94,20 +101,10 @@ class RestAuthService extends AuthService {
         },
       );
 
-      final userData = (await _networkService.get(
-        kAuthCheck,
-      ))
-          .data as Map<String, dynamic>?;
-      // TODO(Waldz): Introduce DTO models, layer of serialization/deserialization is missing
-      final username = userData!['username'] as String;
+      final user = await currentUser();
+      _authSessionStore.setAuthenticatedUser(user);
 
-      final authData = AuthUser(
-        username: username,
-        userId: authTokens.userId,
-      );
-      await _securedStorage.saveUsername(username: authData.username);
-      await _securedStorage.saveUserId(userId: authData.userId);
-      return authData;
+      return user;
     } on ApiException {
       rethrow;
     } catch (e, stackTrace) {
@@ -161,15 +158,16 @@ class RestAuthService extends AuthService {
   }
 
   Future<void> removeLocalData() async {
+    final currentUsername = _authSessionStore.user?.username;
     _authSessionStore.setUnauthenticated();
-    await _securedStorage.removeUserId();
+
     await _securedStorage.removePkcePair();
     await _securedStorage.removeWireguardPrivateKey();
     await _securedStorage.removeWireguardPublicKey();
-    final val = await _securedStorage.removeUsername();
-    if (val != null && val.isNotEmpty) {
-      _logger.info('User $val logged out');
-      await _securedStorage.saveLastLoggedInUser(username: val);
+
+    if (currentUsername != null && currentUsername.isNotEmpty) {
+      _logger.info('User $currentUsername logged out');
+      await _securedStorage.saveLastLoggedInUser(username: currentUsername);
     }
   }
 

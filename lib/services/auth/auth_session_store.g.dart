@@ -43,6 +43,23 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
     });
   }
 
+  late final _$_userAtom = Atom(name: '_AuthSessionStore._user', context: context);
+
+  AuthUser? get user {
+    _$_userAtom.reportRead();
+    return super._user;
+  }
+
+  @override
+  AuthUser? get _user => user;
+
+  @override
+  set _user(AuthUser? value) {
+    _$_userAtom.reportWrite(value, super._user, () {
+      super._user = value;
+    });
+  }
+
   late final _$_AuthSessionStoreActionController =
       ActionController(name: '_AuthSessionStore', context: context);
 
@@ -52,6 +69,17 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
         _$_AuthSessionStoreActionController.startAction(name: '_AuthSessionStore.setAuthenticated');
     try {
       return super.setAuthenticated(accessToken, refreshToken);
+    } finally {
+      _$_AuthSessionStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setAuthenticatedUser(AuthUser user) {
+    final _$actionInfo = _$_AuthSessionStoreActionController.startAction(
+        name: '_AuthSessionStore.setAuthenticatedUser');
+    try {
+      return super.setAuthenticatedUser(user);
     } finally {
       _$_AuthSessionStoreActionController.endAction(_$actionInfo);
     }
