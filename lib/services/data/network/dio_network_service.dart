@@ -4,7 +4,12 @@ import 'package:mysterium_vpn/models/response.dart' as response;
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
 
 class DioNetworkService extends NetworkService with ExceptionHandlerMixin {
-  DioNetworkService(this.dio, this.interceptors, this.baseUrl) {
+  DioNetworkService(
+    this.dio,
+    this.interceptors,
+    this.baseUrl,
+    this.userAgent,
+  ) {
     dio.options = dioBaseOptions;
 
     dio.interceptors.addAll(interceptors);
@@ -12,6 +17,7 @@ class DioNetworkService extends NetworkService with ExceptionHandlerMixin {
   final Dio dio;
   final List<Interceptor> interceptors;
   final String baseUrl;
+  final String userAgent;
 
   BaseOptions get dioBaseOptions => BaseOptions(
         baseUrl: baseUrl,
@@ -25,6 +31,7 @@ class DioNetworkService extends NetworkService with ExceptionHandlerMixin {
   Map<String, Object> get headers => {
         'Content-Type': 'application/json',
         'accept': 'application/json',
+        'User-Agent': userAgent,
       };
 
   @override

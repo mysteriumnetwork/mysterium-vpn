@@ -53,6 +53,7 @@ final networkServicePOD = Provider<NetworkService>((ref) {
       if (kDebugMode || environment.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
     ],
     environment.values.baseUrl,
+    environment.appUserAgent(),
   );
 });
 
