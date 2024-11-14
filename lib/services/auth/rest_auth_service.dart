@@ -44,8 +44,6 @@ class RestAuthService extends AuthService {
   @override
   Future<AuthData> checkUserAuth() async {
     try {
-      final accessToken = await _securedStorage.getAccessToken();
-      final refreshToken = await _securedStorage.getRefreshToken();
       final userName = await _securedStorage.getUsername() ?? '';
       final userId = await _securedStorage.getUserId();
 
@@ -56,8 +54,6 @@ class RestAuthService extends AuthService {
       );
 
       return AuthData(
-        accessToken: accessToken,
-        refreshToken: refreshToken,
         username: userName,
         userId: userId,
       );
@@ -107,15 +103,9 @@ class RestAuthService extends AuthService {
       final username = userData!['username'] as String;
 
       final authData = AuthData(
-        accessToken: authTokens.accessToken,
-        refreshToken: authTokens.refreshToken,
         username: username,
         userId: authTokens.userId,
       );
-      await _securedStorage.saveAccessToken(authData.accessToken);
-      if (authTokens.refreshToken != null) {
-        await _securedStorage.saveRefreshToken(authTokens.refreshToken!);
-      }
       await _securedStorage.saveUsername(username: authData.username);
       await _securedStorage.saveUserId(userId: authData.userId);
       return authData;

@@ -20,14 +20,10 @@ AuthData _$AuthDataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AuthData {
-  @JsonKey(name: 'access_token')
-  String get accessToken => throw _privateConstructorUsedError;
   @JsonKey(name: 'username')
   String get username => throw _privateConstructorUsedError;
   @JsonKey(name: 'sub')
   String get userId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'refresh_token')
-  String? get refreshToken => throw _privateConstructorUsedError;
 
   /// Serializes this AuthData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -43,11 +39,7 @@ abstract class $AuthDataCopyWith<$Res> {
   factory $AuthDataCopyWith(AuthData value, $Res Function(AuthData) then) =
       _$AuthDataCopyWithImpl<$Res, AuthData>;
   @useResult
-  $Res call(
-      {@JsonKey(name: 'access_token') String accessToken,
-      @JsonKey(name: 'username') String username,
-      @JsonKey(name: 'sub') String userId,
-      @JsonKey(name: 'refresh_token') String? refreshToken});
+  $Res call({@JsonKey(name: 'username') String username, @JsonKey(name: 'sub') String userId});
 }
 
 /// @nodoc
@@ -64,16 +56,10 @@ class _$AuthDataCopyWithImpl<$Res, $Val extends AuthData> implements $AuthDataCo
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? accessToken = null,
     Object? username = null,
     Object? userId = null,
-    Object? refreshToken = freezed,
   }) {
     return _then(_value.copyWith(
-      accessToken: null == accessToken
-          ? _value.accessToken
-          : accessToken // ignore: cast_nullable_to_non_nullable
-              as String,
       username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
@@ -82,10 +68,6 @@ class _$AuthDataCopyWithImpl<$Res, $Val extends AuthData> implements $AuthDataCo
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      refreshToken: freezed == refreshToken
-          ? _value.refreshToken
-          : refreshToken // ignore: cast_nullable_to_non_nullable
-              as String?,
     ) as $Val);
   }
 }
@@ -96,11 +78,7 @@ abstract class _$$AuthDataImplCopyWith<$Res> implements $AuthDataCopyWith<$Res> 
       __$$AuthDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {@JsonKey(name: 'access_token') String accessToken,
-      @JsonKey(name: 'username') String username,
-      @JsonKey(name: 'sub') String userId,
-      @JsonKey(name: 'refresh_token') String? refreshToken});
+  $Res call({@JsonKey(name: 'username') String username, @JsonKey(name: 'sub') String userId});
 }
 
 /// @nodoc
@@ -114,16 +92,10 @@ class __$$AuthDataImplCopyWithImpl<$Res> extends _$AuthDataCopyWithImpl<$Res, _$
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? accessToken = null,
     Object? username = null,
     Object? userId = null,
-    Object? refreshToken = freezed,
   }) {
     return _then(_$AuthDataImpl(
-      accessToken: null == accessToken
-          ? _value.accessToken
-          : accessToken // ignore: cast_nullable_to_non_nullable
-              as String,
       username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
@@ -132,10 +104,6 @@ class __$$AuthDataImplCopyWithImpl<$Res> extends _$AuthDataCopyWithImpl<$Res, _$
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      refreshToken: freezed == refreshToken
-          ? _value.refreshToken
-          : refreshToken // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
@@ -144,29 +112,21 @@ class __$$AuthDataImplCopyWithImpl<$Res> extends _$AuthDataCopyWithImpl<$Res, _$
 @JsonSerializable()
 class _$AuthDataImpl implements _AuthData {
   _$AuthDataImpl(
-      {@JsonKey(name: 'access_token') required this.accessToken,
-      @JsonKey(name: 'username') required this.username,
-      @JsonKey(name: 'sub') required this.userId,
-      @JsonKey(name: 'refresh_token') required this.refreshToken});
+      {@JsonKey(name: 'username') required this.username,
+      @JsonKey(name: 'sub') required this.userId});
 
   factory _$AuthDataImpl.fromJson(Map<String, dynamic> json) => _$$AuthDataImplFromJson(json);
 
-  @override
-  @JsonKey(name: 'access_token')
-  final String accessToken;
   @override
   @JsonKey(name: 'username')
   final String username;
   @override
   @JsonKey(name: 'sub')
   final String userId;
-  @override
-  @JsonKey(name: 'refresh_token')
-  final String? refreshToken;
 
   @override
   String toString() {
-    return 'AuthData(accessToken: $accessToken, username: $username, userId: $userId, refreshToken: $refreshToken)';
+    return 'AuthData(username: $username, userId: $userId)';
   }
 
   @override
@@ -174,15 +134,13 @@ class _$AuthDataImpl implements _AuthData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AuthDataImpl &&
-            (identical(other.accessToken, accessToken) || other.accessToken == accessToken) &&
             (identical(other.username, username) || other.username == username) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken));
+            (identical(other.userId, userId) || other.userId == userId));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, accessToken, username, userId, refreshToken);
+  int get hashCode => Object.hash(runtimeType, username, userId);
 
   /// Create a copy of AuthData
   /// with the given fields replaced by the non-null parameter values.
@@ -202,25 +160,17 @@ class _$AuthDataImpl implements _AuthData {
 
 abstract class _AuthData implements AuthData {
   factory _AuthData(
-      {@JsonKey(name: 'access_token') required final String accessToken,
-      @JsonKey(name: 'username') required final String username,
-      @JsonKey(name: 'sub') required final String userId,
-      @JsonKey(name: 'refresh_token') required final String? refreshToken}) = _$AuthDataImpl;
+      {@JsonKey(name: 'username') required final String username,
+      @JsonKey(name: 'sub') required final String userId}) = _$AuthDataImpl;
 
   factory _AuthData.fromJson(Map<String, dynamic> json) = _$AuthDataImpl.fromJson;
 
-  @override
-  @JsonKey(name: 'access_token')
-  String get accessToken;
   @override
   @JsonKey(name: 'username')
   String get username;
   @override
   @JsonKey(name: 'sub')
   String get userId;
-  @override
-  @JsonKey(name: 'refresh_token')
-  String? get refreshToken;
 
   /// Create a copy of AuthData
   /// with the given fields replaced by the non-null parameter values.
