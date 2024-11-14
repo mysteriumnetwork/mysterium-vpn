@@ -371,7 +371,7 @@ abstract class _AuthStore with Store {
   Future<void> deleteAccount() async {
     try {
       deleteAccountFeature = ObservableFuture(
-        _authService.deleteAccount(email: _authData?.username ?? ''),
+        _authService.deleteAccount(),
       );
 
       await deleteAccountFeature;
