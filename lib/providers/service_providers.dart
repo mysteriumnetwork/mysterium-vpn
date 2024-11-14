@@ -54,6 +54,7 @@ final networkServicePOD = Provider<NetworkService>((ref) {
     ],
     environment.values.baseUrl,
     environment.appUserAgent(),
+    environment.buildInfo.buildVersion,
   );
 });
 
