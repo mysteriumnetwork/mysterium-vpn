@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
@@ -14,35 +15,33 @@ class DiscountTag extends StatelessWidget {
   final PurchasableProduct product;
 
   @override
-  Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [
-              Color(0xffFF735F),
-              Color(0xffFF40CA),
-            ],
+  Widget build(BuildContext context) => product.isDiscounted
+      ? Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [
+                Color(0xffFF735F),
+                Color(0xffFF40CA),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(12),
           ),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: EasyText(
-          product.duration == 12
-              ? LocaleKeys.discountTag.tr(
-                  namedArgs: {
-                    'discount': '49%',
-                  },
-                )
-              : LocaleKeys.discountTag.tr(
-                  namedArgs: {
-                    'discount': '${_calculateDiscountPercentage()}%',
-                  },
-                ),
-          fontSize: 12,
-        ),
-      );
+          child: EasyText(
+            LocaleKeys.discountTag.tr(
+              namedArgs: {
+                'discount': '${_calculateDiscountPercentage()}%',
+              },
+            ),
+            fontSize: 12,
+            color: Palette.white,
+          ),
+        )
+      : const SizedBox.shrink();
 
-  int _calculateDiscountPercentage() => (((monthlyRawPrice * product.duration) - product.rawPrice) /
-          (monthlyRawPrice * product.duration) *
-          100)
-      .round();
+  int _calculateDiscountPercentage() =>
+      (((monthlyRawPrice * product.duration) - product.productPrice) /
+              (monthlyRawPrice * product.duration) *
+              100)
+          .round();
 }

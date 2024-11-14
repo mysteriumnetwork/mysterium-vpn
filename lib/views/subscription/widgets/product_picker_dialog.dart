@@ -30,6 +30,7 @@ Future<void> shownProductPickerDialog({
   required SubscriptionStore subscriptionStore,
   required void Function(String selectedProductId) subscribeToPackage,
   required bool isDarkTheme,
+  required bool seeAllPlans,
 }) async {
   analyticsStore.logEvent(AnalyticsEvent.paymentSelectProductPopup);
   showModalBottomSheet(
@@ -49,6 +50,7 @@ Future<void> shownProductPickerDialog({
         subscriptionStore: subscriptionStore,
         subscribeToPackage: subscribeToPackage,
         isDarkMode: isDarkTheme,
+        seeAllPlansInit: seeAllPlans,
       ),
     ),
   );
@@ -61,18 +63,20 @@ class _ProductPickerDialog extends HookWidget {
     required this.products,
     required this.subscribeToPackage,
     required this.isDarkMode,
+    required this.seeAllPlansInit,
   });
   final SubscriptionStore subscriptionStore;
   final AnalyticsStore analyticsStore;
   final List<PurchasableProduct> products;
   final void Function(String selectedProductId) subscribeToPackage;
   final bool isDarkMode;
+  final bool seeAllPlansInit;
   @override
   Widget build(BuildContext context) {
     final selectedProductId = useState<String>(
       subscriptionStore.purchasedProductId ?? subscriptionStore.products.last.id,
     );
-    final seeAllPlans = useState(false);
+    final seeAllPlans = useState(seeAllPlansInit);
     return Observer(
       builder: (context) => Stack(
         clipBehavior: Clip.none,
@@ -154,7 +158,7 @@ class _ProductPickerDialog extends HookWidget {
                       LocaleKeys.pricingPlanSeePlansBtn.tr(),
                       color: Palette.purple,
                     ),
-                  ).padding(top: getMediaHeight(context) * 0.01),
+                  ),
                 ),
                 const BottomSpacer(),
               ],

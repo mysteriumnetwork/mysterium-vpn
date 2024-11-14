@@ -181,20 +181,28 @@ class RestSubscriptionService extends SubscriptionService {
       final plans = (subscriptionConfig.plans
           .map((e) => Platform.isAndroid ? e.googleProductId : e.appleProductId)
           .toSet())
-        ..removeWhere((element) => element.isEmpty || element == 'not_supported');
+        ..removeWhere(
+          (element) => element.isEmpty || element == 'not_supported' || element == 'not_found',
+        );
       final storePlans = (await _inAppPurchase.queryProductDetails(plans)).productDetails
         ..removeWhere((element) => element.rawPrice <= 0 || element.price.toLowerCase() == 'free');
       final productsDetails = <PurchasableProduct>[];
 
       for (final plan in subscriptionConfig.plans) {
         ProductDetails? productDetails;
-
+        double? rawPrice;
+        double? introductoryPrice;
         if (Platform.isAndroid) {
-          final products = storePlans.where(
-            (element) => element.id == plan.googleProductId,
-          );
+          final products = storePlans
+              .where(
+                (element) => element.id == plan.googleProductId,
+              )
+              .toList();
           if (products.length > 1) {
-            productDetails = products.firstWhereOrNull((element) => element.rawPrice == 0);
+            products.sort((a, b) => a.rawPrice.compareTo(b.rawPrice));
+            productDetails = products.firstOrNull;
+            rawPrice = products.lastOrNull?.rawPrice;
+            introductoryPrice = productDetails?.rawPrice;
           } else {
             productDetails = storePlans.firstWhereOrNull(
               (element) => element.id == plan.googleProductId,
@@ -204,6 +212,12 @@ class RestSubscriptionService extends SubscriptionService {
           productDetails = storePlans.firstWhereOrNull(
             (element) => element.id == plan.appleProductId,
           );
+          if (productDetails is AppStoreProductDetails) {
+            final skProduct = productDetails.skProduct;
+            introductoryPrice = skProduct.introductoryPrice?.price != null
+                ? double.tryParse(skProduct.introductoryPrice!.price)
+                : null;
+          }
         }
         if (productDetails == null) {
           continue;
@@ -214,9 +228,10 @@ class RestSubscriptionService extends SubscriptionService {
             productDetails: productDetails,
             status:
                 purchasedProductId == plan.id ? ProductStatus.purchased : ProductStatus.purchasable,
-            rawPrice: productDetails.rawPrice,
+            rawPrice: rawPrice ?? productDetails.rawPrice,
             currencyCode: productDetails.currencyCode,
             currencySymbol: productDetails.currencySymbol,
+            introductoryPrice: introductoryPrice,
           ),
         );
       }

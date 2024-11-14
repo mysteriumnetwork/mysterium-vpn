@@ -65,9 +65,9 @@ class SubscriptionMobileView extends HookConsumerWidget {
                 return LoadingIndicator(
                   message: LocaleKeys.connectingToPaymentProcesor.tr(),
                 );
-              } else if ([StoreState.loading, StoreState.notAvailable]
-                  .contains(subscriptionStore.isAvailable)) {
-                RetryOnErrorWidget(
+              } else if (subscriptionStore.isAvailable == StoreState.notAvailable ||
+                  subscriptionStore.products.isEmpty) {
+                return RetryOnErrorWidget(
                   error: subscriptionStore.isAvailable == StoreState.loading
                       ? LocaleKeys.unableToConnectToPaymentProcesor.tr()
                       : LocaleKeys.productsNotAvailable.tr(),

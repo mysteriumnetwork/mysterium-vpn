@@ -217,6 +217,7 @@ abstract class _SubscriptionStore with Store {
     if (!Platform.isIOS) {
       return;
     }
+    _analyticsStore.logEvent(AnalyticsEvent.redeemOpen);
     InAppPurchase.instance
         .getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>()
         .presentCodeRedemptionSheet();
