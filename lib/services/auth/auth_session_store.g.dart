@@ -47,22 +47,22 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
       ActionController(name: '_AuthSessionStore', context: context);
 
   @override
-  void login(String accessToken, String? refreshToken) {
+  void setAuthenticated(String accessToken, String? refreshToken) {
     final _$actionInfo =
-        _$_AuthSessionStoreActionController.startAction(name: '_AuthSessionStore.login');
+        _$_AuthSessionStoreActionController.startAction(name: '_AuthSessionStore.setAuthenticated');
     try {
-      return super.login(accessToken, refreshToken);
+      return super.setAuthenticated(accessToken, refreshToken);
     } finally {
       _$_AuthSessionStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void logout() {
-    final _$actionInfo =
-        _$_AuthSessionStoreActionController.startAction(name: '_AuthSessionStore.logout');
+  void setUnauthenticated() {
+    final _$actionInfo = _$_AuthSessionStoreActionController.startAction(
+        name: '_AuthSessionStore.setUnauthenticated');
     try {
-      return super.logout();
+      return super.setUnauthenticated();
     } finally {
       _$_AuthSessionStoreActionController.endAction(_$actionInfo);
     }
