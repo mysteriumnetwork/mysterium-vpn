@@ -36,10 +36,10 @@ abstract class _PurchasableProduct with Store {
   String get id => planDetails.id;
 
   @computed
-  bool get isDiscounted => introductoryPrice != null;
+  bool get isDiscounted => introductoryPrice != null && introductoryPrice! > 0;
 
   @computed
-  double get productPrice => introductoryPrice ?? rawPrice;
+  double get productPrice => isDiscounted ? introductoryPrice! : rawPrice;
 
   @computed
   int get duration => planDetails.id == kMonthlyPlan
