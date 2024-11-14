@@ -4,13 +4,13 @@ import 'dart:io';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
-import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/models/token_request.dart';
 import 'package:mysterium_vpn/models/token_response.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
+import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -42,7 +42,7 @@ class RestAuthService extends AuthService {
   );
 
   @override
-  Future<AuthData> checkUserAuth() async {
+  Future<AuthUser> checkUserAuth() async {
     try {
       final userName = await _securedStorage.getUsername() ?? '';
       final userId = await _securedStorage.getUserId();
@@ -53,7 +53,7 @@ class RestAuthService extends AuthService {
         _networkService.get(kAuthCheck),
       );
 
-      return AuthData(
+      return AuthUser(
         username: userName,
         userId: userId,
       );
@@ -80,7 +80,7 @@ class RestAuthService extends AuthService {
   }
 
   @override
-  Future<AuthData> singInComplete({
+  Future<AuthUser> singInComplete({
     required TokenRequest tokenRequest,
   }) async {
     try {
@@ -101,7 +101,7 @@ class RestAuthService extends AuthService {
       // TODO(Waldz): Introduce DTO models, layer of serialization/deserialization is missing
       final username = userData!['username'] as String;
 
-      final authData = AuthData(
+      final authData = AuthUser(
         username: username,
         userId: authTokens.userId,
       );
