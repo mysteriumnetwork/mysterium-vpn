@@ -2,8 +2,6 @@ import 'package:mysterium_vpn/models/response.dart';
 
 // TODO(Waldz): Generate API client from API documentation openapi.yaml
 abstract class NetworkService {
-  Map<String, Object> get headers;
-
   Future<Response> get(
     String endpoint, {
     Map<String, dynamic>? queryParameters,
