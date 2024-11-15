@@ -32,4 +32,5 @@ generate-api:
 	  --minimal-update \
 	  --remove-operation-id-prefix \
 	  --global-property apiTests=false,modelTests=false,skipFormModel=false \
-	  --additional-properties=serializationLibrary=json_serializable,finalProperties=true,apiNameSuffix=,apiNamePrefix=,pubName=vpn_api
+	  --additional-properties=serializationLibrary=json_serializable,finalProperties=true,apiNameSuffix=,apiNamePrefix=,pubName=vpn_api ;\
+	fvm dart format --line-length 100 .

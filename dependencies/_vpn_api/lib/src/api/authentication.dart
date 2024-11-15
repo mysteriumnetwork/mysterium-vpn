@@ -21,13 +21,12 @@ import 'package:vpn_api/src/model/request_activation200_response.dart';
 import 'package:vpn_api/src/model/request_activation_request.dart';
 
 class Authentication {
-
   final Dio _dio;
 
   const Authentication(this._dio);
 
   /// Get authentication configuration
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -39,7 +38,7 @@ class Authentication {
   ///
   /// Returns a [Future] containing a [Response] with a [AuthConfigResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AuthConfigResponse>> authConfig({ 
+  Future<Response<AuthConfigResponse>> authConfig({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -71,8 +70,11 @@ class Authentication {
     AuthConfigResponse? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<AuthConfigResponse, AuthConfigResponse>(rawData, 'AuthConfigResponse', growable: true);
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<AuthConfigResponse, AuthConfigResponse>(rawData, 'AuthConfigResponse',
+              growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -96,7 +98,7 @@ _responseData = rawData == null ? null : deserialize<AuthConfigResponse, AuthCon
   }
 
   /// Get authentication status
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -108,7 +110,7 @@ _responseData = rawData == null ? null : deserialize<AuthConfigResponse, AuthCon
   ///
   /// Returns a [Future] containing a [Response] with a [AuthCheckResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AuthCheckResponse>> checkAuth({ 
+  Future<Response<AuthCheckResponse>> checkAuth({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -140,8 +142,11 @@ _responseData = rawData == null ? null : deserialize<AuthConfigResponse, AuthCon
     AuthCheckResponse? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<AuthCheckResponse, AuthCheckResponse>(rawData, 'AuthCheckResponse', growable: true);
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<AuthCheckResponse, AuthCheckResponse>(rawData, 'AuthCheckResponse',
+              growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -165,10 +170,10 @@ _responseData = rawData == null ? null : deserialize<AuthCheckResponse, AuthChec
   }
 
   /// Get activation request status
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [id] 
+  /// * [id]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -178,7 +183,7 @@ _responseData = rawData == null ? null : deserialize<AuthCheckResponse, AuthChec
   ///
   /// Returns a [Future] containing a [Response] with a [RequestActivation200Response] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<RequestActivation200Response>> getActivationStatus({ 
+  Future<Response<RequestActivation200Response>> getActivationStatus({
     required String id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -211,8 +216,12 @@ _responseData = rawData == null ? null : deserialize<AuthCheckResponse, AuthChec
     RequestActivation200Response? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<RequestActivation200Response, RequestActivation200Response>(rawData, 'RequestActivation200Response', growable: true);
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<RequestActivation200Response, RequestActivation200Response>(
+              rawData, 'RequestActivation200Response',
+              growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -236,7 +245,7 @@ _responseData = rawData == null ? null : deserialize<RequestActivation200Respons
   }
 
   /// OAuth Token introspection endpoint [RFC 7662]
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [token] - Token to be introspected. Optional when token is presented via Authorization header.
@@ -249,7 +258,7 @@ _responseData = rawData == null ? null : deserialize<RequestActivation200Respons
   ///
   /// Returns a [Future] containing a [Response] with a [OAuth2TokenIntrospectionResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<OAuth2TokenIntrospectionResponse>> introspectToken({ 
+  Future<Response<OAuth2TokenIntrospectionResponse>> introspectToken({
     String? token,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -274,11 +283,9 @@ _responseData = rawData == null ? null : deserialize<RequestActivation200Respons
 
     dynamic _bodyData;
 
-    try {
-
-    } catch(error, stackTrace) {
+    try {} catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -300,8 +307,12 @@ _responseData = rawData == null ? null : deserialize<RequestActivation200Respons
     OAuth2TokenIntrospectionResponse? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<OAuth2TokenIntrospectionResponse, OAuth2TokenIntrospectionResponse>(rawData, 'OAuth2TokenIntrospectionResponse', growable: true);
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<OAuth2TokenIntrospectionResponse, OAuth2TokenIntrospectionResponse>(
+              rawData, 'OAuth2TokenIntrospectionResponse',
+              growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -325,7 +336,7 @@ _responseData = rawData == null ? null : deserialize<OAuth2TokenIntrospectionRes
   }
 
   /// Deletes authentication cookie (effective on web only)
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -337,7 +348,7 @@ _responseData = rawData == null ? null : deserialize<OAuth2TokenIntrospectionRes
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> logout({ 
+  Future<Response<void>> logout({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -370,11 +381,11 @@ _responseData = rawData == null ? null : deserialize<OAuth2TokenIntrospectionRes
   }
 
   /// Redirect from magic link click
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [code] 
-  /// * [continueTo] 
+  /// * [code]
+  /// * [continueTo]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -384,7 +395,7 @@ _responseData = rawData == null ? null : deserialize<OAuth2TokenIntrospectionRes
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> redirectMagicLink({ 
+  Future<Response<void>> redirectMagicLink({
     required String code,
     String? continueTo,
     CancelToken? cancelToken,
@@ -425,10 +436,10 @@ _responseData = rawData == null ? null : deserialize<OAuth2TokenIntrospectionRes
   }
 
   /// Create session activation request
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [requestActivationRequest] 
+  /// * [requestActivationRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -438,7 +449,7 @@ _responseData = rawData == null ? null : deserialize<OAuth2TokenIntrospectionRes
   ///
   /// Returns a [Future] containing a [Response] with a [RequestActivation200Response] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<RequestActivation200Response>> requestActivation({ 
+  Future<Response<RequestActivation200Response>> requestActivation({
     RequestActivationRequest? requestActivationRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -464,10 +475,10 @@ _responseData = rawData == null ? null : deserialize<OAuth2TokenIntrospectionRes
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(requestActivationRequest);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(requestActivationRequest);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -489,8 +500,12 @@ _bodyData=jsonEncode(requestActivationRequest);
     RequestActivation200Response? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<RequestActivation200Response, RequestActivation200Response>(rawData, 'RequestActivation200Response', growable: true);
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<RequestActivation200Response, RequestActivation200Response>(
+              rawData, 'RequestActivation200Response',
+              growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -514,10 +529,10 @@ _responseData = rawData == null ? null : deserialize<RequestActivation200Respons
   }
 
   /// Request magic link
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [magicLinkRequest] 
+  /// * [magicLinkRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -527,7 +542,7 @@ _responseData = rawData == null ? null : deserialize<RequestActivation200Respons
   ///
   /// Returns a [Future] containing a [Response] with a [MagicLinkResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<MagicLinkResponse>> requestMagicLink({ 
+  Future<Response<MagicLinkResponse>> requestMagicLink({
     MagicLinkRequest? magicLinkRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -553,10 +568,10 @@ _responseData = rawData == null ? null : deserialize<RequestActivation200Respons
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(magicLinkRequest);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(magicLinkRequest);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -578,8 +593,11 @@ _bodyData=jsonEncode(magicLinkRequest);
     MagicLinkResponse? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<MagicLinkResponse, MagicLinkResponse>(rawData, 'MagicLinkResponse', growable: true);
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<MagicLinkResponse, MagicLinkResponse>(rawData, 'MagicLinkResponse',
+              growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -603,16 +621,16 @@ _responseData = rawData == null ? null : deserialize<MagicLinkResponse, MagicLin
   }
 
   /// OAuth Token endpoint [RFC 6749]. Requires Proof Key for Code Exchange (PKCE) [RFC 7636].
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [grantType] 
-  /// * [clientId] 
-  /// * [refreshToken] 
-  /// * [codeVerifier] 
+  /// * [grantType]
+  /// * [clientId]
+  /// * [refreshToken]
+  /// * [codeVerifier]
   /// * [code] - Google authorization code for retrieving access token
   /// * [googleIdToken] - Google access token. Required if authorization code is not provided.
-  /// * [authorization] 
+  /// * [authorization]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -622,7 +640,7 @@ _responseData = rawData == null ? null : deserialize<MagicLinkResponse, MagicLin
   ///
   /// Returns a [Future] containing a [Response] with a [OAuth2TokenResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<OAuth2TokenResponse>> token({ 
+  Future<Response<OAuth2TokenResponse>> token({
     String? grantType,
     String? clientId,
     String? refreshToken,
@@ -653,11 +671,9 @@ _responseData = rawData == null ? null : deserialize<MagicLinkResponse, MagicLin
 
     dynamic _bodyData;
 
-    try {
-
-    } catch(error, stackTrace) {
+    try {} catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -679,8 +695,11 @@ _responseData = rawData == null ? null : deserialize<MagicLinkResponse, MagicLin
     OAuth2TokenResponse? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<OAuth2TokenResponse, OAuth2TokenResponse>(rawData, 'OAuth2TokenResponse', growable: true);
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<OAuth2TokenResponse, OAuth2TokenResponse>(rawData, 'OAuth2TokenResponse',
+              growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -702,5 +721,4 @@ _responseData = rawData == null ? null : deserialize<OAuth2TokenResponse, OAuth2
       extra: _response.extra,
     );
   }
-
 }

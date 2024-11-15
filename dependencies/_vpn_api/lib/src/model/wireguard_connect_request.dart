@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'wireguard_connect_request.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -17,98 +16,69 @@ part 'wireguard_connect_request.g.dart';
 class WireguardConnectRequest {
   /// Returns a new [WireguardConnectRequest] instance.
   WireguardConnectRequest({
-
-    required  this.publicKey,
-
-     this.country,
-
-     this.ipType,
-
-     this.resetConnection,
-
-     this.osType,
+    required this.publicKey,
+    this.country,
+    this.ipType,
+    this.resetConnection,
+    this.osType,
   });
 
   @JsonKey(
-    
     name: r'public_key',
     required: true,
     includeIfNull: false,
   )
-
-
   final String publicKey;
 
-
-
   @JsonKey(
-    
     name: r'country',
     required: false,
     includeIfNull: false,
   )
-
-
   final String? country;
 
-
-
   @JsonKey(
-    
     name: r'ip_type',
     required: false,
     includeIfNull: false,
   )
-
-
   final String? ipType;
 
-
-
-      /// Request a new IP
+  /// Request a new IP
   @JsonKey(
-    
     name: r'reset_connection',
     required: false,
     includeIfNull: false,
   )
-
-
   final bool? resetConnection;
 
-
-
   @JsonKey(
-    
     name: r'os_type',
     required: false,
     includeIfNull: false,
   )
-
-
   final String? osType;
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WireguardConnectRequest &&
+          other.publicKey == publicKey &&
+          other.country == country &&
+          other.ipType == ipType &&
+          other.resetConnection == resetConnection &&
+          other.osType == osType;
 
+  @override
+  int get hashCode =>
+      publicKey.hashCode +
+      (country == null ? 0 : country.hashCode) +
+      (ipType == null ? 0 : ipType.hashCode) +
+      (resetConnection == null ? 0 : resetConnection.hashCode) +
+      (osType == null ? 0 : osType.hashCode);
 
-
-
-    @override
-    bool operator ==(Object other) => identical(this, other) || other is WireguardConnectRequest &&
-      other.publicKey == publicKey &&
-      other.country == country &&
-      other.ipType == ipType &&
-      other.resetConnection == resetConnection &&
-      other.osType == osType;
-
-    @override
-    int get hashCode =>
-        publicKey.hashCode +
-        (country == null ? 0 : country.hashCode) +
-        (ipType == null ? 0 : ipType.hashCode) +
-        (resetConnection == null ? 0 : resetConnection.hashCode) +
-        (osType == null ? 0 : osType.hashCode);
-
-  factory WireguardConnectRequest.fromJson(Map<String, dynamic> json) => _$WireguardConnectRequestFromJson(json);
+  factory WireguardConnectRequest.fromJson(Map<String, dynamic> json) =>
+      _$WireguardConnectRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$WireguardConnectRequestToJson(this);
 
@@ -116,6 +86,4 @@ class WireguardConnectRequest {
   String toString() {
     return toJson().toString();
   }
-
 }
-

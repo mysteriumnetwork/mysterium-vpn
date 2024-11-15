@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'invoices_request.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -17,47 +16,31 @@ part 'invoices_request.g.dart';
 class InvoicesRequest {
   /// Returns a new [InvoicesRequest] instance.
   InvoicesRequest({
-
-    required  this.page,
-
-    required  this.pageSize,
+    required this.page,
+    required this.pageSize,
   });
 
   @JsonKey(
-    
     name: r'page',
     required: true,
     includeIfNull: false,
   )
-
-
   final String page;
 
-
-
   @JsonKey(
-    
     name: r'page_size',
     required: true,
     includeIfNull: false,
   )
-
-
   final String pageSize;
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is InvoicesRequest && other.page == page && other.pageSize == pageSize;
 
-
-
-
-    @override
-    bool operator ==(Object other) => identical(this, other) || other is InvoicesRequest &&
-      other.page == page &&
-      other.pageSize == pageSize;
-
-    @override
-    int get hashCode =>
-        page.hashCode +
-        pageSize.hashCode;
+  @override
+  int get hashCode => page.hashCode + pageSize.hashCode;
 
   factory InvoicesRequest.fromJson(Map<String, dynamic> json) => _$InvoicesRequestFromJson(json);
 
@@ -67,6 +50,4 @@ class InvoicesRequest {
   String toString() {
     return toJson().toString();
   }
-
 }
-

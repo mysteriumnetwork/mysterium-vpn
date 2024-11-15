@@ -16,16 +16,15 @@ import 'package:vpn_api/src/model/wireguard_connect_request.dart';
 import 'package:vpn_api/src/model/wireguard_connect_response.dart';
 
 class Connection {
-
   final Dio _dio;
 
   const Connection(this._dio);
 
   /// Get Wireguard configuration template given connect options
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [wireguardConnectRequest] 
+  /// * [wireguardConnectRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -35,7 +34,7 @@ class Connection {
   ///
   /// Returns a [Future] containing a [Response] with a [WireguardConnectResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<WireguardConnectResponse>> connect({ 
+  Future<Response<WireguardConnectResponse>> connect({
     WireguardConnectRequest? wireguardConnectRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -61,10 +60,10 @@ class Connection {
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(wireguardConnectRequest);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(wireguardConnectRequest);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -86,8 +85,12 @@ _bodyData=jsonEncode(wireguardConnectRequest);
     WireguardConnectResponse? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<WireguardConnectResponse, WireguardConnectResponse>(rawData, 'WireguardConnectResponse', growable: true);
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<WireguardConnectResponse, WireguardConnectResponse>(
+              rawData, 'WireguardConnectResponse',
+              growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -111,10 +114,10 @@ _responseData = rawData == null ? null : deserialize<WireguardConnectResponse, W
   }
 
   /// Get proxy configuration given connect options
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [httpsConnectRequest] 
+  /// * [httpsConnectRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -124,7 +127,7 @@ _responseData = rawData == null ? null : deserialize<WireguardConnectResponse, W
   ///
   /// Returns a [Future] containing a [Response] with a [ProxyConnectResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ProxyConnectResponse>> connectProxy({ 
+  Future<Response<ProxyConnectResponse>> connectProxy({
     HttpsConnectRequest? httpsConnectRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -150,10 +153,10 @@ _responseData = rawData == null ? null : deserialize<WireguardConnectResponse, W
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(httpsConnectRequest);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(httpsConnectRequest);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -175,8 +178,11 @@ _bodyData=jsonEncode(httpsConnectRequest);
     ProxyConnectResponse? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<ProxyConnectResponse, ProxyConnectResponse>(rawData, 'ProxyConnectResponse', growable: true);
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<ProxyConnectResponse, ProxyConnectResponse>(rawData, 'ProxyConnectResponse',
+              growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -200,7 +206,7 @@ _responseData = rawData == null ? null : deserialize<ProxyConnectResponse, Proxy
   }
 
   /// Get connection options
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -212,7 +218,7 @@ _responseData = rawData == null ? null : deserialize<ProxyConnectResponse, Proxy
   ///
   /// Returns a [Future] containing a [Response] with a [ConnectionConfigResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ConnectionConfigResponse>> connectionConfig({ 
+  Future<Response<ConnectionConfigResponse>> connectionConfig({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -244,8 +250,12 @@ _responseData = rawData == null ? null : deserialize<ProxyConnectResponse, Proxy
     ConnectionConfigResponse? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<ConnectionConfigResponse, ConnectionConfigResponse>(rawData, 'ConnectionConfigResponse', growable: true);
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<ConnectionConfigResponse, ConnectionConfigResponse>(
+              rawData, 'ConnectionConfigResponse',
+              growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -267,5 +277,4 @@ _responseData = rawData == null ? null : deserialize<ConnectionConfigResponse, C
       extra: _response.extra,
     );
   }
-
 }

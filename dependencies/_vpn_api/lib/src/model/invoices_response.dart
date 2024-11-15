@@ -9,7 +9,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'invoices_response.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -19,47 +18,31 @@ part 'invoices_response.g.dart';
 class InvoicesResponse {
   /// Returns a new [InvoicesResponse] instance.
   InvoicesResponse({
-
-    required  this.data,
-
-    required  this.paging,
+    required this.data,
+    required this.paging,
   });
 
   @JsonKey(
-    
     name: r'data',
     required: true,
     includeIfNull: false,
   )
-
-
   final List<Invoice> data;
 
-
-
   @JsonKey(
-    
     name: r'paging',
     required: true,
     includeIfNull: false,
   )
-
-
   final InvoicesResponsePaging paging;
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is InvoicesResponse && other.data == data && other.paging == paging;
 
-
-
-
-    @override
-    bool operator ==(Object other) => identical(this, other) || other is InvoicesResponse &&
-      other.data == data &&
-      other.paging == paging;
-
-    @override
-    int get hashCode =>
-        data.hashCode +
-        paging.hashCode;
+  @override
+  int get hashCode => data.hashCode + paging.hashCode;
 
   factory InvoicesResponse.fromJson(Map<String, dynamic> json) => _$InvoicesResponseFromJson(json);
 
@@ -69,6 +52,4 @@ class InvoicesResponse {
   String toString() {
     return toJson().toString();
   }
-
 }
-

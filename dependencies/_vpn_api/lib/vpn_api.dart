@@ -8,7 +8,6 @@ export 'package:vpn_api/src/auth/basic_auth.dart';
 export 'package:vpn_api/src/auth/bearer_auth.dart';
 export 'package:vpn_api/src/auth/oauth.dart';
 
-
 export 'package:vpn_api/src/api/authentication.dart';
 export 'package:vpn_api/src/api/connection.dart';
 export 'package:vpn_api/src/api/infrastructure.dart';
@@ -70,4 +69,3 @@ export 'package:vpn_api/src/model/subscription_config_response_plans_inner_price
 export 'package:vpn_api/src/model/user_callback_request.dart';
 export 'package:vpn_api/src/model/wireguard_connect_request.dart';
 export 'package:vpn_api/src/model/wireguard_connect_response.dart';
-
