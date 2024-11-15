@@ -10,7 +10,7 @@ run-dev: init generate
 clean:
 	fvm flutter clean
 
-generate: generate-code generate-localization
+generate: generate-code generate-localization generate-api
 
 generate-code:
 	fvm dart run build_runner build --verbose --delete-conflicting-outputs ;\
@@ -20,3 +20,16 @@ generate-localization:
 	fvm dart run easy_localization:generate ;\
     fvm dart run easy_localization:generate -f keys -o locale_keys.g.dart ;\
     fvm dart format --line-length 100 .
+
+# Generate VPN API client code using
+# https://github.com/OpenAPITools/openapi-generator
+generate-api:
+	openapi-generator generate \
+	  --input-spec https://api-test.mysteriumvpn.com/openapi.yaml \
+	  --generator-name dart-dio \
+	  --output dependencies/_vpn_api/ \
+	  --skip-validate-spec \
+	  --minimal-update \
+	  --remove-operation-id-prefix \
+	  --global-property apiTests=false,modelTests=false,skipFormModel=false \
+	  --additional-properties=serializationLibrary=json_serializable,finalProperties=true,apiNameSuffix=,apiNamePrefix=,pubName=vpn_api
