@@ -12,13 +12,12 @@ import 'package:dio/dio.dart';
 import 'package:vpn_api/src/model/healthcheck_response.dart';
 
 class Infrastructure {
-
   final Dio _dio;
 
   const Infrastructure(this._dio);
 
   /// Check whether the API is up
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -30,7 +29,7 @@ class Infrastructure {
   ///
   /// Returns a [Future] containing a [Response] with a [HealthcheckResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<HealthcheckResponse>> healthcheck({ 
+  Future<Response<HealthcheckResponse>> healthcheck({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -62,8 +61,11 @@ class Infrastructure {
     HealthcheckResponse? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<HealthcheckResponse, HealthcheckResponse>(rawData, 'HealthcheckResponse', growable: true);
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<HealthcheckResponse, HealthcheckResponse>(rawData, 'HealthcheckResponse',
+              growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -85,5 +87,4 @@ _responseData = rawData == null ? null : deserialize<HealthcheckResponse, Health
       extra: _response.extra,
     );
   }
-
 }

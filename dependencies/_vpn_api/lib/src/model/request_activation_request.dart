@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'request_activation_request.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -17,33 +16,25 @@ part 'request_activation_request.g.dart';
 class RequestActivationRequest {
   /// Returns a new [RequestActivationRequest] instance.
   RequestActivationRequest({
-
-    required  this.id,
+    required this.id,
   });
 
   @JsonKey(
-    
     name: r'id',
     required: true,
     includeIfNull: false,
   )
-
-
   final String id;
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is RequestActivationRequest && other.id == id;
 
+  @override
+  int get hashCode => id.hashCode;
 
-
-
-    @override
-    bool operator ==(Object other) => identical(this, other) || other is RequestActivationRequest &&
-      other.id == id;
-
-    @override
-    int get hashCode =>
-        id.hashCode;
-
-  factory RequestActivationRequest.fromJson(Map<String, dynamic> json) => _$RequestActivationRequestFromJson(json);
+  factory RequestActivationRequest.fromJson(Map<String, dynamic> json) =>
+      _$RequestActivationRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$RequestActivationRequestToJson(this);
 
@@ -51,6 +42,4 @@ class RequestActivationRequest {
   String toString() {
     return toJson().toString();
   }
-
 }
-

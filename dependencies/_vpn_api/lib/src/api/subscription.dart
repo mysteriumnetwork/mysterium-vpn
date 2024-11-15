@@ -20,16 +20,15 @@ import 'package:vpn_api/src/model/subscription_config_response.dart';
 import 'package:vpn_api/src/model/user_callback_request.dart';
 
 class Subscription {
-
   final Dio _dio;
 
   const Subscription(this._dio);
 
   /// Get invoices list with pagination
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [invoicesRequest] 
+  /// * [invoicesRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -39,7 +38,7 @@ class Subscription {
   ///
   /// Returns a [Future] containing a [Response] with a [InvoicesResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<InvoicesResponse>> invoices({ 
+  Future<Response<InvoicesResponse>> invoices({
     InvoicesRequest? invoicesRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -65,10 +64,10 @@ class Subscription {
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(invoicesRequest);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(invoicesRequest);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -90,8 +89,11 @@ _bodyData=jsonEncode(invoicesRequest);
     InvoicesResponse? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<InvoicesResponse, InvoicesResponse>(rawData, 'InvoicesResponse', growable: true);
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<InvoicesResponse, InvoicesResponse>(rawData, 'InvoicesResponse',
+              growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -115,10 +117,10 @@ _responseData = rawData == null ? null : deserialize<InvoicesResponse, InvoicesR
   }
 
   /// Preview order summary breakdown
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [orderSummaryRequest] 
+  /// * [orderSummaryRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -128,7 +130,7 @@ _responseData = rawData == null ? null : deserialize<InvoicesResponse, InvoicesR
   ///
   /// Returns a [Future] containing a [Response] with a [OrderSummaryResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<OrderSummaryResponse>> orderSummary({ 
+  Future<Response<OrderSummaryResponse>> orderSummary({
     OrderSummaryRequest? orderSummaryRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -154,10 +156,10 @@ _responseData = rawData == null ? null : deserialize<InvoicesResponse, InvoicesR
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(orderSummaryRequest);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(orderSummaryRequest);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -179,8 +181,11 @@ _bodyData=jsonEncode(orderSummaryRequest);
     OrderSummaryResponse? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<OrderSummaryResponse, OrderSummaryResponse>(rawData, 'OrderSummaryResponse', growable: true);
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<OrderSummaryResponse, OrderSummaryResponse>(rawData, 'OrderSummaryResponse',
+              growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -204,10 +209,10 @@ _responseData = rawData == null ? null : deserialize<OrderSummaryResponse, Order
   }
 
   /// Create subscription
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [subscribeRequest] 
+  /// * [subscribeRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -217,7 +222,7 @@ _responseData = rawData == null ? null : deserialize<OrderSummaryResponse, Order
   ///
   /// Returns a [Future] containing a [Response] with a [Subscribe200Response] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Subscribe200Response>> subscribe({ 
+  Future<Response<Subscribe200Response>> subscribe({
     SubscribeRequest? subscribeRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -243,10 +248,10 @@ _responseData = rawData == null ? null : deserialize<OrderSummaryResponse, Order
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(subscribeRequest);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(subscribeRequest);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -268,8 +273,11 @@ _bodyData=jsonEncode(subscribeRequest);
     Subscribe200Response? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<Subscribe200Response, Subscribe200Response>(rawData, 'Subscribe200Response', growable: true);
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<Subscribe200Response, Subscribe200Response>(rawData, 'Subscribe200Response',
+              growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -293,7 +301,7 @@ _responseData = rawData == null ? null : deserialize<Subscribe200Response, Subsc
   }
 
   /// Get subscription options
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -305,7 +313,7 @@ _responseData = rawData == null ? null : deserialize<Subscribe200Response, Subsc
   ///
   /// Returns a [Future] containing a [Response] with a [SubscriptionConfigResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SubscriptionConfigResponse>> subscriptionConfig({ 
+  Future<Response<SubscriptionConfigResponse>> subscriptionConfig({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -337,8 +345,12 @@ _responseData = rawData == null ? null : deserialize<Subscribe200Response, Subsc
     SubscriptionConfigResponse? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<SubscriptionConfigResponse, SubscriptionConfigResponse>(rawData, 'SubscriptionConfigResponse', growable: true);
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<SubscriptionConfigResponse, SubscriptionConfigResponse>(
+              rawData, 'SubscriptionConfigResponse',
+              growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -362,7 +374,7 @@ _responseData = rawData == null ? null : deserialize<SubscriptionConfigResponse,
   }
 
   /// Get subscription status
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -374,7 +386,7 @@ _responseData = rawData == null ? null : deserialize<SubscriptionConfigResponse,
   ///
   /// Returns a [Future] containing a [Response] with a [GetSubscriptionResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetSubscriptionResponse>> subscriptionStatus({ 
+  Future<Response<GetSubscriptionResponse>> subscriptionStatus({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -406,8 +418,12 @@ _responseData = rawData == null ? null : deserialize<SubscriptionConfigResponse,
     GetSubscriptionResponse? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<GetSubscriptionResponse, GetSubscriptionResponse>(rawData, 'GetSubscriptionResponse', growable: true);
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<GetSubscriptionResponse, GetSubscriptionResponse>(
+              rawData, 'GetSubscriptionResponse',
+              growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -431,10 +447,10 @@ _responseData = rawData == null ? null : deserialize<GetSubscriptionResponse, Ge
   }
 
   /// Post user callback of payment
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [userCallbackRequest] 
+  /// * [userCallbackRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -444,7 +460,7 @@ _responseData = rawData == null ? null : deserialize<GetSubscriptionResponse, Ge
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> subscriptionUserCallback({ 
+  Future<Response<void>> subscriptionUserCallback({
     UserCallbackRequest? userCallbackRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -470,10 +486,10 @@ _responseData = rawData == null ? null : deserialize<GetSubscriptionResponse, Ge
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(userCallbackRequest);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(userCallbackRequest);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -494,5 +510,4 @@ _bodyData=jsonEncode(userCallbackRequest);
 
     return _response;
   }
-
 }
