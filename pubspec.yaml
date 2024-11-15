@@ -80,6 +80,8 @@ dependencies:
     git:
       url: https://github.com/KristijanMitrik/flutter_url_protocol
       ref: main
+  vpn_api:
+    path: dependencies/_vpn_api
   window_manager: 0.4.3
   wireguard_dart:
     git:
