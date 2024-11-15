@@ -59,155 +59,167 @@ final _regList = RegExp(r'^List<(.*)>$');
 final _regSet = RegExp(r'^Set<(.*)>$');
 final _regMap = RegExp(r'^Map<String,(.*)>$');
 
-  ReturnType deserialize<ReturnType, BaseType>(dynamic value, String targetType, {bool growable= true}) {
-      switch (targetType) {
-        case 'String':
-          return '$value' as ReturnType;
-        case 'int':
-          return (value is int ? value : int.parse('$value')) as ReturnType;
-        case 'bool':
-          if (value is bool) {
-            return value as ReturnType;
-          }
-          final valueString = '$value'.toLowerCase();
-          return (valueString == 'true' || valueString == '1') as ReturnType;
-        case 'double':
-          return (value is double ? value : double.parse('$value')) as ReturnType;
-        case 'APIError':
-          return APIError.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'ActivationAuthorizationRequest':
-          return ActivationAuthorizationRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'AuthCheckResponse':
-          return AuthCheckResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'AuthConfigResponse':
-          return AuthConfigResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'CheckAuth401Response':
-          return CheckAuth401Response.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'CheckAuth401ResponseError':
-          return CheckAuth401ResponseError.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'CheckAuth401ResponseErrorFieldsValue':
-          return CheckAuth401ResponseErrorFieldsValue.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'CodeAuthorizationRequest':
-          return CodeAuthorizationRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'ConnectionConfigResponse':
-          return ConnectionConfigResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'Country':
-          return Country.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'CreateAppleSubscriptionRequest':
-          return CreateAppleSubscriptionRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'CreateAppleSubscriptionResponse':
-          return CreateAppleSubscriptionResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'CreateGenericSubscriptionRequest':
-          return CreateGenericSubscriptionRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'CreateGenericSubscriptionResponse':
-          return CreateGenericSubscriptionResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'CreateGoogleSubscriptionRequest':
-          return CreateGoogleSubscriptionRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'CreateGoogleSubscriptionResponse':
-          return CreateGoogleSubscriptionResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'FieldError':
-          return FieldError.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'GetSubscriptionResponse':
-          return GetSubscriptionResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'HealthcheckResponse':
-          return HealthcheckResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'HttpsConnectRequest':
-          return HttpsConnectRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'Invoice':
-          return Invoice.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'InvoicesRequest':
-          return InvoicesRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'InvoicesResponse':
-          return InvoicesResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'InvoicesResponsePaging':
-          return InvoicesResponsePaging.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'LocationRate':
-          return LocationRate.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'MagicLinkRedirectRequestQuery':
-          return MagicLinkRedirectRequestQuery.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'MagicLinkRequest':
-          return MagicLinkRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'MagicLinkResponse':
-          return MagicLinkResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'OAuth2AuthorizationRequest':
-          return OAuth2AuthorizationRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'OAuth2AuthorizationResponse':
-          return OAuth2AuthorizationResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'OAuth2TokenIntrospectionRequest':
-          return OAuth2TokenIntrospectionRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'OAuth2TokenIntrospectionResponse':
-          return OAuth2TokenIntrospectionResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'OAuth2TokenRequest':
-          return OAuth2TokenRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'OAuth2TokenRequestOneOf':
-          return OAuth2TokenRequestOneOf.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'OAuth2TokenRequestOneOf1':
-          return OAuth2TokenRequestOneOf1.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'OAuth2TokenRequestOneOf2':
-          return OAuth2TokenRequestOneOf2.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'OAuth2TokenRequestOneOf3':
-          return OAuth2TokenRequestOneOf3.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'OAuth2TokenRequestOneOf3Authorization':
-          return OAuth2TokenRequestOneOf3Authorization.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'OAuth2TokenResponse':
-          return OAuth2TokenResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'OrderSummaryRequest':
-          return OrderSummaryRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'OrderSummaryResponse':
-          return OrderSummaryResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'ProxyConnectResponse':
-          return ProxyConnectResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'ProxyConnectResponseProxyConfig':
-          return ProxyConnectResponseProxyConfig.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'RequestActivation200Response':
-          return RequestActivation200Response.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'RequestActivation200ResponseToken':
-          return RequestActivation200ResponseToken.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'RequestActivationRequest':
-          return RequestActivationRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'Subscribe200Response':
-          return Subscribe200Response.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'SubscribeRequest':
-          return SubscribeRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'SubscriptionConfigResponse':
-          return SubscriptionConfigResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'SubscriptionConfigResponseGatewaysInner':
-          return SubscriptionConfigResponseGatewaysInner.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'SubscriptionConfigResponsePlansInner':
-          return SubscriptionConfigResponsePlansInner.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'SubscriptionConfigResponsePlansInnerInterval':
-          return SubscriptionConfigResponsePlansInnerInterval.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'SubscriptionConfigResponsePlansInnerPrice':
-          return SubscriptionConfigResponsePlansInnerPrice.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'UserCallbackRequest':
-          return UserCallbackRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'WireguardConnectRequest':
-          return WireguardConnectRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'WireguardConnectResponse':
-          return WireguardConnectResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
-        default:
-          RegExpMatch? match;
+ReturnType deserialize<ReturnType, BaseType>(dynamic value, String targetType,
+    {bool growable = true}) {
+  switch (targetType) {
+    case 'String':
+      return '$value' as ReturnType;
+    case 'int':
+      return (value is int ? value : int.parse('$value')) as ReturnType;
+    case 'bool':
+      if (value is bool) {
+        return value as ReturnType;
+      }
+      final valueString = '$value'.toLowerCase();
+      return (valueString == 'true' || valueString == '1') as ReturnType;
+    case 'double':
+      return (value is double ? value : double.parse('$value')) as ReturnType;
+    case 'APIError':
+      return APIError.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'ActivationAuthorizationRequest':
+      return ActivationAuthorizationRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'AuthCheckResponse':
+      return AuthCheckResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'AuthConfigResponse':
+      return AuthConfigResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'CheckAuth401Response':
+      return CheckAuth401Response.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'CheckAuth401ResponseError':
+      return CheckAuth401ResponseError.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'CheckAuth401ResponseErrorFieldsValue':
+      return CheckAuth401ResponseErrorFieldsValue.fromJson(value as Map<String, dynamic>)
+          as ReturnType;
+    case 'CodeAuthorizationRequest':
+      return CodeAuthorizationRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'ConnectionConfigResponse':
+      return ConnectionConfigResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'Country':
+      return Country.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'CreateAppleSubscriptionRequest':
+      return CreateAppleSubscriptionRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'CreateAppleSubscriptionResponse':
+      return CreateAppleSubscriptionResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'CreateGenericSubscriptionRequest':
+      return CreateGenericSubscriptionRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'CreateGenericSubscriptionResponse':
+      return CreateGenericSubscriptionResponse.fromJson(value as Map<String, dynamic>)
+          as ReturnType;
+    case 'CreateGoogleSubscriptionRequest':
+      return CreateGoogleSubscriptionRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'CreateGoogleSubscriptionResponse':
+      return CreateGoogleSubscriptionResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'FieldError':
+      return FieldError.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'GetSubscriptionResponse':
+      return GetSubscriptionResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'HealthcheckResponse':
+      return HealthcheckResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'HttpsConnectRequest':
+      return HttpsConnectRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'Invoice':
+      return Invoice.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'InvoicesRequest':
+      return InvoicesRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'InvoicesResponse':
+      return InvoicesResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'InvoicesResponsePaging':
+      return InvoicesResponsePaging.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'LocationRate':
+      return LocationRate.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'MagicLinkRedirectRequestQuery':
+      return MagicLinkRedirectRequestQuery.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'MagicLinkRequest':
+      return MagicLinkRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'MagicLinkResponse':
+      return MagicLinkResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'OAuth2AuthorizationRequest':
+      return OAuth2AuthorizationRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'OAuth2AuthorizationResponse':
+      return OAuth2AuthorizationResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'OAuth2TokenIntrospectionRequest':
+      return OAuth2TokenIntrospectionRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'OAuth2TokenIntrospectionResponse':
+      return OAuth2TokenIntrospectionResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'OAuth2TokenRequest':
+      return OAuth2TokenRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'OAuth2TokenRequestOneOf':
+      return OAuth2TokenRequestOneOf.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'OAuth2TokenRequestOneOf1':
+      return OAuth2TokenRequestOneOf1.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'OAuth2TokenRequestOneOf2':
+      return OAuth2TokenRequestOneOf2.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'OAuth2TokenRequestOneOf3':
+      return OAuth2TokenRequestOneOf3.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'OAuth2TokenRequestOneOf3Authorization':
+      return OAuth2TokenRequestOneOf3Authorization.fromJson(value as Map<String, dynamic>)
+          as ReturnType;
+    case 'OAuth2TokenResponse':
+      return OAuth2TokenResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'OrderSummaryRequest':
+      return OrderSummaryRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'OrderSummaryResponse':
+      return OrderSummaryResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'ProxyConnectResponse':
+      return ProxyConnectResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'ProxyConnectResponseProxyConfig':
+      return ProxyConnectResponseProxyConfig.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'RequestActivation200Response':
+      return RequestActivation200Response.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'RequestActivation200ResponseToken':
+      return RequestActivation200ResponseToken.fromJson(value as Map<String, dynamic>)
+          as ReturnType;
+    case 'RequestActivationRequest':
+      return RequestActivationRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'Subscribe200Response':
+      return Subscribe200Response.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'SubscribeRequest':
+      return SubscribeRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'SubscriptionConfigResponse':
+      return SubscriptionConfigResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'SubscriptionConfigResponseGatewaysInner':
+      return SubscriptionConfigResponseGatewaysInner.fromJson(value as Map<String, dynamic>)
+          as ReturnType;
+    case 'SubscriptionConfigResponsePlansInner':
+      return SubscriptionConfigResponsePlansInner.fromJson(value as Map<String, dynamic>)
+          as ReturnType;
+    case 'SubscriptionConfigResponsePlansInnerInterval':
+      return SubscriptionConfigResponsePlansInnerInterval.fromJson(value as Map<String, dynamic>)
+          as ReturnType;
+    case 'SubscriptionConfigResponsePlansInnerPrice':
+      return SubscriptionConfigResponsePlansInnerPrice.fromJson(value as Map<String, dynamic>)
+          as ReturnType;
+    case 'UserCallbackRequest':
+      return UserCallbackRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'WireguardConnectRequest':
+      return WireguardConnectRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'WireguardConnectResponse':
+      return WireguardConnectResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    default:
+      RegExpMatch? match;
 
-          if (value is List && (match = _regList.firstMatch(targetType)) != null) {
-            targetType = match![1]!; // ignore: parameter_assignments
-            return value
-              .map<BaseType>((dynamic v) => deserialize<BaseType, BaseType>(v, targetType, growable: growable))
-              .toList(growable: growable) as ReturnType;
-          }
-          if (value is Set && (match = _regSet.firstMatch(targetType)) != null) {
-            targetType = match![1]!; // ignore: parameter_assignments
-            return value
-              .map<BaseType>((dynamic v) => deserialize<BaseType, BaseType>(v, targetType, growable: growable))
-              .toSet() as ReturnType;
-          }
-          if (value is Map && (match = _regMap.firstMatch(targetType)) != null) {
-            targetType = match![1]!.trim(); // ignore: parameter_assignments
-            return Map<String, BaseType>.fromIterables(
-              value.keys as Iterable<String>,
-              value.values.map((dynamic v) => deserialize<BaseType, BaseType>(v, targetType, growable: growable)),
-            ) as ReturnType;
-          }
-          break;
-    }
-    throw Exception('Cannot deserialize');
+      if (value is List && (match = _regList.firstMatch(targetType)) != null) {
+        targetType = match![1]!; // ignore: parameter_assignments
+        return value
+            .map<BaseType>(
+                (dynamic v) => deserialize<BaseType, BaseType>(v, targetType, growable: growable))
+            .toList(growable: growable) as ReturnType;
+      }
+      if (value is Set && (match = _regSet.firstMatch(targetType)) != null) {
+        targetType = match![1]!; // ignore: parameter_assignments
+        return value
+            .map<BaseType>(
+                (dynamic v) => deserialize<BaseType, BaseType>(v, targetType, growable: growable))
+            .toSet() as ReturnType;
+      }
+      if (value is Map && (match = _regMap.firstMatch(targetType)) != null) {
+        targetType = match![1]!.trim(); // ignore: parameter_assignments
+        return Map<String, BaseType>.fromIterables(
+          value.keys as Iterable<String>,
+          value.values.map(
+              (dynamic v) => deserialize<BaseType, BaseType>(v, targetType, growable: growable)),
+        ) as ReturnType;
+      }
+      break;
   }
+  throw Exception('Cannot deserialize');
+}

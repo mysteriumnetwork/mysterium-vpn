@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'field_error.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -17,47 +16,31 @@ part 'field_error.g.dart';
 class FieldError {
   /// Returns a new [FieldError] instance.
   FieldError({
-
-    required  this.code,
-
-    required  this.message,
+    required this.code,
+    required this.message,
   });
 
   @JsonKey(
-    
     name: r'code',
     required: true,
     includeIfNull: false,
   )
-
-
   final String code;
 
-
-
   @JsonKey(
-    
     name: r'message',
     required: true,
     includeIfNull: false,
   )
-
-
   final String message;
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FieldError && other.code == code && other.message == message;
 
-
-
-
-    @override
-    bool operator ==(Object other) => identical(this, other) || other is FieldError &&
-      other.code == code &&
-      other.message == message;
-
-    @override
-    int get hashCode =>
-        code.hashCode +
-        message.hashCode;
+  @override
+  int get hashCode => code.hashCode + message.hashCode;
 
   factory FieldError.fromJson(Map<String, dynamic> json) => _$FieldErrorFromJson(json);
 
@@ -67,6 +50,4 @@ class FieldError {
   String toString() {
     return toJson().toString();
   }
-
 }
-

@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'healthcheck_response.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -17,65 +16,45 @@ part 'healthcheck_response.g.dart';
 class HealthcheckResponse {
   /// Returns a new [HealthcheckResponse] instance.
   HealthcheckResponse({
-
-    required  this.status,
-
-    required  this.version,
-
-    required  this.sha,
+    required this.status,
+    required this.version,
+    required this.sha,
   });
 
   @JsonKey(
-    
     name: r'status',
     required: true,
     includeIfNull: false,
   )
-
-
   final String status;
 
-
-
   @JsonKey(
-    
     name: r'version',
     required: true,
     includeIfNull: false,
   )
-
-
   final String version;
 
-
-
   @JsonKey(
-    
     name: r'sha',
     required: true,
     includeIfNull: false,
   )
-
-
   final String sha;
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is HealthcheckResponse &&
+          other.status == status &&
+          other.version == version &&
+          other.sha == sha;
 
+  @override
+  int get hashCode => status.hashCode + version.hashCode + sha.hashCode;
 
-
-
-    @override
-    bool operator ==(Object other) => identical(this, other) || other is HealthcheckResponse &&
-      other.status == status &&
-      other.version == version &&
-      other.sha == sha;
-
-    @override
-    int get hashCode =>
-        status.hashCode +
-        version.hashCode +
-        sha.hashCode;
-
-  factory HealthcheckResponse.fromJson(Map<String, dynamic> json) => _$HealthcheckResponseFromJson(json);
+  factory HealthcheckResponse.fromJson(Map<String, dynamic> json) =>
+      _$HealthcheckResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$HealthcheckResponseToJson(this);
 
@@ -83,6 +62,4 @@ class HealthcheckResponse {
   String toString() {
     return toJson().toString();
   }
-
 }
-

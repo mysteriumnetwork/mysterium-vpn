@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'create_generic_subscription_response.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -17,81 +16,58 @@ part 'create_generic_subscription_response.g.dart';
 class CreateGenericSubscriptionResponse {
   /// Returns a new [CreateGenericSubscriptionResponse] instance.
   CreateGenericSubscriptionResponse({
-
-    required  this.gatewayId,
-
-     this.checkoutUrl,
-
-     this.clientSecret,
-
-     this.invoicePaid,
+    required this.gatewayId,
+    this.checkoutUrl,
+    this.clientSecret,
+    this.invoicePaid,
   });
 
   @JsonKey(
-    
     name: r'gateway_id',
     required: true,
     includeIfNull: false,
   )
-
-
   final String gatewayId;
 
-
-
   @JsonKey(
-    
     name: r'checkout_url',
     required: false,
     includeIfNull: false,
   )
-
-
   final String? checkoutUrl;
 
-
-
   @JsonKey(
-    
     name: r'client_secret',
     required: false,
     includeIfNull: false,
   )
-
-
   final String? clientSecret;
 
-
-
   @JsonKey(
-    
     name: r'invoice_paid',
     required: false,
     includeIfNull: false,
   )
-
-
   final bool? invoicePaid;
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CreateGenericSubscriptionResponse &&
+          other.gatewayId == gatewayId &&
+          other.checkoutUrl == checkoutUrl &&
+          other.clientSecret == clientSecret &&
+          other.invoicePaid == invoicePaid;
 
+  @override
+  int get hashCode =>
+      gatewayId.hashCode +
+      (checkoutUrl == null ? 0 : checkoutUrl.hashCode) +
+      (clientSecret == null ? 0 : clientSecret.hashCode) +
+      (invoicePaid == null ? 0 : invoicePaid.hashCode);
 
-
-
-    @override
-    bool operator ==(Object other) => identical(this, other) || other is CreateGenericSubscriptionResponse &&
-      other.gatewayId == gatewayId &&
-      other.checkoutUrl == checkoutUrl &&
-      other.clientSecret == clientSecret &&
-      other.invoicePaid == invoicePaid;
-
-    @override
-    int get hashCode =>
-        gatewayId.hashCode +
-        (checkoutUrl == null ? 0 : checkoutUrl.hashCode) +
-        (clientSecret == null ? 0 : clientSecret.hashCode) +
-        (invoicePaid == null ? 0 : invoicePaid.hashCode);
-
-  factory CreateGenericSubscriptionResponse.fromJson(Map<String, dynamic> json) => _$CreateGenericSubscriptionResponseFromJson(json);
+  factory CreateGenericSubscriptionResponse.fromJson(Map<String, dynamic> json) =>
+      _$CreateGenericSubscriptionResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$CreateGenericSubscriptionResponseToJson(this);
 
@@ -99,6 +75,4 @@ class CreateGenericSubscriptionResponse {
   String toString() {
     return toJson().toString();
   }
-
 }
-

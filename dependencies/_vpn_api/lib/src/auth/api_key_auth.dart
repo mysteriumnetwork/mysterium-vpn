@@ -2,7 +2,6 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-
 import 'package:dio/dio.dart';
 import 'package:vpn_api/src/auth/auth.dart';
 
