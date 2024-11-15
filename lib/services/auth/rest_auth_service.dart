@@ -55,9 +55,6 @@ class RestAuthService extends AuthService {
         throw AuthenticationRequiredException();
       }
       _logger.handle(e, stackTrace);
-      if (e is KeyDoesntExistsException) {
-        rethrow;
-      }
       rethrow;
     }
   }

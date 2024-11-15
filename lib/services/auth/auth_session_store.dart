@@ -11,7 +11,7 @@ class AuthSessionStore = _AuthSessionStore with _$AuthSessionStore;
 abstract class _AuthSessionStore with Store {
   _AuthSessionStore({required SecureStorageService secureStorage})
       : _secureStorage = secureStorage {
-    _storageLoad();
+    initStore();
   }
 
   final SecureStorageService _secureStorage;
@@ -24,6 +24,11 @@ abstract class _AuthSessionStore with Store {
 
   @readonly
   AuthUser? _user;
+
+  @action
+  Future<void> initStore() async {
+    await _storageLoad();
+  }
 
   @action
   void setAuthenticated(String accessToken, String? refreshToken) {
