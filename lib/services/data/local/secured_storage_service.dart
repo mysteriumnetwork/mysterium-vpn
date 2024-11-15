@@ -104,7 +104,7 @@ class SecureStorageService {
     }
   }
 
-  Future<String> getAccessToken() async => read(StorageKeys.accessToken.name);
+  Future<String?> getAccessToken() async => readOrNull(StorageKeys.accessToken.name);
   Future<void> saveAccessToken(String token) async => write(StorageKeys.accessToken.name, token);
   Future<void> removeAccessToken() async => remove(StorageKeys.accessToken.name);
 

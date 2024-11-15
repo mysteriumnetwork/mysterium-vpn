@@ -60,6 +60,13 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
     });
   }
 
+  late final _$initStoreAsyncAction = AsyncAction('_AuthSessionStore.initStore', context: context);
+
+  @override
+  Future<void> initStore() {
+    return _$initStoreAsyncAction.run(() => super.initStore());
+  }
+
   late final _$_AuthSessionStoreActionController =
       ActionController(name: '_AuthSessionStore', context: context);
 

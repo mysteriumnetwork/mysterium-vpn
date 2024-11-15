@@ -192,7 +192,7 @@ abstract class _AuthStore with Store {
       }
     } catch (e) {
       _authStatus = AuthStatus.unauthenticated;
-      if (e is KeyDoesntExistsException || e is AuthenticationRequiredException) {
+      if (e is AuthenticationRequiredException) {
         _logger.info('User token expired or not found');
         return;
       }
