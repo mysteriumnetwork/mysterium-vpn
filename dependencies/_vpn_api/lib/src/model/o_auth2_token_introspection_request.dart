@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'o_auth2_token_introspection_request.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -17,34 +16,26 @@ part 'o_auth2_token_introspection_request.g.dart';
 class OAuth2TokenIntrospectionRequest {
   /// Returns a new [OAuth2TokenIntrospectionRequest] instance.
   OAuth2TokenIntrospectionRequest({
-
-     this.token,
+    this.token,
   });
 
-      /// Token to be introspected. Optional when token is presented via Authorization header.
+  /// Token to be introspected. Optional when token is presented via Authorization header.
   @JsonKey(
-    
     name: r'token',
     required: false,
     includeIfNull: false,
   )
-
-
   final String? token;
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is OAuth2TokenIntrospectionRequest && other.token == token;
 
+  @override
+  int get hashCode => (token == null ? 0 : token.hashCode);
 
-
-
-    @override
-    bool operator ==(Object other) => identical(this, other) || other is OAuth2TokenIntrospectionRequest &&
-      other.token == token;
-
-    @override
-    int get hashCode =>
-        (token == null ? 0 : token.hashCode);
-
-  factory OAuth2TokenIntrospectionRequest.fromJson(Map<String, dynamic> json) => _$OAuth2TokenIntrospectionRequestFromJson(json);
+  factory OAuth2TokenIntrospectionRequest.fromJson(Map<String, dynamic> json) =>
+      _$OAuth2TokenIntrospectionRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$OAuth2TokenIntrospectionRequestToJson(this);
 
@@ -52,6 +43,4 @@ class OAuth2TokenIntrospectionRequest {
   String toString() {
     return toJson().toString();
   }
-
 }
-

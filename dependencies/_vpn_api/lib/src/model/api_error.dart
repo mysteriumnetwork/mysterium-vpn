@@ -8,7 +8,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'api_error.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -18,63 +17,40 @@ part 'api_error.g.dart';
 class APIError {
   /// Returns a new [APIError] instance.
   APIError({
-
-     this.status,
-
-     this.path,
-
-    required  this.error,
+    this.status,
+    this.path,
+    required this.error,
   });
 
   @JsonKey(
-    
     name: r'status',
     required: false,
     includeIfNull: false,
   )
-
-
   final int? status;
 
-
-
   @JsonKey(
-    
     name: r'path',
     required: false,
     includeIfNull: false,
   )
-
-
   final String? path;
 
-
-
   @JsonKey(
-    
     name: r'error',
     required: true,
     includeIfNull: false,
   )
-
-
   final CheckAuth401ResponseError error;
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is APIError && other.status == status && other.path == path && other.error == error;
 
-
-
-
-    @override
-    bool operator ==(Object other) => identical(this, other) || other is APIError &&
-      other.status == status &&
-      other.path == path &&
-      other.error == error;
-
-    @override
-    int get hashCode =>
-        (status == null ? 0 : status.hashCode) +
-        (path == null ? 0 : path.hashCode) +
-        error.hashCode;
+  @override
+  int get hashCode =>
+      (status == null ? 0 : status.hashCode) + (path == null ? 0 : path.hashCode) + error.hashCode;
 
   factory APIError.fromJson(Map<String, dynamic> json) => _$APIErrorFromJson(json);
 
@@ -84,6 +60,4 @@ class APIError {
   String toString() {
     return toJson().toString();
   }
-
 }
-
