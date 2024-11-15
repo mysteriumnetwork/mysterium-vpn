@@ -53,7 +53,7 @@ final networkServicePOD = Provider<DioNetworkService>((ref) {
           return handler.next(options);
         },
       ),
-      RefreshTokenInterceptor(dio: dio),
+      RefreshTokenInterceptor(dio: dio, logger: logger),
       RetryRequestInterceptor(dio: dio),
       if (kDebugMode)
         TalkerDioLogger(
