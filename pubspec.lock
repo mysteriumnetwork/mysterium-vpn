@@ -1787,7 +1787,7 @@ packages:
   vpn_api:
     dependency: "direct main"
     description:
-      path: "dependencies/_vpn_api"
+      path: "packages/vpn_api"
       relative: true
     source: path
     version: "1.0.0"
