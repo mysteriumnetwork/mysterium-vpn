@@ -118,16 +118,16 @@ mixin _$VpnStore on _VpnStore, Store {
 
   late final _$_vpnConfigAtom = Atom(name: '_VpnStore._vpnConfig', context: context);
 
-  VpnConfig? get vpnConfig {
+  WireguardConnectResponse? get vpnConfig {
     _$_vpnConfigAtom.reportRead();
     return super._vpnConfig;
   }
 
   @override
-  VpnConfig? get _vpnConfig => vpnConfig;
+  WireguardConnectResponse? get _vpnConfig => vpnConfig;
 
   @override
-  set _vpnConfig(VpnConfig? value) {
+  set _vpnConfig(WireguardConnectResponse? value) {
     _$_vpnConfigAtom.reportWrite(value, super._vpnConfig, () {
       super._vpnConfig = value;
     });
@@ -188,13 +188,13 @@ mixin _$VpnStore on _VpnStore, Store {
   late final _$fetchConfigFutureAtom = Atom(name: '_VpnStore.fetchConfigFuture', context: context);
 
   @override
-  ObservableFuture<VpnConfig>? get fetchConfigFuture {
+  ObservableFuture<WireguardConnectResponse>? get fetchConfigFuture {
     _$fetchConfigFutureAtom.reportRead();
     return super.fetchConfigFuture;
   }
 
   @override
-  set fetchConfigFuture(ObservableFuture<VpnConfig>? value) {
+  set fetchConfigFuture(ObservableFuture<WireguardConnectResponse>? value) {
     _$fetchConfigFutureAtom.reportWrite(value, super.fetchConfigFuture, () {
       super.fetchConfigFuture = value;
     });
