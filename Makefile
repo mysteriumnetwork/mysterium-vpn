@@ -22,7 +22,9 @@ generate-localization:
     fvm dart format --line-length 100 .
 
 # Generate VPN API client code using
-# https://github.com/OpenAPITools/openapi-generator
+# Tool install: https://github.com/OpenAPITools/openapi-generator
+# generate command: https://openapi-generator.tech/docs/usage/#generate
+# dart-dio docs: https://openapi-generator.tech/docs/generators/dart-dio
 generate-api:
 	pushd packages/vpn_api ;\
 	openapi-generator generate \
