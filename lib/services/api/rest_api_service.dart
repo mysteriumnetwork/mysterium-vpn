@@ -1,18 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/report_broken_node_request.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
-import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:talker/talker.dart';
+import 'package:vpn_api/vpn_api.dart';
 
-const kFetchAllLocations = '/connection/config';
-const kCreateConnectionConfig = '/connection/connect';
 const kFetchIP = 'https://location.mysterium.network/api/v1/location';
 const kFetchIPFallback = 'https://ipinfo.io/json';
 const kReportBrokenNode = '/connection/report-broken-node';
@@ -21,16 +18,18 @@ const kGetMarketingConsent = '/user-preferences/marketing-consent';
 const kGetUserPreferences = '/user-preferences';
 const kSetEmailMarketingConsent = '/email-marketing/marketing-consent';
 
-// TODO(Waldz): Generate API client from API documentation openapi.yaml
 class RestApiService extends ApiService {
   RestApiService({
+    required VpnApi api,
     required NetworkService networkService,
     required LocalDBService localDb,
     required Talker logger,
   })  : _networkService = networkService,
+        _apiConnection = api.getConnection(),
         _localDb = localDb,
         _logger = logger;
 
+  final Connection _apiConnection;
   final NetworkService _networkService;
   final LocalDBService _localDb;
   final Talker _logger;
@@ -52,16 +51,16 @@ class RestApiService extends ApiService {
   @override
   Future<VPNLocations> fetchVPNLocations({required String keyword}) async {
     try {
-      final data = (await _networkService.get(kFetchAllLocations)).data as Map<String, dynamic>?;
-
-      if (data == null || !data.containsKey('countries')) {
+      final data = (await _apiConnection.connectionConfig()).data;
+      if (data == null) {
         throw Exception('No data found');
       }
-      final topCountryCodes = List<String>.from(data['top_countries'] as List<dynamic>)
+
+      final topCountryCodes = List<String>.from(data.topCountries)
         ..sort(
           (a, b) => a.tr().compareTo(b.tr()),
         );
-      final allCountryCodes = List<String>.from(data['countries'] as List<dynamic>)
+      final allCountryCodes = List<String>.from(data.countries)
         ..removeWhere(
           topCountryCodes.contains,
         )
@@ -109,36 +108,16 @@ class RestApiService extends ApiService {
   }
 
   @override
-  Future<VpnConfig> fetchVpnConfig({
-    required VpnConfigInput input,
-    required String privateKey,
-    required String? replaceDNSAddress,
+  Future<WireguardConnectResponse> fetchVpnConfig({
+    required WireguardConnectRequest request,
   }) async {
     try {
-      final data = (await _networkService.post(
-        kCreateConnectionConfig,
-        data: input.toJson(),
-      ))
-          .data as Map<String, dynamic>?;
-      if (data == null || !data.containsKey('wg_config')) {
+      final response = await _apiConnection.connect(wireguardConnectRequest: request);
+      if (response.data == null) {
         throw Exception("config wasn't created");
       }
-      final vpnConfig = VpnConfig.fromJson(data);
-      var config = vpnConfig.config;
-      if (replaceDNSAddress.isNotNullOrEmpty) {
-        // Regular expression pattern to match lines containing "DNS"
-        final dnsRegex = RegExp(r'.*(\DNS\b).*', caseSensitive: false);
 
-        // Find all matches in the content
-        final match = dnsRegex.firstMatch(config);
-        if (match?[0] != null) {
-          final dnsLine = match![0]!;
-          config = config.replaceFirst(dnsLine, 'DNS = $replaceDNSAddress');
-        }
-      }
-      return vpnConfig.copyWith(
-        config: config.replaceFirst('%private_key%', privateKey),
-      );
+      return response.data!;
     } on ApiException {
       rethrow;
     } catch (e, stackTrace) {
@@ -175,6 +154,7 @@ class RestApiService extends ApiService {
   Future<void> reportBrokenNode({required ReportBrokenNodeRequest request}) async {
     try {
       await Future.delayed(
+        // TODO(Waldz): Generate API client from API documentation openapi.yaml
         const Duration(minutes: 2),
         () => _networkService.post(
           kReportBrokenNode,
@@ -191,6 +171,7 @@ class RestApiService extends ApiService {
   @override
   Future<void> setUserPrefsMarketingConsent({required bool consent}) async {
     try {
+      // TODO(Waldz): Generate API client from API documentation openapi.yaml
       await _networkService.post(
         kSetMarketingConsent,
         data: {
@@ -208,6 +189,7 @@ class RestApiService extends ApiService {
   @override
   Future<bool> getUserPrefsMarketingConsent() async {
     try {
+      // TODO(Waldz): Generate API client from API documentation openapi.yaml
       final data = (await _networkService.get(kGetMarketingConsent)).data as Map<String, dynamic>?;
       if (data == null || !data.containsKey('marketing_consent')) {
         throw Exception('No data found');
@@ -224,6 +206,7 @@ class RestApiService extends ApiService {
   @override
   Future<void> setEmailMarketingConsent({required bool consent}) async {
     try {
+      // TODO(Waldz): Generate API client from API documentation openapi.yaml
       await _networkService.post(
         kSetEmailMarketingConsent,
         data: {

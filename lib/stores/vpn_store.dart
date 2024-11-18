@@ -16,7 +16,6 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/report_broken_node_request.dart';
-import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
@@ -29,6 +28,7 @@ import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
+import 'package:vpn_api/vpn_api.dart';
 import 'package:wireguard_dart/connection_status.dart';
 import 'package:wireguard_dart/key_pair.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
@@ -36,6 +36,9 @@ import 'package:wireguard_dart/wireguard_dart.dart';
 // Project imports:
 
 part 'vpn_store.g.dart';
+
+// Regular expression pattern to match lines containing "DNS"
+final dnsRegex = RegExp(r'.*(\DNS\b).*', caseSensitive: false);
 
 // ignore: library_private_types_in_public_api
 class VpnStore = _VpnStore with _$VpnStore;
@@ -93,7 +96,7 @@ abstract class _VpnStore with Store {
   VpnConnection? _vpnConnection;
 
   @readonly
-  VpnConfig? _vpnConfig;
+  WireguardConnectResponse? _vpnConfig;
 
   KeyPair? _wireguardKey;
 
@@ -134,7 +137,7 @@ abstract class _VpnStore with Store {
   ObservableFuture<VpnConnection>? resolveConnectionLocationFuture;
 
   @observable
-  ObservableFuture<VpnConfig>? fetchConfigFuture;
+  ObservableFuture<WireguardConnectResponse>? fetchConfigFuture;
 
   int _retryCount = 0;
   bool _isRetrying = false;
@@ -166,7 +169,7 @@ abstract class _VpnStore with Store {
           _resolveConnectionLocation(
             location: location,
             nonce: _connectingNonce,
-            hash: _vpnConfig?.hashValue ?? '',
+            hash: _vpnConfig?.hash ?? '',
           ),
         );
         _vpnConnection = await resolveConnectionLocationFuture;
@@ -288,10 +291,26 @@ abstract class _VpnStore with Store {
   Future<void> _connectWireguard(
     String nonce,
   ) async {
-    final config = _vpnConfig?.config;
-    if (config == null) {
+    if (_vpnConfig == null) {
       return;
     }
+
+    if (_wireguardKey == null) {
+      await _generateKey();
+    }
+
+    // TODO(Waldz): Move to separate function, which mutates variable
+    var config = _vpnConfig!.wgConfig;
+    if (replaceDNSAddress.isNotNullOrEmpty) {
+      // Find all matches in the content
+      final match = dnsRegex.firstMatch(config);
+      if (match?[0] != null) {
+        final dnsLine = match![0]!;
+        config = config.replaceFirst(dnsLine, 'DNS = $replaceDNSAddress');
+      }
+    }
+    config = config.replaceFirst('%private_key%', _wireguardKey!.privateKey);
+
     try {
       final tunnelStatus = await _wireguardService.status();
       if (tunnelStatus == ConnectionStatus.connected ||
@@ -524,19 +543,14 @@ abstract class _VpnStore with Store {
       _stopwatch
         ..reset()
         ..start();
-      if (_wireguardKey == null) {
-        await _generateKey();
-      }
       fetchConfigFuture = ObservableFuture(
         _apiService.fetchVpnConfig(
-          input: VpnConfigInput(
+          request: WireguardConnectRequest(
             publicKey: _wireguardKey!.publicKey,
             country: location,
             resetConnection: refreshIP ?? _refreshIPConnection,
             osType: Platform.operatingSystem,
           ),
-          privateKey: _wireguardKey!.privateKey,
-          replaceDNSAddress: replaceDNSAddress,
         ),
       );
       _vpnConfig = await fetchConfigFuture;
@@ -548,7 +562,7 @@ abstract class _VpnStore with Store {
         _resolveConnectionLocation(
           location: location,
           nonce: nonce,
-          hash: _vpnConfig?.hashValue ?? '',
+          hash: _vpnConfig?.hash ?? '',
         ),
       );
       return await resolveConnectionLocationFuture!;
@@ -608,7 +622,7 @@ abstract class _VpnStore with Store {
               appVersion: (await PackageInfo.fromPlatform()).version,
               originCountry: originCountry,
               connectivityType: (await Connectivity().checkConnectivity()).lastOrNull,
-              hashValue: _vpnConfig!.hashValue,
+              hashValue: _vpnConfig!.hash,
             ),
           ),
         );
