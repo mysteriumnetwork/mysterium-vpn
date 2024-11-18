@@ -55,12 +55,8 @@ abstract class _AuthSessionStore with Store {
   }
 
   Future<void> _storageLoad() async {
-    await _secureStorage.getAccessToken().then((value) async {
-      _accessToken = value;
-    });
-    await _secureStorage.getRefreshToken().then((value) async {
-      _refreshToken = value;
-    });
+    _accessToken = await _secureStorage.getAccessToken();
+    _refreshToken = await _secureStorage.getRefreshToken();
   }
 
   Future<void> _storageUpdate() async {
