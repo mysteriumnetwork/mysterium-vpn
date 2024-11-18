@@ -24,7 +24,7 @@ generate-localization:
 # Generate VPN API client code using
 # https://github.com/OpenAPITools/openapi-generator
 generate-api:
-	pushd dependencies/_vpn_api ;\
+	pushd packages/vpn_api ;\
 	openapi-generator generate \
 	  --input-spec https://api-test.mysteriumvpn.com/openapi.yaml \
 	  --generator-name dart-dio \

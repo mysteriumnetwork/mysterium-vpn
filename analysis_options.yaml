@@ -21,7 +21,7 @@ analyzer:
   exclude:
     - "**/*.g.dart"
     - "**/*.freezed.dart"    
-    - "dependencies"
+    - "packages/vpn_api"
 
 linter: 
   rules:
