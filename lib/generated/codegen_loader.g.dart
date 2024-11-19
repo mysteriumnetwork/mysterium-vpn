@@ -518,7 +518,10 @@ class CodegenLoader extends AssetLoader {
     "semiAnnualPlanDiscountPrice": "半年{amount}。",
     "billedEveryYear": "{amount} 每年计费",
     "billedEvery6Months": "{amount} 每 6 个月计费一次",
-    "billedEveryMonth": "{amount} 每月计费"
+    "billedEveryMonth": "{amount} 每月计费",
+    "malwareBlocker": "恶意软件拦截器",
+    "contentBlockerTitle": "NSFW 内容和恶意软件拦截器",
+    "contentBlockerDesc": "阻止恶意软件和成人内容"
   };
   static const Map<String, dynamic> tr = {
     "title": "Merhaba efendim",
@@ -1042,7 +1045,11 @@ class CodegenLoader extends AssetLoader {
     "semiAnnualPlanDiscountPrice": "Yarı yıllık {amount}",
     "billedEveryYear": "{amount} Her yıl faturalandırılır",
     "billedEvery6Months": "{amount} 6 ayda bir faturalandırılır",
-    "billedEveryMonth": "{amount} Her ay faturalandırılır"
+    "billedEveryMonth": "{amount} Her ay faturalandırılır",
+    "malwareBlocker": "Kötü amaçlı yazılım engelleyici",
+    "contentBlockerTitle": "NSFW içeriği ve kötü amaçlı yazılım engelleyici",
+    "contentBlockerDesc":
+        "Hem kötü amaçlı yazılımları hem de yetişkinlere yönelik içeriği engelleyin"
   };
   static const Map<String, dynamic> ja = {
     "title": "こんにちは。",
@@ -1550,7 +1557,10 @@ class CodegenLoader extends AssetLoader {
     "semiAnnualPlanDiscountPrice": "6ヶ月{amount}。",
     "billedEveryYear": "{amount} 毎年請求される",
     "billedEvery6Months": "{amount} 6 か月ごとに請求されます",
-    "billedEveryMonth": "{amount} 毎月請求される"
+    "billedEveryMonth": "{amount} 毎月請求される",
+    "malwareBlocker": "マルウェアブロッカー",
+    "contentBlockerTitle": "NSFW コンテンツとマルウェア ブロッカー",
+    "contentBlockerDesc": "マルウェアとアダルト コンテンツの両方をブロック"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -2093,7 +2103,10 @@ class CodegenLoader extends AssetLoader {
     "semiAnnualPlanDiscountPrice": "{amount} für 6 Monate.",
     "billedEveryYear": "{amount} Wird jedes Jahr in Rechnung gestellt",
     "billedEvery6Months": "{amount} Wird alle 6 Monate in Rechnung gestellt",
-    "billedEveryMonth": "{amount} Wird jeden Monat in Rechnung gestellt"
+    "billedEveryMonth": "{amount} Wird jeden Monat in Rechnung gestellt",
+    "malwareBlocker": "Malware-Blocker",
+    "contentBlockerTitle": "NSFW-Inhalts- und Malware-Blocker",
+    "contentBlockerDesc": "Blockieren Sie sowohl Malware als auch nicht jugendfreie Inhalte"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2624,7 +2637,10 @@ class CodegenLoader extends AssetLoader {
     "semiAnnualPlanDiscountPrice": "{amount} por 6 meses.",
     "billedEveryYear": "{amount} Faturado anualmente",
     "billedEvery6Months": "{amount} Faturado a cada 6 meses",
-    "billedEveryMonth": "{amount} Faturado todo mês"
+    "billedEveryMonth": "{amount} Faturado todo mês",
+    "malwareBlocker": "Bloqueador de malware",
+    "contentBlockerTitle": "Conteúdo NSFW e bloqueador de malware",
+    "contentBlockerDesc": "Bloqueie malware e conteúdo adulto"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -3154,7 +3170,10 @@ class CodegenLoader extends AssetLoader {
     "letsGoBtn": "Let's go",
     "billedEveryYear": "{amount} Billed every year",
     "billedEvery6Months": "{amount} Billed every 6 months",
-    "billedEveryMonth": "{amount} Billed every month"
+    "billedEveryMonth": "{amount} Billed every month",
+    "malwareBlocker": "Malware blocker",
+    "contentBlockerTitle": "NSFW content and malware blocker",
+    "contentBlockerDesc": "Block both malware and adult content"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3690,7 +3709,10 @@ class CodegenLoader extends AssetLoader {
     "semiAnnualPlanDiscountPrice": "{amount} per 6 mesi.",
     "billedEveryYear": "{importo} Fatturato ogni anno",
     "billedEvery6Months": "{importo} Fatturato ogni 6 mesi",
-    "billedEveryMonth": "{importo} Fatturato ogni mese"
+    "billedEveryMonth": "{importo} Fatturato ogni mese",
+    "malwareBlocker": "Blocco malware",
+    "contentBlockerTitle": "Contenuto NSFW e blocco malware",
+    "contentBlockerDesc": "Blocca sia malware che contenuti per adulti"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -4228,7 +4250,11 @@ class CodegenLoader extends AssetLoader {
     "semiAnnualPlanDiscountPrice": "{amount} pour 6 mois.",
     "billedEveryYear": "{amount} Facturé chaque année",
     "billedEvery6Months": "{amount} Facturé tous les 6 mois",
-    "billedEveryMonth": "{amount} Facturé chaque mois"
+    "billedEveryMonth": "{amount} Facturé chaque mois",
+    "malwareBlocker": "Bloqueur de logiciels malveillants",
+    "contentBlockerTitle": "Bloqueur de contenu NSFW et de logiciels malveillants",
+    "contentBlockerDesc":
+        "Bloquez à la fois les logiciels malveillants et le contenu réservé aux adultes"
   };
   static const Map<String, dynamic> id = {
     "title": "Halo Pak",
@@ -4758,7 +4784,10 @@ class CodegenLoader extends AssetLoader {
     "semiAnnualPlanDiscountPrice": "{amount} untuk 6 bulan.",
     "billedEveryYear": "{amount} Ditagih setiap tahun",
     "billedEvery6Months": "{amount} Ditagih setiap 6 bulan",
-    "billedEveryMonth": "{amount} Ditagih setiap bulan"
+    "billedEveryMonth": "{amount} Ditagih setiap bulan",
+    "malwareBlocker": "Pemblokir malware",
+    "contentBlockerTitle": "Pemblokir konten NSFW dan malware",
+    "contentBlockerDesc": "Blokir malware dan konten dewasa"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -5292,7 +5321,10 @@ class CodegenLoader extends AssetLoader {
     "semiAnnualPlanDiscountPrice": "{amount} por 6 meses.",
     "billedEveryYear": "{cantidad} Facturado cada año",
     "billedEvery6Months": "{amount} Facturado cada 6 meses",
-    "billedEveryMonth": "{amount} facturado cada mes"
+    "billedEveryMonth": "{amount} facturado cada mes",
+    "malwareBlocker": "bloqueador de malware",
+    "contentBlockerTitle": "Bloqueador de malware y contenido NSFW",
+    "contentBlockerDesc": "Bloquee tanto el malware como el contenido para adultos"
   };
   static const Map<String, dynamic> ar = {
     "title": "أهلاً سيدي",
@@ -5815,7 +5847,10 @@ class CodegenLoader extends AssetLoader {
     "semiAnnualPlanDiscountPrice": "{amount} لمدة 6 أشهر",
     "billedEveryYear": "{amount} يتم إصدار فاتورة به كل عام",
     "billedEvery6Months": "{amount} يتم إصدار فاتورة به كل 6 أشهر",
-    "billedEveryMonth": "{amount} يتم إصدار فاتورة به كل شهر"
+    "billedEveryMonth": "{amount} يتم إصدار فاتورة به كل شهر",
+    "malwareBlocker": "مانع البرامج الضارة",
+    "contentBlockerTitle": "محتوى NSFW ومانع البرامج الضارة",
+    "contentBlockerDesc": "حظر كل من البرامج الضارة ومحتوى البالغين"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,

@@ -501,5 +501,8 @@
   "semiAnnualPlanDiscountPrice": "{amount} pour 6 mois.",
   "billedEveryYear": "{amount} Facturé chaque année",
   "billedEvery6Months": "{amount} Facturé tous les 6 mois",
-  "billedEveryMonth": "{amount} Facturé chaque mois"
+  "billedEveryMonth": "{amount} Facturé chaque mois",
+  "malwareBlocker": "Bloqueur de logiciels malveillants",
+  "contentBlockerTitle": "Bloqueur de contenu NSFW et de logiciels malveillants",
+  "contentBlockerDesc": "Bloquez à la fois les logiciels malveillants et le contenu réservé aux adultes"
 }

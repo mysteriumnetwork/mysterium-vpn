@@ -500,5 +500,8 @@
   "semiAnnualPlanDiscountPrice": "{amount} لمدة 6 أشهر",
   "billedEveryYear": "{amount} يتم إصدار فاتورة به كل عام",
   "billedEvery6Months": "{amount} يتم إصدار فاتورة به كل 6 أشهر",
-  "billedEveryMonth": "{amount} يتم إصدار فاتورة به كل شهر"
+  "billedEveryMonth": "{amount} يتم إصدار فاتورة به كل شهر",
+  "malwareBlocker": "مانع البرامج الضارة",
+  "contentBlockerTitle": "محتوى NSFW ومانع البرامج الضارة",
+  "contentBlockerDesc": "حظر كل من البرامج الضارة ومحتوى البالغين"
 }

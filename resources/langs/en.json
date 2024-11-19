@@ -501,5 +501,8 @@
     "letsGoBtn":"Let's go",
     "billedEveryYear":"{amount} Billed every year",
     "billedEvery6Months":"{amount} Billed every 6 months",
-    "billedEveryMonth":"{amount} Billed every month"
+    "billedEveryMonth":"{amount} Billed every month",
+    "malwareBlocker":"Malware blocker",
+    "contentBlockerTitle":"NSFW content and malware blocker",
+    "contentBlockerDesc":"Block both malware and adult content"
   }

@@ -501,5 +501,8 @@
   "semiAnnualPlanDiscountPrice": "Yarı yıllık {amount}",
   "billedEveryYear": "{amount} Her yıl faturalandırılır",
   "billedEvery6Months": "{amount} 6 ayda bir faturalandırılır",
-  "billedEveryMonth": "{amount} Her ay faturalandırılır"
+  "billedEveryMonth": "{amount} Her ay faturalandırılır",
+  "malwareBlocker": "Kötü amaçlı yazılım engelleyici",
+  "contentBlockerTitle": "NSFW içeriği ve kötü amaçlı yazılım engelleyici",
+  "contentBlockerDesc": "Hem kötü amaçlı yazılımları hem de yetişkinlere yönelik içeriği engelleyin"
 }
