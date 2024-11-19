@@ -15,7 +15,7 @@ abstract class ApiService {
   Future<VpnConfig> fetchVpnConfig({
     required VpnConfigInput input,
     required String privateKey,
-    required (String mainDNSAddress, String? replaceDNSAddress) replaceDNS,
+    required String? replaceDNSAddress,
   });
   Future<IPInfo?> getIPAdress();
   Future<void> reportBrokenNode({required ReportBrokenNodeRequest request});

@@ -112,7 +112,7 @@ class RestApiService extends ApiService {
   Future<VpnConfig> fetchVpnConfig({
     required VpnConfigInput input,
     required String privateKey,
-    required (String mainDNSAddress, String? replaceDNSAddress) replaceDNS,
+    required String? replaceDNSAddress,
   }) async {
     try {
       final data = (await _networkService.post(
@@ -125,9 +125,16 @@ class RestApiService extends ApiService {
       }
       final vpnConfig = VpnConfig.fromJson(data);
       var config = vpnConfig.config;
-      final (mainDNSAddress, replaceDNSAddress) = replaceDNS;
       if (replaceDNSAddress.isNotNullOrEmpty) {
-        config = config.replaceFirst(mainDNSAddress, replaceDNSAddress!);
+        // Regular expression pattern to match lines containing "DNS"
+        final dnsRegex = RegExp(r'.*(\DNS\b).*', caseSensitive: false);
+
+        // Find all matches in the content
+        final match = dnsRegex.firstMatch(config);
+        if (match?[0] != null) {
+          final dnsLine = match![0]!;
+          config = config.replaceFirst(dnsLine, 'DNS = $replaceDNSAddress');
+        }
       }
       return vpnConfig.copyWith(
         config: config.replaceFirst('%private_key%', privateKey),

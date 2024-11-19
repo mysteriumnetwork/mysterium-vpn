@@ -9,11 +9,11 @@ part of 'vpn_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$VpnStore on _VpnStore, Store {
-  Computed<(String, String?)>? _$replaceDNSComputed;
+  Computed<String?>? _$replaceDNSAddressComputed;
 
   @override
-  (String, String?) get replaceDNS => (_$replaceDNSComputed ??=
-          Computed<(String, String?)>(() => super.replaceDNS, name: '_VpnStore.replaceDNS'))
+  String? get replaceDNSAddress => (_$replaceDNSAddressComputed ??=
+          Computed<String?>(() => super.replaceDNSAddress, name: '_VpnStore.replaceDNSAddress'))
       .value;
   Computed<bool>? _$isConnectedComputed;
 
@@ -308,7 +308,7 @@ mixin _$VpnStore on _VpnStore, Store {
     return '''
 resolveConnectionLocationFuture: ${resolveConnectionLocationFuture},
 fetchConfigFuture: ${fetchConfigFuture},
-replaceDNS: ${replaceDNS},
+replaceDNSAddress: ${replaceDNSAddress},
 isConnected: ${isConnected},
 isLoading: ${isLoading}
     ''';

@@ -102,14 +102,14 @@ abstract class _VpnStore with Store {
   ConnectionStatus _connectionStatus = ConnectionStatus.disconnected;
 
   @computed
-  (String, String?) get replaceDNS {
+  String? get replaceDNSAddress {
     String? replaceDNS;
     if (!_remoteConfigStore.hideNotSafeContentBlocker && _notSafeContentBlocker) {
       replaceDNS = _remoteConfigStore.notSafeContentBlockerDnsAddress;
     } else if (!_remoteConfigStore.hideMalwareBlocker && _malwareBlockerContent) {
       replaceDNS = _remoteConfigStore.malwareBlockerDnsAddress;
     }
-    return (_remoteConfigStore.mainDnsAddress, replaceDNS);
+    return replaceDNS;
   }
 
   @computed
@@ -517,7 +517,7 @@ abstract class _VpnStore with Store {
             osType: Platform.operatingSystem,
           ),
           privateKey: _wireguardKey!.privateKey,
-          replaceDNS: replaceDNS,
+          replaceDNSAddress: replaceDNSAddress,
         ),
       );
       _vpnConfig = await fetchConfigFuture;
