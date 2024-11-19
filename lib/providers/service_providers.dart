@@ -90,12 +90,13 @@ final vpnApiPOD = Provider<VpnApi>((ref) {
 });
 
 final subscriptionServicePOD = Provider<SubscriptionService>((ref) {
-  final networkService = ref.watch(networkServicePOD);
+  final api = ref.watch(vpnApiPOD);
   final localDb = ref.watch(localDBPOD);
   final inAppPurchase = ref.watch(inAppPurchasePOD);
   final logger = ref.watch(loggerPOD);
+
   return RestSubscriptionService(
-    networkService: networkService,
+    api: api,
     inAppPurchase: inAppPurchase,
     localDb: localDb,
     logger: logger,
