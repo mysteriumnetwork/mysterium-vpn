@@ -27,7 +27,7 @@ class FlavorValues {
   });
 
   factory FlavorValues.production() => FlavorValues(
-        baseUrl: 'https://app.mysteriumvpn.com/api/v1',
+        baseUrl: 'https://api.mysteriumvpn.com/api/v1',
         webAppUrl: 'app.mysteriumvpn.com',
         sentryDsn:
             'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200',
@@ -35,13 +35,13 @@ class FlavorValues {
         accountName: 'mysterium_vpn',
         appName: 'Mysterium VPN',
         appleClientId: 'com.mysteriumvpn.app',
-        appleRedirectUri: 'https://app.mysteriumvpn.com/api/v1/callbacks/apple-sign-in',
+        appleRedirectUri: 'https://api.mysteriumvpn.com/api/v1/callbacks/apple-sign-in',
         tunnelName: 'MysteriumVPN',
         remoteConfigSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/ZKdEmBGd9EukTUz4fPL6mw',
         abTestingSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/X1h2DjWhpEq7P2KXA2WymA',
       );
   factory FlavorValues.dev() => FlavorValues(
-        baseUrl: 'https://app-testnet.mysteriumvpn.com/api/v1',
+        baseUrl: 'https://api-test.mysteriumvpn.com/api/v1',
         webAppUrl: 'app-testnet.mysteriumvpn.com',
         sentryDsn:
             'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200',
@@ -49,7 +49,7 @@ class FlavorValues {
         accountName: 'mysterium_vpn_test',
         appName: 'Mysterium VPN Test',
         appleClientId: 'com.mysteriumvpn.app-testnet',
-        appleRedirectUri: 'https://app-testnet.mysteriumvpn.com/api/v1/callbacks/apple-sign-in',
+        appleRedirectUri: 'https://api-test.mysteriumvpn.com/api/v1/callbacks/apple-sign-in',
         tunnelName: 'MysteriumTest',
         remoteConfigSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/fEG0yLr3KEed9BjXRuQvgA',
         abTestingSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/_PK9Imkd8EG-w8NiPpc5bw',
