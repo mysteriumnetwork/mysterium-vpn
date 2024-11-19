@@ -353,30 +353,28 @@ abstract class _VpnStore with Store {
 
   /// Connect/Disconnect from VPN
   @action
-  Future<void> toggleConnection({
-    String? location,
-    bool? refreshIP,
-    bool isRetrying = false,
-  }) async {
-    if (refreshIP != true &&
-        _connectionStatus == ConnectionStatus.connected &&
+  Future<void> toggleConnection({String? location, bool isRetrying = false}) async {
+    if (_connectionStatus == ConnectionStatus.connected &&
         (location == null || location == _vpnConnection?.location)) {
       await disconnectWireguard();
       _connectingLocationCode = '';
       return;
     }
 
-    if (isLoading &&
-        (_connectingLocationCode?.isNotEmpty ?? false) &&
-        !isRetrying &&
-        refreshIP != true) {
+    if (isLoading && (_connectingLocationCode?.isNotEmpty ?? false) && !isRetrying) {
       if (_connectingLocationCode == location || location == null) {
         _cancelConnection();
         return;
       }
     }
 
-    await startConnection(location: location, refreshIP: refreshIP, isRetrying: isRetrying);
+    await startConnection(location: location, isRetrying: isRetrying);
+  }
+
+  /// Connect to VPN by refreshing IP address
+  @action
+  Future<void> startConnectionWithRefreshIP() async {
+    await startConnection(refreshIP: true);
   }
 
   /// Connect to VPN
