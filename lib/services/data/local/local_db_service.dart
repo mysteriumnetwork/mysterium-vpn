@@ -47,6 +47,20 @@ class LocalDBService {
     await box.put(_userId, userData);
   }
 
+  bool getMalwareBlocker() => userData.malwareBlocker;
+
+  Future<void> setMalwareBlocker({required bool malwareBlocker}) async {
+    userData.malwareBlocker = malwareBlocker;
+    await box.put(_userId, userData);
+  }
+
+  bool getNotSafeContentBlocker() => userData.notSafeContentBlocker;
+
+  Future<void> setNotSafeContentBlocker({required bool notSafeContentBlocker}) async {
+    userData.notSafeContentBlocker = notSafeContentBlocker;
+    await box.put(_userId, userData);
+  }
+
   bool? getVpnConsentApproval() => userData.vpnConfigConsent;
 
   Approval getNotificationsApproval() => userData.notifications;

@@ -77,6 +77,41 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   bool get hideReedemCode => (_$hideReedemCodeComputed ??=
           Computed<bool>(() => super.hideReedemCode, name: 'RemoteConfigStoreBase.hideReedemCode'))
       .value;
+  Computed<bool>? _$hideMalwareBlockerComputed;
+
+  @override
+  bool get hideMalwareBlocker =>
+      (_$hideMalwareBlockerComputed ??= Computed<bool>(() => super.hideMalwareBlocker,
+              name: 'RemoteConfigStoreBase.hideMalwareBlocker'))
+          .value;
+  Computed<bool>? _$hideNotSafeContentBlockerComputed;
+
+  @override
+  bool get hideNotSafeContentBlocker =>
+      (_$hideNotSafeContentBlockerComputed ??= Computed<bool>(() => super.hideNotSafeContentBlocker,
+              name: 'RemoteConfigStoreBase.hideNotSafeContentBlocker'))
+          .value;
+  Computed<String>? _$mainDnsAddressComputed;
+
+  @override
+  String get mainDnsAddress =>
+      (_$mainDnsAddressComputed ??= Computed<String>(() => super.mainDnsAddress,
+              name: 'RemoteConfigStoreBase.mainDnsAddress'))
+          .value;
+  Computed<String>? _$malwareBlockerDnsAddressComputed;
+
+  @override
+  String get malwareBlockerDnsAddress =>
+      (_$malwareBlockerDnsAddressComputed ??= Computed<String>(() => super.malwareBlockerDnsAddress,
+              name: 'RemoteConfigStoreBase.malwareBlockerDnsAddress'))
+          .value;
+  Computed<String>? _$notSafeContentBlockerDnsAddressComputed;
+
+  @override
+  String get notSafeContentBlockerDnsAddress => (_$notSafeContentBlockerDnsAddressComputed ??=
+          Computed<String>(() => super.notSafeContentBlockerDnsAddress,
+              name: 'RemoteConfigStoreBase.notSafeContentBlockerDnsAddress'))
+      .value;
 
   late final _$configAtom = Atom(name: 'RemoteConfigStoreBase.config', context: context);
 
@@ -131,7 +166,12 @@ minWindowsStandAloneBuildNumber: ${minWindowsStandAloneBuildNumber},
 minWindowsBuildNumber: ${minWindowsBuildNumber},
 minAndroidBuildNumber: ${minAndroidBuildNumber},
 minIosBuildNumber: ${minIosBuildNumber},
-hideReedemCode: ${hideReedemCode}
+hideReedemCode: ${hideReedemCode},
+hideMalwareBlocker: ${hideMalwareBlocker},
+hideNotSafeContentBlocker: ${hideNotSafeContentBlocker},
+mainDnsAddress: ${mainDnsAddress},
+malwareBlockerDnsAddress: ${malwareBlockerDnsAddress},
+notSafeContentBlockerDnsAddress: ${notSafeContentBlockerDnsAddress}
     ''';
   }
 }

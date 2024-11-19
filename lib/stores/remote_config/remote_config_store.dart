@@ -1,5 +1,6 @@
 import 'package:configcat_client/configcat_client.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:talker/talker.dart';
 
@@ -16,6 +17,11 @@ enum _FeatureToggleKey {
   minWindowsStandAloneBuildNumber,
   minMacosBuildNumber,
   hideReedemCode,
+  hideMalwareBlocker,
+  hideNotSafeContentBlocker,
+  mainDnsAddress,
+  malwareBlockerDnsAddress,
+  notSafeContentBlockerDnsAddress,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -141,6 +147,46 @@ abstract class RemoteConfigStoreBase with Store {
       return config[_FeatureToggleKey.hideReedemCode.name] as bool;
     }
     return false;
+  }
+
+  @computed
+  bool get hideMalwareBlocker {
+    if (config.containsKey(_FeatureToggleKey.hideMalwareBlocker.name)) {
+      return config[_FeatureToggleKey.hideMalwareBlocker.name] as bool;
+    }
+    return false;
+  }
+
+  @computed
+  bool get hideNotSafeContentBlocker {
+    if (config.containsKey(_FeatureToggleKey.hideNotSafeContentBlocker.name)) {
+      return config[_FeatureToggleKey.hideNotSafeContentBlocker.name] as bool;
+    }
+    return false;
+  }
+
+  @computed
+  String get mainDnsAddress {
+    if (config.containsKey(_FeatureToggleKey.mainDnsAddress.name)) {
+      return config[_FeatureToggleKey.mainDnsAddress.name] as String;
+    }
+    return mainDomainAddress;
+  }
+
+  @computed
+  String get malwareBlockerDnsAddress {
+    if (config.containsKey(_FeatureToggleKey.malwareBlockerDnsAddress.name)) {
+      return config[_FeatureToggleKey.malwareBlockerDnsAddress.name] as String;
+    }
+    return malwareBlockerDomainAddress;
+  }
+
+  @computed
+  String get notSafeContentBlockerDnsAddress {
+    if (config.containsKey(_FeatureToggleKey.notSafeContentBlockerDnsAddress.name)) {
+      return config[_FeatureToggleKey.notSafeContentBlockerDnsAddress.name] as String;
+    }
+    return notSafeContentBlockerDomainAddress;
   }
 
   Map<String, String> get asUserProperties =>

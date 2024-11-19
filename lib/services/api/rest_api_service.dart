@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/report_broken_node_request.dart';
@@ -111,6 +112,7 @@ class RestApiService extends ApiService {
   Future<VpnConfig> fetchVpnConfig({
     required VpnConfigInput input,
     required String privateKey,
+    required (String mainDNSAddress, String? replaceDNSAddress) replaceDNS,
   }) async {
     try {
       final data = (await _networkService.post(
@@ -122,8 +124,13 @@ class RestApiService extends ApiService {
         throw Exception("config wasn't created");
       }
       final vpnConfig = VpnConfig.fromJson(data);
+      var config = vpnConfig.config;
+      final (mainDNSAddress, replaceDNSAddress) = replaceDNS;
+      if (replaceDNSAddress.isNotNullOrEmpty) {
+        config = config.replaceFirst(mainDNSAddress, replaceDNSAddress!);
+      }
       return vpnConfig.copyWith(
-        config: vpnConfig.config.replaceFirst('%private_key%', privateKey),
+        config: config.replaceFirst('%private_key%', privateKey),
       );
     } on ApiException {
       rethrow;

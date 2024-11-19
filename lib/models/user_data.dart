@@ -12,6 +12,8 @@ class UserData {
     this.subscriptionPlan,
     this.vpnConfigConsent,
     this.refreshIPConnection = true,
+    this.malwareBlocker = false,
+    this.notSafeContentBlocker = false,
   });
   @HiveField(0)
   String userId;
@@ -37,6 +39,12 @@ class UserData {
   @HiveField(7, defaultValue: true)
   bool refreshIPConnection;
 
+  @HiveField(8, defaultValue: false)
+  bool malwareBlocker;
+
+  @HiveField(9, defaultValue: false)
+  bool notSafeContentBlocker;
+
   @override
   String toString() => '''
 UserData : 
@@ -48,6 +56,8 @@ subscriptionPlan: $subscriptionPlan,
 subscriptionPurchaseId: $subscriptionPurchaseId
 vpnConfigConsent: $vpnConfigConsent
 resetConnection: $refreshIPConnection
+malwareBlocker: $malwareBlocker
+notSafeContentBlocker: $notSafeContentBlocker
 ''';
 }
 

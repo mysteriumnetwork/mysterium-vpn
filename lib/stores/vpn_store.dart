@@ -24,6 +24,7 @@ import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:talker/talker.dart';
@@ -48,6 +49,7 @@ abstract class _VpnStore with Store {
     required FlavorConfig env,
     required Talker logger,
     required AnalyticsStore analyticsStore,
+    required RemoteConfigStore remoteConfigStore,
   })  : _apiService = apiService,
         _locationsStore = locationsStore,
         _wireguardService = wireguardService,
@@ -55,6 +57,7 @@ abstract class _VpnStore with Store {
         _localDBService = localDBService,
         _env = env,
         _analyticsStore = analyticsStore,
+        _remoteConfigStore = remoteConfigStore,
         _logger = logger {
     _init();
   }
@@ -64,6 +67,8 @@ abstract class _VpnStore with Store {
   final AnalyticsStore _analyticsStore;
   final WireguardDart _wireguardService;
   final SubscriptionStore _subscriptionStore;
+  final RemoteConfigStore _remoteConfigStore;
+
   final FlavorConfig _env;
   final _securedStorage = SecureStorageService.instance;
   final _sharedPrefs = SharedPreferenceService.instance;
@@ -73,6 +78,12 @@ abstract class _VpnStore with Store {
 
   @readonly
   bool _refreshIPConnection = true;
+
+  @readonly
+  bool _malwareBlockerContent = false;
+
+  @readonly
+  bool _notSafeContentBlocker = false;
 
   @readonly
   bool? _vpnConfigConsent;
@@ -89,6 +100,17 @@ abstract class _VpnStore with Store {
 
   @readonly
   ConnectionStatus _connectionStatus = ConnectionStatus.disconnected;
+
+  @computed
+  (String, String?) get replaceDNS {
+    String? replaceDNS;
+    if (!_remoteConfigStore.hideNotSafeContentBlocker && _notSafeContentBlocker) {
+      replaceDNS = _remoteConfigStore.notSafeContentBlockerDnsAddress;
+    } else if (!_remoteConfigStore.hideMalwareBlocker && _malwareBlockerContent) {
+      replaceDNS = _remoteConfigStore.malwareBlockerDnsAddress;
+    }
+    return (_remoteConfigStore.mainDnsAddress, replaceDNS);
+  }
 
   @computed
   bool get isConnected =>
@@ -121,6 +143,8 @@ abstract class _VpnStore with Store {
     await _generateKey();
     _vpnConfigConsent = _localDBService.getVpnConsentApproval() ?? false;
     _refreshIPConnection = _localDBService.getRefreshIPConnection();
+    _malwareBlockerContent = _localDBService.getMalwareBlocker();
+    _notSafeContentBlocker = _localDBService.getNotSafeContentBlocker();
     if (_vpnConfigConsent ?? false) {
       await _setupTunnel().whenComplete(_setupAndListenToConnectionStatus);
     }
@@ -205,13 +229,28 @@ abstract class _VpnStore with Store {
     }
   }
 
-  ///
   @action
   Future<void> toggleRefreshIPWhenConnecting() async {
     await _localDBService.setRefreshIPConnection(
       refreshIPConnection: !_refreshIPConnection,
     );
     _refreshIPConnection = !_refreshIPConnection;
+  }
+
+  @action
+  Future<void> toggleMalwareBlocker() async {
+    await _localDBService.setMalwareBlocker(
+      malwareBlocker: !_malwareBlockerContent,
+    );
+    _malwareBlockerContent = !_malwareBlockerContent;
+  }
+
+  @action
+  Future<void> toggleNotSafeContentBlocker() async {
+    await _localDBService.setNotSafeContentBlocker(
+      notSafeContentBlocker: !_notSafeContentBlocker,
+    );
+    _notSafeContentBlocker = !_notSafeContentBlocker;
   }
 
   @action
@@ -478,6 +517,7 @@ abstract class _VpnStore with Store {
             osType: Platform.operatingSystem,
           ),
           privateKey: _wireguardKey!.privateKey,
+          replaceDNS: replaceDNS,
         ),
       );
       _vpnConfig = await fetchConfigFuture;
