@@ -91,13 +91,6 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$hideNotSafeContentBlockerComputed ??= Computed<bool>(() => super.hideNotSafeContentBlocker,
               name: 'RemoteConfigStoreBase.hideNotSafeContentBlocker'))
           .value;
-  Computed<String>? _$mainDnsAddressComputed;
-
-  @override
-  String get mainDnsAddress =>
-      (_$mainDnsAddressComputed ??= Computed<String>(() => super.mainDnsAddress,
-              name: 'RemoteConfigStoreBase.mainDnsAddress'))
-          .value;
   Computed<String>? _$malwareBlockerDnsAddressComputed;
 
   @override
@@ -169,7 +162,6 @@ minIosBuildNumber: ${minIosBuildNumber},
 hideReedemCode: ${hideReedemCode},
 hideMalwareBlocker: ${hideMalwareBlocker},
 hideNotSafeContentBlocker: ${hideNotSafeContentBlocker},
-mainDnsAddress: ${mainDnsAddress},
 malwareBlockerDnsAddress: ${malwareBlockerDnsAddress},
 notSafeContentBlockerDnsAddress: ${notSafeContentBlockerDnsAddress}
     ''';

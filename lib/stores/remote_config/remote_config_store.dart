@@ -19,7 +19,6 @@ enum _FeatureToggleKey {
   hideReedemCode,
   hideMalwareBlocker,
   hideNotSafeContentBlocker,
-  mainDnsAddress,
   malwareBlockerDnsAddress,
   notSafeContentBlockerDnsAddress,
 }
@@ -163,14 +162,6 @@ abstract class RemoteConfigStoreBase with Store {
       return config[_FeatureToggleKey.hideNotSafeContentBlocker.name] as bool;
     }
     return false;
-  }
-
-  @computed
-  String get mainDnsAddress {
-    if (config.containsKey(_FeatureToggleKey.mainDnsAddress.name)) {
-      return config[_FeatureToggleKey.mainDnsAddress.name] as String;
-    }
-    return mainDomainAddress;
   }
 
   @computed
