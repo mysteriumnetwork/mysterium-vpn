@@ -61,6 +61,8 @@ abstract class Assets {
   static const String refreshConn = 'assets/icons/refresh.svg';
   static const String closeDark = 'assets/icons/close_dark.svg';
   static const String closeLight = 'assets/icons/close_light.svg';
+  static const String lockerDark = 'assets/icons/locker_dark.svg';
+  static const String lockerLight = 'assets/icons/locker_light.svg';
 
   //Animations
   static const String backgroundElements = 'assets/animations/background_elements.json';
