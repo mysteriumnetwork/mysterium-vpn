@@ -31,7 +31,7 @@ class RefreshConnection extends HookConsumerWidget {
           ),
           onPressed: () {
             analyticsStore.logEvent(AnalyticsEvent.refreshIp);
-            vpnStore.toggleConnection(refreshIP: true);
+            vpnStore.startConnectionWithRefreshIP();
           },
           label: EasyText(
             LocaleKeys.refreshIP.tr(),
