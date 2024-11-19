@@ -11,12 +11,12 @@ import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
-import 'package:mysterium_vpn/models/subscription_config.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:vpn_api/vpn_api.dart' as api;
 
 // Include generated file
 part 'subscription_store.g.dart';
@@ -49,7 +49,7 @@ abstract class _SubscriptionStore with Store {
   final AnalyticsStore _analyticsStore;
 
   @observable
-  ObservableFuture<SubscriptionConfig>? isAvailableFuture;
+  ObservableFuture<api.SubscriptionConfigResponse>? isAvailableFuture;
 
   @observable
   ObservableFuture<Subscription>? verifySubscriptionFuture;
@@ -73,7 +73,7 @@ abstract class _SubscriptionStore with Store {
   String? _purchasedProductId;
 
   @readonly
-  SubscriptionConfig? _subscriptionConfig;
+  api.SubscriptionConfigResponse? _subscriptionConfig;
 
   @readonly
   SubscriptionStatus? _subscriptonStatus;

@@ -4,7 +4,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/plan_details.dart';
+import 'package:vpn_api/vpn_api.dart';
 
 part 'purchasable_product.g.dart';
 
@@ -22,7 +22,7 @@ abstract class _PurchasableProduct with Store {
     required this.introductoryPrice,
   });
 
-  final PlanDetails planDetails;
+  final SubscriptionConfigResponsePlansInner planDetails;
   final ProductDetails productDetails;
   final double rawPrice;
   final String currencySymbol;
