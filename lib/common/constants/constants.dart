@@ -50,3 +50,8 @@ const appStoreIdMacOS = '6446624307';
 const androidAppBundleId = 'com.mysteriumvpn.android';
 const windowsProductId = '9NGWJCZSB5MK';
 const windowsStandAloneProductId = 'te4cyv5h340wa';
+
+//DNS Addresses
+const mainDomainAddress = '1.1.1.1';
+const malwareBlockerDomainAddress = '1.1.1.2';
+const notSafeContentBlockerDomainAddress = '1.1.1.3';
