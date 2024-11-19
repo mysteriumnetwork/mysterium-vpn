@@ -65,5 +65,9 @@ enum AnalyticsEvent {
   click1YearPlan,
   click6MonthsPlan,
   click1MonthPlan,
-  clickLetsgo
+  clickLetsgo,
+  malwareOn,
+  malwareOff,
+  nsfwOn,
+  nsfwOff,
 }

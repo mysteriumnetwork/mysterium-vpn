@@ -38,17 +38,51 @@ class ConnectionSettings extends HookConsumerWidget {
                   value: vpnStore.refreshIPConnection,
                   onChanged: (val) async {
                     vpnStore.toggleRefreshIPWhenConnecting();
-                    if (val) {
-                      analyticsStore.logEvent(AnalyticsEvent.refreshIpEnable);
-                    } else {
-                      analyticsStore.logEvent(AnalyticsEvent.refreshIpDisable);
-                    }
+                    analyticsStore.logEvent(
+                      val ? AnalyticsEvent.refreshIpEnable : AnalyticsEvent.refreshIpDisable,
+                    );
                   },
                 ),
               ),
             ),
-            if (!remoteConfigStore.hideKillSwitch)
-              SwitchItem(
+            Visibility(
+              visible: !remoteConfigStore.hideMalwareBlocker,
+              child: SwitchItem(
+                asset: isDarkTheme ? Assets.lockerDark : Assets.lockerLight,
+                title: LocaleKeys.malwareBlocker.tr(),
+                subtitle: '',
+                actionWidget: Observer(
+                  builder: (context) => Switch(
+                    value: vpnStore.malwareBlockerContent,
+                    onChanged: (val) async {
+                      vpnStore.toggleMalwareBlocker();
+                      analyticsStore
+                          .logEvent(val ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff);
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: !remoteConfigStore.hideNotSafeContentBlocker,
+              child: SwitchItem(
+                asset: isDarkTheme ? Assets.lockerDark : Assets.lockerLight,
+                title: LocaleKeys.contentBlockerTitle.tr(),
+                subtitle: LocaleKeys.contentBlockerDesc.tr(),
+                actionWidget: Observer(
+                  builder: (context) => Switch(
+                    value: vpnStore.notSafeContentBlocker,
+                    onChanged: (val) async {
+                      vpnStore.toggleNotSafeContentBlocker();
+                      analyticsStore.logEvent(val ? AnalyticsEvent.nsfwOn : AnalyticsEvent.nsfwOff);
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: !remoteConfigStore.hideKillSwitch,
+              child: SwitchItem(
                 asset: isDarkTheme ? Assets.refreshDark : Assets.refreshLight,
                 title: LocaleKeys.killSwitch.tr(),
                 subtitle: LocaleKeys.killSwitchDesc.tr(),
@@ -64,6 +98,7 @@ class ConnectionSettings extends HookConsumerWidget {
                   ],
                 ),
               ),
+            ),
             Visibility(
               visible: false,
               child: SettingItem(
