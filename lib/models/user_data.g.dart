@@ -24,13 +24,15 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       subscriptionPlan: fields[4] as String?,
       vpnConfigConsent: fields[6] as bool?,
       refreshIPConnection: fields[7] == null ? true : fields[7] as bool,
+      malwareBlocker: fields[8] == null ? false : fields[8] as bool,
+      notSafeContentBlocker: fields[9] == null ? false : fields[9] as bool,
     )..subscriptionPurchaseId = fields[5] as String?;
   }
 
   @override
   void write(BinaryWriter writer, UserData obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.userId)
       ..writeByte(1)
@@ -46,7 +48,11 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       ..writeByte(6)
       ..write(obj.vpnConfigConsent)
       ..writeByte(7)
-      ..write(obj.refreshIPConnection);
+      ..write(obj.refreshIPConnection)
+      ..writeByte(8)
+      ..write(obj.malwareBlocker)
+      ..writeByte(9)
+      ..write(obj.notSafeContentBlocker);
   }
 
   @override

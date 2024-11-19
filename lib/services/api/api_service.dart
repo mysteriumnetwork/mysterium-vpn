@@ -12,7 +12,11 @@ abstract class ApiService {
   Future<VPNLocations> fetchVPNLocations({required String keyword});
   void addRecentLocation(String location);
   List<String> getRecentLocations({required String keyword});
-  Future<VpnConfig> fetchVpnConfig({required VpnConfigInput input, required String privateKey});
+  Future<VpnConfig> fetchVpnConfig({
+    required VpnConfigInput input,
+    required String privateKey,
+    required String? replaceDNSAddress,
+  });
   Future<IPInfo?> getIPAdress();
   Future<void> reportBrokenNode({required ReportBrokenNodeRequest request});
   Future<void> setUserPrefsMarketingConsent({required bool consent});

@@ -501,5 +501,8 @@
   "semiAnnualPlanDiscountPrice": "6ヶ月{amount}。",
   "billedEveryYear": "{amount} 毎年請求される",
   "billedEvery6Months": "{amount} 6 か月ごとに請求されます",
-  "billedEveryMonth": "{amount} 毎月請求される"
+  "billedEveryMonth": "{amount} 毎月請求される",
+  "malwareBlocker": "マルウェアブロッカー",
+  "contentBlockerTitle": "NSFW コンテンツとマルウェア ブロッカー",
+  "contentBlockerDesc": "マルウェアとアダルト コンテンツの両方をブロック"
 }
