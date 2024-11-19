@@ -501,5 +501,8 @@
   "semiAnnualPlanDiscountPrice": "{amount} untuk 6 bulan.",
   "billedEveryYear": "{amount} Ditagih setiap tahun",
   "billedEvery6Months": "{amount} Ditagih setiap 6 bulan",
-  "billedEveryMonth": "{amount} Ditagih setiap bulan"
+  "billedEveryMonth": "{amount} Ditagih setiap bulan",
+  "malwareBlocker": "Pemblokir malware",
+  "contentBlockerTitle": "Pemblokir konten NSFW dan malware",
+  "contentBlockerDesc": "Blokir malware dan konten dewasa"
 }

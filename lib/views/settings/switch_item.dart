@@ -39,6 +39,7 @@ class SwitchItem extends StatelessWidget {
                 EasyText(
                   title,
                   fontSize: 16,
+                  maxLines: 2,
                 ).padding(bottom: 4),
                 EasyText(
                   subtitle,

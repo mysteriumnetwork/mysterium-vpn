@@ -504,4 +504,7 @@ abstract class LocaleKeys {
   static const billedEveryYear = 'billedEveryYear';
   static const billedEvery6Months = 'billedEvery6Months';
   static const billedEveryMonth = 'billedEveryMonth';
+  static const malwareBlocker = 'malwareBlocker';
+  static const contentBlockerTitle = 'contentBlockerTitle';
+  static const contentBlockerDesc = 'contentBlockerDesc';
 }

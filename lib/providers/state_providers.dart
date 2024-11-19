@@ -64,6 +64,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final env = ref.watch(environmentPOD);
   final logger = ref.watch(loggerPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   return VpnStore(
     apiService: apiService,
     locationsStore: locationsStore,
@@ -73,6 +74,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     env: env,
     logger: logger,
     analyticsStore: analyticsStore,
+    remoteConfigStore: remoteConfigStore,
   );
 });
 

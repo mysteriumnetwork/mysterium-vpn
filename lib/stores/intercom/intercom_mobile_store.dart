@@ -62,6 +62,9 @@ abstract class _IntercomMobileStore extends IntercomStore with Store {
   @override
   @action
   Future<void> logout() async {
+    if (!_isIntercomInitialized) {
+      return;
+    }
     await _intercom.logout();
   }
 
