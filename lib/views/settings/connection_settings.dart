@@ -37,7 +37,7 @@ class ConnectionSettings extends HookConsumerWidget {
                 builder: (context) => Switch(
                   value: vpnStore.refreshIPConnection,
                   onChanged: (val) async {
-                    vpnStore.toggleRefreshIPWhenConnecting();
+                    await vpnStore.toggleRefreshIPWhenConnecting();
                     analyticsStore.logEvent(
                       val ? AnalyticsEvent.refreshIpEnable : AnalyticsEvent.refreshIpDisable,
                     );
@@ -55,7 +55,7 @@ class ConnectionSettings extends HookConsumerWidget {
                   builder: (context) => Switch(
                     value: vpnStore.malwareBlockerContent,
                     onChanged: (val) async {
-                      vpnStore.toggleMalwareBlocker();
+                      await vpnStore.toggleMalwareBlocker();
                       analyticsStore
                           .logEvent(val ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff);
                     },
@@ -73,7 +73,7 @@ class ConnectionSettings extends HookConsumerWidget {
                   builder: (context) => Switch(
                     value: vpnStore.notSafeContentBlocker,
                     onChanged: (val) async {
-                      vpnStore.toggleNotSafeContentBlocker();
+                      await vpnStore.toggleNotSafeContentBlocker();
                       analyticsStore.logEvent(val ? AnalyticsEvent.nsfwOn : AnalyticsEvent.nsfwOff);
                     },
                   ),
