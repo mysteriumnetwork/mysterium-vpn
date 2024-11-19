@@ -358,32 +358,6 @@ abstract class _VpnStore with Store {
     bool? refreshIP,
     bool isRetrying = false,
   }) async {
-    if (!await _checkSubscriptionStatus()) {
-      return;
-    }
-
-    _connectingNonce = generateRandomString(8);
-    if (isLoading &&
-        (_connectingLocationCode?.isNotEmpty ?? false) &&
-        !isRetrying &&
-        refreshIP != true) {
-      if (_connectingLocationCode == location || location == null) {
-        var counter = 0;
-        Future.doWhile(() async {
-          counter++;
-          final status = await _wireguardService.status();
-          if (status == ConnectionStatus.connected) {
-            disconnectWireguard();
-          } else if (_connectionStatus == ConnectionStatus.connecting &&
-              status != _connectionStatus) {
-            _connectionStatus = ConnectionStatus.disconnected;
-          }
-          return counter < 5 && status != ConnectionStatus.connected;
-        });
-        return;
-      }
-    }
-
     if (refreshIP != true &&
         _connectionStatus == ConnectionStatus.connected &&
         (location == null || location == _vpnConnection?.location)) {
@@ -391,6 +365,32 @@ abstract class _VpnStore with Store {
       _connectingLocationCode = '';
       return;
     }
+
+    if (isLoading &&
+        (_connectingLocationCode?.isNotEmpty ?? false) &&
+        !isRetrying &&
+        refreshIP != true) {
+      if (_connectingLocationCode == location || location == null) {
+        _cancelConnection();
+        return;
+      }
+    }
+
+    await startConnection(location: location, refreshIP: refreshIP, isRetrying: isRetrying);
+  }
+
+  /// Connect to VPN
+  @action
+  Future<void> startConnection({
+    String? location,
+    bool? refreshIP,
+    bool isRetrying = false,
+  }) async {
+    if (!await _checkSubscriptionStatus()) {
+      return;
+    }
+
+    _connectingNonce = generateRandomString(8);
 
     location ??= refreshIP ?? false ? _vpnConnection?.location : _selectLocation();
     _connectingLocationCode = location;
@@ -493,6 +493,20 @@ abstract class _VpnStore with Store {
     if (_connectingNonce != nonce) {
       throw OperationCancelledException();
     }
+  }
+
+  void _cancelConnection() {
+    var counter = 0;
+    Future.doWhile(() async {
+      counter++;
+      final status = await _wireguardService.status();
+      if (status == ConnectionStatus.connected) {
+        disconnectWireguard();
+      } else if (_connectionStatus == ConnectionStatus.connecting && status != _connectionStatus) {
+        _connectionStatus = ConnectionStatus.disconnected;
+      }
+      return counter < 5 && status != ConnectionStatus.connected;
+    });
   }
 
   @action
