@@ -217,6 +217,7 @@ abstract class _VpnStore with Store {
       _isTunnelSetup = false;
       _logger.handle(e, stackTrace);
       showSnackbar(message);
+      rethrow;
     }
   }
 
@@ -291,9 +292,6 @@ abstract class _VpnStore with Store {
       return;
     }
     try {
-      if (!_isTunnelSetup) {
-        await _setupTunnel();
-      }
       final tunnelStatus = await _wireguardService.status();
       if (tunnelStatus == ConnectionStatus.connected ||
           tunnelStatus == ConnectionStatus.connecting) {
@@ -368,6 +366,9 @@ abstract class _VpnStore with Store {
       }
     }
 
+    if (!_isTunnelSetup || await _wireguardService.status() == ConnectionStatus.unknown) {
+      await _setupTunnel();
+    }
     await startConnection(location: location, isRetrying: isRetrying);
   }
 
