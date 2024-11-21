@@ -491,6 +491,8 @@
   "pricingPlanLetsGoBtn": "Hadi gidelim!",
   "pricingPlanPunchLineTitle": "Sınırsız internet için hazır mısınız?",
   "pricingPlanPunchLineDesc": "Gizlilik, güvenlik ve çevrimiçi özgürlük sadece bir adım ötede. Nerede olursanız olun, ne zaman olursanız olun.",
+  "noSubscriptionTitle": "Aktif bir aboneliğiniz yok",
+  "noSubscriptionAction": "Abonelik edinin",
   "mostPopularTag": "En Popüler",
   "discountTag": "{discount} indirim",
   "sixMonthsBonus": "6 ay ödeyin, 6 BONUS kazanın",

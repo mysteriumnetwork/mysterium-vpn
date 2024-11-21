@@ -493,6 +493,8 @@ abstract class LocaleKeys {
   static const pricingPlanLetsGoBtn = 'pricingPlanLetsGoBtn';
   static const pricingPlanPunchLineTitle = 'pricingPlanPunchLineTitle';
   static const pricingPlanPunchLineDesc = 'pricingPlanPunchLineDesc';
+  static const noSubscriptionTitle = 'noSubscriptionTitle';
+  static const noSubscriptionAction = 'noSubscriptionAction';
   static const mostPopularTag = 'mostPopularTag';
   static const discountTag = 'discountTag';
   static const sixMonthsBonus = 'sixMonthsBonus';

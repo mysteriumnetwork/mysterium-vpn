@@ -491,6 +491,8 @@
   "pricingPlanLetsGoBtn": "Los geht's!",
   "pricingPlanPunchLineTitle": "Bereit für grenzenloses Internet?",
   "pricingPlanPunchLineDesc": "Privatsphäre, Sicherheit und Online-Freiheit sind gleich um die Ecke. Wo auch immer Sie sind, wann auch immer Sie sind.",
+  "noSubscriptionTitle": "Sie haben kein aktives Abonnement",
+  "noSubscriptionAction": "Abonnement erhalten",
   "mostPopularTag": "Am beliebtesten",
   "discountTag": "{discount} Rabatt",
   "sixMonthsBonus": "Zahlen Sie für 6 Monate, erhalten Sie 6 BONUS",

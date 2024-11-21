@@ -491,6 +491,8 @@
   "pricingPlanLetsGoBtn": "走吧！",
   "pricingPlanPunchLineTitle": "准备好无国界的互联网了吗？",
   "pricingPlanPunchLineDesc": "隐私、安全和在线自由近在咫尺。无论你在哪里，无论你什么时候。",
+  "noSubscriptionTitle": "您没有有效的订阅",
+  "noSubscriptionAction": "获取订阅",
   "mostPopularTag": "最受欢迎",
   "discountTag": "{discount}折扣",
   "sixMonthsBonus": "支付6个月，获得6个月的奖励",

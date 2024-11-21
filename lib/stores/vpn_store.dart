@@ -362,7 +362,7 @@ abstract class _VpnStore with Store {
     }
     if (_subscriptionStore.subscription?.active == false ||
         _subscriptionStore.subscriptionFuture?.status == FutureStatus.rejected) {
-      _subscriptionStore.fetchSubscription();
+      await _subscriptionStore.fetchSubscription();
       showSnackbar(LocaleKeys.activateSubscription.tr());
       return false;
     }
