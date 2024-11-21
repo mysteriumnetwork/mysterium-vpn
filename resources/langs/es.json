@@ -491,6 +491,8 @@
   "pricingPlanLetsGoBtn": "¡Vamos!",
   "pricingPlanPunchLineTitle": "¿Listo para un internet sin fronteras?",
   "pricingPlanPunchLineDesc": "Privacidad, seguridad y libertad en línea están a la vuelta de la esquina. Dondequiera que estés, cuando sea.",
+  "noSubscriptionTitle": "No tienes una suscripción activa",
+  "noSubscriptionAction": "Obtener una suscripción",
   "mostPopularTag": "Más Popular",
   "discountTag": "{discount} de descuento",
   "sixMonthsBonus": "Paga por 6 meses, obtén 6 de BONO",

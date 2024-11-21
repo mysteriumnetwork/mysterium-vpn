@@ -4,9 +4,10 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/hooks/handle_toggle_connection_hook.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/connect_button.dart';
+import 'package:mysterium_vpn/components/connect_button_animated.dart';
 import 'package:mysterium_vpn/components/connection_bar.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_mobile_app_bar.dart';
@@ -22,21 +23,32 @@ class HomeMobileView extends HookConsumerWidget {
     final vpnStore = ref.watch(vpnStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
     final pc = useMemoized(PanelController.new);
+    final handleToggleConnection = useHandleToggleConnection();
+
     return Observer(
       builder: (context) {
+        final size = Size(getMediaWidth(context), getMediaHeight(context));
         final isConnected = vpnStore.isConnected;
+        final buttonSize = (size.width + size.height) * 0.08;
+
+        void handleConnect() {
+          analyticsStore.logEvent(
+            isConnected ? AnalyticsEvent.disconnectMain : AnalyticsEvent.connectMain,
+          );
+          handleToggleConnection();
+        }
+
         return SlidingUpPanel(
-          maxHeight: getMediaHeight(context) * 0.8,
-          minHeight: getMediaHeight(context) * 0.4,
+          maxHeight: size.height * 0.8,
+          minHeight: size.height * 0.4,
           controller: pc,
           isDraggable: !isDesktop(),
           color: Theme.of(context).primaryColor,
-          panelBuilder: (sc) => LocationsSliderMobileView(
-            pc: pc,
-            sc: sc,
+          panelBuilder: (sc) => LocationsSliderMobileView(pc: pc, sc: sc),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
           ),
-          borderRadius:
-              const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
           body: Stack(
             children: [
               Lottie.asset(Assets.backgroundElements),
@@ -44,28 +56,13 @@ class HomeMobileView extends HookConsumerWidget {
                 children: [
                   const HomeMobileAppBar(),
                   const MobileConnectionStatusBar(),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Lottie.asset(
-                        isConnected ? Assets.circlesPurple : Assets.circlesGrey,
-                        alignment: Alignment.center,
-                      ),
-                      ConnectButton(
-                        onPressed: () {
-                          analyticsStore.logEvent(
-                            isConnected
-                                ? AnalyticsEvent.disconnectMain
-                                : AnalyticsEvent.connectMain,
-                          );
-                          vpnStore.toggleConnection();
-                        },
-                      ).width((getMediaWidth(context) + getMediaHeight(context)) * 0.08),
-                    ],
-                  ).padding(bottom: getMediaHeight(context) * 0.08).expanded(),
-                  // const Visibility(visible: false, child: ConnectionInfoPanel()),
+                  ConnectButtonAnimated(
+                    onPressed: handleConnect,
+                    buttonSize: buttonSize,
+                  ).expanded(),
+                  SizedBox(height: size.height * 0.08),
                 ],
-              ).height(getMediaHeight(context) * 0.66 - getWindowPadding().top),
+              ).height(size.height * 0.66 - getWindowPadding().top),
             ],
           ),
         );

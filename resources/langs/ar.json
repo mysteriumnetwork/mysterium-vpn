@@ -490,6 +490,8 @@
   "pricingPlanLetsGoBtn": "دعنا نذهب!",
   "pricingPlanPunchLineTitle": "هل أنت مستعد للإنترنت بلا حدود؟",
   "pricingPlanPunchLineDesc": "الخصوصية والأمان والحرية عبر الإنترنت أصبحت قاب قوسين أو أدنى. ",
+  "noSubscriptionTitle": "ليس لديك اشتراك نشط",
+  "noSubscriptionAction": "احصل على اشتراك",
   "mostPopularTag": "الأكثر شعبية",
   "discountTag": "{discount} قبالة",
   "sixMonthsBonus": "ادفع لمدة 6 أشهر واحصل على 6 مكافآت",

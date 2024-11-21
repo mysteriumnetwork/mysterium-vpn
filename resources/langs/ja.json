@@ -491,6 +491,8 @@
   "pricingPlanLetsGoBtn": "行こう！",
   "pricingPlanPunchLineTitle": "国境のないインターネットの準備はできましたか？",
   "pricingPlanPunchLineDesc": "プライバシー、セキュリティ、オンラインの自由はすぐそこにあります。どこにいても、いつでも。",
+  "noSubscriptionTitle": "アクティブなサブスクリプションがありません",
+  "noSubscriptionAction": "サブスクリプションを取得する",
   "mostPopularTag": "最も人気のある",
   "discountTag": "{discount}オフ",
   "sixMonthsBonus": "6ヶ月分を支払い、6ヶ月のボーナスを獲得",
