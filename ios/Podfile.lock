@@ -223,8 +223,8 @@ PODS:
   - wireguard_dart (0.0.1):
     - Flutter
     - FlutterMacOS
-    - WireGuardKit (= 0.4)
-  - WireGuardKit (0.4)
+    - WireGuardKit (= 0.5)
+  - WireGuardKit (0.5)
 
 DEPENDENCIES:
   - app_links (from `.symlinks/plugins/app_links/ios`)
@@ -249,7 +249,7 @@ DEPENDENCIES:
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - wireguard_dart (from `.symlinks/plugins/wireguard_dart/darwin`)
-  - WireGuardKit (from `https://raw.githubusercontent.com/mysteriumnetwork/wireguard-apple/0.4/WireGuardKit.podspec`)
+  - WireGuardKit (from `https://raw.githubusercontent.com/mysteriumnetwork/wireguard-apple/0.5/WireGuardKit.podspec`)
 
 SPEC REPOS:
   trunk:
@@ -325,7 +325,7 @@ EXTERNAL SOURCES:
   wireguard_dart:
     :path: ".symlinks/plugins/wireguard_dart/darwin"
   WireGuardKit:
-    :podspec: https://raw.githubusercontent.com/mysteriumnetwork/wireguard-apple/0.4/WireGuardKit.podspec
+    :podspec: https://raw.githubusercontent.com/mysteriumnetwork/wireguard-apple/0.5/WireGuardKit.podspec
 
 SPEC CHECKSUMS:
   app_links: e7a6750a915a9e161c58d91bc610e8cd1d4d0ad0
@@ -374,9 +374,9 @@ SPEC CHECKSUMS:
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
-  wireguard_dart: 243daf647faad658d89ececebd2fae120c53f9e6
-  WireGuardKit: 4279043137fb39ac85bd2821f613ecd94b826a68
+  wireguard_dart: c6c27bbc1469f9aa1f7984b64ce3aaf04136417b
+  WireGuardKit: 44063ed405613ca3d234e489e24b015d434e2a64
 
-PODFILE CHECKSUM: 18b9c2829b8fbf395c99ca077782961e02e80c97
+PODFILE CHECKSUM: eac0ac693608eca14ed927c705221657f69aa48b
 
 COCOAPODS: 1.15.2
