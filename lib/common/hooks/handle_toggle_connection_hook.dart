@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:mysterium_vpn/common/hooks/computed_hook.dart';
 import 'package:mysterium_vpn/common/hooks/handle_subscribe_hook.dart';
 import 'package:mysterium_vpn/common/hooks/provider_hook.dart';
 import 'package:mysterium_vpn/common/hooks/subscription_active_hook.dart';
@@ -14,6 +15,7 @@ FutureOr<void> Function({
   final subscriptionActive = useSubscriptionActive();
   final handleSubscribe = useHandleSubscribe();
   final vpnStore = useProvider(vpnStorePOD);
+  final isConnected = useComputed(() => vpnStore.isConnected).value;
 
   return useCallback(
     ({
@@ -21,16 +23,22 @@ FutureOr<void> Function({
       bool? refreshIP,
       bool isRetrying = false,
     }) async {
+      if (isConnected) {
+        await vpnStore.disconnectWireguard();
+        return;
+      }
+
       if (!subscriptionActive) {
         handleSubscribe();
         return;
       }
-      await vpnStore.toggleConnection(
+
+      await vpnStore.startConnection(
         location: location,
         refreshIP: refreshIP,
         isRetrying: isRetrying,
       );
     },
-    [handleSubscribe, subscriptionActive, vpnStore],
+    [handleSubscribe, subscriptionActive, vpnStore, isConnected],
   );
 }
