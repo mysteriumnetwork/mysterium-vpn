@@ -309,6 +309,13 @@ abstract class _SubscriptionStore with Store {
         ),
       );
       _subscription = await verifySubscriptionFuture;
+      _analyticsStore.logEvent(
+        AnalyticsEvent.paymentVerificationSuccess,
+        parameters: {
+          'planType': productId,
+          'price': price,
+        },
+      );
     } catch (e) {
       _subscriptonStatus = SubscriptionStatus.verifyingError;
       _analyticsStore.logEvent(
@@ -345,23 +352,8 @@ abstract class _SubscriptionStore with Store {
         _subscriptonStatus = _subscription?.active ?? false
             ? SubscriptionStatus.purchased
             : SubscriptionStatus.notVerified;
-        _analyticsStore.logEvent(
-          AnalyticsEvent.paymentVerificationSuccess,
-          parameters: {
-            'planType': _lastPurchase!.productID,
-            'price': product.productDetails.rawPrice.toString(),
-          },
-        );
       } catch (e) {
         _subscriptonStatus = SubscriptionStatus.verifyingError;
-        _analyticsStore.logEvent(
-          AnalyticsEvent.paymentVerificationError,
-          parameters: {
-            'planType': _lastPurchase!.productID,
-            'price': product.productDetails.rawPrice.toString(),
-            'error': e.toString(),
-          },
-        );
       }
     }
   }
