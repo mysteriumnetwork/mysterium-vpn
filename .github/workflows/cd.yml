@@ -69,5 +69,6 @@ jobs:
       product_store_id: "9NGWJCZSB5MK"
       product_identity: "UABMNTechnologijos.MysteriumVPN"
       application_name: "Mysterium VPN"
+      application_logo: "assets/logo/prod/desktop.png"
       flavor_dart: "PROD"
     secrets: inherit
