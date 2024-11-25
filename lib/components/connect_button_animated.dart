@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mysterium_vpn/common/hooks/handle_subscribe_hook.dart';
-import 'package:mysterium_vpn/common/hooks/provider_hook.dart';
+import 'package:mysterium_vpn/common/hooks/is_connected_hook.dart';
 import 'package:mysterium_vpn/common/hooks/subscription_active_hook.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/connect_button.dart';
 import 'package:mysterium_vpn/components/no_subscription_banner.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ConnectButtonAnimated extends HookWidget {
@@ -26,7 +25,7 @@ class ConnectButtonAnimated extends HookWidget {
   Widget build(BuildContext context) {
     final subscriptionActive = useSubscriptionActive();
     final handleSubscribe = useHandleSubscribe();
-    final isConnected = useProvider(vpnStorePOD.select((it) => it.isConnected));
+    final isConnected = useIsConnected();
 
     final banner =
         subscriptionActive ? null : NoSubscriptionBanner(onSubscribePressed: handleSubscribe);

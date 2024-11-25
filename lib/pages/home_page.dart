@@ -2,12 +2,11 @@ import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/hooks/reaction_hook.dart';
 import 'package:mysterium_vpn/common/layout_builders/screen_type_builder.dart';
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/components/dialogs/info_dialog.dart';
@@ -48,21 +47,19 @@ class HomePage extends HookConsumerWidget {
       }
     });
 
-    return ReactionBuilder(
-      builder: (_) => when(
-        (_) => vpnStore.vpnConfigConsent == false,
-        () {
-          WidgetsBinding.instance.addPostFrameCallback(
-            (_) => Beamer.of(context).beamToNamed(Routes.privacyPolicy.toRoute),
-          );
-        },
-      ),
-      child: ColoredScaffold(
-        body: ScreenTypeLayoutBuilder(
-          mobile: (BuildContext context) => const HomeMobileView(),
-          tablet: (BuildContext context) => const HomeDesktopView(),
-          desktop: (BuildContext context) => const HomeDesktopView(),
-        ),
+    useReaction(() => vpnStore.vpnConfigConsent ?? false, (vpnConfigConsent) {
+      if (!vpnConfigConsent) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Beamer.of(context).beamToNamed(Routes.privacyPolicy.toRoute);
+        });
+      }
+    });
+
+    return ColoredScaffold(
+      body: ScreenTypeLayoutBuilder(
+        mobile: (BuildContext context) => const HomeMobileView(),
+        tablet: (BuildContext context) => const HomeDesktopView(),
+        desktop: (BuildContext context) => const HomeDesktopView(),
       ),
     );
   }
