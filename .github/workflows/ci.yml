@@ -121,5 +121,6 @@ jobs:
       product_store_id: "9MZRX8P6FXC4"
       product_identity: "UABMNTechnologijos.MysteriumVPNTest"
       application_name: "Mysterium VPN Test"
+      application_logo: "assets/logo/dev/desktop.png"
       flavor_dart: "DEV"
     secrets: inherit
