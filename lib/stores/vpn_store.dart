@@ -417,8 +417,10 @@ abstract class _VpnStore with Store {
         },
       );
       _locationsStore.addRecentLocation(value.location);
-    } on TimeoutException catch (e) {
+    } on TimeoutException catch (e, stackTrace) {
       _logger.handle(e);
+      Sentry.captureException(e, stackTrace: stackTrace);
+
       showSnackbar(
         LocaleKeys.connectionTimeout.tr(),
       );
