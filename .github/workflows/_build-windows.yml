@@ -17,6 +17,10 @@ on:
         required: true
         type: string
         default: "Mysterium VPN Test"
+      application_logo:
+        required: true
+        type: string
+        default: "assets/logo/dev/desktop.png"
       flavor_dart:
         required: true
         type: string
@@ -57,7 +61,7 @@ jobs:
         run: |
           dart run msix:create `
             --build-windows false --install-certificate false --output-name "Mysterium VPN" `
-            --display-name "${{ inputs.application_name }}" --logo-path "assets/logo/dev/desktop.png" `
+            --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
             --sign-msix "true"
 
       # Requirements to Sign RELEASE builds:
@@ -82,7 +86,7 @@ jobs:
         run: |
           dart run msix:create `
             --build-windows false --install-certificate false --output-name "Mysterium VPN" `
-            --display-name "${{ inputs.application_name }}" --logo-path "assets/logo/dev/desktop.png" `
+            --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
             --store --identity-name "${{ inputs.product_identity }}" --publisher "CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC" --publisher-display-name "UAB MN Technologijos"
 
       - name: Upload to Github
