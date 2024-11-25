@@ -52,6 +52,7 @@ enum AnalyticsEvent {
   manageSubscription,
   clickStartNow,
   paymentConfirm,
+  paymentVerificationSuccess,
   paymentSuccess,
   paymentError,
   paymentVerificationError,

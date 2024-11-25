@@ -256,6 +256,13 @@ abstract class _SubscriptionStore with Store {
       _expired = _subscription?.expired;
       if (purchaseDetails.status == PurchaseStatus.purchased && (_subscription?.active ?? false)) {
         _purchasedProductId = _subscription?.planId;
+        _analyticsStore.logEvent(
+          AnalyticsEvent.paymentVerificationSuccess,
+          parameters: {
+            'planType': _lastPurchase!.productID,
+            'price': product?.productDetails.rawPrice.toString(),
+          },
+        );
         if (product != null) {
           for (final product in _products) {
             product.status = product.id == _purchasedProductId
@@ -302,14 +309,6 @@ abstract class _SubscriptionStore with Store {
         ),
       );
       _subscription = await verifySubscriptionFuture;
-      _analyticsStore.logEvent(
-        AnalyticsEvent.paymentSuccess,
-        parameters: {
-          'planType': productId,
-          'price': price,
-          'item_ids': _products.map((e) => e.id).toList(),
-        },
-      );
     } catch (e) {
       _subscriptonStatus = SubscriptionStatus.verifyingError;
       _analyticsStore.logEvent(
@@ -347,7 +346,7 @@ abstract class _SubscriptionStore with Store {
             ? SubscriptionStatus.purchased
             : SubscriptionStatus.notVerified;
         _analyticsStore.logEvent(
-          AnalyticsEvent.paymentSuccess,
+          AnalyticsEvent.paymentVerificationSuccess,
           parameters: {
             'planType': _lastPurchase!.productID,
             'price': product.productDetails.rawPrice.toString(),
