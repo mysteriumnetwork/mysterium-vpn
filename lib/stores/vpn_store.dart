@@ -27,6 +27,7 @@ import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
 import 'package:wireguard_dart/connection_status.dart';
 import 'package:wireguard_dart/key_pair.dart';
@@ -433,10 +434,13 @@ abstract class _VpnStore with Store {
     } on OperationCancelledException {
       _logger.info('Operation cancelled by user');
     } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      Sentry.captureException(e, stackTrace: stackTrace);
+
       if (e is BrokenNodeException && _isRetrying == true) {
         return;
       }
-      _logger.handle(e, stackTrace);
+
       final errorCode = e is WireguardConnectException
           ? e.code
           : e is ApiException
