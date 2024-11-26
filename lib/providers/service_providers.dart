@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app_links/app_links.dart';
 import 'package:configcat_client/configcat_client.dart';
 import 'package:dio/dio.dart';
@@ -20,6 +22,7 @@ import 'package:mysterium_vpn/services/subscription/rest_subscription_service.da
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:talker/talker.dart';
 import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
+import 'package:vpn_api/vpn_api.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
 final inAppPurchasePOD = Provider(
@@ -37,36 +40,53 @@ final appLinksPOD = Provider(
 final localDBPOD = Provider((ref) => LocalDBService());
 
 final networkServicePOD = Provider<DioNetworkService>((ref) {
+  final dio = ref.watch(vpnApiDioPOD);
+
+  return DioNetworkService(dio);
+});
+
+final vpnApiDioPOD = Provider<Dio>((ref) {
   final authSessionStore = ref.watch(authSessionStorePOD);
   final environment = ref.watch(environmentPOD);
   final logger = ref.watch(loggerPOD);
-  final dio = Dio();
 
-  final networkService = DioNetworkService(
-    dio,
-    [
-      InterceptorsWrapper(
-        onRequest: (options, handler) async {
-          if (authSessionStore.accessToken != null) {
-            options.headers['Authorization'] = 'Bearer ${authSessionStore.accessToken}';
-          }
-          return handler.next(options);
-        },
-      ),
-      RefreshTokenInterceptor(dio: dio, logger: logger),
-      RetryRequestInterceptor(dio: dio),
-      if (kDebugMode)
-        TalkerDioLogger(
-          talker: logger,
-        ),
-      if (kDebugMode || environment.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
-    ],
-    environment.values.baseUrl,
-    environment.appUserAgent(),
-    environment.buildInfo.buildVersion,
+  final dio = Dio(
+    BaseOptions(
+      baseUrl: environment.values.baseUrl,
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'application/json',
+        'User-Agent': environment.appUserAgent(),
+        'x-client-version': environment.buildInfo.buildVersion,
+        'x-client-platform': Platform.operatingSystem,
+      },
+      connectTimeout: const Duration(seconds: 15),
+      receiveTimeout: const Duration(seconds: 15),
+      sendTimeout: const Duration(seconds: 15),
+    ),
   );
+  dio.interceptors.addAll([
+    InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        if (authSessionStore.accessToken != null) {
+          options.headers['Authorization'] = 'Bearer ${authSessionStore.accessToken}';
+        }
+        return handler.next(options);
+      },
+    ),
+    RefreshTokenInterceptor(dio: dio, logger: logger),
+    RetryRequestInterceptor(dio: dio),
+    if (kDebugMode) TalkerDioLogger(talker: logger),
+    if (kDebugMode || environment.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
+  ]);
 
-  return networkService;
+  return dio;
+});
+
+final vpnApiPOD = Provider<VpnApi>((ref) {
+  final dio = ref.watch(vpnApiDioPOD);
+
+  return VpnApi(dio: dio);
 });
 
 final subscriptionServicePOD = Provider<SubscriptionService>((ref) {
