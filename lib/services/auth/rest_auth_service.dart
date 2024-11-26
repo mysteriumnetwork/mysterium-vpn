@@ -4,12 +4,13 @@ import 'dart:io';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
-import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/models/token_request.dart';
 import 'package:mysterium_vpn/models/token_response.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
+import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -23,13 +24,16 @@ const kDisconnectAllDevices = '/connection/disconnect-all';
 class RestAuthService extends AuthService {
   RestAuthService({
     required NetworkService networkService,
+    required AuthSessionStore authSessionStore,
     required Talker logger,
     required FlavorValues env,
   })  : _networkService = networkService,
+        _authSessionStore = authSessionStore,
         _logger = logger,
         _env = env;
 
   final NetworkService _networkService;
+  final AuthSessionStore _authSessionStore;
   final _securedStorage = SecureStorageService.instance;
   final Talker _logger;
   final FlavorValues _env;
@@ -38,37 +42,19 @@ class RestAuthService extends AuthService {
   );
 
   @override
-  Future<AuthData> checkUserAuth() async {
+  Future<AuthUser> checkUserAuth() async {
     try {
-      final accessToken = await _securedStorage.getAccessToken();
-      final userName = await _securedStorage.getUsername() ?? '';
-      final userId = await _securedStorage.getUserId();
-      _networkService.updateHeader(
-        {'Authorization': 'Bearer $accessToken'},
-      );
       // Proceed with token introspection in order to check if token is valid
       // If token is invalid, UnauthorizedInterceptor will catch it and it will be handled
-      unawaited(
-        _networkService.get(
-          kAuthCheck,
-          headers: {'Authorization': 'Bearer $accessToken'},
-        ),
-      );
+      final user = await currentUser();
+      _authSessionStore.setAuthenticatedUser(user);
 
-      return AuthData(
-        accessToken: accessToken,
-        username: userName,
-        userId: userId,
-      );
+      return user;
     } catch (e, stackTrace) {
-      removeLocalData();
       if (e is ApiException && e.message == 'Unauthorized' && e.code == 401) {
         throw AuthenticationRequiredException();
       }
       _logger.handle(e, stackTrace);
-      if (e is KeyDoesntExistsException) {
-        rethrow;
-      }
       rethrow;
     }
   }
@@ -80,46 +66,42 @@ class RestAuthService extends AuthService {
       headers: {'content-type': 'application/x-www-form-urlencoded'},
     );
 
+    // TODO(Waldz): Introduce DTO models, layer of serialization/deserialization is missing
     return TokenResponse.fromJson(response.data as Map<String, dynamic>);
   }
 
+  /*
+  Checks current authorisation session + retrieves currently authorized user.
+   */
+  Future<AuthUser> currentUser() async {
+    // TODO(Waldz): Introduce DTO models, layer of serialization/deserialization is missing
+    final response = (await _networkService.get(kAuthCheck)).data as Map<String, dynamic>;
+
+    return AuthUser(
+      userId: response['user_id'] as String,
+      username: response['username'] as String,
+    );
+  }
+
   @override
-  Future<AuthData> singInComplete({
+  Future<AuthUser> singInComplete({
     required TokenRequest tokenRequest,
   }) async {
     try {
       final authTokens = await signIn(tokenRequest);
+      _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
 
       await _networkService.post(
         kOAuthIntrospect,
-        headers: {'Authorization': 'Bearer ${authTokens.accessToken}'},
         data: {
           'token': authTokens.accessToken,
         },
       );
-      final userData = (await _networkService.get(
-        kAuthCheck,
-        headers: {'Authorization': 'Bearer ${authTokens.accessToken}'},
-      ))
-          .data as Map<String, dynamic>?;
-      // TODO(Waldz): Introduce DTO models, layer of serialization/deserialization is missing
-      final username = userData!['username'] as String;
 
-      final authData = AuthData(
-        accessToken: authTokens.accessToken,
-        username: username,
-        userId: authTokens.userId,
-      );
-      _networkService.updateHeader(
-        {'Authorization': 'Bearer ${authData.accessToken}'},
-      );
-      await _securedStorage.saveAccessToken(authData.accessToken);
-      if (authTokens.refreshToken != null) {
-        await _securedStorage.saveRefreshToken(authTokens.refreshToken!);
-      }
-      await _securedStorage.saveUsername(username: authData.username);
-      await _securedStorage.saveUserId(userId: authData.userId);
-      return authData;
+      final user = await currentUser();
+      _authSessionStore.setAuthenticatedUser(user);
+
+      return user;
     } on ApiException {
       rethrow;
     } catch (e, stackTrace) {
@@ -173,21 +155,21 @@ class RestAuthService extends AuthService {
   }
 
   Future<void> removeLocalData() async {
-    await _securedStorage.removeAccessToken();
-    await _securedStorage.removeRefreshToken();
-    await _securedStorage.removeUserId();
+    final currentUsername = _authSessionStore.user?.username;
+    _authSessionStore.setUnauthenticated();
+
     await _securedStorage.removePkcePair();
     await _securedStorage.removeWireguardPrivateKey();
     await _securedStorage.removeWireguardPublicKey();
-    final val = await _securedStorage.removeUsername();
-    if (val != null && val.isNotEmpty) {
-      _logger.info('User $val logged out');
-      await _securedStorage.saveLastLoggedInUser(username: val);
+
+    if (currentUsername != null && currentUsername.isNotEmpty) {
+      _logger.info('User $currentUsername logged out');
+      await _securedStorage.saveLastLoggedInUser(username: currentUsername);
     }
   }
 
   @override
-  Future<void> deleteAccount({required String email}) async {
+  Future<void> deleteAccount() async {
     await Future.delayed(const Duration(seconds: 4));
   }
 

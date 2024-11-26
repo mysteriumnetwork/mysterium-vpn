@@ -8,6 +8,8 @@ import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
+import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_firebase.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_noop.dart';
@@ -27,8 +29,13 @@ import 'package:mysterium_vpn/stores/vpn_store.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
+final authSessionStorePOD = Provider<AuthSessionStore>(
+  (ref) => AuthSessionStore(secureStorage: SecureStorageService.instance),
+);
+
 final authStorePOD = Provider<AuthStore>((ref) {
   final authService = ref.watch(authServicePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
   final appLinks = ref.watch(appLinksPOD);
   final localDb = ref.watch(localDBPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
@@ -41,6 +48,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
 
   return AuthStore(
     authService: authService,
+    authSessionStore: authSessionStore,
     appLinks: appLinks,
     localDb: localDb,
     analyticsStore: analyticsStore,
@@ -82,11 +90,12 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final localeStore = ref.watch(localeStorePOD);
-  final authStore = ref.watch(authStorePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
+
   return LocationsStore(
     apiService: apiService,
     analyticsStore: analyticsStore,
-    authStore: authStore,
+    authSessionStore: authSessionStore,
     localeStore: localeStore,
   );
 });
@@ -94,13 +103,14 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
 final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   final inAppPurchase = ref.read(inAppPurchasePOD);
   final subscriptionService = ref.read(subscriptionServicePOD);
-  final authStore = ref.read(authStorePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
   final localDb = ref.read(localDBPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
+
   return SubscriptionStore(
     inAppPurchase: inAppPurchase,
     subscriptionService: subscriptionService,
-    authStore: authStore,
+    authSessionStore: authSessionStore,
     localDb: localDb,
     analyticsStore: analyticsStore,
   );

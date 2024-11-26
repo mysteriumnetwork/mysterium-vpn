@@ -4,8 +4,8 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 
 part 'locations_store.g.dart';
@@ -17,15 +17,13 @@ abstract class _LocationsStore with Store {
   _LocationsStore({
     required ApiService apiService,
     required AnalyticsStore analyticsStore,
-    required AuthStore authStore,
+    required AuthSessionStore authSessionStore,
     required LocaleStore localeStore,
   })  : _apiService = apiService,
         _analyticsStore = analyticsStore,
-        _authStore = authStore {
-    when((_) => _authStore.authData != null, () async {
-      if (_authStore.authData != null) {
-        fetchVPNLocations().whenComplete(fetchRecentLocations);
-      }
+        _authSessionStore = authSessionStore {
+    when((_) => _authSessionStore.user != null, () async {
+      fetchVPNLocations().whenComplete(fetchRecentLocations);
     });
 
     reaction((_) => localeStore.currentLocale, (locale) {
@@ -37,7 +35,7 @@ abstract class _LocationsStore with Store {
 
   final ApiService _apiService;
   final AnalyticsStore _analyticsStore;
-  final AuthStore _authStore;
+  final AuthSessionStore _authSessionStore;
 
   ObservableList<String> recentLocations = ObservableList();
 

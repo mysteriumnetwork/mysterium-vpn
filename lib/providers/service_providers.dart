@@ -15,7 +15,6 @@ import 'package:mysterium_vpn/services/auth/rest_auth_service.dart';
 import 'package:mysterium_vpn/services/data/local/config_cat_cache.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/network/dio_network_service.dart';
-import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:mysterium_vpn/services/dio_network_logger/dio_network_logger.dart';
 import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
@@ -37,14 +36,24 @@ final appLinksPOD = Provider(
 
 final localDBPOD = Provider((ref) => LocalDBService());
 
-final networkServicePOD = Provider<NetworkService>((ref) {
+final networkServicePOD = Provider<DioNetworkService>((ref) {
+  final authSessionStore = ref.watch(authSessionStorePOD);
   final environment = ref.watch(environmentPOD);
   final logger = ref.watch(loggerPOD);
   final dio = Dio();
-  return DioNetworkService(
+
+  final networkService = DioNetworkService(
     dio,
     [
-      RefreshTokenInterceptor(dio: dio),
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          if (authSessionStore.accessToken != null) {
+            options.headers['Authorization'] = 'Bearer ${authSessionStore.accessToken}';
+          }
+          return handler.next(options);
+        },
+      ),
+      RefreshTokenInterceptor(dio: dio, logger: logger),
       RetryRequestInterceptor(dio: dio),
       if (kDebugMode)
         TalkerDioLogger(
@@ -56,6 +65,8 @@ final networkServicePOD = Provider<NetworkService>((ref) {
     environment.appUserAgent(),
     environment.buildInfo.buildVersion,
   );
+
+  return networkService;
 });
 
 final subscriptionServicePOD = Provider<SubscriptionService>((ref) {
@@ -80,10 +91,13 @@ final apiServicePOD = Provider<ApiService>((ref) {
 
 final authServicePOD = Provider<AuthService>((ref) {
   final networkService = ref.watch(networkServicePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
   final env = ref.watch(environmentPOD).values;
   final logger = ref.watch(loggerPOD);
+
   return RestAuthService(
     networkService: networkService,
+    authSessionStore: authSessionStore,
     logger: logger,
     env: env,
   );

@@ -1,15 +1,18 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:talker/talker.dart';
 
 late final Future<void> Function() refreshTokenCallback;
 
 class RefreshTokenInterceptor extends Interceptor {
   RefreshTokenInterceptor({
     required this.dio,
+    required this.logger,
   });
 
   final Dio dio;
+  final Talker logger;
 
   @override
   Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
@@ -17,7 +20,12 @@ class RefreshTokenInterceptor extends Interceptor {
       return handler.next(err);
     }
 
-    await refreshTokenCallback();
+    try {
+      await refreshTokenCallback();
+    } catch (e, stackTrace) {
+      logger.handle(e, stackTrace, 'Failed to refresh expired authorization');
+      return handler.next(err);
+    }
 
     // Retry the request.
     try {

@@ -28,6 +28,7 @@ class HomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
     final authStore = ref.watch(authStorePOD);
+    final authSessionStore = ref.watch(authSessionStorePOD);
     final subscriptionStore = ref.watch(subscriptionStorePOD);
     final environment = ref.watch(environmentPOD);
 
@@ -64,7 +65,7 @@ class HomePage extends HookConsumerWidget {
             context: context,
             gateway: subscriptionStore.subscription?.gateway,
             subscriptionActive: subscriptionStore.subscription?.active ?? false,
-            accessToken: authStore.authData?.accessToken,
+            accessToken: authSessionStore.accessToken,
           );
         }
         if (result == FutureStatus.rejected) {

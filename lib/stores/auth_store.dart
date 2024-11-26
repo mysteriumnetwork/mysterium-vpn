@@ -13,11 +13,12 @@ import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/models/token_request.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
+import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -38,6 +39,7 @@ class AuthStore = _AuthStore with _$AuthStore;
 abstract class _AuthStore with Store {
   _AuthStore({
     required AuthService authService,
+    required AuthSessionStore authSessionStore,
     required AppLinks appLinks,
     required LocalDBService localDb,
     required AnalyticsStore analyticsStore,
@@ -48,6 +50,7 @@ abstract class _AuthStore with Store {
     required RemoteConfigStore remoteConfigStore,
     required ABTestingStore abTestingStore,
   })  : _authService = authService,
+        _authSessionStore = authSessionStore,
         _appLinks = appLinks,
         _localDb = localDb,
         _analyticsStore = analyticsStore,
@@ -62,6 +65,7 @@ abstract class _AuthStore with Store {
   }
 
   final AuthService _authService;
+  final AuthSessionStore _authSessionStore;
   final LocalDBService _localDb;
   final AppLinks _appLinks;
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
@@ -88,9 +92,6 @@ abstract class _AuthStore with Store {
   @observable
   String? temporaryEmail;
 
-  @readonly
-  AuthData? _authData;
-
   @observable
   bool marketingConsent = true;
 
@@ -101,7 +102,7 @@ abstract class _AuthStore with Store {
   @observable
   ObservableFuture<void> deleteAccountFeature = ObservableFuture.value(null);
   @observable
-  ObservableFuture<AuthData?> authenticateFeature = ObservableFuture.value(null);
+  ObservableFuture<AuthUser>? authenticateFeature;
 
   @action
   Future<void> initAuth() async {
@@ -166,7 +167,7 @@ abstract class _AuthStore with Store {
   @action
   Future<void> authenticate(
     GrantType grantType,
-    Future<AuthData?> authenticateFeature,
+    Future<AuthUser> authenticateFeature,
   ) async {
     try {
       if (_authStatus == AuthStatus.authenticating) {
@@ -179,9 +180,8 @@ abstract class _AuthStore with Store {
       }
 
       final res = await authenticateFeature;
-      await _localDb.setUserId(res!.username);
+      await _localDb.setUserId(res.username);
       _initializeAnalyticsStores(username: res.username, userId: res.userId, grantType: grantType);
-      _authData = res;
       _authStatus = AuthStatus.authenticated;
       _logger.info(_localDb.userData.toString());
       if (grantType != GrantType.savedToken) {
@@ -192,7 +192,7 @@ abstract class _AuthStore with Store {
       }
     } catch (e) {
       _authStatus = AuthStatus.unauthenticated;
-      if (e is KeyDoesntExistsException || e is AuthenticationRequiredException) {
+      if (e is AuthenticationRequiredException) {
         _logger.info('User token expired or not found');
         return;
       }
@@ -235,7 +235,6 @@ abstract class _AuthStore with Store {
     await logoutFeature;
     _intercomStore.logout();
     _authStatus = AuthStatus.unauthenticated;
-    _authData = null;
     temporaryEmail = email;
   }
 
@@ -371,7 +370,7 @@ abstract class _AuthStore with Store {
   Future<void> deleteAccount() async {
     try {
       deleteAccountFeature = ObservableFuture(
-        _authService.deleteAccount(email: _authData?.username ?? ''),
+        _authService.deleteAccount(),
       );
 
       await deleteAccountFeature;
@@ -382,7 +381,11 @@ abstract class _AuthStore with Store {
 
   Future<void> refreshAuthToken() async {
     try {
-      final refreshToken = await _secureStorageService.getRefreshToken();
+      final refreshToken = _authSessionStore.refreshToken;
+      if (refreshToken == null) {
+        throw Exception('Refresh token not found');
+      }
+
       await _authService.singInComplete(
         tokenRequest: TokenRequest(
           grantType: GrantType.refreshToken,
