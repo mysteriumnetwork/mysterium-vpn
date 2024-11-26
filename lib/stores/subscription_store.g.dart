@@ -26,13 +26,13 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
       Atom(name: '_SubscriptionStore.isAvailableFuture', context: context);
 
   @override
-  ObservableFuture<SubscriptionConfig>? get isAvailableFuture {
+  ObservableFuture<api.SubscriptionConfigResponse>? get isAvailableFuture {
     _$isAvailableFutureAtom.reportRead();
     return super.isAvailableFuture;
   }
 
   @override
-  set isAvailableFuture(ObservableFuture<SubscriptionConfig>? value) {
+  set isAvailableFuture(ObservableFuture<api.SubscriptionConfigResponse>? value) {
     _$isAvailableFutureAtom.reportWrite(value, super.isAvailableFuture, () {
       super.isAvailableFuture = value;
     });
@@ -142,16 +142,16 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
   late final _$_subscriptionConfigAtom =
       Atom(name: '_SubscriptionStore._subscriptionConfig', context: context);
 
-  SubscriptionConfig? get subscriptionConfig {
+  api.SubscriptionConfigResponse? get subscriptionConfig {
     _$_subscriptionConfigAtom.reportRead();
     return super._subscriptionConfig;
   }
 
   @override
-  SubscriptionConfig? get _subscriptionConfig => subscriptionConfig;
+  api.SubscriptionConfigResponse? get _subscriptionConfig => subscriptionConfig;
 
   @override
-  set _subscriptionConfig(SubscriptionConfig? value) {
+  set _subscriptionConfig(api.SubscriptionConfigResponse? value) {
     _$_subscriptionConfigAtom.reportWrite(value, super._subscriptionConfig, () {
       super._subscriptionConfig = value;
     });

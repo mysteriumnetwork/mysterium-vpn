@@ -90,12 +90,13 @@ final vpnApiPOD = Provider<VpnApi>((ref) {
 });
 
 final subscriptionServicePOD = Provider<SubscriptionService>((ref) {
-  final networkService = ref.watch(networkServicePOD);
+  final api = ref.watch(vpnApiPOD);
   final localDb = ref.watch(localDBPOD);
   final inAppPurchase = ref.watch(inAppPurchasePOD);
   final logger = ref.watch(loggerPOD);
+
   return RestSubscriptionService(
-    networkService: networkService,
+    api: api,
     inAppPurchase: inAppPurchase,
     localDb: localDb,
     logger: logger,
@@ -103,19 +104,23 @@ final subscriptionServicePOD = Provider<SubscriptionService>((ref) {
 });
 
 final apiServicePOD = Provider<ApiService>((ref) {
+  final api = ref.watch(vpnApiPOD);
   final networkService = ref.watch(networkServicePOD);
   final localDb = ref.watch(localDBPOD);
   final logger = ref.watch(loggerPOD);
-  return RestApiService(networkService: networkService, localDb: localDb, logger: logger);
+
+  return RestApiService(api: api, networkService: networkService, localDb: localDb, logger: logger);
 });
 
 final authServicePOD = Provider<AuthService>((ref) {
+  final api = ref.watch(vpnApiPOD);
   final networkService = ref.watch(networkServicePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
   final env = ref.watch(environmentPOD).values;
   final logger = ref.watch(loggerPOD);
 
   return RestAuthService(
+    api: api,
     networkService: networkService,
     authSessionStore: authSessionStore,
     logger: logger,
