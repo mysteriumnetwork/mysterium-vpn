@@ -103,7 +103,10 @@ jobs:
           msstore reconfigure --tenantId "${{ vars.MICROSOFT_AZURE_AD_TENANT_ID }}" --clientId "${{ vars.MICROSOFT_AZURE_AD_ClIENT_ID }}" --clientSecret "${{ secrets.MICROSOFT_AZURE_AD_CLIENT_SECRET }}" --sellerId "${{ vars.MICROSOFT_PARTNER_CENTER_SELLER_ID }}"
           msstore info
       - name: Publish to Microsoft Store
-        run: msstore publish --inputDirectory "build/windows/x64/runner/Release" --appId ${{ inputs.product_store_id }} --noCommit
-      - name: Publish to Microsoft Store (commit right away)
-        run: msstore submission publish ${{ inputs.product_store_id }}
-        continue-on-error: true
+        run: |
+          msstore submission status ${{ inputs.product_store_id }} -v
+          msstore publish --inputDirectory "build/windows/x64/runner/Release" --appId ${{ inputs.product_store_id }} --noCommit -v
+          msstore submission status ${{ inputs.product_store_id }} -v
+#      - name: Publish to Microsoft Store (commit right away)
+#        run: msstore submission publish ${{ inputs.product_store_id }}
+#        continue-on-error: true
