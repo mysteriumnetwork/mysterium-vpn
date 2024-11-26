@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:dio/dio.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
@@ -13,28 +14,25 @@ import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
-import 'package:mysterium_vpn/models/subscription_config.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
-import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:talker/talker.dart';
+import 'package:vpn_api/vpn_api.dart' as api;
 
-const kFetchSubscriptionInfo = '/subscription';
 const kFetchSubscriptionConfig = '/subscription/config';
-const kCreateSubscriptionRequest = '/subscription';
 
 class RestSubscriptionService extends SubscriptionService {
   RestSubscriptionService({
-    required NetworkService networkService,
+    required api.VpnApi api,
     required InAppPurchase inAppPurchase,
     required LocalDBService localDb,
     required Talker logger,
-  })  : _networkService = networkService,
+  })  : _apiSubscription = api.getSubscription(),
         _inAppPurchase = inAppPurchase,
         _localDb = localDb,
         _logger = logger;
 
-  final NetworkService _networkService;
+  final api.Subscription _apiSubscription;
   final InAppPurchase _inAppPurchase;
   final LocalDBService _localDb;
   final Talker _logger;
@@ -93,15 +91,22 @@ class RestSubscriptionService extends SubscriptionService {
     required String transactionId,
   }) async {
     try {
-      final gatewayId = getPlatformGateway();
-      final res = await _networkService.post(
-        '/subscription/user-callback',
-        data: {
-          'gateway_id': gatewayId,
-          if (gatewayId == 'google') 'payload': serverVerificationData,
-          if (gatewayId == 'apple') 'transaction_id': transactionId,
-        },
-      );
+      Response<void> res;
+      if (Platform.isAndroid) {
+        res = await _apiSubscription.subscriptionUserCallback(
+          userCallbackRequest: api.UserCallbackRequest(
+            gatewayId: api.UserCallbackRequestGatewayIdEnum.google,
+            payload: serverVerificationData,
+          ),
+        );
+      } else {
+        res = await _apiSubscription.subscriptionUserCallback(
+          userCallbackRequest: api.UserCallbackRequest(
+            gatewayId: api.UserCallbackRequestGatewayIdEnum.apple,
+            transactionId: transactionId,
+          ),
+        );
+      }
       if (res.statusCode == 200) {
         try {
           final subs = await fetchSubscriptionDetails();
@@ -174,7 +179,7 @@ class RestSubscriptionService extends SubscriptionService {
 
   @override
   Future<List<PurchasableProduct>> getProductsDetails(
-    SubscriptionConfig subscriptionConfig,
+    api.SubscriptionConfigResponse subscriptionConfig,
     String? purchasedProductId,
   ) async {
     try {
@@ -260,12 +265,19 @@ class RestSubscriptionService extends SubscriptionService {
   @override
   Future<Subscription> fetchSubscriptionDetails() async {
     try {
-      final data =
-          (await _networkService.get(kFetchSubscriptionInfo)).data as Map<String, dynamic>?;
-      if (data == null) {
+      final res = await _apiSubscription.subscriptionStatus();
+      if (res.data == null) {
         throw Exception('No data found');
       }
-      return Subscription.fromJson(data);
+
+      return Subscription(
+        active: res.data!.active,
+        planId: res.data!.planId,
+        gateway: res.data!.gateway,
+        activeUntil: res.data!.activeUntil,
+        expired: res.data!.expired,
+        recurring: res.data!.recurring,
+      );
     } on ApiException {
       rethrow;
     } on Exception catch (e, stackTrace) {
@@ -275,23 +287,25 @@ class RestSubscriptionService extends SubscriptionService {
   }
 
   @override
-  Future<SubscriptionConfig> fetchSubscriptionConfig() async {
+  Future<api.SubscriptionConfigResponse> fetchSubscriptionConfig() async {
     try {
       final isStoreAvailable = await _inAppPurchase.isAvailable();
       if (!isStoreAvailable) {
         throw NotAvailableException();
       }
-      final data =
-          (await _networkService.get(kFetchSubscriptionConfig)).data as Map<String, dynamic>?;
-      if (data == null) {
+
+      final res = await _apiSubscription.subscriptionConfig();
+      if (res.data == null) {
         throw Exception('No data found');
       }
-      final config = SubscriptionConfig.fromJson(data);
+
+      final config = res.data!;
       final gateway =
           config.gateways.firstWhereOrNull((element) => element.name == getPlatformGateway());
       if (gateway == null || !gateway.enabled) {
         throw NotAvailableException();
       }
+
       return config;
     } on NotAvailableException catch (_) {
       rethrow;

@@ -15,23 +15,22 @@ import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:talker/talker.dart';
-
-const kAuthCheck = '/auth/check';
-const kMagicLink = '/magic-link';
-const kOAuthIntrospect = '/oauth/introspect';
-const kDisconnectAllDevices = '/connection/disconnect-all';
+import 'package:vpn_api/vpn_api.dart';
 
 class RestAuthService extends AuthService {
   RestAuthService({
+    required VpnApi api,
     required NetworkService networkService,
     required AuthSessionStore authSessionStore,
     required Talker logger,
     required FlavorValues env,
-  })  : _networkService = networkService,
+  })  : _apiAuth = api.getAuthentication(),
+        _networkService = networkService,
         _authSessionStore = authSessionStore,
         _logger = logger,
         _env = env;
 
+  final Authentication _apiAuth;
   final NetworkService _networkService;
   final AuthSessionStore _authSessionStore;
   final _securedStorage = SecureStorageService.instance;
@@ -59,6 +58,7 @@ class RestAuthService extends AuthService {
     }
   }
 
+  // TODO(Waldz): Fix schema for this endpoint (JSON encoding needed)
   Future<TokenResponse> signIn(TokenRequest request) async {
     final response = await _networkService.post(
       '/oauth/token',
@@ -66,7 +66,6 @@ class RestAuthService extends AuthService {
       headers: {'content-type': 'application/x-www-form-urlencoded'},
     );
 
-    // TODO(Waldz): Introduce DTO models, layer of serialization/deserialization is missing
     return TokenResponse.fromJson(response.data as Map<String, dynamic>);
   }
 
@@ -74,12 +73,12 @@ class RestAuthService extends AuthService {
   Checks current authorisation session + retrieves currently authorized user.
    */
   Future<AuthUser> currentUser() async {
-    // TODO(Waldz): Introduce DTO models, layer of serialization/deserialization is missing
-    final response = (await _networkService.get(kAuthCheck)).data as Map<String, dynamic>;
+    final response = await _apiAuth.checkAuth();
+    final authCheck = response.data!;
 
     return AuthUser(
-      userId: response['user_id'] as String,
-      username: response['username'] as String,
+      userId: authCheck.userId,
+      username: authCheck.username,
     );
   }
 
@@ -91,12 +90,7 @@ class RestAuthService extends AuthService {
       final authTokens = await signIn(tokenRequest);
       _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
 
-      await _networkService.post(
-        kOAuthIntrospect,
-        data: {
-          'token': authTokens.accessToken,
-        },
-      );
+      await _apiAuth.introspectToken(token: authTokens.accessToken);
 
       final user = await currentUser();
       _authSessionStore.setAuthenticatedUser(user);
@@ -118,26 +112,25 @@ class RestAuthService extends AuthService {
   }) async {
     try {
       await removeLocalData();
-      final result = await _networkService.post(
-        kMagicLink,
-        data: {
-          'email': email,
-          'client_id': 'app',
-          'code_challenge': pkcePair.codeChallenge,
-          'code_challenge_method': 'S256',
-        },
-      );
-      final data = result.data as Map<String, dynamic>?;
 
-      if (result.statusCode != 200) {
+      final response = await _apiAuth.requestMagicLink(
+        magicLinkRequest: MagicLinkRequest(
+          email: email,
+          clientId: MagicLinkRequestClientIdEnum.app,
+          codeChallenge: pkcePair.codeChallenge,
+          codeChallengeMethod: MagicLinkRequestCodeChallengeMethodEnum.s256,
+        ),
+      );
+      if (response.statusCode != 200) {
         throw Exception('Login failed');
       }
 
-      if (data != null && data.containsKey('code')) {
-        // TODO(Waldz): Introduce DTO models, layer of serialization/deserialization is missing
-        return data['code'] as String;
+      final result = response.data;
+      if (result == null || result.code == null) {
+        return null;
       }
-      return null;
+
+      return result.code;
     } on ApiException {
       rethrow;
     } catch (e, stackTrace) {
@@ -223,9 +216,8 @@ class RestAuthService extends AuthService {
   @override
   Future<void> disconnectAllDevices() async {
     try {
-      await _networkService.get(
-        kDisconnectAllDevices,
-      );
+      // TODO(Waldz): Generate API client from API documentation openapi.yaml
+      await _networkService.get('/connection/disconnect-all');
       _logger.info('All devices disconnected');
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
