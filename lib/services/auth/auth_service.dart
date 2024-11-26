@@ -1,18 +1,16 @@
-import 'package:mysterium_vpn/models/auth_data.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/models/token_request.dart';
+import 'package:mysterium_vpn/services/auth/auth_user.dart';
 
 abstract class AuthService {
-  Future<AuthData> checkUserAuth();
+  Future<AuthUser> checkUserAuth();
   Future<String?> signInWithEmail({required String email, required PkcePair pkcePair});
   Future<String> signInWithGoogle();
   Future<String> signInWithApple();
-  Future<AuthData> singInComplete({
+  Future<AuthUser> singInComplete({
     required TokenRequest tokenRequest,
   });
   Future<void> logout();
-  Future<void> deleteAccount({
-    required String email,
-  });
+  Future<void> deleteAccount();
   Future<void> disconnectAllDevices();
 }

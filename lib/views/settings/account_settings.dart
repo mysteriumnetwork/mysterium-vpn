@@ -28,6 +28,7 @@ class AccountSettings extends HookConsumerWidget {
     final subscriptionStore = ref.read(subscriptionStorePOD);
     final environment = ref.watch(environmentPOD);
     final authStore = ref.watch(authStorePOD);
+    final authSessionStore = ref.watch(authSessionStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
     final remoteConfigStore = ref.read(remoteConfigStorePOD);
 
@@ -61,7 +62,7 @@ class AccountSettings extends HookConsumerWidget {
                                   context: context,
                                   gateway: gateway,
                                   subscriptionActive: active,
-                                  accessToken: authStore.authData?.accessToken,
+                                  accessToken: authSessionStore.accessToken,
                                   onManageSubscription: () {
                                     if (subscriptionStore.isSubscribed ?? false) {
                                       final product = subscriptionStore.products.firstWhereOrNull(
@@ -82,7 +83,7 @@ class AccountSettings extends HookConsumerWidget {
             ),
             SettingItem(
               asset: isDarkTheme ? Assets.accountNameDark : Assets.accountNameLight,
-              title: authStore.authData?.username ?? '',
+              title: authSessionStore.user?.username ?? '',
               actionWidget: Wrap(
                 runSpacing: 10,
                 spacing: 10,

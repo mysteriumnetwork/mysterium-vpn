@@ -41,9 +41,6 @@ class DioNetworkService extends NetworkService with ExceptionHandlerMixin {
       };
 
   @override
-  void updateHeader(Map<String, dynamic> data) => dio.options.headers = {...data, ...headers};
-
-  @override
   Future<response.Response> post(
     String endpoint, {
     Map<String, dynamic>? data,
