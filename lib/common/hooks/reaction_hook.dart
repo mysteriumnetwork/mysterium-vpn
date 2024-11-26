@@ -1,8 +1,4 @@
-import 'dart:async';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mobx/mobx.dart';
+part of 'hooks.dart';
 
 void useReaction<T>(
   T Function() function,
