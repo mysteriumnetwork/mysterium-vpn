@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lottie/lottie.dart';
-import 'package:mysterium_vpn/common/hooks/handle_subscribe_hook.dart';
-import 'package:mysterium_vpn/common/hooks/is_connected_hook.dart';
-import 'package:mysterium_vpn/common/hooks/subscription_active_hook.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/connect_button.dart';
 import 'package:mysterium_vpn/components/no_subscription_banner.dart';

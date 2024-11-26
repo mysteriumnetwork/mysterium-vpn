@@ -1,44 +1,20 @@
-import 'dart:async';
+part of 'hooks.dart';
 
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mysterium_vpn/common/hooks/computed_hook.dart';
-import 'package:mysterium_vpn/common/hooks/handle_subscribe_hook.dart';
-import 'package:mysterium_vpn/common/hooks/provider_hook.dart';
-import 'package:mysterium_vpn/common/hooks/subscription_active_hook.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
-
-FutureOr<void> Function({
-  String? location,
-  bool? refreshIP,
-  bool isRetrying,
-}) useHandleToggleConnection() {
-  final subscriptionActive = useSubscriptionActive();
+Future<void> Function({String? location, bool isRetrying}) useHandleToggleConnection() {
+  final context = useContext();
   final handleSubscribe = useHandleSubscribe();
-  final vpnStore = useProvider(vpnStorePOD);
-  final isConnected = useComputed(() => vpnStore.isConnected).value;
 
   return useCallback(
-    ({
-      String? location,
-      bool? refreshIP,
-      bool isRetrying = false,
-    }) async {
-      if (isConnected) {
-        await vpnStore.disconnectWireguard();
-        return;
-      }
+    ({String? location, bool isRetrying = false}) async {
+      final ref = ProviderScope.containerOf(context, listen: false);
+      final vpnStore = ref.read(vpnStorePOD);
 
-      if (!subscriptionActive) {
+      try {
+        await vpnStore.toggleConnection(location: location, isRetrying: isRetrying);
+      } on SubscriptionRequiredException catch (_) {
         handleSubscribe();
-        return;
       }
-
-      await vpnStore.startConnection(
-        location: location,
-        refreshIP: refreshIP,
-        isRetrying: isRetrying,
-      );
     },
-    [handleSubscribe, subscriptionActive, vpnStore, isConnected],
+    [handleSubscribe],
   );
 }

@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+part of 'hooks.dart';
 
 T useProvider<T>(ProviderListenable<T> provider) => use(_UseProviderHook(provider));
 
