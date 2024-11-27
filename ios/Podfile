@@ -36,6 +36,8 @@ target "Runner" do
 
   pod 'WireGuardKit', :podspec => "https://raw.githubusercontent.com/mysteriumnetwork/wireguard-apple/0.5/WireGuardKit.podspec"
 
+  pod 'FirebaseAnalyticsOnDeviceConversion'
+
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 
   target "tun" do
