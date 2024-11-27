@@ -8,6 +8,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -35,6 +36,11 @@ class SubscriptionMobileView extends HookConsumerWidget {
     final analyticsStore = ref.read(analyticsStorePOD);
     final abTestingStore = ref.read(abTestingStorePOD);
     final themeStore = ref.watch(themeStorePOD);
+
+    final shouldAllowBack = useComputedValue(
+      () => subscriptionStore.subscriptonStatus != SubscriptionStatus.verifying,
+    );
+
     useEffect(
       () {
         if (subscriptionStore.products.isEmpty) {
@@ -45,50 +51,49 @@ class SubscriptionMobileView extends HookConsumerWidget {
       },
       [],
     );
-    return Observer(
-      builder: (_) => BaseLayout(
-        header: BaseAppBar(
-          showBackButton: subscriptionStore.subscriptonStatus != SubscriptionStatus.verifying,
-          onBackButtonPressed: Beamer.of(context).beamBack,
-        ),
-        child: Observer(
-          builder: (context) {
-            final isDarkMode = themeStore.isDarkMode;
-            if (subscriptionStore.isAvailable == StoreState.loading) {
-              return LoadingIndicator(
-                message: LocaleKeys.connectingToPaymentProcesor.tr(),
-              );
-            } else if (subscriptionStore.isAvailable == StoreState.notAvailable ||
-                subscriptionStore.products.isEmpty) {
-              return RetryOnErrorWidget(
-                error: subscriptionStore.isAvailable == StoreState.loading
-                    ? LocaleKeys.unableToConnectToPaymentProcesor.tr()
-                    : LocaleKeys.productsNotAvailable.tr(),
-                onRetry: subscriptionStore.getSubscriptionsConfig,
-              );
-            }
-            return ReactionBuilder(
-              builder: (context) => reaction((_) => subscriptionStore.subscriptonStatus, (status) {
-                subscriptionStatusReaction(context, status, subscriptionStore);
-              }),
-              child: SubscriptionFormVariantContainer(
-                subscriptionStore: subscriptionStore,
-                localDb: localDb,
-                analyticsStore: analyticsStore,
-                subscribeToPackage: (String selectedProductId) => subscribeToPackage(
-                  analyticsStore,
-                  subscriptionStore,
-                  subscriptionStore.products.map((e) => e.id).toList(),
-                  selectedProductId,
-                ),
-                variant: abTestingStore.subscriptionFlowVariant,
-                isDarkMode: isDarkMode,
-                isVerifingPayment:
-                    subscriptionStore.subscriptonStatus == SubscriptionStatus.verifying,
-              ),
+
+    return BaseLayout(
+      header: BaseAppBar(
+        showBackButton: shouldAllowBack,
+        onBackButtonPressed: Beamer.of(context).beamBack,
+      ),
+      child: Observer(
+        builder: (context) {
+          final isDarkMode = themeStore.isDarkMode;
+          if (subscriptionStore.isAvailable == StoreState.loading) {
+            return LoadingIndicator(
+              message: LocaleKeys.connectingToPaymentProcesor.tr(),
             );
-          },
-        ),
+          } else if (subscriptionStore.isAvailable == StoreState.notAvailable ||
+              subscriptionStore.products.isEmpty) {
+            return RetryOnErrorWidget(
+              error: subscriptionStore.isAvailable == StoreState.loading
+                  ? LocaleKeys.unableToConnectToPaymentProcesor.tr()
+                  : LocaleKeys.productsNotAvailable.tr(),
+              onRetry: subscriptionStore.getSubscriptionsConfig,
+            );
+          }
+          return ReactionBuilder(
+            builder: (context) => reaction((_) => subscriptionStore.subscriptonStatus, (status) {
+              subscriptionStatusReaction(context, status, subscriptionStore);
+            }),
+            child: SubscriptionFormVariantContainer(
+              subscriptionStore: subscriptionStore,
+              localDb: localDb,
+              analyticsStore: analyticsStore,
+              subscribeToPackage: (String selectedProductId) => subscribeToPackage(
+                analyticsStore,
+                subscriptionStore,
+                subscriptionStore.products.map((e) => e.id).toList(),
+                selectedProductId,
+              ),
+              variant: abTestingStore.subscriptionFlowVariant,
+              isDarkMode: isDarkMode,
+              isVerifingPayment:
+                  subscriptionStore.subscriptonStatus == SubscriptionStatus.verifying,
+            ),
+          );
+        },
       ),
     );
   }
