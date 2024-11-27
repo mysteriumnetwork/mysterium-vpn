@@ -95,7 +95,7 @@ class SecureStorageService {
 
   Future<void> write(String key, String value) async {
     try {
-      if (Platform.isMacOS || Platform.isWindows) {
+      if (Platform.isMacOS || Platform.isWindows || Platform.isIOS) {
         await remove(key);
       }
       await _securedStorage.write(key: key, value: value);
