@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -78,6 +79,7 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
     await Future.wait([
       _analytics.setUserId(id: id),
       _crashlytics.setUserIdentifier(id),
+      if (Platform.isIOS) _analytics.initiateOnDeviceConversionMeasurementWithEmailAddress(id),
     ]);
   }
 
@@ -175,6 +177,7 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
         adPersonalizationSignalsConsentGranted: true,
         adUserDataConsentGranted: true,
       );
+      await _analytics.setAnalyticsCollectionEnabled(true);
     } catch (e) {
       logError(err: e);
     }
