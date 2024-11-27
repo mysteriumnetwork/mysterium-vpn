@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/app.dart';
@@ -60,6 +61,7 @@ class Enviroment {
       SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
     );
+    GoogleFonts.config.allowRuntimeFetching = false;
 
     FlutterError.demangleStackTrace = (StackTrace stack) {
       if (stack is stack_trace.Trace) {
