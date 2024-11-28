@@ -13,7 +13,6 @@ final List<Locale> kSupportedLocales = [
   const Locale('ja', 'JP'),
   const Locale.fromSubtags(
     languageCode: 'zh',
-    scriptCode: 'Hant',
     countryCode: 'CN',
   ),
 ];

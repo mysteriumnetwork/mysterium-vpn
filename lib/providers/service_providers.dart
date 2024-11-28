@@ -22,6 +22,7 @@ import 'package:mysterium_vpn/services/subscription/rest_subscription_service.da
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:talker/talker.dart';
 import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
+import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
 import 'package:vpn_api/vpn_api.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
@@ -76,7 +77,15 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
     ),
     RefreshTokenInterceptor(dio: dio, logger: logger),
     RetryRequestInterceptor(dio: dio),
-    if (kDebugMode) TalkerDioLogger(talker: logger),
+    if (kDebugMode)
+      TalkerDioLogger(
+        talker: logger,
+        settings: const TalkerDioLoggerSettings(
+          printRequestData: false,
+          printResponseData: false,
+          printErrorData: false,
+        ),
+      ),
     if (kDebugMode || environment.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
   ]);
 
@@ -140,7 +149,8 @@ final remoteConfigClientPOD = Provider<ConfigCatClient>((ref) {
   return ConfigCatClient.get(
     sdkKey: environment.values.remoteConfigSdkKey,
     options: ConfigCatOptions(
-      pollingMode: PollingMode.autoPoll(autoPollInterval: Duration(seconds: isTestEnv ? 30 : 120)),
+      pollingMode:
+          PollingMode.lazyLoad(cacheRefreshInterval: Duration(seconds: isTestEnv ? 30 : 60 * 30)),
       logger: isTestEnv ? ConfigCatLogger() : null,
       cache: ConfigCatPreferencesCache(),
     ),
@@ -154,7 +164,8 @@ final abTestingClientPOD = Provider<ConfigCatClient>((ref) {
   return ConfigCatClient.get(
     sdkKey: environment.values.abTestingSdkKey,
     options: ConfigCatOptions(
-      pollingMode: PollingMode.autoPoll(autoPollInterval: Duration(seconds: isTestEnv ? 30 : 120)),
+      pollingMode:
+          PollingMode.lazyLoad(cacheRefreshInterval: Duration(seconds: isTestEnv ? 30 : 60 * 180)),
       logger: isTestEnv ? ConfigCatLogger() : null,
       cache: ConfigCatPreferencesCache(),
     ),

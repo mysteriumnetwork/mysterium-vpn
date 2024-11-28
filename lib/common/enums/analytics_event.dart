@@ -1,3 +1,6 @@
+/// Analytics events that are sent to the analytics service.
+/// Events are sent as strings and converted to snake_case.
+/// The [name] of the event. Should contain 1 to 40 alphanumeric characters or underscores
 enum AnalyticsEvent {
   deleteAccount,
   checkYourEmailScreen,
@@ -61,8 +64,8 @@ enum AnalyticsEvent {
   clickSave49ByJoining,
   clickSeeAllPlans,
   paymentSelectProductPopup,
-  clickLetsgoPaymentSelectProductPopup,
-  clickSeeAllPlansPaymentSelectProductPopup,
+  clickLetsgoProductPopup,
+  clickSeeAllPlansProductPopup,
   click1YearPlan,
   click6MonthsPlan,
   click1MonthPlan,

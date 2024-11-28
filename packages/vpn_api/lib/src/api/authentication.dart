@@ -3,15 +3,13 @@
 //
 
 import 'dart:async';
-
 // ignore: unused_import
 import 'dart:convert';
-import 'package:vpn_api/src/deserialize.dart';
-import 'package:dio/dio.dart';
 
+import 'package:dio/dio.dart';
+import 'package:vpn_api/src/deserialize.dart';
 import 'package:vpn_api/src/model/auth_check_response.dart';
 import 'package:vpn_api/src/model/auth_config_response.dart';
-import 'package:vpn_api/src/model/check_auth401_response.dart';
 import 'package:vpn_api/src/model/magic_link_request.dart';
 import 'package:vpn_api/src/model/magic_link_response.dart';
 import 'package:vpn_api/src/model/o_auth2_token_introspection_response.dart';
@@ -21,9 +19,8 @@ import 'package:vpn_api/src/model/request_activation200_response.dart';
 import 'package:vpn_api/src/model/request_activation_request.dart';
 
 class Authentication {
-  final Dio _dio;
-
   const Authentication(this._dio);
+  final Dio _dio;
 
   /// Get authentication configuration
   ///
@@ -46,9 +43,9 @@ class Authentication {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/auth/config';
-    final _options = Options(
-      method: r'GET',
+    const path = '/auth/config';
+    final options = Options(
+      method: 'GET',
       headers: <String, dynamic>{
         ...?headers,
       },
@@ -59,41 +56,42 @@ class Authentication {
       validateStatus: validateStatus,
     );
 
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    AuthConfigResponse? _responseData;
+    AuthConfigResponse? responseData;
 
     try {
-      final rawData = _response.data;
-      _responseData = rawData == null
+      final rawData = response.data;
+      responseData = rawData == null
           ? null
-          : deserialize<AuthConfigResponse, AuthConfigResponse>(rawData, 'AuthConfigResponse',
-              growable: true);
+          : deserialize<AuthConfigResponse, AuthConfigResponse>(
+              rawData,
+              'AuthConfigResponse',
+            );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioExceptionType.unknown,
+        requestOptions: response.requestOptions,
+        response: response,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
     return Response<AuthConfigResponse>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 
@@ -118,9 +116,9 @@ class Authentication {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/auth/check';
-    final _options = Options(
-      method: r'GET',
+    const path = '/auth/check';
+    final options = Options(
+      method: 'GET',
       headers: <String, dynamic>{
         ...?headers,
       },
@@ -131,41 +129,42 @@ class Authentication {
       validateStatus: validateStatus,
     );
 
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    AuthCheckResponse? _responseData;
+    AuthCheckResponse? responseData;
 
     try {
-      final rawData = _response.data;
-      _responseData = rawData == null
+      final rawData = response.data;
+      responseData = rawData == null
           ? null
-          : deserialize<AuthCheckResponse, AuthCheckResponse>(rawData, 'AuthCheckResponse',
-              growable: true);
+          : deserialize<AuthCheckResponse, AuthCheckResponse>(
+              rawData,
+              'AuthCheckResponse',
+            );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioExceptionType.unknown,
+        requestOptions: response.requestOptions,
+        response: response,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
     return Response<AuthCheckResponse>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 
@@ -192,9 +191,9 @@ class Authentication {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/auth/activation/{id}'.replaceAll('{' r'id' '}', id.toString());
-    final _options = Options(
-      method: r'GET',
+    final path = '/auth/activation/{id}'.replaceAll('{' 'id' '}', id);
+    final options = Options(
+      method: 'GET',
       headers: <String, dynamic>{
         ...?headers,
       },
@@ -205,42 +204,42 @@ class Authentication {
       validateStatus: validateStatus,
     );
 
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    RequestActivation200Response? _responseData;
+    RequestActivation200Response? responseData;
 
     try {
-      final rawData = _response.data;
-      _responseData = rawData == null
+      final rawData = response.data;
+      responseData = rawData == null
           ? null
           : deserialize<RequestActivation200Response, RequestActivation200Response>(
-              rawData, 'RequestActivation200Response',
-              growable: true);
+              rawData,
+              'RequestActivation200Response',
+            );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioExceptionType.unknown,
+        requestOptions: response.requestOptions,
+        response: response,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
     return Response<RequestActivation200Response>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 
@@ -267,9 +266,9 @@ class Authentication {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/oauth/introspect';
-    final _options = Options(
-      method: r'POST',
+    const path = '/oauth/introspect';
+    final options = Options(
+      method: 'POST',
       headers: <String, dynamic>{
         ...?headers,
       },
@@ -281,57 +280,56 @@ class Authentication {
       validateStatus: validateStatus,
     );
 
-    dynamic _bodyData;
+    dynamic bodyData;
 
     try {} catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
+        requestOptions: options.compose(
           _dio.options,
-          _path,
+          path,
         ),
-        type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
-    final _response = await _dio.request<Object>(
-      _path,
-      data: _bodyData,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      data: bodyData,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    OAuth2TokenIntrospectionResponse? _responseData;
+    OAuth2TokenIntrospectionResponse? responseData;
 
     try {
-      final rawData = _response.data;
-      _responseData = rawData == null
+      final rawData = response.data;
+      responseData = rawData == null
           ? null
           : deserialize<OAuth2TokenIntrospectionResponse, OAuth2TokenIntrospectionResponse>(
-              rawData, 'OAuth2TokenIntrospectionResponse',
-              growable: true);
+              rawData,
+              'OAuth2TokenIntrospectionResponse',
+            );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioExceptionType.unknown,
+        requestOptions: response.requestOptions,
+        response: response,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
     return Response<OAuth2TokenIntrospectionResponse>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 
@@ -356,9 +354,9 @@ class Authentication {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/auth/logout';
-    final _options = Options(
-      method: r'POST',
+    const path = '/auth/logout';
+    final options = Options(
+      method: 'POST',
       headers: <String, dynamic>{
         ...?headers,
       },
@@ -369,15 +367,15 @@ class Authentication {
       validateStatus: validateStatus,
     );
 
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    return _response;
+    return response;
   }
 
   /// Redirect from magic link click
@@ -405,9 +403,9 @@ class Authentication {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/magic-link/redirect';
-    final _options = Options(
-      method: r'GET',
+    const path = '/magic-link/redirect';
+    final options = Options(
+      method: 'GET',
       headers: <String, dynamic>{
         ...?headers,
       },
@@ -418,21 +416,21 @@ class Authentication {
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      r'code': code,
-      r'continue_to': continueTo,
+    final queryParameters = <String, dynamic>{
+      'code': code,
+      'continue_to': continueTo,
     };
 
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
-      queryParameters: _queryParameters,
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
+      queryParameters: queryParameters,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    return _response;
+    return response;
   }
 
   /// Create session activation request
@@ -458,9 +456,9 @@ class Authentication {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/auth/activation';
-    final _options = Options(
-      method: r'POST',
+    const path = '/auth/activation';
+    final options = Options(
+      method: 'POST',
       headers: <String, dynamic>{
         ...?headers,
       },
@@ -472,59 +470,58 @@ class Authentication {
       validateStatus: validateStatus,
     );
 
-    dynamic _bodyData;
+    dynamic bodyData;
 
     try {
-      _bodyData = jsonEncode(requestActivationRequest);
+      bodyData = jsonEncode(requestActivationRequest);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
+        requestOptions: options.compose(
           _dio.options,
-          _path,
+          path,
         ),
-        type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
-    final _response = await _dio.request<Object>(
-      _path,
-      data: _bodyData,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      data: bodyData,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    RequestActivation200Response? _responseData;
+    RequestActivation200Response? responseData;
 
     try {
-      final rawData = _response.data;
-      _responseData = rawData == null
+      final rawData = response.data;
+      responseData = rawData == null
           ? null
           : deserialize<RequestActivation200Response, RequestActivation200Response>(
-              rawData, 'RequestActivation200Response',
-              growable: true);
+              rawData,
+              'RequestActivation200Response',
+            );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioExceptionType.unknown,
+        requestOptions: response.requestOptions,
+        response: response,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
     return Response<RequestActivation200Response>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 
@@ -551,9 +548,9 @@ class Authentication {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/magic-link';
-    final _options = Options(
-      method: r'POST',
+    const path = '/magic-link';
+    final options = Options(
+      method: 'POST',
       headers: <String, dynamic>{
         ...?headers,
       },
@@ -565,58 +562,58 @@ class Authentication {
       validateStatus: validateStatus,
     );
 
-    dynamic _bodyData;
+    dynamic bodyData;
 
     try {
-      _bodyData = jsonEncode(magicLinkRequest);
+      bodyData = jsonEncode(magicLinkRequest);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
+        requestOptions: options.compose(
           _dio.options,
-          _path,
+          path,
         ),
-        type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
-    final _response = await _dio.request<Object>(
-      _path,
-      data: _bodyData,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      data: bodyData,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    MagicLinkResponse? _responseData;
+    MagicLinkResponse? responseData;
 
     try {
-      final rawData = _response.data;
-      _responseData = rawData == null
+      final rawData = response.data;
+      responseData = rawData == null
           ? null
-          : deserialize<MagicLinkResponse, MagicLinkResponse>(rawData, 'MagicLinkResponse',
-              growable: true);
+          : deserialize<MagicLinkResponse, MagicLinkResponse>(
+              rawData,
+              'MagicLinkResponse',
+            );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioExceptionType.unknown,
+        requestOptions: response.requestOptions,
+        response: response,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
     return Response<MagicLinkResponse>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 
@@ -655,9 +652,9 @@ class Authentication {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/oauth/token';
-    final _options = Options(
-      method: r'POST',
+    const path = '/oauth/token';
+    final options = Options(
+      method: 'POST',
       headers: <String, dynamic>{
         ...?headers,
       },
@@ -669,56 +666,56 @@ class Authentication {
       validateStatus: validateStatus,
     );
 
-    dynamic _bodyData;
+    dynamic bodyData;
 
     try {} catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
+        requestOptions: options.compose(
           _dio.options,
-          _path,
+          path,
         ),
-        type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
-    final _response = await _dio.request<Object>(
-      _path,
-      data: _bodyData,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      data: bodyData,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    OAuth2TokenResponse? _responseData;
+    OAuth2TokenResponse? responseData;
 
     try {
-      final rawData = _response.data;
-      _responseData = rawData == null
+      final rawData = response.data;
+      responseData = rawData == null
           ? null
-          : deserialize<OAuth2TokenResponse, OAuth2TokenResponse>(rawData, 'OAuth2TokenResponse',
-              growable: true);
+          : deserialize<OAuth2TokenResponse, OAuth2TokenResponse>(
+              rawData,
+              'OAuth2TokenResponse',
+            );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioExceptionType.unknown,
+        requestOptions: response.requestOptions,
+        response: response,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
     return Response<OAuth2TokenResponse>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 }

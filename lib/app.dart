@@ -114,8 +114,9 @@ class MyApp extends HookConsumerWidget {
     routeDelegate.update();
     if (authStatus == AuthStatus.unauthenticated) {
       if (ref.exists(vpnStorePOD)) {
-        await ref.read(vpnStorePOD).disconnectWireguard();
-        ref.invalidate(vpnStorePOD);
+        ref.read(vpnStorePOD).disconnectWireguard().whenComplete(() {
+          ref.invalidate(vpnStorePOD);
+        });
       }
       if (ref.exists(locationsStorePOD)) {
         ref.invalidate(locationsStorePOD);
