@@ -47,6 +47,7 @@ app.*.map.json
 
 # Generated files
 Podfile.lock
+devtools_options.yaml
 
 
 # Windows
@@ -65,6 +66,10 @@ Podfile.lock
 **/macos/Flutter/GeneratedPluginRegistrant.swift
 **/macos/Flutter/ephemeral
 **/xcuserdata/
+**/macos/build/
+
+# iOS
+**/ios/build/
 
 # FVM Version Cache
 .fvm/

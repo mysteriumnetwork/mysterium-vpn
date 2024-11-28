@@ -508,6 +508,8 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanLetsGoBtn": "走吧！",
     "pricingPlanPunchLineTitle": "准备好无国界的互联网了吗？",
     "pricingPlanPunchLineDesc": "隐私、安全和在线自由近在咫尺。无论你在哪里，无论你什么时候。",
+    "noSubscriptionTitle": "您没有有效的订阅",
+    "noSubscriptionAction": "获取订阅",
     "mostPopularTag": "最受欢迎",
     "discountTag": "{discount}折扣",
     "sixMonthsBonus": "支付6个月，获得6个月的奖励",
@@ -1035,6 +1037,8 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanPunchLineTitle": "Sınırsız internet için hazır mısınız?",
     "pricingPlanPunchLineDesc":
         "Gizlilik, güvenlik ve çevrimiçi özgürlük sadece bir adım ötede. Nerede olursanız olun, ne zaman olursanız olun.",
+    "noSubscriptionTitle": "Aktif bir aboneliğiniz yok",
+    "noSubscriptionAction": "Abonelik edinin",
     "mostPopularTag": "En Popüler",
     "discountTag": "{discount} indirim",
     "sixMonthsBonus": "6 ay ödeyin, 6 BONUS kazanın",
@@ -1547,6 +1551,8 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanLetsGoBtn": "行こう！",
     "pricingPlanPunchLineTitle": "国境のないインターネットの準備はできましたか？",
     "pricingPlanPunchLineDesc": "プライバシー、セキュリティ、オンラインの自由はすぐそこにあります。どこにいても、いつでも。",
+    "noSubscriptionTitle": "アクティブなサブスクリプションがありません",
+    "noSubscriptionAction": "サブスクリプションを取得する",
     "mostPopularTag": "最も人気のある",
     "discountTag": "{discount}オフ",
     "sixMonthsBonus": "6ヶ月分を支払い、6ヶ月のボーナスを獲得",
@@ -2093,6 +2099,8 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanPunchLineTitle": "Bereit für grenzenloses Internet?",
     "pricingPlanPunchLineDesc":
         "Privatsphäre, Sicherheit und Online-Freiheit sind gleich um die Ecke. Wo auch immer Sie sind, wann auch immer Sie sind.",
+    "noSubscriptionTitle": "Sie haben kein aktives Abonnement",
+    "noSubscriptionAction": "Abonnement erhalten",
     "mostPopularTag": "Am beliebtesten",
     "discountTag": "{discount} Rabatt",
     "sixMonthsBonus": "Zahlen Sie für 6 Monate, erhalten Sie 6 BONUS",
@@ -2627,6 +2635,8 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanPunchLineTitle": "Pronto para uma internet sem fronteiras?",
     "pricingPlanPunchLineDesc":
         "Privacidade, segurança e liberdade online estão ao seu alcance. Onde quer que você esteja, a qualquer momento.",
+    "noSubscriptionTitle": "Você não tem uma assinatura ativa",
+    "noSubscriptionAction": "Obter uma assinatura",
     "mostPopularTag": "Mais Popular",
     "discountTag": "{discount} de desconto",
     "sixMonthsBonus": "Pague por 6 meses, ganhe 6 BÔNUS",
@@ -3160,6 +3170,8 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanPunchLineTitle": "Ready for borderless internet?",
     "pricingPlanPunchLineDesc":
         "Privacy, security, and online freedom are just around the corner. Wherever you are, whenever you are.",
+    "noSubscriptionTitle": "You don't have an active subscription",
+    "noSubscriptionAction": "Get a subscription",
     "mostPopularTag": "Most Popular",
     "discountTag": "{discount} off",
     "sixMonthsBonus": "Pay for 6 months,get 6 BONUS",
@@ -3699,6 +3711,8 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanPunchLineTitle": "Pronto per un internet senza confini?",
     "pricingPlanPunchLineDesc":
         "Privacy, sicurezza e libertà online sono a portata di mano. Ovunque tu sia, in qualsiasi momento.",
+    "noSubscriptionTitle": "Non hai un abbonamento attivo",
+    "noSubscriptionAction": "Ottieni un abbonamento",
     "mostPopularTag": "Più Popolare",
     "discountTag": "Sconto del {discount}%",
     "sixMonthsBonus": "Paga per 6 mesi, ottieni 6 BONUS",
@@ -4240,6 +4254,8 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanPunchLineTitle": "Prêt pour un internet sans frontières?",
     "pricingPlanPunchLineDesc":
         "Confidentialité, sécurité et liberté en ligne sont à portée de main. Où que vous soyez, quand que ce soit.",
+    "noSubscriptionTitle": "Vous n'avez pas d'abonnement actif",
+    "noSubscriptionAction": "Obtenez un abonnement",
     "mostPopularTag": "Le Plus Populaire",
     "discountTag": "{discount} de réduction",
     "sixMonthsBonus": "Payez pour 6 mois, obtenez 6 BONUS",
@@ -4774,6 +4790,8 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanPunchLineTitle": "Siap untuk internet tanpa batas?",
     "pricingPlanPunchLineDesc":
         "Privasi, keamanan, dan kebebasan online hanya beberapa langkah lagi. Di mana pun Anda berada, kapan pun Anda berada.",
+    "noSubscriptionTitle": "Anda tidak memiliki langganan aktif",
+    "noSubscriptionAction": "Dapatkan langganan",
     "mostPopularTag": "Paling Populer",
     "discountTag": "Diskon {discount}",
     "sixMonthsBonus": "Bayar untuk 6 bulan, dapatkan 6 BONUS",
@@ -5311,6 +5329,8 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanPunchLineTitle": "¿Listo para un internet sin fronteras?",
     "pricingPlanPunchLineDesc":
         "Privacidad, seguridad y libertad en línea están a la vuelta de la esquina. Dondequiera que estés, cuando sea.",
+    "noSubscriptionTitle": "No tienes una suscripción activa",
+    "noSubscriptionAction": "Obtener una suscripción",
     "mostPopularTag": "Más Popular",
     "discountTag": "{discount} de descuento",
     "sixMonthsBonus": "Paga por 6 meses, obtén 6 de BONO",
@@ -5837,6 +5857,8 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanLetsGoBtn": "دعنا نذهب!",
     "pricingPlanPunchLineTitle": "هل أنت مستعد للإنترنت بلا حدود؟",
     "pricingPlanPunchLineDesc": "الخصوصية والأمان والحرية عبر الإنترنت أصبحت قاب قوسين أو أدنى. ",
+    "noSubscriptionTitle": "ليس لديك اشتراك نشط",
+    "noSubscriptionAction": "احصل على اشتراك",
     "mostPopularTag": "الأكثر شعبية",
     "discountTag": "{discount} قبالة",
     "sixMonthsBonus": "ادفع لمدة 6 أشهر واحصل على 6 مكافآت",

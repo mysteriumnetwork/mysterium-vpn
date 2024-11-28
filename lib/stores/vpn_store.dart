@@ -10,6 +10,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/exceptions/subscription_required_exception.dart';
 import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -358,15 +359,11 @@ abstract class _VpnStore with Store {
   Future<bool> _checkSubscriptionStatus() async {
     if (_subscriptionStore.subscriptionFuture?.status == FutureStatus.pending) {
       showSnackbar(LocaleKeys.checkingSubsStatus.tr());
-      return false;
+      await _subscriptionStore.subscriptionFuture;
+    } else {
+      await _subscriptionStore.fetchSubscription();
     }
-    if (_subscriptionStore.subscription?.active == false ||
-        _subscriptionStore.subscriptionFuture?.status == FutureStatus.rejected) {
-      _subscriptionStore.fetchSubscription();
-      showSnackbar(LocaleKeys.activateSubscription.tr());
-      return false;
-    }
-    return true;
+    return _subscriptionStore.subscription?.active ?? false;
   }
 
   /// Connect/Disconnect from VPN
@@ -406,7 +403,7 @@ abstract class _VpnStore with Store {
     bool isRetrying = false,
   }) async {
     if (!await _checkSubscriptionStatus()) {
-      return;
+      throw const SubscriptionRequiredException();
     }
 
     _connectingNonce = generateRandomString(8);
@@ -476,9 +473,6 @@ abstract class _VpnStore with Store {
       );
       if (_isRetrying == true) {
         return;
-      }
-      if (errorCode == 7040) {
-        _checkSubscriptionStatus();
       }
       showSnackbar(errorMessage);
       _analyticsStore.logEvent(
