@@ -6,7 +6,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:mysterium_vpn/common/interceptors/interceptors.dart';
+import 'package:mysterium_vpn/common/interceptors/connection_errors.dart';
+import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
+import 'package:mysterium_vpn/common/interceptors/retry_request.dart';
 import 'package:mysterium_vpn/common/observers/crashlytics_talker_observer.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -67,6 +69,7 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
     ),
   );
   dio.interceptors.addAll([
+    ConnectionErrorsInterceptor(),
     InterceptorsWrapper(
       onRequest: (options, handler) async {
         if (authSessionStore.accessToken != null) {
