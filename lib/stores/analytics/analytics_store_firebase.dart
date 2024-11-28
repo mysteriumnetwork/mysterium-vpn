@@ -70,7 +70,11 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
     AnalyticsEvent event, {
     Map<String, dynamic>? parameters,
   }) async {
-    await _analytics.logEvent(name: event.name.toSnakeCase);
+    await _analytics.logEvent(
+      name: event.name.toSnakeCase.truncate(40),
+      parameters: parameters
+          ?.map((key, value) => MapEntry(key.truncate(40), value.toString().truncate(100))),
+    );
   }
 
   @override
@@ -86,7 +90,10 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   @override
   @action
   Future<void> setUserProperty(String name, String value) async {
-    await _analytics.setUserProperty(name: name, value: value);
+    await _analytics.setUserProperty(
+      name: name.truncate(24),
+      value: value,
+    );
   }
 
   @override

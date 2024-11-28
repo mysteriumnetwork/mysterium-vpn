@@ -6,6 +6,9 @@ import 'package:talker/talker.dart';
 
 part 'ab_testing_store.g.dart';
 
+/// [name]'s are added to user properties to the analytics service.
+/// Properties are sent as strings and converted to snake_case.
+/// The [name] of the event. Should contain 1 to 24 alphanumeric characters or underscores
 enum _ABKey {
   subscriptionFlow,
 }
@@ -17,9 +20,7 @@ abstract class ABTestingStoreBase with Store {
     required this.client,
     required this.logger,
     required this.analytics,
-  }) {
-    getAllABTestingValues().whenComplete(refreshABTestingValues);
-  }
+  });
   final ConfigCatClient client;
   final Talker logger;
   final AnalyticsStore analytics;
@@ -38,7 +39,7 @@ abstract class ABTestingStoreBase with Store {
         email: email,
       ),
     );
-    await getAllABTestingValues();
+    await getAllABTestingValues().whenComplete(refreshABTestingValues);
   }
 
   @action
@@ -63,7 +64,7 @@ abstract class ABTestingStoreBase with Store {
     if (config.containsKey(_ABKey.subscriptionFlow.name)) {
       return config[_ABKey.subscriptionFlow.name] as String;
     }
-    return 'A';
+    return 'C';
   }
 
   Map<String, String> get asUserProperties =>

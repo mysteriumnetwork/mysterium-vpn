@@ -9,6 +9,14 @@ extension StringExtensions on String {
 
   String capitalize() => '${this[0].toUpperCase()}${substring(1).toLowerCase()}';
 
+  String truncate(int length) {
+    if (length >= this.length) {
+      return this;
+    } else {
+      return substring(0, length);
+    }
+  }
+
   String get toSnakeCase {
     final sb = StringBuffer();
     var first = true;
