@@ -6,6 +6,9 @@ import 'package:talker/talker.dart';
 
 part 'ab_testing_store.g.dart';
 
+/// [name]'s are added to user properties to the analytics service.
+/// Properties are sent as strings and converted to snake_case.
+/// The [name] of the event. Should contain 1 to 24 alphanumeric characters or underscores
 enum _ABKey {
   subscriptionFlow,
 }
