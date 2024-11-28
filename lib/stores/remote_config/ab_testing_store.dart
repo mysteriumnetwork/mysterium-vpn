@@ -61,7 +61,7 @@ abstract class ABTestingStoreBase with Store {
     if (config.containsKey(_ABKey.subscriptionFlow.name)) {
       return config[_ABKey.subscriptionFlow.name] as String;
     }
-    return 'A';
+    return 'C';
   }
 
   Map<String, String> get asUserProperties =>
