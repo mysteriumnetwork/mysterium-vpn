@@ -17,9 +17,7 @@ abstract class ABTestingStoreBase with Store {
     required this.client,
     required this.logger,
     required this.analytics,
-  }) {
-    getAllABTestingValues().whenComplete(refreshABTestingValues);
-  }
+  });
   final ConfigCatClient client;
   final Talker logger;
   final AnalyticsStore analytics;
@@ -38,7 +36,7 @@ abstract class ABTestingStoreBase with Store {
         email: email,
       ),
     );
-    await getAllABTestingValues();
+    await getAllABTestingValues().whenComplete(refreshABTestingValues);
   }
 
   @action
