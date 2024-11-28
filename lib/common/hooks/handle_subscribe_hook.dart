@@ -1,6 +1,8 @@
 part of 'hooks.dart';
 
-void Function() useHandleSubscribe() {
+void Function({
+  PurchasableProduct? Function()? findProduct,
+}) useHandleSubscribe() {
   final context = useContext();
 
   final authStore = useProvider(authStorePOD);
@@ -16,15 +18,31 @@ void Function() useHandleSubscribe() {
   );
 
   return useCallback(
-    () {
+    ({
+      PurchasableProduct? Function()? findProduct,
+    }) {
       handleOnBillingPage(
         billingPage: billingPage,
         context: context,
         gateway: subscription?.gateway,
         subscriptionActive: subscription?.active ?? false,
         accessToken: accessToken,
+        onManageSubscription: findProduct == null
+            ? null
+            : () {
+                final product = findProduct();
+                if (product != null) {
+                  subscriptionStore.subscribeToPackage(product: product.productDetails);
+                }
+              },
       );
     },
-    [billingPage, subscription?.gateway, subscription?.active, accessToken],
+    [
+      billingPage,
+      subscription?.gateway,
+      subscription?.active,
+      accessToken,
+      subscriptionStore,
+    ],
   );
 }
