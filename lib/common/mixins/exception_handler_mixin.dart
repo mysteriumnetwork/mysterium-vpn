@@ -1,50 +1,24 @@
 import 'dart:async';
-import 'dart:io';
-
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/response.dart' as response;
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
 
 mixin ExceptionHandlerMixin on NetworkService {
-  Future<response.Response> handleException(
+  Future<Response<dynamic>> handleException(
     Future<Response<dynamic>> Function() handler, {
     String endpoint = '',
   }) async {
     try {
-      final connectivityStatus = (await Connectivity().checkConnectivity()).lastOrNull;
-      if (connectivityStatus == ConnectivityResult.none && !(await hasNetwork())) {
-        throw const SocketException('No internet connection');
-      }
-      final res = await handler();
-      return response.Response(
-        statusCode: res.statusCode ?? 200,
-        data: res.data,
-        statusMessage: res.statusMessage,
-      );
+      return await handler();
     } catch (e) {
       var message = '';
       var identifier = '';
       var statusCode = 0;
       switch (e) {
-        case SocketException _:
-          message =
-              'Internet connection unavailable. Please verify your network settings and retry.';
-          statusCode = 0;
-          identifier = 'Socket Exception ${e.message} \nat  $endpoint';
-          throw ApiException(message, statusCode, identifier);
-
         case DioException _:
-          if (e.error is SocketException) {
-            message =
-                'Unable to connect to the server. Please check your internet connection and try again.';
-            statusCode = 0;
-            identifier = 'Socket Exception ${e.message} \nat  $endpoint';
-          } else if (e.response?.data != null && e.response?.data is Map<String, dynamic>) {
+          if (e.response?.data != null && e.response?.data is Map<String, dynamic>) {
             identifier = 'Dio Exception ${e.message} \nat  $endpoint';
             final data = e.response?.data as Map<String, dynamic>;
             statusCode = e.response?.statusCode ?? 500;
@@ -73,13 +47,13 @@ mixin ExceptionHandlerMixin on NetworkService {
             statusCode = 500;
             identifier = 'Dio Exception ${e.message} \nat  $endpoint';
           }
-          throw ApiException(message, statusCode, identifier);
+          throw ApiException(RequestOptions(), message, statusCode, identifier);
 
         default:
           message = 'Unknown error occurred';
           statusCode = 2;
           identifier = 'Unknown error $e\n at $endpoint';
-          throw ApiException(message, statusCode, identifier);
+          throw ApiException(RequestOptions(), message, statusCode, identifier);
       }
     }
   }

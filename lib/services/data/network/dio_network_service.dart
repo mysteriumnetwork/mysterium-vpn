@@ -15,21 +15,23 @@ class DioNetworkService extends NetworkService with ExceptionHandlerMixin {
     Map<String, dynamic>? data,
     Map<String, dynamic>? headers,
   }) async {
-    try {
-      return await handleException(
-        () => dio.post(
-          endpoint,
-          data: data,
-          cancelToken: CancelToken(),
-          options: Options(
-            headers: {...dio.options.headers, if (headers != null) ...headers},
-          ),
+    final res = await handleException(
+          () => dio.post(
+        endpoint,
+        data: data,
+        cancelToken: CancelToken(),
+        options: Options(
+          headers: {...dio.options.headers, if (headers != null) ...headers},
         ),
-        endpoint: endpoint,
-      );
-    } catch (e) {
-      rethrow;
-    }
+      ),
+      endpoint: endpoint,
+    );
+
+    return response.Response(
+      statusCode: res.statusCode ?? 200,
+      data: res.data,
+      statusMessage: res.statusMessage,
+    );
   }
 
   @override
@@ -38,36 +40,40 @@ class DioNetworkService extends NetworkService with ExceptionHandlerMixin {
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
   }) async {
-    try {
-      return await handleException(
-        () => dio.get(
-          endpoint,
-          queryParameters: queryParameters,
-          options: Options(
-            headers: {...dio.options.headers, if (headers != null) ...headers},
-          ),
-          cancelToken: CancelToken(),
+    final res = await handleException(
+          () => dio.get(
+        endpoint,
+        queryParameters: queryParameters,
+        options: Options(
+          headers: {...dio.options.headers, if (headers != null) ...headers},
         ),
-        endpoint: endpoint,
-      );
-    } catch (e) {
-      rethrow;
-    }
+        cancelToken: CancelToken(),
+      ),
+      endpoint: endpoint,
+    );
+
+    return response.Response(
+      statusCode: res.statusCode ?? 200,
+      data: res.data,
+      statusMessage: res.statusMessage,
+    );
   }
 
   @override
   Future<response.Response> fetch(String url) async {
-    try {
-      return await handleException(
-        () => dio.fetch(
-          RequestOptions(
-            baseUrl: url,
-            cancelToken: CancelToken(),
-          ),
+    final res = await handleException(
+          () => dio.fetch(
+        RequestOptions(
+          baseUrl: url,
+          cancelToken: CancelToken(),
         ),
-      );
-    } catch (e) {
-      rethrow;
-    }
+      ),
+    );
+
+    return response.Response(
+      statusCode: res.statusCode ?? 200,
+      data: res.data,
+      statusMessage: res.statusMessage,
+    );
   }
 }
