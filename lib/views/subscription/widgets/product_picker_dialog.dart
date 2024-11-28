@@ -139,7 +139,7 @@ class _ProductPickerDialog extends HookWidget {
                 SizedBox(height: getMediaHeight(context) * 0.04),
                 SubscriptionButton(
                   onPressed: () {
-                    analyticsStore.logEvent(AnalyticsEvent.clickLetsgoPaymentSelectProductPopup);
+                    analyticsStore.logEvent(AnalyticsEvent.clickLetsgoProductPopup);
                     Navigator.of(context).pop();
                     subscribeToPackage(selectedProductId.value);
                   },
@@ -150,8 +150,7 @@ class _ProductPickerDialog extends HookWidget {
                   visible: !seeAllPlans.value && !subscriptionStore.isLoading,
                   child: TextButton(
                     onPressed: () {
-                      analyticsStore
-                          .logEvent(AnalyticsEvent.clickSeeAllPlansPaymentSelectProductPopup);
+                      analyticsStore.logEvent(AnalyticsEvent.clickSeeAllPlansProductPopup);
                       seeAllPlans.value = !seeAllPlans.value;
                     },
                     child: EasyText(
