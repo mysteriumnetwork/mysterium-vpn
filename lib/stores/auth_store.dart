@@ -18,6 +18,7 @@ import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/models/token_request.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
+import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
@@ -60,7 +61,6 @@ abstract class _AuthStore with Store {
         _userPreferencesStore = userPreferencesStore,
         _remoteConfigStore = remoteConfigStore,
         _abTestingStore = abTestingStore {
-    initAuth();
     refreshTokenCallback = refreshAuthToken;
   }
 
@@ -77,8 +77,8 @@ abstract class _AuthStore with Store {
   final RemoteConfigStore _remoteConfigStore;
   final ABTestingStore _abTestingStore;
 
-  @readonly
-  AuthStatus _authStatus = AuthStatus.unknown;
+  @computed
+  AuthStatus get authStatus => _authSessionStore.status;
 
   @readonly
   PkcePair? _pkcePair;
@@ -120,7 +120,7 @@ abstract class _AuthStore with Store {
       }
       _appLinks.uriLinkStream.listen(
         (appLink) async {
-          if (_authStatus == AuthStatus.authenticated) {
+          if (_authSessionStore.status == AuthStatus.authenticated) {
             return;
           }
           final storedLink = await _secureStorageService.getAppLink();
@@ -135,7 +135,7 @@ abstract class _AuthStore with Store {
       );
     } catch (e) {
       _logger.handle(e);
-      _authStatus = AuthStatus.unauthenticated;
+      _authSessionStore.status = AuthStatus.unauthenticated;
     }
   }
 
@@ -168,7 +168,7 @@ abstract class _AuthStore with Store {
   @action
   Future<void> authenticationLoad() async {
     try {
-      if (_authStatus == AuthStatus.authenticating) {
+      if (_authSessionStore.status == AuthStatus.authenticating) {
         return;
       }
 
@@ -177,9 +177,9 @@ abstract class _AuthStore with Store {
       final user = await _authService.currentUser();
       _initializeAuthenticatedUser(user);
 
-      _authStatus = AuthStatus.authenticated;
+      _authSessionStore.status = AuthStatus.authenticated;
     } catch (e, stackTrace) {
-      _authStatus = AuthStatus.unauthenticated;
+      _authSessionStore.status = AuthStatus.unauthenticated;
 
       if (e is ApiException && e.message == 'Unauthorized' && e.code == 401) {
         _logger.info('User token expired or not found');
@@ -201,16 +201,16 @@ abstract class _AuthStore with Store {
     Future<AuthUser> authenticateFeature,
   ) async {
     try {
-      if (_authStatus == AuthStatus.authenticating) {
+      if (_authSessionStore.status == AuthStatus.authenticating) {
         return;
       }
-      _authStatus = AuthStatus.authenticating;
+      _authSessionStore.status = AuthStatus.authenticating;
 
       final user = await authenticateFeature;
       _initializeAuthenticatedUser(user);
       _analyticsStore.setLogin(grantType);
 
-      _authStatus = AuthStatus.authenticated;
+      _authSessionStore.status = AuthStatus.authenticated;
 
       // TODO(Waldz): Update user preferences from login form, there marketing checkbox is being handled
       Future.delayed(
@@ -218,7 +218,7 @@ abstract class _AuthStore with Store {
         () => _userPreferencesStore.setEmailMarketingConsent(consent: marketingConsent),
       );
     } catch (e) {
-      _authStatus = AuthStatus.unauthenticated;
+      _authSessionStore.status = AuthStatus.unauthenticated;
       var message = LocaleKeys.authenticationFailed.tr();
       if (e is ApiException) {
         message = e.message;
@@ -263,7 +263,7 @@ abstract class _AuthStore with Store {
 
     await logoutFeature;
     _intercomStore.logout();
-    _authStatus = AuthStatus.unauthenticated;
+    _authSessionStore.status = AuthStatus.unauthenticated;
     temporaryEmail = email;
   }
 

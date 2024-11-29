@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 
@@ -10,11 +11,12 @@ class AuthSessionStore = _AuthSessionStore with _$AuthSessionStore;
 
 abstract class _AuthSessionStore with Store {
   _AuthSessionStore({required SecureStorageService secureStorage})
-      : _secureStorage = secureStorage {
-    initStore();
-  }
+      : _secureStorage = secureStorage;
 
   final SecureStorageService _secureStorage;
+
+  @observable
+  AuthStatus status = AuthStatus.unknown;
 
   @readonly
   String? _accessToken;
