@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:mysterium_vpn/common/mixins/exception_handler_mixin.dart';
 import 'package:mysterium_vpn/models/response.dart' as response;
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
 
-class DioNetworkService extends NetworkService with ExceptionHandlerMixin {
+class DioNetworkService extends NetworkService {
   DioNetworkService(
     this.dio,
   );
@@ -15,16 +14,13 @@ class DioNetworkService extends NetworkService with ExceptionHandlerMixin {
     Map<String, dynamic>? data,
     Map<String, dynamic>? headers,
   }) async {
-    final res = await handleException(
-          () => dio.post(
-        endpoint,
-        data: data,
-        cancelToken: CancelToken(),
-        options: Options(
-          headers: {...dio.options.headers, if (headers != null) ...headers},
-        ),
+    final res = await dio.post(
+      endpoint,
+      data: data,
+      cancelToken: CancelToken(),
+      options: Options(
+        headers: {...dio.options.headers, if (headers != null) ...headers},
       ),
-      endpoint: endpoint,
     );
 
     return response.Response(
@@ -40,16 +36,13 @@ class DioNetworkService extends NetworkService with ExceptionHandlerMixin {
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
   }) async {
-    final res = await handleException(
-          () => dio.get(
-        endpoint,
-        queryParameters: queryParameters,
-        options: Options(
-          headers: {...dio.options.headers, if (headers != null) ...headers},
-        ),
-        cancelToken: CancelToken(),
+    final res = await dio.get(
+      endpoint,
+      queryParameters: queryParameters,
+      options: Options(
+        headers: {...dio.options.headers, if (headers != null) ...headers},
       ),
-      endpoint: endpoint,
+      cancelToken: CancelToken(),
     );
 
     return response.Response(
@@ -61,12 +54,10 @@ class DioNetworkService extends NetworkService with ExceptionHandlerMixin {
 
   @override
   Future<response.Response> fetch(String url) async {
-    final res = await handleException(
-          () => dio.fetch(
-        RequestOptions(
-          baseUrl: url,
-          cancelToken: CancelToken(),
-        ),
+    final res = await dio.fetch(
+      RequestOptions(
+        baseUrl: url,
+        cancelToken: CancelToken(),
       ),
     );
 
