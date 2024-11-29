@@ -175,15 +175,12 @@ abstract class _AuthStore with Store {
       // Proceed with token introspection in order to check if token is valid
       // If token is invalid, UnauthorizedInterceptor will catch it and it will be handled
       final user = await _authService.currentUser();
-      _authSessionStore.setAuthenticatedUser(user);
-
-      await _localDb.setUserId(user.username);
-      _initializeAnalyticsStores(username: user.username, userId: user.userId);
+      _initializeAuthenticatedUser(user);
 
       _authStatus = AuthStatus.authenticated;
-      _logger.info(_localDb.userData.toString());
     } catch (e, stackTrace) {
       _authStatus = AuthStatus.unauthenticated;
+
       if (e is ApiException && e.message == 'Unauthorized' && e.code == 401) {
         _logger.info('User token expired or not found');
         return;
@@ -210,14 +207,10 @@ abstract class _AuthStore with Store {
       _authStatus = AuthStatus.authenticating;
 
       final user = await authenticateFeature;
-      _authSessionStore.setAuthenticatedUser(user);
-
-      await _localDb.setUserId(user.username);
-      _initializeAnalyticsStores(username: user.username, userId: user.userId);
+      _initializeAuthenticatedUser(user);
       _analyticsStore.setLogin(grantType);
 
       _authStatus = AuthStatus.authenticated;
-      _logger.info(_localDb.userData.toString());
 
       // TODO(Waldz): Update user preferences from login form, there marketing checkbox is being handled
       Future.delayed(
@@ -232,6 +225,16 @@ abstract class _AuthStore with Store {
       }
       showSnackbar(message);
     }
+  }
+
+  @action
+  Future<void> _initializeAuthenticatedUser(AuthUser user) async {
+    _authSessionStore.setAuthenticatedUser(user);
+
+    await _localDb.setUserId(user.username);
+    _initializeAnalyticsStores(username: user.username, userId: user.userId);
+
+    _logger.info(_localDb.userData.toString());
   }
 
   Future<void> _initializeAnalyticsStores({

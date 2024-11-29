@@ -191,6 +191,15 @@ mixin _$AuthStore on _AuthStore, Store {
     return _$authenticateAsyncAction.run(() => super.authenticate(grantType, authenticateFeature));
   }
 
+  late final _$_initializeAuthenticatedUserAsyncAction =
+      AsyncAction('_AuthStore._initializeAuthenticatedUser', context: context);
+
+  @override
+  Future<void> _initializeAuthenticatedUser(AuthUser user) {
+    return _$_initializeAuthenticatedUserAsyncAction
+        .run(() => super._initializeAuthenticatedUser(user));
+  }
+
   late final _$logoutAsyncAction = AsyncAction('_AuthStore.logout', context: context);
 
   @override
