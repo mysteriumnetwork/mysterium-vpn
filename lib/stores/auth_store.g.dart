@@ -176,6 +176,14 @@ mixin _$AuthStore on _AuthStore, Store {
     return _$initAuthAsyncAction.run(() => super.initAuth());
   }
 
+  late final _$authenticationLoadAsyncAction =
+      AsyncAction('_AuthStore.authenticationLoad', context: context);
+
+  @override
+  Future<void> authenticationLoad() {
+    return _$authenticationLoadAsyncAction.run(() => super.authenticationLoad());
+  }
+
   late final _$authenticateAsyncAction = AsyncAction('_AuthStore.authenticate', context: context);
 
   @override
