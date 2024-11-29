@@ -116,7 +116,7 @@ abstract class _AuthStore with Store {
         await _secureStorageService.saveAppLink(appLink: appLink.toString());
         verifyMagicLinkAndAuthenticate(appLink);
       } else {
-        authenticate(GrantType.savedToken, _authService.checkUserAuth());
+        await authenticationLoad();
       }
       _appLinks.uriLinkStream.listen(
         (appLink) async {
@@ -164,32 +164,20 @@ abstract class _AuthStore with Store {
     }
   }
 
+  // When app is opened initially, we want the user to stay on the splash screen
   @action
-  Future<void> authenticate(
-    GrantType grantType,
-    Future<AuthUser> authenticateFeature,
-  ) async {
+  Future<void> authenticationLoad() async {
     try {
       if (_authStatus == AuthStatus.authenticating) {
         return;
       }
 
-      //When app is opened initially, we want the user to stay on the splash screen
-      if (grantType != GrantType.savedToken) {
-        _authStatus = AuthStatus.authenticating;
-      }
-
-      final res = await authenticateFeature;
+      final res = await _authService.checkUserAuth();
       await _localDb.setUserId(res.username);
-      _initializeAnalyticsStores(username: res.username, userId: res.userId, grantType: grantType);
+      _initializeAnalyticsStores(username: res.username, userId: res.userId);
+
       _authStatus = AuthStatus.authenticated;
       _logger.info(_localDb.userData.toString());
-      if (grantType != GrantType.savedToken) {
-        Future.delayed(
-          const Duration(seconds: 5),
-          () => _userPreferencesStore.setEmailMarketingConsent(consent: marketingConsent),
-        );
-      }
     } catch (e) {
       _authStatus = AuthStatus.unauthenticated;
       if (e is AuthenticationRequiredException) {
@@ -204,14 +192,45 @@ abstract class _AuthStore with Store {
     }
   }
 
+  @action
+  Future<void> authenticate(
+    GrantType grantType,
+    Future<AuthUser> authenticateFeature,
+  ) async {
+    try {
+      if (_authStatus == AuthStatus.authenticating) {
+        return;
+      }
+
+      _authStatus = AuthStatus.authenticating;
+
+      final res = await authenticateFeature;
+      await _localDb.setUserId(res.username);
+      _initializeAnalyticsStores(username: res.username, userId: res.userId);
+      _analyticsStore.setLogin(grantType);
+
+      _authStatus = AuthStatus.authenticated;
+      _logger.info(_localDb.userData.toString());
+
+      // TODO(Waldz): Update user preferences from login form, there marketing checkbox is being handled
+      Future.delayed(
+        const Duration(seconds: 5),
+        () => _userPreferencesStore.setEmailMarketingConsent(consent: marketingConsent),
+      );
+    } catch (e) {
+      _authStatus = AuthStatus.unauthenticated;
+      var message = LocaleKeys.authenticationFailed.tr();
+      if (e is ApiException) {
+        message = e.message;
+      }
+      showSnackbar(message);
+    }
+  }
+
   Future<void> _initializeAnalyticsStores({
     required String username,
     required String userId,
-    required GrantType grantType,
   }) async {
-    if (grantType != GrantType.savedToken) {
-      _analyticsStore.setLogin(grantType);
-    }
     await _remoteConfigStore.setDefaultUser(email: username, userId: userId);
     await _abTestingStore.setDefaultUser(email: username, userId: userId);
     _analyticsStore.setUserId(username);
