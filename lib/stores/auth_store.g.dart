@@ -9,22 +9,12 @@ part of 'auth_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$AuthStore on _AuthStore, Store {
-  late final _$_authStatusAtom = Atom(name: '_AuthStore._authStatus', context: context);
-
-  AuthStatus get authStatus {
-    _$_authStatusAtom.reportRead();
-    return super._authStatus;
-  }
+  Computed<AuthStatus>? _$authStatusComputed;
 
   @override
-  AuthStatus get _authStatus => authStatus;
-
-  @override
-  set _authStatus(AuthStatus value) {
-    _$_authStatusAtom.reportWrite(value, super._authStatus, () {
-      super._authStatus = value;
-    });
-  }
+  AuthStatus get authStatus => (_$authStatusComputed ??=
+          Computed<AuthStatus>(() => super.authStatus, name: '_AuthStore.authStatus'))
+      .value;
 
   late final _$_pkcePairAtom = Atom(name: '_AuthStore._pkcePair', context: context);
 
@@ -255,7 +245,8 @@ marketingConsent: ${marketingConsent},
 signInFeatureFeature: ${signInFeatureFeature},
 logoutFeature: ${logoutFeature},
 deleteAccountFeature: ${deleteAccountFeature},
-authenticateFeature: ${authenticateFeature}
+authenticateFeature: ${authenticateFeature},
+authStatus: ${authStatus}
     ''';
   }
 }

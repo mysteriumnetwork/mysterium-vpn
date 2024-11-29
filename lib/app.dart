@@ -7,7 +7,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/router/route_delegate.dart';
 import 'package:mysterium_vpn/components/custom_platform_menu.dart';
 import 'package:mysterium_vpn/components/lifecycle_listener.dart';
@@ -17,7 +16,7 @@ import 'package:mysterium_vpn/components/shortcuts.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/ft_checkers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/auth_store.dart';
+import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 
 class MyApp extends HookConsumerWidget {
@@ -28,22 +27,26 @@ class MyApp extends HookConsumerWidget {
     final themeStore = ref.read(themeStorePOD);
     final routeInformationParser = ref.read(routeInformationParserPOD);
     final authStore = ref.read(authStorePOD);
+    final authSessionStore = ref.read(authSessionStorePOD);
     final routeDelegate = ref.read(routerDelegatePOD);
     final localStore = ref.read(localeStorePOD);
     final env = ref.read(environmentPOD);
     final appName = env.values.appName;
     final flavor = env.flavor;
 
+    authStore.initAuth();
+    authSessionStore.initStore();
+
     return ReactionBuilder(
       builder: (_) => reaction(
-        (_) => authStore.authStatus,
+        (_) => authSessionStore.status,
         (status) {
-          authenticationReaction(status, routeDelegate, authStore, ref);
+          authenticationReaction(status, routeDelegate, ref);
         },
       ),
       child: LifecycleListener(
         onResumed: () {
-          checkSubsStatus(authStore, ref.read(subscriptionStorePOD));
+          checkSubsStatus(authSessionStore.status, ref.read(subscriptionStorePOD));
         },
         onThemeChanged: themeStore.updateSystemTheme,
         child: Observer(
@@ -93,10 +96,10 @@ class MyApp extends HookConsumerWidget {
   }
 
   void checkSubsStatus(
-    AuthStore authStore,
+    AuthStatus authStatus,
     SubscriptionStore subscriptionStore,
   ) {
-    if (authStore.authStatus != AuthStatus.authenticated) {
+    if (authStatus != AuthStatus.authenticated) {
       return;
     }
     if (subscriptionStore.isSubscribed == false ||
@@ -108,7 +111,6 @@ class MyApp extends HookConsumerWidget {
   Future<void> authenticationReaction(
     AuthStatus authStatus,
     BeamerDelegate routeDelegate,
-    AuthStore authStore,
     WidgetRef ref,
   ) async {
     routeDelegate.update();
