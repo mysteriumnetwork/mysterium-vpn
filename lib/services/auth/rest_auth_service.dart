@@ -40,24 +40,6 @@ class RestAuthService extends AuthService {
     scopes: ['email'],
   );
 
-  @override
-  Future<AuthUser> checkUserAuth() async {
-    try {
-      // Proceed with token introspection in order to check if token is valid
-      // If token is invalid, UnauthorizedInterceptor will catch it and it will be handled
-      final user = await currentUser();
-      _authSessionStore.setAuthenticatedUser(user);
-
-      return user;
-    } catch (e, stackTrace) {
-      if (e is ApiException && e.message == 'Unauthorized' && e.code == 401) {
-        throw AuthenticationRequiredException();
-      }
-      _logger.handle(e, stackTrace);
-      rethrow;
-    }
-  }
-
   // TODO(Waldz): Fix schema for this endpoint (JSON encoding needed)
   Future<TokenResponse> signIn(TokenRequest request) async {
     final response = await _networkService.post(
@@ -72,6 +54,7 @@ class RestAuthService extends AuthService {
   /*
   Checks current authorisation session + retrieves currently authorized user.
    */
+  @override
   Future<AuthUser> currentUser() async {
     final response = await _apiAuth.checkAuth();
     final authCheck = response.data!;
@@ -92,10 +75,7 @@ class RestAuthService extends AuthService {
 
       await _apiAuth.introspectToken(token: authTokens.accessToken);
 
-      final user = await currentUser();
-      _authSessionStore.setAuthenticatedUser(user);
-
-      return user;
+      return await currentUser();
     } on ApiException {
       rethrow;
     } catch (e, stackTrace) {

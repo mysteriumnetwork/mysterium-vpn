@@ -172,18 +172,24 @@ abstract class _AuthStore with Store {
         return;
       }
 
-      final res = await _authService.checkUserAuth();
-      await _localDb.setUserId(res.username);
-      _initializeAnalyticsStores(username: res.username, userId: res.userId);
+      // Proceed with token introspection in order to check if token is valid
+      // If token is invalid, UnauthorizedInterceptor will catch it and it will be handled
+      final user = await _authService.currentUser();
+      _authSessionStore.setAuthenticatedUser(user);
+
+      await _localDb.setUserId(user.username);
+      _initializeAnalyticsStores(username: user.username, userId: user.userId);
 
       _authStatus = AuthStatus.authenticated;
       _logger.info(_localDb.userData.toString());
-    } catch (e) {
+    } catch (e, stackTrace) {
       _authStatus = AuthStatus.unauthenticated;
-      if (e is AuthenticationRequiredException) {
+      if (e is ApiException && e.message == 'Unauthorized' && e.code == 401) {
         _logger.info('User token expired or not found');
         return;
       }
+
+      _logger.handle(e, stackTrace);
       var message = LocaleKeys.authenticationFailed.tr();
       if (e is ApiException) {
         message = e.message;
@@ -201,12 +207,13 @@ abstract class _AuthStore with Store {
       if (_authStatus == AuthStatus.authenticating) {
         return;
       }
-
       _authStatus = AuthStatus.authenticating;
 
-      final res = await authenticateFeature;
-      await _localDb.setUserId(res.username);
-      _initializeAnalyticsStores(username: res.username, userId: res.userId);
+      final user = await authenticateFeature;
+      _authSessionStore.setAuthenticatedUser(user);
+
+      await _localDb.setUserId(user.username);
+      _initializeAnalyticsStores(username: user.username, userId: user.userId);
       _analyticsStore.setLogin(grantType);
 
       _authStatus = AuthStatus.authenticated;

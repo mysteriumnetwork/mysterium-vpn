@@ -3,7 +3,7 @@ import 'package:mysterium_vpn/models/token_request.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
 
 abstract class AuthService {
-  Future<AuthUser> checkUserAuth();
+  Future<AuthUser> currentUser();
   Future<String?> signInWithEmail({required String email, required PkcePair pkcePair});
   Future<String> signInWithGoogle();
   Future<String> signInWithApple();
