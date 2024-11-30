@@ -10,8 +10,7 @@ part 'auth_session_store.g.dart';
 class AuthSessionStore = _AuthSessionStore with _$AuthSessionStore;
 
 abstract class _AuthSessionStore with Store {
-  _AuthSessionStore({required SecureStorageService secureStorage})
-      : _secureStorage = secureStorage;
+  _AuthSessionStore({required SecureStorageService secureStorage}) : _secureStorage = secureStorage;
 
   final SecureStorageService _secureStorage;
 
