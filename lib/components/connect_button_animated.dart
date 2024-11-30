@@ -5,6 +5,7 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/connect_button.dart';
 import 'package:mysterium_vpn/components/no_subscription_banner.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ConnectButtonAnimated extends HookWidget {
@@ -21,12 +22,16 @@ class ConnectButtonAnimated extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final subscriptionActive = useSubscriptionActive();
+    final subscriptionStore = useProvider(subscriptionStorePOD);
     final handleSubscribe = useHandleSubscribe();
     final isConnected = useIsConnected();
 
-    final banner =
-        subscriptionActive ? null : NoSubscriptionBanner(onSubscribePressed: handleSubscribe);
+    NoSubscriptionBanner? banner;
+    if (subscriptionStore.subscription != null) {
+      if (!subscriptionStore.subscription!.active) {
+        banner = NoSubscriptionBanner(onSubscribePressed: handleSubscribe);
+      }
+    }
 
     return Stack(
       fit: StackFit.expand,

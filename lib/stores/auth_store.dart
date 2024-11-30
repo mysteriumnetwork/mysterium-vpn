@@ -116,7 +116,7 @@ abstract class _AuthStore with Store {
         await _secureStorageService.saveAppLink(appLink: appLink.toString());
         verifyMagicLinkAndAuthenticate(appLink);
       } else {
-        await authenticationLoad();
+        authenticationLoad();
       }
       _appLinks.uriLinkStream.listen(
         (appLink) async {
@@ -166,7 +166,7 @@ abstract class _AuthStore with Store {
 
   // When app is opened initially, we want the user to stay on the splash screen
   @action
-  Future<void> authenticationLoad() async {
+  void authenticationLoad() {
     try {
       if (_authSessionStore.status == AuthStatus.authenticating) {
         return;
@@ -174,8 +174,7 @@ abstract class _AuthStore with Store {
 
       // Proceed with token introspection in order to check if token is valid
       // If token is invalid, UnauthorizedInterceptor will catch it and it will be handled
-      final user = await _authService.currentUser();
-      _initializeAuthenticatedUser(user);
+      _authService.currentUser().then(_initializeAuthenticatedUser);
 
       _authSessionStore.status = AuthStatus.authenticated;
     } catch (e, stackTrace) {
