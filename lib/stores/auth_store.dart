@@ -77,9 +77,6 @@ abstract class _AuthStore with Store {
   final RemoteConfigStore _remoteConfigStore;
   final ABTestingStore _abTestingStore;
 
-  @computed
-  AuthStatus get authStatus => _authSessionStore.status;
-
   @readonly
   PkcePair? _pkcePair;
 
@@ -135,7 +132,6 @@ abstract class _AuthStore with Store {
       );
     } catch (e) {
       _logger.handle(e);
-      _authSessionStore.status = AuthStatus.unauthenticated;
     }
   }
 
@@ -168,17 +164,11 @@ abstract class _AuthStore with Store {
   @action
   void authenticationLoad() {
     try {
-      if (_authSessionStore.status == AuthStatus.authenticating) {
-        return;
-      }
-
       // Proceed with token introspection in order to check if token is valid
       // If token is invalid, UnauthorizedInterceptor will catch it and it will be handled
       _authService.currentUser().then(_initializeAuthenticatedUser);
-
-      _authSessionStore.status = AuthStatus.authenticated;
     } catch (e, stackTrace) {
-      _authSessionStore.status = AuthStatus.unauthenticated;
+      _authSessionStore.setUnauthenticated();
 
       if (e is ApiException && e.message == 'Unauthorized' && e.code == 401) {
         _logger.info('User token expired or not found');
@@ -200,16 +190,9 @@ abstract class _AuthStore with Store {
     Future<AuthUser> authenticateFeature,
   ) async {
     try {
-      if (_authSessionStore.status == AuthStatus.authenticating) {
-        return;
-      }
-      _authSessionStore.status = AuthStatus.authenticating;
-
       final user = await authenticateFeature;
       _initializeAuthenticatedUser(user);
       _analyticsStore.setLogin(grantType);
-
-      _authSessionStore.status = AuthStatus.authenticated;
 
       // TODO(Waldz): Update user preferences from login form, there marketing checkbox is being handled
       Future.delayed(
@@ -217,7 +200,7 @@ abstract class _AuthStore with Store {
         () => _userPreferencesStore.setEmailMarketingConsent(consent: marketingConsent),
       );
     } catch (e) {
-      _authSessionStore.status = AuthStatus.unauthenticated;
+      _authSessionStore.setUnauthenticated();
       var message = LocaleKeys.authenticationFailed.tr();
       if (e is ApiException) {
         message = e.message;
@@ -262,7 +245,7 @@ abstract class _AuthStore with Store {
 
     await logoutFeature;
     _intercomStore.logout();
-    _authSessionStore.status = AuthStatus.unauthenticated;
+    _authSessionStore.setUnauthenticated();
     temporaryEmail = email;
   }
 

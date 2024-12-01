@@ -29,12 +29,14 @@ abstract class _AuthSessionStore with Store {
   @action
   Future<void> initStore() async {
     await _storageLoad();
+    status = _accessToken != null ? AuthStatus.authenticated : AuthStatus.unauthenticated;
   }
 
   @action
   void setAuthenticated(String accessToken, String? refreshToken) {
     _accessToken = accessToken;
     _refreshToken = refreshToken;
+    status = AuthStatus.authenticated;
 
     _storageUpdate();
   }
@@ -50,6 +52,7 @@ abstract class _AuthSessionStore with Store {
   void setUnauthenticated() {
     _accessToken = null;
     _refreshToken = null;
+    status = AuthStatus.unauthenticated;
     _user = null;
 
     _storageCleanup();

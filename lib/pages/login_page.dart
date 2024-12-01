@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
@@ -15,7 +16,6 @@ import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/auth_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/views/login/login_desktop_view.dart';
@@ -68,7 +68,7 @@ class LoginPage extends HookConsumerWidget {
                 ),
               ),
             ),
-            if (authStore.authStatus == AuthStatus.authenticating)
+            if (authStore.signInFeatureFeature.status == FutureStatus.pending)
               const LoadingBarrier(
                 color: Palette.darkBlue,
               ),

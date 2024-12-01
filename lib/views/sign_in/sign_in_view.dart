@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
@@ -11,7 +12,6 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/views/sign_in/sign_in_form.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -81,7 +81,7 @@ class SignInView extends ConsumerWidget {
                   ),
                 ],
               ).scrollable().paddingDirectional(all: 20),
-              if (authStore.authStatus == AuthStatus.authenticating)
+              if (authStore.signInFeatureFeature.status == FutureStatus.pending)
                 LoadingBarrier(color: Theme.of(context).primaryColor),
             ],
           ),
