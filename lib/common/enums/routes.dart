@@ -2,7 +2,7 @@ enum Routes {
   welcome('/welcome'),
   main('/main'),
   login('/login'),
-  checkYourEmail('login/check-your-email'),
+  checkYourEmail('/login/check-your-email'),
   splash('/splash'),
   settings('/main/settings'),
   payment('/main/payment'),
@@ -10,5 +10,6 @@ enum Routes {
   privacyPolicy('/main/privacy-policy');
 
   const Routes(this.path);
+
   final String path;
 }
