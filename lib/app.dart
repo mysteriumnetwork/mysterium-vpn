@@ -37,14 +37,7 @@ class MyApp extends HookConsumerWidget {
 
     useEffect(
       () {
-        authSessionStore.initStore();
-        return null;
-      },
-      [authSessionStore],
-    );
-    useEffect(
-      () {
-        authStore.initAuth();
+        authSessionStore.initStore().whenComplete(authStore.initAuth);
         return null;
       },
       [authStore],
