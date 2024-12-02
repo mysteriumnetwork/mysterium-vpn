@@ -16,6 +16,7 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/models/token_request.dart';
+import 'package:mysterium_vpn/models/token_response.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
@@ -187,10 +188,13 @@ abstract class _AuthStore with Store {
   @action
   Future<void> authenticate(
     GrantType grantType,
-    Future<AuthUser> authenticateFeature,
+    Future<TokenResponse> authenticateFeature,
   ) async {
     try {
-      final user = await authenticateFeature;
+      final authTokens = await authenticateFeature;
+      _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
+
+      final user = await _authService.currentUser();
       _initializeAuthenticatedUser(user);
       _analyticsStore.setLogin(grantType);
 
