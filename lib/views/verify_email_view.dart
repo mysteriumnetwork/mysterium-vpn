@@ -17,8 +17,8 @@ import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class CheckYourEmailView extends HookConsumerWidget {
-  const CheckYourEmailView({super.key});
+class VerifyEmailView extends HookConsumerWidget {
+  const VerifyEmailView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,55 +26,54 @@ class CheckYourEmailView extends HookConsumerWidget {
     final analyticsStore = ref.watch(analyticsStorePOD);
     final height = getMediaHeight(context);
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: SafeArea(
-        child: Observer(
-          builder: (context) => Stack(
+    return Observer(
+      builder: (context) => Stack(
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  EasyText(
-                    LocaleKeys.checkYourEmail.tr(),
-                    fontWeight: FontWeight.w900,
-                    fontSize: 20,
-                  ).padding(bottom: height * .03, top: height * .02),
-                  const SvgIcon(
-                    asset: Assets.checkEmail,
-                  ).padding(bottom: height * .03),
-                  EasyText(
-                    LocaleKeys.emailSentTo.tr(namedArgs: {'email': '${authStore.email}'}),
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                  ).padding(bottom: height * .02),
-                  EasyText(
-                    LocaleKeys.linkExpires.tr(),
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                  ).padding(bottom: height * .02),
-                  EasyText(
-                    LocaleKeys.consumeLink.tr(),
-                    maxLines: 5,
-                    textAlign: TextAlign.center,
-                  ).padding(bottom: height * .05),
-                  Visibility(
-                    visible: isMobile(),
-                    child: EasyButton(
-                      text: LocaleKeys.openEmailApp.tr(),
-                      onPressed: () {
-                        analyticsStore.logEvent(AnalyticsEvent.openEmailClicked);
-                        openEmailApp(context, analyticsStore);
-                      },
-                    ),
-                  ),
-                ],
-              ).scrollable().padding(all: 20),
-              if (authStore.authStatus == AuthStatus.authenticating)
-                LoadingBarrier(color: Theme.of(context).primaryColor),
+              EasyText(
+                LocaleKeys.checkYourEmail.tr(),
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
+              ).padding(bottom: 20),
+              const SvgIcon(
+                asset: Assets.checkEmail,
+              ).padding(bottom: height * .03),
+              EasyText(
+                LocaleKeys.emailSentTo.tr(namedArgs: {'email': '${authStore.email}'}),
+                maxLines: 2,
+                textAlign: TextAlign.center,
+              ).padding(bottom: height * .02),
+              EasyText(
+                LocaleKeys.linkExpires.tr(),
+                maxLines: 2,
+                textAlign: TextAlign.center,
+              ).padding(bottom: height * .02),
+              EasyText(
+                LocaleKeys.consumeLink.tr(),
+                maxLines: 5,
+                textAlign: TextAlign.center,
+              ).padding(bottom: height * .05),
+              Visibility(
+                visible: isMobile(),
+                child: EasyButton(
+                  text: LocaleKeys.openEmailApp.tr(),
+                  onPressed: () {
+                    analyticsStore.logEvent(AnalyticsEvent.openEmailClicked);
+                    openEmailApp(context, analyticsStore);
+                  },
+                ),
+              ),
             ],
-          ),
-        ),
+          ).scrollable().padding(
+                top: 20,
+                bottom: 10,
+                horizontal: getMediaWidth(context) > 650 ? 60 : 20,
+              ),
+          if (authStore.authStatus == AuthStatus.authenticating)
+            LoadingBarrier(color: Theme.of(context).primaryColor),
+        ],
       ),
     );
   }

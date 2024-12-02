@@ -18,6 +18,4 @@ extension StorageKeysEx on Enum {
     }
     return sb.toString();
   }
-
-  String get toRoute => '/$toDashCase';
 }

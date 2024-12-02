@@ -1,13 +1,15 @@
+import 'dart:io';
+
 import 'package:beamer/beamer.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/auth_status.dart';
 import 'package:mysterium_vpn/common/enums/routes.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/router/router.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 final routeInformationParserPOD = Provider((ref) => BeamerParser());
+final loginRoute = Platform.isWindows ? Routes.welcome.path : Routes.login.path;
 
 final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
   final authStore = ref.read(authStorePOD);
@@ -20,33 +22,30 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
     guards: [
       BeamGuard(
         pathPatterns: [
-          Routes.main.toRoute,
-          Routes.settings.toRoute,
-          Routes.payment.toRoute,
-          Routes.emailCommunications.toRoute,
-          Routes.notifications.toRoute,
-          Routes.permissions.toRoute,
-          Routes.privacyPolicy.toRoute,
+          Routes.main.path,
+          Routes.settings.path,
+          Routes.payment.path,
+          Routes.permissions.path,
+          Routes.privacyPolicy.path,
         ],
         check: (context, state) => authStore.authStatus == AuthStatus.authenticated,
-        beamToNamed: (_, __) => Routes.welcome.toRoute,
+        beamToNamed: (_, __) => loginRoute,
       ),
       BeamGuard(
-        pathPatterns: [Routes.welcome.toRoute],
+        pathPatterns: [loginRoute],
         check: (context, state) =>
             authStore.authStatus == AuthStatus.unauthenticated ||
             authStore.authStatus == AuthStatus.authenticating,
-        beamToNamed: (_, __) => Routes.main.toRoute,
+        beamToNamed: (_, __) => Routes.main.path,
       ),
       BeamGuard(
-        pathPatterns: [Routes.splash.toRoute],
+        pathPatterns: [Routes.splash.path],
         check: (context, state) => authStore.authStatus == AuthStatus.unknown,
-        beamToNamed: (_, __) => authStore.authStatus == AuthStatus.authenticated
-            ? Routes.main.toRoute
-            : Routes.welcome.toRoute,
+        beamToNamed: (_, __) =>
+            authStore.authStatus == AuthStatus.authenticated ? Routes.main.path : loginRoute,
       ),
     ],
-    initialPath: Routes.splash.toRoute,
+    initialPath: Routes.splash.path,
     locationBuilder: (routeInformation, _) => BeamerLocations(routeInformation),
   );
 });
