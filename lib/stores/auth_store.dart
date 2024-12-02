@@ -10,6 +10,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -104,7 +105,7 @@ abstract class _AuthStore with Store {
 
   @action
   Future<void> initAuth() async {
-    when((status) => _authSessionStore.status == AuthStatus.authenticated, () async {
+    useReaction(() => _authSessionStore.status == AuthStatus.authenticated, (_) async {
       if (_authSessionStore.status == AuthStatus.authenticated) {
         await fetchAuthUser();
       }
