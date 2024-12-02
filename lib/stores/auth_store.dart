@@ -104,6 +104,12 @@ abstract class _AuthStore with Store {
 
   @action
   Future<void> initAuth() async {
+    when((status) => _authSessionStore.status == AuthStatus.authenticated, () async {
+      if (_authSessionStore.status == AuthStatus.authenticated) {
+        await fetchAuthUser();
+      }
+    });
+
     try {
       _pkcePair = await _secureStorageService.getPkcePair();
       email = await _secureStorageService.getLastLoggedInUser();
@@ -113,8 +119,6 @@ abstract class _AuthStore with Store {
       if (appLink != null && appLink.toString() != storedLink) {
         await _secureStorageService.saveAppLink(appLink: appLink.toString());
         verifyMagicLinkAndAuthenticate(appLink);
-      } else {
-        authenticationLoad();
       }
       _appLinks.uriLinkStream.listen(
         (appLink) async {
@@ -161,14 +165,15 @@ abstract class _AuthStore with Store {
     }
   }
 
-  // When app is opened initially, we want the user to stay on the splash screen
+  // Proceed with token introspection in order to check if token is valid
+  // If token is invalid, UnauthorizedInterceptor will catch it and it will be handled
   @action
-  void authenticationLoad() {
+  Future<void> fetchAuthUser() async {
     try {
-      // Proceed with token introspection in order to check if token is valid
-      // If token is invalid, UnauthorizedInterceptor will catch it and it will be handled
-      _authService.currentUser().then(_initializeAuthenticatedUser);
+      final user = await _authService.currentUser();
+      _initializeAuthenticatedUser(user);
     } catch (e, stackTrace) {
+      // We want to make call to user details endpoint to introspect AccessToken, and if it's invalid when logout the user
       _authSessionStore.setUnauthenticated();
 
       if (e is ApiException && e.message == 'Unauthorized' && e.code == 401) {
@@ -193,9 +198,6 @@ abstract class _AuthStore with Store {
     try {
       final authTokens = await authenticateFeature;
       _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
-
-      final user = await _authService.currentUser();
-      _initializeAuthenticatedUser(user);
       _analyticsStore.setLogin(grantType);
 
       // TODO(Waldz): Update user preferences from login form, there marketing checkbox is being handled

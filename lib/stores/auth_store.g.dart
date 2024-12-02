@@ -159,6 +159,13 @@ mixin _$AuthStore on _AuthStore, Store {
     return _$initAuthAsyncAction.run(() => super.initAuth());
   }
 
+  late final _$fetchAuthUserAsyncAction = AsyncAction('_AuthStore.fetchAuthUser', context: context);
+
+  @override
+  Future<void> fetchAuthUser() {
+    return _$fetchAuthUserAsyncAction.run(() => super.fetchAuthUser());
+  }
+
   late final _$authenticateAsyncAction = AsyncAction('_AuthStore.authenticate', context: context);
 
   @override
@@ -219,19 +226,6 @@ mixin _$AuthStore on _AuthStore, Store {
   @override
   Future<void> loginDesktop() {
     return _$loginDesktopAsyncAction.run(() => super.loginDesktop());
-  }
-
-  late final _$_AuthStoreActionController = ActionController(name: '_AuthStore', context: context);
-
-  @override
-  void authenticationLoad() {
-    final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.authenticationLoad');
-    try {
-      return super.authenticationLoad();
-    } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
-    }
   }
 
   @override
