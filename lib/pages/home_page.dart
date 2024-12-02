@@ -46,13 +46,20 @@ class HomePage extends HookConsumerWidget {
       }
     });
 
-    useReaction(() => vpnStore.vpnConfigConsent ?? false, (vpnConfigConsent) {
-      if (!vpnConfigConsent) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Beamer.of(context).beamToNamed(Routes.privacyPolicy.toRoute);
-        });
-      }
-    });
+    useReaction(
+      () => vpnStore.vpnConfigConsent,
+      (vpnConfigConsent) {
+        if (vpnConfigConsent == null) {
+          return;
+        }
+        if (!vpnConfigConsent) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Beamer.of(context).beamToNamed(Routes.privacyPolicy.toRoute);
+          });
+        }
+      },
+      fireImmediately: true,
+    );
 
     return ColoredScaffold(
       body: ScreenTypeLayoutBuilder(

@@ -1,14 +1,13 @@
-import 'dart:io';
-
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/delete_account_dialog.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
@@ -26,7 +25,6 @@ class AccountSettings extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.read(themeStorePOD);
     final subscriptionStore = ref.read(subscriptionStorePOD);
-    final environment = ref.watch(environmentPOD);
     final authStore = ref.watch(authStorePOD);
     final authSessionStore = ref.watch(authSessionStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
@@ -35,7 +33,6 @@ class AccountSettings extends HookConsumerWidget {
     return Observer(
       builder: (context) {
         final isDarkTheme = themeStore.isDarkMode;
-        final gateway = subscriptionStore.subscription?.gateway;
         final active = subscriptionStore.subscription?.active ?? false;
         return Column(
           children: [
@@ -45,40 +42,39 @@ class AccountSettings extends HookConsumerWidget {
               description: subscriptionStore.subscription != null && active
                   ? PurchasedPlan(subscription: subscriptionStore.subscription!)
                   : null,
-              actionWidget: Visibility(
-                visible: !Platform.isMacOS || (isMobilePaymentGateway(gateway) || gateway == null),
-                child: subscriptionStore.isLoading
-                    ? const LoadingIndicator()
-                    : EasyButton(
-                        useSystemColor: false,
-                        color: Palette.black,
-                        text: LocaleKeys.goToBillingPage.tr(),
-                        onPressed: subscriptionStore.isLoading
-                            ? null
-                            : () {
-                                analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
-                                handleOnBillingPage(
-                                  billingPage: environment.values.billingPage,
-                                  context: context,
-                                  gateway: gateway,
-                                  subscriptionActive: active,
-                                  accessToken: authSessionStore.accessToken,
-                                  onManageSubscription: () {
-                                    if (subscriptionStore.isSubscribed ?? false) {
-                                      final product = subscriptionStore.products.firstWhereOrNull(
-                                        (element) =>
-                                            element.id == subscriptionStore.subscription?.planId,
-                                      );
-                                      if (product != null) {
-                                        subscriptionStore.subscribeToPackage(
-                                          product: product.productDetails,
-                                        );
-                                      }
-                                    }
-                                  },
-                                );
-                              },
-                      ),
+              actionWidget: HookBuilder(
+                builder: (context) {
+                  final handleSubscribe = useHandleSubscribe();
+                  if (subscriptionStore.isLoading) {
+                    return const LoadingIndicator();
+                  }
+
+                  if (!active) {
+                    return EasyButton(
+                      onPressed: handleSubscribe,
+                      text: LocaleKeys.pricingPlanSeePlansBtn.tr(),
+                    );
+                  }
+
+                  return EasyButton(
+                    useSystemColor: false,
+                    color: Palette.black,
+                    text: LocaleKeys.goToBillingPage.tr(),
+                    onPressed: () {
+                      analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
+                      handleSubscribe(
+                        findProduct: () {
+                          if (!(subscriptionStore.isSubscribed ?? false)) {
+                            return null;
+                          }
+                          return subscriptionStore.products.firstWhereOrNull(
+                            (element) => element.id == subscriptionStore.subscription?.planId,
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
               ),
             ),
             SettingItem(

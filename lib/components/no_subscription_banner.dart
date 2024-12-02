@@ -31,6 +31,7 @@ class NoSubscriptionBanner extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   EasyText(
+                    color: Colors.white,
                     LocaleKeys.noSubscriptionTitle.tr(),
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
@@ -38,6 +39,7 @@ class NoSubscriptionBanner extends StatelessWidget {
                   ElevatedButton(
                     onPressed: onSubscribePressed,
                     style: ElevatedButton.styleFrom(
+                      backgroundColor: Palette.purple,
                       elevation: 0,
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
                       minimumSize: Size.zero,
