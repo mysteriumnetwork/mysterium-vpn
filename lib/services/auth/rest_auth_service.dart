@@ -66,16 +66,11 @@ class RestAuthService extends AuthService {
   }
 
   @override
-  Future<AuthUser> singInComplete({
+  Future<TokenResponse> singInComplete({
     required TokenRequest tokenRequest,
   }) async {
     try {
-      final authTokens = await signIn(tokenRequest);
-      _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
-
-      await _apiAuth.introspectToken(token: authTokens.accessToken);
-
-      return await currentUser();
+      return await signIn(tokenRequest);
     } on ApiException {
       rethrow;
     } catch (e, stackTrace) {

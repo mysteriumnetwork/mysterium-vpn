@@ -162,7 +162,7 @@ mixin _$AuthStore on _AuthStore, Store {
   late final _$authenticateAsyncAction = AsyncAction('_AuthStore.authenticate', context: context);
 
   @override
-  Future<void> authenticate(GrantType grantType, Future<AuthUser> authenticateFeature) {
+  Future<void> authenticate(GrantType grantType, Future<TokenResponse> authenticateFeature) {
     return _$authenticateAsyncAction.run(() => super.authenticate(grantType, authenticateFeature));
   }
 
