@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
@@ -36,7 +35,7 @@ class HomeDesktopAppBar extends ConsumerWidget {
               SvgIconButton(
                 onPressed: () {
                   analyticsStore.logEvent(AnalyticsEvent.openSettings);
-                  context.beamToNamed(Routes.settings.toRoute);
+                  context.beamToNamed(Routes.settings.path);
                 },
                 asset: themeStore.isDarkMode ? Assets.settingsLightBlack : Assets.settings,
               ),

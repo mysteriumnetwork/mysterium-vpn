@@ -2,7 +2,6 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
@@ -31,7 +30,7 @@ class HomeMobileAppBar extends ConsumerWidget {
         SvgIconButton(
           onPressed: () {
             analyticsStore.logEvent(AnalyticsEvent.openSettings);
-            context.beamToNamed(Routes.settings.toRoute);
+            context.beamToNamed(Routes.settings.path);
           },
           asset: Assets.settings,
         ),
