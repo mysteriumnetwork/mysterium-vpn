@@ -4,8 +4,8 @@ import 'package:lottie/lottie.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 
-class LoginDesktopViewRightPanel extends HookWidget {
-  const LoginDesktopViewRightPanel({super.key});
+class WelcomeDesktopViewRightPanel extends HookWidget {
+  const WelcomeDesktopViewRightPanel({super.key});
 
   @override
   Widget build(BuildContext context) {
