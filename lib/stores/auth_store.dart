@@ -88,9 +88,6 @@ abstract class _AuthStore with Store {
   String? email;
 
   @observable
-  String? temporaryEmail;
-
-  @observable
   bool marketingConsent = true;
 
   @observable
@@ -103,11 +100,14 @@ abstract class _AuthStore with Store {
   ObservableFuture<AuthUser>? authenticateFeature;
 
   @action
+  Future<String?> getLastLoggedInUser() async =>
+      email ?? await _secureStorageService.getLastLoggedInUser();
+
+  @action
   Future<void> initAuth() async {
     try {
-      _pkcePair = await _secureStorageService.getPkcePair();
       email = await _secureStorageService.getLastLoggedInUser();
-      temporaryEmail = email;
+      _pkcePair = await _secureStorageService.getPkcePair();
       final appLink = await _appLinks.getLatestLink();
       final storedLink = await _secureStorageService.getAppLink();
       if (appLink != null && appLink.toString() != storedLink) {
@@ -246,7 +246,6 @@ abstract class _AuthStore with Store {
     await logoutFeature;
     _intercomStore.logout();
     _authSessionStore.setUnauthenticated();
-    temporaryEmail = email;
   }
 
   @action

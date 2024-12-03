@@ -32,7 +32,9 @@ class SignInForm extends HookConsumerWidget {
     final store = ref.watch(authStorePOD);
     final signInForm = useMemoized(() {
       final form = singIn();
-      form.control('email').value = store.email;
+      store.getLastLoggedInUser().then((value) {
+        form.control('email').value = value;
+      });
       return form;
     });
     final marketingConsentForm = useMemoized(marketingConsent);
@@ -101,7 +103,11 @@ class SignInForm extends HookConsumerWidget {
                       onTap: (_) {
                         analyticsStore.logEvent(AnalyticsEvent.emailInput);
                       },
-                      decoration: InputDecoration(labelText: LocaleKeys.email.tr()),
+                      decoration: InputDecoration(
+                        labelText: LocaleKeys.email.tr(),
+                        hintText: 'example@example.com',
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
                       formControlName: 'email',
                       autofillHints: const [AutofillHints.email],
                       keyboardType: TextInputType.emailAddress,
