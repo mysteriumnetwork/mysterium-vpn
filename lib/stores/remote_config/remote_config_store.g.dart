@@ -105,6 +105,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
           Computed<String>(() => super.notSafeContentBlockerDnsAddress,
               name: 'RemoteConfigStoreBase.notSafeContentBlockerDnsAddress'))
       .value;
+  Computed<bool>? _$showVpnPrivacyPolicyPageComputed;
+
+  @override
+  bool get showVpnPrivacyPolicyPage =>
+      (_$showVpnPrivacyPolicyPageComputed ??= Computed<bool>(() => super.showVpnPrivacyPolicyPage,
+              name: 'RemoteConfigStoreBase.showVpnPrivacyPolicyPage'))
+          .value;
 
   late final _$configAtom = Atom(name: 'RemoteConfigStoreBase.config', context: context);
 
@@ -163,7 +170,8 @@ hideReedemCode: ${hideReedemCode},
 hideMalwareBlocker: ${hideMalwareBlocker},
 hideNotSafeContentBlocker: ${hideNotSafeContentBlocker},
 malwareBlockerDnsAddress: ${malwareBlockerDnsAddress},
-notSafeContentBlockerDnsAddress: ${notSafeContentBlockerDnsAddress}
+notSafeContentBlockerDnsAddress: ${notSafeContentBlockerDnsAddress},
+showVpnPrivacyPolicyPage: ${showVpnPrivacyPolicyPage}
     ''';
   }
 }

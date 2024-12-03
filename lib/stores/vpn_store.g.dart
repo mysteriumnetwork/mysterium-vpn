@@ -82,23 +82,6 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$_vpnConfigConsentAtom = Atom(name: '_VpnStore._vpnConfigConsent', context: context);
-
-  bool? get vpnConfigConsent {
-    _$_vpnConfigConsentAtom.reportRead();
-    return super._vpnConfigConsent;
-  }
-
-  @override
-  bool? get _vpnConfigConsent => vpnConfigConsent;
-
-  @override
-  set _vpnConfigConsent(bool? value) {
-    _$_vpnConfigConsentAtom.reportWrite(value, super._vpnConfigConsent, () {
-      super._vpnConfigConsent = value;
-    });
-  }
-
   late final _$_vpnConnectionAtom = Atom(name: '_VpnStore._vpnConnection', context: context);
 
   VpnConnection? get vpnConnection {
@@ -214,14 +197,6 @@ mixin _$VpnStore on _VpnStore, Store {
   @override
   Future<void> _setupTunnel() {
     return _$_setupTunnelAsyncAction.run(() => super._setupTunnel());
-  }
-
-  late final _$setVpnConfigConsentAsyncAction =
-      AsyncAction('_VpnStore.setVpnConfigConsent', context: context);
-
-  @override
-  Future<void> setVpnConfigConsent({required bool value}) {
-    return _$setVpnConfigConsentAsyncAction.run(() => super.setVpnConfigConsent(value: value));
   }
 
   late final _$toggleRefreshIPWhenConnectingAsyncAction =
