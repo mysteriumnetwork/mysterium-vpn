@@ -45,7 +45,7 @@ class HomePage extends HookConsumerWidget {
 
     useAutorun(() {
       if ((vpnStore.vpnConfig?.limitExceeded ?? false) &&
-          vpnStore.connectionStatus == ConnectionStatus.connected) {
+          vpnStore.vpnStatus == ConnectionStatus.connected) {
         shownInfoDialog(
           context,
           LocaleKeys.connectionLimitExceededTitle.tr(),

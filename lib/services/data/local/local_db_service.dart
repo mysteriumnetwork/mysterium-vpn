@@ -4,7 +4,7 @@ import 'package:mysterium_vpn/models/user_data.dart';
 class LocalDBService {
   LocalDBService();
 
-  String? _userId;
+  String _userId = '';
 
   UserData userData = UserData(
     userId: '',

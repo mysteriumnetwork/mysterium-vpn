@@ -3,6 +3,7 @@ part of 'hooks.dart';
 Future<void> Function({String? location, bool isRetrying}) useHandleToggleConnection() {
   final context = useContext();
   final handleSubscribe = useHandleSubscribe();
+  final handleSetupTunnel = useHandleSetupTunnel();
 
   return useCallback(
     ({String? location, bool isRetrying = false}) async {
@@ -13,6 +14,8 @@ Future<void> Function({String? location, bool isRetrying}) useHandleToggleConnec
         await vpnStore.toggleConnection(location: location, isRetrying: isRetrying);
       } on SubscriptionRequiredException catch (_) {
         handleSubscribe();
+      } on TunnelSetupnRequiredException catch (_) {
+        handleSetupTunnel();
       }
     },
     [handleSubscribe],
