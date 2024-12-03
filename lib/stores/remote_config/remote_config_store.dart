@@ -21,6 +21,7 @@ enum _FeatureToggleKey {
   hideNotSafeContentBlocker,
   malwareBlockerDnsAddress,
   notSafeContentBlockerDnsAddress,
+  showVpnPrivacyPolicyPage,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -49,7 +50,6 @@ abstract class RemoteConfigStoreBase with Store {
         email: email,
       ),
     );
-    getAllRemoteConfigValues();
   }
 
   @action
@@ -161,7 +161,7 @@ abstract class RemoteConfigStoreBase with Store {
     if (config.containsKey(_FeatureToggleKey.hideNotSafeContentBlocker.name)) {
       return config[_FeatureToggleKey.hideNotSafeContentBlocker.name] as bool;
     }
-    return false;
+    return true;
   }
 
   @computed
@@ -178,6 +178,14 @@ abstract class RemoteConfigStoreBase with Store {
       return config[_FeatureToggleKey.notSafeContentBlockerDnsAddress.name] as String;
     }
     return notSafeContentBlockerDomainAddress;
+  }
+
+  @computed
+  bool get showVpnPrivacyPolicyPage {
+    if (config.containsKey(_FeatureToggleKey.showVpnPrivacyPolicyPage.name)) {
+      return config[_FeatureToggleKey.showVpnPrivacyPolicyPage.name] as bool;
+    }
+    return false;
   }
 
   Map<String, String> get asUserProperties =>

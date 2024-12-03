@@ -25,7 +25,6 @@ class VpnConfigConsentForm extends HookConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) {
-    final vpnStore = ref.watch(vpnStorePOD);
     final height = getMediaHeight(context);
     final analyticsStore = ref.read(analyticsStorePOD);
 
@@ -62,7 +61,6 @@ class VpnConfigConsentForm extends HookConsumerWidget {
           color: Palette.purple,
           width: 250,
           onPressed: () async {
-            await vpnStore.setVpnConfigConsent(value: true);
             analyticsStore.logEvent(AnalyticsEvent.permissionsAcceptClick);
             if (context.mounted) {
               ref.read(subscriptionStorePOD).fetchSubscription();

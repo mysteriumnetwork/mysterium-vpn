@@ -91,9 +91,6 @@ abstract class _VpnStore with Store {
   bool _notSafeContentBlocker = false;
 
   @readonly
-  bool? _vpnConfigConsent;
-
-  @readonly
   VpnConnection? _vpnConnection;
 
   @readonly
@@ -146,13 +143,10 @@ abstract class _VpnStore with Store {
 
   Future<void> _init() async {
     await _generateKey();
-    _vpnConfigConsent = _localDBService.getVpnConsentApproval() ?? false;
     _refreshIPConnection = _localDBService.getRefreshIPConnection();
     _malwareBlockerContent = _localDBService.getMalwareBlocker();
     _notSafeContentBlocker = _localDBService.getNotSafeContentBlocker();
-    if (_vpnConfigConsent ?? false) {
-      await _setupTunnel().whenComplete(_setupAndListenToConnectionStatus);
-    }
+    await _setupTunnel().whenComplete(_setupAndListenToConnectionStatus);
   }
 
   /// Setup initial connection status and listen to connection status changes
@@ -223,15 +217,6 @@ abstract class _VpnStore with Store {
       _logger.handle(e, stackTrace);
       showSnackbar(message);
       rethrow;
-    }
-  }
-
-  @action
-  Future<void> setVpnConfigConsent({required bool value}) async {
-    await _localDBService.setVpnConsentApproval(approval: value);
-    _vpnConfigConsent = value;
-    if (_vpnConfigConsent ?? false) {
-      await _setupTunnel().whenComplete(_setupAndListenToConnectionStatus);
     }
   }
 

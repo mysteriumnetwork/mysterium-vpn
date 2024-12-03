@@ -10,10 +10,10 @@ class UserData {
     this.emailCommunication = Approval.notSet,
     this.notifications = Approval.notSet,
     this.subscriptionPlan,
-    this.vpnConfigConsent,
     this.refreshIPConnection = true,
     this.malwareBlocker = false,
     this.notSafeContentBlocker = false,
+    this.vpnPrivacyPolicyConsent = false,
   });
   @HiveField(0)
   String userId;
@@ -33,9 +33,6 @@ class UserData {
   @HiveField(5)
   String? subscriptionPurchaseId;
 
-  @HiveField(6)
-  bool? vpnConfigConsent;
-
   @HiveField(7, defaultValue: true)
   bool refreshIPConnection;
 
@@ -44,6 +41,9 @@ class UserData {
 
   @HiveField(9, defaultValue: false)
   bool notSafeContentBlocker;
+
+  @HiveField(10, defaultValue: false)
+  bool vpnPrivacyPolicyConsent;
 
   @override
   String toString() => '''
@@ -54,10 +54,10 @@ recentLocations: $recentLocations,
 notificationsApproval: ${notifications.name},
 subscriptionPlan: $subscriptionPlan,
 subscriptionPurchaseId: $subscriptionPurchaseId
-vpnConfigConsent: $vpnConfigConsent
 resetConnection: $refreshIPConnection
 malwareBlocker: $malwareBlocker
 notSafeContentBlocker: $notSafeContentBlocker
+vpnPrivacyPolicyConsent: $vpnPrivacyPolicyConsent
 ''';
 }
 
