@@ -9,8 +9,7 @@ part of 'auth_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$AuthStore on _AuthStore, Store {
-  late final _$_pkcePairAtom =
-      Atom(name: '_AuthStore._pkcePair', context: context);
+  late final _$_pkcePairAtom = Atom(name: '_AuthStore._pkcePair', context: context);
 
   PkcePair? get pkcePair {
     _$_pkcePairAtom.reportRead();
@@ -60,8 +59,7 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$marketingConsentAtom =
-      Atom(name: '_AuthStore.marketingConsent', context: context);
+  late final _$marketingConsentAtom = Atom(name: '_AuthStore.marketingConsent', context: context);
 
   @override
   bool get marketingConsent {
@@ -87,14 +85,12 @@ mixin _$AuthStore on _AuthStore, Store {
 
   @override
   set signInFeatureFeature(ObservableFuture<String?> value) {
-    _$signInFeatureFeatureAtom.reportWrite(value, super.signInFeatureFeature,
-        () {
+    _$signInFeatureFeatureAtom.reportWrite(value, super.signInFeatureFeature, () {
       super.signInFeatureFeature = value;
     });
   }
 
-  late final _$logoutFeatureAtom =
-      Atom(name: '_AuthStore.logoutFeature', context: context);
+  late final _$logoutFeatureAtom = Atom(name: '_AuthStore.logoutFeature', context: context);
 
   @override
   ObservableFuture<void> get logoutFeature {
@@ -120,8 +116,7 @@ mixin _$AuthStore on _AuthStore, Store {
 
   @override
   set deleteAccountFeature(ObservableFuture<void> value) {
-    _$deleteAccountFeatureAtom.reportWrite(value, super.deleteAccountFeature,
-        () {
+    _$deleteAccountFeatureAtom.reportWrite(value, super.deleteAccountFeature, () {
       super.deleteAccountFeature = value;
     });
   }
@@ -147,34 +142,28 @@ mixin _$AuthStore on _AuthStore, Store {
 
   @override
   Future<String?> getLastLoggedInUser() {
-    return _$getLastLoggedInUserAsyncAction
-        .run(() => super.getLastLoggedInUser());
+    return _$getLastLoggedInUserAsyncAction.run(() => super.getLastLoggedInUser());
   }
 
-  late final _$initAuthAsyncAction =
-      AsyncAction('_AuthStore.initAuth', context: context);
+  late final _$initAuthAsyncAction = AsyncAction('_AuthStore.initAuth', context: context);
 
   @override
   Future<void> initAuth() {
     return _$initAuthAsyncAction.run(() => super.initAuth());
   }
 
-  late final _$fetchAuthUserAsyncAction =
-      AsyncAction('_AuthStore.fetchAuthUser', context: context);
+  late final _$fetchAuthUserAsyncAction = AsyncAction('_AuthStore.fetchAuthUser', context: context);
 
   @override
   Future<void> fetchAuthUser() {
     return _$fetchAuthUserAsyncAction.run(() => super.fetchAuthUser());
   }
 
-  late final _$authenticateAsyncAction =
-      AsyncAction('_AuthStore.authenticate', context: context);
+  late final _$authenticateAsyncAction = AsyncAction('_AuthStore.authenticate', context: context);
 
   @override
-  Future<void> authenticate(
-      GrantType grantType, Future<TokenResponse> authenticateFeature) {
-    return _$authenticateAsyncAction
-        .run(() => super.authenticate(grantType, authenticateFeature));
+  Future<void> authenticate(GrantType grantType, Future<TokenResponse> authenticateFeature) {
+    return _$authenticateAsyncAction.run(() => super.authenticate(grantType, authenticateFeature));
   }
 
   late final _$_initializeAuthenticatedUserAsyncAction =
@@ -186,8 +175,7 @@ mixin _$AuthStore on _AuthStore, Store {
         .run(() => super._initializeAuthenticatedUser(user));
   }
 
-  late final _$logoutAsyncAction =
-      AsyncAction('_AuthStore.logout', context: context);
+  late final _$logoutAsyncAction = AsyncAction('_AuthStore.logout', context: context);
 
   @override
   Future<void> logout({String? email}) {
@@ -199,8 +187,7 @@ mixin _$AuthStore on _AuthStore, Store {
 
   @override
   Future<void> logoutFromAllDevices() {
-    return _$logoutFromAllDevicesAsyncAction
-        .run(() => super.logoutFromAllDevices());
+    return _$logoutFromAllDevicesAsyncAction.run(() => super.logoutFromAllDevices());
   }
 
   late final _$signInwithEmailAsyncAction =
@@ -208,8 +195,7 @@ mixin _$AuthStore on _AuthStore, Store {
 
   @override
   Future<String?> signInwithEmail({required String email}) {
-    return _$signInwithEmailAsyncAction
-        .run(() => super.signInwithEmail(email: email));
+    return _$signInwithEmailAsyncAction.run(() => super.signInwithEmail(email: email));
   }
 
   late final _$signInWithGoogleAsyncAction =
@@ -228,8 +214,7 @@ mixin _$AuthStore on _AuthStore, Store {
     return _$signInWithAppleAsyncAction.run(() => super.signInWithApple());
   }
 
-  late final _$loginDesktopAsyncAction =
-      AsyncAction('_AuthStore.loginDesktop', context: context);
+  late final _$loginDesktopAsyncAction = AsyncAction('_AuthStore.loginDesktop', context: context);
 
   @override
   Future<void> loginDesktop() {
