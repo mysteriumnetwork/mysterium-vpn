@@ -12,6 +12,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
+import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
@@ -91,10 +92,8 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<void> initStore() async {
-    when((_) => _authSessionStore.user != null, () {
-      if (_authSessionStore.user != null) {
-        fetchSubscription().whenComplete(getSubscriptionsConfig);
-      }
+    when((status) => _authSessionStore.status == AuthStatus.authenticated, () {
+      fetchSubscription().whenComplete(getSubscriptionsConfig);
     });
   }
 

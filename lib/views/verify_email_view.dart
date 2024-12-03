@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -71,7 +72,7 @@ class VerifyEmailView extends HookConsumerWidget {
                 bottom: 10,
                 horizontal: getMediaWidth(context) > 650 ? 60 : 20,
               ),
-          if (authStore.authStatus == AuthStatus.authenticating)
+          if (authStore.signInFeatureFeature.status == FutureStatus.pending)
             LoadingBarrier(color: Theme.of(context).primaryColor),
         ],
       ),

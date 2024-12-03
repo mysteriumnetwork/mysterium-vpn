@@ -16,8 +16,10 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/models/token_request.dart';
+import 'package:mysterium_vpn/models/token_response.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
+import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
@@ -60,7 +62,6 @@ abstract class _AuthStore with Store {
         _userPreferencesStore = userPreferencesStore,
         _remoteConfigStore = remoteConfigStore,
         _abTestingStore = abTestingStore {
-    initAuth();
     refreshTokenCallback = refreshAuthToken;
   }
 
@@ -76,9 +77,6 @@ abstract class _AuthStore with Store {
   final UserPreferencesStore _userPreferencesStore;
   final RemoteConfigStore _remoteConfigStore;
   final ABTestingStore _abTestingStore;
-
-  @readonly
-  AuthStatus _authStatus = AuthStatus.unknown;
 
   @readonly
   PkcePair? _pkcePair;
@@ -115,12 +113,10 @@ abstract class _AuthStore with Store {
       if (appLink != null && appLink.toString() != storedLink) {
         await _secureStorageService.saveAppLink(appLink: appLink.toString());
         verifyMagicLinkAndAuthenticate(appLink);
-      } else {
-        authenticate(GrantType.savedToken, _authService.checkUserAuth());
       }
       _appLinks.uriLinkStream.listen(
         (appLink) async {
-          if (_authStatus == AuthStatus.authenticated) {
+          if (_authSessionStore.status == AuthStatus.authenticated) {
             return;
           }
           final storedLink = await _secureStorageService.getAppLink();
@@ -135,7 +131,6 @@ abstract class _AuthStore with Store {
       );
     } catch (e) {
       _logger.handle(e);
-      _authStatus = AuthStatus.unauthenticated;
     }
   }
 
@@ -164,38 +159,23 @@ abstract class _AuthStore with Store {
     }
   }
 
+  // Proceed with token introspection in order to check if token is valid
+  // If token is invalid, UnauthorizedInterceptor will catch it and it will be handled
   @action
-  Future<void> authenticate(
-    GrantType grantType,
-    Future<AuthUser> authenticateFeature,
-  ) async {
+  Future<void> fetchAuthUser() async {
     try {
-      if (_authStatus == AuthStatus.authenticating) {
-        return;
-      }
+      final user = await _authService.currentUser();
+      _initializeAuthenticatedUser(user);
+    } catch (e, stackTrace) {
+      // We want to make call to user details endpoint to introspect AccessToken, and if it's invalid when logout the user
+      _authSessionStore.setUnauthenticated();
 
-      //When app is opened initially, we want the user to stay on the splash screen
-      if (grantType != GrantType.savedToken) {
-        _authStatus = AuthStatus.authenticating;
-      }
-
-      final res = await authenticateFeature;
-      await _localDb.setUserId(res.username);
-      _initializeAnalyticsStores(username: res.username, userId: res.userId, grantType: grantType);
-      _authStatus = AuthStatus.authenticated;
-      _logger.info(_localDb.userData.toString());
-      if (grantType != GrantType.savedToken) {
-        Future.delayed(
-          const Duration(seconds: 5),
-          () => _userPreferencesStore.setEmailMarketingConsent(consent: marketingConsent),
-        );
-      }
-    } catch (e) {
-      _authStatus = AuthStatus.unauthenticated;
-      if (e is AuthenticationRequiredException) {
+      if (e is ApiException && e.message == 'Unauthorized' && e.code == 401) {
         _logger.info('User token expired or not found');
         return;
       }
+
+      _logger.handle(e, stackTrace);
       var message = LocaleKeys.authenticationFailed.tr();
       if (e is ApiException) {
         message = e.message;
@@ -204,14 +184,45 @@ abstract class _AuthStore with Store {
     }
   }
 
+  @action
+  Future<void> authenticate(
+    GrantType grantType,
+    Future<TokenResponse> authenticateFeature,
+  ) async {
+    try {
+      final authTokens = await authenticateFeature;
+      _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
+      _analyticsStore.setLogin(grantType);
+
+      // TODO(Waldz): Update user preferences from login form, there marketing checkbox is being handled
+      Future.delayed(
+        const Duration(seconds: 5),
+        () => _userPreferencesStore.setEmailMarketingConsent(consent: marketingConsent),
+      );
+    } catch (e) {
+      _authSessionStore.setUnauthenticated();
+      var message = LocaleKeys.authenticationFailed.tr();
+      if (e is ApiException) {
+        message = e.message;
+      }
+      showSnackbar(message);
+    }
+  }
+
+  @action
+  Future<void> _initializeAuthenticatedUser(AuthUser user) async {
+    _authSessionStore.setAuthenticatedUser(user);
+
+    await _localDb.setUserId(user.username);
+    _initializeAnalyticsStores(username: user.username, userId: user.userId);
+
+    _logger.info(_localDb.userData.toString());
+  }
+
   Future<void> _initializeAnalyticsStores({
     required String username,
     required String userId,
-    required GrantType grantType,
   }) async {
-    if (grantType != GrantType.savedToken) {
-      _analyticsStore.setLogin(grantType);
-    }
     await _remoteConfigStore.setDefaultUser(email: username, userId: userId);
     await _abTestingStore.setDefaultUser(email: username, userId: userId);
     _analyticsStore.setUserId(username);
@@ -234,7 +245,7 @@ abstract class _AuthStore with Store {
 
     await logoutFeature;
     _intercomStore.logout();
-    _authStatus = AuthStatus.unauthenticated;
+    _authSessionStore.setUnauthenticated();
     temporaryEmail = email;
   }
 

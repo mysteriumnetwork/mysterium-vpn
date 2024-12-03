@@ -32,5 +32,4 @@ const _$GrantTypeEnumMap = {
   GrantType.email: 'email',
   GrantType.apple: 'apple',
   GrantType.google: 'google',
-  GrantType.savedToken: 'savedToken',
 };
