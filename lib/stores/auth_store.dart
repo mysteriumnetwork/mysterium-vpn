@@ -97,7 +97,7 @@ abstract class _AuthStore with Store {
   @observable
   ObservableFuture<void> deleteAccountFeature = ObservableFuture.value(null);
   @observable
-  ObservableFuture<AuthUser>? authenticateFeature;
+  ObservableFuture<TokenResponse>? authenticateFeature;
 
   @action
   Future<String?> getLastLoggedInUser() async =>
@@ -188,12 +188,12 @@ abstract class _AuthStore with Store {
   @action
   Future<void> authenticate(
     GrantType grantType,
-    Future<TokenResponse> authenticateFeature,
+    Future<TokenResponse> feature,
   ) async {
     try {
-      _authSessionStore.status = AuthStatus.authenticating;
+      authenticateFeature = ObservableFuture(feature);
       final authTokens = await authenticateFeature;
-      _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
+      _authSessionStore.setAuthenticated(authTokens!.accessToken, authTokens.refreshToken);
       _analyticsStore.setLogin(grantType);
 
       // TODO(Waldz): Update user preferences from login form, there marketing checkbox is being handled

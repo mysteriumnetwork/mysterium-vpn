@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/layout_builders/screen_type_builder.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/views/welcome/welcome_desktop_view.dart';
 import 'package:mysterium_vpn/views/welcome/welcome_mobile_view.dart';
 
@@ -16,7 +16,6 @@ class WelcomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authSessionStore = ref.watch(authSessionStorePOD);
     final authStore = ref.watch(authStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
 
@@ -44,7 +43,7 @@ class WelcomePage extends HookConsumerWidget {
                 },
               ),
             ),
-            if (authSessionStore.status == AuthStatus.authenticating)
+            if (authStore.authenticateFeature?.status == FutureStatus.pending)
               const LoadingBarrier(
                 color: Palette.darkBlue,
               ),
