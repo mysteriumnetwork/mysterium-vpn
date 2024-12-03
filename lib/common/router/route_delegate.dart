@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:beamer/beamer.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/routes.dart';
 import 'package:mysterium_vpn/common/router/router.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -14,6 +15,7 @@ final loginRoute = Platform.isWindows ? Routes.welcome.path : Routes.login.path;
 final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
   final authSessionStore = ref.read(authSessionStorePOD);
   final analyticsStore = ref.read(analyticsStorePOD);
+  final authStore = ref.read(authStorePOD);
   return BeamerDelegate(
     navigatorObservers: [
       ...analyticsStore.navigationObservers(),
@@ -38,7 +40,7 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
         ],
         check: (context, state) =>
             authSessionStore.status == AuthStatus.unauthenticated ||
-            authSessionStore.status == AuthStatus.authenticating,
+            authStore.authenticateFeature?.status == FutureStatus.pending,
         beamToNamed: (_, __) => Routes.main.path,
       ),
       BeamGuard(
