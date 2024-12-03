@@ -11,6 +11,7 @@ part 'ab_testing_store.g.dart';
 /// The [name] of the event. Should contain 1 to 24 alphanumeric characters or underscores
 enum _ABKey {
   subscriptionFlow,
+  tunnelConsent,
 }
 
 class ABTestingStore = ABTestingStoreBase with _$ABTestingStore;
@@ -65,6 +66,14 @@ abstract class ABTestingStoreBase with Store {
       return config[_ABKey.subscriptionFlow.name] as String;
     }
     return 'C';
+  }
+
+  @computed
+  String get tunnelConsentType {
+    if (config.containsKey(_ABKey.tunnelConsent.name)) {
+      return config[_ABKey.tunnelConsent.name] as String;
+    }
+    return 'A';
   }
 
   Map<String, String> get asUserProperties =>
