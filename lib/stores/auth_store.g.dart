@@ -74,19 +74,18 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$signInFeatureFeatureAtom =
-      Atom(name: '_AuthStore.signInFeatureFeature', context: context);
+  late final _$signInFeatureAtom = Atom(name: '_AuthStore.signInFeature', context: context);
 
   @override
-  ObservableFuture<String?> get signInFeatureFeature {
-    _$signInFeatureFeatureAtom.reportRead();
-    return super.signInFeatureFeature;
+  ObservableFuture<String?> get signInFeature {
+    _$signInFeatureAtom.reportRead();
+    return super.signInFeature;
   }
 
   @override
-  set signInFeatureFeature(ObservableFuture<String?> value) {
-    _$signInFeatureFeatureAtom.reportWrite(value, super.signInFeatureFeature, () {
-      super.signInFeatureFeature = value;
+  set signInFeature(ObservableFuture<String?> value) {
+    _$signInFeatureAtom.reportWrite(value, super.signInFeature, () {
+      super.signInFeature = value;
     });
   }
 
@@ -226,7 +225,7 @@ mixin _$AuthStore on _AuthStore, Store {
     return '''
 email: ${email},
 marketingConsent: ${marketingConsent},
-signInFeatureFeature: ${signInFeatureFeature},
+signInFeature: ${signInFeature},
 logoutFeature: ${logoutFeature},
 deleteAccountFeature: ${deleteAccountFeature},
 authenticateFeature: ${authenticateFeature}

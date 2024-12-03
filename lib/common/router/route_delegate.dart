@@ -32,7 +32,10 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
         beamToNamed: (_, __) => loginRoute,
       ),
       BeamGuard(
-        pathPatterns: [loginRoute],
+        pathPatterns: [
+          loginRoute,
+          Routes.checkYourEmail.path,
+        ],
         check: (context, state) =>
             authSessionStore.status == AuthStatus.unauthenticated ||
             authSessionStore.status == AuthStatus.authenticating,
