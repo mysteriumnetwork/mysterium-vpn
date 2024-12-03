@@ -5,7 +5,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/app_version.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/login_headlines.dart';
-import 'package:mysterium_vpn/components/unathenticated_header.dart';
+import 'package:mysterium_vpn/components/unauthenticated_header.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -20,7 +20,7 @@ class WelcomeDesktopViewLeftPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          const UnathenticatedHeader().padding(bottom: getMediaHeight(context) * 0.02),
+          const UnauthenticatedHeader().padding(bottom: getMediaHeight(context) * 0.02),
           const LoginHeadlines().expanded(),
           EasyButton(
             height: 60,

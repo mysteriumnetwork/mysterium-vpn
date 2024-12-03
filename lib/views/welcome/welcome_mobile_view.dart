@@ -4,7 +4,7 @@ import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/login_headlines.dart';
-import 'package:mysterium_vpn/components/unathenticated_header.dart';
+import 'package:mysterium_vpn/components/unauthenticated_header.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -19,7 +19,7 @@ class WelcomeMobileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          const UnathenticatedHeader().padding(
+          const UnauthenticatedHeader().padding(
             vertical: getMediaHeight(context) * 0.03,
             horizontal: 30,
           ),
