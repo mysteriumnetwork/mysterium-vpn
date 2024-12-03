@@ -79,9 +79,9 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
         return handler.next(options);
       },
     ),
-    ApiErrorsInterceptor(),
     RefreshTokenInterceptor(dio: dio, logger: logger),
     RetryRequestInterceptor(dio: dio),
+    ApiErrorsInterceptor(),
     if (kDebugMode)
       TalkerDioLogger(
         talker: logger,
