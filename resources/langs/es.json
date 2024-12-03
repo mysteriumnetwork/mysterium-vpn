@@ -506,5 +506,9 @@
   "billedEveryMonth": "{amount} facturado cada mes",
   "malwareBlocker": "bloqueador de malware",
   "contentBlockerTitle": "Bloqueador de malware y contenido NSFW",
-  "contentBlockerDesc": "Bloquee tanto el malware como el contenido para adultos"
+  "contentBlockerDesc": "Bloquee tanto el malware como el contenido para adultos",
+  "setupTunnerPermissionsDialogTitle": "Necesitamos tu permiso",
+  "setupTunnerPermissionsDialogDesc": "Para comenzar a usar Mysterium VPN, necesitamos su permiso para instalar un perfil de VPN.",
+  "setupTunnerPermissionsDialogDisclaimer": "Su anonimato está seguro. No vemos, recopilamos ni almacenamos ninguna actividad de navegación.",
+  "allowPermissionsBtn": "Permitir"
 }

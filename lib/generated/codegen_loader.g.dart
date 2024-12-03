@@ -523,7 +523,11 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{amount} 每月计费",
     "malwareBlocker": "恶意软件拦截器",
     "contentBlockerTitle": "NSFW 内容和恶意软件拦截器",
-    "contentBlockerDesc": "阻止恶意软件和成人内容"
+    "contentBlockerDesc": "阻止恶意软件和成人内容",
+    "setupTunnerPermissionsDialogTitle": "我们需要您的许可",
+    "setupTunnerPermissionsDialogDesc": "要开始使用 Mysterium VPN，我们需要您的许可才能安装 VPN 配置文件。",
+    "setupTunnerPermissionsDialogDisclaimer": "您的匿名是安全的。我们不会查看、收集或存储您的任何浏览活动。",
+    "allowPermissionsBtn": "允许"
   };
   static const Map<String, dynamic> tr = {
     "title": "Merhaba efendim",
@@ -1054,7 +1058,13 @@ class CodegenLoader extends AssetLoader {
     "malwareBlocker": "Kötü amaçlı yazılım engelleyici",
     "contentBlockerTitle": "NSFW içeriği ve kötü amaçlı yazılım engelleyici",
     "contentBlockerDesc":
-        "Hem kötü amaçlı yazılımları hem de yetişkinlere yönelik içeriği engelleyin"
+        "Hem kötü amaçlı yazılımları hem de yetişkinlere yönelik içeriği engelleyin",
+    "setupTunnerPermissionsDialogTitle": "izninize ihtiyacımız var",
+    "setupTunnerPermissionsDialogDesc":
+        "Mysterium VPN'i kullanmaya başlamak için bir VPN profili kurma izninize ihtiyacımız var.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "Anonimliğiniz güvende. Tarama etkinliklerinizin hiçbirini görüntülemiyoruz, toplamıyoruz veya saklamıyoruz.",
+    "allowPermissionsBtn": "İzin vermek"
   };
   static const Map<String, dynamic> ja = {
     "title": "こんにちは。",
@@ -1568,7 +1578,11 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{amount} 毎月請求される",
     "malwareBlocker": "マルウェアブロッカー",
     "contentBlockerTitle": "NSFW コンテンツとマルウェア ブロッカー",
-    "contentBlockerDesc": "マルウェアとアダルト コンテンツの両方をブロック"
+    "contentBlockerDesc": "マルウェアとアダルト コンテンツの両方をブロック",
+    "setupTunnerPermissionsDialogTitle": "あなたの許可が必要です",
+    "setupTunnerPermissionsDialogDesc": "Mysterium VPN の使用を開始するには、VPN プロファイルをインストールする許可が必要です。",
+    "setupTunnerPermissionsDialogDisclaimer": "あなたの匿名性は安全です。当社はあなたの閲覧活動を閲覧、収集、保存することはありません。",
+    "allowPermissionsBtn": "許可する"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -2117,7 +2131,13 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{amount} Wird jeden Monat in Rechnung gestellt",
     "malwareBlocker": "Malware-Blocker",
     "contentBlockerTitle": "NSFW-Inhalts- und Malware-Blocker",
-    "contentBlockerDesc": "Blockieren Sie sowohl Malware als auch nicht jugendfreie Inhalte"
+    "contentBlockerDesc": "Blockieren Sie sowohl Malware als auch nicht jugendfreie Inhalte",
+    "setupTunnerPermissionsDialogTitle": "Wir benötigen Ihre Erlaubnis",
+    "setupTunnerPermissionsDialogDesc":
+        "Um Mysterium VPN nutzen zu können, benötigen wir Ihre Erlaubnis zur Installation eines VPN-Profils.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "Ihre Anonymität ist sicher. Wir sehen, sammeln oder speichern keine Ihrer Browsing-Aktivitäten.",
+    "allowPermissionsBtn": "Erlauben"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2654,7 +2674,13 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{amount} Faturado todo mês",
     "malwareBlocker": "Bloqueador de malware",
     "contentBlockerTitle": "Conteúdo NSFW e bloqueador de malware",
-    "contentBlockerDesc": "Bloqueie malware e conteúdo adulto"
+    "contentBlockerDesc": "Bloqueie malware e conteúdo adulto",
+    "setupTunnerPermissionsDialogTitle": "Precisamos da sua permissão",
+    "setupTunnerPermissionsDialogDesc":
+        "Para começar a usar o Mysterium VPN, precisamos da sua permissão para instalar um perfil VPN.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "Seu anonimato é seguro. Não visualizamos, coletamos ou armazenamos nenhuma de suas atividades de navegação.",
+    "allowPermissionsBtn": "Permitir"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -3190,7 +3216,13 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{amount} Billed every month",
     "malwareBlocker": "Malware blocker",
     "contentBlockerTitle": "NSFW content and malware blocker",
-    "contentBlockerDesc": "Block both malware and adult content"
+    "contentBlockerDesc": "Block both malware and adult content",
+    "setupTunnerPermissionsDialogTitle": "We need your permission",
+    "setupTunnerPermissionsDialogDesc":
+        "To start using Mysterium VPN, we need your permission to install a VPN profile.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "Your anonymity is safe. We don't view, collect or store any of your browsing activity.",
+    "allowPermissionsBtn": "Allow"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3732,7 +3764,13 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{importo} Fatturato ogni mese",
     "malwareBlocker": "Blocco malware",
     "contentBlockerTitle": "Contenuto NSFW e blocco malware",
-    "contentBlockerDesc": "Blocca sia malware che contenuti per adulti"
+    "contentBlockerDesc": "Blocca sia malware che contenuti per adulti",
+    "setupTunnerPermissionsDialogTitle": "Abbiamo bisogno del tuo permesso",
+    "setupTunnerPermissionsDialogDesc":
+        "Per iniziare a utilizzare Mysterium VPN, abbiamo bisogno della tua autorizzazione per installare un profilo VPN.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "Il tuo anonimato è al sicuro. Non visualizziamo, raccogliamo o archiviamo nessuna delle tue attività di navigazione.",
+    "allowPermissionsBtn": "Permettere"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -4277,7 +4315,13 @@ class CodegenLoader extends AssetLoader {
     "malwareBlocker": "Bloqueur de logiciels malveillants",
     "contentBlockerTitle": "Bloqueur de contenu NSFW et de logiciels malveillants",
     "contentBlockerDesc":
-        "Bloquez à la fois les logiciels malveillants et le contenu réservé aux adultes"
+        "Bloquez à la fois les logiciels malveillants et le contenu réservé aux adultes",
+    "setupTunnerPermissionsDialogTitle": "Nous avons besoin de votre autorisation",
+    "setupTunnerPermissionsDialogDesc":
+        "Pour commencer à utiliser Mysterium VPN, nous avons besoin de votre autorisation pour installer un profil VPN.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "Votre anonymat est protégé. Nous ne consultons, ne collectons ni ne stockons aucune de vos activités de navigation.",
+    "allowPermissionsBtn": "Permettre"
   };
   static const Map<String, dynamic> id = {
     "title": "Halo Pak",
@@ -4813,7 +4857,13 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{amount} Ditagih setiap bulan",
     "malwareBlocker": "Pemblokir malware",
     "contentBlockerTitle": "Pemblokir konten NSFW dan malware",
-    "contentBlockerDesc": "Blokir malware dan konten dewasa"
+    "contentBlockerDesc": "Blokir malware dan konten dewasa",
+    "setupTunnerPermissionsDialogTitle": "Kami membutuhkan izin Anda",
+    "setupTunnerPermissionsDialogDesc":
+        "Untuk mulai menggunakan Mysterium VPN, kami memerlukan izin Anda untuk memasang profil VPN.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "Anonimitas Anda aman. Kami tidak melihat, mengumpulkan, atau menyimpan aktivitas penjelajahan Anda.",
+    "allowPermissionsBtn": "Mengizinkan"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -5353,7 +5403,13 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{amount} facturado cada mes",
     "malwareBlocker": "bloqueador de malware",
     "contentBlockerTitle": "Bloqueador de malware y contenido NSFW",
-    "contentBlockerDesc": "Bloquee tanto el malware como el contenido para adultos"
+    "contentBlockerDesc": "Bloquee tanto el malware como el contenido para adultos",
+    "setupTunnerPermissionsDialogTitle": "Necesitamos tu permiso",
+    "setupTunnerPermissionsDialogDesc":
+        "Para comenzar a usar Mysterium VPN, necesitamos su permiso para instalar un perfil de VPN.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "Su anonimato está seguro. No vemos, recopilamos ni almacenamos ninguna actividad de navegación.",
+    "allowPermissionsBtn": "Permitir"
   };
   static const Map<String, dynamic> ar = {
     "title": "أهلاً سيدي",
@@ -5882,7 +5938,13 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{amount} يتم إصدار فاتورة به كل شهر",
     "malwareBlocker": "مانع البرامج الضارة",
     "contentBlockerTitle": "محتوى NSFW ومانع البرامج الضارة",
-    "contentBlockerDesc": "حظر كل من البرامج الضارة ومحتوى البالغين"
+    "contentBlockerDesc": "حظر كل من البرامج الضارة ومحتوى البالغين",
+    "setupTunnerPermissionsDialogTitle": "نحن بحاجة إلى إذنك",
+    "setupTunnerPermissionsDialogDesc":
+        "لبدء استخدام Mysterium VPN، نحتاج إلى إذنك لتثبيت ملف تعريف VPN.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "إخفاء هويتك آمن. نحن لا نشاهد أو نجمع أو نخزن أيًا من أنشطة التصفح الخاصة بك.",
+    "allowPermissionsBtn": "يسمح"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,

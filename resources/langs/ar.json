@@ -505,5 +505,9 @@
   "billedEveryMonth": "{amount} يتم إصدار فاتورة به كل شهر",
   "malwareBlocker": "مانع البرامج الضارة",
   "contentBlockerTitle": "محتوى NSFW ومانع البرامج الضارة",
-  "contentBlockerDesc": "حظر كل من البرامج الضارة ومحتوى البالغين"
+  "contentBlockerDesc": "حظر كل من البرامج الضارة ومحتوى البالغين",
+  "setupTunnerPermissionsDialogTitle": "نحن بحاجة إلى إذنك",
+  "setupTunnerPermissionsDialogDesc": "لبدء استخدام Mysterium VPN، نحتاج إلى إذنك لتثبيت ملف تعريف VPN.",
+  "setupTunnerPermissionsDialogDisclaimer": "إخفاء هويتك آمن. نحن لا نشاهد أو نجمع أو نخزن أيًا من أنشطة التصفح الخاصة بك.",
+  "allowPermissionsBtn": "يسمح"
 }

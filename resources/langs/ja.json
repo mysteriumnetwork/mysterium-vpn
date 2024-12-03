@@ -506,5 +506,9 @@
   "billedEveryMonth": "{amount} 毎月請求される",
   "malwareBlocker": "マルウェアブロッカー",
   "contentBlockerTitle": "NSFW コンテンツとマルウェア ブロッカー",
-  "contentBlockerDesc": "マルウェアとアダルト コンテンツの両方をブロック"
+  "contentBlockerDesc": "マルウェアとアダルト コンテンツの両方をブロック",
+  "setupTunnerPermissionsDialogTitle": "あなたの許可が必要です",
+  "setupTunnerPermissionsDialogDesc": "Mysterium VPN の使用を開始するには、VPN プロファイルをインストールする許可が必要です。",
+  "setupTunnerPermissionsDialogDisclaimer": "あなたの匿名性は安全です。当社はあなたの閲覧活動を閲覧、収集、保存することはありません。",
+  "allowPermissionsBtn": "許可する"
 }
