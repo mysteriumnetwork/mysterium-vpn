@@ -32,12 +32,22 @@ class SignInForm extends HookConsumerWidget {
     final store = ref.watch(authStorePOD);
     final signInForm = useMemoized(() {
       final form = singIn();
-      store.getLastLoggedInUser().then((value) {
-        form.control('email').value = value;
-      });
       return form;
     });
     final marketingConsentForm = useMemoized(marketingConsent);
+
+    useEffect(
+      () {
+        Future.microtask(() async {
+          final email = await store.getLastLoggedInUser();
+          if (!signInForm.control('email').dirty) {
+            signInForm.control('email').value = email;
+          }
+        });
+        return null;
+      },
+      [signInForm, store],
+    );
 
     return Observer(
       builder: (context) {
