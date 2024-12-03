@@ -6,8 +6,8 @@ import 'package:mysterium_vpn/components/app_logo.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
-class UnathenticatedHeader extends HookConsumerWidget {
-  const UnathenticatedHeader({
+class UnauthenticatedHeader extends HookConsumerWidget {
+  const UnauthenticatedHeader({
     super.key,
   });
   @override

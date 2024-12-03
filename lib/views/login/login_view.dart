@@ -3,7 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/components/loading_barrier.dart';
-import 'package:mysterium_vpn/components/unathenticated_header.dart';
+import 'package:mysterium_vpn/components/unauthenticated_header.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/login/login_form.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -19,7 +19,7 @@ class SignInView extends ConsumerWidget {
         children: [
           Column(
             children: [
-              const UnathenticatedHeader().padding(horizontal: 30, top: 30, bottom: 40),
+              const UnauthenticatedHeader().padding(horizontal: 30, top: 30, bottom: 40),
               const SignInForm()
                   .decorated(
                     color: Theme.of(context).colorScheme.surface,
