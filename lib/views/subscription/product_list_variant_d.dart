@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/components/inherited/parent_scroll_controller.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -19,6 +20,7 @@ class SubscriptionProductsListVariantD extends ConsumerWidget {
     final analyticsStore = ref.watch(analyticsStorePOD);
 
     return ListView.builder(
+      controller: ParentScrollController.of(context),
       clipBehavior: Clip.none,
       padding: EdgeInsets.zero,
       shrinkWrap: true,

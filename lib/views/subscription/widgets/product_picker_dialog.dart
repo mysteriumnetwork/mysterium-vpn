@@ -18,9 +18,8 @@ import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/views/subscription/subscription_button.dart';
-import 'package:mysterium_vpn/views/subscription/widgets/billing_text.dart';
-import 'package:mysterium_vpn/views/subscription/widgets/discount_tag.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/highlighted_product.dart';
+import 'package:mysterium_vpn/views/subscription/widgets/product_pricing.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 Future<void> shownProductPickerDialog({
@@ -181,35 +180,38 @@ class _ProductsContainer extends StatelessWidget {
   final bool isDarkTheme;
   final AnalyticsStore analyticsStore;
   @override
-  Widget build(BuildContext context) => DecoratedBox(
-        decoration: BoxDecoration(
-          color: isDarkTheme ? const Color(0xff23222D) : const Color(0xff363355),
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          border: Border.all(color: Palette.purple, width: 1.5),
-        ),
-        child: ListView.separated(
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: products.length,
-          itemBuilder: (context, index) => ContaineredProduct(
-            selectProdcut: () {
-              analyticsStore.logProductSelected(
-                products[index].id,
-                products.map((e) => e.id).toList(),
-              );
-              selectedProductId.value = products[index].id;
-            },
-            product: products[index],
-            monthlyRawPrice: products.last.rawPrice,
-            showDiscountTag: products[index].id == products.first.id,
-            isSelected: selectedProductId.value == products[index].id,
-            isDarkTheme: false,
+  Widget build(BuildContext context) => ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: isDarkTheme ? const Color(0xff23222D) : const Color(0xff363355),
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
+            border: Border.all(color: Palette.purple, width: 1.5),
           ),
-          separatorBuilder: (context, index) => const Divider(
-            color: Color.fromRGBO(106, 103, 142, 0.4),
-            thickness: 1,
-            height: 1,
+          child: ListView.separated(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: products.length,
+            itemBuilder: (context, index) => ContaineredProduct(
+              selectProdcut: () {
+                analyticsStore.logProductSelected(
+                  products[index].id,
+                  products.map((e) => e.id).toList(),
+                );
+                selectedProductId.value = products[index].id;
+              },
+              product: products[index],
+              monthlyRawPrice: products.last.rawPrice,
+              showDiscountTag: products[index].id == products.first.id,
+              isSelected: selectedProductId.value == products[index].id,
+              isDarkTheme: false,
+            ),
+            separatorBuilder: (context, index) => const Divider(
+              color: Color.fromRGBO(106, 103, 142, 0.4),
+              thickness: 1,
+              height: 1,
+            ),
           ),
         ),
       );
@@ -233,60 +235,32 @@ class ContaineredProduct extends StatelessWidget {
   final bool isSelected;
 
   @override
-  Widget build(BuildContext context) => RippleWidget(
-        onTap: selectProdcut,
-        radius: 0,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                EasyText(
-                  product.id.tr(),
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: !isDarkTheme ? Palette.white : null,
-                ),
-                const SizedBox(width: 8),
-                if (showDiscountTag)
-                  DiscountTag(
-                    monthlyRawPrice: monthlyRawPrice,
-                    product: product,
-                  ),
-                if (isSelected) ...[
-                  const Spacer(),
-                  const SvgIcon(
-                    asset: Assets.checkmark,
-                  ),
-                ],
-              ],
-            ),
-            RichText(
-              text: TextSpan(
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontSize: 14,
-                    ),
-                children: [
-                  TextSpan(
-                    text: product.monthlyPrice,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Palette.purple,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  TextSpan(
-                    text: LocaleKeys.perMonth.tr(),
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Palette.purple,
-                          fontSize: 14,
-                        ),
-                  ),
-                ],
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return RippleWidget(
+      onTap: selectProdcut,
+      radius: 0,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: DefaultTextStyle(
+              style: theme.textTheme.bodyMedium!.copyWith(color: Palette.white),
+              child: ProductPricing(
+                product: product,
+                showDiscount: showDiscountTag,
+                monthlyPrice: monthlyRawPrice,
               ),
             ),
-            BillingText(product: product, isDarkTheme: isDarkTheme),
-          ],
-        ).padding(horizontal: 16, vertical: 12).width(double.infinity),
-      );
+          ),
+          if (isSelected)
+            const Padding(
+              padding: EdgeInsets.only(left: 8),
+              child: SvgIcon(asset: Assets.checkmark),
+            ),
+        ],
+      ).padding(horizontal: 14, vertical: 14).width(double.infinity),
+    );
+  }
 }
