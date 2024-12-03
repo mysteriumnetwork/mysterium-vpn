@@ -1,5 +1,4 @@
 export 'api.dart';
-export 'authentication_required.dart';
 export 'broken_node.dart';
 export 'incorrect_code.dart';
 export 'incorrect_magic_link.dart';
