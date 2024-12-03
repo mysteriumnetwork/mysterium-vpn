@@ -19,7 +19,7 @@ abstract class _LocationsStore with Store {
     required LocaleStore localeStore,
   })  : _apiService = apiService,
         _analyticsStore = analyticsStore {
-    autorun((_) async {
+    when((_) => true, () async {
       fetchVPNLocations().whenComplete(fetchRecentLocations);
     });
 
