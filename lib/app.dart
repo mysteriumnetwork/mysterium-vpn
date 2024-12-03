@@ -8,6 +8,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/router/route_delegate.dart';
 import 'package:mysterium_vpn/components/custom_platform_menu.dart';
 import 'package:mysterium_vpn/components/lifecycle_listener.dart';
@@ -42,6 +43,11 @@ class MyApp extends HookConsumerWidget {
       },
       [authStore],
     );
+    useReaction(() => authSessionStore.status == AuthStatus.authenticated, (_) async {
+      if (authSessionStore.status == AuthStatus.authenticated) {
+        await authStore.fetchAuthUser();
+      }
+    });
 
     return ReactionBuilder(
       builder: (_) => reaction(
