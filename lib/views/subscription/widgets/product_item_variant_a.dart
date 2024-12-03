@@ -1,15 +1,14 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/circle_box.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/ripple.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
+import 'package:mysterium_vpn/views/subscription/widgets/product_pricing.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ProductItemVariantA extends StatelessWidget {
@@ -24,64 +23,53 @@ class ProductItemVariantA extends StatelessWidget {
   final Function(String productId) onProductSelected;
   final String selectedProductId;
   @override
-  Widget build(BuildContext context) => RippleWidget(
-        radius: 20,
-        onTap: () => onProductSelected(productDetails.id),
-        child: Row(
-          children: [
-            const SvgIcon(
-              asset: Assets.subscriptionItem,
-            ).paddingDirectional(end: getMediaWidth(context) * 0.05),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                EasyText(
-                  productDetails.id.tr(),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-                Row(
-                  children: [
-                    EasyText(
-                      productDetails.billedInTotal,
-                      color: Palette.purple,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ],
-                ).fittedBox(),
-                EasyText(
-                  productDetails.billedPerMonth,
-                  fontSize: 14,
-                ),
-              ],
-            ).expanded(),
-            Observer(
-              builder: (context) => Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (productDetails.status == ProductStatus.pending)
-                    const LoadingIndicator(
-                      radius: 18,
-                      strokeWidth: 1.5,
-                    )
-                  else
-                    _CheckMark(
-                      isSelected: productDetails.id == selectedProductId,
-                    ),
-                ],
-              ).padding(left: 14),
-            ),
-          ],
-        ).padding(horizontal: 14, vertical: 8).decorated(
-              border: Border.all(color: Theme.of(context).hintColor),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(20),
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return RippleWidget(
+      radius: 20,
+      onTap: () => onProductSelected(productDetails.id),
+      child: Row(
+        children: [
+          const SvgIcon(
+            asset: Assets.subscriptionItem,
+          ).paddingDirectional(end: getMediaWidth(context) * 0.05),
+          Expanded(
+            child: DefaultTextStyle(
+              style: theme.textTheme.bodyMedium!.copyWith(
+                color: switch (theme.brightness) {
+                  Brightness.dark => Palette.white,
+                  Brightness.light => Palette.black,
+                },
               ),
+              child: ProductPricing(product: productDetails),
             ),
-      );
+          ),
+          Observer(
+            builder: (context) => Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (productDetails.status == ProductStatus.pending)
+                  const LoadingIndicator(
+                    radius: 18,
+                    strokeWidth: 1.5,
+                  )
+                else
+                  _CheckMark(
+                    isSelected: productDetails.id == selectedProductId,
+                  ),
+              ],
+            ).padding(left: 14),
+          ),
+        ],
+      ).padding(horizontal: 14, vertical: 8).decorated(
+            border: Border.all(color: theme.hintColor),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(20),
+            ),
+          ),
+    );
+  }
 }
 
 class _CheckMark extends StatelessWidget {

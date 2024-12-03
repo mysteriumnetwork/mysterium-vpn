@@ -1,0 +1,10 @@
+import 'package:flutter/widgets.dart';
+
+class CharacterSpan extends TextSpan {
+  const CharacterSpan._({required String character, super.style}) : super(text: character);
+
+  factory CharacterSpan.space({TextStyle? style}) => CharacterSpan._(character: ' ', style: style);
+
+  factory CharacterSpan.newline({TextStyle? style}) =>
+      CharacterSpan._(character: '\n', style: style);
+}

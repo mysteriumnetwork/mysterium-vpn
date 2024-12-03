@@ -40,6 +40,7 @@ class SubscriptionFormVariantA extends HookConsumerWidget {
       builder: (context) => Align(
         alignment: Alignment.topCenter,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             EasyText(
               LocaleKeys.selectPackage.tr(),
@@ -80,7 +81,7 @@ class SubscriptionFormVariantA extends HookConsumerWidget {
             ).padding(top: 10),
             const BottomSpacer(),
           ],
-        ).scrollable(),
+        ),
       ),
     );
   }
