@@ -509,4 +509,8 @@ abstract class LocaleKeys {
   static const malwareBlocker = 'malwareBlocker';
   static const contentBlockerTitle = 'contentBlockerTitle';
   static const contentBlockerDesc = 'contentBlockerDesc';
+  static const setupTunnerPermissionsDialogTitle = 'setupTunnerPermissionsDialogTitle';
+  static const setupTunnerPermissionsDialogDesc = 'setupTunnerPermissionsDialogDesc';
+  static const setupTunnerPermissionsDialogDisclaimer = 'setupTunnerPermissionsDialogDisclaimer';
+  static const allowPermissionsBtn = 'allowPermissionsBtn';
 }

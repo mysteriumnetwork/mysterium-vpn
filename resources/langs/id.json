@@ -506,5 +506,9 @@
   "billedEveryMonth": "{amount} Ditagih setiap bulan",
   "malwareBlocker": "Pemblokir malware",
   "contentBlockerTitle": "Pemblokir konten NSFW dan malware",
-  "contentBlockerDesc": "Blokir malware dan konten dewasa"
+  "contentBlockerDesc": "Blokir malware dan konten dewasa",
+  "setupTunnerPermissionsDialogTitle": "Kami membutuhkan izin Anda",
+  "setupTunnerPermissionsDialogDesc": "Untuk mulai menggunakan Mysterium VPN, kami memerlukan izin Anda untuk memasang profil VPN.",
+  "setupTunnerPermissionsDialogDisclaimer": "Anonimitas Anda aman. Kami tidak melihat, mengumpulkan, atau menyimpan aktivitas penjelajahan Anda.",
+  "allowPermissionsBtn": "Mengizinkan"
 }
