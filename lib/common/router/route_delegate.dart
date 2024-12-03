@@ -27,7 +27,6 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
           Routes.main.path,
           Routes.settings.path,
           Routes.payment.path,
-          Routes.permissions.path,
           Routes.privacyPolicy.path,
         ],
         check: (context, state) => authSessionStore.status == AuthStatus.authenticated,
