@@ -41,7 +41,7 @@ class SignInForm extends HookConsumerWidget {
 
     return Observer(
       builder: (context) {
-        final signInStatus = store.signInFeatureFeature.status;
+        final signInStatus = store.signInFeature.status;
 
         return Stack(
           children: [

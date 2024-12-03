@@ -91,7 +91,7 @@ abstract class _AuthStore with Store {
   bool marketingConsent = true;
 
   @observable
-  ObservableFuture<String?> signInFeatureFeature = ObservableFuture.value(null);
+  ObservableFuture<String?> signInFeature = ObservableFuture.value(null);
   @observable
   ObservableFuture<void> logoutFeature = ObservableFuture.value(null);
   @observable
@@ -122,6 +122,7 @@ abstract class _AuthStore with Store {
           final storedLink = await _secureStorageService.getAppLink();
           if (appLink.toString() != storedLink) {
             await _secureStorageService.saveAppLink(appLink: appLink.toString());
+
             verifyMagicLinkAndAuthenticate(appLink);
           } else {
             Sentry.captureException(TokenAlreadyUsedException());
@@ -190,6 +191,7 @@ abstract class _AuthStore with Store {
     Future<TokenResponse> authenticateFeature,
   ) async {
     try {
+      _authSessionStore.status = AuthStatus.authenticating;
       final authTokens = await authenticateFeature;
       _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
       _analyticsStore.setLogin(grantType);
@@ -267,13 +269,13 @@ abstract class _AuthStore with Store {
     );
     try {
       _authenticatingType = GrantType.email;
-      signInFeatureFeature = ObservableFuture(
+      signInFeature = ObservableFuture(
         _authService.signInWithEmail(
           email: email,
           pkcePair: _pkcePair!,
         ),
       );
-      final code = await signInFeatureFeature;
+      final code = await signInFeature;
       if (code != null) {
         authenticate(
           GrantType.email,
@@ -301,10 +303,10 @@ abstract class _AuthStore with Store {
   Future<void> signInWithGoogle() async {
     try {
       _authenticatingType = GrantType.google;
-      signInFeatureFeature = ObservableFuture(
+      signInFeature = ObservableFuture(
         _authService.signInWithGoogle(),
       );
-      final code = await signInFeatureFeature;
+      final code = await signInFeature;
       if (code != null) {
         authenticate(
           GrantType.google,
@@ -329,10 +331,10 @@ abstract class _AuthStore with Store {
   Future<void> signInWithApple() async {
     try {
       _authenticatingType = GrantType.apple;
-      signInFeatureFeature = ObservableFuture(
+      signInFeature = ObservableFuture(
         _authService.signInWithApple(),
       );
-      final code = await signInFeatureFeature;
+      final code = await signInFeature;
       if (code != null) {
         authenticate(
           GrantType.apple,
