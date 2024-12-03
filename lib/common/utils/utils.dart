@@ -363,7 +363,7 @@ void handleOnBillingPage({
   }
 
   if (!subscriptionActive && !Platform.isWindows) {
-    context.beamToNamed(Routes.payment.toRoute);
+    context.beamToNamed(Routes.payment.path);
     return;
   }
 

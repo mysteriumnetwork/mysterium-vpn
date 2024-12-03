@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/layout_builders/screen_type_builder.dart';
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
@@ -54,7 +53,7 @@ class HomePage extends HookConsumerWidget {
         }
         if (!vpnConfigConsent) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            Beamer.of(context).beamToNamed(Routes.privacyPolicy.toRoute);
+            Beamer.of(context).beamToNamed(Routes.privacyPolicy.path);
           });
         }
       },

@@ -41,7 +41,7 @@ class MyApp extends HookConsumerWidget {
         authSessionStore.initStore().whenComplete(authStore.initAuth);
         return null;
       },
-      [authStore],
+      [authStore, authSessionStore],
     );
     useReaction(() => authSessionStore.status == AuthStatus.authenticated, (_) async {
       if (authSessionStore.status == AuthStatus.authenticated) {

@@ -2,14 +2,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/app_logo.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/login_headlines.dart';
+import 'package:mysterium_vpn/components/unauthenticated_header.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class LoginMobileView extends StatelessWidget {
-  const LoginMobileView({
+class WelcomeMobileView extends StatelessWidget {
+  const WelcomeMobileView({
     required this.onSignInPressed,
     super.key,
   });
@@ -19,9 +19,9 @@ class LoginMobileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          const AppLogo().padding(
-            top: getMediaHeight(context) * 0.03,
-            bottom: getMediaHeight(context) * 0.02,
+          const UnauthenticatedHeader().padding(
+            vertical: getMediaHeight(context) * 0.03,
+            horizontal: 30,
           ),
           const Expanded(
             child: LoginHeadlines(),

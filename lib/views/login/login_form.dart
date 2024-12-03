@@ -1,16 +1,18 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/forms/forms.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
@@ -30,14 +32,26 @@ class SignInForm extends HookConsumerWidget {
     final store = ref.watch(authStorePOD);
     final signInForm = useMemoized(() {
       final form = singIn();
-      form.control('email').value = store.email;
       return form;
     });
     final marketingConsentForm = useMemoized(marketingConsent);
 
+    useEffect(
+      () {
+        Future.microtask(() async {
+          final email = await store.getLastLoggedInUser();
+          if (!signInForm.control('email').dirty) {
+            signInForm.control('email').value = email;
+          }
+        });
+        return null;
+      },
+      [signInForm, store],
+    );
+
     return Observer(
       builder: (context) {
-        final signInStatus = store.signInFeatureFeature.status;
+        final signInStatus = store.signInFeature.status;
 
         return Stack(
           children: [
@@ -45,12 +59,65 @@ class SignInForm extends HookConsumerWidget {
               formGroup: signInForm,
               child: Column(
                 children: [
+                  EasyText(
+                    LocaleKeys.signIn.tr(),
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                  ).padding(bottom: 20),
+                  SocialLoginButton(
+                    onPressed: signInStatus == FutureStatus.pending
+                        ? null
+                        : () {
+                            analyticsStore.logEvent(AnalyticsEvent.appleLogin);
+                            store.signInWithApple();
+                          },
+                    isLoading: signInStatus == FutureStatus.pending &&
+                        store.authenticatingType == GrantType.apple,
+                    asset: Assets.appleLogo,
+                    label: LocaleKeys.continueWithApple.tr(),
+                  ).padding(bottom: 20),
+                  SocialLoginButton(
+                    onPressed: signInStatus == FutureStatus.pending
+                        ? null
+                        : () {
+                            analyticsStore.logEvent(AnalyticsEvent.gLogin);
+                            store.signInWithGoogle();
+                          },
+                    isLoading: signInStatus == FutureStatus.pending &&
+                        store.authenticatingType == GrantType.google,
+                    asset: Assets.googleLogo,
+                    label: LocaleKeys.continueWithGoogle.tr(),
+                  ),
+                  Row(
+                    children: [
+                      const Expanded(
+                        child: Divider(
+                          color: Palette.lightBlack,
+                        ),
+                      ),
+                      EasyText(
+                        LocaleKeys.or.tr(),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Palette.lightBlack,
+                      ).padding(horizontal: 8),
+                      const Expanded(
+                        child: Divider(
+                          color: Palette.lightBlack,
+                        ),
+                      ),
+                    ],
+                  ).padding(vertical: 35),
                   AutofillGroup(
                     child: ReactiveTextField(
                       onTap: (_) {
                         analyticsStore.logEvent(AnalyticsEvent.emailInput);
                       },
-                      decoration: InputDecoration(labelText: LocaleKeys.email.tr()),
+                      decoration: InputDecoration(
+                        labelText: LocaleKeys.email.tr(),
+                        hintText: 'example@example.com',
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
                       formControlName: 'email',
                       autofillHints: const [AutofillHints.email],
                       keyboardType: TextInputType.emailAddress,
@@ -88,7 +155,7 @@ class SignInForm extends HookConsumerWidget {
                           fontSize: 14,
                         ).expanded(),
                       ],
-                    ).padding(bottom: 10),
+                    ).padding(bottom: 40),
                   ),
                   ReactiveFormConsumer(
                     builder: (_, signInForm, child) => EasyButton(
@@ -110,57 +177,51 @@ class SignInForm extends HookConsumerWidget {
                               fontWeight: FontWeight.w700,
                             ),
                     ),
-                  ),
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Expanded(
-                            child: Divider(
-                              color: Palette.lightBlack,
-                            ),
+                  ).padding(bottom: 40),
+                  RichText(
+                    text: TextSpan(
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            fontSize: 14,
                           ),
-                          EasyText(
-                            LocaleKeys.or.tr(),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Palette.lightBlack,
-                          ).padding(horizontal: 8),
-                          const Expanded(
-                            child: Divider(
-                              color: Palette.lightBlack,
-                            ),
-                          ),
-                        ],
-                      ).padding(vertical: 25),
-                      SocialLoginButton(
-                        onPressed: signInStatus == FutureStatus.pending
-                            ? null
-                            : () {
-                                analyticsStore.logEvent(AnalyticsEvent.appleLogin);
-                                store.signInWithApple();
-                              },
-                        isLoading: signInStatus == FutureStatus.pending &&
-                            store.authenticatingType == GrantType.apple,
-                        asset: Assets.appleLogo,
-                        label: LocaleKeys.continueWithApple.tr(),
-                      ).padding(bottom: 20),
-                      SocialLoginButton(
-                        onPressed: signInStatus == FutureStatus.pending
-                            ? null
-                            : () {
-                                analyticsStore.logEvent(AnalyticsEvent.gLogin);
-                                store.signInWithGoogle();
-                              },
-                        isLoading: signInStatus == FutureStatus.pending &&
-                            store.authenticatingType == GrantType.google,
-                        asset: Assets.googleLogo,
-                        label: LocaleKeys.continueWithGoogle.tr(),
-                      ).padding(bottom: 20),
-                    ],
+                      children: [
+                        TextSpan(text: '${LocaleKeys.signInDisclaimer.tr()} '),
+                        TextSpan(
+                          text: LocaleKeys.termsAndConditions.tr(),
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                color: Palette.pink,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                          mouseCursor: WidgetStateMouseCursor.clickable,
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              openUrlLink(Uri.parse(termsOfServiceUrl));
+                              analyticsStore.logEvent(AnalyticsEvent.tcsClickLoginScreen);
+                            },
+                        ),
+                        TextSpan(text: '${LocaleKeys.and.tr()} '),
+                        TextSpan(
+                          text: LocaleKeys.privacyPolicy.tr(),
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                color: Palette.pink,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                          mouseCursor: WidgetStateMouseCursor.clickable,
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              openUrlLink(Uri.parse(privacyPolicyUrl));
+                              analyticsStore.logEvent(AnalyticsEvent.ppClickLoginScreen);
+                            },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
+              ).padding(
+                top: 20,
+                bottom: 10,
+                horizontal: getMediaWidth(context) > 650 ? 60 : 20,
               ),
             ),
           ],
@@ -190,7 +251,7 @@ class SignInForm extends HookConsumerWidget {
     final email = form.control('email').value as String;
     final result = await store.signInwithEmail(email: email);
     if (context.mounted && result == null) {
-      context.beamToNamed(Routes.checkYourEmail.toRoute, beamBackOnPop: true);
+      context.beamToNamed(Routes.checkYourEmail.path);
     }
   }
 }

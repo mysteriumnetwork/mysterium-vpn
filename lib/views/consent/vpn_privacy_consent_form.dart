@@ -5,7 +5,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
@@ -46,7 +45,7 @@ class VpnPrivacyConsentForm extends HookConsumerWidget {
           width: 250,
           onPressed: () {
             analyticsStore.logEvent(AnalyticsEvent.ppAcceptClick);
-            context.beamToReplacementNamed(Routes.permissions.toRoute);
+            context.beamToReplacementNamed(Routes.permissions.path);
           },
           child: EasyText(
             LocaleKeys.acceptAndContinue.tr(),

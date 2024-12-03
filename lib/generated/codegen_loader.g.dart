@@ -27,7 +27,7 @@ class CodegenLoader extends AssetLoader {
     "continueWithEmail": "继续使用电子邮件",
     "continueWithGoogle": "继续使用谷歌",
     "continueWithApple": "继续使用苹果",
-    "signInDisclaimer": "登录即表示您同意我们的",
+    "signInDisclaimer": "Mysterium VPN 不会记录您的在线活动，并且没有任何记录与您、您的设备、您的 IP 地址或您的电子邮件绑定。登录即表示您同意我们的",
     "termsAndConditions": "条款和条件",
     "and": "和",
     "privacyPolicy": "隐私政策",
@@ -538,7 +538,8 @@ class CodegenLoader extends AssetLoader {
     "continueWithEmail": "E-posta ile devam et",
     "continueWithGoogle": "Google ile devam",
     "continueWithApple": "Apple ile devam et",
-    "signInDisclaimer": "Oturum açarak şunları kabul etmiş olursunuz:",
+    "signInDisclaimer":
+        "Mysterium VPN çevrimiçi etkinliklerinizi günlüğe kaydetmez ve size, cihazınıza, IP adresinize veya e-posta adresinize hiçbir kayıt bağlanmaz. Oturum açarak şunları kabul etmiş olursunuz:",
     "termsAndConditions": "Şartlar ve koşullar",
     "and": " Ve ",
     "privacyPolicy": "Gizlilik Politikası",
@@ -1068,7 +1069,8 @@ class CodegenLoader extends AssetLoader {
     "continueWithEmail": "メールで続行",
     "continueWithGoogle": "Google で続行",
     "continueWithApple": "Apple で続行",
-    "signInDisclaimer": "サインインすると、次のことに同意したことになります",
+    "signInDisclaimer":
+        "Mysterium VPN はあなたのオンライン アクティビティを記録せず、記録はあなた、あなたのデバイス、あなたの IP アドレス、またはあなたの電子メールに関連付けられません。サインインすると、あなたは",
     "termsAndConditions": "利用規約",
     "and": "および",
     "privacyPolicy": "プライバシーポリシー",
@@ -1581,7 +1583,8 @@ class CodegenLoader extends AssetLoader {
     "continueWithEmail": "Mit E-Mail fortfahren",
     "continueWithGoogle": "Weiter mit Google",
     "continueWithApple": "Weiter mit Apple",
-    "signInDisclaimer": "Mit Ihrer Anmeldung stimmen Sie unseren",
+    "signInDisclaimer":
+        "Mysterium VPN protokolliert Ihre Online-Aktivitäten nicht und es werden keine Aufzeichnungen an Sie, Ihr Gerät, Ihre IP-Adresse oder Ihre E-Mail-Adresse gebunden. Durch die Anmeldung stimmen Sie unseren zu",
     "termsAndConditions": "Geschäftsbedingungen",
     "and": "und der",
     "privacyPolicy": "Datenschutzrichtlinie zu",
@@ -2129,7 +2132,8 @@ class CodegenLoader extends AssetLoader {
     "continueWithEmail": "Continue com e -mail",
     "continueWithGoogle": "Continue com o Google",
     "continueWithApple": "Continue com a Apple",
-    "signInDisclaimer": "Ao fazer login, você concorda com o nosso",
+    "signInDisclaimer":
+        "Mysterium VPN não registra suas atividades online e nenhum registro está vinculado a você, seu dispositivo, seu endereço IP ou seu e-mail.Ao fazer login, você concorda com nossos",
     "termsAndConditions": "Termos e Condições",
     "and": "e",
     "privacyPolicy": "Política de Privacidade",
@@ -2665,7 +2669,8 @@ class CodegenLoader extends AssetLoader {
     "continueWithEmail": "Continue with Email",
     "continueWithGoogle": "Continue with Google",
     "continueWithApple": "Continue with Apple",
-    "signInDisclaimer": "By signing in, you agree to our",
+    "signInDisclaimer":
+        "Mysterium VPN does not log your online activities, and no records are tied to you, your device, your IP address, or your email.By signing in, you agree with our",
     "termsAndConditions": "Terms and Conditions",
     "and": " and ",
     "privacyPolicy": "Privacy Policy",
@@ -3200,7 +3205,8 @@ class CodegenLoader extends AssetLoader {
     "continueWithEmail": "Continua con l'e-mail",
     "continueWithGoogle": "Continua con Google",
     "continueWithApple": "Continua con Apple",
-    "signInDisclaimer": "Effettuando l'accesso, accetti i nostri",
+    "signInDisclaimer":
+        "Mysterium VPN non registra le tue attività online e nessun record è legato a te, al tuo dispositivo, al tuo indirizzo IP o alla tua email. Accedendo, accetti i nostri",
     "termsAndConditions": "Termini e condizioni",
     "and": "e",
     "privacyPolicy": "politica sulla riservatezza",
@@ -3741,7 +3747,8 @@ class CodegenLoader extends AssetLoader {
     "continueWithEmail": "Continuez avec le courrier électronique",
     "continueWithGoogle": "Continuez avec Google",
     "continueWithApple": "Continuez avec Apple",
-    "signInDisclaimer": "En vous connectant, vous acceptez notre",
+    "signInDisclaimer":
+        "Mysterium VPN n'enregistre pas vos activités en ligne et aucun enregistrement n'est lié à vous, à votre appareil, à votre adresse IP ou à votre adresse e-mail. En vous connectant, vous acceptez notre",
     "termsAndConditions": "Termes et conditions",
     "and": "et",
     "privacyPolicy": "Politique de confidentialité",
@@ -4285,7 +4292,8 @@ class CodegenLoader extends AssetLoader {
     "continueWithEmail": "Lanjutkan dengan Email",
     "continueWithGoogle": "Lanjutkan dengan Google",
     "continueWithApple": "Lanjutkan dengan Apple",
-    "signInDisclaimer": "Dengan masuk, Anda menyetujui kami",
+    "signInDisclaimer":
+        "Mysterium VPN tidak mencatat aktivitas online Anda, dan tidak ada catatan yang terkait dengan Anda, perangkat Anda, alamat IP Anda, atau email Anda. Dengan masuk, Anda setuju dengan kami",
     "termsAndConditions": "syarat dan Ketentuan",
     "and": "Dan",
     "privacyPolicy": "Kebijakan pribadi",
@@ -4820,7 +4828,8 @@ class CodegenLoader extends AssetLoader {
     "continueWithEmail": "Continuar con correo electrónico",
     "continueWithGoogle": "Continuar con Google",
     "continueWithApple": "Continuar con Apple",
-    "signInDisclaimer": "Al iniciar sesión, aceptas nuestros",
+    "signInDisclaimer":
+        "Mysterium VPN no registra sus actividades en línea y no hay registros vinculados a usted, su dispositivo, su dirección IP o su correo electrónico. Al iniciar sesión, acepta nuestras",
     "termsAndConditions": "Términos y condiciones",
     "and": "y",
     "privacyPolicy": "Política de privacidad",
@@ -5359,7 +5368,8 @@ class CodegenLoader extends AssetLoader {
     "continueWithEmail": "تواصل مع البريد الإلكتروني",
     "continueWithGoogle": "تواصل مع جوجل",
     "continueWithApple": "تواصل مع أبل",
-    "signInDisclaimer": "من خلال تسجيل الدخول ، فإنك توافق على",
+    "signInDisclaimer":
+        "لا تقوم Mysterium VPN بتسجيل أنشطتك عبر الإنترنت، ولا ترتبط أي سجلات بك أو بجهازك أو بعنوان IP الخاص بك أو بريدك الإلكتروني. من خلال تسجيل الدخول، فإنك توافق على",
     "termsAndConditions": "الأحكام والشروط",
     "and": "و",
     "privacyPolicy": "سياسة الخصوصية",
