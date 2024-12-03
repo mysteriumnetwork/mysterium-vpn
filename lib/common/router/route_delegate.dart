@@ -29,7 +29,7 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
           Routes.privacyPolicy.path,
         ],
         check: (context, state) => authSessionStore.status == AuthStatus.authenticated,
-        beamToNamed: (_, __) => Routes.welcome.path,
+        beamToNamed: (_, __) => loginRoute,
       ),
       BeamGuard(
         pathPatterns: [loginRoute],
@@ -41,9 +41,8 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
       BeamGuard(
         pathPatterns: [Routes.splash.path],
         check: (context, state) => authSessionStore.status == AuthStatus.unknown,
-        beamToNamed: (_, __) => authSessionStore.status == AuthStatus.authenticated
-            ? Routes.main.path
-            : Routes.welcome.path,
+        beamToNamed: (_, __) =>
+            authSessionStore.status == AuthStatus.authenticated ? Routes.main.path : loginRoute,
       ),
     ],
     initialPath: Routes.splash.path,

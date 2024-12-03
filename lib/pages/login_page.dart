@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/views/sign_in/sign_in_view.dart';
+import 'package:mysterium_vpn/views/login/login_view.dart';
 
-class LoginPage extends ConsumerWidget {
+class LoginPage extends HookConsumerWidget {
   const LoginPage({
     super.key,
   });

@@ -77,7 +77,6 @@ class SignInForm extends HookConsumerWidget {
                     label: LocaleKeys.continueWithGoogle.tr(),
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Expanded(
                         child: Divider(
@@ -174,7 +173,6 @@ class SignInForm extends HookConsumerWidget {
                           text: LocaleKeys.termsAndConditions.tr(),
                           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                                 color: Palette.pink,
-                                decoration: TextDecoration.underline,
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -190,7 +188,6 @@ class SignInForm extends HookConsumerWidget {
                           text: LocaleKeys.privacyPolicy.tr(),
                           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                                 color: Palette.pink,
-                                decoration: TextDecoration.underline,
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
