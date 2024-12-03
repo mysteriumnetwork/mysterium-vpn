@@ -9,6 +9,12 @@ part of 'vpn_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$VpnStore on _VpnStore, Store {
+  Computed<ConnectionStatus>? _$vpnStatusComputed;
+
+  @override
+  ConnectionStatus get vpnStatus => (_$vpnStatusComputed ??=
+          Computed<ConnectionStatus>(() => super.vpnStatus, name: '_VpnStore.vpnStatus'))
+      .value;
   Computed<String?>? _$replaceDNSAddressComputed;
 
   @override
@@ -192,11 +198,11 @@ mixin _$VpnStore on _VpnStore, Store {
         .run(() => super._setupAndListenToConnectionStatus());
   }
 
-  late final _$_setupTunnelAsyncAction = AsyncAction('_VpnStore._setupTunnel', context: context);
+  late final _$setupTunnelAsyncAction = AsyncAction('_VpnStore.setupTunnel', context: context);
 
   @override
-  Future<void> _setupTunnel() {
-    return _$_setupTunnelAsyncAction.run(() => super._setupTunnel());
+  Future<void> setupTunnel() {
+    return _$setupTunnelAsyncAction.run(() => super.setupTunnel());
   }
 
   late final _$toggleRefreshIPWhenConnectingAsyncAction =
@@ -301,6 +307,7 @@ mixin _$VpnStore on _VpnStore, Store {
     return '''
 resolveConnectionLocationFuture: ${resolveConnectionLocationFuture},
 fetchConfigFuture: ${fetchConfigFuture},
+vpnStatus: ${vpnStatus},
 replaceDNSAddress: ${replaceDNSAddress},
 isConnected: ${isConnected},
 isLoading: ${isLoading}

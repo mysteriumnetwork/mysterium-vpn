@@ -9,3 +9,4 @@ export 'package_not_found.dart';
 export 'sign_in_aborted.dart';
 export 'subscription_verification.dart';
 export 'token_already_used.dart';
+export 'tunnel_setup_required_exception.dart';
