@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 
@@ -9,12 +10,12 @@ part 'auth_session_store.g.dart';
 class AuthSessionStore = _AuthSessionStore with _$AuthSessionStore;
 
 abstract class _AuthSessionStore with Store {
-  _AuthSessionStore({required SecureStorageService secureStorage})
-      : _secureStorage = secureStorage {
-    initStore();
-  }
+  _AuthSessionStore({required SecureStorageService secureStorage}) : _secureStorage = secureStorage;
 
   final SecureStorageService _secureStorage;
+
+  @observable
+  AuthStatus status = AuthStatus.unknown;
 
   @readonly
   String? _accessToken;
@@ -28,12 +29,14 @@ abstract class _AuthSessionStore with Store {
   @action
   Future<void> initStore() async {
     await _storageLoad();
+    status = _accessToken != null ? AuthStatus.authenticated : AuthStatus.unauthenticated;
   }
 
   @action
   void setAuthenticated(String accessToken, String? refreshToken) {
     _accessToken = accessToken;
     _refreshToken = refreshToken;
+    status = AuthStatus.authenticated;
 
     _storageUpdate();
   }
@@ -49,6 +52,7 @@ abstract class _AuthSessionStore with Store {
   void setUnauthenticated() {
     _accessToken = null;
     _refreshToken = null;
+    status = AuthStatus.unauthenticated;
     _user = null;
 
     _storageCleanup();

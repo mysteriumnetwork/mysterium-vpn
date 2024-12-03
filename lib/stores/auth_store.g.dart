@@ -9,23 +9,6 @@ part of 'auth_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$AuthStore on _AuthStore, Store {
-  late final _$_authStatusAtom = Atom(name: '_AuthStore._authStatus', context: context);
-
-  AuthStatus get authStatus {
-    _$_authStatusAtom.reportRead();
-    return super._authStatus;
-  }
-
-  @override
-  AuthStatus get _authStatus => authStatus;
-
-  @override
-  set _authStatus(AuthStatus value) {
-    _$_authStatusAtom.reportWrite(value, super._authStatus, () {
-      super._authStatus = value;
-    });
-  }
-
   late final _$_pkcePairAtom = Atom(name: '_AuthStore._pkcePair', context: context);
 
   PkcePair? get pkcePair {
@@ -176,11 +159,27 @@ mixin _$AuthStore on _AuthStore, Store {
     return _$initAuthAsyncAction.run(() => super.initAuth());
   }
 
+  late final _$fetchAuthUserAsyncAction = AsyncAction('_AuthStore.fetchAuthUser', context: context);
+
+  @override
+  Future<void> fetchAuthUser() {
+    return _$fetchAuthUserAsyncAction.run(() => super.fetchAuthUser());
+  }
+
   late final _$authenticateAsyncAction = AsyncAction('_AuthStore.authenticate', context: context);
 
   @override
-  Future<void> authenticate(GrantType grantType, Future<AuthUser> authenticateFeature) {
+  Future<void> authenticate(GrantType grantType, Future<TokenResponse> authenticateFeature) {
     return _$authenticateAsyncAction.run(() => super.authenticate(grantType, authenticateFeature));
+  }
+
+  late final _$_initializeAuthenticatedUserAsyncAction =
+      AsyncAction('_AuthStore._initializeAuthenticatedUser', context: context);
+
+  @override
+  Future<void> _initializeAuthenticatedUser(AuthUser user) {
+    return _$_initializeAuthenticatedUserAsyncAction
+        .run(() => super._initializeAuthenticatedUser(user));
   }
 
   late final _$logoutAsyncAction = AsyncAction('_AuthStore.logout', context: context);

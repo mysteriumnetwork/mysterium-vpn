@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
@@ -80,7 +81,7 @@ class SignInView extends ConsumerWidget {
                   ),
                 ],
               ).scrollable().paddingDirectional(all: 20),
-              if (authStore.authStatus == AuthStatus.authenticating)
+              if (authStore.signInFeatureFeature.status == FutureStatus.pending)
                 LoadingBarrier(color: Theme.of(context).primaryColor),
             ],
           ),
