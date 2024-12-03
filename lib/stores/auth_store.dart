@@ -88,26 +88,26 @@ abstract class _AuthStore with Store {
   String? email;
 
   @observable
-  String? temporaryEmail;
-
-  @observable
   bool marketingConsent = true;
 
   @observable
-  ObservableFuture<String?> signInFeatureFeature = ObservableFuture.value(null);
+  ObservableFuture<String?> signInFeature = ObservableFuture.value(null);
   @observable
   ObservableFuture<void> logoutFeature = ObservableFuture.value(null);
   @observable
   ObservableFuture<void> deleteAccountFeature = ObservableFuture.value(null);
   @observable
-  ObservableFuture<AuthUser>? authenticateFeature;
+  ObservableFuture<TokenResponse>? authenticateFeature;
+
+  @action
+  Future<String?> getLastLoggedInUser() async =>
+      email ?? await _secureStorageService.getLastLoggedInUser();
 
   @action
   Future<void> initAuth() async {
     try {
-      _pkcePair = await _secureStorageService.getPkcePair();
       email = await _secureStorageService.getLastLoggedInUser();
-      temporaryEmail = email;
+      _pkcePair = await _secureStorageService.getPkcePair();
       final appLink = await _appLinks.getLatestLink();
       final storedLink = await _secureStorageService.getAppLink();
       if (appLink != null && appLink.toString() != storedLink) {
@@ -122,6 +122,7 @@ abstract class _AuthStore with Store {
           final storedLink = await _secureStorageService.getAppLink();
           if (appLink.toString() != storedLink) {
             await _secureStorageService.saveAppLink(appLink: appLink.toString());
+
             verifyMagicLinkAndAuthenticate(appLink);
           } else {
             Sentry.captureException(TokenAlreadyUsedException());
@@ -187,11 +188,12 @@ abstract class _AuthStore with Store {
   @action
   Future<void> authenticate(
     GrantType grantType,
-    Future<TokenResponse> authenticateFeature,
+    Future<TokenResponse> feature,
   ) async {
     try {
+      authenticateFeature = ObservableFuture(feature);
       final authTokens = await authenticateFeature;
-      _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
+      _authSessionStore.setAuthenticated(authTokens!.accessToken, authTokens.refreshToken);
       _analyticsStore.setLogin(grantType);
 
       // TODO(Waldz): Update user preferences from login form, there marketing checkbox is being handled
@@ -246,7 +248,6 @@ abstract class _AuthStore with Store {
     await logoutFeature;
     _intercomStore.logout();
     _authSessionStore.setUnauthenticated();
-    temporaryEmail = email;
   }
 
   @action
@@ -268,13 +269,13 @@ abstract class _AuthStore with Store {
     );
     try {
       _authenticatingType = GrantType.email;
-      signInFeatureFeature = ObservableFuture(
+      signInFeature = ObservableFuture(
         _authService.signInWithEmail(
           email: email,
           pkcePair: _pkcePair!,
         ),
       );
-      final code = await signInFeatureFeature;
+      final code = await signInFeature;
       if (code != null) {
         authenticate(
           GrantType.email,
@@ -302,10 +303,10 @@ abstract class _AuthStore with Store {
   Future<void> signInWithGoogle() async {
     try {
       _authenticatingType = GrantType.google;
-      signInFeatureFeature = ObservableFuture(
+      signInFeature = ObservableFuture(
         _authService.signInWithGoogle(),
       );
-      final code = await signInFeatureFeature;
+      final code = await signInFeature;
       if (code != null) {
         authenticate(
           GrantType.google,
@@ -330,10 +331,10 @@ abstract class _AuthStore with Store {
   Future<void> signInWithApple() async {
     try {
       _authenticatingType = GrantType.apple;
-      signInFeatureFeature = ObservableFuture(
+      signInFeature = ObservableFuture(
         _authService.signInWithApple(),
       );
-      final code = await signInFeatureFeature;
+      final code = await signInFeature;
       if (code != null) {
         authenticate(
           GrantType.apple,

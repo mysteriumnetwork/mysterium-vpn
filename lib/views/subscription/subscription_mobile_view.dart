@@ -7,7 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
@@ -109,7 +108,7 @@ class SubscriptionMobileView extends HookConsumerWidget {
           LocaleKeys.subscriptionActive.tr(),
           type: MessageType.success,
         );
-        context.beamToReplacementNamed(Routes.main.toRoute);
+        context.beamToReplacementNamed(Routes.main.path);
       } else if (store.verifySubscriptionFuture?.error is ApiException &&
           (store.verifySubscriptionFuture?.error as ApiException).code == 409) {
         showSnackbar(

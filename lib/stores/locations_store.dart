@@ -19,10 +19,7 @@ abstract class _LocationsStore with Store {
     required LocaleStore localeStore,
   })  : _apiService = apiService,
         _analyticsStore = analyticsStore {
-    when((_) => true, () async {
-      fetchVPNLocations().whenComplete(fetchRecentLocations);
-    });
-
+    fetchVPNLocations().whenComplete(fetchRecentLocations);
     reaction((_) => localeStore.currentLocale, (locale) {
       if (searchKeyword.isNotEmpty) {
         setLocationKeyword('');
