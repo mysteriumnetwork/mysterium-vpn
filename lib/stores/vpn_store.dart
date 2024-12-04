@@ -10,7 +10,6 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/exceptions/subscription_required_exception.dart';
 import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
@@ -238,7 +237,11 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> setVpnConfigConsent({required bool value}) async {
-    await _localDBService.setVpnConsentApproval(approval: value);
+    if (_authSessionStore.user == null) {
+      throw AuthenticationRequiredException();
+    }
+
+    await _localDBService.setVpnConsentApproval(_authSessionStore.user!, approval: value);
     _vpnConfigConsent = value;
     if (_vpnConfigConsent ?? false) {
       await _setupTunnel().whenComplete(_setupAndListenToConnectionStatus);
