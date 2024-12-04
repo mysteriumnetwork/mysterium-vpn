@@ -13,7 +13,6 @@ import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -30,12 +29,10 @@ abstract class _SubscriptionStore with Store {
     required InAppPurchase inAppPurchase,
     required SubscriptionService subscriptionService,
     required AuthSessionStore authSessionStore,
-    required LocalDBService localDb,
     required AnalyticsStore analyticsStore,
   })  : _inAppPurchase = inAppPurchase,
         _subscriptionService = subscriptionService,
         _authSessionStore = authSessionStore,
-        _localDb = localDb,
         _analyticsStore = analyticsStore {
     initStore();
   }
@@ -45,7 +42,6 @@ abstract class _SubscriptionStore with Store {
   final InAppPurchase _inAppPurchase;
   final SubscriptionService _subscriptionService;
   final AuthSessionStore _authSessionStore;
-  final LocalDBService _localDb;
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
   final AnalyticsStore _analyticsStore;
 
@@ -103,7 +99,6 @@ abstract class _SubscriptionStore with Store {
     _subscription = await subscriptionFuture;
     _expired = _subscription?.expired;
     if (_subscription!.active && (_subscription!.planId?.isNotEmpty ?? false)) {
-      _localDb.setSubscriptionPlan(_subscription!.planId!);
       _purchasedProductId = _subscription!.planId;
     }
   }

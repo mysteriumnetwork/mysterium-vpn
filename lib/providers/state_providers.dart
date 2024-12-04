@@ -65,6 +65,7 @@ final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
 
 final vpnStorePOD = Provider<VpnStore>((ref) {
   final apiService = ref.read(apiServicePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
   final locationsStore = ref.watch(locationsStorePOD);
   final wireguardService = ref.watch(wireguardServicePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
@@ -75,6 +76,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   return VpnStore(
     apiService: apiService,
+    authSessionStore: authSessionStore,
     locationsStore: locationsStore,
     wireguardService: wireguardService,
     subscriptionStore: subscriptionStore,
@@ -88,11 +90,13 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
 
 final locationsStorePOD = Provider<LocationsStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final localeStore = ref.watch(localeStorePOD);
 
   return LocationsStore(
     apiService: apiService,
+    authSessionStore: authSessionStore,
     analyticsStore: analyticsStore,
     localeStore: localeStore,
   );
@@ -102,21 +106,21 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   final inAppPurchase = ref.read(inAppPurchasePOD);
   final subscriptionService = ref.read(subscriptionServicePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
-  final localDb = ref.read(localDBPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
 
   return SubscriptionStore(
     inAppPurchase: inAppPurchase,
     subscriptionService: subscriptionService,
     authSessionStore: authSessionStore,
-    localDb: localDb,
     analyticsStore: analyticsStore,
   );
 });
 
 final restApiStorePOD = Provider<RestStore>((ref) {
   final apiService = ref.read(apiServicePOD);
-  return RestStore(apiService: apiService);
+  final authSessionStore = ref.watch(authSessionStorePOD);
+
+  return RestStore(apiService: apiService, authSessionStore: authSessionStore);
 });
 
 final environmentPOD = StateProvider<FlavorConfig>(
@@ -143,11 +147,10 @@ final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
   if (isWindowsOrLinux()) {
     return AnalyticsStoreNoop();
   }
-  final localDb = ref.watch(localDBPOD);
+
   return AnalyticsStoreFirebase(
     analytics: FirebaseAnalytics.instance,
     crashlytics: FirebaseCrashlytics.instance,
-    localDb: localDb,
   );
 });
 
