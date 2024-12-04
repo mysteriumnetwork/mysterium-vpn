@@ -118,7 +118,9 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
 
 final restApiStorePOD = Provider<RestStore>((ref) {
   final apiService = ref.read(apiServicePOD);
-  return RestStore(apiService: apiService);
+  final authSessionStore = ref.watch(authSessionStorePOD);
+
+  return RestStore(apiService: apiService, authSessionStore: authSessionStore);
 });
 
 final environmentPOD = StateProvider<FlavorConfig>(

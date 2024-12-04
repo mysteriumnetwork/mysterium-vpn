@@ -36,11 +36,12 @@ class RestApiService extends ApiService {
   final Talker _logger;
 
   @override
-  Future<void> setNotificationsApproval({required bool approval}) async =>
-      _localDb.setNotificationsApproval(approval: approval);
+  Future<void> setNotificationsApproval(AuthUser user, {required bool approval}) async =>
+      _localDb.setNotificationsApproval(user, approval: approval);
 
   @override
-  Approval geNotificationsApproval() => _localDb.getNotificationsApproval();
+  Future<Approval> getNotificationsApproval(AuthUser user) =>
+      _localDb.getNotificationsApproval(user);
 
   @override
   Future<VPNLocations> fetchVPNLocations({required String keyword}) async {

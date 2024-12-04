@@ -19,10 +19,15 @@ class LocalDBService {
 
   final box = Hive.box<UserData>('user_data');
 
-  Future<void> setNotificationsApproval({required bool approval}) async {
+  Future<void> setNotificationsApproval(AuthUser user, {required bool approval}) async {
+    final userData = await _loadUserData(user);
     userData.notifications = approval ? Approval.approved : Approval.declined;
+
     await box.put(_userId, userData);
   }
+
+  Future<Approval> getNotificationsApproval(AuthUser user) async =>
+      (await _loadUserData(user)).notifications;
 
   Future<void> setVpnConsentApproval(AuthUser user, {required bool approval}) async {
     final userData = await _loadUserData(user);
@@ -54,8 +59,6 @@ class LocalDBService {
     userData.notSafeContentBlocker = notSafeContentBlocker;
     await box.put(_userId, userData);
   }
-
-  Approval getNotificationsApproval() => userData.notifications;
 
   Future<void> setRecentLocation(AuthUser user, List<String> locations) async {
     final userData = await _loadUserData(user);
