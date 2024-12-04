@@ -141,11 +141,10 @@ final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
   if (isWindowsOrLinux()) {
     return AnalyticsStoreNoop();
   }
-  final localDb = ref.watch(localDBPOD);
+
   return AnalyticsStoreFirebase(
     analytics: FirebaseAnalytics.instance,
     crashlytics: FirebaseCrashlytics.instance,
-    localDb: localDb,
   );
 });
 
