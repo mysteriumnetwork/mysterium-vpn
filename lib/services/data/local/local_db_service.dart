@@ -72,34 +72,7 @@ class LocalDBService {
     await box.put(_userId, userData);
   }
 
-  Future<void> setSubscriptionPurchase({
-    required String subscriptionPlan,
-    required String subscriptionPurchaseId,
-  }) async {
-    userData
-      ..subscriptionPlan = subscriptionPlan
-      ..subscriptionPurchaseId = subscriptionPurchaseId;
-    await box.put(_userId, userData);
-  }
-
-  Future<void> setSubscriptionPlan(
-    String subscriptionPlan,
-  ) async {
-    userData.subscriptionPlan = subscriptionPlan;
-    await box.put(_userId, userData);
-  }
-
   List<String> getRecentLocations() => userData.recentLocations;
-
-  String? getSubscriptionPlan() {
-    final subPlan = userData.subscriptionPlan;
-    if (subPlan != null && subPlan.isNotEmpty) {
-      return subPlan;
-    }
-    return null;
-  }
-
-  String? getSubscriptionPurchaseId() => userData.subscriptionPurchaseId;
 
   Future<void> _setInitUserData(
     String key,
