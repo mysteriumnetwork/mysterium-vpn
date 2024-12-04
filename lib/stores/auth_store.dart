@@ -398,12 +398,13 @@ abstract class _AuthStore with Store {
         throw Exception('Refresh token not found');
       }
 
-      await _authService.singInComplete(
+      final authTokens = await _authService.singInComplete(
         tokenRequest: TokenRequest(
           grantType: GrantType.refreshToken,
           refreshToken: refreshToken,
         ),
       );
+      _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
     } catch (e) {
       showSnackbar(LocaleKeys.loginSessionExpired.tr());
       await logout();
