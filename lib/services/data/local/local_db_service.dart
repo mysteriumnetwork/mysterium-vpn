@@ -64,12 +64,15 @@ class LocalDBService {
 
   Approval getEmailCommunicationApproval() => userData.emailCommunication;
 
-  Future<void> setRecentLocation(List<String> locations) async {
+  Future<void> setRecentLocation(AuthUser user, List<String> locations) async {
+    final userData = await _loadUserData(user);
     userData.recentLocations = locations;
+
     await box.put(_userId, userData);
   }
 
-  List<String> getRecentLocations() => userData.recentLocations;
+  Future<List<String>> getRecentLocations(AuthUser user) async =>
+      (await _loadUserData(user)).recentLocations;
 
   Future<UserData> _loadUserData(AuthUser user) async {
     final cacheId = user.username;

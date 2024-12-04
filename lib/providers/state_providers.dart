@@ -90,11 +90,13 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
 
 final locationsStorePOD = Provider<LocationsStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final localeStore = ref.watch(localeStorePOD);
 
   return LocationsStore(
     apiService: apiService,
+    authSessionStore: authSessionStore,
     analyticsStore: analyticsStore,
     localeStore: localeStore,
   );

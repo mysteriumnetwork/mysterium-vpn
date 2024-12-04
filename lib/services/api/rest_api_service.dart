@@ -5,6 +5,7 @@ import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/report_broken_node_request.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:talker/talker.dart';
@@ -84,8 +85,8 @@ class RestApiService extends ApiService {
   }
 
   @override
-  List<String> getRecentLocations({required String keyword}) {
-    final countryCodes = _localDb.getRecentLocations();
+  Future<List<String>> getRecentLocations(AuthUser user, {required String keyword}) async {
+    final countryCodes = await _localDb.getRecentLocations(user);
     if (keyword.isNotEmpty) {
       final res =
           countryCodes.where((location) => location.tr().toLowerCase().contains(keyword)).toList();
@@ -95,8 +96,8 @@ class RestApiService extends ApiService {
   }
 
   @override
-  void addRecentLocation(String location) {
-    final recentLocations = _localDb.getRecentLocations();
+  Future<void> addRecentLocation(AuthUser user, String location) async {
+    final recentLocations = await _localDb.getRecentLocations(user);
     if (recentLocations.contains(location)) {
       recentLocations.remove(location);
     }
@@ -104,7 +105,7 @@ class RestApiService extends ApiService {
     if (recentLocations.length > 5) {
       recentLocations.removeLast();
     }
-    _localDb.setRecentLocation(recentLocations);
+    await _localDb.setRecentLocation(user, recentLocations);
   }
 
   @override
