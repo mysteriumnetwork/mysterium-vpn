@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
@@ -25,7 +24,7 @@ abstract class _LocationsStore with Store {
         _authSessionStore = authSessionStore,
         _analyticsStore = analyticsStore {
     fetchVPNLocations();
-    useReaction(() => _authSessionStore.user != null, (_) async {
+    reaction((_) => _authSessionStore.user, (_) async {
       if (_authSessionStore.user != null) {
         await fetchVPNLocationsFuture.whenComplete(fetchRecentLocations);
       }
