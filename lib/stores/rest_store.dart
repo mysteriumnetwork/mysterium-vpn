@@ -17,17 +17,10 @@ abstract class _RestStore with Store {
   _RestStore({
     required ApiService apiService,
   }) : _apiService = apiService {
-    checkEmailCommunicationApproval();
     //checkNotificationsApproval();
   }
 
   final ApiService _apiService;
-
-  @observable
-  ObservableFuture<Approval>? emailCommunicationApprovalFuture;
-
-  @observable
-  ObservableFuture<void> setEmailCommunicationApprovalFuture = ObservableFuture.value(null);
 
   @observable
   ObservableFuture<Approval>? notificationsApprovalFuture;
@@ -36,18 +29,7 @@ abstract class _RestStore with Store {
   ObservableFuture<void> setNotificationsApprovalFuture = ObservableFuture.value(null);
 
   @readonly
-  Approval _emailCommunicationApproval = Approval.notSet;
-
-  @readonly
   Approval _notificationsApproval = Approval.notSet;
-
-  @action
-  Future<void> checkEmailCommunicationApproval() async {
-    emailCommunicationApprovalFuture = ObservableFuture(
-      Future.delayed(const Duration(seconds: 3), _apiService.getEmailCommunicationApproval),
-    );
-    _emailCommunicationApproval = await emailCommunicationApprovalFuture!;
-  }
 
   @action
   Future<void> checkNotificationsApproval() async {
@@ -55,17 +37,6 @@ abstract class _RestStore with Store {
       Future.delayed(const Duration(seconds: 3), _apiService.geNotificationsApproval),
     );
     _notificationsApproval = await notificationsApprovalFuture!;
-  }
-
-  @action
-  Future<void> setEmailCommunicationApproval({required bool status}) async {
-    setEmailCommunicationApprovalFuture = ObservableFuture(
-      Future.delayed(
-        const Duration(seconds: 3),
-        () => _apiService.setEmailCommunicationApproval(approval: status),
-      ),
-    );
-    await setEmailCommunicationApprovalFuture;
   }
 
   @action

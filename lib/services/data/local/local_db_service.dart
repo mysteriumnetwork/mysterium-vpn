@@ -19,11 +19,6 @@ class LocalDBService {
 
   final box = Hive.box<UserData>('user_data');
 
-  Future<void> setEmailCommunicationApproval({required bool approval}) async {
-    userData.emailCommunication = approval ? Approval.approved : Approval.declined;
-    await box.put(_userId, userData);
-  }
-
   Future<void> setNotificationsApproval({required bool approval}) async {
     userData.notifications = approval ? Approval.approved : Approval.declined;
     await box.put(_userId, userData);
@@ -61,8 +56,6 @@ class LocalDBService {
   }
 
   Approval getNotificationsApproval() => userData.notifications;
-
-  Approval getEmailCommunicationApproval() => userData.emailCommunication;
 
   Future<void> setRecentLocation(AuthUser user, List<String> locations) async {
     final userData = await _loadUserData(user);

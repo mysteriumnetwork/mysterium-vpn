@@ -6,10 +6,8 @@ import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 abstract class ApiService {
-  Future<void> setEmailCommunicationApproval({required bool approval});
   Future<void> setNotificationsApproval({required bool approval});
   Approval geNotificationsApproval();
-  Approval getEmailCommunicationApproval();
   Future<VPNLocations> fetchVPNLocations({required String keyword});
   Future<void> addRecentLocation(AuthUser user, String location);
   Future<List<String>> getRecentLocations(AuthUser user, {required String keyword});
