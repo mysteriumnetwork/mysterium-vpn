@@ -39,24 +39,35 @@ class LocalDBService {
   Future<bool?> getVpnConsentApproval(AuthUser user) async =>
       (await _loadUserData(user)).vpnConfigConsent;
 
-  bool getRefreshIPConnection() => userData.refreshIPConnection;
+  Future<bool> getRefreshIPConnection(AuthUser user) async =>
+      (await _loadUserData(user)).refreshIPConnection;
 
-  Future<void> setRefreshIPConnection({required bool refreshIPConnection}) async {
+  Future<void> setRefreshIPConnection(AuthUser user, {required bool refreshIPConnection}) async {
+    final userData = await _loadUserData(user);
     userData.refreshIPConnection = refreshIPConnection;
+
     await box.put(_userId, userData);
   }
 
-  bool getMalwareBlocker() => userData.malwareBlocker;
+  Future<bool> getMalwareBlocker(AuthUser user) async => (await _loadUserData(user)).malwareBlocker;
 
-  Future<void> setMalwareBlocker({required bool malwareBlocker}) async {
+  Future<void> setMalwareBlocker(AuthUser user, {required bool malwareBlocker}) async {
+    final userData = await _loadUserData(user);
     userData.malwareBlocker = malwareBlocker;
+
     await box.put(_userId, userData);
   }
 
-  bool getNotSafeContentBlocker() => userData.notSafeContentBlocker;
+  Future<bool> getNotSafeContentBlocker(AuthUser user) async =>
+      (await _loadUserData(user)).notSafeContentBlocker;
 
-  Future<void> setNotSafeContentBlocker({required bool notSafeContentBlocker}) async {
+  Future<void> setNotSafeContentBlocker(
+    AuthUser user, {
+    required bool notSafeContentBlocker,
+  }) async {
+    final userData = await _loadUserData(user);
     userData.notSafeContentBlocker = notSafeContentBlocker;
+
     await box.put(_userId, userData);
   }
 
