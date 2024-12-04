@@ -43,6 +43,7 @@ class SubscriptionFormVariantD extends HookWidget {
       builder: (context) => Align(
         alignment: Alignment.topCenter,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(height: getMediaHeight(context) * 0.01),
             EasyText(
@@ -68,6 +69,7 @@ class SubscriptionFormVariantD extends HookWidget {
                           horizontal: 20,
                         ),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   ProductFeatures(
                     formVariant: variant,
@@ -105,7 +107,7 @@ class SubscriptionFormVariantD extends HookWidget {
               ),
             ),
           ],
-        ).scrollable(),
+        ),
       ),
     );
   }
