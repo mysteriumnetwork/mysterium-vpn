@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
+import 'package:mysterium_vpn/services/auth/auth_user.dart';
 
 class LocalDBService {
   LocalDBService();
@@ -11,19 +12,12 @@ class LocalDBService {
     recentLocations: [],
   );
 
-  Future<void> setUserId(String userId) async {
-    _userId = userId;
-    if (checkUserExistance(userId)) {
-      userData = box.get(userId)!;
-    } else {
-      await _setInitUserData(userId);
-      userData = box.get(userId)!;
-    }
+  Future<void> setUserId(AuthUser user) async {
+    _userId = user.userId;
+    userData = await _loadUserData(user);
   }
 
   final box = Hive.box<UserData>('user_data');
-
-  bool checkUserExistance(String key) => box.containsKey(key);
 
   Future<void> setEmailCommunicationApproval({required bool approval}) async {
     userData.emailCommunication = approval ? Approval.approved : Approval.declined;
@@ -61,7 +55,8 @@ class LocalDBService {
     await box.put(_userId, userData);
   }
 
-  bool? getVpnConsentApproval() => userData.vpnConfigConsent;
+  Future<bool?> getVpnConsentApproval(AuthUser user) async =>
+      (await _loadUserData(user)).vpnConfigConsent;
 
   Approval getNotificationsApproval() => userData.notifications;
 
@@ -73,6 +68,15 @@ class LocalDBService {
   }
 
   List<String> getRecentLocations() => userData.recentLocations;
+
+  Future<UserData> _loadUserData(AuthUser user) async {
+    final cacheId = user.username;
+    if (!box.containsKey(cacheId)) {
+      await _setInitUserData(cacheId);
+    }
+
+    return box.get(cacheId)!;
+  }
 
   Future<void> _setInitUserData(
     String key,

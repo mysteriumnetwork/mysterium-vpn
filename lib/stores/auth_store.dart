@@ -215,7 +215,7 @@ abstract class _AuthStore with Store {
   Future<void> _initializeAuthenticatedUser(AuthUser user) async {
     _authSessionStore.setAuthenticatedUser(user);
 
-    await _localDb.setUserId(user.username);
+    await _localDb.setUserId(user);
     _initializeAnalyticsStores(username: user.username, userId: user.userId);
 
     _logger.info(_localDb.userData.toString());
