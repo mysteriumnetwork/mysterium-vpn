@@ -29,10 +29,15 @@ class LocalDBService {
     await box.put(_userId, userData);
   }
 
-  Future<void> setVpnConsentApproval({required bool approval}) async {
+  Future<void> setVpnConsentApproval(AuthUser user, {required bool approval}) async {
+    final userData = await _loadUserData(user);
     userData.vpnConfigConsent = approval;
+
     await box.put(_userId, userData);
   }
+
+  Future<bool?> getVpnConsentApproval(AuthUser user) async =>
+      (await _loadUserData(user)).vpnConfigConsent;
 
   bool getRefreshIPConnection() => userData.refreshIPConnection;
 
@@ -54,9 +59,6 @@ class LocalDBService {
     userData.notSafeContentBlocker = notSafeContentBlocker;
     await box.put(_userId, userData);
   }
-
-  Future<bool?> getVpnConsentApproval(AuthUser user) async =>
-      (await _loadUserData(user)).vpnConfigConsent;
 
   Approval getNotificationsApproval() => userData.notifications;
 
