@@ -5,25 +5,15 @@ import 'package:mysterium_vpn/services/auth/auth_user.dart';
 class LocalDBService {
   LocalDBService();
 
-  String? _userId;
-
-  UserData userData = UserData(
-    userId: '',
-    recentLocations: [],
-  );
-
-  Future<void> setUserId(AuthUser user) async {
-    _userId = user.userId;
-    userData = await _loadUserData(user);
-  }
-
   final box = Hive.box<UserData>('user_data');
+
+  Future<UserData> getUserData(AuthUser user) => _loadUserData(user);
 
   Future<void> setNotificationsApproval(AuthUser user, {required bool approval}) async {
     final userData = await _loadUserData(user);
     userData.notifications = approval ? Approval.approved : Approval.declined;
 
-    await box.put(_userId, userData);
+    await _saveUserData(user, userData);
   }
 
   Future<Approval> getNotificationsApproval(AuthUser user) async =>
@@ -33,7 +23,7 @@ class LocalDBService {
     final userData = await _loadUserData(user);
     userData.vpnConfigConsent = approval;
 
-    await box.put(_userId, userData);
+    await _saveUserData(user, userData);
   }
 
   Future<bool?> getVpnConsentApproval(AuthUser user) async =>
@@ -46,7 +36,7 @@ class LocalDBService {
     final userData = await _loadUserData(user);
     userData.refreshIPConnection = refreshIPConnection;
 
-    await box.put(_userId, userData);
+    await _saveUserData(user, userData);
   }
 
   Future<bool> getMalwareBlocker(AuthUser user) async => (await _loadUserData(user)).malwareBlocker;
@@ -55,7 +45,7 @@ class LocalDBService {
     final userData = await _loadUserData(user);
     userData.malwareBlocker = malwareBlocker;
 
-    await box.put(_userId, userData);
+    await _saveUserData(user, userData);
   }
 
   Future<bool> getNotSafeContentBlocker(AuthUser user) async =>
@@ -68,14 +58,14 @@ class LocalDBService {
     final userData = await _loadUserData(user);
     userData.notSafeContentBlocker = notSafeContentBlocker;
 
-    await box.put(_userId, userData);
+    await _saveUserData(user, userData);
   }
 
   Future<void> setRecentLocation(AuthUser user, List<String> locations) async {
     final userData = await _loadUserData(user);
     userData.recentLocations = locations;
 
-    await box.put(_userId, userData);
+    await _saveUserData(user, userData);
   }
 
   Future<List<String>> getRecentLocations(AuthUser user) async =>
@@ -88,6 +78,12 @@ class LocalDBService {
     }
 
     return box.get(cacheId)!;
+  }
+
+  Future<void> _saveUserData(AuthUser user, UserData userData) async {
+    final cacheId = user.username;
+
+    await box.put(cacheId, userData);
   }
 
   Future<void> _setInitUserData(
