@@ -12,7 +12,6 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
@@ -149,7 +148,7 @@ abstract class _VpnStore with Store {
   String? originCountry;
 
   Future<void> _init() async {
-    useReaction(() => _authSessionStore.user != null, (_) async {
+    reaction((_) => _authSessionStore.user, (_) async {
       if (_authSessionStore.user == null) {
         return;
       }
