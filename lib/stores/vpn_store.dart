@@ -13,12 +13,14 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/subscription_required_exception.dart';
 import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/report_broken_node_request.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
@@ -47,6 +49,7 @@ class VpnStore = _VpnStore with _$VpnStore;
 abstract class _VpnStore with Store {
   _VpnStore({
     required ApiService apiService,
+    required AuthSessionStore authSessionStore,
     required LocationsStore locationsStore,
     required WireguardDart wireguardService,
     required SubscriptionStore subscriptionStore,
@@ -57,6 +60,7 @@ abstract class _VpnStore with Store {
     required RemoteConfigStore remoteConfigStore,
   })  : _apiService = apiService,
         _locationsStore = locationsStore,
+        _authSessionStore = authSessionStore,
         _wireguardService = wireguardService,
         _subscriptionStore = subscriptionStore,
         _localDBService = localDBService,
@@ -68,6 +72,7 @@ abstract class _VpnStore with Store {
   }
 
   final ApiService _apiService;
+  final AuthSessionStore _authSessionStore;
   final LocationsStore _locationsStore;
   final AnalyticsStore _analyticsStore;
   final WireguardDart _wireguardService;
@@ -145,14 +150,19 @@ abstract class _VpnStore with Store {
   String? originCountry;
 
   Future<void> _init() async {
+    useReaction(() => _authSessionStore.user != null, (_) async {
+      if (_authSessionStore.user != null) {
+        _vpnConfigConsent =
+            await _localDBService.getVpnConsentApproval(_authSessionStore.user!) ?? false;
+        if (_vpnConfigConsent ?? false) {
+          await _setupTunnel().whenComplete(_setupAndListenToConnectionStatus);
+        }
+      }
+    });
     await _generateKey();
-    _vpnConfigConsent = _localDBService.getVpnConsentApproval() ?? false;
     _refreshIPConnection = _localDBService.getRefreshIPConnection();
     _malwareBlockerContent = _localDBService.getMalwareBlocker();
     _notSafeContentBlocker = _localDBService.getNotSafeContentBlocker();
-    if (_vpnConfigConsent ?? false) {
-      await _setupTunnel().whenComplete(_setupAndListenToConnectionStatus);
-    }
   }
 
   /// Setup initial connection status and listen to connection status changes
