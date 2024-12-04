@@ -56,30 +56,24 @@ mixin _$LocationsStore on _LocationsStore, Store {
     return _$fetchVPNLocationsAsyncAction.run(() => super.fetchVPNLocations());
   }
 
+  late final _$fetchRecentLocationsAsyncAction =
+      AsyncAction('_LocationsStore.fetchRecentLocations', context: context);
+
+  @override
+  Future<void> fetchRecentLocations() {
+    return _$fetchRecentLocationsAsyncAction.run(() => super.fetchRecentLocations());
+  }
+
+  late final _$addRecentLocationAsyncAction =
+      AsyncAction('_LocationsStore.addRecentLocation', context: context);
+
+  @override
+  Future<void> addRecentLocation(String location) {
+    return _$addRecentLocationAsyncAction.run(() => super.addRecentLocation(location));
+  }
+
   late final _$_LocationsStoreActionController =
       ActionController(name: '_LocationsStore', context: context);
-
-  @override
-  void fetchRecentLocations() {
-    final _$actionInfo =
-        _$_LocationsStoreActionController.startAction(name: '_LocationsStore.fetchRecentLocations');
-    try {
-      return super.fetchRecentLocations();
-    } finally {
-      _$_LocationsStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void addRecentLocation(String location) {
-    final _$actionInfo =
-        _$_LocationsStoreActionController.startAction(name: '_LocationsStore.addRecentLocation');
-    try {
-      return super.addRecentLocation(location);
-    } finally {
-      _$_LocationsStoreActionController.endAction(_$actionInfo);
-    }
-  }
 
   @override
   void setLocationKeyword(String text, [int duration = 500]) {

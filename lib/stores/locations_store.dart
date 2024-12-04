@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 
@@ -15,11 +18,18 @@ class LocationsStore = _LocationsStore with _$LocationsStore;
 abstract class _LocationsStore with Store {
   _LocationsStore({
     required ApiService apiService,
+    required AuthSessionStore authSessionStore,
     required AnalyticsStore analyticsStore,
     required LocaleStore localeStore,
   })  : _apiService = apiService,
+        _authSessionStore = authSessionStore,
         _analyticsStore = analyticsStore {
-    fetchVPNLocations().whenComplete(fetchRecentLocations);
+    fetchVPNLocations();
+    useReaction(() => _authSessionStore.user != null, (_) async {
+      if (_authSessionStore.user != null) {
+        await fetchVPNLocationsFuture.whenComplete(fetchRecentLocations);
+      }
+    });
     reaction((_) => localeStore.currentLocale, (locale) {
       if (searchKeyword.isNotEmpty) {
         setLocationKeyword('');
@@ -28,6 +38,7 @@ abstract class _LocationsStore with Store {
   }
 
   final ApiService _apiService;
+  final AuthSessionStore _authSessionStore;
   final AnalyticsStore _analyticsStore;
 
   ObservableList<String> recentLocations = ObservableList();
@@ -57,11 +68,18 @@ abstract class _LocationsStore with Store {
   }
 
   @action
-  void fetchRecentLocations() {
+  Future<void> fetchRecentLocations() async {
+    if (_authSessionStore.user == null) {
+      throw AuthenticationRequiredException();
+    }
+
+    final locations =
+        await _apiService.getRecentLocations(_authSessionStore.user!, keyword: searchKeyword);
+
     recentLocations
       ..clear()
       ..addAll(
-        _apiService.getRecentLocations(keyword: searchKeyword)
+        locations
           ..removeWhere(
             (element) =>
                 !vpnLocations.allLocations.contains(element) &&
@@ -71,9 +89,13 @@ abstract class _LocationsStore with Store {
   }
 
   @action
-  void addRecentLocation(String location) {
-    _apiService.addRecentLocation(location);
-    fetchRecentLocations();
+  Future<void> addRecentLocation(String location) async {
+    if (_authSessionStore.user == null) {
+      throw AuthenticationRequiredException();
+    }
+
+    await _apiService.addRecentLocation(_authSessionStore.user!, location);
+    await fetchRecentLocations();
   }
 
   @action
