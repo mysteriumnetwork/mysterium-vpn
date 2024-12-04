@@ -92,6 +92,7 @@
   "currentPrice": "{amount}",
   "originalMonthlyPrice": "{amount}",
   "perMonth": "/bulan",
+  "billedEveryPeriodMonths": "ditagih setiap {amount} bulan",
   "freeTrialTitle": "Mulai dengan Mysterium VPN",
   "freeTrialDesc": "Amankan koneksi Anda, buka konten, dan kendalikan privasi online Anda.",
   "startTrialBtn": "Mulai",

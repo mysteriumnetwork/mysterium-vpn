@@ -39,6 +39,7 @@ class SubscriptionFormVariantC extends StatelessWidget {
         builder: (context) => Align(
           alignment: Alignment.topCenter,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               EasyText(
                 LocaleKeys.pricingPlanTitle.tr(),
@@ -107,7 +108,7 @@ class SubscriptionFormVariantC extends StatelessWidget {
               ).padding(top: 10),
               const BottomSpacer(),
             ],
-          ).scrollable(),
+          ),
         ),
       );
 }

@@ -21,6 +21,7 @@ enum _FeatureToggleKey {
   hideNotSafeContentBlocker,
   malwareBlockerDnsAddress,
   notSafeContentBlockerDnsAddress,
+  pricingMonthly,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -178,6 +179,14 @@ abstract class RemoteConfigStoreBase with Store {
       return config[_FeatureToggleKey.notSafeContentBlockerDnsAddress.name] as String;
     }
     return notSafeContentBlockerDomainAddress;
+  }
+
+  @computed
+  bool get pricingMonthly {
+    if (config.containsKey(_FeatureToggleKey.pricingMonthly.name)) {
+      return config[_FeatureToggleKey.pricingMonthly.name] as bool;
+    }
+    return false;
   }
 
   Map<String, String> get asUserProperties =>
