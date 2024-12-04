@@ -150,18 +150,22 @@ abstract class _VpnStore with Store {
 
   Future<void> _init() async {
     useReaction(() => _authSessionStore.user != null, (_) async {
-      if (_authSessionStore.user != null) {
-        _vpnConfigConsent =
-            await _localDBService.getVpnConsentApproval(_authSessionStore.user!) ?? false;
-        if (_vpnConfigConsent ?? false) {
-          await _setupTunnel().whenComplete(_setupAndListenToConnectionStatus);
-        }
+      if (_authSessionStore.user == null) {
+        return;
       }
+      final user = _authSessionStore.user!;
+
+      _vpnConfigConsent = await _localDBService.getVpnConsentApproval(user) ?? false;
+      if (_vpnConfigConsent ?? false) {
+        await _setupTunnel().whenComplete(_setupAndListenToConnectionStatus);
+      }
+
+      _refreshIPConnection = await _localDBService.getRefreshIPConnection(user);
+      _malwareBlockerContent = await _localDBService.getMalwareBlocker(user);
+      _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker(user);
     });
+
     await _generateKey();
-    _refreshIPConnection = _localDBService.getRefreshIPConnection();
-    _malwareBlockerContent = _localDBService.getMalwareBlocker();
-    _notSafeContentBlocker = _localDBService.getNotSafeContentBlocker();
   }
 
   /// Setup initial connection status and listen to connection status changes
@@ -250,7 +254,12 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> toggleRefreshIPWhenConnecting() async {
+    if (_authSessionStore.user == null) {
+      throw AuthenticationRequiredException();
+    }
+
     await _localDBService.setRefreshIPConnection(
+      _authSessionStore.user!,
       refreshIPConnection: !_refreshIPConnection,
     );
     _refreshIPConnection = !_refreshIPConnection;
@@ -258,7 +267,12 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> toggleMalwareBlocker() async {
+    if (_authSessionStore.user == null) {
+      throw AuthenticationRequiredException();
+    }
+
     await _localDBService.setMalwareBlocker(
+      _authSessionStore.user!,
       malwareBlocker: !_malwareBlockerContent,
     );
     _malwareBlockerContent = !_malwareBlockerContent;
@@ -266,7 +280,12 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> toggleNotSafeContentBlocker() async {
+    if (_authSessionStore.user == null) {
+      throw AuthenticationRequiredException();
+    }
+
     await _localDBService.setNotSafeContentBlocker(
+      _authSessionStore.user!,
       notSafeContentBlocker: !_notSafeContentBlocker,
     );
     _notSafeContentBlocker = !_notSafeContentBlocker;
