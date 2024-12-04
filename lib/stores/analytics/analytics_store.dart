@@ -18,10 +18,6 @@ abstract class AnalyticsStore {
   Future<void> setScreenName(String name);
   Future<void> setSessionTimeoutDuration();
   Future<void> setLogin([GrantType loginMethod = GrantType.email]);
-  Future<void> setSignUp(
-    String userId, [
-    GrantType signUpMethod = GrantType.email,
-  ]);
   Future<void> setSearchEvent(String searchTerm);
 
   Future<void> logMessage(
