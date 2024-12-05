@@ -75,7 +75,7 @@ class SubscriptionFormVariantContainer extends HookWidget {
             child: SingleChildScrollView(
               padding: padding,
               controller: scrollController,
-              child: switch ('D') {
+              child: switch (variant) {
                 'A' => SubscriptionFormVariantA(
                     store: subscriptionStore,
                     localDb: localDb,

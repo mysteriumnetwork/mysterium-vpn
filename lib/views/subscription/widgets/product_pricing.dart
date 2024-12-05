@@ -58,7 +58,6 @@ class ProductPricing extends HookConsumerWidget {
         ),
         _SecondaryPriceText(
           product: product,
-          monthlyPrice: monthlyPrice,
           pricingMonthly: pricingMonthly,
         ),
       ],
@@ -138,12 +137,10 @@ class _SecondaryPriceText extends HookWidget {
   const _SecondaryPriceText({
     required this.pricingMonthly,
     required this.product,
-    required this.monthlyPrice,
   });
 
   final bool pricingMonthly;
   final PurchasableProduct product;
-  final double? monthlyPrice;
 
   @override
   Widget build(BuildContext context) {
@@ -158,18 +155,15 @@ class _SecondaryPriceText extends HookWidget {
         );
       }
 
-      if (monthlyPrice == null) {
-        return null;
-      }
+      final monthlyPrice = product.rawPrice / product.duration;
 
-      return monthlyPrice!.price(
+      return monthlyPrice.price(
         currencySymbol: product.currencySymbol,
         currencyCode: product.currencyCode,
       );
     }, [
       product,
       pricingMonthly,
-      monthlyPrice,
     ]);
 
     final text = useMemoized(() {
