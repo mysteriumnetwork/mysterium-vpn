@@ -11,101 +11,106 @@ class LocalDBService {
   static final LocalDBService instance = LocalDBService._();
 
   final box = Hive.box<UserData>('user_data');
-  final Completer<void> _userSetCompleter = Completer<void>();
-  late AuthUser _currentUser;
+  Completer<AuthUser> _userSetCompleter = Completer<AuthUser>();
+  AuthUser? _currentUser;
 
   Future<void> setUser(AuthUser user) async {
     _currentUser = user;
     if (!_userSetCompleter.isCompleted) {
-      _userSetCompleter.complete();
+      _userSetCompleter.complete(user);
     }
   }
 
-  Future<void> _ensureUserSet() async {
-    await _userSetCompleter.future;
+  void clearUser() {
+    _currentUser = null;
+    if (_userSetCompleter.isCompleted) {
+      _userSetCompleter = Completer<AuthUser>();
+    }
   }
 
+  Future<AuthUser> _ensureUserSet() async => _userSetCompleter.future;
+
   Future<UserData> getUserData() async {
-    await _ensureUserSet();
-    return _loadUserData(_currentUser);
+    final user = await _ensureUserSet();
+    return _loadUserData(user);
   }
 
   Future<void> setNotificationsApproval({required bool approval}) async {
-    await _ensureUserSet();
-    final userData = await _loadUserData(_currentUser);
+    final user = await _ensureUserSet();
+    final userData = await _loadUserData(user);
     userData.notifications = approval ? Approval.approved : Approval.declined;
 
     await _saveUserData(userData);
   }
 
   Future<Approval> getNotificationsApproval() async {
-    await _ensureUserSet();
-    return (await _loadUserData(_currentUser)).notifications;
+    final user = await _ensureUserSet();
+    return (await _loadUserData(user)).notifications;
   }
 
   Future<void> setVpnConsentApproval({required bool approval}) async {
-    await _ensureUserSet();
-    final userData = await _loadUserData(_currentUser);
+    final user = await _ensureUserSet();
+    final userData = await _loadUserData(user);
     userData.vpnConfigConsent = approval;
 
     await _saveUserData(userData);
   }
 
   Future<bool?> getVpnConsentApproval() async {
-    await _ensureUserSet();
-    return (await _loadUserData(_currentUser)).vpnConfigConsent;
+    final user = await _ensureUserSet();
+    return (await _loadUserData(user)).vpnConfigConsent;
   }
 
   Future<bool> getRefreshIPConnection() async {
-    await _ensureUserSet();
-    return (await _loadUserData(_currentUser)).refreshIPConnection;
+    final user = await _ensureUserSet();
+    return (await _loadUserData(user)).refreshIPConnection;
   }
 
   Future<void> setRefreshIPConnection({required bool refreshIPConnection}) async {
-    await _ensureUserSet();
-    final userData = await _loadUserData(_currentUser);
+    final user = await _ensureUserSet();
+    final userData = await _loadUserData(user);
     userData.refreshIPConnection = refreshIPConnection;
 
     await _saveUserData(userData);
   }
 
   Future<bool> getMalwareBlocker() async {
-    await _ensureUserSet();
-    return (await _loadUserData(_currentUser)).malwareBlocker;
+    final user = await _ensureUserSet();
+    return (await _loadUserData(user)).malwareBlocker;
   }
 
   Future<void> setMalwareBlocker({required bool malwareBlocker}) async {
-    await _ensureUserSet();
-    final userData = await _loadUserData(_currentUser);
+    final user = await _ensureUserSet();
+    final userData = await _loadUserData(user);
     userData.malwareBlocker = malwareBlocker;
 
     await _saveUserData(userData);
   }
 
   Future<bool> getNotSafeContentBlocker() async {
-    await _ensureUserSet();
-    return (await _loadUserData(_currentUser)).notSafeContentBlocker;
+    final user = await _ensureUserSet();
+    return (await _loadUserData(user)).notSafeContentBlocker;
   }
 
   Future<void> setNotSafeContentBlocker({required bool notSafeContentBlocker}) async {
-    await _ensureUserSet();
-    final userData = await _loadUserData(_currentUser);
+    final user = await _ensureUserSet();
+    final userData = await _loadUserData(user);
     userData.notSafeContentBlocker = notSafeContentBlocker;
 
     await _saveUserData(userData);
   }
 
   Future<void> setRecentLocation(List<String> locations) async {
-    await _ensureUserSet();
-    final userData = await _loadUserData(_currentUser);
+    final user = await _ensureUserSet();
+    final userData = await _loadUserData(user);
     userData.recentLocations = locations;
 
     await _saveUserData(userData);
   }
 
   Future<List<String>> getRecentLocations() async {
-    await _ensureUserSet();
-    return (await _loadUserData(_currentUser)).recentLocations;
+    final user = await _ensureUserSet();
+    return (await _loadUserData(user)).recentLocations;
   }
 
   Future<UserData> _loadUserData(AuthUser user) async {
@@ -118,7 +123,7 @@ class LocalDBService {
   }
 
   Future<void> _saveUserData(UserData userData) async {
-    final cacheId = _currentUser.username;
+    final cacheId = _currentUser!.username;
 
     await box.put(cacheId, userData);
   }
