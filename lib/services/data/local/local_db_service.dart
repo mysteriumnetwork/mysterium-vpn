@@ -30,90 +30,64 @@ class LocalDBService {
 
   Future<AuthUser> _ensureUserSet() async => _userSetCompleter.future;
 
-  Future<UserData> getUserData() async {
-    final user = await _ensureUserSet();
-    return _loadUserData(user);
-  }
+  Future<UserData> getUserData() async => _loadUserData();
 
   Future<void> setNotificationsApproval({required bool approval}) async {
-    final user = await _ensureUserSet();
-    final userData = await _loadUserData(user);
+    final userData = await _loadUserData();
     userData.notifications = approval ? Approval.approved : Approval.declined;
 
     await _saveUserData(userData);
   }
 
-  Future<Approval> getNotificationsApproval() async {
-    final user = await _ensureUserSet();
-    return (await _loadUserData(user)).notifications;
-  }
+  Future<Approval> getNotificationsApproval() async => (await _loadUserData()).notifications;
 
   Future<void> setVpnConsentApproval({required bool approval}) async {
-    final user = await _ensureUserSet();
-    final userData = await _loadUserData(user);
+    final userData = await _loadUserData();
     userData.vpnConfigConsent = approval;
 
     await _saveUserData(userData);
   }
 
-  Future<bool?> getVpnConsentApproval() async {
-    final user = await _ensureUserSet();
-    return (await _loadUserData(user)).vpnConfigConsent;
-  }
+  Future<bool?> getVpnConsentApproval() async => (await _loadUserData()).vpnConfigConsent;
 
-  Future<bool> getRefreshIPConnection() async {
-    final user = await _ensureUserSet();
-    return (await _loadUserData(user)).refreshIPConnection;
-  }
+  Future<bool> getRefreshIPConnection() async => (await _loadUserData()).refreshIPConnection;
 
   Future<void> setRefreshIPConnection({required bool refreshIPConnection}) async {
-    final user = await _ensureUserSet();
-    final userData = await _loadUserData(user);
+    final userData = await _loadUserData();
     userData.refreshIPConnection = refreshIPConnection;
 
     await _saveUserData(userData);
   }
 
-  Future<bool> getMalwareBlocker() async {
-    final user = await _ensureUserSet();
-    return (await _loadUserData(user)).malwareBlocker;
-  }
+  Future<bool> getMalwareBlocker() async => (await _loadUserData()).malwareBlocker;
 
   Future<void> setMalwareBlocker({required bool malwareBlocker}) async {
-    final user = await _ensureUserSet();
-    final userData = await _loadUserData(user);
+    final userData = await _loadUserData();
     userData.malwareBlocker = malwareBlocker;
 
     await _saveUserData(userData);
   }
 
-  Future<bool> getNotSafeContentBlocker() async {
-    final user = await _ensureUserSet();
-    return (await _loadUserData(user)).notSafeContentBlocker;
-  }
+  Future<bool> getNotSafeContentBlocker() async => (await _loadUserData()).notSafeContentBlocker;
 
   Future<void> setNotSafeContentBlocker({required bool notSafeContentBlocker}) async {
-    final user = await _ensureUserSet();
-    final userData = await _loadUserData(user);
+    final userData = await _loadUserData();
     userData.notSafeContentBlocker = notSafeContentBlocker;
 
     await _saveUserData(userData);
   }
 
   Future<void> setRecentLocation(List<String> locations) async {
-    final user = await _ensureUserSet();
-    final userData = await _loadUserData(user);
+    final userData = await _loadUserData();
     userData.recentLocations = locations;
 
     await _saveUserData(userData);
   }
 
-  Future<List<String>> getRecentLocations() async {
-    final user = await _ensureUserSet();
-    return (await _loadUserData(user)).recentLocations;
-  }
+  Future<List<String>> getRecentLocations() async => (await _loadUserData()).recentLocations;
 
-  Future<UserData> _loadUserData(AuthUser user) async {
+  Future<UserData> _loadUserData() async {
+    final user = await _ensureUserSet();
     final cacheId = user.username;
     if (!box.containsKey(cacheId)) {
       await _setInitUserData(cacheId);
