@@ -20,15 +20,22 @@ class VpnPrivacyConsentPage extends HookConsumerWidget {
     final localDb = ref.watch(localDBPOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
     final authStore = ref.watch(authStorePOD);
+    final authSession = ref.watch(authSessionStorePOD);
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) async {
-        if (localDb.getVpnPrivacyPolicyConsent() == false) {
+        if (await localDb.getVpnPrivacyPolicyConsent(authSession.user!) == false) {
+          if (!context.mounted) {
+            return;
+          }
           final shouldPop = await shownDismissPageDialog(context);
           if (shouldPop ?? false) {
             authStore.logout();
           }
         } else {
+          if (!context.mounted) {
+            return;
+          }
           analyticsStore.logEvent(AnalyticsEvent.backButtonClick);
           Beamer.of(context).beamBack();
         }

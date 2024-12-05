@@ -25,13 +25,17 @@ class HomePage extends HookConsumerWidget {
     final vpnStore = ref.watch(vpnStorePOD);
     final localDb = ref.watch(localDBPOD);
     final remoteConfig = ref.watch(remoteConfigStorePOD);
+    final authSession = ref.watch(authSessionStorePOD);
     useEffect(
       () {
         InAppReviewObserver().monitor();
         when(
           (showVpnPrivacyPolicyPage) => remoteConfig.showVpnPrivacyPolicyPage == true,
-          () {
-            if (localDb.getVpnPrivacyPolicyConsent() == false) {
+          () async {
+            if (await localDb.getVpnPrivacyPolicyConsent(
+                  authSession.user!,
+                ) ==
+                false) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 Beamer.of(context).beamToNamed(Routes.privacyPolicy.path);
               });

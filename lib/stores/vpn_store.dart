@@ -161,6 +161,24 @@ abstract class _VpnStore with Store {
     });
 
     await _generateKey();
+    _setupAndListenToConnectionStatus();
+    final res = await _checkTunelConfigured();
+    if (res) {
+      await _setupAndListenToConnectionStatus();
+    }
+  }
+
+  @action
+  Future<bool> _checkTunelConfigured() async {
+    try {
+      return await _wireguardService.isTunnelConfigured(
+        bundleId: _env.getBundleId(),
+        tunnelName: _env.values.tunnelName,
+      );
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      return false;
+    }
   }
 
   /// Setup initial connection status and listen to connection status changes

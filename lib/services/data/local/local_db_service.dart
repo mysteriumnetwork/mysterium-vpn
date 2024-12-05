@@ -21,13 +21,13 @@ class LocalDBService {
 
   Future<void> setVpnConsentApproval(AuthUser user, {required bool approval}) async {
     final userData = await _loadUserData(user);
-    userData.vpnConfigConsent = approval;
+    userData.vpnPrivacyPolicyConsent = approval;
 
     await _saveUserData(user, userData);
   }
 
-  Future<bool?> getVpnConsentApproval(AuthUser user) async =>
-      (await _loadUserData(user)).vpnConfigConsent;
+  Future<bool?> getVpnPrivacyPolicyConsent(AuthUser user) async =>
+      (await _loadUserData(user)).vpnPrivacyPolicyConsent;
 
   Future<bool> getRefreshIPConnection(AuthUser user) async =>
       (await _loadUserData(user)).refreshIPConnection;
