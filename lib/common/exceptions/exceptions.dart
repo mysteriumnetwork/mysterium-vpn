@@ -1,4 +1,5 @@
 export 'api.dart';
+export 'authentication_required.dart';
 export 'broken_node.dart';
 export 'incorrect_code.dart';
 export 'incorrect_magic_link.dart';
@@ -7,6 +8,7 @@ export 'no_internet_connection.dart';
 export 'operation_cancelled.dart';
 export 'package_not_found.dart';
 export 'sign_in_aborted.dart';
+export 'subscription_required_exception.dart';
 export 'subscription_verification.dart';
 export 'token_already_used.dart';
 export 'tunnel_setup_required_exception.dart';

@@ -105,14 +105,12 @@ final vpnApiPOD = Provider<VpnApi>((ref) {
 
 final subscriptionServicePOD = Provider<SubscriptionService>((ref) {
   final api = ref.watch(vpnApiPOD);
-  final localDb = ref.watch(localDBPOD);
   final inAppPurchase = ref.watch(inAppPurchasePOD);
   final logger = ref.watch(loggerPOD);
 
   return RestSubscriptionService(
     api: api,
     inAppPurchase: inAppPurchase,
-    localDb: localDb,
     logger: logger,
   );
 });

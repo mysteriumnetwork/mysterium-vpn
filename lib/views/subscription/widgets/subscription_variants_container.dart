@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/inherited/parent_scroll_controller.dart';
 import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -14,7 +16,7 @@ import 'package:mysterium_vpn/views/subscription/widgets/subscription_form_varia
 import 'package:mysterium_vpn/views/subscription/widgets/subscription_form_variant_d.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class SubscriptionFormVariantContainer extends StatelessWidget {
+class SubscriptionFormVariantContainer extends HookWidget {
   const SubscriptionFormVariantContainer({
     required this.subscriptionStore,
     required this.localDb,
@@ -34,25 +36,33 @@ class SubscriptionFormVariantContainer extends StatelessWidget {
   final bool isVerifingPayment;
   @override
   Widget build(BuildContext context) {
+    final scrollController = useScrollController();
     final shouldApplyHorizontalPadding = variant != 'D';
+    final width = getMediaWidth(context);
+    final padding = useMemoized(
+      () {
+        if (width > 950) {
+          return EdgeInsets.symmetric(
+            horizontal: shouldApplyHorizontalPadding ? 150 : 0,
+            vertical: 20,
+          );
+        } else if (width > 650) {
+          return EdgeInsets.symmetric(
+            horizontal: shouldApplyHorizontalPadding ? 80 : 0,
+            vertical: 20,
+          );
+        }
+        return EdgeInsets.symmetric(
+          horizontal: shouldApplyHorizontalPadding ? 20 : 0,
+          vertical: 20,
+        );
+      },
+      [width, shouldApplyHorizontalPadding],
+    );
+
     return Stack(
       children: [
-        Container(
-          width: double.infinity,
-          padding: getMediaWidth(context) > 950
-              ? EdgeInsets.symmetric(
-                  horizontal: shouldApplyHorizontalPadding ? 150 : 0,
-                  vertical: 20,
-                )
-              : getMediaWidth(context) > 650
-                  ? EdgeInsets.symmetric(
-                      horizontal: shouldApplyHorizontalPadding ? 80 : 0,
-                      vertical: 20,
-                    )
-                  : EdgeInsets.symmetric(
-                      horizontal: shouldApplyHorizontalPadding ? 20 : 0,
-                      vertical: 20,
-                    ),
+        DecoratedBox(
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             borderRadius: const BorderRadius.only(
@@ -60,46 +70,53 @@ class SubscriptionFormVariantContainer extends StatelessWidget {
               topRight: Radius.circular(30),
             ),
           ),
-          child: switch (variant) {
-            'A' => SubscriptionFormVariantA(
-                store: subscriptionStore,
-                localDb: localDb,
-                analyticsStore: analyticsStore,
-                variant: variant,
-                subscribeToPackage: subscribeToPackage,
-              ),
-            'B' => SubscriptionFormVariantB(
-                store: subscriptionStore,
-                localDb: localDb,
-                analyticsStore: analyticsStore,
-                variant: variant,
-                subscribeToPackage: subscribeToPackage,
-                isDarkMode: isDarkMode,
-              ),
-            'C' => SubscriptionFormVariantC(
-                store: subscriptionStore,
-                localDb: localDb,
-                analyticsStore: analyticsStore,
-                variant: variant,
-                subscribeToPackage: subscribeToPackage,
-                isDarkMode: isDarkMode,
-              ),
-            'D' => SubscriptionFormVariantD(
-                store: subscriptionStore,
-                localDb: localDb,
-                analyticsStore: analyticsStore,
-                variant: variant,
-                subscribeToPackage: subscribeToPackage,
-                isDarkMode: isDarkMode,
-              ),
-            _ => SubscriptionFormVariantA(
-                store: subscriptionStore,
-                localDb: localDb,
-                analyticsStore: analyticsStore,
-                variant: variant,
-                subscribeToPackage: subscribeToPackage,
-              ),
-          },
+          child: ParentScrollController(
+            controller: scrollController,
+            child: SingleChildScrollView(
+              padding: padding,
+              controller: scrollController,
+              child: switch ('D') {
+                'A' => SubscriptionFormVariantA(
+                    store: subscriptionStore,
+                    localDb: localDb,
+                    analyticsStore: analyticsStore,
+                    variant: variant,
+                    subscribeToPackage: subscribeToPackage,
+                  ),
+                'B' => SubscriptionFormVariantB(
+                    store: subscriptionStore,
+                    localDb: localDb,
+                    analyticsStore: analyticsStore,
+                    variant: variant,
+                    subscribeToPackage: subscribeToPackage,
+                    isDarkMode: isDarkMode,
+                  ),
+                'C' => SubscriptionFormVariantC(
+                    store: subscriptionStore,
+                    localDb: localDb,
+                    analyticsStore: analyticsStore,
+                    variant: variant,
+                    subscribeToPackage: subscribeToPackage,
+                    isDarkMode: isDarkMode,
+                  ),
+                'D' => SubscriptionFormVariantD(
+                    store: subscriptionStore,
+                    localDb: localDb,
+                    analyticsStore: analyticsStore,
+                    variant: variant,
+                    subscribeToPackage: subscribeToPackage,
+                    isDarkMode: isDarkMode,
+                  ),
+                _ => SubscriptionFormVariantA(
+                    store: subscriptionStore,
+                    localDb: localDb,
+                    analyticsStore: analyticsStore,
+                    variant: variant,
+                    subscribeToPackage: subscribeToPackage,
+                  ),
+              },
+            ),
+          ),
         ),
         if (isVerifingPayment)
           LoadingBarrier(

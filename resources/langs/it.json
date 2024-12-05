@@ -92,6 +92,7 @@
   "currentPrice": "{amount}",
   "originalMonthlyPrice": "{amount}",
   "perMonth": "/mese",
+  "billedEveryPeriodMonths": "fatturato ogni {amount} mesi",
   "freeTrialTitle": "Inizia con Mysterium VPN",
   "freeTrialDesc": "Proteggi la tua connessione, sblocca contenuti e prendi il controllo della tua privacy online.",
   "startTrialBtn": "Inizia",

@@ -10,7 +10,6 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/exceptions/subscription_required_exception.dart';
 import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -19,6 +18,7 @@ import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/report_broken_node_request.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
@@ -47,6 +47,7 @@ class VpnStore = _VpnStore with _$VpnStore;
 abstract class _VpnStore with Store {
   _VpnStore({
     required ApiService apiService,
+    required AuthSessionStore authSessionStore,
     required LocationsStore locationsStore,
     required WireguardDart wireguardService,
     required SubscriptionStore subscriptionStore,
@@ -57,6 +58,7 @@ abstract class _VpnStore with Store {
     required RemoteConfigStore remoteConfigStore,
   })  : _apiService = apiService,
         _locationsStore = locationsStore,
+        _authSessionStore = authSessionStore,
         _wireguardService = wireguardService,
         _subscriptionStore = subscriptionStore,
         _localDBService = localDBService,
@@ -68,6 +70,7 @@ abstract class _VpnStore with Store {
   }
 
   final ApiService _apiService;
+  final AuthSessionStore _authSessionStore;
   final LocationsStore _locationsStore;
   final AnalyticsStore _analyticsStore;
   final WireguardDart _wireguardService;
@@ -146,27 +149,18 @@ abstract class _VpnStore with Store {
   String? lastConnectingLocation;
 
   Future<void> _init() async {
-    await _generateKey();
-    _refreshIPConnection = _localDBService.getRefreshIPConnection();
-    _malwareBlockerContent = _localDBService.getMalwareBlocker();
-    _notSafeContentBlocker = _localDBService.getNotSafeContentBlocker();
-    final res = await _checkTunelConfigured();
-    if (res) {
-      await _setupAndListenToConnectionStatus();
-    }
-  }
+    reaction((_) => _authSessionStore.user, (_) async {
+      if (_authSessionStore.user == null) {
+        return;
+      }
+      final user = _authSessionStore.user!;
 
-  @action
-  Future<bool> _checkTunelConfigured() async {
-    try {
-      return await _wireguardService.isTunnelConfigured(
-        bundleId: _env.getBundleId(),
-        tunnelName: _env.values.tunnelName,
-      );
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      return false;
-    }
+      _refreshIPConnection = await _localDBService.getRefreshIPConnection(user);
+      _malwareBlockerContent = await _localDBService.getMalwareBlocker(user);
+      _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker(user);
+    });
+
+    await _generateKey();
   }
 
   /// Setup initial connection status and listen to connection status changes
@@ -233,7 +227,12 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> toggleRefreshIPWhenConnecting() async {
+    if (_authSessionStore.user == null) {
+      throw AuthenticationRequiredException();
+    }
+
     await _localDBService.setRefreshIPConnection(
+      _authSessionStore.user!,
       refreshIPConnection: !_refreshIPConnection,
     );
     _refreshIPConnection = !_refreshIPConnection;
@@ -241,7 +240,12 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> toggleMalwareBlocker() async {
+    if (_authSessionStore.user == null) {
+      throw AuthenticationRequiredException();
+    }
+
     await _localDBService.setMalwareBlocker(
+      _authSessionStore.user!,
       malwareBlocker: !_malwareBlockerContent,
     );
     _malwareBlockerContent = !_malwareBlockerContent;
@@ -249,7 +253,12 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> toggleNotSafeContentBlocker() async {
+    if (_authSessionStore.user == null) {
+      throw AuthenticationRequiredException();
+    }
+
     await _localDBService.setNotSafeContentBlocker(
+      _authSessionStore.user!,
       notSafeContentBlocker: !_notSafeContentBlocker,
     );
     _notSafeContentBlocker = !_notSafeContentBlocker;

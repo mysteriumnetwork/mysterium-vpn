@@ -14,7 +14,6 @@ import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
@@ -25,16 +24,13 @@ class RestSubscriptionService extends SubscriptionService {
   RestSubscriptionService({
     required api.VpnApi api,
     required InAppPurchase inAppPurchase,
-    required LocalDBService localDb,
     required Talker logger,
   })  : _apiSubscription = api.getSubscription(),
         _inAppPurchase = inAppPurchase,
-        _localDb = localDb,
         _logger = logger;
 
   final api.Subscription _apiSubscription;
   final InAppPurchase _inAppPurchase;
-  final LocalDBService _localDb;
   final Talker _logger;
 
   /// Experiment on verifying purchase using server side verification (webhooks)
@@ -109,13 +105,7 @@ class RestSubscriptionService extends SubscriptionService {
       }
       if (res.statusCode == 200) {
         try {
-          final subs = await fetchSubscriptionDetails();
-          planId = subs.planId ?? planId;
-          _localDb.setSubscriptionPurchase(
-            subscriptionPlan: planId,
-            subscriptionPurchaseId: transactionId,
-          );
-          return subs;
+          return await fetchSubscriptionDetails();
         } catch (e) {
           return Subscription(
             planId: planId,

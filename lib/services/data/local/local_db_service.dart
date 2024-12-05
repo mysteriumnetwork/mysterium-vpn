@@ -1,105 +1,90 @@
 import 'package:hive/hive.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
+import 'package:mysterium_vpn/services/auth/auth_user.dart';
 
 class LocalDBService {
   LocalDBService();
 
-  String _userId = '';
-
-  UserData userData = UserData(
-    userId: '',
-    recentLocations: [],
-  );
-
-  Future<void> setUserId(String userId) async {
-    _userId = userId;
-    if (checkUserExistance(userId)) {
-      userData = box.get(userId)!;
-    } else {
-      await _setInitUserData(userId);
-      userData = box.get(userId)!;
-    }
-  }
-
   final box = Hive.box<UserData>('user_data');
 
-  bool checkUserExistance(String key) => box.containsKey(key);
+  Future<UserData> getUserData(AuthUser user) => _loadUserData(user);
 
-  Future<void> setEmailCommunicationApproval({required bool approval}) async {
-    userData.emailCommunication = approval ? Approval.approved : Approval.declined;
-    await box.put(_userId, userData);
-  }
-
-  Future<void> setNotificationsApproval({required bool approval}) async {
+  Future<void> setNotificationsApproval(AuthUser user, {required bool approval}) async {
+    final userData = await _loadUserData(user);
     userData.notifications = approval ? Approval.approved : Approval.declined;
-    await box.put(_userId, userData);
+
+    await _saveUserData(user, userData);
   }
 
-  bool getRefreshIPConnection() => userData.refreshIPConnection;
+  Future<Approval> getNotificationsApproval(AuthUser user) async =>
+      (await _loadUserData(user)).notifications;
 
-  Future<void> setRefreshIPConnection({required bool refreshIPConnection}) async {
+  Future<void> setVpnConsentApproval(AuthUser user, {required bool approval}) async {
+    final userData = await _loadUserData(user);
+    userData.vpnConfigConsent = approval;
+
+    await _saveUserData(user, userData);
+  }
+
+  Future<bool?> getVpnConsentApproval(AuthUser user) async =>
+      (await _loadUserData(user)).vpnConfigConsent;
+
+  Future<bool> getRefreshIPConnection(AuthUser user) async =>
+      (await _loadUserData(user)).refreshIPConnection;
+
+  Future<void> setRefreshIPConnection(AuthUser user, {required bool refreshIPConnection}) async {
+    final userData = await _loadUserData(user);
     userData.refreshIPConnection = refreshIPConnection;
-    await box.put(_userId, userData);
+
+    await _saveUserData(user, userData);
   }
 
-  bool getVpnPrivacyPolicyConsent() => userData.vpnPrivacyPolicyConsent;
+  Future<bool> getMalwareBlocker(AuthUser user) async => (await _loadUserData(user)).malwareBlocker;
 
-  Future<void> setVpnPrivacyPolicyConsent({required bool vpnPrivacyPolicyConsent}) async {
-    userData.vpnPrivacyPolicyConsent = vpnPrivacyPolicyConsent;
-    await box.put(_userId, userData);
-  }
-
-  bool getMalwareBlocker() => userData.malwareBlocker;
-
-  Future<void> setMalwareBlocker({required bool malwareBlocker}) async {
+  Future<void> setMalwareBlocker(AuthUser user, {required bool malwareBlocker}) async {
+    final userData = await _loadUserData(user);
     userData.malwareBlocker = malwareBlocker;
-    await box.put(_userId, userData);
+
+    await _saveUserData(user, userData);
   }
 
-  bool getNotSafeContentBlocker() => userData.notSafeContentBlocker;
+  Future<bool> getNotSafeContentBlocker(AuthUser user) async =>
+      (await _loadUserData(user)).notSafeContentBlocker;
 
-  Future<void> setNotSafeContentBlocker({required bool notSafeContentBlocker}) async {
-    userData.notSafeContentBlocker = notSafeContentBlocker;
-    await box.put(_userId, userData);
-  }
-
-  Approval getNotificationsApproval() => userData.notifications;
-
-  Approval getEmailCommunicationApproval() => userData.emailCommunication;
-
-  Future<void> setRecentLocation(List<String> locations) async {
-    userData.recentLocations = locations;
-    await box.put(_userId, userData);
-  }
-
-  Future<void> setSubscriptionPurchase({
-    required String subscriptionPlan,
-    required String subscriptionPurchaseId,
+  Future<void> setNotSafeContentBlocker(
+    AuthUser user, {
+    required bool notSafeContentBlocker,
   }) async {
-    userData
-      ..subscriptionPlan = subscriptionPlan
-      ..subscriptionPurchaseId = subscriptionPurchaseId;
-    await box.put(_userId, userData);
+    final userData = await _loadUserData(user);
+    userData.notSafeContentBlocker = notSafeContentBlocker;
+
+    await _saveUserData(user, userData);
   }
 
-  Future<void> setSubscriptionPlan(
-    String subscriptionPlan,
-  ) async {
-    userData.subscriptionPlan = subscriptionPlan;
-    await box.put(_userId, userData);
+  Future<void> setRecentLocation(AuthUser user, List<String> locations) async {
+    final userData = await _loadUserData(user);
+    userData.recentLocations = locations;
+
+    await _saveUserData(user, userData);
   }
 
-  List<String> getRecentLocations() => userData.recentLocations;
+  Future<List<String>> getRecentLocations(AuthUser user) async =>
+      (await _loadUserData(user)).recentLocations;
 
-  String? getSubscriptionPlan() {
-    final subPlan = userData.subscriptionPlan;
-    if (subPlan != null && subPlan.isNotEmpty) {
-      return subPlan;
+  Future<UserData> _loadUserData(AuthUser user) async {
+    final cacheId = user.username;
+    if (!box.containsKey(cacheId)) {
+      await _setInitUserData(cacheId);
     }
-    return null;
+
+    return box.get(cacheId)!;
   }
 
-  String? getSubscriptionPurchaseId() => userData.subscriptionPurchaseId;
+  Future<void> _saveUserData(AuthUser user, UserData userData) async {
+    final cacheId = user.username;
+
+    await box.put(cacheId, userData);
+  }
 
   Future<void> _setInitUserData(
     String key,

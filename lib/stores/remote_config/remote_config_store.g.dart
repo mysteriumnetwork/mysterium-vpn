@@ -112,6 +112,12 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$showVpnPrivacyPolicyPageComputed ??= Computed<bool>(() => super.showVpnPrivacyPolicyPage,
               name: 'RemoteConfigStoreBase.showVpnPrivacyPolicyPage'))
           .value;
+  Computed<bool>? _$pricingMonthlyComputed;
+
+  @override
+  bool get pricingMonthly => (_$pricingMonthlyComputed ??=
+          Computed<bool>(() => super.pricingMonthly, name: 'RemoteConfigStoreBase.pricingMonthly'))
+      .value;
 
   late final _$configAtom = Atom(name: 'RemoteConfigStoreBase.config', context: context);
 
@@ -171,7 +177,8 @@ hideMalwareBlocker: ${hideMalwareBlocker},
 hideNotSafeContentBlocker: ${hideNotSafeContentBlocker},
 malwareBlockerDnsAddress: ${malwareBlockerDnsAddress},
 notSafeContentBlockerDnsAddress: ${notSafeContentBlockerDnsAddress},
-showVpnPrivacyPolicyPage: ${showVpnPrivacyPolicyPage}
+showVpnPrivacyPolicyPage: ${showVpnPrivacyPolicyPage},
+pricingMonthly: ${pricingMonthly}
     ''';
   }
 }

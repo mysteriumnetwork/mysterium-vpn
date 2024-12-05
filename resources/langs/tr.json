@@ -93,6 +93,7 @@
   "currentPrice": "{amount}",
   "originalMonthlyPrice": "{amount}",
   "perMonth": " /ay",
+  "billedEveryPeriodMonths": "{amount} ayda bir faturalandırılır",
   "freeTrialTitle": "Mysterium VPN ile Başlayın",
   "freeTrialDesc": "Bağlantınızı güvence altına alın, içeriğin kilidini açın ve çevrimiçi gizliliğinizi kontrol edin.",
   "startTrialBtn": "Başla",

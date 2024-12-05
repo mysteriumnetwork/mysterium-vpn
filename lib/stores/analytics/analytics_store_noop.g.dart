@@ -55,14 +55,6 @@ mixin _$AnalyticsStoreNoop on _AnalyticsStoreNoop, Store {
     return _$setLoginAsyncAction.run(() => super.setLogin(loginMethod));
   }
 
-  late final _$setSignUpAsyncAction =
-      AsyncAction('_AnalyticsStoreNoop.setSignUp', context: context);
-
-  @override
-  Future<void> setSignUp(String userId, [GrantType signUpMethod = GrantType.email]) {
-    return _$setSignUpAsyncAction.run(() => super.setSignUp(userId, signUpMethod));
-  }
-
   late final _$setSearchEventAsyncAction =
       AsyncAction('_AnalyticsStoreNoop.setSearchEvent', context: context);
 
