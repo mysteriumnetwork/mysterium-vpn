@@ -89,11 +89,7 @@ abstract class _LocationsStore with Store {
 
   @action
   Future<void> addRecentLocation(String location) async {
-    if (_authSessionStore.user == null) {
-      throw AuthenticationRequiredException();
-    }
-
-    await _apiService.addRecentLocation(_authSessionStore.user!, location);
+    await _apiService.addRecentLocation(location);
     await fetchRecentLocations();
   }
 

@@ -45,7 +45,7 @@ abstract class _RestStore with Store {
     notificationsApprovalFuture = ObservableFuture(
       Future.delayed(
         const Duration(seconds: 3),
-        () => _apiService.getNotificationsApproval(_authSessionStore.user!),
+        _apiService.getNotificationsApproval,
       ),
     );
     _notificationsApproval = await notificationsApprovalFuture!;
@@ -60,7 +60,7 @@ abstract class _RestStore with Store {
     setNotificationsApprovalFuture = ObservableFuture(
       Future.delayed(
         const Duration(seconds: 3),
-        () => _apiService.setNotificationsApproval(_authSessionStore.user!, approval: status),
+        () => _apiService.setNotificationsApproval(approval: status),
       ),
     );
     await setNotificationsApprovalFuture;
