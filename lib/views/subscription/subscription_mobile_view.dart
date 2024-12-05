@@ -19,7 +19,6 @@ import 'package:mysterium_vpn/components/error_widget.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
@@ -31,7 +30,6 @@ class SubscriptionMobileView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subscriptionStore = ref.watch(subscriptionStorePOD);
-    final localDb = ref.watch(localDBPOD);
     final analyticsStore = ref.read(analyticsStorePOD);
     final abTestingStore = ref.read(abTestingStorePOD);
     final themeStore = ref.watch(themeStorePOD);
@@ -78,7 +76,6 @@ class SubscriptionMobileView extends HookConsumerWidget {
             }),
             child: SubscriptionFormVariantContainer(
               subscriptionStore: subscriptionStore,
-              localDb: localDb,
               analyticsStore: analyticsStore,
               subscribeToPackage: (String selectedProductId) => subscribeToPackage(
                 analyticsStore,

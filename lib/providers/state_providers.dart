@@ -37,7 +37,6 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final authService = ref.watch(authServicePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
   final appLinks = ref.watch(appLinksPOD);
-  final localDb = ref.watch(localDBPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final env = ref.watch(environmentPOD);
   final intercomStore = ref.watch(intercomStorePOD);
@@ -50,7 +49,6 @@ final authStorePOD = Provider<AuthStore>((ref) {
     authService: authService,
     authSessionStore: authSessionStore,
     appLinks: appLinks,
-    localDb: localDb,
     analyticsStore: analyticsStore,
     env: env,
     intercomStore: intercomStore,
@@ -65,22 +63,18 @@ final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
 
 final vpnStorePOD = Provider<VpnStore>((ref) {
   final apiService = ref.read(apiServicePOD);
-  final authSessionStore = ref.watch(authSessionStorePOD);
   final locationsStore = ref.watch(locationsStorePOD);
   final wireguardService = ref.watch(wireguardServicePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
-  final localDBService = ref.watch(localDBPOD);
   final env = ref.watch(environmentPOD);
   final logger = ref.watch(loggerPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   return VpnStore(
     apiService: apiService,
-    authSessionStore: authSessionStore,
     locationsStore: locationsStore,
     wireguardService: wireguardService,
     subscriptionStore: subscriptionStore,
-    localDBService: localDBService,
     env: env,
     logger: logger,
     analyticsStore: analyticsStore,
@@ -90,13 +84,11 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
 
 final locationsStorePOD = Provider<LocationsStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
-  final authSessionStore = ref.watch(authSessionStorePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final localeStore = ref.watch(localeStorePOD);
 
   return LocationsStore(
     apiService: apiService,
-    authSessionStore: authSessionStore,
     analyticsStore: analyticsStore,
     localeStore: localeStore,
   );
@@ -118,9 +110,8 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
 
 final restApiStorePOD = Provider<RestStore>((ref) {
   final apiService = ref.read(apiServicePOD);
-  final authSessionStore = ref.watch(authSessionStorePOD);
 
-  return RestStore(apiService: apiService, authSessionStore: authSessionStore);
+  return RestStore(apiService: apiService);
 });
 
 final environmentPOD = StateProvider<FlavorConfig>(

@@ -43,7 +43,6 @@ abstract class _AuthStore with Store {
     required AuthService authService,
     required AuthSessionStore authSessionStore,
     required AppLinks appLinks,
-    required LocalDBService localDb,
     required AnalyticsStore analyticsStore,
     required FlavorConfig env,
     required IntercomStore intercomStore,
@@ -54,7 +53,6 @@ abstract class _AuthStore with Store {
   })  : _authService = authService,
         _authSessionStore = authSessionStore,
         _appLinks = appLinks,
-        _localDb = localDb,
         _analyticsStore = analyticsStore,
         _env = env,
         _intercomStore = intercomStore,
@@ -67,7 +65,7 @@ abstract class _AuthStore with Store {
 
   final AuthService _authService;
   final AuthSessionStore _authSessionStore;
-  final LocalDBService _localDb;
+  final LocalDBService _localDb = LocalDBService.instance;
   final AppLinks _appLinks;
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
   final AnalyticsStore _analyticsStore;
@@ -211,8 +209,9 @@ abstract class _AuthStore with Store {
     _authSessionStore.setAuthenticatedUser(user);
 
     _initializeAnalyticsStores(username: user.username, userId: user.userId);
-
-    final userSettings = await _localDb.getUserData(user);
+    // Set auth user
+    await _localDb.setUser(user);
+    final userSettings = await _localDb.getUserData();
     _logger.info(userSettings.toString());
   }
 

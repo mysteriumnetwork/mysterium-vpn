@@ -18,7 +18,6 @@ import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/report_broken_node_request.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
@@ -47,21 +46,17 @@ class VpnStore = _VpnStore with _$VpnStore;
 abstract class _VpnStore with Store {
   _VpnStore({
     required ApiService apiService,
-    required AuthSessionStore authSessionStore,
     required LocationsStore locationsStore,
     required WireguardDart wireguardService,
     required SubscriptionStore subscriptionStore,
-    required LocalDBService localDBService,
     required FlavorConfig env,
     required Talker logger,
     required AnalyticsStore analyticsStore,
     required RemoteConfigStore remoteConfigStore,
   })  : _apiService = apiService,
         _locationsStore = locationsStore,
-        _authSessionStore = authSessionStore,
         _wireguardService = wireguardService,
         _subscriptionStore = subscriptionStore,
-        _localDBService = localDBService,
         _env = env,
         _analyticsStore = analyticsStore,
         _remoteConfigStore = remoteConfigStore,
@@ -70,7 +65,6 @@ abstract class _VpnStore with Store {
   }
 
   final ApiService _apiService;
-  final AuthSessionStore _authSessionStore;
   final LocationsStore _locationsStore;
   final AnalyticsStore _analyticsStore;
   final WireguardDart _wireguardService;
@@ -80,7 +74,7 @@ abstract class _VpnStore with Store {
   final FlavorConfig _env;
   final _securedStorage = SecureStorageService.instance;
   final _sharedPrefs = SharedPreferenceService.instance;
-  final LocalDBService _localDBService;
+  final LocalDBService _localDBService = LocalDBService.instance;
   final Talker _logger;
   final Stopwatch _stopwatch = Stopwatch();
 
@@ -148,21 +142,14 @@ abstract class _VpnStore with Store {
   String? originCountry;
 
   Future<void> _init() async {
-    reaction((_) => _authSessionStore.user, (_) async {
-      if (_authSessionStore.user == null) {
-        return;
-      }
-      final user = _authSessionStore.user!;
+    _vpnConfigConsent = await _localDBService.getVpnConsentApproval() ?? false;
+    if (_vpnConfigConsent ?? false) {
+      await _setupTunnel().whenComplete(_setupAndListenToConnectionStatus);
+    }
 
-      _vpnConfigConsent = await _localDBService.getVpnConsentApproval(user) ?? false;
-      if (_vpnConfigConsent ?? false) {
-        await _setupTunnel().whenComplete(_setupAndListenToConnectionStatus);
-      }
-
-      _refreshIPConnection = await _localDBService.getRefreshIPConnection(user);
-      _malwareBlockerContent = await _localDBService.getMalwareBlocker(user);
-      _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker(user);
-    });
+    _refreshIPConnection = await _localDBService.getRefreshIPConnection();
+    _malwareBlockerContent = await _localDBService.getMalwareBlocker();
+    _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker();
 
     await _generateKey();
   }
@@ -240,11 +227,7 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> setVpnConfigConsent({required bool value}) async {
-    if (_authSessionStore.user == null) {
-      throw AuthenticationRequiredException();
-    }
-
-    await _localDBService.setVpnConsentApproval(_authSessionStore.user!, approval: value);
+    await _localDBService.setVpnConsentApproval(approval: value);
     _vpnConfigConsent = value;
     if (_vpnConfigConsent ?? false) {
       await _setupTunnel().whenComplete(_setupAndListenToConnectionStatus);
@@ -253,12 +236,7 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> toggleRefreshIPWhenConnecting() async {
-    if (_authSessionStore.user == null) {
-      throw AuthenticationRequiredException();
-    }
-
     await _localDBService.setRefreshIPConnection(
-      _authSessionStore.user!,
       refreshIPConnection: !_refreshIPConnection,
     );
     _refreshIPConnection = !_refreshIPConnection;
@@ -266,12 +244,7 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> toggleMalwareBlocker() async {
-    if (_authSessionStore.user == null) {
-      throw AuthenticationRequiredException();
-    }
-
     await _localDBService.setMalwareBlocker(
-      _authSessionStore.user!,
       malwareBlocker: !_malwareBlockerContent,
     );
     _malwareBlockerContent = !_malwareBlockerContent;
@@ -279,12 +252,7 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> toggleNotSafeContentBlocker() async {
-    if (_authSessionStore.user == null) {
-      throw AuthenticationRequiredException();
-    }
-
     await _localDBService.setNotSafeContentBlocker(
-      _authSessionStore.user!,
       notSafeContentBlocker: !_notSafeContentBlocker,
     );
     _notSafeContentBlocker = !_notSafeContentBlocker;
