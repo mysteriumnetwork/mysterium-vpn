@@ -167,21 +167,19 @@ abstract class _AuthStore with Store {
     try {
       final user = await _authService.currentUser();
       _initializeAuthenticatedUser(user);
-    } catch (e, stackTrace) {
+    } on ApiException catch (e, stackTrace) {
       // We want to make call to user details endpoint to introspect AccessToken, and if it's invalid when logout the user
-      _authSessionStore.setUnauthenticated();
-
-      if (e is ApiException && e.message == 'Unauthorized' && e.code == 401) {
-        _logger.info('User token expired or not found');
+      if (e.code == 401) {
+        _logger.error('User AccessToken invalid');
+        _authSessionStore.setUnauthenticated();
         return;
       }
 
       _logger.handle(e, stackTrace);
-      var message = LocaleKeys.authenticationFailed.tr();
-      if (e is ApiException) {
-        message = e.message;
-      }
-      showSnackbar(message);
+      showSnackbar(e.message);
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      showSnackbar(LocaleKeys.authenticationFailed.tr());
     }
   }
 
@@ -201,13 +199,10 @@ abstract class _AuthStore with Store {
         const Duration(seconds: 5),
         () => _userPreferencesStore.setEmailMarketingConsent(consent: marketingConsent),
       );
+    } on ApiException catch (e) {
+      showSnackbar(e.message);
     } catch (e) {
-      _authSessionStore.setUnauthenticated();
-      var message = LocaleKeys.authenticationFailed.tr();
-      if (e is ApiException) {
-        message = e.message;
-      }
-      showSnackbar(message);
+      showSnackbar(LocaleKeys.authenticationFailed.tr());
     }
   }
 
