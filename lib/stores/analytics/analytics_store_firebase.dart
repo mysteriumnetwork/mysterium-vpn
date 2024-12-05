@@ -9,7 +9,6 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/observers/navigator_observer.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 
 part 'analytics_store_firebase.g.dart';
@@ -21,16 +20,13 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   _AnalyticsStoreFirebase({
     required FirebaseAnalytics analytics,
     required FirebaseCrashlytics crashlytics,
-    required LocalDBService localDb,
   })  : _analytics = analytics,
-        _crashlytics = crashlytics,
-        _localDb = localDb {
+        _crashlytics = crashlytics {
     setConsents();
   }
 
   final FirebaseAnalytics _analytics;
   final FirebaseCrashlytics _crashlytics;
-  final LocalDBService _localDb;
   Timer? _timer;
 
   @override
@@ -112,17 +108,6 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   @action
   Future<void> setLogin([GrantType loginMethod = GrantType.email]) async {
     await _analytics.logLogin(loginMethod: loginMethod.name);
-  }
-
-  @override
-  @action
-  Future<void> setSignUp(
-    String userId, [
-    GrantType signUpMethod = GrantType.email,
-  ]) async {
-    if (!_localDb.checkUserExistance(userId)) {
-      await _analytics.logSignUp(signUpMethod: signUpMethod.name);
-    }
   }
 
   @override

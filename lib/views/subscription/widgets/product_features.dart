@@ -21,6 +21,7 @@ class ProductFeatures extends StatelessWidget {
           vertical: 12,
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
@@ -31,6 +32,7 @@ class ProductFeatures extends StatelessWidget {
             ),
             SizedBox(height: getMediaHeight(context) * 0.01),
             Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 LocaleKeys.pricingPlanFeatures1.tr(),
                 LocaleKeys.pricingPlanFeatures2.tr(),
@@ -73,6 +75,7 @@ class _FeatureItem extends StatelessWidget {
           horizontal: 8,
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               children: [

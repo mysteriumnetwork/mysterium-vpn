@@ -65,14 +65,6 @@ mixin _$AnalyticsStoreFirebase on _AnalyticsStoreFirebase, Store {
     return _$setLoginAsyncAction.run(() => super.setLogin(loginMethod));
   }
 
-  late final _$setSignUpAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.setSignUp', context: context);
-
-  @override
-  Future<void> setSignUp(String userId, [GrantType signUpMethod = GrantType.email]) {
-    return _$setSignUpAsyncAction.run(() => super.setSignUp(userId, signUpMethod));
-  }
-
   late final _$setSearchEventAsyncAction =
       AsyncAction('_AnalyticsStoreFirebase.setSearchEvent', context: context);
 

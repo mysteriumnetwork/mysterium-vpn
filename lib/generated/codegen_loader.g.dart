@@ -108,6 +108,7 @@ class CodegenLoader extends AssetLoader {
     "currentPrice": "{amount}",
     "originalMonthlyPrice": "{amount}",
     "perMonth": "/月",
+    "billedEveryPeriodMonths": "每{amount}个月收费",
     "freeTrialTitle": "开始使用Mysterium VPN",
     "freeTrialDesc": "保护您的连接，解锁内容，并控制您的在线隐私。",
     "startTrialBtn": "开始",
@@ -629,6 +630,7 @@ class CodegenLoader extends AssetLoader {
     "currentPrice": "{amount}",
     "originalMonthlyPrice": "{amount}",
     "perMonth": " /ay",
+    "billedEveryPeriodMonths": "{amount} ayda bir faturalandırılır",
     "freeTrialTitle": "Mysterium VPN ile Başlayın",
     "freeTrialDesc":
         "Bağlantınızı güvence altına alın, içeriğin kilidini açın ve çevrimiçi gizliliğinizi kontrol edin.",
@@ -1162,6 +1164,7 @@ class CodegenLoader extends AssetLoader {
     "currentPrice": "{amount}",
     "originalMonthlyPrice": "{amount}",
     "perMonth": "/月",
+    "billedEveryPeriodMonths": "{amount}か月ごとに請求",
     "freeTrialTitle": "Mysterium VPNを始めよう",
     "freeTrialDesc": "あなたの接続を保護し、コンテンツのブロックを解除し、オンラインプライバシーをコントロールしましょう。",
     "startTrialBtn": "始める",
@@ -1685,6 +1688,7 @@ class CodegenLoader extends AssetLoader {
     "currentPrice": "{amount}",
     "originalMonthlyPrice": "{amount}",
     "perMonth": "/Monat",
+    "billedEveryPeriodMonths": "alle {amount} Monate in Rechnung gestellt",
     "freeTrialTitle": "Starten Sie mit Mysterium VPN",
     "freeTrialDesc":
         "Sichern Sie Ihre Verbindung, entsperren Sie Inhalte und übernehmen Sie die Kontrolle über Ihre Online-Privatsphäre.",
@@ -2242,6 +2246,7 @@ class CodegenLoader extends AssetLoader {
     "currentPrice": "{amount}",
     "originalMonthlyPrice": "{amount}",
     "perMonth": "/mês",
+    "billedEveryPeriodMonths": "cobrado a cada {amount} meses",
     "freeTrialTitle": "Comece com Mysterium VPN",
     "freeTrialDesc": "Proteja sua conexão, desbloqueie conteúdo e controle sua privacidade online.",
     "startTrialBtn": "Começar",
@@ -2783,6 +2788,7 @@ class CodegenLoader extends AssetLoader {
     "currentPrice": "{amount}",
     "originalMonthlyPrice": "{amount}",
     "perMonth": " /month",
+    "billedEveryPeriodMonths": "billed every {amount} months",
     "freeTrialTitle": "Get Started with Mysterium VPN",
     "freeTrialDesc":
         "Secure your connection, unblock content, and take control of your online privacy.",
@@ -3324,6 +3330,7 @@ class CodegenLoader extends AssetLoader {
     "currentPrice": "{amount}",
     "originalMonthlyPrice": "{amount}",
     "perMonth": "/mese",
+    "billedEveryPeriodMonths": "fatturato ogni {amount} mesi",
     "freeTrialTitle": "Inizia con Mysterium VPN",
     "freeTrialDesc":
         "Proteggi la tua connessione, sblocca contenuti e prendi il controllo della tua privacy online.",
@@ -3875,6 +3882,7 @@ class CodegenLoader extends AssetLoader {
     "currentPrice": "{amount}",
     "originalMonthlyPrice": "{amount}",
     "perMonth": "/mois",
+    "billedEveryPeriodMonths": "facturé tous les {amount} mois",
     "freeTrialTitle": "Commencez avec Mysterium VPN",
     "freeTrialDesc":
         "Sécurisez votre connexion, débloquez du contenu et prenez le contrôle de votre vie privée en ligne.",
@@ -4423,6 +4431,7 @@ class CodegenLoader extends AssetLoader {
     "currentPrice": "{amount}",
     "originalMonthlyPrice": "{amount}",
     "perMonth": "/bulan",
+    "billedEveryPeriodMonths": "ditagih setiap {amount} bulan",
     "freeTrialTitle": "Mulai dengan Mysterium VPN",
     "freeTrialDesc": "Amankan koneksi Anda, buka konten, dan kendalikan privasi online Anda.",
     "startTrialBtn": "Mulai",
@@ -4965,6 +4974,7 @@ class CodegenLoader extends AssetLoader {
     "currentPrice": "{amount}",
     "originalMonthlyPrice": "{amount}",
     "perMonth": "/mes",
+    "billedEveryPeriodMonths": "facturado cada {amount} meses",
     "freeTrialTitle": "Comienza con Mysterium VPN",
     "freeTrialDesc":
         "Asegura tu conexión, desbloquea contenido y toma control de tu privacidad en línea.",
@@ -5511,6 +5521,7 @@ class CodegenLoader extends AssetLoader {
     "currentPrice": "{amount}",
     "originalMonthlyPrice": "{amount}",
     "perMonth": "/شهر",
+    "billedEveryPeriodMonths": "يتم الفوترة كل {amount} شهر",
     "freeTrialTitle": "ابدأ مع Mysterium VPN",
     "freeTrialDesc": "أمن اتصالك، افتح المحتوى المحظور، وتحكم في خصوصيتك على الإنترنت.",
     "startTrialBtn": "ابدأ الآن",

@@ -22,6 +22,7 @@ enum _FeatureToggleKey {
   malwareBlockerDnsAddress,
   notSafeContentBlockerDnsAddress,
   showVpnPrivacyPolicyPage,
+  pricingMonthly,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -184,6 +185,14 @@ abstract class RemoteConfigStoreBase with Store {
   bool get showVpnPrivacyPolicyPage {
     if (config.containsKey(_FeatureToggleKey.showVpnPrivacyPolicyPage.name)) {
       return config[_FeatureToggleKey.showVpnPrivacyPolicyPage.name] as bool;
+    }
+    return true;
+  }
+
+  @computed
+  bool get pricingMonthly {
+    if (config.containsKey(_FeatureToggleKey.pricingMonthly.name)) {
+      return config[_FeatureToggleKey.pricingMonthly.name] as bool;
     }
     return false;
   }

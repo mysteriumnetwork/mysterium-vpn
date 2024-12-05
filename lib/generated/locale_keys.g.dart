@@ -94,6 +94,7 @@ abstract class LocaleKeys {
   static const currentPrice = 'currentPrice';
   static const originalMonthlyPrice = 'originalMonthlyPrice';
   static const perMonth = 'perMonth';
+  static const billedEveryPeriodMonths = 'billedEveryPeriodMonths';
   static const freeTrialTitle = 'freeTrialTitle';
   static const freeTrialDesc = 'freeTrialDesc';
   static const startTrialBtn = 'startTrialBtn';
