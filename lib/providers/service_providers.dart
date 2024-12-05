@@ -18,7 +18,6 @@ import 'package:mysterium_vpn/services/api/rest_api_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/auth/rest_auth_service.dart';
 import 'package:mysterium_vpn/services/data/local/config_cat_cache.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/network/dio_network_service.dart';
 import 'package:mysterium_vpn/services/dio_network_logger/dio_network_logger.dart';
 import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
@@ -40,8 +39,6 @@ final wireguardServicePOD = Provider(
 final appLinksPOD = Provider(
   (ref) => AppLinks(),
 );
-
-final localDBPOD = Provider((ref) => LocalDBService());
 
 final networkServicePOD = Provider<DioNetworkService>((ref) {
   final dio = ref.watch(vpnApiDioPOD);
@@ -118,10 +115,9 @@ final subscriptionServicePOD = Provider<SubscriptionService>((ref) {
 final apiServicePOD = Provider<ApiService>((ref) {
   final api = ref.watch(vpnApiPOD);
   final networkService = ref.watch(networkServicePOD);
-  final localDb = ref.watch(localDBPOD);
   final logger = ref.watch(loggerPOD);
 
-  return RestApiService(api: api, networkService: networkService, localDb: localDb, logger: logger);
+  return RestApiService(api: api, networkService: networkService, logger: logger);
 });
 
 final authServicePOD = Provider<AuthService>((ref) {

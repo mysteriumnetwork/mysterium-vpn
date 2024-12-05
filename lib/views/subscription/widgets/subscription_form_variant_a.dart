@@ -9,7 +9,6 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/bottom_spacer.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/views/consent/agreements.dart';
@@ -21,14 +20,12 @@ import 'package:styled_widget/styled_widget.dart';
 class SubscriptionFormVariantA extends HookConsumerWidget {
   const SubscriptionFormVariantA({
     required this.store,
-    required this.localDb,
     required this.analyticsStore,
     required this.subscribeToPackage,
     required this.variant,
     super.key,
   });
   final SubscriptionStore store;
-  final LocalDBService localDb;
   final AnalyticsStore analyticsStore;
   final void Function(String selectedProductId) subscribeToPackage;
   final String variant;
