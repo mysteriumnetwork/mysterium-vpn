@@ -150,7 +150,23 @@ abstract class _VpnStore with Store {
     _refreshIPConnection = _localDBService.getRefreshIPConnection();
     _malwareBlockerContent = _localDBService.getMalwareBlocker();
     _notSafeContentBlocker = _localDBService.getNotSafeContentBlocker();
-    _setupAndListenToConnectionStatus();
+    final res = await _checkTunelConfigured();
+    if (res) {
+      await _setupAndListenToConnectionStatus();
+    }
+  }
+
+  @action
+  Future<bool> _checkTunelConfigured() async {
+    try {
+      return await _wireguardService.isTunnelConfigured(
+        bundleId: _env.getBundleId(),
+        tunnelName: _env.values.tunnelName,
+      );
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      return false;
+    }
   }
 
   /// Setup initial connection status and listen to connection status changes
@@ -199,6 +215,7 @@ abstract class _VpnStore with Store {
         tunnelName: _env.values.tunnelName,
       );
       _logger.info('Tunnel setup done');
+      await _setupAndListenToConnectionStatus();
       toggleConnection(location: lastConnectingLocation);
     } catch (e, stackTrace) {
       var message = 'Error occured while setting up tunnel';
@@ -311,11 +328,6 @@ abstract class _VpnStore with Store {
       _logger.handle(e, stackTrace);
       rethrow;
     } catch (e, stackTrace) {
-      if (e is PlatformException) {
-        if ((e.message?.contains('Permissions are not given') ?? false) ||
-            (e.message?.contains('permission denied') ?? false) ||
-            (e.message?.contains('tunnel not initialized') ?? false)) {}
-      }
       _logger.handle(e, stackTrace);
       throw WireguardConnectException(e.toString());
     }
@@ -324,6 +336,12 @@ abstract class _VpnStore with Store {
   /// Disconnect from Wireguard tunnel
   @action
   Future<void> disconnectWireguard() async {
+    if (!(await _wireguardService.isTunnelConfigured(
+      bundleId: _env.getBundleId(),
+      tunnelName: _env.values.tunnelName,
+    ))) {
+      return;
+    }
     final tunnelStatus = await _wireguardService.status();
     if (tunnelStatus == ConnectionStatus.connected || tunnelStatus == ConnectionStatus.connecting) {
       await _wireguardService.disconnect().timeout(
@@ -380,7 +398,10 @@ abstract class _VpnStore with Store {
       throw const SubscriptionRequiredException();
     }
 
-    if (await _wireguardService.status() == ConnectionStatus.unknown) {
+    if (!(await _wireguardService.isTunnelConfigured(
+      bundleId: _env.getBundleId(),
+      tunnelName: _env.values.tunnelName,
+    ))) {
       lastConnectingLocation = location;
       throw const TunnelSetupnRequiredException();
     }

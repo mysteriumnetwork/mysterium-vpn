@@ -189,6 +189,14 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_checkTunelConfiguredAsyncAction =
+      AsyncAction('_VpnStore._checkTunelConfigured', context: context);
+
+  @override
+  Future<bool> _checkTunelConfigured() {
+    return _$_checkTunelConfiguredAsyncAction.run(() => super._checkTunelConfigured());
+  }
+
   late final _$_setupAndListenToConnectionStatusAsyncAction =
       AsyncAction('_VpnStore._setupAndListenToConnectionStatus', context: context);
 
