@@ -26,6 +26,7 @@ class VpnPrivacyConsentForm extends HookConsumerWidget {
     final height = getMediaHeight(context);
     final analyticsStore = ref.read(analyticsStorePOD);
     final localDb = ref.read(localDBPOD);
+    final authSession = ref.read(authSessionStorePOD);
     return Column(
       children: [
         HeaderTitle(
@@ -46,7 +47,10 @@ class VpnPrivacyConsentForm extends HookConsumerWidget {
           width: 250,
           onPressed: () async {
             analyticsStore.logEvent(AnalyticsEvent.ppAcceptClick);
-            await localDb.setVpnPrivacyPolicyConsent(vpnPrivacyPolicyConsent: true);
+            await localDb.setVpnConsentApproval(
+              authSession.user!,
+              approval: true,
+            );
             Navigator.of(context).maybePop();
           },
           child: EasyText(
