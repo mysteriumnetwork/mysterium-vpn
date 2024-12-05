@@ -18,25 +18,22 @@ WireguardConnectResponse _$WireguardConnectResponseFromJson(Map<String, dynamic>
         final val = WireguardConnectResponse(
           wgConfig: $checkedConvert('wg_config', (v) => v as String),
           hash: $checkedConvert('hash', (v) => v as String),
+          exitIp: $checkedConvert('exit_ip', (v) => v as String?),
           limitExceeded: $checkedConvert('limit_exceeded', (v) => v as bool?),
         );
         return val;
       },
-      fieldKeyMap: const {'wgConfig': 'wg_config', 'limitExceeded': 'limit_exceeded'},
+      fieldKeyMap: const {
+        'wgConfig': 'wg_config',
+        'exitIp': 'exit_ip',
+        'limitExceeded': 'limit_exceeded'
+      },
     );
 
-Map<String, dynamic> _$WireguardConnectResponseToJson(WireguardConnectResponse instance) {
-  final val = <String, dynamic>{
-    'wg_config': instance.wgConfig,
-    'hash': instance.hash,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('limit_exceeded', instance.limitExceeded);
-  return val;
-}
+Map<String, dynamic> _$WireguardConnectResponseToJson(WireguardConnectResponse instance) =>
+    <String, dynamic>{
+      'wg_config': instance.wgConfig,
+      'hash': instance.hash,
+      if (instance.exitIp case final value?) 'exit_ip': value,
+      if (instance.limitExceeded case final value?) 'limit_exceeded': value,
+    };
