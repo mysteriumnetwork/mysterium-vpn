@@ -16,6 +16,7 @@ Name | Type | Description | Notes
 **zipCode** | **String** |  | [optional] 
 **couponCode** | **String** |  | [optional] 
 **embedded** | **bool** |  | [optional] 
+**cardHolder** | **String** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
