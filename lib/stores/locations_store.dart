@@ -2,10 +2,8 @@ import 'dart:async';
 
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 
@@ -17,18 +15,12 @@ class LocationsStore = _LocationsStore with _$LocationsStore;
 abstract class _LocationsStore with Store {
   _LocationsStore({
     required ApiService apiService,
-    required AuthSessionStore authSessionStore,
     required AnalyticsStore analyticsStore,
     required LocaleStore localeStore,
   })  : _apiService = apiService,
-        _authSessionStore = authSessionStore,
         _analyticsStore = analyticsStore {
     fetchVPNLocations();
-    reaction((_) => _authSessionStore.user, (_) async {
-      if (_authSessionStore.user != null) {
-        await fetchVPNLocationsFuture.whenComplete(fetchRecentLocations);
-      }
-    });
+    fetchVPNLocationsFuture.whenComplete(fetchRecentLocations);
     reaction((_) => localeStore.currentLocale, (locale) {
       if (searchKeyword.isNotEmpty) {
         setLocationKeyword('');
@@ -37,7 +29,6 @@ abstract class _LocationsStore with Store {
   }
 
   final ApiService _apiService;
-  final AuthSessionStore _authSessionStore;
   final AnalyticsStore _analyticsStore;
 
   ObservableList<String> recentLocations = ObservableList();
@@ -68,12 +59,7 @@ abstract class _LocationsStore with Store {
 
   @action
   Future<void> fetchRecentLocations() async {
-    if (_authSessionStore.user == null) {
-      throw AuthenticationRequiredException();
-    }
-
-    final locations =
-        await _apiService.getRecentLocations(_authSessionStore.user!, keyword: searchKeyword);
+    final locations = await _apiService.getRecentLocations(keyword: searchKeyword);
 
     recentLocations
       ..clear()

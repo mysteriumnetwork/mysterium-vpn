@@ -5,7 +5,6 @@ import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/report_broken_node_request.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:talker/talker.dart';
@@ -76,7 +75,7 @@ class RestApiService extends ApiService {
   }
 
   @override
-  Future<List<String>> getRecentLocations(AuthUser user, {required String keyword}) async {
+  Future<List<String>> getRecentLocations({required String keyword}) async {
     final countryCodes = await _localDb.getRecentLocations();
     if (keyword.isNotEmpty) {
       final res =
