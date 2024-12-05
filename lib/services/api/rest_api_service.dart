@@ -23,25 +23,22 @@ class RestApiService extends ApiService {
   RestApiService({
     required VpnApi api,
     required NetworkService networkService,
-    required LocalDBService localDb,
     required Talker logger,
   })  : _networkService = networkService,
         _apiConnection = api.getConnection(),
-        _localDb = localDb,
         _logger = logger;
 
   final Connection _apiConnection;
   final NetworkService _networkService;
-  final LocalDBService _localDb;
+  final LocalDBService _localDb = LocalDBService.instance;
   final Talker _logger;
 
   @override
-  Future<void> setNotificationsApproval(AuthUser user, {required bool approval}) async =>
-      _localDb.setNotificationsApproval(user, approval: approval);
+  Future<void> setNotificationsApproval({required bool approval}) async =>
+      _localDb.setNotificationsApproval(approval: approval);
 
   @override
-  Future<Approval> getNotificationsApproval(AuthUser user) =>
-      _localDb.getNotificationsApproval(user);
+  Future<Approval> getNotificationsApproval() => _localDb.getNotificationsApproval();
 
   @override
   Future<VPNLocations> fetchVPNLocations({required String keyword}) async {
@@ -80,7 +77,7 @@ class RestApiService extends ApiService {
 
   @override
   Future<List<String>> getRecentLocations(AuthUser user, {required String keyword}) async {
-    final countryCodes = await _localDb.getRecentLocations(user);
+    final countryCodes = await _localDb.getRecentLocations();
     if (keyword.isNotEmpty) {
       final res =
           countryCodes.where((location) => location.tr().toLowerCase().contains(keyword)).toList();
@@ -90,8 +87,8 @@ class RestApiService extends ApiService {
   }
 
   @override
-  Future<void> addRecentLocation(AuthUser user, String location) async {
-    final recentLocations = await _localDb.getRecentLocations(user);
+  Future<void> addRecentLocation(String location) async {
+    final recentLocations = await _localDb.getRecentLocations();
     if (recentLocations.contains(location)) {
       recentLocations.remove(location);
     }
@@ -99,7 +96,7 @@ class RestApiService extends ApiService {
     if (recentLocations.length > 5) {
       recentLocations.removeLast();
     }
-    await _localDb.setRecentLocation(user, recentLocations);
+    await _localDb.setRecentLocation(recentLocations);
   }
 
   @override
