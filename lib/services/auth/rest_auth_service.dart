@@ -11,6 +11,7 @@ import 'package:mysterium_vpn/models/token_response.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -129,6 +130,7 @@ class RestAuthService extends AuthService {
     await _securedStorage.removePkcePair();
     await _securedStorage.removeWireguardPrivateKey();
     await _securedStorage.removeWireguardPublicKey();
+    LocalDBService.instance.clearUser();
 
     if (currentUsername != null && currentUsername.isNotEmpty) {
       _logger.info('User $currentUsername logged out');
