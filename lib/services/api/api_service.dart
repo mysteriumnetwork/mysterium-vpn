@@ -2,7 +2,6 @@ import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/report_broken_node_request.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
-import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 abstract class ApiService {
@@ -10,7 +9,7 @@ abstract class ApiService {
   Future<Approval> getNotificationsApproval();
   Future<VPNLocations> fetchVPNLocations({required String keyword});
   Future<void> addRecentLocation(String location);
-  Future<List<String>> getRecentLocations(AuthUser user, {required String keyword});
+  Future<List<String>> getRecentLocations({required String keyword});
   Future<WireguardConnectResponse> fetchVpnConfig({required WireguardConnectRequest request});
   Future<IPInfo?> getIPAdress();
   Future<void> reportBrokenNode({required ReportBrokenNodeRequest request});
