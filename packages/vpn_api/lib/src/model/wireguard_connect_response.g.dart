@@ -30,10 +30,19 @@ WireguardConnectResponse _$WireguardConnectResponseFromJson(Map<String, dynamic>
       },
     );
 
-Map<String, dynamic> _$WireguardConnectResponseToJson(WireguardConnectResponse instance) =>
-    <String, dynamic>{
-      'wg_config': instance.wgConfig,
-      'hash': instance.hash,
-      if (instance.exitIp case final value?) 'exit_ip': value,
-      if (instance.limitExceeded case final value?) 'limit_exceeded': value,
-    };
+Map<String, dynamic> _$WireguardConnectResponseToJson(WireguardConnectResponse instance) {
+  final val = <String, dynamic>{
+    'wg_config': instance.wgConfig,
+    'hash': instance.hash,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('exit_ip', instance.exitIp);
+  writeNotNull('limit_exceeded', instance.limitExceeded);
+  return val;
+}
