@@ -7,7 +7,6 @@ import 'package:mysterium_vpn/components/inherited/parent_scroll_controller.dart
 import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/subscription_form_variant_a.dart';
@@ -19,7 +18,6 @@ import 'package:styled_widget/styled_widget.dart';
 class SubscriptionFormVariantContainer extends HookWidget {
   const SubscriptionFormVariantContainer({
     required this.subscriptionStore,
-    required this.localDb,
     required this.analyticsStore,
     required this.variant,
     required this.subscribeToPackage,
@@ -28,7 +26,6 @@ class SubscriptionFormVariantContainer extends HookWidget {
     super.key,
   });
   final SubscriptionStore subscriptionStore;
-  final LocalDBService localDb;
   final AnalyticsStore analyticsStore;
   final void Function(String selectedProductId) subscribeToPackage;
   final String variant;
