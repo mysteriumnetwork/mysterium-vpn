@@ -14,21 +14,23 @@ import 'package:mysterium_vpn/views/subscription/widgets/discount_tag.dart';
 class ProductPricing extends HookConsumerWidget {
   const ProductPricing({
     required this.product,
-    this.showDiscount = false,
-    this.monthlyPrice,
     super.key,
   });
 
   final PurchasableProduct product;
-  final bool showDiscount;
-  final double? monthlyPrice;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final monthlyPrice = this.monthlyPrice ?? product.rawPrice / product.duration;
+    final configStore = ref.watch(remoteConfigStorePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
 
-    final config = ref.watch(remoteConfigStorePOD);
-    final pricingMonthly = useComputedValue(() => config.pricingMonthly);
+    final monthlyPrice = useComputedValue(() => subscriptionStore.monthlyProduct.rawPrice);
+    final showDiscount = useMemoized(() => product.isDiscounted(monthlyPrice), [
+      monthlyPrice,
+      product,
+    ]);
+
+    final pricingMonthly = useComputedValue(() => configStore.pricingMonthly);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -46,7 +48,7 @@ class ProductPricing extends HookConsumerWidget {
             const SizedBox(width: 8),
             if (showDiscount)
               DiscountTag(
-                monthlyRawPrice: product.rawPrice,
+                monthlyRawPrice: monthlyPrice,
                 product: product,
               ),
           ],

@@ -8,6 +8,7 @@ import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
+import 'package:mysterium_vpn/common/utils/comparator_utils.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
@@ -80,6 +81,13 @@ abstract class _SubscriptionStore with Store {
 
   @readonly
   ObservableList<PurchasableProduct> _products = ObservableList<PurchasableProduct>.of([]);
+
+  @computed
+  PurchasableProduct get monthlyProduct => _products.firstWhere((element) => element.duration == 1);
+
+  @computed
+  PurchasableProduct get highlightedProduct =>
+      _products.sortedByCompare((it) => it.duration, compareNums).last;
 
   @computed
   bool get isLoading =>
