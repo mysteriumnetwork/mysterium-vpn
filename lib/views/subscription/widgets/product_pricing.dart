@@ -157,7 +157,7 @@ class _SecondaryPriceText extends HookWidget {
         );
       }
 
-      final monthlyPrice = product.rawPrice / product.duration;
+      final monthlyPrice = product.productPrice / product.duration;
 
       return monthlyPrice.price(
         currencySymbol: product.currencySymbol,
