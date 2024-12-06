@@ -74,35 +74,22 @@ class SubscriptionFormVariantContainer extends HookWidget {
               controller: scrollController,
               child: switch (variant) {
                 'A' => SubscriptionFormVariantA(
-                    store: subscriptionStore,
-                    analyticsStore: analyticsStore,
                     variant: variant,
                     subscribeToPackage: subscribeToPackage,
                   ),
                 'B' => SubscriptionFormVariantB(
-                    store: subscriptionStore,
-                    analyticsStore: analyticsStore,
                     variant: variant,
                     subscribeToPackage: subscribeToPackage,
-                    isDarkMode: isDarkMode,
                   ),
                 'C' => SubscriptionFormVariantC(
-                    store: subscriptionStore,
-                    analyticsStore: analyticsStore,
                     variant: variant,
                     subscribeToPackage: subscribeToPackage,
-                    isDarkMode: isDarkMode,
                   ),
                 'D' => SubscriptionFormVariantD(
-                    store: subscriptionStore,
-                    analyticsStore: analyticsStore,
                     variant: variant,
                     subscribeToPackage: subscribeToPackage,
-                    isDarkMode: isDarkMode,
                   ),
                 _ => SubscriptionFormVariantA(
-                    store: subscriptionStore,
-                    analyticsStore: analyticsStore,
                     variant: variant,
                     subscribeToPackage: subscribeToPackage,
                   ),

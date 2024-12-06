@@ -15,6 +15,20 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
   bool? get isSubscribed => (_$isSubscribedComputed ??=
           Computed<bool?>(() => super.isSubscribed, name: '_SubscriptionStore.isSubscribed'))
       .value;
+  Computed<PurchasableProduct>? _$monthlyProductComputed;
+
+  @override
+  PurchasableProduct get monthlyProduct =>
+      (_$monthlyProductComputed ??= Computed<PurchasableProduct>(() => super.monthlyProduct,
+              name: '_SubscriptionStore.monthlyProduct'))
+          .value;
+  Computed<PurchasableProduct>? _$highlightedProductComputed;
+
+  @override
+  PurchasableProduct get highlightedProduct =>
+      (_$highlightedProductComputed ??= Computed<PurchasableProduct>(() => super.highlightedProduct,
+              name: '_SubscriptionStore.highlightedProduct'))
+          .value;
   Computed<bool>? _$isLoadingComputed;
 
   @override
@@ -324,6 +338,8 @@ isAvailableFuture: ${isAvailableFuture},
 verifySubscriptionFuture: ${verifySubscriptionFuture},
 subscriptionFuture: ${subscriptionFuture},
 isSubscribed: ${isSubscribed},
+monthlyProduct: ${monthlyProduct},
+highlightedProduct: ${highlightedProduct},
 isLoading: ${isLoading}
     ''';
   }
