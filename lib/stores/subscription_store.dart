@@ -261,7 +261,7 @@ abstract class _SubscriptionStore with Store {
         _analyticsStore.logEvent(
           AnalyticsEvent.paymentVerificationSuccess,
           parameters: {
-            'planType': _lastPurchase!.productID,
+            'planType': _purchasedProductId ?? _lastPurchase?.productID,
             'price': product?.productDetails.rawPrice.toString(),
           },
         );
