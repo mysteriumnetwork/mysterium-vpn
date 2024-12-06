@@ -64,9 +64,11 @@ class ProductItemVariantD extends StatelessWidget {
                 Brightness.light => isSelected ? Palette.white : Palette.black,
               },
             ),
-            child: ProductPricing(
-              product: product,
-            ).padding(horizontal: 16, vertical: 12).width(260),
+            child: Center(
+              child: ProductPricing(
+                product: product,
+              ).padding(horizontal: 16, vertical: 2).width(260),
+            ),
           ),
         ),
       ],

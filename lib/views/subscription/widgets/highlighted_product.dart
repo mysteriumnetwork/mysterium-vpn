@@ -8,32 +8,25 @@ import 'package:styled_widget/styled_widget.dart';
 class HighlightedProduct extends StatelessWidget {
   const HighlightedProduct({
     required this.product,
-    required this.isDarkTheme,
-    required this.monthlyRawPrice,
-    required this.showDiscountTag,
     required this.isHighlighted,
-    this.selectProdcut,
+    this.selectProduct,
     super.key,
   });
   final PurchasableProduct product;
-  final double monthlyRawPrice;
-  final bool isDarkTheme;
-  final VoidCallback? selectProdcut;
-  final bool showDiscountTag;
+  final VoidCallback? selectProduct;
   final bool isHighlighted;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
     return RippleWidget(
-      onTap: selectProdcut,
+      onTap: selectProduct,
       radius: 15,
       child: DefaultTextStyle(
         style: theme.textTheme.bodyMedium!.copyWith(color: Palette.white),
         child: ProductPricing(
           product: product,
-          monthlyPrice: monthlyRawPrice,
-          showDiscount: showDiscountTag,
         ).padding(horizontal: 16, vertical: 12).width(double.infinity),
       ).card(
         margin: const EdgeInsets.symmetric(vertical: 8),
@@ -43,7 +36,7 @@ class HighlightedProduct extends StatelessWidget {
             color: Palette.purple,
           ),
         ),
-        color: isDarkTheme ? const Color(0xff23222D) : const Color(0xff363355),
+        color: isDarkMode ? const Color(0xff23222D) : const Color(0xff363355),
       ),
     );
   }

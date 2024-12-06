@@ -4,7 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -15,8 +17,8 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/views/subscription/subscription_button.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/highlighted_product.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/product_pricing.dart';
@@ -24,14 +26,10 @@ import 'package:styled_widget/styled_widget.dart';
 
 Future<void> shownProductPickerDialog({
   required BuildContext context,
-  required AnalyticsStore analyticsStore,
   required List<PurchasableProduct> products,
-  required SubscriptionStore subscriptionStore,
   required void Function(String selectedProductId) subscribeToPackage,
-  required bool isDarkTheme,
   required bool seeAllPlans,
 }) async {
-  analyticsStore.logEvent(AnalyticsEvent.paymentSelectProductPopup);
   showModalBottomSheet(
     clipBehavior: Clip.none,
     constraints: const BoxConstraints.tightFor(width: double.infinity),
@@ -44,38 +42,47 @@ Future<void> shownProductPickerDialog({
     builder: (context) => Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: _ProductPickerDialog(
-        analyticsStore: analyticsStore,
         products: products,
-        subscriptionStore: subscriptionStore,
         subscribeToPackage: subscribeToPackage,
-        isDarkMode: isDarkTheme,
         seeAllPlansInit: seeAllPlans,
       ),
     ),
   );
 }
 
-class _ProductPickerDialog extends HookWidget {
+class _ProductPickerDialog extends HookConsumerWidget {
   const _ProductPickerDialog({
-    required this.subscriptionStore,
-    required this.analyticsStore,
     required this.products,
     required this.subscribeToPackage,
-    required this.isDarkMode,
     required this.seeAllPlansInit,
   });
-  final SubscriptionStore subscriptionStore;
-  final AnalyticsStore analyticsStore;
+
   final List<PurchasableProduct> products;
   final void Function(String selectedProductId) subscribeToPackage;
-  final bool isDarkMode;
   final bool seeAllPlansInit;
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final analyticsStore = ref.watch(analyticsStorePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
+
+    final highlightedProduct = useComputedValue(() => subscriptionStore.highlightedProduct);
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     final selectedProductId = useState<String>(
-      subscriptionStore.purchasedProductId ?? subscriptionStore.products.last.id,
+      subscriptionStore.purchasedProductId ?? highlightedProduct.id,
     );
+
     final seeAllPlans = useState(seeAllPlansInit);
+
+    useEffect(
+      () {
+        analyticsStore.logEvent(AnalyticsEvent.paymentSelectProductPopup);
+        return;
+      },
+      [analyticsStore],
+    );
+
     return Observer(
       builder: (context) => Stack(
         clipBehavior: Clip.none,
@@ -124,15 +131,11 @@ class _ProductPickerDialog extends HookWidget {
                   _ProductsContainer(
                     products: products,
                     selectedProductId: selectedProductId,
-                    isDarkTheme: isDarkMode,
                     analyticsStore: analyticsStore,
                   )
                 else
                   HighlightedProduct(
                     product: products.first,
-                    isDarkTheme: isDarkMode,
-                    monthlyRawPrice: products.last.rawPrice,
-                    showDiscountTag: true,
                     isHighlighted: false,
                   ),
                 SizedBox(height: getMediaHeight(context) * 0.04),
@@ -172,66 +175,58 @@ class _ProductsContainer extends StatelessWidget {
   const _ProductsContainer({
     required this.products,
     required this.selectedProductId,
-    required this.isDarkTheme,
     required this.analyticsStore,
   });
   final List<PurchasableProduct> products;
   final ValueNotifier<String> selectedProductId;
-  final bool isDarkTheme;
   final AnalyticsStore analyticsStore;
   @override
-  Widget build(BuildContext context) => ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: isDarkTheme ? const Color(0xff23222D) : const Color(0xff363355),
-            borderRadius: const BorderRadius.all(Radius.circular(16)),
-            border: Border.all(color: Palette.purple, width: 1.5),
+  Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return ClipRRect(
+      borderRadius: const BorderRadius.all(Radius.circular(16)),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: isDarkMode ? const Color(0xff23222D) : const Color(0xff363355),
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          border: Border.all(color: Palette.purple, width: 1.5),
+        ),
+        child: ListView.separated(
+          shrinkWrap: true,
+          padding: EdgeInsets.zero,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: products.length,
+          itemBuilder: (context, index) => ContaineredProduct(
+            selectProduct: () {
+              analyticsStore.logProductSelected(
+                products[index].id,
+                products.map((e) => e.id).toList(),
+              );
+              selectedProductId.value = products[index].id;
+            },
+            product: products[index],
+            isSelected: selectedProductId.value == products[index].id,
           ),
-          child: ListView.separated(
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: products.length,
-            itemBuilder: (context, index) => ContaineredProduct(
-              selectProdcut: () {
-                analyticsStore.logProductSelected(
-                  products[index].id,
-                  products.map((e) => e.id).toList(),
-                );
-                selectedProductId.value = products[index].id;
-              },
-              product: products[index],
-              monthlyRawPrice: products.last.rawPrice,
-              showDiscountTag: products[index].id == products.first.id,
-              isSelected: selectedProductId.value == products[index].id,
-              isDarkTheme: false,
-            ),
-            separatorBuilder: (context, index) => const Divider(
-              color: Color.fromRGBO(106, 103, 142, 0.4),
-              thickness: 1,
-              height: 1,
-            ),
+          separatorBuilder: (context, index) => const Divider(
+            color: Color.fromRGBO(106, 103, 142, 0.4),
+            thickness: 1,
+            height: 1,
           ),
         ),
-      );
+      ),
+    );
+  }
 }
 
 class ContaineredProduct extends StatelessWidget {
   const ContaineredProduct({
     required this.product,
-    required this.isDarkTheme,
-    required this.monthlyRawPrice,
-    required this.showDiscountTag,
     required this.isSelected,
-    this.selectProdcut,
+    this.selectProduct,
     super.key,
   });
   final PurchasableProduct product;
-  final double monthlyRawPrice;
-  final bool isDarkTheme;
-  final VoidCallback? selectProdcut;
-  final bool showDiscountTag;
+  final VoidCallback? selectProduct;
   final bool isSelected;
 
   @override
@@ -239,7 +234,7 @@ class ContaineredProduct extends StatelessWidget {
     final theme = Theme.of(context);
 
     return RippleWidget(
-      onTap: selectProdcut,
+      onTap: selectProduct,
       radius: 0,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,11 +242,7 @@ class ContaineredProduct extends StatelessWidget {
           Expanded(
             child: DefaultTextStyle(
               style: theme.textTheme.bodyMedium!.copyWith(color: Palette.white),
-              child: ProductPricing(
-                product: product,
-                showDiscount: showDiscountTag,
-                monthlyPrice: monthlyRawPrice,
-              ),
+              child: ProductPricing(product: product),
             ),
           ),
           if (isSelected)
