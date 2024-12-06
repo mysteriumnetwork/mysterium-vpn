@@ -549,6 +549,11 @@ abstract class _VpnStore with Store {
       _checkOperationCancel(nonce);
       _connectionStatus = ConnectionStatus.connecting;
       await _connectWireguard(privateKey: key.privateKey, nonce: nonce);
+
+      if (_vpnConfig!.exitIp != null && location != null) {
+        return VpnConnection(connectionIP: _vpnConfig!.exitIp!, location: location);
+      }
+
       _checkOperationCancel(nonce);
       resolveConnectionLocationFuture = ObservableFuture(
         _resolveConnectionLocation(
