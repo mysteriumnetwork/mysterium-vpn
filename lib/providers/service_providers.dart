@@ -6,6 +6,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:mysterium_vpn/common/interceptors/api_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/connection_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
@@ -92,6 +94,40 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
   ]);
 
   return dio;
+});
+
+final vpnApiMQTTPOD = Provider<MqttClient>((ref) {
+  final environment = ref.watch(environmentPOD);
+  final logger = ref.watch(loggerPOD);
+
+  final mqtt = MqttServerClient.withPort(
+    environment.values.mqttHost,
+    'mysterium-vpn-${environment.buildInfo.buildVersion}-${environment.buildInfo.buildNumber}',
+    environment.values.mqttPort,
+  );
+  mqtt
+    //..logging(on: true)
+    ..autoReconnect = true
+    ..keepAlivePeriod = 60 * 5
+    ..resubscribeOnAutoReconnect = true
+    ..onConnected = () {
+      logger.debug('MQTT connected');
+      mqtt.subscribe('testtopic', MqttQos.exactlyOnce);
+    }
+    ..onAutoReconnect = () {
+      logger.verbose('MQTT reconnecting..');
+    }
+    ..onAutoReconnected = () {
+      logger.verbose('MQTT reconnected');
+    }
+    ..onDisconnected = () {
+      logger.verbose('MQTT disconnected');
+    }
+    ..onFailedConnectionAttempt = (attempt) {
+      logger.warning('MQTT connecting.. Attempt $attempt');
+    };
+
+  return mqtt;
 });
 
 final vpnApiPOD = Provider<VpnApi>((ref) {

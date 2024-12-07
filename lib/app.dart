@@ -7,6 +7,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/router/route_delegate.dart';
@@ -17,6 +18,7 @@ import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/components/shortcuts.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/ft_checkers.dart';
+import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
@@ -35,6 +37,28 @@ class MyApp extends HookConsumerWidget {
     final env = ref.read(environmentPOD);
     final appName = env.values.appName;
     final flavor = env.flavor;
+    final mqtt = ref.read(vpnApiMQTTPOD);
+    final logger = ref.watch(loggerPOD);
+
+    useEffect(
+      () {
+        try {
+          mqtt.connect();
+
+          mqtt.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
+            final topic = c![0].topic;
+            final recMess = c[0].payload! as MqttPublishMessage;
+            final pt = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+
+            logger.debug('MQTT message. <$topic> $pt');
+          });
+        } catch (e, stackTrace) {
+          logger.handle(e, stackTrace);
+        }
+        return null;
+      },
+      [mqtt],
+    );
 
     useEffect(
       () {
