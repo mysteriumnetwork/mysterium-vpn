@@ -1,0 +1,84 @@
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:mysterium_vpn/services/mqtt/testtopic.dart';
+import 'package:talker/talker.dart';
+
+class MqttService {
+  MqttService(MqttServerClient client, Talker logger)
+      : _mqtt = client,
+        _logger = logger {
+    _mqtt
+      ..autoReconnect = true
+      ..useWebSocket = true
+      ..keepAlivePeriod = 60 * 5
+      ..resubscribeOnAutoReconnect = true
+      ..onConnected = () {
+        _logger.debug('MQTT connected');
+      }
+      ..onAutoReconnect = () {
+        _logger.verbose('MQTT reconnecting..');
+      }
+      ..onAutoReconnected = () {
+        _logger.verbose('MQTT reconnected');
+      }
+      ..onDisconnected = () {
+        _logger.verbose('MQTT disconnected');
+      }
+      ..onFailedConnectionAttempt = (attempt) {
+        _logger.warning('MQTT connecting.. Attempt $attempt');
+      };
+  }
+
+  final MqttServerClient _mqtt;
+  final Talker _logger;
+
+  Future<void> start(TesttopicNotifier testtopic) async {
+    try {
+      await _mqtt.connect();
+
+      _mqtt.subscribe('testtopic', MqttQos.exactlyOnce);
+
+      _mqtt.updates!.listen(_onMessage(testtopic));
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+    }
+  }
+
+  void stop() {
+    try {
+      _mqtt.disconnect();
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+    }
+  }
+
+  void Function(List<MqttReceivedMessage<MqttMessage?>>? c) _onMessage(
+    TesttopicNotifier testtopic,
+  ) =>
+      (List<MqttReceivedMessage<MqttMessage?>>? c) {
+        try {
+          if (c == null) {
+            _logger.warning('MQTT topic empty');
+            return;
+          }
+          if (c[0].payload == null) {
+            _logger.warning('MQTT payload empty');
+            return;
+          }
+          final topic = c[0].topic;
+          final topicMessage = c[0].payload! as MqttPublishMessage;
+
+          final topicPayload =
+              MqttPublishPayload.bytesToStringAsString(topicMessage.payload.message);
+          _logger.debug('MQTT message. <$topic> $topicPayload');
+
+          switch (topic) {
+            case 'testtopic':
+              testtopic.receive(topicPayload);
+              break;
+          }
+        } catch (e, stackTrace) {
+          _logger.handle(e, stackTrace);
+        }
+      };
+}

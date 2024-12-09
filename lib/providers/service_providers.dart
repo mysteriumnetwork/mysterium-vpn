@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:mysterium_vpn/common/interceptors/api_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/connection_errors.dart';
@@ -22,6 +21,8 @@ import 'package:mysterium_vpn/services/auth/rest_auth_service.dart';
 import 'package:mysterium_vpn/services/data/local/config_cat_cache.dart';
 import 'package:mysterium_vpn/services/data/network/dio_network_service.dart';
 import 'package:mysterium_vpn/services/dio_network_logger/dio_network_logger.dart';
+import 'package:mysterium_vpn/services/mqtt/service.dart';
+import 'package:mysterium_vpn/services/mqtt/testtopic.dart';
 import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:talker/talker.dart';
@@ -96,7 +97,7 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
   return dio;
 });
 
-final vpnApiMQTTPOD = Provider<MqttClient>((ref) {
+final vpnApiMQTTPOD = Provider<MqttService>((ref) {
   final environment = ref.watch(environmentPOD);
   final logger = ref.watch(loggerPOD);
 
@@ -105,30 +106,14 @@ final vpnApiMQTTPOD = Provider<MqttClient>((ref) {
     'mysterium-vpn-${environment.buildInfo.buildVersion}-${environment.buildInfo.buildNumber}',
     environment.values.mqttPort,
   );
-  mqtt
-    //..logging(on: true)
-    ..autoReconnect = true
-    ..keepAlivePeriod = 60 * 5
-    ..resubscribeOnAutoReconnect = true
-    ..onConnected = () {
-      logger.debug('MQTT connected');
-      mqtt.subscribe('testtopic', MqttQos.exactlyOnce);
-    }
-    ..onAutoReconnect = () {
-      logger.verbose('MQTT reconnecting..');
-    }
-    ..onAutoReconnected = () {
-      logger.verbose('MQTT reconnected');
-    }
-    ..onDisconnected = () {
-      logger.verbose('MQTT disconnected');
-    }
-    ..onFailedConnectionAttempt = (attempt) {
-      logger.warning('MQTT connecting.. Attempt $attempt');
-    };
+  if (kDebugMode) {
+    mqtt.logging(on: true);
+  }
 
-  return mqtt;
+  return MqttService(mqtt, logger);
 });
+
+final vpnApiMQTTTesttipicPOD = NotifierProvider<TesttopicNotifier, String?>(TesttopicNotifier.new);
 
 final vpnApiPOD = Provider<VpnApi>((ref) {
   final dio = ref.watch(vpnApiDioPOD);

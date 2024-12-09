@@ -7,7 +7,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/router/route_delegate.dart';
@@ -38,27 +37,6 @@ class MyApp extends HookConsumerWidget {
     final appName = env.values.appName;
     final flavor = env.flavor;
     final mqtt = ref.read(vpnApiMQTTPOD);
-    final logger = ref.watch(loggerPOD);
-
-    useEffect(
-      () {
-        try {
-          mqtt.connect();
-
-          mqtt.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
-            final topic = c![0].topic;
-            final recMess = c[0].payload! as MqttPublishMessage;
-            final pt = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-
-            logger.debug('MQTT message. <$topic> $pt');
-          });
-        } catch (e, stackTrace) {
-          logger.handle(e, stackTrace);
-        }
-        return null;
-      },
-      [mqtt],
-    );
 
     useEffect(
       () {
@@ -72,6 +50,13 @@ class MyApp extends HookConsumerWidget {
         await authStore.fetchAuthUser();
       }
     });
+    useEffect(
+      () {
+        mqtt.start(ref.read(vpnApiMQTTTesttipicPOD.notifier));
+        return mqtt.stop;
+      },
+      [mqtt],
+    );
 
     return ReactionBuilder(
       builder: (_) => reaction(
