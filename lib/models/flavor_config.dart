@@ -14,8 +14,7 @@ enum Flavor {
 class FlavorValues {
   FlavorValues({
     required this.baseUrl,
-    required this.mqttHost,
-    required this.mqttPort,
+    required this.mqttUrl,
     required this.webAppUrl,
     required this.sentryDsn,
     required this.billingPage,
@@ -30,8 +29,7 @@ class FlavorValues {
 
   factory FlavorValues.production() => FlavorValues(
         baseUrl: 'https://api.mysteriumvpn.com/api/v1',
-        mqttHost: 'api.mysteriumvpn.com',
-        mqttPort: 2883,
+        mqttUrl: 'wss://api.mysteriumvpn.com/api/v1/events',
         webAppUrl: 'app.mysteriumvpn.com',
         sentryDsn:
             'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200',
@@ -46,8 +44,7 @@ class FlavorValues {
       );
   factory FlavorValues.dev() => FlavorValues(
         baseUrl: 'https://api-test.mysteriumvpn.com/api/v1',
-        mqttHost: 'api-test.mysteriumvpn.com',
-        mqttPort: 2883,
+        mqttUrl: 'wss://api-test.mysteriumvpn.com/api/v1/events',
         webAppUrl: 'app-testnet.mysteriumvpn.com',
         sentryDsn:
             'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200',
@@ -62,8 +59,7 @@ class FlavorValues {
       );
 
   final String baseUrl;
-  final String mqttHost;
-  final int mqttPort;
+  final String mqttUrl;
   final String webAppUrl;
   final String sentryDsn;
   final String billingPage;

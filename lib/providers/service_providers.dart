@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:mysterium_vpn/common/interceptors/api_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/connection_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
@@ -101,16 +100,11 @@ final vpnApiMQTTPOD = Provider<MqttService>((ref) {
   final environment = ref.watch(environmentPOD);
   final logger = ref.watch(loggerPOD);
 
-  final mqtt = MqttServerClient.withPort(
-    environment.values.mqttHost,
+  return MqttService(
+    environment.values.mqttUrl,
     'mysterium-vpn-${environment.buildInfo.buildVersion}-${environment.buildInfo.buildNumber}',
-    environment.values.mqttPort,
+    logger,
   );
-  if (kDebugMode) {
-    mqtt.logging(on: true);
-  }
-
-  return MqttService(mqtt, logger);
 });
 
 final vpnApiMQTTTesttipicPOD = NotifierProvider<TesttopicNotifier, String?>(TesttopicNotifier.new);
