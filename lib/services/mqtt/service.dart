@@ -5,9 +5,9 @@ import 'package:mysterium_vpn/services/mqtt/testtopic.dart';
 import 'package:talker/talker.dart';
 
 class MqttService {
-  MqttService(String url, String clientID, Talker logger) :
-    _mqtt = MqttServerClient(url, clientID), _logger = logger {
-
+  MqttService(String url, String clientID, Talker logger)
+      : _mqtt = MqttServerClient(url, clientID),
+        _logger = logger {
     final uri = Uri.parse(url);
     _mqtt
       ..port = uri.port
@@ -41,10 +41,6 @@ class MqttService {
   Future<void> start(TesttopicNotifier testtopic) async {
     try {
       await _mqtt.connect();
-
-      _mqtt.subscribe('testtopic', MqttQos.exactlyOnce);
-
-      _mqtt.updates!.listen(_onMessage(testtopic));
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
     }
@@ -56,6 +52,11 @@ class MqttService {
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
     }
+  }
+
+  Future<Stream<void>> listen(String topic) {
+    _mqtt.subscribe(topic, MqttQos.atMostOnce);
+    _mqtt.updates!.listen(_onMessage(testtopic));
   }
 
   void Function(List<MqttReceivedMessage<MqttMessage?>>? c) _onMessage(
