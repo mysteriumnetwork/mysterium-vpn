@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
-import 'package:mysterium_vpn/services/mqtt/testtopic.dart';
 import 'package:talker/talker.dart';
 
 class MqttService {
@@ -38,7 +39,7 @@ class MqttService {
   final MqttServerClient _mqtt;
   final Talker _logger;
 
-  Future<void> start(TesttopicNotifier testtopic) async {
+  Future<void> start() async {
     try {
       await _mqtt.connect();
     } catch (e, stackTrace) {
@@ -54,13 +55,19 @@ class MqttService {
     }
   }
 
-  Future<Stream<void>> listen(String topic) {
-    _mqtt.subscribe(topic, MqttQos.atMostOnce);
-    _mqtt.updates!.listen(_onMessage(testtopic));
+  Stream<String> listen(String topic) {
+    final stream = StreamController<String>();
+
+    _mqtt.subscribe(topic, MqttQos.atLeastOnce);
+    // TODO(Waldz): This library support once stream for all subscriptions, would be good to run only one listen loop
+    _mqtt.updates!.listen(_onMessage(topic, stream));
+
+    return stream.stream;
   }
 
   void Function(List<MqttReceivedMessage<MqttMessage?>>? c) _onMessage(
-    TesttopicNotifier testtopic,
+    String topicExpected,
+    StreamController<String> topicStream,
   ) =>
       (List<MqttReceivedMessage<MqttMessage?>>? c) {
         try {
@@ -79,10 +86,8 @@ class MqttService {
               MqttPublishPayload.bytesToStringAsString(topicMessage.payload.message);
           _logger.debug('MQTT message. <$topic> $topicPayload');
 
-          switch (topic) {
-            case 'testtopic':
-              testtopic.receive(topicPayload);
-              break;
+          if (topic == topicExpected) {
+            topicStream.add(topicPayload);
           }
         } catch (e, stackTrace) {
           _logger.handle(e, stackTrace);

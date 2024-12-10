@@ -52,7 +52,7 @@ class MyApp extends HookConsumerWidget {
     });
     useEffect(
       () {
-        mqtt.start(ref.read(vpnApiMQTTTesttipicPOD.notifier));
+        mqtt.start();
         return mqtt.stop;
       },
       [mqtt],
