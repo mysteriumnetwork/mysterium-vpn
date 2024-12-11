@@ -16,7 +16,7 @@ class ApiVersion extends HookConsumerWidget {
 
     return Observer(
       builder: (context) {
-        if (apiStore.healthcheck == null) {
+        if (apiStore.lastHealthcheck == null) {
           return const SizedBox.shrink();
         }
 
@@ -30,7 +30,7 @@ class ApiVersion extends HookConsumerWidget {
                 fontSize: 10,
               ).padding(bottom: 6),
               EasyText(
-                apiStore.healthcheck!.version,
+                apiStore.lastHealthcheck!.version,
                 color: Palette.lightBlack,
                 fontSize: 6,
               ),
@@ -39,7 +39,7 @@ class ApiVersion extends HookConsumerWidget {
         }
 
         return EasyText(
-          'v.${apiStore.healthcheck!.version}',
+          'v.${apiStore.lastHealthcheck!.version}',
           color: Palette.lightBlue,
           fontSize: 6,
         );
