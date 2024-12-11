@@ -29,16 +29,6 @@ mixin _$ApiStore on _ApiStore, Store {
   late final _$_ApiStoreActionController = ActionController(name: '_ApiStore', context: context);
 
   @override
-  void initStore() {
-    final _$actionInfo = _$_ApiStoreActionController.startAction(name: '_ApiStore.initStore');
-    try {
-      return super.initStore();
-    } finally {
-      _$_ApiStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void dispose() {
     final _$actionInfo = _$_ApiStoreActionController.startAction(name: '_ApiStore.dispose');
     try {
