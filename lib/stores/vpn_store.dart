@@ -151,7 +151,7 @@ abstract class _VpnStore with Store {
     _malwareBlockerContent = await _localDBService.getMalwareBlocker();
     _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker();
 
-    await _generateKey();
+    await _initWireguardKey();
   }
 
   /// Setup initial connection status and listen to connection status changes
@@ -259,7 +259,7 @@ abstract class _VpnStore with Store {
   }
 
   @action
-  Future<void> _generateKey() async {
+  Future<void> _initWireguardKey() async {
     try {
       final res = await Future.wait([
         _securedStorage.checkExistance(StorageKeys.wireguardPrivateKey.name),
@@ -294,11 +294,6 @@ abstract class _VpnStore with Store {
     if (_vpnConfig == null) {
       return;
     }
-
-    if (_wireguardKey == null) {
-      await _generateKey();
-    }
-
     // TODO(Waldz): Move to separate function, which mutates variable
     var config = _vpnConfig!.wgConfig;
     if (replaceDNSAddress.isNotNullOrEmpty) {
@@ -533,6 +528,9 @@ abstract class _VpnStore with Store {
     String nonce,
   ) async {
     try {
+      if (_wireguardKey == null) {
+        await _initWireguardKey();
+      }
       _stopwatch
         ..reset()
         ..start();
