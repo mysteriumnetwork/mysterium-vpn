@@ -253,7 +253,7 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore._initWireguardKey', context: context);
 
   @override
-  Future<void> _initWireguardKey() {
+  Future<KeyPair> _initWireguardKey() {
     return _$_initWireguardKeyAsyncAction.run(() => super._initWireguardKey());
   }
 
@@ -261,8 +261,9 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore._connectWireguard', context: context);
 
   @override
-  Future<void> _connectWireguard(String nonce) {
-    return _$_connectWireguardAsyncAction.run(() => super._connectWireguard(nonce));
+  Future<void> _connectWireguard({required String privateKey, required String nonce}) {
+    return _$_connectWireguardAsyncAction
+        .run(() => super._connectWireguard(privateKey: privateKey, nonce: nonce));
   }
 
   late final _$disconnectWireguardAsyncAction =
