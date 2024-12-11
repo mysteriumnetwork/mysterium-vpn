@@ -67,7 +67,7 @@ class MqttService {
   /// [topic] - The MQTT topic to listen to.
   ///
   /// Returns a stream of message payloads as strings.
-  Stream<String> listen(String topic) => Stream.multi(
+  Stream<String> subscribe(String topic) => Stream.multi(
         (subject) async {
           // make sure to unsubscribe when the stream is cancelled
           subject.onCancel = () => _mqtt.unsubscribe(topic);

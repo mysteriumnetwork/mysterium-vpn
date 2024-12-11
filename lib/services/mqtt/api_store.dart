@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:mobx/mobx.dart';
@@ -15,23 +16,22 @@ abstract class _ApiStore with Store {
     initStore();
   }
 
-  final MqttService _mqtt;
-  ObservableStream<HealthcheckResponse> _healthcheckSub = ObservableStream(const Stream.empty());
+  MqttService _mqtt;
+  StreamSubscription<String>? _healthcheckSub;
 
   @readonly
   HealthcheckResponse? _lastHealthcheck;
 
-  @action
   void initStore() {
-    _healthcheckSub = ObservableStream(_mqtt.listen('healthcheck'))
-        .map((event) => HealthcheckResponse.fromJson(json.decode(event) as Map<String, dynamic>));
-    _healthcheckSub.listen((event) {
-      _lastHealthcheck = event;
+    _healthcheckSub = _mqtt.subscribe('healthcheck').listen((event) {
+      _lastHealthcheck = HealthcheckResponse.fromJson(json.decode(event) as Map<String, dynamic>);
     });
   }
 
   @action
   void dispose() {
-    _healthcheckSub.close();
+    if (_healthcheckSub != null) {
+      _healthcheckSub!.cancel();
+    }
   }
 }
