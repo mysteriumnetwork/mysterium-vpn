@@ -151,7 +151,7 @@ abstract class _VpnStore with Store {
     _malwareBlockerContent = await _localDBService.getMalwareBlocker();
     _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker();
 
-    await _generateKey();
+    await _initWireguardKey();
   }
 
   /// Setup initial connection status and listen to connection status changes
@@ -259,14 +259,13 @@ abstract class _VpnStore with Store {
   }
 
   @action
-  Future<void> _generateKey() async {
+  Future<KeyPair> _initWireguardKey() async {
     try {
       final res = await Future.wait([
         _securedStorage.checkExistance(StorageKeys.wireguardPrivateKey.name),
         _securedStorage.checkExistance(StorageKeys.wireguardPublicKey.name),
       ]);
       if (res.contains(false)) {
-        _wireguardKey = await _wireguardService.generateKeyPair();
         await Future.wait([
           _securedStorage.saveWireguardPublicKey(
             publicKey: _wireguardKey!.publicKey,
@@ -275,10 +274,11 @@ abstract class _VpnStore with Store {
             privateKey: _wireguardKey!.privateKey,
           ),
         ]);
+        return _wireguardKey = await _wireguardService.generateKeyPair();
       } else {
         final publicKey = await _securedStorage.getWireguardPublicKey();
         final privateKey = await _securedStorage.getWireguardPrivateKey();
-        _wireguardKey = KeyPair(publicKey, privateKey);
+        return _wireguardKey = KeyPair(publicKey, privateKey);
       }
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
@@ -288,17 +288,13 @@ abstract class _VpnStore with Store {
 
   /// Connect to Wireguard tunnel
   @action
-  Future<void> _connectWireguard(
-    String nonce,
-  ) async {
+  Future<void> _connectWireguard({
+    required String privateKey,
+    required String nonce,
+  }) async {
     if (_vpnConfig == null) {
       return;
     }
-
-    if (_wireguardKey == null) {
-      await _generateKey();
-    }
-
     // TODO(Waldz): Move to separate function, which mutates variable
     var config = _vpnConfig!.wgConfig;
     if (replaceDNSAddress.isNotNullOrEmpty) {
@@ -309,7 +305,7 @@ abstract class _VpnStore with Store {
         config = config.replaceFirst(dnsLine, 'DNS = $replaceDNSAddress');
       }
     }
-    config = config.replaceFirst('%private_key%', _wireguardKey!.privateKey);
+    config = config.replaceFirst('%private_key%', privateKey);
 
     try {
       final tunnelStatus = await _wireguardService.status();
@@ -533,13 +529,14 @@ abstract class _VpnStore with Store {
     String nonce,
   ) async {
     try {
+      final key = _wireguardKey ?? await _initWireguardKey();
       _stopwatch
         ..reset()
         ..start();
       fetchConfigFuture = ObservableFuture(
         _apiService.fetchVpnConfig(
           request: WireguardConnectRequest(
-            publicKey: _wireguardKey!.publicKey,
+            publicKey: key.publicKey,
             country: location,
             resetConnection: refreshIP ?? _refreshIPConnection,
             osType: Platform.operatingSystem,
@@ -549,7 +546,7 @@ abstract class _VpnStore with Store {
       _vpnConfig = await fetchConfigFuture;
       _checkOperationCancel(nonce);
       _connectionStatus = ConnectionStatus.connecting;
-      await _connectWireguard(nonce);
+      await _connectWireguard(privateKey: key.privateKey, nonce: nonce);
       _checkOperationCancel(nonce);
       resolveConnectionLocationFuture = ObservableFuture(
         _resolveConnectionLocation(
