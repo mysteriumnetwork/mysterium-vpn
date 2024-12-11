@@ -26,7 +26,7 @@ class HomeMobileAppBar extends ConsumerWidget {
           ),
           asset: Assets.report,
         ),
-        const AppLogo(),
+        const AppLogo(brightness: Brightness.dark),
         SvgIconButton(
           onPressed: () {
             analyticsStore.logEvent(AnalyticsEvent.openSettings);
