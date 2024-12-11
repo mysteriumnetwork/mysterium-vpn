@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
+import 'package:mysterium_vpn/services/mqtt/api_store.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_firebase.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_noop.dart';
@@ -57,6 +58,12 @@ final authStorePOD = Provider<AuthStore>((ref) {
     remoteConfigStore: remoteConfigStore,
     abTestingStore: abTestingStore,
   );
+});
+
+final apiStorePOD = Provider<ApiStore>((ref) {
+  final mqttService = ref.watch(vpnApiMQTTPOD);
+
+  return ApiStore(mqtt: mqttService);
 });
 
 final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
