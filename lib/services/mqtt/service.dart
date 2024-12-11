@@ -55,44 +55,51 @@ class MqttService {
     }
   }
 
-  Stream<String> listen(String topic) {
-    final subject = StreamController<String>(
-      onCancel: () => _mqtt.unsubscribe(topic),
-    );
+  /// Listens to messages on a specified MQTT topic.
+  ///
+  /// This function returns a stream of messages for the given topic.
+  /// It subscribes to the topic and filters incoming messages to only
+  /// include those that match the topic. When the stream is cancelled,
+  /// it unsubscribes from the topic.
+  ///
+  /// The stream emits the payload of the messages as strings.
+  ///
+  /// [topic] - The MQTT topic to listen to.
+  ///
+  /// Returns a stream of message payloads as strings.
+  Stream<String> listen(String topic) => Stream.multi(
+        (subject) async {
+          // make sure to unsubscribe when the stream is cancelled
+          subject.onCancel = () => _mqtt.unsubscribe(topic);
 
-    _mqtt.subscribe(topic, MqttQos.atLeastOnce);
-    // TODO(Waldz): This library support once subject for all subscriptions, would be good to run only one listen loop
-    _mqtt.updates!.listen(_onMessage(topic, subject));
+          _mqtt.subscribe(topic, MqttQos.atLeastOnce);
+          // filter and map the messages
+          final stream = _mqtt.updates!
+              // filter the messages by the topic
+              .where((messages) => messages.any((message) => message.topic == topic))
+              // map the messages to the payload
+              .map(
+                (messages) => messages
+                    .where((message) => message.topic == topic)
+                    .where((message) => message.payload is MqttPublishMessage)
+                    .map((message) => _deserializePayload(message.payload as MqttPublishMessage))
+                    .nonNulls
+                    .toList(),
+              )
+              // flatten the list of messages
+              .expand((messages) => messages);
 
-    return subject.stream;
+          // add the stream to the subject
+          await subject.addStream(stream);
+        },
+      );
+
+  String? _deserializePayload(MqttPublishMessage message) {
+    try {
+      return MqttPublishPayload.bytesToStringAsString(message.payload.message);
+    } catch (e, stack) {
+      _logger.handle(e, stack);
+      return null;
+    }
   }
-
-  void Function(List<MqttReceivedMessage<MqttMessage?>>? c) _onMessage(
-    String topicExpected,
-    StreamController<String> topicSubject,
-  ) =>
-      (List<MqttReceivedMessage<MqttMessage?>>? c) {
-        try {
-          if (c == null) {
-            _logger.warning('MQTT topic empty');
-            return;
-          }
-          if (c[0].payload == null) {
-            _logger.warning('MQTT payload empty');
-            return;
-          }
-          final topic = c[0].topic;
-          final topicMessage = c[0].payload! as MqttPublishMessage;
-
-          final topicPayload =
-              MqttPublishPayload.bytesToStringAsString(topicMessage.payload.message);
-          _logger.debug('MQTT message. <$topic> $topicPayload');
-
-          if (topic == topicExpected) {
-            topicSubject.add(topicPayload);
-          }
-        } catch (e, stackTrace) {
-          _logger.handle(e, stackTrace);
-        }
-      };
 }
