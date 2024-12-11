@@ -39,6 +39,16 @@ mixin _$ApiStore on _ApiStore, Store {
   }
 
   @override
+  void dispose() {
+    final _$actionInfo = _$_ApiStoreActionController.startAction(name: '_ApiStore.dispose');
+    try {
+      return super.dispose();
+    } finally {
+      _$_ApiStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 
