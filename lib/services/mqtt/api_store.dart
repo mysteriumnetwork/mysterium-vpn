@@ -16,23 +16,22 @@ abstract class _ApiStore with Store {
   }
 
   final MqttService _mqtt;
-  ObservableStream<String>? _healthcheckSub;
+  ObservableStream<HealthcheckResponse> _healthcheckSub = ObservableStream(const Stream.empty());
 
   @readonly
-  HealthcheckResponse? _healthcheck;
+  HealthcheckResponse? _lastHealthcheck;
 
   @action
   void initStore() {
-    _healthcheckSub = ObservableStream(_mqtt.listen('healthcheck'));
-    _healthcheckSub!.listen((event) {
-      _healthcheck = HealthcheckResponse.fromJson(json.decode(event) as Map<String, dynamic>);
+    _healthcheckSub = ObservableStream(_mqtt.listen('healthcheck'))
+        .map((event) => HealthcheckResponse.fromJson(json.decode(event) as Map<String, dynamic>));
+    _healthcheckSub.listen((event) {
+      _lastHealthcheck = event;
     });
   }
 
   @action
   void dispose() {
-    if (_healthcheckSub != null) {
-      _healthcheckSub!.close();
-    }
+    _healthcheckSub.close();
   }
 }
