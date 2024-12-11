@@ -21,7 +21,6 @@ import 'package:mysterium_vpn/services/data/local/config_cat_cache.dart';
 import 'package:mysterium_vpn/services/data/network/dio_network_service.dart';
 import 'package:mysterium_vpn/services/dio_network_logger/dio_network_logger.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
-import 'package:mysterium_vpn/services/mqtt/testtopic.dart';
 import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:talker/talker.dart';
@@ -106,8 +105,6 @@ final vpnApiMQTTPOD = Provider<MqttService>((ref) {
     logger,
   );
 });
-
-final vpnApiMQTTTesttipicPOD = NotifierProvider<TesttopicNotifier, String?>(TesttopicNotifier.new);
 
 final vpnApiPOD = Provider<VpnApi>((ref) {
   final dio = ref.watch(vpnApiDioPOD);
