@@ -53,7 +53,7 @@ class MyApp extends HookConsumerWidget {
     });
     useEffect(
       () {
-        mqtt.start().whenComplete(apiStore.initStore);
+        mqtt.start().then((_) => apiStore.initStore());
         return mqtt.stop;
       },
       [mqtt],
