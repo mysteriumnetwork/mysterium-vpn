@@ -37,7 +37,6 @@ class MyApp extends HookConsumerWidget {
     final appName = env.values.appName;
     final flavor = env.flavor;
     final mqtt = ref.read(vpnApiMQTTPOD);
-    final apiStore = ref.read(apiStorePOD);
 
     useEffect(
       () {
@@ -53,7 +52,7 @@ class MyApp extends HookConsumerWidget {
     });
     useEffect(
       () {
-        mqtt.start().then((_) => apiStore.initStore());
+        mqtt.start();
         return mqtt.stop;
       },
       [mqtt],

@@ -56,18 +56,20 @@ class MqttService {
   }
 
   Stream<String> listen(String topic) {
-    final stream = StreamController<String>();
+    final subject = StreamController<String>(
+      onCancel: () => _mqtt.unsubscribe(topic),
+    );
 
     _mqtt.subscribe(topic, MqttQos.atLeastOnce);
-    // TODO(Waldz): This library support once stream for all subscriptions, would be good to run only one listen loop
-    _mqtt.updates!.listen(_onMessage(topic, stream));
+    // TODO(Waldz): This library support once subject for all subscriptions, would be good to run only one listen loop
+    _mqtt.updates!.listen(_onMessage(topic, subject));
 
-    return stream.stream;
+    return subject.stream;
   }
 
   void Function(List<MqttReceivedMessage<MqttMessage?>>? c) _onMessage(
     String topicExpected,
-    StreamController<String> topicStream,
+    StreamController<String> topicSubject,
   ) =>
       (List<MqttReceivedMessage<MqttMessage?>>? c) {
         try {
@@ -87,7 +89,7 @@ class MqttService {
           _logger.debug('MQTT message. <$topic> $topicPayload');
 
           if (topic == topicExpected) {
-            topicStream.add(topicPayload);
+            topicSubject.add(topicPayload);
           }
         } catch (e, stackTrace) {
           _logger.handle(e, stackTrace);
