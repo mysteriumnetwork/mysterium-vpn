@@ -2126,7 +2126,8 @@ class CodegenLoader extends AssetLoader {
     "malwareBlocker": "Malware-Blocker",
     "contentBlockerTitle": "NSFW-Inhalts- und Malware-Blocker",
     "contentBlockerDesc": "Blockieren Sie sowohl Malware als auch nicht jugendfreie Inhalte",
-    "pendingTransactionMessage": ""
+    "pendingTransactionMessage":
+        "Sie haben bereits einen laufenden Zahlungsvorgang. Bitte schließen Sie ihn ab, bevor Sie einen neuen starten."
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
