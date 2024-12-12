@@ -338,7 +338,7 @@ String? getMagicLinkCode(String query) {
 }
 
 void handleOnBillingPage({
-  required BuildContext context,
+  required BeamerDelegate beamer,
   required bool subscriptionActive,
   required String billingPage,
   required String? gateway,
@@ -363,7 +363,7 @@ void handleOnBillingPage({
   }
 
   if (!subscriptionActive && !Platform.isWindows) {
-    context.beamToNamed(Routes.payment.path);
+    beamer.beamToNamed(Routes.payment.path);
     return;
   }
 

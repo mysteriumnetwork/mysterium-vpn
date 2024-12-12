@@ -7,6 +7,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/common/utils/comparator_utils.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -277,7 +278,7 @@ abstract class _SubscriptionStore with Store {
           }
         }
         _subscriptonStatus = SubscriptionStatus.purchased;
-        _secureStorageService.saveSubscriptionPaymentInfo(
+        await _secureStorageService.saveSubscriptionPaymentInfo(
           email: _authSessionStore.user!.username,
           activeUntil: _subscription!.activeUntil,
         );
@@ -286,7 +287,7 @@ abstract class _SubscriptionStore with Store {
       }
 
       if (purchaseDetails.pendingCompletePurchase) {
-        _inAppPurchase.completePurchase(purchaseDetails);
+        await _inAppPurchase.completePurchase(purchaseDetails);
       }
     } catch (e) {
       if (kDebugMode) {
@@ -378,6 +379,21 @@ abstract class _SubscriptionStore with Store {
     } catch (e) {
       return (false, null);
     }
+  }
+
+  Future<void> manageSubscription() async {
+    await fetchSubscription();
+    final subscription = await subscriptionFuture;
+
+    if (subscription == null || !subscription.active) {
+      throw const SubscriptionRequiredException();
+    }
+
+    final config = await _subscriptionService.fetchSubscriptionConfig();
+    final products = await _subscriptionService.getProductsDetails(config, subscription.planId);
+    final product = products.firstWhere((it) => it.status == ProductStatus.purchased);
+
+    await subscribeToPackage(product: product.productDetails);
   }
 
   void dispose() {
