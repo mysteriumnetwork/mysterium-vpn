@@ -312,7 +312,7 @@ class RestSubscriptionService extends SubscriptionService {
   }
 
   @override
-  Future<bool> hasPurchasingTransactions() async {
+  Future<bool> hasApplePendingPurchasingTransactions() async {
     try {
       if (Platform.isIOS || Platform.isMacOS) {
         final transactions = await SKPaymentQueueWrapper().transactions();

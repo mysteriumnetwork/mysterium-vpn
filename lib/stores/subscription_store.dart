@@ -183,7 +183,7 @@ abstract class _SubscriptionStore with Store {
       );
     } catch (e) {
       _subscriptionService.clearPendingTransactions();
-      if (await _subscriptionService.hasPurchasingTransactions()) {
+      if (await _subscriptionService.hasApplePendingPurchasingTransactions()) {
         _subscriptonStatus = SubscriptionStatus.pendingTransaction;
       } else {
         _subscriptonStatus = SubscriptionStatus.error;
