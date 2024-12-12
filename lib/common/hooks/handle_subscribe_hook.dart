@@ -1,9 +1,8 @@
 part of 'hooks.dart';
 
-void Function({
-  PurchasableProduct? Function()? findProduct,
-}) useHandleSubscribe() {
+FutureOr<void> Function() useHandleSubscribe() {
   final context = useContext();
+  final beamer = Beamer.of(context);
 
   final sessionStore = useProvider(authSessionStorePOD);
   final subscriptionStore = useProvider(subscriptionStorePOD);
@@ -17,26 +16,26 @@ void Function({
   );
 
   return useCallback(
-    ({
-      PurchasableProduct? Function()? findProduct,
-    }) {
+    () async {
+      if (subscription?.active ?? false) {
+        try {
+          await subscriptionStore.manageSubscription();
+          return;
+        } on SubscriptionRequiredException catch (_) {
+          // ignore and let the flow continue
+        }
+      }
+
       handleOnBillingPage(
+        beamer: beamer,
         billingPage: billingPage,
-        context: context,
         gateway: subscription?.gateway,
         subscriptionActive: subscription?.active ?? false,
         accessToken: accessToken,
-        onManageSubscription: findProduct == null
-            ? null
-            : () {
-                final product = findProduct();
-                if (product != null) {
-                  subscriptionStore.subscribeToPackage(product: product.productDetails);
-                }
-              },
       );
     },
     [
+      beamer,
       billingPage,
       subscription?.gateway,
       subscription?.active,
