@@ -29,7 +29,7 @@ abstract class _ApiStore with Store {
 
   void initStore() {
     try {
-      _healthcheckSub = _mqtt.subscribe('healthcheck').listen((event) {
+      _healthcheckSub ??= _mqtt.subscribe('healthcheck').listen((event) {
         _lastHealthcheck = HealthcheckResponse.fromJson(json.decode(event) as Map<String, dynamic>);
       });
     } catch (e, stackTrace) {
