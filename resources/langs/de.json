@@ -507,5 +507,6 @@
   "billedEveryMonth": "{amount} Wird jeden Monat in Rechnung gestellt",
   "malwareBlocker": "Malware-Blocker",
   "contentBlockerTitle": "NSFW-Inhalts- und Malware-Blocker",
-  "contentBlockerDesc": "Blockieren Sie sowohl Malware als auch nicht jugendfreie Inhalte"
+  "contentBlockerDesc": "Blockieren Sie sowohl Malware als auch nicht jugendfreie Inhalte",
+  "pendingTransactionMessage":""
 }

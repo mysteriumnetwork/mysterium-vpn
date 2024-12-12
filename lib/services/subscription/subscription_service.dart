@@ -26,4 +26,6 @@ abstract class SubscriptionService {
   Future<api.SubscriptionConfigResponse> fetchSubscriptionConfig();
 
   Future<void> clearPendingTransactions();
+
+  Future<bool> hasPurchasingTransactions();
 }

@@ -183,7 +183,11 @@ abstract class _SubscriptionStore with Store {
       );
     } catch (e) {
       _subscriptionService.clearPendingTransactions();
-      _subscriptonStatus = SubscriptionStatus.error;
+      if (await _subscriptionService.hasPurchasingTransactions()) {
+        _subscriptonStatus = SubscriptionStatus.pendingTransaction;
+      } else {
+        _subscriptonStatus = SubscriptionStatus.error;
+      }
       _analyticsStore.logEvent(
         AnalyticsEvent.paymentError,
         parameters: {

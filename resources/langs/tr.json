@@ -507,5 +507,6 @@
   "billedEveryMonth": "{amount} Her ay faturalandırılır",
   "malwareBlocker": "Kötü amaçlı yazılım engelleyici",
   "contentBlockerTitle": "NSFW içeriği ve kötü amaçlı yazılım engelleyici",
-  "contentBlockerDesc": "Hem kötü amaçlı yazılımları hem de yetişkinlere yönelik içeriği engelleyin"
+  "contentBlockerDesc": "Hem kötü amaçlı yazılımları hem de yetişkinlere yönelik içeriği engelleyin",
+  "pendingTransactionMessage": "Halihazırda devam eden bir ödeme işleminiz var. Lütfen yeni bir ödeme işlemine başlamadan önce işlemi tamamlayın."
 }
