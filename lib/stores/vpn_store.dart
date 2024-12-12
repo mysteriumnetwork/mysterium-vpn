@@ -265,16 +265,18 @@ abstract class _VpnStore with Store {
         _securedStorage.checkExistance(StorageKeys.wireguardPrivateKey.name),
         _securedStorage.checkExistance(StorageKeys.wireguardPublicKey.name),
       ]);
+      final key = await _wireguardService.generateKeyPair();
+
       if (res.contains(false)) {
         await Future.wait([
           _securedStorage.saveWireguardPublicKey(
-            publicKey: _wireguardKey!.publicKey,
+            publicKey: key.publicKey,
           ),
           _securedStorage.saveWireguardPrivateKey(
-            privateKey: _wireguardKey!.privateKey,
+            privateKey: key.privateKey,
           ),
         ]);
-        return _wireguardKey = await _wireguardService.generateKeyPair();
+        return _wireguardKey = key;
       } else {
         final publicKey = await _securedStorage.getWireguardPublicKey();
         final privateKey = await _securedStorage.getWireguardPrivateKey();
