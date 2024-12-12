@@ -507,5 +507,6 @@
   "billedEveryMonth": "{importo} Fatturato ogni mese",
   "malwareBlocker": "Blocco malware",
   "contentBlockerTitle": "Contenuto NSFW e blocco malware",
-  "contentBlockerDesc": "Blocca sia malware che contenuti per adulti"
+  "contentBlockerDesc": "Blocca sia malware che contenuti per adulti",
+  "pendingTransactionMessage": "Hai già un processo di pagamento in corso. Completalo prima di iniziarne uno nuovo."
 }
