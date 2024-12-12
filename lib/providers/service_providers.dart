@@ -95,11 +95,11 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
   return dio;
 });
 
-final vpnApiMQTTPOD = Provider<MqttService>((ref) {
+final vpnApiMQTTPOD = Provider<MQQTService>((ref) {
   final environment = ref.watch(environmentPOD);
   final logger = ref.watch(loggerPOD);
 
-  return MqttService(
+  return MQQTService(
     environment.values.mqttUrl,
     'mysterium-vpn-${environment.buildInfo.buildVersion}-${environment.buildInfo.buildNumber}',
     logger,

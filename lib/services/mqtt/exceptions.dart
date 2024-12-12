@@ -1,0 +1,1 @@
+class MQQTConnectionRequiredException implements Exception {}
