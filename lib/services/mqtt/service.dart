@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:mysterium_vpn/services/mqtt/exceptions.dart';
 import 'package:talker/talker.dart';
 
-class MqttService {
-  MqttService(String url, String clientID, Talker logger)
+class MQQTService {
+  MQQTService(String url, String clientID, Talker logger)
       : _mqtt = MqttServerClient(url, clientID),
         _logger = logger {
     final uri = Uri.parse(url);
@@ -44,6 +45,7 @@ class MqttService {
       await _mqtt.connect();
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
+      rethrow;
     }
   }
 
@@ -52,6 +54,7 @@ class MqttService {
       _mqtt.disconnect();
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
+      rethrow;
     }
   }
 
@@ -67,32 +70,39 @@ class MqttService {
   /// [topic] - The MQTT topic to listen to.
   ///
   /// Returns a stream of message payloads as strings.
-  Stream<String> subscribe(String topic) => Stream.multi(
-        (subject) async {
-          // make sure to unsubscribe when the stream is cancelled
-          subject.onCancel = () => _mqtt.unsubscribe(topic);
+  Stream<String> subscribe(String topic) {
+    if (_mqtt.connectionStatus!.state != MqttConnectionState.connected) {
+      throw MQQTConnectionRequiredException();
+    }
 
-          _mqtt.subscribe(topic, MqttQos.atLeastOnce);
-          // filter and map the messages
-          final stream = _mqtt.updates!
-              // filter the messages by the topic
-              .where((messages) => messages.any((message) => message.topic == topic))
-              // map the messages to the payload
-              .map(
-                (messages) => messages
-                    .where((message) => message.topic == topic)
-                    .where((message) => message.payload is MqttPublishMessage)
-                    .map((message) => _deserializePayload(message.payload as MqttPublishMessage))
-                    .nonNulls
-                    .toList(),
-              )
-              // flatten the list of messages
-              .expand((messages) => messages);
+    return Stream.multi(
+      (subject) async {
+        // make sure to unsubscribe when the stream is cancelled
+        subject.onCancel = () => _mqtt.unsubscribe(topic);
 
-          // add the stream to the subject
-          await subject.addStream(stream);
-        },
-      );
+        _mqtt.subscribe(topic, MqttQos.atLeastOnce);
+        // filter and map the messages
+        final stream = _mqtt.updates!
+            // filter the messages by the topic
+            .where((messages) => messages.any((message) => message.topic == topic))
+            // map the messages to the payload
+            .map(
+              (messages) => messages
+                  .where(
+                    (message) => message.topic == topic && message.payload is MqttPublishMessage,
+                  )
+                  .map((message) => _deserializePayload(message.payload as MqttPublishMessage))
+                  .nonNulls
+                  .toList(),
+            )
+            // flatten the list of messages
+            .expand((messages) => messages);
+
+        // add the stream to the subject
+        await subject.addStream(stream);
+      },
+    );
+  }
 
   String? _deserializePayload(MqttPublishMessage message) {
     try {
