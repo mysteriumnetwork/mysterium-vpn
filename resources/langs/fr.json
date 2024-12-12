@@ -508,5 +508,6 @@
   "billedEveryMonth": "{amount} Facturé chaque mois",
   "malwareBlocker": "Bloqueur de logiciels malveillants",
   "contentBlockerTitle": "Bloqueur de contenu NSFW et de logiciels malveillants",
-  "contentBlockerDesc": "Bloquez à la fois les logiciels malveillants et le contenu réservé aux adultes"
+  "contentBlockerDesc": "Bloquez à la fois les logiciels malveillants et le contenu réservé aux adultes",
+  "pendingTransactionMessage": "Vous avez déjà un processus de paiement en cours. Veuillez le terminer avant d'en démarrer un nouveau."
 }

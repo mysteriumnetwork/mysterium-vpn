@@ -179,11 +179,15 @@ class RestSubscriptionService extends SubscriptionService {
         ..removeWhere(
           (element) => element.isEmpty || element == 'not_supported' || element == 'not_found',
         );
+      final subsConfPlans = subscriptionConfig.plans.where(
+        (element) =>
+            plans.contains(Platform.isAndroid ? element.googleProductId : element.appleProductId),
+      );
       final storePlans = (await _inAppPurchase.queryProductDetails(plans)).productDetails
         ..removeWhere((element) => element.rawPrice <= 0 || element.price.toLowerCase() == 'free');
       final productsDetails = <PurchasableProduct>[];
 
-      for (final plan in subscriptionConfig.plans) {
+      for (final plan in subsConfPlans) {
         ProductDetails? productDetails;
         double? rawPrice;
         double? introductoryPrice;
@@ -304,6 +308,22 @@ class RestSubscriptionService extends SubscriptionService {
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
+    }
+  }
+
+  @override
+  Future<bool> hasApplePendingPurchasingTransactions() async {
+    try {
+      if (Platform.isIOS || Platform.isMacOS) {
+        final transactions = await SKPaymentQueueWrapper().transactions();
+        return transactions.any(
+          (element) => element.transactionState == SKPaymentTransactionStateWrapper.purchasing,
+        );
+      }
+      return false;
+    } catch (e, s) {
+      _logger.handle(e, s);
+      return false;
     }
   }
 }

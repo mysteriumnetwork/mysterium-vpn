@@ -508,5 +508,6 @@
   "billedEveryMonth": "{amount} 毎月請求される",
   "malwareBlocker": "マルウェアブロッカー",
   "contentBlockerTitle": "NSFW コンテンツとマルウェア ブロッカー",
-  "contentBlockerDesc": "マルウェアとアダルト コンテンツの両方をブロック"
+  "contentBlockerDesc": "マルウェアとアダルト コンテンツの両方をブロック",
+  "pendingTransactionMessage": "すでに支払いプロセスが進行中です。新しい支払いプロセスを開始する前に完了してください。"
 }

@@ -508,5 +508,6 @@
   "billedEveryMonth": "{amount} Ditagih setiap bulan",
   "malwareBlocker": "Pemblokir malware",
   "contentBlockerTitle": "Pemblokir konten NSFW dan malware",
-  "contentBlockerDesc": "Blokir malware dan konten dewasa"
+  "contentBlockerDesc": "Blokir malware dan konten dewasa",
+  "pendingTransactionMessage": "Anda sudah memiliki proses pembayaran yang sedang berjalan. Harap selesaikan sebelum memulai yang baru."
 }

@@ -508,5 +508,6 @@
   "billedEveryMonth": "{amount} 每月计费",
   "malwareBlocker": "恶意软件拦截器",
   "contentBlockerTitle": "NSFW 内容和恶意软件拦截器",
-  "contentBlockerDesc": "阻止恶意软件和成人内容"
+  "contentBlockerDesc": "阻止恶意软件和成人内容",
+  "pendingTransactionMessage": "您已经有一个正在进行的付款流程。请先完成该流程，然后再开始新的付款流程。"
 }

@@ -507,5 +507,6 @@
   "billedEveryMonth": "{amount} يتم إصدار فاتورة به كل شهر",
   "malwareBlocker": "مانع البرامج الضارة",
   "contentBlockerTitle": "محتوى NSFW ومانع البرامج الضارة",
-  "contentBlockerDesc": "حظر كل من البرامج الضارة ومحتوى البالغين"
+  "contentBlockerDesc": "حظر كل من البرامج الضارة ومحتوى البالغين",
+  "pendingTransactionMessage": "لديك بالفعل عملية دفع جارية. يرجى إكمالها قبل بدء عملية دفع جديدة."
 }
