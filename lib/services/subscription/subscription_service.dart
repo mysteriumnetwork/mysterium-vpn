@@ -27,5 +27,5 @@ abstract class SubscriptionService {
 
   Future<void> clearPendingTransactions();
 
-  Future<bool> hasPurchasingTransactions();
+  Future<bool> hasApplePendingPurchasingTransactions();
 }
