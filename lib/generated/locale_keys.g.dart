@@ -511,4 +511,5 @@ abstract class LocaleKeys {
   static const malwareBlocker = 'malwareBlocker';
   static const contentBlockerTitle = 'contentBlockerTitle';
   static const contentBlockerDesc = 'contentBlockerDesc';
+  static const pendingTransactionMessage = 'pendingTransactionMessage';
 }

@@ -133,6 +133,12 @@ class SubscriptionMobileView extends HookConsumerWidget {
         LocaleKeys.failedToSubscribe.tr(),
       );
     }
+
+    if (status == SubscriptionStatus.pendingTransaction) {
+      showSnackbar(
+        LocaleKeys.pendingTransactionMessage.tr(),
+      );
+    }
   }
 
   Future<void> checkForExistingSubscription(

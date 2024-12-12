@@ -524,7 +524,8 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{amount} 每月计费",
     "malwareBlocker": "恶意软件拦截器",
     "contentBlockerTitle": "NSFW 内容和恶意软件拦截器",
-    "contentBlockerDesc": "阻止恶意软件和成人内容"
+    "contentBlockerDesc": "阻止恶意软件和成人内容",
+    "pendingTransactionMessage": "您已经有一个正在进行的付款流程。请先完成该流程，然后再开始新的付款流程。"
   };
   static const Map<String, dynamic> tr = {
     "title": "Merhaba efendim",
@@ -1056,7 +1057,9 @@ class CodegenLoader extends AssetLoader {
     "malwareBlocker": "Kötü amaçlı yazılım engelleyici",
     "contentBlockerTitle": "NSFW içeriği ve kötü amaçlı yazılım engelleyici",
     "contentBlockerDesc":
-        "Hem kötü amaçlı yazılımları hem de yetişkinlere yönelik içeriği engelleyin"
+        "Hem kötü amaçlı yazılımları hem de yetişkinlere yönelik içeriği engelleyin",
+    "pendingTransactionMessage":
+        "Halihazırda devam eden bir ödeme işleminiz var. Lütfen yeni bir ödeme işlemine başlamadan önce işlemi tamamlayın."
   };
   static const Map<String, dynamic> ja = {
     "title": "こんにちは。",
@@ -1571,7 +1574,8 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{amount} 毎月請求される",
     "malwareBlocker": "マルウェアブロッカー",
     "contentBlockerTitle": "NSFW コンテンツとマルウェア ブロッカー",
-    "contentBlockerDesc": "マルウェアとアダルト コンテンツの両方をブロック"
+    "contentBlockerDesc": "マルウェアとアダルト コンテンツの両方をブロック",
+    "pendingTransactionMessage": "すでに支払いプロセスが進行中です。新しい支払いプロセスを開始する前に完了してください。"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -2121,7 +2125,9 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{amount} Wird jeden Monat in Rechnung gestellt",
     "malwareBlocker": "Malware-Blocker",
     "contentBlockerTitle": "NSFW-Inhalts- und Malware-Blocker",
-    "contentBlockerDesc": "Blockieren Sie sowohl Malware als auch nicht jugendfreie Inhalte"
+    "contentBlockerDesc": "Blockieren Sie sowohl Malware als auch nicht jugendfreie Inhalte",
+    "pendingTransactionMessage":
+        "Sie haben bereits einen laufenden Zahlungsvorgang. Bitte schließen Sie ihn ab, bevor Sie einen neuen starten."
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2659,7 +2665,9 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{amount} Faturado todo mês",
     "malwareBlocker": "Bloqueador de malware",
     "contentBlockerTitle": "Conteúdo NSFW e bloqueador de malware",
-    "contentBlockerDesc": "Bloqueie malware e conteúdo adulto"
+    "contentBlockerDesc": "Bloqueie malware e conteúdo adulto",
+    "pendingTransactionMessage":
+        "Você já tem um processo de pagamento em andamento. Conclua-o antes de iniciar um novo."
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -3196,7 +3204,9 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{amount} Billed every month",
     "malwareBlocker": "Malware blocker",
     "contentBlockerTitle": "NSFW content and malware blocker",
-    "contentBlockerDesc": "Block both malware and adult content"
+    "contentBlockerDesc": "Block both malware and adult content",
+    "pendingTransactionMessage":
+        "Sie haben bereits einen laufenden Zahlungsvorgang. Bitte schließen Sie ihn ab, bevor Sie einen neuen starten."
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3739,7 +3749,9 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{importo} Fatturato ogni mese",
     "malwareBlocker": "Blocco malware",
     "contentBlockerTitle": "Contenuto NSFW e blocco malware",
-    "contentBlockerDesc": "Blocca sia malware che contenuti per adulti"
+    "contentBlockerDesc": "Blocca sia malware che contenuti per adulti",
+    "pendingTransactionMessage":
+        "Hai già un processo di pagamento in corso. Completalo prima di iniziarne uno nuovo."
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -4285,7 +4297,9 @@ class CodegenLoader extends AssetLoader {
     "malwareBlocker": "Bloqueur de logiciels malveillants",
     "contentBlockerTitle": "Bloqueur de contenu NSFW et de logiciels malveillants",
     "contentBlockerDesc":
-        "Bloquez à la fois les logiciels malveillants et le contenu réservé aux adultes"
+        "Bloquez à la fois les logiciels malveillants et le contenu réservé aux adultes",
+    "pendingTransactionMessage":
+        "Vous avez déjà un processus de paiement en cours. Veuillez le terminer avant d'en démarrer un nouveau."
   };
   static const Map<String, dynamic> id = {
     "title": "Halo Pak",
@@ -4822,7 +4836,9 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{amount} Ditagih setiap bulan",
     "malwareBlocker": "Pemblokir malware",
     "contentBlockerTitle": "Pemblokir konten NSFW dan malware",
-    "contentBlockerDesc": "Blokir malware dan konten dewasa"
+    "contentBlockerDesc": "Blokir malware dan konten dewasa",
+    "pendingTransactionMessage":
+        "Anda sudah memiliki proses pembayaran yang sedang berjalan. Harap selesaikan sebelum memulai yang baru."
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -5363,7 +5379,9 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{amount} facturado cada mes",
     "malwareBlocker": "bloqueador de malware",
     "contentBlockerTitle": "Bloqueador de malware y contenido NSFW",
-    "contentBlockerDesc": "Bloquee tanto el malware como el contenido para adultos"
+    "contentBlockerDesc": "Bloquee tanto el malware como el contenido para adultos",
+    "pendingTransactionMessage":
+        "Ya tienes un proceso de pago en curso. Termínalo antes de comenzar uno nuevo."
   };
   static const Map<String, dynamic> ar = {
     "title": "أهلاً سيدي",
@@ -5893,7 +5911,9 @@ class CodegenLoader extends AssetLoader {
     "billedEveryMonth": "{amount} يتم إصدار فاتورة به كل شهر",
     "malwareBlocker": "مانع البرامج الضارة",
     "contentBlockerTitle": "محتوى NSFW ومانع البرامج الضارة",
-    "contentBlockerDesc": "حظر كل من البرامج الضارة ومحتوى البالغين"
+    "contentBlockerDesc": "حظر كل من البرامج الضارة ومحتوى البالغين",
+    "pendingTransactionMessage":
+        "لديك بالفعل عملية دفع جارية. يرجى إكمالها قبل بدء عملية دفع جديدة."
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,
