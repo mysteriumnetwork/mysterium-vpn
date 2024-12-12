@@ -380,6 +380,28 @@ abstract class _SubscriptionStore with Store {
     }
   }
 
+  Future<void> manageSubscription() async {
+    await fetchSubscription();
+    final subscription = await subscriptionFuture;
+
+    if (subscription == null || !subscription.active) {
+      // TODO(dmacan): add exception for nonexistent subscription
+      return;
+    }
+
+    final config = await _subscriptionService.fetchSubscriptionConfig();
+    final products = await _subscriptionService.getProductsDetails(config, subscription.planId);
+    final product = products.firstWhere((it) => it.status == ProductStatus.purchased);
+
+    await _subscriptionService.subscribeToPackage(
+      productDetails: product.productDetails,
+      purchasedProductId: product.id,
+      userId: _authSessionStore.user!.userId,
+    );
+
+    await fetchSubscription();
+  }
+
   void dispose() {
     _purchaseStream.cancel();
   }
