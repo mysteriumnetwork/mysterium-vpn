@@ -78,6 +78,7 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
     ),
     RefreshTokenInterceptor(dio: dio, logger: logger),
     RetryRequestInterceptor(dio: dio),
+    if (kDebugMode || environment.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
     ApiErrorsInterceptor(),
     if (kDebugMode)
       TalkerDioLogger(
@@ -88,7 +89,6 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
           printErrorData: false,
         ),
       ),
-    if (kDebugMode || environment.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
   ]);
 
   return dio;
