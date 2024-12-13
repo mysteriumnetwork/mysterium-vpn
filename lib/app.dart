@@ -17,7 +17,6 @@ import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/components/shortcuts.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/ft_checkers.dart';
-import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
@@ -36,7 +35,7 @@ class MyApp extends HookConsumerWidget {
     final env = ref.read(environmentPOD);
     final appName = env.values.appName;
     final flavor = env.flavor;
-    final mqtt = ref.read(vpnApiMQTTPOD);
+    //final mqtt = ref.read(vpnApiMQTTPOD);
 
     useEffect(
       () {
@@ -50,13 +49,13 @@ class MyApp extends HookConsumerWidget {
         await authStore.fetchAuthUser();
       }
     });
-    useEffect(
-      () {
-        mqtt.start();
-        return mqtt.stop;
-      },
-      [mqtt],
-    );
+    // useEffect(
+    //   () {
+    //     mqtt.start();
+    //     return mqtt.stop;
+    //   },
+    //   [mqtt],
+    // );
 
     return ReactionBuilder(
       builder: (_) => reaction(
