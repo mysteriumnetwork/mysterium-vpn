@@ -508,5 +508,9 @@
   "malwareBlocker": "مانع البرامج الضارة",
   "contentBlockerTitle": "محتوى NSFW ومانع البرامج الضارة",
   "contentBlockerDesc": "حظر كل من البرامج الضارة ومحتوى البالغين",
-  "pendingTransactionMessage": "لديك بالفعل عملية دفع جارية. يرجى إكمالها قبل بدء عملية دفع جديدة."
+  "pendingTransactionMessage": "لديك بالفعل عملية دفع جارية. يرجى إكمالها قبل بدء عملية دفع جديدة.",
+  "pricingIntroductoryPeriod": {
+    "12": "للسنة الأولى!",
+    "other": "لأول {} شهر!"
+  }
 }
