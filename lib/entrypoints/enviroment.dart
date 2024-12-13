@@ -41,6 +41,7 @@ class Enviroment {
     if (isDesktop()) {
       await windowManager.ensureInitialized();
       await windowManager.setPreventClose(true);
+      await windowManager.setMinimumSize(const Size(400, 600));
     }
     if (Platform.isIOS) {
       DartPingIOS.register();
