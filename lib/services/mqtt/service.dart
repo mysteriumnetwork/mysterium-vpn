@@ -14,9 +14,9 @@ class MQQTService {
     _mqtt
       ..port = uri.port
       ..autoReconnect = true
+      ..resubscribeOnAutoReconnect = true
       ..useWebSocket = true
       ..keepAlivePeriod = 60 * 5
-      ..resubscribeOnAutoReconnect = true
       ..onConnected = () {
         _logger.debug('MQTT connected');
       }
@@ -55,6 +55,14 @@ class MQQTService {
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
+    }
+  }
+
+  bool isStarted() => _mqtt.connectionStatus!.state == MqttConnectionState.connected;
+
+  Future<void> ensureStart() async {
+    if (!isStarted()) {
+      await start();
     }
   }
 
