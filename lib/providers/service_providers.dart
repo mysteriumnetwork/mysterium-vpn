@@ -101,7 +101,7 @@ final vpnApiMQTTPOD = Provider<MQQTService>((ref) {
 
   return MQQTService(
     environment.values.mqttUrl,
-    'mysterium-vpn-${environment.buildInfo.buildVersion}-${environment.buildInfo.buildNumber}',
+    'mysterium-vpn-${environment.buildInfo.buildVersion}',
     logger,
   );
 });
