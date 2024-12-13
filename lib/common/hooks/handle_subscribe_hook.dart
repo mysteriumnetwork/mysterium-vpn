@@ -17,22 +17,18 @@ FutureOr<void> Function() useHandleSubscribe() {
 
   return useCallback(
     () async {
-      if (subscription?.active ?? false) {
-        try {
-          await subscriptionStore.manageSubscription();
-          return;
-        } on SubscriptionRequiredException catch (_) {
-          // ignore and let the flow continue
-        }
+      try {
+        await handleOnBillingPage(
+          beamer: beamer,
+          billingPage: billingPage,
+          gateway: subscription?.gateway,
+          subscriptionActive: subscription?.active ?? false,
+          accessToken: accessToken,
+          onManageSubscription: subscriptionStore.manageSubscription,
+        );
+      } on SubscriptionRequiredException catch (_) {
+        // ignore and let the flow continue
       }
-
-      handleOnBillingPage(
-        beamer: beamer,
-        billingPage: billingPage,
-        gateway: subscription?.gateway,
-        subscriptionActive: subscription?.active ?? false,
-        accessToken: accessToken,
-      );
     },
     [
       beamer,

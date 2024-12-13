@@ -149,13 +149,12 @@ class _RegularPricing extends HookWidget {
     return Text.rich(
       TextSpan(
         children: [
-          TextSpan(children: top),
+          TextSpan(
+            children: top,
+            style: const TextStyle(color: Palette.purple),
+          ),
           if (bottom.isNotEmpty) CharacterSpan.newline(),
-          if (bottom.isNotEmpty)
-            TextSpan(
-              children: bottom,
-              style: const TextStyle(color: Palette.purple),
-            ),
+          if (bottom.isNotEmpty) TextSpan(children: bottom),
         ],
       ),
       style: const TextStyle(fontSize: 12),
