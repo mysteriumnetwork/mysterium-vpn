@@ -101,7 +101,8 @@ final vpnApiMQTTPOD = Provider<MQQTService>((ref) {
 
   return MQQTService(
     environment.values.mqttUrl,
-    'mysterium-vpn-${environment.buildInfo.buildVersion}',
+    // Client ID length can not exceed 23, see http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html
+    'mysterium-vpn-${environment.buildInfo.buildVersion}'.substring(0, 23),
     logger,
   );
 });
