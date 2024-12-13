@@ -509,5 +509,8 @@
   "malwareBlocker": "Malware-Blocker",
   "contentBlockerTitle": "NSFW-Inhalts- und Malware-Blocker",
   "contentBlockerDesc": "Blockieren Sie sowohl Malware als auch nicht jugendfreie Inhalte",
-  "pendingTransactionMessage": "Sie haben bereits einen laufenden Zahlungsvorgang. Bitte schließen Sie ihn ab, bevor Sie einen neuen starten."
+  "pendingTransactionMessage": "Sie haben bereits einen laufenden Zahlungsvorgang. Bitte schließen Sie ihn ab, bevor Sie einen neuen starten.",
+  "pricingIntroductoryPeriod12": "für das erste Jahr!",
+  "pricingIntroductoryPeriod6": "für die ersten 6 Monate!",
+  "renewsFor": "Erneuert für"
 }

@@ -23,6 +23,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "提升您的个人体验。\n匿名。是自由的。",
     "signIn": "登录 Mysterium VPN",
     "appVersion": "应用程序版本",
+    "apiVersion": "API版本",
     "getHelp": "得到帮助",
     "continueWithEmail": "继续使用电子邮件",
     "continueWithGoogle": "继续使用谷歌",
@@ -525,7 +526,10 @@ class CodegenLoader extends AssetLoader {
     "malwareBlocker": "恶意软件拦截器",
     "contentBlockerTitle": "NSFW 内容和恶意软件拦截器",
     "contentBlockerDesc": "阻止恶意软件和成人内容",
-    "pendingTransactionMessage": "您已经有一个正在进行的付款流程。请先完成该流程，然后再开始新的付款流程。"
+    "pendingTransactionMessage": "您已经有一个正在进行的付款流程。请先完成该流程，然后再开始新的付款流程。",
+    "pricingIntroductoryPeriod12": "首年优惠！",
+    "pricingIntroductoryPeriod6": "前6个月优惠！",
+    "renewsFor": "续费"
   };
   static const Map<String, dynamic> tr = {
     "title": "Merhaba efendim",
@@ -536,6 +540,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "Kişisel deneyiminizi yükseltin.\n",
     "signIn": "Mysterium VPN'de oturum açın",
     "appVersion": "Uygulama sürümü",
+    "apiVersion": "API Sürümü",
     "getHelp": "Yardım al",
     "continueWithEmail": "E-posta ile devam et",
     "continueWithGoogle": "Google ile devam",
@@ -1059,7 +1064,10 @@ class CodegenLoader extends AssetLoader {
     "contentBlockerDesc":
         "Hem kötü amaçlı yazılımları hem de yetişkinlere yönelik içeriği engelleyin",
     "pendingTransactionMessage":
-        "Halihazırda devam eden bir ödeme işleminiz var. Lütfen yeni bir ödeme işlemine başlamadan önce işlemi tamamlayın."
+        "Halihazırda devam eden bir ödeme işleminiz var. Lütfen yeni bir ödeme işlemine başlamadan önce işlemi tamamlayın.",
+    "pricingIntroductoryPeriod12": "ilk yıl için!",
+    "pricingIntroductoryPeriod6": "ilk 6 ay için!",
+    "renewsFor": "Yenileme"
   };
   static const Map<String, dynamic> ja = {
     "title": "こんにちは。",
@@ -1070,6 +1078,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "あなたの個人的な経験をレベルアップしてください。\n匿名であること。自由。",
     "signIn": "ミステリウム VPN にサインイン",
     "appVersion": "アプリのバージョン",
+    "apiVersion": "APIバージョン",
     "getHelp": "ヘルプ",
     "continueWithEmail": "メールで続行",
     "continueWithGoogle": "Google で続行",
@@ -1575,7 +1584,10 @@ class CodegenLoader extends AssetLoader {
     "malwareBlocker": "マルウェアブロッカー",
     "contentBlockerTitle": "NSFW コンテンツとマルウェア ブロッカー",
     "contentBlockerDesc": "マルウェアとアダルト コンテンツの両方をブロック",
-    "pendingTransactionMessage": "すでに支払いプロセスが進行中です。新しい支払いプロセスを開始する前に完了してください。"
+    "pendingTransactionMessage": "すでに支払いプロセスが進行中です。新しい支払いプロセスを開始する前に完了してください。",
+    "pricingIntroductoryPeriod12": "最初の1年間！",
+    "pricingIntroductoryPeriod6": "最初の6か月間！",
+    "renewsFor": "更新"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1586,6 +1598,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "Steigern Sie Ihre persönliche Erfahrung.\nBleiben Sie anonym. Seien Sie frei.",
     "signIn": "Melden Sie sich bei Mysterium VPN an",
     "appVersion": "App Version",
+    "apiVersion": "API Version",
     "getHelp": "Hilfe erhalten",
     "continueWithEmail": "Mit E-Mail fortfahren",
     "continueWithGoogle": "Weiter mit Google",
@@ -2127,7 +2140,10 @@ class CodegenLoader extends AssetLoader {
     "contentBlockerTitle": "NSFW-Inhalts- und Malware-Blocker",
     "contentBlockerDesc": "Blockieren Sie sowohl Malware als auch nicht jugendfreie Inhalte",
     "pendingTransactionMessage":
-        "Sie haben bereits einen laufenden Zahlungsvorgang. Bitte schließen Sie ihn ab, bevor Sie einen neuen starten."
+        "Sie haben bereits einen laufenden Zahlungsvorgang. Bitte schließen Sie ihn ab, bevor Sie einen neuen starten.",
+    "pricingIntroductoryPeriod12": "für das erste Jahr!",
+    "pricingIntroductoryPeriod6": "für die ersten 6 Monate!",
+    "renewsFor": "Erneuert für"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2138,6 +2154,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "Leve sua experiência pessoal. \n Seja anônimo. Seja livre.",
     "signIn": "Faça login no Mysterium VPN",
     "appVersion": "Versão do aplicativo",
+    "apiVersion": "Versão da API",
     "getHelp": "Obter ajuda",
     "continueWithEmail": "Continue com e -mail",
     "continueWithGoogle": "Continue com o Google",
@@ -2667,7 +2684,9 @@ class CodegenLoader extends AssetLoader {
     "contentBlockerTitle": "Conteúdo NSFW e bloqueador de malware",
     "contentBlockerDesc": "Bloqueie malware e conteúdo adulto",
     "pendingTransactionMessage":
-        "Você já tem um processo de pagamento em andamento. Conclua-o antes de iniciar um novo."
+        "Você já tem um processo de pagamento em andamento. Conclua-o antes de iniciar um novo.",
+    "pricingIntroductoryPeriod12": "para o primeiro ano!",
+    "pricingIntroductoryPeriod6": "para os primeiros 6 meses!"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -2678,6 +2697,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "Level up your personal experience.\nBe anonymous. Be free.",
     "signIn": "Sign in to Mysterium VPN",
     "appVersion": "App Version",
+    "apiVersion": "API Version",
     "getHelp": "Get Help",
     "continueWithEmail": "Continue with Email",
     "continueWithGoogle": "Continue with Google",
@@ -3206,7 +3226,10 @@ class CodegenLoader extends AssetLoader {
     "contentBlockerTitle": "NSFW content and malware blocker",
     "contentBlockerDesc": "Block both malware and adult content",
     "pendingTransactionMessage":
-        "Sie haben bereits einen laufenden Zahlungsvorgang. Bitte schließen Sie ihn ab, bevor Sie einen neuen starten."
+        "Sie haben bereits einen laufenden Zahlungsvorgang. Bitte schließen Sie ihn ab, bevor Sie einen neuen starten.",
+    "pricingIntroductoryPeriod12": "for the first year!",
+    "pricingIntroductoryPeriod6": "for the first 6 months!",
+    "renewsFor": "Renews for"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3217,6 +3240,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "Migliora la tua esperienza personale.\nSii anonimo. Sii libero.",
     "signIn": "Accedi a Mysterium VPN",
     "appVersion": "Versione dell'app",
+    "apiVersion": "Versione dell'API",
     "getHelp": "Ottieni aiuto",
     "continueWithEmail": "Continua con l'e-mail",
     "continueWithGoogle": "Continua con Google",
@@ -3751,7 +3775,10 @@ class CodegenLoader extends AssetLoader {
     "contentBlockerTitle": "Contenuto NSFW e blocco malware",
     "contentBlockerDesc": "Blocca sia malware che contenuti per adulti",
     "pendingTransactionMessage":
-        "Hai già un processo di pagamento in corso. Completalo prima di iniziarne uno nuovo."
+        "Hai già un processo di pagamento in corso. Completalo prima di iniziarne uno nuovo.",
+    "pricingIntroductoryPeriod12": "per il primo anno!",
+    "pricingIntroductoryPeriod6": "per i primi 6 mesi!",
+    "renewsFor": "Si rinnova per"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -3762,6 +3789,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "Augmentez votre expérience personnelle. \n Être anonyme. Sois libre.",
     "signIn": "Connectez-vous à Mysterium VPN",
     "appVersion": "Version de l'application",
+    "apiVersion": "Version de l'API",
     "getHelp": "Obtenir de l'aide",
     "continueWithEmail": "Continuez avec le courrier électronique",
     "continueWithGoogle": "Continuez avec Google",
@@ -4299,7 +4327,10 @@ class CodegenLoader extends AssetLoader {
     "contentBlockerDesc":
         "Bloquez à la fois les logiciels malveillants et le contenu réservé aux adultes",
     "pendingTransactionMessage":
-        "Vous avez déjà un processus de paiement en cours. Veuillez le terminer avant d'en démarrer un nouveau."
+        "Vous avez déjà un processus de paiement en cours. Veuillez le terminer avant d'en démarrer un nouveau.",
+    "pricingIntroductoryPeriod12": "pour la première année !",
+    "pricingIntroductoryPeriod6": "pour les premiers 6 mois !",
+    "renewsFor": "Renouvelle pour"
   };
   static const Map<String, dynamic> id = {
     "title": "Halo Pak",
@@ -4310,6 +4341,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "Tingkatkan pengalaman pribadi Anda.\nJadilah anonim. Jadilah bebas.",
     "signIn": "Masuk ke Mysterium VPN",
     "appVersion": "Versi Aplikasi",
+    "apiVersion": "Versi API",
     "getHelp": "Mendapatkan bantuan",
     "continueWithEmail": "Lanjutkan dengan Email",
     "continueWithGoogle": "Lanjutkan dengan Google",
@@ -4838,7 +4870,10 @@ class CodegenLoader extends AssetLoader {
     "contentBlockerTitle": "Pemblokir konten NSFW dan malware",
     "contentBlockerDesc": "Blokir malware dan konten dewasa",
     "pendingTransactionMessage":
-        "Anda sudah memiliki proses pembayaran yang sedang berjalan. Harap selesaikan sebelum memulai yang baru."
+        "Anda sudah memiliki proses pembayaran yang sedang berjalan. Harap selesaikan sebelum memulai yang baru.",
+    "pricingIntroductoryPeriod12": "untuk tahun pertama!",
+    "pricingIntroductoryPeriod6": "untuk 6 bulan pertama!",
+    "renewsFor": "Diperbarui untuk"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -4849,6 +4884,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "Sube de nivel tu experiencia personal.\nSé anónimo. Sé libre.",
     "signIn": "Inicia sesión en Mysterium VPN",
     "appVersion": "Versión de aplicación",
+    "apiVersion": "Versión API",
     "getHelp": "Obtener ayuda",
     "continueWithEmail": "Continuar con correo electrónico",
     "continueWithGoogle": "Continuar con Google",
@@ -5381,7 +5417,11 @@ class CodegenLoader extends AssetLoader {
     "contentBlockerTitle": "Bloqueador de malware y contenido NSFW",
     "contentBlockerDesc": "Bloquee tanto el malware como el contenido para adultos",
     "pendingTransactionMessage":
-        "Ya tienes un proceso de pago en curso. Termínalo antes de comenzar uno nuevo."
+        "Ya tienes un proceso de pago en curso. Termínalo antes de comenzar uno nuevo.",
+    "pricingIntroductoryPeriod": {
+      "12": "¡por el primer año!",
+      "other": "¡por los primeros {} meses!"
+    }
   };
   static const Map<String, dynamic> ar = {
     "title": "أهلاً سيدي",
@@ -5392,6 +5432,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "ارفع مستوى تجربتك الشخصية.\nكن مجهول الهوية. كن حرا.",
     "signIn": "سجّل الدخول إلى Mysterium VPN",
     "appVersion": "نسخة التطبيق",
+    "apiVersion": "أبي الإصدار",
     "getHelp": "احصل على مساعدة",
     "continueWithEmail": "تواصل مع البريد الإلكتروني",
     "continueWithGoogle": "تواصل مع جوجل",
@@ -5913,7 +5954,8 @@ class CodegenLoader extends AssetLoader {
     "contentBlockerTitle": "محتوى NSFW ومانع البرامج الضارة",
     "contentBlockerDesc": "حظر كل من البرامج الضارة ومحتوى البالغين",
     "pendingTransactionMessage":
-        "لديك بالفعل عملية دفع جارية. يرجى إكمالها قبل بدء عملية دفع جديدة."
+        "لديك بالفعل عملية دفع جارية. يرجى إكمالها قبل بدء عملية دفع جديدة.",
+    "pricingIntroductoryPeriod": {"12": "للسنة الأولى!", "other": "لأول {} شهر!"}
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,

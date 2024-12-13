@@ -509,5 +509,8 @@
   "malwareBlocker": "恶意软件拦截器",
   "contentBlockerTitle": "NSFW 内容和恶意软件拦截器",
   "contentBlockerDesc": "阻止恶意软件和成人内容",
-  "pendingTransactionMessage": "您已经有一个正在进行的付款流程。请先完成该流程，然后再开始新的付款流程。"
+  "pendingTransactionMessage": "您已经有一个正在进行的付款流程。请先完成该流程，然后再开始新的付款流程。",
+  "pricingIntroductoryPeriod12": "首年优惠！",
+  "pricingIntroductoryPeriod6": "前6个月优惠！",
+  "renewsFor": "续费"
 }

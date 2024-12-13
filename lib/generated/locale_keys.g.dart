@@ -512,4 +512,7 @@ abstract class LocaleKeys {
   static const contentBlockerTitle = 'contentBlockerTitle';
   static const contentBlockerDesc = 'contentBlockerDesc';
   static const pendingTransactionMessage = 'pendingTransactionMessage';
+  static const pricingIntroductoryPeriod12 = 'pricingIntroductoryPeriod12';
+  static const pricingIntroductoryPeriod6 = 'pricingIntroductoryPeriod6';
+  static const renewsFor = 'renewsFor';
 }

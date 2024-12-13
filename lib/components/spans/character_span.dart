@@ -7,4 +7,6 @@ class CharacterSpan extends TextSpan {
 
   factory CharacterSpan.newline({TextStyle? style}) =>
       CharacterSpan._(character: '\n', style: style);
+
+  factory CharacterSpan.slash({TextStyle? style}) => CharacterSpan._(character: '/', style: style);
 }
