@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/api_version.dart';
 import 'package:mysterium_vpn/components/app_version.dart';
 import 'package:mysterium_vpn/components/desktop_page_header.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -53,9 +52,9 @@ class SettingsDesktopLeftPanel extends ConsumerWidget {
         AppVersion(
           headerText: LocaleKeys.appVersion.tr(),
         ),
-        ApiVersion(
-          headerText: LocaleKeys.apiVersion.tr(),
-        ),
+        // ApiVersion(
+        //   headerText: LocaleKeys.apiVersion.tr(),
+        // ),
       ],
     ).padding(horizontal: 40, vertical: 40);
   }
