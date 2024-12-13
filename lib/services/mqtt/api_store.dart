@@ -27,8 +27,9 @@ abstract class _ApiStore with Store {
   @readonly
   HealthcheckResponse? _lastHealthcheck;
 
-  void initStore() {
+  Future<void> initStore() async {
     try {
+      await _mqtt.ensureStart();
       _healthcheckSub ??= _mqtt.subscribe('healthcheck').listen((event) {
         _lastHealthcheck = HealthcheckResponse.fromJson(json.decode(event) as Map<String, dynamic>);
       });

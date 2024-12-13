@@ -58,6 +58,14 @@ class MQQTService {
     }
   }
 
+  bool isStarted() => _mqtt.connectionStatus!.state == MqttConnectionState.connected;
+
+  Future<void> ensureStart() async {
+    if (!isStarted()) {
+      await start();
+    }
+  }
+
   /// Listens to messages on a specified MQTT topic.
   ///
   /// This function returns a stream of messages for the given topic.
