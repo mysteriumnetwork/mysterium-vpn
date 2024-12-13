@@ -35,7 +35,6 @@ class MyApp extends HookConsumerWidget {
     final env = ref.read(environmentPOD);
     final appName = env.values.appName;
     final flavor = env.flavor;
-    //final mqtt = ref.read(vpnApiMQTTPOD);
 
     useEffect(
       () {
@@ -49,13 +48,6 @@ class MyApp extends HookConsumerWidget {
         await authStore.fetchAuthUser();
       }
     });
-    // useEffect(
-    //   () {
-    //     mqtt.start();
-    //     return mqtt.stop;
-    //   },
-    //   [mqtt],
-    // );
 
     return ReactionBuilder(
       builder: (_) => reaction(

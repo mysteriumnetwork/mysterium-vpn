@@ -20,6 +20,7 @@ import 'package:mysterium_vpn/services/auth/rest_auth_service.dart';
 import 'package:mysterium_vpn/services/data/local/config_cat_cache.dart';
 import 'package:mysterium_vpn/services/data/network/dio_network_service.dart';
 import 'package:mysterium_vpn/services/dio_network_logger/dio_network_logger.dart';
+import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:talker/talker.dart';
@@ -94,16 +95,16 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
   return dio;
 });
 
-// final vpnApiMQTTPOD = Provider<MQQTService>((ref) {
-//   final environment = ref.watch(environmentPOD);
-//   final logger = ref.watch(loggerPOD);
+final vpnApiMQTTPOD = Provider<MQQTService>((ref) {
+  final environment = ref.watch(environmentPOD);
+  final logger = ref.watch(loggerPOD);
 
-//   return MQQTService(
-//     environment.values.mqttUrl,
-//     'mysterium-vpn-${environment.buildInfo.buildVersion}-${environment.buildInfo.buildNumber}',
-//     logger,
-//   );
-// });
+  return MQQTService(
+    environment.values.mqttUrl,
+    'mysterium-vpn-${environment.buildInfo.buildVersion}',
+    logger,
+  );
+});
 
 final vpnApiPOD = Provider<VpnApi>((ref) {
   final dio = ref.watch(vpnApiDioPOD);
