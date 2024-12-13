@@ -19,6 +19,11 @@ class RefreshTokenInterceptor extends Interceptor {
     if (!_isUnauthorizedError(err)) {
       return handler.next(err);
     }
+    final requestData = err.requestOptions.data;
+    if (requestData is Map<String, dynamic> && requestData['grant_type'] == 'refresh_token') {
+      logger.handle(err, err.stackTrace, 'Failed to refresh authorization');
+      return handler.next(err);
+    }
 
     try {
       await refreshTokenCallback();
