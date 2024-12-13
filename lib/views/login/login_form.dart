@@ -219,11 +219,13 @@ class SignInForm extends HookConsumerWidget {
                     ),
                   ),
                 ],
-              ).scrollable().padding(
+              )
+                  .padding(
                     top: 20,
                     bottom: 10,
                     horizontal: getMediaWidth(context) > 650 ? 60 : 20,
-                  ),
+                  )
+                  .scrollable(),
             ),
           ],
         );
