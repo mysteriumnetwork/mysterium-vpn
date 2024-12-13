@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
-import 'package:mysterium_vpn/components/api_version.dart';
 import 'package:mysterium_vpn/components/app_version.dart';
 import 'package:mysterium_vpn/components/header_title.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
@@ -32,7 +31,7 @@ class PageHeader extends HookConsumerWidget {
         ),
         HeaderTitle(text: headerTitle, color: Palette.white),
         const AppVersion(),
-        const ApiVersion(),
+        //const ApiVersion(),
       ],
     ).padding(horizontal: 20);
   }
