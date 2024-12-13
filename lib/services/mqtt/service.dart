@@ -14,9 +14,9 @@ class MQQTService {
     _mqtt
       ..port = uri.port
       ..autoReconnect = true
+      ..resubscribeOnAutoReconnect = true
       ..useWebSocket = true
       ..keepAlivePeriod = 60 * 5
-      ..resubscribeOnAutoReconnect = true
       ..onConnected = () {
         _logger.debug('MQTT connected');
       }
