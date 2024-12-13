@@ -14,9 +14,7 @@ class UnauthenticatedHeader extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const SizedBox(
-            width: 40,
-          ),
+          const SizedBox(width: 26),
           const AppLogo(),
           SvgIconButton(
             asset: Assets.messageSvg,
