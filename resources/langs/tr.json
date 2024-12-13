@@ -509,5 +509,8 @@
   "malwareBlocker": "Kötü amaçlı yazılım engelleyici",
   "contentBlockerTitle": "NSFW içeriği ve kötü amaçlı yazılım engelleyici",
   "contentBlockerDesc": "Hem kötü amaçlı yazılımları hem de yetişkinlere yönelik içeriği engelleyin",
-  "pendingTransactionMessage": "Halihazırda devam eden bir ödeme işleminiz var. Lütfen yeni bir ödeme işlemine başlamadan önce işlemi tamamlayın."
+  "pendingTransactionMessage": "Halihazırda devam eden bir ödeme işleminiz var. Lütfen yeni bir ödeme işlemine başlamadan önce işlemi tamamlayın.",
+  "pricingIntroductoryPeriod12": "ilk yıl için!",
+  "pricingIntroductoryPeriod6": "ilk 6 ay için!",
+  "renewsFor": "Yenileme"
 }
