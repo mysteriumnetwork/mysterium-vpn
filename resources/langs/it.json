@@ -509,5 +509,8 @@
   "malwareBlocker": "Blocco malware",
   "contentBlockerTitle": "Contenuto NSFW e blocco malware",
   "contentBlockerDesc": "Blocca sia malware che contenuti per adulti",
-  "pendingTransactionMessage": "Hai già un processo di pagamento in corso. Completalo prima di iniziarne uno nuovo."
+  "pendingTransactionMessage": "Hai già un processo di pagamento in corso. Completalo prima di iniziarne uno nuovo.",
+  "pricingIntroductoryPeriod12": "per il primo anno!",
+  "pricingIntroductoryPeriod6": "per i primi 6 mesi!",
+  "renewsFor": "Si rinnova per"
 }

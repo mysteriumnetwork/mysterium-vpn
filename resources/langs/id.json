@@ -509,5 +509,8 @@
   "malwareBlocker": "Pemblokir malware",
   "contentBlockerTitle": "Pemblokir konten NSFW dan malware",
   "contentBlockerDesc": "Blokir malware dan konten dewasa",
-  "pendingTransactionMessage": "Anda sudah memiliki proses pembayaran yang sedang berjalan. Harap selesaikan sebelum memulai yang baru."
+  "pendingTransactionMessage": "Anda sudah memiliki proses pembayaran yang sedang berjalan. Harap selesaikan sebelum memulai yang baru.",
+  "pricingIntroductoryPeriod12": "untuk tahun pertama!",
+  "pricingIntroductoryPeriod6": "untuk 6 bulan pertama!",
+  "renewsFor": "Diperbarui untuk"
 }

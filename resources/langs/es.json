@@ -509,5 +509,9 @@
   "malwareBlocker": "bloqueador de malware",
   "contentBlockerTitle": "Bloqueador de malware y contenido NSFW",
   "contentBlockerDesc": "Bloquee tanto el malware como el contenido para adultos",
-  "pendingTransactionMessage": "Ya tienes un proceso de pago en curso. Termínalo antes de comenzar uno nuevo."
+  "pendingTransactionMessage": "Ya tienes un proceso de pago en curso. Termínalo antes de comenzar uno nuevo.",
+  "pricingIntroductoryPeriod": {
+    "12": "¡por el primer año!",
+    "other": "¡por los primeros {} meses!"
+  }
 }

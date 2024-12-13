@@ -509,5 +509,8 @@
   "malwareBlocker": "マルウェアブロッカー",
   "contentBlockerTitle": "NSFW コンテンツとマルウェア ブロッカー",
   "contentBlockerDesc": "マルウェアとアダルト コンテンツの両方をブロック",
-  "pendingTransactionMessage": "すでに支払いプロセスが進行中です。新しい支払いプロセスを開始する前に完了してください。"
+  "pendingTransactionMessage": "すでに支払いプロセスが進行中です。新しい支払いプロセスを開始する前に完了してください。",
+  "pricingIntroductoryPeriod12": "最初の1年間！",
+  "pricingIntroductoryPeriod6": "最初の6か月間！",
+  "renewsFor": "更新"
 }
