@@ -108,7 +108,7 @@ class SignInForm extends HookConsumerWidget {
                         ),
                       ),
                     ],
-                  ).padding(vertical: height* 0.03),
+                  ).padding(vertical: height * 0.03),
                   AutofillGroup(
                     child: ReactiveTextField(
                       onTap: (_) {
