@@ -11,6 +11,12 @@ class MQQTService {
       : _mqtt = MqttServerClient(url, clientID),
         _logger = logger {
     final uri = Uri.parse(url);
+
+    // Client ID length can not exceed 23, see http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html
+    if (clientID.length > 23) {
+      throw MQQTException();
+    }
+
     _mqtt
       ..port = uri.port
       ..autoReconnect = true
