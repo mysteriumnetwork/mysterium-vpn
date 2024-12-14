@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/interceptors/api_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/connection_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
@@ -101,7 +102,7 @@ final vpnApiMQTTPOD = Provider<MQQTService>((ref) {
 
   return MQQTService(
     environment.values.mqttUrl,
-    'mysterium-vpn-${environment.buildInfo.buildVersion}',
+    'mysterium-vpn-${environment.buildInfo.buildVersion}'.truncate(23),
     logger,
   );
 });
