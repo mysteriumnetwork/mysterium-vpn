@@ -1,17 +1,17 @@
+import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/utils/comparator_utils.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/bottom_spacer.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/subscription_store.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/consent/agreements.dart';
 import 'package:mysterium_vpn/views/subscription/product_list_variant_a.dart';
 import 'package:mysterium_vpn/views/subscription/subscription_button.dart';
@@ -20,22 +20,31 @@ import 'package:styled_widget/styled_widget.dart';
 
 class SubscriptionFormVariantA extends HookConsumerWidget {
   const SubscriptionFormVariantA({
-    required this.store,
-    required this.localDb,
-    required this.analyticsStore,
     required this.subscribeToPackage,
     required this.variant,
     super.key,
   });
-  final SubscriptionStore store;
-  final LocalDBService localDb;
-  final AnalyticsStore analyticsStore;
-  final void Function(String selectedProductId) subscribeToPackage;
+
   final String variant;
+  final void Function(String selectedProductId) subscribeToPackage;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedProductId =
-        useState<String>(store.purchasedProductId ?? store.products.lastOrNull?.id ?? kPopularPlan);
+    final analyticsStore = ref.watch(analyticsStorePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
+
+    final isLoading = useComputedValue(() => subscriptionStore.isLoading);
+    final products = useComputedValue(
+      () => subscriptionStore.products
+          .sortedByCompare((it) => it.duration, compareNums)
+          .reversed
+          .toList(),
+    );
+    final highlightedProduct = useComputedValue(() => subscriptionStore.highlightedProduct);
+    final selectedProductId = useState<String>(
+      subscriptionStore.purchasedProductId ?? highlightedProduct.id,
+    );
+
     return Observer(
       builder: (context) => Align(
         alignment: Alignment.topCenter,
@@ -49,7 +58,7 @@ class SubscriptionFormVariantA extends HookConsumerWidget {
             ),
             SizedBox(height: getMediaHeight(context) * 0.015),
             SubscriptionProductsListVariantA(
-              products: store.products.reversed.toList(),
+              products: products,
               selectedProductId: selectedProductId,
             ).padding(bottom: getMediaHeight(context) * 0.02),
             EasyText(
@@ -68,12 +77,12 @@ class SubscriptionFormVariantA extends HookConsumerWidget {
                 analyticsStore.logEvent(AnalyticsEvent.clickStartNow);
                 subscribeToPackage(selectedProductId.value);
               },
-              isLoading: store.isLoading,
+              isLoading: isLoading,
               label: LocaleKeys.startTrialBtn.tr(),
             ),
             ReedemCode(
-              isLoading: store.isLoading,
-              onPressed: store.redeemCode,
+              isLoading: isLoading,
+              onPressed: subscriptionStore.redeemCode,
             ),
             SizedBox(height: getMediaHeight(context) * 0.01),
             Agreements(

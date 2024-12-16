@@ -7,7 +7,9 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
+import 'package:mysterium_vpn/common/utils/comparator_utils.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
@@ -80,6 +82,13 @@ abstract class _SubscriptionStore with Store {
 
   @readonly
   ObservableList<PurchasableProduct> _products = ObservableList<PurchasableProduct>.of([]);
+
+  @computed
+  PurchasableProduct get monthlyProduct => _products.firstWhere((element) => element.duration == 1);
+
+  @computed
+  PurchasableProduct get highlightedProduct =>
+      _products.sortedByCompare((it) => it.duration, compareNums).last;
 
   @computed
   bool get isLoading =>
@@ -175,7 +184,11 @@ abstract class _SubscriptionStore with Store {
       );
     } catch (e) {
       _subscriptionService.clearPendingTransactions();
-      _subscriptonStatus = SubscriptionStatus.error;
+      if (await _subscriptionService.hasApplePendingPurchasingTransactions()) {
+        _subscriptonStatus = SubscriptionStatus.pendingTransaction;
+      } else {
+        _subscriptonStatus = SubscriptionStatus.error;
+      }
       _analyticsStore.logEvent(
         AnalyticsEvent.paymentError,
         parameters: {
@@ -253,7 +266,7 @@ abstract class _SubscriptionStore with Store {
         _analyticsStore.logEvent(
           AnalyticsEvent.paymentVerificationSuccess,
           parameters: {
-            'planType': _lastPurchase!.productID,
+            'planType': _purchasedProductId ?? _lastPurchase?.productID,
             'price': product?.productDetails.rawPrice.toString(),
           },
         );
@@ -265,7 +278,7 @@ abstract class _SubscriptionStore with Store {
           }
         }
         _subscriptonStatus = SubscriptionStatus.purchased;
-        _secureStorageService.saveSubscriptionPaymentInfo(
+        await _secureStorageService.saveSubscriptionPaymentInfo(
           email: _authSessionStore.user!.username,
           activeUntil: _subscription!.activeUntil,
         );
@@ -274,7 +287,7 @@ abstract class _SubscriptionStore with Store {
       }
 
       if (purchaseDetails.pendingCompletePurchase) {
-        _inAppPurchase.completePurchase(purchaseDetails);
+        await _inAppPurchase.completePurchase(purchaseDetails);
       }
     } catch (e) {
       if (kDebugMode) {
@@ -366,6 +379,21 @@ abstract class _SubscriptionStore with Store {
     } catch (e) {
       return (false, null);
     }
+  }
+
+  Future<void> manageSubscription() async {
+    await fetchSubscription();
+    final subscription = await subscriptionFuture;
+
+    if (subscription == null || !subscription.active) {
+      throw const SubscriptionRequiredException();
+    }
+
+    final config = await _subscriptionService.fetchSubscriptionConfig();
+    final products = await _subscriptionService.getProductsDetails(config, subscription.planId);
+    final product = products.firstWhere((it) => it.status == ProductStatus.purchased);
+
+    await subscribeToPackage(product: product.productDetails);
   }
 
   void dispose() {

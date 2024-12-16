@@ -1,15 +1,16 @@
+import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/utils/comparator_utils.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/bottom_spacer.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/subscription_store.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/consent/agreements.dart';
 import 'package:mysterium_vpn/views/subscription/subscription_button.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/highlighted_product.dart';
@@ -18,97 +19,98 @@ import 'package:mysterium_vpn/views/subscription/widgets/product_picker_dialog.d
 import 'package:mysterium_vpn/views/subscription/widgets/redeem_code.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class SubscriptionFormVariantC extends StatelessWidget {
+class SubscriptionFormVariantC extends HookConsumerWidget {
   const SubscriptionFormVariantC({
-    required this.store,
-    required this.localDb,
-    required this.analyticsStore,
     required this.subscribeToPackage,
     required this.variant,
-    required this.isDarkMode,
     super.key,
   });
-  final SubscriptionStore store;
-  final LocalDBService localDb;
-  final AnalyticsStore analyticsStore;
+
   final void Function(String selectedProductId) subscribeToPackage;
   final String variant;
-  final bool isDarkMode;
+
   @override
-  Widget build(BuildContext context) => Observer(
-        builder: (context) => Align(
-          alignment: Alignment.topCenter,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              EasyText(
-                LocaleKeys.pricingPlanTitle.tr(),
-                fontSize: 20,
-                fontWeight: FontWeight.w900,
-              ),
-              SizedBox(height: getMediaHeight(context) * 0.01),
-              HighlightedProduct(
-                product: store.products.last,
-                isDarkTheme: isDarkMode,
-                monthlyRawPrice: store.products.first.rawPrice,
-                isHighlighted: true,
-                showDiscountTag: true,
-              ),
-              ProductFeatures(
-                formVariant: variant,
-                isDarkTheme: isDarkMode,
-              ),
-              EasyText(
-                LocaleKeys.pricingPlanPunchLineTitle.tr(),
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-              ).padding(bottom: getMediaHeight(context) * 0.005),
-              EasyText(
-                LocaleKeys.pricingPlanPunchLineDesc.tr(),
-                maxLines: 3,
-                fontSize: 12,
-                textAlign: TextAlign.center,
-                color: isDarkMode ? Palette.veryLightGrey : Palette.darkGrey,
-              ).padding(bottom: getMediaHeight(context) * 0.025),
-              SubscriptionButton(
-                onPressed: () {
-                  analyticsStore.logEvent(AnalyticsEvent.clickLetsgo);
-                  subscribeToPackage(store.products.last.id);
-                },
-                isLoading: store.isLoading,
-                label: LocaleKeys.letsGoBtn.tr(),
-              ),
-              ReedemCode(
-                isLoading: store.isLoading,
-                onPressed: store.redeemCode,
-              ),
-              Visibility(
-                visible: !store.isLoading,
-                child: TextButton(
-                  onPressed: () {
-                    analyticsStore.logEvent(AnalyticsEvent.clickSeeAllPlans);
-                    shownProductPickerDialog(
-                      context: context,
-                      analyticsStore: analyticsStore,
-                      products: store.products.reversed.toList(),
-                      subscribeToPackage: subscribeToPackage,
-                      isDarkTheme: isDarkMode,
-                      subscriptionStore: store,
-                      seeAllPlans: true,
-                    );
-                  },
-                  child: EasyText(
-                    LocaleKeys.pricingPlanSeePlansBtn.tr(),
-                    color: Palette.purple,
-                  ),
-                ),
-              ),
-              Agreements(
-                analyticsStore: analyticsStore,
-              ).padding(top: 10),
-              const BottomSpacer(),
-            ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final analyticsStore = ref.watch(analyticsStorePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
+
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final isLoading = useComputedValue(() => subscriptionStore.isLoading);
+    final products = useComputedValue(
+      () => subscriptionStore.products
+          .sortedByCompare((it) => it.duration, compareNums)
+          .reversed
+          .toList(),
+    );
+    final highlightedProduct = useComputedValue(() => subscriptionStore.highlightedProduct);
+
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          EasyText(
+            LocaleKeys.pricingPlanTitle.tr(),
+            fontSize: 20,
+            fontWeight: FontWeight.w900,
           ),
-        ),
-      );
+          SizedBox(height: getMediaHeight(context) * 0.01),
+          HighlightedProduct(
+            product: highlightedProduct,
+            isHighlighted: true,
+          ),
+          ProductFeatures(
+            formVariant: variant,
+            isDarkTheme: isDarkMode,
+          ),
+          EasyText(
+            LocaleKeys.pricingPlanPunchLineTitle.tr(),
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+          ).padding(bottom: getMediaHeight(context) * 0.005),
+          EasyText(
+            LocaleKeys.pricingPlanPunchLineDesc.tr(),
+            maxLines: 3,
+            fontSize: 12,
+            textAlign: TextAlign.center,
+            color: isDarkMode ? Palette.veryLightGrey : Palette.darkGrey,
+          ).padding(bottom: getMediaHeight(context) * 0.025),
+          SubscriptionButton(
+            onPressed: () {
+              analyticsStore.logEvent(AnalyticsEvent.clickLetsgo);
+              subscribeToPackage(highlightedProduct.id);
+            },
+            isLoading: isLoading,
+            label: LocaleKeys.letsGoBtn.tr(),
+          ),
+          ReedemCode(
+            isLoading: isLoading,
+            onPressed: subscriptionStore.redeemCode,
+          ),
+          Visibility(
+            visible: !isLoading,
+            child: TextButton(
+              onPressed: () {
+                analyticsStore.logEvent(AnalyticsEvent.clickSeeAllPlans);
+                shownProductPickerDialog(
+                  context: context,
+                  products: products,
+                  subscribeToPackage: subscribeToPackage,
+                  seeAllPlans: true,
+                );
+              },
+              child: EasyText(
+                LocaleKeys.pricingPlanSeePlansBtn.tr(),
+                color: Palette.purple,
+              ),
+            ),
+          ),
+          Agreements(
+            analyticsStore: analyticsStore,
+          ).padding(top: 10),
+          const BottomSpacer(),
+        ],
+      ),
+    );
+  }
 }

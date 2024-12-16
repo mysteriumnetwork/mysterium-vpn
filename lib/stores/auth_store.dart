@@ -43,7 +43,6 @@ abstract class _AuthStore with Store {
     required AuthService authService,
     required AuthSessionStore authSessionStore,
     required AppLinks appLinks,
-    required LocalDBService localDb,
     required AnalyticsStore analyticsStore,
     required FlavorConfig env,
     required IntercomStore intercomStore,
@@ -54,7 +53,6 @@ abstract class _AuthStore with Store {
   })  : _authService = authService,
         _authSessionStore = authSessionStore,
         _appLinks = appLinks,
-        _localDb = localDb,
         _analyticsStore = analyticsStore,
         _env = env,
         _intercomStore = intercomStore,
@@ -67,7 +65,7 @@ abstract class _AuthStore with Store {
 
   final AuthService _authService;
   final AuthSessionStore _authSessionStore;
-  final LocalDBService _localDb;
+  final LocalDBService _localDb = LocalDBService.instance;
   final AppLinks _appLinks;
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
   final AnalyticsStore _analyticsStore;
@@ -167,21 +165,19 @@ abstract class _AuthStore with Store {
     try {
       final user = await _authService.currentUser();
       _initializeAuthenticatedUser(user);
-    } catch (e, stackTrace) {
+    } on ApiException catch (e, stackTrace) {
       // We want to make call to user details endpoint to introspect AccessToken, and if it's invalid when logout the user
-      _authSessionStore.setUnauthenticated();
-
-      if (e is ApiException && e.message == 'Unauthorized' && e.code == 401) {
-        _logger.info('User token expired or not found');
+      if (e.code == 401) {
+        _logger.error('User AccessToken invalid');
+        _authSessionStore.setUnauthenticated();
         return;
       }
 
       _logger.handle(e, stackTrace);
-      var message = LocaleKeys.authenticationFailed.tr();
-      if (e is ApiException) {
-        message = e.message;
-      }
-      showSnackbar(message);
+      showSnackbar(e.message);
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      showSnackbar(LocaleKeys.authenticationFailed.tr());
     }
   }
 
@@ -201,13 +197,10 @@ abstract class _AuthStore with Store {
         const Duration(seconds: 5),
         () => _userPreferencesStore.setEmailMarketingConsent(consent: marketingConsent),
       );
+    } on ApiException catch (e) {
+      showSnackbar(e.message);
     } catch (e) {
-      _authSessionStore.setUnauthenticated();
-      var message = LocaleKeys.authenticationFailed.tr();
-      if (e is ApiException) {
-        message = e.message;
-      }
-      showSnackbar(message);
+      showSnackbar(LocaleKeys.authenticationFailed.tr());
     }
   }
 
@@ -216,8 +209,9 @@ abstract class _AuthStore with Store {
     _authSessionStore.setAuthenticatedUser(user);
 
     _initializeAnalyticsStores(username: user.username, userId: user.userId);
-
-    final userSettings = await _localDb.getUserData(user);
+    // Set auth user
+    await _localDb.setUser(user);
+    final userSettings = await _localDb.getUserData();
     _logger.info(userSettings.toString());
   }
 

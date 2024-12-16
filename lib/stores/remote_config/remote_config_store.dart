@@ -23,6 +23,7 @@ enum _FeatureToggleKey {
   notSafeContentBlockerDnsAddress,
   showVpnPrivacyPolicyPage,
   pricingMonthly,
+  mqttExperiment,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -193,6 +194,14 @@ abstract class RemoteConfigStoreBase with Store {
   bool get pricingMonthly {
     if (config.containsKey(_FeatureToggleKey.pricingMonthly.name)) {
       return config[_FeatureToggleKey.pricingMonthly.name] as bool;
+    }
+    return false;
+  }
+
+  @computed
+  bool get mqttExperiment {
+    if (config.containsKey(_FeatureToggleKey.mqttExperiment.name)) {
+      return config[_FeatureToggleKey.mqttExperiment.name] as bool;
     }
     return false;
   }

@@ -118,6 +118,12 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   bool get pricingMonthly => (_$pricingMonthlyComputed ??=
           Computed<bool>(() => super.pricingMonthly, name: 'RemoteConfigStoreBase.pricingMonthly'))
       .value;
+  Computed<bool>? _$mqttExperimentComputed;
+
+  @override
+  bool get mqttExperiment => (_$mqttExperimentComputed ??=
+          Computed<bool>(() => super.mqttExperiment, name: 'RemoteConfigStoreBase.mqttExperiment'))
+      .value;
 
   late final _$configAtom = Atom(name: 'RemoteConfigStoreBase.config', context: context);
 
@@ -178,7 +184,8 @@ hideNotSafeContentBlocker: ${hideNotSafeContentBlocker},
 malwareBlockerDnsAddress: ${malwareBlockerDnsAddress},
 notSafeContentBlockerDnsAddress: ${notSafeContentBlockerDnsAddress},
 showVpnPrivacyPolicyPage: ${showVpnPrivacyPolicyPage},
-pricingMonthly: ${pricingMonthly}
+pricingMonthly: ${pricingMonthly},
+mqttExperiment: ${mqttExperiment}
     ''';
   }
 }

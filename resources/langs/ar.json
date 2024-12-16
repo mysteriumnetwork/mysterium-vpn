@@ -7,6 +7,7 @@
   "loginQuote": "ارفع مستوى تجربتك الشخصية.\nكن مجهول الهوية. كن حرا.",
   "signIn": "سجّل الدخول إلى Mysterium VPN",
   "appVersion": "نسخة التطبيق",
+  "apiVersion": "أبي الإصدار",
   "getHelp": "احصل على مساعدة",
   "continueWithEmail": "تواصل مع البريد الإلكتروني",
   "continueWithGoogle": "تواصل مع جوجل",
@@ -510,5 +511,10 @@
   "setupTunnerPermissionsDialogTitle": "نحن بحاجة إلى إذنك",
   "setupTunnerPermissionsDialogDesc": "لبدء استخدام Mysterium VPN، نحتاج إلى إذنك لتثبيت ملف تعريف VPN.",
   "setupTunnerPermissionsDialogDisclaimer": "إخفاء هويتك آمن. نحن لا نشاهد أو نجمع أو نخزن أيًا من أنشطة التصفح الخاصة بك.",
-  "allowPermissionsBtn": "يسمح"
+  "allowPermissionsBtn": "يسمح",
+  "pendingTransactionMessage": "لديك بالفعل عملية دفع جارية. يرجى إكمالها قبل بدء عملية دفع جديدة.",
+  "pricingIntroductoryPeriod": {
+    "12": "للسنة الأولى!",
+    "other": "لأول {} شهر!"
+  }
 }

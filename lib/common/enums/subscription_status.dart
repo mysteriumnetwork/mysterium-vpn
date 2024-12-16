@@ -7,4 +7,5 @@ enum SubscriptionStatus {
   verifyingError,
   verifying,
   notVerified,
+  pendingTransaction,
 }

@@ -14,21 +14,23 @@ import 'package:mysterium_vpn/views/subscription/widgets/discount_tag.dart';
 class ProductPricing extends HookConsumerWidget {
   const ProductPricing({
     required this.product,
-    this.showDiscount = false,
-    this.monthlyPrice,
     super.key,
   });
 
   final PurchasableProduct product;
-  final bool showDiscount;
-  final double? monthlyPrice;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final monthlyPrice = this.monthlyPrice ?? product.rawPrice / product.duration;
+    final configStore = ref.watch(remoteConfigStorePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
 
-    final config = ref.watch(remoteConfigStorePOD);
-    final pricingMonthly = useComputedValue(() => config.pricingMonthly);
+    final monthlyPrice = useComputedValue(() => subscriptionStore.monthlyProduct.rawPrice);
+    final showDiscount = useMemoized(() => product.isDiscounted(monthlyPrice), [
+      monthlyPrice,
+      product,
+    ]);
+
+    final pricingMonthly = useComputedValue(() => configStore.pricingMonthly);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -46,203 +48,210 @@ class ProductPricing extends HookConsumerWidget {
             const SizedBox(width: 8),
             if (showDiscount)
               DiscountTag(
-                monthlyRawPrice: product.rawPrice,
+                monthlyRawPrice: monthlyPrice,
                 product: product,
               ),
           ],
         ),
-        _PrimaryPriceText(
-          product: product,
-          monthlyPrice: monthlyPrice,
-          pricingMonthly: pricingMonthly,
-        ),
-        _SecondaryPriceText(
-          product: product,
-          monthlyPrice: monthlyPrice,
-          pricingMonthly: pricingMonthly,
-        ),
+        if (pricingMonthly)
+          _MonthlyPricing(product: product, monthlyPrice: monthlyPrice)
+        else
+          _RegularPricing(monthlyPrice: monthlyPrice, product: product),
       ],
     );
   }
 }
 
-class _PrimaryPriceText extends HookWidget {
-  const _PrimaryPriceText({
-    required this.product,
+class _RegularPricing extends HookWidget {
+  const _RegularPricing({
     required this.monthlyPrice,
-    required this.pricingMonthly,
-  });
-
-  final bool pricingMonthly;
-  final PurchasableProduct product;
-  final double? monthlyPrice;
-
-  @override
-  Widget build(BuildContext context) {
-    final amount = useMemoized(() {
-      if (pricingMonthly) {
-        return product.monthlyPrice;
-      }
-      return product.productPrice.price(
-        currencySymbol: product.currencySymbol,
-        currencyCode: product.currencyCode,
-      );
-    }, [
-      product,
-      pricingMonthly,
-    ]);
-
-    final fullAmount = useMemoized(() {
-      if (pricingMonthly || monthlyPrice == null) {
-        return null;
-      }
-      final amount = monthlyPrice! * product.duration;
-      if (amount <= product.productPrice) {
-        return null;
-      }
-      return amount.price(
-        currencySymbol: product.currencySymbol,
-        currencyCode: product.currencyCode,
-      );
-    }, [
-      monthlyPrice,
-      pricingMonthly,
-    ]);
-
-    final text = useMemoized(() {
-      if (pricingMonthly) {
-        return LocaleKeys.perMonth.tr();
-      }
-      return switch (product.duration) {
-        12 => LocaleKeys.year.tr(),
-        1 => null,
-        _ => LocaleKeys.billedEveryPeriodMonths.tr(
-            namedArgs: {'amount': product.duration.toString()},
-          ).toLowerCase(),
-      };
-    }, [
-      context.locale,
-      product.duration,
-    ]);
-
-    return _PriceText(
-      amount: amount,
-      text: text,
-      fullAmount: fullAmount,
-      highlighted: true,
-    );
-  }
-}
-
-class _SecondaryPriceText extends HookWidget {
-  const _SecondaryPriceText({
-    required this.pricingMonthly,
     required this.product,
-    required this.monthlyPrice,
   });
 
-  final bool pricingMonthly;
+  final double monthlyPrice;
   final PurchasableProduct product;
-  final double? monthlyPrice;
 
   @override
   Widget build(BuildContext context) {
-    final amount = useMemoized(() {
-      if (product.duration == 1) {
-        return null;
-      }
-      if (pricingMonthly) {
-        return product.productPrice.price(
-          currencySymbol: product.currencySymbol,
-          currencyCode: product.currencyCode,
-        );
-      }
-
-      if (monthlyPrice == null) {
-        return null;
-      }
-
-      return monthlyPrice!.price(
-        currencySymbol: product.currencySymbol,
-        currencyCode: product.currencyCode,
-      );
-    }, [
-      product,
-      pricingMonthly,
-      monthlyPrice,
-    ]);
-
-    final text = useMemoized(() {
-      if (product.duration == 1) {
-        return LocaleKeys.billedEveryMonth.tr(namedArgs: {'amount': ''}).trim();
-      }
-      if (!pricingMonthly) {
-        return LocaleKeys.month.tr();
-      }
-      return switch (product.duration) {
-        12 => LocaleKeys.year.tr(),
-        _ => LocaleKeys.billedEveryPeriodMonths.tr(
-            namedArgs: {'amount': product.duration.toString()},
-          ).toLowerCase(),
-      };
-    }, [
-      product,
-      pricingMonthly,
-      context.locale,
-    ]);
-
-    return _PriceText(amount: amount, text: text);
-  }
-}
-
-class _PriceText extends HookWidget {
-  const _PriceText({
-    required this.amount,
-    required this.text,
-    this.fullAmount,
-    this.highlighted = false,
-  });
-
-  final String? amount;
-  final String? fullAmount;
-  final String? text;
-  final bool highlighted;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final baseStyle = useMemoized(
-      () => DefaultTextStyle.of(context).style.copyWith(
-            fontSize: highlighted ? 20 : 12,
-            color: highlighted ? Palette.purple : null,
+    final top = useMemoized<List<TextSpan>>(
+      () => [
+        TextSpan(
+          text: product.rawPrice.price(
+            currencySymbol: product.currencySymbol,
+            currencyCode: product.currencyCode,
           ),
-      [highlighted, theme.textTheme],
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        CharacterSpan.space(),
+        CharacterSpan.slash(),
+        TextSpan(
+          text: switch (product.duration) {
+            12 => LocaleKeys.year.tr(),
+            6 => LocaleKeys.SixMonths.tr(),
+            1 => LocaleKeys.month.tr(),
+            _ => '',
+          },
+        ),
+      ],
+      [product, context.locale],
     );
 
-    return RichText(
-      text: TextSpan(
-        style: baseStyle,
-        children: [
-          if (amount != null)
+    final bottom = useMemoized<List<TextSpan>>(
+      () {
+        if (product.duration == 1) {
+          return [];
+        }
+
+        late final List<TextSpan> introductory;
+        if (product.hasIntroductoryPrice) {
+          introductory = [
             TextSpan(
-              text: amount,
-              style: TextStyle(fontWeight: highlighted ? FontWeight.w900 : null),
-            ),
-          if (fullAmount != null)
-            TextSpan(
-              text: fullAmount,
-              style: TextStyle(
-                decoration: TextDecoration.lineThrough,
-                decorationColor: baseStyle.color,
+              text: product.productPrice.price(
+                currencySymbol: product.currencySymbol,
+                currencyCode: product.currencyCode,
               ),
+              style: const TextStyle(fontWeight: FontWeight.w700),
             ),
-          if (text != null)
+            CharacterSpan.space(),
             TextSpan(
-              text: text,
-              style: const TextStyle(fontSize: 12),
+              text: switch (product.duration) {
+                12 => LocaleKeys.pricingIntroductoryPeriod12.tr(),
+                6 => LocaleKeys.pricingIntroductoryPeriod6.tr(),
+                _ => '',
+              },
             ),
-        ].separateWith(CharacterSpan.space()).toList(),
+            CharacterSpan.space(),
+          ];
+        } else {
+          introductory = [];
+        }
+
+        return [
+          ...introductory,
+          TextSpan(
+            text: monthlyPrice.price(
+              currencySymbol: product.currencySymbol,
+              currencyCode: product.currencyCode,
+            ),
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
+          CharacterSpan.space(),
+          CharacterSpan.slash(),
+          TextSpan(text: LocaleKeys.month.tr()),
+        ];
+      },
+      [monthlyPrice, product, context.locale],
+    );
+
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(children: top),
+          if (bottom.isNotEmpty) CharacterSpan.newline(),
+          if (bottom.isNotEmpty)
+            TextSpan(
+              children: bottom,
+              style: const TextStyle(color: Palette.purple),
+            ),
+        ],
       ),
+      style: const TextStyle(fontSize: 12),
+    );
+  }
+}
+
+class _MonthlyPricing extends HookWidget {
+  const _MonthlyPricing({
+    required this.product,
+    required this.monthlyPrice,
+  });
+
+  final PurchasableProduct product;
+  final double monthlyPrice;
+
+  @override
+  Widget build(BuildContext context) {
+    final top = useMemoized<List<TextSpan>>(
+      () => [
+        TextSpan(
+          text: product.monthlyPrice,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+        ),
+        CharacterSpan.space(),
+        CharacterSpan.slash(),
+        TextSpan(text: LocaleKeys.month.tr()),
+      ],
+      [product, context.locale],
+    );
+
+    final bottom = useMemoized<List<TextSpan>>(
+      () {
+        if (product.duration == 1) {
+          return [
+            TextSpan(text: LocaleKeys.billedEveryMonth.tr(namedArgs: {'amount': ''}).trim()),
+          ];
+        }
+
+        late final List<TextSpan> introductory;
+        if (product.hasIntroductoryPrice) {
+          introductory = [
+            TextSpan(
+              text: product.productPrice.price(
+                currencySymbol: product.currencySymbol,
+                currencyCode: product.currencyCode,
+              ),
+              style: const TextStyle(fontWeight: FontWeight.w700),
+            ),
+            CharacterSpan.space(),
+            TextSpan(
+              text: switch (product.duration) {
+                12 => LocaleKeys.pricingIntroductoryPeriod12.tr(),
+                6 => LocaleKeys.pricingIntroductoryPeriod6.tr(),
+                _ => '',
+              },
+            ),
+            CharacterSpan.space(),
+            TextSpan(text: LocaleKeys.renewsFor.tr()),
+            CharacterSpan.space(),
+          ];
+        } else {
+          introductory = [];
+        }
+        return [
+          ...introductory,
+          TextSpan(
+            text: product.rawPrice.price(
+              currencySymbol: product.currencySymbol,
+              currencyCode: product.currencyCode,
+            ),
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
+          CharacterSpan.space(),
+          CharacterSpan.slash(),
+          TextSpan(
+            text: switch (product.duration) {
+              12 => LocaleKeys.year.tr(),
+              6 => LocaleKeys.SixMonths.tr(),
+              1 => LocaleKeys.month.tr(),
+              _ => '',
+            },
+          ),
+        ];
+      },
+      [product, context.locale],
+    );
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(children: top, style: const TextStyle(color: Palette.purple)),
+          if (bottom.isNotEmpty) CharacterSpan.newline(),
+          if (bottom.isNotEmpty) TextSpan(children: bottom),
+        ],
+      ),
+      style: const TextStyle(fontSize: 12),
     );
   }
 }

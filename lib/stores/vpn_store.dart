@@ -18,7 +18,6 @@ import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/report_broken_node_request.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
@@ -47,21 +46,17 @@ class VpnStore = _VpnStore with _$VpnStore;
 abstract class _VpnStore with Store {
   _VpnStore({
     required ApiService apiService,
-    required AuthSessionStore authSessionStore,
     required LocationsStore locationsStore,
     required WireguardDart wireguardService,
     required SubscriptionStore subscriptionStore,
-    required LocalDBService localDBService,
     required FlavorConfig env,
     required Talker logger,
     required AnalyticsStore analyticsStore,
     required RemoteConfigStore remoteConfigStore,
   })  : _apiService = apiService,
         _locationsStore = locationsStore,
-        _authSessionStore = authSessionStore,
         _wireguardService = wireguardService,
         _subscriptionStore = subscriptionStore,
-        _localDBService = localDBService,
         _env = env,
         _analyticsStore = analyticsStore,
         _remoteConfigStore = remoteConfigStore,
@@ -70,7 +65,6 @@ abstract class _VpnStore with Store {
   }
 
   final ApiService _apiService;
-  final AuthSessionStore _authSessionStore;
   final LocationsStore _locationsStore;
   final AnalyticsStore _analyticsStore;
   final WireguardDart _wireguardService;
@@ -80,7 +74,7 @@ abstract class _VpnStore with Store {
   final FlavorConfig _env;
   final _securedStorage = SecureStorageService.instance;
   final _sharedPrefs = SharedPreferenceService.instance;
-  final LocalDBService _localDBService;
+  final LocalDBService _localDBService = LocalDBService.instance;
   final Talker _logger;
   final Stopwatch _stopwatch = Stopwatch();
 
@@ -149,36 +143,11 @@ abstract class _VpnStore with Store {
   String? lastConnectingLocation;
 
   Future<void> _init() async {
-    reaction((_) => _authSessionStore.user, (_) async {
-      if (_authSessionStore.user == null) {
-        return;
-      }
-      final user = _authSessionStore.user!;
+    _refreshIPConnection = await _localDBService.getRefreshIPConnection();
+    _malwareBlockerContent = await _localDBService.getMalwareBlocker();
+    _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker();
 
-      _refreshIPConnection = await _localDBService.getRefreshIPConnection(user);
-      _malwareBlockerContent = await _localDBService.getMalwareBlocker(user);
-      _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker(user);
-    });
-
-    await _generateKey();
-    _setupAndListenToConnectionStatus();
-    final res = await _checkTunelConfigured();
-    if (res) {
-      await _setupAndListenToConnectionStatus();
-    }
-  }
-
-  @action
-  Future<bool> _checkTunelConfigured() async {
-    try {
-      return await _wireguardService.isTunnelConfigured(
-        bundleId: _env.getBundleId(),
-        tunnelName: _env.values.tunnelName,
-      );
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      return false;
-    }
+    await _initWireguardKey();
   }
 
   /// Setup initial connection status and listen to connection status changes
@@ -245,12 +214,7 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> toggleRefreshIPWhenConnecting() async {
-    if (_authSessionStore.user == null) {
-      throw AuthenticationRequiredException();
-    }
-
     await _localDBService.setRefreshIPConnection(
-      _authSessionStore.user!,
       refreshIPConnection: !_refreshIPConnection,
     );
     _refreshIPConnection = !_refreshIPConnection;
@@ -258,12 +222,7 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> toggleMalwareBlocker() async {
-    if (_authSessionStore.user == null) {
-      throw AuthenticationRequiredException();
-    }
-
     await _localDBService.setMalwareBlocker(
-      _authSessionStore.user!,
       malwareBlocker: !_malwareBlockerContent,
     );
     _malwareBlockerContent = !_malwareBlockerContent;
@@ -271,38 +230,35 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> toggleNotSafeContentBlocker() async {
-    if (_authSessionStore.user == null) {
-      throw AuthenticationRequiredException();
-    }
-
     await _localDBService.setNotSafeContentBlocker(
-      _authSessionStore.user!,
       notSafeContentBlocker: !_notSafeContentBlocker,
     );
     _notSafeContentBlocker = !_notSafeContentBlocker;
   }
 
   @action
-  Future<void> _generateKey() async {
+  Future<KeyPair> _initWireguardKey() async {
     try {
       final res = await Future.wait([
         _securedStorage.checkExistance(StorageKeys.wireguardPrivateKey.name),
         _securedStorage.checkExistance(StorageKeys.wireguardPublicKey.name),
       ]);
+      final key = await _wireguardService.generateKeyPair();
+
       if (res.contains(false)) {
-        _wireguardKey = await _wireguardService.generateKeyPair();
         await Future.wait([
           _securedStorage.saveWireguardPublicKey(
-            publicKey: _wireguardKey!.publicKey,
+            publicKey: key.publicKey,
           ),
           _securedStorage.saveWireguardPrivateKey(
-            privateKey: _wireguardKey!.privateKey,
+            privateKey: key.privateKey,
           ),
         ]);
+        return _wireguardKey = key;
       } else {
         final publicKey = await _securedStorage.getWireguardPublicKey();
         final privateKey = await _securedStorage.getWireguardPrivateKey();
-        _wireguardKey = KeyPair(publicKey, privateKey);
+        return _wireguardKey = KeyPair(publicKey, privateKey);
       }
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
@@ -312,17 +268,13 @@ abstract class _VpnStore with Store {
 
   /// Connect to Wireguard tunnel
   @action
-  Future<void> _connectWireguard(
-    String nonce,
-  ) async {
+  Future<void> _connectWireguard({
+    required String privateKey,
+    required String nonce,
+  }) async {
     if (_vpnConfig == null) {
       return;
     }
-
-    if (_wireguardKey == null) {
-      await _generateKey();
-    }
-
     // TODO(Waldz): Move to separate function, which mutates variable
     var config = _vpnConfig!.wgConfig;
     if (replaceDNSAddress.isNotNullOrEmpty) {
@@ -333,7 +285,7 @@ abstract class _VpnStore with Store {
         config = config.replaceFirst(dnsLine, 'DNS = $replaceDNSAddress');
       }
     }
-    config = config.replaceFirst('%private_key%', _wireguardKey!.privateKey);
+    config = config.replaceFirst('%private_key%', privateKey);
 
     try {
       final tunnelStatus = await _wireguardService.status();
@@ -561,13 +513,14 @@ abstract class _VpnStore with Store {
     String nonce,
   ) async {
     try {
+      final key = _wireguardKey ?? await _initWireguardKey();
       _stopwatch
         ..reset()
         ..start();
       fetchConfigFuture = ObservableFuture(
         _apiService.fetchVpnConfig(
           request: WireguardConnectRequest(
-            publicKey: _wireguardKey!.publicKey,
+            publicKey: key.publicKey,
             country: location,
             resetConnection: refreshIP ?? _refreshIPConnection,
             osType: Platform.operatingSystem,
@@ -577,7 +530,7 @@ abstract class _VpnStore with Store {
       _vpnConfig = await fetchConfigFuture;
       _checkOperationCancel(nonce);
       _connectionStatus = ConnectionStatus.connecting;
-      await _connectWireguard(nonce);
+      await _connectWireguard(privateKey: key.privateKey, nonce: nonce);
       _checkOperationCancel(nonce);
       resolveConnectionLocationFuture = ObservableFuture(
         _resolveConnectionLocation(

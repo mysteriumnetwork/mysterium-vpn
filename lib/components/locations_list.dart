@@ -38,7 +38,7 @@ class LocationsList extends HookConsumerWidget {
             vpnStore.isConnected
                 ? analyticsStore.disconnectFromVpn(location.toLowerCase())
                 : analyticsStore.connectToVpn(location.toLowerCase());
-            handleToggleConnection();
+            handleToggleConnection(location: location);
           },
         );
       },

@@ -7,6 +7,7 @@
   "loginQuote": "提升您的个人体验。\n匿名。是自由的。",
   "signIn": "登录 Mysterium VPN",
   "appVersion": "应用程序版本",
+  "apiVersion": "API版本",
   "getHelp": "得到帮助",
   "continueWithEmail": "继续使用电子邮件",
   "continueWithGoogle": "继续使用谷歌",
@@ -511,5 +512,9 @@
   "setupTunnerPermissionsDialogTitle": "我们需要您的许可",
   "setupTunnerPermissionsDialogDesc": "要开始使用 Mysterium VPN，我们需要您的许可才能安装 VPN 配置文件。",
   "setupTunnerPermissionsDialogDisclaimer": "您的匿名是安全的。我们不会查看、收集或存储您的任何浏览活动。",
-  "allowPermissionsBtn": "允许"
+  "allowPermissionsBtn": "允许",
+  "pendingTransactionMessage": "您已经有一个正在进行的付款流程。请先完成该流程，然后再开始新的付款流程。",
+  "pricingIntroductoryPeriod12": "首年优惠！",
+  "pricingIntroductoryPeriod6": "前6个月优惠！",
+  "renewsFor": "续费"
 }

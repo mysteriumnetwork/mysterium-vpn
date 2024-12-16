@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/components/unauthenticated_header.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -14,12 +15,17 @@ class SignInView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authStore = ref.read(authStorePOD);
+    final size = Size(getMediaWidth(context), getMediaHeight(context));
     return Observer(
       builder: (context) => Stack(
         children: [
           Column(
             children: [
-              const UnauthenticatedHeader().padding(horizontal: 30, top: 30, bottom: 40),
+              const UnauthenticatedHeader().padding(
+                horizontal: size.width * 0.05,
+                top: size.height * 0.02,
+                bottom: size.height * 0.03,
+              ),
               const SignInForm()
                   .decorated(
                     color: Theme.of(context).colorScheme.surface,

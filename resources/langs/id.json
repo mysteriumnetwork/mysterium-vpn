@@ -7,6 +7,7 @@
   "loginQuote": "Tingkatkan pengalaman pribadi Anda.\nJadilah anonim. Jadilah bebas.",
   "signIn": "Masuk ke Mysterium VPN",
   "appVersion": "Versi Aplikasi",
+  "apiVersion": "Versi API",
   "getHelp": "Mendapatkan bantuan",
   "continueWithEmail": "Lanjutkan dengan Email",
   "continueWithGoogle": "Lanjutkan dengan Google",
@@ -511,5 +512,9 @@
   "setupTunnerPermissionsDialogTitle": "Kami membutuhkan izin Anda",
   "setupTunnerPermissionsDialogDesc": "Untuk mulai menggunakan Mysterium VPN, kami memerlukan izin Anda untuk memasang profil VPN.",
   "setupTunnerPermissionsDialogDisclaimer": "Anonimitas Anda aman. Kami tidak melihat, mengumpulkan, atau menyimpan aktivitas penjelajahan Anda.",
-  "allowPermissionsBtn": "Mengizinkan"
+  "allowPermissionsBtn": "Mengizinkan",
+  "pendingTransactionMessage": "Anda sudah memiliki proses pembayaran yang sedang berjalan. Harap selesaikan sebelum memulai yang baru.",
+  "pricingIntroductoryPeriod12": "untuk tahun pertama!",
+  "pricingIntroductoryPeriod6": "untuk 6 bulan pertama!",
+  "renewsFor": "Diperbarui untuk"
 }

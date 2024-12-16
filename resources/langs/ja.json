@@ -7,6 +7,7 @@
   "loginQuote": "あなたの個人的な経験をレベルアップしてください。\n匿名であること。自由。",
   "signIn": "ミステリウム VPN にサインイン",
   "appVersion": "アプリのバージョン",
+  "apiVersion": "APIバージョン",
   "getHelp": "ヘルプ",
   "continueWithEmail": "メールで続行",
   "continueWithGoogle": "Google で続行",
@@ -511,5 +512,9 @@
   "setupTunnerPermissionsDialogTitle": "あなたの許可が必要です",
   "setupTunnerPermissionsDialogDesc": "Mysterium VPN の使用を開始するには、VPN プロファイルをインストールする許可が必要です。",
   "setupTunnerPermissionsDialogDisclaimer": "あなたの匿名性は安全です。当社はあなたの閲覧活動を閲覧、収集、保存することはありません。",
-  "allowPermissionsBtn": "許可する"
+  "allowPermissionsBtn": "許可する",
+  "pendingTransactionMessage": "すでに支払いプロセスが進行中です。新しい支払いプロセスを開始する前に完了してください。",
+  "pricingIntroductoryPeriod12": "最初の1年間！",
+  "pricingIntroductoryPeriod6": "最初の6か月間！",
+  "renewsFor": "更新"
 }
