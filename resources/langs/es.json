@@ -513,5 +513,9 @@
   "pricingIntroductoryPeriod": {
     "12": "¡por el primer año!",
     "other": "¡por los primeros {} meses!"
-  }
+  },
+  "pricingIntroductoryPeriod12": "¡por el primer año!",
+  "pricingIntroductoryPeriod6": "¡por los primeros 6 meses!",
+  "then": "Luego",
+  "renewsFor": "Se renueva por"
 }
