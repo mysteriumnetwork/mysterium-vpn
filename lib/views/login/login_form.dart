@@ -35,6 +35,7 @@ class SignInForm extends HookConsumerWidget {
       return form;
     });
     final marketingConsentForm = useMemoized(marketingConsent);
+    final height = getMediaHeight(context);
 
     useEffect(
       () {
@@ -107,7 +108,7 @@ class SignInForm extends HookConsumerWidget {
                         ),
                       ),
                     ],
-                  ).padding(vertical: 35),
+                  ).padding(vertical: height * 0.03),
                   AutofillGroup(
                     child: ReactiveTextField(
                       onTap: (_) {
@@ -155,7 +156,7 @@ class SignInForm extends HookConsumerWidget {
                           fontSize: 14,
                         ).expanded(),
                       ],
-                    ).padding(bottom: 40),
+                    ).padding(bottom: height * 0.03),
                   ),
                   ReactiveFormConsumer(
                     builder: (_, signInForm, child) => EasyButton(
@@ -177,7 +178,7 @@ class SignInForm extends HookConsumerWidget {
                               fontWeight: FontWeight.w700,
                             ),
                     ),
-                  ).padding(bottom: 40),
+                  ).padding(bottom: height * 0.03),
                   RichText(
                     text: TextSpan(
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -218,11 +219,13 @@ class SignInForm extends HookConsumerWidget {
                     ),
                   ),
                 ],
-              ).padding(
-                top: 20,
-                bottom: 10,
-                horizontal: getMediaWidth(context) > 650 ? 60 : 20,
-              ),
+              )
+                  .padding(
+                    top: 20,
+                    bottom: 10,
+                    horizontal: getMediaWidth(context) > 650 ? 60 : 20,
+                  )
+                  .scrollable(),
             ),
           ],
         );

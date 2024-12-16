@@ -23,6 +23,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "提升您的个人体验。\n匿名。是自由的。",
     "signIn": "登录 Mysterium VPN",
     "appVersion": "应用程序版本",
+    "apiVersion": "API版本",
     "getHelp": "得到帮助",
     "continueWithEmail": "继续使用电子邮件",
     "continueWithGoogle": "继续使用谷歌",
@@ -528,7 +529,11 @@ class CodegenLoader extends AssetLoader {
     "setupTunnerPermissionsDialogTitle": "我们需要您的许可",
     "setupTunnerPermissionsDialogDesc": "要开始使用 Mysterium VPN，我们需要您的许可才能安装 VPN 配置文件。",
     "setupTunnerPermissionsDialogDisclaimer": "您的匿名是安全的。我们不会查看、收集或存储您的任何浏览活动。",
-    "allowPermissionsBtn": "允许"
+    "allowPermissionsBtn": "允许",
+    "pendingTransactionMessage": "您已经有一个正在进行的付款流程。请先完成该流程，然后再开始新的付款流程。",
+    "pricingIntroductoryPeriod12": "首年优惠！",
+    "pricingIntroductoryPeriod6": "前6个月优惠！",
+    "renewsFor": "续费"
   };
   static const Map<String, dynamic> tr = {
     "title": "Merhaba efendim",
@@ -539,6 +544,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "Kişisel deneyiminizi yükseltin.\n",
     "signIn": "Mysterium VPN'de oturum açın",
     "appVersion": "Uygulama sürümü",
+    "apiVersion": "API Sürümü",
     "getHelp": "Yardım al",
     "continueWithEmail": "E-posta ile devam et",
     "continueWithGoogle": "Google ile devam",
@@ -1066,7 +1072,12 @@ class CodegenLoader extends AssetLoader {
         "Mysterium VPN'i kullanmaya başlamak için bir VPN profili kurma izninize ihtiyacımız var.",
     "setupTunnerPermissionsDialogDisclaimer":
         "Anonimliğiniz güvende. Tarama etkinliklerinizin hiçbirini görüntülemiyoruz, toplamıyoruz veya saklamıyoruz.",
-    "allowPermissionsBtn": "İzin vermek"
+    "allowPermissionsBtn": "İzin vermek",
+    "pendingTransactionMessage":
+        "Halihazırda devam eden bir ödeme işleminiz var. Lütfen yeni bir ödeme işlemine başlamadan önce işlemi tamamlayın.",
+    "pricingIntroductoryPeriod12": "ilk yıl için!",
+    "pricingIntroductoryPeriod6": "ilk 6 ay için!",
+    "renewsFor": "Yenileme"
   };
   static const Map<String, dynamic> ja = {
     "title": "こんにちは。",
@@ -1077,6 +1088,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "あなたの個人的な経験をレベルアップしてください。\n匿名であること。自由。",
     "signIn": "ミステリウム VPN にサインイン",
     "appVersion": "アプリのバージョン",
+    "apiVersion": "APIバージョン",
     "getHelp": "ヘルプ",
     "continueWithEmail": "メールで続行",
     "continueWithGoogle": "Google で続行",
@@ -1585,7 +1597,11 @@ class CodegenLoader extends AssetLoader {
     "setupTunnerPermissionsDialogTitle": "あなたの許可が必要です",
     "setupTunnerPermissionsDialogDesc": "Mysterium VPN の使用を開始するには、VPN プロファイルをインストールする許可が必要です。",
     "setupTunnerPermissionsDialogDisclaimer": "あなたの匿名性は安全です。当社はあなたの閲覧活動を閲覧、収集、保存することはありません。",
-    "allowPermissionsBtn": "許可する"
+    "allowPermissionsBtn": "許可する",
+    "pendingTransactionMessage": "すでに支払いプロセスが進行中です。新しい支払いプロセスを開始する前に完了してください。",
+    "pricingIntroductoryPeriod12": "最初の1年間！",
+    "pricingIntroductoryPeriod6": "最初の6か月間！",
+    "renewsFor": "更新"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -1596,6 +1612,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "Steigern Sie Ihre persönliche Erfahrung.\nBleiben Sie anonym. Seien Sie frei.",
     "signIn": "Melden Sie sich bei Mysterium VPN an",
     "appVersion": "App Version",
+    "apiVersion": "API Version",
     "getHelp": "Hilfe erhalten",
     "continueWithEmail": "Mit E-Mail fortfahren",
     "continueWithGoogle": "Weiter mit Google",
@@ -2141,7 +2158,12 @@ class CodegenLoader extends AssetLoader {
         "Um Mysterium VPN nutzen zu können, benötigen wir Ihre Erlaubnis zur Installation eines VPN-Profils.",
     "setupTunnerPermissionsDialogDisclaimer":
         "Ihre Anonymität ist sicher. Wir sehen, sammeln oder speichern keine Ihrer Browsing-Aktivitäten.",
-    "allowPermissionsBtn": "Erlauben"
+    "allowPermissionsBtn": "Erlauben",
+    "pendingTransactionMessage":
+        "Sie haben bereits einen laufenden Zahlungsvorgang. Bitte schließen Sie ihn ab, bevor Sie einen neuen starten.",
+    "pricingIntroductoryPeriod12": "für das erste Jahr!",
+    "pricingIntroductoryPeriod6": "für die ersten 6 Monate!",
+    "renewsFor": "Erneuert für"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2152,6 +2174,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "Leve sua experiência pessoal. \n Seja anônimo. Seja livre.",
     "signIn": "Faça login no Mysterium VPN",
     "appVersion": "Versão do aplicativo",
+    "apiVersion": "Versão da API",
     "getHelp": "Obter ajuda",
     "continueWithEmail": "Continue com e -mail",
     "continueWithGoogle": "Continue com o Google",
@@ -2685,7 +2708,11 @@ class CodegenLoader extends AssetLoader {
         "Para começar a usar o Mysterium VPN, precisamos da sua permissão para instalar um perfil VPN.",
     "setupTunnerPermissionsDialogDisclaimer":
         "Seu anonimato é seguro. Não visualizamos, coletamos ou armazenamos nenhuma de suas atividades de navegação.",
-    "allowPermissionsBtn": "Permitir"
+    "allowPermissionsBtn": "Permitir",
+    "pendingTransactionMessage":
+        "Você já tem um processo de pagamento em andamento. Conclua-o antes de iniciar um novo.",
+    "pricingIntroductoryPeriod12": "para o primeiro ano!",
+    "pricingIntroductoryPeriod6": "para os primeiros 6 meses!"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -2696,6 +2723,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "Level up your personal experience.\nBe anonymous. Be free.",
     "signIn": "Sign in to Mysterium VPN",
     "appVersion": "App Version",
+    "apiVersion": "API Version",
     "getHelp": "Get Help",
     "continueWithEmail": "Continue with Email",
     "continueWithGoogle": "Continue with Google",
@@ -3225,10 +3253,15 @@ class CodegenLoader extends AssetLoader {
     "contentBlockerDesc": "Block both malware and adult content",
     "setupTunnerPermissionsDialogTitle": "We need your permission",
     "setupTunnerPermissionsDialogDesc":
-        "To start using Mysterium VPN, we need your permission to install a VPN profile.",
+        "In order to use Mysterium VPN, we need your permission to install a VPN profile.",
     "setupTunnerPermissionsDialogDisclaimer":
-        "Your anonymity is safe. We don't view, collect or store any of your browsing activity.",
-    "allowPermissionsBtn": "Allow"
+        "Your anonymity is secure. We do not see, collect or store any of your browsing activity.",
+    "allowPermissionsBtn": "Allow",
+    "pendingTransactionMessage":
+        "You already have an ongoing payment transaction. Please complete it before starting a new one.",
+    "pricingIntroductoryPeriod12": "for the first year!",
+    "pricingIntroductoryPeriod6": "for the first 6 months!",
+    "renewsFor": "Renews for"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3239,6 +3272,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "Migliora la tua esperienza personale.\nSii anonimo. Sii libero.",
     "signIn": "Accedi a Mysterium VPN",
     "appVersion": "Versione dell'app",
+    "apiVersion": "Versione dell'API",
     "getHelp": "Ottieni aiuto",
     "continueWithEmail": "Continua con l'e-mail",
     "continueWithGoogle": "Continua con Google",
@@ -3777,7 +3811,12 @@ class CodegenLoader extends AssetLoader {
         "Per iniziare a utilizzare Mysterium VPN, abbiamo bisogno della tua autorizzazione per installare un profilo VPN.",
     "setupTunnerPermissionsDialogDisclaimer":
         "Il tuo anonimato è al sicuro. Non visualizziamo, raccogliamo o archiviamo nessuna delle tue attività di navigazione.",
-    "allowPermissionsBtn": "Permettere"
+    "allowPermissionsBtn": "Permettere",
+    "pendingTransactionMessage":
+        "Hai già un processo di pagamento in corso. Completalo prima di iniziarne uno nuovo.",
+    "pricingIntroductoryPeriod12": "per il primo anno!",
+    "pricingIntroductoryPeriod6": "per i primi 6 mesi!",
+    "renewsFor": "Si rinnova per"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -3788,6 +3827,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "Augmentez votre expérience personnelle. \n Être anonyme. Sois libre.",
     "signIn": "Connectez-vous à Mysterium VPN",
     "appVersion": "Version de l'application",
+    "apiVersion": "Version de l'API",
     "getHelp": "Obtenir de l'aide",
     "continueWithEmail": "Continuez avec le courrier électronique",
     "continueWithGoogle": "Continuez avec Google",
@@ -4329,7 +4369,12 @@ class CodegenLoader extends AssetLoader {
         "Pour commencer à utiliser Mysterium VPN, nous avons besoin de votre autorisation pour installer un profil VPN.",
     "setupTunnerPermissionsDialogDisclaimer":
         "Votre anonymat est protégé. Nous ne consultons, ne collectons ni ne stockons aucune de vos activités de navigation.",
-    "allowPermissionsBtn": "Permettre"
+    "allowPermissionsBtn": "Permettre",
+    "pendingTransactionMessage":
+        "Vous avez déjà un processus de paiement en cours. Veuillez le terminer avant d'en démarrer un nouveau.",
+    "pricingIntroductoryPeriod12": "pour la première année !",
+    "pricingIntroductoryPeriod6": "pour les premiers 6 mois !",
+    "renewsFor": "Renouvelle pour"
   };
   static const Map<String, dynamic> id = {
     "title": "Halo Pak",
@@ -4340,6 +4385,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "Tingkatkan pengalaman pribadi Anda.\nJadilah anonim. Jadilah bebas.",
     "signIn": "Masuk ke Mysterium VPN",
     "appVersion": "Versi Aplikasi",
+    "apiVersion": "Versi API",
     "getHelp": "Mendapatkan bantuan",
     "continueWithEmail": "Lanjutkan dengan Email",
     "continueWithGoogle": "Lanjutkan dengan Google",
@@ -4872,7 +4918,12 @@ class CodegenLoader extends AssetLoader {
         "Untuk mulai menggunakan Mysterium VPN, kami memerlukan izin Anda untuk memasang profil VPN.",
     "setupTunnerPermissionsDialogDisclaimer":
         "Anonimitas Anda aman. Kami tidak melihat, mengumpulkan, atau menyimpan aktivitas penjelajahan Anda.",
-    "allowPermissionsBtn": "Mengizinkan"
+    "allowPermissionsBtn": "Mengizinkan",
+    "pendingTransactionMessage":
+        "Anda sudah memiliki proses pembayaran yang sedang berjalan. Harap selesaikan sebelum memulai yang baru.",
+    "pricingIntroductoryPeriod12": "untuk tahun pertama!",
+    "pricingIntroductoryPeriod6": "untuk 6 bulan pertama!",
+    "renewsFor": "Diperbarui untuk"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -4883,6 +4934,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "Sube de nivel tu experiencia personal.\nSé anónimo. Sé libre.",
     "signIn": "Inicia sesión en Mysterium VPN",
     "appVersion": "Versión de aplicación",
+    "apiVersion": "Versión API",
     "getHelp": "Obtener ayuda",
     "continueWithEmail": "Continuar con correo electrónico",
     "continueWithGoogle": "Continuar con Google",
@@ -5419,7 +5471,13 @@ class CodegenLoader extends AssetLoader {
         "Para comenzar a usar Mysterium VPN, necesitamos su permiso para instalar un perfil de VPN.",
     "setupTunnerPermissionsDialogDisclaimer":
         "Su anonimato está seguro. No vemos, recopilamos ni almacenamos ninguna actividad de navegación.",
-    "allowPermissionsBtn": "Permitir"
+    "allowPermissionsBtn": "Permitir",
+    "pendingTransactionMessage":
+        "Ya tienes un proceso de pago en curso. Termínalo antes de comenzar uno nuevo.",
+    "pricingIntroductoryPeriod": {
+      "12": "¡por el primer año!",
+      "other": "¡por los primeros {} meses!"
+    }
   };
   static const Map<String, dynamic> ar = {
     "title": "أهلاً سيدي",
@@ -5430,6 +5488,7 @@ class CodegenLoader extends AssetLoader {
     "loginQuote": "ارفع مستوى تجربتك الشخصية.\nكن مجهول الهوية. كن حرا.",
     "signIn": "سجّل الدخول إلى Mysterium VPN",
     "appVersion": "نسخة التطبيق",
+    "apiVersion": "أبي الإصدار",
     "getHelp": "احصل على مساعدة",
     "continueWithEmail": "تواصل مع البريد الإلكتروني",
     "continueWithGoogle": "تواصل مع جوجل",
@@ -5955,7 +6014,10 @@ class CodegenLoader extends AssetLoader {
         "لبدء استخدام Mysterium VPN، نحتاج إلى إذنك لتثبيت ملف تعريف VPN.",
     "setupTunnerPermissionsDialogDisclaimer":
         "إخفاء هويتك آمن. نحن لا نشاهد أو نجمع أو نخزن أيًا من أنشطة التصفح الخاصة بك.",
-    "allowPermissionsBtn": "يسمح"
+    "allowPermissionsBtn": "يسمح",
+    "pendingTransactionMessage":
+        "لديك بالفعل عملية دفع جارية. يرجى إكمالها قبل بدء عملية دفع جديدة.",
+    "pricingIntroductoryPeriod": {"12": "للسنة الأولى!", "other": "لأول {} شهر!"}
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,

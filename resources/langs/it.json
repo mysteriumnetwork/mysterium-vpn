@@ -7,6 +7,7 @@
   "loginQuote": "Migliora la tua esperienza personale.\nSii anonimo. Sii libero.",
   "signIn": "Accedi a Mysterium VPN",
   "appVersion": "Versione dell'app",
+  "apiVersion": "Versione dell'API",
   "getHelp": "Ottieni aiuto",
   "continueWithEmail": "Continua con l'e-mail",
   "continueWithGoogle": "Continua con Google",
@@ -511,5 +512,9 @@
   "setupTunnerPermissionsDialogTitle": "Abbiamo bisogno del tuo permesso",
   "setupTunnerPermissionsDialogDesc": "Per iniziare a utilizzare Mysterium VPN, abbiamo bisogno della tua autorizzazione per installare un profilo VPN.",
   "setupTunnerPermissionsDialogDisclaimer": "Il tuo anonimato è al sicuro. Non visualizziamo, raccogliamo o archiviamo nessuna delle tue attività di navigazione.",
-  "allowPermissionsBtn": "Permettere"
+  "allowPermissionsBtn": "Permettere",
+  "pendingTransactionMessage": "Hai già un processo di pagamento in corso. Completalo prima di iniziarne uno nuovo.",
+  "pricingIntroductoryPeriod12": "per il primo anno!",
+  "pricingIntroductoryPeriod6": "per i primi 6 mesi!",
+  "renewsFor": "Si rinnova per"
 }

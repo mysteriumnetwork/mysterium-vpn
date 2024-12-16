@@ -1,0 +1,58 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:easy_localization/easy_localization.dart';
+import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/services/mqtt/service.dart';
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
+import 'package:talker/talker.dart';
+import 'package:vpn_api/vpn_api.dart';
+
+// Include generated file
+part 'api_store.g.dart';
+
+// ignore: library_private_types_in_public_api
+class ApiStore = _ApiStore with _$ApiStore;
+
+abstract class _ApiStore with Store {
+  _ApiStore({
+    required MQQTService mqtt,
+    required Talker logger,
+    required RemoteConfigStore remoteConfigStore,
+  })  : _mqtt = mqtt,
+        _logger = logger,
+        _remoteConfigStore = remoteConfigStore;
+
+  final MQQTService _mqtt;
+  final Talker _logger;
+  final RemoteConfigStore _remoteConfigStore;
+  StreamSubscription<String>? _healthcheckSub;
+
+  @readonly
+  HealthcheckResponse? _lastHealthcheck;
+
+  Future<void> initStore() async {
+    try {
+      if (!_remoteConfigStore.mqttExperiment) {
+        return;
+      }
+
+      await _mqtt.ensureStart();
+      _healthcheckSub ??= _mqtt.subscribe('healthcheck').listen((event) {
+        _lastHealthcheck = HealthcheckResponse.fromJson(json.decode(event) as Map<String, dynamic>);
+      });
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      showSnackbar(LocaleKeys.somethingWentWrong.tr());
+      rethrow;
+    }
+  }
+
+  void dispose() {
+    if (_healthcheckSub != null) {
+      _healthcheckSub!.cancel();
+    }
+  }
+}

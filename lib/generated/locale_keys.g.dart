@@ -9,6 +9,7 @@ abstract class LocaleKeys {
   static const loginQuote = 'loginQuote';
   static const signIn = 'signIn';
   static const appVersion = 'appVersion';
+  static const apiVersion = 'apiVersion';
   static const getHelp = 'getHelp';
   static const continueWithEmail = 'continueWithEmail';
   static const continueWithGoogle = 'continueWithGoogle';
@@ -514,4 +515,8 @@ abstract class LocaleKeys {
   static const setupTunnerPermissionsDialogDesc = 'setupTunnerPermissionsDialogDesc';
   static const setupTunnerPermissionsDialogDisclaimer = 'setupTunnerPermissionsDialogDisclaimer';
   static const allowPermissionsBtn = 'allowPermissionsBtn';
+  static const pendingTransactionMessage = 'pendingTransactionMessage';
+  static const pricingIntroductoryPeriod12 = 'pricingIntroductoryPeriod12';
+  static const pricingIntroductoryPeriod6 = 'pricingIntroductoryPeriod6';
+  static const renewsFor = 'renewsFor';
 }
