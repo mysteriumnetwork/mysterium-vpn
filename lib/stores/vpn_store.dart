@@ -132,7 +132,7 @@ abstract class _VpnStore with Store {
   bool _isTunnelSetup = false;
 
   @observable
-  ObservableFuture<VpnConnection>? resolveConnectionLocationFuture;
+  ObservableFuture<void>? resolveConnectionLocationFuture;
 
   @observable
   ObservableFuture<WireguardConnectResponse>? fetchConfigFuture;
@@ -166,13 +166,16 @@ abstract class _VpnStore with Store {
         final location = _sharedPrefs.getLocationCode();
         _connectingNonce = generateRandomString(8);
         resolveConnectionLocationFuture = ObservableFuture(
-          _resolveConnectionLocation(
+          _checkConnectionQuality(
+            checkLocation: () async {
+              _resolveIPAddress(location, _connectingNonce);
+            },
             location: location,
             nonce: _connectingNonce,
             hash: _vpnConfig?.hash ?? '',
           ),
         );
-        _vpnConnection = await resolveConnectionLocationFuture;
+        await resolveConnectionLocationFuture;
       } catch (e) {
         disconnectWireguard();
       }
@@ -413,23 +416,18 @@ abstract class _VpnStore with Store {
         await disconnectWireguard();
       }
 
-      final value = await _completeConnection(
-        location,
-        refreshIP,
-        _connectingNonce,
-      );
+      await _completeConnection(location, refreshIP, _connectingNonce);
 
-      _vpnConnection = value;
       _stopwatch.stop();
       _analyticsStore.logEvent(
         AnalyticsEvent.connectSuccess,
         parameters: {
-          'location': value.location,
+          'location': _vpnConnection!.location,
           'time': _stopwatch.elapsed.inSeconds,
           'refresh_ip': refreshIP,
         },
       );
-      _locationsStore.addRecentLocation(value.location);
+      _locationsStore.addRecentLocation(_vpnConnection!.location);
     } on TimeoutException catch (e, stackTrace) {
       _logger.handle(e);
       Sentry.captureException(e, stackTrace: stackTrace);
@@ -525,7 +523,7 @@ abstract class _VpnStore with Store {
   }
 
   @action
-  Future<VpnConnection> _completeConnection(
+  Future<void> _completeConnection(
     String? location,
     bool? refreshIP,
     String nonce,
@@ -550,26 +548,28 @@ abstract class _VpnStore with Store {
       _connectionStatus = ConnectionStatus.connecting;
       await _connectWireguard(privateKey: key.privateKey, nonce: nonce);
 
-      if (_vpnConfig!.exitIp != null && location != null) {
-        return VpnConnection(connectionIP: _vpnConfig!.exitIp!, location: location);
-      }
-
       _checkOperationCancel(nonce);
       resolveConnectionLocationFuture = ObservableFuture(
-        _resolveConnectionLocation(
+        _checkConnectionQuality(
+          checkLocation: () async {
+            if (_vpnConfig!.exitIp != null) {
+              _vpnConnection = _vpnConnection?.copyWith(connectionIP: _vpnConfig!.exitIp!);
+            }
+          },
           location: location,
           nonce: nonce,
           hash: _vpnConfig?.hash ?? '',
         ),
       );
-      return await resolveConnectionLocationFuture!;
+      await resolveConnectionLocationFuture!;
     } catch (e) {
       _logger.handle(e);
       rethrow;
     }
   }
 
-  Future<VpnConnection> _resolveConnectionLocation({
+  Future<void> _checkConnectionQuality({
+    required Future<void> Function() checkLocation,
     required String? location,
     required String nonce,
     required String hash,
@@ -580,24 +580,22 @@ abstract class _VpnStore with Store {
             !(await _wireguardService.status() == ConnectionStatus.connected) &&
             _connectingNonce == nonce,
       );
+
       _checkOperationCancel(nonce);
-      if (!await hasNetwork(interval: 5)) {
+      if (!await hasNetwork(interval: 5, timeout: 10)) {
         if (_connectingNonce == nonce) {
           throw BrokenNodeException(location ?? '');
         }
       }
+
       _checkOperationCancel(nonce);
       await _sharedPrefs.setLocationCode(location ?? '');
-      _resolveIPAddress(
-        location,
-        nonce,
-      );
+
+      _vpnConnection = VpnConnection(connectionIP: '', location: location ?? '');
+      await checkLocation();
+
       _retryCount = 0;
       _isRetrying = false;
-      return VpnConnection(
-        connectionIP: '',
-        location: location ?? '',
-      );
     } on BrokenNodeException {
       _retryCount++;
       _isRetrying = true;
