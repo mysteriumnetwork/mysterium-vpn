@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:mysterium_vpn/common/hooks/scaffold_brightness_hook.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 
-class AppLogo extends StatelessWidget {
+class AppLogo extends HookWidget {
   const AppLogo({
     super.key,
     this.brightness,
@@ -12,8 +14,8 @@ class AppLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final brightness = this.brightness ?? theme.brightness;
+    final scaffoldBrightness = useScaffoldBrightness();
+    final brightness = this.brightness ?? scaffoldBrightness;
 
     return SvgIcon(
       asset: switch (brightness) {
