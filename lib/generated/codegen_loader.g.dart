@@ -529,7 +529,8 @@ class CodegenLoader extends AssetLoader {
     "pendingTransactionMessage": "您已经有一个正在进行的付款流程。请先完成该流程，然后再开始新的付款流程。",
     "pricingIntroductoryPeriod12": "首年优惠！",
     "pricingIntroductoryPeriod6": "前6个月优惠！",
-    "renewsFor": "续费"
+    "then": "然后",
+    "renewsFor": "续订费用为"
   };
   static const Map<String, dynamic> tr = {
     "title": "Merhaba efendim",
@@ -1067,7 +1068,8 @@ class CodegenLoader extends AssetLoader {
         "Halihazırda devam eden bir ödeme işleminiz var. Lütfen yeni bir ödeme işlemine başlamadan önce işlemi tamamlayın.",
     "pricingIntroductoryPeriod12": "ilk yıl için!",
     "pricingIntroductoryPeriod6": "ilk 6 ay için!",
-    "renewsFor": "Yenileme"
+    "then": "Sonra",
+    "renewsFor": "Şunun için yenilenir"
   };
   static const Map<String, dynamic> ja = {
     "title": "こんにちは。",
@@ -1587,7 +1589,8 @@ class CodegenLoader extends AssetLoader {
     "pendingTransactionMessage": "すでに支払いプロセスが進行中です。新しい支払いプロセスを開始する前に完了してください。",
     "pricingIntroductoryPeriod12": "最初の1年間！",
     "pricingIntroductoryPeriod6": "最初の6か月間！",
-    "renewsFor": "更新"
+    "then": "次に",
+    "renewsFor": "更新料金は"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -2143,7 +2146,8 @@ class CodegenLoader extends AssetLoader {
         "Sie haben bereits einen laufenden Zahlungsvorgang. Bitte schließen Sie ihn ab, bevor Sie einen neuen starten.",
     "pricingIntroductoryPeriod12": "für das erste Jahr!",
     "pricingIntroductoryPeriod6": "für die ersten 6 Monate!",
-    "renewsFor": "Erneuert für"
+    "then": "Dann",
+    "renewsFor": "Verlängert für"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2686,7 +2690,9 @@ class CodegenLoader extends AssetLoader {
     "pendingTransactionMessage":
         "Você já tem um processo de pagamento em andamento. Conclua-o antes de iniciar um novo.",
     "pricingIntroductoryPeriod12": "para o primeiro ano!",
-    "pricingIntroductoryPeriod6": "para os primeiros 6 meses!"
+    "pricingIntroductoryPeriod6": "para os primeiros 6 meses!",
+    "then": "Depois",
+    "renewsFor": "Renova por"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -3229,6 +3235,7 @@ class CodegenLoader extends AssetLoader {
         "Sie haben bereits einen laufenden Zahlungsvorgang. Bitte schließen Sie ihn ab, bevor Sie einen neuen starten.",
     "pricingIntroductoryPeriod12": "for the first year!",
     "pricingIntroductoryPeriod6": "for the first 6 months!",
+    "then": "Then",
     "renewsFor": "Renews for"
   };
   static const Map<String, dynamic> it = {
@@ -3778,6 +3785,7 @@ class CodegenLoader extends AssetLoader {
         "Hai già un processo di pagamento in corso. Completalo prima di iniziarne uno nuovo.",
     "pricingIntroductoryPeriod12": "per il primo anno!",
     "pricingIntroductoryPeriod6": "per i primi 6 mesi!",
+    "then": "Poi",
     "renewsFor": "Si rinnova per"
   };
   static const Map<String, dynamic> fr = {
@@ -4329,8 +4337,9 @@ class CodegenLoader extends AssetLoader {
     "pendingTransactionMessage":
         "Vous avez déjà un processus de paiement en cours. Veuillez le terminer avant d'en démarrer un nouveau.",
     "pricingIntroductoryPeriod12": "pour la première année !",
-    "pricingIntroductoryPeriod6": "pour les premiers 6 mois !",
-    "renewsFor": "Renouvelle pour"
+    "pricingIntroductoryPeriod6": "pour les 6 premiers mois !",
+    "then": "Ensuite",
+    "renewsFor": "Se renouvelle pour"
   };
   static const Map<String, dynamic> id = {
     "title": "Halo Pak",
@@ -4873,7 +4882,8 @@ class CodegenLoader extends AssetLoader {
         "Anda sudah memiliki proses pembayaran yang sedang berjalan. Harap selesaikan sebelum memulai yang baru.",
     "pricingIntroductoryPeriod12": "untuk tahun pertama!",
     "pricingIntroductoryPeriod6": "untuk 6 bulan pertama!",
-    "renewsFor": "Diperbarui untuk"
+    "then": "Kemudian",
+    "renewsFor": "Diperpanjang untuk"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -5421,7 +5431,11 @@ class CodegenLoader extends AssetLoader {
     "pricingIntroductoryPeriod": {
       "12": "¡por el primer año!",
       "other": "¡por los primeros {} meses!"
-    }
+    },
+    "pricingIntroductoryPeriod12": "¡por el primer año!",
+    "pricingIntroductoryPeriod6": "¡por los primeros 6 meses!",
+    "then": "Luego",
+    "renewsFor": "Se renueva por"
   };
   static const Map<String, dynamic> ar = {
     "title": "أهلاً سيدي",
@@ -5955,7 +5969,10 @@ class CodegenLoader extends AssetLoader {
     "contentBlockerDesc": "حظر كل من البرامج الضارة ومحتوى البالغين",
     "pendingTransactionMessage":
         "لديك بالفعل عملية دفع جارية. يرجى إكمالها قبل بدء عملية دفع جديدة.",
-    "pricingIntroductoryPeriod": {"12": "للسنة الأولى!", "other": "لأول {} شهر!"}
+    "pricingIntroductoryPeriod12": "للسنة الأولى!",
+    "pricingIntroductoryPeriod6": "لأول 6 أشهر!",
+    "then": "ثم",
+    "renewsFor": "يتجدد لـ"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,
