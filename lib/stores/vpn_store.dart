@@ -143,11 +143,27 @@ abstract class _VpnStore with Store {
   String? lastConnectingLocation;
 
   Future<void> _init() async {
+    await _initWireguardKey();
+
     _refreshIPConnection = await _localDBService.getRefreshIPConnection();
     _malwareBlockerContent = await _localDBService.getMalwareBlocker();
     _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker();
+    final isConfigured = await _checkTunelConfigured();
+    if (isConfigured) {
+      await _setupAndListenToConnectionStatus();
+    }
+  }
 
-    await _initWireguardKey();
+  @action
+  Future<bool> _checkTunelConfigured() async {
+    try {
+      return await _wireguardService.isTunnelConfigured(
+        bundleId: _env.getBundleId(),
+        tunnelName: _env.values.tunnelName,
+      );
+    } catch (e) {
+      return false;
+    }
   }
 
   /// Setup initial connection status and listen to connection status changes
