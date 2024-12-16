@@ -101,38 +101,40 @@ class _RegularPricing extends HookWidget {
 
     final bottom = useMemoized<List<TextSpan>>(
       () {
-        if (product.duration == 1) {
-          return [];
-        }
-
-        late final List<TextSpan> introductory;
-        if (product.hasIntroductoryPrice) {
-          introductory = [
-            TextSpan(
-              text: product.productPrice.price(
-                currencySymbol: product.currencySymbol,
-                currencyCode: product.currencyCode,
-              ),
-              style: const TextStyle(fontWeight: FontWeight.w700),
-            ),
-            CharacterSpan.space(),
+        if (product.duration == 1 || !product.hasIntroductoryPrice) {
+          return [
             TextSpan(
               text: switch (product.duration) {
-                12 => LocaleKeys.pricingIntroductoryPeriod12.tr(),
-                6 => LocaleKeys.pricingIntroductoryPeriod6.tr(),
+                12 => LocaleKeys.billedEveryYear.tr(namedArgs: {'amount': ''}).trim(),
+                6 => LocaleKeys.billedEvery6Months.tr(namedArgs: {'amount': ''}).trim(),
+                1 => LocaleKeys.billedEveryMonth.tr(namedArgs: {'amount': ''}).trim(),
                 _ => '',
               },
             ),
-            CharacterSpan.space(),
           ];
-        } else {
-          introductory = [];
         }
 
         return [
-          ...introductory,
           TextSpan(
-            text: monthlyPrice.price(
+            text: product.productPrice.price(
+              currencySymbol: product.currencySymbol,
+              currencyCode: product.currencyCode,
+            ),
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
+          CharacterSpan.space(),
+          TextSpan(
+            text: switch (product.duration) {
+              12 => LocaleKeys.pricingIntroductoryPeriod12.tr(),
+              6 => LocaleKeys.pricingIntroductoryPeriod6.tr(),
+              _ => '',
+            },
+          ),
+          CharacterSpan.space(),
+          TextSpan(text: LocaleKeys.then.tr()),
+          CharacterSpan.space(),
+          TextSpan(
+            text: product.rawPrice.price(
               currencySymbol: product.currencySymbol,
               currencyCode: product.currencyCode,
             ),
@@ -140,7 +142,13 @@ class _RegularPricing extends HookWidget {
           ),
           CharacterSpan.space(),
           CharacterSpan.slash(),
-          TextSpan(text: LocaleKeys.month.tr()),
+          TextSpan(
+            text: switch (product.duration) {
+              12 => LocaleKeys.year,
+              6 => LocaleKeys.SixMonths,
+              _ => '',
+            },
+          ),
         ];
       },
       [monthlyPrice, product, context.locale],
