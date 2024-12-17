@@ -20,6 +20,7 @@ abstract class _PurchasableProduct with Store {
     required this.currencySymbol,
     required this.currencyCode,
     required this.introductoryPrice,
+    required this.isEligibleForStoreKitIntroOffer,
   });
 
   final SubscriptionConfigResponsePlansInner planDetails;
@@ -28,6 +29,7 @@ abstract class _PurchasableProduct with Store {
   final String currencySymbol;
   final String currencyCode;
   final double? introductoryPrice;
+  final bool? isEligibleForStoreKitIntroOffer;
 
   @observable
   ProductStatus status;
@@ -36,7 +38,8 @@ abstract class _PurchasableProduct with Store {
   String get id => planDetails.id;
 
   @computed
-  bool get hasIntroductoryPrice => introductoryPrice != null && introductoryPrice! > 0;
+  bool get hasIntroductoryPrice =>
+      isEligibleForStoreKitIntroOffer ?? introductoryPrice != null && introductoryPrice! > 0;
 
   bool isDiscounted(double monthlyRawPrice) =>
       hasIntroductoryPrice || productPrice < monthlyRawPrice * duration;

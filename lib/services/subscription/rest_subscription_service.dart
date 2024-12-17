@@ -14,6 +14,7 @@ import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
+import 'package:mysterium_vpn/services/subscription/storekit_extension_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
@@ -32,6 +33,7 @@ class RestSubscriptionService extends SubscriptionService {
   final api.Subscription _apiSubscription;
   final InAppPurchase _inAppPurchase;
   final Talker _logger;
+  final StoreKitExtensionService _storeKitExtension = const StoreKitExtensionService();
 
   /// Experiment on verifying purchase using server side verification (webhooks)
   /// Downside: It's taking too long to verify the purchase (1-2min)
@@ -221,6 +223,10 @@ class RestSubscriptionService extends SubscriptionService {
         if (productDetails == null) {
           continue;
         }
+        bool? isEligibleForIntroOffer;
+        if (Platform.isIOS || Platform.isMacOS) {
+          isEligibleForIntroOffer = await this.isEligibleForIntroOffer(productDetails.id);
+        }
         productsDetails.add(
           PurchasableProduct(
             planDetails: plan,
@@ -231,6 +237,7 @@ class RestSubscriptionService extends SubscriptionService {
             currencyCode: productDetails.currencyCode,
             currencySymbol: productDetails.currencySymbol,
             introductoryPrice: introductoryPrice,
+            isEligibleForStoreKitIntroOffer: isEligibleForIntroOffer,
           ),
         );
       }
@@ -326,4 +333,8 @@ class RestSubscriptionService extends SubscriptionService {
       return false;
     }
   }
+
+  @override
+  Future<bool> isEligibleForIntroOffer(String productId) =>
+      _storeKitExtension.isEligibleForIntroOffer(productId);
 }
