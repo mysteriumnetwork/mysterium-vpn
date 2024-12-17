@@ -27,6 +27,7 @@ class SubscribeRequest {
     this.zipCode,
     this.couponCode,
     this.embedded,
+    this.cardHolder,
   });
 
   @JsonKey(
@@ -85,6 +86,13 @@ class SubscribeRequest {
   )
   final bool? embedded;
 
+  @JsonKey(
+    name: r'card_holder',
+    required: false,
+    includeIfNull: false,
+  )
+  final String? cardHolder;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -96,7 +104,8 @@ class SubscribeRequest {
           other.currency == currency &&
           other.zipCode == zipCode &&
           other.couponCode == couponCode &&
-          other.embedded == embedded;
+          other.embedded == embedded &&
+          other.cardHolder == cardHolder;
 
   @override
   int get hashCode =>
@@ -107,7 +116,8 @@ class SubscribeRequest {
       currency.hashCode +
       (zipCode == null ? 0 : zipCode.hashCode) +
       (couponCode == null ? 0 : couponCode.hashCode) +
-      (embedded == null ? 0 : embedded.hashCode);
+      (embedded == null ? 0 : embedded.hashCode) +
+      (cardHolder == null ? 0 : cardHolder.hashCode);
 
   factory SubscribeRequest.fromJson(Map<String, dynamic> json) => _$SubscribeRequestFromJson(json);
 
