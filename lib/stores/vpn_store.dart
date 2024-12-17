@@ -140,7 +140,6 @@ abstract class _VpnStore with Store {
   int _retryCount = 0;
   bool _isRetrying = false;
   String? originCountry;
-  String? lastConnectingLocation;
 
   Future<void> _init() async {
     await _initWireguardKey();
@@ -151,13 +150,15 @@ abstract class _VpnStore with Store {
     final isConfigured = await _checkTunelConfigured();
     if (isConfigured) {
       await _setupAndListenToConnectionStatus();
+    } else if (Platform.isWindows) {
+      await setupTunnel();
     }
   }
 
   @action
   Future<bool> _checkTunelConfigured() async {
     try {
-      return await _wireguardService.isTunnelConfigured(
+      return await _wireguardService.checkTunnelConfiguration(
         bundleId: _env.getBundleId(),
         tunnelName: _env.values.tunnelName,
       );
@@ -204,7 +205,9 @@ abstract class _VpnStore with Store {
 
   /// Setup Wireguard tunnel
   @action
-  Future<void> setupTunnel() async {
+  Future<void> setupTunnel([
+    String? lastConnectingLocation,
+  ]) async {
     try {
       await _wireguardService.setupTunnel(
         bundleId: _env.getBundleId(),
@@ -213,7 +216,9 @@ abstract class _VpnStore with Store {
       );
       _logger.info('Tunnel setup done');
       await _setupAndListenToConnectionStatus();
-      toggleConnection(location: lastConnectingLocation);
+      if (lastConnectingLocation != null) {
+        toggleConnection(location: lastConnectingLocation);
+      }
     } catch (e, stackTrace) {
       var message = 'Error occured while setting up tunnel';
       if (e is PlatformException) {
@@ -331,7 +336,7 @@ abstract class _VpnStore with Store {
   /// Disconnect from Wireguard tunnel
   @action
   Future<void> disconnectWireguard() async {
-    if (!(await _wireguardService.isTunnelConfigured(
+    if (!(await _wireguardService.checkTunnelConfiguration(
       bundleId: _env.getBundleId(),
       tunnelName: _env.values.tunnelName,
     ))) {
@@ -358,7 +363,10 @@ abstract class _VpnStore with Store {
 
   /// Connect/Disconnect from VPN
   @action
-  Future<void> toggleConnection({String? location, bool isRetrying = false}) async {
+  Future<void> toggleConnection({
+    String? location,
+    bool isRetrying = false,
+  }) async {
     if (_connectionStatus == ConnectionStatus.connected &&
         (location == null || location == _vpnConnection?.location)) {
       await disconnectWireguard();
@@ -393,12 +401,15 @@ abstract class _VpnStore with Store {
       throw const SubscriptionRequiredException();
     }
 
-    if (!(await _wireguardService.isTunnelConfigured(
+    if (!(await _wireguardService.checkTunnelConfiguration(
       bundleId: _env.getBundleId(),
       tunnelName: _env.values.tunnelName,
     ))) {
-      lastConnectingLocation = location;
-      throw const TunnelSetupnRequiredException();
+      if (Platform.isWindows) {
+        await setupTunnel();
+      } else {
+        throw const TunnelSetupnRequiredException();
+      }
     }
 
     _connectingNonce = generateRandomString(8);

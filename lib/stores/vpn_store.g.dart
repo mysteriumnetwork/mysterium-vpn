@@ -209,8 +209,8 @@ mixin _$VpnStore on _VpnStore, Store {
   late final _$setupTunnelAsyncAction = AsyncAction('_VpnStore.setupTunnel', context: context);
 
   @override
-  Future<void> setupTunnel() {
-    return _$setupTunnelAsyncAction.run(() => super.setupTunnel());
+  Future<void> setupTunnel([String? lastConnectingLocation]) {
+    return _$setupTunnelAsyncAction.run(() => super.setupTunnel(lastConnectingLocation));
   }
 
   late final _$toggleRefreshIPWhenConnectingAsyncAction =
