@@ -1,13 +1,12 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:mysterium_vpn/common/exceptions/api.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 
 class ConnectionErrorsInterceptor extends Interceptor {
   @override
   Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     final connectivityStatus = (await Connectivity().checkConnectivity()).lastOrNull;
-    if (connectivityStatus == ConnectivityResult.none && !(await hasNetwork())) {
+    if (connectivityStatus == ConnectivityResult.none) {
       final endpoint = options.path;
       return handler.reject(
         ApiException(

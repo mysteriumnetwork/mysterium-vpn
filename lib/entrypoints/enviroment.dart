@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 
-import 'package:dart_ping_ios/dart_ping_ios.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -42,9 +41,6 @@ class Enviroment {
       await windowManager.ensureInitialized();
       await windowManager.setPreventClose(true);
       await windowManager.setMinimumSize(const Size(400, 600));
-    }
-    if (Platform.isIOS) {
-      DartPingIOS.register();
     }
 
     if (Platform.isWindows) {
