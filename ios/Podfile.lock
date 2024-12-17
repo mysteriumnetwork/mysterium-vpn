@@ -221,6 +221,9 @@ PODS:
     - FlutterMacOS
   - sign_in_with_apple (0.0.1):
     - Flutter
+  - storekit_extensions (0.0.1):
+    - Flutter
+    - FlutterMacOS
   - url_launcher_ios (0.0.1):
     - Flutter
   - wireguard_dart (0.0.1):
@@ -251,6 +254,7 @@ DEPENDENCIES:
   - sentry_flutter (from `.symlinks/plugins/sentry_flutter/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
+  - storekit_extensions (from `.symlinks/plugins/storekit_extensions/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - wireguard_dart (from `.symlinks/plugins/wireguard_dart/darwin`)
   - WireGuardKit (from `https://raw.githubusercontent.com/mysteriumnetwork/wireguard-apple/0.5/WireGuardKit.podspec`)
@@ -326,6 +330,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sign_in_with_apple:
     :path: ".symlinks/plugins/sign_in_with_apple/ios"
+  storekit_extensions:
+    :path: ".symlinks/plugins/storekit_extensions/darwin"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
   wireguard_dart:
@@ -381,6 +387,7 @@ SPEC CHECKSUMS:
   sentry_flutter: a39c2a2d67d5e5b9cb0b94a4985c76dd5b3fc737
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
+  storekit_extensions: bb0fe27c5002b8f45e7a030d11e096281c040fad
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
   wireguard_dart: c6c27bbc1469f9aa1f7984b64ce3aaf04136417b
   WireGuardKit: 44063ed405613ca3d234e489e24b015d434e2a64
