@@ -1,1 +1,3 @@
-class MQQTConnectionRequiredException implements Exception {}
+class MQQTException implements Exception {}
+
+class MQQTConnectionRequiredException extends MQQTException {}

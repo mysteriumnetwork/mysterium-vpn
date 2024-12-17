@@ -161,13 +161,13 @@ mixin _$VpnStore on _VpnStore, Store {
       Atom(name: '_VpnStore.resolveConnectionLocationFuture', context: context);
 
   @override
-  ObservableFuture<VpnConnection>? get resolveConnectionLocationFuture {
+  ObservableFuture<void>? get resolveConnectionLocationFuture {
     _$resolveConnectionLocationFutureAtom.reportRead();
     return super.resolveConnectionLocationFuture;
   }
 
   @override
-  set resolveConnectionLocationFuture(ObservableFuture<VpnConnection>? value) {
+  set resolveConnectionLocationFuture(ObservableFuture<void>? value) {
     _$resolveConnectionLocationFutureAtom.reportWrite(value, super.resolveConnectionLocationFuture,
         () {
       super.resolveConnectionLocationFuture = value;
@@ -294,7 +294,7 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore._completeConnection', context: context);
 
   @override
-  Future<VpnConnection> _completeConnection(String? location, bool? refreshIP, String nonce) {
+  Future<void> _completeConnection(String? location, bool? refreshIP, String nonce) {
     return _$_completeConnectionAsyncAction
         .run(() => super._completeConnection(location, refreshIP, nonce));
   }
