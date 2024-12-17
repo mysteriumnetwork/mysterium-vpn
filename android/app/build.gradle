@@ -46,7 +46,6 @@ def keystorePropertiesFile = rootProject.file('key.properties')
                dimension "env"
                applicationIdSuffix ".test"
                manifestPlaceholders = [ "appLabel": "Mysterium VPN Test"]
-               versionNameSuffix "-test"
            }
        create("prod") {
                dimension "env"

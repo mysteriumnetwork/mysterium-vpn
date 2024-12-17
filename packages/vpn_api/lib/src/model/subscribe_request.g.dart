@@ -24,6 +24,7 @@ SubscribeRequest _$SubscribeRequestFromJson(Map<String, dynamic> json) => $check
           zipCode: $checkedConvert('zip_code', (v) => v as String?),
           couponCode: $checkedConvert('coupon_code', (v) => v as String?),
           embedded: $checkedConvert('embedded', (v) => v as bool?),
+          cardHolder: $checkedConvert('card_holder', (v) => v as String?),
         );
         return val;
       },
@@ -31,7 +32,8 @@ SubscribeRequest _$SubscribeRequestFromJson(Map<String, dynamic> json) => $check
         'gatewayId': 'gateway_id',
         'planId': 'plan_id',
         'zipCode': 'zip_code',
-        'couponCode': 'coupon_code'
+        'couponCode': 'coupon_code',
+        'cardHolder': 'card_holder'
       },
     );
 
@@ -53,6 +55,7 @@ Map<String, dynamic> _$SubscribeRequestToJson(SubscribeRequest instance) {
   writeNotNull('zip_code', instance.zipCode);
   writeNotNull('coupon_code', instance.couponCode);
   writeNotNull('embedded', instance.embedded);
+  writeNotNull('card_holder', instance.cardHolder);
   return val;
 }
 

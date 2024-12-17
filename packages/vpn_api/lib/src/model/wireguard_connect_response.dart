@@ -18,6 +18,7 @@ class WireguardConnectResponse {
   WireguardConnectResponse({
     required this.wgConfig,
     required this.hash,
+    this.exitIp,
     this.limitExceeded,
   });
 
@@ -37,6 +38,14 @@ class WireguardConnectResponse {
   )
   final String hash;
 
+  /// Exit IP of provider
+  @JsonKey(
+    name: r'exit_ip',
+    required: false,
+    includeIfNull: false,
+  )
+  final String? exitIp;
+
   @JsonKey(
     name: r'limit_exceeded',
     required: false,
@@ -50,11 +59,15 @@ class WireguardConnectResponse {
       other is WireguardConnectResponse &&
           other.wgConfig == wgConfig &&
           other.hash == hash &&
+          other.exitIp == exitIp &&
           other.limitExceeded == limitExceeded;
 
   @override
   int get hashCode =>
-      wgConfig.hashCode + hash.hashCode + (limitExceeded == null ? 0 : limitExceeded.hashCode);
+      wgConfig.hashCode +
+      hash.hashCode +
+      (exitIp == null ? 0 : exitIp.hashCode) +
+      (limitExceeded == null ? 0 : limitExceeded.hashCode);
 
   factory WireguardConnectResponse.fromJson(Map<String, dynamic> json) =>
       _$WireguardConnectResponseFromJson(json);
