@@ -49,38 +49,45 @@ class _RequestTunnelPermissionsOptionA extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            EasyText(
-              LocaleKeys.setupTunnerPermissionsDialogTitle.tr(),
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              textAlign: TextAlign.center,
-              maxLines: 2,
-            ).padding(bottom: 16),
-            EasyText(
-              LocaleKeys.setupTunnerPermissionsDialogDesc.tr(),
-              fontSize: 14,
-              textAlign: TextAlign.center,
-              maxLines: 4,
-            ).padding(bottom: 16),
-            EasyText(
-              LocaleKeys.setupTunnerPermissionsDialogDisclaimer.tr(),
-              fontSize: 14,
-              textAlign: TextAlign.center,
-              color: const Color(0xffC4C1DD),
-              maxLines: 4,
-            ).padding(bottom: 40),
-            EasyButton(
-              useSystemColor: false,
-              width: 160,
-              color: Palette.purple,
-              text: 'Allow',
-              onPressed: () => Navigator.pop(context, true),
-            ),
-          ],
-        ).padding(horizontal: 20, vertical: 40),
+        child: Container(
+          constraints: const BoxConstraints(
+            maxWidth: 500,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              EasyText(
+                LocaleKeys.setupTunnerPermissionsDialogTitle.tr(),
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                color: Palette.white,
+              ).padding(bottom: 16),
+              EasyText(
+                LocaleKeys.setupTunnerPermissionsDialogDesc.tr(),
+                fontSize: 14,
+                textAlign: TextAlign.center,
+                maxLines: 4,
+                color: Palette.white,
+              ).padding(bottom: 16),
+              EasyText(
+                LocaleKeys.setupTunnerPermissionsDialogDisclaimer.tr(),
+                fontSize: 14,
+                textAlign: TextAlign.center,
+                color: const Color(0xffC4C1DD),
+                maxLines: 4,
+              ).padding(bottom: 40),
+              EasyButton(
+                useSystemColor: false,
+                width: 160,
+                color: Palette.purple,
+                text: 'Allow',
+                onPressed: () => Navigator.pop(context, true),
+              ),
+            ],
+          ).padding(horizontal: 20, vertical: 40),
+        ),
       );
 }
 

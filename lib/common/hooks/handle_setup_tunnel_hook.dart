@@ -1,6 +1,6 @@
 part of 'hooks.dart';
 
-Future<void> Function(String? location) useHandleSetupTunnel() {
+Future<bool> Function() useHandleSetupTunnel() {
   final context = useContext();
 
   final abTestingStore = useProvider(abTestingStorePOD);
@@ -10,11 +10,13 @@ Future<void> Function(String? location) useHandleSetupTunnel() {
     [abTestingStore],
   );
 
-  return useCallback((String? location) async {
+  return useCallback(() async {
     final permissionsGranted =
         await shownRequestTunnelPermissionsDialog(context, tunnelConsentType);
     if (permissionsGranted ?? false) {
-      vpnStore.setupTunnel(location);
+      await vpnStore.setupTunnel();
+      return true;
     }
+    return false;
   });
 }

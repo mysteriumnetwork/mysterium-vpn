@@ -205,9 +205,7 @@ abstract class _VpnStore with Store {
 
   /// Setup Wireguard tunnel
   @action
-  Future<void> setupTunnel([
-    String? lastConnectingLocation,
-  ]) async {
+  Future<void> setupTunnel() async {
     try {
       await _wireguardService.setupTunnel(
         bundleId: _env.getBundleId(),
@@ -216,9 +214,6 @@ abstract class _VpnStore with Store {
       );
       _logger.info('Tunnel setup done');
       await _setupAndListenToConnectionStatus();
-      if (lastConnectingLocation != null) {
-        toggleConnection(location: lastConnectingLocation);
-      }
     } catch (e, stackTrace) {
       var message = 'Error occured while setting up tunnel';
       if (e is PlatformException) {
