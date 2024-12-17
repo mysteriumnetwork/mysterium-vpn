@@ -15,7 +15,7 @@ Future<void> Function({String? location, bool isRetrying}) useHandleToggleConnec
       } on SubscriptionRequiredException catch (_) {
         handleSubscribe();
       } on TunnelSetupnRequiredException catch (_) {
-        handleSetupTunnel();
+        handleSetupTunnel(location);
       }
     },
     [handleSubscribe],
