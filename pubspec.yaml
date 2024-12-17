@@ -70,6 +70,8 @@ dependencies:
   stack_trace: 1.11.1
   store_checker_windows:
     path: ./packages/store_checker_windows
+  storekit_extensions:
+    path: ./packages/storekit_extensions
   styled_widget: 0.4.1
   talker: 4.4.1
   talker_dio_logger: 4.4.1
