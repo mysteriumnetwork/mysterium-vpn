@@ -130,4 +130,3 @@ lib/src/model/user_callback_request.dart
 lib/src/model/wireguard_connect_request.dart
 lib/src/model/wireguard_connect_response.dart
 lib/vpn_api.dart
-pubspec.yaml
