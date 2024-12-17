@@ -9,9 +9,9 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
   Flutter StoreKit extensions not yet supported by in_app_purchases plugin
                        DESC
-  s.homepage         = 'https://mysteriumvpn.com'
-  s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Mysterium VPN' => 'davidm@mysteriumvpn.com' }
+  s.homepage         = 'https://mysterium.network'
+  s.license          = { :type => 'MIT', :file => 'COPYING' }
+  s.author           = 'Mysterium Network'
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
 
