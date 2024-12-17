@@ -552,9 +552,11 @@ abstract class _VpnStore with Store {
       resolveConnectionLocationFuture = ObservableFuture(
         _checkConnectionQuality(
           checkLocation: () async {
-            if (_vpnConfig!.exitIp != null) {
+            if (_vpnConfig?.exitIp != null) {
               _vpnConnection = _vpnConnection?.copyWith(connectionIP: _vpnConfig!.exitIp!);
+              return;
             }
+            _resolveIPAddress(location, _connectingNonce);
           },
           location: location,
           nonce: nonce,
