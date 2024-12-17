@@ -223,10 +223,6 @@ class RestSubscriptionService extends SubscriptionService {
         if (productDetails == null) {
           continue;
         }
-        bool? isEligibleForIntroOffer;
-        if (Platform.isIOS || Platform.isMacOS) {
-          isEligibleForIntroOffer = await this.isEligibleForIntroOffer(productDetails.id);
-        }
         productsDetails.add(
           PurchasableProduct(
             planDetails: plan,
@@ -237,7 +233,7 @@ class RestSubscriptionService extends SubscriptionService {
             currencyCode: productDetails.currencyCode,
             currencySymbol: productDetails.currencySymbol,
             introductoryPrice: introductoryPrice,
-            isEligibleForStoreKitIntroOffer: isEligibleForIntroOffer,
+            hasIntroductoryPrice: await _hasIntroductoryPrice(productDetails.id, introductoryPrice),
           ),
         );
       }
@@ -337,4 +333,13 @@ class RestSubscriptionService extends SubscriptionService {
   @override
   Future<bool> isEligibleForIntroOffer(String productId) =>
       _storeKitExtensions.isEligibleForIntroOffer(productId);
+
+  Future<bool> _hasIntroductoryPrice(String productId, double? introductoryPrice) async {
+    var isEligible = true;
+    if (Platform.isIOS || Platform.isMacOS) {
+      isEligible = await isEligibleForIntroOffer(productId);
+    }
+
+    return isEligible && introductoryPrice != null && introductoryPrice > 0;
+  }
 }
