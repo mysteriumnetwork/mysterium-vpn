@@ -5,7 +5,6 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/components/dialogs/dismiss_page_dialog.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/views/consent/consent_view.dart';
 import 'package:mysterium_vpn/views/consent/vpn_privacy_consent_form.dart';
 
@@ -17,13 +16,13 @@ class VpnPrivacyConsentPage extends HookConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) {
-    final localDb = LocalDBService.instance;
+    final userPreferencesStore = ref.watch(userPreferencesStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
     final authStore = ref.watch(authStorePOD);
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) async {
-        if (await localDb.getVpnPrivacyPolicyConsent() == false) {
+        if (await userPreferencesStore.getVpnPrivacyPolicyConsent() == false) {
           if (!context.mounted) {
             return;
           }

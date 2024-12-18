@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 
 part 'user_preferences_store.g.dart';
 
@@ -14,6 +15,7 @@ abstract class _UserPreferencesStore with Store {
   }) : _apiService = apiService;
 
   final ApiService _apiService;
+  final LocalDBService _localDb = LocalDBService.instance;
 
   @observable
   ObservableFuture<void> setMarketingConsentFeature = ObservableFuture.value(null);
@@ -26,6 +28,12 @@ abstract class _UserPreferencesStore with Store {
 
   @computed
   FutureStatus get setMarketingConsentFeatureStatus => setMarketingConsentFeature.status;
+
+  Future<bool> getVpnPrivacyPolicyConsent() async => _localDb.getVpnPrivacyPolicyConsent();
+
+  Future<void> setVpnPrivacyPolicyConsent({required bool approval}) async {
+    await _localDb.setVpnPrivacyPolicyConsent(approval: approval);
+  }
 
   @action
   Future<void> setUserPrefsMarketingConsent({required bool consent}) async {
