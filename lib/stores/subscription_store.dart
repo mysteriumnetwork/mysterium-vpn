@@ -382,16 +382,16 @@ abstract class _SubscriptionStore with Store {
   }
 
   Future<void> manageSubscription() async {
-    await fetchSubscription();
-    final subscription = await subscriptionFuture;
-
-    if (subscription == null || !subscription.active) {
+    if (_subscription == null || !_subscription!.active) {
       throw const SubscriptionRequiredException();
     }
-
-    final config = await _subscriptionService.fetchSubscriptionConfig();
-    final products = await _subscriptionService.getProductsDetails(config, subscription.planId);
-    final product = products.firstWhere((it) => it.status == ProductStatus.purchased);
+    if (_products.isEmpty) {
+      await getSubscriptionsConfig();
+    }
+    final product = _products.firstWhereOrNull((element) => element.id == _subscription!.planId);
+    if (product == null) {
+      throw const SubscriptionRequiredException();
+    }
 
     await subscribeToPackage(product: product.productDetails);
   }

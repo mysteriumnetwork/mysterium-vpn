@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
@@ -336,14 +337,14 @@ String? getMagicLinkCode(String query) {
   return query.substring(query.indexOf('code=') + 5, query.length);
 }
 
-void handleOnBillingPage({
+FutureOr<void> handleOnBillingPage({
   required BeamerDelegate beamer,
   required bool subscriptionActive,
   required String billingPage,
   required String? gateway,
   required String? accessToken,
-  VoidCallback? onManageSubscription,
-}) {
+  FutureOr<void> Function()? onManageSubscription,
+}) async {
   final isMobileGateway = isMobilePaymentGateway(gateway);
 
   if (subscriptionActive && isMobileGateway) {
@@ -357,7 +358,7 @@ void handleOnBillingPage({
       );
       return;
     }
-    onManageSubscription?.call();
+    await onManageSubscription?.call();
     return;
   }
 
@@ -376,7 +377,7 @@ void handleOnBillingPage({
     },
   );
 
-  launchUrl(httpsUri);
+  await launchUrl(httpsUri);
 }
 
 void handleOnReportPage({
