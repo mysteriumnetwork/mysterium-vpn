@@ -1,9 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
 import 'package:beamer/beamer.dart';
 import 'package:clipboard/clipboard.dart';
-import 'package:dart_ping/dart_ping.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -337,14 +337,14 @@ String? getMagicLinkCode(String query) {
   return query.substring(query.indexOf('code=') + 5, query.length);
 }
 
-void handleOnBillingPage({
+FutureOr<void> handleOnBillingPage({
   required BeamerDelegate beamer,
   required bool subscriptionActive,
   required String billingPage,
   required String? gateway,
   required String? accessToken,
-  VoidCallback? onManageSubscription,
-}) {
+  FutureOr<void> Function()? onManageSubscription,
+}) async {
   final isMobileGateway = isMobilePaymentGateway(gateway);
 
   if (subscriptionActive && isMobileGateway) {
@@ -358,7 +358,7 @@ void handleOnBillingPage({
       );
       return;
     }
-    onManageSubscription?.call();
+    await onManageSubscription?.call();
     return;
   }
 
@@ -377,7 +377,7 @@ void handleOnBillingPage({
     },
   );
 
-  launchUrl(httpsUri);
+  await launchUrl(httpsUri);
 }
 
 void handleOnReportPage({
@@ -420,27 +420,6 @@ Future<void> openUrlLink(Uri url) async {
       type: MessageType.info,
     );
   }
-}
-
-Future<bool> hasNetwork({
-  int count = 2,
-  int timeout = 1,
-  int interval = 1,
-}) async {
-  final ping = Ping(
-    'bing.com',
-    count: count,
-    timeout: timeout,
-    interval: interval,
-  );
-  var isConnected = false;
-  await for (final PingData event in ping.stream) {
-    if (event.response != null) {
-      isConnected = true;
-      break;
-    }
-  }
-  return isConnected;
 }
 
 String generateRandomString(int len) {

@@ -513,8 +513,8 @@
   "setupTunnerPermissionsDialogDisclaimer": "إخفاء هويتك آمن. نحن لا نشاهد أو نجمع أو نخزن أيًا من أنشطة التصفح الخاصة بك.",
   "allowPermissionsBtn": "يسمح",
   "pendingTransactionMessage": "لديك بالفعل عملية دفع جارية. يرجى إكمالها قبل بدء عملية دفع جديدة.",
-  "pricingIntroductoryPeriod": {
-    "12": "للسنة الأولى!",
-    "other": "لأول {} شهر!"
-  }
+  "pricingIntroductoryPeriod12": "للسنة الأولى!",
+  "pricingIntroductoryPeriod6": "لأول 6 أشهر!",
+  "then": "ثم",
+  "renewsFor": "يتجدد لـ"
 }

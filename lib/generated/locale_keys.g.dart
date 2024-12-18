@@ -518,5 +518,6 @@ abstract class LocaleKeys {
   static const pendingTransactionMessage = 'pendingTransactionMessage';
   static const pricingIntroductoryPeriod12 = 'pricingIntroductoryPeriod12';
   static const pricingIntroductoryPeriod6 = 'pricingIntroductoryPeriod6';
+  static const then = 'then';
   static const renewsFor = 'renewsFor';
 }

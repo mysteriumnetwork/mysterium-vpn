@@ -516,5 +516,6 @@
   "pendingTransactionMessage": "Halihazırda devam eden bir ödeme işleminiz var. Lütfen yeni bir ödeme işlemine başlamadan önce işlemi tamamlayın.",
   "pricingIntroductoryPeriod12": "ilk yıl için!",
   "pricingIntroductoryPeriod6": "ilk 6 ay için!",
-  "renewsFor": "Yenileme"
+  "then": "Sonra",
+  "renewsFor": "Şunun için yenilenir"
 }

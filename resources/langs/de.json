@@ -516,5 +516,6 @@
   "pendingTransactionMessage": "Sie haben bereits einen laufenden Zahlungsvorgang. Bitte schließen Sie ihn ab, bevor Sie einen neuen starten.",
   "pricingIntroductoryPeriod12": "für das erste Jahr!",
   "pricingIntroductoryPeriod6": "für die ersten 6 Monate!",
-  "renewsFor": "Erneuert für"
+  "then": "Dann",
+  "renewsFor": "Verlängert für"
 }
