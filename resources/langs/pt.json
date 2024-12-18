@@ -515,5 +515,7 @@
   "allowPermissionsBtn": "Permitir",
   "pendingTransactionMessage": "Você já tem um processo de pagamento em andamento. Conclua-o antes de iniciar um novo.",
   "pricingIntroductoryPeriod12": "para o primeiro ano!",
-  "pricingIntroductoryPeriod6": "para os primeiros 6 meses!"
+  "pricingIntroductoryPeriod6": "para os primeiros 6 meses!",
+  "then": "Depois",
+  "renewsFor": "Renova por"
 }

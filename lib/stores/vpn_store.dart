@@ -588,13 +588,6 @@ abstract class _VpnStore with Store {
       );
 
       _checkOperationCancel(nonce);
-      if (!await hasNetwork(interval: 5, timeout: 10)) {
-        if (_connectingNonce == nonce) {
-          throw BrokenNodeException(location ?? '');
-        }
-      }
-
-      _checkOperationCancel(nonce);
       await _sharedPrefs.setLocationCode(location ?? '');
 
       _vpnConnection = VpnConnection(connectionIP: '', location: location ?? '');

@@ -22,48 +22,56 @@ class BeamerLocations extends BeamLocation<BeamState> {
         if (state.uri.path == Routes.welcome.path)
           BeamPage(
             key: ValueKey(Routes.welcome.toDashCase),
+            name: Routes.welcome.path,
             title: Routes.welcome.name,
             child: const WelcomePage(),
           ),
         if (state.uri.path == Routes.main.path)
           BeamPage(
             key: ValueKey(Routes.main.toDashCase),
+            name: Routes.main.path,
             title: Routes.main.name,
             child: const HomePage(),
           ),
         if (state.uri.path == Routes.splash.path)
           BeamPage(
             key: ValueKey(Routes.splash.toDashCase),
+            name: Routes.splash.path,
             title: Routes.splash.name,
             child: const SplashPage(),
           ),
         if (state.uri.path == Routes.settings.path)
           BeamPage(
             key: ValueKey(Routes.settings.toDashCase),
+            name: Routes.settings.path,
             title: Routes.settings.name,
             child: const SettingsPage(),
           ),
         if (state.uri.path == Routes.payment.path)
           BeamPage(
             key: ValueKey(Routes.payment.toDashCase),
+            name: Routes.payment.path,
             title: Routes.payment.name,
             child: const SubscriptionPage(),
           ),
         if (state.uri.path == Routes.privacyPolicy.path)
           BeamPage(
             key: ValueKey(Routes.privacyPolicy.toDashCase),
+            name: Routes.privacyPolicy.path,
             title: Routes.privacyPolicy.name,
             child: const VpnPrivacyConsentPage(),
           ),
         if (state.uri.path == Routes.login.path)
           BeamPage(
             key: ValueKey(Routes.login.toDashCase),
+            name: Routes.login.path,
             title: Routes.login.name,
             child: const LoginPage(),
           ),
         if (state.uri.path == Routes.checkYourEmail.path)
           BeamPage(
             key: ValueKey(Routes.checkYourEmail.toDashCase),
+            name: Routes.checkYourEmail.path,
             title: Routes.checkYourEmail.name,
             child: const VerifyEmailPage(),
           ),

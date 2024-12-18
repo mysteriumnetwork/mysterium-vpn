@@ -516,5 +516,6 @@
     "pendingTransactionMessage": "You already have an ongoing payment transaction. Please complete it before starting a new one.",
     "pricingIntroductoryPeriod12": "for the first year!",
     "pricingIntroductoryPeriod6": "for the first 6 months!",
+    "then": "Then",
     "renewsFor": "Renews for"
 }

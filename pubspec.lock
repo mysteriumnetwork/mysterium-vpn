@@ -334,22 +334,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
-  dart_ping:
-    dependency: "direct main"
-    description:
-      name: dart_ping
-      sha256: "2f5418d0a5c64e53486caaac78677b25725b1e13c33c5be834ce874ea18bd24f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "9.0.1"
-  dart_ping_ios:
-    dependency: "direct main"
-    description:
-      name: dart_ping_ios
-      sha256: "17df1b369331ec6c30a91a51db64ac8feed47fad71e444208de06edf2a22415f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.2"
   dart_style:
     dependency: transitive
     description:
@@ -539,14 +523,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.20.5"
-  flutter_icmp_ping:
-    dependency: transitive
-    description:
-      name: flutter_icmp_ping
-      sha256: de9633cf65a8c733fae29d08a35d3d4b343620cd1d13e1bfa88eccf56696d896
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.1.3"
   flutter_launcher_icons:
     dependency: "direct main"
     description:
@@ -1567,6 +1543,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  storekit_extensions:
+    dependency: "direct main"
+    description:
+      path: "packages/storekit_extensions"
+      relative: true
+    source: path
+    version: "0.0.1"
   stream_channel:
     dependency: transitive
     description:
@@ -1905,5 +1888,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.5.0 <4.0.0"
+  dart: ">=3.5.1 <4.0.0"
   flutter: ">=3.24.1"

@@ -15,6 +15,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
+import 'package:storekit_extensions/storekit_extensions.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
 
@@ -32,6 +33,7 @@ class RestSubscriptionService extends SubscriptionService {
   final api.Subscription _apiSubscription;
   final InAppPurchase _inAppPurchase;
   final Talker _logger;
+  final StorekitExtensions _storeKitExtensions = const StorekitExtensions();
 
   /// Experiment on verifying purchase using server side verification (webhooks)
   /// Downside: It's taking too long to verify the purchase (1-2min)
@@ -231,6 +233,7 @@ class RestSubscriptionService extends SubscriptionService {
             currencyCode: productDetails.currencyCode,
             currencySymbol: productDetails.currencySymbol,
             introductoryPrice: introductoryPrice,
+            hasIntroductoryPrice: await _hasIntroductoryPrice(productDetails.id, introductoryPrice),
           ),
         );
       }
@@ -325,5 +328,18 @@ class RestSubscriptionService extends SubscriptionService {
       _logger.handle(e, s);
       return false;
     }
+  }
+
+  @override
+  Future<bool> isEligibleForIntroOffer(String productId) =>
+      _storeKitExtensions.isEligibleForIntroOffer(productId);
+
+  Future<bool> _hasIntroductoryPrice(String productId, double? introductoryPrice) async {
+    var isEligible = true;
+    if (Platform.isIOS || Platform.isMacOS) {
+      isEligible = await isEligibleForIntroOffer(productId);
+    }
+
+    return isEligible && introductoryPrice != null && introductoryPrice > 0;
   }
 }
