@@ -163,7 +163,7 @@ abstract class RemoteConfigStoreBase with Store {
     if (config.containsKey(_FeatureToggleKey.hideNotSafeContentBlocker.name)) {
       return config[_FeatureToggleKey.hideNotSafeContentBlocker.name] as bool;
     }
-    return true;
+    return false;
   }
 
   @computed
