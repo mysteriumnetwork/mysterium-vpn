@@ -11,7 +11,6 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/header_title.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/views/consent/agreements.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -25,7 +24,7 @@ class VpnPrivacyConsentForm extends HookConsumerWidget {
   ) {
     final height = getMediaHeight(context);
     final analyticsStore = ref.read(analyticsStorePOD);
-    final localDb = LocalDBService.instance;
+    final userPreferencesStore = ref.watch(userPreferencesStorePOD);
     return Column(
       children: [
         HeaderTitle(
@@ -46,7 +45,7 @@ class VpnPrivacyConsentForm extends HookConsumerWidget {
           width: 250,
           onPressed: () async {
             analyticsStore.logEvent(AnalyticsEvent.ppAcceptClick);
-            await localDb.setVpnPrivacyPolicyConsent(
+            await userPreferencesStore.setVpnPrivacyPolicyConsent(
               approval: true,
             );
             Navigator.of(context).maybePop();

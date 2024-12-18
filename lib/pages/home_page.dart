@@ -11,7 +11,6 @@ import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/components/dialogs/info_dialog.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/in_app_review/in_app_review.dart';
 import 'package:mysterium_vpn/views/home/home_desktop_view.dart';
 import 'package:mysterium_vpn/views/home/home_mobile_view.dart';
@@ -23,15 +22,15 @@ class HomePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
-    final localDb = LocalDBService.instance;
     final remoteConfig = ref.watch(remoteConfigStorePOD);
+    final userPreferencesStore = ref.watch(userPreferencesStorePOD);
     useEffect(
       () {
         InAppReviewObserver().monitor();
         final disposer = when(
           (showVpnPrivacyPolicyPage) => remoteConfig.showVpnPrivacyPolicyPage == true,
           () async {
-            if (await localDb.getVpnPrivacyPolicyConsent() == false) {
+            if (await userPreferencesStore.getVpnPrivacyPolicyConsent() == false) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 Beamer.of(context).beamToNamed(Routes.privacyPolicy.path);
               });

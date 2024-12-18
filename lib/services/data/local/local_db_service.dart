@@ -48,7 +48,7 @@ class LocalDBService {
     await _saveUserData(userData);
   }
 
-  Future<bool?> getVpnPrivacyPolicyConsent() async =>
+  Future<bool> getVpnPrivacyPolicyConsent() async =>
       (await _loadUserData()).vpnPrivacyPolicyConsent;
 
   Future<bool> getRefreshIPConnection() async => (await _loadUserData()).refreshIPConnection;
