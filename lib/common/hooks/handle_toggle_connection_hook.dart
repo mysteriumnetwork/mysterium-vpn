@@ -5,7 +5,7 @@ Future<void> Function({String? location}) useHandleToggleConnection() {
   final handleSubscribe = useHandleSubscribe();
   final handleSetupTunnel = useHandleSetupTunnel();
 
-  final callback = useCallback(
+  return useCallback(
     ({String? location}) async {
       final ref = ProviderScope.containerOf(context, listen: false);
       final vpnStore = ref.read(vpnStorePOD);
@@ -21,7 +21,6 @@ Future<void> Function({String? location}) useHandleToggleConnection() {
         }
       }
     },
-    [handleSubscribe],
+    [handleSubscribe, handleSetupTunnel],
   );
-  return callback;
 }
