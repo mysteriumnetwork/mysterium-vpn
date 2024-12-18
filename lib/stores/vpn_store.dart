@@ -151,6 +151,7 @@ abstract class _VpnStore with Store {
     if (isConfigured) {
       await _setupAndListenToConnectionStatus();
     } else if (Platform.isWindows) {
+      // Has to be called on init
       await setupTunnel();
     }
   }
