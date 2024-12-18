@@ -36,7 +36,7 @@ class VpnPrivacyConsentPage extends HookConsumerWidget {
             return;
           }
           analyticsStore.logEvent(AnalyticsEvent.backButtonClick);
-          Beamer.of(context).beamBack();
+          Future.microtask(Beamer.of(context).beamBack);
         }
       },
       child: const ColoredScaffold(

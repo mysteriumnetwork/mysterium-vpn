@@ -28,7 +28,7 @@ class HomePage extends HookConsumerWidget {
     useEffect(
       () {
         InAppReviewObserver().monitor();
-        when(
+        final disposer = when(
           (showVpnPrivacyPolicyPage) => remoteConfig.showVpnPrivacyPolicyPage == true,
           () async {
             if (await localDb.getVpnPrivacyPolicyConsent() == false) {
@@ -38,7 +38,7 @@ class HomePage extends HookConsumerWidget {
             }
           },
         );
-        return null;
+        return disposer.call;
       },
       [],
     );

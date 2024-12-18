@@ -10,13 +10,16 @@ Future<bool> Function() useHandleSetupTunnel() {
     [abTestingStore],
   );
 
-  return useCallback(() async {
-    final permissionsGranted =
-        await shownRequestTunnelPermissionsDialog(context, tunnelConsentType);
-    if (permissionsGranted ?? false) {
-      await vpnStore.setupTunnel();
-      return true;
-    }
-    return false;
-  });
+  return useCallback(
+    () async {
+      final permissionsGranted =
+          await showRequestTunnelPermissionsDialog(context, tunnelConsentType);
+      if (permissionsGranted ?? false) {
+        await vpnStore.setupTunnel();
+        return true;
+      }
+      return false;
+    },
+    [vpnStore, tunnelConsentType],
+  );
 }

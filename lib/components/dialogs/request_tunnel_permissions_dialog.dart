@@ -15,7 +15,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/consent/agreements.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-Future<bool?> shownRequestTunnelPermissionsDialog(
+Future<bool?> showRequestTunnelPermissionsDialog(
   BuildContext context,
   String dialogVariant,
 ) async {
