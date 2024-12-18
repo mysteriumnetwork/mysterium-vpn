@@ -509,8 +509,8 @@
   "contentBlockerTitle": "محتوى NSFW ومانع البرامج الضارة",
   "contentBlockerDesc": "حظر كل من البرامج الضارة ومحتوى البالغين",
   "pendingTransactionMessage": "لديك بالفعل عملية دفع جارية. يرجى إكمالها قبل بدء عملية دفع جديدة.",
-  "pricingIntroductoryPeriod": {
-    "12": "للسنة الأولى!",
-    "other": "لأول {} شهر!"
-  }
+  "pricingIntroductoryPeriod12": "للسنة الأولى!",
+  "pricingIntroductoryPeriod6": "لأول 6 أشهر!",
+  "then": "ثم",
+  "renewsFor": "يتجدد لـ"
 }
