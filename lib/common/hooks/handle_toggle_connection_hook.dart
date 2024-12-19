@@ -14,7 +14,7 @@ Future<void> Function({String? location}) useHandleToggleConnection() {
         await vpnStore.toggleConnection(location: location);
       } on SubscriptionRequiredException catch (_) {
         handleSubscribe();
-      } on TunnelSetupnRequiredException catch (_) {
+      } on TunnelSetupRequiredException catch (_) {
         final permissionsGiven = await handleSetupTunnel();
         if (permissionsGiven) {
           await vpnStore.toggleConnection(location: location);

@@ -1,3 +1,3 @@
-class TunnelSetupnRequiredException implements Exception {
-  const TunnelSetupnRequiredException();
+class TunnelSetupRequiredException implements Exception {
+  const TunnelSetupRequiredException();
 }
