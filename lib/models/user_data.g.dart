@@ -22,10 +22,10 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       emailCommunication: fields[1] as Approval,
       notifications: fields[3] as Approval,
       subscriptionPlan: fields[4] as String?,
-      vpnConfigConsent: fields[6] as bool?,
       refreshIPConnection: fields[7] == null ? true : fields[7] as bool,
       malwareBlocker: fields[8] == null ? false : fields[8] as bool,
       notSafeContentBlocker: fields[9] == null ? false : fields[9] as bool,
+      vpnPrivacyPolicyConsent: fields[10] == null ? false : fields[10] as bool,
     )..subscriptionPurchaseId = fields[5] as String?;
   }
 
@@ -45,14 +45,14 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       ..write(obj.subscriptionPlan)
       ..writeByte(5)
       ..write(obj.subscriptionPurchaseId)
-      ..writeByte(6)
-      ..write(obj.vpnConfigConsent)
       ..writeByte(7)
       ..write(obj.refreshIPConnection)
       ..writeByte(8)
       ..write(obj.malwareBlocker)
       ..writeByte(9)
-      ..write(obj.notSafeContentBlocker);
+      ..write(obj.notSafeContentBlocker)
+      ..writeByte(10)
+      ..write(obj.vpnPrivacyPolicyConsent);
   }
 
   @override

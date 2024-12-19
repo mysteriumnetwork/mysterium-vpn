@@ -53,7 +53,7 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
               label: LocaleKeys.status.tr(),
               text: vpnStore.isLoading
                   ? ConnectionStatus.connecting.name.tr()
-                  : vpnStore.connectionStatus.name.tr(),
+                  : vpnStore.vpnStatus.name.tr(),
               isConnected: vpnStore.isConnected,
               leading: ConnectionIndicator(
                 isConnected: vpnStore.isConnected,

@@ -16,6 +16,13 @@ mixin _$ABTestingStore on ABTestingStoreBase, Store {
       (_$subscriptionFlowVariantComputed ??= Computed<String>(() => super.subscriptionFlowVariant,
               name: 'ABTestingStoreBase.subscriptionFlowVariant'))
           .value;
+  Computed<String>? _$tunnelConsentTypeComputed;
+
+  @override
+  String get tunnelConsentType =>
+      (_$tunnelConsentTypeComputed ??= Computed<String>(() => super.tunnelConsentType,
+              name: 'ABTestingStoreBase.tunnelConsentType'))
+          .value;
 
   late final _$configAtom = Atom(name: 'ABTestingStoreBase.config', context: context);
 
@@ -61,7 +68,8 @@ mixin _$ABTestingStore on ABTestingStoreBase, Store {
   String toString() {
     return '''
 config: ${config},
-subscriptionFlowVariant: ${subscriptionFlowVariant}
+subscriptionFlowVariant: ${subscriptionFlowVariant},
+tunnelConsentType: ${tunnelConsentType}
     ''';
   }
 }

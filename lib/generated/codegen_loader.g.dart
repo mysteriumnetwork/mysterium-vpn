@@ -526,6 +526,10 @@ class CodegenLoader extends AssetLoader {
     "malwareBlocker": "恶意软件拦截器",
     "contentBlockerTitle": "NSFW 内容和恶意软件拦截器",
     "contentBlockerDesc": "阻止恶意软件和成人内容",
+    "setupTunnerPermissionsDialogTitle": "我们需要您的许可",
+    "setupTunnerPermissionsDialogDesc": "要开始使用 Mysterium VPN，我们需要您的许可才能安装 VPN 配置文件。",
+    "setupTunnerPermissionsDialogDisclaimer": "您的匿名是安全的。我们不会查看、收集或存储您的任何浏览活动。",
+    "allowPermissionsBtn": "允许",
     "pendingTransactionMessage": "您已经有一个正在进行的付款流程。请先完成该流程，然后再开始新的付款流程。",
     "pricingIntroductoryPeriod12": "首年优惠！",
     "pricingIntroductoryPeriod6": "前6个月优惠！",
@@ -1064,6 +1068,12 @@ class CodegenLoader extends AssetLoader {
     "contentBlockerTitle": "NSFW içeriği ve kötü amaçlı yazılım engelleyici",
     "contentBlockerDesc":
         "Hem kötü amaçlı yazılımları hem de yetişkinlere yönelik içeriği engelleyin",
+    "setupTunnerPermissionsDialogTitle": "izninize ihtiyacımız var",
+    "setupTunnerPermissionsDialogDesc":
+        "Mysterium VPN'i kullanmaya başlamak için bir VPN profili kurma izninize ihtiyacımız var.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "Anonimliğiniz güvende. Tarama etkinliklerinizin hiçbirini görüntülemiyoruz, toplamıyoruz veya saklamıyoruz.",
+    "allowPermissionsBtn": "İzin vermek",
     "pendingTransactionMessage":
         "Halihazırda devam eden bir ödeme işleminiz var. Lütfen yeni bir ödeme işlemine başlamadan önce işlemi tamamlayın.",
     "pricingIntroductoryPeriod12": "ilk yıl için!",
@@ -1586,6 +1596,10 @@ class CodegenLoader extends AssetLoader {
     "malwareBlocker": "マルウェアブロッカー",
     "contentBlockerTitle": "NSFW コンテンツとマルウェア ブロッカー",
     "contentBlockerDesc": "マルウェアとアダルト コンテンツの両方をブロック",
+    "setupTunnerPermissionsDialogTitle": "あなたの許可が必要です",
+    "setupTunnerPermissionsDialogDesc": "Mysterium VPN の使用を開始するには、VPN プロファイルをインストールする許可が必要です。",
+    "setupTunnerPermissionsDialogDisclaimer": "あなたの匿名性は安全です。当社はあなたの閲覧活動を閲覧、収集、保存することはありません。",
+    "allowPermissionsBtn": "許可する",
     "pendingTransactionMessage": "すでに支払いプロセスが進行中です。新しい支払いプロセスを開始する前に完了してください。",
     "pricingIntroductoryPeriod12": "最初の1年間！",
     "pricingIntroductoryPeriod6": "最初の6か月間！",
@@ -2142,6 +2156,12 @@ class CodegenLoader extends AssetLoader {
     "malwareBlocker": "Malware-Blocker",
     "contentBlockerTitle": "NSFW-Inhalts- und Malware-Blocker",
     "contentBlockerDesc": "Blockieren Sie sowohl Malware als auch nicht jugendfreie Inhalte",
+    "setupTunnerPermissionsDialogTitle": "Wir benötigen Ihre Erlaubnis",
+    "setupTunnerPermissionsDialogDesc":
+        "Um Mysterium VPN nutzen zu können, benötigen wir Ihre Erlaubnis zur Installation eines VPN-Profils.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "Ihre Anonymität ist sicher. Wir sehen, sammeln oder speichern keine Ihrer Browsing-Aktivitäten.",
+    "allowPermissionsBtn": "Erlauben",
     "pendingTransactionMessage":
         "Sie haben bereits einen laufenden Zahlungsvorgang. Bitte schließen Sie ihn ab, bevor Sie einen neuen starten.",
     "pricingIntroductoryPeriod12": "für das erste Jahr!",
@@ -2687,6 +2707,12 @@ class CodegenLoader extends AssetLoader {
     "malwareBlocker": "Bloqueador de malware",
     "contentBlockerTitle": "Conteúdo NSFW e bloqueador de malware",
     "contentBlockerDesc": "Bloqueie malware e conteúdo adulto",
+    "setupTunnerPermissionsDialogTitle": "Precisamos da sua permissão",
+    "setupTunnerPermissionsDialogDesc":
+        "Para começar a usar o Mysterium VPN, precisamos da sua permissão para instalar um perfil VPN.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "Seu anonimato é seguro. Não visualizamos, coletamos ou armazenamos nenhuma de suas atividades de navegação.",
+    "allowPermissionsBtn": "Permitir",
     "pendingTransactionMessage":
         "Você já tem um processo de pagamento em andamento. Conclua-o antes de iniciar um novo.",
     "pricingIntroductoryPeriod12": "para o primeiro ano!",
@@ -3231,8 +3257,14 @@ class CodegenLoader extends AssetLoader {
     "malwareBlocker": "Malware blocker",
     "contentBlockerTitle": "NSFW content and malware blocker",
     "contentBlockerDesc": "Block both malware and adult content",
+    "setupTunnerPermissionsDialogTitle": "We need your permission",
+    "setupTunnerPermissionsDialogDesc":
+        "In order to use Mysterium VPN, we need your permission to install a VPN profile.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "Your anonymity is secure. We do not see, collect or store any of your browsing activity.",
+    "allowPermissionsBtn": "Allow",
     "pendingTransactionMessage":
-        "Sie haben bereits einen laufenden Zahlungsvorgang. Bitte schließen Sie ihn ab, bevor Sie einen neuen starten.",
+        "You already have an ongoing payment transaction. Please complete it before starting a new one.",
     "pricingIntroductoryPeriod12": "for the first year!",
     "pricingIntroductoryPeriod6": "for the first 6 months!",
     "then": "Then",
@@ -3781,6 +3813,12 @@ class CodegenLoader extends AssetLoader {
     "malwareBlocker": "Blocco malware",
     "contentBlockerTitle": "Contenuto NSFW e blocco malware",
     "contentBlockerDesc": "Blocca sia malware che contenuti per adulti",
+    "setupTunnerPermissionsDialogTitle": "Abbiamo bisogno del tuo permesso",
+    "setupTunnerPermissionsDialogDesc":
+        "Per iniziare a utilizzare Mysterium VPN, abbiamo bisogno della tua autorizzazione per installare un profilo VPN.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "Il tuo anonimato è al sicuro. Non visualizziamo, raccogliamo o archiviamo nessuna delle tue attività di navigazione.",
+    "allowPermissionsBtn": "Permettere",
     "pendingTransactionMessage":
         "Hai già un processo di pagamento in corso. Completalo prima di iniziarne uno nuovo.",
     "pricingIntroductoryPeriod12": "per il primo anno!",
@@ -4334,6 +4372,12 @@ class CodegenLoader extends AssetLoader {
     "contentBlockerTitle": "Bloqueur de contenu NSFW et de logiciels malveillants",
     "contentBlockerDesc":
         "Bloquez à la fois les logiciels malveillants et le contenu réservé aux adultes",
+    "setupTunnerPermissionsDialogTitle": "Nous avons besoin de votre autorisation",
+    "setupTunnerPermissionsDialogDesc":
+        "Pour commencer à utiliser Mysterium VPN, nous avons besoin de votre autorisation pour installer un profil VPN.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "Votre anonymat est protégé. Nous ne consultons, ne collectons ni ne stockons aucune de vos activités de navigation.",
+    "allowPermissionsBtn": "Permettre",
     "pendingTransactionMessage":
         "Vous avez déjà un processus de paiement en cours. Veuillez le terminer avant d'en démarrer un nouveau.",
     "pricingIntroductoryPeriod12": "pour la première année !",
@@ -4878,6 +4922,12 @@ class CodegenLoader extends AssetLoader {
     "malwareBlocker": "Pemblokir malware",
     "contentBlockerTitle": "Pemblokir konten NSFW dan malware",
     "contentBlockerDesc": "Blokir malware dan konten dewasa",
+    "setupTunnerPermissionsDialogTitle": "Kami membutuhkan izin Anda",
+    "setupTunnerPermissionsDialogDesc":
+        "Untuk mulai menggunakan Mysterium VPN, kami memerlukan izin Anda untuk memasang profil VPN.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "Anonimitas Anda aman. Kami tidak melihat, mengumpulkan, atau menyimpan aktivitas penjelajahan Anda.",
+    "allowPermissionsBtn": "Mengizinkan",
     "pendingTransactionMessage":
         "Anda sudah memiliki proses pembayaran yang sedang berjalan. Harap selesaikan sebelum memulai yang baru.",
     "pricingIntroductoryPeriod12": "untuk tahun pertama!",
@@ -5426,6 +5476,12 @@ class CodegenLoader extends AssetLoader {
     "malwareBlocker": "bloqueador de malware",
     "contentBlockerTitle": "Bloqueador de malware y contenido NSFW",
     "contentBlockerDesc": "Bloquee tanto el malware como el contenido para adultos",
+    "setupTunnerPermissionsDialogTitle": "Necesitamos tu permiso",
+    "setupTunnerPermissionsDialogDesc":
+        "Para comenzar a usar Mysterium VPN, necesitamos su permiso para instalar un perfil de VPN.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "Su anonimato está seguro. No vemos, recopilamos ni almacenamos ninguna actividad de navegación.",
+    "allowPermissionsBtn": "Permitir",
     "pendingTransactionMessage":
         "Ya tienes un proceso de pago en curso. Termínalo antes de comenzar uno nuevo.",
     "pricingIntroductoryPeriod": {
@@ -5967,6 +6023,12 @@ class CodegenLoader extends AssetLoader {
     "malwareBlocker": "مانع البرامج الضارة",
     "contentBlockerTitle": "محتوى NSFW ومانع البرامج الضارة",
     "contentBlockerDesc": "حظر كل من البرامج الضارة ومحتوى البالغين",
+    "setupTunnerPermissionsDialogTitle": "نحن بحاجة إلى إذنك",
+    "setupTunnerPermissionsDialogDesc":
+        "لبدء استخدام Mysterium VPN، نحتاج إلى إذنك لتثبيت ملف تعريف VPN.",
+    "setupTunnerPermissionsDialogDisclaimer":
+        "إخفاء هويتك آمن. نحن لا نشاهد أو نجمع أو نخزن أيًا من أنشطة التصفح الخاصة بك.",
+    "allowPermissionsBtn": "يسمح",
     "pendingTransactionMessage":
         "لديك بالفعل عملية دفع جارية. يرجى إكمالها قبل بدء عملية دفع جديدة.",
     "pricingIntroductoryPeriod12": "للسنة الأولى!",
