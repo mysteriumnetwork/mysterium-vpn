@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -25,6 +24,7 @@ class VpnPrivacyConsentForm extends HookConsumerWidget {
   ) {
     final height = getMediaHeight(context);
     final analyticsStore = ref.read(analyticsStorePOD);
+    final userPreferencesStore = ref.watch(userPreferencesStorePOD);
     return Column(
       children: [
         HeaderTitle(
@@ -43,9 +43,12 @@ class VpnPrivacyConsentForm extends HookConsumerWidget {
           useSystemColor: false,
           color: Palette.purple,
           width: 250,
-          onPressed: () {
+          onPressed: () async {
             analyticsStore.logEvent(AnalyticsEvent.ppAcceptClick);
-            context.beamToReplacementNamed(Routes.permissions.path);
+            await userPreferencesStore.setVpnPrivacyPolicyConsent(
+              approval: true,
+            );
+            Navigator.of(context).maybePop();
           },
           child: EasyText(
             LocaleKeys.acceptAndContinue.tr(),

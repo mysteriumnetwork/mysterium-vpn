@@ -105,6 +105,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
           Computed<String>(() => super.notSafeContentBlockerDnsAddress,
               name: 'RemoteConfigStoreBase.notSafeContentBlockerDnsAddress'))
       .value;
+  Computed<bool>? _$showVpnPrivacyPolicyPageComputed;
+
+  @override
+  bool get showVpnPrivacyPolicyPage =>
+      (_$showVpnPrivacyPolicyPageComputed ??= Computed<bool>(() => super.showVpnPrivacyPolicyPage,
+              name: 'RemoteConfigStoreBase.showVpnPrivacyPolicyPage'))
+          .value;
   Computed<bool>? _$pricingMonthlyComputed;
 
   @override
@@ -176,6 +183,7 @@ hideMalwareBlocker: ${hideMalwareBlocker},
 hideNotSafeContentBlocker: ${hideNotSafeContentBlocker},
 malwareBlockerDnsAddress: ${malwareBlockerDnsAddress},
 notSafeContentBlockerDnsAddress: ${notSafeContentBlockerDnsAddress},
+showVpnPrivacyPolicyPage: ${showVpnPrivacyPolicyPage},
 pricingMonthly: ${pricingMonthly},
 mqttExperiment: ${mqttExperiment}
     ''';

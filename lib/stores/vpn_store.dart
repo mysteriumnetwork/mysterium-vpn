@@ -88,9 +88,6 @@ abstract class _VpnStore with Store {
   bool _notSafeContentBlocker = false;
 
   @readonly
-  bool? _vpnConfigConsent;
-
-  @readonly
   VpnConnection? _vpnConnection;
 
   @readonly
@@ -102,6 +99,11 @@ abstract class _VpnStore with Store {
 
   @readonly
   ConnectionStatus _connectionStatus = ConnectionStatus.disconnected;
+
+  @computed
+  ConnectionStatus get vpnStatus => _connectionStatus == ConnectionStatus.unknown
+      ? ConnectionStatus.disconnected
+      : _connectionStatus;
 
   @computed
   String? get replaceDNSAddress {
@@ -129,8 +131,6 @@ abstract class _VpnStore with Store {
   @readonly
   String? _connectingLocationCode;
 
-  bool _isTunnelSetup = false;
-
   @observable
   ObservableFuture<void>? resolveConnectionLocationFuture;
 
@@ -142,16 +142,30 @@ abstract class _VpnStore with Store {
   String? originCountry;
 
   Future<void> _init() async {
-    _vpnConfigConsent = await _localDBService.getVpnConsentApproval() ?? false;
-    if (_vpnConfigConsent ?? false) {
-      await _setupTunnel().whenComplete(_setupAndListenToConnectionStatus);
-    }
+    await _initWireguardKey();
 
     _refreshIPConnection = await _localDBService.getRefreshIPConnection();
     _malwareBlockerContent = await _localDBService.getMalwareBlocker();
     _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker();
+    final isConfigured = await _checkTunelConfigured();
+    if (isConfigured) {
+      await _setupAndListenToConnectionStatus();
+    } else if (Platform.isWindows) {
+      // Has to be called on init
+      await setupTunnel();
+    }
+  }
 
-    await _initWireguardKey();
+  @action
+  Future<bool> _checkTunelConfigured() async {
+    try {
+      return await _wireguardService.checkTunnelConfiguration(
+        bundleId: _env.getBundleId(),
+        tunnelName: _env.values.tunnelName,
+      );
+    } catch (e) {
+      return false;
+    }
   }
 
   /// Setup initial connection status and listen to connection status changes
@@ -189,29 +203,21 @@ abstract class _VpnStore with Store {
       if (event == ConnectionStatus.disconnecting) {
         _vpnConnection = null;
       }
-
-      if (event == ConnectionStatus.unknown) {
-        _isTunnelSetup = false;
-        _setupTunnel();
-      }
       _connectionStatus = event;
     });
   }
 
   /// Setup Wireguard tunnel
   @action
-  Future<void> _setupTunnel() async {
+  Future<void> setupTunnel() async {
     try {
-      if (_isTunnelSetup) {
-        return;
-      }
       await _wireguardService.setupTunnel(
         bundleId: _env.getBundleId(),
         win32ServiceName: win32ServiceName,
         tunnelName: _env.values.tunnelName,
       );
-      _isTunnelSetup = true;
       _logger.info('Tunnel setup done');
+      await _setupAndListenToConnectionStatus();
     } catch (e, stackTrace) {
       var message = 'Error occured while setting up tunnel';
       if (e is PlatformException) {
@@ -220,20 +226,9 @@ abstract class _VpnStore with Store {
           message = 'You need to grant permission to start VPN tunnel.';
         }
       }
-
-      _isTunnelSetup = false;
       _logger.handle(e, stackTrace);
       showSnackbar(message);
       rethrow;
-    }
-  }
-
-  @action
-  Future<void> setVpnConfigConsent({required bool value}) async {
-    await _localDBService.setVpnConsentApproval(approval: value);
-    _vpnConfigConsent = value;
-    if (_vpnConfigConsent ?? false) {
-      await _setupTunnel().whenComplete(_setupAndListenToConnectionStatus);
     }
   }
 
@@ -332,13 +327,6 @@ abstract class _VpnStore with Store {
       _logger.handle(e, stackTrace);
       rethrow;
     } catch (e, stackTrace) {
-      if (e is PlatformException) {
-        if ((e.message?.contains('Permissions are not given') ?? false) ||
-            (e.message?.contains('permission denied') ?? false) ||
-            (e.message?.contains('tunnel not initialized') ?? false)) {
-          _setupTunnel();
-        }
-      }
       _logger.handle(e, stackTrace);
       throw WireguardConnectException(e.toString());
     }
@@ -368,7 +356,10 @@ abstract class _VpnStore with Store {
 
   /// Connect/Disconnect from VPN
   @action
-  Future<void> toggleConnection({String? location, bool isRetrying = false}) async {
+  Future<void> toggleConnection({
+    String? location,
+    bool isRetrying = false,
+  }) async {
     if (_connectionStatus == ConnectionStatus.connected &&
         (location == null || location == _vpnConnection?.location)) {
       await disconnectWireguard();
@@ -383,9 +374,6 @@ abstract class _VpnStore with Store {
       }
     }
 
-    if (!_isTunnelSetup || await _wireguardService.status() == ConnectionStatus.unknown) {
-      await _setupTunnel();
-    }
     await startConnection(location: location, isRetrying: isRetrying);
   }
 
@@ -404,6 +392,17 @@ abstract class _VpnStore with Store {
   }) async {
     if (!await _checkSubscriptionStatus()) {
       throw const SubscriptionRequiredException();
+    }
+
+    if (!(await _wireguardService.checkTunnelConfiguration(
+      bundleId: _env.getBundleId(),
+      tunnelName: _env.values.tunnelName,
+    ))) {
+      if (Platform.isWindows) {
+        await setupTunnel();
+      } else {
+        throw const TunnelSetupRequiredException();
+      }
     }
 
     _connectingNonce = generateRandomString(8);

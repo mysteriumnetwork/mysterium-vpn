@@ -32,7 +32,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
         .scrollable()
         .padding(horizontal: 40, vertical: 40)
         .height(getMediaHeight(context))
-        .backgroundColor(Theme.of(context).colorScheme.onSurface);
+        .backgroundColor(Theme.of(context).colorScheme.surface);
   }
 }
 
