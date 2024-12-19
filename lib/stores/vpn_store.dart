@@ -335,12 +335,6 @@ abstract class _VpnStore with Store {
   /// Disconnect from Wireguard tunnel
   @action
   Future<void> disconnectWireguard() async {
-    if (!(await _wireguardService.checkTunnelConfiguration(
-      bundleId: _env.getBundleId(),
-      tunnelName: _env.values.tunnelName,
-    ))) {
-      return;
-    }
     final tunnelStatus = await _wireguardService.status();
     if (tunnelStatus == ConnectionStatus.connected || tunnelStatus == ConnectionStatus.connecting) {
       await _wireguardService.disconnect().timeout(
@@ -407,7 +401,7 @@ abstract class _VpnStore with Store {
       if (Platform.isWindows) {
         await setupTunnel();
       } else {
-        throw const TunnelSetupnRequiredException();
+        throw const TunnelSetupRequiredException();
       }
     }
 
