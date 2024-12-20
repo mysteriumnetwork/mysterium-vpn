@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/layout_builders/screen_type_builder.dart';
@@ -27,17 +26,15 @@ class HomePage extends HookConsumerWidget {
     useEffect(
       () {
         InAppReviewObserver().monitor();
-        final disposer = when(
-          (showVpnPrivacyPolicyPage) => remoteConfig.showVpnPrivacyPolicyPage == true,
-          () async {
-            if (await userPreferencesStore.getVpnPrivacyPolicyConsent() == false) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                Beamer.of(context).beamToNamed(Routes.privacyPolicy.path);
-              });
+        if (remoteConfig.showVpnPrivacyPolicyPage) {
+          Future.microtask(() async {
+            final isConsentAccepted = await userPreferencesStore.getVpnPrivacyPolicyConsent();
+            if (!isConsentAccepted && context.mounted) {
+              context.beamToNamed(Routes.privacyPolicy.path);
             }
-          },
-        );
-        return disposer.call;
+          });
+        }
+        return null;
       },
       [],
     );

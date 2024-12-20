@@ -140,6 +140,30 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
     });
   }
 
+  late final _$resolveRemoteConfigValuesFutureAtom =
+      Atom(name: 'RemoteConfigStoreBase.resolveRemoteConfigValuesFuture', context: context);
+
+  @override
+  ObservableFuture<void>? get resolveRemoteConfigValuesFuture {
+    _$resolveRemoteConfigValuesFutureAtom.reportRead();
+    return super.resolveRemoteConfigValuesFuture;
+  }
+
+  @override
+  set resolveRemoteConfigValuesFuture(ObservableFuture<void>? value) {
+    _$resolveRemoteConfigValuesFutureAtom.reportWrite(value, super.resolveRemoteConfigValuesFuture,
+        () {
+      super.resolveRemoteConfigValuesFuture = value;
+    });
+  }
+
+  late final _$initAsyncAction = AsyncAction('RemoteConfigStoreBase.init', context: context);
+
+  @override
+  Future<void> init() {
+    return _$initAsyncAction.run(() => super.init());
+  }
+
   late final _$setDefaultUserAsyncAction =
       AsyncAction('RemoteConfigStoreBase.setDefaultUser', context: context);
 
@@ -169,6 +193,7 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   String toString() {
     return '''
 config: ${config},
+resolveRemoteConfigValuesFuture: ${resolveRemoteConfigValuesFuture},
 isServiceAvailable: ${isServiceAvailable},
 isServiceAvailableMessage: ${isServiceAvailableMessage},
 hideDeleteAccount: ${hideDeleteAccount},
