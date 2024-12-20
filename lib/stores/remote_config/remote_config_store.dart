@@ -47,7 +47,7 @@ abstract class RemoteConfigStoreBase with Store {
   @action
   Future<void> init() async {
     try {
-      resolveRemoteConfigValuesFuture = ObservableFuture(getAllRemoteConfigValues());
+      resolveRemoteConfigValuesFuture ??= ObservableFuture(getAllRemoteConfigValues());
       await resolveRemoteConfigValuesFuture;
     } catch (e, st) {
       logger.handle(e, st);
@@ -72,8 +72,7 @@ abstract class RemoteConfigStoreBase with Store {
   @action
   Future<void> getAllRemoteConfigValues() async {
     try {
-      final val = await client.getAllValues();
-      config = ObservableMap.of(val);
+      config = ObservableMap.of(await client.getAllValues());
     } catch (e, st) {
       logger.handle(e, st);
     }
