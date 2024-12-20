@@ -363,7 +363,10 @@ FutureOr<void> handleOnBillingPage({
   }
 
   if (!subscriptionActive && !Platform.isWindows) {
-    beamer.beamToNamed(Routes.payment.path);
+    final currentLocation = beamer.currentConfiguration?.uri.path;
+    currentLocation == Routes.settings.path
+        ? beamer.beamToNamed(Routes.paymentSettings.path)
+        : beamer.beamToNamed(Routes.payment.path);
     return;
   }
 
