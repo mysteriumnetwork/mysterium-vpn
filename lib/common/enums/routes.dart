@@ -6,6 +6,7 @@ enum Routes {
   splash('/splash'),
   settings('/main/settings'),
   payment('/main/payment'),
+  paymentSettings('/main/settings/payment'),
   privacyPolicy('/main/privacy-policy');
 
   const Routes(this.path);
