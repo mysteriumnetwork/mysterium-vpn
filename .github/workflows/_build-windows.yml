@@ -62,18 +62,23 @@ jobs:
           dart run msix:create `
             --build-windows false --install-certificate false --output-name "Mysterium VPN" `
             --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
-            --sign-msix "true"
+            --sign-msix false --publisher "CN=UAB MN Technologijos, O=UAB MN Technologijos, L=Vilnius, S=Vilniaus, C=LT"
 
-      # Requirements to Sign RELEASE builds:
-      # 1. Certum DER file from https://certmanager.certum.pl/certificate/107036750
-      # 2. Certum SimplySign Desktop application installed from https://support.certum.eu/en/cert-offer-software-and-libraries/
-      # SimplySign Desktop application works with 2FA to unlock private keys for certificate in Windows keystore
-      # - name: Build Windows installer
-      #  run: |
-      #    dart run msix:create `
-      #      --build-windows false --install-certificate false --output-name "Mysterium VPN" `
-      #      --display-name "Mysterium VPN Test" --logo-path "assets/logo/dev/desktop.png" `
-      #      --sign-msix "true" --certificate-path " /z/69a0bfe490c4fa06080c8aa2f3d5330c.cer"
+      - name: Sign Windows installer
+        uses: azure/trusted-signing-action@v0.5.0
+        with:
+          azure-tenant-id: ${{ vars.MICROSOFT_AZURE_AD_TENANT_ID }}
+          azure-client-id: ${{ vars.MICROSOFT_AZURE_SIGNING_ClIENT_ID }}
+          azure-client-secret: ${{ secrets.MICROSOFT_AZURE_SIGNING_ClIENT_SECRET }}
+          endpoint: https://neu.codesigning.azure.net/
+          trusted-signing-account-name: ${{ vars.MICROSOFT_AZURE_SIGNING_ACCOUNT_NAME }}
+          certificate-profile-name: ${{ vars.MICROSOFT_AZURE_SIGNING_PROFILE_NAME }}
+          files-folder: build/windows/x64/runner/Release
+          files-folder-filter: msix
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+          cache-dependencies: true
 
       - name: Upload to Github
         uses: actions/upload-artifact@v4
