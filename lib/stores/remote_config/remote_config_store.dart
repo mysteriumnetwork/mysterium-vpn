@@ -41,6 +41,21 @@ abstract class RemoteConfigStoreBase with Store {
   @observable
   ObservableMap<String, dynamic> config = ObservableMap();
 
+  @observable
+  ObservableFuture<void>? resolveRemoteConfigValuesFuture;
+
+  @action
+  Future<void> init() async {
+    try {
+      resolveRemoteConfigValuesFuture = ObservableFuture(getAllRemoteConfigValues());
+      await resolveRemoteConfigValuesFuture;
+    } catch (e, st) {
+      logger.handle(e, st);
+    } finally {
+      refreshRemoteConfigValues();
+    }
+  }
+
   @action
   Future<void> setDefaultUser({
     required String email,
@@ -57,7 +72,8 @@ abstract class RemoteConfigStoreBase with Store {
   @action
   Future<void> getAllRemoteConfigValues() async {
     try {
-      config = ObservableMap.of(await client.getAllValues());
+      final val = await client.getAllValues();
+      config = ObservableMap.of(val);
     } catch (e, st) {
       logger.handle(e, st);
     }
@@ -187,7 +203,7 @@ abstract class RemoteConfigStoreBase with Store {
     if (config.containsKey(_FeatureToggleKey.showVpnPrivacyPolicyPage.name)) {
       return config[_FeatureToggleKey.showVpnPrivacyPolicyPage.name] as bool;
     }
-    return true;
+    return false;
   }
 
   @computed

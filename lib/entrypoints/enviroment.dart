@@ -88,6 +88,7 @@ class Enviroment {
       overrides: [environmentPOD.overrideWith((ref) => flavorConfig)],
     );
     await container.read(analyticsInitPOD(firebaseOptions).future);
+    await initRemoteConfig(container);
     final logger = container.read(loggerPOD);
 
     FlutterError.onError = (details) {
@@ -142,6 +143,15 @@ class Enviroment {
         );
       },
     );
+  }
+
+  Future<void> initRemoteConfig(ProviderContainer container) async {
+    try {
+      final remoteConfigStore = container.read(remoteConfigStorePOD);
+      await remoteConfigStore.init();
+    } catch (e) {
+      debugPrint('Error initializing remote config $e');
+    }
   }
 
   Future<FlavorConfig> setupFlavor({required String flavor}) async {
