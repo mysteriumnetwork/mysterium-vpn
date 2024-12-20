@@ -27,11 +27,10 @@ class HomePage extends HookConsumerWidget {
       () {
         InAppReviewObserver().monitor();
         if (remoteConfig.showVpnPrivacyPolicyPage) {
-          userPreferencesStore.getVpnPrivacyPolicyConsent().then((isConsentAccepted) {
-            if (!isConsentAccepted) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                context.beamToNamed(Routes.privacyPolicy.path);
-              });
+          Future.microtask(() async {
+            final isConsentAccepted = await userPreferencesStore.getVpnPrivacyPolicyConsent();
+            if (!isConsentAccepted && context.mounted) {
+              context.beamToNamed(Routes.privacyPolicy.path);
             }
           });
         }
