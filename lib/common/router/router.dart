@@ -15,60 +15,71 @@ class BeamerLocations extends BeamLocation<BeamState> {
   BeamerLocations(RouteInformation super.routeInformation);
 
   @override
-  List<Pattern> get pathPatterns => [Routes.main.path, Routes.welcome.path];
+  List<Pattern> get pathPatterns => [
+        Routes.welcome.path,
+        Routes.main.path,
+        Routes.splash.path,
+        Routes.settings.path,
+        Routes.payment.path,
+        Routes.privacyPolicy.path,
+        Routes.login.path,
+        Routes.checkYourEmail.path,
+        Routes.paymentSettings.path,
+      ];
 
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
-        if (state.uri.path == Routes.welcome.path)
+        if (state.uri.path.contains(Routes.welcome.path))
           BeamPage(
             key: ValueKey(Routes.welcome.toDashCase),
             name: Routes.welcome.path,
             title: Routes.welcome.name,
             child: const WelcomePage(),
           ),
-        if (state.uri.path == Routes.main.path)
+        if (state.uri.path.contains(Routes.main.path))
           BeamPage(
             key: ValueKey(Routes.main.toDashCase),
             name: Routes.main.path,
             title: Routes.main.name,
             child: const HomePage(),
           ),
-        if (state.uri.path == Routes.splash.path)
+        if (state.uri.path.contains(Routes.splash.path))
           BeamPage(
             key: ValueKey(Routes.splash.toDashCase),
             name: Routes.splash.path,
             title: Routes.splash.name,
             child: const SplashPage(),
           ),
-        if (state.uri.path == Routes.settings.path)
+        if (state.uri.path.contains(Routes.settings.path))
           BeamPage(
             key: ValueKey(Routes.settings.toDashCase),
             name: Routes.settings.path,
             title: Routes.settings.name,
             child: const SettingsPage(),
           ),
-        if (state.uri.path == Routes.payment.path)
+        if (state.uri.path.contains(Routes.payment.path) ||
+            state.uri.path.contains(Routes.paymentSettings.path))
           BeamPage(
             key: ValueKey(Routes.payment.toDashCase),
             name: Routes.payment.path,
             title: Routes.payment.name,
             child: const SubscriptionPage(),
           ),
-        if (state.uri.path == Routes.privacyPolicy.path)
+        if (state.uri.path.contains(Routes.privacyPolicy.path))
           BeamPage(
             key: ValueKey(Routes.privacyPolicy.toDashCase),
             name: Routes.privacyPolicy.path,
             title: Routes.privacyPolicy.name,
             child: const VpnPrivacyConsentPage(),
           ),
-        if (state.uri.path == Routes.login.path)
+        if (state.uri.path.contains(Routes.login.path))
           BeamPage(
             key: ValueKey(Routes.login.toDashCase),
             name: Routes.login.path,
             title: Routes.login.name,
             child: const LoginPage(),
           ),
-        if (state.uri.path == Routes.checkYourEmail.path)
+        if (state.uri.path.contains(Routes.checkYourEmail.path))
           BeamPage(
             key: ValueKey(Routes.checkYourEmail.toDashCase),
             name: Routes.checkYourEmail.path,
