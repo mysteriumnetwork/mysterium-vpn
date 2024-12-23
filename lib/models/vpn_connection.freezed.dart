@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$VpnConnection {
   String get connectionIP => throw _privateConstructorUsedError;
-  String get location => throw _privateConstructorUsedError;
+  VPNLocation get location => throw _privateConstructorUsedError;
 
   /// Create a copy of VpnConnection
   /// with the given fields replaced by the non-null parameter values.
@@ -30,7 +30,9 @@ abstract class $VpnConnectionCopyWith<$Res> {
   factory $VpnConnectionCopyWith(VpnConnection value, $Res Function(VpnConnection) then) =
       _$VpnConnectionCopyWithImpl<$Res, VpnConnection>;
   @useResult
-  $Res call({String connectionIP, String location});
+  $Res call({String connectionIP, VPNLocation location});
+
+  $VPNLocationCopyWith<$Res> get location;
 }
 
 /// @nodoc
@@ -59,8 +61,18 @@ class _$VpnConnectionCopyWithImpl<$Res, $Val extends VpnConnection>
       location: null == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
-              as String,
+              as VPNLocation,
     ) as $Val);
+  }
+
+  /// Create a copy of VpnConnection
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $VPNLocationCopyWith<$Res> get location {
+    return $VPNLocationCopyWith<$Res>(_value.location, (value) {
+      return _then(_value.copyWith(location: value) as $Val);
+    });
   }
 }
 
@@ -71,7 +83,10 @@ abstract class _$$VpnConnectionImplCopyWith<$Res> implements $VpnConnectionCopyW
       __$$VpnConnectionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String connectionIP, String location});
+  $Res call({String connectionIP, VPNLocation location});
+
+  @override
+  $VPNLocationCopyWith<$Res> get location;
 }
 
 /// @nodoc
@@ -98,7 +113,7 @@ class __$$VpnConnectionImplCopyWithImpl<$Res>
       location: null == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
-              as String,
+              as VPNLocation,
     ));
   }
 }
@@ -111,7 +126,7 @@ class _$VpnConnectionImpl extends _VpnConnection {
   @override
   final String connectionIP;
   @override
-  final String location;
+  final VPNLocation location;
 
   @override
   String toString() {
@@ -141,13 +156,14 @@ class _$VpnConnectionImpl extends _VpnConnection {
 
 abstract class _VpnConnection extends VpnConnection {
   const factory _VpnConnection(
-      {required final String connectionIP, required final String location}) = _$VpnConnectionImpl;
+      {required final String connectionIP,
+      required final VPNLocation location}) = _$VpnConnectionImpl;
   const _VpnConnection._() : super._();
 
   @override
   String get connectionIP;
   @override
-  String get location;
+  VPNLocation get location;
 
   /// Create a copy of VpnConnection
   /// with the given fields replaced by the non-null parameter values.

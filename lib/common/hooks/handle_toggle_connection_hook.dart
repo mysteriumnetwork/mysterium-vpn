@@ -1,14 +1,25 @@
 part of 'hooks.dart';
 
-Future<void> Function({String? location}) useHandleToggleConnection() {
+Future<void> Function({
+  VPNLocation? location,
+  AnalyticsEventSelector? selectEvent,
+}) useHandleToggleConnection() {
   final context = useContext();
   final handleSubscribe = useHandleSubscribe();
   final handleSetupTunnel = useHandleSetupTunnel();
 
   return useCallback(
-    ({String? location}) async {
+    ({VPNLocation? location, AnalyticsEventSelector? selectEvent}) async {
       final ref = ProviderScope.containerOf(context, listen: false);
       final vpnStore = ref.read(vpnStorePOD);
+      final analyticsStore = ref.read(analyticsStorePOD);
+
+      final logEvent =
+          vpnStore.isConnected ? analyticsStore.logDisconnect : analyticsStore.logConnect;
+      logEvent(
+        location,
+        selectEvent?.call(vpnStore.isConnected),
+      );
 
       try {
         await vpnStore.toggleConnection(location: location);
@@ -24,3 +35,6 @@ Future<void> Function({String? location}) useHandleToggleConnection() {
     [handleSubscribe, handleSetupTunnel],
   );
 }
+
+// ignore: avoid_positional_boolean_parameters
+typedef AnalyticsEventSelector = AnalyticsEvent Function(bool connected);

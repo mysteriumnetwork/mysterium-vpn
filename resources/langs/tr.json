@@ -517,5 +517,11 @@
   "pricingIntroductoryPeriod12": "ilk yıl için!",
   "pricingIntroductoryPeriod6": "ilk 6 ay için!",
   "then": "Sonra",
-  "renewsFor": "Şunun için yenilenir"
+  "renewsFor": "Şunun için yenilenir",
+  "dataCenterBannerTitle": "Veri Merkezi IP'lerini Tanıtıyoruz!",
+  "dataCenterBannerDesc": "Hızınızı artırın ve rakipsiz bağlantı kararlılığının tadını çıkarın",
+  "dataCenterBannerBtn": "Şimdi deneyin",
+  "ipTypeDataCenter": "Veri Merkezi IP'leri",
+  "ipTypeResidential": "Tüm konumlar",
+  "locationsDataCenterDisclaimer": "Tüm gizlilik ihtiyaçlarınız için daha hızlı hızların ve geliştirilmiş kararlılığın keyfini çıkarın."
 }

@@ -517,5 +517,11 @@
   "pricingIntroductoryPeriod12": "最初の1年間！",
   "pricingIntroductoryPeriod6": "最初の6か月間！",
   "then": "次に",
-  "renewsFor": "更新料金は"
+  "renewsFor": "更新料金は",
+  "dataCenterBannerTitle": "データセンターIPのご紹介！",
+  "dataCenterBannerDesc": "速度を向上させ、比類のない接続の安定性を楽しもう",
+  "dataCenterBannerBtn": "今すぐ試す",
+  "ipTypeDataCenter": "データセンターIP",
+  "ipTypeResidential": "すべての場所",
+  "locationsDataCenterDisclaimer": "すべてのプライバシー要件に対応する、より速い速度と向上した安定性をお楽しみください。"
 }

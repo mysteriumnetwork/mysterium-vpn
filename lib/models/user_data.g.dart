@@ -18,33 +18,38 @@ class UserDataAdapter extends TypeAdapter<UserData> {
     };
     return UserData(
       userId: fields[0] as String,
-      recentLocations: (fields[2] as List).cast<String>(),
+      recentLocationCodes: (fields[2] as List).cast<String>(),
+      recentVPNLocations: fields[10] == null ? [] : (fields[10] as List).cast<VPNLocation>(),
       emailCommunication: fields[1] as Approval,
       notifications: fields[3] as Approval,
       subscriptionPlan: fields[4] as String?,
+      vpnConfigConsent: fields[6] as bool?,
       refreshIPConnection: fields[7] == null ? true : fields[7] as bool,
       malwareBlocker: fields[8] == null ? false : fields[8] as bool,
       notSafeContentBlocker: fields[9] == null ? false : fields[9] as bool,
-      vpnPrivacyPolicyConsent: fields[10] == null ? false : fields[10] as bool,
-    )..subscriptionPurchaseId = fields[5] as String?;
+      subscriptionPurchaseId: fields[5] as String?,
+      shownBanners: fields[11] == null ? [] : (fields[11] as List).cast<BannerType>(),
+    );
   }
 
   @override
   void write(BinaryWriter writer, UserData obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.userId)
       ..writeByte(1)
       ..write(obj.emailCommunication)
       ..writeByte(2)
-      ..write(obj.recentLocations)
+      ..write(obj.recentLocationCodes)
       ..writeByte(3)
       ..write(obj.notifications)
       ..writeByte(4)
       ..write(obj.subscriptionPlan)
       ..writeByte(5)
       ..write(obj.subscriptionPurchaseId)
+      ..writeByte(6)
+      ..write(obj.vpnConfigConsent)
       ..writeByte(7)
       ..write(obj.refreshIPConnection)
       ..writeByte(8)
@@ -52,7 +57,9 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       ..writeByte(9)
       ..write(obj.notSafeContentBlocker)
       ..writeByte(10)
-      ..write(obj.vpnPrivacyPolicyConsent);
+      ..write(obj.recentVPNLocations)
+      ..writeByte(11)
+      ..write(obj.shownBanners);
   }
 
   @override

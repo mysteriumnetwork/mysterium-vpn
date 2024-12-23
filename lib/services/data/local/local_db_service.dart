@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:hive/hive.dart';
+import 'package:mysterium_vpn/common/enums/banner_type.dart';
+import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
 
@@ -78,14 +80,23 @@ class LocalDBService {
     await _saveUserData(userData);
   }
 
-  Future<void> setRecentLocation(List<String> locations) async {
+  Future<void> setRecentLocation(List<VPNLocation> locations) async {
     final userData = await _loadUserData();
     userData.recentLocations = locations;
 
     await _saveUserData(userData);
   }
 
-  Future<List<String>> getRecentLocations() async => (await _loadUserData()).recentLocations;
+  Future<List<VPNLocation>> getRecentLocations() async => (await _loadUserData()).recentLocations;
+
+  Future<void> setShownBanners(List<BannerType> banners) async {
+    final userData = await _loadUserData();
+    userData.shownBanners = banners;
+
+    await _saveUserData(userData);
+  }
+
+  Future<List<BannerType>> getShownBanners() async => (await _loadUserData()).shownBanners;
 
   Future<UserData> _loadUserData() async {
     final user = await _ensureUserSet();
@@ -108,7 +119,8 @@ class LocalDBService {
       key,
       UserData(
         userId: key,
-        recentLocations: [],
+        recentLocationCodes: [],
+        recentVPNLocations: [],
       ),
     );
   }

@@ -29,6 +29,8 @@ abstract class Palette {
   Color get scrimColor;
   Color get buttonBackgroundColor;
   Color get disabledColor;
+  Color get disclaimerBackgroundColor;
+
   MaterialColor get swatchColor;
 }
 
@@ -71,6 +73,9 @@ class LightPalette implements Palette {
 
   @override
   Color get disabledColor => Palette.white;
+
+  @override
+  Color get disclaimerBackgroundColor => Palette.lightGrey;
 }
 
 class DarkPalette implements Palette {
@@ -110,6 +115,9 @@ class DarkPalette implements Palette {
 
   @override
   Color get disabledColor => Palette.mediumBlack;
+
+  @override
+  Color get disclaimerBackgroundColor => Palette.lightBlack;
 }
 
 Map<int, Color> color = const {

@@ -132,7 +132,12 @@ final apiServicePOD = Provider<ApiService>((ref) {
   final networkService = ref.watch(networkServicePOD);
   final logger = ref.watch(loggerPOD);
 
-  return RestApiService(api: api, networkService: networkService, logger: logger);
+  return RestApiService(
+    api: api,
+    networkService: networkService,
+    logger: logger,
+    env: ref.watch(environmentPOD),
+  );
 });
 
 final authServicePOD = Provider<AuthService>((ref) {

@@ -516,5 +516,11 @@
   "pricingIntroductoryPeriod12": "للسنة الأولى!",
   "pricingIntroductoryPeriod6": "لأول 6 أشهر!",
   "then": "ثم",
-  "renewsFor": "يتجدد لـ"
+  "renewsFor": "يتجدد لـ",
+  "dataCenterBannerTitle": "تقديم عناوين IP لمراكز البيانات!",
+  "dataCenterBannerDesc": "عزز سرعتك واستمتع باستقرار اتصال لا مثيل له",
+  "dataCenterBannerBtn": "جرّب الآن",
+  "ipTypeDataCenter": "عناوين IP لمراكز البيانات",
+  "ipTypeResidential": "جميع المواقع",
+  "locationsDataCenterDisclaimer": "استمتع بسرعات أسرع واستقرار محسّن لجميع احتياجات الخصوصية لديك."
 }

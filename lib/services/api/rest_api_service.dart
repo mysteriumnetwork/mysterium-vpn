@@ -1,5 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/report_broken_node_request.dart';
@@ -23,14 +26,17 @@ class RestApiService extends ApiService {
     required VpnApi api,
     required NetworkService networkService,
     required Talker logger,
+    required FlavorConfig env,
   })  : _networkService = networkService,
         _apiConnection = api.getConnection(),
-        _logger = logger;
+        _logger = logger,
+        _env = env;
 
   final Connection _apiConnection;
   final NetworkService _networkService;
   final LocalDBService _localDb = LocalDBService.instance;
   final Talker _logger;
+  final FlavorConfig _env;
 
   @override
   Future<void> setNotificationsApproval({required bool approval}) async =>
@@ -47,24 +53,25 @@ class RestApiService extends ApiService {
         throw Exception('No data found');
       }
 
-      final topCountryCodes = List<String>.from(data.topCountries)
-        ..sort(
-          (a, b) => a.tr().compareTo(b.tr()),
-        );
-      final allCountryCodes = List<String>.from(data.countries)
-        ..removeWhere(
-          topCountryCodes.contains,
-        )
-        ..sort(
-          (a, b) => a.tr().compareTo(b.tr()),
-        );
+      var topCountries = data.topCountries.sortedBy((it) => it.tr()).toList();
+      var allCountries =
+          data.countries.whereNot(topCountries.contains).sortedBy((it) => it.tr()).toList();
+
       if (keyword.isNotEmpty) {
-        topCountryCodes.removeWhere((element) => !element.tr().toLowerCase().contains(keyword));
-        allCountryCodes.removeWhere((element) => !element.tr().toLowerCase().contains(keyword));
+        bool isMatch(String it) => it.tr().toLowerCase().contains(keyword);
+        topCountries = topCountries.where(isMatch).toList();
+        allCountries = allCountries.where(isMatch).toList();
       }
+
+      final dcCountries = _env.values.dcLocations
+          .where((it) => allCountries.contains(it) || topCountries.contains(it))
+          .toList();
+
       return VPNLocations(
-        allLocations: allCountryCodes,
-        topLocations: topCountryCodes,
+        allLocations: allCountries.map((code) => VPNLocation(code: code)).toList(),
+        topLocations: topCountries.map((code) => VPNLocation(code: code)).toList(),
+        dcLocations:
+            dcCountries.map((code) => VPNLocation(code: code, ipType: IPType.datacenter)).toList(),
       );
     } on ApiException {
       rethrow;
@@ -75,18 +82,18 @@ class RestApiService extends ApiService {
   }
 
   @override
-  Future<List<String>> getRecentLocations({required String keyword}) async {
-    final countryCodes = await _localDb.getRecentLocations();
+  Future<List<VPNLocation>> getRecentLocations({required String keyword}) async {
+    var locations = await _localDb.getRecentLocations();
     if (keyword.isNotEmpty) {
-      final res =
-          countryCodes.where((location) => location.tr().toLowerCase().contains(keyword)).toList();
-      return res;
+      locations = locations
+          .where((location) => location.code.tr().toLowerCase().contains(keyword))
+          .toList();
     }
-    return countryCodes;
+    return locations;
   }
 
   @override
-  Future<void> addRecentLocation(String location) async {
+  Future<void> addRecentLocation(VPNLocation location) async {
     final recentLocations = await _localDb.getRecentLocations();
     if (recentLocations.contains(location)) {
       recentLocations.remove(location);
@@ -211,4 +218,10 @@ class RestApiService extends ApiService {
       rethrow;
     }
   }
+
+  @override
+  Future<List<BannerType>> getShownBanners() => _localDb.getShownBanners();
+
+  @override
+  Future<void> setShownBanners(List<BannerType> banners) => _localDb.setShownBanners(banners);
 }
