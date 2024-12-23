@@ -71,4 +71,5 @@ jobs:
       application_name: "Mysterium VPN"
       application_logo: "assets/logo/prod/desktop.png"
       flavor_dart: "PROD"
+      standalone_sign: true
     secrets: inherit
