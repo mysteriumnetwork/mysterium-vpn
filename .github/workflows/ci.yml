@@ -123,4 +123,5 @@ jobs:
       application_name: "Mysterium VPN Test"
       application_logo: "assets/logo/dev/desktop.png"
       flavor_dart: "DEV"
+      standalone_sign: false
     secrets: inherit
