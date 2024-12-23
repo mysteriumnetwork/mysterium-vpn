@@ -222,7 +222,6 @@ abstract class RemoteConfigStoreBase with Store {
 
   @computed
   bool get mqttExperiment {
-    return false;
     if (config.containsKey(_FeatureToggleKey.mqttExperiment.name)) {
       return config[_FeatureToggleKey.mqttExperiment.name] as bool;
     }
