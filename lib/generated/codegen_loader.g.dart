@@ -534,7 +534,13 @@ class CodegenLoader extends AssetLoader {
     "pricingIntroductoryPeriod12": "首年优惠！",
     "pricingIntroductoryPeriod6": "前6个月优惠！",
     "then": "然后",
-    "renewsFor": "续订费用为"
+    "renewsFor": "续订费用为",
+    "dataCenterBannerTitle": "全新数据中心IP上线！",
+    "dataCenterBannerDesc": "提升速度，享受无与伦比的连接稳定性",
+    "dataCenterBannerBtn": "立即尝试",
+    "ipTypeDataCenter": "数据中心IP",
+    "ipTypeResidential": "所有位置",
+    "locationsDataCenterDisclaimer": "为您的隐私需求提供更快的速度和更高的稳定性。"
   };
   static const Map<String, dynamic> tr = {
     "title": "Merhaba efendim",
@@ -1079,7 +1085,14 @@ class CodegenLoader extends AssetLoader {
     "pricingIntroductoryPeriod12": "ilk yıl için!",
     "pricingIntroductoryPeriod6": "ilk 6 ay için!",
     "then": "Sonra",
-    "renewsFor": "Şunun için yenilenir"
+    "renewsFor": "Şunun için yenilenir",
+    "dataCenterBannerTitle": "Veri Merkezi IP'lerini Tanıtıyoruz!",
+    "dataCenterBannerDesc": "Hızınızı artırın ve rakipsiz bağlantı kararlılığının tadını çıkarın",
+    "dataCenterBannerBtn": "Şimdi deneyin",
+    "ipTypeDataCenter": "Veri Merkezi IP'leri",
+    "ipTypeResidential": "Tüm konumlar",
+    "locationsDataCenterDisclaimer":
+        "Tüm gizlilik ihtiyaçlarınız için daha hızlı hızların ve geliştirilmiş kararlılığın keyfini çıkarın."
   };
   static const Map<String, dynamic> ja = {
     "title": "こんにちは。",
@@ -1604,7 +1617,13 @@ class CodegenLoader extends AssetLoader {
     "pricingIntroductoryPeriod12": "最初の1年間！",
     "pricingIntroductoryPeriod6": "最初の6か月間！",
     "then": "次に",
-    "renewsFor": "更新料金は"
+    "renewsFor": "更新料金は",
+    "dataCenterBannerTitle": "データセンターIPのご紹介！",
+    "dataCenterBannerDesc": "速度を向上させ、比類のない接続の安定性を楽しもう",
+    "dataCenterBannerBtn": "今すぐ試す",
+    "ipTypeDataCenter": "データセンターIP",
+    "ipTypeResidential": "すべての場所",
+    "locationsDataCenterDisclaimer": "すべてのプライバシー要件に対応する、より速い速度と向上した安定性をお楽しみください。"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -2167,7 +2186,15 @@ class CodegenLoader extends AssetLoader {
     "pricingIntroductoryPeriod12": "für das erste Jahr!",
     "pricingIntroductoryPeriod6": "für die ersten 6 Monate!",
     "then": "Dann",
-    "renewsFor": "Verlängert für"
+    "renewsFor": "Verlängert für",
+    "dataCenterBannerTitle": "Einführung von Rechenzentrums-IPs!",
+    "dataCenterBannerDesc":
+        "Erhöhen Sie Ihre Geschwindigkeit und genießen Sie unvergleichliche Verbindungsstabilität",
+    "dataCenterBannerBtn": "Jetzt ausprobieren",
+    "ipTypeDataCenter": "Rechenzentrums-IPs",
+    "ipTypeResidential": "Alle Standorte",
+    "locationsDataCenterDisclaimer":
+        "Genießen Sie schnellere Geschwindigkeiten und verbesserte Stabilität für alle Ihre Datenschutzbedürfnisse."
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2718,7 +2745,15 @@ class CodegenLoader extends AssetLoader {
     "pricingIntroductoryPeriod12": "para o primeiro ano!",
     "pricingIntroductoryPeriod6": "para os primeiros 6 meses!",
     "then": "Depois",
-    "renewsFor": "Renova por"
+    "renewsFor": "Renova por",
+    "dataCenterBannerTitle": "Apresentando IPs de Data Center!",
+    "dataCenterBannerDesc":
+        "Aumente sua velocidade e desfrute de uma estabilidade de conexão incomparável",
+    "dataCenterBannerBtn": "Experimente agora",
+    "ipTypeDataCenter": "IPs de Data Center",
+    "ipTypeResidential": "Todas as localizações",
+    "locationsDataCenterDisclaimer":
+        "Desfrute de velocidades mais rápidas e maior estabilidade para todas as suas necessidades de privacidade."
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -3268,7 +3303,14 @@ class CodegenLoader extends AssetLoader {
     "pricingIntroductoryPeriod12": "for the first year!",
     "pricingIntroductoryPeriod6": "for the first 6 months!",
     "then": "Then",
-    "renewsFor": "Renews for"
+    "renewsFor": "Renews for",
+    "dataCenterBannerTitle": "Introducing Data Center IPs!",
+    "dataCenterBannerDesc": "Boost your speed and enjoy unrivaled connection stability",
+    "dataCenterBannerBtn": "Try now",
+    "ipTypeDataCenter": "Data center IPs",
+    "ipTypeResidential": "All locations",
+    "locationsDataCenterDisclaimer":
+        "Enjoy faster speeds and improved stability for all your privacy needs."
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3824,7 +3866,15 @@ class CodegenLoader extends AssetLoader {
     "pricingIntroductoryPeriod12": "per il primo anno!",
     "pricingIntroductoryPeriod6": "per i primi 6 mesi!",
     "then": "Poi",
-    "renewsFor": "Si rinnova per"
+    "renewsFor": "Si rinnova per",
+    "dataCenterBannerTitle": "Presentazione degli IP del data center!",
+    "dataCenterBannerDesc":
+        "Aumenta la tua velocità e goditi una stabilità di connessione senza rivali",
+    "dataCenterBannerBtn": "Prova ora",
+    "ipTypeDataCenter": "IP del data center",
+    "ipTypeResidential": "Tutte le posizioni",
+    "locationsDataCenterDisclaimer":
+        "Goditi velocità più elevate e stabilità migliorata per tutte le tue esigenze di privacy."
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -4383,7 +4433,15 @@ class CodegenLoader extends AssetLoader {
     "pricingIntroductoryPeriod12": "pour la première année !",
     "pricingIntroductoryPeriod6": "pour les 6 premiers mois !",
     "then": "Ensuite",
-    "renewsFor": "Se renouvelle pour"
+    "renewsFor": "Se renouvelle pour",
+    "dataCenterBannerTitle": "Présentation des IPs de centre de données !",
+    "dataCenterBannerDesc":
+        "Augmentez votre vitesse et profitez d'une stabilité de connexion inégalée",
+    "dataCenterBannerBtn": "Essayez maintenant",
+    "ipTypeDataCenter": "IPs de centre de données",
+    "ipTypeResidential": "Tous les emplacements",
+    "locationsDataCenterDisclaimer":
+        "Profitez de vitesses plus rapides et d'une stabilité améliorée pour tous vos besoins en matière de confidentialité."
   };
   static const Map<String, dynamic> id = {
     "title": "Halo Pak",
@@ -4933,7 +4991,15 @@ class CodegenLoader extends AssetLoader {
     "pricingIntroductoryPeriod12": "untuk tahun pertama!",
     "pricingIntroductoryPeriod6": "untuk 6 bulan pertama!",
     "then": "Kemudian",
-    "renewsFor": "Diperpanjang untuk"
+    "renewsFor": "Diperpanjang untuk",
+    "dataCenterBannerTitle": "Memperkenalkan IP Pusat Data!",
+    "dataCenterBannerDesc":
+        "Tingkatkan kecepatan Anda dan nikmati stabilitas koneksi yang tak tertandingi",
+    "dataCenterBannerBtn": "Coba sekarang",
+    "ipTypeDataCenter": "IP Pusat Data",
+    "ipTypeResidential": "Semua lokasi",
+    "locationsDataCenterDisclaimer":
+        "Nikmati kecepatan lebih tinggi dan stabilitas yang lebih baik untuk semua kebutuhan privasi Anda."
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -5491,7 +5557,15 @@ class CodegenLoader extends AssetLoader {
     "pricingIntroductoryPeriod12": "¡por el primer año!",
     "pricingIntroductoryPeriod6": "¡por los primeros 6 meses!",
     "then": "Luego",
-    "renewsFor": "Se renueva por"
+    "renewsFor": "Se renueva por",
+    "dataCenterBannerTitle": "¡Presentamos IPs de centro de datos!",
+    "dataCenterBannerDesc":
+        "Aumenta tu velocidad y disfruta de una estabilidad de conexión inigualable",
+    "dataCenterBannerBtn": "Prueba ahora",
+    "ipTypeDataCenter": "IPs de centro de datos",
+    "ipTypeResidential": "Todas las ubicaciones",
+    "locationsDataCenterDisclaimer":
+        "Disfruta de velocidades más rápidas y mayor estabilidad para todas tus necesidades de privacidad."
   };
   static const Map<String, dynamic> ar = {
     "title": "أهلاً سيدي",
@@ -6034,7 +6108,14 @@ class CodegenLoader extends AssetLoader {
     "pricingIntroductoryPeriod12": "للسنة الأولى!",
     "pricingIntroductoryPeriod6": "لأول 6 أشهر!",
     "then": "ثم",
-    "renewsFor": "يتجدد لـ"
+    "renewsFor": "يتجدد لـ",
+    "dataCenterBannerTitle": "تقديم عناوين IP لمراكز البيانات!",
+    "dataCenterBannerDesc": "عزز سرعتك واستمتع باستقرار اتصال لا مثيل له",
+    "dataCenterBannerBtn": "جرّب الآن",
+    "ipTypeDataCenter": "عناوين IP لمراكز البيانات",
+    "ipTypeResidential": "جميع المواقع",
+    "locationsDataCenterDisclaimer":
+        "استمتع بسرعات أسرع واستقرار محسّن لجميع احتياجات الخصوصية لديك."
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,

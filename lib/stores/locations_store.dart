@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -13,14 +15,12 @@ part 'locations_store.g.dart';
 class LocationsStore = _LocationsStore with _$LocationsStore;
 
 abstract class _LocationsStore with Store {
-  _LocationsStore({
-    required ApiService apiService,
-    required AnalyticsStore analyticsStore,
-    required LocaleStore localeStore,
-  })  : _apiService = apiService,
-        _analyticsStore = analyticsStore {
+  _LocationsStore(
+    this._apiService,
+    this._analyticsStore,
+    LocaleStore localeStore,
+  ) {
     fetchVPNLocations();
-    fetchVPNLocationsFuture.whenComplete(fetchRecentLocations);
     reaction((_) => localeStore.currentLocale, (locale) {
       if (searchKeyword.isNotEmpty) {
         setLocationKeyword('');
@@ -30,70 +30,91 @@ abstract class _LocationsStore with Store {
 
   final ApiService _apiService;
   final AnalyticsStore _analyticsStore;
+  final Debouncer _debouncer = Debouncer();
 
-  ObservableList<String> recentLocations = ObservableList();
-
-  VPNLocations vpnLocations = VPNLocations(allLocations: [], topLocations: []);
-
-  Timer? _debounce;
-
-  @observable
-  ObservableFuture<VPNLocations> fetchVPNLocationsFuture = emptyLocations;
+  @readonly
+  ObservableFuture<VPNLocations> _vpnLocationsFuture = ObservableFuture.value(const VPNLocations());
 
   @observable
   String searchKeyword = '';
 
+  @readonly
+  List<VPNLocation> _recentLocations = [];
+
   @computed
-  FutureStatus get vpnLocationsFutureStatus => fetchVPNLocationsFuture.status;
+  List<VPNLocation> get allLocations => _vpnLocationsFuture.value?.allLocations ?? [];
 
-  static ObservableFuture<VPNLocations> emptyLocations =
-      ObservableFuture.value(VPNLocations(allLocations: [], topLocations: []));
+  @computed
+  List<VPNLocation> get topLocations => _vpnLocationsFuture.value?.topLocations ?? [];
 
-  @action
-  Future<VPNLocations> fetchVPNLocations() async {
-    fetchVPNLocationsFuture =
-        ObservableFuture(_apiService.fetchVPNLocations(keyword: searchKeyword));
-    final res = await fetchVPNLocationsFuture;
-    return vpnLocations = res;
+  @computed
+  List<VPNLocation> get dcLocations => _vpnLocationsFuture.value?.dcLocations ?? [];
+
+  VPNLocation? randomLocation([IPType? type]) {
+    final residentialLocations = topLocations.isEmpty ? allLocations : topLocations;
+    final locations = [
+      if (type == null || type == IPType.residential) ...residentialLocations,
+      if (type == null || type == IPType.datacenter) ...dcLocations,
+    ];
+
+    if (locations.isEmpty) {
+      return null;
+    }
+
+    var recent = _recentLocations;
+    if (type != null) {
+      recent = _recentLocations.where((location) => location.ipType == type).toList();
+    }
+    if (recent.isNotEmpty) {
+      return recent.first;
+    }
+
+    return locations.randomItem();
   }
 
   @action
-  Future<void> fetchRecentLocations() async {
-    final locations = await _apiService.getRecentLocations(keyword: searchKeyword);
-
-    recentLocations
-      ..clear()
-      ..addAll(
-        locations
-          ..removeWhere(
-            (element) =>
-                !vpnLocations.allLocations.contains(element) &&
-                !vpnLocations.topLocations.contains(element),
-          ),
-      );
-  }
-
-  @action
-  Future<void> addRecentLocation(String location) async {
-    await _apiService.addRecentLocation(location);
+  Future<void> fetchVPNLocations() async {
+    _vpnLocationsFuture = ObservableFuture(
+      _apiService.fetchVPNLocations(keyword: searchKeyword),
+    );
+    await _vpnLocationsFuture;
     await fetchRecentLocations();
   }
 
   @action
-  void setLocationKeyword(String text, [int duration = 500]) {
-    if (_debounce?.isActive ?? false) {
-      _debounce?.cancel();
-    }
-    _debounce = Timer(Duration(milliseconds: duration), () {
-      searchKeyword = text.toLowerCase().trim();
-      fetchVPNLocations().whenComplete(fetchRecentLocations);
-      _analyticsStore
-        ..setSearchEvent(searchKeyword)
-        ..logEvent(AnalyticsEvent.search);
-    });
+  Future<void> fetchRecentLocations() async {
+    final vpnLocations = await _vpnLocationsFuture;
+    final locations = await _apiService.getRecentLocations(keyword: searchKeyword);
+    _recentLocations = locations
+        .where(
+          (code) =>
+              vpnLocations.allLocations.contains(code) ||
+              vpnLocations.topLocations.contains(code) ||
+              vpnLocations.dcLocations.contains(code),
+        )
+        .toList();
   }
 
-  void dispose() {
-    _debounce?.cancel();
+  @action
+  Future<void> addRecentLocation(VPNLocation location) async {
+    await _apiService.addRecentLocation(location);
+    _recentLocations = {location, ..._recentLocations}.toList();
+    await fetchRecentLocations();
   }
+
+  @action
+  void setLocationKeyword(String text, [Duration duration = const Duration(milliseconds: 500)]) {
+    _debouncer.debounce(
+      () async {
+        searchKeyword = text.toLowerCase().trim();
+        _analyticsStore
+          ..setSearchEvent(searchKeyword)
+          ..logEvent(AnalyticsEvent.search);
+        await fetchVPNLocations();
+      },
+      duration,
+    );
+  }
+
+  void dispose() => _debouncer.dispose();
 }

@@ -517,5 +517,11 @@
   "pricingIntroductoryPeriod12": "per il primo anno!",
   "pricingIntroductoryPeriod6": "per i primi 6 mesi!",
   "then": "Poi",
-  "renewsFor": "Si rinnova per"
+  "renewsFor": "Si rinnova per",
+  "dataCenterBannerTitle": "Presentazione degli IP del data center!",
+  "dataCenterBannerDesc": "Aumenta la tua velocità e goditi una stabilità di connessione senza rivali",
+  "dataCenterBannerBtn": "Prova ora",
+  "ipTypeDataCenter": "IP del data center",
+  "ipTypeResidential": "Tutte le posizioni",
+  "locationsDataCenterDisclaimer": "Goditi velocità più elevate e stabilità migliorata per tutte le tue esigenze di privacy."
 }

@@ -517,5 +517,11 @@
   "pricingIntroductoryPeriod12": "首年优惠！",
   "pricingIntroductoryPeriod6": "前6个月优惠！",
   "then": "然后",
-  "renewsFor": "续订费用为"
+  "renewsFor": "续订费用为",
+  "dataCenterBannerTitle": "全新数据中心IP上线！",
+  "dataCenterBannerDesc": "提升速度，享受无与伦比的连接稳定性",
+  "dataCenterBannerBtn": "立即尝试",
+  "ipTypeDataCenter": "数据中心IP",
+  "ipTypeResidential": "所有位置",
+  "locationsDataCenterDisclaimer": "为您的隐私需求提供更快的速度和更高的稳定性。"
 }

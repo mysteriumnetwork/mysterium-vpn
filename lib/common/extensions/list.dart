@@ -13,4 +13,14 @@ extension IterableExtensions<T> on Iterable<T> {
       }
     }
   }
+
+  Iterable<T> distinctBy<R>(R Function(T) selector) sync* {
+    final seen = <R>{};
+    for (final element in this) {
+      final key = selector(element);
+      if (seen.add(key)) {
+        yield element;
+      }
+    }
+  }
 }
