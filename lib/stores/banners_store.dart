@@ -52,7 +52,7 @@ abstract class _BannersStore with Store {
   @action
   Future<void> setShown(BannerType banner) async {
     final shownBanners = [...(await _shownBanners), banner];
-    //await _apiService.setShownBanners(shownBanners);
+    await _apiService.setShownBanners(shownBanners);
 
     _shownBanners = ObservableFuture.value(shownBanners);
   }
