@@ -25,6 +25,10 @@ on:
         required: true
         type: string
         default: "DEV"
+      standalone_sign:
+        required: true
+        type: boolean
+        default: false
 
 jobs:
 
@@ -58,6 +62,14 @@ jobs:
       # Documentation: https://github.com/YehudaKremer/msix?tab=readme-ov-file#%EF%B8%8F-signing-options
       # Instructions how to use installer which such certificate: https://medium.com/flutter-community/publishing-flutter-windows-apps-to-microsoft-partner-center-with-codemagic-b1962575510c#f083
       - name: Build Windows installer
+        if: ${{ inputs.standalone_sign != true }}
+        run: |
+          dart run msix:create `
+            --build-windows false --install-certificate false --output-name "Mysterium VPN" `
+            --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
+            --sign-msix "true"
+      - name: Build Windows installer
+        if: ${{ inputs.standalone_sign == true }}
         run: |
           dart run msix:create `
             --build-windows false --install-certificate false --output-name "Mysterium VPN" `
@@ -65,6 +77,7 @@ jobs:
             --sign-msix false --publisher "CN=UAB MN Technologijos, O=UAB MN Technologijos, L=Vilnius, S=Vilniaus, C=LT"
 
       - name: Sign Windows installer
+        if: ${{ inputs.standalone_sign == true }}
         uses: azure/trusted-signing-action@v0.5.0
         with:
           azure-tenant-id: ${{ vars.MICROSOFT_AZURE_AD_TENANT_ID }}
