@@ -19,11 +19,17 @@ class SearchField extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final controller = useTextEditingController(text: store.searchKeyword);
-    useEffect(() {
-      void listener() {}
-      controller.addListener(listener);
-      return () => controller.removeListener(listener);
-    }, [controller, store.setLocationKeyword]);
+    useEffect(
+      () {
+        void listener() {
+          store.setLocationKeyword(controller.text, controller.text.isEmpty ? 0 : 500);
+        }
+
+        controller.addListener(listener);
+        return () => controller.removeListener(listener);
+      },
+      [controller, store.setLocationKeyword],
+    );
     return TextField(
       controller: controller,
       style: TextStyle(
@@ -44,13 +50,9 @@ class SearchField extends HookWidget {
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
-        suffixIcon: _Button(
-          controller: controller,
-          onCleared: () => store.setLocationKeyword('', 0),
-        ).width(20),
+        suffixIcon: _Button(controller: controller).width(20),
       ),
       autocorrect: false,
-      onChanged: store.setLocationKeyword,
       onTapOutside: (_) => FocusScope.of(
         context,
         createDependency: false,
@@ -62,11 +64,9 @@ class SearchField extends HookWidget {
 class _Button extends HookWidget {
   const _Button({
     required this.controller,
-    required this.onCleared,
   });
 
   final TextEditingController controller;
-  final VoidCallback onCleared;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +80,6 @@ class _Button extends HookWidget {
         ..clear()
         ..text = '';
       FocusScope.of(context, createDependency: false).unfocus();
-      onCleared();
     }
 
     return SvgIconButton(
