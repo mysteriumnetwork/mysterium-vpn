@@ -108,6 +108,10 @@ class _DeleteAccountDialog extends HookWidget {
                 onTap: () {
                   analyticsStore.logEvent(AnalyticsEvent.deleteAccountInput);
                 },
+                onTapOutside: (_) => FocusScope.of(
+                  context,
+                  createDependency: false,
+                ).unfocus(),
               ).height(40).padding(bottom: 30),
               EasyButton(
                 useSystemColor: false,
