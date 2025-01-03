@@ -250,10 +250,13 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> toggleNotSafeContentBlocker() async {
-    await _localDBService.setNotSafeContentBlocker(
-      notSafeContentBlocker: !_notSafeContentBlocker,
-    );
-    _notSafeContentBlocker = !_notSafeContentBlocker;
+    final value = !_notSafeContentBlocker;
+    if (value) {
+      await _localDBService.setMalwareBlocker(malwareBlocker: value);
+      _malwareBlockerContent = value;
+    }
+    await _localDBService.setNotSafeContentBlocker(notSafeContentBlocker: value);
+    _notSafeContentBlocker = value;
   }
 
   @action
