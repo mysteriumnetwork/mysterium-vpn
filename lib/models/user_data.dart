@@ -1,3 +1,6 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
+import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:mysterium_vpn/common/enums/banner_type.dart';
 import 'package:mysterium_vpn/models/location.dart';
@@ -27,6 +30,8 @@ class UserData {
   Approval emailCommunication;
 
   @HiveField(2)
+  @Deprecated('use recentLocations instead')
+  @protected
   List<String> recentLocationCodes;
 
   @HiveField(3)
@@ -51,6 +56,7 @@ class UserData {
   bool vpnPrivacyPolicyConsent;
 
   @HiveField(11, defaultValue: <VPNLocation>[])
+  @protected
   List<VPNLocation> recentVPNLocations;
 
   @HiveField(12, defaultValue: <BannerType>[])
