@@ -7,9 +7,11 @@ import 'package:mysterium_vpn/services/mqtt/exceptions.dart';
 import 'package:talker/talker.dart';
 
 class MQTTService {
-  MQTTService(String url, String clientID, Talker logger)
+  MQTTService(String url, String username, String password, String clientID, Talker logger)
       : _mqtt = MqttServerClient(url, clientID),
-        _logger = logger {
+        _logger = logger,
+        _username = username,
+        _password = password {
     final uri = Uri.parse(url);
 
     // Client ID length can not exceed 23, see http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html
@@ -44,11 +46,13 @@ class MQTTService {
   }
 
   final MqttServerClient _mqtt;
+  final String _username;
+  final String _password;
   final Talker _logger;
 
   Future<void> start() async {
     try {
-      await _mqtt.connect();
+      await _mqtt.connect(_username, _password);
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
