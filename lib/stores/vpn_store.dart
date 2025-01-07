@@ -346,7 +346,6 @@ abstract class _VpnStore with Store {
 
   Future<bool> _checkSubscriptionStatus() async {
     if (_subscriptionStore.subscriptionFuture?.status == FutureStatus.pending) {
-      showSnackbar(LocaleKeys.checkingSubsStatus.tr());
       await _subscriptionStore.subscriptionFuture;
     } else {
       await _subscriptionStore.fetchSubscription();
