@@ -11,6 +11,8 @@ part 'user_data.g.dart';
 class UserData {
   UserData({
     required this.userId,
+    // TODO(david): remove at a certain point
+    // ignore: deprecated_consistency
     required this.recentLocationCodes,
     required this.recentVPNLocations,
     this.emailCommunication = Approval.notSet,
