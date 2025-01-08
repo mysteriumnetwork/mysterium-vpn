@@ -12,9 +12,11 @@ class _HomeState extends ChangeNotifier {
   _HomeState(this._ipType);
 
   final typeSwitcherKey = GlobalKey();
+  final panelMaxExtent = .8;
+  final panelMinExtent = .4;
+
   IPType _ipType;
   bool _isPanelOpen = false;
-  ScrollPhysics? _tempScrollPhysics;
 
   PanelController? panelController;
   ScrollController? _scrollController;
@@ -33,13 +35,6 @@ class _HomeState extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-  set tempScrollPhysics(ScrollPhysics? value) {
-    _tempScrollPhysics = value;
-    notifyListeners();
-  }
-
-  ScrollPhysics? get tempScrollPhysics => _tempScrollPhysics;
 
   ScrollController? get scrollController => _scrollController;
 
@@ -79,22 +74,17 @@ class _HomeState extends ChangeNotifier {
       return;
     }
 
-    final offset = box.localToGlobal(Offset.zero).dy;
-
     if (scrollController == null) {
       return;
     }
+    final offset = box.localToGlobal(Offset.zero).dy;
+    final height = box.size.height;
+    final extent = _isPanelOpen ? panelMaxExtent : panelMinExtent;
 
-    final target = scrollController!.offset + offset - kToolbarHeight;
-    final position = scrollController!.positions.firstOrNull?.viewportDimension ?? 0;
+    final target = (offset - height) * extent;
+    final scrollPosition = scrollController!.position;
 
-    if (target <= position) {
-      return;
-    }
-
-    tempScrollPhysics = const ClampingScrollPhysics();
-    scrollController!.jumpTo(scrollController!.offset + offset - kToolbarHeight);
-    tempScrollPhysics = null;
+    await scrollPosition.moveTo(target);
   }
 
   Future<void> show(GlobalKey key) async {
@@ -118,13 +108,13 @@ class _HomeState extends ChangeNotifier {
         scrollController.offset <= 0 &&
         scrollController.position.userScrollDirection == ScrollDirection.forward) {
       // user tries to scroll up
-      scrollController.jumpTo(0);
+      await scrollController.position.moveTo(0);
       await closePanel();
     } else if (!_isPanelOpen &&
         scrollController.offset > 0 &&
         scrollController.position.userScrollDirection == ScrollDirection.reverse) {
       // user tries to scroll down
-      scrollController.jumpTo(0);
+      await scrollController.position.moveTo(0);
       await openPanel();
     }
   }
