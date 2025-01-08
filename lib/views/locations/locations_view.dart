@@ -56,8 +56,12 @@ class LocationsSliverView extends HookConsumerWidget {
     final handleToggleConnection = useHandleToggleConnection();
 
     void handleSearch(String? value) {
-      if (locationsStore.searchKeyword != value) {
-        locationsStore.setLocationKeyword(value ?? '');
+      final keyword = value?.trim() ?? '';
+      if (locationsStore.searchKeyword != keyword) {
+        locationsStore.setLocationKeyword(
+          keyword,
+          keyword.isEmpty ? Duration.zero : const Duration(milliseconds: 500),
+        );
       }
     }
 

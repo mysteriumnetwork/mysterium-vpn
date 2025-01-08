@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/scaffold_brightness_hook.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -27,14 +28,27 @@ class LocationsSearch extends HookConsumerWidget {
       borderRadius: BorderRadius.circular(20),
     );
 
-    void handleSearch() {
-      onChanged(controller.text);
-    }
+    final onChangedRef = useRef(onChanged)..value = onChanged;
+
+    useEffect(
+      () {
+        void listener() {
+          onChangedRef.value(controller.text);
+        }
+
+        controller.addListener(listener);
+        return () => controller.removeListener(listener);
+      },
+      [controller, onChangedRef],
+    );
 
     return TextField(
       controller: controller,
-      onChanged: onChanged,
       autocorrect: false,
+      onTapOutside: (_) => FocusScope.of(
+        context,
+        createDependency: false,
+      ).unfocus(),
       style: TextStyle(
         color: switch (brightness) {
           Brightness.light => Palette.black,
@@ -50,8 +64,36 @@ class LocationsSearch extends HookConsumerWidget {
         border: border,
         focusedBorder: border,
         enabledBorder: border,
-        suffixIcon: SvgIconButton(asset: Assets.search, onPressed: handleSearch).width(20),
+        suffixIcon: _Button(controller: controller).width(20),
       ),
+    );
+  }
+}
+
+class _Button extends HookWidget {
+  const _Button({
+    required this.controller,
+  });
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final canClear = useListenableSelector(controller, () => controller.text.isNotEmpty);
+    if (!canClear) {
+      return const SvgIcon(asset: Assets.search, width: 11);
+    }
+
+    void handleClear() {
+      controller
+        ..clear()
+        ..text = '';
+      FocusScope.of(context, createDependency: false).unfocus();
+    }
+
+    return SvgIconButton(
+      onPressed: handleClear,
+      asset: Assets.clear,
     );
   }
 }
