@@ -281,13 +281,13 @@ mixin _$VpnStore on _VpnStore, Store {
         .run(() => super.startConnectionWithRefreshIP());
   }
 
-  late final _$startConnectionAsyncAction =
-      AsyncAction('_VpnStore.startConnection', context: context);
+  late final _$_startConnectionAsyncAction =
+      AsyncAction('_VpnStore._startConnection', context: context);
 
   @override
-  Future<void> startConnection({String? location, bool? refreshIP, bool isRetrying = false}) {
-    return _$startConnectionAsyncAction.run(() =>
-        super.startConnection(location: location, refreshIP: refreshIP, isRetrying: isRetrying));
+  Future<void> _startConnection({String? location, bool? refreshIP, bool isRetrying = false}) {
+    return _$_startConnectionAsyncAction.run(() =>
+        super._startConnection(location: location, refreshIP: refreshIP, isRetrying: isRetrying));
   }
 
   late final _$_completeConnectionAsyncAction =
