@@ -7,6 +7,9 @@ import 'package:vpn_api/src/model/check_auth401_response_error.dart';
 import 'package:vpn_api/src/model/check_auth401_response_error_fields_value.dart';
 import 'package:vpn_api/src/model/code_authorization_request.dart';
 import 'package:vpn_api/src/model/connection_config_response.dart';
+import 'package:vpn_api/src/model/connection_location.dart';
+import 'package:vpn_api/src/model/connection_message.dart';
+import 'package:vpn_api/src/model/connection_message_location.dart';
 import 'package:vpn_api/src/model/country.dart';
 import 'package:vpn_api/src/model/create_apple_subscription_request.dart';
 import 'package:vpn_api/src/model/create_apple_subscription_response.dart';
@@ -16,6 +19,8 @@ import 'package:vpn_api/src/model/create_google_subscription_request.dart';
 import 'package:vpn_api/src/model/create_google_subscription_response.dart';
 import 'package:vpn_api/src/model/field_error.dart';
 import 'package:vpn_api/src/model/get_subscription_response.dart';
+import 'package:vpn_api/src/model/healthcheck200_response.dart';
+import 'package:vpn_api/src/model/healthcheck_message.dart';
 import 'package:vpn_api/src/model/healthcheck_response.dart';
 import 'package:vpn_api/src/model/https_connect_request.dart';
 import 'package:vpn_api/src/model/invoice.dart';
@@ -93,6 +98,12 @@ ReturnType deserialize<ReturnType, BaseType>(dynamic value, String targetType,
       return CodeAuthorizationRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'ConnectionConfigResponse':
       return ConnectionConfigResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'ConnectionLocation':
+      return ConnectionLocation.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'ConnectionMessage':
+      return ConnectionMessage.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'ConnectionMessageLocation':
+      return ConnectionMessageLocation.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'Country':
       return Country.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'CreateAppleSubscriptionRequest':
@@ -112,6 +123,10 @@ ReturnType deserialize<ReturnType, BaseType>(dynamic value, String targetType,
       return FieldError.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'GetSubscriptionResponse':
       return GetSubscriptionResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'Healthcheck200Response':
+      return Healthcheck200Response.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'HealthcheckMessage':
+      return HealthcheckMessage.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'HealthcheckResponse':
       return HealthcheckResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'HttpsConnectRequest':

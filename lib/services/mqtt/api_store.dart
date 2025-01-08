@@ -18,20 +18,20 @@ class ApiStore = _ApiStore with _$ApiStore;
 
 abstract class _ApiStore with Store {
   _ApiStore({
-    required MQQTService mqtt,
+    required MQTTService mqtt,
     required Talker logger,
     required RemoteConfigStore remoteConfigStore,
   })  : _mqtt = mqtt,
         _logger = logger,
         _remoteConfigStore = remoteConfigStore;
 
-  final MQQTService _mqtt;
+  final MQTTService _mqtt;
   final Talker _logger;
   final RemoteConfigStore _remoteConfigStore;
   StreamSubscription<String>? _healthcheckSub;
 
   @readonly
-  HealthcheckResponse? _lastHealthcheck;
+  HealthcheckMessage? _lastHealthcheck;
 
   Future<void> initStore() async {
     try {
@@ -41,7 +41,7 @@ abstract class _ApiStore with Store {
 
       await _mqtt.ensureStart();
       _healthcheckSub ??= _mqtt.subscribe('healthcheck').listen((event) {
-        _lastHealthcheck = HealthcheckResponse.fromJson(json.decode(event) as Map<String, dynamic>);
+        _lastHealthcheck = HealthcheckMessage.fromJson(json.decode(event) as Map<String, dynamic>);
       });
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);

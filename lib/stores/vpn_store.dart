@@ -1,6 +1,7 @@
 // Flutter imports:
 // Package imports:
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -21,6 +22,7 @@ import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
@@ -46,6 +48,7 @@ class VpnStore = _VpnStore with _$VpnStore;
 abstract class _VpnStore with Store {
   _VpnStore({
     required ApiService apiService,
+    required MQTTService mqtt,
     required LocationsStore locationsStore,
     required WireguardDart wireguardService,
     required SubscriptionStore subscriptionStore,
@@ -54,6 +57,7 @@ abstract class _VpnStore with Store {
     required AnalyticsStore analyticsStore,
     required RemoteConfigStore remoteConfigStore,
   })  : _apiService = apiService,
+        _mqtt = mqtt,
         _locationsStore = locationsStore,
         _wireguardService = wireguardService,
         _subscriptionStore = subscriptionStore,
@@ -65,6 +69,7 @@ abstract class _VpnStore with Store {
   }
 
   final ApiService _apiService;
+  final MQTTService _mqtt;
   final LocationsStore _locationsStore;
   final AnalyticsStore _analyticsStore;
   final WireguardDart _wireguardService;
@@ -77,6 +82,7 @@ abstract class _VpnStore with Store {
   final LocalDBService _localDBService = LocalDBService.instance;
   final Talker _logger;
   final Stopwatch _stopwatch = Stopwatch();
+  StreamSubscription<String>? _connectionSub;
 
   @readonly
   bool _refreshIPConnection = true;
@@ -342,6 +348,10 @@ abstract class _VpnStore with Store {
             onTimeout: () => throw TimeoutException('Wireguard disconnection timeout'),
           );
     }
+
+    if (_connectionSub != null) {
+      _connectionSub!.cancel();
+    }
   }
 
   Future<bool> _checkSubscriptionStatus() async {
@@ -543,6 +553,19 @@ abstract class _VpnStore with Store {
         ),
       );
       _vpnConfig = await fetchConfigFuture;
+
+      await _mqtt.ensureStart();
+      // TODO(Waldz): Make it mandatory, when backend field will be deployed
+      final connectionID = _vpnConfig?.uid ?? '';
+      _connectionSub ??= _mqtt.subscribe('mysterium-vpn/connection/$connectionID').listen((event) {
+        final connectionUpdate =
+            ConnectionMessage.fromJson(json.decode(event) as Map<String, dynamic>);
+        _vpnConnection = _vpnConnection?.copyWith(
+          connectionIP: connectionUpdate.location.ip,
+          location: connectionUpdate.location.country,
+        );
+      });
+
       _checkOperationCancel(nonce);
       _connectionStatus = ConnectionStatus.connecting;
       await _connectWireguard(privateKey: key.privateKey, nonce: nonce);
