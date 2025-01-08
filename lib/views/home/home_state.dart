@@ -60,6 +60,14 @@ class _HomeState extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> togglePanel() async {
+    if (_isPanelOpen) {
+      await closePanel();
+    } else {
+      await openPanel();
+    }
+  }
+
   Future<void> scrollTo(GlobalKey key) async {
     final context = key.currentContext;
     if (context == null) {
