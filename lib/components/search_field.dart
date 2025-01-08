@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -18,8 +18,17 @@ class SearchField extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = useTextEditingController(
-      text: store.searchKeyword,
+    final controller = useTextEditingController(text: store.searchKeyword);
+    useEffect(
+      () {
+        void listener() {
+          store.setLocationKeyword(controller.text, controller.text.isEmpty ? 0 : 500);
+        }
+
+        controller.addListener(listener);
+        return () => controller.removeListener(listener);
+      },
+      [controller, store.setLocationKeyword],
     );
     return TextField(
       controller: controller,
@@ -41,16 +50,41 @@ class SearchField extends HookWidget {
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
-        suffixIcon: SvgIconButton(
-          onPressed: () async {
-            analyticsStore.logEvent(AnalyticsEvent.search);
-            store.fetchVPNLocations().whenComplete(store.fetchRecentLocations);
-          },
-          asset: Assets.search,
-        ).width(20),
+        suffixIcon: _Button(controller: controller).width(20),
       ),
       autocorrect: false,
-      onChanged: store.setLocationKeyword,
+      onTapOutside: (_) => FocusScope.of(
+        context,
+        createDependency: false,
+      ).unfocus(),
     ).height(40);
+  }
+}
+
+class _Button extends HookWidget {
+  const _Button({
+    required this.controller,
+  });
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final canClear = useListenableSelector(controller, () => controller.text.isNotEmpty);
+    if (!canClear) {
+      return const SvgIcon(asset: Assets.search, width: 11);
+    }
+
+    void handleClear() {
+      controller
+        ..clear()
+        ..text = '';
+      FocusScope.of(context, createDependency: false).unfocus();
+    }
+
+    return SvgIconButton(
+      onPressed: handleClear,
+      asset: Assets.clear,
+    );
   }
 }
