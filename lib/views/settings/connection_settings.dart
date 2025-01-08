@@ -48,6 +48,7 @@ class ConnectionSettings extends HookConsumerWidget {
             Visibility(
               visible: !remoteConfigStore.hideMalwareBlocker,
               child: SwitchItem(
+                enabled: !vpnStore.notSafeContentBlocker,
                 asset: isDarkTheme ? Assets.lockerDark : Assets.lockerLight,
                 title: LocaleKeys.malwareBlocker.tr(),
                 subtitle: '',
