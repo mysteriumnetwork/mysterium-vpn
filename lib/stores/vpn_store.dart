@@ -151,6 +151,7 @@ abstract class _VpnStore with Store {
     _malwareBlockerContent = await _localDBService.getMalwareBlocker();
     _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker();
     final isConfigured = await _checkTunelConfigured();
+    await setupTunnel();
     if (isConfigured) {
       await _setupAndListenToConnectionStatus();
     } else if (Platform.isWindows) {
@@ -298,6 +299,16 @@ abstract class _VpnStore with Store {
     required String privateKey,
     required String vpnConfig,
   }) async {
+    await Future.doWhile(() async {
+      final tunnelStatus = await _wireguardService.status();
+      if (tunnelStatus == ConnectionStatus.disconnected) {
+        return false;
+      } else if (tunnelStatus == ConnectionStatus.connected) {
+        await disconnectWireguard();
+      }
+      return true;
+    });
+
     // TODO(Waldz): Move to separate function, which mutates variable
     var config = vpnConfig;
     if (replaceDNSAddress.isNotNullOrEmpty) {
@@ -385,11 +396,10 @@ abstract class _VpnStore with Store {
     _connectingLocationCode = location;
 
     try {
-      if (Platform.isWindows || Platform.isAndroid) {
-        if (await _wireguardService.status() == ConnectionStatus.connected) {
-          await disconnectWireguard();
-        }
+      if (await _wireguardService.status() == ConnectionStatus.connected) {
+        await disconnectWireguard();
       }
+
       await _completeConnection(location, refreshIP);
 
       _stopwatch.stop();
