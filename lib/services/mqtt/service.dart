@@ -6,8 +6,8 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:mysterium_vpn/services/mqtt/exceptions.dart';
 import 'package:talker/talker.dart';
 
-class MQQTService {
-  MQQTService(String url, String clientID, Talker logger)
+class MQTTService {
+  MQTTService(String url, String clientID, Talker logger)
       : _mqtt = MqttServerClient(url, clientID),
         _logger = logger {
     final uri = Uri.parse(url);

@@ -10,6 +10,7 @@ class SwitchItem extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.actionWidget,
+    this.enabled = true,
     super.key,
   });
 
@@ -17,40 +18,47 @@ class SwitchItem extends StatelessWidget {
   final String title;
   final String subtitle;
   final Widget actionWidget;
+  final bool enabled;
   @override
-  Widget build(BuildContext context) => Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.brightness == Brightness.dark
-              ? Palette.mediumBlack
-              : Palette.white,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(20),
+  Widget build(BuildContext context) => IgnorePointer(
+        ignoring: !enabled,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.brightness == Brightness.dark
+                ? Palette.mediumBlack
+                : Palette.white,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(20),
+            ),
           ),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SvgIcon(asset: asset).paddingDirectional(end: 20),
-            Column(
+          child: Opacity(
+            opacity: enabled ? 1 : 0.5,
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                EasyText(
-                  title,
-                  fontSize: 16,
-                  maxLines: 2,
-                ).padding(bottom: 4),
-                EasyText(
-                  subtitle,
-                  color: Palette.lightBlue,
-                  fontSize: 12,
-                  maxLines: 3,
-                ).padding(bottom: 4),
+                SvgIcon(asset: asset).paddingDirectional(end: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    EasyText(
+                      title,
+                      fontSize: 16,
+                      maxLines: 2,
+                    ).padding(bottom: 4),
+                    EasyText(
+                      subtitle,
+                      color: Palette.lightBlue,
+                      fontSize: 12,
+                      maxLines: 3,
+                    ).padding(bottom: 4),
+                  ],
+                ).expanded(),
+                actionWidget,
               ],
-            ).expanded(),
-            actionWidget,
-          ],
-        ),
-      ).paddingDirectional(bottom: 10, horizontal: 20);
+            ),
+          ),
+        ).paddingDirectional(bottom: 10, horizontal: 20),
+      );
 }

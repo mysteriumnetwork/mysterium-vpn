@@ -9,7 +9,7 @@ import 'dart:convert';
 import 'package:vpn_api/src/deserialize.dart';
 import 'package:dio/dio.dart';
 
-import 'package:vpn_api/src/model/healthcheck_response.dart';
+import 'package:vpn_api/src/model/healthcheck200_response.dart';
 
 class Infrastructure {
   final Dio _dio;
@@ -27,9 +27,9 @@ class Infrastructure {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [HealthcheckResponse] as data
+  /// Returns a [Future] containing a [Response] with a [Healthcheck200Response] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<HealthcheckResponse>> healthcheck({
+  Future<Response<Healthcheck200Response>> healthcheck({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -58,13 +58,14 @@ class Infrastructure {
       onReceiveProgress: onReceiveProgress,
     );
 
-    HealthcheckResponse? _responseData;
+    Healthcheck200Response? _responseData;
 
     try {
       final rawData = _response.data;
       _responseData = rawData == null
           ? null
-          : deserialize<HealthcheckResponse, HealthcheckResponse>(rawData, 'HealthcheckResponse',
+          : deserialize<Healthcheck200Response, Healthcheck200Response>(
+              rawData, 'Healthcheck200Response',
               growable: true);
     } catch (error, stackTrace) {
       throw DioException(
@@ -76,7 +77,7 @@ class Infrastructure {
       );
     }
 
-    return Response<HealthcheckResponse>(
+    return Response<Healthcheck200Response>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
