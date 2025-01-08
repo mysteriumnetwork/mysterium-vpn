@@ -389,10 +389,11 @@ abstract class _VpnStore with Store {
     _connectingLocationCode = location;
 
     try {
-      // if (await _wireguardService.status() == ConnectionStatus.connected) {
-      //   await disconnectWireguard();
-      // }
-
+      if (Platform.isWindows) {
+        if (await _wireguardService.status() == ConnectionStatus.connected) {
+          await disconnectWireguard();
+        }
+      }
       await _completeConnection(location, refreshIP);
 
       _stopwatch.stop();
