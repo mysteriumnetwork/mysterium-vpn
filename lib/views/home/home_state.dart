@@ -14,6 +14,7 @@ class _HomeState extends ChangeNotifier {
   final typeSwitcherKey = GlobalKey();
   IPType _ipType;
   bool _isPanelOpen = false;
+  ScrollPhysics? _tempScrollPhysics;
 
   PanelController? panelController;
   ScrollController? _scrollController;
@@ -32,6 +33,13 @@ class _HomeState extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  set tempScrollPhysics(ScrollPhysics? value) {
+    _tempScrollPhysics = value;
+    notifyListeners();
+  }
+
+  ScrollPhysics? get tempScrollPhysics => _tempScrollPhysics;
 
   ScrollController? get scrollController => _scrollController;
 
@@ -69,11 +77,16 @@ class _HomeState extends ChangeNotifier {
       return;
     }
 
-    await scrollController!.animateTo(
-      scrollController!.offset + offset - kToolbarHeight,
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.easeInOut,
-    );
+    final target = scrollController!.offset + offset - kToolbarHeight;
+    final position = scrollController!.positions.firstOrNull?.viewportDimension ?? 0;
+
+    if (target <= position) {
+      return;
+    }
+
+    tempScrollPhysics = const ClampingScrollPhysics();
+    scrollController!.jumpTo(scrollController!.offset + offset - kToolbarHeight);
+    tempScrollPhysics = null;
   }
 
   Future<void> show(GlobalKey key) async {
