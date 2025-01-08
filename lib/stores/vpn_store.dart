@@ -335,12 +335,15 @@ abstract class _VpnStore with Store {
   /// Disconnect from Wireguard tunnel
   @action
   Future<void> disconnectWireguard() async {
-    final tunnelStatus = await _wireguardService.status();
-    if (tunnelStatus == ConnectionStatus.connected || tunnelStatus == ConnectionStatus.connecting) {
+    _connectionStatus = await _wireguardService.status();
+    if (_connectionStatus == ConnectionStatus.connected ||
+        _connectionStatus == ConnectionStatus.connecting) {
       await _wireguardService.disconnect().timeout(
             const Duration(seconds: 10),
             onTimeout: () => throw TimeoutException('Wireguard disconnection timeout'),
           );
+
+      _connectionStatus = await _wireguardService.status();
     }
   }
 
@@ -374,18 +377,18 @@ abstract class _VpnStore with Store {
       }
     }
 
-    await startConnection(location: location, isRetrying: isRetrying);
+    await _startConnection(location: location, isRetrying: isRetrying);
   }
 
   /// Connect to VPN by refreshing IP address
   @action
   Future<void> startConnectionWithRefreshIP() async {
-    await startConnection(refreshIP: true);
+    await _startConnection(refreshIP: true);
   }
 
   /// Connect to VPN
   @action
-  Future<void> startConnection({
+  Future<void> _startConnection({
     String? location,
     bool? refreshIP,
     bool isRetrying = false,
