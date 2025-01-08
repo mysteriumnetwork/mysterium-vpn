@@ -531,11 +531,19 @@ abstract class _VpnStore with Store {
       // TODO(Waldz): Make it mandatory, when backend field will be deployed
       final connectionID = _vpnConfig?.uid ?? '';
       _connectionSub ??= _mqtt.subscribe('mysterium-vpn/connection/$connectionID').listen((event) {
-        final connectionUpdate =
-            ConnectionMessage.fromJson(json.decode(event) as Map<String, dynamic>);
-        _vpnConnection = _vpnConnection?.copyWith(
+        final connection = _vpnConnection;
+        if (connection == null) {
+          return;
+        }
+        final connectionUpdate = ConnectionMessage.fromJson(
+          json.decode(event) as Map<String, dynamic>,
+        );
+        _vpnConnection = connection.copyWith(
           connectionIP: connectionUpdate.location.ip,
-          location: connectionUpdate.location.country,
+          // TODO(dmacan): update with proper IPType once we receive it within ConnectionMessage
+          location: connection.location.copyWith(
+            code: connectionUpdate.location.country,
+          ),
         );
       });
     } catch (e) {
