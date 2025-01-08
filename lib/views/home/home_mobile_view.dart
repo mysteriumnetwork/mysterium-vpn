@@ -19,8 +19,6 @@ class HomeMobileView extends HookConsumerWidget {
     final theme = Theme.of(context);
     final homeState = ref.watch(homeStateProvider.notifier);
 
-    const panelFraction = .4;
-
     useEffect(
       () {
         homeState.panelController = panelController;
@@ -32,12 +30,12 @@ class HomeMobileView extends HookConsumerWidget {
     return LayoutBuilder(
       builder: (context, layoutConstraints) {
         final minHeight = max<double>(
-          layoutConstraints.maxHeight * panelFraction,
+          layoutConstraints.maxHeight * homeState.panelMinExtent,
           // panel should be at least this size in order to fit at least one country
-          420,
+          240,
         );
         final constraints = layoutConstraints.copyWith(
-          maxHeight: max(layoutConstraints.maxHeight * .8, minHeight),
+          maxHeight: max(layoutConstraints.maxHeight * homeState.panelMaxExtent, minHeight),
           minHeight: minHeight,
         );
 
@@ -60,10 +58,10 @@ class HomeMobileView extends HookConsumerWidget {
           body: Column(
             children: [
               Expanded(
-                flex: 10 - (panelFraction * 10).round(),
+                flex: 10 - (homeState.panelMinExtent * 10).round(),
                 child: const HomeConnectionView(header: HomeMobileAppBar()),
               ),
-              Spacer(flex: (panelFraction * 10).round()),
+              Spacer(flex: (homeState.panelMinExtent * 10).round()),
             ],
           ),
         );

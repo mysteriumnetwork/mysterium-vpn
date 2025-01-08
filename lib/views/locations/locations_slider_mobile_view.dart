@@ -20,7 +20,6 @@ class LocationsSliderMobileView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final analyticsStore = ref.watch(analyticsStorePOD);
-    final scrollPhysics = ref.watch(homeStateProvider.select((it) => it.tempScrollPhysics));
 
     useEffect(
       () {
@@ -35,7 +34,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     }
 
     return CustomScrollView(
-      physics: scrollPhysics ?? const AlwaysScrollableScrollPhysics(),
+      physics: const AlwaysScrollableScrollPhysics(),
       controller: controller,
       slivers: [
         SliverPinnedHeader(
