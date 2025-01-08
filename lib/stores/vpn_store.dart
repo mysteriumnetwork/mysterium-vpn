@@ -327,17 +327,13 @@ abstract class _VpnStore with Store {
   /// Disconnect from Wireguard tunnel
   @action
   Future<void> disconnectWireguard() async {
-    try {
-      final status = await _wireguardService.status();
-      if (status == ConnectionStatus.connected) {
-        await _wireguardService.disconnect();
-      }
+    final status = await _wireguardService.status();
+    if (status == ConnectionStatus.connected) {
+      await _wireguardService.disconnect();
+    }
 
-      if (_connectionSub != null) {
-        _connectionSub!.cancel();
-      }
-    } catch (e) {
-      print(e);
+    if (_connectionSub != null) {
+      _connectionSub!.cancel();
     }
   }
 
