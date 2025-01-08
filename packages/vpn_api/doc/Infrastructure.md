@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 
 # **healthcheck**
-> HealthcheckResponse healthcheck()
+> Healthcheck200Response healthcheck()
 
 Check whether the API is up
 
@@ -36,7 +36,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**HealthcheckResponse**](HealthcheckResponse.md)
+[**Healthcheck200Response**](Healthcheck200Response.md)
 
 ### Authorization
 

@@ -114,6 +114,10 @@ class SignInForm extends HookConsumerWidget {
                       onTap: (_) {
                         analyticsStore.logEvent(AnalyticsEvent.emailInput);
                       },
+                      onTapOutside: (_) => FocusScope.of(
+                        context,
+                        createDependency: false,
+                      ).unfocus(),
                       decoration: InputDecoration(
                         labelText: LocaleKeys.email.tr(),
                         hintText: 'example@example.com',
@@ -122,8 +126,10 @@ class SignInForm extends HookConsumerWidget {
                       formControlName: 'email',
                       autofillHints: const [AutofillHints.email],
                       keyboardType: TextInputType.emailAddress,
-                      onSubmitted: (control) =>
-                          _onSignInWithEmailPressed(signInForm, context, store, analyticsStore),
+                      onSubmitted: (_) => FocusScope.of(
+                        context,
+                        createDependency: false,
+                      ).unfocus(),
                       onEditingComplete: (_) => TextInput.finishAutofillContext(),
                       validationMessages: {
                         ValidationMessage.required: (_) => LocaleKeys.emailIsRequired.tr(),
