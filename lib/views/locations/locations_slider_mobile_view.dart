@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/locations_view.dart';
 
 class LocationsSliderMobileView extends HookConsumerWidget {
@@ -17,6 +18,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final analyticsStore = ref.watch(analyticsStorePOD);
+    final scrollPhysics = ref.watch(homeStateProvider.select((it) => it.tempScrollPhysics));
 
     useEffect(
       () {
@@ -27,7 +29,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     );
 
     return CustomScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
+      physics: scrollPhysics ?? const AlwaysScrollableScrollPhysics(),
       controller: controller,
       slivers: const [
         SliverSafeArea(

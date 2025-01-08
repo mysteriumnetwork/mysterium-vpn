@@ -12,6 +12,7 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final scrollPhysics = ref.watch(homeStateProvider.select((it) => it.tempScrollPhysics));
     final analyticsStore = ref.read(analyticsStorePOD);
     final scrollController = useScrollController()
       ..addListener(analyticsStore.logLocationsListScroll);
@@ -20,6 +21,7 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
 
     return CustomScrollView(
       controller: scrollController,
+      physics: scrollPhysics,
       slivers: const [
         SliverToBoxAdapter(child: SizedBox(height: 14)),
         SliverPinnedHeader(
