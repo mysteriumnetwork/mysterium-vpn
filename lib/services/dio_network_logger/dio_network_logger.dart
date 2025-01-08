@@ -441,23 +441,19 @@ class NetworkLoggerEventScreen extends StatelessWidget {
     } else {
       text = body.toString();
     }
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: GestureDetector(
-        onLongPress: () {
-          Clipboard.setData(ClipboardData(text: text));
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: EasyText('Copied to clipboard'),
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
-        },
-        child: EasyText(
-          text,
-          maxLines: 100,
-        ),
+    return GestureDetector(
+      onLongPress: () {
+        Clipboard.setData(ClipboardData(text: text));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: EasyText('Copied to clipboard'),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      },
+      child: EasyText(
+        text.replaceAll('","', '"\n"'),
+        maxLines: 100,
       ),
     );
   }

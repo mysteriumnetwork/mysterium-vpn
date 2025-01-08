@@ -112,8 +112,6 @@ PODS:
     - PromisesSwift (~> 2.1)
   - FirebaseSharedSwift (11.5.0)
   - Flutter (1.0.0)
-  - flutter_icmp_ping (0.0.1):
-    - Flutter
   - flutter_native_splash (0.0.1):
     - Flutter
   - flutter_secure_storage (6.0.0):
@@ -241,7 +239,6 @@ DEPENDENCIES:
   - firebase_performance (from `.symlinks/plugins/firebase_performance/ios`)
   - FirebaseAnalyticsOnDeviceConversion
   - Flutter (from `Flutter`)
-  - flutter_icmp_ping (from `.symlinks/plugins/flutter_icmp_ping/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/darwin`)
@@ -304,8 +301,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_performance/ios"
   Flutter:
     :path: Flutter
-  flutter_icmp_ping:
-    :path: ".symlinks/plugins/flutter_icmp_ping/ios"
   flutter_native_splash:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
   flutter_secure_storage:
@@ -362,7 +357,6 @@ SPEC CHECKSUMS:
   FirebaseSessions: 3f56f177d9e53a85021d16b31f9a111849d1dd8b
   FirebaseSharedSwift: 302ac5967857ad7e7388b15382d705b8c8d892aa
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_icmp_ping: 2b159955eee0c487c766ad83fec224ae35e7c935
   flutter_native_splash: edf599c81f74d093a4daf8e17bd7a018854bc778
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
   google_sign_in_ios: 07375bfbf2620bc93a602c0e27160d6afc6ead38
@@ -387,7 +381,7 @@ SPEC CHECKSUMS:
   sentry_flutter: a39c2a2d67d5e5b9cb0b94a4985c76dd5b3fc737
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
-  storekit_extensions: bb0fe27c5002b8f45e7a030d11e096281c040fad
+  storekit_extensions: 1bb0609314cef6c2404cfdcae93bd832272dee2b
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
   wireguard_dart: c6c27bbc1469f9aa1f7984b64ce3aaf04136417b
   WireGuardKit: 44063ed405613ca3d234e489e24b015d434e2a64

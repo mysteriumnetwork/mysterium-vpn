@@ -250,9 +250,9 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore._connectWireguard', context: context);
 
   @override
-  Future<void> _connectWireguard({required String privateKey, required String nonce}) {
+  Future<void> _connectWireguard({required String privateKey, required String vpnConfig}) {
     return _$_connectWireguardAsyncAction
-        .run(() => super._connectWireguard(privateKey: privateKey, nonce: nonce));
+        .run(() => super._connectWireguard(privateKey: privateKey, vpnConfig: vpnConfig));
   }
 
   late final _$disconnectWireguardAsyncAction =
@@ -294,22 +294,9 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore._completeConnection', context: context);
 
   @override
-  Future<void> _completeConnection(String? location, bool? refreshIP, String nonce) {
+  Future<void> _completeConnection(String? location, bool? refreshIP) {
     return _$_completeConnectionAsyncAction
-        .run(() => super._completeConnection(location, refreshIP, nonce));
-  }
-
-  late final _$_VpnStoreActionController = ActionController(name: '_VpnStore', context: context);
-
-  @override
-  void _checkOperationCancel(String nonce) {
-    final _$actionInfo =
-        _$_VpnStoreActionController.startAction(name: '_VpnStore._checkOperationCancel');
-    try {
-      return super._checkOperationCancel(nonce);
-    } finally {
-      _$_VpnStoreActionController.endAction(_$actionInfo);
-    }
+        .run(() => super._completeConnection(location, refreshIP));
   }
 
   @override
