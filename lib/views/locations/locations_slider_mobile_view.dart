@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/components/dragable_indicator.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/locations_view.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 class LocationsSliderMobileView extends HookConsumerWidget {
   const LocationsSliderMobileView({
@@ -28,14 +30,27 @@ class LocationsSliderMobileView extends HookConsumerWidget {
       [analyticsStore],
     );
 
+    void handleTogglePanel() {
+      ref.read(homeStateProvider.notifier).togglePanel();
+    }
+
     return CustomScrollView(
       physics: scrollPhysics ?? const AlwaysScrollableScrollPhysics(),
       controller: controller,
-      slivers: const [
-        SliverSafeArea(
-          sliver: SliverPadding(
-            padding: EdgeInsets.all(20),
-            sliver: LocationsSliverView(),
+      slivers: [
+        SliverPinnedHeader(
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Center(child: DraggableIndicator(onTap: handleTogglePanel)),
+          ),
+        ),
+        const SliverClip(
+          child: SliverSafeArea(
+            top: false,
+            sliver: SliverPadding(
+              padding: EdgeInsets.all(20),
+              sliver: LocationsSliverView(),
+            ),
           ),
         ),
       ],
