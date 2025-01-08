@@ -11,16 +11,16 @@ part of 'api_store.dart';
 mixin _$ApiStore on _ApiStore, Store {
   late final _$_lastHealthcheckAtom = Atom(name: '_ApiStore._lastHealthcheck', context: context);
 
-  HealthcheckResponse? get lastHealthcheck {
+  HealthcheckMessage? get lastHealthcheck {
     _$_lastHealthcheckAtom.reportRead();
     return super._lastHealthcheck;
   }
 
   @override
-  HealthcheckResponse? get _lastHealthcheck => lastHealthcheck;
+  HealthcheckMessage? get _lastHealthcheck => lastHealthcheck;
 
   @override
-  set _lastHealthcheck(HealthcheckResponse? value) {
+  set _lastHealthcheck(HealthcheckMessage? value) {
     _$_lastHealthcheckAtom.reportWrite(value, super._lastHealthcheck, () {
       super._lastHealthcheck = value;
     });
