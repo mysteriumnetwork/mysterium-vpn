@@ -385,7 +385,7 @@ abstract class _VpnStore with Store {
     _connectingLocationCode = location;
 
     try {
-      if (Platform.isWindows) {
+      if (Platform.isWindows || Platform.isAndroid) {
         if (await _wireguardService.status() == ConnectionStatus.connected) {
           await disconnectWireguard();
         }
