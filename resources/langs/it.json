@@ -524,5 +524,7 @@
   "ipTypeDataCenter": "IP ad alta velocità",
   "ipTypeResidential": "IP residenziali",
   "ipTypeDataCenterDisclaimer": "IP ospitati su server veloci ed efficienti per esigenze VPN rapide.",
-  "ipTypeResidentialDisclaimer": "IP collegati a case reali per ridurre il rilevamento VPN."
+  "ipTypeResidentialDisclaimer": "IP collegati a case reali per ridurre il rilevamento VPN.",
+  "noLocations": "Non siamo riusciti a trovare alcuna località 😕",
+  "noLocationsKeyword": "Non siamo riusciti a trovare alcuna località per \"{keyword}\" 😕"
 }

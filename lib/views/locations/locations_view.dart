@@ -50,7 +50,7 @@ class LocationsSliverView extends HookConsumerWidget {
       [locationType],
     );
 
-    final recentLocations = useComputedValue(() => <VPNLocation>[]);
+    final recentLocations = useComputedValue(() => locationsStore.recentLocations);
 
     final handleToggleConnection = useHandleToggleConnection();
 
@@ -113,15 +113,14 @@ class LocationsSliverView extends HookConsumerWidget {
                     recentLocations: recentLocations,
                     onLocationTapped: handleRecentLocationTapped,
                   ),
-                if (recentLocations.isNotEmpty && locations.isNotEmpty) const SizedBox(height: 24),
-                if (locations.isNotEmpty)
-                  _Locations(
-                    locations: locations,
-                    topLocations: topLocations,
-                    locationType: locationType,
-                    onLocationTypeChanged: handleSetLocationType,
-                    onLocationTapped: handleLocationTapped,
-                  ),
+                if (recentLocations.isNotEmpty) const SizedBox(height: 24),
+                _Locations(
+                  locations: locations,
+                  topLocations: topLocations,
+                  locationType: locationType,
+                  onLocationTypeChanged: handleSetLocationType,
+                  onLocationTapped: handleLocationTapped,
+                ),
               ],
             ),
         },
@@ -175,56 +174,63 @@ class _Locations extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final config = ref.watch(remoteConfigStorePOD);
+    final locationsStore = ref.watch(locationsStorePOD);
 
     final typeSwitcherKey = ref.watch(homeStateProvider.select((it) => it.typeSwitcherKey));
-    final dcIPs = useComputedValue(() => config.dcIPs);
+    final hasDataCenterIPs = useComputedValue(() => config.dataCenterCountries.isNotEmpty);
+    final searchKeyword = useComputedValue(() => locationsStore.searchKeyword);
 
-    return MultiSliver(children: [
-      SliverPinnedHeader(
-        child: LocationTypeSwitcher(
-          key: typeSwitcherKey,
-          value: locationType,
-          onChanged: onLocationTypeChanged,
+    return MultiSliver(
+      children: [
+        SliverPinnedHeader(
+          child: LocationTypeSwitcher(
+            key: typeSwitcherKey,
+            value: locationType,
+            onChanged: onLocationTypeChanged,
+          ),
         ),
-      ),
-      SliverClip(
-        child: SliverStack(
-          children: [
-            const SliverPositioned.fill(child: LocationsContainer()),
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-              sliver: MultiSliver(
-                children: [
-                  if (dcIPs)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 30),
-                      child: switch (locationType) {
-                        IPType.datacenter => LocationsDisclaimer.dataCenter(),
-                        IPType.residential => LocationsDisclaimer.residential(),
-                      },
-                    ),
-                  if (topLocations.isNotEmpty)
+        SliverClip(
+          child: SliverStack(
+            children: [
+              const SliverPositioned.fill(child: LocationsContainer()),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                sliver: MultiSliver(
+                  children: [
+                    if (hasDataCenterIPs)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 30),
+                        child: switch (locationType) {
+                          IPType.datacenter => LocationsDisclaimer.dataCenter(),
+                          IPType.residential => LocationsDisclaimer.residential(),
+                        },
+                      ),
+                    if (topLocations.isNotEmpty)
+                      LocationsSliverList(
+                        ipType: locationType,
+                        items: topLocations,
+                        onItemPressed: onLocationTapped,
+                      ),
+                    if (topLocations.isNotEmpty && locations.isNotEmpty)
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                        child: Divider(thickness: 0.5, color: Palette.lightBlue),
+                      ),
                     LocationsSliverList(
                       ipType: locationType,
-                      items: topLocations,
+                      items: locations,
                       onItemPressed: onLocationTapped,
+                      emptyText: searchKeyword.isEmpty
+                          ? LocaleKeys.noLocations.tr()
+                          : LocaleKeys.noLocationsKeyword.tr(namedArgs: {'keyword': searchKeyword}),
                     ),
-                  if (topLocations.isNotEmpty && locations.isNotEmpty)
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                      child: Divider(thickness: 0.5, color: Palette.lightBlue),
-                    ),
-                  LocationsSliverList(
-                    ipType: locationType,
-                    items: locations,
-                    onItemPressed: onLocationTapped,
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }

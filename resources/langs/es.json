@@ -528,5 +528,7 @@
   "ipTypeDataCenter": "IPs de alta velocidad",
   "ipTypeResidential": "IPs residenciales",
   "ipTypeDataCenterDisclaimer": "IPs alojadas en servidores rápidos y eficientes para necesidades rápidas de VPN.",
-  "ipTypeResidentialDisclaimer": "IPs vinculadas a hogares reales para reducir la detección de VPN."
+  "ipTypeResidentialDisclaimer": "IPs vinculadas a hogares reales para reducir la detección de VPN.",
+  "noLocations": "No pudimos encontrar ninguna ubicación 😕",
+  "noLocationsKeyword": "No pudimos encontrar ubicaciones para \"{keyword}\" 😕"
 }

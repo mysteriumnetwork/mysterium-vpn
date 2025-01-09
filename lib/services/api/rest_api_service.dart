@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/report_broken_node_request.dart';
@@ -26,17 +25,14 @@ class RestApiService extends ApiService {
     required VpnApi api,
     required NetworkService networkService,
     required Talker logger,
-    required FlavorConfig env,
   })  : _networkService = networkService,
         _apiConnection = api.getConnection(),
-        _logger = logger,
-        _env = env;
+        _logger = logger;
 
   final Connection _apiConnection;
   final NetworkService _networkService;
   final LocalDBService _localDb = LocalDBService.instance;
   final Talker _logger;
-  final FlavorConfig _env;
 
   @override
   Future<void> setNotificationsApproval({required bool approval}) async =>
@@ -58,20 +54,14 @@ class RestApiService extends ApiService {
           data.countries.whereNot(topCountries.contains).sortedBy((it) => it.tr()).toList();
 
       if (keyword.isNotEmpty) {
-        bool isMatch(String it) => it.tr().toLowerCase().contains(keyword);
-        topCountries = topCountries.where(isMatch).toList();
-        allCountries = allCountries.where(isMatch).toList();
+        topCountries = topCountries.where((code) => _isMatch(code, keyword)).toList();
+        allCountries = allCountries.where((code) => _isMatch(code, keyword)).toList();
       }
-
-      final dcCountries = _env.values.dcLocations
-          .where((it) => allCountries.contains(it) || topCountries.contains(it))
-          .toList();
 
       return VPNLocations(
         allLocations: allCountries.map((code) => VPNLocation(code: code)).toList(),
         topLocations: topCountries.map((code) => VPNLocation(code: code)).toList(),
-        dcLocations:
-            dcCountries.map((code) => VPNLocation(code: code, ipType: IPType.datacenter)).toList(),
+        dcLocations: [],
       );
     } on ApiException {
       rethrow;
@@ -85,11 +75,14 @@ class RestApiService extends ApiService {
   Future<List<VPNLocation>> getRecentLocations({required String keyword}) async {
     var locations = await _localDb.getRecentLocations();
     if (keyword.isNotEmpty) {
-      locations = locations
-          .where((location) => location.code.tr().toLowerCase().contains(keyword))
-          .toList();
+      locations = locations.where((location) => _isMatch(location.code, keyword)).toList();
     }
     return locations;
+  }
+
+  bool _isMatch(String code, String keyword) {
+    final query = keyword.toLowerCase();
+    return code.tr().toLowerCase().contains(query) || code.toLowerCase().contains(query);
   }
 
   @override

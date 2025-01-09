@@ -136,7 +136,6 @@ final apiServicePOD = Provider<ApiService>((ref) {
     api: api,
     networkService: networkService,
     logger: logger,
-    env: ref.watch(environmentPOD),
   );
 });
 

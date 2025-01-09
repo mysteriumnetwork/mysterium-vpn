@@ -26,7 +26,7 @@ enum _FeatureToggleKey {
   showVpnPrivacyPolicyPage,
   pricingMonthly,
   mqttExperiment,
-  dcIPs,
+  dataCenterCountries,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -229,11 +229,12 @@ abstract class RemoteConfigStoreBase with Store {
   }
 
   @computed
-  bool get dcIPs {
-    if (config.containsKey(_FeatureToggleKey.dcIPs.name)) {
-      return config[_FeatureToggleKey.dcIPs.name] as bool;
+  List<String> get dataCenterCountries {
+    if (config.containsKey(_FeatureToggleKey.dataCenterCountries.name)) {
+      final raw = config[_FeatureToggleKey.dataCenterCountries.name] as String;
+      return raw.split(RegExp('[^a-zA-Z]+')).map((code) => code.toUpperCase()).toList();
     }
-    return false;
+    return [];
   }
 
   Map<String, String> get asUserProperties =>

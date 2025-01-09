@@ -39,7 +39,7 @@ abstract class _BannersStore with Store {
       all.remove(BannerType.subscription);
     }
 
-    if (!_configStore.dcIPs) {
+    if (_configStore.dataCenterCountries.isEmpty) {
       all.remove(BannerType.datacenter);
     }
 

@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 
 part 'locations_store.g.dart';
 
@@ -18,6 +19,7 @@ abstract class _LocationsStore with Store {
   _LocationsStore(
     this._apiService,
     this._analyticsStore,
+    this._remoteConfigStore,
     LocaleStore localeStore,
   ) {
     fetchVPNLocations();
@@ -30,6 +32,8 @@ abstract class _LocationsStore with Store {
 
   final ApiService _apiService;
   final AnalyticsStore _analyticsStore;
+  final RemoteConfigStore _remoteConfigStore;
+
   final Debouncer _debouncer = Debouncer();
 
   @readonly
@@ -72,11 +76,25 @@ abstract class _LocationsStore with Store {
     return locations.randomItem();
   }
 
+  /// Fetches VPN locations from the API and filters them based on the search keyword.
+  /// It also cross-matches data center locations with the remote config.
   @action
   Future<void> fetchVPNLocations() async {
-    _vpnLocationsFuture = ObservableFuture(
-      _apiService.fetchVPNLocations(keyword: searchKeyword),
-    );
+    // make sure we have the remote config values resolved before fetching locations
+    await _remoteConfigStore.resolveRemoteConfigValuesFuture;
+    final dataCenterCountries = _remoteConfigStore.dataCenterCountries;
+
+    Future<VPNLocations> fetch() async {
+      final locations = await _apiService.fetchVPNLocations(keyword: searchKeyword);
+      return locations.copyWith(
+        dcLocations: locations.allLocations
+            .where((location) => dataCenterCountries.contains(location.code))
+            .map((location) => location.copyWith(ipType: IPType.datacenter))
+            .toList(),
+      );
+    }
+
+    _vpnLocationsFuture = ObservableFuture(fetch());
     await _vpnLocationsFuture;
     await fetchRecentLocations();
   }

@@ -524,5 +524,7 @@
   "ipTypeDataCenter": "高速IP",
   "ipTypeResidential": "住宅用IP",
   "ipTypeDataCenterDisclaimer": "迅速なVPNニーズに対応する高速で効率的なサーバー上にホストされるIP。",
-  "ipTypeResidentialDisclaimer": "実際の家庭に関連付けられたIPでVPN検出を減少。"
+  "ipTypeResidentialDisclaimer": "実際の家庭に関連付けられたIPでVPN検出を減少。",
+  "noLocations": "場所が見つかりませんでした 😕",
+  "noLocationsKeyword": "「{keyword}」の場所が見つかりませんでした 😕"
 }
