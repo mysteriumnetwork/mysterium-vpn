@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:mysterium_vpn/common/exceptions/authentication_required.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/interceptors/api_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/connection_errors.dart';
@@ -99,16 +98,10 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
 
 final vpnApiMQTTPOD = Provider<MQTTService>((ref) {
   final environment = ref.watch(environmentPOD);
-  final authSessionStore = ref.watch(authSessionStorePOD);
   final logger = ref.watch(loggerPOD);
 
-  if (authSessionStore.accessToken == null) {
-    throw AuthenticationRequiredException();
-  }
   return MQTTService(
     environment.values.mqttUrl,
-    'dvpn',
-    authSessionStore.accessToken!,
     'mysterium-vpn-${environment.buildInfo.buildVersion}'.truncate(23),
     logger,
   );

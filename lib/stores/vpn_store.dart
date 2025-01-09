@@ -19,6 +19,7 @@ import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/report_broken_node_request.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
@@ -49,6 +50,7 @@ abstract class _VpnStore with Store {
   _VpnStore({
     required ApiService apiService,
     required MQTTService mqtt,
+    required AuthSessionStore authSession,
     required LocationsStore locationsStore,
     required WireguardDart wireguardService,
     required SubscriptionStore subscriptionStore,
@@ -58,6 +60,7 @@ abstract class _VpnStore with Store {
     required RemoteConfigStore remoteConfigStore,
   })  : _apiService = apiService,
         _mqtt = mqtt,
+        _authSession = authSession,
         _locationsStore = locationsStore,
         _wireguardService = wireguardService,
         _subscriptionStore = subscriptionStore,
@@ -70,6 +73,7 @@ abstract class _VpnStore with Store {
 
   final ApiService _apiService;
   final MQTTService _mqtt;
+  final AuthSessionStore _authSession;
   final LocationsStore _locationsStore;
   final AnalyticsStore _analyticsStore;
   final WireguardDart _wireguardService;
@@ -556,7 +560,11 @@ abstract class _VpnStore with Store {
       );
       _vpnConfig = await fetchConfigFuture;
 
-      await _mqtt.ensureStart();
+      if (_authSession.accessToken == null) {
+        throw AuthenticationRequiredException();
+      }
+      await _mqtt.ensureStart(_authSession.accessToken!);
+
       // TODO(Waldz): Make it mandatory, when backend field will be deployed
       final connectionID = _vpnConfig?.uid ?? '';
       _connectionSub ??= _mqtt.subscribe('mysterium-vpn/connection/$connectionID').listen((event) {
