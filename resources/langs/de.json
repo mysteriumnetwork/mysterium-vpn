@@ -524,5 +524,7 @@
   "ipTypeDataCenter": "Hochgeschwindigkeits-IPs",
   "ipTypeResidential": "Wohn-IPs",
   "ipTypeDataCenterDisclaimer": "IPs, die auf schnellen und effizienten Servern für schnelle VPN-Anforderungen gehostet werden.",
-  "ipTypeResidentialDisclaimer": "IPs, die an tatsächliche Haushalte gebunden sind, um VPN-Erkennung zu reduzieren."
+  "ipTypeResidentialDisclaimer": "IPs, die an tatsächliche Haushalte gebunden sind, um VPN-Erkennung zu reduzieren.",
+  "noLocations": "Wir konnten keine Standorte finden 😕",
+  "noLocationsKeyword": "Wir konnten keine Standorte für \"{keyword}\" finden 😕"
 }

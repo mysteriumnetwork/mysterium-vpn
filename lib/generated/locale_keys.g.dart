@@ -527,4 +527,6 @@ abstract class LocaleKeys {
   static const ipTypeResidential = 'ipTypeResidential';
   static const ipTypeDataCenterDisclaimer = 'ipTypeDataCenterDisclaimer';
   static const ipTypeResidentialDisclaimer = 'ipTypeResidentialDisclaimer';
+  static const noLocations = 'noLocations';
+  static const noLocationsKeyword = 'noLocationsKeyword';
 }

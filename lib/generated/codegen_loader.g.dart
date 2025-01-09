@@ -541,7 +541,9 @@ class CodegenLoader extends AssetLoader {
     "ipTypeDataCenter": "高速IP",
     "ipTypeResidential": "住宅IP",
     "ipTypeDataCenterDisclaimer": "托管在快速高效服务器上的IP，适用于快速VPN需求。",
-    "ipTypeResidentialDisclaimer": "绑定到实际家庭的IP，以减少VPN检测。"
+    "ipTypeResidentialDisclaimer": "绑定到实际家庭的IP，以减少VPN检测。",
+    "noLocations": "我们找不到任何位置 😕",
+    "noLocationsKeyword": "我们找不到与 \"{keyword}\" 相关的位置 😕"
   };
   static const Map<String, dynamic> tr = {
     "title": "Merhaba efendim",
@@ -1094,7 +1096,9 @@ class CodegenLoader extends AssetLoader {
     "ipTypeResidential": "Rezidans IP'leri",
     "ipTypeDataCenterDisclaimer":
         "Hızlı VPN ihtiyaçları için hızlı ve verimli sunucularda barındırılan IP'ler.",
-    "ipTypeResidentialDisclaimer": "Gerçek evlere bağlı IP'ler, VPN algılamasını azaltır."
+    "ipTypeResidentialDisclaimer": "Gerçek evlere bağlı IP'ler, VPN algılamasını azaltır.",
+    "noLocations": "Herhangi bir konum bulamadık 😕",
+    "noLocationsKeyword": "\"{keyword}\" için herhangi bir konum bulamadık 😕"
   };
   static const Map<String, dynamic> ja = {
     "title": "こんにちは。",
@@ -1626,7 +1630,9 @@ class CodegenLoader extends AssetLoader {
     "ipTypeDataCenter": "高速IP",
     "ipTypeResidential": "住宅用IP",
     "ipTypeDataCenterDisclaimer": "迅速なVPNニーズに対応する高速で効率的なサーバー上にホストされるIP。",
-    "ipTypeResidentialDisclaimer": "実際の家庭に関連付けられたIPでVPN検出を減少。"
+    "ipTypeResidentialDisclaimer": "実際の家庭に関連付けられたIPでVPN検出を減少。",
+    "noLocations": "場所が見つかりませんでした 😕",
+    "noLocationsKeyword": "「{keyword}」の場所が見つかりませんでした 😕"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -2199,7 +2205,9 @@ class CodegenLoader extends AssetLoader {
     "ipTypeDataCenterDisclaimer":
         "IPs, die auf schnellen und effizienten Servern für schnelle VPN-Anforderungen gehostet werden.",
     "ipTypeResidentialDisclaimer":
-        "IPs, die an tatsächliche Haushalte gebunden sind, um VPN-Erkennung zu reduzieren."
+        "IPs, die an tatsächliche Haushalte gebunden sind, um VPN-Erkennung zu reduzieren.",
+    "noLocations": "Wir konnten keine Standorte finden 😕",
+    "noLocationsKeyword": "Wir konnten keine Standorte für \"{keyword}\" finden 😕"
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2760,7 +2768,9 @@ class CodegenLoader extends AssetLoader {
     "ipTypeDataCenterDisclaimer":
         "IPs hospedados em servidores rápidos e eficientes para necessidades rápidas de VPN.",
     "ipTypeResidentialDisclaimer":
-        "IPs vinculados a residências reais para reduzir a detecção de VPN."
+        "IPs vinculados a residências reais para reduzir a detecção de VPN.",
+    "noLocations": "Não conseguimos encontrar nenhum local 😕",
+    "noLocationsKeyword": "Não conseguimos encontrar locais para \"{keyword}\" 😕"
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -3204,7 +3214,6 @@ class CodegenLoader extends AssetLoader {
     "ar": "Arabic",
     "id": "Indonesian",
     "ja": "Japanese",
-    "coudntFindLocations": "We could not find any location for \"{searchKeyword}\". 😕",
     "checkingSubsStatus": "We are checking your subscription status. Please wait...",
     "connectionTimeout":
         "Connection timed out. Please try again later. If the problem persists, contact the support team",
@@ -3317,7 +3326,9 @@ class CodegenLoader extends AssetLoader {
     "ipTypeDataCenter": "High-speed IPs",
     "ipTypeResidential": "Residential IPs",
     "ipTypeDataCenterDisclaimer": "IPs hosted on fast and efficient servers for quick VPN needs.",
-    "ipTypeResidentialDisclaimer": "IPs tied to actual households for decreased VPN detection."
+    "ipTypeResidentialDisclaimer": "IPs tied to actual households for decreased VPN detection.",
+    "noLocations": "We could not find any locations 😕",
+    "noLocationsKeyword": "We could not find any locations for \"{keyword}\" 😕"
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3882,7 +3893,9 @@ class CodegenLoader extends AssetLoader {
     "ipTypeResidential": "IP residenziali",
     "ipTypeDataCenterDisclaimer":
         "IP ospitati su server veloci ed efficienti per esigenze VPN rapide.",
-    "ipTypeResidentialDisclaimer": "IP collegati a case reali per ridurre il rilevamento VPN."
+    "ipTypeResidentialDisclaimer": "IP collegati a case reali per ridurre il rilevamento VPN.",
+    "noLocations": "Non siamo riusciti a trovare alcuna località 😕",
+    "noLocationsKeyword": "Non siamo riusciti a trovare alcuna località per \"{keyword}\" 😕"
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -4450,7 +4463,9 @@ class CodegenLoader extends AssetLoader {
     "ipTypeResidential": "IPs résidentielles",
     "ipTypeDataCenterDisclaimer":
         "IPs hébergées sur des serveurs rapides et efficaces pour des besoins VPN rapides.",
-    "ipTypeResidentialDisclaimer": "IPs liées à des foyers réels pour réduire la détection VPN."
+    "ipTypeResidentialDisclaimer": "IPs liées à des foyers réels pour réduire la détection VPN.",
+    "noLocations": "Nous n'avons trouvé aucun emplacement 😕",
+    "noLocationsKeyword": "Nous n'avons trouvé aucun emplacement pour \"{keyword}\" 😕"
   };
   static const Map<String, dynamic> id = {
     "title": "Halo Pak",
@@ -5009,7 +5024,9 @@ class CodegenLoader extends AssetLoader {
     "ipTypeResidential": "IP Residensial",
     "ipTypeDataCenterDisclaimer":
         "IP yang di-host di server cepat dan efisien untuk kebutuhan VPN cepat.",
-    "ipTypeResidentialDisclaimer": "IP yang terhubung ke rumah asli untuk mengurangi deteksi VPN."
+    "ipTypeResidentialDisclaimer": "IP yang terhubung ke rumah asli untuk mengurangi deteksi VPN.",
+    "noLocations": "Kami tidak dapat menemukan lokasi 😕",
+    "noLocationsKeyword": "Kami tidak dapat menemukan lokasi untuk \"{keyword}\" 😕"
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -5577,7 +5594,9 @@ class CodegenLoader extends AssetLoader {
     "ipTypeDataCenterDisclaimer":
         "IPs alojadas en servidores rápidos y eficientes para necesidades rápidas de VPN.",
     "ipTypeResidentialDisclaimer":
-        "IPs vinculadas a hogares reales para reducir la detección de VPN."
+        "IPs vinculadas a hogares reales para reducir la detección de VPN.",
+    "noLocations": "No pudimos encontrar ninguna ubicación 😕",
+    "noLocationsKeyword": "No pudimos encontrar ubicaciones para \"{keyword}\" 😕"
   };
   static const Map<String, dynamic> ar = {
     "title": "أهلاً سيدي",
@@ -6017,7 +6036,6 @@ class CodegenLoader extends AssetLoader {
     "ar": "عربي",
     "id": "الاندونيسية",
     "ja": "اليابانية",
-    "coudntFindLocations": "لم نتمكن من العثور على أي موقع لـ \"{searchKeyword}\". 😕",
     "checkingSubsStatus": "نحن نتحقق من حالة اشتراكك. انتظر من فضلك...",
     "connectionTimeout":
         "انتهت مدة الاتصال. الرجاء معاودة المحاولة في وقت لاحق. إذا استمرت المشكلة ، فاتصل بفريق الدعم",
@@ -6128,7 +6146,9 @@ class CodegenLoader extends AssetLoader {
     "ipTypeResidential": "عناوين IP المنزلية",
     "ipTypeDataCenterDisclaimer":
         "عناوين IP مستضافة على خوادم سريعة وفعالة لتلبية احتياجات VPN السريعة.",
-    "ipTypeResidentialDisclaimer": "عناوين IP مرتبطة بمنازل حقيقية لتقليل اكتشاف VPN."
+    "ipTypeResidentialDisclaimer": "عناوين IP مرتبطة بمنازل حقيقية لتقليل اكتشاف VPN.",
+    "noLocations": "لم نتمكن من العثور على أي مواقع 😕",
+    "noLocationsKeyword": "لم نتمكن من العثور على أي مواقع لـ \"{keyword}\" 😕"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,

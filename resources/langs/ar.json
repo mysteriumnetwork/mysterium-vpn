@@ -426,7 +426,6 @@
   "ar": "عربي",
   "id": "الاندونيسية",
   "ja": "اليابانية",
-  "coudntFindLocations": "لم نتمكن من العثور على أي موقع لـ \"{searchKeyword}\". 😕",
   "checkingSubsStatus": "نحن نتحقق من حالة اشتراكك. انتظر من فضلك...",
   "connectionTimeout": "انتهت مدة الاتصال. الرجاء معاودة المحاولة في وقت لاحق. إذا استمرت المشكلة ، فاتصل بفريق الدعم",
   "cancelYourSubsMess": "قم بإلغاء اشتراكك في اشتراكات App Store قبل حذف حسابك.",
@@ -523,5 +522,7 @@
   "ipTypeDataCenter": "عناوين IP عالية السرعة",
   "ipTypeResidential": "عناوين IP المنزلية",
   "ipTypeDataCenterDisclaimer": "عناوين IP مستضافة على خوادم سريعة وفعالة لتلبية احتياجات VPN السريعة.",
-  "ipTypeResidentialDisclaimer": "عناوين IP مرتبطة بمنازل حقيقية لتقليل اكتشاف VPN."
+  "ipTypeResidentialDisclaimer": "عناوين IP مرتبطة بمنازل حقيقية لتقليل اكتشاف VPN.",
+  "noLocations": "لم نتمكن من العثور على أي مواقع 😕",
+  "noLocationsKeyword": "لم نتمكن من العثور على أي مواقع لـ \"{keyword}\" 😕"
 }

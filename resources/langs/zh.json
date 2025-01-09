@@ -524,5 +524,7 @@
   "ipTypeDataCenter": "高速IP",
   "ipTypeResidential": "住宅IP",
   "ipTypeDataCenterDisclaimer": "托管在快速高效服务器上的IP，适用于快速VPN需求。",
-  "ipTypeResidentialDisclaimer": "绑定到实际家庭的IP，以减少VPN检测。"
+  "ipTypeResidentialDisclaimer": "绑定到实际家庭的IP，以减少VPN检测。",
+  "noLocations": "我们找不到任何位置 😕",
+  "noLocationsKeyword": "我们找不到与 \"{keyword}\" 相关的位置 😕"
 }

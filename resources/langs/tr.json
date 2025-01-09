@@ -524,5 +524,7 @@
   "ipTypeDataCenter": "Yüksek hızlı IP'ler",
   "ipTypeResidential": "Rezidans IP'leri",
   "ipTypeDataCenterDisclaimer": "Hızlı VPN ihtiyaçları için hızlı ve verimli sunucularda barındırılan IP'ler.",
-  "ipTypeResidentialDisclaimer": "Gerçek evlere bağlı IP'ler, VPN algılamasını azaltır."
+  "ipTypeResidentialDisclaimer": "Gerçek evlere bağlı IP'ler, VPN algılamasını azaltır.",
+  "noLocations": "Herhangi bir konum bulamadık 😕",
+  "noLocationsKeyword": "\"{keyword}\" için herhangi bir konum bulamadık 😕"
 }

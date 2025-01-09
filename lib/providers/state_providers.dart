@@ -108,10 +108,12 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final localeStore = ref.watch(localeStorePOD);
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
 
   final store = LocationsStore(
     apiService,
     analyticsStore,
+    remoteConfigStore,
     localeStore,
   );
 

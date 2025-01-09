@@ -524,5 +524,7 @@
   "ipTypeDataCenter": "IP Kecepatan Tinggi",
   "ipTypeResidential": "IP Residensial",
   "ipTypeDataCenterDisclaimer": "IP yang di-host di server cepat dan efisien untuk kebutuhan VPN cepat.",
-  "ipTypeResidentialDisclaimer": "IP yang terhubung ke rumah asli untuk mengurangi deteksi VPN."
+  "ipTypeResidentialDisclaimer": "IP yang terhubung ke rumah asli untuk mengurangi deteksi VPN.",
+  "noLocations": "Kami tidak dapat menemukan lokasi 😕",
+  "noLocationsKeyword": "Kami tidak dapat menemukan lokasi untuk \"{keyword}\" 😕"
 }

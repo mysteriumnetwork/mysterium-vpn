@@ -22,11 +22,11 @@ class LocationTypeSwitcher extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final config = ref.watch(remoteConfigStorePOD);
-    final dcIPs = useComputedValue(() => config.dcIPs);
+    final hasDataCenterIPs = useComputedValue(() => config.dataCenterCountries.isNotEmpty);
 
     final values = [
       IPType.residential,
-      if (dcIPs) IPType.datacenter,
+      if (hasDataCenterIPs) IPType.datacenter,
     ];
 
     return Row(
