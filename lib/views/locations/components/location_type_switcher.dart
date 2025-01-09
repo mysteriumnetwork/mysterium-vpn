@@ -38,7 +38,9 @@ class LocationTypeSwitcher extends HookConsumerWidget {
               onTap: values.length > 1 ? () => onChanged(value) : null,
               label: switch (value) {
                 IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
-                IPType.residential => LocaleKeys.ipTypeResidential.tr(),
+                IPType.residential => values.length > 1
+                    ? LocaleKeys.ipTypeResidential.tr()
+                    : LocaleKeys.allLocations.tr(),
               },
               icon: switch (value) {
                 IPType.datacenter => const SvgIcon(asset: Assets.speed, height: 20),
@@ -84,15 +86,15 @@ class _Item extends StatelessWidget {
       fillColor: selected ? theme.colorScheme.surface : Colors.transparent,
       onPressed: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
         child: Row(
           mainAxisAlignment: alignment,
           children: [
             Flexible(
               child: EasyText(
                 label,
-                fontWeight: FontWeight.w500,
-                fontSize: 18,
+                fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                fontSize: 16,
                 textDecoration: !selected ? null : TextDecoration.underline,
                 colorDecoration: theme.textTheme.bodyMedium?.color,
               ),

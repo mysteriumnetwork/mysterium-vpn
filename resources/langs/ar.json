@@ -520,7 +520,8 @@
   "dataCenterBannerTitle": "تقديم عناوين IP لمراكز البيانات!",
   "dataCenterBannerDesc": "عزز سرعتك واستمتع باستقرار اتصال لا مثيل له",
   "dataCenterBannerBtn": "جرّب الآن",
-  "ipTypeDataCenter": "عناوين IP لمراكز البيانات",
-  "ipTypeResidential": "جميع المواقع",
-  "locationsDataCenterDisclaimer": "استمتع بسرعات أسرع واستقرار محسّن لجميع احتياجات الخصوصية لديك."
+  "ipTypeDataCenter": "عناوين IP عالية السرعة",
+  "ipTypeResidential": "عناوين IP المنزلية",
+  "ipTypeDataCenterDisclaimer": "عناوين IP مستضافة على خوادم سريعة وفعالة لتلبية احتياجات VPN السريعة.",
+  "ipTypeResidentialDisclaimer": "عناوين IP مرتبطة بمنازل حقيقية لتقليل اكتشاف VPN."
 }

@@ -9,10 +9,14 @@ class Banner extends StatelessWidget {
     this.body,
     this.onDismiss,
     this.color = Palette.mediumBlack,
+    this.borderRadius = const BorderRadius.all(Radius.circular(20)),
+    this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
     super.key,
   });
 
   final Color color;
+  final EdgeInsets padding;
+  final BorderRadiusGeometry borderRadius;
   final Widget title;
   final Widget? cta;
   final Widget? body;
@@ -29,7 +33,7 @@ class Banner extends StatelessWidget {
       elevation: 0,
       fillColor: color,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: borderRadius,
         side: const BorderSide(color: Palette.purple, width: 1.5),
       ),
       child: Stack(
@@ -42,7 +46,7 @@ class Banner extends StatelessWidget {
             ),
           Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+              padding: padding,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

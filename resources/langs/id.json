@@ -521,7 +521,8 @@
   "dataCenterBannerTitle": "Memperkenalkan IP Pusat Data!",
   "dataCenterBannerDesc": "Tingkatkan kecepatan Anda dan nikmati stabilitas koneksi yang tak tertandingi",
   "dataCenterBannerBtn": "Coba sekarang",
-  "ipTypeDataCenter": "IP Pusat Data",
-  "ipTypeResidential": "Semua lokasi",
-  "locationsDataCenterDisclaimer": "Nikmati kecepatan lebih tinggi dan stabilitas yang lebih baik untuk semua kebutuhan privasi Anda."
+  "ipTypeDataCenter": "IP Kecepatan Tinggi",
+  "ipTypeResidential": "IP Residensial",
+  "ipTypeDataCenterDisclaimer": "IP yang di-host di server cepat dan efisien untuk kebutuhan VPN cepat.",
+  "ipTypeResidentialDisclaimer": "IP yang terhubung ke rumah asli untuk mengurangi deteksi VPN."
 }

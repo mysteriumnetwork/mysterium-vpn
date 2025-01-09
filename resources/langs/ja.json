@@ -521,7 +521,8 @@
   "dataCenterBannerTitle": "データセンターIPのご紹介！",
   "dataCenterBannerDesc": "速度を向上させ、比類のない接続の安定性を楽しもう",
   "dataCenterBannerBtn": "今すぐ試す",
-  "ipTypeDataCenter": "データセンターIP",
-  "ipTypeResidential": "すべての場所",
-  "locationsDataCenterDisclaimer": "すべてのプライバシー要件に対応する、より速い速度と向上した安定性をお楽しみください。"
+  "ipTypeDataCenter": "高速IP",
+  "ipTypeResidential": "住宅用IP",
+  "ipTypeDataCenterDisclaimer": "迅速なVPNニーズに対応する高速で効率的なサーバー上にホストされるIP。",
+  "ipTypeResidentialDisclaimer": "実際の家庭に関連付けられたIPでVPN検出を減少。"
 }

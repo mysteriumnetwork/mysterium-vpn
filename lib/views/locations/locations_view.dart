@@ -15,7 +15,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/components/location_type_switcher.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_container.dart';
-import 'package:mysterium_vpn/views/locations/components/locations_dc_disclaimer.dart';
+import 'package:mysterium_vpn/views/locations/components/locations_disclaimer.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_search.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_sliver_list.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_sliver_loading.dart';
@@ -28,11 +28,13 @@ class LocationsSliverView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final config = ref.watch(remoteConfigStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
     final locationsStore = ref.watch(locationsStorePOD);
     final typeSwitcherKey = ref.watch(homeStateProvider.select((it) => it.typeSwitcherKey));
     final locationType = ref.watch(homeStateProvider.select((it) => it.ipType));
 
+    final dcIPs = useComputedValue(() => config.dcIPs);
     final state = useComputedValue(() => locationsStore.vpnLocationsFuture);
 
     final locations = useComputedValue(
@@ -141,10 +143,13 @@ class LocationsSliverView extends HookConsumerWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                           sliver: MultiSliver(
                             children: [
-                              if (locationType == IPType.datacenter)
-                                const Padding(
-                                  padding: EdgeInsets.only(bottom: 30),
-                                  child: LocationsDCDisclaimer(),
+                              if (dcIPs)
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 30),
+                                  child: switch (locationType) {
+                                    IPType.datacenter => LocationsDisclaimer.dataCenter(),
+                                    IPType.residential => LocationsDisclaimer.residential(),
+                                  },
                                 ),
                               if (topLocations.isNotEmpty)
                                 LocationsSliverList(
