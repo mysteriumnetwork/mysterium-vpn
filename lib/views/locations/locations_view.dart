@@ -28,13 +28,10 @@ class LocationsSliverView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final config = ref.watch(remoteConfigStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
     final locationsStore = ref.watch(locationsStorePOD);
-    final typeSwitcherKey = ref.watch(homeStateProvider.select((it) => it.typeSwitcherKey));
     final locationType = ref.watch(homeStateProvider.select((it) => it.ipType));
 
-    final dcIPs = useComputedValue(() => config.dcIPs);
     final state = useComputedValue(() => locationsStore.vpnLocationsFuture);
 
     final locations = useComputedValue(
@@ -53,7 +50,7 @@ class LocationsSliverView extends HookConsumerWidget {
       [locationType],
     );
 
-    final recentLocations = useComputedValue(() => locationsStore.recentLocations);
+    final recentLocations = useComputedValue(() => <VPNLocation>[]);
 
     final handleToggleConnection = useHandleToggleConnection();
 
@@ -92,7 +89,7 @@ class LocationsSliverView extends HookConsumerWidget {
     return MultiSliver(
       children: [
         LocationsSearch(onChanged: handleSearch),
-        const SizedBox(height: 20),
+        const SizedBox(height: 24),
         switch (state.status) {
           FutureStatus.pending => MultiSliver(
               children: const [
@@ -111,73 +108,123 @@ class LocationsSliverView extends HookConsumerWidget {
             ),
           FutureStatus.fulfilled => MultiSliver(
               children: [
-                if (recentLocations.isNotEmpty) ...[
-                  EasyText(
-                    LocaleKeys.recentLocations.tr(),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
+                if (recentLocations.isNotEmpty)
+                  _RecentLocations(
+                    recentLocations: recentLocations,
+                    onLocationTapped: handleRecentLocationTapped,
                   ),
-                  const SizedBox(height: 12),
-                  RecentLocationsList(
-                    items: recentLocations,
-                    onItemPressed: handleRecentLocationTapped,
+                if (recentLocations.isNotEmpty && locations.isNotEmpty) const SizedBox(height: 24),
+                if (locations.isNotEmpty)
+                  _Locations(
+                    locations: locations,
+                    topLocations: topLocations,
+                    locationType: locationType,
+                    onLocationTypeChanged: handleSetLocationType,
+                    onLocationTapped: handleLocationTapped,
                   ),
-                ],
-                const SizedBox(height: 12),
-                if (locations.isNotEmpty) ...[
-                  SliverPinnedHeader(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 24),
-                      child: LocationTypeSwitcher(
-                        key: typeSwitcherKey,
-                        value: locationType,
-                        onChanged: handleSetLocationType,
-                      ),
-                    ),
-                  ),
-                  SliverClip(
-                    child: SliverStack(
-                      children: [
-                        const SliverPositioned.fill(child: LocationsContainer()),
-                        SliverPadding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                          sliver: MultiSliver(
-                            children: [
-                              if (dcIPs)
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 30),
-                                  child: switch (locationType) {
-                                    IPType.datacenter => LocationsDisclaimer.dataCenter(),
-                                    IPType.residential => LocationsDisclaimer.residential(),
-                                  },
-                                ),
-                              if (topLocations.isNotEmpty)
-                                LocationsSliverList(
-                                  ipType: locationType,
-                                  items: topLocations,
-                                  onItemPressed: handleLocationTapped,
-                                ),
-                              if (topLocations.isNotEmpty && locations.isNotEmpty)
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                                  child: Divider(thickness: 0.5, color: Palette.lightBlue),
-                                ),
-                              LocationsSliverList(
-                                ipType: locationType,
-                                items: locations,
-                                onItemPressed: handleLocationTapped,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
               ],
             ),
         },
       ],
     );
+  }
+}
+
+class _RecentLocations extends StatelessWidget {
+  const _RecentLocations({
+    required this.recentLocations,
+    required this.onLocationTapped,
+  });
+
+  final List<VPNLocation> recentLocations;
+  final Function(VPNLocation) onLocationTapped;
+
+  @override
+  Widget build(BuildContext context) => MultiSliver(
+        children: [
+          EasyText(
+            LocaleKeys.recentLocations.tr(),
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+          ),
+          const SizedBox(height: 12),
+          RecentLocationsList(
+            items: recentLocations,
+            onItemPressed: onLocationTapped,
+          ),
+        ],
+      );
+}
+
+class _Locations extends HookConsumerWidget {
+  const _Locations({
+    required this.locations,
+    required this.topLocations,
+    required this.locationType,
+    required this.onLocationTypeChanged,
+    required this.onLocationTapped,
+  });
+
+  final List<VPNLocation> locations;
+  final List<VPNLocation> topLocations;
+
+  final IPType locationType;
+  final Function(IPType) onLocationTypeChanged;
+  final Function(VPNLocation) onLocationTapped;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final config = ref.watch(remoteConfigStorePOD);
+
+    final typeSwitcherKey = ref.watch(homeStateProvider.select((it) => it.typeSwitcherKey));
+    final dcIPs = useComputedValue(() => config.dcIPs);
+
+    return MultiSliver(children: [
+      SliverPinnedHeader(
+        child: LocationTypeSwitcher(
+          key: typeSwitcherKey,
+          value: locationType,
+          onChanged: onLocationTypeChanged,
+        ),
+      ),
+      SliverClip(
+        child: SliverStack(
+          children: [
+            const SliverPositioned.fill(child: LocationsContainer()),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+              sliver: MultiSliver(
+                children: [
+                  if (dcIPs)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30),
+                      child: switch (locationType) {
+                        IPType.datacenter => LocationsDisclaimer.dataCenter(),
+                        IPType.residential => LocationsDisclaimer.residential(),
+                      },
+                    ),
+                  if (topLocations.isNotEmpty)
+                    LocationsSliverList(
+                      ipType: locationType,
+                      items: topLocations,
+                      onItemPressed: onLocationTapped,
+                    ),
+                  if (topLocations.isNotEmpty && locations.isNotEmpty)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                      child: Divider(thickness: 0.5, color: Palette.lightBlue),
+                    ),
+                  LocationsSliverList(
+                    ipType: locationType,
+                    items: locations,
+                    onItemPressed: onLocationTapped,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ]);
   }
 }
