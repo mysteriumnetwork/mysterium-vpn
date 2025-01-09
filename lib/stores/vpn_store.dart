@@ -151,7 +151,6 @@ abstract class _VpnStore with Store {
     _malwareBlockerContent = await _localDBService.getMalwareBlocker();
     _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker();
     final isConfigured = await _checkTunelConfigured();
-    await setupTunnel();
     if (isConfigured) {
       await _setupAndListenToConnectionStatus();
     } else if (Platform.isWindows) {
