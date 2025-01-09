@@ -538,9 +538,10 @@ class CodegenLoader extends AssetLoader {
     "dataCenterBannerTitle": "全新数据中心IP上线！",
     "dataCenterBannerDesc": "提升速度，享受无与伦比的连接稳定性",
     "dataCenterBannerBtn": "立即尝试",
-    "ipTypeDataCenter": "数据中心IP",
-    "ipTypeResidential": "所有位置",
-    "locationsDataCenterDisclaimer": "为您的隐私需求提供更快的速度和更高的稳定性。"
+    "ipTypeDataCenter": "高速IP",
+    "ipTypeResidential": "住宅IP",
+    "ipTypeDataCenterDisclaimer": "托管在快速高效服务器上的IP，适用于快速VPN需求。",
+    "ipTypeResidentialDisclaimer": "绑定到实际家庭的IP，以减少VPN检测。"
   };
   static const Map<String, dynamic> tr = {
     "title": "Merhaba efendim",
@@ -1089,10 +1090,11 @@ class CodegenLoader extends AssetLoader {
     "dataCenterBannerTitle": "Veri Merkezi IP'lerini Tanıtıyoruz!",
     "dataCenterBannerDesc": "Hızınızı artırın ve rakipsiz bağlantı kararlılığının tadını çıkarın",
     "dataCenterBannerBtn": "Şimdi deneyin",
-    "ipTypeDataCenter": "Veri Merkezi IP'leri",
-    "ipTypeResidential": "Tüm konumlar",
-    "locationsDataCenterDisclaimer":
-        "Tüm gizlilik ihtiyaçlarınız için daha hızlı hızların ve geliştirilmiş kararlılığın keyfini çıkarın."
+    "ipTypeDataCenter": "Yüksek hızlı IP'ler",
+    "ipTypeResidential": "Rezidans IP'leri",
+    "ipTypeDataCenterDisclaimer":
+        "Hızlı VPN ihtiyaçları için hızlı ve verimli sunucularda barındırılan IP'ler.",
+    "ipTypeResidentialDisclaimer": "Gerçek evlere bağlı IP'ler, VPN algılamasını azaltır."
   };
   static const Map<String, dynamic> ja = {
     "title": "こんにちは。",
@@ -1621,9 +1623,10 @@ class CodegenLoader extends AssetLoader {
     "dataCenterBannerTitle": "データセンターIPのご紹介！",
     "dataCenterBannerDesc": "速度を向上させ、比類のない接続の安定性を楽しもう",
     "dataCenterBannerBtn": "今すぐ試す",
-    "ipTypeDataCenter": "データセンターIP",
-    "ipTypeResidential": "すべての場所",
-    "locationsDataCenterDisclaimer": "すべてのプライバシー要件に対応する、より速い速度と向上した安定性をお楽しみください。"
+    "ipTypeDataCenter": "高速IP",
+    "ipTypeResidential": "住宅用IP",
+    "ipTypeDataCenterDisclaimer": "迅速なVPNニーズに対応する高速で効率的なサーバー上にホストされるIP。",
+    "ipTypeResidentialDisclaimer": "実際の家庭に関連付けられたIPでVPN検出を減少。"
   };
   static const Map<String, dynamic> de = {
     "title": "Hallo Herr",
@@ -2191,10 +2194,12 @@ class CodegenLoader extends AssetLoader {
     "dataCenterBannerDesc":
         "Erhöhen Sie Ihre Geschwindigkeit und genießen Sie unvergleichliche Verbindungsstabilität",
     "dataCenterBannerBtn": "Jetzt ausprobieren",
-    "ipTypeDataCenter": "Rechenzentrums-IPs",
-    "ipTypeResidential": "Alle Standorte",
-    "locationsDataCenterDisclaimer":
-        "Genießen Sie schnellere Geschwindigkeiten und verbesserte Stabilität für alle Ihre Datenschutzbedürfnisse."
+    "ipTypeDataCenter": "Hochgeschwindigkeits-IPs",
+    "ipTypeResidential": "Wohn-IPs",
+    "ipTypeDataCenterDisclaimer":
+        "IPs, die auf schnellen und effizienten Servern für schnelle VPN-Anforderungen gehostet werden.",
+    "ipTypeResidentialDisclaimer":
+        "IPs, die an tatsächliche Haushalte gebunden sind, um VPN-Erkennung zu reduzieren."
   };
   static const Map<String, dynamic> pt = {
     "title": "Olá senhor",
@@ -2750,10 +2755,12 @@ class CodegenLoader extends AssetLoader {
     "dataCenterBannerDesc":
         "Aumente sua velocidade e desfrute de uma estabilidade de conexão incomparável",
     "dataCenterBannerBtn": "Experimente agora",
-    "ipTypeDataCenter": "IPs de Data Center",
-    "ipTypeResidential": "Todas as localizações",
-    "locationsDataCenterDisclaimer":
-        "Desfrute de velocidades mais rápidas e maior estabilidade para todas as suas necessidades de privacidade."
+    "ipTypeDataCenter": "IPs de alta velocidade",
+    "ipTypeResidential": "IPs residenciais",
+    "ipTypeDataCenterDisclaimer":
+        "IPs hospedados em servidores rápidos e eficientes para necessidades rápidas de VPN.",
+    "ipTypeResidentialDisclaimer":
+        "IPs vinculados a residências reais para reduzir a detecção de VPN."
   };
   static const Map<String, dynamic> en = {
     "title": "Hello Sir",
@@ -3307,10 +3314,10 @@ class CodegenLoader extends AssetLoader {
     "dataCenterBannerTitle": "Introducing Data Center IPs!",
     "dataCenterBannerDesc": "Boost your speed and enjoy unrivaled connection stability",
     "dataCenterBannerBtn": "Try now",
-    "ipTypeDataCenter": "Data center IPs",
-    "ipTypeResidential": "All locations",
-    "locationsDataCenterDisclaimer":
-        "Enjoy faster speeds and improved stability for all your privacy needs."
+    "ipTypeDataCenter": "High-speed IPs",
+    "ipTypeResidential": "Residential IPs",
+    "ipTypeDataCenterDisclaimer": "IPs hosted on fast and efficient servers for quick VPN needs.",
+    "ipTypeResidentialDisclaimer": "IPs tied to actual households for decreased VPN detection."
   };
   static const Map<String, dynamic> it = {
     "title": "Salve signore",
@@ -3871,10 +3878,11 @@ class CodegenLoader extends AssetLoader {
     "dataCenterBannerDesc":
         "Aumenta la tua velocità e goditi una stabilità di connessione senza rivali",
     "dataCenterBannerBtn": "Prova ora",
-    "ipTypeDataCenter": "IP del data center",
-    "ipTypeResidential": "Tutte le posizioni",
-    "locationsDataCenterDisclaimer":
-        "Goditi velocità più elevate e stabilità migliorata per tutte le tue esigenze di privacy."
+    "ipTypeDataCenter": "IP ad alta velocità",
+    "ipTypeResidential": "IP residenziali",
+    "ipTypeDataCenterDisclaimer":
+        "IP ospitati su server veloci ed efficienti per esigenze VPN rapide.",
+    "ipTypeResidentialDisclaimer": "IP collegati a case reali per ridurre il rilevamento VPN."
   };
   static const Map<String, dynamic> fr = {
     "title": "Bonjour monsieur",
@@ -4438,10 +4446,11 @@ class CodegenLoader extends AssetLoader {
     "dataCenterBannerDesc":
         "Augmentez votre vitesse et profitez d'une stabilité de connexion inégalée",
     "dataCenterBannerBtn": "Essayez maintenant",
-    "ipTypeDataCenter": "IPs de centre de données",
-    "ipTypeResidential": "Tous les emplacements",
-    "locationsDataCenterDisclaimer":
-        "Profitez de vitesses plus rapides et d'une stabilité améliorée pour tous vos besoins en matière de confidentialité."
+    "ipTypeDataCenter": "IPs à haute vitesse",
+    "ipTypeResidential": "IPs résidentielles",
+    "ipTypeDataCenterDisclaimer":
+        "IPs hébergées sur des serveurs rapides et efficaces pour des besoins VPN rapides.",
+    "ipTypeResidentialDisclaimer": "IPs liées à des foyers réels pour réduire la détection VPN."
   };
   static const Map<String, dynamic> id = {
     "title": "Halo Pak",
@@ -4996,10 +5005,11 @@ class CodegenLoader extends AssetLoader {
     "dataCenterBannerDesc":
         "Tingkatkan kecepatan Anda dan nikmati stabilitas koneksi yang tak tertandingi",
     "dataCenterBannerBtn": "Coba sekarang",
-    "ipTypeDataCenter": "IP Pusat Data",
-    "ipTypeResidential": "Semua lokasi",
-    "locationsDataCenterDisclaimer":
-        "Nikmati kecepatan lebih tinggi dan stabilitas yang lebih baik untuk semua kebutuhan privasi Anda."
+    "ipTypeDataCenter": "IP Kecepatan Tinggi",
+    "ipTypeResidential": "IP Residensial",
+    "ipTypeDataCenterDisclaimer":
+        "IP yang di-host di server cepat dan efisien untuk kebutuhan VPN cepat.",
+    "ipTypeResidentialDisclaimer": "IP yang terhubung ke rumah asli untuk mengurangi deteksi VPN."
   };
   static const Map<String, dynamic> es = {
     "title": "Hola señor",
@@ -5562,10 +5572,12 @@ class CodegenLoader extends AssetLoader {
     "dataCenterBannerDesc":
         "Aumenta tu velocidad y disfruta de una estabilidad de conexión inigualable",
     "dataCenterBannerBtn": "Prueba ahora",
-    "ipTypeDataCenter": "IPs de centro de datos",
-    "ipTypeResidential": "Todas las ubicaciones",
-    "locationsDataCenterDisclaimer":
-        "Disfruta de velocidades más rápidas y mayor estabilidad para todas tus necesidades de privacidad."
+    "ipTypeDataCenter": "IPs de alta velocidad",
+    "ipTypeResidential": "IPs residenciales",
+    "ipTypeDataCenterDisclaimer":
+        "IPs alojadas en servidores rápidos y eficientes para necesidades rápidas de VPN.",
+    "ipTypeResidentialDisclaimer":
+        "IPs vinculadas a hogares reales para reducir la detección de VPN."
   };
   static const Map<String, dynamic> ar = {
     "title": "أهلاً سيدي",
@@ -6112,10 +6124,11 @@ class CodegenLoader extends AssetLoader {
     "dataCenterBannerTitle": "تقديم عناوين IP لمراكز البيانات!",
     "dataCenterBannerDesc": "عزز سرعتك واستمتع باستقرار اتصال لا مثيل له",
     "dataCenterBannerBtn": "جرّب الآن",
-    "ipTypeDataCenter": "عناوين IP لمراكز البيانات",
-    "ipTypeResidential": "جميع المواقع",
-    "locationsDataCenterDisclaimer":
-        "استمتع بسرعات أسرع واستقرار محسّن لجميع احتياجات الخصوصية لديك."
+    "ipTypeDataCenter": "عناوين IP عالية السرعة",
+    "ipTypeResidential": "عناوين IP المنزلية",
+    "ipTypeDataCenterDisclaimer":
+        "عناوين IP مستضافة على خوادم سريعة وفعالة لتلبية احتياجات VPN السريعة.",
+    "ipTypeResidentialDisclaimer": "عناوين IP مرتبطة بمنازل حقيقية لتقليل اكتشاف VPN."
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,

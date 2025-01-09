@@ -525,5 +525,6 @@ abstract class LocaleKeys {
   static const dataCenterBannerBtn = 'dataCenterBannerBtn';
   static const ipTypeDataCenter = 'ipTypeDataCenter';
   static const ipTypeResidential = 'ipTypeResidential';
-  static const locationsDataCenterDisclaimer = 'locationsDataCenterDisclaimer';
+  static const ipTypeDataCenterDisclaimer = 'ipTypeDataCenterDisclaimer';
+  static const ipTypeResidentialDisclaimer = 'ipTypeResidentialDisclaimer';
 }

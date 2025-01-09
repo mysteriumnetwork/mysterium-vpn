@@ -43,13 +43,11 @@ class LocationsSliderMobileView extends HookConsumerWidget {
             child: Center(child: DraggableIndicator(onTap: handleTogglePanel)),
           ),
         ),
-        const SliverClip(
-          child: SliverSafeArea(
-            top: false,
-            sliver: SliverPadding(
-              padding: EdgeInsets.all(20),
-              sliver: LocationsSliverView(),
-            ),
+        const SliverSafeArea(
+          top: false,
+          sliver: SliverPadding(
+            padding: EdgeInsets.all(20),
+            sliver: LocationsSliverView(),
           ),
         ),
       ],

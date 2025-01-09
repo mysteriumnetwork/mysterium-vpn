@@ -521,7 +521,8 @@
   "dataCenterBannerTitle": "Veri Merkezi IP'lerini Tanıtıyoruz!",
   "dataCenterBannerDesc": "Hızınızı artırın ve rakipsiz bağlantı kararlılığının tadını çıkarın",
   "dataCenterBannerBtn": "Şimdi deneyin",
-  "ipTypeDataCenter": "Veri Merkezi IP'leri",
-  "ipTypeResidential": "Tüm konumlar",
-  "locationsDataCenterDisclaimer": "Tüm gizlilik ihtiyaçlarınız için daha hızlı hızların ve geliştirilmiş kararlılığın keyfini çıkarın."
+  "ipTypeDataCenter": "Yüksek hızlı IP'ler",
+  "ipTypeResidential": "Rezidans IP'leri",
+  "ipTypeDataCenterDisclaimer": "Hızlı VPN ihtiyaçları için hızlı ve verimli sunucularda barındırılan IP'ler.",
+  "ipTypeResidentialDisclaimer": "Gerçek evlere bağlı IP'ler, VPN algılamasını azaltır."
 }

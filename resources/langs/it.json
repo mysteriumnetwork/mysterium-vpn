@@ -521,7 +521,8 @@
   "dataCenterBannerTitle": "Presentazione degli IP del data center!",
   "dataCenterBannerDesc": "Aumenta la tua velocità e goditi una stabilità di connessione senza rivali",
   "dataCenterBannerBtn": "Prova ora",
-  "ipTypeDataCenter": "IP del data center",
-  "ipTypeResidential": "Tutte le posizioni",
-  "locationsDataCenterDisclaimer": "Goditi velocità più elevate e stabilità migliorata per tutte le tue esigenze di privacy."
+  "ipTypeDataCenter": "IP ad alta velocità",
+  "ipTypeResidential": "IP residenziali",
+  "ipTypeDataCenterDisclaimer": "IP ospitati su server veloci ed efficienti per esigenze VPN rapide.",
+  "ipTypeResidentialDisclaimer": "IP collegati a case reali per ridurre il rilevamento VPN."
 }
