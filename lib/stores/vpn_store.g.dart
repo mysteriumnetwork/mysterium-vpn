@@ -250,9 +250,9 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore._connectWireguard', context: context);
 
   @override
-  Future<void> _connectWireguard({required String privateKey, required String nonce}) {
+  Future<void> _connectWireguard({required String privateKey, required String vpnConfig}) {
     return _$_connectWireguardAsyncAction
-        .run(() => super._connectWireguard(privateKey: privateKey, nonce: nonce));
+        .run(() => super._connectWireguard(privateKey: privateKey, vpnConfig: vpnConfig));
   }
 
   late final _$disconnectWireguardAsyncAction =
@@ -281,35 +281,22 @@ mixin _$VpnStore on _VpnStore, Store {
         .run(() => super.startConnectionWithRefreshIP());
   }
 
-  late final _$startConnectionAsyncAction =
-      AsyncAction('_VpnStore.startConnection', context: context);
+  late final _$_startConnectionAsyncAction =
+      AsyncAction('_VpnStore._startConnection', context: context);
 
   @override
-  Future<void> startConnection({String? location, bool? refreshIP, bool isRetrying = false}) {
-    return _$startConnectionAsyncAction.run(() =>
-        super.startConnection(location: location, refreshIP: refreshIP, isRetrying: isRetrying));
+  Future<void> _startConnection({String? location, bool? refreshIP, bool isRetrying = false}) {
+    return _$_startConnectionAsyncAction.run(() =>
+        super._startConnection(location: location, refreshIP: refreshIP, isRetrying: isRetrying));
   }
 
   late final _$_completeConnectionAsyncAction =
       AsyncAction('_VpnStore._completeConnection', context: context);
 
   @override
-  Future<void> _completeConnection(String? location, bool? refreshIP, String nonce) {
+  Future<void> _completeConnection(String? location, bool? refreshIP) {
     return _$_completeConnectionAsyncAction
-        .run(() => super._completeConnection(location, refreshIP, nonce));
-  }
-
-  late final _$_VpnStoreActionController = ActionController(name: '_VpnStore', context: context);
-
-  @override
-  void _checkOperationCancel(String nonce) {
-    final _$actionInfo =
-        _$_VpnStoreActionController.startAction(name: '_VpnStore._checkOperationCancel');
-    try {
-      return super._checkOperationCancel(nonce);
-    } finally {
-      _$_VpnStoreActionController.endAction(_$actionInfo);
-    }
+        .run(() => super._completeConnection(location, refreshIP));
   }
 
   @override

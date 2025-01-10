@@ -31,13 +31,13 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
       builder: (context) {
         final vpnConnection = vpnStore.vpnConnection;
         final isResolvingconnectionIP = vpnConnection?.isResolvingconnectionIP ?? false;
-
+        final isConnected = vpnStore.isConnected;
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _BarItem(
               label: LocaleKeys.connectionIp.tr(),
-              text: vpnConnection?.connectionIP ?? '--',
+              text: isConnected ? vpnConnection?.connectionIP : null,
               maxLines: 1,
               action: const RefreshConnection(),
               indicator: isResolvingconnectionIP
@@ -54,18 +54,18 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
               text: vpnStore.isLoading
                   ? ConnectionStatus.connecting.name.tr()
                   : vpnStore.vpnStatus.name.tr(),
-              isConnected: vpnStore.isConnected,
+              isConnected: isConnected,
               leading: ConnectionIndicator(
-                isConnected: vpnStore.isConnected,
+                isConnected: isConnected,
               ),
               maxLines: 1,
             ).expanded(),
             _BarItem(
               label: LocaleKeys.location.tr(),
-              leading: vpnStore.isConnected && (vpnConnection?.location.isNotEmpty ?? false)
-                  ? Flag(countryCode: vpnStore.vpnConnection?.location ?? '')
+              leading: isConnected && (vpnConnection?.location.isNotEmpty ?? false)
+                  ? Flag(countryCode: vpnStore.vpnConnection!.location)
                   : null,
-              text: vpnConnection?.location.tr() ?? '--',
+              text: isConnected ? vpnConnection?.location.tr() : null,
               leadingPosition: LeadingPosition.bottom,
               maxLines: 2,
             ).expanded(),
@@ -91,7 +91,7 @@ class _BarItem extends StatelessWidget {
   final String label;
   final Widget? leading;
   final Widget? action;
-  final String text;
+  final String? text;
   final bool isConnected;
   final LeadingPosition leadingPosition;
   final int maxLines;
@@ -107,7 +107,7 @@ class _BarItem extends StatelessWidget {
           ).padding(bottom: 4),
           if (isConnected)
             DecoratedLabel(
-              text: text,
+              text: text ?? '--',
               color: Palette.green,
             )
           else
@@ -120,7 +120,7 @@ class _BarItem extends StatelessWidget {
                   indicator!
                 else
                   EasyText(
-                    text,
+                    text ?? '--',
                     color: Palette.white,
                     fontWeight: FontWeight.w500,
                     fontSize: 12,

@@ -234,8 +234,16 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
       AsyncAction('_SubscriptionStore.fetchSubscription', context: context);
 
   @override
-  Future<void> fetchSubscription() {
+  Future<bool> fetchSubscription() {
     return _$fetchSubscriptionAsyncAction.run(() => super.fetchSubscription());
+  }
+
+  late final _$isSubscriptionActiveAsyncAction =
+      AsyncAction('_SubscriptionStore.isSubscriptionActive', context: context);
+
+  @override
+  Future<bool> isSubscriptionActive() {
+    return _$isSubscriptionActiveAsyncAction.run(() => super.isSubscriptionActive());
   }
 
   late final _$getSubscriptionsConfigAsyncAction =
