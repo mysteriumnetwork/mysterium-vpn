@@ -116,13 +116,10 @@ abstract class _SubscriptionStore with Store {
   @action
   Future<bool> isSubscriptionActive() async {
     try {
-      if (_subscription != null) {
-        return _subscription!.active;
-      } else if (subscriptionFuture?.status == FutureStatus.pending) {
-        return (await subscriptionFuture)!.active;
-      } else {
-        return await fetchSubscription();
+      if (subscriptionFuture == null) {
+        await fetchSubscription();
       }
+      return (await subscriptionFuture)!.active;
     } catch (_) {
       return false;
     }
