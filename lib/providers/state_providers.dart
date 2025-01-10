@@ -45,6 +45,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final userPreferencesStore = ref.watch(userPreferencesStorePOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   final abTestingStore = ref.watch(abTestingStorePOD);
+  final mqttService = ref.watch(vpnApiMQTTPOD);
 
   return AuthStore(
     authService: authService,
@@ -57,6 +58,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
     userPreferencesStore: userPreferencesStore,
     remoteConfigStore: remoteConfigStore,
     abTestingStore: abTestingStore,
+    mqtt: mqttService,
   );
 });
 
