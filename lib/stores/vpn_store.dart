@@ -184,18 +184,13 @@ abstract class _VpnStore with Store {
 
     if (status == ConnectionStatus.connected) {
       final location = _sharedPrefs.getLocation() ?? _selectLocation();
-      if (location == null) {
-        await disconnectWireguard();
-        return;
-      }
       _connectingLocation = location;
       _connectionStatus = ConnectionStatus.connecting;
       try {
-        final location = _sharedPrefs.getLocation();
         resolveConnectionLocationFuture = ObservableFuture(
           _checkConnectionQuality(
             checkLocation: () => _resolveIPAddress(location),
-            location: location,
+            location: location!,
             hash: _vpnConfig?.hash ?? '',
           ),
         );
