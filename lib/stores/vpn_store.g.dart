@@ -33,6 +33,12 @@ mixin _$VpnStore on _VpnStore, Store {
   bool get isLoading =>
       (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading, name: '_VpnStore.isLoading'))
           .value;
+  Computed<VPNLocation?>? _$locationComputed;
+
+  @override
+  VPNLocation? get location => (_$locationComputed ??=
+          Computed<VPNLocation?>(() => super.location, name: '_VpnStore.location'))
+      .value;
 
   late final _$_refreshIPConnectionAtom =
       Atom(name: '_VpnStore._refreshIPConnection', context: context);
@@ -139,21 +145,21 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$_connectingLocationCodeAtom =
-      Atom(name: '_VpnStore._connectingLocationCode', context: context);
+  late final _$_connectingLocationAtom =
+      Atom(name: '_VpnStore._connectingLocation', context: context);
 
-  String? get connectingLocationCode {
-    _$_connectingLocationCodeAtom.reportRead();
-    return super._connectingLocationCode;
+  VPNLocation? get connectingLocation {
+    _$_connectingLocationAtom.reportRead();
+    return super._connectingLocation;
   }
 
   @override
-  String? get _connectingLocationCode => connectingLocationCode;
+  VPNLocation? get _connectingLocation => connectingLocation;
 
   @override
-  set _connectingLocationCode(String? value) {
-    _$_connectingLocationCodeAtom.reportWrite(value, super._connectingLocationCode, () {
-      super._connectingLocationCode = value;
+  set _connectingLocation(VPNLocation? value) {
+    _$_connectingLocationAtom.reportWrite(value, super._connectingLocation, () {
+      super._connectingLocation = value;
     });
   }
 
@@ -267,7 +273,7 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore.toggleConnection', context: context);
 
   @override
-  Future<void> toggleConnection({String? location, bool isRetrying = false}) {
+  Future<void> toggleConnection({VPNLocation? location, bool isRetrying = false}) {
     return _$toggleConnectionAsyncAction
         .run(() => super.toggleConnection(location: location, isRetrying: isRetrying));
   }
@@ -285,7 +291,7 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore._startConnection', context: context);
 
   @override
-  Future<void> _startConnection({String? location, bool? refreshIP, bool isRetrying = false}) {
+  Future<void> _startConnection({VPNLocation? location, bool? refreshIP, bool isRetrying = false}) {
     return _$_startConnectionAsyncAction.run(() =>
         super._startConnection(location: location, refreshIP: refreshIP, isRetrying: isRetrying));
   }
@@ -294,7 +300,7 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore._completeConnection', context: context);
 
   @override
-  Future<void> _completeConnection(String? location, bool? refreshIP) {
+  Future<void> _completeConnection(VPNLocation location, bool? refreshIP) {
     return _$_completeConnectionAsyncAction
         .run(() => super._completeConnection(location, refreshIP));
   }
@@ -307,7 +313,8 @@ fetchConfigFuture: ${fetchConfigFuture},
 vpnStatus: ${vpnStatus},
 replaceDNSAddress: ${replaceDNSAddress},
 isConnected: ${isConnected},
-isLoading: ${isLoading}
+isLoading: ${isLoading},
+location: ${location}
     ''';
   }
 }
