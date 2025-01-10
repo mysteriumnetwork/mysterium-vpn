@@ -1,6 +1,7 @@
 // Flutter imports:
 // Package imports:
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -298,16 +299,6 @@ abstract class _VpnStore with Store {
     required String privateKey,
     required String vpnConfig,
   }) async {
-    await Future.doWhile(() async {
-      final tunnelStatus = await _wireguardService.status();
-      if (tunnelStatus == ConnectionStatus.disconnected) {
-        return false;
-      } else if (tunnelStatus == ConnectionStatus.connected) {
-        await disconnectWireguard();
-      }
-      return true;
-    });
-
     // TODO(Waldz): Move to separate function, which mutates variable
     var config = vpnConfig;
     if (replaceDNSAddress.isNotNullOrEmpty) {
@@ -397,6 +388,14 @@ abstract class _VpnStore with Store {
     try {
       if (await _wireguardService.status() == ConnectionStatus.connected) {
         await disconnectWireguard();
+        // Wait until connection is disconnected
+        await Future.doWhile(() async {
+          final tunnelStatus = await _wireguardService.status();
+          if (tunnelStatus == ConnectionStatus.disconnected) {
+            return false;
+          }
+          return true;
+        });
       }
 
       await _completeConnection(location, refreshIP);
@@ -503,17 +502,7 @@ abstract class _VpnStore with Store {
       );
       _vpnConfig = await fetchConfigFuture;
 
-      // await _mqtt.ensureStart();
-      // // TODO(Waldz): Make it mandatory, when backend field will be deployed
-      // final connectionID = _vpnConfig?.uid ?? '';
-      // _connectionSub ??= _mqtt.subscribe('mysterium-vpn/connection/$connectionID').listen((event) {
-      //   final connectionUpdate =
-      //       ConnectionMessage.fromJson(json.decode(event) as Map<String, dynamic>);
-      //   _vpnConnection = _vpnConnection?.copyWith(
-      //     connectionIP: connectionUpdate.location.ip,
-      //     location: connectionUpdate.location.country,
-      //   );
-      // });
+      await _initMqtt();
 
       await _connectWireguard(
         privateKey: key.privateKey,
@@ -539,6 +528,26 @@ abstract class _VpnStore with Store {
     } catch (e) {
       _logger.handle(e);
       rethrow;
+    }
+  }
+
+  Future<void> _initMqtt() async {
+    try {
+      await _mqtt.ensureStart();
+      // TODO(Waldz): Make it mandatory, when backend field will be deployed
+      final connectionID = _vpnConfig?.uid ?? '';
+      _connectionSub ??= _mqtt.subscribe('mysterium-vpn/connection/$connectionID').listen((event) {
+        final connectionUpdate =
+            ConnectionMessage.fromJson(json.decode(event) as Map<String, dynamic>);
+        _vpnConnection = _vpnConnection?.copyWith(
+          connectionIP: connectionUpdate.location.ip,
+          location: connectionUpdate.location.country,
+        );
+      });
+    } catch (e) {
+      _logger.handle(e);
+      // Do not throw error, until it's safe to do so
+      //rethrow;
     }
   }
 
