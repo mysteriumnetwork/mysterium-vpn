@@ -103,12 +103,25 @@ abstract class _SubscriptionStore with Store {
   }
 
   @action
-  Future<void> fetchSubscription() async {
+  Future<bool> fetchSubscription() async {
     subscriptionFuture = ObservableFuture(_subscriptionService.fetchSubscriptionDetails());
     _subscription = await subscriptionFuture;
     _expired = _subscription?.expired;
     if (_subscription!.active && (_subscription!.planId?.isNotEmpty ?? false)) {
       _purchasedProductId = _subscription!.planId;
+    }
+    return _subscription!.active;
+  }
+
+  @action
+  Future<bool> isSubscriptionActive() async {
+    try {
+      if (subscriptionFuture == null) {
+        await fetchSubscription();
+      }
+      return (await subscriptionFuture)!.active;
+    } catch (_) {
+      return false;
     }
   }
 
