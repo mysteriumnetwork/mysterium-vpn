@@ -9,6 +9,7 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/observers/navigator_observer.dart';
+import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 
 part 'analytics_store_firebase.g.dart';
@@ -124,18 +125,6 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
 
   @override
   @action
-  Future<void> connectToVpn(String countryCode) async {
-    await _analytics.logEvent(name: 'connect_$countryCode');
-  }
-
-  @override
-  @action
-  Future<void> disconnectFromVpn(String countryCode) async {
-    await _analytics.logEvent(name: 'disconnect_$countryCode');
-  }
-
-  @override
-  @action
   Future<void> logLocationsListScroll() async {
     if (_timer?.isActive ?? false) {
       _timer?.cancel();
@@ -194,5 +183,84 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
         },
       );
     }
+  }
+
+  @override
+  @action
+  Future<void> logBannerClick(BannerType banner) async {
+    await logEvent(AnalyticsEvent.bannerClick, parameters: {'banner': banner.name});
+  }
+
+  @override
+  @action
+  Future<void> logBannerClose(BannerType banner) async {
+    await logEvent(AnalyticsEvent.bannerClose, parameters: {'banner': banner.name});
+  }
+
+  @override
+  @action
+  Future<void> logLocationTabOpen(IPType locationType) async {
+    await logEvent(AnalyticsEvent.locationsTabOpen, parameters: {'ip_type': locationType.name});
+  }
+
+  @override
+  @action
+  Future<void> logConnect(VPNLocation? location, [AnalyticsEvent? event]) async {
+    final eventName = event?.name ?? ['connect', location?.code].join('_');
+    await _analytics.logEvent(
+      name: eventName,
+      parameters: location != null
+          ? {'location': location.code, 'ip_type': location.ipType.name.toSnakeCase}
+          : null,
+    );
+  }
+
+  @override
+  @action
+  Future<void> logDisconnect(VPNLocation? location, [AnalyticsEvent? event]) async {
+    final eventName = event?.name ?? ['disconnect', location?.code].join('_');
+    await _analytics.logEvent(
+      name: eventName,
+      parameters: location != null
+          ? {'location': location.code, 'ip_type': location.ipType.name.toSnakeCase}
+          : null,
+    );
+  }
+
+  @override
+  Future<void> logConnectSuccess({
+    required VPNLocation location,
+    required Duration time,
+    required bool? isRefresh,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.connectSuccess,
+      parameters: {
+        'location': location.code,
+        'ipType': location.ipType.name.toSnakeCase,
+        'time': time.inSeconds,
+        'refresh_ip': isRefresh,
+      },
+    );
+  }
+
+  @override
+  Future<void> logConnectFailure({
+    required Duration time,
+    required String error,
+    required String errorType,
+    int? errorCode,
+    String? errorMessage,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.connectError,
+      parameters: {
+        'time': time.inSeconds,
+        'error': error,
+        'error_type': errorType,
+        if (errorCode != null) 'error_code': errorCode,
+        if (errorMessage != null) 'error_message': errorMessage,
+      },
+    );
   }
 }

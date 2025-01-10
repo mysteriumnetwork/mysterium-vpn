@@ -1,4 +1,6 @@
+import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/models/location.dart';
@@ -47,24 +49,19 @@ class RestApiService extends ApiService {
         throw Exception('No data found');
       }
 
-      final topCountryCodes = List<String>.from(data.topCountries)
-        ..sort(
-          (a, b) => a.tr().compareTo(b.tr()),
-        );
-      final allCountryCodes = List<String>.from(data.countries)
-        ..removeWhere(
-          topCountryCodes.contains,
-        )
-        ..sort(
-          (a, b) => a.tr().compareTo(b.tr()),
-        );
+      var topCountries = data.topCountries.sortedBy((it) => it.tr()).toList();
+      var allCountries =
+          data.countries.whereNot(topCountries.contains).sortedBy((it) => it.tr()).toList();
+
       if (keyword.isNotEmpty) {
-        topCountryCodes.removeWhere((element) => !element.tr().toLowerCase().contains(keyword));
-        allCountryCodes.removeWhere((element) => !element.tr().toLowerCase().contains(keyword));
+        topCountries = topCountries.where((code) => _isMatch(code, keyword)).toList();
+        allCountries = allCountries.where((code) => _isMatch(code, keyword)).toList();
       }
+
       return VPNLocations(
-        allLocations: allCountryCodes,
-        topLocations: topCountryCodes,
+        allLocations: allCountries.map((code) => VPNLocation(code: code)).toList(),
+        topLocations: topCountries.map((code) => VPNLocation(code: code)).toList(),
+        dcLocations: [],
       );
     } on ApiException {
       rethrow;
@@ -75,18 +72,21 @@ class RestApiService extends ApiService {
   }
 
   @override
-  Future<List<String>> getRecentLocations({required String keyword}) async {
-    final countryCodes = await _localDb.getRecentLocations();
+  Future<List<VPNLocation>> getRecentLocations({required String keyword}) async {
+    var locations = await _localDb.getRecentLocations();
     if (keyword.isNotEmpty) {
-      final res =
-          countryCodes.where((location) => location.tr().toLowerCase().contains(keyword)).toList();
-      return res;
+      locations = locations.where((location) => _isMatch(location.code, keyword)).toList();
     }
-    return countryCodes;
+    return locations;
+  }
+
+  bool _isMatch(String code, String keyword) {
+    final query = keyword.toLowerCase();
+    return code.tr().toLowerCase().contains(query) || code.toLowerCase().contains(query);
   }
 
   @override
-  Future<void> addRecentLocation(String location) async {
+  Future<void> addRecentLocation(VPNLocation location) async {
     final recentLocations = await _localDb.getRecentLocations();
     if (recentLocations.contains(location)) {
       recentLocations.remove(location);
@@ -211,4 +211,10 @@ class RestApiService extends ApiService {
       rethrow;
     }
   }
+
+  @override
+  Future<List<BannerType>> getShownBanners() => _localDb.getShownBanners();
+
+  @override
+  Future<void> setShownBanners(List<BannerType> banners) => _localDb.setShownBanners(banners);
 }

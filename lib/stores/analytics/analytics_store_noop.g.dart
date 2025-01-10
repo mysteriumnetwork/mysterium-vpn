@@ -79,22 +79,6 @@ mixin _$AnalyticsStoreNoop on _AnalyticsStoreNoop, Store {
     return _$logScreenViewedAsyncAction.run(() => super.logScreenViewed(screenName));
   }
 
-  late final _$connectToVpnAsyncAction =
-      AsyncAction('_AnalyticsStoreNoop.connectToVpn', context: context);
-
-  @override
-  Future<void> connectToVpn(String countryCode) {
-    return _$connectToVpnAsyncAction.run(() => super.connectToVpn(countryCode));
-  }
-
-  late final _$disconnectFromVpnAsyncAction =
-      AsyncAction('_AnalyticsStoreNoop.disconnectFromVpn', context: context);
-
-  @override
-  Future<void> disconnectFromVpn(String countryCode) {
-    return _$disconnectFromVpnAsyncAction.run(() => super.disconnectFromVpn(countryCode));
-  }
-
   late final _$logLocationsListScrollAsyncAction =
       AsyncAction('_AnalyticsStoreNoop.logLocationsListScroll', context: context);
 
@@ -134,6 +118,46 @@ mixin _$AnalyticsStoreNoop on _AnalyticsStoreNoop, Store {
   Future<void> logProductSelected(String productId, List<String> productIds) {
     return _$logProductSelectedAsyncAction
         .run(() => super.logProductSelected(productId, productIds));
+  }
+
+  late final _$logBannerClickAsyncAction =
+      AsyncAction('_AnalyticsStoreNoop.logBannerClick', context: context);
+
+  @override
+  Future<void> logBannerClick(BannerType banner) {
+    return _$logBannerClickAsyncAction.run(() => super.logBannerClick(banner));
+  }
+
+  late final _$logBannerCloseAsyncAction =
+      AsyncAction('_AnalyticsStoreNoop.logBannerClose', context: context);
+
+  @override
+  Future<void> logBannerClose(BannerType banner) {
+    return _$logBannerCloseAsyncAction.run(() => super.logBannerClose(banner));
+  }
+
+  late final _$logLocationTabOpenAsyncAction =
+      AsyncAction('_AnalyticsStoreNoop.logLocationTabOpen', context: context);
+
+  @override
+  Future<void> logLocationTabOpen(IPType locationType) {
+    return _$logLocationTabOpenAsyncAction.run(() => super.logLocationTabOpen(locationType));
+  }
+
+  late final _$logConnectAsyncAction =
+      AsyncAction('_AnalyticsStoreNoop.logConnect', context: context);
+
+  @override
+  Future<void> logConnect(VPNLocation? location, [AnalyticsEvent? event]) {
+    return _$logConnectAsyncAction.run(() => super.logConnect(location, event));
+  }
+
+  late final _$logDisconnectAsyncAction =
+      AsyncAction('_AnalyticsStoreNoop.logDisconnect', context: context);
+
+  @override
+  Future<void> logDisconnect(VPNLocation? location, [AnalyticsEvent? event]) {
+    return _$logDisconnectAsyncAction.run(() => super.logDisconnect(location, event));
   }
 
   @override

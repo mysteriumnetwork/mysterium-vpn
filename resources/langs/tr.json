@@ -517,5 +517,14 @@
   "pricingIntroductoryPeriod12": "ilk yıl için!",
   "pricingIntroductoryPeriod6": "ilk 6 ay için!",
   "then": "Sonra",
-  "renewsFor": "Şunun için yenilenir"
+  "renewsFor": "Şunun için yenilenir",
+  "dataCenterBannerTitle": "Veri Merkezi IP'lerini Tanıtıyoruz!",
+  "dataCenterBannerDesc": "Hızınızı artırın ve rakipsiz bağlantı kararlılığının tadını çıkarın",
+  "dataCenterBannerBtn": "Şimdi deneyin",
+  "ipTypeDataCenter": "Yüksek hızlı IP'ler",
+  "ipTypeResidential": "Rezidans IP'leri",
+  "ipTypeDataCenterDisclaimer": "Hızlı VPN ihtiyaçları için hızlı ve verimli sunucularda barındırılan IP'ler.",
+  "ipTypeResidentialDisclaimer": "Gerçek evlere bağlı IP'ler, VPN algılamasını azaltır.",
+  "noLocations": "Herhangi bir konum bulamadık 😕",
+  "noLocationsKeyword": "\"{keyword}\" için herhangi bir konum bulamadık 😕"
 }

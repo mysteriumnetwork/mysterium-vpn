@@ -15,6 +15,7 @@ import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_firebase.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_noop.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
+import 'package:mysterium_vpn/stores/banners_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_desktop_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_mobile_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
@@ -107,12 +108,18 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final localeStore = ref.watch(localeStorePOD);
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
 
-  return LocationsStore(
-    apiService: apiService,
-    analyticsStore: analyticsStore,
-    localeStore: localeStore,
+  final store = LocationsStore(
+    apiService,
+    analyticsStore,
+    remoteConfigStore,
+    localeStore,
   );
+
+  ref.onCancel(store.dispose);
+
+  return store;
 });
 
 final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
@@ -135,15 +142,8 @@ final restApiStorePOD = Provider<RestStore>((ref) {
   return RestStore(apiService: apiService);
 });
 
-final environmentPOD = StateProvider<FlavorConfig>(
-  (ref) => FlavorConfig(
-    flavor: Flavor.dev,
-    values: FlavorValues.dev(),
-    buildInfo: BuildInfo(
-      buildNumber: 0,
-      buildVersion: '0',
-    ),
-  ),
+final environmentPOD = Provider<FlavorConfig>(
+  (ref) => throw UnimplementedError(),
 );
 
 final analyticsInitPOD = FutureProviderFamily<void, FirebaseOptions?>((ref, options) async {
@@ -198,3 +198,11 @@ final abTestingStorePOD = Provider<ABTestingStore>((ref) {
     analytics: analyticsStore,
   );
 });
+
+final bannersStorePOD = Provider<BannersStore>(
+  (ref) => BannersStore(
+    ref.watch(apiServicePOD),
+    ref.watch(subscriptionStorePOD),
+    ref.watch(remoteConfigStorePOD),
+  ),
+);

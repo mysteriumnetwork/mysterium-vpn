@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:configcat_client/configcat_client.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
@@ -24,6 +26,7 @@ enum _FeatureToggleKey {
   showVpnPrivacyPolicyPage,
   pricingMonthly,
   mqttExperiment,
+  dataCenterCountries,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -65,6 +68,10 @@ abstract class RemoteConfigStoreBase with Store {
       ConfigCatUser(
         identifier: userId,
         email: email,
+        custom: {
+          'platform': Platform.operatingSystem,
+          'platformVersion': Platform.operatingSystemVersion,
+        },
       ),
     );
   }
@@ -219,6 +226,15 @@ abstract class RemoteConfigStoreBase with Store {
       return config[_FeatureToggleKey.mqttExperiment.name] as bool;
     }
     return false;
+  }
+
+  @computed
+  List<String> get dataCenterCountries {
+    if (config.containsKey(_FeatureToggleKey.dataCenterCountries.name)) {
+      final raw = config[_FeatureToggleKey.dataCenterCountries.name] as String;
+      return raw.split(RegExp('[^a-zA-Z]+')).map((code) => code.toUpperCase()).toList();
+    }
+    return [];
   }
 
   Map<String, String> get asUserProperties =>

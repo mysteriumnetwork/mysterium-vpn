@@ -1,0 +1,4 @@
+enum BannerType {
+  subscription,
+  datacenter;
+}

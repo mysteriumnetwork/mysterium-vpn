@@ -1,65 +1,23 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
+import 'package:flutter/material.dart' hide Banner;
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/components/banners/banner.dart';
+import 'package:mysterium_vpn/components/banners/banner_cta.dart';
+import 'package:mysterium_vpn/components/banners/banner_title.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 
-class NoSubscriptionBanner extends StatelessWidget {
-  const NoSubscriptionBanner({
-    required this.onSubscribePressed,
-    super.key,
-    this.constraints = const BoxConstraints(maxHeight: 84, maxWidth: 360),
-  });
-
-  final VoidCallback onSubscribePressed;
-
-  final BoxConstraints constraints;
+class NoSubscriptionBanner extends HookWidget {
+  const NoSubscriptionBanner({super.key});
 
   @override
-  Widget build(BuildContext context) => DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Palette.purple, width: 2),
-          color: Palette.mediumBlack,
-        ),
-        child: ConstrainedBox(
-          constraints: constraints,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  EasyText(
-                    color: Colors.white,
-                    LocaleKeys.noSubscriptionTitle.tr(),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                  ),
-                  ElevatedButton(
-                    onPressed: onSubscribePressed,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Palette.purple,
-                      elevation: 0,
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                      minimumSize: Size.zero,
-                      foregroundColor: Palette.white,
-                      visualDensity: VisualDensity.comfortable,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                    child: EasyText(
-                      LocaleKeys.noSubscriptionAction.tr(),
-                      fontSize: 12,
-                      color: Palette.white,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
+  Widget build(BuildContext context) {
+    final handleSubscribe = useHandleSubscribe();
+
+    return Banner(
+      title: BannerTitle(text: LocaleKeys.noSubscriptionTitle.tr()),
+      cta: BannerCTA(text: LocaleKeys.noSubscriptionAction.tr(), onPressed: handleSubscribe),
+      onPressed: handleSubscribe,
+    );
+  }
 }

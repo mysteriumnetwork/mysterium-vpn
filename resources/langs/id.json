@@ -517,5 +517,14 @@
   "pricingIntroductoryPeriod12": "untuk tahun pertama!",
   "pricingIntroductoryPeriod6": "untuk 6 bulan pertama!",
   "then": "Kemudian",
-  "renewsFor": "Diperpanjang untuk"
+  "renewsFor": "Diperpanjang untuk",
+  "dataCenterBannerTitle": "Memperkenalkan IP Pusat Data!",
+  "dataCenterBannerDesc": "Tingkatkan kecepatan Anda dan nikmati stabilitas koneksi yang tak tertandingi",
+  "dataCenterBannerBtn": "Coba sekarang",
+  "ipTypeDataCenter": "IP Kecepatan Tinggi",
+  "ipTypeResidential": "IP Residensial",
+  "ipTypeDataCenterDisclaimer": "IP yang di-host di server cepat dan efisien untuk kebutuhan VPN cepat.",
+  "ipTypeResidentialDisclaimer": "IP yang terhubung ke rumah asli untuk mengurangi deteksi VPN.",
+  "noLocations": "Kami tidak dapat menemukan lokasi 😕",
+  "noLocationsKeyword": "Kami tidak dapat menemukan lokasi untuk \"{keyword}\" 😕"
 }

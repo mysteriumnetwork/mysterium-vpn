@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 
 part 'analytics_store_noop.g.dart';
@@ -61,14 +62,6 @@ abstract class _AnalyticsStoreNoop extends AnalyticsStore with Store {
 
   @override
   @action
-  Future<void> connectToVpn(String countryCode) async {}
-
-  @override
-  @action
-  Future<void> disconnectFromVpn(String countryCode) async {}
-
-  @override
-  @action
   Future<void> logLocationsListScroll() async {}
 
   @override
@@ -86,4 +79,40 @@ abstract class _AnalyticsStoreNoop extends AnalyticsStore with Store {
   @override
   @action
   Future<void> logProductSelected(String productId, List<String> productIds) async {}
+
+  @override
+  @action
+  Future<void> logBannerClick(BannerType banner) async {}
+
+  @override
+  @action
+  Future<void> logBannerClose(BannerType banner) async {}
+
+  @override
+  @action
+  Future<void> logLocationTabOpen(IPType locationType) async {}
+
+  @override
+  @action
+  Future<void> logConnect(VPNLocation? location, [AnalyticsEvent? event]) async {}
+
+  @override
+  @action
+  Future<void> logDisconnect(VPNLocation? location, [AnalyticsEvent? event]) async {}
+
+  @override
+  Future<void> logConnectSuccess({
+    required VPNLocation location,
+    required Duration time,
+    required bool? isRefresh,
+  }) async {}
+
+  @override
+  Future<void> logConnectFailure({
+    required Duration time,
+    required String error,
+    required String errorType,
+    int? errorCode,
+    String? errorMessage,
+  }) async {}
 }

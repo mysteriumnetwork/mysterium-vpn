@@ -1,70 +1,96 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lottie/lottie.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/connect_button_animated.dart';
-import 'package:mysterium_vpn/components/connection_bar.dart';
+import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/home/home_banner.dart';
+import 'package:mysterium_vpn/views/home/home_connection_view.dart';
 import 'package:mysterium_vpn/views/home/home_mobile_app_bar.dart';
+import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/locations_slider_mobile_view.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class HomeMobileView extends HookConsumerWidget {
   const HomeMobileView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final vpnStore = ref.watch(vpnStorePOD);
-    final analyticsStore = ref.watch(analyticsStorePOD);
-    final pc = useMemoized(PanelController.new);
-    final handleToggleConnection = useHandleToggleConnection();
+    final abTestingStore = ref.watch(abTestingStorePOD);
+    final panelController = useMemoized(PanelController.new);
 
-    return Observer(
-      builder: (context) {
-        final size = Size(getMediaWidth(context), getMediaHeight(context));
-        final isConnected = vpnStore.isConnected;
-        final buttonSize = (size.width + size.height) * 0.08;
+    final bannerDisplayVariant = useComputedValue(() => abTestingStore.bannerDisplayVariant);
+    final theme = Theme.of(context);
+    final homeState = ref.watch(homeStateProvider.notifier);
+    final appBarObject = useRenderObject<RenderBox>();
+    final appBarHeight = appBarObject.value?.size.height ?? kToolbarHeight;
 
-        void handleConnect() {
-          analyticsStore.logEvent(
-            isConnected ? AnalyticsEvent.disconnectMain : AnalyticsEvent.connectMain,
-          );
-          handleToggleConnection();
-        }
+    useEffect(
+      () {
+        homeState.panelController = panelController;
+        return () => homeState.panelController = null;
+      },
+      [panelController, homeState],
+    );
 
-        return SlidingUpPanel(
-          maxHeight: size.height * 0.8,
-          minHeight: size.height * 0.4,
-          controller: pc,
-          isDraggable: !isDesktop(),
-          color: Theme.of(context).primaryColor,
-          panelBuilder: (sc) => LocationsSliderMobileView(pc: pc, sc: sc),
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-          body: Stack(
-            children: [
-              Lottie.asset(Assets.backgroundElements),
-              Column(
+    return LayoutBuilder(
+      builder: (context, layoutConstraints) {
+        final minHeight = max<double>(
+          layoutConstraints.maxHeight * homeState.panelMinExtent,
+          // panel should be at least this size in order to fit at least one country
+          240,
+        );
+        final constraints = layoutConstraints.copyWith(
+          maxHeight: max(layoutConstraints.maxHeight * homeState.panelMaxExtent, minHeight),
+          minHeight: minHeight,
+        );
+
+        return Stack(
+          children: [
+            SlidingUpPanel(
+              maxHeight: constraints.maxHeight,
+              minHeight: constraints.minHeight,
+              controller: homeState.panelController,
+              color: theme.primaryColor,
+              isDraggable: homeState.isDraggable,
+              panelBuilder: (sc) => HookBuilder(
+                builder: (context) {
+                  homeState.scrollController = sc;
+                  return LocationsSliderMobileView(constraints: constraints, controller: sc);
+                },
+              ),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+              body: Column(
                 children: [
-                  const HomeMobileAppBar(),
-                  const MobileConnectionStatusBar(),
-                  ConnectButtonAnimated(
-                    onPressed: handleConnect,
-                    buttonSize: buttonSize,
-                  ).expanded(),
-                  SizedBox(height: size.height * 0.08),
+                  Expanded(
+                    flex: 10 - (homeState.panelMinExtent * 10).round(),
+                    child: HomeConnectionView(header: HomeMobileAppBar(key: appBarObject.key)),
+                  ),
+                  Spacer(flex: (homeState.panelMinExtent * 10).round()),
                 ],
-              ).height(size.height * 0.66 - getWindowPadding().top),
-            ],
-          ),
+              ),
+            ),
+            switch (bannerDisplayVariant) {
+              'B' => Positioned(
+                  top: 24 + appBarHeight,
+                  left: 0,
+                  right: 0,
+                  child: const HomeBanner(),
+                ),
+              'C' => const Positioned(
+                  bottom: 24,
+                  left: 0,
+                  right: 0,
+                  child: HomeBanner(),
+                ),
+              _ => const SizedBox.shrink(),
+            },
+          ],
         );
       },
     );

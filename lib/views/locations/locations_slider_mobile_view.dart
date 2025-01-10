@@ -1,65 +1,55 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/components/recent_locations_list.dart';
-import 'package:mysterium_vpn/components/search_field.dart';
-import 'package:mysterium_vpn/components/vpn_locations.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/components/dragable_indicator.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:styled_widget/styled_widget.dart';
+import 'package:mysterium_vpn/views/home/home_state.dart';
+import 'package:mysterium_vpn/views/locations/locations_view.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 class LocationsSliderMobileView extends HookConsumerWidget {
-  const LocationsSliderMobileView({required this.sc, required this.pc, super.key});
-  final ScrollController sc;
-  final PanelController pc;
+  const LocationsSliderMobileView({
+    required this.constraints,
+    required this.controller,
+    super.key,
+  });
+
+  final BoxConstraints constraints;
+  final ScrollController controller;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final locationsStore = ref.watch(locationsStorePOD);
-    final vpnStore = ref.watch(vpnStorePOD);
-    final themeStore = ref.watch(themeStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
-    sc.addListener(analyticsStore.logLocationsListScroll);
 
-    return Column(
-      children: [
-        Align(
-          child: InkWell(
-            onTap: () => pc.isPanelOpen ? pc.close() : pc.open(),
-            child: Container(
-              width: 45,
-              height: 10,
-              decoration: BoxDecoration(
-                color: Colors.grey[400],
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
-              ),
-            ),
+    useEffect(
+      () {
+        controller.addListener(analyticsStore.logLocationsListScroll);
+        return () => controller.removeListener(analyticsStore.logLocationsListScroll);
+      },
+      [analyticsStore],
+    );
+
+    void handleTogglePanel() {
+      ref.read(homeStateProvider.notifier).togglePanel();
+    }
+
+    return CustomScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      controller: controller,
+      slivers: [
+        SliverPinnedHeader(
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Center(child: DraggableIndicator(onTap: handleTogglePanel)),
           ),
-        ).padding(bottom: 10, top: 10),
-        ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          controller: sc,
-          children: <Widget>[
-            SearchField(locationsStore, analyticsStore).padding(bottom: 20),
-            RecentLocationsList(
-              themeStore: themeStore,
-              locationsStore: locationsStore,
-              vpnStore: vpnStore,
-              analyticsStore: analyticsStore,
-            ).padding(bottom: 20),
-            EasyText(
-              LocaleKeys.allLocations.tr(),
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ).padding(bottom: 20),
-            AllLocationsList(
-              themeStore: themeStore,
-              locationsStore: locationsStore,
-              vpnStore: vpnStore,
-            ),
-          ],
-        ).expanded(),
+        ),
+        const SliverSafeArea(
+          top: false,
+          sliver: SliverPadding(
+            padding: EdgeInsets.all(20),
+            sliver: LocationsSliverView(),
+          ),
+        ),
       ],
     );
   }

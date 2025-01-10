@@ -517,5 +517,14 @@
   "pricingIntroductoryPeriod12": "最初の1年間！",
   "pricingIntroductoryPeriod6": "最初の6か月間！",
   "then": "次に",
-  "renewsFor": "更新料金は"
+  "renewsFor": "更新料金は",
+  "dataCenterBannerTitle": "データセンターIPのご紹介！",
+  "dataCenterBannerDesc": "速度を向上させ、比類のない接続の安定性を楽しもう",
+  "dataCenterBannerBtn": "今すぐ試す",
+  "ipTypeDataCenter": "高速IP",
+  "ipTypeResidential": "住宅用IP",
+  "ipTypeDataCenterDisclaimer": "迅速なVPNニーズに対応する高速で効率的なサーバー上にホストされるIP。",
+  "ipTypeResidentialDisclaimer": "実際の家庭に関連付けられたIPでVPN検出を減少。",
+  "noLocations": "場所が見つかりませんでした 😕",
+  "noLocationsKeyword": "「{keyword}」の場所が見つかりませんでした 😕"
 }

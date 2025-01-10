@@ -427,7 +427,6 @@
     "ar": "Arabic",
     "id": "Indonesian",
     "ja": "Japanese",
-    "coudntFindLocations": "We could not find any location for \"{searchKeyword}\". 😕",
     "checkingSubsStatus": "We are checking your subscription status. Please wait...",
     "connectionTimeout": "Connection timed out. Please try again later. If the problem persists, contact the support team",
     "cancelYourSubsMess": "Cancel your subscription on the App Store subscriptions before deleting your account.",
@@ -517,5 +516,14 @@
     "pricingIntroductoryPeriod12": "for the first year!",
     "pricingIntroductoryPeriod6": "for the first 6 months!",
     "then": "Then",
-    "renewsFor": "Renews for"
+    "renewsFor": "Renews for",
+    "dataCenterBannerTitle": "Introducing Data Center IPs!",
+    "dataCenterBannerDesc": "Boost your speed and enjoy unrivaled connection stability",
+    "dataCenterBannerBtn": "Try now",
+    "ipTypeDataCenter": "High-speed IPs",
+    "ipTypeResidential": "Residential IPs",
+    "ipTypeDataCenterDisclaimer": "IPs hosted on fast and efficient servers for quick VPN needs.",
+    "ipTypeResidentialDisclaimer": "IPs tied to actual households for decreased VPN detection.",
+    "noLocations": "We could not find any locations 😕",
+    "noLocationsKeyword": "We could not find any locations for \"{keyword}\" 😕"
 }

@@ -19,6 +19,8 @@ import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/services/data/local/adapters/banner_type_adapter.dart';
+import 'package:mysterium_vpn/services/data/local/adapters/vpn_location_adapter.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -78,14 +80,16 @@ class Enviroment {
     await Hive.initFlutter();
     Hive
       ..registerAdapter(UserDataAdapter())
-      ..registerAdapter(ApprovalAdapter());
+      ..registerAdapter(ApprovalAdapter())
+      ..registerAdapter(VPNLocationAdapter(typeId: 3))
+      ..registerAdapter(BannerTypeAdapter(typeId: 4));
     await Hive.openBox<UserData>(
       'user_data',
       compactionStrategy: (e, d) => false,
     );
 
     final container = ProviderContainer(
-      overrides: [environmentPOD.overrideWith((ref) => flavorConfig)],
+      overrides: [environmentPOD.overrideWithValue(flavorConfig)],
     );
     await container.read(analyticsInitPOD(firebaseOptions).future);
     await initRemoteConfig(container);

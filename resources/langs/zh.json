@@ -517,5 +517,14 @@
   "pricingIntroductoryPeriod12": "首年优惠！",
   "pricingIntroductoryPeriod6": "前6个月优惠！",
   "then": "然后",
-  "renewsFor": "续订费用为"
+  "renewsFor": "续订费用为",
+  "dataCenterBannerTitle": "全新数据中心IP上线！",
+  "dataCenterBannerDesc": "提升速度，享受无与伦比的连接稳定性",
+  "dataCenterBannerBtn": "立即尝试",
+  "ipTypeDataCenter": "高速IP",
+  "ipTypeResidential": "住宅IP",
+  "ipTypeDataCenterDisclaimer": "托管在快速高效服务器上的IP，适用于快速VPN需求。",
+  "ipTypeResidentialDisclaimer": "绑定到实际家庭的IP，以减少VPN检测。",
+  "noLocations": "我们找不到任何位置 😕",
+  "noLocationsKeyword": "我们找不到与 \"{keyword}\" 相关的位置 😕"
 }
