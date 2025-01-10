@@ -185,9 +185,7 @@ abstract class _VpnStore with Store {
         resolveConnectionLocationFuture = ObservableFuture(
           _checkConnectionQuality(
             checkLocation: () async {
-              _resolveIPAddress(
-                location,
-              );
+              _resolveIPAddress(location);
             },
             location: location,
             hash: _vpnConfig?.hash ?? '',
