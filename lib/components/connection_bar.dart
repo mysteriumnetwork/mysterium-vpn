@@ -74,7 +74,7 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
               leading: vpnStore.isConnected && locationCode.isNotEmpty
                   ? Flag(countryCode: locationCode)
                   : null,
-              text: vpnConnection?.location.code?.tr(),
+              text: vpnConnection?.location.code.tr(),
               leadingPosition: LeadingPosition.bottom,
               maxLines: 2,
             ).expanded(),
