@@ -23,6 +23,7 @@ import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
+import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
@@ -50,6 +51,7 @@ abstract class _AuthStore with Store {
     required UserPreferencesStore userPreferencesStore,
     required RemoteConfigStore remoteConfigStore,
     required ABTestingStore abTestingStore,
+    required MQTTService mqtt,
   })  : _authService = authService,
         _authSessionStore = authSessionStore,
         _appLinks = appLinks,
@@ -59,7 +61,8 @@ abstract class _AuthStore with Store {
         _logger = logger,
         _userPreferencesStore = userPreferencesStore,
         _remoteConfigStore = remoteConfigStore,
-        _abTestingStore = abTestingStore {
+        _abTestingStore = abTestingStore,
+        _mqtt = mqtt {
     refreshTokenCallback = refreshAuthToken;
   }
 
@@ -75,6 +78,7 @@ abstract class _AuthStore with Store {
   final UserPreferencesStore _userPreferencesStore;
   final RemoteConfigStore _remoteConfigStore;
   final ABTestingStore _abTestingStore;
+  final MQTTService _mqtt;
 
   @readonly
   PkcePair? _pkcePair;
@@ -209,9 +213,16 @@ abstract class _AuthStore with Store {
     _authSessionStore.setAuthenticatedUser(user);
 
     _initializeAnalyticsStores(username: user.username, userId: user.userId);
+
     // Set auth user
     await _localDb.setUser(user);
     final userSettings = await _localDb.getUserData();
+
+    // Connect to MQTT server after we have valid AccessToken
+    if (_remoteConfigStore.mqttExperiment) {
+      _mqtt.start();
+    }
+
     _logger.info(userSettings.toString());
   }
 
