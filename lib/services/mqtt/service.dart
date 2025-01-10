@@ -3,12 +3,15 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:mysterium_vpn/common/exceptions/authentication_required.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/mqtt/exceptions.dart';
 import 'package:talker/talker.dart';
 
 class MQTTService {
-  MQTTService(String url, String clientID, Talker logger)
+  MQTTService(String url, String clientID, AuthSessionStore authSession, Talker logger)
       : _mqtt = MqttServerClient(url, clientID),
+        _authSession = authSession,
         _logger = logger {
     final uri = Uri.parse(url);
 
@@ -44,11 +47,16 @@ class MQTTService {
   }
 
   final MqttServerClient _mqtt;
+  final AuthSessionStore _authSession;
   final Talker _logger;
 
-  Future<void> start(String accessToken) async {
+  Future<void> start() async {
     try {
-      await _mqtt.connect('dvpn', accessToken);
+      if (_authSession.accessToken == null) {
+        throw AuthenticationRequiredException();
+      }
+
+      await _mqtt.connect('dvpn', _authSession.accessToken);
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
@@ -66,9 +74,9 @@ class MQTTService {
 
   bool isStarted() => _mqtt.connectionStatus!.state == MqttConnectionState.connected;
 
-  Future<void> ensureStart(String accessToken) async {
+  Future<void> ensureStart() async {
     if (!isStarted()) {
-      await start(accessToken);
+      await start();
     }
   }
 
