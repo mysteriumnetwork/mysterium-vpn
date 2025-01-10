@@ -22,7 +22,7 @@ class RecentLocationsLoading extends StatelessWidget {
         clipBehavior: Clip.none,
         scrollDirection: Axis.horizontal,
         itemCount: placeholderCount,
-        separatorBuilder: (_, __) => const SizedBox(height: 12),
+        separatorBuilder: (_, __) => const SizedBox(width: 12),
         itemBuilder: (_, __) {
           final color = theme.colorScheme.secondary;
           return Shimmer.fromColors(
