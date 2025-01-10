@@ -3,10 +3,8 @@ import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/exceptions/authentication_required.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:talker/talker.dart';
@@ -21,16 +19,13 @@ class ApiStore = _ApiStore with _$ApiStore;
 abstract class _ApiStore with Store {
   _ApiStore({
     required MQTTService mqtt,
-    required AuthSessionStore authSession,
     required Talker logger,
     required RemoteConfigStore remoteConfigStore,
   })  : _mqtt = mqtt,
-        _authSession = authSession,
         _logger = logger,
         _remoteConfigStore = remoteConfigStore;
 
   final MQTTService _mqtt;
-  final AuthSessionStore _authSession;
   final Talker _logger;
   final RemoteConfigStore _remoteConfigStore;
   StreamSubscription<String>? _healthcheckSub;
@@ -44,11 +39,7 @@ abstract class _ApiStore with Store {
         return;
       }
 
-      if (_authSession.accessToken == null) {
-        throw AuthenticationRequiredException();
-      }
-      await _mqtt.ensureStart(_authSession.accessToken!);
-
+      await _mqtt.ensureStart();
       _healthcheckSub ??= _mqtt.subscribe('healthcheck').listen((event) {
         _lastHealthcheck = HealthcheckMessage.fromJson(json.decode(event) as Map<String, dynamic>);
       });
