@@ -74,4 +74,7 @@ enum AnalyticsEvent {
   malwareOff,
   nsfwOn,
   nsfwOff,
+  locationsTabOpen,
+  bannerClick,
+  bannerClose
 }

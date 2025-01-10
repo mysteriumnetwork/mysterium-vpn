@@ -520,4 +520,13 @@ abstract class LocaleKeys {
   static const pricingIntroductoryPeriod6 = 'pricingIntroductoryPeriod6';
   static const then = 'then';
   static const renewsFor = 'renewsFor';
+  static const dataCenterBannerTitle = 'dataCenterBannerTitle';
+  static const dataCenterBannerDesc = 'dataCenterBannerDesc';
+  static const dataCenterBannerBtn = 'dataCenterBannerBtn';
+  static const ipTypeDataCenter = 'ipTypeDataCenter';
+  static const ipTypeResidential = 'ipTypeResidential';
+  static const ipTypeDataCenterDisclaimer = 'ipTypeDataCenterDisclaimer';
+  static const ipTypeResidentialDisclaimer = 'ipTypeResidentialDisclaimer';
+  static const noLocations = 'noLocations';
+  static const noLocationsKeyword = 'noLocationsKeyword';
 }

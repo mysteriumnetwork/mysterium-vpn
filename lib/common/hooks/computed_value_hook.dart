@@ -1,10 +1,10 @@
 part of 'hooks.dart';
 
-T useComputedValue<T>(T Function() compute, [List<Object> keys = const []]) =>
+T useComputedValue<T>(T Function() compute, [List<Object?> keys = const []]) =>
     use(_ComputedValueHook(compute, keys));
 
 class _ComputedValueHook<T> extends Hook<T> {
-  const _ComputedValueHook(this.compute, [List<Object> keys = const []]) : super(keys: keys);
+  const _ComputedValueHook(this.compute, [List<Object?> keys = const []]) : super(keys: keys);
   final T Function() compute;
 
   @override

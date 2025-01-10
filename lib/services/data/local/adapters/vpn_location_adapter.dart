@@ -1,0 +1,27 @@
+import 'dart:convert';
+
+import 'package:hive/hive.dart';
+import 'package:mysterium_vpn/models/location.dart';
+
+class VPNLocationAdapter extends TypeAdapter<VPNLocation> {
+  VPNLocationAdapter({required this.typeId});
+
+  @override
+  final int typeId;
+
+  @override
+  VPNLocation read(BinaryReader reader) {
+    final raw = reader.readString();
+    try {
+      final json = jsonDecode(raw) as Map<String, dynamic>;
+      return VPNLocation.fromJson(json);
+    } catch (e) {
+      return VPNLocation(code: raw);
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, VPNLocation obj) {
+    writer.writeString(jsonEncode(obj.toJson()));
+  }
+}

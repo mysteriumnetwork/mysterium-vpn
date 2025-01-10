@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/models/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceService {
@@ -74,4 +75,31 @@ class SharedPreferenceService {
   String? getLocationCode() => getString(StorageKeys.locationCode.name);
   Future<bool> setLocationCode(String value) async =>
       setString(StorageKeys.locationCode.name, value);
+
+  VPNLocation? getLocation() {
+    final [code, type] = [
+      getString(StorageKeys.locationCode.name),
+      getString(StorageKeys.locationType.name),
+    ];
+    if (code == null) {
+      return null;
+    }
+    return VPNLocation(
+      code: code,
+      ipType: type == null ? IPType.residential : IPType.fromName(type),
+    );
+  }
+
+  Future<bool> setLocation(VPNLocation? location) async {
+    final results = await Future.wait([
+      if (location == null) ...[
+        remove(StorageKeys.locationCode.name),
+        remove(StorageKeys.locationType.name),
+      ] else ...[
+        setString(StorageKeys.locationCode.name, location.code),
+        setString(StorageKeys.locationType.name, location.ipType.name),
+      ],
+    ]);
+    return results.every((isSuccess) => isSuccess);
+  }
 }

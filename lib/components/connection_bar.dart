@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/connection_indicator.dart';
 import 'package:mysterium_vpn/components/decorated_label.dart';
@@ -9,6 +11,7 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/flag.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/refresh_connection.dart';
+import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -30,12 +33,18 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
     return Observer(
       builder: (context) {
         final vpnConnection = vpnStore.vpnConnection;
+        final locationCode = vpnConnection?.location.code ?? '';
         final isResolvingconnectionIP = vpnConnection?.isResolvingconnectionIP ?? false;
         final isConnected = vpnStore.isConnected;
+
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _BarItem(
+              leading: switch (vpnConnection?.location.ipType) {
+                IPType.datacenter => const SvgIcon(asset: Assets.speed, height: 16),
+                _ => null,
+              },
               label: LocaleKeys.connectionIp.tr(),
               text: isConnected ? vpnConnection?.connectionIP : null,
               maxLines: 1,
@@ -62,15 +71,15 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
             ).expanded(),
             _BarItem(
               label: LocaleKeys.location.tr(),
-              leading: isConnected && (vpnConnection?.location.isNotEmpty ?? false)
-                  ? Flag(countryCode: vpnStore.vpnConnection!.location)
+              leading: vpnStore.isConnected && locationCode.isNotEmpty
+                  ? Flag(countryCode: locationCode)
                   : null,
-              text: isConnected ? vpnConnection?.location.tr() : null,
+              text: vpnConnection?.location.code.tr(),
               leadingPosition: LeadingPosition.bottom,
               maxLines: 2,
             ).expanded(),
           ],
-        ).padding(vertical: 20, horizontal: 4);
+        ).padding(horizontal: 4);
       },
     );
   }

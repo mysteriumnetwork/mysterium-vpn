@@ -12,7 +12,7 @@ enum Flavor {
 }
 
 class FlavorValues {
-  FlavorValues({
+  FlavorValues._({
     required this.baseUrl,
     required this.mqttUrl,
     required this.webAppUrl,
@@ -27,7 +27,7 @@ class FlavorValues {
     required this.abTestingSdkKey,
   });
 
-  factory FlavorValues.production() => FlavorValues(
+  factory FlavorValues.production() => FlavorValues._(
         baseUrl: 'https://api.mysteriumvpn.com/api/v1',
         mqttUrl: 'wss://events.mysteriumvpn.com/',
         webAppUrl: 'app.mysteriumvpn.com',
@@ -42,7 +42,8 @@ class FlavorValues {
         remoteConfigSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/ZKdEmBGd9EukTUz4fPL6mw',
         abTestingSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/X1h2DjWhpEq7P2KXA2WymA',
       );
-  factory FlavorValues.dev() => FlavorValues(
+
+  factory FlavorValues.dev() => FlavorValues._(
         baseUrl: 'https://api-test.mysteriumvpn.com/api/v1',
         mqttUrl: 'wss://events-test.mysteriumvpn.com/',
         webAppUrl: 'app-testnet.mysteriumvpn.com',
@@ -73,7 +74,7 @@ class FlavorValues {
 
   @override
   String toString() =>
-      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, billingPage: $billingPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName';
+      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, billingPage: $billingPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey';
 }
 
 class FlavorConfig {

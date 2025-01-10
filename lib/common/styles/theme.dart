@@ -15,6 +15,7 @@ ThemeData themeData(Palette palette) => ThemeData(
         tertiary: palette.tertiaryColor,
         secondary: palette.placeholderColor,
         scrim: palette.scrimColor,
+        surfaceContainerHigh: palette.disclaimerBackgroundColor,
       ),
       indicatorColor: palette.secondaryColor,
       hintColor: palette.darkTextColor,

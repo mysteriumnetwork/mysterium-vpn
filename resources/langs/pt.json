@@ -517,5 +517,14 @@
   "pricingIntroductoryPeriod12": "para o primeiro ano!",
   "pricingIntroductoryPeriod6": "para os primeiros 6 meses!",
   "then": "Depois",
-  "renewsFor": "Renova por"
+  "renewsFor": "Renova por",
+  "dataCenterBannerTitle": "Apresentando IPs de Data Center!",
+  "dataCenterBannerDesc": "Aumente sua velocidade e desfrute de uma estabilidade de conexão incomparável",
+  "dataCenterBannerBtn": "Experimente agora",
+  "ipTypeDataCenter": "IPs de alta velocidade",
+  "ipTypeResidential": "IPs residenciais",
+  "ipTypeDataCenterDisclaimer": "IPs hospedados em servidores rápidos e eficientes para necessidades rápidas de VPN.",
+  "ipTypeResidentialDisclaimer": "IPs vinculados a residências reais para reduzir a detecção de VPN.",
+  "noLocations": "Não conseguimos encontrar nenhum local 😕",
+  "noLocationsKeyword": "Não conseguimos encontrar locais para \"{keyword}\" 😕"
 }

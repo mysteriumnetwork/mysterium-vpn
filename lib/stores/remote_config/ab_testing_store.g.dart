@@ -23,6 +23,13 @@ mixin _$ABTestingStore on ABTestingStoreBase, Store {
       (_$tunnelConsentTypeComputed ??= Computed<String>(() => super.tunnelConsentType,
               name: 'ABTestingStoreBase.tunnelConsentType'))
           .value;
+  Computed<String>? _$bannerDisplayVariantComputed;
+
+  @override
+  String get bannerDisplayVariant =>
+      (_$bannerDisplayVariantComputed ??= Computed<String>(() => super.bannerDisplayVariant,
+              name: 'ABTestingStoreBase.bannerDisplayVariant'))
+          .value;
 
   late final _$configAtom = Atom(name: 'ABTestingStoreBase.config', context: context);
 
@@ -69,7 +76,8 @@ mixin _$ABTestingStore on ABTestingStoreBase, Store {
     return '''
 config: ${config},
 subscriptionFlowVariant: ${subscriptionFlowVariant},
-tunnelConsentType: ${tunnelConsentType}
+tunnelConsentType: ${tunnelConsentType},
+bannerDisplayVariant: ${bannerDisplayVariant}
     ''';
   }
 }

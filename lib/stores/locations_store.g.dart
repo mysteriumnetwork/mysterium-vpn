@@ -9,27 +9,42 @@ part of 'locations_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$LocationsStore on _LocationsStore, Store {
-  Computed<FutureStatus>? _$vpnLocationsFutureStatusComputed;
+  Computed<List<VPNLocation>>? _$allLocationsComputed;
 
   @override
-  FutureStatus get vpnLocationsFutureStatus => (_$vpnLocationsFutureStatusComputed ??=
-          Computed<FutureStatus>(() => super.vpnLocationsFutureStatus,
-              name: '_LocationsStore.vpnLocationsFutureStatus'))
+  List<VPNLocation> get allLocations =>
+      (_$allLocationsComputed ??= Computed<List<VPNLocation>>(() => super.allLocations,
+              name: '_LocationsStore.allLocations'))
+          .value;
+  Computed<List<VPNLocation>>? _$topLocationsComputed;
+
+  @override
+  List<VPNLocation> get topLocations =>
+      (_$topLocationsComputed ??= Computed<List<VPNLocation>>(() => super.topLocations,
+              name: '_LocationsStore.topLocations'))
+          .value;
+  Computed<List<VPNLocation>>? _$dcLocationsComputed;
+
+  @override
+  List<VPNLocation> get dcLocations => (_$dcLocationsComputed ??=
+          Computed<List<VPNLocation>>(() => super.dcLocations, name: '_LocationsStore.dcLocations'))
       .value;
 
-  late final _$fetchVPNLocationsFutureAtom =
-      Atom(name: '_LocationsStore.fetchVPNLocationsFuture', context: context);
+  late final _$_vpnLocationsFutureAtom =
+      Atom(name: '_LocationsStore._vpnLocationsFuture', context: context);
 
-  @override
-  ObservableFuture<VPNLocations> get fetchVPNLocationsFuture {
-    _$fetchVPNLocationsFutureAtom.reportRead();
-    return super.fetchVPNLocationsFuture;
+  ObservableFuture<VPNLocations> get vpnLocationsFuture {
+    _$_vpnLocationsFutureAtom.reportRead();
+    return super._vpnLocationsFuture;
   }
 
   @override
-  set fetchVPNLocationsFuture(ObservableFuture<VPNLocations> value) {
-    _$fetchVPNLocationsFutureAtom.reportWrite(value, super.fetchVPNLocationsFuture, () {
-      super.fetchVPNLocationsFuture = value;
+  ObservableFuture<VPNLocations> get _vpnLocationsFuture => vpnLocationsFuture;
+
+  @override
+  set _vpnLocationsFuture(ObservableFuture<VPNLocations> value) {
+    _$_vpnLocationsFutureAtom.reportWrite(value, super._vpnLocationsFuture, () {
+      super._vpnLocationsFuture = value;
     });
   }
 
@@ -48,11 +63,29 @@ mixin _$LocationsStore on _LocationsStore, Store {
     });
   }
 
+  late final _$_recentLocationsAtom =
+      Atom(name: '_LocationsStore._recentLocations', context: context);
+
+  List<VPNLocation> get recentLocations {
+    _$_recentLocationsAtom.reportRead();
+    return super._recentLocations;
+  }
+
+  @override
+  List<VPNLocation> get _recentLocations => recentLocations;
+
+  @override
+  set _recentLocations(List<VPNLocation> value) {
+    _$_recentLocationsAtom.reportWrite(value, super._recentLocations, () {
+      super._recentLocations = value;
+    });
+  }
+
   late final _$fetchVPNLocationsAsyncAction =
       AsyncAction('_LocationsStore.fetchVPNLocations', context: context);
 
   @override
-  Future<VPNLocations> fetchVPNLocations() {
+  Future<void> fetchVPNLocations() {
     return _$fetchVPNLocationsAsyncAction.run(() => super.fetchVPNLocations());
   }
 
@@ -68,7 +101,7 @@ mixin _$LocationsStore on _LocationsStore, Store {
       AsyncAction('_LocationsStore.addRecentLocation', context: context);
 
   @override
-  Future<void> addRecentLocation(String location) {
+  Future<void> addRecentLocation(VPNLocation location) {
     return _$addRecentLocationAsyncAction.run(() => super.addRecentLocation(location));
   }
 
@@ -76,7 +109,7 @@ mixin _$LocationsStore on _LocationsStore, Store {
       ActionController(name: '_LocationsStore', context: context);
 
   @override
-  void setLocationKeyword(String text, [int duration = 500]) {
+  void setLocationKeyword(String text, [Duration duration = const Duration(milliseconds: 500)]) {
     final _$actionInfo =
         _$_LocationsStoreActionController.startAction(name: '_LocationsStore.setLocationKeyword');
     try {
@@ -89,9 +122,10 @@ mixin _$LocationsStore on _LocationsStore, Store {
   @override
   String toString() {
     return '''
-fetchVPNLocationsFuture: ${fetchVPNLocationsFuture},
 searchKeyword: ${searchKeyword},
-vpnLocationsFutureStatus: ${vpnLocationsFutureStatus}
+allLocations: ${allLocations},
+topLocations: ${topLocations},
+dcLocations: ${dcLocations}
     ''';
   }
 }

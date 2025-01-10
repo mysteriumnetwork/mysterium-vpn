@@ -124,6 +124,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   bool get mqttExperiment => (_$mqttExperimentComputed ??=
           Computed<bool>(() => super.mqttExperiment, name: 'RemoteConfigStoreBase.mqttExperiment'))
       .value;
+  Computed<List<String>>? _$dataCenterCountriesComputed;
+
+  @override
+  List<String> get dataCenterCountries =>
+      (_$dataCenterCountriesComputed ??= Computed<List<String>>(() => super.dataCenterCountries,
+              name: 'RemoteConfigStoreBase.dataCenterCountries'))
+          .value;
 
   late final _$configAtom = Atom(name: 'RemoteConfigStoreBase.config', context: context);
 
@@ -210,7 +217,8 @@ malwareBlockerDnsAddress: ${malwareBlockerDnsAddress},
 notSafeContentBlockerDnsAddress: ${notSafeContentBlockerDnsAddress},
 showVpnPrivacyPolicyPage: ${showVpnPrivacyPolicyPage},
 pricingMonthly: ${pricingMonthly},
-mqttExperiment: ${mqttExperiment}
+mqttExperiment: ${mqttExperiment},
+dataCenterCountries: ${dataCenterCountries}
     ''';
   }
 }

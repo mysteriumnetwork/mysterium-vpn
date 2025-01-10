@@ -4,58 +4,29 @@ import 'package:lottie/lottie.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/connect_button.dart';
-import 'package:mysterium_vpn/components/no_subscription_banner.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class ConnectButtonAnimated extends HookWidget {
   const ConnectButtonAnimated({
     required this.onPressed,
     this.locationCode,
-    this.buttonSize = 24,
     super.key,
   });
 
   final VoidCallback onPressed;
   final String? locationCode;
-  final double buttonSize;
 
   @override
   Widget build(BuildContext context) {
-    final subscriptionStore = useProvider(subscriptionStorePOD);
-    final handleSubscribe = useHandleSubscribe();
     final isConnected = useIsConnected();
 
-    NoSubscriptionBanner? banner;
-    if (subscriptionStore.subscription != null) {
-      if (!subscriptionStore.subscription!.active) {
-        banner = NoSubscriptionBanner(onSubscribePressed: handleSubscribe);
-      }
-    }
-
     return Stack(
-      fit: StackFit.expand,
+      alignment: Alignment.center,
       children: [
-        Positioned.fill(
-          bottom: (banner?.constraints.maxHeight ?? 0) * .3,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Lottie.asset(
-                isConnected ? Assets.circlesPurple : Assets.circlesGrey,
-                alignment: Alignment.center,
-              ),
-              ConnectButton(onPressed: onPressed).height(buttonSize),
-            ],
-          ),
+        Lottie.asset(
+          isConnected ? Assets.circlesPurple : Assets.circlesGrey,
+          alignment: Alignment.center,
         ),
-        if (banner != null)
-          Positioned(
-            left: 21,
-            right: 21,
-            bottom: 0,
-            child: Center(child: banner),
-          ),
+        ConnectButton(onPressed: onPressed),
       ],
     );
   }

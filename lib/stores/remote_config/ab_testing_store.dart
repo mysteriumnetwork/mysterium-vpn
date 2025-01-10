@@ -12,6 +12,7 @@ part 'ab_testing_store.g.dart';
 enum _ABKey {
   subscriptionFlow,
   tunnelConsent,
+  bannerDisplay,
 }
 
 class ABTestingStore = ABTestingStoreBase with _$ABTestingStore;
@@ -72,6 +73,14 @@ abstract class ABTestingStoreBase with Store {
   String get tunnelConsentType {
     if (config.containsKey(_ABKey.tunnelConsent.name)) {
       return config[_ABKey.tunnelConsent.name] as String;
+    }
+    return 'A';
+  }
+
+  @computed
+  String get bannerDisplayVariant {
+    if (config.containsKey(_ABKey.bannerDisplay.name)) {
+      return config[_ABKey.bannerDisplay.name] as String;
     }
     return 'A';
   }
