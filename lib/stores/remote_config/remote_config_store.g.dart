@@ -9,6 +9,12 @@ part of 'remote_config_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
+  Computed<Map<String, dynamic>>? _$configComputed;
+
+  @override
+  Map<String, dynamic> get config => (_$configComputed ??=
+          Computed<Map<String, dynamic>>(() => super.config, name: 'RemoteConfigStoreBase.config'))
+      .value;
   Computed<bool>? _$isServiceAvailableComputed;
 
   @override
@@ -132,75 +138,38 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
               name: 'RemoteConfigStoreBase.dataCenterCountries'))
           .value;
 
-  late final _$configAtom = Atom(name: 'RemoteConfigStoreBase.config', context: context);
+  late final _$configFutureAtom =
+      Atom(name: 'RemoteConfigStoreBase.configFuture', context: context);
 
   @override
-  ObservableMap<String, dynamic> get config {
-    _$configAtom.reportRead();
-    return super.config;
+  ObservableFuture<Map<String, dynamic>> get configFuture {
+    _$configFutureAtom.reportRead();
+    return super.configFuture;
   }
 
-  @override
-  set config(ObservableMap<String, dynamic> value) {
-    _$configAtom.reportWrite(value, super.config, () {
-      super.config = value;
-    });
-  }
-
-  late final _$resolveRemoteConfigValuesFutureAtom =
-      Atom(name: 'RemoteConfigStoreBase.resolveRemoteConfigValuesFuture', context: context);
+  bool _configFutureIsInitialized = false;
 
   @override
-  ObservableFuture<void>? get resolveRemoteConfigValuesFuture {
-    _$resolveRemoteConfigValuesFutureAtom.reportRead();
-    return super.resolveRemoteConfigValuesFuture;
-  }
-
-  @override
-  set resolveRemoteConfigValuesFuture(ObservableFuture<void>? value) {
-    _$resolveRemoteConfigValuesFutureAtom.reportWrite(value, super.resolveRemoteConfigValuesFuture,
+  set configFuture(ObservableFuture<Map<String, dynamic>> value) {
+    _$configFutureAtom.reportWrite(value, _configFutureIsInitialized ? super.configFuture : null,
         () {
-      super.resolveRemoteConfigValuesFuture = value;
+      super.configFuture = value;
+      _configFutureIsInitialized = true;
     });
   }
 
-  late final _$initAsyncAction = AsyncAction('RemoteConfigStoreBase.init', context: context);
+  late final _$_initAsyncAction = AsyncAction('RemoteConfigStoreBase._init', context: context);
 
   @override
-  Future<void> init() {
-    return _$initAsyncAction.run(() => super.init());
-  }
-
-  late final _$setDefaultUserAsyncAction =
-      AsyncAction('RemoteConfigStoreBase.setDefaultUser', context: context);
-
-  @override
-  Future<void> setDefaultUser({required String email, required String userId}) {
-    return _$setDefaultUserAsyncAction
-        .run(() => super.setDefaultUser(email: email, userId: userId));
-  }
-
-  late final _$getAllRemoteConfigValuesAsyncAction =
-      AsyncAction('RemoteConfigStoreBase.getAllRemoteConfigValues', context: context);
-
-  @override
-  Future<void> getAllRemoteConfigValues() {
-    return _$getAllRemoteConfigValuesAsyncAction.run(() => super.getAllRemoteConfigValues());
-  }
-
-  late final _$refreshRemoteConfigValuesAsyncAction =
-      AsyncAction('RemoteConfigStoreBase.refreshRemoteConfigValues', context: context);
-
-  @override
-  Future<void> refreshRemoteConfigValues() {
-    return _$refreshRemoteConfigValuesAsyncAction.run(() => super.refreshRemoteConfigValues());
+  Future<void> _init() {
+    return _$_initAsyncAction.run(() => super._init());
   }
 
   @override
   String toString() {
     return '''
+configFuture: ${configFuture},
 config: ${config},
-resolveRemoteConfigValuesFuture: ${resolveRemoteConfigValuesFuture},
 isServiceAvailable: ${isServiceAvailable},
 isServiceAvailableMessage: ${isServiceAvailableMessage},
 hideDeleteAccount: ${hideDeleteAccount},

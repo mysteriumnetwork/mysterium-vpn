@@ -1,8 +1,7 @@
-import 'package:configcat_client/configcat_client.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
+import 'package:mysterium_vpn/common/utils/config_cat_client_wrapper.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:talker/talker.dart';
 
 part 'ab_testing_store.g.dart';
 
@@ -18,46 +17,30 @@ enum _ABKey {
 class ABTestingStore = ABTestingStoreBase with _$ABTestingStore;
 
 abstract class ABTestingStoreBase with Store {
-  ABTestingStoreBase({
-    required this.client,
-    required this.logger,
-    required this.analytics,
-  });
-  final ConfigCatClient client;
-  final Talker logger;
-  final AnalyticsStore analytics;
+  ABTestingStoreBase(this._client, this._analytics) {
+    _init();
+  }
+
+  final ConfigCatClientWrapper _client;
+  final AnalyticsStore _analytics;
 
   @observable
-  ObservableMap<String, dynamic> config = ObservableMap();
+  late ObservableFuture<Map<String, dynamic>> configFuture = ObservableFuture(_client.fetch());
+
+  @computed
+  Map<String, dynamic> get config => configFuture.value ?? {};
 
   @action
-  Future<void> setDefaultUser({
-    required String email,
-    required String userId,
-  }) async {
-    client.setDefaultUser(
-      ConfigCatUser(
-        identifier: userId,
-        email: email,
-      ),
-    );
-    await getAllABTestingValues().whenComplete(refreshABTestingValues);
-  }
+  Future<void> _init() async {
+    await configFuture;
 
-  @action
-  Future<void> getAllABTestingValues() async {
-    try {
-      config = ObservableMap.of(await client.getAllValues());
-      asUserProperties.forEach(analytics.setUserProperty);
-    } catch (e, st) {
-      logger.handle(e, st);
-    }
-  }
+    asUserProperties.forEach(_analytics.setUserProperty);
 
-  @action
-  Future<void> refreshABTestingValues() async {
-    client.hooks.addOnConfigChanged((flags) async {
-      getAllABTestingValues();
+    _client.watch(() async {
+      configFuture = ObservableFuture(_client.fetch());
+      await configFuture;
+
+      asUserProperties.forEach(_analytics.setUserProperty);
     });
   }
 

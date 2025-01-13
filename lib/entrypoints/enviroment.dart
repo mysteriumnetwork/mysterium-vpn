@@ -141,6 +141,7 @@ class Enviroment {
               path: Assets.langs,
               fallbackLocale: kFallbackLocale,
               startLocale: kFallbackLocale,
+              assetLoader: container.read(assetsLoaderPOD),
               child: const MyApp(),
             ),
           ),
@@ -152,7 +153,7 @@ class Enviroment {
   Future<void> initRemoteConfig(ProviderContainer container) async {
     try {
       final remoteConfigStore = container.read(remoteConfigStorePOD);
-      await remoteConfigStore.init();
+      await remoteConfigStore.configFuture;
     } catch (e) {
       debugPrint('Error initializing remote config $e');
     }
