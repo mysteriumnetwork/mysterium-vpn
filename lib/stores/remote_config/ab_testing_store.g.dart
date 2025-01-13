@@ -40,27 +40,23 @@ mixin _$ABTestingStore on ABTestingStoreBase, Store {
   late final _$configFutureAtom = Atom(name: 'ABTestingStoreBase.configFuture', context: context);
 
   @override
-  ObservableFuture<Map<String, dynamic>> get configFuture {
+  ObservableFuture<Map<String, dynamic>>? get configFuture {
     _$configFutureAtom.reportRead();
     return super.configFuture;
   }
 
-  bool _configFutureIsInitialized = false;
-
   @override
-  set configFuture(ObservableFuture<Map<String, dynamic>> value) {
-    _$configFutureAtom.reportWrite(value, _configFutureIsInitialized ? super.configFuture : null,
-        () {
+  set configFuture(ObservableFuture<Map<String, dynamic>>? value) {
+    _$configFutureAtom.reportWrite(value, super.configFuture, () {
       super.configFuture = value;
-      _configFutureIsInitialized = true;
     });
   }
 
-  late final _$_initAsyncAction = AsyncAction('ABTestingStoreBase._init', context: context);
+  late final _$initAsyncAction = AsyncAction('ABTestingStoreBase.init', context: context);
 
   @override
-  Future<void> _init() {
-    return _$_initAsyncAction.run(() => super._init());
+  Future<void> init() {
+    return _$initAsyncAction.run(() => super.init());
   }
 
   @override

@@ -27,6 +27,7 @@ import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
+import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -50,6 +51,7 @@ abstract class _AuthStore with Store {
     required Talker logger,
     required UserPreferencesStore userPreferencesStore,
     required RemoteConfigStore remoteConfigStore,
+    required ABTestingStore abTestingStore,
     required List<ConfigCatClientWrapper> configCatClients,
     required MQTTService mqtt,
   })  : _authService = authService,
@@ -62,6 +64,7 @@ abstract class _AuthStore with Store {
         _userPreferencesStore = userPreferencesStore,
         _remoteConfigStore = remoteConfigStore,
         _configCatClients = configCatClients,
+        _abTestingStore = abTestingStore,
         _mqtt = mqtt {
     refreshTokenCallback = refreshAuthToken;
   }
@@ -77,6 +80,7 @@ abstract class _AuthStore with Store {
   final Talker _logger;
   final UserPreferencesStore _userPreferencesStore;
   final RemoteConfigStore _remoteConfigStore;
+  final ABTestingStore _abTestingStore;
   final List<ConfigCatClientWrapper> _configCatClients;
   final MQTTService _mqtt;
 
@@ -233,8 +237,9 @@ abstract class _AuthStore with Store {
     for (final client in _configCatClients) {
       client.setDefaultUser(email: username, userId: userId);
     }
-    _analyticsStore.setUserId(username);
-    _intercomStore.registerUser(email: username);
+    await _abTestingStore.init();
+    await _analyticsStore.setUserId(username);
+    await _intercomStore.registerUser(email: username);
     Sentry.configureScope(
       (scope) => scope.setUser(
         SentryUser(

@@ -17,21 +17,20 @@ enum _ABKey {
 class ABTestingStore = ABTestingStoreBase with _$ABTestingStore;
 
 abstract class ABTestingStoreBase with Store {
-  ABTestingStoreBase(this._client, this._analytics) {
-    _init();
-  }
+  ABTestingStoreBase(this._client, this._analytics);
 
   final ConfigCatClientWrapper _client;
   final AnalyticsStore _analytics;
 
   @observable
-  late ObservableFuture<Map<String, dynamic>> configFuture = ObservableFuture(_client.fetch());
+  ObservableFuture<Map<String, dynamic>>? configFuture;
 
   @computed
-  Map<String, dynamic> get config => configFuture.value ?? {};
+  Map<String, dynamic> get config => configFuture?.value ?? {};
 
   @action
-  Future<void> _init() async {
+  Future<void> init() async {
+    configFuture ??= ObservableFuture(_client.fetch());
     await configFuture;
 
     asUserProperties.forEach(_analytics.setUserProperty);
