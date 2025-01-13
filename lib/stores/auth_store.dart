@@ -11,6 +11,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
+import 'package:mysterium_vpn/common/utils/config_cat_client_wrapper.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
@@ -26,7 +27,6 @@ import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
-import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -50,7 +50,7 @@ abstract class _AuthStore with Store {
     required Talker logger,
     required UserPreferencesStore userPreferencesStore,
     required RemoteConfigStore remoteConfigStore,
-    required ABTestingStore abTestingStore,
+    required List<ConfigCatClientWrapper> configCatClients,
     required MQTTService mqtt,
   })  : _authService = authService,
         _authSessionStore = authSessionStore,
@@ -61,7 +61,7 @@ abstract class _AuthStore with Store {
         _logger = logger,
         _userPreferencesStore = userPreferencesStore,
         _remoteConfigStore = remoteConfigStore,
-        _abTestingStore = abTestingStore,
+        _configCatClients = configCatClients,
         _mqtt = mqtt {
     refreshTokenCallback = refreshAuthToken;
   }
@@ -77,7 +77,7 @@ abstract class _AuthStore with Store {
   final Talker _logger;
   final UserPreferencesStore _userPreferencesStore;
   final RemoteConfigStore _remoteConfigStore;
-  final ABTestingStore _abTestingStore;
+  final List<ConfigCatClientWrapper> _configCatClients;
   final MQTTService _mqtt;
 
   @readonly
@@ -230,8 +230,9 @@ abstract class _AuthStore with Store {
     required String username,
     required String userId,
   }) async {
-    await _remoteConfigStore.setDefaultUser(email: username, userId: userId);
-    await _abTestingStore.setDefaultUser(email: username, userId: userId);
+    for (final client in _configCatClients) {
+      client.setDefaultUser(email: username, userId: userId);
+    }
     _analyticsStore.setUserId(username);
     _intercomStore.registerUser(email: username);
     Sentry.configureScope(
