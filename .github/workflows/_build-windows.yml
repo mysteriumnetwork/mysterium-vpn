@@ -78,7 +78,7 @@ jobs:
 
       - name: Sign Windows installer
         if: ${{ inputs.standalone_sign == true }}
-        uses: azure/trusted-signing-action@v0.5.0
+        uses: azure/trusted-signing-action@v0.5.1
         with:
           azure-tenant-id: ${{ vars.MICROSOFT_AZURE_AD_TENANT_ID }}
           azure-client-id: ${{ vars.MICROSOFT_AZURE_SIGNING_ClIENT_ID }}
