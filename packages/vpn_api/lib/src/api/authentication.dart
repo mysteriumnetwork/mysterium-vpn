@@ -386,6 +386,7 @@ class Authentication {
   /// Parameters:
   /// * [code]
   /// * [continueTo]
+  /// * [redirectUrl]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -398,6 +399,7 @@ class Authentication {
   Future<Response<void>> redirectMagicLink({
     required String code,
     String? continueTo,
+    String? redirectUrl,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -421,6 +423,7 @@ class Authentication {
     final _queryParameters = <String, dynamic>{
       r'code': code,
       r'continue_to': continueTo,
+      r'redirect_url': redirectUrl,
     };
 
     final _response = await _dio.request<Object>(
