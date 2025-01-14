@@ -23,6 +23,7 @@ import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
+import 'package:mysterium_vpn/stores/remote_config/texts_store.dart';
 import 'package:mysterium_vpn/stores/rest_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
@@ -45,8 +46,14 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final logger = ref.watch(loggerPOD);
   final userPreferencesStore = ref.watch(userPreferencesStorePOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
-  final abTestingStore = ref.watch(abTestingStorePOD);
   final mqttService = ref.watch(vpnApiMQTTPOD);
+  final abTestingStore = ref.watch(abTestingStorePOD);
+
+  final configCatClients = [
+    ref.watch(remoteConfigClientPOD),
+    ref.watch(abTestingClientPOD),
+    ref.watch(textsClientPOD),
+  ];
 
   return AuthStore(
     authService: authService,
@@ -58,8 +65,9 @@ final authStorePOD = Provider<AuthStore>((ref) {
     logger: logger,
     userPreferencesStore: userPreferencesStore,
     remoteConfigStore: remoteConfigStore,
-    abTestingStore: abTestingStore,
     mqtt: mqttService,
+    configCatClients: configCatClients,
+    abTestingStore: abTestingStore,
   );
 });
 
@@ -183,20 +191,20 @@ final userPreferencesStorePOD = StateProvider<UserPreferencesStore>((ref) {
 });
 
 final remoteConfigStorePOD = Provider<RemoteConfigStore>((ref) {
-  final logger = ref.watch(loggerPOD);
   final configCatClient = ref.watch(remoteConfigClientPOD);
-  return RemoteConfigStore(client: configCatClient, logger: logger);
+  return RemoteConfigStore(configCatClient);
 });
 
 final abTestingStorePOD = Provider<ABTestingStore>((ref) {
-  final logger = ref.watch(loggerPOD);
   final configCatClient = ref.watch(abTestingClientPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
-  return ABTestingStore(
-    client: configCatClient,
-    logger: logger,
-    analytics: analyticsStore,
-  );
+  return ABTestingStore(configCatClient, analyticsStore);
+});
+
+final textsStorePOD = Provider<TextsStore>((ref) {
+  final logger = ref.watch(loggerPOD);
+  final configCatClient = ref.watch(textsClientPOD);
+  return TextsStore(configCatClient, logger);
 });
 
 final bannersStorePOD = Provider<BannersStore>(

@@ -81,7 +81,7 @@ abstract class _LocationsStore with Store {
   @action
   Future<void> fetchVPNLocations() async {
     // make sure we have the remote config values resolved before fetching locations
-    await _remoteConfigStore.resolveRemoteConfigValuesFuture;
+    await _remoteConfigStore.configFuture;
     final dataCenterCountries = _remoteConfigStore.dataCenterCountries;
 
     Future<VPNLocations> fetch() async {
