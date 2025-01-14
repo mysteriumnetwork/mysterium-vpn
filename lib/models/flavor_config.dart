@@ -25,6 +25,7 @@ class FlavorValues {
     required this.tunnelName,
     required this.remoteConfigSdkKey,
     required this.abTestingSdkKey,
+    required this.textsSdkKey,
   });
 
   factory FlavorValues.production() => FlavorValues._(
@@ -41,6 +42,7 @@ class FlavorValues {
         tunnelName: 'MysteriumVPN',
         remoteConfigSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/ZKdEmBGd9EukTUz4fPL6mw',
         abTestingSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/X1h2DjWhpEq7P2KXA2WymA',
+        textsSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/ZnfqKRIkCEy2oG4Fc_ZbgA',
       );
 
   factory FlavorValues.dev() => FlavorValues._(
@@ -57,6 +59,7 @@ class FlavorValues {
         tunnelName: 'MysteriumTest',
         remoteConfigSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/fEG0yLr3KEed9BjXRuQvgA',
         abTestingSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/_PK9Imkd8EG-w8NiPpc5bw',
+        textsSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/OyPvJv7luUW48Kb20B3dbw',
       );
 
   final String baseUrl;
@@ -71,10 +74,11 @@ class FlavorValues {
   final String tunnelName;
   final String remoteConfigSdkKey;
   final String abTestingSdkKey;
+  final String textsSdkKey;
 
   @override
   String toString() =>
-      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, billingPage: $billingPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey';
+      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, billingPage: $billingPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey';
 }
 
 class FlavorConfig {

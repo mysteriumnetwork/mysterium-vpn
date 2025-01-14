@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:app_links/app_links.dart';
 import 'package:configcat_client/configcat_client.dart';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -12,6 +13,8 @@ import 'package:mysterium_vpn/common/interceptors/connection_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/interceptors/retry_request.dart';
 import 'package:mysterium_vpn/common/observers/crashlytics_talker_observer.dart';
+import 'package:mysterium_vpn/common/utils/config_cat_client_wrapper.dart';
+import 'package:mysterium_vpn/common/utils/translation_asset_loader.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
@@ -161,31 +164,67 @@ final loggerPOD = Provider<Talker>((ref) {
   );
 });
 
-final remoteConfigClientPOD = Provider<ConfigCatClient>((ref) {
+final remoteConfigClientPOD = Provider<ConfigCatClientWrapper>((ref) {
   final environment = ref.watch(environmentPOD);
   final isTestEnv = environment.flavor == Flavor.dev;
-  return ConfigCatClient.get(
-    sdkKey: environment.values.remoteConfigSdkKey,
-    options: ConfigCatOptions(
-      pollingMode:
-          PollingMode.lazyLoad(cacheRefreshInterval: Duration(seconds: isTestEnv ? 30 : 60 * 30)),
-      logger: isTestEnv ? ConfigCatLogger() : null,
-      cache: ConfigCatPreferencesCache(),
+  final logger = ref.watch(loggerPOD);
+
+  return ConfigCatClientWrapper(
+    ConfigCatClient.get(
+      sdkKey: environment.values.remoteConfigSdkKey,
+      options: ConfigCatOptions(
+        pollingMode: PollingMode.lazyLoad(
+          cacheRefreshInterval: Duration(seconds: isTestEnv ? 30 : 60 * 30),
+        ),
+        logger: isTestEnv ? ConfigCatLogger() : null,
+        cache: ConfigCatPreferencesCache(),
+      ),
     ),
+    logger,
   );
 });
 
-final abTestingClientPOD = Provider<ConfigCatClient>((ref) {
+final abTestingClientPOD = Provider<ConfigCatClientWrapper>((ref) {
   final environment = ref.watch(environmentPOD);
   final isTestEnv = environment.flavor == Flavor.dev;
+  final logger = ref.watch(loggerPOD);
 
-  return ConfigCatClient.get(
-    sdkKey: environment.values.abTestingSdkKey,
-    options: ConfigCatOptions(
-      pollingMode:
-          PollingMode.lazyLoad(cacheRefreshInterval: Duration(seconds: isTestEnv ? 30 : 60 * 180)),
-      logger: isTestEnv ? ConfigCatLogger() : null,
-      cache: ConfigCatPreferencesCache(),
+  return ConfigCatClientWrapper(
+    ConfigCatClient.get(
+      sdkKey: environment.values.abTestingSdkKey,
+      options: ConfigCatOptions(
+        pollingMode: PollingMode.lazyLoad(
+          cacheRefreshInterval: Duration(seconds: isTestEnv ? 30 : 60 * 180),
+        ),
+        logger: isTestEnv ? ConfigCatLogger() : null,
+        cache: ConfigCatPreferencesCache(),
+      ),
     ),
+    logger,
   );
+});
+
+final textsClientPOD = Provider<ConfigCatClientWrapper>((ref) {
+  final environment = ref.watch(environmentPOD);
+  final isTestEnv = environment.flavor == Flavor.dev;
+  final logger = ref.watch(loggerPOD);
+
+  return ConfigCatClientWrapper(
+    ConfigCatClient.get(
+      sdkKey: environment.values.textsSdkKey,
+      options: ConfigCatOptions(
+        pollingMode: PollingMode.lazyLoad(
+          cacheRefreshInterval: Duration(seconds: isTestEnv ? 30 : 60 * 180),
+        ),
+        logger: isTestEnv ? ConfigCatLogger() : null,
+        cache: ConfigCatPreferencesCache(),
+      ),
+    ),
+    logger,
+  );
+});
+
+final assetsLoaderPOD = Provider<AssetLoader>((ref) {
+  final textsStore = ref.watch(textsStorePOD);
+  return TranslationAssetLoader(textsStore);
 });

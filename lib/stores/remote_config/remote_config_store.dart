@@ -1,10 +1,7 @@
-import 'dart:io';
-
-import 'package:configcat_client/configcat_client.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
-import 'package:talker/talker.dart';
+import 'package:mysterium_vpn/common/utils/config_cat_client_wrapper.dart';
 
 part 'remote_config_store.g.dart';
 
@@ -32,64 +29,22 @@ enum _FeatureToggleKey {
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
 
 abstract class RemoteConfigStoreBase with Store {
-  RemoteConfigStoreBase({
-    required this.client,
-    required this.logger,
-  }) {
-    getAllRemoteConfigValues().whenComplete(refreshRemoteConfigValues);
+  RemoteConfigStoreBase(this._client) {
+    _init();
   }
-  final ConfigCatClient client;
-  final Talker logger;
+
+  final ConfigCatClientWrapper _client;
 
   @observable
-  ObservableMap<String, dynamic> config = ObservableMap();
+  late ObservableFuture<Map<String, dynamic>> configFuture = ObservableFuture(_client.fetch());
 
-  @observable
-  ObservableFuture<void>? resolveRemoteConfigValuesFuture;
-
-  @action
-  Future<void> init() async {
-    try {
-      resolveRemoteConfigValuesFuture ??= ObservableFuture(getAllRemoteConfigValues());
-      await resolveRemoteConfigValuesFuture;
-    } catch (e, st) {
-      logger.handle(e, st);
-    } finally {
-      refreshRemoteConfigValues();
-    }
-  }
+  @computed
+  Map<String, dynamic> get config => configFuture.value ?? {};
 
   @action
-  Future<void> setDefaultUser({
-    required String email,
-    required String userId,
-  }) async {
-    client.setDefaultUser(
-      ConfigCatUser(
-        identifier: userId,
-        email: email,
-        custom: {
-          'platform': Platform.operatingSystem,
-          'platformVersion': Platform.operatingSystemVersion,
-        },
-      ),
-    );
-  }
-
-  @action
-  Future<void> getAllRemoteConfigValues() async {
-    try {
-      config = ObservableMap.of(await client.getAllValues());
-    } catch (e, st) {
-      logger.handle(e, st);
-    }
-  }
-
-  @action
-  Future<void> refreshRemoteConfigValues() async {
-    client.hooks.addOnConfigChanged((flags) async {
-      config = ObservableMap.of(await client.getAllValues());
-    });
+  Future<void> _init() async {
+    await configFuture;
+    _client.watch(() => configFuture = ObservableFuture(_client.fetch()));
   }
 
   @computed
