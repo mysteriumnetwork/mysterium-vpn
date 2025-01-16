@@ -9,6 +9,25 @@ part of 'auth_session_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$AuthSessionStore on _AuthSessionStore, Store {
+  Computed<String?>? _$accessTokenComputed;
+
+  @override
+  String? get accessToken => (_$accessTokenComputed ??=
+          Computed<String?>(() => super.accessToken, name: '_AuthSessionStore.accessToken'))
+      .value;
+  Computed<String?>? _$refreshTokenComputed;
+
+  @override
+  String? get refreshToken => (_$refreshTokenComputed ??=
+          Computed<String?>(() => super.refreshToken, name: '_AuthSessionStore.refreshToken'))
+      .value;
+  Computed<AuthUser?>? _$userComputed;
+
+  @override
+  AuthUser? get user =>
+      (_$userComputed ??= Computed<AuthUser?>(() => super.user, name: '_AuthSessionStore.user'))
+          .value;
+
   late final _$statusAtom = Atom(name: '_AuthSessionStore.status', context: context);
 
   @override
@@ -24,54 +43,67 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
     });
   }
 
-  late final _$_accessTokenAtom = Atom(name: '_AuthSessionStore._accessToken', context: context);
+  late final _$_accessTokenFutureAtom =
+      Atom(name: '_AuthSessionStore._accessTokenFuture', context: context);
 
-  String? get accessToken {
-    _$_accessTokenAtom.reportRead();
-    return super._accessToken;
+  ObservableFuture<String?> get accessTokenFuture {
+    _$_accessTokenFutureAtom.reportRead();
+    return super._accessTokenFuture;
   }
 
   @override
-  String? get _accessToken => accessToken;
+  ObservableFuture<String?> get _accessTokenFuture => accessTokenFuture;
+
+  bool __accessTokenFutureIsInitialized = false;
 
   @override
-  set _accessToken(String? value) {
-    _$_accessTokenAtom.reportWrite(value, super._accessToken, () {
-      super._accessToken = value;
+  set _accessTokenFuture(ObservableFuture<String?> value) {
+    _$_accessTokenFutureAtom
+        .reportWrite(value, __accessTokenFutureIsInitialized ? super._accessTokenFuture : null, () {
+      super._accessTokenFuture = value;
+      __accessTokenFutureIsInitialized = true;
     });
   }
 
-  late final _$_refreshTokenAtom = Atom(name: '_AuthSessionStore._refreshToken', context: context);
+  late final _$_refreshTokenFutureAtom =
+      Atom(name: '_AuthSessionStore._refreshTokenFuture', context: context);
 
-  String? get refreshToken {
-    _$_refreshTokenAtom.reportRead();
-    return super._refreshToken;
+  ObservableFuture<String?> get refreshTokenFuture {
+    _$_refreshTokenFutureAtom.reportRead();
+    return super._refreshTokenFuture;
   }
 
   @override
-  String? get _refreshToken => refreshToken;
+  ObservableFuture<String?> get _refreshTokenFuture => refreshTokenFuture;
+
+  bool __refreshTokenFutureIsInitialized = false;
 
   @override
-  set _refreshToken(String? value) {
-    _$_refreshTokenAtom.reportWrite(value, super._refreshToken, () {
-      super._refreshToken = value;
+  set _refreshTokenFuture(ObservableFuture<String?> value) {
+    _$_refreshTokenFutureAtom.reportWrite(
+        value, __refreshTokenFutureIsInitialized ? super._refreshTokenFuture : null, () {
+      super._refreshTokenFuture = value;
+      __refreshTokenFutureIsInitialized = true;
     });
   }
 
-  late final _$_userAtom = Atom(name: '_AuthSessionStore._user', context: context);
+  late final _$_userFutureAtom = Atom(name: '_AuthSessionStore._userFuture', context: context);
 
-  AuthUser? get user {
-    _$_userAtom.reportRead();
-    return super._user;
+  ObservableFuture<AuthUser?> get userFuture {
+    _$_userFutureAtom.reportRead();
+    return super._userFuture;
   }
 
   @override
-  AuthUser? get _user => user;
+  ObservableFuture<AuthUser?> get _userFuture => userFuture;
+
+  bool __userFutureIsInitialized = false;
 
   @override
-  set _user(AuthUser? value) {
-    _$_userAtom.reportWrite(value, super._user, () {
-      super._user = value;
+  set _userFuture(ObservableFuture<AuthUser?> value) {
+    _$_userFutureAtom.reportWrite(value, __userFutureIsInitialized ? super._userFuture : null, () {
+      super._userFuture = value;
+      __userFutureIsInitialized = true;
     });
   }
 
@@ -82,46 +114,38 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
     return _$initStoreAsyncAction.run(() => super.initStore());
   }
 
-  late final _$_AuthSessionStoreActionController =
-      ActionController(name: '_AuthSessionStore', context: context);
+  late final _$setAuthenticatedAsyncAction =
+      AsyncAction('_AuthSessionStore.setAuthenticated', context: context);
 
   @override
-  void setAuthenticated(String accessToken, String? refreshToken) {
-    final _$actionInfo =
-        _$_AuthSessionStoreActionController.startAction(name: '_AuthSessionStore.setAuthenticated');
-    try {
-      return super.setAuthenticated(accessToken, refreshToken);
-    } finally {
-      _$_AuthSessionStoreActionController.endAction(_$actionInfo);
-    }
+  Future<void> setAuthenticated(String accessToken, String? refreshToken) {
+    return _$setAuthenticatedAsyncAction
+        .run(() => super.setAuthenticated(accessToken, refreshToken));
   }
 
-  @override
-  void setAuthenticatedUser(AuthUser user) {
-    final _$actionInfo = _$_AuthSessionStoreActionController.startAction(
-        name: '_AuthSessionStore.setAuthenticatedUser');
-    try {
-      return super.setAuthenticatedUser(user);
-    } finally {
-      _$_AuthSessionStoreActionController.endAction(_$actionInfo);
-    }
-  }
+  late final _$setAuthenticatedUserAsyncAction =
+      AsyncAction('_AuthSessionStore.setAuthenticatedUser', context: context);
 
   @override
-  void setUnauthenticated() {
-    final _$actionInfo = _$_AuthSessionStoreActionController.startAction(
-        name: '_AuthSessionStore.setUnauthenticated');
-    try {
-      return super.setUnauthenticated();
-    } finally {
-      _$_AuthSessionStoreActionController.endAction(_$actionInfo);
-    }
+  Future<void> setAuthenticatedUser(AuthUser user) {
+    return _$setAuthenticatedUserAsyncAction.run(() => super.setAuthenticatedUser(user));
+  }
+
+  late final _$setUnauthenticatedAsyncAction =
+      AsyncAction('_AuthSessionStore.setUnauthenticated', context: context);
+
+  @override
+  Future<void> setUnauthenticated() {
+    return _$setUnauthenticatedAsyncAction.run(() => super.setUnauthenticated());
   }
 
   @override
   String toString() {
     return '''
-status: ${status}
+status: ${status},
+accessToken: ${accessToken},
+refreshToken: ${refreshToken},
+user: ${user}
     ''';
   }
 }

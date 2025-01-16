@@ -8,6 +8,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/common/hooks/config_cat_user_updater_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/router/route_delegate.dart';
 import 'package:mysterium_vpn/components/custom_platform_menu.dart';
@@ -49,6 +50,8 @@ class MyApp extends HookConsumerWidget {
         await authStore.fetchAuthUser();
       }
     });
+
+    useConfigCatUserUpdater();
 
     return ReactionBuilder(
       builder: (_) => reaction(

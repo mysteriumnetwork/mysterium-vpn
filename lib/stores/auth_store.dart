@@ -52,7 +52,6 @@ abstract class _AuthStore with Store {
     required UserPreferencesStore userPreferencesStore,
     required RemoteConfigStore remoteConfigStore,
     required ABTestingStore abTestingStore,
-    required List<ConfigCatClientWrapper> configCatClients,
     required MQTTService mqtt,
   })  : _authService = authService,
         _authSessionStore = authSessionStore,
@@ -63,7 +62,6 @@ abstract class _AuthStore with Store {
         _logger = logger,
         _userPreferencesStore = userPreferencesStore,
         _remoteConfigStore = remoteConfigStore,
-        _configCatClients = configCatClients,
         _abTestingStore = abTestingStore,
         _mqtt = mqtt {
     refreshTokenCallback = refreshAuthToken;
@@ -81,7 +79,6 @@ abstract class _AuthStore with Store {
   final UserPreferencesStore _userPreferencesStore;
   final RemoteConfigStore _remoteConfigStore;
   final ABTestingStore _abTestingStore;
-  final List<ConfigCatClientWrapper> _configCatClients;
   final MQTTService _mqtt;
 
   @readonly
@@ -234,9 +231,6 @@ abstract class _AuthStore with Store {
     required String username,
     required String userId,
   }) async {
-    for (final client in _configCatClients) {
-      client.setDefaultUser(email: username, userId: userId);
-    }
     await _abTestingStore.init();
     await _analyticsStore.setUserId(username);
     await _intercomStore.registerUser(email: username);

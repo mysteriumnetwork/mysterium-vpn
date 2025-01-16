@@ -50,12 +50,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   final mqttService = ref.watch(vpnApiMQTTPOD);
   final abTestingStore = ref.watch(abTestingStorePOD);
-
-  final configCatClients = [
-    ref.watch(remoteConfigClientPOD),
-    ref.watch(abTestingClientPOD),
-    ref.watch(textsClientPOD),
-  ];
+  final configCatService = ref.watch(configCatServicePOD);
 
   return AuthStore(
     authService: authService,
@@ -68,7 +63,6 @@ final authStorePOD = Provider<AuthStore>((ref) {
     userPreferencesStore: userPreferencesStore,
     remoteConfigStore: remoteConfigStore,
     mqtt: mqttService,
-    configCatClients: configCatClients,
     abTestingStore: abTestingStore,
   );
 });
@@ -193,20 +187,20 @@ final userPreferencesStorePOD = StateProvider<UserPreferencesStore>((ref) {
 });
 
 final remoteConfigStorePOD = Provider<RemoteConfigStore>((ref) {
-  final configCatClient = ref.watch(remoteConfigClientPOD);
-  return RemoteConfigStore(configCatClient);
+  final configCatService = ref.watch(configCatServicePOD);
+  return RemoteConfigStore(configCatService);
 });
 
 final abTestingStorePOD = Provider<ABTestingStore>((ref) {
-  final configCatClient = ref.watch(abTestingClientPOD);
+  final configCatService = ref.watch(configCatServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
-  return ABTestingStore(configCatClient, analyticsStore);
+  return ABTestingStore(configCatService, analyticsStore);
 });
 
 final textsStorePOD = Provider<TextsStore>((ref) {
   final logger = ref.watch(loggerPOD);
-  final configCatClient = ref.watch(textsClientPOD);
-  return TextsStore(configCatClient, logger);
+  final configCatService = ref.watch(configCatServicePOD);
+  return TextsStore(configCatService, logger);
 });
 
 final bannersStorePOD = Provider<BannersStore>(

@@ -14,11 +14,11 @@ abstract class _TextsStore with Store {
     _init();
   }
 
-  final ConfigCatClientWrapper _client;
+  final ConfigCatService _client;
   final Talker _logger;
 
   @observable
-  late ObservableFuture<Map<String, dynamic>> configFuture = ObservableFuture(_client.fetch());
+  late ObservableFuture<Map<String, dynamic>> configFuture = ObservableFuture(_client.fetchTexts());
 
   @computed
   Map<String, dynamic> get config => configFuture.value ?? {};
@@ -26,7 +26,7 @@ abstract class _TextsStore with Store {
   @action
   Future<void> _init() async {
     await configFuture;
-    _client.watch(() => configFuture = ObservableFuture(_client.fetch()));
+    _client.watchTexts(() => configFuture = ObservableFuture(_client.fetchTexts()));
   }
 
   @computed

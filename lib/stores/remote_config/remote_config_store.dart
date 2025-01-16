@@ -29,14 +29,16 @@ enum _FeatureToggleKey {
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
 
 abstract class RemoteConfigStoreBase with Store {
-  RemoteConfigStoreBase(this._client) {
+  RemoteConfigStoreBase(this._configCat) {
     _init();
   }
 
-  final ConfigCatClientWrapper _client;
+  final ConfigCatService _configCat;
 
   @observable
-  late ObservableFuture<Map<String, dynamic>> configFuture = ObservableFuture(_client.fetch());
+  late ObservableFuture<Map<String, dynamic>> configFuture = ObservableFuture(
+    _configCat.fetchRemoteConfig(),
+  );
 
   @computed
   Map<String, dynamic> get config => configFuture.value ?? {};
@@ -44,7 +46,9 @@ abstract class RemoteConfigStoreBase with Store {
   @action
   Future<void> _init() async {
     await configFuture;
-    _client.watch(() => configFuture = ObservableFuture(_client.fetch()));
+    _configCat.watchRemoteConfig(
+      () => configFuture = ObservableFuture(_configCat.fetchRemoteConfig()),
+    );
   }
 
   @computed
