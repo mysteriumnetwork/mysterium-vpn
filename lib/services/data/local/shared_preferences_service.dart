@@ -1,5 +1,6 @@
 // Dart imports:
 import 'dart:async' show Future;
+import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -101,5 +103,23 @@ class SharedPreferenceService {
       ],
     ]);
     return results.every((isSuccess) => isSuccess);
+  }
+
+  Future<void> setIPInfo(IPInfo? info) async {
+    if (info == null) {
+      await remove(StorageKeys.ipInfo.name);
+      return;
+    }
+
+    await setString(StorageKeys.ipInfo.name, jsonEncode(info.toJson()));
+  }
+
+  IPInfo? getIPInfo() {
+    final ipInfo = getString(StorageKeys.ipInfo.name);
+    if (ipInfo == null) {
+      return null;
+    }
+
+    return IPInfo.fromJson(jsonDecode(ipInfo) as Map<String, dynamic>);
   }
 }

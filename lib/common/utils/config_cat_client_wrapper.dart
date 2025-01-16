@@ -1,25 +1,19 @@
 import 'dart:io';
 
 import 'package:configcat_client/configcat_client.dart';
+import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
 import 'package:talker/talker.dart';
 
-class ConfigCatUtils {
-  const ConfigCatUtils(
-    this.remoteConfigClient,
-    this.abTestingClient,
-    this.textsClient,
-  );
-
-  final ConfigCatClient remoteConfigClient;
-  final ConfigCatClient abTestingClient;
-  final ConfigCatClient textsClient;
-}
-
 class ConfigCatClientWrapper {
-  const ConfigCatClientWrapper(this._client, this._logger);
+  const ConfigCatClientWrapper(
+    this._client,
+    this._logger,
+    this._realIPInfoStore,
+  );
 
   final ConfigCatClient _client;
   final Talker _logger;
+  final RealIPInfoStore _realIPInfoStore;
 
   Future<Map<String, dynamic>> fetch() async {
     try {
@@ -35,10 +29,11 @@ class ConfigCatClientWrapper {
     _client.hooks.addOnConfigChanged((_) => callback());
   }
 
-  void setDefaultUser({
+  Future<void> setDefaultUser({
     required String email,
     required String userId,
-  }) {
+  }) async {
+    final ipInfo = await _realIPInfoStore.infoFuture;
     _client.setDefaultUser(
       ConfigCatUser(
         identifier: userId,
@@ -46,6 +41,8 @@ class ConfigCatClientWrapper {
         custom: {
           'platform': Platform.operatingSystem,
           'platformVersion': Platform.operatingSystemVersion,
+          if (ipInfo != null) 'country': ipInfo.country,
+          if (ipInfo != null) 'city': ipInfo.city,
         },
       ),
     );

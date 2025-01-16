@@ -21,4 +21,5 @@ enum StorageKeys {
   locationCode,
   locationType,
   lastLoggedInUser,
+  ipInfo,
 }
