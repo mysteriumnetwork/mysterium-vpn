@@ -41,7 +41,7 @@ abstract class _AuthSessionStore with Store {
 
   @action
   Future<void> initStore() async {
-    final [accessToken, _, __] = await Future.wait([
+    final [accessToken, refreshToken, user] = await Future.wait([
       _accessTokenFuture,
       _refreshTokenFuture,
       _userFuture,
