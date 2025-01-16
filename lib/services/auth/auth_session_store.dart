@@ -18,61 +18,84 @@ abstract class _AuthSessionStore with Store {
   AuthStatus status = AuthStatus.unknown;
 
   @readonly
-  String? _accessToken;
+  late ObservableFuture<String?> _accessTokenFuture = ObservableFuture(
+    _secureStorage.getAccessToken(),
+  );
 
   @readonly
-  String? _refreshToken;
+  late ObservableFuture<String?> _refreshTokenFuture = ObservableFuture(
+    _secureStorage.getRefreshToken(),
+  );
 
   @readonly
-  AuthUser? _user;
+  late ObservableFuture<AuthUser?> _userFuture = ObservableFuture(_loadUser());
+
+  @computed
+  String? get accessToken => _accessTokenFuture.value;
+
+  @computed
+  String? get refreshToken => _refreshTokenFuture.value;
+
+  @computed
+  AuthUser? get user => _userFuture.value;
 
   @action
   Future<void> initStore() async {
-    await _storageLoad();
-    status = _accessToken != null ? AuthStatus.authenticated : AuthStatus.unauthenticated;
+    final [accessToken, _, __] = await Future.wait([
+      _accessTokenFuture,
+      _refreshTokenFuture,
+      _userFuture,
+    ]);
+    status = accessToken != null ? AuthStatus.authenticated : AuthStatus.unauthenticated;
   }
 
   @action
-  void setAuthenticated(String accessToken, String? refreshToken) {
-    _accessToken = accessToken;
-    _refreshToken = refreshToken;
+  Future<void> setAuthenticated(String accessToken, String? refreshToken) async {
+    _accessTokenFuture = ObservableFuture.value(accessToken);
+    _refreshTokenFuture = ObservableFuture.value(refreshToken);
     status = AuthStatus.authenticated;
 
-    _storageUpdate();
+    await _storageUpdate();
   }
 
   @action
-  void setAuthenticatedUser(AuthUser user) {
-    _user = user;
-
-    _storageUpdate();
+  Future<void> setAuthenticatedUser(AuthUser user) async {
+    _userFuture = ObservableFuture.value(user);
+    await _storageUpdate();
   }
 
   @action
-  void setUnauthenticated() {
-    _accessToken = null;
-    _refreshToken = null;
+  Future<void> setUnauthenticated() async {
+    _accessTokenFuture = ObservableFuture.value(null);
+    _refreshTokenFuture = ObservableFuture.value(null);
     status = AuthStatus.unauthenticated;
-    _user = null;
+    _userFuture = ObservableFuture.value(null);
 
-    _storageCleanup();
+    await _storageCleanup();
   }
 
-  Future<void> _storageLoad() async {
-    _accessToken = await _secureStorage.getAccessToken();
-    _refreshToken = await _secureStorage.getRefreshToken();
+  Future<AuthUser?> _loadUser() async {
+    final [userId, userEmail] = await Future.wait([
+      _secureStorage.getUserId(),
+      _secureStorage.getUsername(),
+    ]);
+
+    if (userId != null && userEmail != null) {
+      return AuthUser(userId: userId, username: userEmail);
+    }
+    return null;
   }
 
   Future<void> _storageUpdate() async {
-    if (_accessToken != null) {
-      await _secureStorage.saveAccessToken(_accessToken!);
+    if (accessToken != null) {
+      await _secureStorage.saveAccessToken(accessToken!);
     }
-    if (_refreshToken != null) {
-      await _secureStorage.saveRefreshToken(_refreshToken!);
+    if (refreshToken != null) {
+      await _secureStorage.saveRefreshToken(refreshToken!);
     }
-    if (_user != null) {
-      await _secureStorage.saveUserId(userId: _user!.userId);
-      await _secureStorage.saveUsername(username: _user!.username);
+    if (user != null) {
+      await _secureStorage.saveUserId(userId: user!.userId);
+      await _secureStorage.saveUsername(username: user!.username);
     }
   }
 

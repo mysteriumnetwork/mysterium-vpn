@@ -16,6 +16,7 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
+import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/report_broken_node_request.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
@@ -147,7 +148,9 @@ abstract class _VpnStore with Store {
 
   int _retryCount = 0;
   bool _isRetrying = false;
-  String? originCountry;
+
+  @observable
+  IPInfo? originIP;
 
   Future<void> _init() async {
     await _initWireguardKey();
@@ -199,7 +202,10 @@ abstract class _VpnStore with Store {
         await disconnectWireguard();
       }
     } else {
-      originCountry = (await _apiService.getIPAdress())?.country;
+      final originIP = await _apiService.getIPAdress();
+      if (originIP != null) {
+        this.originIP = originIP;
+      }
     }
 
     _connectionStatus = status;
@@ -578,7 +584,7 @@ abstract class _VpnStore with Store {
               destinationCountry: location.code,
               osType: Platform.operatingSystem,
               appVersion: (await PackageInfo.fromPlatform()).version,
-              originCountry: originCountry,
+              originCountry: originIP?.country,
               connectivityType: (await Connectivity().checkConnectivity()).lastOrNull,
               hashValue: _vpnConfig!.hash,
             ),
