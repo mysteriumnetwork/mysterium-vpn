@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
+import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/services/mqtt/api_store.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_firebase.dart';
@@ -21,6 +22,7 @@ import 'package:mysterium_vpn/stores/intercom/intercom_mobile_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
+import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/texts_store.dart';
@@ -212,5 +214,13 @@ final bannersStorePOD = Provider<BannersStore>(
     ref.watch(apiServicePOD),
     ref.watch(subscriptionStorePOD),
     ref.watch(remoteConfigStorePOD),
+  ),
+);
+
+final realIPInfoStorePOD = Provider<RealIPInfoStore>(
+  (ref) => RealIPInfoStore(
+    ref.watch(apiServicePOD),
+    SharedPreferenceService.instance,
+    ref.watch(wireguardServicePOD),
   ),
 );

@@ -168,6 +168,7 @@ final remoteConfigClientPOD = Provider<ConfigCatClientWrapper>((ref) {
   final environment = ref.watch(environmentPOD);
   final isTestEnv = environment.flavor == Flavor.dev;
   final logger = ref.watch(loggerPOD);
+  final realIPInfoStore = ref.watch(realIPInfoStorePOD);
 
   return ConfigCatClientWrapper(
     ConfigCatClient.get(
@@ -181,6 +182,7 @@ final remoteConfigClientPOD = Provider<ConfigCatClientWrapper>((ref) {
       ),
     ),
     logger,
+    realIPInfoStore,
   );
 });
 
@@ -188,6 +190,7 @@ final abTestingClientPOD = Provider<ConfigCatClientWrapper>((ref) {
   final environment = ref.watch(environmentPOD);
   final isTestEnv = environment.flavor == Flavor.dev;
   final logger = ref.watch(loggerPOD);
+  final realIPInfoStore = ref.watch(realIPInfoStorePOD);
 
   return ConfigCatClientWrapper(
     ConfigCatClient.get(
@@ -201,6 +204,7 @@ final abTestingClientPOD = Provider<ConfigCatClientWrapper>((ref) {
       ),
     ),
     logger,
+    realIPInfoStore,
   );
 });
 
@@ -208,6 +212,7 @@ final textsClientPOD = Provider<ConfigCatClientWrapper>((ref) {
   final environment = ref.watch(environmentPOD);
   final isTestEnv = environment.flavor == Flavor.dev;
   final logger = ref.watch(loggerPOD);
+  final realIPInfoStore = ref.watch(realIPInfoStorePOD);
 
   return ConfigCatClientWrapper(
     ConfigCatClient.get(
@@ -221,6 +226,7 @@ final textsClientPOD = Provider<ConfigCatClientWrapper>((ref) {
       ),
     ),
     logger,
+    realIPInfoStore,
   );
 });
 
