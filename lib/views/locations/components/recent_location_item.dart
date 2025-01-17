@@ -45,7 +45,7 @@ class RecentLocationItem extends HookConsumerWidget {
                 Flag(countryCode: location.code),
                 const Spacer(),
                 Transform.translate(
-                  offset: const Offset(8, -8),
+                  offset: const Offset(8, 0),
                   child: ConnectButton(
                     onPressed: onTap,
                     location: location,
@@ -57,6 +57,7 @@ class RecentLocationItem extends HookConsumerWidget {
               location.code.tr(),
               fontWeight: FontWeight.w700,
               maxLines: 2,
+              fontSize: 14,
             ),
             const SizedBox(height: 4),
             if (isConnected)
@@ -80,6 +81,6 @@ class RecentLocationItem extends HookConsumerWidget {
           color: isLoading ? Theme.of(context).disabledColor : Theme.of(context).cardColor,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         )
-        .constrained(maxWidth: 130);
+        .constrained(maxWidth: 142);
   }
 }
