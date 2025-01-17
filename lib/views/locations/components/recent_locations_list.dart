@@ -6,7 +6,7 @@ class RecentLocationsList extends StatelessWidget {
   const RecentLocationsList({
     required this.items,
     required this.onItemPressed,
-    this.constraints = const BoxConstraints(maxHeight: 146),
+    this.constraints = const BoxConstraints(maxHeight: 132),
     super.key,
   });
 
