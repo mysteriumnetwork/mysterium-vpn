@@ -86,12 +86,7 @@ abstract class _LocationsStore with Store {
 
     Future<VPNLocations> fetch() async {
       final locations = await _apiService.fetchVPNLocations(keyword: searchKeyword);
-      return locations.copyWith(
-        dcLocations: locations.allLocations
-            .where((location) => dataCenterCountries.contains(location.code))
-            .map((location) => location.copyWith(ipType: IPType.datacenter))
-            .toList(),
-      );
+      return locations.withDCCountries(dataCenterCountries);
     }
 
     _vpnLocationsFuture = ObservableFuture(fetch());
