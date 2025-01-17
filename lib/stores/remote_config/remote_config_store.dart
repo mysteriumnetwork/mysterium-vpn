@@ -186,8 +186,15 @@ abstract class RemoteConfigStoreBase with Store {
   @computed
   List<String> get dataCenterCountries {
     if (config.containsKey(_FeatureToggleKey.dataCenterCountries.name)) {
-      final raw = config[_FeatureToggleKey.dataCenterCountries.name] as String;
-      return raw.split(RegExp('[^a-zA-Z]+')).map((code) => code.toUpperCase()).toList();
+      final raw = config[_FeatureToggleKey.dataCenterCountries.name];
+      if (raw is String) {
+        return raw
+            .trim()
+            .split(RegExp('[^a-zA-Z]+'))
+            .map((code) => code.trim().toUpperCase())
+            .where((it) => it.length == 2)
+            .toList();
+      }
     }
     return [];
   }
