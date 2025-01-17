@@ -13,7 +13,7 @@ class _HomeState extends ChangeNotifier {
 
   final typeSwitcherKey = GlobalKey();
   final panelMaxExtent = .8;
-  final panelMinExtent = .4;
+  final panelMinExtent = .45;
 
   IPType _ipType;
   bool _isPanelOpen = false;
