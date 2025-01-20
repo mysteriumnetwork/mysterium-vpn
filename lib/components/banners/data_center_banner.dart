@@ -19,14 +19,8 @@ class DataCenterBanner extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final analyticsStore = ref.watch(analyticsStorePOD);
     final bannersStore = ref.watch(bannersStorePOD);
-    final locationsStore = ref.watch(locationsStorePOD);
 
     Future<void> handlePressed() async {
-      final location = locationsStore.randomLocation(IPType.datacenter);
-      if (location == null) {
-        return;
-      }
-
       analyticsStore.logBannerClick(BannerType.datacenter);
 
       final homeState = ref.read(homeStateProvider);
