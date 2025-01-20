@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
+import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/services/mqtt/api_store.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_firebase.dart';
@@ -21,6 +22,7 @@ import 'package:mysterium_vpn/stores/intercom/intercom_mobile_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
+import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/texts_store.dart';
@@ -49,12 +51,6 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final mqttService = ref.watch(vpnApiMQTTPOD);
   final abTestingStore = ref.watch(abTestingStorePOD);
 
-  final configCatClients = [
-    ref.watch(remoteConfigClientPOD),
-    ref.watch(abTestingClientPOD),
-    ref.watch(textsClientPOD),
-  ];
-
   return AuthStore(
     authService: authService,
     authSessionStore: authSessionStore,
@@ -66,7 +62,6 @@ final authStorePOD = Provider<AuthStore>((ref) {
     userPreferencesStore: userPreferencesStore,
     remoteConfigStore: remoteConfigStore,
     mqtt: mqttService,
-    configCatClients: configCatClients,
     abTestingStore: abTestingStore,
   );
 });
@@ -191,20 +186,20 @@ final userPreferencesStorePOD = StateProvider<UserPreferencesStore>((ref) {
 });
 
 final remoteConfigStorePOD = Provider<RemoteConfigStore>((ref) {
-  final configCatClient = ref.watch(remoteConfigClientPOD);
-  return RemoteConfigStore(configCatClient);
+  final configCatService = ref.watch(configCatServicePOD);
+  return RemoteConfigStore(configCatService);
 });
 
 final abTestingStorePOD = Provider<ABTestingStore>((ref) {
-  final configCatClient = ref.watch(abTestingClientPOD);
+  final configCatService = ref.watch(configCatServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
-  return ABTestingStore(configCatClient, analyticsStore);
+  return ABTestingStore(configCatService, analyticsStore);
 });
 
 final textsStorePOD = Provider<TextsStore>((ref) {
   final logger = ref.watch(loggerPOD);
-  final configCatClient = ref.watch(textsClientPOD);
-  return TextsStore(configCatClient, logger);
+  final configCatService = ref.watch(configCatServicePOD);
+  return TextsStore(configCatService, logger);
 });
 
 final bannersStorePOD = Provider<BannersStore>(
@@ -212,5 +207,13 @@ final bannersStorePOD = Provider<BannersStore>(
     ref.watch(apiServicePOD),
     ref.watch(subscriptionStorePOD),
     ref.watch(remoteConfigStorePOD),
+  ),
+);
+
+final realIPInfoStorePOD = Provider<RealIPInfoStore>(
+  (ref) => RealIPInfoStore(
+    ref.watch(apiServicePOD),
+    SharedPreferenceService.instance,
+    ref.watch(wireguardServicePOD),
   ),
 );

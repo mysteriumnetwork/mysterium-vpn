@@ -18,6 +18,7 @@ class MagicLinkRedirectRequestQuery {
   MagicLinkRedirectRequestQuery({
     required this.code,
     this.continueTo,
+    this.redirectUrl,
   });
 
   @JsonKey(
@@ -34,15 +35,26 @@ class MagicLinkRedirectRequestQuery {
   )
   final String? continueTo;
 
+  @JsonKey(
+    name: r'redirect_url',
+    required: false,
+    includeIfNull: false,
+  )
+  final String? redirectUrl;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is MagicLinkRedirectRequestQuery &&
           other.code == code &&
-          other.continueTo == continueTo;
+          other.continueTo == continueTo &&
+          other.redirectUrl == redirectUrl;
 
   @override
-  int get hashCode => code.hashCode + (continueTo == null ? 0 : continueTo.hashCode);
+  int get hashCode =>
+      code.hashCode +
+      (continueTo == null ? 0 : continueTo.hashCode) +
+      (redirectUrl == null ? 0 : redirectUrl.hashCode);
 
   factory MagicLinkRedirectRequestQuery.fromJson(Map<String, dynamic> json) =>
       _$MagicLinkRedirectRequestQueryFromJson(json);

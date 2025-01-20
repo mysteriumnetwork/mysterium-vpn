@@ -213,7 +213,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **redirectMagicLink**
-> redirectMagicLink(code, continueTo)
+> redirectMagicLink(code, continueTo, redirectUrl)
 
 Redirect from magic link click
 
@@ -224,9 +224,10 @@ import 'package:vpn_api/api.dart';
 final api = VpnApi().getAuthentication();
 final String code = code_example; // String | 
 final String continueTo = continueTo_example; // String | 
+final String redirectUrl = redirectUrl_example; // String | 
 
 try {
-    api.redirectMagicLink(code, continueTo);
+    api.redirectMagicLink(code, continueTo, redirectUrl);
 } catch on DioException (e) {
     print('Exception when calling Authentication->redirectMagicLink: $e\n');
 }
@@ -238,6 +239,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **code** | **String**|  | 
  **continueTo** | **String**|  | [optional] 
+ **redirectUrl** | **String**|  | [optional] 
 
 ### Return type
 

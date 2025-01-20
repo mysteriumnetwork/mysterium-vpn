@@ -195,6 +195,21 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$originIPAtom = Atom(name: '_VpnStore.originIP', context: context);
+
+  @override
+  IPInfo? get originIP {
+    _$originIPAtom.reportRead();
+    return super.originIP;
+  }
+
+  @override
+  set originIP(IPInfo? value) {
+    _$originIPAtom.reportWrite(value, super.originIP, () {
+      super.originIP = value;
+    });
+  }
+
   late final _$_checkTunelConfiguredAsyncAction =
       AsyncAction('_VpnStore._checkTunelConfigured', context: context);
 
@@ -310,6 +325,7 @@ mixin _$VpnStore on _VpnStore, Store {
     return '''
 resolveConnectionLocationFuture: ${resolveConnectionLocationFuture},
 fetchConfigFuture: ${fetchConfigFuture},
+originIP: ${originIP},
 vpnStatus: ${vpnStatus},
 replaceDNSAddress: ${replaceDNSAddress},
 isConnected: ${isConnected},
