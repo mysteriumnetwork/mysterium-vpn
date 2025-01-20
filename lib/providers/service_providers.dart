@@ -164,62 +164,60 @@ final loggerPOD = Provider<Talker>((ref) {
   );
 });
 
-final remoteConfigClientPOD = Provider<ConfigCatClientWrapper>((ref) {
+final remoteConfigClientPOD = Provider<ConfigCatClient>((ref) {
   final environment = ref.watch(environmentPOD);
   final isTestEnv = environment.flavor == Flavor.dev;
-  final logger = ref.watch(loggerPOD);
 
-  return ConfigCatClientWrapper(
-    ConfigCatClient.get(
-      sdkKey: environment.values.remoteConfigSdkKey,
-      options: ConfigCatOptions(
-        pollingMode: PollingMode.lazyLoad(
-          cacheRefreshInterval: Duration(seconds: isTestEnv ? 30 : 60 * 30),
-        ),
-        logger: isTestEnv ? ConfigCatLogger() : null,
-        cache: ConfigCatPreferencesCache(),
+  return ConfigCatClient.get(
+    sdkKey: environment.values.remoteConfigSdkKey,
+    options: ConfigCatOptions(
+      pollingMode: PollingMode.lazyLoad(
+        cacheRefreshInterval: Duration(seconds: isTestEnv ? 30 : 60 * 30),
       ),
+      logger: isTestEnv ? ConfigCatLogger() : null,
+      cache: ConfigCatPreferencesCache(),
     ),
-    logger,
   );
 });
 
-final abTestingClientPOD = Provider<ConfigCatClientWrapper>((ref) {
+final abTestingClientPOD = Provider<ConfigCatClient>((ref) {
   final environment = ref.watch(environmentPOD);
   final isTestEnv = environment.flavor == Flavor.dev;
-  final logger = ref.watch(loggerPOD);
 
-  return ConfigCatClientWrapper(
-    ConfigCatClient.get(
-      sdkKey: environment.values.abTestingSdkKey,
-      options: ConfigCatOptions(
-        pollingMode: PollingMode.lazyLoad(
-          cacheRefreshInterval: Duration(seconds: isTestEnv ? 30 : 60 * 180),
-        ),
-        logger: isTestEnv ? ConfigCatLogger() : null,
-        cache: ConfigCatPreferencesCache(),
+  return ConfigCatClient.get(
+    sdkKey: environment.values.abTestingSdkKey,
+    options: ConfigCatOptions(
+      pollingMode: PollingMode.lazyLoad(
+        cacheRefreshInterval: Duration(seconds: isTestEnv ? 30 : 60 * 180),
       ),
+      logger: isTestEnv ? ConfigCatLogger() : null,
+      cache: ConfigCatPreferencesCache(),
     ),
-    logger,
   );
 });
 
-final textsClientPOD = Provider<ConfigCatClientWrapper>((ref) {
+final textsClientPOD = Provider<ConfigCatClient>((ref) {
   final environment = ref.watch(environmentPOD);
   final isTestEnv = environment.flavor == Flavor.dev;
-  final logger = ref.watch(loggerPOD);
 
-  return ConfigCatClientWrapper(
-    ConfigCatClient.get(
-      sdkKey: environment.values.textsSdkKey,
-      options: ConfigCatOptions(
-        pollingMode: PollingMode.lazyLoad(
-          cacheRefreshInterval: Duration(seconds: isTestEnv ? 30 : 60 * 180),
-        ),
-        logger: isTestEnv ? ConfigCatLogger() : null,
-        cache: ConfigCatPreferencesCache(),
+  return ConfigCatClient.get(
+    sdkKey: environment.values.textsSdkKey,
+    options: ConfigCatOptions(
+      pollingMode: PollingMode.lazyLoad(
+        cacheRefreshInterval: Duration(seconds: isTestEnv ? 30 : 60 * 180),
       ),
+      logger: isTestEnv ? ConfigCatLogger() : null,
+      cache: ConfigCatPreferencesCache(),
     ),
+  );
+});
+
+final configCatServicePOD = Provider<ConfigCatService>((ref) {
+  final logger = ref.watch(loggerPOD);
+  return ConfigCatService(
+    ref.watch(remoteConfigClientPOD),
+    ref.watch(abTestingClientPOD),
+    ref.watch(textsClientPOD),
     logger,
   );
 });

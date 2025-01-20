@@ -17,9 +17,9 @@ enum _ABKey {
 class ABTestingStore = ABTestingStoreBase with _$ABTestingStore;
 
 abstract class ABTestingStoreBase with Store {
-  ABTestingStoreBase(this._client, this._analytics);
+  ABTestingStoreBase(this._configCatService, this._analytics);
 
-  final ConfigCatClientWrapper _client;
+  final ConfigCatService _configCatService;
   final AnalyticsStore _analytics;
 
   @observable
@@ -30,13 +30,13 @@ abstract class ABTestingStoreBase with Store {
 
   @action
   Future<void> init() async {
-    configFuture ??= ObservableFuture(_client.fetch());
+    configFuture ??= ObservableFuture(_configCatService.fetchABTesting());
     await configFuture;
 
     asUserProperties.forEach(_analytics.setUserProperty);
 
-    _client.watch(() async {
-      configFuture = ObservableFuture(_client.fetch());
+    _configCatService.watchABTesting(() async {
+      configFuture = ObservableFuture(_configCatService.fetchABTesting());
       await configFuture;
 
       asUserProperties.forEach(_analytics.setUserProperty);
