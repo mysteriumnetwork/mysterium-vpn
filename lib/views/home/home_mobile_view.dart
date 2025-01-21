@@ -24,8 +24,8 @@ class HomeMobileView extends HookConsumerWidget {
     final bannerDisplayVariant = useComputedValue(() => abTestingStore.bannerDisplayVariant);
     final theme = Theme.of(context);
     final homeState = ref.watch(homeStateProvider.notifier);
-    final appBarObject = useRenderObject<RenderBox>();
-    final appBarHeight = appBarObject.value?.size.height ?? kToolbarHeight;
+    final (appBarKey, appBarBox) = useRenderObject<RenderBox>();
+    final appBarHeight = appBarBox?.size.height ?? kToolbarHeight;
 
     useEffect(
       () {
@@ -69,7 +69,7 @@ class HomeMobileView extends HookConsumerWidget {
                 children: [
                   Expanded(
                     flex: 10 - (homeState.panelMinExtent * 10).round(),
-                    child: HomeConnectionView(header: HomeMobileAppBar(key: appBarObject.key)),
+                    child: HomeConnectionView(header: HomeMobileAppBar(key: appBarKey)),
                   ),
                   Spacer(flex: (homeState.panelMinExtent * 10).round()),
                 ],
