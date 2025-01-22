@@ -112,7 +112,7 @@ class SecureStorageService {
   Future<void> saveRefreshToken(String token) async => write(StorageKeys.refreshToken.name, token);
   Future<void> removeRefreshToken() async => remove(StorageKeys.refreshToken.name);
 
-  Future<String> getUserId() async => read(StorageKeys.userId.name);
+  Future<String?> getUserId() async => readOrNull(StorageKeys.userId.name);
   Future<void> saveUserId({required String userId}) async => write(StorageKeys.userId.name, userId);
   Future<void> removeUserId() async => remove(StorageKeys.userId.name);
 
