@@ -12,10 +12,6 @@ abstract class _IntercomDesktopStore extends IntercomStore with Store {
 
   @override
   @action
-  Future<void> initialize() async {}
-
-  @override
-  @action
   Future<void> registerUser({
     String? email,
   }) async {}
