@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-typedef Result<T extends RenderObject> = ({GlobalKey key, T? value});
+typedef Result<T extends RenderObject> = (GlobalKey key, T? value);
 
 Result<T> useRenderObject<T extends RenderObject>() => use(_RenderObjectHook<T>());
 
@@ -32,5 +32,5 @@ class _RenderObjectHookState<T extends RenderObject>
   }
 
   @override
-  Result<T> build(BuildContext context) => (key: key, value: _value);
+  Result<T> build(BuildContext context) => (key, _value);
 }
