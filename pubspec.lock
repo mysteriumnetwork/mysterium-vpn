@@ -902,10 +902,10 @@ packages:
     dependency: "direct main"
     description:
       name: intercom_flutter
-      sha256: "4eeb6ecc55cc8d0a5b44324e2f423dab4b242041794af555cb9c1d4a3c2efa95"
+      sha256: "46ee13791cbdc79da9e0ad6a94d6d200cc5bf0a7b954d1135e34faac2a078209"
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.9"
+    version: "9.2.5"
   intercom_flutter_platform_interface:
     dependency: transitive
     description:
