@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
@@ -72,32 +73,34 @@ class MyApp extends HookConsumerWidget {
                 appName: appName,
                 child: BeamerProvider(
                   routerDelegate: routeDelegate,
-                  child: MaterialApp.router(
-                    title: appName,
-                    key: UniqueKey(),
-                    scaffoldMessengerKey: snackbarKey,
-                    theme: themeStore.lightTheme,
-                    darkTheme: themeStore.darkTheme,
-                    themeMode: themeStore.themeMode,
-                    routerDelegate: routeDelegate,
-                    routeInformationParser: routeInformationParser,
-                    localizationsDelegates: context.localizationDelegates,
-                    supportedLocales: context.supportedLocales,
-                    locale: localStore.currentLocale,
-                    backButtonDispatcher: BeamerBackButtonDispatcher(
-                      delegate: routeDelegate,
-                    ),
-                    builder: (context, child) => ScrollConfiguration(
-                      behavior: ScrollConfiguration.of(context).copyWith(
-                        dragDevices: PointerDeviceKind.values.toSet(),
-                        scrollbars: false,
-                        overscroll: true,
-                        physics: const BouncingScrollPhysics(),
+                  child: Portal(
+                    child: MaterialApp.router(
+                      title: appName,
+                      key: UniqueKey(),
+                      scaffoldMessengerKey: snackbarKey,
+                      theme: themeStore.lightTheme,
+                      darkTheme: themeStore.darkTheme,
+                      themeMode: themeStore.themeMode,
+                      routerDelegate: routeDelegate,
+                      routeInformationParser: routeInformationParser,
+                      localizationsDelegates: context.localizationDelegates,
+                      supportedLocales: context.supportedLocales,
+                      locale: localStore.currentLocale,
+                      backButtonDispatcher: BeamerBackButtonDispatcher(
+                        delegate: routeDelegate,
                       ),
-                      child: FTCheckers(
-                        child: NetworkLoggerOverlayView(
-                          flavor: flavor,
-                          child: child!,
+                      builder: (context, child) => ScrollConfiguration(
+                        behavior: ScrollConfiguration.of(context).copyWith(
+                          dragDevices: PointerDeviceKind.values.toSet(),
+                          scrollbars: false,
+                          overscroll: true,
+                          physics: const BouncingScrollPhysics(),
+                        ),
+                        child: FTCheckers(
+                          child: NetworkLoggerOverlayView(
+                            flavor: flavor,
+                            child: child!,
+                          ),
                         ),
                       ),
                     ),
