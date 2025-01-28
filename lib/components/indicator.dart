@@ -40,14 +40,24 @@ class Indicator extends HookWidget {
 
     return PortalTarget(
       visible: visible.value,
-      anchor: const Aligned(
-        follower: Alignment.topLeft,
-        target: Alignment.bottomLeft,
-        offset: Offset(14, 3),
-        shiftToWithinBound: AxisFlag(x: true),
+      portalFollower: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => visible.value = false,
       ),
-      portalFollower: buildEntry(context),
-      child: SvgIconButton(key: key, onPressed: handleToggle, asset: asset),
+      child: PortalTarget(
+        visible: visible.value,
+        anchor: const Aligned(
+          follower: Alignment.topLeft,
+          target: Alignment.bottomLeft,
+          offset: Offset(14, 3),
+          shiftToWithinBound: AxisFlag(x: true),
+        ),
+        portalFollower: _IndicatorController(
+          visible: visible,
+          child: buildEntry(context),
+        ),
+        child: SvgIconButton(key: key, onPressed: handleToggle, asset: asset),
+      ),
     );
   }
 }
@@ -65,11 +75,16 @@ class IndicatorEntry extends StatelessWidget {
   final BoxConstraints constraints;
 
   @override
-  Widget build(BuildContext context) => ConstrainedBox(
-        constraints: constraints,
-        child: Material(
-          color: Palette.lightBlack,
-          borderRadius: BorderRadius.circular(8),
+  Widget build(BuildContext context) {
+    final controller = _IndicatorController.of(context);
+    return ConstrainedBox(
+      constraints: constraints,
+      child: Material(
+        color: Palette.lightBlack,
+        borderRadius: BorderRadius.circular(8),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () => controller.value = false,
           child: Padding(
             padding: const EdgeInsets.all(6),
             child: Column(
@@ -94,5 +109,24 @@ class IndicatorEntry extends StatelessWidget {
             ),
           ),
         ),
-      );
+      ),
+    );
+  }
+}
+
+class _IndicatorController extends InheritedWidget {
+  const _IndicatorController({
+    required this.visible,
+    required super.child,
+  });
+
+  final ValueNotifier<bool> visible;
+
+  static ValueNotifier<bool> of(BuildContext context) {
+    final controller = context.dependOnInheritedWidgetOfExactType<_IndicatorController>();
+    return controller!.visible;
+  }
+
+  @override
+  bool updateShouldNotify(_IndicatorController oldWidget) => visible != oldWidget.visible;
 }
