@@ -3,49 +3,65 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_portal/flutter_portal.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/indicator_type.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 
-class Indicator extends HookWidget {
+class Indicator extends HookConsumerWidget {
   const Indicator({
+    required this.type,
     required this.buildEntry,
     required this.asset,
+    this.autoDismissDuration = const Duration(seconds: 3),
     super.key,
   });
 
+  final IndicatorType type;
   final IndicatorEntry Function(BuildContext) buildEntry;
   final String asset;
+  final Duration? autoDismissDuration;
 
   @override
-  Widget build(BuildContext context) {
-    final visible = useState(false);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final analyticsStore = ref.watch(analyticsStorePOD);
+
+    final visibility = useState(false);
     final autoHideTimer = useRef<Timer?>(null);
 
-    void handleToggle() {
-      visible.value = !visible.value;
+    Future<void> handleToggle() async {
+      final visible = !visibility.value;
+      visibility.value = visible;
+      if (visible) {
+        await analyticsStore.logIndicatorClick(type);
+      }
     }
 
     useEffect(
       () {
-        if (visible.value) {
+        if (visibility.value) {
           autoHideTimer.value?.cancel();
-          autoHideTimer.value = Timer(const Duration(seconds: 3), () => visible.value = false);
+          final duration = autoDismissDuration;
+          if (duration != null) {
+            autoHideTimer.value = Timer(duration, () => visibility.value = false);
+          }
         }
 
         return null;
       },
-      [visible.value, autoHideTimer],
+      [visibility.value, autoHideTimer, autoDismissDuration],
     );
 
     return PortalTarget(
-      visible: visible.value,
+      visible: visibility.value,
       portalFollower: GestureDetector(
         behavior: HitTestBehavior.translucent,
-        onTap: () => visible.value = false,
+        onTap: () => visibility.value = false,
       ),
       child: PortalTarget(
-        visible: visible.value,
+        visible: visibility.value,
         anchor: const Aligned(
           follower: Alignment.topLeft,
           target: Alignment.bottomLeft,
@@ -53,7 +69,7 @@ class Indicator extends HookWidget {
           shiftToWithinBound: AxisFlag(x: true),
         ),
         portalFollower: _IndicatorController(
-          visible: visible,
+          visible: visibility,
           child: buildEntry(context),
         ),
         child: SvgIconButton(key: key, onPressed: handleToggle, asset: asset),
