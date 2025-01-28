@@ -45,5 +45,5 @@ abstract class AnalyticsStore {
     int? errorCode,
     String? errorMessage,
   });
-  Future<void> logIndicatorClick(IndicatorType indicator);
+  Future<void> logTooltipClick(TooltipType tooltip);
 }

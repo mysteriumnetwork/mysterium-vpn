@@ -10,7 +10,7 @@ import 'package:mysterium_vpn/components/connection_indicator.dart';
 import 'package:mysterium_vpn/components/decorated_label.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/flag.dart';
-import 'package:mysterium_vpn/components/kill_switch_indicator.dart';
+import 'package:mysterium_vpn/components/kill_switch_tooltip.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/refresh_connection.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
@@ -73,7 +73,7 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
                   ScreenType.desktop || ScreenType.tablet => Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        KillSwitchIndicator(
+                        KillSwitchTooltip(
                           constraints: constraints
                               .widthConstraints()
                               .copyWith(maxWidth: constraints.maxWidth * .4),

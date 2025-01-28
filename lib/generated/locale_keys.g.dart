@@ -384,8 +384,8 @@ abstract class LocaleKeys {
   static const ja = 'ja';
   static const killSwitch = 'killSwitch';
   static const killSwitchDesc = 'killSwitchDesc';
-  static const killSwitchIndicatorMessage = 'killSwitchIndicatorMessage';
-  static const killSwitchIndicatorTitle = 'killSwitchIndicatorTitle';
+  static const killSwitchTooltipMessage = 'killSwitchTooltipMessage';
+  static const killSwitchTooltipTitle = 'killSwitchTooltipTitle';
   static const letsGoBtn = 'letsGoBtn';
   static const light = 'light';
   static const linkCopied = 'linkCopied';
