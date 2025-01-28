@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:mysterium_vpn/common/enums/indicator_type.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/indicator.dart';
@@ -18,6 +19,7 @@ class KillSwitchIndicator extends HookWidget {
     final isConnected = useIsConnected();
 
     return Indicator(
+      type: IndicatorType.killSwitch,
       asset: isConnected ? Assets.killSwitchOn : Assets.killSwitchOff,
       buildEntry: (context) => IndicatorEntry(
         title: LocaleKeys.killSwitchIndicatorTitle.tr(),
