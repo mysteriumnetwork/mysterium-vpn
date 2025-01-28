@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Tooltip;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,8 +10,8 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
-class Indicator extends HookConsumerWidget {
-  const Indicator({
+class Tooltip extends HookConsumerWidget {
+  const Tooltip({
     required this.type,
     required this.buildEntry,
     required this.asset,
@@ -19,8 +19,8 @@ class Indicator extends HookConsumerWidget {
     super.key,
   });
 
-  final IndicatorType type;
-  final IndicatorEntry Function(BuildContext) buildEntry;
+  final TooltipType type;
+  final TooltipEntry Function(BuildContext) buildEntry;
   final String asset;
   final Duration? autoDismissDuration;
 
@@ -35,7 +35,7 @@ class Indicator extends HookConsumerWidget {
       final visible = !visibility.value;
       visibility.value = visible;
       if (visible) {
-        await analyticsStore.logIndicatorClick(type);
+        await analyticsStore.logTooltipClick(type);
       }
     }
 
@@ -68,7 +68,7 @@ class Indicator extends HookConsumerWidget {
           offset: Offset(14, 3),
           shiftToWithinBound: AxisFlag(x: true),
         ),
-        portalFollower: _IndicatorController(
+        portalFollower: _TooltipController(
           visible: visibility,
           child: buildEntry(context),
         ),
@@ -78,8 +78,8 @@ class Indicator extends HookConsumerWidget {
   }
 }
 
-class IndicatorEntry extends StatelessWidget {
-  const IndicatorEntry({
+class TooltipEntry extends StatelessWidget {
+  const TooltipEntry({
     required this.title,
     required this.message,
     this.constraints = const BoxConstraints(),
@@ -92,7 +92,7 @@ class IndicatorEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = _IndicatorController.of(context);
+    final controller = _TooltipController.of(context);
     return ConstrainedBox(
       constraints: constraints,
       child: Material(
@@ -130,8 +130,8 @@ class IndicatorEntry extends StatelessWidget {
   }
 }
 
-class _IndicatorController extends InheritedWidget {
-  const _IndicatorController({
+class _TooltipController extends InheritedWidget {
+  const _TooltipController({
     required this.visible,
     required super.child,
   });
@@ -139,10 +139,10 @@ class _IndicatorController extends InheritedWidget {
   final ValueNotifier<bool> visible;
 
   static ValueNotifier<bool> of(BuildContext context) {
-    final controller = context.dependOnInheritedWidgetOfExactType<_IndicatorController>();
+    final controller = context.dependOnInheritedWidgetOfExactType<_TooltipController>();
     return controller!.visible;
   }
 
   @override
-  bool updateShouldNotify(_IndicatorController oldWidget) => visible != oldWidget.visible;
+  bool updateShouldNotify(_TooltipController oldWidget) => visible != oldWidget.visible;
 }

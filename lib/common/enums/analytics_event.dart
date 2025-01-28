@@ -77,5 +77,5 @@ enum AnalyticsEvent {
   locationsTabOpen,
   bannerClick,
   bannerClose,
-  indicatorClick,
+  tooltipClick,
 }

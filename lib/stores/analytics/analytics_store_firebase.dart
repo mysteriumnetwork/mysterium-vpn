@@ -266,8 +266,8 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
   }
 
   @override
-  Future<void> logIndicatorClick(IndicatorType indicator) async {
-    final type = indicator.name.toSnakeCase;
-    await logEvent(AnalyticsEvent.indicatorClick, parameters: {'type': type});
+  Future<void> logTooltipClick(TooltipType tooltip) async {
+    final type = tooltip.name.toSnakeCase;
+    await logEvent(AnalyticsEvent.tooltipClick, parameters: {'type': type});
   }
 }

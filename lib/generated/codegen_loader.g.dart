@@ -398,8 +398,8 @@ class CodegenLoader extends AssetLoader {
     "ja": "日本人",
     "killSwitch": "终止开关",
     "killSwitchDesc": "如果VPN断开连接，则停止互联网访问，以防止暴露您的IP地址。",
-    "killSwitchIndicatorMessage": "当与VPN服务器的连接丢失时，阻止互联网流量。连接到MysteriumVPN时，断网开关始终开启。",
-    "killSwitchIndicatorTitle": "断网开关",
+    "killSwitchTooltipMessage": "当与VPN服务器的连接丢失时，阻止互联网流量。连接到MysteriumVPN时，断网开关始终开启。",
+    "killSwitchTooltipTitle": "断网开关",
     "letsGoBtn": "走吧！",
     "light": "浅色主题",
     "linkCopied": "链接已复制到剪贴板！",
@@ -947,9 +947,9 @@ class CodegenLoader extends AssetLoader {
     "killSwitch": "Kapatma anahtarı",
     "killSwitchDesc":
         "IP adresinizin açığa çıkmasını önlemek için VPN bağlantısı kesilirse internet erişimini durdurur.",
-    "killSwitchIndicatorMessage":
+    "killSwitchTooltipMessage":
         "VPN sunucusuna bağlantı kesildiğinde internet trafiğini engeller. MysteriumVPN'e bağlandığınızda öldürme anahtarı her zaman açıktır.",
-    "killSwitchIndicatorTitle": "Öldürme Anahtarı",
+    "killSwitchTooltipTitle": "Öldürme Anahtarı",
     "letsGoBtn": "Hadi gidelim!",
     "light": "Açık Tema",
     "linkCopied": "Bağlantı panoya kopyalandı!",
@@ -1490,9 +1490,9 @@ class CodegenLoader extends AssetLoader {
     "ja": "日本語",
     "killSwitch": "緊急停止装置",
     "killSwitchDesc": "VPNが切断された場合にインターネットアクセスを停止し、IPアドレスの露出を防止します。",
-    "killSwitchIndicatorMessage":
+    "killSwitchTooltipMessage":
         "VPNサーバーへの接続が失われたときにインターネットトラフィックをブロックします。MysteriumVPNに接続すると、キルスイッチは常にオンになります。",
-    "killSwitchIndicatorTitle": "キルスイッチ",
+    "killSwitchTooltipTitle": "キルスイッチ",
     "letsGoBtn": "行こう！",
     "light": "明るいテーマ",
     "linkCopied": "リンクをクリップボードにコピーしました！",
@@ -2053,9 +2053,9 @@ class CodegenLoader extends AssetLoader {
     "killSwitch": "Notausschalter",
     "killSwitchDesc":
         "Stoppt den Internetzugang, wenn die VPN-Verbindung getrennt wird, um die Offenlegung Ihrer IP-Adresse zu verhindern.",
-    "killSwitchIndicatorMessage":
+    "killSwitchTooltipMessage":
         "Blockiert den Internetverkehr, wenn die Verbindung zu einem VPN-Server verloren geht. Der Kill-Switch ist immer aktiviert, wenn Sie sich mit MysteriumVPN verbinden.",
-    "killSwitchIndicatorTitle": "Kill-Switch",
+    "killSwitchTooltipTitle": "Kill-Switch",
     "letsGoBtn": "Los geht's",
     "light": "Helles Motiv",
     "linkCopied": "Link in die Zwischenablage kopiert!",
@@ -2623,9 +2623,9 @@ class CodegenLoader extends AssetLoader {
     "killSwitch": "Botão de desligar",
     "killSwitchDesc":
         "Interrompe o acesso à Internet se a VPN for desconectada, para evitar a exposição do seu endereço IP.",
-    "killSwitchIndicatorMessage":
+    "killSwitchTooltipMessage":
         "Bloqueia o tráfego da Internet quando a conexão com um servidor VPN é perdida. O interruptor de desligamento está sempre ativado quando você se conecta ao MysteriumVPN.",
-    "killSwitchIndicatorTitle": "مفتاح القتل",
+    "killSwitchTooltipTitle": "مفتاح القتل",
     "letsGoBtn": "Vamos!",
     "light": "Tema leve",
     "linkCopied": "Link copiado para a área de transferência!",
@@ -3185,9 +3185,9 @@ class CodegenLoader extends AssetLoader {
     "killSwitch": "Kill-Switch",
     "killSwitchDesc":
         "Stops internet access if VPN disconnects, to prevent exposing your IP address.",
-    "killSwitchIndicatorMessage":
+    "killSwitchTooltipMessage":
         "Blocks internet traffic when connection to a vpn server is lost. Kill-switch is always on when you connect to MysteriumVPN.",
-    "killSwitchIndicatorTitle": "Kill switch",
+    "killSwitchTooltipTitle": "Kill switch",
     "letsGoBtn": "Let's go",
     "light": "Light Theme",
     "linkCopied": "Link copied to clipboard!",
@@ -3754,9 +3754,9 @@ class CodegenLoader extends AssetLoader {
     "killSwitch": "Kill switch",
     "killSwitchDesc":
         "Interrompe l'accesso a Internet se la VPN si disconnette, per evitare di esporre il tuo indirizzo IP.",
-    "killSwitchIndicatorMessage":
+    "killSwitchTooltipMessage":
         "Blocca il traffico internet quando la connessione a un server VPN viene persa. L'interruttore di sicurezza è sempre attivo quando ti connetti a MysteriumVPN.",
-    "killSwitchIndicatorTitle": "Interruttore di Sicurezza",
+    "killSwitchTooltipTitle": "Interruttore di Sicurezza",
     "letsGoBtn": "Andiamo!",
     "light": "Tema chiaro",
     "linkCopied": "Link copiato negli appunti!",
@@ -4326,9 +4326,9 @@ class CodegenLoader extends AssetLoader {
     "killSwitch": "Antidémarreur",
     "killSwitchDesc":
         "Arrête l'accès à Internet si le VPN se déconnecte, pour éviter d'exposer votre adresse IP.",
-    "killSwitchIndicatorMessage":
+    "killSwitchTooltipMessage":
         "Bloque le trafic internet lorsque la connexion à un serveur VPN est perdue. L'interrupteur d'arrêt est toujours activé lorsque vous vous connectez à MysteriumVPN.",
-    "killSwitchIndicatorTitle": "Interrupteur d'arrêt",
+    "killSwitchTooltipTitle": "Interrupteur d'arrêt",
     "letsGoBtn": "Allons-y!",
     "light": "Thème léger",
     "linkCopied": "Lien copié dans le presse-papiers!",
@@ -4892,9 +4892,9 @@ class CodegenLoader extends AssetLoader {
     "killSwitch": "Membunuh beralih",
     "killSwitchDesc":
         "Menghentikan akses internet jika VPN terputus, untuk mencegah mengekspos alamat IP Anda.",
-    "killSwitchIndicatorMessage":
+    "killSwitchTooltipMessage":
         "Memblokir lalu lintas internet ketika koneksi ke server VPN terputus. Sakelar pembunuh selalu aktif saat Anda terhubung ke MysteriumVPN.",
-    "killSwitchIndicatorTitle": "Sakelar Pembunuh",
+    "killSwitchTooltipTitle": "Sakelar Pembunuh",
     "letsGoBtn": "Ayo pergi!",
     "light": "Tema Cahaya",
     "linkCopied": "Tautan disalin ke papan klip!",
@@ -5460,9 +5460,9 @@ class CodegenLoader extends AssetLoader {
     "killSwitch": "Interruptor de apagado",
     "killSwitchDesc":
         "Detiene el acceso a Internet si la VPN se desconecta, para evitar exponer tu dirección IP.",
-    "killSwitchIndicatorMessage":
+    "killSwitchTooltipMessage":
         "Bloquea el tráfico de internet cuando se pierde la conexión con un servidor VPN. El interruptor de corte siempre está activado cuando te conectas a MysteriumVPN.",
-    "killSwitchIndicatorTitle": "Interruptor de Corte",
+    "killSwitchTooltipTitle": "Interruptor de Corte",
     "letsGoBtn": "¡Vamos!",
     "light": "Tema claro",
     "linkCopied": "¡Enlace copiado al portapapeles!",
@@ -6022,9 +6022,9 @@ class CodegenLoader extends AssetLoader {
     "killSwitch": "Kill-switch",
     "killSwitchDesc":
         "يوقف الوصول إلى الإنترنت في حالة انقطاع الاتصال بـ VPN، لمنع عرض عنوان IP الخاص بك.",
-    "killSwitchIndicatorMessage":
+    "killSwitchTooltipMessage":
         "يمنع حركة المرور على الإنترنت عند فقدان الاتصال بخادم VPN. مفتاح القتل دائمًا قيد التشغيل عند الاتصال بـ MysteriumVPN.",
-    "killSwitchIndicatorTitle": "Interruptor de Desligamento",
+    "killSwitchTooltipTitle": "Interruptor de Desligamento",
     "letsGoBtn": "دعنا نذهب",
     "light": "مظهر خفيف",
     "linkCopied": "تم نسخ الرابط إلى الحافظة!",

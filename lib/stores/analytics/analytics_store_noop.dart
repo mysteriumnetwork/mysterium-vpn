@@ -118,5 +118,5 @@ abstract class _AnalyticsStoreNoop extends AnalyticsStore with Store {
   }) async {}
 
   @override
-  Future<void> logIndicatorClick(IndicatorType indicator) async {}
+  Future<void> logTooltipClick(TooltipType tooltip) async {}
 }

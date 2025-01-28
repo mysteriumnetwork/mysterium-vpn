@@ -1,3 +1,3 @@
-enum IndicatorType {
+enum TooltipType {
   killSwitch;
 }
