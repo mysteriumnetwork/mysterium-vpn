@@ -101,14 +101,16 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
 
 final vpnApiMQTTPOD = Provider<MQTTService>((ref) {
   final environment = ref.watch(environmentPOD);
-  final logger = ref.watch(loggerPOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
+  final logger = ref.watch(loggerPOD);
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
 
   return MQTTService(
     environment.values.mqttUrl,
     'mysterium-vpn-${environment.buildInfo.buildVersion}'.truncate(23),
     authSessionStore,
     logger,
+    remoteConfigStore,
   );
 });
 
