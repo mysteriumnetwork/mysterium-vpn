@@ -169,7 +169,7 @@ abstract class _AuthStore with Store {
       // We want to make call to user details endpoint to introspect AccessToken, and if it's invalid when logout the user
       if (e.code == 401) {
         _logger.error('User AccessToken invalid');
-        _authSessionStore.setUnauthenticated();
+        await _authSessionStore.setUnauthenticated();
         return;
       }
 
@@ -189,7 +189,7 @@ abstract class _AuthStore with Store {
     try {
       authenticateFeature = ObservableFuture(feature);
       final authTokens = await authenticateFeature;
-      _authSessionStore.setAuthenticated(authTokens!.accessToken, authTokens.refreshToken);
+      await _authSessionStore.setAuthenticated(authTokens!.accessToken, authTokens.refreshToken);
       _analyticsStore.setLogin(grantType);
 
       // TODO(Waldz): Update user preferences from login form, there marketing checkbox is being handled
@@ -206,8 +206,7 @@ abstract class _AuthStore with Store {
 
   @action
   Future<void> _initializeAuthenticatedUser(AuthUser user) async {
-    _authSessionStore.setAuthenticatedUser(user);
-
+    await _authSessionStore.setAuthenticatedUser(user);
     _initializeAnalyticsStores(username: user.username, userId: user.userId);
 
     // Set auth user
@@ -244,8 +243,8 @@ abstract class _AuthStore with Store {
     logoutFeature = ObservableFuture(_authService.logout());
 
     await logoutFeature;
-    _intercomStore.logout();
-    _authSessionStore.setUnauthenticated();
+    await _intercomStore.logout();
+    await _authSessionStore.setUnauthenticated();
   }
 
   @action
@@ -391,7 +390,7 @@ abstract class _AuthStore with Store {
 
   Future<void> refreshAuthToken() async {
     try {
-      final refreshToken = _authSessionStore.refreshToken;
+      final refreshToken = await _authSessionStore.refreshTokenFuture;
       if (refreshToken == null) {
         throw Exception('Refresh token not found');
       }
@@ -402,7 +401,7 @@ abstract class _AuthStore with Store {
           refreshToken: refreshToken,
         ),
       );
-      _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
+      await _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
     } catch (e) {
       showSnackbar(LocaleKeys.loginSessionExpired.tr());
       await logout();
