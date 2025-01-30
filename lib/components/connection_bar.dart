@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/connection_indicator.dart';
 import 'package:mysterium_vpn/components/decorated_label.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/flag.dart';
+import 'package:mysterium_vpn/components/kill_switch_tooltip.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/refresh_connection.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
@@ -29,6 +31,7 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
+    final screenType = useScreenType();
 
     return Observer(
       builder: (context) {
@@ -37,49 +40,62 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
         final isResolvingconnectionIP = vpnConnection?.isResolvingconnectionIP ?? false;
         final isConnected = vpnStore.isConnected;
 
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _BarItem(
-              leading: switch (vpnConnection?.location.ipType) {
-                IPType.datacenter => const SvgIcon(asset: Assets.speed, height: 16),
-                _ => null,
-              },
-              label: LocaleKeys.connectionIp.tr(),
-              text: isConnected ? vpnConnection?.connectionIP : null,
-              maxLines: 1,
-              action: const RefreshConnection(),
-              indicator: isResolvingconnectionIP
-                  ? const Padding(
-                      padding: EdgeInsets.only(top: 2),
-                      child: LoadingIndicator(
-                        radius: 15,
-                      ),
-                    )
-                  : null,
-            ).expanded(),
-            _BarItem(
-              label: LocaleKeys.status.tr(),
-              text: vpnStore.isLoading
-                  ? ConnectionStatus.connecting.name.tr()
-                  : vpnStore.vpnStatus.name.tr(),
-              isConnected: isConnected,
-              leading: ConnectionIndicator(
+        return LayoutBuilder(
+          builder: (context, constraints) => Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _BarItem(
+                leading: switch (vpnConnection?.location.ipType) {
+                  IPType.datacenter => const SvgIcon(asset: Assets.speed, height: 16),
+                  _ => null,
+                },
+                label: LocaleKeys.connectionIp.tr(),
+                text: isConnected ? vpnConnection?.connectionIP : null,
+                maxLines: 1,
+                action: const RefreshConnection(),
+                indicator: isResolvingconnectionIP
+                    ? const Padding(
+                        padding: EdgeInsets.only(top: 2),
+                        child: LoadingIndicator(
+                          radius: 15,
+                        ),
+                      )
+                    : null,
+              ).expanded(),
+              _BarItem(
+                label: LocaleKeys.status.tr(),
+                text: vpnStore.isLoading
+                    ? ConnectionStatus.connecting.name.tr()
+                    : vpnStore.vpnStatus.name.tr(),
                 isConnected: isConnected,
-              ),
-              maxLines: 1,
-            ).expanded(),
-            _BarItem(
-              label: LocaleKeys.location.tr(),
-              leading: vpnStore.isConnected && locationCode.isNotEmpty
-                  ? Flag(countryCode: locationCode)
-                  : null,
-              text: vpnConnection?.location.code.tr(),
-              leadingPosition: LeadingPosition.bottom,
-              maxLines: 2,
-            ).expanded(),
-          ],
-        ).padding(horizontal: 4);
+                leading: ConnectionIndicator(isConnected: isConnected),
+                action: switch (screenType) {
+                  ScreenType.desktop || ScreenType.tablet => Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        KillSwitchTooltip(
+                          constraints: constraints
+                              .widthConstraints()
+                              .copyWith(maxWidth: constraints.maxWidth * .4),
+                        ),
+                      ],
+                    ),
+                  _ => null,
+                },
+                maxLines: 1,
+              ).expanded(),
+              _BarItem(
+                label: LocaleKeys.location.tr(),
+                leading: vpnStore.isConnected && locationCode.isNotEmpty
+                    ? Flag(countryCode: locationCode)
+                    : null,
+                text: vpnConnection?.location.code.tr(),
+                leadingPosition: LeadingPosition.bottom,
+                maxLines: 2,
+              ).expanded(),
+            ],
+          ).padding(horizontal: 4),
+        );
       },
     );
   }

@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/enums/indicator_type.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/observers/navigator_observer.dart';
 import 'package:mysterium_vpn/models/location.dart';
@@ -262,5 +263,11 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
         if (errorMessage != null) 'error_message': errorMessage,
       },
     );
+  }
+
+  @override
+  Future<void> logTooltipClick(TooltipType tooltip) async {
+    final type = tooltip.name.toSnakeCase;
+    await logEvent(AnalyticsEvent.tooltipClick, parameters: {'type': type});
   }
 }
