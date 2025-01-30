@@ -9,19 +9,23 @@ part of 'intercom_mobile_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$IntercomMobileStore on _IntercomMobileStore, Store {
-  late final _$_isIntercomInitializedAtom =
-      Atom(name: '_IntercomMobileStore._isIntercomInitialized', context: context);
+  late final _$_intercomFutureAtom =
+      Atom(name: '_IntercomMobileStore._intercomFuture', context: context);
 
   @override
-  bool get _isIntercomInitialized {
-    _$_isIntercomInitializedAtom.reportRead();
-    return super._isIntercomInitialized;
+  ObservableFuture<Intercom> get _intercomFuture {
+    _$_intercomFutureAtom.reportRead();
+    return super._intercomFuture;
   }
 
+  bool __intercomFutureIsInitialized = false;
+
   @override
-  set _isIntercomInitialized(bool value) {
-    _$_isIntercomInitializedAtom.reportWrite(value, super._isIntercomInitialized, () {
-      super._isIntercomInitialized = value;
+  set _intercomFuture(ObservableFuture<Intercom> value) {
+    _$_intercomFutureAtom
+        .reportWrite(value, __intercomFutureIsInitialized ? super._intercomFuture : null, () {
+      super._intercomFuture = value;
+      __intercomFutureIsInitialized = true;
     });
   }
 
@@ -39,14 +43,6 @@ mixin _$IntercomMobileStore on _IntercomMobileStore, Store {
     _$_isUserLoggedInAtom.reportWrite(value, super._isUserLoggedIn, () {
       super._isUserLoggedIn = value;
     });
-  }
-
-  late final _$initializeAsyncAction =
-      AsyncAction('_IntercomMobileStore.initialize', context: context);
-
-  @override
-  Future<void> initialize() {
-    return _$initializeAsyncAction.run(() => super.initialize());
   }
 
   late final _$registerUserAsyncAction =
