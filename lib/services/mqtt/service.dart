@@ -76,7 +76,7 @@ class MQTTService {
   }
 
   void stop() {
-    if (!_remoteConfigStore.mqttExperiment) {
+    if (_mqtt.connectionStatus!.state != MqttConnectionState.connected) {
       return;
     }
 
