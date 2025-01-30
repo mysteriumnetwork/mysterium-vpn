@@ -1,11 +1,7 @@
 import 'package:mobx/mobx.dart';
 
 abstract class IntercomStore {
-  Future<void> initialize();
-
-  Future<void> registerUser({
-    String? email,
-  });
+  Future<void> registerUser({String? email});
 
   Future<void> logout();
 

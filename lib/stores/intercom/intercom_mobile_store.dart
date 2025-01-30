@@ -13,46 +13,33 @@ const String intercomIosApiKey = 'ios_sdk-13bd499b260981778455ba0235d7ca612b3305
 class IntercomMobileStore = _IntercomMobileStore with _$IntercomMobileStore;
 
 abstract class _IntercomMobileStore extends IntercomStore with Store {
-  _IntercomMobileStore({required Intercom intercom}) : _intercom = intercom;
-
-  @override
-  @action
-  Future<void> initialize() async {
-    try {
-      if (_isIntercomInitialized) {
-        return;
-      }
-      await _intercom.initialize(
-        intercomAppId,
-        androidApiKey: intercomAndroidApiKey,
-        iosApiKey: intercomIosApiKey,
-      );
-      _isIntercomInitialized = true;
-    } catch (e) {
-      _isIntercomInitialized = false;
-
-      debugPrint(e.toString());
-    }
-  }
+  _IntercomMobileStore({required Intercom intercom})
+      : _intercomFuture = ObservableFuture(
+          intercom
+              .initialize(
+                intercomAppId,
+                androidApiKey: intercomAndroidApiKey,
+                iosApiKey: intercomIosApiKey,
+              )
+              .then((_) => intercom),
+        );
 
   @observable
-  bool _isIntercomInitialized = false;
+  late ObservableFuture<Intercom> _intercomFuture;
 
   @observable
   bool _isUserLoggedIn = false;
 
   @override
   @action
-  Future<void> registerUser({
-    String? email,
-  }) async {
+  Future<void> registerUser({String? email}) async {
     try {
-      await initialize();
-      email != null
-          ? await _intercom.loginIdentifiedUser(
-              email: email,
-            )
-          : await _intercom.loginUnidentifiedUser();
+      final intercom = await _intercomFuture;
+      if (email != null) {
+        await intercom.loginIdentifiedUser(email: email);
+      } else {
+        await intercom.loginUnidentifiedUser();
+      }
       _isUserLoggedIn = true;
     } catch (e) {
       debugPrint(e.toString());
@@ -62,10 +49,8 @@ abstract class _IntercomMobileStore extends IntercomStore with Store {
   @override
   @action
   Future<void> logout() async {
-    if (!_isIntercomInitialized) {
-      return;
-    }
-    await _intercom.logout();
+    final intercom = await _intercomFuture;
+    await intercom.logout();
   }
 
   @override
@@ -74,7 +59,8 @@ abstract class _IntercomMobileStore extends IntercomStore with Store {
     String email,
     String userId,
   ) async {
-    await _intercom.updateUser(
+    final intercom = await _intercomFuture;
+    await intercom.updateUser(
       email: email,
       userId: userId,
     );
@@ -83,17 +69,19 @@ abstract class _IntercomMobileStore extends IntercomStore with Store {
   @override
   @action
   Future<void> displayMessageComposer(String message) async {
-    await _intercom.displayMessageComposer(message);
+    final intercom = await _intercomFuture;
+    await intercom.displayMessageComposer(message);
   }
 
   @override
   @action
   Future<void> displayMessenger() async {
+    final intercom = await _intercomFuture;
     try {
       if (!_isUserLoggedIn) {
         await registerUser();
       }
-      await _intercom.displayMessenger();
+      await intercom.displayMessenger();
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -102,8 +90,7 @@ abstract class _IntercomMobileStore extends IntercomStore with Store {
   @override
   @action
   Future<void> displayHelpCenter() async {
-    await _intercom.displayHelpCenter();
+    final intercom = await _intercomFuture;
+    await intercom.displayHelpCenter();
   }
-
-  final Intercom _intercom;
 }
