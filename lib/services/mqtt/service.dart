@@ -29,7 +29,7 @@ class MQTTService {
 
     _mqtt
       ..port = uri.port
-      ..autoReconnect = true
+      ..autoReconnect = false
       ..resubscribeOnAutoReconnect = true
       ..useWebSocket = true
       ..keepAlivePeriod = 60 * 5
