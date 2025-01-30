@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/enums/indicator_type.dart';
 import 'package:mysterium_vpn/models/location.dart';
 
 abstract class AnalyticsStore {
@@ -44,4 +45,5 @@ abstract class AnalyticsStore {
     int? errorCode,
     String? errorMessage,
   });
+  Future<void> logTooltipClick(TooltipType tooltip);
 }

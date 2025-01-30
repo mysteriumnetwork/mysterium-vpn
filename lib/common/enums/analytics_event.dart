@@ -76,5 +76,6 @@ enum AnalyticsEvent {
   nsfwOff,
   locationsTabOpen,
   bannerClick,
-  bannerClose
+  bannerClose,
+  tooltipClick,
 }
