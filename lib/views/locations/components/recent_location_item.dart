@@ -32,55 +32,68 @@ class RecentLocationItem extends HookConsumerWidget {
       [location],
     );
 
-    return RippleWidget(
-      radius: 20,
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
+    return LayoutBuilder(
+      builder: (context, constraints) => AspectRatio(
+        aspectRatio: 152 / constraints.maxHeight,
+        child: RippleWidget(
+          radius: 20,
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Flag(countryCode: location.code),
-                const Spacer(),
-                Transform.translate(
-                  offset: const Offset(8, 0),
-                  child: ConnectButton(
-                    onPressed: onTap,
-                    location: location,
+                Row(
+                  children: [
+                    Flag(countryCode: location.code),
+                    const Spacer(),
+                    IconButtonTheme(
+                      data: IconButtonThemeData(
+                        style: IconButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          elevation: 0,
+                          visualDensity: VisualDensity.compact,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                      ),
+                      child: ConnectButton(
+                        onPressed: onTap,
+                        location: location,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Expanded(
+                  child: EasyText(
+                    location.code.tr(),
+                    fontWeight: FontWeight.w700,
+                    maxLines: 2,
+                    fontSize: 14,
                   ),
                 ),
+                const SizedBox(height: 4),
+                if (isConnected)
+                  EasyText(
+                    LocaleKeys.connected.tr(),
+                    color: Palette.purple,
+                    fontSize: 10,
+                  ),
+                if (location.ipType == IPType.datacenter)
+                  EasyText(
+                    LocaleKeys.ipTypeDataCenter.tr(),
+                    fontSize: 10,
+                  ),
               ],
             ),
-            EasyText(
-              location.code.tr(),
-              fontWeight: FontWeight.w700,
-              maxLines: 2,
-              fontSize: 14,
-            ),
-            const SizedBox(height: 4),
-            if (isConnected)
-              EasyText(
-                LocaleKeys.connected.tr(),
-                color: Palette.purple,
-                fontSize: 10,
-              ),
-            if (location.ipType == IPType.datacenter)
-              EasyText(
-                LocaleKeys.ipTypeDataCenter.tr(),
-                fontSize: 10,
-              ),
-          ],
-        ),
-      ),
-    )
-        .card(
+          ),
+        ).card(
           elevation: 1,
           margin: EdgeInsets.zero,
           color: isLoading ? Theme.of(context).disabledColor : Theme.of(context).cardColor,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        )
-        .constrained(maxWidth: 142);
+        ),
+      ),
+    );
   }
 }
