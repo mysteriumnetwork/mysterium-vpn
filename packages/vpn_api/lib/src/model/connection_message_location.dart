@@ -18,6 +18,7 @@ class ConnectionMessageLocation {
   ConnectionMessageLocation({
     required this.ip,
     required this.country,
+    required this.nodeType,
   });
 
   @JsonKey(
@@ -34,13 +35,23 @@ class ConnectionMessageLocation {
   )
   final String country;
 
+  @JsonKey(
+    name: r'node_type',
+    required: true,
+    includeIfNull: false,
+  )
+  final String nodeType;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ConnectionMessageLocation && other.ip == ip && other.country == country;
+      other is ConnectionMessageLocation &&
+          other.ip == ip &&
+          other.country == country &&
+          other.nodeType == nodeType;
 
   @override
-  int get hashCode => ip.hashCode + country.hashCode;
+  int get hashCode => ip.hashCode + country.hashCode + nodeType.hashCode;
 
   factory ConnectionMessageLocation.fromJson(Map<String, dynamic> json) =>
       _$ConnectionMessageLocationFromJson(json);
