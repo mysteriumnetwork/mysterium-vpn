@@ -9,6 +9,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/observers/navigator_observer.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:mysterium_vpn/stores/analytics/constants.dart';
 
 part 'analytics_store_firebase.g.dart';
 
@@ -64,6 +65,16 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
     AnalyticsEvent event, {
     Map<String, dynamic>? parameters,
   }) async {
+    final eventName = event.name.toSnakeCase;
+    assert(!reservedGa4Events.contains(event.name), 'Event name ${event.name} is reserved by GA4');
+    if (reservedGa4Events.contains(eventName)) {
+      return;
+    }
+    assert(eventName.length <= 40, 'Event name should be between 1 and 40 characters long');
+    assert(
+      eventName.isNotEmpty && RegExp(r'^[a-zA-Z][a-zA-Z0-9_]*$').hasMatch(eventName),
+      'Event name should start with a letter and contain only letters, numbers, and underscores.',
+    );
     await _analytics.logEvent(
       name: event.name.toSnakeCase.truncate(40),
       parameters: parameters
