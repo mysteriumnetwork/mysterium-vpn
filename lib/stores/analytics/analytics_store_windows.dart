@@ -44,7 +44,7 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
     AnalyticsEvent event, {
     Map<String, dynamic>? parameters,
   }) async {
-    _session.sendEvent(event.name, parameters);
+    _session.logEvent(event.name, parameters);
   }
 
   @override
@@ -68,7 +68,7 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
   @override
   @action
   Future<void> logScreenViewed(String screenName) async {
-    _session.sendEvent(screenName);
+    _session.logEvent(screenName);
   }
 
   @override
@@ -102,7 +102,7 @@ class AnalyticsSession {
     ),
   );
 
-  void sendEvent(String eventName, [Map<String, Object?>? params]) {
+  void logEvent(String eventName, [Map<String, Object?>? params]) {
     assert(!reservedGa4Events.contains(eventName), 'Event name $eventName is reserved by GA4');
     if (reservedGa4Events.contains(eventName)) {
       return;
@@ -167,7 +167,7 @@ class WindowsAnalyticsObserver extends RouteObserver<ModalRoute<dynamic>> {
 
     final name = route.settings.name!;
 
-    ambilytics.sendEvent(PredefinedEvents.screenViewCust, {'screen_name': name});
+    ambilytics.logEvent(PredefinedEvents.screenViewCust, {'screen_name': name});
   }
 
   @override
