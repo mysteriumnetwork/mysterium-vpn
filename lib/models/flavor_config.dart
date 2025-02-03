@@ -26,6 +26,8 @@ class FlavorValues {
     required this.remoteConfigSdkKey,
     required this.abTestingSdkKey,
     required this.textsSdkKey,
+    required this.measurementId,
+    required this.apiSecret,
   });
 
   factory FlavorValues.production() => FlavorValues._(
@@ -43,6 +45,8 @@ class FlavorValues {
         remoteConfigSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/ZKdEmBGd9EukTUz4fPL6mw',
         abTestingSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/X1h2DjWhpEq7P2KXA2WymA',
         textsSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/ZnfqKRIkCEy2oG4Fc_ZbgA',
+        measurementId: 'G-9Y0P8J42T5',
+        apiSecret: 'AIzaSyDEg8yyxnhEaCJ7wBPcOqd6O8W2FTkDJXg',
       );
 
   factory FlavorValues.dev() => FlavorValues._(
@@ -60,6 +64,8 @@ class FlavorValues {
         remoteConfigSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/fEG0yLr3KEed9BjXRuQvgA',
         abTestingSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/_PK9Imkd8EG-w8NiPpc5bw',
         textsSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/OyPvJv7luUW48Kb20B3dbw',
+        measurementId: 'G-293FMB7WPQ',
+        apiSecret: 'An1EAWXDRp6iivNpZ6uKBg',
       );
 
   final String baseUrl;
@@ -75,10 +81,12 @@ class FlavorValues {
   final String remoteConfigSdkKey;
   final String abTestingSdkKey;
   final String textsSdkKey;
+  final String measurementId;
+  final String apiSecret;
 
   @override
   String toString() =>
-      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, billingPage: $billingPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey';
+      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, billingPage: $billingPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret';
 }
 
 class FlavorConfig {

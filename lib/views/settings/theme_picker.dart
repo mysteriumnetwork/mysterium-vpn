@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/components/easy_dropdown.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -19,11 +18,6 @@ class ThemePicker extends StatelessWidget {
   Widget build(BuildContext context) => Observer(
         builder: (context) => EasyDropdown<ThemeMode>(
           value: store.themeMode,
-          onTap: () {
-            analyticsStore.logEvent(
-              AnalyticsEvent.setTheme,
-            );
-          },
           onChanged: (ThemeMode? newThemeMode) {
             if (newThemeMode == null) {
               return;
