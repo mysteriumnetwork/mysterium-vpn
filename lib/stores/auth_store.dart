@@ -27,7 +27,6 @@ import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
-import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
@@ -49,7 +48,6 @@ abstract class _AuthStore with Store {
     required IntercomStore intercomStore,
     required Talker logger,
     required UserPreferencesStore userPreferencesStore,
-    required RemoteConfigStore remoteConfigStore,
     required ABTestingStore abTestingStore,
     required MQTTService mqtt,
   })  : _authService = authService,
@@ -60,7 +58,6 @@ abstract class _AuthStore with Store {
         _intercomStore = intercomStore,
         _logger = logger,
         _userPreferencesStore = userPreferencesStore,
-        _remoteConfigStore = remoteConfigStore,
         _abTestingStore = abTestingStore,
         _mqtt = mqtt {
     refreshTokenCallback = refreshAuthToken;
@@ -76,7 +73,6 @@ abstract class _AuthStore with Store {
   final IntercomStore _intercomStore;
   final Talker _logger;
   final UserPreferencesStore _userPreferencesStore;
-  final RemoteConfigStore _remoteConfigStore;
   final ABTestingStore _abTestingStore;
   final MQTTService _mqtt;
 
@@ -219,9 +215,7 @@ abstract class _AuthStore with Store {
     final userSettings = await _localDb.getUserData();
 
     // Connect to MQTT server after we have valid AccessToken
-    if (_remoteConfigStore.mqttExperiment) {
-      _mqtt.start();
-    }
+    _mqtt.start();
 
     _logger.info(userSettings.toString());
   }
