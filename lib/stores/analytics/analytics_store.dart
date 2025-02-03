@@ -5,10 +5,11 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/enums/indicator_type.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
 
 mixin AnalyticsStore {
-  Timer? _timer;
+  final Debouncer _debouncer = Debouncer();
 
   Future<void> logError({
     required Object err,
@@ -30,12 +31,12 @@ mixin AnalyticsStore {
   Future<void> logScreenViewed(String screenName);
 
   Future<void> logLocationsListScroll() async {
-    if (_timer?.isActive ?? false) {
-      _timer?.cancel();
-    }
-    _timer = Timer(const Duration(milliseconds: 800), () {
-      logEvent(AnalyticsEvent.scrollLocations);
-    });
+    _debouncer.debounce(
+      () {
+        logEvent(AnalyticsEvent.scrollLocations);
+      },
+      const Duration(milliseconds: 800),
+    );
   }
 
   Future<void> logThemeChange(String themeMode) async {
@@ -136,7 +137,7 @@ mixin AnalyticsStore {
     await logEvent(AnalyticsEvent.tooltipClick, parameters: {'type': type});
   }
 
-  Future<void> dispose() async {
-    _timer?.cancel();
+  void dispose() {
+    _debouncer.dispose();
   }
 }
