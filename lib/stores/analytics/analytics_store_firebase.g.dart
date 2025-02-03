@@ -41,36 +41,12 @@ mixin _$AnalyticsStoreFirebase on _AnalyticsStoreFirebase, Store {
     return _$setUserPropertyAsyncAction.run(() => super.setUserProperty(name, value));
   }
 
-  late final _$setScreenNameAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.setScreenName', context: context);
-
-  @override
-  Future<void> setScreenName(String name) {
-    return _$setScreenNameAsyncAction.run(() => super.setScreenName(name));
-  }
-
-  late final _$setSessionTimeoutDurationAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.setSessionTimeoutDuration', context: context);
-
-  @override
-  Future<void> setSessionTimeoutDuration() {
-    return _$setSessionTimeoutDurationAsyncAction.run(() => super.setSessionTimeoutDuration());
-  }
-
   late final _$setLoginAsyncAction =
       AsyncAction('_AnalyticsStoreFirebase.setLogin', context: context);
 
   @override
   Future<void> setLogin([GrantType loginMethod = GrantType.email]) {
     return _$setLoginAsyncAction.run(() => super.setLogin(loginMethod));
-  }
-
-  late final _$setSearchEventAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.setSearchEvent', context: context);
-
-  @override
-  Future<void> setSearchEvent(String searchTerm) {
-    return _$setSearchEventAsyncAction.run(() => super.setSearchEvent(searchTerm));
   }
 
   late final _$logScreenViewedAsyncAction =
@@ -81,85 +57,12 @@ mixin _$AnalyticsStoreFirebase on _AnalyticsStoreFirebase, Store {
     return _$logScreenViewedAsyncAction.run(() => super.logScreenViewed(screenName));
   }
 
-  late final _$logLocationsListScrollAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.logLocationsListScroll', context: context);
-
-  @override
-  Future<void> logLocationsListScroll() {
-    return _$logLocationsListScrollAsyncAction.run(() => super.logLocationsListScroll());
-  }
-
-  late final _$logThemeChangeAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.logThemeChange', context: context);
-
-  @override
-  Future<void> logThemeChange(String themeMode) {
-    return _$logThemeChangeAsyncAction.run(() => super.logThemeChange(themeMode));
-  }
-
-  late final _$logLanguageChangeAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.logLanguageChange', context: context);
-
-  @override
-  Future<void> logLanguageChange(String language) {
-    return _$logLanguageChangeAsyncAction.run(() => super.logLanguageChange(language));
-  }
-
   late final _$setConsentsAsyncAction =
       AsyncAction('_AnalyticsStoreFirebase.setConsents', context: context);
 
   @override
   Future<void> setConsents() {
     return _$setConsentsAsyncAction.run(() => super.setConsents());
-  }
-
-  late final _$logProductSelectedAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.logProductSelected', context: context);
-
-  @override
-  Future<void> logProductSelected(String productId, List<String> productIds) {
-    return _$logProductSelectedAsyncAction
-        .run(() => super.logProductSelected(productId, productIds));
-  }
-
-  late final _$logBannerClickAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.logBannerClick', context: context);
-
-  @override
-  Future<void> logBannerClick(BannerType banner) {
-    return _$logBannerClickAsyncAction.run(() => super.logBannerClick(banner));
-  }
-
-  late final _$logBannerCloseAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.logBannerClose', context: context);
-
-  @override
-  Future<void> logBannerClose(BannerType banner) {
-    return _$logBannerCloseAsyncAction.run(() => super.logBannerClose(banner));
-  }
-
-  late final _$logLocationTabOpenAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.logLocationTabOpen', context: context);
-
-  @override
-  Future<void> logLocationTabOpen(IPType locationType) {
-    return _$logLocationTabOpenAsyncAction.run(() => super.logLocationTabOpen(locationType));
-  }
-
-  late final _$logConnectAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.logConnect', context: context);
-
-  @override
-  Future<void> logConnect(VPNLocation? location, [AnalyticsEvent? event]) {
-    return _$logConnectAsyncAction.run(() => super.logConnect(location, event));
-  }
-
-  late final _$logDisconnectAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.logDisconnect', context: context);
-
-  @override
-  Future<void> logDisconnect(VPNLocation? location, [AnalyticsEvent? event]) {
-    return _$logDisconnectAsyncAction.run(() => super.logDisconnect(location, event));
   }
 
   @override

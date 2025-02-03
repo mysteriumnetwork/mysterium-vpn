@@ -5,12 +5,9 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/enums/indicator_type.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/observers/navigator_observer.dart';
-import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 
 part 'analytics_store_firebase.g.dart';
@@ -18,7 +15,7 @@ part 'analytics_store_firebase.g.dart';
 // ignore: library_private_types_in_public_api
 class AnalyticsStoreFirebase = _AnalyticsStoreFirebase with _$AnalyticsStoreFirebase;
 
-abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
+abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
   _AnalyticsStoreFirebase({
     required FirebaseAnalytics analytics,
     required FirebaseCrashlytics crashlytics,
@@ -29,7 +26,6 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
 
   final FirebaseAnalytics _analytics;
   final FirebaseCrashlytics _crashlytics;
-  Timer? _timer;
 
   @override
   Future<void> logError({
@@ -96,59 +92,14 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
 
   @override
   @action
-  Future<void> setScreenName(String name) async {
-    await _analytics.logScreenView(screenName: name);
-  }
-
-  @override
-  @action
-  Future<void> setSessionTimeoutDuration() async {
-    await _analytics.logAppOpen();
-  }
-
-  @override
-  @action
   Future<void> setLogin([GrantType loginMethod = GrantType.email]) async {
     await _analytics.logLogin(loginMethod: loginMethod.name);
   }
 
   @override
   @action
-  Future<void> setSearchEvent(String searchTerm) async {
-    await _analytics.logSearch(searchTerm: searchTerm);
-  }
-
-  @override
-  @action
   Future<void> logScreenViewed(String screenName) async {
     await _analytics.logEvent(name: screenName);
-  }
-
-  @override
-  @action
-  Future<void> logLocationsListScroll() async {
-    if (_timer?.isActive ?? false) {
-      _timer?.cancel();
-    }
-    _timer = Timer(const Duration(milliseconds: 800), () {
-      logEvent(AnalyticsEvent.scrollLocations);
-    });
-  }
-
-  @override
-  @action
-  Future<void> logThemeChange(String themeMode) async {
-    await _analytics.logEvent(name: 'set_theme_$themeMode');
-  }
-
-  @override
-  @action
-  Future<void> logLanguageChange(String language) async {
-    await _analytics.logEvent(name: 'set_language_$language');
-  }
-
-  Future<void> dispose() async {
-    _timer?.cancel();
   }
 
   @override
@@ -163,111 +114,5 @@ abstract class _AnalyticsStoreFirebase extends AnalyticsStore with Store {
     } catch (e) {
       logError(err: e);
     }
-  }
-
-  @override
-  @action
-  Future<void> logProductSelected(String productId, List<String> productIds) async {
-    AnalyticsEvent? event;
-    if (productId == kAnnualPlan) {
-      event = AnalyticsEvent.click1YearPlan;
-    } else if (productId == kMonthlyPlan) {
-      event = AnalyticsEvent.click1MonthPlan;
-    } else if (productId == ksemiAnnualPlan) {
-      event = AnalyticsEvent.click6MonthsPlan;
-    }
-    if (event != null) {
-      logEvent(
-        event,
-        parameters: {
-          'item_ids': productIds,
-        },
-      );
-    }
-  }
-
-  @override
-  @action
-  Future<void> logBannerClick(BannerType banner) async {
-    await logEvent(AnalyticsEvent.bannerClick, parameters: {'banner': banner.name});
-  }
-
-  @override
-  @action
-  Future<void> logBannerClose(BannerType banner) async {
-    await logEvent(AnalyticsEvent.bannerClose, parameters: {'banner': banner.name});
-  }
-
-  @override
-  @action
-  Future<void> logLocationTabOpen(IPType locationType) async {
-    await logEvent(AnalyticsEvent.locationsTabOpen, parameters: {'ip_type': locationType.name});
-  }
-
-  @override
-  @action
-  Future<void> logConnect(VPNLocation? location, [AnalyticsEvent? event]) async {
-    final eventName = event?.name ?? ['connect', location?.code].join('_');
-    await _analytics.logEvent(
-      name: eventName,
-      parameters: location != null
-          ? {'location': location.code, 'ip_type': location.ipType.name.toSnakeCase}
-          : null,
-    );
-  }
-
-  @override
-  @action
-  Future<void> logDisconnect(VPNLocation? location, [AnalyticsEvent? event]) async {
-    final eventName = event?.name ?? ['disconnect', location?.code].join('_');
-    await _analytics.logEvent(
-      name: eventName,
-      parameters: location != null
-          ? {'location': location.code, 'ip_type': location.ipType.name.toSnakeCase}
-          : null,
-    );
-  }
-
-  @override
-  Future<void> logConnectSuccess({
-    required VPNLocation location,
-    required Duration time,
-    required bool? isRefresh,
-  }) async {
-    await logEvent(
-      AnalyticsEvent.connectSuccess,
-      parameters: {
-        'location': location.code,
-        'ipType': location.ipType.name.toSnakeCase,
-        'time': time.inSeconds,
-        'refresh_ip': isRefresh,
-      },
-    );
-  }
-
-  @override
-  Future<void> logConnectFailure({
-    required Duration time,
-    required String error,
-    required String errorType,
-    int? errorCode,
-    String? errorMessage,
-  }) async {
-    await logEvent(
-      AnalyticsEvent.connectError,
-      parameters: {
-        'time': time.inSeconds,
-        'error': error,
-        'error_type': errorType,
-        if (errorCode != null) 'error_code': errorCode,
-        if (errorMessage != null) 'error_message': errorMessage,
-      },
-    );
-  }
-
-  @override
-  Future<void> logTooltipClick(TooltipType tooltip) async {
-    final type = tooltip.name.toSnakeCase;
-    await logEvent(AnalyticsEvent.tooltipClick, parameters: {'type': type});
   }
 }
