@@ -1,29 +1,24 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter/material.dart' hide Tooltip;
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
+import 'package:mysterium_vpn/common/enums/indicator_type.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
-import 'package:mysterium_vpn/components/connection_indicator.dart';
-import 'package:mysterium_vpn/components/decorated_label.dart';
+import 'package:mysterium_vpn/components/circle_box.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/flag.dart';
-import 'package:mysterium_vpn/components/kill_switch_tooltip.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/refresh_connection.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/components/tooltip.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:styled_widget/styled_widget.dart';
 import 'package:wireguard_dart/connection_status.dart';
-
-enum LeadingPosition {
-  left,
-  right,
-  bottom,
-}
 
 class MobileConnectionStatusBar extends HookConsumerWidget {
   const MobileConnectionStatusBar({super.key});
@@ -31,132 +26,206 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
-    final screenType = useScreenType();
+    final isLoading = useComputedValue(() => vpnStore.isLoading);
+    final connectionStatus = useComputedValue(() => vpnStore.connectionStatus);
+    final isConnected = useComputedValue(() => vpnStore.isConnected);
 
-    return Observer(
-      builder: (context) {
-        final vpnConnection = vpnStore.vpnConnection;
-        final locationCode = vpnConnection?.location.code ?? '';
-        final isResolvingconnectionIP = vpnConnection?.isResolvingconnectionIP ?? false;
-        final isConnected = vpnStore.isConnected;
+    final vpnConnection = useComputedValue(() => vpnStore.vpnConnection);
 
-        return LayoutBuilder(
-          builder: (context, constraints) => Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _BarItem(
-                leading: switch (vpnConnection?.location.ipType) {
-                  IPType.datacenter => const SvgIcon(asset: Assets.speed, height: 16),
-                  _ => null,
-                },
-                label: LocaleKeys.connectionIp.tr(),
-                text: isConnected ? vpnConnection?.connectionIP : null,
-                maxLines: 1,
-                action: const RefreshConnection(),
-                indicator: isResolvingconnectionIP
-                    ? const Padding(
-                        padding: EdgeInsets.only(top: 2),
-                        child: LoadingIndicator(
-                          radius: 15,
-                        ),
-                      )
-                    : null,
-              ).expanded(),
-              _BarItem(
-                label: LocaleKeys.status.tr(),
-                text: vpnStore.isLoading
-                    ? ConnectionStatus.connecting.name.tr()
-                    : vpnStore.vpnStatus.name.tr(),
-                isConnected: isConnected,
-                leading: ConnectionIndicator(isConnected: isConnected),
-                action: switch (screenType) {
-                  ScreenType.desktop || ScreenType.tablet => Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        KillSwitchTooltip(
-                          constraints: constraints
-                              .widthConstraints()
-                              .copyWith(maxWidth: constraints.maxWidth * .4),
-                        ),
-                      ],
-                    ),
-                  _ => null,
-                },
-                maxLines: 1,
-              ).expanded(),
-              _BarItem(
-                label: LocaleKeys.location.tr(),
-                leading: vpnStore.isConnected && locationCode.isNotEmpty
-                    ? Flag(countryCode: locationCode)
-                    : null,
-                text: vpnConnection?.location.code.tr(),
-                leadingPosition: LeadingPosition.bottom,
-                maxLines: 2,
-              ).expanded(),
-            ],
-          ).padding(horizontal: 4),
-        );
-      },
+    return LayoutBuilder(
+      builder: (context, constraints) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _IPItem(
+              isConnected: isConnected,
+              connection: vpnConnection,
+            ),
+            const SizedBox(width: 8),
+            _StatusItem(
+              status: connectionStatus,
+              isLoading: isLoading,
+              layoutConstraints: constraints,
+            ),
+            const SizedBox(width: 8),
+            _LocationItem(
+              location: vpnConnection?.location,
+              isConnected: isConnected,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
 
-class _BarItem extends StatelessWidget {
-  const _BarItem({
+class _Item extends StatelessWidget {
+  const _Item({
     required this.label,
-    required this.text,
-    required this.maxLines,
-    this.isConnected = false,
-    this.leading,
-    this.leadingPosition = LeadingPosition.left,
-    this.action,
-    this.indicator,
+    required this.children,
+  });
+  final String label;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) => Expanded(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            EasyText(
+              label,
+              color: Palette.lightBlue,
+              fontWeight: FontWeight.w400,
+              fontSize: 10,
+            ),
+            const SizedBox(height: 2),
+            ...children.map(
+              (child) => Padding(padding: const EdgeInsets.only(top: 8), child: child),
+            ),
+          ],
+        ),
+      );
+}
+
+class _IPItem extends HookWidget {
+  const _IPItem({
+    required this.connection,
+    required this.isConnected,
   });
 
-  final String label;
-  final Widget? leading;
-  final Widget? action;
-  final String? text;
+  final VpnConnection? connection;
   final bool isConnected;
-  final LeadingPosition leadingPosition;
-  final int maxLines;
-  final Widget? indicator;
+
   @override
-  Widget build(BuildContext context) => Column(
-        children: [
-          EasyText(
-            label,
-            color: Palette.lightBlue,
-            fontWeight: FontWeight.w400,
-            fontSize: 10,
-          ).padding(bottom: 4),
-          if (isConnected)
-            DecoratedLabel(
-              text: text ?? '--',
-              color: Palette.green,
-            )
-          else
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (leadingPosition == LeadingPosition.left && leading != null)
-                  leading!.paddingDirectional(end: 4),
-                if (indicator != null)
-                  indicator!
-                else
-                  EasyText(
-                    text ?? '--',
-                    color: Palette.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12,
-                    textAlign: TextAlign.center,
-                    maxLines: maxLines,
-                  ).flexible(),
-              ],
+  Widget build(BuildContext context) {
+    final isResolvingConnectionIP = connection?.isResolvingconnectionIP ?? false;
+    final ip = useMemoized(
+      () {
+        if (!isConnected || connection == null) {
+          return '--';
+        }
+        return connection!.connectionIP;
+      },
+      [isConnected, connection],
+    );
+
+    return _Item(
+      label: LocaleKeys.connectionIp.tr(),
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (isConnected && connection?.location.ipType == IPType.datacenter)
+              const Padding(
+                padding: EdgeInsets.only(right: 4),
+                child: SvgIcon(asset: Assets.speed, height: 12),
+              ),
+            Flexible(
+              child: !isResolvingConnectionIP
+                  ? EasyText(ip, fontSize: 12)
+                  : const LoadingIndicator(radius: 15),
             ),
-          if (leadingPosition == LeadingPosition.bottom && leading != null)
-            leading!.padding(top: 4),
-          action ?? const SizedBox(),
-        ],
-      );
+          ],
+        ),
+        if (isConnected) const RefreshConnection(),
+      ],
+    );
+  }
+}
+
+class _StatusItem extends StatelessWidget {
+  const _StatusItem({
+    required this.status,
+    required this.isLoading,
+    required this.layoutConstraints,
+  });
+
+  final bool isLoading;
+  final ConnectionStatus status;
+  final BoxConstraints layoutConstraints;
+
+  @override
+  Widget build(BuildContext context) {
+    final status = isLoading ? ConnectionStatus.connecting : this.status;
+
+    return _Item(
+      label: LocaleKeys.status.tr(),
+      children: [
+        Tooltip(
+          enabled: status == ConnectionStatus.connected,
+          type: TooltipType.killSwitch,
+          buildEntry: (context) => TooltipEntry(
+            title: LocaleKeys.killSwitchTooltipTitle.tr(),
+            message: LocaleKeys.killSwitchTooltipMessage.tr(),
+            constraints: layoutConstraints
+                .copyWith(maxWidth: layoutConstraints.maxWidth * .7)
+                .widthConstraints(),
+          ),
+          child: DecoratedBox(
+            decoration: switch (status) {
+              ConnectionStatus.connected => BoxDecoration(
+                  color: Palette.green,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              _ => const BoxDecoration(),
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 3),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  switch (status) {
+                    ConnectionStatus.connected =>
+                      const SvgIcon(asset: Assets.killSwitch, height: 9),
+                    ConnectionStatus.disconnected => const CircleBox(color: Palette.pink, size: 4),
+                    _ => const SizedBox.shrink(),
+                  },
+                  const SizedBox(width: 4),
+                  Flexible(child: EasyText(status.name.tr(), fontSize: 12)),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _LocationItem extends HookWidget {
+  const _LocationItem({
+    required this.location,
+    required this.isConnected,
+  });
+
+  final bool isConnected;
+  final VPNLocation? location;
+
+  @override
+  Widget build(BuildContext context) {
+    final code = useMemoized(
+      () {
+        if (location == null || !isConnected) {
+          return null;
+        }
+        return location!.code;
+      },
+      [location, isConnected],
+    );
+
+    return _Item(
+      label: LocaleKeys.location.tr(),
+      children: [
+        EasyText(
+          code?.tr() ?? '--',
+          maxLines: 2,
+          fontSize: 12,
+          textAlign: TextAlign.center,
+        ),
+        if (code != null) Flag(countryCode: code),
+      ],
+    );
+  }
 }
