@@ -17,7 +17,7 @@ class LoadingBarrier extends StatelessWidget {
           children: <Widget>[
             ModalBarrier(
               dismissible: false,
-              color: color.withOpacity(0.8),
+              color: color.withValues(alpha: 0.8),
             ).height(constraints.maxHeight),
             child ??
                 Center(
