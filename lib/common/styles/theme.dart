@@ -20,7 +20,7 @@ ThemeData themeData(Palette palette) => ThemeData(
       indicatorColor: palette.secondaryColor,
       hintColor: palette.darkTextColor,
       secondaryHeaderColor: palette.lightTextColor,
-      highlightColor: palette.highlightColor.withOpacity(0.4),
+      highlightColor: palette.highlightColor.withValues(alpha: 0.4),
       disabledColor: palette.disabledColor.darken(palette is LightPalette ? 10 : 30),
       buttonTheme: ButtonThemeData(
         colorScheme: palette is LightPalette ? const ColorScheme.dark() : const ColorScheme.light(),
@@ -36,7 +36,7 @@ ThemeData themeData(Palette palette) => ThemeData(
           ),
           minimumSize: const Size(200, 50),
           backgroundColor: palette.buttonBackgroundColor,
-          disabledBackgroundColor: palette.highlightColor.withOpacity(0.4),
+          disabledBackgroundColor: palette.highlightColor.withValues(alpha: 0.4),
         ),
       ),
       checkboxTheme: CheckboxThemeData(
