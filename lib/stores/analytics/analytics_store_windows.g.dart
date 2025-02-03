@@ -57,85 +57,12 @@ mixin _$AnalyticsStoreWindows on _AnalyticsStoreWindows, Store {
     return _$logScreenViewedAsyncAction.run(() => super.logScreenViewed(screenName));
   }
 
-  late final _$logLocationsListScrollAsyncAction =
-      AsyncAction('_AnalyticsStoreWindows.logLocationsListScroll', context: context);
-
-  @override
-  Future<void> logLocationsListScroll() {
-    return _$logLocationsListScrollAsyncAction.run(() => super.logLocationsListScroll());
-  }
-
-  late final _$logThemeChangeAsyncAction =
-      AsyncAction('_AnalyticsStoreWindows.logThemeChange', context: context);
-
-  @override
-  Future<void> logThemeChange(String themeMode) {
-    return _$logThemeChangeAsyncAction.run(() => super.logThemeChange(themeMode));
-  }
-
-  late final _$logLanguageChangeAsyncAction =
-      AsyncAction('_AnalyticsStoreWindows.logLanguageChange', context: context);
-
-  @override
-  Future<void> logLanguageChange(String language) {
-    return _$logLanguageChangeAsyncAction.run(() => super.logLanguageChange(language));
-  }
-
   late final _$setConsentsAsyncAction =
       AsyncAction('_AnalyticsStoreWindows.setConsents', context: context);
 
   @override
   Future<void> setConsents() {
     return _$setConsentsAsyncAction.run(() => super.setConsents());
-  }
-
-  late final _$logProductSelectedAsyncAction =
-      AsyncAction('_AnalyticsStoreWindows.logProductSelected', context: context);
-
-  @override
-  Future<void> logProductSelected(String productId, List<String> productIds) {
-    return _$logProductSelectedAsyncAction
-        .run(() => super.logProductSelected(productId, productIds));
-  }
-
-  late final _$logBannerClickAsyncAction =
-      AsyncAction('_AnalyticsStoreWindows.logBannerClick', context: context);
-
-  @override
-  Future<void> logBannerClick(BannerType banner) {
-    return _$logBannerClickAsyncAction.run(() => super.logBannerClick(banner));
-  }
-
-  late final _$logBannerCloseAsyncAction =
-      AsyncAction('_AnalyticsStoreWindows.logBannerClose', context: context);
-
-  @override
-  Future<void> logBannerClose(BannerType banner) {
-    return _$logBannerCloseAsyncAction.run(() => super.logBannerClose(banner));
-  }
-
-  late final _$logLocationTabOpenAsyncAction =
-      AsyncAction('_AnalyticsStoreWindows.logLocationTabOpen', context: context);
-
-  @override
-  Future<void> logLocationTabOpen(IPType locationType) {
-    return _$logLocationTabOpenAsyncAction.run(() => super.logLocationTabOpen(locationType));
-  }
-
-  late final _$logConnectAsyncAction =
-      AsyncAction('_AnalyticsStoreWindows.logConnect', context: context);
-
-  @override
-  Future<void> logConnect(VPNLocation? location, [AnalyticsEvent? event]) {
-    return _$logConnectAsyncAction.run(() => super.logConnect(location, event));
-  }
-
-  late final _$logDisconnectAsyncAction =
-      AsyncAction('_AnalyticsStoreWindows.logDisconnect', context: context);
-
-  @override
-  Future<void> logDisconnect(VPNLocation? location, [AnalyticsEvent? event]) {
-    return _$logDisconnectAsyncAction.run(() => super.logDisconnect(location, event));
   }
 
   @override
