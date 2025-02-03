@@ -6,13 +6,20 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:mysterium_vpn/common/exceptions/authentication_required.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/mqtt/exceptions.dart';
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:talker/talker.dart';
 
 class MQTTService {
-  MQTTService(String url, String clientID, AuthSessionStore authSession, Talker logger)
-      : _mqtt = MqttServerClient(url, clientID),
+  MQTTService(
+    String url,
+    String clientID,
+    AuthSessionStore authSession,
+    Talker logger,
+    RemoteConfigStore remoteConfigStore,
+  )   : _mqtt = MqttServerClient(url, clientID),
         _authSession = authSession,
-        _logger = logger {
+        _logger = logger,
+        _remoteConfigStore = remoteConfigStore {
     final uri = Uri.parse(url);
 
     // Client ID length can not exceed 23, see http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html
@@ -22,7 +29,7 @@ class MQTTService {
 
     _mqtt
       ..port = uri.port
-      ..autoReconnect = true
+      ..autoReconnect = false
       ..resubscribeOnAutoReconnect = true
       ..useWebSocket = true
       ..keepAlivePeriod = 60 * 5
@@ -49,8 +56,13 @@ class MQTTService {
   final MqttServerClient _mqtt;
   final AuthSessionStore _authSession;
   final Talker _logger;
+  final RemoteConfigStore _remoteConfigStore;
 
   Future<void> start() async {
+    if (!_remoteConfigStore.mqttExperiment) {
+      return;
+    }
+
     try {
       if (_authSession.accessToken == null) {
         throw AuthenticationRequiredException();
@@ -64,6 +76,10 @@ class MQTTService {
   }
 
   void stop() {
+    if (_mqtt.connectionStatus!.state != MqttConnectionState.connected) {
+      return;
+    }
+
     try {
       _mqtt.disconnect();
     } catch (e, stackTrace) {
@@ -75,6 +91,10 @@ class MQTTService {
   bool isStarted() => _mqtt.connectionStatus!.state == MqttConnectionState.connected;
 
   Future<void> ensureStart() async {
+    if (!_remoteConfigStore.mqttExperiment) {
+      return;
+    }
+
     if (!isStarted()) {
       await start();
     }
@@ -93,6 +113,10 @@ class MQTTService {
   ///
   /// Returns a stream of message payloads as strings.
   Stream<String> subscribe(String topic) {
+    if (!_remoteConfigStore.mqttExperiment) {
+      return const Stream<String>.empty();
+    }
+
     if (_mqtt.connectionStatus!.state != MqttConnectionState.connected) {
       throw MQQTConnectionRequiredException();
     }
