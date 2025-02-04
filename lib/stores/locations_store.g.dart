@@ -48,18 +48,20 @@ mixin _$LocationsStore on _LocationsStore, Store {
     });
   }
 
-  late final _$searchKeywordAtom = Atom(name: '_LocationsStore.searchKeyword', context: context);
+  late final _$_searchKeywordAtom = Atom(name: '_LocationsStore._searchKeyword', context: context);
 
-  @override
   String get searchKeyword {
-    _$searchKeywordAtom.reportRead();
-    return super.searchKeyword;
+    _$_searchKeywordAtom.reportRead();
+    return super._searchKeyword;
   }
 
   @override
-  set searchKeyword(String value) {
-    _$searchKeywordAtom.reportWrite(value, super.searchKeyword, () {
-      super.searchKeyword = value;
+  String get _searchKeyword => searchKeyword;
+
+  @override
+  set _searchKeyword(String value) {
+    _$_searchKeywordAtom.reportWrite(value, super._searchKeyword, () {
+      super._searchKeyword = value;
     });
   }
 
@@ -122,7 +124,6 @@ mixin _$LocationsStore on _LocationsStore, Store {
   @override
   String toString() {
     return '''
-searchKeyword: ${searchKeyword},
 allLocations: ${allLocations},
 topLocations: ${topLocations},
 dcLocations: ${dcLocations}
