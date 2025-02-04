@@ -25,8 +25,8 @@ class LocationTypeSwitcher extends HookConsumerWidget {
     final hasDataCenterIPs = useComputedValue(() => config.dataCenterCountries.isNotEmpty);
 
     final values = [
-      IPType.residential,
       if (hasDataCenterIPs) IPType.datacenter,
+      IPType.residential,
     ];
 
     return Row(
