@@ -7,22 +7,23 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/indicator_type.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class Tooltip extends HookConsumerWidget {
   const Tooltip({
     required this.type,
     required this.buildEntry,
-    required this.asset,
+    required this.child,
     this.autoDismissDuration = const Duration(seconds: 3),
+    this.enabled = true,
     super.key,
   });
 
+  final Widget child;
   final TooltipType type;
   final TooltipEntry Function(BuildContext) buildEntry;
-  final String asset;
   final Duration? autoDismissDuration;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -63,8 +64,8 @@ class Tooltip extends HookConsumerWidget {
       child: PortalTarget(
         visible: visibility.value,
         anchor: const Aligned(
-          follower: Alignment.topLeft,
-          target: Alignment.bottomLeft,
+          follower: Alignment.topCenter,
+          target: Alignment.bottomCenter,
           offset: Offset(14, 3),
           shiftToWithinBound: AxisFlag(x: true),
         ),
@@ -72,7 +73,7 @@ class Tooltip extends HookConsumerWidget {
           visible: visibility,
           child: buildEntry(context),
         ),
-        child: SvgIconButton(key: key, onPressed: handleToggle, asset: asset),
+        child: GestureDetector(key: key, onTap: enabled ? handleToggle : null, child: child),
       ),
     );
   }
@@ -96,7 +97,7 @@ class TooltipEntry extends StatelessWidget {
     return ConstrainedBox(
       constraints: constraints,
       child: Material(
-        color: Palette.lightBlack,
+        color: Palette.mediumBlack,
         borderRadius: BorderRadius.circular(8),
         clipBehavior: Clip.antiAlias,
         child: InkWell(

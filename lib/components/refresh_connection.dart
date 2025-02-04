@@ -9,7 +9,6 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class RefreshConnection extends HookConsumerWidget {
   const RefreshConnection({super.key});
@@ -22,12 +21,15 @@ class RefreshConnection extends HookConsumerWidget {
       builder: (context) => Visibility(
         visible: vpnStore.isConnected,
         replacement: SizedBox.fromSize(
-          size: const Size.fromHeight(32),
+          size: const Size.fromHeight(36),
         ),
         child: ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
             backgroundColor: Palette.blue,
-            padding: EdgeInsets.zero,
+            padding: const EdgeInsets.all(8),
+            visualDensity: VisualDensity.compact,
+            minimumSize: const Size(0, 36),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           onPressed: () {
             analyticsStore.logEvent(AnalyticsEvent.refreshIp);
@@ -41,7 +43,7 @@ class RefreshConnection extends HookConsumerWidget {
           icon: const SvgIcon(
             asset: Assets.refreshConn,
           ),
-        ).height(32).width(105).padding(top: 4),
+        ),
       ),
     );
   }

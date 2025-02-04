@@ -5,7 +5,6 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
-import 'package:mysterium_vpn/components/kill_switch_tooltip.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -27,11 +26,6 @@ class HomeMobileAppBar extends ConsumerWidget {
               analyticsStore: ref.read(analyticsStorePOD),
             ),
             asset: Assets.report,
-          ),
-          KillSwitchTooltip(
-            constraints: constraints.widthConstraints().copyWith(
-                  maxWidth: constraints.maxWidth * .7,
-                ),
           ),
           const Expanded(child: AppLogo()),
           SvgIconButton(
