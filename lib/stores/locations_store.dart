@@ -24,7 +24,7 @@ abstract class _LocationsStore with Store {
   ) {
     fetchVPNLocations();
     reaction((_) => localeStore.currentLocale, (locale) {
-      if (searchKeyword.isNotEmpty) {
+      if (_searchKeyword.isNotEmpty) {
         setLocationKeyword('');
       }
     });
@@ -39,8 +39,8 @@ abstract class _LocationsStore with Store {
   @readonly
   ObservableFuture<VPNLocations> _vpnLocationsFuture = ObservableFuture.value(const VPNLocations());
 
-  @observable
-  String searchKeyword = '';
+  @readonly
+  String _searchKeyword = '';
 
   @readonly
   List<VPNLocation> _recentLocations = [];
@@ -85,7 +85,7 @@ abstract class _LocationsStore with Store {
     final dataCenterCountries = _remoteConfigStore.dataCenterCountries;
 
     Future<VPNLocations> fetch() async {
-      final locations = await _apiService.fetchVPNLocations(keyword: searchKeyword);
+      final locations = await _apiService.fetchVPNLocations(keyword: _searchKeyword);
       return locations.withDCCountries(dataCenterCountries);
     }
 
@@ -97,7 +97,7 @@ abstract class _LocationsStore with Store {
   @action
   Future<void> fetchRecentLocations() async {
     final vpnLocations = await _vpnLocationsFuture;
-    final locations = await _apiService.getRecentLocations(keyword: searchKeyword);
+    final locations = await _apiService.getRecentLocations(keyword: _searchKeyword);
     _recentLocations = locations
         .where(
           (code) =>
@@ -119,9 +119,9 @@ abstract class _LocationsStore with Store {
   void setLocationKeyword(String text, [Duration duration = const Duration(milliseconds: 500)]) {
     _debouncer.debounce(
       () async {
-        searchKeyword = text.toLowerCase().trim();
+        _searchKeyword = text.toLowerCase().trim();
         _analyticsStore
-          ..setSearchEvent(searchKeyword)
+          ..setSearchEvent(_searchKeyword)
           ..logEvent(AnalyticsEvent.search);
         await fetchVPNLocations();
       },
