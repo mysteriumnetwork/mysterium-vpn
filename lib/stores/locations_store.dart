@@ -118,6 +118,7 @@ abstract class _LocationsStore with Store {
   Future<void> addRecentLocation(VPNLocation location) async {
     await _apiService.addRecentLocation(location);
     _recentLocations = {location, ..._recentLocations}.toList();
+    _ipType = location.ipType;
     await fetchRecentLocations();
   }
 
