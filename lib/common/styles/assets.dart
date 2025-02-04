@@ -42,10 +42,7 @@ abstract class Assets {
   static const String billingLight = 'assets/icons/billing_light.svg';
   static const String deleteAccountDark = 'assets/icons/delete_account_dark.svg';
   static const String deleteAccountLight = 'assets/icons/delete_account_light.svg';
-  static const String killSwitchOff = 'assets/icons/kill_switch_off.svg';
-  static const String killSwitchOn = 'assets/icons/kill_switch_on.svg';
-  static const String killSwitchDark = 'assets/icons/kill_switch_dark.svg';
-  static const String killSwitchLight = 'assets/icons/kill_switch_light.svg';
+  static const String killSwitch = 'assets/icons/kill_switch.svg';
   static const String languageDark = 'assets/icons/language_dark.svg';
   static const String languageLight = 'assets/icons/language_light.svg';
   static const String protocolDark = 'assets/icons/protocol_dark.svg';
