@@ -30,7 +30,7 @@ class LocationsSliverView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final analyticsStore = ref.watch(analyticsStorePOD);
     final locationsStore = ref.watch(locationsStorePOD);
-    final locationType = ref.watch(homeStateProvider.select((it) => it.ipType));
+    final locationType = useComputedValue(() => locationsStore.ipType);
 
     final state = useComputedValue(() => locationsStore.vpnLocationsFuture);
 
@@ -65,7 +65,7 @@ class LocationsSliverView extends HookConsumerWidget {
     }
 
     void handleSetLocationType(IPType value) {
-      ref.read(homeStateProvider.notifier).ipType = value;
+      locationsStore.setIPType(value);
     }
 
     void handleLocationTapped(VPNLocation location) {

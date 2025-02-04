@@ -113,6 +113,7 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
     apiService,
     analyticsStore,
     remoteConfigStore,
+    SharedPreferenceService.instance,
     localeStore,
   );
 

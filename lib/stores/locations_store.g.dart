@@ -65,6 +65,26 @@ mixin _$LocationsStore on _LocationsStore, Store {
     });
   }
 
+  late final _$_ipTypeAtom = Atom(name: '_LocationsStore._ipType', context: context);
+
+  IPType get ipType {
+    _$_ipTypeAtom.reportRead();
+    return super._ipType;
+  }
+
+  @override
+  IPType get _ipType => ipType;
+
+  bool __ipTypeIsInitialized = false;
+
+  @override
+  set _ipType(IPType value) {
+    _$_ipTypeAtom.reportWrite(value, __ipTypeIsInitialized ? super._ipType : null, () {
+      super._ipType = value;
+      __ipTypeIsInitialized = true;
+    });
+  }
+
   late final _$_recentLocationsAtom =
       Atom(name: '_LocationsStore._recentLocations', context: context);
 
@@ -105,6 +125,13 @@ mixin _$LocationsStore on _LocationsStore, Store {
   @override
   Future<void> addRecentLocation(VPNLocation location) {
     return _$addRecentLocationAsyncAction.run(() => super.addRecentLocation(location));
+  }
+
+  late final _$setIPTypeAsyncAction = AsyncAction('_LocationsStore.setIPType', context: context);
+
+  @override
+  Future<void> setIPType(IPType type) {
+    return _$setIPTypeAsyncAction.run(() => super.setIPType(type));
   }
 
   late final _$_LocationsStoreActionController =
