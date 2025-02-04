@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
@@ -20,6 +21,7 @@ abstract class _LocationsStore with Store {
     this._apiService,
     this._analyticsStore,
     this._remoteConfigStore,
+    this._prefs,
     LocaleStore localeStore,
   ) {
     fetchVPNLocations();
@@ -33,6 +35,7 @@ abstract class _LocationsStore with Store {
   final ApiService _apiService;
   final AnalyticsStore _analyticsStore;
   final RemoteConfigStore _remoteConfigStore;
+  final SharedPreferenceService _prefs;
 
   final Debouncer _debouncer = Debouncer();
 
@@ -41,6 +44,9 @@ abstract class _LocationsStore with Store {
 
   @readonly
   String _searchKeyword = '';
+
+  @readonly
+  late IPType _ipType = _prefs.getIPType() ?? IPType.residential;
 
   @readonly
   List<VPNLocation> _recentLocations = [];
@@ -127,6 +133,12 @@ abstract class _LocationsStore with Store {
       },
       duration,
     );
+  }
+
+  @action
+  Future<void> setIPType(IPType type) async {
+    _ipType = type;
+    await _prefs.setIPType(type);
   }
 
   void dispose() => _debouncer.dispose();
