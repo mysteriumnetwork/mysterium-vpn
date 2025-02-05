@@ -80,4 +80,5 @@ enum AnalyticsEvent {
   setLanguageCode,
   connectToVpn,
   disconnectFromVpn,
+  appLaunch,
 }

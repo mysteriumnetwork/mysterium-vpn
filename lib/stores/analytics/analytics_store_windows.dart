@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/observers/navigator_observer.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/analytics/constants.dart';
@@ -20,7 +21,9 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
   _AnalyticsStoreWindows({
     required String measurementId,
     required String apiSecret,
-  }) : _session = AnalyticsSession(measurementId, apiSecret);
+  }) : _session = AnalyticsSession(measurementId, apiSecret) {
+    logAppLaunchEvent();
+  }
 
   final AnalyticsSession _session;
   @override
@@ -43,7 +46,7 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
     AnalyticsEvent event, {
     Map<String, dynamic>? parameters,
   }) async {
-    _session.logEvent(event.name, parameters);
+    _session.logEvent(event.name.toSnakeCase, parameters);
   }
 
   @override
@@ -101,12 +104,21 @@ class AnalyticsSession {
     ),
   );
 
-  void logEvent(String eventName, [Map<String, Object?>? params]) {
-    assert(!reservedGa4Events.contains(eventName), 'Event name $eventName is reserved by GA4');
+  Future<void> logEvent(
+    String eventName, [
+    Map<String, Object?>? params,
+  ]) async {
+    assert(
+      !reservedGa4Events.contains(eventName),
+      'Event name $eventName is reserved by GA4',
+    );
     if (reservedGa4Events.contains(eventName)) {
       return;
     }
-    assert(eventName.length <= 40, 'Event name should be between 1 and 40 characters long');
+    assert(
+      eventName.length <= 40,
+      'Event name should be between 1 and 40 characters long',
+    );
     assert(
       eventName.isNotEmpty && RegExp(r'^[a-zA-Z][a-zA-Z0-9_]*$').hasMatch(eventName),
       'Event name should start with a letter and contain only letters, numbers, and underscores.',
@@ -128,10 +140,14 @@ class AnalyticsSession {
       ],
     });
 
-    dio.post(
-      'mp/collect?measurement_id=$measurementId&api_secret=$apiSecret',
-      data: body,
-    );
+    try {
+      await dio.post(
+        '/mp/collect?firebase_app_id=$measurementId&api_secret=$apiSecret',
+        data: body,
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 }
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -44,11 +45,17 @@ mixin AnalyticsStore {
   }
 
   Future<void> logLanguageChange(String language) async {
-    logEvent(AnalyticsEvent.setLanguageCode, parameters: {'language': language});
+    logEvent(
+      AnalyticsEvent.setLanguageCode,
+      parameters: {'language': language},
+    );
   }
 
   Future<void> setConsents();
-  Future<void> logProductSelected(String productId, List<String> productIds) async {
+  Future<void> logProductSelected(
+    String productId,
+    List<String> productIds,
+  ) async {
     AnalyticsEvent? event;
     if (productId == kAnnualPlan) {
       event = AnalyticsEvent.click1YearPlan;
@@ -68,7 +75,10 @@ mixin AnalyticsStore {
   }
 
   Future<void> logBannerClose(BannerType banner) async {
-    await logEvent(AnalyticsEvent.bannerClose, parameters: {'banner': banner.name});
+    await logEvent(
+      AnalyticsEvent.bannerClose,
+      parameters: {'banner': banner.name},
+    );
   }
 
   Future<void> logBannerClick(BannerType banner) async {
@@ -76,23 +86,38 @@ mixin AnalyticsStore {
   }
 
   Future<void> logLocationTabOpen(IPType locationType) async {
-    logEvent(AnalyticsEvent.locationsTabOpen, parameters: {'ip_type': locationType.name});
+    logEvent(
+      AnalyticsEvent.locationsTabOpen,
+      parameters: {'ip_type': locationType.name},
+    );
   }
 
-  Future<void> logConnect(VPNLocation? location, [AnalyticsEvent? event]) async {
+  Future<void> logConnect(
+    VPNLocation? location, [
+    AnalyticsEvent? event,
+  ]) async {
     await logEvent(
       AnalyticsEvent.connectToVpn,
       parameters: location != null
-          ? {'location': location.code, 'ip_type': location.ipType.name.toSnakeCase}
+          ? {
+              'location': location.code,
+              'ip_type': location.ipType.name.toSnakeCase,
+            }
           : null,
     );
   }
 
-  Future<void> logDisconnect(VPNLocation? location, [AnalyticsEvent? event]) async {
+  Future<void> logDisconnect(
+    VPNLocation? location, [
+    AnalyticsEvent? event,
+  ]) async {
     await logEvent(
       AnalyticsEvent.disconnectFromVpn,
       parameters: location != null
-          ? {'location': location.code, 'ip_type': location.ipType.name.toSnakeCase}
+          ? {
+              'location': location.code,
+              'ip_type': location.ipType.name.toSnakeCase,
+            }
           : null,
     );
   }
@@ -134,7 +159,12 @@ mixin AnalyticsStore {
 
   Future<void> logTooltipClick(TooltipType tooltip) async {
     final type = tooltip.name.toSnakeCase;
-    await logEvent(AnalyticsEvent.tooltipClick, parameters: {'type': type});
+    logEvent(AnalyticsEvent.tooltipClick, parameters: {'type': type});
+  }
+
+  Future<void> logAppLaunchEvent() async {
+    final params = {'platform': defaultTargetPlatform.name};
+    logEvent(AnalyticsEvent.appLaunch, parameters: params);
   }
 
   void dispose() {
