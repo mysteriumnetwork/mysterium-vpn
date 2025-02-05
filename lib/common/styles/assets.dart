@@ -64,6 +64,8 @@ abstract class Assets {
   static const String lockerLight = 'assets/icons/locker_light.svg';
   static const String speed = 'assets/icons/speed.svg';
   static const String clear = 'assets/icons/clear.svg';
+  static const String barcode = 'assets/icons/barcode.svg';
+  static const String tag = 'assets/icons/tag.svg';
 
   //Animations
   static const String backgroundElements = 'assets/animations/background_elements.json';

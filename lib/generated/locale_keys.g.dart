@@ -455,6 +455,9 @@ abstract class LocaleKeys {
   static const pricingPlanLetsGoBtn = 'pricingPlanLetsGoBtn';
   static const pricingPlanPunchLineDesc = 'pricingPlanPunchLineDesc';
   static const pricingPlanPunchLineTitle = 'pricingPlanPunchLineTitle';
+  static const pricingPlanSaleDesc = 'pricingPlanSaleDesc';
+  static const pricingPlanSaleTag = 'pricingPlanSaleTag';
+  static const pricingPlanSaleTitle = 'pricingPlanSaleTitle';
   static const pricingPlanSeePlansBtn = 'pricingPlanSeePlansBtn';
   static const pricingPlanTitle = 'pricingPlanTitle';
   static const privacyPolicy = 'privacyPolicy';
