@@ -1,6 +1,7 @@
 // Flutter imports:
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 // Project imports:
 
@@ -40,7 +41,7 @@ class EasyText extends StatelessWidget {
           overflow: overflow,
           maxLines: maxLines,
           minFontSize: 10,
-          style: TextStyle(
+          style: GoogleFonts.montserrat(
             decoration: textDecoration,
             decorationColor: colorDecoration,
             color: color ?? Theme.of(context).textTheme.bodyLarge?.color ?? Palette.black,
