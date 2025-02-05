@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'analytics_store_firebase.dart';
+part of 'analytics_store_windows.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,17 +8,9 @@ part of 'analytics_store_firebase.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$AnalyticsStoreFirebase on _AnalyticsStoreFirebase, Store {
-  late final _$logMessageAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.logMessage', context: context);
-
-  @override
-  Future<void> logMessage(String message) {
-    return _$logMessageAsyncAction.run(() => super.logMessage(message));
-  }
-
+mixin _$AnalyticsStoreWindows on _AnalyticsStoreWindows, Store {
   late final _$logEventAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.logEvent', context: context);
+      AsyncAction('_AnalyticsStoreWindows.logEvent', context: context);
 
   @override
   Future<void> logEvent(AnalyticsEvent event, {Map<String, dynamic>? parameters}) {
@@ -26,7 +18,7 @@ mixin _$AnalyticsStoreFirebase on _AnalyticsStoreFirebase, Store {
   }
 
   late final _$setUserIdAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.setUserId', context: context);
+      AsyncAction('_AnalyticsStoreWindows.setUserId', context: context);
 
   @override
   Future<void> setUserId(String id) {
@@ -34,7 +26,7 @@ mixin _$AnalyticsStoreFirebase on _AnalyticsStoreFirebase, Store {
   }
 
   late final _$setUserPropertyAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.setUserProperty', context: context);
+      AsyncAction('_AnalyticsStoreWindows.setUserProperty', context: context);
 
   @override
   Future<void> setUserProperty(String name, String value) {
@@ -42,15 +34,23 @@ mixin _$AnalyticsStoreFirebase on _AnalyticsStoreFirebase, Store {
   }
 
   late final _$setLoginAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.setLogin', context: context);
+      AsyncAction('_AnalyticsStoreWindows.setLogin', context: context);
 
   @override
   Future<void> setLogin([GrantType loginMethod = GrantType.email]) {
     return _$setLoginAsyncAction.run(() => super.setLogin(loginMethod));
   }
 
+  late final _$logMessageAsyncAction =
+      AsyncAction('_AnalyticsStoreWindows.logMessage', context: context);
+
+  @override
+  Future<void> logMessage(String message) {
+    return _$logMessageAsyncAction.run(() => super.logMessage(message));
+  }
+
   late final _$logScreenViewedAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.logScreenViewed', context: context);
+      AsyncAction('_AnalyticsStoreWindows.logScreenViewed', context: context);
 
   @override
   Future<void> logScreenViewed(String screenName) {
@@ -58,7 +58,7 @@ mixin _$AnalyticsStoreFirebase on _AnalyticsStoreFirebase, Store {
   }
 
   late final _$setConsentsAsyncAction =
-      AsyncAction('_AnalyticsStoreFirebase.setConsents', context: context);
+      AsyncAction('_AnalyticsStoreWindows.setConsents', context: context);
 
   @override
   Future<void> setConsents() {
