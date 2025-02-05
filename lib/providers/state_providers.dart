@@ -14,7 +14,7 @@ import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dar
 import 'package:mysterium_vpn/services/mqtt/api_store.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_firebase.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store_noop.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store_windows.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/banners_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_desktop_store.dart';
@@ -156,7 +156,11 @@ final analyticsInitPOD = FutureProviderFamily<void, FirebaseOptions?>((ref, opti
 
 final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
   if (isWindowsOrLinux()) {
-    return AnalyticsStoreNoop();
+    final env = ref.watch(environmentPOD);
+    return AnalyticsStoreWindows(
+      measurementId: env.values.measurementId,
+      apiSecret: env.values.apiSecret,
+    );
   }
 
   return AnalyticsStoreFirebase(

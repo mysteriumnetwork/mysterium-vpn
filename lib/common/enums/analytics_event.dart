@@ -32,8 +32,6 @@ enum AnalyticsEvent {
   logOutAllConfirm,
   refreshIpDisable,
   refreshIpEnable,
-  setLanguage,
-  setTheme,
   openSupport,
   openSettings,
   connectMain,
@@ -78,4 +76,9 @@ enum AnalyticsEvent {
   bannerClick,
   bannerClose,
   tooltipClick,
+  setThemeMode,
+  setLanguageCode,
+  connectToVpn,
+  disconnectFromVpn,
+  appLaunch,
 }

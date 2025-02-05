@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/components/easy_dropdown.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -18,11 +17,6 @@ class LanguagePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) => EasyDropdown<Locale>(
         value: store.currentLocale,
-        onTap: () {
-          analyticsStore.logEvent(
-            AnalyticsEvent.setLanguage,
-          );
-        },
         onChanged: (Locale? newLocale) async {
           if (newLocale == null) {
             return;
