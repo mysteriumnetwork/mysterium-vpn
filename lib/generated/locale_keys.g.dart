@@ -355,6 +355,7 @@ abstract class LocaleKeys {
   static const fetchSubsFailed = 'fetchSubsFailed';
   static const fetchSubsFailedDesc = 'fetchSubsFailedDesc';
   static const fieldRequired = 'fieldRequired';
+  static const first = 'first';
   static const fr = 'fr';
   static const france = 'france';
   static const freeTrialDesc = 'freeTrialDesc';
@@ -425,6 +426,7 @@ abstract class LocaleKeys {
   static const noSubscriptionAction = 'noSubscriptionAction';
   static const noSubscriptionTitle = 'noSubscriptionTitle';
   static const notificationsDesktop = 'notificationsDesktop';
+  static const now = 'now';
   static const off = 'off';
   static const on = 'on';
   static const openBillingPlans = 'openBillingPlans';
@@ -507,6 +509,7 @@ abstract class LocaleKeys {
   static const subscriptionActive = 'subscriptionActive';
   static const subscriptionDesktop = 'subscriptionDesktop';
   static const subscriptionProcessCanceled = 'subscriptionProcessCanceled';
+  static const subscriptionRenewalDisclaimer = 'subscriptionRenewalDisclaimer';
   static const subscriptionVerificationFailed = 'subscriptionVerificationFailed';
   static const subscripton = 'subscripton';
   static const system = 'system';
@@ -527,6 +530,7 @@ abstract class LocaleKeys {
   static const unableToConnectToPaymentProcesor = 'unableToConnectToPaymentProcesor';
   static const unableToGetPlans = 'unableToGetPlans';
   static const upload = 'upload';
+  static const was = 'was';
   static const weNeedPermission = 'weNeedPermission';
   static const year = 'year';
   static const yearly = 'yearly';
