@@ -122,4 +122,15 @@ class SharedPreferenceService {
 
     return IPInfo.fromJson(jsonDecode(ipInfo) as Map<String, dynamic>);
   }
+
+  Future<void> setIPType(IPType type) async => setString(StorageKeys.ipType.name, type.name);
+
+  IPType? getIPType() {
+    final ipType = getString(StorageKeys.ipType.name);
+    if (ipType == null) {
+      return null;
+    }
+
+    return IPType.fromName(ipType);
+  }
 }

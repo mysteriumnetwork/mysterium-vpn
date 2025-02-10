@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
@@ -20,11 +21,12 @@ abstract class _LocationsStore with Store {
     this._apiService,
     this._analyticsStore,
     this._remoteConfigStore,
+    this._prefs,
     LocaleStore localeStore,
   ) {
     fetchVPNLocations();
     reaction((_) => localeStore.currentLocale, (locale) {
-      if (searchKeyword.isNotEmpty) {
+      if (_searchKeyword.isNotEmpty) {
         setLocationKeyword('');
       }
     });
@@ -33,14 +35,18 @@ abstract class _LocationsStore with Store {
   final ApiService _apiService;
   final AnalyticsStore _analyticsStore;
   final RemoteConfigStore _remoteConfigStore;
+  final SharedPreferenceService _prefs;
 
   final Debouncer _debouncer = Debouncer();
 
   @readonly
   ObservableFuture<VPNLocations> _vpnLocationsFuture = ObservableFuture.value(const VPNLocations());
 
-  @observable
-  String searchKeyword = '';
+  @readonly
+  String _searchKeyword = '';
+
+  @readonly
+  late IPType _ipType = _prefs.getIPType() ?? IPType.residential;
 
   @readonly
   List<VPNLocation> _recentLocations = [];
@@ -85,7 +91,7 @@ abstract class _LocationsStore with Store {
     final dataCenterCountries = _remoteConfigStore.dataCenterCountries;
 
     Future<VPNLocations> fetch() async {
-      final locations = await _apiService.fetchVPNLocations(keyword: searchKeyword);
+      final locations = await _apiService.fetchVPNLocations(keyword: _searchKeyword);
       return locations.withDCCountries(dataCenterCountries);
     }
 
@@ -97,7 +103,7 @@ abstract class _LocationsStore with Store {
   @action
   Future<void> fetchRecentLocations() async {
     final vpnLocations = await _vpnLocationsFuture;
-    final locations = await _apiService.getRecentLocations(keyword: searchKeyword);
+    final locations = await _apiService.getRecentLocations(keyword: _searchKeyword);
     _recentLocations = locations
         .where(
           (code) =>
@@ -112,6 +118,7 @@ abstract class _LocationsStore with Store {
   Future<void> addRecentLocation(VPNLocation location) async {
     await _apiService.addRecentLocation(location);
     _recentLocations = {location, ..._recentLocations}.toList();
+    _ipType = location.ipType;
     await fetchRecentLocations();
   }
 
@@ -119,14 +126,20 @@ abstract class _LocationsStore with Store {
   void setLocationKeyword(String text, [Duration duration = const Duration(milliseconds: 500)]) {
     _debouncer.debounce(
       () async {
-        searchKeyword = text.toLowerCase().trim();
+        _searchKeyword = text.toLowerCase().trim();
         _analyticsStore
-          ..setSearchEvent(searchKeyword)
+          ..setSearchEvent(_searchKeyword)
           ..logEvent(AnalyticsEvent.search);
         await fetchVPNLocations();
       },
       duration,
     );
+  }
+
+  @action
+  Future<void> setIPType(IPType type) async {
+    _ipType = type;
+    await _prefs.setIPType(type);
   }
 
   void dispose() => _debouncer.dispose();

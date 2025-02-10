@@ -3,19 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class _HomeState extends ChangeNotifier {
-  _HomeState(this._ipType);
+  _HomeState();
 
   final typeSwitcherKey = GlobalKey();
   final panelMaxExtent = .8;
   final panelMinExtent = .45;
 
-  IPType _ipType;
   bool _isPanelOpen = false;
 
   PanelController? panelController;
@@ -26,15 +23,6 @@ class _HomeState extends ChangeNotifier {
   bool get isDraggable => isMobile();
 
   bool get isPadded => isMobile();
-
-  IPType get ipType => _ipType;
-
-  set ipType(IPType value) {
-    if (_ipType != value) {
-      _ipType = value;
-      notifyListeners();
-    }
-  }
 
   ScrollController? get scrollController => _scrollController;
 
@@ -127,10 +115,5 @@ class _HomeState extends ChangeNotifier {
 }
 
 final homeStateProvider = ChangeNotifierProvider.autoDispose(
-  (ref) {
-    final vpnStore = ref.watch(vpnStorePOD);
-    return _HomeState(
-      vpnStore.connectingLocation?.ipType ?? vpnStore.location?.ipType ?? IPType.residential,
-    );
-  },
+  (ref) => _HomeState(),
 );

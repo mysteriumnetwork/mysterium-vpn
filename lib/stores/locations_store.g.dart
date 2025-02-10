@@ -48,18 +48,40 @@ mixin _$LocationsStore on _LocationsStore, Store {
     });
   }
 
-  late final _$searchKeywordAtom = Atom(name: '_LocationsStore.searchKeyword', context: context);
+  late final _$_searchKeywordAtom = Atom(name: '_LocationsStore._searchKeyword', context: context);
 
-  @override
   String get searchKeyword {
-    _$searchKeywordAtom.reportRead();
-    return super.searchKeyword;
+    _$_searchKeywordAtom.reportRead();
+    return super._searchKeyword;
   }
 
   @override
-  set searchKeyword(String value) {
-    _$searchKeywordAtom.reportWrite(value, super.searchKeyword, () {
-      super.searchKeyword = value;
+  String get _searchKeyword => searchKeyword;
+
+  @override
+  set _searchKeyword(String value) {
+    _$_searchKeywordAtom.reportWrite(value, super._searchKeyword, () {
+      super._searchKeyword = value;
+    });
+  }
+
+  late final _$_ipTypeAtom = Atom(name: '_LocationsStore._ipType', context: context);
+
+  IPType get ipType {
+    _$_ipTypeAtom.reportRead();
+    return super._ipType;
+  }
+
+  @override
+  IPType get _ipType => ipType;
+
+  bool __ipTypeIsInitialized = false;
+
+  @override
+  set _ipType(IPType value) {
+    _$_ipTypeAtom.reportWrite(value, __ipTypeIsInitialized ? super._ipType : null, () {
+      super._ipType = value;
+      __ipTypeIsInitialized = true;
     });
   }
 
@@ -105,6 +127,13 @@ mixin _$LocationsStore on _LocationsStore, Store {
     return _$addRecentLocationAsyncAction.run(() => super.addRecentLocation(location));
   }
 
+  late final _$setIPTypeAsyncAction = AsyncAction('_LocationsStore.setIPType', context: context);
+
+  @override
+  Future<void> setIPType(IPType type) {
+    return _$setIPTypeAsyncAction.run(() => super.setIPType(type));
+  }
+
   late final _$_LocationsStoreActionController =
       ActionController(name: '_LocationsStore', context: context);
 
@@ -122,7 +151,6 @@ mixin _$LocationsStore on _LocationsStore, Store {
   @override
   String toString() {
     return '''
-searchKeyword: ${searchKeyword},
 allLocations: ${allLocations},
 topLocations: ${topLocations},
 dcLocations: ${dcLocations}
