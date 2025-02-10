@@ -14,6 +14,13 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
   @override
   String get id =>
       (_$idComputed ??= Computed<String>(() => super.id, name: '_PurchasableProduct.id')).value;
+  Computed<int>? _$introductoryDiscountPercentageComputed;
+
+  @override
+  int get introductoryDiscountPercentage => (_$introductoryDiscountPercentageComputed ??=
+          Computed<int>(() => super.introductoryDiscountPercentage,
+              name: '_PurchasableProduct.introductoryDiscountPercentage'))
+      .value;
   Computed<double>? _$productPriceComputed;
 
   @override
@@ -73,11 +80,26 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
     });
   }
 
+  late final _$_PurchasableProductActionController =
+      ActionController(name: '_PurchasableProduct', context: context);
+
+  @override
+  int periodDiscountPercentage(PurchasableProduct otherProduct) {
+    final _$actionInfo = _$_PurchasableProductActionController.startAction(
+        name: '_PurchasableProduct.periodDiscountPercentage');
+    try {
+      return super.periodDiscountPercentage(otherProduct);
+    } finally {
+      _$_PurchasableProductActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 status: ${status},
 id: ${id},
+introductoryDiscountPercentage: ${introductoryDiscountPercentage},
 productPrice: ${productPrice},
 duration: ${duration},
 billedPerMonth: ${billedPerMonth},
