@@ -369,6 +369,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailed": "无法获取您的订阅",
     "fetchSubsFailedDesc": "您的订阅出了点问题。请再试一次。",
     "fieldRequired": "此字段是必需的",
+    "first": "第一",
     "fr": "法语",
     "france": "法国",
     "freeTrialDesc": "保护您的连接，解锁内容，并控制您的在线隐私。",
@@ -439,6 +440,7 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionAction": "获取订阅",
     "noSubscriptionTitle": "您没有有效的订阅",
     "notificationsDesktop": "我们目前正在通过我们的网站处理我们的通知。请访问我们的网站进行更改。",
+    "now": "现在",
     "off": "离开",
     "on": "在",
     "openBillingPlans": "打开计费计划",
@@ -522,6 +524,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionActive": "好消息！您的订阅现已激活。🎉?",
     "subscriptionDesktop": "我们目前正在通过我们的网站处理 macOS/Windows 上的订阅计划。请访问我们的网站订阅我们的计划。",
     "subscriptionProcessCanceled": "您尚未完成对订阅的更改。😕?",
+    "subscriptionRenewalDisclaimer": "订阅随后以 {price} 续订",
     "subscriptionVerificationFailed": "重试验证",
     "subscripton": "订阅",
     "system": "系统主题",
@@ -542,6 +545,7 @@ class CodegenLoader extends AssetLoader {
     "unableToConnectToPaymentProcesor": "无法连接到支付处理器！请再试一次。",
     "unableToGetPlans": "无法获取订阅计划！请再试一次。",
     "upload": "上传",
+    "was": "原价",
     "weNeedPermission": "我们需要您的许可",
     "year": "年",
     "yearly": "每年",
@@ -924,6 +928,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailed": "Abonelik getirilemiyor",
     "fetchSubsFailedDesc": "Abonelik paketinizi bulmakta sorun yaşıyoruz. ",
     "fieldRequired": "Bu alan gereklidir",
+    "first": "ilk",
     "fr": "Fransızca",
     "france": "Fransa",
     "freeTrialDesc":
@@ -1000,6 +1005,7 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionAction": "Abonelik edinin",
     "noSubscriptionTitle": "Aktif bir aboneliğiniz yok",
     "notificationsDesktop": "Şu anda bildirimlerimizi web sitemiz üzerinden yapıyoruz. ",
+    "now": "Şimdi",
     "off": "Kapalı",
     "on": "Açık",
     "openBillingPlans": "Faturalandırma planlarını aç",
@@ -1090,6 +1096,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionDesktop":
         "Şu anda web sitemiz aracılığıyla macos/windows abonelik planımızı yönetiyoruz. ",
     "subscriptionProcessCanceled": "Abonelik değişiklik işlemini yarıda bıraktın. 😕",
+    "subscriptionRenewalDisclaimer": "Abonelik bundan sonra {price} olarak yenilenir",
     "subscriptionVerificationFailed": "Doğrulamayı Yeniden Dene",
     "subscripton": "abonelik",
     "system": "Sistem Teması",
@@ -1110,6 +1117,7 @@ class CodegenLoader extends AssetLoader {
     "unableToConnectToPaymentProcesor": "Ödeme işlemcisine bağlanılamıyor! ",
     "unableToGetPlans": "Abonelik planları alınamıyor! ",
     "upload": "Yükleme",
+    "was": "Önce",
     "weNeedPermission": "İzninize ihtiyacımız var",
     "year": "yıl",
     "yearly": "yıllık",
@@ -1483,6 +1491,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailed": "サブスクリプションを取得できません",
     "fetchSubsFailedDesc": "サブスクリプションで問題が発生しました。もう一度試してください。",
     "fieldRequired": "この項目は必須です",
+    "first": "最初",
     "fr": "フランス語",
     "france": "フランス",
     "freeTrialDesc": "あなたの接続を保護し、コンテンツのブロックを解除し、オンラインプライバシーをコントロールしましょう。",
@@ -1554,6 +1563,7 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionAction": "サブスクリプションを取得する",
     "noSubscriptionTitle": "アクティブなサブスクリプションがありません",
     "notificationsDesktop": "現在、当社のウェブサイトを通じて通知を処理しています。変更するには当社の Web サイトにアクセスしてください。",
+    "now": "今なら",
     "off": "オフ",
     "on": "の上",
     "openBillingPlans": "オープンな料金プラン",
@@ -1639,6 +1649,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionDesktop":
         "現在、macos/windows のサブスクリプションプランは Web サイトを通じてお取り扱いしています。プランを購読するには、当社の Web サイトにアクセスしてください。",
     "subscriptionProcessCanceled": "サブスクリプションの変更が完了していません。😕?",
+    "subscriptionRenewalDisclaimer": "サブスクリプションはその後 {price} で更新されます",
     "subscriptionVerificationFailed": "検証の再試行",
     "subscripton": "サブスクリプション",
     "system": "システムテーマ",
@@ -1659,6 +1670,7 @@ class CodegenLoader extends AssetLoader {
     "unableToConnectToPaymentProcesor": "支払いプロセッサに接続できません! もう一度試してください。",
     "unableToGetPlans": "サブスクリプションプランを取得できません! もう一度試してください。",
     "upload": "アップロード",
+    "was": "以前は",
     "weNeedPermission": "あなたの許可が必要です",
     "year": "年",
     "yearly": "毎年",
@@ -2051,6 +2063,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc":
         "Bei Ihrem Abonnement ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
     "fieldRequired": "Dieses Feld ist erforderlich",
+    "first": "erste",
     "fr": "Französisch",
     "france": "Frankreich",
     "freeTrialDesc":
@@ -2131,6 +2144,7 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionTitle": "Sie haben kein aktives Abonnement",
     "notificationsDesktop":
         "Wir bearbeiten unsere Benachrichtigungen derzeit über unsere Website. Bitte besuchen Sie unsere Website, um Änderungen vorzunehmen.",
+    "now": "Jetzt",
     "off": "Aus",
     "on": "An",
     "openBillingPlans": "Offene Abrechnungspläne",
@@ -2225,6 +2239,7 @@ class CodegenLoader extends AssetLoader {
         "Wir verwalten derzeit unser Abonnement für MacOS/Windows über unsere Website. Bitte besuchen Sie unsere Website, um unsere Abos zu abonnieren.",
     "subscriptionProcessCanceled":
         "Sie haben die Änderungen an Ihrem Abonnement nicht abgeschlossen.😕",
+    "subscriptionRenewalDisclaimer": "Abonnement verlängert sich danach für {price}",
     "subscriptionVerificationFailed": "Überprüfung erneut versuchen",
     "subscripton": "Abonnement",
     "system": "Systemmotiv",
@@ -2247,6 +2262,7 @@ class CodegenLoader extends AssetLoader {
     "unableToGetPlans":
         "Abonnementpläne können nicht abgerufen werden! Bitte versuchen Sie es erneut.",
     "upload": "Hochladen",
+    "was": "War",
     "weNeedPermission": "Wir benötigen Ihre Erlaubnis",
     "year": "Jahr",
     "yearly": "jährlich",
@@ -2634,6 +2650,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc":
         "Não conseguimos buscar seu pacote de assinatura. Clique no botão abaixo para tentar novamente.",
     "fieldRequired": "Este campo é obrigatório",
+    "first": "primeiro",
     "fr": "Francês",
     "france": "França",
     "freeTrialDesc": "Proteja sua conexão, desbloqueie conteúdo e controle sua privacidade online.",
@@ -2712,6 +2729,7 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionTitle": "Você não tem uma assinatura ativa",
     "notificationsDesktop":
         "No momento, estamos lidando com nossas notificações através do nosso site. Visite nosso site para fazer alterações.",
+    "now": "Agora",
     "off": "Desligado",
     "on": "Sobre",
     "openBillingPlans": "Planos de cobrança aberta",
@@ -2804,6 +2822,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionDesktop":
         "No momento, estamos lidando com nosso plano de assinatura no MacOS/Windows através do nosso site. Visite nosso site para assinar nossos planos.",
     "subscriptionProcessCanceled": "Processo de assinatura cancelado",
+    "subscriptionRenewalDisclaimer": "A assinatura é renovada por {price} a partir de então",
     "subscriptionVerificationFailed": "VERIFICAÇÃO DE ALTIMAÇÃO",
     "subscripton": "Inscrição",
     "system": "Tema do sistema",
@@ -2825,6 +2844,7 @@ class CodegenLoader extends AssetLoader {
         "Incapaz de conectar -se ao Processor de Pagamento! Por favor, tente novamente.",
     "unableToGetPlans": "Incapaz de obter planos de assinatura! Por favor, tente novamente.",
     "upload": "Carregar",
+    "was": "Era",
     "weNeedPermission": "Precisamos da sua permissão",
     "year": "ano",
     "yearly": "anual",
@@ -3211,6 +3231,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailed": "Unable to get your subscription",
     "fetchSubsFailedDesc": "Something went wrong with your subscription. Please try again.",
     "fieldRequired": "This field is required",
+    "first": "first",
     "fr": "French",
     "france": "France",
     "freeTrialDesc":
@@ -3287,6 +3308,7 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionTitle": "You don't have an active subscription",
     "notificationsDesktop":
         "We are currently handling our notifications through our website. Please visit our website to make changes.",
+    "now": "Now",
     "off": "Off",
     "on": "On",
     "openBillingPlans": "Open billing plans",
@@ -3379,6 +3401,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionDesktop":
         "We are currently handling our subscription plan on macos/windows through our website. Please visit our website to subscribe to our plans.",
     "subscriptionProcessCanceled": "You didn't complete the changes to your subscription.😕",
+    "subscriptionRenewalDisclaimer": "Subscription renews at {price} thereafter",
     "subscriptionVerificationFailed": "Retry Verification",
     "subscripton": "Subscription",
     "system": "System Theme",
@@ -3400,6 +3423,7 @@ class CodegenLoader extends AssetLoader {
         "Unable to connect to the payment processor! Please try again.",
     "unableToGetPlans": "Unable to get subscription plans! Please try again.",
     "upload": "Upload",
+    "was": "Was",
     "weNeedPermission": "We need your permission",
     "year": "year",
     "yearly": "yearly",
@@ -3791,6 +3815,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailed": "Impossibile ottenere l'abbonamento",
     "fetchSubsFailedDesc": "Qualcosa è andato storto con il tuo abbonamento. Per favore riprova.",
     "fieldRequired": "Questo campo è obbligatorio",
+    "first": "primo",
     "fr": "Francese",
     "france": "Francia",
     "freeTrialDesc":
@@ -3869,6 +3894,7 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionTitle": "Non hai un abbonamento attivo",
     "notificationsDesktop":
         "Attualmente stiamo gestendo le nostre notifiche attraverso il nostro sito web. Si prega di visitare il nostro sito Web per apportare modifiche.",
+    "now": "Ora",
     "off": "Spento",
     "on": "SU",
     "openBillingPlans": "Apri i piani di fatturazione",
@@ -3961,6 +3987,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionDesktop":
         "Attualmente stiamo gestendo il nostro piano di abbonamento su macos/windows attraverso il nostro sito web. Visita il nostro sito Web per iscriverti ai nostri piani.",
     "subscriptionProcessCanceled": "Non hai completato le modifiche al tuo abbonamento.😕",
+    "subscriptionRenewalDisclaimer": "L’abbonamento si rinnova a {price} successivamente",
     "subscriptionVerificationFailed": "Riprova la verifica",
     "subscripton": "Sottoscrizione",
     "system": "Tema di sistema",
@@ -3982,6 +4009,7 @@ class CodegenLoader extends AssetLoader {
         "Impossibile connettersi al processore di pagamento! Per favore riprova.",
     "unableToGetPlans": "Impossibile ottenere piani di abbonamento! Per favore riprova.",
     "upload": "Upload",
+    "was": "Era",
     "weNeedPermission": "Abbiamo bisogno del tuo permesso",
     "year": "anno",
     "yearly": "annuale",
@@ -4376,6 +4404,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc":
         "Nous n'avons pas pu récupérer votre package d'abonnement. Cliquez sur le bouton ci-dessous pour réessayer.",
     "fieldRequired": "Ce champ est obligatoire",
+    "first": "premier",
     "fr": "Français",
     "france": "France",
     "freeTrialDesc":
@@ -4454,6 +4483,7 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionTitle": "Vous n'avez pas d'abonnement actif",
     "notificationsDesktop":
         "Nous gérons actuellement nos notifications via notre site Web. Veuillez visiter notre site Web pour apporter des modifications.",
+    "now": "Maintenant",
     "off": "Désactivé",
     "on": "Sur",
     "openBillingPlans": "Plans de facturation ouverts",
@@ -4547,6 +4577,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionDesktop":
         "Nous traitons actuellement notre plan d'abonnement sur MacOS / Windows via notre site Web. Veuillez visiter notre site Web pour vous abonner à nos plans.",
     "subscriptionProcessCanceled": "Processus d'abonnement annulé.😕",
+    "subscriptionRenewalDisclaimer": "L’abonnement se renouvelle à {price} par la suite",
     "subscriptionVerificationFailed": "Vérification de réessayer",
     "subscripton": "Abonnement",
     "system": "Thème du système",
@@ -4568,6 +4599,7 @@ class CodegenLoader extends AssetLoader {
         "Impossible de se connecter au Processeur de paiement! Veuillez réessayer.",
     "unableToGetPlans": "Impossible d'obtenir des plans d'abonnement! Veuillez réessayer.",
     "upload": "Télécharger",
+    "was": "Était",
     "weNeedPermission": "Nous avons besoin de votre autorisation",
     "year": "année",
     "yearly": "annuelle",
@@ -4955,6 +4987,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailed": "Tidak bisa mendapatkan langganan Anda",
     "fetchSubsFailedDesc": "Ada yang salah dengan langganan Anda. Silakan coba lagi.",
     "fieldRequired": "Bagian ini diperlukan",
+    "first": "pertama",
     "fr": "Perancis",
     "france": "Perancis",
     "freeTrialDesc": "Amankan koneksi Anda, buka konten, dan kendalikan privasi online Anda.",
@@ -5032,6 +5065,7 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionTitle": "Anda tidak memiliki langganan aktif",
     "notificationsDesktop":
         "Kami sedang menangani pemberitahuan kami melalui situs web kami. Silakan kunjungi situs web kami untuk melakukan perubahan.",
+    "now": "Sekarang",
     "off": "Mati",
     "on": "Pada",
     "openBillingPlans": "Buka paket penagihan",
@@ -5123,6 +5157,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionDesktop":
         "Kami sedang menangani paket langganan kami di macOS/windows melalui situs web kami. Silakan kunjungi situs web kami untuk berlangganan paket kami.",
     "subscriptionProcessCanceled": "Anda belum menyelesaikan perubahan pada langganan Anda.😕",
+    "subscriptionRenewalDisclaimer": "Langganan diperpanjang seharga {price} setelah itu",
     "subscriptionVerificationFailed": "Ulangi Verifikasi",
     "subscripton": "Berlangganan",
     "system": "Tema Sistem",
@@ -5144,6 +5179,7 @@ class CodegenLoader extends AssetLoader {
         "Tidak dapat terhubung ke pemroses pembayaran! Silakan coba lagi.",
     "unableToGetPlans": "Tidak bisa mendapatkan paket langganan! Silakan coba lagi.",
     "upload": "Mengunggah",
+    "was": "Sebelumnya",
     "weNeedPermission": "Kami membutuhkan izin Anda",
     "year": "tahun",
     "yearly": "tahunan",
@@ -5533,6 +5569,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailed": "No se puede obtener tu suscripción",
     "fetchSubsFailedDesc": "Algo salió mal con tu suscripción. Inténtalo de nuevo.",
     "fieldRequired": "Este campo es obligatorio",
+    "first": "primero",
     "fr": "Francés",
     "france": "Francia",
     "freeTrialDesc":
@@ -5612,6 +5649,7 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionTitle": "No tienes una suscripción activa",
     "notificationsDesktop":
         "Actualmente estamos manejando nuestras notificaciones a través de nuestro sitio web. Visita nuestro sitio web para realizar cambios.",
+    "now": "Ahora",
     "off": "Apagado",
     "on": "En",
     "openBillingPlans": "Abrir planes de facturación",
@@ -5708,6 +5746,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionDesktop":
         "Actualmente estamos manejando nuestro plan de suscripción en macos/windows a través de nuestro sitio web. Visita nuestro sitio web para suscribirte a nuestros planes.",
     "subscriptionProcessCanceled": "No completaste los cambios en tu suscripción.😕",
+    "subscriptionRenewalDisclaimer": "La suscripción se renueva a {price} a partir de entonces",
     "subscriptionVerificationFailed": "Reintentar Verificación",
     "subscripton": "Suscripción",
     "system": "Tema del sistema",
@@ -5729,6 +5768,7 @@ class CodegenLoader extends AssetLoader {
         "¡No se puede conectar al procesador de pagos! Inténtalo de nuevo.",
     "unableToGetPlans": "¡No se pueden obtener planes de suscripción! Inténtalo de nuevo.",
     "upload": "Subir",
+    "was": "Antes",
     "weNeedPermission": "Necesitamos tu permiso",
     "year": "año",
     "yearly": "anual",
@@ -6112,6 +6152,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailed": "غير قادر على الحصول على اشتراكك",
     "fetchSubsFailedDesc": "حدث خطأ ما في اشتراكك. حاول مرة أخرى.",
     "fieldRequired": "هذه الخانة مطلوبه",
+    "first": "أول",
     "fr": "فرنسي",
     "france": "فرنسا",
     "freeTrialDesc": "أمن اتصالك، افتح المحتوى المحظور، وتحكم في خصوصيتك على الإنترنت.",
@@ -6187,6 +6228,7 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionTitle": "ليس لديك اشتراك نشط",
     "notificationsDesktop":
         "نحن نتعامل حاليًا مع إشعاراتنا من خلال موقعنا على الإنترنت. يرجى زيارة موقعنا على شبكة الإنترنت لإجراء تغييرات.",
+    "now": "الآن",
     "off": "عن",
     "on": "على",
     "openBillingPlans": "فتح خطط الفواتير",
@@ -6278,6 +6320,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionDesktop":
         "نحن نتعامل حاليًا مع خطة الاشتراك الخاصة بنا على macos/windows من خلال موقعنا على الويب. يرجى زيارة موقعنا على شبكة الإنترنت للاشتراك في خططنا.",
     "subscriptionProcessCanceled": "لم تكمل التغييرات على اشتراكك.",
+    "subscriptionRenewalDisclaimer": "يتم تجديد الاشتراك بسعر {price} بعد ذلك",
     "subscriptionVerificationFailed": "أعد محاولة التحقق",
     "subscripton": "الاشتراك",
     "system": "موضوع النظام",
@@ -6298,6 +6341,7 @@ class CodegenLoader extends AssetLoader {
     "unableToConnectToPaymentProcesor": "غير قادر على الاتصال بمعالج الدفع! حاول مرة أخرى.",
     "unableToGetPlans": "غير قادر على الحصول على خطط الاشتراك! حاول مرة أخرى.",
     "upload": "رفع",
+    "was": "كان",
     "weNeedPermission": "نحن بحاجة إلى إذنك",
     "year": "سنة",
     "yearly": "سنوي",

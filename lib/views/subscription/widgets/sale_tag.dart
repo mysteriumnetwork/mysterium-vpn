@@ -59,12 +59,13 @@ class SaleTag extends HookWidget {
                                 color: Palette.white,
                               ),
                             ),
-                            EasyText(
-                              '-$discountPercentage%',
-                              fontWeight: FontWeight.w700,
-                              fontSize: 36,
-                              color: Palette.white,
-                            ),
+                            if (discountPercentage > 0)
+                              EasyText(
+                                '-$discountPercentage%',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 36,
+                                color: Palette.white,
+                              ),
                           ],
                         ),
                       ),

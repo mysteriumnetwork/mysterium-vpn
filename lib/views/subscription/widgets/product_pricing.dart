@@ -24,11 +24,11 @@ class ProductPricing extends HookConsumerWidget {
     final configStore = ref.watch(remoteConfigStorePOD);
     final subscriptionStore = ref.watch(subscriptionStorePOD);
 
-    final monthlyPrice = useComputedValue(() => subscriptionStore.monthlyProduct.rawPrice);
-    final showDiscount = useMemoized(() => product.isDiscounted(monthlyPrice), [
-      monthlyPrice,
-      product,
-    ]);
+    final monthlyProduct = useComputedValue(() => subscriptionStore.monthlyProduct);
+    final discountPercentage = useComputedValue(
+      () => product.periodDiscountPercentage(monthlyProduct),
+      [monthlyProduct],
+    );
 
     final pricingMonthly = useComputedValue(() => configStore.pricingMonthly);
 
@@ -37,6 +37,7 @@ class ProductPricing extends HookConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
+          spacing: 8,
           children: [
             Text(
               product.id.tr(),
@@ -45,18 +46,13 @@ class ProductPricing extends HookConsumerWidget {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(width: 8),
-            if (showDiscount)
-              DiscountTag(
-                monthlyRawPrice: monthlyPrice,
-                product: product,
-              ),
+            if (discountPercentage > 0) DiscountTag(discountPercentage: discountPercentage),
           ],
         ),
         if (pricingMonthly)
-          _MonthlyPricing(product: product, monthlyPrice: monthlyPrice)
+          _MonthlyPricing(product: product)
         else
-          _RegularPricing(monthlyPrice: monthlyPrice, product: product),
+          _RegularPricing(monthlyPrice: monthlyProduct.rawPrice, product: product),
       ],
     );
   }
@@ -171,13 +167,9 @@ class _RegularPricing extends HookWidget {
 }
 
 class _MonthlyPricing extends HookWidget {
-  const _MonthlyPricing({
-    required this.product,
-    required this.monthlyPrice,
-  });
+  const _MonthlyPricing({required this.product});
 
   final PurchasableProduct product;
-  final double monthlyPrice;
 
   @override
   Widget build(BuildContext context) {
