@@ -23,10 +23,11 @@ class DataCenterBanner extends HookConsumerWidget {
     Future<void> handlePressed() async {
       analyticsStore.logBannerClick(BannerType.datacenter);
 
+      final locationsStore = ref.read(locationsStorePOD);
+      await locationsStore.setIPType(IPType.datacenter);
+
       final homeState = ref.read(homeStateProvider);
-      homeState
-        ..ipType = IPType.datacenter
-        ..show(homeState.typeSwitcherKey);
+      homeState.show(homeState.typeSwitcherKey);
 
       bannersStore.setShown(BannerType.datacenter);
     }
