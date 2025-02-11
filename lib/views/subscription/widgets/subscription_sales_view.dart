@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
@@ -15,15 +16,8 @@ import 'package:mysterium_vpn/views/subscription/widgets/discount_tag.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/product_picker_dialog.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/sale_tag.dart';
 
-class SubscriptionFormVariantE extends HookConsumerWidget {
-  const SubscriptionFormVariantE({
-    required this.variant,
-    required this.subscribeToPackage,
-    super.key,
-  });
-
-  final String variant;
-  final void Function(String selectedProductId) subscribeToPackage;
+class SubscriptionSalesView extends HookConsumerWidget {
+  const SubscriptionSalesView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,6 +26,8 @@ class SubscriptionFormVariantE extends HookConsumerWidget {
     final isLoading = useComputedValue(() => subscriptionStore.isLoading);
     final product = useComputedValue(() => subscriptionStore.highlightedProduct);
     final products = useComputedValue(() => subscriptionStore.products);
+
+    final handleSubscribeToProduct = useHandleSubscribeToProduct();
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -60,7 +56,7 @@ class SubscriptionFormVariantE extends HookConsumerWidget {
         SubscriptionButton(
           onPressed: () {
             analyticsStore.logEvent(AnalyticsEvent.clickLetsgo);
-            subscribeToPackage(product.id);
+            handleSubscribeToProduct(product.id);
           },
           isLoading: isLoading,
           label: LocaleKeys.letsGoBtn.tr(),
@@ -72,7 +68,7 @@ class SubscriptionFormVariantE extends HookConsumerWidget {
             shownProductPickerDialog(
               context: context,
               products: products,
-              subscribeToPackage: subscribeToPackage,
+              subscribeToPackage: handleSubscribeToProduct,
               seeAllPlans: true,
             );
           },
