@@ -26,7 +26,7 @@ class SubscriptionMobileScaffold extends HookConsumerWidget {
 
     final showSalesPage = useComputedValue(
       () =>
-          remoteConfigStore.showSalesPage &&
+          remoteConfigStore.showSalesView &&
           subscriptionStore.highlightedProduct.hasIntroductoryPrice,
     );
 
