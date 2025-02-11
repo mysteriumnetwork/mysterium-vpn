@@ -137,11 +137,11 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$dataCenterCountriesComputed ??= Computed<List<String>>(() => super.dataCenterCountries,
               name: 'RemoteConfigStoreBase.dataCenterCountries'))
           .value;
-  Computed<bool>? _$showSalesPageComputed;
+  Computed<bool>? _$showSalesViewComputed;
 
   @override
-  bool get showSalesPage => (_$showSalesPageComputed ??=
-          Computed<bool>(() => super.showSalesPage, name: 'RemoteConfigStoreBase.showSalesPage'))
+  bool get showSalesView => (_$showSalesViewComputed ??=
+          Computed<bool>(() => super.showSalesView, name: 'RemoteConfigStoreBase.showSalesView'))
       .value;
 
   late final _$configFutureAtom =
@@ -194,7 +194,7 @@ showVpnPrivacyPolicyPage: ${showVpnPrivacyPolicyPage},
 pricingMonthly: ${pricingMonthly},
 mqttExperiment: ${mqttExperiment},
 dataCenterCountries: ${dataCenterCountries},
-showSalesPage: ${showSalesPage}
+showSalesView: ${showSalesView}
     ''';
   }
 }

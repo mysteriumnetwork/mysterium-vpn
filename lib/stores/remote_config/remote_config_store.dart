@@ -24,7 +24,7 @@ enum _FeatureToggleKey {
   pricingMonthly,
   mqttExperiment,
   dataCenterCountries,
-  showSalesPage,
+  showSalesView,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -205,9 +205,9 @@ abstract class RemoteConfigStoreBase with Store {
   }
 
   @computed
-  bool get showSalesPage {
-    if (config.containsKey(_FeatureToggleKey.showSalesPage.name)) {
-      return config[_FeatureToggleKey.showSalesPage.name] as bool;
+  bool get showSalesView {
+    if (config.containsKey(_FeatureToggleKey.showSalesView.name)) {
+      return config[_FeatureToggleKey.showSalesView.name] as bool;
     }
     return false;
   }
