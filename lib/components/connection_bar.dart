@@ -183,7 +183,7 @@ class _StatusItem extends StatelessWidget {
                     _ => const SizedBox.shrink(),
                   },
                   const SizedBox(width: 4),
-                  Flexible(child: EasyText(status.name.tr(), fontSize: 12)),
+                  Flexible(child: EasyText(status.name.tr(), fontSize: 12, color: Colors.white)),
                 ],
               ),
             ),
