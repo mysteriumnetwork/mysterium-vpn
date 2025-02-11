@@ -14,38 +14,50 @@ void main() {
     });
 
     test('executes function after specified duration', () async {
-      bool executed = false;
-      debouncer.debounce(() {
-        executed = true;
-      }, Duration(milliseconds: 100));
+      var executed = false;
+      debouncer.debounce(
+        () {
+          executed = true;
+        },
+        const Duration(milliseconds: 100),
+      );
 
-      await Future.delayed(Duration(milliseconds: 150));
+      await Future.delayed(const Duration(milliseconds: 150));
       expect(executed, true);
     });
 
     test('cancels previous timer if called again within duration', () async {
-      bool executed = false;
-      debouncer.debounce(() {
-        executed = true;
-      }, Duration(milliseconds: 100));
+      var executed = false;
+      debouncer
+        ..debounce(
+          () {
+            executed = true;
+          },
+          const Duration(milliseconds: 100),
+        )
+        ..debounce(
+          () {
+            executed = true;
+          },
+          const Duration(milliseconds: 100),
+        );
 
-      debouncer.debounce(() {
-        executed = true;
-      }, Duration(milliseconds: 100));
-
-      await Future.delayed(Duration(milliseconds: 150));
+      await Future.delayed(const Duration(milliseconds: 150));
       expect(executed, true);
     });
 
     test('does not execute function if cancelled before duration', () async {
-      bool executed = false;
-      debouncer.debounce(() {
-        executed = true;
-      }, Duration(milliseconds: 100));
+      var executed = false;
+      debouncer
+        ..debounce(
+          () {
+            executed = true;
+          },
+          const Duration(milliseconds: 100),
+        )
+        ..dispose();
 
-      debouncer.dispose();
-
-      await Future.delayed(Duration(milliseconds: 150));
+      await Future.delayed(const Duration(milliseconds: 150));
       expect(executed, false);
     });
   });

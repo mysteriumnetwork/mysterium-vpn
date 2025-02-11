@@ -32,16 +32,11 @@ void main() {
 
     group('banners', () {
       test('returns all banners when no banners are shown and not subscribed', () async {
-        print('W1');
         when(mockApiService.getShownBanners()).thenAnswer((_) async => <BannerType>[]);
         await Future.delayed(Duration.zero); // Allow MobX to react
 
-        print('W2');
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
-        print('W3');
         when(mockRemoteConfigStore.dataCenterCountries).thenReturn([]);
-
-        print(await mockApiService.getShownBanners());
 
         expect(bannersStore.banners, BannerType.values);
       });
@@ -58,8 +53,10 @@ void main() {
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
         when(mockRemoteConfigStore.dataCenterCountries).thenReturn([]);
 
-        expect(bannersStore.banners,
-            BannerType.values.where((b) => b != BannerType.subscription).toList());
+        expect(
+          bannersStore.banners,
+          BannerType.values.where((b) => b != BannerType.subscription).toList(),
+        );
       });
 
       test('excludes subscription banner when subscribed', () {
@@ -67,8 +64,10 @@ void main() {
         when(mockSubscriptionStore.isSubscribed).thenReturn(true);
         when(mockRemoteConfigStore.dataCenterCountries).thenReturn([]);
 
-        expect(bannersStore.banners,
-            BannerType.values.where((b) => b != BannerType.subscription).toList());
+        expect(
+          bannersStore.banners,
+          BannerType.values.where((b) => b != BannerType.subscription).toList(),
+        );
       });
 
       test('excludes datacenter banner when dataCenterCountries is empty', () {
@@ -76,8 +75,10 @@ void main() {
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
         when(mockRemoteConfigStore.dataCenterCountries).thenReturn([]);
 
-        expect(bannersStore.banners,
-            BannerType.values.where((b) => b != BannerType.datacenter).toList());
+        expect(
+          bannersStore.banners,
+          BannerType.values.where((b) => b != BannerType.datacenter).toList(),
+        );
       });
     });
   });
