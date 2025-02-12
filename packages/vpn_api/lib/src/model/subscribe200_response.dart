@@ -23,6 +23,7 @@ class Subscribe200Response {
     this.checkoutUrl,
     this.clientSecret,
     this.invoicePaid,
+    this.subscriptionId,
     required this.subscriptionBasePlanId,
     required this.subscriptionProductId,
   });
@@ -56,6 +57,13 @@ class Subscribe200Response {
   final bool? invoicePaid;
 
   @JsonKey(
+    name: r'subscription_id',
+    required: false,
+    includeIfNull: false,
+  )
+  final String? subscriptionId;
+
+  @JsonKey(
     name: r'subscription_base_plan_id',
     required: true,
     includeIfNull: false,
@@ -77,6 +85,7 @@ class Subscribe200Response {
           other.checkoutUrl == checkoutUrl &&
           other.clientSecret == clientSecret &&
           other.invoicePaid == invoicePaid &&
+          other.subscriptionId == subscriptionId &&
           other.subscriptionBasePlanId == subscriptionBasePlanId &&
           other.subscriptionProductId == subscriptionProductId;
 
@@ -86,6 +95,7 @@ class Subscribe200Response {
       (checkoutUrl == null ? 0 : checkoutUrl.hashCode) +
       (clientSecret == null ? 0 : clientSecret.hashCode) +
       (invoicePaid == null ? 0 : invoicePaid.hashCode) +
+      (subscriptionId == null ? 0 : subscriptionId.hashCode) +
       subscriptionBasePlanId.hashCode +
       subscriptionProductId.hashCode;
 

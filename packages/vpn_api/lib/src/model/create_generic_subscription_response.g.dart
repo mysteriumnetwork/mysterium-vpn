@@ -21,6 +21,7 @@ CreateGenericSubscriptionResponse _$CreateGenericSubscriptionResponseFromJson(
           checkoutUrl: $checkedConvert('checkout_url', (v) => v as String?),
           clientSecret: $checkedConvert('client_secret', (v) => v as String?),
           invoicePaid: $checkedConvert('invoice_paid', (v) => v as bool?),
+          subscriptionId: $checkedConvert('subscription_id', (v) => v as String?),
         );
         return val;
       },
@@ -28,7 +29,8 @@ CreateGenericSubscriptionResponse _$CreateGenericSubscriptionResponseFromJson(
         'gatewayId': 'gateway_id',
         'checkoutUrl': 'checkout_url',
         'clientSecret': 'client_secret',
-        'invoicePaid': 'invoice_paid'
+        'invoicePaid': 'invoice_paid',
+        'subscriptionId': 'subscription_id'
       },
     );
 
@@ -47,5 +49,6 @@ Map<String, dynamic> _$CreateGenericSubscriptionResponseToJson(
   writeNotNull('checkout_url', instance.checkoutUrl);
   writeNotNull('client_secret', instance.clientSecret);
   writeNotNull('invoice_paid', instance.invoicePaid);
+  writeNotNull('subscription_id', instance.subscriptionId);
   return val;
 }

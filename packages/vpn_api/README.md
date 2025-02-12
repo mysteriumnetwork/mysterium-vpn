@@ -101,6 +101,8 @@ Class | Method | HTTP request | Description
  - [ConnectionMessage](doc/ConnectionMessage.md)
  - [ConnectionMessageLocation](doc/ConnectionMessageLocation.md)
  - [Country](doc/Country.md)
+ - [CreateAdyenSubscriptionRequest](doc/CreateAdyenSubscriptionRequest.md)
+ - [CreateAdyenSubscriptionResponse](doc/CreateAdyenSubscriptionResponse.md)
  - [CreateAppleSubscriptionRequest](doc/CreateAppleSubscriptionRequest.md)
  - [CreateAppleSubscriptionResponse](doc/CreateAppleSubscriptionResponse.md)
  - [CreateGenericSubscriptionRequest](doc/CreateGenericSubscriptionRequest.md)
