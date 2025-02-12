@@ -17,6 +17,8 @@ doc/ConnectionLocation.md
 doc/ConnectionMessage.md
 doc/ConnectionMessageLocation.md
 doc/Country.md
+doc/CreateAdyenSubscriptionRequest.md
+doc/CreateAdyenSubscriptionResponse.md
 doc/CreateAppleSubscriptionRequest.md
 doc/CreateAppleSubscriptionResponse.md
 doc/CreateGenericSubscriptionRequest.md
@@ -91,6 +93,8 @@ lib/src/model/connection_location.dart
 lib/src/model/connection_message.dart
 lib/src/model/connection_message_location.dart
 lib/src/model/country.dart
+lib/src/model/create_adyen_subscription_request.dart
+lib/src/model/create_adyen_subscription_response.dart
 lib/src/model/create_apple_subscription_request.dart
 lib/src/model/create_apple_subscription_response.dart
 lib/src/model/create_generic_subscription_request.dart

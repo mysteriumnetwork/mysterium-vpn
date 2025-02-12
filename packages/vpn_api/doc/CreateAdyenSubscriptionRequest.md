@@ -1,4 +1,4 @@
-# vpn_api.model.SubscribeRequest
+# vpn_api.model.CreateAdyenSubscriptionRequest
 
 ## Load the model package
 ```dart
@@ -8,7 +8,6 @@ import 'package:vpn_api/api.dart';
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**gatewayId** | **String** |  | 
 **planId** | **String** |  | 
 **country** | **String** |  | 
 **state** | **String** |  | [optional] 
@@ -19,6 +18,7 @@ Name | Type | Description | Notes
 **cardHolder** | **String** |  | [optional] 
 **amount** | **num** |  | 
 **origin** | **String** |  | 
+**gatewayId** | **String** |  | 
 **paymentData** | **Object** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
