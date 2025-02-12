@@ -11,6 +11,8 @@ import 'package:vpn_api/src/model/connection_location.dart';
 import 'package:vpn_api/src/model/connection_message.dart';
 import 'package:vpn_api/src/model/connection_message_location.dart';
 import 'package:vpn_api/src/model/country.dart';
+import 'package:vpn_api/src/model/create_adyen_subscription_request.dart';
+import 'package:vpn_api/src/model/create_adyen_subscription_response.dart';
 import 'package:vpn_api/src/model/create_apple_subscription_request.dart';
 import 'package:vpn_api/src/model/create_apple_subscription_response.dart';
 import 'package:vpn_api/src/model/create_generic_subscription_request.dart';
@@ -106,6 +108,10 @@ ReturnType deserialize<ReturnType, BaseType>(dynamic value, String targetType,
       return ConnectionMessageLocation.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'Country':
       return Country.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'CreateAdyenSubscriptionRequest':
+      return CreateAdyenSubscriptionRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'CreateAdyenSubscriptionResponse':
+      return CreateAdyenSubscriptionResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'CreateAppleSubscriptionRequest':
       return CreateAppleSubscriptionRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'CreateAppleSubscriptionResponse':

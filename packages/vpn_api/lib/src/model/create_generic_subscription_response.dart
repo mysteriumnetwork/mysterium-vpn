@@ -20,6 +20,7 @@ class CreateGenericSubscriptionResponse {
     this.checkoutUrl,
     this.clientSecret,
     this.invoicePaid,
+    this.subscriptionId,
   });
 
   @JsonKey(
@@ -50,6 +51,13 @@ class CreateGenericSubscriptionResponse {
   )
   final bool? invoicePaid;
 
+  @JsonKey(
+    name: r'subscription_id',
+    required: false,
+    includeIfNull: false,
+  )
+  final String? subscriptionId;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -57,14 +65,16 @@ class CreateGenericSubscriptionResponse {
           other.gatewayId == gatewayId &&
           other.checkoutUrl == checkoutUrl &&
           other.clientSecret == clientSecret &&
-          other.invoicePaid == invoicePaid;
+          other.invoicePaid == invoicePaid &&
+          other.subscriptionId == subscriptionId;
 
   @override
   int get hashCode =>
       gatewayId.hashCode +
       (checkoutUrl == null ? 0 : checkoutUrl.hashCode) +
       (clientSecret == null ? 0 : clientSecret.hashCode) +
-      (invoicePaid == null ? 0 : invoicePaid.hashCode);
+      (invoicePaid == null ? 0 : invoicePaid.hashCode) +
+      (subscriptionId == null ? 0 : subscriptionId.hashCode);
 
   factory CreateGenericSubscriptionResponse.fromJson(Map<String, dynamic> json) =>
       _$CreateGenericSubscriptionResponseFromJson(json);

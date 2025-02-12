@@ -3,13 +3,9 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:vpn_api/src/model/create_generic_subscription_request.dart';
-import 'package:vpn_api/src/model/create_adyen_subscription_request.dart';
-import 'package:vpn_api/src/model/create_apple_subscription_request.dart';
-import 'package:vpn_api/src/model/create_google_subscription_request.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'subscribe_request.g.dart';
+part 'create_adyen_subscription_request.g.dart';
 
 @JsonSerializable(
   checked: true,
@@ -17,10 +13,9 @@ part 'subscribe_request.g.dart';
   disallowUnrecognizedKeys: false,
   explicitToJson: true,
 )
-class SubscribeRequest {
-  /// Returns a new [SubscribeRequest] instance.
-  SubscribeRequest({
-    required this.gatewayId,
+class CreateAdyenSubscriptionRequest {
+  /// Returns a new [CreateAdyenSubscriptionRequest] instance.
+  CreateAdyenSubscriptionRequest({
     required this.planId,
     required this.country,
     this.state,
@@ -31,15 +26,9 @@ class SubscribeRequest {
     this.cardHolder,
     required this.amount,
     required this.origin,
+    required this.gatewayId,
     this.paymentData,
   });
-
-  @JsonKey(
-    name: r'gateway_id',
-    required: true,
-    includeIfNull: false,
-  )
-  final SubscribeRequestGatewayIdEnum gatewayId;
 
   @JsonKey(
     name: r'plan_id',
@@ -112,6 +101,13 @@ class SubscribeRequest {
   final String origin;
 
   @JsonKey(
+    name: r'gateway_id',
+    required: true,
+    includeIfNull: false,
+  )
+  final CreateAdyenSubscriptionRequestGatewayIdEnum gatewayId;
+
+  @JsonKey(
     name: r'payment_data',
     required: false,
     includeIfNull: false,
@@ -121,8 +117,7 @@ class SubscribeRequest {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SubscribeRequest &&
-          other.gatewayId == gatewayId &&
+      other is CreateAdyenSubscriptionRequest &&
           other.planId == planId &&
           other.country == country &&
           other.state == state &&
@@ -133,11 +128,11 @@ class SubscribeRequest {
           other.cardHolder == cardHolder &&
           other.amount == amount &&
           other.origin == origin &&
+          other.gatewayId == gatewayId &&
           other.paymentData == paymentData;
 
   @override
   int get hashCode =>
-      gatewayId.hashCode +
       planId.hashCode +
       country.hashCode +
       (state == null ? 0 : state.hashCode) +
@@ -148,11 +143,13 @@ class SubscribeRequest {
       (cardHolder == null ? 0 : cardHolder.hashCode) +
       amount.hashCode +
       origin.hashCode +
+      gatewayId.hashCode +
       (paymentData == null ? 0 : paymentData.hashCode);
 
-  factory SubscribeRequest.fromJson(Map<String, dynamic> json) => _$SubscribeRequestFromJson(json);
+  factory CreateAdyenSubscriptionRequest.fromJson(Map<String, dynamic> json) =>
+      _$CreateAdyenSubscriptionRequestFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SubscribeRequestToJson(this);
+  Map<String, dynamic> toJson() => _$CreateAdyenSubscriptionRequestToJson(this);
 
   @override
   String toString() {
@@ -160,11 +157,11 @@ class SubscribeRequest {
   }
 }
 
-enum SubscribeRequestGatewayIdEnum {
+enum CreateAdyenSubscriptionRequestGatewayIdEnum {
   @JsonValue(r'adyen')
   adyen(r'adyen');
 
-  const SubscribeRequestGatewayIdEnum(this.value);
+  const CreateAdyenSubscriptionRequestGatewayIdEnum(this.value);
 
   final String value;
 
