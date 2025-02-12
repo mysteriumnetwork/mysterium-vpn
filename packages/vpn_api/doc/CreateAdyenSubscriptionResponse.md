@@ -1,4 +1,4 @@
-# vpn_api.model.CreateGenericSubscriptionResponse
+# vpn_api.model.CreateAdyenSubscriptionResponse
 
 ## Load the model package
 ```dart
@@ -9,10 +9,8 @@ import 'package:vpn_api/api.dart';
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **gatewayId** | **String** |  | 
-**checkoutUrl** | **String** |  | [optional] 
-**clientSecret** | **String** |  | [optional] 
-**invoicePaid** | **bool** |  | [optional] 
-**subscriptionId** | **String** |  | [optional] 
+**subscriptionId** | **String** |  | 
+**paymentData** | **Object** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

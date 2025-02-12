@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **checkoutUrl** | **String** |  | [optional] 
 **clientSecret** | **String** |  | [optional] 
 **invoicePaid** | **bool** |  | [optional] 
+**subscriptionId** | **String** |  | [optional] 
 **subscriptionBasePlanId** | **String** |  | 
 **subscriptionProductId** | **String** |  | 
 

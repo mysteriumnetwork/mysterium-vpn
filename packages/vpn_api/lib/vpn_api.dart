@@ -26,6 +26,8 @@ export 'package:vpn_api/src/model/connection_location.dart';
 export 'package:vpn_api/src/model/connection_message.dart';
 export 'package:vpn_api/src/model/connection_message_location.dart';
 export 'package:vpn_api/src/model/country.dart';
+export 'package:vpn_api/src/model/create_adyen_subscription_request.dart';
+export 'package:vpn_api/src/model/create_adyen_subscription_response.dart';
 export 'package:vpn_api/src/model/create_apple_subscription_request.dart';
 export 'package:vpn_api/src/model/create_apple_subscription_response.dart';
 export 'package:vpn_api/src/model/create_generic_subscription_request.dart';
