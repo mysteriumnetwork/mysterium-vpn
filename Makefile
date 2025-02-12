@@ -36,6 +36,7 @@ generate-api:
 	  --remove-operation-id-prefix \
 	  --global-property apiTests=false,modelTests=false,skipFormModel=false \
 	  --additional-properties=serializationLibrary=json_serializable,finalProperties=true,apiNameSuffix=,apiNamePrefix=,pubName=vpn_api ;\
+	echo "Generate API client code done" ;\
   	fvm dart run build_runner build --verbose --delete-conflicting-outputs ;\
 	fvm dart format --line-length 100 . ;\
 	popd
