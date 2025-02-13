@@ -103,14 +103,14 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
 
 final locationsStorePOD = Provider<LocationsStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
+  final filterService = ref.watch(filterServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final localeStore = ref.watch(localeStorePOD);
-  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
 
   final store = LocationsStore(
     apiService,
+    filterService,
     analyticsStore,
-    remoteConfigStore,
     SharedPreferenceService.instance,
     localeStore,
   );

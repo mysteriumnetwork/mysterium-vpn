@@ -6,10 +6,10 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
-import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 
 part 'locations_store.g.dart';
 
@@ -19,12 +19,11 @@ class LocationsStore = _LocationsStore with _$LocationsStore;
 abstract class _LocationsStore with Store {
   _LocationsStore(
     this._apiService,
+    this._filterService,
     this._analyticsStore,
-    this._remoteConfigStore,
     this._prefs,
     LocaleStore localeStore,
   ) {
-    fetchVPNLocations();
     reaction((_) => localeStore.currentLocale, (locale) {
       if (_searchKeyword.isNotEmpty) {
         setLocationKeyword('');
@@ -33,14 +32,32 @@ abstract class _LocationsStore with Store {
   }
 
   final ApiService _apiService;
+  final FilterService _filterService;
   final AnalyticsStore _analyticsStore;
-  final RemoteConfigStore _remoteConfigStore;
   final SharedPreferenceService _prefs;
 
   final Debouncer _debouncer = Debouncer();
 
   @readonly
-  ObservableFuture<VPNLocations> _vpnLocationsFuture = ObservableFuture.value(const VPNLocations());
+  late ObservableFuture<VPNLocations> _dcLocationsFuture = ObservableFuture(
+    _apiService.fetchVPNLocations(IPType.datacenter),
+  );
+
+  @readonly
+  late ObservableFuture<VPNLocations> _residentialLocationsFuture = ObservableFuture(
+    _apiService.fetchVPNLocations(IPType.residential),
+  );
+
+  @computed
+  ObservableFuture<VPNLocations> get locationsFuture => switch (_ipType) {
+        IPType.datacenter => _dcLocationsFuture,
+        IPType.residential => _residentialLocationsFuture,
+      };
+
+  @readonly
+  late ObservableFuture<List<VPNLocation>> _recentLocationsFuture = ObservableFuture(
+    _apiService.getRecentLocations(),
+  );
 
   @readonly
   String _searchKeyword = '';
@@ -48,78 +65,79 @@ abstract class _LocationsStore with Store {
   @readonly
   late IPType _ipType = _prefs.getIPType() ?? IPType.residential;
 
-  @readonly
-  List<VPNLocation> _recentLocations = [];
+  @computed
+  List<VPNLocation> get recentLocations {
+    final value = _recentLocationsFuture.value;
+    if (value != null) {
+      return _filterService.filterLocations(value, keyword: _searchKeyword);
+    }
+    return [];
+  }
 
   @computed
-  List<VPNLocation> get allLocations => _vpnLocationsFuture.value?.allLocations ?? [];
+  List<VPNLocation> get locations {
+    final value = locationsFuture.value?.locations;
+    if (value != null) {
+      return _filterService.filterLocations(value, keyword: _searchKeyword);
+    }
+    return [];
+  }
 
   @computed
-  List<VPNLocation> get topLocations => _vpnLocationsFuture.value?.topLocations ?? [];
-
-  @computed
-  List<VPNLocation> get dcLocations => _vpnLocationsFuture.value?.dcLocations ?? [];
+  List<VPNLocation> get topLocations {
+    final value = locationsFuture.value?.topLocations;
+    if (value != null) {
+      return _filterService.filterLocations(value, keyword: _searchKeyword);
+    }
+    return [];
+  }
 
   VPNLocation? randomLocation([IPType? type]) {
-    final residentialLocations = topLocations.isEmpty ? allLocations : topLocations;
-    final locations = [
-      if (type == null || type == IPType.residential) ...residentialLocations,
-      if (type == null || type == IPType.datacenter) ...dcLocations,
-    ];
+    var recents = recentLocations;
+    if (type != null) {
+      recents = recentLocations.where((location) => location.ipType == type).toList();
+    }
+    if (recents.isNotEmpty) {
+      return recents.randomItem();
+    }
 
+    final future = switch (type) {
+      IPType.datacenter => _dcLocationsFuture,
+      _ => _residentialLocationsFuture,
+    };
+
+    final locations = [...?future.value?.locations, ...?future.value?.topLocations];
     if (locations.isEmpty) {
       return null;
-    }
-
-    var recent = _recentLocations;
-    if (type != null) {
-      recent = _recentLocations.where((location) => location.ipType == type).toList();
-    }
-    if (recent.isNotEmpty) {
-      return recent.first;
     }
 
     return locations.randomItem();
   }
 
-  /// Fetches VPN locations from the API and filters them based on the search keyword.
-  /// It also cross-matches data center locations with the remote config.
   @action
-  Future<void> fetchVPNLocations() async {
-    // make sure we have the remote config values resolved before fetching locations
-    await _remoteConfigStore.configFuture;
-    final dataCenterCountries = _remoteConfigStore.dataCenterCountries;
-
-    Future<VPNLocations> fetch() async {
-      final locations = await _apiService.fetchVPNLocations(keyword: _searchKeyword);
-      return locations.withDCCountries(dataCenterCountries);
+  Future<void> refresh() async {
+    switch (_ipType) {
+      case IPType.datacenter:
+        _dcLocationsFuture = _dcLocationsFuture.replace(
+          _apiService.fetchVPNLocations(IPType.datacenter),
+        );
+        await _dcLocationsFuture;
+        break;
+      case IPType.residential:
+        _residentialLocationsFuture = _residentialLocationsFuture.replace(
+          _apiService.fetchVPNLocations(IPType.residential),
+        );
+        await _residentialLocationsFuture;
+        break;
     }
-
-    _vpnLocationsFuture = ObservableFuture(fetch());
-    await _vpnLocationsFuture;
-    await fetchRecentLocations();
-  }
-
-  @action
-  Future<void> fetchRecentLocations() async {
-    final vpnLocations = await _vpnLocationsFuture;
-    final locations = await _apiService.getRecentLocations(keyword: _searchKeyword);
-    _recentLocations = locations
-        .where(
-          (code) =>
-              vpnLocations.allLocations.contains(code) ||
-              vpnLocations.topLocations.contains(code) ||
-              vpnLocations.dcLocations.contains(code),
-        )
-        .toList();
   }
 
   @action
   Future<void> addRecentLocation(VPNLocation location) async {
     await _apiService.addRecentLocation(location);
-    _recentLocations = {location, ..._recentLocations}.toList();
     _ipType = location.ipType;
-    await fetchRecentLocations();
+    _recentLocationsFuture = _recentLocationsFuture.replace(_apiService.getRecentLocations());
+    await _recentLocationsFuture;
   }
 
   @action
@@ -130,7 +148,6 @@ abstract class _LocationsStore with Store {
         _analyticsStore
           ..setSearchEvent(_searchKeyword)
           ..logEvent(AnalyticsEvent.search);
-        await fetchVPNLocations();
       },
       duration,
     );
