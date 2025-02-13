@@ -269,6 +269,16 @@ class MockApiService extends _i1.Mock implements _i6.ApiService {
         returnValue: _i7.Future<void>.value(),
         returnValueForMissingStub: _i7.Future<void>.value(),
       ) as _i7.Future<void>);
+
+  @override
+  _i7.Future<void> disconnectAllDevices() => (super.noSuchMethod(
+        Invocation.method(
+          #disconnectAllDevices,
+          [],
+        ),
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
 }
 
 /// A class which mocks [SubscriptionStore].
