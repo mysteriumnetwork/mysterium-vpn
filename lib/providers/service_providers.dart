@@ -21,6 +21,7 @@ import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/api/rest_api_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/auth/rest_auth_service.dart';
+import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/config_cat_cache.dart';
 import 'package:mysterium_vpn/services/data/network/dio_network_service.dart';
 import 'package:mysterium_vpn/services/dio_network_logger/dio_network_logger.dart';
@@ -228,3 +229,5 @@ final assetsLoaderPOD = Provider<AssetLoader>((ref) {
   final textsStore = ref.watch(textsStorePOD);
   return TranslationAssetLoader(textsStore);
 });
+
+final filterServicePOD = Provider<FilterService>((ref) => FilterService());

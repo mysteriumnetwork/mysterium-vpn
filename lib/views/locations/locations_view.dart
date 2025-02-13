@@ -32,24 +32,10 @@ class LocationsSliverView extends HookConsumerWidget {
     final locationsStore = ref.watch(locationsStorePOD);
     final locationType = useComputedValue(() => locationsStore.ipType);
 
-    final state = useComputedValue(() => locationsStore.vpnLocationsFuture);
+    final state = useComputedValue(() => locationsStore.locationsFuture);
 
-    final locations = useComputedValue(
-      () => switch (locationType) {
-        IPType.residential => locationsStore.allLocations,
-        IPType.datacenter => locationsStore.dcLocations,
-      },
-      [locationType],
-    );
-
-    final topLocations = useComputedValue(
-      () => switch (locationType) {
-        IPType.residential => locationsStore.topLocations,
-        IPType.datacenter => const <VPNLocation>[],
-      },
-      [locationType],
-    );
-
+    final locations = useComputedValue(() => locationsStore.locations);
+    final topLocations = useComputedValue(() => locationsStore.topLocations);
     final recentLocations = useComputedValue(() => locationsStore.recentLocations);
 
     final handleToggleConnection = useHandleToggleConnection();
@@ -102,7 +88,7 @@ class LocationsSliverView extends HookConsumerWidget {
               constraints: const BoxConstraints(minHeight: 260),
               child: RetryWdiget(
                 asset: Assets.globe,
-                onRetry: locationsStore.fetchVPNLocations,
+                onRetry: locationsStore.refresh,
                 text: state.error.toString(),
               ),
             ),
