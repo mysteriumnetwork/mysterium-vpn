@@ -195,6 +195,22 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$disconnectAllDevicesFutureAtom =
+      Atom(name: '_VpnStore.disconnectAllDevicesFuture', context: context);
+
+  @override
+  ObservableFuture<void>? get disconnectAllDevicesFuture {
+    _$disconnectAllDevicesFutureAtom.reportRead();
+    return super.disconnectAllDevicesFuture;
+  }
+
+  @override
+  set disconnectAllDevicesFuture(ObservableFuture<void>? value) {
+    _$disconnectAllDevicesFutureAtom.reportWrite(value, super.disconnectAllDevicesFuture, () {
+      super.disconnectAllDevicesFuture = value;
+    });
+  }
+
   late final _$originIPAtom = Atom(name: '_VpnStore.originIP', context: context);
 
   @override
@@ -320,11 +336,20 @@ mixin _$VpnStore on _VpnStore, Store {
         .run(() => super._completeConnection(location, refreshIP));
   }
 
+  late final _$disconnectAllDevicesAsyncAction =
+      AsyncAction('_VpnStore.disconnectAllDevices', context: context);
+
+  @override
+  Future<void> disconnectAllDevices() {
+    return _$disconnectAllDevicesAsyncAction.run(() => super.disconnectAllDevices());
+  }
+
   @override
   String toString() {
     return '''
 resolveConnectionLocationFuture: ${resolveConnectionLocationFuture},
 fetchConfigFuture: ${fetchConfigFuture},
+disconnectAllDevicesFuture: ${disconnectAllDevicesFuture},
 originIP: ${originIP},
 vpnStatus: ${vpnStatus},
 replaceDNSAddress: ${replaceDNSAddress},

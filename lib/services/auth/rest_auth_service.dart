@@ -189,15 +189,4 @@ class RestAuthService extends AuthService {
       rethrow;
     }
   }
-
-  @override
-  Future<void> disconnectAllDevices() async {
-    try {
-      // TODO(Waldz): Generate API client from API documentation openapi.yaml
-      await _networkService.get('/connection/disconnect-all');
-      _logger.info('All devices disconnected');
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-    }
-  }
 }

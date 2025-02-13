@@ -248,16 +248,6 @@ abstract class _AuthStore with Store {
   }
 
   @action
-  Future<void> logoutFromAllDevices() async {
-    try {
-      await _authService.disconnectAllDevices();
-      await logout();
-    } catch (e) {
-      showSnackbar(LocaleKeys.failedToLogoutAllDevices.tr());
-    }
-  }
-
-  @action
   Future<String?> signInwithEmail({required String email}) async {
     _pkcePair = PkcePair.generate();
     _secureStorageService.savePkcePair(

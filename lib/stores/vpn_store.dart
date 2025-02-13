@@ -146,6 +146,9 @@ abstract class _VpnStore with Store {
   @observable
   ObservableFuture<WireguardConnectResponse>? fetchConfigFuture;
 
+  @observable
+  ObservableFuture<void>? disconnectAllDevicesFuture;
+
   int _retryCount = 0;
   bool _isRetrying = false;
 
@@ -620,6 +623,20 @@ abstract class _VpnStore with Store {
     else if ((_vpnConnection?.connectionIP.isEmpty ?? true) && _connectingLocation == location) {
       disconnectWireguard();
       _vpnConnection = null;
+    }
+  }
+
+  @action
+  Future<void> disconnectAllDevices() async {
+    try {
+      disconnectAllDevicesFuture = ObservableFuture(
+        _apiService.disconnectAllDevices(),
+      );
+      await disconnectWireguard();
+      await disconnectAllDevicesFuture;
+    } catch (e) {
+      _logger.handle(e);
+      rethrow;
     }
   }
 }
