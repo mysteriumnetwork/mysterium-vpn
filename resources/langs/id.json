@@ -528,5 +528,12 @@
   "yearlyPlanDiscountPrice": "{amount} untuk tahun.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Iya",
-  "zh": "Cina"
+  "zh": "Cina",
+  "disconnectAllDevices": "Lepaskan semua perangkat",
+  "disconnectAllDevicesDesc": "Anda akan memutuskan dari semua perangkat Anda. Sesi saat ini akan diakhiri, dan Anda akan kehilangan koneksi VPN Anda.",
+  "disconnectAllDevicesTitle": "Putuskan sambungan dari semua perangkat",
+  "disconnectAllDevicesConfirmation": "Apakah Anda yakin ingin memutuskan semua perangkat?",
+  "failedToDisconnectAllDevices": "Gagal memutuskan hubungan dari semua perangkat. Coba lagi",
+  "disconnectAllDevicesSuccess": "Anda telah terputus dari semua perangkat. Connonnect ke VPN untuk memastikan keselamatan Anda.",
+  "reconnectBtn": "Terhubung kembali"
 }

@@ -545,7 +545,14 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "全年{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "是",
-    "zh": "中国人"
+    "zh": "中国人",
+    "disconnectAllDevices": "断开所有设备",
+    "disconnectAllDevicesDesc": "您将要与所有设备断开连接。当前的会话将被终止，并且您将失去VPN连接。",
+    "disconnectAllDevicesTitle": "与所有设备断开连接",
+    "disconnectAllDevicesConfirmation": "您确定要断开所有设备吗？",
+    "failedToDisconnectAllDevices": "无法与所有设备断开连接。请重试",
+    "disconnectAllDevicesSuccess": "您已经与所有设备断开了连接。连接到VPN，以确保您的安全性。",
+    "reconnectBtn": "重新连接"
   };
   static const Map<String, dynamic> tr = {
     "AD": "Andorra",
@@ -1103,7 +1110,16 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "Yıl için {amount}.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Evet",
-    "zh": "Çince"
+    "zh": "Çince",
+    "disconnectAllDevices": "Tüm cihazların bağlantısını kesin",
+    "disconnectAllDevicesDesc":
+        "Tüm cihazlarınızla bağlantıyı kesmek üzeresiniz. Mevcut oturum sona erdirilecek ve VPN bağlantınızı kaybedeceksiniz.",
+    "disconnectAllDevicesTitle": "Tüm cihazlardan bağlantıyı kesin",
+    "disconnectAllDevicesConfirmation":
+        "Tüm cihazların bağlantısını kesmek istediğinizden emin misiniz?",
+    "failedToDisconnectAllDevices": "Tüm cihazlardan bağlantıyı kesemedi. Lütfen tekrar deneyin",
+    "disconnectAllDevicesSuccess": "Güvenliğinizi sağlamak için tüm cihazlardan ayrıldınız.",
+    "reconnectBtn": "Yeniden bağlanmak"
   };
   static const Map<String, dynamic> ja = {
     "AD": "アンドラ",
@@ -1640,7 +1656,14 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "年間{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "はい",
-    "zh": "中国語"
+    "zh": "中国語",
+    "disconnectAllDevices": "すべてのデバイスを切断します",
+    "disconnectAllDevicesDesc": "すべてのデバイスから切断しようとしています。現在のセッションは終了し、VPN接続が失われます。",
+    "disconnectAllDevicesTitle": "すべてのデバイスから切断します",
+    "disconnectAllDevicesConfirmation": "すべてのデバイスを切断したいですか？",
+    "failedToDisconnectAllDevices": "すべてのデバイスから切断できませんでした。再試行してください",
+    "disconnectAllDevicesSuccess": "すべてのデバイスから切断されています。安全性を確保するために、VPNに再接続しています。",
+    "reconnectBtn": "再接続します"
   };
   static const Map<String, dynamic> de = {
     "AD": "Andorra",
@@ -2218,7 +2241,16 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} für das Jahr.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Ja",
-    "zh": "Chinesisch"
+    "zh": "Chinesisch",
+    "disconnectAllDevices": "Trennen Sie alle Geräte",
+    "disconnectAllDevicesDesc":
+        "Sie sind kurz davor, die Verbindung von all Ihren Geräten zu trennen. Die aktuelle Sitzung wird beendet, und Sie verlieren Ihre VPN -Verbindung.",
+    "disconnectAllDevicesTitle": "Sich von allen Geräten trennen",
+    "disconnectAllDevicesConfirmation": "Sind Sie sicher, dass Sie alle Geräte trennen möchten?",
+    "failedToDisconnectAllDevices":
+        "Es versäumt, die Verbindung von allen Geräten zu trennen. Bitte versuchen Sie es erneut",
+    "disconnectAllDevicesSuccess": "Sie wurden von allen Geräten getrennt.",
+    "reconnectBtn": "Erneut verbinden"
   };
   static const Map<String, dynamic> pt = {
     "AD": "Andorra",
@@ -2784,7 +2816,18 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} por ano.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "sim",
-    "zh": "Chinês"
+    "zh": "Chinês",
+    "disconnectAllDevices": "Desconecte todos os dispositivos",
+    "disconnectAllDevicesDesc":
+        "Você está prestes a se desconectar de todos os seus dispositivos. A sessão atual será encerrada e você perderá sua conexão VPN.",
+    "disconnectAllDevicesTitle": "Desconectar de todos os dispositivos",
+    "disconnectAllDevicesConfirmation":
+        "Tem certeza de que deseja desconectar todos os dispositivos?",
+    "failedToDisconnectAllDevices":
+        "Falha ao desconectar de todos os dispositivos. Por favor, tente novamente",
+    "disconnectAllDevicesSuccess":
+        "Você foi desconectado de todos os dispositivos.Reconnect à VPN para garantir sua segurança.",
+    "reconnectBtn": "Reconectar"
   };
   static const Map<String, dynamic> en = {
     "AD": "Andorra",
@@ -3345,7 +3388,16 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} for the year.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Yes",
-    "zh": "Chinese"
+    "zh": "Chinese",
+    "disconnectAllDevices": "Disconnect all devices",
+    "disconnectAllDevicesDesc":
+        "You are about to disconnect from all your devices. The current session will be terminated, and you will lose your VPN connection.",
+    "disconnectAllDevicesTitle": "Disconnect from all devices",
+    "disconnectAllDevicesConfirmation": "Are you sure you want to disconnect all devices?",
+    "failedToDisconnectAllDevices": "Failed to disconnect from all devices. Please try again",
+    "disconnectAllDevicesSuccess":
+        "You have been disconnected from all devices. Reconnect to the VPN to ensure your safety.",
+    "reconnectBtn": "Reconnect"
   };
   static const Map<String, dynamic> it = {
     "AD": "Andorra",
@@ -3915,7 +3967,17 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} per l'anno.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sì",
-    "zh": "Cinese"
+    "zh": "Cinese",
+    "disconnectAllDevices": "Scollegare tutti i dispositivi",
+    "disconnectAllDevicesDesc":
+        "Stai per disconnetterti da tutti i tuoi dispositivi. La sessione corrente verrà terminata e perderai la connessione VPN.",
+    "disconnectAllDevicesTitle": "Scollegare da tutti i dispositivi",
+    "disconnectAllDevicesConfirmation": "Sei sicuro di voler scollegare tutti i dispositivi?",
+    "failedToDisconnectAllDevices":
+        "Impossibile disconnettersi da tutti i dispositivi. Per favore riprova",
+    "disconnectAllDevicesSuccess":
+        "Sei stato disconnesso da tutti i dispositivi. RECONNECT alla VPN per garantire la tua sicurezza.",
+    "reconnectBtn": "Riconnettersi"
   };
   static const Map<String, dynamic> fr = {
     "AD": "Andorre",
@@ -4488,7 +4550,16 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} pour l'année.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Oui",
-    "zh": "Chinois"
+    "zh": "Chinois",
+    "disconnectAllDevices": "Débrancher tous les appareils",
+    "disconnectAllDevicesDesc":
+        "Vous êtes sur le point de vous déconnecter de tous vos appareils. La session actuelle sera terminée et vous perdrez votre connexion VPN.",
+    "disconnectAllDevicesTitle": "Se déconnecter de tous les appareils",
+    "disconnectAllDevicesConfirmation": "Êtes-vous sûr de vouloir déconnecter tous les appareils?",
+    "failedToDisconnectAllDevices": "Échec de la déconnexion de tous les appareils.",
+    "disconnectAllDevicesSuccess":
+        "Vous avez été déconnecté de tous les appareils. Connectez-vous au VPN pour assurer votre sécurité.",
+    "reconnectBtn": "Reconnecter"
   };
   static const Map<String, dynamic> id = {
     "AD": "Andorra",
@@ -5052,7 +5123,16 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} untuk tahun.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Iya",
-    "zh": "Cina"
+    "zh": "Cina",
+    "disconnectAllDevices": "Lepaskan semua perangkat",
+    "disconnectAllDevicesDesc":
+        "Anda akan memutuskan dari semua perangkat Anda. Sesi saat ini akan diakhiri, dan Anda akan kehilangan koneksi VPN Anda.",
+    "disconnectAllDevicesTitle": "Putuskan sambungan dari semua perangkat",
+    "disconnectAllDevicesConfirmation": "Apakah Anda yakin ingin memutuskan semua perangkat?",
+    "failedToDisconnectAllDevices": "Gagal memutuskan hubungan dari semua perangkat. Coba lagi",
+    "disconnectAllDevicesSuccess":
+        "Anda telah terputus dari semua perangkat. Connonnect ke VPN untuk memastikan keselamatan Anda.",
+    "reconnectBtn": "Terhubung kembali"
   };
   static const Map<String, dynamic> es = {
     "AD": "Andorra",
@@ -5625,7 +5705,18 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} por el año.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sí",
-    "zh": "Chino"
+    "zh": "Chino",
+    "disconnectAllDevices": "Desconectar todos los dispositivos",
+    "disconnectAllDevicesDesc":
+        "Está a punto de desconectarse de todos sus dispositivos. La sesión actual se terminará y perderá su conexión VPN.",
+    "disconnectAllDevicesTitle": "Desconectar de todos los dispositivos",
+    "disconnectAllDevicesConfirmation":
+        "¿Estás seguro de que quieres desconectar todos los dispositivos?",
+    "failedToDisconnectAllDevices":
+        "No se pudo desconectar de todos los dispositivos. Por favor, intente nuevamente",
+    "disconnectAllDevicesSuccess":
+        "Se ha desconectado de todos los dispositivos. Realice a la VPN para garantizar su seguridad.",
+    "reconnectBtn": "Volver a conectar"
   };
   static const Map<String, dynamic> ar = {
     "AD": "أندورا",
@@ -6180,7 +6271,15 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{المبلغ} للسنة.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "نعم",
-    "zh": "صينى"
+    "zh": "صينى",
+    "disconnectAllDevices": "افصل جميع الأجهزة",
+    "disconnectAllDevicesDesc":
+        "أنت على وشك الانفصال عن جميع أجهزتك. سيتم إنهاء الجلسة الحالية ، وسوف تفقد اتصال VPN الخاص بك.",
+    "disconnectAllDevicesTitle": "افصل عن جميع الأجهزة",
+    "disconnectAllDevicesConfirmation": "هل أنت متأكد أنك تريد فصل جميع الأجهزة؟",
+    "failedToDisconnectAllDevices": "فشل في الانفصال عن جميع الأجهزة.",
+    "disconnectAllDevicesSuccess": "لقد تم فصلك عن جميع الأجهزة. الاتصال بـ VPN لضمان سلامتك.",
+    "reconnectBtn": "إعادة الاتصال"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,
