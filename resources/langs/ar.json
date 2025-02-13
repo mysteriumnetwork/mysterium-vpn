@@ -526,5 +526,12 @@
   "yearlyPlanDiscountPrice": "{المبلغ} للسنة.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "نعم",
-  "zh": "صينى"
+  "zh": "صينى",
+  "disconnectAllDevices": "افصل جميع الأجهزة",
+  "disconnectAllDevicesDesc": "أنت على وشك الانفصال عن جميع أجهزتك. سيتم إنهاء الجلسة الحالية ، وسوف تفقد اتصال VPN الخاص بك.",
+  "disconnectAllDevicesTitle": "افصل عن جميع الأجهزة",
+  "disconnectAllDevicesConfirmation": "هل أنت متأكد أنك تريد فصل جميع الأجهزة؟",
+  "failedToDisconnectAllDevices": "فشل في الانفصال عن جميع الأجهزة.",
+  "disconnectAllDevicesSuccess": "لقد تم فصلك عن جميع الأجهزة. الاتصال بـ VPN لضمان سلامتك.",
+  "reconnectBtn": "إعادة الاتصال"
 }
