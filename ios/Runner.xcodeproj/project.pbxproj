@@ -15,11 +15,13 @@
 		3EA225DE29D42E5C001CD70B /* tun.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3EA225D429D42E5C001CD70B /* tun.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		9729FC4D2BC6D94700E926F9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9729FC4C2BC6D94700E926F9 /* PrivacyInfo.xcprivacy */; };
-		97A7065B2CE64C7D00413133 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97A7065A2CE64C7D00413133 /* AdSupport.framework */; };
+		977D12872D5E43A900223A2A /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 977D12852D5E43A400223A2A /* AdServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		977D12892D5E43AC00223A2A /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97A7065A2CE64C7D00413133 /* AdSupport.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		977D128D2D5E43C400223A2A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 977D128B2D5E43BD00223A2A /* StoreKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
-		C9BA2B85F49069A19940A27F /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E321E737D6B8E72E2263E3C /* Pods_Runner.framework */; };
+		C9BA2B85F49069A19940A27F /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E321E737D6B8E72E2263E3C /* Pods_Runner.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,16 +44,6 @@
 				3EA225DE29D42E5C001CD70B /* tun.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9705A1C41CF9048500538489 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -82,6 +74,8 @@
 		9729FC4C2BC6D94700E926F9 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
+		977D12852D5E43A400223A2A /* AdServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdServices.framework; path = System/Library/Frameworks/AdServices.framework; sourceTree = SDKROOT; };
+		977D128B2D5E43BD00223A2A /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		97A7065A2CE64C7D00413133 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97C146FB1CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -116,7 +110,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9BA2B85F49069A19940A27F /* Pods_Runner.framework in Frameworks */,
-				97A7065B2CE64C7D00413133 /* AdSupport.framework in Frameworks */,
+				977D12872D5E43A900223A2A /* AdServices.framework in Frameworks */,
+				977D12892D5E43AC00223A2A /* AdSupport.framework in Frameworks */,
+				977D128D2D5E43C400223A2A /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,6 +122,8 @@
 		3ADBFD7F2A7974A6B75C50EC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				977D128B2D5E43BD00223A2A /* StoreKit.framework */,
+				977D12852D5E43A400223A2A /* AdServices.framework */,
 				97A7065A2CE64C7D00413133 /* AdSupport.framework */,
 				2E321E737D6B8E72E2263E3C /* Pods_Runner.framework */,
 				3EA225D529D42E5C001CD70B /* NetworkExtension.framework */,
@@ -246,7 +244,6 @@
 			buildConfigurationList = 97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */;
 			buildPhases = (
 				4AEC0B97BA0A3762AE1E4F5D /* [CP] Check Pods Manifest.lock */,
-				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3EA225DF29D42E5C001CD70B /* Embed Foundation Extensions */,
 				65AFC80260EB588B94378EEB /* [CP] Embed Pods Frameworks */,
 				976FB21F2AD003010002C96B /* ShellScript */,
