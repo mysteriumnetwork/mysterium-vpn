@@ -181,14 +181,6 @@ mixin _$AuthStore on _AuthStore, Store {
     return _$logoutAsyncAction.run(() => super.logout(email: email));
   }
 
-  late final _$logoutFromAllDevicesAsyncAction =
-      AsyncAction('_AuthStore.logoutFromAllDevices', context: context);
-
-  @override
-  Future<void> logoutFromAllDevices() {
-    return _$logoutFromAllDevicesAsyncAction.run(() => super.logoutFromAllDevices());
-  }
-
   late final _$signInwithEmailAsyncAction =
       AsyncAction('_AuthStore.signInwithEmail', context: context);
 
