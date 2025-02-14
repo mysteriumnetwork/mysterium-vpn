@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 
 part 'locations_store.g.dart';
 
@@ -21,6 +22,7 @@ abstract class _LocationsStore with Store {
     this._apiService,
     this._filterService,
     this._analyticsStore,
+    this._remoteConfigStore,
     this._prefs,
     LocaleStore localeStore,
   ) {
@@ -29,14 +31,17 @@ abstract class _LocationsStore with Store {
         setLocationKeyword('');
       }
     });
+    _autoRefresh();
   }
 
   final ApiService _apiService;
   final FilterService _filterService;
   final AnalyticsStore _analyticsStore;
+  final RemoteConfigStore _remoteConfigStore;
   final SharedPreferenceService _prefs;
 
   final Debouncer _debouncer = Debouncer();
+  StreamSubscription<dynamic>? _autoRefreshSubscription;
 
   @readonly
   late ObservableFuture<VPNLocations> _dcLocationsFuture = ObservableFuture(
@@ -114,6 +119,13 @@ abstract class _LocationsStore with Store {
     return locations.randomItem();
   }
 
+  Future<void> _autoRefresh() async {
+    await _remoteConfigStore.configFuture;
+    _autoRefreshSubscription = Stream.periodic(_remoteConfigStore.locationsRefreshInterval).listen(
+      (_) => refresh(),
+    );
+  }
+
   @action
   Future<void> refresh() async {
     switch (_ipType) {
@@ -159,5 +171,8 @@ abstract class _LocationsStore with Store {
     await _prefs.setIPType(type);
   }
 
-  void dispose() => _debouncer.dispose();
+  FutureOr<void> dispose() async {
+    _debouncer.dispose();
+    await _autoRefreshSubscription?.cancel();
+  }
 }

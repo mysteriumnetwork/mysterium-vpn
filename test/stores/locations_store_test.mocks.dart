@@ -4,12 +4,13 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i7;
-import 'dart:ui' as _i4;
+import 'dart:ui' as _i5;
 
-import 'package:flutter/material.dart' as _i17;
+import 'package:flutter/material.dart' as _i19;
 import 'package:flutter/widgets.dart' as _i14;
-import 'package:mobx/mobx.dart' as _i5;
+import 'package:mobx/mobx.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:mockito/src/dummies.dart' as _i17;
 import 'package:mysterium_vpn/common/enums/enums.dart' as _i9;
 import 'package:mysterium_vpn/common/enums/indicator_type.dart' as _i15;
 import 'package:mysterium_vpn/models/ip_info.dart' as _i10;
@@ -18,9 +19,10 @@ import 'package:mysterium_vpn/models/report_broken_node_request.dart' as _i11;
 import 'package:mysterium_vpn/models/user_data.dart' as _i8;
 import 'package:mysterium_vpn/services/api/api_service.dart' as _i6;
 import 'package:mysterium_vpn/services/data/filter_service.dart' as _i12;
-import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart' as _i16;
+import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart' as _i18;
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart' as _i13;
-import 'package:mysterium_vpn/stores/locale_store.dart' as _i18;
+import 'package:mysterium_vpn/stores/locale_store.dart' as _i20;
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart' as _i16;
 import 'package:vpn_api/vpn_api.dart' as _i3;
 
 // ignore_for_file: type=lint
@@ -57,8 +59,8 @@ class _FakeWireguardConnectResponse_1 extends _i1.SmartFake
         );
 }
 
-class _FakeLocale_2 extends _i1.SmartFake implements _i4.Locale {
-  _FakeLocale_2(
+class _FakeObservableFuture_2<T> extends _i1.SmartFake implements _i4.ObservableFuture<T> {
+  _FakeObservableFuture_2(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -67,8 +69,28 @@ class _FakeLocale_2 extends _i1.SmartFake implements _i4.Locale {
         );
 }
 
-class _FakeReactiveContext_3 extends _i1.SmartFake implements _i5.ReactiveContext {
-  _FakeReactiveContext_3(
+class _FakeDuration_3 extends _i1.SmartFake implements Duration {
+  _FakeDuration_3(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeReactiveContext_4 extends _i1.SmartFake implements _i4.ReactiveContext {
+  _FakeReactiveContext_4(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeLocale_5 extends _i1.SmartFake implements _i5.Locale {
+  _FakeLocale_5(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -581,10 +603,251 @@ class MockAnalyticsStore extends _i1.Mock implements _i13.AnalyticsStore {
       );
 }
 
+/// A class which mocks [RemoteConfigStore].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockRemoteConfigStore extends _i1.Mock implements _i16.RemoteConfigStore {
+  @override
+  _i4.ObservableFuture<Map<String, dynamic>> get configFuture => (super.noSuchMethod(
+        Invocation.getter(#configFuture),
+        returnValue: _FakeObservableFuture_2<Map<String, dynamic>>(
+          this,
+          Invocation.getter(#configFuture),
+        ),
+        returnValueForMissingStub: _FakeObservableFuture_2<Map<String, dynamic>>(
+          this,
+          Invocation.getter(#configFuture),
+        ),
+      ) as _i4.ObservableFuture<Map<String, dynamic>>);
+
+  @override
+  set configFuture(_i4.ObservableFuture<Map<String, dynamic>>? value) => super.noSuchMethod(
+        Invocation.setter(
+          #configFuture,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  Map<String, dynamic> get config => (super.noSuchMethod(
+        Invocation.getter(#config),
+        returnValue: <String, dynamic>{},
+        returnValueForMissingStub: <String, dynamic>{},
+      ) as Map<String, dynamic>);
+
+  @override
+  bool get isServiceAvailable => (super.noSuchMethod(
+        Invocation.getter(#isServiceAvailable),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  String get isServiceAvailableMessage => (super.noSuchMethod(
+        Invocation.getter(#isServiceAvailableMessage),
+        returnValue: _i17.dummyValue<String>(
+          this,
+          Invocation.getter(#isServiceAvailableMessage),
+        ),
+        returnValueForMissingStub: _i17.dummyValue<String>(
+          this,
+          Invocation.getter(#isServiceAvailableMessage),
+        ),
+      ) as String);
+
+  @override
+  bool get hideDeleteAccount => (super.noSuchMethod(
+        Invocation.getter(#hideDeleteAccount),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get hideKillSwitch => (super.noSuchMethod(
+        Invocation.getter(#hideKillSwitch),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  String get minMacosBuildNumber => (super.noSuchMethod(
+        Invocation.getter(#minMacosBuildNumber),
+        returnValue: _i17.dummyValue<String>(
+          this,
+          Invocation.getter(#minMacosBuildNumber),
+        ),
+        returnValueForMissingStub: _i17.dummyValue<String>(
+          this,
+          Invocation.getter(#minMacosBuildNumber),
+        ),
+      ) as String);
+
+  @override
+  String get minWindowsStandAloneBuildNumber => (super.noSuchMethod(
+        Invocation.getter(#minWindowsStandAloneBuildNumber),
+        returnValue: _i17.dummyValue<String>(
+          this,
+          Invocation.getter(#minWindowsStandAloneBuildNumber),
+        ),
+        returnValueForMissingStub: _i17.dummyValue<String>(
+          this,
+          Invocation.getter(#minWindowsStandAloneBuildNumber),
+        ),
+      ) as String);
+
+  @override
+  String get minWindowsBuildNumber => (super.noSuchMethod(
+        Invocation.getter(#minWindowsBuildNumber),
+        returnValue: _i17.dummyValue<String>(
+          this,
+          Invocation.getter(#minWindowsBuildNumber),
+        ),
+        returnValueForMissingStub: _i17.dummyValue<String>(
+          this,
+          Invocation.getter(#minWindowsBuildNumber),
+        ),
+      ) as String);
+
+  @override
+  String get minAndroidBuildNumber => (super.noSuchMethod(
+        Invocation.getter(#minAndroidBuildNumber),
+        returnValue: _i17.dummyValue<String>(
+          this,
+          Invocation.getter(#minAndroidBuildNumber),
+        ),
+        returnValueForMissingStub: _i17.dummyValue<String>(
+          this,
+          Invocation.getter(#minAndroidBuildNumber),
+        ),
+      ) as String);
+
+  @override
+  String get minIosBuildNumber => (super.noSuchMethod(
+        Invocation.getter(#minIosBuildNumber),
+        returnValue: _i17.dummyValue<String>(
+          this,
+          Invocation.getter(#minIosBuildNumber),
+        ),
+        returnValueForMissingStub: _i17.dummyValue<String>(
+          this,
+          Invocation.getter(#minIosBuildNumber),
+        ),
+      ) as String);
+
+  @override
+  bool get hideReedemCode => (super.noSuchMethod(
+        Invocation.getter(#hideReedemCode),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get hideMalwareBlocker => (super.noSuchMethod(
+        Invocation.getter(#hideMalwareBlocker),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get hideNotSafeContentBlocker => (super.noSuchMethod(
+        Invocation.getter(#hideNotSafeContentBlocker),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  String get malwareBlockerDnsAddress => (super.noSuchMethod(
+        Invocation.getter(#malwareBlockerDnsAddress),
+        returnValue: _i17.dummyValue<String>(
+          this,
+          Invocation.getter(#malwareBlockerDnsAddress),
+        ),
+        returnValueForMissingStub: _i17.dummyValue<String>(
+          this,
+          Invocation.getter(#malwareBlockerDnsAddress),
+        ),
+      ) as String);
+
+  @override
+  String get notSafeContentBlockerDnsAddress => (super.noSuchMethod(
+        Invocation.getter(#notSafeContentBlockerDnsAddress),
+        returnValue: _i17.dummyValue<String>(
+          this,
+          Invocation.getter(#notSafeContentBlockerDnsAddress),
+        ),
+        returnValueForMissingStub: _i17.dummyValue<String>(
+          this,
+          Invocation.getter(#notSafeContentBlockerDnsAddress),
+        ),
+      ) as String);
+
+  @override
+  bool get showVpnPrivacyPolicyPage => (super.noSuchMethod(
+        Invocation.getter(#showVpnPrivacyPolicyPage),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get pricingMonthly => (super.noSuchMethod(
+        Invocation.getter(#pricingMonthly),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get mqttExperiment => (super.noSuchMethod(
+        Invocation.getter(#mqttExperiment),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  List<String> get dataCenterCountries => (super.noSuchMethod(
+        Invocation.getter(#dataCenterCountries),
+        returnValue: <String>[],
+        returnValueForMissingStub: <String>[],
+      ) as List<String>);
+
+  @override
+  Duration get locationsRefreshInterval => (super.noSuchMethod(
+        Invocation.getter(#locationsRefreshInterval),
+        returnValue: _FakeDuration_3(
+          this,
+          Invocation.getter(#locationsRefreshInterval),
+        ),
+        returnValueForMissingStub: _FakeDuration_3(
+          this,
+          Invocation.getter(#locationsRefreshInterval),
+        ),
+      ) as Duration);
+
+  @override
+  Map<String, String> get asUserProperties => (super.noSuchMethod(
+        Invocation.getter(#asUserProperties),
+        returnValue: <String, String>{},
+        returnValueForMissingStub: <String, String>{},
+      ) as Map<String, String>);
+
+  @override
+  _i4.ReactiveContext get context => (super.noSuchMethod(
+        Invocation.getter(#context),
+        returnValue: _FakeReactiveContext_4(
+          this,
+          Invocation.getter(#context),
+        ),
+        returnValueForMissingStub: _FakeReactiveContext_4(
+          this,
+          Invocation.getter(#context),
+        ),
+      ) as _i4.ReactiveContext);
+}
+
 /// A class which mocks [SharedPreferenceService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSharedPreferenceService extends _i1.Mock implements _i16.SharedPreferenceService {
+class MockSharedPreferenceService extends _i1.Mock implements _i18.SharedPreferenceService {
   @override
   _i7.Future<void> init() => (super.noSuchMethod(
         Invocation.method(
@@ -728,29 +991,29 @@ class MockSharedPreferenceService extends _i1.Mock implements _i16.SharedPrefere
       ) as bool);
 
   @override
-  _i4.Locale getLocale() => (super.noSuchMethod(
+  _i5.Locale getLocale() => (super.noSuchMethod(
         Invocation.method(
           #getLocale,
           [],
         ),
-        returnValue: _FakeLocale_2(
+        returnValue: _FakeLocale_5(
           this,
           Invocation.method(
             #getLocale,
             [],
           ),
         ),
-        returnValueForMissingStub: _FakeLocale_2(
+        returnValueForMissingStub: _FakeLocale_5(
           this,
           Invocation.method(
             #getLocale,
             [],
           ),
         ),
-      ) as _i4.Locale);
+      ) as _i5.Locale);
 
   @override
-  _i7.Future<bool> setLocale(_i4.Locale? locale) => (super.noSuchMethod(
+  _i7.Future<bool> setLocale(_i5.Locale? locale) => (super.noSuchMethod(
         Invocation.method(
           #setLocale,
           [locale],
@@ -760,7 +1023,7 @@ class MockSharedPreferenceService extends _i1.Mock implements _i16.SharedPrefere
       ) as _i7.Future<bool>);
 
   @override
-  _i7.Future<bool> setThemeType(_i17.ThemeMode? themeMode) => (super.noSuchMethod(
+  _i7.Future<bool> setThemeType(_i19.ThemeMode? themeMode) => (super.noSuchMethod(
         Invocation.method(
           #setThemeType,
           [themeMode],
@@ -833,35 +1096,35 @@ class MockSharedPreferenceService extends _i1.Mock implements _i16.SharedPrefere
 /// A class which mocks [LocaleStore].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLocaleStore extends _i1.Mock implements _i18.LocaleStore {
+class MockLocaleStore extends _i1.Mock implements _i20.LocaleStore {
   @override
-  _i5.ReactiveContext get context => (super.noSuchMethod(
+  _i4.ReactiveContext get context => (super.noSuchMethod(
         Invocation.getter(#context),
-        returnValue: _FakeReactiveContext_3(
+        returnValue: _FakeReactiveContext_4(
           this,
           Invocation.getter(#context),
         ),
-        returnValueForMissingStub: _FakeReactiveContext_3(
+        returnValueForMissingStub: _FakeReactiveContext_4(
           this,
           Invocation.getter(#context),
         ),
-      ) as _i5.ReactiveContext);
+      ) as _i4.ReactiveContext);
 
   @override
-  _i4.Locale get currentLocale => (super.noSuchMethod(
+  _i5.Locale get currentLocale => (super.noSuchMethod(
         Invocation.getter(#currentLocale),
-        returnValue: _FakeLocale_2(
+        returnValue: _FakeLocale_5(
           this,
           Invocation.getter(#currentLocale),
         ),
-        returnValueForMissingStub: _FakeLocale_2(
+        returnValueForMissingStub: _FakeLocale_5(
           this,
           Invocation.getter(#currentLocale),
         ),
-      ) as _i4.Locale);
+      ) as _i5.Locale);
 
   @override
-  _i7.Future<void> setLocale(_i4.Locale? locale) => (super.noSuchMethod(
+  _i7.Future<void> setLocale(_i5.Locale? locale) => (super.noSuchMethod(
         Invocation.method(
           #setLocale,
           [locale],

@@ -9,6 +9,7 @@ import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dar
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 
 import 'locations_store_test.mocks.dart';
 
@@ -16,6 +17,7 @@ import 'locations_store_test.mocks.dart';
   MockSpec<ApiService>(),
   MockSpec<FilterService>(),
   MockSpec<AnalyticsStore>(),
+  MockSpec<RemoteConfigStore>(),
   MockSpec<SharedPreferenceService>(),
   MockSpec<LocaleStore>(),
 ])
@@ -24,6 +26,8 @@ void main() {
   late MockApiService mockApiService;
   late MockFilterService mockFilterService;
   late MockAnalyticsStore mockAnalyticsStore;
+  late MockRemoteConfigStore mockRemoteConfigStore;
+
   late MockSharedPreferenceService mockPrefs;
   late MockLocaleStore mockLocaleStore;
   late List<VPNLocation> mockLocations;
@@ -32,12 +36,15 @@ void main() {
     mockApiService = MockApiService();
     mockFilterService = MockFilterService();
     mockAnalyticsStore = MockAnalyticsStore();
+    mockRemoteConfigStore = MockRemoteConfigStore();
     mockPrefs = MockSharedPreferenceService();
     mockLocaleStore = MockLocaleStore();
+
     locationsStore = LocationsStore(
       mockApiService,
       mockFilterService,
       mockAnalyticsStore,
+      mockRemoteConfigStore,
       mockPrefs,
       mockLocaleStore,
     );
