@@ -113,17 +113,21 @@ class _PlanCard extends HookConsumerWidget {
                 color: Palette.white,
               ),
               if (product.hasIntroductoryPrice)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 6,
-                  children: [
-                    EasyText(LocaleKeys.now.tr()),
-                    DiscountTag(
-                      discountPercentage: product.introductoryDiscountPercentage,
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                      colors: const [Color(0xffC544E6), Color(0xffC544E6)],
-                    ),
-                  ],
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(text: LocaleKeys.now.tr()),
+                      CharacterSpan.space(),
+                      WidgetSpan(
+                        child: DiscountTag(
+                          discountPercentage: product.introductoryDiscountPercentage,
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                          colors: const [Color(0xffC544E6), Color(0xffC544E6)],
+                        ),
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               Text.rich(
                 TextSpan(
