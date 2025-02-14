@@ -52,7 +52,7 @@ class SubscriptionFormVariantB extends HookConsumerWidget {
             EasyText(
               LocaleKeys.pricingPlanTitle.tr(),
               fontSize: 20,
-              fontWeight: FontWeight.w900,
+              fontWeight: FontWeight.w700,
             ),
             SizedBox(height: getMediaHeight(context) * 0.01),
             ProductFeatures(

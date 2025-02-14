@@ -11,4 +11,7 @@ extension NumberExtensions on double {
     required String currencyCode,
   }) =>
       '${currencySymbol.isEmpty ? currencyCode : currencySymbol}${toStringAsFixed(2)}';
+
+  String toPriceString({required String currency}) =>
+      price(currencySymbol: currency, currencyCode: currency);
 }

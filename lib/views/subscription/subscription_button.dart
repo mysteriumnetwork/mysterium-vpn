@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 
 class SubscriptionButton extends StatelessWidget {
@@ -28,9 +27,6 @@ class SubscriptionButton extends StatelessWidget {
           useSystemColor: false,
           color: isLoading ? Theme.of(context).disabledColor : Palette.purple,
           onPressed: isLoading ? null : onPressed,
-          child: EasyText(
-            label,
-            color: Palette.white,
-          ),
+          text: label,
         );
 }

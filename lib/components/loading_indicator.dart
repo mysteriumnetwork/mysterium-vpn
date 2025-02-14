@@ -30,7 +30,7 @@ class LoadingIndicator extends StatelessWidget {
             EasyText(
               message!,
               fontSize: 16,
-              fontWeight: FontWeight.w900,
+              fontWeight: FontWeight.w700,
               maxLines: 2,
               textAlign: TextAlign.center,
               color: messageColor,

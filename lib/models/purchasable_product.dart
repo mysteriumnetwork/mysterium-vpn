@@ -31,14 +31,28 @@ abstract class _PurchasableProduct with Store {
   final double? introductoryPrice;
   final bool hasIntroductoryPrice;
 
+  late final currency = currencySymbol.isEmpty ? currencyCode : currencySymbol;
+
   @observable
   ProductStatus status;
 
   @computed
   String get id => planDetails.id;
 
-  bool isDiscounted(double monthlyRawPrice) =>
-      hasIntroductoryPrice || productPrice < monthlyRawPrice * duration;
+  @computed
+  int get introductoryDiscountPercentage {
+    if (!hasIntroductoryPrice || introductoryPrice == null) {
+      return 0;
+    }
+    return ((rawPrice - introductoryPrice!) / rawPrice * 100).toInt();
+  }
+
+  @action
+  int periodDiscountPercentage(PurchasableProduct otherProduct) {
+    final monthlyPrice = productPrice / duration;
+    final otherMonthlyPrice = otherProduct.productPrice / otherProduct.duration;
+    return ((monthlyPrice - otherMonthlyPrice) / monthlyPrice * 100).toInt();
+  }
 
   @computed
   double get productPrice => hasIntroductoryPrice ? introductoryPrice! : rawPrice;
