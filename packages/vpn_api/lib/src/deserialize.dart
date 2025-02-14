@@ -6,6 +6,7 @@ import 'package:vpn_api/src/model/check_auth401_response.dart';
 import 'package:vpn_api/src/model/check_auth401_response_error.dart';
 import 'package:vpn_api/src/model/check_auth401_response_error_fields_value.dart';
 import 'package:vpn_api/src/model/code_authorization_request.dart';
+import 'package:vpn_api/src/model/connection_config_request_query.dart';
 import 'package:vpn_api/src/model/connection_config_response.dart';
 import 'package:vpn_api/src/model/connection_location.dart';
 import 'package:vpn_api/src/model/connection_message.dart';
@@ -98,6 +99,8 @@ ReturnType deserialize<ReturnType, BaseType>(dynamic value, String targetType,
           as ReturnType;
     case 'CodeAuthorizationRequest':
       return CodeAuthorizationRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'ConnectionConfigRequestQuery':
+      return ConnectionConfigRequestQuery.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'ConnectionConfigResponse':
       return ConnectionConfigResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'ConnectionLocation':

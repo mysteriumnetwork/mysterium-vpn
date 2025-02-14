@@ -96,6 +96,7 @@ Class | Method | HTTP request | Description
  - [CheckAuth401ResponseError](doc/CheckAuth401ResponseError.md)
  - [CheckAuth401ResponseErrorFieldsValue](doc/CheckAuth401ResponseErrorFieldsValue.md)
  - [CodeAuthorizationRequest](doc/CodeAuthorizationRequest.md)
+ - [ConnectionConfigRequestQuery](doc/ConnectionConfigRequestQuery.md)
  - [ConnectionConfigResponse](doc/ConnectionConfigResponse.md)
  - [ConnectionLocation](doc/ConnectionLocation.md)
  - [ConnectionMessage](doc/ConnectionMessage.md)
