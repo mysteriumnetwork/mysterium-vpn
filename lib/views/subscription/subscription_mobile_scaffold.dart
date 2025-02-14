@@ -143,7 +143,7 @@ class _SalesPricing extends HookWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.all(24),
-              child: SubscriptionSalesView(),
+              child: SubscriptionStatusContainer(child: SubscriptionSalesView()),
             ),
           ),
         ],
