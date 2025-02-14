@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -32,13 +33,18 @@ void main() {
   late MockLocaleStore mockLocaleStore;
   late List<VPNLocation> mockLocations;
 
-  setUp(() {
+  setUp(() async {
     mockApiService = MockApiService();
     mockFilterService = MockFilterService();
     mockAnalyticsStore = MockAnalyticsStore();
     mockRemoteConfigStore = MockRemoteConfigStore();
     mockPrefs = MockSharedPreferenceService();
     mockLocaleStore = MockLocaleStore();
+
+    when(mockRemoteConfigStore.configFuture).thenAnswer((_) => ObservableFuture.value({}));
+    when(mockRemoteConfigStore.locationsRefreshInterval).thenReturn(Duration.zero);
+
+    await mockRemoteConfigStore.configFuture;
 
     locationsStore = LocationsStore(
       mockApiService,
