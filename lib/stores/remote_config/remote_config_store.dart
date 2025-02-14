@@ -24,6 +24,7 @@ enum _FeatureToggleKey {
   pricingMonthly,
   mqttExperiment,
   dataCenterCountries,
+  locationsRefreshInterval,
   showSalesView,
   sentryDsn,
 }
@@ -203,6 +204,17 @@ abstract class RemoteConfigStoreBase with Store {
       }
     }
     return [];
+  }
+
+  @computed
+  Duration get locationsRefreshInterval {
+    if (config.containsKey(_FeatureToggleKey.locationsRefreshInterval.name)) {
+      final raw = config[_FeatureToggleKey.locationsRefreshInterval.name];
+      if (raw is int) {
+        return Duration(seconds: raw);
+      }
+    }
+    return const Duration(minutes: 10);
   }
 
   @computed
