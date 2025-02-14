@@ -19,6 +19,7 @@ const kSetMarketingConsent = '/user-preferences/marketing-consent';
 const kGetMarketingConsent = '/user-preferences/marketing-consent';
 const kGetUserPreferences = '/user-preferences';
 const kSetEmailMarketingConsent = '/email-marketing/marketing-consent';
+const kDisconnectAllDevices = '/connection/disconnect-all';
 
 class RestApiService extends ApiService {
   RestApiService({
@@ -217,4 +218,16 @@ class RestApiService extends ApiService {
 
   @override
   Future<void> setShownBanners(List<BannerType> banners) => _localDb.setShownBanners(banners);
+
+  @override
+  Future<void> disconnectAllDevices() async {
+    try {
+      // TODO(Waldz): Generate API client from API documentation openapi.yaml
+      await _networkService.get(kDisconnectAllDevices);
+      _logger.info('All devices disconnected');
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
+  }
 }

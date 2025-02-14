@@ -531,4 +531,11 @@ abstract class LocaleKeys {
   static const yearlyPlanFullPrice = 'yearlyPlanFullPrice';
   static const yes = 'yes';
   static const zh = 'zh';
+  static const disconnectAllDevices = 'disconnectAllDevices';
+  static const disconnectAllDevicesDesc = 'disconnectAllDevicesDesc';
+  static const disconnectAllDevicesTitle = 'disconnectAllDevicesTitle';
+  static const disconnectAllDevicesConfirmation = 'disconnectAllDevicesConfirmation';
+  static const failedToDisconnectAllDevices = 'failedToDisconnectAllDevices';
+  static const disconnectAllDevicesSuccess = 'disconnectAllDevicesSuccess';
+  static const reconnectBtn = 'reconnectBtn';
 }

@@ -528,5 +528,12 @@
   "yearlyPlanDiscountPrice": "Yıl için {amount}.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Evet",
-  "zh": "Çince"
+  "zh": "Çince",
+  "disconnectAllDevices": "Tüm cihazların bağlantısını kesin",
+  "disconnectAllDevicesDesc": "Tüm cihazlarınızla bağlantıyı kesmek üzeresiniz. Mevcut oturum sona erdirilecek ve VPN bağlantınızı kaybedeceksiniz.",
+  "disconnectAllDevicesTitle": "Tüm cihazlardan bağlantıyı kesin",
+  "disconnectAllDevicesConfirmation": "Tüm cihazların bağlantısını kesmek istediğinizden emin misiniz?",
+  "failedToDisconnectAllDevices": "Tüm cihazlardan bağlantıyı kesemedi. Lütfen tekrar deneyin",
+  "disconnectAllDevicesSuccess": "Güvenliğinizi sağlamak için tüm cihazlardan ayrıldınız.",
+  "reconnectBtn": "Yeniden bağlanmak"
 }

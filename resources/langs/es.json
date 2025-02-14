@@ -532,5 +532,12 @@
   "yearlyPlanDiscountPrice": "{amount} por el año.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Sí",
-  "zh": "Chino"
+  "zh": "Chino",
+  "disconnectAllDevices": "Desconectar todos los dispositivos",
+  "disconnectAllDevicesDesc": "Está a punto de desconectarse de todos sus dispositivos. La sesión actual se terminará y perderá su conexión VPN.",
+  "disconnectAllDevicesTitle": "Desconectar de todos los dispositivos",
+  "disconnectAllDevicesConfirmation": "¿Estás seguro de que quieres desconectar todos los dispositivos?",
+  "failedToDisconnectAllDevices": "No se pudo desconectar de todos los dispositivos. Por favor, intente nuevamente",
+  "disconnectAllDevicesSuccess": "Se ha desconectado de todos los dispositivos. Realice a la VPN para garantizar su seguridad.",
+  "reconnectBtn": "Volver a conectar"
 }
