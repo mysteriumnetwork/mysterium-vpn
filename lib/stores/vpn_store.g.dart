@@ -163,35 +163,58 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$resolveConnectionLocationFutureAtom =
-      Atom(name: '_VpnStore.resolveConnectionLocationFuture', context: context);
+  late final _$_resolveConnectionLocationFutureAtom =
+      Atom(name: '_VpnStore._resolveConnectionLocationFuture', context: context);
 
-  @override
   ObservableFuture<void>? get resolveConnectionLocationFuture {
-    _$resolveConnectionLocationFutureAtom.reportRead();
-    return super.resolveConnectionLocationFuture;
+    _$_resolveConnectionLocationFutureAtom.reportRead();
+    return super._resolveConnectionLocationFuture;
   }
 
   @override
-  set resolveConnectionLocationFuture(ObservableFuture<void>? value) {
-    _$resolveConnectionLocationFutureAtom.reportWrite(value, super.resolveConnectionLocationFuture,
-        () {
-      super.resolveConnectionLocationFuture = value;
+  ObservableFuture<void>? get _resolveConnectionLocationFuture => resolveConnectionLocationFuture;
+
+  @override
+  set _resolveConnectionLocationFuture(ObservableFuture<void>? value) {
+    _$_resolveConnectionLocationFutureAtom
+        .reportWrite(value, super._resolveConnectionLocationFuture, () {
+      super._resolveConnectionLocationFuture = value;
     });
   }
 
-  late final _$fetchConfigFutureAtom = Atom(name: '_VpnStore.fetchConfigFuture', context: context);
+  late final _$_fetchConfigFutureAtom =
+      Atom(name: '_VpnStore._fetchConfigFuture', context: context);
 
-  @override
   ObservableFuture<WireguardConnectResponse>? get fetchConfigFuture {
-    _$fetchConfigFutureAtom.reportRead();
-    return super.fetchConfigFuture;
+    _$_fetchConfigFutureAtom.reportRead();
+    return super._fetchConfigFuture;
   }
 
   @override
-  set fetchConfigFuture(ObservableFuture<WireguardConnectResponse>? value) {
-    _$fetchConfigFutureAtom.reportWrite(value, super.fetchConfigFuture, () {
-      super.fetchConfigFuture = value;
+  ObservableFuture<WireguardConnectResponse>? get _fetchConfigFuture => fetchConfigFuture;
+
+  @override
+  set _fetchConfigFuture(ObservableFuture<WireguardConnectResponse>? value) {
+    _$_fetchConfigFutureAtom.reportWrite(value, super._fetchConfigFuture, () {
+      super._fetchConfigFuture = value;
+    });
+  }
+
+  late final _$_disconnectAllDevicesFutureAtom =
+      Atom(name: '_VpnStore._disconnectAllDevicesFuture', context: context);
+
+  ObservableFuture<void>? get disconnectAllDevicesFuture {
+    _$_disconnectAllDevicesFutureAtom.reportRead();
+    return super._disconnectAllDevicesFuture;
+  }
+
+  @override
+  ObservableFuture<void>? get _disconnectAllDevicesFuture => disconnectAllDevicesFuture;
+
+  @override
+  set _disconnectAllDevicesFuture(ObservableFuture<void>? value) {
+    _$_disconnectAllDevicesFutureAtom.reportWrite(value, super._disconnectAllDevicesFuture, () {
+      super._disconnectAllDevicesFuture = value;
     });
   }
 
@@ -320,11 +343,17 @@ mixin _$VpnStore on _VpnStore, Store {
         .run(() => super._completeConnection(location, refreshIP));
   }
 
+  late final _$disconnectAllDevicesAsyncAction =
+      AsyncAction('_VpnStore.disconnectAllDevices', context: context);
+
+  @override
+  Future<void> disconnectAllDevices() {
+    return _$disconnectAllDevicesAsyncAction.run(() => super.disconnectAllDevices());
+  }
+
   @override
   String toString() {
     return '''
-resolveConnectionLocationFuture: ${resolveConnectionLocationFuture},
-fetchConfigFuture: ${fetchConfigFuture},
 originIP: ${originIP},
 vpnStatus: ${vpnStatus},
 replaceDNSAddress: ${replaceDNSAddress},

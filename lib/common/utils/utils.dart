@@ -300,7 +300,12 @@ bool isMobilePaymentGateway(String? gateway) {
   return false;
 }
 
-void showSnackbar(String message, {SnackBarAction? action, MessageType type = MessageType.error}) {
+void showSnackbar(
+  String message, {
+  SnackBarAction? action,
+  MessageType type = MessageType.error,
+  TextAlign textAlign = TextAlign.center,
+}) {
   final snackBar = SnackBar(
     elevation: 8,
     shape: RoundedRectangleBorder(
@@ -318,7 +323,7 @@ void showSnackbar(String message, {SnackBarAction? action, MessageType type = Me
         maxLines: 3,
         color: Palette.white,
         fontWeight: FontWeight.w900,
-        textAlign: TextAlign.center,
+        textAlign: textAlign,
       ),
     ),
     action: action,

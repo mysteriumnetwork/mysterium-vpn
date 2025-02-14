@@ -528,5 +528,12 @@
   "yearlyPlanDiscountPrice": "全年{amount}。",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "是",
-  "zh": "中国人"
+  "zh": "中国人",
+  "disconnectAllDevices": "断开所有设备",
+  "disconnectAllDevicesDesc": "您将要与所有设备断开连接。当前的会话将被终止，并且您将失去VPN连接。",
+  "disconnectAllDevicesTitle": "与所有设备断开连接",
+  "disconnectAllDevicesConfirmation": "您确定要断开所有设备吗？",
+  "failedToDisconnectAllDevices": "无法与所有设备断开连接。请重试",
+  "disconnectAllDevicesSuccess": "您已经与所有设备断开了连接。连接到VPN，以确保您的安全性。",
+  "reconnectBtn": "重新连接"
 }

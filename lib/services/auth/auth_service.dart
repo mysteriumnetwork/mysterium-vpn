@@ -13,5 +13,4 @@ abstract class AuthService {
   });
   Future<void> logout();
   Future<void> deleteAccount();
-  Future<void> disconnectAllDevices();
 }

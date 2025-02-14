@@ -19,4 +19,5 @@ abstract class ApiService {
   Future<void> setEmailMarketingConsent({required bool consent});
   Future<List<BannerType>> getShownBanners();
   Future<void> setShownBanners(List<BannerType> banners);
+  Future<void> disconnectAllDevices();
 }

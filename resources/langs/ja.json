@@ -528,5 +528,12 @@
   "yearlyPlanDiscountPrice": "年間{amount}。",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "はい",
-  "zh": "中国語"
+  "zh": "中国語",
+  "disconnectAllDevices": "すべてのデバイスを切断します",
+  "disconnectAllDevicesDesc": "すべてのデバイスから切断しようとしています。現在のセッションは終了し、VPN接続が失われます。",
+  "disconnectAllDevicesTitle": "すべてのデバイスから切断します",
+  "disconnectAllDevicesConfirmation": "すべてのデバイスを切断したいですか？",
+  "failedToDisconnectAllDevices": "すべてのデバイスから切断できませんでした。再試行してください",
+  "disconnectAllDevicesSuccess": "すべてのデバイスから切断されています。安全性を確保するために、VPNに再接続しています。",
+  "reconnectBtn": "再接続します"
 }
