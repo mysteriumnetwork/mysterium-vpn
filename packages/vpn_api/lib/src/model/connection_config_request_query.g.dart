@@ -13,7 +13,7 @@ ConnectionConfigRequestQuery _$ConnectionConfigRequestQueryFromJson(Map<String, 
       ($checkedConvert) {
         final val = ConnectionConfigRequestQuery(
           ipType: $checkedConvert('ip_type',
-              (v) => $enumDecodeNullable(_$ConnectionConfigRequestQueryIpTypeEnumEnumMap, v) ?? ''),
+              (v) => $enumDecodeNullable(_$ConnectionConfigRequestQueryIpTypeEnumEnumMap, v)),
         );
         return val;
       },

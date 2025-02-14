@@ -16,11 +16,10 @@ part 'connection_config_request_query.g.dart';
 class ConnectionConfigRequestQuery {
   /// Returns a new [ConnectionConfigRequestQuery] instance.
   ConnectionConfigRequestQuery({
-    this.ipType = const ConnectionConfigRequestQueryIpTypeEnum._(''),
+    this.ipType,
   });
 
   @JsonKey(
-    defaultValue: '',
     name: r'ip_type',
     required: false,
     includeIfNull: false,
