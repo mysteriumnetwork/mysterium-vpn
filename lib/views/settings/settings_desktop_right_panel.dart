@@ -49,7 +49,7 @@ class _HeaderTitle extends StatelessWidget {
           EasyText(
             LocaleKeys.settings.tr(),
             fontSize: 20,
-            fontWeight: FontWeight.w900,
+            fontWeight: FontWeight.w700,
           ),
           CircleBox(
             size: 8,
