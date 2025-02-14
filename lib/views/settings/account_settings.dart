@@ -20,6 +20,8 @@ import 'package:mysterium_vpn/components/setting_item.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:mysterium_vpn/stores/vpn_store.dart';
 import 'package:mysterium_vpn/views/settings/purchased_plan.dart';
 
 class AccountSettings extends HookConsumerWidget {
@@ -120,69 +122,12 @@ class AccountSettings extends HookConsumerWidget {
                       useSystemColor: false,
                       color: Palette.black,
                       width: 200,
-                      onPressed: () {
-                        analyticsStore.logEvent(AnalyticsEvent.logOutAll);
-                        shownConfirmationDialog(
-                          context,
-                          confirmText: LocaleKeys.confirm.tr(),
-                          cancelText: LocaleKeys.cancelBtn.tr(),
-                          title: LocaleKeys.disconnectAllDevicesTitle.tr(),
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                LocaleKeys.disconnectAllDevicesDesc.tr(),
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Palette.black,
-                                ),
-                                maxLines: 4,
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                LocaleKeys.disconnectAllDevicesConfirmation.tr(),
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Palette.black.withValues(alpha: 0.7),
-                                ),
-                                maxLines: 4,
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                          onConfirm: () async {
-                            analyticsStore.logEvent(AnalyticsEvent.logOutAllConfirm);
-                            try {
-                              await vpnStore.disconnectAllDevices();
-                              showSnackbar(
-                                LocaleKeys.disconnectAllDevicesSuccess.tr(),
-                                type: MessageType.success,
-                                textAlign: TextAlign.start,
-                                action: SnackBarAction(
-                                  label: LocaleKeys.reconnectBtn.tr(),
-                                  backgroundColor: Palette.black,
-                                  textColor: Palette.white,
-                                  onPressed: () async {
-                                    snackbarKey.currentState?.clearSnackBars();
-                                    handleToggleConnection();
-                                    context.beamBack();
-                                  },
-                                ),
-                              );
-                            } catch (e) {
-                              showSnackbar(
-                                LocaleKeys.failedToDisconnectAllDevices.tr(),
-                              );
-                            }
-                          },
-                          onCancel: () {
-                            analyticsStore.logEvent(AnalyticsEvent.logOutAllCancel);
-                          },
-                        );
-                      },
+                      onPressed: () => _onDisconnectedAllDevices(
+                        context,
+                        analyticsStore,
+                        vpnStore,
+                        handleToggleConnection,
+                      ),
                       child: vpnStore.disconnectAllDevicesFuture?.status == FutureStatus.pending
                           ? const LoadingIndicator()
                           : EasyText(
@@ -213,5 +158,89 @@ class AccountSettings extends HookConsumerWidget {
         );
       },
     );
+  }
+
+  Future<void> _onDisconnectedAllDevices(
+    BuildContext context,
+    AnalyticsStore analyticsStore,
+    VpnStore vpnStore,
+    VoidCallback handleToggleConnection,
+  ) async {
+    analyticsStore.logEvent(AnalyticsEvent.logOutAll);
+    shownConfirmationDialog(
+      context,
+      confirmText: LocaleKeys.confirm.tr(),
+      cancelText: LocaleKeys.cancelBtn.tr(),
+      title: LocaleKeys.disconnectAllDevicesTitle.tr(),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            LocaleKeys.disconnectAllDevicesDesc.tr(),
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: Palette.black,
+            ),
+            maxLines: 4,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 10),
+          Text(
+            LocaleKeys.disconnectAllDevicesConfirmation.tr(),
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: Palette.black.withValues(alpha: 0.7),
+            ),
+            maxLines: 4,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+      onConfirm: () => _onConfirmDisconnectedAllDevices(
+        context,
+        analyticsStore,
+        vpnStore,
+        handleToggleConnection,
+      ),
+      onCancel: () {
+        analyticsStore.logEvent(AnalyticsEvent.logOutAllCancel);
+      },
+    );
+  }
+
+  Future<void> _onConfirmDisconnectedAllDevices(
+    BuildContext context,
+    AnalyticsStore analyticsStore,
+    VpnStore vpnStore,
+    VoidCallback handleToggleConnection,
+  ) async {
+    analyticsStore.logEvent(AnalyticsEvent.logOutAllConfirm);
+    try {
+      final isConnected = vpnStore.isConnected;
+      await vpnStore.disconnectAllDevices();
+      showSnackbar(
+        LocaleKeys.disconnectAllDevicesSuccess.tr(),
+        type: MessageType.success,
+        textAlign: TextAlign.start,
+        action: isConnected
+            ? SnackBarAction(
+                label: LocaleKeys.reconnectBtn.tr(),
+                backgroundColor: Palette.black,
+                textColor: Palette.white,
+                onPressed: () async {
+                  snackbarKey.currentState?.clearSnackBars();
+                  handleToggleConnection();
+                  context.beamBack();
+                },
+              )
+            : null,
+      );
+    } catch (e) {
+      showSnackbar(
+        LocaleKeys.failedToDisconnectAllDevices.tr(),
+      );
+    }
   }
 }
