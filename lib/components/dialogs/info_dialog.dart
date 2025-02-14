@@ -69,7 +69,7 @@ class _InfoDialog extends HookWidget {
               EasyText(
                 title,
                 fontSize: 18,
-                fontWeight: FontWeight.w900,
+                fontWeight: FontWeight.w700,
                 maxLines: 3,
                 textAlign: TextAlign.center,
               ),

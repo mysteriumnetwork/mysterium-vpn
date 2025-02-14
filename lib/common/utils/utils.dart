@@ -322,7 +322,7 @@ void showSnackbar(
         message,
         maxLines: 3,
         color: Palette.white,
-        fontWeight: FontWeight.w900,
+        fontWeight: FontWeight.w600,
         textAlign: textAlign,
       ),
     ),

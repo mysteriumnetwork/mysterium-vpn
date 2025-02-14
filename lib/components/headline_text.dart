@@ -13,7 +13,7 @@ class HeadlineText extends ConsumerWidget {
     this.color,
     this.maxLines = 1,
     this.fontSize = 50,
-    this.fontWeight = FontWeight.w900,
+    this.fontWeight = FontWeight.w700,
     this.textAlign = TextAlign.start,
     super.key,
   });
