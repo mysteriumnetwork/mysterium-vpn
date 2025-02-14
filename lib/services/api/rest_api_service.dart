@@ -44,7 +44,14 @@ class RestApiService extends ApiService {
   Future<VPNLocations> fetchVPNLocations([IPType? ipType]) async {
     try {
       // TODO(dmacan): pass IP type to the API
-      final data = (await _apiConnection.connectionConfig()).data;
+      final data = (await _apiConnection.connectionConfig(
+        ipType: switch (ipType) {
+          IPType.datacenter => 'hosting',
+          IPType.residential => 'residential',
+          _ => null,
+        },
+      ))
+          .data;
       if (data == null) {
         throw Exception('No data found');
       }

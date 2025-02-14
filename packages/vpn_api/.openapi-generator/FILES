@@ -12,6 +12,7 @@ doc/CheckAuth401ResponseError.md
 doc/CheckAuth401ResponseErrorFieldsValue.md
 doc/CodeAuthorizationRequest.md
 doc/Connection.md
+doc/ConnectionConfigRequestQuery.md
 doc/ConnectionConfigResponse.md
 doc/ConnectionLocation.md
 doc/ConnectionMessage.md
@@ -88,6 +89,7 @@ lib/src/model/check_auth401_response.dart
 lib/src/model/check_auth401_response_error.dart
 lib/src/model/check_auth401_response_error_fields_value.dart
 lib/src/model/code_authorization_request.dart
+lib/src/model/connection_config_request_query.dart
 lib/src/model/connection_config_response.dart
 lib/src/model/connection_location.dart
 lib/src/model/connection_message.dart

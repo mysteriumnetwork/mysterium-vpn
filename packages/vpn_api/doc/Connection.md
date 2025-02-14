@@ -97,7 +97,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **connectionConfig**
-> ConnectionConfigResponse connectionConfig()
+> ConnectionConfigResponse connectionConfig(ipType)
 
 Get connection options
 
@@ -106,9 +106,10 @@ Get connection options
 import 'package:vpn_api/api.dart';
 
 final api = VpnApi().getConnection();
+final String ipType = ipType_example; // String | 
 
 try {
-    final response = api.connectionConfig();
+    final response = api.connectionConfig(ipType);
     print(response);
 } catch on DioException (e) {
     print('Exception when calling Connection->connectionConfig: $e\n');
@@ -116,7 +117,10 @@ try {
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ipType** | **String**|  | [optional] [default to '']
 
 ### Return type
 
