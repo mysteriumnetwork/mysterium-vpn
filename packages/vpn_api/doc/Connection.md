@@ -120,7 +120,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ipType** | **String**|  | [optional] [default to '']
+ **ipType** | **String**|  | [optional] 
 
 ### Return type
 
