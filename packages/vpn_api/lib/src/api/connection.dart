@@ -220,7 +220,7 @@ class Connection {
   /// Returns a [Future] containing a [Response] with a [ConnectionConfigResponse] as data
   /// Throws [DioException] if API call or serialization fails
   Future<Response<ConnectionConfigResponse>> connectionConfig({
-    String? ipType = '',
+    String? ipType,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
