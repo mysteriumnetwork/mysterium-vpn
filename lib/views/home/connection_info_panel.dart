@@ -79,7 +79,7 @@ class _InfoItem extends StatelessWidget {
           EasyText(
             text,
             fontSize: 16,
-            fontWeight: FontWeight.w900,
+            fontWeight: FontWeight.w700,
             color: isConnected ? Palette.white : Palette.lightBlack,
           ),
         ],

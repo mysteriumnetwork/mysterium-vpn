@@ -3,7 +3,7 @@ import 'package:mysterium_vpn/common/layout_builders/platform_type_builder.dart'
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/views/informational_view.dart';
-import 'package:mysterium_vpn/views/subscription/subscription_mobile_view.dart';
+import 'package:mysterium_vpn/views/subscription/subscription_mobile_scaffold.dart';
 
 class SubscriptionPage extends StatelessWidget {
   const SubscriptionPage({super.key});
@@ -13,9 +13,9 @@ class SubscriptionPage extends StatelessWidget {
         body: PlatformTypeLayoutBuilder(
           windows: (BuildContext context) =>
               const InformationalView(translationKey: LocaleKeys.subscriptionDesktop),
-          android: (BuildContext context) => const SubscriptionMobileView(),
-          macos: (BuildContext context) => const SubscriptionMobileView(),
-          ios: (BuildContext context) => const SubscriptionMobileView(),
+          android: (BuildContext context) => const SubscriptionMobileScaffold(),
+          macos: (BuildContext context) => const SubscriptionMobileScaffold(),
+          ios: (BuildContext context) => const SubscriptionMobileScaffold(),
         ),
       );
 }

@@ -719,6 +719,13 @@ class MockRemoteConfigStore extends _i1.Mock implements _i16.RemoteConfigStore {
       ) as List<String>);
 
   @override
+  bool get showSalesView => (super.noSuchMethod(
+        Invocation.getter(#showSalesView),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
   Map<String, String> get asUserProperties => (super.noSuchMethod(
         Invocation.getter(#asUserProperties),
         returnValue: <String, String>{},

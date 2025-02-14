@@ -1,49 +1,38 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/purchasable_product.dart';
 
-class DiscountTag extends HookWidget {
+class DiscountTag extends HookConsumerWidget {
   const DiscountTag({
-    required this.monthlyRawPrice,
-    required this.product,
+    required this.discountPercentage,
+    this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+    this.colors = const [Color(0xffFF735F), Color(0xffFF40CA)],
     super.key,
   });
-  final double monthlyRawPrice;
-  final PurchasableProduct product;
+
+  final int discountPercentage;
+
+  final EdgeInsets padding;
+  final List<Color> colors;
 
   @override
-  Widget build(BuildContext context) {
-    final discount = useMemoized(
-      () {
-        final fullAmount = monthlyRawPrice * product.duration;
-        final amount = product.productPrice;
-
-        return ((fullAmount - amount) / fullAmount * 100).round();
-      },
-      [product.rawPrice, product.duration, monthlyRawPrice],
-    );
-
-    if (!product.isDiscounted(monthlyRawPrice)) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (discountPercentage <= 0) {
       return const SizedBox.shrink();
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      padding: padding,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        gradient: const LinearGradient(
-          colors: [
-            Color(0xffFF735F),
-            Color(0xffFF40CA),
-          ],
-        ),
+        color: colors.length == 1 ? colors.first : null,
+        gradient: colors.length >= 2 ? LinearGradient(colors: colors) : null,
       ),
       child: EasyText(
-        LocaleKeys.discountTag.tr(namedArgs: {'discount': '$discount%'}),
+        LocaleKeys.discountTag.tr(namedArgs: {'discount': '$discountPercentage%'}),
         fontSize: 12,
         color: Palette.white,
       ),
