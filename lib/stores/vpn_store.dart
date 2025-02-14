@@ -125,14 +125,14 @@ abstract class _VpnStore with Store {
   @computed
   bool get isConnected =>
       _connectionStatus == ConnectionStatus.connected &&
-      resolveConnectionLocationFuture?.status != FutureStatus.pending &&
-      fetchConfigFuture?.status != FutureStatus.pending;
+      _resolveConnectionLocationFuture?.status != FutureStatus.pending &&
+      _fetchConfigFuture?.status != FutureStatus.pending;
 
   @computed
   bool get isLoading =>
       _connectionStatus == ConnectionStatus.connecting ||
-      resolveConnectionLocationFuture?.status == FutureStatus.pending ||
-      fetchConfigFuture?.status == FutureStatus.pending;
+      _resolveConnectionLocationFuture?.status == FutureStatus.pending ||
+      _fetchConfigFuture?.status == FutureStatus.pending;
 
   @readonly
   VPNLocation? _connectingLocation;
@@ -140,14 +140,14 @@ abstract class _VpnStore with Store {
   @computed
   VPNLocation? get location => _vpnConnection?.location;
 
-  @observable
-  ObservableFuture<void>? resolveConnectionLocationFuture;
+  @readonly
+  ObservableFuture<void>? _resolveConnectionLocationFuture;
 
-  @observable
-  ObservableFuture<WireguardConnectResponse>? fetchConfigFuture;
+  @readonly
+  ObservableFuture<WireguardConnectResponse>? _fetchConfigFuture;
 
-  @observable
-  ObservableFuture<void>? disconnectAllDevicesFuture;
+  @readonly
+  ObservableFuture<void>? _disconnectAllDevicesFuture;
 
   int _retryCount = 0;
   bool _isRetrying = false;
@@ -193,14 +193,14 @@ abstract class _VpnStore with Store {
       _connectingLocation = location;
       _connectionStatus = ConnectionStatus.connecting;
       try {
-        resolveConnectionLocationFuture = ObservableFuture(
+        _resolveConnectionLocationFuture = ObservableFuture(
           _checkConnectionQuality(
             checkLocation: () => _resolveIPAddress(location),
             location: location!,
             hash: _vpnConfig?.hash ?? '',
           ),
         );
-        await resolveConnectionLocationFuture;
+        await _resolveConnectionLocationFuture;
       } catch (e) {
         await disconnectWireguard();
       }
@@ -484,7 +484,7 @@ abstract class _VpnStore with Store {
       _stopwatch
         ..reset()
         ..start();
-      fetchConfigFuture = ObservableFuture(
+      _fetchConfigFuture = ObservableFuture(
         _apiService.fetchVpnConfig(
           request: WireguardConnectRequest(
             publicKey: key.publicKey,
@@ -498,7 +498,7 @@ abstract class _VpnStore with Store {
           ),
         ),
       );
-      _vpnConfig = await fetchConfigFuture;
+      _vpnConfig = await _fetchConfigFuture;
 
       await _initMqtt();
 
@@ -506,7 +506,7 @@ abstract class _VpnStore with Store {
         privateKey: key.privateKey,
         vpnConfig: _vpnConfig!.wgConfig,
       );
-      resolveConnectionLocationFuture = ObservableFuture(
+      _resolveConnectionLocationFuture = ObservableFuture(
         _checkConnectionQuality(
           checkLocation: () async {
             if (_vpnConfig?.exitIp != null) {
@@ -519,7 +519,7 @@ abstract class _VpnStore with Store {
           hash: _vpnConfig?.hash ?? '',
         ),
       );
-      await resolveConnectionLocationFuture!;
+      await _resolveConnectionLocationFuture!;
       if (_vpnConnection?.location != null) {
         _locationsStore.addRecentLocation(_vpnConnection!.location);
       }
@@ -629,11 +629,11 @@ abstract class _VpnStore with Store {
   @action
   Future<void> disconnectAllDevices() async {
     try {
-      disconnectAllDevicesFuture = ObservableFuture(
+      _disconnectAllDevicesFuture = ObservableFuture(
         _apiService.disconnectAllDevices(),
       );
       await disconnectWireguard();
-      await disconnectAllDevicesFuture;
+      await _disconnectAllDevicesFuture;
     } catch (e) {
       _logger.handle(e);
       rethrow;
