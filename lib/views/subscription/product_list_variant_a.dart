@@ -14,7 +14,7 @@ class SubscriptionProductsListVariantA extends ConsumerWidget {
     super.key,
   });
   final List<PurchasableProduct> products;
-  final ValueNotifier<String> selectedProductId;
+  final ValueNotifier<String?> selectedProductId;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final analyticsStore = ref.watch(analyticsStorePOD);
@@ -43,7 +43,7 @@ class SubscriptionProductsListVariantA extends ConsumerWidget {
     String productId,
     AnalyticsStore analyticsStore,
     List<String> productIds,
-    ValueNotifier<String> selectedProductId,
+    ValueNotifier<String?> selectedProductId,
   ) {
     selectedProductId.value = productId;
     analyticsStore.logProductSelected(
