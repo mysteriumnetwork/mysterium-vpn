@@ -23,6 +23,7 @@ import 'package:mysterium_vpn/services/data/local/adapters/banner_type_adapter.d
 import 'package:mysterium_vpn/services/data/local/adapters/vpn_location_adapter.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
@@ -92,7 +93,7 @@ class Enviroment {
       overrides: [environmentPOD.overrideWithValue(flavorConfig)],
     );
     await container.read(analyticsInitPOD(firebaseOptions).future);
-    await initRemoteConfig(container);
+    final remoteConfigStore = await initRemoteConfig(container);
     final logger = container.read(loggerPOD);
 
     FlutterError.onError = (details) {
@@ -112,7 +113,7 @@ class Enviroment {
     await SentryFlutter.init(
       (options) {
         options
-          ..dsn = flavorConfig.values.sentryDsn
+          ..dsn = remoteConfigStore?.sentryDsn ?? flavorConfig.values.sentryDsn
           ..sendClientReports = true
           ..maxRequestBodySize = MaxRequestBodySize.small
           ..maxResponseBodySize = MaxResponseBodySize.small
@@ -149,12 +150,14 @@ class Enviroment {
     );
   }
 
-  Future<void> initRemoteConfig(ProviderContainer container) async {
+  Future<RemoteConfigStore?> initRemoteConfig(ProviderContainer container) async {
     try {
       final remoteConfigStore = container.read(remoteConfigStorePOD);
       await remoteConfigStore.configFuture;
+      return remoteConfigStore;
     } catch (e) {
       debugPrint('Error initializing remote config $e');
+      return null;
     }
   }
 
