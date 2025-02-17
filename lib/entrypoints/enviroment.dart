@@ -112,8 +112,7 @@ class Enviroment {
     await SentryFlutter.init(
       (options) {
         options
-          ..dsn =
-              'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200'
+          ..dsn = flavorConfig.values.sentryDsn
           ..sendClientReports = true
           ..maxRequestBodySize = MaxRequestBodySize.small
           ..maxResponseBodySize = MaxResponseBodySize.small
