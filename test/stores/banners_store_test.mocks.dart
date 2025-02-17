@@ -240,17 +240,6 @@ class MockApiService extends _i1.Mock implements _i6.ApiService {
       ) as _i7.Future<bool>);
 
   @override
-  _i7.Future<void> setEmailMarketingConsent({required bool? consent}) => (super.noSuchMethod(
-        Invocation.method(
-          #setEmailMarketingConsent,
-          [],
-          {#consent: consent},
-        ),
-        returnValue: _i7.Future<void>.value(),
-        returnValueForMissingStub: _i7.Future<void>.value(),
-      ) as _i7.Future<void>);
-
-  @override
   _i7.Future<List<_i11.BannerType>> getShownBanners() => (super.noSuchMethod(
         Invocation.method(
           #getShownBanners,

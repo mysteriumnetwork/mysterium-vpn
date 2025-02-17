@@ -23,9 +23,6 @@ abstract class _UserPreferencesStore with Store {
   @observable
   ObservableFuture<void> getMarketingConsentFeature = ObservableFuture.value(null);
 
-  @observable
-  ObservableFuture<void> setEmailMarketingConsentFeature = ObservableFuture.value(null);
-
   @computed
   FutureStatus get setMarketingConsentFeatureStatus => setMarketingConsentFeature.status;
 
@@ -46,17 +43,5 @@ abstract class _UserPreferencesStore with Store {
   Future<void> getUserPrefsMarketingConsent() async {
     getMarketingConsentFeature = ObservableFuture(_apiService.getUserPrefsMarketingConsent());
     await getMarketingConsentFeature;
-  }
-
-  @action
-  Future<void> setEmailMarketingConsent({
-    required bool consent,
-  }) async {
-    setEmailMarketingConsentFeature = ObservableFuture(
-      _apiService.setEmailMarketingConsent(
-        consent: consent,
-      ),
-    );
-    await setEmailMarketingConsentFeature;
   }
 }
