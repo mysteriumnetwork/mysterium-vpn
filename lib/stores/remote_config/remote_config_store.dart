@@ -25,6 +25,7 @@ enum _FeatureToggleKey {
   mqttExperiment,
   dataCenterCountries,
   showSalesView,
+  sentryDsn,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -210,6 +211,14 @@ abstract class RemoteConfigStoreBase with Store {
       return config[_FeatureToggleKey.showSalesView.name] as bool;
     }
     return false;
+  }
+
+  @computed
+  String? get sentryDsn {
+    if (config.containsKey(_FeatureToggleKey.sentryDsn.name)) {
+      return config[_FeatureToggleKey.sentryDsn.name] as String;
+    }
+    return null;
   }
 
   Map<String, String> get asUserProperties =>
