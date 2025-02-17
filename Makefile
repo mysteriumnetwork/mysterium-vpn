@@ -1,5 +1,4 @@
 .DEFAULT_GOAL := run-dev
-.PHONY: run-dev clean generate
 
 init:
 	fvm flutter pub get

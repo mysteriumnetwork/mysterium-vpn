@@ -26,15 +26,14 @@ jobs:
           cache: true
 
       - name: Install dependencies
-        run: flutter pub get
+        run: make init
 
       - name: Check formating
         run: dart format --line-length=100 --output=none --set-exit-if-changed .
 
       - name: Check generated files
         run: |
-          dart run build_runner build --delete-conflicting-outputs
-          dart format --line-length 100 .
+          make generate-code
           if [ -n "$(git status --porcelain)" ]; then
             echo "Uncommitted changes detected! Please run `dart run build_runner build --delete-conflicting-outputs` and commit the changes."
             git status
@@ -117,7 +116,7 @@ jobs:
     uses: ./.github/workflows/_build-windows.yml
     with:
       build_version: ${{ needs.quality_checks.outputs.dev_version }}
-      build_number: ${{ github.run_number }}
+      build_number: ${{ needs.quality_checks.outputs.dev_build }}
       product_store_id: "9MZRX8P6FXC4"
       product_identity: "UABMNTechnologijos.MysteriumVPNTest"
       application_name: "Mysterium VPN Test"
