@@ -196,24 +196,6 @@ class RestApiService extends ApiService {
   }
 
   @override
-  Future<void> setEmailMarketingConsent({required bool consent}) async {
-    try {
-      // TODO(Waldz): Generate API client from API documentation openapi.yaml
-      await _networkService.post(
-        kSetEmailMarketingConsent,
-        data: {
-          'consent': consent,
-        },
-      );
-    } on ApiException catch (_) {
-      rethrow;
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
-    }
-  }
-
-  @override
   Future<List<BannerType>> getShownBanners() => _localDb.getShownBanners();
 
   @override
