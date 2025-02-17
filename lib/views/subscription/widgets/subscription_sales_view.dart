@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/spans/character_span.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/subscription/subscription_button.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/discount_tag.dart';
@@ -33,7 +34,8 @@ class SubscriptionSalesView extends HookConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Center(child: SaleTag(discountPercentage: product.introductoryDiscountPercentage)),
+        if (product != null)
+          Center(child: SaleTag(discountPercentage: product.introductoryDiscountPercentage)),
         const SizedBox(height: 24),
         EasyText(
           LocaleKeys.pricingPlanSaleTitle.tr(),
@@ -51,12 +53,17 @@ class SubscriptionSalesView extends HookConsumerWidget {
           color: Palette.white,
         ),
         const SizedBox(height: 40),
-        const _PlanCard(),
+        if (product != null) _PlanCard(product: product),
         const SizedBox(height: 40),
         SubscriptionButton(
           onPressed: () {
+            final id = product?.id;
+            if (id == null) {
+              return;
+            }
+
             analyticsStore.logEvent(AnalyticsEvent.clickLetsgo);
-            handleSubscribeToProduct(product.id);
+            handleSubscribeToProduct(id);
           },
           isLoading: isLoading,
           label: LocaleKeys.letsGoBtn.tr(),
@@ -86,98 +93,94 @@ class SubscriptionSalesView extends HookConsumerWidget {
 }
 
 class _PlanCard extends HookConsumerWidget {
-  const _PlanCard();
+  const _PlanCard({required this.product});
+  final PurchasableProduct product;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final subscriptionStore = ref.watch(subscriptionStorePOD);
-    final product = useComputedValue(() => subscriptionStore.highlightedProduct);
-
-    return DefaultTextStyle(
-      style: GoogleFonts.montserrat(color: Colors.white),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: .1),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 48),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            spacing: 16,
-            children: [
-              EasyText(
-                product.productDetails.title,
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-                color: Palette.white,
-              ),
-              if (product.hasIntroductoryPrice)
+  Widget build(BuildContext context, WidgetRef ref) => DefaultTextStyle(
+        style: GoogleFonts.montserrat(color: Colors.white),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: .1),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 48),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              spacing: 16,
+              children: [
+                EasyText(
+                  product.productDetails.title,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Palette.white,
+                ),
+                if (product.hasIntroductoryPrice)
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(text: LocaleKeys.now.tr()),
+                        CharacterSpan.space(),
+                        WidgetSpan(
+                          child: DiscountTag(
+                            discountPercentage: product.introductoryDiscountPercentage,
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                            colors: const [Color(0xffC544E6), Color(0xffC544E6)],
+                          ),
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 Text.rich(
                   TextSpan(
                     children: [
-                      TextSpan(text: LocaleKeys.now.tr()),
+                      TextSpan(
+                        text: product.productPrice.toPriceString(currency: product.currency),
+                        style: GoogleFonts.montserrat(fontSize: 34, fontWeight: FontWeight.w700),
+                      ),
                       CharacterSpan.space(),
-                      WidgetSpan(
-                        child: DiscountTag(
-                          discountPercentage: product.introductoryDiscountPercentage,
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                          colors: const [Color(0xffC544E6), Color(0xffC544E6)],
-                        ),
+                      CharacterSpan.slash(),
+                      if (product.hasIntroductoryPrice) ...[
+                        TextSpan(text: LocaleKeys.first.tr()),
+                        CharacterSpan.space(),
+                      ],
+                      TextSpan(
+                        text: switch (product.duration) {
+                          12 => LocaleKeys.year.tr(),
+                          6 => LocaleKeys.SixMonths.tr(),
+                          _ => LocaleKeys.month.tr(),
+                        },
                       ),
                     ],
                   ),
-                  textAlign: TextAlign.center,
                 ),
-              Text.rich(
-                TextSpan(
-                  children: [
+                if (product.hasIntroductoryPrice)
+                  Text.rich(
                     TextSpan(
-                      text: product.productPrice.toPriceString(currency: product.currency),
-                      style: GoogleFonts.montserrat(fontSize: 34, fontWeight: FontWeight.w700),
+                      children: [
+                        TextSpan(text: LocaleKeys.was.tr()),
+                        CharacterSpan.space(),
+                        TextSpan(
+                          text: product.rawPrice.toPriceString(currency: product.currency),
+                          style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w700),
+                        ),
+                      ],
                     ),
-                    CharacterSpan.space(),
-                    CharacterSpan.slash(),
-                    if (product.hasIntroductoryPrice) ...[
-                      TextSpan(text: LocaleKeys.first.tr()),
-                      CharacterSpan.space(),
-                    ],
-                    TextSpan(
-                      text: switch (product.duration) {
-                        12 => LocaleKeys.year.tr(),
-                        6 => LocaleKeys.SixMonths.tr(),
-                        _ => LocaleKeys.month.tr(),
+                  ),
+                if (product.hasIntroductoryPrice)
+                  EasyText(
+                    LocaleKeys.subscriptionRenewalDisclaimer.tr(
+                      namedArgs: {
+                        'price': product.rawPrice.toPriceString(currency: product.currency),
                       },
                     ),
-                  ],
-                ),
-              ),
-              if (product.hasIntroductoryPrice)
-                Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(text: LocaleKeys.was.tr()),
-                      CharacterSpan.space(),
-                      TextSpan(
-                        text: product.rawPrice.toPriceString(currency: product.currency),
-                        style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w700),
-                      ),
-                    ],
+                    color: Palette.darkGrey,
                   ),
-                ),
-              if (product.hasIntroductoryPrice)
-                EasyText(
-                  LocaleKeys.subscriptionRenewalDisclaimer.tr(
-                    namedArgs: {
-                      'price': product.rawPrice.toPriceString(currency: product.currency),
-                    },
-                  ),
-                  color: Palette.darkGrey,
-                ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

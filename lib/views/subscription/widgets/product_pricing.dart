@@ -26,7 +26,12 @@ class ProductPricing extends HookConsumerWidget {
 
     final monthlyProduct = useComputedValue(() => subscriptionStore.monthlyProduct);
     final discountPercentage = useComputedValue(
-      () => product.periodDiscountPercentage(monthlyProduct),
+      () {
+        if (monthlyProduct == null) {
+          return 0;
+        }
+        return product.periodDiscountPercentage(monthlyProduct);
+      },
       [monthlyProduct],
     );
 
@@ -51,7 +56,7 @@ class ProductPricing extends HookConsumerWidget {
         ),
         if (pricingMonthly)
           _MonthlyPricing(product: product)
-        else
+        else if (monthlyProduct != null)
           _RegularPricing(monthlyPrice: monthlyProduct.rawPrice, product: product),
       ],
     );

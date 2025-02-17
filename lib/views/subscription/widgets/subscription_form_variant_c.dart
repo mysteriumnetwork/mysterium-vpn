@@ -55,10 +55,11 @@ class SubscriptionFormVariantC extends HookConsumerWidget {
             fontWeight: FontWeight.w700,
           ),
           SizedBox(height: getMediaHeight(context) * 0.01),
-          HighlightedProduct(
-            product: highlightedProduct,
-            isHighlighted: true,
-          ),
+          if (highlightedProduct != null)
+            HighlightedProduct(
+              product: highlightedProduct,
+              isHighlighted: true,
+            ),
           ProductFeatures(
             formVariant: variant,
             isDarkTheme: isDarkMode,
@@ -77,6 +78,10 @@ class SubscriptionFormVariantC extends HookConsumerWidget {
           ).padding(bottom: getMediaHeight(context) * 0.025),
           SubscriptionButton(
             onPressed: () {
+              if (highlightedProduct == null) {
+                return;
+              }
+
               analyticsStore.logEvent(AnalyticsEvent.clickLetsgo);
               subscribeToPackage(highlightedProduct.id);
             },

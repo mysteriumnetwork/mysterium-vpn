@@ -41,8 +41,8 @@ class SubscriptionFormVariantA extends HookConsumerWidget {
           .toList(),
     );
     final highlightedProduct = useComputedValue(() => subscriptionStore.highlightedProduct);
-    final selectedProductId = useState<String>(
-      subscriptionStore.purchasedProductId ?? highlightedProduct.id,
+    final selectedProductId = useState<String?>(
+      subscriptionStore.purchasedProductId ?? highlightedProduct?.id,
     );
 
     return Observer(
@@ -74,8 +74,11 @@ class SubscriptionFormVariantA extends HookConsumerWidget {
             ).padding(bottom: getMediaHeight(context) * 0.025),
             SubscriptionButton(
               onPressed: () {
+                if (selectedProductId.value == null) {
+                  return;
+                }
                 analyticsStore.logEvent(AnalyticsEvent.clickStartNow);
-                subscribeToPackage(selectedProductId.value);
+                subscribeToPackage(selectedProductId.value!);
               },
               isLoading: isLoading,
               label: LocaleKeys.startTrialBtn.tr(),
