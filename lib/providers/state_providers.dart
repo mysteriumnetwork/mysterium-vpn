@@ -46,7 +46,6 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final env = ref.watch(environmentPOD);
   final intercomStore = ref.watch(intercomStorePOD);
   final logger = ref.watch(loggerPOD);
-  final userPreferencesStore = ref.watch(userPreferencesStorePOD);
   final mqttService = ref.watch(vpnApiMQTTPOD);
   final abTestingStore = ref.watch(abTestingStorePOD);
 
@@ -58,7 +57,6 @@ final authStorePOD = Provider<AuthStore>((ref) {
     env: env,
     intercomStore: intercomStore,
     logger: logger,
-    userPreferencesStore: userPreferencesStore,
     mqtt: mqttService,
     abTestingStore: abTestingStore,
   );
