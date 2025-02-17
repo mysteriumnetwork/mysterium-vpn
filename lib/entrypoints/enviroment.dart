@@ -112,7 +112,7 @@ class Enviroment {
     await SentryFlutter.init(
       (options) {
         options
-          ..dsn =flavorConfig.values.sentryDsn
+          ..dsn = flavorConfig.values.sentryDsn
           ..sendClientReports = true
           ..maxRequestBodySize = MaxRequestBodySize.small
           ..maxResponseBodySize = MaxResponseBodySize.small
