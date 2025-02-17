@@ -16,7 +16,6 @@ abstract class ApiService {
   Future<void> reportBrokenNode({required ReportBrokenNodeRequest request});
   Future<void> setUserPrefsMarketingConsent({required bool consent});
   Future<bool> getUserPrefsMarketingConsent();
-  Future<void> setEmailMarketingConsent({required bool consent});
   Future<List<BannerType>> getShownBanners();
   Future<void> setShownBanners(List<BannerType> banners);
   Future<void> disconnectAllDevices();

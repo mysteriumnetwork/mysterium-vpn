@@ -50,23 +50,6 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
     });
   }
 
-  late final _$setEmailMarketingConsentFeatureAtom =
-      Atom(name: '_UserPreferencesStore.setEmailMarketingConsentFeature', context: context);
-
-  @override
-  ObservableFuture<void> get setEmailMarketingConsentFeature {
-    _$setEmailMarketingConsentFeatureAtom.reportRead();
-    return super.setEmailMarketingConsentFeature;
-  }
-
-  @override
-  set setEmailMarketingConsentFeature(ObservableFuture<void> value) {
-    _$setEmailMarketingConsentFeatureAtom.reportWrite(value, super.setEmailMarketingConsentFeature,
-        () {
-      super.setEmailMarketingConsentFeature = value;
-    });
-  }
-
   late final _$setUserPrefsMarketingConsentAsyncAction =
       AsyncAction('_UserPreferencesStore.setUserPrefsMarketingConsent', context: context);
 
@@ -85,21 +68,11 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
         .run(() => super.getUserPrefsMarketingConsent());
   }
 
-  late final _$setEmailMarketingConsentAsyncAction =
-      AsyncAction('_UserPreferencesStore.setEmailMarketingConsent', context: context);
-
-  @override
-  Future<void> setEmailMarketingConsent({required bool consent}) {
-    return _$setEmailMarketingConsentAsyncAction
-        .run(() => super.setEmailMarketingConsent(consent: consent));
-  }
-
   @override
   String toString() {
     return '''
 setMarketingConsentFeature: ${setMarketingConsentFeature},
 getMarketingConsentFeature: ${getMarketingConsentFeature},
-setEmailMarketingConsentFeature: ${setEmailMarketingConsentFeature},
 setMarketingConsentFeatureStatus: ${setMarketingConsentFeatureStatus}
     ''';
   }
