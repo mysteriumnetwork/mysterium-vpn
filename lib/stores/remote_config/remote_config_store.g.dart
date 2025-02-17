@@ -143,6 +143,12 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   bool get showSalesView => (_$showSalesViewComputed ??=
           Computed<bool>(() => super.showSalesView, name: 'RemoteConfigStoreBase.showSalesView'))
       .value;
+  Computed<String?>? _$sentryDsnComputed;
+
+  @override
+  String? get sentryDsn => (_$sentryDsnComputed ??=
+          Computed<String?>(() => super.sentryDsn, name: 'RemoteConfigStoreBase.sentryDsn'))
+      .value;
 
   late final _$configFutureAtom =
       Atom(name: 'RemoteConfigStoreBase.configFuture', context: context);
@@ -194,7 +200,8 @@ showVpnPrivacyPolicyPage: ${showVpnPrivacyPolicyPage},
 pricingMonthly: ${pricingMonthly},
 mqttExperiment: ${mqttExperiment},
 dataCenterCountries: ${dataCenterCountries},
-showSalesView: ${showSalesView}
+showSalesView: ${showSalesView},
+sentryDsn: ${sentryDsn}
     ''';
   }
 }
