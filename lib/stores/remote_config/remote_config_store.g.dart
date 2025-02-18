@@ -130,13 +130,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   bool get mqttExperiment => (_$mqttExperimentComputed ??=
           Computed<bool>(() => super.mqttExperiment, name: 'RemoteConfigStoreBase.mqttExperiment'))
       .value;
-  Computed<List<String>>? _$dataCenterCountriesComputed;
+  Computed<Duration>? _$locationsRefreshIntervalComputed;
 
   @override
-  List<String> get dataCenterCountries =>
-      (_$dataCenterCountriesComputed ??= Computed<List<String>>(() => super.dataCenterCountries,
-              name: 'RemoteConfigStoreBase.dataCenterCountries'))
-          .value;
+  Duration get locationsRefreshInterval => (_$locationsRefreshIntervalComputed ??=
+          Computed<Duration>(() => super.locationsRefreshInterval,
+              name: 'RemoteConfigStoreBase.locationsRefreshInterval'))
+      .value;
   Computed<bool>? _$showSalesViewComputed;
 
   @override
@@ -199,7 +199,7 @@ notSafeContentBlockerDnsAddress: ${notSafeContentBlockerDnsAddress},
 showVpnPrivacyPolicyPage: ${showVpnPrivacyPolicyPage},
 pricingMonthly: ${pricingMonthly},
 mqttExperiment: ${mqttExperiment},
-dataCenterCountries: ${dataCenterCountries},
+locationsRefreshInterval: ${locationsRefreshInterval},
 showSalesView: ${showSalesView},
 sentryDsn: ${sentryDsn}
     ''';
