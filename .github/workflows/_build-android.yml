@@ -49,6 +49,8 @@ jobs:
         #with:
         #  cache-read-only: false
 
+      - name: Setup Flutter Version Management CLI
+        uses: flutter-actions/setup-fvm@v1
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -66,15 +68,15 @@ jobs:
           cat android/key.properties
 
       - name: Install dependencies
-        run: flutter pub get
+        run: make init
 
       - name: Replace version
         run: |
-          dart run cider version "${{ inputs.build_version }}+${{ inputs.build_number }}"
+          fvm dart run cider version "${{ inputs.build_version }}+${{ inputs.build_number }}"
           git diff
 
       - name: Build Android app
-        run: flutter build appbundle --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define "FLAVOR=${{ inputs.flavor_dart }}"
+        run: fvm flutter build appbundle --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define "FLAVOR=${{ inputs.flavor_dart }}"
 
       - name: Authenticate to Play Store
         id: google-play-auth

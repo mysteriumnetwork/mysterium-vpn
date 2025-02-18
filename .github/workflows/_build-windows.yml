@@ -38,9 +38,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install yq using Chocolatey
-        run: choco install yq -y
-
+      - name: Setup Flutter Version Management CLI
+        run: choco install yq fvm -y
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -48,15 +47,15 @@ jobs:
           cache: true
 
       - name: Install dependencies
-        run: flutter pub get
+        run: make init
 
       - name: Replace version
         run: |
-          dart run cider version "${{ inputs.build_version }}+${{ inputs.build_number }}"
+          fvm dart run cider version "${{ inputs.build_version }}+${{ inputs.build_number }}"
           git diff
 
       - name: Build Windows app
-        run: flutter build windows --no-pub --release --dart-define "FLAVOR=${{ inputs.flavor_dart }}"
+        run: fvm flutter build windows --no-pub --release --dart-define "FLAVOR=${{ inputs.flavor_dart }}"
 
       # Sign DEV builds with self-signed test certificate for QA process.
       # Documentation: https://github.com/YehudaKremer/msix?tab=readme-ov-file#%EF%B8%8F-signing-options
@@ -64,14 +63,14 @@ jobs:
       - name: Build Windows installer
         if: ${{ inputs.standalone_sign != true }}
         run: |
-          dart run msix:create `
+          fvm dart run msix:create `
             --build-windows false --install-certificate false --output-name "Mysterium VPN" `
             --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
             --sign-msix "true"
       - name: Build Windows installer
         if: ${{ inputs.standalone_sign == true }}
         run: |
-          dart run msix:create `
+          fvm dart run msix:create `
             --build-windows false --install-certificate false --output-name "Mysterium VPN" `
             --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
             --sign-msix false --publisher "CN=UAB MN Technologijos, O=UAB MN Technologijos, L=Vilnius, S=Vilniaus, C=LT"
@@ -102,7 +101,7 @@ jobs:
 
       - name: Build Windows installer
         run: |
-          dart run msix:create `
+          fvm dart run msix:create `
             --build-windows false --install-certificate false --output-name "Mysterium VPN" `
             --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
             --store --identity-name "${{ inputs.product_identity }}" --publisher "CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC" --publisher-display-name "UAB MN Technologijos"
