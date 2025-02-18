@@ -33,6 +33,8 @@ jobs:
       - name: Set up XCode
         run: sudo xcode-select --switch /Applications/Xcode_16.1.0.app
 
+      - name: Setup Flutter Version Management CLI
+        uses: flutter-actions/setup-fvm@v1
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -71,11 +73,11 @@ jobs:
           cat ios/export_options.plist
 
       - name: Install dependencies
-        run: flutter pub get
+        run: make init
 
       - name: Replace version
         run: |
-          dart run cider version "${{ inputs.build_version }}+${{ inputs.build_number }}"
+          fvm dart run cider version "${{ inputs.build_version }}+${{ inputs.build_number }}"
           git diff
 
       - name: Install Pods
@@ -84,7 +86,7 @@ jobs:
 
       - name: Build iOS app
         run: |
-          flutter build ipa --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define "FLAVOR=${{ inputs.flavor_dart }}" --export-options-plist=ios/export_options.plist
+          fvm flutter build ipa --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define "FLAVOR=${{ inputs.flavor_dart }}" --export-options-plist=ios/export_options.plist
           cat build/ios/ipa/ExportOptions.plist
 
       - name: Publish to Apple Store
