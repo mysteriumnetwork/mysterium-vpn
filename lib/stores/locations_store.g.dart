@@ -9,13 +9,26 @@ part of 'locations_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$LocationsStore on _LocationsStore, Store {
-  Computed<List<VPNLocation>>? _$allLocationsComputed;
+  Computed<ObservableFuture<VPNLocations>>? _$locationsFutureComputed;
 
   @override
-  List<VPNLocation> get allLocations =>
-      (_$allLocationsComputed ??= Computed<List<VPNLocation>>(() => super.allLocations,
-              name: '_LocationsStore.allLocations'))
+  ObservableFuture<VPNLocations> get locationsFuture => (_$locationsFutureComputed ??=
+          Computed<ObservableFuture<VPNLocations>>(() => super.locationsFuture,
+              name: '_LocationsStore.locationsFuture'))
+      .value;
+  Computed<List<VPNLocation>>? _$recentLocationsComputed;
+
+  @override
+  List<VPNLocation> get recentLocations =>
+      (_$recentLocationsComputed ??= Computed<List<VPNLocation>>(() => super.recentLocations,
+              name: '_LocationsStore.recentLocations'))
           .value;
+  Computed<List<VPNLocation>>? _$locationsComputed;
+
+  @override
+  List<VPNLocation> get locations => (_$locationsComputed ??=
+          Computed<List<VPNLocation>>(() => super.locations, name: '_LocationsStore.locations'))
+      .value;
   Computed<List<VPNLocation>>? _$topLocationsComputed;
 
   @override
@@ -23,28 +36,71 @@ mixin _$LocationsStore on _LocationsStore, Store {
       (_$topLocationsComputed ??= Computed<List<VPNLocation>>(() => super.topLocations,
               name: '_LocationsStore.topLocations'))
           .value;
-  Computed<List<VPNLocation>>? _$dcLocationsComputed;
 
-  @override
-  List<VPNLocation> get dcLocations => (_$dcLocationsComputed ??=
-          Computed<List<VPNLocation>>(() => super.dcLocations, name: '_LocationsStore.dcLocations'))
-      .value;
+  late final _$_dcLocationsFutureAtom =
+      Atom(name: '_LocationsStore._dcLocationsFuture', context: context);
 
-  late final _$_vpnLocationsFutureAtom =
-      Atom(name: '_LocationsStore._vpnLocationsFuture', context: context);
-
-  ObservableFuture<VPNLocations> get vpnLocationsFuture {
-    _$_vpnLocationsFutureAtom.reportRead();
-    return super._vpnLocationsFuture;
+  ObservableFuture<VPNLocations> get dcLocationsFuture {
+    _$_dcLocationsFutureAtom.reportRead();
+    return super._dcLocationsFuture;
   }
 
   @override
-  ObservableFuture<VPNLocations> get _vpnLocationsFuture => vpnLocationsFuture;
+  ObservableFuture<VPNLocations> get _dcLocationsFuture => dcLocationsFuture;
+
+  bool __dcLocationsFutureIsInitialized = false;
 
   @override
-  set _vpnLocationsFuture(ObservableFuture<VPNLocations> value) {
-    _$_vpnLocationsFutureAtom.reportWrite(value, super._vpnLocationsFuture, () {
-      super._vpnLocationsFuture = value;
+  set _dcLocationsFuture(ObservableFuture<VPNLocations> value) {
+    _$_dcLocationsFutureAtom
+        .reportWrite(value, __dcLocationsFutureIsInitialized ? super._dcLocationsFuture : null, () {
+      super._dcLocationsFuture = value;
+      __dcLocationsFutureIsInitialized = true;
+    });
+  }
+
+  late final _$_residentialLocationsFutureAtom =
+      Atom(name: '_LocationsStore._residentialLocationsFuture', context: context);
+
+  ObservableFuture<VPNLocations> get residentialLocationsFuture {
+    _$_residentialLocationsFutureAtom.reportRead();
+    return super._residentialLocationsFuture;
+  }
+
+  @override
+  ObservableFuture<VPNLocations> get _residentialLocationsFuture => residentialLocationsFuture;
+
+  bool __residentialLocationsFutureIsInitialized = false;
+
+  @override
+  set _residentialLocationsFuture(ObservableFuture<VPNLocations> value) {
+    _$_residentialLocationsFutureAtom.reportWrite(
+        value, __residentialLocationsFutureIsInitialized ? super._residentialLocationsFuture : null,
+        () {
+      super._residentialLocationsFuture = value;
+      __residentialLocationsFutureIsInitialized = true;
+    });
+  }
+
+  late final _$_recentLocationsFutureAtom =
+      Atom(name: '_LocationsStore._recentLocationsFuture', context: context);
+
+  ObservableFuture<List<VPNLocation>> get recentLocationsFuture {
+    _$_recentLocationsFutureAtom.reportRead();
+    return super._recentLocationsFuture;
+  }
+
+  @override
+  ObservableFuture<List<VPNLocation>> get _recentLocationsFuture => recentLocationsFuture;
+
+  bool __recentLocationsFutureIsInitialized = false;
+
+  @override
+  set _recentLocationsFuture(ObservableFuture<List<VPNLocation>> value) {
+    _$_recentLocationsFutureAtom.reportWrite(
+        value, __recentLocationsFutureIsInitialized ? super._recentLocationsFuture : null, () {
+      super._recentLocationsFuture = value;
+      __recentLocationsFutureIsInitialized = true;
     });
   }
 
@@ -85,38 +141,11 @@ mixin _$LocationsStore on _LocationsStore, Store {
     });
   }
 
-  late final _$_recentLocationsAtom =
-      Atom(name: '_LocationsStore._recentLocations', context: context);
-
-  List<VPNLocation> get recentLocations {
-    _$_recentLocationsAtom.reportRead();
-    return super._recentLocations;
-  }
+  late final _$refreshAsyncAction = AsyncAction('_LocationsStore.refresh', context: context);
 
   @override
-  List<VPNLocation> get _recentLocations => recentLocations;
-
-  @override
-  set _recentLocations(List<VPNLocation> value) {
-    _$_recentLocationsAtom.reportWrite(value, super._recentLocations, () {
-      super._recentLocations = value;
-    });
-  }
-
-  late final _$fetchVPNLocationsAsyncAction =
-      AsyncAction('_LocationsStore.fetchVPNLocations', context: context);
-
-  @override
-  Future<void> fetchVPNLocations() {
-    return _$fetchVPNLocationsAsyncAction.run(() => super.fetchVPNLocations());
-  }
-
-  late final _$fetchRecentLocationsAsyncAction =
-      AsyncAction('_LocationsStore.fetchRecentLocations', context: context);
-
-  @override
-  Future<void> fetchRecentLocations() {
-    return _$fetchRecentLocationsAsyncAction.run(() => super.fetchRecentLocations());
+  Future<void> refresh() {
+    return _$refreshAsyncAction.run(() => super.refresh());
   }
 
   late final _$addRecentLocationAsyncAction =
@@ -151,9 +180,10 @@ mixin _$LocationsStore on _LocationsStore, Store {
   @override
   String toString() {
     return '''
-allLocations: ${allLocations},
-topLocations: ${topLocations},
-dcLocations: ${dcLocations}
+locationsFuture: ${locationsFuture},
+recentLocations: ${recentLocations},
+locations: ${locations},
+topLocations: ${topLocations}
     ''';
   }
 }

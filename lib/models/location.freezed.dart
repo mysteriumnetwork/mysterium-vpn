@@ -16,9 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$VPNLocations {
-  List<VPNLocation> get allLocations => throw _privateConstructorUsedError;
+  List<VPNLocation> get locations => throw _privateConstructorUsedError;
   List<VPNLocation> get topLocations => throw _privateConstructorUsedError;
-  List<VPNLocation> get dcLocations => throw _privateConstructorUsedError;
 
   /// Create a copy of VPNLocations
   /// with the given fields replaced by the non-null parameter values.
@@ -31,10 +30,7 @@ abstract class $VPNLocationsCopyWith<$Res> {
   factory $VPNLocationsCopyWith(VPNLocations value, $Res Function(VPNLocations) then) =
       _$VPNLocationsCopyWithImpl<$Res, VPNLocations>;
   @useResult
-  $Res call(
-      {List<VPNLocation> allLocations,
-      List<VPNLocation> topLocations,
-      List<VPNLocation> dcLocations});
+  $Res call({List<VPNLocation> locations, List<VPNLocation> topLocations});
 }
 
 /// @nodoc
@@ -52,22 +48,17 @@ class _$VPNLocationsCopyWithImpl<$Res, $Val extends VPNLocations>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? allLocations = null,
+    Object? locations = null,
     Object? topLocations = null,
-    Object? dcLocations = null,
   }) {
     return _then(_value.copyWith(
-      allLocations: null == allLocations
-          ? _value.allLocations
-          : allLocations // ignore: cast_nullable_to_non_nullable
+      locations: null == locations
+          ? _value.locations
+          : locations // ignore: cast_nullable_to_non_nullable
               as List<VPNLocation>,
       topLocations: null == topLocations
           ? _value.topLocations
           : topLocations // ignore: cast_nullable_to_non_nullable
-              as List<VPNLocation>,
-      dcLocations: null == dcLocations
-          ? _value.dcLocations
-          : dcLocations // ignore: cast_nullable_to_non_nullable
               as List<VPNLocation>,
     ) as $Val);
   }
@@ -80,10 +71,7 @@ abstract class _$$VPNLocationsImplCopyWith<$Res> implements $VPNLocationsCopyWit
       __$$VPNLocationsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {List<VPNLocation> allLocations,
-      List<VPNLocation> topLocations,
-      List<VPNLocation> dcLocations});
+  $Res call({List<VPNLocation> locations, List<VPNLocation> topLocations});
 }
 
 /// @nodoc
@@ -99,22 +87,17 @@ class __$$VPNLocationsImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? allLocations = null,
+    Object? locations = null,
     Object? topLocations = null,
-    Object? dcLocations = null,
   }) {
     return _then(_$VPNLocationsImpl(
-      allLocations: null == allLocations
-          ? _value._allLocations
-          : allLocations // ignore: cast_nullable_to_non_nullable
+      locations: null == locations
+          ? _value._locations
+          : locations // ignore: cast_nullable_to_non_nullable
               as List<VPNLocation>,
       topLocations: null == topLocations
           ? _value._topLocations
           : topLocations // ignore: cast_nullable_to_non_nullable
-              as List<VPNLocation>,
-      dcLocations: null == dcLocations
-          ? _value._dcLocations
-          : dcLocations // ignore: cast_nullable_to_non_nullable
               as List<VPNLocation>,
     ));
   }
@@ -123,22 +106,20 @@ class __$$VPNLocationsImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$VPNLocationsImpl extends _VPNLocations {
-  const _$VPNLocationsImpl(
-      {final List<VPNLocation> allLocations = const [],
-      final List<VPNLocation> topLocations = const [],
-      final List<VPNLocation> dcLocations = const []})
-      : _allLocations = allLocations,
+  _$VPNLocationsImpl(
+      {final List<VPNLocation> locations = const [],
+      final List<VPNLocation> topLocations = const []})
+      : _locations = locations,
         _topLocations = topLocations,
-        _dcLocations = dcLocations,
         super._();
 
-  final List<VPNLocation> _allLocations;
+  final List<VPNLocation> _locations;
   @override
   @JsonKey()
-  List<VPNLocation> get allLocations {
-    if (_allLocations is EqualUnmodifiableListView) return _allLocations;
+  List<VPNLocation> get locations {
+    if (_locations is EqualUnmodifiableListView) return _locations;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_allLocations);
+    return EqualUnmodifiableListView(_locations);
   }
 
   final List<VPNLocation> _topLocations;
@@ -150,18 +131,9 @@ class _$VPNLocationsImpl extends _VPNLocations {
     return EqualUnmodifiableListView(_topLocations);
   }
 
-  final List<VPNLocation> _dcLocations;
-  @override
-  @JsonKey()
-  List<VPNLocation> get dcLocations {
-    if (_dcLocations is EqualUnmodifiableListView) return _dcLocations;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_dcLocations);
-  }
-
   @override
   String toString() {
-    return 'VPNLocations(allLocations: $allLocations, topLocations: $topLocations, dcLocations: $dcLocations)';
+    return 'VPNLocations(locations: $locations, topLocations: $topLocations)';
   }
 
   @override
@@ -169,17 +141,13 @@ class _$VPNLocationsImpl extends _VPNLocations {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$VPNLocationsImpl &&
-            const DeepCollectionEquality().equals(other._allLocations, _allLocations) &&
-            const DeepCollectionEquality().equals(other._topLocations, _topLocations) &&
-            const DeepCollectionEquality().equals(other._dcLocations, _dcLocations));
+            const DeepCollectionEquality().equals(other._locations, _locations) &&
+            const DeepCollectionEquality().equals(other._topLocations, _topLocations));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_allLocations),
-      const DeepCollectionEquality().hash(_topLocations),
-      const DeepCollectionEquality().hash(_dcLocations));
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(_locations),
+      const DeepCollectionEquality().hash(_topLocations));
 
   /// Create a copy of VPNLocations
   /// with the given fields replaced by the non-null parameter values.
@@ -191,18 +159,14 @@ class _$VPNLocationsImpl extends _VPNLocations {
 }
 
 abstract class _VPNLocations extends VPNLocations {
-  const factory _VPNLocations(
-      {final List<VPNLocation> allLocations,
-      final List<VPNLocation> topLocations,
-      final List<VPNLocation> dcLocations}) = _$VPNLocationsImpl;
-  const _VPNLocations._() : super._();
+  factory _VPNLocations({final List<VPNLocation> locations, final List<VPNLocation> topLocations}) =
+      _$VPNLocationsImpl;
+  _VPNLocations._() : super._();
 
   @override
-  List<VPNLocation> get allLocations;
+  List<VPNLocation> get locations;
   @override
   List<VPNLocation> get topLocations;
-  @override
-  List<VPNLocation> get dcLocations;
 
   /// Create a copy of VPNLocations
   /// with the given fields replaced by the non-null parameter values.

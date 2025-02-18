@@ -32,24 +32,10 @@ class LocationsSliverView extends HookConsumerWidget {
     final locationsStore = ref.watch(locationsStorePOD);
     final locationType = useComputedValue(() => locationsStore.ipType);
 
-    final state = useComputedValue(() => locationsStore.vpnLocationsFuture);
+    final state = useComputedValue(() => locationsStore.locationsFuture);
 
-    final locations = useComputedValue(
-      () => switch (locationType) {
-        IPType.residential => locationsStore.allLocations,
-        IPType.datacenter => locationsStore.dcLocations,
-      },
-      [locationType],
-    );
-
-    final topLocations = useComputedValue(
-      () => switch (locationType) {
-        IPType.residential => locationsStore.topLocations,
-        IPType.datacenter => const <VPNLocation>[],
-      },
-      [locationType],
-    );
-
+    final locations = useComputedValue(() => locationsStore.locations);
+    final topLocations = useComputedValue(() => locationsStore.topLocations);
     final recentLocations = useComputedValue(() => locationsStore.recentLocations);
 
     final handleToggleConnection = useHandleToggleConnection();
@@ -102,7 +88,7 @@ class LocationsSliverView extends HookConsumerWidget {
               constraints: const BoxConstraints(minHeight: 260),
               child: RetryWdiget(
                 asset: Assets.globe,
-                onRetry: locationsStore.fetchVPNLocations,
+                onRetry: locationsStore.refresh,
                 text: state.error.toString(),
               ),
             ),
@@ -173,11 +159,9 @@ class _Locations extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final config = ref.watch(remoteConfigStorePOD);
     final locationsStore = ref.watch(locationsStorePOD);
 
     final typeSwitcherKey = ref.watch(homeStateProvider.select((it) => it.typeSwitcherKey));
-    final hasDataCenterIPs = useComputedValue(() => config.dataCenterCountries.isNotEmpty);
     final searchKeyword = useComputedValue(() => locationsStore.searchKeyword);
 
     return MultiSliver(
@@ -197,14 +181,13 @@ class _Locations extends HookConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                 sliver: MultiSliver(
                   children: [
-                    if (hasDataCenterIPs)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 30),
-                        child: switch (locationType) {
-                          IPType.datacenter => LocationsDisclaimer.dataCenter(),
-                          IPType.residential => LocationsDisclaimer.residential(),
-                        },
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30),
+                      child: switch (locationType) {
+                        IPType.datacenter => LocationsDisclaimer.dataCenter(),
+                        IPType.residential => LocationsDisclaimer.residential(),
+                      },
+                    ),
                     if (topLocations.isNotEmpty)
                       LocationsSliverList(
                         ipType: locationType,
