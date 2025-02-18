@@ -56,13 +56,18 @@ class RestApiService extends ApiService {
         throw Exception('No data found');
       }
 
+      final topLocations = data.topCountries
+          .map((code) => VPNLocation(code: code, ipType: ipType ?? IPType.residential))
+          .toList();
+
+      final locations = data.countries
+          .where((it) => !data.topCountries.contains(it))
+          .map((code) => VPNLocation(code: code, ipType: ipType ?? IPType.residential))
+          .toList();
+
       return VPNLocations(
-        locations: data.countries
-            .map((code) => VPNLocation(code: code, ipType: ipType ?? IPType.residential))
-            .toList(),
-        topLocations: data.topCountries
-            .map((code) => VPNLocation(code: code, ipType: ipType ?? IPType.residential))
-            .toList(),
+        topLocations: topLocations,
+        locations: locations,
       );
     } on ApiException {
       rethrow;
