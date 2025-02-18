@@ -27,7 +27,7 @@ class MobileConnectionStatusBar extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
     final isLoading = useComputedValue(() => vpnStore.isLoading);
-    final connectionStatus = useComputedValue(() => vpnStore.connectionStatus);
+    final connectionStatus = useComputedValue(() => vpnStore.vpnStatus);
     final isConnected = useComputedValue(() => vpnStore.isConnected);
 
     final vpnConnection = useComputedValue(() => vpnStore.vpnConnection);
@@ -173,17 +173,28 @@ class _StatusItem extends StatelessWidget {
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 3),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
+              child: Column(
                 children: [
-                  switch (status) {
-                    ConnectionStatus.connected =>
-                      const SvgIcon(asset: Assets.killSwitch, height: 9),
-                    ConnectionStatus.disconnected => const CircleBox(color: Palette.pink, size: 4),
-                    _ => const SizedBox.shrink(),
-                  },
-                  const SizedBox(width: 4),
-                  Flexible(child: EasyText(status.name.tr(), fontSize: 12, color: Colors.white)),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      switch (status) {
+                        ConnectionStatus.connected =>
+                          const SvgIcon(asset: Assets.killSwitch, height: 9),
+                        ConnectionStatus.disconnected =>
+                          const CircleBox(color: Palette.pink, size: 4),
+                        _ => const SizedBox(),
+                      },
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: EasyText(status.name.tr(), fontSize: 12, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  if (isLoading || status == ConnectionStatus.disconnecting) ...[
+                    const SizedBox(height: 2),
+                    const LoadingIndicator(radius: 14),
+                  ],
                 ],
               ),
             ),
