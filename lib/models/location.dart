@@ -6,12 +6,15 @@ part 'location.g.dart';
 
 @Freezed(fromJson: false, toJson: false)
 class VPNLocations with _$VPNLocations {
-  const factory VPNLocations({
+  factory VPNLocations({
     @Default([]) List<VPNLocation> locations,
     @Default([]) List<VPNLocation> topLocations,
   }) = _VPNLocations;
 
-  const VPNLocations._();
+  VPNLocations._();
+
+  late final Set<VPNLocation> allLocations = {...locations, ...topLocations};
+  late final bool isEmpty = allLocations.isEmpty;
 }
 
 @freezed
