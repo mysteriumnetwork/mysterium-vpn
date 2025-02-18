@@ -23,7 +23,7 @@ enum _FeatureToggleKey {
   showVpnPrivacyPolicyPage,
   pricingMonthly,
   mqttExperiment,
-  dataCenterCountries,
+  locationsRefreshInterval,
   showSalesView,
   sentryDsn,
 }
@@ -190,19 +190,14 @@ abstract class RemoteConfigStoreBase with Store {
   }
 
   @computed
-  List<String> get dataCenterCountries {
-    if (config.containsKey(_FeatureToggleKey.dataCenterCountries.name)) {
-      final raw = config[_FeatureToggleKey.dataCenterCountries.name];
-      if (raw is String) {
-        return raw
-            .trim()
-            .split(RegExp('[^a-zA-Z]+'))
-            .map((code) => code.trim().toUpperCase())
-            .where((it) => it.length == 2)
-            .toList();
+  Duration get locationsRefreshInterval {
+    if (config.containsKey(_FeatureToggleKey.locationsRefreshInterval.name)) {
+      final raw = config[_FeatureToggleKey.locationsRefreshInterval.name];
+      if (raw is int) {
+        return Duration(seconds: raw);
       }
     }
-    return [];
+    return const Duration(minutes: 10);
   }
 
   @computed

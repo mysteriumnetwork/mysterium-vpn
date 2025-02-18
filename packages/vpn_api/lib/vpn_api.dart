@@ -21,6 +21,7 @@ export 'package:vpn_api/src/model/check_auth401_response.dart';
 export 'package:vpn_api/src/model/check_auth401_response_error.dart';
 export 'package:vpn_api/src/model/check_auth401_response_error_fields_value.dart';
 export 'package:vpn_api/src/model/code_authorization_request.dart';
+export 'package:vpn_api/src/model/connection_config_request_query.dart';
 export 'package:vpn_api/src/model/connection_config_response.dart';
 export 'package:vpn_api/src/model/connection_location.dart';
 export 'package:vpn_api/src/model/connection_message.dart';

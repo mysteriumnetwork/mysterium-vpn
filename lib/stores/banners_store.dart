@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/banner_type.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
+import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 
 part 'banners_store.g.dart';
@@ -13,12 +13,12 @@ abstract class _BannersStore with Store {
   _BannersStore(
     this._apiService,
     this._subscriptionStore,
-    this._configStore,
+    this._locationsStore,
   );
 
   final ApiService _apiService;
   final SubscriptionStore _subscriptionStore;
-  final RemoteConfigStore _configStore;
+  final LocationsStore _locationsStore;
 
   @readonly
   late ObservableFuture<List<BannerType>> _shownBanners =
@@ -39,7 +39,8 @@ abstract class _BannersStore with Store {
       all.remove(BannerType.subscription);
     }
 
-    if (_configStore.dataCenterCountries.isEmpty) {
+    final locations = _locationsStore.dcLocationsFuture.value;
+    if (locations?.isEmpty ?? false) {
       all.remove(BannerType.datacenter);
     }
 

@@ -2,12 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class LocationTypeSwitcher extends HookConsumerWidget {
   const LocationTypeSwitcher({
@@ -21,11 +19,8 @@ class LocationTypeSwitcher extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final config = ref.watch(remoteConfigStorePOD);
-    final hasDataCenterIPs = useComputedValue(() => config.dataCenterCountries.isNotEmpty);
-
     final values = [
-      if (hasDataCenterIPs) IPType.datacenter,
+      IPType.datacenter,
       IPType.residential,
     ];
 
