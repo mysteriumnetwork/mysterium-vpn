@@ -154,11 +154,15 @@ abstract class _VpnStore with Store {
   IPInfo? originIP;
 
   Future<void> _init() async {
-    await _initTunnel();
-    await _initWireguardKey();
-    await _initRefreshIPConnection();
-    await _initMalwareBlockerContent();
-    await _initNotSafeContentBlocker();
+    await Future.wait<void>(
+      [
+        _initTunnel(),
+        _initWireguardKey(),
+        _initRefreshIPConnection(),
+        _initMalwareBlockerContent(),
+        _initNotSafeContentBlocker(),
+      ],
+    );
   }
 
   Future<void> _initMalwareBlockerContent() async {
