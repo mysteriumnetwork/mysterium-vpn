@@ -6,7 +6,7 @@ class FilterService {
     List<VPNLocation> data, {
     String? keyword,
   }) {
-    final query = keyword?.toLowerCase();
+    final query = keyword?.toLowerCase().trim();
     if (query == null || query.isEmpty) {
       return data;
     }

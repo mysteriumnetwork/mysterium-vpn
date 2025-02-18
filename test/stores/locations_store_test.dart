@@ -99,7 +99,7 @@ void main() {
 
     test('returns null when no locations available for random selection', () async {
       when(mockApiService.fetchVPNLocations(IPType.residential))
-          .thenAnswer((_) async => const VPNLocations());
+          .thenAnswer((_) async => VPNLocations());
       when(mockApiService.getRecentLocations()).thenAnswer((_) async => []);
 
       await locationsStore.locationsFuture;

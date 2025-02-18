@@ -106,7 +106,7 @@ class __$$VPNLocationsImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$VPNLocationsImpl extends _VPNLocations {
-  const _$VPNLocationsImpl(
+  _$VPNLocationsImpl(
       {final List<VPNLocation> locations = const [],
       final List<VPNLocation> topLocations = const []})
       : _locations = locations,
@@ -159,10 +159,9 @@ class _$VPNLocationsImpl extends _VPNLocations {
 }
 
 abstract class _VPNLocations extends VPNLocations {
-  const factory _VPNLocations(
-      {final List<VPNLocation> locations,
-      final List<VPNLocation> topLocations}) = _$VPNLocationsImpl;
-  const _VPNLocations._() : super._();
+  factory _VPNLocations({final List<VPNLocation> locations, final List<VPNLocation> topLocations}) =
+      _$VPNLocationsImpl;
+  _VPNLocations._() : super._();
 
   @override
   List<VPNLocation> get locations;
