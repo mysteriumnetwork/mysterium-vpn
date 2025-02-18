@@ -154,17 +154,57 @@ abstract class _VpnStore with Store {
   IPInfo? originIP;
 
   Future<void> _init() async {
-    final isConfigured = await _checkTunelConfigured();
-    if (isConfigured) {
-      await _setupAndListenToConnectionStatus();
-    } else if (Platform.isWindows) {
-      // Has to be called on init
-      await setupTunnel();
-    }
+    await _initTunnel();
     await _initWireguardKey();
-    _refreshIPConnection = await _localDBService.getRefreshIPConnection();
-    _malwareBlockerContent = await _localDBService.getMalwareBlocker();
-    _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker();
+    await _initRefreshIPConnection();
+    await _initMalwareBlockerContent();
+    await _initNotSafeContentBlocker();
+  }
+
+  Future<void> _initMalwareBlockerContent() async {
+    try {
+      _malwareBlockerContent = await _localDBService.getMalwareBlocker();
+    } catch (e) {
+      _logger.handle(e);
+    }
+  }
+
+  Future<void> _initRefreshIPConnection() async {
+    try {
+      _refreshIPConnection = await _localDBService.getRefreshIPConnection();
+    } catch (e) {
+      _logger.handle(e);
+    }
+  }
+
+  Future<void> _initNotSafeContentBlocker() async {
+    try {
+      _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker();
+    } catch (e) {
+      _logger.handle(e);
+    }
+  }
+
+  Future<void> _initTunnel() async {
+    try {
+      final isConfigured = await _checkTunelConfigured();
+      if (isConfigured) {
+        await _setupAndListenToConnectionStatus();
+      } else if (Platform.isWindows) {
+        // Has to be called on init
+        await setupTunnel();
+      }
+    } catch (e) {
+      _logger.handle(e);
+    }
+  }
+
+  Future<void> _initWireguardKey() async {
+    try {
+      await _generateWireguardKey();
+    } catch (e) {
+      _logger.handle(e);
+    }
   }
 
   @action
@@ -268,7 +308,7 @@ abstract class _VpnStore with Store {
   }
 
   @action
-  Future<KeyPair> _initWireguardKey() async {
+  Future<KeyPair> _generateWireguardKey() async {
     try {
       final res = await Future.wait([
         _securedStorage.checkExistance(StorageKeys.wireguardPrivateKey.name),
@@ -474,7 +514,7 @@ abstract class _VpnStore with Store {
     bool? refreshIP,
   ) async {
     try {
-      final key = _wireguardKey ?? await _initWireguardKey();
+      final key = _wireguardKey ?? await _generateWireguardKey();
       _stopwatch
         ..reset()
         ..start();
