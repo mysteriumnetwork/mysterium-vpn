@@ -20,7 +20,6 @@ on:
         default: "DEV"
 
 jobs:
-
   # iOS Build
   # Base on documentation https://docs.flutter.dev/deployment/ios#create-a-build-archive-with-codemagic-cli-tools
   # And tutorial at https://blog.codemagic.io/deploy-your-app-to-app-store-with-codemagic-cli-tools-and-github-actions/
@@ -79,10 +78,6 @@ jobs:
         run: |
           fvm dart run cider version "${{ inputs.build_version }}+${{ inputs.build_number }}"
           git diff
-
-      - name: Install Pods
-        run: pod install
-        working-directory: ios
 
       - name: Build iOS app
         run: |

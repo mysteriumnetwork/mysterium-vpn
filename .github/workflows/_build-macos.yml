@@ -24,7 +24,6 @@ on:
         default: "DEV"
 
 jobs:
-
   # macOS Build
   # Based on documentation https://docs.flutter.dev/deployment/macos#create-a-build-archive-with-codemagic-cli-tools
   # And tutorial https://docs.codemagic.io/yaml-quick-start/building-a-flutter-app/#code-signing
@@ -92,10 +91,6 @@ jobs:
         run: |
           fvm dart run cider version "${{ inputs.build_version }}+${{ inputs.build_number }}"
           git diff
-
-      - name: Install Pods
-        run: pod install
-        working-directory: macos
 
       - name: Build macOS app
         run: fvm flutter build macos --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define "FLAVOR=${{ inputs.flavor_dart }}"
