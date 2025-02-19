@@ -79,13 +79,6 @@ jobs:
           fvm dart run cider version "${{ inputs.build_version }}+${{ inputs.build_number }}"
           git diff
 
-      - name: Precache Flutter artifacts
-        run: fvm flutter precache --ios
-
-      - name: Install Pods
-        run: pod install
-        working-directory: ios
-
       - name: Build iOS app
         run: |
           fvm flutter build ipa --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define "FLAVOR=${{ inputs.flavor_dart }}" --export-options-plist=ios/export_options.plist
