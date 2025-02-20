@@ -21,7 +21,7 @@ class ProductItemVariantA extends StatelessWidget {
 
   final PurchasableProduct productDetails;
   final Function(String productId) onProductSelected;
-  final String selectedProductId;
+  final String? selectedProductId;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

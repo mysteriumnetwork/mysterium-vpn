@@ -69,8 +69,8 @@ class _ProductPickerDialog extends HookConsumerWidget {
     final highlightedProduct = useComputedValue(() => subscriptionStore.highlightedProduct);
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    final selectedProductId = useState<String>(
-      subscriptionStore.purchasedProductId ?? highlightedProduct.id,
+    final selectedProductId = useState<String?>(
+      subscriptionStore.purchasedProductId ?? highlightedProduct?.id,
     );
 
     final seeAllPlans = useState(seeAllPlansInit);
@@ -141,9 +141,12 @@ class _ProductPickerDialog extends HookConsumerWidget {
                 SizedBox(height: getMediaHeight(context) * 0.04),
                 SubscriptionButton(
                   onPressed: () {
+                    if (selectedProductId.value == null) {
+                      return;
+                    }
                     analyticsStore.logEvent(AnalyticsEvent.clickLetsgoProductPopup);
                     Navigator.of(context).pop();
-                    subscribeToPackage(selectedProductId.value);
+                    subscribeToPackage(selectedProductId.value!);
                   },
                   isLoading: subscriptionStore.isLoading,
                   label: LocaleKeys.letsGoBtn.tr(),
@@ -178,7 +181,7 @@ class _ProductsContainer extends StatelessWidget {
     required this.analyticsStore,
   });
   final List<PurchasableProduct> products;
-  final ValueNotifier<String> selectedProductId;
+  final ValueNotifier<String?> selectedProductId;
   final AnalyticsStore analyticsStore;
   @override
   Widget build(BuildContext context) {
