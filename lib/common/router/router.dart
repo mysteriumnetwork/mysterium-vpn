@@ -28,63 +28,65 @@ class BeamerLocations extends BeamLocation<BeamState> {
       ];
 
   @override
-  List<BeamPage> buildPages(BuildContext context, BeamState state) => [
-        if (state.uri.path.contains(Routes.welcome.path))
-          BeamPage(
-            key: ValueKey(Routes.welcome.toDashCase),
-            name: Routes.welcome.path,
-            title: Routes.welcome.name,
-            child: const WelcomePage(),
-          ),
-        if (state.uri.path.contains(Routes.main.path))
-          BeamPage(
-            key: ValueKey(Routes.main.toDashCase),
-            name: Routes.main.path,
-            title: Routes.main.name,
-            child: const HomePage(),
-          ),
-        if (state.uri.path.contains(Routes.splash.path))
-          BeamPage(
-            key: ValueKey(Routes.splash.toDashCase),
-            name: Routes.splash.path,
-            title: Routes.splash.name,
-            child: const SplashPage(),
-          ),
-        if (state.uri.path.contains(Routes.settings.path))
-          BeamPage(
-            key: ValueKey(Routes.settings.toDashCase),
-            name: Routes.settings.path,
-            title: Routes.settings.name,
-            child: const SettingsPage(),
-          ),
-        if (state.uri.path.contains(Routes.payment.path) ||
-            state.uri.path.contains(Routes.paymentSettings.path))
-          BeamPage(
-            key: ValueKey(Routes.payment.toDashCase),
-            name: Routes.payment.path,
-            title: Routes.payment.name,
-            child: const SubscriptionPage(),
-          ),
-        if (state.uri.path.contains(Routes.privacyPolicy.path))
-          BeamPage(
-            key: ValueKey(Routes.privacyPolicy.toDashCase),
-            name: Routes.privacyPolicy.path,
-            title: Routes.privacyPolicy.name,
-            child: const VpnPrivacyConsentPage(),
-          ),
-        if (state.uri.path.contains(Routes.login.path))
-          BeamPage(
-            key: ValueKey(Routes.login.toDashCase),
-            name: Routes.login.path,
-            title: Routes.login.name,
-            child: const LoginPage(),
-          ),
-        if (state.uri.path.contains(Routes.checkYourEmail.path))
-          BeamPage(
-            key: ValueKey(Routes.checkYourEmail.toDashCase),
-            name: Routes.checkYourEmail.path,
-            title: Routes.checkYourEmail.name,
-            child: const VerifyEmailPage(),
-          ),
-      ];
+  List<BeamPage> buildPages(BuildContext context, BeamState state) {
+    final path = state.uri.path;
+    return [
+      if (path.contains(Routes.welcome.path))
+        BeamPage(
+          key: ValueKey(Routes.welcome.toDashCase),
+          name: Routes.welcome.path,
+          title: Routes.welcome.name,
+          child: const WelcomePage(),
+        ),
+      if (path.contains(Routes.main.path))
+        BeamPage(
+          key: ValueKey(Routes.main.toDashCase),
+          name: Routes.main.path,
+          title: Routes.main.name,
+          child: const HomePage(),
+        ),
+      if (path.contains(Routes.splash.path))
+        BeamPage(
+          key: ValueKey(Routes.splash.toDashCase),
+          name: Routes.splash.path,
+          title: Routes.splash.name,
+          child: const SplashPage(),
+        ),
+      if (path.contains(Routes.settings.path))
+        BeamPage(
+          key: ValueKey(Routes.settings.toDashCase),
+          name: Routes.settings.path,
+          title: Routes.settings.name,
+          child: const SettingsPage(),
+        ),
+      if (path.contains(Routes.payment.path) || path.contains(Routes.paymentSettings.path))
+        BeamPage(
+          key: ValueKey(Routes.payment.toDashCase),
+          name: Routes.payment.path,
+          title: Routes.payment.name,
+          child: const SubscriptionPage(),
+        ),
+      if (path.contains(Routes.privacyPolicy.path))
+        BeamPage(
+          key: ValueKey(Routes.privacyPolicy.toDashCase),
+          name: Routes.privacyPolicy.path,
+          title: Routes.privacyPolicy.name,
+          child: const VpnPrivacyConsentPage(),
+        ),
+      if (path.contains(Routes.login.path))
+        BeamPage(
+          key: ValueKey(Routes.login.toDashCase),
+          name: Routes.login.path,
+          title: Routes.login.name,
+          child: const LoginPage(),
+        ),
+      if (path.contains(Routes.checkYourEmail.path))
+        BeamPage(
+          key: ValueKey(Routes.checkYourEmail.toDashCase),
+          name: Routes.checkYourEmail.path,
+          title: Routes.checkYourEmail.name,
+          child: const VerifyEmailPage(),
+        ),
+    ];
+  }
 }
