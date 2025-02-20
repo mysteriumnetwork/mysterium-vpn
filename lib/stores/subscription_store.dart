@@ -84,11 +84,12 @@ abstract class _SubscriptionStore with Store {
   ObservableList<PurchasableProduct> _products = ObservableList<PurchasableProduct>.of([]);
 
   @computed
-  PurchasableProduct get monthlyProduct => _products.firstWhere((element) => element.duration == 1);
+  PurchasableProduct? get monthlyProduct =>
+      _products.firstWhereOrNull((element) => element.duration == 1);
 
   @computed
-  PurchasableProduct get highlightedProduct =>
-      _products.sortedByCompare((it) => it.duration, compareNums).last;
+  PurchasableProduct? get highlightedProduct =>
+      _products.sortedByCompare((it) => it.duration, compareNums).lastOrNull;
 
   @computed
   bool get isLoading =>
