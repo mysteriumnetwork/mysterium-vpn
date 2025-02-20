@@ -44,11 +44,8 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
         beamToNamed: (_, __) => Routes.main.path,
       ),
       BeamGuard(
-        pathPatterns: ['/email-token'],
-        check: (context, state) {
-          print(state.state.routeInformation.uri.path);
-          return false;
-        },
+        pathPatterns: [Routes.emailToken.path],
+        check: (context, state) => false,
         beamToNamed: (a, b) => a?.state.routeInformation.uri.path ?? loginRoute,
       ),
       BeamGuard(
