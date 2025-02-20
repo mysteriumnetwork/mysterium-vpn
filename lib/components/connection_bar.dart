@@ -124,7 +124,11 @@ class _IPItem extends HookWidget {
               ),
             Flexible(
               child: !isResolvingConnectionIP
-                  ? EasyText(ip, fontSize: 12)
+                  ? EasyText(
+                      ip,
+                      fontSize: 12,
+                      color: Palette.white,
+                    )
                   : const LoadingIndicator(radius: 15),
             ),
           ],
@@ -234,6 +238,7 @@ class _LocationItem extends HookWidget {
           maxLines: 2,
           fontSize: 12,
           textAlign: TextAlign.center,
+          color: Palette.white,
         ),
         if (code != null) Flag(countryCode: code),
       ],
