@@ -9,12 +9,6 @@ part of 'subscription_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$SubscriptionStore on _SubscriptionStore, Store {
-  Computed<bool?>? _$isSubscribedComputed;
-
-  @override
-  bool? get isSubscribed => (_$isSubscribedComputed ??=
-          Computed<bool?>(() => super.isSubscribed, name: '_SubscriptionStore.isSubscribed'))
-      .value;
   Computed<PurchasableProduct?>? _$monthlyProductComputed;
 
   @override
@@ -29,163 +23,132 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
           Computed<PurchasableProduct?>(() => super.highlightedProduct,
               name: '_SubscriptionStore.highlightedProduct'))
       .value;
-  Computed<bool>? _$isLoadingComputed;
+  Computed<bool?>? _$isSubscribedComputed;
 
   @override
-  bool get isLoading => (_$isLoadingComputed ??=
-          Computed<bool>(() => super.isLoading, name: '_SubscriptionStore.isLoading'))
+  bool? get isSubscribed => (_$isSubscribedComputed ??=
+          Computed<bool?>(() => super.isSubscribed, name: '_SubscriptionStore.isSubscribed'))
+      .value;
+  Computed<bool>? _$isSubscriptionLoadingComputed;
+
+  @override
+  bool get isSubscriptionLoading =>
+      (_$isSubscriptionLoadingComputed ??= Computed<bool>(() => super.isSubscriptionLoading,
+              name: '_SubscriptionStore.isSubscriptionLoading'))
+          .value;
+  Computed<StoreState>? _$storeStateComputed;
+
+  @override
+  StoreState get storeState => (_$storeStateComputed ??=
+          Computed<StoreState>(() => super.storeState, name: '_SubscriptionStore.storeState'))
       .value;
 
-  late final _$isAvailableFutureAtom =
-      Atom(name: '_SubscriptionStore.isAvailableFuture', context: context);
+  late final _$_subscriptionFutureAtom =
+      Atom(name: '_SubscriptionStore._subscriptionFuture', context: context);
 
-  @override
-  ObservableFuture<api.SubscriptionConfigResponse>? get isAvailableFuture {
-    _$isAvailableFutureAtom.reportRead();
-    return super.isAvailableFuture;
+  ObservableFuture<Subscription> get subscriptionFuture {
+    _$_subscriptionFutureAtom.reportRead();
+    return super._subscriptionFuture;
   }
 
   @override
-  set isAvailableFuture(ObservableFuture<api.SubscriptionConfigResponse>? value) {
-    _$isAvailableFutureAtom.reportWrite(value, super.isAvailableFuture, () {
-      super.isAvailableFuture = value;
+  ObservableFuture<Subscription> get _subscriptionFuture => subscriptionFuture;
+
+  bool __subscriptionFutureIsInitialized = false;
+
+  @override
+  set _subscriptionFuture(ObservableFuture<Subscription> value) {
+    _$_subscriptionFutureAtom.reportWrite(
+        value, __subscriptionFutureIsInitialized ? super._subscriptionFuture : null, () {
+      super._subscriptionFuture = value;
+      __subscriptionFutureIsInitialized = true;
     });
   }
 
-  late final _$verifySubscriptionFutureAtom =
-      Atom(name: '_SubscriptionStore.verifySubscriptionFuture', context: context);
+  late final _$_subscriptionConfigFutureAtom =
+      Atom(name: '_SubscriptionStore._subscriptionConfigFuture', context: context);
 
-  @override
-  ObservableFuture<Subscription>? get verifySubscriptionFuture {
-    _$verifySubscriptionFutureAtom.reportRead();
-    return super.verifySubscriptionFuture;
+  ObservableFuture<api.SubscriptionConfigResponse?> get subscriptionConfigFuture {
+    _$_subscriptionConfigFutureAtom.reportRead();
+    return super._subscriptionConfigFuture;
   }
 
   @override
-  set verifySubscriptionFuture(ObservableFuture<Subscription>? value) {
-    _$verifySubscriptionFutureAtom.reportWrite(value, super.verifySubscriptionFuture, () {
-      super.verifySubscriptionFuture = value;
+  ObservableFuture<api.SubscriptionConfigResponse?> get _subscriptionConfigFuture =>
+      subscriptionConfigFuture;
+
+  bool __subscriptionConfigFutureIsInitialized = false;
+
+  @override
+  set _subscriptionConfigFuture(ObservableFuture<api.SubscriptionConfigResponse?> value) {
+    _$_subscriptionConfigFutureAtom.reportWrite(
+        value, __subscriptionConfigFutureIsInitialized ? super._subscriptionConfigFuture : null,
+        () {
+      super._subscriptionConfigFuture = value;
+      __subscriptionConfigFutureIsInitialized = true;
     });
   }
 
-  late final _$subscriptionFutureAtom =
-      Atom(name: '_SubscriptionStore.subscriptionFuture', context: context);
+  late final _$_productsFutureAtom =
+      Atom(name: '_SubscriptionStore._productsFuture', context: context);
 
-  @override
-  ObservableFuture<Subscription>? get subscriptionFuture {
-    _$subscriptionFutureAtom.reportRead();
-    return super.subscriptionFuture;
+  ObservableFuture<List<PurchasableProduct>> get productsFuture {
+    _$_productsFutureAtom.reportRead();
+    return super._productsFuture;
   }
 
   @override
-  set subscriptionFuture(ObservableFuture<Subscription>? value) {
-    _$subscriptionFutureAtom.reportWrite(value, super.subscriptionFuture, () {
-      super.subscriptionFuture = value;
+  ObservableFuture<List<PurchasableProduct>> get _productsFuture => productsFuture;
+
+  bool __productsFutureIsInitialized = false;
+
+  @override
+  set _productsFuture(ObservableFuture<List<PurchasableProduct>> value) {
+    _$_productsFutureAtom
+        .reportWrite(value, __productsFutureIsInitialized ? super._productsFuture : null, () {
+      super._productsFuture = value;
+      __productsFutureIsInitialized = true;
     });
   }
 
-  late final _$_subscriptionAtom = Atom(name: '_SubscriptionStore._subscription', context: context);
+  late final _$_otherSubscriberEmailFutureAtom =
+      Atom(name: '_SubscriptionStore._otherSubscriberEmailFuture', context: context);
 
-  Subscription? get subscription {
-    _$_subscriptionAtom.reportRead();
-    return super._subscription;
+  ObservableFuture<String?> get otherSubscriberEmailFuture {
+    _$_otherSubscriberEmailFutureAtom.reportRead();
+    return super._otherSubscriberEmailFuture;
   }
 
   @override
-  Subscription? get _subscription => subscription;
+  ObservableFuture<String?> get _otherSubscriberEmailFuture => otherSubscriberEmailFuture;
+
+  bool __otherSubscriberEmailFutureIsInitialized = false;
 
   @override
-  set _subscription(Subscription? value) {
-    _$_subscriptionAtom.reportWrite(value, super._subscription, () {
-      super._subscription = value;
+  set _otherSubscriberEmailFuture(ObservableFuture<String?> value) {
+    _$_otherSubscriberEmailFutureAtom.reportWrite(
+        value, __otherSubscriberEmailFutureIsInitialized ? super._otherSubscriberEmailFuture : null,
+        () {
+      super._otherSubscriberEmailFuture = value;
+      __otherSubscriberEmailFutureIsInitialized = true;
     });
   }
 
-  late final _$_expiredAtom = Atom(name: '_SubscriptionStore._expired', context: context);
+  late final _$_subscriptionStatusAtom =
+      Atom(name: '_SubscriptionStore._subscriptionStatus', context: context);
 
-  bool? get expired {
-    _$_expiredAtom.reportRead();
-    return super._expired;
+  SubscriptionStatus? get subscriptionStatus {
+    _$_subscriptionStatusAtom.reportRead();
+    return super._subscriptionStatus;
   }
 
   @override
-  bool? get _expired => expired;
+  SubscriptionStatus? get _subscriptionStatus => subscriptionStatus;
 
   @override
-  set _expired(bool? value) {
-    _$_expiredAtom.reportWrite(value, super._expired, () {
-      super._expired = value;
-    });
-  }
-
-  late final _$_isAvailableAtom = Atom(name: '_SubscriptionStore._isAvailable', context: context);
-
-  StoreState get isAvailable {
-    _$_isAvailableAtom.reportRead();
-    return super._isAvailable;
-  }
-
-  @override
-  StoreState get _isAvailable => isAvailable;
-
-  @override
-  set _isAvailable(StoreState value) {
-    _$_isAvailableAtom.reportWrite(value, super._isAvailable, () {
-      super._isAvailable = value;
-    });
-  }
-
-  late final _$_purchasedProductIdAtom =
-      Atom(name: '_SubscriptionStore._purchasedProductId', context: context);
-
-  String? get purchasedProductId {
-    _$_purchasedProductIdAtom.reportRead();
-    return super._purchasedProductId;
-  }
-
-  @override
-  String? get _purchasedProductId => purchasedProductId;
-
-  @override
-  set _purchasedProductId(String? value) {
-    _$_purchasedProductIdAtom.reportWrite(value, super._purchasedProductId, () {
-      super._purchasedProductId = value;
-    });
-  }
-
-  late final _$_subscriptionConfigAtom =
-      Atom(name: '_SubscriptionStore._subscriptionConfig', context: context);
-
-  api.SubscriptionConfigResponse? get subscriptionConfig {
-    _$_subscriptionConfigAtom.reportRead();
-    return super._subscriptionConfig;
-  }
-
-  @override
-  api.SubscriptionConfigResponse? get _subscriptionConfig => subscriptionConfig;
-
-  @override
-  set _subscriptionConfig(api.SubscriptionConfigResponse? value) {
-    _$_subscriptionConfigAtom.reportWrite(value, super._subscriptionConfig, () {
-      super._subscriptionConfig = value;
-    });
-  }
-
-  late final _$_subscriptonStatusAtom =
-      Atom(name: '_SubscriptionStore._subscriptonStatus', context: context);
-
-  SubscriptionStatus? get subscriptonStatus {
-    _$_subscriptonStatusAtom.reportRead();
-    return super._subscriptonStatus;
-  }
-
-  @override
-  SubscriptionStatus? get _subscriptonStatus => subscriptonStatus;
-
-  @override
-  set _subscriptonStatus(SubscriptionStatus? value) {
-    _$_subscriptonStatusAtom.reportWrite(value, super._subscriptonStatus, () {
-      super._subscriptonStatus = value;
+  set _subscriptionStatus(SubscriptionStatus? value) {
+    _$_subscriptionStatusAtom.reportWrite(value, super._subscriptionStatus, () {
+      super._subscriptionStatus = value;
     });
   }
 
@@ -206,60 +169,44 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     });
   }
 
-  late final _$_productsAtom = Atom(name: '_SubscriptionStore._products', context: context);
+  late final _$refreshProductsAsyncAction =
+      AsyncAction('_SubscriptionStore.refreshProducts', context: context);
 
-  ObservableList<PurchasableProduct> get products {
-    _$_productsAtom.reportRead();
-    return super._products;
+  @override
+  Future<List<PurchasableProduct>> refreshProducts() {
+    return _$refreshProductsAsyncAction.run(() => super.refreshProducts());
   }
 
-  @override
-  ObservableList<PurchasableProduct> get _products => products;
+  late final _$refreshSubscriptionAsyncAction =
+      AsyncAction('_SubscriptionStore.refreshSubscription', context: context);
 
   @override
-  set _products(ObservableList<PurchasableProduct> value) {
-    _$_productsAtom.reportWrite(value, super._products, () {
-      super._products = value;
-    });
+  Future<Subscription> refreshSubscription() {
+    return _$refreshSubscriptionAsyncAction.run(() => super.refreshSubscription());
   }
 
-  late final _$initStoreAsyncAction = AsyncAction('_SubscriptionStore.initStore', context: context);
+  late final _$refreshSubscriptionConfigAsyncAction =
+      AsyncAction('_SubscriptionStore.refreshSubscriptionConfig', context: context);
 
   @override
-  Future<void> initStore() {
-    return _$initStoreAsyncAction.run(() => super.initStore());
+  Future<api.SubscriptionConfigResponse?> refreshSubscriptionConfig() {
+    return _$refreshSubscriptionConfigAsyncAction.run(() => super.refreshSubscriptionConfig());
   }
 
-  late final _$fetchSubscriptionAsyncAction =
-      AsyncAction('_SubscriptionStore.fetchSubscription', context: context);
+  late final _$refreshOtherSubscriberAsyncAction =
+      AsyncAction('_SubscriptionStore.refreshOtherSubscriber', context: context);
 
   @override
-  Future<bool> fetchSubscription() {
-    return _$fetchSubscriptionAsyncAction.run(() => super.fetchSubscription());
+  Future<String?> refreshOtherSubscriber() {
+    return _$refreshOtherSubscriberAsyncAction.run(() => super.refreshOtherSubscriber());
   }
 
-  late final _$isSubscriptionActiveAsyncAction =
-      AsyncAction('_SubscriptionStore.isSubscriptionActive', context: context);
+  late final _$refreshAllAsyncAction =
+      AsyncAction('_SubscriptionStore.refreshAll', context: context);
 
   @override
-  Future<bool> isSubscriptionActive() {
-    return _$isSubscriptionActiveAsyncAction.run(() => super.isSubscriptionActive());
-  }
-
-  late final _$getSubscriptionsConfigAsyncAction =
-      AsyncAction('_SubscriptionStore.getSubscriptionsConfig', context: context);
-
-  @override
-  Future<void> getSubscriptionsConfig() {
-    return _$getSubscriptionsConfigAsyncAction.run(() => super.getSubscriptionsConfig());
-  }
-
-  late final _$getProductsDetailsAsyncAction =
-      AsyncAction('_SubscriptionStore.getProductsDetails', context: context);
-
-  @override
-  Future<void> getProductsDetails() {
-    return _$getProductsDetailsAsyncAction.run(() => super.getProductsDetails());
+  Future<void> refreshAll() {
+    return _$refreshAllAsyncAction.run(() => super.refreshAll());
   }
 
   late final _$subscribeToPackageAsyncAction =
@@ -303,6 +250,14 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     return _$retryVerificationProcessAsyncAction.run(() => super.retryVerificationProcess());
   }
 
+  late final _$manageSubscriptionAsyncAction =
+      AsyncAction('_SubscriptionStore.manageSubscription', context: context);
+
+  @override
+  Future<void> manageSubscription() {
+    return _$manageSubscriptionAsyncAction.run(() => super.manageSubscription());
+  }
+
   late final _$_SubscriptionStoreActionController =
       ActionController(name: '_SubscriptionStore', context: context);
 
@@ -318,37 +273,13 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
   }
 
   @override
-  void _updateStreamOnDone() {
-    final _$actionInfo = _$_SubscriptionStoreActionController.startAction(
-        name: '_SubscriptionStore._updateStreamOnDone');
-    try {
-      return super._updateStreamOnDone();
-    } finally {
-      _$_SubscriptionStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void _updateStreamOnError(dynamic error) {
-    final _$actionInfo = _$_SubscriptionStoreActionController.startAction(
-        name: '_SubscriptionStore._updateStreamOnError');
-    try {
-      return super._updateStreamOnError(error);
-    } finally {
-      _$_SubscriptionStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
-isAvailableFuture: ${isAvailableFuture},
-verifySubscriptionFuture: ${verifySubscriptionFuture},
-subscriptionFuture: ${subscriptionFuture},
-isSubscribed: ${isSubscribed},
 monthlyProduct: ${monthlyProduct},
 highlightedProduct: ${highlightedProduct},
-isLoading: ${isLoading}
+isSubscribed: ${isSubscribed},
+isSubscriptionLoading: ${isSubscriptionLoading},
+storeState: ${storeState}
     ''';
   }
 }

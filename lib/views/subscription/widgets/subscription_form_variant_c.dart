@@ -35,9 +35,9 @@ class SubscriptionFormVariantC extends HookConsumerWidget {
     final subscriptionStore = ref.watch(subscriptionStorePOD);
 
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final isLoading = useComputedValue(() => subscriptionStore.isLoading);
+    final isLoading = useComputedValue(() => subscriptionStore.isSubscriptionLoading);
     final products = useComputedValue(
-      () => subscriptionStore.products
+      () => subscriptionStore.productsFuture.value!
           .sortedByCompare((it) => it.duration, compareNums)
           .reversed
           .toList(),

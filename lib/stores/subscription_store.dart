@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
@@ -9,12 +10,11 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
+import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/common/utils/comparator_utils.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
-import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -35,173 +35,203 @@ abstract class _SubscriptionStore with Store {
   })  : _inAppPurchase = inAppPurchase,
         _subscriptionService = subscriptionService,
         _authSessionStore = authSessionStore,
-        _analyticsStore = analyticsStore {
-    initStore();
-  }
+        _analyticsStore = analyticsStore;
 
-  late StreamSubscription<List<PurchaseDetails>> _purchaseStream;
-
+  StreamSubscription<List<PurchaseDetails>>? _purchaseStream;
   final InAppPurchase _inAppPurchase;
   final SubscriptionService _subscriptionService;
   final AuthSessionStore _authSessionStore;
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
   final AnalyticsStore _analyticsStore;
 
-  @observable
-  ObservableFuture<api.SubscriptionConfigResponse>? isAvailableFuture;
-
-  @observable
-  ObservableFuture<Subscription>? verifySubscriptionFuture;
-
-  @observable
-  ObservableFuture<Subscription>? subscriptionFuture;
+  @readonly
+  late ObservableFuture<Subscription> _subscriptionFuture = ObservableFuture(_fetchSubscription());
 
   @readonly
-  Subscription? _subscription;
+  late ObservableFuture<api.SubscriptionConfigResponse?> _subscriptionConfigFuture =
+      ObservableFuture(_fetchSubscriptionConfig());
 
   @readonly
-  bool? _expired;
-
-  @computed
-  bool? get isSubscribed => _subscription?.active;
+  late ObservableFuture<List<PurchasableProduct>> _productsFuture =
+      ObservableFuture(_fetchProducts());
 
   @readonly
-  StoreState _isAvailable = StoreState.loading;
+  late ObservableFuture<String?> _otherSubscriberEmailFuture =
+      ObservableFuture(_fetchOtherSubscriber());
 
   @readonly
-  String? _purchasedProductId;
-
-  @readonly
-  api.SubscriptionConfigResponse? _subscriptionConfig;
-
-  @readonly
-  SubscriptionStatus? _subscriptonStatus;
+  SubscriptionStatus? _subscriptionStatus;
 
   @readonly
   PurchaseDetails? _lastPurchase;
 
-  @readonly
-  ObservableList<PurchasableProduct> _products = ObservableList<PurchasableProduct>.of([]);
-
   @computed
   PurchasableProduct? get monthlyProduct =>
-      _products.firstWhereOrNull((element) => element.duration == 1);
+      _productsFuture.value?.firstWhereOrNull((element) => element.duration == 1);
 
   @computed
   PurchasableProduct? get highlightedProduct =>
-      _products.sortedByCompare((it) => it.duration, compareNums).lastOrNull;
+      _productsFuture.value?.sortedByCompare((it) => it.duration, compareNums).lastOrNull;
 
   @computed
-  bool get isLoading =>
-      _subscriptonStatus == SubscriptionStatus.pending ||
-      _subscriptonStatus == SubscriptionStatus.verifying;
+  bool? get isSubscribed => _subscriptionFuture.value?.active;
 
-  @action
-  Future<void> initStore() async {
-    when((status) => _authSessionStore.status == AuthStatus.authenticated, () {
-      fetchSubscription().whenComplete(getSubscriptionsConfig);
-    });
-  }
-
-  @action
-  Future<bool> fetchSubscription() async {
-    subscriptionFuture = ObservableFuture(_subscriptionService.fetchSubscriptionDetails());
-    _subscription = await subscriptionFuture;
-    _expired = _subscription?.expired;
-    if (_subscription!.active && (_subscription!.planId?.isNotEmpty ?? false)) {
-      _purchasedProductId = _subscription!.planId;
+  @computed
+  bool get isSubscriptionLoading {
+    if (storeState == StoreState.loading) {
+      return true;
     }
-    return _subscription!.active;
+    if (_subscriptionStatus == SubscriptionStatus.pending ||
+        _subscriptionStatus == SubscriptionStatus.verifying) {
+      return true;
+    }
+    if (_subscriptionFuture.status == FutureStatus.pending ||
+        _subscriptionConfigFuture.status == FutureStatus.pending) {
+      return true;
+    }
+
+    return false;
   }
 
-  @action
-  Future<bool> isSubscriptionActive() async {
+  @computed
+  StoreState get storeState => switch (_subscriptionConfigFuture.status) {
+        FutureStatus.pending => StoreState.loading,
+        FutureStatus.rejected => StoreState.notAvailable,
+        FutureStatus.fulfilled =>
+          _subscriptionConfigFuture.value != null ? StoreState.available : StoreState.notAvailable,
+      };
+
+  Future<List<PurchasableProduct>> _fetchProducts() async {
+    final [subscription, config] = await Future.wait<Object?>([
+      _subscriptionFuture,
+      _subscriptionConfigFuture,
+    ]);
+    if (subscription is! Subscription || config is! api.SubscriptionConfigResponse) {
+      return [];
+    }
+
+    return _subscriptionService.getProductsDetails(config, subscription.planId);
+  }
+
+  Future<Subscription> _fetchSubscription() => _subscriptionService.fetchSubscriptionDetails();
+
+  Future<api.SubscriptionConfigResponse?> _fetchSubscriptionConfig() async {
+    if (Platform.isWindows) {
+      return null;
+    }
     try {
-      if (subscriptionFuture == null) {
-        await fetchSubscription();
-      }
-      return (await subscriptionFuture)!.active;
-    } catch (_) {
-      return false;
-    }
-  }
-
-  @action
-  Future<void> getSubscriptionsConfig() async {
-    if (Platform.isWindows || isAvailableFuture?.status == FutureStatus.pending) {
-      return;
-    }
-    try {
-      _isAvailable = StoreState.loading;
-      isAvailableFuture = ObservableFuture(_subscriptionService.fetchSubscriptionConfig());
-      _subscriptionConfig = await isAvailableFuture;
-      await getProductsDetails();
-      _isAvailable = StoreState.available;
-      if (!Platform.isWindows) {
-        final purchaseUpdated = _inAppPurchase.purchaseStream;
-        _purchaseStream = purchaseUpdated.listen(
-          _onPurchaseUpdate,
-          onDone: _updateStreamOnDone,
-          onError: _updateStreamOnError,
-        );
-        _subscriptionService.clearPendingTransactions();
-      }
+      final config = await _subscriptionService.fetchSubscriptionConfig();
+      _purchaseStream ??= _inAppPurchase.purchaseStream.listen(
+        _onPurchaseUpdate,
+        onDone: _updateStreamOnDone,
+        onError: _updateStreamOnError,
+      );
+      await _subscriptionService.clearPendingTransactions();
+      return config;
     } on NotAvailableException catch (_) {
-      _isAvailable = StoreState.notAvailable;
-    } catch (_) {
-      _isAvailable = StoreState.notAvailable;
-      rethrow;
+      return null;
     }
   }
 
-  @action
-  Future<void> getProductsDetails() async {
-    try {
-      if (_subscriptionConfig != null) {
-        _products = ObservableList.of(
-          await _subscriptionService.getProductsDetails(
-            _subscriptionConfig!,
-            _purchasedProductId,
-          ),
-        );
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      rethrow;
+  Future<String?> _fetchOtherSubscriber() async {
+    final subscription = await _subscriptionFuture;
+    if (subscription.active) {
+      return null;
     }
+
+    try {
+      final user = await _authSessionStore.userFuture;
+      final (email, activeUntil) = await _secureStorageService.getSubscriptionPaymentInfo();
+      if (email != user!.username && activeUntil.isAfter(DateTime.now())) {
+        return email;
+      }
+    } catch (e, stack) {
+      if (kDebugMode) {
+        log('Failed to fetch other subscriber', error: e, stackTrace: stack);
+      }
+    }
+
+    return null;
+  }
+
+  @action
+  Future<List<PurchasableProduct>> refreshProducts() async {
+    _productsFuture = _productsFuture.replaceOrReset(
+      _fetchProducts(),
+    );
+    return await _productsFuture;
+  }
+
+  @action
+  Future<Subscription> refreshSubscription() async {
+    _subscriptionFuture = _subscriptionFuture.replaceOrReset(
+      _fetchSubscription(),
+    );
+    return await _subscriptionFuture;
+  }
+
+  @action
+  Future<api.SubscriptionConfigResponse?> refreshSubscriptionConfig() async {
+    _subscriptionConfigFuture = _subscriptionConfigFuture.replaceOrReset(
+      _fetchSubscriptionConfig(),
+    );
+    return await _subscriptionConfigFuture;
+  }
+
+  @action
+  Future<String?> refreshOtherSubscriber() async {
+    _otherSubscriberEmailFuture = _otherSubscriberEmailFuture.replaceOrReset(
+      _fetchOtherSubscriber(),
+    );
+    return await _otherSubscriberEmailFuture;
+  }
+
+  @action
+  Future<void> refreshAll() async {
+    await Future.wait([
+      refreshSubscriptionConfig(),
+      refreshSubscription(),
+    ]);
+
+    await Future.wait([
+      refreshProducts(),
+      refreshOtherSubscriber(),
+    ]);
   }
 
   @action
   Future<void> subscribeToPackage({required ProductDetails product}) async {
     try {
-      _subscriptonStatus = SubscriptionStatus.pending;
+      _subscriptionStatus = SubscriptionStatus.pending;
+      final user = (await _authSessionStore.userFuture)!;
+      final subscription = await _subscriptionFuture;
+      final products = await _productsFuture;
+
+      String? purchasedProductId;
+      if (subscription.active && subscription.gateway == 'google' && subscription.planId != null) {
+        final product = products.firstWhereOrNull((it) => it.id == subscription.planId!);
+        purchasedProductId = product?.productDetails.id;
+      }
 
       await _subscriptionService.subscribeToPackage(
         productDetails: product,
-        purchasedProductId: ((_subscription?.active ?? false) && _subscription?.gateway == 'google')
-            ? _products
-                .firstWhereOrNull((element) => element.id == _purchasedProductId)
-                ?.productDetails
-                .id
-            : null,
-        userId: _authSessionStore.user!.userId,
+        purchasedProductId: purchasedProductId,
+        userId: user.userId,
       );
       _analyticsStore.logEvent(
         AnalyticsEvent.paymentConfirm,
         parameters: {
           'planType': product.id,
           'price': product.rawPrice.toString(),
-          'item_ids': _products.map((e) => e.id).toList(),
+          'item_ids': products.map((e) => e.id).toList(),
         },
       );
     } catch (e) {
       _subscriptionService.clearPendingTransactions();
       if (await _subscriptionService.hasApplePendingPurchasingTransactions()) {
-        _subscriptonStatus = SubscriptionStatus.pendingTransaction;
+        _subscriptionStatus = SubscriptionStatus.pendingTransaction;
       } else {
-        _subscriptonStatus = SubscriptionStatus.error;
+        _subscriptionStatus = SubscriptionStatus.error;
       }
       _analyticsStore.logEvent(
         AnalyticsEvent.paymentError,
@@ -222,14 +252,14 @@ abstract class _SubscriptionStore with Store {
     purchaseDetailsList.forEach(_handlePurchase);
   }
 
-  @action
-  void _updateStreamOnDone() {
-    _purchaseStream.cancel();
+  Future<void> _updateStreamOnDone() async {
+    await _purchaseStream?.cancel();
+    _purchaseStream = null;
   }
 
-  @action
-  void _updateStreamOnError(error) {
-    _purchaseStream.cancel();
+  Future<void> _updateStreamOnError(error) async {
+    await _purchaseStream?.cancel();
+    _purchaseStream = null;
   }
 
   ///Available on devices running iOS 14 and iPadOS 14 and later.
@@ -246,20 +276,21 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<void> _handlePurchase(PurchaseDetails purchaseDetails) async {
-    final product = _products
-        .firstWhereOrNull((element) => element.productDetails.id == purchaseDetails.productID);
-    if (purchaseDetails.status == PurchaseStatus.error ||
-        purchaseDetails.status == PurchaseStatus.canceled) {
+    final products = await _productsFuture;
+    final product = products.firstWhereOrNull(
+      (it) => it.productDetails.id == purchaseDetails.productID,
+    );
+
+    if ([PurchaseStatus.error, PurchaseStatus.canceled].contains(purchaseDetails.status)) {
       if (product != null) {
         product.status = ProductStatus.purchasable;
       }
       if (purchaseDetails.status == PurchaseStatus.canceled ||
           (purchaseDetails.status == PurchaseStatus.error &&
               purchaseDetails.error?.code == 'purchase_error')) {
-        _subscriptionService.clearPendingTransactions();
+        await _subscriptionService.clearPendingTransactions();
       }
-      _subscriptonStatus = getSubscriptionStatus(purchaseDetails.status);
-      return;
+      _subscriptionStatus = purchaseDetails.status.subscriptionStatus;
     }
 
     if (purchaseDetails.status == PurchaseStatus.pending) {
@@ -268,36 +299,36 @@ abstract class _SubscriptionStore with Store {
       }
       return;
     }
+
     try {
       await verifyPurchase(
         product?.id ?? '',
         product?.productDetails.rawPrice.toString() ?? '',
         purchaseDetails,
       );
-      _expired = _subscription?.expired;
-      if (purchaseDetails.status == PurchaseStatus.purchased && (_subscription?.active ?? false)) {
-        _purchasedProductId = _subscription?.planId;
+      final subscription = await _subscriptionFuture;
+      if (purchaseDetails.status == PurchaseStatus.purchased && subscription.active) {
         _analyticsStore.logEvent(
           AnalyticsEvent.paymentVerificationSuccess,
           parameters: {
-            'planType': _purchasedProductId ?? _lastPurchase?.productID,
+            'planType': subscription.planId ?? _lastPurchase?.productID,
             'price': product?.productDetails.rawPrice.toString(),
           },
         );
         if (product != null) {
-          for (final product in _products) {
-            product.status = product.id == _purchasedProductId
+          for (final product in products) {
+            product.status = product.id == subscription.planId
                 ? ProductStatus.purchased
                 : ProductStatus.purchasable;
           }
         }
-        _subscriptonStatus = SubscriptionStatus.purchased;
+        _subscriptionStatus = SubscriptionStatus.purchased;
         await _secureStorageService.saveSubscriptionPaymentInfo(
           email: _authSessionStore.user!.username,
-          activeUntil: _subscription!.activeUntil,
+          activeUntil: subscription.activeUntil,
         );
       } else {
-        _subscriptonStatus = SubscriptionStatus.notVerified;
+        _subscriptionStatus = SubscriptionStatus.notVerified;
       }
 
       if (purchaseDetails.pendingCompletePurchase) {
@@ -318,18 +349,19 @@ abstract class _SubscriptionStore with Store {
     String price,
     PurchaseDetails purchaseDetails,
   ) async {
-    if (_subscriptonStatus == SubscriptionStatus.pending) {
-      _subscriptonStatus = SubscriptionStatus.verifying;
+    if (_subscriptionStatus == SubscriptionStatus.pending) {
+      _subscriptionStatus = SubscriptionStatus.verifying;
     }
     try {
-      verifySubscriptionFuture = ObservableFuture(
+      _subscriptionFuture = _subscriptionFuture.replace(
         _subscriptionService.verifyPurchase(
           serverVerificationData: purchaseDetails.verificationData.serverVerificationData,
           planId: productId,
           transactionId: purchaseDetails.purchaseID ?? '',
         ),
       );
-      _subscription = await verifySubscriptionFuture;
+      await _subscriptionFuture;
+
       _analyticsStore.logEvent(
         AnalyticsEvent.paymentVerificationSuccess,
         parameters: {
@@ -338,7 +370,7 @@ abstract class _SubscriptionStore with Store {
         },
       );
     } catch (e) {
-      _subscriptonStatus = SubscriptionStatus.verifyingError;
+      _subscriptionStatus = SubscriptionStatus.verifyingError;
       _analyticsStore.logEvent(
         AnalyticsEvent.paymentVerificationError,
         parameters: {
@@ -353,56 +385,47 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<void> retryVerificationProcess() async {
-    if (_lastPurchase != null) {
-      final product = _products
-          .firstWhereOrNull((element) => element.productDetails.id == _lastPurchase!.productID);
-      if (product == null) {
-        return;
-      }
-      try {
-        _subscriptonStatus = SubscriptionStatus.verifying;
-        verifySubscriptionFuture = ObservableFuture(
-          _subscriptionService.verifyPurchase(
-            serverVerificationData: _lastPurchase!.verificationData.serverVerificationData,
-            planId: product.id,
-            transactionId: _lastPurchase!.purchaseID ?? '',
-          ),
-        );
-
-        _subscription = await verifySubscriptionFuture;
-        _subscriptonStatus = _subscription?.active ?? false
-            ? SubscriptionStatus.purchased
-            : SubscriptionStatus.notVerified;
-      } catch (e) {
-        _subscriptonStatus = SubscriptionStatus.verifyingError;
-      }
+    final lastPurchase = _lastPurchase;
+    if (lastPurchase == null) {
+      return;
     }
-  }
 
-  Future<(bool, String?)> checkForExistingSubscription() async {
+    final products = await _productsFuture;
+    final product = products.firstWhereOrNull(
+      (it) => it.productDetails.id == lastPurchase.productID,
+    );
+    if (product == null) {
+      return;
+    }
+
     try {
-      if (_subscription?.active ?? false) {
-        return (false, null);
-      }
-      final (String email, DateTime activeUntil) =
-          await _secureStorageService.getSubscriptionPaymentInfo();
-      if (email != _authSessionStore.user!.username && activeUntil.isAfter(DateTime.now())) {
-        return (true, email);
-      }
-      return (false, null);
+      _subscriptionStatus = SubscriptionStatus.verifying;
+      _subscriptionFuture = ObservableFuture(
+        _subscriptionService.verifyPurchase(
+          serverVerificationData: lastPurchase.verificationData.serverVerificationData,
+          planId: product.id,
+          transactionId: lastPurchase.purchaseID ?? '',
+        ),
+      );
+      final subscription = await _subscriptionFuture;
+      _subscriptionStatus =
+          subscription.active ? SubscriptionStatus.purchased : SubscriptionStatus.notVerified;
     } catch (e) {
-      return (false, null);
+      _subscriptionStatus = SubscriptionStatus.verifyingError;
     }
   }
 
+  @action
   Future<void> manageSubscription() async {
-    if (_subscription == null || !_subscription!.active) {
+    final subscription = await _subscriptionFuture;
+    if (!subscription.active) {
       throw const SubscriptionRequiredException();
     }
-    if (_products.isEmpty) {
-      await getSubscriptionsConfig();
+    var products = await _productsFuture;
+    if (products.isEmpty) {
+      products = await refreshProducts();
     }
-    final product = _products.firstWhereOrNull((element) => element.id == _subscription!.planId);
+    final product = products.firstWhereOrNull((it) => it.id == subscription.planId);
     if (product == null) {
       throw const SubscriptionRequiredException();
     }
@@ -410,7 +433,8 @@ abstract class _SubscriptionStore with Store {
     await subscribeToPackage(product: product.productDetails);
   }
 
-  void dispose() {
-    _purchaseStream.cancel();
+  FutureOr<void> dispose() async {
+    await _purchaseStream?.cancel();
+    _purchaseStream = null;
   }
 }

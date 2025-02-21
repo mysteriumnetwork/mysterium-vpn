@@ -415,7 +415,8 @@ abstract class _VpnStore with Store {
     bool? refreshIP,
     bool isRetrying = false,
   }) async {
-    if (!await _subscriptionStore.isSubscriptionActive()) {
+    final subscription = await _subscriptionStore.subscriptionFuture;
+    if (!subscription.active) {
       throw const SubscriptionRequiredException();
     }
 

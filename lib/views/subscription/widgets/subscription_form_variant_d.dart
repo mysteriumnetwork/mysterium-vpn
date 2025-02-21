@@ -36,17 +36,17 @@ class SubscriptionFormVariantD extends HookConsumerWidget {
     final subscriptionStore = ref.watch(subscriptionStorePOD);
 
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final isLoading = useComputedValue(() => subscriptionStore.isLoading);
+    final isLoading = useComputedValue(() => subscriptionStore.isSubscriptionLoading);
     final products = useComputedValue(
-      () => subscriptionStore.products
+      () => subscriptionStore.productsFuture.value!
           .sortedByCompare((it) => it.duration, compareNums)
           .reversed
           .toList(),
     );
 
-    final highlightedProduct = useComputedValue(() => subscriptionStore.highlightedProduct);
-    final selectedProductId = useState<String?>(
-      subscriptionStore.purchasedProductId ?? highlightedProduct?.id,
+    final highlightedProduct = useComputedValue(() => subscriptionStore.highlightedProduct!);
+    final selectedProductId = useState<String>(
+      subscriptionStore.subscriptionFuture.value?.planId ?? highlightedProduct.id,
     );
 
     return Observer(
@@ -99,12 +99,8 @@ class SubscriptionFormVariantD extends HookConsumerWidget {
                   ).padding(bottom: getMediaHeight(context) * 0.025),
                   SubscriptionButton(
                     onPressed: () {
-                      final id = selectedProductId.value;
-                      if (id == null) {
-                        return;
-                      }
                       analyticsStore.logEvent(AnalyticsEvent.clickLetsgo);
-                      subscribeToPackage(id);
+                      subscribeToPackage(selectedProductId.value);
                     },
                     isLoading: isLoading,
                     label: LocaleKeys.letsGoBtn.tr(),

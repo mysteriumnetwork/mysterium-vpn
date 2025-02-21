@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -32,37 +33,58 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final products = useComputedValue(() => subscriptionStore.productsFuture.value);
 
     useEffect(
       () {
-        if (subscriptionStore.products.isEmpty) {
-          subscriptionStore.getSubscriptionsConfig();
+        if (products == null) {
+          return;
         }
+        if (products.isEmpty) {
+          Future.microtask(() async {
+            await subscriptionStore.refreshSubscriptionConfig();
+            await subscriptionStore.refreshProducts();
+          });
+        }
+        return null;
+      },
+      [products, subscriptionStore],
+    );
+
+    useEffect(
+      () {
         _checkForExistingSubscription(subscriptionStore, context, ref);
         return null;
       },
-      [],
+      [ref, subscriptionStore, context],
     );
 
     return Observer(
       builder: (context) {
+        final storeState = subscriptionStore.storeState;
+        final products = subscriptionStore.productsFuture.value;
+
         final isVerifyingPayment =
-            subscriptionStore.subscriptonStatus == SubscriptionStatus.verifying;
-        if (subscriptionStore.isAvailable == StoreState.loading) {
+            subscriptionStore.subscriptionStatus == SubscriptionStatus.verifying;
+
+        final isLoading = storeState == StoreState.loading ||
+            subscriptionStore.subscriptionFuture.status == FutureStatus.pending ||
+            subscriptionStore.productsFuture.status == FutureStatus.pending;
+
+        if (isLoading) {
           return LoadingIndicator(
             message: LocaleKeys.connectingToPaymentProcesor.tr(),
           );
-        } else if (subscriptionStore.isAvailable == StoreState.notAvailable ||
-            subscriptionStore.products.isEmpty) {
+        } else if (storeState == StoreState.notAvailable || (products?.isEmpty ?? true)) {
           return RetryOnErrorWidget(
-            error: subscriptionStore.isAvailable == StoreState.loading
-                ? LocaleKeys.unableToConnectToPaymentProcesor.tr()
-                : LocaleKeys.productsNotAvailable.tr(),
-            onRetry: subscriptionStore.getSubscriptionsConfig,
+            error: (products?.isEmpty ?? true)
+                ? LocaleKeys.productsNotAvailable.tr()
+                : LocaleKeys.unableToConnectToPaymentProcesor.tr(),
+            onRetry: subscriptionStore.refreshAll,
           );
         }
         return ReactionBuilder(
-          builder: (context) => reaction((_) => subscriptionStore.subscriptonStatus, (status) {
+          builder: (context) => reaction((_) => subscriptionStore.subscriptionStatus, (status) {
             _subscriptionStatusReaction(context, status, subscriptionStore);
           }),
           child: Stack(
@@ -106,10 +128,10 @@ void _subscriptionStatusReaction(
         type: MessageType.success,
       );
       context.beamToReplacementNamed(Routes.main.path);
-    } else if (store.verifySubscriptionFuture?.error is ApiException &&
-        (store.verifySubscriptionFuture?.error as ApiException).code == 409) {
+    } else if (store.subscriptionConfigFuture.error is ApiException &&
+        (store.subscriptionConfigFuture.error as ApiException).code == 409) {
       showSnackbar(
-        (store.verifySubscriptionFuture?.error as ApiException).message,
+        (store.subscriptionConfigFuture.error as ApiException).message,
       );
     } else if (status == SubscriptionStatus.notVerified ||
         status == SubscriptionStatus.verifyingError) {
@@ -146,8 +168,8 @@ Future<void> _checkForExistingSubscription(
   BuildContext context,
   WidgetRef ref,
 ) async {
-  final (exists, email) = await store.checkForExistingSubscription();
-  if (!exists) {
+  final email = await store.refreshOtherSubscriber();
+  if (email == null) {
     return;
   }
 
@@ -168,7 +190,7 @@ Future<void> _checkForExistingSubscription(
         maxLines: 2,
         textAlign: TextAlign.center,
       ),
-      title: LocaleKeys.existingSubscriptionDesc.tr(namedArgs: {'email': email ?? ''}),
+      title: LocaleKeys.existingSubscriptionDesc.tr(namedArgs: {'email': email}),
       onConfirm: () => ref.read(authStorePOD).logout(email: email),
     );
   }
