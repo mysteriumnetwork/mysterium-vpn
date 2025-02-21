@@ -9,7 +9,6 @@ FutureOr<void> Function() useHandleSubscribe() {
   final environmentStore = useProvider(environmentPOD);
 
   final accessToken = useComputedValue(() => sessionStore.accessToken, [sessionStore]);
-  final subscription = useComputedValue(() => subscriptionStore.subscription, [subscriptionStore]);
   final billingPage = useComputedValue(
     () => environmentStore.values.billingPage,
     [environmentStore],
@@ -18,11 +17,12 @@ FutureOr<void> Function() useHandleSubscribe() {
   return useCallback(
     () async {
       try {
+        final subscription = await subscriptionStore.subscriptionFuture;
         await handleOnBillingPage(
           beamer: beamer,
           billingPage: billingPage,
-          gateway: subscription?.gateway,
-          subscriptionActive: subscription?.active ?? false,
+          gateway: subscription.gateway,
+          subscriptionActive: subscription.active,
           accessToken: accessToken,
           onManageSubscription: subscriptionStore.manageSubscription,
         );
@@ -33,8 +33,6 @@ FutureOr<void> Function() useHandleSubscribe() {
     [
       beamer,
       billingPage,
-      subscription?.gateway,
-      subscription?.active,
       accessToken,
       subscriptionStore,
     ],

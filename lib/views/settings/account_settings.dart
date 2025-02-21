@@ -40,23 +40,24 @@ class AccountSettings extends HookConsumerWidget {
     return Observer(
       builder: (ctx) {
         final isDarkTheme = themeStore.isDarkMode;
-        final active = subscriptionStore.subscription?.active ?? false;
+        final subscription = subscriptionStore.subscriptionFuture.value;
+        final isLoading = subscriptionStore.subscriptionFuture.status == FutureStatus.pending;
         return Column(
           children: [
             SettingItem(
               asset: isDarkTheme ? Assets.billingDark : Assets.billingLight,
               title: LocaleKeys.myBillingPackage.tr(),
-              description: subscriptionStore.subscription != null && active
-                  ? PurchasedPlan(subscription: subscriptionStore.subscription!)
+              description: subscription != null && subscription.active
+                  ? PurchasedPlan(subscription: subscription)
                   : null,
               actionWidget: HookBuilder(
                 builder: (context) {
                   final handleSubscribe = useHandleSubscribe();
-                  if (subscriptionStore.isLoading) {
+                  if (isLoading) {
                     return const LoadingIndicator();
                   }
 
-                  if (!active) {
+                  if (subscription == null || !subscription.active) {
                     return EasyButton(
                       onPressed: handleSubscribe,
                       text: LocaleKeys.pricingPlanSeePlansBtn.tr(),

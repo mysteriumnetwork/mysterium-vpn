@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
@@ -69,8 +70,8 @@ class _ProductPickerDialog extends HookConsumerWidget {
     final highlightedProduct = useComputedValue(() => subscriptionStore.highlightedProduct);
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    final selectedProductId = useState<String?>(
-      subscriptionStore.purchasedProductId ?? highlightedProduct?.id,
+    final selectedProductId = useState<String>(
+      subscriptionStore.subscriptionFuture.value?.planId ?? highlightedProduct!.id,
     );
 
     final seeAllPlans = useState(seeAllPlansInit);
@@ -84,92 +85,96 @@ class _ProductPickerDialog extends HookConsumerWidget {
     );
 
     return Observer(
-      builder: (context) => Stack(
-        clipBehavior: Clip.none,
-        alignment: Alignment.center,
-        children: [
-          Positioned(
-            top: 10,
-            right: 20,
-            child: SizedBox(
-              width: 40,
-              height: 40,
-              child: SvgIconButton(
-                asset: isDarkMode ? Assets.closeDark : Assets.closeLight,
-                onPressed: Navigator.of(context).pop,
+      builder: (context) {
+        final isSubscriptionLoading =
+            subscriptionStore.subscriptionFuture.status == FutureStatus.pending ||
+                subscriptionStore.subscriptionStatus == SubscriptionStatus.pending ||
+                subscriptionStore.subscriptionStatus == SubscriptionStatus.verifying;
+
+        return Stack(
+          clipBehavior: Clip.none,
+          alignment: Alignment.center,
+          children: [
+            Positioned(
+              top: 10,
+              right: 20,
+              child: SizedBox(
+                width: 40,
+                height: 40,
+                child: SvgIconButton(
+                  asset: isDarkMode ? Assets.closeDark : Assets.closeLight,
+                  onPressed: Navigator.of(context).pop,
+                ),
               ),
             ),
-          ),
-          Container(
-            width: double.infinity,
-            padding: getMediaWidth(context) > 950
-                ? const EdgeInsets.symmetric(
-                    horizontal: 150,
-                    vertical: 20,
-                  )
-                : getMediaWidth(context) > 650
-                    ? const EdgeInsets.symmetric(
-                        horizontal: 80,
-                        vertical: 20,
-                      )
-                    : const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 20,
-                      ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                EasyText(
-                  seeAllPlans.value
-                      ? LocaleKeys.selectYourSubscription.tr()
-                      : LocaleKeys.pricingPlanTitle.tr(),
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                ),
-                SizedBox(height: getMediaHeight(context) * 0.02),
-                if (seeAllPlans.value)
-                  _ProductsContainer(
-                    products: products,
-                    selectedProductId: selectedProductId,
-                    analyticsStore: analyticsStore,
-                  )
-                else
-                  HighlightedProduct(
-                    product: products.first,
-                    isHighlighted: false,
+            Container(
+              width: double.infinity,
+              padding: getMediaWidth(context) > 950
+                  ? const EdgeInsets.symmetric(
+                      horizontal: 150,
+                      vertical: 20,
+                    )
+                  : getMediaWidth(context) > 650
+                      ? const EdgeInsets.symmetric(
+                          horizontal: 80,
+                          vertical: 20,
+                        )
+                      : const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 20,
+                        ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  EasyText(
+                    seeAllPlans.value
+                        ? LocaleKeys.selectYourSubscription.tr()
+                        : LocaleKeys.pricingPlanTitle.tr(),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
                   ),
-                SizedBox(height: getMediaHeight(context) * 0.04),
-                SubscriptionButton(
-                  onPressed: () {
-                    if (selectedProductId.value == null) {
-                      return;
-                    }
-                    analyticsStore.logEvent(AnalyticsEvent.clickLetsgoProductPopup);
-                    Navigator.of(context).pop();
-                    subscribeToPackage(selectedProductId.value!);
-                  },
-                  isLoading: subscriptionStore.isLoading,
-                  label: LocaleKeys.letsGoBtn.tr(),
-                ),
-                Visibility(
-                  visible: !seeAllPlans.value && !subscriptionStore.isLoading,
-                  child: TextButton(
+                  SizedBox(height: getMediaHeight(context) * 0.02),
+                  if (seeAllPlans.value)
+                    _ProductsContainer(
+                      products: products,
+                      selectedProductId: selectedProductId,
+                      analyticsStore: analyticsStore,
+                    )
+                  else
+                    HighlightedProduct(
+                      product: products.first,
+                      isHighlighted: false,
+                    ),
+                  SizedBox(height: getMediaHeight(context) * 0.04),
+                  SubscriptionButton(
                     onPressed: () {
-                      analyticsStore.logEvent(AnalyticsEvent.clickSeeAllPlansProductPopup);
-                      seeAllPlans.value = !seeAllPlans.value;
+                      analyticsStore.logEvent(AnalyticsEvent.clickLetsgoProductPopup);
+                      Navigator.of(context).pop();
+                      subscribeToPackage(selectedProductId.value);
                     },
-                    child: EasyText(
-                      LocaleKeys.pricingPlanSeePlansBtn.tr(),
-                      color: Palette.purple,
+                    isLoading: isSubscriptionLoading,
+                    label: LocaleKeys.letsGoBtn.tr(),
+                  ),
+                  Visibility(
+                    visible: !seeAllPlans.value && !isSubscriptionLoading,
+                    child: TextButton(
+                      onPressed: () {
+                        analyticsStore.logEvent(AnalyticsEvent.clickSeeAllPlansProductPopup);
+                        seeAllPlans.value = !seeAllPlans.value;
+                      },
+                      child: EasyText(
+                        LocaleKeys.pricingPlanSeePlansBtn.tr(),
+                        color: Palette.purple,
+                      ),
                     ),
                   ),
-                ),
-                const BottomSpacer(),
-              ],
+                  const BottomSpacer(),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      },
     );
   }
 }
@@ -181,7 +186,7 @@ class _ProductsContainer extends StatelessWidget {
     required this.analyticsStore,
   });
   final List<PurchasableProduct> products;
-  final ValueNotifier<String?> selectedProductId;
+  final ValueNotifier<String> selectedProductId;
   final AnalyticsStore analyticsStore;
   @override
   Widget build(BuildContext context) {

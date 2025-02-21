@@ -14,15 +14,16 @@ Future<void> Function(String id) useHandleSubscribeToProduct() {
       final ref = ProviderScope.containerOf(context, listen: false);
       final subscriptionStore = ref.read(subscriptionStorePOD);
       final analyticsStore = ref.read(analyticsStorePOD);
+      final products = await subscriptionStore.productsFuture;
 
-      final selectedProduct = subscriptionStore.products.firstWhereOrNull((it) => it.id == id);
+      final selectedProduct = products.firstWhereOrNull((it) => it.id == id);
       if (selectedProduct == null) {
         return;
       }
 
       analyticsStore.logEvent(
         AnalyticsEvent.subscriptionNew,
-        parameters: {'item_ids': subscriptionStore.products.map((e) => e.id).toList()},
+        parameters: {'item_ids': products.map((e) => e.id).toList()},
       );
 
       await subscriptionStore.subscribeToPackage(product: selectedProduct.productDetails);
