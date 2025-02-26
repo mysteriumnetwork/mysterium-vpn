@@ -11,18 +11,17 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/hooks/config_cat_user_updater_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/hooks/subscription_watcher_hook.dart';
 import 'package:mysterium_vpn/common/router/route_delegate.dart';
 import 'package:mysterium_vpn/components/custom_platform_menu.dart';
 import 'package:mysterium_vpn/components/lifecycle_listener.dart';
 import 'package:mysterium_vpn/components/network_logger_overlay.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/components/shortcuts.dart';
-import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/ft_checkers.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
-import 'package:mysterium_vpn/stores/subscription_store.dart';
 
 class MyApp extends HookConsumerWidget {
   const MyApp({super.key});
@@ -53,6 +52,7 @@ class MyApp extends HookConsumerWidget {
     });
 
     useConfigCatUserUpdater();
+    useSubscriptionWatcher();
 
     return ReactionBuilder(
       builder: (_) => reaction(
@@ -62,9 +62,6 @@ class MyApp extends HookConsumerWidget {
         },
       ),
       child: LifecycleListener(
-        onResumed: () {
-          checkSubsStatus(authSessionStore.status, ref.read(subscriptionStorePOD));
-        },
         onThemeChanged: themeStore.updateSystemTheme,
         child: Observer(
           builder: (context) => RetakeFocusOnTap(
@@ -112,19 +109,6 @@ class MyApp extends HookConsumerWidget {
         ),
       ),
     );
-  }
-
-  void checkSubsStatus(
-    AuthStatus authStatus,
-    SubscriptionStore subscriptionStore,
-  ) {
-    if (authStatus != AuthStatus.authenticated) {
-      return;
-    }
-    if (subscriptionStore.isSubscribed == false ||
-        (subscriptionStore.subscription?.isExpired ?? false)) {
-      subscriptionStore.fetchSubscription();
-    }
   }
 
   Future<void> authenticationReaction(

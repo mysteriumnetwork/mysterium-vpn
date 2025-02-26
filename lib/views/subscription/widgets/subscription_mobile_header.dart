@@ -14,7 +14,7 @@ class SubscriptionMobileHeader extends HookWidget {
   Widget build(BuildContext context) {
     final subscriptionStore = useProvider(subscriptionStorePOD);
     final shouldAllowBack = useComputedValue(
-      () => subscriptionStore.subscriptonStatus != SubscriptionStatus.verifying,
+      () => subscriptionStore.subscriptionStatus != SubscriptionStatus.verifying,
     );
 
     final variant = useABTest((store) => store.subscriptionFlowVariant);
