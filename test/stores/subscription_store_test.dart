@@ -39,7 +39,6 @@ void main() {
     expired: false,
     recurring: true,
   );
-  final subscriptionInactive = Subscription(active: false);
 
   setUp(() {
     mockSubscriptionService = MockSubscriptionService();
