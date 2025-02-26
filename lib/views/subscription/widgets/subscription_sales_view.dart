@@ -24,9 +24,9 @@ class SubscriptionSalesView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final analyticsStore = ref.watch(analyticsStorePOD);
     final subscriptionStore = ref.watch(subscriptionStorePOD);
-    final isLoading = useComputedValue(() => subscriptionStore.isLoading);
+    final isLoading = useComputedValue(() => subscriptionStore.isSubscriptionLoading);
     final product = useComputedValue(() => subscriptionStore.highlightedProduct);
-    final products = useComputedValue(() => subscriptionStore.products);
+    final products = useComputedValue(() => subscriptionStore.productsFuture.value ?? []);
 
     final handleSubscribeToProduct = useHandleSubscribeToProduct();
 

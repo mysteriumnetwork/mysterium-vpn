@@ -7,7 +7,6 @@ import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_breakpoints.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_size_breakpoints.dart';
 import 'package:mysterium_vpn/common/configurations/breakpoint_configuration.dart';
@@ -396,14 +395,6 @@ void handleOnReportPage({
   analyticsStore.logEvent(AnalyticsEvent.openSupport);
   intetcomStore.displayMessenger();
 }
-
-SubscriptionStatus getSubscriptionStatus(PurchaseStatus status) => switch (status) {
-      PurchaseStatus.purchased => SubscriptionStatus.purchased,
-      PurchaseStatus.pending => SubscriptionStatus.pending,
-      PurchaseStatus.error => SubscriptionStatus.error,
-      PurchaseStatus.restored => SubscriptionStatus.restored,
-      PurchaseStatus.canceled => SubscriptionStatus.canceled
-    };
 
 Future<void> openUrlLink(Uri url) async {
   try {
