@@ -10,14 +10,14 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 class _HomeState extends ChangeNotifier {
   _HomeState(this._prefs) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final state = _prefs.getPanelState() ?? PanelState.snap;
-      _animatePanelState(state).ignore();
+      _animatePanelState(initialState).ignore();
     });
   }
 
   final SharedPreferenceService _prefs;
   final PanelController panelController = PanelController();
   final typeSwitcherKey = GlobalKey();
+  late final PanelState initialState = _prefs.getPanelState() ?? PanelState.snap;
 
   PanelState get _panelState => PanelState.fromPosition(panelController.panelPosition);
 
@@ -29,7 +29,7 @@ class _HomeState extends ChangeNotifier {
   bool get isPadded => isMobile();
 
   double get extent =>
-      panelController.isAttached ? panelController.panelPosition : PanelState.closed.extent;
+      panelController.isAttached ? panelController.panelPosition : initialState.extent;
 
   ScrollController? get scrollController => _scrollController;
 
@@ -173,3 +173,15 @@ enum PanelState {
 final homeStateProvider = ChangeNotifierProvider.autoDispose(
   (ref) => _HomeState(SharedPreferenceService.instance),
 );
+
+final homePanelFlexProvider = Provider.autoDispose((ref) {
+  final homeState = ref.watch(homeStateProvider);
+  final value = (homeState.extent * 10).round();
+  if (value <= 0) {
+    return 1;
+  }
+  if (value >= 5) {
+    return 4;
+  }
+  return value;
+});
