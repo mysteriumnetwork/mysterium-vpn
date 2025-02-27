@@ -219,7 +219,7 @@ abstract class _SubscriptionStore with Store {
         userId: user.userId,
       );
       _analyticsStore.logEvent(
-        AnalyticsEvent.paymentConfirm,
+        AnalyticsEvent.returnStore,
         parameters: {
           'planType': product.id,
           'price': product.rawPrice.toString(),
