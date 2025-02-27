@@ -10,19 +10,25 @@ class _HomeState extends ChangeNotifier {
   _HomeState();
 
   final typeSwitcherKey = GlobalKey();
-  final panelMaxExtent = .8;
-  final panelMinExtent = .45;
 
-  bool _isPanelOpen = false;
+  PanelState get _panelState => PanelState.fromPosition(_panelController?.panelPosition ?? 0.0);
 
-  PanelController? panelController;
+  PanelController? _panelController;
   ScrollController? _scrollController;
-
-  bool get isPanelOpen => _isPanelOpen;
+  double _scrollOffset = 0;
 
   bool get isDraggable => isMobile();
 
   bool get isPadded => isMobile();
+
+  PanelController? get panelController => _panelController;
+  set panelController(PanelController? value) {
+    if (_panelController == value) {
+      return;
+    }
+    _panelController = value;
+    Future.microtask(() => _setPanelState(PanelState.snap));
+  }
 
   ScrollController? get scrollController => _scrollController;
 
@@ -31,23 +37,19 @@ class _HomeState extends ChangeNotifier {
     _scrollController = value?..addListener(_scrollListener);
   }
 
-  Future<void> openPanel() async {
-    _isPanelOpen = true;
-    await panelController?.open();
-    notifyListeners();
-  }
-
-  Future<void> closePanel() async {
-    _isPanelOpen = false;
-    await panelController?.close();
+  Future<void> _setPanelState(PanelState state) async {
+    await switch (state) {
+      PanelState.closed => _panelController?.close(),
+      PanelState.snap => _panelController?.animatePanelToSnapPoint(),
+      PanelState.open => _panelController?.open(),
+    };
     notifyListeners();
   }
 
   Future<void> togglePanel() async {
-    if (_isPanelOpen) {
-      await closePanel();
-    } else {
-      await openPanel();
+    final next = _panelState.next(circular: true);
+    if (next != null) {
+      await _setPanelState(next);
     }
   }
 
@@ -67,22 +69,24 @@ class _HomeState extends ChangeNotifier {
     }
     final offset = box.localToGlobal(Offset.zero).dy;
     final height = box.size.height;
-    final extent = _isPanelOpen ? panelMaxExtent : panelMinExtent;
 
-    final target = (offset - height) * extent;
+    final target = (offset - height) * _panelState.extent;
     final scrollPosition = scrollController!.position;
 
     await scrollPosition.moveTo(target);
   }
 
   Future<void> show(GlobalKey key) async {
-    await openPanel();
+    await _setPanelState(PanelState.open);
     await scrollTo(key);
   }
 
   FutureOr<void> _scrollListener() async {
+    if (!isDesktop()) {
+      return;
+    }
     final scrollController = _scrollController;
-    final panelController = this.panelController;
+    final panelController = _panelController;
 
     if (scrollController == null) {
       return;
@@ -92,18 +96,30 @@ class _HomeState extends ChangeNotifier {
       return;
     }
 
-    if (_isPanelOpen &&
-        scrollController.offset <= 0 &&
-        scrollController.position.userScrollDirection == ScrollDirection.forward) {
-      // user tries to scroll up
-      await scrollController.position.moveTo(0);
-      await closePanel();
-    } else if (!_isPanelOpen &&
-        scrollController.offset > 0 &&
-        scrollController.position.userScrollDirection == ScrollDirection.reverse) {
-      // user tries to scroll down
-      await scrollController.position.moveTo(0);
-      await openPanel();
+    if (panelController.isPanelAnimating) {
+      return;
+    }
+
+    final offset = scrollController.offset;
+    if (_scrollOffset != 0 && offset != 0) {
+      return;
+    }
+    _scrollOffset = offset;
+    final direction = scrollController.position.userScrollDirection;
+
+    if (offset < 0 && direction == ScrollDirection.forward) {
+      final state = _panelState.previous();
+      if (state != null) {
+        await scrollController.position.moveTo(0);
+        await _setPanelState(state);
+      }
+    }
+    if (offset > 0 && direction == ScrollDirection.reverse) {
+      final state = _panelState.next();
+      if (state != null) {
+        await scrollController.position.moveTo(0);
+        await _setPanelState(state);
+      }
     }
   }
 
@@ -111,6 +127,42 @@ class _HomeState extends ChangeNotifier {
   void dispose() {
     _scrollController?.removeListener(_scrollListener);
     super.dispose();
+  }
+}
+
+enum PanelState {
+  closed._(.1),
+  snap._(.5),
+  open._(.8);
+
+  const PanelState._(this.extent);
+
+  static PanelState fromPosition(double panelPosition) {
+    if (panelPosition == PanelState.snap.extent) {
+      return PanelState.snap;
+    }
+    if (panelPosition > PanelState.snap.extent) {
+      return PanelState.open;
+    }
+    return PanelState.closed;
+  }
+
+  final double extent;
+
+  PanelState? next({bool circular = false}) {
+    final nextIndex = index + 1;
+    if (nextIndex >= values.length) {
+      return circular ? values.first : null;
+    }
+    return values[nextIndex];
+  }
+
+  PanelState? previous({bool circular = false}) {
+    final previousIndex = index - 1;
+    if (previousIndex < 0) {
+      return circular ? values.last : null;
+    }
+    return values[previousIndex];
   }
 }
 
