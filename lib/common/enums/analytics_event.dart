@@ -81,4 +81,5 @@ enum AnalyticsEvent {
   connectToVpn,
   disconnectFromVpn,
   appLaunch,
+  panelMoved,
 }

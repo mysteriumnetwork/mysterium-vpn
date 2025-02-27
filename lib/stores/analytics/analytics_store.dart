@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/common/enums/indicator_type.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/views/home/home_state.dart';
 
 mixin AnalyticsStore {
   final Debouncer _debouncer = Debouncer();
@@ -165,6 +166,10 @@ mixin AnalyticsStore {
   Future<void> logAppLaunchEvent() async {
     final params = {'platform': defaultTargetPlatform.name};
     logEvent(AnalyticsEvent.appLaunch, parameters: params);
+  }
+
+  Future<void> logPanelMoved(PanelState state) async {
+    await logEvent(AnalyticsEvent.panelMoved, parameters: {'state': state.name});
   }
 
   void dispose() {

@@ -4,25 +4,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class _HomeState extends ChangeNotifier {
-  _HomeState(this._prefs) {
+  _HomeState(this._prefs, this._analytics) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _animatePanelState(initialState).ignore();
     });
   }
 
   final SharedPreferenceService _prefs;
+  final AnalyticsStore _analytics;
   final PanelController panelController = PanelController();
   final typeSwitcherKey = GlobalKey();
-  late final PanelState initialState = _prefs.getPanelState() ?? PanelState.snap;
 
-  PanelState get _panelState => PanelState.fromPosition(panelController.panelPosition);
+  late final PanelState initialState = _prefs.getPanelState() ?? PanelState.snap;
 
   ScrollController? _scrollController;
   double _scrollOffset = 0;
+
+  PanelState get _panelState => PanelState.fromPosition(panelController.panelPosition);
 
   bool get isDraggable => isMobile();
 
@@ -49,6 +53,7 @@ class _HomeState extends ChangeNotifier {
   Future<void> _setPanelState(PanelState state) async {
     await _animatePanelState(state);
     await _prefs.setPanelState(state);
+    _analytics.logPanelMoved(state).ignore();
     notifyListeners();
   }
 
@@ -171,7 +176,10 @@ enum PanelState {
 }
 
 final homeStateProvider = ChangeNotifierProvider.autoDispose(
-  (ref) => _HomeState(SharedPreferenceService.instance),
+  (ref) {
+    final analyticsStore = ref.watch(analyticsStorePOD);
+    return _HomeState(SharedPreferenceService.instance, analyticsStore);
+  },
 );
 
 final homePanelFlexProvider = Provider.autoDispose((ref) {
