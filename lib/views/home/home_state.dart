@@ -4,16 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class _HomeState extends ChangeNotifier {
-  _HomeState();
+  _HomeState(this._prefs) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final state = _prefs.getPanelState() ?? PanelState.snap;
+      _animatePanelState(state).ignore();
+    });
+  }
 
+  final SharedPreferenceService _prefs;
+  final PanelController panelController = PanelController();
   final typeSwitcherKey = GlobalKey();
 
-  PanelState get _panelState => PanelState.fromPosition(_panelController?.panelPosition ?? 0.0);
+  PanelState get _panelState => PanelState.fromPosition(panelController.panelPosition);
 
-  PanelController? _panelController;
   ScrollController? _scrollController;
   double _scrollOffset = 0;
 
@@ -21,14 +28,8 @@ class _HomeState extends ChangeNotifier {
 
   bool get isPadded => isMobile();
 
-  PanelController? get panelController => _panelController;
-  set panelController(PanelController? value) {
-    if (_panelController == value) {
-      return;
-    }
-    _panelController = value;
-    Future.microtask(() => _setPanelState(PanelState.snap));
-  }
+  double get extent =>
+      panelController.isAttached ? panelController.panelPosition : PanelState.closed.extent;
 
   ScrollController? get scrollController => _scrollController;
 
@@ -37,12 +38,17 @@ class _HomeState extends ChangeNotifier {
     _scrollController = value?..addListener(_scrollListener);
   }
 
-  Future<void> _setPanelState(PanelState state) async {
+  Future<void> _animatePanelState(PanelState state) async {
     await switch (state) {
-      PanelState.closed => _panelController?.close(),
-      PanelState.snap => _panelController?.animatePanelToSnapPoint(),
-      PanelState.open => _panelController?.open(),
+      PanelState.closed => panelController.close(),
+      PanelState.snap => panelController.animatePanelToSnapPoint(),
+      PanelState.open => panelController.open(),
     };
+  }
+
+  Future<void> _setPanelState(PanelState state) async {
+    await _animatePanelState(state);
+    await _prefs.setPanelState(state);
     notifyListeners();
   }
 
@@ -86,17 +92,13 @@ class _HomeState extends ChangeNotifier {
       return;
     }
     final scrollController = _scrollController;
-    final panelController = _panelController;
+    final panelController = this.panelController;
 
     if (scrollController == null) {
       return;
     }
 
-    if (panelController == null) {
-      return;
-    }
-
-    if (panelController.isPanelAnimating) {
+    if (!panelController.isAttached || panelController.isPanelAnimating) {
       return;
     }
 
@@ -147,6 +149,8 @@ enum PanelState {
     return PanelState.closed;
   }
 
+  static PanelState fromName(String name) => values.firstWhere((element) => element.name == name);
+
   final double extent;
 
   PanelState? next({bool circular = false}) {
@@ -167,5 +171,5 @@ enum PanelState {
 }
 
 final homeStateProvider = ChangeNotifierProvider.autoDispose(
-  (ref) => _HomeState(),
+  (ref) => _HomeState(SharedPreferenceService.instance),
 );

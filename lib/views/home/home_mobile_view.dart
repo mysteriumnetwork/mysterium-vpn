@@ -19,21 +19,12 @@ class HomeMobileView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final abTestingStore = ref.watch(abTestingStorePOD);
-    final panelController = useMemoized(PanelController.new);
 
     final bannerDisplayVariant = useComputedValue(() => abTestingStore.bannerDisplayVariant);
     final theme = Theme.of(context);
     final homeState = ref.watch(homeStateProvider.notifier);
     final (appBarKey, appBarBox) = useRenderObject<RenderBox>();
     final appBarHeight = appBarBox?.size.height ?? kToolbarHeight;
-
-    useEffect(
-      () {
-        homeState.panelController = panelController;
-        return () => homeState.panelController = null;
-      },
-      [panelController, homeState],
-    );
 
     return LayoutBuilder(
       builder: (context, layoutConstraints) {
@@ -46,8 +37,6 @@ class HomeMobileView extends HookConsumerWidget {
           maxHeight: max(layoutConstraints.maxHeight * PanelState.open.extent, minHeight),
           minHeight: minHeight,
         );
-
-        final panelFlex = (PanelState.closed.extent * 10).ceil();
 
         return Stack(
           children: [
@@ -68,14 +57,19 @@ class HomeMobileView extends HookConsumerWidget {
                 topLeft: Radius.circular(20),
                 topRight: Radius.circular(20),
               ),
-              body: Column(
-                children: [
-                  Expanded(
-                    flex: 10 - panelFlex,
-                    child: HomeConnectionView(header: HomeMobileAppBar(key: appBarKey)),
-                  ),
-                  Spacer(flex: panelFlex),
-                ],
+              body: HookBuilder(
+                builder: (context) {
+                  final panelFlex = _usePanelFlex();
+                  return Column(
+                    children: [
+                      Expanded(
+                        flex: 10 - panelFlex,
+                        child: HomeConnectionView(header: HomeMobileAppBar(key: appBarKey)),
+                      ),
+                      Spacer(flex: panelFlex),
+                    ],
+                  );
+                },
               ),
             ),
             switch (bannerDisplayVariant) {
@@ -98,4 +92,23 @@ class HomeMobileView extends HookConsumerWidget {
       },
     );
   }
+}
+
+int _usePanelFlex() {
+  final context = useContext();
+  final flex = useState(1);
+  useEffect(
+    () => ProviderScope.containerOf(context, listen: false).listen(homeStateProvider, (_, state) {
+      final value = (state.extent * 10).round();
+      if (value <= 0) {
+        flex.value = 1;
+      }
+      if (value >= 5) {
+        flex.value = 4;
+      }
+    }).close,
+    [flex, context],
+  );
+
+  return flex.value;
 }
