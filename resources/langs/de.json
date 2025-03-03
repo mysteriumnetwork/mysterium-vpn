@@ -542,5 +542,7 @@
   "disconnectAllDevicesConfirmation": "Sind Sie sicher, dass Sie alle Geräte trennen möchten?",
   "failedToDisconnectAllDevices": "Es versäumt, die Verbindung von allen Geräten zu trennen. Bitte versuchen Sie es erneut",
   "disconnectAllDevicesSuccess": "Sie wurden von allen Geräten getrennt.",
-  "reconnectBtn": "Erneut verbinden"
+  "reconnectBtn": "Erneut verbinden",
+  "toManyRequestsErrorMsg": "Zu viele Anfragen. Bitte versuchen Sie es später erneut.",
+  "connectingInProggress": "In Arbeit verbinden. Bitte warten Sie, bis die Verbindung hergestellt ist."
 }

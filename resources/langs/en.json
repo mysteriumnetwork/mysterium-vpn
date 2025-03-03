@@ -541,5 +541,7 @@
   "disconnectAllDevicesConfirmation": "Are you sure you want to disconnect all devices?",
   "failedToDisconnectAllDevices": "Failed to disconnect from all devices. Please try again",
   "disconnectAllDevicesSuccess": "You have been disconnected from all devices. Reconnect to the VPN to ensure your safety.",
-  "reconnectBtn": "Reconnect"
+  "reconnectBtn": "Reconnect",
+  "toManyRequestsErrorMsg": "Too many requests. Please try again later.",
+  "connectingInProggress": "Connecting in progress.. Please wait until the connection is established."
 }

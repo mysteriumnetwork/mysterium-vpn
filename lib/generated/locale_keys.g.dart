@@ -545,4 +545,6 @@ abstract class LocaleKeys {
   static const failedToDisconnectAllDevices = 'failedToDisconnectAllDevices';
   static const disconnectAllDevicesSuccess = 'disconnectAllDevicesSuccess';
   static const reconnectBtn = 'reconnectBtn';
+  static const toManyRequestsErrorMsg = 'toManyRequestsErrorMsg';
+  static const connectingInProggress = 'connectingInProggress';
 }

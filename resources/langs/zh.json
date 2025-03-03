@@ -542,5 +542,7 @@
   "disconnectAllDevicesConfirmation": "您确定要断开所有设备吗？",
   "failedToDisconnectAllDevices": "无法与所有设备断开连接。请重试",
   "disconnectAllDevicesSuccess": "您已经与所有设备断开了连接。连接到VPN，以确保您的安全性。",
-  "reconnectBtn": "重新连接"
+  "reconnectBtn": "重新连接",
+  "toManyRequestsErrorMsg": "您的请求太多。请稍后再试。",
+  "connectingInProggress": "连接正在进行中。请等到建立连接。"
 }
