@@ -542,5 +542,7 @@
   "disconnectAllDevicesConfirmation": "Apakah Anda yakin ingin memutuskan semua perangkat?",
   "failedToDisconnectAllDevices": "Gagal memutuskan hubungan dari semua perangkat. Coba lagi",
   "disconnectAllDevicesSuccess": "Anda telah terputus dari semua perangkat. Connonnect ke VPN untuk memastikan keselamatan Anda.",
-  "reconnectBtn": "Terhubung kembali"
+  "reconnectBtn": "Terhubung kembali",
+  "toManyRequestsErrorMsg": "Terlalu banyak permintaan. Silakan coba lagi nanti.",
+  "connectingInProggress": "Menghubungkan dalam proses .. Harap tunggu sampai koneksi dibuat."
 }

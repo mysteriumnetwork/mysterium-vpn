@@ -540,5 +540,7 @@
   "disconnectAllDevicesConfirmation": "هل أنت متأكد أنك تريد فصل جميع الأجهزة؟",
   "failedToDisconnectAllDevices": "فشل في الانفصال عن جميع الأجهزة.",
   "disconnectAllDevicesSuccess": "لقد تم فصلك عن جميع الأجهزة. الاتصال بـ VPN لضمان سلامتك.",
-  "reconnectBtn": "إعادة الاتصال"
+  "reconnectBtn": "إعادة الاتصال",
+  "toManyRequestsErrorMsg": "لقد تجاوزت الحد الأقصى لعدد الطلبات. يرجى المحاولة مرة أخرى في وقت لاحق.",
+  "connectingInProggress": "الاتصال قيد التقدم .. يرجى الانتظار حتى يتم إنشاء الاتصال."
 }

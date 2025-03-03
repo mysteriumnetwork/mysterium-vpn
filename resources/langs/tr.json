@@ -542,5 +542,7 @@
   "disconnectAllDevicesConfirmation": "Tüm cihazların bağlantısını kesmek istediğinizden emin misiniz?",
   "failedToDisconnectAllDevices": "Tüm cihazlardan bağlantıyı kesemedi. Lütfen tekrar deneyin",
   "disconnectAllDevicesSuccess": "Güvenliğinizi sağlamak için tüm cihazlardan ayrıldınız.",
-  "reconnectBtn": "Yeniden bağlanmak"
+  "reconnectBtn": "Yeniden bağlanmak",
+  "toManyRequestsErrorMsg": "Çok fazla istek gönderildi. Lütfen daha sonra tekrar deneyin.",
+  "connectingInProggress": "Devam Edecek Bağlantı .. Lütfen bağlantı kurulana kadar bekleyin."
 }
