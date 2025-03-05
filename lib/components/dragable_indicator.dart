@@ -18,7 +18,6 @@ class DraggableIndicator extends StatelessWidget {
         focusElevation: 2,
         highlightElevation: 2,
         onPressed: onTap,
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         constraints: BoxConstraints.tight(size),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(size.height / 2),

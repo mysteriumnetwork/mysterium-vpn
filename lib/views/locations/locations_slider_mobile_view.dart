@@ -38,10 +38,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
       controller: controller,
       slivers: [
         SliverPinnedHeader(
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Center(child: DraggableIndicator(onTap: handleTogglePanel)),
-          ),
+          child: Center(child: DraggableIndicator(onTap: handleTogglePanel)),
         ),
         const SliverSafeArea(
           top: false,

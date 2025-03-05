@@ -11,7 +11,7 @@ import 'package:mysterium_vpn/views/home/home_connection_view.dart';
 import 'package:mysterium_vpn/views/home/home_mobile_app_bar.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/locations_slider_mobile_view.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart' hide PanelState;
 
 class HomeMobileView extends HookConsumerWidget {
   const HomeMobileView({super.key});
@@ -19,31 +19,23 @@ class HomeMobileView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final abTestingStore = ref.watch(abTestingStorePOD);
-    final panelController = useMemoized(PanelController.new);
 
     final bannerDisplayVariant = useComputedValue(() => abTestingStore.bannerDisplayVariant);
     final theme = Theme.of(context);
     final homeState = ref.watch(homeStateProvider.notifier);
     final (appBarKey, appBarBox) = useRenderObject<RenderBox>();
     final appBarHeight = appBarBox?.size.height ?? kToolbarHeight;
-
-    useEffect(
-      () {
-        homeState.panelController = panelController;
-        return () => homeState.panelController = null;
-      },
-      [panelController, homeState],
-    );
+    final panelFlex = ref.watch(homePanelFlexProvider);
 
     return LayoutBuilder(
       builder: (context, layoutConstraints) {
         final minHeight = max<double>(
-          layoutConstraints.maxHeight * homeState.panelMinExtent,
+          layoutConstraints.maxHeight * PanelState.closed.extent,
           // panel should be at least this size in order to fit at least one country
-          240,
+          42,
         );
         final constraints = layoutConstraints.copyWith(
-          maxHeight: max(layoutConstraints.maxHeight * homeState.panelMaxExtent, minHeight),
+          maxHeight: max(layoutConstraints.maxHeight * PanelState.open.extent, minHeight),
           minHeight: minHeight,
         );
 
@@ -54,6 +46,7 @@ class HomeMobileView extends HookConsumerWidget {
               minHeight: constraints.minHeight,
               controller: homeState.panelController,
               color: theme.primaryColor,
+              snapPoint: PanelState.snap.extent,
               isDraggable: homeState.isDraggable,
               panelBuilder: (sc) => HookBuilder(
                 builder: (context) {
@@ -68,10 +61,10 @@ class HomeMobileView extends HookConsumerWidget {
               body: Column(
                 children: [
                   Expanded(
-                    flex: 10 - (homeState.panelMinExtent * 10).round(),
+                    flex: 10 - panelFlex,
                     child: HomeConnectionView(header: HomeMobileAppBar(key: appBarKey)),
                   ),
-                  Spacer(flex: (homeState.panelMinExtent * 10).round()),
+                  Spacer(flex: panelFlex),
                 ],
               ),
             ),
