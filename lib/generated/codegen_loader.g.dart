@@ -559,7 +559,9 @@ class CodegenLoader extends AssetLoader {
     "disconnectAllDevicesConfirmation": "您确定要断开所有设备吗？",
     "failedToDisconnectAllDevices": "无法与所有设备断开连接。请重试",
     "disconnectAllDevicesSuccess": "您已经与所有设备断开了连接。连接到VPN，以确保您的安全性。",
-    "reconnectBtn": "重新连接"
+    "reconnectBtn": "重新连接",
+    "toManyRequestsErrorMsg": "您的请求太多。请稍后再试。",
+    "connectingInProggress": "连接正在进行中。请等到建立连接。"
   };
   static const Map<String, dynamic> tr = {
     "AD": "Andorra",
@@ -1133,7 +1135,9 @@ class CodegenLoader extends AssetLoader {
         "Tüm cihazların bağlantısını kesmek istediğinizden emin misiniz?",
     "failedToDisconnectAllDevices": "Tüm cihazlardan bağlantıyı kesemedi. Lütfen tekrar deneyin",
     "disconnectAllDevicesSuccess": "Güvenliğinizi sağlamak için tüm cihazlardan ayrıldınız.",
-    "reconnectBtn": "Yeniden bağlanmak"
+    "reconnectBtn": "Yeniden bağlanmak",
+    "toManyRequestsErrorMsg": "Çok fazla istek gönderildi. Lütfen daha sonra tekrar deneyin.",
+    "connectingInProggress": "Devam Edecek Bağlantı .. Lütfen bağlantı kurulana kadar bekleyin."
   };
   static const Map<String, dynamic> ja = {
     "AD": "アンドラ",
@@ -1684,7 +1688,9 @@ class CodegenLoader extends AssetLoader {
     "disconnectAllDevicesConfirmation": "すべてのデバイスを切断したいですか？",
     "failedToDisconnectAllDevices": "すべてのデバイスから切断できませんでした。再試行してください",
     "disconnectAllDevicesSuccess": "すべてのデバイスから切断されています。安全性を確保するために、VPNに再接続しています。",
-    "reconnectBtn": "再接続します"
+    "reconnectBtn": "再接続します",
+    "toManyRequestsErrorMsg": "リクエストが多すぎます。後でもう一度試してください。",
+    "connectingInProggress": "進行中の接続..接続が確立されるまで待ってください。"
   };
   static const Map<String, dynamic> de = {
     "AD": "Andorra",
@@ -2278,7 +2284,10 @@ class CodegenLoader extends AssetLoader {
     "failedToDisconnectAllDevices":
         "Es versäumt, die Verbindung von allen Geräten zu trennen. Bitte versuchen Sie es erneut",
     "disconnectAllDevicesSuccess": "Sie wurden von allen Geräten getrennt.",
-    "reconnectBtn": "Erneut verbinden"
+    "reconnectBtn": "Erneut verbinden",
+    "toManyRequestsErrorMsg": "Zu viele Anfragen. Bitte versuchen Sie es später erneut.",
+    "connectingInProggress":
+        "In Arbeit verbinden. Bitte warten Sie, bis die Verbindung hergestellt ist."
   };
   static const Map<String, dynamic> pt = {
     "AD": "Andorra",
@@ -2862,7 +2871,9 @@ class CodegenLoader extends AssetLoader {
         "Falha ao desconectar de todos os dispositivos. Por favor, tente novamente",
     "disconnectAllDevicesSuccess":
         "Você foi desconectado de todos os dispositivos.Reconnect à VPN para garantir sua segurança.",
-    "reconnectBtn": "Reconectar"
+    "reconnectBtn": "Reconectar",
+    "toManyRequestsErrorMsg": "Muitas solicitações. Por favor, tente novamente mais tarde.",
+    "connectingInProggress": "Conectando em andamento. Aguarde até que a conexão seja estabelecida."
   };
   static const Map<String, dynamic> en = {
     "AD": "Andorra",
@@ -3439,7 +3450,10 @@ class CodegenLoader extends AssetLoader {
     "failedToDisconnectAllDevices": "Failed to disconnect from all devices. Please try again",
     "disconnectAllDevicesSuccess":
         "You have been disconnected from all devices. Reconnect to the VPN to ensure your safety.",
-    "reconnectBtn": "Reconnect"
+    "reconnectBtn": "Reconnect",
+    "toManyRequestsErrorMsg": "Too many requests. Please try again later.",
+    "connectingInProggress":
+        "Connecting in progress.. Please wait until the connection is established."
   };
   static const Map<String, dynamic> it = {
     "AD": "Andorra",
@@ -4026,7 +4040,10 @@ class CodegenLoader extends AssetLoader {
         "Impossibile disconnettersi da tutti i dispositivi. Per favore riprova",
     "disconnectAllDevicesSuccess":
         "Sei stato disconnesso da tutti i dispositivi. RECONNECT alla VPN per garantire la tua sicurezza.",
-    "reconnectBtn": "Riconnettersi"
+    "reconnectBtn": "Riconnettersi",
+    "toManyRequestsErrorMsg": "Troppe richieste. Per favore riprova più tardi.",
+    "connectingInProggress":
+        "Connessione in corso. Attendere fino a quando non è stabilita la connessione."
   };
   static const Map<String, dynamic> fr = {
     "AD": "Andorre",
@@ -4615,7 +4632,10 @@ class CodegenLoader extends AssetLoader {
     "failedToDisconnectAllDevices": "Échec de la déconnexion de tous les appareils.",
     "disconnectAllDevicesSuccess":
         "Vous avez été déconnecté de tous les appareils. Connectez-vous au VPN pour assurer votre sécurité.",
-    "reconnectBtn": "Reconnecter"
+    "reconnectBtn": "Reconnecter",
+    "toManyRequestsErrorMsg": "Trop de demandes. Veuillez réessayer plus tard.",
+    "connectingInProggress":
+        "Connexion en cours .. Veuillez attendre que la connexion soit établie."
   };
   static const Map<String, dynamic> id = {
     "AD": "Andorra",
@@ -5195,7 +5215,9 @@ class CodegenLoader extends AssetLoader {
     "failedToDisconnectAllDevices": "Gagal memutuskan hubungan dari semua perangkat. Coba lagi",
     "disconnectAllDevicesSuccess":
         "Anda telah terputus dari semua perangkat. Connonnect ke VPN untuk memastikan keselamatan Anda.",
-    "reconnectBtn": "Terhubung kembali"
+    "reconnectBtn": "Terhubung kembali",
+    "toManyRequestsErrorMsg": "Terlalu banyak permintaan. Silakan coba lagi nanti.",
+    "connectingInProggress": "Menghubungkan dalam proses .. Harap tunggu sampai koneksi dibuat."
   };
   static const Map<String, dynamic> es = {
     "AD": "Andorra",
@@ -5786,7 +5808,9 @@ class CodegenLoader extends AssetLoader {
         "No se pudo desconectar de todos los dispositivos. Por favor, intente nuevamente",
     "disconnectAllDevicesSuccess":
         "Se ha desconectado de todos los dispositivos. Realice a la VPN para garantizar su seguridad.",
-    "reconnectBtn": "Volver a conectar"
+    "reconnectBtn": "Volver a conectar",
+    "toManyRequestsErrorMsg": "Demasiadas solicitudes. Inténtalo de nuevo más tarde.",
+    "connectingInProggress": "Conectando en progreso. Espere hasta que se establezca la conexión."
   };
   static const Map<String, dynamic> ar = {
     "AD": "أندورا",
@@ -6356,7 +6380,10 @@ class CodegenLoader extends AssetLoader {
     "disconnectAllDevicesConfirmation": "هل أنت متأكد أنك تريد فصل جميع الأجهزة؟",
     "failedToDisconnectAllDevices": "فشل في الانفصال عن جميع الأجهزة.",
     "disconnectAllDevicesSuccess": "لقد تم فصلك عن جميع الأجهزة. الاتصال بـ VPN لضمان سلامتك.",
-    "reconnectBtn": "إعادة الاتصال"
+    "reconnectBtn": "إعادة الاتصال",
+    "toManyRequestsErrorMsg":
+        "لقد تجاوزت الحد الأقصى لعدد الطلبات. يرجى المحاولة مرة أخرى في وقت لاحق.",
+    "connectingInProggress": "الاتصال قيد التقدم .. يرجى الانتظار حتى يتم إنشاء الاتصال."
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,

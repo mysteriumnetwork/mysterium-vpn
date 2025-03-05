@@ -542,5 +542,7 @@
   "disconnectAllDevicesConfirmation": "Sei sicuro di voler scollegare tutti i dispositivi?",
   "failedToDisconnectAllDevices": "Impossibile disconnettersi da tutti i dispositivi. Per favore riprova",
   "disconnectAllDevicesSuccess": "Sei stato disconnesso da tutti i dispositivi. RECONNECT alla VPN per garantire la tua sicurezza.",
-  "reconnectBtn": "Riconnettersi"
+  "reconnectBtn": "Riconnettersi",
+  "toManyRequestsErrorMsg": "Troppe richieste. Per favore riprova più tardi.",
+  "connectingInProggress": "Connessione in corso. Attendere fino a quando non è stabilita la connessione."
 }
