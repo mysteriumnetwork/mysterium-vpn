@@ -331,8 +331,14 @@ class RestSubscriptionService extends SubscriptionService {
   }
 
   @override
-  Future<bool> isEligibleForIntroOffer(String productId) =>
-      _storeKitExtensions.isEligibleForIntroOffer(productId);
+  Future<bool> isEligibleForIntroOffer(String productId) async {
+    try {
+      return await _storeKitExtensions.isEligibleForIntroOffer(productId);
+    } catch (e, s) {
+      _logger.handle(e, s);
+      return false;
+    }
+  }
 
   Future<bool> _hasIntroductoryPrice(String productId, double? introductoryPrice) async {
     var isEligible = true;
