@@ -219,7 +219,7 @@ abstract class _SubscriptionStore with Store {
         userId: user.userId,
       );
       _analyticsStore.logEvent(
-        AnalyticsEvent.paymentConfirm,
+        AnalyticsEvent.returnStore,
         parameters: {
           'planType': product.id,
           'price': product.rawPrice.toString(),
@@ -308,13 +308,6 @@ abstract class _SubscriptionStore with Store {
       );
       final subscription = await _subscriptionFuture;
       if (purchaseDetails.status == PurchaseStatus.purchased && subscription.active) {
-        _analyticsStore.logEvent(
-          AnalyticsEvent.paymentVerificationSuccess,
-          parameters: {
-            'planType': subscription.planId ?? _lastPurchase?.productID,
-            'price': product?.productDetails.rawPrice.toString(),
-          },
-        );
         if (product != null) {
           for (final product in products) {
             product.status = product.id == subscription.planId
