@@ -39,13 +39,17 @@ public class StorekitExtensionsPlugin: NSObject, FlutterPlugin {
     Task {
       do {
         if #available(macOS 12.0, iOS 15.0, *) {
-          let product = try await Product.products(for: [productId]).first
-          let eligibility = try await product?.subscription?.isEligibleForIntroOffer ?? false
+          let products = try await Product.products(for: [productId])
+          guard let product = products.first else {
+              result(FlutterError(code: "PRODUCT_NOT_FOUND", message: "Product not found", details: nil))
+              return
+          }
+          let eligibility = try await product.subscription?.isEligibleForIntroOffer ?? false
           result(eligibility)
         } else {
           result(
             FlutterError(
-              code: "UNSUPPORTED_VERSION", message: "macOS version not supported", details: nil))
+              code: "UNSUPPORTED_VERSION", message: "OS version not supported", details: nil))
         }
       } catch {
         result(
