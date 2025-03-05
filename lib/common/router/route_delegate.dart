@@ -57,5 +57,6 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
     ],
     initialPath: Routes.splash.path,
     locationBuilder: (routeInformation, _) => BeamerLocations(routeInformation),
+    setBrowserTabTitle: false,
   );
 });
