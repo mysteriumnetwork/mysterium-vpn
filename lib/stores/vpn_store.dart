@@ -490,11 +490,13 @@ abstract class _VpnStore with Store {
               : e is BrokenNodeException
                   ? e.code
                   : 1113;
-      final errorMessage = LocaleKeys.failedToConnectError.tr(
-        namedArgs: {
-          'errorCode': errorCode.toString(),
-        },
-      );
+      final errorMessage = errorCode == 4029
+          ? LocaleKeys.toManyRequestsErrorMsg.tr()
+          : LocaleKeys.failedToConnectError.tr(
+              namedArgs: {
+                'errorCode': errorCode.toString(),
+              },
+            );
       if (_isRetrying == true) {
         return;
       }

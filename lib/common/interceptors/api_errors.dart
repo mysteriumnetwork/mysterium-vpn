@@ -21,7 +21,9 @@ class ApiErrorsInterceptor extends Interceptor {
       }
 
       var message = '';
-      if (err.response?.statusCode == 503) {
+      if (errorCode == 4029 || errorCode == 429) {
+        message = LocaleKeys.toManyRequestsErrorMsg.tr();
+      } else if (errorCode == 503) {
         message = err.message ?? LocaleKeys.serviceUnavailableError.tr();
       } else if (data.containsKey('status') && data['status'] == 503) {
         message = err.message ?? LocaleKeys.serviceUnavailableError.tr();
