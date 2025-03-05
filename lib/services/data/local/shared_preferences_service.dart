@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceService {
@@ -132,5 +133,19 @@ class SharedPreferenceService {
     }
 
     return IPType.fromName(ipType);
+  }
+
+  Future<void> setPanelState(PanelState state) async => setString(
+        StorageKeys.panelState.name,
+        state.name,
+      );
+
+  PanelState? getPanelState() {
+    final panelState = getString(StorageKeys.panelState.name);
+    if (panelState == null) {
+      return null;
+    }
+
+    return PanelState.fromName(panelState);
   }
 }

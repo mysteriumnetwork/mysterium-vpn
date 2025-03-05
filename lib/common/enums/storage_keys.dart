@@ -23,4 +23,5 @@ enum StorageKeys {
   lastLoggedInUser,
   ipInfo,
   ipType,
+  panelState,
 }
