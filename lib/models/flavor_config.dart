@@ -15,6 +15,8 @@ class FlavorValues {
   FlavorValues._({
     required this.baseUrl,
     required this.mqttUrl,
+    required this.mqttUsername,
+    required this.mqttPassword,
     required this.webAppUrl,
     required this.sentryDsn,
     required this.billingPage,
@@ -33,6 +35,8 @@ class FlavorValues {
   factory FlavorValues.production() => FlavorValues._(
         baseUrl: 'https://api.mysteriumvpn.com/api/v1',
         mqttUrl: 'wss://events.mysteriumvpn.com/ws',
+        mqttUsername: '',
+        mqttPassword: '',
         webAppUrl: 'app.mysteriumvpn.com',
         sentryDsn:
             'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200',
@@ -52,6 +56,8 @@ class FlavorValues {
   factory FlavorValues.dev() => FlavorValues._(
         baseUrl: 'https://api-test.mysteriumvpn.com/api/v1',
         mqttUrl: 'wss://events-test.mysteriumvpn.com/ws',
+        mqttUsername: 'default_user_yN8VY8dtAjHiZF31bNd',
+        mqttPassword: '-LFtK5h7hS019NmA8gsxSU-V35fCRhwo',
         webAppUrl: 'app-testnet.mysteriumvpn.com',
         sentryDsn: 'https://5b2acee54898674711aeba99171db808@sentry.mysterium.network/2',
         billingPage: 'https://app-testnet.mysteriumvpn.com/dashboard/billing',
@@ -69,6 +75,8 @@ class FlavorValues {
 
   final String baseUrl;
   final String mqttUrl;
+  final String mqttUsername;
+  final String mqttPassword;
   final String webAppUrl;
   final String sentryDsn;
   final String billingPage;
