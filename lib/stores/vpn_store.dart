@@ -545,7 +545,7 @@ abstract class _VpnStore with Store {
         privateKey: key.privateKey,
         vpnConfig: _vpnConfig!.wgConfig,
       );
-      await _initMqtt();
+
       _resolveConnectionLocationFuture = ObservableFuture(
         _checkConnectionQuality(
           checkLocation: () async {
@@ -563,6 +563,7 @@ abstract class _VpnStore with Store {
       if (_vpnConnection?.location != null) {
         _locationsStore.addRecentLocation(_vpnConnection!.location);
       }
+      await _initMqtt();
     } catch (e) {
       _logger.handle(e);
       rethrow;
