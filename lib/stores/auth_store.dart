@@ -101,13 +101,6 @@ abstract class _AuthStore with Store {
   Future<void> initAuth() async {
     try {
       email = await _secureStorageService.getLastLoggedInUser();
-      _pkcePair = await _secureStorageService.getPkcePair();
-      final appLink = await _appLinks.getLatestLink();
-      final storedLink = await _secureStorageService.getAppLink();
-      if (appLink != null && appLink.toString() != storedLink) {
-        await _secureStorageService.saveAppLink(appLink: appLink.toString());
-        verifyMagicLinkAndAuthenticate(appLink);
-      }
       _appLinks.uriLinkStream.listen(
         (appLink) async {
           if (_authSessionStore.status == AuthStatus.authenticated) {
@@ -129,14 +122,18 @@ abstract class _AuthStore with Store {
     }
   }
 
-  void verifyMagicLinkAndAuthenticate(Uri appLink) {
+  Future<void> verifyMagicLinkAndAuthenticate(Uri appLink) async {
     try {
       if (appLink.query.isEmpty) {
         throw IncorrectMagicLinkException();
       }
       final code = getMagicLinkCode(appLink.query);
-      if (code == null || _pkcePair == null) {
+      if (code == null) {
         throw IncorrectCodeException();
+      }
+
+      if (_pkcePair == null || (_pkcePair = await _secureStorageService.getPkcePair()) == null) {
+        throw PkcePairNotFoundException();
       }
       authenticate(
         GrantType.email,
@@ -150,6 +147,7 @@ abstract class _AuthStore with Store {
       );
     } catch (e) {
       showSnackbar(LocaleKeys.incorrectMagicLink.tr());
+      Sentry.captureException(e);
       rethrow;
     }
   }
@@ -240,7 +238,7 @@ abstract class _AuthStore with Store {
   @action
   Future<String?> signInwithEmail({required String email}) async {
     _pkcePair = PkcePair.generate();
-    _secureStorageService.savePkcePair(
+    await _secureStorageService.savePkcePair(
       codeChallenge: _pkcePair!.codeChallenge,
       codeVerifier: _pkcePair!.codeVerifier,
     );

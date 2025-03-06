@@ -127,7 +127,6 @@ class RestAuthService extends AuthService {
     final currentUsername = _authSessionStore.user?.username;
     _authSessionStore.setUnauthenticated();
 
-    await _securedStorage.removePkcePair();
     await _securedStorage.removeWireguardPrivateKey();
     await _securedStorage.removeWireguardPublicKey();
     LocalDBService.instance.clearUser();

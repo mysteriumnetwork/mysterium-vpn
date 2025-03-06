@@ -76,7 +76,7 @@ class Enviroment {
     final flavorConfig = await setupFlavor(flavor: flavor);
     await setupTrayIcon(flavorConfig);
     await SharedPreferenceService.instance.init();
-    await SecureStorageService.instance.init(flavorConfig);
+    SecureStorageService.instance.init(flavorConfig);
     await EasyLocalization.ensureInitialized();
     await Hive.initFlutter();
     Hive
