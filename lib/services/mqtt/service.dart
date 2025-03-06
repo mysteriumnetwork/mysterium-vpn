@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:mqtt_client/mqtt_client.dart';
-import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:mqtt5_client/mqtt5_client.dart';
+import 'package:mqtt5_client/mqtt5_server_client.dart';
 import 'package:mysterium_vpn/common/exceptions/authentication_required.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/mqtt/exceptions.dart';
@@ -117,18 +117,22 @@ class MQTTService {
       return const Stream<String>.empty();
     }
 
-    if (_mqtt.connectionStatus!.state != MqttConnectionState.connected) {
-      throw MQQTConnectionRequiredException();
-    }
-
     return Stream.multi(
       (subject) async {
-        // make sure to unsubscribe when the stream is cancelled
-        subject.onCancel = () => _mqtt.unsubscribe(topic);
+        if (_mqtt.connectionStatus!.state != MqttConnectionState.connected) {
+          throw MQQTConnectionRequiredException();
+        }
 
-        _mqtt.subscribe(topic, MqttQos.atLeastOnce);
+        final sub = _mqtt.subscribe(topic, MqttQos.atLeastOnce);
+        if (sub == null) {
+          throw MQQTException();
+        }
+
+        // make sure to unsubscribe when the stream is cancelled
+        subject.onCancel = () => _mqtt.unsubscribeSubscription(sub);
+
         // filter and map the messages
-        final stream = _mqtt.updates!
+        final stream = _mqtt.updates
             // filter the messages by the topic
             .where((messages) => messages.any((message) => message.topic == topic))
             // map the messages to the payload
@@ -152,7 +156,7 @@ class MQTTService {
 
   String? _deserializePayload(MqttPublishMessage message) {
     try {
-      return MqttPublishPayload.bytesToStringAsString(message.payload.message);
+      return MqttUtilities.bytesToStringAsString(message.payload.message!);
     } catch (e, stack) {
       _logger.handle(e, stack);
       return null;
