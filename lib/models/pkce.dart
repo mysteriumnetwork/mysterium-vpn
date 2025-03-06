@@ -32,4 +32,7 @@ class PkcePair {
   /// The code challenge, computed as base64Url(sha256([codeVerifier])) with
   /// padding removed as per the spec.
   final String codeChallenge;
+
+  @override
+  String toString() => 'codeVerifier: $codeVerifier, codeChallenge: $codeChallenge';
 }

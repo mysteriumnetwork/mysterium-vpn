@@ -1,7 +1,6 @@
 // Dart imports:
 import 'dart:async' show Future;
 import 'dart:convert';
-import 'dart:io';
 
 // Package imports:
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -18,7 +17,7 @@ class SecureStorageService {
 
   static final SecureStorageService instance = SecureStorageService._internal();
 
-  Future<void> init(FlavorConfig flavor) async {
+  void init(FlavorConfig flavor) {
     _securedStorage = FlutterSecureStorage(
       aOptions: const AndroidOptions(
         encryptedSharedPreferences: true,
@@ -42,9 +41,6 @@ class SecureStorageService {
     }
     final result = await _securedStorage.read(
       key: key,
-      aOptions: const AndroidOptions(
-        encryptedSharedPreferences: true,
-      ),
     );
     if (result == null) {
       throw KeyDoesntExistsException();
@@ -59,9 +55,6 @@ class SecureStorageService {
     }
     final result = await _securedStorage.read(
       key: key,
-      aOptions: const AndroidOptions(
-        encryptedSharedPreferences: true,
-      ),
     );
     if (result == null) {
       return null;
@@ -95,9 +88,6 @@ class SecureStorageService {
 
   Future<void> write(String key, String value) async {
     try {
-      if (!Platform.isAndroid) {
-        await remove(key);
-      }
       await _securedStorage.write(key: key, value: value);
     } catch (e) {
       rethrow;
@@ -154,13 +144,13 @@ class SecureStorageService {
     required String codeChallenge,
     required String codeVerifier,
   }) async {
-    write(StorageKeys.codeChallenge.name, codeChallenge);
-    write(StorageKeys.codeVerifier.name, codeVerifier);
+    await write(StorageKeys.codeChallenge.name, codeChallenge);
+    await write(StorageKeys.codeVerifier.name, codeVerifier);
   }
 
   Future<void> removePkcePair() async {
-    remove(StorageKeys.codeChallenge.name);
-    remove(StorageKeys.codeVerifier.name);
+    await remove(StorageKeys.codeChallenge.name);
+    await remove(StorageKeys.codeVerifier.name);
   }
 
   Future<void> saveSubscriptionPaymentInfo({
