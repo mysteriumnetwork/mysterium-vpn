@@ -16,7 +16,7 @@ class MQTTService {
     AuthSessionStore authSession,
     Talker logger,
     RemoteConfigStore remoteConfigStore,
-  )   : _mqtt = MqttServerClient(url, clientID),
+  )   : _mqtt = MqttServerClient(url, clientID, maxConnectionAttempts: 2),
         _authSession = authSession,
         _logger = logger,
         _remoteConfigStore = remoteConfigStore {
@@ -29,10 +29,10 @@ class MQTTService {
 
     _mqtt
       ..port = uri.port
-      ..autoReconnect = false
+      ..autoReconnect = true
       ..resubscribeOnAutoReconnect = true
       ..useWebSocket = true
-      ..keepAlivePeriod = 60 * 5
+      ..keepAlivePeriod = 50
       ..onConnected = () {
         _logger.debug('MQTT connected');
       }
