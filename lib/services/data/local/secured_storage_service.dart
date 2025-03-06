@@ -1,6 +1,7 @@
 // Dart imports:
 import 'dart:async' show Future;
 import 'dart:convert';
+import 'dart:io';
 
 // Package imports:
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -88,6 +89,9 @@ class SecureStorageService {
 
   Future<void> write(String key, String value) async {
     try {
+      if (!Platform.isAndroid) {
+        await remove(key);
+      }
       await _securedStorage.write(key: key, value: value);
     } catch (e) {
       rethrow;
