@@ -18,7 +18,7 @@ dependencies:
   collection: 1.19.0
   configcat_client: 4.1.1
   connectivity_plus: 6.0.5
-  crypto: 3.0.5
+  crypto: 3.0.6
   cupertino_icons: 1.0.8
   dio: 5.6.0
   easy_localization: 3.0.7
@@ -54,7 +54,7 @@ dependencies:
   lottie: 3.3.1
   mobx: 2.3.3+2
   modal_bottom_sheet: 3.0.0
-  mqtt_client: ^10.5.1
+  mqtt5_client: 4.11.0
   open_mail_app:
     git:
       url: https://github.com/KristijanMitrik/open-mail-app-flutter.git

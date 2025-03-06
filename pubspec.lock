@@ -314,10 +314,10 @@ packages:
     dependency: "direct main"
     description:
       name: crypto
-      sha256: ec30d999af904f33454ba22ed9a86162b35e52b44ac4807d1d93c288041d7d27
+      sha256: "1e445881f28f22d6140f181e07737b22f1e099a5e1ff94b0af2f9e4a463f4855"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.5"
+    version: "3.0.6"
   csslib:
     dependency: transitive
     description:
@@ -1114,14 +1114,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
-  mqtt_client:
+  mqtt5_client:
     dependency: "direct main"
     description:
-      name: mqtt_client
-      sha256: "37aae360fac0b3322cb37267696c1535e1ad2984a13064d877273ffe4b16ca7a"
+      name: mqtt5_client
+      sha256: "9e15d1cd888035bcd5b204325c6678b32858ea3fc94bc1e41d5aa99d3a43f49f"
       url: "https://pub.dev"
     source: hosted
-    version: "10.5.1"
+    version: "4.11.0"
   msix:
     dependency: "direct dev"
     description:
