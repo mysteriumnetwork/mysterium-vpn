@@ -32,7 +32,7 @@ class FlavorValues {
 
   factory FlavorValues.production() => FlavorValues._(
         baseUrl: 'https://api.mysteriumvpn.com/api/v1',
-        mqttUrl: 'wss://events.mysteriumvpn.com/',
+        mqttUrl: 'wss://events.mysteriumvpn.com/ws',
         webAppUrl: 'app.mysteriumvpn.com',
         sentryDsn:
             'https://62d0b0c708d8492ca4921472bd99ebec@o136129.ingest.sentry.io/4504949838643200',
@@ -51,7 +51,7 @@ class FlavorValues {
 
   factory FlavorValues.dev() => FlavorValues._(
         baseUrl: 'https://api-test.mysteriumvpn.com/api/v1',
-        mqttUrl: 'wss://events-test.mysteriumvpn.com/',
+        mqttUrl: 'wss://events-test.mysteriumvpn.com/ws',
         webAppUrl: 'app-testnet.mysteriumvpn.com',
         sentryDsn: 'https://5b2acee54898674711aeba99171db808@sentry.mysterium.network/2',
         billingPage: 'https://app-testnet.mysteriumvpn.com/dashboard/billing',
