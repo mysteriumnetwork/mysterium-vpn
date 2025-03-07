@@ -33,7 +33,7 @@ class HomeConnectionView extends HookConsumerWidget {
             const SizedBox(height: 20),
             const MobileConnectionStatusBar(),
             const Expanded(child: HomeConnectButton()),
-            SizedBox(height: hasBanner ? 64 : 32),
+            SizedBox(height: hasBanner ? 72 : 32),
           ],
         ),
         if (hasBanner && bannerDisplayVariant == 'A')
