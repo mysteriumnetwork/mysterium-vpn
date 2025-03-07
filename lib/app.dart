@@ -19,7 +19,6 @@ import 'package:mysterium_vpn/components/network_logger_overlay.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/components/shortcuts.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/ft_checkers.dart';
-import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 
@@ -128,9 +127,6 @@ class MyApp extends HookConsumerWidget {
       }
       if (ref.exists(subscriptionStorePOD)) {
         ref.invalidate(subscriptionStorePOD);
-      }
-      if (ref.exists(vpnApiMQTTPOD)) {
-        ref.read(vpnApiMQTTPOD).stop();
       }
     }
   }
