@@ -120,12 +120,14 @@ class _HomeState extends ChangeNotifier {
       final state = _panelState.previous();
       if (state != null) {
         await scrollController.position.moveTo(0);
+        await _setPanelState(state);
       }
     }
     if (offset > 0 && direction == ScrollDirection.reverse) {
       final state = _panelState.next();
       if (state != null) {
         await scrollController.position.moveTo(0);
+        await _setPanelState(state);
       }
     }
   }
