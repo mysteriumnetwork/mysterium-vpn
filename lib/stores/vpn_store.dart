@@ -454,11 +454,13 @@ abstract class _VpnStore with Store {
       await _completeConnection(location, refreshIP);
 
       _stopwatch.stop();
-      _analyticsStore.logConnectSuccess(
-        location: _vpnConnection!.location,
-        time: _stopwatch.elapsed,
-        isRefresh: refreshIP,
-      );
+      if (_vpnConnection != null) {
+        _analyticsStore.logConnectSuccess(
+          location: _vpnConnection!.location,
+          time: _stopwatch.elapsed,
+          isRefresh: refreshIP,
+        );
+      }
     } on TimeoutException catch (e, stackTrace) {
       _logger.handle(e);
       Sentry.captureException(e, stackTrace: stackTrace);
@@ -563,7 +565,7 @@ abstract class _VpnStore with Store {
       if (_vpnConnection?.location != null) {
         _locationsStore.addRecentLocation(_vpnConnection!.location);
       }
-      await _initMqtt();
+      unawaited(_initMqtt());
     } catch (e) {
       _logger.handle(e);
       rethrow;
