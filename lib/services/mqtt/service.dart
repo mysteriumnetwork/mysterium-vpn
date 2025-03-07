@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:mqtt5_client/mqtt5_client.dart';
 import 'package:mqtt5_client/mqtt5_server_client.dart';
-import 'package:mysterium_vpn/common/exceptions/authentication_required.dart';
-import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/mqtt/exceptions.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:talker/talker.dart';
@@ -12,12 +10,14 @@ import 'package:talker/talker.dart';
 class MQTTService {
   MQTTService(
     String url,
+    String username,
+    String password,
     String clientID,
-    AuthSessionStore authSession,
     Talker logger,
     RemoteConfigStore remoteConfigStore,
   )   : _mqtt = MqttServerClient(url, clientID, maxConnectionAttempts: 2),
-        _authSession = authSession,
+        _username = username,
+        _password = password,
         _logger = logger,
         _remoteConfigStore = remoteConfigStore {
     final uri = Uri.parse(url);
@@ -54,7 +54,8 @@ class MQTTService {
   }
 
   final MqttServerClient _mqtt;
-  final AuthSessionStore _authSession;
+  final String _username;
+  final String _password;
   final Talker _logger;
   final RemoteConfigStore _remoteConfigStore;
 
@@ -64,11 +65,7 @@ class MQTTService {
     }
 
     try {
-      if (_authSession.accessToken == null) {
-        throw AuthenticationRequiredException();
-      }
-
-      await _mqtt.connect('dvpn', _authSession.accessToken);
+      await _mqtt.connect(_username, _password);
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
