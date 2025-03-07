@@ -58,6 +58,7 @@ class HomeMobileView extends HookConsumerWidget {
                 topLeft: Radius.circular(20),
                 topRight: Radius.circular(20),
               ),
+              onPanelSlide: homeState.onPanelSlide,
               body: Column(
                 children: [
                   Expanded(
