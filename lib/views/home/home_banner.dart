@@ -20,7 +20,7 @@ class HomeBanner extends HookConsumerWidget {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 24, left: 24, right: 24),
+        padding: const EdgeInsets.only(bottom: 86, left: 24, right: 24),
         child: switch (banner) {
           BannerType.subscription => const NoSubscriptionBanner(),
           BannerType.datacenter => const DataCenterBanner(),

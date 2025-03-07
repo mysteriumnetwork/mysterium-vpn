@@ -27,6 +27,7 @@ class _HomeState extends ChangeNotifier {
   double _scrollOffset = 0;
 
   PanelState get _panelState => PanelState.fromPosition(panelController.panelPosition);
+  PanelState? _previousState;
 
   bool get isDraggable => isMobile();
 
@@ -53,6 +54,7 @@ class _HomeState extends ChangeNotifier {
   Future<void> _setPanelState(PanelState state) async {
     await _animatePanelState(state);
     await _prefs.setPanelState(state);
+    _previousState = state;
     _analytics.logPanelMoved(state).ignore();
     notifyListeners();
   }
@@ -118,15 +120,20 @@ class _HomeState extends ChangeNotifier {
       final state = _panelState.previous();
       if (state != null) {
         await scrollController.position.moveTo(0);
-        await _setPanelState(state);
       }
     }
     if (offset > 0 && direction == ScrollDirection.reverse) {
       final state = _panelState.next();
       if (state != null) {
         await scrollController.position.moveTo(0);
-        await _setPanelState(state);
       }
+    }
+  }
+
+  void onPanelSlide(double value) {
+    final slide = PanelState.fromPosition(value);
+    if (slide != _previousState) {
+      notifyListeners();
     }
   }
 
