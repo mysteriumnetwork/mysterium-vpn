@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
-import 'package:mysterium_vpn/common/utils/config_cat_client_wrapper.dart';
+import 'package:mysterium_vpn/stores/remote_config/config_cat_store.dart';
 
 part 'remote_config_store.g.dart';
 
@@ -30,28 +30,8 @@ enum _FeatureToggleKey {
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
 
-abstract class RemoteConfigStoreBase with Store {
-  RemoteConfigStoreBase(this._configCat) {
-    _init();
-  }
-
-  final ConfigCatService _configCat;
-
-  @observable
-  late ObservableFuture<Map<String, dynamic>> configFuture = ObservableFuture(
-    _configCat.fetchRemoteConfig(),
-  );
-
-  @computed
-  Map<String, dynamic> get config => configFuture.value ?? {};
-
-  @action
-  Future<void> _init() async {
-    await configFuture;
-    _configCat.watchRemoteConfig(
-      () => configFuture = ObservableFuture(_configCat.fetchRemoteConfig()),
-    );
-  }
+abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
+  RemoteConfigStoreBase(super.service, super.logger);
 
   @computed
   bool get isServiceAvailable {

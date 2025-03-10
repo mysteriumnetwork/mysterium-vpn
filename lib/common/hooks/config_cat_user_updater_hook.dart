@@ -1,11 +1,24 @@
+import 'dart:async';
+
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 void useConfigCatUserUpdater() {
   final vpnStore = useProvider(vpnStorePOD);
   final authSessionStore = useProvider(authSessionStorePOD);
-  final configCatService = useProvider(configCatServicePOD);
+  final remoteConfigStore = useProvider(remoteConfigStorePOD);
+  final abTestingStore = useProvider(abTestingStorePOD);
+  final textsStore = useProvider(textsStorePOD);
+
+  final handleNotify = useCallback(
+    () => Future.wait([
+      remoteConfigStore.notifyUserChanged(),
+      abTestingStore.notifyUserChanged(),
+      textsStore.notifyUserChanged(),
+    ]),
+    [remoteConfigStore, abTestingStore, textsStore],
+  );
 
   useReaction(
     () => vpnStore.originIP,
@@ -14,24 +27,17 @@ void useConfigCatUserUpdater() {
         return;
       }
 
-      configCatService.setOriginIP(originIP);
+      unawaited(handleNotify());
     },
-    keys: [vpnStore, configCatService],
-    fireImmediately: true,
+    keys: [vpnStore, handleNotify],
   );
 
   useReaction(
     () => authSessionStore.userFuture,
     (userFuture) async {
-      final user = await userFuture;
-
-      if (user == null) {
-        configCatService.clearUser();
-      } else {
-        configCatService.setUserInfo(identifier: user.userId, email: user.username);
-      }
+      await userFuture;
+      unawaited(handleNotify());
     },
-    keys: [authSessionStore, configCatService],
-    fireImmediately: true,
+    keys: [authSessionStore, handleNotify],
   );
 }
