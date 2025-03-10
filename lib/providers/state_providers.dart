@@ -187,20 +187,22 @@ final userPreferencesStorePOD = StateProvider<UserPreferencesStore>((ref) {
 });
 
 final remoteConfigStorePOD = Provider<RemoteConfigStore>((ref) {
-  final configCatService = ref.watch(configCatServicePOD);
-  return RemoteConfigStore(configCatService);
+  final client = ref.watch(remoteConfigClientPOD);
+  final logger = ref.watch(loggerPOD);
+  return RemoteConfigStore(client, logger);
 });
 
 final abTestingStorePOD = Provider<ABTestingStore>((ref) {
-  final configCatService = ref.watch(configCatServicePOD);
+  final client = ref.watch(abTestingClientPOD);
+  final logger = ref.watch(loggerPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
-  return ABTestingStore(configCatService, analyticsStore);
+  return ABTestingStore(client, logger, analyticsStore);
 });
 
 final textsStorePOD = Provider<TextsStore>((ref) {
+  final client = ref.watch(textsClientPOD);
   final logger = ref.watch(loggerPOD);
-  final configCatService = ref.watch(configCatServicePOD);
-  return TextsStore(configCatService, logger);
+  return TextsStore(client, logger);
 });
 
 final bannersStorePOD = Provider<BannersStore>(
