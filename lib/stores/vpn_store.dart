@@ -147,6 +147,9 @@ abstract class _VpnStore with Store {
   @readonly
   ObservableFuture<void>? _disconnectAllDevicesFuture;
 
+  @readonly
+  ObservableFuture<void>? _resetAppFuture;
+
   int _retryCount = 0;
   bool _isRetrying = false;
 
@@ -677,6 +680,22 @@ abstract class _VpnStore with Store {
       );
       await disconnectWireguard();
       await _disconnectAllDevicesFuture;
+    } catch (e) {
+      _logger.handle(e);
+      rethrow;
+    }
+  }
+
+  @action
+  Future<void> resetApp() async {
+    try {
+      _resetAppFuture = ObservableFuture(
+        _wireguardService.removeTunnelConfiguration(
+          bundleId: _env.getBundleId(),
+          tunnelName: _env.values.tunnelName,
+        ),
+      );
+      await _resetAppFuture;
     } catch (e) {
       _logger.handle(e);
       rethrow;

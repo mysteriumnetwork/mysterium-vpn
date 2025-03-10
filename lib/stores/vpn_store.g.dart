@@ -218,6 +218,23 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_resetAppFutureAtom = Atom(name: '_VpnStore._resetAppFuture', context: context);
+
+  ObservableFuture<void>? get resetAppFuture {
+    _$_resetAppFutureAtom.reportRead();
+    return super._resetAppFuture;
+  }
+
+  @override
+  ObservableFuture<void>? get _resetAppFuture => resetAppFuture;
+
+  @override
+  set _resetAppFuture(ObservableFuture<void>? value) {
+    _$_resetAppFutureAtom.reportWrite(value, super._resetAppFuture, () {
+      super._resetAppFuture = value;
+    });
+  }
+
   late final _$originIPAtom = Atom(name: '_VpnStore.originIP', context: context);
 
   @override
@@ -349,6 +366,13 @@ mixin _$VpnStore on _VpnStore, Store {
   @override
   Future<void> disconnectAllDevices() {
     return _$disconnectAllDevicesAsyncAction.run(() => super.disconnectAllDevices());
+  }
+
+  late final _$resetAppAsyncAction = AsyncAction('_VpnStore.resetApp', context: context);
+
+  @override
+  Future<void> resetApp() {
+    return _$resetAppAsyncAction.run(() => super.resetApp());
   }
 
   @override
