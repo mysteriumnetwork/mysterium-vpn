@@ -542,5 +542,12 @@
   "disconnectAllDevicesSuccess": "لقد تم فصلك عن جميع الأجهزة. الاتصال بـ VPN لضمان سلامتك.",
   "reconnectBtn": "إعادة الاتصال",
   "toManyRequestsErrorMsg": "لقد تجاوزت الحد الأقصى لعدد الطلبات. يرجى المحاولة مرة أخرى في وقت لاحق.",
-  "connectingInProggress": "الاتصال قيد التقدم .. يرجى الانتظار حتى يتم إنشاء الاتصال."
+  "connectingInProggress": "الاتصال قيد التقدم .. يرجى الانتظار حتى يتم إنشاء الاتصال.",
+  "resetAppTitle": "إعادة تعيين التطبيق",
+  "resetAppDesc": "شيء لا يعمل كما هو متوقع؟ انقر لإعادة ضبط التطبيق.",
+  "resetAppDialogTitle": "اتصال VPN نشط حاليًا",
+  "resetAppDialogContent": "إذا تابعت إعادة تعيين التطبيق ، فسيتم فصلك عن Mysterium VPN.",
+  "resetBtn": "إعادة ضبط",
+  "resetAppSuccess": "تم إعادة تعيين التطبيق بنجاح.",
+  "resetAppFailed": "فشل في إعادة ضبط التطبيق. "
 }

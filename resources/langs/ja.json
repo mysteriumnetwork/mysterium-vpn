@@ -544,5 +544,12 @@
   "disconnectAllDevicesSuccess": "すべてのデバイスから切断されています。安全性を確保するために、VPNに再接続しています。",
   "reconnectBtn": "再接続します",
   "toManyRequestsErrorMsg": "リクエストが多すぎます。後でもう一度試してください。",
-  "connectingInProggress": "進行中の接続..接続が確立されるまで待ってください。"
+  "connectingInProggress": "進行中の接続..接続が確立されるまで待ってください。",
+  "resetAppTitle": "アプリをリセットします",
+  "resetAppDesc": "何かが期待どおりに機能していませんか？クリックしてアプリをリセットします。",
+  "resetAppDialogTitle": "現在、VPN接続がアクティブです",
+  "resetAppDialogContent": "アプリのリセットを続行すると、Mysterium VPNから切断されます。",
+  "resetBtn": "リセット",
+  "resetAppSuccess": "アプリは正常にリセットされました。",
+  "resetAppFailed": "アプリのリセットに失敗しました。再試行してください。"
 }
