@@ -149,6 +149,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   String? get sentryDsn => (_$sentryDsnComputed ??=
           Computed<String?>(() => super.sentryDsn, name: 'RemoteConfigStoreBase.sentryDsn'))
       .value;
+  Computed<bool>? _$hideResetAppSettingComputed;
+
+  @override
+  bool get hideResetAppSetting =>
+      (_$hideResetAppSettingComputed ??= Computed<bool>(() => super.hideResetAppSetting,
+              name: 'RemoteConfigStoreBase.hideResetAppSetting'))
+          .value;
 
   late final _$configFutureAtom =
       Atom(name: 'RemoteConfigStoreBase.configFuture', context: context);
@@ -201,7 +208,8 @@ pricingMonthly: ${pricingMonthly},
 mqttExperiment: ${mqttExperiment},
 locationsRefreshInterval: ${locationsRefreshInterval},
 showSalesView: ${showSalesView},
-sentryDsn: ${sentryDsn}
+sentryDsn: ${sentryDsn},
+hideResetAppSetting: ${hideResetAppSetting}
     ''';
   }
 }
