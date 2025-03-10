@@ -544,5 +544,12 @@
   "disconnectAllDevicesSuccess": "Sie wurden von allen Geräten getrennt.",
   "reconnectBtn": "Erneut verbinden",
   "toManyRequestsErrorMsg": "Zu viele Anfragen. Bitte versuchen Sie es später erneut.",
-  "connectingInProggress": "In Arbeit verbinden. Bitte warten Sie, bis die Verbindung hergestellt ist."
+  "connectingInProggress": "In Arbeit verbinden. Bitte warten Sie, bis die Verbindung hergestellt ist.",
+  "resetAppTitle": "App zurücksetzen",
+  "resetAppDesc": "Etwas funktioniert nicht wie erwartet? Klicken Sie, um die App zurückzusetzen.",
+  "resetAppDialogTitle": "Die VPN -Verbindung ist derzeit aktiv",
+  "resetAppDialogContent": "Wenn Sie mit dem Zurücksetzen der App fortfahren, werden Sie vom Mysterium VPN getrennt.",
+  "resetBtn": "Zurücksetzen",
+  "resetAppSuccess": "App wurde erfolgreich zurückgesetzt.",
+  "resetAppFailed": "Die App nicht zurücksetzen. Bitte versuchen Sie es erneut."
 }

@@ -547,4 +547,11 @@ abstract class LocaleKeys {
   static const reconnectBtn = 'reconnectBtn';
   static const toManyRequestsErrorMsg = 'toManyRequestsErrorMsg';
   static const connectingInProggress = 'connectingInProggress';
+  static const resetAppTitle = 'resetAppTitle';
+  static const resetAppDesc = 'resetAppDesc';
+  static const resetAppDialogTitle = 'resetAppDialogTitle';
+  static const resetAppDialogContent = 'resetAppDialogContent';
+  static const resetBtn = 'resetBtn';
+  static const resetAppSuccess = 'resetAppSuccess';
+  static const resetAppFailed = 'resetAppFailed';
 }

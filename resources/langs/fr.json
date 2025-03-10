@@ -544,5 +544,12 @@
   "disconnectAllDevicesSuccess": "Vous avez été déconnecté de tous les appareils. Connectez-vous au VPN pour assurer votre sécurité.",
   "reconnectBtn": "Reconnecter",
   "toManyRequestsErrorMsg": "Trop de demandes. Veuillez réessayer plus tard.",
-  "connectingInProggress": "Connexion en cours .. Veuillez attendre que la connexion soit établie."
+  "connectingInProggress": "Connexion en cours .. Veuillez attendre que la connexion soit établie.",
+  "resetAppTitle": "Réinitialiser l'application",
+  "resetAppDesc": "Quelque chose ne fonctionne pas comme prévu? Cliquez pour réinitialiser l'application.",
+  "resetAppDialogTitle": "La connexion VPN est actuellement active",
+  "resetAppDialogContent": "Si vous continuez à réinitialiser l'application, vous serez déconnecté du Mysterium VPN.",
+  "resetBtn": "Réinitialiser",
+  "resetAppSuccess": "L'application a été réinitialisée avec succès.",
+  "resetAppFailed": "Échec de la réinitialisation de l'application.Veuillez réessayer."
 }

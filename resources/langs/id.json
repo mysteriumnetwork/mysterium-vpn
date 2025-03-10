@@ -544,5 +544,12 @@
   "disconnectAllDevicesSuccess": "Anda telah terputus dari semua perangkat. Connonnect ke VPN untuk memastikan keselamatan Anda.",
   "reconnectBtn": "Terhubung kembali",
   "toManyRequestsErrorMsg": "Terlalu banyak permintaan. Silakan coba lagi nanti.",
-  "connectingInProggress": "Menghubungkan dalam proses .. Harap tunggu sampai koneksi dibuat."
+  "connectingInProggress": "Menghubungkan dalam proses .. Harap tunggu sampai koneksi dibuat.",
+  "resetAppTitle": "Reset aplikasi",
+  "resetAppDesc": "Sesuatu tidak berfungsi seperti yang diharapkan? Klik untuk mengatur ulang aplikasi.",
+  "resetAppDialogTitle": "Koneksi VPN saat ini aktif",
+  "resetAppDialogContent": "Jika Anda melanjutkan dengan mengatur ulang aplikasi, Anda akan terputus dari Mysterium VPN.",
+  "resetBtn": "Mengatur ulang",
+  "resetAppSuccess": "Aplikasi telah berhasil diatur ulang.",
+  "resetAppFailed": "Gagal mengatur ulang app. Tolong coba lagi."
 }
