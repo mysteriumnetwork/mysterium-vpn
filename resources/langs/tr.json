@@ -544,5 +544,12 @@
   "disconnectAllDevicesSuccess": "Güvenliğinizi sağlamak için tüm cihazlardan ayrıldınız.",
   "reconnectBtn": "Yeniden bağlanmak",
   "toManyRequestsErrorMsg": "Çok fazla istek gönderildi. Lütfen daha sonra tekrar deneyin.",
-  "connectingInProggress": "Devam Edecek Bağlantı .. Lütfen bağlantı kurulana kadar bekleyin."
+  "connectingInProggress": "Devam Edecek Bağlantı .. Lütfen bağlantı kurulana kadar bekleyin.",
+  "resetAppTitle": "Uygulamayı sıfırla",
+  "resetAppDesc": "Bir şey beklendiği gibi çalışmıyor mu? Uygulamayı sıfırlamak için tıklayın.",
+  "resetAppDialogTitle": "VPN bağlantısı şu anda aktif",
+  "resetAppDialogContent": "Uygulamayı sıfırlamaya devam ederseniz, Mysterium VPN'den koparsınız.",
+  "resetBtn": "Sıfırlamak",
+  "resetAppSuccess": "Uygulama başarıyla sıfırlandı.",
+  "resetAppFailed": "Uygulamayı sıfırlayamadı. Lütfen tekrar deneyin."
 }

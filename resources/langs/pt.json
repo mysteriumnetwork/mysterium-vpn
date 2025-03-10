@@ -544,5 +544,12 @@
   "disconnectAllDevicesSuccess": "Você foi desconectado de todos os dispositivos.Reconnect à VPN para garantir sua segurança.",
   "reconnectBtn": "Reconectar",
   "toManyRequestsErrorMsg": "Muitas solicitações. Por favor, tente novamente mais tarde.",
-  "connectingInProggress": "Conectando em andamento. Aguarde até que a conexão seja estabelecida."
+  "connectingInProggress": "Conectando em andamento. Aguarde até que a conexão seja estabelecida.",
+  "resetAppTitle": "Redefinir aplicativo",
+  "resetAppDesc": "Algo não está funcionando como esperado? Clique para redefinir o aplicativo.",
+  "resetAppDialogTitle": "A conexão VPN está atualmente ativa",
+  "resetAppDialogContent": "Se você prosseguir com a redefinição do aplicativo, você será desconectado da VPN do Mysterium.",
+  "resetBtn": "Reiniciar",
+  "resetAppSuccess": "O aplicativo foi redefinido com sucesso.",
+  "resetAppFailed": "Falha ao redefinir o app. Experimente tentar novamente."
 }
