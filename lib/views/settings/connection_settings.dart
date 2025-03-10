@@ -52,6 +52,8 @@ class ConnectionSettings extends HookConsumerWidget {
                   color: Palette.lightBlue,
                 ),
                 actionWidget: EasyButton(
+                  color: Palette.purple,
+                  useSystemColor: false,
                   onPressed: vpnStore.resetAppFuture?.status == FutureStatus.pending
                       ? null
                       : () => _onConfirmResetApp(
@@ -66,7 +68,10 @@ class ConnectionSettings extends HookConsumerWidget {
                             radius: 25,
                           ),
                         )
-                      : EasyText(LocaleKeys.resetAppTitle.tr()),
+                      : EasyText(
+                          LocaleKeys.resetAppTitle.tr(),
+                          color: Palette.white,
+                        ),
                 ),
               ),
             ),
