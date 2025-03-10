@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:configcat_client/configcat_client.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -39,10 +40,8 @@ abstract class ConfigCatStore with Store {
   Future<Map<String, dynamic>> _fetch() async {
     try {
       final user = await _fetchUser();
-      if (!user.equals(_user)) {
-        _client.setDefaultUser(user);
-        _user = user;
-      }
+      _client.setDefaultUser(user);
+      _user = user;
       return await _client.getAllValues();
     } catch (e, stack) {
       _logger.handle(e, stack);
@@ -50,32 +49,52 @@ abstract class ConfigCatStore with Store {
     }
   }
 
-  Future<ConfigCatUser?> _fetchUser() async {
+  Future<ConfigCatUser> _fetchUser() async {
+    final platform = Platform.operatingSystem;
+    (String id, String email) user;
     try {
-      final [identifier, email] = await Future.wait([
+      var [identifier, email] = await Future.wait([
         SecureStorageService.instance.getUserId(),
         SecureStorageService.instance.getUsername(),
       ]);
-
-      if (identifier == null) {
-        return null;
+      if (identifier == null || identifier.isEmpty) {
+        identifier = 'anonymous';
       }
-
-      final ipInfo = SharedPreferenceService.instance.getIPInfo();
-      return ConfigCatUser(
-        identifier: identifier,
-        email: email,
-        country: ipInfo?.country,
-        custom: {
-          'platform': Platform.operatingSystem,
-          'version': await PackageInfo.fromPlatform().then((value) => value.version),
-          if (ipInfo?.city != null) 'city': ipInfo!.city,
-        },
-      );
+      if (email == null || email.isEmpty) {
+        email = 'anonymous';
+      }
+      user = (identifier, email);
     } catch (e, stack) {
       _logger.handle(e, stack);
-      return null;
+      user = ('anonymous', 'anonymous');
     }
+
+    IPInfo? ipInfo;
+    try {
+      ipInfo = SharedPreferenceService.instance.getIPInfo();
+    } catch (e, stack) {
+      _logger.handle(e, stack);
+      ipInfo = null;
+    }
+
+    String? version;
+    try {
+      version = await PackageInfo.fromPlatform().then((value) => value.version);
+    } catch (e, stack) {
+      _logger.handle(e, stack);
+      version = null;
+    }
+
+    return ConfigCatUser(
+      identifier: user.$1,
+      email: user.$2,
+      country: ipInfo?.country,
+      custom: {
+        'platform': platform,
+        if (version != null) 'version': version,
+        if (ipInfo?.city != null) 'city': ipInfo!.city,
+      },
+    );
   }
 
   @action
@@ -84,39 +103,24 @@ abstract class ConfigCatStore with Store {
     if (!user.equals(_user)) {
       _client.setDefaultUser(user);
       _user = user;
-      configFuture = ObservableFuture(_fetch());
-      await configFuture;
+
+      // TODO(dmacan): re-fetch config on user info change if needed. right now we're not doing that in order to reduce number of requests towards ConfigCat service
+      // configFuture = ObservableFuture(_fetch());
+      // await configFuture;
     }
   }
 }
 
 extension _ConfigCatUserExtension on ConfigCatUser {
+  static const nativeKeys = ['Identifier', 'Email', 'Country'];
+  static const customKeys = ['platform', 'version', 'city'];
+
   Map<String, dynamic> toMap() {
-    const keys = [
-      // native
-      'Identifier',
-      'Email',
-      'Country',
-      // custom
-      'platform',
-      'version',
-      'city',
-    ];
+    const keys = [...nativeKeys, ...customKeys];
 
     return {for (final key in keys) key: getAttribute(key)};
   }
 
-  bool equals(ConfigCatUser user) => const MapEquality().equals(toMap(), user.toMap());
-}
-
-extension _NullishConfigCatUserExtension on ConfigCatUser? {
-  bool equals(ConfigCatUser? other) {
-    if (this == null && other == null) {
-      return true;
-    }
-    if (this == null || other == null) {
-      return false;
-    }
-    return this!.equals(other);
-  }
+  bool equals(ConfigCatUser? user) =>
+      user != null && const MapEquality().equals(toMap(), user.toMap());
 }
