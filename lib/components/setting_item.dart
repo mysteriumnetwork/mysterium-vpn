@@ -10,6 +10,7 @@ class SettingItem extends StatelessWidget {
     required this.actionWidget,
     required this.title,
     this.description,
+    this.subtitle,
     super.key,
   });
 
@@ -17,6 +18,7 @@ class SettingItem extends StatelessWidget {
   final String title;
   final Widget actionWidget;
   final Widget? description;
+  final Widget? subtitle;
   @override
   Widget build(BuildContext context) => Container(
         width: double.infinity,
@@ -39,7 +41,9 @@ class SettingItem extends StatelessWidget {
                 description ??
                     EasyText(
                       title,
-                    ).padding(bottom: 8),
+                    ),
+                if (subtitle != null) subtitle!.padding(top: 4),
+                const SizedBox(height: 8),
                 actionWidget,
               ],
             ).expanded(),

@@ -26,6 +26,7 @@ enum _FeatureToggleKey {
   locationsRefreshInterval,
   showSalesView,
   sentryDsn,
+  hideResetAppSetting,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -214,6 +215,14 @@ abstract class RemoteConfigStoreBase with Store {
       return config[_FeatureToggleKey.sentryDsn.name] as String;
     }
     return null;
+  }
+
+  @computed
+  bool get hideResetAppSetting {
+    if (config.containsKey(_FeatureToggleKey.hideResetAppSetting.name)) {
+      return config[_FeatureToggleKey.hideResetAppSetting.name] as bool;
+    }
+    return false;
   }
 
   Map<String, String> get asUserProperties =>

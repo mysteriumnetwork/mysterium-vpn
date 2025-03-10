@@ -544,5 +544,12 @@
   "disconnectAllDevicesSuccess": "您已经与所有设备断开了连接。连接到VPN，以确保您的安全性。",
   "reconnectBtn": "重新连接",
   "toManyRequestsErrorMsg": "您的请求太多。请稍后再试。",
-  "connectingInProggress": "连接正在进行中。请等到建立连接。"
+  "connectingInProggress": "连接正在进行中。请等到建立连接。",
+  "resetAppTitle": "重置应用程序",
+  "resetAppDesc": "某些事情无法正常工作？单击重置该应用程序。",
+  "resetAppDialogTitle": "VPN连接当前处于活动状态",
+  "resetAppDialogContent": "如果您继续重置该应用程序，则将与Mysterium VPN断开连接。",
+  "resetBtn": "重置",
+  "resetAppSuccess": "应用程序已成功重置。",
+  "resetAppFailed": "无法重置该应用程序。请重试。"
 }

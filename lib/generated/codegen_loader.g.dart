@@ -561,7 +561,14 @@ class CodegenLoader extends AssetLoader {
     "disconnectAllDevicesSuccess": "您已经与所有设备断开了连接。连接到VPN，以确保您的安全性。",
     "reconnectBtn": "重新连接",
     "toManyRequestsErrorMsg": "您的请求太多。请稍后再试。",
-    "connectingInProggress": "连接正在进行中。请等到建立连接。"
+    "connectingInProggress": "连接正在进行中。请等到建立连接。",
+    "resetAppTitle": "重置应用程序",
+    "resetAppDesc": "某些事情无法正常工作？单击重置该应用程序。",
+    "resetAppDialogTitle": "VPN连接当前处于活动状态",
+    "resetAppDialogContent": "如果您继续重置该应用程序，则将与Mysterium VPN断开连接。",
+    "resetBtn": "重置",
+    "resetAppSuccess": "应用程序已成功重置。",
+    "resetAppFailed": "无法重置该应用程序。请重试。"
   };
   static const Map<String, dynamic> tr = {
     "AD": "Andorra",
@@ -1137,7 +1144,15 @@ class CodegenLoader extends AssetLoader {
     "disconnectAllDevicesSuccess": "Güvenliğinizi sağlamak için tüm cihazlardan ayrıldınız.",
     "reconnectBtn": "Yeniden bağlanmak",
     "toManyRequestsErrorMsg": "Çok fazla istek gönderildi. Lütfen daha sonra tekrar deneyin.",
-    "connectingInProggress": "Devam Edecek Bağlantı .. Lütfen bağlantı kurulana kadar bekleyin."
+    "connectingInProggress": "Devam Edecek Bağlantı .. Lütfen bağlantı kurulana kadar bekleyin.",
+    "resetAppTitle": "Uygulamayı sıfırla",
+    "resetAppDesc": "Bir şey beklendiği gibi çalışmıyor mu? Uygulamayı sıfırlamak için tıklayın.",
+    "resetAppDialogTitle": "VPN bağlantısı şu anda aktif",
+    "resetAppDialogContent":
+        "Uygulamayı sıfırlamaya devam ederseniz, Mysterium VPN'den koparsınız.",
+    "resetBtn": "Sıfırlamak",
+    "resetAppSuccess": "Uygulama başarıyla sıfırlandı.",
+    "resetAppFailed": "Uygulamayı sıfırlayamadı. Lütfen tekrar deneyin."
   };
   static const Map<String, dynamic> ja = {
     "AD": "アンドラ",
@@ -1690,7 +1705,14 @@ class CodegenLoader extends AssetLoader {
     "disconnectAllDevicesSuccess": "すべてのデバイスから切断されています。安全性を確保するために、VPNに再接続しています。",
     "reconnectBtn": "再接続します",
     "toManyRequestsErrorMsg": "リクエストが多すぎます。後でもう一度試してください。",
-    "connectingInProggress": "進行中の接続..接続が確立されるまで待ってください。"
+    "connectingInProggress": "進行中の接続..接続が確立されるまで待ってください。",
+    "resetAppTitle": "アプリをリセットします",
+    "resetAppDesc": "何かが期待どおりに機能していませんか？クリックしてアプリをリセットします。",
+    "resetAppDialogTitle": "現在、VPN接続がアクティブです",
+    "resetAppDialogContent": "アプリのリセットを続行すると、Mysterium VPNから切断されます。",
+    "resetBtn": "リセット",
+    "resetAppSuccess": "アプリは正常にリセットされました。",
+    "resetAppFailed": "アプリのリセットに失敗しました。再試行してください。"
   };
   static const Map<String, dynamic> de = {
     "AD": "Andorra",
@@ -2287,7 +2309,16 @@ class CodegenLoader extends AssetLoader {
     "reconnectBtn": "Erneut verbinden",
     "toManyRequestsErrorMsg": "Zu viele Anfragen. Bitte versuchen Sie es später erneut.",
     "connectingInProggress":
-        "In Arbeit verbinden. Bitte warten Sie, bis die Verbindung hergestellt ist."
+        "In Arbeit verbinden. Bitte warten Sie, bis die Verbindung hergestellt ist.",
+    "resetAppTitle": "App zurücksetzen",
+    "resetAppDesc":
+        "Etwas funktioniert nicht wie erwartet? Klicken Sie, um die App zurückzusetzen.",
+    "resetAppDialogTitle": "Die VPN -Verbindung ist derzeit aktiv",
+    "resetAppDialogContent":
+        "Wenn Sie mit dem Zurücksetzen der App fortfahren, werden Sie vom Mysterium VPN getrennt.",
+    "resetBtn": "Zurücksetzen",
+    "resetAppSuccess": "App wurde erfolgreich zurückgesetzt.",
+    "resetAppFailed": "Die App nicht zurücksetzen. Bitte versuchen Sie es erneut."
   };
   static const Map<String, dynamic> pt = {
     "AD": "Andorra",
@@ -2873,7 +2904,16 @@ class CodegenLoader extends AssetLoader {
         "Você foi desconectado de todos os dispositivos.Reconnect à VPN para garantir sua segurança.",
     "reconnectBtn": "Reconectar",
     "toManyRequestsErrorMsg": "Muitas solicitações. Por favor, tente novamente mais tarde.",
-    "connectingInProggress": "Conectando em andamento. Aguarde até que a conexão seja estabelecida."
+    "connectingInProggress":
+        "Conectando em andamento. Aguarde até que a conexão seja estabelecida.",
+    "resetAppTitle": "Redefinir aplicativo",
+    "resetAppDesc": "Algo não está funcionando como esperado? Clique para redefinir o aplicativo.",
+    "resetAppDialogTitle": "A conexão VPN está atualmente ativa",
+    "resetAppDialogContent":
+        "Se você prosseguir com a redefinição do aplicativo, você será desconectado da VPN do Mysterium.",
+    "resetBtn": "Reiniciar",
+    "resetAppSuccess": "O aplicativo foi redefinido com sucesso.",
+    "resetAppFailed": "Falha ao redefinir o app. Experimente tentar novamente."
   };
   static const Map<String, dynamic> en = {
     "AD": "Andorra",
@@ -3453,7 +3493,15 @@ class CodegenLoader extends AssetLoader {
     "reconnectBtn": "Reconnect",
     "toManyRequestsErrorMsg": "Too many requests. Please try again later.",
     "connectingInProggress":
-        "Connecting in progress.. Please wait until the connection is established."
+        "Connecting in progress.. Please wait until the connection is established.",
+    "resetAppTitle": "Reset app",
+    "resetAppDesc": "Something isn't working as expected? Click to reset the app.",
+    "resetAppDialogTitle": "VPN connection is currently active",
+    "resetAppDialogContent":
+        "If you proceed with resetting the app, you will be disconnected from the Mysterium VPN.",
+    "resetBtn": "Reset",
+    "resetAppSuccess": "App has been reset successfully.",
+    "resetAppFailed": "Failed to reset the app. Please try again."
   };
   static const Map<String, dynamic> it = {
     "AD": "Andorra",
@@ -4043,7 +4091,15 @@ class CodegenLoader extends AssetLoader {
     "reconnectBtn": "Riconnettersi",
     "toManyRequestsErrorMsg": "Troppe richieste. Per favore riprova più tardi.",
     "connectingInProggress":
-        "Connessione in corso. Attendere fino a quando non è stabilita la connessione."
+        "Connessione in corso. Attendere fino a quando non è stabilita la connessione.",
+    "resetAppTitle": "Ripristina l'app",
+    "resetAppDesc": "Qualcosa non funziona come previsto? Fai clic per ripristinare l'app.",
+    "resetAppDialogTitle": "La connessione VPN è attualmente attiva",
+    "resetAppDialogContent":
+        "Se procedi con il ripristino dell'app, verrai disconnesso dalla VPN Mysterium.",
+    "resetBtn": "Reset",
+    "resetAppSuccess": "L'app è stata ripristinata correttamente.",
+    "resetAppFailed": "Impossibile ripristinare l'app. Riprova."
   };
   static const Map<String, dynamic> fr = {
     "AD": "Andorre",
@@ -4635,7 +4691,16 @@ class CodegenLoader extends AssetLoader {
     "reconnectBtn": "Reconnecter",
     "toManyRequestsErrorMsg": "Trop de demandes. Veuillez réessayer plus tard.",
     "connectingInProggress":
-        "Connexion en cours .. Veuillez attendre que la connexion soit établie."
+        "Connexion en cours .. Veuillez attendre que la connexion soit établie.",
+    "resetAppTitle": "Réinitialiser l'application",
+    "resetAppDesc":
+        "Quelque chose ne fonctionne pas comme prévu? Cliquez pour réinitialiser l'application.",
+    "resetAppDialogTitle": "La connexion VPN est actuellement active",
+    "resetAppDialogContent":
+        "Si vous continuez à réinitialiser l'application, vous serez déconnecté du Mysterium VPN.",
+    "resetBtn": "Réinitialiser",
+    "resetAppSuccess": "L'application a été réinitialisée avec succès.",
+    "resetAppFailed": "Échec de la réinitialisation de l'application.Veuillez réessayer."
   };
   static const Map<String, dynamic> id = {
     "AD": "Andorra",
@@ -5217,7 +5282,16 @@ class CodegenLoader extends AssetLoader {
         "Anda telah terputus dari semua perangkat. Connonnect ke VPN untuk memastikan keselamatan Anda.",
     "reconnectBtn": "Terhubung kembali",
     "toManyRequestsErrorMsg": "Terlalu banyak permintaan. Silakan coba lagi nanti.",
-    "connectingInProggress": "Menghubungkan dalam proses .. Harap tunggu sampai koneksi dibuat."
+    "connectingInProggress": "Menghubungkan dalam proses .. Harap tunggu sampai koneksi dibuat.",
+    "resetAppTitle": "Reset aplikasi",
+    "resetAppDesc":
+        "Sesuatu tidak berfungsi seperti yang diharapkan? Klik untuk mengatur ulang aplikasi.",
+    "resetAppDialogTitle": "Koneksi VPN saat ini aktif",
+    "resetAppDialogContent":
+        "Jika Anda melanjutkan dengan mengatur ulang aplikasi, Anda akan terputus dari Mysterium VPN.",
+    "resetBtn": "Mengatur ulang",
+    "resetAppSuccess": "Aplikasi telah berhasil diatur ulang.",
+    "resetAppFailed": "Gagal mengatur ulang app. Tolong coba lagi."
   };
   static const Map<String, dynamic> es = {
     "AD": "Andorra",
@@ -5810,7 +5884,15 @@ class CodegenLoader extends AssetLoader {
         "Se ha desconectado de todos los dispositivos. Realice a la VPN para garantizar su seguridad.",
     "reconnectBtn": "Volver a conectar",
     "toManyRequestsErrorMsg": "Demasiadas solicitudes. Inténtalo de nuevo más tarde.",
-    "connectingInProggress": "Conectando en progreso. Espere hasta que se establezca la conexión."
+    "connectingInProggress": "Conectando en progreso. Espere hasta que se establezca la conexión.",
+    "resetAppTitle": "Restablecer la aplicación",
+    "resetAppDesc": "Algo no funciona como se esperaba? Haga clic para restablecer la aplicación.",
+    "resetAppDialogTitle": "La conexión VPN está actualmente activa",
+    "resetAppDialogContent":
+        "Si continúa con restablecimiento de la aplicación, se desconectará de la VPN Mysterium.",
+    "resetBtn": "Reiniciar",
+    "resetAppSuccess": "La aplicación se ha restablecido con éxito.",
+    "resetAppFailed": "No se pudo reiniciar la aplicación. Por favor, intente nuevamente."
   };
   static const Map<String, dynamic> ar = {
     "AD": "أندورا",
@@ -6383,7 +6465,14 @@ class CodegenLoader extends AssetLoader {
     "reconnectBtn": "إعادة الاتصال",
     "toManyRequestsErrorMsg":
         "لقد تجاوزت الحد الأقصى لعدد الطلبات. يرجى المحاولة مرة أخرى في وقت لاحق.",
-    "connectingInProggress": "الاتصال قيد التقدم .. يرجى الانتظار حتى يتم إنشاء الاتصال."
+    "connectingInProggress": "الاتصال قيد التقدم .. يرجى الانتظار حتى يتم إنشاء الاتصال.",
+    "resetAppTitle": "إعادة تعيين التطبيق",
+    "resetAppDesc": "شيء لا يعمل كما هو متوقع؟ انقر لإعادة ضبط التطبيق.",
+    "resetAppDialogTitle": "اتصال VPN نشط حاليًا",
+    "resetAppDialogContent": "إذا تابعت إعادة تعيين التطبيق ، فسيتم فصلك عن Mysterium VPN.",
+    "resetBtn": "إعادة ضبط",
+    "resetAppSuccess": "تم إعادة تعيين التطبيق بنجاح.",
+    "resetAppFailed": "فشل في إعادة ضبط التطبيق. "
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,
