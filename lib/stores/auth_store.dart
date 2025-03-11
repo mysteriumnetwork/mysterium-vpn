@@ -211,7 +211,7 @@ abstract class _AuthStore with Store {
     required String username,
     required String userId,
   }) async {
-    await _abTestingStore.init();
+    await _abTestingStore.configFuture;
     await _analyticsStore.setUserId(username);
     await _intercomStore.registerUser(email: username);
     Sentry.configureScope(
