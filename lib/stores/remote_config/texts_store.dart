@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/utils/config_cat_client_wrapper.dart';
+import 'package:mysterium_vpn/stores/remote_config/config_cat_store.dart';
 import 'package:talker/talker.dart';
 
 part 'texts_store.g.dart';
@@ -9,25 +9,10 @@ part 'texts_store.g.dart';
 // ignore: library_private_types_in_public_api
 class TextsStore = _TextsStore with _$TextsStore;
 
-abstract class _TextsStore with Store {
-  _TextsStore(this._client, this._logger) {
-    _init();
-  }
+abstract class _TextsStore extends ConfigCatStore with Store {
+  _TextsStore(super.client, super.logger) : _logger = logger;
 
-  final ConfigCatService _client;
   final Talker _logger;
-
-  @observable
-  late ObservableFuture<Map<String, dynamic>> configFuture = ObservableFuture(_client.fetchTexts());
-
-  @computed
-  Map<String, dynamic> get config => configFuture.value ?? {};
-
-  @action
-  Future<void> _init() async {
-    await configFuture;
-    _client.watchTexts(() => configFuture = ObservableFuture(_client.fetchTexts()));
-  }
 
   @computed
   Map<String, Map<String, String>> get texts {

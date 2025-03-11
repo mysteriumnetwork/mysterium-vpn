@@ -13,7 +13,6 @@ import 'package:mysterium_vpn/common/interceptors/connection_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/interceptors/retry_request.dart';
 import 'package:mysterium_vpn/common/observers/crashlytics_talker_observer.dart';
-import 'package:mysterium_vpn/common/utils/config_cat_client_wrapper.dart';
 import 'package:mysterium_vpn/common/utils/translation_asset_loader.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -212,16 +211,6 @@ final textsClientPOD = Provider<ConfigCatClient>((ref) {
       logger: isTestEnv ? ConfigCatLogger() : null,
       cache: ConfigCatPreferencesCache(),
     ),
-  );
-});
-
-final configCatServicePOD = Provider<ConfigCatService>((ref) {
-  final logger = ref.watch(loggerPOD);
-  return ConfigCatService(
-    ref.watch(remoteConfigClientPOD),
-    ref.watch(abTestingClientPOD),
-    ref.watch(textsClientPOD),
-    logger,
   );
 });
 

@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
-import 'package:mysterium_vpn/common/utils/config_cat_client_wrapper.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:mysterium_vpn/stores/remote_config/config_cat_store.dart';
 
 part 'ab_testing_store.g.dart';
 
@@ -16,32 +16,19 @@ enum _ABKey {
 
 class ABTestingStore = ABTestingStoreBase with _$ABTestingStore;
 
-abstract class ABTestingStoreBase with Store {
-  ABTestingStoreBase(this._configCatService, this._analytics);
-
-  final ConfigCatService _configCatService;
-  final AnalyticsStore _analytics;
-
-  @observable
-  ObservableFuture<Map<String, dynamic>>? configFuture;
-
-  @computed
-  Map<String, dynamic> get config => configFuture?.value ?? {};
-
-  @action
-  Future<void> init() async {
-    configFuture ??= ObservableFuture(_configCatService.fetchABTesting());
-    await configFuture;
-
-    asUserProperties.forEach(_analytics.setUserProperty);
-
-    _configCatService.watchABTesting(() async {
-      configFuture = ObservableFuture(_configCatService.fetchABTesting());
-      await configFuture;
-
-      asUserProperties.forEach(_analytics.setUserProperty);
-    });
+abstract class ABTestingStoreBase extends ConfigCatStore with Store {
+  ABTestingStoreBase(super.client, super.logger, this._analytics) {
+    reaction(
+      (_) => configFuture,
+      (future) async {
+        await future;
+        asUserProperties.forEach(_analytics.setUserProperty);
+      },
+      fireImmediately: true,
+    );
   }
+
+  final AnalyticsStore _analytics;
 
   @computed
   String get subscriptionFlowVariant {
