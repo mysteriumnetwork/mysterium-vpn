@@ -190,6 +190,7 @@ final userPreferencesStorePOD = StateProvider<UserPreferencesStore>((ref) {
 final remoteConfigStorePOD = Provider<RemoteConfigStore>((ref) {
   final client = ref.watch(remoteConfigClientPOD);
   final logger = ref.watch(loggerPOD);
+
   return RemoteConfigStore(client, logger);
 });
 
@@ -197,12 +198,14 @@ final abTestingStorePOD = Provider<ABTestingStore>((ref) {
   final client = ref.watch(abTestingClientPOD);
   final logger = ref.watch(loggerPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
+
   return ABTestingStore(client, logger, analyticsStore);
 });
 
 final textsStorePOD = Provider<TextsStore>((ref) {
   final client = ref.watch(textsClientPOD);
   final logger = ref.watch(loggerPOD);
+
   return TextsStore(client, logger);
 });
 
