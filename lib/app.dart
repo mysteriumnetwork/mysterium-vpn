@@ -29,6 +29,7 @@ class MyApp extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, WidgetRef ref) {
     final mqtt = ref.read(vpnApiMQTTPOD);
+    final remoteConfigStore = ref.read(remoteConfigStorePOD);
     final themeStore = ref.read(themeStorePOD);
     final routeInformationParser = ref.read(routeInformationParserPOD);
     final authStore = ref.read(authStorePOD);
@@ -41,7 +42,13 @@ class MyApp extends HookConsumerWidget {
 
     useEffect(
       () {
-        mqtt.start();
+        mqtt.start().whenComplete(() {
+          mqtt.subscribe('config-cat/changed').listen(
+            (_) {
+              remoteConfigStore.refresh();
+            },
+          );
+        });
         return null;
       },
       [mqtt],

@@ -173,9 +173,7 @@ final remoteConfigClientPOD = Provider<ConfigCatClient>((ref) {
   return ConfigCatClient.get(
     sdkKey: environment.values.remoteConfigSdkKey,
     options: ConfigCatOptions(
-      pollingMode: PollingMode.lazyLoad(
-        cacheRefreshInterval: Duration(seconds: isTestEnv ? 30 : 60 * 30),
-      ),
+      pollingMode: PollingMode.manualPoll(),
       logger: isTestEnv ? ConfigCatLogger() : null,
       cache: ConfigCatPreferencesCache(),
     ),
