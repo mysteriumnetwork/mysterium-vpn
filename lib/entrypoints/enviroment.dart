@@ -10,6 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mysterium_vpn/app.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -95,7 +96,7 @@ class Enviroment {
     await container.read(analyticsInitPOD(firebaseOptions).future);
     final remoteConfigStore = await initRemoteConfig(container);
     final logger = container.read(loggerPOD);
-
+    await _initIntercom();
     FlutterError.onError = (details) {
       logger.handle(
         details.exception,
@@ -150,6 +151,24 @@ class Enviroment {
     );
   }
 
+  Future<void> _initIntercom() async {
+    if (isDesktop()) {
+      return;
+    }
+    try {
+      const intercomAppId = 'sjkeehf4';
+      const intercomAndroidApiKey = 'android_sdk-f9955e908e48bf630f3f2a6dc6609c3f4b5aa2b8';
+      const intercomIosApiKey = 'ios_sdk-13bd499b260981778455ba0235d7ca612b330582';
+      await Intercom.instance.initialize(
+        intercomAppId,
+        androidApiKey: intercomAndroidApiKey,
+        iosApiKey: intercomIosApiKey,
+      );
+    } catch (e) {
+      Sentry.captureException(e);
+    }
+  }
+
   Future<RemoteConfigStore?> initRemoteConfig(ProviderContainer container) async {
     try {
       final remoteConfigStore = container.read(remoteConfigStorePOD);
@@ -179,6 +198,7 @@ class Enviroment {
       );
     } catch (e) {
       debugPrint('Error getting package info');
+      Sentry.captureException(e);
     }
 
     return switch (flavor) {
@@ -221,24 +241,28 @@ class Enviroment {
     if (!Platform.isWindows) {
       return;
     }
-    await trayManager.setIcon(
-      flavor.isDev() ? 'assets/logo/dev/app_icon.ico' : 'assets/logo/prod/app_icon.ico',
-      iconPosition: TrayIconPosition.right,
-    );
-    final items = Menu(
-      items: <MenuItem>[
-        MenuItem(
-          key: 'show_window',
-          label: 'Open',
-        ),
-        MenuItem.separator(),
-        MenuItem(
-          key: 'exit_app',
-          label: 'Exit MysteriumVPN',
-        ),
-      ],
-    );
+    try {
+      await trayManager.setIcon(
+        flavor.isDev() ? 'assets/logo/dev/app_icon.ico' : 'assets/logo/prod/app_icon.ico',
+        iconPosition: TrayIconPosition.right,
+      );
+      final items = Menu(
+        items: <MenuItem>[
+          MenuItem(
+            key: 'show_window',
+            label: 'Open',
+          ),
+          MenuItem.separator(),
+          MenuItem(
+            key: 'exit_app',
+            label: 'Exit MysteriumVPN',
+          ),
+        ],
+      );
 
-    await trayManager.setContextMenu(items);
+      await trayManager.setContextMenu(items);
+    } catch (e) {
+      Sentry.captureException(e);
+    }
   }
 }
