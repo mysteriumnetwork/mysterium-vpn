@@ -34,6 +34,16 @@ abstract class ConfigCatStore with Store {
     await configFuture;
   }
 
+  Future<void> refresh() async {
+    try {
+      await _client.forceRefresh();
+      configFuture = ObservableFuture(_fetch());
+      await configFuture;
+    } catch (e, stack) {
+      _logger.handle(e, stack);
+    }
+  }
+
   @protected
   Future<Map<String, dynamic>> _fetch() async {
     try {
