@@ -31,7 +31,6 @@ abstract class _ApiStore with Store {
 
   Future<void> initStore() async {
     try {
-      await _mqtt.ensureStart();
       _healthcheckSub ??= _mqtt.subscribe('healthcheck').listen((event) {
         _lastHealthcheck = HealthcheckMessage.fromJson(json.decode(event) as Map<String, dynamic>);
       });

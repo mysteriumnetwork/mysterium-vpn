@@ -87,16 +87,6 @@ class MQTTService {
 
   bool isStarted() => _mqtt.connectionStatus!.state == MqttConnectionState.connected;
 
-  Future<void> ensureStart() async {
-    if (!_remoteConfigStore.mqttExperiment) {
-      return;
-    }
-
-    if (!isStarted()) {
-      await start();
-    }
-  }
-
   /// Listens to messages on a specified MQTT topic.
   ///
   /// This function returns a stream of messages for the given topic.
@@ -114,12 +104,13 @@ class MQTTService {
       return const Stream<String>.empty();
     }
 
+    // TODO(Waldz): Would be good to subscribe later when connection gets established
+    if (_mqtt.connectionStatus!.state != MqttConnectionState.connected) {
+      return const Stream<String>.empty();
+    }
+
     return Stream.multi(
       (subject) async {
-        if (_mqtt.connectionStatus!.state != MqttConnectionState.connected) {
-          throw MQQTConnectionRequiredException();
-        }
-
         final sub = _mqtt.subscribe(topic, MqttQos.atLeastOnce);
         if (sub == null) {
           throw MQQTException();
