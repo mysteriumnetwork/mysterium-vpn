@@ -32,8 +32,6 @@ abstract class ConfigCatStore with Store {
   @action
   Future<void> _init() async {
     await configFuture;
-    _client.hooks.clear();
-    _client.hooks.addOnConfigChanged((_) => configFuture = ObservableFuture(_fetch()));
   }
 
   @protected
