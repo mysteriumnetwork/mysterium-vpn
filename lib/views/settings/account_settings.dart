@@ -48,7 +48,7 @@ class _Unauthenticated extends HookConsumerWidget {
     final isDarkMode = useComputedValue(() => themeStore.isDarkMode);
 
     void handleSignIn() {
-      context.beamToNamed(Routes.login.name);
+      context.beamToNamed(Routes.platformLogin.path);
     }
 
     return SettingItem(

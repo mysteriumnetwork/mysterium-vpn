@@ -10,33 +10,33 @@ import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class UnauthenticatedHeader extends HookConsumerWidget {
-  const UnauthenticatedHeader({
-    super.key,
-    this.showBackButton = false,
-  });
-
-  final bool showBackButton;
+  const UnauthenticatedHeader({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        spacing: 24,
-        children: [
-          if (showBackButton) const _BackButton(),
-          if (!showBackButton) const SizedBox.shrink(),
-          const AppLogo(),
-          SvgIconButton(
-            asset: Assets.messageSvg,
-            onPressed: () {
-              handleOnReportPage(
-                context: context,
-                intetcomStore: ref.read(intercomStorePOD),
-                analyticsStore: ref.read(analyticsStorePOD),
-              );
-            },
-          ),
-        ],
-      );
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authSessionStore = ref.read(authSessionStorePOD);
+    final canBrowseApp = useComputedValue(() => authSessionStore.canBrowseApp);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      spacing: 24,
+      children: [
+        if (canBrowseApp) const _BackButton(),
+        if (!canBrowseApp) const SizedBox.shrink(),
+        const AppLogo(),
+        SvgIconButton(
+          asset: Assets.messageSvg,
+          onPressed: () {
+            handleOnReportPage(
+              context: context,
+              intetcomStore: ref.read(intercomStorePOD),
+              analyticsStore: ref.read(analyticsStorePOD),
+            );
+          },
+        ),
+      ],
+    );
+  }
 }
 
 class _BackButton extends HookConsumerWidget {

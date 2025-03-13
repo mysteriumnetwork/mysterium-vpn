@@ -1,3 +1,5 @@
+import 'dart:io';
+
 enum Routes {
   welcome('/welcome'),
   main('/main'),
@@ -15,4 +17,6 @@ enum Routes {
   const Routes(this.path);
 
   final String path;
+
+  static Routes get platformLogin => Platform.isWindows ? welcome : login;
 }
