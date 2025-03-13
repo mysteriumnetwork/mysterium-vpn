@@ -15,14 +15,13 @@ class SignInView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authStore = ref.read(authStorePOD);
-    final authSessionStore = ref.read(authSessionStorePOD);
     final size = Size(getMediaWidth(context), getMediaHeight(context));
     return Observer(
       builder: (context) => Stack(
         children: [
           Column(
             children: [
-              UnauthenticatedHeader(showBackButton: authSessionStore.canBrowseApp).padding(
+              const UnauthenticatedHeader().padding(
                 horizontal: size.width * 0.05,
                 top: size.height * 0.02,
                 bottom: size.height * 0.03,

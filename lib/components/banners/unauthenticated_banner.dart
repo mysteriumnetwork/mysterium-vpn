@@ -15,7 +15,7 @@ class UnauthenticatedBanner extends HookWidget {
   @override
   Widget build(BuildContext context) {
     void handlePressed() {
-      Beamer.of(context).beamToNamed(Routes.login.path);
+      Beamer.of(context).beamToNamed(Routes.platformLogin.path);
     }
 
     return Banner(

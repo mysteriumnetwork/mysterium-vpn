@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:beamer/beamer.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
@@ -10,7 +8,6 @@ import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 final routeInformationParserPOD = Provider((ref) => BeamerParser());
-final loginRoute = Platform.isWindows ? Routes.welcome.path : Routes.login.path;
 
 final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
   final authSessionStore = ref.read(authSessionStorePOD);
@@ -28,7 +25,7 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
           Routes.settings.path,
         ],
         check: (context, state) => authSessionStore.canBrowseApp,
-        beamToNamed: (_, __) => loginRoute,
+        beamToNamed: (_, __) => Routes.platformLogin.path,
       ),
       BeamGuard(
         pathPatterns: [
@@ -37,11 +34,11 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
           Routes.paymentSettings.path,
         ],
         check: (context, state) => authSessionStore.status == AuthStatus.authenticated,
-        beamToNamed: (_, __) => loginRoute,
+        beamToNamed: (_, __) => Routes.platformLogin.path,
       ),
       BeamGuard(
         pathPatterns: [
-          loginRoute,
+          Routes.platformLogin.path,
           Routes.checkYourEmail.path,
         ],
         check: (context, state) =>
@@ -52,12 +49,13 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
       BeamGuard(
         pathPatterns: [Routes.emailToken.path],
         check: (context, state) => false,
-        beamToNamed: (a, b) => a?.state.routeInformation.uri.path ?? loginRoute,
+        beamToNamed: (a, b) => a?.state.routeInformation.uri.path ?? Routes.platformLogin.path,
       ),
       BeamGuard(
         pathPatterns: [Routes.splash.path],
         check: (context, state) => authSessionStore.status == AuthStatus.unknown,
-        beamToNamed: (_, __) => authSessionStore.canBrowseApp ? Routes.main.path : loginRoute,
+        beamToNamed: (_, __) =>
+            authSessionStore.canBrowseApp ? Routes.main.path : Routes.platformLogin.path,
       ),
     ],
     initialPath: Routes.splash.path,
