@@ -543,6 +543,8 @@
   "ukraine": "أوكرانيا",
   "unableToConnectToPaymentProcesor": "غير قادر على الاتصال بمعالج الدفع! حاول مرة أخرى.",
   "unableToGetPlans": "غير قادر على الحصول على خطط الاشتراك! حاول مرة أخرى.",
+  "unauthenticatedBannerBtn": "قم بتسجيل الدخول للتحقق من اشتراكك",
+  "unauthenticatedBannerTitle": "تسجيل الدخول",
   "upload": "رفع",
   "was": "كان",
   "weNeedPermission": "نحن بحاجة إلى إذنك",

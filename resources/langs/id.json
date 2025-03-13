@@ -545,6 +545,8 @@
   "ukraine": "Ukraina",
   "unableToConnectToPaymentProcesor": "Tidak dapat terhubung ke pemroses pembayaran! Silakan coba lagi.",
   "unableToGetPlans": "Tidak bisa mendapatkan paket langganan! Silakan coba lagi.",
+  "unauthenticatedBannerBtn": "Masuk untuk memeriksa langganan Anda",
+  "unauthenticatedBannerTitle": "Anda belum masuk",
   "upload": "Mengunggah",
   "was": "Sebelumnya",
   "weNeedPermission": "Kami membutuhkan izin Anda",

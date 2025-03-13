@@ -545,6 +545,8 @@
   "ukraine": "ウクライナ",
   "unableToConnectToPaymentProcesor": "支払いプロセッサに接続できません! もう一度試してください。",
   "unableToGetPlans": "サブスクリプションプランを取得できません! もう一度試してください。",
+  "unauthenticatedBannerBtn": "サインインしてサブスクリプションを確認してください",
+  "unauthenticatedBannerTitle": "サインインしていません",
   "upload": "アップロード",
   "was": "以前は",
   "weNeedPermission": "あなたの許可が必要です",

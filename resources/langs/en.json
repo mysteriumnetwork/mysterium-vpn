@@ -544,6 +544,8 @@
   "ukraine": "Ukraine",
   "unableToConnectToPaymentProcesor": "Unable to connect to the payment processor! Please try again.",
   "unableToGetPlans": "Unable to get subscription plans! Please try again.",
+  "unauthenticatedBannerBtn": "Sign in to check your subscription",
+  "unauthenticatedBannerTitle": "You're not signed in",
   "upload": "Upload",
   "was": "Was",
   "weNeedPermission": "We need your permission",

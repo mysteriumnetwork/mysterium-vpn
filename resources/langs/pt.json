@@ -545,6 +545,8 @@
   "ukraine": "Ucrânia",
   "unableToConnectToPaymentProcesor": "Incapaz de conectar -se ao Processor de Pagamento! Por favor, tente novamente.",
   "unableToGetPlans": "Incapaz de obter planos de assinatura! Por favor, tente novamente.",
+  "unauthenticatedBannerBtn": "Faça login para verificar sua assinatura",
+  "unauthenticatedBannerTitle": "Você não está conectado",
   "upload": "Carregar",
   "was": "Era",
   "weNeedPermission": "Precisamos da sua permissão",
