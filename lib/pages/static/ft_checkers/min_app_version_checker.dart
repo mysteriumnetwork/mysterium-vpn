@@ -56,6 +56,8 @@ class MinAppVersionChecker extends HookConsumerWidget {
                       LocaleKeys.featureToggleMinVersionNotSatisfied.tr(),
                       textAlign: TextAlign.center,
                       color: Palette.white,
+                      maxLines: 4,
+                      fontSize: 18,
                     ),
                     const SizedBox(height: 40),
                     EasyButton(

@@ -132,7 +132,7 @@ abstract class _AuthStore with Store {
         throw IncorrectCodeException();
       }
 
-      if (_pkcePair == null || (_pkcePair = await _secureStorageService.getPkcePair()) == null) {
+      if (_pkcePair == null && (_pkcePair = await _secureStorageService.getPkcePair()) == null) {
         throw PkcePairNotFoundException();
       }
       authenticate(
