@@ -1,4 +1,4 @@
-package io.maido.intercomexample
+package com.mysteriumvpn.android
 
 import android.app.Application
 import io.maido.intercom.IntercomFlutterPlugin
