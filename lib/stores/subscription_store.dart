@@ -15,6 +15,7 @@ import 'package:mysterium_vpn/common/utils/comparator_utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
+import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -113,7 +114,12 @@ abstract class _SubscriptionStore with Store {
     return _subscriptionService.getProductsDetails(config, subscription.planId);
   }
 
-  Future<Subscription> _fetchSubscription() => _subscriptionService.fetchSubscriptionDetails();
+  Future<Subscription> _fetchSubscription() async {
+    if (_authSessionStore.status != AuthStatus.authenticated) {
+      return Subscription.empty();
+    }
+    return _subscriptionService.fetchSubscriptionDetails();
+  }
 
   Future<api.SubscriptionConfigResponse?> _fetchSubscriptionConfig() async {
     if (Platform.isWindows) {

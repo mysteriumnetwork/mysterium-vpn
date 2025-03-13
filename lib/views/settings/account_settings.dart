@@ -20,12 +20,50 @@ import 'package:mysterium_vpn/components/setting_item.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 import 'package:mysterium_vpn/views/settings/purchased_plan.dart';
 
 class AccountSettings extends HookConsumerWidget {
   const AccountSettings({super.key});
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authSessionStore = ref.watch(authSessionStorePOD);
+    final authStatus = useComputedValue(() => authSessionStore.status);
+
+    return switch (authStatus) {
+      AuthStatus.authenticated => const _Authenticated(),
+      AuthStatus.unauthenticated => const _Unauthenticated(),
+      _ => const SizedBox.shrink(),
+    };
+  }
+}
+
+class _Unauthenticated extends HookConsumerWidget {
+  const _Unauthenticated();
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeStore = ref.read(themeStorePOD);
+    final isDarkMode = useComputedValue(() => themeStore.isDarkMode);
+
+    void handleSignIn() {
+      context.beamToNamed(Routes.login.name);
+    }
+
+    return SettingItem(
+      asset: isDarkMode ? Assets.accountNameDark : Assets.accountNameLight,
+      title: LocaleKeys.accountSignInTitle.tr(),
+      actionWidget: EasyButton(
+        text: LocaleKeys.accountSignIn.tr(),
+        onPressed: handleSignIn,
+      ),
+    );
+  }
+}
+
+class _Authenticated extends HookConsumerWidget {
+  const _Authenticated();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

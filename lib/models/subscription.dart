@@ -16,6 +16,8 @@ class Subscription with _$Subscription {
     @JsonKey(name: 'recurring') bool? recurring,
   }) = _Subscription;
   factory Subscription.fromJson(Map<String, dynamic> json) => _$SubscriptionFromJson(json);
+
+  factory Subscription.empty() => Subscription(active: false, expired: false, recurring: false);
 }
 
 extension SubscriptionExtension on Subscription {
