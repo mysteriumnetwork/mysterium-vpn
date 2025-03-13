@@ -270,6 +270,8 @@ class CodegenLoader extends AssetLoader {
     "acceptAndContinue": "接受并继续",
     "account": "帐号",
     "accountName": "帐号名\\电子邮件",
+    "accountSignIn": "登录",
+    "accountSignInTitle": "您尚未登录",
     "accountSuccessfullyDeleted": "您的帐号已成功删除。我们很伤心看你走。 😢?",
     "activateSubscription": "您需要有效的订阅才能连接到 VPN",
     "activeSubsPaidVia": "您已经通过 {store} 支付了有效的订阅费用。请访问 {store} 更改您的订阅。",
@@ -309,6 +311,7 @@ class CodegenLoader extends AssetLoader {
     "confirm": "确认",
     "connected": "连接的",
     "connecting": "正在连接",
+    "connectingInProggress": "连接正在进行中。请等到建立连接。",
     "connectingToPaymentProcesor": "正在连接支付处理器...",
     "connection": "联系",
     "connectionDuration": "{duration}分钟",
@@ -336,6 +339,11 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "删除帐号",
     "deleteAccountQuestion": "删除帐号？",
     "describeYourIssue": "描述您的问题",
+    "disconnectAllDevices": "断开所有设备",
+    "disconnectAllDevicesConfirmation": "您确定要断开所有设备吗？",
+    "disconnectAllDevicesDesc": "您将要与所有设备断开连接。当前的会话将被终止，并且您将失去VPN连接。",
+    "disconnectAllDevicesSuccess": "您已经与所有设备断开了连接。连接到VPN，以确保您的安全性。",
+    "disconnectAllDevicesTitle": "与所有设备断开连接",
     "disconnected": "已断开连接",
     "disconnecting": "断开连接",
     "discountTag": "{discount}折扣",
@@ -360,6 +368,7 @@ class CodegenLoader extends AssetLoader {
     "existingSubscriptionTitle": "您可以登出并尝试使用您的电子邮件，或者忽略此警告",
     "failedToConnect": "连接到 {countryName} 时出现问题。请再试一次。😕?",
     "failedToConnectError": "连接失败。请重试 [错误：{errorCode}]",
+    "failedToDisconnectAllDevices": "无法与所有设备断开连接。请重试",
     "failedToLoadLocations": "我们无法加载位置。请再试一次。😕?",
     "failedToLogoutAllDevices": "无法从所有设备注销。请再试一次",
     "failedToSubscribe": "您的订阅出了点问题。请再试一次！😕?",
@@ -489,6 +498,7 @@ class CodegenLoader extends AssetLoader {
     "questions": "问题？",
     "readOur": "阅读我们的",
     "recentLocations": "最近的地点",
+    "reconnectBtn": "重新连接",
     "redeemCode": "兑换代码",
     "redirectToLoginPage": "您将被重定向到登录页面。",
     "refreshIP": "刷新 IP",
@@ -496,6 +506,13 @@ class CodegenLoader extends AssetLoader {
     "renewSubsBtn": "续订您的订阅",
     "renewsFor": "续订费用为",
     "reportAnIssue": "报告问题",
+    "resetAppDesc": "某些事情无法正常工作？单击重置该应用程序。",
+    "resetAppDialogContent": "如果您继续重置该应用程序，则将与Mysterium VPN断开连接。",
+    "resetAppDialogTitle": "VPN连接当前处于活动状态",
+    "resetAppFailed": "无法重置该应用程序。请重试。",
+    "resetAppSuccess": "应用程序已成功重置。",
+    "resetAppTitle": "重置应用程序",
+    "resetBtn": "重置",
     "retryBtn": "重试",
     "searchForLocations": "搜索地点",
     "secure": "安全的",
@@ -533,6 +550,7 @@ class CodegenLoader extends AssetLoader {
     "theme": "主题",
     "then": "然后",
     "title": "你好先生",
+    "toManyRequestsErrorMsg": "您的请求太多。请稍后再试。",
     "tokenAlreadyUsed": "令牌已使用。请再试一次。😕?",
     "topLocations": "热门地点",
     "tr": "土耳其",
@@ -552,23 +570,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "全年{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "是",
-    "zh": "中国人",
-    "disconnectAllDevices": "断开所有设备",
-    "disconnectAllDevicesDesc": "您将要与所有设备断开连接。当前的会话将被终止，并且您将失去VPN连接。",
-    "disconnectAllDevicesTitle": "与所有设备断开连接",
-    "disconnectAllDevicesConfirmation": "您确定要断开所有设备吗？",
-    "failedToDisconnectAllDevices": "无法与所有设备断开连接。请重试",
-    "disconnectAllDevicesSuccess": "您已经与所有设备断开了连接。连接到VPN，以确保您的安全性。",
-    "reconnectBtn": "重新连接",
-    "toManyRequestsErrorMsg": "您的请求太多。请稍后再试。",
-    "connectingInProggress": "连接正在进行中。请等到建立连接。",
-    "resetAppTitle": "重置应用程序",
-    "resetAppDesc": "某些事情无法正常工作？单击重置该应用程序。",
-    "resetAppDialogTitle": "VPN连接当前处于活动状态",
-    "resetAppDialogContent": "如果您继续重置该应用程序，则将与Mysterium VPN断开连接。",
-    "resetBtn": "重置",
-    "resetAppSuccess": "应用程序已成功重置。",
-    "resetAppFailed": "无法重置该应用程序。请重试。"
+    "zh": "中国人"
   };
   static const Map<String, dynamic> tr = {
     "AD": "Andorra",
@@ -826,6 +828,8 @@ class CodegenLoader extends AssetLoader {
     "acceptAndContinue": "Kabul et ve devam et",
     "account": "Hesap",
     "accountName": "Hesap adı \\ e-posta",
+    "accountSignIn": "Giriş yap",
+    "accountSignInTitle": "Oturum açmadınız",
     "accountSuccessfullyDeleted": "Hesabınız başarıyla silindi. Gittiğiniz için üzgünüz.😢",
     "activateSubscription": "VPN'e bağlanmak için abonelik almanız gerekiyor.",
     "activeSubsPaidVia":
@@ -868,6 +872,7 @@ class CodegenLoader extends AssetLoader {
     "confirm": "Onaylamak",
     "connected": "Bağlı",
     "connecting": "Bağlanıyor",
+    "connectingInProggress": "Devam Edecek Bağlantı .. Lütfen bağlantı kurulana kadar bekleyin.",
     "connectingToPaymentProcesor": "Ödeme işlemcisine bağlanılıyor...",
     "connection": "Bağlantı",
     "connectionDuration": "{duration} dk",
@@ -898,6 +903,13 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Hesabımı Sil",
     "deleteAccountQuestion": "Hesabını silmek üzeresin!",
     "describeYourIssue": "Sorununuzu açıklayın",
+    "disconnectAllDevices": "Tüm cihazların bağlantısını kesin",
+    "disconnectAllDevicesConfirmation":
+        "Tüm cihazların bağlantısını kesmek istediğinizden emin misiniz?",
+    "disconnectAllDevicesDesc":
+        "Tüm cihazlarınızla bağlantıyı kesmek üzeresiniz. Mevcut oturum sona erdirilecek ve VPN bağlantınızı kaybedeceksiniz.",
+    "disconnectAllDevicesSuccess": "Güvenliğinizi sağlamak için tüm cihazlardan ayrıldınız.",
+    "disconnectAllDevicesTitle": "Tüm cihazlardan bağlantıyı kesin",
     "disconnected": "Bağlantı kesildi",
     "disconnecting": "Bağlantıyı kes",
     "discountTag": "{discount} indirim",
@@ -926,6 +938,7 @@ class CodegenLoader extends AssetLoader {
         "Oturumu kapatabilir ve e-postanızla deneyebilir veya bu uyarıyı yoksayabilirsiniz",
     "failedToConnect": "{countryName} ile bağlantı kurulurken bir sorun oluştu. 😕",
     "failedToConnectError": "Bağlantı başarısız oldu. Lütfen tekrar deneyin [hata: {errorCode}]",
+    "failedToDisconnectAllDevices": "Tüm cihazlardan bağlantıyı kesemedi. Lütfen tekrar deneyin",
     "failedToLoadLocations": "Ülkeleri yükleyemedik. 😕",
     "failedToLogoutAllDevices": "Tüm cihazlardan çıkış yapılamadı. Lütfen tekrar deneyin",
     "failedToSubscribe": "Aboneliğinizle ilgili bir sorun oluştu. 😕",
@@ -1066,6 +1079,7 @@ class CodegenLoader extends AssetLoader {
     "questions": "Sorular?",
     "readOur": "Okuyun ",
     "recentLocations": "Son konumlar",
+    "reconnectBtn": "Yeniden bağlanmak",
     "redeemCode": "Kodu Kullan",
     "redirectToLoginPage": "Giriş sayfasına yönlendirileceksiniz.",
     "refreshIP": "IP'yi yenile",
@@ -1073,6 +1087,14 @@ class CodegenLoader extends AssetLoader {
     "renewSubsBtn": "Aboneliğinizi Yenileyin",
     "renewsFor": "Şunun için yenilenir",
     "reportAnIssue": "sorun bildir",
+    "resetAppDesc": "Bir şey beklendiği gibi çalışmıyor mu? Uygulamayı sıfırlamak için tıklayın.",
+    "resetAppDialogContent":
+        "Uygulamayı sıfırlamaya devam ederseniz, Mysterium VPN'den koparsınız.",
+    "resetAppDialogTitle": "VPN bağlantısı şu anda aktif",
+    "resetAppFailed": "Uygulamayı sıfırlayamadı. Lütfen tekrar deneyin.",
+    "resetAppSuccess": "Uygulama başarıyla sıfırlandı.",
+    "resetAppTitle": "Uygulamayı sıfırla",
+    "resetBtn": "Sıfırlamak",
     "retryBtn": "yeniden dene",
     "searchForLocations": "Konum ara",
     "secure": "Güvenli",
@@ -1114,6 +1136,7 @@ class CodegenLoader extends AssetLoader {
     "theme": "Tema",
     "then": "Sonra",
     "title": "Merhaba efendim",
+    "toManyRequestsErrorMsg": "Çok fazla istek gönderildi. Lütfen daha sonra tekrar deneyin.",
     "tokenAlreadyUsed": "Girişinizle ilgili bir sorun oluştu. Lütfen tekrar deneyin. 😕",
     "topLocations": "En iyi yerler",
     "tr": "Türkçe",
@@ -1133,26 +1156,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "Yıl için {amount}.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Evet",
-    "zh": "Çince",
-    "disconnectAllDevices": "Tüm cihazların bağlantısını kesin",
-    "disconnectAllDevicesDesc":
-        "Tüm cihazlarınızla bağlantıyı kesmek üzeresiniz. Mevcut oturum sona erdirilecek ve VPN bağlantınızı kaybedeceksiniz.",
-    "disconnectAllDevicesTitle": "Tüm cihazlardan bağlantıyı kesin",
-    "disconnectAllDevicesConfirmation":
-        "Tüm cihazların bağlantısını kesmek istediğinizden emin misiniz?",
-    "failedToDisconnectAllDevices": "Tüm cihazlardan bağlantıyı kesemedi. Lütfen tekrar deneyin",
-    "disconnectAllDevicesSuccess": "Güvenliğinizi sağlamak için tüm cihazlardan ayrıldınız.",
-    "reconnectBtn": "Yeniden bağlanmak",
-    "toManyRequestsErrorMsg": "Çok fazla istek gönderildi. Lütfen daha sonra tekrar deneyin.",
-    "connectingInProggress": "Devam Edecek Bağlantı .. Lütfen bağlantı kurulana kadar bekleyin.",
-    "resetAppTitle": "Uygulamayı sıfırla",
-    "resetAppDesc": "Bir şey beklendiği gibi çalışmıyor mu? Uygulamayı sıfırlamak için tıklayın.",
-    "resetAppDialogTitle": "VPN bağlantısı şu anda aktif",
-    "resetAppDialogContent":
-        "Uygulamayı sıfırlamaya devam ederseniz, Mysterium VPN'den koparsınız.",
-    "resetBtn": "Sıfırlamak",
-    "resetAppSuccess": "Uygulama başarıyla sıfırlandı.",
-    "resetAppFailed": "Uygulamayı sıfırlayamadı. Lütfen tekrar deneyin."
+    "zh": "Çince"
   };
   static const Map<String, dynamic> ja = {
     "AD": "アンドラ",
@@ -1410,6 +1414,8 @@ class CodegenLoader extends AssetLoader {
     "acceptAndContinue": "受け入れて続行します",
     "account": "アカウント",
     "accountName": "アカウント名\\メールアドレス",
+    "accountSignIn": "サインイン",
+    "accountSignInTitle": "サインインしていません",
     "accountSuccessfullyDeleted": "アカウントは正常に削除されました。あなたと離れてみんな悲しいです。 😢?",
     "activateSubscription": "VPN に接続するにはアクティブなサブスクリプションが必要です",
     "activeSubsPaidVia": "{store} 経由で支払われた有効な定期購入がすでにあります。サブスクリプションを変更するには、{store} にアクセスしてください。",
@@ -1449,6 +1455,7 @@ class CodegenLoader extends AssetLoader {
     "confirm": "確認",
     "connected": "接続済み",
     "connecting": "接続中",
+    "connectingInProggress": "進行中の接続..接続が確立されるまで待ってください。",
     "connectingToPaymentProcesor": "支払いプロセッサに接続しています...",
     "connection": "繋がり",
     "connectionDuration": "{duration} 分",
@@ -1476,6 +1483,11 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "アカウントを削除",
     "deleteAccountQuestion": "アカウントを削除?",
     "describeYourIssue": "問題を説明",
+    "disconnectAllDevices": "すべてのデバイスを切断します",
+    "disconnectAllDevicesConfirmation": "すべてのデバイスを切断したいですか？",
+    "disconnectAllDevicesDesc": "すべてのデバイスから切断しようとしています。現在のセッションは終了し、VPN接続が失われます。",
+    "disconnectAllDevicesSuccess": "すべてのデバイスから切断されています。安全性を確保するために、VPNに再接続しています。",
+    "disconnectAllDevicesTitle": "すべてのデバイスから切断します",
     "disconnected": "切断済み",
     "disconnecting": "切断中",
     "discountTag": "{discount}オフ",
@@ -1501,6 +1513,7 @@ class CodegenLoader extends AssetLoader {
     "existingSubscriptionTitle": "ログアウトしてメールで試すか、この警告を無視することができます",
     "failedToConnect": "{countryName} への接続中に問題が発生しました。もう一度試してください。😕?",
     "failedToConnectError": "接続に失敗しました。もう一度お試しください [エラー: {errorCode}]",
+    "failedToDisconnectAllDevices": "すべてのデバイスから切断できませんでした。再試行してください",
     "failedToLoadLocations": "場所の読み込みに失敗しました。もう一度試してください。😕?",
     "failedToLogoutAllDevices": "すべてのデバイスからのログアウトに失敗しました。もう一度お試しください",
     "failedToSubscribe": "サブスクリプションで問題が発生しました。もう一度試してください。 😕?",
@@ -1631,6 +1644,7 @@ class CodegenLoader extends AssetLoader {
     "questions": "質問がありますか?",
     "readOur": "私たちの記事を読んでください",
     "recentLocations": "最近の場所",
+    "reconnectBtn": "再接続します",
     "redeemCode": "コードを引き換える",
     "redirectToLoginPage": "ログインページにリダイレクトされます。",
     "refreshIP": "IP をリフレッシュ",
@@ -1638,6 +1652,13 @@ class CodegenLoader extends AssetLoader {
     "renewSubsBtn": "サブスクリプションを更新",
     "renewsFor": "更新料金は",
     "reportAnIssue": "問題を報告",
+    "resetAppDesc": "何かが期待どおりに機能していませんか？クリックしてアプリをリセットします。",
+    "resetAppDialogContent": "アプリのリセットを続行すると、Mysterium VPNから切断されます。",
+    "resetAppDialogTitle": "現在、VPN接続がアクティブです",
+    "resetAppFailed": "アプリのリセットに失敗しました。再試行してください。",
+    "resetAppSuccess": "アプリは正常にリセットされました。",
+    "resetAppTitle": "アプリをリセットします",
+    "resetBtn": "リセット",
     "retryBtn": "再試行",
     "searchForLocations": "場所を検索",
     "secure": "安全",
@@ -1677,6 +1698,7 @@ class CodegenLoader extends AssetLoader {
     "theme": "テーマ",
     "then": "次に",
     "title": "こんにちは。",
+    "toManyRequestsErrorMsg": "リクエストが多すぎます。後でもう一度試してください。",
     "tokenAlreadyUsed": "トークンはすでに使用されています。もう一度試してください。😕?",
     "topLocations": "上位の場所",
     "tr": "トルコ語",
@@ -1696,23 +1718,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "年間{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "はい",
-    "zh": "中国語",
-    "disconnectAllDevices": "すべてのデバイスを切断します",
-    "disconnectAllDevicesDesc": "すべてのデバイスから切断しようとしています。現在のセッションは終了し、VPN接続が失われます。",
-    "disconnectAllDevicesTitle": "すべてのデバイスから切断します",
-    "disconnectAllDevicesConfirmation": "すべてのデバイスを切断したいですか？",
-    "failedToDisconnectAllDevices": "すべてのデバイスから切断できませんでした。再試行してください",
-    "disconnectAllDevicesSuccess": "すべてのデバイスから切断されています。安全性を確保するために、VPNに再接続しています。",
-    "reconnectBtn": "再接続します",
-    "toManyRequestsErrorMsg": "リクエストが多すぎます。後でもう一度試してください。",
-    "connectingInProggress": "進行中の接続..接続が確立されるまで待ってください。",
-    "resetAppTitle": "アプリをリセットします",
-    "resetAppDesc": "何かが期待どおりに機能していませんか？クリックしてアプリをリセットします。",
-    "resetAppDialogTitle": "現在、VPN接続がアクティブです",
-    "resetAppDialogContent": "アプリのリセットを続行すると、Mysterium VPNから切断されます。",
-    "resetBtn": "リセット",
-    "resetAppSuccess": "アプリは正常にリセットされました。",
-    "resetAppFailed": "アプリのリセットに失敗しました。再試行してください。"
+    "zh": "中国語"
   };
   static const Map<String, dynamic> de = {
     "AD": "Andorra",
@@ -1970,6 +1976,8 @@ class CodegenLoader extends AssetLoader {
     "acceptAndContinue": "Akzeptieren und weiter",
     "account": "Konto",
     "accountName": "Kontoname \\ E-Mail",
+    "accountSignIn": "Anmelden",
+    "accountSignInTitle": "Du bist nicht angemeldet",
     "accountSuccessfullyDeleted":
         "Ihr Konto wurde erfolgreich gelöscht. Wir bedauern, dass Sie gehen. 😢",
     "activateSubscription":
@@ -2013,6 +2021,8 @@ class CodegenLoader extends AssetLoader {
     "confirm": "Bestätigen",
     "connected": "Verbunden",
     "connecting": "Verbinden",
+    "connectingInProggress":
+        "In Arbeit verbinden. Bitte warten Sie, bis die Verbindung hergestellt ist.",
     "connectingToPaymentProcesor": "Verbindung zum Zahlungsabwickler herstellen...",
     "connection": "Verbindung",
     "connectionDuration": "{duration} Min",
@@ -2044,6 +2054,12 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Konto löschen",
     "deleteAccountQuestion": "Konto löschen?",
     "describeYourIssue": "Beschreiben Sie Ihr Problem",
+    "disconnectAllDevices": "Trennen Sie alle Geräte",
+    "disconnectAllDevicesConfirmation": "Sind Sie sicher, dass Sie alle Geräte trennen möchten?",
+    "disconnectAllDevicesDesc":
+        "Sie sind kurz davor, die Verbindung von all Ihren Geräten zu trennen. Die aktuelle Sitzung wird beendet, und Sie verlieren Ihre VPN -Verbindung.",
+    "disconnectAllDevicesSuccess": "Sie wurden von allen Geräten getrennt.",
+    "disconnectAllDevicesTitle": "Sich von allen Geräten trennen",
     "disconnected": "Getrennt",
     "disconnecting": "Trennen",
     "discountTag": "{discount} Rabatt",
@@ -2076,6 +2092,8 @@ class CodegenLoader extends AssetLoader {
         "Beim Herstellen der Verbindung zu {countryName} ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut. 😕",
     "failedToConnectError":
         "Die Verbindung konnte nicht hergestellt werden. Bitte versuchen Sie es erneut [Fehler: {errorCode}]",
+    "failedToDisconnectAllDevices":
+        "Es versäumt, die Verbindung von allen Geräten zu trennen. Bitte versuchen Sie es erneut",
     "failedToLoadLocations":
         "Die Standorte konnten nicht geladen werden. Bitte versuchen Sie es erneut. 😕",
     "failedToLogoutAllDevices":
@@ -2225,6 +2243,7 @@ class CodegenLoader extends AssetLoader {
     "questions": "Fragen?",
     "readOur": "Lesen Sie unsere",
     "recentLocations": "Aktuelle Standorte",
+    "reconnectBtn": "Erneut verbinden",
     "redeemCode": "Code einlösen",
     "redirectToLoginPage": "Sie werden zur Anmeldeseite weitergeleitet.",
     "refreshIP": "IP aktualisieren",
@@ -2232,6 +2251,15 @@ class CodegenLoader extends AssetLoader {
     "renewSubsBtn": "Erneuern Sie Ihr Abonnement",
     "renewsFor": "Verlängert für",
     "reportAnIssue": "Ein Problem melden",
+    "resetAppDesc":
+        "Etwas funktioniert nicht wie erwartet? Klicken Sie, um die App zurückzusetzen.",
+    "resetAppDialogContent":
+        "Wenn Sie mit dem Zurücksetzen der App fortfahren, werden Sie vom Mysterium VPN getrennt.",
+    "resetAppDialogTitle": "Die VPN -Verbindung ist derzeit aktiv",
+    "resetAppFailed": "Die App nicht zurücksetzen. Bitte versuchen Sie es erneut.",
+    "resetAppSuccess": "App wurde erfolgreich zurückgesetzt.",
+    "resetAppTitle": "App zurücksetzen",
+    "resetBtn": "Zurücksetzen",
     "retryBtn": "Wiederholen",
     "searchForLocations": "Nach Standorten suchen",
     "secure": "Sicher",
@@ -2276,6 +2304,7 @@ class CodegenLoader extends AssetLoader {
     "theme": "Motiv",
     "then": "Dann",
     "title": "Hallo Herr",
+    "toManyRequestsErrorMsg": "Zu viele Anfragen. Bitte versuchen Sie es später erneut.",
     "tokenAlreadyUsed": "Token bereits verwendet. Bitte versuchen Sie es erneut. 😕",
     "topLocations": "Top-Standorte",
     "tr": "Türkisch",
@@ -2297,28 +2326,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} für das Jahr.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Ja",
-    "zh": "Chinesisch",
-    "disconnectAllDevices": "Trennen Sie alle Geräte",
-    "disconnectAllDevicesDesc":
-        "Sie sind kurz davor, die Verbindung von all Ihren Geräten zu trennen. Die aktuelle Sitzung wird beendet, und Sie verlieren Ihre VPN -Verbindung.",
-    "disconnectAllDevicesTitle": "Sich von allen Geräten trennen",
-    "disconnectAllDevicesConfirmation": "Sind Sie sicher, dass Sie alle Geräte trennen möchten?",
-    "failedToDisconnectAllDevices":
-        "Es versäumt, die Verbindung von allen Geräten zu trennen. Bitte versuchen Sie es erneut",
-    "disconnectAllDevicesSuccess": "Sie wurden von allen Geräten getrennt.",
-    "reconnectBtn": "Erneut verbinden",
-    "toManyRequestsErrorMsg": "Zu viele Anfragen. Bitte versuchen Sie es später erneut.",
-    "connectingInProggress":
-        "In Arbeit verbinden. Bitte warten Sie, bis die Verbindung hergestellt ist.",
-    "resetAppTitle": "App zurücksetzen",
-    "resetAppDesc":
-        "Etwas funktioniert nicht wie erwartet? Klicken Sie, um die App zurückzusetzen.",
-    "resetAppDialogTitle": "Die VPN -Verbindung ist derzeit aktiv",
-    "resetAppDialogContent":
-        "Wenn Sie mit dem Zurücksetzen der App fortfahren, werden Sie vom Mysterium VPN getrennt.",
-    "resetBtn": "Zurücksetzen",
-    "resetAppSuccess": "App wurde erfolgreich zurückgesetzt.",
-    "resetAppFailed": "Die App nicht zurücksetzen. Bitte versuchen Sie es erneut."
+    "zh": "Chinesisch"
   };
   static const Map<String, dynamic> pt = {
     "AD": "Andorra",
@@ -2576,6 +2584,8 @@ class CodegenLoader extends AssetLoader {
     "acceptAndContinue": "Aceitar e continuar",
     "account": "Conta",
     "accountName": "Nome da conta \\ Email",
+    "accountSignIn": "Entrar",
+    "accountSignInTitle": "VocÃª nÃ£o estÃ¡ conectado",
     "accountSuccessfullyDeleted": "Sua conta foi excluída com sucesso. Lamentamos sua partida.😢",
     "activateSubscription": "Ative sua assinatura para conectar -se à VPN!",
     "activeSubsPaidVia":
@@ -2618,6 +2628,8 @@ class CodegenLoader extends AssetLoader {
     "confirm": "confirme",
     "connected": "Conectada",
     "connecting": "Conectando",
+    "connectingInProggress":
+        "Conectando em andamento. Aguarde até que a conexão seja estabelecida.",
     "connectingToPaymentProcesor": "Conectando -se ao Processor de Pagamento ...",
     "connection": "Conexão",
     "connectionDuration": "{duration} min",
@@ -2649,6 +2661,14 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Deletar conta",
     "deleteAccountQuestion": "Deletar conta?",
     "describeYourIssue": "descreva seu problema",
+    "disconnectAllDevices": "Desconecte todos os dispositivos",
+    "disconnectAllDevicesConfirmation":
+        "Tem certeza de que deseja desconectar todos os dispositivos?",
+    "disconnectAllDevicesDesc":
+        "Você está prestes a se desconectar de todos os seus dispositivos. A sessão atual será encerrada e você perderá sua conexão VPN.",
+    "disconnectAllDevicesSuccess":
+        "Você foi desconectado de todos os dispositivos.Reconnect à VPN para garantir sua segurança.",
+    "disconnectAllDevicesTitle": "Desconectar de todos os dispositivos",
     "disconnected": "Desconectado",
     "disconnecting": "Desconectando",
     "discountTag": "{discount} de desconto",
@@ -2677,6 +2697,8 @@ class CodegenLoader extends AssetLoader {
     "existingSubscriptionTitle": "Você pode sair e tentar com seu email ou ignorar este aviso",
     "failedToConnect": "Algo deu errado ao se conectar a {countryName}. Por favor, experimente. 😕",
     "failedToConnectError": "Falha ao conectar. Tente novamente [error: {errorCode}]",
+    "failedToDisconnectAllDevices":
+        "Falha ao desconectar de todos os dispositivos. Por favor, tente novamente",
     "failedToLoadLocations": "Não conseguimos carregar os locais. Por favor, experimente. 😕",
     "failedToLogoutAllDevices":
         "Falha ao sair de todos os dispositivos. Por favor, tente novamente",
@@ -2822,6 +2844,7 @@ class CodegenLoader extends AssetLoader {
     "questions": "Questões?",
     "readOur": "Leia nosso ",
     "recentLocations": "Locais recentes",
+    "reconnectBtn": "Reconectar",
     "redeemCode": "Resgatar código",
     "redirectToLoginPage": "Você será redirecionado para a página de login.",
     "refreshIP": "Atualizar IP",
@@ -2829,6 +2852,14 @@ class CodegenLoader extends AssetLoader {
     "renewSubsBtn": "Renove sua assinatura",
     "renewsFor": "Renova por",
     "reportAnIssue": "Relatar um problema",
+    "resetAppDesc": "Algo não está funcionando como esperado? Clique para redefinir o aplicativo.",
+    "resetAppDialogContent":
+        "Se você prosseguir com a redefinição do aplicativo, você será desconectado da VPN do Mysterium.",
+    "resetAppDialogTitle": "A conexão VPN está atualmente ativa",
+    "resetAppFailed": "Falha ao redefinir o app. Experimente tentar novamente.",
+    "resetAppSuccess": "O aplicativo foi redefinido com sucesso.",
+    "resetAppTitle": "Redefinir aplicativo",
+    "resetBtn": "Reiniciar",
     "retryBtn": "Tente novamente",
     "searchForLocations": "Procure por locais",
     "secure": "Segura",
@@ -2871,6 +2902,7 @@ class CodegenLoader extends AssetLoader {
     "theme": "Tema",
     "then": "Depois",
     "title": "Olá senhor",
+    "toManyRequestsErrorMsg": "Muitas solicitações. Por favor, tente novamente mais tarde.",
     "tokenAlreadyUsed": "Token já usado. Por favor, tente novamente. 😕",
     "topLocations": "Locais principais",
     "tr": "Turco",
@@ -2891,29 +2923,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} por ano.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "sim",
-    "zh": "Chinês",
-    "disconnectAllDevices": "Desconecte todos os dispositivos",
-    "disconnectAllDevicesDesc":
-        "Você está prestes a se desconectar de todos os seus dispositivos. A sessão atual será encerrada e você perderá sua conexão VPN.",
-    "disconnectAllDevicesTitle": "Desconectar de todos os dispositivos",
-    "disconnectAllDevicesConfirmation":
-        "Tem certeza de que deseja desconectar todos os dispositivos?",
-    "failedToDisconnectAllDevices":
-        "Falha ao desconectar de todos os dispositivos. Por favor, tente novamente",
-    "disconnectAllDevicesSuccess":
-        "Você foi desconectado de todos os dispositivos.Reconnect à VPN para garantir sua segurança.",
-    "reconnectBtn": "Reconectar",
-    "toManyRequestsErrorMsg": "Muitas solicitações. Por favor, tente novamente mais tarde.",
-    "connectingInProggress":
-        "Conectando em andamento. Aguarde até que a conexão seja estabelecida.",
-    "resetAppTitle": "Redefinir aplicativo",
-    "resetAppDesc": "Algo não está funcionando como esperado? Clique para redefinir o aplicativo.",
-    "resetAppDialogTitle": "A conexão VPN está atualmente ativa",
-    "resetAppDialogContent":
-        "Se você prosseguir com a redefinição do aplicativo, você será desconectado da VPN do Mysterium.",
-    "resetBtn": "Reiniciar",
-    "resetAppSuccess": "O aplicativo foi redefinido com sucesso.",
-    "resetAppFailed": "Falha ao redefinir o app. Experimente tentar novamente."
+    "zh": "Chinês"
   };
   static const Map<String, dynamic> en = {
     "AD": "Andorra",
@@ -3171,6 +3181,8 @@ class CodegenLoader extends AssetLoader {
     "acceptAndContinue": "Accept and continue",
     "account": "Account",
     "accountName": "Account name \\ email",
+    "accountSignIn": "Sign in",
+    "accountSignInTitle": "You're not signed in",
     "accountSuccessfullyDeleted":
         "Your account has been successfully deleted. We are sorry to see you go. 😢",
     "activateSubscription": "You need an active subscription to connect to VPN",
@@ -3214,6 +3226,8 @@ class CodegenLoader extends AssetLoader {
     "confirm": "Confirm",
     "connected": "Connected",
     "connecting": "Connecting",
+    "connectingInProggress":
+        "Connecting in progress.. Please wait until the connection is established.",
     "connectingToPaymentProcesor": "Connecting to the payment processor...",
     "connection": "Connection",
     "connectionDuration": "{duration} min",
@@ -3243,6 +3257,13 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Delete account",
     "deleteAccountQuestion": "Delete Account?",
     "describeYourIssue": "Describe your issue",
+    "disconnectAllDevices": "Disconnect all devices",
+    "disconnectAllDevicesConfirmation": "Are you sure you want to disconnect all devices?",
+    "disconnectAllDevicesDesc":
+        "You are about to disconnect from all your devices. The current session will be terminated, and you will lose your VPN connection.",
+    "disconnectAllDevicesSuccess":
+        "You have been disconnected from all devices. Reconnect to the VPN to ensure your safety.",
+    "disconnectAllDevicesTitle": "Disconnect from all devices",
     "disconnected": "Disconnected",
     "disconnecting": "Disconnecting",
     "discountTag": "{discount} off",
@@ -3271,6 +3292,7 @@ class CodegenLoader extends AssetLoader {
     "failedToConnect":
         "Something went wrong while connecting to {countryName}. Please try again. 😕",
     "failedToConnectError": "Failed to connect. Please try again [error: {errorCode}]",
+    "failedToDisconnectAllDevices": "Failed to disconnect from all devices. Please try again",
     "failedToLoadLocations": "We failed to load the locations. Please try again. 😕",
     "failedToLogoutAllDevices": "Failed to logout from all devices. Please try again",
     "failedToSubscribe": "Something went wrong with your subscription. Please try again! 😕",
@@ -3412,6 +3434,7 @@ class CodegenLoader extends AssetLoader {
     "questions": "Questions?",
     "readOur": "Read our ",
     "recentLocations": "Recent locations",
+    "reconnectBtn": "Reconnect",
     "redeemCode": "Redeem Code",
     "redirectToLoginPage": "You will be redirected to the login page.",
     "refreshIP": "Refresh IP",
@@ -3419,6 +3442,14 @@ class CodegenLoader extends AssetLoader {
     "renewSubsBtn": "Renew Your Subscription",
     "renewsFor": "Renews for",
     "reportAnIssue": "Report an issue",
+    "resetAppDesc": "Something isn't working as expected? Click to reset the app.",
+    "resetAppDialogContent":
+        "If you proceed with resetting the app, you will be disconnected from the Mysterium VPN.",
+    "resetAppDialogTitle": "VPN connection is currently active",
+    "resetAppFailed": "Failed to reset the app. Please try again.",
+    "resetAppSuccess": "App has been reset successfully.",
+    "resetAppTitle": "Reset app",
+    "resetBtn": "Reset",
     "retryBtn": "Retry",
     "searchForLocations": "Search for locations",
     "secure": "Secure",
@@ -3461,6 +3492,7 @@ class CodegenLoader extends AssetLoader {
     "theme": "Theme",
     "then": "Then",
     "title": "Hello Sir",
+    "toManyRequestsErrorMsg": "Too many requests. Please try again later.",
     "tokenAlreadyUsed": "Token already used. Please try again. 😕",
     "topLocations": "Top locations",
     "tr": "Turkish",
@@ -3481,27 +3513,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} for the year.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Yes",
-    "zh": "Chinese",
-    "disconnectAllDevices": "Disconnect all devices",
-    "disconnectAllDevicesDesc":
-        "You are about to disconnect from all your devices. The current session will be terminated, and you will lose your VPN connection.",
-    "disconnectAllDevicesTitle": "Disconnect from all devices",
-    "disconnectAllDevicesConfirmation": "Are you sure you want to disconnect all devices?",
-    "failedToDisconnectAllDevices": "Failed to disconnect from all devices. Please try again",
-    "disconnectAllDevicesSuccess":
-        "You have been disconnected from all devices. Reconnect to the VPN to ensure your safety.",
-    "reconnectBtn": "Reconnect",
-    "toManyRequestsErrorMsg": "Too many requests. Please try again later.",
-    "connectingInProggress":
-        "Connecting in progress.. Please wait until the connection is established.",
-    "resetAppTitle": "Reset app",
-    "resetAppDesc": "Something isn't working as expected? Click to reset the app.",
-    "resetAppDialogTitle": "VPN connection is currently active",
-    "resetAppDialogContent":
-        "If you proceed with resetting the app, you will be disconnected from the Mysterium VPN.",
-    "resetBtn": "Reset",
-    "resetAppSuccess": "App has been reset successfully.",
-    "resetAppFailed": "Failed to reset the app. Please try again."
+    "zh": "Chinese"
   };
   static const Map<String, dynamic> it = {
     "AD": "Andorra",
@@ -3759,6 +3771,8 @@ class CodegenLoader extends AssetLoader {
     "acceptAndContinue": "Accetta e continua",
     "account": "Account",
     "accountName": "Nome account \\ e-mail",
+    "accountSignIn": "Accedi",
+    "accountSignInTitle": "Non hai effettuato l'accesso",
     "accountSuccessfullyDeleted":
         "Il tuo account è stato eliminato con successo. Siamo spiacenti di vederti andare. 😢",
     "activateSubscription": "È necessario un abbonamento attivo per connettersi alla VPN",
@@ -3803,6 +3817,8 @@ class CodegenLoader extends AssetLoader {
     "confirm": "Conferma",
     "connected": "Collegato",
     "connecting": "Collegamento",
+    "connectingInProggress":
+        "Connessione in corso. Attendere fino a quando non è stabilita la connessione.",
     "connectingToPaymentProcesor": "Connessione al processore di pagamento...",
     "connection": "Connessione",
     "connectionDuration": "{duration} min",
@@ -3835,6 +3851,13 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Elimina account",
     "deleteAccountQuestion": "Vuoi eliminare l'account?",
     "describeYourIssue": "Descrivi il tuo problema",
+    "disconnectAllDevices": "Scollegare tutti i dispositivi",
+    "disconnectAllDevicesConfirmation": "Sei sicuro di voler scollegare tutti i dispositivi?",
+    "disconnectAllDevicesDesc":
+        "Stai per disconnetterti da tutti i tuoi dispositivi. La sessione corrente verrà terminata e perderai la connessione VPN.",
+    "disconnectAllDevicesSuccess":
+        "Sei stato disconnesso da tutti i dispositivi. RECONNECT alla VPN per garantire la tua sicurezza.",
+    "disconnectAllDevicesTitle": "Scollegare da tutti i dispositivi",
     "disconnected": "Disconnesso",
     "disconnecting": "Disconnessione",
     "discountTag": "Sconto del {discount}%",
@@ -3865,6 +3888,8 @@ class CodegenLoader extends AssetLoader {
     "failedToConnect":
         "Qualcosa è andato storto durante la connessione a {countryName}. Per favore riprova. 😕",
     "failedToConnectError": "Impossibile connettersi. Riprova [errore: {errorCode}]",
+    "failedToDisconnectAllDevices":
+        "Impossibile disconnettersi da tutti i dispositivi. Per favore riprova",
     "failedToLoadLocations": "Impossibile caricare le posizioni. Per favore riprova. 😕",
     "failedToLogoutAllDevices":
         "Impossibile disconnettersi da tutti i dispositivi. Per favore, riprova",
@@ -4009,6 +4034,7 @@ class CodegenLoader extends AssetLoader {
     "questions": "Domande?",
     "readOur": "Leggi il nostro",
     "recentLocations": "Località recenti",
+    "reconnectBtn": "Riconnettersi",
     "redeemCode": "Riscatta codice",
     "redirectToLoginPage": "Verrai reindirizzato alla pagina di accesso.",
     "refreshIP": "Aggiorna IP",
@@ -4016,6 +4042,14 @@ class CodegenLoader extends AssetLoader {
     "renewSubsBtn": "Rinnova il tuo abbonamento",
     "renewsFor": "Si rinnova per",
     "reportAnIssue": "Segnala un problema",
+    "resetAppDesc": "Qualcosa non funziona come previsto? Fai clic per ripristinare l'app.",
+    "resetAppDialogContent":
+        "Se procedi con il ripristino dell'app, verrai disconnesso dalla VPN Mysterium.",
+    "resetAppDialogTitle": "La connessione VPN è attualmente attiva",
+    "resetAppFailed": "Impossibile ripristinare l'app. Riprova.",
+    "resetAppSuccess": "L'app è stata ripristinata correttamente.",
+    "resetAppTitle": "Ripristina l'app",
+    "resetBtn": "Reset",
     "retryBtn": "Riprova",
     "searchForLocations": "Cerca località",
     "secure": "Sicuro",
@@ -4058,6 +4092,7 @@ class CodegenLoader extends AssetLoader {
     "theme": "Tema",
     "then": "Poi",
     "title": "Salve signore",
+    "toManyRequestsErrorMsg": "Troppe richieste. Per favore riprova più tardi.",
     "tokenAlreadyUsed": "Token già utilizzato. Per favore riprova. 😕",
     "topLocations": "Le migliori posizioni",
     "tr": "Turco",
@@ -4078,28 +4113,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} per l'anno.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sì",
-    "zh": "Cinese",
-    "disconnectAllDevices": "Scollegare tutti i dispositivi",
-    "disconnectAllDevicesDesc":
-        "Stai per disconnetterti da tutti i tuoi dispositivi. La sessione corrente verrà terminata e perderai la connessione VPN.",
-    "disconnectAllDevicesTitle": "Scollegare da tutti i dispositivi",
-    "disconnectAllDevicesConfirmation": "Sei sicuro di voler scollegare tutti i dispositivi?",
-    "failedToDisconnectAllDevices":
-        "Impossibile disconnettersi da tutti i dispositivi. Per favore riprova",
-    "disconnectAllDevicesSuccess":
-        "Sei stato disconnesso da tutti i dispositivi. RECONNECT alla VPN per garantire la tua sicurezza.",
-    "reconnectBtn": "Riconnettersi",
-    "toManyRequestsErrorMsg": "Troppe richieste. Per favore riprova più tardi.",
-    "connectingInProggress":
-        "Connessione in corso. Attendere fino a quando non è stabilita la connessione.",
-    "resetAppTitle": "Ripristina l'app",
-    "resetAppDesc": "Qualcosa non funziona come previsto? Fai clic per ripristinare l'app.",
-    "resetAppDialogTitle": "La connessione VPN è attualmente attiva",
-    "resetAppDialogContent":
-        "Se procedi con il ripristino dell'app, verrai disconnesso dalla VPN Mysterium.",
-    "resetBtn": "Reset",
-    "resetAppSuccess": "L'app è stata ripristinata correttamente.",
-    "resetAppFailed": "Impossibile ripristinare l'app. Riprova."
+    "zh": "Cinese"
   };
   static const Map<String, dynamic> fr = {
     "AD": "Andorre",
@@ -4357,6 +4371,8 @@ class CodegenLoader extends AssetLoader {
     "acceptAndContinue": "Accepter et continuer",
     "account": "Compte",
     "accountName": "Nom du compte \\ e-mail",
+    "accountSignIn": "Se connecter",
+    "accountSignInTitle": "Vous n'êtes pas connecté",
     "accountSuccessfullyDeleted":
         "Votre compte a été supprimé avec succès.Nous sommes désolés de vous voir partir.😢",
     "activateSubscription": "Veuillez activer votre abonnement pour vous connecter à VPN!",
@@ -4401,6 +4417,8 @@ class CodegenLoader extends AssetLoader {
     "confirm": "Confirmer",
     "connected": "Connecté",
     "connecting": "De liaison",
+    "connectingInProggress":
+        "Connexion en cours .. Veuillez attendre que la connexion soit établie.",
     "connectingToPaymentProcesor": "Connexion au Processeur de paiement ...",
     "connection": "Connexion",
     "connectionDuration": "{duration} min",
@@ -4433,6 +4451,13 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Supprimer le compte",
     "deleteAccountQuestion": "Supprimer le compte?",
     "describeYourIssue": "Décrivez votre problème",
+    "disconnectAllDevices": "Débrancher tous les appareils",
+    "disconnectAllDevicesConfirmation": "Êtes-vous sûr de vouloir déconnecter tous les appareils?",
+    "disconnectAllDevicesDesc":
+        "Vous êtes sur le point de vous déconnecter de tous vos appareils. La session actuelle sera terminée et vous perdrez votre connexion VPN.",
+    "disconnectAllDevicesSuccess":
+        "Vous avez été déconnecté de tous les appareils. Connectez-vous au VPN pour assurer votre sécurité.",
+    "disconnectAllDevicesTitle": "Se déconnecter de tous les appareils",
     "disconnected": "Débranché",
     "disconnecting": "Déconnecter",
     "discountTag": "{discount} de réduction",
@@ -4463,6 +4488,7 @@ class CodegenLoader extends AssetLoader {
     "failedToConnect":
         "Quelque chose s'est mal passé lors de la connexion à {countryName}. Veuillez essayer un autre essai. 😕",
     "failedToConnectError": "Échec de la connexion. Veuillez réessayer [erreur : {errorCode}]",
+    "failedToDisconnectAllDevices": "Échec de la déconnexion de tous les appareils.",
     "failedToLoadLocations":
         "Nous n'avons pas réussi à charger les emplacements. Veuillez essayer un autre essai. 😕",
     "failedToLogoutAllDevices": "Échec de la déconnexion de tous les appareils. Veuillez réessayer",
@@ -4609,6 +4635,7 @@ class CodegenLoader extends AssetLoader {
     "questions": "Des questions?",
     "readOur": "Lisez notre ",
     "recentLocations": "Emplacements récents",
+    "reconnectBtn": "Reconnecter",
     "redeemCode": "Utiliser le code",
     "redirectToLoginPage": "Vous serez redirigé vers la page de connexion.",
     "refreshIP": "Actualiser l'IP",
@@ -4616,6 +4643,15 @@ class CodegenLoader extends AssetLoader {
     "renewSubsBtn": "Renouveler votre abonnement",
     "renewsFor": "Se renouvelle pour",
     "reportAnIssue": "Signaler un problème",
+    "resetAppDesc":
+        "Quelque chose ne fonctionne pas comme prévu? Cliquez pour réinitialiser l'application.",
+    "resetAppDialogContent":
+        "Si vous continuez à réinitialiser l'application, vous serez déconnecté du Mysterium VPN.",
+    "resetAppDialogTitle": "La connexion VPN est actuellement active",
+    "resetAppFailed": "Échec de la réinitialisation de l'application.Veuillez réessayer.",
+    "resetAppSuccess": "L'application a été réinitialisée avec succès.",
+    "resetAppTitle": "Réinitialiser l'application",
+    "resetBtn": "Réinitialiser",
     "retryBtn": "Recommencez",
     "searchForLocations": "Rechercher des emplacements",
     "secure": "Sécurisé",
@@ -4659,6 +4695,7 @@ class CodegenLoader extends AssetLoader {
     "theme": "Thème",
     "then": "Ensuite",
     "title": "Bonjour monsieur",
+    "toManyRequestsErrorMsg": "Trop de demandes. Veuillez réessayer plus tard.",
     "tokenAlreadyUsed": "Jeton déjà utilisé. Veuillez réessayer. 😕",
     "topLocations": "Emplacements supérieurs",
     "tr": "Turc",
@@ -4679,28 +4716,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} pour l'année.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Oui",
-    "zh": "Chinois",
-    "disconnectAllDevices": "Débrancher tous les appareils",
-    "disconnectAllDevicesDesc":
-        "Vous êtes sur le point de vous déconnecter de tous vos appareils. La session actuelle sera terminée et vous perdrez votre connexion VPN.",
-    "disconnectAllDevicesTitle": "Se déconnecter de tous les appareils",
-    "disconnectAllDevicesConfirmation": "Êtes-vous sûr de vouloir déconnecter tous les appareils?",
-    "failedToDisconnectAllDevices": "Échec de la déconnexion de tous les appareils.",
-    "disconnectAllDevicesSuccess":
-        "Vous avez été déconnecté de tous les appareils. Connectez-vous au VPN pour assurer votre sécurité.",
-    "reconnectBtn": "Reconnecter",
-    "toManyRequestsErrorMsg": "Trop de demandes. Veuillez réessayer plus tard.",
-    "connectingInProggress":
-        "Connexion en cours .. Veuillez attendre que la connexion soit établie.",
-    "resetAppTitle": "Réinitialiser l'application",
-    "resetAppDesc":
-        "Quelque chose ne fonctionne pas comme prévu? Cliquez pour réinitialiser l'application.",
-    "resetAppDialogTitle": "La connexion VPN est actuellement active",
-    "resetAppDialogContent":
-        "Si vous continuez à réinitialiser l'application, vous serez déconnecté du Mysterium VPN.",
-    "resetBtn": "Réinitialiser",
-    "resetAppSuccess": "L'application a été réinitialisée avec succès.",
-    "resetAppFailed": "Échec de la réinitialisation de l'application.Veuillez réessayer."
+    "zh": "Chinois"
   };
   static const Map<String, dynamic> id = {
     "AD": "Andorra",
@@ -4958,6 +4974,8 @@ class CodegenLoader extends AssetLoader {
     "acceptAndContinue": "Terima dan lanjutkan",
     "account": "Akun",
     "accountName": "Nama akun \\ email",
+    "accountSignIn": "Masuk",
+    "accountSignInTitle": "Anda belum masuk",
     "accountSuccessfullyDeleted":
         "Akun Anda telah berhasil dihapus. Kami menyesal melihat Anda pergi. 😢",
     "activateSubscription": "Anda memerlukan langganan aktif untuk terhubung ke VPN",
@@ -5001,6 +5019,7 @@ class CodegenLoader extends AssetLoader {
     "confirm": "Mengonfirmasi",
     "connected": "Terhubung",
     "connecting": "Menghubungkan",
+    "connectingInProggress": "Menghubungkan dalam proses .. Harap tunggu sampai koneksi dibuat.",
     "connectingToPaymentProcesor": "Menghubungkan ke pemroses pembayaran...",
     "connection": "Koneksi",
     "connectionDuration": "{duration} mnt",
@@ -5032,6 +5051,13 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Hapus akun",
     "deleteAccountQuestion": "Hapus akun?",
     "describeYourIssue": "jelaskan permasalahanmu",
+    "disconnectAllDevices": "Lepaskan semua perangkat",
+    "disconnectAllDevicesConfirmation": "Apakah Anda yakin ingin memutuskan semua perangkat?",
+    "disconnectAllDevicesDesc":
+        "Anda akan memutuskan dari semua perangkat Anda. Sesi saat ini akan diakhiri, dan Anda akan kehilangan koneksi VPN Anda.",
+    "disconnectAllDevicesSuccess":
+        "Anda telah terputus dari semua perangkat. Connonnect ke VPN untuk memastikan keselamatan Anda.",
+    "disconnectAllDevicesTitle": "Putuskan sambungan dari semua perangkat",
     "disconnected": "Terputus",
     "disconnecting": "Memutuskan",
     "discountTag": "Diskon {discount}",
@@ -5061,6 +5087,7 @@ class CodegenLoader extends AssetLoader {
     "failedToConnect":
         "Terjadi kesalahan saat menghubungkan ke {countryName}. Silakan coba lagi. 😕",
     "failedToConnectError": "Gagal terhubung. Silakan coba lagi [kesalahan: {errorCode}]",
+    "failedToDisconnectAllDevices": "Gagal memutuskan hubungan dari semua perangkat. Coba lagi",
     "failedToLoadLocations": "Kami gagal memuat lokasi. Silakan coba lagi. 😕",
     "failedToLogoutAllDevices": "Gagal keluar dari semua perangkat. Silakan coba lagi",
     "failedToSubscribe": "Ada yang salah dengan langganan Anda. Silakan coba lagi! 😕",
@@ -5202,6 +5229,7 @@ class CodegenLoader extends AssetLoader {
     "questions": "Pertanyaan?",
     "readOur": "Baca kami",
     "recentLocations": "Lokasi terkini",
+    "reconnectBtn": "Terhubung kembali",
     "redeemCode": "Menebus kode",
     "redirectToLoginPage": "Anda akan dialihkan ke halaman login.",
     "refreshIP": "Segarkan IP",
@@ -5209,6 +5237,15 @@ class CodegenLoader extends AssetLoader {
     "renewSubsBtn": "Perbarui Langganan Anda",
     "renewsFor": "Diperpanjang untuk",
     "reportAnIssue": "Laporkan masalah",
+    "resetAppDesc":
+        "Sesuatu tidak berfungsi seperti yang diharapkan? Klik untuk mengatur ulang aplikasi.",
+    "resetAppDialogContent":
+        "Jika Anda melanjutkan dengan mengatur ulang aplikasi, Anda akan terputus dari Mysterium VPN.",
+    "resetAppDialogTitle": "Koneksi VPN saat ini aktif",
+    "resetAppFailed": "Gagal mengatur ulang app. Tolong coba lagi.",
+    "resetAppSuccess": "Aplikasi telah berhasil diatur ulang.",
+    "resetAppTitle": "Reset aplikasi",
+    "resetBtn": "Mengatur ulang",
     "retryBtn": "Mencoba kembali",
     "searchForLocations": "Telusuri lokasi",
     "secure": "Aman",
@@ -5251,6 +5288,7 @@ class CodegenLoader extends AssetLoader {
     "theme": "Tema",
     "then": "Kemudian",
     "title": "Halo Pak",
+    "toManyRequestsErrorMsg": "Terlalu banyak permintaan. Silakan coba lagi nanti.",
     "tokenAlreadyUsed": "Token sudah digunakan. Silakan coba lagi. 😕",
     "topLocations": "Lokasi teratas",
     "tr": "Turki",
@@ -5271,27 +5309,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} untuk tahun.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Iya",
-    "zh": "Cina",
-    "disconnectAllDevices": "Lepaskan semua perangkat",
-    "disconnectAllDevicesDesc":
-        "Anda akan memutuskan dari semua perangkat Anda. Sesi saat ini akan diakhiri, dan Anda akan kehilangan koneksi VPN Anda.",
-    "disconnectAllDevicesTitle": "Putuskan sambungan dari semua perangkat",
-    "disconnectAllDevicesConfirmation": "Apakah Anda yakin ingin memutuskan semua perangkat?",
-    "failedToDisconnectAllDevices": "Gagal memutuskan hubungan dari semua perangkat. Coba lagi",
-    "disconnectAllDevicesSuccess":
-        "Anda telah terputus dari semua perangkat. Connonnect ke VPN untuk memastikan keselamatan Anda.",
-    "reconnectBtn": "Terhubung kembali",
-    "toManyRequestsErrorMsg": "Terlalu banyak permintaan. Silakan coba lagi nanti.",
-    "connectingInProggress": "Menghubungkan dalam proses .. Harap tunggu sampai koneksi dibuat.",
-    "resetAppTitle": "Reset aplikasi",
-    "resetAppDesc":
-        "Sesuatu tidak berfungsi seperti yang diharapkan? Klik untuk mengatur ulang aplikasi.",
-    "resetAppDialogTitle": "Koneksi VPN saat ini aktif",
-    "resetAppDialogContent":
-        "Jika Anda melanjutkan dengan mengatur ulang aplikasi, Anda akan terputus dari Mysterium VPN.",
-    "resetBtn": "Mengatur ulang",
-    "resetAppSuccess": "Aplikasi telah berhasil diatur ulang.",
-    "resetAppFailed": "Gagal mengatur ulang app. Tolong coba lagi."
+    "zh": "Cina"
   };
   static const Map<String, dynamic> es = {
     "AD": "Andorra",
@@ -5549,6 +5567,8 @@ class CodegenLoader extends AssetLoader {
     "acceptAndContinue": "Aceptar y continuar",
     "account": "Cuenta",
     "accountName": "Nombre de cuenta / correo electrónico",
+    "accountSignIn": "Iniciar sesión",
+    "accountSignInTitle": "No has iniciado sesión",
     "accountSuccessfullyDeleted":
         "Tu cuenta ha sido eliminada con éxito. Lamentamos que te vayas. 😢",
     "activateSubscription": "Necesita una suscripción activa para conectarse a VPN",
@@ -5593,6 +5613,7 @@ class CodegenLoader extends AssetLoader {
     "confirm": "Confirmar",
     "connected": "Conectado",
     "connecting": "Conectando",
+    "connectingInProggress": "Conectando en progreso. Espere hasta que se establezca la conexión.",
     "connectingToPaymentProcesor": "Conectándose al procesador de pagos...",
     "connection": "Conexión",
     "connectionDuration": "{duración} minutos",
@@ -5624,6 +5645,14 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Borrar cuenta",
     "deleteAccountQuestion": "¿Borrar cuenta?",
     "describeYourIssue": "Describe tu problema",
+    "disconnectAllDevices": "Desconectar todos los dispositivos",
+    "disconnectAllDevicesConfirmation":
+        "¿Estás seguro de que quieres desconectar todos los dispositivos?",
+    "disconnectAllDevicesDesc":
+        "Está a punto de desconectarse de todos sus dispositivos. La sesión actual se terminará y perderá su conexión VPN.",
+    "disconnectAllDevicesSuccess":
+        "Se ha desconectado de todos los dispositivos. Realice a la VPN para garantizar su seguridad.",
+    "disconnectAllDevicesTitle": "Desconectar de todos los dispositivos",
     "disconnected": "Desconectado",
     "disconnecting": "Desconectando",
     "discountTag": "{discount} de descuento",
@@ -5653,6 +5682,8 @@ class CodegenLoader extends AssetLoader {
         "Puedes cerrar sesión e intentarlo con tu correo electrónico o ignorar esta advertencia",
     "failedToConnect": "Algo salió mal al conectarse a {countryName}. Inténtalo de nuevo. 😕",
     "failedToConnectError": "No se pudo conectar. Inténtelo de nuevo [error: {errorCode}]",
+    "failedToDisconnectAllDevices":
+        "No se pudo desconectar de todos los dispositivos. Por favor, intente nuevamente",
     "failedToLoadLocations": "No pudimos cargar las ubicaciones. Inténtalo de nuevo. 😕",
     "failedToLogoutAllDevices":
         "Error al cerrar sesión en todos los dispositivos. Por favor, inténtalo de nuevo",
@@ -5802,6 +5833,7 @@ class CodegenLoader extends AssetLoader {
     "questions": "¿Preguntas?",
     "readOur": "Lee nuestro",
     "recentLocations": "Ubicaciones recientes",
+    "reconnectBtn": "Volver a conectar",
     "redeemCode": "Canjear código",
     "redirectToLoginPage": "Serás redirigido a la página de inicio de sesión.",
     "refreshIP": "Actualizar IP",
@@ -5809,6 +5841,14 @@ class CodegenLoader extends AssetLoader {
     "renewSubsBtn": "Renueva tu suscripción",
     "renewsFor": "Se renueva por",
     "reportAnIssue": "Reportar un problema",
+    "resetAppDesc": "Algo no funciona como se esperaba? Haga clic para restablecer la aplicación.",
+    "resetAppDialogContent":
+        "Si continúa con restablecimiento de la aplicación, se desconectará de la VPN Mysterium.",
+    "resetAppDialogTitle": "La conexión VPN está actualmente activa",
+    "resetAppFailed": "No se pudo reiniciar la aplicación. Por favor, intente nuevamente.",
+    "resetAppSuccess": "La aplicación se ha restablecido con éxito.",
+    "resetAppTitle": "Restablecer la aplicación",
+    "resetBtn": "Reiniciar",
     "retryBtn": "Intentar de nuevo",
     "searchForLocations": "Buscar ubicaciones",
     "secure": "Seguro",
@@ -5851,6 +5891,7 @@ class CodegenLoader extends AssetLoader {
     "theme": "Tema",
     "then": "Luego",
     "title": "Hola señor",
+    "toManyRequestsErrorMsg": "Demasiadas solicitudes. Inténtalo de nuevo más tarde.",
     "tokenAlreadyUsed": "Ficha ya utilizada. Inténtalo de nuevo. 😕",
     "topLocations": "Ubicaciones principales",
     "tr": "Turco",
@@ -5871,28 +5912,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} por el año.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sí",
-    "zh": "Chino",
-    "disconnectAllDevices": "Desconectar todos los dispositivos",
-    "disconnectAllDevicesDesc":
-        "Está a punto de desconectarse de todos sus dispositivos. La sesión actual se terminará y perderá su conexión VPN.",
-    "disconnectAllDevicesTitle": "Desconectar de todos los dispositivos",
-    "disconnectAllDevicesConfirmation":
-        "¿Estás seguro de que quieres desconectar todos los dispositivos?",
-    "failedToDisconnectAllDevices":
-        "No se pudo desconectar de todos los dispositivos. Por favor, intente nuevamente",
-    "disconnectAllDevicesSuccess":
-        "Se ha desconectado de todos los dispositivos. Realice a la VPN para garantizar su seguridad.",
-    "reconnectBtn": "Volver a conectar",
-    "toManyRequestsErrorMsg": "Demasiadas solicitudes. Inténtalo de nuevo más tarde.",
-    "connectingInProggress": "Conectando en progreso. Espere hasta que se establezca la conexión.",
-    "resetAppTitle": "Restablecer la aplicación",
-    "resetAppDesc": "Algo no funciona como se esperaba? Haga clic para restablecer la aplicación.",
-    "resetAppDialogTitle": "La conexión VPN está actualmente activa",
-    "resetAppDialogContent":
-        "Si continúa con restablecimiento de la aplicación, se desconectará de la VPN Mysterium.",
-    "resetBtn": "Reiniciar",
-    "resetAppSuccess": "La aplicación se ha restablecido con éxito.",
-    "resetAppFailed": "No se pudo reiniciar la aplicación. Por favor, intente nuevamente."
+    "zh": "Chino"
   };
   static const Map<String, dynamic> ar = {
     "AD": "أندورا",
@@ -6150,6 +6170,8 @@ class CodegenLoader extends AssetLoader {
     "acceptAndContinue": "اقبل واستمر",
     "account": "حساب",
     "accountName": "اسم الحساب / البريد الإلكتروني",
+    "accountSignIn": "لم تقم بتسجيل الدخول",
+    "accountSignInTitle": "تسجيل الدخول",
     "accountSuccessfullyDeleted": "تم حذف حسابك بنجاح. نأسف لمغادرتك. 😢",
     "activateSubscription": "أنت بحاجة إلى اشتراك نشط للاتصال بشبكة VPN",
     "activeSubsPaidVia":
@@ -6190,6 +6212,7 @@ class CodegenLoader extends AssetLoader {
     "confirm": "أكد",
     "connected": "متصل",
     "connecting": "جاري الاتصال",
+    "connectingInProggress": "الاتصال قيد التقدم .. يرجى الانتظار حتى يتم إنشاء الاتصال.",
     "connectingToPaymentProcesor": "جارٍ الاتصال بمعالج الدفع...",
     "connection": "اتصال",
     "connectionDuration": "{duration} دقيقة",
@@ -6219,6 +6242,12 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "حذف الحساب",
     "deleteAccountQuestion": "حذف الحساب؟",
     "describeYourIssue": "صف مشكلتك",
+    "disconnectAllDevices": "افصل جميع الأجهزة",
+    "disconnectAllDevicesConfirmation": "هل أنت متأكد أنك تريد فصل جميع الأجهزة؟",
+    "disconnectAllDevicesDesc":
+        "أنت على وشك الانفصال عن جميع أجهزتك. سيتم إنهاء الجلسة الحالية ، وسوف تفقد اتصال VPN الخاص بك.",
+    "disconnectAllDevicesSuccess": "لقد تم فصلك عن جميع الأجهزة. الاتصال بـ VPN لضمان سلامتك.",
+    "disconnectAllDevicesTitle": "افصل عن جميع الأجهزة",
     "disconnected": "انقطع الاتصال",
     "disconnecting": "قطع الاتصال",
     "discountTag": "{discount} قبالة",
@@ -6247,6 +6276,7 @@ class CodegenLoader extends AssetLoader {
         "يمكنك تسجيل الخروج والمحاولة مع بريدك الإلكتروني أو تجاهل هذا التحذير",
     "failedToConnect": "حدث خطأ أثناء الاتصال بـ {countryName}. حاول مرة أخرى. 😕",
     "failedToConnectError": "فشل الاتصال. يرجى المحاولة مرة أخرى [الخطأ: {errorCode}]",
+    "failedToDisconnectAllDevices": "فشل في الانفصال عن جميع الأجهزة.",
     "failedToLoadLocations": "فشلنا في تحميل المواقع. حاول مرة أخرى. 😕",
     "failedToLogoutAllDevices": "فشل تسجيل الخروج من جميع الأجهزة. الرجاء المحاولة مرة أخرى",
     "failedToSubscribe": "حدث خطأ ما في اشتراكك. حاول مرة اخرى! 😕",
@@ -6386,6 +6416,7 @@ class CodegenLoader extends AssetLoader {
     "questions": "أسئلة؟",
     "readOur": "اقرأ",
     "recentLocations": "المواقع الأخيرة",
+    "reconnectBtn": "إعادة الاتصال",
     "redeemCode": "استرداد الرمز",
     "redirectToLoginPage": "ستتم إعادة توجيهك إلى صفحة تسجيل الدخول.",
     "refreshIP": "تحديث IP",
@@ -6393,6 +6424,13 @@ class CodegenLoader extends AssetLoader {
     "renewSubsBtn": "جدد اشتراكك",
     "renewsFor": "يتجدد لـ",
     "reportAnIssue": "بلغ عن خطأ",
+    "resetAppDesc": "شيء لا يعمل كما هو متوقع؟ انقر لإعادة ضبط التطبيق.",
+    "resetAppDialogContent": "إذا تابعت إعادة تعيين التطبيق ، فسيتم فصلك عن Mysterium VPN.",
+    "resetAppDialogTitle": "اتصال VPN نشط حاليًا",
+    "resetAppFailed": "فشل في إعادة ضبط التطبيق. ",
+    "resetAppSuccess": "تم إعادة تعيين التطبيق بنجاح.",
+    "resetAppTitle": "إعادة تعيين التطبيق",
+    "resetBtn": "إعادة ضبط",
     "retryBtn": "أعد المحاولة",
     "searchForLocations": "ابحث عن المواقع",
     "secure": "آمن",
@@ -6435,6 +6473,8 @@ class CodegenLoader extends AssetLoader {
     "theme": "سمة",
     "then": "ثم",
     "title": "أهلاً سيدي",
+    "toManyRequestsErrorMsg":
+        "لقد تجاوزت الحد الأقصى لعدد الطلبات. يرجى المحاولة مرة أخرى في وقت لاحق.",
     "tokenAlreadyUsed": "رمز مستخدم بالفعل. حاول مرة أخرى. 😕",
     "topLocations": "أفضل المواقع",
     "tr": "اللغة التركية",
@@ -6454,25 +6494,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{المبلغ} للسنة.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "نعم",
-    "zh": "صينى",
-    "disconnectAllDevices": "افصل جميع الأجهزة",
-    "disconnectAllDevicesDesc":
-        "أنت على وشك الانفصال عن جميع أجهزتك. سيتم إنهاء الجلسة الحالية ، وسوف تفقد اتصال VPN الخاص بك.",
-    "disconnectAllDevicesTitle": "افصل عن جميع الأجهزة",
-    "disconnectAllDevicesConfirmation": "هل أنت متأكد أنك تريد فصل جميع الأجهزة؟",
-    "failedToDisconnectAllDevices": "فشل في الانفصال عن جميع الأجهزة.",
-    "disconnectAllDevicesSuccess": "لقد تم فصلك عن جميع الأجهزة. الاتصال بـ VPN لضمان سلامتك.",
-    "reconnectBtn": "إعادة الاتصال",
-    "toManyRequestsErrorMsg":
-        "لقد تجاوزت الحد الأقصى لعدد الطلبات. يرجى المحاولة مرة أخرى في وقت لاحق.",
-    "connectingInProggress": "الاتصال قيد التقدم .. يرجى الانتظار حتى يتم إنشاء الاتصال.",
-    "resetAppTitle": "إعادة تعيين التطبيق",
-    "resetAppDesc": "شيء لا يعمل كما هو متوقع؟ انقر لإعادة ضبط التطبيق.",
-    "resetAppDialogTitle": "اتصال VPN نشط حاليًا",
-    "resetAppDialogContent": "إذا تابعت إعادة تعيين التطبيق ، فسيتم فصلك عن Mysterium VPN.",
-    "resetBtn": "إعادة ضبط",
-    "resetAppSuccess": "تم إعادة تعيين التطبيق بنجاح.",
-    "resetAppFailed": "فشل في إعادة ضبط التطبيق. "
+    "zh": "صينى"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,

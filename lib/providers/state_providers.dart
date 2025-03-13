@@ -35,7 +35,10 @@ import 'package:mysterium_vpn/stores/vpn_store.dart';
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
 final authSessionStorePOD = Provider<AuthSessionStore>(
-  (ref) => AuthSessionStore(secureStorage: SecureStorageService.instance),
+  (ref) => AuthSessionStore(
+    secureStorage: SecureStorageService.instance,
+    remoteConfigStore: ref.watch(remoteConfigStorePOD),
+  ),
 );
 
 final authStorePOD = Provider<AuthStore>((ref) {
