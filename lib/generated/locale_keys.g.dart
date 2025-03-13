@@ -547,6 +547,8 @@ abstract class LocaleKeys {
   static const ukraine = 'ukraine';
   static const unableToConnectToPaymentProcesor = 'unableToConnectToPaymentProcesor';
   static const unableToGetPlans = 'unableToGetPlans';
+  static const unauthenticatedBannerBtn = 'unauthenticatedBannerBtn';
+  static const unauthenticatedBannerTitle = 'unauthenticatedBannerTitle';
   static const upload = 'upload';
   static const was = 'was';
   static const weNeedPermission = 'weNeedPermission';

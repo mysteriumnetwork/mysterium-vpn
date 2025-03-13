@@ -545,6 +545,8 @@
   "ukraine": "乌克兰",
   "unableToConnectToPaymentProcesor": "无法连接到支付处理器！请再试一次。",
   "unableToGetPlans": "无法获取订阅计划！请再试一次。",
+  "unauthenticatedBannerBtn": "登录以检查您的订阅",
+  "unauthenticatedBannerTitle": "您尚未登录",
   "upload": "上传",
   "was": "原价",
   "weNeedPermission": "我们需要您的许可",

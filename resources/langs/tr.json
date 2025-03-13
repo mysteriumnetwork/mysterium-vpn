@@ -545,6 +545,8 @@
   "ukraine": "Ukrayna",
   "unableToConnectToPaymentProcesor": "Ödeme işlemcisine bağlanılamıyor! ",
   "unableToGetPlans": "Abonelik planları alınamıyor! ",
+  "unauthenticatedBannerBtn": "Aboneliğinizi kontrol etmek için giriş yapın",
+  "unauthenticatedBannerTitle": "Oturum açmadınız",
   "upload": "Yükleme",
   "was": "Önce",
   "weNeedPermission": "İzninize ihtiyacımız var",

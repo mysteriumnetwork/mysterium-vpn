@@ -545,6 +545,8 @@
   "ukraine": "Ukraine",
   "unableToConnectToPaymentProcesor": "Es konnte keine Verbindung zum Zahlungsabwickler hergestellt werden! Bitte versuchen Sie es erneut.",
   "unableToGetPlans": "Abonnementpläne können nicht abgerufen werden! Bitte versuchen Sie es erneut.",
+  "unauthenticatedBannerBtn": "Melde dich an, um dein Abonnement zu überprüfen",
+  "unauthenticatedBannerTitle": "Du bist nicht angemeldet",
   "upload": "Hochladen",
   "was": "War",
   "weNeedPermission": "Wir benötigen Ihre Erlaubnis",

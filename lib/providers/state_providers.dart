@@ -213,6 +213,7 @@ final bannersStorePOD = Provider<BannersStore>(
     ref.watch(apiServicePOD),
     ref.watch(subscriptionStorePOD),
     ref.watch(locationsStorePOD),
+    ref.watch(authSessionStorePOD),
   ),
 );
 
