@@ -131,7 +131,7 @@ class LocalDBService {
     await _locationsBox.put(type.name, locations);
   }
 
-  Future<VPNLocations?> getLocations(IPType type) async => _locationsBox.get(type.name);
+  VPNLocations? getLocations(IPType type) => _locationsBox.get(type.name);
 
   Stream<VPNLocations?> watchLocations(IPType type) async* {
     yield* _locationsBox.watch(key: type.name).asyncMap((_) => getLocations(type));

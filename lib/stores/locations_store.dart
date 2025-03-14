@@ -48,12 +48,14 @@ abstract class _LocationsStore with Store {
 
   @readonly
   late ObservableStream<VPNLocations> _dcLocationsStream = ObservableStream(
-    _watch(IPType.datacenter),
+    _watch(IPType.datacenter).distinct(),
+    initialValue: _localDB.getLocations(IPType.datacenter),
   );
 
   @readonly
   late ObservableStream<VPNLocations> _residentialLocationsStream = ObservableStream(
-    _watch(IPType.residential),
+    _watch(IPType.residential).distinct(),
+    initialValue: _localDB.getLocations(IPType.residential),
   );
 
   @computed
@@ -123,7 +125,7 @@ abstract class _LocationsStore with Store {
   }
 
   Stream<VPNLocations> _watch(IPType ipType) async* {
-    final cached = await _localDB.getLocations(_ipType);
+    final cached = _localDB.getLocations(_ipType);
     if (cached != null) {
       yield cached;
     }
