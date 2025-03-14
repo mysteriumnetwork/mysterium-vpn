@@ -68,6 +68,9 @@ void main() {
         when(mockApiService.getShownBanners()).thenAnswer((_) async => []);
         when(mockSubscriptionStore.isSubscribed).thenReturn(null);
         when(mockAuthSessionStore.status).thenReturn(AuthStatus.authenticated);
+        when(mockLocationsStore.dcLocationsFuture).thenAnswer(
+          (_) => ObservableFuture.value(VPNLocations()),
+        );
 
         await bannersStore.shownBanners;
 
