@@ -99,10 +99,8 @@ class VerificationFailedDialog extends StatelessWidget {
                     color: Palette.purple,
                     text: LocaleKeys.retryBtn.tr(),
                     onPressed: () async {
-                      await onRetry(context);
-                      if (context.mounted) {
-                        Beamer.of(context).popRoute();
-                      }
+                      onRetry(context);
+                      Beamer.of(context).popRoute();
                     },
                     width: onDismiss != null ? 160 : 200,
                   ),
