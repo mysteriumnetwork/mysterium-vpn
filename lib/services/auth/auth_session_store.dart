@@ -83,6 +83,7 @@ abstract class _AuthSessionStore with Store {
     _refreshTokenFuture = ObservableFuture.value(null);
     status = AuthStatus.unauthenticated;
     _userFuture = ObservableFuture.value(null);
+    authShown = false;
 
     await _storageCleanup();
   }
