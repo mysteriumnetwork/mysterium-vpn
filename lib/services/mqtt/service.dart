@@ -35,6 +35,7 @@ class MQTTService {
       ..keepAlivePeriod = 50
       ..onConnected = () {
         _logger.debug('MQTT connected');
+        _subscriptions.forEach(_subscribeReal);
       }
       ..onAutoReconnect = () {
         _logger.verbose('MQTT reconnecting..');
@@ -58,6 +59,8 @@ class MQTTService {
   final String _password;
   final Talker _logger;
   final RemoteConfigStore _remoteConfigStore;
+
+  final Map<String, StreamController<String>> _subscriptions = {};
 
   Future<void> start() async {
     if (!_remoteConfigStore.mqttExperiment) {
@@ -104,42 +107,49 @@ class MQTTService {
       return const Stream<String>.empty();
     }
 
-    // TODO(Waldz): Would be good to subscribe later when connection gets established
-    if (_mqtt.connectionStatus!.state != MqttConnectionState.connected) {
-      return const Stream<String>.empty();
+    final subject = _subscribeDeferred(topic);
+    if (_mqtt.connectionStatus!.state == MqttConnectionState.connected) {
+      _subscribeReal(topic, subject);
     }
 
-    return Stream.multi(
-      (subject) async {
-        final sub = _mqtt.subscribe(topic, MqttQos.atLeastOnce);
-        if (sub == null) {
-          throw MQQTException();
-        }
+    return subject.stream;
+  }
 
-        // make sure to unsubscribe when the stream is cancelled
-        subject.onCancel = () => _mqtt.unsubscribeSubscription(sub);
+  StreamController<String> _subscribeDeferred(String topic) {
+    _subscriptions[topic] = StreamController();
+    return _subscriptions[topic]!;
+  }
 
-        // filter and map the messages
-        final stream = _mqtt.updates
-            // filter the messages by the topic
-            .where((messages) => messages.any((message) => message.topic == topic))
-            // map the messages to the payload
-            .map(
-              (messages) => messages
-                  .where(
-                    (message) => message.topic == topic && message.payload is MqttPublishMessage,
-                  )
-                  .map((message) => _deserializePayload(message.payload as MqttPublishMessage))
-                  .nonNulls
-                  .toList(),
-            )
-            // flatten the list of messages
-            .expand((messages) => messages);
+  void _subscribeReal(String topic, StreamController<String> subject) {
+    subject.onListen = () {
+      final sub = _mqtt.subscribe(topic, MqttQos.atLeastOnce);
+      if (sub == null) {
+        throw MQQTException();
+      }
 
-        // add the stream to the subject
-        await subject.addStream(stream);
-      },
-    );
+      // make sure to unsubscribe when the stream is cancelled
+      subject.onCancel = () => _mqtt.unsubscribeSubscription(sub);
+
+      // filter and map the messages
+      final stream = _mqtt.updates
+          // filter the messages by the topic
+          .where((messages) => messages.any((message) => message.topic == topic))
+          // map the messages to the payload
+          .map(
+            (messages) => messages
+                .where(
+                  (message) => message.topic == topic && message.payload is MqttPublishMessage,
+                )
+                .map((message) => _deserializePayload(message.payload as MqttPublishMessage))
+                .nonNulls
+                .toList(),
+          )
+          // flatten the list of messages
+          .expand((messages) => messages);
+
+      // add the stream to the subject
+      subject.addStream(stream);
+    };
   }
 
   String? _deserializePayload(MqttPublishMessage message) {
