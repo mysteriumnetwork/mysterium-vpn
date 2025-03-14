@@ -256,6 +256,8 @@ abstract class LocaleKeys {
   static const acceptAndContinue = 'acceptAndContinue';
   static const account = 'account';
   static const accountName = 'accountName';
+  static const accountSignIn = 'accountSignIn';
+  static const accountSignInTitle = 'accountSignInTitle';
   static const accountSuccessfullyDeleted = 'accountSuccessfullyDeleted';
   static const activateSubscription = 'activateSubscription';
   static const activeSubsPaidVia = 'activeSubsPaidVia';
@@ -295,6 +297,7 @@ abstract class LocaleKeys {
   static const confirm = 'confirm';
   static const connected = 'connected';
   static const connecting = 'connecting';
+  static const connectingInProggress = 'connectingInProggress';
   static const connectingToPaymentProcesor = 'connectingToPaymentProcesor';
   static const connection = 'connection';
   static const connectionDuration = 'connectionDuration';
@@ -322,6 +325,11 @@ abstract class LocaleKeys {
   static const deleteAccount = 'deleteAccount';
   static const deleteAccountQuestion = 'deleteAccountQuestion';
   static const describeYourIssue = 'describeYourIssue';
+  static const disconnectAllDevices = 'disconnectAllDevices';
+  static const disconnectAllDevicesConfirmation = 'disconnectAllDevicesConfirmation';
+  static const disconnectAllDevicesDesc = 'disconnectAllDevicesDesc';
+  static const disconnectAllDevicesSuccess = 'disconnectAllDevicesSuccess';
+  static const disconnectAllDevicesTitle = 'disconnectAllDevicesTitle';
   static const disconnected = 'disconnected';
   static const disconnecting = 'disconnecting';
   static const discountTag = 'discountTag';
@@ -346,6 +354,7 @@ abstract class LocaleKeys {
   static const existingSubscriptionTitle = 'existingSubscriptionTitle';
   static const failedToConnect = 'failedToConnect';
   static const failedToConnectError = 'failedToConnectError';
+  static const failedToDisconnectAllDevices = 'failedToDisconnectAllDevices';
   static const failedToLoadLocations = 'failedToLoadLocations';
   static const failedToLogoutAllDevices = 'failedToLogoutAllDevices';
   static const failedToSubscribe = 'failedToSubscribe';
@@ -474,6 +483,7 @@ abstract class LocaleKeys {
   static const questions = 'questions';
   static const readOur = 'readOur';
   static const recentLocations = 'recentLocations';
+  static const reconnectBtn = 'reconnectBtn';
   static const redeemCode = 'redeemCode';
   static const redirectToLoginPage = 'redirectToLoginPage';
   static const refreshIP = 'refreshIP';
@@ -481,6 +491,13 @@ abstract class LocaleKeys {
   static const renewSubsBtn = 'renewSubsBtn';
   static const renewsFor = 'renewsFor';
   static const reportAnIssue = 'reportAnIssue';
+  static const resetAppDesc = 'resetAppDesc';
+  static const resetAppDialogContent = 'resetAppDialogContent';
+  static const resetAppDialogTitle = 'resetAppDialogTitle';
+  static const resetAppFailed = 'resetAppFailed';
+  static const resetAppSuccess = 'resetAppSuccess';
+  static const resetAppTitle = 'resetAppTitle';
+  static const resetBtn = 'resetBtn';
   static const retryBtn = 'retryBtn';
   static const searchForLocations = 'searchForLocations';
   static const secure = 'secure';
@@ -518,6 +535,7 @@ abstract class LocaleKeys {
   static const theme = 'theme';
   static const then = 'then';
   static const title = 'title';
+  static const toManyRequestsErrorMsg = 'toManyRequestsErrorMsg';
   static const tokenAlreadyUsed = 'tokenAlreadyUsed';
   static const topLocations = 'topLocations';
   static const tr = 'tr';
@@ -529,6 +547,8 @@ abstract class LocaleKeys {
   static const ukraine = 'ukraine';
   static const unableToConnectToPaymentProcesor = 'unableToConnectToPaymentProcesor';
   static const unableToGetPlans = 'unableToGetPlans';
+  static const unauthenticatedBannerBtn = 'unauthenticatedBannerBtn';
+  static const unauthenticatedBannerTitle = 'unauthenticatedBannerTitle';
   static const upload = 'upload';
   static const was = 'was';
   static const weNeedPermission = 'weNeedPermission';
@@ -538,20 +558,4 @@ abstract class LocaleKeys {
   static const yearlyPlanFullPrice = 'yearlyPlanFullPrice';
   static const yes = 'yes';
   static const zh = 'zh';
-  static const disconnectAllDevices = 'disconnectAllDevices';
-  static const disconnectAllDevicesDesc = 'disconnectAllDevicesDesc';
-  static const disconnectAllDevicesTitle = 'disconnectAllDevicesTitle';
-  static const disconnectAllDevicesConfirmation = 'disconnectAllDevicesConfirmation';
-  static const failedToDisconnectAllDevices = 'failedToDisconnectAllDevices';
-  static const disconnectAllDevicesSuccess = 'disconnectAllDevicesSuccess';
-  static const reconnectBtn = 'reconnectBtn';
-  static const toManyRequestsErrorMsg = 'toManyRequestsErrorMsg';
-  static const connectingInProggress = 'connectingInProggress';
-  static const resetAppTitle = 'resetAppTitle';
-  static const resetAppDesc = 'resetAppDesc';
-  static const resetAppDialogTitle = 'resetAppDialogTitle';
-  static const resetAppDialogContent = 'resetAppDialogContent';
-  static const resetBtn = 'resetBtn';
-  static const resetAppSuccess = 'resetAppSuccess';
-  static const resetAppFailed = 'resetAppFailed';
 }

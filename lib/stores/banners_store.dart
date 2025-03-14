@@ -1,6 +1,8 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/banner_type.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
+import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 
@@ -14,11 +16,13 @@ abstract class _BannersStore with Store {
     this._apiService,
     this._subscriptionStore,
     this._locationsStore,
+    this._authSessionStore,
   );
 
   final ApiService _apiService;
   final SubscriptionStore _subscriptionStore;
   final LocationsStore _locationsStore;
+  final AuthSessionStore _authSessionStore;
 
   @readonly
   late ObservableFuture<List<BannerType>> _shownBanners =
@@ -27,13 +31,19 @@ abstract class _BannersStore with Store {
   @computed
   List<BannerType> get banners {
     final shown = _shownBanners.value;
-    final isSubscribed = _subscriptionStore.isSubscribed;
+    final isSubscribed = _subscriptionStore.isSubscribed ?? true;
+    final status = _authSessionStore.status;
 
-    if (shown == null || isSubscribed == null) {
-      return [];
+    if (shown == null) {
+      return [
+        if (status == AuthStatus.unauthenticated) BannerType.unauthenticated,
+      ];
     }
 
     final all = [...BannerType.values]..removeWhere(shown.contains);
+    if (status == AuthStatus.authenticated) {
+      all.remove(BannerType.unauthenticated);
+    }
 
     if (isSubscribed) {
       all.remove(BannerType.subscription);

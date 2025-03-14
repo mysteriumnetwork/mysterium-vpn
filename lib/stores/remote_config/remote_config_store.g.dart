@@ -150,6 +150,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$hideResetAppSettingComputed ??= Computed<bool>(() => super.hideResetAppSetting,
               name: 'RemoteConfigStoreBase.hideResetAppSetting'))
           .value;
+  Computed<bool>? _$browseUnauthenticatedComputed;
+
+  @override
+  bool get browseUnauthenticated =>
+      (_$browseUnauthenticatedComputed ??= Computed<bool>(() => super.browseUnauthenticated,
+              name: 'RemoteConfigStoreBase.browseUnauthenticated'))
+          .value;
 
   @override
   String toString() {
@@ -174,7 +181,8 @@ mqttExperiment: ${mqttExperiment},
 locationsRefreshInterval: ${locationsRefreshInterval},
 showSalesView: ${showSalesView},
 sentryDsn: ${sentryDsn},
-hideResetAppSetting: ${hideResetAppSetting}
+hideResetAppSetting: ${hideResetAppSetting},
+browseUnauthenticated: ${browseUnauthenticated}
     ''';
   }
 }

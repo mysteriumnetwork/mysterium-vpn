@@ -27,6 +27,7 @@ enum _FeatureToggleKey {
   showSalesView,
   sentryDsn,
   hideResetAppSetting,
+  browseUnauthenticated,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -201,6 +202,14 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   bool get hideResetAppSetting {
     if (config.containsKey(_FeatureToggleKey.hideResetAppSetting.name)) {
       return config[_FeatureToggleKey.hideResetAppSetting.name] as bool;
+    }
+    return false;
+  }
+
+  @computed
+  bool get browseUnauthenticated {
+    if (config.containsKey(_FeatureToggleKey.browseUnauthenticated.name)) {
+      return config[_FeatureToggleKey.browseUnauthenticated.name] as bool;
     }
     return false;
   }

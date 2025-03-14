@@ -27,6 +27,12 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
   AuthUser? get user =>
       (_$userComputed ??= Computed<AuthUser?>(() => super.user, name: '_AuthSessionStore.user'))
           .value;
+  Computed<bool>? _$canBrowseAppComputed;
+
+  @override
+  bool get canBrowseApp => (_$canBrowseAppComputed ??=
+          Computed<bool>(() => super.canBrowseApp, name: '_AuthSessionStore.canBrowseApp'))
+      .value;
 
   late final _$statusAtom = Atom(name: '_AuthSessionStore.status', context: context);
 
@@ -40,6 +46,21 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
   set status(AuthStatus value) {
     _$statusAtom.reportWrite(value, super.status, () {
       super.status = value;
+    });
+  }
+
+  late final _$authShownAtom = Atom(name: '_AuthSessionStore.authShown', context: context);
+
+  @override
+  bool get authShown {
+    _$authShownAtom.reportRead();
+    return super.authShown;
+  }
+
+  @override
+  set authShown(bool value) {
+    _$authShownAtom.reportWrite(value, super.authShown, () {
+      super.authShown = value;
     });
   }
 
@@ -143,9 +164,11 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
   String toString() {
     return '''
 status: ${status},
+authShown: ${authShown},
 accessToken: ${accessToken},
 refreshToken: ${refreshToken},
-user: ${user}
+user: ${user},
+canBrowseApp: ${canBrowseApp}
     ''';
   }
 }
