@@ -250,6 +250,24 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_isTunnelConfiguredAtom =
+      Atom(name: '_VpnStore._isTunnelConfigured', context: context);
+
+  bool get isTunnelConfigured {
+    _$_isTunnelConfiguredAtom.reportRead();
+    return super._isTunnelConfigured;
+  }
+
+  @override
+  bool get _isTunnelConfigured => isTunnelConfigured;
+
+  @override
+  set _isTunnelConfigured(bool value) {
+    _$_isTunnelConfiguredAtom.reportWrite(value, super._isTunnelConfigured, () {
+      super._isTunnelConfigured = value;
+    });
+  }
+
   late final _$_checkTunelConfiguredAsyncAction =
       AsyncAction('_VpnStore._checkTunelConfigured', context: context);
 
