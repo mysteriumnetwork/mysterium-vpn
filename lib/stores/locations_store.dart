@@ -28,11 +28,19 @@ abstract class _LocationsStore with Store {
     this._localDB,
     LocaleStore localeStore,
   ) {
+    /// mobx stream won't initialize if not used within ReactiveContext scope, so this is done to
+    /// preload locations as soon as store is created
+    autorun((_) {
+      _dcLocationsStream.value;
+      _residentialLocationsStream.value;
+    });
+
     reaction((_) => localeStore.currentLocale, (locale) {
       if (_searchKeyword.isNotEmpty) {
         setLocationKeyword('');
       }
     });
+
     _autoRefresh();
   }
 
