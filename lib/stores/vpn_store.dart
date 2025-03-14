@@ -214,18 +214,15 @@ abstract class _VpnStore with Store {
     }
   }
 
-  @readonly
-  bool _isTunnelConfigured = false;
-
   @action
   Future<bool> _checkTunelConfigured() async {
     try {
-      return _isTunnelConfigured = await _wireguardService.checkTunnelConfiguration(
+      return await _wireguardService.checkTunnelConfiguration(
         bundleId: _env.getBundleId(),
         tunnelName: _env.values.tunnelName,
       );
     } catch (e) {
-      return _isTunnelConfigured = false;
+      return false;
     }
   }
 
@@ -692,7 +689,7 @@ abstract class _VpnStore with Store {
   @action
   Future<void> resetApp() async {
     try {
-      if (!_isTunnelConfigured) {
+      if (!await _checkTunelConfigured()) {
         /// If tunnel is not configured, no need to reset the app
         return;
       }
@@ -703,7 +700,6 @@ abstract class _VpnStore with Store {
         ),
       );
       await _resetAppFuture;
-      _isTunnelConfigured = false;
     } catch (e) {
       _logger.handle(e);
       rethrow;
