@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mysterium_vpn/models/location.dart';
 
@@ -7,15 +8,17 @@ class FilterService {
     String? keyword,
   }) {
     final query = keyword?.toLowerCase().trim();
-    if (query == null || query.isEmpty) {
-      return data;
+
+    var result = [...data];
+    if (query != null && query.isNotEmpty) {
+      result = data
+          .where(
+            (it) =>
+                it.code.tr().toLowerCase().contains(query) || it.code.toLowerCase().contains(query),
+          )
+          .toList();
     }
 
-    return data
-        .where(
-          (it) =>
-              it.code.tr().toLowerCase().contains(query) || it.code.toLowerCase().contains(query),
-        )
-        .toList();
+    return result.sortedBy((it) => it.code.tr());
   }
 }
