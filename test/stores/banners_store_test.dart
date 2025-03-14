@@ -5,8 +5,6 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
-import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/stores/banners_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
@@ -17,7 +15,6 @@ import 'banners_store_test.mocks.dart';
   MockSpec<ApiService>(),
   MockSpec<SubscriptionStore>(),
   MockSpec<LocationsStore>(),
-  MockSpec<AuthSessionStore>(),
 ])
 void main() {
   group('BannersStore', () {
@@ -25,8 +22,6 @@ void main() {
     late MockApiService mockApiService;
     late MockSubscriptionStore mockSubscriptionStore;
     late MockLocationsStore mockLocationsStore;
-    late MockAuthSessionStore mockAuthSessionStore;
-
     final mockDCLocations = VPNLocations(
       locations: [
         const VPNLocation(code: 'NL', ipType: IPType.datacenter),
@@ -38,23 +33,16 @@ void main() {
       mockApiService = MockApiService();
       mockSubscriptionStore = MockSubscriptionStore();
       mockLocationsStore = MockLocationsStore();
-      mockAuthSessionStore = MockAuthSessionStore();
 
-      bannersStore = BannersStore(
-        mockApiService,
-        mockSubscriptionStore,
-        mockLocationsStore,
-        mockAuthSessionStore,
-      );
+      bannersStore = BannersStore(mockApiService, mockSubscriptionStore, mockLocationsStore);
     });
 
     group('banners', () {
       test('returns all banners when no banners are shown and not subscribed', () async {
         when(mockApiService.getShownBanners()).thenAnswer((_) async => <BannerType>[]);
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
-        when(mockAuthSessionStore.status).thenReturn(AuthStatus.unauthenticated);
-        when(mockLocationsStore.dcLocationsFuture).thenAnswer(
-          (_) => ObservableFuture.value(mockDCLocations),
+        when(mockLocationsStore.dcLocationsStream).thenAnswer(
+          (_) => ObservableStream(Stream.value(mockDCLocations), initialValue: mockDCLocations),
         );
 
         await bannersStore.shownBanners;
@@ -62,15 +50,9 @@ void main() {
         expect(bannersStore.banners, BannerType.values);
       });
 
-      test(
-          'returns empty list when shown banners and subscription status are null and authentication status is authenticated',
-          () async {
+      test('returns empty list when shown banners and subscription status are null', () async {
         when(mockApiService.getShownBanners()).thenAnswer((_) async => []);
         when(mockSubscriptionStore.isSubscribed).thenReturn(null);
-        when(mockAuthSessionStore.status).thenReturn(AuthStatus.authenticated);
-        when(mockLocationsStore.dcLocationsFuture).thenAnswer(
-          (_) => ObservableFuture.value(VPNLocations()),
-        );
 
         await bannersStore.shownBanners;
 
@@ -80,9 +62,8 @@ void main() {
       test('excludes shown banners from the list', () async {
         when(mockApiService.getShownBanners()).thenAnswer((_) async => [BannerType.datacenter]);
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
-        when(mockAuthSessionStore.status).thenReturn(AuthStatus.unauthenticated);
-        when(mockLocationsStore.dcLocationsFuture).thenAnswer(
-          (_) => ObservableFuture.value(mockDCLocations),
+        when(mockLocationsStore.dcLocationsStream).thenAnswer(
+          (_) => ObservableStream(Stream.value(mockDCLocations), initialValue: mockDCLocations),
         );
 
         await bannersStore.shownBanners;
@@ -96,10 +77,9 @@ void main() {
       test('excludes subscription banner when subscribed', () async {
         when(mockApiService.getShownBanners()).thenAnswer((_) async => []);
         when(mockSubscriptionStore.isSubscribed).thenReturn(true);
-        when(mockLocationsStore.dcLocationsFuture).thenAnswer(
-          (_) => ObservableFuture.value(mockDCLocations),
+        when(mockLocationsStore.dcLocationsStream).thenAnswer(
+          (_) => ObservableStream(Stream.value(mockDCLocations), initialValue: mockDCLocations),
         );
-        when(mockAuthSessionStore.status).thenReturn(AuthStatus.unauthenticated);
 
         await bannersStore.shownBanners;
 
@@ -112,32 +92,15 @@ void main() {
       test('excludes datacenter banner when dataCenterCountries is empty', () async {
         when(mockApiService.getShownBanners()).thenAnswer((_) async => []);
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
-        when(mockLocationsStore.dcLocationsFuture).thenAnswer(
-          (_) => ObservableFuture.value(VPNLocations()),
+        when(mockLocationsStore.dcLocationsStream).thenAnswer(
+          (_) => ObservableStream(Stream.value(VPNLocations()), initialValue: VPNLocations()),
         );
-        when(mockAuthSessionStore.status).thenReturn(AuthStatus.unauthenticated);
 
         await bannersStore.shownBanners;
 
         expect(
           bannersStore.banners,
           BannerType.values.where((b) => b != BannerType.datacenter).toList(),
-        );
-      });
-
-      test('excludes unauthenticated banner when authenticated', () async {
-        when(mockApiService.getShownBanners()).thenAnswer((_) async => []);
-        when(mockSubscriptionStore.isSubscribed).thenReturn(false);
-        when(mockLocationsStore.dcLocationsFuture).thenAnswer(
-          (_) => ObservableFuture.value(mockDCLocations),
-        );
-        when(mockAuthSessionStore.status).thenReturn(AuthStatus.authenticated);
-
-        await bannersStore.shownBanners;
-
-        expect(
-          bannersStore.banners,
-          BannerType.values.where((b) => b != BannerType.unauthenticated).toList(),
         );
       });
     });

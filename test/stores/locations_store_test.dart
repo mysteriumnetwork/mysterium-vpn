@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
@@ -21,6 +22,7 @@ import 'locations_store_test.mocks.dart';
   MockSpec<RemoteConfigStore>(),
   MockSpec<SharedPreferenceService>(),
   MockSpec<LocaleStore>(),
+  MockSpec<LocalDBService>(),
 ])
 void main() {
   late LocationsStore locationsStore;
@@ -30,6 +32,7 @@ void main() {
   late MockRemoteConfigStore mockRemoteConfigStore;
 
   late MockSharedPreferenceService mockPrefs;
+  late MockLocalDBService mockLocalDB;
   late MockLocaleStore mockLocaleStore;
   late List<VPNLocation> mockLocations;
 
@@ -39,6 +42,7 @@ void main() {
     mockAnalyticsStore = MockAnalyticsStore();
     mockRemoteConfigStore = MockRemoteConfigStore();
     mockPrefs = MockSharedPreferenceService();
+    mockLocalDB = MockLocalDBService();
     mockLocaleStore = MockLocaleStore();
 
     when(mockRemoteConfigStore.configFuture).thenAnswer((_) => ObservableFuture.value({}));
@@ -52,6 +56,7 @@ void main() {
       mockAnalyticsStore,
       mockRemoteConfigStore,
       mockPrefs,
+      mockLocalDB,
       mockLocaleStore,
     );
     mockLocations = const [VPNLocation(code: 'US'), VPNLocation(code: 'DE')];
@@ -81,7 +86,7 @@ void main() {
         ..setLocationKeyword('de', Duration.zero);
 
       await Future.delayed(Duration.zero); // ensure the debounce time has passed
-      await locationsStore.locationsFuture;
+      await locationsStore.locationsStream.first;
 
       expect(locationsStore.locations, [const VPNLocation(code: 'DE')]);
     });
@@ -91,7 +96,7 @@ void main() {
           .thenAnswer((_) async => VPNLocations(locations: mockLocations));
       when(mockApiService.getRecentLocations()).thenAnswer((_) async => mockLocations);
 
-      await locationsStore.locationsFuture;
+      await locationsStore.locationsStream.first;
 
       final randomLocation = locationsStore.randomLocation();
       expect(mockLocations.contains(randomLocation), isTrue);
@@ -102,7 +107,7 @@ void main() {
           .thenAnswer((_) async => VPNLocations());
       when(mockApiService.getRecentLocations()).thenAnswer((_) async => []);
 
-      await locationsStore.locationsFuture;
+      await locationsStore.locationsStream.first;
 
       final randomLocation = locationsStore.randomLocation();
       expect(randomLocation, isNull);
@@ -114,7 +119,7 @@ void main() {
           .thenAnswer((_) async => VPNLocations(locations: mockLocations));
 
       await locationsStore.refresh();
-      await locationsStore.locationsFuture;
+      await locationsStore.locationsStream.first;
 
       expect(locationsStore.locations, mockLocations);
     });
