@@ -43,7 +43,6 @@ class RestApiService extends ApiService {
   @override
   Future<VPNLocations> fetchVPNLocations([IPType? ipType]) async {
     try {
-      // TODO(dmacan): pass IP type to the API
       final data = (await _apiConnection.connectionConfig(
         ipType: switch (ipType) {
           IPType.datacenter => 'hosting',

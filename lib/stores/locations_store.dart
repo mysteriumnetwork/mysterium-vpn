@@ -7,6 +7,7 @@ import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
@@ -24,6 +25,7 @@ abstract class _LocationsStore with Store {
     this._analyticsStore,
     this._remoteConfigStore,
     this._prefs,
+    this._localDB,
     LocaleStore localeStore,
   ) {
     reaction((_) => localeStore.currentLocale, (locale) {
@@ -39,24 +41,25 @@ abstract class _LocationsStore with Store {
   final AnalyticsStore _analyticsStore;
   final RemoteConfigStore _remoteConfigStore;
   final SharedPreferenceService _prefs;
+  final LocalDBService _localDB;
 
   final Debouncer _debouncer = Debouncer();
   StreamSubscription<dynamic>? _autoRefreshSubscription;
 
   @readonly
-  late ObservableFuture<VPNLocations> _dcLocationsFuture = ObservableFuture(
-    _apiService.fetchVPNLocations(IPType.datacenter),
+  late ObservableStream<VPNLocations> _dcLocationsStream = ObservableStream(
+    _watch(IPType.datacenter),
   );
 
   @readonly
-  late ObservableFuture<VPNLocations> _residentialLocationsFuture = ObservableFuture(
-    _apiService.fetchVPNLocations(IPType.residential),
+  late ObservableStream<VPNLocations> _residentialLocationsStream = ObservableStream(
+    _watch(IPType.residential),
   );
 
   @computed
-  ObservableFuture<VPNLocations> get locationsFuture => switch (_ipType) {
-        IPType.datacenter => _dcLocationsFuture,
-        IPType.residential => _residentialLocationsFuture,
+  ObservableStream<VPNLocations> get locationsStream => switch (_ipType) {
+        IPType.datacenter => _dcLocationsStream,
+        IPType.residential => _residentialLocationsStream,
       };
 
   @readonly
@@ -81,7 +84,7 @@ abstract class _LocationsStore with Store {
 
   @computed
   List<VPNLocation> get locations {
-    final value = locationsFuture.value?.locations;
+    final value = locationsStream.value?.locations;
     if (value != null) {
       return _filterService.filterLocations(value, keyword: _searchKeyword);
     }
@@ -90,7 +93,7 @@ abstract class _LocationsStore with Store {
 
   @computed
   List<VPNLocation> get topLocations {
-    final value = locationsFuture.value?.topLocations;
+    final value = locationsStream.value?.topLocations;
     if (value != null) {
       return _filterService.filterLocations(value, keyword: _searchKeyword);
     }
@@ -106,17 +109,30 @@ abstract class _LocationsStore with Store {
       return recents.randomItem();
     }
 
-    final future = switch (type) {
-      IPType.datacenter => _dcLocationsFuture,
-      _ => _residentialLocationsFuture,
+    final value = switch (type) {
+      IPType.datacenter => _dcLocationsStream.value,
+      _ => _residentialLocationsStream.value,
     };
 
-    final locations = [...?future.value?.locations, ...?future.value?.topLocations];
+    final locations = [...?value?.locations, ...?value?.topLocations];
     if (locations.isEmpty) {
       return null;
     }
 
     return locations.randomItem();
+  }
+
+  Stream<VPNLocations> _watch(IPType ipType) async* {
+    final cached = await _localDB.getLocations(_ipType);
+    if (cached != null) {
+      yield cached;
+    }
+
+    final fresh = await _apiService.fetchVPNLocations(ipType);
+    yield fresh;
+
+    await _localDB.setLocations(fresh, type: ipType);
+    yield* _localDB.watchLocations(ipType).where((it) => it != null).map((it) => it!);
   }
 
   Future<void> _autoRefresh() async {
@@ -127,21 +143,13 @@ abstract class _LocationsStore with Store {
   }
 
   @action
-  Future<void> refresh() async {
-    switch (_ipType) {
-      case IPType.datacenter:
-        _dcLocationsFuture = _dcLocationsFuture.replace(
-          _apiService.fetchVPNLocations(IPType.datacenter),
-        );
-        await _dcLocationsFuture;
-        break;
-      case IPType.residential:
-        _residentialLocationsFuture = _residentialLocationsFuture.replace(
-          _apiService.fetchVPNLocations(IPType.residential),
-        );
-        await _residentialLocationsFuture;
-        break;
-    }
+  Future<VPNLocations> refresh([IPType? ipType]) async {
+    ipType ??= _ipType;
+
+    final locations = await _apiService.fetchVPNLocations(ipType);
+    await _localDB.setLocations(locations, type: ipType);
+
+    return locations;
   }
 
   @action

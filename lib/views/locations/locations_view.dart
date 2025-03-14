@@ -32,7 +32,7 @@ class LocationsSliverView extends HookConsumerWidget {
     final locationsStore = ref.watch(locationsStorePOD);
     final locationType = useComputedValue(() => locationsStore.ipType);
 
-    final state = useComputedValue(() => locationsStore.locationsFuture);
+    final state = useComputedValue(() => locationsStore.locationsStream);
 
     final locations = useComputedValue(() => locationsStore.locations);
     final topLocations = useComputedValue(() => locationsStore.topLocations);
@@ -76,40 +76,85 @@ class LocationsSliverView extends HookConsumerWidget {
       children: [
         LocationsSearch(onChanged: handleSearch),
         const SizedBox(height: 24),
-        switch (state.status) {
-          FutureStatus.pending => MultiSliver(
-              children: const [
-                RecentLocationsLoading(),
-                SizedBox(height: 24),
-                LocationsSliverLoading(),
-              ],
+        _Body(
+          state: state,
+          recentLocations: recentLocations,
+          locationType: locationType,
+          locations: locations,
+          topLocations: topLocations,
+          onRecentLocationTapped: handleRecentLocationTapped,
+          onLocationTypeChanged: handleSetLocationType,
+          onLocationTapped: handleLocationTapped,
+        ),
+      ],
+    );
+  }
+}
+
+class _Body extends HookConsumerWidget {
+  const _Body({
+    required this.state,
+    required this.recentLocations,
+    required this.locationType,
+    required this.locations,
+    required this.topLocations,
+    required this.onRecentLocationTapped,
+    required this.onLocationTypeChanged,
+    required this.onLocationTapped,
+  });
+
+  final ObservableStream<VPNLocations> state;
+  final List<VPNLocation> recentLocations;
+  final IPType locationType;
+  final List<VPNLocation> locations;
+  final List<VPNLocation> topLocations;
+  final Function(VPNLocation) onRecentLocationTapped;
+  final Function(IPType) onLocationTypeChanged;
+  final Function(VPNLocation) onLocationTapped;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final locationsStore = ref.watch(locationsStorePOD);
+
+    if (state.value != null) {
+      return MultiSliver(
+        children: [
+          if (recentLocations.isNotEmpty)
+            _RecentLocations(
+              recentLocations: recentLocations,
+              onLocationTapped: onRecentLocationTapped,
             ),
-          FutureStatus.rejected => ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: 260),
-              child: RetryWdiget(
-                asset: Assets.globe,
-                onRetry: locationsStore.refresh,
-                text: state.error.toString(),
-              ),
-            ),
-          FutureStatus.fulfilled => MultiSliver(
-              children: [
-                if (recentLocations.isNotEmpty)
-                  _RecentLocations(
-                    recentLocations: recentLocations,
-                    onLocationTapped: handleRecentLocationTapped,
-                  ),
-                if (recentLocations.isNotEmpty) const SizedBox(height: 24),
-                _Locations(
-                  locations: locations,
-                  topLocations: topLocations,
-                  locationType: locationType,
-                  onLocationTypeChanged: handleSetLocationType,
-                  onLocationTapped: handleLocationTapped,
-                ),
-              ],
-            ),
-        },
+          if (recentLocations.isNotEmpty) const SizedBox(height: 24),
+          _Locations(
+            locations: locations,
+            topLocations: topLocations,
+            locationType: locationType,
+            onLocationTypeChanged: onLocationTypeChanged,
+            onLocationTapped: onLocationTapped,
+          ),
+        ],
+      );
+    }
+    if (state.status == StreamStatus.waiting) {
+      return MultiSliver(
+        children: const [
+          RecentLocationsLoading(),
+          SizedBox(height: 24),
+          LocationsSliverLoading(),
+        ],
+      );
+    }
+
+    return MultiSliver(
+      children: [
+        ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 260),
+          child: RetryWdiget(
+            asset: Assets.globe,
+            onRetry: locationsStore.refresh,
+            text: state.error.toString(),
+          ),
+        ),
       ],
     );
   }
