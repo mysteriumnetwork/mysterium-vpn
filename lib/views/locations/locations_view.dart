@@ -32,7 +32,7 @@ class LocationsSliverView extends HookConsumerWidget {
     final locationsStore = ref.watch(locationsStorePOD);
     final locationType = useComputedValue(() => locationsStore.ipType);
 
-    final state = useComputedValue(() => locationsStore.locationsStream);
+    final stream = useComputedValue(() => locationsStore.locationsStream);
 
     final locations = useComputedValue(() => locationsStore.locations);
     final topLocations = useComputedValue(() => locationsStore.topLocations);
@@ -77,7 +77,7 @@ class LocationsSliverView extends HookConsumerWidget {
         LocationsSearch(onChanged: handleSearch),
         const SizedBox(height: 24),
         _Body(
-          state: state,
+          stream: stream,
           recentLocations: recentLocations,
           locationType: locationType,
           locations: locations,
@@ -93,7 +93,7 @@ class LocationsSliverView extends HookConsumerWidget {
 
 class _Body extends HookConsumerWidget {
   const _Body({
-    required this.state,
+    required this.stream,
     required this.recentLocations,
     required this.locationType,
     required this.locations,
@@ -103,7 +103,7 @@ class _Body extends HookConsumerWidget {
     required this.onLocationTapped,
   });
 
-  final ObservableStream<VPNLocations> state;
+  final ObservableStream<VPNLocations> stream;
   final List<VPNLocation> recentLocations;
   final IPType locationType;
   final List<VPNLocation> locations;
@@ -116,7 +116,7 @@ class _Body extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsStore = ref.watch(locationsStorePOD);
 
-    if (state.value != null) {
+    if (stream.value != null) {
       return MultiSliver(
         children: [
           if (recentLocations.isNotEmpty)
@@ -135,7 +135,7 @@ class _Body extends HookConsumerWidget {
         ],
       );
     }
-    if (state.status == StreamStatus.waiting) {
+    if (stream.status == StreamStatus.waiting) {
       return MultiSliver(
         children: const [
           RecentLocationsLoading(),
@@ -152,7 +152,7 @@ class _Body extends HookConsumerWidget {
           child: RetryWdiget(
             asset: Assets.globe,
             onRetry: locationsStore.refresh,
-            text: state.error.toString(),
+            text: stream.error.toString(),
           ),
         ),
       ],
