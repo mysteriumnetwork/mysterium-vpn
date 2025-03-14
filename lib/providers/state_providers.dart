@@ -9,6 +9,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/services/mqtt/api_store.dart';
@@ -117,6 +118,7 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
     analyticsStore,
     remoteConfigStore,
     SharedPreferenceService.instance,
+    LocalDBService.instance,
     localeStore,
   );
 
