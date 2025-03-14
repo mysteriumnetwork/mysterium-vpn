@@ -689,6 +689,10 @@ abstract class _VpnStore with Store {
   @action
   Future<void> resetApp() async {
     try {
+      if (!await _checkTunelConfigured()) {
+        /// If tunnel is not configured, no need to reset the app
+        return;
+      }
       _resetAppFuture = ObservableFuture(
         _wireguardService.removeTunnelConfiguration(
           bundleId: _env.getBundleId(),
