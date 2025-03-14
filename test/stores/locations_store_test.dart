@@ -34,7 +34,8 @@ void main() {
   late MockSharedPreferenceService mockPrefs;
   late MockLocalDBService mockLocalDB;
   late MockLocaleStore mockLocaleStore;
-  late List<VPNLocation> mockLocations;
+  late List<VPNLocation> mockResidential;
+  late List<VPNLocation> mockDatacenter;
 
   setUp(() async {
     mockApiService = MockApiService();
@@ -45,8 +46,33 @@ void main() {
     mockLocalDB = MockLocalDBService();
     mockLocaleStore = MockLocaleStore();
 
+    mockResidential = const [
+      VPNLocation(code: 'US'),
+      VPNLocation(code: 'DE'),
+    ];
+    mockDatacenter = const [
+      VPNLocation(code: 'US', ipType: IPType.datacenter),
+      VPNLocation(code: 'DE', ipType: IPType.datacenter),
+    ];
+
+    when(mockLocalDB.getLocations(IPType.residential)).thenAnswer((_) => null);
+    when(mockLocalDB.getLocations(IPType.datacenter)).thenAnswer((_) => null);
+    when(mockLocalDB.getLocations(null)).thenAnswer((_) => null);
+
     when(mockRemoteConfigStore.configFuture).thenAnswer((_) => ObservableFuture.value({}));
     when(mockRemoteConfigStore.locationsRefreshInterval).thenReturn(Duration.zero);
+    when(mockApiService.getRecentLocations()).thenAnswer((_) async => const <VPNLocation>[]);
+
+    // Add stubs for fetchVPNLocations
+    when(mockApiService.fetchVPNLocations()).thenAnswer(
+      (_) async => VPNLocations(locations: mockResidential),
+    );
+    when(mockApiService.fetchVPNLocations(IPType.residential)).thenAnswer(
+      (_) async => VPNLocations(locations: mockResidential),
+    );
+    when(mockApiService.fetchVPNLocations(IPType.datacenter)).thenAnswer(
+      (_) async => VPNLocations(locations: mockDatacenter),
+    );
 
     await mockRemoteConfigStore.configFuture;
 
@@ -59,13 +85,12 @@ void main() {
       mockLocalDB,
       mockLocaleStore,
     );
-    mockLocations = const [VPNLocation(code: 'US'), VPNLocation(code: 'DE')];
   });
 
   group('LocationsStore', () {
     test('returns filtered recent locations', () async {
-      when(mockApiService.getRecentLocations()).thenAnswer((_) async => mockLocations);
-      when(mockFilterService.filterLocations(mockLocations, keyword: 'us'))
+      when(mockApiService.getRecentLocations()).thenAnswer((_) async => mockResidential);
+      when(mockFilterService.filterLocations(mockResidential, keyword: 'us'))
           .thenReturn([const VPNLocation(code: 'US')]);
 
       locationsStore.setLocationKeyword('US', Duration.zero);
@@ -76,52 +101,60 @@ void main() {
     });
 
     test('returns filtered locations', () async {
-      when(mockApiService.fetchVPNLocations(IPType.datacenter))
-          .thenAnswer((_) async => VPNLocations(locations: mockLocations));
-      when(mockFilterService.filterLocations(mockLocations, keyword: 'de'))
+      await locationsStore.locationsStream.first;
+
+      when(mockFilterService.filterLocations(mockResidential, keyword: 'de'))
           .thenReturn([const VPNLocation(code: 'DE')]);
 
-      locationsStore
-        ..setIPType(IPType.datacenter)
-        ..setLocationKeyword('de', Duration.zero);
+      locationsStore.setLocationKeyword('de', Duration.zero);
 
       await Future.delayed(Duration.zero); // ensure the debounce time has passed
-      await locationsStore.locationsStream.first;
 
       expect(locationsStore.locations, [const VPNLocation(code: 'DE')]);
     });
 
     test('returns random location from recent locations', () async {
-      when(mockApiService.fetchVPNLocations(IPType.residential))
-          .thenAnswer((_) async => VPNLocations(locations: mockLocations));
-      when(mockApiService.getRecentLocations()).thenAnswer((_) async => mockLocations);
+      when(mockApiService.getRecentLocations()).thenAnswer((_) async => mockResidential);
 
       await locationsStore.locationsStream.first;
+      final recentLocations = await locationsStore.recentLocationsFuture;
 
       final randomLocation = locationsStore.randomLocation();
-      expect(mockLocations.contains(randomLocation), isTrue);
+      expect(recentLocations.contains(randomLocation), isTrue);
     });
 
     test('returns null when no locations available for random selection', () async {
-      when(mockApiService.fetchVPNLocations(IPType.residential))
-          .thenAnswer((_) async => VPNLocations());
-      when(mockApiService.getRecentLocations()).thenAnswer((_) async => []);
+      final locationsStore = LocationsStore(
+        mockApiService,
+        mockFilterService,
+        mockAnalyticsStore,
+        mockRemoteConfigStore,
+        mockPrefs,
+        mockLocalDB,
+        mockLocaleStore,
+      );
+      when(mockApiService.fetchVPNLocations(IPType.residential)).thenAnswer(
+        (_) async => VPNLocations(),
+      );
+      when(mockApiService.getRecentLocations()).thenAnswer((_) async => const <VPNLocation>[]);
 
-      await locationsStore.locationsStream.first;
+      await locationsStore.dcLocationsStream.first;
+      await locationsStore.residentialLocationsStream.first;
+      await locationsStore.recentLocationsFuture;
 
-      final randomLocation = locationsStore.randomLocation();
+      final randomLocation = locationsStore.randomLocation(IPType.residential);
+
       expect(randomLocation, isNull);
     });
 
     test('refresh updates locations', () async {
-      when(mockFilterService.filterLocations(mockLocations, keyword: '')).thenReturn(mockLocations);
-      when(mockApiService.fetchVPNLocations(IPType.residential))
-          .thenAnswer((_) async => VPNLocations(locations: mockLocations));
+      when(mockFilterService.filterLocations(mockResidential, keyword: ''))
+          .thenReturn(mockResidential);
 
       await locationsStore.refresh();
       await locationsStore.locationsStream.first;
 
-      expect(locationsStore.locations, mockLocations);
+      expect(locationsStore.locations, mockResidential);
     });
 
     test('setLocationKeyword updates search keyword', () async {
