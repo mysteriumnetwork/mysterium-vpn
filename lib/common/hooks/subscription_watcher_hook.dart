@@ -7,13 +7,11 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 
 void useSubscriptionWatcher() {
-  final authSessionStore = useProvider(authSessionStorePOD);
-  final authStatus = useComputedValue(() => authSessionStore.status);
-  use(_SubscriptionWatcherHook(keys: [authStatus]));
+  use(const _SubscriptionWatcherHook());
 }
 
 class _SubscriptionWatcherHook extends Hook<void> {
-  const _SubscriptionWatcherHook({super.keys});
+  const _SubscriptionWatcherHook();
 
   @override
   _SubscriptionWatcherHookState createState() => _SubscriptionWatcherHookState();
@@ -21,13 +19,24 @@ class _SubscriptionWatcherHook extends Hook<void> {
 
 class _SubscriptionWatcherHookState extends HookState<void, _SubscriptionWatcherHook>
     with WidgetsBindingObserver {
+  late ReactionDisposer disposer;
+
   @override
   void initHook() {
     super.initHook();
     final state = WidgetsBinding.instance.lifecycleState;
+    final ref = ProviderScope.containerOf(context, listen: false);
+    final authSessionStore = ref.read(authSessionStorePOD);
+
     if (state == AppLifecycleState.resumed) {
       onResumed();
     }
+
+    disposer = reaction(
+      (_) => authSessionStore.status,
+      (_) => onResumed(),
+      fireImmediately: false,
+    );
 
     WidgetsBinding.instance.addObserver(this);
   }
@@ -55,6 +64,7 @@ class _SubscriptionWatcherHookState extends HookState<void, _SubscriptionWatcher
 
   @override
   void dispose() {
+    disposer.call();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
