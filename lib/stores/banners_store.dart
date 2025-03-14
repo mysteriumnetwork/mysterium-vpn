@@ -31,10 +31,10 @@ abstract class _BannersStore with Store {
   @computed
   List<BannerType> get banners {
     final shown = _shownBanners.value;
-    final isSubscribed = _subscriptionStore.isSubscribed;
+    final isSubscribed = _subscriptionStore.isSubscribed ?? true;
     final status = _authSessionStore.status;
 
-    if (shown == null || isSubscribed == null) {
+    if (shown == null) {
       return [
         if (status == AuthStatus.unauthenticated) BannerType.unauthenticated,
       ];
