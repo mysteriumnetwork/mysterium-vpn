@@ -14,10 +14,17 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+VPNLocations _$VPNLocationsFromJson(Map<String, dynamic> json) {
+  return _VPNLocations.fromJson(json);
+}
+
 /// @nodoc
 mixin _$VPNLocations {
   List<VPNLocation> get locations => throw _privateConstructorUsedError;
   List<VPNLocation> get topLocations => throw _privateConstructorUsedError;
+
+  /// Serializes this VPNLocations to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of VPNLocations
   /// with the given fields replaced by the non-null parameter values.
@@ -104,7 +111,7 @@ class __$$VPNLocationsImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$VPNLocationsImpl extends _VPNLocations {
   _$VPNLocationsImpl(
       {final List<VPNLocation> locations = const [],
@@ -112,6 +119,9 @@ class _$VPNLocationsImpl extends _VPNLocations {
       : _locations = locations,
         _topLocations = topLocations,
         super._();
+
+  factory _$VPNLocationsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$VPNLocationsImplFromJson(json);
 
   final List<VPNLocation> _locations;
   @override
@@ -145,6 +155,7 @@ class _$VPNLocationsImpl extends _VPNLocations {
             const DeepCollectionEquality().equals(other._topLocations, _topLocations));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(_locations),
       const DeepCollectionEquality().hash(_topLocations));
@@ -156,12 +167,21 @@ class _$VPNLocationsImpl extends _VPNLocations {
   @pragma('vm:prefer-inline')
   _$$VPNLocationsImplCopyWith<_$VPNLocationsImpl> get copyWith =>
       __$$VPNLocationsImplCopyWithImpl<_$VPNLocationsImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$VPNLocationsImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _VPNLocations extends VPNLocations {
   factory _VPNLocations({final List<VPNLocation> locations, final List<VPNLocation> topLocations}) =
       _$VPNLocationsImpl;
   _VPNLocations._() : super._();
+
+  factory _VPNLocations.fromJson(Map<String, dynamic> json) = _$VPNLocationsImpl.fromJson;
 
   @override
   List<VPNLocation> get locations;

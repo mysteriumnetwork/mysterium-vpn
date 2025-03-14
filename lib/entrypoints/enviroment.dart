@@ -17,11 +17,13 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
+import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/banner_type_adapter.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/vpn_location_adapter.dart';
+import 'package:mysterium_vpn/services/data/local/adapters/vpn_locations_adapter.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
@@ -84,11 +86,13 @@ class Enviroment {
       ..registerAdapter(UserDataAdapter())
       ..registerAdapter(ApprovalAdapter())
       ..registerAdapter(VPNLocationAdapter(typeId: 3))
-      ..registerAdapter(BannerTypeAdapter(typeId: 4));
+      ..registerAdapter(BannerTypeAdapter(typeId: 4))
+      ..registerAdapter(VpnLocationsAdapter(typeId: 5));
     await Hive.openBox<UserData>(
       'user_data',
       compactionStrategy: (e, d) => false,
     );
+    await Hive.openBox<VPNLocations>('locations_data');
 
     final container = ProviderContainer(
       overrides: [environmentPOD.overrideWithValue(flavorConfig)],
