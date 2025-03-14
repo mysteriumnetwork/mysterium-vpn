@@ -1,16 +1,36 @@
 import 'dart:async';
 
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
+import 'package:mysterium_vpn/services/data/local/adapters/banner_type_adapter.dart';
+import 'package:mysterium_vpn/services/data/local/adapters/vpn_location_adapter.dart';
+import 'package:mysterium_vpn/services/data/local/adapters/vpn_locations_adapter.dart';
 
 class LocalDBService {
   factory LocalDBService() => instance;
   LocalDBService._();
 
   static final LocalDBService instance = LocalDBService._();
+  static Future<void> initialize() async {
+    await Hive.initFlutter();
+    Hive
+      ..registerAdapter(UserDataAdapter())
+      ..registerAdapter(ApprovalAdapter())
+      ..registerAdapter(VPNLocationAdapter(typeId: 3))
+      ..registerAdapter(BannerTypeAdapter(typeId: 4))
+      ..registerAdapter(VpnLocationsAdapter(typeId: 5));
+
+    await Future.wait([
+      Hive.openBox<UserData>(
+        'user_data',
+        compactionStrategy: (e, d) => false,
+      ),
+      Hive.openBox<VPNLocations>('locations_data'),
+    ]);
+  }
 
   final _userBox = Hive.box<UserData>('user_data');
   final _locationsBox = Hive.box<VPNLocations>('locations_data');
