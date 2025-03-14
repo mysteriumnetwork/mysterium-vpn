@@ -136,13 +136,13 @@ void _subscriptionStatusReaction(
     } else if (status == SubscriptionStatus.notVerified ||
         status == SubscriptionStatus.verifyingError) {
       shownRetryDialog(
-        onRetry: () async => store.retryVerificationProcess(),
+        onRetry: (_) => store.retryVerificationProcess(),
         context: context,
         asset: Assets.subscription,
         title: LocaleKeys.subscriptionVerificationFailed.tr(),
         subtitle: LocaleKeys.failedToVerifySubs.tr(),
         dismissText: LocaleKeys.cancelBtn.tr(),
-        onDismiss: () async => Navigator.of(context).pop(),
+        onDismiss: (context) => Navigator.of(context).pop(),
       );
     }
   }
