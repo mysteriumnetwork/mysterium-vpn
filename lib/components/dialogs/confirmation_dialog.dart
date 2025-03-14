@@ -16,21 +16,20 @@ Future<void> shownConfirmationDialog(
   bool dismissible = true,
   String? confirmText,
   String? cancelText,
-}) async {
-  showDialog(
-    context: context,
-    barrierDismissible: dismissible,
-    builder: (context) => _ConfirmDialog(
-      title: title,
-      content: content,
-      onConfirm: onConfirm,
-      icon: icon,
-      confirmText: confirmText,
-      cancelText: cancelText,
-      onCancel: onCancel,
-    ),
-  );
-}
+}) =>
+    showDialog(
+      context: context,
+      barrierDismissible: dismissible,
+      builder: (context) => _ConfirmDialog(
+        title: title,
+        content: content,
+        onConfirm: onConfirm,
+        icon: icon,
+        confirmText: confirmText,
+        cancelText: cancelText,
+        onCancel: onCancel,
+      ),
+    );
 
 class _ConfirmDialog extends StatelessWidget {
   const _ConfirmDialog({

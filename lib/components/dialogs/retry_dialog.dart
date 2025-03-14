@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
@@ -12,12 +13,12 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 Future<void> shownRetryDialog({
-  required AsyncCallback onRetry,
+  required FutureOr<void> Function(BuildContext context) onRetry,
   required BuildContext context,
   required String title,
   required String subtitle,
   required String asset,
-  AsyncCallback? onDismiss,
+  FutureOr<void> Function(BuildContext context)? onDismiss,
   String? dismissText,
   bool? isDismissible,
 }) async {
@@ -51,11 +52,12 @@ class VerificationFailedDialog extends StatelessWidget {
     this.dismissText,
     super.key,
   });
-  final AsyncCallback onRetry;
+
+  final FutureOr<void> Function(BuildContext context) onRetry;
+  final FutureOr<void> Function(BuildContext context)? onDismiss;
   final String title;
   final String subtitle;
   final String asset;
-  final AsyncCallback? onDismiss;
   final String? dismissText;
   @override
   Widget build(BuildContext context) => Stack(
@@ -89,18 +91,18 @@ class VerificationFailedDialog extends StatelessWidget {
                       useSystemColor: false,
                       color: Palette.lightBlack,
                       text: dismissText ?? LocaleKeys.goBackButton.tr(),
-                      onPressed: () {
-                        onDismiss!();
-                      },
+                      onPressed: () => onDismiss!(context),
                       width: 160,
                     ),
                   EasyButton(
                     useSystemColor: false,
                     color: Palette.purple,
                     text: LocaleKeys.retryBtn.tr(),
-                    onPressed: () {
-                      onRetry();
-                      Beamer.of(context).popRoute();
+                    onPressed: () async {
+                      await onRetry(context);
+                      if (context.mounted) {
+                        Beamer.of(context).popRoute();
+                      }
                     },
                     width: onDismiss != null ? 160 : 200,
                   ),
