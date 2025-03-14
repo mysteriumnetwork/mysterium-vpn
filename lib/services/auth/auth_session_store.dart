@@ -2,6 +2,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 
 // Include generated file
 part 'auth_session_store.g.dart';
@@ -10,12 +11,20 @@ part 'auth_session_store.g.dart';
 class AuthSessionStore = _AuthSessionStore with _$AuthSessionStore;
 
 abstract class _AuthSessionStore with Store {
-  _AuthSessionStore({required SecureStorageService secureStorage}) : _secureStorage = secureStorage;
+  _AuthSessionStore({
+    required SecureStorageService secureStorage,
+    required RemoteConfigStore remoteConfigStore,
+  })  : _secureStorage = secureStorage,
+        _remoteConfigStore = remoteConfigStore;
 
   final SecureStorageService _secureStorage;
+  final RemoteConfigStore _remoteConfigStore;
 
   @observable
   AuthStatus status = AuthStatus.unknown;
+
+  @observable
+  bool authShown = false;
 
   @readonly
   late ObservableFuture<String?> _accessTokenFuture = ObservableFuture(
@@ -38,6 +47,10 @@ abstract class _AuthSessionStore with Store {
 
   @computed
   AuthUser? get user => _userFuture.value;
+
+  @computed
+  bool get canBrowseApp =>
+      status == AuthStatus.authenticated || (authShown && _remoteConfigStore.browseUnauthenticated);
 
   @action
   Future<void> initStore() async {
@@ -70,6 +83,7 @@ abstract class _AuthSessionStore with Store {
     _refreshTokenFuture = ObservableFuture.value(null);
     status = AuthStatus.unauthenticated;
     _userFuture = ObservableFuture.value(null);
+    authShown = false;
 
     await _storageCleanup();
   }

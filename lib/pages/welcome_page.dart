@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/layout_builders/screen_type_builder.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
@@ -17,7 +18,21 @@ class WelcomePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authStore = ref.watch(authStorePOD);
+    final authSessionStore = ref.watch(authSessionStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
+
+    useReaction(
+      () => authSessionStore.authShown,
+      (authShown) {
+        if (authShown) {
+          return;
+        }
+        Future.microtask(() async {
+          authSessionStore.authShown = true;
+        });
+      },
+      fireImmediately: true,
+    );
 
     return ColoredScaffold(
       body: Observer(

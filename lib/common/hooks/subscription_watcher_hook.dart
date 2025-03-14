@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 
@@ -17,18 +18,29 @@ class _SubscriptionWatcherHook extends Hook<void> {
 
 class _SubscriptionWatcherHookState extends HookState<void, _SubscriptionWatcherHook>
     with WidgetsBindingObserver {
+  late ReactionDisposer disposer;
+
   @override
   void initHook() {
     super.initHook();
     final state = WidgetsBinding.instance.lifecycleState;
+    final ref = ProviderScope.containerOf(context, listen: false);
+    final authSessionStore = ref.read(authSessionStorePOD);
+
     if (state == AppLifecycleState.resumed) {
-      _onResumed();
+      onResumed();
     }
+
+    disposer = reaction(
+      (_) => authSessionStore.status,
+      (_) => onResumed(),
+      fireImmediately: false,
+    );
 
     WidgetsBinding.instance.addObserver(this);
   }
 
-  void _onResumed() {
+  void onResumed() {
     final ref = ProviderScope.containerOf(context, listen: false);
     final authSessionStore = ref.read(authSessionStorePOD);
     if (authSessionStore.status != AuthStatus.authenticated) {
@@ -45,12 +57,13 @@ class _SubscriptionWatcherHookState extends HookState<void, _SubscriptionWatcher
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      _onResumed();
+      onResumed();
     }
   }
 
   @override
   void dispose() {
+    disposer.call();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }

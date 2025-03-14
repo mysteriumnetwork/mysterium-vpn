@@ -15,12 +15,9 @@ class BannerTitle extends HookWidget {
   @override
   Widget build(BuildContext context) => Row(
         mainAxisSize: MainAxisSize.min,
+        spacing: 6,
         children: [
-          if (icon != null)
-            Padding(
-              padding: const EdgeInsets.only(right: 4),
-              child: icon,
-            ),
+          if (icon != null) icon!,
           Flexible(
             child: EasyText(
               text,
