@@ -20,8 +20,8 @@ String? getCurrentPackageFullName() {
   final length = calloc<Uint32>();
   final result = _getCurrentPackageFullName(length, nullptr);
 
-  if (result != WIN32_ERROR.ERROR_INSUFFICIENT_BUFFER) {
-    if (result == WIN32_ERROR.APPMODEL_ERROR_NO_PACKAGE) {
+  if (result != ERROR_INSUFFICIENT_BUFFER) {
+    if (result == APPMODEL_ERROR_NO_PACKAGE) {
       print('Process has no package identity');
       calloc.free(length);
       return null;
@@ -35,7 +35,7 @@ String? getCurrentPackageFullName() {
   final fullName = calloc<Uint16>(length.value).cast<Utf16>();
   final result2 = _getCurrentPackageFullName(length, fullName);
 
-  if (result2 != WIN32_ERROR.ERROR_SUCCESS) {
+  if (result2 != ERROR_SUCCESS) {
     print('Error $result2 retrieving PackageFullName');
     calloc.free(fullName);
     calloc.free(length);

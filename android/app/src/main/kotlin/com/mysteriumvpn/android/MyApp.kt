@@ -6,9 +6,6 @@ import io.maido.intercom.IntercomFlutterPlugin
 class MyApp : Application() {
   override fun onCreate() {
     super.onCreate()
-
-    // Initialize the Intercom SDK here also as Android requires to initialize it in the onCreate of
-    // the application.
-    IntercomFlutterPlugin.initSdk(this, appId = "appId", androidApiKey = "androidApiKey")
+    IntercomFlutterPlugin.initSdk(this, appId = "sjkeehf4", androidApiKey = "android_sdk-f9955e908e48bf630f3f2a6dc6609c3f4b5aa2b8")
   }
 }
