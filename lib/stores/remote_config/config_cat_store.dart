@@ -36,7 +36,6 @@ abstract class ConfigCatStore with Store {
 
   Future<void> refresh() async {
     try {
-      await _client.forceRefresh();
       configFuture = ObservableFuture(_fetch());
       await configFuture;
     } catch (e, stack) {
@@ -50,6 +49,8 @@ abstract class ConfigCatStore with Store {
       final user = await _fetchUser();
       _client.setDefaultUser(user);
       _user = user;
+
+      await _client.forceRefresh();
       return await _client.getAllValues();
     } catch (e, stack) {
       _logger.handle(e, stack);
