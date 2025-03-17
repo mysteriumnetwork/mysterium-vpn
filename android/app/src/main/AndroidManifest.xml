@@ -17,8 +17,6 @@
         
         <!-- Disable default Flutter deep linking-->
         <meta-data android:name="flutter_deeplinking_enabled" android:value="false" />
-        <!-- Disable Impeller until issues resolved-->
-        <meta-data android:name="io.flutter.embedding.android.EnableImpeller" android:value="false" />
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
