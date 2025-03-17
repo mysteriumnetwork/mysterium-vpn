@@ -23,7 +23,6 @@ import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
-import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
@@ -47,7 +46,6 @@ abstract class _AuthStore with Store {
     required IntercomStore intercomStore,
     required Talker logger,
     required ABTestingStore abTestingStore,
-    required MQTTService mqtt,
   })  : _authService = authService,
         _authSessionStore = authSessionStore,
         _appLinks = appLinks,
@@ -55,8 +53,7 @@ abstract class _AuthStore with Store {
         _env = env,
         _intercomStore = intercomStore,
         _logger = logger,
-        _abTestingStore = abTestingStore,
-        _mqtt = mqtt {
+        _abTestingStore = abTestingStore {
     refreshTokenCallback = refreshAuthToken;
   }
 
@@ -70,7 +67,6 @@ abstract class _AuthStore with Store {
   final IntercomStore _intercomStore;
   final Talker _logger;
   final ABTestingStore _abTestingStore;
-  final MQTTService _mqtt;
 
   @readonly
   PkcePair? _pkcePair;
@@ -200,9 +196,6 @@ abstract class _AuthStore with Store {
     // Set auth user
     await _localDb.setUser(user);
     final userSettings = await _localDb.getUserData();
-
-    // Connect to MQTT server after we have valid AccessToken
-    _mqtt.start();
 
     _logger.info(userSettings.toString());
   }

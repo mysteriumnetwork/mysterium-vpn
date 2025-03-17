@@ -19,6 +19,7 @@ import 'package:mysterium_vpn/components/network_logger_overlay.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/components/shortcuts.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/ft_checkers.dart';
+import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 
@@ -27,6 +28,7 @@ class MyApp extends HookConsumerWidget {
 
   @override
   Widget build(final BuildContext context, WidgetRef ref) {
+    final mqtt = ref.read(vpnApiMQTTPOD);
     final themeStore = ref.read(themeStorePOD);
     final routeInformationParser = ref.read(routeInformationParserPOD);
     final authStore = ref.read(authStorePOD);
@@ -36,6 +38,14 @@ class MyApp extends HookConsumerWidget {
     final env = ref.read(environmentPOD);
     final appName = env.values.appName;
     final flavor = env.flavor;
+
+    useEffect(
+      () {
+        mqtt.start();
+        return null;
+      },
+      [mqtt],
+    );
 
     useEffect(
       () {
