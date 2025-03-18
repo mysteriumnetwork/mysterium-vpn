@@ -4,7 +4,7 @@ import 'package:mysterium_vpn/common/enums/ip_type.dart';
 part 'location.freezed.dart';
 part 'location.g.dart';
 
-@Freezed(fromJson: false, toJson: false)
+@freezed
 class VPNLocations with _$VPNLocations {
   factory VPNLocations({
     @Default([]) List<VPNLocation> locations,
@@ -12,6 +12,8 @@ class VPNLocations with _$VPNLocations {
   }) = _VPNLocations;
 
   VPNLocations._();
+
+  factory VPNLocations.fromJson(Map<String, dynamic> json) => _$VPNLocationsFromJson(json);
 
   late final Set<VPNLocation> allLocations = {...locations, ...topLocations};
   late final bool isEmpty = allLocations.isEmpty;

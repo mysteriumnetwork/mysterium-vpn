@@ -1,18 +1,40 @@
 import 'dart:async';
 
-import 'package:hive/hive.dart';
-import 'package:mysterium_vpn/common/enums/banner_type.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
+import 'package:mysterium_vpn/services/data/local/adapters/banner_type_adapter.dart';
+import 'package:mysterium_vpn/services/data/local/adapters/vpn_location_adapter.dart';
+import 'package:mysterium_vpn/services/data/local/adapters/vpn_locations_adapter.dart';
 
 class LocalDBService {
   factory LocalDBService() => instance;
   LocalDBService._();
 
   static final LocalDBService instance = LocalDBService._();
+  static Future<void> initialize() async {
+    await Hive.initFlutter();
+    Hive
+      ..registerAdapter(UserDataAdapter())
+      ..registerAdapter(ApprovalAdapter())
+      ..registerAdapter(VPNLocationAdapter(typeId: 3))
+      ..registerAdapter(BannerTypeAdapter(typeId: 4))
+      ..registerAdapter(VpnLocationsAdapter(typeId: 5));
 
-  final box = Hive.box<UserData>('user_data');
+    await Future.wait([
+      Hive.openBox<UserData>(
+        'user_data',
+        compactionStrategy: (e, d) => false,
+      ),
+      Hive.openBox<VPNLocations>('locations_data'),
+    ]);
+  }
+
+  final _userBox = Hive.box<UserData>('user_data');
+  final _locationsBox = Hive.box<VPNLocations>('locations_data');
+
   Completer<AuthUser> _userSetCompleter = Completer<AuthUser>();
   AuthUser? _currentUser;
 
@@ -101,21 +123,21 @@ class LocalDBService {
   Future<UserData> _loadUserData() async {
     final user = await _ensureUserSet();
     final cacheId = user.username;
-    if (!box.containsKey(cacheId)) {
+    if (!_userBox.containsKey(cacheId)) {
       await _setInitUserData(cacheId);
     }
 
-    return box.get(cacheId)!;
+    return _userBox.get(cacheId)!;
   }
 
   Future<void> _saveUserData(UserData userData) async {
     final cacheId = _currentUser!.username;
 
-    await box.put(cacheId, userData);
+    await _userBox.put(cacheId, userData);
   }
 
   Future<void> _setInitUserData(String key) async {
-    await box.put(
+    await _userBox.put(
       key,
       UserData(
         userId: key,
@@ -123,5 +145,15 @@ class LocalDBService {
         recentVPNLocations: [],
       ),
     );
+  }
+
+  Future<void> setLocations(VPNLocations locations, {required IPType type}) async {
+    await _locationsBox.put(type.name, locations);
+  }
+
+  VPNLocations? getLocations(IPType type) => _locationsBox.get(type.name);
+
+  Stream<VPNLocations?> watchLocations(IPType type) async* {
+    yield* _locationsBox.watch(key: type.name).asyncMap((_) => getLocations(type));
   }
 }
