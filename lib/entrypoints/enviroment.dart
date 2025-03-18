@@ -8,7 +8,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mysterium_vpn/app.dart';
@@ -17,11 +16,9 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
-import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/data/local/adapters/banner_type_adapter.dart';
-import 'package:mysterium_vpn/services/data/local/adapters/vpn_location_adapter.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
@@ -79,17 +76,7 @@ class Enviroment {
     await SharedPreferenceService.instance.init();
     SecureStorageService.instance.init(flavorConfig);
     await EasyLocalization.ensureInitialized();
-    await Hive.initFlutter();
-    Hive
-      ..registerAdapter(UserDataAdapter())
-      ..registerAdapter(ApprovalAdapter())
-      ..registerAdapter(VPNLocationAdapter(typeId: 3))
-      ..registerAdapter(BannerTypeAdapter(typeId: 4));
-    await Hive.openBox<UserData>(
-      'user_data',
-      compactionStrategy: (e, d) => false,
-    );
-
+    await LocalDBService.initialize();
     final container = ProviderContainer(
       overrides: [environmentPOD.overrideWithValue(flavorConfig)],
     );

@@ -49,7 +49,7 @@ abstract class _BannersStore with Store {
       all.remove(BannerType.subscription);
     }
 
-    final locations = _locationsStore.dcLocationsFuture.value;
+    final locations = _locationsStore.dcLocationsStream.value;
     if (locations?.isEmpty ?? false) {
       all.remove(BannerType.datacenter);
     }
