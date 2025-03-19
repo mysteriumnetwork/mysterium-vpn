@@ -21,6 +21,8 @@ import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/report_broken_node_request.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
+import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
@@ -58,6 +60,7 @@ abstract class _VpnStore with Store {
     required Talker logger,
     required AnalyticsStore analyticsStore,
     required RemoteConfigStore remoteConfigStore,
+    required AuthSessionStore authSessionStore,
   })  : _apiService = apiService,
         _mqtt = mqtt,
         _locationsStore = locationsStore,
@@ -66,6 +69,7 @@ abstract class _VpnStore with Store {
         _env = env,
         _analyticsStore = analyticsStore,
         _remoteConfigStore = remoteConfigStore,
+        _authSessionStore = authSessionStore,
         _logger = logger {
     _init();
   }
@@ -77,6 +81,7 @@ abstract class _VpnStore with Store {
   final WireguardDart _wireguardService;
   final SubscriptionStore _subscriptionStore;
   final RemoteConfigStore _remoteConfigStore;
+  final AuthSessionStore _authSessionStore;
 
   final FlavorConfig _env;
   final _securedStorage = SecureStorageService.instance;
@@ -418,6 +423,10 @@ abstract class _VpnStore with Store {
     bool? refreshIP,
     bool isRetrying = false,
   }) async {
+    await _authSessionStore.accessTokenFuture;
+    if (_authSessionStore.status != AuthStatus.authenticated) {
+      throw AuthenticationRequiredException();
+    }
     final subscription = await _subscriptionStore.subscriptionFuture;
     if (!subscription.active) {
       throw const SubscriptionRequiredException();
