@@ -246,7 +246,7 @@ class RestApiService extends ApiService {
       });
 
       // Set up a timeout for receiving the response
-      await Future.delayed(const Duration(seconds: 2), () {
+      await Future.delayed(const Duration(seconds: 5), () {
         if (!isSocketClosed) {
           _logger.info('No response received within 2seconds');
           socket.close(); // Close the socket after timeout
