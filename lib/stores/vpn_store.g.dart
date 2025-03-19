@@ -375,6 +375,14 @@ mixin _$VpnStore on _VpnStore, Store {
     return _$resetAppAsyncAction.run(() => super.resetApp());
   }
 
+  late final _$_udpBlockedCheckAsyncAction =
+      AsyncAction('_VpnStore._udpBlockedCheck', context: context);
+
+  @override
+  Future<void> _udpBlockedCheck() {
+    return _$_udpBlockedCheckAsyncAction.run(() => super._udpBlockedCheck());
+  }
+
   @override
   String toString() {
     return '''

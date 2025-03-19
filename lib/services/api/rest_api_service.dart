@@ -1,8 +1,12 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/report_broken_node_request.dart';
+import 'package:mysterium_vpn/models/stun_binding_request.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
@@ -202,6 +206,61 @@ class RestApiService extends ApiService {
       _logger.info('All devices disconnected');
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> udpBlockedCheck() async {
+    const domain = 'echo.mysterium.network'; // domain name to resolve
+    const serverPort = 3478; // Default STUN port
+    var isSocketClosed = false;
+
+    try {
+      // Resolve the domain name to an IP address
+      final result = await InternetAddress.lookup(domain);
+      final serverAddress = result.first.address; // Get the first resolved IP address
+
+      _logger.info('Resolved IP addresses for $domain: $serverAddress');
+
+      // Example STUN Binding Request (binary format)
+      final bindingRequest = StunBindingRequest.create().toBytes;
+
+      // Create a socket to the server using UDP
+      final socket = await RawDatagramSocket.bind(InternetAddress.anyIPv4, 0);
+
+      // Send the request to the STUN server
+      socket.send(bindingRequest, InternetAddress(serverAddress), serverPort);
+      _logger.info('Sent STUN Binding Request to $serverAddress:$serverPort');
+
+      // Listen for response
+      socket.listen((RawSocketEvent event) {
+        if (event == RawSocketEvent.read) {
+          final datagram = socket.receive();
+          if (datagram != null) {
+            _logger.info('Received response from server: ${datagram.data}');
+            socket.close(); // Close the socket after receiving the response
+            isSocketClosed = true; // Mark the socket as closed
+          }
+        }
+      });
+
+      // Set up a timeout for receiving the response
+      await Future.delayed(const Duration(seconds: 2), () {
+        if (!isSocketClosed) {
+          _logger.info('No response received within 2seconds');
+          socket.close(); // Close the socket after timeout
+          throw TimeoutException('No response from STUN server within 2 seconds');
+        } else {
+          _logger.info('Socket is already closed, no need to close again');
+        }
+      });
+    } catch (e) {
+      _logger.log(
+        'Error resolving domain: $e',
+        logLevel: LogLevel.error,
+        exception: e,
+      );
       rethrow;
     }
   }

@@ -19,4 +19,5 @@ abstract class ApiService {
   Future<List<BannerType>> getShownBanners();
   Future<void> setShownBanners(List<BannerType> banners);
   Future<void> disconnectAllDevices();
+  Future<void> udpBlockedCheck();
 }
