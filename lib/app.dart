@@ -11,6 +11,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/hooks/config_cat_user_updater_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/hooks/mqtt_service.dart';
 import 'package:mysterium_vpn/common/hooks/subscription_watcher_hook.dart';
 import 'package:mysterium_vpn/common/router/route_delegate.dart';
 import 'package:mysterium_vpn/components/custom_platform_menu.dart';
@@ -19,7 +20,6 @@ import 'package:mysterium_vpn/components/network_logger_overlay.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/components/shortcuts.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/ft_checkers.dart';
-import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 
@@ -28,7 +28,6 @@ class MyApp extends HookConsumerWidget {
 
   @override
   Widget build(final BuildContext context, WidgetRef ref) {
-    final mqtt = ref.read(vpnApiMQTTPOD);
     final themeStore = ref.read(themeStorePOD);
     final routeInformationParser = ref.read(routeInformationParserPOD);
     final authStore = ref.read(authStorePOD);
@@ -38,14 +37,6 @@ class MyApp extends HookConsumerWidget {
     final env = ref.read(environmentPOD);
     final appName = env.values.appName;
     final flavor = env.flavor;
-
-    useEffect(
-      () {
-        mqtt.start();
-        return null;
-      },
-      [mqtt],
-    );
 
     useEffect(
       () {
@@ -60,6 +51,7 @@ class MyApp extends HookConsumerWidget {
       }
     });
 
+    useMQTTService();
     useConfigCatUserUpdater();
     useSubscriptionWatcher();
 

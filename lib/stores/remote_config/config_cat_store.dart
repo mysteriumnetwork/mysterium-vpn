@@ -32,8 +32,15 @@ abstract class ConfigCatStore with Store {
   @action
   Future<void> _init() async {
     await configFuture;
-    _client.hooks.clear();
-    _client.hooks.addOnConfigChanged((_) => configFuture = ObservableFuture(_fetch()));
+  }
+
+  Future<void> refresh() async {
+    try {
+      configFuture = configFuture.replace(_fetch());
+      await configFuture;
+    } catch (e, stack) {
+      _logger.handle(e, stack);
+    }
   }
 
   @protected
@@ -42,6 +49,12 @@ abstract class ConfigCatStore with Store {
       final user = await _fetchUser();
       _client.setDefaultUser(user);
       _user = user;
+
+      final res = await _client.forceRefresh();
+      if (!res.isSuccess) {
+        _logger.warning('Failed to refresh ConfigCat: ${res.error}');
+      }
+
       return await _client.getAllValues();
     } catch (e, stack) {
       _logger.handle(e, stack);
