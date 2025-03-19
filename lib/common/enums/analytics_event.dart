@@ -88,4 +88,5 @@ enum AnalyticsEvent {
   resetAppCancel,
   resetAppSuccess,
   resetAppError,
+  udpBlocked,
 }
