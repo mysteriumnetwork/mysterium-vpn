@@ -23,6 +23,10 @@ Future<void> Function({
 
       try {
         await vpnStore.toggleConnection(location: location);
+      } on AuthenticationRequiredException catch (_) {
+        if (context.mounted) {
+          Beamer.of(context).beamToNamed(Routes.platformLogin.path);
+        }
       } on SubscriptionRequiredException catch (_) {
         handleSubscribe();
       } on TunnelSetupRequiredException catch (_) {
