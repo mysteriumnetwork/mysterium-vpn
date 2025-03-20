@@ -12,6 +12,7 @@ class ConnectTextButton extends HookConsumerWidget {
   const ConnectTextButton({
     required this.onPressed,
     required this.location,
+    this.minimumSize = const Size(120, 40),
     this.textScaleGroup,
     super.key,
   });
@@ -19,6 +20,7 @@ class ConnectTextButton extends HookConsumerWidget {
   final VoidCallback? onPressed;
   final VPNLocation location;
   final AutoSizeGroup? textScaleGroup;
+  final Size minimumSize;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,8 +39,6 @@ class ConnectTextButton extends HookConsumerWidget {
       },
       [location],
     );
-
-    const minimumSize = Size(120, 40);
 
     void onPressed() {
       this.onPressed?.call();
