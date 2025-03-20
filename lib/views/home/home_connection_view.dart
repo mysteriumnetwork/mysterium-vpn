@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
-import 'package:mysterium_vpn/components/connection_bar.dart';
+import 'package:mysterium_vpn/components/connection_status_bar.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_banner.dart';
 import 'package:mysterium_vpn/views/home/home_connect_button.dart';
@@ -26,7 +26,7 @@ class HomeConnectionView extends HookConsumerWidget {
         Positioned.fill(child: Lottie.asset(Assets.backgroundElements)),
         Column(
           children: [
-            const MobileConnectionStatusBar(),
+            const ConnectionStatusBar(),
             const Expanded(child: HomeConnectButton()),
             SizedBox(height: hasBanner ? 72 : 32),
           ],
