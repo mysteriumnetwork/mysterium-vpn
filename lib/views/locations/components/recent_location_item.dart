@@ -48,7 +48,7 @@ class RecentLocationItem extends HookConsumerWidget {
                 Flag(countryCode: location.code, size: 30),
                 Flexible(
                   child: AutoSizeText(
-                    'AE'.tr(),
+                    location.code.tr(),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontWeight: FontWeight.w500),
