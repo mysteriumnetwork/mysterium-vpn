@@ -1,21 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
-import 'package:mysterium_vpn/components/svg_icon.dart';
-import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:styled_widget/styled_widget.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class LocationsSearch extends HookConsumerWidget {
-  const LocationsSearch({
-    required this.onChanged,
-    super.key,
-  });
-
-  final ValueChanged<String> onChanged;
+  const LocationsSearch({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,10 +18,21 @@ class LocationsSearch extends HookConsumerWidget {
     final brightness = theme.brightness;
     final border = OutlineInputBorder(
       borderSide: BorderSide.none,
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(12),
     );
 
-    final onChangedRef = useRef(onChanged)..value = onChanged;
+    void handleSearch(String? value) {
+      final keyword = value?.trim() ?? '';
+      final locationsStore = ref.read(locationsStorePOD);
+      if (locationsStore.searchKeyword != keyword) {
+        locationsStore.setLocationKeyword(
+          keyword,
+          keyword.isEmpty ? Duration.zero : const Duration(milliseconds: 500),
+        );
+      }
+    }
+
+    final onChangedRef = useRef(handleSearch)..value = handleSearch;
 
     useEffect(
       () {
@@ -58,12 +63,13 @@ class LocationsSearch extends HookConsumerWidget {
         filled: true,
         constraints: const BoxConstraints(minHeight: 40),
         contentPadding: const EdgeInsets.only(left: 20),
+        isDense: true,
         fillColor: theme.colorScheme.surface,
         hintText: LocaleKeys.searchForLocations.tr(),
         border: border,
         focusedBorder: border,
         enabledBorder: border,
-        suffixIcon: _Button(controller: controller).width(20),
+        suffixIcon: _Button(controller: controller),
       ),
     );
   }
@@ -79,9 +85,6 @@ class _Button extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final canClear = useListenableSelector(controller, () => controller.text.isNotEmpty);
-    if (!canClear) {
-      return const SvgIcon(asset: Assets.search, width: 11);
-    }
 
     void handleClear() {
       controller
@@ -90,9 +93,15 @@ class _Button extends HookWidget {
       FocusScope.of(context, createDependency: false).unfocus();
     }
 
-    return SvgIconButton(
-      onPressed: handleClear,
-      asset: Assets.clear,
+    return IgnorePointer(
+      ignoring: !canClear,
+      child: IconButton(
+        onPressed: handleClear,
+        icon: SvgPicture.asset(
+          canClear ? Assets.clear : Assets.search,
+          height: 16,
+        ),
+      ),
     );
   }
 }

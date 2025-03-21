@@ -39,6 +39,7 @@ abstract class Palette {
   Color get outlinedButtonTextColor;
   Color get outlinedButtonBorderColor;
   Color get outlinedButtonBackgroundColor;
+  Color get headerColor;
 
   MaterialColor get swatchColor;
 }
@@ -103,6 +104,9 @@ class LightPalette implements Palette {
 
   @override
   Color get outlinedButtonTextColor => Palette.purple;
+
+  @override
+  Color get headerColor => Palette.white;
 }
 
 class DarkPalette implements Palette {
@@ -163,6 +167,9 @@ class DarkPalette implements Palette {
 
   @override
   Color get outlinedButtonTextColor => Palette.white;
+
+  @override
+  Color get headerColor => Palette.deepPurple;
 }
 
 Map<int, Color> color = const {

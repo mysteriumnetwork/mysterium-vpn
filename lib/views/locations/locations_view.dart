@@ -16,7 +16,6 @@ import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/components/location_type_switcher.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_container.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_disclaimer.dart';
-import 'package:mysterium_vpn/views/locations/components/locations_search.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_sliver_list.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_sliver_loading.dart';
 import 'package:mysterium_vpn/views/locations/components/recent_locations_list.dart';
@@ -39,16 +38,6 @@ class LocationsSliverView extends HookConsumerWidget {
     final recentLocations = useComputedValue(() => locationsStore.recentLocations);
 
     final handleToggleConnection = useHandleToggleConnection();
-
-    void handleSearch(String? value) {
-      final keyword = value?.trim() ?? '';
-      if (locationsStore.searchKeyword != keyword) {
-        locationsStore.setLocationKeyword(
-          keyword,
-          keyword.isEmpty ? Duration.zero : const Duration(milliseconds: 500),
-        );
-      }
-    }
 
     void handleSetLocationType(IPType value) {
       locationsStore.setIPType(value);
@@ -74,8 +63,6 @@ class LocationsSliverView extends HookConsumerWidget {
 
     return MultiSliver(
       children: [
-        LocationsSearch(onChanged: handleSearch),
-        const SizedBox(height: 24),
         _Body(
           stream: stream,
           recentLocations: recentLocations,

@@ -5,10 +5,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
+import 'package:mysterium_vpn/components/home_app_bar.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_banner.dart';
 import 'package:mysterium_vpn/views/home/home_connection_view.dart';
-import 'package:mysterium_vpn/views/home/home_mobile_app_bar.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/locations_slider_mobile_view.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart' hide PanelState;
@@ -61,9 +61,13 @@ class HomeMobileView extends HookConsumerWidget {
               onPanelSlide: homeState.onPanelSlide,
               body: Column(
                 children: [
+                  DecoratedBox(
+                    decoration: BoxDecoration(color: theme.colorScheme.surfaceContainerHighest),
+                    child: HomeAppBar(key: appBarKey),
+                  ),
                   Expanded(
                     flex: 10 - panelFlex,
-                    child: HomeConnectionView(header: HomeMobileAppBar(key: appBarKey)),
+                    child: const HomeConnectionView(),
                   ),
                   Spacer(flex: panelFlex),
                 ],
