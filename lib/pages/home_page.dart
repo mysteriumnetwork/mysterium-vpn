@@ -60,6 +60,7 @@ class HomePage extends HookConsumerWidget {
     });
 
     return ColoredScaffold(
+      extendBodyBehindAppBar: true,
       body: Stack(
         children: [
           ScreenTypeLayoutBuilder(

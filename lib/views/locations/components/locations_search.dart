@@ -4,7 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
@@ -14,8 +13,6 @@ class LocationsSearch extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = useTextEditingController();
-    final theme = Theme.of(context);
-    final brightness = theme.brightness;
     final border = OutlineInputBorder(
       borderSide: BorderSide.none,
       borderRadius: BorderRadius.circular(12),
@@ -53,23 +50,17 @@ class LocationsSearch extends HookConsumerWidget {
         context,
         createDependency: false,
       ).unfocus(),
-      style: TextStyle(
-        color: switch (brightness) {
-          Brightness.light => Palette.black,
-          Brightness.dark => Palette.lightGrey,
-        },
-      ),
+      style: const TextStyle(fontSize: 12),
       decoration: InputDecoration(
-        filled: true,
-        constraints: const BoxConstraints(minHeight: 40),
-        contentPadding: const EdgeInsets.only(left: 20),
+        constraints: const BoxConstraints(minHeight: 32),
         isDense: true,
-        fillColor: theme.colorScheme.surface,
         hintText: LocaleKeys.searchForLocations.tr(),
         border: border,
         focusedBorder: border,
         enabledBorder: border,
         suffixIcon: _Button(controller: controller),
+        suffixIconConstraints: const BoxConstraints(maxHeight: 32),
+        contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
       ),
     );
   }
