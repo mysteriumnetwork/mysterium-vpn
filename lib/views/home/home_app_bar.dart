@@ -44,14 +44,20 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
                     intetcomStore: ref.read(intercomStorePOD),
                     analyticsStore: ref.read(analyticsStorePOD),
                   ),
-                  asset: Assets.report,
+                  asset: switch (brightness) {
+                    Brightness.dark => Assets.supportDark,
+                    Brightness.light => Assets.supportLight,
+                  },
                 ),
                 SvgIconButton(
                   onPressed: () {
                     analyticsStore.logEvent(AnalyticsEvent.openSettings);
                     context.beamToNamed(Routes.settings.path);
                   },
-                  asset: Assets.settings,
+                  asset: switch (brightness) {
+                    Brightness.dark => Assets.settingsDark,
+                    Brightness.light => Assets.settingsLight,
+                  },
                 ),
               ],
             ),
