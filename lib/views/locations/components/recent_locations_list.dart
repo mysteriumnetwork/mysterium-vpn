@@ -6,7 +6,7 @@ class RecentLocationsList extends StatelessWidget {
   const RecentLocationsList({
     required this.items,
     required this.onItemPressed,
-    this.constraints = const BoxConstraints(maxHeight: 132),
+    this.constraints = const BoxConstraints(maxHeight: 82),
     super.key,
   });
 
@@ -25,9 +25,12 @@ class RecentLocationsList extends StatelessWidget {
           separatorBuilder: (_, __) => const SizedBox(width: 12),
           itemBuilder: (_, index) {
             final item = items[index];
-            return RecentLocationItem(
-              location: item,
-              onTap: () => onItemPressed(item),
+            return Align(
+              alignment: Alignment.topLeft,
+              child: RecentLocationItem(
+                location: item,
+                onTap: () => onItemPressed(item),
+              ),
             );
           },
         ),

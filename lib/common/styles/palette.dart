@@ -16,6 +16,9 @@ abstract class Palette {
   static const Color green = Color(0xff4DC800);
   static const Color blue = Color(0xff236EFF);
   static const Color darkGrey = Color(0xff908EA6);
+  static const Color lightLavender = Color(0xffDED9EF);
+  static const Color darkIndigo = Color(0xff353352);
+  static const Color deepPurple = Color(0xff1E1632);
 
   Color get highlightColor;
   Color get secondaryColor;
@@ -30,6 +33,12 @@ abstract class Palette {
   Color get buttonBackgroundColor;
   Color get disabledColor;
   Color get disclaimerBackgroundColor;
+  Color get tileColor;
+  Color get filledButtonBackgroundColor;
+  Color get filledButtonTextColor;
+  Color get outlinedButtonTextColor;
+  Color get outlinedButtonBorderColor;
+  Color get outlinedButtonBackgroundColor;
 
   MaterialColor get swatchColor;
 }
@@ -76,6 +85,24 @@ class LightPalette implements Palette {
 
   @override
   Color get disclaimerBackgroundColor => Palette.lightGrey;
+
+  @override
+  Color get tileColor => Palette.lightLavender;
+
+  @override
+  Color get filledButtonBackgroundColor => Palette.lightBlack;
+
+  @override
+  Color get filledButtonTextColor => Palette.white;
+
+  @override
+  Color get outlinedButtonBackgroundColor => Palette.white;
+
+  @override
+  Color get outlinedButtonBorderColor => Palette.purple;
+
+  @override
+  Color get outlinedButtonTextColor => Palette.purple;
 }
 
 class DarkPalette implements Palette {
@@ -118,6 +145,24 @@ class DarkPalette implements Palette {
 
   @override
   Color get disclaimerBackgroundColor => Palette.lightBlack;
+
+  @override
+  Color get tileColor => Palette.darkIndigo;
+
+  @override
+  Color get filledButtonBackgroundColor => Palette.lightBlack;
+
+  @override
+  Color get filledButtonTextColor => Palette.white;
+
+  @override
+  Color get outlinedButtonBackgroundColor => Palette.mediumBlack;
+
+  @override
+  Color get outlinedButtonBorderColor => Palette.purple;
+
+  @override
+  Color get outlinedButtonTextColor => Palette.white;
 }
 
 Map<int, Color> color = const {

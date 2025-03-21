@@ -16,6 +16,7 @@ ThemeData themeData(Palette palette) => ThemeData(
         secondary: palette.placeholderColor,
         scrim: palette.scrimColor,
         surfaceContainerHigh: palette.disclaimerBackgroundColor,
+        surfaceContainerHighest: palette.tileColor,
       ),
       indicatorColor: palette.secondaryColor,
       hintColor: palette.darkTextColor,
@@ -98,6 +99,28 @@ ThemeData themeData(Palette palette) => ThemeData(
             color: Palette.pink,
           ),
           borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          side: BorderSide(color: palette.outlinedButtonBorderColor),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          foregroundColor: palette.outlinedButtonTextColor,
+          backgroundColor: palette.outlinedButtonBackgroundColor,
+          disabledForegroundColor: palette.outlinedButtonTextColor.withValues(alpha: .5),
+          disabledBackgroundColor: palette.outlinedButtonBackgroundColor.withValues(alpha: .5),
+          padding: const EdgeInsets.all(10),
+        ),
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          padding: const EdgeInsets.all(10),
+          backgroundColor: palette.filledButtonBackgroundColor,
+          foregroundColor: palette.filledButtonTextColor,
+          disabledBackgroundColor: palette.filledButtonBackgroundColor.withValues(alpha: .6),
+          disabledForegroundColor: palette.filledButtonTextColor.withValues(alpha: .7),
+          disabledIconColor: palette.filledButtonTextColor.withValues(alpha: .7),
         ),
       ),
     );

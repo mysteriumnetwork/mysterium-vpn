@@ -309,6 +309,7 @@ class CodegenLoader extends AssetLoader {
     "checkingNotificationsApproval": "正在检查通知状态...",
     "checkingSubsStatus": "我们正在检查您的订阅状态。请稍等...",
     "confirm": "确认",
+    "connect": "连接",
     "connected": "连接的",
     "connecting": "正在连接",
     "connectingInProggress": "连接正在进行中。请等到建立连接。",
@@ -339,6 +340,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "删除帐号",
     "deleteAccountQuestion": "删除帐号？",
     "describeYourIssue": "描述您的问题",
+    "disconnect": "断开连接",
     "disconnectAllDevices": "断开所有设备",
     "disconnectAllDevicesConfirmation": "您确定要断开所有设备吗？",
     "disconnectAllDevicesDesc": "您将要与所有设备断开连接。当前的会话将被终止，并且您将失去VPN连接。",
@@ -872,6 +874,7 @@ class CodegenLoader extends AssetLoader {
     "checkingNotificationsApproval": "Bildirimlerin durumu kontrol ediliyor...",
     "checkingSubsStatus": "Abonelik durumunuzu kontrol ediyoruz. Lütfen bekleyin.",
     "confirm": "Onaylamak",
+    "connect": "Bağlan",
     "connected": "Bağlı",
     "connecting": "Bağlanıyor",
     "connectingInProggress": "Devam Edecek Bağlantı .. Lütfen bağlantı kurulana kadar bekleyin.",
@@ -905,6 +908,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Hesabımı Sil",
     "deleteAccountQuestion": "Hesabını silmek üzeresin!",
     "describeYourIssue": "Sorununuzu açıklayın",
+    "disconnect": "Bağlantıyı kes",
     "disconnectAllDevices": "Tüm cihazların bağlantısını kesin",
     "disconnectAllDevicesConfirmation":
         "Tüm cihazların bağlantısını kesmek istediğinizden emin misiniz?",
@@ -1457,6 +1461,7 @@ class CodegenLoader extends AssetLoader {
     "checkingNotificationsApproval": "通知ステータスを確認しています...",
     "checkingSubsStatus": "あなたの購読状況を確認しています。お待ちください...",
     "confirm": "確認",
+    "connect": "接続",
     "connected": "接続済み",
     "connecting": "接続中",
     "connectingInProggress": "進行中の接続..接続が確立されるまで待ってください。",
@@ -1487,6 +1492,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "アカウントを削除",
     "deleteAccountQuestion": "アカウントを削除?",
     "describeYourIssue": "問題を説明",
+    "disconnect": "切断",
     "disconnectAllDevices": "すべてのデバイスを切断します",
     "disconnectAllDevicesConfirmation": "すべてのデバイスを切断したいですか？",
     "disconnectAllDevicesDesc": "すべてのデバイスから切断しようとしています。現在のセッションは終了し、VPN接続が失われます。",
@@ -2025,6 +2031,7 @@ class CodegenLoader extends AssetLoader {
     "checkingNotificationsApproval": "Benachrichtigungsstatus wird geprüft...",
     "checkingSubsStatus": "Wir prüfen Ihren Abonnementstatus. Bitte warten...",
     "confirm": "Bestätigen",
+    "connect": "Verbinden",
     "connected": "Verbunden",
     "connecting": "Verbinden",
     "connectingInProggress":
@@ -2060,6 +2067,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Konto löschen",
     "deleteAccountQuestion": "Konto löschen?",
     "describeYourIssue": "Beschreiben Sie Ihr Problem",
+    "disconnect": "Trennen",
     "disconnectAllDevices": "Trennen Sie alle Geräte",
     "disconnectAllDevicesConfirmation": "Sind Sie sicher, dass Sie alle Geräte trennen möchten?",
     "disconnectAllDevicesDesc":
@@ -2634,6 +2642,7 @@ class CodegenLoader extends AssetLoader {
     "checkingNotificationsApproval": "Verificando o status das notificações ...",
     "checkingSubsStatus": "Estamos verificando o status da sua assinatura. Aguarde.",
     "confirm": "confirme",
+    "connect": "Conectar",
     "connected": "Conectada",
     "connecting": "Conectando",
     "connectingInProggress":
@@ -2669,6 +2678,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Deletar conta",
     "deleteAccountQuestion": "Deletar conta?",
     "describeYourIssue": "descreva seu problema",
+    "disconnect": "Desconectar",
     "disconnectAllDevices": "Desconecte todos os dispositivos",
     "disconnectAllDevicesConfirmation":
         "Tem certeza de que deseja desconectar todos os dispositivos?",
@@ -3234,6 +3244,7 @@ class CodegenLoader extends AssetLoader {
     "checkingNotificationsApproval": "Checking Notifications status...",
     "checkingSubsStatus": "We are checking your subscription status. Please wait...",
     "confirm": "Confirm",
+    "connect": "Connect",
     "connected": "Connected",
     "connecting": "Connecting",
     "connectingInProggress":
@@ -3267,6 +3278,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Delete account",
     "deleteAccountQuestion": "Delete Account?",
     "describeYourIssue": "Describe your issue",
+    "disconnect": "Disconnect",
     "disconnectAllDevices": "Disconnect all devices",
     "disconnectAllDevicesConfirmation": "Are you sure you want to disconnect all devices?",
     "disconnectAllDevicesDesc":
@@ -3827,6 +3839,7 @@ class CodegenLoader extends AssetLoader {
     "checkingNotificationsApproval": "Verifica dello stato delle notifiche in corso...",
     "checkingSubsStatus": "Stiamo controllando lo stato della tua iscrizione. Attendere prego...",
     "confirm": "Conferma",
+    "connect": "Connetti",
     "connected": "Collegato",
     "connecting": "Collegamento",
     "connectingInProggress":
@@ -3863,6 +3876,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Elimina account",
     "deleteAccountQuestion": "Vuoi eliminare l'account?",
     "describeYourIssue": "Descrivi il tuo problema",
+    "disconnect": "Disconnetti",
     "disconnectAllDevices": "Scollegare tutti i dispositivi",
     "disconnectAllDevicesConfirmation": "Sei sicuro di voler scollegare tutti i dispositivi?",
     "disconnectAllDevicesDesc":
@@ -4429,6 +4443,7 @@ class CodegenLoader extends AssetLoader {
     "checkingNotificationsApproval": "Vérification de l'état des notifications ...",
     "checkingSubsStatus": "Nous vérifions l'état de votre abonnement.Veuillez patienter.",
     "confirm": "Confirmer",
+    "connect": "Connecter",
     "connected": "Connecté",
     "connecting": "De liaison",
     "connectingInProggress":
@@ -4465,6 +4480,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Supprimer le compte",
     "deleteAccountQuestion": "Supprimer le compte?",
     "describeYourIssue": "Décrivez votre problème",
+    "disconnect": "Déconnecter",
     "disconnectAllDevices": "Débrancher tous les appareils",
     "disconnectAllDevicesConfirmation": "Êtes-vous sûr de vouloir déconnecter tous les appareils?",
     "disconnectAllDevicesDesc":
@@ -5033,6 +5049,7 @@ class CodegenLoader extends AssetLoader {
     "checkingNotificationsApproval": "Memeriksa status Notifikasi...",
     "checkingSubsStatus": "Kami sedang memeriksa status langganan Anda. Harap tunggu...",
     "confirm": "Mengonfirmasi",
+    "connect": "Hubungkan",
     "connected": "Terhubung",
     "connecting": "Menghubungkan",
     "connectingInProggress": "Menghubungkan dalam proses .. Harap tunggu sampai koneksi dibuat.",
@@ -5067,6 +5084,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Hapus akun",
     "deleteAccountQuestion": "Hapus akun?",
     "describeYourIssue": "jelaskan permasalahanmu",
+    "disconnect": "Putuskan",
     "disconnectAllDevices": "Lepaskan semua perangkat",
     "disconnectAllDevicesConfirmation": "Apakah Anda yakin ingin memutuskan semua perangkat?",
     "disconnectAllDevicesDesc":
@@ -5629,6 +5647,7 @@ class CodegenLoader extends AssetLoader {
     "checkingNotificationsApproval": "Comprobando el estado de las notificaciones...",
     "checkingSubsStatus": "Estamos comprobando el estado de tu suscripción. Espera, por favor...",
     "confirm": "Confirmar",
+    "connect": "Conectar",
     "connected": "Conectado",
     "connecting": "Conectando",
     "connectingInProggress": "Conectando en progreso. Espere hasta que se establezca la conexión.",
@@ -5663,6 +5682,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Borrar cuenta",
     "deleteAccountQuestion": "¿Borrar cuenta?",
     "describeYourIssue": "Describe tu problema",
+    "disconnect": "Desconectar",
     "disconnectAllDevices": "Desconectar todos los dispositivos",
     "disconnectAllDevicesConfirmation":
         "¿Estás seguro de que quieres desconectar todos los dispositivos?",
@@ -6230,6 +6250,7 @@ class CodegenLoader extends AssetLoader {
     "checkingNotificationsApproval": "التحقق من حالة الإخطارات...",
     "checkingSubsStatus": "نحن نتحقق من حالة اشتراكك. انتظر من فضلك...",
     "confirm": "أكد",
+    "connect": "قطع الاتصال",
     "connected": "متصل",
     "connecting": "جاري الاتصال",
     "connectingInProggress": "الاتصال قيد التقدم .. يرجى الانتظار حتى يتم إنشاء الاتصال.",
@@ -6262,6 +6283,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "حذف الحساب",
     "deleteAccountQuestion": "حذف الحساب؟",
     "describeYourIssue": "صف مشكلتك",
+    "disconnect": "اتصال",
     "disconnectAllDevices": "افصل جميع الأجهزة",
     "disconnectAllDevicesConfirmation": "هل أنت متأكد أنك تريد فصل جميع الأجهزة؟",
     "disconnectAllDevicesDesc":
