@@ -18,8 +18,10 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
     final analyticsStore = ref.read(analyticsStorePOD);
 
     return SafeArea(
+      bottom: false,
+      minimum: const EdgeInsets.only(top: 12),
       child: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 24),
+        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 24),
         child: Column(
           spacing: 12,
           crossAxisAlignment: CrossAxisAlignment.stretch,
