@@ -295,6 +295,7 @@ abstract class LocaleKeys {
   static const checkingNotificationsApproval = 'checkingNotificationsApproval';
   static const checkingSubsStatus = 'checkingSubsStatus';
   static const confirm = 'confirm';
+  static const connect = 'connect';
   static const connected = 'connected';
   static const connecting = 'connecting';
   static const connectingInProggress = 'connectingInProggress';
@@ -325,6 +326,7 @@ abstract class LocaleKeys {
   static const deleteAccount = 'deleteAccount';
   static const deleteAccountQuestion = 'deleteAccountQuestion';
   static const describeYourIssue = 'describeYourIssue';
+  static const disconnect = 'disconnect';
   static const disconnectAllDevices = 'disconnectAllDevices';
   static const disconnectAllDevicesConfirmation = 'disconnectAllDevicesConfirmation';
   static const disconnectAllDevicesDesc = 'disconnectAllDevicesDesc';
