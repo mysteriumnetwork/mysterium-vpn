@@ -7,6 +7,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/components/connection_tile.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/retry_widget.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -44,12 +45,10 @@ class LocationsSliverView extends HookConsumerWidget {
     }
 
     void handleLocationTapped(VPNLocation location) {
-      handleSetLocationType(location.ipType);
       handleToggleConnection(location: location);
     }
 
     void handleRecentLocationTapped(VPNLocation location) {
-      handleSetLocationType(location.ipType);
       handleToggleConnection(
         location: location,
         selectEvent: (connected) =>
@@ -63,6 +62,10 @@ class LocationsSliverView extends HookConsumerWidget {
 
     return MultiSliver(
       children: [
+        LocationsSearch(onChanged: handleSearch),
+        const SizedBox(height: 24),
+        const ConnectionTile(),
+        const SizedBox(height: 24),
         _Body(
           stream: stream,
           recentLocations: recentLocations,
