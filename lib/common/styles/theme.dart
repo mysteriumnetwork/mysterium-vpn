@@ -16,7 +16,8 @@ ThemeData themeData(Palette palette) => ThemeData(
         secondary: palette.placeholderColor,
         scrim: palette.scrimColor,
         surfaceContainerHigh: palette.disclaimerBackgroundColor,
-        surfaceContainerHighest: palette.tileColor,
+        surfaceContainerHighest: palette.headerColor,
+        primaryContainer: palette.tileColor,
       ),
       indicatorColor: palette.secondaryColor,
       hintColor: palette.darkTextColor,
@@ -62,15 +63,11 @@ ThemeData themeData(Palette palette) => ThemeData(
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        hintStyle: TextStyle(
-          color: palette.secondaryColor,
-        ),
-        labelStyle: TextStyle(
-          color: palette.secondaryColor,
-        ),
+        hintStyle: TextStyle(color: palette.inputHintColor),
+        labelStyle: TextStyle(color: palette.secondaryColor),
         filled: true,
         contentPadding: const EdgeInsets.only(left: 20),
-        fillColor: palette.surfaceColor,
+        fillColor: palette.inputColor,
         outlineBorder: BorderSide(color: palette.lightTextColor),
         border: OutlineInputBorder(
           borderSide: BorderSide(color: palette.lightTextColor),
