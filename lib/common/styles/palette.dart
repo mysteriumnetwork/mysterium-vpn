@@ -19,6 +19,7 @@ abstract class Palette {
   static const Color lightLavender = Color(0xffDED9EF);
   static const Color darkIndigo = Color(0xff353352);
   static const Color deepPurple = Color(0xff1E1632);
+  static const Color veryLightBlue = Color(0xffF0F2FF);
 
   Color get highlightColor;
   Color get secondaryColor;
@@ -39,6 +40,9 @@ abstract class Palette {
   Color get outlinedButtonTextColor;
   Color get outlinedButtonBorderColor;
   Color get outlinedButtonBackgroundColor;
+  Color get headerColor;
+  Color get inputColor;
+  Color get inputHintColor;
 
   MaterialColor get swatchColor;
 }
@@ -103,6 +107,15 @@ class LightPalette implements Palette {
 
   @override
   Color get outlinedButtonTextColor => Palette.purple;
+
+  @override
+  Color get headerColor => Palette.white;
+
+  @override
+  Color get inputColor => Palette.veryLightBlue;
+
+  @override
+  Color get inputHintColor => Palette.lightBlack;
 }
 
 class DarkPalette implements Palette {
@@ -163,6 +176,15 @@ class DarkPalette implements Palette {
 
   @override
   Color get outlinedButtonTextColor => Palette.white;
+
+  @override
+  Color get headerColor => Palette.deepPurple;
+
+  @override
+  Color get inputColor => Palette.mediumBlack;
+
+  @override
+  Color get inputHintColor => Palette.veryLightGrey;
 }
 
 Map<int, Color> color = const {

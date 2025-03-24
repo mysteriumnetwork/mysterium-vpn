@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/views/home/home_desktop_app_bar.dart';
+import 'package:mysterium_vpn/views/home/home_app_bar.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/locations_view.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -21,13 +21,7 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
     return CustomScrollView(
       controller: scrollController,
       slivers: const [
-        SliverToBoxAdapter(child: SizedBox(height: 14)),
-        SliverPinnedHeader(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 16),
-            child: HomeDesktopAppBar(),
-          ),
-        ),
+        SliverPinnedHeader(child: HomeAppBar()),
         SliverClip(
           child: SliverPadding(
             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 14),
