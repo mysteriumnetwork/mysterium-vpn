@@ -18,6 +18,8 @@ ThemeData themeData(Palette palette) => ThemeData(
         surfaceContainerHigh: palette.disclaimerBackgroundColor,
         surfaceContainerHighest: palette.headerColor,
         primaryContainer: palette.tileColor,
+        secondaryContainer: palette.secondaryTileColor,
+        onSecondaryContainer: palette.secondaryColor.withValues(alpha: .75),
       ),
       indicatorColor: palette.secondaryColor,
       hintColor: palette.darkTextColor,
