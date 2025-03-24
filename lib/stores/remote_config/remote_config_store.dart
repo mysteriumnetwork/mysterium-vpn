@@ -28,6 +28,7 @@ enum _FeatureToggleKey {
   sentryDsn,
   hideResetAppSetting,
   browseUnauthenticated,
+  shouldCheckUdp,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -212,6 +213,14 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return config[_FeatureToggleKey.browseUnauthenticated.name] as bool;
     }
     return false;
+  }
+
+  @computed
+  bool get shouldCheckUdp {
+    if (config.containsKey(_FeatureToggleKey.shouldCheckUdp.name)) {
+      return config[_FeatureToggleKey.shouldCheckUdp.name] as bool;
+    }
+    return true;
   }
 
   Map<String, String> get asUserProperties =>
