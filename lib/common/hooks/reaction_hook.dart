@@ -17,6 +17,11 @@ void useReaction<T>(
         effect: effect,
         fireImmediately: fireImmediately,
         keys: keys,
+        delay: delay,
+        context: context,
+        equals: equals,
+        name: name,
+        onError: onError,
       ),
     );
 

@@ -16,6 +16,8 @@ abstract class Palette {
   static const Color green = Color(0xff4DC800);
   static const Color blue = Color(0xff236EFF);
   static const Color darkGrey = Color(0xff908EA6);
+  static const Color forestGreen = Color(0xff429218);
+  static const Color crimsonRed = Color(0xffA62B2B);
   static const Color lightLavender = Color(0xffDED9EF);
   static const Color darkIndigo = Color(0xff353352);
   static const Color deepPurple = Color(0xff1E1632);
