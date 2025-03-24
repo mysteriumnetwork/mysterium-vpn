@@ -37,6 +37,7 @@ abstract class Assets {
   static const String languageLight = 'assets/icons/language_light.svg';
   static const String lockerDark = 'assets/icons/locker_dark.svg';
   static const String lockerLight = 'assets/icons/locker_light.svg';
+  static const String lockOpen = 'assets/icons/lock_open.svg';
   static const String messageSvg = 'assets/icons/message.svg';
   static const String navigateBack = 'assets/icons/navigate_back.svg';
   static const String navigateBackLightBlack = 'assets/icons/navigate_back_light_grey.svg';
@@ -67,7 +68,6 @@ abstract class Assets {
   static const String supportDark = 'assets/icons/support_dark.svg';
   static const String supportLight = 'assets/icons/support_light.svg';
   static const String tag = 'assets/icons/tag.svg';
-  static const String lockOpen = 'assets/icons/lock_open.svg';
   static const String themeDark = 'assets/icons/theme_dark.svg';
   static const String themeLight = 'assets/icons/theme_light.svg';
   static const String upload = 'assets/icons/upload.svg';
