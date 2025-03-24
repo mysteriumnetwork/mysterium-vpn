@@ -62,8 +62,6 @@ class LocationsSliverView extends HookConsumerWidget {
 
     return MultiSliver(
       children: [
-        LocationsSearch(onChanged: handleSearch),
-        const SizedBox(height: 24),
         const ConnectionTile(),
         const SizedBox(height: 24),
         _Body(

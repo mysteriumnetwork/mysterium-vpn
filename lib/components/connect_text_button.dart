@@ -6,7 +6,6 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class ConnectTextButton extends HookConsumerWidget {
   const ConnectTextButton({
