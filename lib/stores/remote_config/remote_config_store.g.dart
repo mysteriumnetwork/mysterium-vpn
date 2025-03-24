@@ -157,6 +157,12 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$browseUnauthenticatedComputed ??= Computed<bool>(() => super.browseUnauthenticated,
               name: 'RemoteConfigStoreBase.browseUnauthenticated'))
           .value;
+  Computed<bool>? _$shouldCheckUdpComputed;
+
+  @override
+  bool get shouldCheckUdp => (_$shouldCheckUdpComputed ??=
+          Computed<bool>(() => super.shouldCheckUdp, name: 'RemoteConfigStoreBase.shouldCheckUdp'))
+      .value;
 
   @override
   String toString() {
@@ -182,7 +188,8 @@ locationsRefreshInterval: ${locationsRefreshInterval},
 showSalesView: ${showSalesView},
 sentryDsn: ${sentryDsn},
 hideResetAppSetting: ${hideResetAppSetting},
-browseUnauthenticated: ${browseUnauthenticated}
+browseUnauthenticated: ${browseUnauthenticated},
+shouldCheckUdp: ${shouldCheckUdp}
     ''';
   }
 }

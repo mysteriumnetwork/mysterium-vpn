@@ -578,6 +578,7 @@ abstract class _VpnStore with Store {
         _locationsStore.addRecentLocation(_vpnConnection!.location);
       }
       unawaited(_initMqtt());
+      unawaited(_udpBlockedCheck());
     } catch (e) {
       _logger.handle(e);
       rethrow;
@@ -711,6 +712,24 @@ abstract class _VpnStore with Store {
     } catch (e) {
       _logger.handle(e);
       rethrow;
+    }
+  }
+
+  @action
+  Future<void> _udpBlockedCheck() async {
+    try {
+      if (!_remoteConfigStore.shouldCheckUdp) {
+        return;
+      }
+      await _apiService.udpBlockedCheck();
+      _logger.info('UDP block check completed in less than 2sec and it is not blocked');
+    } catch (e) {
+      _analyticsStore.logEvent(
+        AnalyticsEvent.udpBlocked,
+        parameters: {
+          'error': e.toString(),
+        },
+      );
     }
   }
 }
