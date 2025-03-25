@@ -37,6 +37,7 @@ abstract class Palette {
   Color get disabledColor;
   Color get disclaimerBackgroundColor;
   Color get tileColor;
+  Color get secondaryTileColor;
   Color get filledButtonBackgroundColor;
   Color get filledButtonTextColor;
   Color get outlinedButtonTextColor;
@@ -118,6 +119,9 @@ class LightPalette implements Palette {
 
   @override
   Color get inputHintColor => Palette.lightBlack;
+
+  @override
+  Color get secondaryTileColor => Palette.lightGrey;
 }
 
 class DarkPalette implements Palette {
@@ -187,6 +191,9 @@ class DarkPalette implements Palette {
 
   @override
   Color get inputHintColor => Palette.veryLightGrey;
+
+  @override
+  Color get secondaryTileColor => Palette.deepPurple;
 }
 
 Map<int, Color> color = const {
