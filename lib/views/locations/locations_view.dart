@@ -44,12 +44,10 @@ class LocationsSliverView extends HookConsumerWidget {
     }
 
     void handleLocationTapped(VPNLocation location) {
-      handleSetLocationType(location.ipType);
       handleToggleConnection(location: location);
     }
 
     void handleRecentLocationTapped(VPNLocation location) {
-      handleSetLocationType(location.ipType);
       handleToggleConnection(
         location: location,
         selectEvent: (connected) =>

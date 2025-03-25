@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/components/connection_tile.dart';
 import 'package:mysterium_vpn/components/dragable_indicator.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
@@ -40,11 +41,17 @@ class LocationsSliderMobileView extends HookConsumerWidget {
         SliverPinnedHeader(
           child: Center(child: DraggableIndicator(onTap: handleTogglePanel)),
         ),
-        const SliverSafeArea(
+        SliverSafeArea(
           top: false,
           sliver: SliverPadding(
-            padding: EdgeInsets.all(20),
-            sliver: LocationsSliverView(),
+            padding: const EdgeInsets.all(20),
+            sliver: MultiSliver(
+              children: const [
+                ConnectionTile(),
+                SizedBox(height: 24),
+                LocationsSliverView(),
+              ],
+            ),
           ),
         ),
       ],

@@ -6,7 +6,6 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class ConnectTextButton extends HookConsumerWidget {
   const ConnectTextButton({
@@ -24,21 +23,7 @@ class ConnectTextButton extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final vpnStore = ref.watch(vpnStorePOD);
-    final isConnected = useComputedValue(
-      () {
-        if (vpnStore.isLoading && location == vpnStore.location) {
-          return null;
-        }
-
-        if (!vpnStore.isConnected) {
-          return false;
-        }
-
-        return location == vpnStore.location;
-      },
-      [location],
-    );
+    final isConnected = useIsLocationConnected(location);
 
     void onPressed() {
       this.onPressed?.call();

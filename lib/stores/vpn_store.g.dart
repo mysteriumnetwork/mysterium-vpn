@@ -39,6 +39,13 @@ mixin _$VpnStore on _VpnStore, Store {
   VPNLocation? get location => (_$locationComputed ??=
           Computed<VPNLocation?>(() => super.location, name: '_VpnStore.location'))
       .value;
+  Computed<VPNLocation?>? _$potentialLocationComputed;
+
+  @override
+  VPNLocation? get potentialLocation =>
+      (_$potentialLocationComputed ??= Computed<VPNLocation?>(() => super.potentialLocation,
+              name: '_VpnStore.potentialLocation'))
+          .value;
 
   late final _$_refreshIPConnectionAtom =
       Atom(name: '_VpnStore._refreshIPConnection', context: context);
@@ -391,7 +398,8 @@ vpnStatus: ${vpnStatus},
 replaceDNSAddress: ${replaceDNSAddress},
 isConnected: ${isConnected},
 isLoading: ${isLoading},
-location: ${location}
+location: ${location},
+potentialLocation: ${potentialLocation}
     ''';
   }
 }

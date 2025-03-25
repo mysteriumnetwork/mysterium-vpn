@@ -143,6 +143,9 @@ abstract class _VpnStore with Store {
   @computed
   VPNLocation? get location => _vpnConnection?.location;
 
+  @computed
+  VPNLocation? get potentialLocation => _sharedPrefs.getLocation() ?? _selectLocation();
+
   @readonly
   ObservableFuture<void>? _resolveConnectionLocationFuture;
 
@@ -238,7 +241,7 @@ abstract class _VpnStore with Store {
     _connectionStatus = await _wireguardService.status();
 
     if (_connectionStatus == ConnectionStatus.connected) {
-      final location = _sharedPrefs.getLocation() ?? _selectLocation();
+      final location = potentialLocation;
       _connectingLocation = location;
       try {
         _resolveConnectionLocationFuture = ObservableFuture(
