@@ -22,7 +22,7 @@ class VPNLocations with _$VPNLocations {
 @freezed
 class VPNLocation with _$VPNLocation {
   const factory VPNLocation({
-    required String code,
+    @Default('') String code,
     @Default(IPType.residential) IPType ipType,
   }) = _VPNLocation;
 

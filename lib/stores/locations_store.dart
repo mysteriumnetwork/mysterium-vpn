@@ -136,7 +136,7 @@ abstract class _LocationsStore with Store {
       return null;
     }
 
-    return locations.first;
+    return null;
   }
 
   Stream<VPNLocations> _watch(IPType ipType) async* {

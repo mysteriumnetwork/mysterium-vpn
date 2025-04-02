@@ -510,9 +510,7 @@ abstract class _VpnStore with Store {
     }
 
     location ??= refreshIP ?? false ? _vpnConnection?.location : _selectLocation();
-    if (location == null) {
-      return;
-    }
+    location ??= const VPNLocation(ipType: IPType.closest);
 
     _connectingLocation = location;
 
