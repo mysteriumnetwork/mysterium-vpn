@@ -557,5 +557,6 @@
   "yearlyPlanDiscountPrice": "Yıl için {amount}.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Evet",
-  "zh": "Çince"
+  "zh": "Çince",
+  "logoutVPNConnectedDesc": "VPN açık. Oturum açmaya devam ederseniz VPN sunucusundan bağlantısı kesileceksiniz."
 }

@@ -137,7 +137,9 @@ class _Authenticated extends HookConsumerWidget {
                         ),
                         title: LocaleKeys.logoutConfirmationTitle.tr(),
                         content: Text(
-                          LocaleKeys.logoutConfirmationDesc.tr(),
+                          vpnStore.isConnected
+                              ? LocaleKeys.logoutVPNConnectedDesc.tr()
+                              : LocaleKeys.logoutConfirmationDesc.tr(),
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
