@@ -557,5 +557,6 @@
   "yearlyPlanDiscountPrice": "{amount} untuk tahun.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Iya",
-  "zh": "Cina"
+  "zh": "Cina",
+  "logoutVPNConnectedDesc": "VPN aktif. Anda akan terputus dari VPN Server jika terus keluar."
 }
