@@ -557,5 +557,6 @@
   "yearlyPlanDiscountPrice": "{amount} für das Jahr.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Ja",
-  "zh": "Chinesisch"
+  "zh": "Chinesisch",
+  "logoutVPNConnectedDesc": "VPN ist eingeschaltet. Sie werden vom VPN -Server getrennt, wenn Sie sich weiter anmelden."
 }

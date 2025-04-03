@@ -557,5 +557,6 @@
   "yearlyPlanDiscountPrice": "年間{amount}。",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "はい",
-  "zh": "中国語"
+  "zh": "中国語",
+  "logoutVPNConnectedDesc": "VPNがオンになります。ログアウトを続けると、VPNサーバーから切断されます。"
 }

@@ -574,7 +574,8 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "全年{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "是",
-    "zh": "中国人"
+    "zh": "中国人",
+    "logoutVPNConnectedDesc": "VPN已打开。如果继续注销，您将与VPN服务器断开连接。"
   };
   static const Map<String, dynamic> tr = {
     "AD": "Andorra",
@@ -1164,7 +1165,9 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "Yıl için {amount}.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Evet",
-    "zh": "Çince"
+    "zh": "Çince",
+    "logoutVPNConnectedDesc":
+        "VPN açık. Oturum açmaya devam ederseniz VPN sunucusundan bağlantısı kesileceksiniz."
   };
   static const Map<String, dynamic> ja = {
     "AD": "アンドラ",
@@ -1730,7 +1733,8 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "年間{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "はい",
-    "zh": "中国語"
+    "zh": "中国語",
+    "logoutVPNConnectedDesc": "VPNがオンになります。ログアウトを続けると、VPNサーバーから切断されます。"
   };
   static const Map<String, dynamic> de = {
     "AD": "Andorra",
@@ -2342,7 +2346,9 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} für das Jahr.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Ja",
-    "zh": "Chinesisch"
+    "zh": "Chinesisch",
+    "logoutVPNConnectedDesc":
+        "VPN ist eingeschaltet. Sie werden vom VPN -Server getrennt, wenn Sie sich weiter anmelden."
   };
   static const Map<String, dynamic> pt = {
     "AD": "Andorra",
@@ -2943,7 +2949,9 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} por ano.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "sim",
-    "zh": "Chinês"
+    "zh": "Chinês",
+    "logoutVPNConnectedDesc":
+        "O VPN está em ON.Você será desconectado do servidor VPN se continuar a fazer o logon."
   };
   static const Map<String, dynamic> en = {
     "AD": "Andorra",
@@ -3537,7 +3545,9 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} for the year.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Yes",
-    "zh": "Chinese"
+    "zh": "Chinese",
+    "logoutVPNConnectedDesc":
+        "VPN is on. You will be disconnected from VPN server if continue to log out."
   };
   static const Map<String, dynamic> it = {
     "AD": "Andorra",
@@ -4141,7 +4151,9 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} per l'anno.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sì",
-    "zh": "Cinese"
+    "zh": "Cinese",
+    "logoutVPNConnectedDesc":
+        "VPN è on. Verrà disconnesso dal server VPN se continui a disconnettersi."
   };
   static const Map<String, dynamic> fr = {
     "AD": "Andorre",
@@ -4748,7 +4760,9 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} pour l'année.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Oui",
-    "zh": "Chinois"
+    "zh": "Chinois",
+    "logoutVPNConnectedDesc":
+        "VPN est activé. Vous serez déconnecté de VPN Server si vous continuerez à vous déconnecter."
   };
   static const Map<String, dynamic> id = {
     "AD": "Andorra",
@@ -5345,7 +5359,8 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} untuk tahun.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Iya",
-    "zh": "Cina"
+    "zh": "Cina",
+    "logoutVPNConnectedDesc": "VPN aktif. Anda akan terputus dari VPN Server jika terus keluar."
   };
   static const Map<String, dynamic> es = {
     "AD": "Andorra",
@@ -5952,7 +5967,9 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} por el año.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sí",
-    "zh": "Chino"
+    "zh": "Chino",
+    "logoutVPNConnectedDesc":
+        "VPN está encendido. Será desconectado del servidor VPN si continúa iniciando sesión."
   };
   static const Map<String, dynamic> ar = {
     "AD": "أندورا",
@@ -6538,7 +6555,8 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{المبلغ} للسنة.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "نعم",
-    "zh": "صينى"
+    "zh": "صينى",
+    "logoutVPNConnectedDesc": "VPN ON. سيتم فصلك عن خادم VPN إذا استمرت في تسجيل الخروج."
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,
