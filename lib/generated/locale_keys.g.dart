@@ -560,4 +560,5 @@ abstract class LocaleKeys {
   static const yearlyPlanFullPrice = 'yearlyPlanFullPrice';
   static const yes = 'yes';
   static const zh = 'zh';
+  static const logoutVPNConnectedDesc = 'logoutVPNConnectedDesc';
 }

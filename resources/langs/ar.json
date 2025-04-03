@@ -555,5 +555,6 @@
   "yearlyPlanDiscountPrice": "{المبلغ} للسنة.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "نعم",
-  "zh": "صينى"
+  "zh": "صينى",
+  "logoutVPNConnectedDesc": "VPN ON. سيتم فصلك عن خادم VPN إذا استمرت في تسجيل الخروج."
 }
