@@ -69,7 +69,7 @@ abstract class _LocationsStore with Store {
   @computed
   ObservableStream<VPNLocations> get locationsStream => switch (_ipType) {
         IPType.datacenter => _dcLocationsStream,
-        IPType.residential => _residentialLocationsStream,
+        _ => _residentialLocationsStream,
       };
 
   @readonly

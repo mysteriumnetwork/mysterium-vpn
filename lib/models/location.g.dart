@@ -35,4 +35,5 @@ Map<String, dynamic> _$$VPNLocationImplToJson(_$VPNLocationImpl instance) => <St
 const _$IPTypeEnumMap = {
   IPType.residential: 'residential',
   IPType.datacenter: 'datacenter',
+  IPType.closest: 'closest',
 };

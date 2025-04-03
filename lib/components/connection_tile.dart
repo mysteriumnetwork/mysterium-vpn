@@ -181,6 +181,7 @@ class _IPTypeIndicator extends HookWidget {
             switch (ipType) {
               IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
               IPType.residential => LocaleKeys.ipTypeResidential.tr(),
+              IPType.closest => 'Connect to the best server...',
             },
             fontSize: 12,
             color: theme.colorScheme.onSecondaryContainer,
