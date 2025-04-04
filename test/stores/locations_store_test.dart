@@ -124,15 +124,16 @@ void main() {
 
     test('returns random location from recent locations', () async {
       when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => mockResidential);
+      when(mockFilterService.filterLocations(mockResidential, keyword: '', shouldSortList: false))
+          .thenReturn(mockResidential);
 
-      await locationsStore.locationsStream.first;
       final recentLocations = await locationsStore.recentLocationsFuture;
 
       final randomLocation = locationsStore.randomLocation();
       expect(recentLocations.contains(randomLocation), isTrue);
     });
 
-    test('returns null when no locations available for random selection', () async {
+    test('returns closest location when no locations available for random selection', () async {
       final locationsStore = LocationsStore(
         mockApiService,
         mockFilterService,
@@ -153,8 +154,7 @@ void main() {
       await locationsStore.recentLocationsFuture;
 
       final randomLocation = locationsStore.randomLocation(IPType.residential);
-
-      expect(randomLocation, isNull);
+      expect(randomLocation, const VPNLocation(ipType: IPType.closest));
     });
 
     test('refresh updates locations', () async {

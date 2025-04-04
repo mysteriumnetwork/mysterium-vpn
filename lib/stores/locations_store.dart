@@ -117,7 +117,7 @@ abstract class _LocationsStore with Store {
     return [];
   }
 
-  VPNLocation? randomLocation([IPType? type]) {
+  VPNLocation randomLocation([IPType? type]) {
     var recents = recentLocations;
     if (type != null) {
       recents = recentLocations.where((location) => location.ipType == type).toList();
@@ -126,17 +126,7 @@ abstract class _LocationsStore with Store {
       return recents.first;
     }
 
-    final value = switch (type) {
-      IPType.datacenter => _dcLocationsStream.value,
-      _ => _residentialLocationsStream.value,
-    };
-
-    final locations = [...?value?.locations, ...?value?.topLocations];
-    if (locations.isEmpty) {
-      return null;
-    }
-
-    return null;
+    return const VPNLocation(ipType: IPType.closest);
   }
 
   Stream<VPNLocations> _watch(IPType ipType) async* {

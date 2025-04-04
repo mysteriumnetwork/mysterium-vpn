@@ -162,7 +162,8 @@ abstract class _VpnStore with Store {
   VPNLocation? get location => _vpnConnection?.location ?? _connectingLocation;
 
   @computed
-  VPNLocation? get potentialLocation => _sharedPrefs.getLocation() ?? _selectLocation();
+  VPNLocation? get potentialLocation =>
+      _sharedPrefs.getLocation() ?? _locationsStore.randomLocation();
 
   @readonly
   ObservableFuture<void>? _resolveConnectionLocationFuture;
@@ -509,8 +510,10 @@ abstract class _VpnStore with Store {
       }
     }
 
-    location ??= refreshIP ?? false ? _vpnConnection?.location : _selectLocation();
-    location ??= const VPNLocation(ipType: IPType.closest);
+    location ??= refreshIP ?? false ? _vpnConnection?.location : potentialLocation;
+    if (location == null) {
+      return;
+    }
 
     _connectingLocation = location;
 
@@ -583,8 +586,6 @@ abstract class _VpnStore with Store {
     }
   }
 
-  VPNLocation? _selectLocation() => _locationsStore.randomLocation();
-
   @action
   Future<void> _completeConnection(
     VPNLocation location,
@@ -599,7 +600,7 @@ abstract class _VpnStore with Store {
         _apiService.fetchVpnConfig(
           request: WireguardConnectRequest(
             publicKey: key.publicKey,
-            countryOriginate: _realIPInfo.info?.country,
+            countryOriginate: (await _realIPInfo.infoFuture)?.country,
             country: location.code,
             ipType: switch (location.ipType) {
               IPType.datacenter => 'hosting',
