@@ -36,7 +36,10 @@ class ConnectTextButton extends HookConsumerWidget {
           child: AutoSizeText(
             LocaleKeys.connect.tr(),
             group: textScaleGroup,
-            style: const TextStyle(fontSize: 12),
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -47,14 +50,18 @@ class ConnectTextButton extends HookConsumerWidget {
           child: AutoSizeText(
             LocaleKeys.disconnect.tr(),
             group: textScaleGroup,
-            style: const TextStyle(fontSize: 12),
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
         ),
-      null => SizedBox.fromSize(
-          size: minimumSize,
-          child: const LoadingIndicator(radius: 20),
+      null => FilledButton(
+          onPressed: null,
+          style: FilledButton.styleFrom(minimumSize: minimumSize),
+          child: const LoadingIndicator(radius: 16),
         ),
     };
   }

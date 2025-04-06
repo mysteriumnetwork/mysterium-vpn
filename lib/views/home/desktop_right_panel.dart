@@ -15,38 +15,42 @@ class HomeDesktopRightPanel extends HookConsumerWidget {
     final abTestingStore = ref.watch(abTestingStorePOD);
     final bannerDisplayVariant = useComputedValue(() => abTestingStore.bannerDisplayVariant);
 
-    return DecoratedBox(
-      decoration: const BoxDecoration(color: Palette.darkBlue),
-      child: Stack(
-        children: [
-          const HomeConnectionView(),
-          Positioned(
-            bottom: 48,
-            left: 36,
-            right: 36,
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 432),
-                child: const ConnectionTile(),
+    return LayoutBuilder(
+      builder: (context, constraints) => DecoratedBox(
+        decoration: const BoxDecoration(color: Palette.darkBlue),
+        child: Stack(
+          children: [
+            const HomeConnectionView(),
+            Positioned(
+              bottom: 48,
+              left: 24,
+              right: 24,
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: constraints.maxWidth < 432 ? constraints.maxWidth : 432,
+                  ),
+                  child: const ConnectionTile(),
+                ),
               ),
             ),
-          ),
-          switch (bannerDisplayVariant) {
-            'B' => const Positioned(
-                top: 24,
-                left: 0,
-                right: 0,
-                child: HomeBanner(),
-              ),
-            'C' => const Positioned(
-                bottom: 24,
-                left: 0,
-                right: 0,
-                child: HomeBanner(),
-              ),
-            _ => const SizedBox.shrink(),
-          },
-        ],
+            switch (bannerDisplayVariant) {
+              'B' => const Positioned(
+                  top: 24,
+                  left: 0,
+                  right: 0,
+                  child: HomeBanner(),
+                ),
+              'C' => const Positioned(
+                  bottom: 24,
+                  left: 0,
+                  right: 0,
+                  child: HomeBanner(),
+                ),
+              _ => const SizedBox.shrink(),
+            },
+          ],
+        ),
       ),
     );
   }
