@@ -556,5 +556,6 @@
   "yearlyPlanFullPrice": "{amount}",
   "yes": "نعم",
   "zh": "صينى",
-  "logoutVPNConnectedDesc": "VPN ON. سيتم فصلك عن خادم VPN إذا استمرت في تسجيل الخروج."
+  "logoutVPNConnectedDesc": "VPN ON. سيتم فصلك عن خادم VPN إذا استمرت في تسجيل الخروج.",
+  "gettingIPAddress": "الحصول على عنوان IP..."
 }
