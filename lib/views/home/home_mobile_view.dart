@@ -27,6 +27,8 @@ class HomeMobileView extends HookConsumerWidget {
     final appBarHeight = appBarBox?.size.height ?? kToolbarHeight;
     final panelFlex = ref.watch(homePanelFlexProvider);
 
+    final topSectionHeight = appBarHeight + 42;
+
     return LayoutBuilder(
       builder: (context, layoutConstraints) {
         final minHeight = max<double>(
@@ -35,7 +37,10 @@ class HomeMobileView extends HookConsumerWidget {
           42,
         );
         final constraints = layoutConstraints.copyWith(
-          maxHeight: max(layoutConstraints.maxHeight * PanelState.open.extent, minHeight),
+          maxHeight: max(
+            (layoutConstraints.maxHeight * PanelState.open.extent) - topSectionHeight,
+            minHeight,
+          ),
           minHeight: minHeight,
         );
 
