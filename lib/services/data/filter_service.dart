@@ -6,6 +6,7 @@ class FilterService {
   List<VPNLocation> filterLocations(
     List<VPNLocation> data, {
     String? keyword,
+    bool shouldSortList = true,
   }) {
     final query = keyword?.toLowerCase().trim();
 
@@ -18,7 +19,10 @@ class FilterService {
           )
           .toList();
     }
-
-    return result.sortedBy((it) => it.code.tr());
+    if (shouldSortList) {
+      return result.sortedBy((it) => it.code.tr());
+    } else {
+      return result;
+    }
   }
 }
