@@ -44,7 +44,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
         SliverSafeArea(
           top: false,
           sliver: SliverPadding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             sliver: MultiSliver(
               children: const [
                 ConnectionTile(),
