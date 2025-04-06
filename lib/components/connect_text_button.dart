@@ -63,7 +63,7 @@ class ConnectTextButton extends HookConsumerWidget {
       null => FilledButton(
           onPressed: null,
           style: FilledButton.styleFrom(minimumSize: minimumSize),
-          child:  LoadingIndicator(radius: loadingIndicatorRadius),
+          child: LoadingIndicator(radius: loadingIndicatorRadius),
         ),
     };
   }
