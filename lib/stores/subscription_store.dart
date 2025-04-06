@@ -170,9 +170,13 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<Subscription> refreshSubscription() async {
-    _subscriptionFuture = _subscriptionFuture.replaceOrReset(
-      _fetchSubscription(),
-    );
+    if (_subscriptionFuture.value?.active == false ||
+        (_subscriptionFuture.value?.isExpired ?? false)) {
+      _subscriptionFuture = _subscriptionFuture.replaceOrReset(
+        _fetchSubscription(),
+      );
+    }
+
     return await _subscriptionFuture;
   }
 
