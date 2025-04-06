@@ -87,7 +87,11 @@ abstract class _LocationsStore with Store {
   List<VPNLocation> get recentLocations {
     final value = _recentLocationsFuture.value;
     if (value != null) {
-      return _filterService.filterLocations(value, keyword: _searchKeyword);
+      return _filterService.filterLocations(
+        value,
+        keyword: _searchKeyword,
+        shouldSortList: false,
+      );
     }
     return [];
   }
