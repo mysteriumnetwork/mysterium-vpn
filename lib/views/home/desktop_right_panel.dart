@@ -36,7 +36,7 @@ class HomeDesktopRightPanel extends HookConsumerWidget {
             ),
             switch (bannerDisplayVariant) {
               'B' => const Positioned(
-                  top: 24,
+                  top: 44,
                   left: 0,
                   right: 0,
                   child: HomeBanner(),
