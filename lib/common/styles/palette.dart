@@ -122,7 +122,7 @@ class LightPalette implements Palette {
   Color get inputHintColor => Palette.lightBlack;
 
   @override
-  Color get secondaryTileColor => Palette.lightGrey;
+  Color get secondaryTileColor => const Color(0xffEFEFF3);
 }
 
 class DarkPalette implements Palette {
