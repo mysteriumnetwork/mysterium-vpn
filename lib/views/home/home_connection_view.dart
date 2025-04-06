@@ -27,7 +27,7 @@ class HomeConnectionView extends HookConsumerWidget {
         Column(
           children: [
             const ConnectionStatusBar(),
-            const Expanded(child: Center(child: HomeConnectButton())),
+            const Expanded(child: Center(child: Center(child: HomeConnectButton()))),
             SizedBox(height: hasBanner ? 72 : 32),
           ],
         ),
