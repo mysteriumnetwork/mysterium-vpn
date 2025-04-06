@@ -75,7 +75,7 @@ class HomeMobileView extends HookConsumerWidget {
             ),
             switch (bannerDisplayVariant) {
               'B' => Positioned(
-                  top: 24 + appBarHeight,
+                  top: 44 + appBarHeight,
                   left: 0,
                   right: 0,
                   child: const HomeBanner(),
