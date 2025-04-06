@@ -561,4 +561,5 @@ abstract class LocaleKeys {
   static const yes = 'yes';
   static const zh = 'zh';
   static const logoutVPNConnectedDesc = 'logoutVPNConnectedDesc';
+  static const gettingIPAddress = 'gettingIPAddress';
 }

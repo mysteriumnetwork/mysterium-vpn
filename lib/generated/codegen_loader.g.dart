@@ -575,7 +575,8 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "是",
     "zh": "中国人",
-    "logoutVPNConnectedDesc": "VPN已打开。如果继续注销，您将与VPN服务器断开连接。"
+    "logoutVPNConnectedDesc": "VPN已打开。如果继续注销，您将与VPN服务器断开连接。",
+    "gettingIPAddress": "获取 IP 地址"
   };
   static const Map<String, dynamic> tr = {
     "AD": "Andorra",
@@ -1167,7 +1168,8 @@ class CodegenLoader extends AssetLoader {
     "yes": "Evet",
     "zh": "Çince",
     "logoutVPNConnectedDesc":
-        "VPN açık. Oturum açmaya devam ederseniz VPN sunucusundan bağlantısı kesileceksiniz."
+        "VPN açık. Oturum açmaya devam ederseniz VPN sunucusundan bağlantısı kesileceksiniz.",
+    "gettingIPAddress": "IP adresi alınıyor..."
   };
   static const Map<String, dynamic> ja = {
     "AD": "アンドラ",
@@ -1734,7 +1736,8 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "はい",
     "zh": "中国語",
-    "logoutVPNConnectedDesc": "VPNがオンになります。ログアウトを続けると、VPNサーバーから切断されます。"
+    "logoutVPNConnectedDesc": "VPNがオンになります。ログアウトを続けると、VPNサーバーから切断されます。",
+    "gettingIPAddress": "IPアドレスを取得しています..."
   };
   static const Map<String, dynamic> de = {
     "AD": "Andorra",
@@ -2348,7 +2351,8 @@ class CodegenLoader extends AssetLoader {
     "yes": "Ja",
     "zh": "Chinesisch",
     "logoutVPNConnectedDesc":
-        "VPN ist eingeschaltet. Sie werden vom VPN -Server getrennt, wenn Sie sich weiter anmelden."
+        "VPN ist eingeschaltet. Sie werden vom VPN -Server getrennt, wenn Sie sich weiter anmelden.",
+    "gettingIPAddress": "IP-Adresse wird abgerufen..."
   };
   static const Map<String, dynamic> pt = {
     "AD": "Andorra",
@@ -2951,7 +2955,8 @@ class CodegenLoader extends AssetLoader {
     "yes": "sim",
     "zh": "Chinês",
     "logoutVPNConnectedDesc":
-        "O VPN está em ON.Você será desconectado do servidor VPN se continuar a fazer o logon."
+        "O VPN está em ON.Você será desconectado do servidor VPN se continuar a fazer o logon.",
+    "gettingIPAddress": "Obtendo endereço IP ..."
   };
   static const Map<String, dynamic> en = {
     "AD": "Andorra",
@@ -3547,7 +3552,8 @@ class CodegenLoader extends AssetLoader {
     "yes": "Yes",
     "zh": "Chinese",
     "logoutVPNConnectedDesc":
-        "VPN is on. You will be disconnected from VPN server if continue to log out."
+        "VPN is on. You will be disconnected from VPN server if continue to log out.",
+    "gettingIPAddress": "Getting IP address..."
   };
   static const Map<String, dynamic> it = {
     "AD": "Andorra",
@@ -4153,7 +4159,8 @@ class CodegenLoader extends AssetLoader {
     "yes": "Sì",
     "zh": "Cinese",
     "logoutVPNConnectedDesc":
-        "VPN è on. Verrà disconnesso dal server VPN se continui a disconnettersi."
+        "VPN è on. Verrà disconnesso dal server VPN se continui a disconnettersi.",
+    "gettingIPAddress": "Stiamo ottenendo l'indirizzo IP..."
   };
   static const Map<String, dynamic> fr = {
     "AD": "Andorre",
@@ -4762,7 +4769,8 @@ class CodegenLoader extends AssetLoader {
     "yes": "Oui",
     "zh": "Chinois",
     "logoutVPNConnectedDesc":
-        "VPN est activé. Vous serez déconnecté de VPN Server si vous continuerez à vous déconnecter."
+        "VPN est activé. Vous serez déconnecté de VPN Server si vous continuerez à vous déconnecter.",
+    "gettingIPAddress": "Obtenir une adresse IP"
   };
   static const Map<String, dynamic> id = {
     "AD": "Andorra",
@@ -5360,7 +5368,8 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Iya",
     "zh": "Cina",
-    "logoutVPNConnectedDesc": "VPN aktif. Anda akan terputus dari VPN Server jika terus keluar."
+    "logoutVPNConnectedDesc": "VPN aktif. Anda akan terputus dari VPN Server jika terus keluar.",
+    "gettingIPAddress": "Mengambil alamat IP..."
   };
   static const Map<String, dynamic> es = {
     "AD": "Andorra",
@@ -5969,7 +5978,8 @@ class CodegenLoader extends AssetLoader {
     "yes": "Sí",
     "zh": "Chino",
     "logoutVPNConnectedDesc":
-        "VPN está encendido. Será desconectado del servidor VPN si continúa iniciando sesión."
+        "VPN está encendido. Será desconectado del servidor VPN si continúa iniciando sesión.",
+    "gettingIPAddress": "Obteniendo dirección IP..."
   };
   static const Map<String, dynamic> ar = {
     "AD": "أندورا",
@@ -6556,7 +6566,8 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "نعم",
     "zh": "صينى",
-    "logoutVPNConnectedDesc": "VPN ON. سيتم فصلك عن خادم VPN إذا استمرت في تسجيل الخروج."
+    "logoutVPNConnectedDesc": "VPN ON. سيتم فصلك عن خادم VPN إذا استمرت في تسجيل الخروج.",
+    "gettingIPAddress": "الحصول على عنوان IP..."
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,

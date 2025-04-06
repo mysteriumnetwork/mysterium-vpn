@@ -557,5 +557,6 @@
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Yes",
   "zh": "Chinese",
-  "logoutVPNConnectedDesc": "VPN is on. You will be disconnected from VPN server if continue to log out."
+  "logoutVPNConnectedDesc": "VPN is on. You will be disconnected from VPN server if continue to log out.",
+  "gettingIPAddress": "Getting IP address..."
 }

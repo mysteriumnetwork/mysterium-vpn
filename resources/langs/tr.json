@@ -558,5 +558,6 @@
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Evet",
   "zh": "Çince",
-  "logoutVPNConnectedDesc": "VPN açık. Oturum açmaya devam ederseniz VPN sunucusundan bağlantısı kesileceksiniz."
+  "logoutVPNConnectedDesc": "VPN açık. Oturum açmaya devam ederseniz VPN sunucusundan bağlantısı kesileceksiniz.",
+  "gettingIPAddress":"IP adresi alınıyor..."
 }
