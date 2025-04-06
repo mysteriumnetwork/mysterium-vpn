@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
@@ -120,7 +119,7 @@ abstract class _LocationsStore with Store {
       recents = recentLocations.where((location) => location.ipType == type).toList();
     }
     if (recents.isNotEmpty) {
-      return recents.randomItem();
+      return recents.first;
     }
 
     final value = switch (type) {
@@ -133,7 +132,7 @@ abstract class _LocationsStore with Store {
       return null;
     }
 
-    return locations.randomItem();
+    return locations.first;
   }
 
   Stream<VPNLocations> _watch(IPType ipType) async* {

@@ -97,7 +97,7 @@ class ConnectionTile extends HookConsumerWidget {
                   ),
                 ),
               ],
-            ).padding(left: 40)
+            ).padding(left: 40),
           ],
         ),
       ),
