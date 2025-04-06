@@ -135,13 +135,17 @@ abstract class _VpnStore with Store {
   @computed
   bool get isLoading =>
       _connectionStatus == ConnectionStatus.connecting ||
-      _fetchConfigFuture?.status == FutureStatus.pending;
+      isFetchingConfig ||
+      _connectionStatus == ConnectionStatus.disconnecting;
+
+  @computed
+  bool get isFetchingConfig => _fetchConfigFuture?.status == FutureStatus.pending;
 
   @readonly
   VPNLocation? _connectingLocation;
 
   @computed
-  VPNLocation? get location => _vpnConnection?.location;
+  VPNLocation? get location => _vpnConnection?.location ?? _connectingLocation;
 
   @computed
   VPNLocation? get potentialLocation => _sharedPrefs.getLocation() ?? _selectLocation();

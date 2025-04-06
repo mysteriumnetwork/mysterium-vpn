@@ -17,7 +17,7 @@ class HomeBanner extends HookConsumerWidget {
     final banner = useComputedValue(() => bannersStore.banner);
     final bottomPadding = useResponsiveValue<double>(
       86,
-      tablet: 162,
+      tablet: 172,
       desktop: 162,
     );
 
