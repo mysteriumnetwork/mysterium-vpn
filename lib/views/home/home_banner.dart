@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/banner_type.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/components/banners/data_center_banner.dart';
 import 'package:mysterium_vpn/components/banners/unauthenticated_banner.dart';
 import 'package:mysterium_vpn/components/no_subscription_banner.dart';
@@ -14,6 +15,11 @@ class HomeBanner extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bannersStore = ref.watch(bannersStorePOD);
     final banner = useComputedValue(() => bannersStore.banner);
+    final bottomPadding = useResponsiveValue<double>(
+      86,
+      tablet: 162,
+      desktop: 162,
+    );
 
     if (banner == null) {
       return const SizedBox.shrink();
@@ -21,7 +27,7 @@ class HomeBanner extends HookConsumerWidget {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 86, left: 24, right: 24),
+        padding: EdgeInsets.only(bottom: bottomPadding, left: 24, right: 24),
         child: switch (banner) {
           BannerType.subscription => const NoSubscriptionBanner(),
           BannerType.datacenter => const DataCenterBanner(),
