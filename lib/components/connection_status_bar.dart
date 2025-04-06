@@ -19,7 +19,6 @@ class ConnectionStatusBar extends HookConsumerWidget {
   const ConnectionStatusBar({super.key});
 
   Color _barBackgroundColor(ConnectionStatus connectionStatus, bool isFetchingConfig) {
-    print('ConnectionStatus: $connectionStatus');
     if (isFetchingConfig) {
       return Palette.yellow;
     }
