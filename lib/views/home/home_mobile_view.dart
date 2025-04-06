@@ -34,7 +34,7 @@ class HomeMobileView extends HookConsumerWidget {
         final minHeight = max<double>(
           layoutConstraints.maxHeight * PanelState.closed.extent,
           // panel should be at least this size in order to fit at least one country
-          42,
+          170,
         );
         final constraints = layoutConstraints.copyWith(
           maxHeight: max(
