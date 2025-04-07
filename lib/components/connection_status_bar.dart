@@ -18,19 +18,6 @@ import 'package:wireguard_dart/connection_status.dart';
 class ConnectionStatusBar extends HookConsumerWidget {
   const ConnectionStatusBar({super.key});
 
-  Color _barBackgroundColor(ConnectionStatus connectionStatus, bool isFetchingConfig) {
-    if (isFetchingConfig) {
-      return Palette.yellow;
-    }
-    return switch (connectionStatus) {
-      ConnectionStatus.connected => Palette.forestGreen,
-      ConnectionStatus.disconnected => Palette.crimsonRed,
-      ConnectionStatus.connecting => Palette.yellow,
-      ConnectionStatus.disconnecting => Palette.yellow,
-      _ => Palette.lightBlack,
-    };
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final horizontalPadding = useResponsiveValue<double>(
@@ -138,6 +125,19 @@ class ConnectionStatusBar extends HookConsumerWidget {
         ),
       ),
     );
+  }
+
+  Color _barBackgroundColor(ConnectionStatus connectionStatus, bool isFetchingConfig) {
+    if (isFetchingConfig) {
+      return Palette.yellow;
+    }
+    return switch (connectionStatus) {
+      ConnectionStatus.connected => Palette.forestGreen,
+      ConnectionStatus.disconnected => Palette.crimsonRed,
+      ConnectionStatus.connecting => Palette.yellow,
+      ConnectionStatus.disconnecting => Palette.yellow,
+      _ => Palette.lightBlack,
+    };
   }
 
   String _statusText(
