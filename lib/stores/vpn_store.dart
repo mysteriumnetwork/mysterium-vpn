@@ -169,10 +169,8 @@ abstract class _VpnStore with Store {
   @observable
   IPInfo? originIP;
 
-  ReactionDisposer? disposer;
-
   Future<void> _init() async {
-    disposer = reaction<AuthStatus>((_) => _authSessionStore.status, (status) async {
+    reaction<AuthStatus>((_) => _authSessionStore.status, (status) async {
       if (status == AuthStatus.authenticated) {
         await Future.wait<void>(
           [
@@ -190,7 +188,6 @@ abstract class _VpnStore with Store {
   // Call on log out or app termiantion
   Future<void> disposeStore() async {
     await disconnectWireguard();
-    disposer?.call();
     _wireguradConnectionStatus?.cancel();
   }
 
