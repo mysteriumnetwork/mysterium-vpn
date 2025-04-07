@@ -13,6 +13,7 @@ class ConnectTextButton extends HookConsumerWidget {
     required this.location,
     this.minimumSize = const Size(120, 40),
     this.textScaleGroup,
+    this.loadingIndicatorRadius = 16,
     super.key,
   });
 
@@ -20,6 +21,7 @@ class ConnectTextButton extends HookConsumerWidget {
   final VPNLocation location;
   final AutoSizeGroup? textScaleGroup;
   final Size minimumSize;
+  final double loadingIndicatorRadius;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,7 +38,10 @@ class ConnectTextButton extends HookConsumerWidget {
           child: AutoSizeText(
             LocaleKeys.connect.tr(),
             group: textScaleGroup,
-            style: const TextStyle(fontSize: 12),
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -47,14 +52,18 @@ class ConnectTextButton extends HookConsumerWidget {
           child: AutoSizeText(
             LocaleKeys.disconnect.tr(),
             group: textScaleGroup,
-            style: const TextStyle(fontSize: 12),
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
         ),
-      null => SizedBox.fromSize(
-          size: minimumSize,
-          child: const LoadingIndicator(radius: 20),
+      null => FilledButton(
+          onPressed: null,
+          style: FilledButton.styleFrom(minimumSize: minimumSize),
+          child: LoadingIndicator(radius: loadingIndicatorRadius),
         ),
     };
   }

@@ -11,6 +11,7 @@ import 'package:mysterium_vpn/components/flag.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class ConnectionTile extends HookConsumerWidget {
   const ConnectionTile({super.key});
@@ -27,7 +28,7 @@ class ConnectionTile extends HookConsumerWidget {
     );
 
     final isConnected = useIsLocationConnected(location);
-    final ipInfo = useComputedValue(() => vpnStore.originIP);
+    final ipInfo = useComputedValue(() => vpnStore.vpnConnection?.connectionIP);
 
     final handleToggleConnection = useHandleToggleConnection();
     final onTap = useComputedValue(
@@ -59,55 +60,44 @@ class ConnectionTile extends HookConsumerWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(20),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 10,
+        child: Column(
+          spacing: 12,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Flag(countryCode: location.code, size: 32),
-            Expanded(
-              child: Column(
-                spacing: 12,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    spacing: 10,
-                    children: [
-                      Expanded(
-                        child: EasyText(
-                          location.code.tr(),
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18,
-                          maxLines: 2,
-                        ),
-                      ),
-                      ConnectTextButton(
-                        onPressed: onTap,
-                        location: location,
-                      ),
-                    ],
+            Row(
+              spacing: 5,
+              children: [
+                Flag(countryCode: location.code, size: 30).padding(right: 5),
+                Expanded(
+                  child: EasyText(
+                    location.code.tr(),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                    maxLines: 2,
                   ),
-                  Row(
-                    spacing: 12,
-                    children: [
-                      if (ipInfo != null && (isConnected ?? false))
-                        _IPIndicator(
-                          ip: ipInfo.ip,
-                          onRefreshPressed: vpnStore.startConnectionWithRefreshIP,
-                        ),
-                      if (ipInfo != null && (isConnected ?? false))
-                        DecoratedBox(
-                          decoration: BoxDecoration(color: theme.colorScheme.onSecondaryContainer),
-                          child: const SizedBox(height: 16, width: 1),
-                        ),
-                      _IPTypeIndicator(
-                        ipType: location.ipType,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                ),
+                ConnectTextButton(
+                  onPressed: onTap,
+                  location: location,
+                ),
+              ],
             ),
+            Row(
+              spacing: 12,
+              children: [
+                if (ipInfo != null && (isConnected ?? false))
+                  _IPIndicator(
+                    ip: ipInfo,
+                    onRefreshPressed: vpnStore.startConnectionWithRefreshIP,
+                  ),
+                Expanded(
+                  child: _IPTypeIndicator(
+                    ipType: location.ipType,
+                  ),
+                ),
+              ],
+            ).padding(left: 40),
           ],
         ),
       ),
@@ -144,8 +134,12 @@ class _IPIndicator extends StatelessWidget {
               visualDensity: VisualDensity.compact,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
               padding: const EdgeInsets.all(6),
-              minimumSize: const Size.square(32),
+              minimumSize: const Size.square(25),
             ),
+          ),
+          DecoratedBox(
+            decoration: BoxDecoration(color: Theme.of(context).colorScheme.onSecondaryContainer),
+            child: const SizedBox(height: 20, width: 1),
           ),
         ],
       );
@@ -160,12 +154,6 @@ class _IPTypeIndicator extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         spacing: 6,
         children: [
-          if (ipType == IPType.datacenter)
-            const SvgIcon(
-              asset: Assets.speed,
-              width: 14,
-              height: 14,
-            ),
           Flexible(
             child: EasyText(
               switch (ipType) {
@@ -176,6 +164,12 @@ class _IPTypeIndicator extends StatelessWidget {
               color: Theme.of(context).colorScheme.onSecondaryContainer,
             ),
           ),
+          if (ipType == IPType.datacenter)
+            const SvgIcon(
+              asset: Assets.speed,
+              width: 12,
+              height: 14,
+            ),
         ],
       );
 }

@@ -562,5 +562,6 @@
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Sí",
   "zh": "Chino",
-  "logoutVPNConnectedDesc": "VPN está encendido. Será desconectado del servidor VPN si continúa iniciando sesión."
+  "logoutVPNConnectedDesc": "VPN está encendido. Será desconectado del servidor VPN si continúa iniciando sesión.",
+  "gettingIPAddress": "Obteniendo dirección IP..."
 }

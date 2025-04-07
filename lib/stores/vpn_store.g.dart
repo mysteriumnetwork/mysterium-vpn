@@ -33,6 +33,12 @@ mixin _$VpnStore on _VpnStore, Store {
   bool get isLoading =>
       (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading, name: '_VpnStore.isLoading'))
           .value;
+  Computed<bool>? _$isFetchingConfigComputed;
+
+  @override
+  bool get isFetchingConfig => (_$isFetchingConfigComputed ??=
+          Computed<bool>(() => super.isFetchingConfig, name: '_VpnStore.isFetchingConfig'))
+      .value;
   Computed<VPNLocation?>? _$locationComputed;
 
   @override
@@ -398,6 +404,7 @@ vpnStatus: ${vpnStatus},
 replaceDNSAddress: ${replaceDNSAddress},
 isConnected: ${isConnected},
 isLoading: ${isLoading},
+isFetchingConfig: ${isFetchingConfig},
 location: ${location},
 potentialLocation: ${potentialLocation}
     ''';
