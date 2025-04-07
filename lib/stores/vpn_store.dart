@@ -90,6 +90,7 @@ abstract class _VpnStore with Store {
   final Talker _logger;
   final Stopwatch _stopwatch = Stopwatch();
   StreamSubscription<String>? _connectionSub;
+  StreamSubscription<ConnectionStatus>? _wireguradConnectionStatus;
 
   @readonly
   bool _refreshIPConnection = true;
@@ -135,13 +136,17 @@ abstract class _VpnStore with Store {
   @computed
   bool get isLoading =>
       _connectionStatus == ConnectionStatus.connecting ||
-      _fetchConfigFuture?.status == FutureStatus.pending;
+      isFetchingConfig ||
+      _connectionStatus == ConnectionStatus.disconnecting;
+
+  @computed
+  bool get isFetchingConfig => _fetchConfigFuture?.status == FutureStatus.pending;
 
   @readonly
   VPNLocation? _connectingLocation;
 
   @computed
-  VPNLocation? get location => _vpnConnection?.location;
+  VPNLocation? get location => _vpnConnection?.location ?? _connectingLocation;
 
   @computed
   VPNLocation? get potentialLocation => _sharedPrefs.getLocation() ?? _selectLocation();
@@ -165,15 +170,25 @@ abstract class _VpnStore with Store {
   IPInfo? originIP;
 
   Future<void> _init() async {
-    await Future.wait<void>(
-      [
-        _initTunnel(),
-        _initWireguardKey(),
-        _initRefreshIPConnection(),
-        _initMalwareBlockerContent(),
-        _initNotSafeContentBlocker(),
-      ],
-    );
+    reaction<AuthStatus>((_) => _authSessionStore.status, (status) async {
+      if (status == AuthStatus.authenticated) {
+        await Future.wait<void>(
+          [
+            _initTunnel(),
+            _initWireguardKey(),
+            _initRefreshIPConnection(),
+            _initMalwareBlockerContent(),
+            _initNotSafeContentBlocker(),
+          ],
+        );
+      }
+    });
+  }
+
+  // Call on log out or app termiantion
+  Future<void> disposeStore() async {
+    await disconnectWireguard();
+    _wireguradConnectionStatus?.cancel();
   }
 
   Future<void> _initMalwareBlockerContent() async {
@@ -261,8 +276,8 @@ abstract class _VpnStore with Store {
         this.originIP = originIP;
       }
     }
-
-    _wireguardService.statusStream().listen((event) async {
+    final stream = _wireguardService.statusStream();
+    _wireguradConnectionStatus = stream.listen((event) async {
       if (event == ConnectionStatus.disconnecting) {
         _vpnConnection = null;
       }

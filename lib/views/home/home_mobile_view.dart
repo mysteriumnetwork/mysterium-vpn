@@ -27,15 +27,20 @@ class HomeMobileView extends HookConsumerWidget {
     final appBarHeight = appBarBox?.size.height ?? kToolbarHeight;
     final panelFlex = ref.watch(homePanelFlexProvider);
 
+    final topSectionHeight = appBarHeight + 42;
+
     return LayoutBuilder(
       builder: (context, layoutConstraints) {
         final minHeight = max<double>(
           layoutConstraints.maxHeight * PanelState.closed.extent,
           // panel should be at least this size in order to fit at least one country
-          42,
+          170,
         );
         final constraints = layoutConstraints.copyWith(
-          maxHeight: max(layoutConstraints.maxHeight * PanelState.open.extent, minHeight),
+          maxHeight: max(
+            (layoutConstraints.maxHeight * PanelState.open.extent) - topSectionHeight,
+            minHeight,
+          ),
           minHeight: minHeight,
         );
 
@@ -75,7 +80,7 @@ class HomeMobileView extends HookConsumerWidget {
             ),
             switch (bannerDisplayVariant) {
               'B' => Positioned(
-                  top: 24 + appBarHeight,
+                  top: 44 + appBarHeight,
                   left: 0,
                   right: 0,
                   child: const HomeBanner(),

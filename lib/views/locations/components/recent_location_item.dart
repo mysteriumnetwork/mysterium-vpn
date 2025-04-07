@@ -32,8 +32,8 @@ class RecentLocationItem extends HookConsumerWidget {
       hoverElevation: 0,
       highlightElevation: 0,
       focusElevation: 0,
-      fillColor: theme.colorScheme.surface,
-      constraints: const BoxConstraints(maxWidth: 300, minHeight: 68),
+      fillColor: theme.colorScheme.secondaryContainer,
+      constraints: const BoxConstraints(maxWidth: 300, minHeight: 78),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -58,7 +58,8 @@ class RecentLocationItem extends HookConsumerWidget {
                 ConnectTextButton(
                   onPressed: onTap,
                   location: location,
-                  minimumSize: const Size(65, 38),
+                  minimumSize: const Size(86, 32),
+                  loadingIndicatorRadius: 15,
                 ),
               ],
             ),

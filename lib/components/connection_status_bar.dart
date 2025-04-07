@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
@@ -21,12 +22,20 @@ class ConnectionStatusBar extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final horizontalPadding = useResponsiveValue<double>(
       20,
-      tablet: 40,
-      desktop: 80,
+      tablet: 30,
+      desktop: 40,
+    );
+
+    final borderRadius = useResponsiveValue<double>(
+      30,
+      tablet: 0,
+      desktop: 0,
     );
 
     final vpnStore = ref.watch(vpnStorePOD);
     final connectionStatus = useComputedValue(() => vpnStore.connectionStatus);
+    final isFetchingConfig =
+        useComputedValue(() => vpnStore.fetchConfigFuture?.status == FutureStatus.pending);
     final isExpanded = useState(false);
 
     final handleToggleExpanded = useMemoized(
@@ -54,16 +63,12 @@ class ConnectionStatusBar extends HookConsumerWidget {
       highlightColor: Colors.transparent,
       focusColor: Colors.transparent,
       hoverColor: Colors.transparent,
-      fillColor: switch (connectionStatus) {
-        ConnectionStatus.connected => Palette.forestGreen,
-        ConnectionStatus.disconnected => Palette.crimsonRed,
-        _ => Palette.lightBlack,
-      },
+      fillColor: _barBackgroundColor(connectionStatus, isFetchingConfig),
       splashColor: Palette.white.withValues(alpha: .2),
       visualDensity: VisualDensity.compact,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          bottom: isExpanded.value ? const Radius.circular(30) : Radius.zero,
+          bottom: isExpanded.value ? Radius.circular(borderRadius) : Radius.zero,
         ),
       ),
       clipBehavior: Clip.antiAlias,
@@ -81,28 +86,16 @@ class ConnectionStatusBar extends HookConsumerWidget {
                     spacing: 6,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      switch (connectionStatus) {
-                        ConnectionStatus.connected => const SvgIcon(
-                            asset: Assets.killSwitch,
-                            height: 16,
-                            width: 16,
-                          ),
-                        ConnectionStatus.disconnected => const SvgIcon(
-                            asset: Assets.lockOpen,
-                            height: 14,
-                            width: 16,
-                          ),
-                        _ => const LoadingIndicator(radius: 16),
-                      },
+                      _statusIcon(
+                        connectionStatus,
+                        isFetchingConfig,
+                      ),
                       Flexible(
                         child: EasyText(
-                          switch (connectionStatus) {
-                            ConnectionStatus.connected => LocaleKeys.connected.tr(),
-                            ConnectionStatus.connecting => LocaleKeys.connecting.tr(),
-                            ConnectionStatus.disconnected => LocaleKeys.disconnected.tr(),
-                            ConnectionStatus.disconnecting => LocaleKeys.disconnecting.tr(),
-                            ConnectionStatus.unknown => '',
-                          },
+                          _statusText(
+                            connectionStatus,
+                            isFetchingConfig,
+                          ),
                           color: Palette.white,
                           fontWeight: FontWeight.w700,
                           fontSize: 14,
@@ -132,6 +125,56 @@ class ConnectionStatusBar extends HookConsumerWidget {
         ),
       ),
     );
+  }
+
+  Color _barBackgroundColor(ConnectionStatus connectionStatus, bool isFetchingConfig) {
+    if (isFetchingConfig) {
+      return Palette.yellow;
+    }
+    return switch (connectionStatus) {
+      ConnectionStatus.connected => Palette.forestGreen,
+      ConnectionStatus.disconnected => Palette.crimsonRed,
+      ConnectionStatus.connecting => Palette.yellow,
+      ConnectionStatus.disconnecting => Palette.yellow,
+      _ => Palette.lightBlack,
+    };
+  }
+
+  String _statusText(
+    ConnectionStatus connectionStatus,
+    bool isFetchingConfig,
+  ) {
+    if (isFetchingConfig) {
+      return LocaleKeys.gettingIPAddress.tr();
+    }
+    return switch (connectionStatus) {
+      ConnectionStatus.connected => LocaleKeys.connected.tr(),
+      ConnectionStatus.connecting => LocaleKeys.connecting.tr(),
+      ConnectionStatus.disconnected => LocaleKeys.disconnected.tr(),
+      ConnectionStatus.disconnecting => LocaleKeys.disconnecting.tr(),
+      ConnectionStatus.unknown => '',
+    };
+  }
+
+  Widget _statusIcon(ConnectionStatus connectionStatus, bool isFetchingConfig) {
+    if (isFetchingConfig) {
+      return const LoadingIndicator(radius: 16);
+    }
+    return switch (connectionStatus) {
+      ConnectionStatus.connected => const SvgIcon(
+          asset: Assets.killSwitch,
+          height: 16,
+          width: 16,
+        ),
+      ConnectionStatus.disconnected => const SvgIcon(
+          asset: Assets.lockOpen,
+          height: 14,
+          width: 16,
+        ),
+      ConnectionStatus.connecting => const LoadingIndicator(radius: 16),
+      ConnectionStatus.disconnecting => const LoadingIndicator(radius: 16),
+      _ => const SizedBox.shrink(),
+    };
   }
 }
 

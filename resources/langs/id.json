@@ -558,5 +558,6 @@
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Iya",
   "zh": "Cina",
-  "logoutVPNConnectedDesc": "VPN aktif. Anda akan terputus dari VPN Server jika terus keluar."
+  "logoutVPNConnectedDesc": "VPN aktif. Anda akan terputus dari VPN Server jika terus keluar.",
+  "gettingIPAddress":"Mengambil alamat IP..."
 }

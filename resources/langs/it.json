@@ -558,5 +558,6 @@
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Sì",
   "zh": "Cinese",
-  "logoutVPNConnectedDesc": "VPN è on. Verrà disconnesso dal server VPN se continui a disconnettersi."
+  "logoutVPNConnectedDesc": "VPN è on. Verrà disconnesso dal server VPN se continui a disconnettersi.",
+  "gettingIPAddress":"Stiamo ottenendo l'indirizzo IP..."
 }

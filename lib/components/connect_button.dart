@@ -83,6 +83,6 @@ class ConnectButton extends HookConsumerWidget {
     return SvgIconButton(
       asset: isConnected ? powerOn : powerOff,
       onPressed: onPressed,
-    ).fittedBox();
+    );
   }
 }

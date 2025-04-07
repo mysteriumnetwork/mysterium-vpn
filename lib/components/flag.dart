@@ -1,5 +1,6 @@
 import 'package:circle_flags/circle_flags.dart';
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/styles/palette.dart';
 
 class Flag extends StatelessWidget {
   const Flag({
@@ -10,8 +11,19 @@ class Flag extends StatelessWidget {
   final String countryCode;
   final double size;
   @override
-  Widget build(BuildContext context) => CircleFlag(
-        countryCode,
-        size: size,
+  Widget build(BuildContext context) => Container(
+        width: size + 2,
+        height: size + 2,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          border: Border.all(
+            color: Palette.white,
+            width: 2,
+          ),
+        ),
+        child: CircleFlag(
+          countryCode,
+          size: size,
+        ),
       );
 }

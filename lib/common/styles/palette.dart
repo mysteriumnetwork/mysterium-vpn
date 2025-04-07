@@ -22,6 +22,7 @@ abstract class Palette {
   static const Color darkIndigo = Color(0xff353352);
   static const Color deepPurple = Color(0xff1E1632);
   static const Color veryLightBlue = Color(0xffF0F2FF);
+  static const Color yellow = Color(0xffE2AF00);
 
   Color get highlightColor;
   Color get secondaryColor;
@@ -121,7 +122,7 @@ class LightPalette implements Palette {
   Color get inputHintColor => Palette.lightBlack;
 
   @override
-  Color get secondaryTileColor => Palette.lightGrey;
+  Color get secondaryTileColor => const Color(0xffEFEFF3);
 }
 
 class DarkPalette implements Palette {

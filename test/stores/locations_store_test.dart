@@ -90,8 +90,13 @@ void main() {
   group('LocationsStore', () {
     test('returns filtered recent locations', () async {
       when(mockApiService.getRecentLocations()).thenAnswer((_) async => mockResidential);
-      when(mockFilterService.filterLocations(mockResidential, keyword: 'us'))
-          .thenReturn([const VPNLocation(code: 'US')]);
+      when(
+        mockFilterService.filterLocations(
+          mockResidential,
+          keyword: 'us',
+          shouldSortList: false,
+        ),
+      ).thenReturn([const VPNLocation(code: 'US')]);
 
       locationsStore.setLocationKeyword('US', Duration.zero);
       await Future.delayed(Duration.zero); // ensure the debounce time has passed
