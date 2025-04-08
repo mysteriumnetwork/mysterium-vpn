@@ -5,7 +5,6 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 void useConfigCatUserUpdater() {
-  final vpnStore = useProvider(vpnStorePOD);
   final authSessionStore = useProvider(authSessionStorePOD);
   final remoteConfigStore = useProvider(remoteConfigStorePOD);
   final abTestingStore = useProvider(abTestingStorePOD);
@@ -20,17 +19,18 @@ void useConfigCatUserUpdater() {
     [remoteConfigStore, abTestingStore, textsStore],
   );
 
-  useReaction(
-    () => vpnStore.originIP,
-    (originIP) {
-      if (originIP == null) {
-        return;
-      }
+  // TODO(David): Use RealIPStore instead of originIP
+  // useReaction(
+  //   () => vpnStore.originIP,
+  //   (originIP) {
+  //     if (originIP == null) {
+  //       return;
+  //     }
 
-      unawaited(handleNotify());
-    },
-    keys: [vpnStore, handleNotify],
-  );
+  //     unawaited(handleNotify());
+  //   },
+  //   keys: [vpnStore, handleNotify],
+  // );
 
   useReaction(
     () => authSessionStore.userFuture,
