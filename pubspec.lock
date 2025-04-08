@@ -74,10 +74,10 @@ packages:
     dependency: transitive
     description:
       name: archive
-      sha256: "0c64e928dcbefddecd234205422bcfc2b5e6d31be0b86fef0d0dd48d7b4c9742"
+      sha256: "7dcbd0f87fe5f61cb28da39a1a8b70dbc106e2fe0516f7836eb7bb2948481a12"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.4"
+    version: "4.0.5"
   args:
     dependency: transitive
     description:
@@ -474,10 +474,10 @@ packages:
     dependency: transitive
     description:
       name: firebase_core_web
-      sha256: faa5a76f6380a9b90b53bc3bdcb85bc7926a382e0709b9b5edac9f7746651493
+      sha256: "129a34d1e0fb62e2b488d988a1fc26cc15636357e50944ffee2862efe8929b23"
       url: "https://pub.dev"
     source: hosted
-    version: "2.21.1"
+    version: "2.22.0"
   firebase_crashlytics:
     dependency: "direct main"
     description:
@@ -564,10 +564,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_mobx
-      sha256: "859fbf452fa9c2519d2700b125dd7fb14c508bbdd7fb65e26ca8ff6c92280e2e"
+      sha256: ba5e93467866a2991259dc51cffd41ef45f695c667c2b8e7b087bf24118b50fe
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.1+1"
+    version: "2.3.0"
   flutter_native_splash:
     dependency: "direct main"
     description:
@@ -846,10 +846,10 @@ packages:
     dependency: transitive
     description:
       name: image
-      sha256: "13d3349ace88f12f4a0d175eb5c12dcdd39d35c4c109a8a13dfeb6d0bd9e31c3"
+      sha256: "4e973fcf4caae1a4be2fa0a13157aa38a8f9cb049db6529aa00b4d71abc4d928"
       url: "https://pub.dev"
     source: hosted
-    version: "4.5.3"
+    version: "4.5.4"
   in_app_purchase:
     dependency: "direct main"
     description:
@@ -902,10 +902,10 @@ packages:
     dependency: "direct main"
     description:
       name: intercom_flutter
-      sha256: "76e6aa2b8c55816aedbf35509fa8407ff815588ca59f8eca3425b2e3cf3a0d85"
+      sha256: "3265618738162418d2f7756884adf020e552d873dcc6ee67a54f1c858d03bf3b"
       url: "https://pub.dev"
     source: hosted
-    version: "9.2.7"
+    version: "9.2.8"
   intercom_flutter_platform_interface:
     dependency: transitive
     description:
@@ -1086,18 +1086,18 @@ packages:
     dependency: "direct main"
     description:
       name: mobx
-      sha256: "63920b27b32ad1910adfe767ab1750e4c212e8923232a1f891597b362074ea5e"
+      sha256: bf1a90e5bcfd2851fc6984e20eef69557c65d9e4d0a88f5be4cf72c9819ce6b0
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.3+2"
+    version: "2.5.0"
   mobx_codegen:
     dependency: "direct dev"
     description:
       name: mobx_codegen
-      sha256: "8e0d8653a0c720ad933cd8358f6f89f740ce89203657c13f25bea772ef1fff7c"
+      sha256: "990da80722f7d7c0017dec92040b31545d625b15d40204c36a1e63d167c73cdc"
       url: "https://pub.dev"
     source: hosted
-    version: "2.6.1"
+    version: "2.7.0"
   mockito:
     dependency: "direct dev"
     description:
@@ -1295,10 +1295,10 @@ packages:
     dependency: transitive
     description:
       name: provider
-      sha256: c8a055ee5ce3fd98d6fc872478b03823ffdb448699c6ebdbbc71d59b596fd48c
+      sha256: "489024f942069c2920c844ee18bb3d467c69e48955a4f32d1677f71be103e310"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.2"
+    version: "6.1.4"
   pub_semver:
     dependency: transitive
     description:
@@ -1722,10 +1722,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_ios
-      sha256: "16a513b6c12bb419304e72ea0ae2ab4fed569920d1c7cb850263fe3acc824626"
+      sha256: "7f2022359d4c099eea7df3fdf739f7d3d3b9faf3166fb1dd390775176e0b76cb"
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.2"
+    version: "6.3.3"
   url_launcher_linux:
     dependency: transitive
     description:
