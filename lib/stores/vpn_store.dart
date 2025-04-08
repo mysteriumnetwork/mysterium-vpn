@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
@@ -16,9 +15,7 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
-import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/models/report_broken_node_request.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
@@ -31,7 +28,6 @@ import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -163,12 +159,6 @@ abstract class _VpnStore with Store {
   @readonly
   ObservableFuture<void>? _resetAppFuture;
 
-  int _retryCount = 0;
-  bool _isRetrying = false;
-
-  @observable
-  IPInfo? originIP;
-
   Future<void> _init() async {
     reaction<AuthStatus>((_) => _authSessionStore.status, (status) async {
       if (status == AuthStatus.authenticated) {
@@ -269,11 +259,6 @@ abstract class _VpnStore with Store {
         await _resolveConnectionLocationFuture;
       } catch (e) {
         await disconnectWireguard();
-      }
-    } else {
-      final originIP = await _apiService.getIPAdress();
-      if (originIP != null) {
-        this.originIP = originIP;
       }
     }
     final stream = _wireguardService.statusStream();
@@ -511,17 +496,11 @@ abstract class _VpnStore with Store {
       _logger.handle(e, stackTrace);
       Sentry.captureException(e, stackTrace: stackTrace);
 
-      if (e is BrokenNodeException && _isRetrying == true) {
-        return;
-      }
-
       final errorCode = e is WireguardConnectException
           ? e.code
           : e is ApiException
               ? e.code
-              : e is BrokenNodeException
-                  ? e.code
-                  : 1113;
+              : 1113;
       final errorMessage = errorCode == 4029
           ? LocaleKeys.toManyRequestsErrorMsg.tr()
           : LocaleKeys.failedToConnectError.tr(
@@ -529,9 +508,7 @@ abstract class _VpnStore with Store {
                 'errorCode': errorCode.toString(),
               },
             );
-      if (_isRetrying == true) {
-        return;
-      }
+
       showSnackbar(errorMessage);
       _analyticsStore.logConnectFailure(
         time: _stopwatch.elapsed,
@@ -639,35 +616,6 @@ abstract class _VpnStore with Store {
       await _sharedPrefs.setLocation(location);
       _vpnConnection = VpnConnection(connectionIP: '', location: location);
       await checkLocation();
-      _retryCount = 0;
-      _isRetrying = false;
-    } on BrokenNodeException {
-      _retryCount++;
-      _isRetrying = true;
-      await disconnectWireguard();
-
-      if (_retryCount < 3) {
-        toggleConnection(location: location, isRetrying: true);
-      } else {
-        _retryCount = 0;
-        _isRetrying = false;
-      }
-      if (_vpnConfig?.hashCode != null) {
-        unawaited(
-          _apiService.reportBrokenNode(
-            request: ReportBrokenNodeRequest(
-              publicKey: _wireguardKey!.publicKey,
-              destinationCountry: location.code,
-              osType: Platform.operatingSystem,
-              appVersion: (await PackageInfo.fromPlatform()).version,
-              originCountry: originIP?.country,
-              connectivityType: (await Connectivity().checkConnectivity()).lastOrNull,
-              hashValue: _vpnConfig!.hash,
-            ),
-          ),
-        );
-      }
-      rethrow;
     } catch (e) {
       rethrow;
     }
