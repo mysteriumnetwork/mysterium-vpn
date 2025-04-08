@@ -32,8 +32,8 @@ class RecentLocationItem extends HookConsumerWidget {
       hoverElevation: 0,
       highlightElevation: 0,
       focusElevation: 0,
-      fillColor: theme.colorScheme.secondaryContainer,
-      constraints: const BoxConstraints(maxWidth: 300, minHeight: 78),
+      fillColor: theme.colorScheme.surface,
+      constraints: const BoxConstraints(maxWidth: 300, minHeight: 82),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -63,8 +63,12 @@ class RecentLocationItem extends HookConsumerWidget {
                 ),
               ],
             ),
-            if (location.ipType == IPType.datacenter)
-              Opacity(
+            Visibility(
+              visible: location.ipType == IPType.datacenter,
+              maintainSize: true,
+              maintainState: true,
+              maintainAnimation: true,
+              child: Opacity(
                 opacity: .75,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -81,6 +85,7 @@ class RecentLocationItem extends HookConsumerWidget {
                   ],
                 ),
               ),
+            ),
           ],
         ),
       ),

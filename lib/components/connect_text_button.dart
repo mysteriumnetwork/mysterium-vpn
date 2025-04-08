@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/location.dart';
@@ -14,6 +15,7 @@ class ConnectTextButton extends HookConsumerWidget {
     this.minimumSize = const Size(120, 40),
     this.textScaleGroup,
     this.loadingIndicatorRadius = 16,
+    this.outlinedButton = true,
     super.key,
   });
 
@@ -22,7 +24,7 @@ class ConnectTextButton extends HookConsumerWidget {
   final AutoSizeGroup? textScaleGroup;
   final Size minimumSize;
   final double loadingIndicatorRadius;
-
+  final bool outlinedButton;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isConnected = useIsLocationConnected(location);
@@ -32,20 +34,40 @@ class ConnectTextButton extends HookConsumerWidget {
     }
 
     return switch (isConnected) {
-      false => OutlinedButton(
-          onPressed: onPressed,
-          style: OutlinedButton.styleFrom(minimumSize: minimumSize),
-          child: AutoSizeText(
-            LocaleKeys.connect.tr(),
-            group: textScaleGroup,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
+      false => outlinedButton
+          ? OutlinedButton(
+              onPressed: onPressed,
+              style: OutlinedButton.styleFrom(
+                minimumSize: minimumSize,
+              ),
+              child: AutoSizeText(
+                LocaleKeys.connect.tr(),
+                group: textScaleGroup,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            )
+          : ElevatedButton(
+              onPressed: onPressed,
+              style: ElevatedButton.styleFrom(
+                minimumSize: minimumSize,
+              ),
+              child: AutoSizeText(
+                LocaleKeys.connect.tr(),
+                group: textScaleGroup,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: Palette.white,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
       true => FilledButton(
           onPressed: onPressed,
           style: FilledButton.styleFrom(minimumSize: minimumSize),
