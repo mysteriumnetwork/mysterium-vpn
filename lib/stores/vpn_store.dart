@@ -1,5 +1,7 @@
 // Flutter imports:
 // Package imports:
+// ignore_for_file: use_setters_to_change_properties
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -69,7 +71,6 @@ abstract class _VpnStore with Store {
         _logger = logger {
     _init();
   }
-
   final ApiService _apiService;
   final MQTTService _mqtt;
   final LocationsStore _locationsStore;
@@ -159,26 +160,34 @@ abstract class _VpnStore with Store {
   @readonly
   ObservableFuture<void>? _resetAppFuture;
 
+  ReactionDisposer? _reactionDisposer;
+  @action
   Future<void> _init() async {
-    reaction<AuthStatus>((_) => _authSessionStore.status, (status) async {
-      if (status == AuthStatus.authenticated) {
-        await Future.wait<void>(
-          [
-            _initTunnel(),
-            _initWireguardKey(),
-            _initRefreshIPConnection(),
-            _initMalwareBlockerContent(),
-            _initNotSafeContentBlocker(),
-          ],
-        );
-      }
-    });
+    _reactionDisposer = reaction<AuthStatus>(
+      (_) => _authSessionStore.status,
+      (status) async {
+        if (status == AuthStatus.authenticated) {
+          await Future.wait<void>(
+            [
+              _initTunnel(),
+              _initWireguardKey(),
+              _initRefreshIPConnection(),
+              _initMalwareBlockerContent(),
+              _initNotSafeContentBlocker(),
+            ],
+          );
+        }
+      },
+      fireImmediately: true,
+      equals: (p0, p1) => p0?.name == p1?.name,
+    );
   }
 
   // Call on log out or app termiantion
   Future<void> disposeStore() async {
     await disconnectWireguard();
     _wireguradConnectionStatus?.cancel();
+    _reactionDisposer?.call();
   }
 
   Future<void> _initMalwareBlockerContent() async {
@@ -205,6 +214,7 @@ abstract class _VpnStore with Store {
     }
   }
 
+  @action
   Future<void> _initTunnel() async {
     try {
       final isConfigured = await _checkTunelConfigured();
@@ -243,7 +253,7 @@ abstract class _VpnStore with Store {
   @action
   Future<void> _setupAndListenToConnectionStatus() async {
     _connectingLocation = null;
-    _connectionStatus = await _wireguardService.status();
+    _setConnectionStatus(await _wireguardService.status());
 
     if (_connectionStatus == ConnectionStatus.connected) {
       final location = potentialLocation;
@@ -266,8 +276,13 @@ abstract class _VpnStore with Store {
       if (event == ConnectionStatus.disconnecting) {
         _vpnConnection = null;
       }
-      _connectionStatus = event;
+      _setConnectionStatus(event);
     });
+  }
+
+  @action
+  void _setConnectionStatus(ConnectionStatus status) {
+    _connectionStatus = status;
   }
 
   /// Setup Wireguard tunnel
