@@ -120,7 +120,8 @@ class MyApp extends HookConsumerWidget {
     routeDelegate.update();
     if (authStatus == AuthStatus.unauthenticated) {
       if (ref.exists(vpnStorePOD)) {
-        ref.read(vpnStorePOD).disposeStore();
+        await ref.read(vpnStorePOD).disposeStore();
+        ref.invalidate(vpnStorePOD);
       }
       if (ref.exists(locationsStorePOD)) {
         ref.invalidate(locationsStorePOD);
