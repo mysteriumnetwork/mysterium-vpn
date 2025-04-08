@@ -96,11 +96,11 @@ class _ProductPickerDialog extends HookConsumerWidget {
           alignment: Alignment.center,
           children: [
             Positioned(
-              top: 10,
-              right: 20,
+              top: 5,
+              right: 8,
               child: SizedBox(
-                width: 40,
-                height: 40,
+                width: 35,
+                height: 35,
                 child: SvgIconButton(
                   asset: isDarkMode ? Assets.closeDark : Assets.closeLight,
                   onPressed: Navigator.of(context).pop,
