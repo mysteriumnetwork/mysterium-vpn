@@ -5,10 +5,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
@@ -71,10 +69,8 @@ abstract class _VpnStore with Store {
         _remoteConfigStore = remoteConfigStore,
         _authSessionStore = authSessionStore,
         _logger = logger {
-    ref = Random.secure().nextInt(1000000);
     _init();
   }
-  late int ref;
   final ApiService _apiService;
   final MQTTService _mqtt;
   final LocationsStore _locationsStore;
@@ -171,7 +167,6 @@ abstract class _VpnStore with Store {
       (_) => _authSessionStore.status,
       (status) async {
         if (status == AuthStatus.authenticated) {
-          print('init called $ref');
           await Future.wait<void>(
             [
               _initTunnel(),
@@ -184,10 +179,7 @@ abstract class _VpnStore with Store {
         }
       },
       fireImmediately: true,
-      equals: (p0, p1) {
-        debugPrint('Auth status changed: $p0, $p1');
-        return p0?.name == p1?.name;
-      },
+      equals: (p0, p1) => p0?.name == p1?.name,
     );
   }
 
