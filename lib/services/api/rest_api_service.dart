@@ -5,7 +5,6 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/models/report_broken_node_request.dart';
 import 'package:mysterium_vpn/models/stun_binding_request.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
@@ -136,24 +135,6 @@ class RestApiService extends ApiService {
       } catch (fallbackError) {
         return null;
       }
-    }
-  }
-
-  @override
-  Future<void> reportBrokenNode({required ReportBrokenNodeRequest request}) async {
-    try {
-      await Future.delayed(
-        // TODO(Waldz): Generate API client from API documentation openapi.yaml
-        const Duration(minutes: 2),
-        () => _networkService.post(
-          kReportBrokenNode,
-          data: request.toJson(),
-        ),
-      );
-
-      _logger.info('Broken node reported');
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
     }
   }
 
