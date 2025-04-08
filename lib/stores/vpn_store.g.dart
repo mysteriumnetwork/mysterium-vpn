@@ -248,6 +248,20 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_initAsyncAction = AsyncAction('_VpnStore._init', context: context);
+
+  @override
+  Future<void> _init() {
+    return _$_initAsyncAction.run(() => super._init());
+  }
+
+  late final _$_initTunnelAsyncAction = AsyncAction('_VpnStore._initTunnel', context: context);
+
+  @override
+  Future<void> _initTunnel() {
+    return _$_initTunnelAsyncAction.run(() => super._initTunnel());
+  }
+
   late final _$_checkTunelConfiguredAsyncAction =
       AsyncAction('_VpnStore._checkTunelConfigured', context: context);
 
@@ -379,6 +393,19 @@ mixin _$VpnStore on _VpnStore, Store {
   @override
   Future<void> _udpBlockedCheck() {
     return _$_udpBlockedCheckAsyncAction.run(() => super._udpBlockedCheck());
+  }
+
+  late final _$_VpnStoreActionController = ActionController(name: '_VpnStore', context: context);
+
+  @override
+  void _setConnectionStatus(ConnectionStatus status) {
+    final _$actionInfo =
+        _$_VpnStoreActionController.startAction(name: '_VpnStore._setConnectionStatus');
+    try {
+      return super._setConnectionStatus(status);
+    } finally {
+      _$_VpnStoreActionController.endAction(_$actionInfo);
+    }
   }
 
   @override

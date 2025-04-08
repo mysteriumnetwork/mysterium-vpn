@@ -1,10 +1,14 @@
 // Flutter imports:
 // Package imports:
+// ignore_for_file: use_setters_to_change_properties
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
@@ -67,9 +71,10 @@ abstract class _VpnStore with Store {
         _remoteConfigStore = remoteConfigStore,
         _authSessionStore = authSessionStore,
         _logger = logger {
+    ref = Random.secure().nextInt(1000000);
     _init();
   }
-
+  late int ref;
   final ApiService _apiService;
   final MQTTService _mqtt;
   final LocationsStore _locationsStore;
@@ -159,26 +164,38 @@ abstract class _VpnStore with Store {
   @readonly
   ObservableFuture<void>? _resetAppFuture;
 
+  ReactionDisposer? _reactionDisposer;
+  @action
   Future<void> _init() async {
-    reaction<AuthStatus>((_) => _authSessionStore.status, (status) async {
-      if (status == AuthStatus.authenticated) {
-        await Future.wait<void>(
-          [
-            _initTunnel(),
-            _initWireguardKey(),
-            _initRefreshIPConnection(),
-            _initMalwareBlockerContent(),
-            _initNotSafeContentBlocker(),
-          ],
-        );
-      }
-    });
+    _reactionDisposer = reaction<AuthStatus>(
+      (_) => _authSessionStore.status,
+      (status) async {
+        if (status == AuthStatus.authenticated) {
+          print('init called $ref');
+          await Future.wait<void>(
+            [
+              _initTunnel(),
+              _initWireguardKey(),
+              _initRefreshIPConnection(),
+              _initMalwareBlockerContent(),
+              _initNotSafeContentBlocker(),
+            ],
+          );
+        }
+      },
+      fireImmediately: true,
+      equals: (p0, p1) {
+        debugPrint('Auth status changed: $p0, $p1');
+        return p0?.name == p1?.name;
+      },
+    );
   }
 
   // Call on log out or app termiantion
   Future<void> disposeStore() async {
     await disconnectWireguard();
     _wireguradConnectionStatus?.cancel();
+    _reactionDisposer?.call();
   }
 
   Future<void> _initMalwareBlockerContent() async {
@@ -205,6 +222,7 @@ abstract class _VpnStore with Store {
     }
   }
 
+  @action
   Future<void> _initTunnel() async {
     try {
       final isConfigured = await _checkTunelConfigured();
@@ -243,7 +261,7 @@ abstract class _VpnStore with Store {
   @action
   Future<void> _setupAndListenToConnectionStatus() async {
     _connectingLocation = null;
-    _connectionStatus = await _wireguardService.status();
+    _setConnectionStatus(await _wireguardService.status());
 
     if (_connectionStatus == ConnectionStatus.connected) {
       final location = potentialLocation;
@@ -266,8 +284,13 @@ abstract class _VpnStore with Store {
       if (event == ConnectionStatus.disconnecting) {
         _vpnConnection = null;
       }
-      _connectionStatus = event;
+      _setConnectionStatus(event);
     });
+  }
+
+  @action
+  void _setConnectionStatus(ConnectionStatus status) {
+    _connectionStatus = status;
   }
 
   /// Setup Wireguard tunnel
