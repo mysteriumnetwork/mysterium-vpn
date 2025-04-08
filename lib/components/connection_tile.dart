@@ -80,6 +80,7 @@ class ConnectionTile extends HookConsumerWidget {
                 ConnectTextButton(
                   onPressed: onTap,
                   location: location,
+                  outlinedButton: false,
                 ),
               ],
             ),
