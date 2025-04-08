@@ -33,7 +33,7 @@ class ConnectionStatusBar extends HookConsumerWidget {
     );
 
     final vpnStore = ref.watch(vpnStorePOD);
-    final connectionStatus = useComputedValue(() => vpnStore.connectionStatus);
+    final connectionStatus = useComputedValue(() => vpnStore.vpnStatus);
     final isFetchingConfig =
         useComputedValue(() => vpnStore.fetchConfigFuture?.status == FutureStatus.pending);
     final isExpanded = useState(false);
@@ -49,7 +49,7 @@ class ConnectionStatusBar extends HookConsumerWidget {
     );
 
     useReaction(
-      () => vpnStore.connectionStatus,
+      () => vpnStore.vpnStatus,
       (_) => isExpanded.value = false,
       keys: [isExpanded],
     );
@@ -136,7 +136,7 @@ class ConnectionStatusBar extends HookConsumerWidget {
       ConnectionStatus.disconnected => Palette.crimsonRed,
       ConnectionStatus.connecting => Palette.yellow,
       ConnectionStatus.disconnecting => Palette.yellow,
-      _ => Palette.lightBlack,
+      _ => Palette.crimsonRed,
     };
   }
 
