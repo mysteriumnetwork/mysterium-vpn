@@ -116,7 +116,7 @@ class LightPalette implements Palette {
   Color get headerColor => Palette.white;
 
   @override
-  Color get inputColor => Palette.veryLightBlue;
+  Color get inputColor => const Color(0xFFEFEFF3);
 
   @override
   Color get inputHintColor => Palette.lightBlack;

@@ -206,7 +206,11 @@ class _Locations extends HookConsumerWidget {
         SliverClip(
           child: SliverStack(
             children: [
-              const SliverPositioned.fill(child: LocationsContainer()),
+              SliverPositioned.fill(
+                child: LocationsContainer(
+                  locationType: locationType,
+                ),
+              ),
               SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                 sliver: MultiSliver(
