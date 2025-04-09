@@ -95,7 +95,7 @@ class LightPalette implements Palette {
   Color get disclaimerBackgroundColor => Palette.lightGrey;
 
   @override
-  Color get tileColor => Palette.lightLavender;
+  Color get tileColor => Palette.white;
 
   @override
   Color get filledButtonBackgroundColor => Palette.lightBlack;
@@ -116,13 +116,13 @@ class LightPalette implements Palette {
   Color get headerColor => Palette.white;
 
   @override
-  Color get inputColor => Palette.veryLightBlue;
+  Color get inputColor => const Color(0xFFEFEFF3);
 
   @override
   Color get inputHintColor => Palette.lightBlack;
 
   @override
-  Color get secondaryTileColor => const Color(0xffEFEFF3);
+  Color get secondaryTileColor => const Color(0x289E9CB6);
 }
 
 class DarkPalette implements Palette {

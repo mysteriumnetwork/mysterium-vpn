@@ -29,7 +29,7 @@ class LocationItem extends HookConsumerWidget {
       hoverElevation: 0,
       highlightElevation: 0,
       focusElevation: 0,
-      fillColor: theme.colorScheme.surfaceContainerHighest,
+      fillColor: theme.colorScheme.primaryContainer,
       constraints: const BoxConstraints(minHeight: 64),
       onPressed: onTap,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

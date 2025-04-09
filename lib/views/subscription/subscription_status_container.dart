@@ -74,14 +74,14 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
         if (isLoading) {
           return LoadingIndicator(
             message: LocaleKeys.connectingToPaymentProcesor.tr(),
-          );
+          ).padding(top: 36);
         } else if (storeState == StoreState.notAvailable || (products?.isEmpty ?? true)) {
           return RetryOnErrorWidget(
             error: (products?.isEmpty ?? true)
                 ? LocaleKeys.productsNotAvailable.tr()
                 : LocaleKeys.unableToConnectToPaymentProcesor.tr(),
             onRetry: subscriptionStore.refreshAll,
-          );
+          ).padding(top: 36);
         }
         return ReactionBuilder(
           builder: (context) => reaction((_) => subscriptionStore.subscriptionStatus, (status) {
