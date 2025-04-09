@@ -147,7 +147,7 @@ class _HomeState extends ChangeNotifier {
 }
 
 enum PanelState {
-  closed._(.25),
+  closed._(.1),
   snap._(.5),
   open._(1);
 
