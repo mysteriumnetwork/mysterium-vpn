@@ -227,7 +227,7 @@ final bannersStorePOD = Provider<BannersStore>(
 
 final realIPInfoStorePOD = Provider<RealIPInfoStore>(
   (ref) => RealIPInfoStore(
-    ref.watch(apiServicePOD),
+    ref.watch(publicApiServicePOD),
     SharedPreferenceService.instance,
     ref.watch(wireguardServicePOD),
     ref.watch(analyticsStorePOD),
