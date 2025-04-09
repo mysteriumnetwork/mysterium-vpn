@@ -2,6 +2,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:wireguard_dart/connection_status.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
@@ -15,11 +16,13 @@ abstract class _RealIPInfoStore with Store {
     this._api,
     this._preferences,
     this._wireguardService,
+    this._analyticsStore,
   );
 
   final ApiService _api;
   final SharedPreferenceService _preferences;
   final WireguardDart _wireguardService;
+  final AnalyticsStore _analyticsStore;
 
   @observable
   late ObservableFuture<IPInfo?> infoFuture = ObservableFuture(_fetch());
@@ -28,12 +31,17 @@ abstract class _RealIPInfoStore with Store {
   IPInfo? get info => infoFuture.value;
 
   Future<IPInfo?> _fetch() async {
+    IPInfo? info;
     if (await _isConnectedToVPN()) {
       // return last cached value if currently connected to VPN
-      return _preferences.getIPInfo();
+      info = _preferences.getIPInfo();
+    } else {
+      info = await _api.getIPAdress();
+      await _preferences.setIPInfo(info);
     }
-    final info = await _api.getIPAdress();
-    await _preferences.setIPInfo(info);
+    if (info != null) {
+      _analyticsStore.setUserProperty('country_user', info.country);
+    }
     return info;
   }
 
