@@ -118,7 +118,21 @@ abstract class _SubscriptionStore with Store {
     if (_authSessionStore.status != AuthStatus.authenticated) {
       return Subscription.empty();
     }
-    return _subscriptionService.fetchSubscriptionDetails();
+    final subscription = await _subscriptionService.fetchSubscriptionDetails();
+    _setSubscriptionAnalyticsProps(subscription).ignore();
+    return subscription;
+  }
+
+  Future<void> _setSubscriptionAnalyticsProps(Subscription subscription) async {
+    final userStatus = subscription.active
+        ? 'paid'
+        : (subscription.expired ?? false)
+            ? 'expired_paid'
+            : 'not_paid';
+    _analyticsStore
+      ..setUserProperty('plan_id', subscription.planId ?? '')
+      ..setUserProperty('valid_to', subscription.activeUntil.toString())
+      ..setUserProperty('user_status', userStatus);
   }
 
   Future<api.SubscriptionConfigResponse?> _fetchSubscriptionConfig() async {
