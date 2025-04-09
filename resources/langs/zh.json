@@ -595,5 +595,6 @@
   "thanksForFeedback": "感谢您的反馈！",
   "thanksForFeedbackDesc": "我们感谢您的意见。您的反馈有助于我们改善您的VPN体验！",
   "closeBtn": "关闭",
-  "failedToSubmitFeedback": "提交反馈时出错。请再试一次。"
+  "failedToSubmitFeedback": "提交反馈时出错。请再试一次。",
+  "connectBestServer": "连接到最佳服务器"
 }
