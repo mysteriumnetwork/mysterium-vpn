@@ -37,6 +37,7 @@ class MyApp extends HookConsumerWidget {
     final env = ref.read(environmentPOD);
     final appName = env.values.appName;
     final flavor = env.flavor;
+    ref.watch(realIPInfoStorePOD);
 
     useEffect(
       () {

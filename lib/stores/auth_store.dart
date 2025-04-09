@@ -205,7 +205,8 @@ abstract class _AuthStore with Store {
     required String userId,
   }) async {
     await _abTestingStore.configFuture;
-    await _analyticsStore.setUserId(username);
+    await _analyticsStore.setUserId(userId);
+    await _analyticsStore.setUserProperty('email', username);
     await _intercomStore.registerUser(email: username);
     Sentry.configureScope(
       (scope) => scope.setUser(

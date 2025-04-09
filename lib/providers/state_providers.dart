@@ -227,5 +227,6 @@ final realIPInfoStorePOD = Provider<RealIPInfoStore>(
     ref.watch(apiServicePOD),
     SharedPreferenceService.instance,
     ref.watch(wireguardServicePOD),
+    ref.watch(analyticsStorePOD),
   ),
 );
