@@ -194,23 +194,26 @@ final userPreferencesStorePOD = StateProvider<UserPreferencesStore>((ref) {
 final remoteConfigStorePOD = Provider<RemoteConfigStore>((ref) {
   final client = ref.watch(remoteConfigClientPOD);
   final logger = ref.watch(loggerPOD);
+  final realIPInfoStore = ref.watch(realIPInfoStorePOD);
 
-  return RemoteConfigStore(client, logger);
+  return RemoteConfigStore(client, logger, realIPInfoStore);
 });
 
 final abTestingStorePOD = Provider<ABTestingStore>((ref) {
   final client = ref.watch(abTestingClientPOD);
   final logger = ref.watch(loggerPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
+  final realIPInfoStore = ref.watch(realIPInfoStorePOD);
 
-  return ABTestingStore(client, logger, analyticsStore);
+  return ABTestingStore(client, logger, realIPInfoStore, analyticsStore);
 });
 
 final textsStorePOD = Provider<TextsStore>((ref) {
   final client = ref.watch(textsClientPOD);
   final logger = ref.watch(loggerPOD);
+  final realIPInfoStore = ref.watch(realIPInfoStorePOD);
 
-  return TextsStore(client, logger);
+  return TextsStore(client, logger, realIPInfoStore);
 });
 
 final bannersStorePOD = Provider<BannersStore>(

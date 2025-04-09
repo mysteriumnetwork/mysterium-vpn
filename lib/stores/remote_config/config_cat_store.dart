@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
-import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:talker/talker.dart';
 
@@ -14,12 +14,14 @@ abstract class ConfigCatStore with Store {
   ConfigCatStore(
     this._client,
     this._logger,
+    this._ipInfoStore,
   ) {
     _init();
   }
 
   final ConfigCatClient _client;
   final Talker _logger;
+  final RealIPInfoStore _ipInfoStore;
 
   @readonly
   late ObservableFuture<Map<String, dynamic>> configFuture = ObservableFuture(_fetch());
@@ -84,7 +86,7 @@ abstract class ConfigCatStore with Store {
 
     IPInfo? ipInfo;
     try {
-      ipInfo = SharedPreferenceService.instance.getIPInfo();
+      ipInfo = await _ipInfoStore.infoFuture;
     } catch (e, stack) {
       _logger.handle(e, stack);
       ipInfo = null;

@@ -34,7 +34,7 @@ enum _FeatureToggleKey {
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
 
 abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
-  RemoteConfigStoreBase(super.service, super.logger);
+  RemoteConfigStoreBase(super.service, super.logger, super.ipInfoStore);
 
   @computed
   bool get isServiceAvailable {
