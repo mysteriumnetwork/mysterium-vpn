@@ -22,6 +22,7 @@ import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/auth/rest_auth_service.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/config_cat_cache.dart';
+import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/network/dio_network_service.dart';
 import 'package:mysterium_vpn/services/dio_network_logger/dio_network_logger.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
@@ -52,7 +53,6 @@ final networkServicePOD = Provider<DioNetworkService>((ref) {
 });
 
 final vpnApiDioPOD = Provider<Dio>((ref) {
-  final authSessionStore = ref.watch(authSessionStorePOD);
   final environment = ref.watch(environmentPOD);
   final logger = ref.watch(loggerPOD);
 
@@ -75,8 +75,9 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
     ConnectionErrorsInterceptor(),
     InterceptorsWrapper(
       onRequest: (options, handler) async {
-        if (authSessionStore.accessToken != null) {
-          options.headers['Authorization'] = 'Bearer ${authSessionStore.accessToken}';
+        final token = await SecureStorageService.instance.getAccessToken();
+        if (token != null) {
+          options.headers['Authorization'] = 'Bearer $token';
         }
         return handler.next(options);
       },
