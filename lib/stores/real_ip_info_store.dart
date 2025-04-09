@@ -17,15 +17,16 @@ abstract class _RealIPInfoStore with Store {
     this._preferences,
     this._wireguardService,
     this._analyticsStore,
-  );
-
+  ) {
+    infoFuture = ObservableFuture(_fetch());
+  }
   final ApiService _api;
   final SharedPreferenceService _preferences;
   final WireguardDart _wireguardService;
   final AnalyticsStore _analyticsStore;
 
   @observable
-  late ObservableFuture<IPInfo?> infoFuture = ObservableFuture(_fetch());
+  late ObservableFuture<IPInfo?> infoFuture;
 
   @computed
   IPInfo? get info => infoFuture.value;
