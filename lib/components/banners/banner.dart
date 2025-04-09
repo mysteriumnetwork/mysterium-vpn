@@ -40,8 +40,8 @@ class Banner extends StatelessWidget {
         children: [
           if (canDismiss)
             Positioned(
-              top: 2,
-              right: 4,
+              top: 12,
+              right: 12,
               child: _DismissButton(onPressed: onDismiss),
             ),
           Center(
