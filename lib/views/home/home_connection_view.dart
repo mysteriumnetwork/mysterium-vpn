@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mysterium_vpn/common/enums/screen_type.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/connection_status_bar.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -15,11 +17,11 @@ class HomeConnectionView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final abTestingStore = ref.watch(abTestingStorePOD);
     final bannersStore = ref.watch(bannersStorePOD);
 
-    final bannerDisplayVariant = useComputedValue(() => abTestingStore.bannerDisplayVariant);
     final hasBanner = useComputedValue(() => bannersStore.banner != null);
+
+    final screenType = useScreenType();
 
     return Stack(
       children: [
@@ -31,13 +33,17 @@ class HomeConnectionView extends HookConsumerWidget {
             SizedBox(height: hasBanner ? 72 : 32),
           ],
         ),
-        if (hasBanner && bannerDisplayVariant == 'A')
-          const Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: HomeBanner(),
-          ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: switch (screenType) {
+            ScreenType.tablet => 182,
+            ScreenType.desktop => 172,
+            _ => null,
+          },
+          top: screenType == ScreenType.mobile ? 60 : null,
+          child: const HomeBanner(),
+        ),
       ],
     );
   }
