@@ -23,20 +23,12 @@ mixin _$ABTestingStore on ABTestingStoreBase, Store {
       (_$tunnelConsentTypeComputed ??= Computed<String>(() => super.tunnelConsentType,
               name: 'ABTestingStoreBase.tunnelConsentType'))
           .value;
-  Computed<String>? _$bannerDisplayVariantComputed;
-
-  @override
-  String get bannerDisplayVariant =>
-      (_$bannerDisplayVariantComputed ??= Computed<String>(() => super.bannerDisplayVariant,
-              name: 'ABTestingStoreBase.bannerDisplayVariant'))
-          .value;
 
   @override
   String toString() {
     return '''
 subscriptionFlowVariant: ${subscriptionFlowVariant},
-tunnelConsentType: ${tunnelConsentType},
-bannerDisplayVariant: ${bannerDisplayVariant}
+tunnelConsentType: ${tunnelConsentType}
     ''';
   }
 }
