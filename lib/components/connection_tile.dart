@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/hooks/scaffold_brightness_hook.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/connect_text_button.dart';
@@ -21,6 +23,7 @@ class ConnectionTile extends HookConsumerWidget {
     final theme = Theme.of(context);
     final locationsStore = ref.watch(locationsStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
+    final scaffoldBrightness = useScaffoldBrightness();
 
     final location = useComputedValue(
       () => vpnStore.location ?? vpnStore.connectingLocation ?? vpnStore.potentialLocation,
@@ -75,11 +78,16 @@ class ConnectionTile extends HookConsumerWidget {
                     fontWeight: FontWeight.w500,
                     fontSize: 18,
                     maxLines: 2,
+                    color: switch (scaffoldBrightness) {
+                      Brightness.light => Palette.white,
+                      Brightness.dark => theme.colorScheme.onSecondaryContainer,
+                    },
                   ),
                 ),
                 ConnectTextButton(
                   onPressed: onTap,
                   location: location,
+                  outlinedButton: false,
                 ),
               ],
             ),
@@ -91,11 +99,7 @@ class ConnectionTile extends HookConsumerWidget {
                     ip: ipInfo,
                     onRefreshPressed: vpnStore.startConnectionWithRefreshIP,
                   ),
-                Expanded(
-                  child: _IPTypeIndicator(
-                    ipType: location.ipType,
-                  ),
-                ),
+                Expanded(child: _IPTypeIndicator(ipType: location.ipType)),
               ],
             ).padding(left: 40),
           ],
@@ -105,7 +109,7 @@ class ConnectionTile extends HookConsumerWidget {
   }
 }
 
-class _IPIndicator extends StatelessWidget {
+class _IPIndicator extends HookWidget {
   const _IPIndicator({
     required this.ip,
     required this.onRefreshPressed,
@@ -114,62 +118,77 @@ class _IPIndicator extends StatelessWidget {
   final String ip;
   final VoidCallback onRefreshPressed;
   @override
-  Widget build(BuildContext context) => Row(
-        mainAxisSize: MainAxisSize.min,
-        spacing: 12,
-        children: [
-          Flexible(
-            child: EasyText(
-              ip,
-              fontSize: 12,
-              color: Theme.of(context).colorScheme.onSecondaryContainer,
-            ),
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaffoldBrightness = useScaffoldBrightness();
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      spacing: 12,
+      children: [
+        Flexible(
+          child: EasyText(
+            ip,
+            fontSize: 12,
+            color: switch (scaffoldBrightness) {
+              Brightness.light => Palette.white,
+              Brightness.dark => theme.colorScheme.onSecondaryContainer,
+            },
           ),
-          IconButton(
-            onPressed: onRefreshPressed,
-            icon: const SvgIcon(asset: Assets.refreshConn, height: 12, width: 12),
-            style: IconButton.styleFrom(
-              backgroundColor: Palette.blue,
-              foregroundColor: Palette.white,
-              visualDensity: VisualDensity.compact,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-              padding: const EdgeInsets.all(6),
-              minimumSize: const Size.square(25),
-            ),
+        ),
+        IconButton(
+          onPressed: onRefreshPressed,
+          icon: const SvgIcon(asset: Assets.refreshConn, height: 12, width: 12),
+          style: IconButton.styleFrom(
+            backgroundColor: Palette.blue,
+            foregroundColor: Palette.white,
+            visualDensity: VisualDensity.compact,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            padding: const EdgeInsets.all(6),
+            minimumSize: const Size.square(25),
           ),
-          DecoratedBox(
-            decoration: BoxDecoration(color: Theme.of(context).colorScheme.onSecondaryContainer),
-            child: const SizedBox(height: 20, width: 1),
-          ),
-        ],
-      );
+        ),
+        DecoratedBox(
+          decoration: BoxDecoration(color: Theme.of(context).colorScheme.onSecondaryContainer),
+          child: const SizedBox(height: 20, width: 1),
+        ),
+      ],
+    );
+  }
 }
 
-class _IPTypeIndicator extends StatelessWidget {
+class _IPTypeIndicator extends HookWidget {
   const _IPTypeIndicator({required this.ipType});
   final IPType ipType;
 
   @override
-  Widget build(BuildContext context) => Row(
-        mainAxisSize: MainAxisSize.min,
-        spacing: 6,
-        children: [
-          Flexible(
-            child: EasyText(
-              switch (ipType) {
-                IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
-                IPType.residential => LocaleKeys.ipTypeResidential.tr(),
-              },
-              fontSize: 12,
-              color: Theme.of(context).colorScheme.onSecondaryContainer,
-            ),
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaffoldBrightness = useScaffoldBrightness();
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      spacing: 6,
+      children: [
+        Flexible(
+          child: EasyText(
+            switch (ipType) {
+              IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
+              IPType.residential => LocaleKeys.ipTypeResidential.tr(),
+            },
+            fontSize: 12,
+            color: switch (scaffoldBrightness) {
+              Brightness.light => Palette.white,
+              Brightness.dark => theme.colorScheme.onSecondaryContainer,
+            },
           ),
-          if (ipType == IPType.datacenter)
-            const SvgIcon(
-              asset: Assets.speed,
-              width: 12,
-              height: 14,
-            ),
-        ],
-      );
+        ),
+        if (ipType == IPType.datacenter)
+          const SvgIcon(
+            asset: Assets.speed,
+            width: 12,
+            height: 14,
+          ),
+      ],
+    );
+  }
 }

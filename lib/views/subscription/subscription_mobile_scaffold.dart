@@ -50,7 +50,7 @@ class SubscriptionMobileScaffold extends HookConsumerWidget {
               bottom: 0,
               child: DecoratedBox(
                 decoration: BoxDecoration(color: theme.colorScheme.surface),
-                child: SizedBox(height: offset + 12),
+                child: SizedBox(height: offset + kToolbarHeight),
               ),
             )
           else
@@ -105,7 +105,6 @@ class _RegularPricing extends HookWidget {
             children: [
               SliverPositioned.fill(
                 child: SliverFillRemaining(
-                  hasScrollBody: false,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       color: theme.colorScheme.surface,

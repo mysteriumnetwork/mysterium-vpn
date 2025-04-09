@@ -88,7 +88,7 @@ class _Item extends StatelessWidget {
             Flexible(
               child: EasyText(
                 label,
-                fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
                 fontSize: 16,
                 textDecoration: !selected ? null : TextDecoration.underline,
                 colorDecoration: theme.textTheme.bodyMedium?.color,
