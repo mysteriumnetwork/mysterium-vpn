@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mysterium_vpn/common/enums/screen_type.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/connection_status_bar.dart';
@@ -23,29 +22,34 @@ class HomeConnectionView extends HookConsumerWidget {
     final hasBanner = useComputedValue(() => bannersStore.banner != null);
 
     final screenType = useScreenType();
-    final (statusBarKey, statusBarBox) = useRenderObject<RenderBox>();
-    final statusBarHeight = statusBarBox?.size.height ?? 20;
 
-    return Stack(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Positioned.fill(child: Lottie.asset(Assets.backgroundElements)),
-        Column(
-          children: [
-            ConnectionStatusBar(key: statusBarKey),
-            const Expanded(child: Center(child: Center(child: HomeConnectButton()))),
-            SizedBox(height: hasBanner ? 72 : 32),
-          ],
-        ),
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: switch (screenType) {
-            ScreenType.tablet => 182,
-            ScreenType.desktop => 172,
-            _ => null,
-          },
-          top: screenType == ScreenType.mobile ? 10 + statusBarHeight : null,
-          child: const HomeBanner(),
+        const ConnectionStatusBar(),
+        Expanded(
+          child: Stack(
+            children: [
+              Positioned.fill(child: Lottie.asset(Assets.backgroundElements)),
+              Column(
+                children: [
+                  const Expanded(child: Center(child: Center(child: HomeConnectButton()))),
+                  SizedBox(height: hasBanner ? 72 : 32),
+                ],
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: switch (screenType) {
+                  ScreenType.tablet => 182,
+                  ScreenType.desktop => 172,
+                  _ => null,
+                },
+                top: screenType == ScreenType.mobile ? 10 : null,
+                child: const HomeBanner(),
+              ),
+            ],
+          ),
         ),
       ],
     );
