@@ -6,6 +6,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 // Package imports:
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/ip_info.dart';
@@ -80,16 +81,27 @@ class SharedPreferenceService {
       setString(StorageKeys.locationCode.name, value);
 
   VPNLocation? getLocation() {
-    final [code, type] = [
+    final [code, type, coordinatesRaw] = [
       getString(StorageKeys.locationCode.name),
       getString(StorageKeys.locationType.name),
+      getString(StorageKeys.locationCoordinates.name),
     ];
     if (code == null) {
       return null;
     }
+
+    LatLng? coordinates;
+    if (coordinatesRaw != null) {
+      final json = jsonDecode(coordinatesRaw);
+      if (json is Map<String, dynamic>) {
+        coordinates = LatLng.fromJson(json);
+      }
+    }
+
     return VPNLocation(
       code: code,
       ipType: type == null ? IPType.residential : IPType.fromName(type),
+      coordinates: coordinates,
     );
   }
 
@@ -98,9 +110,17 @@ class SharedPreferenceService {
       if (location == null) ...[
         remove(StorageKeys.locationCode.name),
         remove(StorageKeys.locationType.name),
+        remove(StorageKeys.locationCoordinates.name),
       ] else ...[
         setString(StorageKeys.locationCode.name, location.code),
         setString(StorageKeys.locationType.name, location.ipType.name),
+        if (location.coordinates != null)
+          setString(
+            StorageKeys.locationCoordinates.name,
+            jsonEncode(location.coordinates),
+          )
+        else
+          remove(StorageKeys.locationCoordinates.name),
       ],
     ]);
     return results.every((isSuccess) => isSuccess);
