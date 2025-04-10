@@ -23,6 +23,7 @@ import 'package:mysterium_vpn/services/api/rest_external_api_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/auth/rest_auth_service.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
+import 'package:mysterium_vpn/services/data/local/assets_service.dart';
 import 'package:mysterium_vpn/services/data/local/config_cat_cache.dart';
 import 'package:mysterium_vpn/services/data/network/dio_network_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
@@ -144,11 +145,13 @@ final subscriptionServicePOD = Provider<SubscriptionService>((ref) {
 final apiServicePOD = Provider<ApiService>((ref) {
   final api = ref.watch(vpnApiPOD);
   final networkService = ref.watch(networkServicePOD);
+  final assetsService = ref.watch(assetsServicePOD);
   final logger = ref.watch(loggerPOD);
 
   return RestApiService(
     api: api,
     networkService: networkService,
+    assetsService: assetsService,
     logger: logger,
   );
 });
@@ -241,3 +244,5 @@ final assetsLoaderPOD = Provider<AssetLoader>((ref) {
 });
 
 final filterServicePOD = Provider<FilterService>((ref) => FilterService());
+
+final assetsServicePOD = Provider((_) => const AssetsService());

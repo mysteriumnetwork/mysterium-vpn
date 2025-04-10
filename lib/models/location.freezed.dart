@@ -204,6 +204,7 @@ VPNLocation _$VPNLocationFromJson(Map<String, dynamic> json) {
 mixin _$VPNLocation {
   String get code => throw _privateConstructorUsedError;
   IPType get ipType => throw _privateConstructorUsedError;
+  LatLng? get coordinates => throw _privateConstructorUsedError;
 
   /// Serializes this VPNLocation to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -219,7 +220,7 @@ abstract class $VPNLocationCopyWith<$Res> {
   factory $VPNLocationCopyWith(VPNLocation value, $Res Function(VPNLocation) then) =
       _$VPNLocationCopyWithImpl<$Res, VPNLocation>;
   @useResult
-  $Res call({String code, IPType ipType});
+  $Res call({String code, IPType ipType, LatLng? coordinates});
 }
 
 /// @nodoc
@@ -239,6 +240,7 @@ class _$VPNLocationCopyWithImpl<$Res, $Val extends VPNLocation>
   $Res call({
     Object? code = null,
     Object? ipType = null,
+    Object? coordinates = freezed,
   }) {
     return _then(_value.copyWith(
       code: null == code
@@ -249,6 +251,10 @@ class _$VPNLocationCopyWithImpl<$Res, $Val extends VPNLocation>
           ? _value.ipType
           : ipType // ignore: cast_nullable_to_non_nullable
               as IPType,
+      coordinates: freezed == coordinates
+          ? _value.coordinates
+          : coordinates // ignore: cast_nullable_to_non_nullable
+              as LatLng?,
     ) as $Val);
   }
 }
@@ -260,7 +266,7 @@ abstract class _$$VPNLocationImplCopyWith<$Res> implements $VPNLocationCopyWith<
       __$$VPNLocationImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String code, IPType ipType});
+  $Res call({String code, IPType ipType, LatLng? coordinates});
 }
 
 /// @nodoc
@@ -277,6 +283,7 @@ class __$$VPNLocationImplCopyWithImpl<$Res>
   $Res call({
     Object? code = null,
     Object? ipType = null,
+    Object? coordinates = freezed,
   }) {
     return _then(_$VPNLocationImpl(
       code: null == code
@@ -287,6 +294,10 @@ class __$$VPNLocationImplCopyWithImpl<$Res>
           ? _value.ipType
           : ipType // ignore: cast_nullable_to_non_nullable
               as IPType,
+      coordinates: freezed == coordinates
+          ? _value.coordinates
+          : coordinates // ignore: cast_nullable_to_non_nullable
+              as LatLng?,
     ));
   }
 }
@@ -294,7 +305,8 @@ class __$$VPNLocationImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$VPNLocationImpl extends _VPNLocation {
-  const _$VPNLocationImpl({required this.code, this.ipType = IPType.residential}) : super._();
+  const _$VPNLocationImpl({required this.code, this.ipType = IPType.residential, this.coordinates})
+      : super._();
 
   factory _$VPNLocationImpl.fromJson(Map<String, dynamic> json) => _$$VPNLocationImplFromJson(json);
 
@@ -303,10 +315,12 @@ class _$VPNLocationImpl extends _VPNLocation {
   @override
   @JsonKey()
   final IPType ipType;
+  @override
+  final LatLng? coordinates;
 
   @override
   String toString() {
-    return 'VPNLocation(code: $code, ipType: $ipType)';
+    return 'VPNLocation(code: $code, ipType: $ipType, coordinates: $coordinates)';
   }
 
   @override
@@ -315,12 +329,13 @@ class _$VPNLocationImpl extends _VPNLocation {
         (other.runtimeType == runtimeType &&
             other is _$VPNLocationImpl &&
             (identical(other.code, code) || other.code == code) &&
-            (identical(other.ipType, ipType) || other.ipType == ipType));
+            (identical(other.ipType, ipType) || other.ipType == ipType) &&
+            (identical(other.coordinates, coordinates) || other.coordinates == coordinates));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, code, ipType);
+  int get hashCode => Object.hash(runtimeType, code, ipType, coordinates);
 
   /// Create a copy of VPNLocation
   /// with the given fields replaced by the non-null parameter values.
@@ -339,7 +354,10 @@ class _$VPNLocationImpl extends _VPNLocation {
 }
 
 abstract class _VPNLocation extends VPNLocation {
-  const factory _VPNLocation({required final String code, final IPType ipType}) = _$VPNLocationImpl;
+  const factory _VPNLocation(
+      {required final String code,
+      final IPType ipType,
+      final LatLng? coordinates}) = _$VPNLocationImpl;
   const _VPNLocation._() : super._();
 
   factory _VPNLocation.fromJson(Map<String, dynamic> json) = _$VPNLocationImpl.fromJson;
@@ -348,6 +366,8 @@ abstract class _VPNLocation extends VPNLocation {
   String get code;
   @override
   IPType get ipType;
+  @override
+  LatLng? get coordinates;
 
   /// Create a copy of VPNLocation
   /// with the given fields replaced by the non-null parameter values.

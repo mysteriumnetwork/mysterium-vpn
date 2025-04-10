@@ -34,6 +34,8 @@ dependencies:
   flutter_launcher_icons: 0.13.1
   flutter_localizations:
     sdk: flutter
+  flutter_map: ^7.0.2
+  flutter_map_cancellable_tile_provider: ^3.0.0
   flutter_mobx: 2.3.0
   flutter_native_splash: 2.4.1
   flutter_portal: ^1.1.4
@@ -52,6 +54,7 @@ dependencies:
   intercom_flutter: ^9.2.5
   intl: 0.19.0
   json_annotation: 4.9.0
+  latlong2: ^0.9.1
   lottie: 3.3.1
   mobx: 2.5.0
   modal_bottom_sheet: 3.0.0
@@ -126,3 +129,4 @@ flutter:
     - assets/animations/
     - resources/langs/
     - assets/google_fonts/
+    - assets/data/
