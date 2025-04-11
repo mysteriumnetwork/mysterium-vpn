@@ -65,6 +65,14 @@ mixin _$AnalyticsStoreFirebase on _AnalyticsStoreFirebase, Store {
     return _$setConsentsAsyncAction.run(() => super.setConsents());
   }
 
+  late final _$setDeviceInfoAsyncAction =
+      AsyncAction('_AnalyticsStoreFirebase.setDeviceInfo', context: context);
+
+  @override
+  Future<void> setDeviceInfo() {
+    return _$setDeviceInfoAsyncAction.run(() => super.setDeviceInfo());
+  }
+
   @override
   String toString() {
     return '''
