@@ -175,4 +175,6 @@ mixin AnalyticsStore {
   void dispose() {
     _debouncer.dispose();
   }
+
+  Future<void> setDeviceInfo() async {}
 }

@@ -18,6 +18,7 @@ import 'package:mysterium_vpn/stores/analytics/analytics_store_firebase.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_windows.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/banners_store.dart';
+import 'package:mysterium_vpn/stores/device_info_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_desktop_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_mobile_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
@@ -172,6 +173,7 @@ final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
   return AnalyticsStoreFirebase(
     analytics: FirebaseAnalytics.instance,
     crashlytics: FirebaseCrashlytics.instance,
+    deviceInfoStore: ref.watch(deviceInfoStorePOD),
   );
 });
 
@@ -229,4 +231,8 @@ final realIPInfoStorePOD = Provider<RealIPInfoStore>(
     ref.watch(wireguardServicePOD),
     ref.watch(analyticsStorePOD),
   ),
+);
+
+final deviceInfoStorePOD = Provider<DeviceInfoStore>(
+  (ref) => DeviceInfoStore(),
 );
