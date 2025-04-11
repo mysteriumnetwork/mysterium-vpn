@@ -81,6 +81,7 @@ final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
 
 final vpnStorePOD = Provider<VpnStore>((ref) {
   final apiService = ref.read(apiServicePOD);
+  final externalApiService = ref.watch(externalApiServicePOD);
   final mqttService = ref.watch(vpnApiMQTTPOD);
   final locationsStore = ref.watch(locationsStorePOD);
   final wireguardService = ref.watch(wireguardServicePOD);
@@ -93,6 +94,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
 
   return VpnStore(
     apiService: apiService,
+    externalApiService: externalApiService,
     mqtt: mqttService,
     locationsStore: locationsStore,
     wireguardService: wireguardService,
@@ -227,7 +229,7 @@ final bannersStorePOD = Provider<BannersStore>(
 
 final realIPInfoStorePOD = Provider<RealIPInfoStore>(
   (ref) => RealIPInfoStore(
-    ref.watch(publicApiServicePOD),
+    ref.watch(externalApiServicePOD),
     SharedPreferenceService.instance,
     ref.watch(wireguardServicePOD),
     ref.watch(analyticsStorePOD),

@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/stun_binding_request.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
@@ -13,8 +12,6 @@ import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
 
-const kFetchIP = 'https://location.mysterium.network/api/v1/location';
-const kFetchIPFallback = 'https://ipinfo.io/json';
 const kReportBrokenNode = '/connection/report-broken-node';
 const kSetMarketingConsent = '/user-preferences/marketing-consent';
 const kGetMarketingConsent = '/user-preferences/marketing-consent';
@@ -111,30 +108,6 @@ class RestApiService extends ApiService {
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
-    }
-  }
-
-  @override
-  Future<IPInfo?> getIPAdress() async {
-    try {
-      final response = await _networkService.fetch(kFetchIP);
-
-      if (response.statusCode == 200) {
-        return IPInfo.fromJson(response.data as Map<String, dynamic>);
-      } else {
-        throw Exception('Failed to load IP info');
-      }
-    } catch (e) {
-      try {
-        final fallbackResponse = await _networkService.fetch(kFetchIPFallback);
-        if (fallbackResponse.statusCode == 200) {
-          return IPInfo.fromJson(fallbackResponse.data as Map<String, dynamic>);
-        } else {
-          throw Exception('Failed to load IP info from fallback service');
-        }
-      } catch (fallbackError) {
-        return null;
-      }
     }
   }
 
