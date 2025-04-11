@@ -20,6 +20,7 @@ import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/api/external_api_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
@@ -50,6 +51,7 @@ class VpnStore = _VpnStore with _$VpnStore;
 abstract class _VpnStore with Store {
   _VpnStore({
     required ApiService apiService,
+    required ExternalApiService externalApiService,
     required MQTTService mqtt,
     required LocationsStore locationsStore,
     required WireguardDart wireguardService,
@@ -60,6 +62,7 @@ abstract class _VpnStore with Store {
     required RemoteConfigStore remoteConfigStore,
     required AuthSessionStore authSessionStore,
   })  : _apiService = apiService,
+        _externalApiService = externalApiService,
         _mqtt = mqtt,
         _locationsStore = locationsStore,
         _wireguardService = wireguardService,
@@ -72,6 +75,7 @@ abstract class _VpnStore with Store {
     _init();
   }
   final ApiService _apiService;
+  final ExternalApiService _externalApiService;
   final MQTTService _mqtt;
   final LocationsStore _locationsStore;
   final AnalyticsStore _analyticsStore;
@@ -642,7 +646,7 @@ abstract class _VpnStore with Store {
     await Future.doWhile(() async {
       counter++;
       await Future.delayed(const Duration(seconds: 3));
-      final ipInfo = await _apiService.getIPAdress().timeout(
+      final ipInfo = await _externalApiService.getIPAddress().timeout(
             const Duration(seconds: 10),
             onTimeout: () => null,
           );
