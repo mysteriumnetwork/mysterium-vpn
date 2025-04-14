@@ -20,6 +20,7 @@ ThemeData themeData(Palette palette) => ThemeData(
         primaryContainer: palette.tileColor,
         secondaryContainer: palette.secondaryTileColor,
         onSecondaryContainer: palette.secondaryColor.withValues(alpha: .75),
+        tertiaryContainer: palette.tertiaryContainer,
       ),
       indicatorColor: palette.secondaryColor,
       hintColor: palette.darkTextColor,

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/hooks/scaffold_brightness_hook.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
@@ -43,9 +45,18 @@ class ConnectionTile extends HookConsumerWidget {
       return const SizedBox.shrink();
     }
 
+    final countryName = location.code.tr();
+
+    // TODO(David): Remove this when map is ready
+    final fillColor = useResponsiveValue<Color>(
+      theme.colorScheme.secondaryContainer,
+      tablet: Palette.deepPurple,
+      desktop: Palette.deepPurple,
+    );
+
     return RawMaterialButton(
       onPressed: onTap,
-      fillColor: theme.colorScheme.secondaryContainer,
+      fillColor: fillColor,
       elevation: 0,
       focusElevation: 0,
       highlightElevation: 0,
@@ -74,10 +85,10 @@ class ConnectionTile extends HookConsumerWidget {
                 Flag(countryCode: location.code, size: 30).padding(right: 5),
                 Expanded(
                   child: EasyText(
-                    location.code.tr(),
+                    countryName,
                     fontWeight: FontWeight.w500,
                     fontSize: 18,
-                    maxLines: 2,
+                    maxLines: countryName.hasMultipleWords ? 2 : 1,
                     color: switch (scaffoldBrightness) {
                       Brightness.light => Palette.white,
                       Brightness.dark => theme.colorScheme.onSecondaryContainer,

@@ -9,6 +9,11 @@ extension StringExtensions on String {
 
   String capitalize() => '${this[0].toUpperCase()}${substring(1).toLowerCase()}';
 
+  bool get hasMultipleWords {
+    final words = split(RegExp(r'\s+'));
+    return words.length > 1;
+  }
+
   String truncate(int length) {
     if (length >= this.length) {
       return this;
