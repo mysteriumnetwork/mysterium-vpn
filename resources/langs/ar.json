@@ -557,5 +557,10 @@
   "yes": "نعم",
   "zh": "صينى",
   "logoutVPNConnectedDesc": "VPN ON. سيتم فصلك عن خادم VPN إذا استمرت في تسجيل الخروج.",
-  "gettingIPAddress": "الحصول على عنوان IP..."
+  "gettingIPAddress": "الحصول على عنوان IP...",
+  "sendAgain": {
+    "zero": "إعادة الإرسال",
+    "one": "إعادة الإرسال",
+    "other": "إعادة الإرسال ({})"
+  }
 }

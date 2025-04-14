@@ -563,5 +563,10 @@
   "yes": "Sí",
   "zh": "Chino",
   "logoutVPNConnectedDesc": "VPN está encendido. Será desconectado del servidor VPN si continúa iniciando sesión.",
-  "gettingIPAddress": "Obteniendo dirección IP..."
+  "gettingIPAddress": "Obteniendo dirección IP...",
+  "sendAgain": {
+    "zero": "Enviar de nuevo",
+    "one": "Enviar de nuevo",
+    "other": "Enviar de nuevo ({})"
+  }
 }

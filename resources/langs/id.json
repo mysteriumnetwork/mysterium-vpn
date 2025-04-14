@@ -559,5 +559,10 @@
   "yes": "Iya",
   "zh": "Cina",
   "logoutVPNConnectedDesc": "VPN aktif. Anda akan terputus dari VPN Server jika terus keluar.",
-  "gettingIPAddress":"Mengambil alamat IP..."
+  "gettingIPAddress": "Mengambil alamat IP...",
+  "sendAgain": {
+    "zero": "Kirim lagi",
+    "one": "Kirim lagi",
+    "other": "Kirim lagi ({})"
+  }
 }

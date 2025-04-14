@@ -558,5 +558,9 @@
   "yes": "Yes",
   "zh": "Chinese",
   "logoutVPNConnectedDesc": "VPN is on. You will be disconnected from VPN server if continue to log out.",
-  "gettingIPAddress": "Getting IP address..."
+  "gettingIPAddress": "Getting IP address...",
+  "sendAgain": {
+    "zero":"Send again",
+    "other": "Send again ({})"
+  }
 }
