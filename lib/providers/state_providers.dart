@@ -210,7 +210,7 @@ final textsStorePOD = Provider<TextsStore>((ref) {
 
 final bannersStorePOD = Provider<BannersStore>(
   (ref) => BannersStore(
-    ref.watch(apiServicePOD),
+    LocalDBService.instance,
     ref.watch(subscriptionStorePOD),
     ref.watch(locationsStorePOD),
     ref.watch(authSessionStorePOD),

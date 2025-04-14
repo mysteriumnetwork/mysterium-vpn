@@ -1,8 +1,8 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/banner_type.dart';
-import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 
@@ -13,20 +13,20 @@ class BannersStore = _BannersStore with _$BannersStore;
 
 abstract class _BannersStore with Store {
   _BannersStore(
-    this._apiService,
+    this._localDBService,
     this._subscriptionStore,
     this._locationsStore,
     this._authSessionStore,
   );
 
-  final ApiService _apiService;
+  final LocalDBService _localDBService;
   final SubscriptionStore _subscriptionStore;
   final LocationsStore _locationsStore;
   final AuthSessionStore _authSessionStore;
 
   @readonly
   late ObservableFuture<List<BannerType>> _shownBanners =
-      ObservableFuture(_apiService.getShownBanners());
+      ObservableFuture(_localDBService.getShownBanners());
 
   @computed
   List<BannerType> get banners {
@@ -63,7 +63,7 @@ abstract class _BannersStore with Store {
   @action
   Future<void> setShown(BannerType banner) async {
     final shownBanners = [...(await _shownBanners), banner];
-    await _apiService.setShownBanners(shownBanners);
+    await _localDBService.setShownBanners(shownBanners);
 
     _shownBanners = ObservableFuture.value(shownBanners);
   }
