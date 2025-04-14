@@ -18,6 +18,9 @@ part of 'hooks.dart';
       if (countdown.value > 1) {
         countdown.value--;
       } else {
+        if (countdown.value == 1) {
+          countdown.value = 0; // Set to 0 when the countdown finishes
+        }
         timer.cancel();
         isActive.value = false; // Mark the timer as inactive when it finishes
       }
@@ -25,6 +28,7 @@ part of 'hooks.dart';
   }
 
   void resetTimer() {
+    isActive.value = true;
     countdown.value = initialCountdown; // Reset countdown value
     startTimer(); // Restart the timer
   }
