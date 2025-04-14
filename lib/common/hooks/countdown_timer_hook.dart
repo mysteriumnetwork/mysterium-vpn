@@ -38,9 +38,8 @@ part of 'hooks.dart';
 
   useEffect(
     () {
-      if (timer.value == null) {
-        startTimer(); // Start the timer when the hook is initialized
-      }
+      startTimer(); // Start the timer when the hook is initialized
+
       // Cleanup the timer when the widget is disposed
       return () {
         timer.value?.cancel();
