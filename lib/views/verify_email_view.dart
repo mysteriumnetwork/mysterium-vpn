@@ -30,7 +30,7 @@ class VerifyEmailView extends HookConsumerWidget {
     final analyticsStore = ref.watch(analyticsStorePOD);
     final height = getMediaHeight(context);
     final timer = useCountdownTimer(
-      initialCountdown: 5,
+      initialCountdown: 60,
     );
     final isActive = timer.countdown > 0;
     return Observer(
