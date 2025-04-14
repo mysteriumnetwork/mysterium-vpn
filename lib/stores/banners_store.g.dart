@@ -21,6 +21,13 @@ mixin _$BannersStore on _BannersStore, Store {
   BannerType? get mainBanner => (_$mainBannerComputed ??=
           Computed<BannerType?>(() => super.mainBanner, name: '_BannersStore.mainBanner'))
       .value;
+  Computed<List<BannerType>>? _$secondaryBannersComputed;
+
+  @override
+  List<BannerType> get secondaryBanners =>
+      (_$secondaryBannersComputed ??= Computed<List<BannerType>>(() => super.secondaryBanners,
+              name: '_BannersStore.secondaryBanners'))
+          .value;
 
   late final _$_shownBannersAtom = Atom(name: '_BannersStore._shownBanners', context: context);
 
@@ -54,7 +61,8 @@ mixin _$BannersStore on _BannersStore, Store {
   String toString() {
     return '''
 mainBanners: ${mainBanners},
-mainBanner: ${mainBanner}
+mainBanner: ${mainBanner},
+secondaryBanners: ${secondaryBanners}
     ''';
   }
 }

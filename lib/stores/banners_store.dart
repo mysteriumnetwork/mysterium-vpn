@@ -48,6 +48,14 @@ abstract class _BannersStore with Store {
   @computed
   BannerType? get mainBanner => mainBanners.firstOrNull;
 
+  @computed
+  List<BannerType> get secondaryBanners {
+    final shown = _shownBanners.value ?? [];
+
+    return BannerType.secondaryBanners
+      ..removeWhere((banner) => banner.isDismissable && shown.contains(banner));
+  }
+
   @action
   Future<void> setShown(BannerType banner) async {
     if (!banner.isDismissable) {
