@@ -34,13 +34,15 @@ abstract class _BannersStore with Store {
     final isSubscribed = _subscriptionStore.isSubscribed ?? true;
     final status = _authSessionStore.status;
 
-    final banners = <BannerType>[
+    final banners = <BannerType>{
       if (status == AuthStatus.unauthenticated) BannerType.unauthenticated,
       if (!isSubscribed) BannerType.subscription,
       if (_locationsStore.dcLocationsStream.value?.isEmpty ?? false) BannerType.datacenter,
-    ];
+      ...BannerType.mainBanners,
+    };
 
-    return banners..removeWhere((banner) => banner.isDismissable && shown.contains(banner));
+    return banners.toList()
+      ..removeWhere((banner) => banner.isDismissable && shown.contains(banner));
   }
 
   @computed
