@@ -5,8 +5,5 @@ FormGroup singIn() => FormGroup({
     });
 
 FormGroup marketingConsent() => FormGroup({
-      'consent': FormControl<bool>(value: true),
-    });
-FormGroup emailConsent() => FormGroup({
-      'consent': FormControl<bool>(value: true),
+      'consent': FormControl<bool>(value: false),
     });
