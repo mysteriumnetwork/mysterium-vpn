@@ -32,6 +32,7 @@ class VerifyEmailView extends HookConsumerWidget {
     final timer = useCountdownTimer(
       initialCountdown: 5,
     );
+    final isActive = timer.countdown > 0;
     return Observer(
       builder: (context) {
         final signInStatus = authStore.signInFeature.status;
@@ -80,7 +81,7 @@ class VerifyEmailView extends HookConsumerWidget {
                   width: 200,
                   color: Palette.purple,
                   useSystemColor: false,
-                  onPressed: timer.isActive
+                  onPressed: isActive
                       ? null
                       : () async {
                           analyticsStore.logEvent(AnalyticsEvent.resendEmailClicked);
