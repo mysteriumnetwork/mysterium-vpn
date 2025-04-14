@@ -39,7 +39,7 @@ void main() {
       mockLocationsStore = MockLocationsStore();
       mockAuthSessionStore = MockAuthSessionStore();
 
-      when(mockLocalDBService.getShownBanners()).thenAnswer((_) async => <BannerType>[]);
+      when(mockLocalDBService.getMainBanners()).thenAnswer((_) async => <BannerType>[]);
       when(mockSubscriptionStore.isSubscribed).thenReturn(true);
       when(mockAuthSessionStore.status).thenReturn(AuthStatus.unauthenticated);
       when(mockLocationsStore.dcLocationsStream).thenAnswer(
@@ -60,7 +60,7 @@ void main() {
 
         await bannersStore.shownBanners;
 
-        expect(bannersStore.banners, BannerType.values);
+        expect(bannersStore.mainBanners, BannerType.values);
       });
 
       test('returns empty list when shown banners and subscription status are null', () async {
@@ -72,17 +72,17 @@ void main() {
 
         await bannersStore.shownBanners;
 
-        expect(bannersStore.banners, []);
+        expect(bannersStore.mainBanners, []);
       });
 
       test('excludes shown banners from the list', () async {
-        when(mockLocalDBService.getShownBanners()).thenAnswer((_) async => [BannerType.datacenter]);
+        when(mockLocalDBService.getMainBanners()).thenAnswer((_) async => [BannerType.datacenter]);
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
 
         await bannersStore.shownBanners;
 
         expect(
-          bannersStore.banners,
+          bannersStore.mainBanners,
           BannerType.values.where((b) => b != BannerType.datacenter).toList(),
         );
       });
@@ -91,7 +91,7 @@ void main() {
         await bannersStore.shownBanners;
 
         expect(
-          bannersStore.banners,
+          bannersStore.mainBanners,
           BannerType.values.where((b) => b != BannerType.subscription).toList(),
         );
       });
@@ -105,7 +105,7 @@ void main() {
         await bannersStore.shownBanners;
 
         expect(
-          bannersStore.banners,
+          bannersStore.mainBanners,
           BannerType.values.where((b) => b != BannerType.datacenter).toList(),
         );
       });

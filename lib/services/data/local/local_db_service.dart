@@ -111,6 +111,20 @@ class LocalDBService {
 
   Future<List<BannerType>> getShownBanners() async => (await _loadUserData()).shownBanners;
 
+  Future<List<BannerType>> getMainBanners() async => (await _loadUserData())
+      .shownBanners
+      .where(
+        (it) => it.mainBanner,
+      )
+      .toList();
+
+  Future<List<BannerType>> getSecondaryBanners() async => (await _loadUserData())
+      .shownBanners
+      .where(
+        (it) => !it.mainBanner,
+      )
+      .toList();
+
   Future<UserData> _loadUserData() async {
     final user = await _ensureUserSet();
     final cacheId = user.username;

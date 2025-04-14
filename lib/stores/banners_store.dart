@@ -29,39 +29,28 @@ abstract class _BannersStore with Store {
       ObservableFuture(_localDBService.getShownBanners());
 
   @computed
-  List<BannerType> get banners {
-    final shown = _shownBanners.value;
+  List<BannerType> get mainBanners {
+    final shown = _shownBanners.value ?? [];
     final isSubscribed = _subscriptionStore.isSubscribed ?? true;
     final status = _authSessionStore.status;
 
-    if (shown == null) {
-      return [
-        if (status == AuthStatus.unauthenticated) BannerType.unauthenticated,
-      ];
-    }
+    final banners = <BannerType>[
+      if (status == AuthStatus.unauthenticated) BannerType.unauthenticated,
+      if (!isSubscribed) BannerType.subscription,
+      if (_locationsStore.dcLocationsStream.value?.isEmpty ?? false) BannerType.datacenter,
+    ];
 
-    final all = [...BannerType.values]..removeWhere(shown.contains);
-    if (status == AuthStatus.authenticated) {
-      all.remove(BannerType.unauthenticated);
-    }
-
-    if (isSubscribed) {
-      all.remove(BannerType.subscription);
-    }
-
-    final locations = _locationsStore.dcLocationsStream.value;
-    if (locations?.isEmpty ?? false) {
-      all.remove(BannerType.datacenter);
-    }
-
-    return all;
+    return banners..removeWhere((banner) => banner.isDismissable && shown.contains(banner));
   }
 
   @computed
-  BannerType? get banner => banners.firstOrNull;
+  BannerType? get mainBanner => mainBanners.firstOrNull;
 
   @action
   Future<void> setShown(BannerType banner) async {
+    if (!banner.isDismissable) {
+      return;
+    }
     final shownBanners = [...(await _shownBanners), banner];
     await _localDBService.setShownBanners(shownBanners);
 
