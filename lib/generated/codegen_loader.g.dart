@@ -576,7 +576,8 @@ class CodegenLoader extends AssetLoader {
     "yes": "是",
     "zh": "中国人",
     "logoutVPNConnectedDesc": "VPN已打开。如果继续注销，您将与VPN服务器断开连接。",
-    "gettingIPAddress": "获取 IP 地址"
+    "gettingIPAddress": "获取 IP 地址",
+    "sendAgain": {"zero": "重新发送", "one": "重新发送", "other": "重新发送 ({})"}
   };
   static const Map<String, dynamic> tr = {
     "AD": "Andorra",
@@ -1169,7 +1170,8 @@ class CodegenLoader extends AssetLoader {
     "zh": "Çince",
     "logoutVPNConnectedDesc":
         "VPN açık. Oturum açmaya devam ederseniz VPN sunucusundan bağlantısı kesileceksiniz.",
-    "gettingIPAddress": "IP adresi alınıyor..."
+    "gettingIPAddress": "IP adresi alınıyor...",
+    "sendAgain": {"zero": "Tekrar gönder", "one": "Tekrar gönder", "other": "Tekrar gönder ({})"}
   };
   static const Map<String, dynamic> ja = {
     "AD": "アンドラ",
@@ -1737,7 +1739,8 @@ class CodegenLoader extends AssetLoader {
     "yes": "はい",
     "zh": "中国語",
     "logoutVPNConnectedDesc": "VPNがオンになります。ログアウトを続けると、VPNサーバーから切断されます。",
-    "gettingIPAddress": "IPアドレスを取得しています..."
+    "gettingIPAddress": "IPアドレスを取得しています...",
+    "sendAgain": {"zero": "再送信", "one": "再送信", "other": "再送信 ({})"}
   };
   static const Map<String, dynamic> de = {
     "AD": "Andorra",
@@ -2352,7 +2355,8 @@ class CodegenLoader extends AssetLoader {
     "zh": "Chinesisch",
     "logoutVPNConnectedDesc":
         "VPN ist eingeschaltet. Sie werden vom VPN -Server getrennt, wenn Sie sich weiter anmelden.",
-    "gettingIPAddress": "IP-Adresse wird abgerufen..."
+    "gettingIPAddress": "IP-Adresse wird abgerufen...",
+    "sendAgain": {"zero": "Erneut senden", "one": "Erneut senden", "other": "Erneut senden ({})"}
   };
   static const Map<String, dynamic> pt = {
     "AD": "Andorra",
@@ -2956,7 +2960,12 @@ class CodegenLoader extends AssetLoader {
     "zh": "Chinês",
     "logoutVPNConnectedDesc":
         "O VPN está em ON.Você será desconectado do servidor VPN se continuar a fazer o logon.",
-    "gettingIPAddress": "Obtendo endereço IP ..."
+    "gettingIPAddress": "Obtendo endereço IP ...",
+    "sendAgain": {
+      "zero": "Enviar novamente",
+      "one": "Enviar novamente",
+      "other": "Enviar novamente ({})"
+    }
   };
   static const Map<String, dynamic> en = {
     "AD": "Andorra",
@@ -3553,7 +3562,8 @@ class CodegenLoader extends AssetLoader {
     "zh": "Chinese",
     "logoutVPNConnectedDesc":
         "VPN is on. You will be disconnected from VPN server if continue to log out.",
-    "gettingIPAddress": "Getting IP address..."
+    "gettingIPAddress": "Getting IP address...",
+    "sendAgain": {"zero": "Send again", "other": "Send again ({})"}
   };
   static const Map<String, dynamic> it = {
     "AD": "Andorra",
@@ -4160,7 +4170,8 @@ class CodegenLoader extends AssetLoader {
     "zh": "Cinese",
     "logoutVPNConnectedDesc":
         "VPN è on. Verrà disconnesso dal server VPN se continui a disconnettersi.",
-    "gettingIPAddress": "Stiamo ottenendo l'indirizzo IP..."
+    "gettingIPAddress": "Stiamo ottenendo l'indirizzo IP...",
+    "sendAgain": {"zero": "Invia di nuovo", "one": "Invia di nuovo", "other": "Invia di nuovo ({})"}
   };
   static const Map<String, dynamic> fr = {
     "AD": "Andorre",
@@ -4770,7 +4781,12 @@ class CodegenLoader extends AssetLoader {
     "zh": "Chinois",
     "logoutVPNConnectedDesc":
         "VPN est activé. Vous serez déconnecté de VPN Server si vous continuerez à vous déconnecter.",
-    "gettingIPAddress": "Obtenir une adresse IP"
+    "gettingIPAddress": "Obtenir une adresse IP",
+    "sendAgain": {
+      "zero": "Envoyer à nouveau",
+      "one": "Envoyer à nouveau",
+      "other": "Envoyer à nouveau ({})"
+    }
   };
   static const Map<String, dynamic> id = {
     "AD": "Andorra",
@@ -5369,7 +5385,8 @@ class CodegenLoader extends AssetLoader {
     "yes": "Iya",
     "zh": "Cina",
     "logoutVPNConnectedDesc": "VPN aktif. Anda akan terputus dari VPN Server jika terus keluar.",
-    "gettingIPAddress": "Mengambil alamat IP..."
+    "gettingIPAddress": "Mengambil alamat IP...",
+    "sendAgain": {"zero": "Kirim lagi", "one": "Kirim lagi", "other": "Kirim lagi ({})"}
   };
   static const Map<String, dynamic> es = {
     "AD": "Andorra",
@@ -5979,7 +5996,12 @@ class CodegenLoader extends AssetLoader {
     "zh": "Chino",
     "logoutVPNConnectedDesc":
         "VPN está encendido. Será desconectado del servidor VPN si continúa iniciando sesión.",
-    "gettingIPAddress": "Obteniendo dirección IP..."
+    "gettingIPAddress": "Obteniendo dirección IP...",
+    "sendAgain": {
+      "zero": "Enviar de nuevo",
+      "one": "Enviar de nuevo",
+      "other": "Enviar de nuevo ({})"
+    }
   };
   static const Map<String, dynamic> ar = {
     "AD": "أندورا",
@@ -6567,7 +6589,8 @@ class CodegenLoader extends AssetLoader {
     "yes": "نعم",
     "zh": "صينى",
     "logoutVPNConnectedDesc": "VPN ON. سيتم فصلك عن خادم VPN إذا استمرت في تسجيل الخروج.",
-    "gettingIPAddress": "الحصول على عنوان IP..."
+    "gettingIPAddress": "الحصول على عنوان IP...",
+    "sendAgain": {"zero": "إعادة الإرسال", "one": "إعادة الإرسال", "other": "إعادة الإرسال ({})"}
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,

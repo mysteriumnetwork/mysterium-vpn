@@ -559,5 +559,10 @@
   "yes": "Sì",
   "zh": "Cinese",
   "logoutVPNConnectedDesc": "VPN è on. Verrà disconnesso dal server VPN se continui a disconnettersi.",
-  "gettingIPAddress":"Stiamo ottenendo l'indirizzo IP..."
+  "gettingIPAddress": "Stiamo ottenendo l'indirizzo IP...",
+  "sendAgain": {
+    "zero": "Invia di nuovo",
+    "one": "Invia di nuovo",
+    "other": "Invia di nuovo ({})"
+  }
 }
