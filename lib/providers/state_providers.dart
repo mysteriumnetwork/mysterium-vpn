@@ -28,7 +28,6 @@ import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/texts_store.dart';
-import 'package:mysterium_vpn/stores/rest_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
@@ -140,12 +139,6 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
     authSessionStore: authSessionStore,
     analyticsStore: analyticsStore,
   );
-});
-
-final restApiStorePOD = Provider<RestStore>((ref) {
-  final apiService = ref.read(apiServicePOD);
-
-  return RestStore(apiService: apiService);
 });
 
 final environmentPOD = Provider<FlavorConfig>(

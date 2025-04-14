@@ -56,15 +56,6 @@ class LocalDBService {
 
   Future<UserData> getUserData() async => _loadUserData();
 
-  Future<void> setNotificationsApproval({required bool approval}) async {
-    final userData = await _loadUserData();
-    userData.notifications = approval ? Approval.approved : Approval.declined;
-
-    await _saveUserData(userData);
-  }
-
-  Future<Approval> getNotificationsApproval() async => (await _loadUserData()).notifications;
-
   Future<void> setVpnPrivacyPolicyConsent({required bool approval}) async {
     final userData = await _loadUserData();
     userData.vpnPrivacyPolicyConsent = approval;
@@ -141,7 +132,6 @@ class LocalDBService {
       key,
       UserData(
         userId: key,
-        recentLocationCodes: [],
         recentVPNLocations: [],
       ),
     );
