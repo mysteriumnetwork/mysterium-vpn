@@ -50,6 +50,7 @@ ThemeData themeData(Palette palette) => ThemeData(
         fillColor: WidgetStateProperty.all(Palette.pink),
         overlayColor: WidgetStateProperty.all(Palette.transparent),
         checkColor: WidgetStateProperty.all(Palette.white),
+        side: BorderSide.none,
       ),
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.all(
