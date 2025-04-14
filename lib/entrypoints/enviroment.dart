@@ -41,7 +41,9 @@ class Enviroment {
     if (isDesktop()) {
       await windowManager.ensureInitialized();
       await windowManager.setPreventClose(true);
-      await windowManager.setMinimumSize(const Size(400, 600));
+      // Give option to resize on DEV env for testing
+      final size = flavor == 'DEV' ? const Size(400, 600) : const Size(1040, 700);
+      await windowManager.setMinimumSize(size);
     }
 
     if (Platform.isWindows) {
