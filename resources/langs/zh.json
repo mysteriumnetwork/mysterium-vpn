@@ -559,5 +559,10 @@
   "yes": "是",
   "zh": "中国人",
   "logoutVPNConnectedDesc": "VPN已打开。如果继续注销，您将与VPN服务器断开连接。",
-  "gettingIPAddress": "获取 IP 地址"
+  "gettingIPAddress": "获取 IP 地址",
+  "sendAgain": {
+    "zero": "重新发送",
+    "one": "重新发送",
+    "other": "重新发送 ({})"
+  }
 }

@@ -559,5 +559,10 @@
   "yes": "Ja",
   "zh": "Chinesisch",
   "logoutVPNConnectedDesc": "VPN ist eingeschaltet. Sie werden vom VPN -Server getrennt, wenn Sie sich weiter anmelden.",
-  "gettingIPAddress": "IP-Adresse wird abgerufen..."
+  "gettingIPAddress": "IP-Adresse wird abgerufen...",
+  "sendAgain": {
+    "zero": "Erneut senden",
+    "one": "Erneut senden",
+    "other": "Erneut senden ({})"
+  }
 }

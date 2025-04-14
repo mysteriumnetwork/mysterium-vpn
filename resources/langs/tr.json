@@ -559,5 +559,10 @@
   "yes": "Evet",
   "zh": "Çince",
   "logoutVPNConnectedDesc": "VPN açık. Oturum açmaya devam ederseniz VPN sunucusundan bağlantısı kesileceksiniz.",
-  "gettingIPAddress":"IP adresi alınıyor..."
+  "gettingIPAddress": "IP adresi alınıyor...",
+  "sendAgain": {
+    "zero": "Tekrar gönder",
+    "one": "Tekrar gönder",
+    "other": "Tekrar gönder ({})"
+  }
 }
