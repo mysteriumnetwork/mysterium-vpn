@@ -16,6 +16,7 @@ class ConnectTextButton extends HookConsumerWidget {
     this.textScaleGroup,
     this.loadingIndicatorRadius = 16,
     this.outlinedButton = true,
+    this.borderRadius,
     super.key,
   });
 
@@ -25,6 +26,7 @@ class ConnectTextButton extends HookConsumerWidget {
   final Size minimumSize;
   final double loadingIndicatorRadius;
   final bool outlinedButton;
+  final double? borderRadius;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isConnected = useIsLocationConnected(location);
@@ -39,6 +41,11 @@ class ConnectTextButton extends HookConsumerWidget {
               onPressed: onPressed,
               style: OutlinedButton.styleFrom(
                 minimumSize: minimumSize,
+                shape: borderRadius != null
+                    ? RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(borderRadius!),
+                      )
+                    : null,
               ),
               child: AutoSizeText(
                 LocaleKeys.connect.tr(),
@@ -55,6 +62,7 @@ class ConnectTextButton extends HookConsumerWidget {
               onPressed: onPressed,
               style: ElevatedButton.styleFrom(
                 minimumSize: minimumSize,
+                backgroundColor: Palette.purple,
               ),
               child: AutoSizeText(
                 LocaleKeys.connect.tr(),
