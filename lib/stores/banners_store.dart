@@ -37,8 +37,13 @@ abstract class _BannersStore with Store {
     final banners = <BannerType>{
       if (status == AuthStatus.unauthenticated) BannerType.unauthenticated,
       if (!isSubscribed) BannerType.subscription,
-      if (_locationsStore.dcLocationsStream.value?.isEmpty ?? false) BannerType.datacenter,
-      ...BannerType.mainBanners,
+      if (_locationsStore.dcLocationsStream.value?.isEmpty == false) BannerType.datacenter,
+      // Add remaining main banners which require no conditions
+      ...BannerType.mainBanners.toSet().difference({
+        BannerType.unauthenticated,
+        BannerType.subscription,
+        BannerType.datacenter,
+      }),
     };
 
     return banners.toList()

@@ -60,7 +60,7 @@ void main() {
 
         await bannersStore.shownBanners;
 
-        expect(bannersStore.mainBanners, BannerType.values);
+        expect(bannersStore.mainBanners, BannerType.mainBanners);
       });
 
       test('returns empty list when shown banners and subscription status are null', () async {
@@ -77,13 +77,16 @@ void main() {
 
       test('excludes shown banners from the list', () async {
         when(mockLocalDBService.getMainBanners()).thenAnswer((_) async => [BannerType.datacenter]);
+        when(mockLocationsStore.dcLocationsStream).thenAnswer(
+          (_) => ObservableStream(Stream.value(VPNLocations()), initialValue: VPNLocations()),
+        );
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
 
         await bannersStore.shownBanners;
 
         expect(
           bannersStore.mainBanners,
-          BannerType.values.where((b) => b != BannerType.datacenter).toList(),
+          BannerType.mainBanners.where((b) => b != BannerType.datacenter).toList(),
         );
       });
 
@@ -92,7 +95,7 @@ void main() {
 
         expect(
           bannersStore.mainBanners,
-          BannerType.values.where((b) => b != BannerType.subscription).toList(),
+          BannerType.mainBanners.where((b) => b != BannerType.subscription).toList(),
         );
       });
 
@@ -106,7 +109,7 @@ void main() {
 
         expect(
           bannersStore.mainBanners,
-          BannerType.values.where((b) => b != BannerType.datacenter).toList(),
+          BannerType.mainBanners.where((b) => b != BannerType.datacenter).toList(),
         );
       });
     });
