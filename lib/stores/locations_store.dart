@@ -73,7 +73,7 @@ abstract class _LocationsStore with Store {
 
   @readonly
   late ObservableFuture<List<VPNLocation>> _recentLocationsFuture = ObservableFuture(
-    _apiService.getRecentLocations(),
+    _localDB.getRecentLocations(),
   );
 
   @readonly
@@ -167,9 +167,16 @@ abstract class _LocationsStore with Store {
 
   @action
   Future<void> addRecentLocation(VPNLocation location) async {
-    await _apiService.addRecentLocation(location);
+    if (recentLocations.contains(location)) {
+      recentLocations.remove(location);
+    }
+    recentLocations.insert(0, location);
+    if (recentLocations.length > 5) {
+      recentLocations.removeLast();
+    }
+    await _localDB.setRecentLocation(recentLocations);
     _ipType = location.ipType;
-    _recentLocationsFuture = _recentLocationsFuture.replace(_apiService.getRecentLocations());
+    _recentLocationsFuture = _recentLocationsFuture.replace(_localDB.getRecentLocations());
     await _recentLocationsFuture;
   }
 

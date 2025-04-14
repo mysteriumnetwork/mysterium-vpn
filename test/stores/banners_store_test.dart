@@ -4,9 +4,9 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/banners_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
@@ -14,15 +14,15 @@ import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'banners_store_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<ApiService>(),
   MockSpec<SubscriptionStore>(),
   MockSpec<LocationsStore>(),
   MockSpec<AuthSessionStore>(),
+  MockSpec<LocalDBService>(),
 ])
 void main() {
   group('BannersStore', () {
     late BannersStore bannersStore;
-    late MockApiService mockApiService;
+    late MockLocalDBService mockLocalDBService;
     late MockSubscriptionStore mockSubscriptionStore;
     late MockLocationsStore mockLocationsStore;
     late MockAuthSessionStore mockAuthSessionStore;
@@ -34,12 +34,12 @@ void main() {
     );
 
     setUp(() async {
-      mockApiService = MockApiService();
+      mockLocalDBService = MockLocalDBService();
       mockSubscriptionStore = MockSubscriptionStore();
       mockLocationsStore = MockLocationsStore();
       mockAuthSessionStore = MockAuthSessionStore();
 
-      when(mockApiService.getShownBanners()).thenAnswer((_) async => <BannerType>[]);
+      when(mockLocalDBService.getShownBanners()).thenAnswer((_) async => <BannerType>[]);
       when(mockSubscriptionStore.isSubscribed).thenReturn(true);
       when(mockAuthSessionStore.status).thenReturn(AuthStatus.unauthenticated);
       when(mockLocationsStore.dcLocationsStream).thenAnswer(
@@ -47,7 +47,7 @@ void main() {
       );
 
       bannersStore = BannersStore(
-        mockApiService,
+        mockLocalDBService,
         mockSubscriptionStore,
         mockLocationsStore,
         mockAuthSessionStore,
@@ -76,7 +76,7 @@ void main() {
       });
 
       test('excludes shown banners from the list', () async {
-        when(mockApiService.getShownBanners()).thenAnswer((_) async => [BannerType.datacenter]);
+        when(mockLocalDBService.getShownBanners()).thenAnswer((_) async => [BannerType.datacenter]);
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
 
         await bannersStore.shownBanners;

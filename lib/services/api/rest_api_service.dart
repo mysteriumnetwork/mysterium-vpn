@@ -7,7 +7,6 @@ import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/stun_binding_request.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -32,7 +31,6 @@ class RestApiService extends ApiService {
 
   final Connection _apiConnection;
   final NetworkService _networkService;
-  final LocalDBService _localDb = LocalDBService.instance;
   final Talker _logger;
 
   @override
@@ -69,22 +67,6 @@ class RestApiService extends ApiService {
       _logger.handle(e, stackTrace);
       rethrow;
     }
-  }
-
-  @override
-  Future<List<VPNLocation>> getRecentLocations() => _localDb.getRecentLocations();
-
-  @override
-  Future<void> addRecentLocation(VPNLocation location) async {
-    final recentLocations = await _localDb.getRecentLocations();
-    if (recentLocations.contains(location)) {
-      recentLocations.remove(location);
-    }
-    recentLocations.insert(0, location);
-    if (recentLocations.length > 5) {
-      recentLocations.removeLast();
-    }
-    await _localDb.setRecentLocation(recentLocations);
   }
 
   @override
@@ -164,12 +146,6 @@ class RestApiService extends ApiService {
       rethrow;
     }
   }
-
-  @override
-  Future<List<BannerType>> getShownBanners() => _localDb.getShownBanners();
-
-  @override
-  Future<void> setShownBanners(List<BannerType> banners) => _localDb.setShownBanners(banners);
 
   @override
   Future<void> disconnectAllDevices() async {
