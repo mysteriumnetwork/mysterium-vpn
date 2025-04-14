@@ -33,7 +33,7 @@ class RecentLocationItem extends HookConsumerWidget {
       hoverElevation: 0,
       highlightElevation: 0,
       focusElevation: 0,
-      fillColor:  theme.colorScheme.tertiaryContainer,
+      fillColor: theme.colorScheme.tertiaryContainer,
       constraints: const BoxConstraints(maxWidth: 300, minHeight: 82),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
