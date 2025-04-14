@@ -10,23 +10,26 @@ part of 'hooks.dart';
   final countdown = useState(initialCountdown);
   final timer = useRef<Timer?>(null);
 
-  final startTimer = useCallback(() {
-    timer.value?.cancel(); // Cancel any existing timer
-    timer.value = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (countdown.value > 1) {
-        countdown.value--;
-      } else {
-        if (countdown.value == 1) {
-          countdown.value = 0; // Set to 0 when the countdown finishes
+  final startTimer = useCallback(
+    () {
+      timer.value?.cancel(); // Cancel any existing timer
+      timer.value = Timer.periodic(const Duration(seconds: 1), (timer) {
+        if (countdown.value > 1) {
+          countdown.value--;
+        } else {
+          if (countdown.value == 1) {
+            countdown.value = 0; // Set to 0 when the countdown finishes
+          }
+          timer.cancel();
         }
-        timer.cancel();
-      }
-    });
-  }, [
-    initialCountdown,
-    countdown,
-    timer,
-  ]);
+      });
+    },
+    [
+      initialCountdown,
+      countdown,
+      timer,
+    ],
+  );
 
   void resetTimer() {
     countdown.value = initialCountdown; // Reset countdown value
@@ -43,7 +46,7 @@ part of 'hooks.dart';
         timer.value?.cancel();
       };
     },
-    [initialCountdown, startTimer, timer],
+    [initialCountdown, startTimer, timer, countdown],
   );
 
   return (countdown: countdown.value, reset: resetTimer);
