@@ -47,6 +47,7 @@ abstract class Palette {
   Color get headerColor;
   Color get inputColor;
   Color get inputHintColor;
+  Color get tertiaryContainer;
 
   MaterialColor get swatchColor;
 }
@@ -122,7 +123,10 @@ class LightPalette implements Palette {
   Color get inputHintColor => Palette.lightBlack;
 
   @override
-  Color get secondaryTileColor => const Color(0x289E9CB6);
+  Color get secondaryTileColor => const Color(0xFFEFEFF3);
+
+  @override
+  Color get tertiaryContainer => const Color(0xFFEFEFF3);
 }
 
 class DarkPalette implements Palette {
@@ -195,6 +199,9 @@ class DarkPalette implements Palette {
 
   @override
   Color get secondaryTileColor => Palette.deepPurple;
+
+  @override
+  Color get tertiaryContainer => Palette.mediumBlack;
 }
 
 Map<int, Color> color = const {

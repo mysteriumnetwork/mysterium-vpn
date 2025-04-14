@@ -17,7 +17,7 @@ class LocationsContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Material(
-      color: theme.colorScheme.surface,
+      color: theme.colorScheme.tertiaryContainer,
       borderRadius: BorderRadius.only(
         topLeft: locationType == IPType.datacenter ? Radius.zero : const Radius.circular(12),
         topRight: locationType == IPType.residential ? Radius.zero : const Radius.circular(12),
