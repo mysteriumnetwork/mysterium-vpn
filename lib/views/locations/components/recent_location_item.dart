@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/connect_text_button.dart';
 import 'package:mysterium_vpn/components/flag.dart';
@@ -25,14 +26,14 @@ class RecentLocationItem extends HookConsumerWidget {
     final theme = Theme.of(context);
     final vpnStore = ref.watch(vpnStorePOD);
     final onTap = useComputedValue(() => vpnStore.isLoading ? null : this.onTap, [this.onTap]);
-
+    final countryName = location.code.tr();
     return RawMaterialButton(
       onPressed: onTap,
       elevation: 0,
       hoverElevation: 0,
       highlightElevation: 0,
       focusElevation: 0,
-      fillColor: theme.colorScheme.surface,
+      fillColor: theme.colorScheme.tertiaryContainer,
       constraints: const BoxConstraints(maxWidth: 300, minHeight: 82),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
@@ -48,10 +49,12 @@ class RecentLocationItem extends HookConsumerWidget {
                 Flag(countryCode: location.code, size: 30),
                 Flexible(
                   child: AutoSizeText(
-                    location.code.tr(),
-                    maxLines: 2,
+                    countryName,
+                    maxLines: countryName.hasMultipleWords ? 2 : 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontWeight: FontWeight.w500),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 4),
@@ -60,6 +63,7 @@ class RecentLocationItem extends HookConsumerWidget {
                   location: location,
                   minimumSize: const Size(86, 32),
                   loadingIndicatorRadius: 15,
+                  borderRadius: 8,
                 ),
               ],
             ),

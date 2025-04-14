@@ -78,7 +78,7 @@ class _Item extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
       ),
-      fillColor: selected ? theme.colorScheme.surface : Colors.transparent,
+      fillColor: selected ? theme.colorScheme.tertiaryContainer : Colors.transparent,
       onPressed: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
