@@ -559,5 +559,10 @@
   "yes": "はい",
   "zh": "中国語",
   "logoutVPNConnectedDesc": "VPNがオンになります。ログアウトを続けると、VPNサーバーから切断されます。",
-  "gettingIPAddress": "IPアドレスを取得しています..."
+  "gettingIPAddress": "IPアドレスを取得しています...",
+  "sendAgain": {
+    "zero": "再送信",
+    "one": "再送信",
+    "other": "再送信 ({})"
+  }
 }
