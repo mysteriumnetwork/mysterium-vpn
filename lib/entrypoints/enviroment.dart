@@ -41,7 +41,7 @@ class Enviroment {
     if (isDesktop()) {
       await windowManager.ensureInitialized();
       await windowManager.setPreventClose(true);
-      await windowManager.setMinimumSize(const Size(400, 600));
+      await windowManager.setMinimumSize(const Size(1040, 700));
     }
 
     if (Platform.isWindows) {
