@@ -1,6 +1,4 @@
 // TODO(Kristijan): Deprecate and use library to generate assets
-import 'dart:ui';
-
 abstract class Assets {
   //LOGO
   static const String logoBlackSvg = 'assets/logo/logo_black.svg';
