@@ -12,6 +12,8 @@ abstract class Assets {
   static const String reportDark = 'assets/images/report_dark.svg';
   static const String reportLight = 'assets/images/report_light.svg';
   static const String settingsImg = 'assets/images/settings.svg';
+  static const String mapDark = 'assets/images/map-dark.png';
+  static const String mapLight = 'assets/images/map-light.png';
 
   //ICONS
   static const String accountNameDark = 'assets/icons/account_name_dark.svg';
