@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 void main() async {
@@ -21,7 +22,7 @@ void main() async {
   final pubspecFile = File(pubspecPath);
 
   if (!pubspecFile.existsSync()) {
-    print('Error: pubspec.yaml not found at $pubspecPath');
+    log('Error: pubspec.yaml not found at $pubspecPath');
     return;
   }
 
@@ -48,7 +49,7 @@ void main() async {
     // Append the auto-generated section at the end of the assets section
     final assetsSectionStart = pubspecContent.indexOf('assets:');
     if (assetsSectionStart == -1) {
-      print('Error: No "assets:" section found in pubspec.yaml');
+      log('Error: No "assets:" section found in pubspec.yaml');
       return;
     }
 
@@ -61,5 +62,5 @@ void main() async {
   // Write the updated content back to pubspec.yaml
   await pubspecFile.writeAsString(updatedPubspecContent);
 
-  print('Folders successfully added to the assets section of pubspec.yaml');
+  log('Folders successfully added to the assets section of pubspec.yaml');
 }
