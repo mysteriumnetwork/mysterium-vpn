@@ -40,6 +40,7 @@ class LocationsSliverView extends HookConsumerWidget {
     final handleToggleConnection = useHandleToggleConnection();
 
     void handleSetLocationType(IPType value) {
+      analyticsStore.logTabChange(value);
       locationsStore.setIPType(value);
     }
 
