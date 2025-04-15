@@ -35,10 +35,15 @@ class LocationsMap extends HookConsumerWidget {
     final theme = Theme.of(context);
     final controller = useMapController();
 
+    void handlePressed(VPNLocation location, LatLng point) {
+      controller.move(point, controller.camera.zoom);
+      onLocationPressed?.call(location);
+    }
+
     final markers = _useLocationMarkers(
       locations: locations,
       activeLocation: activeLocation,
-      onLocationPressed: onLocationPressed,
+      onLocationPressed: handlePressed,
     );
 
     useValueChanged<LatLng?, void>(position, (_, __) {
@@ -74,7 +79,7 @@ class LocationsMap extends HookConsumerWidget {
 List<Marker> _useLocationMarkers({
   required List<VPNLocation>? locations,
   required VPNLocation? activeLocation,
-  required Function(VPNLocation)? onLocationPressed,
+  required Function(VPNLocation, LatLng)? onLocationPressed,
 }) {
   final latLngStore = useProvider(latLngStorePOD);
   final onLocationPressedRef = useRef(onLocationPressed)..value = onLocationPressed;
@@ -100,7 +105,7 @@ List<Marker> _useLocationMarkers({
               height: size.height,
               width: size.width,
               child: InkWell(
-                onTap: () => onLocationPressedRef.value?.call(it),
+                onTap: () => onLocationPressedRef.value?.call(it, point),
                 child: LocationMarker(
                   size: size,
                   txt: it.code,
