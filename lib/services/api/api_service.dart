@@ -1,5 +1,4 @@
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -11,7 +10,6 @@ abstract class ApiService {
   Future<void> addRecentLocation(VPNLocation location);
   Future<List<VPNLocation>> getRecentLocations();
   Future<WireguardConnectResponse> fetchVpnConfig({required WireguardConnectRequest request});
-  Future<IPInfo?> getIPAdress();
   Future<void> setUserPrefsMarketingConsent({required bool consent});
   Future<bool> getUserPrefsMarketingConsent();
   Future<List<BannerType>> getShownBanners();

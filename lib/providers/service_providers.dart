@@ -17,12 +17,15 @@ import 'package:mysterium_vpn/common/utils/translation_asset_loader.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/api/external_api_service.dart';
 import 'package:mysterium_vpn/services/api/rest_api_service.dart';
+import 'package:mysterium_vpn/services/api/rest_external_api_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_service.dart';
 import 'package:mysterium_vpn/services/auth/rest_auth_service.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/config_cat_cache.dart';
 import 'package:mysterium_vpn/services/data/network/dio_network_service.dart';
+import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:mysterium_vpn/services/dio_network_logger/dio_network_logger.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
@@ -52,51 +55,57 @@ final networkServicePOD = Provider<DioNetworkService>((ref) {
 });
 
 final vpnApiDioPOD = Provider<Dio>((ref) {
-  final authSessionStore = ref.watch(authSessionStorePOD);
-  final environment = ref.watch(environmentPOD);
+  final options = ref.watch(dioOptionsPOD);
   final logger = ref.watch(loggerPOD);
+  final environment = ref.watch(environmentPOD);
+  final sessionStore = ref.watch(authSessionStorePOD);
+  final dio = Dio(options);
 
-  final dio = Dio(
-    BaseOptions(
-      baseUrl: environment.values.baseUrl,
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': 'application/json',
-        'User-Agent': environment.appUserAgent(),
-        'x-client-version': environment.buildInfo.buildVersion,
-        'x-client-platform': Platform.operatingSystem,
-      },
-      connectTimeout: const Duration(seconds: 15),
-      receiveTimeout: const Duration(seconds: 15),
-      sendTimeout: const Duration(seconds: 15),
-    ),
-  );
-  dio.interceptors.addAll([
-    ConnectionErrorsInterceptor(),
-    InterceptorsWrapper(
-      onRequest: (options, handler) async {
-        if (authSessionStore.accessToken != null) {
-          options.headers['Authorization'] = 'Bearer ${authSessionStore.accessToken}';
-        }
-        return handler.next(options);
-      },
-    ),
-    RefreshTokenInterceptor(dio: dio, logger: logger),
-    RetryRequestInterceptor(dio: dio),
-    if (kDebugMode || environment.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
-    ApiErrorsInterceptor(),
-    if (kDebugMode)
-      TalkerDioLogger(
-        talker: logger,
-        settings: const TalkerDioLoggerSettings(
-          printRequestData: false,
-          printResponseData: false,
-          printErrorData: false,
-        ),
+  dio.interceptors.addAll(
+    [
+      ConnectionErrorsInterceptor(),
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          if (sessionStore.accessToken != null) {
+            options.headers['Authorization'] = 'Bearer ${sessionStore.accessToken}';
+          }
+          return handler.next(options);
+        },
       ),
-  ]);
+      RefreshTokenInterceptor(dio: dio, logger: logger),
+      RetryRequestInterceptor(dio: dio),
+      if (kDebugMode || environment.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
+      ApiErrorsInterceptor(),
+      if (kDebugMode)
+        TalkerDioLogger(
+          talker: logger,
+          settings: const TalkerDioLoggerSettings(
+            printRequestData: false,
+            printResponseData: false,
+            printErrorData: false,
+          ),
+        ),
+    ],
+  );
 
   return dio;
+});
+
+final dioOptionsPOD = Provider((ref) {
+  final environment = ref.watch(environmentPOD);
+  return BaseOptions(
+    baseUrl: environment.values.baseUrl,
+    headers: {
+      'Content-Type': 'application/json',
+      'accept': 'application/json',
+      'User-Agent': environment.appUserAgent(),
+      'x-client-version': environment.buildInfo.buildVersion,
+      'x-client-platform': Platform.operatingSystem,
+    },
+    connectTimeout: const Duration(seconds: 15),
+    receiveTimeout: const Duration(seconds: 15),
+    sendTimeout: const Duration(seconds: 15),
+  );
 });
 
 final vpnApiMQTTPOD = Provider<MQTTService>((ref) {
@@ -142,6 +151,20 @@ final apiServicePOD = Provider<ApiService>((ref) {
     networkService: networkService,
     logger: logger,
   );
+});
+
+final externalApiServicePOD = Provider<ExternalApiService>((ref) {
+  final networkService = ref.watch(externalNetworkServicePOD);
+  final logger = ref.watch(loggerPOD);
+
+  return RestExternalApiService(networkService, logger);
+});
+
+final externalNetworkServicePOD = Provider<NetworkService>((ref) {
+  final dio = Dio(ref.watch(dioOptionsPOD));
+  dio.interceptors.addAll([RetryRequestInterceptor(dio: dio)]);
+
+  return DioNetworkService(dio);
 });
 
 final authServicePOD = Provider<AuthService>((ref) {
