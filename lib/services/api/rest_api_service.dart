@@ -6,7 +6,6 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/stun_binding_request.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/services/data/local/assets_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:talker/talker.dart';
@@ -23,16 +22,13 @@ class RestApiService extends ApiService {
   RestApiService({
     required VpnApi api,
     required NetworkService networkService,
-    required AssetsService assetsService,
     required Talker logger,
   })  : _networkService = networkService,
         _apiConnection = api.getConnection(),
-        _assetsService = assetsService,
         _logger = logger;
 
   final Connection _apiConnection;
   final NetworkService _networkService;
-  final AssetsService _assetsService;
   final LocalDBService _localDb = LocalDBService.instance;
   final Talker _logger;
 
@@ -50,14 +46,11 @@ class RestApiService extends ApiService {
       if (data == null) {
         throw Exception('No data found');
       }
-      final coordinates = await _assetsService.getCoordinates();
-
       final topLocations = data.topCountries
           .map(
             (code) => VPNLocation(
               code: code,
               ipType: ipType ?? IPType.residential,
-              coordinates: coordinates[code],
             ),
           )
           .toList();
@@ -68,7 +61,6 @@ class RestApiService extends ApiService {
             (code) => VPNLocation(
               code: code,
               ipType: ipType ?? IPType.residential,
-              coordinates: coordinates[code],
             ),
           )
           .toList();

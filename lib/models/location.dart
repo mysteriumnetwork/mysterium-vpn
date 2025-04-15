@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/enums/ip_type.dart';
 
 part 'location.freezed.dart';
@@ -25,7 +24,6 @@ class VPNLocation with _$VPNLocation {
   const factory VPNLocation({
     required String code,
     @Default(IPType.residential) IPType ipType,
-    LatLng? coordinates,
   }) = _VPNLocation;
 
   const VPNLocation._();

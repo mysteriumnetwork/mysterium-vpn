@@ -22,6 +22,7 @@ import 'package:mysterium_vpn/stores/device_info_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_desktop_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_mobile_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
+import 'package:mysterium_vpn/stores/latlng_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
@@ -234,3 +235,8 @@ final realIPInfoStorePOD = Provider<RealIPInfoStore>(
 final deviceInfoStorePOD = Provider<DeviceInfoStore>(
   (ref) => DeviceInfoStore(),
 );
+
+final latLngStorePOD = Provider<LatLngStore>((ref) {
+  final assetsService = ref.watch(assetsServicePOD);
+  return LatLngStore(assetsService);
+});
