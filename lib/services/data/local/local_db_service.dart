@@ -56,15 +56,6 @@ class LocalDBService {
 
   Future<UserData> getUserData() async => _loadUserData();
 
-  Future<void> setNotificationsApproval({required bool approval}) async {
-    final userData = await _loadUserData();
-    userData.notifications = approval ? Approval.approved : Approval.declined;
-
-    await _saveUserData(userData);
-  }
-
-  Future<Approval> getNotificationsApproval() async => (await _loadUserData()).notifications;
-
   Future<void> setVpnPrivacyPolicyConsent({required bool approval}) async {
     final userData = await _loadUserData();
     userData.vpnPrivacyPolicyConsent = approval;
@@ -120,6 +111,27 @@ class LocalDBService {
 
   Future<List<BannerType>> getShownBanners() async => (await _loadUserData()).shownBanners;
 
+  Future<List<BannerType>> getMainBanners() async => (await _loadUserData())
+      .shownBanners
+      .where(
+        (it) => it.mainBanner,
+      )
+      .toList();
+
+  Future<List<BannerType>> getSecondaryBanners() async => (await _loadUserData())
+      .shownBanners
+      .where(
+        (it) => !it.mainBanner,
+      )
+      .toList();
+
+  Future<void> resetShownBanners() async {
+    final userData = await _loadUserData();
+    userData.shownBanners = [];
+
+    await _saveUserData(userData);
+  }
+
   Future<UserData> _loadUserData() async {
     final user = await _ensureUserSet();
     final cacheId = user.username;
@@ -141,7 +153,6 @@ class LocalDBService {
       key,
       UserData(
         userId: key,
-        recentLocationCodes: [],
         recentVPNLocations: [],
       ),
     );

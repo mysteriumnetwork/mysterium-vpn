@@ -232,7 +232,7 @@ class Enviroment {
     }
     try {
       await trayManager.setIcon(
-        flavor.isDev() ? 'assets/logo/dev/app_icon.ico' : 'assets/logo/prod/app_icon.ico',
+        flavor.isDev ? 'assets/logo/dev/app_icon.ico' : 'assets/logo/prod/app_icon.ico',
         iconPosition: TrayIconPosition.right,
       );
       final items = Menu(

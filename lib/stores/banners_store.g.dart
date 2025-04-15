@@ -9,17 +9,24 @@ part of 'banners_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$BannersStore on _BannersStore, Store {
-  Computed<List<BannerType>>? _$bannersComputed;
+  Computed<List<BannerType>>? _$mainBannersComputed;
 
   @override
-  List<BannerType> get banners => (_$bannersComputed ??=
-          Computed<List<BannerType>>(() => super.banners, name: '_BannersStore.banners'))
+  List<BannerType> get mainBanners => (_$mainBannersComputed ??=
+          Computed<List<BannerType>>(() => super.mainBanners, name: '_BannersStore.mainBanners'))
       .value;
-  Computed<BannerType?>? _$bannerComputed;
+  Computed<BannerType?>? _$mainBannerComputed;
 
   @override
-  BannerType? get banner =>
-      (_$bannerComputed ??= Computed<BannerType?>(() => super.banner, name: '_BannersStore.banner'))
+  BannerType? get mainBanner => (_$mainBannerComputed ??=
+          Computed<BannerType?>(() => super.mainBanner, name: '_BannersStore.mainBanner'))
+      .value;
+  Computed<List<BannerType>>? _$secondaryBannersComputed;
+
+  @override
+  List<BannerType> get secondaryBanners =>
+      (_$secondaryBannersComputed ??= Computed<List<BannerType>>(() => super.secondaryBanners,
+              name: '_BannersStore.secondaryBanners'))
           .value;
 
   late final _$_shownBannersAtom = Atom(name: '_BannersStore._shownBanners', context: context);
@@ -50,11 +57,19 @@ mixin _$BannersStore on _BannersStore, Store {
     return _$setShownAsyncAction.run(() => super.setShown(banner));
   }
 
+  late final _$resetShownAsyncAction = AsyncAction('_BannersStore.resetShown', context: context);
+
+  @override
+  Future<void> resetShown() {
+    return _$resetShownAsyncAction.run(() => super.resetShown());
+  }
+
   @override
   String toString() {
     return '''
-banners: ${banners},
-banner: ${banner}
+mainBanners: ${mainBanners},
+mainBanner: ${mainBanner},
+secondaryBanners: ${secondaryBanners}
     ''';
   }
 }

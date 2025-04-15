@@ -163,6 +163,14 @@ mixin _$LocationsStore on _LocationsStore, Store {
     return _$setIPTypeAsyncAction.run(() => super.setIPType(type));
   }
 
+  late final _$resetRecentLocationsAsyncAction =
+      AsyncAction('_LocationsStore.resetRecentLocations', context: context);
+
+  @override
+  Future<void> resetRecentLocations() {
+    return _$resetRecentLocationsAsyncAction.run(() => super.resetRecentLocations());
+  }
+
   late final _$_LocationsStoreActionController =
       ActionController(name: '_LocationsStore', context: context);
 

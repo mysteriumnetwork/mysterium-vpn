@@ -13,7 +13,8 @@ final selectedCategoryProvider = StateProvider<SettingCategory>((ref) => _initia
 enum SettingCategory {
   connection(LocaleKeys.connection),
   account(LocaleKeys.account),
-  application(LocaleKeys.application);
+  application(LocaleKeys.application),
+  qaToolbox('QA Toolbox');
 
   const SettingCategory(this.trKey);
   final String trKey;

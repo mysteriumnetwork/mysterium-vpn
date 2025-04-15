@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use_from_same_package
+// ignore_for_file: deprecated_member_use_from_same_package, deprecated_consistency
 
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
@@ -12,8 +12,6 @@ class UserData {
   UserData({
     required this.userId,
     // TODO(david): remove at a certain point
-    // ignore: deprecated_consistency
-    required this.recentLocationCodes,
     required this.recentVPNLocations,
     this.emailCommunication = Approval.notSet,
     this.notifications = Approval.notSet,
@@ -24,10 +22,12 @@ class UserData {
     this.vpnPrivacyPolicyConsent = false,
     this.subscriptionPurchaseId,
     this.shownBanners = const [],
+    this.recentLocationCodes = const [],
   });
   @HiveField(0)
   String userId;
 
+  @Deprecated('Removed')
   @HiveField(1)
   Approval emailCommunication;
 
@@ -36,6 +36,7 @@ class UserData {
   @protected
   List<String> recentLocationCodes;
 
+  @Deprecated('Removed')
   @HiveField(3)
   Approval notifications;
 
@@ -67,14 +68,10 @@ class UserData {
   set recentLocations(List<VPNLocation> locations) {
     recentVPNLocations = [
       ...locations,
-      if (recentLocationCodes.isNotEmpty)
-        ...recentLocationCodes.map((code) => VPNLocation(code: code)),
     ];
-    recentLocationCodes = [];
   }
 
   List<VPNLocation> get recentLocations => {
-        ...recentLocationCodes.map((code) => VPNLocation(code: code)),
         ...recentVPNLocations,
       }.toList();
 
@@ -82,9 +79,6 @@ class UserData {
   String toString() => '''
 UserData : 
 userId: $userId,
-emailCommunicationApproval: ${emailCommunication.name},
-recentLocations: $recentLocationCodes,
-notificationsApproval: ${notifications.name},
 subscriptionPlan: $subscriptionPlan,
 subscriptionPurchaseId: $subscriptionPurchaseId
 resetConnection: $refreshIPConnection
