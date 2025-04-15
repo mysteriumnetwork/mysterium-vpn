@@ -82,6 +82,7 @@ final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
 
 final vpnStorePOD = Provider<VpnStore>((ref) {
   final apiService = ref.read(apiServicePOD);
+  final externalApiService = ref.watch(externalApiServicePOD);
   final mqttService = ref.watch(vpnApiMQTTPOD);
   final locationsStore = ref.watch(locationsStorePOD);
   final wireguardService = ref.watch(wireguardServicePOD);
@@ -94,6 +95,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
 
   return VpnStore(
     apiService: apiService,
+    externalApiService: externalApiService,
     mqtt: mqttService,
     locationsStore: locationsStore,
     wireguardService: wireguardService,
@@ -196,23 +198,26 @@ final userPreferencesStorePOD = StateProvider<UserPreferencesStore>((ref) {
 final remoteConfigStorePOD = Provider<RemoteConfigStore>((ref) {
   final client = ref.watch(remoteConfigClientPOD);
   final logger = ref.watch(loggerPOD);
+  final realIPInfoStore = ref.watch(realIPInfoStorePOD);
 
-  return RemoteConfigStore(client, logger);
+  return RemoteConfigStore(client, logger, realIPInfoStore);
 });
 
 final abTestingStorePOD = Provider<ABTestingStore>((ref) {
   final client = ref.watch(abTestingClientPOD);
   final logger = ref.watch(loggerPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
+  final realIPInfoStore = ref.watch(realIPInfoStorePOD);
 
-  return ABTestingStore(client, logger, analyticsStore);
+  return ABTestingStore(client, logger, realIPInfoStore, analyticsStore);
 });
 
 final textsStorePOD = Provider<TextsStore>((ref) {
   final client = ref.watch(textsClientPOD);
   final logger = ref.watch(loggerPOD);
+  final realIPInfoStore = ref.watch(realIPInfoStorePOD);
 
-  return TextsStore(client, logger);
+  return TextsStore(client, logger, realIPInfoStore);
 });
 
 final bannersStorePOD = Provider<BannersStore>(
@@ -226,7 +231,7 @@ final bannersStorePOD = Provider<BannersStore>(
 
 final realIPInfoStorePOD = Provider<RealIPInfoStore>(
   (ref) => RealIPInfoStore(
-    ref.watch(apiServicePOD),
+    ref.watch(externalApiServicePOD),
     SharedPreferenceService.instance,
     ref.watch(wireguardServicePOD),
     ref.watch(analyticsStorePOD),
