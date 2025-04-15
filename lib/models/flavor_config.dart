@@ -112,15 +112,15 @@ class FlavorConfig {
   final FlavorValues values;
   final BuildInfo buildInfo;
 
-  bool isProduction() => flavor == Flavor.production;
+  bool get isProduction => flavor == Flavor.production;
 
-  bool isDev() => flavor == Flavor.dev;
+  bool get isDev => flavor == Flavor.dev;
 
   String getBundleId() {
     if (Platform.isIOS || Platform.isMacOS) {
-      return isDev() ? iosTestBundleId : iosBundleId;
+      return isDev ? iosTestBundleId : iosBundleId;
     }
-    return isDev() ? testBundleId : bundleId;
+    return isDev ? testBundleId : bundleId;
   }
 
   String appUserAgent() =>

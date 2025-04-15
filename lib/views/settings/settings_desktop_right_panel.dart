@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/views/settings/account_settings.dart';
 import 'package:mysterium_vpn/views/settings/application_settings.dart';
 import 'package:mysterium_vpn/views/settings/connection_settings.dart';
+import 'package:mysterium_vpn/views/settings/qa_toolbox.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -27,6 +28,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
         if (settingCategory == SettingCategory.connection) const ConnectionSettings(),
         if (settingCategory == SettingCategory.application) const ApplicationSettings(),
         if (settingCategory == SettingCategory.account) const AccountSettings(),
+        if (settingCategory == SettingCategory.qaToolbox) const QAToolbox(),
       ],
     )
         .scrollable()

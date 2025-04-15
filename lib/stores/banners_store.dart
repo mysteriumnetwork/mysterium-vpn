@@ -71,4 +71,10 @@ abstract class _BannersStore with Store {
 
     _shownBanners = ObservableFuture.value(shownBanners);
   }
+
+  @action
+  Future<void> resetShown() async {
+    await _localDBService.resetShownBanners();
+    _shownBanners = ObservableFuture.value([]);
+  }
 }

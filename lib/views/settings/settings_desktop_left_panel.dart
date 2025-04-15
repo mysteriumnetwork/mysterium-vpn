@@ -19,6 +19,7 @@ class SettingsDesktopLeftPanel extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settingCategory = ref.watch(selectedCategoryProvider);
+    final isDev = ref.watch(environmentPOD).isDev;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -48,6 +49,12 @@ class SettingsDesktopLeftPanel extends ConsumerWidget {
               title: SettingCategory.account.trKey.tr(),
               onTap: () => updateSelectedCategory(ref, SettingCategory.account),
             ),
+            if (isDev)
+              CategoryItem(
+                isSelected: settingCategory == SettingCategory.qaToolbox,
+                title: SettingCategory.qaToolbox.trKey,
+                onTap: () => updateSelectedCategory(ref, SettingCategory.qaToolbox),
+              ),
           ],
         ).expanded(),
         AppVersion(
