@@ -125,6 +125,13 @@ class LocalDBService {
       )
       .toList();
 
+  Future<void> resetShownBanners() async {
+    final userData = await _loadUserData();
+    userData.shownBanners = [];
+
+    await _saveUserData(userData);
+  }
+
   Future<UserData> _loadUserData() async {
     final user = await _ensureUserSet();
     final cacheId = user.username;

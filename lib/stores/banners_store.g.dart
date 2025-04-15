@@ -57,6 +57,13 @@ mixin _$BannersStore on _BannersStore, Store {
     return _$setShownAsyncAction.run(() => super.setShown(banner));
   }
 
+  late final _$resetShownAsyncAction = AsyncAction('_BannersStore.resetShown', context: context);
+
+  @override
+  Future<void> resetShown() {
+    return _$resetShownAsyncAction.run(() => super.resetShown());
+  }
+
   @override
   String toString() {
     return '''
