@@ -1,4 +1,6 @@
 // TODO(Kristijan): Deprecate and use library to generate assets
+import 'dart:ui';
+
 abstract class Assets {
   //LOGO
   static const String logoBlackSvg = 'assets/logo/logo_black.svg';
@@ -12,8 +14,6 @@ abstract class Assets {
   static const String reportDark = 'assets/images/report_dark.svg';
   static const String reportLight = 'assets/images/report_light.svg';
   static const String settingsImg = 'assets/images/settings.svg';
-  static const String mapDark = 'assets/images/map-dark.png';
-  static const String mapLight = 'assets/images/map-light.png';
 
   //ICONS
   static const String accountNameDark = 'assets/icons/account_name_dark.svg';
@@ -85,4 +85,11 @@ abstract class Assets {
 
   //Langs
   static const String langs = 'resources/langs';
+
+  // Map tiles
+  static const String mapTilesDark = 'assets/map_tiles/dark/{z}/{x}/{y}.png';
+  static const String mapTilesLight = 'assets/map_tiles/light/{z}/{x}/{y}.png';
+
+  // Data
+  static const String countriesLatLng = 'assets/data/countries_latlng.json';
 }

@@ -4,7 +4,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
-LatLng? useCurrentCoordinates() {
+LatLng? useCurrentIPCoordinates() {
   final locationsStore = useProvider(locationsStorePOD);
   final realIPStore = useProvider(realIPInfoStorePOD);
   final vpnStore = useProvider(vpnStorePOD);

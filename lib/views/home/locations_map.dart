@@ -7,7 +7,6 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/hooks/map_controller_hook.dart';
 import 'package:mysterium_vpn/components/location_marker.dart';
 import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/views/home/world_map_image_layer.dart';
 import 'package:mysterium_vpn/views/home/world_map_tiles_layer.dart';
 
 class LocationsMap extends HookConsumerWidget {
@@ -82,7 +81,6 @@ class LocationsMap extends HookConsumerWidget {
         maxZoom: zoom,
       ),
       children: [
-        const WorldMapImageLayer(),
         const WorldMapTilesLayer(),
         MarkerLayer(markers: markers),
       ],
