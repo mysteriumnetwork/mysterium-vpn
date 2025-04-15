@@ -22,7 +22,8 @@ class QAToolbox extends HookConsumerWidget {
           children: [
             SettingItem(
               asset: isDarkTheme ? Assets.settingsDark : Assets.settingsLight,
-              title: 'Reset banners',
+              title: 'Reset hidden banners',
+              subtitle: const EasyText('This will reset all hidden banners to be shown again'),
               actionWidget: TextButton.icon(
                 label: const EasyText('Reset'),
                 icon: const Icon(Icons.refresh),

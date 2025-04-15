@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/banner_type.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
@@ -59,6 +60,13 @@ abstract class _BannersStore with Store {
 
     return BannerType.secondaryBanners
       ..removeWhere((banner) => banner.isDismissable && shown.contains(banner));
+  }
+
+  bool canShow(BannerType banner) {
+    if (banner.isDismissable) {
+      return !(_shownBanners.value ?? []).contains(banner);
+    }
+    return true;
   }
 
   @action

@@ -215,13 +215,10 @@ class _Locations extends HookConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                 sliver: MultiSliver(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 30),
-                      child: switch (locationType) {
-                        IPType.datacenter => LocationsDisclaimer.dataCenter(),
-                        IPType.residential => LocationsDisclaimer.residential(),
-                      },
-                    ),
+                    switch (locationType) {
+                      IPType.datacenter => LocationsDisclaimer.dataCenter(),
+                      IPType.residential => LocationsDisclaimer.residential(),
+                    },
                     if (topLocations.isNotEmpty)
                       LocationsSliverList(
                         ipType: locationType,
