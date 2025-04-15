@@ -3,14 +3,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 
 LatLng? useCurrentCoordinates() {
   final locationsStore = useProvider(locationsStorePOD);
+  final realIPStore = useProvider(realIPInfoStorePOD);
   final vpnStore = useProvider(vpnStorePOD);
 
   final location = useComputedValue(() => vpnStore.location);
-  final originIP = SharedPreferenceService.instance.getIPInfo();
+  final originIP = useComputedValue(() => realIPStore.info);
   final locations = useComputedValue(() => locationsStore.locationsStream.value?.allLocations);
 
   return useMemoized(
