@@ -15,11 +15,15 @@ class LocationsMap extends HookConsumerWidget {
     this.locations,
     this.position,
     this.connectedLocation,
+    this.onLocationPressed,
+    this.onTapOutside,
   });
 
   final List<VPNLocation>? locations;
   final LatLng? position;
   final VPNLocation? connectedLocation;
+  final Function(VPNLocation location)? onLocationPressed;
+  final VoidCallback? onTapOutside;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,6 +31,7 @@ class LocationsMap extends HookConsumerWidget {
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
     final theme = Theme.of(context);
     final controller = useMapController();
+    final onLocationPressedRef = useRef(onLocationPressed)..value = onLocationPressed;
 
     useValueChanged<LatLng?, void>(position, (_, __) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -57,17 +62,20 @@ class LocationsMap extends HookConsumerWidget {
                 point: point,
                 height: size.height,
                 width: size.width,
-                child: LocationMarker(
-                  size: size,
-                  txt: it.code,
-                  isActive: isActive,
+                child: InkWell(
+                  onTap: () => onLocationPressedRef.value?.call(it),
+                  child: LocationMarker(
+                    size: size,
+                    txt: it.code,
+                    isActive: isActive,
+                  ),
                 ),
               );
             })
             .nonNulls
             .toList();
       },
-      [locations, pixelRatio, connectedLocation],
+      [locations, pixelRatio, connectedLocation, onLocationPressedRef],
     );
 
     return FlutterMap(
@@ -79,6 +87,7 @@ class LocationsMap extends HookConsumerWidget {
         backgroundColor: theme.colorScheme.surface,
         minZoom: zoom,
         maxZoom: zoom,
+        onTap: (_, __) => onTapOutside?.call(),
       ),
       children: [
         const WorldMapTilesLayer(),

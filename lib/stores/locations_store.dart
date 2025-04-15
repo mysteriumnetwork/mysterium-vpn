@@ -82,6 +82,9 @@ abstract class _LocationsStore with Store {
   @readonly
   late IPType _ipType = _prefs.getIPType() ?? IPType.residential;
 
+  @observable
+  VPNLocation? selectedLocation;
+
   @computed
   List<VPNLocation> get recentLocations {
     final value = _recentLocationsFuture.value;
