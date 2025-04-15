@@ -141,6 +141,22 @@ mixin _$LocationsStore on _LocationsStore, Store {
     });
   }
 
+  late final _$selectedLocationAtom =
+      Atom(name: '_LocationsStore.selectedLocation', context: context);
+
+  @override
+  VPNLocation? get selectedLocation {
+    _$selectedLocationAtom.reportRead();
+    return super.selectedLocation;
+  }
+
+  @override
+  set selectedLocation(VPNLocation? value) {
+    _$selectedLocationAtom.reportWrite(value, super.selectedLocation, () {
+      super.selectedLocation = value;
+    });
+  }
+
   late final _$refreshAsyncAction = AsyncAction('_LocationsStore.refresh', context: context);
 
   @override
@@ -188,6 +204,7 @@ mixin _$LocationsStore on _LocationsStore, Store {
   @override
   String toString() {
     return '''
+selectedLocation: ${selectedLocation},
 locationsStream: ${locationsStream},
 recentLocations: ${recentLocations},
 locations: ${locations},
