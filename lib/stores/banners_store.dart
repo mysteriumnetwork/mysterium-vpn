@@ -1,8 +1,9 @@
+import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/banner_type.dart';
-import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 
@@ -13,58 +14,75 @@ class BannersStore = _BannersStore with _$BannersStore;
 
 abstract class _BannersStore with Store {
   _BannersStore(
-    this._apiService,
+    this._localDBService,
     this._subscriptionStore,
     this._locationsStore,
     this._authSessionStore,
   );
 
-  final ApiService _apiService;
+  final LocalDBService _localDBService;
   final SubscriptionStore _subscriptionStore;
   final LocationsStore _locationsStore;
   final AuthSessionStore _authSessionStore;
 
   @readonly
   late ObservableFuture<List<BannerType>> _shownBanners =
-      ObservableFuture(_apiService.getShownBanners());
+      ObservableFuture(_localDBService.getShownBanners());
 
   @computed
-  List<BannerType> get banners {
-    final shown = _shownBanners.value;
+  List<BannerType> get mainBanners {
+    final shown = _shownBanners.value ?? [];
     final isSubscribed = _subscriptionStore.isSubscribed ?? true;
     final status = _authSessionStore.status;
 
-    if (shown == null) {
-      return [
-        if (status == AuthStatus.unauthenticated) BannerType.unauthenticated,
-      ];
-    }
+    final banners = <BannerType>{
+      if (status == AuthStatus.unauthenticated) BannerType.unauthenticated,
+      if (!isSubscribed) BannerType.subscription,
+      if (_locationsStore.dcLocationsStream.value?.isEmpty == false) BannerType.datacenter,
+      // Add remaining main banners which require no conditions
+      ...BannerType.mainBanners.toSet().difference({
+        BannerType.unauthenticated,
+        BannerType.subscription,
+        BannerType.datacenter,
+      }),
+    };
 
-    final all = [...BannerType.values]..removeWhere(shown.contains);
-    if (status == AuthStatus.authenticated) {
-      all.remove(BannerType.unauthenticated);
-    }
-
-    if (isSubscribed) {
-      all.remove(BannerType.subscription);
-    }
-
-    final locations = _locationsStore.dcLocationsStream.value;
-    if (locations?.isEmpty ?? false) {
-      all.remove(BannerType.datacenter);
-    }
-
-    return all;
+    return banners.toList()
+      ..removeWhere((banner) => banner.isDismissable && shown.contains(banner));
   }
 
   @computed
-  BannerType? get banner => banners.firstOrNull;
+  BannerType? get mainBanner => mainBanners.firstOrNull;
+
+  @computed
+  List<BannerType> get secondaryBanners {
+    final shown = _shownBanners.value ?? [];
+
+    return BannerType.secondaryBanners
+      ..removeWhere((banner) => banner.isDismissable && shown.contains(banner));
+  }
+
+  bool canShow(BannerType banner) {
+    if (banner.isDismissable) {
+      return !(_shownBanners.value ?? []).contains(banner);
+    }
+    return true;
+  }
 
   @action
   Future<void> setShown(BannerType banner) async {
+    if (!banner.isDismissable) {
+      return;
+    }
     final shownBanners = [...(await _shownBanners), banner];
-    await _apiService.setShownBanners(shownBanners);
+    await _localDBService.setShownBanners(shownBanners);
 
     _shownBanners = ObservableFuture.value(shownBanners);
+  }
+
+  @action
+  Future<void> resetShown() async {
+    await _localDBService.resetShownBanners();
+    _shownBanners = ObservableFuture.value([]);
   }
 }

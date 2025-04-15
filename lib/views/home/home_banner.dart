@@ -13,7 +13,7 @@ class HomeBanner extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bannersStore = ref.watch(bannersStorePOD);
-    final banner = useComputedValue(() => bannersStore.banner);
+    final banner = useComputedValue(() => bannersStore.mainBanner);
 
     if (banner == null) {
       return const SizedBox.shrink();
@@ -26,6 +26,7 @@ class HomeBanner extends HookConsumerWidget {
           BannerType.subscription => const NoSubscriptionBanner(),
           BannerType.datacenter => const DataCenterBanner(),
           BannerType.unauthenticated => const UnauthenticatedBanner(),
+          _ => const SizedBox.shrink(),
         },
       ),
     );

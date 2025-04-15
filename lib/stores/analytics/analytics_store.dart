@@ -176,5 +176,12 @@ mixin AnalyticsStore {
     _debouncer.dispose();
   }
 
+  Future<void> logTabChange(IPType type) async {
+    await logEvent(
+      AnalyticsEvent.locationsTabClick,
+      parameters: {'tab': type.name},
+    );
+  }
+
   Future<void> setDeviceInfo() async {}
 }

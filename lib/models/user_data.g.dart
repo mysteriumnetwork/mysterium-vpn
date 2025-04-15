@@ -18,7 +18,6 @@ class UserDataAdapter extends TypeAdapter<UserData> {
     };
     return UserData(
       userId: fields[0] as String,
-      recentLocationCodes: (fields[2] as List).cast<String>(),
       recentVPNLocations: fields[11] == null ? [] : (fields[11] as List).cast<VPNLocation>(),
       emailCommunication: fields[1] as Approval,
       notifications: fields[3] as Approval,
@@ -29,6 +28,7 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       vpnPrivacyPolicyConsent: fields[10] == null ? false : fields[10] as bool,
       subscriptionPurchaseId: fields[5] as String?,
       shownBanners: fields[12] == null ? [] : (fields[12] as List).cast<BannerType>(),
+      recentLocationCodes: (fields[2] as List).cast<String>(),
     );
   }
 

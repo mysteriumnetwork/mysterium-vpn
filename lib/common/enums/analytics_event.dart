@@ -90,4 +90,5 @@ enum AnalyticsEvent {
   resetAppError,
   udpBlocked,
   resendEmailClicked,
+  locationsTabClick,
 }

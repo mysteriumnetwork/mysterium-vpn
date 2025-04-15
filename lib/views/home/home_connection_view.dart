@@ -19,7 +19,7 @@ class HomeConnectionView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bannersStore = ref.watch(bannersStorePOD);
 
-    final hasBanner = useComputedValue(() => bannersStore.banner != null);
+    final hasBanner = useComputedValue(() => bannersStore.mainBanner != null);
 
     final screenType = useScreenType();
 

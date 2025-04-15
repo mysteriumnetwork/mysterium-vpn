@@ -61,7 +61,7 @@ void main() {
 
     when(mockRemoteConfigStore.configFuture).thenAnswer((_) => ObservableFuture.value({}));
     when(mockRemoteConfigStore.locationsRefreshInterval).thenReturn(Duration.zero);
-    when(mockApiService.getRecentLocations()).thenAnswer((_) async => const <VPNLocation>[]);
+    when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => const <VPNLocation>[]);
 
     // Add stubs for fetchVPNLocations
     when(mockApiService.fetchVPNLocations()).thenAnswer(
@@ -89,7 +89,7 @@ void main() {
 
   group('LocationsStore', () {
     test('returns filtered recent locations', () async {
-      when(mockApiService.getRecentLocations()).thenAnswer((_) async => mockResidential);
+      when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => mockResidential);
       when(
         mockFilterService.filterLocations(
           mockResidential,
@@ -119,7 +119,7 @@ void main() {
     });
 
     test('returns random location from recent locations', () async {
-      when(mockApiService.getRecentLocations()).thenAnswer((_) async => mockResidential);
+      when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => mockResidential);
 
       await locationsStore.locationsStream.first;
       final recentLocations = await locationsStore.recentLocationsFuture;
@@ -141,7 +141,7 @@ void main() {
       when(mockApiService.fetchVPNLocations(IPType.residential)).thenAnswer(
         (_) async => VPNLocations(),
       );
-      when(mockApiService.getRecentLocations()).thenAnswer((_) async => const <VPNLocation>[]);
+      when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => const <VPNLocation>[]);
 
       await locationsStore.dcLocationsStream.first;
       await locationsStore.residentialLocationsStream.first;

@@ -163,7 +163,10 @@ enum PanelState {
     return PanelState.closed;
   }
 
-  static PanelState fromName(String name) => values.firstWhere((element) => element.name == name);
+  static PanelState fromName(String name) => values.firstWhere(
+        (element) => element.name == name,
+        orElse: () => PanelState.snap,
+      );
 
   final double extent;
 
