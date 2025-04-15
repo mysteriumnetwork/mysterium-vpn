@@ -18,18 +18,15 @@ class HomeMap extends HookConsumerWidget {
         ...?locationsStore.dcLocationsStream.value?.allLocations,
       ].where((it) => it.coordinates != null).distinctBy((it) => it.code).toList(),
     );
-    final myLocation = useCurrentCoordinates();
+    final myLocation = useCurrentIPCoordinates();
     final connectedLocation = useComputedValue(
       () => vpnStore.isConnected ? vpnStore.location : null,
     );
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: LocationsMap(
-        locations: locations,
-        position: myLocation,
-        connectedLocation: connectedLocation,
-      ),
+    return LocationsMap(
+      locations: locations,
+      position: myLocation,
+      connectedLocation: connectedLocation,
     );
   }
 }

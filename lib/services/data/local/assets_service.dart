@@ -2,12 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:mysterium_vpn/common/styles/assets.dart';
 
 class AssetsService {
   const AssetsService();
 
   Future<Map<String, LatLng>> getCoordinates() async {
-    final raw = await rootBundle.loadString('assets/data/countries_latlng.json');
+    final raw = await rootBundle.loadString(Assets.countriesLatLng);
     final json = jsonDecode(raw) as Map<String, dynamic>;
 
     return {
