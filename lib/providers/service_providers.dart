@@ -145,13 +145,11 @@ final subscriptionServicePOD = Provider<SubscriptionService>((ref) {
 final apiServicePOD = Provider<ApiService>((ref) {
   final api = ref.watch(vpnApiPOD);
   final networkService = ref.watch(networkServicePOD);
-  final assetsService = ref.watch(assetsServicePOD);
   final logger = ref.watch(loggerPOD);
 
   return RestApiService(
     api: api,
     networkService: networkService,
-    assetsService: assetsService,
     logger: logger,
   );
 });

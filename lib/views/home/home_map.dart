@@ -17,7 +17,7 @@ class HomeMap extends HookConsumerWidget {
       () => [
         ...?locationsStore.locationsStream.value?.allLocations,
         ...?locationsStore.dcLocationsStream.value?.allLocations,
-      ].where((it) => it.coordinates != null).distinctBy((it) => it.code).toList(),
+      ].distinctBy((it) => it.code).toList(),
     );
     final myLocation = useCurrentIPCoordinates();
     final connectedLocation = useComputedValue(
@@ -35,7 +35,7 @@ class HomeMap extends HookConsumerWidget {
     return LocationsMap(
       locations: locations,
       position: myLocation,
-      connectedLocation: connectedLocation,
+      activeLocation: connectedLocation,
       onLocationPressed: handleSelectLocation,
       onTapOutside: handleClearSelectedLocation,
     );
