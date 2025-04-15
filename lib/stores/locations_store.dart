@@ -203,4 +203,11 @@ abstract class _LocationsStore with Store {
     _debouncer.dispose();
     await _autoRefreshSubscription?.cancel();
   }
+
+  @action
+  Future<void> resetRecentLocations() async {
+    await _localDB.setRecentLocation([]);
+    _recentLocationsFuture = _recentLocationsFuture.replace(_localDB.getRecentLocations());
+    await _recentLocationsFuture;
+  }
 }

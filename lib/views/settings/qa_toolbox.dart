@@ -14,6 +14,7 @@ class QAToolbox extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.read(themeStorePOD);
     final bannerStore = ref.read(bannersStorePOD);
+    final locationsStore = ref.read(locationsStorePOD);
     return Observer(
       builder: (context) {
         final isDarkTheme = themeStore.isDarkMode;
@@ -31,6 +32,21 @@ class QAToolbox extends HookConsumerWidget {
                   await bannerStore.resetShown();
                   showSnackbar(
                     'Banners reset successfully',
+                  );
+                },
+              ),
+            ),
+            SettingItem(
+              asset: isDarkTheme ? Assets.settingsDark : Assets.settingsLight,
+              title: 'Reset recent locations',
+              subtitle: const EasyText('This will remove all recent locations'),
+              actionWidget: TextButton.icon(
+                label: const EasyText('Reset'),
+                icon: const Icon(Icons.refresh),
+                onPressed: () async {
+                  await locationsStore.resetRecentLocations();
+                  showSnackbar(
+                    'Recent locations reset successfully',
                   );
                 },
               ),
