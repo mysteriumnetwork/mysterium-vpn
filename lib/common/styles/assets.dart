@@ -83,4 +83,11 @@ abstract class Assets {
 
   //Langs
   static const String langs = 'resources/langs';
+
+  // Map tiles
+  static const String mapTilesDark = 'assets/map_tiles/dark/{z}/{x}/{y}.png';
+  static const String mapTilesLight = 'assets/map_tiles/light/{z}/{x}/{y}.png';
+
+  // Data
+  static const String countriesLatLng = 'assets/data/countries_latlng.json';
 }

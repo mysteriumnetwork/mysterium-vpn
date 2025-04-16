@@ -28,7 +28,11 @@ class ConnectionTile extends HookConsumerWidget {
     final scaffoldBrightness = useScaffoldBrightness();
 
     final location = useComputedValue(
-      () => vpnStore.location ?? vpnStore.connectingLocation ?? vpnStore.potentialLocation,
+      () =>
+          locationsStore.selectedLocation ??
+          vpnStore.location ??
+          vpnStore.connectingLocation ??
+          vpnStore.potentialLocation,
       [vpnStore, locationsStore],
     );
 

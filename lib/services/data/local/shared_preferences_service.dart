@@ -80,13 +80,15 @@ class SharedPreferenceService {
       setString(StorageKeys.locationCode.name, value);
 
   VPNLocation? getLocation() {
-    final [code, type] = [
+    final [code, type, coordinatesRaw] = [
       getString(StorageKeys.locationCode.name),
       getString(StorageKeys.locationType.name),
+      getString(StorageKeys.locationCoordinates.name),
     ];
     if (code == null) {
       return null;
     }
+
     return VPNLocation(
       code: code,
       ipType: type == null ? IPType.residential : IPType.fromName(type),
@@ -98,6 +100,7 @@ class SharedPreferenceService {
       if (location == null) ...[
         remove(StorageKeys.locationCode.name),
         remove(StorageKeys.locationType.name),
+        remove(StorageKeys.locationCoordinates.name),
       ] else ...[
         setString(StorageKeys.locationCode.name, location.code),
         setString(StorageKeys.locationType.name, location.ipType.name),
