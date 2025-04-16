@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/configurations/breakpoint_configuration.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/views/home/desktop_left_panel.dart';
 import 'package:mysterium_vpn/views/home/desktop_right_panel.dart';
 
