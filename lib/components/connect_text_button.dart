@@ -15,7 +15,7 @@ class ConnectTextButton extends HookConsumerWidget {
     this.minimumSize = const Size(120, 40),
     this.textScaleGroup,
     this.loadingIndicatorRadius = 16,
-    this.outlinedButton = true,
+    this.outlinedButton = false,
     this.borderRadius,
     super.key,
   });
@@ -63,6 +63,7 @@ class ConnectTextButton extends HookConsumerWidget {
               style: ElevatedButton.styleFrom(
                 minimumSize: minimumSize,
                 backgroundColor: Palette.purple,
+                elevation: 0,
               ),
               child: AutoSizeText(
                 LocaleKeys.connect.tr(),
