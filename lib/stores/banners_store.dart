@@ -25,20 +25,25 @@ abstract class _BannersStore with Store {
   final LocationsStore _locationsStore;
   final AuthSessionStore _authSessionStore;
 
+  final ObservableList<BannerType> _unauthenticatedShown = ObservableList<BannerType>();
+
   @readonly
   late ObservableFuture<List<BannerType>> _shownBanners =
       ObservableFuture(_localDBService.getShownBanners());
 
   @computed
   List<BannerType> get mainBanners {
-    final shown = _shownBanners.value ?? [];
     final isSubscribed = _subscriptionStore.isSubscribed ?? true;
     final status = _authSessionStore.status;
+    final shown = _authSessionStore.status == AuthStatus.authenticated
+        ? _shownBanners.value
+        : _unauthenticatedShown;
 
     final banners = <BannerType>{
       if (status == AuthStatus.unauthenticated) BannerType.unauthenticated,
       if (!isSubscribed) BannerType.subscription,
-      if (_locationsStore.dcLocationsStream.value?.isEmpty == false) BannerType.datacenter,
+      if (_locationsStore.dcLocationsStream.value?.isEmpty == false && shown != null)
+        BannerType.datacenter,
       // Add remaining main banners which require no conditions
       ...BannerType.mainBanners.toSet().difference({
         BannerType.unauthenticated,
@@ -46,6 +51,9 @@ abstract class _BannersStore with Store {
         BannerType.datacenter,
       }),
     };
+    if (shown == null) {
+      return banners.toList();
+    }
 
     return banners.toList()
       ..removeWhere((banner) => banner.isDismissable && shown.contains(banner));
@@ -56,15 +64,26 @@ abstract class _BannersStore with Store {
 
   @computed
   List<BannerType> get secondaryBanners {
-    final shown = _shownBanners.value ?? [];
+    final shown = _authSessionStore.status == AuthStatus.authenticated
+        ? _shownBanners.value
+        : _unauthenticatedShown;
+    if (shown == null) {
+      return [];
+    }
 
     return BannerType.secondaryBanners
       ..removeWhere((banner) => banner.isDismissable && shown.contains(banner));
   }
 
   bool canShow(BannerType banner) {
+    final shown = _authSessionStore.status == AuthStatus.authenticated
+        ? _shownBanners.value
+        : _unauthenticatedShown;
     if (banner.isDismissable) {
-      return !(_shownBanners.value ?? []).contains(banner);
+      if (shown == null) {
+        return false;
+      }
+      return !shown.contains(banner);
     }
     return true;
   }
@@ -72,6 +91,10 @@ abstract class _BannersStore with Store {
   @action
   Future<void> setShown(BannerType banner) async {
     if (!banner.isDismissable) {
+      return;
+    }
+    if (_authSessionStore.status == AuthStatus.unauthenticated) {
+      _unauthenticatedShown.add(banner);
       return;
     }
     final shownBanners = [...(await _shownBanners), banner];
@@ -82,6 +105,10 @@ abstract class _BannersStore with Store {
 
   @action
   Future<void> resetShown() async {
+    if (_authSessionStore.status == AuthStatus.unauthenticated) {
+      _unauthenticatedShown.clear();
+      return;
+    }
     await _localDBService.resetShownBanners();
     _shownBanners = ObservableFuture.value([]);
   }
