@@ -73,12 +73,10 @@ class UserData {
         ...recentLocationCodes.map((code) => VPNLocation(code: code)),
     ].distinctBy((it) => (it.code, it.ipType)).toList();
     recentLocationCodes = [];
-    ];
   }
 
   List<VPNLocation> get recentLocations => [
         ...recentLocationCodes.map((code) => VPNLocation(code: code)),
-  List<VPNLocation> get recentLocations => {
         ...recentVPNLocations,
       ].distinctBy((it) => (it.code, it.ipType)).toList();
 
