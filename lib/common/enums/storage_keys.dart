@@ -20,6 +20,7 @@ enum StorageKeys {
   subscriptionPaymentInfo,
   locationCode,
   locationType,
+  locationCoordinates,
   lastLoggedInUser,
   ipInfo,
   ipType,

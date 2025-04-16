@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 final List<Locale> kSupportedLocales = [
   kFallbackLocale,
@@ -53,3 +55,9 @@ const windowsStandAloneProductId = 'te4cyv5h340wa';
 //DNS Addresses
 const malwareBlockerDomainAddress = '1.1.1.2';
 const notSafeContentBlockerDomainAddress = '1.1.1.3';
+
+// wold bounds
+final kWorldBounds = LatLngBounds(
+  const LatLng(-90, -180), // SW
+  const LatLng(90, 180),
+);

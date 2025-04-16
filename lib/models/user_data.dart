@@ -3,6 +3,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:mysterium_vpn/common/enums/banner_type.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/models/location.dart';
 
 part 'user_data.g.dart';
@@ -68,12 +69,16 @@ class UserData {
   set recentLocations(List<VPNLocation> locations) {
     recentVPNLocations = [
       ...locations,
-    ];
+      if (recentLocationCodes.isNotEmpty)
+        ...recentLocationCodes.map((code) => VPNLocation(code: code)),
+    ].distinctBy((it) => (it.code, it.ipType)).toList();
+    recentLocationCodes = [];
   }
 
-  List<VPNLocation> get recentLocations => {
+  List<VPNLocation> get recentLocations => [
+        ...recentLocationCodes.map((code) => VPNLocation(code: code)),
         ...recentVPNLocations,
-      }.toList();
+      ].distinctBy((it) => (it.code, it.ipType)).toList();
 
   @override
   String toString() => '''

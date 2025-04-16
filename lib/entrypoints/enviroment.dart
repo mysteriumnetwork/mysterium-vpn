@@ -21,6 +21,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/stores/latlng_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -84,6 +85,7 @@ class Enviroment {
     );
     await container.read(analyticsInitPOD(firebaseOptions).future);
     final remoteConfigStore = await initRemoteConfig(container);
+    await initLatLngStore(container);
     final logger = container.read(loggerPOD);
     await _initIntercom();
     FlutterError.onError = (details) {
@@ -165,6 +167,17 @@ class Enviroment {
       return remoteConfigStore;
     } catch (e) {
       debugPrint('Error initializing remote config $e');
+      return null;
+    }
+  }
+
+  Future<LatLngStore?> initLatLngStore(ProviderContainer container) async {
+    try {
+      final latLngStore = container.read(latLngStorePOD);
+      await latLngStore.coordinatesFuture;
+      return latLngStore;
+    } catch (e) {
+      debugPrint('Error initializing latlng store $e');
       return null;
     }
   }

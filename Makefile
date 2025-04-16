@@ -38,3 +38,6 @@ generate-api:
   	fvm dart run build_runner build --verbose --delete-conflicting-outputs ;\
 	fvm dart format --line-length 100 . ;\
 	popd
+
+update-tile-assets-declaration:
+	fvm dart run assets/map_tiles/list_assets.dart
