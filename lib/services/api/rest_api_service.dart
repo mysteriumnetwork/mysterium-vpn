@@ -6,7 +6,6 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/stun_binding_request.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -29,7 +28,6 @@ class RestApiService extends ApiService {
 
   final Connection _apiConnection;
   final NetworkService _networkService;
-  final LocalDBService _localDb = LocalDBService.instance;
   final Talker _logger;
 
   @override
