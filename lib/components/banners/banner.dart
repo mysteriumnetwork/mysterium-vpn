@@ -40,11 +40,6 @@ class Banner extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          if (canDismiss)
-            _DismissButton(
-              onPressed: onDismiss,
-              mainBanner: mainBanner,
-            ),
           Center(
             child: Padding(
               padding: padding,
@@ -52,7 +47,7 @@ class Banner extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: canDismiss ? 32 : 0),
+                    padding: EdgeInsets.only(right: canDismiss ? 32 : 0),
                     child: title,
                   ),
                   if (body != null)
@@ -69,6 +64,15 @@ class Banner extends StatelessWidget {
               ),
             ),
           ),
+          if (canDismiss)
+            Positioned(
+              right: 6,
+              top: 8,
+              child: _DismissButton(
+                onPressed: onDismiss,
+                mainBanner: mainBanner,
+              ),
+            ),
         ],
       ),
     );

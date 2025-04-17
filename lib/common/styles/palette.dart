@@ -93,7 +93,7 @@ class LightPalette implements Palette {
   Color get disabledColor => Palette.white;
 
   @override
-  Color get disclaimerBackgroundColor => Palette.lightGrey;
+  Color get disclaimerBackgroundColor => Palette.white;
 
   @override
   Color get tileColor => Palette.white;
