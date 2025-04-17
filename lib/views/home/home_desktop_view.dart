@@ -7,15 +7,18 @@ class HomeDesktopView extends HookConsumerWidget {
   const HomeDesktopView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => const Row(
+  Widget build(BuildContext context, WidgetRef ref) => const Stack(
+        clipBehavior: Clip.none,
+        fit: StackFit.passthrough,
+        alignment: Alignment.topLeft,
         children: [
-          Flexible(
-            flex: 6,
-            child: HomeDesktopLeftPanel(),
-          ),
-          Flexible(
-            flex: 5,
+          Padding(
+            padding: EdgeInsets.only(left: 500),
             child: HomeDesktopRightPanel(),
+          ),
+          SizedBox(
+            width: 500,
+            child: HomeDesktopLeftPanel(),
           ),
         ],
       );

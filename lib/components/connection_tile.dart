@@ -5,8 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
-import 'package:mysterium_vpn/common/hooks/scaffold_brightness_hook.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/connect_text_button.dart';
@@ -25,7 +23,6 @@ class ConnectionTile extends HookConsumerWidget {
     final theme = Theme.of(context);
     final locationsStore = ref.watch(locationsStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
-    final scaffoldBrightness = useScaffoldBrightness();
 
     final location = useComputedValue(
       () =>
@@ -51,16 +48,9 @@ class ConnectionTile extends HookConsumerWidget {
 
     final countryName = location.code.tr();
 
-    // TODO(David): Remove this when map is ready
-    final fillColor = useResponsiveValue<Color>(
-      theme.colorScheme.secondaryContainer,
-      tablet: Palette.deepPurple,
-      desktop: Palette.deepPurple,
-    );
-
     return RawMaterialButton(
       onPressed: onTap,
-      fillColor: fillColor,
+      fillColor: theme.colorScheme.secondaryContainer,
       elevation: 0,
       focusElevation: 0,
       highlightElevation: 0,
@@ -93,16 +83,12 @@ class ConnectionTile extends HookConsumerWidget {
                     fontWeight: FontWeight.w500,
                     fontSize: 18,
                     maxLines: countryName.hasMultipleWords ? 2 : 1,
-                    color: switch (scaffoldBrightness) {
-                      Brightness.light => Palette.white,
-                      Brightness.dark => theme.colorScheme.onSecondaryContainer,
-                    },
+                    color: theme.colorScheme.onSecondaryContainer,
                   ),
                 ),
                 ConnectTextButton(
                   onPressed: onTap,
                   location: location,
-                  outlinedButton: false,
                 ),
               ],
             ),
@@ -135,7 +121,6 @@ class _IPIndicator extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final scaffoldBrightness = useScaffoldBrightness();
 
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -145,10 +130,7 @@ class _IPIndicator extends HookWidget {
           child: EasyText(
             ip,
             fontSize: 12,
-            color: switch (scaffoldBrightness) {
-              Brightness.light => Palette.white,
-              Brightness.dark => theme.colorScheme.onSecondaryContainer,
-            },
+            color: theme.colorScheme.onSecondaryContainer,
           ),
         ),
         IconButton(
@@ -179,7 +161,6 @@ class _IPTypeIndicator extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final scaffoldBrightness = useScaffoldBrightness();
     return Row(
       mainAxisSize: MainAxisSize.min,
       spacing: 6,
@@ -191,10 +172,7 @@ class _IPTypeIndicator extends HookWidget {
               IPType.residential => LocaleKeys.ipTypeResidential.tr(),
             },
             fontSize: 12,
-            color: switch (scaffoldBrightness) {
-              Brightness.light => Palette.white,
-              Brightness.dark => theme.colorScheme.onSecondaryContainer,
-            },
+            color: theme.colorScheme.onSecondaryContainer,
           ),
         ),
         if (ipType == IPType.datacenter)
