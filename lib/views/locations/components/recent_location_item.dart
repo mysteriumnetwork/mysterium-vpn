@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/connect_text_button.dart';
 import 'package:mysterium_vpn/components/flag.dart';
@@ -34,7 +33,7 @@ class RecentLocationItem extends HookConsumerWidget {
       highlightElevation: 0,
       focusElevation: 0,
       fillColor: theme.colorScheme.tertiaryContainer,
-      constraints: const BoxConstraints(maxWidth: 300, minHeight: 82),
+      constraints: const BoxConstraints(maxWidth: 360, minHeight: 82),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -50,7 +49,7 @@ class RecentLocationItem extends HookConsumerWidget {
                 Flexible(
                   child: AutoSizeText(
                     countryName,
-                    maxLines: countryName.hasMultipleWords ? 2 : 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontWeight: FontWeight.w500,
