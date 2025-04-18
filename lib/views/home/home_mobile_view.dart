@@ -23,7 +23,6 @@ class HomeMobileView extends HookConsumerWidget {
     final homeState = ref.watch(homeStateProvider.notifier);
     final (appBarKey, appBarBox) = useRenderObject<RenderBox>();
     final appBarHeight = appBarBox?.size.height ?? kToolbarHeight;
-    final panelFlex = ref.watch(homePanelFlexProvider);
 
     final topSectionHeight = appBarHeight + 42;
 
@@ -76,18 +75,25 @@ class HomeMobileView extends HookConsumerWidget {
                 topRight: Radius.circular(20),
               ),
               onPanelSlide: homeState.onPanelSlide,
-              body: Column(
-                children: [
-                  DecoratedBox(
-                    decoration: BoxDecoration(color: theme.colorScheme.surfaceContainerHighest),
-                    child: HomeAppBar(key: appBarKey),
-                  ),
-                  Expanded(
-                    flex: 10 - panelFlex,
-                    child: const HomeConnectionView(),
-                  ),
-                  Spacer(flex: panelFlex),
-                ],
+              onPanelClosed: homeState.onPanelSlide,
+              onPanelOpened: homeState.onPanelSlide,
+              body: Consumer(
+                builder: (context, ref, _) {
+                  final panelFlex = ref.watch(homeStateProvider.select((it) => it.panelFlex));
+                  return Column(
+                    children: [
+                      DecoratedBox(
+                        decoration: BoxDecoration(color: theme.colorScheme.surfaceContainerHighest),
+                        child: HomeAppBar(key: appBarKey),
+                      ),
+                      Expanded(
+                        flex: 10 - panelFlex,
+                        child: const HomeConnectionView(),
+                      ),
+                      Spacer(flex: panelFlex),
+                    ],
+                  );
+                },
               ),
             ),
           ],
