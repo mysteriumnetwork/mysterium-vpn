@@ -61,3 +61,4 @@ final kWorldBounds = LatLngBounds(
   const LatLng(-90, -180), // SW
   const LatLng(90, 180),
 );
+const kMapZoomLevels = <double>[3, 4];
