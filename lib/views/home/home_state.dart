@@ -37,6 +37,17 @@ class _HomeState extends ChangeNotifier {
   double get extent =>
       panelController.isAttached ? panelController.panelPosition : initialState.extent;
 
+  int get panelFlex {
+    final value = (extent * 10).round();
+    if (value <= 0) {
+      return 1;
+    }
+    if (value >= 5) {
+      return 4;
+    }
+    return value;
+  }
+
   ScrollController? get scrollController => _scrollController;
 
   set scrollController(ScrollController? value) {
@@ -54,9 +65,15 @@ class _HomeState extends ChangeNotifier {
 
   Future<void> _setPanelState(PanelState state) async {
     await _animatePanelState(state);
-    await _prefs.setPanelState(state);
-    _previousState = state;
-    _analytics.logPanelMoved(state).ignore();
+    await _notifyPanelState(state);
+  }
+
+  Future<void> _notifyPanelState(PanelState state) async {
+    if (state != _previousState) {
+      await _prefs.setPanelState(state);
+      _previousState = state;
+      _analytics.logPanelMoved(state).ignore();
+    }
     notifyListeners();
   }
 
@@ -69,8 +86,8 @@ class _HomeState extends ChangeNotifier {
 
   Future<void> collapsePanel() async {
     if (panelController.isAttached) {
+      await _setPanelState(PanelState.closed);
       _scrollController?.jumpTo(0);
-      _setPanelState(PanelState.closed);
     }
   }
 
@@ -140,11 +157,13 @@ class _HomeState extends ChangeNotifier {
     }
   }
 
-  void onPanelSlide(double value) {
-    final slide = PanelState.fromPosition(value);
-    if (slide != _previousState) {
-      notifyListeners();
+  void onPanelSlide([double? value]) {
+    if (!panelController.isAttached) {
+      return;
     }
+    value ??= panelController.panelPosition;
+    final slide = PanelState.fromPosition(value);
+    _notifyPanelState(slide);
   }
 
   @override
@@ -201,15 +220,3 @@ final homeStateProvider = ChangeNotifierProvider.autoDispose(
     return _HomeState(SharedPreferenceService.instance, analyticsStore);
   },
 );
-
-final homePanelFlexProvider = Provider.autoDispose((ref) {
-  final homeState = ref.watch(homeStateProvider);
-  final value = (homeState.extent * 10).round();
-  if (value <= 0) {
-    return 1;
-  }
-  if (value >= 5) {
-    return 4;
-  }
-  return value;
-});
