@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -21,6 +22,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final analyticsStore = ref.watch(analyticsStorePOD);
+    final homeState = ref.watch(homeStateProvider);
 
     useEffect(
       () {
@@ -35,7 +37,11 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     }
 
     return CustomScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
+      physics: switch (homeState.panelState) {
+        PanelState.open => const AlwaysScrollableScrollPhysics(),
+        _ => const NeverScrollableScrollPhysics(),
+      },
+      dragStartBehavior: DragStartBehavior.down,
       controller: controller,
       slivers: [
         SliverPinnedHeader(

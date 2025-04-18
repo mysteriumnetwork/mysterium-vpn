@@ -27,6 +27,7 @@ class _HomeState extends ChangeNotifier {
   double _scrollOffset = 0;
 
   PanelState get _panelState => PanelState.fromPosition(panelController.panelPosition);
+  PanelState get panelState => _panelState;
   PanelState? _previousState;
 
   bool get isDraggable => isMobile();
@@ -63,6 +64,13 @@ class _HomeState extends ChangeNotifier {
     final next = _panelState.next(circular: true);
     if (next != null) {
       await _setPanelState(next);
+    }
+  }
+
+  Future<void> collapsePanel() async {
+    if (panelController.isAttached) {
+      _scrollController?.jumpTo(0);
+      _setPanelState(PanelState.closed);
     }
   }
 
@@ -147,7 +155,7 @@ class _HomeState extends ChangeNotifier {
 }
 
 enum PanelState {
-  closed._(.1),
+  closed._(.25),
   snap._(.5),
   open._(1);
 

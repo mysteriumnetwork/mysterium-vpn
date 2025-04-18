@@ -3,18 +3,22 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_app_bar.dart';
 import 'package:mysterium_vpn/views/home/home_connection_view.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/locations_slider_mobile_view.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart' hide PanelState;
+import 'package:wireguard_dart/connection_status.dart';
 
 class HomeMobileView extends HookConsumerWidget {
   const HomeMobileView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final vpnStore = ref.watch(vpnStorePOD);
     final theme = Theme.of(context);
     final homeState = ref.watch(homeStateProvider.notifier);
     final (appBarKey, appBarBox) = useRenderObject<RenderBox>();
@@ -22,6 +26,20 @@ class HomeMobileView extends HookConsumerWidget {
     final panelFlex = ref.watch(homePanelFlexProvider);
 
     final topSectionHeight = appBarHeight + 42;
+
+    useReaction(
+      () => vpnStore.connectionStatus,
+      (status) {
+        if (status != ConnectionStatus.connected) {
+          return;
+        }
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          homeState.collapsePanel();
+        });
+      },
+      keys: [homeState],
+    );
 
     return LayoutBuilder(
       builder: (context, layoutConstraints) {
