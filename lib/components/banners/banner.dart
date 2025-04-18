@@ -65,13 +65,9 @@ class Banner extends StatelessWidget {
             ),
           ),
           if (canDismiss)
-            Positioned(
-              right: 6,
-              top: 8,
-              child: _DismissButton(
-                onPressed: onDismiss,
-                mainBanner: mainBanner,
-              ),
+            _DismissButton(
+              onPressed: onDismiss,
+              mainBanner: mainBanner,
             ),
         ],
       ),
@@ -110,8 +106,8 @@ class _DismissButton extends StatelessWidget {
           ),
         )
       : Positioned(
-          top: 4,
-          right: 4,
+          top: 8,
+          right: 6,
           child: IconButton(
             color: Colors.white,
             constraints: BoxConstraints.tight(const Size(24, 24)),
