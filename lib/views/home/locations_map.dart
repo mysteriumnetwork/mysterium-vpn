@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -101,16 +102,16 @@ List<Marker> _useLocationMarkers({
             }
 
             final isActive = activeLocation?.code == it.code;
-            final size = isActive ? const Size.square(32) : const Size.square(12);
+            final size = isActive ? const Size.square(42) : const Size.square(16);
 
             return Marker(
               point: point,
               height: size.height,
               width: size.width,
-              child: InkWell(
-                onTap: () => onLocationPressedRef.value?.call(it, point),
+              child: _GestureHandler(
+                onPressed: () => onLocationPressedRef.value?.call(it, point),
                 child: LocationMarker(
-                  size: size,
+                  size: size * .7,
                   txt: it.code,
                   isActive: isActive,
                 ),
@@ -122,4 +123,37 @@ List<Marker> _useLocationMarkers({
     },
     [onLocationPressedRef, latLngStore, locations, activeLocation],
   );
+}
+
+class _GestureHandler extends StatelessWidget {
+  const _GestureHandler({
+    required this.onPressed,
+    required this.child,
+  });
+
+  final Widget child;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => Stack(
+        children: [
+          Center(child: child),
+          Positioned.fill(
+            child: Material(
+              type: MaterialType.transparency,
+              shape: const CircleBorder(),
+              color: Colors.transparent,
+              shadowColor: Colors.transparent,
+              surfaceTintColor: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  onPressed();
+                },
+                customBorder: const CircleBorder(),
+              ),
+            ),
+          ),
+        ],
+      );
 }
