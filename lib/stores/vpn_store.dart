@@ -164,10 +164,12 @@ abstract class _VpnStore with Store {
   @readonly
   ObservableFuture<void>? _resetAppFuture;
 
-  ReactionDisposer? _reactionDisposer;
+  ReactionDisposer? _authReactionDisposer;
+  ReactionDisposer? _selectedLocationReactionDisposer;
+
   @action
   Future<void> _init() async {
-    _reactionDisposer = reaction<AuthStatus>(
+    _authReactionDisposer = reaction<AuthStatus>(
       (_) => _authSessionStore.status,
       (status) async {
         if (status == AuthStatus.authenticated) {
@@ -185,13 +187,23 @@ abstract class _VpnStore with Store {
       fireImmediately: true,
       equals: (p0, p1) => p0?.name == p1?.name,
     );
+
+    _selectedLocationReactionDisposer = reaction<ConnectionStatus>(
+      (_) => _connectionStatus,
+      (status) {
+        if (status == ConnectionStatus.connected || status == ConnectionStatus.connecting) {
+          _locationsStore.selectedLocation = null;
+        }
+      },
+    );
   }
 
   // Call on log out or app termiantion
   Future<void> disposeStore() async {
     await disconnectWireguard();
     _wireguradConnectionStatus?.cancel();
-    _reactionDisposer?.call();
+    _authReactionDisposer?.call();
+    _selectedLocationReactionDisposer?.call();
   }
 
   Future<void> _initMalwareBlockerContent() async {
