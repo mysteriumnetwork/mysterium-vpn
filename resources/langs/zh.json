@@ -564,5 +564,9 @@
     "zero": "重新发送",
     "one": "重新发送",
     "other": "重新发送 ({})"
-  }
+  },
+  "appUpdateAvailableTitle": "应用更新可用",
+  "appUpdateAvailableDesc": "新的应用版本已上线！立即更新以获取最新功能和改进。",
+  "updateBtn": "更新",
+  "appUpdateAvailableSetting": "应用更新可用！"
 }
