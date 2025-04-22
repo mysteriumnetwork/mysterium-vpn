@@ -69,6 +69,7 @@ void main() {
     group('banners', () {
       test('returns all banners when no banners are shown and not subscribed', () async {
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
+        when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.1');
 
         await bannersStore.shownBanners;
 
