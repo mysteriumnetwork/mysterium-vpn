@@ -51,7 +51,7 @@ class ConnectionSettings extends HookConsumerWidget {
                   maxLines: 3,
                   color: Palette.lightBlue,
                 ),
-                actionWidget: ActionButton(
+                actionWidget: SettingActionButton(
                   action: vpnStore.resetAppFuture?.status == FutureStatus.pending
                       ? null
                       : () => _onConfirmResetApp(
@@ -59,6 +59,7 @@ class ConnectionSettings extends HookConsumerWidget {
                             analyticsStore: analyticsStore,
                             vpnStore: vpnStore,
                           ),
+                  backgroundColor: Palette.purple,
                   child: vpnStore.resetAppFuture?.status == FutureStatus.pending
                       ? const SizedBox(
                           width: 50,

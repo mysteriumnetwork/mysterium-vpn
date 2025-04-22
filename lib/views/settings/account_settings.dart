@@ -23,6 +23,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:mysterium_vpn/views/settings/action_button.dart';
 import 'package:mysterium_vpn/views/settings/purchased_plan.dart';
 
 class AccountSettings extends HookConsumerWidget {
@@ -96,17 +97,21 @@ class _Authenticated extends HookConsumerWidget {
                   }
 
                   if (subscription == null || !subscription.active) {
-                    return EasyButton(
-                      onPressed: handleSubscribe,
-                      text: LocaleKeys.pricingPlanSeePlansBtn.tr(),
+                    return SettingActionButton(
+                      action: handleSubscribe,
+                      child: EasyText(
+                        LocaleKeys.pricingPlanSeePlansBtn.tr(),
+                        color: Palette.white,
+                      ),
                     );
                   }
 
-                  return EasyButton(
-                    useSystemColor: false,
-                    color: Palette.black,
-                    text: LocaleKeys.goToBillingPage.tr(),
-                    onPressed: () {
+                  return SettingActionButton(
+                    child: EasyText(
+                      LocaleKeys.goToBillingPage.tr(),
+                      color: Palette.white,
+                    ),
+                    action: () {
                       analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
                       handleSubscribe();
                     },
@@ -121,12 +126,12 @@ class _Authenticated extends HookConsumerWidget {
                 runSpacing: 10,
                 spacing: 10,
                 children: [
-                  EasyButton(
-                    useSystemColor: false,
-                    color: Palette.black,
-                    width: 100,
-                    text: LocaleKeys.logout.tr(),
-                    onPressed: () {
+                  SettingActionButton(
+                    child: EasyText(
+                      LocaleKeys.logout.tr(),
+                      color: Palette.white,
+                    ),
+                    action: () {
                       analyticsStore.logEvent(AnalyticsEvent.logOutPopup);
                       shownConfirmationDialog(
                         context,
@@ -159,11 +164,8 @@ class _Authenticated extends HookConsumerWidget {
                     },
                   ),
                   if (subscriptionStore.isSubscribed ?? false)
-                    EasyButton(
-                      useSystemColor: false,
-                      color: Palette.black,
-                      width: 200,
-                      onPressed: () => _onDisconnectedAllDevices(
+                    SettingActionButton(
+                      action: () => _onDisconnectedAllDevices(
                         context,
                         analyticsStore,
                         vpnStore,
@@ -174,8 +176,6 @@ class _Authenticated extends HookConsumerWidget {
                           : EasyText(
                               LocaleKeys.disconnectAllDevices.tr(),
                               color: Palette.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
                             ),
                     ),
                 ],
@@ -185,10 +185,12 @@ class _Authenticated extends HookConsumerWidget {
               SettingItem(
                 asset: isDarkTheme ? Assets.deleteAccountDark : Assets.deleteAccountLight,
                 title: LocaleKeys.cancelMyAccount.tr(),
-                actionWidget: EasyButton(
-                  useSystemColor: false,
-                  text: LocaleKeys.deleteAccount.tr(),
-                  onPressed: () {
+                actionWidget: SettingActionButton(
+                  child: EasyText(
+                    LocaleKeys.deleteAccount.tr(),
+                    color: Palette.white,
+                  ),
+                  action: () {
                     analyticsStore.logEvent(AnalyticsEvent.deleteAccount);
                     shownDeleteAccountDialog(context, authStore, analyticsStore);
                   },
