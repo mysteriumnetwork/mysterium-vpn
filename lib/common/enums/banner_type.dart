@@ -2,10 +2,10 @@
 enum BannerType {
   unauthenticated(isDismissable: false),
   subscription(isDismissable: false),
+  appUpdateAvailable(shouldPersist: false),
   datacenter,
   highSpeedIPs(mainBanner: false),
-  residentialIPs(mainBanner: false),
-  appUpdateAvailable(shouldPersist: false);
+  residentialIPs(mainBanner: false);
 
   const BannerType({
     this.isDismissable = true,
