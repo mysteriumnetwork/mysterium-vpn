@@ -63,7 +63,7 @@ abstract class _BannersStore with Store {
     final banners = <BannerType>{
       if (authStatus == AuthStatus.unauthenticated) BannerType.unauthenticated,
       if (!isSubscribed) BannerType.subscription,
-      if (shouldShowAppUpdateBanner()) BannerType.appUpdateAvailable,
+      if (shouldShowAppUpdateBanner) BannerType.appUpdateAvailable,
       if (_locationsStore.dcLocationsStream.value?.isEmpty == false && shown != null)
         BannerType.datacenter,
 
@@ -101,8 +101,8 @@ abstract class _BannersStore with Store {
     return true;
   }
 
-  @action
-  bool shouldShowAppUpdateBanner() {
+  @computed
+  bool get shouldShowAppUpdateBanner {
     if (_temporaryHidden.contains(BannerType.appUpdateAvailable)) {
       return false;
     }
