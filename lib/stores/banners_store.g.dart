@@ -70,6 +70,20 @@ mixin _$BannersStore on _BannersStore, Store {
     return _$resetShownAsyncAction.run(() => super.resetShown());
   }
 
+  late final _$_BannersStoreActionController =
+      ActionController(name: '_BannersStore', context: context);
+
+  @override
+  bool shouldShowAppUpdateBanner() {
+    final _$actionInfo = _$_BannersStoreActionController.startAction(
+        name: '_BannersStore.shouldShowAppUpdateBanner');
+    try {
+      return super.shouldShowAppUpdateBanner();
+    } finally {
+      _$_BannersStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''

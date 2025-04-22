@@ -163,6 +163,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   bool get shouldCheckUdp => (_$shouldCheckUdpComputed ??=
           Computed<bool>(() => super.shouldCheckUdp, name: 'RemoteConfigStoreBase.shouldCheckUdp'))
       .value;
+  Computed<String>? _$latestStableAppVersionComputed;
+
+  @override
+  String get latestStableAppVersion =>
+      (_$latestStableAppVersionComputed ??= Computed<String>(() => super.latestStableAppVersion,
+              name: 'RemoteConfigStoreBase.latestStableAppVersion'))
+          .value;
 
   @override
   String toString() {
@@ -189,7 +196,8 @@ showSalesView: ${showSalesView},
 sentryDsn: ${sentryDsn},
 hideResetAppSetting: ${hideResetAppSetting},
 browseUnauthenticated: ${browseUnauthenticated},
-shouldCheckUdp: ${shouldCheckUdp}
+shouldCheckUdp: ${shouldCheckUdp},
+latestStableAppVersion: ${latestStableAppVersion}
     ''';
   }
 }
