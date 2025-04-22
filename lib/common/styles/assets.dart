@@ -73,6 +73,7 @@ abstract class Assets {
   static const String upload = 'assets/icons/upload.svg';
   static const String uploadActive = 'assets/icons/upload_active.svg';
   static const String warning = 'assets/icons/warning.svg';
+  static const String appUpdate = 'assets/icons/app_update.svg';
 
   //Animations
   static const String backgroundElements = 'assets/animations/background_elements.json';
