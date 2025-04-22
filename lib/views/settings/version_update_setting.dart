@@ -39,7 +39,7 @@ class AppVersionUpdateSetting extends ConsumerWidget {
           },
           elevation: 0,
           fillColor: Theme.of(context).colorScheme.brightness == Brightness.dark
-              ? Palette.mediumBlack
+              ? const Color(0xff524e77)
               : Palette.white,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -67,10 +67,11 @@ class AppVersionUpdateSetting extends ConsumerWidget {
                     maxLines: 2,
                   ),
                 ),
-                ActionButton(
+                SettingActionButton(
                   action: () async {
                     await openAppStorePage();
                   },
+                  backgroundColor: Palette.purple,
                   child: EasyText(
                     LocaleKeys.updateBtn.tr(),
                     color: Palette.white,
