@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -23,6 +24,7 @@ class AppVersionUpdateSetting extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final config = ref.watch(environmentPOD);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+    final analyticsStore = ref.watch(analyticsStorePOD);
 
     return Observer(
       builder: (context) {
@@ -35,6 +37,9 @@ class AppVersionUpdateSetting extends ConsumerWidget {
 
         return RawMaterialButton(
           onPressed: () async {
+            analyticsStore.logEvent(
+              AnalyticsEvent.appVersionSettingClicked,
+            );
             await openAppStorePage();
           },
           elevation: 0,
