@@ -29,13 +29,17 @@ class EasyDropdown<T> extends StatelessWidget {
         items: items,
       )
           .width(checkMediaWidth(context, 750) ? double.infinity : 220)
+          .height(36)
           .padding(horizontal: 10)
           .decorated(
             color: Theme.of(context).colorScheme.brightness == Brightness.dark
                 ? Palette.black
-                : Palette.lightGrey,
+                : Palette.white,
             borderRadius: const BorderRadius.all(
               Radius.circular(10),
+            ),
+            border: Border.all(
+              color: Palette.lightBlack,
             ),
           );
 }
