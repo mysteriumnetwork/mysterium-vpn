@@ -1,0 +1,99 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/easy_text.dart';
+import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/models/flavor_config.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
+import 'package:mysterium_vpn/views/settings/action_button.dart';
+import 'package:styled_widget/styled_widget.dart';
+
+class AppVersionUpdateSetting extends ConsumerWidget {
+  const AppVersionUpdateSetting({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final config = ref.watch(environmentPOD);
+    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+
+    return Observer(
+      builder: (context) {
+        if (shouldShowAppUpdateBanner(
+          remoteConfigStore,
+          config,
+        )) {
+          return const SizedBox.shrink();
+        }
+
+        return RawMaterialButton(
+          onPressed: () async {
+            await openAppStorePage();
+          },
+          elevation: 0,
+          fillColor: Theme.of(context).colorScheme.brightness == Brightness.dark
+              ? Palette.mediumBlack
+              : Palette.white,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            side: BorderSide(color: Palette.purple, width: 1.5),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const CircleAvatar(
+                  radius: 17,
+                  backgroundColor: Palette.purple,
+                  child: SvgIcon(
+                    asset: Assets.appUpdate,
+                    width: 16,
+                    height: 16,
+                  ),
+                ).padding(right: 10),
+                Expanded(
+                  child: EasyText(
+                    LocaleKeys.appUpdateAvailableSetting.tr(),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    maxLines: 2,
+                  ),
+                ),
+                ActionButton(
+                  action: () async {
+                    await openAppStorePage();
+                  },
+                  child: EasyText(
+                    LocaleKeys.updateBtn.tr(),
+                    color: Palette.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ).paddingDirectional(bottom: 10, horizontal: 20);
+      },
+    );
+  }
+
+  bool shouldShowAppUpdateBanner(
+    RemoteConfigStore remoteConfigStore,
+    FlavorConfig flavorConfig,
+  ) {
+    final latestStableAppVersion = remoteConfigStore.latestStableAppVersion;
+    final currentBuildVersion = flavorConfig.buildInfo.buildVersion;
+
+    if (currentBuildVersion.compareTo(latestStableAppVersion) >= 0) {
+      return false;
+    }
+    return true;
+  }
+}
