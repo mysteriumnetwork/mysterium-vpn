@@ -564,5 +564,9 @@
     "zero": "Envoyer à nouveau",
     "one": "Envoyer à nouveau",
     "other": "Envoyer à nouveau ({})"
-  }
+  },
+  "appUpdateAvailableTitle": "Mise à jour de l'application disponible",
+  "appUpdateAvailableDesc": "La nouvelle version de l'application est arrivée ! Mettez à jour maintenant pour profiter des dernières fonctionnalités et améliorations.",
+  "updateBtn": "Mettre à jour",
+  "appUpdateAvailableSetting": "Mise à jour de l'application disponible !"
 }
