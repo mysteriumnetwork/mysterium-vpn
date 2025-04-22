@@ -53,6 +53,8 @@ void main() {
       when(mockLocationsStore.dcLocationsStream).thenAnswer(
         (_) => ObservableStream(Stream.value(mockDCLocations), initialValue: mockDCLocations),
       );
+      when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.0');
+      when(mockFlavorConfig.buildInfo).thenReturn(BuildInfo(buildNumber: 0, buildVersion: '0.0.0'));
 
       bannersStore = BannersStore(
         mockLocalDBService,
@@ -91,6 +93,7 @@ void main() {
           (_) => ObservableStream(Stream.value(VPNLocations()), initialValue: VPNLocations()),
         );
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
+        when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.1');
 
         await bannersStore.shownBanners;
 
@@ -102,6 +105,7 @@ void main() {
 
       test('excludes subscription banner when subscribed', () async {
         await bannersStore.shownBanners;
+        when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.1');
 
         expect(
           bannersStore.mainBanners,
@@ -114,7 +118,7 @@ void main() {
         when(mockLocationsStore.dcLocationsStream).thenAnswer(
           (_) => ObservableStream(Stream.value(VPNLocations()), initialValue: VPNLocations()),
         );
-
+        when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.1');
         await bannersStore.shownBanners;
 
         expect(
