@@ -34,6 +34,13 @@ mixin _$BannersStore on _BannersStore, Store {
       (_$secondaryBannersComputed ??= Computed<List<BannerType>>(() => super.secondaryBanners,
               name: '_BannersStore.secondaryBanners'))
           .value;
+  Computed<bool>? _$shouldShowAppUpdateBannerComputed;
+
+  @override
+  bool get shouldShowAppUpdateBanner =>
+      (_$shouldShowAppUpdateBannerComputed ??= Computed<bool>(() => super.shouldShowAppUpdateBanner,
+              name: '_BannersStore.shouldShowAppUpdateBanner'))
+          .value;
 
   late final _$_shownBannersAtom = Atom(name: '_BannersStore._shownBanners', context: context);
 
@@ -70,27 +77,14 @@ mixin _$BannersStore on _BannersStore, Store {
     return _$resetShownAsyncAction.run(() => super.resetShown());
   }
 
-  late final _$_BannersStoreActionController =
-      ActionController(name: '_BannersStore', context: context);
-
-  @override
-  bool shouldShowAppUpdateBanner() {
-    final _$actionInfo = _$_BannersStoreActionController.startAction(
-        name: '_BannersStore.shouldShowAppUpdateBanner');
-    try {
-      return super.shouldShowAppUpdateBanner();
-    } finally {
-      _$_BannersStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
   @override
   String toString() {
     return '''
 shown: ${shown},
 mainBanners: ${mainBanners},
 mainBanner: ${mainBanner},
-secondaryBanners: ${secondaryBanners}
+secondaryBanners: ${secondaryBanners},
+shouldShowAppUpdateBanner: ${shouldShowAppUpdateBanner}
     ''';
   }
 }
