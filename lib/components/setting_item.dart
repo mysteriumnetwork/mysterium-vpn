@@ -26,7 +26,7 @@ class SettingItem extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.brightness == Brightness.dark
               ? Palette.mediumBlack
-              : Palette.white,
+              : const Color(0xFFF5F3FD),
           borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),
