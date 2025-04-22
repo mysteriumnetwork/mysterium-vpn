@@ -187,7 +187,6 @@ class _Authenticated extends HookConsumerWidget {
                 title: LocaleKeys.cancelMyAccount.tr(),
                 actionWidget: EasyButton(
                   useSystemColor: false,
-                  color: isDarkTheme ? Palette.pink : Palette.lightBlue,
                   text: LocaleKeys.deleteAccount.tr(),
                   onPressed: () {
                     analyticsStore.logEvent(AnalyticsEvent.deleteAccount);

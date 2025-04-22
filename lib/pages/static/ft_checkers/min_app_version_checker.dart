@@ -15,7 +15,6 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
-import 'package:open_store/open_store.dart';
 
 /// Checks if the current app version is greater than or equal to the minimum required app version.
 /// Works only with PROD flavor.
@@ -67,14 +66,9 @@ class MinAppVersionChecker extends HookConsumerWidget {
                                   ?.toLowerCase()
                                   .contains(windowsStandAloneProductId.toLowerCase()) ??
                               false) {
-                            openUrlLink(Uri.parse(windowsGithubDownloadLink));
+                            await openUrlLink(Uri.parse(windowsGithubDownloadLink));
                           } else {
-                            OpenStore.instance.open(
-                              appStoreId: appStoreId,
-                              appStoreIdMacOS: appStoreIdMacOS,
-                              androidAppBundleId: androidAppBundleId,
-                              windowsProductId: windowsProductId,
-                            );
+                            await openAppStorePage();
                           }
                         } catch (e) {
                           // Unable to open the store, unblock the user
