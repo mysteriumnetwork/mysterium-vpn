@@ -375,6 +375,7 @@ abstract class LocaleKeys {
   static const getHelp = 'getHelp';
   static const getNewIPAddress = 'getNewIPAddress';
   static const getTips = 'getTips';
+  static const gettingIPAddress = 'gettingIPAddress';
   static const gettingYourPlan = 'gettingYourPlan';
   static const goBackButton = 'goBackButton';
   static const goToBillingPage = 'goToBillingPage';
@@ -412,6 +413,7 @@ abstract class LocaleKeys {
   static const logoutConfirmationDesc = 'logoutConfirmationDesc';
   static const logoutConfirmationTitle = 'logoutConfirmationTitle';
   static const logoutDescription = 'logoutDescription';
+  static const logoutVPNConnectedDesc = 'logoutVPNConnectedDesc';
   static const lt = 'lt';
   static const malwareBlocker = 'malwareBlocker';
   static const manageBtn = 'manageBtn';
@@ -508,6 +510,7 @@ abstract class LocaleKeys {
   static const selectYourSubscription = 'selectYourSubscription';
   static const semiAnnual = 'semiAnnual';
   static const semiAnnualPlanDiscountPrice = 'semiAnnualPlanDiscountPrice';
+  static const sendAgain = 'sendAgain';
   static const sendToUs = 'sendToUs';
   static const serviceUnavailableError = 'serviceUnavailableError';
   static const settings = 'settings';
@@ -539,6 +542,11 @@ abstract class LocaleKeys {
   static const title = 'title';
   static const toManyRequestsErrorMsg = 'toManyRequestsErrorMsg';
   static const tokenAlreadyUsed = 'tokenAlreadyUsed';
+  static const tooManyConnectionsBannerCTADisconnect = 'tooManyConnectionsBannerCTADisconnect';
+  static const tooManyConnectionsBannerCTAReconnect = 'tooManyConnectionsBannerCTAReconnect';
+  static const tooManyConnectionsBannerDesc = 'tooManyConnectionsBannerDesc';
+  static const tooManyConnectionsBannerDescConnected = 'tooManyConnectionsBannerDescConnected';
+  static const tooManyConnectionsBannerTitle = 'tooManyConnectionsBannerTitle';
   static const topLocations = 'topLocations';
   static const tr = 'tr';
   static const tryAgainBtn = 'tryAgainBtn';

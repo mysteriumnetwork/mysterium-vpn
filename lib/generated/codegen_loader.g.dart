@@ -389,6 +389,7 @@ class CodegenLoader extends AssetLoader {
     "getHelp": "得到帮助",
     "getNewIPAddress": "每次连接时获取新的 IP 地址",
     "getTips": "获取提示和技巧：增强 VPN 体验",
+    "gettingIPAddress": "获取 IP 地址",
     "gettingYourPlan": "正在获取付款计划...",
     "goBackButton": "回去",
     "goToBillingPage": "管理订阅",
@@ -426,6 +427,7 @@ class CodegenLoader extends AssetLoader {
     "logoutConfirmationDesc": "您即将退出。您确定吗？",
     "logoutConfirmationTitle": "登出",
     "logoutDescription": "返回将使您退出该应用程序。",
+    "logoutVPNConnectedDesc": "VPN已打开。如果继续注销，您将与VPN服务器断开连接。",
     "lt": "立陶宛语",
     "malwareBlocker": "恶意软件拦截器",
     "manageBtn": "管理订阅",
@@ -523,6 +525,7 @@ class CodegenLoader extends AssetLoader {
     "selectYourSubscription": "选择您的订阅",
     "semiAnnual": "半年度",
     "semiAnnualPlanDiscountPrice": "半年{amount}。",
+    "sendAgain": {"one": "重新发送", "other": "重新发送 ({})", "zero": "重新发送"},
     "sendToUs": "发送反馈",
     "serviceUnavailableError": "我们遇到暂时的网络问题。请稍后再试..",
     "settings": "设置",
@@ -554,6 +557,11 @@ class CodegenLoader extends AssetLoader {
     "title": "你好先生",
     "toManyRequestsErrorMsg": "您的请求太多。请稍后再试。",
     "tokenAlreadyUsed": "令牌已使用。请再试一次。😕?",
+    "tooManyConnectionsBannerCTADisconnect": "断开连接",
+    "tooManyConnectionsBannerCTAReconnect": "重新连接",
+    "tooManyConnectionsBannerDesc": "您的账户已达到最多可连接的6台设备限制。要继续使用VPN，请点击重新连接。",
+    "tooManyConnectionsBannerDescConnected": "您的账户已达到最多可连接的6台设备限制。要继续使用VPN，请点击断开连接并重试。",
+    "tooManyConnectionsBannerTitle": "您已断开连接",
     "topLocations": "热门地点",
     "tr": "土耳其",
     "tryAgainBtn": "再试一次",
@@ -973,6 +981,7 @@ class CodegenLoader extends AssetLoader {
     "getHelp": "Yardım al",
     "getNewIPAddress": "Her bağlantıda yeni bir IP adresi alın",
     "getTips": "İpuçları alın",
+    "gettingIPAddress": "IP adresi alınıyor...",
     "gettingYourPlan": "Ödeme planları getiriliyor...",
     "goBackButton": "Geri gitmek",
     "goToBillingPage": "Aboneliğimi yönet",
@@ -1015,6 +1024,8 @@ class CodegenLoader extends AssetLoader {
     "logoutConfirmationDesc": "Oturumu kapatmak üzeresiniz.Emin misiniz?",
     "logoutConfirmationTitle": "Çıkış Yap",
     "logoutDescription": "Geri dönmek, uygulamadan çıkmanıza neden olur.",
+    "logoutVPNConnectedDesc":
+        "VPN açık. Oturum açmaya devam ederseniz VPN sunucusundan bağlantısı kesileceksiniz.",
     "lt": "Litvanyalı",
     "malwareBlocker": "Kötü amaçlı yazılım engelleyici",
     "manageBtn": "Aboneliği Yönet",
@@ -1116,6 +1127,7 @@ class CodegenLoader extends AssetLoader {
     "selectYourSubscription": "Aboneliğinizi seçin",
     "semiAnnual": "yarı yıllık",
     "semiAnnualPlanDiscountPrice": "Yarı yıllık {amount}",
+    "sendAgain": {"one": "Tekrar gönder", "other": "Tekrar gönder ({})", "zero": "Tekrar gönder"},
     "sendToUs": "Geribildirim yolla",
     "serviceUnavailableError": "Geçici ağ sorunları yaşıyoruz. Lütfen daha sonra tekrar deneyin..",
     "settings": "Ayarlar",
@@ -1151,6 +1163,13 @@ class CodegenLoader extends AssetLoader {
     "title": "Merhaba efendim",
     "toManyRequestsErrorMsg": "Çok fazla istek gönderildi. Lütfen daha sonra tekrar deneyin.",
     "tokenAlreadyUsed": "Girişinizle ilgili bir sorun oluştu. Lütfen tekrar deneyin. 😕",
+    "tooManyConnectionsBannerCTADisconnect": "Bağlantıyı Kes",
+    "tooManyConnectionsBannerCTAReconnect": "Tekrar Bağlan",
+    "tooManyConnectionsBannerDesc":
+        "Hesabınızda bağlı en fazla 6 cihaza ulaştınız. VPN'i kullanmaya devam etmek için tekrar bağlan'a tıklayın.",
+    "tooManyConnectionsBannerDescConnected":
+        "Hesabınızda bağlı en fazla 6 cihaza ulaştınız. VPN'i kullanmaya devam etmek için bağlantıyı kesip tekrar deneyin.",
+    "tooManyConnectionsBannerTitle": "Bağlantınız kesildi",
     "topLocations": "En iyi yerler",
     "tr": "Türkçe",
     "tryAgainBtn": "Tekrar deneyin",
@@ -1558,6 +1577,7 @@ class CodegenLoader extends AssetLoader {
     "getHelp": "ヘルプ",
     "getNewIPAddress": "接続するたびに新しい IP アドレスを取得",
     "getTips": "ヒントとコツを入手: VPN エクスペリエンスを強化",
+    "gettingIPAddress": "IPアドレスを取得しています...",
     "gettingYourPlan": "支払いプランを取得しています...",
     "goBackButton": "戻る",
     "goToBillingPage": "サブスクリプションの管理",
@@ -1596,6 +1616,7 @@ class CodegenLoader extends AssetLoader {
     "logoutConfirmationDesc": "ログアウトしようとしています。よろしいですか?",
     "logoutConfirmationTitle": "ログアウト",
     "logoutDescription": "戻るとアプリケーションからログアウトされます。",
+    "logoutVPNConnectedDesc": "VPNがオンになります。ログアウトを続けると、VPNサーバーから切断されます。",
     "lt": "リトアニア語",
     "malwareBlocker": "マルウェアブロッカー",
     "manageBtn": "サブスクリプションの管理",
@@ -1693,6 +1714,7 @@ class CodegenLoader extends AssetLoader {
     "selectYourSubscription": "サブスクリプションを選択してください",
     "semiAnnual": "半年に一回",
     "semiAnnualPlanDiscountPrice": "6ヶ月{amount}。",
+    "sendAgain": {"one": "再送信", "other": "再送信 ({})", "zero": "再送信"},
     "sendToUs": "フィードバックを送信",
     "serviceUnavailableError": "一時的なネットワークの問題が発生しています。後でもう一度試してください。",
     "settings": "設定",
@@ -1726,6 +1748,12 @@ class CodegenLoader extends AssetLoader {
     "title": "こんにちは。",
     "toManyRequestsErrorMsg": "リクエストが多すぎます。後でもう一度試してください。",
     "tokenAlreadyUsed": "トークンはすでに使用されています。もう一度試してください。😕?",
+    "tooManyConnectionsBannerCTADisconnect": "切断",
+    "tooManyConnectionsBannerCTAReconnect": "再接続",
+    "tooManyConnectionsBannerDesc": "アカウントに接続されているデバイスが6台の上限に達しました。VPNを使い続けるには、再接続をクリックしてください。",
+    "tooManyConnectionsBannerDescConnected":
+        "アカウントに接続されているデバイスが6台の上限に達しました。VPNを使い続けるには、切断をクリックして再試行してください。",
+    "tooManyConnectionsBannerTitle": "接続が切断されました",
     "topLocations": "上位の場所",
     "tr": "トルコ語",
     "tryAgainBtn": "もう一度やり直してください",
@@ -2156,6 +2184,7 @@ class CodegenLoader extends AssetLoader {
     "getHelp": "Hilfe erhalten",
     "getNewIPAddress": "Erhalten Sie bei jeder Verbindung eine neue IP-Adresse",
     "getTips": "Holen Sie sich Tipps und Tricks: Verbessern Sie das VPN-Erlebnis",
+    "gettingIPAddress": "IP-Adresse wird abgerufen...",
     "gettingYourPlan": "Zahlungspläne werden abgerufen...",
     "goBackButton": "Zurückgehen",
     "goToBillingPage": "Abonnement verwalten",
@@ -2200,6 +2229,8 @@ class CodegenLoader extends AssetLoader {
     "logoutConfirmationDesc": "Sie sind dabei, sich abzumelden. Sind Sie sicher?",
     "logoutConfirmationTitle": "Ausloggen",
     "logoutDescription": "Wenn Sie zurückgehen, werden Sie von der Anwendung abgemeldet.",
+    "logoutVPNConnectedDesc":
+        "VPN ist eingeschaltet. Sie werden vom VPN -Server getrennt, wenn Sie sich weiter anmelden.",
     "lt": "Litauisch",
     "malwareBlocker": "Malware-Blocker",
     "manageBtn": "Abonnement verwalten",
@@ -2305,6 +2336,7 @@ class CodegenLoader extends AssetLoader {
     "selectYourSubscription": "Wählen Sie Ihr Abonnement",
     "semiAnnual": "halbjährlich",
     "semiAnnualPlanDiscountPrice": "{amount} für 6 Monate.",
+    "sendAgain": {"one": "Erneut senden", "other": "Erneut senden ({})", "zero": "Erneut senden"},
     "sendToUs": "Feedback abschicken",
     "serviceUnavailableError":
         "Wir haben vorübergehende Netzwerkprobleme. Bitte versuchen Sie es später noch einmal.",
@@ -2343,6 +2375,13 @@ class CodegenLoader extends AssetLoader {
     "title": "Hallo Herr",
     "toManyRequestsErrorMsg": "Zu viele Anfragen. Bitte versuchen Sie es später erneut.",
     "tokenAlreadyUsed": "Token bereits verwendet. Bitte versuchen Sie es erneut. 😕",
+    "tooManyConnectionsBannerCTADisconnect": "Trennen",
+    "tooManyConnectionsBannerCTAReconnect": "Wiederverbinden",
+    "tooManyConnectionsBannerDesc":
+        "Du hast die maximale Anzahl von 6 verbundenen Geräten erreicht. Um VPN weiterhin zu nutzen, klicke auf „Wiederverbinden“.",
+    "tooManyConnectionsBannerDescConnected":
+        "Du hast die maximale Anzahl von 6 verbundenen Geräten erreicht. Um VPN weiterhin zu nutzen, klicke auf „Trennen“ und versuche es erneut.",
+    "tooManyConnectionsBannerTitle": "Du wurdest getrennt",
     "topLocations": "Top-Standorte",
     "tr": "Türkisch",
     "tryAgainBtn": "Versuchen Sie es erneut",
@@ -2771,6 +2810,7 @@ class CodegenLoader extends AssetLoader {
     "getHelp": "Obter ajuda",
     "getNewIPAddress": "Obtenha um novo endereço IP a cada conexão",
     "getTips": "Obtenha dicas e truques: aprimore a experiência da VPN",
+    "gettingIPAddress": "Obtendo endereço IP ...",
     "gettingYourPlan": "Buscando planos de pagamento ...",
     "goBackButton": "Volte",
     "goToBillingPage": "Vá para a página de cobrança",
@@ -2815,6 +2855,8 @@ class CodegenLoader extends AssetLoader {
     "logoutConfirmationDesc": "Você está prestes a sair. Tem certeza?",
     "logoutConfirmationTitle": "Sair",
     "logoutDescription": "Voltar irá registrar você fora do aplicativo.",
+    "logoutVPNConnectedDesc":
+        "O VPN está em ON.Você será desconectado do servidor VPN se continuar a fazer o logon.",
     "lt": "Lituano",
     "malwareBlocker": "Bloqueador de malware",
     "manageBtn": "Gerenciar assinatura",
@@ -2918,6 +2960,11 @@ class CodegenLoader extends AssetLoader {
     "selectYourSubscription": "Selecione sua assinatura",
     "semiAnnual": "semi anualmente",
     "semiAnnualPlanDiscountPrice": "{amount} por 6 meses.",
+    "sendAgain": {
+      "one": "Enviar novamente",
+      "other": "Enviar novamente ({})",
+      "zero": "Enviar novamente"
+    },
     "sendToUs": "Enviar comentários",
     "serviceUnavailableError":
         "Estamos com problemas temporários de rede. Tente novamente mais tarde.",
@@ -2954,6 +3001,13 @@ class CodegenLoader extends AssetLoader {
     "title": "Olá senhor",
     "toManyRequestsErrorMsg": "Muitas solicitações. Por favor, tente novamente mais tarde.",
     "tokenAlreadyUsed": "Token já usado. Por favor, tente novamente. 😕",
+    "tooManyConnectionsBannerCTADisconnect": "Desconectar",
+    "tooManyConnectionsBannerCTAReconnect": "Reconectar",
+    "tooManyConnectionsBannerDesc":
+        "Você atingiu o limite máximo de 6 dispositivos conectados em sua conta. Para continuar usando a VPN, clique em reconectar.",
+    "tooManyConnectionsBannerDescConnected":
+        "Você atingiu o limite máximo de 6 dispositivos conectados em sua conta. Para continuar usando a VPN, clique em desconectar e tente novamente.",
+    "tooManyConnectionsBannerTitle": "Você foi desconectado",
     "topLocations": "Locais principais",
     "tr": "Turco",
     "tryAgainBtn": "Tente novamente",
@@ -2975,15 +3029,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} por ano.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "sim",
-    "zh": "Chinês",
-    "logoutVPNConnectedDesc":
-        "O VPN está em ON.Você será desconectado do servidor VPN se continuar a fazer o logon.",
-    "gettingIPAddress": "Obtendo endereço IP ...",
-    "sendAgain": {
-      "zero": "Enviar novamente",
-      "one": "Enviar novamente",
-      "other": "Enviar novamente ({})"
-    }
+    "zh": "Chinês"
   };
   static const Map<String, dynamic> en = {
     "AD": "Andorra",
@@ -3376,6 +3422,7 @@ class CodegenLoader extends AssetLoader {
     "getHelp": "Get Help",
     "getNewIPAddress": "Get a new IP address at every connection",
     "getTips": "Get tips & tricks: Enhance VPN experience",
+    "gettingIPAddress": "Getting IP address...",
     "gettingYourPlan": "Fetching payment plans...",
     "goBackButton": "Go Back",
     "goToBillingPage": "Manage Subscription",
@@ -3417,6 +3464,8 @@ class CodegenLoader extends AssetLoader {
     "logoutConfirmationDesc": "You’re about to log out. Are you sure?",
     "logoutConfirmationTitle": "Log out",
     "logoutDescription": "Going back will log you out of the application.",
+    "logoutVPNConnectedDesc":
+        "VPN is on. You will be disconnected from VPN server if continue to log out.",
     "lt": "Lithuanian",
     "malwareBlocker": "Malware blocker",
     "manageBtn": "Manage Subscription",
@@ -3520,6 +3569,7 @@ class CodegenLoader extends AssetLoader {
     "selectYourSubscription": "Select your subscription",
     "semiAnnual": "semi-annually",
     "semiAnnualPlanDiscountPrice": "{amount} for 6 months.",
+    "sendAgain": {"other": "Send again ({})", "zero": "Send again"},
     "sendToUs": "Send Feedback",
     "serviceUnavailableError":
         "We’re experiencing temporary network issues. Please try again later..",
@@ -3556,6 +3606,13 @@ class CodegenLoader extends AssetLoader {
     "title": "Hello Sir",
     "toManyRequestsErrorMsg": "Too many requests. Please try again later.",
     "tokenAlreadyUsed": "Token already used. Please try again. 😕",
+    "tooManyConnectionsBannerCTADisconnect": "Disconnect",
+    "tooManyConnectionsBannerCTAReconnect": "Reconnect",
+    "tooManyConnectionsBannerDesc":
+        "You’ve reached the maximum limit of 6 connected devices on your account. To continue using VPN, click to reconnect.",
+    "tooManyConnectionsBannerDescConnected":
+        "You’ve reached the maximum limit of 6 connected devices on your account. To continue using VPN, click disconnect and try again.",
+    "tooManyConnectionsBannerTitle": "You've Been Disconnected",
     "topLocations": "Top locations",
     "tr": "Turkish",
     "tryAgainBtn": "Try again",
@@ -3987,6 +4044,7 @@ class CodegenLoader extends AssetLoader {
     "getHelp": "Ottieni aiuto",
     "getNewIPAddress": "Ottieni un nuovo indirizzo IP ad ogni connessione",
     "getTips": "Ottieni suggerimenti e trucchi: migliora l'esperienza VPN",
+    "gettingIPAddress": "Stiamo ottenendo l'indirizzo IP...",
     "gettingYourPlan": "Recupero dei piani di pagamento...",
     "goBackButton": "Torna indietro",
     "goToBillingPage": "Gestisci abbonamento",
@@ -4030,6 +4088,8 @@ class CodegenLoader extends AssetLoader {
     "logoutConfirmationDesc": "Stai per disconnetterti.Sei sicuro?",
     "logoutConfirmationTitle": "Disconnettersi",
     "logoutDescription": "Tornare indietro ti disconnetterà dall'applicazione.",
+    "logoutVPNConnectedDesc":
+        "VPN è on. Verrà disconnesso dal server VPN se continui a disconnettersi.",
     "lt": "Lituano",
     "malwareBlocker": "Blocco malware",
     "manageBtn": "Gestisci abbonamento",
@@ -4133,6 +4193,11 @@ class CodegenLoader extends AssetLoader {
     "selectYourSubscription": "Seleziona il tuo abbonamento",
     "semiAnnual": "semestrale",
     "semiAnnualPlanDiscountPrice": "{amount} per 6 mesi.",
+    "sendAgain": {
+      "one": "Invia di nuovo",
+      "other": "Invia di nuovo ({})",
+      "zero": "Invia di nuovo"
+    },
     "sendToUs": "Invia feedback",
     "serviceUnavailableError":
         "Stiamo riscontrando problemi di rete temporanei. Per favore riprova più tardi..",
@@ -4169,6 +4234,13 @@ class CodegenLoader extends AssetLoader {
     "title": "Salve signore",
     "toManyRequestsErrorMsg": "Troppe richieste. Per favore riprova più tardi.",
     "tokenAlreadyUsed": "Token già utilizzato. Per favore riprova. 😕",
+    "tooManyConnectionsBannerCTADisconnect": "Disconnetti",
+    "tooManyConnectionsBannerCTAReconnect": "Riconnetti",
+    "tooManyConnectionsBannerDesc":
+        "Hai raggiunto il limite massimo di 6 dispositivi connessi al tuo account. Per continuare a usare la VPN, fai clic su riconnetti.",
+    "tooManyConnectionsBannerDescConnected":
+        "Hai raggiunto il limite massimo di 6 dispositivi connessi al tuo account. Per continuare a usare la VPN, fai clic su disconnetti e riprova.",
+    "tooManyConnectionsBannerTitle": "Sei stato disconnesso",
     "topLocations": "Le migliori posizioni",
     "tr": "Turco",
     "tryAgainBtn": "Riprova",
@@ -4605,6 +4677,7 @@ class CodegenLoader extends AssetLoader {
     "getHelp": "Obtenir de l'aide",
     "getNewIPAddress": "Obtenez une nouvelle adresse IP à chaque connexion",
     "getTips": "Obtenez des conseils et des astuces: améliorez l'expérience VPN",
+    "gettingIPAddress": "Obtenir une adresse IP",
     "gettingYourPlan": "Recherche de plans de paiement ...",
     "goBackButton": "Retourner",
     "goToBillingPage": "Aller à la page de facturation",
@@ -4648,6 +4721,8 @@ class CodegenLoader extends AssetLoader {
     "logoutConfirmationDesc": "Vous êtes sur le point de vous déconnecter. Êtes-vous sûr ?",
     "logoutConfirmationTitle": "Se déconnecter",
     "logoutDescription": "REVOIR vous déconnectera de l'application.",
+    "logoutVPNConnectedDesc":
+        "VPN est activé. Vous serez déconnecté de VPN Server si vous continuerez à vous déconnecter.",
     "lt": "Lituanien",
     "malwareBlocker": "Bloqueur de logiciels malveillants",
     "manageBtn": "Gérer l'abonnement",
@@ -4752,6 +4827,11 @@ class CodegenLoader extends AssetLoader {
     "selectYourSubscription": "Sélectionnez votre abonnement",
     "semiAnnual": "semestriellement",
     "semiAnnualPlanDiscountPrice": "{amount} pour 6 mois.",
+    "sendAgain": {
+      "one": "Envoyer à nouveau",
+      "other": "Envoyer à nouveau ({})",
+      "zero": "Envoyer à nouveau"
+    },
     "sendToUs": "Envoyer des commentaires",
     "serviceUnavailableError":
         "Nous rencontrons des problèmes de réseau temporaires.Veuillez réessayer plus tard..",
@@ -4789,6 +4869,13 @@ class CodegenLoader extends AssetLoader {
     "title": "Bonjour monsieur",
     "toManyRequestsErrorMsg": "Trop de demandes. Veuillez réessayer plus tard.",
     "tokenAlreadyUsed": "Jeton déjà utilisé. Veuillez réessayer. 😕",
+    "tooManyConnectionsBannerCTADisconnect": "Déconnecter",
+    "tooManyConnectionsBannerCTAReconnect": "Se reconnecter",
+    "tooManyConnectionsBannerDesc":
+        "Vous avez atteint la limite maximale de 6 appareils connectés à votre compte. Pour continuer à utiliser le VPN, cliquez sur se reconnecter.",
+    "tooManyConnectionsBannerDescConnected":
+        "Vous avez atteint la limite maximale de 6 appareils connectés à votre compte. Pour continuer à utiliser le VPN, cliquez sur déconnecter et réessayez.",
+    "tooManyConnectionsBannerTitle": "Vous avez été déconnecté",
     "topLocations": "Emplacements supérieurs",
     "tr": "Turc",
     "tryAgainBtn": "Essayer à nouveau",
@@ -5217,6 +5304,7 @@ class CodegenLoader extends AssetLoader {
     "getHelp": "Mendapatkan bantuan",
     "getNewIPAddress": "Dapatkan alamat IP baru di setiap koneksi",
     "getTips": "Dapatkan tip & trik: Tingkatkan pengalaman VPN",
+    "gettingIPAddress": "Mengambil alamat IP...",
     "gettingYourPlan": "Mengambil paket pembayaran...",
     "goBackButton": "Kembali",
     "goToBillingPage": "Kelola Langganan",
@@ -5260,6 +5348,7 @@ class CodegenLoader extends AssetLoader {
     "logoutConfirmationDesc": "Anda akan logout. Apakah Anda yakin?",
     "logoutConfirmationTitle": "Keluar",
     "logoutDescription": "Kembali akan mengeluarkan Anda dari aplikasi.",
+    "logoutVPNConnectedDesc": "VPN aktif. Anda akan terputus dari VPN Server jika terus keluar.",
     "lt": "Lithuania",
     "malwareBlocker": "Pemblokir malware",
     "manageBtn": "Kelola Langganan",
@@ -5363,6 +5452,7 @@ class CodegenLoader extends AssetLoader {
     "selectYourSubscription": "Pilih langganan Anda",
     "semiAnnual": "Tengah tahunan",
     "semiAnnualPlanDiscountPrice": "{amount} untuk 6 bulan.",
+    "sendAgain": {"one": "Kirim lagi", "other": "Kirim lagi ({})", "zero": "Kirim lagi"},
     "sendToUs": "Kirim Umpan Balik",
     "serviceUnavailableError":
         "Kami mengalami masalah jaringan sementara. Silakan coba lagi nanti..",
@@ -5399,6 +5489,13 @@ class CodegenLoader extends AssetLoader {
     "title": "Halo Pak",
     "toManyRequestsErrorMsg": "Terlalu banyak permintaan. Silakan coba lagi nanti.",
     "tokenAlreadyUsed": "Token sudah digunakan. Silakan coba lagi. 😕",
+    "tooManyConnectionsBannerCTADisconnect": "Putuskan",
+    "tooManyConnectionsBannerCTAReconnect": "Sambungkan kembali",
+    "tooManyConnectionsBannerDesc":
+        "Anda telah mencapai batas maksimum 6 perangkat yang terhubung ke akun Anda. Untuk melanjutkan penggunaan VPN, klik sambungkan kembali.",
+    "tooManyConnectionsBannerDescConnected":
+        "Anda telah mencapai batas maksimum 6 perangkat yang terhubung ke akun Anda. Untuk melanjutkan penggunaan VPN, klik putuskan dan coba lagi.",
+    "tooManyConnectionsBannerTitle": "Anda telah terputus",
     "topLocations": "Lokasi teratas",
     "tr": "Turki",
     "tryAgainBtn": "Coba lagi",
@@ -5827,6 +5924,7 @@ class CodegenLoader extends AssetLoader {
     "getHelp": "Obtener ayuda",
     "getNewIPAddress": "Obtén una nueva dirección IP en cada conexión",
     "getTips": "Obtén consejos y trucos: mejora la experiencia VPN",
+    "gettingIPAddress": "Obteniendo dirección IP...",
     "gettingYourPlan": "Obteniendo planes de pago...",
     "goBackButton": "Regresar",
     "goToBillingPage": "Administrar suscripción",
@@ -5871,6 +5969,8 @@ class CodegenLoader extends AssetLoader {
     "logoutConfirmationDesc": "Estás a punto de cerrar sesión. ¿Estás seguro?",
     "logoutConfirmationTitle": "Cerrar sesión",
     "logoutDescription": "Al regresar, se cerrará la sesión de la aplicación.",
+    "logoutVPNConnectedDesc":
+        "VPN está encendido. Será desconectado del servidor VPN si continúa iniciando sesión.",
     "lt": "Lituano",
     "malwareBlocker": "bloqueador de malware",
     "manageBtn": "Administrar suscripción",
@@ -5978,6 +6078,11 @@ class CodegenLoader extends AssetLoader {
     "selectYourSubscription": "Selecciona tu suscripción",
     "semiAnnual": "semi anualmente",
     "semiAnnualPlanDiscountPrice": "{amount} por 6 meses.",
+    "sendAgain": {
+      "one": "Enviar de nuevo",
+      "other": "Enviar de nuevo ({})",
+      "zero": "Enviar de nuevo"
+    },
     "sendToUs": "Enviar comentarios",
     "serviceUnavailableError":
         "Estamos experimentando problemas de red temporales. Por favor, inténtalo de nuevo más tarde..",
@@ -6014,6 +6119,13 @@ class CodegenLoader extends AssetLoader {
     "title": "Hola señor",
     "toManyRequestsErrorMsg": "Demasiadas solicitudes. Inténtalo de nuevo más tarde.",
     "tokenAlreadyUsed": "Ficha ya utilizada. Inténtalo de nuevo. 😕",
+    "tooManyConnectionsBannerCTADisconnect": "Desconectar",
+    "tooManyConnectionsBannerCTAReconnect": "Reconectar",
+    "tooManyConnectionsBannerDesc":
+        "Ha alcanzado el límite máximo de 6 dispositivos conectados a su cuenta. Para seguir usando la VPN, haga clic en reconectar.",
+    "tooManyConnectionsBannerDescConnected":
+        "Ha alcanzado el límite máximo de 6 dispositivos conectados a su cuenta. Para seguir usando la VPN, haga clic en desconectar e intente de nuevo.",
+    "tooManyConnectionsBannerTitle": "Se ha desconectado",
     "topLocations": "Ubicaciones principales",
     "tr": "Turco",
     "tryAgainBtn": "Intentar otra vez",
@@ -6435,6 +6547,7 @@ class CodegenLoader extends AssetLoader {
     "getHelp": "احصل على مساعدة",
     "getNewIPAddress": "احصل على عنوان IP جديد عند كل اتصال",
     "getTips": "احصل على النصائح والحيل: تحسين تجربة VPN",
+    "gettingIPAddress": "الحصول على عنوان IP...",
     "gettingYourPlan": "جارٍ إحضار خطط الدفع...",
     "goBackButton": "عُد",
     "goToBillingPage": "إدارة الاشتراك",
@@ -6476,6 +6589,7 @@ class CodegenLoader extends AssetLoader {
     "logoutConfirmationDesc": "أنت على وشك تسجيل الخروج. هل أنت متأكد؟",
     "logoutConfirmationTitle": "تسجيل خروج",
     "logoutDescription": "ستؤدي العودة إلى تسجيل خروجك من التطبيق.",
+    "logoutVPNConnectedDesc": "VPN ON. سيتم فصلك عن خادم VPN إذا استمرت في تسجيل الخروج.",
     "lt": "الليتوانية",
     "malwareBlocker": "مانع البرامج الضارة",
     "manageBtn": "إدارة الاشتراك",
@@ -6577,6 +6691,7 @@ class CodegenLoader extends AssetLoader {
     "selectYourSubscription": "حدد اشتراكك",
     "semiAnnual": "نصف سنوى",
     "semiAnnualPlanDiscountPrice": "{amount} لمدة 6 أشهر",
+    "sendAgain": {"one": "إعادة الإرسال", "other": "إعادة الإرسال ({})", "zero": "إعادة الإرسال"},
     "sendToUs": "ارسل رأيك",
     "serviceUnavailableError":
         "نحن نواجه مشكلات مؤقتة في الشبكة. الرجاء معاودة المحاولة في وقت لاحق..",
@@ -6614,6 +6729,13 @@ class CodegenLoader extends AssetLoader {
     "toManyRequestsErrorMsg":
         "لقد تجاوزت الحد الأقصى لعدد الطلبات. يرجى المحاولة مرة أخرى في وقت لاحق.",
     "tokenAlreadyUsed": "رمز مستخدم بالفعل. حاول مرة أخرى. 😕",
+    "tooManyConnectionsBannerCTADisconnect": "قطع الاتصال",
+    "tooManyConnectionsBannerCTAReconnect": "إعادة الاتصال",
+    "tooManyConnectionsBannerDesc":
+        "لقد وصلت إلى الحد الأقصى وهو 6 أجهزة متصلة بحسابك. لمتابعة استخدام VPN، انقر على \"إعادة الاتصال\".",
+    "tooManyConnectionsBannerDescConnected":
+        "لقد وصلت إلى الحد الأقصى وهو 6 أجهزة متصلة بحسابك. لمتابعة استخدام VPN، انقر على \"قطع الاتصال\" وحاول مرة أخرى.",
+    "tooManyConnectionsBannerTitle": "تم قطع الاتصال",
     "topLocations": "أفضل المواقع",
     "tr": "اللغة التركية",
     "tryAgainBtn": "حاول ثانية",

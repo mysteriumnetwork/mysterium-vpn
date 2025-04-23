@@ -15,6 +15,7 @@ class QAToolbox extends HookConsumerWidget {
     final themeStore = ref.read(themeStorePOD);
     final bannerStore = ref.read(bannersStorePOD);
     final locationsStore = ref.read(locationsStorePOD);
+    final vpnStore = ref.read(vpnStorePOD);
     return Observer(
       builder: (context) {
         final isDarkTheme = themeStore.isDarkMode;
@@ -47,6 +48,23 @@ class QAToolbox extends HookConsumerWidget {
                   await locationsStore.resetRecentLocations();
                   showSnackbar(
                     'Recent locations reset successfully',
+                  );
+                },
+              ),
+            ),
+            SettingItem(
+              asset: isDarkTheme ? Assets.settingsDark : Assets.settingsLight,
+              title: 'VPN Connection limit',
+              subtitle: EasyText('Exceeded: ${vpnStore.connectionLimitReached}'),
+              actionWidget: TextButton.icon(
+                label: EasyText(
+                  vpnStore.connectionLimitReached ? 'Mark not reached' : 'Mark reached',
+                ),
+                icon: const Icon(Icons.refresh),
+                onPressed: () async {
+                  vpnStore.connectionLimitReached = !vpnStore.connectionLimitReached;
+                  showSnackbar(
+                    'Connection limit reached: ${vpnStore.connectionLimitReached}',
                   );
                 },
               ),
