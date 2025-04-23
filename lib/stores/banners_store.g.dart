@@ -15,6 +15,13 @@ mixin _$BannersStore on _BannersStore, Store {
   List<BannerType>? get shown => (_$shownComputed ??=
           Computed<List<BannerType>?>(() => super.shown, name: '_BannersStore.shown'))
       .value;
+  Computed<bool>? _$shouldShowSubscriptionBannerComputed;
+
+  @override
+  bool get shouldShowSubscriptionBanner => (_$shouldShowSubscriptionBannerComputed ??=
+          Computed<bool>(() => super.shouldShowSubscriptionBanner,
+              name: '_BannersStore.shouldShowSubscriptionBanner'))
+      .value;
   Computed<List<BannerType>>? _$mainBannersComputed;
 
   @override
@@ -81,6 +88,7 @@ mixin _$BannersStore on _BannersStore, Store {
   String toString() {
     return '''
 shown: ${shown},
+shouldShowSubscriptionBanner: ${shouldShowSubscriptionBanner},
 mainBanners: ${mainBanners},
 mainBanner: ${mainBanner},
 secondaryBanners: ${secondaryBanners},
