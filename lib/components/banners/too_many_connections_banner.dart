@@ -16,10 +16,11 @@ class TooManyConnectionsBanner extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
+    final handleToggleConnection = useHandleToggleConnection();
     final isConnected = useComputedValue(() => vpnStore.isConnected);
 
     Future<void> handleDisconnect() async {
-      await vpnStore.disconnectWireguard();
+      await handleToggleConnection();
       vpnStore.connectionLimitReached = false;
     }
 
