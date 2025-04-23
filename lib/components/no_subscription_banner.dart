@@ -1,23 +1,58 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' hide Banner;
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/banners/banner.dart';
+import 'package:mysterium_vpn/components/banners/banner_body.dart';
 import 'package:mysterium_vpn/components/banners/banner_cta.dart';
 import 'package:mysterium_vpn/components/banners/banner_title.dart';
+import 'package:mysterium_vpn/components/loading_indicator.dart';
+import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 
-class NoSubscriptionBanner extends HookWidget {
-  const NoSubscriptionBanner({super.key});
+class SubscriptionBanner extends HookConsumerWidget {
+  const SubscriptionBanner({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final handleSubscribe = useHandleSubscribe();
-
-    return Banner(
-      title: BannerTitle(text: LocaleKeys.noSubscriptionTitle.tr()),
-      cta: BannerCTA(text: LocaleKeys.noSubscriptionAction.tr(), onPressed: handleSubscribe),
-      onPressed: handleSubscribe,
-    );
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
+    return switch (subscriptionStore.subscriptionFuture.status) {
+      FutureStatus.rejected => const Banner(
+          title: BannerTitle(
+            icon: LoadingIndicator(
+              radius: 16,
+            ),
+            text: 'Checking subscription status',
+          ),
+          body: BannerBody(text: 'Please wait while we check your subscription status'),
+        ),
+      FutureStatus.pending => Banner(
+          title: const BannerTitle(
+            icon: SvgIcon(
+              asset: Assets.subscription,
+              width: 20,
+              height: 20,
+            ),
+            text: 'Something went wrong',
+          ),
+          body: const BannerBody(
+            text: 'We were unable to check your subscription status. Please retry.',
+          ),
+          cta: BannerCTA(
+            text: LocaleKeys.retryBtn.tr(),
+            onPressed: subscriptionStore.refreshSubscription,
+          ),
+          onPressed: subscriptionStore.refreshSubscription,
+        ),
+      FutureStatus.fulfilled => Banner(
+          title: BannerTitle(text: LocaleKeys.noSubscriptionTitle.tr()),
+          cta: BannerCTA(text: LocaleKeys.noSubscriptionAction.tr(), onPressed: handleSubscribe),
+          onPressed: handleSubscribe,
+        )
+    };
   }
 }
