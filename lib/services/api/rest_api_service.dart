@@ -187,12 +187,9 @@ class RestApiService extends ApiService {
         }
       });
     } catch (e) {
-      _logger.log(
+      _logger.info(
         'Error resolving domain: $e',
-        logLevel: LogLevel.error,
-        exception: e,
       );
-      rethrow;
     }
   }
 }
