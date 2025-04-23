@@ -564,5 +564,9 @@
     "zero": "再送信",
     "one": "再送信",
     "other": "再送信 ({})"
-  }
+  },
+  "appUpdateAvailableTitle": "アプリのアップデートが利用可能です",
+  "appUpdateAvailableDesc": "新しいアプリバージョンが登場しました！ 最新の機能と改善を利用するには、今すぐアップデートしてください。",
+  "updateBtn": "アップデート",
+  "appUpdateAvailableSetting": "アプリのアップデートが利用可能です！"
 }

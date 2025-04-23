@@ -34,6 +34,13 @@ mixin _$BannersStore on _BannersStore, Store {
       (_$secondaryBannersComputed ??= Computed<List<BannerType>>(() => super.secondaryBanners,
               name: '_BannersStore.secondaryBanners'))
           .value;
+  Computed<bool>? _$shouldShowAppUpdateBannerComputed;
+
+  @override
+  bool get shouldShowAppUpdateBanner =>
+      (_$shouldShowAppUpdateBannerComputed ??= Computed<bool>(() => super.shouldShowAppUpdateBanner,
+              name: '_BannersStore.shouldShowAppUpdateBanner'))
+          .value;
 
   late final _$_shownBannersAtom = Atom(name: '_BannersStore._shownBanners', context: context);
 
@@ -76,7 +83,8 @@ mixin _$BannersStore on _BannersStore, Store {
 shown: ${shown},
 mainBanners: ${mainBanners},
 mainBanner: ${mainBanner},
-secondaryBanners: ${secondaryBanners}
+secondaryBanners: ${secondaryBanners},
+shouldShowAppUpdateBanner: ${shouldShowAppUpdateBanner}
     ''';
   }
 }

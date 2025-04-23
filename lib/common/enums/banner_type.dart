@@ -2,6 +2,7 @@
 enum BannerType {
   unauthenticated(isDismissable: false),
   subscription(isDismissable: false),
+  appUpdateAvailable(shouldPersist: false),
   datacenter,
   highSpeedIPs(mainBanner: false),
   residentialIPs(mainBanner: false);
@@ -9,11 +10,15 @@ enum BannerType {
   const BannerType({
     this.isDismissable = true,
     this.mainBanner = true,
+    this.shouldPersist = true,
   });
 
   /// Whether the banner can be dismissed by the user.
   final bool isDismissable;
   final bool mainBanner;
+
+  /// Whether the banner should shown again after app restart.
+  final bool shouldPersist;
 
   static List<BannerType> get allBanners => BannerType.values.toList();
   static List<BannerType> get mainBanners => allBanners.where((it) => it.mainBanner).toList();

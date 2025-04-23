@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/components/header_title.dart';
+import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/sheet_scaffold.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -9,6 +9,8 @@ import 'package:mysterium_vpn/views/settings/account_settings.dart';
 import 'package:mysterium_vpn/views/settings/application_settings.dart';
 import 'package:mysterium_vpn/views/settings/connection_settings.dart';
 import 'package:mysterium_vpn/views/settings/qa_toolbox.dart';
+import 'package:mysterium_vpn/views/settings/version_update_setting.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class SettingsMobileView extends ConsumerWidget {
   const SettingsMobileView({super.key});
@@ -17,18 +19,35 @@ class SettingsMobileView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => SheetScaffold(
         headerTitle: LocaleKeys.settings.tr(),
         sliver: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            HeaderTitle(text: LocaleKeys.connection.tr()),
+            const AppVersionUpdateSetting().padding(top: 32, bottom: 6),
+            _HeaderTitle(title: LocaleKeys.connection.tr()),
             const ConnectionSettings(),
-            HeaderTitle(text: LocaleKeys.application.tr()),
+            _HeaderTitle(title: LocaleKeys.application.tr()),
             const ApplicationSettings(),
-            HeaderTitle(text: LocaleKeys.account.tr()),
+            _HeaderTitle(title: LocaleKeys.account.tr()),
             const AccountSettings(),
             if (ref.watch(environmentPOD).isDev) ...[
-              const HeaderTitle(text: 'QA Toolbox'),
+              const _HeaderTitle(title: 'QA Toolbox'),
               const QAToolbox(),
             ],
           ],
         ),
       );
+}
+
+class _HeaderTitle extends StatelessWidget {
+  const _HeaderTitle({
+    required this.title,
+  });
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) => EasyText(
+        title,
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+      ).padding(vertical: 16, horizontal: 40);
 }

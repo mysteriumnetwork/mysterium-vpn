@@ -562,5 +562,9 @@
   "sendAgain": {
     "zero":"Send again",
     "other": "Send again ({})"
-  }
+  },
+  "appUpdateAvailableTitle":"App Update Available",
+  "appUpdateAvailableDesc": "The new app version is here! Update now for the latest features and improvements.",
+  "updateBtn": "Update",
+  "appUpdateAvailableSetting":"App Update Available!"
 }

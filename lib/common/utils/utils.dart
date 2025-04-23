@@ -18,6 +18,7 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
+import 'package:open_store/open_store.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 bool checkMediaWidth(BuildContext context, double width) =>
@@ -396,6 +397,9 @@ void handleOnReportPage({
   intetcomStore.displayMessenger();
 }
 
+/// Opens a URL link in the default browser.
+/// If the URL cannot be launched, it copies the URL to the clipboard and shows a snackbar.
+/// [url] is the URL to be opened.
 Future<void> openUrlLink(Uri url) async {
   try {
     if (await canLaunchUrl(url)) {
@@ -419,6 +423,15 @@ Future<void> openUrlLink(Uri url) async {
       type: MessageType.info,
     );
   }
+}
+
+Future<void> openAppStorePage() async {
+  OpenStore.instance.open(
+    appStoreId: appStoreId,
+    appStoreIdMacOS: appStoreIdMacOS,
+    androidAppBundleId: androidAppBundleId,
+    windowsProductId: windowsProductId,
+  );
 }
 
 String generateRandomString(int len) {

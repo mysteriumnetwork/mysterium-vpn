@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/views/settings/application_settings.dart';
 import 'package:mysterium_vpn/views/settings/connection_settings.dart';
 import 'package:mysterium_vpn/views/settings/qa_toolbox.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
+import 'package:mysterium_vpn/views/settings/version_update_setting.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SettingsDesktopRightPanel extends HookConsumerWidget {
@@ -25,6 +26,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
         _HeaderTitle(
           title: settingCategory.trKey.tr(),
         ).padding(bottom: 50),
+        const AppVersionUpdateSetting(),
         if (settingCategory == SettingCategory.connection) const ConnectionSettings(),
         if (settingCategory == SettingCategory.application) const ApplicationSettings(),
         if (settingCategory == SettingCategory.account) const AccountSettings(),

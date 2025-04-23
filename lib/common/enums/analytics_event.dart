@@ -91,4 +91,5 @@ enum AnalyticsEvent {
   udpBlocked,
   resendEmailClicked,
   locationsTabClick,
+  appVersionSettingClicked,
 }

@@ -10,7 +10,6 @@ import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
-import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';
@@ -19,6 +18,7 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:mysterium_vpn/views/settings/action_button.dart';
 import 'package:mysterium_vpn/views/settings/protocol_picker.dart';
 import 'package:mysterium_vpn/views/settings/switch_item.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -51,21 +51,21 @@ class ConnectionSettings extends HookConsumerWidget {
                   maxLines: 3,
                   color: Palette.lightBlue,
                 ),
-                actionWidget: EasyButton(
-                  color: Palette.purple,
-                  useSystemColor: false,
-                  onPressed: vpnStore.resetAppFuture?.status == FutureStatus.pending
+                actionWidget: SettingActionButton(
+                  action: vpnStore.resetAppFuture?.status == FutureStatus.pending
                       ? null
                       : () => _onConfirmResetApp(
                             context: context,
                             analyticsStore: analyticsStore,
                             vpnStore: vpnStore,
                           ),
+                  backgroundColor: Palette.purple,
                   child: vpnStore.resetAppFuture?.status == FutureStatus.pending
                       ? const SizedBox(
                           width: 50,
                           child: LoadingIndicator(
-                            radius: 25,
+                            radius: 16,
+                            indicatorColor: Palette.white,
                           ),
                         )
                       : EasyText(

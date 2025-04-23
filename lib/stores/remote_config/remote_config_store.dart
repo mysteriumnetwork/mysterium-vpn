@@ -29,6 +29,7 @@ enum _FeatureToggleKey {
   hideResetAppSetting,
   browseUnauthenticated,
   shouldCheckUdp,
+  latestStableAppVersion,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -221,6 +222,14 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return config[_FeatureToggleKey.shouldCheckUdp.name] as bool;
     }
     return true;
+  }
+
+  @computed
+  String get latestStableAppVersion {
+    if (config.containsKey(_FeatureToggleKey.latestStableAppVersion.name)) {
+      return config[_FeatureToggleKey.latestStableAppVersion.name] as String;
+    }
+    return '2.0.2';
   }
 
   Map<String, String> get asUserProperties =>

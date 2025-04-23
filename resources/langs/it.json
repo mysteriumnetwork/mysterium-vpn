@@ -564,5 +564,9 @@
     "zero": "Invia di nuovo",
     "one": "Invia di nuovo",
     "other": "Invia di nuovo ({})"
-  }
+  },
+  "appUpdateAvailableTitle": "Aggiornamento dell'app disponibile",
+  "appUpdateAvailableDesc": "La nuova versione dell'app è qui! Aggiorna ora per le ultime funzionalità e miglioramenti.",
+  "updateBtn": "Aggiorna",
+  "appUpdateAvailableSetting": "Aggiornamento dell'app disponibile!"
 }
