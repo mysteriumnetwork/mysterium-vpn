@@ -1,10 +1,12 @@
 import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/banner_type.dart';
+import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 
 part 'banners_store.g.dart';
@@ -18,14 +20,31 @@ abstract class _BannersStore with Store {
     this._subscriptionStore,
     this._locationsStore,
     this._authSessionStore,
+    this._remoteConfigStore,
+    this._flavorConfig,
   );
 
   final LocalDBService _localDBService;
   final SubscriptionStore _subscriptionStore;
   final LocationsStore _locationsStore;
   final AuthSessionStore _authSessionStore;
+  final RemoteConfigStore _remoteConfigStore;
+  final FlavorConfig _flavorConfig;
 
-  final ObservableList<BannerType> _unauthenticatedShown = ObservableList<BannerType>();
+  /// User can dismiss the banner when unauthenticated
+  /// Banners will be hidden until the app is restarted or the user logs in.
+  final ObservableList<BannerType> _unauthenticatedHidden = ObservableList<BannerType>();
+
+  /// Banners that are temporarily hidden and should not be shown
+  /// until the app is restarted or the user logs out.
+  final ObservableList<BannerType> _temporaryHidden = ObservableList<BannerType>();
+
+  final Set<BannerType> _bannerRequireConditions = {
+    BannerType.unauthenticated,
+    BannerType.subscription,
+    BannerType.datacenter,
+    BannerType.appUpdateAvailable,
+  };
 
   @readonly
   late ObservableFuture<List<BannerType>> _shownBanners =
@@ -34,24 +53,22 @@ abstract class _BannersStore with Store {
   @computed
   List<BannerType>? get shown => _authSessionStore.status == AuthStatus.authenticated
       ? _shownBanners.value
-      : _unauthenticatedShown;
+      : _unauthenticatedHidden;
 
   @computed
   List<BannerType> get mainBanners {
     final isSubscribed = _subscriptionStore.isSubscribed ?? true;
-    final status = _authSessionStore.status;
+    final authStatus = _authSessionStore.status;
 
     final banners = <BannerType>{
-      if (status == AuthStatus.unauthenticated) BannerType.unauthenticated,
+      if (authStatus == AuthStatus.unauthenticated) BannerType.unauthenticated,
       if (!isSubscribed) BannerType.subscription,
+      if (shouldShowAppUpdateBanner) BannerType.appUpdateAvailable,
       if (_locationsStore.dcLocationsStream.value?.isEmpty == false && shown != null)
         BannerType.datacenter,
+
       // Add remaining main banners which require no conditions
-      ...BannerType.mainBanners.toSet().difference({
-        BannerType.unauthenticated,
-        BannerType.subscription,
-        BannerType.datacenter,
-      }),
+      ...BannerType.mainBanners.toSet().difference(_bannerRequireConditions),
     };
     if (shown == null) {
       return banners.toList();
@@ -84,13 +101,31 @@ abstract class _BannersStore with Store {
     return true;
   }
 
+  @computed
+  bool get shouldShowAppUpdateBanner {
+    if (_temporaryHidden.contains(BannerType.appUpdateAvailable)) {
+      return false;
+    }
+    final latestStableAppVersion = _remoteConfigStore.latestStableAppVersion;
+    final currentBuildVersion = _flavorConfig.buildInfo.buildVersion;
+
+    if (currentBuildVersion.compareTo(latestStableAppVersion) >= 0) {
+      return false;
+    }
+    return true;
+  }
+
   @action
   Future<void> setShown(BannerType banner) async {
     if (!banner.isDismissable) {
       return;
     }
     if (_authSessionStore.status == AuthStatus.unauthenticated) {
-      _unauthenticatedShown.add(banner);
+      _unauthenticatedHidden.add(banner);
+      return;
+    }
+    if (!banner.shouldPersist) {
+      _temporaryHidden.add(banner);
       return;
     }
     final shownBanners = [...(await _shownBanners), banner];
@@ -102,7 +137,7 @@ abstract class _BannersStore with Store {
   @action
   Future<void> resetShown() async {
     if (_authSessionStore.status == AuthStatus.unauthenticated) {
-      _unauthenticatedShown.clear();
+      _unauthenticatedHidden.clear();
       return;
     }
     await _localDBService.resetShownBanners();

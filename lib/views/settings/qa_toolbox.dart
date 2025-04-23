@@ -22,7 +22,7 @@ class QAToolbox extends HookConsumerWidget {
         return Column(
           children: [
             SettingItem(
-              asset: isDarkTheme ? Assets.settingsDark : Assets.settingsLight,
+              asset: isDarkTheme ? Assets.resetAppSettingDark : Assets.resetAppSettingLight,
               title: 'Reset hidden banners',
               subtitle: const EasyText('This will reset all hidden banners to be shown again'),
               actionWidget: TextButton.icon(
@@ -37,7 +37,7 @@ class QAToolbox extends HookConsumerWidget {
               ),
             ),
             SettingItem(
-              asset: isDarkTheme ? Assets.settingsDark : Assets.settingsLight,
+              asset: isDarkTheme ? Assets.resetAppSettingDark : Assets.resetAppSettingLight,
               title: 'Reset recent locations',
               subtitle: const EasyText('This will remove all recent locations'),
               actionWidget: TextButton.icon(

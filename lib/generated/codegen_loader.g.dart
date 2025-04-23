@@ -577,7 +577,11 @@ class CodegenLoader extends AssetLoader {
     "zh": "中国人",
     "logoutVPNConnectedDesc": "VPN已打开。如果继续注销，您将与VPN服务器断开连接。",
     "gettingIPAddress": "获取 IP 地址",
-    "sendAgain": {"zero": "重新发送", "one": "重新发送", "other": "重新发送 ({})"}
+    "sendAgain": {"zero": "重新发送", "one": "重新发送", "other": "重新发送 ({})"},
+    "appUpdateAvailableTitle": "应用更新可用",
+    "appUpdateAvailableDesc": "新的应用版本已上线！立即更新以获取最新功能和改进。",
+    "updateBtn": "更新",
+    "appUpdateAvailableSetting": "应用更新可用！"
   };
   static const Map<String, dynamic> tr = {
     "AD": "Andorra",
@@ -1171,7 +1175,12 @@ class CodegenLoader extends AssetLoader {
     "logoutVPNConnectedDesc":
         "VPN açık. Oturum açmaya devam ederseniz VPN sunucusundan bağlantısı kesileceksiniz.",
     "gettingIPAddress": "IP adresi alınıyor...",
-    "sendAgain": {"zero": "Tekrar gönder", "one": "Tekrar gönder", "other": "Tekrar gönder ({})"}
+    "sendAgain": {"zero": "Tekrar gönder", "one": "Tekrar gönder", "other": "Tekrar gönder ({})"},
+    "appUpdateAvailableTitle": "Uygulama Güncellemesi Mevcut",
+    "appUpdateAvailableDesc":
+        "Yeni uygulama sürümü burada! En son özellikler ve iyileştirmeler için şimdi güncelleyin.",
+    "updateBtn": "Güncelle",
+    "appUpdateAvailableSetting": "Uygulama Güncellemesi Mevcut!"
   };
   static const Map<String, dynamic> ja = {
     "AD": "アンドラ",
@@ -1740,7 +1749,11 @@ class CodegenLoader extends AssetLoader {
     "zh": "中国語",
     "logoutVPNConnectedDesc": "VPNがオンになります。ログアウトを続けると、VPNサーバーから切断されます。",
     "gettingIPAddress": "IPアドレスを取得しています...",
-    "sendAgain": {"zero": "再送信", "one": "再送信", "other": "再送信 ({})"}
+    "sendAgain": {"zero": "再送信", "one": "再送信", "other": "再送信 ({})"},
+    "appUpdateAvailableTitle": "アプリのアップデートが利用可能です",
+    "appUpdateAvailableDesc": "新しいアプリバージョンが登場しました！ 最新の機能と改善を利用するには、今すぐアップデートしてください。",
+    "updateBtn": "アップデート",
+    "appUpdateAvailableSetting": "アプリのアップデートが利用可能です！"
   };
   static const Map<String, dynamic> de = {
     "AD": "Andorra",
@@ -2356,7 +2369,12 @@ class CodegenLoader extends AssetLoader {
     "logoutVPNConnectedDesc":
         "VPN ist eingeschaltet. Sie werden vom VPN -Server getrennt, wenn Sie sich weiter anmelden.",
     "gettingIPAddress": "IP-Adresse wird abgerufen...",
-    "sendAgain": {"zero": "Erneut senden", "one": "Erneut senden", "other": "Erneut senden ({})"}
+    "sendAgain": {"zero": "Erneut senden", "one": "Erneut senden", "other": "Erneut senden ({})"},
+    "appUpdateAvailableTitle": "App-Update verfügbar",
+    "appUpdateAvailableDesc":
+        "Die neue App-Version ist da! Aktualisieren Sie jetzt, um die neuesten Funktionen und Verbesserungen zu erhalten.",
+    "updateBtn": "Aktualisieren",
+    "appUpdateAvailableSetting": "App-Update verfügbar!"
   };
   static const Map<String, dynamic> pt = {
     "AD": "Andorra",
@@ -3563,7 +3581,12 @@ class CodegenLoader extends AssetLoader {
     "logoutVPNConnectedDesc":
         "VPN is on. You will be disconnected from VPN server if continue to log out.",
     "gettingIPAddress": "Getting IP address...",
-    "sendAgain": {"zero": "Send again", "other": "Send again ({})"}
+    "sendAgain": {"zero": "Send again", "other": "Send again ({})"},
+    "appUpdateAvailableTitle": "App Update Available",
+    "appUpdateAvailableDesc":
+        "The new app version is here! Update now for the latest features and improvements.",
+    "updateBtn": "Update",
+    "appUpdateAvailableSetting": "App Update Available!"
   };
   static const Map<String, dynamic> it = {
     "AD": "Andorra",
@@ -4171,7 +4194,16 @@ class CodegenLoader extends AssetLoader {
     "logoutVPNConnectedDesc":
         "VPN è on. Verrà disconnesso dal server VPN se continui a disconnettersi.",
     "gettingIPAddress": "Stiamo ottenendo l'indirizzo IP...",
-    "sendAgain": {"zero": "Invia di nuovo", "one": "Invia di nuovo", "other": "Invia di nuovo ({})"}
+    "sendAgain": {
+      "zero": "Invia di nuovo",
+      "one": "Invia di nuovo",
+      "other": "Invia di nuovo ({})"
+    },
+    "appUpdateAvailableTitle": "Aggiornamento dell'app disponibile",
+    "appUpdateAvailableDesc":
+        "La nuova versione dell'app è qui! Aggiorna ora per le ultime funzionalità e miglioramenti.",
+    "updateBtn": "Aggiorna",
+    "appUpdateAvailableSetting": "Aggiornamento dell'app disponibile!"
   };
   static const Map<String, dynamic> fr = {
     "AD": "Andorre",
@@ -4786,7 +4818,12 @@ class CodegenLoader extends AssetLoader {
       "zero": "Envoyer à nouveau",
       "one": "Envoyer à nouveau",
       "other": "Envoyer à nouveau ({})"
-    }
+    },
+    "appUpdateAvailableTitle": "Mise à jour de l'application disponible",
+    "appUpdateAvailableDesc":
+        "La nouvelle version de l'application est arrivée ! Mettez à jour maintenant pour profiter des dernières fonctionnalités et améliorations.",
+    "updateBtn": "Mettre à jour",
+    "appUpdateAvailableSetting": "Mise à jour de l'application disponible !"
   };
   static const Map<String, dynamic> id = {
     "AD": "Andorra",
@@ -5386,7 +5423,12 @@ class CodegenLoader extends AssetLoader {
     "zh": "Cina",
     "logoutVPNConnectedDesc": "VPN aktif. Anda akan terputus dari VPN Server jika terus keluar.",
     "gettingIPAddress": "Mengambil alamat IP...",
-    "sendAgain": {"zero": "Kirim lagi", "one": "Kirim lagi", "other": "Kirim lagi ({})"}
+    "sendAgain": {"zero": "Kirim lagi", "one": "Kirim lagi", "other": "Kirim lagi ({})"},
+    "appUpdateAvailableTitle": "Pembaruan Aplikasi Tersedia",
+    "appUpdateAvailableDesc":
+        "Versi baru aplikasi sudah tersedia! Perbarui sekarang untuk fitur dan peningkatan terbaru.",
+    "updateBtn": "Perbarui",
+    "appUpdateAvailableSetting": "Pembaruan Aplikasi Tersedia!"
   };
   static const Map<String, dynamic> es = {
     "AD": "Andorra",
@@ -6001,7 +6043,12 @@ class CodegenLoader extends AssetLoader {
       "zero": "Enviar de nuevo",
       "one": "Enviar de nuevo",
       "other": "Enviar de nuevo ({})"
-    }
+    },
+    "appUpdateAvailableTitle": "Actualización de la aplicación disponible",
+    "appUpdateAvailableDesc":
+        "¡La nueva versión de la aplicación está aquí! Actualiza ahora para obtener las últimas funciones y mejoras.",
+    "updateBtn": "Actualizar",
+    "appUpdateAvailableSetting": "¡Actualización de la aplicación disponible!"
   };
   static const Map<String, dynamic> ar = {
     "AD": "أندورا",
@@ -6590,7 +6637,12 @@ class CodegenLoader extends AssetLoader {
     "zh": "صينى",
     "logoutVPNConnectedDesc": "VPN ON. سيتم فصلك عن خادم VPN إذا استمرت في تسجيل الخروج.",
     "gettingIPAddress": "الحصول على عنوان IP...",
-    "sendAgain": {"zero": "إعادة الإرسال", "one": "إعادة الإرسال", "other": "إعادة الإرسال ({})"}
+    "sendAgain": {"zero": "إعادة الإرسال", "one": "إعادة الإرسال", "other": "إعادة الإرسال ({})"},
+    "appUpdateAvailableTitle": "تحديث التطبيق متاح",
+    "appUpdateAvailableDesc":
+        "الإصدار الجديد من التطبيق هنا! قم بالتحديث الآن للحصول على أحدث الميزات والتحسينات.",
+    "updateBtn": "تحديث",
+    "appUpdateAvailableSetting": "تحديث التطبيق متاح!"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,

@@ -564,5 +564,9 @@
     "zero": "Kirim lagi",
     "one": "Kirim lagi",
     "other": "Kirim lagi ({})"
-  }
+  },
+  "appUpdateAvailableTitle": "Pembaruan Aplikasi Tersedia",
+  "appUpdateAvailableDesc": "Versi baru aplikasi sudah tersedia! Perbarui sekarang untuk fitur dan peningkatan terbaru.",
+  "updateBtn": "Perbarui",
+  "appUpdateAvailableSetting": "Pembaruan Aplikasi Tersedia!"
 }

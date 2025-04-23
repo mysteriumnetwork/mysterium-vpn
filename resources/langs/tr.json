@@ -564,5 +564,9 @@
     "zero": "Tekrar gönder",
     "one": "Tekrar gönder",
     "other": "Tekrar gönder ({})"
-  }
+  },
+  "appUpdateAvailableTitle": "Uygulama Güncellemesi Mevcut",
+  "appUpdateAvailableDesc": "Yeni uygulama sürümü burada! En son özellikler ve iyileştirmeler için şimdi güncelleyin.",
+  "updateBtn": "Güncelle",
+  "appUpdateAvailableSetting": "Uygulama Güncellemesi Mevcut!"
 }
