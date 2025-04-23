@@ -5,11 +5,13 @@ class BannerCTA extends StatelessWidget {
   const BannerCTA({
     required this.text,
     required this.onPressed,
+    this.color = Palette.purple,
     super.key,
   });
 
   final String text;
   final VoidCallback onPressed;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class BannerCTA extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Palette.purple,
+        backgroundColor: color,
         elevation: 0,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         minimumSize: const Size(130, 32),

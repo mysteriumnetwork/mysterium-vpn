@@ -373,6 +373,7 @@
   "getHelp": "Obter ajuda",
   "getNewIPAddress": "Obtenha um novo endereço IP a cada conexão",
   "getTips": "Obtenha dicas e truques: aprimore a experiência da VPN",
+  "gettingIPAddress": "Obtendo endereço IP ...",
   "gettingYourPlan": "Buscando planos de pagamento ...",
   "goBackButton": "Volte",
   "goToBillingPage": "Vá para a página de cobrança",
@@ -410,6 +411,7 @@
   "logoutConfirmationDesc": "Você está prestes a sair. Tem certeza?",
   "logoutConfirmationTitle": "Sair",
   "logoutDescription": "Voltar irá registrar você fora do aplicativo.",
+  "logoutVPNConnectedDesc": "O VPN está em ON.Você será desconectado do servidor VPN se continuar a fazer o logon.",
   "lt": "Lituano",
   "malwareBlocker": "Bloqueador de malware",
   "manageBtn": "Gerenciar assinatura",
@@ -506,6 +508,11 @@
   "selectYourSubscription": "Selecione sua assinatura",
   "semiAnnual": "semi anualmente",
   "semiAnnualPlanDiscountPrice": "{amount} por 6 meses.",
+  "sendAgain": {
+    "one": "Enviar novamente",
+    "other": "Enviar novamente ({})",
+    "zero": "Enviar novamente"
+  },
   "sendToUs": "Enviar comentários",
   "serviceUnavailableError": "Estamos com problemas temporários de rede. Tente novamente mais tarde.",
   "settings": "Configurações",
@@ -537,6 +544,11 @@
   "title": "Olá senhor",
   "toManyRequestsErrorMsg": "Muitas solicitações. Por favor, tente novamente mais tarde.",
   "tokenAlreadyUsed": "Token já usado. Por favor, tente novamente. 😕",
+  "tooManyConnectionsBannerCTADisconnect": "Desconectar",
+  "tooManyConnectionsBannerCTAReconnect": "Reconectar",
+  "tooManyConnectionsBannerDesc": "Você atingiu o limite máximo de 6 dispositivos conectados em sua conta. Para continuar usando a VPN, clique em reconectar.",
+  "tooManyConnectionsBannerDescConnected": "Você atingiu o limite máximo de 6 dispositivos conectados em sua conta. Para continuar usando a VPN, clique em desconectar e tente novamente.",
+  "tooManyConnectionsBannerTitle": "Você foi desconectado",
   "topLocations": "Locais principais",
   "tr": "Turco",
   "tryAgainBtn": "Tente novamente",
@@ -557,12 +569,5 @@
   "yearlyPlanDiscountPrice": "{amount} por ano.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "sim",
-  "zh": "Chinês",
-  "logoutVPNConnectedDesc": "O VPN está em ON.Você será desconectado do servidor VPN se continuar a fazer o logon.",
-  "gettingIPAddress": "Obtendo endereço IP ...",
-  "sendAgain": {
-    "zero": "Enviar novamente",
-    "one": "Enviar novamente",
-    "other": "Enviar novamente ({})"
-  }
+  "zh": "Chinês"
 }

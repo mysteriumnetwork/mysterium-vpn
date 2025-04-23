@@ -89,6 +89,22 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$connectionLimitReachedAtom =
+      Atom(name: '_VpnStore.connectionLimitReached', context: context);
+
+  @override
+  bool get connectionLimitReached {
+    _$connectionLimitReachedAtom.reportRead();
+    return super.connectionLimitReached;
+  }
+
+  @override
+  set connectionLimitReached(bool value) {
+    _$connectionLimitReachedAtom.reportWrite(value, super.connectionLimitReached, () {
+      super.connectionLimitReached = value;
+    });
+  }
+
   late final _$_notSafeContentBlockerAtom =
       Atom(name: '_VpnStore._notSafeContentBlocker', context: context);
 
@@ -411,6 +427,7 @@ mixin _$VpnStore on _VpnStore, Store {
   @override
   String toString() {
     return '''
+connectionLimitReached: ${connectionLimitReached},
 vpnStatus: ${vpnStatus},
 replaceDNSAddress: ${replaceDNSAddress},
 isConnected: ${isConnected},

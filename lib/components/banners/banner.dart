@@ -9,6 +9,7 @@ class Banner extends StatelessWidget {
     this.body,
     this.onDismiss,
     this.color = Palette.mediumBlack,
+    this.borderColor = Palette.purple,
     this.borderRadius = const BorderRadius.all(Radius.circular(20)),
     this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
     this.mainBanner = true,
@@ -16,6 +17,7 @@ class Banner extends StatelessWidget {
   });
 
   final Color color;
+  final Color? borderColor;
   final EdgeInsets padding;
   final BorderRadiusGeometry borderRadius;
   final Widget title;
@@ -36,7 +38,7 @@ class Banner extends StatelessWidget {
       fillColor: color,
       shape: RoundedRectangleBorder(
         borderRadius: borderRadius,
-        side: const BorderSide(color: Palette.purple, width: 1.5),
+        side: borderColor != null ? BorderSide(color: borderColor!, width: 1.5) : BorderSide.none,
       ),
       child: Stack(
         children: [
