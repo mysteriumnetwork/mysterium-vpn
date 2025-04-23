@@ -32,7 +32,7 @@ class HomeBanner extends HookConsumerWidget {
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: maxWidth),
             child: switch (banner) {
-              BannerType.subscription => const NoSubscriptionBanner(),
+              BannerType.subscription => const SubscriptionBanner(),
               BannerType.datacenter => const DataCenterBanner(),
               BannerType.unauthenticated => const UnauthenticatedBanner(),
               BannerType.appUpdateAvailable => const AppVersionUpdateBanner(),
