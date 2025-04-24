@@ -47,6 +47,7 @@ abstract class _BannersStore with Store {
     BannerType.subscription,
     BannerType.datacenter,
     BannerType.appUpdateAvailable,
+    BannerType.tooManyConnections,
   };
 
   @readonly
