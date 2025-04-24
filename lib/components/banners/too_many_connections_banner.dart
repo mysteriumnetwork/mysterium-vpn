@@ -3,7 +3,6 @@ import 'package:flutter/material.dart' hide Banner;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/banners/banner.dart';
 import 'package:mysterium_vpn/components/banners/banner_body.dart';
 import 'package:mysterium_vpn/components/banners/banner_cta.dart';
@@ -20,6 +19,11 @@ class TooManyConnectionsBanner extends HookConsumerWidget {
     final vpnStore = ref.watch(vpnStorePOD);
     final handleToggleConnection = useHandleToggleConnection();
     final isConnected = useComputedValue(() => vpnStore.isConnected);
+    final theme = Theme.of(context);
+    final bannerStyle = switch (theme.brightness) {
+      Brightness.light => BannerStyle.warningLight,
+      Brightness.dark => BannerStyle.warningDark,
+    };
 
     Future<void> handleDisconnect() async {
       await handleToggleConnection();
@@ -27,11 +31,11 @@ class TooManyConnectionsBanner extends HookConsumerWidget {
     }
 
     return Banner(
-      color: Palette.darkOliveBrown,
-      borderColor: Palette.yellow,
+      style: bannerStyle,
       title: BannerTitle(
         text: LocaleKeys.tooManyConnectionsBannerTitle.tr(),
-        icon: const SvgIcon(
+        icon: SvgIcon(
+          color: bannerStyle.foregroundColor,
           asset: Assets.infoOutline,
           width: 20,
           height: 20,
@@ -43,7 +47,6 @@ class TooManyConnectionsBanner extends HookConsumerWidget {
             : LocaleKeys.tooManyConnectionsBannerDesc.tr(),
       ),
       cta: BannerCTA(
-        color: Palette.yellow,
         onPressed: handleDisconnect,
         text: isConnected
             ? LocaleKeys.tooManyConnectionsBannerCTADisconnect.tr()

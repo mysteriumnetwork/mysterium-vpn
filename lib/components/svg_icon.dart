@@ -10,11 +10,13 @@ class SvgIcon extends StatelessWidget {
     super.key,
     this.width,
     this.height,
+    this.color,
   });
 
   final String asset;
   final double? width;
   final double? height;
+  final Color? color;
   @override
   Widget build(BuildContext context) => Directionality(
         textDirection: TextDirection.ltr,
@@ -23,6 +25,7 @@ class SvgIcon extends StatelessWidget {
           matchTextDirection: true,
           width: width,
           height: height,
+          colorFilter: color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
         ),
       ).center();
 }
