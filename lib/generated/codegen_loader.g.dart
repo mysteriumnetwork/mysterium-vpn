@@ -284,6 +284,9 @@ class CodegenLoader extends AssetLoader {
     "anonymous": "匿名的",
     "apiVersion": "API版本",
     "appLang": "应用语言",
+    "appUpdateAvailableDesc": "新的应用版本已上线！立即更新以获取最新功能和改进。",
+    "appUpdateAvailableSetting": "应用更新可用！",
+    "appUpdateAvailableTitle": "应用更新可用",
     "appVersion": "应用程序版本",
     "application": "应用",
     "ar": "阿拉伯",
@@ -574,6 +577,7 @@ class CodegenLoader extends AssetLoader {
     "unableToGetPlans": "无法获取订阅计划！请再试一次。",
     "unauthenticatedBannerBtn": "登录以检查您的订阅",
     "unauthenticatedBannerTitle": "您尚未登录",
+    "updateBtn": "更新",
     "upload": "上传",
     "was": "原价",
     "weNeedPermission": "我们需要您的许可",
@@ -582,14 +586,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "全年{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "是",
-    "zh": "中国人",
-    "logoutVPNConnectedDesc": "VPN已打开。如果继续注销，您将与VPN服务器断开连接。",
-    "gettingIPAddress": "获取 IP 地址",
-    "sendAgain": {"zero": "重新发送", "one": "重新发送", "other": "重新发送 ({})"},
-    "appUpdateAvailableTitle": "应用更新可用",
-    "appUpdateAvailableDesc": "新的应用版本已上线！立即更新以获取最新功能和改进。",
-    "updateBtn": "更新",
-    "appUpdateAvailableSetting": "应用更新可用！"
+    "zh": "中国人"
   };
   static const Map<String, dynamic> tr = {
     "AD": "Andorra",
@@ -863,6 +860,10 @@ class CodegenLoader extends AssetLoader {
     "anonymous": "Anonim",
     "apiVersion": "API Sürümü",
     "appLang": "Uygulama dili",
+    "appUpdateAvailableDesc":
+        "Yeni uygulama sürümü burada! En son özellikler ve iyileştirmeler için şimdi güncelleyin.",
+    "appUpdateAvailableSetting": "Uygulama Güncellemesi Mevcut!",
+    "appUpdateAvailableTitle": "Uygulama Güncellemesi Mevcut",
     "appVersion": "Uygulama sürümü",
     "application": "Başvuru",
     "ar": "Arapça",
@@ -1182,6 +1183,7 @@ class CodegenLoader extends AssetLoader {
     "unableToGetPlans": "Abonelik planları alınamıyor! ",
     "unauthenticatedBannerBtn": "Aboneliğinizi kontrol etmek için giriş yapın",
     "unauthenticatedBannerTitle": "Oturum açmadınız",
+    "updateBtn": "Güncelle",
     "upload": "Yükleme",
     "was": "Önce",
     "weNeedPermission": "İzninize ihtiyacımız var",
@@ -1190,16 +1192,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "Yıl için {amount}.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Evet",
-    "zh": "Çince",
-    "logoutVPNConnectedDesc":
-        "VPN açık. Oturum açmaya devam ederseniz VPN sunucusundan bağlantısı kesileceksiniz.",
-    "gettingIPAddress": "IP adresi alınıyor...",
-    "sendAgain": {"zero": "Tekrar gönder", "one": "Tekrar gönder", "other": "Tekrar gönder ({})"},
-    "appUpdateAvailableTitle": "Uygulama Güncellemesi Mevcut",
-    "appUpdateAvailableDesc":
-        "Yeni uygulama sürümü burada! En son özellikler ve iyileştirmeler için şimdi güncelleyin.",
-    "updateBtn": "Güncelle",
-    "appUpdateAvailableSetting": "Uygulama Güncellemesi Mevcut!"
+    "zh": "Çince"
   };
   static const Map<String, dynamic> ja = {
     "AD": "アンドラ",
@@ -1471,6 +1464,9 @@ class CodegenLoader extends AssetLoader {
     "anonymous": "匿名",
     "apiVersion": "APIバージョン",
     "appLang": "アプリケーション言語",
+    "appUpdateAvailableDesc": "新しいアプリバージョンが登場しました！ 最新の機能と改善を利用するには、今すぐアップデートしてください。",
+    "appUpdateAvailableSetting": "アプリのアップデートが利用可能です！",
+    "appUpdateAvailableTitle": "アプリのアップデートが利用可能です",
     "appVersion": "アプリのバージョン",
     "application": "応用",
     "ar": "アラビア語",
@@ -1766,6 +1762,7 @@ class CodegenLoader extends AssetLoader {
     "unableToGetPlans": "サブスクリプションプランを取得できません! もう一度試してください。",
     "unauthenticatedBannerBtn": "サインインしてサブスクリプションを確認してください",
     "unauthenticatedBannerTitle": "サインインしていません",
+    "updateBtn": "アップデート",
     "upload": "アップロード",
     "was": "以前は",
     "weNeedPermission": "あなたの許可が必要です",
@@ -1774,14 +1771,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "年間{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "はい",
-    "zh": "中国語",
-    "logoutVPNConnectedDesc": "VPNがオンになります。ログアウトを続けると、VPNサーバーから切断されます。",
-    "gettingIPAddress": "IPアドレスを取得しています...",
-    "sendAgain": {"zero": "再送信", "one": "再送信", "other": "再送信 ({})"},
-    "appUpdateAvailableTitle": "アプリのアップデートが利用可能です",
-    "appUpdateAvailableDesc": "新しいアプリバージョンが登場しました！ 最新の機能と改善を利用するには、今すぐアップデートしてください。",
-    "updateBtn": "アップデート",
-    "appUpdateAvailableSetting": "アプリのアップデートが利用可能です！"
+    "zh": "中国語"
   };
   static const Map<String, dynamic> de = {
     "AD": "Andorra",
@@ -2057,6 +2047,10 @@ class CodegenLoader extends AssetLoader {
     "anonymous": "Anonym",
     "apiVersion": "API Version",
     "appLang": "Anwendungssprache",
+    "appUpdateAvailableDesc":
+        "Die neue App-Version ist da! Aktualisieren Sie jetzt, um die neuesten Funktionen und Verbesserungen zu erhalten.",
+    "appUpdateAvailableSetting": "App-Update verfügbar!",
+    "appUpdateAvailableTitle": "App-Update verfügbar",
     "appVersion": "App Version",
     "application": "Anwendung",
     "ar": "Arabisch",
@@ -2396,6 +2390,7 @@ class CodegenLoader extends AssetLoader {
         "Abonnementpläne können nicht abgerufen werden! Bitte versuchen Sie es erneut.",
     "unauthenticatedBannerBtn": "Melde dich an, um dein Abonnement zu überprüfen",
     "unauthenticatedBannerTitle": "Du bist nicht angemeldet",
+    "updateBtn": "Aktualisieren",
     "upload": "Hochladen",
     "was": "War",
     "weNeedPermission": "Wir benötigen Ihre Erlaubnis",
@@ -2404,16 +2399,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} für das Jahr.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Ja",
-    "zh": "Chinesisch",
-    "logoutVPNConnectedDesc":
-        "VPN ist eingeschaltet. Sie werden vom VPN -Server getrennt, wenn Sie sich weiter anmelden.",
-    "gettingIPAddress": "IP-Adresse wird abgerufen...",
-    "sendAgain": {"zero": "Erneut senden", "one": "Erneut senden", "other": "Erneut senden ({})"},
-    "appUpdateAvailableTitle": "App-Update verfügbar",
-    "appUpdateAvailableDesc":
-        "Die neue App-Version ist da! Aktualisieren Sie jetzt, um die neuesten Funktionen und Verbesserungen zu erhalten.",
-    "updateBtn": "Aktualisieren",
-    "appUpdateAvailableSetting": "App-Update verfügbar!"
+    "zh": "Chinesisch"
   };
   static const Map<String, dynamic> pt = {
     "AD": "Andorra",
@@ -2687,6 +2673,10 @@ class CodegenLoader extends AssetLoader {
     "anonymous": "Anônima",
     "apiVersion": "Versão da API",
     "appLang": "Idioma do aplicativo",
+    "appUpdateAvailableDesc":
+        "A nova versão da aplicação chegou! Atualize agora para obter as mais recentes funcionalidades e melhorias.",
+    "appUpdateAvailableSetting": "Atualização da aplicação disponível!",
+    "appUpdateAvailableTitle": "Atualização da aplicação disponível",
     "appVersion": "Versão do aplicativo",
     "application": "Aplicativa",
     "ar": "Arabe",
@@ -3021,6 +3011,7 @@ class CodegenLoader extends AssetLoader {
     "unableToGetPlans": "Incapaz de obter planos de assinatura! Por favor, tente novamente.",
     "unauthenticatedBannerBtn": "Faça login para verificar sua assinatura",
     "unauthenticatedBannerTitle": "Você não está conectado",
+    "updateBtn": "Atualização",
     "upload": "Carregar",
     "was": "Era",
     "weNeedPermission": "Precisamos da sua permissão",
@@ -3304,6 +3295,10 @@ class CodegenLoader extends AssetLoader {
     "anonymous": "Anonymous",
     "apiVersion": "API Version",
     "appLang": "Application language",
+    "appUpdateAvailableDesc":
+        "The new app version is here! Update now for the latest features and improvements.",
+    "appUpdateAvailableSetting": "App Update Available!",
+    "appUpdateAvailableTitle": "App Update Available",
     "appVersion": "App Version",
     "application": "Application",
     "ar": "Arabic",
@@ -3354,6 +3349,7 @@ class CodegenLoader extends AssetLoader {
     "continueWithGoogle": "Continue with Google",
     "copyBtn": "Copy",
     "copyLink": "Copy the link and paste it on your browser",
+    "coudntFindLocations": "We couldn't find a location for \"{searchKeyword}.\" 😕",
     "currentPrice": "{amount}",
     "currentlyOffline": "You are currently offline.",
     "dark": "Dark Theme",
@@ -3569,7 +3565,7 @@ class CodegenLoader extends AssetLoader {
     "selectYourSubscription": "Select your subscription",
     "semiAnnual": "semi-annually",
     "semiAnnualPlanDiscountPrice": "{amount} for 6 months.",
-    "sendAgain": {"other": "Send again ({})", "zero": "Send again"},
+    "sendAgain": {"one": "Send again", "other": "Send again ({})", "zero": "Send again"},
     "sendToUs": "Send Feedback",
     "serviceUnavailableError":
         "We’re experiencing temporary network issues. Please try again later..",
@@ -3626,6 +3622,7 @@ class CodegenLoader extends AssetLoader {
     "unableToGetPlans": "Unable to get subscription plans! Please try again.",
     "unauthenticatedBannerBtn": "Sign in to check your subscription",
     "unauthenticatedBannerTitle": "You're not signed in",
+    "updateBtn": "Update",
     "upload": "Upload",
     "was": "Was",
     "weNeedPermission": "We need your permission",
@@ -3634,16 +3631,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} for the year.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Yes",
-    "zh": "Chinese",
-    "logoutVPNConnectedDesc":
-        "VPN is on. You will be disconnected from VPN server if continue to log out.",
-    "gettingIPAddress": "Getting IP address...",
-    "sendAgain": {"zero": "Send again", "other": "Send again ({})"},
-    "appUpdateAvailableTitle": "App Update Available",
-    "appUpdateAvailableDesc":
-        "The new app version is here! Update now for the latest features and improvements.",
-    "updateBtn": "Update",
-    "appUpdateAvailableSetting": "App Update Available!"
+    "zh": "Chinese"
   };
   static const Map<String, dynamic> it = {
     "AD": "Andorra",
@@ -3918,6 +3906,10 @@ class CodegenLoader extends AssetLoader {
     "anonymous": "Anonimo",
     "apiVersion": "Versione dell'API",
     "appLang": "Lingua dell'applicazione",
+    "appUpdateAvailableDesc":
+        "La nuova versione dell'app è qui! Aggiorna ora per le ultime funzionalità e miglioramenti.",
+    "appUpdateAvailableSetting": "Aggiornamento dell'app disponibile!",
+    "appUpdateAvailableTitle": "Aggiornamento dell'app disponibile",
     "appVersion": "Versione dell'app",
     "application": "Applicazione",
     "ar": "Arabo",
@@ -4254,6 +4246,7 @@ class CodegenLoader extends AssetLoader {
     "unableToGetPlans": "Impossibile ottenere piani di abbonamento! Per favore riprova.",
     "unauthenticatedBannerBtn": "Accedi per controllare il tuo abbonamento",
     "unauthenticatedBannerTitle": "Non hai effettuato l'accesso",
+    "updateBtn": "Aggiorna",
     "upload": "Upload",
     "was": "Era",
     "weNeedPermission": "Abbiamo bisogno del tuo permesso",
@@ -4262,20 +4255,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} per l'anno.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sì",
-    "zh": "Cinese",
-    "logoutVPNConnectedDesc":
-        "VPN è on. Verrà disconnesso dal server VPN se continui a disconnettersi.",
-    "gettingIPAddress": "Stiamo ottenendo l'indirizzo IP...",
-    "sendAgain": {
-      "zero": "Invia di nuovo",
-      "one": "Invia di nuovo",
-      "other": "Invia di nuovo ({})"
-    },
-    "appUpdateAvailableTitle": "Aggiornamento dell'app disponibile",
-    "appUpdateAvailableDesc":
-        "La nuova versione dell'app è qui! Aggiorna ora per le ultime funzionalità e miglioramenti.",
-    "updateBtn": "Aggiorna",
-    "appUpdateAvailableSetting": "Aggiornamento dell'app disponibile!"
+    "zh": "Cinese"
   };
   static const Map<String, dynamic> fr = {
     "AD": "Andorre",
@@ -4550,6 +4530,10 @@ class CodegenLoader extends AssetLoader {
     "anonymous": "Anonyme",
     "apiVersion": "Version de l'API",
     "appLang": "Langage de l'application",
+    "appUpdateAvailableDesc":
+        "La nouvelle version de l'application est arrivée ! Mettez à jour maintenant pour profiter des dernières fonctionnalités et améliorations.",
+    "appUpdateAvailableSetting": "Mise à jour de l'application disponible !",
+    "appUpdateAvailableTitle": "Mise à jour de l'application disponible",
     "appVersion": "Version de l'application",
     "application": "Application",
     "ar": "Arabe",
@@ -4889,6 +4873,7 @@ class CodegenLoader extends AssetLoader {
     "unableToGetPlans": "Impossible d'obtenir des plans d'abonnement! Veuillez réessayer.",
     "unauthenticatedBannerBtn": "Connectez-vous pour vérifier votre abonnement",
     "unauthenticatedBannerTitle": "Vous n'êtes pas connecté",
+    "updateBtn": "Mettre à jour",
     "upload": "Télécharger",
     "was": "Était",
     "weNeedPermission": "Nous avons besoin de votre autorisation",
@@ -4897,20 +4882,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} pour l'année.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Oui",
-    "zh": "Chinois",
-    "logoutVPNConnectedDesc":
-        "VPN est activé. Vous serez déconnecté de VPN Server si vous continuerez à vous déconnecter.",
-    "gettingIPAddress": "Obtenir une adresse IP",
-    "sendAgain": {
-      "zero": "Envoyer à nouveau",
-      "one": "Envoyer à nouveau",
-      "other": "Envoyer à nouveau ({})"
-    },
-    "appUpdateAvailableTitle": "Mise à jour de l'application disponible",
-    "appUpdateAvailableDesc":
-        "La nouvelle version de l'application est arrivée ! Mettez à jour maintenant pour profiter des dernières fonctionnalités et améliorations.",
-    "updateBtn": "Mettre à jour",
-    "appUpdateAvailableSetting": "Mise à jour de l'application disponible !"
+    "zh": "Chinois"
   };
   static const Map<String, dynamic> id = {
     "AD": "Andorra",
@@ -5185,6 +5157,10 @@ class CodegenLoader extends AssetLoader {
     "anonymous": "Anonim",
     "apiVersion": "Versi API",
     "appLang": "Bahasa aplikasi",
+    "appUpdateAvailableDesc":
+        "Versi baru aplikasi sudah tersedia! Perbarui sekarang untuk fitur dan peningkatan terbaru.",
+    "appUpdateAvailableSetting": "Pembaruan Aplikasi Tersedia!",
+    "appUpdateAvailableTitle": "Pembaruan Aplikasi Tersedia",
     "appVersion": "Versi Aplikasi",
     "application": "Aplikasi",
     "ar": "Arab",
@@ -5509,6 +5485,7 @@ class CodegenLoader extends AssetLoader {
     "unableToGetPlans": "Tidak bisa mendapatkan paket langganan! Silakan coba lagi.",
     "unauthenticatedBannerBtn": "Masuk untuk memeriksa langganan Anda",
     "unauthenticatedBannerTitle": "Anda belum masuk",
+    "updateBtn": "Perbarui",
     "upload": "Mengunggah",
     "was": "Sebelumnya",
     "weNeedPermission": "Kami membutuhkan izin Anda",
@@ -5517,15 +5494,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} untuk tahun.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Iya",
-    "zh": "Cina",
-    "logoutVPNConnectedDesc": "VPN aktif. Anda akan terputus dari VPN Server jika terus keluar.",
-    "gettingIPAddress": "Mengambil alamat IP...",
-    "sendAgain": {"zero": "Kirim lagi", "one": "Kirim lagi", "other": "Kirim lagi ({})"},
-    "appUpdateAvailableTitle": "Pembaruan Aplikasi Tersedia",
-    "appUpdateAvailableDesc":
-        "Versi baru aplikasi sudah tersedia! Perbarui sekarang untuk fitur dan peningkatan terbaru.",
-    "updateBtn": "Perbarui",
-    "appUpdateAvailableSetting": "Pembaruan Aplikasi Tersedia!"
+    "zh": "Cina"
   };
   static const Map<String, dynamic> es = {
     "AD": "Andorra",
@@ -5800,6 +5769,10 @@ class CodegenLoader extends AssetLoader {
     "anonymous": "Anónimo",
     "apiVersion": "Versión API",
     "appLang": "Idioma de la aplicación",
+    "appUpdateAvailableDesc":
+        "¡La nueva versión de la aplicación está aquí! Actualiza ahora para obtener las últimas funciones y mejoras.",
+    "appUpdateAvailableSetting": "¡Actualización de la aplicación disponible!",
+    "appUpdateAvailableTitle": "Actualización de la aplicación disponible",
     "appVersion": "Versión de aplicación",
     "application": "Solicitud",
     "ar": "Arábica",
@@ -6014,10 +5987,6 @@ class CodegenLoader extends AssetLoader {
     "plan_yearly": "Plan Anual",
     "poland": "Polonia",
     "popular": "Popular",
-    "pricingIntroductoryPeriod": {
-      "12": "¡por el primer año!",
-      "other": "¡por los primeros {} meses!"
-    },
     "pricingIntroductoryPeriod12": "¡por el primer año!",
     "pricingIntroductoryPeriod6": "¡por los primeros 6 meses!",
     "pricingPlanDiscountDesc":
@@ -6139,6 +6108,7 @@ class CodegenLoader extends AssetLoader {
     "unableToGetPlans": "¡No se pueden obtener planes de suscripción! Inténtalo de nuevo.",
     "unauthenticatedBannerBtn": "Inicia sesión para verificar tu suscripción",
     "unauthenticatedBannerTitle": "No has iniciado sesión",
+    "updateBtn": "Actualizar",
     "upload": "Subir",
     "was": "Antes",
     "weNeedPermission": "Necesitamos tu permiso",
@@ -6147,20 +6117,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} por el año.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sí",
-    "zh": "Chino",
-    "logoutVPNConnectedDesc":
-        "VPN está encendido. Será desconectado del servidor VPN si continúa iniciando sesión.",
-    "gettingIPAddress": "Obteniendo dirección IP...",
-    "sendAgain": {
-      "zero": "Enviar de nuevo",
-      "one": "Enviar de nuevo",
-      "other": "Enviar de nuevo ({})"
-    },
-    "appUpdateAvailableTitle": "Actualización de la aplicación disponible",
-    "appUpdateAvailableDesc":
-        "¡La nueva versión de la aplicación está aquí! Actualiza ahora para obtener las últimas funciones y mejoras.",
-    "updateBtn": "Actualizar",
-    "appUpdateAvailableSetting": "¡Actualización de la aplicación disponible!"
+    "zh": "Chino"
   };
   static const Map<String, dynamic> ar = {
     "AD": "أندورا",
@@ -6434,6 +6391,10 @@ class CodegenLoader extends AssetLoader {
     "anonymous": "مجهول",
     "apiVersion": "أبي الإصدار",
     "appLang": "لغة التطبيق",
+    "appUpdateAvailableDesc":
+        "الإصدار الجديد من التطبيق هنا! قم بالتحديث الآن للحصول على أحدث الميزات والتحسينات.",
+    "appUpdateAvailableSetting": "تحديث التطبيق متاح!",
+    "appUpdateAvailableTitle": "تحديث التطبيق متاح",
     "appVersion": "نسخة التطبيق",
     "application": "طلب",
     "ar": "عربي",
@@ -6449,6 +6410,7 @@ class CodegenLoader extends AssetLoader {
     "billedPerMonth": "{amount}/شهر - تحصيل {period}",
     "browseAll": "تصفح الكل",
     "browseTop": "تصفح في الأعلى",
+    "buttonUpdateApp": "تحديث الآن",
     "cancelBtn": "الغي",
     "cancelMyAccount": "حذف الحساب",
     "cancelYourSubsMess": "قم بإلغاء اشتراكك في اشتراكات App Store قبل حذف حسابك.",
@@ -6481,6 +6443,7 @@ class CodegenLoader extends AssetLoader {
     "continueWithGoogle": "تواصل مع جوجل",
     "copyBtn": "نسخ",
     "copyLink": "انسخ الرابط والصقه في متصفحك",
+    "coudntFindLocations": "لم نتمكن من العثور على موقع لـ \"{searchKeyword} 😕",
     "currentPrice": "{amount}",
     "currentlyOffline": "أنت حاليا غير متصل.",
     "dark": "مظهر داكن",
@@ -6748,6 +6711,7 @@ class CodegenLoader extends AssetLoader {
     "unableToGetPlans": "غير قادر على الحصول على خطط الاشتراك! حاول مرة أخرى.",
     "unauthenticatedBannerBtn": "قم بتسجيل الدخول للتحقق من اشتراكك",
     "unauthenticatedBannerTitle": "تسجيل الدخول",
+    "updateBtn": "تحديث",
     "upload": "رفع",
     "was": "كان",
     "weNeedPermission": "نحن بحاجة إلى إذنك",
@@ -6756,15 +6720,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{المبلغ} للسنة.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "نعم",
-    "zh": "صينى",
-    "logoutVPNConnectedDesc": "VPN ON. سيتم فصلك عن خادم VPN إذا استمرت في تسجيل الخروج.",
-    "gettingIPAddress": "الحصول على عنوان IP...",
-    "sendAgain": {"zero": "إعادة الإرسال", "one": "إعادة الإرسال", "other": "إعادة الإرسال ({})"},
-    "appUpdateAvailableTitle": "تحديث التطبيق متاح",
-    "appUpdateAvailableDesc":
-        "الإصدار الجديد من التطبيق هنا! قم بالتحديث الآن للحصول على أحدث الميزات والتحسينات.",
-    "updateBtn": "تحديث",
-    "appUpdateAvailableSetting": "تحديث التطبيق متاح!"
+    "zh": "صينى"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,
