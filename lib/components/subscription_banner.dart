@@ -4,13 +4,13 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/hooks/scaffold_brightness_hook.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/banners/banner.dart';
 import 'package:mysterium_vpn/components/banners/banner_body.dart';
 import 'package:mysterium_vpn/components/banners/banner_cta.dart';
 import 'package:mysterium_vpn/components/banners/banner_title.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
-import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
@@ -20,6 +20,7 @@ class SubscriptionBanner extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final handleSubscribe = useHandleSubscribe();
+    final scaffoldBrightness = useScaffoldBrightness();
     final subscriptionStore = ref.watch(subscriptionStorePOD);
     return Observer(
       builder: (context) => switch (subscriptionStore.subscriptionFuture.status) {
@@ -36,11 +37,7 @@ class SubscriptionBanner extends HookConsumerWidget {
           ),
         FutureStatus.rejected => Banner(
             title: BannerTitle(
-              icon: const SvgIcon(
-                asset: Assets.errorIcon,
-                width: 20,
-                height: 20,
-              ),
+              iconAsset: Assets.infoOutline,
               text: LocaleKeys.checkSubsStatusFailedTitle.tr(),
             ),
             body: BannerBody(
@@ -51,6 +48,10 @@ class SubscriptionBanner extends HookConsumerWidget {
               onPressed: subscriptionStore.refreshSubscription,
             ),
             onPressed: subscriptionStore.refreshSubscription,
+            style: switch (scaffoldBrightness) {
+              Brightness.light => BannerStyle.warningLight,
+              Brightness.dark => BannerStyle.warningDark,
+            },
           ),
         FutureStatus.fulfilled => Banner(
             title: BannerTitle(text: LocaleKeys.noSubscriptionTitle.tr()),
