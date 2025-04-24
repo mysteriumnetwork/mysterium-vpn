@@ -5,7 +5,8 @@ enum BannerType {
   appUpdateAvailable(shouldPersist: false),
   datacenter,
   highSpeedIPs(mainBanner: false),
-  residentialIPs(mainBanner: false);
+  residentialIPs(mainBanner: false),
+  tooManyConnections;
 
   const BannerType({
     this.isDismissable = true,

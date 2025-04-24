@@ -4,6 +4,7 @@ import 'package:mysterium_vpn/common/enums/banner_type.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/components/banners/data_center_banner.dart';
+import 'package:mysterium_vpn/components/banners/too_many_connections_banner.dart';
 import 'package:mysterium_vpn/components/banners/unauthenticated_banner.dart';
 import 'package:mysterium_vpn/components/banners/version_update_banner.dart';
 import 'package:mysterium_vpn/components/subscription_banner.dart';
@@ -35,6 +36,7 @@ class HomeBanner extends HookConsumerWidget {
               BannerType.subscription => const SubscriptionBanner(),
               BannerType.datacenter => const DataCenterBanner(),
               BannerType.unauthenticated => const UnauthenticatedBanner(),
+              BannerType.tooManyConnections => const TooManyConnectionsBanner(),
               BannerType.appUpdateAvailable => const AppVersionUpdateBanner(),
               _ => const SizedBox.shrink(),
             },

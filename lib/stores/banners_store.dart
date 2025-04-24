@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
+import 'package:mysterium_vpn/stores/vpn_store.dart';
 
 part 'banners_store.g.dart';
 
@@ -20,6 +21,7 @@ abstract class _BannersStore with Store {
     this._subscriptionStore,
     this._locationsStore,
     this._authSessionStore,
+    this._vpnStore,
     this._remoteConfigStore,
     this._flavorConfig,
   );
@@ -28,6 +30,7 @@ abstract class _BannersStore with Store {
   final SubscriptionStore _subscriptionStore;
   final LocationsStore _locationsStore;
   final AuthSessionStore _authSessionStore;
+  final VpnStore _vpnStore;
   final RemoteConfigStore _remoteConfigStore;
   final FlavorConfig _flavorConfig;
 
@@ -44,6 +47,7 @@ abstract class _BannersStore with Store {
     BannerType.subscription,
     BannerType.datacenter,
     BannerType.appUpdateAvailable,
+    BannerType.tooManyConnections,
   };
 
   @readonly
@@ -74,6 +78,7 @@ abstract class _BannersStore with Store {
       if (shouldShowAppUpdateBanner) BannerType.appUpdateAvailable,
       if (_locationsStore.dcLocationsStream.value?.isEmpty == false && shown != null)
         BannerType.datacenter,
+      if (_vpnStore.connectionLimitReached) BannerType.tooManyConnections,
 
       // Add remaining main banners which require no conditions
       ...BannerType.mainBanners.toSet().difference(_bannerRequireConditions),

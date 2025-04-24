@@ -32,6 +32,7 @@ abstract class Assets {
   static const String durationActive = 'assets/icons/duration_active.svg';
   static const String globe = 'assets/icons/globe.svg';
   static const String googleLogo = 'assets/icons/google.svg';
+  static const String infoOutline = 'assets/icons/info_outline.svg';
   static const String killSwitch = 'assets/icons/kill_switch.svg';
   static const String languageDark = 'assets/icons/language_dark.svg';
   static const String languageLight = 'assets/icons/language_light.svg';
