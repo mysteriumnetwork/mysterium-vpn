@@ -169,6 +169,14 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     });
   }
 
+  late final _$_fetchSubscriptionAsyncAction =
+      AsyncAction('_SubscriptionStore._fetchSubscription', context: context);
+
+  @override
+  Future<Subscription> _fetchSubscription() {
+    return _$_fetchSubscriptionAsyncAction.run(() => super._fetchSubscription());
+  }
+
   late final _$refreshProductsAsyncAction =
       AsyncAction('_SubscriptionStore.refreshProducts', context: context);
 
