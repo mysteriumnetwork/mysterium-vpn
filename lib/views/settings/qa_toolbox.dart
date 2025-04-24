@@ -69,6 +69,23 @@ class QAToolbox extends HookConsumerWidget {
                 },
               ),
             ),
+            SettingItem(
+              asset: isDarkTheme ? Assets.settingsDark : Assets.settingsLight,
+              title: 'Mock subscription failure status',
+              subtitle: const EasyText('Will set subscription status to failed'),
+              actionWidget: TextButton.icon(
+                label: const EasyText(
+                  'Mark subscription failed',
+                ),
+                icon: const Icon(Icons.refresh),
+                onPressed: () async {
+                  ref.read(subscriptionStorePOD).mockSubscriptionFailureStatus();
+                  showSnackbar(
+                    'Subscription status set to failed',
+                  );
+                },
+              ),
+            ),
           ],
         );
       },
