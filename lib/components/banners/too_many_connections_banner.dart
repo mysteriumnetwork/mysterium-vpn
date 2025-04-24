@@ -2,11 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' hide Banner;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/banners/banner.dart';
 import 'package:mysterium_vpn/components/banners/banner_body.dart';
 import 'package:mysterium_vpn/components/banners/banner_cta.dart';
 import 'package:mysterium_vpn/components/banners/banner_title.dart';
+import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
@@ -29,7 +31,11 @@ class TooManyConnectionsBanner extends HookConsumerWidget {
       borderColor: Palette.yellow,
       title: BannerTitle(
         text: LocaleKeys.tooManyConnectionsBannerTitle.tr(),
-        icon: const Icon(Icons.info_outline_rounded),
+        icon: const SvgIcon(
+          asset: Assets.infoOutline,
+          width: 20,
+          height: 20,
+        ),
       ),
       body: BannerBody(
         text: isConnected
