@@ -78,6 +78,7 @@ void main() {
       test('returns all banners when no banners are shown and not subscribed', () async {
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
         when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.1');
+        when(mockVpnStore.connectionLimitReached).thenReturn(true);
 
         await bannersStore.shownBanners;
 
@@ -103,6 +104,7 @@ void main() {
         );
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
         when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.1');
+        when(mockVpnStore.connectionLimitReached).thenReturn(true);
 
         await bannersStore.shownBanners;
 
@@ -115,6 +117,7 @@ void main() {
       test('excludes subscription banner when subscribed', () async {
         await bannersStore.shownBanners;
         when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.1');
+        when(mockVpnStore.connectionLimitReached).thenReturn(true);
 
         expect(
           bannersStore.mainBanners,
@@ -128,11 +131,24 @@ void main() {
           (_) => ObservableStream(Stream.value(VPNLocations()), initialValue: VPNLocations()),
         );
         when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.1');
+        when(mockVpnStore.connectionLimitReached).thenReturn(true);
         await bannersStore.shownBanners;
 
         expect(
           bannersStore.mainBanners,
           BannerType.mainBanners.where((b) => b != BannerType.datacenter).toList(),
+        );
+      });
+
+      test('excludes tooManyConnections banner when connectionLimitReached is false', () async {
+        when(mockSubscriptionStore.isSubscribed).thenReturn(false);
+        when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.1');
+        when(mockVpnStore.connectionLimitReached).thenReturn(false);
+        await bannersStore.shownBanners;
+
+        expect(
+          bannersStore.mainBanners,
+          BannerType.mainBanners.where((b) => b != BannerType.tooManyConnections).toList(),
         );
       });
     });
