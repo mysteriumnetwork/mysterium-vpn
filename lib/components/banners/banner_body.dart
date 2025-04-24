@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/components/banners/banner.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 
 class BannerBody extends StatelessWidget {
@@ -15,6 +16,6 @@ class BannerBody extends StatelessWidget {
         fontSize: 12,
         maxLines: 3,
         textAlign: TextAlign.center,
-        color: Colors.white,
+        color: BannerStyle.of(context).foregroundColor,
       );
 }

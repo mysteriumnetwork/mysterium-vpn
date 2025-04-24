@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/components/banners/banner.dart';
 
 class BannerCTA extends StatelessWidget {
   const BannerCTA({
@@ -14,14 +14,16 @@ class BannerCTA extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final bannerStyle = BannerStyle.of(context);
+
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Palette.purple,
+        backgroundColor: bannerStyle.ctaBackgroundColor,
         elevation: 0,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         minimumSize: const Size(130, 32),
-        foregroundColor: Palette.white,
+        foregroundColor: bannerStyle.ctaForegroundColor,
         visualDensity: VisualDensity.comfortable,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       ),
@@ -29,7 +31,7 @@ class BannerCTA extends StatelessWidget {
         text,
         style: theme.textTheme.labelMedium!.copyWith(
           fontWeight: FontWeight.w700,
-          color: Palette.white,
+          color: bannerStyle.ctaForegroundColor,
           fontSize: 12,
         ),
       ),

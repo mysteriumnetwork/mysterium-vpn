@@ -51,9 +51,11 @@ class LocationsDisclaimer extends HookConsumerWidget {
         return Padding(
           padding: const EdgeInsets.only(bottom: 30),
           child: Banner(
-            color: theme.colorScheme.surfaceContainerHigh,
-            borderRadius: BorderRadius.circular(12),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            style: BannerStyle.info.copyWith(
+              backgroundColor: theme.colorScheme.surfaceContainerHigh,
+              borderRadius: BorderRadius.circular(12),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            ),
             onDismiss: handleDismiss,
             title: SizedBox(
               width: double.infinity,
