@@ -566,5 +566,9 @@
   "appUpdateAvailableTitle":"App Update Available",
   "appUpdateAvailableDesc": "The new app version is here! Update now for the latest features and improvements.",
   "updateBtn": "Update",
-  "appUpdateAvailableSetting":"App Update Available!"
+  "appUpdateAvailableSetting":"App Update Available!",
+  "checkSubsStatusTitle":"Check Subscription Status",
+  "checkSubsStatusDesc":"Please wait while we check your subscription status",
+  "checkSubsStatusFailedTitle":"Something went wrong",
+  "checkSubsStatusFailedDesc":"We were unable to check your subscription status. Please retry."
 }

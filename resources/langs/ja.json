@@ -568,5 +568,9 @@
   "appUpdateAvailableTitle": "アプリのアップデートが利用可能です",
   "appUpdateAvailableDesc": "新しいアプリバージョンが登場しました！ 最新の機能と改善を利用するには、今すぐアップデートしてください。",
   "updateBtn": "アップデート",
-  "appUpdateAvailableSetting": "アプリのアップデートが利用可能です！"
+  "appUpdateAvailableSetting": "アプリのアップデートが利用可能です！",
+  "checkSubsStatusTitle": "サブスクリプションステータスを確認",
+  "checkSubsStatusDesc": "サブスクリプションステータスを確認しています。しばらくお待ちください。",
+  "checkSubsStatusFailedTitle": "問題が発生しました",
+  "checkSubsStatusFailedDesc": "サブスクリプションステータスを確認できませんでした。再試行してください。"
 }

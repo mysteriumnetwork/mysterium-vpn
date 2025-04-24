@@ -568,5 +568,9 @@
   "appUpdateAvailableTitle": "应用更新可用",
   "appUpdateAvailableDesc": "新的应用版本已上线！立即更新以获取最新功能和改进。",
   "updateBtn": "更新",
-  "appUpdateAvailableSetting": "应用更新可用！"
+  "appUpdateAvailableSetting": "应用更新可用！",
+  "checkSubsStatusTitle": "检查订阅状态",
+  "checkSubsStatusDesc": "请稍候，我们正在检查您的订阅状态",
+  "checkSubsStatusFailedTitle": "出了点问题",
+  "checkSubsStatusFailedDesc": "我们无法检查您的订阅状态。请重试。"
 }

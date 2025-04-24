@@ -567,4 +567,8 @@ abstract class LocaleKeys {
   static const appUpdateAvailableDesc = 'appUpdateAvailableDesc';
   static const updateBtn = 'updateBtn';
   static const appUpdateAvailableSetting = 'appUpdateAvailableSetting';
+  static const checkSubsStatusTitle = 'checkSubsStatusTitle';
+  static const checkSubsStatusDesc = 'checkSubsStatusDesc';
+  static const checkSubsStatusFailedTitle = 'checkSubsStatusFailedTitle';
+  static const checkSubsStatusFailedDesc = 'checkSubsStatusFailedDesc';
 }
