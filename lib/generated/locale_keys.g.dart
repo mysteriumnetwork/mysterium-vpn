@@ -270,6 +270,9 @@ abstract class LocaleKeys {
   static const anonymous = 'anonymous';
   static const apiVersion = 'apiVersion';
   static const appLang = 'appLang';
+  static const appUpdateAvailableDesc = 'appUpdateAvailableDesc';
+  static const appUpdateAvailableSetting = 'appUpdateAvailableSetting';
+  static const appUpdateAvailableTitle = 'appUpdateAvailableTitle';
   static const appVersion = 'appVersion';
   static const application = 'application';
   static const ar = 'ar';
@@ -559,6 +562,7 @@ abstract class LocaleKeys {
   static const unableToGetPlans = 'unableToGetPlans';
   static const unauthenticatedBannerBtn = 'unauthenticatedBannerBtn';
   static const unauthenticatedBannerTitle = 'unauthenticatedBannerTitle';
+  static const updateBtn = 'updateBtn';
   static const upload = 'upload';
   static const was = 'was';
   static const weNeedPermission = 'weNeedPermission';
@@ -568,11 +572,4 @@ abstract class LocaleKeys {
   static const yearlyPlanFullPrice = 'yearlyPlanFullPrice';
   static const yes = 'yes';
   static const zh = 'zh';
-  static const logoutVPNConnectedDesc = 'logoutVPNConnectedDesc';
-  static const gettingIPAddress = 'gettingIPAddress';
-  static const sendAgain = 'sendAgain';
-  static const appUpdateAvailableTitle = 'appUpdateAvailableTitle';
-  static const appUpdateAvailableDesc = 'appUpdateAvailableDesc';
-  static const updateBtn = 'updateBtn';
-  static const appUpdateAvailableSetting = 'appUpdateAvailableSetting';
 }
