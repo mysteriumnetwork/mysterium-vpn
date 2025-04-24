@@ -281,6 +281,17 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
   }
 
   @override
+  void mockSubscriptionFailureStatus() {
+    final _$actionInfo = _$_SubscriptionStoreActionController.startAction(
+        name: '_SubscriptionStore.mockSubscriptionFailureStatus');
+    try {
+      return super.mockSubscriptionFailureStatus();
+    } finally {
+      _$_SubscriptionStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 monthlyProduct: ${monthlyProduct},

@@ -465,6 +465,11 @@ abstract class _SubscriptionStore with Store {
     await subscribeToPackage(product: product.productDetails);
   }
 
+  @action
+  void mockSubscriptionFailureStatus() {
+    _subscriptionFuture = ObservableFuture.error(Exception('mock error'));
+  }
+
   FutureOr<void> dispose() async {
     await _purchaseStream?.cancel();
     _purchaseStream = null;
