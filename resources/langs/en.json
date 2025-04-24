@@ -268,6 +268,9 @@
   "anonymous": "Anonymous",
   "apiVersion": "API Version",
   "appLang": "Application language",
+  "appUpdateAvailableDesc": "The new app version is here! Update now for the latest features and improvements.",
+  "appUpdateAvailableSetting": "App Update Available!",
+  "appUpdateAvailableTitle": "App Update Available",
   "appVersion": "App Version",
   "application": "Application",
   "ar": "Arabic",
@@ -313,6 +316,7 @@
   "continueWithGoogle": "Continue with Google",
   "copyBtn": "Copy",
   "copyLink": "Copy the link and paste it on your browser",
+  "coudntFindLocations": "We couldn't find a location for \"{searchKeyword}.\" 😕",
   "currentPrice": "{amount}",
   "currentlyOffline": "You are currently offline.",
   "dark": "Dark Theme",
@@ -508,6 +512,7 @@
   "semiAnnual": "semi-annually",
   "semiAnnualPlanDiscountPrice": "{amount} for 6 months.",
   "sendAgain": {
+    "one": "Send again",
     "other": "Send again ({})",
     "zero": "Send again"
   },
@@ -559,6 +564,7 @@
   "unableToGetPlans": "Unable to get subscription plans! Please try again.",
   "unauthenticatedBannerBtn": "Sign in to check your subscription",
   "unauthenticatedBannerTitle": "You're not signed in",
+  "updateBtn": "Update",
   "upload": "Upload",
   "was": "Was",
   "weNeedPermission": "We need your permission",
@@ -567,9 +573,5 @@
   "yearlyPlanDiscountPrice": "{amount} for the year.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Yes",
-  "zh": "Chinese",
-  "appUpdateAvailableTitle":"App Update Available",
-  "appUpdateAvailableDesc": "The new app version is here! Update now for the latest features and improvements.",
-  "updateBtn": "Update",
-  "appUpdateAvailableSetting":"App Update Available!"
+  "zh": "Chinese"
 }

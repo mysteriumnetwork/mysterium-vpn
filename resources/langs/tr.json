@@ -268,6 +268,9 @@
   "anonymous": "Anonim",
   "apiVersion": "API Sürümü",
   "appLang": "Uygulama dili",
+  "appUpdateAvailableDesc": "Yeni uygulama sürümü burada! En son özellikler ve iyileştirmeler için şimdi güncelleyin.",
+  "appUpdateAvailableSetting": "Uygulama Güncellemesi Mevcut!",
+  "appUpdateAvailableTitle": "Uygulama Güncellemesi Mevcut",
   "appVersion": "Uygulama sürümü",
   "application": "Başvuru",
   "ar": "Arapça",
@@ -561,6 +564,7 @@
   "unableToGetPlans": "Abonelik planları alınamıyor! ",
   "unauthenticatedBannerBtn": "Aboneliğinizi kontrol etmek için giriş yapın",
   "unauthenticatedBannerTitle": "Oturum açmadınız",
+  "updateBtn": "Güncelle",
   "upload": "Yükleme",
   "was": "Önce",
   "weNeedPermission": "İzninize ihtiyacımız var",
@@ -569,9 +573,5 @@
   "yearlyPlanDiscountPrice": "Yıl için {amount}.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Evet",
-  "zh": "Çince",
-  "appUpdateAvailableTitle": "Uygulama Güncellemesi Mevcut",
-  "appUpdateAvailableDesc": "Yeni uygulama sürümü burada! En son özellikler ve iyileştirmeler için şimdi güncelleyin.",
-  "updateBtn": "Güncelle",
-  "appUpdateAvailableSetting": "Uygulama Güncellemesi Mevcut!"
+  "zh": "Çince"
 }

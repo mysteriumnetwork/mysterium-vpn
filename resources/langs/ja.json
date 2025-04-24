@@ -268,6 +268,9 @@
   "anonymous": "匿名",
   "apiVersion": "APIバージョン",
   "appLang": "アプリケーション言語",
+  "appUpdateAvailableDesc": "新しいアプリバージョンが登場しました！ 最新の機能と改善を利用するには、今すぐアップデートしてください。",
+  "appUpdateAvailableSetting": "アプリのアップデートが利用可能です！",
+  "appUpdateAvailableTitle": "アプリのアップデートが利用可能です",
   "appVersion": "アプリのバージョン",
   "application": "応用",
   "ar": "アラビア語",
@@ -561,6 +564,7 @@
   "unableToGetPlans": "サブスクリプションプランを取得できません! もう一度試してください。",
   "unauthenticatedBannerBtn": "サインインしてサブスクリプションを確認してください",
   "unauthenticatedBannerTitle": "サインインしていません",
+  "updateBtn": "アップデート",
   "upload": "アップロード",
   "was": "以前は",
   "weNeedPermission": "あなたの許可が必要です",
@@ -569,9 +573,5 @@
   "yearlyPlanDiscountPrice": "年間{amount}。",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "はい",
-  "zh": "中国語",
-  "appUpdateAvailableTitle": "アプリのアップデートが利用可能です",
-  "appUpdateAvailableDesc": "新しいアプリバージョンが登場しました！ 最新の機能と改善を利用するには、今すぐアップデートしてください。",
-  "updateBtn": "アップデート",
-  "appUpdateAvailableSetting": "アプリのアップデートが利用可能です！"
+  "zh": "中国語"
 }
