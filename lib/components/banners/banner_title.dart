@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/components/banners/banner.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
+import 'package:mysterium_vpn/components/svg_icon.dart';
 
 class BannerTitle extends HookWidget {
   const BannerTitle({
     required this.text,
+    this.iconAsset,
+    this.iconSize,
     this.icon,
     super.key,
   });
 
   final String text;
+  final String? iconAsset;
+  final double? iconSize;
   final Widget? icon;
 
   @override
@@ -18,7 +23,15 @@ class BannerTitle extends HookWidget {
         mainAxisSize: MainAxisSize.min,
         spacing: 6,
         children: [
-          if (icon != null) icon!,
+          if (iconAsset != null)
+            SvgIcon(
+              asset: iconAsset!,
+              width: iconSize,
+              height: iconSize,
+              color: BannerStyle.of(context).foregroundColor,
+            )
+          else if (icon != null)
+            icon!,
           Flexible(
             child: EasyText(
               text,
