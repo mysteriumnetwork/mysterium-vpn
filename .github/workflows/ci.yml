@@ -20,7 +20,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Initialize Flutter SDK
-        uses: kuhnroyal/flutter-fvm-config-action/setup@v3
+        uses: chika3742/setup-fvm@v3
+        with:
+          project-dir: . # default
+          cache: true # default
 
       - name: Install dependencies
         run: make init
