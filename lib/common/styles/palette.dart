@@ -23,6 +23,8 @@ abstract class Palette {
   static const Color deepPurple = Color(0xff1E1632);
   static const Color veryLightBlue = Color(0xffF0F2FF);
   static const Color yellow = Color(0xffE2AF00);
+  static const Color darkOliveBrown = Color(0xff514314);
+  static const Color paleYellow = Color(0xffFFF6D9);
 
   Color get highlightColor;
   Color get secondaryColor;

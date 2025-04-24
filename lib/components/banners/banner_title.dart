@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:mysterium_vpn/components/banners/banner.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 
 class BannerTitle extends HookWidget {
@@ -23,7 +24,7 @@ class BannerTitle extends HookWidget {
               text,
               fontWeight: FontWeight.w700,
               fontSize: 14,
-              color: Colors.white,
+              color: BannerStyle.of(context).foregroundColor,
             ),
           ),
         ],
