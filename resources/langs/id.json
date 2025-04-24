@@ -268,6 +268,9 @@
   "anonymous": "Anonim",
   "apiVersion": "Versi API",
   "appLang": "Bahasa aplikasi",
+  "appUpdateAvailableDesc": "Versi baru aplikasi sudah tersedia! Perbarui sekarang untuk fitur dan peningkatan terbaru.",
+  "appUpdateAvailableSetting": "Pembaruan Aplikasi Tersedia!",
+  "appUpdateAvailableTitle": "Pembaruan Aplikasi Tersedia",
   "appVersion": "Versi Aplikasi",
   "application": "Aplikasi",
   "ar": "Arab",
@@ -561,6 +564,7 @@
   "unableToGetPlans": "Tidak bisa mendapatkan paket langganan! Silakan coba lagi.",
   "unauthenticatedBannerBtn": "Masuk untuk memeriksa langganan Anda",
   "unauthenticatedBannerTitle": "Anda belum masuk",
+  "updateBtn": "Perbarui",
   "upload": "Mengunggah",
   "was": "Sebelumnya",
   "weNeedPermission": "Kami membutuhkan izin Anda",
@@ -569,9 +573,5 @@
   "yearlyPlanDiscountPrice": "{amount} untuk tahun.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Iya",
-  "zh": "Cina",
-  "appUpdateAvailableTitle": "Pembaruan Aplikasi Tersedia",
-  "appUpdateAvailableDesc": "Versi baru aplikasi sudah tersedia! Perbarui sekarang untuk fitur dan peningkatan terbaru.",
-  "updateBtn": "Perbarui",
-  "appUpdateAvailableSetting": "Pembaruan Aplikasi Tersedia!"
+  "zh": "Cina"
 }

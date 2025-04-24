@@ -268,6 +268,9 @@
   "anonymous": "匿名的",
   "apiVersion": "API版本",
   "appLang": "应用语言",
+  "appUpdateAvailableDesc": "新的应用版本已上线！立即更新以获取最新功能和改进。",
+  "appUpdateAvailableSetting": "应用更新可用！",
+  "appUpdateAvailableTitle": "应用更新可用",
   "appVersion": "应用程序版本",
   "application": "应用",
   "ar": "阿拉伯",
@@ -561,6 +564,7 @@
   "unableToGetPlans": "无法获取订阅计划！请再试一次。",
   "unauthenticatedBannerBtn": "登录以检查您的订阅",
   "unauthenticatedBannerTitle": "您尚未登录",
+  "updateBtn": "更新",
   "upload": "上传",
   "was": "原价",
   "weNeedPermission": "我们需要您的许可",
@@ -569,9 +573,5 @@
   "yearlyPlanDiscountPrice": "全年{amount}。",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "是",
-  "zh": "中国人",
-  "appUpdateAvailableTitle": "应用更新可用",
-  "appUpdateAvailableDesc": "新的应用版本已上线！立即更新以获取最新功能和改进。",
-  "updateBtn": "更新",
-  "appUpdateAvailableSetting": "应用更新可用！"
+  "zh": "中国人"
 }

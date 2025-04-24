@@ -268,6 +268,9 @@
   "anonymous": "Anonym",
   "apiVersion": "API Version",
   "appLang": "Anwendungssprache",
+  "appUpdateAvailableDesc": "Die neue App-Version ist da! Aktualisieren Sie jetzt, um die neuesten Funktionen und Verbesserungen zu erhalten.",
+  "appUpdateAvailableSetting": "App-Update verfügbar!",
+  "appUpdateAvailableTitle": "App-Update verfügbar",
   "appVersion": "App Version",
   "application": "Anwendung",
   "ar": "Arabisch",
@@ -561,6 +564,7 @@
   "unableToGetPlans": "Abonnementpläne können nicht abgerufen werden! Bitte versuchen Sie es erneut.",
   "unauthenticatedBannerBtn": "Melde dich an, um dein Abonnement zu überprüfen",
   "unauthenticatedBannerTitle": "Du bist nicht angemeldet",
+  "updateBtn": "Aktualisieren",
   "upload": "Hochladen",
   "was": "War",
   "weNeedPermission": "Wir benötigen Ihre Erlaubnis",
@@ -569,9 +573,5 @@
   "yearlyPlanDiscountPrice": "{amount} für das Jahr.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Ja",
-  "zh": "Chinesisch",
-  "appUpdateAvailableTitle": "App-Update verfügbar",
-  "appUpdateAvailableDesc": "Die neue App-Version ist da! Aktualisieren Sie jetzt, um die neuesten Funktionen und Verbesserungen zu erhalten.",
-  "updateBtn": "Aktualisieren",
-  "appUpdateAvailableSetting": "App-Update verfügbar!"
+  "zh": "Chinesisch"
 }

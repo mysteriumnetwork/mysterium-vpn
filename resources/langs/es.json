@@ -268,6 +268,9 @@
   "anonymous": "Anónimo",
   "apiVersion": "Versión API",
   "appLang": "Idioma de la aplicación",
+  "appUpdateAvailableDesc": "¡La nueva versión de la aplicación está aquí! Actualiza ahora para obtener las últimas funciones y mejoras.",
+  "appUpdateAvailableSetting": "¡Actualización de la aplicación disponible!",
+  "appUpdateAvailableTitle": "Actualización de la aplicación disponible",
   "appVersion": "Versión de aplicación",
   "application": "Solicitud",
   "ar": "Arábica",
@@ -453,10 +456,6 @@
   "plan_yearly": "Plan Anual",
   "poland": "Polonia",
   "popular": "Popular",
-  "pricingIntroductoryPeriod": {
-    "12": "¡por el primer año!",
-    "other": "¡por los primeros {} meses!"
-  },
   "pricingIntroductoryPeriod12": "¡por el primer año!",
   "pricingIntroductoryPeriod6": "¡por los primeros 6 meses!",
   "pricingPlanDiscountDesc": "Privacidad total sin ser caro: ¡este plan ofrece un 43% de descuento en tu compra!",
@@ -565,6 +564,7 @@
   "unableToGetPlans": "¡No se pueden obtener planes de suscripción! Inténtalo de nuevo.",
   "unauthenticatedBannerBtn": "Inicia sesión para verificar tu suscripción",
   "unauthenticatedBannerTitle": "No has iniciado sesión",
+  "updateBtn": "Actualizar",
   "upload": "Subir",
   "was": "Antes",
   "weNeedPermission": "Necesitamos tu permiso",
@@ -573,9 +573,5 @@
   "yearlyPlanDiscountPrice": "{amount} por el año.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Sí",
-  "zh": "Chino",
-  "appUpdateAvailableTitle": "Actualización de la aplicación disponible",
-  "appUpdateAvailableDesc": "¡La nueva versión de la aplicación está aquí! Actualiza ahora para obtener las últimas funciones y mejoras.",
-  "updateBtn": "Actualizar",
-  "appUpdateAvailableSetting": "¡Actualización de la aplicación disponible!"
+  "zh": "Chino"
 }
