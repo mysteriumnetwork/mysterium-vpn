@@ -21,26 +21,28 @@ class SubscriptionBanner extends HookConsumerWidget {
     final handleSubscribe = useHandleSubscribe();
     final subscriptionStore = ref.watch(subscriptionStorePOD);
     return switch (subscriptionStore.subscriptionFuture.status) {
-      FutureStatus.rejected => const Banner(
+      FutureStatus.pending => Banner(
           title: BannerTitle(
-            icon: LoadingIndicator(
+            icon: const LoadingIndicator(
               radius: 16,
             ),
-            text: 'Checking subscription status',
+            text: LocaleKeys.checkSubsStatusTitle.tr(),
           ),
-          body: BannerBody(text: 'Please wait while we check your subscription status'),
+          body: BannerBody(
+            text: LocaleKeys.checkSubsStatusDesc.tr(),
+          ),
         ),
-      FutureStatus.pending => Banner(
-          title: const BannerTitle(
-            icon: SvgIcon(
+      FutureStatus.rejected => Banner(
+          title: BannerTitle(
+            icon: const SvgIcon(
               asset: Assets.subscription,
               width: 20,
               height: 20,
             ),
-            text: 'Something went wrong',
+            text: LocaleKeys.checkSubsStatusFailedTitle.tr(),
           ),
-          body: const BannerBody(
-            text: 'We were unable to check your subscription status. Please retry.',
+          body: BannerBody(
+            text: LocaleKeys.checkSubsStatusFailedDesc.tr(),
           ),
           cta: BannerCTA(
             text: LocaleKeys.retryBtn.tr(),

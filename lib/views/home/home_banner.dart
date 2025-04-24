@@ -6,7 +6,7 @@ import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/components/banners/data_center_banner.dart';
 import 'package:mysterium_vpn/components/banners/unauthenticated_banner.dart';
 import 'package:mysterium_vpn/components/banners/version_update_banner.dart';
-import 'package:mysterium_vpn/components/no_subscription_banner.dart';
+import 'package:mysterium_vpn/components/subscription_banner.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class HomeBanner extends HookConsumerWidget {
