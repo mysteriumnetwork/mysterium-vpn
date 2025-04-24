@@ -8,7 +8,6 @@ import 'package:mysterium_vpn/components/banners/banner.dart';
 import 'package:mysterium_vpn/components/banners/banner_body.dart';
 import 'package:mysterium_vpn/components/banners/banner_cta.dart';
 import 'package:mysterium_vpn/components/banners/banner_title.dart';
-import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
@@ -32,7 +31,7 @@ class AppVersionUpdateBanner extends HookConsumerWidget {
 
     return Banner(
       title: BannerTitle(
-        icon: const SvgIcon(asset: Assets.appUpdate),
+        iconAsset: Assets.appUpdate,
         text: LocaleKeys.appUpdateAvailableTitle.tr(),
       ),
       body: BannerBody(text: LocaleKeys.appUpdateAvailableDesc.tr()),
