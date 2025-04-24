@@ -128,6 +128,7 @@ class MyApp extends HookConsumerWidget {
         ref.invalidate(locationsStorePOD);
       }
       if (ref.exists(subscriptionStorePOD)) {
+        await ref.read(subscriptionStorePOD).disposeStore();
         ref.invalidate(subscriptionStorePOD);
       }
     }
