@@ -99,6 +99,9 @@ abstract class _VpnStore with Store {
   @readonly
   bool _malwareBlockerContent = false;
 
+  @observable
+  bool connectionLimitReached = false;
+
   @readonly
   bool _notSafeContentBlocker = false;
 
@@ -426,6 +429,7 @@ abstract class _VpnStore with Store {
     if (_connectionSub != null) {
       _connectionSub!.cancel();
     }
+    _connectingLocation = null;
   }
 
   /// Connect/Disconnect from VPN
@@ -437,7 +441,6 @@ abstract class _VpnStore with Store {
     if (_connectionStatus == ConnectionStatus.connected &&
         (location == null || location == _vpnConnection?.location)) {
       await disconnectWireguard();
-      _connectingLocation = null;
       return;
     }
 

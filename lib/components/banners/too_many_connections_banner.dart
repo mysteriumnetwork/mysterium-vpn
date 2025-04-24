@@ -1,0 +1,57 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart' hide Banner;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/components/banners/banner.dart';
+import 'package:mysterium_vpn/components/banners/banner_body.dart';
+import 'package:mysterium_vpn/components/banners/banner_cta.dart';
+import 'package:mysterium_vpn/components/banners/banner_title.dart';
+import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
+
+class TooManyConnectionsBanner extends HookConsumerWidget {
+  const TooManyConnectionsBanner({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final vpnStore = ref.watch(vpnStorePOD);
+    final handleToggleConnection = useHandleToggleConnection();
+    final isConnected = useComputedValue(() => vpnStore.isConnected);
+    final theme = Theme.of(context);
+    final bannerStyle = switch (theme.brightness) {
+      Brightness.light => BannerStyle.warningLight,
+      Brightness.dark => BannerStyle.warningDark,
+    };
+
+    Future<void> handleDisconnect() async {
+      await handleToggleConnection();
+      vpnStore.connectionLimitReached = false;
+    }
+
+    return Banner(
+      style: bannerStyle,
+      title: BannerTitle(
+        text: LocaleKeys.tooManyConnectionsBannerTitle.tr(),
+        icon: SvgIcon(
+          color: bannerStyle.foregroundColor,
+          asset: Assets.infoOutline,
+          width: 20,
+          height: 20,
+        ),
+      ),
+      body: BannerBody(
+        text: isConnected
+            ? LocaleKeys.tooManyConnectionsBannerDescConnected.tr()
+            : LocaleKeys.tooManyConnectionsBannerDesc.tr(),
+      ),
+      cta: BannerCTA(
+        onPressed: handleDisconnect,
+        text: isConnected
+            ? LocaleKeys.tooManyConnectionsBannerCTADisconnect.tr()
+            : LocaleKeys.tooManyConnectionsBannerCTAReconnect.tr(),
+      ),
+    );
+  }
+}

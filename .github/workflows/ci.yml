@@ -19,13 +19,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Flutter Version Management CLI
-        uses: flutter-actions/setup-fvm@v1
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+      - name: Initialize Flutter SDK
+        uses: chika3742/setup-fvm@v3
         with:
-          flutter-version-file: pubspec.yaml
-          cache: true
+          project-dir: . # default
+          cache: true # default
 
       - name: Install dependencies
         run: make init
