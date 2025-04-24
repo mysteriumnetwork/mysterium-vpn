@@ -568,5 +568,9 @@
   "appUpdateAvailableTitle": "Pembaruan Aplikasi Tersedia",
   "appUpdateAvailableDesc": "Versi baru aplikasi sudah tersedia! Perbarui sekarang untuk fitur dan peningkatan terbaru.",
   "updateBtn": "Perbarui",
-  "appUpdateAvailableSetting": "Pembaruan Aplikasi Tersedia!"
+  "appUpdateAvailableSetting": "Pembaruan Aplikasi Tersedia!",
+  "checkSubsStatusTitle": "Periksa Status Langganan",
+  "checkSubsStatusDesc": "Harap tunggu sementara kami memeriksa status langganan Anda",
+  "checkSubsStatusFailedTitle": "Terjadi kesalahan",
+  "checkSubsStatusFailedDesc": "Kami tidak dapat memeriksa status langganan Anda. Silakan coba lagi."
 }

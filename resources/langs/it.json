@@ -568,5 +568,9 @@
   "appUpdateAvailableTitle": "Aggiornamento dell'app disponibile",
   "appUpdateAvailableDesc": "La nuova versione dell'app è qui! Aggiorna ora per le ultime funzionalità e miglioramenti.",
   "updateBtn": "Aggiorna",
-  "appUpdateAvailableSetting": "Aggiornamento dell'app disponibile!"
+  "appUpdateAvailableSetting": "Aggiornamento dell'app disponibile!",
+  "checkSubsStatusTitle": "Controlla lo stato dell'abbonamento",
+  "checkSubsStatusDesc": "Attendere mentre verifichiamo lo stato del tuo abbonamento",
+  "checkSubsStatusFailedTitle": "Qualcosa è andato storto",
+  "checkSubsStatusFailedDesc": "Non siamo riusciti a verificare lo stato del tuo abbonamento. Riprova."
 }

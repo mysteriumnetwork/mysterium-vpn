@@ -581,7 +581,11 @@ class CodegenLoader extends AssetLoader {
     "appUpdateAvailableTitle": "应用更新可用",
     "appUpdateAvailableDesc": "新的应用版本已上线！立即更新以获取最新功能和改进。",
     "updateBtn": "更新",
-    "appUpdateAvailableSetting": "应用更新可用！"
+    "appUpdateAvailableSetting": "应用更新可用！",
+    "checkSubsStatusTitle": "检查订阅状态",
+    "checkSubsStatusDesc": "请稍候，我们正在检查您的订阅状态",
+    "checkSubsStatusFailedTitle": "出了点问题",
+    "checkSubsStatusFailedDesc": "我们无法检查您的订阅状态。请重试。"
   };
   static const Map<String, dynamic> tr = {
     "AD": "Andorra",
@@ -1180,7 +1184,11 @@ class CodegenLoader extends AssetLoader {
     "appUpdateAvailableDesc":
         "Yeni uygulama sürümü burada! En son özellikler ve iyileştirmeler için şimdi güncelleyin.",
     "updateBtn": "Güncelle",
-    "appUpdateAvailableSetting": "Uygulama Güncellemesi Mevcut!"
+    "appUpdateAvailableSetting": "Uygulama Güncellemesi Mevcut!",
+    "checkSubsStatusTitle": "Abonelik Durumunu Kontrol Et",
+    "checkSubsStatusDesc": "Abonelik durumunuzu kontrol ederken lütfen bekleyin",
+    "checkSubsStatusFailedTitle": "Bir şeyler ters gitti",
+    "checkSubsStatusFailedDesc": "Abonelik durumunuzu kontrol edemedik. Lütfen tekrar deneyin."
   };
   static const Map<String, dynamic> ja = {
     "AD": "アンドラ",
@@ -1753,7 +1761,11 @@ class CodegenLoader extends AssetLoader {
     "appUpdateAvailableTitle": "アプリのアップデートが利用可能です",
     "appUpdateAvailableDesc": "新しいアプリバージョンが登場しました！ 最新の機能と改善を利用するには、今すぐアップデートしてください。",
     "updateBtn": "アップデート",
-    "appUpdateAvailableSetting": "アプリのアップデートが利用可能です！"
+    "appUpdateAvailableSetting": "アプリのアップデートが利用可能です！",
+    "checkSubsStatusTitle": "サブスクリプションステータスを確認",
+    "checkSubsStatusDesc": "サブスクリプションステータスを確認しています。しばらくお待ちください。",
+    "checkSubsStatusFailedTitle": "問題が発生しました",
+    "checkSubsStatusFailedDesc": "サブスクリプションステータスを確認できませんでした。再試行してください。"
   };
   static const Map<String, dynamic> de = {
     "AD": "Andorra",
@@ -2374,7 +2386,12 @@ class CodegenLoader extends AssetLoader {
     "appUpdateAvailableDesc":
         "Die neue App-Version ist da! Aktualisieren Sie jetzt, um die neuesten Funktionen und Verbesserungen zu erhalten.",
     "updateBtn": "Aktualisieren",
-    "appUpdateAvailableSetting": "App-Update verfügbar!"
+    "appUpdateAvailableSetting": "App-Update verfügbar!",
+    "checkSubsStatusTitle": "Abonnementstatus überprüfen",
+    "checkSubsStatusDesc": "Bitte warten Sie, während wir Ihren Abonnementstatus überprüfen",
+    "checkSubsStatusFailedTitle": "Etwas ist schiefgelaufen",
+    "checkSubsStatusFailedDesc":
+        "Wir konnten Ihren Abonnementstatus nicht überprüfen. Bitte versuchen Sie es erneut."
   };
   static const Map<String, dynamic> pt = {
     "AD": "Andorra",
@@ -3586,7 +3603,11 @@ class CodegenLoader extends AssetLoader {
     "appUpdateAvailableDesc":
         "The new app version is here! Update now for the latest features and improvements.",
     "updateBtn": "Update",
-    "appUpdateAvailableSetting": "App Update Available!"
+    "appUpdateAvailableSetting": "App Update Available!",
+    "checkSubsStatusTitle": "Check Subscription Status",
+    "checkSubsStatusDesc": "Please wait while we check your subscription status",
+    "checkSubsStatusFailedTitle": "Something went wrong",
+    "checkSubsStatusFailedDesc": "We were unable to check your subscription status. Please retry."
   };
   static const Map<String, dynamic> it = {
     "AD": "Andorra",
@@ -4203,7 +4224,12 @@ class CodegenLoader extends AssetLoader {
     "appUpdateAvailableDesc":
         "La nuova versione dell'app è qui! Aggiorna ora per le ultime funzionalità e miglioramenti.",
     "updateBtn": "Aggiorna",
-    "appUpdateAvailableSetting": "Aggiornamento dell'app disponibile!"
+    "appUpdateAvailableSetting": "Aggiornamento dell'app disponibile!",
+    "checkSubsStatusTitle": "Controlla lo stato dell'abbonamento",
+    "checkSubsStatusDesc": "Attendere mentre verifichiamo lo stato del tuo abbonamento",
+    "checkSubsStatusFailedTitle": "Qualcosa è andato storto",
+    "checkSubsStatusFailedDesc":
+        "Non siamo riusciti a verificare lo stato del tuo abbonamento. Riprova."
   };
   static const Map<String, dynamic> fr = {
     "AD": "Andorre",
@@ -4823,7 +4849,13 @@ class CodegenLoader extends AssetLoader {
     "appUpdateAvailableDesc":
         "La nouvelle version de l'application est arrivée ! Mettez à jour maintenant pour profiter des dernières fonctionnalités et améliorations.",
     "updateBtn": "Mettre à jour",
-    "appUpdateAvailableSetting": "Mise à jour de l'application disponible !"
+    "appUpdateAvailableSetting": "Mise à jour de l'application disponible !",
+    "checkSubsStatusTitle": "Vérifier le statut de l'abonnement",
+    "checkSubsStatusDesc":
+        "Veuillez patienter pendant que nous vérifions le statut de votre abonnement",
+    "checkSubsStatusFailedTitle": "Quelque chose s'est mal passé",
+    "checkSubsStatusFailedDesc":
+        "Nous n'avons pas pu vérifier le statut de votre abonnement. Veuillez réessayer."
   };
   static const Map<String, dynamic> id = {
     "AD": "Andorra",
@@ -5428,7 +5460,12 @@ class CodegenLoader extends AssetLoader {
     "appUpdateAvailableDesc":
         "Versi baru aplikasi sudah tersedia! Perbarui sekarang untuk fitur dan peningkatan terbaru.",
     "updateBtn": "Perbarui",
-    "appUpdateAvailableSetting": "Pembaruan Aplikasi Tersedia!"
+    "appUpdateAvailableSetting": "Pembaruan Aplikasi Tersedia!",
+    "checkSubsStatusTitle": "Periksa Status Langganan",
+    "checkSubsStatusDesc": "Harap tunggu sementara kami memeriksa status langganan Anda",
+    "checkSubsStatusFailedTitle": "Terjadi kesalahan",
+    "checkSubsStatusFailedDesc":
+        "Kami tidak dapat memeriksa status langganan Anda. Silakan coba lagi."
   };
   static const Map<String, dynamic> es = {
     "AD": "Andorra",
@@ -6048,7 +6085,12 @@ class CodegenLoader extends AssetLoader {
     "appUpdateAvailableDesc":
         "¡La nueva versión de la aplicación está aquí! Actualiza ahora para obtener las últimas funciones y mejoras.",
     "updateBtn": "Actualizar",
-    "appUpdateAvailableSetting": "¡Actualización de la aplicación disponible!"
+    "appUpdateAvailableSetting": "¡Actualización de la aplicación disponible!",
+    "checkSubsStatusTitle": "Verificar estado de la suscripción",
+    "checkSubsStatusDesc": "Por favor, espera mientras verificamos el estado de tu suscripción",
+    "checkSubsStatusFailedTitle": "Algo salió mal",
+    "checkSubsStatusFailedDesc":
+        "No pudimos verificar el estado de tu suscripción. Por favor, inténtalo de nuevo."
   };
   static const Map<String, dynamic> ar = {
     "AD": "أندورا",
@@ -6642,7 +6684,11 @@ class CodegenLoader extends AssetLoader {
     "appUpdateAvailableDesc":
         "الإصدار الجديد من التطبيق هنا! قم بالتحديث الآن للحصول على أحدث الميزات والتحسينات.",
     "updateBtn": "تحديث",
-    "appUpdateAvailableSetting": "تحديث التطبيق متاح!"
+    "appUpdateAvailableSetting": "تحديث التطبيق متاح!",
+    "checkSubsStatusTitle": "تحقق من حالة الاشتراك",
+    "checkSubsStatusDesc": "يرجى الانتظار بينما نتحقق من حالة اشتراكك",
+    "checkSubsStatusFailedTitle": "حدث خطأ ما",
+    "checkSubsStatusFailedDesc": "تعذر علينا التحقق من حالة اشتراكك. يرجى المحاولة مرة أخرى."
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,

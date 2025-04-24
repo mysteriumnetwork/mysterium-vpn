@@ -566,5 +566,9 @@
   "appUpdateAvailableTitle": "تحديث التطبيق متاح",
   "appUpdateAvailableDesc": "الإصدار الجديد من التطبيق هنا! قم بالتحديث الآن للحصول على أحدث الميزات والتحسينات.",
   "updateBtn": "تحديث",
-  "appUpdateAvailableSetting": "تحديث التطبيق متاح!"
+  "appUpdateAvailableSetting": "تحديث التطبيق متاح!",
+  "checkSubsStatusTitle": "تحقق من حالة الاشتراك",
+  "checkSubsStatusDesc": "يرجى الانتظار بينما نتحقق من حالة اشتراكك",
+  "checkSubsStatusFailedTitle": "حدث خطأ ما",
+  "checkSubsStatusFailedDesc": "تعذر علينا التحقق من حالة اشتراكك. يرجى المحاولة مرة أخرى."
 }

@@ -568,5 +568,9 @@
   "appUpdateAvailableTitle": "Uygulama Güncellemesi Mevcut",
   "appUpdateAvailableDesc": "Yeni uygulama sürümü burada! En son özellikler ve iyileştirmeler için şimdi güncelleyin.",
   "updateBtn": "Güncelle",
-  "appUpdateAvailableSetting": "Uygulama Güncellemesi Mevcut!"
+  "appUpdateAvailableSetting": "Uygulama Güncellemesi Mevcut!",
+  "checkSubsStatusTitle": "Abonelik Durumunu Kontrol Et",
+  "checkSubsStatusDesc": "Abonelik durumunuzu kontrol ederken lütfen bekleyin",
+  "checkSubsStatusFailedTitle": "Bir şeyler ters gitti",
+  "checkSubsStatusFailedDesc": "Abonelik durumunuzu kontrol edemedik. Lütfen tekrar deneyin."
 }
