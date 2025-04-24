@@ -40,6 +40,13 @@ void main() {
     recurring: true,
   );
 
+  final subscriptionExpired = Subscription(
+    active: false,
+    activeUntil: DateTime.now().subtract(const Duration(days: 1)),
+    expired: true,
+    recurring: false,
+  );
+
   setUp(() {
     mockSubscriptionService = MockSubscriptionService();
     mockAuthSessionStore = MockAuthSessionStore();
@@ -47,6 +54,8 @@ void main() {
     mockInAppPurchase = MockInAppPurchase();
     mockPurchasableProduct = MockPurchasableProduct();
     mockProductDetails = MockProductDetails();
+    when(mockSubscriptionService.fetchSubscriptionDetails())
+        .thenAnswer((_) async => subscriptionExpired);
     subscriptionStore = SubscriptionStore(
       inAppPurchase: mockInAppPurchase,
       subscriptionService: mockSubscriptionService,
