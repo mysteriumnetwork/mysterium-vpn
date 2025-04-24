@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' hide Banner;
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
@@ -20,41 +21,43 @@ class SubscriptionBanner extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final handleSubscribe = useHandleSubscribe();
     final subscriptionStore = ref.watch(subscriptionStorePOD);
-    return switch (subscriptionStore.subscriptionFuture.status) {
-      FutureStatus.pending => Banner(
-          title: BannerTitle(
-            icon: const LoadingIndicator(
-              radius: 16,
+    return Observer(
+      builder: (context) => switch (subscriptionStore.subscriptionFuture.status) {
+        FutureStatus.pending => Banner(
+            title: BannerTitle(
+              icon: const LoadingIndicator(
+                radius: 16,
+              ),
+              text: LocaleKeys.checkSubsStatusTitle.tr(),
             ),
-            text: LocaleKeys.checkSubsStatusTitle.tr(),
-          ),
-          body: BannerBody(
-            text: LocaleKeys.checkSubsStatusDesc.tr(),
-          ),
-        ),
-      FutureStatus.rejected => Banner(
-          title: BannerTitle(
-            icon: const SvgIcon(
-              asset: Assets.subscription,
-              width: 20,
-              height: 20,
+            body: BannerBody(
+              text: LocaleKeys.checkSubsStatusDesc.tr(),
             ),
-            text: LocaleKeys.checkSubsStatusFailedTitle.tr(),
           ),
-          body: BannerBody(
-            text: LocaleKeys.checkSubsStatusFailedDesc.tr(),
-          ),
-          cta: BannerCTA(
-            text: LocaleKeys.retryBtn.tr(),
+        FutureStatus.rejected => Banner(
+            title: BannerTitle(
+              icon: const SvgIcon(
+                asset: Assets.errorIcon,
+                width: 20,
+                height: 20,
+              ),
+              text: LocaleKeys.checkSubsStatusFailedTitle.tr(),
+            ),
+            body: BannerBody(
+              text: LocaleKeys.checkSubsStatusFailedDesc.tr(),
+            ),
+            cta: BannerCTA(
+              text: LocaleKeys.retryBtn.tr(),
+              onPressed: subscriptionStore.refreshSubscription,
+            ),
             onPressed: subscriptionStore.refreshSubscription,
           ),
-          onPressed: subscriptionStore.refreshSubscription,
-        ),
-      FutureStatus.fulfilled => Banner(
-          title: BannerTitle(text: LocaleKeys.noSubscriptionTitle.tr()),
-          cta: BannerCTA(text: LocaleKeys.noSubscriptionAction.tr(), onPressed: handleSubscribe),
-          onPressed: handleSubscribe,
-        )
-    };
+        FutureStatus.fulfilled => Banner(
+            title: BannerTitle(text: LocaleKeys.noSubscriptionTitle.tr()),
+            cta: BannerCTA(text: LocaleKeys.noSubscriptionAction.tr(), onPressed: handleSubscribe),
+            onPressed: handleSubscribe,
+          )
+      },
+    );
   }
 }
