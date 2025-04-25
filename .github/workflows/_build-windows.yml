@@ -38,13 +38,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Flutter Version Management CLI
-        run: choco install yq fvm -y
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version-file: pubspec.yaml
-          cache: true
+      - name: Initialize Flutter SDK
+        uses: chika3742/setup-fvm@v3
 
       - name: Install dependencies
         run: make init
