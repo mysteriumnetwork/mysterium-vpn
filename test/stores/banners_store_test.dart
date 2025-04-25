@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
@@ -53,7 +54,8 @@ void main() {
       when(mockLocalDBService.getShownBanners()).thenAnswer((_) async => <BannerType>[]);
       mockRemoteConfigStore = MockRemoteConfigStore();
       mockFlavorConfig = MockFlavorConfig();
-
+      when(mockSubscriptionStore.subscriptionFuture)
+          .thenAnswer((_) => ObservableFuture.value(Subscription(active: false)));
       when(mockLocalDBService.getMainBanners()).thenAnswer((_) async => <BannerType>[]);
       when(mockSubscriptionStore.isSubscribed).thenReturn(true);
       when(mockAuthSessionStore.status).thenReturn(AuthStatus.unauthenticated);

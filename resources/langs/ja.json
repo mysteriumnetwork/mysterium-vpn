@@ -573,5 +573,9 @@
   "yearlyPlanDiscountPrice": "年間{amount}。",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "はい",
-  "zh": "中国語"
+  "zh": "中国語",
+  "checkSubsStatusTitle": "サブスクリプションステータスを確認",
+  "checkSubsStatusDesc": "サブスクリプションステータスを確認しています。しばらくお待ちください。",
+  "checkSubsStatusFailedTitle": "問題が発生しました",
+  "checkSubsStatusFailedDesc": "サブスクリプションステータスを確認できませんでした。再試行してください。"
 }

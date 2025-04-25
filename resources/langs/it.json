@@ -573,5 +573,9 @@
   "yearlyPlanDiscountPrice": "{amount} per l'anno.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Sì",
-  "zh": "Cinese"
+  "zh": "Cinese",
+  "checkSubsStatusTitle": "Controlla lo stato dell'abbonamento",
+  "checkSubsStatusDesc": "Attendere mentre verifichiamo lo stato del tuo abbonamento",
+  "checkSubsStatusFailedTitle": "Qualcosa è andato storto",
+  "checkSubsStatusFailedDesc": "Non siamo riusciti a verificare lo stato del tuo abbonamento. Riprova."
 }

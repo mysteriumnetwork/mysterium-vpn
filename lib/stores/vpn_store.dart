@@ -453,6 +453,23 @@ abstract class _VpnStore with Store {
     await _startConnection(refreshIP: true);
   }
 
+  Future<void> _checkSubscriptionStatus() async {
+    if (_subscriptionStore.subscriptionFuture.status == FutureStatus.pending) {
+      return;
+    }
+    try {
+      final subscription = await _subscriptionStore.subscriptionFuture;
+      if (!subscription.active) {
+        throw const SubscriptionRequiredException();
+      }
+    } catch (e) {
+      if (e is! SubscriptionRequiredException) {
+        _subscriptionStore.refreshSubscription();
+      }
+      rethrow;
+    }
+  }
+
   /// Connect to VPN
   @action
   Future<void> _startConnection({
@@ -464,10 +481,7 @@ abstract class _VpnStore with Store {
     if (_authSessionStore.status != AuthStatus.authenticated) {
       throw AuthenticationRequiredException();
     }
-    final subscription = await _subscriptionStore.subscriptionFuture;
-    if (!subscription.active) {
-      throw const SubscriptionRequiredException();
-    }
+    await _checkSubscriptionStatus();
 
     if (!(await _wireguardService.checkTunnelConfiguration(
       bundleId: _env.getBundleId(),

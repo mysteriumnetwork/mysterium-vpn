@@ -586,7 +586,11 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "全年{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "是",
-    "zh": "中国人"
+    "zh": "中国人",
+    "checkSubsStatusTitle": "检查订阅状态",
+    "checkSubsStatusDesc": "请稍候，我们正在检查您的订阅状态",
+    "checkSubsStatusFailedTitle": "出了点问题",
+    "checkSubsStatusFailedDesc": "我们无法检查您的订阅状态。请重试。"
   };
   static const Map<String, dynamic> tr = {
     "AD": "Andorra",
@@ -1192,7 +1196,11 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "Yıl için {amount}.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Evet",
-    "zh": "Çince"
+    "zh": "Çince",
+    "checkSubsStatusTitle": "Abonelik Durumunu Kontrol Et",
+    "checkSubsStatusDesc": "Abonelik durumunuzu kontrol ederken lütfen bekleyin",
+    "checkSubsStatusFailedTitle": "Bir şeyler ters gitti",
+    "checkSubsStatusFailedDesc": "Abonelik durumunuzu kontrol edemedik. Lütfen tekrar deneyin."
   };
   static const Map<String, dynamic> ja = {
     "AD": "アンドラ",
@@ -1771,7 +1779,11 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "年間{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "はい",
-    "zh": "中国語"
+    "zh": "中国語",
+    "checkSubsStatusTitle": "サブスクリプションステータスを確認",
+    "checkSubsStatusDesc": "サブスクリプションステータスを確認しています。しばらくお待ちください。",
+    "checkSubsStatusFailedTitle": "問題が発生しました",
+    "checkSubsStatusFailedDesc": "サブスクリプションステータスを確認できませんでした。再試行してください。"
   };
   static const Map<String, dynamic> de = {
     "AD": "Andorra",
@@ -2399,7 +2411,12 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} für das Jahr.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Ja",
-    "zh": "Chinesisch"
+    "zh": "Chinesisch",
+    "checkSubsStatusTitle": "Abonnementstatus überprüfen",
+    "checkSubsStatusDesc": "Bitte warten Sie, während wir Ihren Abonnementstatus überprüfen",
+    "checkSubsStatusFailedTitle": "Etwas ist schiefgelaufen",
+    "checkSubsStatusFailedDesc":
+        "Wir konnten Ihren Abonnementstatus nicht überprüfen. Bitte versuchen Sie es erneut."
   };
   static const Map<String, dynamic> pt = {
     "AD": "Andorra",
@@ -3631,7 +3648,11 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} for the year.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Yes",
-    "zh": "Chinese"
+    "zh": "Chinese",
+    "checkSubsStatusTitle": "Check Subscription Status",
+    "checkSubsStatusDesc": "Please wait while we check your subscription status",
+    "checkSubsStatusFailedTitle": "Something went wrong",
+    "checkSubsStatusFailedDesc": "We were unable to check your subscription status. Please retry."
   };
   static const Map<String, dynamic> it = {
     "AD": "Andorra",
@@ -4255,7 +4276,12 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} per l'anno.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sì",
-    "zh": "Cinese"
+    "zh": "Cinese",
+    "checkSubsStatusTitle": "Controlla lo stato dell'abbonamento",
+    "checkSubsStatusDesc": "Attendere mentre verifichiamo lo stato del tuo abbonamento",
+    "checkSubsStatusFailedTitle": "Qualcosa è andato storto",
+    "checkSubsStatusFailedDesc":
+        "Non siamo riusciti a verificare lo stato del tuo abbonamento. Riprova."
   };
   static const Map<String, dynamic> fr = {
     "AD": "Andorre",
@@ -4882,7 +4908,13 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} pour l'année.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Oui",
-    "zh": "Chinois"
+    "zh": "Chinois",
+    "checkSubsStatusTitle": "Vérifier le statut de l'abonnement",
+    "checkSubsStatusDesc":
+        "Veuillez patienter pendant que nous vérifions le statut de votre abonnement",
+    "checkSubsStatusFailedTitle": "Quelque chose s'est mal passé",
+    "checkSubsStatusFailedDesc":
+        "Nous n'avons pas pu vérifier le statut de votre abonnement. Veuillez réessayer."
   };
   static const Map<String, dynamic> id = {
     "AD": "Andorra",
@@ -5494,7 +5526,12 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} untuk tahun.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Iya",
-    "zh": "Cina"
+    "zh": "Cina",
+    "checkSubsStatusTitle": "Periksa Status Langganan",
+    "checkSubsStatusDesc": "Harap tunggu sementara kami memeriksa status langganan Anda",
+    "checkSubsStatusFailedTitle": "Terjadi kesalahan",
+    "checkSubsStatusFailedDesc":
+        "Kami tidak dapat memeriksa status langganan Anda. Silakan coba lagi."
   };
   static const Map<String, dynamic> es = {
     "AD": "Andorra",
@@ -6117,7 +6154,12 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} por el año.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sí",
-    "zh": "Chino"
+    "zh": "Chino",
+    "checkSubsStatusTitle": "Verificar estado de la suscripción",
+    "checkSubsStatusDesc": "Por favor, espera mientras verificamos el estado de tu suscripción",
+    "checkSubsStatusFailedTitle": "Algo salió mal",
+    "checkSubsStatusFailedDesc":
+        "No pudimos verificar el estado de tu suscripción. Por favor, inténtalo de nuevo."
   };
   static const Map<String, dynamic> ar = {
     "AD": "أندورا",
@@ -6720,7 +6762,11 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{المبلغ} للسنة.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "نعم",
-    "zh": "صينى"
+    "zh": "صينى",
+    "checkSubsStatusTitle": "تحقق من حالة الاشتراك",
+    "checkSubsStatusDesc": "يرجى الانتظار بينما نتحقق من حالة اشتراكك",
+    "checkSubsStatusFailedTitle": "حدث خطأ ما",
+    "checkSubsStatusFailedDesc": "تعذر علينا التحقق من حالة اشتراكك. يرجى المحاولة مرة أخرى."
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,

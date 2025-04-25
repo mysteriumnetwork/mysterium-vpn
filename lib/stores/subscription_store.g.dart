@@ -169,6 +169,14 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     });
   }
 
+  late final _$_fetchSubscriptionAsyncAction =
+      AsyncAction('_SubscriptionStore._fetchSubscription', context: context);
+
+  @override
+  Future<Subscription> _fetchSubscription() {
+    return _$_fetchSubscriptionAsyncAction.run(() => super._fetchSubscription());
+  }
+
   late final _$refreshProductsAsyncAction =
       AsyncAction('_SubscriptionStore.refreshProducts', context: context);
 
@@ -267,6 +275,17 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
         name: '_SubscriptionStore._onPurchaseUpdate');
     try {
       return super._onPurchaseUpdate(purchaseDetailsList);
+    } finally {
+      _$_SubscriptionStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void mockSubscriptionFailureStatus() {
+    final _$actionInfo = _$_SubscriptionStoreActionController.startAction(
+        name: '_SubscriptionStore.mockSubscriptionFailureStatus');
+    try {
+      return super.mockSubscriptionFailureStatus();
     } finally {
       _$_SubscriptionStoreActionController.endAction(_$actionInfo);
     }

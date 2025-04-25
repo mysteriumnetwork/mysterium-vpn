@@ -573,5 +573,9 @@
   "yearlyPlanDiscountPrice": "{amount} untuk tahun.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Iya",
-  "zh": "Cina"
+  "zh": "Cina",
+  "checkSubsStatusTitle": "Periksa Status Langganan",
+  "checkSubsStatusDesc": "Harap tunggu sementara kami memeriksa status langganan Anda",
+  "checkSubsStatusFailedTitle": "Terjadi kesalahan",
+  "checkSubsStatusFailedDesc": "Kami tidak dapat memeriksa status langganan Anda. Silakan coba lagi."
 }
