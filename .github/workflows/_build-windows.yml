@@ -38,8 +38,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install yq using Chocolatey
+        run: choco install yq -y
+
       - name: Setup Flutter Version Management CLI
-        uses: flutter-actions/setup-fvm@v1.0
+        run: choco install yq fvm -y
 
       - name: Install Flutter SDK
         run: echo yes | fvm use
