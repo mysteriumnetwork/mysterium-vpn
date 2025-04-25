@@ -26,7 +26,9 @@ class _HomeState extends ChangeNotifier {
   ScrollController? _scrollController;
   double _scrollOffset = 0;
 
-  PanelState get _panelState => PanelState.fromPosition(panelController.panelPosition);
+  PanelState get _panelState => panelController.isAttached
+      ? PanelState.fromPosition(panelController.panelPosition)
+      : initialState;
   PanelState get panelState => _panelState;
   PanelState? _previousState;
 
@@ -56,6 +58,9 @@ class _HomeState extends ChangeNotifier {
   }
 
   Future<void> _animatePanelState(PanelState state) async {
+    if (!panelController.isAttached) {
+      return;
+    }
     await switch (state) {
       PanelState.closed => panelController.close(),
       PanelState.snap => panelController.animatePanelToSnapPoint(),
@@ -85,10 +90,11 @@ class _HomeState extends ChangeNotifier {
   }
 
   Future<void> collapsePanel() async {
-    if (panelController.isAttached) {
-      await _setPanelState(PanelState.closed);
-      _scrollController?.jumpTo(0);
+    if (!panelController.isAttached) {
+      return;
     }
+    await _setPanelState(PanelState.closed);
+    _scrollController?.jumpTo(0);
   }
 
   Future<void> scrollTo(GlobalKey key) async {
