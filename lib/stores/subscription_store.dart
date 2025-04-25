@@ -45,10 +45,6 @@ abstract class _SubscriptionStore with Store {
       fireImmediately: true,
     );
   }
-  // Call on log out or app termiantion
-  Future<void> disposeStore() async {
-    _authReactionDisposer?.call();
-  }
 
   StreamSubscription<List<PurchaseDetails>>? _purchaseStream;
   final InAppPurchase _inAppPurchase;
@@ -471,6 +467,7 @@ abstract class _SubscriptionStore with Store {
   }
 
   FutureOr<void> dispose() async {
+    _authReactionDisposer?.call();
     await _purchaseStream?.cancel();
     _purchaseStream = null;
   }
