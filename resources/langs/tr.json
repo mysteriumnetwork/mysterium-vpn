@@ -573,5 +573,9 @@
   "yearlyPlanDiscountPrice": "Yıl için {amount}.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Evet",
-  "zh": "Çince"
+  "zh": "Çince",
+  "checkSubsStatusTitle": "Abonelik Durumunu Kontrol Et",
+  "checkSubsStatusDesc": "Abonelik durumunuzu kontrol ederken lütfen bekleyin",
+  "checkSubsStatusFailedTitle": "Bir şeyler ters gitti",
+  "checkSubsStatusFailedDesc": "Abonelik durumunuzu kontrol edemedik. Lütfen tekrar deneyin."
 }

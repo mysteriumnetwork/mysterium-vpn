@@ -573,5 +573,9 @@
   "yearlyPlanDiscountPrice": "{المبلغ} للسنة.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "نعم",
-  "zh": "صينى"
+  "zh": "صينى",
+  "checkSubsStatusTitle": "تحقق من حالة الاشتراك",
+  "checkSubsStatusDesc": "يرجى الانتظار بينما نتحقق من حالة اشتراكك",
+  "checkSubsStatusFailedTitle": "حدث خطأ ما",
+  "checkSubsStatusFailedDesc": "تعذر علينا التحقق من حالة اشتراكك. يرجى المحاولة مرة أخرى."
 }
