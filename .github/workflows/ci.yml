@@ -21,9 +21,6 @@ jobs:
 
       - name: Initialize Flutter SDK
         uses: chika3742/setup-fvm@v3
-        with:
-          project-dir: . # default
-          cache: true # default
 
       - name: Install dependencies
         run: make init
