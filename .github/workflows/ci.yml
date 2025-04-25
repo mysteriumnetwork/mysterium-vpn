@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup Flutter Version Management CLI
-        uses: flutter-actions/setup-fvm@v1.0
+        uses: flutter-actions/setup-fvm@v1.0 #v1.0 is tag, v1 is branch
 
       - name: Install Flutter SDK
         run: echo yes | fvm use
