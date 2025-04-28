@@ -37,12 +37,13 @@ jobs:
         run: sudo xcode-select --switch /Applications/Xcode_16.1.0.app
 
       - name: Setup Flutter Version Management CLI
-        uses: flutter-actions/setup-fvm@v1
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version-file: pubspec.yaml
-          cache: true
+        uses: flutter-actions/setup-fvm@v1.0
+
+      - name: Install Flutter SDK
+        run: echo yes | fvm use
+
+      - name: Print Flutter SDK version
+        run: fvm flutter --version
 
       - name: Install Codemagic CLI tools
         run: |

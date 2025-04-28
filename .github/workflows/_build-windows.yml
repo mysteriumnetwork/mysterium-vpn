@@ -38,13 +38,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install yq using Chocolatey
+        run: choco install yq -y
+
       - name: Setup Flutter Version Management CLI
         run: choco install yq fvm -y
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version-file: pubspec.yaml
-          cache: true
+
+      - name: Install Flutter SDK
+        run: echo yes | fvm use
+
+      - name: Print Flutter SDK version
+        run: fvm flutter --version
 
       - name: Install dependencies
         run: make init

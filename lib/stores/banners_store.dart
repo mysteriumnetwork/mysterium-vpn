@@ -60,13 +60,21 @@ abstract class _BannersStore with Store {
       : _unauthenticatedHidden;
 
   @computed
+  bool get shouldShowSubscriptionBanner {
+    final status = _subscriptionStore.subscriptionFuture.status;
+    if (status == FutureStatus.pending || status == FutureStatus.rejected) {
+      return true;
+    }
+    return _subscriptionStore.isSubscribed == false;
+  }
+
+  @computed
   List<BannerType> get mainBanners {
-    final isSubscribed = _subscriptionStore.isSubscribed ?? true;
     final authStatus = _authSessionStore.status;
 
     final banners = <BannerType>{
       if (authStatus == AuthStatus.unauthenticated) BannerType.unauthenticated,
-      if (!isSubscribed) BannerType.subscription,
+      if (shouldShowSubscriptionBanner) BannerType.subscription,
       if (shouldShowAppUpdateBanner) BannerType.appUpdateAvailable,
       if (_locationsStore.dcLocationsStream.value?.isEmpty == false && shown != null)
         BannerType.datacenter,

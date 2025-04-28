@@ -19,11 +19,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Initialize Flutter SDK
-        uses: chika3742/setup-fvm@v3
-        with:
-          project-dir: . # default
-          cache: true # default
+      - name: Setup Flutter Version Management CLI
+        uses: flutter-actions/setup-fvm@v1.0 #v1.0 is tag, v1 is branch
+
+      - name: Install Flutter SDK
+        run: echo yes | fvm use
+
+      - name: Print Flutter SDK version
+        run: fvm flutter --version
 
       - name: Install dependencies
         run: make init
