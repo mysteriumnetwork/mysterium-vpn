@@ -106,9 +106,12 @@ class ConnectionTile extends HookConsumerWidget {
                 Expanded(child: _IPTypeIndicator(ipType: location.ipType)),
               ],
             ).padding(left: 40),
-            const Divider(
+            Divider(
               height: 0,
-              color: Palette.lightBlue,
+              color: switch (theme.brightness) {
+                Brightness.light => Palette.lightBlue,
+                Brightness.dark => Palette.darkIndigo,
+              },
             ).padding(left: 40),
             _RateConnection(),
           ],
