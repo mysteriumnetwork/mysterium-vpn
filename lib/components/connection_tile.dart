@@ -106,14 +106,16 @@ class ConnectionTile extends HookConsumerWidget {
                 Expanded(child: _IPTypeIndicator(ipType: location.ipType)),
               ],
             ).padding(left: 40),
-            Divider(
-              height: 0,
-              color: switch (theme.brightness) {
-                Brightness.light => Palette.lightBlue,
-                Brightness.dark => Palette.darkIndigo,
-              },
-            ).padding(left: 40),
-            _RateConnection(),
+            if (vpnStore.isConnected) ...[
+              Divider(
+                height: 0,
+                color: switch (theme.brightness) {
+                  Brightness.light => Palette.lightBlue,
+                  Brightness.dark => Palette.darkIndigo,
+                },
+              ).padding(left: 40),
+              _RateConnection(),
+            ],
           ],
         ),
       ),
