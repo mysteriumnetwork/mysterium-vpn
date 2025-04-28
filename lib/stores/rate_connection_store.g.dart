@@ -101,11 +101,11 @@ mixin _$RateConnectionStore on _RateConnectionStore, Store {
   }
 
   @override
-  void setRateConnectionMode(RateConnectionMode mode) {
+  void setRateConnectionMode(RateConnectionMode mode, VpnConnection? connection) {
     final _$actionInfo = _$_RateConnectionStoreActionController.startAction(
         name: '_RateConnectionStore.setRateConnectionMode');
     try {
-      return super.setRateConnectionMode(mode);
+      return super.setRateConnectionMode(mode, connection);
     } finally {
       _$_RateConnectionStoreActionController.endAction(_$actionInfo);
     }

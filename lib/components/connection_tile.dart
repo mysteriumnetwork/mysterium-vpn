@@ -16,6 +16,7 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/rate_connection_store.dart';
+import 'package:mysterium_vpn/stores/vpn_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ConnectionTile extends HookConsumerWidget {
@@ -207,6 +208,7 @@ class _RateConnection extends ConsumerWidget {
     final theme = Theme.of(context);
 
     final rateConnectionStore = ref.watch(rateConnectionStorePOD);
+    final vpnStore = ref.watch(vpnStorePOD);
     return Row(
       children: [
         Expanded(
@@ -229,11 +231,11 @@ class _RateConnection extends ConsumerWidget {
             },
           ),
           onPressed: () {
-            rateConnectionStore.setRateConnectionMode(RateConnectionMode.like);
             handleRateConnection(
               context,
               rateConnectionStore,
               RateConnectionMode.like,
+              vpnStore,
             );
           },
         ),
@@ -249,11 +251,11 @@ class _RateConnection extends ConsumerWidget {
             },
           ),
           onPressed: () {
-            rateConnectionStore.setRateConnectionMode(RateConnectionMode.dislike);
             handleRateConnection(
               context,
               rateConnectionStore,
               RateConnectionMode.dislike,
+              vpnStore,
             );
           },
         ),
@@ -265,8 +267,12 @@ class _RateConnection extends ConsumerWidget {
     BuildContext context,
     RateConnectionStore rateConnectionStore,
     RateConnectionMode rateConnectionMode,
+    VpnStore vpnStore,
   ) async {
-    rateConnectionStore.setRateConnectionMode(rateConnectionMode);
+    rateConnectionStore.setRateConnectionMode(
+      rateConnectionMode,
+      vpnStore.vpnConnection,
+    );
 
     showRateConnectionDialog(context).whenComplete(() {
       // Reset the rate connection store after the dialog is closed

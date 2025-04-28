@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/rate_connection.dart';
+import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 
 part 'rate_connection_store.g.dart';
@@ -31,6 +32,8 @@ abstract class _RateConnectionStore with Store {
   @observable
   String feedback = '';
 
+  VpnConnection? connection;
+
   @readonly
   bool _isSubmitted = false;
 
@@ -47,7 +50,8 @@ abstract class _RateConnectionStore with Store {
   }
 
   @action
-  void setRateConnectionMode(RateConnectionMode mode) {
+  void setRateConnectionMode(RateConnectionMode mode, VpnConnection? connection) {
+    this.connection = connection;
     _rateConnectionMode = mode;
     _rateConnectionReasons.clear();
     _analyticsStore.logRateConnnectionClicked(mode);
@@ -64,15 +68,17 @@ abstract class _RateConnectionStore with Store {
 
   @action
   void submitRateConnection() {
-    if (_rateConnectionMode != null) {
+    if (_rateConnectionMode != null && connection != null) {
       _analyticsStore.logRateConnectionSubmit(
-        _rateConnectionMode!,
-        _rateConnectionReasons.toList(),
-        feedback,
+        mode: _rateConnectionMode!,
+        reasons: _rateConnectionReasons.toList(),
+        feedback: feedback,
+        countryCode: connection!.location.code,
+        ipType: connection!.location.ipType,
+        ipAddress: connection!.connectionIP,
       );
-
-      _isSubmitted = true;
     }
+    _isSubmitted = true;
   }
 
   @action

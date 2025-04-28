@@ -200,17 +200,23 @@ mixin AnalyticsStore {
     );
   }
 
-  Future<void> logRateConnectionSubmit(
-    RateConnectionMode mode,
-    List<RateConnectionReason> reasons,
-    String feedback,
-  ) async {
+  Future<void> logRateConnectionSubmit({
+    required RateConnectionMode mode,
+    required List<RateConnectionReason> reasons,
+    required String feedback,
+    required String countryCode,
+    required IPType ipType,
+    required String ipAddress,
+  }) async {
     logEvent(
       AnalyticsEvent.rateConnectionSubmit,
       parameters: {
         'mode': mode.name,
         'reasons': reasons.map((e) => e.name).toList(),
         'feedback': feedback,
+        'country_code': countryCode,
+        'ip_type': ipType.name,
+        'ip_address': ipAddress,
       },
     );
   }
