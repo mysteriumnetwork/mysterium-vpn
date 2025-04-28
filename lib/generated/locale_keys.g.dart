@@ -583,12 +583,12 @@ abstract class LocaleKeys {
   static const stableConnectionReason = 'stableConnectionReason';
   static const consistentSpeedReason = 'consistentSpeedReason';
   static const lowLatencyReason = 'lowLatencyReason';
-  static const accessToSitessReason = 'accessToSitessReason';
+  static const bypassRestrictionsReason = 'bypassRestrictionsReason';
+  static const accessBlockedSitesReason = 'accessBlockedSitesReason';
   static const otherReason = 'otherReason';
   static const frequentDisconnectsReason = 'frequentDisconnectsReason';
   static const unstableSpeedReason = 'unstableSpeedReason';
   static const highLatencyReason = 'highLatencyReason';
-  static const geoBlockedSitesReason = 'geoBlockedSitesReason';
   static const submitBtn = 'submitBtn';
   static const thanksForFeedback = 'thanksForFeedback';
   static const thanksForFeedbackDesc = 'thanksForFeedbackDesc';
