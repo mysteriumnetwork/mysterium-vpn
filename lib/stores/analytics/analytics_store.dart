@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/enums/indicator_type.dart';
+import 'package:mysterium_vpn/common/enums/rate_connection.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
@@ -184,4 +185,32 @@ mixin AnalyticsStore {
   }
 
   Future<void> setDeviceInfo() async {}
+
+  Future<void> logRateConnnectionClicked(RateConnectionMode mode) async {
+    logEvent(
+      AnalyticsEvent.rateConnectionClicked,
+      parameters: {'mode': mode.name},
+    );
+  }
+
+  Future<void> logRateConnectionCancel() async {
+    logEvent(
+      AnalyticsEvent.rateConnectionCancel,
+    );
+  }
+
+  Future<void> logRateConnectionSubmit(
+    RateConnectionMode mode,
+    List<RateConnectionReason> reasons,
+    String feedback,
+  ) async {
+    logEvent(
+      AnalyticsEvent.rateConnectionSubmit,
+      parameters: {
+        'mode': mode.name,
+        'reasons': reasons.map((e) => e.name).toList(),
+        'feedback': feedback,
+      },
+    );
+  }
 }
