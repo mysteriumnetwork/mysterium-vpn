@@ -165,11 +165,20 @@ class _ConfirmDialog extends HookConsumerWidget {
               else ...[
                 for (var i = 0; i < rateConnectionStore.showReasons.length; i++)
                   CheckboxListTile(
+                    side:  BorderSide(color: Theme.of(context).indicatorColor),
+                    checkboxShape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
                     value: rateConnectionStore.selectedReasons.contains(
                       rateConnectionStore.showReasons[i],
                     ),
-                    fillColor: WidgetStateProperty.all(
-                      Palette.purple,
+                    fillColor: WidgetStateProperty.resolveWith(
+                      (states) {
+                        if (states.contains(WidgetState.selected)) {
+                          return Palette.purple;
+                        }
+                        return Palette.lightBlue;
+                      },
                     ),
                     controlAffinity: ListTileControlAffinity.leading,
                     onChanged: (_) {
