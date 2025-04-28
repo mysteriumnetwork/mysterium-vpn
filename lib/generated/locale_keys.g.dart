@@ -572,4 +572,25 @@ abstract class LocaleKeys {
   static const yearlyPlanFullPrice = 'yearlyPlanFullPrice';
   static const yes = 'yes';
   static const zh = 'zh';
+  static const checkSubsStatusTitle = 'checkSubsStatusTitle';
+  static const checkSubsStatusDesc = 'checkSubsStatusDesc';
+  static const checkSubsStatusFailedTitle = 'checkSubsStatusFailedTitle';
+  static const checkSubsStatusFailedDesc = 'checkSubsStatusFailedDesc';
+  static const rateConnection = 'rateConnection';
+  static const rateConnectionLike = 'rateConnectionLike';
+  static const rateConnectionDislike = 'rateConnectionDislike';
+  static const typeFeedback = 'typeFeedback';
+  static const stableConnectionReason = 'stableConnectionReason';
+  static const consistentSpeedReason = 'consistentSpeedReason';
+  static const lowLatencyReason = 'lowLatencyReason';
+  static const accessToSitessReason = 'accessToSitessReason';
+  static const otherReason = 'otherReason';
+  static const frequentDisconnectsReason = 'frequentDisconnectsReason';
+  static const unstableSpeedReason = 'unstableSpeedReason';
+  static const highLatencyReason = 'highLatencyReason';
+  static const geoBlockedSitesReason = 'geoBlockedSitesReason';
+  static const submitBtn = 'submitBtn';
+  static const thanksForFeedback = 'thanksForFeedback';
+  static const thanksForFeedbackDesc = 'thanksForFeedbackDesc';
+  static const closeBtn = 'closeBtn';
 }

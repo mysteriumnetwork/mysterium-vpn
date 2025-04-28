@@ -586,7 +586,28 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "全年{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "是",
-    "zh": "中国人"
+    "zh": "中国人",
+    "checkSubsStatusTitle": "检查订阅状态",
+    "checkSubsStatusDesc": "请稍候，我们正在检查您的订阅状态",
+    "checkSubsStatusFailedTitle": "出了点问题",
+    "checkSubsStatusFailedDesc": "我们无法检查您的订阅状态。请重试。",
+    "rateConnection": "您的连接如何？",
+    "rateConnectionLike": "很高兴听到这个！您喜欢什么？",
+    "rateConnectionDislike": "很抱歉听到这个！问题是什么？",
+    "typeFeedback": "在这里输入您的反馈...",
+    "stableConnectionReason": "稳定的连接",
+    "consistentSpeedReason": "一致的速度",
+    "lowLatencyReason": "低延迟",
+    "accessToSitessReason": "访问所有网站",
+    "otherReason": "其他...",
+    "frequentDisconnectsReason": "频繁断开连接",
+    "unstableSpeedReason": "不稳定的速度",
+    "highLatencyReason": "高延迟",
+    "geoBlockedSitesReason": "地理封锁的网站",
+    "submitBtn": "提交",
+    "thanksForFeedback": "感谢您的反馈！",
+    "thanksForFeedbackDesc": "我们感谢您的意见。您的反馈有助于我们改善您的VPN体验！",
+    "closeBtn": "关闭"
   };
   static const Map<String, dynamic> tr = {
     "AD": "Andorra",
@@ -1192,7 +1213,29 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "Yıl için {amount}.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Evet",
-    "zh": "Çince"
+    "zh": "Çince",
+    "checkSubsStatusTitle": "Abonelik Durumunu Kontrol Et",
+    "checkSubsStatusDesc": "Abonelik durumunuzu kontrol ederken lütfen bekleyin",
+    "checkSubsStatusFailedTitle": "Bir şeyler ters gitti",
+    "checkSubsStatusFailedDesc": "Abonelik durumunuzu kontrol edemedik. Lütfen tekrar deneyin.",
+    "rateConnection": "Bağlantınız nasıl?",
+    "rateConnectionLike": "Bunu duyduğuma sevindim! Neyi beğendiniz?",
+    "rateConnectionDislike": "Bunu duyduğuma üzüldüm! Sorun neydi?",
+    "typeFeedback": "Görüşlerinizi buraya yazın...",
+    "stableConnectionReason": "Kararlı bağlantı",
+    "consistentSpeedReason": "Tutarlı hız",
+    "lowLatencyReason": "Düşük gecikme",
+    "accessToSitessReason": "Tüm sitelere erişim",
+    "otherReason": "Diğer...",
+    "frequentDisconnectsReason": "Sık bağlantı kesilmeleri",
+    "unstableSpeedReason": "Kararsız hız",
+    "highLatencyReason": "Yüksek gecikme",
+    "geoBlockedSitesReason": "Coğrafi olarak engellenmiş siteler",
+    "submitBtn": "Gönder",
+    "thanksForFeedback": "Görüşleriniz için teşekkür ederiz!",
+    "thanksForFeedbackDesc":
+        "Görüşlerinizi önemsiyoruz. Geri bildiriminiz VPN deneyiminizi geliştirmemize yardımcı olur!",
+    "closeBtn": "Kapat"
   };
   static const Map<String, dynamic> ja = {
     "AD": "アンドラ",
@@ -1771,7 +1814,28 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "年間{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "はい",
-    "zh": "中国語"
+    "zh": "中国語",
+    "checkSubsStatusTitle": "サブスクリプションステータスを確認",
+    "checkSubsStatusDesc": "サブスクリプションステータスを確認しています。しばらくお待ちください。",
+    "checkSubsStatusFailedTitle": "問題が発生しました",
+    "checkSubsStatusFailedDesc": "サブスクリプションステータスを確認できませんでした。再試行してください。",
+    "rateConnection": "接続状況はいかがですか？",
+    "rateConnectionLike": "それは良かったです！何が良かったですか？",
+    "rateConnectionDislike": "それは残念です！問題は何でしたか？",
+    "typeFeedback": "ここにフィードバックを入力してください...",
+    "stableConnectionReason": "安定した接続",
+    "consistentSpeedReason": "一貫した速度",
+    "lowLatencyReason": "低遅延",
+    "accessToSitessReason": "すべてのサイトへのアクセス",
+    "otherReason": "その他...",
+    "frequentDisconnectsReason": "頻繁な切断",
+    "unstableSpeedReason": "不安定な速度",
+    "highLatencyReason": "高遅延",
+    "geoBlockedSitesReason": "地理的にブロックされたサイト",
+    "submitBtn": "送信",
+    "thanksForFeedback": "フィードバックありがとうございます！",
+    "thanksForFeedbackDesc": "ご意見をいただきありがとうございます。フィードバックはVPN体験の向上に役立ちます！",
+    "closeBtn": "閉じる"
   };
   static const Map<String, dynamic> de = {
     "AD": "Andorra",
@@ -2399,7 +2463,30 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} für das Jahr.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Ja",
-    "zh": "Chinesisch"
+    "zh": "Chinesisch",
+    "checkSubsStatusTitle": "Abonnementstatus überprüfen",
+    "checkSubsStatusDesc": "Bitte warten Sie, während wir Ihren Abonnementstatus überprüfen",
+    "checkSubsStatusFailedTitle": "Etwas ist schiefgelaufen",
+    "checkSubsStatusFailedDesc":
+        "Wir konnten Ihren Abonnementstatus nicht überprüfen. Bitte versuchen Sie es erneut.",
+    "rateConnection": "Wie ist Ihre Verbindung?",
+    "rateConnectionLike": "Freut mich zu hören! Was hat Ihnen gefallen?",
+    "rateConnectionDislike": "Tut mir leid zu hören! Was war das Problem?",
+    "typeFeedback": "Geben Sie hier Ihr Feedback ein...",
+    "stableConnectionReason": "Stabile Verbindung",
+    "consistentSpeedReason": "Konstante Geschwindigkeit",
+    "lowLatencyReason": "Niedrige Latenz",
+    "accessToSitessReason": "Zugriff auf alle Websites",
+    "otherReason": "Andere...",
+    "frequentDisconnectsReason": "Häufige Verbindungsabbrüche",
+    "unstableSpeedReason": "Instabile Geschwindigkeit",
+    "highLatencyReason": "Hohe Latenz",
+    "geoBlockedSitesReason": "Geoblockierte Websites",
+    "submitBtn": "Absenden",
+    "thanksForFeedback": "Vielen Dank für Ihr Feedback!",
+    "thanksForFeedbackDesc":
+        "Wir schätzen Ihr Feedback. Es hilft uns, Ihre VPN-Erfahrung zu verbessern!",
+    "closeBtn": "Schließen"
   };
   static const Map<String, dynamic> pt = {
     "AD": "Andorra",
@@ -3020,7 +3107,30 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} por ano.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "sim",
-    "zh": "Chinês"
+    "zh": "Chinês",
+    "checkSubsStatusTitle": "Verificar Status da Assinatura",
+    "checkSubsStatusDesc": "Por favor, aguarde enquanto verificamos o status da sua assinatura",
+    "checkSubsStatusFailedTitle": "Algo deu errado",
+    "checkSubsStatusFailedDesc":
+        "Não conseguimos verificar o status da sua assinatura. Por favor, tente novamente.",
+    "rateConnection": "Como está sua conexão?",
+    "rateConnectionLike": "Que bom ouvir isso! O que você gostou?",
+    "rateConnectionDislike": "Lamentamos ouvir isso! Qual foi o problema?",
+    "typeFeedback": "Digite seu feedback aqui...",
+    "stableConnectionReason": "Conexão estável",
+    "consistentSpeedReason": "Velocidade consistente",
+    "lowLatencyReason": "Baixa latência",
+    "accessToSitessReason": "Acesso a todos os sites",
+    "otherReason": "Outro...",
+    "frequentDisconnectsReason": "Desconexões frequentes",
+    "unstableSpeedReason": "Velocidade instável",
+    "highLatencyReason": "Alta latência",
+    "geoBlockedSitesReason": "Sites bloqueados geograficamente",
+    "submitBtn": "Enviar",
+    "thanksForFeedback": "Obrigado pelo seu feedback!",
+    "thanksForFeedbackDesc":
+        "Agradecemos sua opinião. Seu feedback nos ajuda a melhorar sua experiência com a VPN!",
+    "closeBtn": "Fechar"
   };
   static const Map<String, dynamic> en = {
     "AD": "Andorra",
@@ -3631,7 +3741,29 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} for the year.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Yes",
-    "zh": "Chinese"
+    "zh": "Chinese",
+    "checkSubsStatusTitle": "Check Subscription Status",
+    "checkSubsStatusDesc": "Please wait while we check your subscription status",
+    "checkSubsStatusFailedTitle": "Something went wrong",
+    "checkSubsStatusFailedDesc": "We were unable to check your subscription status. Please retry.",
+    "rateConnection": "How is your connection?",
+    "rateConnectionLike": "Glad to hear that! What did you like?",
+    "rateConnectionDislike": "Sorry to hear that! What was the issue?",
+    "typeFeedback": "Type your feedback here...",
+    "stableConnectionReason": "Stable connection",
+    "consistentSpeedReason": "Consistent speed",
+    "lowLatencyReason": "Low latency",
+    "accessToSitessReason": "Access to all sites",
+    "otherReason": "Other...",
+    "frequentDisconnectsReason": "Frequent disconnects",
+    "unstableSpeedReason": "Unstable speed",
+    "highLatencyReason": "High latency",
+    "geoBlockedSitesReason": "Geo-blocked sites",
+    "submitBtn": "Submit",
+    "thanksForFeedback": "Thank You for Your Feedback!",
+    "thanksForFeedbackDesc":
+        "We appreciate your input. Your feedback helps us improve your VPN experience!",
+    "closeBtn": "Close"
   };
   static const Map<String, dynamic> it = {
     "AD": "Andorra",
@@ -4255,7 +4387,30 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} per l'anno.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sì",
-    "zh": "Cinese"
+    "zh": "Cinese",
+    "checkSubsStatusTitle": "Controlla lo stato dell'abbonamento",
+    "checkSubsStatusDesc": "Attendere mentre verifichiamo lo stato del tuo abbonamento",
+    "checkSubsStatusFailedTitle": "Qualcosa è andato storto",
+    "checkSubsStatusFailedDesc":
+        "Non siamo riusciti a verificare lo stato del tuo abbonamento. Riprova.",
+    "rateConnection": "Com'è la tua connessione?",
+    "rateConnectionLike": "Felice di sentirlo! Cosa ti è piaciuto?",
+    "rateConnectionDislike": "Spiacente di sentirlo! Qual è stato il problema?",
+    "typeFeedback": "Scrivi il tuo feedback qui...",
+    "stableConnectionReason": "Connessione stabile",
+    "consistentSpeedReason": "Velocità costante",
+    "lowLatencyReason": "Bassa latenza",
+    "accessToSitessReason": "Accesso a tutti i siti",
+    "otherReason": "Altro...",
+    "frequentDisconnectsReason": "Disconnessioni frequenti",
+    "unstableSpeedReason": "Velocità instabile",
+    "highLatencyReason": "Alta latenza",
+    "geoBlockedSitesReason": "Siti bloccati geograficamente",
+    "submitBtn": "Invia",
+    "thanksForFeedback": "Grazie per il tuo feedback!",
+    "thanksForFeedbackDesc":
+        "Apprezziamo il tuo contributo. Il tuo feedback ci aiuta a migliorare la tua esperienza VPN!",
+    "closeBtn": "Chiudi"
   };
   static const Map<String, dynamic> fr = {
     "AD": "Andorre",
@@ -4882,7 +5037,31 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} pour l'année.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Oui",
-    "zh": "Chinois"
+    "zh": "Chinois",
+    "checkSubsStatusTitle": "Vérifier le statut de l'abonnement",
+    "checkSubsStatusDesc":
+        "Veuillez patienter pendant que nous vérifions le statut de votre abonnement",
+    "checkSubsStatusFailedTitle": "Quelque chose s'est mal passé",
+    "checkSubsStatusFailedDesc":
+        "Nous n'avons pas pu vérifier le statut de votre abonnement. Veuillez réessayer.",
+    "rateConnection": "Comment est votre connexion ?",
+    "rateConnectionLike": "Ravi de l'entendre ! Qu'est-ce qui vous a plu ?",
+    "rateConnectionDislike": "Désolé de l'entendre ! Quel était le problème ?",
+    "typeFeedback": "Tapez vos commentaires ici...",
+    "stableConnectionReason": "Connexion stable",
+    "consistentSpeedReason": "Vitesse constante",
+    "lowLatencyReason": "Faible latence",
+    "accessToSitessReason": "Accès à tous les sites",
+    "otherReason": "Autre...",
+    "frequentDisconnectsReason": "Déconnexions fréquentes",
+    "unstableSpeedReason": "Vitesse instable",
+    "highLatencyReason": "Latence élevée",
+    "geoBlockedSitesReason": "Sites géo-bloqués",
+    "submitBtn": "Soumettre",
+    "thanksForFeedback": "Merci pour vos commentaires !",
+    "thanksForFeedbackDesc":
+        "Nous apprécions vos commentaires. Ils nous aident à améliorer votre expérience VPN !",
+    "closeBtn": "Fermer"
   };
   static const Map<String, dynamic> id = {
     "AD": "Andorra",
@@ -5494,7 +5673,30 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} untuk tahun.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Iya",
-    "zh": "Cina"
+    "zh": "Cina",
+    "checkSubsStatusTitle": "Periksa Status Langganan",
+    "checkSubsStatusDesc": "Harap tunggu sementara kami memeriksa status langganan Anda",
+    "checkSubsStatusFailedTitle": "Terjadi kesalahan",
+    "checkSubsStatusFailedDesc":
+        "Kami tidak dapat memeriksa status langganan Anda. Silakan coba lagi.",
+    "rateConnection": "Bagaimana koneksi Anda?",
+    "rateConnectionLike": "Senang mendengarnya! Apa yang Anda sukai?",
+    "rateConnectionDislike": "Maaf mendengarnya! Apa masalahnya?",
+    "typeFeedback": "Ketikkan masukan Anda di sini...",
+    "stableConnectionReason": "Koneksi stabil",
+    "consistentSpeedReason": "Kecepatan konsisten",
+    "lowLatencyReason": "Latensi rendah",
+    "accessToSitessReason": "Akses ke semua situs",
+    "otherReason": "Lainnya...",
+    "frequentDisconnectsReason": "Sering terputus",
+    "unstableSpeedReason": "Kecepatan tidak stabil",
+    "highLatencyReason": "Latensi tinggi",
+    "geoBlockedSitesReason": "Situs diblokir secara geografis",
+    "submitBtn": "Kirim",
+    "thanksForFeedback": "Terima kasih atas masukan Anda!",
+    "thanksForFeedbackDesc":
+        "Kami menghargai masukan Anda. Masukan Anda membantu kami meningkatkan pengalaman VPN Anda!",
+    "closeBtn": "Tutup"
   };
   static const Map<String, dynamic> es = {
     "AD": "Andorra",
@@ -6117,7 +6319,30 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} por el año.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sí",
-    "zh": "Chino"
+    "zh": "Chino",
+    "checkSubsStatusTitle": "Verificar estado de la suscripción",
+    "checkSubsStatusDesc": "Por favor, espera mientras verificamos el estado de tu suscripción",
+    "checkSubsStatusFailedTitle": "Algo salió mal",
+    "checkSubsStatusFailedDesc":
+        "No pudimos verificar el estado de tu suscripción. Por favor, inténtalo de nuevo.",
+    "rateConnection": "¿Cómo está tu conexión?",
+    "rateConnectionLike": "¡Me alegra saberlo! ¿Qué te gustó?",
+    "rateConnectionDislike": "¡Lamentamos escuchar eso! ¿Cuál fue el problema?",
+    "typeFeedback": "Escribe tus comentarios aquí...",
+    "stableConnectionReason": "Conexión estable",
+    "consistentSpeedReason": "Velocidad constante",
+    "lowLatencyReason": "Baja latencia",
+    "accessToSitessReason": "Acceso a todos los sitios",
+    "otherReason": "Otro...",
+    "frequentDisconnectsReason": "Desconexiones frecuentes",
+    "unstableSpeedReason": "Velocidad inestable",
+    "highLatencyReason": "Alta latencia",
+    "geoBlockedSitesReason": "Sitios bloqueados geográficamente",
+    "submitBtn": "Enviar",
+    "thanksForFeedback": "¡Gracias por tus comentarios!",
+    "thanksForFeedbackDesc":
+        "Agradecemos tus comentarios. ¡Nos ayudan a mejorar tu experiencia con VPN!",
+    "closeBtn": "Cerrar"
   };
   static const Map<String, dynamic> ar = {
     "AD": "أندورا",
@@ -6720,7 +6945,28 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{المبلغ} للسنة.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "نعم",
-    "zh": "صينى"
+    "zh": "صينى",
+    "checkSubsStatusTitle": "تحقق من حالة الاشتراك",
+    "checkSubsStatusDesc": "يرجى الانتظار بينما نتحقق من حالة اشتراكك",
+    "checkSubsStatusFailedTitle": "حدث خطأ ما",
+    "checkSubsStatusFailedDesc": "تعذر علينا التحقق من حالة اشتراكك. يرجى المحاولة مرة أخرى.",
+    "rateConnection": "كيف هي اتصالك؟",
+    "rateConnectionLike": "سعيد لسماع ذلك! ما الذي أعجبك؟",
+    "rateConnectionDislike": "نأسف لسماع ذلك! ما هي المشكلة؟",
+    "typeFeedback": "اكتب ملاحظاتك هنا...",
+    "stableConnectionReason": "اتصال مستقر",
+    "consistentSpeedReason": "سرعة ثابتة",
+    "lowLatencyReason": "زمن انتقال منخفض",
+    "accessToSitessReason": "الوصول إلى جميع المواقع",
+    "otherReason": "أخرى...",
+    "frequentDisconnectsReason": "انقطاعات متكررة",
+    "unstableSpeedReason": "سرعة غير مستقرة",
+    "highLatencyReason": "زمن انتقال مرتفع",
+    "geoBlockedSitesReason": "مواقع محجوبة جغرافيًا",
+    "submitBtn": "إرسال",
+    "thanksForFeedback": "شكرًا لك على ملاحظاتك!",
+    "thanksForFeedbackDesc": "نقدر ملاحظاتك. تساعدنا في تحسين تجربتك مع VPN!",
+    "closeBtn": "إغلاق"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,
