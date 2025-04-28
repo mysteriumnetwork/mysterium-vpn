@@ -36,7 +36,15 @@ abstract class _SubscriptionStore with Store {
   })  : _inAppPurchase = inAppPurchase,
         _subscriptionService = subscriptionService,
         _authSessionStore = authSessionStore,
-        _analyticsStore = analyticsStore;
+        _analyticsStore = analyticsStore {
+    _authReactionDisposer = reaction<void>(
+      (_) => _authSessionStore.status == AuthStatus.authenticated,
+      (status) async {
+        _subscriptionFuture = ObservableFuture(_fetchSubscription());
+      },
+      fireImmediately: true,
+    );
+  }
 
   StreamSubscription<List<PurchaseDetails>>? _purchaseStream;
   final InAppPurchase _inAppPurchase;
@@ -44,6 +52,7 @@ abstract class _SubscriptionStore with Store {
   final AuthSessionStore _authSessionStore;
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
   final AnalyticsStore _analyticsStore;
+  ReactionDisposer? _authReactionDisposer;
 
   @readonly
   late ObservableFuture<Subscription> _subscriptionFuture = ObservableFuture(_fetchSubscription());
@@ -114,6 +123,7 @@ abstract class _SubscriptionStore with Store {
     return _subscriptionService.getProductsDetails(config, subscription.planId);
   }
 
+  @action
   Future<Subscription> _fetchSubscription() async {
     if (_authSessionStore.status != AuthStatus.authenticated) {
       return Subscription.empty();
@@ -185,7 +195,8 @@ abstract class _SubscriptionStore with Store {
   @action
   Future<Subscription> refreshSubscription() async {
     if (_subscriptionFuture.value?.active == false ||
-        (_subscriptionFuture.value?.isExpired ?? false)) {
+        (_subscriptionFuture.value?.isExpired ?? false) ||
+        _subscriptionFuture.status == FutureStatus.rejected) {
       _subscriptionFuture = _subscriptionFuture.replaceOrReset(
         _fetchSubscription(),
       );
@@ -450,7 +461,13 @@ abstract class _SubscriptionStore with Store {
     await subscribeToPackage(product: product.productDetails);
   }
 
+  @action
+  void mockSubscriptionFailureStatus() {
+    _subscriptionFuture = ObservableFuture.error(Exception('mock error'));
+  }
+
   FutureOr<void> dispose() async {
+    _authReactionDisposer?.call();
     await _purchaseStream?.cancel();
     _purchaseStream = null;
   }

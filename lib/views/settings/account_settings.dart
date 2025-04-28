@@ -93,7 +93,22 @@ class _Authenticated extends HookConsumerWidget {
                 builder: (context) {
                   final handleSubscribe = useHandleSubscribe();
                   if (isLoading) {
-                    return const LoadingIndicator();
+                    return const SizedBox(
+                      width: 40,
+                      child: LoadingIndicator(
+                        radius: 20,
+                      ),
+                    );
+                  }
+
+                  if (subscriptionStore.subscriptionFuture.status == FutureStatus.rejected) {
+                    return SettingActionButton(
+                      action: subscriptionStore.refreshSubscription,
+                      child: EasyText(
+                        LocaleKeys.retryBtn.tr(),
+                        color: Palette.white,
+                      ),
+                    );
                   }
 
                   if (subscription == null || !subscription.active) {

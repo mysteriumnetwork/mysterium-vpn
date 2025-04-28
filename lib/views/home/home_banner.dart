@@ -7,7 +7,7 @@ import 'package:mysterium_vpn/components/banners/data_center_banner.dart';
 import 'package:mysterium_vpn/components/banners/too_many_connections_banner.dart';
 import 'package:mysterium_vpn/components/banners/unauthenticated_banner.dart';
 import 'package:mysterium_vpn/components/banners/version_update_banner.dart';
-import 'package:mysterium_vpn/components/no_subscription_banner.dart';
+import 'package:mysterium_vpn/components/subscription_banner.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class HomeBanner extends HookConsumerWidget {
@@ -33,7 +33,7 @@ class HomeBanner extends HookConsumerWidget {
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: maxWidth),
             child: switch (banner) {
-              BannerType.subscription => const NoSubscriptionBanner(),
+              BannerType.subscription => const SubscriptionBanner(),
               BannerType.datacenter => const DataCenterBanner(),
               BannerType.unauthenticated => const UnauthenticatedBanner(),
               BannerType.tooManyConnections => const TooManyConnectionsBanner(),

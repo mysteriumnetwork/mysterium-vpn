@@ -136,12 +136,14 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   final authSessionStore = ref.watch(authSessionStorePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
 
-  return SubscriptionStore(
+  final store = SubscriptionStore(
     inAppPurchase: inAppPurchase,
     subscriptionService: subscriptionService,
     authSessionStore: authSessionStore,
     analyticsStore: analyticsStore,
   );
+  ref.onCancel(store.dispose);
+  return store;
 });
 
 final environmentPOD = Provider<FlavorConfig>(
