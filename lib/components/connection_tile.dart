@@ -267,7 +267,10 @@ class _RateConnection extends ConsumerWidget {
     rateConnectionStore.setRateConnectionMode(rateConnectionMode);
 
     showRateConnectionDialog(context).whenComplete(() {
-      rateConnectionStore.reset();
+      // Reset the rate connection store after the dialog is closed
+      Future.delayed(const Duration(milliseconds: 100)).then((_) {
+        rateConnectionStore.reset();
+      });
     });
   }
 }
