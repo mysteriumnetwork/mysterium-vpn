@@ -44,7 +44,7 @@ class _ConfirmDialog extends HookConsumerWidget {
       };
 
   String _stringifyReason(RateConnectionReason reason) => switch (reason) {
-        RateConnectionReason.accessToSites => LocaleKeys.accessToSitessReason.tr(),
+        RateConnectionReason.accessToSites => LocaleKeys.bypassRestrictionsReason.tr(),
         RateConnectionReason.unstableSpeed => LocaleKeys.unstableSpeedReason.tr(),
         RateConnectionReason.stableConnection => LocaleKeys.stableConnectionReason.tr(),
         RateConnectionReason.other => LocaleKeys.otherReason.tr(),
@@ -52,7 +52,7 @@ class _ConfirmDialog extends HookConsumerWidget {
         RateConnectionReason.lowLatency => LocaleKeys.lowLatencyReason.tr(),
         RateConnectionReason.highLatency => LocaleKeys.highLatencyReason.tr(),
         RateConnectionReason.consistentSpeed => LocaleKeys.consistentSpeedReason.tr(),
-        RateConnectionReason.geoBlockedSites => LocaleKeys.geoBlockedSitesReason.tr(),
+        RateConnectionReason.geoBlockedSites => LocaleKeys.accessBlockedSitesReason.tr(),
       };
 
   @override
