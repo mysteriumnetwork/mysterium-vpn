@@ -3,16 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/enums/rate_connection.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/connect_text_button.dart';
+import 'package:mysterium_vpn/components/dialogs/rate_connection_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/flag.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/rate_connection_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ConnectionTile extends HookConsumerWidget {
@@ -103,6 +106,11 @@ class ConnectionTile extends HookConsumerWidget {
                 Expanded(child: _IPTypeIndicator(ipType: location.ipType)),
               ],
             ).padding(left: 40),
+            const Divider(
+              height: 0,
+              color: Palette.lightBlue,
+            ).padding(left: 40),
+            _RateConnection(),
           ],
         ),
       ),
@@ -131,6 +139,7 @@ class _IPIndicator extends HookWidget {
             ip,
             fontSize: 12,
             color: theme.colorScheme.onSecondaryContainer,
+            fontWeight: FontWeight.w500,
           ),
         ),
         IconButton(
@@ -173,6 +182,7 @@ class _IPTypeIndicator extends HookWidget {
             },
             fontSize: 12,
             color: theme.colorScheme.onSecondaryContainer,
+            fontWeight: FontWeight.w500,
           ),
         ),
         if (ipType == IPType.datacenter)
@@ -183,5 +193,78 @@ class _IPTypeIndicator extends HookWidget {
           ),
       ],
     );
+  }
+}
+
+class _RateConnection extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+
+    final rateConnectionStore = ref.watch(rateConnectionStorePOD);
+    return Row(
+      children: [
+        Expanded(
+          child: EasyText(
+            LocaleKeys.rateConnection.tr(),
+            color: theme.colorScheme.onSecondaryContainer,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        IconButton(
+          style: IconButton.styleFrom(
+            visualDensity: VisualDensity.compact,
+            padding: const EdgeInsets.all(2),
+          ),
+          icon: SvgIcon(
+            asset: switch (theme.brightness) {
+              Brightness.light => Assets.thumbsUpLight,
+              Brightness.dark => Assets.thumbsUpDark,
+            },
+          ),
+          onPressed: () {
+            rateConnectionStore.setRateConnectionMode(RateConnectionMode.like);
+            handleRateConnection(
+              context,
+              rateConnectionStore,
+              RateConnectionMode.like,
+            );
+          },
+        ),
+        IconButton(
+          style: IconButton.styleFrom(
+            visualDensity: VisualDensity.compact,
+            padding: const EdgeInsets.all(2),
+          ),
+          icon: SvgIcon(
+            asset: switch (theme.brightness) {
+              Brightness.light => Assets.thumbsDownLight,
+              Brightness.dark => Assets.thumbsDownDark,
+            },
+          ),
+          onPressed: () {
+            rateConnectionStore.setRateConnectionMode(RateConnectionMode.dislike);
+            handleRateConnection(
+              context,
+              rateConnectionStore,
+              RateConnectionMode.dislike,
+            );
+          },
+        ),
+      ],
+    ).padding(left: 40);
+  }
+
+  Future<void> handleRateConnection(
+    BuildContext context,
+    RateConnectionStore rateConnectionStore,
+    RateConnectionMode rateConnectionMode,
+  ) async {
+    rateConnectionStore.setRateConnectionMode(RateConnectionMode.dislike);
+
+    showRateConnectionDialog(context).whenComplete(() {
+      rateConnectionStore.reset();
+    });
   }
 }
