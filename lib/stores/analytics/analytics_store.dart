@@ -193,9 +193,10 @@ mixin AnalyticsStore {
     );
   }
 
-  Future<void> logRateConnectionCancel() async {
+  Future<void> logRateConnectionCancel(RateConnectionMode mode) async {
     logEvent(
       AnalyticsEvent.rateConnectionCancel,
+      parameters: {'mode': mode.name},
     );
   }
 

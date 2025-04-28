@@ -77,6 +77,10 @@ abstract class _RateConnectionStore with Store {
 
   @action
   void cancelRateConnection() {
-    _analyticsStore.logRateConnectionCancel();
+    if (_rateConnectionMode != null) {
+      _analyticsStore.logRateConnectionCancel(
+        _rateConnectionMode!,
+      );
+    }
   }
 }

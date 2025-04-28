@@ -165,7 +165,7 @@ class _ConfirmDialog extends HookConsumerWidget {
               else ...[
                 for (var i = 0; i < rateConnectionStore.showReasons.length; i++)
                   CheckboxListTile(
-                    side:  BorderSide(color: Theme.of(context).indicatorColor),
+                    side: BorderSide(color: Theme.of(context).indicatorColor),
                     checkboxShape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4),
                     ),
