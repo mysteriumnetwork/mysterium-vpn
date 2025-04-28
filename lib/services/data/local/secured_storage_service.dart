@@ -1,7 +1,6 @@
 // Dart imports:
 import 'dart:async' show Future;
 import 'dart:convert';
-import 'dart:io';
 
 // Package imports:
 import 'package:flutter/services.dart';
