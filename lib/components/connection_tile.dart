@@ -261,7 +261,7 @@ class _RateConnection extends ConsumerWidget {
     RateConnectionStore rateConnectionStore,
     RateConnectionMode rateConnectionMode,
   ) async {
-    rateConnectionStore.setRateConnectionMode(RateConnectionMode.dislike);
+    rateConnectionStore.setRateConnectionMode(rateConnectionMode);
 
     showRateConnectionDialog(context).whenComplete(() {
       rateConnectionStore.reset();
