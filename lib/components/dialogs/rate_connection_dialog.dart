@@ -1,13 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/enums/rate_connection.dart';
+import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -59,6 +61,7 @@ class _ConfirmDialog extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final rateConnectionStore = ref.watch(rateConnectionStorePOD);
     final brightness = Theme.of(context).brightness;
+    final screenType = useScreenType();
 
     return Observer(
       builder: (context) => AlertDialog(
@@ -150,7 +153,10 @@ class _ConfirmDialog extends HookConsumerWidget {
           ],
         ],
         content: SizedBox(
-          width: getMediaWidth(context) > 750 ? 500 : 300,
+          width: switch (screenType) {
+            ScreenType.mobile => 300,
+            _ => 500,
+          },
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -163,8 +169,8 @@ class _ConfirmDialog extends HookConsumerWidget {
                   textAlign: TextAlign.center,
                 )
               else ...[
-                for (var i = 0; i < rateConnectionStore.showReasons.length; i++)
-                  CheckboxListTile(
+                ...rateConnectionStore.showReasons.mapIndexed(
+                  (i, element) => CheckboxListTile(
                     side: BorderSide(color: Theme.of(context).indicatorColor),
                     checkboxShape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4),
@@ -195,6 +201,7 @@ class _ConfirmDialog extends HookConsumerWidget {
                       ),
                     ),
                   ),
+                ),
                 TextField(
                   maxLines: 2,
                   cursorColor: Palette.purple,
