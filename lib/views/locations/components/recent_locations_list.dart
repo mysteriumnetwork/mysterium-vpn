@@ -1,8 +1,10 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:mysterium_vpn/components/horizontal_scroll_indicator.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/views/locations/components/recent_location_item.dart';
 
-class RecentLocationsList extends StatelessWidget {
+class RecentLocationsList extends HookWidget {
   const RecentLocationsList({
     required this.items,
     required this.onItemPressed,
@@ -15,11 +17,14 @@ class RecentLocationsList extends StatelessWidget {
   final BoxConstraints constraints;
 
   @override
-  Widget build(BuildContext context) => ConstrainedBox(
-        constraints: constraints,
+  Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+    return ConstrainedBox(
+      constraints: constraints,
+      child: HorizontalScrollIndicator(
+        controller: scrollController,
         child: ListView.separated(
-          shrinkWrap: true,
-          clipBehavior: Clip.none,
+          controller: scrollController,
           itemCount: items.length,
           scrollDirection: Axis.horizontal,
           separatorBuilder: (_, __) => const SizedBox(width: 12),
@@ -34,5 +39,7 @@ class RecentLocationsList extends StatelessWidget {
             );
           },
         ),
-      );
+      ),
+    );
+  }
 }
