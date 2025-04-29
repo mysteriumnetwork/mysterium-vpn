@@ -14,19 +14,19 @@ enum RateConnectionReason {
   geoBlockedSites,
   other;
 
-  static List<RateConnectionReason> get likeReasons => [
-        stableConnection,
-        consistentSpeed,
-        lowLatency,
-        accessToSites,
-        other,
-      ];
+  static const List<RateConnectionReason> likeReasons = [
+    stableConnection,
+    consistentSpeed,
+    lowLatency,
+    accessToSites,
+    other,
+  ];
 
-  static List<RateConnectionReason> get dislikeReasons => [
-        frequentDisconnects,
-        unstableSpeed,
-        highLatency,
-        geoBlockedSites,
-        other,
-      ];
+  static const List<RateConnectionReason> dislikeReasons = [
+    frequentDisconnects,
+    unstableSpeed,
+    highLatency,
+    geoBlockedSites,
+    other,
+  ];
 }
