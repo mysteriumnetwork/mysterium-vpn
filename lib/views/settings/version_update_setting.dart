@@ -28,7 +28,7 @@ class AppVersionUpdateSetting extends ConsumerWidget {
 
     return Observer(
       builder: (context) {
-        if (shouldShowAppUpdateBanner(
+        if (!shouldShowAppUpdateBanner(
           remoteConfigStore,
           config,
         )) {
