@@ -103,26 +103,30 @@ class _Indicator extends HookWidget {
   final ScrollDirection scrollDirection;
 
   @override
-  Widget build(BuildContext context) => Transform.rotate(
-        angle: switch (scrollDirection) {
-          ScrollDirection.forward => pi,
-          _ => 0,
-        },
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Palette.white.withValues(alpha: .1),
-                Palette.white.withValues(alpha: .6),
-                Palette.white.withValues(alpha: .95),
-                Palette.white,
-              ],
-            ),
-          ),
-          child: const Padding(
-            padding: EdgeInsets.only(top: 25, bottom: 25, left: 25, right: 8),
-            child: SvgIcon(asset: Assets.chevronRight),
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final gradientColor = theme.primaryColor;
+    return Transform.rotate(
+      angle: switch (scrollDirection) {
+        ScrollDirection.forward => pi,
+        _ => 0,
+      },
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              gradientColor.withValues(alpha: .1),
+              gradientColor.withValues(alpha: .6),
+              gradientColor.withValues(alpha: .95),
+              gradientColor,
+            ],
           ),
         ),
-      );
+        child: const Padding(
+          padding: EdgeInsets.only(top: 25, bottom: 25, left: 25, right: 8),
+          child: SvgIcon(asset: Assets.chevronRight),
+        ),
+      ),
+    );
+  }
 }
