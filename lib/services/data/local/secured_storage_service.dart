@@ -1,14 +1,15 @@
 // Dart imports:
 import 'dart:async' show Future;
 import 'dart:convert';
-import 'dart:io';
 
 // Package imports:
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mysterium_vpn/common/enums/storage_keys.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
+import 'package:retry/retry.dart';
 // Project imports:
 
 class SecureStorageService {
@@ -88,13 +89,26 @@ class SecureStorageService {
   }
 
   Future<void> write(String key, String value) async {
+    /// if we get error -25299, we retry writing up to 3 times with a delay between each attempt.
+    /// This is an attempted workaround based on the following comment:
+    /// https://github.com/juliansteenbakker/flutter_secure_storage/issues/785#issuecomment-2764906277
+    await retry(
+      () => _write(key, value),
+      retryIf: (e) => e is PlatformException && e.code == '-25299',
+      delayFactor: const Duration(milliseconds: 500),
+      maxAttempts: 3,
+      maxDelay: const Duration(seconds: 3),
+    );
+  }
+
+  /// in case it fails to write, we try to delete first and then write again. Based on:
+  /// https://github.com/juliansteenbakker/flutter_secure_storage/issues/785#issuecomment-2603053482
+  Future<void> _write(String key, String value) async {
     try {
-      if (!Platform.isAndroid) {
-        await remove(key);
-      }
       await _securedStorage.write(key: key, value: value);
     } catch (e) {
-      rethrow;
+      await _securedStorage.delete(key: key);
+      await _securedStorage.write(key: key, value: value);
     }
   }
 
