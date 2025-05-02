@@ -364,7 +364,7 @@ abstract class _AuthStore with Store {
     try {
       final refreshToken = await _authSessionStore.refreshTokenFuture;
       if (refreshToken == null) {
-        return;
+        throw RefreshTokenNotFoundException();
       }
 
       final authTokens = await _authService.singInComplete(

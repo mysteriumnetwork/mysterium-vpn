@@ -7,6 +7,7 @@ export 'no_internet_connection.dart';
 export 'operation_cancelled.dart';
 export 'package_not_found.dart';
 export 'pkce_pair_not_found.dart';
+export 'refresh_token_not_found_exception.dart';
 export 'sign_in_aborted.dart';
 export 'subscription_required_exception.dart';
 export 'subscription_verification.dart';
