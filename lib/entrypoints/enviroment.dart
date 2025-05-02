@@ -117,7 +117,8 @@ class Enviroment {
                 event.throwable is TimeoutException ||
                 event.throwable is TokenAlreadyUsedException ||
                 event.throwable is OperationCancelledException ||
-                event.throwable is SubscriptionRequiredException) {
+                event.throwable is SubscriptionRequiredException ||
+                event.throwable is RefreshTokenNotFoundException) {
               return null;
             }
             return event;
