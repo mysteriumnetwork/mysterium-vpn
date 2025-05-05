@@ -84,7 +84,7 @@ class HomeMobileView extends HookConsumerWidget {
                       decoration: BoxDecoration(color: theme.colorScheme.surfaceContainerHighest),
                       child: HomeAppBar(key: appBarKey),
                     ),
-                    const Expanded(child: HomeConnectionView())
+                    const Expanded(child: HomeConnectionView()),
                   ],
                 ),
               ),
