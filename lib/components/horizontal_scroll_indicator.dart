@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 
@@ -21,6 +22,7 @@ class HorizontalScrollIndicator extends HookWidget {
   @override
   Widget build(BuildContext context) {
     const animationDuration = Duration(milliseconds: 250);
+    final (stackKey, stackBox) = useRenderObject<RenderBox>();
 
     final canScrollLeft = useListenableSelector(controller, () {
       if (!controller.hasClients) {
@@ -38,15 +40,25 @@ class HorizontalScrollIndicator extends HookWidget {
 
     void handleScrollToStart() {
       if (controller.hasClients) {
-        final extent = controller.positions.isNotEmpty ? controller.position.minScrollExtent : 0.0;
-        controller.animateTo(extent - 16, duration: animationDuration, curve: Curves.easeInOut);
+        final stackWidth = stackBox?.size.width ?? 0;
+        final currentPosition = controller.positions.isNotEmpty ? controller.position.pixels : 0.0;
+        controller.animateTo(
+          max(0, currentPosition - stackWidth),
+          duration: animationDuration,
+          curve: Curves.easeInOut,
+        );
       }
     }
 
     void handleScrollToEnd() {
       if (controller.hasClients && controller.positions.isNotEmpty) {
-        final extent = controller.position.maxScrollExtent;
-        controller.animateTo(extent + 16, duration: animationDuration, curve: Curves.easeInOut);
+        final stackWidth = stackBox?.size.width ?? 0;
+        final currentPosition = controller.positions.isNotEmpty ? controller.position.pixels : 0.0;
+        controller.animateTo(
+          currentPosition + stackWidth,
+          duration: animationDuration,
+          curve: Curves.easeInOut,
+        );
       }
     }
 
@@ -66,6 +78,7 @@ class HorizontalScrollIndicator extends HookWidget {
     );
 
     return Stack(
+      key: stackKey,
       clipBehavior: Clip.none,
       children: [
         child,
