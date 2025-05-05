@@ -78,22 +78,15 @@ class HomeMobileView extends HookConsumerWidget {
               onPanelClosed: homeState.onPanelSlide,
               onPanelOpened: homeState.onPanelSlide,
               body: Consumer(
-                builder: (context, ref, _) {
-                  final panelFlex = ref.watch(homeStateProvider.select((it) => it.panelFlex));
-                  return Column(
+                builder: (context, ref, _) => Column(
                     children: [
                       DecoratedBox(
                         decoration: BoxDecoration(color: theme.colorScheme.surfaceContainerHighest),
                         child: HomeAppBar(key: appBarKey),
                       ),
-                      Expanded(
-                        flex: 10 - panelFlex,
-                        child: const HomeConnectionView(),
-                      ),
-                      Spacer(flex: panelFlex),
+                      const Expanded(child: HomeConnectionView())
                     ],
-                  );
-                },
+                  ),
               ),
             ),
           ],
