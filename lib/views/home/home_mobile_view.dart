@@ -79,14 +79,14 @@ class HomeMobileView extends HookConsumerWidget {
               onPanelOpened: homeState.onPanelSlide,
               body: Consumer(
                 builder: (context, ref, _) => Column(
-                    children: [
-                      DecoratedBox(
-                        decoration: BoxDecoration(color: theme.colorScheme.surfaceContainerHighest),
-                        child: HomeAppBar(key: appBarKey),
-                      ),
-                      const Expanded(child: HomeConnectionView())
-                    ],
-                  ),
+                  children: [
+                    DecoratedBox(
+                      decoration: BoxDecoration(color: theme.colorScheme.surfaceContainerHighest),
+                      child: HomeAppBar(key: appBarKey),
+                    ),
+                    const Expanded(child: HomeConnectionView())
+                  ],
+                ),
               ),
             ),
           ],
