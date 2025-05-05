@@ -142,7 +142,7 @@ class AnalyticsSession {
 
     try {
       await dio.post(
-        '/mp/collect?firebase_app_id=$measurementId&api_secret=$apiSecret',
+        '/mp/collect?measurement_id=$measurementId&api_secret=$apiSecret',
         data: body,
       );
     } catch (e) {
