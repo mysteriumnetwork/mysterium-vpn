@@ -172,6 +172,13 @@ mixin AnalyticsStore {
     await logEvent(AnalyticsEvent.panelMoved, parameters: {'state': state.name});
   }
 
+  Future<void> logRefreshIP([String? currentIP]) async {
+    await logEvent(
+      AnalyticsEvent.refreshIp,
+      parameters: currentIP != null ? {'ip': currentIP} : null,
+    );
+  }
+
   void dispose() {
     _debouncer.dispose();
   }
