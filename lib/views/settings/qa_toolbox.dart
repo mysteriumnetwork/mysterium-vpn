@@ -90,6 +90,23 @@ class QAToolbox extends HookConsumerWidget {
                 },
               ),
             ),
+            SettingItem(
+              asset: isDarkTheme ? Assets.settingsDark : Assets.settingsLight,
+              title: 'Clear cached locations',
+              subtitle: const EasyText('Will delete all VPNLocations from db'),
+              actionWidget: TextButton.icon(
+                label: const EasyText(
+                  'Clear',
+                ),
+                icon: const Icon(Icons.refresh),
+                onPressed: () async {
+                  await ref.read(locationsStorePOD).resetStoredLocations();
+                  showSnackbar(
+                    'Locations cleared',
+                  );
+                },
+              ),
+            ),
           ],
         );
       },
