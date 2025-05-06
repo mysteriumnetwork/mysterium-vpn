@@ -23,6 +23,7 @@ class ConnectionTile extends HookConsumerWidget {
     final theme = Theme.of(context);
     final locationsStore = ref.watch(locationsStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
+    final analyticsStore = ref.watch(analyticsStorePOD);
 
     final location = useComputedValue(
       () =>
@@ -41,6 +42,11 @@ class ConnectionTile extends HookConsumerWidget {
       () => vpnStore.isLoading ? null : () => handleToggleConnection(location: location),
       [handleToggleConnection, location],
     );
+
+    Future<void> handleRefreshIP() async {
+      analyticsStore.logRefreshIP(ipInfo);
+      await vpnStore.startConnectionWithRefreshIP();
+    }
 
     if (location == null) {
       return const SizedBox.shrink();
@@ -98,7 +104,7 @@ class ConnectionTile extends HookConsumerWidget {
                 if (ipInfo != null && (isConnected ?? false))
                   _IPIndicator(
                     ip: ipInfo,
-                    onRefreshPressed: vpnStore.startConnectionWithRefreshIP,
+                    onRefreshPressed: handleRefreshIP,
                   ),
                 Expanded(child: _IPTypeIndicator(ipType: location.ipType)),
               ],
