@@ -187,6 +187,14 @@ mixin _$LocationsStore on _LocationsStore, Store {
     return _$resetRecentLocationsAsyncAction.run(() => super.resetRecentLocations());
   }
 
+  late final _$resetStoredLocationsAsyncAction =
+      AsyncAction('_LocationsStore.resetStoredLocations', context: context);
+
+  @override
+  Future<void> resetStoredLocations() {
+    return _$resetStoredLocationsAsyncAction.run(() => super.resetStoredLocations());
+  }
+
   late final _$_LocationsStoreActionController =
       ActionController(name: '_LocationsStore', context: context);
 

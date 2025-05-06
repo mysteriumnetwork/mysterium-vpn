@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/stream_extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
@@ -55,13 +56,13 @@ abstract class _LocationsStore with Store {
 
   @readonly
   late ObservableStream<VPNLocations> _dcLocationsStream = ObservableStream(
-    _watch(IPType.datacenter).distinct(),
+    _watch(IPType.datacenter).distinct().doOnListen(() => refresh(IPType.datacenter)),
     initialValue: _localDB.getLocations(IPType.datacenter),
   );
 
   @readonly
   late ObservableStream<VPNLocations> _residentialLocationsStream = ObservableStream(
-    _watch(IPType.residential).distinct(),
+    _watch(IPType.residential).distinct().doOnListen(() => refresh(IPType.residential)),
     initialValue: _localDB.getLocations(IPType.residential),
   );
 
@@ -144,10 +145,6 @@ abstract class _LocationsStore with Store {
       yield cached;
     }
 
-    final fresh = await _apiService.fetchVPNLocations(ipType);
-    yield fresh;
-
-    await _localDB.setLocations(fresh, type: ipType);
     yield* _localDB.watchLocations(ipType).where((it) => it != null).map((it) => it!);
   }
 
@@ -212,5 +209,13 @@ abstract class _LocationsStore with Store {
     await _localDB.setRecentLocation([]);
     _recentLocationsFuture = _recentLocationsFuture.replace(_localDB.getRecentLocations());
     await _recentLocationsFuture;
+  }
+
+  @action
+  Future<void> resetStoredLocations() async {
+    await Future.wait([
+      _localDB.setLocations(VPNLocations(), type: IPType.residential),
+      _localDB.setLocations(VPNLocations(), type: IPType.datacenter),
+    ]);
   }
 }
