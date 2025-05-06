@@ -55,8 +55,12 @@ void main() {
       VPNLocation(code: 'DE', ipType: IPType.datacenter),
     ];
 
-    when(mockLocalDB.getLocations(IPType.residential)).thenAnswer((_) => null);
-    when(mockLocalDB.getLocations(IPType.datacenter)).thenAnswer((_) => null);
+    when(mockLocalDB.getLocations(IPType.residential)).thenAnswer(
+      (_) => VPNLocations(locations: mockResidential),
+    );
+    when(mockLocalDB.getLocations(IPType.datacenter)).thenAnswer(
+      (_) => VPNLocations(locations: mockDatacenter),
+    );
     when(mockLocalDB.getLocations(null)).thenAnswer((_) => null);
 
     when(mockRemoteConfigStore.configFuture).thenAnswer((_) => ObservableFuture.value({}));
@@ -138,6 +142,7 @@ void main() {
         mockLocalDB,
         mockLocaleStore,
       );
+      when(mockLocalDB.getLocations(IPType.residential)).thenAnswer((_) => VPNLocations());
       when(mockApiService.fetchVPNLocations(IPType.residential)).thenAnswer(
         (_) async => VPNLocations(),
       );
