@@ -19,7 +19,7 @@ class NetworkStatistics extends ConsumerWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.brightness == Brightness.dark
               ? Palette.darkIndigo
-              : const Color(0xFFF5F3FD),
+              : Palette.grayContainer,
           borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),

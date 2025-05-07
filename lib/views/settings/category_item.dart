@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/theme.dart';
 import 'package:mysterium_vpn/components/circle_box.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -16,6 +17,16 @@ class CategoryItem extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
+  Color _backgroundColor(BuildContext context) {
+    if (context.c.isDarkMode) {
+      return Palette.darkIndigo;
+    }
+    if (isSelected) {
+      return Palette.white;
+    }
+    return Palette.grayContainer;
+  }
+
   @override
   Widget build(BuildContext context) => Material(
         color: Colors.transparent,
@@ -30,8 +41,8 @@ class CategoryItem extends StatelessWidget {
               ).paddingDirectional(end: 14),
               EasyText(
                 title,
-                fontWeight: FontWeight.w700,
-                fontSize: 18,
+                fontWeight: isSelected? FontWeight.w600 : FontWeight.w500,
+                fontSize: 16,
                 color: isSelected ? Palette.purple : Theme.of(context).indicatorColor,
               ).expanded(),
             ],
@@ -39,9 +50,12 @@ class CategoryItem extends StatelessWidget {
         ),
       )
           .decorated(
-            color:
-                isSelected ? Theme.of(context).colorScheme.scrim : Theme.of(context).primaryColor,
+            color: _backgroundColor(context),
             borderRadius: BorderRadius.circular(100),
+            border: Border.all(
+              color: isSelected ? Palette.purple : Palette.transparent,
+              width: 1.5,
+            ),
           )
           .paddingDirectional(top: 30);
 }
@@ -60,7 +74,7 @@ class _SelectionIndicator extends StatelessWidget {
           color: Palette.purple,
         )
       : CircleBox(
-          size: 6,
+          size: 4,
           color: Theme.of(context).indicatorColor,
         );
 }
