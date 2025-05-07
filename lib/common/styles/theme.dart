@@ -124,4 +124,30 @@ ThemeData themeData(Palette palette) => ThemeData(
           disabledIconColor: palette.filledButtonTextColor.withValues(alpha: .7),
         ),
       ),
+      extensions: <ThemeExtension<dynamic>>[
+        _ThemeColorsX(
+          isDarkMode: palette is DarkPalette,
+        ),
+      ],
     );
+
+extension ThemeExtensionX on BuildContext {
+
+  // ignore: library_private_types_in_public_api
+  _ThemeColorsX get c => Theme.of(this).extension<_ThemeColorsX>()!;
+}
+
+class _ThemeColorsX extends ThemeExtension<_ThemeColorsX> {
+  const _ThemeColorsX({required this.isDarkMode});
+
+  final bool isDarkMode;
+
+  Palette get palette => isDarkMode ? DarkPalette() : LightPalette();
+
+  @override
+  ThemeExtension<_ThemeColorsX> copyWith() => this;
+
+  @override
+  ThemeExtension<_ThemeColorsX> lerp(covariant ThemeExtension<_ThemeColorsX>? other, double t) =>
+      this;
+}
