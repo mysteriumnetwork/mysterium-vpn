@@ -40,8 +40,9 @@ class ApiErrorsInterceptor extends Interceptor {
         ApiException(
           err.requestOptions,
           message,
-          errorCode,
-          'Dio Exception ${err.message} \nat  $endpoint',
+          code: errorCode,
+          identifier: 'Dio Exception ${err.message} \nat  $endpoint',
+          endpoint: endpoint,
         ),
       );
     }
@@ -50,8 +51,9 @@ class ApiErrorsInterceptor extends Interceptor {
       ApiException(
         err.requestOptions,
         LocaleKeys.somethingWentWrong.tr(),
-        500,
-        'Dio Exception ${err.message} \nat  $endpoint',
+        code: 500,
+        identifier: 'Dio Exception ${err.message} \nat  $endpoint',
+        endpoint: endpoint,
       ),
     );
   }
