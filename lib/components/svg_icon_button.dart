@@ -14,7 +14,10 @@ class SvgIconButton extends StatelessWidget {
   final VoidCallback? onPressed;
   @override
   Widget build(BuildContext context) => IconButton(
-        iconSize: 10,
+        style: IconButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          padding: EdgeInsets.zero,
+        ),
         onPressed: onPressed,
         icon: SvgIcon(asset: asset),
       );

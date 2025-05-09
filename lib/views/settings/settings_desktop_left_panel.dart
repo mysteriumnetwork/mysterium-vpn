@@ -29,7 +29,7 @@ class SettingsDesktopLeftPanel extends ConsumerWidget {
             intetcomStore: ref.read(intercomStorePOD),
             analyticsStore: ref.read(analyticsStorePOD),
           ),
-          asset: Assets.reportPurple,
+          asset: context.c.isDarkMode ? Assets.reportDarkIcon : Assets.reportLightIcon,
         ).padding(bottom: 10),
         ListView(
           shrinkWrap: true,

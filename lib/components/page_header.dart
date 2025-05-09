@@ -27,11 +27,15 @@ class PageHeader extends HookConsumerWidget {
             analyticsStore.logEvent(AnalyticsEvent.backButtonClick);
             context.beamBack();
           },
-          asset: Assets.navigateBack,
+          asset: context.c.isDarkMode ? Assets.navigateBackDark : Assets.navigateBackLight,
         ),
         HeaderTitle(text: headerTitle, color: Palette.white),
-        const AppVersion(),
-        const ApiVersion(),
+        const Row(
+          children: [
+            AppVersion(),
+            ApiVersion(),
+          ],
+        ),
       ],
     ).padding(horizontal: 20);
   }
