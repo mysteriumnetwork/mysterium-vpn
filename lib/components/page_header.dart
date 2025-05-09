@@ -2,8 +2,7 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/api_version.dart';
 import 'package:mysterium_vpn/components/app_version.dart';
 import 'package:mysterium_vpn/components/header_title.dart';
@@ -28,11 +27,15 @@ class PageHeader extends HookConsumerWidget {
             analyticsStore.logEvent(AnalyticsEvent.backButtonClick);
             context.beamBack();
           },
-          asset: Assets.navigateBack,
+          asset: context.c.isDarkMode ? Assets.navigateBackDark : Assets.navigateBackLight,
         ),
         HeaderTitle(text: headerTitle, color: Palette.white),
-        const AppVersion(),
-        const ApiVersion(),
+        const Row(
+          children: [
+            AppVersion(),
+            ApiVersion(),
+          ],
+        ),
       ],
     ).padding(horizontal: 20);
   }

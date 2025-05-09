@@ -37,7 +37,9 @@ class DesktopPageHeader extends ConsumerWidget {
                 onPressed: () {
                   onNavigationButtonPressed(context, analyticsStore);
                 },
-                asset: themeStore.isDarkMode ? Assets.navigateBackLightBlack : Assets.navigateBack,
+                asset: themeStore.isDarkMode
+                    ? Assets.navigateBackLightGrey
+                    : Assets.navigateBackLightBlack,
               ),
               TextButton(
                 onPressed: () {
