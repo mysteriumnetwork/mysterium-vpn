@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 
 class LocationMarker extends StatelessWidget {
   const LocationMarker({
