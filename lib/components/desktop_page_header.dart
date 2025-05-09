@@ -1,10 +1,13 @@
 import 'package:beamer/beamer.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 
@@ -28,13 +31,26 @@ class DesktopPageHeader extends ConsumerWidget {
       builder: (context) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SvgIconButton(
-            onPressed: () {
-              onNavigationButtonPressed(context, analyticsStore);
-            },
-            asset: themeStore.isDarkMode
-                ? Assets.navigateBackLightGrey
-                : Assets.navigateBackLightBlack,
+          Row(
+            children: [
+              SvgIconButton(
+                onPressed: () {
+                  onNavigationButtonPressed(context, analyticsStore);
+                },
+                asset: themeStore.isDarkMode
+                    ? Assets.navigateBackLightGrey
+                    : Assets.navigateBackLightBlack,
+              ),
+              TextButton(
+                onPressed: () {
+                  onNavigationButtonPressed(context, analyticsStore);
+                },
+                child: EasyText(
+                  LocaleKeys.back.tr(),
+                  fontSize: 14,
+                ),
+              ),
+            ],
           ),
           if (showNavigationButton)
             SvgIconButton(
