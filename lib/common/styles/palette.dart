@@ -26,6 +26,7 @@ abstract class Palette {
   static const Color darkOliveBrown = Color(0xff514314);
   static const Color paleYellow = Color(0xffFFF6D9);
   static const Color grayContainer = Color(0xFFF5F3FD);
+  static const Color grayScaffold = Color(0xFFA09EB7);
 
   Color get highlightColor;
   Color get secondaryColor;
