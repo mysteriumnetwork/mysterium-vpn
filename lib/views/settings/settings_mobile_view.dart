@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/sheet_scaffold.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -33,7 +34,11 @@ class SettingsMobileView extends ConsumerWidget {
               const QAToolbox(),
             ],
           ],
+        ).backgroundColor(
+          context.c.isDarkMode ? Palette.darkBlue : Palette.white,
         ),
+      ).backgroundColor(
+        context.c.isDarkMode ? Palette.deepPurple : Palette.grayScaffold,
       );
 }
 

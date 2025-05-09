@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -32,9 +32,7 @@ class EasyDropdown<T> extends StatelessWidget {
           .height(36)
           .padding(horizontal: 10)
           .decorated(
-            color: Theme.of(context).colorScheme.brightness == Brightness.dark
-                ? Palette.black
-                : Palette.white,
+            color: context.c.isDarkMode ? Palette.black : Palette.white,
             borderRadius: const BorderRadius.all(
               Radius.circular(10),
             ),

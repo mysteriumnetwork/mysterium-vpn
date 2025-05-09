@@ -56,7 +56,7 @@ class _BackButton extends HookConsumerWidget {
     }
 
     return SvgIconButton(
-      asset: isDarkMode ? Assets.navigateBackLightBlack : Assets.navigateBack,
+      asset: isDarkMode ? Assets.navigateBackLightGrey : Assets.navigateBackLightBlack,
       onPressed: handleBackOrHome,
     );
   }
