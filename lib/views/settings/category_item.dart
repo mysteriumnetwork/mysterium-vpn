@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
-import 'package:mysterium_vpn/common/styles/theme.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/circle_box.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -41,7 +40,7 @@ class CategoryItem extends StatelessWidget {
               ).paddingDirectional(end: 14),
               EasyText(
                 title,
-                fontWeight: isSelected? FontWeight.w600 : FontWeight.w500,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                 fontSize: 16,
                 color: isSelected ? Palette.purple : Theme.of(context).indicatorColor,
               ).expanded(),

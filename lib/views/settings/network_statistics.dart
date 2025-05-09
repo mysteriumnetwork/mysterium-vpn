@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/date.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class NetworkStatistics extends ConsumerWidget {
@@ -17,9 +17,7 @@ class NetworkStatistics extends ConsumerWidget {
         padding: const EdgeInsets.all(20),
         margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.brightness == Brightness.dark
-              ? Palette.darkIndigo
-              : Palette.grayContainer,
+          color: context.c.isDarkMode ? Palette.darkIndigo : Palette.grayContainer,
           borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),

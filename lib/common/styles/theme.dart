@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 
 ThemeData themeData(Palette palette) => ThemeData(
       useMaterial3: true,
@@ -132,7 +132,6 @@ ThemeData themeData(Palette palette) => ThemeData(
     );
 
 extension ThemeExtensionX on BuildContext {
-
   // ignore: library_private_types_in_public_api
   _ThemeColorsX get c => Theme.of(this).extension<_ThemeColorsX>()!;
 }
