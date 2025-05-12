@@ -24,7 +24,7 @@ class HomeMobileView extends HookConsumerWidget {
     final (appBarKey, appBarBox) = useRenderObject<RenderBox>();
     final appBarHeight = appBarBox?.size.height ?? kToolbarHeight;
 
-    final topSectionHeight = appBarHeight + 42;
+    final topSectionHeight = appBarHeight + 40;
 
     useReaction(
       () => vpnStore.connectionStatus,
