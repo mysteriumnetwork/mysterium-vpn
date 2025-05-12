@@ -5,6 +5,7 @@
 // ignore_for_file: unused_element
 import 'package:vpn_api/src/model/subscription_config_response_plans_inner_interval.dart';
 import 'package:vpn_api/src/model/subscription_config_response_plans_inner_price.dart';
+import 'package:vpn_api/src/model/subscription_config_response_plans_inner_prices_inner.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'subscription_config_response_plans_inner.g.dart';
@@ -23,6 +24,7 @@ class SubscriptionConfigResponsePlansInner {
     required this.googleProductId,
     required this.interval,
     required this.price,
+    required this.prices,
     required this.supportedGateways,
   });
 
@@ -62,6 +64,13 @@ class SubscriptionConfigResponsePlansInner {
   final SubscriptionConfigResponsePlansInnerPrice price;
 
   @JsonKey(
+    name: r'prices',
+    required: true,
+    includeIfNull: false,
+  )
+  final List<SubscriptionConfigResponsePlansInnerPricesInner> prices;
+
+  @JsonKey(
     name: r'supported_gateways',
     required: true,
     includeIfNull: false,
@@ -77,6 +86,7 @@ class SubscriptionConfigResponsePlansInner {
           other.googleProductId == googleProductId &&
           other.interval == interval &&
           other.price == price &&
+          other.prices == prices &&
           other.supportedGateways == supportedGateways;
 
   @override
@@ -86,6 +96,7 @@ class SubscriptionConfigResponsePlansInner {
       googleProductId.hashCode +
       interval.hashCode +
       price.hashCode +
+      prices.hashCode +
       supportedGateways.hashCode;
 
   factory SubscriptionConfigResponsePlansInner.fromJson(Map<String, dynamic> json) =>

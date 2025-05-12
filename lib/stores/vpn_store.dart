@@ -631,7 +631,7 @@ abstract class _VpnStore with Store {
   Future<void> _initMqtt() async {
     try {
       // TODO(Waldz): Make it mandatory, when backend field will be deployed
-      final connectionID = _vpnConfig?.uid ?? '';
+      final connectionID = _vpnConfig?.id ?? '';
       _connectionSub ??= _mqtt.subscribe('mysterium-vpn/connection/$connectionID').listen((event) {
         final connection = _vpnConnection;
         if (connection == null) {
