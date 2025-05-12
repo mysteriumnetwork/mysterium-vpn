@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 
 class ApiException extends DioException {
   ApiException(
@@ -7,10 +8,12 @@ class ApiException extends DioException {
     required this.code,
     required this.identifier,
     required this.endpoint,
+    required this.severity,
   }) : super(requestOptions: requestOptions, message: message);
   @override
   String get message => super.message!;
   String identifier;
   final int code;
   final String endpoint;
+  final ExceptionSeverity severity;
 }

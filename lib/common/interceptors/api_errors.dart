@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/api.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 
@@ -43,6 +44,7 @@ class ApiErrorsInterceptor extends Interceptor {
           code: errorCode,
           identifier: 'Dio Exception ${err.message} \nat  $endpoint',
           endpoint: endpoint,
+          severity: errorCode >= 500 ? ExceptionSeverity.high : ExceptionSeverity.medium,
         ),
       );
     }
@@ -54,6 +56,7 @@ class ApiErrorsInterceptor extends Interceptor {
         code: 500,
         identifier: 'Dio Exception ${err.message} \nat  $endpoint',
         endpoint: endpoint,
+        severity: ExceptionSeverity.high,
       ),
     );
   }
