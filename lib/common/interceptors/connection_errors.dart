@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/api.dart';
 
 class ConnectionErrorsInterceptor extends Interceptor {
@@ -15,6 +16,7 @@ class ConnectionErrorsInterceptor extends Interceptor {
           code: 0,
           identifier: 'No internet connection \nat  $endpoint',
           endpoint: endpoint,
+          severity: ExceptionSeverity.low,
         ),
       );
     }
@@ -30,9 +32,10 @@ class ConnectionErrorsInterceptor extends Interceptor {
         ApiException(
           err.requestOptions,
           'Unable to connect to the server. Please check your internet connection and try again.',
-          code: 0,
+          code: 1,
           identifier: 'Socket Exception ${err.message} \nat  $endpoint',
           endpoint: endpoint,
+          severity: ExceptionSeverity.low,
         ),
       );
     }
