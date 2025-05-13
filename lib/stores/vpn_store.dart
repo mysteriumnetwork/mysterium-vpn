@@ -429,9 +429,11 @@ abstract class _VpnStore with Store {
 
     if (_connectionDataSub != null) {
       _connectionDataSub!.cancel();
+      _connectionDataSub = null;
     }
     if (_connectionKilledSub != null) {
       _connectionKilledSub?.cancel();
+      _connectionKilledSub = null;
     }
     _connectingLocation = null;
   }
@@ -637,7 +639,7 @@ abstract class _VpnStore with Store {
       // TODO(Waldz): Make it mandatory, when backend field will be deployed
       final connectionID = _vpnConfig?.id ?? '';
 
-      _connectionDataSub ??=
+      _connectionDataSub =
           _mqtt.subscribe('mysterium-vpn/connection/$connectionID').listen((event) {
         final connection = _vpnConnection;
         if (connection == null) {
@@ -655,7 +657,7 @@ abstract class _VpnStore with Store {
         );
       });
 
-      _connectionKilledSub ??=
+      _connectionKilledSub =
           _mqtt.subscribe('mysterium-vpn/connection/$connectionID/killed').listen((_) {
         connectionLimitReached = true;
       });
