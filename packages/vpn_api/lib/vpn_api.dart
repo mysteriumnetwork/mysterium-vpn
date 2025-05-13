@@ -11,6 +11,7 @@ export 'package:vpn_api/src/auth/oauth.dart';
 export 'package:vpn_api/src/api/authentication.dart';
 export 'package:vpn_api/src/api/connection.dart';
 export 'package:vpn_api/src/api/infrastructure.dart';
+export 'package:vpn_api/src/api/location.dart';
 export 'package:vpn_api/src/api/subscription.dart';
 
 export 'package:vpn_api/src/model/api_error.dart';
@@ -23,6 +24,7 @@ export 'package:vpn_api/src/model/check_auth401_response_error_fields_value.dart
 export 'package:vpn_api/src/model/code_authorization_request.dart';
 export 'package:vpn_api/src/model/connection_config_request_query.dart';
 export 'package:vpn_api/src/model/connection_config_response.dart';
+export 'package:vpn_api/src/model/connection_killed_message.dart';
 export 'package:vpn_api/src/model/connection_location.dart';
 export 'package:vpn_api/src/model/connection_message.dart';
 export 'package:vpn_api/src/model/connection_message_location.dart';
@@ -36,6 +38,7 @@ export 'package:vpn_api/src/model/create_generic_subscription_response.dart';
 export 'package:vpn_api/src/model/create_google_subscription_request.dart';
 export 'package:vpn_api/src/model/create_google_subscription_response.dart';
 export 'package:vpn_api/src/model/field_error.dart';
+export 'package:vpn_api/src/model/get_location_response.dart';
 export 'package:vpn_api/src/model/get_subscription_response.dart';
 export 'package:vpn_api/src/model/healthcheck200_response.dart';
 export 'package:vpn_api/src/model/healthcheck_message.dart';
@@ -74,6 +77,7 @@ export 'package:vpn_api/src/model/subscription_config_response_gateways_inner.da
 export 'package:vpn_api/src/model/subscription_config_response_plans_inner.dart';
 export 'package:vpn_api/src/model/subscription_config_response_plans_inner_interval.dart';
 export 'package:vpn_api/src/model/subscription_config_response_plans_inner_price.dart';
+export 'package:vpn_api/src/model/subscription_config_response_plans_inner_prices_inner.dart';
 export 'package:vpn_api/src/model/user_callback_request.dart';
 export 'package:vpn_api/src/model/wireguard_connect_request.dart';
 export 'package:vpn_api/src/model/wireguard_connect_response.dart';

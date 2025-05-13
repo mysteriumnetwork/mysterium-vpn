@@ -25,7 +25,7 @@ generate-localization:
 # generate command: https://openapi-generator.tech/docs/usage/#generate
 # dart-dio docs: https://openapi-generator.tech/docs/generators/dart-dio
 generate-api:
-	pushd packages/vpn_api ;\
+	cd packages/vpn_api ;\
 	openapi-generator generate \
 	  --input-spec https://api-test.mysteriumvpn.com/openapi.yaml \
 	  --generator-name dart-dio \
@@ -37,7 +37,7 @@ generate-api:
 	  --additional-properties=serializationLibrary=json_serializable,finalProperties=true,apiNameSuffix=,apiNamePrefix=,pubName=vpn_api ;\
   	fvm dart run build_runner build --verbose --delete-conflicting-outputs ;\
 	fvm dart format --line-length 100 . ;\
-	popd
+	cd ..
 
 update-tile-assets-declaration:
 	fvm dart run assets/map_tiles/list_assets.dart
