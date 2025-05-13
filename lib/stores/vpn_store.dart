@@ -626,7 +626,7 @@ abstract class _VpnStore with Store {
       if (_vpnConnection?.location != null) {
         _locationsStore.addRecentLocation(_vpnConnection!.location);
       }
-      unawaited(_subscribeConnectionChanges());
+      unawaited(_subscribeConnectionChanges(_vpnConfig!.id));
       unawaited(_udpBlockedCheck());
     } catch (e) {
       _logger.handle(e);
@@ -634,11 +634,8 @@ abstract class _VpnStore with Store {
     }
   }
 
-  Future<void> _subscribeConnectionChanges() async {
+  Future<void> _subscribeConnectionChanges(String connectionID) async {
     try {
-      // TODO(Waldz): Make it mandatory, when backend field will be deployed
-      final connectionID = _vpnConfig?.id ?? '';
-
       _connectionDataSub =
           _mqtt.subscribe('mysterium-vpn/connection/$connectionID').listen((event) {
         final connection = _vpnConnection;
