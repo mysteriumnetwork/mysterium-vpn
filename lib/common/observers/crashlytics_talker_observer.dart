@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:talker/talker.dart';
@@ -18,6 +19,7 @@ class CrashlitycsLoggerObserver extends TalkerObserver {
 
   @override
   Future<void> onError(TalkerError err) async {
+    trackErrorEvent(err.exception);
     if (shouldSkipEvent(err.exception)) {
       return;
     }
@@ -30,6 +32,7 @@ class CrashlitycsLoggerObserver extends TalkerObserver {
 
   @override
   Future<void> onException(TalkerException err) async {
+    trackErrorEvent(err.exception);
     if (shouldSkipEvent(err.exception)) {
       return;
     }
@@ -39,6 +42,20 @@ class CrashlitycsLoggerObserver extends TalkerObserver {
       reason: err.exception.toString(),
       fatal: true,
     );
+  }
+
+  void trackErrorEvent(Object? apiError) {
+    if (apiError is ApiException) {
+      analyticsStore.logEvent(
+        AnalyticsEvent.apiError,
+        parameters: {
+          'message': apiError.message,
+          'status_code': apiError.code,
+          'endpoint': apiError.endpoint,
+          'method': apiError.requestOptions.method,
+        },
+      );
+    }
   }
 
   /// Skip some exceptions from being logged to Crashlytics
