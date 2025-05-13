@@ -17,6 +17,7 @@ class WireguardConnectRequest {
   /// Returns a new [WireguardConnectRequest] instance.
   WireguardConnectRequest({
     required this.publicKey,
+    this.countryOriginate,
     this.country,
     this.ipType,
     this.resetConnection,
@@ -29,6 +30,13 @@ class WireguardConnectRequest {
     includeIfNull: false,
   )
   final String publicKey;
+
+  @JsonKey(
+    name: r'country_originate',
+    required: false,
+    includeIfNull: false,
+  )
+  final String? countryOriginate;
 
   @JsonKey(
     name: r'country',
@@ -64,6 +72,7 @@ class WireguardConnectRequest {
       identical(this, other) ||
       other is WireguardConnectRequest &&
           other.publicKey == publicKey &&
+          other.countryOriginate == countryOriginate &&
           other.country == country &&
           other.ipType == ipType &&
           other.resetConnection == resetConnection &&
@@ -72,6 +81,7 @@ class WireguardConnectRequest {
   @override
   int get hashCode =>
       publicKey.hashCode +
+      (countryOriginate == null ? 0 : countryOriginate.hashCode) +
       (country == null ? 0 : country.hashCode) +
       (ipType == null ? 0 : ipType.hashCode) +
       (resetConnection == null ? 0 : resetConnection.hashCode) +

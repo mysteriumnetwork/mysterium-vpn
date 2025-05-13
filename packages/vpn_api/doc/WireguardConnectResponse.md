@@ -8,7 +8,7 @@ import 'package:vpn_api/api.dart';
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**uid** | **String** | Unique identifier of prepared connection | [optional] 
+**id** | **String** | Unique identifier of prepared connection | 
 **wgConfig** | **String** | Wireguard connection configuration with a placeholder for %private_key% | 
 **hash** | **String** | Hash representing provider id | 
 **exitIp** | **String** | Exit IP of provider | [optional] 
