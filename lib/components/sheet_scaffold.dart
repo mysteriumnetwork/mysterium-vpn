@@ -24,6 +24,7 @@ class SheetScaffold extends HookWidget {
         // Sticky header with background
         SliverAppBar(
           automaticallyImplyLeading: false,
+          stretch: true,
           pinned: true,
           title: header,
           expandedHeight: 80,
@@ -57,12 +58,6 @@ class SheetScaffold extends HookWidget {
         ),
 
         sliver,
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: Container(
-            color: Palette.crimsonRed,
-          ),
-        ),
       ],
     );
   }

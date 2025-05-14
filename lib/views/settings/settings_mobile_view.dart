@@ -42,7 +42,7 @@ class SettingsMobileView extends ConsumerWidget {
           ),
         ),
       ).backgroundColor(
-        context.c.isDarkMode ? Palette.deepPurple : Palette.grayScaffold,
+        context.c.isDarkMode ? Palette.darkBlue : Palette.white,
       );
 }
 
