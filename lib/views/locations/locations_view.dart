@@ -234,10 +234,14 @@ class _Locations extends HookConsumerWidget {
                       ipType: locationType,
                       items: locations,
                       onItemPressed: onLocationTapped,
-                      emptyText: searchKeyword.isEmpty
-                          ? LocaleKeys.noLocations.tr()
-                          : LocaleKeys.noLocationsKeyword.tr(namedArgs: {'keyword': searchKeyword}),
                     ),
+                    if (topLocations.isEmpty && locations.isEmpty)
+                      _Empty(
+                        text: searchKeyword.isEmpty
+                            ? LocaleKeys.noLocations.tr()
+                            : LocaleKeys.noLocationsKeyword
+                                .tr(namedArgs: {'keyword': searchKeyword}),
+                      ),
                   ],
                 ),
               ),
@@ -245,6 +249,20 @@ class _Locations extends HookConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _Empty extends StatelessWidget {
+  const _Empty({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return SliverToBoxAdapter(
+      child: EasyText(text, color: theme.colorScheme.error, fontWeight: FontWeight.w700),
     );
   }
 }
