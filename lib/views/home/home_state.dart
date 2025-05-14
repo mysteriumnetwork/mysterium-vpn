@@ -20,6 +20,7 @@ class _HomeState extends ChangeNotifier {
   final AnalyticsStore _analytics;
   final PanelController panelController = PanelController();
   final typeSwitcherKey = GlobalKey();
+  final locationsKey = GlobalKey();
 
   late final PanelState initialState = _prefs.getPanelState() ?? PanelState.snap;
 
@@ -95,18 +96,34 @@ class _HomeState extends ChangeNotifier {
     _scrollController?.jumpTo(0);
   }
 
-  Future<void> expandPanel() async {
+  Future<void> scrollToLocations() async {
     if (!panelController.isAttached) {
       return;
     }
     await _setPanelState(PanelState.open);
-    if (_scrollController != null) {
-      _scrollController!.animateTo(
-        200,
-        duration: const Duration(milliseconds: 100),
-        curve: Curves.fastOutSlowIn,
-      );
+    final context = locationsKey.currentContext;
+    if (context == null || !context.mounted) {
+      return;
     }
+
+    final box = context.findRenderObject();
+    if (box is! RenderBox) {
+      return;
+    }
+
+    if (scrollController == null) {
+      return;
+    }
+
+    // Calculate the offset of the target widget
+    final offset = box.localToGlobal(Offset.zero).dy;
+
+    // Scroll to the exact position of the widget
+    await scrollController!.animateTo(
+      scrollController!.offset + offset,
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeInOut,
+    );
   }
 
   Future<void> scrollTo(GlobalKey key) async {
