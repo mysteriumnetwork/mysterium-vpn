@@ -108,8 +108,8 @@ class _DismissButton extends StatelessWidget {
             ),
           )
         : Positioned(
-            top: 8,
-            right: 6,
+            top: 3,
+            right: 4,
             child: IconButton(
               color: bannerStyle.foregroundColor,
               constraints: BoxConstraints.tight(const Size(24, 24)),
