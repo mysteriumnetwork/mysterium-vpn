@@ -1,0 +1,28 @@
+{
+  "buildFiles": [
+    "/Users/dmacan/fvm/versions/3.29.2/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/dmacan/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/dmacan/Projects/mysterium/mysterium-vpn/android/app/.cxx/RelWithDebInfo/516n274r/armeabi-v7a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/dmacan/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/dmacan/Projects/mysterium/mysterium-vpn/android/app/.cxx/RelWithDebInfo/516n274r/armeabi-v7a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {},
+  "toolchains": {
+    "toolchain": {
+      "cCompilerExecutable": "/Users/dmacan/Library/Android/sdk/ndk/26.3.11579264/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang.lld",
+      "cppCompilerExecutable": "/Users/dmacan/Library/Android/sdk/ndk/26.3.11579264/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++.lld"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": []
+}
