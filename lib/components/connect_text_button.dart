@@ -12,21 +12,23 @@ class ConnectTextButton extends HookConsumerWidget {
   const ConnectTextButton({
     required this.onPressed,
     required this.location,
-    this.minimumSize = const Size(120, 40),
+    required this.btnSize,
     this.textScaleGroup,
     this.loadingIndicatorRadius = 16,
     this.outlinedButton = false,
     this.borderRadius,
+    this.fontStyle,
     super.key,
   });
 
   final VoidCallback? onPressed;
   final VPNLocation location;
   final AutoSizeGroup? textScaleGroup;
-  final Size minimumSize;
+  final Size btnSize;
   final double loadingIndicatorRadius;
   final bool outlinedButton;
   final double? borderRadius;
+  final TextStyle? fontStyle;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isConnected = useIsLocationConnected(location);
@@ -40,7 +42,8 @@ class ConnectTextButton extends HookConsumerWidget {
           ? OutlinedButton(
               onPressed: onPressed,
               style: OutlinedButton.styleFrom(
-                minimumSize: minimumSize,
+                fixedSize: btnSize,
+                minimumSize: btnSize,
                 shape: borderRadius != null
                     ? RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(borderRadius!),
@@ -50,10 +53,11 @@ class ConnectTextButton extends HookConsumerWidget {
               child: AutoSizeText(
                 LocaleKeys.connect.tr(),
                 group: textScaleGroup,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: fontStyle ??
+                    const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -61,39 +65,45 @@ class ConnectTextButton extends HookConsumerWidget {
           : ElevatedButton(
               onPressed: onPressed,
               style: ElevatedButton.styleFrom(
-                minimumSize: minimumSize,
+                fixedSize: btnSize,
+                minimumSize: btnSize,
                 backgroundColor: Palette.purple,
                 elevation: 0,
               ),
               child: AutoSizeText(
                 LocaleKeys.connect.tr(),
                 group: textScaleGroup,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Palette.white,
-                ),
+                style: fontStyle ??
+                    const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Palette.white,
+                    ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
       true => FilledButton(
           onPressed: onPressed,
-          style: FilledButton.styleFrom(minimumSize: minimumSize),
+          style: FilledButton.styleFrom(
+            fixedSize: btnSize,
+            minimumSize: btnSize,
+          ),
           child: AutoSizeText(
             LocaleKeys.disconnect.tr(),
             group: textScaleGroup,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
+            style: fontStyle ??
+                const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
         ),
       null => FilledButton(
           onPressed: null,
-          style: FilledButton.styleFrom(minimumSize: minimumSize),
+          style: FilledButton.styleFrom(fixedSize: btnSize),
           child: LoadingIndicator(radius: loadingIndicatorRadius),
         ),
     };
