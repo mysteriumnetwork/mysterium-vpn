@@ -94,7 +94,7 @@ class ConnectionTile extends HookConsumerWidget {
                 ConnectTextButton(
                   onPressed: onTap,
                   location: location,
-                  btnSize: const Size(106, 31),
+                  size: const Size(106, 31),
                 ),
               ],
             ),
