@@ -35,10 +35,7 @@ class ProductItemVariantA extends StatelessWidget {
           Expanded(
             child: DefaultTextStyle(
               style: theme.textTheme.bodyMedium!.copyWith(
-                color: switch (theme.brightness) {
-                  Brightness.dark => Palette.white,
-                  Brightness.light => Palette.black,
-                },
+                color: context.c.isDarkMode ? Palette.white : Palette.black,
               ),
               child: ProductPricing(product: productDetails),
             ),
