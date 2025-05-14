@@ -110,6 +110,7 @@ class SignInForm extends HookConsumerWidget {
                   ).padding(vertical: height * 0.03),
                   AutofillGroup(
                     child: ReactiveTextField(
+                      key: const Key('loginEmailField'),
                       onTap: (_) {
                         analyticsStore.logEvent(AnalyticsEvent.emailInput);
                       },
@@ -165,6 +166,7 @@ class SignInForm extends HookConsumerWidget {
                   ),
                   ReactiveFormConsumer(
                     builder: (_, signInForm, child) => EasyButton(
+                      key: const Key('loginButton'),
                       width: double.infinity,
                       onPressed: signInStatus != FutureStatus.pending
                           ? () =>
