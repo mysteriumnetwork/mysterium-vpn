@@ -32,8 +32,6 @@ class _HomeState extends ChangeNotifier {
   PanelState get panelState => _panelState;
   PanelState? _previousState;
 
-  bool get isDraggable => isMobile();
-
   bool get isPadded => isMobile();
 
   double get extent =>
@@ -95,6 +93,20 @@ class _HomeState extends ChangeNotifier {
     }
     await _setPanelState(PanelState.closed);
     _scrollController?.jumpTo(0);
+  }
+
+  Future<void> expandPanel() async {
+    if (!panelController.isAttached) {
+      return;
+    }
+    await _setPanelState(PanelState.open);
+    if (_scrollController != null) {
+      _scrollController!.animateTo(
+        200,
+        duration: const Duration(milliseconds: 100),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
   }
 
   Future<void> scrollTo(GlobalKey key) async {

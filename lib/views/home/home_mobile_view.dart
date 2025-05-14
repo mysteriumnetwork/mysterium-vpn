@@ -23,7 +23,7 @@ class HomeMobileView extends HookConsumerWidget {
     final homeState = ref.watch(homeStateProvider.notifier);
     final (appBarKey, appBarBox) = useRenderObject<RenderBox>();
     final appBarHeight = appBarBox?.size.height ?? kToolbarHeight;
-
+    final locationsStore = ref.watch(locationsStorePOD);
     final topSectionHeight = appBarHeight + 40;
 
     useReaction(
@@ -38,6 +38,20 @@ class HomeMobileView extends HookConsumerWidget {
         });
       },
       keys: [homeState],
+    );
+
+    useReaction(
+      () => locationsStore.searchKeyword,
+      (_) {
+        homeState.expandPanel();
+      },
+      keys: [homeState],
+      equals: (String? c, String? p) {
+        if ((p?.isEmpty ?? true) && (c?.isNotEmpty ?? false)) {
+          return false;
+        }
+        return true;
+      },
     );
 
     return LayoutBuilder(
@@ -63,7 +77,7 @@ class HomeMobileView extends HookConsumerWidget {
               controller: homeState.panelController,
               color: theme.primaryColor,
               snapPoint: PanelState.snap.extent,
-              isDraggable: homeState.isDraggable,
+              isDraggable: false,
               panelBuilder: (sc) => HookBuilder(
                 builder: (context) {
                   homeState.scrollController = sc;
