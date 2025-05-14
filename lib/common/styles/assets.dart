@@ -70,12 +70,16 @@ abstract class Assets {
   static const String settings = 'assets/icons/settings.svg';
   static const String settingsDark = 'assets/icons/settings_dark.svg';
   static const String settingsLight = 'assets/icons/settings_light.svg';
+  static const String settingsDarkDesktop = 'assets/icons/settings_dark_desktop.svg';
+  static const String settingsLightDesktop = 'assets/icons/settings_light_desktop.svg';
   static const String settingsLightBlack = 'assets/icons/settings_light_black.svg';
   static const String speed = 'assets/icons/speed.svg';
   static const String subscription = 'assets/icons/subscription.svg';
   static const String subscriptionItem = 'assets/icons/subscription_item.svg';
   static const String supportDark = 'assets/icons/support_dark.svg';
   static const String supportLight = 'assets/icons/support_light.svg';
+  static const String supportDarkDesktop = 'assets/icons/support_dark_desktop.svg';
+  static const String supportLightDesktop = 'assets/icons/support_light_desktop.svg';
   static const String tag = 'assets/icons/tag.svg';
   static const String themeDark = 'assets/icons/theme_dark.svg';
   static const String themeLight = 'assets/icons/theme_light.svg';
