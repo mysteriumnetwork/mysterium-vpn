@@ -60,9 +60,13 @@ class RecentLocationItem extends HookConsumerWidget {
                 ConnectTextButton(
                   onPressed: onTap,
                   location: location,
-                  minimumSize: const Size(86, 32),
+                  btnSize: const Size(90, 30),
                   loadingIndicatorRadius: 15,
-                  borderRadius: 8,
+                  outlinedButton: true,
+                  fontStyle: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),
