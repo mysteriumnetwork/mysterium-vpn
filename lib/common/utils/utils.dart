@@ -388,7 +388,7 @@ FutureOr<void> handleOnBillingPage({
   await launchUrl(httpsUri);
 }
 
-void handleOnReportPage({
+void handleOnSupportPage({
   required BuildContext context,
   required IntercomStore intetcomStore,
   required AnalyticsStore analyticsStore,

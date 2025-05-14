@@ -40,9 +40,16 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
       ),
       child: CustomScrollView(
         controller: scrollController,
-        slivers: const [
-          SliverPinnedHeader(child: HomeAppBar()),
-          SliverClip(
+        slivers: [
+          SliverPinnedHeader(
+            child: HomeAppBar(
+              supportIcon:
+                  context.c.isDarkMode ? Assets.supportDarkDesktop : Assets.supportLightDesktop,
+              settingsIcon:
+                  context.c.isDarkMode ? Assets.settingsDarkDesktop : Assets.settingsLightDesktop,
+            ),
+          ),
+          const SliverClip(
             child: SliverPadding(
               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 14),
               sliver: LocationsSliverView(),

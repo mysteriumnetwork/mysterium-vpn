@@ -10,7 +10,13 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_search.dart';
 
 class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
-  const HomeAppBar({super.key});
+  const HomeAppBar({
+    required this.supportIcon,
+    required this.settingsIcon,
+    super.key,
+  });
+  final String supportIcon;
+  final String settingsIcon;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,19 +43,19 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
                   ),
                 ),
                 SvgIconButton(
-                  onPressed: () => handleOnReportPage(
+                  onPressed: () => handleOnSupportPage(
                     context: context,
                     intetcomStore: ref.read(intercomStorePOD),
                     analyticsStore: ref.read(analyticsStorePOD),
                   ),
-                  asset: context.c.isDarkMode ? Assets.supportDark : Assets.supportLight,
+                  asset: supportIcon,
                 ),
                 SvgIconButton(
                   onPressed: () {
                     analyticsStore.logEvent(AnalyticsEvent.openSettings);
                     context.beamToNamed(Routes.settings.path);
                   },
-                  asset: context.c.isDarkMode ? Assets.settingsDark : Assets.settingsLight,
+                  asset: settingsIcon,
                 ),
               ],
             ),
