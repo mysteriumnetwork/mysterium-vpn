@@ -72,6 +72,7 @@ class _Item extends StatelessWidget {
       elevation: 0,
       focusElevation: 0,
       highlightElevation: 0,
+      splashColor: Colors.transparent,
       hoverElevation: 0,
       constraints: const BoxConstraints(minHeight: 56),
       visualDensity: VisualDensity.compact,
