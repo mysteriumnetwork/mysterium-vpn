@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
@@ -14,11 +14,9 @@ import 'package:styled_widget/styled_widget.dart';
 class ProductFeatures extends HookConsumerWidget {
   const ProductFeatures({
     required this.formVariant,
-    required this.isDarkTheme,
     super.key,
   });
   final String formVariant;
-  final bool isDarkTheme;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final config = ref.watch(remoteConfigStorePOD);
@@ -56,13 +54,12 @@ class ProductFeatures extends HookConsumerWidget {
                 .mapIndexed(
                   (i, e) => _FeatureItem(
                     title: e,
-                    isDarkTheme: isDarkTheme,
                     isLastItem: i == features.length - 1,
                   ),
                 )
                 .toList(),
           ).padding(all: 16).card(
-                color: isDarkTheme ? const Color(0xff353355) : const Color(0xffF5F3FD),
+                color: context.c.isDarkMode ? const Color(0xff353355) : const Color(0xffF5F3FD),
               ),
         ],
       ),
@@ -73,12 +70,10 @@ class ProductFeatures extends HookConsumerWidget {
 class _FeatureItem extends StatelessWidget {
   const _FeatureItem({
     required this.title,
-    required this.isDarkTheme,
     this.isLastItem = false,
   });
   final String title;
   final bool isLastItem;
-  final bool isDarkTheme;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -98,7 +93,7 @@ class _FeatureItem extends StatelessWidget {
                   child: EasyText(
                     title,
                     fontSize: 14,
-                    color: isDarkTheme ? const Color(0xffC4C1DD) : const Color(0xFF716F8A),
+                    color: context.c.isDarkMode ? const Color(0xffC4C1DD) : const Color(0xFF716F8A),
                   ),
                 ),
               ],
@@ -109,7 +104,7 @@ class _FeatureItem extends StatelessWidget {
                   vertical: 8,
                 ),
                 child: Divider(
-                  color: isDarkTheme ? const Color(0xFF6a678e) : const Color(0x66A6A3C9),
+                  color: context.c.isDarkMode ? const Color(0xFF6a678e) : const Color(0x66A6A3C9),
                   thickness: 1,
                   height: 1,
                 ),

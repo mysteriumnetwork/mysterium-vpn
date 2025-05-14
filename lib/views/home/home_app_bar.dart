@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -14,7 +14,6 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final brightness = Theme.of(context).brightness;
     final analyticsStore = ref.read(analyticsStorePOD);
 
     return SafeArea(
@@ -32,10 +31,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
               children: [
                 Expanded(
                   child: SvgPicture.asset(
-                    switch (brightness) {
-                      Brightness.dark => Assets.logoWhiteSvg,
-                      Brightness.light => Assets.logoBlackSvg,
-                    },
+                    context.c.isDarkMode ? Assets.logoWhiteSvg : Assets.logoBlackSvg,
                     height: 24,
                     alignment: Alignment.centerLeft,
                   ),
@@ -46,20 +42,14 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
                     intetcomStore: ref.read(intercomStorePOD),
                     analyticsStore: ref.read(analyticsStorePOD),
                   ),
-                  asset: switch (brightness) {
-                    Brightness.dark => Assets.supportDark,
-                    Brightness.light => Assets.supportLight,
-                  },
+                  asset: context.c.isDarkMode ? Assets.supportDark : Assets.supportLight,
                 ),
                 SvgIconButton(
                   onPressed: () {
                     analyticsStore.logEvent(AnalyticsEvent.openSettings);
                     context.beamToNamed(Routes.settings.path);
                   },
-                  asset: switch (brightness) {
-                    Brightness.dark => Assets.settingsDark,
-                    Brightness.light => Assets.settingsLight,
-                  },
+                  asset: context.c.isDarkMode ? Assets.settingsDark : Assets.settingsLight,
                 ),
               ],
             ),

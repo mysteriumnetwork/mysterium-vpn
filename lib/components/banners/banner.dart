@@ -117,9 +117,7 @@ class _DismissButton extends StatelessWidget {
               padding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
               style: IconButton.styleFrom(
-                backgroundColor: Theme.of(context).brightness == Brightness.light
-                    ? Palette.lightBlack
-                    : Palette.mediumBlack,
+                backgroundColor: context.c.isDarkMode ? Palette.mediumBlack : Palette.lightBlack,
               ),
               onPressed: onPressed,
               icon: const Icon(Icons.close_sharp),
