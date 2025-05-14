@@ -12,7 +12,7 @@ class ConnectTextButton extends HookConsumerWidget {
   const ConnectTextButton({
     required this.onPressed,
     required this.location,
-    required this.btnSize,
+    required this.size,
     this.textScaleGroup,
     this.loadingIndicatorRadius = 16,
     this.outlinedButton = false,
@@ -24,7 +24,7 @@ class ConnectTextButton extends HookConsumerWidget {
   final VoidCallback? onPressed;
   final VPNLocation location;
   final AutoSizeGroup? textScaleGroup;
-  final Size btnSize;
+  final Size size;
   final double loadingIndicatorRadius;
   final bool outlinedButton;
   final double? borderRadius;
@@ -42,8 +42,8 @@ class ConnectTextButton extends HookConsumerWidget {
           ? OutlinedButton(
               onPressed: onPressed,
               style: OutlinedButton.styleFrom(
-                fixedSize: btnSize,
-                minimumSize: btnSize,
+                fixedSize: size,
+                minimumSize: size,
                 shape: borderRadius != null
                     ? RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(borderRadius!),
@@ -65,8 +65,8 @@ class ConnectTextButton extends HookConsumerWidget {
           : ElevatedButton(
               onPressed: onPressed,
               style: ElevatedButton.styleFrom(
-                fixedSize: btnSize,
-                minimumSize: btnSize,
+                fixedSize: size,
+                minimumSize: size,
                 backgroundColor: Palette.purple,
                 elevation: 0,
               ),
@@ -86,8 +86,8 @@ class ConnectTextButton extends HookConsumerWidget {
       true => FilledButton(
           onPressed: onPressed,
           style: FilledButton.styleFrom(
-            fixedSize: btnSize,
-            minimumSize: btnSize,
+            fixedSize: size,
+            minimumSize: size,
           ),
           child: AutoSizeText(
             LocaleKeys.disconnect.tr(),
@@ -103,7 +103,7 @@ class ConnectTextButton extends HookConsumerWidget {
         ),
       null => FilledButton(
           onPressed: null,
-          style: FilledButton.styleFrom(fixedSize: btnSize),
+          style: FilledButton.styleFrom(fixedSize: size),
           child: LoadingIndicator(radius: loadingIndicatorRadius),
         ),
     };
