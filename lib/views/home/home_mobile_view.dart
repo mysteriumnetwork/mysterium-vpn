@@ -44,7 +44,7 @@ class HomeMobileView extends HookConsumerWidget {
     useReaction(
       () => locationsStore.searchKeyword,
       (_) {
-        homeState.expandPanel();
+        homeState.scrollToLocations();
       },
       keys: [homeState],
       equals: (String? c, String? p) {
