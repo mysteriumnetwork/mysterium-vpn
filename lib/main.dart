@@ -1,26 +1,39 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:mysterium_vpn/entrypoints/enviroment.dart';
-import 'package:mysterium_vpn/entrypoints/firebase/firebase_options_dev.dart' as dev;
-import 'package:mysterium_vpn/entrypoints/firebase/firebase_options_prod.dart' as prod;
-import 'package:mysterium_vpn/models/flavor_config.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/entrypoints/environment.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 void main() async {
   const flavor = String.fromEnvironment('FLAVOR');
+  final environment = Environment(flavor);
 
-  Enviroment().launch(
-    flavor: flavor,
-    firebaseOptions: _getFirebaseOptions(flavor),
+  await environment.init();
+
+  await SentryFlutter.init(
+    (options) {
+      options
+        ..dsn =
+            environment.remoteConfigStore?.sentryDsn ?? environment.flavorConfig.values.sentryDsn
+        ..sendClientReports = true
+        ..maxRequestBodySize = MaxRequestBodySize.small
+        ..maxResponseBodySize = MaxResponseBodySize.small
+        ..beforeSend = (event, hint) {
+          debugPrint(event.throwable.toString());
+          if (event.throwable is ApiException ||
+              event.throwable is SignInAborted ||
+              event.throwable is KeyDoesntExistsException ||
+              event.throwable is TimeoutException ||
+              event.throwable is TokenAlreadyUsedException ||
+              event.throwable is OperationCancelledException ||
+              event.throwable is SubscriptionRequiredException ||
+              event.throwable is RefreshTokenNotFoundException) {
+            return null;
+          }
+          return event;
+        };
+    },
+    appRunner: () => runApp(environment.getApp()),
   );
-}
-
-FirebaseOptions? _getFirebaseOptions(String flavor) {
-  try {
-    if (flavor == Flavor.dev.name) {
-      return dev.DefaultFirebaseOptions.currentPlatform;
-    } else {
-      return prod.DefaultFirebaseOptions.currentPlatform;
-    }
-  } catch (_) {
-    return null;
-  }
 }
