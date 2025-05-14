@@ -1,0 +1,2 @@
+/Users/dmacan/Projects/mysterium/mysterium-vpn/android/app/.cxx/RelWithDebInfo/516n274r/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/dmacan/Projects/mysterium/mysterium-vpn/android/app/.cxx/RelWithDebInfo/516n274r/armeabi-v7a/CMakeFiles/rebuild_cache.dir
