@@ -92,4 +92,5 @@ enum AnalyticsEvent {
   resendEmailClicked,
   locationsTabClick,
   appVersionSettingClicked,
+  apiError,
 }

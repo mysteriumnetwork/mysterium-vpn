@@ -9,6 +9,7 @@ import 'package:vpn_api/api.dart';
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **publicKey** | **String** |  | 
+**countryOriginate** | **String** |  | [optional] 
 **country** | **String** |  | [optional] 
 **ipType** | **String** |  | [optional] 
 **resetConnection** | **bool** | Request a new IP | [optional] 

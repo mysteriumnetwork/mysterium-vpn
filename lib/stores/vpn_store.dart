@@ -90,7 +90,8 @@ abstract class _VpnStore with Store {
   final LocalDBService _localDBService = LocalDBService.instance;
   final Talker _logger;
   final Stopwatch _stopwatch = Stopwatch();
-  StreamSubscription<String>? _connectionSub;
+  StreamSubscription<String>? _connectionDataSub;
+  StreamSubscription<String>? _connectionKilledSub;
   StreamSubscription<ConnectionStatus>? _wireguradConnectionStatus;
 
   @readonly
@@ -426,8 +427,13 @@ abstract class _VpnStore with Store {
       await _wireguardService.disconnect();
     }
 
-    if (_connectionSub != null) {
-      _connectionSub!.cancel();
+    if (_connectionDataSub != null) {
+      _connectionDataSub!.cancel();
+      _connectionDataSub = null;
+    }
+    if (_connectionKilledSub != null) {
+      _connectionKilledSub?.cancel();
+      _connectionKilledSub = null;
     }
     _connectingLocation = null;
   }
@@ -620,7 +626,7 @@ abstract class _VpnStore with Store {
       if (_vpnConnection?.location != null) {
         _locationsStore.addRecentLocation(_vpnConnection!.location);
       }
-      unawaited(_initMqtt());
+      unawaited(_subscribeConnectionChanges(_vpnConfig!.id));
       unawaited(_udpBlockedCheck());
     } catch (e) {
       _logger.handle(e);
@@ -628,11 +634,10 @@ abstract class _VpnStore with Store {
     }
   }
 
-  Future<void> _initMqtt() async {
+  Future<void> _subscribeConnectionChanges(String connectionID) async {
     try {
-      // TODO(Waldz): Make it mandatory, when backend field will be deployed
-      final connectionID = _vpnConfig?.uid ?? '';
-      _connectionSub ??= _mqtt.subscribe('mysterium-vpn/connection/$connectionID').listen((event) {
+      _connectionDataSub =
+          _mqtt.subscribe('mysterium-vpn/connection/$connectionID').listen((event) {
         final connection = _vpnConnection;
         if (connection == null) {
           return;
@@ -647,6 +652,11 @@ abstract class _VpnStore with Store {
             code: connectionUpdate.location.country,
           ),
         );
+      });
+
+      _connectionKilledSub =
+          _mqtt.subscribe('mysterium-vpn/connection/$connectionID/killed').listen((_) {
+        connectionLimitReached = true;
       });
     } catch (e) {
       _logger.handle(e);

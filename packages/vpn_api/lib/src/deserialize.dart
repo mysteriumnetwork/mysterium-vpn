@@ -8,6 +8,7 @@ import 'package:vpn_api/src/model/check_auth401_response_error_fields_value.dart
 import 'package:vpn_api/src/model/code_authorization_request.dart';
 import 'package:vpn_api/src/model/connection_config_request_query.dart';
 import 'package:vpn_api/src/model/connection_config_response.dart';
+import 'package:vpn_api/src/model/connection_killed_message.dart';
 import 'package:vpn_api/src/model/connection_location.dart';
 import 'package:vpn_api/src/model/connection_message.dart';
 import 'package:vpn_api/src/model/connection_message_location.dart';
@@ -21,6 +22,7 @@ import 'package:vpn_api/src/model/create_generic_subscription_response.dart';
 import 'package:vpn_api/src/model/create_google_subscription_request.dart';
 import 'package:vpn_api/src/model/create_google_subscription_response.dart';
 import 'package:vpn_api/src/model/field_error.dart';
+import 'package:vpn_api/src/model/get_location_response.dart';
 import 'package:vpn_api/src/model/get_subscription_response.dart';
 import 'package:vpn_api/src/model/healthcheck200_response.dart';
 import 'package:vpn_api/src/model/healthcheck_message.dart';
@@ -59,6 +61,7 @@ import 'package:vpn_api/src/model/subscription_config_response_gateways_inner.da
 import 'package:vpn_api/src/model/subscription_config_response_plans_inner.dart';
 import 'package:vpn_api/src/model/subscription_config_response_plans_inner_interval.dart';
 import 'package:vpn_api/src/model/subscription_config_response_plans_inner_price.dart';
+import 'package:vpn_api/src/model/subscription_config_response_plans_inner_prices_inner.dart';
 import 'package:vpn_api/src/model/user_callback_request.dart';
 import 'package:vpn_api/src/model/wireguard_connect_request.dart';
 import 'package:vpn_api/src/model/wireguard_connect_response.dart';
@@ -103,6 +106,8 @@ ReturnType deserialize<ReturnType, BaseType>(dynamic value, String targetType,
       return ConnectionConfigRequestQuery.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'ConnectionConfigResponse':
       return ConnectionConfigResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'ConnectionKilledMessage':
+      return ConnectionKilledMessage.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'ConnectionLocation':
       return ConnectionLocation.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'ConnectionMessage':
@@ -130,6 +135,8 @@ ReturnType deserialize<ReturnType, BaseType>(dynamic value, String targetType,
       return CreateGoogleSubscriptionResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'FieldError':
       return FieldError.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'GetLocationResponse':
+      return GetLocationResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'GetSubscriptionResponse':
       return GetSubscriptionResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'Healthcheck200Response':
@@ -211,6 +218,9 @@ ReturnType deserialize<ReturnType, BaseType>(dynamic value, String targetType,
           as ReturnType;
     case 'SubscriptionConfigResponsePlansInnerPrice':
       return SubscriptionConfigResponsePlansInnerPrice.fromJson(value as Map<String, dynamic>)
+          as ReturnType;
+    case 'SubscriptionConfigResponsePlansInnerPricesInner':
+      return SubscriptionConfigResponsePlansInnerPricesInner.fromJson(value as Map<String, dynamic>)
           as ReturnType;
     case 'UserCallbackRequest':
       return UserCallbackRequest.fromJson(value as Map<String, dynamic>) as ReturnType;

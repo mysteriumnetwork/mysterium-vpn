@@ -16,11 +16,19 @@ part 'https_connect_request.g.dart';
 class HttpsConnectRequest {
   /// Returns a new [HttpsConnectRequest] instance.
   HttpsConnectRequest({
+    this.countryOriginate,
     this.country,
     this.ipType,
     this.resetConnection,
     this.osType,
   });
+
+  @JsonKey(
+    name: r'country_originate',
+    required: false,
+    includeIfNull: false,
+  )
+  final String? countryOriginate;
 
   @JsonKey(
     name: r'country',
@@ -55,6 +63,7 @@ class HttpsConnectRequest {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is HttpsConnectRequest &&
+          other.countryOriginate == countryOriginate &&
           other.country == country &&
           other.ipType == ipType &&
           other.resetConnection == resetConnection &&
@@ -62,6 +71,7 @@ class HttpsConnectRequest {
 
   @override
   int get hashCode =>
+      (countryOriginate == null ? 0 : countryOriginate.hashCode) +
       (country == null ? 0 : country.hashCode) +
       (ipType == null ? 0 : ipType.hashCode) +
       (resetConnection == null ? 0 : resetConnection.hashCode) +
