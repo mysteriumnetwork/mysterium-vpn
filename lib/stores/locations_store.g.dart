@@ -157,6 +157,14 @@ mixin _$LocationsStore on _LocationsStore, Store {
     });
   }
 
+  late final _$_detectClosestRegionAsyncAction =
+      AsyncAction('_LocationsStore._detectClosestRegion', context: context);
+
+  @override
+  Future<void> _detectClosestRegion() {
+    return _$_detectClosestRegionAsyncAction.run(() => super._detectClosestRegion());
+  }
+
   late final _$refreshAsyncAction = AsyncAction('_LocationsStore.refresh', context: context);
 
   @override
