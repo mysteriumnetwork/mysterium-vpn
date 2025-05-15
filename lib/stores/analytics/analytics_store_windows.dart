@@ -57,7 +57,9 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
 
   @override
   @action
-  Future<void> setUserProperty(String name, String value) async {}
+  Future<void> setUserProperty(String name, String value) async {
+    _session.userProperties[name.truncate(24)] = value;
+  }
 
   @override
   @action
@@ -89,6 +91,7 @@ class AnalyticsSession {
   final String measurementId;
   final String apiSecret;
   String? userId;
+  Map<String, String> userProperties = {};
 
   final DateTime sessionStarted = DateTime.now().toUtc();
   String get sessionId => _sessionId;
@@ -135,8 +138,9 @@ class AnalyticsSession {
     final body = jsonEncode({
       'client_id': defaultTargetPlatform.name,
       'user_id': userId,
+      'user_properties': userProperties.map(MapEntry.new),
       'events': [
-        {'name': eventName, 'params': defParams},
+        {'name': eventName.truncate(40), 'params': defParams},
       ],
     });
 
