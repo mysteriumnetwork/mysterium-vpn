@@ -6,12 +6,17 @@ import 'package:vpn_api/src/model/check_auth401_response.dart';
 import 'package:vpn_api/src/model/check_auth401_response_error.dart';
 import 'package:vpn_api/src/model/check_auth401_response_error_fields_value.dart';
 import 'package:vpn_api/src/model/code_authorization_request.dart';
+import 'package:vpn_api/src/model/connection_config_regions_query.dart';
+import 'package:vpn_api/src/model/connection_config_regions_response.dart';
 import 'package:vpn_api/src/model/connection_config_request_query.dart';
 import 'package:vpn_api/src/model/connection_config_response.dart';
 import 'package:vpn_api/src/model/connection_killed_message.dart';
 import 'package:vpn_api/src/model/connection_location.dart';
+import 'package:vpn_api/src/model/connection_location_city.dart';
+import 'package:vpn_api/src/model/connection_locations_request_query.dart';
 import 'package:vpn_api/src/model/connection_message.dart';
 import 'package:vpn_api/src/model/connection_message_location.dart';
+import 'package:vpn_api/src/model/connection_region.dart';
 import 'package:vpn_api/src/model/country.dart';
 import 'package:vpn_api/src/model/create_adyen_subscription_request.dart';
 import 'package:vpn_api/src/model/create_adyen_subscription_response.dart';
@@ -102,6 +107,10 @@ ReturnType deserialize<ReturnType, BaseType>(dynamic value, String targetType,
           as ReturnType;
     case 'CodeAuthorizationRequest':
       return CodeAuthorizationRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'ConnectionConfigRegionsQuery':
+      return ConnectionConfigRegionsQuery.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'ConnectionConfigRegionsResponse':
+      return ConnectionConfigRegionsResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'ConnectionConfigRequestQuery':
       return ConnectionConfigRequestQuery.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'ConnectionConfigResponse':
@@ -110,10 +119,16 @@ ReturnType deserialize<ReturnType, BaseType>(dynamic value, String targetType,
       return ConnectionKilledMessage.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'ConnectionLocation':
       return ConnectionLocation.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'ConnectionLocationCity':
+      return ConnectionLocationCity.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'ConnectionLocationsRequestQuery':
+      return ConnectionLocationsRequestQuery.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'ConnectionMessage':
       return ConnectionMessage.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'ConnectionMessageLocation':
       return ConnectionMessageLocation.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'ConnectionRegion':
+      return ConnectionRegion.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'Country':
       return Country.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'CreateAdyenSubscriptionRequest':

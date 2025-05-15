@@ -3,10 +3,9 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:vpn_api/src/model/connection_location_city.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'connection_location.g.dart';
+part 'connection_location_city.g.dart';
 
 @JsonSerializable(
   checked: true,
@@ -14,21 +13,20 @@ part 'connection_location.g.dart';
   disallowUnrecognizedKeys: false,
   explicitToJson: true,
 )
-class ConnectionLocation {
-  /// Returns a new [ConnectionLocation] instance.
-  ConnectionLocation({
-    required this.country,
+class ConnectionLocationCity {
+  /// Returns a new [ConnectionLocationCity] instance.
+  ConnectionLocationCity({
+    required this.city,
     required this.total,
-    required this.cities,
     required this.translations,
   });
 
   @JsonKey(
-    name: r'country',
+    name: r'city',
     required: true,
     includeIfNull: false,
   )
-  final String country;
+  final String city;
 
   @JsonKey(
     name: r'total',
@@ -36,13 +34,6 @@ class ConnectionLocation {
     includeIfNull: false,
   )
   final num total;
-
-  @JsonKey(
-    name: r'cities',
-    required: true,
-    includeIfNull: false,
-  )
-  final List<ConnectionLocationCity> cities;
 
   @JsonKey(
     name: r'translations',
@@ -54,19 +45,18 @@ class ConnectionLocation {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ConnectionLocation &&
-          other.country == country &&
+      other is ConnectionLocationCity &&
+          other.city == city &&
           other.total == total &&
-          other.cities == cities &&
           other.translations == translations;
 
   @override
-  int get hashCode => country.hashCode + total.hashCode + cities.hashCode + translations.hashCode;
+  int get hashCode => city.hashCode + total.hashCode + translations.hashCode;
 
-  factory ConnectionLocation.fromJson(Map<String, dynamic> json) =>
-      _$ConnectionLocationFromJson(json);
+  factory ConnectionLocationCity.fromJson(Map<String, dynamic> json) =>
+      _$ConnectionLocationCityFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ConnectionLocationToJson(this);
+  Map<String, dynamic> toJson() => _$ConnectionLocationCityToJson(this);
 
   @override
   String toString() {

@@ -77,6 +77,8 @@ Class | Method | HTTP request | Description
 [*Connection*](doc/Connection.md) | [**connect**](doc/Connection.md#connect) | **POST** /connection/connect | Get Wireguard configuration template given connect options
 [*Connection*](doc/Connection.md) | [**connectProxy**](doc/Connection.md#connectproxy) | **POST** /connection/connect-proxy | Get proxy configuration given connect options
 [*Connection*](doc/Connection.md) | [**connectionConfig**](doc/Connection.md#connectionconfig) | **GET** /connection/config | Get connection options
+[*Connection*](doc/Connection.md) | [**connectionConfigRegions**](doc/Connection.md#connectionconfigregions) | **GET** /connection/config/regions | Get connection region options
+[*Connection*](doc/Connection.md) | [**connectionLocations**](doc/Connection.md#connectionlocations) | **GET** /connection/locations | Get connection locations
 [*Infrastructure*](doc/Infrastructure.md) | [**healthcheck**](doc/Infrastructure.md#healthcheck) | **GET** /healthcheck | Check whether the API is up
 [*Location*](doc/Location.md) | [**location**](doc/Location.md#location) | **GET** /subscription/location | Get location
 [*Subscription*](doc/Subscription.md) | [**invoices**](doc/Subscription.md#invoices) | **POST** /subscription/invoices | Get invoices list with pagination
@@ -97,12 +99,17 @@ Class | Method | HTTP request | Description
  - [CheckAuth401ResponseError](doc/CheckAuth401ResponseError.md)
  - [CheckAuth401ResponseErrorFieldsValue](doc/CheckAuth401ResponseErrorFieldsValue.md)
  - [CodeAuthorizationRequest](doc/CodeAuthorizationRequest.md)
+ - [ConnectionConfigRegionsQuery](doc/ConnectionConfigRegionsQuery.md)
+ - [ConnectionConfigRegionsResponse](doc/ConnectionConfigRegionsResponse.md)
  - [ConnectionConfigRequestQuery](doc/ConnectionConfigRequestQuery.md)
  - [ConnectionConfigResponse](doc/ConnectionConfigResponse.md)
  - [ConnectionKilledMessage](doc/ConnectionKilledMessage.md)
  - [ConnectionLocation](doc/ConnectionLocation.md)
+ - [ConnectionLocationCity](doc/ConnectionLocationCity.md)
+ - [ConnectionLocationsRequestQuery](doc/ConnectionLocationsRequestQuery.md)
  - [ConnectionMessage](doc/ConnectionMessage.md)
  - [ConnectionMessageLocation](doc/ConnectionMessageLocation.md)
+ - [ConnectionRegion](doc/ConnectionRegion.md)
  - [Country](doc/Country.md)
  - [CreateAdyenSubscriptionRequest](doc/CreateAdyenSubscriptionRequest.md)
  - [CreateAdyenSubscriptionResponse](doc/CreateAdyenSubscriptionResponse.md)
