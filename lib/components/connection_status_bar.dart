@@ -25,12 +25,6 @@ class ConnectionStatusBar extends HookConsumerWidget {
       desktop: 40,
     );
 
-    final borderRadius = useResponsiveValue<double>(
-      30,
-      tablet: 0,
-      desktop: 0,
-    );
-
     final vpnStore = ref.watch(vpnStorePOD);
     final connectionStatus = useComputedValue(() => vpnStore.vpnStatus);
     final isFetchingConfig =
@@ -65,11 +59,6 @@ class ConnectionStatusBar extends HookConsumerWidget {
       fillColor: _barBackgroundColor(connectionStatus, isFetchingConfig),
       splashColor: Palette.white.withValues(alpha: .2),
       visualDensity: VisualDensity.compact,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          bottom: isExpanded.value ? Radius.circular(borderRadius) : Radius.zero,
-        ),
-      ),
       clipBehavior: Clip.antiAlias,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       child: Padding(
