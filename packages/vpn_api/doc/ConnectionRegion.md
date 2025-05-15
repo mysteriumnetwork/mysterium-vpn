@@ -1,4 +1,4 @@
-# vpn_api.model.ConnectionLocation
+# vpn_api.model.ConnectionRegion
 
 ## Load the model package
 ```dart
@@ -8,10 +8,9 @@ import 'package:vpn_api/api.dart';
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**country** | **String** |  | 
-**total** | **num** |  | 
-**cities** | [**List&lt;ConnectionLocationCity&gt;**](ConnectionLocationCity.md) |  | 
-**translations** | **Map&lt;String, String&gt;** |  | 
+**id** | **String** |  | 
+**host** | **String** |  | 
+**topCountries** | **List&lt;String&gt;** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
