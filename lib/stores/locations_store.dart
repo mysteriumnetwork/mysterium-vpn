@@ -9,6 +9,7 @@ import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/services/location/ping.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
@@ -41,6 +42,7 @@ abstract class _LocationsStore with Store {
       }
     });
 
+    _detectClosestRegion();
     _autoRefresh();
   }
 
@@ -136,6 +138,35 @@ abstract class _LocationsStore with Store {
     }
 
     yield* _localDB.watchLocations(ipType).where((it) => it != null).map((it) => it!);
+  }
+
+  @action
+  Future<void> _detectClosestRegion() async {
+    const servers = [
+      ['5.223.54.236', '56666'],
+      ['5.78.41.116', '56666'],
+      ['49.13.201.36', '56666'],
+      ['195.201.19.125', '56666'],
+      ['5.223.45.14', '56666'],
+      ['128.140.102.112', '56666'],
+      ['5.223.48.63', '56666'],
+      ['5.223.43.40', '56666'],
+      ['23.88.100.197', '56666'],
+      ['5.161.225.73', '56666'],
+      ['5.223.46.96', '56666'],
+      ['78.47.113.108', '56666'],
+      ['5.161.94.120', '56666'],
+      ['5.161.113.101', '56666'],
+      ['88.99.85.196', '56666'],
+      ['178.156.151.5', '56666'],
+    ];
+
+    servers.forEach((server) async {
+      final ping = Ping(server[0]);
+      ping.latencyMedian().then((latency) {
+        print('==PING: ${server[0]}, ${latency.inMilliseconds}ms');
+      });
+    });
   }
 
   Future<void> _autoRefresh() async {
