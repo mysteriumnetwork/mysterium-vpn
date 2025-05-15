@@ -13,6 +13,7 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/flag.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -54,8 +55,6 @@ class ConnectionTile extends HookConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    final countryName = location.code.tr();
-
     return RawMaterialButton(
       onPressed: onTap,
       fillColor: theme.colorScheme.secondaryContainer,
@@ -84,15 +83,8 @@ class ConnectionTile extends HookConsumerWidget {
             Row(
               spacing: 5,
               children: [
-                Flag(countryCode: location.code, size: 30).padding(right: 5),
                 Expanded(
-                  child: EasyText(
-                    countryName,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 18,
-                    maxLines: countryName.hasMultipleWords ? 2 : 1,
-                    color: theme.colorScheme.onSecondaryContainer,
-                  ),
+                  child: _ConnectingLocation(location: location),
                 ),
                 ConnectTextButton(
                   onPressed: onTap,
@@ -116,6 +108,52 @@ class ConnectionTile extends HookConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _ConnectingLocation extends StatelessWidget {
+  const _ConnectingLocation({required this.location});
+  final VPNLocation location;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final brightness = Theme.of(context).brightness;
+    final countryName = location.code.tr();
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (location.ipType == IPType.closest) ...[
+          SvgIcon(
+            asset: switch (brightness) {
+              Brightness.dark => Assets.bestServerDark,
+              Brightness.light => Assets.bestServerLight,
+            },
+          ).padding(right: 10),
+          Expanded(
+            child: EasyText(
+              LocaleKeys.connectBestServer.tr(),
+              fontWeight: FontWeight.w500,
+              fontSize: 18,
+              maxLines: 2,
+              color: theme.colorScheme.onSecondaryContainer,
+            ).padding(right: 10),
+          ),
+        ] else ...[
+          Flag(countryCode: location.code, size: 30).padding(right: 10),
+          Expanded(
+            child: EasyText(
+              countryName,
+              fontWeight: FontWeight.w500,
+              fontSize: 18,
+              maxLines: countryName.hasMultipleWords ? 2 : 1,
+              color: theme.colorScheme.onSecondaryContainer,
+            ),
+          ),
+        ],
+      ],
     );
   }
 }
@@ -181,7 +219,7 @@ class _IPTypeIndicator extends HookWidget {
             switch (ipType) {
               IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
               IPType.residential => LocaleKeys.ipTypeResidential.tr(),
-              IPType.closest => 'Connect to the best server...',
+              _ => '',
             },
             fontSize: 12,
             color: theme.colorScheme.onSecondaryContainer,
