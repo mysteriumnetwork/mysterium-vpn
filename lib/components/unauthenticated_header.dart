@@ -27,7 +27,7 @@ class UnauthenticatedHeader extends HookConsumerWidget {
         SvgIconButton(
           asset: Assets.messageSvg,
           onPressed: () {
-            handleOnReportPage(
+            handleOnSupportPage(
               context: context,
               intetcomStore: ref.read(intercomStorePOD),
               analyticsStore: ref.read(analyticsStorePOD),

@@ -24,7 +24,7 @@ class SettingsDesktopLeftPanel extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DesktopPageHeader(
-          onPressed: () => handleOnReportPage(
+          onPressed: () => handleOnSupportPage(
             context: context,
             intetcomStore: ref.read(intercomStorePOD),
             analyticsStore: ref.read(analyticsStorePOD),

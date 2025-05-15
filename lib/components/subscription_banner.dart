@@ -4,7 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/banners/banner.dart';
 import 'package:mysterium_vpn/components/banners/banner_body.dart';
 import 'package:mysterium_vpn/components/banners/banner_cta.dart';
@@ -46,10 +46,7 @@ class SubscriptionBanner extends HookConsumerWidget {
               onPressed: subscriptionStore.refreshSubscription,
             ),
             onPressed: subscriptionStore.refreshSubscription,
-            style: switch (Theme.of(context).brightness) {
-              Brightness.light => BannerStyle.warningLight,
-              Brightness.dark => BannerStyle.warningDark,
-            },
+            style: context.c.isDarkMode ? BannerStyle.warningDark : BannerStyle.warningLight,
           ),
         FutureStatus.fulfilled => Banner(
             title: BannerTitle(text: LocaleKeys.noSubscriptionTitle.tr()),

@@ -35,7 +35,6 @@ class SubscriptionFormVariantD extends HookConsumerWidget {
     final analyticsStore = ref.watch(analyticsStorePOD);
     final subscriptionStore = ref.watch(subscriptionStorePOD);
 
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final isLoading = useComputedValue(() => subscriptionStore.isSubscriptionLoading);
     final products = useComputedValue(
       () => subscriptionStore.productsFuture.value!
@@ -83,7 +82,6 @@ class SubscriptionFormVariantD extends HookConsumerWidget {
                 children: [
                   ProductFeatures(
                     formVariant: variant,
-                    isDarkTheme: isDarkMode,
                   ),
                   EasyText(
                     LocaleKeys.pricingPlanPunchLineTitle.tr(),
@@ -95,7 +93,7 @@ class SubscriptionFormVariantD extends HookConsumerWidget {
                     maxLines: 3,
                     fontSize: 12,
                     textAlign: TextAlign.center,
-                    color: isDarkMode ? Palette.veryLightGrey : Palette.darkGrey,
+                    color: context.c.isDarkMode ? Palette.veryLightGrey : Palette.darkGrey,
                   ).padding(bottom: getMediaHeight(context) * 0.025),
                   SubscriptionButton(
                     onPressed: () {
