@@ -193,7 +193,7 @@ flutter:
     # END auto-generated assets
 
 patrol:
-  app_name: My App
+  app_name: Mysterium VPN
   android:
     package_name: com.mysteriumvpn.android.test
   ios:
