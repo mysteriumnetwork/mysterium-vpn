@@ -138,7 +138,7 @@ class AnalyticsSession {
     final body = jsonEncode({
       'client_id': defaultTargetPlatform.name,
       'user_id': userId,
-      'user_properties': userProperties.map(MapEntry.new),
+      'user_properties': userProperties,
       'events': [
         {'name': eventName.truncate(40), 'params': defParams},
       ],
