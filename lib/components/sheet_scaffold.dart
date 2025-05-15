@@ -23,6 +23,7 @@ class SheetScaffold extends HookWidget {
       slivers: [
         // Sticky header with background
         SliverAppBar(
+          titleSpacing: 0,
           automaticallyImplyLeading: false,
           stretch: true,
           pinned: true,
