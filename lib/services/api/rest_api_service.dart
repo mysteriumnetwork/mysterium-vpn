@@ -175,6 +175,7 @@ class RestApiService extends ApiService {
           }
         }
       });
+      
 
       // Set up a timeout for receiving the response
       await Future.delayed(const Duration(seconds: 5), () {
@@ -190,6 +191,7 @@ class RestApiService extends ApiService {
       _logger.info(
         'Error resolving domain: $e',
       );
+      rethrow;
     }
   }
 }
