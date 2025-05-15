@@ -29,6 +29,7 @@ import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dar
 import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
+import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -61,6 +62,7 @@ abstract class _VpnStore with Store {
     required AnalyticsStore analyticsStore,
     required RemoteConfigStore remoteConfigStore,
     required AuthSessionStore authSessionStore,
+    required RealIPInfoStore realIPInfo,
   })  : _apiService = apiService,
         _externalApiService = externalApiService,
         _mqtt = mqtt,
@@ -71,6 +73,7 @@ abstract class _VpnStore with Store {
         _analyticsStore = analyticsStore,
         _remoteConfigStore = remoteConfigStore,
         _authSessionStore = authSessionStore,
+        _realIPInfo = realIPInfo,
         _logger = logger {
     _init();
   }
@@ -83,6 +86,7 @@ abstract class _VpnStore with Store {
   final SubscriptionStore _subscriptionStore;
   final RemoteConfigStore _remoteConfigStore;
   final AuthSessionStore _authSessionStore;
+  final RealIPInfoStore _realIPInfo;
 
   final FlavorConfig _env;
   final _securedStorage = SecureStorageService.instance;
@@ -597,6 +601,7 @@ abstract class _VpnStore with Store {
         _apiService.fetchVpnConfig(
           request: WireguardConnectRequest(
             publicKey: key.publicKey,
+            countryOriginate: _realIPInfo.info?.country,
             country: location.code,
             ipType: switch (location.ipType) {
               IPType.datacenter => 'hosting',
