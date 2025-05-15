@@ -175,7 +175,6 @@ class RestApiService extends ApiService {
           }
         }
       });
-      
 
       // Set up a timeout for receiving the response
       await Future.delayed(const Duration(seconds: 5), () {
