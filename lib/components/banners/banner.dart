@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class Banner extends StatelessWidget {
   const Banner({
@@ -108,20 +109,22 @@ class _DismissButton extends StatelessWidget {
             ),
           )
         : Positioned(
-            top: 3,
-            right: 4,
+            top: 7,
+            right: 7,
             child: IconButton(
               color: bannerStyle.foregroundColor,
-              constraints: BoxConstraints.tight(const Size(24, 24)),
-              iconSize: 12,
-              padding: EdgeInsets.zero,
-              visualDensity: VisualDensity.compact,
               style: IconButton.styleFrom(
                 backgroundColor: context.c.isDarkMode ? Palette.mediumBlack : Palette.lightBlack,
+                splashFactory: NoSplash.splashFactory,
+                iconSize: 12,
+                padding: EdgeInsets.zero,
+                visualDensity: VisualDensity.compact,
+                minimumSize: const Size(15, 15),
+                elevation: 0,
               ),
               onPressed: onPressed,
               icon: const Icon(Icons.close_sharp),
-            ),
+            ).width(15).height(15),
           );
   }
 }

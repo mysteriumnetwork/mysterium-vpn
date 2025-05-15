@@ -32,7 +32,7 @@ class AppVersion extends StatelessWidget {
                 : EasyText(
                     'v.${snapshot.data?.version}',
                     color: context.c.isDarkMode ? Palette.lightBlue : Palette.white,
-                    fontSize: 12,
+                    fontSize: 8,
                   )
             : const SizedBox.shrink(),
       );

@@ -2,7 +2,8 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -17,6 +18,8 @@ class VerifyEmailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final analyticsStore = ref.read(analyticsStorePOD);
+    final size = Size(getMediaWidth(context), getMediaHeight(context));
+
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
@@ -29,12 +32,17 @@ class VerifyEmailPage extends ConsumerWidget {
                     analyticsStore.logEvent(AnalyticsEvent.backButtonClick);
                     context.beamBack();
                   },
-                  asset: Assets.navigateBackLightBlack,
+                  asset: context.c.isDarkMode
+                      ? Assets.navigateBackLightGrey
+                      : Assets.navigateBackLightBlack,
                 ).padding(left: 20),
                 const AppLogo().expanded(),
                 const SizedBox(width: 70),
               ],
-            ).padding(top: 40, bottom: 30),
+            ).padding(
+              top: size.height * 0.02,
+              bottom: size.height * 0.03,
+            ),
             const VerifyEmailView()
                 .decorated(
                   color: Theme.of(context).colorScheme.surface,
