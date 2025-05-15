@@ -42,8 +42,8 @@ class ApiVersion extends HookConsumerWidget {
 
         return EasyText(
           'v.${apiStore.lastHealthcheck!.version}',
-          color: Palette.lightBlue,
-          fontSize: 6,
+          color: context.c.isDarkMode ? Palette.lightBlue : Palette.white,
+          fontSize: 8,
         ).padding(left: 8);
       },
     );

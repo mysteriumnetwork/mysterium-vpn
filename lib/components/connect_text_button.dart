@@ -42,7 +42,7 @@ class ConnectTextButton extends HookConsumerWidget {
           ? OutlinedButton(
               onPressed: onPressed,
               style: OutlinedButton.styleFrom(
-                fixedSize: size,
+                padding: const EdgeInsets.all(6),
                 minimumSize: size,
                 shape: borderRadius != null
                     ? RoundedRectangleBorder(
@@ -54,9 +54,10 @@ class ConnectTextButton extends HookConsumerWidget {
                 LocaleKeys.connect.tr(),
                 group: textScaleGroup,
                 style: fontStyle ??
-                    const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                    TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: context.c.isDarkMode ? Palette.white : Palette.purple,
                     ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -65,7 +66,6 @@ class ConnectTextButton extends HookConsumerWidget {
           : ElevatedButton(
               onPressed: onPressed,
               style: ElevatedButton.styleFrom(
-                fixedSize: size,
                 minimumSize: size,
                 backgroundColor: Palette.purple,
                 elevation: 0,
@@ -86,16 +86,16 @@ class ConnectTextButton extends HookConsumerWidget {
       true => FilledButton(
           onPressed: onPressed,
           style: FilledButton.styleFrom(
-            fixedSize: size,
             minimumSize: size,
+            padding: const EdgeInsets.all(6),
           ),
           child: AutoSizeText(
             LocaleKeys.disconnect.tr(),
             group: textScaleGroup,
             style: fontStyle ??
                 const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
                 ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -103,8 +103,8 @@ class ConnectTextButton extends HookConsumerWidget {
         ),
       null => FilledButton(
           onPressed: null,
-          style: FilledButton.styleFrom(fixedSize: size),
-          child: LoadingIndicator(radius: loadingIndicatorRadius),
+          style: FilledButton.styleFrom(minimumSize: size),
+          child: const LoadingIndicator(radius: 14),
         ),
     };
   }
