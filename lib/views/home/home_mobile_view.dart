@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_app_bar.dart';
 import 'package:mysterium_vpn/views/home/home_connection_view.dart';
@@ -78,7 +79,7 @@ class HomeMobileView extends HookConsumerWidget {
               controller: homeState.panelController,
               color: theme.primaryColor,
               snapPoint: PanelState.snap.extent,
-              isDraggable: false,
+              isDraggable: isMobile(),
               panelBuilder: (sc) => HookBuilder(
                 builder: (context) {
                   homeState.scrollController = sc;
