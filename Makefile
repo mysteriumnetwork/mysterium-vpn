@@ -41,3 +41,6 @@ generate-api:
 
 update-tile-assets-declaration:
 	fvm dart run assets/map_tiles/list_assets.dart
+
+run-integration-tests:
+	patrol test --flavor dev --flutter-command="fvm flutter" $(flags)
