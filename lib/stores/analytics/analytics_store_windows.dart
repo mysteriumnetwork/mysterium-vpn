@@ -58,7 +58,10 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
   @override
   @action
   Future<void> setUserProperty(String name, String value) async {
-    _session.userProperties[name.truncate(24)] = value;
+    _session.userProperties[name.truncate(24)] = {
+      'value': value,
+      'timestamp_micros': DateTime.now().microsecondsSinceEpoch,
+    };
   }
 
   @override
@@ -91,7 +94,7 @@ class AnalyticsSession {
   final String measurementId;
   final String apiSecret;
   String? userId;
-  Map<String, String> userProperties = {};
+  Map<String, dynamic> userProperties = {};
 
   final DateTime sessionStarted = DateTime.now().toUtc();
   String get sessionId => _sessionId;
