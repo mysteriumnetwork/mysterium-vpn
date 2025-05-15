@@ -85,9 +85,7 @@ class _DeleteAccountDialog extends HookWidget {
               ).padding(bottom: 10),
               TextField(
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.brightness == Brightness.light
-                      ? Palette.black
-                      : Palette.veryLightGrey,
+                  color: context.c.isDarkMode ? Palette.veryLightGrey : Palette.black,
                 ),
                 decoration: InputDecoration(
                   filled: true,

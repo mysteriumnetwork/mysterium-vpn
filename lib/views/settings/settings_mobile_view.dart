@@ -19,26 +19,30 @@ class SettingsMobileView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => SheetScaffold(
         headerTitle: LocaleKeys.settings.tr(),
-        sliver: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const AppVersionUpdateSetting().padding(top: 32, bottom: 6),
-            _HeaderTitle(title: LocaleKeys.connection.tr()),
-            const ConnectionSettings(),
-            _HeaderTitle(title: LocaleKeys.application.tr()),
-            const ApplicationSettings(),
-            _HeaderTitle(title: LocaleKeys.account.tr()),
-            const AccountSettings(),
-            if (ref.watch(environmentPOD).isDev) ...[
-              const _HeaderTitle(title: 'QA Toolbox'),
-              const QAToolbox(),
-            ],
-          ],
-        ).backgroundColor(
-          context.c.isDarkMode ? Palette.darkBlue : Palette.white,
+        sliver: DecoratedSliver(
+          decoration: BoxDecoration(
+            color: context.c.isDarkMode ? Palette.darkBlue : Palette.white,
+          ),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                const AppVersionUpdateSetting(),
+                _HeaderTitle(title: LocaleKeys.connection.tr()),
+                const ConnectionSettings(),
+                _HeaderTitle(title: LocaleKeys.application.tr()),
+                const ApplicationSettings(),
+                _HeaderTitle(title: LocaleKeys.account.tr()),
+                const AccountSettings(),
+                if (ref.watch(environmentPOD).isDev) ...[
+                  const _HeaderTitle(title: 'QA Toolbox'),
+                  const QAToolbox(),
+                ],
+              ],
+            ),
+          ),
         ),
       ).backgroundColor(
-        context.c.isDarkMode ? Palette.deepPurple : Palette.grayScaffold,
+        context.c.isDarkMode ? Palette.darkBlue : Palette.white,
       );
 }
 

@@ -44,7 +44,7 @@ class ApiVersion extends HookConsumerWidget {
           'v.${apiStore.lastHealthcheck!.version}',
           color: Palette.lightBlue,
           fontSize: 6,
-        );
+        ).padding(left: 8);
       },
     );
   }

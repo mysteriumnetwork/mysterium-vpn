@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_app_bar.dart';
 import 'package:mysterium_vpn/views/home/home_connection_view.dart';
@@ -23,8 +24,8 @@ class HomeMobileView extends HookConsumerWidget {
     final homeState = ref.watch(homeStateProvider.notifier);
     final (appBarKey, appBarBox) = useRenderObject<RenderBox>();
     final appBarHeight = appBarBox?.size.height ?? kToolbarHeight;
-
-    final topSectionHeight = appBarHeight + 42;
+    final locationsStore = ref.watch(locationsStorePOD);
+    final topSectionHeight = appBarHeight + 40;
 
     useReaction(
       () => vpnStore.connectionStatus,
@@ -38,6 +39,20 @@ class HomeMobileView extends HookConsumerWidget {
         });
       },
       keys: [homeState],
+    );
+
+    useReaction(
+      () => locationsStore.searchKeyword,
+      (_) {
+        homeState.scrollToLocations();
+      },
+      keys: [homeState],
+      equals: (String? c, String? p) {
+        if ((p?.isEmpty ?? true) && (c?.isNotEmpty ?? false)) {
+          return false;
+        }
+        return true;
+      },
     );
 
     return LayoutBuilder(
@@ -63,7 +78,7 @@ class HomeMobileView extends HookConsumerWidget {
               controller: homeState.panelController,
               color: theme.primaryColor,
               snapPoint: PanelState.snap.extent,
-              isDraggable: homeState.isDraggable,
+              isDraggable: false,
               panelBuilder: (sc) => HookBuilder(
                 builder: (context) {
                   homeState.scrollController = sc;
@@ -82,7 +97,13 @@ class HomeMobileView extends HookConsumerWidget {
                   children: [
                     DecoratedBox(
                       decoration: BoxDecoration(color: theme.colorScheme.surfaceContainerHighest),
-                      child: HomeAppBar(key: appBarKey),
+                      child: HomeAppBar(
+                        key: appBarKey,
+                        supportIcon:
+                            context.c.isDarkMode ? Assets.supportDark : Assets.supportLight,
+                        settingsIcon:
+                            context.c.isDarkMode ? Assets.settingsDark : Assets.settingsLight,
+                      ),
                     ),
                     const Expanded(child: HomeConnectionView()),
                   ],
