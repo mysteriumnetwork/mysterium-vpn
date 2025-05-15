@@ -30,7 +30,8 @@ class PageHeader extends HookConsumerWidget {
           asset: context.c.isDarkMode ? Assets.navigateBackDark : Assets.navigateBackLight,
         ),
         HeaderTitle(text: headerTitle, color: Palette.white),
-        const Row(
+        const Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             AppVersion(),
             ApiVersion(),
