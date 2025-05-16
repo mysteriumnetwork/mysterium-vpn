@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/exceptions/api.dart';
 import 'package:mysterium_vpn/common/extensions/stream_extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
@@ -13,6 +13,8 @@ import 'package:mysterium_vpn/services/location/ping.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
+import 'package:talker/talker.dart';
+import 'package:vpn_api/vpn_api.dart';
 
 part 'locations_store.g.dart';
 
@@ -21,12 +23,13 @@ class LocationsStore = _LocationsStore with _$LocationsStore;
 
 abstract class _LocationsStore with Store {
   _LocationsStore(
-    this._apiService,
+    this._apiConnection,
     this._filterService,
     this._analyticsStore,
     this._remoteConfigStore,
     this._prefs,
     this._localDB,
+    this._logger,
     LocaleStore localeStore,
   ) {
     /// mobx stream won't initialize if not used within ReactiveContext scope, so this is done to
@@ -46,12 +49,13 @@ abstract class _LocationsStore with Store {
     _autoRefresh();
   }
 
-  final ApiService _apiService;
+  final Connection _apiConnection;
   final FilterService _filterService;
   final AnalyticsStore _analyticsStore;
   final RemoteConfigStore _remoteConfigStore;
   final SharedPreferenceService _prefs;
   final LocalDBService _localDB;
+  final Talker _logger;
 
   final Debouncer _debouncer = Debouncer();
   StreamSubscription<dynamic>? _autoRefreshSubscription;
@@ -177,13 +181,53 @@ abstract class _LocationsStore with Store {
   }
 
   @action
-  Future<VPNLocations> refresh([IPType? ipType]) async {
+  Future<void> refresh([IPType? ipType]) async {
     ipType ??= _ipType;
 
-    final locations = await _apiService.fetchVPNLocations(ipType);
-    await _localDB.setLocations(locations, type: ipType);
+    try {
+      final data = (await _apiConnection.connectionConfig(
+        ipType: switch (ipType) {
+          IPType.datacenter => 'hosting',
+          IPType.residential => 'residential',
+          _ => null,
+        },
+      ))
+          .data;
+      if (data == null) {
+        throw Exception('No data found');
+      }
+      final topLocations = data.topCountries
+          .map(
+            (code) => VPNLocation(
+              code: code,
+              ipType: ipType ?? IPType.residential,
+            ),
+          )
+          .toList();
 
-    return locations;
+      final locations = data.countries
+          .where((it) => !data.topCountries.contains(it))
+          .map(
+            (code) => VPNLocation(
+              code: code,
+              ipType: ipType ?? IPType.residential,
+            ),
+          )
+          .toList();
+
+      await _localDB.setLocations(
+        VPNLocations(
+          topLocations: topLocations,
+          locations: locations,
+        ),
+        type: ipType,
+      );
+    } on ApiException {
+      rethrow;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
   }
 
   @action
