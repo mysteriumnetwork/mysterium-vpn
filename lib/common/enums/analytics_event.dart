@@ -51,11 +51,11 @@ enum AnalyticsEvent {
   redeemOpen,
   subscriptionNew,
   manageSubscription,
+  subscriptionCancel,
+  subscriptionError,
   clickStartNow,
   returnStore,
   paymentVerificationSuccess,
-  paymentSuccess,
-  paymentError,
   paymentVerificationError,
   connectSuccess,
   connectError,
@@ -93,4 +93,5 @@ enum AnalyticsEvent {
   locationsTabClick,
   appVersionSettingClicked,
   apiError,
+  ipChanged
 }

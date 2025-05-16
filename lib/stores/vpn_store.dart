@@ -652,6 +652,9 @@ abstract class _VpnStore with Store {
             code: connectionUpdate.location.country,
           ),
         );
+        _analyticsStore.logEvent(
+          AnalyticsEvent.ipChanged,
+        );
       });
 
       _connectionKilledSub =
