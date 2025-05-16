@@ -93,4 +93,5 @@ enum AnalyticsEvent {
   locationsTabClick,
   appVersionSettingClicked,
   apiError,
+  ipChanged
 }
