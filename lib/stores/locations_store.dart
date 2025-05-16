@@ -31,6 +31,7 @@ abstract class _LocationsStore with Store {
     this._localDB,
     this._logger,
     LocaleStore localeStore,
+    this._ping,
   ) {
     /// mobx stream won't initialize if not used within ReactiveContext scope, so this is done to
     /// preload locations as soon as store is created
@@ -56,6 +57,7 @@ abstract class _LocationsStore with Store {
   final SharedPreferenceService _prefs;
   final LocalDBService _localDB;
   final Talker _logger;
+  final Ping? _ping;
 
   final Debouncer _debouncer = Debouncer();
   StreamSubscription<dynamic>? _autoRefreshSubscription;
@@ -166,7 +168,7 @@ abstract class _LocationsStore with Store {
     ];
 
     servers.forEach((server) async {
-      final ping = Ping(server[0]);
+      final ping = _ping ?? Ping(server[0]);
       ping.latencyMedian().then((latency) {
         print('==PING: ${server[0]}, ${latency.inMilliseconds}ms');
       });
