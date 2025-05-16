@@ -130,6 +130,7 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
     LocalDBService.instance,
     logger,
     localeStore,
+    null,
   );
 
   ref.onCancel(store.dispose);

@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/services/location/ping.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
@@ -25,6 +26,7 @@ import 'locations_store_test.mocks.dart';
   MockSpec<SharedPreferenceService>(),
   MockSpec<LocaleStore>(),
   MockSpec<LocalDBService>(),
+  MockSpec<Ping>(),
 ])
 void main() {
   late LocationsStore locationsStore;
@@ -32,10 +34,11 @@ void main() {
   late MockFilterService mockFilterService;
   late MockAnalyticsStore mockAnalyticsStore;
   late MockRemoteConfigStore mockRemoteConfigStore;
-
   late MockSharedPreferenceService mockPrefs;
   late MockLocalDBService mockLocalDB;
   late MockLocaleStore mockLocaleStore;
+  late MockPing mockPing;
+
   late List<VPNLocation> mockResidential;
   late List<VPNLocation> mockDatacenter;
 
@@ -53,6 +56,7 @@ void main() {
     mockPrefs = MockSharedPreferenceService();
     mockLocalDB = MockLocalDBService();
     mockLocaleStore = MockLocaleStore();
+    mockPing = MockPing();
 
     mockResidential = const [
       VPNLocation(code: 'US'),
@@ -86,6 +90,8 @@ void main() {
       ConnectionConfigResponse(countries: ['US'], topCountries: ['DE']),
     );
 
+    when(mockPing.latencyMedian()).thenAnswer((_) async => Duration.zero);
+
     await mockRemoteConfigStore.configFuture;
 
     locationsStore = LocationsStore(
@@ -97,6 +103,7 @@ void main() {
       mockLocalDB,
       Talker(),
       mockLocaleStore,
+      mockPing,
     );
   });
 
@@ -152,6 +159,7 @@ void main() {
         mockLocalDB,
         Talker(),
         mockLocaleStore,
+        mockPing,
       );
       when(mockLocalDB.getLocations(IPType.residential)).thenAnswer((_) => VPNLocations());
       mockConnectionConfig(
