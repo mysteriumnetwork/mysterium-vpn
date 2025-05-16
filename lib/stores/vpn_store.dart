@@ -514,6 +514,9 @@ abstract class _VpnStore with Store {
     if (location == null) {
       return;
     }
+    if (location.ipType == IPType.closest) {
+      location = await _locationsStore.closestLocation(IPType.datacenter);
+    }
 
     _connectingLocation = location;
 

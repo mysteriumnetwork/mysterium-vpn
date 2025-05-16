@@ -46,7 +46,6 @@ abstract class _LocationsStore with Store {
       }
     });
 
-    _detectClosestRegion();
     _autoRefresh();
   }
 
@@ -137,6 +136,21 @@ abstract class _LocationsStore with Store {
     return const VPNLocation(ipType: IPType.closest);
   }
 
+  Future<VPNLocation> closestLocation([IPType? type]) async {
+    final connectionConfigRegions = (await _apiConnection.connectionConfigRegions(
+      ipType: switch (type) {
+        IPType.datacenter => 'hosting',
+        IPType.residential => 'residential',
+        _ => null,
+      },
+    ))
+        .data!;
+    final closestRegion = await _detectClosestRegion(connectionConfigRegions.regions);
+    final closestLocations = countriesToLocations(closestRegion.topCountries, type);
+
+    return closestLocations.first;
+  }
+
   Stream<VPNLocations> _watch(IPType ipType) async* {
     final cached = _localDB.getLocations(_ipType);
     if (cached != null) {
@@ -146,33 +160,21 @@ abstract class _LocationsStore with Store {
     yield* _localDB.watchLocations(ipType).where((it) => it != null).map((it) => it!);
   }
 
-  @action
-  Future<void> _detectClosestRegion() async {
-    const servers = [
-      ['5.223.54.236', '56666'],
-      ['5.78.41.116', '56666'],
-      ['49.13.201.36', '56666'],
-      ['195.201.19.125', '56666'],
-      ['5.223.45.14', '56666'],
-      ['128.140.102.112', '56666'],
-      ['5.223.48.63', '56666'],
-      ['5.223.43.40', '56666'],
-      ['23.88.100.197', '56666'],
-      ['5.161.225.73', '56666'],
-      ['5.223.46.96', '56666'],
-      ['78.47.113.108', '56666'],
-      ['5.161.94.120', '56666'],
-      ['5.161.113.101', '56666'],
-      ['88.99.85.196', '56666'],
-      ['178.156.151.5', '56666'],
-    ];
+  Future<ConnectionRegion> _detectClosestRegion(List<ConnectionRegion> regions) async {
+    // Ensures all pings complete before finding the lowest latency
+    final regionsWithLatencies = await Future.wait(
+      regions.map((region) async {
+        final ping = _ping ?? Ping(region.host);
+        return RegionWithLatency(region, await ping.latencyMedian());
+      }),
+    );
 
-    servers.forEach((server) async {
-      final ping = _ping ?? Ping(server[0]);
-      ping.latencyMedian().then((latency) {
-        print('==PING: ${server[0]}, ${latency.inMilliseconds}ms');
-      });
-    });
+    // Find region with lowest latency
+    final region = regionsWithLatencies.reduce(
+      (a, b) => a.latency < b.latency ? a : b,
+    );
+
+    return region.region;
   }
 
   Future<void> _autoRefresh() async {
@@ -187,35 +189,23 @@ abstract class _LocationsStore with Store {
     ipType ??= _ipType;
 
     try {
-      final data = (await _apiConnection.connectionConfig(
+      final response = await _apiConnection.connectionConfig(
         ipType: switch (ipType) {
           IPType.datacenter => 'hosting',
           IPType.residential => 'residential',
           _ => null,
         },
-      ))
-          .data;
-      if (data == null) {
+      );
+      final connectionConfig = response.data;
+      if (connectionConfig == null) {
         throw Exception('No data found');
       }
-      final topLocations = data.topCountries
-          .map(
-            (code) => VPNLocation(
-              code: code,
-              ipType: ipType ?? IPType.residential,
-            ),
-          )
-          .toList();
 
-      final locations = data.countries
-          .where((it) => !data.topCountries.contains(it))
-          .map(
-            (code) => VPNLocation(
-              code: code,
-              ipType: ipType ?? IPType.residential,
-            ),
-          )
-          .toList();
+      final topLocations = countriesToLocations(connectionConfig.topCountries, ipType);
+      final locations = countriesToLocations(
+        connectionConfig.countries.where((it) => !connectionConfig.topCountries.contains(it)),
+        ipType,
+      );
 
       await _localDB.setLocations(
         VPNLocations(
@@ -285,4 +275,20 @@ abstract class _LocationsStore with Store {
       _localDB.setLocations(VPNLocations(), type: IPType.datacenter),
     ]);
   }
+}
+
+List<VPNLocation> countriesToLocations(Iterable<String> countries, IPType? ipType) => countries
+    .map(
+      (code) => VPNLocation(
+        code: code,
+        ipType: ipType ?? IPType.residential,
+      ),
+    )
+    .toList();
+
+class RegionWithLatency {
+  RegionWithLatency(this.region, this.latency);
+
+  final ConnectionRegion region;
+  final Duration latency;
 }
