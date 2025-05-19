@@ -22,3 +22,17 @@ bool? useIsLocationConnected([VPNLocation? location]) {
     [location, store],
   );
 }
+
+bool? useIsConnectedOrConnecting() {
+  final store = useProvider(vpnStorePOD);
+  return useComputedValue(
+    () {
+      if (store.isLoading) {
+        return null;
+      }
+
+      return store.isConnected;
+    },
+    [store],
+  );
+}
