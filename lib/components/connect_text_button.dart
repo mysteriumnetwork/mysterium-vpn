@@ -22,7 +22,7 @@ class ConnectTextButton extends HookConsumerWidget {
   });
 
   final VoidCallback? onPressed;
-  final VPNLocation location;
+  final VPNLocation? location;
   final AutoSizeGroup? textScaleGroup;
   final Size size;
   final double loadingIndicatorRadius;
@@ -31,7 +31,8 @@ class ConnectTextButton extends HookConsumerWidget {
   final TextStyle? fontStyle;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isConnected = useIsLocationConnected(location);
+    final isConnected =
+        location != null ? useIsLocationConnected(location) : useIsConnectedOrConnecting();
 
     void onPressed() {
       this.onPressed?.call();

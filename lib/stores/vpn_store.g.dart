@@ -33,6 +33,12 @@ mixin _$VpnStore on _VpnStore, Store {
   bool get isLoading =>
       (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading, name: '_VpnStore.isLoading'))
           .value;
+  Computed<bool>? _$isFetchingLocationComputed;
+
+  @override
+  bool get isFetchingLocation => (_$isFetchingLocationComputed ??=
+          Computed<bool>(() => super.isFetchingLocation, name: '_VpnStore.isFetchingLocation'))
+      .value;
   Computed<bool>? _$isFetchingConfigComputed;
 
   @override
@@ -240,6 +246,24 @@ mixin _$VpnStore on _VpnStore, Store {
     _$_resolveConnectionLocationFutureAtom
         .reportWrite(value, super._resolveConnectionLocationFuture, () {
       super._resolveConnectionLocationFuture = value;
+    });
+  }
+
+  late final _$_fetchLocationFutureAtom =
+      Atom(name: '_VpnStore._fetchLocationFuture', context: context);
+
+  ObservableFuture<VPNLocation>? get fetchLocationFuture {
+    _$_fetchLocationFutureAtom.reportRead();
+    return super._fetchLocationFuture;
+  }
+
+  @override
+  ObservableFuture<VPNLocation>? get _fetchLocationFuture => fetchLocationFuture;
+
+  @override
+  set _fetchLocationFuture(ObservableFuture<VPNLocation>? value) {
+    _$_fetchLocationFutureAtom.reportWrite(value, super._fetchLocationFuture, () {
+      super._fetchLocationFuture = value;
     });
   }
 
@@ -465,6 +489,7 @@ vpnStatus: ${vpnStatus},
 replaceDNSAddress: ${replaceDNSAddress},
 isConnected: ${isConnected},
 isLoading: ${isLoading},
+isFetchingLocation: ${isFetchingLocation},
 isFetchingConfig: ${isFetchingConfig},
 location: ${location},
 potentialLocation: ${potentialLocation}

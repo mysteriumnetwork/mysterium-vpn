@@ -150,7 +150,11 @@ abstract class _VpnStore with Store {
   bool get isLoading =>
       _connectionStatus == ConnectionStatus.connecting ||
       isFetchingConfig ||
+      isFetchingLocation ||
       _connectionStatus == ConnectionStatus.disconnecting;
+
+  @computed
+  bool get isFetchingLocation => _fetchLocationFuture?.status == FutureStatus.pending;
 
   @computed
   bool get isFetchingConfig => _fetchConfigFuture?.status == FutureStatus.pending;
@@ -167,6 +171,9 @@ abstract class _VpnStore with Store {
 
   @readonly
   ObservableFuture<void>? _resolveConnectionLocationFuture;
+
+  @readonly
+  ObservableFuture<VPNLocation>? _fetchLocationFuture;
 
   @readonly
   ObservableFuture<WireguardConnectResponse>? _fetchConfigFuture;
@@ -515,7 +522,11 @@ abstract class _VpnStore with Store {
       return;
     }
     if (location.ipType == IPType.closest) {
-      location = await _locationsStore.closestLocation(IPType.datacenter);
+      _fetchLocationFuture = ObservableFuture(_locationsStore.closestLocation(IPType.datacenter));
+      location = await _fetchLocationFuture;
+    }
+    if (location == null) {
+      return;
     }
 
     _connectingLocation = location;
