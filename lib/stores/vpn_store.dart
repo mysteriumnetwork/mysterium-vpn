@@ -173,7 +173,7 @@ abstract class _VpnStore with Store {
   ObservableFuture<void>? _resolveConnectionLocationFuture;
 
   @readonly
-  ObservableFuture<VPNLocation>? _fetchLocationFuture;
+  ObservableFuture<VPNLocation?>? _fetchLocationFuture;
 
   @readonly
   ObservableFuture<WireguardConnectResponse>? _fetchConfigFuture;
@@ -518,18 +518,18 @@ abstract class _VpnStore with Store {
     }
 
     location ??= refreshIP ?? false ? _vpnConnection?.location : potentialLocation;
-    if (location == null) {
-      return;
-    }
-    if (location.ipType == IPType.closest) {
-      _fetchLocationFuture = ObservableFuture(_locationsStore.closestLocation(IPType.datacenter));
-      location = await _fetchLocationFuture;
-    }
-    if (location == null) {
+    _connectingLocation = location;
+    if (_connectingLocation == null) {
       return;
     }
 
-    _connectingLocation = location;
+    if (_connectingLocation!.ipType == IPType.closest) {
+      _fetchLocationFuture = ObservableFuture(_locationsStore.closestLocation(IPType.datacenter));
+      _connectingLocation = await _fetchLocationFuture;
+    }
+    if (_connectingLocation == null) {
+      return;
+    }
 
     try {
       if (await _wireguardService.status() == ConnectionStatus.connected) {
@@ -544,7 +544,7 @@ abstract class _VpnStore with Store {
         });
       }
 
-      await _completeConnection(location, refreshIP);
+      await _completeConnection(_connectingLocation!, refreshIP);
 
       _stopwatch.stop();
       if (_vpnConnection != null) {

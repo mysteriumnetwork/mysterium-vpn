@@ -252,16 +252,16 @@ mixin _$VpnStore on _VpnStore, Store {
   late final _$_fetchLocationFutureAtom =
       Atom(name: '_VpnStore._fetchLocationFuture', context: context);
 
-  ObservableFuture<VPNLocation>? get fetchLocationFuture {
+  ObservableFuture<VPNLocation?>? get fetchLocationFuture {
     _$_fetchLocationFutureAtom.reportRead();
     return super._fetchLocationFuture;
   }
 
   @override
-  ObservableFuture<VPNLocation>? get _fetchLocationFuture => fetchLocationFuture;
+  ObservableFuture<VPNLocation?>? get _fetchLocationFuture => fetchLocationFuture;
 
   @override
-  set _fetchLocationFuture(ObservableFuture<VPNLocation>? value) {
+  set _fetchLocationFuture(ObservableFuture<VPNLocation?>? value) {
     _$_fetchLocationFutureAtom.reportWrite(value, super._fetchLocationFuture, () {
       super._fetchLocationFuture = value;
     });
