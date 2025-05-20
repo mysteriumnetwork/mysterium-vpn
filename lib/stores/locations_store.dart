@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -136,7 +137,7 @@ abstract class _LocationsStore with Store {
     return const VPNLocation(ipType: IPType.closest);
   }
 
-  Future<VPNLocation> closestLocation([IPType? type]) async {
+  Future<VPNLocation?> closestLocation([IPType? type]) async {
     final connectionConfigRegions = (await _apiConnection.connectionConfigRegions(
       ipType: switch (type) {
         IPType.datacenter => 'hosting',
@@ -146,9 +147,14 @@ abstract class _LocationsStore with Store {
     ))
         .data!;
     final closestRegion = await _detectClosestRegion(connectionConfigRegions.regions);
-    final closestLocations = countriesToLocations(closestRegion.topCountries, type);
 
-    return closestLocations.first;
+    final closestLocations = countriesToLocations(closestRegion.topCountries, type);
+    if (closestLocations.isNotEmpty) {
+      final r = Random();
+      return closestLocations[r.nextInt(closestLocations.length)];
+    }
+
+    return null;
   }
 
   Stream<VPNLocations> _watch(IPType ipType) async* {
