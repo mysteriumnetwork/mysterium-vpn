@@ -76,6 +76,9 @@ devtools_options.yaml
 
 # Certificate files
 /assets/certificates
-/test/**/*.mocks.dart
 android/app/.cxx
 .scripts/
+
+# Tests
+/test/**/*.mocks.dart
+/integration_test/test_bundle.dart
