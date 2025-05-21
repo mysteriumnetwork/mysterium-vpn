@@ -1,4 +1,8 @@
 .DEFAULT_GOAL := run-dev
+IOS_DEVICE_MODEL = iphone15
+IOS_DEVICE_VERSION = 18.0
+ANDROID_DEVICE_MODEL = MediumPhone.arm
+ANDROID_DEVICE_VERSION = 34
 
 init:
 	fvm flutter pub get
@@ -44,3 +48,33 @@ update-tile-assets-declaration:
 
 run-integration-tests:
 	patrol test --flavor dev --flutter-command="fvm flutter" $(flags)
+
+build-ios-integration-test:
+	rm -rf build/ios_integ && \
+	patrol build ios --target integration_test/example_test.dart --flavor dev --dart-define "FLAVOR=DEV" --flutter-command="fvm flutter" --verbose --release $(flags)
+
+build-android-integration-test:
+	patrol build android --target integration_test/example_test.dart --flavor dev --dart-define "FLAVOR=DEV" --flutter-command="fvm flutter" $(flags)
+
+run-ios-testlab:
+	cd build/ios_integ/Build/Products && \
+	rm -f ios_tests.zip && \
+	zip -r ios_tests.zip Release-iphoneos/*.app *.xctestrun && \
+	cd - && \
+	gcloud firebase test ios run \
+		--type xctest \
+		--test "build/ios_integ/Build/Products/ios_tests.zip" \
+		--device model="$(IOS_DEVICE_MODEL)",version="$(IOS_DEVICE_VERSION)",locale=en_US,orientation=portrait \
+		--timeout 10m \
+		--project "new-mysterium-vpn"
+
+run-android-testlab:
+	gcloud firebase test android run \
+    	--type instrumentation \
+    	--app build/app/outputs/apk/dev/debug/app-dev-debug.apk \
+    	--test build/app/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk \
+    	--device model="$(ANDROID_DEVICE_MODEL)",version="$(ANDROID_DEVICE_VERSION)",locale=en,orientation=portrait \
+    	--timeout 10m \
+    	--use-orchestrator \
+    	--environment-variables clearPackageData=true \
+    	--project "new-mysterium-vpn"
