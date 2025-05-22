@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **String** |  | 
 **valid** | **bool** |  | 
-**token** | [**RequestActivation200ResponseToken**](RequestActivation200ResponseToken.md) |  | [optional] 
+**token** | [**OAuth2TokenResponse**](OAuth2TokenResponse.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
