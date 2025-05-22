@@ -594,5 +594,6 @@
   "submitBtn": "送信",
   "thanksForFeedback": "フィードバックありがとうございます！",
   "thanksForFeedbackDesc": "ご意見をいただきありがとうございます。フィードバックはVPN体験の向上に役立ちます！",
-  "closeBtn": "閉じる"
+  "closeBtn": "閉じる",
+  "failedToSubmitFeedback": "フィードバックの送信に失敗しました。もう一度お試しください。"
 }

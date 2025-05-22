@@ -607,7 +607,8 @@ class CodegenLoader extends AssetLoader {
     "submitBtn": "提交",
     "thanksForFeedback": "感谢您的反馈！",
     "thanksForFeedbackDesc": "我们感谢您的意见。您的反馈有助于我们改善您的VPN体验！",
-    "closeBtn": "关闭"
+    "closeBtn": "关闭",
+    "failedToSubmitFeedback": "提交反馈时出错。请再试一次。"
   };
   static const Map<String, dynamic> tr = {
     "AD": "Andorra",
@@ -1235,7 +1236,8 @@ class CodegenLoader extends AssetLoader {
     "thanksForFeedback": "Görüşleriniz için teşekkür ederiz!",
     "thanksForFeedbackDesc":
         "Görüşlerinizi önemsiyoruz. Geri bildiriminiz VPN deneyiminizi geliştirmemize yardımcı olur!",
-    "closeBtn": "Kapat"
+    "closeBtn": "Kapat",
+    "failedToSubmitFeedback": "Geri bildiriminizi gönderemedik. Lütfen tekrar deneyin."
   };
   static const Map<String, dynamic> ja = {
     "AD": "アンドラ",
@@ -1835,7 +1837,8 @@ class CodegenLoader extends AssetLoader {
     "submitBtn": "送信",
     "thanksForFeedback": "フィードバックありがとうございます！",
     "thanksForFeedbackDesc": "ご意見をいただきありがとうございます。フィードバックはVPN体験の向上に役立ちます！",
-    "closeBtn": "閉じる"
+    "closeBtn": "閉じる",
+    "failedToSubmitFeedback": "フィードバックの送信に失敗しました。もう一度お試しください。"
   };
   static const Map<String, dynamic> de = {
     "AD": "Andorra",
@@ -2486,7 +2489,8 @@ class CodegenLoader extends AssetLoader {
     "thanksForFeedback": "Vielen Dank für Ihr Feedback!",
     "thanksForFeedbackDesc":
         "Wir schätzen Ihr Feedback. Es hilft uns, Ihre VPN-Erfahrung zu verbessern!",
-    "closeBtn": "Schließen"
+    "closeBtn": "Schließen",
+    "failedToSubmitFeedback": "Fehler beim Einreichen des Feedbacks. Bitte versuchen Sie es erneut."
   };
   static const Map<String, dynamic> pt = {
     "AD": "Andorra",
@@ -3130,7 +3134,8 @@ class CodegenLoader extends AssetLoader {
     "thanksForFeedback": "Obrigado pelo seu feedback!",
     "thanksForFeedbackDesc":
         "Agradecemos sua opinião. Seu feedback nos ajuda a melhorar sua experiência com a VPN!",
-    "closeBtn": "Fechar"
+    "closeBtn": "Fechar",
+    "failedToSubmitFeedback": "Falha ao enviar feedback. Por favor, tente novamente."
   };
   static const Map<String, dynamic> en = {
     "AD": "Andorra",
@@ -3763,7 +3768,8 @@ class CodegenLoader extends AssetLoader {
     "thanksForFeedback": "Thank You for Your Feedback!",
     "thanksForFeedbackDesc":
         "We appreciate your input. Your feedback helps us improve your VPN experience!",
-    "closeBtn": "Close"
+    "closeBtn": "Close",
+    "failedToSubmitFeedback": "Failed to submit feedback. Please try again."
   };
   static const Map<String, dynamic> it = {
     "AD": "Andorra",
@@ -4410,7 +4416,8 @@ class CodegenLoader extends AssetLoader {
     "thanksForFeedback": "Grazie per il tuo feedback!",
     "thanksForFeedbackDesc":
         "Apprezziamo il tuo contributo. Il tuo feedback ci aiuta a migliorare la tua esperienza VPN!",
-    "closeBtn": "Chiudi"
+    "closeBtn": "Chiudi",
+    "failedToSubmitFeedback": "Impossibile inviare il feedback. Riprova."
   };
   static const Map<String, dynamic> fr = {
     "AD": "Andorre",
@@ -5061,7 +5068,8 @@ class CodegenLoader extends AssetLoader {
     "thanksForFeedback": "Merci pour vos commentaires !",
     "thanksForFeedbackDesc":
         "Nous apprécions vos commentaires. Ils nous aident à améliorer votre expérience VPN !",
-    "closeBtn": "Fermer"
+    "closeBtn": "Fermer",
+    "failedToSubmitFeedback": "Échec de l'envoi des commentaires. Veuillez réessayer."
   };
   static const Map<String, dynamic> id = {
     "AD": "Andorra",
@@ -5696,7 +5704,8 @@ class CodegenLoader extends AssetLoader {
     "thanksForFeedback": "Terima kasih atas masukan Anda!",
     "thanksForFeedbackDesc":
         "Kami menghargai masukan Anda. Masukan Anda membantu kami meningkatkan pengalaman VPN Anda!",
-    "closeBtn": "Tutup"
+    "closeBtn": "Tutup",
+    "failedToSubmitFeedback": "Gagal mengirim umpan balik. Silakan coba lagi."
   };
   static const Map<String, dynamic> es = {
     "AD": "Andorra",
@@ -6342,7 +6351,8 @@ class CodegenLoader extends AssetLoader {
     "thanksForFeedback": "¡Gracias por tus comentarios!",
     "thanksForFeedbackDesc":
         "Agradecemos tus comentarios. ¡Nos ayudan a mejorar tu experiencia con VPN!",
-    "closeBtn": "Cerrar"
+    "closeBtn": "Cerrar",
+    "failedToSubmitFeedback": "No se pudo enviar comentarios. Por favor, inténtalo de nuevo."
   };
   static const Map<String, dynamic> ar = {
     "AD": "أندورا",
@@ -6966,7 +6976,8 @@ class CodegenLoader extends AssetLoader {
     "submitBtn": "إرسال",
     "thanksForFeedback": "شكرًا لك على ملاحظاتك!",
     "thanksForFeedbackDesc": "نقدر ملاحظاتك. تساعدنا في تحسين تجربتك مع VPN!",
-    "closeBtn": "إغلاق"
+    "closeBtn": "إغلاق",
+    "failedToSubmitFeedback": "فشل في إرسال ملاحظاتك. حاول مرة أخرى."
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": zh,

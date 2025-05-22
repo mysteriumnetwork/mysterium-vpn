@@ -594,5 +594,6 @@
   "submitBtn": "إرسال",
   "thanksForFeedback": "شكرًا لك على ملاحظاتك!",
   "thanksForFeedbackDesc": "نقدر ملاحظاتك. تساعدنا في تحسين تجربتك مع VPN!",
-  "closeBtn": "إغلاق"
+  "closeBtn": "إغلاق",
+  "failedToSubmitFeedback": "فشل في إرسال ملاحظاتك. حاول مرة أخرى."
 }

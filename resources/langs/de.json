@@ -594,5 +594,6 @@
   "submitBtn": "Absenden",
   "thanksForFeedback": "Vielen Dank für Ihr Feedback!",
   "thanksForFeedbackDesc": "Wir schätzen Ihr Feedback. Es hilft uns, Ihre VPN-Erfahrung zu verbessern!",
-  "closeBtn": "Schließen"
+  "closeBtn": "Schließen",
+  "failedToSubmitFeedback": "Fehler beim Einreichen des Feedbacks. Bitte versuchen Sie es erneut."
 }
