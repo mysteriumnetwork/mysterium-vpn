@@ -53,7 +53,7 @@ class ApiErrorsInterceptor extends Interceptor {
       ApiException(
         err.requestOptions,
         LocaleKeys.somethingWentWrong.tr(),
-        code: 500,
+        code: err.response?.statusCode ?? 500,
         identifier: 'Dio Exception ${err.message} \nat  $endpoint',
         endpoint: endpoint,
         severity: ExceptionSeverity.high,
