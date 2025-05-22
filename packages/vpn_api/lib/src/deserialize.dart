@@ -56,8 +56,8 @@ import 'package:vpn_api/src/model/order_summary_request.dart';
 import 'package:vpn_api/src/model/order_summary_response.dart';
 import 'package:vpn_api/src/model/proxy_connect_response.dart';
 import 'package:vpn_api/src/model/proxy_connect_response_proxy_config.dart';
+import 'package:vpn_api/src/model/rate_connection_request.dart';
 import 'package:vpn_api/src/model/request_activation200_response.dart';
-import 'package:vpn_api/src/model/request_activation200_response_token.dart';
 import 'package:vpn_api/src/model/request_activation_request.dart';
 import 'package:vpn_api/src/model/subscribe200_response.dart';
 import 'package:vpn_api/src/model/subscribe_request.dart';
@@ -209,11 +209,10 @@ ReturnType deserialize<ReturnType, BaseType>(dynamic value, String targetType,
       return ProxyConnectResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'ProxyConnectResponseProxyConfig':
       return ProxyConnectResponseProxyConfig.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'RateConnectionRequest':
+      return RateConnectionRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'RequestActivation200Response':
       return RequestActivation200Response.fromJson(value as Map<String, dynamic>) as ReturnType;
-    case 'RequestActivation200ResponseToken':
-      return RequestActivation200ResponseToken.fromJson(value as Map<String, dynamic>)
-          as ReturnType;
     case 'RequestActivationRequest':
       return RequestActivationRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'Subscribe200Response':
