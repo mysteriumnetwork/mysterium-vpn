@@ -157,6 +157,23 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_wireguardKeyAtom = Atom(name: '_VpnStore._wireguardKey', context: context);
+
+  KeyPair? get wireguardKey {
+    _$_wireguardKeyAtom.reportRead();
+    return super._wireguardKey;
+  }
+
+  @override
+  KeyPair? get _wireguardKey => wireguardKey;
+
+  @override
+  set _wireguardKey(KeyPair? value) {
+    _$_wireguardKeyAtom.reportWrite(value, super._wireguardKey, () {
+      super._wireguardKey = value;
+    });
+  }
+
   late final _$_connectionStatusAtom = Atom(name: '_VpnStore._connectionStatus', context: context);
 
   ConnectionStatus get connectionStatus {

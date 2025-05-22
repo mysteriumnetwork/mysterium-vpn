@@ -5,11 +5,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/enums/rate_connection.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -64,172 +66,190 @@ class _ConfirmDialog extends HookConsumerWidget {
     final screenType = useScreenType();
 
     return Observer(
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        titlePadding: EdgeInsets.only(
-          top: rateConnectionStore.isSubmitted ? 0 : 30,
-          left: 16,
-          right: 16,
-        ),
-        contentPadding: EdgeInsets.only(
-          top: rateConnectionStore.isSubmitted ? 16 : 30,
-          bottom: 30,
-          left: 16,
-          right: 16,
-        ),
-        insetPadding: const EdgeInsets.symmetric(horizontal: 15),
-        iconPadding: const EdgeInsets.only(top: 30, bottom: 20),
-        backgroundColor: getDialogBackgroundColor(brightness),
-        actionsAlignment: MainAxisAlignment.spaceAround,
-        icon: rateConnectionStore.isSubmitted
-            ? const SvgIcon(
-                asset: Assets.feedback,
-              )
-            : null,
-        title: Text(
-          rateConnectionStore.isSubmitted
-              ? LocaleKeys.thanksForFeedback.tr()
-              : rateConnectionStore.isLikeMode
-                  ? LocaleKeys.rateConnectionLike.tr()
-                  : LocaleKeys.rateConnectionDislike.tr(),
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            color: getDialogTextColor(brightness),
+      builder: (context) {
+        final futureStatus = rateConnectionStore.submitRateConnectionFuture?.status;
+        final futureStatusPending = futureStatus == FutureStatus.pending;
+        final futureStatusError = futureStatus == FutureStatus.rejected;
+        final futureStatusFulfilled = futureStatus == FutureStatus.fulfilled;
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
           ),
-          textAlign: TextAlign.center,
-        ),
-        actions: [
-          if (rateConnectionStore.isSubmitted)
-            TextButton(
-              style: ButtonStyle(
-                foregroundColor: WidgetStateProperty.all(Palette.purple),
-              ),
-              child: Text(
-                LocaleKeys.closeBtn.tr(),
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            )
-          else ...[
-            TextButton(
-              style: ButtonStyle(
-                foregroundColor: WidgetStateProperty.all(
-                  cancelButtonColor(brightness),
-                ),
-              ),
-              child: Text(
-                LocaleKeys.cancelBtn.tr(),
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-                rateConnectionStore.cancelRateConnection();
-              },
-            ),
-            TextButton(
-              style: ButtonStyle(
-                foregroundColor: WidgetStateProperty.all(Palette.purple),
-              ),
-              onPressed: rateConnectionStore.submitRateConnection,
-              child: Text(
-                LocaleKeys.submitBtn.tr(),
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-          ],
-        ],
-        content: SizedBox(
-          width: switch (screenType) {
-            ScreenType.mobile => 300,
-            _ => 500,
-          },
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (rateConnectionStore.isSubmitted)
-                Text(
-                  LocaleKeys.thanksForFeedbackDesc.tr(),
-                  style: TextStyle(
-                    color: getDialogTextColor(brightness),
-                  ),
-                  textAlign: TextAlign.center,
+          titlePadding: EdgeInsets.only(
+            top: futureStatusFulfilled ? 0 : 30,
+            left: 16,
+            right: 16,
+          ),
+          contentPadding: EdgeInsets.only(
+            top: futureStatusFulfilled ? 16 : 30,
+            bottom: 30,
+            left: 16,
+            right: 16,
+          ),
+          insetPadding: const EdgeInsets.symmetric(horizontal: 15),
+          iconPadding: const EdgeInsets.only(top: 30, bottom: 20),
+          backgroundColor: getDialogBackgroundColor(brightness),
+          actionsAlignment: MainAxisAlignment.spaceAround,
+          icon: futureStatusFulfilled
+              ? const SvgIcon(
+                  asset: Assets.feedback,
                 )
-              else ...[
-                ...rateConnectionStore.showReasons.mapIndexed(
-                  (i, element) => CheckboxListTile(
-                    side: BorderSide(color: Theme.of(context).indicatorColor),
-                    checkboxShape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    value: rateConnectionStore.selectedReasons.contains(
-                      rateConnectionStore.showReasons[i],
-                    ),
-                    fillColor: WidgetStateProperty.resolveWith(
-                      (states) {
-                        if (states.contains(WidgetState.selected)) {
-                          return Palette.purple;
-                        }
-                        return Palette.lightBlue;
-                      },
-                    ),
-                    controlAffinity: ListTileControlAffinity.leading,
-                    onChanged: (_) {
-                      rateConnectionStore.toggleRateConnectionReason(
-                        rateConnectionStore.showReasons[i],
-                      );
-                    },
-                    title: Text(
-                      _stringifyReason(
-                        rateConnectionStore.showReasons[i],
-                      ),
-                      style: TextStyle(
-                        color: getDialogTextColor(brightness),
-                      ),
-                    ),
-                  ),
-                ),
-                TextField(
-                  maxLines: 2,
-                  cursorColor: Palette.purple,
-                  onChanged: (value) {
-                    rateConnectionStore.feedback = value;
-                  },
-                  decoration: InputDecoration(
-                    fillColor: Theme.of(context).colorScheme.secondaryContainer,
-                    contentPadding: const EdgeInsets.all(12),
-                    enabledBorder: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                      borderSide: BorderSide.none,
-                    ),
-                    hintText: LocaleKeys.typeFeedback.tr(),
-                    hintStyle: TextStyle(
-                      color: getDialogTextColor(brightness).withValues(alpha: .5),
-                    ),
-                  ),
-                ),
-              ],
-              Divider(
-                height: 1,
-                color: getDialogTextColor(brightness).withValues(alpha: .2),
-              ).padding(top: 30),
-            ],
+              : null,
+          title: Text(
+            futureStatusFulfilled
+                ? LocaleKeys.thanksForFeedback.tr()
+                : rateConnectionStore.isLikeMode
+                    ? LocaleKeys.rateConnectionLike.tr()
+                    : LocaleKeys.rateConnectionDislike.tr(),
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: getDialogTextColor(brightness),
+            ),
+            textAlign: TextAlign.center,
           ),
-        ),
-      ),
+          actions: [
+            if (futureStatusFulfilled)
+              TextButton(
+                style: ButtonStyle(
+                  foregroundColor: WidgetStateProperty.all(Palette.purple),
+                ),
+                child: Text(
+                  LocaleKeys.closeBtn.tr(),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            else ...[
+              if (!futureStatusPending)
+                TextButton(
+                  style: ButtonStyle(
+                    foregroundColor: WidgetStateProperty.all(
+                      cancelButtonColor(brightness),
+                    ),
+                  ),
+                  child: Text(
+                    LocaleKeys.cancelBtn.tr(),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    rateConnectionStore.cancelRateConnection();
+                  },
+                ),
+              TextButton(
+                style: ButtonStyle(
+                  foregroundColor: WidgetStateProperty.all(Palette.purple),
+                ),
+                onPressed: futureStatusPending ? null : rateConnectionStore.submitRateConnection,
+                child: futureStatusPending
+                    ? const LoadingIndicator(
+                        radius: 16,
+                      )
+                    : Text(
+                        LocaleKeys.submitBtn.tr(),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+              ),
+            ],
+          ],
+          content: SizedBox(
+            width: switch (screenType) {
+              ScreenType.mobile => 300,
+              _ => 500,
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (futureStatusFulfilled)
+                  Text(
+                    LocaleKeys.thanksForFeedbackDesc.tr(),
+                    style: TextStyle(
+                      color: getDialogTextColor(brightness),
+                    ),
+                    textAlign: TextAlign.center,
+                  )
+                else ...[
+                  ...rateConnectionStore.showReasons.mapIndexed(
+                    (i, element) => CheckboxListTile(
+                      side: BorderSide(color: Theme.of(context).indicatorColor),
+                      checkboxShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      value: rateConnectionStore.selectedReasons.contains(
+                        rateConnectionStore.showReasons[i],
+                      ),
+                      fillColor: WidgetStateProperty.resolveWith(
+                        (states) {
+                          if (states.contains(WidgetState.selected)) {
+                            return Palette.purple;
+                          }
+                          return Palette.lightBlue;
+                        },
+                      ),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      onChanged: (_) {
+                        rateConnectionStore.toggleRateConnectionReason(
+                          rateConnectionStore.showReasons[i],
+                        );
+                      },
+                      title: Text(
+                        _stringifyReason(
+                          rateConnectionStore.showReasons[i],
+                        ),
+                        style: TextStyle(
+                          color: getDialogTextColor(brightness),
+                        ),
+                      ),
+                    ),
+                  ),
+                  TextField(
+                    maxLines: 2,
+                    cursorColor: Palette.purple,
+                    onChanged: (value) {
+                      rateConnectionStore.feedback = value;
+                    },
+                    decoration: InputDecoration(
+                      fillColor: Theme.of(context).colorScheme.secondaryContainer,
+                      contentPadding: const EdgeInsets.all(12),
+                      enabledBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderSide: BorderSide.none,
+                      ),
+                      hintText: LocaleKeys.typeFeedback.tr(),
+                      hintStyle: TextStyle(
+                        color: getDialogTextColor(brightness).withValues(alpha: .5),
+                      ),
+                    ),
+                  ),
+                  if (futureStatusError)
+                    const Text(
+                      'Faiked',
+                      style: TextStyle(
+                        color: Palette.crimsonRed,
+                      ),
+                    ).padding(top: 10),
+                ],
+                Divider(
+                  height: 1,
+                  color: getDialogTextColor(brightness).withValues(alpha: .2),
+                ).padding(top: 30),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

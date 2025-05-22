@@ -112,6 +112,7 @@ abstract class _VpnStore with Store {
   @readonly
   WireguardConnectResponse? _vpnConfig;
 
+  @readonly
   KeyPair? _wireguardKey;
 
   @readonly

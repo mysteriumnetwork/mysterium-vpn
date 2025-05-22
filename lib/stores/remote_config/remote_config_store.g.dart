@@ -170,6 +170,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$latestStableAppVersionComputed ??= Computed<String>(() => super.latestStableAppVersion,
               name: 'RemoteConfigStoreBase.latestStableAppVersion'))
           .value;
+  Computed<bool>? _$isRateConnectionAvailableComputed;
+
+  @override
+  bool get isRateConnectionAvailable =>
+      (_$isRateConnectionAvailableComputed ??= Computed<bool>(() => super.isRateConnectionAvailable,
+              name: 'RemoteConfigStoreBase.isRateConnectionAvailable'))
+          .value;
 
   @override
   String toString() {
@@ -197,7 +204,8 @@ sentryDsn: ${sentryDsn},
 hideResetAppSetting: ${hideResetAppSetting},
 browseUnauthenticated: ${browseUnauthenticated},
 shouldCheckUdp: ${shouldCheckUdp},
-latestStableAppVersion: ${latestStableAppVersion}
+latestStableAppVersion: ${latestStableAppVersion},
+isRateConnectionAvailable: ${isRateConnectionAvailable}
     ''';
   }
 }

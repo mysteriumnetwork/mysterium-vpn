@@ -30,6 +30,7 @@ enum _FeatureToggleKey {
   browseUnauthenticated,
   shouldCheckUdp,
   latestStableAppVersion,
+  isRateConnectionAvailable,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -230,6 +231,14 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return config[_FeatureToggleKey.latestStableAppVersion.name] as String;
     }
     return '2.0.2';
+  }
+
+  @computed
+  bool get isRateConnectionAvailable {
+    if (config.containsKey(_FeatureToggleKey.isRateConnectionAvailable.name)) {
+      return config[_FeatureToggleKey.isRateConnectionAvailable.name] as bool;
+    }
+    return false;
   }
 
   Map<String, String> get asUserProperties =>
