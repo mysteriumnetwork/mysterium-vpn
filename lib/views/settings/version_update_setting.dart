@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
@@ -43,9 +42,7 @@ class AppVersionUpdateSetting extends ConsumerWidget {
             await openAppStorePage();
           },
           elevation: 0,
-          fillColor: Theme.of(context).colorScheme.brightness == Brightness.dark
-              ? const Color(0xff524e77)
-              : Palette.white,
+          fillColor: context.c.isDarkMode ? const Color(0xff524e77) : Palette.white,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20)),
             side: BorderSide(color: Palette.purple, width: 1.5),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -26,9 +26,7 @@ class SwitchItem extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.brightness == Brightness.dark
-                ? Palette.darkIndigo
-                : const Color(0xFFF5F3FD),
+            color: context.c.isDarkMode ? Palette.darkIndigo : Palette.grayContainer,
             borderRadius: const BorderRadius.all(
               Radius.circular(20),
             ),

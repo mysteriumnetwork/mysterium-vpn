@@ -16,7 +16,7 @@ part 'wireguard_connect_response.g.dart';
 class WireguardConnectResponse {
   /// Returns a new [WireguardConnectResponse] instance.
   WireguardConnectResponse({
-    this.uid,
+    required this.id,
     required this.wgConfig,
     required this.hash,
     this.exitIp,
@@ -25,11 +25,11 @@ class WireguardConnectResponse {
 
   /// Unique identifier of prepared connection
   @JsonKey(
-    name: r'uid',
-    required: false,
+    name: r'id',
+    required: true,
     includeIfNull: false,
   )
-  final String? uid;
+  final String id;
 
   /// Wireguard connection configuration with a placeholder for %private_key%
   @JsonKey(
@@ -66,7 +66,7 @@ class WireguardConnectResponse {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is WireguardConnectResponse &&
-          other.uid == uid &&
+          other.id == id &&
           other.wgConfig == wgConfig &&
           other.hash == hash &&
           other.exitIp == exitIp &&
@@ -74,7 +74,7 @@ class WireguardConnectResponse {
 
   @override
   int get hashCode =>
-      (uid == null ? 0 : uid.hashCode) +
+      id.hashCode +
       wgConfig.hashCode +
       hash.hashCode +
       (exitIp == null ? 0 : exitIp.hashCode) +

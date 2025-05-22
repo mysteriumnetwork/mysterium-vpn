@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 

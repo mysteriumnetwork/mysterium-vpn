@@ -6,8 +6,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/enums/rate_connection.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/connect_text_button.dart';
 import 'package:mysterium_vpn/components/dialogs/rate_connection_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
@@ -27,6 +26,7 @@ class ConnectionTile extends HookConsumerWidget {
     final theme = Theme.of(context);
     final locationsStore = ref.watch(locationsStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
+    final analyticsStore = ref.watch(analyticsStorePOD);
 
     final location = useComputedValue(
       () =>
@@ -45,6 +45,11 @@ class ConnectionTile extends HookConsumerWidget {
       () => vpnStore.isLoading ? null : () => handleToggleConnection(location: location),
       [handleToggleConnection, location],
     );
+
+    Future<void> handleRefreshIP() async {
+      analyticsStore.logRefreshIP(ipInfo);
+      await vpnStore.startConnectionWithRefreshIP();
+    }
 
     if (location == null) {
       return const SizedBox.shrink();
@@ -93,6 +98,7 @@ class ConnectionTile extends HookConsumerWidget {
                 ConnectTextButton(
                   onPressed: onTap,
                   location: location,
+                  size: const Size(106, 31),
                 ),
               ],
             ),
@@ -102,7 +108,7 @@ class ConnectionTile extends HookConsumerWidget {
                 if (ipInfo != null && (isConnected ?? false))
                   _IPIndicator(
                     ip: ipInfo,
-                    onRefreshPressed: vpnStore.startConnectionWithRefreshIP,
+                    onRefreshPressed: handleRefreshIP,
                   ),
                 Expanded(child: _IPTypeIndicator(ipType: location.ipType)),
               ],

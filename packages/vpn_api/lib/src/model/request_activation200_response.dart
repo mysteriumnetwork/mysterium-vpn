@@ -3,7 +3,7 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:vpn_api/src/model/request_activation200_response_token.dart';
+import 'package:vpn_api/src/model/o_auth2_token_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'request_activation200_response.g.dart';
@@ -41,7 +41,7 @@ class RequestActivation200Response {
     required: false,
     includeIfNull: false,
   )
-  final RequestActivation200ResponseToken? token;
+  final OAuth2TokenResponse? token;
 
   @override
   bool operator ==(Object other) =>

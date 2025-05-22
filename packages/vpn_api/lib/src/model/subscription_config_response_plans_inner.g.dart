@@ -20,6 +20,7 @@ SubscriptionConfigResponsePlansInner _$SubscriptionConfigResponsePlansInnerFromJ
             'google_product_id',
             'interval',
             'price',
+            'prices',
             'supported_gateways'
           ],
         );
@@ -33,6 +34,12 @@ SubscriptionConfigResponsePlansInner _$SubscriptionConfigResponsePlansInnerFromJ
                   SubscriptionConfigResponsePlansInnerInterval.fromJson(v as Map<String, dynamic>)),
           price: $checkedConvert('price',
               (v) => SubscriptionConfigResponsePlansInnerPrice.fromJson(v as Map<String, dynamic>)),
+          prices: $checkedConvert(
+              'prices',
+              (v) => (v as List<dynamic>)
+                  .map((e) => SubscriptionConfigResponsePlansInnerPricesInner.fromJson(
+                      e as Map<String, dynamic>))
+                  .toList()),
           supportedGateways: $checkedConvert(
               'supported_gateways', (v) => (v as List<dynamic>).map((e) => e as String).toList()),
         );
@@ -53,5 +60,6 @@ Map<String, dynamic> _$SubscriptionConfigResponsePlansInnerToJson(
       'google_product_id': instance.googleProductId,
       'interval': instance.interval.toJson(),
       'price': instance.price.toJson(),
+      'prices': instance.prices.map((e) => e.toJson()).toList(),
       'supported_gateways': instance.supportedGateways,
     };

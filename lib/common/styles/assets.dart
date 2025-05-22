@@ -21,6 +21,7 @@ abstract class Assets {
   static const String billingDark = 'assets/icons/billing_dark.svg';
   static const String billingLight = 'assets/icons/billing_light.svg';
   static const String checkmark = 'assets/icons/checkmark.svg';
+  static const String chevronRight = 'assets/icons/chevron_right.svg';
   static const String clear = 'assets/icons/clear.svg';
   static const String closeDark = 'assets/icons/close_dark.svg';
   static const String closeLight = 'assets/icons/close_light.svg';
@@ -41,7 +42,11 @@ abstract class Assets {
   static const String lockOpen = 'assets/icons/lock_open.svg';
   static const String messageSvg = 'assets/icons/message.svg';
   static const String navigateBack = 'assets/icons/navigate_back.svg';
-  static const String navigateBackLightBlack = 'assets/icons/navigate_back_light_grey.svg';
+  static const String navigateBackLightGrey = 'assets/icons/navigate_back_light_grey.svg';
+  static const String navigateBackLight = 'assets/icons/navigate_back_light.svg';
+  static const String navigateBackDark = 'assets/icons/navigate_back_dark.svg';
+  static const String navigateBackLightBlack = 'assets/icons/navigate_back_light_black.svg';
+
   static const String next = 'assets/icons/next.svg';
   static const String noInternetConnection = 'assets/icons/no_internet_connection.svg';
   static const String nodePowerOff = 'assets/icons/node_power_off.svg';
@@ -56,18 +61,25 @@ abstract class Assets {
   static const String refreshIpSettingLight = 'assets/icons/refresh_ip_setting_light.svg';
   static const String report = 'assets/icons/report.svg';
   static const String reportPurple = 'assets/icons/report_purple.svg';
+  static const String reportLightIcon = 'assets/icons/report_light.svg';
+  static const String reportDarkIcon = 'assets/icons/report_dark.svg';
+
   static const String resetAppSettingDark = 'assets/icons/reset_app_setting_dark.svg';
   static const String resetAppSettingLight = 'assets/icons/reset_app_setting_light.svg';
   static const String search = 'assets/icons/search.svg';
   static const String settings = 'assets/icons/settings.svg';
   static const String settingsDark = 'assets/icons/settings_dark.svg';
   static const String settingsLight = 'assets/icons/settings_light.svg';
+  static const String settingsDarkDesktop = 'assets/icons/settings_dark_desktop.svg';
+  static const String settingsLightDesktop = 'assets/icons/settings_light_desktop.svg';
   static const String settingsLightBlack = 'assets/icons/settings_light_black.svg';
   static const String speed = 'assets/icons/speed.svg';
   static const String subscription = 'assets/icons/subscription.svg';
   static const String subscriptionItem = 'assets/icons/subscription_item.svg';
   static const String supportDark = 'assets/icons/support_dark.svg';
   static const String supportLight = 'assets/icons/support_light.svg';
+  static const String supportDarkDesktop = 'assets/icons/support_dark_desktop.svg';
+  static const String supportLightDesktop = 'assets/icons/support_light_desktop.svg';
   static const String tag = 'assets/icons/tag.svg';
   static const String themeDark = 'assets/icons/theme_dark.svg';
   static const String themeLight = 'assets/icons/theme_light.svg';

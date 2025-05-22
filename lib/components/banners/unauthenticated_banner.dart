@@ -7,6 +7,7 @@ import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/banners/banner.dart';
 import 'package:mysterium_vpn/components/banners/banner_cta.dart';
 import 'package:mysterium_vpn/components/banners/banner_title.dart';
+import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 
 class UnauthenticatedBanner extends HookWidget {
@@ -19,8 +20,11 @@ class UnauthenticatedBanner extends HookWidget {
 
     return Banner(
       title: BannerTitle(
-        iconAsset: Assets.accountNameDark,
-        iconSize: 18,
+        icon: const SvgIcon(
+          asset: Assets.accountNameDark,
+          width: 18,
+          height: 18,
+        ),
         text: LocaleKeys.unauthenticatedBannerTitle.tr(),
       ),
       cta: BannerCTA(

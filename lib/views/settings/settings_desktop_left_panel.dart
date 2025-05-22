@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/api_version.dart';
 import 'package:mysterium_vpn/components/app_version.dart';
@@ -24,12 +24,12 @@ class SettingsDesktopLeftPanel extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DesktopPageHeader(
-          onPressed: () => handleOnReportPage(
+          onPressed: () => handleOnSupportPage(
             context: context,
             intetcomStore: ref.read(intercomStorePOD),
             analyticsStore: ref.read(analyticsStorePOD),
           ),
-          asset: Assets.reportPurple,
+          asset: context.c.isDarkMode ? Assets.reportDarkIcon : Assets.reportLightIcon,
         ).padding(bottom: 10),
         ListView(
           shrinkWrap: true,
@@ -64,7 +64,9 @@ class SettingsDesktopLeftPanel extends ConsumerWidget {
           headerText: LocaleKeys.apiVersion.tr(),
         ),
       ],
-    ).padding(horizontal: 40, vertical: 40);
+    ).padding(horizontal: 40, vertical: 40).backgroundColor(
+          context.c.isDarkMode ? Palette.darkIndigo : Palette.grayContainer,
+        );
   }
 
   void updateSelectedCategory(

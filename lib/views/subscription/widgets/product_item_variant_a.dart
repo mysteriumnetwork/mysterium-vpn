@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/circle_box.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
@@ -36,10 +35,7 @@ class ProductItemVariantA extends StatelessWidget {
           Expanded(
             child: DefaultTextStyle(
               style: theme.textTheme.bodyMedium!.copyWith(
-                color: switch (theme.brightness) {
-                  Brightness.dark => Palette.white,
-                  Brightness.light => Palette.black,
-                },
+                color: context.c.isDarkMode ? Palette.white : Palette.black,
               ),
               child: ProductPricing(product: productDetails),
             ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 
 class DraggableIndicator extends StatelessWidget {
   const DraggableIndicator({

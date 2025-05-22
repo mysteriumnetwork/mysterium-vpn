@@ -6,6 +6,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_app_bar.dart';
 import 'package:mysterium_vpn/views/home/home_connection_view.dart';
@@ -24,8 +26,8 @@ class HomeMobileView extends HookConsumerWidget {
     final homeState = ref.watch(homeStateProvider.notifier);
     final (appBarKey, appBarBox) = useRenderObject<RenderBox>();
     final appBarHeight = appBarBox?.size.height ?? kToolbarHeight;
-
-    final topSectionHeight = appBarHeight + 42;
+    final locationsStore = ref.watch(locationsStorePOD);
+    final topSectionHeight = appBarHeight + 40;
 
     useReaction(
       () => vpnStore.connectionStatus,
@@ -41,14 +43,74 @@ class HomeMobileView extends HookConsumerWidget {
       keys: [homeState],
     );
 
+    useReaction(
+      () => locationsStore.searchKeyword,
+      (_) {
+        homeState.scrollToLocations();
+      },
+      keys: [homeState],
+      equals: (String? c, String? p) {
+        if ((p?.isEmpty ?? true) && (c?.isNotEmpty ?? false)) {
+          return false;
+        }
+        return true;
+      },
+    );
+
     return LayoutBuilder(
-      builder: (context, layoutConstraints) => Observer(
-        builder: (context) {
-          final minHeight = vpnStore.isConnected ? 220.0 : 170.0;
-          final constraints = layoutConstraints.copyWith(
-            maxHeight: max(
-              (layoutConstraints.maxHeight * PanelState.open.extent) - topSectionHeight,
-              minHeight,
+      builder: (context, layoutConstraints) {
+        final minHeight = max<double>(
+          layoutConstraints.maxHeight * PanelState.closed.extent,
+          // panel should be at least this size in order to fit at least one country
+          190,
+        );
+        final constraints = layoutConstraints.copyWith(
+          maxHeight: max(
+            (layoutConstraints.maxHeight * PanelState.open.extent) - topSectionHeight,
+            minHeight,
+          ),
+          minHeight: minHeight,
+        );
+
+        return Stack(
+          children: [
+            SlidingUpPanel(
+              maxHeight: constraints.maxHeight,
+              minHeight: constraints.minHeight,
+              controller: homeState.panelController,
+              color: theme.primaryColor,
+              snapPoint: PanelState.snap.extent,
+              isDraggable: isMobile(),
+              panelBuilder: (sc) => HookBuilder(
+                builder: (context) {
+                  homeState.scrollController = sc;
+                  return LocationsSliderMobileView(constraints: constraints, controller: sc);
+                },
+              ),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+              onPanelSlide: homeState.onPanelSlide,
+              onPanelClosed: homeState.onPanelSlide,
+              onPanelOpened: homeState.onPanelSlide,
+              body: Consumer(
+                builder: (context, ref, _) => Column(
+                  children: [
+                    DecoratedBox(
+                      decoration: BoxDecoration(color: theme.colorScheme.surfaceContainerHighest),
+                      child: HomeAppBar(
+                        key: appBarKey,
+                        supportIcon:
+                            context.c.isDarkMode ? Assets.supportDark : Assets.supportLight,
+                        settingsIcon:
+                            context.c.isDarkMode ? Assets.settingsDark : Assets.settingsLight,
+                      ),
+                    ),
+                    const Expanded(child: HomeConnectionView()),
+                  ],
+                ),
+              ),
             ),
             minHeight: minHeight,
           );

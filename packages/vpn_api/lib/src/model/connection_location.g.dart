@@ -12,20 +12,25 @@ ConnectionLocation _$ConnectionLocationFromJson(Map<String, dynamic> json) => $c
       ($checkedConvert) {
         $checkKeys(
           json,
-          requiredKeys: const ['ip', 'country', 'node_type'],
+          requiredKeys: const ['country', 'total', 'cities', 'translations'],
         );
         final val = ConnectionLocation(
-          ip: $checkedConvert('ip', (v) => v as String),
           country: $checkedConvert('country', (v) => v as String),
-          nodeType: $checkedConvert('node_type', (v) => v as String),
+          total: $checkedConvert('total', (v) => v as num),
+          cities: $checkedConvert(
+              'cities',
+              (v) => (v as List<dynamic>)
+                  .map((e) => ConnectionLocationCity.fromJson(e as Map<String, dynamic>))
+                  .toList()),
+          translations: $checkedConvert('translations', (v) => Map<String, String>.from(v as Map)),
         );
         return val;
       },
-      fieldKeyMap: const {'nodeType': 'node_type'},
     );
 
 Map<String, dynamic> _$ConnectionLocationToJson(ConnectionLocation instance) => <String, dynamic>{
-      'ip': instance.ip,
       'country': instance.country,
-      'node_type': instance.nodeType,
+      'total': instance.total,
+      'cities': instance.cities.map((e) => e.toJson()).toList(),
+      'translations': instance.translations,
     };

@@ -190,6 +190,7 @@ class RestApiService extends ApiService {
       _logger.info(
         'Error resolving domain: $e',
       );
+      rethrow;
     }
   }
 }

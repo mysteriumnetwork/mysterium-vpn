@@ -1,5 +1,6 @@
 export 'analytics_event.dart';
 export 'banner_type.dart';
+export 'exception_severity.dart';
 export 'grant_type.dart';
 export 'ip_type.dart';
 export 'marketing_analytics_event.dart';

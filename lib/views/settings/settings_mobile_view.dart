@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/sheet_scaffold.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -18,22 +19,30 @@ class SettingsMobileView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => SheetScaffold(
         headerTitle: LocaleKeys.settings.tr(),
-        sliver: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const AppVersionUpdateSetting().padding(top: 32, bottom: 6),
-            _HeaderTitle(title: LocaleKeys.connection.tr()),
-            const ConnectionSettings(),
-            _HeaderTitle(title: LocaleKeys.application.tr()),
-            const ApplicationSettings(),
-            _HeaderTitle(title: LocaleKeys.account.tr()),
-            const AccountSettings(),
-            if (ref.watch(environmentPOD).isDev) ...[
-              const _HeaderTitle(title: 'QA Toolbox'),
-              const QAToolbox(),
-            ],
-          ],
+        sliver: DecoratedSliver(
+          decoration: BoxDecoration(
+            color: context.c.isDarkMode ? Palette.darkBlue : Palette.white,
+          ),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                const AppVersionUpdateSetting(),
+                _HeaderTitle(title: LocaleKeys.connection.tr()),
+                const ConnectionSettings(),
+                _HeaderTitle(title: LocaleKeys.application.tr()),
+                const ApplicationSettings(),
+                _HeaderTitle(title: LocaleKeys.account.tr()),
+                const AccountSettings(),
+                if (ref.watch(environmentPOD).isDev) ...[
+                  const _HeaderTitle(title: 'QA Toolbox'),
+                  const QAToolbox(),
+                ],
+              ],
+            ),
+          ),
         ),
+      ).backgroundColor(
+        context.c.isDarkMode ? Palette.darkBlue : Palette.white,
       );
 }
 

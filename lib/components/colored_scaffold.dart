@@ -1,6 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 // Project imports:
 

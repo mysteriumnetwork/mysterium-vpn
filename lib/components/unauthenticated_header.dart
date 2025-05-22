@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
@@ -27,7 +27,7 @@ class UnauthenticatedHeader extends HookConsumerWidget {
         SvgIconButton(
           asset: Assets.messageSvg,
           onPressed: () {
-            handleOnReportPage(
+            handleOnSupportPage(
               context: context,
               intetcomStore: ref.read(intercomStorePOD),
               analyticsStore: ref.read(analyticsStorePOD),
@@ -39,14 +39,11 @@ class UnauthenticatedHeader extends HookConsumerWidget {
   }
 }
 
-class _BackButton extends HookConsumerWidget {
+class _BackButton extends StatelessWidget {
   const _BackButton();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final themeStore = ref.watch(themeStorePOD);
-    final isDarkMode = useComputedValue(() => themeStore.isDarkMode);
-
+  Widget build(BuildContext context) {
     Future<void> handleBackOrHome() async {
       final beamer = Beamer.of(context);
       final success = await beamer.popRoute();
@@ -56,7 +53,7 @@ class _BackButton extends HookConsumerWidget {
     }
 
     return SvgIconButton(
-      asset: isDarkMode ? Assets.navigateBackLightBlack : Assets.navigateBack,
+      asset: context.c.isDarkMode ? Assets.navigateBackLightGrey : Assets.navigateBackLightBlack,
       onPressed: handleBackOrHome,
     );
   }
