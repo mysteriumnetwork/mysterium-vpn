@@ -250,7 +250,9 @@ final latLngStorePOD = Provider<LatLngStore>((ref) {
 
 final rateConnectionStorePOD = Provider<RateConnectionStore>((ref) {
   final analyticsStore = ref.watch(analyticsStorePOD);
-  return RateConnectionStore(analyticsStore);
+  final apiService = ref.watch(apiServicePOD);
+  final vpnStore = ref.watch(vpnStorePOD);
+  return RateConnectionStore(analyticsStore, apiService, vpnStore);
 });
 
 final networkStatisticsStorePOD = Provider.autoDispose<NetworkStatisticsStore>((ref) {

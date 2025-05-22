@@ -1,7 +1,10 @@
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/analytics_event.dart';
 import 'package:mysterium_vpn/common/enums/rate_connection.dart';
-import 'package:mysterium_vpn/models/vpn_connection.dart';
+import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:vpn_api/vpn_api.dart';
 
 part 'rate_connection_store.g.dart';
 
@@ -11,31 +14,32 @@ class RateConnectionStore = _RateConnectionStore with _$RateConnectionStore;
 abstract class _RateConnectionStore with Store {
   _RateConnectionStore(
     this._analyticsStore,
+    this._apiService,
+    this._vpnStore,
   );
 
   final AnalyticsStore _analyticsStore;
+  final ApiService _apiService;
+  final VpnStore _vpnStore;
 
   final ObservableList<RateConnectionReason> _rateConnectionReasons =
       ObservableList<RateConnectionReason>();
+  @observable
+  ObservableFuture<void>? submitRateConnectionFuture;
 
   @readonly
-  RateConnectionMode? _rateConnectionMode;
+  RateConnectionRequestModeEnum? _rateConnectionMode;
 
   @computed
-  bool get isLikeMode => _rateConnectionMode == RateConnectionMode.like;
+  bool get isLikeMode => _rateConnectionMode == RateConnectionRequestModeEnum.like;
   @computed
-  bool get isDislikeMode => _rateConnectionMode == RateConnectionMode.dislike;
+  bool get isDislikeMode => _rateConnectionMode == RateConnectionRequestModeEnum.dislike;
 
   @computed
   List<RateConnectionReason> get selectedReasons => _rateConnectionReasons.toList();
 
   @observable
   String feedback = '';
-
-  VpnConnection? connection;
-
-  @readonly
-  bool _isSubmitted = false;
 
   @computed
   List<RateConnectionReason> get showReasons =>
@@ -46,12 +50,11 @@ abstract class _RateConnectionStore with Store {
     _rateConnectionMode = null;
     _rateConnectionReasons.clear();
     feedback = '';
-    _isSubmitted = false;
+    submitRateConnectionFuture = null;
   }
 
   @action
-  void setRateConnectionMode(RateConnectionMode mode, VpnConnection? connection) {
-    this.connection = connection;
+  void setRateConnectionMode(RateConnectionRequestModeEnum mode) {
     _rateConnectionMode = mode;
     _rateConnectionReasons.clear();
     _analyticsStore.logRateConnnectionClicked(mode);
@@ -67,18 +70,26 @@ abstract class _RateConnectionStore with Store {
   }
 
   @action
-  void submitRateConnection() {
-    if (_rateConnectionMode != null && connection != null) {
-      _analyticsStore.logRateConnectionSubmit(
-        mode: _rateConnectionMode!,
-        reasons: _rateConnectionReasons.toList(),
-        feedback: feedback,
-        countryCode: connection!.location.code,
-        ipType: connection!.location.ipType,
-        ipAddress: connection!.connectionIP,
+  Future<void> submitRateConnection() async {
+    if (_rateConnectionMode != null &&
+        _vpnStore.vpnConnection != null &&
+        _vpnStore.wireguardKey?.publicKey != null) {
+      _analyticsStore.logEvent(AnalyticsEvent.rateConnectionSubmit);
+      submitRateConnectionFuture = ObservableFuture(
+        _apiService.rateConnection(
+          request: RateConnectionRequest(
+            mode: _rateConnectionMode!,
+            reasons:
+                _rateConnectionReasons.isEmpty ? '' : _rateConnectionReasons.toList().join(','),
+            feedback: feedback,
+            country: _vpnStore.vpnConnection!.location.code,
+            ipType: _vpnStore.vpnConnection!.location.ipType.name,
+            publicKey: _vpnStore.wireguardKey!.publicKey,
+          ),
+        ),
       );
+      await submitRateConnectionFuture;
     }
-    _isSubmitted = true;
   }
 
   @action

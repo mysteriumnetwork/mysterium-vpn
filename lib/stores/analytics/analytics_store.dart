@@ -5,11 +5,11 @@ import 'package:flutter/widgets.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/enums/indicator_type.dart';
-import 'package:mysterium_vpn/common/enums/rate_connection.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
+import 'package:vpn_api/vpn_api.dart';
 
 mixin AnalyticsStore {
   final Debouncer _debouncer = Debouncer();
@@ -193,38 +193,17 @@ mixin AnalyticsStore {
 
   Future<void> setDeviceInfo() async {}
 
-  Future<void> logRateConnnectionClicked(RateConnectionMode mode) async {
+  Future<void> logRateConnnectionClicked(RateConnectionRequestModeEnum mode) async {
     logEvent(
       AnalyticsEvent.rateConnectionClicked,
       parameters: {'mode': mode.name},
     );
   }
 
-  Future<void> logRateConnectionCancel(RateConnectionMode mode) async {
+  Future<void> logRateConnectionCancel(RateConnectionRequestModeEnum mode) async {
     logEvent(
       AnalyticsEvent.rateConnectionCancel,
       parameters: {'mode': mode.name},
-    );
-  }
-
-  Future<void> logRateConnectionSubmit({
-    required RateConnectionMode mode,
-    required List<RateConnectionReason> reasons,
-    required String feedback,
-    required String countryCode,
-    required IPType ipType,
-    required String ipAddress,
-  }) async {
-    logEvent(
-      AnalyticsEvent.rateConnectionSubmit,
-      parameters: {
-        'mode': mode.name,
-        'reasons': reasons.map((e) => e.name).toList(),
-        'feedback': feedback,
-        'country_code': countryCode,
-        'ip_type': ipType.name,
-        'ip_address': ipAddress,
-      },
     );
   }
 }

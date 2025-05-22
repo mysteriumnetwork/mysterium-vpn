@@ -1,8 +1,3 @@
-enum RateConnectionMode {
-  like,
-  dislike,
-}
-
 enum RateConnectionReason {
   stableConnection,
   consistentSpeed,

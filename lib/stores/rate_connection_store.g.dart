@@ -36,19 +36,35 @@ mixin _$RateConnectionStore on _RateConnectionStore, Store {
               name: '_RateConnectionStore.showReasons'))
           .value;
 
+  late final _$submitRateConnectionFutureAtom =
+      Atom(name: '_RateConnectionStore.submitRateConnectionFuture', context: context);
+
+  @override
+  ObservableFuture<void>? get submitRateConnectionFuture {
+    _$submitRateConnectionFutureAtom.reportRead();
+    return super.submitRateConnectionFuture;
+  }
+
+  @override
+  set submitRateConnectionFuture(ObservableFuture<void>? value) {
+    _$submitRateConnectionFutureAtom.reportWrite(value, super.submitRateConnectionFuture, () {
+      super.submitRateConnectionFuture = value;
+    });
+  }
+
   late final _$_rateConnectionModeAtom =
       Atom(name: '_RateConnectionStore._rateConnectionMode', context: context);
 
-  RateConnectionMode? get rateConnectionMode {
+  RateConnectionRequestModeEnum? get rateConnectionMode {
     _$_rateConnectionModeAtom.reportRead();
     return super._rateConnectionMode;
   }
 
   @override
-  RateConnectionMode? get _rateConnectionMode => rateConnectionMode;
+  RateConnectionRequestModeEnum? get _rateConnectionMode => rateConnectionMode;
 
   @override
-  set _rateConnectionMode(RateConnectionMode? value) {
+  set _rateConnectionMode(RateConnectionRequestModeEnum? value) {
     _$_rateConnectionModeAtom.reportWrite(value, super._rateConnectionMode, () {
       super._rateConnectionMode = value;
     });
@@ -69,21 +85,12 @@ mixin _$RateConnectionStore on _RateConnectionStore, Store {
     });
   }
 
-  late final _$_isSubmittedAtom = Atom(name: '_RateConnectionStore._isSubmitted', context: context);
-
-  bool get isSubmitted {
-    _$_isSubmittedAtom.reportRead();
-    return super._isSubmitted;
-  }
+  late final _$submitRateConnectionAsyncAction =
+      AsyncAction('_RateConnectionStore.submitRateConnection', context: context);
 
   @override
-  bool get _isSubmitted => isSubmitted;
-
-  @override
-  set _isSubmitted(bool value) {
-    _$_isSubmittedAtom.reportWrite(value, super._isSubmitted, () {
-      super._isSubmitted = value;
-    });
+  Future<void> submitRateConnection() {
+    return _$submitRateConnectionAsyncAction.run(() => super.submitRateConnection());
   }
 
   late final _$_RateConnectionStoreActionController =
@@ -101,11 +108,11 @@ mixin _$RateConnectionStore on _RateConnectionStore, Store {
   }
 
   @override
-  void setRateConnectionMode(RateConnectionMode mode, VpnConnection? connection) {
+  void setRateConnectionMode(RateConnectionRequestModeEnum mode) {
     final _$actionInfo = _$_RateConnectionStoreActionController.startAction(
         name: '_RateConnectionStore.setRateConnectionMode');
     try {
-      return super.setRateConnectionMode(mode, connection);
+      return super.setRateConnectionMode(mode);
     } finally {
       _$_RateConnectionStoreActionController.endAction(_$actionInfo);
     }
@@ -117,17 +124,6 @@ mixin _$RateConnectionStore on _RateConnectionStore, Store {
         name: '_RateConnectionStore.toggleRateConnectionReason');
     try {
       return super.toggleRateConnectionReason(reason);
-    } finally {
-      _$_RateConnectionStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void submitRateConnection() {
-    final _$actionInfo = _$_RateConnectionStoreActionController.startAction(
-        name: '_RateConnectionStore.submitRateConnection');
-    try {
-      return super.submitRateConnection();
     } finally {
       _$_RateConnectionStoreActionController.endAction(_$actionInfo);
     }
@@ -147,6 +143,7 @@ mixin _$RateConnectionStore on _RateConnectionStore, Store {
   @override
   String toString() {
     return '''
+submitRateConnectionFuture: ${submitRateConnectionFuture},
 feedback: ${feedback},
 isLikeMode: ${isLikeMode},
 isDislikeMode: ${isDislikeMode},

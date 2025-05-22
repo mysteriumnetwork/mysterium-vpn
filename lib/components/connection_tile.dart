@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/enums/rate_connection.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
@@ -15,8 +14,8 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/rate_connection_store.dart';
-import 'package:mysterium_vpn/stores/vpn_store.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:vpn_api/vpn_api.dart';
 
 class ConnectionTile extends HookConsumerWidget {
   const ConnectionTile({super.key});
@@ -113,16 +112,7 @@ class ConnectionTile extends HookConsumerWidget {
                 Expanded(child: _IPTypeIndicator(ipType: location.ipType)),
               ],
             ).padding(left: 40),
-            if (vpnStore.isConnected) ...[
-              Divider(
-                height: 0,
-                color: switch (theme.brightness) {
-                  Brightness.light => Palette.lightBlue,
-                  Brightness.dark => Palette.darkIndigo,
-                },
-              ).padding(left: 40),
-              _RateConnection(),
-            ],
+            _RateConnection(),
           ],
         ),
       ),
@@ -215,69 +205,80 @@ class _RateConnection extends ConsumerWidget {
 
     final rateConnectionStore = ref.watch(rateConnectionStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
-    return Row(
+    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+    if (!vpnStore.isConnected || !remoteConfigStore.isRateConnectionAvailable) {
+      return const SizedBox.shrink();
+    }
+    return Column(
       children: [
-        Expanded(
-          child: EasyText(
-            LocaleKeys.rateConnection.tr(),
-            color: theme.colorScheme.onSecondaryContainer,
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        IconButton(
-          style: IconButton.styleFrom(
-            visualDensity: VisualDensity.compact,
-            padding: const EdgeInsets.all(2),
-          ),
-          icon: SvgIcon(
-            asset: switch (theme.brightness) {
-              Brightness.light => Assets.thumbsUpLight,
-              Brightness.dark => Assets.thumbsUpDark,
-            },
-          ),
-          onPressed: () {
-            handleRateConnection(
-              context,
-              rateConnectionStore,
-              RateConnectionMode.like,
-              vpnStore,
-            );
+        Divider(
+          height: 0,
+          color: switch (theme.brightness) {
+            Brightness.light => Palette.lightBlue,
+            Brightness.dark => Palette.darkIndigo,
           },
-        ),
-        IconButton(
-          style: IconButton.styleFrom(
-            visualDensity: VisualDensity.compact,
-            padding: const EdgeInsets.all(2),
-          ),
-          icon: SvgIcon(
-            asset: switch (theme.brightness) {
-              Brightness.light => Assets.thumbsDownLight,
-              Brightness.dark => Assets.thumbsDownDark,
-            },
-          ),
-          onPressed: () {
-            handleRateConnection(
-              context,
-              rateConnectionStore,
-              RateConnectionMode.dislike,
-              vpnStore,
-            );
-          },
-        ),
+        ).padding(left: 40),
+        Row(
+          children: [
+            Expanded(
+              child: EasyText(
+                LocaleKeys.rateConnection.tr(),
+                color: theme.colorScheme.onSecondaryContainer,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            IconButton(
+              style: IconButton.styleFrom(
+                visualDensity: VisualDensity.compact,
+                padding: const EdgeInsets.all(2),
+              ),
+              icon: SvgIcon(
+                asset: switch (theme.brightness) {
+                  Brightness.light => Assets.thumbsUpLight,
+                  Brightness.dark => Assets.thumbsUpDark,
+                },
+              ),
+              onPressed: () {
+                handleRateConnection(
+                  context,
+                  rateConnectionStore,
+                  RateConnectionRequestModeEnum.like,
+                );
+              },
+            ),
+            IconButton(
+              style: IconButton.styleFrom(
+                visualDensity: VisualDensity.compact,
+                padding: const EdgeInsets.all(2),
+              ),
+              icon: SvgIcon(
+                asset: switch (theme.brightness) {
+                  Brightness.light => Assets.thumbsDownLight,
+                  Brightness.dark => Assets.thumbsDownDark,
+                },
+              ),
+              onPressed: () {
+                handleRateConnection(
+                  context,
+                  rateConnectionStore,
+                  RateConnectionRequestModeEnum.dislike,
+                );
+              },
+            ),
+          ],
+        ).padding(left: 40),
       ],
-    ).padding(left: 40);
+    );
   }
 
   Future<void> handleRateConnection(
     BuildContext context,
     RateConnectionStore rateConnectionStore,
-    RateConnectionMode rateConnectionMode,
-    VpnStore vpnStore,
+    RateConnectionRequestModeEnum rateConnectionMode,
   ) async {
     rateConnectionStore.setRateConnectionMode(
       rateConnectionMode,
-      vpnStore.vpnConnection,
     );
 
     showRateConnectionDialog(context).whenComplete(() {
