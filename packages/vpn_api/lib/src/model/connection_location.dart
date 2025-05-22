@@ -3,6 +3,7 @@
 //
 
 // ignore_for_file: unused_element
+import 'package:vpn_api/src/model/connection_location_city.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'connection_location.g.dart';
@@ -16,17 +17,11 @@ part 'connection_location.g.dart';
 class ConnectionLocation {
   /// Returns a new [ConnectionLocation] instance.
   ConnectionLocation({
-    required this.ip,
     required this.country,
-    required this.nodeType,
+    required this.total,
+    required this.cities,
+    required this.translations,
   });
-
-  @JsonKey(
-    name: r'ip',
-    required: true,
-    includeIfNull: false,
-  )
-  final String ip;
 
   @JsonKey(
     name: r'country',
@@ -36,22 +31,37 @@ class ConnectionLocation {
   final String country;
 
   @JsonKey(
-    name: r'node_type',
+    name: r'total',
     required: true,
     includeIfNull: false,
   )
-  final String nodeType;
+  final num total;
+
+  @JsonKey(
+    name: r'cities',
+    required: true,
+    includeIfNull: false,
+  )
+  final List<ConnectionLocationCity> cities;
+
+  @JsonKey(
+    name: r'translations',
+    required: true,
+    includeIfNull: false,
+  )
+  final Map<String, String> translations;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ConnectionLocation &&
-          other.ip == ip &&
           other.country == country &&
-          other.nodeType == nodeType;
+          other.total == total &&
+          other.cities == cities &&
+          other.translations == translations;
 
   @override
-  int get hashCode => ip.hashCode + country.hashCode + nodeType.hashCode;
+  int get hashCode => country.hashCode + total.hashCode + cities.hashCode + translations.hashCode;
 
   factory ConnectionLocation.fromJson(Map<String, dynamic> json) =>
       _$ConnectionLocationFromJson(json);

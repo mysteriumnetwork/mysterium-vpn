@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -42,9 +42,9 @@ class ApiVersion extends HookConsumerWidget {
 
         return EasyText(
           'v.${apiStore.lastHealthcheck!.version}',
-          color: Palette.lightBlue,
-          fontSize: 6,
-        );
+          color: context.c.isDarkMode ? Palette.lightBlue : Palette.white,
+          fontSize: 8,
+        ).padding(left: 8);
       },
     );
   }

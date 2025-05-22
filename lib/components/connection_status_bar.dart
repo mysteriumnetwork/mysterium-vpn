@@ -6,8 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
@@ -24,12 +23,6 @@ class ConnectionStatusBar extends HookConsumerWidget {
       20,
       tablet: 30,
       desktop: 40,
-    );
-
-    final borderRadius = useResponsiveValue<double>(
-      30,
-      tablet: 0,
-      desktop: 0,
     );
 
     final vpnStore = ref.watch(vpnStorePOD);
@@ -66,11 +59,6 @@ class ConnectionStatusBar extends HookConsumerWidget {
       fillColor: _barBackgroundColor(connectionStatus, isFetchingConfig),
       splashColor: Palette.white.withValues(alpha: .2),
       visualDensity: VisualDensity.compact,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          bottom: isExpanded.value ? Radius.circular(borderRadius) : Radius.zero,
-        ),
-      ),
       clipBehavior: Clip.antiAlias,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       child: Padding(

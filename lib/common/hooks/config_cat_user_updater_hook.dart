@@ -19,19 +19,6 @@ void useConfigCatUserUpdater() {
     [remoteConfigStore, abTestingStore, textsStore],
   );
 
-  // TODO(David): Use RealIPStore instead of originIP
-  // useReaction(
-  //   () => vpnStore.originIP,
-  //   (originIP) {
-  //     if (originIP == null) {
-  //       return;
-  //     }
-
-  //     unawaited(handleNotify());
-  //   },
-  //   keys: [vpnStore, handleNotify],
-  // );
-
   useReaction(
     () => authSessionStore.userFuture,
     (userFuture) async {

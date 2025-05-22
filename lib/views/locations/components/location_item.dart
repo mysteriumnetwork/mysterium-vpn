@@ -53,9 +53,10 @@ class LocationItem extends HookConsumerWidget {
             ConnectTextButton(
               onPressed: onTap,
               location: location,
-              minimumSize: const Size(86, 32),
+              size: const Size(90, 30),
               loadingIndicatorRadius: 15,
               borderRadius: 8,
+              outlinedButton: true,
             ),
           ],
         ),

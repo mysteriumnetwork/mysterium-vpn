@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/ripple.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/product_pricing.dart';
@@ -19,7 +19,6 @@ class HighlightedProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkMode = theme.brightness == Brightness.dark;
     return RippleWidget(
       onTap: selectProduct,
       radius: 15,
@@ -36,7 +35,7 @@ class HighlightedProduct extends StatelessWidget {
             color: Palette.purple,
           ),
         ),
-        color: isDarkMode ? const Color(0xff23222D) : const Color(0xff363355),
+        color: context.c.isDarkMode ? const Color(0xff23222D) : const Color(0xff363355),
       ),
     );
   }

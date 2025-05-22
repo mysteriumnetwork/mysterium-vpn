@@ -12,6 +12,9 @@ Method | HTTP request | Description
 [**connect**](Connection.md#connect) | **POST** /connection/connect | Get Wireguard configuration template given connect options
 [**connectProxy**](Connection.md#connectproxy) | **POST** /connection/connect-proxy | Get proxy configuration given connect options
 [**connectionConfig**](Connection.md#connectionconfig) | **GET** /connection/config | Get connection options
+[**connectionConfigRegions**](Connection.md#connectionconfigregions) | **GET** /connection/config/regions | Get connection region options
+[**connectionLocations**](Connection.md#connectionlocations) | **GET** /connection/locations | Get connection locations
+[**rateConnection**](Connection.md#rateconnection) | **POST** /connection/rate-connection | Rate connection
 
 
 # **connect**
@@ -134,6 +137,128 @@ No authorization required
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **connectionConfigRegions**
+> ConnectionConfigRegionsResponse connectionConfigRegions(ipType)
+
+Get connection region options
+
+### Example
+```dart
+import 'package:vpn_api/api.dart';
+
+final api = VpnApi().getConnection();
+final String ipType = ipType_example; // String | 
+
+try {
+    final response = api.connectionConfigRegions(ipType);
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling Connection->connectionConfigRegions: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ipType** | **String**|  | [optional] 
+
+### Return type
+
+[**ConnectionConfigRegionsResponse**](ConnectionConfigRegionsResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **connectionLocations**
+> List<ConnectionLocation> connectionLocations(ipType)
+
+Get connection locations
+
+### Example
+```dart
+import 'package:vpn_api/api.dart';
+
+final api = VpnApi().getConnection();
+final String ipType = ipType_example; // String | 
+
+try {
+    final response = api.connectionLocations(ipType);
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling Connection->connectionLocations: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ipType** | **String**|  | [optional] 
+
+### Return type
+
+[**List&lt;ConnectionLocation&gt;**](ConnectionLocation.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **rateConnection**
+> rateConnection(rateConnectionRequest)
+
+Rate connection
+
+### Example
+```dart
+import 'package:vpn_api/api.dart';
+
+final api = VpnApi().getConnection();
+final RateConnectionRequest rateConnectionRequest = ; // RateConnectionRequest | 
+
+try {
+    api.rateConnection(rateConnectionRequest);
+} catch on DioException (e) {
+    print('Exception when calling Connection->rateConnection: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **rateConnectionRequest** | [**RateConnectionRequest**](RateConnectionRequest.md)|  | [optional] 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

@@ -8,9 +8,10 @@ import 'package:vpn_api/api.dart';
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ip** | **String** |  | 
 **country** | **String** |  | 
-**nodeType** | **String** |  | 
+**total** | **num** |  | 
+**cities** | [**List&lt;ConnectionLocationCity&gt;**](ConnectionLocationCity.md) |  | 
+**translations** | **Map&lt;String, String&gt;** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

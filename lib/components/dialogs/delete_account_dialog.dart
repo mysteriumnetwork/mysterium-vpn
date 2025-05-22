@@ -7,8 +7,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/dialogs/info_dialog.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
@@ -86,9 +85,7 @@ class _DeleteAccountDialog extends HookWidget {
               ).padding(bottom: 10),
               TextField(
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.brightness == Brightness.light
-                      ? Palette.black
-                      : Palette.veryLightGrey,
+                  color: context.c.isDarkMode ? Palette.veryLightGrey : Palette.black,
                 ),
                 decoration: InputDecoration(
                   filled: true,

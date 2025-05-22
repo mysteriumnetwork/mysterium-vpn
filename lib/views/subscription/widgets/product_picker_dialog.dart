@@ -8,8 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/bottom_spacer.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
@@ -68,7 +67,6 @@ class _ProductPickerDialog extends HookConsumerWidget {
     final subscriptionStore = ref.watch(subscriptionStorePOD);
 
     final highlightedProduct = useComputedValue(() => subscriptionStore.highlightedProduct);
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     final selectedProductId = useState<String>(
       subscriptionStore.subscriptionFuture.value?.planId ?? highlightedProduct!.id,
@@ -102,7 +100,7 @@ class _ProductPickerDialog extends HookConsumerWidget {
                 width: 35,
                 height: 35,
                 child: SvgIconButton(
-                  asset: isDarkMode ? Assets.closeDark : Assets.closeLight,
+                  asset: context.c.isDarkMode ? Assets.closeDark : Assets.closeLight,
                   onPressed: Navigator.of(context).pop,
                 ),
               ),
@@ -189,41 +187,38 @@ class _ProductsContainer extends StatelessWidget {
   final ValueNotifier<String> selectedProductId;
   final AnalyticsStore analyticsStore;
   @override
-  Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    return ClipRRect(
-      borderRadius: const BorderRadius.all(Radius.circular(16)),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: isDarkMode ? const Color(0xff23222D) : const Color(0xff363355),
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          border: Border.all(color: Palette.purple, width: 1.5),
-        ),
-        child: ListView.separated(
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: products.length,
-          itemBuilder: (context, index) => ContaineredProduct(
-            selectProduct: () {
-              analyticsStore.logProductSelected(
-                products[index].id,
-                products.map((e) => e.id).toList(),
-              );
-              selectedProductId.value = products[index].id;
-            },
-            product: products[index],
-            isSelected: selectedProductId.value == products[index].id,
+  Widget build(BuildContext context) => ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: context.c.isDarkMode ? const Color(0xff23222D) : const Color(0xff363355),
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
+            border: Border.all(color: Palette.purple, width: 1.5),
           ),
-          separatorBuilder: (context, index) => const Divider(
-            color: Color.fromRGBO(106, 103, 142, 0.4),
-            thickness: 1,
-            height: 1,
+          child: ListView.separated(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: products.length,
+            itemBuilder: (context, index) => ContaineredProduct(
+              selectProduct: () {
+                analyticsStore.logProductSelected(
+                  products[index].id,
+                  products.map((e) => e.id).toList(),
+                );
+                selectedProductId.value = products[index].id;
+              },
+              product: products[index],
+              isSelected: selectedProductId.value == products[index].id,
+            ),
+            separatorBuilder: (context, index) => const Divider(
+              color: Color.fromRGBO(106, 103, 142, 0.4),
+              thickness: 1,
+              height: 1,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class ContaineredProduct extends StatelessWidget {

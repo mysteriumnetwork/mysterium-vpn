@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/circle_box.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
@@ -36,7 +37,9 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
         .scrollable()
         .padding(horizontal: 40, vertical: 40)
         .height(getMediaHeight(context))
-        .backgroundColor(Theme.of(context).colorScheme.surface);
+        .backgroundColor(
+          context.c.isDarkMode ? Palette.darkBlue : Palette.white,
+        );
   }
 }
 

@@ -269,7 +269,7 @@ abstract class _SubscriptionStore with Store {
         _subscriptionStatus = SubscriptionStatus.error;
       }
       _analyticsStore.logEvent(
-        AnalyticsEvent.paymentError,
+        AnalyticsEvent.subscriptionError,
         parameters: {
           'planType': product.id,
           'price': product.rawPrice.toString(),
@@ -326,6 +326,17 @@ abstract class _SubscriptionStore with Store {
         await _subscriptionService.clearPendingTransactions();
       }
       _subscriptionStatus = purchaseDetails.status.subscriptionStatus;
+      _analyticsStore.logEvent(
+        purchaseDetails.status == PurchaseStatus.error
+            ? AnalyticsEvent.subscriptionError
+            : AnalyticsEvent.subscriptionCancel,
+        parameters: {
+          'planType': product?.id,
+          'price': product?.productDetails.rawPrice.toString(),
+          'error': purchaseDetails.error?.message,
+        },
+      );
+      return;
     }
 
     if (purchaseDetails.status == PurchaseStatus.pending) {

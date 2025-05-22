@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -6,6 +8,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/settings/network_statistics.dart';
 
 class QAToolbox extends HookConsumerWidget {
   const QAToolbox({super.key});
@@ -22,6 +25,7 @@ class QAToolbox extends HookConsumerWidget {
 
         return Column(
           children: [
+            if (vpnStore.isConnected && Platform.isAndroid) const NetworkStatistics(),
             SettingItem(
               asset: isDarkTheme ? Assets.resetAppSettingDark : Assets.resetAppSettingLight,
               title: 'Reset hidden banners',
@@ -82,6 +86,23 @@ class QAToolbox extends HookConsumerWidget {
                   ref.read(subscriptionStorePOD).mockSubscriptionFailureStatus();
                   showSnackbar(
                     'Subscription status set to failed',
+                  );
+                },
+              ),
+            ),
+            SettingItem(
+              asset: isDarkTheme ? Assets.settingsDark : Assets.settingsLight,
+              title: 'Clear cached locations',
+              subtitle: const EasyText('Will delete all VPNLocations from db'),
+              actionWidget: TextButton.icon(
+                label: const EasyText(
+                  'Clear',
+                ),
+                icon: const Icon(Icons.refresh),
+                onPressed: () async {
+                  await ref.read(locationsStorePOD).resetStoredLocations();
+                  showSnackbar(
+                    'Locations cleared',
                   );
                 },
               ),

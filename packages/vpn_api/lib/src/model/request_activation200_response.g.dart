@@ -18,11 +18,8 @@ RequestActivation200Response _$RequestActivation200ResponseFromJson(Map<String, 
         final val = RequestActivation200Response(
           id: $checkedConvert('id', (v) => v as String),
           valid: $checkedConvert('valid', (v) => v as bool),
-          token: $checkedConvert(
-              'token',
-              (v) => v == null
-                  ? null
-                  : RequestActivation200ResponseToken.fromJson(v as Map<String, dynamic>)),
+          token: $checkedConvert('token',
+              (v) => v == null ? null : OAuth2TokenResponse.fromJson(v as Map<String, dynamic>)),
         );
         return val;
       },

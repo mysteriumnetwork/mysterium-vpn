@@ -16,7 +16,7 @@ class HeaderTitle extends StatelessWidget {
   Widget build(BuildContext context) => EasyText(
         text,
         fontSize: 20,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.w400,
         color: color,
       ).fittedBox().padding(vertical: getMediaHeight(context) * .025);
 }

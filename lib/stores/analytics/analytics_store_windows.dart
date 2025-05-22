@@ -57,7 +57,12 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
 
   @override
   @action
-  Future<void> setUserProperty(String name, String value) async {}
+  Future<void> setUserProperty(String name, String value) async {
+    _session.userProperties[name.truncate(24)] = {
+      'value': value,
+      'timestamp_micros': DateTime.now().microsecondsSinceEpoch,
+    };
+  }
 
   @override
   @action
@@ -89,6 +94,7 @@ class AnalyticsSession {
   final String measurementId;
   final String apiSecret;
   String? userId;
+  Map<String, dynamic> userProperties = {};
 
   final DateTime sessionStarted = DateTime.now().toUtc();
   String get sessionId => _sessionId;
@@ -135,14 +141,15 @@ class AnalyticsSession {
     final body = jsonEncode({
       'client_id': defaultTargetPlatform.name,
       'user_id': userId,
+      'user_properties': userProperties,
       'events': [
-        {'name': eventName, 'params': defParams},
+        {'name': eventName.truncate(40), 'params': defParams},
       ],
     });
 
     try {
       await dio.post(
-        '/mp/collect?firebase_app_id=$measurementId&api_secret=$apiSecret',
+        '/mp/collect?measurement_id=$measurementId&api_secret=$apiSecret',
         data: body,
       );
     } catch (e) {

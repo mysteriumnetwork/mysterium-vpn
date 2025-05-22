@@ -17,4 +17,5 @@ extension DurationExtension on Duration {
 
 extension DateExtension on DateTime {
   String formatWithDay() => DateFormat('EEEE, d MMM, yyyy').format(this);
+  String formatWithTime() => DateFormat('HH:mm:ss').format(this);
 }

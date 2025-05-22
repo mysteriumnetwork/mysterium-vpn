@@ -12,11 +12,17 @@ doc/CheckAuth401ResponseError.md
 doc/CheckAuth401ResponseErrorFieldsValue.md
 doc/CodeAuthorizationRequest.md
 doc/Connection.md
+doc/ConnectionConfigRegionsQuery.md
+doc/ConnectionConfigRegionsResponse.md
 doc/ConnectionConfigRequestQuery.md
 doc/ConnectionConfigResponse.md
+doc/ConnectionKilledMessage.md
 doc/ConnectionLocation.md
+doc/ConnectionLocationCity.md
+doc/ConnectionLocationsRequestQuery.md
 doc/ConnectionMessage.md
 doc/ConnectionMessageLocation.md
+doc/ConnectionRegion.md
 doc/Country.md
 doc/CreateAdyenSubscriptionRequest.md
 doc/CreateAdyenSubscriptionResponse.md
@@ -27,6 +33,7 @@ doc/CreateGenericSubscriptionResponse.md
 doc/CreateGoogleSubscriptionRequest.md
 doc/CreateGoogleSubscriptionResponse.md
 doc/FieldError.md
+doc/GetLocationResponse.md
 doc/GetSubscriptionResponse.md
 doc/Healthcheck200Response.md
 doc/HealthcheckMessage.md
@@ -37,6 +44,7 @@ doc/Invoice.md
 doc/InvoicesRequest.md
 doc/InvoicesResponse.md
 doc/InvoicesResponsePaging.md
+doc/Location.md
 doc/LocationRate.md
 doc/MagicLinkRedirectRequestQuery.md
 doc/MagicLinkRequest.md
@@ -56,8 +64,8 @@ doc/OrderSummaryRequest.md
 doc/OrderSummaryResponse.md
 doc/ProxyConnectResponse.md
 doc/ProxyConnectResponseProxyConfig.md
+doc/RateConnectionRequest.md
 doc/RequestActivation200Response.md
-doc/RequestActivation200ResponseToken.md
 doc/RequestActivationRequest.md
 doc/Subscribe200Response.md
 doc/SubscribeRequest.md
@@ -67,6 +75,7 @@ doc/SubscriptionConfigResponseGatewaysInner.md
 doc/SubscriptionConfigResponsePlansInner.md
 doc/SubscriptionConfigResponsePlansInnerInterval.md
 doc/SubscriptionConfigResponsePlansInnerPrice.md
+doc/SubscriptionConfigResponsePlansInnerPricesInner.md
 doc/UserCallbackRequest.md
 doc/WireguardConnectRequest.md
 doc/WireguardConnectResponse.md
@@ -74,6 +83,7 @@ lib/src/api.dart
 lib/src/api/authentication.dart
 lib/src/api/connection.dart
 lib/src/api/infrastructure.dart
+lib/src/api/location.dart
 lib/src/api/subscription.dart
 lib/src/auth/api_key_auth.dart
 lib/src/auth/auth.dart
@@ -89,11 +99,17 @@ lib/src/model/check_auth401_response.dart
 lib/src/model/check_auth401_response_error.dart
 lib/src/model/check_auth401_response_error_fields_value.dart
 lib/src/model/code_authorization_request.dart
+lib/src/model/connection_config_regions_query.dart
+lib/src/model/connection_config_regions_response.dart
 lib/src/model/connection_config_request_query.dart
 lib/src/model/connection_config_response.dart
+lib/src/model/connection_killed_message.dart
 lib/src/model/connection_location.dart
+lib/src/model/connection_location_city.dart
+lib/src/model/connection_locations_request_query.dart
 lib/src/model/connection_message.dart
 lib/src/model/connection_message_location.dart
+lib/src/model/connection_region.dart
 lib/src/model/country.dart
 lib/src/model/create_adyen_subscription_request.dart
 lib/src/model/create_adyen_subscription_response.dart
@@ -104,6 +120,7 @@ lib/src/model/create_generic_subscription_response.dart
 lib/src/model/create_google_subscription_request.dart
 lib/src/model/create_google_subscription_response.dart
 lib/src/model/field_error.dart
+lib/src/model/get_location_response.dart
 lib/src/model/get_subscription_response.dart
 lib/src/model/healthcheck200_response.dart
 lib/src/model/healthcheck_message.dart
@@ -132,8 +149,8 @@ lib/src/model/order_summary_request.dart
 lib/src/model/order_summary_response.dart
 lib/src/model/proxy_connect_response.dart
 lib/src/model/proxy_connect_response_proxy_config.dart
+lib/src/model/rate_connection_request.dart
 lib/src/model/request_activation200_response.dart
-lib/src/model/request_activation200_response_token.dart
 lib/src/model/request_activation_request.dart
 lib/src/model/subscribe200_response.dart
 lib/src/model/subscribe_request.dart
@@ -142,6 +159,7 @@ lib/src/model/subscription_config_response_gateways_inner.dart
 lib/src/model/subscription_config_response_plans_inner.dart
 lib/src/model/subscription_config_response_plans_inner_interval.dart
 lib/src/model/subscription_config_response_plans_inner_price.dart
+lib/src/model/subscription_config_response_plans_inner_prices_inner.dart
 lib/src/model/user_callback_request.dart
 lib/src/model/wireguard_connect_request.dart
 lib/src/model/wireguard_connect_response.dart
