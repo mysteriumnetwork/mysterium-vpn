@@ -593,4 +593,5 @@ abstract class LocaleKeys {
   static const thanksForFeedback = 'thanksForFeedback';
   static const thanksForFeedbackDesc = 'thanksForFeedbackDesc';
   static const closeBtn = 'closeBtn';
+  static const failedToSubmitFeedback = 'failedToSubmitFeedback';
 }

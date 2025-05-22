@@ -594,5 +594,6 @@
   "submitBtn": "Enviar",
   "thanksForFeedback": "¡Gracias por tus comentarios!",
   "thanksForFeedbackDesc": "Agradecemos tus comentarios. ¡Nos ayudan a mejorar tu experiencia con VPN!",
-  "closeBtn": "Cerrar"
+  "closeBtn": "Cerrar",
+  "failedToSubmitFeedback": "No se pudo enviar comentarios. Por favor, inténtalo de nuevo."
 }

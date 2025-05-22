@@ -594,5 +594,6 @@
   "submitBtn": "Gönder",
   "thanksForFeedback": "Görüşleriniz için teşekkür ederiz!",
   "thanksForFeedbackDesc": "Görüşlerinizi önemsiyoruz. Geri bildiriminiz VPN deneyiminizi geliştirmemize yardımcı olur!",
-  "closeBtn": "Kapat"
+  "closeBtn": "Kapat",
+  "failedToSubmitFeedback": "Geri bildiriminizi gönderemedik. Lütfen tekrar deneyin."
 }

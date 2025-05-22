@@ -594,5 +594,6 @@
   "submitBtn": "Kirim",
   "thanksForFeedback": "Terima kasih atas masukan Anda!",
   "thanksForFeedbackDesc": "Kami menghargai masukan Anda. Masukan Anda membantu kami meningkatkan pengalaman VPN Anda!",
-  "closeBtn": "Tutup"
+  "closeBtn": "Tutup",
+  "failedToSubmitFeedback": "Gagal mengirim umpan balik. Silakan coba lagi."
 }
