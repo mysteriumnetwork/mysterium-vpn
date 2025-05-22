@@ -79,8 +79,9 @@ abstract class _RateConnectionStore with Store {
         _apiService.rateConnection(
           request: RateConnectionRequest(
             mode: _rateConnectionMode!,
-            reasons:
-                _rateConnectionReasons.isEmpty ? '' : _rateConnectionReasons.toList().join(','),
+            reasons: _rateConnectionReasons.isEmpty
+                ? RateConnectionReason.other.name
+                : _rateConnectionReasons.toList().join(','),
             feedback: feedback,
             country: _vpnStore.vpnConnection!.location.code,
             ipType: _vpnStore.vpnConnection!.location.ipType.name,
