@@ -193,4 +193,19 @@ class RestApiService extends ApiService {
       rethrow;
     }
   }
+
+  @override
+  Future<void> rateConnection({
+    required RateConnectionRequest request,
+  }) async {
+    try {
+      await _apiConnection.rateConnection(
+        rateConnectionRequest: request,
+      );
+      _logger.info('Connection rated successfully');
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
+  }
 }

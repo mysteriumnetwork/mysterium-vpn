@@ -7,12 +7,14 @@ import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/connect_text_button.dart';
+import 'package:mysterium_vpn/components/dialogs/rate_connection_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/flag.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:vpn_api/vpn_api.dart';
 
 class ConnectionTile extends HookConsumerWidget {
   const ConnectionTile({super.key});
@@ -109,6 +111,7 @@ class ConnectionTile extends HookConsumerWidget {
                 Expanded(child: _IPTypeIndicator(ipType: location.ipType)),
               ],
             ).padding(left: 40),
+            _RateConnection(),
           ],
         ),
       ),
@@ -137,6 +140,7 @@ class _IPIndicator extends HookWidget {
             ip,
             fontSize: 12,
             color: theme.colorScheme.onSecondaryContainer,
+            fontWeight: FontWeight.w500,
           ),
         ),
         IconButton(
@@ -179,6 +183,7 @@ class _IPTypeIndicator extends HookWidget {
             },
             fontSize: 12,
             color: theme.colorScheme.onSecondaryContainer,
+            fontWeight: FontWeight.w500,
           ),
         ),
         if (ipType == IPType.datacenter)
@@ -189,5 +194,84 @@ class _IPTypeIndicator extends HookWidget {
           ),
       ],
     );
+  }
+}
+
+class _RateConnection extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+
+    final vpnStore = ref.watch(vpnStorePOD);
+    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+    if (!vpnStore.isConnected || !remoteConfigStore.isRateConnectionAvailable) {
+      return const SizedBox.shrink();
+    }
+    return Column(
+      children: [
+        Divider(
+          height: 0,
+          color: switch (theme.brightness) {
+            Brightness.light => Palette.lightBlue,
+            Brightness.dark => Palette.darkIndigo,
+          },
+        ).padding(left: 40),
+        Row(
+          children: [
+            Expanded(
+              child: EasyText(
+                LocaleKeys.rateConnection.tr(),
+                color: theme.colorScheme.onSecondaryContainer,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            IconButton(
+              style: IconButton.styleFrom(
+                visualDensity: VisualDensity.compact,
+                padding: const EdgeInsets.all(2),
+              ),
+              icon: SvgIcon(
+                asset: switch (theme.brightness) {
+                  Brightness.light => Assets.thumbsUpLight,
+                  Brightness.dark => Assets.thumbsUpDark,
+                },
+              ),
+              onPressed: () {
+                handleRateConnection(
+                  context,
+                  RateConnectionRequestModeEnum.like,
+                );
+              },
+            ),
+            IconButton(
+              style: IconButton.styleFrom(
+                visualDensity: VisualDensity.compact,
+                padding: const EdgeInsets.all(2),
+              ),
+              icon: SvgIcon(
+                asset: switch (theme.brightness) {
+                  Brightness.light => Assets.thumbsDownLight,
+                  Brightness.dark => Assets.thumbsDownDark,
+                },
+              ),
+              onPressed: () {
+                handleRateConnection(
+                  context,
+                  RateConnectionRequestModeEnum.dislike,
+                );
+              },
+            ),
+          ],
+        ).padding(left: 40),
+      ],
+    );
+  }
+
+  Future<void> handleRateConnection(
+    BuildContext context,
+    RateConnectionRequestModeEnum rateConnectionMode,
+  ) async {
+    showRateConnectionDialog(context, rateConnectionMode);
   }
 }

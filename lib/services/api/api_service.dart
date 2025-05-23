@@ -9,4 +9,5 @@ abstract class ApiService {
   Future<bool> getUserPrefsMarketingConsent();
   Future<void> disconnectAllDevices();
   Future<void> udpBlockedCheck();
+  Future<void> rateConnection({required RateConnectionRequest request});
 }
