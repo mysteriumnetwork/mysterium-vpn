@@ -9,6 +9,7 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
+import 'package:vpn_api/vpn_api.dart';
 
 mixin AnalyticsStore {
   final Debouncer _debouncer = Debouncer();
@@ -191,4 +192,18 @@ mixin AnalyticsStore {
   }
 
   Future<void> setDeviceInfo() async {}
+
+  Future<void> logRateConnnectionClicked(RateConnectionRequestModeEnum mode) async {
+    logEvent(
+      AnalyticsEvent.rateConnectionClicked,
+      parameters: {'mode': mode.name},
+    );
+  }
+
+  Future<void> logRateConnectionCancel(RateConnectionRequestModeEnum mode) async {
+    logEvent(
+      AnalyticsEvent.rateConnectionCancel,
+      parameters: {'mode': mode.name},
+    );
+  }
 }

@@ -92,6 +92,9 @@ enum AnalyticsEvent {
   resendEmailClicked,
   locationsTabClick,
   appVersionSettingClicked,
+  rateConnectionClicked,
+  rateConnectionCancel,
+  rateConnectionSubmit,
   apiError,
   ipChanged
 }

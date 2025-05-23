@@ -27,8 +27,8 @@ class HomeConnectionView extends HookConsumerWidget {
                 left: 0,
                 right: 0,
                 bottom: switch (screenType) {
-                  ScreenType.tablet => 182,
-                  ScreenType.desktop => 172,
+                  ScreenType.tablet => 222,
+                  ScreenType.desktop => 212,
                   _ => null,
                 },
                 top: screenType == ScreenType.mobile ? 10 : null,
