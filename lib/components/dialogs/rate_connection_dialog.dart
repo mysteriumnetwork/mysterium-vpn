@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -12,6 +13,7 @@ import 'package:mysterium_vpn/common/enums/rate_connection.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -88,24 +90,23 @@ class _ConfirmDialog extends HookConsumerWidget {
         final futureStatusError = futureStatus == FutureStatus.rejected;
         final futureStatusFulfilled = futureStatus == FutureStatus.fulfilled;
         return AlertDialog(
+          scrollable: true,
+          buttonPadding: EdgeInsets.zero,
+          actionsPadding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
           titlePadding: EdgeInsets.only(
             top: futureStatusFulfilled ? 0 : 30,
-            left: 16,
-            right: 16,
-          ),
-          contentPadding: EdgeInsets.only(
-            top: futureStatusFulfilled ? 16 : 30,
+            left: 20,
+            right: 20,
             bottom: 30,
-            left: 16,
-            right: 16,
           ),
+          contentPadding: EdgeInsets.zero,
           insetPadding: const EdgeInsets.symmetric(horizontal: 15),
           iconPadding: const EdgeInsets.only(top: 30, bottom: 20),
           backgroundColor: getDialogBackgroundColor(brightness),
-          actionsAlignment: MainAxisAlignment.spaceAround,
+          actionsAlignment: MainAxisAlignment.spaceEvenly,
           icon: futureStatusFulfilled
               ? const SvgIcon(
                   asset: Assets.feedback,
@@ -117,7 +118,7 @@ class _ConfirmDialog extends HookConsumerWidget {
                 : rateConnectionStore.isLikeMode
                     ? LocaleKeys.rateConnectionLike.tr()
                     : LocaleKeys.rateConnectionDislike.tr(),
-            style: TextStyle(
+            style: GoogleFonts.montserrat(
               fontSize: 20,
               fontWeight: FontWeight.w700,
               color: getDialogTextColor(brightness),
@@ -132,7 +133,7 @@ class _ConfirmDialog extends HookConsumerWidget {
                 ),
                 child: Text(
                   LocaleKeys.closeBtn.tr(),
-                  style: const TextStyle(
+                  style: GoogleFonts.montserrat(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                   ),
@@ -153,7 +154,7 @@ class _ConfirmDialog extends HookConsumerWidget {
                   ),
                   child: Text(
                     LocaleKeys.cancelBtn.tr(),
-                    style: const TextStyle(
+                    style: GoogleFonts.montserrat(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                     ),
@@ -163,6 +164,10 @@ class _ConfirmDialog extends HookConsumerWidget {
                     rateConnectionStore.cancelRateConnection();
                   },
                 ),
+                VerticalDivider(
+                  width: 1,
+                  color: getDialogTextColor(brightness).withValues(alpha: .2),
+                ).height(80),
                 TextButton(
                   style: ButtonStyle(
                     foregroundColor: WidgetStateProperty.all(Palette.purple),
@@ -170,7 +175,7 @@ class _ConfirmDialog extends HookConsumerWidget {
                   onPressed: rateConnectionStore.submitRateConnection,
                   child: Text(
                     LocaleKeys.submitBtn.tr(),
-                    style: const TextStyle(
+                    style: GoogleFonts.montserrat(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                     ),
@@ -181,81 +186,90 @@ class _ConfirmDialog extends HookConsumerWidget {
           ],
           content: SizedBox(
             width: switch (screenType) {
-              ScreenType.mobile => 300,
-              _ => 500,
+              ScreenType.mobile => getMediaWidth(context) > 335 ? 335 : double.infinity,
+              _ => 335,
             },
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               children: [
-                if (futureStatusFulfilled)
-                  Text(
-                    LocaleKeys.thanksForFeedbackDesc.tr(),
-                    style: TextStyle(
-                      color: getDialogTextColor(brightness),
-                    ),
-                    textAlign: TextAlign.center,
-                  )
-                else ...[
-                  ...rateConnectionStore.showReasons.mapIndexed(
-                    (i, element) => CheckboxListTile(
-                      side: BorderSide(color: Theme.of(context).indicatorColor),
-                      checkboxShape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      value: rateConnectionStore.selectedReasons.contains(
-                        rateConnectionStore.showReasons[i],
-                      ),
-                      fillColor: WidgetStateProperty.resolveWith(
-                        (states) {
-                          if (states.contains(WidgetState.selected)) {
-                            return Palette.purple;
-                          }
-                          return Palette.lightBlue;
-                        },
-                      ),
-                      controlAffinity: ListTileControlAffinity.leading,
-                      onChanged: (_) {
-                        rateConnectionStore.toggleRateConnectionReason(
-                          rateConnectionStore.showReasons[i],
-                        );
-                      },
-                      title: Text(
-                        _stringifyReason(
-                          rateConnectionStore.showReasons[i],
-                        ),
-                        style: TextStyle(
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (futureStatusFulfilled)
+                      Text(
+                        LocaleKeys.thanksForFeedbackDesc.tr(),
+                        style: GoogleFonts.montserrat(
                           color: getDialogTextColor(brightness),
                         ),
+                        textAlign: TextAlign.center,
+                      )
+                    else ...[
+                      ...rateConnectionStore.showReasons.mapIndexed(
+                        (i, element) => CheckboxListTile(
+                          contentPadding: EdgeInsets.zero,
+                          side: BorderSide(color: Theme.of(context).indicatorColor),
+                          checkboxShape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          value: rateConnectionStore.selectedReasons.contains(
+                            rateConnectionStore.showReasons[i],
+                          ),
+                          fillColor: WidgetStateProperty.resolveWith(
+                            (states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return Palette.purple;
+                              }
+                              return Palette.lightBlue;
+                            },
+                          ),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          onChanged: (_) {
+                            rateConnectionStore.toggleRateConnectionReason(
+                              rateConnectionStore.showReasons[i],
+                            );
+                          },
+                          title: Text(
+                            _stringifyReason(
+                              rateConnectionStore.showReasons[i],
+                            ),
+                            style: GoogleFonts.montserrat(
+                              color: getDialogTextColor(brightness),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  TextField(
-                    maxLines: 2,
-                    cursorColor: Palette.purple,
-                    onChanged: (value) {
-                      rateConnectionStore.feedback = value;
-                    },
-                    decoration: InputDecoration(
-                      fillColor: Theme.of(context).colorScheme.secondaryContainer,
-                      contentPadding: const EdgeInsets.all(12),
-                      enabledBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
-                        borderSide: BorderSide.none,
+                      TextField(
+                        maxLines: 2,
+                        cursorColor: Palette.purple,
+                        onChanged: (value) {
+                          rateConnectionStore.feedback = value;
+                        },
+                        textInputAction: TextInputAction.done,
+                        decoration: InputDecoration(
+                          fillColor: Theme.of(context).colorScheme.secondaryContainer,
+                          contentPadding: const EdgeInsets.all(12),
+                          enabledBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            borderSide: BorderSide.none,
+                          ),
+                          hintText: LocaleKeys.typeFeedback.tr(),
+                          hintStyle: GoogleFonts.montserrat(
+                            color: getDialogTextColor(brightness).withValues(alpha: .5),
+                          ),
+                        ),
                       ),
-                      hintText: LocaleKeys.typeFeedback.tr(),
-                      hintStyle: TextStyle(
-                        color: getDialogTextColor(brightness).withValues(alpha: .5),
-                      ),
-                    ),
-                  ),
-                  if (futureStatusError)
-                    const Text(
-                      'Faiked',
-                      style: TextStyle(
-                        color: Palette.crimsonRed,
-                      ),
-                    ).padding(top: 10),
-                ],
+                      if (futureStatusError)
+                        Text(
+                          LocaleKeys.failedToSubmitFeedback.tr(),
+                          style: GoogleFonts.montserrat(
+                            color: Palette.crimsonRed,
+                          ),
+                        ).padding(top: 10),
+                    ],
+                  ],
+                ).padding(
+                  left: 20,
+                  right: 20,
+                ),
                 Divider(
                   height: 1,
                   color: getDialogTextColor(brightness).withValues(alpha: .2),
