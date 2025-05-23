@@ -237,7 +237,6 @@ class _ConfirmDialog extends HookConsumerWidget {
                           ),
                         ),
                       ),
-                      
                       TextField(
                         maxLines: 2,
                         cursorColor: Palette.purple,
