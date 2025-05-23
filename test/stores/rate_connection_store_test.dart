@@ -22,7 +22,8 @@ import 'rate_connection_store_test.mocks.dart';
   MockSpec<KeyPair>(),
 ])
 void main() {
-  late RateConnectionStore store;
+  late RateConnectionStore likeModeStore;
+  late RateConnectionStore dislikeModeStore;
   late MockAnalyticsStore mockAnalyticsStore;
   late MockApiService mockApiService;
   late MockVpnStore mockVpnStore;
@@ -31,64 +32,65 @@ void main() {
     mockAnalyticsStore = MockAnalyticsStore();
     mockApiService = MockApiService();
     mockVpnStore = MockVpnStore();
-    store = RateConnectionStore(mockAnalyticsStore, mockApiService, mockVpnStore);
+    likeModeStore = RateConnectionStore(
+      RateConnectionRequestModeEnum.like,
+      mockAnalyticsStore,
+      mockApiService,
+      mockVpnStore,
+    );
+    dislikeModeStore = RateConnectionStore(
+      RateConnectionRequestModeEnum.dislike,
+      mockAnalyticsStore,
+      mockApiService,
+      mockVpnStore,
+    );
   });
 
   group('RateConnectionStore', () {
-    test('reset clears all fields', () {
-      store
-        ..feedback = 'test'
-        ..setRateConnectionMode(RateConnectionRequestModeEnum.like)
-        ..toggleRateConnectionReason(RateConnectionReason.likeReasons.first)
-        ..reset();
-
-      expect(store.feedback, '');
-      expect(store.selectedReasons, isEmpty);
-      expect(store.isLikeMode, isFalse);
-      expect(store.isDislikeMode, isFalse);
-      expect(store.submitRateConnectionFuture, isNull);
-    });
-
-    test('setRateConnectionMode sets mode and clears reasons', () {
-      store
-        ..toggleRateConnectionReason(RateConnectionReason.likeReasons.first)
-        ..setRateConnectionMode(RateConnectionRequestModeEnum.dislike);
-
-      expect(store.isDislikeMode, isTrue);
-      expect(store.selectedReasons, isEmpty);
-      verify(mockAnalyticsStore.logRateConnnectionClicked(RateConnectionRequestModeEnum.dislike))
-          .called(1);
-    });
-
-    test('toggleRateConnectionReason adds and removes reasons', () {
+    test('toggleRateConnectionReason adds and removes reasons (dislike)', () {
       final reason = RateConnectionReason.dislikeReasons.first;
-      store
-        ..setRateConnectionMode(RateConnectionRequestModeEnum.dislike)
-        ..toggleRateConnectionReason(reason);
-      expect(store.selectedReasons, contains(reason));
+      dislikeModeStore.toggleRateConnectionReason(reason);
+      expect(dislikeModeStore.selectedReasons, contains(reason));
 
-      store.toggleRateConnectionReason(reason);
-      expect(store.selectedReasons, isNot(contains(reason)));
+      dislikeModeStore.toggleRateConnectionReason(reason);
+      expect(dislikeModeStore.selectedReasons, isNot(contains(reason)));
+    });
+
+    test('toggleRateConnectionReason adds and removes reasons (like)', () {
+      final reason = RateConnectionReason.likeReasons.first;
+      likeModeStore.toggleRateConnectionReason(reason);
+      expect(likeModeStore.selectedReasons, contains(reason));
+
+      likeModeStore.toggleRateConnectionReason(reason);
+      expect(likeModeStore.selectedReasons, isNot(contains(reason)));
+    });
+
+    test('toggleRateConnectionReason wrong reason', () {
+      final reason = RateConnectionReason.likeReasons.first;
+      dislikeModeStore.toggleRateConnectionReason(reason);
+      expect(dislikeModeStore.selectedReasons, isNot(contains(reason)));
     });
 
     test('showReasons returns correct reasons for mode', () {
-      store.setRateConnectionMode(RateConnectionRequestModeEnum.like);
-      expect(store.showReasons, RateConnectionReason.likeReasons);
-
-      store.setRateConnectionMode(RateConnectionRequestModeEnum.dislike);
-      expect(store.showReasons, RateConnectionReason.dislikeReasons);
+      expect(likeModeStore.showReasons, RateConnectionReason.likeReasons);
+      expect(dislikeModeStore.showReasons, RateConnectionReason.dislikeReasons);
     });
 
-    test('submitRateConnection does nothing if mode or vpnConnection is null', () async {
-      await store.submitRateConnection();
+    test('submitRateConnection does nothing if vpnConnection is null (like)', () async {
+      await likeModeStore.submitRateConnection();
+      verifyNever(mockAnalyticsStore.logEvent(any));
+      verifyNever(mockApiService.rateConnection(request: anyNamed('request')));
+    });
+
+    test('submitRateConnection does nothing if vpnConnection is null (dislike)', () async {
+      await dislikeModeStore.submitRateConnection();
       verifyNever(mockAnalyticsStore.logEvent(any));
       verifyNever(mockApiService.rateConnection(request: anyNamed('request')));
     });
 
     test('submitRateConnection calls api and logs analytics', () async {
       // Arrange
-      store
-        ..setRateConnectionMode(RateConnectionRequestModeEnum.like)
+      likeModeStore
         ..feedback = 'Great connection!'
         ..toggleRateConnectionReason(RateConnectionReason.likeReasons.first);
 
@@ -107,7 +109,7 @@ void main() {
       ).thenAnswer((_) async {});
 
       // Act
-      await store.submitRateConnection();
+      await likeModeStore.submitRateConnection();
 
       // Assert
       verify(mockAnalyticsStore.logEvent(AnalyticsEvent.rateConnectionSubmit)).called(1);
@@ -129,14 +131,12 @@ void main() {
           ),
         ),
       ).called(1);
-      expect(store.submitRateConnectionFuture, isNotNull);
+      expect(likeModeStore.submitRateConnectionFuture, isNotNull);
     });
 
     test('submitRateConnection calls api and logs analytics no reasons', () async {
       // Arrange
-      store
-        ..setRateConnectionMode(RateConnectionRequestModeEnum.like)
-        ..feedback = 'Great connection!';
+      likeModeStore.feedback = 'Great connection!';
 
       final mockVpnConnection = MockVpnConnection();
       final mockKeyPair = MockKeyPair();
@@ -153,7 +153,7 @@ void main() {
       ).thenAnswer((_) async {});
 
       // Act
-      await store.submitRateConnection();
+      await likeModeStore.submitRateConnection();
 
       // Assert
       verify(mockAnalyticsStore.logEvent(AnalyticsEvent.rateConnectionSubmit)).called(1);
@@ -175,13 +175,12 @@ void main() {
           ),
         ),
       ).called(1);
-      expect(store.submitRateConnectionFuture, isNotNull);
+      expect(likeModeStore.submitRateConnectionFuture, isNotNull);
     });
 
     test('submitRateConnection completes with error if api throws', () async {
       // Arrange
-      store
-        ..setRateConnectionMode(RateConnectionRequestModeEnum.like)
+      likeModeStore
         ..feedback = 'Great connection!'
         ..toggleRateConnectionReason(RateConnectionReason.likeReasons.first);
 
@@ -200,21 +199,19 @@ void main() {
       ).thenAnswer((_) async => throw Exception('API error'));
 
       // Act & Assert
-      await expectLater(store.submitRateConnection(), throwsA(isA<Exception>()));
-      expect(store.submitRateConnectionFuture, isNotNull);
-      await expectLater(store.submitRateConnectionFuture, throwsA(isA<Exception>()));
+      await expectLater(likeModeStore.submitRateConnection(), throwsA(isA<Exception>()));
+      expect(likeModeStore.submitRateConnectionFuture, isNotNull);
+      await expectLater(likeModeStore.submitRateConnectionFuture, throwsA(isA<Exception>()));
     });
 
     test('cancelRateConnection logs analytics if mode is set', () {
-      store
-        ..setRateConnectionMode(RateConnectionRequestModeEnum.like)
-        ..cancelRateConnection();
+      likeModeStore.cancelRateConnection();
       verify(mockAnalyticsStore.logRateConnectionCancel(RateConnectionRequestModeEnum.like))
           .called(1);
     });
 
     test('cancelRateConnection does nothing if mode is null', () {
-      store.cancelRateConnection();
+      likeModeStore.cancelRateConnection();
       verifyNever(mockAnalyticsStore.logRateConnectionCancel(any));
     });
   });

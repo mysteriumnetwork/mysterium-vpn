@@ -13,6 +13,7 @@ class RateConnectionStore = _RateConnectionStore with _$RateConnectionStore;
 
 abstract class _RateConnectionStore with Store {
   _RateConnectionStore(
+    this._rateConnectionMode,
     this._analyticsStore,
     this._apiService,
     this._vpnStore,
@@ -21,14 +22,12 @@ abstract class _RateConnectionStore with Store {
   final AnalyticsStore _analyticsStore;
   final ApiService _apiService;
   final VpnStore _vpnStore;
+  final RateConnectionRequestModeEnum _rateConnectionMode;
 
   final ObservableList<RateConnectionReason> _rateConnectionReasons =
       ObservableList<RateConnectionReason>();
   @observable
   ObservableFuture<void>? submitRateConnectionFuture;
-
-  @readonly
-  RateConnectionRequestModeEnum? _rateConnectionMode;
 
   @computed
   bool get isLikeMode => _rateConnectionMode == RateConnectionRequestModeEnum.like;
@@ -46,22 +45,10 @@ abstract class _RateConnectionStore with Store {
       isLikeMode ? RateConnectionReason.likeReasons : RateConnectionReason.dislikeReasons;
 
   @action
-  void reset() {
-    _rateConnectionMode = null;
-    _rateConnectionReasons.clear();
-    feedback = '';
-    submitRateConnectionFuture = null;
-  }
-
-  @action
-  void setRateConnectionMode(RateConnectionRequestModeEnum mode) {
-    _rateConnectionMode = mode;
-    _rateConnectionReasons.clear();
-    _analyticsStore.logRateConnnectionClicked(mode);
-  }
-
-  @action
   void toggleRateConnectionReason(RateConnectionReason reason) {
+    if (!showReasons.contains(reason)) {
+      return;
+    }
     if (_rateConnectionReasons.contains(reason)) {
       _rateConnectionReasons.remove(reason);
     } else {
@@ -71,14 +58,12 @@ abstract class _RateConnectionStore with Store {
 
   @action
   Future<void> submitRateConnection() async {
-    if (_rateConnectionMode != null &&
-        _vpnStore.vpnConnection != null &&
-        _vpnStore.wireguardKey?.publicKey != null) {
+    if (_vpnStore.vpnConnection != null && _vpnStore.wireguardKey?.publicKey != null) {
       _analyticsStore.logEvent(AnalyticsEvent.rateConnectionSubmit);
       submitRateConnectionFuture = ObservableFuture(
         _apiService.rateConnection(
           request: RateConnectionRequest(
-            mode: _rateConnectionMode!,
+            mode: _rateConnectionMode,
             reasons: _rateConnectionReasons.isEmpty
                 ? RateConnectionReason.other.name
                 : _rateConnectionReasons.toList().join(','),
@@ -95,10 +80,8 @@ abstract class _RateConnectionStore with Store {
 
   @action
   void cancelRateConnection() {
-    if (_rateConnectionMode != null) {
-      _analyticsStore.logRateConnectionCancel(
-        _rateConnectionMode!,
-      );
-    }
+    _analyticsStore.logRateConnectionCancel(
+      _rateConnectionMode,
+    );
   }
 }

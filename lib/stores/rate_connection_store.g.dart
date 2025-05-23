@@ -52,24 +52,6 @@ mixin _$RateConnectionStore on _RateConnectionStore, Store {
     });
   }
 
-  late final _$_rateConnectionModeAtom =
-      Atom(name: '_RateConnectionStore._rateConnectionMode', context: context);
-
-  RateConnectionRequestModeEnum? get rateConnectionMode {
-    _$_rateConnectionModeAtom.reportRead();
-    return super._rateConnectionMode;
-  }
-
-  @override
-  RateConnectionRequestModeEnum? get _rateConnectionMode => rateConnectionMode;
-
-  @override
-  set _rateConnectionMode(RateConnectionRequestModeEnum? value) {
-    _$_rateConnectionModeAtom.reportWrite(value, super._rateConnectionMode, () {
-      super._rateConnectionMode = value;
-    });
-  }
-
   late final _$feedbackAtom = Atom(name: '_RateConnectionStore.feedback', context: context);
 
   @override
@@ -95,28 +77,6 @@ mixin _$RateConnectionStore on _RateConnectionStore, Store {
 
   late final _$_RateConnectionStoreActionController =
       ActionController(name: '_RateConnectionStore', context: context);
-
-  @override
-  void reset() {
-    final _$actionInfo =
-        _$_RateConnectionStoreActionController.startAction(name: '_RateConnectionStore.reset');
-    try {
-      return super.reset();
-    } finally {
-      _$_RateConnectionStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setRateConnectionMode(RateConnectionRequestModeEnum mode) {
-    final _$actionInfo = _$_RateConnectionStoreActionController.startAction(
-        name: '_RateConnectionStore.setRateConnectionMode');
-    try {
-      return super.setRateConnectionMode(mode);
-    } finally {
-      _$_RateConnectionStoreActionController.endAction(_$actionInfo);
-    }
-  }
 
   @override
   void toggleRateConnectionReason(RateConnectionReason reason) {
