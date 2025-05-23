@@ -26,7 +26,6 @@ import 'package:mysterium_vpn/stores/latlng_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/network_statistics_store.dart';
-import 'package:mysterium_vpn/stores/rate_connection_store.dart';
 import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
@@ -246,13 +245,6 @@ final deviceInfoStorePOD = Provider<DeviceInfoStore>(
 final latLngStorePOD = Provider<LatLngStore>((ref) {
   final assetsService = ref.watch(assetsServicePOD);
   return LatLngStore(assetsService);
-});
-
-final rateConnectionStorePOD = Provider<RateConnectionStore>((ref) {
-  final analyticsStore = ref.watch(analyticsStorePOD);
-  final apiService = ref.watch(apiServicePOD);
-  final vpnStore = ref.watch(vpnStorePOD);
-  return RateConnectionStore(analyticsStore, apiService, vpnStore);
 });
 
 final networkStatisticsStorePOD = Provider.autoDispose<NetworkStatisticsStore>((ref) {

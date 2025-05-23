@@ -3,6 +3,7 @@
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
@@ -14,19 +15,27 @@ import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/rate_connection_store.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:vpn_api/vpn_api.dart';
 
 Future<void> showRateConnectionDialog(
   BuildContext context,
+  RateConnectionRequestModeEnum mode,
 ) =>
     showDialog(
       context: context,
-      builder: (context) => const _ConfirmDialog(),
+      builder: (context) => _ConfirmDialog(mode),
     );
 
 class _ConfirmDialog extends HookConsumerWidget {
-  const _ConfirmDialog();
+  const _ConfirmDialog(
+    this.rateConnectionMode,
+  );
+
+  final RateConnectionRequestModeEnum rateConnectionMode;
 
   Color getDialogBackgroundColor(Brightness brightness) => switch (brightness) {
         Brightness.light => Palette.white,
@@ -61,7 +70,14 @@ class _ConfirmDialog extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final rateConnectionStore = ref.watch(rateConnectionStorePOD);
+    final rateConnectionStore = useMemoized(
+      () => RateConnectionStore(
+        rateConnectionMode,
+        ref.read(analyticsStorePOD),
+        ref.read(apiServicePOD),
+        ref.read(vpnStorePOD),
+      ),
+    );
     final brightness = Theme.of(context).brightness;
     final screenType = useScreenType();
 

@@ -13,7 +13,6 @@ import 'package:mysterium_vpn/components/flag.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/rate_connection_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:vpn_api/vpn_api.dart';
 
@@ -203,7 +202,6 @@ class _RateConnection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
-    final rateConnectionStore = ref.watch(rateConnectionStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     if (!vpnStore.isConnected || !remoteConfigStore.isRateConnectionAvailable) {
@@ -242,7 +240,6 @@ class _RateConnection extends ConsumerWidget {
               onPressed: () {
                 handleRateConnection(
                   context,
-                  rateConnectionStore,
                   RateConnectionRequestModeEnum.like,
                 );
               },
@@ -261,7 +258,6 @@ class _RateConnection extends ConsumerWidget {
               onPressed: () {
                 handleRateConnection(
                   context,
-                  rateConnectionStore,
                   RateConnectionRequestModeEnum.dislike,
                 );
               },
@@ -274,18 +270,8 @@ class _RateConnection extends ConsumerWidget {
 
   Future<void> handleRateConnection(
     BuildContext context,
-    RateConnectionStore rateConnectionStore,
     RateConnectionRequestModeEnum rateConnectionMode,
   ) async {
-    rateConnectionStore.setRateConnectionMode(
-      rateConnectionMode,
-    );
-
-    showRateConnectionDialog(context).whenComplete(() {
-      // Reset the rate connection store after the dialog is closed
-      Future.delayed(const Duration(milliseconds: 100)).then((_) {
-        rateConnectionStore.reset();
-      });
-    });
+    showRateConnectionDialog(context, rateConnectionMode);
   }
 }
