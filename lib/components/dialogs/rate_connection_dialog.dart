@@ -142,7 +142,9 @@ class _ConfirmDialog extends HookConsumerWidget {
                 },
               )
             else ...[
-              if (!futureStatusPending)
+              if (futureStatusPending)
+                const LoadingIndicator()
+              else ...[
                 TextButton(
                   style: ButtonStyle(
                     foregroundColor: WidgetStateProperty.all(
@@ -161,23 +163,20 @@ class _ConfirmDialog extends HookConsumerWidget {
                     rateConnectionStore.cancelRateConnection();
                   },
                 ),
-              TextButton(
-                style: ButtonStyle(
-                  foregroundColor: WidgetStateProperty.all(Palette.purple),
+                TextButton(
+                  style: ButtonStyle(
+                    foregroundColor: WidgetStateProperty.all(Palette.purple),
+                  ),
+                  onPressed: rateConnectionStore.submitRateConnection,
+                  child: Text(
+                    LocaleKeys.submitBtn.tr(),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
-                onPressed: futureStatusPending ? null : rateConnectionStore.submitRateConnection,
-                child: futureStatusPending
-                    ? const LoadingIndicator(
-                        radius: 16,
-                      )
-                    : Text(
-                        LocaleKeys.submitBtn.tr(),
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-              ),
+              ],
             ],
           ],
           content: SizedBox(
