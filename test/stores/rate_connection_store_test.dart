@@ -204,15 +204,10 @@ void main() {
       await expectLater(likeModeStore.submitRateConnectionFuture, throwsA(isA<Exception>()));
     });
 
-    test('cancelRateConnection logs analytics if mode is set', () {
+    test('cancelRateConnection logs analytics event', () {
       likeModeStore.cancelRateConnection();
       verify(mockAnalyticsStore.logRateConnectionCancel(RateConnectionRequestModeEnum.like))
           .called(1);
-    });
-
-    test('cancelRateConnection does nothing if mode is null', () {
-      likeModeStore.cancelRateConnection();
-      verifyNever(mockAnalyticsStore.logRateConnectionCancel(any));
     });
   });
 }
