@@ -123,6 +123,9 @@ abstract class _VpnStore with Store {
       ? ConnectionStatus.disconnected
       : _connectionStatus;
 
+  @observable
+  RateConnectionRequestModeEnum? connectionRated;
+
   @computed
   String? get replaceDNSAddress {
     String? replaceDNS;
@@ -296,6 +299,7 @@ abstract class _VpnStore with Store {
     _wireguradConnectionStatus = stream.listen((event) async {
       if (event == ConnectionStatus.disconnecting) {
         _vpnConnection = null;
+        connectionRated = null;
       }
       _setConnectionStatus(event);
     });
