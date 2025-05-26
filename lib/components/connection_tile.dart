@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
@@ -207,64 +208,75 @@ class _RateConnection extends ConsumerWidget {
     if (!vpnStore.isConnected || !remoteConfigStore.isRateConnectionAvailable) {
       return const SizedBox.shrink();
     }
-    return Column(
-      children: [
-        Divider(
-          height: 0,
-          color: switch (theme.brightness) {
-            Brightness.light => Palette.lightBlue,
-            Brightness.dark => Palette.darkIndigo,
-          },
-        ).padding(left: 40),
-        Row(
-          children: [
-            Expanded(
-              child: EasyText(
-                LocaleKeys.rateConnection.tr(),
-                color: theme.colorScheme.onSecondaryContainer,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
+    return Observer(
+      builder: (context) => Column(
+        children: [
+          Divider(
+            height: 0,
+            color: switch (theme.brightness) {
+              Brightness.light => Palette.lightBlue,
+              Brightness.dark => Palette.darkIndigo,
+            },
+          ).padding(left: 40),
+          Row(
+            children: [
+              Expanded(
+                child: EasyText(
+                  LocaleKeys.rateConnection.tr(),
+                  color: theme.colorScheme.onSecondaryContainer,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-            IconButton(
-              style: IconButton.styleFrom(
-                visualDensity: VisualDensity.compact,
-                padding: const EdgeInsets.all(2),
+              _RateConnectionIconBtn(
+                connectionRated: vpnStore.connectionRated,
+                rateConnectionMode: RateConnectionRequestModeEnum.like,
               ),
-              icon: SvgIcon(
-                asset: switch (theme.brightness) {
-                  Brightness.light => Assets.thumbsUpLight,
-                  Brightness.dark => Assets.thumbsUpDark,
-                },
+              _RateConnectionIconBtn(
+                connectionRated: vpnStore.connectionRated,
+                rateConnectionMode: RateConnectionRequestModeEnum.dislike,
               ),
-              onPressed: () {
-                handleRateConnection(
-                  context,
-                  RateConnectionRequestModeEnum.like,
-                );
-              },
-            ),
-            IconButton(
-              style: IconButton.styleFrom(
-                visualDensity: VisualDensity.compact,
-                padding: const EdgeInsets.all(2),
-              ),
-              icon: SvgIcon(
-                asset: switch (theme.brightness) {
-                  Brightness.light => Assets.thumbsDownLight,
-                  Brightness.dark => Assets.thumbsDownDark,
-                },
-              ),
-              onPressed: () {
-                handleRateConnection(
-                  context,
-                  RateConnectionRequestModeEnum.dislike,
-                );
-              },
-            ),
-          ],
-        ).padding(left: 40),
-      ],
+            ],
+          ).padding(left: 40),
+        ],
+      ),
+    );
+  }
+}
+
+class _RateConnectionIconBtn extends StatelessWidget {
+  const _RateConnectionIconBtn({
+    required this.connectionRated,
+    required this.rateConnectionMode,
+  });
+
+  final RateConnectionRequestModeEnum rateConnectionMode;
+  final RateConnectionRequestModeEnum? connectionRated;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isActive = connectionRated == rateConnectionMode;
+
+    return IconButton(
+      onPressed: () => handleRateConnection(context, rateConnectionMode),
+      icon: SvgIcon(
+        asset: switch (rateConnectionMode) {
+          RateConnectionRequestModeEnum.like => switch (theme.brightness) {
+              Brightness.light => Assets.thumbsUpLight,
+              Brightness.dark => Assets.thumbsUpDark,
+            },
+          RateConnectionRequestModeEnum.dislike => switch (theme.brightness) {
+              Brightness.light => Assets.thumbsDownLight,
+              Brightness.dark => Assets.thumbsDownDark,
+            },
+        },
+        color: isActive ? Palette.purple : null,
+      ),
+      style: IconButton.styleFrom(
+        visualDensity: VisualDensity.compact,
+        padding: const EdgeInsets.all(2),
+      ),
     );
   }
 
