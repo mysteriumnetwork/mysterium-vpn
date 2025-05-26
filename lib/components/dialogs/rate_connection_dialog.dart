@@ -141,10 +141,10 @@ class _ConfirmDialog extends HookConsumerWidget {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-              )
+              ).height(80)
             else ...[
               if (futureStatusPending)
-                const LoadingIndicator()
+                const LoadingIndicator().height(80)
               else ...[
                 TextButton(
                   style: ButtonStyle(

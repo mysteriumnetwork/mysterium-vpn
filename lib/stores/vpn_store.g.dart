@@ -191,6 +191,21 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$connectionRatedAtom = Atom(name: '_VpnStore.connectionRated', context: context);
+
+  @override
+  RateConnectionRequestModeEnum? get connectionRated {
+    _$connectionRatedAtom.reportRead();
+    return super.connectionRated;
+  }
+
+  @override
+  set connectionRated(RateConnectionRequestModeEnum? value) {
+    _$connectionRatedAtom.reportWrite(value, super.connectionRated, () {
+      super.connectionRated = value;
+    });
+  }
+
   late final _$_connectingLocationAtom =
       Atom(name: '_VpnStore._connectingLocation', context: context);
 
@@ -445,6 +460,7 @@ mixin _$VpnStore on _VpnStore, Store {
   String toString() {
     return '''
 connectionLimitReached: ${connectionLimitReached},
+connectionRated: ${connectionRated},
 vpnStatus: ${vpnStatus},
 replaceDNSAddress: ${replaceDNSAddress},
 isConnected: ${isConnected},
