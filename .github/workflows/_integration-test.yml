@@ -1,0 +1,94 @@
+name: Integration Tests
+
+on:
+  workflow_call:
+    inputs:
+      flavor:
+        required: true
+        type: string
+        default: "dev"
+      flavor_dart:
+        required: true
+        type: string
+        default: "DEV"
+
+jobs:
+  integration_tests:
+    name: Run Integration Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter Version Management CLI
+        uses: flutter-actions/setup-fvm@v1.0
+
+      - name: Install Flutter SDK
+        run: echo yes | fvm use
+
+      - name: Setup Android keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
+
+          echo "storeFile=keystore.jks" > android/key.properties
+          echo "storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> android/key.properties
+          echo "keyPassword=${{ secrets.ANDROID_KEYSTORE_KEY_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.ANDROID_KEYSTORE_KEY_ALIAS }}" >> android/key.properties
+          cat android/key.properties
+
+      - name: Install Codemagic CLI tools
+        run: |
+          python -m pip install codemagic-cli-tools
+          codemagic-cli-tools version
+          codemagic-cli-tools installed-tools
+
+      - name: Set up keychain
+        run: |
+          keychain initialize
+          keychain get-default
+
+      # Signing files are imported to keychain from:
+      #  ls -la ~/Library/MobileDevice/Provisioning\ Profiles
+      #  ls -la ~/Library/MobileDevice/Certificates/
+      - name: Fetch signing files
+        env:
+          APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
+        run: |
+          app-store-connect fetch-signing-files "${{ inputs.bundle_id }}" --platform IOS --type IOS_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
+          keychain add-certificates
+
+      - name: Set up signing preferences on Xcode project
+        run: |
+          keychain list-certificates
+          xcode-project use-profiles --project ios/Runner.xcodeproj --export-options-plist ios/export_options.plist
+          git status
+          git diff
+          cat ios/export_options.plist
+
+
+      - name: Install dependencies
+        run: make init
+
+      - name: Build APK for testing
+        run: fvm flutter build apk --no-pub --flavor "${{ inputs.flavor }}" --dart-define "FLAVOR=${{ inputs.flavor_dart }}"
+
+      - name: Set up Google Cloud SDK
+        uses: 'google-github-actions/auth@v2'
+        with:
+          project_id: 'new-mysterium-vpn'
+          workload_identity_provider: 'projects/104590535697/locations/global/workloadIdentityPools/github/providers/mysterium-vpn'
+
+      - name: Upload APK to Firebase Test Lab
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
+        run: |
+          gcloud auth activate-service-account --key-file="${GOOGLE_APPLICATION_CREDENTIALS}"
+          gcloud --quiet config set project ${{ secrets.FIREBASE_PROJECT_ID }}
+          gcloud firebase test android run \
+            --type instrumentation \
+            --app build/app/outputs/flutter-apk/app-${{ inputs.flavor }}-release.apk \
+            --test app/build/outputs/apk/androidTest/${{ inputs.flavor }}/androidTest.apk \
+            --device model=Pixel4,version=30,locale=en,orientation=portrait
