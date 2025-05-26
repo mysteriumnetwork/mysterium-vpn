@@ -246,6 +246,7 @@ class _RateConnection extends ConsumerWidget {
 
 class _RateConnectionIconBtn extends StatelessWidget {
   const _RateConnectionIconBtn({
+    super.key,
     required this.connectionRated,
     required this.rateConnectionMode,
   });
