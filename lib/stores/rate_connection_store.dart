@@ -75,6 +75,7 @@ abstract class _RateConnectionStore with Store {
         ),
       );
       await submitRateConnectionFuture;
+      _vpnStore.connectionRated = _rateConnectionMode;
     }
   }
 
