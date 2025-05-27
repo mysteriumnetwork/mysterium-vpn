@@ -206,4 +206,38 @@ mixin AnalyticsStore {
       parameters: {'mode': mode.name},
     );
   }
+
+  Future<void> logPaymentSuccess({
+    required String productId,
+    required String price,
+    required String currency,
+    required int duration,
+  }) async {
+    logEvent(
+      AnalyticsEvent.paymentVerificationSuccess,
+      parameters: {
+        'planType': productId,
+        'price': price,
+        'currency': currency,
+        'duration': duration,
+      },
+    );
+    final event = switch (duration) {
+      1 => AnalyticsEvent.paymentSuccess1m,
+      6 => AnalyticsEvent.paymentSuccess6m,
+      12 => AnalyticsEvent.paymentSuccess1y,
+      _ => null,
+    };
+    if (event != null) {
+      logEvent(
+        event,
+        parameters: {
+          'planType': productId,
+          'price': price,
+          'currency': currency,
+          'duration': duration,
+        },
+      );
+    }
+  }
 }
