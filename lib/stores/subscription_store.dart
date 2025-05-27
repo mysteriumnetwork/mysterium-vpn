@@ -348,9 +348,11 @@ abstract class _SubscriptionStore with Store {
 
     try {
       await verifyPurchase(
-        product?.id ?? '',
-        product?.productDetails.rawPrice.toString() ?? '',
-        purchaseDetails,
+        productId: product?.id ?? '',
+        price: product?.productDetails.rawPrice.toString() ?? '',
+        currency: product?.productDetails.currencyCode ?? '',
+        duration: product?.duration ?? 0,
+        purchaseDetails: purchaseDetails,
       );
       final subscription = await _subscriptionFuture;
       if (purchaseDetails.status == PurchaseStatus.purchased && subscription.active) {
@@ -383,11 +385,13 @@ abstract class _SubscriptionStore with Store {
   }
 
   @action
-  Future<void> verifyPurchase(
-    String productId,
-    String price,
-    PurchaseDetails purchaseDetails,
-  ) async {
+  Future<void> verifyPurchase({
+    required String productId,
+    required String price,
+    required String currency,
+    required int duration,
+    required PurchaseDetails purchaseDetails,
+  }) async {
     if (_subscriptionStatus == SubscriptionStatus.pending) {
       _subscriptionStatus = SubscriptionStatus.verifying;
     }
@@ -400,13 +404,11 @@ abstract class _SubscriptionStore with Store {
         ),
       );
       await _subscriptionFuture;
-
-      _analyticsStore.logEvent(
-        AnalyticsEvent.paymentVerificationSuccess,
-        parameters: {
-          'planType': productId,
-          'price': price,
-        },
+      _analyticsStore.logPaymentSuccess(
+        productId: productId,
+        price: price,
+        duration: duration,
+        currency: currency,
       );
     } catch (e) {
       _subscriptionStatus = SubscriptionStatus.verifyingError;
