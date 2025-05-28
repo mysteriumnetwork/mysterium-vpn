@@ -19,7 +19,7 @@ on:
 jobs:
   integration_tests:
     name: Run Integration Tests
-    runs-on: ubuntu-latest
+    runs-on: macos-14
 
     permissions:
       contents: 'read'
@@ -93,27 +93,17 @@ jobs:
       - name: Install dependencies
         run: make init
 
-      - name: Build APK for testing
-        run: fvm flutter build apk --no-pub --flavor "${{ inputs.flavor }}" --dart-define "FLAVOR=${{ inputs.flavor_dart }}"
-
       - name: 'Build iOS test app'
-        run: patrol build ios --target integration_test/example_test.dart --flavor dev --dart-define "FLAVOR=DEV" --flutter-command="fvm flutter" --verbose --release
+        run: make build-ios-integration-test
 
       - name: 'Run iOS tests'
-        run: |
-          cd build/ios_integ/Build/Products 
-          rm -f ios_tests.zip 
-          zip -r ios_tests.zip Release-iphoneos/*.app *.xctestrun
-          cd -
-          gcloud firebase test ios run \
-          		--type xctest \
-          		--test "build/ios_integ/Build/Products/ios_tests.zip" \
-          		--device model="$(IOS_DEVICE_MODEL)",version="$(IOS_DEVICE_VERSION)",locale=en_US,orientation=portrait \
-          		--timeout 10m \
-          		--project "$(FIREBASE_PROJECT_ID)"
+        run: make run-ios-testlab
 
       - name: 'Build Android test app'
-        run: patrol build android --target integration_test/example_test.dart --flavor dev --dart-define "FLAVOR=DEV" --flutter-command="fvm flutter" --verbose --release
+        run: make build-android-integration-test
+
+      - name: 'Run Android tests'
+        run: make run-android-testlab
 
 #      - name: Upload APK to Firebase Test Lab
 #        env:
