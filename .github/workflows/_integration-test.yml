@@ -123,17 +123,17 @@ jobs:
       - name: Install dependencies
         run: make init
 
-      - name: 'Build iOS test app'
-        run: make build-ios-integration-test
-
-      - name: 'Run iOS tests'
-        run: make run-ios-testlab
-
       - name: 'Build Android test app'
         run: make build-android-integration-test
 
       - name: 'Run Android tests'
         run: make run-android-testlab
+
+      - name: 'Build iOS test app'
+        run: make build-ios-integration-test
+
+      - name: 'Run iOS tests'
+        run: make run-ios-testlab
 
 #      - name: Upload APK to Firebase Test Lab
 #        env:
