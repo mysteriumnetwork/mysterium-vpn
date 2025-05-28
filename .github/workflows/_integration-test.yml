@@ -79,16 +79,42 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           project_id: 'new-mysterium-vpn'
-          workload_identity_provider: 'projects/104590535697/locations/global/workloadIdentityPools/github/providers/mysterium-vpn'
+          workload_identity_provider: 'projects/104590535697/locations/global/workloadIdentityPools/github/providers/mysterium-repo'
+          service_account: 'github-actions-service-account@new-mysterium-vpn.iam.gserviceaccount.com'
 
-      - name: Upload APK to Firebase Test Lab
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
+
+      - name: 'Build iOS test app'
+        run: patrol build ios --target integration_test/example_test.dart --flavor dev --dart-define "FLAVOR=DEV" --flutter-command="fvm flutter" --verbose --release
+
+      - name: 'Run iOS tests'
         run: |
-          gcloud auth activate-service-account --key-file="${GOOGLE_APPLICATION_CREDENTIALS}"
-          gcloud --quiet config set project ${{ secrets.FIREBASE_PROJECT_ID }}
-          gcloud firebase test android run \
-            --type instrumentation \
-            --app build/app/outputs/flutter-apk/app-${{ inputs.flavor }}-release.apk \
-            --test app/build/outputs/apk/androidTest/${{ inputs.flavor }}/androidTest.apk \
-            --device model=Pixel4,version=30,locale=en,orientation=portrait
+          cd build/ios_integ/Build/Products 
+          rm -f ios_tests.zip 
+          zip -r ios_tests.zip Release-iphoneos/*.app *.xctestrun
+          cd -
+          gcloud firebase test ios run \
+          		--type xctest \
+          		--test "build/ios_integ/Build/Products/ios_tests.zip" \
+          		--device model="$(IOS_DEVICE_MODEL)",version="$(IOS_DEVICE_VERSION)",locale=en_US,orientation=portrait \
+          		--timeout 10m \
+          		--project "$(FIREBASE_PROJECT_ID)"
+
+      - name: 'Build Android test app'
+        run: patrol build android --target integration_test/example_test.dart --flavor dev --dart-define "FLAVOR=DEV" --flutter-command="fvm flutter" --verbose --release
+
+#      - name: Upload APK to Firebase Test Lab
+#        env:
+#          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
+#        run: |
+#          gcloud auth activate-service-account --key-file="${GOOGLE_APPLICATION_CREDENTIALS}"
+#          gcloud --quiet config set project ${{ secrets.FIREBASE_PROJECT_ID }}
+#          gcloud firebase test android run \
+#            --type instrumentation \
+#            --app build/app/outputs/flutter-apk/app-${{ inputs.flavor }}-release.apk \
+#            --test app/build/outputs/apk/androidTest/${{ inputs.flavor }}/androidTest.apk \
+#            --device model=Pixel4,version=30,locale=en,orientation=portrait
