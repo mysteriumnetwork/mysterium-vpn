@@ -54,7 +54,14 @@ jobs:
         run: |
           mkdir -p ~/.local/bin
           echo '#!/bin/bash' > ~/.local/bin/fvm
-          echo 'exec flutter "$@"' >> ~/.local/bin/fvm
+          echo 'if [[ "$1" == "flutter" || "$1" == "dart" ]]; then' >> ~/.local/bin/fvm
+          echo '  cmd=$1' >> ~/.local/bin/fvm
+          echo '  shift' >> ~/.local/bin/fvm
+          echo '  exec "$cmd" "$@"' >> ~/.local/bin/fvm
+          echo 'else' >> ~/.local/bin/fvm
+          echo '  echo "Unsupported fvm command: $1"' >> ~/.local/bin/fvm
+          echo '  exit 1' >> ~/.local/bin/fvm
+          echo 'fi' >> ~/.local/bin/fvm
           chmod +x ~/.local/bin/fvm
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
