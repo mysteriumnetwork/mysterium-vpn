@@ -52,10 +52,10 @@ run-integration-tests:
 
 build-ios-integration-test:
 	rm -rf build/ios_integ && \
-	patrol build ios --target integration_test/example_test.dart --flavor dev --dart-define "FLAVOR=DEV" --verbose --release $(flags)
+	patrol build ios --target integration_test/example_test.dart --flavor dev --dart-define "FLAVOR=DEV" --flutter-command="fvm flutter" --verbose --release $(flags)
 
 build-android-integration-test:
-	patrol build android --target integration_test/example_test.dart --flavor dev --dart-define "FLAVOR=DEV" --flutter-command="fvm flutter" $(flags)
+	patrol build android --target integration_test/example_test.dart --flavor dev --dart-define "FLAVOR=DEV" --flutter-command="fvm flutter" --verbose $(flags)
 
 run-ios-testlab:
 	cd build/ios_integ/Build/Products && \
