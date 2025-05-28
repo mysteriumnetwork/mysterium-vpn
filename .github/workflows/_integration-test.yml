@@ -93,6 +93,9 @@ jobs:
       - name: Install dependencies
         run: make init
 
+      - name: Set up Patrol CLI
+        run: dart pub global activate patrol_cli
+
       - name: 'Build iOS test app'
         run: make build-ios-integration-test
 
