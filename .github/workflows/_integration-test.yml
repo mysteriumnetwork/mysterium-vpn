@@ -52,7 +52,8 @@ jobs:
         run: |
           fvm dart pub global activate patrol_cli
           echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
-          echo "$HOME/.fvm/default/bin" >> $GITHUB_PATH
+          echo "export PATH=\$HOME/.pub-cache/bin:\$PATH" >> $GITHUB_ENV
+          source $GITHUB_ENV
           patrol --version
 
       - name: Setup Android keystore
@@ -99,11 +100,6 @@ jobs:
 
       - name: Install dependencies
         run: make init
-
-      - name: Set up Patrol CLI
-        run: |
-          dart pub global activate patrol_cli
-          patrol --version
 
       - name: 'Build iOS test app'
         run: make build-ios-integration-test
