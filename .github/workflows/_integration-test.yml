@@ -21,6 +21,10 @@ jobs:
     name: Run Integration Tests
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
