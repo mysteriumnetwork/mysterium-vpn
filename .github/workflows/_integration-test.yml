@@ -50,8 +50,9 @@ jobs:
 
       - name: Set up global dart and flutter from fvm
         run: |
-          echo "export PATH=\$HOME/.fvm/default/bin:\$PATH" >> $GITHUB_ENV
-          source $GITHUB_ENV
+          echo "$HOME/.fvm/default/bin" >> $GITHUB_PATH
+          export PATH="$HOME/.fvm/default/bin:$PATH"
+          dart --version
           flutter --version
 
       - name: Setup Android keystore
