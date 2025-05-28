@@ -47,6 +47,7 @@ jobs:
 
       - name: Set aliases for Flutter and Dart
         run: |
+          echo "export PATH=\$HOME/.fvm/default/bin:\$PATH" >> $GITHUB_ENV
           echo "alias flutter='fvm flutter'" >> ~/.bashrc
           echo "alias dart='fvm dart'" >> ~/.bashrc
           source ~/.bashrc
