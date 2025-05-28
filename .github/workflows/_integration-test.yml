@@ -43,27 +43,17 @@ jobs:
         run: 'gcloud info'
 
       - name: Setup Flutter Version Management CLI
-        uses: flutter-actions/setup-fvm@v1.0
+        uses: kuhnroyal/flutter-fvm-config-action/setup@v3
 
-      - name: Set aliases for Flutter and Dart
+      - name: Verify Flutter and Dart
         run: |
-          echo "export PATH=\$HOME/.fvm/default/bin:\$PATH" >> $GITHUB_ENV
-          echo "alias flutter='fvm flutter'" >> ~/.bashrc
-          echo "alias dart='fvm dart'" >> ~/.bashrc
-          source ~/.bashrc
           flutter --version
           dart --version
 
-      - name: Install Flutter SDK
-        run: echo yes | fvm use
-
       - name: Install Patrol CLI
         run: |
-          fvm dart pub global activate patrol_cli
-          echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
-          echo "export PATH=\$HOME/.pub-cache/bin:\$PATH" >> $GITHUB_ENV
-          source $GITHUB_ENV
-          patrol help
+          dart pub global activate patrol_cli
+          patrol --version
 
       - name: Setup Android keystore
         run: |
