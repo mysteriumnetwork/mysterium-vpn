@@ -50,6 +50,19 @@ jobs:
           flutter --version
           dart --version
 
+      - name: Set up fake FVM alias
+        run: |
+          mkdir -p ~/.local/bin
+          echo '#!/bin/bash' > ~/.local/bin/fvm
+          echo 'exec flutter "$@"' >> ~/.local/bin/fvm
+          chmod +x ~/.local/bin/fvm
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Verify FVM
+        run: |
+          fvm flutter --version
+          fvm dart --version
+
       - name: Install Patrol CLI
         run: |
           dart pub global activate patrol_cli
