@@ -45,6 +45,14 @@ jobs:
       - name: Setup Flutter Version Management CLI
         uses: flutter-actions/setup-fvm@v1.0
 
+      - name: Set aliases for Flutter and Dart
+        run: |
+          echo "alias flutter='fvm flutter'" >> ~/.bashrc
+          echo "alias dart='fvm dart'" >> ~/.bashrc
+          source ~/.bashrc
+          flutter --version
+          dart --version
+
       - name: Install Flutter SDK
         run: echo yes | fvm use
 
@@ -54,6 +62,7 @@ jobs:
           echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
           echo "export PATH=\$HOME/.pub-cache/bin:\$PATH" >> $GITHUB_ENV
           source $GITHUB_ENV
+          patrol help
 
       - name: Setup Android keystore
         run: |
