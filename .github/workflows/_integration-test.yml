@@ -49,9 +49,10 @@ jobs:
         run: echo yes | fvm use
 
       - name: Set up global dart and flutter from fvm
-        run:
+        run: |
           export PATH="$HOME/.fvm/default/bin:$PATH"
           dart --version
+          flutter --version
 
       - name: Setup Android keystore
         run: |
