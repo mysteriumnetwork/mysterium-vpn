@@ -3,6 +3,7 @@ IOS_DEVICE_MODEL = iphone15
 IOS_DEVICE_VERSION = 18.0
 ANDROID_DEVICE_MODEL = MediumPhone.arm
 ANDROID_DEVICE_VERSION = 34
+FIREBASE_PROJECT_ID = new-mysterium-vpn
 
 init:
 	fvm flutter pub get
@@ -58,15 +59,15 @@ build-android-integration-test:
 
 run-ios-testlab:
 	cd build/ios_integ/Build/Products && \
-	rm -f ios_tests.zip && \
-	zip -r ios_tests.zip Release-iphoneos/*.app *.xctestrun && \
-	cd - && \
+    rm -f ios_tests.zip && \
+    zip -r ios_tests.zip . && \
+    cd - && \
 	gcloud firebase test ios run \
 		--type xctest \
 		--test "build/ios_integ/Build/Products/ios_tests.zip" \
 		--device model="$(IOS_DEVICE_MODEL)",version="$(IOS_DEVICE_VERSION)",locale=en_US,orientation=portrait \
 		--timeout 10m \
-		--project "new-mysterium-vpn"
+		--project "$(FIREBASE_PROJECT_ID)"
 
 run-android-testlab:
 	gcloud firebase test android run \
@@ -77,4 +78,4 @@ run-android-testlab:
     	--timeout 10m \
     	--use-orchestrator \
     	--environment-variables clearPackageData=true \
-    	--project "new-mysterium-vpn"
+		--project "$(FIREBASE_PROJECT_ID)"
