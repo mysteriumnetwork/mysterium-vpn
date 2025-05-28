@@ -85,6 +85,9 @@ jobs:
           echo "keyAlias=${{ secrets.ANDROID_KEYSTORE_KEY_ALIAS }}" >> android/key.properties
           cat android/key.properties
 
+      - name: Set up XCode
+        run: sudo xcode-select --switch /Applications/Xcode_16.1.0.app
+
       - name: Install Codemagic CLI tools
         run: |
           python -m pip install codemagic-cli-tools
