@@ -50,7 +50,7 @@ jobs:
 
       - name: Set up global dart and flutter from fvm
         run: |
-          export PATH="$HOME/.fvm/default/bin:$PATH"
+          echo "$HOME/.fvm/default/bin" >> $GITHUB_PATH
           dart --version
           flutter --version
 
