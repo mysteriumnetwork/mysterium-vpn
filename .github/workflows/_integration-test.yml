@@ -7,6 +7,10 @@ on:
   workflow_dispatch:
   workflow_call:
     inputs:
+      bundle_id:
+        required: true
+        type: string
+        default: "com.mysteriumvpn.test"
       flavor:
         required: true
         type: string
