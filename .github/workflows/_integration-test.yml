@@ -48,19 +48,12 @@ jobs:
       - name: Install Flutter SDK
         run: echo yes | fvm use
 
-      - name: Set up global dart and flutter from fvm
+      - name: Install Patrol CLI
         run: |
+          fvm dart pub global activate patrol_cli
           echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
           echo "$HOME/.fvm/default/bin" >> $GITHUB_PATH
-          echo "export PATH=\$HOME/.fvm/default/bin:\$PATH" >> $GITHUB_ENV
-          source $GITHUB_ENV
-          fvm flutter --version
-          fvm dart --version
-
-      - name: Verify Flutter and Dart versions
-        run: |
-          flutter --version
-          dart --version
+          patrol --version
 
       - name: Setup Android keystore
         run: |
