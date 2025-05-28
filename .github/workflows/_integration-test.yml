@@ -25,6 +25,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up Google Cloud SDK
+        uses: 'google-github-actions/auth@v2'
+        with:
+          project_id: 'new-mysterium-vpn'
+          workload_identity_provider: 'projects/104590535697/locations/global/workloadIdentityPools/github/providers/mysterium-repo'
+          service_account: 'github-actions-service-account@new-mysterium-vpn.iam.gserviceaccount.com'
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
+
       - name: Setup Flutter Version Management CLI
         uses: flutter-actions/setup-fvm@v1.0
 
@@ -78,19 +91,6 @@ jobs:
 
       - name: Build APK for testing
         run: fvm flutter build apk --no-pub --flavor "${{ inputs.flavor }}" --dart-define "FLAVOR=${{ inputs.flavor_dart }}"
-
-      - name: Set up Google Cloud SDK
-        uses: 'google-github-actions/auth@v2'
-        with:
-          project_id: 'new-mysterium-vpn'
-          workload_identity_provider: 'projects/104590535697/locations/global/workloadIdentityPools/github/providers/mysterium-repo'
-          service_account: 'github-actions-service-account@new-mysterium-vpn.iam.gserviceaccount.com'
-
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v2'
-
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
 
       - name: 'Build iOS test app'
         run: patrol build ios --target integration_test/example_test.dart --flavor dev --dart-define "FLAVOR=DEV" --flutter-command="fvm flutter" --verbose --release
