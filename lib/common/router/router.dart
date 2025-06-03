@@ -8,7 +8,6 @@ import 'package:mysterium_vpn/pages/settings_page.dart';
 import 'package:mysterium_vpn/pages/static/splash_page.dart';
 import 'package:mysterium_vpn/pages/subscription_page.dart';
 import 'package:mysterium_vpn/pages/verify_email_page.dart';
-import 'package:mysterium_vpn/pages/vpn_privacy_consent_page.dart';
 import 'package:mysterium_vpn/pages/welcome_page.dart';
 
 class BeamerLocations extends BeamLocation<BeamState> {
@@ -21,7 +20,6 @@ class BeamerLocations extends BeamLocation<BeamState> {
         Routes.splash.path,
         Routes.settings.path,
         Routes.payment.path,
-        Routes.privacyPolicy.path,
         Routes.login.path,
         Routes.checkYourEmail.path,
         Routes.paymentSettings.path,
@@ -65,13 +63,6 @@ class BeamerLocations extends BeamLocation<BeamState> {
           name: Routes.payment.path,
           title: Routes.payment.name,
           child: const SubscriptionPage(),
-        ),
-      if (path.contains(Routes.privacyPolicy.path))
-        BeamPage(
-          key: ValueKey(Routes.privacyPolicy.toDashCase),
-          name: Routes.privacyPolicy.path,
-          title: Routes.privacyPolicy.name,
-          child: const VpnPrivacyConsentPage(),
         ),
       if (path.contains(Routes.login.path))
         BeamPage(
