@@ -186,7 +186,7 @@ abstract class _AuthStore with Store {
       await _authSessionStore.setAuthenticated(authTokens!.accessToken, authTokens.refreshToken);
       _analyticsStore.setLogin(grantType);
       if (!grantType.isRefreshToken) {
-        _userPreferencesStore.setMarketingConsent(consent: marketingConsent);
+        unawaited(_userPreferencesStore.setMarketingConsent(consent: marketingConsent));
       }
     } on ApiException catch (e) {
       showSnackbar(e.message);
