@@ -80,6 +80,7 @@ Class | Method | HTTP request | Description
 [*Connection*](doc/Connection.md) | [**connectionConfigRegions**](doc/Connection.md#connectionconfigregions) | **GET** /connection/config/regions | Get connection region options
 [*Connection*](doc/Connection.md) | [**connectionLocations**](doc/Connection.md#connectionlocations) | **GET** /connection/locations | Get connection locations
 [*Connection*](doc/Connection.md) | [**rateConnection**](doc/Connection.md#rateconnection) | **POST** /connection/rate-connection | Rate connection
+[*EmailMarketing*](doc/EmailMarketing.md) | [**setMarketingConsent**](doc/EmailMarketing.md#setmarketingconsent) | **POST** /email-marketing/marketing-consent | Set marketing consent
 [*Infrastructure*](doc/Infrastructure.md) | [**healthcheck**](doc/Infrastructure.md#healthcheck) | **GET** /healthcheck | Check whether the API is up
 [*Location*](doc/Location.md) | [**location**](doc/Location.md#location) | **GET** /subscription/location | Get location
 [*Subscription*](doc/Subscription.md) | [**invoices**](doc/Subscription.md#invoices) | **POST** /subscription/invoices | Get invoices list with pagination
@@ -135,6 +136,7 @@ Class | Method | HTTP request | Description
  - [MagicLinkRedirectRequestQuery](doc/MagicLinkRedirectRequestQuery.md)
  - [MagicLinkRequest](doc/MagicLinkRequest.md)
  - [MagicLinkResponse](doc/MagicLinkResponse.md)
+ - [MarketingPermissionsRequest](doc/MarketingPermissionsRequest.md)
  - [OAuth2AuthorizationRequest](doc/OAuth2AuthorizationRequest.md)
  - [OAuth2AuthorizationResponse](doc/OAuth2AuthorizationResponse.md)
  - [OAuth2TokenIntrospectionRequest](doc/OAuth2TokenIntrospectionRequest.md)
