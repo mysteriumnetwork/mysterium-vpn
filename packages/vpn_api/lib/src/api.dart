@@ -9,6 +9,7 @@ import 'package:vpn_api/src/auth/bearer_auth.dart';
 import 'package:vpn_api/src/auth/oauth.dart';
 import 'package:vpn_api/src/api/authentication.dart';
 import 'package:vpn_api/src/api/connection.dart';
+import 'package:vpn_api/src/api/email_marketing.dart';
 import 'package:vpn_api/src/api/infrastructure.dart';
 import 'package:vpn_api/src/api/location.dart';
 import 'package:vpn_api/src/api/subscription.dart';
@@ -78,6 +79,12 @@ class VpnApi {
   /// by doing that all interceptors will not be executed
   Connection getConnection() {
     return Connection(dio);
+  }
+
+  /// Get EmailMarketing instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  EmailMarketing getEmailMarketing() {
+    return EmailMarketing(dio);
   }
 
   /// Get Infrastructure instance, base route and serializer can be overridden by a given but be careful,
