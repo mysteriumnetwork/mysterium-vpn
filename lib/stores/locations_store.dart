@@ -170,7 +170,7 @@ abstract class _LocationsStore with Store {
     // Ensures all pings complete before finding the lowest latency
     final regionsWithLatencies = await Future.wait(
       regions.map((region) async {
-        final ping = _ping ?? Ping(region.host);
+        final ping = _ping ?? Ping(region.host, 80);
         return RegionWithLatency(region, await ping.latencyMedian());
       }),
     );
