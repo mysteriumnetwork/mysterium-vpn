@@ -10,6 +10,7 @@ export 'package:vpn_api/src/auth/oauth.dart';
 
 export 'package:vpn_api/src/api/authentication.dart';
 export 'package:vpn_api/src/api/connection.dart';
+export 'package:vpn_api/src/api/email_marketing.dart';
 export 'package:vpn_api/src/api/infrastructure.dart';
 export 'package:vpn_api/src/api/location.dart';
 export 'package:vpn_api/src/api/subscription.dart';
@@ -57,6 +58,7 @@ export 'package:vpn_api/src/model/location_rate.dart';
 export 'package:vpn_api/src/model/magic_link_redirect_request_query.dart';
 export 'package:vpn_api/src/model/magic_link_request.dart';
 export 'package:vpn_api/src/model/magic_link_response.dart';
+export 'package:vpn_api/src/model/marketing_permissions_request.dart';
 export 'package:vpn_api/src/model/o_auth2_authorization_request.dart';
 export 'package:vpn_api/src/model/o_auth2_authorization_response.dart';
 export 'package:vpn_api/src/model/o_auth2_token_introspection_request.dart';

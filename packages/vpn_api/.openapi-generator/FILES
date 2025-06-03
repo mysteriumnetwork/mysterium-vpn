@@ -32,6 +32,7 @@ doc/CreateGenericSubscriptionRequest.md
 doc/CreateGenericSubscriptionResponse.md
 doc/CreateGoogleSubscriptionRequest.md
 doc/CreateGoogleSubscriptionResponse.md
+doc/EmailMarketing.md
 doc/FieldError.md
 doc/GetLocationResponse.md
 doc/GetSubscriptionResponse.md
@@ -49,6 +50,7 @@ doc/LocationRate.md
 doc/MagicLinkRedirectRequestQuery.md
 doc/MagicLinkRequest.md
 doc/MagicLinkResponse.md
+doc/MarketingPermissionsRequest.md
 doc/OAuth2AuthorizationRequest.md
 doc/OAuth2AuthorizationResponse.md
 doc/OAuth2TokenIntrospectionRequest.md
@@ -82,6 +84,7 @@ doc/WireguardConnectResponse.md
 lib/src/api.dart
 lib/src/api/authentication.dart
 lib/src/api/connection.dart
+lib/src/api/email_marketing.dart
 lib/src/api/infrastructure.dart
 lib/src/api/location.dart
 lib/src/api/subscription.dart
@@ -134,6 +137,7 @@ lib/src/model/location_rate.dart
 lib/src/model/magic_link_redirect_request_query.dart
 lib/src/model/magic_link_request.dart
 lib/src/model/magic_link_response.dart
+lib/src/model/marketing_permissions_request.dart
 lib/src/model/o_auth2_authorization_request.dart
 lib/src/model/o_auth2_authorization_response.dart
 lib/src/model/o_auth2_token_introspection_request.dart
