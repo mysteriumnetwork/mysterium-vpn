@@ -41,6 +41,7 @@ import 'package:vpn_api/src/model/location_rate.dart';
 import 'package:vpn_api/src/model/magic_link_redirect_request_query.dart';
 import 'package:vpn_api/src/model/magic_link_request.dart';
 import 'package:vpn_api/src/model/magic_link_response.dart';
+import 'package:vpn_api/src/model/marketing_permissions_request.dart';
 import 'package:vpn_api/src/model/o_auth2_authorization_request.dart';
 import 'package:vpn_api/src/model/o_auth2_authorization_response.dart';
 import 'package:vpn_api/src/model/o_auth2_token_introspection_request.dart';
@@ -178,6 +179,8 @@ ReturnType deserialize<ReturnType, BaseType>(dynamic value, String targetType,
       return MagicLinkRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'MagicLinkResponse':
       return MagicLinkResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
+    case 'MarketingPermissionsRequest':
+      return MarketingPermissionsRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'OAuth2AuthorizationRequest':
       return OAuth2AuthorizationRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
     case 'OAuth2AuthorizationResponse':
