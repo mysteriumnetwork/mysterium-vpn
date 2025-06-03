@@ -1,44 +1,46 @@
 import 'dart:async';
-
-import 'package:dart_ping/dart_ping.dart' as dart_ping;
+import 'dart:io';
 
 class Ping {
-  Ping(String host) : _ping = dart_ping.Ping(host, count: 5) {
-    final responses = <dart_ping.PingData>[];
-    _subscription = _ping.stream.listen((response) {
-      responses.add(response);
-
-      if (responses.length == 5) {
-        _subscription.cancel();
-        _completer.complete(responses);
-      }
-    });
+  /// Creates a new Ping instance that will measure latency to [host] on [port].
+  /// By default, it performs 5 measurements with a timeout of 2 seconds per attempt.
+  Ping(String host, int port, {int count = 5, Duration timeout = const Duration(seconds: 2)}) {
+    // Launch all ping attempts concurrently
+    Future.wait(
+      List.generate(count, (_) => _pingOnce(host, port, timeout)),
+    ).then(_completer.complete);
   }
 
-  final dart_ping.Ping _ping;
-  late final StreamSubscription<dart_ping.PingData> _subscription;
-  final Completer<List<dart_ping.PingData>> _completer = Completer();
+  final Completer<List<Duration>> _completer = Completer();
 
+  /// Measures the latency for one TCP connection attempt to [host]:[port].
+  /// If the connection cannot be established within [timeout],
+  /// it returns a fallback latency value (1000ms).
+  Future<Duration> _pingOnce(String host, int port, Duration timeout) async {
+    final stopwatch = Stopwatch()..start();
+    try {
+      final socket = await Socket.connect(host, port, timeout: timeout);
+      stopwatch.stop();
+      socket.destroy();
+      return stopwatch.elapsed;
+    } catch (_) {
+      stopwatch.stop();
+      // Penalize lost packets by returning a high latency value
+      return const Duration(milliseconds: 1000);
+    }
+  }
+
+  /// Returns the median latency measured over the configured number of attempts.
   Future<Duration> latencyMedian() async {
     final responses = await _completer.future;
-
-    final latencies = List<Duration>.empty(growable: true);
-    for (final response in responses) {
-      final ttl = response.response?.time;
-      if (ttl != null) {
-        latencies.add(ttl);
-      } else {
-        latencies.add(const Duration(milliseconds: 1000));
-      }
-      continue;
-    }
-
-    latencies.sort();
-    final middle = latencies.length ~/ 2;
-    if (latencies.length.isOdd) {
-      return latencies[middle];
+    responses.sort((a, b) => a.compareTo(b));
+    final middle = responses.length ~/ 2;
+    if (responses.length.isOdd) {
+      return responses[middle];
     } else {
-      return (latencies[middle - 1] + latencies[middle]) ~/ 2;
+      final medianMs =
+          ((responses[middle - 1].inMilliseconds + responses[middle].inMilliseconds) / 2).round();
+      return Duration(milliseconds: medianMs);
     }
   }
 }

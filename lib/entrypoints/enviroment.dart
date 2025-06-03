@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 
-import 'package:dart_ping_ios/dart_ping_ios.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -99,9 +98,6 @@ class Enviroment {
       logger.handle(error, stack, 'fatal');
       return true;
     };
-    if (Platform.isIOS) {
-      DartPingIOS.register();
-    }
 
     logger.log(
       'App started in ${flavorConfig.flavor} mode\nBase URL ${flavorConfig.values.baseUrl}',
