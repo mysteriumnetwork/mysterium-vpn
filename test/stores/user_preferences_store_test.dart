@@ -6,7 +6,7 @@ import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 
-import 'locations_store_test.mocks.dart';
+import 'user_preferences_store_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<ApiService>(),
