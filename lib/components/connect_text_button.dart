@@ -31,11 +31,7 @@ class ConnectTextButton extends HookConsumerWidget {
   final TextStyle? fontStyle;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Unconditionally call both hooks.
-    final isLocationConnected = useIsLocationConnected(location);
-    final isConnectedOrConnecting = useIsConnectedOrConnecting();
-    // Combine the results based on whether a location was provided.
-    final isConnected = location != null ? isLocationConnected : isConnectedOrConnecting;
+    final isConnected = useIsLocationConnected(location);
 
     void onPressed() {
       this.onPressed?.call();
