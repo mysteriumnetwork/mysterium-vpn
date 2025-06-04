@@ -9,7 +9,6 @@ enum Routes {
   settings('/main/settings'),
   payment('/main/payment'),
   paymentSettings('/main/settings/payment'),
-  privacyPolicy('/main/privacy-policy'),
   // Deep link route should be guarded and replaced with correct route
   // Do not use this route in the app
   emailToken('/email-token');

@@ -26,6 +26,7 @@ import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
+import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
 
@@ -46,7 +47,9 @@ abstract class _AuthStore with Store {
     required IntercomStore intercomStore,
     required Talker logger,
     required ABTestingStore abTestingStore,
+    required UserPreferencesStore userPreferencesStore,
   })  : _authService = authService,
+        _userPreferencesStore = userPreferencesStore,
         _authSessionStore = authSessionStore,
         _appLinks = appLinks,
         _analyticsStore = analyticsStore,
@@ -67,6 +70,7 @@ abstract class _AuthStore with Store {
   final IntercomStore _intercomStore;
   final Talker _logger;
   final ABTestingStore _abTestingStore;
+  final UserPreferencesStore _userPreferencesStore;
 
   @readonly
   PkcePair? _pkcePair;
@@ -78,7 +82,7 @@ abstract class _AuthStore with Store {
   String? email;
 
   @observable
-  bool marketingConsent = true;
+  bool marketingConsent = false;
 
   @observable
   ObservableFuture<String?> signInFeature = ObservableFuture.value(null);
@@ -181,6 +185,9 @@ abstract class _AuthStore with Store {
       final authTokens = await authenticateFeature;
       await _authSessionStore.setAuthenticated(authTokens!.accessToken, authTokens.refreshToken);
       _analyticsStore.setLogin(grantType);
+      if (!grantType.isRefreshToken) {
+        unawaited(_userPreferencesStore.setMarketingConsent(consent: marketingConsent));
+      }
     } on ApiException catch (e) {
       showSnackbar(e.message);
     } catch (e) {

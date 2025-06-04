@@ -30,7 +30,6 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
       BeamGuard(
         pathPatterns: [
           Routes.payment.path,
-          Routes.privacyPolicy.path,
           Routes.paymentSettings.path,
         ],
         check: (context, state) => authSessionStore.status == AuthStatus.authenticated,

@@ -46,6 +46,7 @@ final authSessionStorePOD = Provider<AuthSessionStore>(
 
 final authStorePOD = Provider<AuthStore>((ref) {
   final authService = ref.watch(authServicePOD);
+  final userPreferencesStore = ref.watch(userPreferencesStorePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
   final appLinks = ref.watch(appLinksPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
@@ -56,6 +57,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
 
   return AuthStore(
     authService: authService,
+    userPreferencesStore: userPreferencesStore,
     authSessionStore: authSessionStore,
     appLinks: appLinks,
     analyticsStore: analyticsStore,
@@ -187,8 +189,10 @@ final isAppWindowFocused = StateProvider<bool>((_) => true);
 
 final userPreferencesStorePOD = StateProvider<UserPreferencesStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
+  final analyticsStore = ref.watch(analyticsStorePOD);
   return UserPreferencesStore(
     apiService: apiService,
+    analyticsStore: analyticsStore,
   );
 });
 

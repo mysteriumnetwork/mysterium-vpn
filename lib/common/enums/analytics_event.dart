@@ -100,4 +100,6 @@ enum AnalyticsEvent {
   paymentSuccess1m,
   paymentSuccess6m,
   paymentSuccess1y,
+  setMarketingConsentSuccess,
+  setMarketingConsentError,
 }

@@ -24,9 +24,11 @@ class RestApiService extends ApiService {
     required Talker logger,
   })  : _networkService = networkService,
         _apiConnection = api.getConnection(),
+        _apiEmailMarketing = api.getEmailMarketing(),
         _logger = logger;
 
   final Connection _apiConnection;
+  final EmailMarketing _apiEmailMarketing;
   final NetworkService _networkService;
   final Talker _logger;
 
@@ -86,41 +88,6 @@ class RestApiService extends ApiService {
       }
 
       return response.data!;
-    } on ApiException {
-      rethrow;
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
-    }
-  }
-
-  @override
-  Future<void> setUserPrefsMarketingConsent({required bool consent}) async {
-    try {
-      // TODO(Waldz): Generate API client from API documentation openapi.yaml
-      await _networkService.post(
-        kSetMarketingConsent,
-        data: {
-          'consent': consent,
-        },
-      );
-    } on ApiException {
-      rethrow;
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
-    }
-  }
-
-  @override
-  Future<bool> getUserPrefsMarketingConsent() async {
-    try {
-      // TODO(Waldz): Generate API client from API documentation openapi.yaml
-      final data = (await _networkService.get(kGetMarketingConsent)).data as Map<String, dynamic>?;
-      if (data == null || !data.containsKey('marketing_consent')) {
-        throw Exception('No data found');
-      }
-      return data['marketing_consent'] as bool;
     } on ApiException {
       rethrow;
     } catch (e, stackTrace) {
@@ -203,6 +170,23 @@ class RestApiService extends ApiService {
         rateConnectionRequest: request,
       );
       _logger.info('Connection rated successfully');
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> setMarketingConsentStatus({required bool consent}) async {
+    try {
+      await _apiEmailMarketing.setMarketingConsent(
+        marketingPermissionsRequest: MarketingPermissionsRequest(
+          consent: consent,
+        ),
+      );
+      _logger.info(
+        'Marketing consent status set to $consent',
+      );
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
