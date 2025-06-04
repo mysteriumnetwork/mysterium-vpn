@@ -85,11 +85,11 @@ jobs:
           echo "keyAlias=${{ secrets.ANDROID_KEYSTORE_KEY_ALIAS }}" >> android/key.properties
           cat android/key.properties
 
-#      - name: Download provisioning profiles
-#        run: |
-#          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-#          curl -o ~/Library/MobileDevice/Provisioning\ Profiles/prod.mobileprovision https://zm-random.s3.eu-central-1.amazonaws.com/prod.mobileprovision
-#          curl -o ~/Library/MobileDevice/Provisioning\ Profiles/test.mobileprovision https://zm-random.s3.eu-central-1.amazonaws.com/test.mobileprovision
+      - name: Download provisioning profiles
+        run: |
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          curl -o ~/Library/MobileDevice/Provisioning\ Profiles/prod.mobileprovision https://zm-random.s3.eu-central-1.amazonaws.com/prod.mobileprovision
+          curl -o ~/Library/MobileDevice/Provisioning\ Profiles/test.mobileprovision https://zm-random.s3.eu-central-1.amazonaws.com/test.mobileprovision
 
       - name: Set up XCode
         run: sudo xcode-select --switch /Applications/Xcode_16.1.0.app
@@ -109,7 +109,6 @@ jobs:
         run: |
           curl -o integration_tests.p12 https://zm-random.s3.eu-central-1.amazonaws.com/integration_tests.p12
           keychain add-certificates --certificate integration_tests.p12
-          openssl pkcs12 -in integration_tests.p12 -nocerts -nodes -passin pass: | openssl rsa > private_key.pem
 
       # Signing files are imported to keychain from:
       #  ls -la ~/Library/MobileDevice/Provisioning\ Profiles
@@ -121,7 +120,6 @@ jobs:
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
           app-store-connect fetch-signing-files "com.mysteriumvpn.test" --platform IOS --type IOS_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
-          app-store-connect fetch-signing-files "com.mysteriumvpn.test" --platform IOS --type IOS_APP_DEVELOPMENT --certificate-key "$(cat private_key.pem)" --create
           keychain add-certificates
 
       - name: Set up signing preferences on Xcode project
