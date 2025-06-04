@@ -115,8 +115,7 @@ jobs:
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
           app-store-connect fetch-signing-files "com.mysteriumvpn.test" --platform IOS --type IOS_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
-          app-store-connect fetch-signing-files "com.mysteriumvpn.test" --platform IOS --type IOS_DEVELOPMENT --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
-          app-store-connect fetch-signing-files "com.mysteriumvpn.test" --platform IOS --type DEVELOPMENT --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
+          app-store-connect fetch-signing-files "com.mysteriumvpn.test" --platform IOS --type IOS_APP_DEVELOPMENT
           keychain add-certificates
 
       - name: Set up signing preferences on Xcode project
