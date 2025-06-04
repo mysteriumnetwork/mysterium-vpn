@@ -20,7 +20,6 @@ enum _FeatureToggleKey {
   hideNotSafeContentBlocker,
   malwareBlockerDnsAddress,
   notSafeContentBlockerDnsAddress,
-  showVpnPrivacyPolicyPage,
   pricingMonthly,
   mqttExperiment,
   locationsRefreshInterval,
@@ -148,14 +147,6 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return config[_FeatureToggleKey.notSafeContentBlockerDnsAddress.name] as String;
     }
     return notSafeContentBlockerDomainAddress;
-  }
-
-  @computed
-  bool get showVpnPrivacyPolicyPage {
-    if (config.containsKey(_FeatureToggleKey.showVpnPrivacyPolicyPage.name)) {
-      return config[_FeatureToggleKey.showVpnPrivacyPolicyPage.name] as bool;
-    }
-    return false;
   }
 
   @computed

@@ -34,45 +34,18 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
     });
   }
 
-  late final _$getMarketingConsentFeatureAtom =
-      Atom(name: '_UserPreferencesStore.getMarketingConsentFeature', context: context);
+  late final _$setMarketingConsentAsyncAction =
+      AsyncAction('_UserPreferencesStore.setMarketingConsent', context: context);
 
   @override
-  ObservableFuture<void> get getMarketingConsentFeature {
-    _$getMarketingConsentFeatureAtom.reportRead();
-    return super.getMarketingConsentFeature;
-  }
-
-  @override
-  set getMarketingConsentFeature(ObservableFuture<void> value) {
-    _$getMarketingConsentFeatureAtom.reportWrite(value, super.getMarketingConsentFeature, () {
-      super.getMarketingConsentFeature = value;
-    });
-  }
-
-  late final _$setUserPrefsMarketingConsentAsyncAction =
-      AsyncAction('_UserPreferencesStore.setUserPrefsMarketingConsent', context: context);
-
-  @override
-  Future<void> setUserPrefsMarketingConsent({required bool consent}) {
-    return _$setUserPrefsMarketingConsentAsyncAction
-        .run(() => super.setUserPrefsMarketingConsent(consent: consent));
-  }
-
-  late final _$getUserPrefsMarketingConsentAsyncAction =
-      AsyncAction('_UserPreferencesStore.getUserPrefsMarketingConsent', context: context);
-
-  @override
-  Future<void> getUserPrefsMarketingConsent() {
-    return _$getUserPrefsMarketingConsentAsyncAction
-        .run(() => super.getUserPrefsMarketingConsent());
+  Future<void> setMarketingConsent({required bool consent}) {
+    return _$setMarketingConsentAsyncAction.run(() => super.setMarketingConsent(consent: consent));
   }
 
   @override
   String toString() {
     return '''
 setMarketingConsentFeature: ${setMarketingConsentFeature},
-getMarketingConsentFeature: ${getMarketingConsentFeature},
 setMarketingConsentFeatureStatus: ${setMarketingConsentFeatureStatus}
     ''';
   }

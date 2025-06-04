@@ -6,5 +6,7 @@ enum GrantType {
 
   const GrantType(this.value);
 
+  bool get isRefreshToken => this == GrantType.refreshToken;
+
   final String value;
 }
