@@ -297,7 +297,7 @@ List<VPNLocation> countriesToLocations(Iterable<String> countries, IPType? ipTyp
     .toList();
 
 class RegionWithLatency {
-  RegionWithLatency(this.region, this.latency);
+  const RegionWithLatency(this.region, this.latency);
 
   final ConnectionRegion region;
   final Duration latency;
