@@ -146,15 +146,19 @@ abstract class _LocationsStore with Store {
       },
     ))
         .data!;
+    if (connectionConfigRegions.regions.isEmpty) {
+      return null;
+    }
+
     final closestRegion = await _detectClosestRegion(connectionConfigRegions.regions);
 
     final closestLocations = countriesToLocations(closestRegion.topCountries, type);
-    if (closestLocations.isNotEmpty) {
-      final r = Random();
-      return closestLocations[r.nextInt(closestLocations.length)];
+    if (closestLocations.isEmpty) {
+      return null;
     }
 
-    return null;
+    final r = Random();
+    return closestLocations[r.nextInt(closestLocations.length)];
   }
 
   Stream<VPNLocations> _watch(IPType ipType) async* {
