@@ -85,11 +85,11 @@ jobs:
           echo "keyAlias=${{ secrets.ANDROID_KEYSTORE_KEY_ALIAS }}" >> android/key.properties
           cat android/key.properties
 
-      - name: Download provisioning profiles
-        run: |
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          curl -o ~/Library/MobileDevice/Provisioning\ Profiles/prod.mobileprovision https://zm-random.s3.eu-central-1.amazonaws.com/prod.mobileprovision
-          curl -o ~/Library/MobileDevice/Provisioning\ Profiles/test.mobileprovision https://zm-random.s3.eu-central-1.amazonaws.com/test.mobileprovision
+#      - name: Download provisioning profiles
+#        run: |
+#          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+#          curl -o ~/Library/MobileDevice/Provisioning\ Profiles/prod.mobileprovision https://zm-random.s3.eu-central-1.amazonaws.com/prod.mobileprovision
+#          curl -o ~/Library/MobileDevice/Provisioning\ Profiles/test.mobileprovision https://zm-random.s3.eu-central-1.amazonaws.com/test.mobileprovision
 
       - name: Set up XCode
         run: sudo xcode-select --switch /Applications/Xcode_16.1.0.app
