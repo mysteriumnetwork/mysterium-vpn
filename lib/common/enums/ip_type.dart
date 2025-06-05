@@ -1,6 +1,7 @@
 enum IPType {
   residential,
-  datacenter;
+  datacenter,
+  closest;
 
   static IPType fromName(String name) => IPType.values.firstWhere(
         (it) => it.name == name,

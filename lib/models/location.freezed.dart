@@ -294,11 +294,12 @@ class __$$VPNLocationImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$VPNLocationImpl extends _VPNLocation {
-  const _$VPNLocationImpl({required this.code, this.ipType = IPType.residential}) : super._();
+  const _$VPNLocationImpl({this.code = '', this.ipType = IPType.residential}) : super._();
 
   factory _$VPNLocationImpl.fromJson(Map<String, dynamic> json) => _$$VPNLocationImplFromJson(json);
 
   @override
+  @JsonKey()
   final String code;
   @override
   @JsonKey()
@@ -339,7 +340,7 @@ class _$VPNLocationImpl extends _VPNLocation {
 }
 
 abstract class _VPNLocation extends VPNLocation {
-  const factory _VPNLocation({required final String code, final IPType ipType}) = _$VPNLocationImpl;
+  const factory _VPNLocation({final String code, final IPType ipType}) = _$VPNLocationImpl;
   const _VPNLocation._() : super._();
 
   factory _VPNLocation.fromJson(Map<String, dynamic> json) = _$VPNLocationImpl.fromJson;

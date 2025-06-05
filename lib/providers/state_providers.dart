@@ -95,6 +95,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final analyticsStore = ref.watch(analyticsStorePOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
+  final realIPInfoStore = ref.watch(realIPInfoStorePOD);
 
   return VpnStore(
     apiService: apiService,
@@ -108,24 +109,28 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     analyticsStore: analyticsStore,
     remoteConfigStore: remoteConfigStore,
     authSessionStore: authSessionStore,
+    realIPInfo: realIPInfoStore,
   );
 });
 
 final locationsStorePOD = Provider<LocationsStore>((ref) {
-  final apiService = ref.watch(apiServicePOD);
+  final api = ref.watch(vpnApiPOD);
   final filterService = ref.watch(filterServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   final localeStore = ref.watch(localeStorePOD);
+  final logger = ref.watch(loggerPOD);
 
   final store = LocationsStore(
-    apiService,
+    api.getConnection(),
     filterService,
     analyticsStore,
     remoteConfigStore,
     SharedPreferenceService.instance,
     LocalDBService.instance,
+    logger,
     localeStore,
+    null,
   );
 
   ref.onCancel(store.dispose);

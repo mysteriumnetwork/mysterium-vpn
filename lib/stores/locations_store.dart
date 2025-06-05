@@ -1,17 +1,21 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/exceptions/api.dart';
 import 'package:mysterium_vpn/common/extensions/stream_extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/services/location/ping.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
+import 'package:talker/talker.dart';
+import 'package:vpn_api/vpn_api.dart';
 
 part 'locations_store.g.dart';
 
@@ -20,13 +24,15 @@ class LocationsStore = _LocationsStore with _$LocationsStore;
 
 abstract class _LocationsStore with Store {
   _LocationsStore(
-    this._apiService,
+    this._apiConnection,
     this._filterService,
     this._analyticsStore,
     this._remoteConfigStore,
     this._prefs,
     this._localDB,
+    this._logger,
     LocaleStore localeStore,
+    this._ping,
   ) {
     /// mobx stream won't initialize if not used within ReactiveContext scope, so this is done to
     /// preload locations as soon as store is created
@@ -44,12 +50,14 @@ abstract class _LocationsStore with Store {
     _autoRefresh();
   }
 
-  final ApiService _apiService;
+  final Connection _apiConnection;
   final FilterService _filterService;
   final AnalyticsStore _analyticsStore;
   final RemoteConfigStore _remoteConfigStore;
   final SharedPreferenceService _prefs;
   final LocalDBService _localDB;
+  final Talker _logger;
+  final Ping? _ping;
 
   final Debouncer _debouncer = Debouncer();
   StreamSubscription<dynamic>? _autoRefreshSubscription;
@@ -69,7 +77,7 @@ abstract class _LocationsStore with Store {
   @computed
   ObservableStream<VPNLocations> get locationsStream => switch (_ipType) {
         IPType.datacenter => _dcLocationsStream,
-        IPType.residential => _residentialLocationsStream,
+        _ => _residentialLocationsStream,
       };
 
   @readonly
@@ -117,7 +125,7 @@ abstract class _LocationsStore with Store {
     return [];
   }
 
-  VPNLocation? randomLocation([IPType? type]) {
+  VPNLocation randomLocation([IPType? type]) {
     var recents = recentLocations;
     if (type != null) {
       recents = recentLocations.where((location) => location.ipType == type).toList();
@@ -126,17 +134,31 @@ abstract class _LocationsStore with Store {
       return recents.first;
     }
 
-    final value = switch (type) {
-      IPType.datacenter => _dcLocationsStream.value,
-      _ => _residentialLocationsStream.value,
-    };
+    return const VPNLocation(ipType: IPType.closest);
+  }
 
-    final locations = [...?value?.locations, ...?value?.topLocations];
-    if (locations.isEmpty) {
+  Future<VPNLocation?> closestLocation([IPType? type]) async {
+    final connectionConfigRegions = (await _apiConnection.connectionConfigRegions(
+      ipType: switch (type) {
+        IPType.datacenter => 'hosting',
+        IPType.residential => 'residential',
+        _ => null,
+      },
+    ))
+        .data!;
+    if (connectionConfigRegions.regions.isEmpty) {
       return null;
     }
 
-    return locations.first;
+    final closestRegion = await _detectClosestRegion(connectionConfigRegions.regions);
+
+    final closestLocations = countriesToLocations(closestRegion.topCountries, type);
+    if (closestLocations.isEmpty) {
+      return null;
+    }
+
+    final r = Random();
+    return closestLocations[r.nextInt(closestLocations.length)];
   }
 
   Stream<VPNLocations> _watch(IPType ipType) async* {
@@ -148,6 +170,23 @@ abstract class _LocationsStore with Store {
     yield* _localDB.watchLocations(ipType).where((it) => it != null).map((it) => it!);
   }
 
+  Future<ConnectionRegion> _detectClosestRegion(List<ConnectionRegion> regions) async {
+    // Ensures all pings complete before finding the lowest latency
+    final regionsWithLatencies = await Future.wait(
+      regions.map((region) async {
+        final ping = _ping ?? Ping(region.host, 80);
+        return RegionWithLatency(region, await ping.latencyMedian());
+      }),
+    );
+
+    // Find region with lowest latency
+    final region = regionsWithLatencies.reduce(
+      (a, b) => a.latency < b.latency ? a : b,
+    );
+
+    return region.region;
+  }
+
   Future<void> _autoRefresh() async {
     await _remoteConfigStore.configFuture;
     _autoRefreshSubscription = Stream.periodic(_remoteConfigStore.locationsRefreshInterval).listen(
@@ -156,13 +195,41 @@ abstract class _LocationsStore with Store {
   }
 
   @action
-  Future<VPNLocations> refresh([IPType? ipType]) async {
+  Future<void> refresh([IPType? ipType]) async {
     ipType ??= _ipType;
 
-    final locations = await _apiService.fetchVPNLocations(ipType);
-    await _localDB.setLocations(locations, type: ipType);
+    try {
+      final response = await _apiConnection.connectionConfig(
+        ipType: switch (ipType) {
+          IPType.datacenter => 'hosting',
+          IPType.residential => 'residential',
+          _ => null,
+        },
+      );
+      final connectionConfig = response.data;
+      if (connectionConfig == null) {
+        throw Exception('No data found');
+      }
 
-    return locations;
+      final topLocations = countriesToLocations(connectionConfig.topCountries, ipType);
+      final locations = countriesToLocations(
+        connectionConfig.countries.where((it) => !connectionConfig.topCountries.contains(it)),
+        ipType,
+      );
+
+      await _localDB.setLocations(
+        VPNLocations(
+          topLocations: topLocations,
+          locations: locations,
+        ),
+        type: ipType,
+      );
+    } on ApiException {
+      rethrow;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
   }
 
   @action
@@ -218,4 +285,20 @@ abstract class _LocationsStore with Store {
       _localDB.setLocations(VPNLocations(), type: IPType.datacenter),
     ]);
   }
+}
+
+List<VPNLocation> countriesToLocations(Iterable<String> countries, IPType? ipType) => countries
+    .map(
+      (code) => VPNLocation(
+        code: code,
+        ipType: ipType ?? IPType.residential,
+      ),
+    )
+    .toList();
+
+class RegionWithLatency {
+  const RegionWithLatency(this.region, this.latency);
+
+  final ConnectionRegion region;
+  final Duration latency;
 }

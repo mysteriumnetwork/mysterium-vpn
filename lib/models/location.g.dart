@@ -23,7 +23,7 @@ Map<String, dynamic> _$$VPNLocationsImplToJson(_$VPNLocationsImpl instance) => <
     };
 
 _$VPNLocationImpl _$$VPNLocationImplFromJson(Map<String, dynamic> json) => _$VPNLocationImpl(
-      code: json['code'] as String,
+      code: json['code'] as String? ?? '',
       ipType: $enumDecodeNullable(_$IPTypeEnumMap, json['ipType']) ?? IPType.residential,
     );
 
@@ -35,4 +35,5 @@ Map<String, dynamic> _$$VPNLocationImplToJson(_$VPNLocationImpl instance) => <St
 const _$IPTypeEnumMap = {
   IPType.residential: 'residential',
   IPType.datacenter: 'datacenter',
+  IPType.closest: 'closest',
 };

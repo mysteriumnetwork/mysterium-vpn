@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/stun_binding_request.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
@@ -31,51 +29,6 @@ class RestApiService extends ApiService {
   final EmailMarketing _apiEmailMarketing;
   final NetworkService _networkService;
   final Talker _logger;
-
-  @override
-  Future<VPNLocations> fetchVPNLocations([IPType? ipType]) async {
-    try {
-      final data = (await _apiConnection.connectionConfig(
-        ipType: switch (ipType) {
-          IPType.datacenter => 'hosting',
-          IPType.residential => 'residential',
-          _ => null,
-        },
-      ))
-          .data;
-      if (data == null) {
-        throw Exception('No data found');
-      }
-      final topLocations = data.topCountries
-          .map(
-            (code) => VPNLocation(
-              code: code,
-              ipType: ipType ?? IPType.residential,
-            ),
-          )
-          .toList();
-
-      final locations = data.countries
-          .where((it) => !data.topCountries.contains(it))
-          .map(
-            (code) => VPNLocation(
-              code: code,
-              ipType: ipType ?? IPType.residential,
-            ),
-          )
-          .toList();
-
-      return VPNLocations(
-        topLocations: topLocations,
-        locations: locations,
-      );
-    } on ApiException {
-      rethrow;
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
-    }
-  }
 
   @override
   Future<WireguardConnectResponse> fetchVpnConfig({

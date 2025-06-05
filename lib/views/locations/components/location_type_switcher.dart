@@ -33,13 +33,13 @@ class LocationTypeSwitcher extends HookConsumerWidget {
               onTap: values.length > 1 ? () => onChanged(value) : null,
               label: switch (value) {
                 IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
-                IPType.residential => values.length > 1
+                _ => values.length > 1
                     ? LocaleKeys.ipTypeResidential.tr()
                     : LocaleKeys.allLocations.tr(),
               },
               icon: switch (value) {
                 IPType.datacenter => const SvgIcon(asset: Assets.speed, height: 20),
-                IPType.residential => null,
+                _ => null,
               },
               selected: values.length > 1 && value == this.value,
             ),

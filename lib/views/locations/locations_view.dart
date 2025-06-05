@@ -219,7 +219,7 @@ class _Locations extends HookConsumerWidget {
                   children: [
                     switch (locationType) {
                       IPType.datacenter => LocationsDisclaimer.dataCenter(),
-                      IPType.residential => LocationsDisclaimer.residential(),
+                      _ => LocationsDisclaimer.residential(),
                     },
                     if (topLocations.isNotEmpty)
                       LocationsSliverList(
