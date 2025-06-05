@@ -1,50 +1,62 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/services/location/ping.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
+import 'package:talker/talker.dart';
+import 'package:vpn_api/vpn_api.dart';
 
 import 'locations_store_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<ApiService>(),
+  MockSpec<Connection>(),
   MockSpec<FilterService>(),
   MockSpec<AnalyticsStore>(),
   MockSpec<RemoteConfigStore>(),
   MockSpec<SharedPreferenceService>(),
   MockSpec<LocaleStore>(),
   MockSpec<LocalDBService>(),
+  MockSpec<Ping>(),
 ])
 void main() {
   late LocationsStore locationsStore;
-  late MockApiService mockApiService;
+  late MockConnection mockApiConnection;
   late MockFilterService mockFilterService;
   late MockAnalyticsStore mockAnalyticsStore;
   late MockRemoteConfigStore mockRemoteConfigStore;
-
   late MockSharedPreferenceService mockPrefs;
   late MockLocalDBService mockLocalDB;
   late MockLocaleStore mockLocaleStore;
+  late MockPing mockPing;
+
   late List<VPNLocation> mockResidential;
   late List<VPNLocation> mockDatacenter;
 
+  void mockConnectionConfig(String expectedIPType, ConnectionConfigResponse data) {
+    when(mockApiConnection.connectionConfig(ipType: expectedIPType)).thenAnswer(
+      (_) async => Response(requestOptions: RequestOptions(), data: data),
+    );
+  }
+
   setUp(() async {
-    mockApiService = MockApiService();
+    mockApiConnection = MockConnection();
     mockFilterService = MockFilterService();
     mockAnalyticsStore = MockAnalyticsStore();
     mockRemoteConfigStore = MockRemoteConfigStore();
     mockPrefs = MockSharedPreferenceService();
     mockLocalDB = MockLocalDBService();
     mockLocaleStore = MockLocaleStore();
+    mockPing = MockPing();
 
     mockResidential = const [
       VPNLocation(code: 'US'),
@@ -68,26 +80,30 @@ void main() {
     when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => const <VPNLocation>[]);
 
     // Add stubs for fetchVPNLocations
-    when(mockApiService.fetchVPNLocations()).thenAnswer(
-      (_) async => VPNLocations(locations: mockResidential),
+    mockConnectionConfig('', ConnectionConfigResponse(countries: ['US'], topCountries: ['DE']));
+    mockConnectionConfig(
+      'residential',
+      ConnectionConfigResponse(countries: ['US'], topCountries: ['DE']),
     );
-    when(mockApiService.fetchVPNLocations(IPType.residential)).thenAnswer(
-      (_) async => VPNLocations(locations: mockResidential),
+    mockConnectionConfig(
+      'hosting',
+      ConnectionConfigResponse(countries: ['US'], topCountries: ['DE']),
     );
-    when(mockApiService.fetchVPNLocations(IPType.datacenter)).thenAnswer(
-      (_) async => VPNLocations(locations: mockDatacenter),
-    );
+
+    when(mockPing.latencyMedian()).thenAnswer((_) async => Duration.zero);
 
     await mockRemoteConfigStore.configFuture;
 
     locationsStore = LocationsStore(
-      mockApiService,
+      mockApiConnection,
       mockFilterService,
       mockAnalyticsStore,
       mockRemoteConfigStore,
       mockPrefs,
       mockLocalDB,
+      Talker(),
       mockLocaleStore,
+      mockPing,
     );
   });
 
@@ -124,27 +140,31 @@ void main() {
 
     test('returns random location from recent locations', () async {
       when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => mockResidential);
+      when(mockFilterService.filterLocations(mockResidential, keyword: '', shouldSortList: false))
+          .thenReturn(mockResidential);
 
-      await locationsStore.locationsStream.first;
       final recentLocations = await locationsStore.recentLocationsFuture;
 
       final randomLocation = locationsStore.randomLocation();
       expect(recentLocations.contains(randomLocation), isTrue);
     });
 
-    test('returns null when no locations available for random selection', () async {
+    test('returns closest location when no locations available for random selection', () async {
       final locationsStore = LocationsStore(
-        mockApiService,
+        mockApiConnection,
         mockFilterService,
         mockAnalyticsStore,
         mockRemoteConfigStore,
         mockPrefs,
         mockLocalDB,
+        Talker(),
         mockLocaleStore,
+        mockPing,
       );
       when(mockLocalDB.getLocations(IPType.residential)).thenAnswer((_) => VPNLocations());
-      when(mockApiService.fetchVPNLocations(IPType.residential)).thenAnswer(
-        (_) async => VPNLocations(),
+      mockConnectionConfig(
+        'residential',
+        ConnectionConfigResponse(countries: [], topCountries: []),
       );
       when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => const <VPNLocation>[]);
 
@@ -153,8 +173,7 @@ void main() {
       await locationsStore.recentLocationsFuture;
 
       final randomLocation = locationsStore.randomLocation(IPType.residential);
-
-      expect(randomLocation, isNull);
+      expect(randomLocation, const VPNLocation(ipType: IPType.closest));
     });
 
     test('refresh updates locations', () async {

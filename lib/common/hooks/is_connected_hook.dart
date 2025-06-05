@@ -7,8 +7,17 @@ bool useIsConnected() {
 
 bool? useIsLocationConnected([VPNLocation? location]) {
   final store = useProvider(vpnStorePOD);
+
   return useComputedValue(
     () {
+      // Special case, when no location is used
+      if (location == null) {
+        if (store.isLoading) {
+          return null;
+        }
+        return store.isConnected;
+      }
+
       if (store.isLoading && (location == store.location || location == store.connectingLocation)) {
         return null;
       }

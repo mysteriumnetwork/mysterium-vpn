@@ -92,6 +92,8 @@ abstract class Assets {
   static const String thumbsDownLight = 'assets/icons/thumbs_down_light.svg';
   static const String thumbsDownDark = 'assets/icons/thumbs_down_dark.svg';
   static const String feedback = 'assets/icons/feedback.svg';
+  static const String bestServerDark = 'assets/icons/best_server_dark.svg';
+  static const String bestServerLight = 'assets/icons/best_server_light.svg';
 
   //Animations
   static const String backgroundElements = 'assets/animations/background_elements.json';

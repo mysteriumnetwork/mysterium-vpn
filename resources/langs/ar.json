@@ -595,5 +595,6 @@
   "thanksForFeedback": "شكرًا لك على ملاحظاتك!",
   "thanksForFeedbackDesc": "نقدر ملاحظاتك. تساعدنا في تحسين تجربتك مع VPN!",
   "closeBtn": "إغلاق",
-  "failedToSubmitFeedback": "فشل في إرسال ملاحظاتك. حاول مرة أخرى."
+  "failedToSubmitFeedback": "فشل في إرسال ملاحظاتك. حاول مرة أخرى.",
+  "connectBestServer": "الاتصال بأفضل خادم..."
 }

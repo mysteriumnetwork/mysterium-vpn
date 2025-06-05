@@ -29,6 +29,7 @@ import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dar
 import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
+import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -61,6 +62,7 @@ abstract class _VpnStore with Store {
     required AnalyticsStore analyticsStore,
     required RemoteConfigStore remoteConfigStore,
     required AuthSessionStore authSessionStore,
+    required RealIPInfoStore realIPInfo,
   })  : _apiService = apiService,
         _externalApiService = externalApiService,
         _mqtt = mqtt,
@@ -71,6 +73,7 @@ abstract class _VpnStore with Store {
         _analyticsStore = analyticsStore,
         _remoteConfigStore = remoteConfigStore,
         _authSessionStore = authSessionStore,
+        _realIPInfo = realIPInfo,
         _logger = logger {
     _init();
   }
@@ -83,6 +86,7 @@ abstract class _VpnStore with Store {
   final SubscriptionStore _subscriptionStore;
   final RemoteConfigStore _remoteConfigStore;
   final AuthSessionStore _authSessionStore;
+  final RealIPInfoStore _realIPInfo;
 
   final FlavorConfig _env;
   final _securedStorage = SecureStorageService.instance;
@@ -146,7 +150,11 @@ abstract class _VpnStore with Store {
   bool get isLoading =>
       _connectionStatus == ConnectionStatus.connecting ||
       isFetchingConfig ||
+      isFetchingLocation ||
       _connectionStatus == ConnectionStatus.disconnecting;
+
+  @computed
+  bool get isFetchingLocation => _fetchLocationFuture?.status == FutureStatus.pending;
 
   @computed
   bool get isFetchingConfig => _fetchConfigFuture?.status == FutureStatus.pending;
@@ -158,10 +166,14 @@ abstract class _VpnStore with Store {
   VPNLocation? get location => _vpnConnection?.location ?? _connectingLocation;
 
   @computed
-  VPNLocation? get potentialLocation => _sharedPrefs.getLocation() ?? _selectLocation();
+  VPNLocation? get potentialLocation =>
+      _sharedPrefs.getLocation() ?? _locationsStore.randomLocation();
 
   @readonly
   ObservableFuture<void>? _resolveConnectionLocationFuture;
+
+  @readonly
+  ObservableFuture<VPNLocation?>? _fetchLocationFuture;
 
   @readonly
   ObservableFuture<WireguardConnectResponse>? _fetchConfigFuture;
@@ -505,12 +517,19 @@ abstract class _VpnStore with Store {
       }
     }
 
-    location ??= refreshIP ?? false ? _vpnConnection?.location : _selectLocation();
-    if (location == null) {
+    location ??= refreshIP ?? false ? _vpnConnection?.location : potentialLocation;
+    _connectingLocation = location;
+    if (_connectingLocation == null) {
       return;
     }
 
-    _connectingLocation = location;
+    if (_connectingLocation!.ipType == IPType.closest) {
+      _fetchLocationFuture = ObservableFuture(_locationsStore.closestLocation(IPType.datacenter));
+      _connectingLocation = await _fetchLocationFuture;
+    }
+    if (_connectingLocation == null) {
+      return;
+    }
 
     try {
       if (await _wireguardService.status() == ConnectionStatus.connected) {
@@ -525,7 +544,7 @@ abstract class _VpnStore with Store {
         });
       }
 
-      await _completeConnection(location, refreshIP);
+      await _completeConnection(_connectingLocation!, refreshIP);
 
       _stopwatch.stop();
       if (_vpnConnection != null) {
@@ -581,8 +600,6 @@ abstract class _VpnStore with Store {
     }
   }
 
-  VPNLocation? _selectLocation() => _locationsStore.randomLocation();
-
   @action
   Future<void> _completeConnection(
     VPNLocation location,
@@ -597,6 +614,7 @@ abstract class _VpnStore with Store {
         _apiService.fetchVpnConfig(
           request: WireguardConnectRequest(
             publicKey: key.publicKey,
+            countryOriginate: (await _realIPInfo.infoFuture)?.country,
             country: location.code,
             ipType: switch (location.ipType) {
               IPType.datacenter => 'hosting',

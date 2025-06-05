@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
@@ -27,8 +26,7 @@ class ConnectionStatusBar extends HookConsumerWidget {
 
     final vpnStore = ref.watch(vpnStorePOD);
     final connectionStatus = useComputedValue(() => vpnStore.vpnStatus);
-    final isFetchingConfig =
-        useComputedValue(() => vpnStore.fetchConfigFuture?.status == FutureStatus.pending);
+    final isLoading = useComputedValue(() => vpnStore.isLoading);
     final isExpanded = useState(false);
 
     final handleToggleExpanded = useMemoized(
@@ -56,7 +54,7 @@ class ConnectionStatusBar extends HookConsumerWidget {
       highlightColor: Colors.transparent,
       focusColor: Colors.transparent,
       hoverColor: Colors.transparent,
-      fillColor: _barBackgroundColor(connectionStatus, isFetchingConfig),
+      fillColor: _barBackgroundColor(connectionStatus, isLoading),
       splashColor: Palette.white.withValues(alpha: .2),
       visualDensity: VisualDensity.compact,
       clipBehavior: Clip.antiAlias,
@@ -74,16 +72,10 @@ class ConnectionStatusBar extends HookConsumerWidget {
                     spacing: 6,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _statusIcon(
-                        connectionStatus,
-                        isFetchingConfig,
-                      ),
+                      _statusIcon(connectionStatus, isLoading),
                       Flexible(
                         child: EasyText(
-                          _statusText(
-                            connectionStatus,
-                            isFetchingConfig,
-                          ),
+                          _statusText(connectionStatus, isLoading),
                           color: Palette.white,
                           fontWeight: FontWeight.w700,
                           fontSize: 14,
@@ -115,8 +107,8 @@ class ConnectionStatusBar extends HookConsumerWidget {
     );
   }
 
-  Color _barBackgroundColor(ConnectionStatus connectionStatus, bool isFetchingConfig) {
-    if (isFetchingConfig) {
+  Color _barBackgroundColor(ConnectionStatus connectionStatus, bool isLoading) {
+    if (isLoading) {
       return Palette.yellow;
     }
     return switch (connectionStatus) {
@@ -130,9 +122,9 @@ class ConnectionStatusBar extends HookConsumerWidget {
 
   String _statusText(
     ConnectionStatus connectionStatus,
-    bool isFetchingConfig,
+    bool isLoading,
   ) {
-    if (isFetchingConfig) {
+    if (isLoading) {
       return LocaleKeys.gettingIPAddress.tr();
     }
     return switch (connectionStatus) {
@@ -144,8 +136,8 @@ class ConnectionStatusBar extends HookConsumerWidget {
     };
   }
 
-  Widget _statusIcon(ConnectionStatus connectionStatus, bool isFetchingConfig) {
-    if (isFetchingConfig) {
+  Widget _statusIcon(ConnectionStatus connectionStatus, bool isLoading) {
+    if (isLoading) {
       return const LoadingIndicator(radius: 16);
     }
     return switch (connectionStatus) {

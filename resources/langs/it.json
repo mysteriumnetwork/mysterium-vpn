@@ -595,5 +595,6 @@
   "thanksForFeedback": "Grazie per il tuo feedback!",
   "thanksForFeedbackDesc": "Apprezziamo il tuo contributo. Il tuo feedback ci aiuta a migliorare la tua esperienza VPN!",
   "closeBtn": "Chiudi",
-  "failedToSubmitFeedback": "Impossibile inviare il feedback. Riprova."
+  "failedToSubmitFeedback": "Impossibile inviare il feedback. Riprova.",
+  "connectBestServer": "Collegati al miglior server..."
 }

@@ -160,7 +160,7 @@ mixin _$LocationsStore on _LocationsStore, Store {
   late final _$refreshAsyncAction = AsyncAction('_LocationsStore.refresh', context: context);
 
   @override
-  Future<VPNLocations> refresh([IPType? ipType]) {
+  Future<void> refresh([IPType? ipType]) {
     return _$refreshAsyncAction.run(() => super.refresh(ipType));
   }
 

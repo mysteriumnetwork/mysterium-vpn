@@ -22,7 +22,7 @@ class ConnectTextButton extends HookConsumerWidget {
   });
 
   final VoidCallback? onPressed;
-  final VPNLocation location;
+  final VPNLocation? location;
   final AutoSizeGroup? textScaleGroup;
   final Size size;
   final double loadingIndicatorRadius;
