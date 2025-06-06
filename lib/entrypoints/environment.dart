@@ -28,18 +28,24 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:store_checker_windows/store_checker_windows.dart';
+import 'package:talker/talker.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:url_protocol/url_protocol.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
 class Environment {
-  Environment(this.flavor);
+  Environment(
+    this.flavor, {
+    this.quickAuth = false,
+  });
 
   final String flavor;
+  final bool quickAuth;
   late final ProviderContainer providerContainer;
   late final FlavorConfig flavorConfig;
   late final RemoteConfigStore? remoteConfigStore;
+  late final Talker logger;
 
   Widget getApp() => UncontrolledProviderScope(
         container: providerContainer,
@@ -55,8 +61,6 @@ class Environment {
       );
 
   Future<void> init() async {
-    WidgetsFlutterBinding.ensureInitialized();
-
     if (isDesktop()) {
       await windowManager.ensureInitialized();
       await windowManager.setPreventClose(true);
@@ -69,6 +73,7 @@ class Environment {
       registerProtocolHandler('mysteriumvpn');
       _nativeWindowsInit();
     }
+
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.light.copyWith(statusBarIconBrightness: Brightness.light),
     );
@@ -80,6 +85,7 @@ class Environment {
       SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
     );
+
     GoogleFonts.config.allowRuntimeFetching = false;
 
     FlutterError.demangleStackTrace = (StackTrace stack) {
@@ -101,22 +107,13 @@ class Environment {
     providerContainer = ProviderContainer(
       overrides: [environmentPOD.overrideWithValue(flavorConfig)],
     );
+
     final firebaseOptions = _getFirebaseOptions();
     await providerContainer.read(analyticsInitPOD(firebaseOptions).future);
     remoteConfigStore = await _initRemoteConfig(providerContainer);
     await _initLatLngStore(providerContainer);
-    final logger = providerContainer.read(loggerPOD);
+    logger = providerContainer.read(loggerPOD);
     await _initIntercom();
-    FlutterError.onError = (details) {
-      logger.handle(
-        details.exception,
-        details.stack,
-      );
-    };
-    PlatformDispatcher.instance.onError = (error, stack) {
-      logger.handle(error, stack, 'fatal');
-      return true;
-    };
 
     logger.log(
       'App started in ${flavorConfig.flavor} mode\nBase URL ${flavorConfig.values.baseUrl}',
@@ -185,11 +182,6 @@ class Environment {
     }
 
     return switch (flavor) {
-      'DEV' => FlavorConfig(
-          flavor: Flavor.dev,
-          values: FlavorValues.dev(),
-          buildInfo: buildInfo,
-        ),
       'PROD' => FlavorConfig(
           flavor: Flavor.production,
           values: FlavorValues.production(),
@@ -197,7 +189,7 @@ class Environment {
         ),
       _ => FlavorConfig(
           flavor: Flavor.dev,
-          values: FlavorValues.dev(),
+          values: FlavorValues.dev(quickAuth: quickAuth),
           buildInfo: buildInfo,
         ),
     };

@@ -30,6 +30,7 @@ class FlavorValues {
     required this.textsSdkKey,
     required this.measurementId,
     required this.apiSecret,
+    required this.quickAuth,
   });
 
   factory FlavorValues.production() => FlavorValues._(
@@ -51,9 +52,13 @@ class FlavorValues {
         textsSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/ZnfqKRIkCEy2oG4Fc_ZbgA',
         measurementId: 'G-293FMB7WPQ',
         apiSecret: 'An1EAWXDRp6iivNpZ6uKBg',
+        quickAuth: false,
       );
 
-  factory FlavorValues.dev() => FlavorValues._(
+  factory FlavorValues.dev({
+    required bool quickAuth,
+  }) =>
+      FlavorValues._(
         baseUrl: 'https://api-test.mysteriumvpn.com/api/v1',
         mqttUrl: 'wss://events-test.mysteriumvpn.com/ws',
         mqttUsername: 'dvpn',
@@ -71,6 +76,7 @@ class FlavorValues {
         textsSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/OyPvJv7luUW48Kb20B3dbw',
         measurementId: 'G-9Y0P8J42T5',
         apiSecret: 'AIzaSyDEg8yyxnhEaCJ7wBPcOqd6O8W2FTkDJXg',
+        quickAuth: quickAuth,
       );
 
   final String baseUrl;
@@ -90,10 +96,11 @@ class FlavorValues {
   final String textsSdkKey;
   final String measurementId;
   final String apiSecret;
+  final bool quickAuth;
 
   @override
   String toString() =>
-      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, billingPage: $billingPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret';
+      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, billingPage: $billingPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret, quickAuth: $quickAuth';
 }
 
 class FlavorConfig {

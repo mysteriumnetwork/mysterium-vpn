@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -7,9 +8,20 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 void main() async {
   const flavor = String.fromEnvironment('FLAVOR');
-  final environment = Environment(flavor);
+  final environment = Environment(flavor, quickAuth: true);
 
+  WidgetsFlutterBinding.ensureInitialized();
   await environment.init();
+  FlutterError.onError = (details) {
+    environment.logger.handle(
+      details.exception,
+      details.stack,
+    );
+  };
+  PlatformDispatcher.instance.onError = (error, stack) {
+    environment.logger.handle(error, stack, 'fatal');
+    return true;
+  };
 
   await SentryFlutter.init(
     (options) {

@@ -11,6 +11,7 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/forms/forms.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/utils/keys.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
@@ -25,6 +26,7 @@ import 'package:styled_widget/styled_widget.dart';
 
 class SignInForm extends HookConsumerWidget {
   const SignInForm({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final analyticsStore = ref.watch(analyticsStorePOD);
@@ -110,7 +112,7 @@ class SignInForm extends HookConsumerWidget {
                   ).padding(vertical: height * 0.03),
                   AutofillGroup(
                     child: ReactiveTextField(
-                      key: const Key('loginEmailField'),
+                      key: K.loginEmailField,
                       onTap: (_) {
                         analyticsStore.logEvent(AnalyticsEvent.emailInput);
                       },
@@ -166,7 +168,7 @@ class SignInForm extends HookConsumerWidget {
                   ),
                   ReactiveFormConsumer(
                     builder: (_, signInForm, child) => EasyButton(
-                      key: const Key('loginButton'),
+                      key: K.loginButton,
                       width: double.infinity,
                       onPressed: signInStatus != FutureStatus.pending
                           ? () =>

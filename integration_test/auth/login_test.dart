@@ -1,17 +1,22 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mysterium_vpn/common/utils/keys.dart';
 import 'package:mysterium_vpn/entrypoints/environment.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:patrol/patrol.dart';
 
 void main() {
   final environment = Environment('DEV');
+
   patrolTest('User logs in with valid credentials', ($) async {
     await environment.init();
-
     await $.pumpWidgetAndSettle(environment.getApp());
 
-    expect($(#loginEmailField), findsOneWidget);
+    await $(#loginEmailField).waitUntilVisible(
+      timeout: const Duration(seconds: 10),
+    );
+
     await $(#loginEmailField).enterText('davidm@mysterium.network');
     await $(#loginButton).tap();
 
