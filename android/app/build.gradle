@@ -57,6 +57,7 @@ def keystorePropertiesFile = rootProject.file('key.properties')
                dimension "env"
                applicationIdSuffix ".test"
                manifestPlaceholders = [ "appLabel": "Mysterium VPN Test"]
+               matchingFallbacks = ['release'] // Inherit from release build type
            }
        create("prod") {
                dimension "env"
@@ -76,11 +77,8 @@ def keystorePropertiesFile = rootProject.file('key.properties')
        release {
            signingConfig signingConfigs.release
        }
-       devRelease {
-           matchingFallbacks = ['release']
-       }
    }
-       testBuildType "devRelease"
+       testBuildType "release"
        namespace 'com.mysteriumvpn.android'
 
    }
