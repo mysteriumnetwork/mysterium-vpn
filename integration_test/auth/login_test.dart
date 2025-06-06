@@ -1,28 +1,39 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mysterium_vpn/common/utils/keys.dart';
 import 'package:mysterium_vpn/entrypoints/environment.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:patrol/patrol.dart';
 
 void main() {
-  final environment = Environment('DEV');
+  final environment = Environment('DEV', quickAuth: true);
 
   patrolTest('User logs in with valid credentials', ($) async {
+    WidgetsFlutterBinding.ensureInitialized();
     await environment.init();
     await $.pumpWidgetAndSettle(environment.getApp());
 
-    await $(#loginEmailField).waitUntilVisible(
-      timeout: const Duration(seconds: 10),
-    );
+    // Wait for "Sign in to Mysterium VPN" title
+    await $('Sign in to Mysterium VPN').waitUntilVisible();
 
+    // Close the login page
+    await $(#backButton).tap();
+
+    // Look for "You're not signed in" banner
+    await $("You're not signed in").waitUntilVisible();
+
+    // click the banner
+    await $("You're not signed in").tap();
+
+    // Wait for "Sign in to Mysterium VPN" title
+    await $('Sign in to Mysterium VPN').waitUntilVisible();
+
+    // Input email
     await $(#loginEmailField).enterText('davidm@mysterium.network');
+
+    // Tap the login button
     await $(#loginButton).tap();
 
-    await $(LocaleKeys.checkYourEmail.tr()).waitUntilVisible(
-      timeout: const Duration(seconds: 10),
-    );
-    expect($(LocaleKeys.checkYourEmail.tr()), findsOneWidget);
+    // Make sure that "Sign in to mysterium VPN" is not visible anymore
+    expect($('Sign in to Mysterium VPN'), findsNothing);
+    expect($("You're not signed in"), findsNothing);
   });
 }

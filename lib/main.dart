@@ -8,7 +8,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 void main() async {
   const flavor = String.fromEnvironment('FLAVOR');
-  final environment = Environment(flavor, quickAuth: true);
+  final environment = Environment(flavor);
 
   WidgetsFlutterBinding.ensureInitialized();
   await environment.init();

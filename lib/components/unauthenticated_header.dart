@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/utils/keys.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
@@ -53,6 +54,7 @@ class _BackButton extends StatelessWidget {
     }
 
     return SvgIconButton(
+      key: K.backButton,
       asset: context.c.isDarkMode ? Assets.navigateBackLightGrey : Assets.navigateBackLightBlack,
       onPressed: handleBackOrHome,
     );
