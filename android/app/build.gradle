@@ -76,7 +76,12 @@ def keystorePropertiesFile = rootProject.file('key.properties')
        release {
            signingConfig signingConfigs.release
        }
+       devRelease {
+           initWith release
+           matchingFallbacks = ['release']
+       }
    }
+       testBuildType "devRelease"
        namespace 'com.mysteriumvpn.android'
 
    }
