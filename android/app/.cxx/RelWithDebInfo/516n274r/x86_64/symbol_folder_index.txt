@@ -1,1 +1,0 @@
-/Users/dmacan/Projects/mysterium/mysterium-vpn/build/app/intermediates/cxx/RelWithDebInfo/516n274r/obj/x86_64
