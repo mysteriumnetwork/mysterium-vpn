@@ -76,7 +76,7 @@ devtools_options.yaml
 
 # Certificate files
 /assets/certificates
-android/app/.cxx
+android/app/.cxx/
 .scripts/
 
 # Tests
