@@ -1,2 +1,0 @@
-/Users/dmacan/Projects/mysterium/mysterium-vpn/android/app/.cxx/RelWithDebInfo/516n274r/arm64-v8a/CMakeFiles/edit_cache.dir
-/Users/dmacan/Projects/mysterium/mysterium-vpn/android/app/.cxx/RelWithDebInfo/516n274r/arm64-v8a/CMakeFiles/rebuild_cache.dir
