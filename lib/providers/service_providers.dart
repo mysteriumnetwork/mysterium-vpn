@@ -12,6 +12,7 @@ import 'package:mysterium_vpn/common/interceptors/api_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/connection_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/interceptors/retry_request.dart';
+import 'package:mysterium_vpn/common/interceptors/test_flags_interceptor.dart';
 import 'package:mysterium_vpn/common/observers/crashlytics_talker_observer.dart';
 import 'package:mysterium_vpn/common/utils/translation_asset_loader.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
@@ -86,6 +87,7 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
             printErrorData: false,
           ),
         ),
+      if (environment.flavor == Flavor.dev) TestFlagsInterceptor(environment)
     ],
   );
 
