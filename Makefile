@@ -73,7 +73,7 @@ run-android-testlab:
 	gcloud firebase test android run \
     	--type instrumentation \
     	--app build/app/outputs/apk/dev/debug/app-dev-debug.apk \
-    	--test build/app/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk \
+    	--test build/app/outputs/apk/androidTest/dev/debug/app-dev-release-androidTest.apk \
     	--device model="$(ANDROID_DEVICE_MODEL)",version="$(ANDROID_DEVICE_VERSION)",locale=en,orientation=portrait \
     	--timeout 10m \
     	--use-orchestrator \
