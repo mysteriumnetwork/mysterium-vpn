@@ -55,7 +55,7 @@ build-ios-integration-test:
 	patrol build ios --flavor dev --dart-define "FLAVOR=DEV" --flutter-command="fvm flutter" --verbose --release $(flags)
 
 build-android-integration-test:
-	patrol build android --flavor dev --dart-define "FLAVOR=DEV" --flutter-command="fvm flutter" --verbose $(flags)
+	patrol build android --flavor dev --dart-define "FLAVOR=DEV" --flutter-command="fvm flutter" --verbose --release $(flags)
 
 run-ios-testlab:
 	cd build/ios_integ/Build/Products && \
