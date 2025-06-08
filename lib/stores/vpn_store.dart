@@ -791,6 +791,8 @@ abstract class _VpnStore with Store {
     try {
       return await _wireguardService.status();
     } catch (e) {
+      _logger.handle(e);
+      Sentry.captureException(e);
       return ConnectionStatus.unknown;
     }
   }
