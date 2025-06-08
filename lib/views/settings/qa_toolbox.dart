@@ -107,6 +107,23 @@ class QAToolbox extends HookConsumerWidget {
                 },
               ),
             ),
+            SettingItem(
+              asset: isDarkTheme ? Assets.settingsDark : Assets.settingsLight,
+              title: 'Check tunnel status',
+              subtitle: const EasyText('Will query the current tunnel status'),
+              actionWidget: TextButton.icon(
+                label: const EasyText(
+                  'Check',
+                ),
+                icon: const Icon(Icons.refresh),
+                onPressed: () async {
+                  final status = await ref.read(vpnStorePOD).checkTunnelStatus();
+                  showSnackbar(
+                    'Tunnel status: $status',
+                  );
+                },
+              ),
+            ),
           ],
         );
       },
