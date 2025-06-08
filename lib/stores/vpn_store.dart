@@ -289,7 +289,7 @@ abstract class _VpnStore with Store {
   @action
   Future<void> _setupAndListenToConnectionStatus() async {
     _connectingLocation = null;
-    _setConnectionStatus(await _wireguardService.status());
+    _setConnectionStatus(await checkTunnelStatus());
 
     if (_connectionStatus == ConnectionStatus.connected) {
       final location = potentialLocation;
@@ -370,7 +370,9 @@ abstract class _VpnStore with Store {
       await _localDBService.setMalwareBlocker(malwareBlocker: value);
       _malwareBlockerContent = value;
     }
-    await _localDBService.setNotSafeContentBlocker(notSafeContentBlocker: value);
+    await _localDBService.setNotSafeContentBlocker(
+      notSafeContentBlocker: value,
+    );
     _notSafeContentBlocker = value;
   }
 
@@ -439,7 +441,7 @@ abstract class _VpnStore with Store {
   /// Disconnect from Wireguard tunnel
   @action
   Future<void> disconnectWireguard() async {
-    final status = await _wireguardService.status();
+    final status = await checkTunnelStatus();
     if (status == ConnectionStatus.connected) {
       await _wireguardService.disconnect();
     }
@@ -532,11 +534,11 @@ abstract class _VpnStore with Store {
     }
 
     try {
-      if (await _wireguardService.status() == ConnectionStatus.connected) {
+      if ((await checkTunnelStatus()) == ConnectionStatus.connected) {
         await disconnectWireguard();
         // Wait until connection is disconnected
         await Future.doWhile(() async {
-          final tunnelStatus = await _wireguardService.status();
+          final tunnelStatus = await checkTunnelStatus();
           if (tunnelStatus == ConnectionStatus.disconnected) {
             return false;
           }
@@ -772,7 +774,9 @@ abstract class _VpnStore with Store {
         return;
       }
       await _apiService.udpBlockedCheck();
-      _logger.info('UDP block check completed in less than 2sec and it is not blocked');
+      _logger.info(
+        'UDP block check completed in less than 2sec and it is not blocked',
+      );
     } catch (e) {
       _analyticsStore.logEvent(
         AnalyticsEvent.udpBlocked,
@@ -780,6 +784,16 @@ abstract class _VpnStore with Store {
           'error': e.toString(),
         },
       );
+    }
+  }
+
+  Future<ConnectionStatus> checkTunnelStatus() async {
+    try {
+      return await _wireguardService.status();
+    } catch (e) {
+      _logger.handle(e);
+      Sentry.captureException(e);
+      return ConnectionStatus.unknown;
     }
   }
 }
