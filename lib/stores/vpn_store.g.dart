@@ -404,8 +404,9 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore.disconnectWireguard', context: context);
 
   @override
-  Future<void> disconnectWireguard() {
-    return _$disconnectWireguardAsyncAction.run(() => super.disconnectWireguard());
+  Future<void> disconnectWireguard({bool isRefreshing = false}) {
+    return _$disconnectWireguardAsyncAction
+        .run(() => super.disconnectWireguard(isRefreshing: isRefreshing));
   }
 
   late final _$toggleConnectionAsyncAction =
