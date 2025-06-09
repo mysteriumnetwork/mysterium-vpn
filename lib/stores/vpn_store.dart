@@ -440,7 +440,7 @@ abstract class _VpnStore with Store {
 
   /// Disconnect from Wireguard tunnel
   @action
-  Future<void> disconnectWireguard({bool isRefreshing = false}) async {
+  Future<void> disconnectWireguard({bool isReconnecting = false}) async {
     final status = await checkTunnelStatus();
     if (status == ConnectionStatus.connected) {
       await _wireguardService.disconnect();
@@ -454,7 +454,7 @@ abstract class _VpnStore with Store {
       _connectionKilledSub?.cancel();
       _connectionKilledSub = null;
     }
-    if (!isRefreshing) {
+    if (!isReconnecting) {
       _connectingLocation = null;
     }
   }
@@ -533,7 +533,7 @@ abstract class _VpnStore with Store {
 
     try {
       if ((await checkTunnelStatus()) == ConnectionStatus.connected) {
-        await disconnectWireguard(isRefreshing: refreshIP ?? false);
+        await disconnectWireguard(isReconnecting: true);
         // Wait until connection is disconnected
         await Future.doWhile(() async {
           final tunnelStatus = await checkTunnelStatus();
