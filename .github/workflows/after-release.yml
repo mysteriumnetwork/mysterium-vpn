@@ -2,11 +2,6 @@ name: CD (after release)
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: (Optional) Release version e.g. 1.0.0. Leave empty to auto-detect the latest release.
-        required: false
-        type: string
 
 jobs:
 
@@ -15,25 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Fetch latest release
-        id: fetch-latest
-        if: ${{ github.event.inputs.version == '' }}
-        uses: gregziegan/fetch-latest-release@v2.0.0
-        with:
-          github_token: ${{ github.token }}
-
-      - name: Decide build version
-        id: calculate-version
+      - name: Install ConfigCat CLI
         run: |
-          if [ -n "${{ github.event.inputs.version }}" ]; then
-            echo "Using provided release version: ${{ github.event.inputs.version }}"
-            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
-          else
-            echo "No release input provided, using fetched release: ${{ steps.fetch-latest.outputs.tag_name }}"
-            echo "version=${{ steps.fetch-latest.outputs.tag }}" >> $GITHUB_OUTPUT
-          fi
+          sudo snap install configcat
+          configcat setup --username ${{ secrets.CONFIGCAT_API_USER }} --password ${{ secrets.CONFIGCAT_API_PASS }}
 
-      - name: Debug
-        run: |
-          echo "Using provided release version: ${{ github.event.inputs.version }}"
-          echo "No release input provided, using fetched release: ${{ steps.fetch-latest.outputs.tag_name }}"
+      - name: Reset "hideDeleteAccount" to defaults
+        run: configcat flag-v2 targeting rule rm --flag-id 587567 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --rule-position 1
+
+      - name: Reset "pricingMonthly" to defaults
+        run: configcat flag-v2 targeting rule rm --flag-id 614140 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --rule-position 1
