@@ -521,11 +521,15 @@ abstract class _VpnStore with Store {
       }
     }
 
-    _connectingLocation = refreshIP ?? false ? _vpnConnection?.location : potentialLocation;
+    _connectingLocation =
+        location ?? (refreshIP ?? false ? _vpnConnection?.location : potentialLocation);
 
     if (_connectingLocation!.ipType == IPType.closest) {
       _fetchLocationFuture = ObservableFuture(_locationsStore.closestLocation(IPType.datacenter));
-      _connectingLocation = await _fetchLocationFuture;
+      final location = await _fetchLocationFuture;
+      if (location != null) {
+        _connectingLocation = location;
+      }
     }
     if (_connectingLocation == null) {
       return;
