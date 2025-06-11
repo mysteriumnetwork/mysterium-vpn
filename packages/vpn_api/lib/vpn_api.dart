@@ -43,6 +43,7 @@ export 'package:vpn_api/src/model/create_generic_subscription_request.dart';
 export 'package:vpn_api/src/model/create_generic_subscription_response.dart';
 export 'package:vpn_api/src/model/create_google_subscription_request.dart';
 export 'package:vpn_api/src/model/create_google_subscription_response.dart';
+export 'package:vpn_api/src/model/disconnect_query.dart';
 export 'package:vpn_api/src/model/field_error.dart';
 export 'package:vpn_api/src/model/get_location_response.dart';
 export 'package:vpn_api/src/model/get_subscription_response.dart';
