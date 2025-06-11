@@ -60,12 +60,9 @@ class ConnectionSettings extends HookConsumerWidget {
                           ),
                   backgroundColor: Palette.purple,
                   child: vpnStore.resetAppFuture?.status == FutureStatus.pending
-                      ? const SizedBox(
-                          width: 50,
-                          child: LoadingIndicator(
-                            radius: 16,
-                            indicatorColor: Palette.white,
-                          ),
+                      ? const LoadingIndicator(
+                          radius: 16,
+                          indicatorColor: Palette.white,
                         )
                       : EasyText(
                           LocaleKeys.resetAppTitle.tr(),

@@ -135,8 +135,6 @@ class _DeleteAccountDialog extends HookWidget {
                     : null,
                 child: store.deleteAccountFeature.status == FutureStatus.pending
                     ? const LoadingIndicator(
-                        radius: 20,
-                        strokeWidth: 1.5,
                         indicatorColor: Palette.white,
                       ).paddingDirectional(end: 4)
                     : EasyText(
