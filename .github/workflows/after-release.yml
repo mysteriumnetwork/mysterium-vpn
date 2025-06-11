@@ -1,0 +1,22 @@
+name: CD (after release)
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  release:
+    name: Fix release after it has been approved in stores
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install ConfigCat CLI
+        run: |
+          sudo snap install configcat
+          configcat setup --username ${{ secrets.CONFIGCAT_API_USER }} --password ${{ secrets.CONFIGCAT_API_PASS }}
+
+      - name: Reset "hideDeleteAccount" to defaults
+        run: configcat flag-v2 targeting rule rm --flag-id 587567 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --rule-position 1
+
+      - name: Reset "pricingMonthly" to defaults
+        run: configcat flag-v2 targeting rule rm --flag-id 614140 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --rule-position 1
