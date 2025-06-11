@@ -68,7 +68,7 @@ dependencies:
   path_provider: 2.1.5
   reactive_forms: 17.0.1
   retry: ^3.1.2
-  sentry_flutter: 8.8.0
+  sentry_flutter: ^8.14.2
   shared_preferences: 2.5.2
   shimmer: 3.0.0
   sign_in_with_apple: 6.1.4

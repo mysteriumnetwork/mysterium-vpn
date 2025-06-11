@@ -21,6 +21,7 @@ ThemeData themeData(Palette palette) => ThemeData(
         secondaryContainer: palette.secondaryTileColor,
         onSecondaryContainer: palette.secondaryColor.withValues(alpha: .75),
         tertiaryContainer: palette.tertiaryContainer,
+        outline: palette.scrimColor,
       ),
       indicatorColor: palette.secondaryColor,
       hintColor: palette.darkTextColor,
@@ -149,4 +150,8 @@ class _ThemeColorsX extends ThemeExtension<_ThemeColorsX> {
   @override
   ThemeExtension<_ThemeColorsX> lerp(covariant ThemeExtension<_ThemeColorsX>? other, double t) =>
       this;
+}
+
+extension ThemeExtensions on ThemeData {
+  Palette get palette => extension<_ThemeColorsX>()!.palette;
 }
