@@ -6,4 +6,5 @@ abstract class ApiService {
   Future<void> udpBlockedCheck();
   Future<void> rateConnection({required RateConnectionRequest request});
   Future<void> setMarketingConsentStatus({required bool consent});
+  Future<void> disconnect({required String publicKey});
 }
