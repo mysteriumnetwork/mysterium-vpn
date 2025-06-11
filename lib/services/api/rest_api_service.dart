@@ -1,33 +1,23 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/stun_binding_request.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
-
-const kReportBrokenNode = '/connection/report-broken-node';
-const kSetMarketingConsent = '/user-preferences/marketing-consent';
-const kGetMarketingConsent = '/user-preferences/marketing-consent';
-const kGetUserPreferences = '/user-preferences';
-const kSetEmailMarketingConsent = '/email-marketing/marketing-consent';
-const kDisconnectAllDevices = '/connection/disconnect-all';
 
 class RestApiService extends ApiService {
   RestApiService({
     required VpnApi api,
-    required NetworkService networkService,
     required Talker logger,
-  })  : _networkService = networkService,
-        _apiConnection = api.getConnection(),
+  })  : _apiConnection = api.getConnection(),
         _apiEmailMarketing = api.getEmailMarketing(),
         _logger = logger;
 
   final Connection _apiConnection;
   final EmailMarketing _apiEmailMarketing;
-  final NetworkService _networkService;
   final Talker _logger;
 
   @override
@@ -52,8 +42,9 @@ class RestApiService extends ApiService {
   @override
   Future<void> disconnectAllDevices() async {
     try {
-      // TODO(Waldz): Generate API client from API documentation openapi.yaml
-      await _networkService.get(kDisconnectAllDevices);
+      await Future.delayed(const Duration(seconds: 5));
+
+      await _apiConnection.disconnectAll();
       _logger.info('All devices disconnected');
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
@@ -139,6 +130,21 @@ class RestApiService extends ApiService {
       );
       _logger.info(
         'Marketing consent status set to $consent',
+      );
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> disconnect({required String publicKey}) async {
+    try {
+      await _apiConnection.disconnect(
+        publicKey: json.encode(publicKey),
+      );
+      _logger.info(
+        'Disconnected successfully with public key: $publicKey',
       );
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);

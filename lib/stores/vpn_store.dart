@@ -456,6 +456,23 @@ abstract class _VpnStore with Store {
     }
     if (!isReconnecting) {
       _connectingLocation = null;
+      unawaited(notifyApiVpnDisconnected());
+    }
+  }
+
+  /// Notify the API that the user has disconnected from the VPN tunnel.
+  Future<void> notifyApiVpnDisconnected() async {
+    try {
+      if (_wireguardKey?.publicKey == null) {
+        _logger.warning('Wireguard key is not initialized, cannot disconnect');
+        return;
+      }
+      await _apiService.disconnect(
+        publicKey: _wireguardKey!.publicKey,
+      );
+    } catch (e) {
+      _logger.handle(e);
+      Sentry.captureException(e);
     }
   }
 
