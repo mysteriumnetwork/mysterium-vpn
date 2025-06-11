@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/dialogs/cancel_subscription_survey_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/delete_account_dialog.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
@@ -27,6 +28,7 @@ import 'package:mysterium_vpn/views/settings/purchased_plan.dart';
 
 class AccountSettings extends HookConsumerWidget {
   const AccountSettings({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authSessionStore = ref.watch(authSessionStorePOD);
@@ -42,6 +44,7 @@ class AccountSettings extends HookConsumerWidget {
 
 class _Unauthenticated extends HookConsumerWidget {
   const _Unauthenticated();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.read(themeStorePOD);
@@ -120,15 +123,32 @@ class _Authenticated extends HookConsumerWidget {
                     );
                   }
 
-                  return SettingActionButton(
-                    child: EasyText(
-                      LocaleKeys.goToBillingPage.tr(),
-                      color: Palette.white,
-                    ),
-                    action: () {
-                      analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
-                      handleSubscribe();
-                    },
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 16,
+                    children: [
+                      SettingActionButton(
+                        backgroundColor: Palette.purple,
+                        child: EasyText(
+                          LocaleKeys.goToBillingPage.tr(),
+                          color: Palette.white,
+                        ),
+                        action: () {
+                          analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
+                          handleSubscribe();
+                        },
+                      ),
+                      SettingActionButton(
+                        child: EasyText(LocaleKeys.cancelSubscriptionBtn.tr()),
+                        action: () async {
+                          final shouldProceed = await showCancelSubscriptionSurveyDialog(context);
+                          if (shouldProceed ?? false) {
+                            handleSubscribe();
+                          }
+                        },
+                      ),
+                    ],
                   );
                 },
               ),

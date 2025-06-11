@@ -102,4 +102,5 @@ enum AnalyticsEvent {
   paymentSuccess1y,
   setMarketingConsentSuccess,
   setMarketingConsentError,
+  subscriptionCancellationSurvey,
 }

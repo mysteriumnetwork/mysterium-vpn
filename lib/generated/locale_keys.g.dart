@@ -254,6 +254,7 @@ abstract class LocaleKeys {
   static const ZM = 'ZM';
   static const ZW = 'ZW';
   static const acceptAndContinue = 'acceptAndContinue';
+  static const accessBlockedSitesReason = 'accessBlockedSitesReason';
   static const account = 'account';
   static const accountName = 'accountName';
   static const accountSignIn = 'accountSignIn';
@@ -289,16 +290,26 @@ abstract class LocaleKeys {
   static const browseAll = 'browseAll';
   static const browseTop = 'browseTop';
   static const buttonUpdateApp = 'buttonUpdateApp';
+  static const bypassRestrictionsReason = 'bypassRestrictionsReason';
   static const cancelBtn = 'cancelBtn';
   static const cancelMyAccount = 'cancelMyAccount';
+  static const cancelSubscriptionBtn = 'cancelSubscriptionBtn';
+  static const cancelSurveyFeedbackHint = 'cancelSurveyFeedbackHint';
+  static const cancelSurveyTitle = 'cancelSurveyTitle';
   static const cancelYourSubsMess = 'cancelYourSubsMess';
   static const changeSubPlan = 'changeSubPlan';
+  static const checkSubsStatusDesc = 'checkSubsStatusDesc';
+  static const checkSubsStatusFailedDesc = 'checkSubsStatusFailedDesc';
+  static const checkSubsStatusFailedTitle = 'checkSubsStatusFailedTitle';
+  static const checkSubsStatusTitle = 'checkSubsStatusTitle';
   static const checkYourEmail = 'checkYourEmail';
   static const checkingEmaillCommunicationsApproval = 'checkingEmaillCommunicationsApproval';
   static const checkingNotificationsApproval = 'checkingNotificationsApproval';
   static const checkingSubsStatus = 'checkingSubsStatus';
+  static const closeBtn = 'closeBtn';
   static const confirm = 'confirm';
   static const connect = 'connect';
+  static const connectBestServer = 'connectBestServer';
   static const connected = 'connected';
   static const connecting = 'connecting';
   static const connectingInProggress = 'connectingInProggress';
@@ -309,6 +320,7 @@ abstract class LocaleKeys {
   static const connectionLimitExceededDesc = 'connectionLimitExceededDesc';
   static const connectionLimitExceededTitle = 'connectionLimitExceededTitle';
   static const connectionTimeout = 'connectionTimeout';
+  static const consistentSpeedReason = 'consistentSpeedReason';
   static const consumeLink = 'consumeLink';
   static const contentBlockerDesc = 'contentBlockerDesc';
   static const contentBlockerTitle = 'contentBlockerTitle';
@@ -362,6 +374,7 @@ abstract class LocaleKeys {
   static const failedToDisconnectAllDevices = 'failedToDisconnectAllDevices';
   static const failedToLoadLocations = 'failedToLoadLocations';
   static const failedToLogoutAllDevices = 'failedToLogoutAllDevices';
+  static const failedToSubmitFeedback = 'failedToSubmitFeedback';
   static const failedToSubscribe = 'failedToSubscribe';
   static const failedToVerifySubs = 'failedToVerifySubs';
   static const fast = 'fast';
@@ -374,6 +387,7 @@ abstract class LocaleKeys {
   static const france = 'france';
   static const freeTrialDesc = 'freeTrialDesc';
   static const freeTrialTitle = 'freeTrialTitle';
+  static const frequentDisconnectsReason = 'frequentDisconnectsReason';
   static const germany = 'germany';
   static const getHelp = 'getHelp';
   static const getNewIPAddress = 'getNewIPAddress';
@@ -383,6 +397,7 @@ abstract class LocaleKeys {
   static const goBackButton = 'goBackButton';
   static const goToBillingPage = 'goToBillingPage';
   static const here = 'here';
+  static const highLatencyReason = 'highLatencyReason';
   static const history = 'history';
   static const iUnderstandBtn = 'iUnderstandBtn';
   static const id = 'id';
@@ -417,6 +432,7 @@ abstract class LocaleKeys {
   static const logoutConfirmationTitle = 'logoutConfirmationTitle';
   static const logoutDescription = 'logoutDescription';
   static const logoutVPNConnectedDesc = 'logoutVPNConnectedDesc';
+  static const lowLatencyReason = 'lowLatencyReason';
   static const lt = 'lt';
   static const malwareBlocker = 'malwareBlocker';
   static const manageBtn = 'manageBtn';
@@ -449,6 +465,7 @@ abstract class LocaleKeys {
   static const openEmailApp = 'openEmailApp';
   static const or = 'or';
   static const originalMonthlyPrice = 'originalMonthlyPrice';
+  static const otherReason = 'otherReason';
   static const paymentMethod = 'paymentMethod';
   static const pendingTransactionMessage = 'pendingTransactionMessage';
   static const perMonth = 'perMonth';
@@ -488,6 +505,9 @@ abstract class LocaleKeys {
   static const pt = 'pt';
   static const purchased = 'purchased';
   static const questions = 'questions';
+  static const rateConnection = 'rateConnection';
+  static const rateConnectionDislike = 'rateConnectionDislike';
+  static const rateConnectionLike = 'rateConnectionLike';
   static const readOur = 'readOur';
   static const recentLocations = 'recentLocations';
   static const reconnectBtn = 'reconnectBtn';
@@ -526,9 +546,11 @@ abstract class LocaleKeys {
   static const sixMonthsBonus = 'sixMonthsBonus';
   static const somethingWentWrong = 'somethingWentWrong';
   static const sr = 'sr';
+  static const stableConnectionReason = 'stableConnectionReason';
   static const startTrialBtn = 'startTrialBtn';
   static const status = 'status';
   static const stayButton = 'stayButton';
+  static const submitBtn = 'submitBtn';
   static const subsExpiredDesc = 'subsExpiredDesc';
   static const subsExpiredTittle = 'subsExpiredTittle';
   static const subscriptionActive = 'subscriptionActive';
@@ -540,6 +562,8 @@ abstract class LocaleKeys {
   static const system = 'system';
   static const tap = 'tap';
   static const termsAndConditions = 'termsAndConditions';
+  static const thanksForFeedback = 'thanksForFeedback';
+  static const thanksForFeedbackDesc = 'thanksForFeedbackDesc';
   static const theme = 'theme';
   static const then = 'then';
   static const title = 'title';
@@ -555,6 +579,7 @@ abstract class LocaleKeys {
   static const tryAgainBtn = 'tryAgainBtn';
   static const turnOnNotificationsBtn = 'turnOnNotificationsBtn';
   static const typeDelete = 'typeDelete';
+  static const typeFeedback = 'typeFeedback';
   static const typeIssueHere = 'typeIssueHere';
   static const uk = 'uk';
   static const ukraine = 'ukraine';
@@ -562,6 +587,7 @@ abstract class LocaleKeys {
   static const unableToGetPlans = 'unableToGetPlans';
   static const unauthenticatedBannerBtn = 'unauthenticatedBannerBtn';
   static const unauthenticatedBannerTitle = 'unauthenticatedBannerTitle';
+  static const unstableSpeedReason = 'unstableSpeedReason';
   static const updateBtn = 'updateBtn';
   static const upload = 'upload';
   static const was = 'was';
@@ -572,27 +598,4 @@ abstract class LocaleKeys {
   static const yearlyPlanFullPrice = 'yearlyPlanFullPrice';
   static const yes = 'yes';
   static const zh = 'zh';
-  static const checkSubsStatusTitle = 'checkSubsStatusTitle';
-  static const checkSubsStatusDesc = 'checkSubsStatusDesc';
-  static const checkSubsStatusFailedTitle = 'checkSubsStatusFailedTitle';
-  static const checkSubsStatusFailedDesc = 'checkSubsStatusFailedDesc';
-  static const rateConnection = 'rateConnection';
-  static const rateConnectionLike = 'rateConnectionLike';
-  static const rateConnectionDislike = 'rateConnectionDislike';
-  static const typeFeedback = 'typeFeedback';
-  static const stableConnectionReason = 'stableConnectionReason';
-  static const consistentSpeedReason = 'consistentSpeedReason';
-  static const lowLatencyReason = 'lowLatencyReason';
-  static const bypassRestrictionsReason = 'bypassRestrictionsReason';
-  static const accessBlockedSitesReason = 'accessBlockedSitesReason';
-  static const otherReason = 'otherReason';
-  static const frequentDisconnectsReason = 'frequentDisconnectsReason';
-  static const unstableSpeedReason = 'unstableSpeedReason';
-  static const highLatencyReason = 'highLatencyReason';
-  static const submitBtn = 'submitBtn';
-  static const thanksForFeedback = 'thanksForFeedback';
-  static const thanksForFeedbackDesc = 'thanksForFeedbackDesc';
-  static const closeBtn = 'closeBtn';
-  static const failedToSubmitFeedback = 'failedToSubmitFeedback';
-  static const connectBestServer = 'connectBestServer';
 }
