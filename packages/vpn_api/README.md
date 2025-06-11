@@ -79,6 +79,8 @@ Class | Method | HTTP request | Description
 [*Connection*](doc/Connection.md) | [**connectionConfig**](doc/Connection.md#connectionconfig) | **GET** /connection/config | Get connection options
 [*Connection*](doc/Connection.md) | [**connectionConfigRegions**](doc/Connection.md#connectionconfigregions) | **GET** /connection/config/regions | Get connection region options
 [*Connection*](doc/Connection.md) | [**connectionLocations**](doc/Connection.md#connectionlocations) | **GET** /connection/locations | Get connection locations
+[*Connection*](doc/Connection.md) | [**disconnect**](doc/Connection.md#disconnect) | **GET** /connection/disconnect | Disconnect from the current Wireguard connection
+[*Connection*](doc/Connection.md) | [**disconnectAll**](doc/Connection.md#disconnectall) | **GET** /connection/disconnect-all | Disconnect all Wireguard connections
 [*Connection*](doc/Connection.md) | [**rateConnection**](doc/Connection.md#rateconnection) | **POST** /connection/rate-connection | Rate connection
 [*EmailMarketing*](doc/EmailMarketing.md) | [**setMarketingConsent**](doc/EmailMarketing.md#setmarketingconsent) | **POST** /email-marketing/marketing-consent | Set marketing consent
 [*Infrastructure*](doc/Infrastructure.md) | [**healthcheck**](doc/Infrastructure.md#healthcheck) | **GET** /healthcheck | Check whether the API is up
@@ -121,6 +123,7 @@ Class | Method | HTTP request | Description
  - [CreateGenericSubscriptionResponse](doc/CreateGenericSubscriptionResponse.md)
  - [CreateGoogleSubscriptionRequest](doc/CreateGoogleSubscriptionRequest.md)
  - [CreateGoogleSubscriptionResponse](doc/CreateGoogleSubscriptionResponse.md)
+ - [DisconnectQuery](doc/DisconnectQuery.md)
  - [FieldError](doc/FieldError.md)
  - [GetLocationResponse](doc/GetLocationResponse.md)
  - [GetSubscriptionResponse](doc/GetSubscriptionResponse.md)

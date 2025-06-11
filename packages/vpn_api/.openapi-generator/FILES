@@ -32,6 +32,7 @@ doc/CreateGenericSubscriptionRequest.md
 doc/CreateGenericSubscriptionResponse.md
 doc/CreateGoogleSubscriptionRequest.md
 doc/CreateGoogleSubscriptionResponse.md
+doc/DisconnectQuery.md
 doc/EmailMarketing.md
 doc/FieldError.md
 doc/GetLocationResponse.md
@@ -122,6 +123,7 @@ lib/src/model/create_generic_subscription_request.dart
 lib/src/model/create_generic_subscription_response.dart
 lib/src/model/create_google_subscription_request.dart
 lib/src/model/create_google_subscription_response.dart
+lib/src/model/disconnect_query.dart
 lib/src/model/field_error.dart
 lib/src/model/get_location_response.dart
 lib/src/model/get_subscription_response.dart
