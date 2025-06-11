@@ -95,7 +95,6 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
                   child: Center(
                     child: LoadingIndicator(
                       radius: 50,
-                      strokeWidth: 3,
                       message: LocaleKeys.processingPayment.tr(),
                       messageColor: Palette.black,
                     )

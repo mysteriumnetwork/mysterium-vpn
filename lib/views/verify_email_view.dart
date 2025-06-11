@@ -90,8 +90,6 @@ class VerifyEmailView extends HookConsumerWidget {
                         },
                   child: signInStatus == FutureStatus.pending
                       ? const LoadingIndicator(
-                          radius: 20,
-                          strokeWidth: 1.5,
                           indicatorColor: Palette.white,
                         )
                       : EasyText(
