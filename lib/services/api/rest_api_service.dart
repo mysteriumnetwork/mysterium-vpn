@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -42,8 +41,6 @@ class RestApiService extends ApiService {
   @override
   Future<void> disconnectAllDevices() async {
     try {
-      await Future.delayed(const Duration(seconds: 5));
-
       await _apiConnection.disconnectAll();
       _logger.info('All devices disconnected');
     } catch (e, stackTrace) {
@@ -141,7 +138,7 @@ class RestApiService extends ApiService {
   Future<void> disconnect({required String publicKey}) async {
     try {
       await _apiConnection.disconnect(
-        publicKey: json.encode(publicKey),
+        publicKey: publicKey,
       );
       _logger.info(
         'Disconnected successfully with public key: $publicKey',

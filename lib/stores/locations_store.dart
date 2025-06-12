@@ -189,7 +189,7 @@ abstract class _LocationsStore with Store {
 
   Future<void> _autoRefresh() async {
     await _remoteConfigStore.configFuture;
-    _autoRefreshSubscription = Stream.periodic(const Duration(hours: 4)).listen(
+    _autoRefreshSubscription = Stream.periodic(_remoteConfigStore.locationsRefreshInterval).listen(
       (_) => refresh(),
     );
   }
