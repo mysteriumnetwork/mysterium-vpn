@@ -198,4 +198,20 @@ class SecureStorageService {
   Future<void> removeSubscriptionPaymentInfo() async {
     remove(StorageKeys.subscriptionPaymentInfo.name);
   }
+
+  Future<String?> getDeviceId() async {
+    try {
+      return await read(StorageKeys.deviceId.name);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<void> saveDeviceId(String deviceId) async {
+    await write(StorageKeys.deviceId.name, deviceId);
+  }
+
+  Future<void> removeDeviceId() async {
+    await remove(StorageKeys.deviceId.name);
+  }
 }

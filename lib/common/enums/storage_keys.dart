@@ -25,4 +25,5 @@ enum StorageKeys {
   ipInfo,
   ipType,
   panelState,
+  deviceId,
 }
