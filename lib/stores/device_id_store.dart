@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 part 'device_id_store.g.dart';
 
@@ -44,6 +45,16 @@ abstract class _DeviceIDStore with Store {
     } catch (e) {
       final deviceId = await getDeviceIdFromDeviceInfo();
       await _secureStorageService.saveDeviceId(deviceId);
+      Sentry.captureException(
+        e,
+        stackTrace: StackTrace.current,
+        hint: Hint.withMap(
+          {
+            'platform': defaultTargetPlatform.name,
+            'hint': 'Failed to get device ID from device info',
+          },
+        ),
+      );
       return deviceId;
     }
   }
@@ -83,6 +94,16 @@ abstract class _DeviceIDStore with Store {
       final digest = sha256.convert(bytes);
       return digest.toString();
     } catch (e) {
+      Sentry.captureException(
+        e,
+        stackTrace: StackTrace.current,
+        hint: Hint.withMap(
+          {
+            'platform': platform?.name ?? 'unknown',
+            'hint': 'Failed to get device ID from device info',
+          },
+        ),
+      );
       return '';
     }
   }
