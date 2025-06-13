@@ -24,3 +24,13 @@ extension IterableExtensions<T> on Iterable<T> {
     }
   }
 }
+
+extension SetExtensions<T> on Set<T> {
+  Set<T> toggle(T value) {
+    final newSet = {...this};
+    if (!newSet.add(value)) {
+      newSet.remove(value);
+    }
+    return newSet;
+  }
+}

@@ -170,6 +170,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$isRateConnectionAvailableComputed ??= Computed<bool>(() => super.isRateConnectionAvailable,
               name: 'RemoteConfigStoreBase.isRateConnectionAvailable'))
           .value;
+  Computed<Set<String>?>? _$cancelSubscriptionReasonKeysComputed;
+
+  @override
+  Set<String>? get cancelSubscriptionReasonKeys => (_$cancelSubscriptionReasonKeysComputed ??=
+          Computed<Set<String>?>(() => super.cancelSubscriptionReasonKeys,
+              name: 'RemoteConfigStoreBase.cancelSubscriptionReasonKeys'))
+      .value;
 
   @override
   String toString() {
@@ -197,7 +204,8 @@ hideResetAppSetting: ${hideResetAppSetting},
 browseUnauthenticated: ${browseUnauthenticated},
 shouldCheckUdp: ${shouldCheckUdp},
 latestStableAppVersion: ${latestStableAppVersion},
-isRateConnectionAvailable: ${isRateConnectionAvailable}
+isRateConnectionAvailable: ${isRateConnectionAvailable},
+cancelSubscriptionReasonKeys: ${cancelSubscriptionReasonKeys}
     ''';
   }
 }
