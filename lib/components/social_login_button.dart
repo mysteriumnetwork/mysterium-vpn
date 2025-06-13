@@ -51,10 +51,7 @@ class SocialLoginButton extends ConsumerWidget {
             ),
             height: 44,
             child: isLoading
-                ? const LoadingIndicator(
-                    radius: 20,
-                    strokeWidth: 1.5,
-                  )
+                ? const LoadingIndicator()
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

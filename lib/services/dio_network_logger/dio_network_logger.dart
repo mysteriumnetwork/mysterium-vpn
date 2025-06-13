@@ -223,7 +223,6 @@ class _NetworkLoggerButtonState extends State<NetworkLoggerButton> {
             backgroundColor: widget.color,
             child: isLoading
                 ? const LoadingIndicator(
-                    radius: 20,
                     indicatorColor: Colors.white,
                   )
                 : const Icon(Icons.cloud, color: Colors.white),

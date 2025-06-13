@@ -18,10 +18,7 @@ class SubscriptionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => isLoading
       ? const SizedBox(
-          child: LoadingIndicator(
-            radius: 20,
-            strokeWidth: 1.5,
-          ),
+          child: LoadingIndicator(),
         )
       : EasyButton(
           useSystemColor: false,

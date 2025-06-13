@@ -14,6 +14,8 @@ Method | HTTP request | Description
 [**connectionConfig**](Connection.md#connectionconfig) | **GET** /connection/config | Get connection options
 [**connectionConfigRegions**](Connection.md#connectionconfigregions) | **GET** /connection/config/regions | Get connection region options
 [**connectionLocations**](Connection.md#connectionlocations) | **GET** /connection/locations | Get connection locations
+[**disconnect**](Connection.md#disconnect) | **GET** /connection/disconnect | Disconnect from the current Wireguard connection
+[**disconnectAll**](Connection.md#disconnectall) | **GET** /connection/disconnect-all | Disconnect all Wireguard connections
 [**rateConnection**](Connection.md#rateconnection) | **POST** /connection/rate-connection | Rate connection
 
 
@@ -219,6 +221,82 @@ No authorization required
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **disconnect**
+> disconnect(publicKey)
+
+Disconnect from the current Wireguard connection
+
+### Example
+```dart
+import 'package:vpn_api/api.dart';
+
+final api = VpnApi().getConnection();
+final String publicKey = aJxmamM5IUbxkevqSGcOIASETCxeRl71iXPVbqT1gz0=; // String | 
+
+try {
+    api.disconnect(publicKey);
+} catch on DioException (e) {
+    print('Exception when calling Connection->disconnect: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **publicKey** | **String**|  | 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **disconnectAll**
+> disconnectAll()
+
+Disconnect all Wireguard connections
+
+### Example
+```dart
+import 'package:vpn_api/api.dart';
+
+final api = VpnApi().getConnection();
+
+try {
+    api.disconnectAll();
+} catch on DioException (e) {
+    print('Exception when calling Connection->disconnectAll: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
