@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/observers/navigator_observer.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/analytics/constants.dart';
+import 'package:mysterium_vpn/stores/device_id_store.dart';
 import 'package:mysterium_vpn/stores/device_info_store.dart';
 
 part 'analytics_store_firebase.g.dart';
@@ -22,9 +23,11 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
     required FirebaseAnalytics analytics,
     required FirebaseCrashlytics crashlytics,
     required DeviceInfoStore deviceInfoStore,
+    required DeviceIDStore deviceIDStore,
   })  : _analytics = analytics,
         _crashlytics = crashlytics,
-        _deviceInfoStore = deviceInfoStore {
+        _deviceInfoStore = deviceInfoStore,
+        _deviceIDStore = deviceIDStore {
     setConsents();
     logAppLaunchEvent();
     setDeviceInfo();
@@ -33,7 +36,7 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
   final FirebaseAnalytics _analytics;
   final FirebaseCrashlytics _crashlytics;
   final DeviceInfoStore _deviceInfoStore;
-
+  final DeviceIDStore _deviceIDStore;
   @override
   Future<void> logError({
     required Object err,
@@ -145,7 +148,8 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
   Future<void> setDeviceInfo() async {
     try {
       await _deviceInfoStore.deviceInfoFuture;
-      await _analytics.setUserProperty(name: 'device_id', value: _deviceInfoStore.deviceId);
+      final deviceId = await _deviceIDStore.deviceIdFuture;
+      await _analytics.setUserProperty(name: 'device_id', value: deviceId);
       await _analytics.setUserProperty(name: 'device_name', value: _deviceInfoStore.deviceName);
       await _analytics.setUserProperty(name: 'device_model', value: _deviceInfoStore.deviceModel);
     } catch (e) {

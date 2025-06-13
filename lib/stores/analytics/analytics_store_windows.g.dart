@@ -65,6 +65,14 @@ mixin _$AnalyticsStoreWindows on _AnalyticsStoreWindows, Store {
     return _$setConsentsAsyncAction.run(() => super.setConsents());
   }
 
+  late final _$setDeviceInfoAsyncAction =
+      AsyncAction('_AnalyticsStoreWindows.setDeviceInfo', context: context);
+
+  @override
+  Future<void> setDeviceInfo() {
+    return _$setDeviceInfoAsyncAction.run(() => super.setDeviceInfo());
+  }
+
   @override
   String toString() {
     return '''
