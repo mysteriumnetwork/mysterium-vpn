@@ -18,6 +18,7 @@ import 'package:mysterium_vpn/stores/analytics/analytics_store_firebase.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_windows.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/banners_store.dart';
+import 'package:mysterium_vpn/stores/device_id_store.dart';
 import 'package:mysterium_vpn/stores/device_info_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_desktop_store.dart';
 import 'package:mysterium_vpn/stores/intercom/intercom_mobile_store.dart';
@@ -173,6 +174,8 @@ final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
     return AnalyticsStoreWindows(
       measurementId: env.values.measurementId,
       apiSecret: env.values.apiSecret,
+      deviceInfoStore: ref.watch(deviceInfoStorePOD),
+      deviceIDStore: ref.watch(deviceIDStorePOD),
     );
   }
 
@@ -180,6 +183,7 @@ final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
     analytics: FirebaseAnalytics.instance,
     crashlytics: FirebaseCrashlytics.instance,
     deviceInfoStore: ref.watch(deviceInfoStorePOD),
+    deviceIDStore: ref.watch(deviceIDStorePOD),
   );
 });
 
@@ -249,6 +253,10 @@ final realIPInfoStorePOD = Provider<RealIPInfoStore>(
 
 final deviceInfoStorePOD = Provider<DeviceInfoStore>(
   (ref) => DeviceInfoStore(),
+);
+
+final deviceIDStorePOD = Provider<DeviceIDStore>(
+  (ref) => DeviceIDStore(),
 );
 
 final latLngStorePOD = Provider<LatLngStore>((ref) {

@@ -11,6 +11,8 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/observers/navigator_observer.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/analytics/constants.dart';
+import 'package:mysterium_vpn/stores/device_id_store.dart';
+import 'package:mysterium_vpn/stores/device_info_store.dart';
 
 part 'analytics_store_windows.g.dart';
 
@@ -21,11 +23,17 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
   _AnalyticsStoreWindows({
     required String measurementId,
     required String apiSecret,
-  }) : _session = AnalyticsSession(measurementId, apiSecret) {
+    required DeviceInfoStore deviceInfoStore,
+    required DeviceIDStore deviceIDStore,
+  })  : _deviceInfoStore = deviceInfoStore,
+        _deviceIDStore = deviceIDStore,
+        _session = AnalyticsSession(measurementId, apiSecret) {
     logAppLaunchEvent();
   }
 
   final AnalyticsSession _session;
+  final DeviceInfoStore _deviceInfoStore;
+  final DeviceIDStore _deviceIDStore;
   @override
   Future<void> logError({
     required Object err,
@@ -81,6 +89,20 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
   @override
   @action
   Future<void> setConsents() async {}
+
+  @override
+  @action
+  Future<void> setDeviceInfo() async {
+    try {
+      await _deviceInfoStore.deviceInfoFuture;
+      final deviceId = await _deviceIDStore.deviceIdFuture;
+      await setUserProperty('device_id', deviceId);
+      await setUserProperty('device_name', _deviceInfoStore.deviceName);
+      await setUserProperty('device_model', _deviceInfoStore.deviceModel);
+    } catch (e) {
+      logError(err: e);
+    }
+  }
 }
 
 class AnalyticsSession {
