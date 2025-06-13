@@ -38,6 +38,9 @@ abstract class _DeviceIDStore with Store {
     }
   }
 
+  @computed
+  String get deviceId => deviceIdFuture.value ?? '';
+
   Future<String> getDeviceIdFromDeviceInfo() async {
     try {
       final deviceInfoPlugin = DeviceInfoPlugin();
