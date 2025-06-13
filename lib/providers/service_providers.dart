@@ -4,7 +4,6 @@ import 'package:app_links/app_links.dart';
 import 'package:configcat_client/configcat_client.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
@@ -34,7 +33,6 @@ import 'package:mysterium_vpn/services/subscription/rest_subscription_service.da
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:talker/talker.dart';
 import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
-import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
 import 'package:vpn_api/vpn_api.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
@@ -80,7 +78,7 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
       if (environment.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
       ApiErrorsInterceptor(),
       TalkerDioLogger(talker: logger),
-      if (environment.flavor == Flavor.dev) TestFlagsInterceptor(environment)
+      if (environment.flavor == Flavor.dev) TestFlagsInterceptor(environment),
     ],
   );
 
