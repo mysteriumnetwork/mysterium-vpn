@@ -35,12 +35,11 @@ mixin _$DeviceIDStore on _DeviceIDStore, Store {
     });
   }
 
-  late final _$_getDeviceIdAsyncAction =
-      AsyncAction('_DeviceIDStore._getDeviceId', context: context);
+  late final _$getDeviceIdAsyncAction = AsyncAction('_DeviceIDStore.getDeviceId', context: context);
 
   @override
-  Future<String> _getDeviceId() {
-    return _$_getDeviceIdAsyncAction.run(() => super._getDeviceId());
+  Future<String> getDeviceId() {
+    return _$getDeviceIdAsyncAction.run(() => super.getDeviceId());
   }
 
   @override
