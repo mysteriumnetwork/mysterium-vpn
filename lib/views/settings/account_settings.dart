@@ -92,12 +92,7 @@ class _Authenticated extends HookConsumerWidget {
                 builder: (context) {
                   final handleSubscribe = useHandleSubscribe();
                   if (isLoading) {
-                    return const SizedBox(
-                      width: 40,
-                      child: LoadingIndicator(
-                        radius: 20,
-                      ),
-                    );
+                    return const LoadingIndicator();
                   }
 
                   if (subscriptionStore.subscriptionFuture.status == FutureStatus.rejected) {
@@ -186,7 +181,9 @@ class _Authenticated extends HookConsumerWidget {
                         handleToggleConnection,
                       ),
                       child: vpnStore.disconnectAllDevicesFuture?.status == FutureStatus.pending
-                          ? const LoadingIndicator()
+                          ? const LoadingIndicator(
+                              radius: 16,
+                            )
                           : EasyText(
                               LocaleKeys.disconnectAllDevices.tr(),
                               color: Palette.white,

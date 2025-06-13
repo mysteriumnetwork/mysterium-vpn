@@ -23,7 +23,6 @@ class LoadingBarrier extends StatelessWidget {
                 Center(
                   child: LoadingIndicator(
                     radius: radius,
-                    strokeWidth: 3,
                     message: LocaleKeys.LoggingYouIn.tr(),
                     messageColor: Palette.pink,
                   ),

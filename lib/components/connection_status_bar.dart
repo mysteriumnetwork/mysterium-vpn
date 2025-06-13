@@ -26,7 +26,7 @@ class ConnectionStatusBar extends HookConsumerWidget {
 
     final vpnStore = ref.watch(vpnStorePOD);
     final connectionStatus = useComputedValue(() => vpnStore.vpnStatus);
-    final isLoading = useComputedValue(() => vpnStore.isLoading);
+    final isFetchingConfig = useComputedValue(() => vpnStore.isFetchingConfig);
     final isExpanded = useState(false);
 
     final handleToggleExpanded = useMemoized(
@@ -54,7 +54,7 @@ class ConnectionStatusBar extends HookConsumerWidget {
       highlightColor: Colors.transparent,
       focusColor: Colors.transparent,
       hoverColor: Colors.transparent,
-      fillColor: _barBackgroundColor(connectionStatus, isLoading),
+      fillColor: _barBackgroundColor(connectionStatus, isFetchingConfig),
       splashColor: Palette.white.withValues(alpha: .2),
       visualDensity: VisualDensity.compact,
       clipBehavior: Clip.antiAlias,
@@ -72,10 +72,10 @@ class ConnectionStatusBar extends HookConsumerWidget {
                     spacing: 6,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _statusIcon(connectionStatus, isLoading),
+                      _statusIcon(connectionStatus, isFetchingConfig),
                       Flexible(
                         child: EasyText(
-                          _statusText(connectionStatus, isLoading),
+                          _statusText(connectionStatus, isFetchingConfig),
                           color: Palette.white,
                           fontWeight: FontWeight.w700,
                           fontSize: 14,

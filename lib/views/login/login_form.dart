@@ -172,10 +172,7 @@ class SignInForm extends HookConsumerWidget {
                           : null,
                       child: signInStatus == FutureStatus.pending &&
                               store.authenticatingType == GrantType.email
-                          ? const LoadingIndicator(
-                              radius: 20,
-                              strokeWidth: 1.5,
-                            )
+                          ? const LoadingIndicator()
                           : EasyText(
                               LocaleKeys.continueWithEmail.tr(),
                               color: Palette.white,

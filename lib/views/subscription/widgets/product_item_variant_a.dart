@@ -48,7 +48,6 @@ class ProductItemVariantA extends StatelessWidget {
                 if (productDetails.status == ProductStatus.pending)
                   const LoadingIndicator(
                     radius: 18,
-                    strokeWidth: 1.5,
                   )
                 else
                   _CheckMark(
