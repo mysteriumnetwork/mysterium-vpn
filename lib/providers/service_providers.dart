@@ -71,6 +71,7 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
           if (sessionStore.accessToken != null) {
             options.headers['Authorization'] = 'Bearer ${sessionStore.accessToken}';
           }
+          options.headers['Accept-Charset'] = 'utf-8'; // Force UTF-8 encoding
           return handler.next(options);
         },
       ),
