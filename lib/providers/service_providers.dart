@@ -78,14 +78,7 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
       RetryRequestInterceptor(dio: dio),
       if (environment.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
       ApiErrorsInterceptor(),
-      TalkerDioLogger(
-        talker: logger,
-        settings: const TalkerDioLoggerSettings(
-          printRequestData: false,
-          printResponseData: false,
-          printErrorData: false,
-        ),
-      ),
+      TalkerDioLogger(talker: logger),
       if (environment.flavor == Flavor.dev) TestFlagsInterceptor(environment)
     ],
   );
