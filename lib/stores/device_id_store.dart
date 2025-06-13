@@ -1,0 +1,110 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_udid/flutter_udid.dart';
+import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+
+part 'device_id_store.g.dart';
+
+// ignore: library_private_types_in_public_api
+class DeviceIDStore = _DeviceIDStore with _$DeviceIDStore;
+
+abstract class _DeviceIDStore with Store {
+  _DeviceIDStore({
+    SecureStorageService? secureStorageService,
+    DeviceInfoPlugin? deviceInfoPlugin,
+    Future<String> Function()? flutterUdid,
+  })  : _secureStorageService = secureStorageService ?? SecureStorageService.instance,
+        _deviceInfoPlugin = deviceInfoPlugin ?? DeviceInfoPlugin(),
+        _flutterUdid = flutterUdid {
+    deviceIdFuture = ObservableFuture(getDeviceId());
+  }
+
+  final SecureStorageService _secureStorageService;
+  final DeviceInfoPlugin _deviceInfoPlugin;
+  Future<String> Function()? _flutterUdid;
+
+  @observable
+  late ObservableFuture<String> deviceIdFuture;
+
+  @action
+  Future<String> getDeviceId() async {
+    try {
+      var deviceId = await _secureStorageService.getDeviceId();
+      if (deviceId == null) {
+        // Makes the function testable by allowing injection of FlutterUdid
+        _flutterUdid ??= () => FlutterUdid.consistentUdid;
+        deviceId = await _flutterUdid!();
+        await _secureStorageService.saveDeviceId(deviceId);
+      }
+      return deviceId;
+    } catch (e) {
+      final deviceId = await getDeviceIdFromDeviceInfo();
+      await _secureStorageService.saveDeviceId(deviceId);
+      Sentry.captureException(
+        e,
+        stackTrace: StackTrace.current,
+        hint: Hint.withMap(
+          {
+            'platform': defaultTargetPlatform.name,
+            'hint': 'Failed to get device ID from device info',
+          },
+        ),
+      );
+      return deviceId;
+    }
+  }
+
+  @computed
+  String get deviceId => deviceIdFuture.value ?? '';
+
+  Future<String> getDeviceIdFromDeviceInfo({TargetPlatform? platform}) async {
+    try {
+      final currentPlatform = platform ?? defaultTargetPlatform;
+      String? deviceId;
+      switch (currentPlatform) {
+        case TargetPlatform.android:
+          final androidInfo = await _deviceInfoPlugin.androidInfo;
+          deviceId = androidInfo.id;
+          break;
+        case TargetPlatform.iOS:
+          final iosInfo = await _deviceInfoPlugin.iosInfo;
+          deviceId = iosInfo.identifierForVendor;
+          break;
+        case TargetPlatform.macOS:
+          final macOsInfo = await _deviceInfoPlugin.macOsInfo;
+          deviceId = macOsInfo.systemGUID;
+          break;
+        case TargetPlatform.windows:
+          final windowsInfo = await _deviceInfoPlugin.windowsInfo;
+          deviceId = windowsInfo.deviceId;
+          break;
+        default:
+          // For other platforms, we can return an empty string or handle accordingly
+          return '';
+      }
+      if (deviceId == null || deviceId.isEmpty) {
+        return '';
+      }
+      final bytes = utf8.encode(deviceId);
+      final digest = sha256.convert(bytes);
+      return digest.toString();
+    } catch (e) {
+      Sentry.captureException(
+        e,
+        stackTrace: StackTrace.current,
+        hint: Hint.withMap(
+          {
+            'platform': platform?.name ?? 'unknown',
+            'hint': 'Failed to get device ID from device info',
+          },
+        ),
+      );
+      return '';
+    }
+  }
+}

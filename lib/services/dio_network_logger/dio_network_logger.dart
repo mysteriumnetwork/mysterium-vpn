@@ -7,6 +7,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
@@ -285,6 +286,11 @@ class _NetworkLoggerScreenState extends State<NetworkLoggerScreen> {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () => _ConfigPage.show(context: context),
+            color: Theme.of(context).textTheme.bodyLarge?.color,
+          ),
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            onPressed: () => _DeviceInfo.show(context: context),
             color: Theme.of(context).textTheme.bodyLarge?.color,
           ),
           IconButton(
@@ -991,6 +997,80 @@ class _ConfigPage extends ConsumerWidget {
                 maxLines: 20,
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DeviceInfo extends ConsumerWidget {
+  const _DeviceInfo._();
+
+  static void show({
+    required BuildContext context,
+  }) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => const _DeviceInfo._(),
+        settings: const RouteSettings(name: 'deviceInfoPage'),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final deviceInfo = ref.watch(deviceInfoStorePOD);
+    final deviceIDStore = ref.watch(deviceIDStorePOD);
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: Navigator.of(context).pop,
+          color: Theme.of(context).textTheme.bodyLarge?.color,
+        ),
+        forceMaterialTransparency: true,
+        title: const EasyText('Device infos'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: SingleChildScrollView(
+          child: Observer(
+            builder: (context) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const EasyText(
+                  'Persistent Device ID (We will track this one to analytics): ',
+                  fontWeight: FontWeight.bold,
+                  color: Palette.purple,
+                ),
+                EasyText(
+                  deviceIDStore.deviceId,
+                  maxLines: 20,
+                ),
+                const EasyText(
+                  'Device info: ',
+                  fontWeight: FontWeight.bold,
+                  color: Palette.purple,
+                ),
+                Observer(
+                  builder: (context) {
+                    final info = deviceInfo.deviceInfo ?? {};
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ...info.entries.map(
+                          (e) => EasyText(
+                            '${e.key}: ${e.value}',
+                            maxLines: 20,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
