@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
@@ -30,6 +32,7 @@ enum _FeatureToggleKey {
   shouldCheckUdp,
   latestStableAppVersion,
   isRateConnectionAvailable,
+  cancelSurveyOptions,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -230,6 +233,18 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return config[_FeatureToggleKey.isRateConnectionAvailable.name] as bool;
     }
     return false;
+  }
+
+  @computed
+  Set<String>? get cancelSubscriptionReasonKeys {
+    if (config.containsKey(_FeatureToggleKey.cancelSurveyOptions.name)) {
+      final raw = config[_FeatureToggleKey.cancelSurveyOptions.name].toString();
+      final json = jsonDecode(raw);
+      if (json is Iterable) {
+        return json.map((it) => it.toString()).toSet();
+      }
+    }
+    return null;
   }
 
   Map<String, String> get asUserProperties =>

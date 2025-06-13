@@ -54,6 +54,7 @@ mixin AnalyticsStore {
   }
 
   Future<void> setConsents();
+
   Future<void> logProductSelected(
     String productId,
     List<String> productIds,
@@ -239,5 +240,18 @@ mixin AnalyticsStore {
         },
       );
     }
+  }
+
+  Future<void> logSubscriptionCancellationSurvey({
+    required Set<String> reasons,
+    String? feedback,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.subscriptionCancellationSurvey,
+      parameters: {
+        'reasons': reasons.join(','),
+        if (feedback != null) 'feedback': feedback,
+      },
+    );
   }
 }
