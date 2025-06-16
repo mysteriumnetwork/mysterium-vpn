@@ -59,7 +59,7 @@ class FlavorValues {
     required bool quickAuth,
   }) =>
       FlavorValues._(
-        baseUrl: 'https://bdd15f1f4419-2107680835833771469.ngrok-free.app/api/v1',
+        baseUrl: 'https://api-test.mysteriumvpn.com/api/v1',
         mqttUrl: 'wss://events-test.mysteriumvpn.com/ws',
         mqttUsername: 'dvpn',
         mqttPassword: 'VWm2UJVV7BYr6p3S8ZZZ',
