@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app_links/app_links.dart';
 import 'package:configcat_client/configcat_client.dart';
+import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -75,10 +76,11 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
       ),
       RefreshTokenInterceptor(dio: dio, logger: logger),
       RetryRequestInterceptor(dio: dio),
-      if (environment.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
+      //if (environment.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
       ApiErrorsInterceptor(),
-      TalkerDioLogger(talker: logger),
+      //TalkerDioLogger(talker: logger),
       if (environment.flavor == Flavor.dev) TestFlagsInterceptor(environment),
+      CurlLoggerDioInterceptor(printOnSuccess: true, convertFormData: false),
     ],
   );
 
