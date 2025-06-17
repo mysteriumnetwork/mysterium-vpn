@@ -47,4 +47,7 @@ Future<void> _login(PatrolIntegrationTester $, String email) async {
 Future<void> _subscribe(PatrolIntegrationTester $) async {
   await $("You don't have an active subscription").waitUntilVisible();
   await $("You don't have an active subscription").tap();
+  await $(#backButton).waitUntilVisible();
+  await Future.delayed(const Duration(seconds: 10));
+  await $(#backButton).tap();
 }
