@@ -12,7 +12,7 @@ void main() {
 
   patrolTest('Happy path: log in, subscribe, connect, disconnect, log out', ($) async {
     await $.pumpWidgetAndSettle(environment.getApp());
-    //  await _login($, const String.fromEnvironment('LOGIN_EMAIL'));
+    await _login($, const String.fromEnvironment('LOGIN_EMAIL'));
     await _subscribe($);
   });
 }
