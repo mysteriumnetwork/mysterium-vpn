@@ -134,26 +134,14 @@ jobs:
       - name: Install dependencies
         run: make init
 
-      - name: 'Build iOS test app'
-        run: make build-ios-integration-test
-
-      - name: 'Run iOS tests'
-        run: make run-ios-testlab
-
       - name: 'Build Android test app'
         run: make build-android-integration-test
 
       - name: 'Run Android tests'
         run: make run-android-testlab
 
-#      - name: Upload APK to Firebase Test Lab
-#        env:
-#          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
-#        run: |
-#          gcloud auth activate-service-account --key-file="${GOOGLE_APPLICATION_CREDENTIALS}"
-#          gcloud --quiet config set project ${{ secrets.FIREBASE_PROJECT_ID }}
-#          gcloud firebase test android run \
-#            --type instrumentation \
-#            --app build/app/outputs/flutter-apk/app-${{ inputs.flavor }}-release.apk \
-#            --test app/build/outputs/apk/androidTest/${{ inputs.flavor }}/androidTest.apk \
-#            --device model=Pixel4,version=30,locale=en,orientation=portrait
+      - name: 'Build iOS test app'
+        run: make build-ios-integration-test
+
+      - name: 'Run iOS tests'
+        run: make run-ios-testlab
