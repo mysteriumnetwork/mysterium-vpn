@@ -1,10 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:mysterium_vpn/models/flavor_config.dart';
 
 class TestFlagsInterceptor extends InterceptorsWrapper {
-  TestFlagsInterceptor(this.environment);
-
-  final FlavorConfig environment;
+  TestFlagsInterceptor();
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -14,7 +11,7 @@ class TestFlagsInterceptor extends InterceptorsWrapper {
         options
           ..queryParameters = {
             ...options.queryParameters,
-            'quick_auth': environment.values.quickAuth,
+            'quick_auth': true,
           },
       );
     }

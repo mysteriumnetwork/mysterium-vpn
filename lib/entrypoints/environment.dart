@@ -35,13 +35,9 @@ import 'package:window_manager/window_manager.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
 class Environment {
-  Environment(
-    this.flavor, {
-    this.quickAuth = false,
-  });
+  Environment(this.flavor);
 
   final String flavor;
-  final bool quickAuth;
   late final ProviderContainer providerContainer;
   late final FlavorConfig flavorConfig;
   late final RemoteConfigStore? remoteConfigStore;
@@ -189,7 +185,7 @@ class Environment {
         ),
       _ => FlavorConfig(
           flavor: Flavor.dev,
-          values: FlavorValues.dev(quickAuth: quickAuth),
+          values: FlavorValues.dev(),
           buildInfo: buildInfo,
         ),
     };
