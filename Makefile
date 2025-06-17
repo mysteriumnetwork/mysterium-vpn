@@ -47,15 +47,18 @@ generate-api:
 update-tile-assets-declaration:
 	fvm dart run assets/map_tiles/list_assets.dart
 
+debug-integration-tests:
+	patrol develop --flavor dev --flutter-command="fvm flutter" --dart-define-from-file "integration_test/_dart-defines.json" $(flags)
+
 run-integration-tests:
-	patrol test --flavor dev --flutter-command="fvm flutter" $(flags)
+	patrol test --flavor dev --flutter-command="fvm flutter" --dart-define-from-file "integration_test/_dart-defines.json" $(flags)
 
 build-ios-integration-test:
 	rm -rf build/ios_integ && \
-	patrol build ios --flavor dev --dart-define "FLAVOR=DEV" --flutter-command="fvm flutter" --verbose --release $(flags)
+	patrol build ios --flavor dev --dart-define-from-file "integration_test/_dart-defines.json" --flutter-command="fvm flutter" --verbose --release $(flags)
 
 build-android-integration-test:
-	patrol build android --flavor dev --dart-define "FLAVOR=DEV" --flutter-command="fvm flutter" --verbose $(flags)
+	patrol build android --flavor dev --dart-define-from-file "integration_test/_dart-defines.json" --flutter-command="fvm flutter" --verbose $(flags)
 
 run-ios-testlab:
 	cd build/ios_integ/Build/Products && \
