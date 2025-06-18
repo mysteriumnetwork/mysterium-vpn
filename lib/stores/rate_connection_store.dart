@@ -66,7 +66,7 @@ abstract class _RateConnectionStore with Store {
             mode: _rateConnectionMode,
             reasons: _rateConnectionReasons.isEmpty
                 ? RateConnectionReason.other.name
-                : _rateConnectionReasons.toList().join(','),
+                : _rateConnectionReasons.toList().map((e) => e.name).join(','),
             feedback: feedback,
             country: _vpnStore.vpnConnection!.location.code,
             ipType: _vpnStore.vpnConnection!.location.ipType.name,
