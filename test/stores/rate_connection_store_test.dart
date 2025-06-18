@@ -121,7 +121,7 @@ void main() {
                 .having(
                   (r) => r.reasons,
                   'reasons',
-                  RateConnectionReason.likeReasons.first.toString(),
+                  RateConnectionReason.likeReasons.first.name,
                 )
                 .having((r) => r.feedback, 'feedback', 'Great connection!')
                 .having((r) => r.country, 'country', 'US')
