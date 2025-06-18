@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/utils/keys.dart';
 import 'package:mysterium_vpn/components/banners/banner.dart';
 import 'package:mysterium_vpn/components/banners/banner_body.dart';
 import 'package:mysterium_vpn/components/banners/banner_cta.dart';
@@ -14,7 +15,7 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class SubscriptionBanner extends HookConsumerWidget {
-  const SubscriptionBanner({super.key});
+  const SubscriptionBanner({super.key = K.subscriptionBanner});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -50,7 +51,11 @@ class SubscriptionBanner extends HookConsumerWidget {
           ),
         FutureStatus.fulfilled => Banner(
             title: BannerTitle(text: LocaleKeys.noSubscriptionTitle.tr()),
-            cta: BannerCTA(text: LocaleKeys.noSubscriptionAction.tr(), onPressed: handleSubscribe),
+            cta: BannerCTA(
+              key: K.subscriptionBannerCTA,
+              text: LocaleKeys.noSubscriptionAction.tr(),
+              onPressed: handleSubscribe,
+            ),
             onPressed: handleSubscribe,
           )
       },

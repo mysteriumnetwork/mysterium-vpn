@@ -18,36 +18,37 @@ void main() {
 }
 
 Future<void> _login(PatrolIntegrationTester $, String email) async {
-  // Wait for "Sign in to Mysterium VPN" title
-  await $('Sign in to Mysterium VPN').waitUntilVisible();
-
+  await $(#loginPage).waitUntilVisible();
   // Close the login page
   await $(#backButton).tap();
 
-  // Look for "You're not signed in" banner
-  await $("You're not signed in").waitUntilVisible();
+  // Wait for home page to be visible
+  await $(#homePage).waitUntilVisible();
+  await $(#unauthenticatedBanner).waitUntilVisible();
+  await $(#unauthenticatedBanner).tap();
 
-  // click the banner
-  await $("You're not signed in").tap();
-
-  // Wait for "Sign in to Mysterium VPN" title
-  await $('Sign in to Mysterium VPN').waitUntilVisible();
+  // Wait for login page to be visible
+  await $(#loginPage).waitUntilVisible();
 
   // Input email
   await $(#loginEmailField).enterText(email);
 
   // Tap the login button
   await $(#loginButton).tap();
+  await $(#homePage).waitUntilVisible();
 
-  // Make sure that "Sign in to mysterium VPN" is not visible anymore
-  expect($('Sign in to Mysterium VPN'), findsNothing);
-  expect($("You're not signed in"), findsNothing);
+  expect($(#unauthenticatedBanner), findsNothing);
 }
 
 Future<void> _subscribe(PatrolIntegrationTester $) async {
-  await $("You don't have an active subscription").waitUntilVisible();
-  await $("You don't have an active subscription").tap();
-  await $(#backButton).waitUntilVisible();
+  await $(#subscriptionBanner).waitUntilVisible();
+  await $(#subscriptionBannerCTA).waitUntilVisible();
+  await $(#subscriptionBannerCTA).tap();
+  await $(#subscriptionPage).waitUntilVisible();
   await Future.delayed(const Duration(seconds: 10));
+  expect($(#subscriptionPage), findsOneWidget);
+
   await $(#backButton).tap();
+  await $(#homePage).waitUntilVisible();
+  expect($(#homePage), findsOneWidget);
 }
