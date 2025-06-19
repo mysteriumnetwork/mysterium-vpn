@@ -9,6 +9,8 @@ import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:new_version_plus/new_version_plus.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 part 'banners_store.g.dart';
 
@@ -41,6 +43,27 @@ abstract class _BannersStore with Store {
   /// Banners that are temporarily hidden and should not be shown
   /// until the app is restarted or the user logs out.
   final ObservableList<BannerType> _temporaryHidden = ObservableList<BannerType>();
+
+  @readonly
+  late ObservableFuture<VersionStatus?> _newVersionFuture = ObservableFuture(
+    _getNewVersionStatus(),
+  );
+
+  Future<VersionStatus?> _getNewVersionStatus() async {
+    if (!_remoteConfigStore.useStoreVersionChecker) {
+      return null;
+    }
+    try {
+      final newVersion = NewVersionPlus();
+      return await newVersion.getVersionStatus();
+    } catch (e, s) {
+      Sentry.captureException(
+        e,
+        stackTrace: s,
+      );
+      return null;
+    }
+  }
 
   final Set<BannerType> _bannerRequireConditions = {
     BannerType.unauthenticated,
@@ -121,8 +144,9 @@ abstract class _BannersStore with Store {
     }
     final latestStableAppVersion = _remoteConfigStore.latestStableAppVersion;
     final currentBuildVersion = _flavorConfig.buildInfo.buildVersion;
-
-    if (currentBuildVersion.compareTo(latestStableAppVersion) >= 0) {
+    final storeVersion = _newVersionFuture.value?.storeVersion;
+    if (currentBuildVersion.compareTo(latestStableAppVersion) >= 0 ||
+        (storeVersion != null && currentBuildVersion.compareTo(storeVersion) >= 0)) {
       return false;
     }
     return true;
