@@ -6,10 +6,10 @@ version: 2.1.0-dev
 
 environment:
   sdk: "^3.0.0"
-  flutter: 3.29.2
+  flutter: 3.29.3
 
 dependencies:
-  app_links: 6.3.3
+  app_links: 6.4.0
   async: 2.12.0
   auto_size_text: 3.0.0
   beamer: 1.7.0
@@ -24,10 +24,10 @@ dependencies:
   dio: 5.6.0
   easy_localization: 3.0.7
   easy_localization_loader: ^2.0.2
-  firebase_analytics: 11.4.1
-  firebase_core: 3.10.1
-  firebase_crashlytics: 4.3.1
-  firebase_performance: 0.10.1+1
+  firebase_analytics: 11.5.0
+  firebase_core: 3.14.0
+  firebase_crashlytics: 4.3.7
+  firebase_performance: 0.10.1+7
   flutter:
     sdk: flutter
   flutter_hooks: 0.20.5
@@ -70,7 +70,7 @@ dependencies:
   reactive_forms: 17.0.1
   retry: ^3.1.2
   sentry_flutter: ^8.8.0
-  shared_preferences: 2.5.2
+  shared_preferences: 2.5.3
   shimmer: 3.0.0
   sign_in_with_apple: 6.1.4
   sliding_up_panel: 2.0.0+1
