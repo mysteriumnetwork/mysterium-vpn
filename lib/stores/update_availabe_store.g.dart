@@ -17,31 +17,30 @@ mixin _$UpdateAvailableStore on _UpdateAvailableStore, Store {
               name: '_UpdateAvailableStore.appUpdateAvailable'))
           .value;
 
-  late final _$_newVersionFutureAtom =
-      Atom(name: '_UpdateAvailableStore._newVersionFuture', context: context);
+  late final _$newVersionFutureAtom =
+      Atom(name: '_UpdateAvailableStore.newVersionFuture', context: context);
 
+  @override
   ObservableFuture<VersionStatus?> get newVersionFuture {
-    _$_newVersionFutureAtom.reportRead();
-    return super._newVersionFuture;
+    _$newVersionFutureAtom.reportRead();
+    return super.newVersionFuture;
   }
 
-  @override
-  ObservableFuture<VersionStatus?> get _newVersionFuture => newVersionFuture;
-
-  bool __newVersionFutureIsInitialized = false;
+  bool _newVersionFutureIsInitialized = false;
 
   @override
-  set _newVersionFuture(ObservableFuture<VersionStatus?> value) {
-    _$_newVersionFutureAtom
-        .reportWrite(value, __newVersionFutureIsInitialized ? super._newVersionFuture : null, () {
-      super._newVersionFuture = value;
-      __newVersionFutureIsInitialized = true;
+  set newVersionFuture(ObservableFuture<VersionStatus?> value) {
+    _$newVersionFutureAtom
+        .reportWrite(value, _newVersionFutureIsInitialized ? super.newVersionFuture : null, () {
+      super.newVersionFuture = value;
+      _newVersionFutureIsInitialized = true;
     });
   }
 
   @override
   String toString() {
     return '''
+newVersionFuture: ${newVersionFuture},
 appUpdateAvailable: ${appUpdateAvailable}
     ''';
   }

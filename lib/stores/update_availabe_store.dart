@@ -14,16 +14,18 @@ abstract class _UpdateAvailableStore with Store {
     this._remoteConfigStore,
     this._newVersionPlus,
     this._flavorConfig,
-  );
+  ) {
+    newVersionFuture = ObservableFuture(
+      _getNewVersionStatus(),
+    );
+  }
 
   final RemoteConfigStore _remoteConfigStore;
   final NewVersionPlus _newVersionPlus;
   final FlavorConfig _flavorConfig;
 
-  @readonly
-  late ObservableFuture<VersionStatus?> _newVersionFuture = ObservableFuture(
-    _getNewVersionStatus(),
-  );
+  @observable
+  late ObservableFuture<VersionStatus?> newVersionFuture;
 
   Future<VersionStatus?> _getNewVersionStatus() async {
     if (!_remoteConfigStore.useStoreVersionChecker) {
@@ -44,11 +46,11 @@ abstract class _UpdateAvailableStore with Store {
   bool get appUpdateAvailable {
     final latestStableAppVersion = _remoteConfigStore.latestStableAppVersion;
     final currentBuildVersion = _flavorConfig.buildInfo.buildVersion;
-    final storeVersion = _newVersionFuture.value?.storeVersion;
-    if (currentBuildVersion.compareTo(latestStableAppVersion) >= 0 ||
-        (storeVersion != null && currentBuildVersion.compareTo(storeVersion) >= 0)) {
-      return false;
+    final storeVersion = newVersionFuture.value?.storeVersion;
+    if (latestStableAppVersion.compareTo(currentBuildVersion) >= 0 ||
+        (storeVersion != null && storeVersion.compareTo(currentBuildVersion) >= 0)) {
+      return true;
     }
-    return true;
+    return false;
   }
 }
