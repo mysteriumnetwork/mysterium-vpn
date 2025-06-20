@@ -3,7 +3,6 @@ import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
@@ -11,8 +10,8 @@ import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/banners_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
-import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
+import 'package:mysterium_vpn/stores/update_availabe_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 
 import 'banners_store_test.mocks.dart';
@@ -23,8 +22,7 @@ import 'banners_store_test.mocks.dart';
   MockSpec<AuthSessionStore>(),
   MockSpec<LocalDBService>(),
   MockSpec<VpnStore>(),
-  MockSpec<RemoteConfigStore>(),
-  MockSpec<FlavorConfig>(),
+  MockSpec<UpdateAvailableStore>(),
 ])
 void main() {
   group('BannersStore', () {
@@ -35,8 +33,7 @@ void main() {
     late MockAuthSessionStore mockAuthSessionStore;
     late MockVpnStore mockVpnStore;
 
-    late MockRemoteConfigStore mockRemoteConfigStore;
-    late MockFlavorConfig mockFlavorConfig;
+    late MockUpdateAvailableStore mockUpdateAvailableStore;
     final mockDCLocations = VPNLocations(
       locations: [
         const VPNLocation(code: 'NL', ipType: IPType.datacenter),
@@ -52,8 +49,7 @@ void main() {
       mockVpnStore = MockVpnStore();
 
       when(mockLocalDBService.getShownBanners()).thenAnswer((_) async => <BannerType>[]);
-      mockRemoteConfigStore = MockRemoteConfigStore();
-      mockFlavorConfig = MockFlavorConfig();
+      mockUpdateAvailableStore = MockUpdateAvailableStore();
       when(mockSubscriptionStore.subscriptionFuture)
           .thenAnswer((_) => ObservableFuture.value(Subscription(active: false)));
       when(mockLocalDBService.getMainBanners()).thenAnswer((_) async => <BannerType>[]);
@@ -62,8 +58,6 @@ void main() {
       when(mockLocationsStore.dcLocationsStream).thenAnswer(
         (_) => ObservableStream(Stream.value(mockDCLocations), initialValue: mockDCLocations),
       );
-      when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.0');
-      when(mockFlavorConfig.buildInfo).thenReturn(BuildInfo(buildNumber: 0, buildVersion: '0.0.0'));
 
       bannersStore = BannersStore(
         mockLocalDBService,
@@ -71,15 +65,14 @@ void main() {
         mockLocationsStore,
         mockAuthSessionStore,
         mockVpnStore,
-        mockRemoteConfigStore,
-        mockFlavorConfig,
+        mockUpdateAvailableStore,
       );
     });
 
     group('banners', () {
       test('returns all banners when no banners are shown and not subscribed', () async {
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
-        when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.1');
+        when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
         when(mockVpnStore.connectionLimitReached).thenReturn(true);
 
         await bannersStore.shownBanners;
@@ -105,7 +98,7 @@ void main() {
           (_) => ObservableStream(Stream.value(VPNLocations()), initialValue: VPNLocations()),
         );
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
-        when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.1');
+        when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
         when(mockVpnStore.connectionLimitReached).thenReturn(true);
 
         await bannersStore.shownBanners;
@@ -118,7 +111,7 @@ void main() {
 
       test('excludes subscription banner when subscribed', () async {
         await bannersStore.shownBanners;
-        when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.1');
+        when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
         when(mockVpnStore.connectionLimitReached).thenReturn(true);
 
         expect(
@@ -132,7 +125,7 @@ void main() {
         when(mockLocationsStore.dcLocationsStream).thenAnswer(
           (_) => ObservableStream(Stream.value(VPNLocations()), initialValue: VPNLocations()),
         );
-        when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.1');
+        when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
         when(mockVpnStore.connectionLimitReached).thenReturn(true);
         await bannersStore.shownBanners;
 
@@ -144,7 +137,7 @@ void main() {
 
       test('excludes tooManyConnections banner when connectionLimitReached is false', () async {
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
-        when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.1');
+        when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
         when(mockVpnStore.connectionLimitReached).thenReturn(false);
         await bannersStore.shownBanners;
 
@@ -152,6 +145,48 @@ void main() {
           bannersStore.mainBanners,
           BannerType.mainBanners.where((b) => b != BannerType.tooManyConnections).toList(),
         );
+      });
+
+      test('includes unauthenticated banner when user is unauthenticated', () async {
+        when(mockAuthSessionStore.status).thenReturn(AuthStatus.unauthenticated);
+        when(mockSubscriptionStore.isSubscribed).thenReturn(false);
+        when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
+        when(mockVpnStore.connectionLimitReached).thenReturn(true);
+
+        await bannersStore.shownBanners;
+
+        expect(bannersStore.mainBanners, contains(BannerType.unauthenticated));
+      });
+
+      test('excludes unauthenticated banner when user is authenticated', () async {
+        when(mockAuthSessionStore.status).thenReturn(AuthStatus.authenticated);
+        when(mockSubscriptionStore.isSubscribed).thenReturn(false);
+        when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
+        when(mockVpnStore.connectionLimitReached).thenReturn(true);
+
+        await bannersStore.shownBanners;
+
+        expect(bannersStore.mainBanners, isNot(contains(BannerType.unauthenticated)));
+      });
+
+      test('includes appUpdateAvailable banner when update is available', () async {
+        when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
+        when(mockSubscriptionStore.isSubscribed).thenReturn(false);
+        when(mockVpnStore.connectionLimitReached).thenReturn(true);
+
+        await bannersStore.shownBanners;
+
+        expect(bannersStore.mainBanners, contains(BannerType.appUpdateAvailable));
+      });
+
+      test('excludes appUpdateAvailable banner when no update is available', () async {
+        when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(false);
+        when(mockSubscriptionStore.isSubscribed).thenReturn(false);
+        when(mockVpnStore.connectionLimitReached).thenReturn(true);
+
+        await bannersStore.shownBanners;
+
+        expect(bannersStore.mainBanners, isNot(contains(BannerType.appUpdateAvailable)));
       });
     });
   });

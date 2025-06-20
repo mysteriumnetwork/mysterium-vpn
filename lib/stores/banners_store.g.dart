@@ -49,28 +49,6 @@ mixin _$BannersStore on _BannersStore, Store {
               name: '_BannersStore.shouldShowAppUpdateBanner'))
           .value;
 
-  late final _$_newVersionFutureAtom =
-      Atom(name: '_BannersStore._newVersionFuture', context: context);
-
-  ObservableFuture<VersionStatus?> get newVersionFuture {
-    _$_newVersionFutureAtom.reportRead();
-    return super._newVersionFuture;
-  }
-
-  @override
-  ObservableFuture<VersionStatus?> get _newVersionFuture => newVersionFuture;
-
-  bool __newVersionFutureIsInitialized = false;
-
-  @override
-  set _newVersionFuture(ObservableFuture<VersionStatus?> value) {
-    _$_newVersionFutureAtom
-        .reportWrite(value, __newVersionFutureIsInitialized ? super._newVersionFuture : null, () {
-      super._newVersionFuture = value;
-      __newVersionFutureIsInitialized = true;
-    });
-  }
-
   late final _$_shownBannersAtom = Atom(name: '_BannersStore._shownBanners', context: context);
 
   ObservableFuture<List<BannerType>> get shownBanners {
