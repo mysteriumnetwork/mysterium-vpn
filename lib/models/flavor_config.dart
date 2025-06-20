@@ -30,6 +30,7 @@ class FlavorValues {
     required this.textsSdkKey,
     required this.measurementId,
     required this.apiSecret,
+    required this.isAutomated,
   });
 
   factory FlavorValues.production() => FlavorValues._(
@@ -51,9 +52,11 @@ class FlavorValues {
         textsSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/ZnfqKRIkCEy2oG4Fc_ZbgA',
         measurementId: 'G-293FMB7WPQ',
         apiSecret: 'An1EAWXDRp6iivNpZ6uKBg',
+        isAutomated: false,
       );
 
-  factory FlavorValues.dev() => FlavorValues._(
+  factory FlavorValues.dev({bool isAutomated = const bool.fromEnvironment('IS_AUTOMATED')}) =>
+      FlavorValues._(
         baseUrl: 'https://api-test.mysteriumvpn.com/api/v1',
         mqttUrl: 'wss://events-test.mysteriumvpn.com/ws',
         mqttUsername: 'dvpn',
@@ -71,6 +74,7 @@ class FlavorValues {
         textsSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/OyPvJv7luUW48Kb20B3dbw',
         measurementId: 'G-9Y0P8J42T5',
         apiSecret: 'AIzaSyDEg8yyxnhEaCJ7wBPcOqd6O8W2FTkDJXg',
+        isAutomated: isAutomated,
       );
 
   final String baseUrl;
@@ -90,10 +94,11 @@ class FlavorValues {
   final String textsSdkKey;
   final String measurementId;
   final String apiSecret;
+  final bool isAutomated;
 
   @override
   String toString() =>
-      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, billingPage: $billingPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret';
+      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, billingPage: $billingPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret, isAutomated: $isAutomated';
 }
 
 class FlavorConfig {
@@ -103,11 +108,13 @@ class FlavorConfig {
     required BuildInfo buildInfo,
   }) =>
       FlavorConfig._internal(flavor, values, buildInfo);
+
   FlavorConfig._internal(
     this.flavor,
     this.values,
     this.buildInfo,
   );
+
   final Flavor flavor;
   final FlavorValues values;
   final BuildInfo buildInfo;

@@ -1,0 +1,147 @@
+name: Integration Tests
+
+on:
+  push:
+    branches:
+      - feat/integration-tests
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      flavor:
+        required: true
+        type: string
+        default: "dev"
+      flavor_dart:
+        required: true
+        type: string
+        default: "DEV"
+
+jobs:
+  integration_tests:
+    name: Run Integration Tests
+    runs-on: macos-14
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Google Cloud SDK
+        uses: 'google-github-actions/auth@v2'
+        with:
+          project_id: 'new-mysterium-vpn'
+          workload_identity_provider: 'projects/104590535697/locations/global/workloadIdentityPools/github/providers/mysterium-repo'
+          service_account: 'github-actions-service-account@new-mysterium-vpn.iam.gserviceaccount.com'
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
+
+      - name: Setup Flutter Version Management CLI
+        uses: kuhnroyal/flutter-fvm-config-action/setup@v3
+
+      - name: Verify Flutter and Dart
+        run: |
+          flutter --version
+          dart --version
+
+      - name: Set up fake FVM alias
+        run: |
+          mkdir -p ~/.local/bin
+          echo '#!/bin/bash' > ~/.local/bin/fvm
+          echo 'if [[ "$1" == "flutter" || "$1" == "dart" ]]; then' >> ~/.local/bin/fvm
+          echo '  cmd=$1' >> ~/.local/bin/fvm
+          echo '  shift' >> ~/.local/bin/fvm
+          echo '  exec "$cmd" "$@"' >> ~/.local/bin/fvm
+          echo 'else' >> ~/.local/bin/fvm
+          echo '  echo "Unsupported fvm command: $1"' >> ~/.local/bin/fvm
+          echo '  exit 1' >> ~/.local/bin/fvm
+          echo 'fi' >> ~/.local/bin/fvm
+          chmod +x ~/.local/bin/fvm
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Verify FVM
+        run: |
+          fvm flutter --version
+          fvm dart --version
+
+      - name: Install Patrol CLI
+        run: |
+          dart pub global activate patrol_cli 3.6.0
+          patrol --version
+
+      - name: Setup Android keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
+
+          echo "storeFile=keystore.jks" > android/key.properties
+          echo "storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> android/key.properties
+          echo "keyPassword=${{ secrets.ANDROID_KEYSTORE_KEY_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.ANDROID_KEYSTORE_KEY_ALIAS }}" >> android/key.properties
+          cat android/key.properties
+
+      - name: Download provisioning profiles
+        run: |
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          curl -o ~/Library/MobileDevice/Provisioning\ Profiles/prod.mobileprovision https://zm-random.s3.eu-central-1.amazonaws.com/prod.mobileprovision
+          curl -o ~/Library/MobileDevice/Provisioning\ Profiles/test.mobileprovision https://zm-random.s3.eu-central-1.amazonaws.com/test.mobileprovision
+
+      - name: Set up XCode
+        run: sudo xcode-select --switch /Applications/Xcode_16.1.0.app
+
+      - name: Install Codemagic CLI tools
+        run: |
+          python -m pip install codemagic-cli-tools
+          codemagic-cli-tools version
+          codemagic-cli-tools installed-tools
+
+      - name: Set up keychain
+        run: |
+          keychain initialize
+          keychain get-default
+
+      - name: Download and add .p12 certificate to keychain
+        run: |
+          curl -o integration_tests.p12 https://zm-random.s3.eu-central-1.amazonaws.com/integration_tests.p12
+          keychain add-certificates --certificate integration_tests.p12
+
+      # Signing files are imported to keychain from:
+      #  ls -la ~/Library/MobileDevice/Provisioning\ Profiles
+      #  ls -la ~/Library/MobileDevice/Certificates/
+      - name: Fetch signing files
+        env:
+          APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
+        run: |
+          app-store-connect fetch-signing-files "com.mysteriumvpn.test" --platform IOS --type IOS_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
+          keychain add-certificates
+
+      - name: Set up signing preferences on Xcode project
+        run: |
+          keychain list-certificates
+          xcode-project use-profiles --project ios/Runner.xcodeproj --export-options-plist ios/export_options.plist
+          git status
+          git diff
+          cat ios/export_options.plist
+
+
+      - name: Install dependencies
+        run: make init
+
+      - name: 'Build Android test app'
+        run: make build-android-integration-test
+
+      - name: 'Run Android tests'
+        run: make run-android-testlab
+
+      - name: 'Build iOS test app'
+        run: make build-ios-integration-test
+
+      - name: 'Run iOS tests'
+        run: make run-ios-testlab

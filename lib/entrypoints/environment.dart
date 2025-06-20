@@ -6,15 +6,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/widgets.dart' hide runApp;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mysterium_vpn/app.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/entrypoints/firebase/firebase_options_dev.dart' as dev;
+import 'package:mysterium_vpn/entrypoints/firebase/firebase_options_prod.dart' as prod;
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -27,18 +28,35 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:store_checker_windows/store_checker_windows.dart';
+import 'package:talker/talker.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:url_protocol/url_protocol.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
-class Enviroment {
-  Future<void> launch({
-    required String flavor,
-    required FirebaseOptions? firebaseOptions,
-  }) async {
-    WidgetsFlutterBinding.ensureInitialized();
+class Environment {
+  Environment(this.flavor);
 
+  final String flavor;
+  late final ProviderContainer providerContainer;
+  late final FlavorConfig flavorConfig;
+  late final RemoteConfigStore? remoteConfigStore;
+  late final Talker logger;
+
+  Widget getApp() => UncontrolledProviderScope(
+        container: providerContainer,
+        child: EasyLocalization(
+          useOnlyLangCode: true,
+          supportedLocales: kSupportedLocales,
+          path: Assets.langs,
+          fallbackLocale: kFallbackLocale,
+          startLocale: kFallbackLocale,
+          assetLoader: providerContainer.read(assetsLoaderPOD),
+          child: const MyApp(),
+        ),
+      );
+
+  Future<void> init() async {
     if (isDesktop()) {
       await windowManager.ensureInitialized();
       await windowManager.setPreventClose(true);
@@ -49,8 +67,9 @@ class Enviroment {
 
     if (Platform.isWindows) {
       registerProtocolHandler('mysteriumvpn');
-      nativeWindowsInit();
+      _nativeWindowsInit();
     }
+
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.light.copyWith(statusBarIconBrightness: Brightness.light),
     );
@@ -62,6 +81,7 @@ class Enviroment {
       SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
     );
+
     GoogleFonts.config.allowRuntimeFetching = false;
 
     FlutterError.demangleStackTrace = (StackTrace stack) {
@@ -74,72 +94,25 @@ class Enviroment {
       return stack;
     };
 
-    final flavorConfig = await setupFlavor(flavor: flavor);
-    await setupTrayIcon(flavorConfig);
+    flavorConfig = await _setupFlavor();
+    await _setupTrayIcon(flavorConfig);
     await SharedPreferenceService.instance.init();
     SecureStorageService.instance.init(flavorConfig);
     await EasyLocalization.ensureInitialized();
     await LocalDBService.initialize();
-    final container = ProviderContainer(
+    providerContainer = ProviderContainer(
       overrides: [environmentPOD.overrideWithValue(flavorConfig)],
     );
-    await container.read(analyticsInitPOD(firebaseOptions).future);
-    final remoteConfigStore = await initRemoteConfig(container);
-    await initLatLngStore(container);
-    final logger = container.read(loggerPOD);
+
+    final firebaseOptions = _getFirebaseOptions();
+    await providerContainer.read(analyticsInitPOD(firebaseOptions).future);
+    remoteConfigStore = await _initRemoteConfig(providerContainer);
+    await _initLatLngStore(providerContainer);
+    logger = providerContainer.read(loggerPOD);
     await _initIntercom();
-    FlutterError.onError = (details) {
-      logger.handle(
-        details.exception,
-        details.stack,
-      );
-    };
-    PlatformDispatcher.instance.onError = (error, stack) {
-      logger.handle(error, stack, 'fatal');
-      return true;
-    };
 
     logger.log(
       'App started in ${flavorConfig.flavor} mode\nBase URL ${flavorConfig.values.baseUrl}',
-    );
-    await SentryFlutter.init(
-      (options) {
-        options
-          ..dsn = remoteConfigStore?.sentryDsn ?? flavorConfig.values.sentryDsn
-          ..sendClientReports = true
-          ..maxRequestBodySize = MaxRequestBodySize.small
-          ..maxResponseBodySize = MaxResponseBodySize.small
-          ..beforeSend = (event, hint) {
-            debugPrint(event.throwable.toString());
-            if (event.throwable is ApiException ||
-                event.throwable is SignInAborted ||
-                event.throwable is KeyDoesntExistsException ||
-                event.throwable is TimeoutException ||
-                event.throwable is TokenAlreadyUsedException ||
-                event.throwable is OperationCancelledException ||
-                event.throwable is SubscriptionRequiredException ||
-                event.throwable is RefreshTokenNotFoundException) {
-              return null;
-            }
-            return event;
-          };
-      },
-      appRunner: () {
-        runApp(
-          UncontrolledProviderScope(
-            container: container,
-            child: EasyLocalization(
-              useOnlyLangCode: true,
-              supportedLocales: kSupportedLocales,
-              path: Assets.langs,
-              fallbackLocale: kFallbackLocale,
-              startLocale: kFallbackLocale,
-              assetLoader: container.read(assetsLoaderPOD),
-              child: const MyApp(),
-            ),
-          ),
-        );
-      },
     );
   }
 
@@ -161,7 +134,7 @@ class Enviroment {
     }
   }
 
-  Future<RemoteConfigStore?> initRemoteConfig(ProviderContainer container) async {
+  Future<RemoteConfigStore?> _initRemoteConfig(ProviderContainer container) async {
     try {
       final remoteConfigStore = container.read(remoteConfigStorePOD);
       await remoteConfigStore.configFuture;
@@ -172,7 +145,7 @@ class Enviroment {
     }
   }
 
-  Future<LatLngStore?> initLatLngStore(ProviderContainer container) async {
+  Future<LatLngStore?> _initLatLngStore(ProviderContainer container) async {
     try {
       final latLngStore = container.read(latLngStorePOD);
       await latLngStore.coordinatesFuture;
@@ -183,7 +156,7 @@ class Enviroment {
     }
   }
 
-  Future<FlavorConfig> setupFlavor({required String flavor}) async {
+  Future<FlavorConfig> _setupFlavor() async {
     var buildInfo = BuildInfo(
       buildNumber: 0,
       buildVersion: '0',
@@ -205,11 +178,6 @@ class Enviroment {
     }
 
     return switch (flavor) {
-      'DEV' => FlavorConfig(
-          flavor: Flavor.dev,
-          values: FlavorValues.dev(),
-          buildInfo: buildInfo,
-        ),
       'PROD' => FlavorConfig(
           flavor: Flavor.production,
           values: FlavorValues.production(),
@@ -223,7 +191,7 @@ class Enviroment {
     };
   }
 
-  Future<void> nativeInitBackground(List<Object> args) async {
+  Future<void> _nativeInitBackground(List<Object> args) async {
     final rootIsolateToken = args[0] as RootIsolateToken;
     BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
 
@@ -235,12 +203,12 @@ class Enviroment {
     }
   }
 
-  Future<void> nativeWindowsInit() async {
+  Future<void> _nativeWindowsInit() async {
     final rootIsolateToken = RootIsolateToken.instance!;
-    Isolate.spawn(nativeInitBackground, [rootIsolateToken]);
+    Isolate.spawn(_nativeInitBackground, [rootIsolateToken]);
   }
 
-  Future<void> setupTrayIcon(FlavorConfig flavor) async {
+  Future<void> _setupTrayIcon(FlavorConfig flavor) async {
     if (!Platform.isWindows) {
       return;
     }
@@ -266,6 +234,18 @@ class Enviroment {
       await trayManager.setContextMenu(items);
     } catch (e) {
       Sentry.captureException(e);
+    }
+  }
+
+  FirebaseOptions? _getFirebaseOptions() {
+    try {
+      if (flavor == Flavor.dev.name) {
+        return dev.DefaultFirebaseOptions.currentPlatform;
+      } else {
+        return prod.DefaultFirebaseOptions.currentPlatform;
+      }
+    } catch (_) {
+      return null;
     }
   }
 }
