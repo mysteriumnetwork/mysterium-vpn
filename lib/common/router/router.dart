@@ -2,6 +2,7 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
+import 'package:mysterium_vpn/common/utils/keys.dart';
 import 'package:mysterium_vpn/pages/home_page.dart';
 import 'package:mysterium_vpn/pages/login_page.dart';
 import 'package:mysterium_vpn/pages/settings_page.dart';
@@ -41,7 +42,7 @@ class BeamerLocations extends BeamLocation<BeamState> {
           key: ValueKey(Routes.main.toDashCase),
           name: Routes.main.path,
           title: Routes.main.name,
-          child: const HomePage(),
+          child: const HomePage(key: K.homePage),
         ),
       if (path.contains(Routes.splash.path))
         BeamPage(
@@ -62,14 +63,14 @@ class BeamerLocations extends BeamLocation<BeamState> {
           key: ValueKey(Routes.payment.toDashCase),
           name: Routes.payment.path,
           title: Routes.payment.name,
-          child: const SubscriptionPage(),
+          child: const SubscriptionPage(key: K.subscriptionPage),
         ),
       if (path.contains(Routes.login.path))
         BeamPage(
           key: ValueKey(Routes.login.toDashCase),
           name: Routes.login.path,
           title: Routes.login.name,
-          child: const LoginPage(),
+          child: const LoginPage(key: K.loginPage),
         ),
       if (path.contains(Routes.checkYourEmail.path))
         BeamPage(

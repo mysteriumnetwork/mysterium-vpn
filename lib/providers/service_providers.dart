@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app_links/app_links.dart';
 import 'package:configcat_client/configcat_client.dart';
+import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
@@ -12,6 +13,7 @@ import 'package:mysterium_vpn/common/interceptors/api_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/connection_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/interceptors/retry_request.dart';
+import 'package:mysterium_vpn/common/interceptors/test_flags_interceptor.dart';
 import 'package:mysterium_vpn/common/observers/crashlytics_talker_observer.dart';
 import 'package:mysterium_vpn/common/utils/translation_asset_loader.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
@@ -32,8 +34,7 @@ import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:talker/talker.dart';
-import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
-import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
+import 'package:talker_dio_logger/talker_dio_logger.dart';
 import 'package:vpn_api/vpn_api.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
@@ -70,6 +71,7 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
           if (sessionStore.accessToken != null) {
             options.headers['Authorization'] = 'Bearer ${sessionStore.accessToken}';
           }
+          options.headers['Accept-Charset'] = 'utf-8'; // Force UTF-8 encoding
           return handler.next(options);
         },
       ),
@@ -86,6 +88,9 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
             printErrorData: false,
           ),
         ),
+      if (environment.flavor == Flavor.dev && environment.values.isAutomated)
+        TestFlagsInterceptor(),
+      CurlLoggerDioInterceptor(printOnSuccess: true, convertFormData: false),
     ],
   );
 
