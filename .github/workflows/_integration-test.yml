@@ -1,9 +1,8 @@
 name: Integration Tests
 
 on:
-  push:
-    branches:
-      - feat/integration-tests
+  release:
+    types: [created]
   workflow_dispatch:
   workflow_call:
     inputs:
