@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Remove RECORD_AUDIO permission -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" tools:node="remove"/>
+
     <permission
         android:name="${applicationId}.permission.CONTROL_TUNNELS"
         android:description="@string/permission_description"
