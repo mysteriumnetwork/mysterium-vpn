@@ -1,16 +1,13 @@
 import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/banner_type.dart';
-import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
-import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
+import 'package:mysterium_vpn/stores/update_availabe_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
-import 'package:new_version_plus/new_version_plus.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 part 'banners_store.g.dart';
 
@@ -24,8 +21,7 @@ abstract class _BannersStore with Store {
     this._locationsStore,
     this._authSessionStore,
     this._vpnStore,
-    this._remoteConfigStore,
-    this._flavorConfig,
+    this._updateAvailableStore,
   );
 
   final LocalDBService _localDBService;
@@ -33,8 +29,7 @@ abstract class _BannersStore with Store {
   final LocationsStore _locationsStore;
   final AuthSessionStore _authSessionStore;
   final VpnStore _vpnStore;
-  final RemoteConfigStore _remoteConfigStore;
-  final FlavorConfig _flavorConfig;
+  final UpdateAvailableStore _updateAvailableStore;
 
   /// User can dismiss the banner when unauthenticated
   /// Banners will be hidden until the app is restarted or the user logs in.
@@ -43,27 +38,6 @@ abstract class _BannersStore with Store {
   /// Banners that are temporarily hidden and should not be shown
   /// until the app is restarted or the user logs out.
   final ObservableList<BannerType> _temporaryHidden = ObservableList<BannerType>();
-
-  @readonly
-  late ObservableFuture<VersionStatus?> _newVersionFuture = ObservableFuture(
-    _getNewVersionStatus(),
-  );
-
-  Future<VersionStatus?> _getNewVersionStatus() async {
-    if (!_remoteConfigStore.useStoreVersionChecker) {
-      return null;
-    }
-    try {
-      final newVersion = NewVersionPlus();
-      return await newVersion.getVersionStatus();
-    } catch (e, s) {
-      Sentry.captureException(
-        e,
-        stackTrace: s,
-      );
-      return null;
-    }
-  }
 
   final Set<BannerType> _bannerRequireConditions = {
     BannerType.unauthenticated,
@@ -142,14 +116,7 @@ abstract class _BannersStore with Store {
     if (_temporaryHidden.contains(BannerType.appUpdateAvailable)) {
       return false;
     }
-    final latestStableAppVersion = _remoteConfigStore.latestStableAppVersion;
-    final currentBuildVersion = _flavorConfig.buildInfo.buildVersion;
-    final storeVersion = _newVersionFuture.value?.storeVersion;
-    if (currentBuildVersion.compareTo(latestStableAppVersion) >= 0 ||
-        (storeVersion != null && currentBuildVersion.compareTo(storeVersion) >= 0)) {
-      return false;
-    }
-    return true;
+    return _updateAvailableStore.appUpdateAvailable;
   }
 
   @action
