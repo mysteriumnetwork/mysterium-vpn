@@ -30,7 +30,6 @@ void main() async {
             environment.remoteConfigStore?.sentryDsn ?? environment.flavorConfig.values.sentryDsn
         ..sendClientReports = true
         ..maxRequestBodySize = MaxRequestBodySize.small
-        ..maxResponseBodySize = MaxResponseBodySize.small
         ..beforeSend = (event, hint) {
           debugPrint(event.throwable.toString());
           if (event.throwable is ApiException ||
