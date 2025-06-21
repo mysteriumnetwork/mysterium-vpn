@@ -33,6 +33,7 @@ enum _FeatureToggleKey {
   latestStableAppVersion,
   isRateConnectionAvailable,
   cancelSurveyOptions,
+  useStoreVersionChecker,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -245,6 +246,14 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       }
     }
     return null;
+  }
+
+  @computed
+  bool get useStoreVersionChecker {
+    if (config.containsKey(_FeatureToggleKey.useStoreVersionChecker.name)) {
+      return config[_FeatureToggleKey.useStoreVersionChecker.name] as bool;
+    }
+    return true;
   }
 
   Map<String, String> get asUserProperties =>

@@ -33,8 +33,10 @@ import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/texts_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
+import 'package:mysterium_vpn/stores/update_availabe_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
@@ -237,8 +239,7 @@ final bannersStorePOD = Provider<BannersStore>(
     ref.watch(locationsStorePOD),
     ref.watch(authSessionStorePOD),
     ref.watch(vpnStorePOD),
-    ref.watch(remoteConfigStorePOD),
-    ref.watch(environmentPOD),
+    ref.watch(updateAvailableStorePOD),
   ),
 );
 
@@ -268,5 +269,15 @@ final networkStatisticsStorePOD = Provider.autoDispose<NetworkStatisticsStore>((
   final wireguardService = ref.watch(wireguardServicePOD);
   return NetworkStatisticsStore(
     wireguardService,
+  );
+});
+
+final updateAvailableStorePOD = Provider.autoDispose<UpdateAvailableStore>((ref) {
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+  final newVersionPlus = NewVersionPlus();
+  return UpdateAvailableStore(
+    remoteConfigStore,
+    newVersionPlus,
+    ref.watch(environmentPOD),
   );
 });
