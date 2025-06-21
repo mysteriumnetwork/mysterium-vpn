@@ -177,6 +177,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
           Computed<Set<String>?>(() => super.cancelSubscriptionReasonKeys,
               name: 'RemoteConfigStoreBase.cancelSubscriptionReasonKeys'))
       .value;
+  Computed<bool>? _$useStoreVersionCheckerComputed;
+
+  @override
+  bool get useStoreVersionChecker =>
+      (_$useStoreVersionCheckerComputed ??= Computed<bool>(() => super.useStoreVersionChecker,
+              name: 'RemoteConfigStoreBase.useStoreVersionChecker'))
+          .value;
 
   @override
   String toString() {
@@ -205,7 +212,8 @@ browseUnauthenticated: ${browseUnauthenticated},
 shouldCheckUdp: ${shouldCheckUdp},
 latestStableAppVersion: ${latestStableAppVersion},
 isRateConnectionAvailable: ${isRateConnectionAvailable},
-cancelSubscriptionReasonKeys: ${cancelSubscriptionReasonKeys}
+cancelSubscriptionReasonKeys: ${cancelSubscriptionReasonKeys},
+useStoreVersionChecker: ${useStoreVersionChecker}
     ''';
   }
 }
