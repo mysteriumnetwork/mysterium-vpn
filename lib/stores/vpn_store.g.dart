@@ -383,14 +383,6 @@ mixin _$VpnStore on _VpnStore, Store {
     return _$toggleNotSafeContentBlockerAsyncAction.run(() => super.toggleNotSafeContentBlocker());
   }
 
-  late final _$_generateWireguardKeyAsyncAction =
-      AsyncAction('_VpnStore._generateWireguardKey', context: context);
-
-  @override
-  Future<KeyPair> _generateWireguardKey() {
-    return _$_generateWireguardKeyAsyncAction.run(() => super._generateWireguardKey());
-  }
-
   late final _$_connectWireguardAsyncAction =
       AsyncAction('_VpnStore._connectWireguard', context: context);
 
