@@ -111,10 +111,10 @@ void main() {
     test('returns filtered recent locations', () async {
       when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => mockResidential);
       when(
-        mockFilterService.filterLocations(
+        mockFilterService.filterRecentLocations(
           mockResidential,
+          availableLocations: {...mockResidential},
           keyword: 'us',
-          shouldSortList: false,
         ),
       ).thenReturn([const VPNLocation(code: 'US')]);
 
@@ -140,8 +140,8 @@ void main() {
 
     test('returns random location from recent locations', () async {
       when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => mockResidential);
-      when(mockFilterService.filterLocations(mockResidential, keyword: '', shouldSortList: false))
-          .thenReturn(mockResidential);
+      when(mockFilterService.filterRecentLocations(mockResidential,
+          keyword: '', availableLocations: {...mockResidential})).thenReturn(mockResidential);
 
       final recentLocations = await locationsStore.recentLocationsFuture;
 
