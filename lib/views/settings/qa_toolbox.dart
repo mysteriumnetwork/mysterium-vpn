@@ -129,7 +129,7 @@ class QAToolbox extends HookConsumerWidget {
               title: 'wireguard keys',
               subtitle: EasyText(
                 '''Current: \nPUBLIC:${vpnStore.wireguardKey?.publicKey}\nPRIVATE:${vpnStore.wireguardKey?.privateKey}''',
-               maxLines: 3,
+                maxLines: 3,
               ),
               actionWidget: const SizedBox.shrink(),
             ),
