@@ -269,7 +269,15 @@ abstract class _VpnStore with Store {
 
   Future<void> _initWireguardKey() async {
     try {
-      await _wireguardKeyService.getWireguradKey();
+      _wireguardKey = await _wireguardKeyService.getWireguradKey();
+    } catch (e) {
+      _logger.handle(e);
+    }
+  }
+
+  Future<void> regenerateWireguradKey() async {
+    try {
+      _wireguardKey = await _wireguardKeyService.regenerateWireguardKeys();
     } catch (e) {
       _logger.handle(e);
     }
@@ -745,12 +753,22 @@ abstract class _VpnStore with Store {
         /// If tunnel is not configured, no need to reset the app
         return;
       }
-      _resetAppFuture = ObservableFuture(
-        _wireguardService.removeTunnelConfiguration(
-          bundleId: _env.getBundleId(),
-          tunnelName: _env.values.tunnelName,
-        ),
-      );
+      if (isMobile()) {
+        return;
+      }
+      if (Platform.isWindows) {
+        _resetAppFuture = ObservableFuture(
+          regenerateWireguradKey(),
+        );
+      } else if (Platform.isMacOS) {
+        _resetAppFuture = ObservableFuture(
+          _wireguardService.removeTunnelConfiguration(
+            bundleId: _env.getBundleId(),
+            tunnelName: _env.values.tunnelName,
+          ),
+        );
+      }
+
       await _resetAppFuture;
     } catch (e) {
       _logger.handle(e);
