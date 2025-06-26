@@ -137,11 +137,12 @@ class SecureStorageService {
   Future<String?> getAppLink() async => readOrNull(StorageKeys.appLink.name);
   Future<void> saveAppLink({required String appLink}) async =>
       write(StorageKeys.appLink.name, appLink);
-  Future<String> getWireguardPublicKey() async => read(StorageKeys.wireguardPublicKey.name);
+  Future<String?> getWireguardPublicKey() async => readOrNull(StorageKeys.wireguardPublicKey.name);
   Future<void> saveWireguardPublicKey({required String publicKey}) async =>
       write(StorageKeys.wireguardPublicKey.name, publicKey);
   Future<void> removeWireguardPublicKey() async => remove(StorageKeys.wireguardPublicKey.name);
-  Future<String> getWireguardPrivateKey() async => read(StorageKeys.wireguardPrivateKey.name);
+  Future<String?> getWireguardPrivateKey() async =>
+      readOrNull(StorageKeys.wireguardPrivateKey.name);
   Future<void> saveWireguardPrivateKey({required String privateKey}) async =>
       write(StorageKeys.wireguardPrivateKey.name, privateKey);
   Future<void> removeWireguardPrivateKey() async => remove(StorageKeys.wireguardPrivateKey.name);

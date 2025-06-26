@@ -24,9 +24,9 @@ import 'package:mysterium_vpn/services/api/external_api_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
-import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
+import 'package:mysterium_vpn/services/wiregurad/wiregurad_key_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
@@ -63,6 +63,7 @@ abstract class _VpnStore with Store {
     required RemoteConfigStore remoteConfigStore,
     required AuthSessionStore authSessionStore,
     required RealIPInfoStore realIPInfo,
+    required WireguradKeyService wireguardKeyService,
   })  : _apiService = apiService,
         _externalApiService = externalApiService,
         _mqtt = mqtt,
@@ -74,7 +75,8 @@ abstract class _VpnStore with Store {
         _remoteConfigStore = remoteConfigStore,
         _authSessionStore = authSessionStore,
         _realIPInfo = realIPInfo,
-        _logger = logger {
+        _logger = logger,
+        _wireguardKeyService = wireguardKeyService {
     _init();
   }
   final ApiService _apiService;
@@ -89,7 +91,7 @@ abstract class _VpnStore with Store {
   final RealIPInfoStore _realIPInfo;
 
   final FlavorConfig _env;
-  final _securedStorage = SecureStorageService.instance;
+  final WireguradKeyService _wireguardKeyService;
   final _sharedPrefs = SharedPreferenceService.instance;
   final LocalDBService _localDBService = LocalDBService.instance;
   final Talker _logger;
@@ -267,7 +269,15 @@ abstract class _VpnStore with Store {
 
   Future<void> _initWireguardKey() async {
     try {
-      await _generateWireguardKey();
+      _wireguardKey = await _wireguardKeyService.getWireguradKey();
+    } catch (e) {
+      _logger.handle(e);
+    }
+  }
+
+  Future<void> regenerateWireguradKey() async {
+    try {
+      _wireguardKey = await _wireguardKeyService.regenerateWireguardKeys();
     } catch (e) {
       _logger.handle(e);
     }
@@ -374,36 +384,6 @@ abstract class _VpnStore with Store {
       notSafeContentBlocker: value,
     );
     _notSafeContentBlocker = value;
-  }
-
-  @action
-  Future<KeyPair> _generateWireguardKey() async {
-    try {
-      final res = await Future.wait([
-        _securedStorage.checkExistance(StorageKeys.wireguardPrivateKey.name),
-        _securedStorage.checkExistance(StorageKeys.wireguardPublicKey.name),
-      ]);
-      final key = await _wireguardService.generateKeyPair();
-
-      if (res.contains(false)) {
-        await Future.wait([
-          _securedStorage.saveWireguardPublicKey(
-            publicKey: key.publicKey,
-          ),
-          _securedStorage.saveWireguardPrivateKey(
-            privateKey: key.privateKey,
-          ),
-        ]);
-        return _wireguardKey = key;
-      } else {
-        final publicKey = await _securedStorage.getWireguardPublicKey();
-        final privateKey = await _securedStorage.getWireguardPrivateKey();
-        return _wireguardKey = KeyPair(publicKey, privateKey);
-      }
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
-    }
   }
 
   /// Connect to Wireguard tunnel
@@ -627,7 +607,7 @@ abstract class _VpnStore with Store {
     bool? refreshIP,
   ) async {
     try {
-      final key = _wireguardKey ?? await _generateWireguardKey();
+      final key = _wireguardKey ?? await _wireguardKeyService.getWireguradKey();
       _stopwatch
         ..reset()
         ..start();
@@ -757,12 +737,21 @@ abstract class _VpnStore with Store {
         /// If tunnel is not configured, no need to reset the app
         return;
       }
-      _resetAppFuture = ObservableFuture(
-        _wireguardService.removeTunnelConfiguration(
-          bundleId: _env.getBundleId(),
-          tunnelName: _env.values.tunnelName,
-        ),
-      );
+      if (Platform.isAndroid) {
+        return;
+      } else if (Platform.isWindows) {
+        _resetAppFuture = ObservableFuture(
+          regenerateWireguradKey(),
+        );
+      } else {
+        _resetAppFuture = ObservableFuture(
+          _wireguardService.removeTunnelConfiguration(
+            bundleId: _env.getBundleId(),
+            tunnelName: _env.values.tunnelName,
+          ),
+        );
+      }
+
       await _resetAppFuture;
     } catch (e) {
       _logger.handle(e);

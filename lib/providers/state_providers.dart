@@ -99,7 +99,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
   final realIPInfoStore = ref.watch(realIPInfoStorePOD);
-
+  final wireguardKeyService = ref.watch(wireguradKeyServicePOD);
   return VpnStore(
     apiService: apiService,
     externalApiService: externalApiService,
@@ -113,6 +113,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     remoteConfigStore: remoteConfigStore,
     authSessionStore: authSessionStore,
     realIPInfo: realIPInfoStore,
+    wireguardKeyService: wireguardKeyService,
   );
 });
 
