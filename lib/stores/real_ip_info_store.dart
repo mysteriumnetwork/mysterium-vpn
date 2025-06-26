@@ -37,7 +37,7 @@ abstract class _RealIPInfoStore with Store {
       // return last cached value if currently connected to VPN
       info = _preferences.getIPInfo();
     } else {
-      info = await _api.getIPAddress();
+      info = await _api.getIPInfo();
       await _preferences.setIPInfo(info);
     }
     if (info != null) {

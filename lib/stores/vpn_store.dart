@@ -727,26 +727,10 @@ abstract class _VpnStore with Store {
   }
 
   Future<void> _resolveIPAddress(VPNLocation? location) async {
-    var counter = 0;
-    var resolvedIPAddress = '';
-    await Future.doWhile(() async {
-      counter++;
-      await Future.delayed(const Duration(seconds: 3));
-      final ipInfo = await _externalApiService.getIPAddress().timeout(
-            const Duration(seconds: 10),
-            onTimeout: () => null,
-          );
-      if (ipInfo != null && ipInfo.country == location?.code) {
-        resolvedIPAddress = ipInfo.ip;
-      }
-      return counter < 5 && resolvedIPAddress.isEmpty;
-    });
-
-    if (resolvedIPAddress.isNotEmpty) {
-      _vpnConnection = _vpnConnection?.copyWith(connectionIP: resolvedIPAddress);
-    }
-    // If IP address is not resolved, disconnect the connection
-    else if ((_vpnConnection?.connectionIP.isEmpty ?? true) && _connectingLocation == location) {
+    final ipAddress = await _externalApiService.getIPAddress();
+    if (ipAddress != null && ipAddress.isNotEmpty) {
+      _vpnConnection = _vpnConnection?.copyWith(connectionIP: ipAddress);
+    } else if ((_vpnConnection?.connectionIP.isEmpty ?? true) && _connectingLocation == location) {
       disconnectWireguard();
       _vpnConnection = null;
     }
