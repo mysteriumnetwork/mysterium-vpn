@@ -24,7 +24,6 @@ import 'package:mysterium_vpn/services/api/external_api_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
-import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/services/wiregurad/wiregurad_key_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -79,6 +78,7 @@ abstract class _VpnStore with Store {
         _wireguardKeyService = wireguardKeyService {
     _init();
   }
+
   final ApiService _apiService;
   final ExternalApiService _externalApiService;
   final MQTTService _mqtt;
@@ -92,7 +92,6 @@ abstract class _VpnStore with Store {
 
   final FlavorConfig _env;
   final WireguradKeyService _wireguardKeyService;
-  final _sharedPrefs = SharedPreferenceService.instance;
   final LocalDBService _localDBService = LocalDBService.instance;
   final Talker _logger;
   final Stopwatch _stopwatch = Stopwatch();
@@ -169,7 +168,7 @@ abstract class _VpnStore with Store {
 
   @computed
   VPNLocation? get potentialLocation =>
-      _sharedPrefs.getLocation() ?? _locationsStore.randomLocation();
+      _locationsStore.recentLocations.firstOrNull ?? _locationsStore.randomLocation();
 
   @readonly
   ObservableFuture<void>? _resolveConnectionLocationFuture;
@@ -698,7 +697,7 @@ abstract class _VpnStore with Store {
     required String hash,
   }) async {
     try {
-      await _sharedPrefs.setLocation(location);
+      await _locationsStore.addRecentLocation(location);
       _vpnConnection = VpnConnection(connectionIP: '', location: location);
       await checkLocation();
     } catch (e) {
