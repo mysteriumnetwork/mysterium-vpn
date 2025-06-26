@@ -27,12 +27,14 @@ import 'package:mysterium_vpn/services/auth/rest_auth_service.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/assets_service.dart';
 import 'package:mysterium_vpn/services/data/local/config_cat_cache.dart';
+import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/network/dio_network_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:mysterium_vpn/services/dio_network_logger/dio_network_logger.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
+import 'package:mysterium_vpn/services/wiregurad/wiregurad_key_service.dart';
 import 'package:talker/talker.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -247,3 +249,10 @@ final assetsLoaderPOD = Provider<AssetLoader>((ref) {
 final filterServicePOD = Provider<FilterService>((ref) => FilterService());
 
 final assetsServicePOD = Provider((_) => const AssetsService());
+
+final wireguradKeyServicePOD = Provider<WireguradKeyService>(
+  (ref) => WireguradKeyService(
+    wireguardService: ref.watch(wireguardServicePOD),
+    secureStorageService: SecureStorageService.instance,
+  ),
+);
