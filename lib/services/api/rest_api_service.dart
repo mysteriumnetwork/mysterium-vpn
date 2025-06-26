@@ -58,7 +58,12 @@ class RestApiService extends ApiService {
     try {
       // Resolve the domain name to an IP address
       final result = await InternetAddress.lookup(domain);
-      final serverAddress = result.first.address; // Get the first resolved IP address
+      // Pick the first IPv4 address, or fallback to the first if none found
+      final ipv4 = result.firstWhere(
+        (addr) => addr.type == InternetAddressType.IPv4,
+        orElse: () => result.first,
+      );
+      final serverAddress = ipv4.address; // Get the first resolved IP address
 
       _logger.info('Resolved IP addresses for $domain: $serverAddress');
 
