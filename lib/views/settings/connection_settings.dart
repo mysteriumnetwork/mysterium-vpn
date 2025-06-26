@@ -1,11 +1,14 @@
 import 'dart:io';
 
+import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
@@ -31,6 +34,8 @@ class ConnectionSettings extends HookConsumerWidget {
     final vpnStore = ref.read(vpnStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
     final remoteConfigStore = ref.read(remoteConfigStorePOD);
+    final handleToggleConnection = useHandleToggleConnection();
+
     return Observer(
       builder: (context) {
         final isDarkTheme = themeStore.isDarkMode;
@@ -38,8 +43,7 @@ class ConnectionSettings extends HookConsumerWidget {
         return Column(
           children: [
             Visibility(
-              visible:
-                  !remoteConfigStore.hideResetAppSetting && (Platform.isMacOS || Platform.isIOS),
+              visible: !remoteConfigStore.hideResetAppSetting && !Platform.isAndroid,
               child: SettingItem(
                 asset: isDarkTheme ? Assets.resetAppSettingDark : Assets.resetAppSettingLight,
                 title: LocaleKeys.resetAppTitle.tr(),
@@ -57,6 +61,7 @@ class ConnectionSettings extends HookConsumerWidget {
                             context: context,
                             analyticsStore: analyticsStore,
                             vpnStore: vpnStore,
+                            handleToggleConnection: handleToggleConnection,
                           ),
                   backgroundColor: Palette.purple,
                   child: vpnStore.resetAppFuture?.status == FutureStatus.pending
@@ -162,10 +167,11 @@ class ConnectionSettings extends HookConsumerWidget {
     required BuildContext context,
     required AnalyticsStore analyticsStore,
     required VpnStore vpnStore,
+    required VoidCallback handleToggleConnection,
   }) {
     analyticsStore.logEvent(AnalyticsEvent.resetApp);
     if (!vpnStore.isConnected) {
-      _onResetApp(vpnStore, analyticsStore);
+      _onResetApp(context, vpnStore, analyticsStore);
       return;
     }
     shownConfirmationDialog(
@@ -190,7 +196,7 @@ class ConnectionSettings extends HookConsumerWidget {
       ),
       onConfirm: () {
         analyticsStore.logEvent(AnalyticsEvent.resetAppConfirm);
-        _onResetApp(vpnStore, analyticsStore);
+        _onResetApp(context, vpnStore, analyticsStore, handleToggleConnection);
       },
       onCancel: () {
         analyticsStore.logEvent(AnalyticsEvent.resetAppCancel);
@@ -199,14 +205,28 @@ class ConnectionSettings extends HookConsumerWidget {
   }
 
   Future<void> _onResetApp(
+    BuildContext context,
     VpnStore vpnStore,
-    AnalyticsStore analyticsStore,
-  ) async {
+    AnalyticsStore analyticsStore, [
+    VoidCallback? handleToggleConnection,
+  ]) async {
     try {
       await vpnStore.resetApp();
       showSnackbar(
         LocaleKeys.resetAppSuccess.tr(),
         type: MessageType.success,
+        action: handleToggleConnection != null
+            ? SnackBarAction(
+                label: LocaleKeys.reconnectBtn.tr(),
+                backgroundColor: Palette.black,
+                textColor: Palette.white,
+                onPressed: () async {
+                  snackbarKey.currentState?.clearSnackBars();
+                  handleToggleConnection();
+                  context.beamBack();
+                },
+              )
+            : null,
       );
       analyticsStore.logEvent(AnalyticsEvent.resetAppSuccess);
     } catch (e, s) {
