@@ -727,9 +727,9 @@ abstract class _VpnStore with Store {
   }
 
   Future<void> _resolveIPAddress(VPNLocation? location) async {
-    final ipAddrees = await _externalApiService.getIPAddress();
-    if (ipAddrees != null && ipAddrees.isNotEmpty) {
-      _vpnConnection = _vpnConnection?.copyWith(connectionIP: ipAddrees);
+    final ipAddress = await _externalApiService.getIPAddress();
+    if (ipAddress != null && ipAddress.isNotEmpty) {
+      _vpnConnection = _vpnConnection?.copyWith(connectionIP: ipAddress);
     } else if ((_vpnConnection?.connectionIP.isEmpty ?? true) && _connectingLocation == location) {
       disconnectWireguard();
       _vpnConnection = null;
