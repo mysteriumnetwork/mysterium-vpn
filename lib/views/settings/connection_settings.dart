@@ -38,8 +38,7 @@ class ConnectionSettings extends HookConsumerWidget {
         return Column(
           children: [
             Visibility(
-              visible:
-                  !remoteConfigStore.hideResetAppSetting && (Platform.isMacOS || Platform.isIOS),
+              visible: !remoteConfigStore.hideResetAppSetting && !Platform.isAndroid,
               child: SettingItem(
                 asset: isDarkTheme ? Assets.resetAppSettingDark : Assets.resetAppSettingLight,
                 title: LocaleKeys.resetAppTitle.tr(),

@@ -753,14 +753,13 @@ abstract class _VpnStore with Store {
         /// If tunnel is not configured, no need to reset the app
         return;
       }
-      if (isMobile()) {
+      if (Platform.isAndroid) {
         return;
-      }
-      if (Platform.isWindows) {
+      } else if (Platform.isWindows) {
         _resetAppFuture = ObservableFuture(
           regenerateWireguradKey(),
         );
-      } else if (Platform.isMacOS) {
+      } else {
         _resetAppFuture = ObservableFuture(
           _wireguardService.removeTunnelConfiguration(
             bundleId: _env.getBundleId(),
