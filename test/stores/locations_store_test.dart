@@ -140,8 +140,13 @@ void main() {
 
     test('returns random location from recent locations', () async {
       when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => mockResidential);
-      when(mockFilterService.filterRecentLocations(mockResidential,
-          keyword: '', availableLocations: {...mockResidential})).thenReturn(mockResidential);
+      when(
+        mockFilterService.filterRecentLocations(
+          mockResidential,
+          keyword: '',
+          availableLocations: {...mockResidential},
+        ),
+      ).thenReturn(mockResidential);
 
       final recentLocations = await locationsStore.recentLocationsFuture;
 
