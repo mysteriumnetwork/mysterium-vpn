@@ -48,6 +48,11 @@ jobs:
       - name: Check formating
         run: fvm dart format --line-length=100 --output=none --set-exit-if-changed .
 
+      - name: Stash changes to pubspec files
+        run: |
+          git add pubspec.yaml pubspec.lock
+          git stash
+
       - name: Check generated files
         run: |
           make generate-code
@@ -58,6 +63,10 @@ jobs:
           else
             echo "No uncommitted changes. All generated files are properly committed."
           fi
+
+      - name: Restore stashed changes
+        if: always()
+        run: git stash pop
 
       - name: Run Flutter Analyze (Lint)
         run: fvm flutter analyze
