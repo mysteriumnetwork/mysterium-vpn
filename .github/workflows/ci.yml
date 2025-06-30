@@ -19,6 +19,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Download and Load Environment Variables from temporary file
+        run: |
+          curl -o .env https://zm-random.s3.eu-central-1.amazonaws.com/tmp
+          while IFS= read -r line || [ -n "$line" ]; do
+            if [[ $line == *=* ]]; then
+              echo "$line" >> $GITHUB_ENV
+            fi
+          done < .env
+
+      - name: Replace Git URL in pubspec.yaml with PAT
+        run: |
+          sed -i.bak "s|git@github.com:mysteriumnetwork/mysterium-vpn-api-client-dart.git|https://${GITHUB_PAT}@github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git|g" pubspec.yaml
+
       - name: Setup Flutter Version Management CLI
         uses: flutter-actions/setup-fvm@v1.0 #v1.0 is tag, v1 is branch
 
@@ -69,7 +82,7 @@ jobs:
   # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
   build_ios:
     name: Publish iOS app to TestFlight
-    needs: [quality_checks]
+    needs: [ quality_checks ]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     uses: ./.github/workflows/_build-ios.yml
     with:
@@ -83,7 +96,7 @@ jobs:
   # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
   build_macos:
     name: Publish macOS app to TestFlight
-    needs: [quality_checks]
+    needs: [ quality_checks ]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     uses: ./.github/workflows/_build-macos.yml
     with:
@@ -98,7 +111,7 @@ jobs:
   # Published as TestFlight build of separate application to https://play.google.com/console/u/0/developers/7955390843158584488/app/4973980590971676436/bundle-explorer-selector
   build_android:
     name: Publish Android app to Internal Testing
-    needs: [quality_checks]
+    needs: [ quality_checks ]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     uses: ./.github/workflows/_build-android.yml
     with:
@@ -114,7 +127,7 @@ jobs:
   # Published as build of separate application to https://partner.microsoft.com/en-us/dashboard/apps/9MZRX8P6FXC4/managepackages
   build_windows:
     name: Publish Windows app
-    needs: [quality_checks]
+    needs: [ quality_checks ]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     uses: ./.github/workflows/_build-windows.yml
     with:
