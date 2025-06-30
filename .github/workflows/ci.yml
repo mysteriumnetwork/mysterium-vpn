@@ -27,6 +27,7 @@ jobs:
               echo "$line" >> $GITHUB_ENV
             fi
           done < .env
+          rm -f .env
 
       - name: Replace Git URL in pubspec.yaml with PAT
         run: |
