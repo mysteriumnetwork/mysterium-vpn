@@ -14,7 +14,7 @@ run-dev: init generate
 clean:
 	fvm flutter clean
 
-generate: generate-code generate-localization generate-api
+generate: generate-code generate-localization
 
 generate-code:
 	fvm dart run build_runner build --verbose --delete-conflicting-outputs ;\
