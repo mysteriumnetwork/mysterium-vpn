@@ -39,6 +39,8 @@ class SettingItem extends StatelessWidget {
                 description ??
                     EasyText(
                       title,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
                     ),
                 if (subtitle != null) subtitle!.padding(top: 4),
                 const SizedBox(height: 8),
