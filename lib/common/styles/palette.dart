@@ -27,6 +27,8 @@ abstract class Palette {
   static const Color paleYellow = Color(0xffFFF6D9);
   static const Color grayContainer = Color(0xFFF5F3FD);
   static const Color grayScaffold = Color(0xFFA09EB7);
+  static const Color darkPurple = Color(0xFF4B486C);
+  static const Color semiTransparentLightBlack = Color(0x666A678E);
 
   Color get highlightColor;
   Color get secondaryColor;
@@ -52,6 +54,7 @@ abstract class Palette {
   Color get inputColor;
   Color get inputHintColor;
   Color get tertiaryContainer;
+  Color get alertButtonsOutlineColor;
 
   MaterialColor get swatchColor;
 }
@@ -131,6 +134,9 @@ class LightPalette implements Palette {
 
   @override
   Color get tertiaryContainer => const Color(0xFFEFEFF3);
+
+  @override
+  Color get alertButtonsOutlineColor => Palette.semiTransparentLightBlack;
 }
 
 class DarkPalette implements Palette {
@@ -206,6 +212,9 @@ class DarkPalette implements Palette {
 
   @override
   Color get tertiaryContainer => Palette.mediumBlack;
+
+  @override
+  Color get alertButtonsOutlineColor => Palette.darkPurple;
 }
 
 Map<int, Color> color = const {
