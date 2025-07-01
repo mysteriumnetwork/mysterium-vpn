@@ -114,7 +114,7 @@ class ConnectionSettings extends HookConsumerWidget {
             Visibility(
               visible: !remoteConfigStore.hideNotSafeContentBlocker,
               child: SwitchItem(
-                asset: isDarkTheme ? Assets.lockerDark : Assets.lockerLight,
+                asset: isDarkTheme ? Assets.stopDark : Assets.stopLight,
                 title: LocaleKeys.contentBlockerTitle.tr(),
                 subtitle: LocaleKeys.contentBlockerDesc.tr(),
                 actionWidget: Observer(

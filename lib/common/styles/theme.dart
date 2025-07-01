@@ -66,6 +66,8 @@ ThemeData themeData(Palette palette) => ThemeData(
               ? const Icon(Icons.check, color: Palette.purple)
               : const Icon(Icons.close, color: Palette.lightBlue),
         ),
+        trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
+        trackOutlineWidth: WidgetStateProperty.all(0),
       ),
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: TextStyle(color: palette.inputHintColor),
