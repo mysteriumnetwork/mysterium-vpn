@@ -119,7 +119,7 @@ class _Authenticated extends HookConsumerWidget {
                   }
 
                   return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
                     spacing: 16,
                     children: [
@@ -135,7 +135,10 @@ class _Authenticated extends HookConsumerWidget {
                         },
                       ),
                       SettingActionButton(
-                        child: EasyText(LocaleKeys.cancelSubscriptionBtn.tr()),
+                        child: EasyText(
+                          LocaleKeys.cancelSubscriptionBtn.tr(),
+                          color: Palette.white,
+                        ),
                         action: () async {
                           final shouldProceed = await showCancelSubscriptionSurveyDialog(context);
                           if (shouldProceed ?? false) {
