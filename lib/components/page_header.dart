@@ -19,25 +19,28 @@ class PageHeader extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final analyticsStore = ref.read(analyticsStorePOD);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SvgIconButton(
-          onPressed: () {
-            analyticsStore.logEvent(AnalyticsEvent.backButtonClick);
-            context.beamBack();
-          },
-          asset: context.c.isDarkMode ? Assets.navigateBackDark : Assets.navigateBackLight,
-        ),
-        HeaderTitle(text: headerTitle, color: Palette.white),
-        const Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            AppVersion(),
-            ApiVersion(),
-          ],
-        ),
-      ],
-    ).padding(horizontal: 20);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SvgIconButton(
+            onPressed: () {
+              analyticsStore.logEvent(AnalyticsEvent.backButtonClick);
+              context.beamBack();
+            },
+            asset: context.c.isDarkMode ? Assets.navigateBackDark : Assets.navigateBackLight,
+          ),
+          HeaderTitle(text: headerTitle, color: Palette.white),
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              AppVersion(),
+              ApiVersion(),
+            ],
+          ),
+        ],
+      ).padding(horizontal: 20),
+    );
   }
 }
