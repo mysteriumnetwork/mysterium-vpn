@@ -42,12 +42,12 @@ class SwitchItem extends StatelessWidget {
                   children: [
                     EasyText(
                       title,
-                      fontSize: 16,
+                      fontSize: 14,
                       maxLines: 2,
+                      fontWeight: FontWeight.w700,
                     ).padding(bottom: 4),
                     EasyText(
                       subtitle,
-                      color: Palette.lightBlue,
                       fontSize: 12,
                       maxLines: 3,
                     ).padding(bottom: 4),
