@@ -80,7 +80,7 @@ class CancelSubscriptionSurveyDialog extends HookConsumerWidget {
           style: TextButton.styleFrom(foregroundColor: Palette.lightBlue),
           child: Text(
             LocaleKeys.cancelBtn.tr(),
-            style: GoogleFonts.montserrat(fontWeight: FontWeight.w700),
+            style: GoogleFonts.montserrat(fontWeight: FontWeight.w700, fontSize: 14),
           ),
         ),
         TextButton(
@@ -90,7 +90,7 @@ class CancelSubscriptionSurveyDialog extends HookConsumerWidget {
           ),
           child: Text(
             LocaleKeys.submitBtn.tr(),
-            style: GoogleFonts.montserrat(fontWeight: FontWeight.w700),
+            style: GoogleFonts.montserrat(fontWeight: FontWeight.w700, fontSize: 14),
           ),
         ),
       ],

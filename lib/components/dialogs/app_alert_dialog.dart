@@ -57,8 +57,10 @@ class AppAlertDialog extends HookWidget {
                     fontSize: 20,
                   ),
                   content: DecoratedBox(
-                    decoration: const BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Palette.lightBlue)),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: theme.palette.alertButtonsOutlineColor),
+                      ),
                     ),
                     child: content,
                   ),
@@ -82,9 +84,9 @@ class AppAlertDialog extends HookWidget {
                         child: actions[i],
                       ),
                       if (i < actions.length - 1)
-                        const SizedBox(
+                        SizedBox(
                           height: 81,
-                          child: VerticalDivider(color: Palette.lightBlue),
+                          child: VerticalDivider(color: theme.palette.alertButtonsOutlineColor),
                         ),
                     ],
                   ],

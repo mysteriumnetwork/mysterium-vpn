@@ -8,11 +8,14 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/map_controller_hook.dart';
+import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/components/location_marker.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/home/world_map_tiles_layer.dart';
 
 class LocationsMap extends HookConsumerWidget {
@@ -35,9 +38,23 @@ class LocationsMap extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final controller = useMapController();
+    final screenType = useScreenType();
+
+    void handleMove(LatLng point) {
+      final zoom = controller.camera.zoom;
+      var offset = Offset.zero;
+      if (screenType == ScreenType.mobile) {
+        offset = switch (ref.read(homeStateProvider).panelState) {
+          PanelState.closed => Offset.zero,
+          PanelState.snap => const Offset(0, -100),
+          PanelState.open => const Offset(0, -120),
+        };
+      }
+      controller.move(point, zoom, offset: offset);
+    }
 
     void handlePressed(VPNLocation location, LatLng point) {
-      controller.move(point, controller.camera.zoom);
+      handleMove(point);
       onLocationPressed?.call(location);
     }
 
@@ -54,7 +71,7 @@ class LocationsMap extends HookConsumerWidget {
           return;
         }
 
-        controller.move(center, controller.camera.zoom);
+        handleMove(center);
       });
     });
 

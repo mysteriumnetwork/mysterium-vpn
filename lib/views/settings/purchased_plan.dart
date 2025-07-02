@@ -23,7 +23,7 @@ class PurchasedPlan extends StatelessWidget {
             children: [
               EasyText(
                 subscription.planId?.tr() ?? '',
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
               ).paddingDirectional(end: 4),
               const SizedBox(width: 25, height: 25, child: SvgIcon(asset: Assets.subscription)),
@@ -33,9 +33,11 @@ class PurchasedPlan extends StatelessWidget {
             LocaleKeys.nextBilling.tr(
               namedArgs: {'date': subscription.activeUntil?.toLocal().formatWithDay() ?? ''},
             ),
+            fontSize: 12,
           ),
           EasyText(
             LocaleKeys.paymentMethod.tr(namedArgs: {'method': subscription.gatewayName}),
+            fontSize: 12,
           ),
         ],
       ).padding(bottom: 4);
