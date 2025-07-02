@@ -3,6 +3,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/wiregurad/wiregurad_key_service.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:wireguard_dart/key_pair.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
@@ -11,20 +12,24 @@ import 'wiregurad_key_service_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<WireguardDart>(),
   MockSpec<SecureStorageService>(),
+  MockSpec<AnalyticsStore>(),
 ])
 void main() {
   group('WireguradKeyService', () {
     late WireguradKeyService wireguradKeyService;
     late MockWireguardDart mockWireguardDart;
     late MockSecureStorageService mockSecureStorageService;
+    late MockAnalyticsStore mockAnalyticsStore;
 
     setUp(() {
       mockWireguardDart = MockWireguardDart();
       mockSecureStorageService = MockSecureStorageService();
+      mockAnalyticsStore = MockAnalyticsStore();
 
       wireguradKeyService = WireguradKeyService(
         wireguardService: mockWireguardDart,
         secureStorageService: mockSecureStorageService,
+        analyticsStore: mockAnalyticsStore,
       );
     });
 

@@ -103,4 +103,6 @@ enum AnalyticsEvent {
   setMarketingConsentSuccess,
   setMarketingConsentError,
   subscriptionCancellationSurvey,
+  getWireguradKeyError,
+  wireguardKeyUnavailable,
 }

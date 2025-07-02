@@ -254,5 +254,6 @@ final wireguradKeyServicePOD = Provider<WireguradKeyService>(
   (ref) => WireguradKeyService(
     wireguardService: ref.watch(wireguardServicePOD),
     secureStorageService: SecureStorageService.instance,
+    analyticsStore: ref.watch(analyticsStorePOD),
   ),
 );
