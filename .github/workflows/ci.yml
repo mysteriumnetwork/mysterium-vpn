@@ -19,6 +19,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Replace Git URL in pubspec.yaml with PAT
+        run: |
+          sed -i.bak "s|git@github.com:mysteriumnetwork/mysterium-vpn-api-client-dart.git|https://${GITHUB_PAT}@github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git|g" pubspec.yaml
+          rm -f pubspec.yaml.bak
+        env:
+          GITHUB_PAT: ${{ secrets.VPNAPI_GITHUB_PAT }}
+
       - name: Setup Flutter Version Management CLI
         uses: flutter-actions/setup-fvm@v1.0 #v1.0 is tag, v1 is branch
 
@@ -34,6 +41,11 @@ jobs:
       - name: Check formating
         run: fvm dart format --line-length=100 --output=none --set-exit-if-changed .
 
+      - name: Stash changes to pubspec files
+        run: |
+          git add pubspec.yaml pubspec.lock
+          git stash
+
       - name: Check generated files
         run: |
           make generate-code
@@ -44,6 +56,10 @@ jobs:
           else
             echo "No uncommitted changes. All generated files are properly committed."
           fi
+
+      - name: Restore stashed changes
+        if: always()
+        run: git stash pop
 
       - name: Run Flutter Analyze (Lint)
         run: fvm flutter analyze
@@ -69,7 +85,7 @@ jobs:
   # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
   build_ios:
     name: Publish iOS app to TestFlight
-    needs: [quality_checks]
+    needs: [ quality_checks ]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     uses: ./.github/workflows/_build-ios.yml
     with:
@@ -83,7 +99,7 @@ jobs:
   # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
   build_macos:
     name: Publish macOS app to TestFlight
-    needs: [quality_checks]
+    needs: [ quality_checks ]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     uses: ./.github/workflows/_build-macos.yml
     with:
@@ -98,7 +114,7 @@ jobs:
   # Published as TestFlight build of separate application to https://play.google.com/console/u/0/developers/7955390843158584488/app/4973980590971676436/bundle-explorer-selector
   build_android:
     name: Publish Android app to Internal Testing
-    needs: [quality_checks]
+    needs: [ quality_checks ]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     uses: ./.github/workflows/_build-android.yml
     with:
@@ -114,7 +130,7 @@ jobs:
   # Published as build of separate application to https://partner.microsoft.com/en-us/dashboard/apps/9MZRX8P6FXC4/managepackages
   build_windows:
     name: Publish Windows app
-    needs: [quality_checks]
+    needs: [ quality_checks ]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     uses: ./.github/workflows/_build-windows.yml
     with:

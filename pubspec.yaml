@@ -92,7 +92,9 @@ dependencies:
       url: https://github.com/KristijanMitrik/flutter_url_protocol
       ref: main
   vpn_api:
-    path: packages/vpn_api
+    git:
+      url: git@github.com:mysteriumnetwork/mysterium-vpn-api-client-dart.git
+      ref: 1.0.1
   window_manager: 0.4.3
   wireguard_dart:
     git:
