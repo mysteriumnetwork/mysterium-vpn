@@ -45,7 +45,6 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
                 SvgIconButton(
                   onPressed: () => handleOnSupportPage(
                     context: context,
-                    intetcomStore: ref.read(intercomStorePOD),
                     analyticsStore: ref.read(analyticsStorePOD),
                   ),
                   asset: supportIcon,

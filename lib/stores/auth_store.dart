@@ -24,7 +24,6 @@ import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -44,7 +43,6 @@ abstract class _AuthStore with Store {
     required AppLinks appLinks,
     required AnalyticsStore analyticsStore,
     required FlavorConfig env,
-    required IntercomStore intercomStore,
     required Talker logger,
     required ABTestingStore abTestingStore,
     required UserPreferencesStore userPreferencesStore,
@@ -54,7 +52,6 @@ abstract class _AuthStore with Store {
         _appLinks = appLinks,
         _analyticsStore = analyticsStore,
         _env = env,
-        _intercomStore = intercomStore,
         _logger = logger,
         _abTestingStore = abTestingStore {
     refreshTokenCallback = refreshAuthToken;
@@ -67,7 +64,6 @@ abstract class _AuthStore with Store {
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
   final AnalyticsStore _analyticsStore;
   final FlavorConfig _env;
-  final IntercomStore _intercomStore;
   final Talker _logger;
   final ABTestingStore _abTestingStore;
   final UserPreferencesStore _userPreferencesStore;
@@ -214,7 +210,6 @@ abstract class _AuthStore with Store {
     await _abTestingStore.configFuture;
     await _analyticsStore.setUserId(userId);
     await _analyticsStore.setUserProperty('email', username);
-    await _intercomStore.registerUser(email: username);
     Sentry.configureScope(
       (scope) => scope.setUser(
         SentryUser(
@@ -232,7 +227,6 @@ abstract class _AuthStore with Store {
     logoutFeature = ObservableFuture(_authService.logout());
 
     await logoutFeature;
-    await _intercomStore.logout();
     await _authSessionStore.setUnauthenticated();
   }
 

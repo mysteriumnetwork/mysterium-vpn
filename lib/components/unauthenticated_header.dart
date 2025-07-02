@@ -30,7 +30,6 @@ class UnauthenticatedHeader extends HookConsumerWidget {
           onPressed: () {
             handleOnSupportPage(
               context: context,
-              intetcomStore: ref.read(intercomStorePOD),
               analyticsStore: ref.read(analyticsStorePOD),
             );
           },

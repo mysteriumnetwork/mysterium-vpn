@@ -17,7 +17,6 @@ import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:open_store/open_store.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -390,11 +389,12 @@ FutureOr<void> handleOnBillingPage({
 
 void handleOnSupportPage({
   required BuildContext context,
-  required IntercomStore intetcomStore,
   required AnalyticsStore analyticsStore,
 }) {
   analyticsStore.logEvent(AnalyticsEvent.openSupport);
-  intetcomStore.displayMessenger();
+  openUrlLink(
+    Uri.parse('https://help.mysteriumvpn.com/'),
+  );
 }
 
 /// Opens a URL link in the default browser.
