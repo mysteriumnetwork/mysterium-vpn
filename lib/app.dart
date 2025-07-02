@@ -88,17 +88,22 @@ class MyApp extends HookConsumerWidget {
                       backButtonDispatcher: BeamerBackButtonDispatcher(
                         delegate: routeDelegate,
                       ),
-                      builder: (context, child) => ScrollConfiguration(
-                        behavior: ScrollConfiguration.of(context).copyWith(
-                          dragDevices: PointerDeviceKind.values.toSet(),
-                          scrollbars: false,
-                          overscroll: true,
-                          physics: const BouncingScrollPhysics(),
+                      builder: (context, child) => MediaQuery(
+                        data: MediaQuery.of(context).copyWith(
+                          textScaler: TextScaler.noScaling,
                         ),
-                        child: FTCheckers(
-                          child: NetworkLoggerOverlayView(
-                            flavor: flavor,
-                            child: child!,
+                        child: ScrollConfiguration(
+                          behavior: ScrollConfiguration.of(context).copyWith(
+                            dragDevices: PointerDeviceKind.values.toSet(),
+                            scrollbars: false,
+                            overscroll: true,
+                            physics: const BouncingScrollPhysics(),
+                          ),
+                          child: FTCheckers(
+                            child: NetworkLoggerOverlayView(
+                              flavor: flavor,
+                              child: child!,
+                            ),
                           ),
                         ),
                       ),
