@@ -1,4 +1,6 @@
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:wireguard_dart/key_pair.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
@@ -7,10 +9,12 @@ class WireguradKeyService {
   const WireguradKeyService({
     required this.wireguardService,
     required this.secureStorageService,
+    required this.analyticsStore,
   });
 
   final WireguardDart wireguardService;
   final SecureStorageService secureStorageService;
+  final AnalyticsStore analyticsStore;
 
   Future<KeyPair> getWireguradKey() async {
     try {
@@ -56,6 +60,12 @@ class WireguradKeyService {
       if ((publicKey?.isNotEmpty ?? false) && (privateKey?.isNotEmpty ?? false)) {
         return KeyPair(publicKey!, privateKey!);
       }
+      analyticsStore.logEvent(
+        AnalyticsEvent.wireguardKeyUnavailable,
+        parameters: {
+          'description': 'Wireguard keys not found in secure storage, generating new keys',
+        },
+      );
       return null;
     } catch (e, s) {
       Sentry.captureException(
@@ -64,6 +74,14 @@ class WireguradKeyService {
         hint: Hint.withMap({
           'message': 'Failed to get Wireguard keys from storage',
         }),
+      );
+      analyticsStore.logEvent(
+        AnalyticsEvent.getWireguradKeyError,
+        parameters: {
+          'error': e.toString(),
+          'stackTrace': s.toString(),
+          'description': 'Failed to retrieve Wireguard keys from secure storage',
+        },
       );
       return null;
     }
