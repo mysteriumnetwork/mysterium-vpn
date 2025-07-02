@@ -19,20 +19,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download and Load Environment Variables from temporary file
-        run: |
-          curl -o .env https://zm-random.s3.eu-central-1.amazonaws.com/tmp
-          while IFS= read -r line || [ -n "$line" ]; do
-            if [[ $line == *=* ]]; then
-              echo "$line" >> $GITHUB_ENV
-            fi
-          done < .env
-          rm -f .env
-
       - name: Replace Git URL in pubspec.yaml with PAT
         run: |
           sed -i.bak "s|git@github.com:mysteriumnetwork/mysterium-vpn-api-client-dart.git|https://${GITHUB_PAT}@github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git|g" pubspec.yaml
           rm -f pubspec.yaml.bak
+        env:
+          GITHUB_PAT: ${{ secrets.VPNAPI_GITHUB_PAT }}
 
       - name: Setup Flutter Version Management CLI
         uses: flutter-actions/setup-fvm@v1.0 #v1.0 is tag, v1 is branch
