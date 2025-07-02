@@ -80,6 +80,8 @@ abstract class Assets {
   static const String supportLight = 'assets/icons/support_light.svg';
   static const String supportDarkDesktop = 'assets/icons/support_dark_desktop.svg';
   static const String supportLightDesktop = 'assets/icons/support_light_desktop.svg';
+  static const String stopDark = 'assets/icons/stop_dark.svg';
+  static const String stopLight = 'assets/icons/stop_light.svg';
   static const String tag = 'assets/icons/tag.svg';
   static const String themeDark = 'assets/icons/theme_dark.svg';
   static const String themeLight = 'assets/icons/theme_light.svg';
