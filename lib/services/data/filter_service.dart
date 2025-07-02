@@ -25,4 +25,13 @@ class FilterService {
       return result;
     }
   }
+
+  List<VPNLocation> filterRecentLocations(
+    List<VPNLocation> data, {
+    required String keyword,
+    required Set<VPNLocation> availableLocations,
+  }) {
+    final availableRecents = data.where(availableLocations.contains).toList();
+    return filterLocations(availableRecents, keyword: keyword, shouldSortList: false);
+  }
 }
