@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart' hide runApp;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mysterium_vpn/app.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
@@ -109,29 +108,10 @@ class Environment {
     remoteConfigStore = await _initRemoteConfig(providerContainer);
     await _initLatLngStore(providerContainer);
     logger = providerContainer.read(loggerPOD);
-    await _initIntercom();
 
     logger.log(
       'App started in ${flavorConfig.flavor} mode\nBase URL ${flavorConfig.values.baseUrl}',
     );
-  }
-
-  Future<void> _initIntercom() async {
-    if (isDesktop()) {
-      return;
-    }
-    try {
-      const intercomAppId = 'sjkeehf4';
-      const intercomAndroidApiKey = 'android_sdk-f9955e908e48bf630f3f2a6dc6609c3f4b5aa2b8';
-      const intercomIosApiKey = 'ios_sdk-13bd499b260981778455ba0235d7ca612b330582';
-      await Intercom.instance.initialize(
-        intercomAppId,
-        androidApiKey: intercomAndroidApiKey,
-        iosApiKey: intercomIosApiKey,
-      );
-    } catch (e) {
-      Sentry.captureException(e);
-    }
   }
 
   Future<RemoteConfigStore?> _initRemoteConfig(ProviderContainer container) async {
