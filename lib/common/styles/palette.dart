@@ -55,6 +55,7 @@ abstract class Palette {
   Color get inputHintColor;
   Color get tertiaryContainer;
   Color get alertButtonsOutlineColor;
+  Color get connectionTileBackgroundColor;
 
   MaterialColor get swatchColor;
 }
@@ -137,6 +138,9 @@ class LightPalette implements Palette {
 
   @override
   Color get alertButtonsOutlineColor => Palette.semiTransparentLightBlack;
+
+  @override
+  Color get connectionTileBackgroundColor => Palette.white;
 }
 
 class DarkPalette implements Palette {
@@ -154,8 +158,10 @@ class DarkPalette implements Palette {
 
   @override
   Color get backgroundGolor => Palette.darkBlue;
+
   @override
   Color get primaryColor => Palette.black;
+
   @override
   MaterialColor get swatchColor => MaterialColor(0xffF44D89, color);
 
@@ -215,6 +221,9 @@ class DarkPalette implements Palette {
 
   @override
   Color get alertButtonsOutlineColor => Palette.darkPurple;
+
+  @override
+  Color get connectionTileBackgroundColor => Palette.deepPurple;
 }
 
 Map<int, Color> color = const {

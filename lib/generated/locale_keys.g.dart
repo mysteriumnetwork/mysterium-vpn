@@ -464,6 +464,7 @@ abstract class LocaleKeys {
   static const openBillingPlans = 'openBillingPlans';
   static const openEmailApp = 'openEmailApp';
   static const or = 'or';
+  static const orSelectCountryManually = 'orSelectCountryManually';
   static const originalMonthlyPrice = 'originalMonthlyPrice';
   static const otherReason = 'otherReason';
   static const paymentMethod = 'paymentMethod';
