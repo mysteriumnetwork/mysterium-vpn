@@ -237,17 +237,20 @@ abstract class _LocationsStore with Store {
 
   @action
   Future<void> addRecentLocation(VPNLocation location) async {
-    if (recentLocations.contains(location)) {
-      recentLocations.remove(location);
+    if (location.code.isNotEmpty) {
+      if (recentLocations.contains(location)) {
+        recentLocations.remove(location);
+      }
+      recentLocations.insert(0, location);
+      if (recentLocations.length > 5) {
+        recentLocations.removeLast();
+      }
+      await _localDB.setRecentLocation(recentLocations);
+      _recentLocationsFuture = _recentLocationsFuture.replace(_localDB.getRecentLocations());
+      await _recentLocationsFuture;
     }
-    recentLocations.insert(0, location);
-    if (recentLocations.length > 5) {
-      recentLocations.removeLast();
-    }
-    await _localDB.setRecentLocation(recentLocations);
+
     _ipType = location.ipType;
-    _recentLocationsFuture = _recentLocationsFuture.replace(_localDB.getRecentLocations());
-    await _recentLocationsFuture;
   }
 
   @action

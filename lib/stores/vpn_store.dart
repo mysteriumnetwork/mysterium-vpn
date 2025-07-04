@@ -300,6 +300,7 @@ abstract class _VpnStore with Store {
     _connectingLocation = null;
     _setConnectionStatus(await checkTunnelStatus());
 
+    await _locationsStore.recentLocationsFuture;
     if (_connectionStatus == ConnectionStatus.connected) {
       final location = potentialLocation;
       _connectingLocation = location;
@@ -626,6 +627,7 @@ abstract class _VpnStore with Store {
         ),
       );
       _vpnConfig = await _fetchConfigFuture;
+      await _locationsStore.recentLocationsFuture;
 
       await _connectWireguard(
         privateKey: key.privateKey,
