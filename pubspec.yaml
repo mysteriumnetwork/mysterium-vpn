@@ -53,7 +53,6 @@ dependencies:
   in_app_purchase: 3.1.13
   in_app_purchase_storekit: 0.3.18+1
   in_app_review: 2.0.10
-  intercom_flutter: ^9.2.5
   intl: 0.19.0
   json_annotation: 4.9.0
   latlong2: ^0.9.1
