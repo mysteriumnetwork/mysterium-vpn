@@ -118,35 +118,38 @@ class _Authenticated extends HookConsumerWidget {
                     );
                   }
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
-                    spacing: 16,
-                    children: [
-                      SettingActionButton(
-                        backgroundColor: Palette.purple,
-                        child: EasyText(
-                          LocaleKeys.goToBillingPage.tr(),
-                          color: Palette.white,
-                        ),
-                        action: () {
-                          analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
-                          handleSubscribe();
-                        },
-                      ),
-                      SettingActionButton(
-                        child: EasyText(
-                          LocaleKeys.cancelSubscriptionBtn.tr(),
-                          color: Palette.white,
-                        ),
-                        action: () async {
-                          final shouldProceed = await showCancelSubscriptionSurveyDialog(context);
-                          if (shouldProceed ?? false) {
+                  return ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 250),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: 16,
+                      children: [
+                        SettingActionButton(
+                          backgroundColor: Palette.purple,
+                          child: EasyText(
+                            LocaleKeys.goToBillingPage.tr(),
+                            color: Palette.white,
+                          ),
+                          action: () {
+                            analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
                             handleSubscribe();
-                          }
-                        },
-                      ),
-                    ],
+                          },
+                        ),
+                        SettingActionButton(
+                          child: EasyText(
+                            LocaleKeys.cancelSubscriptionBtn.tr(),
+                            color: Palette.white,
+                          ),
+                          action: () async {
+                            final shouldProceed = await showCancelSubscriptionSurveyDialog(context);
+                            if (shouldProceed ?? false) {
+                              handleSubscribe();
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),
