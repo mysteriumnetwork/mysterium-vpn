@@ -41,9 +41,10 @@ jobs:
       - name: Install yq using Chocolatey
         run: choco install yq -y
 
-      - name: Replace Git URL in pubspec.yaml with PAT
+      - name: Replace SSH with HTTPS in pubspec.yaml
         run: |
-          yq -i '.dependencies."mysterium-vpn-api-client-dart".git = "https://${{ secrets.VPNAPI_GITHUB_PAT }}@github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git"' pubspec.yaml
+          (Get-Content pubspec.yaml) -replace 'git@github.com:mysteriumnetwork/mysterium-vpn-api-client-dart.git', "https://$env:GITHUB_PAT@github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git" | Set-Content pubspec.yaml
+        shell: pwsh
         env:
           GITHUB_PAT: ${{ secrets.VPNAPI_GITHUB_PAT }}
 
