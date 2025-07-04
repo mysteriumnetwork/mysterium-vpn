@@ -26,7 +26,6 @@ class SettingsDesktopLeftPanel extends ConsumerWidget {
         DesktopPageHeader(
           onPressed: () => handleOnSupportPage(
             context: context,
-            intetcomStore: ref.read(intercomStorePOD),
             analyticsStore: ref.read(analyticsStorePOD),
           ),
           asset: context.c.isDarkMode ? Assets.reportDarkIcon : Assets.reportLightIcon,

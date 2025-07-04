@@ -4,7 +4,6 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
@@ -20,9 +19,6 @@ import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/banners_store.dart';
 import 'package:mysterium_vpn/stores/device_id_store.dart';
 import 'package:mysterium_vpn/stores/device_info_store.dart';
-import 'package:mysterium_vpn/stores/intercom/intercom_desktop_store.dart';
-import 'package:mysterium_vpn/stores/intercom/intercom_mobile_store.dart';
-import 'package:mysterium_vpn/stores/intercom/intercom_store.dart';
 import 'package:mysterium_vpn/stores/latlng_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
@@ -54,7 +50,6 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final appLinks = ref.watch(appLinksPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final env = ref.watch(environmentPOD);
-  final intercomStore = ref.watch(intercomStorePOD);
   final logger = ref.watch(loggerPOD);
   final abTestingStore = ref.watch(abTestingStorePOD);
 
@@ -65,7 +60,6 @@ final authStorePOD = Provider<AuthStore>((ref) {
     appLinks: appLinks,
     analyticsStore: analyticsStore,
     env: env,
-    intercomStore: intercomStore,
     logger: logger,
     abTestingStore: abTestingStore,
   );
@@ -188,13 +182,6 @@ final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
     deviceInfoStore: ref.watch(deviceInfoStorePOD),
     deviceIDStore: ref.watch(deviceIDStorePOD),
   );
-});
-
-final intercomStorePOD = StateProvider<IntercomStore>((ref) {
-  if (isDesktop()) {
-    return IntercomDesktopStore();
-  }
-  return IntercomMobileStore(intercom: Intercom.instance);
 });
 
 final isAppWindowFocused = StateProvider<bool>((_) => true);
