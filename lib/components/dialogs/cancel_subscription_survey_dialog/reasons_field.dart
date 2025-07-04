@@ -71,7 +71,7 @@ class _Item extends StatelessWidget {
           ),
         ),
       ),
-      title: EasyText(value.tr(), maxLines: 2),
+      title: EasyText(value.tr(), maxLines: 2, fontSize: 14),
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
     );
   }
