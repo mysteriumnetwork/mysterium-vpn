@@ -52,7 +52,6 @@ class ConnectionSettings extends HookConsumerWidget {
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   maxLines: 3,
-                  color: Palette.lightBlue,
                 ),
                 actionWidget: SettingActionButton(
                   action: vpnStore.resetAppFuture?.status == FutureStatus.pending
