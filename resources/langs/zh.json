@@ -462,6 +462,7 @@
   "openBillingPlans": "打开计费计划",
   "openEmailApp": "打开电子邮件应用程序",
   "or": "或者",
+  "orSelectCountryManually": "或手动选择国家",
   "originalMonthlyPrice": "{amount}",
   "otherReason": "其他...",
   "paymentMethod": "付款方式：{method}",

@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
+import 'package:mysterium_vpn/common/hooks/connection_status_color_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/connect_text_button.dart';
@@ -39,6 +40,7 @@ class ConnectionTile extends HookConsumerWidget {
 
     final isConnected = useIsLocationConnected(location);
     final ipInfo = useComputedValue(() => vpnStore.vpnConnection?.connectionIP);
+    final outlineColor = useConnectionStatusColor();
 
     final handleToggleConnection = useHandleToggleConnection();
     final onTap = useComputedValue(
@@ -64,14 +66,7 @@ class ConnectionTile extends HookConsumerWidget {
       hoverElevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
-        side: BorderSide(
-          width: .5,
-          color: switch (isConnected) {
-            true => Palette.forestGreen,
-            false => Palette.crimsonRed,
-            _ => Colors.transparent,
-          },
-        ),
+        side: BorderSide(color: outlineColor),
       ),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -82,29 +77,29 @@ class ConnectionTile extends HookConsumerWidget {
           children: [
             Row(
               spacing: 5,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: _ConnectingLocation(location: location),
-                ),
+                Expanded(child: _ConnectingLocation(location: location)),
                 ConnectTextButton(
                   onPressed: onTap,
-                  location: null,
-                  size: const Size(106, 31),
+                  location: location,
+                  size: const Size(106, 38),
                 ),
               ],
             ),
-            Row(
-              spacing: 12,
-              children: [
-                if (ipInfo != null && (isConnected ?? false))
-                  _IPIndicator(
-                    ip: ipInfo,
-                    onRefreshPressed: handleRefreshIP,
-                  ),
-                Expanded(child: _IPTypeIndicator(ipType: location.ipType)),
-              ],
-            ).padding(left: 40),
-            _RateConnection(),
+            if (location.ipType != IPType.closest)
+              Row(
+                spacing: 12,
+                children: [
+                  if (ipInfo != null && (isConnected ?? false))
+                    _IPIndicator(
+                      ip: ipInfo,
+                      onRefreshPressed: handleRefreshIP,
+                    ),
+                  Expanded(child: _IPTypeIndicator(ipType: location.ipType)),
+                ],
+              ).padding(left: 40),
+            if (location.ipType != IPType.closest) _RateConnection(),
           ],
         ),
       ),
@@ -114,6 +109,7 @@ class ConnectionTile extends HookConsumerWidget {
 
 class _ConnectingLocation extends StatelessWidget {
   const _ConnectingLocation({required this.location});
+
   final VPNLocation location;
 
   @override
@@ -124,25 +120,38 @@ class _ConnectingLocation extends StatelessWidget {
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 10,
       children: [
         if (location.ipType == IPType.closest) ...[
           SvgIcon(
             asset: switch (brightness) {
-              Brightness.dark => Assets.bestServerDark,
-              Brightness.light => Assets.bestServerLight,
+              Brightness.dark => Assets.flashDark,
+              Brightness.light => Assets.flashLight,
             },
           ).padding(right: 10),
           Expanded(
-            child: EasyText(
-              LocaleKeys.connectBestServer.tr(),
-              fontWeight: FontWeight.w500,
-              fontSize: 18,
-              maxLines: 2,
-              color: theme.colorScheme.onSecondaryContainer,
-            ).padding(right: 10),
+            child: Column(
+              spacing: 18,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                EasyText(
+                  LocaleKeys.connectBestServer.tr(),
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18,
+                  maxLines: 2,
+                  color: theme.colorScheme.onSecondaryContainer,
+                ),
+                EasyText(
+                  LocaleKeys.orSelectCountryManually.tr(),
+                  fontSize: 12,
+                  color: theme.colorScheme.onSecondaryContainer,
+                ),
+              ],
+            ),
           ),
         ] else ...[
-          Flag(countryCode: location.code, size: 30).padding(right: 10),
+          Flag(countryCode: location.code, size: 30),
           Expanded(
             child: EasyText(
               countryName,
@@ -166,6 +175,7 @@ class _IPIndicator extends HookWidget {
 
   final String ip;
   final VoidCallback onRefreshPressed;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -205,6 +215,7 @@ class _IPIndicator extends HookWidget {
 
 class _IPTypeIndicator extends HookWidget {
   const _IPTypeIndicator({required this.ipType});
+
   final IPType ipType;
 
   @override
