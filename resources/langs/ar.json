@@ -462,6 +462,7 @@
   "openBillingPlans": "فتح خطط الفواتير",
   "openEmailApp": "افتح تطبيق البريد الإلكتروني",
   "or": "OR",
+  "orSelectCountryManually": "أو اختر الدولة يدويًا",
   "originalMonthlyPrice": "{amount}",
   "otherReason": "أخرى...",
   "paymentMethod": "طريقة الدفع: {method}",
