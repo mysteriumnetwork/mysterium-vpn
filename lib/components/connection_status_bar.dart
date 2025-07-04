@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/hooks/connection_status_color_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
@@ -28,6 +29,7 @@ class ConnectionStatusBar extends HookConsumerWidget {
     final connectionStatus = useComputedValue(() => vpnStore.vpnStatus);
     final isFetchingConfig = useComputedValue(() => vpnStore.isFetchingConfig);
     final isExpanded = useState(false);
+    final statusColor = useConnectionStatusColor();
 
     final handleToggleExpanded = useMemoized(
       () {
@@ -54,7 +56,7 @@ class ConnectionStatusBar extends HookConsumerWidget {
       highlightColor: Colors.transparent,
       focusColor: Colors.transparent,
       hoverColor: Colors.transparent,
-      fillColor: _barBackgroundColor(connectionStatus, isFetchingConfig),
+      fillColor: statusColor,
       splashColor: Palette.white.withValues(alpha: .2),
       visualDensity: VisualDensity.compact,
       clipBehavior: Clip.antiAlias,
@@ -105,19 +107,6 @@ class ConnectionStatusBar extends HookConsumerWidget {
         ),
       ),
     );
-  }
-
-  Color _barBackgroundColor(ConnectionStatus connectionStatus, bool isLoading) {
-    if (isLoading) {
-      return Palette.yellow;
-    }
-    return switch (connectionStatus) {
-      ConnectionStatus.connected => Palette.forestGreen,
-      ConnectionStatus.disconnected => Palette.crimsonRed,
-      ConnectionStatus.connecting => Palette.yellow,
-      ConnectionStatus.disconnecting => Palette.yellow,
-      _ => Palette.crimsonRed,
-    };
   }
 
   String _statusText(
