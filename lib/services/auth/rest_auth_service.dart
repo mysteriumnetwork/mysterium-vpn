@@ -29,7 +29,9 @@ class RestAuthService extends AuthService {
         _networkService = networkService,
         _authSessionStore = authSessionStore,
         _logger = logger,
-        _env = env;
+        _env = env {
+    _init();
+  }
 
   final Authentication _apiAuth;
   final NetworkService _networkService;
@@ -37,9 +39,13 @@ class RestAuthService extends AuthService {
   final _securedStorage = SecureStorageService.instance;
   final Talker _logger;
   final FlavorValues _env;
-  final googleSignIn = GoogleSignIn(
-    scopes: ['email'],
-  );
+  final GoogleSignIn googleSignIn = GoogleSignIn.instance;
+  late final Future<void> _ensureInitialized;
+
+  Future<void> _init() async {
+    _ensureInitialized = googleSignIn.initialize();
+    await _ensureInitialized;
+  }
 
   // TODO(Waldz): Fix schema for this endpoint (JSON encoding needed)
   Future<TokenResponse> signIn(TokenRequest request) async {
@@ -118,8 +124,9 @@ class RestAuthService extends AuthService {
   @override
   Future<void> logout() async {
     await removeLocalData();
-    if (!Platform.isWindows && await googleSignIn.isSignedIn()) {
-      await googleSignIn.signOut();
+    if (!Platform.isWindows) {
+      await _ensureInitialized;
+      await GoogleSignIn.instance.signOut();
     }
   }
 
@@ -142,6 +149,7 @@ class RestAuthService extends AuthService {
   @override
   Future<String> signInWithApple() async {
     try {
+      await _ensureInitialized;
       if (!await SignInWithApple.isAvailable()) {
         throw NotAvailableException();
       }
@@ -171,14 +179,13 @@ class RestAuthService extends AuthService {
   @override
   Future<String> signInWithGoogle() async {
     try {
-      if (await googleSignIn.isSignedIn()) {
-        await googleSignIn.signOut();
+      if (!googleSignIn.supportsAuthenticate()) {
+        throw NotAvailableException();
       }
-      final googleUser = await googleSignIn.signIn();
-      if (googleUser == null) {
-        throw SignInAborted();
-      }
-      final googleAuth = await googleUser.authentication;
+      final googleUser = await googleSignIn.authenticate(
+        scopeHint: ['https://www.googleapis.com/auth/userinfo.email'],
+      );
+      final googleAuth = googleUser.authentication;
       return googleAuth.idToken!;
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
