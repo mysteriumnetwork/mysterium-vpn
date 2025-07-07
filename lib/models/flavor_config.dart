@@ -57,13 +57,13 @@ class FlavorValues {
 
   factory FlavorValues.dev({bool isAutomated = const bool.fromEnvironment('IS_AUTOMATED')}) =>
       FlavorValues._(
-        baseUrl: 'https://api-test.mysteriumvpn.com/api/v1',
-        mqttUrl: 'wss://events-test.mysteriumvpn.com/ws',
+        baseUrl: 'https://app.test.mysteriumvpn.com/api/v1',
+        mqttUrl: 'wss://events.test.mysteriumvpn.com/ws',
         mqttUsername: 'dvpn',
         mqttPassword: 'VWm2UJVV7BYr6p3S8ZZZ',
-        webAppUrl: 'app-testnet.mysteriumvpn.com',
+        webAppUrl: 'app.testnet.mysteriumvpn.com',
         sentryDsn: 'https://5b2acee54898674711aeba99171db808@sentry.mysterium.network/2',
-        billingPage: 'https://app-testnet.mysteriumvpn.com/dashboard/billing',
+        billingPage: 'https://app.testnet.mysteriumvpn.com/dashboard/billing',
         accountName: 'mysterium_vpn_test',
         appName: 'Mysterium VPN Test',
         appleClientId: 'com.mysteriumvpn.app-testnet',
