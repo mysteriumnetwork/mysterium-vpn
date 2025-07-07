@@ -9,6 +9,19 @@ updates:
     commit-message:
       prefix: "chore(pub)"
       include: "scope"
+    reviewers:
+      - KristijanMitrik
+      - dmacan23
+  - package-ecosystem: gradle
+    directory: "android"
+    schedule:
+      interval: "weekly"   
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "chore(android)"    
+    reviewers:
+      - KristijanMitrik
+      - dmacan23   
 
   # Keep GitHub Actions workflows up to date
   - package-ecosystem: "github-actions"
@@ -18,3 +31,6 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: "chore(ci)"
+    reviewers:
+      - KristijanMitrik
+      - dmacan23  
