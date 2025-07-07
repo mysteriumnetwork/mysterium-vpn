@@ -424,6 +424,10 @@ abstract class _VpnStore with Store {
     final status = await checkTunnelStatus();
     if (status == ConnectionStatus.connected) {
       await _wireguardService.disconnect();
+      if (!isReconnecting) {
+        _connectingLocation = null;
+        unawaited(notifyApiVpnDisconnected());
+      }
     }
 
     if (_connectionDataSub != null) {
@@ -433,10 +437,6 @@ abstract class _VpnStore with Store {
     if (_connectionKilledSub != null) {
       _connectionKilledSub?.cancel();
       _connectionKilledSub = null;
-    }
-    if (!isReconnecting) {
-      _connectingLocation = null;
-      unawaited(notifyApiVpnDisconnected());
     }
   }
 
