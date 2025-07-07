@@ -125,6 +125,7 @@ class RestAuthService extends AuthService {
   Future<void> logout() async {
     await removeLocalData();
     if (!Platform.isWindows) {
+      await _ensureInitialized;
       await GoogleSignIn.instance.signOut();
     }
   }
@@ -148,6 +149,7 @@ class RestAuthService extends AuthService {
   @override
   Future<String> signInWithApple() async {
     try {
+      await _ensureInitialized;
       if (!await SignInWithApple.isAvailable()) {
         throw NotAvailableException();
       }
