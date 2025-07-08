@@ -103,7 +103,7 @@ class WireguradKeyService {
         secureStorageService.saveWireguardPrivateKey(privateKey: privateKey),
       ]);
       final key = await _getKeyFromStorage(); // Verify that keys are saved correctly
-      if (publicKey != key?.publicKey && privateKey != key?.privateKey) {
+      if (publicKey != key?.publicKey || privateKey != key?.privateKey) {
         await Future.wait([
           secureStorageService.removeWireguardPrivateKey(),
           secureStorageService.removeWireguardPublicKey(),
