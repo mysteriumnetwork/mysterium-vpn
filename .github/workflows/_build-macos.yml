@@ -35,9 +35,9 @@ jobs:
 
       - name: Replace Git URL in pubspec.yaml with PAT
         run: |
-          sed -i.bak "s|git@github.com:mysteriumnetwork/mysterium-vpn-api-client-dart.git|https://${GITHUB_PAT}@github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git|g" pubspec.yaml
+          sed -i.bak "s|git@github.com:mysteriumnetwork/mysterium-vpn-api-client-dart.git|https://${GH_TOKEN}@github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git|g" pubspec.yaml
         env:
-          GITHUB_PAT: ${{ secrets.VPNAPI_GITHUB_PAT }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Set up XCode
         run: sudo xcode-select --switch /Applications/Xcode_16.1.0.app
