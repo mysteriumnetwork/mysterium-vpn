@@ -67,7 +67,7 @@ class FlavorValues {
         accountName: 'mysterium_vpn_test',
         appName: 'Mysterium VPN Test',
         appleClientId: 'com.mysteriumvpn.app-testnet',
-        appleRedirectUri: 'https://api-test.mysteriumvpn.com/api/v1/callbacks/apple-sign-in',
+        appleRedirectUri: 'https://api.test.mysteriumvpn.com/api/v1/callbacks/apple-sign-in',
         tunnelName: 'MysteriumTest',
         remoteConfigSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/fEG0yLr3KEed9BjXRuQvgA',
         abTestingSdkKey: 'configcat-sdk-1/4PjcCICjokiFdAeS1Y35vA/_PK9Imkd8EG-w8NiPpc5bw',
