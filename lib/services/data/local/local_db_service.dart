@@ -28,7 +28,10 @@ class LocalDBService {
         'user_data',
         compactionStrategy: (e, d) => false,
       ),
-      Hive.openBox<VPNLocations>('locations_data'),
+      Hive.openBox<VPNLocations>(
+        'locations_data',
+        compactionStrategy: (e, d) => false,
+      ),
     ]);
   }
 
