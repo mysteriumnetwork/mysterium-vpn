@@ -61,7 +61,7 @@ class FlavorValues {
         mqttUrl: 'wss://events.test.mysteriumvpn.com/ws',
         mqttUsername: 'dvpn',
         mqttPassword: 'VWm2UJVV7BYr6p3S8ZZZ',
-        webAppUrl: 'app.testnet.mysteriumvpn.com',
+        webAppUrl: 'app.test.mysteriumvpn.com',
         sentryDsn: 'https://5b2acee54898674711aeba99171db808@sentry.mysterium.network/2',
         billingPage: 'https://app.testnet.mysteriumvpn.com/dashboard/billing',
         accountName: 'mysterium_vpn_test',
