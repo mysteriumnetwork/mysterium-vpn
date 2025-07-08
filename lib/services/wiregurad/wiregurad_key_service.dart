@@ -25,11 +25,9 @@ class WireguradKeyService {
         return wireguradKey;
       } else {
         final key = await _generateWireguradKey();
-        unawaited(
-          _saveWireguardKey(
-            publicKey: key.publicKey,
-            privateKey: key.privateKey,
-          ),
+        await _saveWireguardKey(
+          publicKey: key.publicKey,
+          privateKey: key.privateKey,
         );
         return key;
       }
@@ -41,11 +39,9 @@ class WireguradKeyService {
   Future<KeyPair> regenerateWireguardKeys() async {
     try {
       final key = await _generateWireguradKey();
-      unawaited(
-        _saveWireguardKey(
-          publicKey: key.publicKey,
-          privateKey: key.privateKey,
-        ),
+      await _saveWireguardKey(
+        publicKey: key.publicKey,
+        privateKey: key.privateKey,
       );
       return key;
     } catch (_) {
@@ -55,14 +51,8 @@ class WireguradKeyService {
 
   Future<KeyPair?> _getKeyFromStorage() async {
     try {
-      final [publicKey, privateKey] = await Future.wait<String?>(
-        [
-          secureStorageService.getWireguardPublicKey(),
-          secureStorageService.getWireguardPrivateKey(),
-        ],
-        eagerError: true,
-      );
-
+      final publicKey = await secureStorageService.getWireguardPublicKey();
+      final privateKey = await secureStorageService.getWireguardPrivateKey();
       if ((publicKey?.isNotEmpty ?? false) && (privateKey?.isNotEmpty ?? false)) {
         return KeyPair(publicKey!, privateKey!);
       }
@@ -98,16 +88,12 @@ class WireguradKeyService {
     required String privateKey,
   }) async {
     try {
-      await Future.wait([
-        secureStorageService.saveWireguardPublicKey(publicKey: publicKey),
-        secureStorageService.saveWireguardPrivateKey(privateKey: privateKey),
-      ]);
+      await secureStorageService.saveWireguardPublicKey(publicKey: publicKey);
+      await secureStorageService.saveWireguardPrivateKey(privateKey: privateKey);
       final key = await _getKeyFromStorage(); // Verify that keys are saved correctly
       if (publicKey != key?.publicKey || privateKey != key?.privateKey) {
-        await Future.wait([
-          secureStorageService.removeWireguardPrivateKey(),
-          secureStorageService.removeWireguardPublicKey(),
-        ]);
+        await secureStorageService.removeWireguardPrivateKey();
+        await secureStorageService.removeWireguardPublicKey();
       }
     } catch (e, s) {
       Sentry.captureException(
