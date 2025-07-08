@@ -43,10 +43,10 @@ jobs:
 
       - name: Replace SSH with HTTPS in pubspec.yaml
         run: |
-          (Get-Content pubspec.yaml) -replace 'git@github.com:mysteriumnetwork/mysterium-vpn-api-client-dart.git', "https://$env:GITHUB_PAT@github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git" | Set-Content pubspec.yaml
+          (Get-Content pubspec.yaml) -replace 'git@github.com:mysteriumnetwork/mysterium-vpn-api-client-dart.git', "https://$env:GH_TOKEN@github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git" | Set-Content pubspec.yaml
         shell: pwsh
         env:
-          GITHUB_PAT: ${{ secrets.VPNAPI_GITHUB_PAT }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Setup Flutter Version Management CLI
         run: choco install yq fvm -y
