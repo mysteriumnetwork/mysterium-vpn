@@ -25,11 +25,9 @@ class WireguradKeyService {
         return wireguradKey;
       } else {
         final key = await _generateWireguradKey();
-        unawaited(
-          _saveWireguardKey(
-            publicKey: key.publicKey,
-            privateKey: key.privateKey,
-          ),
+        await _saveWireguardKey(
+          publicKey: key.publicKey,
+          privateKey: key.privateKey,
         );
         return key;
       }
@@ -41,11 +39,9 @@ class WireguradKeyService {
   Future<KeyPair> regenerateWireguardKeys() async {
     try {
       final key = await _generateWireguradKey();
-      unawaited(
-        _saveWireguardKey(
-          publicKey: key.publicKey,
-          privateKey: key.privateKey,
-        ),
+      await _saveWireguardKey(
+        publicKey: key.publicKey,
+        privateKey: key.privateKey,
       );
       return key;
     } catch (_) {
