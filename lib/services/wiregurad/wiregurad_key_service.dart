@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -23,9 +25,11 @@ class WireguradKeyService {
         return wireguradKey;
       } else {
         final key = await _generateWireguradKey();
-        await _saveWireguardKey(
-          publicKey: key.publicKey,
-          privateKey: key.privateKey,
+        unawaited(
+          _saveWireguardKey(
+            publicKey: key.publicKey,
+            privateKey: key.privateKey,
+          ),
         );
         return key;
       }
@@ -37,9 +41,11 @@ class WireguradKeyService {
   Future<KeyPair> regenerateWireguardKeys() async {
     try {
       final key = await _generateWireguradKey();
-      await _saveWireguardKey(
-        publicKey: key.publicKey,
-        privateKey: key.privateKey,
+      unawaited(
+        _saveWireguardKey(
+          publicKey: key.publicKey,
+          privateKey: key.privateKey,
+        ),
       );
       return key;
     } catch (_) {
@@ -96,6 +102,13 @@ class WireguradKeyService {
         secureStorageService.saveWireguardPublicKey(publicKey: publicKey),
         secureStorageService.saveWireguardPrivateKey(privateKey: privateKey),
       ]);
+      final key = await _getKeyFromStorage(); // Verify that keys are saved correctly
+      if (publicKey != key?.publicKey || privateKey != key?.privateKey) {
+        await Future.wait([
+          secureStorageService.removeWireguardPrivateKey(),
+          secureStorageService.removeWireguardPublicKey(),
+        ]);
+      }
     } catch (e, s) {
       Sentry.captureException(
         e,
