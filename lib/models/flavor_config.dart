@@ -63,7 +63,7 @@ class FlavorValues {
         mqttPassword: 'VWm2UJVV7BYr6p3S8ZZZ',
         webAppUrl: 'app.test.mysteriumvpn.com',
         sentryDsn: 'https://5b2acee54898674711aeba99171db808@sentry.mysterium.network/2',
-        billingPage: 'https://app.testnet.mysteriumvpn.com/dashboard/billing',
+        billingPage: 'https://app.test.mysteriumvpn.com/dashboard/billing',
         accountName: 'mysterium_vpn_test',
         appName: 'Mysterium VPN Test',
         appleClientId: 'com.mysteriumvpn.app-testnet',
