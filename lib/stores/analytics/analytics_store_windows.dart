@@ -29,6 +29,7 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
         _deviceIDStore = deviceIDStore,
         _session = AnalyticsSession(measurementId, apiSecret) {
     logAppLaunchEvent();
+    setDeviceInfo();
   }
 
   final AnalyticsSession _session;
@@ -96,6 +97,11 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
     try {
       await _deviceInfoStore.deviceInfoFuture;
       final deviceId = await _deviceIDStore.deviceIdFuture;
+      if (kDebugMode) {
+        debugPrint('Device ID: $deviceId');
+        debugPrint('Device name: ${_deviceInfoStore.deviceName}');
+        debugPrint('Device model: ${_deviceInfoStore.deviceModel}');
+      }
       await setUserProperty('device_id', deviceId);
       await setUserProperty('device_name', _deviceInfoStore.deviceName);
       await setUserProperty('device_model', _deviceInfoStore.deviceModel);
