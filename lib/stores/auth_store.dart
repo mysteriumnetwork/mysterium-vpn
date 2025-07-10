@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -61,7 +60,8 @@ abstract class _AuthStore with Store {
   final AuthSessionStore _authSessionStore;
   final LocalDBService _localDb = LocalDBService.instance;
   final AppLinks _appLinks;
-  final SecureStorageService _secureStorageService = SecureStorageService.instance;
+  final SecureStorageService _secureStorageService =
+      SecureStorageService.instance;
   final AnalyticsStore _analyticsStore;
   final FlavorConfig _env;
   final Talker _logger;
@@ -104,7 +104,9 @@ abstract class _AuthStore with Store {
           }
           final storedLink = await _secureStorageService.getAppLink();
           if (appLink.toString() != storedLink) {
-            await _secureStorageService.saveAppLink(appLink: appLink.toString());
+            await _secureStorageService.saveAppLink(
+              appLink: appLink.toString(),
+            );
 
             verifyMagicLinkAndAuthenticate(appLink);
           } else {
@@ -128,7 +130,8 @@ abstract class _AuthStore with Store {
         throw IncorrectCodeException();
       }
 
-      if (_pkcePair == null && (_pkcePair = await _secureStorageService.getPkcePair()) == null) {
+      if (_pkcePair == null &&
+          (_pkcePair = await _secureStorageService.getPkcePair()) == null) {
         throw PkcePairNotFoundException();
       }
       authenticate(
@@ -179,10 +182,17 @@ abstract class _AuthStore with Store {
     try {
       authenticateFeature = ObservableFuture(feature);
       final authTokens = await authenticateFeature;
-      await _authSessionStore.setAuthenticated(authTokens!.accessToken, authTokens.refreshToken);
+      await _authSessionStore.setAuthenticated(
+        authTokens!.accessToken,
+        authTokens.refreshToken,
+      );
       _analyticsStore.setLogin(grantType);
       if (!grantType.isRefreshToken) {
-        unawaited(_userPreferencesStore.setMarketingConsent(consent: marketingConsent));
+        unawaited(
+          _userPreferencesStore.setMarketingConsent(
+            consent: marketingConsent,
+          ),
+        );
       }
     } on ApiException catch (e) {
       showSnackbar(e.message);
@@ -207,7 +217,9 @@ abstract class _AuthStore with Store {
     required String username,
     required String userId,
   }) async {
-    debugPrint(' userId: $userId, username: $username');
+    if (kDebugMode) {
+      debugPrint('userId: $userId, username: $username');
+    }
     await _abTestingStore.configFuture;
     await _analyticsStore.setUserId(userId);
     await _analyticsStore.setUserProperty('email', username);
@@ -375,7 +387,10 @@ abstract class _AuthStore with Store {
           refreshToken: refreshToken,
         ),
       );
-      await _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
+      await _authSessionStore.setAuthenticated(
+        authTokens.accessToken,
+        authTokens.refreshToken,
+      );
     } catch (e) {
       showSnackbar(LocaleKeys.loginSessionExpired.tr());
       await logout();
