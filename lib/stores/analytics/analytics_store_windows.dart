@@ -17,8 +17,7 @@ import 'package:mysterium_vpn/stores/device_info_store.dart';
 part 'analytics_store_windows.g.dart';
 
 // ignore: library_private_types_in_public_api
-class AnalyticsStoreWindows = _AnalyticsStoreWindows
-    with _$AnalyticsStoreWindows;
+class AnalyticsStoreWindows = _AnalyticsStoreWindows with _$AnalyticsStoreWindows;
 
 abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
   _AnalyticsStoreWindows({
@@ -155,14 +154,12 @@ class AnalyticsSession {
       'Event name should be between 1 and 40 characters long',
     );
     assert(
-      eventName.isNotEmpty &&
-          RegExp(r'^[a-zA-Z][a-zA-Z0-9_]*$').hasMatch(eventName),
+      eventName.isNotEmpty && RegExp(r'^[a-zA-Z][a-zA-Z0-9_]*$').hasMatch(eventName),
       'Event name should start with a letter and contain only letters, numbers, and underscores.',
     );
 
     final defParams = <String, Object?>{
-      'engagement_time_msec':
-          DateTime.now().toUtc().difference(sessionStarted).inMilliseconds,
+      'engagement_time_msec': DateTime.now().toUtc().difference(sessionStarted).inMilliseconds,
       'session_id': sessionId,
     };
     if (params != null) {
@@ -245,9 +242,7 @@ class WindowsAnalyticsObserver extends RouteObserver<ModalRoute<dynamic>> {
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPop(route, previousRoute);
 
-    if (previousRoute != null &&
-        routeFilter(previousRoute) &&
-        routeFilter(route)) {
+    if (previousRoute != null && routeFilter(previousRoute) && routeFilter(route)) {
       _sendScreenView(previousRoute);
     }
   }
