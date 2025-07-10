@@ -90,20 +90,15 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
             children: [
               child,
               if (isVerifyingPayment)
-                LoadingBarrier(
-                  color: Palette.darkBlue,
-                  child: Center(
+                Positioned.fill(
+                  child: LoadingBarrier(
+                    color: Theme.of(context).primaryColor,
                     child: LoadingIndicator(
-                      radius: 50,
+                      radius: 30,
                       message: LocaleKeys.processingPayment.tr(),
-                      messageColor: Palette.black,
-                    )
-                        .decorated(
-                          color: Palette.white,
-                          borderRadius: BorderRadius.circular(10),
-                        )
-                        .padding(all: 20)
-                        .constrained(width: getMediaWidth(context) * 0.8, height: 200),
+                      messageColor: Palette.purple.withValues(alpha: 0.8),
+                      indicatorColor: Palette.purple.withValues(alpha: 0.8),
+                    ),
                   ),
                 ),
             ],
