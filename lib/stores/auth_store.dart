@@ -60,8 +60,7 @@ abstract class _AuthStore with Store {
   final AuthSessionStore _authSessionStore;
   final LocalDBService _localDb = LocalDBService.instance;
   final AppLinks _appLinks;
-  final SecureStorageService _secureStorageService =
-      SecureStorageService.instance;
+  final SecureStorageService _secureStorageService = SecureStorageService.instance;
   final AnalyticsStore _analyticsStore;
   final FlavorConfig _env;
   final Talker _logger;
@@ -130,8 +129,7 @@ abstract class _AuthStore with Store {
         throw IncorrectCodeException();
       }
 
-      if (_pkcePair == null &&
-          (_pkcePair = await _secureStorageService.getPkcePair()) == null) {
+      if (_pkcePair == null && (_pkcePair = await _secureStorageService.getPkcePair()) == null) {
         throw PkcePairNotFoundException();
       }
       authenticate(
