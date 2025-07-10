@@ -207,6 +207,7 @@ abstract class _AuthStore with Store {
     required String username,
     required String userId,
   }) async {
+    debugPrint(' userId: $userId, username: $username');
     await _abTestingStore.configFuture;
     await _analyticsStore.setUserId(userId);
     await _analyticsStore.setUserProperty('email', username);
