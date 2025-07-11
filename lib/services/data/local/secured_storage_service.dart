@@ -21,9 +21,6 @@ class SecureStorageService {
 
   void init(FlavorConfig flavor) {
     _securedStorage = FlutterSecureStorage(
-      aOptions: const AndroidOptions(
-        encryptedSharedPreferences: true,
-      ),
       iOptions: IOSOptions(
         accountName: flavor.values.accountName,
       ),
