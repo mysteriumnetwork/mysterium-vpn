@@ -13,6 +13,7 @@ import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 
 /// Overlay for [NetworkLoggerButton].
 class NetworkLoggerOverlay extends StatefulWidget {
@@ -291,6 +292,11 @@ class _NetworkLoggerScreenState extends State<NetworkLoggerScreen> {
           IconButton(
             icon: const Icon(Icons.info_outline),
             onPressed: () => _DeviceInfo.show(context: context),
+            color: Theme.of(context).textTheme.bodyLarge?.color,
+          ),
+          IconButton(
+            icon: const Icon(Icons.key),
+            onPressed: () => _SecuredStorageValues.show(context: context),
             color: Theme.of(context).textTheme.bodyLarge?.color,
           ),
           IconButton(
@@ -1076,4 +1082,77 @@ class _DeviceInfo extends ConsumerWidget {
       ),
     );
   }
+}
+
+class _SecuredStorageValues extends ConsumerWidget {
+  const _SecuredStorageValues._();
+
+  static void show({
+    required BuildContext context,
+  }) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => const _SecuredStorageValues._(),
+        settings: const RouteSettings(name: 'securedStorageValuesPage'),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) => Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: Navigator.of(context).pop,
+            color: Theme.of(context).textTheme.bodyLarge?.color,
+          ),
+          forceMaterialTransparency: true,
+          title: const EasyText('Secured stored keys'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8),
+          child: SingleChildScrollView(
+            child: FutureBuilder<Map<String, dynamic>>(
+              future: SecureStorageService.instance.readAll(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final data = snapshot.data!;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ...data.entries.map(
+                        (e) => RichText(
+                          maxLines: 20,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '${e.key}: ',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.deepPurple, // or any color you prefer for the key
+                                  fontSize: 14,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '${e.value}',
+                                style: const TextStyle(
+                                  color: Colors.black87, // or any color you prefer for the value
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return EasyText('Error: ${snapshot.error}');
+                }
+                return const Center(child: CircularProgressIndicator());
+              },
+            ),
+          ),
+        ),
+      );
 }

@@ -37,6 +37,18 @@ class SecureStorageService {
     );
   }
 
+  Future<Map<String, dynamic>> readAll() async {
+    try {
+      final allValues = await _securedStorage.readAll();
+      if (allValues.isEmpty) {
+        return {};
+      }
+      return allValues;
+    } catch (e) {
+      return {};
+    }
+  }
+
   Future<String> read(String key) async {
     if (!await _securedStorage.containsKey(key: key)) {
       throw KeyDoesntExistsException();
