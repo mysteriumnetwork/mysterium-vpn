@@ -74,6 +74,7 @@ abstract class _AuthSessionStore with Store {
   @action
   Future<void> setAuthenticatedUser(AuthUser user) async {
     _userFuture = ObservableFuture.value(user);
+    await _userFuture;
     await _storageUpdate();
   }
 
