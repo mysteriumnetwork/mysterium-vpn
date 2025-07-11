@@ -665,8 +665,8 @@ packages:
     dependency: "direct main"
     description:
       path: flutter_secure_storage
-      ref: fix-encription-algorithm
-      resolved-ref: "611da9fd8f1bc1b1cf5ae5a00eb0292bccbea164"
+      ref: "9.2.5"
+      resolved-ref: "293262402609a4ae92fe6d57b80e6eb77458c791"
       url: "https://github.com/KristijanMitrik/flutter_secure_storage.git"
     source: git
     version: "10.0.0-beta.4"
