@@ -53,6 +53,7 @@ class CrashlitycsLoggerObserver extends TalkerObserver {
           'status_code': apiError.code,
           'endpoint': apiError.endpoint,
           'method': apiError.requestOptions.method,
+          'error_type': 'api_exception',
         },
       );
     }
