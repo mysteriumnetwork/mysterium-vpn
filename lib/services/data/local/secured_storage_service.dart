@@ -19,7 +19,7 @@ class SecureStorageService {
 
   static final SecureStorageService instance = SecureStorageService._internal();
 
-  void init(FlavorConfig flavor) {
+  Future<void> init(FlavorConfig flavor) async {
     _securedStorage = FlutterSecureStorage(
       iOptions: IOSOptions(
         accountName: flavor.values.accountName,
@@ -32,6 +32,7 @@ class SecureStorageService {
         useBackwardCompatibility: true,
       ),
     );
+    await readAll();
   }
 
   Future<Map<String, dynamic>> readAll() async {
@@ -41,6 +42,13 @@ class SecureStorageService {
         return {};
       }
       return allValues;
+    } on PlatformException catch (e) {
+      if (e.code == 'RESET_FAILED') {
+        // Corupted storage, reset it
+        // happens because of the encryption algorithm change
+        await _securedStorage.deleteAll();
+      }
+      return {};
     } catch (e) {
       return {};
     }
