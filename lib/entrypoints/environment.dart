@@ -96,7 +96,7 @@ class Environment {
     flavorConfig = await _setupFlavor();
     await _setupTrayIcon(flavorConfig);
     await SharedPreferenceService.instance.init();
-    await SecureStorageService.instance.init(flavorConfig);
+    SecureStorageService.instance.init(flavorConfig);
     await EasyLocalization.ensureInitialized();
     await LocalDBService.initialize();
     providerContainer = ProviderContainer(
