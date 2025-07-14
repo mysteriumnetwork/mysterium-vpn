@@ -31,8 +31,10 @@ class SecureStorageService {
       wOptions: const WindowsOptions(
         useBackwardCompatibility: true,
       ),
+      aOptions: const AndroidOptions(
+        resetOnError: true,
+      ),
     );
-    await readAll();
   }
 
   Future<Map<String, dynamic>> readAll() async {
@@ -42,13 +44,6 @@ class SecureStorageService {
         return {};
       }
       return allValues;
-    } on PlatformException catch (e) {
-      if (e.code == 'RESET_FAILED') {
-        // Corupted storage, reset it
-        // happens because of the encryption algorithm change
-        await _securedStorage.deleteAll();
-      }
-      return {};
     } catch (e) {
       return {};
     }
