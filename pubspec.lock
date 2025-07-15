@@ -1230,8 +1230,8 @@ packages:
     dependency: "direct dev"
     description:
       path: "."
-      ref: fix-msix-build
-      resolved-ref: dde4a97befa21cc7b4298b8bc3a16646a8bda4f2
+      ref: "3.17.0"
+      resolved-ref: "6ceffb5e4341c2a6f60932fa460f18f6b1ef5f8c"
       url: "https://github.com/KristijanMitrik/msix.git"
     source: git
     version: "3.16.9"
