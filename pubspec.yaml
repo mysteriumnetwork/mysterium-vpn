@@ -117,7 +117,10 @@ dev_dependencies:
   json_serializable: 6.9.0
   mobx_codegen: 2.7.1
   mockito: ^5.4.4
-  msix: 3.16.9
+  msix:
+    git:
+      url: https://github.com/KristijanMitrik/msix.git
+      ref: fix-msix-build
   patrol: ^3.15.1
 
 msix_config:
