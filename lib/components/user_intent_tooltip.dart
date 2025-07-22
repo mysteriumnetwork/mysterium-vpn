@@ -58,32 +58,34 @@ class _Item extends StatelessWidget {
       color: theme.textTheme.bodyLarge?.color,
     );
     return AutoSizeText.rich(
-      TextSpan(children: [
-        TextSpan(
-          text: switch (value) {
-            UserIntent.bestSpeed => LocaleKeys.userIntentBestSpeed.tr(),
-            UserIntent.lowLatency => LocaleKeys.userIntentLowLatency.tr(),
-            UserIntent.nearestLocation => LocaleKeys.userIntentNearestLocation.tr(),
-            UserIntent.maxPrivacy => LocaleKeys.userIntentMaxPrivacy.tr(),
-            UserIntent.streaming => LocaleKeys.userIntentStreaming.tr(),
-            UserIntent.p2p => LocaleKeys.userIntentP2P.tr(),
-          },
-          style: GoogleFonts.montserrat(fontWeight: FontWeight.bold),
-        ),
-        CharacterSpan.space(),
-        CharacterSpan.hyphen(),
-        CharacterSpan.space(),
-        TextSpan(
-          text: switch (value) {
-            UserIntent.bestSpeed => LocaleKeys.userIntentBestSpeedDesc.tr(),
-            UserIntent.lowLatency => LocaleKeys.userIntentLowLatencyDesc.tr(),
-            UserIntent.nearestLocation => LocaleKeys.userIntentNearestLocationDesc.tr(),
-            UserIntent.maxPrivacy => LocaleKeys.userIntentMaxPrivacyDesc.tr(),
-            UserIntent.streaming => LocaleKeys.userIntentStreamingDesc.tr(),
-            UserIntent.p2p => LocaleKeys.userIntentP2PDesc.tr(),
-          },
-        ),
-      ]),
+      TextSpan(
+        children: [
+          TextSpan(
+            text: switch (value) {
+              UserIntent.bestSpeed => LocaleKeys.userIntentBestSpeed.tr(),
+              UserIntent.lowLatency => LocaleKeys.userIntentLowLatency.tr(),
+              UserIntent.nearestLocation => LocaleKeys.userIntentNearestLocation.tr(),
+              UserIntent.maxPrivacy => LocaleKeys.userIntentMaxPrivacy.tr(),
+              UserIntent.streaming => LocaleKeys.userIntentStreaming.tr(),
+              UserIntent.p2p => LocaleKeys.userIntentP2P.tr(),
+            },
+            style: GoogleFonts.montserrat(fontWeight: FontWeight.bold),
+          ),
+          CharacterSpan.space(),
+          CharacterSpan.hyphen(),
+          CharacterSpan.space(),
+          TextSpan(
+            text: switch (value) {
+              UserIntent.bestSpeed => LocaleKeys.userIntentBestSpeedDesc.tr(),
+              UserIntent.lowLatency => LocaleKeys.userIntentLowLatencyDesc.tr(),
+              UserIntent.nearestLocation => LocaleKeys.userIntentNearestLocationDesc.tr(),
+              UserIntent.maxPrivacy => LocaleKeys.userIntentMaxPrivacyDesc.tr(),
+              UserIntent.streaming => LocaleKeys.userIntentStreamingDesc.tr(),
+              UserIntent.p2p => LocaleKeys.userIntentP2PDesc.tr(),
+            },
+          ),
+        ],
+      ),
       style: textStyle,
     );
   }
