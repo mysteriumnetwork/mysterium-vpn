@@ -1,0 +1,101 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/components/easy_text.dart';
+import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/models/user_intent.dart';
+
+class UserIntentPicker extends StatelessWidget {
+  const UserIntentPicker({
+    required this.onChanged,
+    required this.value,
+    this.items = UserIntent.values,
+    super.key,
+  });
+
+  final UserIntent? value;
+  final List<UserIntent> items;
+  final ValueChanged<UserIntent?> onChanged;
+
+  @override
+  Widget build(BuildContext context) => ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 46),
+        child: ListView.separated(
+          clipBehavior: Clip.none,
+          scrollDirection: Axis.horizontal,
+          itemCount: items.length,
+          separatorBuilder: (_, __) => const SizedBox(width: 10),
+          itemBuilder: (context, index) {
+            final item = items[index];
+            final isSelected = value == item;
+            return _Item(
+              value: item,
+              isSelected: isSelected,
+              onPressed: () {
+                if (isSelected) {
+                  onChanged(null);
+                } else {
+                  onChanged(item);
+                }
+              },
+            );
+          },
+        ),
+      );
+}
+
+class _Item extends StatelessWidget {
+  const _Item({
+    required this.value,
+    required this.isSelected,
+    required this.onPressed,
+  });
+
+  final UserIntent value;
+  final bool isSelected;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return RawMaterialButton(
+      elevation: 0,
+      hoverElevation: 0,
+      highlightElevation: 0,
+      focusElevation: 0,
+      padding: const EdgeInsets.all(12),
+      onPressed: onPressed,
+      fillColor: isSelected ? theme.palette.highlightColor : theme.colorScheme.tertiaryContainer,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Row(
+        spacing: 6,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          EasyText(
+            switch (value) {
+              UserIntent.bestSpeed => LocaleKeys.userIntentBestSpeed.tr(),
+              UserIntent.lowLatency => LocaleKeys.userIntentLowLatency.tr(),
+              UserIntent.nearestLocation => LocaleKeys.userIntentNearestLocation.tr(),
+              UserIntent.maxPrivacy => LocaleKeys.userIntentMaxPrivacy.tr(),
+              UserIntent.streaming => LocaleKeys.userIntentStreaming.tr(),
+              UserIntent.p2p => LocaleKeys.userIntentP2P.tr(),
+            },
+            color: isSelected ? Colors.white : theme.palette.secondaryColor,
+          ),
+          SvgIcon(
+            color: isSelected ? Colors.white : theme.palette.highlightColor,
+            asset: switch (value) {
+              UserIntent.bestSpeed => Assets.flash,
+              UserIntent.lowLatency => Assets.clockCircle,
+              UserIntent.nearestLocation => Assets.locationPin,
+              UserIntent.maxPrivacy => Assets.incognito,
+              UserIntent.streaming => Assets.film,
+              UserIntent.p2p => Assets.shareCircle,
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}

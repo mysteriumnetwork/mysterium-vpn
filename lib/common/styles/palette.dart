@@ -29,6 +29,7 @@ abstract class Palette {
   static const Color grayScaffold = Color(0xFFA09EB7);
   static const Color darkPurple = Color(0xFF4B486C);
   static const Color semiTransparentLightBlack = Color(0x666A678E);
+  static const Color duskyPurple = Color(0xff524E77);
 
   Color get highlightColor;
   Color get secondaryColor;
@@ -57,6 +58,7 @@ abstract class Palette {
   Color get tertiaryContainer;
   Color get alertButtonsOutlineColor;
   Color get connectionTileBackgroundColor;
+  Color get tooltipBackgroundColor;
 
   MaterialColor get swatchColor;
 }
@@ -145,6 +147,9 @@ class LightPalette implements Palette {
 
   @override
   Color get connectionTileBackgroundColor => Palette.white;
+
+  @override
+  Color get tooltipBackgroundColor => Palette.white;
 }
 
 class DarkPalette implements Palette {
@@ -231,6 +236,9 @@ class DarkPalette implements Palette {
 
   @override
   Color get connectionTileBackgroundColor => Palette.deepPurple;
+
+  @override
+  Color get tooltipBackgroundColor => Palette.duskyPurple;
 }
 
 Map<int, Color> color = const {
