@@ -12,7 +12,7 @@ abstract class SubscriptionService {
 
   Future<Subscription> fetchSubscriptionDetails();
 
-  Future<bool> subscribeToPackage({
+  Future<void> subscribeToPackage({
     required ProductDetails productDetails,
     required String? purchasedProductId,
     required String userId,
@@ -30,4 +30,9 @@ abstract class SubscriptionService {
   Future<bool> hasApplePendingPurchasingTransactions();
 
   Future<bool> isEligibleForIntroOffer(String productId);
+
+  Future<void> manageSubscription({
+    required ProductDetails productDetails,
+    required String userId,
+  });
 }

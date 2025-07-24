@@ -441,7 +441,7 @@ abstract class _SubscriptionStore with Store {
 
     try {
       _subscriptionStatus = SubscriptionStatus.verifying;
-      _subscriptionFuture = ObservableFuture(
+      _subscriptionFuture = _subscriptionFuture.replace(
         _subscriptionService.verifyPurchase(
           serverVerificationData: lastPurchase.verificationData.serverVerificationData,
           planId: product.id,
@@ -459,6 +459,8 @@ abstract class _SubscriptionStore with Store {
   @action
   Future<void> manageSubscription() async {
     final subscription = await _subscriptionFuture;
+    final user = (await _authSessionStore.userFuture)!;
+  
     if (!subscription.active) {
       throw const SubscriptionRequiredException();
     }
@@ -471,7 +473,10 @@ abstract class _SubscriptionStore with Store {
       throw const SubscriptionRequiredException();
     }
 
-    await subscribeToPackage(product: product.productDetails);
+    await _subscriptionService.manageSubscription(
+      productDetails: product.productDetails,
+      userId: user.userId,
+    );
   }
 
   @action

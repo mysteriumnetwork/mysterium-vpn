@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_android/billing_client_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
@@ -15,6 +16,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:storekit_extensions/storekit_extensions.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
@@ -106,14 +108,7 @@ class RestSubscriptionService extends SubscriptionService {
         );
       }
       if (res.statusCode == 200) {
-        try {
-          return await fetchSubscriptionDetails();
-        } catch (e) {
-          return Subscription(
-            planId: planId,
-            active: true,
-          );
-        }
+        return await fetchActiveSubscription(planId);
       } else {
         throw SubscriptionVerificationException();
       }
@@ -123,8 +118,28 @@ class RestSubscriptionService extends SubscriptionService {
     }
   }
 
+  Future<Subscription> fetchActiveSubscription(String planId) async {
+    var retries = 0;
+    Subscription? subs;
+    do {
+      try {
+        subs = await fetchSubscriptionDetails();
+      } catch (_) {}
+      if (subs?.active ?? false) {
+        return subs!; // Return the subscription if it's active
+      }
+      await Future.delayed(const Duration(seconds: 1));
+      retries++;
+    } while (retries < 3);
+    return subs ??
+        Subscription(
+          planId: planId,
+          active: false,
+        );
+  }
+
   @override
-  Future<bool> subscribeToPackage({
+  Future<void> subscribeToPackage({
     required ProductDetails productDetails,
     required String? purchasedProductId,
     required String userId,
@@ -151,6 +166,7 @@ class RestSubscriptionService extends SubscriptionService {
           changeSubscriptionParam: (details != null)
               ? ChangeSubscriptionParam(
                   oldPurchaseDetails: details,
+                  replacementMode: ReplacementMode.withTimeProration,
                 )
               : null,
         );
@@ -160,13 +176,24 @@ class RestSubscriptionService extends SubscriptionService {
           applicationUserName: userId,
         );
       }
-      return await _inAppPurchase.buyNonConsumable(
+      await _inAppPurchase.buyNonConsumable(
         purchaseParam: purchaseParam,
       );
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
     }
+  }
+
+  Future<void> openAndroidManageSubscriptions(
+    String productId,
+  ) async {
+    final info = await PackageInfo.fromPlatform();
+    final packageName = info.packageName;
+    final url =
+        'https://play.google.com/store/account/subscriptions?sku=$productId&package=$packageName';
+
+    await openUrlLink(Uri.parse(url));
   }
 
   @override
@@ -347,5 +374,21 @@ class RestSubscriptionService extends SubscriptionService {
     }
 
     return isEligible && introductoryPrice != null && introductoryPrice > 0;
+  }
+
+  @override
+  Future<void> manageSubscription({
+    required ProductDetails productDetails,
+    required String userId,
+  }) async {
+    if (Platform.isAndroid) {
+      return openAndroidManageSubscriptions(productDetails.id);
+    } else if (Platform.isIOS || Platform.isMacOS) {
+      return subscribeToPackage(
+        productDetails: productDetails,
+        userId: userId,
+        purchasedProductId: null,
+      );
+    }
   }
 }
