@@ -57,6 +57,7 @@ dependencies:
   in_app_purchase: 3.2.3
   in_app_purchase_storekit: 0.4.3
   in_app_review: 2.0.10
+  in_app_update: ^4.2.3
   intl: 0.19.0
   json_annotation: 4.9.0
   latlong2: 0.9.1
@@ -64,7 +65,6 @@ dependencies:
   mobx: 2.5.0
   modal_bottom_sheet: 3.0.0
   mqtt5_client: 4.11.0
-  new_version_plus: 0.1.0
   open_mail_app:
     git:
       url: https://github.com/KristijanMitrik/open-mail-app-flutter.git

@@ -981,6 +981,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.5"
+  in_app_update:
+    dependency: "direct main"
+    description:
+      name: in_app_update
+      sha256: "489572accaa55b51518b2d64676ca8c3c6d4c989fa53cf718001882237691a3c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.3"
   integration_test:
     dependency: "direct dev"
     description: flutter
@@ -1243,14 +1251,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-  new_version_plus:
-    dependency: "direct main"
-    description:
-      name: new_version_plus
-      sha256: db35c04e3174eda88f0c570d12bee37e9d27620d9e23dcd61bf07d0fde7d074b
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.0"
   nm:
     dependency: transitive
     description:
