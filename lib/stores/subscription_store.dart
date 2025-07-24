@@ -460,7 +460,7 @@ abstract class _SubscriptionStore with Store {
   Future<void> manageSubscription() async {
     final subscription = await _subscriptionFuture;
     final user = (await _authSessionStore.userFuture)!;
-  
+
     if (!subscription.active) {
       throw const SubscriptionRequiredException();
     }
