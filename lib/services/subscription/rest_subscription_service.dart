@@ -17,6 +17,7 @@ import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:retry/retry.dart';
 import 'package:storekit_extensions/storekit_extensions.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
@@ -118,25 +119,22 @@ class RestSubscriptionService extends SubscriptionService {
     }
   }
 
-  Future<Subscription> fetchActiveSubscription(String planId) async {
-    var retries = 0;
-    Subscription? subs;
-    do {
-      try {
-        subs = await fetchSubscriptionDetails();
-      } catch (_) {}
-      if (subs?.active ?? false) {
-        return subs!; // Return the subscription if it's active
-      }
-      await Future.delayed(const Duration(seconds: 1));
-      retries++;
-    } while (retries < 3);
-    return subs ??
-        Subscription(
+  Future<Subscription> fetchActiveSubscription(String planId) async => retry(
+        () async {
+          final subs = await fetchSubscriptionDetails();
+          if (subs.active) {
+            return subs;
+          }
+          throw Exception('Subscription not active');
+        },
+        maxAttempts: 3,
+        delayFactor: const Duration(seconds: 1),
+      ).catchError(
+        (_) => Subscription(
           planId: planId,
           active: false,
-        );
-  }
+        ),
+      );
 
   @override
   Future<void> subscribeToPackage({
