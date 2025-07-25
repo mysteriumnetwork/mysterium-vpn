@@ -13,6 +13,7 @@ updates:
       - KristijanMitrik
       - dmacan23
     ignore:
+      # vpn_api is ignored because it is a private dependency that requires manual updates.
       - dependency-name: "vpn_api"
   - package-ecosystem: gradle
     directory: "android"
