@@ -1,0 +1,5 @@
+dependency_overrides:
+  vpn_api:
+    git:
+      url: git@github.com:mysteriumnetwork/mysterium-vpn-api-client-dart.git
+      ref: 1.0.1
