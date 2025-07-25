@@ -65,6 +65,8 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
 
         final isVerifyingPayment =
             subscriptionStore.subscriptionStatus == SubscriptionStatus.verifying;
+        final barrierContentColor =
+            (context.c.isDarkMode ? Palette.white : Palette.purple).withValues(alpha: 0.8);
 
         final isLoading = storeState == StoreState.loading ||
             subscriptionStore.subscriptionFuture.status == FutureStatus.pending ||
@@ -96,9 +98,9 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
                     child: LoadingIndicator(
                       radius: 30,
                       message: LocaleKeys.processingPayment.tr(),
-                      messageColor: Palette.purple.withValues(alpha: 0.8),
-                      indicatorColor: Palette.purple.withValues(alpha: 0.8),
-                    ),
+                      messageColor: barrierContentColor,
+                      indicatorColor: barrierContentColor,
+                    ).padding(horizontal: 16),
                   ),
                 ),
             ],
@@ -129,7 +131,10 @@ void _subscriptionStatusReaction(
     } else if (status == SubscriptionStatus.notVerified ||
         status == SubscriptionStatus.verifyingError) {
       shownRetryDialog(
-        onRetry: (_) => store.retryVerificationProcess(),
+        onRetry: (_) {
+          Navigator.of(context).pop();
+          store.retryVerificationProcess();
+        },
         context: context,
         asset: Assets.subscription,
         title: LocaleKeys.subscriptionVerificationFailed.tr(),
