@@ -4,7 +4,7 @@ updates:
   - package-ecosystem: "pub"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     open-pull-requests-limit: 10
     commit-message:
       prefix: "chore(pub)"
@@ -22,6 +22,8 @@ updates:
     reviewers:
       - KristijanMitrik
       - dmacan23   
+    registries:
+      - github-dependencies  
 
   # Keep GitHub Actions workflows up to date
   - package-ecosystem: "github-actions"
@@ -34,3 +36,10 @@ updates:
     reviewers:
       - KristijanMitrik
       - dmacan23  
+
+registries:
+  github-dependencies:
+    type: git
+    url: https://github.com
+    username: x-access-token
+    password: ${{ secrets.VPNAPI_GITHUB_PAT }}
