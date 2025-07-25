@@ -113,12 +113,12 @@ List<Marker> _useLocationMarkers({
 
       return locations
           .map((it) {
-            final point = latLngStore.coordinatesFor(it.code);
+            final point = latLngStore.coordinatesFor(it.id);
             if (point == null) {
               return null;
             }
 
-            final isActive = activeLocation?.code == it.code;
+            final isActive = activeLocation?.id == it.id;
             final size = isActive ? const Size.square(42) : const Size.square(16);
 
             return Marker(
@@ -129,7 +129,7 @@ List<Marker> _useLocationMarkers({
                 onPressed: () => onLocationPressedRef.value?.call(it, point),
                 child: LocationMarker(
                   size: size * .7,
-                  txt: it.code,
+                  txt: it.id,
                   isActive: isActive,
                 ),
               ),

@@ -107,7 +107,7 @@ abstract class _AuthStore with Store {
               appLink: appLink.toString(),
             );
 
-            verifyMagicLinkAndAuthenticate(appLink);
+            await verifyMagicLinkAndAuthenticate(appLink);
           } else {
             Sentry.captureException(TokenAlreadyUsedException());
             showSnackbar(LocaleKeys.tokenAlreadyUsed.tr());

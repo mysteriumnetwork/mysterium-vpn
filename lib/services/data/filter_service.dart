@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/models/location.dart';
 
 class FilterService {
@@ -12,15 +12,16 @@ class FilterService {
 
     var result = [...data];
     if (query != null && query.isNotEmpty) {
-      result = data
-          .where(
-            (it) =>
-                it.code.tr().toLowerCase().contains(query) || it.code.toLowerCase().contains(query),
-          )
-          .toList();
+      result = data.where(
+        (it) {
+          final code = it.id.toLowerCase();
+          final name = it.name.toLowerCase();
+          return name.contains(query) || code.contains(query);
+        },
+      ).toList();
     }
     if (shouldSortList) {
-      return result.sortedBy((it) => it.code.tr());
+      return result.sortedBy((it) => it.name);
     } else {
       return result;
     }

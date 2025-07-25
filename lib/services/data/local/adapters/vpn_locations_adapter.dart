@@ -13,7 +13,11 @@ class VpnLocationsAdapter extends TypeAdapter<VPNLocations> {
   VPNLocations read(BinaryReader reader) {
     final raw = reader.readString();
     final json = jsonDecode(raw) as Map<String, dynamic>;
-    return VPNLocations.fromJson(json);
+    try {
+      return VPNLocations.fromJson(json);
+    } catch (e) {
+      return VPNLocations.fromLegacyJson(json);
+    }
   }
 
   @override
