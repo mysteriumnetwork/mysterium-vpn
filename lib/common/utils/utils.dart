@@ -438,3 +438,8 @@ String generateRandomString(int len) {
   final r = Random();
   return String.fromCharCodes(List.generate(len, (index) => r.nextInt(33) + 89));
 }
+
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+/// Warning: This is a root context accessor. Make sure to use it carefully, as it can lead to context-related issues if used incorrectly.
+BuildContext get rootContext => navigatorKey.currentContext!;

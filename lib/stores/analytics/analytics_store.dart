@@ -103,7 +103,7 @@ mixin AnalyticsStore {
       AnalyticsEvent.connectToVpn,
       parameters: location != null
           ? {
-              'location': location.code,
+              'location': location.id,
               'ip_type': location.ipType.name.toSnakeCase,
             }
           : null,
@@ -118,7 +118,7 @@ mixin AnalyticsStore {
       AnalyticsEvent.disconnectFromVpn,
       parameters: location != null
           ? {
-              'location': location.code,
+              'location': location.id,
               'ip_type': location.ipType.name.toSnakeCase,
             }
           : null,
@@ -133,7 +133,7 @@ mixin AnalyticsStore {
     logEvent(
       AnalyticsEvent.connectSuccess,
       parameters: {
-        'location': location.code,
+        'location': location.id,
         'ipType': location.ipType.name.toSnakeCase,
         'time': time.inSeconds,
         'refresh_ip': isRefresh,

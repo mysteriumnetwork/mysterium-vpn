@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
+import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/connection_status_color_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
@@ -116,7 +117,7 @@ class _ConnectingLocation extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final brightness = Theme.of(context).brightness;
-    final countryName = location.code.tr();
+    final countryName = location.name;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,7 +152,7 @@ class _ConnectingLocation extends StatelessWidget {
             ),
           ),
         ] else ...[
-          Flag(countryCode: location.code, size: 30),
+          Flag(countryCode: location.name, size: 30),
           Expanded(
             child: EasyText(
               countryName,

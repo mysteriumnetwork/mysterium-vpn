@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/views/locations/components/location_item.dart';
@@ -23,7 +24,14 @@ class LocationsSliverLoading extends StatelessWidget {
         return Shimmer.fromColors(
           baseColor: color,
           highlightColor: color.darken(20),
-          child: LocationItem(location: const VPNLocation(code: 'mock'), onTap: () {}),
+          child: LocationItem(
+            location: const VPNLocation(
+              id: 'mock',
+              ipType: IPType.residential,
+              translations: {'en': 'mock'},
+            ),
+            onTap: () {},
+          ),
         );
       },
     );

@@ -202,8 +202,10 @@ VPNLocation _$VPNLocationFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$VPNLocation {
-  String get code => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   IPType get ipType => throw _privateConstructorUsedError;
+  Map<String, String> get translations => throw _privateConstructorUsedError;
+  VPNLocation? get parent => throw _privateConstructorUsedError;
 
   /// Serializes this VPNLocation to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -219,7 +221,9 @@ abstract class $VPNLocationCopyWith<$Res> {
   factory $VPNLocationCopyWith(VPNLocation value, $Res Function(VPNLocation) then) =
       _$VPNLocationCopyWithImpl<$Res, VPNLocation>;
   @useResult
-  $Res call({String code, IPType ipType});
+  $Res call({String id, IPType ipType, Map<String, String> translations, VPNLocation? parent});
+
+  $VPNLocationCopyWith<$Res>? get parent;
 }
 
 /// @nodoc
@@ -237,19 +241,43 @@ class _$VPNLocationCopyWithImpl<$Res, $Val extends VPNLocation>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? code = null,
+    Object? id = null,
     Object? ipType = null,
+    Object? translations = null,
+    Object? parent = freezed,
   }) {
     return _then(_value.copyWith(
-      code: null == code
-          ? _value.code
-          : code // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       ipType: null == ipType
           ? _value.ipType
           : ipType // ignore: cast_nullable_to_non_nullable
               as IPType,
+      translations: null == translations
+          ? _value.translations
+          : translations // ignore: cast_nullable_to_non_nullable
+              as Map<String, String>,
+      parent: freezed == parent
+          ? _value.parent
+          : parent // ignore: cast_nullable_to_non_nullable
+              as VPNLocation?,
     ) as $Val);
+  }
+
+  /// Create a copy of VPNLocation
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $VPNLocationCopyWith<$Res>? get parent {
+    if (_value.parent == null) {
+      return null;
+    }
+
+    return $VPNLocationCopyWith<$Res>(_value.parent!, (value) {
+      return _then(_value.copyWith(parent: value) as $Val);
+    });
   }
 }
 
@@ -260,7 +288,10 @@ abstract class _$$VPNLocationImplCopyWith<$Res> implements $VPNLocationCopyWith<
       __$$VPNLocationImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String code, IPType ipType});
+  $Res call({String id, IPType ipType, Map<String, String> translations, VPNLocation? parent});
+
+  @override
+  $VPNLocationCopyWith<$Res>? get parent;
 }
 
 /// @nodoc
@@ -275,18 +306,28 @@ class __$$VPNLocationImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? code = null,
+    Object? id = null,
     Object? ipType = null,
+    Object? translations = null,
+    Object? parent = freezed,
   }) {
     return _then(_$VPNLocationImpl(
-      code: null == code
-          ? _value.code
-          : code // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       ipType: null == ipType
           ? _value.ipType
           : ipType // ignore: cast_nullable_to_non_nullable
               as IPType,
+      translations: null == translations
+          ? _value._translations
+          : translations // ignore: cast_nullable_to_non_nullable
+              as Map<String, String>,
+      parent: freezed == parent
+          ? _value.parent
+          : parent // ignore: cast_nullable_to_non_nullable
+              as VPNLocation?,
     ));
   }
 }
@@ -294,20 +335,34 @@ class __$$VPNLocationImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$VPNLocationImpl extends _VPNLocation {
-  const _$VPNLocationImpl({this.code = '', this.ipType = IPType.residential}) : super._();
+  const _$VPNLocationImpl(
+      {required this.id,
+      required this.ipType,
+      required final Map<String, String> translations,
+      this.parent})
+      : _translations = translations,
+        super._();
 
   factory _$VPNLocationImpl.fromJson(Map<String, dynamic> json) => _$$VPNLocationImplFromJson(json);
 
   @override
-  @JsonKey()
-  final String code;
+  final String id;
   @override
-  @JsonKey()
   final IPType ipType;
+  final Map<String, String> _translations;
+  @override
+  Map<String, String> get translations {
+    if (_translations is EqualUnmodifiableMapView) return _translations;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_translations);
+  }
+
+  @override
+  final VPNLocation? parent;
 
   @override
   String toString() {
-    return 'VPNLocation(code: $code, ipType: $ipType)';
+    return 'VPNLocation(id: $id, ipType: $ipType, translations: $translations, parent: $parent)';
   }
 
   @override
@@ -315,13 +370,16 @@ class _$VPNLocationImpl extends _VPNLocation {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$VPNLocationImpl &&
-            (identical(other.code, code) || other.code == code) &&
-            (identical(other.ipType, ipType) || other.ipType == ipType));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.ipType, ipType) || other.ipType == ipType) &&
+            const DeepCollectionEquality().equals(other._translations, _translations) &&
+            (identical(other.parent, parent) || other.parent == parent));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, code, ipType);
+  int get hashCode => Object.hash(
+      runtimeType, id, ipType, const DeepCollectionEquality().hash(_translations), parent);
 
   /// Create a copy of VPNLocation
   /// with the given fields replaced by the non-null parameter values.
@@ -340,15 +398,23 @@ class _$VPNLocationImpl extends _VPNLocation {
 }
 
 abstract class _VPNLocation extends VPNLocation {
-  const factory _VPNLocation({final String code, final IPType ipType}) = _$VPNLocationImpl;
+  const factory _VPNLocation(
+      {required final String id,
+      required final IPType ipType,
+      required final Map<String, String> translations,
+      final VPNLocation? parent}) = _$VPNLocationImpl;
   const _VPNLocation._() : super._();
 
   factory _VPNLocation.fromJson(Map<String, dynamic> json) = _$VPNLocationImpl.fromJson;
 
   @override
-  String get code;
+  String get id;
   @override
   IPType get ipType;
+  @override
+  Map<String, String> get translations;
+  @override
+  VPNLocation? get parent;
 
   /// Create a copy of VPNLocation
   /// with the given fields replaced by the non-null parameter values.

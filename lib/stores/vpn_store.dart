@@ -616,7 +616,7 @@ abstract class _VpnStore with Store {
           request: WireguardConnectRequest(
             publicKey: key.publicKey,
             countryOriginate: (await _realIPInfo.infoFuture)?.country,
-            country: location.code,
+            country: location.id,
             ipType: switch (location.ipType) {
               IPType.datacenter => 'hosting',
               _ => null,
@@ -674,7 +674,7 @@ abstract class _VpnStore with Store {
           connectionIP: connectionUpdate.location.ip,
           // TODO(dmacan): update with proper IPType once we receive it within ConnectionMessage
           location: connection.location.copyWith(
-            code: connectionUpdate.location.country,
+            id: connectionUpdate.location.country,
           ),
         );
         _analyticsStore.logEvent(

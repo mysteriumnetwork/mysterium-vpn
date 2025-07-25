@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/api.dart';
 import 'package:mysterium_vpn/common/extensions/stream_extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
@@ -137,7 +141,11 @@ abstract class _LocationsStore with Store {
       return recents.first;
     }
 
-    return const VPNLocation(ipType: IPType.closest);
+    return const VPNLocation(
+      id: '',
+      translations: {},
+      ipType: IPType.closest,
+    );
   }
 
   Future<VPNLocation?> closestLocation([IPType? type]) async {
@@ -237,7 +245,7 @@ abstract class _LocationsStore with Store {
 
   @action
   Future<void> addRecentLocation(VPNLocation location) async {
-    if (location.code.isNotEmpty) {
+    if (location.id.isNotEmpty) {
       if (recentLocations.contains(location)) {
         recentLocations.remove(location);
       }
@@ -293,14 +301,27 @@ abstract class _LocationsStore with Store {
   }
 }
 
-List<VPNLocation> countriesToLocations(Iterable<String> countries, IPType? ipType) => countries
-    .map(
-      (code) => VPNLocation(
-        code: code,
-        ipType: ipType ?? IPType.residential,
-      ),
-    )
-    .toList();
+List<VPNLocation> countriesToLocations(Iterable<String> countries, IPType? ipType) {
+  List<Locale> locales;
+  try {
+    locales = EasyLocalization.of(rootContext)!.supportedLocales;
+  } catch (e) {
+    // If EasyLocalization is not initialized, fallback to default locales
+    locales = kSupportedLocales;
+  }
+
+  return countries
+      .map(
+        (code) => VPNLocation(
+          id: code,
+          translations: {
+            for (final locale in locales) locale.languageCode.toLowerCase(): code.tr(),
+          },
+          ipType: ipType ?? IPType.residential,
+        ),
+      )
+      .toList();
+}
 
 class RegionWithLatency {
   const RegionWithLatency(this.region, this.latency);

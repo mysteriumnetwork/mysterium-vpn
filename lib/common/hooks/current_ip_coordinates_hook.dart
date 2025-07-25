@@ -10,16 +10,16 @@ LatLng? useCurrentIPCoordinates() {
 
   return useComputedValue(
     () {
-      String? code;
+      String? id;
       if (vpnStore.connectionStatus == ConnectionStatus.connecting ||
           vpnStore.connectionStatus == ConnectionStatus.connected) {
-        code = vpnStore.location?.code ?? vpnStore.connectingLocation?.code;
+        id = vpnStore.location?.id ?? vpnStore.connectingLocation?.id;
       }
-      code ??= realIPStore.info?.country;
-      if (code == null) {
+      id ??= realIPStore.info?.country;
+      if (id == null) {
         return null;
       }
-      return latLngStore.coordinatesFor(code);
+      return latLngStore.coordinatesFor(id);
     },
     [latLngStore, vpnStore, realIPStore],
   );
