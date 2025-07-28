@@ -171,6 +171,14 @@ mixin _$LocationsStore on _LocationsStore, Store {
     });
   }
 
+  late final _$_fetchRecentLocationsAsyncAction =
+      AsyncAction('_LocationsStore._fetchRecentLocations', context: context);
+
+  @override
+  Future<List<VPNLocation>> _fetchRecentLocations() {
+    return _$_fetchRecentLocationsAsyncAction.run(() => super._fetchRecentLocations());
+  }
+
   late final _$refreshAsyncAction = AsyncAction('_LocationsStore.refresh', context: context);
 
   @override

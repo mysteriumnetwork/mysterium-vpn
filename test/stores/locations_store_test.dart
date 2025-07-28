@@ -155,7 +155,7 @@ void main() {
     });
 
     test('returns closest location when no locations available for random selection', () async {
-      final locationsStore = LocationsStore(
+      final newStore = LocationsStore(
         mockApiConnection,
         mockFilterService,
         mockAnalyticsStore,
@@ -166,15 +166,14 @@ void main() {
         mockLocaleStore,
         mockPing,
       );
-      when(mockLocalDB.getLocations(IPType.residential)).thenAnswer((_) => VPNLocations());
       mockConnectionConfig(
         'residential',
         ConnectionConfigResponse(countries: ['DE'], topCountries: ['US']),
       );
       when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => const <VPNLocation>[]);
-      await locationsStore.refresh(IPType.residential);
-
-      final randomLocation = locationsStore.randomLocation;
+      await newStore.recentLocationsFuture;
+      await newStore.refresh(IPType.residential);
+      final randomLocation = newStore.randomLocation;
       expect(randomLocation, const VPNLocation(ipType: IPType.closest));
     });
 
