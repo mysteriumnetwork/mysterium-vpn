@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/api_version.dart';
@@ -12,14 +13,17 @@ import 'package:mysterium_vpn/views/settings/category_item.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class SettingsDesktopLeftPanel extends ConsumerWidget {
+class SettingsDesktopLeftPanel extends HookConsumerWidget {
   const SettingsDesktopLeftPanel({
     super.key,
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settingCategory = ref.watch(selectedCategoryProvider);
-    final isDev = ref.watch(environmentPOD).isDev;
+    final remoteConfig = ref.watch(remoteConfigStorePOD);
+    final enableQaHelpers = useComputedValue(
+      () => remoteConfig.enableQaHelpers,
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -48,7 +52,7 @@ class SettingsDesktopLeftPanel extends ConsumerWidget {
               title: SettingCategory.account.trKey.tr(),
               onTap: () => updateSelectedCategory(ref, SettingCategory.account),
             ),
-            if (isDev)
+            if (enableQaHelpers)
               CategoryItem(
                 isSelected: settingCategory == SettingCategory.qaToolbox,
                 title: SettingCategory.qaToolbox.trKey,
