@@ -132,7 +132,7 @@ class _Body extends HookConsumerWidget {
           child: RetryWdiget(
             asset: Assets.globe,
             onRetry: locationsStore.refresh,
-            text: stream.error.toString(),
+            error: stream.error,
           ),
         ),
       ],
