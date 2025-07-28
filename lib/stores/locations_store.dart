@@ -88,11 +88,24 @@ abstract class _LocationsStore with Store {
 
   @readonly
   late ObservableFuture<List<VPNLocation>> _recentLocationsFuture = ObservableFuture(
-    _localDB.getRecentLocations(),
+    _fetchRecentLocations(),
   );
 
   @readonly
   String _searchKeyword = '';
+
+  @action
+  Future<List<VPNLocation>> _fetchRecentLocations() async {
+    final locations = await _localDB.getRecentLocations();
+    return _filterService.filterRecentLocations(
+      locations,
+      availableLocations: {
+        ..._dcLocationsStream.value?.allLocations ?? [],
+        ..._residentialLocationsStream.value?.allLocations ?? [],
+      },
+      keyword: _searchKeyword,
+    );
+  }
 
   @computed
   bool get _locationsNotEmpty =>
@@ -106,20 +119,7 @@ abstract class _LocationsStore with Store {
   VPNLocation? selectedLocation;
 
   @computed
-  List<VPNLocation> get recentLocations {
-    final value = _recentLocationsFuture.value;
-    if (value != null) {
-      return _filterService.filterRecentLocations(
-        value,
-        availableLocations: {
-          ..._dcLocationsStream.value?.allLocations ?? [],
-          ..._residentialLocationsStream.value?.allLocations ?? [],
-        },
-        keyword: _searchKeyword,
-      );
-    }
-    return [];
-  }
+  List<VPNLocation> get recentLocations => _recentLocationsFuture.value ?? [];
 
   @computed
   List<VPNLocation> get locations {
@@ -144,8 +144,7 @@ abstract class _LocationsStore with Store {
     if (_recentLocationsFuture.status == FutureStatus.pending) {
       return null;
     }
-
-    if (_recentLocationsFuture.value?.isNotEmpty ?? false) {
+    if (recentLocations.isNotEmpty) {
       return recentLocations.first;
     }
 
@@ -272,11 +271,17 @@ abstract class _LocationsStore with Store {
   }
 
   bool _shouldSkipLocation(VPNLocation location) => switch (location.ipType) {
-        IPType.datacenter => !(_dcLocationsStream.value?.locations.contains(location) ?? false),
-        IPType.residential =>
-          !(_residentialLocationsStream.value?.locations.contains(location) ?? false),
+        IPType.datacenter => !_listContainsLocation(_dcLocationsStream.value, location),
+        IPType.residential => !_listContainsLocation(_residentialLocationsStream.value, location),
         IPType.closest => true,
       };
+
+  bool _listContainsLocation(VPNLocations? list, VPNLocation location) {
+    if (list == null) {
+      return false;
+    }
+    return list.locations.contains(location) || list.topLocations.contains(location);
+  }
 
   @action
   void setLocationKeyword(String text, [Duration duration = const Duration(milliseconds: 500)]) {
