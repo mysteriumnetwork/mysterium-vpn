@@ -64,13 +64,19 @@ abstract class _LocationsStore with Store {
 
   @readonly
   late ObservableStream<VPNLocations> _dcLocationsStream = ObservableStream(
-    _watch(IPType.datacenter).distinct().doOnListen(() => refresh(IPType.datacenter)),
+    _watch(IPType.datacenter).distinct().doOnListen(
+          () => refresh(IPType.datacenter),
+          onError: _logger.handle,
+        ),
     initialValue: _localDB.getLocations(IPType.datacenter),
   );
 
   @readonly
   late ObservableStream<VPNLocations> _residentialLocationsStream = ObservableStream(
-    _watch(IPType.residential).distinct().doOnListen(() => refresh(IPType.residential)),
+    _watch(IPType.residential).distinct().doOnListen(
+          () => refresh(IPType.residential),
+          onError: _logger.handle,
+        ),
     initialValue: _localDB.getLocations(IPType.residential),
   );
 
@@ -237,6 +243,9 @@ abstract class _LocationsStore with Store {
 
   @action
   Future<void> addRecentLocation(VPNLocation location) async {
+    if (_shouldSkipLocation(location)) {
+      return;
+    }
     if (location.code.isNotEmpty) {
       if (recentLocations.contains(location)) {
         recentLocations.remove(location);
@@ -252,6 +261,13 @@ abstract class _LocationsStore with Store {
 
     _ipType = location.ipType;
   }
+
+  bool _shouldSkipLocation(VPNLocation location) => switch (location.ipType) {
+        IPType.datacenter => !(_dcLocationsStream.value?.locations.contains(location) ?? false),
+        IPType.residential =>
+          !(_residentialLocationsStream.value?.locations.contains(location) ?? false),
+        IPType.closest => true,
+      };
 
   @action
   void setLocationKeyword(String text, [Duration duration = const Duration(milliseconds: 500)]) {
