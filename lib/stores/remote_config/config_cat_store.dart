@@ -24,7 +24,7 @@ abstract class ConfigCatStore with Store {
   final RealIPInfoStore _ipInfoStore;
 
   @readonly
-  late ObservableFuture<Map<String, dynamic>> configFuture = ObservableFuture(_fetch());
+  late ObservableFuture<Map<String, dynamic>> configFuture = ObservableFuture(_fetchCached());
 
   @computed
   Map<String, dynamic> get config => configFuture.value ?? {};
@@ -34,6 +34,7 @@ abstract class ConfigCatStore with Store {
   @action
   Future<void> _init() async {
     await configFuture;
+    await refresh();
   }
 
   Future<void> refresh() async {
@@ -48,13 +49,12 @@ abstract class ConfigCatStore with Store {
   @protected
   Future<Map<String, dynamic>> _fetch() async {
     try {
-      final user = await _fetchUser();
-      _client.setDefaultUser(user);
-      _user = user;
+      _user = await _fetchUser(skipIpInfo: _user?.country != null);
+      _client.setDefaultUser(_user);
 
-      final res = await _client.forceRefresh();
-      if (!res.isSuccess) {
-        _logger.warning('Failed to refresh ConfigCat: ${res.error}');
+      final result = await _client.forceRefresh();
+      if (!result.isSuccess) {
+        _logger.warning('Failed to refresh ConfigCat: ${result.error}');
       }
 
       return await _client.getAllValues();
@@ -64,7 +64,20 @@ abstract class ConfigCatStore with Store {
     }
   }
 
-  Future<ConfigCatUser> _fetchUser() async {
+  Future<Map<String, dynamic>> _fetchCached() async {
+    try {
+      if (_user == null) {
+        _user = await _fetchUser(skipIpInfo: true);
+        _client.setDefaultUser(_user);
+      }
+      return await _client.getAllValues();
+    } catch (e, stack) {
+      _logger.handle(e, stack);
+      return {};
+    }
+  }
+
+  Future<ConfigCatUser> _fetchUser({bool skipIpInfo = false}) async {
     final platform = Platform.operatingSystem;
     (String id, String email) user;
     try {
@@ -85,11 +98,13 @@ abstract class ConfigCatStore with Store {
     }
 
     IPInfo? ipInfo;
-    try {
-      ipInfo = await _ipInfoStore.infoFuture;
-    } catch (e, stack) {
-      _logger.handle(e, stack);
-      ipInfo = null;
+    if (!skipIpInfo) {
+      try {
+        ipInfo = await _ipInfoStore.infoFuture;
+      } catch (e, stack) {
+        _logger.handle(e, stack);
+        ipInfo = null;
+      }
     }
 
     String? version;
@@ -135,6 +150,8 @@ extension _ConfigCatUserExtension on ConfigCatUser {
 
     return {for (final key in keys) key: getAttribute(key)};
   }
+
+  String? get country => getAttribute('Country') as String?;
 
   bool equals(ConfigCatUser? user) =>
       user != null && const MapEquality().equals(toMap(), user.toMap());
