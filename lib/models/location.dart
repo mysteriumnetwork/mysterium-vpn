@@ -43,7 +43,7 @@ class VPNLocation with _$VPNLocation {
     required String id,
     required IPType ipType,
     required Map<String, String> translations,
-    VPNLocation? parent,
+    List<VPNLocation>? children,
   }) = _VPNLocation;
 
   const VPNLocation._();

@@ -210,7 +210,7 @@ abstract class _LocationsStore with Store {
     ipType ??= _ipType;
 
     try {
-      final response = await _apiConnection.connectionConfig(
+      final response = await _apiConnection.connectionLocations(
         ipType: switch (ipType) {
           IPType.datacenter => 'hosting',
           IPType.residential => 'residential',
@@ -222,15 +222,11 @@ abstract class _LocationsStore with Store {
         throw Exception('No data found');
       }
 
-      final topLocations = countriesToLocations(connectionConfig.topCountries, ipType);
-      final locations = countriesToLocations(
-        connectionConfig.countries.where((it) => !connectionConfig.topCountries.contains(it)),
-        ipType,
-      );
+      final locations = _mapLocations(connectionConfig, ipType);
 
       await _localDB.setLocations(
         VPNLocations(
-          topLocations: topLocations,
+          topLocations: [],
           locations: locations,
         ),
         type: ipType,
@@ -329,3 +325,24 @@ class RegionWithLatency {
   final ConnectionRegion region;
   final Duration latency;
 }
+
+List<VPNLocation> _mapLocations(
+  List<ConnectionLocation> response, [
+  IPType ipType = IPType.residential,
+]) =>
+    response.map((it) => _mapCountry(it, ipType)).toList();
+
+VPNLocation _mapCountry(ConnectionLocation response, [IPType ipType = IPType.residential]) =>
+    VPNLocation(
+      id: response.country,
+      ipType: ipType,
+      translations: response.translations,
+      children: response.cities.map((it) => _mapCity(it, ipType)).toList(),
+    );
+
+VPNLocation _mapCity(ConnectionLocationCity response, [IPType ipType = IPType.residential]) =>
+    VPNLocation(
+      id: response.city,
+      ipType: ipType,
+      translations: response.translations,
+    );
