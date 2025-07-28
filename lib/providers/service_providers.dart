@@ -92,7 +92,8 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
         ),
       if (environment.flavor == Flavor.dev && environment.values.isAutomated)
         TestFlagsInterceptor(),
-      CurlLoggerDioInterceptor(printOnSuccess: true, convertFormData: false),
+      if (kDebugMode || environment.flavor == Flavor.dev)
+        CurlLoggerDioInterceptor(printOnSuccess: true, convertFormData: false),
     ],
   );
 
