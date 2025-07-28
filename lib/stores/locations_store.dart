@@ -94,6 +94,11 @@ abstract class _LocationsStore with Store {
   @readonly
   String _searchKeyword = '';
 
+  @computed
+  bool get _locationsNotEmpty =>
+      (_residentialLocationsStream.value?.locations.isNotEmpty ?? false) ||
+      (_dcLocationsStream.value?.locations.isNotEmpty ?? false);
+
   @readonly
   late IPType _ipType = _prefs.getIPType() ?? IPType.residential;
 
@@ -134,16 +139,20 @@ abstract class _LocationsStore with Store {
     return [];
   }
 
-  VPNLocation randomLocation([IPType? type]) {
-    var recents = recentLocations;
-    if (type != null) {
-      recents = recentLocations.where((location) => location.ipType == type).toList();
-    }
-    if (recents.isNotEmpty) {
-      return recents.first;
+  @computed
+  VPNLocation? get randomLocation {
+    if (_recentLocationsFuture.status == FutureStatus.pending) {
+      return null;
     }
 
-    return const VPNLocation(ipType: IPType.closest);
+    if (_recentLocationsFuture.value?.isNotEmpty ?? false) {
+      return recentLocations.first;
+    }
+
+    if (_locationsNotEmpty) {
+      return const VPNLocation(ipType: IPType.closest);
+    }
+    return null;
   }
 
   Future<VPNLocation?> closestLocation([IPType? type]) async {

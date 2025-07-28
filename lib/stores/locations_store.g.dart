@@ -16,6 +16,13 @@ mixin _$LocationsStore on _LocationsStore, Store {
           Computed<ObservableStream<VPNLocations>>(() => super.locationsStream,
               name: '_LocationsStore.locationsStream'))
       .value;
+  Computed<bool>? _$_locationsNotEmptyComputed;
+
+  @override
+  bool get _locationsNotEmpty =>
+      (_$_locationsNotEmptyComputed ??= Computed<bool>(() => super._locationsNotEmpty,
+              name: '_LocationsStore._locationsNotEmpty'))
+          .value;
   Computed<List<VPNLocation>>? _$recentLocationsComputed;
 
   @override
@@ -35,6 +42,13 @@ mixin _$LocationsStore on _LocationsStore, Store {
   List<VPNLocation> get topLocations =>
       (_$topLocationsComputed ??= Computed<List<VPNLocation>>(() => super.topLocations,
               name: '_LocationsStore.topLocations'))
+          .value;
+  Computed<VPNLocation?>? _$randomLocationComputed;
+
+  @override
+  VPNLocation? get randomLocation =>
+      (_$randomLocationComputed ??= Computed<VPNLocation?>(() => super.randomLocation,
+              name: '_LocationsStore.randomLocation'))
           .value;
 
   late final _$_dcLocationsStreamAtom =
@@ -216,7 +230,8 @@ selectedLocation: ${selectedLocation},
 locationsStream: ${locationsStream},
 recentLocations: ${recentLocations},
 locations: ${locations},
-topLocations: ${topLocations}
+topLocations: ${topLocations},
+randomLocation: ${randomLocation}
     ''';
   }
 }
