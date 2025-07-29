@@ -187,7 +187,7 @@ class _Locations extends HookConsumerWidget {
 
     final typeSwitcherKey = ref.watch(homeStateProvider.select((it) => it.typeSwitcherKey));
     final locationsKey = ref.watch(homeStateProvider.select((it) => it.locationsKey));
-    final searchKeyword = locationsStore.searchKeyword;
+    final searchKeyword = useComputedValue(() => locationsStore.searchKeyword);
 
     return MultiSliver(
       children: [
