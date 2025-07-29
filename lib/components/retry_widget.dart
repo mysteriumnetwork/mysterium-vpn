@@ -1,8 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/utils/resolve_error_msg.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
@@ -28,8 +27,14 @@ class RetryWdiget extends StatelessWidget {
           SvgIcon(
             asset: asset,
           ).padding(top: 10, bottom: 10),
-          ErrorText(
-            error: error,
+          EasyText(
+            error is Object
+                ? resolveErrorMessage(error as Object)
+                : LocaleKeys.somethingWentWrong.tr(),
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            maxLines: 2,
+            textAlign: TextAlign.center,
           ).padding(bottom: 12),
           EasyButton(
             useSystemColor: false,
@@ -38,41 +43,5 @@ class RetryWdiget extends StatelessWidget {
             onPressed: onRetry,
           ),
         ],
-      );
-}
-
-class ErrorText extends StatelessWidget {
-  const ErrorText({
-    required this.error,
-    super.key,
-    this.style,
-    this.textAlign,
-    this.maxLines,
-  });
-  final dynamic error;
-  final TextStyle? style;
-  final TextAlign? textAlign;
-  final int? maxLines;
-
-  String _getErrorMessage(error) {
-    if (error is DioException) {
-      return error.message ?? LocaleKeys.somethingWentWrong.tr();
-    } else if (error is ApiException) {
-      return error.message;
-    } else if (error is Exception) {
-      return error.toString();
-    } else if (error is String) {
-      return error;
-    }
-    return LocaleKeys.somethingWentWrong.tr();
-  }
-
-  @override
-  Widget build(BuildContext context) => EasyText(
-        _getErrorMessage(error),
-        fontSize: 16,
-        fontWeight: FontWeight.w700,
-        maxLines: 2,
-        textAlign: TextAlign.center,
       );
 }
