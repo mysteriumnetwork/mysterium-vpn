@@ -188,8 +188,9 @@ class _Authenticated extends HookConsumerWidget {
                           maxLines: 5,
                           textAlign: TextAlign.center,
                         ),
-                        onConfirm: () {
+                        onConfirm: () async {
                           analyticsStore.logEvent(AnalyticsEvent.logOutConfirm);
+                          await vpnStore.disconnectWireguard();
                           authStore.logout();
                         },
                         onCancel: () {
@@ -229,7 +230,12 @@ class _Authenticated extends HookConsumerWidget {
                   ),
                   action: () {
                     analyticsStore.logEvent(AnalyticsEvent.deleteAccount);
-                    shownDeleteAccountDialog(context, authStore, analyticsStore);
+                    shownDeleteAccountDialog(
+                      context,
+                      authStore: authStore,
+                      analyticsStore: analyticsStore,
+                      vpnStore: vpnStore,
+                    );
                   },
                 ),
               ),

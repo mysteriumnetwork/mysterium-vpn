@@ -132,7 +132,7 @@ class RestAuthService extends AuthService {
 
   Future<void> removeLocalData() async {
     final currentUsername = _authSessionStore.user?.username;
-    _authSessionStore.setUnauthenticated();
+    await _authSessionStore.setUnauthenticated();
     LocalDBService.instance.clearUser();
 
     if (currentUsername != null && currentUsername.isNotEmpty) {
