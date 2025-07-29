@@ -16,4 +16,7 @@ class ApiException extends DioException {
   final int code;
   final String endpoint;
   final ExceptionSeverity severity;
+
+  @override
+  String toString() => '$message [code: $code]';
 }

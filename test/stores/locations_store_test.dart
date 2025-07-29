@@ -150,11 +150,34 @@ void main() {
 
       final recentLocations = await locationsStore.recentLocationsFuture;
 
-      final randomLocation = locationsStore.randomLocation();
+      final randomLocation = locationsStore.randomLocation;
       expect(recentLocations.contains(randomLocation), isTrue);
     });
 
     test('returns closest location when no locations available for random selection', () async {
+      final newStore = LocationsStore(
+        mockApiConnection,
+        mockFilterService,
+        mockAnalyticsStore,
+        mockRemoteConfigStore,
+        mockPrefs,
+        mockLocalDB,
+        Talker(),
+        mockLocaleStore,
+        mockPing,
+      );
+      mockConnectionConfig(
+        'residential',
+        ConnectionConfigResponse(countries: ['DE'], topCountries: ['US']),
+      );
+      when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => const <VPNLocation>[]);
+      await newStore.recentLocationsFuture;
+      await newStore.refresh(IPType.residential);
+      final randomLocation = newStore.randomLocation;
+      expect(randomLocation, const VPNLocation(ipType: IPType.closest));
+    });
+
+    test('returns null when no locations available for random selection', () async {
       final locationsStore = LocationsStore(
         mockApiConnection,
         mockFilterService,
@@ -172,13 +195,9 @@ void main() {
         ConnectionConfigResponse(countries: [], topCountries: []),
       );
       when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => const <VPNLocation>[]);
-
-      await locationsStore.dcLocationsStream.first;
-      await locationsStore.residentialLocationsStream.first;
-      await locationsStore.recentLocationsFuture;
-
-      final randomLocation = locationsStore.randomLocation(IPType.residential);
-      expect(randomLocation, const VPNLocation(ipType: IPType.closest));
+      await locationsStore.refresh(IPType.residential);
+      final randomLocation = locationsStore.randomLocation;
+      expect(randomLocation, isNull);
     });
 
     test('refresh updates locations', () async {
