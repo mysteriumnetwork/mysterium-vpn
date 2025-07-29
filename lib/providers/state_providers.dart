@@ -198,8 +198,9 @@ final remoteConfigStorePOD = Provider<RemoteConfigStore>((ref) {
   final client = ref.watch(remoteConfigClientPOD);
   final logger = ref.watch(loggerPOD);
   final realIPInfoStore = ref.watch(realIPInfoStorePOD);
+  final env = ref.watch(environmentPOD);
 
-  return RemoteConfigStore(client, logger, realIPInfoStore);
+  return RemoteConfigStore(client, logger, realIPInfoStore, env);
 });
 
 final abTestingStorePOD = Provider<ABTestingStore>((ref) {
