@@ -238,7 +238,6 @@ abstract class _AuthStore with Store {
     logoutFeature = ObservableFuture(_authService.logout());
 
     await logoutFeature;
-    await _authSessionStore.setUnauthenticated();
   }
 
   @action

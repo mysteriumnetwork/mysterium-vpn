@@ -220,7 +220,6 @@ abstract class _VpnStore with Store {
 
   // Call on log out or app termiantion
   Future<void> disposeStore() async {
-    await disconnectWireguard();
     _wireguradConnectionStatus?.cancel();
     _authReactionDisposer?.call();
     _selectedLocationReactionDisposer?.call();
@@ -425,7 +424,7 @@ abstract class _VpnStore with Store {
       await _wireguardService.disconnect();
       if (!isReconnecting) {
         _connectingLocation = null;
-        unawaited(notifyApiVpnDisconnected());
+        await notifyApiVpnDisconnected();
       }
     }
 
