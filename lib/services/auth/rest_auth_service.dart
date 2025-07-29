@@ -35,6 +35,7 @@ class RestAuthService extends AuthService {
 
   final Authentication _apiAuth;
   final NetworkService _networkService;
+  // TODO(Kristiajn):  Remove this dependency store should not be used in a service
   final AuthSessionStore _authSessionStore;
   final _securedStorage = SecureStorageService.instance;
   final Talker _logger;
