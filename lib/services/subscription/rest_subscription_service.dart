@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/billing_client_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
+import 'package:in_app_purchase_platform_interface/in_app_purchase_platform_interface.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -18,7 +19,6 @@ import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:retry/retry.dart';
-import 'package:storekit_extensions/storekit_extensions.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
 
@@ -36,7 +36,6 @@ class RestSubscriptionService extends SubscriptionService {
   final api.Subscription _apiSubscription;
   final InAppPurchase _inAppPurchase;
   final Talker _logger;
-  final StorekitExtensions _storeKitExtensions = const StorekitExtensions();
 
   /// Experiment on verifying purchase using server side verification (webhooks)
   /// Downside: It's taking too long to verify the purchase (1-2min)
@@ -238,11 +237,13 @@ class RestSubscriptionService extends SubscriptionService {
           productDetails = storePlans.firstWhereOrNull(
             (element) => element.id == plan.appleProductId,
           );
-          if (productDetails is AppStoreProductDetails) {
-            final skProduct = productDetails.skProduct;
-            introductoryPrice = skProduct.introductoryPrice?.price != null
-                ? double.tryParse(skProduct.introductoryPrice!.price)
-                : null;
+          if (productDetails is AppStoreProduct2Details) {
+            final skProduct = productDetails.sk2Product;
+            final promoOffers = skProduct.subscription?.promotionalOffers;
+            if (promoOffers != null && promoOffers.isNotEmpty) {
+              final offer = promoOffers.first;
+              introductoryPrice = offer.price;
+            }
           }
         }
         if (productDetails == null) {
@@ -357,8 +358,9 @@ class RestSubscriptionService extends SubscriptionService {
 
   @override
   Future<bool> isEligibleForIntroOffer(String productId) async {
+    final iapStoreKitPlatform = InAppPurchasePlatform.instance as InAppPurchaseStoreKitPlatform;
     try {
-      return await _storeKitExtensions.isEligibleForIntroOffer(productId);
+      return await iapStoreKitPlatform.isIntroductoryOfferEligible(productId);
     } catch (e, s) {
       _logger.handle(e, s);
       return false;
