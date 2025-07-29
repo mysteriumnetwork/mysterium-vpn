@@ -1752,13 +1752,6 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
-  storekit_extensions:
-    dependency: "direct main"
-    description:
-      path: "packages/storekit_extensions"
-      relative: true
-    source: path
-    version: "0.0.1"
   stream_channel:
     dependency: transitive
     description:
