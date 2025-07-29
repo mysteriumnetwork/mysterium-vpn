@@ -17,13 +17,15 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
+import 'package:mysterium_vpn/stores/vpn_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 Future<void> shownDeleteAccountDialog(
-  BuildContext context,
-  AuthStore store,
-  AnalyticsStore analyticsStore,
-) async {
+  BuildContext context, {
+  required AuthStore authStore,
+  required VpnStore vpnStore,
+  required AnalyticsStore analyticsStore,
+}) async {
   analyticsStore.logEvent(AnalyticsEvent.deleteAccountPopup);
   showModalBottomSheet(
     clipBehavior: Clip.none,
@@ -37,8 +39,9 @@ Future<void> shownDeleteAccountDialog(
     builder: (context) => Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: _DeleteAccountDialog(
-        store: store,
+        authStore: authStore,
         analyticsStore: analyticsStore,
+        vpnStore: vpnStore,
       ),
     ),
   );
@@ -46,11 +49,14 @@ Future<void> shownDeleteAccountDialog(
 
 class _DeleteAccountDialog extends HookWidget {
   const _DeleteAccountDialog({
-    required this.store,
+    required this.authStore,
     required this.analyticsStore,
+    required this.vpnStore,
   });
-  final AuthStore store;
+  final AuthStore authStore;
   final AnalyticsStore analyticsStore;
+  final VpnStore vpnStore;
+
   @override
   Widget build(BuildContext context) {
     final confirmationMessage = useState('');
@@ -115,10 +121,10 @@ class _DeleteAccountDialog extends HookWidget {
                 width: 160,
                 color: Palette.pink,
                 onPressed: confirmationMessage.value == 'DELETE' &&
-                        store.deleteAccountFeature.status != FutureStatus.pending
+                        authStore.deleteAccountFeature.status != FutureStatus.pending
                     ? () async {
                         analyticsStore.logEvent(AnalyticsEvent.deleteAccountConfirm);
-                        await store.deleteAccount();
+                        await authStore.deleteAccount();
                         if (context.mounted) {
                           await Beamer.of(context).popRoute();
                           shownInfoDialog(
@@ -128,12 +134,15 @@ class _DeleteAccountDialog extends HookWidget {
                             messages: [
                               LocaleKeys.redirectToLoginPage.tr(),
                             ],
-                            onConfirm: store.logout,
+                            onConfirm: () async {
+                              await vpnStore.disconnectWireguard();
+                              authStore.logout();
+                            },
                           );
                         }
                       }
                     : null,
-                child: store.deleteAccountFeature.status == FutureStatus.pending
+                child: authStore.deleteAccountFeature.status == FutureStatus.pending
                     ? const LoadingIndicator(
                         indicatorColor: Palette.white,
                       ).paddingDirectional(end: 4)
