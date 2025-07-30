@@ -14,11 +14,9 @@ class VPNLocationAdapter extends TypeAdapter<VPNLocation> {
     final raw = reader.readString();
     try {
       final json = jsonDecode(raw) as Map<String, dynamic>;
-      if (json.containsKey('id')) {
-        return VPNLocation.fromJson(json);
-      }
-      return VPNLocation.fromLegacyJson(json);
-    } catch (e) {
+      return VPNLocation.fromJson(json);
+    } catch (e, stack) {
+      print('Error decoding VPNLocation: $e\n$stack');
       return VPNLocation.fromCode(raw);
     }
   }

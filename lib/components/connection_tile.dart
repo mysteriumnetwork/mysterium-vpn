@@ -120,7 +120,7 @@ class _ConnectingLocation extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final brightness = Theme.of(context).brightness;
-    final countryName = location.name;
+    final countryName = location.getName(context);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
