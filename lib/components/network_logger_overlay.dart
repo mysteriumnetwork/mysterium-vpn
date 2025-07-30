@@ -1,11 +1,14 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/dio_network_logger/dio_network_logger.dart';
 
-class NetworkLoggerOverlayView extends StatefulWidget {
+class NetworkLoggerOverlayView extends StatefulHookConsumerWidget {
   const NetworkLoggerOverlayView({
     required this.child,
     required this.flavor,
@@ -15,10 +18,10 @@ class NetworkLoggerOverlayView extends StatefulWidget {
   final Flavor flavor;
 
   @override
-  State<NetworkLoggerOverlayView> createState() => _NetworkLoggerOverlayViewState();
+  ConsumerState<NetworkLoggerOverlayView> createState() => _NetworkLoggerOverlayViewState();
 }
 
-class _NetworkLoggerOverlayViewState extends State<NetworkLoggerOverlayView> {
+class _NetworkLoggerOverlayViewState extends ConsumerState<NetworkLoggerOverlayView> {
   double _xPosition = 0;
   double _yPosition = 0;
 
@@ -41,7 +44,11 @@ class _NetworkLoggerOverlayViewState extends State<NetworkLoggerOverlayView> {
 
   @override
   Widget build(BuildContext context) {
-    final shouldShowLogger = !kReleaseMode || !(widget.flavor == Flavor.production);
+    final store = ref.watch(remoteConfigStorePOD);
+    final enableQAHelpers = useComputedValue(
+      () => store.enableQaHelpers,
+    );
+    final shouldShowLogger = !kReleaseMode || enableQAHelpers;
 
     if (shouldShowLogger) {
       return Stack(

@@ -4,7 +4,7 @@ updates:
   - package-ecosystem: "pub"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     open-pull-requests-limit: 10
     commit-message:
       prefix: "chore(pub)"
@@ -12,16 +12,18 @@ updates:
     reviewers:
       - KristijanMitrik
       - dmacan23
+
+ # Keep Android dependencies up to date (build.gradle)     
   - package-ecosystem: gradle
     directory: "android"
     schedule:
-      interval: "weekly"   
+      interval: "weekly"
     open-pull-requests-limit: 10
     commit-message:
-      prefix: "chore(android)"    
+      prefix: "chore(android)"
     reviewers:
       - KristijanMitrik
-      - dmacan23   
+      - dmacan23
 
   # Keep GitHub Actions workflows up to date
   - package-ecosystem: "github-actions"
@@ -33,4 +35,4 @@ updates:
       prefix: "chore(ci)"
     reviewers:
       - KristijanMitrik
-      - dmacan23  
+      - dmacan23

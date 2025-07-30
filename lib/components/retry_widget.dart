@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/utils/resolve_error_msg.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
@@ -10,13 +11,13 @@ import 'package:styled_widget/styled_widget.dart';
 class RetryWdiget extends StatelessWidget {
   const RetryWdiget({
     required this.onRetry,
-    required this.text,
+    required this.error,
     required this.asset,
     super.key,
   });
 
   final VoidCallback onRetry;
-  final String text;
+  final dynamic error;
   final String asset;
 
   @override
@@ -27,7 +28,9 @@ class RetryWdiget extends StatelessWidget {
             asset: asset,
           ).padding(top: 10, bottom: 10),
           EasyText(
-            text,
+            error is Object
+                ? resolveErrorMessage(error as Object)
+                : LocaleKeys.somethingWentWrong.tr(),
             fontSize: 16,
             fontWeight: FontWeight.w700,
             maxLines: 2,

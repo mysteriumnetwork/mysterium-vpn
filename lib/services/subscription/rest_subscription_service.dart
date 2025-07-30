@@ -6,8 +6,11 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_android/billing_client_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
+import 'package:in_app_purchase_platform_interface/in_app_purchase_platform_interface.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
+import 'package:in_app_purchase_storekit/store_kit_2_wrappers.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
@@ -15,7 +18,8 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
-import 'package:storekit_extensions/storekit_extensions.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:retry/retry.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
 
@@ -33,7 +37,6 @@ class RestSubscriptionService extends SubscriptionService {
   final api.Subscription _apiSubscription;
   final InAppPurchase _inAppPurchase;
   final Talker _logger;
-  final StorekitExtensions _storeKitExtensions = const StorekitExtensions();
 
   /// Experiment on verifying purchase using server side verification (webhooks)
   /// Downside: It's taking too long to verify the purchase (1-2min)
@@ -106,14 +109,7 @@ class RestSubscriptionService extends SubscriptionService {
         );
       }
       if (res.statusCode == 200) {
-        try {
-          return await fetchSubscriptionDetails();
-        } catch (e) {
-          return Subscription(
-            planId: planId,
-            active: true,
-          );
-        }
+        return await fetchActiveSubscription(planId);
       } else {
         throw SubscriptionVerificationException();
       }
@@ -123,8 +119,25 @@ class RestSubscriptionService extends SubscriptionService {
     }
   }
 
+  Future<Subscription> fetchActiveSubscription(String planId) async => retry(
+        () async {
+          final subs = await fetchSubscriptionDetails();
+          if (subs.active) {
+            return subs;
+          }
+          throw Exception('Subscription not active');
+        },
+        maxAttempts: 3,
+        delayFactor: const Duration(seconds: 1),
+      ).catchError(
+        (_) => Subscription(
+          planId: planId,
+          active: false,
+        ),
+      );
+
   @override
-  Future<bool> subscribeToPackage({
+  Future<void> subscribeToPackage({
     required ProductDetails productDetails,
     required String? purchasedProductId,
     required String userId,
@@ -151,6 +164,7 @@ class RestSubscriptionService extends SubscriptionService {
           changeSubscriptionParam: (details != null)
               ? ChangeSubscriptionParam(
                   oldPurchaseDetails: details,
+                  replacementMode: ReplacementMode.withTimeProration,
                 )
               : null,
         );
@@ -160,13 +174,24 @@ class RestSubscriptionService extends SubscriptionService {
           applicationUserName: userId,
         );
       }
-      return await _inAppPurchase.buyNonConsumable(
+      await _inAppPurchase.buyNonConsumable(
         purchaseParam: purchaseParam,
       );
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
     }
+  }
+
+  Future<void> openAndroidManageSubscriptions(
+    String productId,
+  ) async {
+    final info = await PackageInfo.fromPlatform();
+    final packageName = info.packageName;
+    final url =
+        'https://play.google.com/store/account/subscriptions?sku=$productId&package=$packageName';
+
+    await openUrlLink(Uri.parse(url));
   }
 
   @override
@@ -213,11 +238,15 @@ class RestSubscriptionService extends SubscriptionService {
           productDetails = storePlans.firstWhereOrNull(
             (element) => element.id == plan.appleProductId,
           );
-          if (productDetails is AppStoreProductDetails) {
-            final skProduct = productDetails.skProduct;
-            introductoryPrice = skProduct.introductoryPrice?.price != null
-                ? double.tryParse(skProduct.introductoryPrice!.price)
-                : null;
+          if (productDetails is AppStoreProduct2Details) {
+            final skProduct = productDetails.sk2Product;
+            final promoOffers = skProduct.subscription?.promotionalOffers;
+            if (promoOffers != null && promoOffers.isNotEmpty) {
+              final offer = promoOffers.firstWhereOrNull(
+                (element) => element.type == SK2SubscriptionOfferType.introductory,
+              );
+              introductoryPrice = offer?.price;
+            }
           }
         }
         if (productDetails == null) {
@@ -332,8 +361,12 @@ class RestSubscriptionService extends SubscriptionService {
 
   @override
   Future<bool> isEligibleForIntroOffer(String productId) async {
+    if (!Platform.isIOS && !Platform.isMacOS) {
+      return false;
+    }
     try {
-      return await _storeKitExtensions.isEligibleForIntroOffer(productId);
+      final iapStoreKitPlatform = InAppPurchasePlatform.instance as InAppPurchaseStoreKitPlatform;
+      return await iapStoreKitPlatform.isIntroductoryOfferEligible(productId);
     } catch (e, s) {
       _logger.handle(e, s);
       return false;
@@ -347,5 +380,21 @@ class RestSubscriptionService extends SubscriptionService {
     }
 
     return isEligible && introductoryPrice != null && introductoryPrice > 0;
+  }
+
+  @override
+  Future<void> manageSubscription({
+    required ProductDetails productDetails,
+    required String userId,
+  }) async {
+    if (Platform.isAndroid) {
+      return openAndroidManageSubscriptions(productDetails.id);
+    } else if (Platform.isIOS || Platform.isMacOS) {
+      return subscribeToPackage(
+        productDetails: productDetails,
+        userId: userId,
+        purchasedProductId: null,
+      );
+    }
   }
 }

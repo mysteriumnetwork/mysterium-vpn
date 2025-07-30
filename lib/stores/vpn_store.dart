@@ -167,8 +167,7 @@ abstract class _VpnStore with Store {
   VPNLocation? get location => _vpnConnection?.location ?? _connectingLocation;
 
   @computed
-  VPNLocation? get potentialLocation =>
-      _locationsStore.recentLocations.firstOrNull ?? _locationsStore.randomLocation();
+  VPNLocation? get potentialLocation => _locationsStore.randomLocation;
 
   @readonly
   ObservableFuture<void>? _resolveConnectionLocationFuture;
@@ -221,7 +220,6 @@ abstract class _VpnStore with Store {
 
   // Call on log out or app termiantion
   Future<void> disposeStore() async {
-    await disconnectWireguard();
     _wireguradConnectionStatus?.cancel();
     _authReactionDisposer?.call();
     _selectedLocationReactionDisposer?.call();
@@ -426,7 +424,7 @@ abstract class _VpnStore with Store {
       await _wireguardService.disconnect();
       if (!isReconnecting) {
         _connectingLocation = null;
-        unawaited(notifyApiVpnDisconnected());
+        await notifyApiVpnDisconnected();
       }
     }
 
