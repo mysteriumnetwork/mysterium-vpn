@@ -1,6 +1,6 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-// ignore_for_file: prefer_single_quotes, avoid_renaming_method_parameters
+// ignore_for_file: prefer_single_quotes, avoid_renaming_method_parameters, constant_identifier_names
 
 import 'dart:ui';
 
@@ -14,7 +14,7 @@ class CodegenLoader extends AssetLoader {
     return Future.value(mapLocales[locale.toString()]);
   }
 
-  static const Map<String, dynamic> zh = {
+  static const Map<String, dynamic> _zh = {
     "AD": "安道尔",
     "AE": "阿拉伯联合酋长国",
     "AF": "阿富汗",
@@ -617,7 +617,7 @@ class CodegenLoader extends AssetLoader {
     "yes": "是",
     "zh": "中国人"
   };
-  static const Map<String, dynamic> tr = {
+  static const Map<String, dynamic> _tr = {
     "AD": "Andorra",
     "AE": "Birleşik Arap Emirlikleri",
     "AF": "Afganistan",
@@ -1253,7 +1253,7 @@ class CodegenLoader extends AssetLoader {
     "yes": "Evet",
     "zh": "Çince"
   };
-  static const Map<String, dynamic> ja = {
+  static const Map<String, dynamic> _ja = {
     "AD": "アンドラ",
     "AE": "アラブ首長国連邦",
     "AF": "アフガニスタン",
@@ -1861,7 +1861,7 @@ class CodegenLoader extends AssetLoader {
     "yes": "はい",
     "zh": "中国語"
   };
-  static const Map<String, dynamic> de = {
+  static const Map<String, dynamic> _de = {
     "AD": "Andorra",
     "AE": "Vereinigte Arabische Emirate",
     "AF": "Afghanistan",
@@ -2521,7 +2521,7 @@ class CodegenLoader extends AssetLoader {
     "yes": "Ja",
     "zh": "Chinesisch"
   };
-  static const Map<String, dynamic> pt = {
+  static const Map<String, dynamic> _pt = {
     "AD": "Andorra",
     "AE": "Emirados Árabes Unidos",
     "AF": "Afeganistão",
@@ -3173,7 +3173,7 @@ class CodegenLoader extends AssetLoader {
     "yes": "sim",
     "zh": "Chinês"
   };
-  static const Map<String, dynamic> en = {
+  static const Map<String, dynamic> _en = {
     "AD": "Andorra",
     "AE": "United Arab Emirates",
     "AF": "Afghanistan",
@@ -3814,7 +3814,7 @@ class CodegenLoader extends AssetLoader {
     "yes": "Yes",
     "zh": "Chinese"
   };
-  static const Map<String, dynamic> it = {
+  static const Map<String, dynamic> _it = {
     "AD": "Andorra",
     "AE": "Emirati Arabi Uniti",
     "AF": "Afghanistan",
@@ -4469,7 +4469,7 @@ class CodegenLoader extends AssetLoader {
     "yes": "Sì",
     "zh": "Cinese"
   };
-  static const Map<String, dynamic> fr = {
+  static const Map<String, dynamic> _fr = {
     "AD": "Andorre",
     "AE": "Emirats Arabes Unis",
     "AF": "Afghanistan",
@@ -5128,7 +5128,7 @@ class CodegenLoader extends AssetLoader {
     "yes": "Oui",
     "zh": "Chinois"
   };
-  static const Map<String, dynamic> id = {
+  static const Map<String, dynamic> _id = {
     "AD": "Andorra",
     "AE": "Uni Emirat Arab",
     "AF": "Afganistan",
@@ -5771,7 +5771,7 @@ class CodegenLoader extends AssetLoader {
     "yes": "Iya",
     "zh": "Cina"
   };
-  static const Map<String, dynamic> es = {
+  static const Map<String, dynamic> _es = {
     "AD": "Andorra",
     "AE": "Emiratos Árabes Unidos",
     "AF": "Afganistán",
@@ -6425,7 +6425,7 @@ class CodegenLoader extends AssetLoader {
     "yes": "Sí",
     "zh": "Chino"
   };
-  static const Map<String, dynamic> ar = {
+  static const Map<String, dynamic> _ar = {
     "AD": "أندورا",
     "AE": "الإمارات العربية المتحدة",
     "AF": "أفغانستان",
@@ -7058,16 +7058,16 @@ class CodegenLoader extends AssetLoader {
     "zh": "صينى"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
-    "zh": zh,
-    "tr": tr,
-    "ja": ja,
-    "de": de,
-    "pt": pt,
-    "en": en,
-    "it": it,
-    "fr": fr,
-    "id": id,
-    "es": es,
-    "ar": ar
+    "zh": _zh,
+    "tr": _tr,
+    "ja": _ja,
+    "de": _de,
+    "pt": _pt,
+    "en": _en,
+    "it": _it,
+    "fr": _fr,
+    "id": _id,
+    "es": _es,
+    "ar": _ar
   };
 }

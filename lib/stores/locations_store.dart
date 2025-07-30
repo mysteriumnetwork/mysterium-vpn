@@ -154,11 +154,11 @@ abstract class _LocationsStore with Store {
 
     if (_locationsNotEmpty) {
       return const VPNLocation(
-      id: '',
-      translations: {},
-      ipType: IPType.closest,
-      countryCode: '',
-    );
+        id: '',
+        translations: {},
+        ipType: IPType.closest,
+        countryCode: '',
+      );
     }
     return null;
   }
