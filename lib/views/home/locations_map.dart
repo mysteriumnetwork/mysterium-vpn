@@ -64,7 +64,7 @@ class LocationsMap extends HookConsumerWidget {
     );
 
     final markers = _useLocationMarkers(
-      locations: locations,
+      data: locations,
       activeLocation: activeLocation,
       onLocationPressed: handlePressed,
     );
@@ -83,15 +83,11 @@ class LocationsMap extends HookConsumerWidget {
     useEffect(
       () {
         if (locations != null && locations.isNotEmpty) {
-          final store = ref.read(latLngStorePOD);
-          Future.microtask(() async {
-            final ids = locations.map((it) => it.id).toSet();
-            await store.refreshIfNeeded(ids);
-          });
+          ref.read(latLngStorePOD).refreshIfNeeded(locations.keys);
         }
         return null;
       },
-      [locations],
+      [locations?.keys],
     );
 
     return FlutterMap(
@@ -116,28 +112,28 @@ class LocationsMap extends HookConsumerWidget {
   }
 }
 
-List<VPNLocation>? _childlessLocations(List<VPNLocation>? locations) {
+Map<String, VPNLocation>? _childlessLocations(List<VPNLocation>? locations) {
   if (locations == null) {
     return null;
   }
 
-  final flattened = <VPNLocation>[];
+  final result = <String, VPNLocation>{};
   final queue = Queue<VPNLocation>.of(locations);
 
   while (queue.isNotEmpty) {
     final location = queue.removeFirst();
     if (location.children == null || location.children!.isEmpty) {
-      flattened.add(location);
+      result[location.id] = location;
     } else {
       queue.addAll(location.children!);
     }
   }
 
-  return flattened;
+  return result;
 }
 
 List<Marker> _useLocationMarkers({
-  required List<VPNLocation>? locations,
+  required Map<String, VPNLocation>? data,
   required VPNLocation? activeLocation,
   required Function(VPNLocation, LatLng)? onLocationPressed,
 }) {
@@ -146,19 +142,18 @@ List<Marker> _useLocationMarkers({
 
   return useComputedValue<List<Marker>>(
     () {
-      if (locations == null) {
+      if (data == null) {
         return [];
       }
 
-      return locations
-          .where((it) => it.children == null || it.children!.isEmpty)
+      return data.entries
           .map((it) {
-            final point = latLngStore.coordinatesFor(it.id);
+            final point = latLngStore.coordinatesFor(it.key);
             if (point == null) {
               return null;
             }
 
-            final isActive = activeLocation?.id == it.id;
+            final isActive = activeLocation?.id == it.key;
             final size = isActive ? const Size.square(42) : const Size.square(16);
 
             return Marker(
@@ -166,19 +161,15 @@ List<Marker> _useLocationMarkers({
               height: size.height,
               width: size.width,
               child: _GestureHandler(
-                onPressed: () => onLocationPressedRef.value?.call(it, point),
-                child: LocationMarker(
-                  size: size * .7,
-                  txt: it.id,
-                  isActive: isActive,
-                ),
+                onPressed: () => onLocationPressedRef.value?.call(it.value, point),
+                child: LocationMarker(size: size * .7, isActive: isActive),
               ),
             );
           })
           .nonNulls
           .toList();
     },
-    [onLocationPressedRef, latLngStore, locations, activeLocation],
+    [onLocationPressedRef, latLngStore, data?.keys, activeLocation],
   );
 }
 

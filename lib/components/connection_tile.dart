@@ -31,11 +31,14 @@ class ConnectionTile extends HookConsumerWidget {
     final analyticsStore = ref.watch(analyticsStorePOD);
 
     final location = useComputedValue(
-      () =>
-          locationsStore.selectedLocation ??
-          vpnStore.location ??
-          vpnStore.connectingLocation ??
-          vpnStore.potentialLocation,
+      () {
+        final selectedLocation = locationsStore.selectedLocation;
+        final location = vpnStore.location;
+        final connectingLocation = vpnStore.connectingLocation;
+        final potentialLocation = vpnStore.potentialLocation;
+
+        return selectedLocation ?? location ?? connectingLocation ?? potentialLocation;
+      },
       [vpnStore, locationsStore],
     );
 

@@ -25,4 +25,6 @@ extension VPNLocationExtensions on VPNLocation {
     }
     return id;
   }
+
+  bool get isCountry => id == countryCode;
 }
