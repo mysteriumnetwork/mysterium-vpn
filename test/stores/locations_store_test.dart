@@ -1,3 +1,6 @@
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
@@ -47,6 +50,24 @@ void main() {
     when(mockApiConnection.connectionConfig(ipType: expectedIPType)).thenAnswer(
       (_) async => Response(requestOptions: RequestOptions(), data: data),
     );
+
+    when(mockApiConnection.connectionLocations(ipType: expectedIPType)).thenAnswer(
+      (_) async {
+        final countries = {...data.countries, ...data.topCountries};
+        return Response(
+          requestOptions: RequestOptions(),
+          data: [
+            for (final country in countries)
+              ConnectionLocation(
+                country: country,
+                total: 5,
+                cities: [],
+                translations: {'en': country},
+              ),
+          ],
+        );
+      },
+    );
   }
 
   setUp(() async {
@@ -67,6 +88,8 @@ void main() {
       Mocks.locationDatacenterUS,
       Mocks.locationDatacenterDE,
     ];
+
+    when(mockLocaleStore.currentLocale).thenAnswer((_) => const Locale('en'));
 
     when(mockLocalDB.getLocations(IPType.residential)).thenAnswer(
       (_) => VPNLocations(locations: mockResidential),
