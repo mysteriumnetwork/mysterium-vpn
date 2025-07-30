@@ -128,7 +128,7 @@ class Environment {
   Future<LatLngStore?> _initLatLngStore(ProviderContainer container) async {
     try {
       final latLngStore = container.read(latLngStorePOD);
-      await latLngStore.coordinatesFuture;
+      await latLngStore.countryCoordinatesFuture;
       return latLngStore;
     } catch (e) {
       debugPrint('Error initializing latlng store $e');
@@ -165,7 +165,7 @@ class Environment {
         ),
       _ => FlavorConfig(
           flavor: Flavor.dev,
-          values: FlavorValues.dev(),
+          values: FlavorValues.dev(isAutomated: true),
           buildInfo: buildInfo,
         ),
     };

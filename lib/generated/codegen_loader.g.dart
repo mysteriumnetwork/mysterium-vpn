@@ -436,6 +436,8 @@ class CodegenLoader extends AssetLoader {
     "linkCopied": "链接已复制到剪贴板！",
     "linkExpires": "该链接将在 30 分钟后过期，因此请务必尽快使用。去查看你的电子邮件",
     "location": "地点",
+    "locationItemNodeCount": {"other": "{} 台服务器"},
+    "locationItemCityCount": {"other": "{} 个城市"},
     "loginQuote": "提升您的个人体验。\n匿名。是自由的。",
     "loginSessionExpired": "您的会话已过期。请重新登录。",
     "logout": "登出",
@@ -1058,6 +1060,8 @@ class CodegenLoader extends AssetLoader {
     "linkExpires":
         "Link 30 dakika içinde kullanılmalıdır, bu yüzden bir an önce tıkladığınızdan emin olun. ",
     "location": "Ülke",
+    "locationItemNodeCount": {"other": "{} sunucu"},
+    "locationItemCityCount": {"other": "{} şehir"},
     "loginQuote": "Kişisel deneyiminizi yükseltin.\n",
     "loginSessionExpired": "Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın.",
     "logout": "Çıkış Yap",
@@ -1673,6 +1677,8 @@ class CodegenLoader extends AssetLoader {
     "linkCopied": "リンクをクリップボードにコピーしました！",
     "linkExpires": "リンクの有効期限は 30 分ですので、お早めにご利用ください。メールをチェックしてみよう",
     "location": "位置",
+    "locationItemNodeCount": {"other": "{} サーバー"},
+    "locationItemCityCount": {"other": "{} 都市"},
     "loginQuote": "あなたの個人的な経験をレベルアップしてください。\n匿名であること。自由。",
     "loginSessionExpired": "セッションの有効期限が切れました。再度ログインしてください。",
     "logout": "ログアウト",
@@ -2312,6 +2318,8 @@ class CodegenLoader extends AssetLoader {
     "linkExpires":
         "Der Link läuft in 30 Minuten ab, also nutzen Sie ihn bald. Überprüfen Sie Ihre E-Mails",
     "location": "Standort",
+    "locationItemNodeCount": {"one": "{} Server", "other": "{} Server"},
+    "locationItemCityCount": {"one": "{} Stadt", "other": "{} Städte"},
     "loginQuote": "Steigern Sie Ihre persönliche Erfahrung.\nBleiben Sie anonym. Seien Sie frei.",
     "loginSessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
     "logout": "Abmelden",
@@ -2963,6 +2971,8 @@ class CodegenLoader extends AssetLoader {
     "linkExpires":
         "O link expira em 30 minutos, portanto, certifique -se de usá -lo em breve. Vá verificar seu e -mail",
     "location": "Localização",
+    "locationItemNodeCount": {"one": "{} servidor", "other": "{} servidores"},
+    "locationItemCityCount": {"one": "{} cidade", "other": "{} cidades"},
     "loginQuote": "Leve sua experiência pessoal. \n Seja anônimo. Seja livre.",
     "loginSessionExpired": "Sua sessão expirou. Faça login novamente.",
     "logout": "Sair",
@@ -3606,6 +3616,8 @@ class CodegenLoader extends AssetLoader {
     "linkCopied": "Link copied to clipboard!",
     "linkExpires": "The link expires in 30 minutes, so be sure to use it soon. Go check your email",
     "location": "Location",
+    "locationItemNodeCount": {"one": "{} Server", "other": "{} Servers"},
+    "locationItemCityCount": {"one": "{} City", "other": "{} Cities"},
     "loginQuote": "Level up your personal experience.\nBe anonymous. Be free.",
     "loginSessionExpired": "Your session has expired. Please log in again.",
     "logout": "Log out",
@@ -4255,6 +4267,8 @@ class CodegenLoader extends AssetLoader {
     "linkExpires":
         "Il link scade tra 30 minuti, quindi assicurati di usarlo presto. Vai a controllare la tua posta",
     "location": "Posizione",
+    "locationItemNodeCount": {"one": "{} server", "other": "{} server"},
+    "locationItemCityCount": {"one": "{} città", "other": "{} città"},
     "loginQuote": "Migliora la tua esperienza personale.\nSii anonimo. Sii libero.",
     "loginSessionExpired": "La tua sessione è scaduta. Effettua nuovamente l'accesso.",
     "logout": "Disconnettersi",
@@ -4910,6 +4924,8 @@ class CodegenLoader extends AssetLoader {
     "linkExpires":
         "Le lien expire en 30 minutes, alors assurez-vous de l'utiliser bientôt. Allez vérifier votre e-mail",
     "location": "Emplacement",
+    "locationItemNodeCount": {"one": "{} serveur", "other": "{} serveurs"},
+    "locationItemCityCount": {"one": "{} ville", "other": "{} villes"},
     "loginQuote": "Augmentez votre expérience personnelle. \n Être anonyme. Sois libre.",
     "loginSessionExpired": "Votre session a expiré. Veuillez vous reconnecter.",
     "logout": "Se déconnecter",
@@ -5558,6 +5574,8 @@ class CodegenLoader extends AssetLoader {
     "linkExpires":
         "Tautan kedaluwarsa dalam 30 menit, jadi pastikan untuk segera menggunakannya. Periksa email Anda",
     "location": "Lokasi",
+    "locationItemNodeCount": {"other": "{} server"},
+    "locationItemCityCount": {"other": "{} kota"},
     "loginQuote": "Tingkatkan pengalaman pribadi Anda.\nJadilah anonim. Jadilah bebas.",
     "loginSessionExpired": "Sesi Anda telah kedaluwarsa. Silakan login kembali.",
     "logout": "Keluar",
@@ -6205,6 +6223,8 @@ class CodegenLoader extends AssetLoader {
     "linkExpires":
         "El enlace caduca en 30 minutos, así que asegúrate de usarlo pronto. Ve a revisar tu correo electrónico",
     "location": "Ubicación",
+    "locationItemNodeCount": {"one": "{} servidor", "other": "{} servidores"},
+    "locationItemCityCount": {"one": "{} ciudad", "other": "{} ciudades"},
     "loginQuote": "Sube de nivel tu experiencia personal.\nSé anónimo. Sé libre.",
     "loginSessionExpired": "Su sesión ha caducado. Inicie sesión nuevamente.",
     "logout": "Cerrar sesión",
@@ -6844,6 +6864,8 @@ class CodegenLoader extends AssetLoader {
     "linkExpires":
         "تنتهي صلاحية الرابط في غضون 30 دقيقة ، لذا تأكد من استخدامه قريبًا. اذهب للتحقق من بريدك الإلكتروني",
     "location": "الموقع",
+    "locationItemNodeCount": {"one": "{} خادم", "other": "{} خوادم"},
+    "locationItemCityCount": {"one": "{} مدينة", "other": "{} مدن"},
     "loginQuote": "ارفع مستوى تجربتك الشخصية.\nكن مجهول الهوية. كن حرا.",
     "loginSessionExpired": "لقد انتهت جلستك. الرجاء تسجيل الدخول مرة أخرى.",
     "logout": "تسجيل الخروج",

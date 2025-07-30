@@ -22,6 +22,8 @@ abstract class Assets {
   static const String billingLight = 'assets/icons/billing_light.svg';
   static const String checkmark = 'assets/icons/checkmark.svg';
   static const String chevronRight = 'assets/icons/chevron_right.svg';
+  static const String cityLight = 'assets/icons/city_light.svg';
+  static const String cityDark = 'assets/icons/city_dark.svg';
   static const String clear = 'assets/icons/clear.svg';
   static const String closeDark = 'assets/icons/close_dark.svg';
   static const String closeLight = 'assets/icons/close_light.svg';

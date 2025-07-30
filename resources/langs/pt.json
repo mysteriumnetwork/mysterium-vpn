@@ -420,6 +420,14 @@
   "linkCopied": "Link copiado para a área de transferência!",
   "linkExpires": "O link expira em 30 minutos, portanto, certifique -se de usá -lo em breve. Vá verificar seu e -mail",
   "location": "Localização",
+  "locationItemNodeCount": {
+    "one": "{} servidor",
+    "other": "{} servidores"
+  },
+  "locationItemCityCount": {
+    "one": "{} cidade",
+    "other": "{} cidades"
+  },
   "loginQuote": "Leve sua experiência pessoal. \n Seja anônimo. Seja livre.",
   "loginSessionExpired": "Sua sessão expirou. Faça login novamente.",
   "logout": "Sair",

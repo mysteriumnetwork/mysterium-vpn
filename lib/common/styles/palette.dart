@@ -32,6 +32,7 @@ abstract class Palette {
 
   Color get highlightColor;
   Color get secondaryColor;
+  Color get subtitleColor;
   Color get lightTextColor;
   Color get backgroundGolor;
   Color get darkTextColor;
@@ -66,6 +67,9 @@ class LightPalette implements Palette {
 
   @override
   Color get secondaryColor => Palette.black;
+
+  @override
+  Color get subtitleColor => Palette.lightBlack;
 
   @override
   Color get lightTextColor => Palette.lightBlue;
@@ -149,6 +153,9 @@ class DarkPalette implements Palette {
 
   @override
   Color get secondaryColor => Palette.white;
+
+  @override
+  Color get subtitleColor => Palette.lightBlue;
 
   @override
   Color get lightTextColor => Palette.lightBlack;

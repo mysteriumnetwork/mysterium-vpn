@@ -420,6 +420,12 @@
   "linkCopied": "リンクをクリップボードにコピーしました！",
   "linkExpires": "リンクの有効期限は 30 分ですので、お早めにご利用ください。メールをチェックしてみよう",
   "location": "位置",
+  "locationItemNodeCount": {
+    "other": "{} サーバー"
+  },
+  "locationItemCityCount": {
+    "other": "{} 都市"
+  },
   "loginQuote": "あなたの個人的な経験をレベルアップしてください。\n匿名であること。自由。",
   "loginSessionExpired": "セッションの有効期限が切れました。再度ログインしてください。",
   "logout": "ログアウト",

@@ -422,6 +422,8 @@ abstract class LocaleKeys {
   static const linkCopied = 'linkCopied';
   static const linkExpires = 'linkExpires';
   static const location = 'location';
+  static const locationItemNodeCount = 'locationItemNodeCount';
+  static const locationItemCityCount = 'locationItemCityCount';
   static const loginQuote = 'loginQuote';
   static const loginSessionExpired = 'loginSessionExpired';
   static const logout = 'logout';

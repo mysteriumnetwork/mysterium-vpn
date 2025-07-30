@@ -420,6 +420,14 @@
   "linkCopied": "Link in die Zwischenablage kopiert!",
   "linkExpires": "Der Link läuft in 30 Minuten ab, also nutzen Sie ihn bald. Überprüfen Sie Ihre E-Mails",
   "location": "Standort",
+  "locationItemNodeCount": {
+    "one": "{} Server",
+    "other": "{} Server"
+  },
+  "locationItemCityCount": {
+    "one": "{} Stadt",
+    "other": "{} Städte"
+  },
   "loginQuote": "Steigern Sie Ihre persönliche Erfahrung.\nBleiben Sie anonym. Seien Sie frei.",
   "loginSessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
   "logout": "Abmelden",

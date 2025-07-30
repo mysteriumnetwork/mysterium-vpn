@@ -61,4 +61,6 @@ final kWorldBounds = LatLngBounds(
   const LatLng(-90, -180), // SW
   const LatLng(90, 180),
 );
-const kMapZoomLevels = <double>[3, 4];
+const kMapZoomLevels = <double>[3, 4, 5, 6];
+// unlike kMapZoomLevels, these are the zoom levels used for the tiles - meaning that we support only tiles with these levels, and other zoom levels will use one of these as well
+const kTileZomLevels = <double>[3, 4];

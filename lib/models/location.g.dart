@@ -26,16 +26,20 @@ _$VPNLocationImpl _$$VPNLocationImplFromJson(Map<String, dynamic> json) => _$VPN
       id: json['id'] as String,
       ipType: $enumDecode(_$IPTypeEnumMap, json['ipType']),
       translations: Map<String, String>.from(json['translations'] as Map),
+      countryCode: json['countryCode'] as String,
       children: (json['children'] as List<dynamic>?)
           ?.map((e) => VPNLocation.fromJson(e as Map<String, dynamic>))
           .toList(),
+      nodeCount: (json['nodeCount'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$VPNLocationImplToJson(_$VPNLocationImpl instance) => <String, dynamic>{
       'id': instance.id,
       'ipType': _$IPTypeEnumMap[instance.ipType]!,
       'translations': instance.translations,
+      'countryCode': instance.countryCode,
       'children': instance.children,
+      'nodeCount': instance.nodeCount,
     };
 
 const _$IPTypeEnumMap = {

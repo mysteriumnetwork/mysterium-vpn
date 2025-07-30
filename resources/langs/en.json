@@ -420,6 +420,14 @@
   "linkCopied": "Link copied to clipboard!",
   "linkExpires": "The link expires in 30 minutes, so be sure to use it soon. Go check your email",
   "location": "Location",
+  "locationItemNodeCount": {
+    "one": "{} Server",
+    "other": "{} Servers"
+  },
+  "locationItemCityCount": {
+    "one": "{} City",
+    "other": "{} Cities"
+  },
   "loginQuote": "Level up your personal experience.\nBe anonymous. Be free.",
   "loginSessionExpired": "Your session has expired. Please log in again.",
   "logout": "Log out",
