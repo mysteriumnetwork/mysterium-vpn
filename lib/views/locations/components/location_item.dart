@@ -22,7 +22,7 @@ class LocationItem extends HookConsumerWidget {
   });
 
   final VPNLocation location;
-  final VoidCallback onTap;
+  final void Function(VPNLocation) onTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,30 +33,28 @@ class LocationItem extends HookConsumerWidget {
     final children = location.children ?? const <VPNLocation>[];
     final isExpanded = useState(children.isNotEmpty ? false : null);
 
-    void handlePressed() {
+    void handleParentPressed() {
       if (isExpanded.value != null) {
         isExpanded.value = !isExpanded.value!;
       } else {
-        onTap?.call();
+        onTap?.call(location);
       }
     }
 
-    return RawMaterialButton(
-      elevation: 0,
-      hoverElevation: 0,
-      highlightElevation: 0,
-      focusElevation: 0,
-      fillColor: theme.colorScheme.primaryContainer,
+    return Container(
       constraints: const BoxConstraints(minHeight: 64),
-      onPressed: handlePressed,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(20),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _LocationItem(
             location: location,
-            onTap: onTap,
+            onTap: handleParentPressed,
+            onToggleConnectionTap: onTap == null ? null : () => onTap(location),
             label: children.isNotEmpty
                 ? LocaleKeys.locationItemCityCount.plural(location.children!.length)
                 : LocaleKeys.locationItemNodeCount.plural(location.nodeCount ?? 0),
@@ -64,7 +62,11 @@ class LocationItem extends HookConsumerWidget {
             flag: location.id,
           ),
           if (isExpanded.value ?? false)
-            for (final child in children) _ChildLocationItem(value: child, onTap: onTap),
+            for (final child in children)
+              _ChildLocationItem(
+                value: child,
+                onTap: onTap == null ? null : () => onTap(child),
+              ),
         ],
       ),
     );
@@ -96,12 +98,14 @@ class _LocationItem extends StatelessWidget {
     required this.location,
     required this.onTap,
     required this.label,
+    this.onToggleConnectionTap,
     this.isExpanded,
     this.flag,
   });
 
   final VPNLocation location;
   final VoidCallback? onTap;
+  final VoidCallback? onToggleConnectionTap;
   final String label;
   final bool? isExpanded;
   final String? flag;
@@ -110,83 +114,92 @@ class _LocationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final title = location.name;
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        spacing: 20,
-        children: [
-          if (flag != null) Flag(countryCode: flag!, size: 30),
-          if (flag == null)
-            Container(
-              width: 30,
-              height: 30,
-              alignment: Alignment.centerRight,
-              child: SvgIcon(
-                height: 20,
-                width: 20,
-                asset: switch (theme.brightness) {
-                  Brightness.light => Assets.cityLight,
-                  Brightness.dark => Assets.cityDark,
-                },
-              ),
-            ),
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: 6,
-              children: [
-                EasyText(
-                  title,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                  maxLines: title.hasMultipleWords ? 2 : 1,
+    return RawMaterialButton(
+      fillColor: theme.colorScheme.primaryContainer,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      elevation: 0,
+      focusElevation: 0,
+      highlightElevation: 0,
+      hoverElevation: 0,
+      onPressed: onTap,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          spacing: 20,
+          children: [
+            if (flag != null) Flag(countryCode: flag!, size: 30),
+            if (flag == null)
+              Container(
+                width: 30,
+                height: 30,
+                alignment: Alignment.centerRight,
+                child: SvgIcon(
+                  height: 20,
+                  width: 20,
+                  asset: switch (theme.brightness) {
+                    Brightness.light => Assets.cityLight,
+                    Brightness.dark => Assets.cityDark,
+                  },
                 ),
-                Row(
-                  spacing: 8,
-                  children: [
-                    Flexible(
-                      child: EasyText(
-                        label,
-                        fontSize: 12,
-                        color: theme.palette.subtitleColor,
-                      ),
-                    ),
-                    if (isExpanded != null)
-                      AnimatedRotation(
-                        turns: switch (isExpanded ?? false) {
-                          false => 0.25,
-                          true => 0.75,
-                        },
-                        duration: const Duration(milliseconds: 200),
-                        child: SvgIcon(
-                          height: 12,
-                          width: 12,
-                          asset: switch (theme.brightness) {
-                            Brightness.light => Assets.chevronRight,
-                            Brightness.dark => Assets.chevronRight,
-                          },
-                          color: switch (theme.brightness) {
-                            Brightness.light => Palette.lightBlack,
-                            Brightness.dark => Palette.white,
-                          },
+              ),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                spacing: 6,
+                children: [
+                  EasyText(
+                    title,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    maxLines: title.hasMultipleWords ? 2 : 1,
+                  ),
+                  Row(
+                    spacing: 8,
+                    children: [
+                      Flexible(
+                        child: EasyText(
+                          label,
+                          fontSize: 12,
+                          color: theme.palette.subtitleColor,
                         ),
                       ),
-                  ],
-                ),
-              ],
+                      if (isExpanded != null)
+                        AnimatedRotation(
+                          turns: switch (isExpanded ?? false) {
+                            false => 0.25,
+                            true => 0.75,
+                          },
+                          duration: const Duration(milliseconds: 200),
+                          child: SvgIcon(
+                            height: 12,
+                            width: 12,
+                            asset: switch (theme.brightness) {
+                              Brightness.light => Assets.chevronRight,
+                              Brightness.dark => Assets.chevronRight,
+                            },
+                            color: switch (theme.brightness) {
+                              Brightness.light => Palette.lightBlack,
+                              Brightness.dark => Palette.white,
+                            },
+                          ),
+                        ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          ConnectTextButton(
-            onPressed: onTap,
-            location: location,
-            size: const Size(90, 38),
-            loadingIndicatorRadius: 15,
-            borderRadius: 10,
-            outlinedButton: true,
-          ),
-        ],
+            ConnectTextButton(
+              onPressed: onToggleConnectionTap ?? onTap,
+              location: location,
+              size: const Size(90, 38),
+              loadingIndicatorRadius: 15,
+              borderRadius: 10,
+              outlinedButton: true,
+            ),
+          ],
+        ),
       ),
     );
   }

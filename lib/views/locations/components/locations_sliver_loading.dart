@@ -31,7 +31,7 @@ class LocationsSliverLoading extends StatelessWidget {
               translations: {'en': 'mock'},
               countryCode: 'mock',
             ),
-            onTap: () {},
+            onTap: (_) {},
           ),
         );
       },

@@ -616,7 +616,7 @@ abstract class _VpnStore with Store {
           request: WireguardConnectRequest(
             publicKey: key.publicKey,
             countryOriginate: (await _realIPInfo.infoFuture)?.country,
-            country: location.id,
+            country: location.countryCode,
             ipType: switch (location.ipType) {
               IPType.datacenter => 'hosting',
               _ => null,

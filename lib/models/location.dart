@@ -37,7 +37,7 @@ class VPNLocations with _$VPNLocations {
   late final bool isEmpty = allLocations.isEmpty;
 }
 
-@freezed
+@Freezed(equal: false)
 class VPNLocation with _$VPNLocation {
   const factory VPNLocation({
     required String id,
@@ -76,4 +76,23 @@ class VPNLocation with _$VPNLocation {
       countryCode: code,
     );
   }
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other.runtimeType != runtimeType) {
+      return false;
+    }
+    return other is VPNLocation &&
+        other.id == id &&
+        other.ipType == ipType &&
+        other.countryCode == countryCode;
+  }
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
+  int get hashCode => id.hashCode ^ ipType.hashCode ^ countryCode.hashCode;
 }

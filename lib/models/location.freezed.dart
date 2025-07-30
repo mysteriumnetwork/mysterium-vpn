@@ -395,30 +395,6 @@ class _$VPNLocationImpl extends _VPNLocation {
     return 'VPNLocation(id: $id, ipType: $ipType, translations: $translations, countryCode: $countryCode, children: $children, nodeCount: $nodeCount)';
   }
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$VPNLocationImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.ipType, ipType) || other.ipType == ipType) &&
-            const DeepCollectionEquality().equals(other._translations, _translations) &&
-            (identical(other.countryCode, countryCode) || other.countryCode == countryCode) &&
-            const DeepCollectionEquality().equals(other._children, _children) &&
-            (identical(other.nodeCount, nodeCount) || other.nodeCount == nodeCount));
-  }
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      ipType,
-      const DeepCollectionEquality().hash(_translations),
-      countryCode,
-      const DeepCollectionEquality().hash(_children),
-      nodeCount);
-
   /// Create a copy of VPNLocation
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
