@@ -29,6 +29,7 @@ class LocationsSliverLoading extends StatelessWidget {
               id: 'mock',
               ipType: IPType.residential,
               translations: {'en': 'mock'},
+              countryCode: 'mock',
             ),
             onTap: () {},
           ),

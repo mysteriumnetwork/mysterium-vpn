@@ -420,6 +420,14 @@
   "linkCopied": "Link copiato negli appunti!",
   "linkExpires": "Il link scade tra 30 minuti, quindi assicurati di usarlo presto. Vai a controllare la tua posta",
   "location": "Posizione",
+  "locationItemNodeCount": {
+    "one": "{} server",
+    "other": "{} server"
+  },
+  "locationItemCityCount": {
+    "one": "{} città",
+    "other": "{} città"
+  },
   "loginQuote": "Migliora la tua esperienza personale.\nSii anonimo. Sii libero.",
   "loginSessionExpired": "La tua sessione è scaduta. Effettua nuovamente l'accesso.",
   "logout": "Disconnettersi",

@@ -420,6 +420,12 @@
   "linkCopied": "链接已复制到剪贴板！",
   "linkExpires": "该链接将在 30 分钟后过期，因此请务必尽快使用。去查看你的电子邮件",
   "location": "地点",
+  "locationItemNodeCount": {
+    "other": "{} 台服务器"
+  },
+  "locationItemCityCount": {
+    "other": "{} 个城市"
+  },
   "loginQuote": "提升您的个人体验。\n匿名。是自由的。",
   "loginSessionExpired": "您的会话已过期。请重新登录。",
   "logout": "登出",

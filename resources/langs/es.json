@@ -420,6 +420,14 @@
   "linkCopied": "¡Enlace copiado al portapapeles!",
   "linkExpires": "El enlace caduca en 30 minutos, así que asegúrate de usarlo pronto. Ve a revisar tu correo electrónico",
   "location": "Ubicación",
+  "locationItemNodeCount": {
+    "one": "{} servidor",
+    "other": "{} servidores"
+  },
+  "locationItemCityCount": {
+    "one": "{} ciudad",
+    "other": "{} ciudades"
+  },
   "loginQuote": "Sube de nivel tu experiencia personal.\nSé anónimo. Sé libre.",
   "loginSessionExpired": "Su sesión ha caducado. Inicie sesión nuevamente.",
   "logout": "Cerrar sesión",

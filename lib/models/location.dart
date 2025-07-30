@@ -43,7 +43,9 @@ class VPNLocation with _$VPNLocation {
     required String id,
     required IPType ipType,
     required Map<String, String> translations,
+    required String countryCode,
     List<VPNLocation>? children,
+    int? nodeCount,
   }) = _VPNLocation;
 
   const VPNLocation._();
@@ -51,7 +53,7 @@ class VPNLocation with _$VPNLocation {
   factory VPNLocation.fromJson(Map<String, dynamic> json) => _$VPNLocationFromJson(json);
 
   factory VPNLocation.fromLegacyJson(Map<String, dynamic> json) {
-    final code = json['code'] as String;
+    final code = (json['code'] ?? json['id']) as String;
     final ipType = IPType.fromName(json['ipType'] as String);
     return VPNLocation.fromCode(code, ipType);
   }
@@ -71,6 +73,7 @@ class VPNLocation with _$VPNLocation {
       id: code,
       ipType: ipType,
       translations: translations,
+      countryCode: code,
     );
   }
 }

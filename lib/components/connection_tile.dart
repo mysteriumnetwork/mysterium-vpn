@@ -152,7 +152,7 @@ class _ConnectingLocation extends StatelessWidget {
             ),
           ),
         ] else ...[
-          Flag(countryCode: location.id, size: 30),
+          Flag(countryCode: location.countryCode, size: 30),
           Expanded(
             child: EasyText(
               countryName,

@@ -420,6 +420,12 @@
   "linkCopied": "Tautan disalin ke papan klip!",
   "linkExpires": "Tautan kedaluwarsa dalam 30 menit, jadi pastikan untuk segera menggunakannya. Periksa email Anda",
   "location": "Lokasi",
+  "locationItemNodeCount": {
+    "other": "{} server"
+  },
+  "locationItemCityCount": {
+    "other": "{} kota"
+  },
   "loginQuote": "Tingkatkan pengalaman pribadi Anda.\nJadilah anonim. Jadilah bebas.",
   "loginSessionExpired": "Sesi Anda telah kedaluwarsa. Silakan login kembali.",
   "logout": "Keluar",

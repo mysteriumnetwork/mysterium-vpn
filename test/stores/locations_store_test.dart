@@ -185,6 +185,7 @@ void main() {
           ipType: IPType.closest,
           id: '',
           translations: {},
+          countryCode: '',
         ),
       );
     });

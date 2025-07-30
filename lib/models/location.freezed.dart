@@ -205,7 +205,9 @@ mixin _$VPNLocation {
   String get id => throw _privateConstructorUsedError;
   IPType get ipType => throw _privateConstructorUsedError;
   Map<String, String> get translations => throw _privateConstructorUsedError;
+  String get countryCode => throw _privateConstructorUsedError;
   List<VPNLocation>? get children => throw _privateConstructorUsedError;
+  int? get nodeCount => throw _privateConstructorUsedError;
 
   /// Serializes this VPNLocation to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -222,7 +224,12 @@ abstract class $VPNLocationCopyWith<$Res> {
       _$VPNLocationCopyWithImpl<$Res, VPNLocation>;
   @useResult
   $Res call(
-      {String id, IPType ipType, Map<String, String> translations, List<VPNLocation>? children});
+      {String id,
+      IPType ipType,
+      Map<String, String> translations,
+      String countryCode,
+      List<VPNLocation>? children,
+      int? nodeCount});
 }
 
 /// @nodoc
@@ -243,7 +250,9 @@ class _$VPNLocationCopyWithImpl<$Res, $Val extends VPNLocation>
     Object? id = null,
     Object? ipType = null,
     Object? translations = null,
+    Object? countryCode = null,
     Object? children = freezed,
+    Object? nodeCount = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -258,10 +267,18 @@ class _$VPNLocationCopyWithImpl<$Res, $Val extends VPNLocation>
           ? _value.translations
           : translations // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
+      countryCode: null == countryCode
+          ? _value.countryCode
+          : countryCode // ignore: cast_nullable_to_non_nullable
+              as String,
       children: freezed == children
           ? _value.children
           : children // ignore: cast_nullable_to_non_nullable
               as List<VPNLocation>?,
+      nodeCount: freezed == nodeCount
+          ? _value.nodeCount
+          : nodeCount // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -274,7 +291,12 @@ abstract class _$$VPNLocationImplCopyWith<$Res> implements $VPNLocationCopyWith<
   @override
   @useResult
   $Res call(
-      {String id, IPType ipType, Map<String, String> translations, List<VPNLocation>? children});
+      {String id,
+      IPType ipType,
+      Map<String, String> translations,
+      String countryCode,
+      List<VPNLocation>? children,
+      int? nodeCount});
 }
 
 /// @nodoc
@@ -292,7 +314,9 @@ class __$$VPNLocationImplCopyWithImpl<$Res>
     Object? id = null,
     Object? ipType = null,
     Object? translations = null,
+    Object? countryCode = null,
     Object? children = freezed,
+    Object? nodeCount = freezed,
   }) {
     return _then(_$VPNLocationImpl(
       id: null == id
@@ -307,10 +331,18 @@ class __$$VPNLocationImplCopyWithImpl<$Res>
           ? _value._translations
           : translations // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
+      countryCode: null == countryCode
+          ? _value.countryCode
+          : countryCode // ignore: cast_nullable_to_non_nullable
+              as String,
       children: freezed == children
           ? _value._children
           : children // ignore: cast_nullable_to_non_nullable
               as List<VPNLocation>?,
+      nodeCount: freezed == nodeCount
+          ? _value.nodeCount
+          : nodeCount // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -322,7 +354,9 @@ class _$VPNLocationImpl extends _VPNLocation {
       {required this.id,
       required this.ipType,
       required final Map<String, String> translations,
-      final List<VPNLocation>? children})
+      required this.countryCode,
+      final List<VPNLocation>? children,
+      this.nodeCount})
       : _translations = translations,
         _children = children,
         super._();
@@ -341,6 +375,8 @@ class _$VPNLocationImpl extends _VPNLocation {
     return EqualUnmodifiableMapView(_translations);
   }
 
+  @override
+  final String countryCode;
   final List<VPNLocation>? _children;
   @override
   List<VPNLocation>? get children {
@@ -352,8 +388,11 @@ class _$VPNLocationImpl extends _VPNLocation {
   }
 
   @override
+  final int? nodeCount;
+
+  @override
   String toString() {
-    return 'VPNLocation(id: $id, ipType: $ipType, translations: $translations, children: $children)';
+    return 'VPNLocation(id: $id, ipType: $ipType, translations: $translations, countryCode: $countryCode, children: $children, nodeCount: $nodeCount)';
   }
 
   @override
@@ -364,7 +403,9 @@ class _$VPNLocationImpl extends _VPNLocation {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.ipType, ipType) || other.ipType == ipType) &&
             const DeepCollectionEquality().equals(other._translations, _translations) &&
-            const DeepCollectionEquality().equals(other._children, _children));
+            (identical(other.countryCode, countryCode) || other.countryCode == countryCode) &&
+            const DeepCollectionEquality().equals(other._children, _children) &&
+            (identical(other.nodeCount, nodeCount) || other.nodeCount == nodeCount));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -374,7 +415,9 @@ class _$VPNLocationImpl extends _VPNLocation {
       id,
       ipType,
       const DeepCollectionEquality().hash(_translations),
-      const DeepCollectionEquality().hash(_children));
+      countryCode,
+      const DeepCollectionEquality().hash(_children),
+      nodeCount);
 
   /// Create a copy of VPNLocation
   /// with the given fields replaced by the non-null parameter values.
@@ -397,7 +440,9 @@ abstract class _VPNLocation extends VPNLocation {
       {required final String id,
       required final IPType ipType,
       required final Map<String, String> translations,
-      final List<VPNLocation>? children}) = _$VPNLocationImpl;
+      required final String countryCode,
+      final List<VPNLocation>? children,
+      final int? nodeCount}) = _$VPNLocationImpl;
   const _VPNLocation._() : super._();
 
   factory _VPNLocation.fromJson(Map<String, dynamic> json) = _$VPNLocationImpl.fromJson;
@@ -409,7 +454,11 @@ abstract class _VPNLocation extends VPNLocation {
   @override
   Map<String, String> get translations;
   @override
+  String get countryCode;
+  @override
   List<VPNLocation>? get children;
+  @override
+  int? get nodeCount;
 
   /// Create a copy of VPNLocation
   /// with the given fields replaced by the non-null parameter values.

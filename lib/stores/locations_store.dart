@@ -68,13 +68,19 @@ abstract class _LocationsStore with Store {
 
   @readonly
   late ObservableStream<VPNLocations> _dcLocationsStream = ObservableStream(
-    _watch(IPType.datacenter).distinct().doOnListen(() => refresh(IPType.datacenter)),
+    _watch(IPType.datacenter).distinct().doOnListen(
+          () => refresh(IPType.datacenter),
+          onError: _logger.handle,
+        ),
     initialValue: _localDB.getLocations(IPType.datacenter),
   );
 
   @readonly
   late ObservableStream<VPNLocations> _residentialLocationsStream = ObservableStream(
-    _watch(IPType.residential).distinct().doOnListen(() => refresh(IPType.residential)),
+    _watch(IPType.residential).distinct().doOnListen(
+          () => refresh(IPType.residential),
+          onError: _logger.handle,
+        ),
     initialValue: _localDB.getLocations(IPType.residential),
   );
 
@@ -145,6 +151,7 @@ abstract class _LocationsStore with Store {
       id: '',
       translations: {},
       ipType: IPType.closest,
+      countryCode: '',
     );
   }
 
@@ -314,6 +321,7 @@ List<VPNLocation> countriesToLocations(Iterable<String> countries, IPType? ipTyp
             for (final locale in locales) locale.languageCode.toLowerCase(): code.tr(),
           },
           ipType: ipType ?? IPType.residential,
+          countryCode: code,
         ),
       )
       .toList();
@@ -337,12 +345,20 @@ VPNLocation _mapCountry(ConnectionLocation response, [IPType ipType = IPType.res
       id: response.country,
       ipType: ipType,
       translations: response.translations,
-      children: response.cities.map((it) => _mapCity(it, ipType)).toList(),
+      nodeCount: response.total.toInt(),
+      children: response.cities.map((it) => _mapCity(it, response.country, ipType)).toList(),
+      countryCode: response.country,
     );
 
-VPNLocation _mapCity(ConnectionLocationCity response, [IPType ipType = IPType.residential]) =>
+VPNLocation _mapCity(
+  ConnectionLocationCity response,
+  String country,
+  IPType ipType,
+) =>
     VPNLocation(
       id: response.city,
       ipType: ipType,
       translations: response.translations,
+      nodeCount: response.total.toInt(),
+      countryCode: country,
     );

@@ -420,6 +420,12 @@
   "linkCopied": "Bağlantı panoya kopyalandı!",
   "linkExpires": "Link 30 dakika içinde kullanılmalıdır, bu yüzden bir an önce tıkladığınızdan emin olun. ",
   "location": "Ülke",
+  "locationItemNodeCount": {
+    "other": "{} sunucu"
+  },
+  "locationItemCityCount": {
+    "other": "{} şehir"
+  },
   "loginQuote": "Kişisel deneyiminizi yükseltin.\n",
   "loginSessionExpired": "Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın.",
   "logout": "Çıkış Yap",

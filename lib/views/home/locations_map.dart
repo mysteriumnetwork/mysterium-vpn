@@ -58,6 +58,11 @@ class LocationsMap extends HookConsumerWidget {
       onLocationPressed?.call(location);
     }
 
+    final locations = useMemoized(
+      () => _childlessLocations(this.locations),
+      [this.locations],
+    );
+
     final markers = _useLocationMarkers(
       locations: locations,
       activeLocation: activeLocation,
@@ -75,10 +80,24 @@ class LocationsMap extends HookConsumerWidget {
       });
     });
 
+    useEffect(
+      () {
+        if (locations != null && locations.isNotEmpty) {
+          final store = ref.read(latLngStorePOD);
+          Future.microtask(() async {
+            final ids = locations.map((it) => it.id).toSet();
+            await store.refreshIfNeeded(ids);
+          });
+        }
+        return null;
+      },
+      [locations],
+    );
+
     return FlutterMap(
       mapController: controller,
       options: MapOptions(
-        initialZoom: kMapZoomLevels.max,
+        initialZoom: kTileZomLevels.max,
         initialCenter: position ?? const LatLng(0, 0),
         cameraConstraint: CameraConstraint.contain(bounds: kWorldBounds),
         backgroundColor: theme.colorScheme.surface,
@@ -97,6 +116,26 @@ class LocationsMap extends HookConsumerWidget {
   }
 }
 
+List<VPNLocation>? _childlessLocations(List<VPNLocation>? locations) {
+  if (locations == null) {
+    return null;
+  }
+
+  final flattened = <VPNLocation>[];
+  final queue = Queue<VPNLocation>.of(locations);
+
+  while (queue.isNotEmpty) {
+    final location = queue.removeFirst();
+    if (location.children == null || location.children!.isEmpty) {
+      flattened.add(location);
+    } else {
+      queue.addAll(location.children!);
+    }
+  }
+
+  return flattened;
+}
+
 List<Marker> _useLocationMarkers({
   required List<VPNLocation>? locations,
   required VPNLocation? activeLocation,
@@ -107,11 +146,12 @@ List<Marker> _useLocationMarkers({
 
   return useComputedValue<List<Marker>>(
     () {
-      if (locations == null || latLngStore.coordinatesFuture.value == null) {
+      if (locations == null) {
         return [];
       }
 
       return locations
+          .where((it) => it.children == null || it.children!.isEmpty)
           .map((it) {
             final point = latLngStore.coordinatesFor(it.id);
             if (point == null) {
