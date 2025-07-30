@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mobx/mobx.dart';
@@ -9,7 +8,6 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/api.dart';
 import 'package:mysterium_vpn/common/extensions/stream_extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
@@ -35,7 +33,7 @@ abstract class _LocationsStore with Store {
     this._prefs,
     this._localDB,
     this._logger,
-    LocaleStore localeStore,
+    this._localeStore,
     this._ping,
   ) {
     /// mobx stream won't initialize if not used within ReactiveContext scope, so this is done to
@@ -45,7 +43,7 @@ abstract class _LocationsStore with Store {
       _residentialLocationsStream.value;
     });
 
-    reaction((_) => localeStore.currentLocale, (locale) {
+    reaction((_) => _localeStore.currentLocale, (locale) {
       if (_searchKeyword.isNotEmpty) {
         setLocationKeyword('');
       }
@@ -58,6 +56,7 @@ abstract class _LocationsStore with Store {
   final FilterService _filterService;
   final AnalyticsStore _analyticsStore;
   final RemoteConfigStore _remoteConfigStore;
+  final LocaleStore _localeStore;
   final SharedPreferenceService _prefs;
   final LocalDBService _localDB;
   final Talker _logger;
@@ -108,6 +107,7 @@ abstract class _LocationsStore with Store {
         ..._residentialLocationsStream.value?.allLocations ?? [],
       },
       keyword: _searchKeyword,
+      locale: _localeStore.currentLocale.languageCode.toLowerCase(),
     );
   }
 
@@ -129,7 +129,11 @@ abstract class _LocationsStore with Store {
   List<VPNLocation> get locations {
     final value = locationsStream.value?.locations;
     if (value != null) {
-      return _filterService.filterLocations(value, keyword: _searchKeyword);
+      return _filterService.filterLocations(
+        value,
+        keyword: _searchKeyword,
+        locale: _localeStore.currentLocale.languageCode.toLowerCase(),
+      );
     }
     return [];
   }
@@ -138,7 +142,11 @@ abstract class _LocationsStore with Store {
   List<VPNLocation> get topLocations {
     final value = locationsStream.value?.topLocations;
     if (value != null) {
-      return _filterService.filterLocations(value, keyword: _searchKeyword);
+      return _filterService.filterLocations(
+        value,
+        keyword: _searchKeyword,
+        locale: _localeStore.currentLocale.languageCode.toLowerCase(),
+      );
     }
     return [];
   }
@@ -329,13 +337,7 @@ abstract class _LocationsStore with Store {
 }
 
 List<VPNLocation> countriesToLocations(Iterable<String> countries, IPType? ipType) {
-  List<Locale> locales;
-  try {
-    locales = EasyLocalization.of(rootContext)!.supportedLocales;
-  } catch (e) {
-    // If EasyLocalization is not initialized, fallback to default locales
-    locales = kSupportedLocales;
-  }
+  final locales = kSupportedLocales;
 
   return countries
       .map(

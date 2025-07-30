@@ -4,7 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/ip_type.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 
 part 'location.freezed.dart';
 
@@ -20,18 +19,6 @@ class VPNLocations with _$VPNLocations {
   VPNLocations._();
 
   factory VPNLocations.fromJson(Map<String, dynamic> json) => _$VPNLocationsFromJson(json);
-
-  factory VPNLocations.fromLegacyJson(Map<String, dynamic> json) {
-    final locations = (json['locations'] as List<dynamic>?)
-            ?.map((e) => VPNLocation.fromLegacyJson(e as Map<String, dynamic>))
-            .toList() ??
-        [];
-    final topLocations = (json['topLocations'] as List<dynamic>?)
-            ?.map((e) => VPNLocation.fromLegacyJson(e as Map<String, dynamic>))
-            .toList() ??
-        [];
-    return VPNLocations(locations: locations, topLocations: topLocations);
-  }
 
   late final Set<VPNLocation> allLocations = {...locations, ...topLocations};
   late final bool isEmpty = allLocations.isEmpty;
@@ -50,22 +37,12 @@ class VPNLocation with _$VPNLocation {
 
   const VPNLocation._();
 
-  factory VPNLocation.fromJson(Map<String, dynamic> json) => _$VPNLocationFromJson(json);
-
-  factory VPNLocation.fromLegacyJson(Map<String, dynamic> json) {
-    final code = (json['code'] ?? json['id']) as String;
-    final ipType = IPType.fromName(json['ipType'] as String);
-    return VPNLocation.fromCode(code, ipType);
-  }
+  factory VPNLocation.fromJson(Map<String, dynamic> json) =>
+      _$VPNLocationFromJson(_processRawJson(json));
 
   factory VPNLocation.fromCode(String code, [IPType ipType = IPType.residential]) {
     List<Locale> locales;
-    try {
-      final localization = EasyLocalization.of(rootContext)!;
-      locales = localization.supportedLocales;
-    } catch (e) {
-      locales = kSupportedLocales;
-    }
+    locales = kSupportedLocales;
     final translations = {
       for (final locale in locales) locale.languageCode.toLowerCase(): code.tr(),
     };
@@ -95,4 +72,24 @@ class VPNLocation with _$VPNLocation {
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
   int get hashCode => id.hashCode ^ ipType.hashCode ^ countryCode.hashCode;
+}
+
+Map<String, dynamic> _processRawJson(Map<String, dynamic> raw) {
+  final id = (raw['id'] ?? raw['code']) as String;
+  final code = (raw['code'] ?? id) as String;
+  final countryCode = (raw['countryCode'] ?? code) as String;
+
+  var translations = raw['translations'];
+  if (translations is! Map) {
+    translations = <String, String>{
+      for (final locale in kSupportedLocales) locale.languageCode.toLowerCase(): code,
+    };
+  }
+  return {
+    ...raw,
+    'id': id,
+    'code': code,
+    'countryCode': countryCode,
+    'translations': translations,
+  };
 }

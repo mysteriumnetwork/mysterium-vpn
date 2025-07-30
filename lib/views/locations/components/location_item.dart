@@ -113,7 +113,7 @@ class _LocationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final title = location.name;
+    final title = location.getName(context);
     return RawMaterialButton(
       fillColor: theme.colorScheme.primaryContainer,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

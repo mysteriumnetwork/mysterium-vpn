@@ -116,6 +116,7 @@ void main() {
           mockResidential,
           availableLocations: {...mockResidential},
           keyword: 'us',
+          locale: 'en',
         ),
       ).thenReturn([Mocks.locationResidentialUS]);
 
@@ -129,8 +130,13 @@ void main() {
     test('returns filtered locations', () async {
       await locationsStore.locationsStream.first;
 
-      when(mockFilterService.filterLocations(mockResidential, keyword: 'de'))
-          .thenReturn([Mocks.locationResidentialDE]);
+      when(
+        mockFilterService.filterLocations(
+          mockResidential,
+          keyword: 'de',
+          locale: 'en',
+        ),
+      ).thenReturn([Mocks.locationResidentialDE]);
 
       locationsStore.setLocationKeyword('de', Duration.zero);
 
@@ -146,6 +152,7 @@ void main() {
           mockResidential,
           keyword: '',
           availableLocations: {...mockResidential},
+          locale: 'en',
         ),
       ).thenReturn(mockResidential);
 
@@ -210,8 +217,13 @@ void main() {
     });
 
     test('refresh updates locations', () async {
-      when(mockFilterService.filterLocations(mockResidential, keyword: ''))
-          .thenReturn(mockResidential);
+      when(
+        mockFilterService.filterLocations(
+          mockResidential,
+          keyword: '',
+          locale: 'en',
+        ),
+      ).thenReturn(mockResidential);
 
       await locationsStore.refresh();
       await locationsStore.locationsStream.first;
