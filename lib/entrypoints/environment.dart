@@ -95,18 +95,23 @@ class Environment {
 
     flavorConfig = await _setupFlavor();
     await _setupTrayIcon(flavorConfig);
-    await SharedPreferenceService.instance.init();
-    SecureStorageService.instance.init(flavorConfig);
-    await EasyLocalization.ensureInitialized();
-    await LocalDBService.initialize();
+    await Future.wait([
+      SharedPreferenceService.instance.init(),
+      SecureStorageService.instance.init(flavorConfig),
+      EasyLocalization.ensureInitialized(),
+      LocalDBService.initialize(),
+    ]);
     providerContainer = ProviderContainer(
       overrides: [environmentPOD.overrideWithValue(flavorConfig)],
     );
 
     final firebaseOptions = _getFirebaseOptions();
     await providerContainer.read(analyticsInitPOD(firebaseOptions).future);
-    remoteConfigStore = await _initRemoteConfig(providerContainer);
-    await _initLatLngStore(providerContainer);
+    final [rcStore, _] = await Future.wait([
+      _initRemoteConfig(providerContainer),
+      _initLatLngStore(providerContainer),
+    ]);
+    remoteConfigStore = rcStore! as RemoteConfigStore;
     logger = providerContainer.read(loggerPOD);
 
     logger.log(

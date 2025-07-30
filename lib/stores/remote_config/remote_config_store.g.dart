@@ -184,6 +184,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$useStoreVersionCheckerComputed ??= Computed<bool>(() => super.useStoreVersionChecker,
               name: 'RemoteConfigStoreBase.useStoreVersionChecker'))
           .value;
+  Computed<bool>? _$enableQaHelpersComputed;
+
+  @override
+  bool get enableQaHelpers =>
+      (_$enableQaHelpersComputed ??= Computed<bool>(() => super.enableQaHelpers,
+              name: 'RemoteConfigStoreBase.enableQaHelpers'))
+          .value;
 
   @override
   String toString() {
@@ -213,7 +220,8 @@ shouldCheckUdp: ${shouldCheckUdp},
 latestStableAppVersion: ${latestStableAppVersion},
 isRateConnectionAvailable: ${isRateConnectionAvailable},
 cancelSubscriptionReasonKeys: ${cancelSubscriptionReasonKeys},
-useStoreVersionChecker: ${useStoreVersionChecker}
+useStoreVersionChecker: ${useStoreVersionChecker},
+enableQaHelpers: ${enableQaHelpers}
     ''';
   }
 }

@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -28,19 +28,13 @@ class LocationsSliverView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final analyticsStore = ref.watch(analyticsStorePOD);
     final locationsStore = ref.watch(locationsStorePOD);
-    final locationType = useComputedValue(() => locationsStore.ipType);
-
-    final stream = useComputedValue(() => locationsStore.locationsStream);
-
-    final locations = useComputedValue(() => locationsStore.locations);
-    final topLocations = useComputedValue(() => locationsStore.topLocations);
-    final recentLocations = useComputedValue(() => locationsStore.recentLocations);
 
     final handleToggleConnection = useHandleToggleConnection();
 
     void handleSetLocationType(IPType value) {
       analyticsStore.logTabChange(value);
       locationsStore.setIPType(value);
+      analyticsStore.logLocationTabOpen(value);
     }
 
     void handleLocationTapped(VPNLocation location) {
@@ -55,13 +49,14 @@ class LocationsSliverView extends HookConsumerWidget {
       );
     }
 
-    useValueChanged<IPType, void>(locationType, (_, __) {
-      analyticsStore.logLocationTabOpen(locationType);
-    });
-
-    return MultiSliver(
-      children: [
-        _Body(
+    return Observer(
+      builder: (context) {
+        final locationType = locationsStore.ipType;
+        final stream = locationsStore.locationsStream;
+        final locations = locationsStore.locations;
+        final topLocations = locationsStore.topLocations;
+        final recentLocations = locationsStore.recentLocations;
+        return _Body(
           stream: stream,
           recentLocations: recentLocations,
           locationType: locationType,
@@ -70,8 +65,8 @@ class LocationsSliverView extends HookConsumerWidget {
           onRecentLocationTapped: handleRecentLocationTapped,
           onLocationTypeChanged: handleSetLocationType,
           onLocationTapped: handleLocationTapped,
-        ),
-      ],
+        );
+      },
     );
   }
 }
@@ -93,23 +88,28 @@ class _Body extends HookConsumerWidget {
   final IPType locationType;
   final List<VPNLocation> locations;
   final List<VPNLocation> topLocations;
-  final Function(VPNLocation) onRecentLocationTapped;
-  final Function(IPType) onLocationTypeChanged;
-  final Function(VPNLocation) onLocationTapped;
+  final void Function(VPNLocation) onRecentLocationTapped;
+  final void Function(IPType) onLocationTypeChanged;
+  final void Function(VPNLocation) onLocationTapped;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsStore = ref.watch(locationsStorePOD);
+    final recentsFutureStatus = useComputedValue(() => locationsStore.recentLocationsFuture.status);
 
     if (stream.value != null) {
       return MultiSliver(
         children: [
-          if (recentLocations.isNotEmpty)
+          if (recentsFutureStatus == FutureStatus.pending) ...[
+            const RecentLocationsLoading(),
+            const SizedBox(height: 24),
+          ] else if (recentLocations.isNotEmpty) ...[
             _RecentLocations(
               recentLocations: recentLocations,
               onLocationTapped: onRecentLocationTapped,
             ),
-          if (recentLocations.isNotEmpty) const SizedBox(height: 24),
+            const SizedBox(height: 24),
+          ],
           _Locations(
             locations: locations,
             topLocations: topLocations,
@@ -137,7 +137,7 @@ class _Body extends HookConsumerWidget {
           child: RetryWdiget(
             asset: Assets.globe,
             onRetry: locationsStore.refresh,
-            text: stream.error.toString(),
+            error: stream.error,
           ),
         ),
       ],
@@ -152,7 +152,7 @@ class _RecentLocations extends StatelessWidget {
   });
 
   final List<VPNLocation> recentLocations;
-  final Function(VPNLocation) onLocationTapped;
+  final void Function(VPNLocation) onLocationTapped;
 
   @override
   Widget build(BuildContext context) => MultiSliver(
@@ -182,10 +182,9 @@ class _Locations extends HookConsumerWidget {
 
   final List<VPNLocation> locations;
   final List<VPNLocation> topLocations;
-
   final IPType locationType;
-  final Function(IPType) onLocationTypeChanged;
-  final Function(VPNLocation) onLocationTapped;
+  final void Function(IPType) onLocationTypeChanged;
+  final void Function(VPNLocation) onLocationTapped;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

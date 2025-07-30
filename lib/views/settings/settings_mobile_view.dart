@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/sheet_scaffold.dart';
@@ -13,37 +14,43 @@ import 'package:mysterium_vpn/views/settings/qa_toolbox.dart';
 import 'package:mysterium_vpn/views/settings/version_update_setting.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class SettingsMobileView extends ConsumerWidget {
+class SettingsMobileView extends HookConsumerWidget {
   const SettingsMobileView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => SheetScaffold(
-        headerTitle: LocaleKeys.settings.tr(),
-        sliver: DecoratedSliver(
-          decoration: BoxDecoration(
-            color: context.c.isDarkMode ? Palette.darkBlue : Palette.white,
-          ),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                const AppVersionUpdateSetting(),
-                _HeaderTitle(title: LocaleKeys.connection.tr()),
-                const ConnectionSettings(),
-                _HeaderTitle(title: LocaleKeys.application.tr()),
-                const ApplicationSettings(),
-                _HeaderTitle(title: LocaleKeys.account.tr()),
-                const AccountSettings(),
-                if (ref.watch(environmentPOD).isDev) ...[
-                  const _HeaderTitle(title: 'QA Toolbox'),
-                  const QAToolbox(),
-                ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final remoteConfig = ref.watch(remoteConfigStorePOD);
+    final enableQaHelpers = useComputedValue(
+      () => remoteConfig.enableQaHelpers,
+    );
+    return SheetScaffold(
+      headerTitle: LocaleKeys.settings.tr(),
+      sliver: DecoratedSliver(
+        decoration: BoxDecoration(
+          color: context.c.isDarkMode ? Palette.darkBlue : Palette.white,
+        ),
+        sliver: SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              const AppVersionUpdateSetting(),
+              _HeaderTitle(title: LocaleKeys.connection.tr()),
+              const ConnectionSettings(),
+              _HeaderTitle(title: LocaleKeys.application.tr()),
+              const ApplicationSettings(),
+              _HeaderTitle(title: LocaleKeys.account.tr()),
+              const AccountSettings(),
+              if (enableQaHelpers) ...[
+                const _HeaderTitle(title: 'QA Toolbox'),
+                const QAToolbox(),
               ],
-            ),
+            ],
           ),
         ),
-      ).backgroundColor(
-        context.c.isDarkMode ? Palette.darkBlue : Palette.white,
-      );
+      ),
+    ).backgroundColor(
+      context.c.isDarkMode ? Palette.darkBlue : Palette.white,
+    );
+  }
 }
 
 class _HeaderTitle extends StatelessWidget {

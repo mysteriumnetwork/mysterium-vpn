@@ -32,7 +32,6 @@ import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/update_availabe_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
-import 'package:new_version_plus/new_version_plus.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
@@ -199,8 +198,9 @@ final remoteConfigStorePOD = Provider<RemoteConfigStore>((ref) {
   final client = ref.watch(remoteConfigClientPOD);
   final logger = ref.watch(loggerPOD);
   final realIPInfoStore = ref.watch(realIPInfoStorePOD);
+  final env = ref.watch(environmentPOD);
 
-  return RemoteConfigStore(client, logger, realIPInfoStore);
+  return RemoteConfigStore(client, logger, realIPInfoStore, env);
 });
 
 final abTestingStorePOD = Provider<ABTestingStore>((ref) {
@@ -264,10 +264,8 @@ final networkStatisticsStorePOD = Provider.autoDispose<NetworkStatisticsStore>((
 
 final updateAvailableStorePOD = Provider.autoDispose<UpdateAvailableStore>((ref) {
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
-  final newVersionPlus = NewVersionPlus();
   return UpdateAvailableStore(
     remoteConfigStore,
-    newVersionPlus,
     ref.watch(environmentPOD),
   );
 });

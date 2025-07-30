@@ -23,12 +23,12 @@ dependencies:
   curl_logger_dio_interceptor: ^1.0.0
   device_info_plus: 11.5.0
   dio: 5.8.0+1 
-  easy_localization: 3.0.7
+  easy_localization: 3.0.8
   easy_localization_loader: ^2.0.2
-  firebase_analytics: 11.5.2
-  firebase_core: 3.15.1
-  firebase_crashlytics: 4.3.9
-  firebase_performance: 0.10.1+9
+  firebase_analytics: 12.0.0
+  firebase_core: 4.0.0
+  firebase_crashlytics: 5.0.0
+  firebase_performance: 0.11.0
   flutter:
     sdk: flutter
   flutter_hooks: 0.21.2
@@ -57,6 +57,7 @@ dependencies:
   in_app_purchase: 3.2.3
   in_app_purchase_storekit: 0.4.3
   in_app_review: 2.0.10
+  in_app_update: ^4.2.3
   intl: 0.19.0
   json_annotation: 4.9.0
   latlong2: 0.9.1
@@ -64,7 +65,6 @@ dependencies:
   mobx: 2.5.0
   modal_bottom_sheet: 3.0.0
   mqtt5_client: 4.11.0
-  new_version_plus: 0.1.0
   open_mail_app:
     git:
       url: https://github.com/KristijanMitrik/open-mail-app-flutter.git
@@ -74,7 +74,7 @@ dependencies:
   path_provider: 2.1.5
   reactive_forms: 17.0.1
   retry: ^3.1.2
-  sentry_flutter: 9.3.0
+  sentry_flutter: 9.5.0
   shared_preferences: 2.5.3
   shimmer: 3.0.0
   sign_in_with_apple: 7.0.1
@@ -83,20 +83,18 @@ dependencies:
   stack_trace: 1.12.1
   store_checker_windows:
     path: ./packages/store_checker_windows
-  storekit_extensions:
-    path: ./packages/storekit_extensions
   styled_widget: 0.4.1
-  talker: 4.4.1
+  talker: 4.9.3
   talker_dio_logger: 4.4.1
   tray_manager: 0.5.0
-  url_launcher: 6.3.1
+  url_launcher: 6.3.2
   url_protocol:
     git:
       url: https://github.com/KristijanMitrik/flutter_url_protocol
       ref: main
   vpn_api:
     git:
-      url: git@github.com:mysteriumnetwork/mysterium-vpn-api-client-dart.git
+      url: https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git
       ref: 1.0.10
   window_manager: 0.5.0
   wireguard_dart:

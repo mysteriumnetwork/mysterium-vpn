@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
-import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/views/locations/components/recent_location_item.dart';
+import 'package:mysterium_vpn/views/locations/components/location_item_loading.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:sliver_tools/sliver_tools.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class RecentLocationsLoading extends StatelessWidget {
   const RecentLocationsLoading({
@@ -16,31 +16,37 @@ class RecentLocationsLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxHeight: 124),
-      child: ListView.separated(
-        shrinkWrap: true,
-        clipBehavior: Clip.none,
-        scrollDirection: Axis.horizontal,
-        itemCount: placeholderCount,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
-        itemBuilder: (_, __) {
-          final color = theme.colorScheme.secondary;
-          return Shimmer.fromColors(
-            baseColor: color,
-            highlightColor: color.darken(20),
-            child: RecentLocationItem(
-              location: const VPNLocation(
-                id: 'mock',
-                ipType: IPType.residential,
-                translations: {'en': 'mock'},
-                countryCode: 'mock',
+    final color = theme.colorScheme.secondary;
+    return MultiSliver(
+      children: [
+        Shimmer.fromColors(
+          baseColor: color,
+          highlightColor: color.darken(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 200,
+                height: 24,
+                color: Colors.grey[300],
               ),
-              onTap: () {},
-            ),
-          );
-        },
-      ),
+            ],
+          ),
+        ).width(100),
+        const SizedBox(height: 12),
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxHeight: 82),
+          child: ListView.separated(
+            shrinkWrap: true,
+            clipBehavior: Clip.none,
+            scrollDirection: Axis.horizontal,
+            itemCount: placeholderCount,
+            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            itemBuilder: (_, __) => const LocationItemLoading(),
+          ),
+        ),
+      ],
     );
   }
 }

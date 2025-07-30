@@ -92,11 +92,29 @@ abstract class _LocationsStore with Store {
 
   @readonly
   late ObservableFuture<List<VPNLocation>> _recentLocationsFuture = ObservableFuture(
-    _localDB.getRecentLocations(),
+    _fetchRecentLocations(),
   );
 
   @readonly
   String _searchKeyword = '';
+
+  @action
+  Future<List<VPNLocation>> _fetchRecentLocations() async {
+    final locations = await _localDB.getRecentLocations();
+    return _filterService.filterRecentLocations(
+      locations,
+      availableLocations: {
+        ..._dcLocationsStream.value?.allLocations ?? [],
+        ..._residentialLocationsStream.value?.allLocations ?? [],
+      },
+      keyword: _searchKeyword,
+    );
+  }
+
+  @computed
+  bool get _locationsNotEmpty =>
+      (_residentialLocationsStream.value?.locations.isNotEmpty ?? false) ||
+      (_dcLocationsStream.value?.locations.isNotEmpty ?? false);
 
   @readonly
   late IPType _ipType = _prefs.getIPType() ?? IPType.residential;
@@ -105,20 +123,7 @@ abstract class _LocationsStore with Store {
   VPNLocation? selectedLocation;
 
   @computed
-  List<VPNLocation> get recentLocations {
-    final value = _recentLocationsFuture.value;
-    if (value != null) {
-      return _filterService.filterRecentLocations(
-        value,
-        availableLocations: {
-          ..._dcLocationsStream.value?.allLocations ?? [],
-          ..._residentialLocationsStream.value?.allLocations ?? [],
-        },
-        keyword: _searchKeyword,
-      );
-    }
-    return [];
-  }
+  List<VPNLocation> get recentLocations => _recentLocationsFuture.value ?? [];
 
   @computed
   List<VPNLocation> get locations {
@@ -138,21 +143,24 @@ abstract class _LocationsStore with Store {
     return [];
   }
 
-  VPNLocation randomLocation([IPType? type]) {
-    var recents = recentLocations;
-    if (type != null) {
-      recents = recentLocations.where((location) => location.ipType == type).toList();
+  @computed
+  VPNLocation? get randomLocation {
+    if (_recentLocationsFuture.status == FutureStatus.pending) {
+      return null;
     }
-    if (recents.isNotEmpty) {
-      return recents.first;
+    if (recentLocations.isNotEmpty) {
+      return recentLocations.first;
     }
 
-    return const VPNLocation(
+    if (_locationsNotEmpty) {
+      return const VPNLocation(
       id: '',
       translations: {},
       ipType: IPType.closest,
       countryCode: '',
     );
+    }
+    return null;
   }
 
   Future<VPNLocation?> closestLocation([IPType? type]) async {
@@ -248,6 +256,9 @@ abstract class _LocationsStore with Store {
 
   @action
   Future<void> addRecentLocation(VPNLocation location) async {
+    if (_shouldSkipLocation(location)) {
+      return;
+    }
     if (location.id.isNotEmpty) {
       if (recentLocations.contains(location)) {
         recentLocations.remove(location);
@@ -262,6 +273,19 @@ abstract class _LocationsStore with Store {
     }
 
     _ipType = location.ipType;
+  }
+
+  bool _shouldSkipLocation(VPNLocation location) => switch (location.ipType) {
+        IPType.datacenter => !_listContainsLocation(_dcLocationsStream.value, location),
+        IPType.residential => !_listContainsLocation(_residentialLocationsStream.value, location),
+        IPType.closest => true,
+      };
+
+  bool _listContainsLocation(VPNLocations? list, VPNLocation location) {
+    if (list == null) {
+      return false;
+    }
+    return list.locations.contains(location) || list.topLocations.contains(location);
   }
 
   @action

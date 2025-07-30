@@ -17,30 +17,38 @@ mixin _$UpdateAvailableStore on _UpdateAvailableStore, Store {
               name: '_UpdateAvailableStore.appUpdateAvailable'))
           .value;
 
-  late final _$newVersionFutureAtom =
-      Atom(name: '_UpdateAvailableStore.newVersionFuture', context: context);
+  late final _$updateAvailabilityFutureAtom =
+      Atom(name: '_UpdateAvailableStore.updateAvailabilityFuture', context: context);
 
   @override
-  ObservableFuture<VersionStatus?> get newVersionFuture {
-    _$newVersionFutureAtom.reportRead();
-    return super.newVersionFuture;
+  ObservableFuture<UpdateAvailability?> get updateAvailabilityFuture {
+    _$updateAvailabilityFutureAtom.reportRead();
+    return super.updateAvailabilityFuture;
   }
 
-  bool _newVersionFutureIsInitialized = false;
+  bool _updateAvailabilityFutureIsInitialized = false;
 
   @override
-  set newVersionFuture(ObservableFuture<VersionStatus?> value) {
-    _$newVersionFutureAtom
-        .reportWrite(value, _newVersionFutureIsInitialized ? super.newVersionFuture : null, () {
-      super.newVersionFuture = value;
-      _newVersionFutureIsInitialized = true;
+  set updateAvailabilityFuture(ObservableFuture<UpdateAvailability?> value) {
+    _$updateAvailabilityFutureAtom.reportWrite(
+        value, _updateAvailabilityFutureIsInitialized ? super.updateAvailabilityFuture : null, () {
+      super.updateAvailabilityFuture = value;
+      _updateAvailabilityFutureIsInitialized = true;
     });
+  }
+
+  late final _$_getNewVersionStatusAsyncAction =
+      AsyncAction('_UpdateAvailableStore._getNewVersionStatus', context: context);
+
+  @override
+  Future<UpdateAvailability?> _getNewVersionStatus() {
+    return _$_getNewVersionStatusAsyncAction.run(() => super._getNewVersionStatus());
   }
 
   @override
   String toString() {
     return '''
-newVersionFuture: ${newVersionFuture},
+updateAvailabilityFuture: ${updateAvailabilityFuture},
 appUpdateAvailable: ${appUpdateAvailable}
     ''';
   }
