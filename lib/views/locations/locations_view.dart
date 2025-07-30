@@ -100,9 +100,10 @@ class _Body extends HookConsumerWidget {
     if (stream.value != null) {
       return MultiSliver(
         children: [
-          if (recentsFutureStatus == FutureStatus.pending)...
-           [ const RecentLocationsLoading(),const SizedBox(height: 24),]
-          else if (recentLocations.isNotEmpty) ...[
+          if (recentsFutureStatus == FutureStatus.pending) ...[
+            const RecentLocationsLoading(),
+            const SizedBox(height: 24),
+          ] else if (recentLocations.isNotEmpty) ...[
             _RecentLocations(
               recentLocations: recentLocations,
               onLocationTapped: onRecentLocationTapped,
