@@ -175,7 +175,15 @@ void main() {
       await newStore.recentLocationsFuture;
       await newStore.refresh(IPType.residential);
       final randomLocation = newStore.randomLocation;
-      expect(randomLocation, const VPNLocation(ipType: IPType.closest));
+      expect(
+        randomLocation,
+        const VPNLocation(
+          ipType: IPType.closest,
+          countryCode: '',
+          id: '',
+          translations: {'en': ''},
+        ),
+      );
     });
 
     test('returns null when no locations available for random selection', () async {
