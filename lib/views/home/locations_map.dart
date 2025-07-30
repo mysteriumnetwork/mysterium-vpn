@@ -93,7 +93,7 @@ class LocationsMap extends HookConsumerWidget {
     return FlutterMap(
       mapController: controller,
       options: MapOptions(
-        initialZoom: kTileZomLevels.max,
+        initialZoom: kTileZoomLevels.max,
         initialCenter: position ?? const LatLng(0, 0),
         cameraConstraint: CameraConstraint.contain(bounds: kWorldBounds),
         backgroundColor: theme.colorScheme.surface,
