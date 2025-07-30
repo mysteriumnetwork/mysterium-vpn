@@ -95,16 +95,21 @@ class _Body extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsStore = ref.watch(locationsStorePOD);
+    final recentsFutureStatus = useComputedValue(() => locationsStore.recentLocationsFuture.status);
 
     if (stream.value != null) {
       return MultiSliver(
         children: [
-          if (recentLocations.isNotEmpty)
+          if (recentsFutureStatus == FutureStatus.pending) ...[
+            const RecentLocationsLoading(),
+            const SizedBox(height: 24),
+          ] else if (recentLocations.isNotEmpty) ...[
             _RecentLocations(
               recentLocations: recentLocations,
               onLocationTapped: onRecentLocationTapped,
             ),
-          if (recentLocations.isNotEmpty) const SizedBox(height: 24),
+            const SizedBox(height: 24),
+          ],
           _Locations(
             locations: locations,
             topLocations: topLocations,
