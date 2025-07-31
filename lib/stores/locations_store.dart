@@ -6,7 +6,6 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/api.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/extensions/stream_extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
@@ -101,11 +100,17 @@ abstract class _LocationsStore with Store {
   @action
   Future<List<VPNLocation>> _fetchRecentLocations() async {
     final locations = await _localDB.getRecentLocations();
+    print('Fetched: ${locations.map((it) => it.id)}');
+    final dcLocations = _dcLocationsStream.value?.allLocationsFlattened;
+    final residentialLocations = _residentialLocationsStream.value?.allLocationsFlattened;
+
+    print('DC Locations: ${dcLocations?.map((it) => it.id)}');
+    print('Residential Locations: ${residentialLocations?.map((it) => it.id)}');
     return _filterService.filterRecentLocations(
       locations,
       availableLocations: {
-        ..._dcLocationsStream.value?.allLocations ?? [],
-        ..._residentialLocationsStream.value?.allLocations ?? [],
+        ...?_dcLocationsStream.value?.allLocationsFlattened,
+        ...?_residentialLocationsStream.value?.allLocationsFlattened,
       },
       keyword: _searchKeyword,
       locale: _localeStore.currentLocale.languageCode.toLowerCase(),
@@ -294,12 +299,7 @@ abstract class _LocationsStore with Store {
     if (list == null) {
       return false;
     }
-    final allLocations = [
-      ...list.locations.flattenBy((it) => it.children ?? const <VPNLocation>[]),
-      ...list.topLocations.flattenBy((it) => it.children ?? const <VPNLocation>[]),
-    ];
-
-    return allLocations.any((it) => it == location);
+    return list.allLocationsFlattened.any((it) => it == location);
   }
 
   @action

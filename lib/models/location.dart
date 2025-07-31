@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/ip_type.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 
 part 'location.freezed.dart';
 
@@ -21,6 +22,8 @@ class VPNLocations with _$VPNLocations {
   factory VPNLocations.fromJson(Map<String, dynamic> json) => _$VPNLocationsFromJson(json);
 
   late final Set<VPNLocation> allLocations = {...locations, ...topLocations};
+  late final Set<VPNLocation> allLocationsFlattened =
+      allLocations.flattenBy((it) => it.children ?? const <VPNLocation>[]).toSet();
   late final bool isEmpty = allLocations.isEmpty;
 }
 
