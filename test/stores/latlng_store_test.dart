@@ -5,33 +5,20 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/services/data/local/assets_service.dart';
 import 'package:mysterium_vpn/services/data/network/nominatim_service.dart';
 import 'package:mysterium_vpn/stores/latlng_store.dart';
-import 'package:talker/talker.dart';
 
 import 'latlng_store_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<AssetsService>(),
   MockSpec<NominatimService>(),
-  MockSpec<Talker>(unsupportedMembers: {#configure}),
 ])
 void main() {
   late MockAssetsService mockAssetsService;
-  late MockNominatimService mockNominatimService;
   late LatLngStore latLngStore;
-  late MockTalker mockLoggerService;
 
   setUp(() {
     mockAssetsService = MockAssetsService();
-    mockNominatimService = MockNominatimService();
-    mockLoggerService = MockTalker();
-    latLngStore = LatLngStore(mockAssetsService, mockNominatimService, mockLoggerService);
-
-    when(mockNominatimService.findCoordinatesFor('vilnius')).thenAnswer(
-      (_) async => const LatLng(54.6872, 25.2797),
-    );
-    when(mockNominatimService.findCoordinatesFor('wrongQuery')).thenAnswer(
-      (_) async => null,
-    );
+    latLngStore = LatLngStore(mockAssetsService);
   });
 
   group('LatLngStore', () {
@@ -62,19 +49,6 @@ void main() {
 
       final result = latLngStore.coordinatesFor('US');
       expect(result, isNull);
-    });
-
-    test('refreshes coordinates for locations', () async {
-      when(mockAssetsService.getCoordinates()).thenAnswer((_) async => {});
-      await latLngStore.refreshIfNeeded(
-        [
-          'vilnius',
-          'wrongQuery',
-        ],
-      );
-
-      expect(latLngStore.coordinatesFor('vilnius'), const LatLng(54.6872, 25.2797));
-      expect(latLngStore.coordinatesFor('wrongQuery'), isNull);
     });
   });
 }

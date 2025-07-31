@@ -100,12 +100,7 @@ abstract class _LocationsStore with Store {
   @action
   Future<List<VPNLocation>> _fetchRecentLocations() async {
     final locations = await _localDB.getRecentLocations();
-    print('Fetched: ${locations.map((it) => it.id)}');
-    final dcLocations = _dcLocationsStream.value?.allLocationsFlattened;
-    final residentialLocations = _residentialLocationsStream.value?.allLocationsFlattened;
 
-    print('DC Locations: ${dcLocations?.map((it) => it.id)}');
-    print('Residential Locations: ${residentialLocations?.map((it) => it.id)}');
     return _filterService.filterRecentLocations(
       locations,
       availableLocations: {

@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/map_controller_hook.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
@@ -59,7 +60,9 @@ class LocationsMap extends HookConsumerWidget {
     }
 
     final locations = useMemoized(
-      () => _childlessLocations(this.locations),
+      () =>
+          this.locations?.flattenBy((it) => it.children ?? const <VPNLocation>[]).toList() ??
+          const <VPNLocation>[],
       [this.locations],
     );
 
@@ -79,16 +82,6 @@ class LocationsMap extends HookConsumerWidget {
         handleMove(center);
       });
     });
-
-    useEffect(
-      () {
-        if (locations != null && locations.isNotEmpty) {
-          ref.read(latLngStorePOD).refreshIfNeeded(locations.keys);
-        }
-        return null;
-      },
-      [locations?.keys],
-    );
 
     return FlutterMap(
       mapController: controller,
@@ -112,64 +105,43 @@ class LocationsMap extends HookConsumerWidget {
   }
 }
 
-Map<String, VPNLocation>? _childlessLocations(List<VPNLocation>? locations) {
-  if (locations == null) {
-    return null;
-  }
-
-  final result = <String, VPNLocation>{};
-  final queue = Queue<VPNLocation>.of(locations);
-
-  while (queue.isNotEmpty) {
-    final location = queue.removeFirst();
-    if (location.children == null || location.children!.isEmpty) {
-      result[location.id] = location;
-    } else {
-      queue.addAll(location.children!);
-    }
-  }
-
-  return result;
-}
-
 List<Marker> _useLocationMarkers({
-  required Map<String, VPNLocation>? data,
+  required List<VPNLocation> data,
   required VPNLocation? activeLocation,
   required Function(VPNLocation, LatLng)? onLocationPressed,
 }) {
   final latLngStore = useProvider(latLngStorePOD);
   final onLocationPressedRef = useRef(onLocationPressed)..value = onLocationPressed;
+  final sorted = {
+    ...data.where((it) => activeLocation?.id != it.id),
+    ...data.where((it) => it.id == activeLocation?.id),
+  };
 
   return useComputedValue<List<Marker>>(
-    () {
-      if (data == null) {
-        return [];
-      }
+    () => sorted
+        .map((it) {
+          final point =
+              latLngStore.coordinatesFor(it.id) ?? latLngStore.coordinatesFor(it.countryCode);
+          if (point == null) {
+            return null;
+          }
 
-      return data.entries
-          .map((it) {
-            final point = latLngStore.coordinatesFor(it.key);
-            if (point == null) {
-              return null;
-            }
+          final isActive = activeLocation?.id == it.id;
+          final size = isActive ? const Size.square(42) : const Size.square(16);
 
-            final isActive = activeLocation?.id == it.key;
-            final size = isActive ? const Size.square(42) : const Size.square(16);
-
-            return Marker(
-              point: point,
-              height: size.height,
-              width: size.width,
-              child: _GestureHandler(
-                onPressed: () => onLocationPressedRef.value?.call(it.value, point),
-                child: LocationMarker(size: size * .7, isActive: isActive),
-              ),
-            );
-          })
-          .nonNulls
-          .toList();
-    },
-    [onLocationPressedRef, latLngStore, data?.keys, activeLocation],
+          return Marker(
+            point: point,
+            height: size.height,
+            width: size.width,
+            child: _GestureHandler(
+              onPressed: () => onLocationPressedRef.value?.call(it, point),
+              child: LocationMarker(size: size * .7, isActive: isActive),
+            ),
+          );
+        })
+        .nonNulls
+        .toList(),
+    [onLocationPressedRef, latLngStore, data, activeLocation?.id],
   );
 }
 
