@@ -46,7 +46,7 @@ class RecentLocationItem extends HookConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               spacing: 12,
               children: [
-                Flag(countryCode: location.id, size: 30),
+                Flag(countryCode: location.countryCode, size: 30),
                 Flexible(
                   child: AutoSizeText(
                     countryName,

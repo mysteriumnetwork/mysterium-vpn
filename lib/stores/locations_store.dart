@@ -6,6 +6,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/api.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/extensions/stream_extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
@@ -293,7 +294,12 @@ abstract class _LocationsStore with Store {
     if (list == null) {
       return false;
     }
-    return list.locations.contains(location) || list.topLocations.contains(location);
+    final allLocations = [
+      ...list.locations.flattenBy((it) => it.children ?? const <VPNLocation>[]),
+      ...list.topLocations.flattenBy((it) => it.children ?? const <VPNLocation>[]),
+    ];
+
+    return allLocations.any((it) => it == location);
   }
 
   @action

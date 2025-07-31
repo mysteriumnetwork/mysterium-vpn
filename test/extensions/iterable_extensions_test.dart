@@ -46,4 +46,30 @@ void main() {
       expect(() => items.batch(-1), throwsArgumentError);
     });
   });
+
+  group('IterableExtensions.flattenBy', () {
+    test('flattens nested structures', () {
+      final items = [
+        {'id': 1, 'children': <Map<String, Object>>[]},
+        {
+          'id': 2,
+          'children': [
+            {'id': 3, 'children': <Map<String, Object>>[]},
+          ],
+        },
+        {'id': 4, 'children': <Map<String, Object>>[]},
+      ];
+      final flattened = items.flattenBy((item) => item['children']! as List<Map<String, Object>>);
+      expect(flattened.map((e) => e['id']).toList(), equals([1, 2, 3, 4]));
+    });
+
+    test('handles empty children', () {
+      final items = [
+        {'id': 1, 'children': <Map<String, Object>>[]},
+        {'id': 2, 'children': <Map<String, Object>>[]},
+      ];
+      final flattened = items.flattenBy((item) => item['children']! as List<Map<String, Object>>);
+      expect(flattened.map((e) => e['id']).toList(), equals([1, 2]));
+    });
+  });
 }
