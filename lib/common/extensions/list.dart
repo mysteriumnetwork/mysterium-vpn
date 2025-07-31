@@ -41,6 +41,16 @@ extension IterableExtensions<T> on Iterable<T> {
     }
     return _batch(size).toList();
   }
+
+  Iterable<T> flattenBy(Iterable<T> Function(T) childrenExtractor) sync* {
+    for (final element in this) {
+      yield element;
+      final children = childrenExtractor(element);
+      if (children.isNotEmpty) {
+        yield* children.flattenBy(childrenExtractor);
+      }
+    }
+  }
 }
 
 extension SetExtensions<T> on Set<T> {
