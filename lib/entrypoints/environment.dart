@@ -170,7 +170,7 @@ class Environment {
         ),
       _ => FlavorConfig(
           flavor: Flavor.dev,
-          values: FlavorValues.dev(isAutomated: true),
+          values: FlavorValues.dev(),
           buildInfo: buildInfo,
         ),
     };

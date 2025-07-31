@@ -16,17 +16,6 @@ class TestFlagsInterceptor extends InterceptorsWrapper {
       );
     }
 
-    if (options.path.contains('connection/locations')) {
-      return handler.next(
-        options.copyWith(
-          path: options.path.replaceFirst(
-            'connection/locations',
-            'connection/config/locations',
-          ),
-        ),
-      );
-    }
-
     super.onRequest(options, handler);
   }
 }
