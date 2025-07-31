@@ -61,7 +61,7 @@ class LocationItem extends HookConsumerWidget {
                 ? LocaleKeys.locationItemCityCount.plural(children.length)
                 : LocaleKeys.locationItemNodeCount.plural(location.nodeCount ?? 0),
             isExpanded: showCitiesAndStates ? isExpanded.value : null,
-            flag: location.id,
+            flag: location.countryCode,
           ),
           if (showCitiesAndStates && isExpanded.value)
             for (final child in children)
