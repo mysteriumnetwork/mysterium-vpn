@@ -54,14 +54,6 @@ mixin _$LatLngStore on _LatLngStore, Store {
     });
   }
 
-  late final _$refreshIfNeededAsyncAction =
-      AsyncAction('_LatLngStore.refreshIfNeeded', context: context);
-
-  @override
-  Future<void> refreshIfNeeded(Iterable<String> locations) {
-    return _$refreshIfNeededAsyncAction.run(() => super.refreshIfNeeded(locations));
-  }
-
   late final _$_LatLngStoreActionController =
       ActionController(name: '_LatLngStore', context: context);
 
