@@ -36,6 +36,7 @@ enum _FeatureToggleKey {
   cancelSurveyOptions,
   useStoreVersionChecker,
   enableQaHelpers,
+  showCitiesAndStates,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -274,6 +275,14 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return true; // Enable QA helpers in development mode
     }
     return false; // Disable QA helpers in production
+  }
+
+  @computed
+  bool get showCitiesAndStates {
+    if (config.containsKey(_FeatureToggleKey.showCitiesAndStates.name)) {
+      return config[_FeatureToggleKey.showCitiesAndStates.name] as bool;
+    }
+    return false;
   }
 
   Map<String, String> get asUserProperties =>
