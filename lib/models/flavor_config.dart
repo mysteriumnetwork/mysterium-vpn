@@ -57,7 +57,7 @@ class FlavorValues {
 
   factory FlavorValues.dev({bool isAutomated = const bool.fromEnvironment('IS_AUTOMATED')}) =>
       FlavorValues._(
-        baseUrl: 'https://app.test.mysteriumvpn.com/api/v1',
+        baseUrl: 'https://api.test.mysteriumvpn.com/api/v1',
         mqttUrl: 'wss://events.test.mysteriumvpn.com/ws',
         mqttUsername: 'dvpn',
         mqttPassword: 'VWm2UJVV7BYr6p3S8ZZZ',
