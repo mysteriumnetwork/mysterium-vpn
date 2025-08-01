@@ -24,6 +24,13 @@ class WireguradKeyService {
       if (wireguradKey != null) {
         return wireguradKey;
       } else {
+        analyticsStore.logEvent(
+          AnalyticsEvent.wireguardKeyUnavailable,
+          parameters: {
+            'description': 'Wireguard keys not found in secure storage, generating new keys',
+            'method': 'getWireguradKey',
+          },
+        );
         final key = await _generateWireguradKey();
         await _saveWireguardKey(
           publicKey: key.publicKey,
@@ -56,12 +63,7 @@ class WireguradKeyService {
       if ((publicKey?.isNotEmpty ?? false) && (privateKey?.isNotEmpty ?? false)) {
         return KeyPair(publicKey!, privateKey!);
       }
-      analyticsStore.logEvent(
-        AnalyticsEvent.wireguardKeyUnavailable,
-        parameters: {
-          'description': 'Wireguard keys not found in secure storage, generating new keys',
-        },
-      );
+
       return null;
     } catch (e, s) {
       Sentry.captureException(
@@ -91,9 +93,25 @@ class WireguradKeyService {
       await secureStorageService.saveWireguardPublicKey(publicKey: publicKey);
       await secureStorageService.saveWireguardPrivateKey(privateKey: privateKey);
       final key = await _getKeyFromStorage(); // Verify that keys are saved correctly
-      if (publicKey != key?.publicKey || privateKey != key?.privateKey) {
+      if (key == null) {
+        analyticsStore.logEvent(
+          AnalyticsEvent.wireguardKeyUnavailable,
+          parameters: {
+            'description': 'Wireguard keys not found after saving, check secure storage',
+            'method': 'saveWireguardKey',
+          },
+        );
+        return;
+      }
+      if (publicKey != key.publicKey || privateKey != key.privateKey) {
         await secureStorageService.removeWireguardPrivateKey();
         await secureStorageService.removeWireguardPublicKey();
+        analyticsStore.logEvent(
+          AnalyticsEvent.wireguardKeysDoNotMatch,
+          parameters: {
+            'description': 'Stored Wireguard keys do not match the provided keys',
+          },
+        );
       }
     } catch (e, s) {
       Sentry.captureException(
