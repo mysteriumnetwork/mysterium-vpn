@@ -96,7 +96,7 @@ dependencies:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git
       ref: 1.0.1
-  window_manager: 0.5.0
+  window_manager: 0.5.1
   wireguard_dart:
     git:
       url: https://github.com/mysteriumnetwork/wireguard_dart.git
