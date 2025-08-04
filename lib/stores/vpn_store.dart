@@ -274,6 +274,7 @@ abstract class _VpnStore with Store {
 
   Future<void> regenerateWireguradKey() async {
     try {
+      await disconnectWireguard();
       _wireguardKey = await _wireguardKeyService.regenerateWireguardKeys();
     } catch (e) {
       _logger.handle(e);
