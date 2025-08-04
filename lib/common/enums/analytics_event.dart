@@ -105,4 +105,5 @@ enum AnalyticsEvent {
   subscriptionCancellationSurvey,
   getWireguradKeyError,
   wireguardKeyUnavailable,
+  wireguardKeysDoNotMatch,
 }
