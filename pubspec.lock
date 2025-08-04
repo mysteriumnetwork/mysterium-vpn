@@ -1804,10 +1804,10 @@ packages:
     dependency: "direct main"
     description:
       name: talker_dio_logger
-      sha256: "310f7d1eec2c890183b726f8b4c4e5dcb9104034aefd10e8c5f13686acac305b"
+      sha256: dcf784f1841e248c270ef741f8a07ca9cf562c6424ee43fc6e598c4eb7f18238
       url: "https://pub.dev"
     source: hosted
-    version: "4.4.1"
+    version: "4.9.3"
   talker_logger:
     dependency: transitive
     description:
