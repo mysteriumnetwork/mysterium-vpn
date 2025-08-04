@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -37,7 +36,7 @@ class ConnectionSettings extends HookConsumerWidget {
     final handleToggleConnection = useHandleToggleConnection();
 
     return Observer(
-      builder: (context) {
+      builder: (_) {
         final isDarkTheme = themeStore.isDarkMode;
 
         return Column(
@@ -222,7 +221,6 @@ class ConnectionSettings extends HookConsumerWidget {
                 onPressed: () async {
                   snackbarKey.currentState?.clearSnackBars();
                   handleToggleConnection();
-                  context.beamBack();
                 },
               )
             : null,
