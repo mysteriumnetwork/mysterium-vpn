@@ -221,6 +221,17 @@ mixin _$LocationsStore on _LocationsStore, Store {
       ActionController(name: '_LocationsStore', context: context);
 
   @override
+  VPNLocation findLocation(String id, {String? countryCode, IPType ipType = IPType.datacenter}) {
+    final _$actionInfo =
+        _$_LocationsStoreActionController.startAction(name: '_LocationsStore.findLocation');
+    try {
+      return super.findLocation(id, countryCode: countryCode, ipType: ipType);
+    } finally {
+      _$_LocationsStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setLocationKeyword(String text, [Duration duration = const Duration(milliseconds: 500)]) {
     final _$actionInfo =
         _$_LocationsStoreActionController.startAction(name: '_LocationsStore.setLocationKeyword');

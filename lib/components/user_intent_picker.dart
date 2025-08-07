@@ -16,7 +16,7 @@ class UserIntentPicker extends StatelessWidget {
 
   final UserIntent? value;
   final List<UserIntent> items;
-  final ValueChanged<UserIntent?> onChanged;
+  final ValueChanged<UserIntent?>? onChanged;
 
   @override
   Widget build(BuildContext context) => ConstrainedBox(
@@ -32,13 +32,15 @@ class UserIntentPicker extends StatelessWidget {
             return _Item(
               value: item,
               isSelected: isSelected,
-              onPressed: () {
-                if (isSelected) {
-                  onChanged(null);
-                } else {
-                  onChanged(item);
-                }
-              },
+              onPressed: onChanged == null
+                  ? null
+                  : () {
+                      if (isSelected) {
+                        onChanged!(null);
+                      } else {
+                        onChanged!(item);
+                      }
+                    },
             );
           },
         ),
@@ -54,7 +56,7 @@ class _Item extends StatelessWidget {
 
   final UserIntent value;
   final bool isSelected;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
