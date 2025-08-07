@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/api.dart';
 import 'package:mysterium_vpn/common/extensions/stream_extensions.dart';
@@ -31,7 +33,7 @@ abstract class _LocationsStore with Store {
     this._prefs,
     this._localDB,
     this._logger,
-    LocaleStore localeStore,
+    this._localeStore,
     this._ping,
   ) {
     /// mobx stream won't initialize if not used within ReactiveContext scope, so this is done to
@@ -41,7 +43,7 @@ abstract class _LocationsStore with Store {
       _residentialLocationsStream.value;
     });
 
-    reaction((_) => localeStore.currentLocale, (locale) {
+    reaction((_) => _localeStore.currentLocale, (locale) {
       if (_searchKeyword.isNotEmpty) {
         setLocationKeyword('');
       }
@@ -54,6 +56,7 @@ abstract class _LocationsStore with Store {
   final FilterService _filterService;
   final AnalyticsStore _analyticsStore;
   final RemoteConfigStore _remoteConfigStore;
+  final LocaleStore _localeStore;
   final SharedPreferenceService _prefs;
   final LocalDBService _localDB;
   final Talker _logger;
@@ -97,13 +100,15 @@ abstract class _LocationsStore with Store {
   @action
   Future<List<VPNLocation>> _fetchRecentLocations() async {
     final locations = await _localDB.getRecentLocations();
+
     return _filterService.filterRecentLocations(
       locations,
       availableLocations: {
-        ..._dcLocationsStream.value?.allLocations ?? [],
-        ..._residentialLocationsStream.value?.allLocations ?? [],
+        ...?_dcLocationsStream.value?.allLocationsFlattened,
+        ...?_residentialLocationsStream.value?.allLocationsFlattened,
       },
       keyword: _searchKeyword,
+      locale: _localeStore.currentLocale.languageCode.toLowerCase(),
     );
   }
 
@@ -125,7 +130,11 @@ abstract class _LocationsStore with Store {
   List<VPNLocation> get locations {
     final value = locationsStream.value?.locations;
     if (value != null) {
-      return _filterService.filterLocations(value, keyword: _searchKeyword);
+      return _filterService.filterLocations(
+        value,
+        keyword: _searchKeyword,
+        locale: _localeStore.currentLocale.languageCode.toLowerCase(),
+      );
     }
     return [];
   }
@@ -134,7 +143,11 @@ abstract class _LocationsStore with Store {
   List<VPNLocation> get topLocations {
     final value = locationsStream.value?.topLocations;
     if (value != null) {
-      return _filterService.filterLocations(value, keyword: _searchKeyword);
+      return _filterService.filterLocations(
+        value,
+        keyword: _searchKeyword,
+        locale: _localeStore.currentLocale.languageCode.toLowerCase(),
+      );
     }
     return [];
   }
@@ -149,7 +162,12 @@ abstract class _LocationsStore with Store {
     }
 
     if (_locationsNotEmpty) {
-      return const VPNLocation(ipType: IPType.closest);
+      return const VPNLocation(
+        id: '',
+        translations: {},
+        ipType: IPType.closest,
+        countryCode: '',
+      );
     }
     return null;
   }
@@ -216,7 +234,7 @@ abstract class _LocationsStore with Store {
     ipType ??= _ipType;
 
     try {
-      final response = await _apiConnection.connectionConfig(
+      final response = await _apiConnection.connectionLocations(
         ipType: switch (ipType) {
           IPType.datacenter => 'hosting',
           IPType.residential => 'residential',
@@ -228,15 +246,11 @@ abstract class _LocationsStore with Store {
         throw Exception('No data found');
       }
 
-      final topLocations = countriesToLocations(connectionConfig.topCountries, ipType);
-      final locations = countriesToLocations(
-        connectionConfig.countries.where((it) => !connectionConfig.topCountries.contains(it)),
-        ipType,
-      );
+      final locations = _mapLocations(connectionConfig, ipType);
 
       await _localDB.setLocations(
         VPNLocations(
-          topLocations: topLocations,
+          topLocations: [],
           locations: locations,
         ),
         type: ipType,
@@ -254,7 +268,7 @@ abstract class _LocationsStore with Store {
     if (_shouldSkipLocation(location)) {
       return;
     }
-    if (location.code.isNotEmpty) {
+    if (location.id.isNotEmpty) {
       if (recentLocations.contains(location)) {
         recentLocations.remove(location);
       }
@@ -280,7 +294,7 @@ abstract class _LocationsStore with Store {
     if (list == null) {
       return false;
     }
-    return list.locations.contains(location) || list.topLocations.contains(location);
+    return list.allLocationsFlattened.any((it) => it == location);
   }
 
   @action
@@ -323,14 +337,22 @@ abstract class _LocationsStore with Store {
   }
 }
 
-List<VPNLocation> countriesToLocations(Iterable<String> countries, IPType? ipType) => countries
-    .map(
-      (code) => VPNLocation(
-        code: code,
-        ipType: ipType ?? IPType.residential,
-      ),
-    )
-    .toList();
+List<VPNLocation> countriesToLocations(Iterable<String> countries, IPType? ipType) {
+  final locales = kSupportedLocales;
+
+  return countries
+      .map(
+        (code) => VPNLocation(
+          id: code,
+          translations: {
+            for (final locale in locales) locale.languageCode.toLowerCase(): code.tr(),
+          },
+          ipType: ipType ?? IPType.residential,
+          countryCode: code,
+        ),
+      )
+      .toList();
+}
 
 class RegionWithLatency {
   const RegionWithLatency(this.region, this.latency);
@@ -338,3 +360,32 @@ class RegionWithLatency {
   final ConnectionRegion region;
   final Duration latency;
 }
+
+List<VPNLocation> _mapLocations(
+  List<ConnectionLocation> response, [
+  IPType ipType = IPType.residential,
+]) =>
+    response.map((it) => _mapCountry(it, ipType)).toList();
+
+VPNLocation _mapCountry(ConnectionLocation response, [IPType ipType = IPType.residential]) =>
+    VPNLocation(
+      id: response.country,
+      ipType: ipType,
+      translations: response.translations,
+      nodeCount: response.total.toInt(),
+      children: response.cities.map((it) => _mapCity(it, response.country, ipType)).toList(),
+      countryCode: response.country,
+    );
+
+VPNLocation _mapCity(
+  ConnectionLocationCity response,
+  String country,
+  IPType ipType,
+) =>
+    VPNLocation(
+      id: response.city,
+      ipType: ipType,
+      translations: response.translations,
+      nodeCount: response.total.toInt(),
+      countryCode: country,
+    );

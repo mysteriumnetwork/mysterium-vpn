@@ -3,11 +3,15 @@ import 'package:latlong2/latlong.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/services/data/local/assets_service.dart';
+import 'package:mysterium_vpn/services/data/network/nominatim_service.dart';
 import 'package:mysterium_vpn/stores/latlng_store.dart';
 
 import 'latlng_store_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<AssetsService>()])
+@GenerateNiceMocks([
+  MockSpec<AssetsService>(),
+  MockSpec<NominatimService>(),
+])
 void main() {
   late MockAssetsService mockAssetsService;
   late LatLngStore latLngStore;
@@ -22,7 +26,7 @@ void main() {
       const mockData = {'US': LatLng(37.7749, -122.4194)};
       when(mockAssetsService.getCoordinates()).thenAnswer((_) async => mockData);
 
-      await latLngStore.coordinatesFuture;
+      await latLngStore.countryCoordinatesFuture;
 
       final result = latLngStore.coordinatesFor('us');
       expect(result, mockData['US']);
@@ -32,7 +36,7 @@ void main() {
       const mockData = {'US': LatLng(37.7749, -122.4194)};
       when(mockAssetsService.getCoordinates()).thenAnswer((_) async => mockData);
 
-      await latLngStore.coordinatesFuture;
+      await latLngStore.countryCoordinatesFuture;
 
       final result = latLngStore.coordinatesFor('invalid');
       expect(result, isNull);
@@ -41,7 +45,7 @@ void main() {
     test('handles empty coordinates map gracefully', () async {
       when(mockAssetsService.getCoordinates()).thenAnswer((_) async => {});
 
-      await latLngStore.coordinatesFuture;
+      await latLngStore.countryCoordinatesFuture;
 
       final result = latLngStore.coordinatesFor('US');
       expect(result, isNull);

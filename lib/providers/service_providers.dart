@@ -27,9 +27,11 @@ import 'package:mysterium_vpn/services/auth/rest_auth_service.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/assets_service.dart';
 import 'package:mysterium_vpn/services/data/local/config_cat_cache.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/network/dio_network_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
+import 'package:mysterium_vpn/services/data/network/nominatim_service.dart';
 import 'package:mysterium_vpn/services/dio_network_logger/dio_network_logger.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
@@ -92,7 +94,8 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
         ),
       if (environment.flavor == Flavor.dev && environment.values.isAutomated)
         TestFlagsInterceptor(),
-      CurlLoggerDioInterceptor(printOnSuccess: true, convertFormData: false),
+      if (kDebugMode || environment.flavor == Flavor.dev)
+        CurlLoggerDioInterceptor(printOnSuccess: true, convertFormData: false),
     ],
   );
 
@@ -256,4 +259,19 @@ final wireguradKeyServicePOD = Provider<WireguradKeyService>(
     secureStorageService: SecureStorageService.instance,
     analyticsStore: ref.watch(analyticsStorePOD),
   ),
+);
+
+final nominatimServicePOD = Provider<NominatimService>(
+  (ref) {
+    final env = ref.watch(environmentPOD);
+    return NominatimService(
+      LocalDBService.instance,
+      Dio(
+        BaseOptions(
+          baseUrl: 'https://nominatim.openstreetmap.org/',
+          headers: {HttpHeaders.userAgentHeader: env.appUserAgent()},
+        ),
+      ),
+    );
+  },
 );

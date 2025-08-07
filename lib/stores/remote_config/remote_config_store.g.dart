@@ -191,6 +191,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$enableQaHelpersComputed ??= Computed<bool>(() => super.enableQaHelpers,
               name: 'RemoteConfigStoreBase.enableQaHelpers'))
           .value;
+  Computed<bool>? _$showCitiesAndStatesComputed;
+
+  @override
+  bool get showCitiesAndStates =>
+      (_$showCitiesAndStatesComputed ??= Computed<bool>(() => super.showCitiesAndStates,
+              name: 'RemoteConfigStoreBase.showCitiesAndStates'))
+          .value;
 
   @override
   String toString() {
@@ -221,7 +228,8 @@ latestStableAppVersion: ${latestStableAppVersion},
 isRateConnectionAvailable: ${isRateConnectionAvailable},
 cancelSubscriptionReasonKeys: ${cancelSubscriptionReasonKeys},
 useStoreVersionChecker: ${useStoreVersionChecker},
-enableQaHelpers: ${enableQaHelpers}
+enableQaHelpers: ${enableQaHelpers},
+showCitiesAndStates: ${showCitiesAndStates}
     ''';
   }
 }

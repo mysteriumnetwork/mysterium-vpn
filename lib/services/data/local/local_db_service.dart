@@ -1,19 +1,23 @@
 import 'dart:async';
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/banner_type_adapter.dart';
+import 'package:mysterium_vpn/services/data/local/adapters/lat_lng_adapter.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/vpn_location_adapter.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/vpn_locations_adapter.dart';
 
 class LocalDBService {
   factory LocalDBService() => instance;
+
   LocalDBService._();
 
   static final LocalDBService instance = LocalDBService._();
+
   static Future<void> initialize() async {
     await Hive.initFlutter();
     Hive
@@ -21,22 +25,19 @@ class LocalDBService {
       ..registerAdapter(ApprovalAdapter())
       ..registerAdapter(VPNLocationAdapter(typeId: 3))
       ..registerAdapter(BannerTypeAdapter(typeId: 4))
-      ..registerAdapter(VpnLocationsAdapter(typeId: 5));
+      ..registerAdapter(VpnLocationsAdapter(typeId: 5))
+      ..registerAdapter(LatLngAdapter(typeId: 6));
 
     await Future.wait([
-      Hive.openBox<UserData>(
-        'user_data',
-        compactionStrategy: (e, d) => false,
-      ),
-      Hive.openBox<VPNLocations>(
-        'locations_data',
-        compactionStrategy: (e, d) => false,
-      ),
+      Hive.openBox<UserData>('user_data', compactionStrategy: (e, d) => false),
+      Hive.openBox<VPNLocations>('locations_data', compactionStrategy: (e, d) => false),
+      Hive.openBox<LatLng>('coordinates_data', compactionStrategy: (e, d) => false),
     ]);
   }
 
   final _userBox = Hive.box<UserData>('user_data');
   final _locationsBox = Hive.box<VPNLocations>('locations_data');
+  final _coordinatesBox = Hive.box<LatLng>('coordinates_data');
 
   Completer<AuthUser> _userSetCompleter = Completer<AuthUser>();
   AuthUser? _currentUser;
@@ -169,5 +170,22 @@ class LocalDBService {
 
   Stream<VPNLocations?> watchLocations(IPType type) async* {
     yield* _locationsBox.watch(key: type.name).asyncMap((_) => getLocations(type));
+  }
+
+  Future<void> putCoordinates(String id, LatLng coordinates) async {
+    await _coordinatesBox.put(id, coordinates);
+  }
+
+  LatLng? getCoordinates(String id) => _coordinatesBox.get(id);
+
+  Future<void> deleteCoordinates(String id) async {
+    await _coordinatesBox.delete(id);
+  }
+
+  Map<String, LatLng> getAllCoordinates() {
+    final coordinates = _coordinatesBox.toMap();
+    return {
+      for (final entry in coordinates.entries) entry.key.toString(): entry.value,
+    };
   }
 }
