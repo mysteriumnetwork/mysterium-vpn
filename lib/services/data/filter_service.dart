@@ -36,7 +36,7 @@ class FilterService {
     required String locale,
     required Set<VPNLocation> availableLocations,
   }) {
-    final availableRecents = data.where(availableLocations.contains).toList();
+    final availableRecents = availableLocations.where(data.contains).toList();
     return filterLocations(
       availableRecents,
       keyword: keyword,
