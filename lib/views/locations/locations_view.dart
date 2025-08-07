@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
@@ -13,7 +12,6 @@ import 'package:mysterium_vpn/components/user_intent_picker.dart';
 import 'package:mysterium_vpn/components/user_intent_tooltip.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/components/location_type_switcher.dart';
@@ -24,6 +22,7 @@ import 'package:mysterium_vpn/views/locations/components/locations_sliver_loadin
 import 'package:mysterium_vpn/views/locations/components/recent_locations_list.dart';
 import 'package:mysterium_vpn/views/locations/components/recent_locations_loading.dart';
 import 'package:sliver_tools/sliver_tools.dart';
+import 'package:wireguard_dart/connection_status.dart';
 
 class LocationsSliverView extends HookConsumerWidget {
   const LocationsSliverView({super.key});
@@ -151,12 +150,22 @@ class _Body extends HookConsumerWidget {
   }
 }
 
-class _UserIntent extends HookWidget {
+class _UserIntent extends HookConsumerWidget {
   const _UserIntent();
 
   @override
-  Widget build(BuildContext context) {
-    final intent = useState<UserIntent?>(null);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final vpnStore = ref.watch(vpnStorePOD);
+    final isLoading = useComputedValue(
+      () =>
+          vpnStore.connectionStatus == ConnectionStatus.connecting ||
+          vpnStore.connectionStatus == ConnectionStatus.disconnecting,
+    );
+
+    final intents = useComputedValue(() => vpnStore.userIntents);
+    final selected = useComputedValue(() => vpnStore.userIntent);
+    final handleToggleConnection = useHandleToggleConnection();
+
     return MultiSliver(
       children: [
         Row(
@@ -176,8 +185,9 @@ class _UserIntent extends HookWidget {
         ),
         const SizedBox(height: 16),
         UserIntentPicker(
-          onChanged: (value) => intent.value = value,
-          value: intent.value,
+          items: intents.toList(),
+          onChanged: isLoading ? null : (value) => handleToggleConnection(intent: value),
+          value: selected,
         ),
       ],
     );

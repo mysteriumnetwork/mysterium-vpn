@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/api.dart';
 import 'package:mysterium_vpn/common/extensions/stream_extensions.dart';
+import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
@@ -173,7 +175,53 @@ abstract class _LocationsStore with Store {
     return null;
   }
 
+  @action
+  VPNLocation findLocation(
+    String id, {
+    String? countryCode,
+    IPType ipType = IPType.datacenter,
+  }) {
+    final locations = switch (ipType) {
+          IPType.datacenter => _dcLocationsStream.value?.allLocationsFlattened,
+          IPType.residential => _residentialLocationsStream.value?.allLocationsFlattened,
+          _ => null,
+        } ??
+        const <VPNLocation>[];
+
+    var match = locations.firstWhereOrNull((it) => it.id == id);
+
+    // if no city is in our list, we try to find a country
+    match ??= locations.firstWhereOrNull(
+      (it) => it.isCountry && it.countryCode == (countryCode ?? id),
+    );
+
+    match ??= VPNLocation(
+      id: id,
+      ipType: ipType,
+      translations: const {},
+      countryCode: countryCode ?? id,
+    );
+
+    return match;
+  }
+
   Future<VPNLocation?> closestLocation([IPType? type]) async {
+    final closestRegion = await this.closestRegion(type);
+
+    if (closestRegion == null) {
+      return null;
+    }
+
+    final closestLocations = countriesToLocations(closestRegion.topCountries, type);
+    if (closestLocations.isEmpty) {
+      return null;
+    }
+
+    final r = Random();
+    return closestLocations[r.nextInt(closestLocations.length)];
+  }
+
+  Future<ConnectionRegion?> closestRegion([IPType? type]) async {
     final connectionConfigRegions = (await _apiConnection.connectionConfigRegions(
       ipType: switch (type) {
         IPType.datacenter => 'hosting',
@@ -186,15 +234,7 @@ abstract class _LocationsStore with Store {
       return null;
     }
 
-    final closestRegion = await _detectClosestRegion(connectionConfigRegions.regions);
-
-    final closestLocations = countriesToLocations(closestRegion.topCountries, type);
-    if (closestLocations.isEmpty) {
-      return null;
-    }
-
-    final r = Random();
-    return closestLocations[r.nextInt(closestLocations.length)];
+    return _detectClosestRegion(connectionConfigRegions.regions);
   }
 
   Stream<VPNLocations> _watch(IPType ipType) async* {
