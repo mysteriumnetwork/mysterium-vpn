@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
+import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/connection_status_color_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
@@ -30,11 +31,14 @@ class ConnectionTile extends HookConsumerWidget {
     final analyticsStore = ref.watch(analyticsStorePOD);
 
     final location = useComputedValue(
-      () =>
-          locationsStore.selectedLocation ??
-          vpnStore.location ??
-          vpnStore.connectingLocation ??
-          vpnStore.potentialLocation,
+      () {
+        final selectedLocation = locationsStore.selectedLocation;
+        final location = vpnStore.location;
+        final connectingLocation = vpnStore.connectingLocation;
+        final potentialLocation = vpnStore.potentialLocation;
+
+        return selectedLocation ?? location ?? connectingLocation ?? potentialLocation;
+      },
       [vpnStore, locationsStore],
     );
 
@@ -116,7 +120,7 @@ class _ConnectingLocation extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final brightness = Theme.of(context).brightness;
-    final countryName = location.code.tr();
+    final countryName = location.getName(context);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,7 +155,7 @@ class _ConnectingLocation extends StatelessWidget {
             ),
           ),
         ] else ...[
-          Flag(countryCode: location.code, size: 30),
+          Flag(countryCode: location.countryCode, size: 30),
           Expanded(
             child: EasyText(
               countryName,

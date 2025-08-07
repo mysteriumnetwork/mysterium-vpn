@@ -3,6 +3,7 @@ import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/utils/mocks.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
@@ -36,8 +37,8 @@ void main() {
     late MockUpdateAvailableStore mockUpdateAvailableStore;
     final mockDCLocations = VPNLocations(
       locations: [
-        const VPNLocation(code: 'NL', ipType: IPType.datacenter),
-        const VPNLocation(code: 'DE', ipType: IPType.datacenter),
+        Mocks.locationDatacenterNL,
+        Mocks.locationDatacenterDE,
       ],
     );
 

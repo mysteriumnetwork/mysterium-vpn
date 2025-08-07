@@ -13,10 +13,14 @@ abstract class _LatLngStore with Store {
   final AssetsService _assetsService;
 
   @readonly
-  late ObservableFuture<Map<String, LatLng>> _coordinatesFuture =
+  late ObservableFuture<Map<String, LatLng>> _countryCoordinatesFuture =
       ObservableFuture(_assetsService.getCoordinates());
 
+  @readonly
+  late ObservableFuture<Map<String, LatLng>> _cityCoordinatesFuture = ObservableFuture.value({});
+
   @action
-  LatLng? coordinatesFor(String countryCode) =>
-      _coordinatesFuture.value?[countryCode.toUpperCase()];
+  LatLng? coordinatesFor(String locationId) =>
+      _countryCoordinatesFuture.value?[locationId.toUpperCase()] ??
+      _cityCoordinatesFuture.value?[locationId];
 }
