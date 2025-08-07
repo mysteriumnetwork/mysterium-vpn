@@ -100,13 +100,14 @@ abstract class _LocationsStore with Store {
   @action
   Future<List<VPNLocation>> _fetchRecentLocations() async {
     final locations = await _localDB.getRecentLocations();
+    final availableLocations = {
+      ...?_dcLocationsStream.value?.allLocationsFlattened,
+      ...?_residentialLocationsStream.value?.allLocationsFlattened,
+    };
 
     return _filterService.filterRecentLocations(
       locations,
-      availableLocations: {
-        ...?_dcLocationsStream.value?.allLocationsFlattened,
-        ...?_residentialLocationsStream.value?.allLocationsFlattened,
-      },
+      availableLocations: availableLocations,
       keyword: _searchKeyword,
       locale: _localeStore.currentLocale.languageCode.toLowerCase(),
     );
