@@ -2,8 +2,6 @@
 import 'dart:async' show Future;
 import 'dart:convert';
 
-// Package imports:
-import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mysterium_vpn/common/enums/storage_keys.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -79,17 +77,25 @@ class SecureStorageService {
 
   Future<void> remove(String key) async {
     if (await checkExistance(key)) {
-      await _securedStorage.delete(key: key);
+      await _remove(key: key);
     }
   }
 
   Future<String?> removeAndReturnValue(String key) async {
     if (await checkExistance(key)) {
       final value = await _securedStorage.read(key: key);
-      await _securedStorage.delete(key: key);
+      await _remove(key: key);
       return value;
     }
     return null;
+  }
+
+  Future<void> _remove({required String key}) async {
+    await retry(
+      () => _securedStorage.delete(key: key),
+      maxAttempts: 3,
+      maxDelay: const Duration(seconds: 3),
+    );
   }
 
   Future<bool> checkExistance(String key) async {
@@ -101,13 +107,8 @@ class SecureStorageService {
   }
 
   Future<void> write(String key, String value) async {
-    /// if we get error -25299, we retry writing up to 3 times with a delay between each attempt.
-    /// This is an attempted workaround based on the following comment:
-    /// https://github.com/juliansteenbakker/flutter_secure_storage/issues/785#issuecomment-2764906277
     await retry(
       () => _write(key, value),
-      retryIf: (e) => e is PlatformException && e.code == '-25299',
-      delayFactor: const Duration(milliseconds: 500),
       maxAttempts: 3,
       maxDelay: const Duration(seconds: 3),
     );
@@ -119,7 +120,7 @@ class SecureStorageService {
     try {
       await _securedStorage.write(key: key, value: value);
     } catch (e) {
-      await _securedStorage.delete(key: key);
+      await remove(key);
       await _securedStorage.write(key: key, value: value);
     }
   }
