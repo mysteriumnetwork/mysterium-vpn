@@ -97,7 +97,7 @@ class _ChildLocationItem extends StatelessWidget {
   }
 }
 
-class _LocationItem extends StatelessWidget {
+class _LocationItem extends HookWidget {
   const _LocationItem({
     required this.location,
     required this.onTap,
@@ -118,6 +118,7 @@ class _LocationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final title = location.getName(context);
+    final isConnected = useIsLocationConnected(location);
     return RawMaterialButton(
       fillColor: theme.colorScheme.primaryContainer,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -141,10 +142,12 @@ class _LocationItem extends StatelessWidget {
                 child: SvgIcon(
                   height: 20,
                   width: 20,
-                  asset: switch (theme.brightness) {
-                    Brightness.light => Assets.cityLight,
-                    Brightness.dark => Assets.cityDark,
-                  },
+                  asset: (isConnected ?? false)
+                      ? Assets.cityConnected
+                      : switch (theme.brightness) {
+                          Brightness.light => Assets.cityLight,
+                          Brightness.dark => Assets.cityDark,
+                        },
                 ),
               ),
             Expanded(
