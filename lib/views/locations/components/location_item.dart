@@ -30,13 +30,15 @@ class LocationItem extends HookConsumerWidget {
     final vpnStore = ref.watch(vpnStorePOD);
     final remoteConfig = ref.watch(remoteConfigStorePOD);
     final onTap = useComputedValue(() => vpnStore.isLoading ? null : this.onTap, [this.onTap]);
-    final showCitiesAndStates = useComputedValue(() => remoteConfig.showCitiesAndStates);
-
     final children = location.children ?? const <VPNLocation>[];
+    final showCitiesAndStates = useComputedValue(
+      () => remoteConfig.showCitiesAndStates && children.isNotEmpty,
+      [children],
+    );
     final isExpanded = useState(false);
 
     void handleParentPressed() {
-      if (showCitiesAndStates && children.isNotEmpty) {
+      if (showCitiesAndStates) {
         isExpanded.value = !isExpanded.value;
       } else {
         onTap?.call(location);
@@ -57,7 +59,7 @@ class LocationItem extends HookConsumerWidget {
             location: location,
             onTap: handleParentPressed,
             onToggleConnectionTap: onTap == null ? null : () => onTap(location),
-            label: showCitiesAndStates && children.isNotEmpty
+            label: showCitiesAndStates
                 ? LocaleKeys.locationItemCityCount.plural(children.length)
                 : LocaleKeys.locationItemNodeCount.plural(location.nodeCount ?? 0),
             isExpanded: showCitiesAndStates ? isExpanded.value : null,
