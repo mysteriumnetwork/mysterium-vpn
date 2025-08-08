@@ -358,5 +358,15 @@
   "yearlyPlanDiscountPrice": "{amount} por ano.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "sim",
-  "zh": "Chinês"
+  "zh": "Chinês",
+  "marketingConsentPopupTitle": "Fique informado",
+  "marketingConsentPopupDesc": "Gostaria de receber atualizações por e-mail, dicas de privacidade e ofertas especiais da Mysterium Network?",
+  "signMeUpBtn": "Sim, quero me inscrever",
+  "noThanksBtn": "Não, obrigado",
+  "notificationsSetting": "Notificações",
+  "notificationsSettingDesc": "Notificações por e-mail e push",
+  "emailNotificationsTitle": "Notificações por e-mail",
+  "emailNotificationsSetting": "Ofertas e atualizações",
+  "emailNotificationsSettingDesc": "Atualizações de produtos, dicas e ofertas especiais",
+  "preferences": "Preferências"
 }
