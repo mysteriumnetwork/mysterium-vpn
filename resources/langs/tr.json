@@ -356,5 +356,15 @@
   "yearlyPlanDiscountPrice": "Yıl için {amount}.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Evet",
-  "zh": "Çince"
+  "zh": "Çince",
+  "marketingConsentPopupTitle": "Güncel Kalın",
+  "marketingConsentPopupDesc": "Mysterium Network'ten e-posta güncellemeleri, gizlilik ipuçları ve özel teklifler almak ister misiniz?",
+  "signMeUpBtn": "Evet, kaydolmak istiyorum",
+  "noThanksBtn": "Hayır, teşekkürler",
+  "notificationsSetting": "Bildirimler",
+  "notificationsSettingDesc": "E-posta ve push bildirimleri",
+  "emailNotificationsTitle": "E-posta Bildirimleri",
+  "emailNotificationsSetting": "Teklifler ve güncellemeler",
+  "emailNotificationsSettingDesc": "Ürün güncellemeleri, ipuçları ve özel teklifler",
+  "preferences": "Tercihler"
 }

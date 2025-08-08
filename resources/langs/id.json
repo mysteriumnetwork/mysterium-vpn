@@ -356,5 +356,15 @@
   "yearlyPlanDiscountPrice": "{amount} untuk tahun.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Iya",
-  "zh": "Cina"
+  "zh": "Cina",
+  "marketingConsentPopupTitle": "Tetap Terinformasi",
+  "marketingConsentPopupDesc": "Apakah Anda ingin menerima pembaruan email, tips privasi, dan penawaran khusus dari Mysterium Network?",
+  "signMeUpBtn": "Ya, daftarkan saya",
+  "noThanksBtn": "Tidak, terima kasih",
+  "notificationsSetting": "Notifikasi",
+  "notificationsSettingDesc": "Notifikasi email & push",
+  "emailNotificationsTitle": "Notifikasi Email",
+  "emailNotificationsSetting": "Penawaran & pembaruan",
+  "emailNotificationsSettingDesc": "Pembaruan produk, tips, dan penawaran khusus",
+  "preferences": "Preferensi"
 }

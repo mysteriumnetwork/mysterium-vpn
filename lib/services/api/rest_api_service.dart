@@ -123,15 +123,12 @@ class RestApiService extends ApiService {
   }
 
   @override
-  Future<void> setMarketingConsentStatus({required bool consent}) async {
+  Future<void> createMarketingContact({required String? country}) async {
     try {
-      await _apiEmailMarketing.setMarketingConsent(
-        marketingPermissionsRequest: MarketingPermissionsRequest(
-          consent: consent,
+      await _apiEmailMarketing.createContactRequest(
+        createContactRequest: CreateContactRequest(
+          country: country,
         ),
-      );
-      _logger.info(
-        'Marketing consent status set to $consent',
       );
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
@@ -147,6 +144,31 @@ class RestApiService extends ApiService {
       );
       _logger.info(
         'Disconnected successfully with public key: $publicKey',
+      );
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> getMarketingContactStatus() async {
+    try {
+      final res = await _apiEmailMarketing.contactStatusRequest();
+      return res.data?.consent ?? false;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateMarketingContact({required bool consent}) {
+    try {
+      return _apiEmailMarketing.updateContactRequest(
+        updateContactRequest: UpdateContactRequest(
+          consent: consent,
+        ),
       );
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
