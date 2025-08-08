@@ -5,7 +5,7 @@ enum IPType {
 
   const IPType(this.key);
 
-  final String? key;
+  final String key;
 
   static IPType fromName(String name) => IPType.values.firstWhere(
         (it) => it.name == name,
