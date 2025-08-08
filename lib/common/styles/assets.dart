@@ -100,7 +100,12 @@ abstract class Assets {
   static const String feedback = 'assets/icons/feedback.svg';
   static const String bestServerDark = 'assets/icons/best_server_dark.svg';
   static const String bestServerLight = 'assets/icons/best_server_light.svg';
-
+  static const String emailNotificationDark = 'assets/icons/email_notification_dark.svg';
+  static const String emailNotificationLight = 'assets/icons/email_notification_light.svg';
+  static const String marketingConsentDark = 'assets/images/marketing_consent_dark.png';
+  static const String marketingConsentLight = 'assets/images/marketing_consent_light.png';
+  static const String notificationDark = 'assets/images/notification_dark.png';
+  static const String notificationLight = 'assets/images/notification_light.png';
   //Animations
   static const String backgroundElements = 'assets/animations/background_elements.json';
   static const String circlesGrey = 'assets/animations/circles_grey.json';
