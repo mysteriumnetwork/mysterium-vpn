@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/settings/email_marketing_setting.dart';
 import 'package:mysterium_vpn/views/settings/language_picker.dart';
 import 'package:mysterium_vpn/views/settings/theme_picker.dart';
 
@@ -17,6 +18,7 @@ class ApplicationSettings extends HookConsumerWidget {
     final themeStore = ref.read(themeStorePOD);
     final localeStore = ref.read(localeStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
+
     return Observer(
       builder: (context) {
         final isDarkTheme = themeStore.isDarkMode;
@@ -39,6 +41,7 @@ class ApplicationSettings extends HookConsumerWidget {
                 analyticsStore: analyticsStore,
               ),
             ),
+            const EmailMarketingSetting(),
           ],
         );
       },

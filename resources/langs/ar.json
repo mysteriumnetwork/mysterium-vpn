@@ -358,5 +358,15 @@
   "yearlyPlanDiscountPrice": "{المبلغ} للسنة.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "نعم",
-  "zh": "صينى"
+  "zh": "صينى",
+  "marketingConsentPopupTitle": "ابق على اطلاع",
+  "marketingConsentPopupDesc": "هل ترغب في تلقي تحديثات البريد الإلكتروني ونصائح الخصوصية والعروض الخاصة من شبكة Mysterium؟",
+  "signMeUpBtn": "نعم، سجلني",
+  "noThanksBtn": "لا، شكرًا",
+  "notificationsSetting": "الإشعارات",
+  "notificationsSettingDesc": "إشعارات البريد الإلكتروني والدفع",
+  "emailNotificationsTitle": "إشعارات البريد الإلكتروني",
+  "emailNotificationsSetting": "العروض والتحديثات",
+  "emailNotificationsSettingDesc": "تحديثات المنتج، نصائح، وعروض خاصة",
+  "preferences": "التفضيلات"
 }

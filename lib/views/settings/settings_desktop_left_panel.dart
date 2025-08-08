@@ -43,9 +43,9 @@ class SettingsDesktopLeftPanel extends HookConsumerWidget {
               onTap: () => updateSelectedCategory(ref, SettingCategory.connection),
             ),
             CategoryItem(
-              isSelected: settingCategory == SettingCategory.application,
-              title: SettingCategory.application.trKey.tr(),
-              onTap: () => updateSelectedCategory(ref, SettingCategory.application),
+              isSelected: settingCategory == SettingCategory.preferences,
+              title: SettingCategory.preferences.trKey.tr(),
+              onTap: () => updateSelectedCategory(ref, SettingCategory.preferences),
             ),
             CategoryItem(
               isSelected: settingCategory == SettingCategory.account,

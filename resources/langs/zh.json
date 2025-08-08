@@ -356,5 +356,15 @@
   "yearlyPlanDiscountPrice": "全年{amount}。",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "是",
-  "zh": "中国人"
+  "zh": "中国人",
+  "marketingConsentPopupTitle": "保持关注",
+  "marketingConsentPopupDesc": "您是否希望收到来自Mysterium Network的电子邮件更新、隐私提示和特别优惠？",
+  "signMeUpBtn": "是的，注册我",
+  "noThanksBtn": "不用了，谢谢",
+  "notificationsSetting": "通知",
+  "notificationsSettingDesc": "电子邮件和推送通知",
+  "emailNotificationsTitle": "电子邮件通知",
+  "emailNotificationsSetting": "优惠和更新",
+  "emailNotificationsSettingDesc": "产品更新、提示和特别优惠",
+  "preferences": "偏好设置"
 }

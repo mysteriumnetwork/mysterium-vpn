@@ -353,4 +353,14 @@ abstract class LocaleKeys {
   static const yearlyPlanFullPrice = 'yearlyPlanFullPrice';
   static const yes = 'yes';
   static const zh = 'zh';
+  static const marketingConsentPopupTitle = 'marketingConsentPopupTitle';
+  static const marketingConsentPopupDesc = 'marketingConsentPopupDesc';
+  static const signMeUpBtn = 'signMeUpBtn';
+  static const noThanksBtn = 'noThanksBtn';
+  static const notificationsSetting = 'notificationsSetting';
+  static const notificationsSettingDesc = 'notificationsSettingDesc';
+  static const emailNotificationsTitle = 'emailNotificationsTitle';
+  static const emailNotificationsSetting = 'emailNotificationsSetting';
+  static const emailNotificationsSettingDesc = 'emailNotificationsSettingDesc';
+  static const preferences = 'preferences';
 }
