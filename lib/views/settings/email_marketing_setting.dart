@@ -13,6 +13,7 @@ import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
+import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:mysterium_vpn/views/settings/switch_item.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -29,9 +30,8 @@ class EmailMarketingSetting extends HookConsumerWidget {
     final isMobile = screenType == ScreenType.mobile;
     return Observer(
       builder: (context) {
-        final shouldShowLoadingIndicator =
-            userPreferencesStore.updateMarketingConsentFuture.status == FutureStatus.pending ||
-                userPreferencesStore.getMarketingConsentFuture?.status == FutureStatus.pending;
+        final shouldShowLoadingIndicator = _shouldShowLoadingIndicator(userPreferencesStore);
+
         return Visibility(
           visible: userPreferencesStore.marketingConsent != null &&
               authStatus == AuthStatus.authenticated,
@@ -83,4 +83,10 @@ class EmailMarketingSetting extends HookConsumerWidget {
       },
     );
   }
+
+  bool _shouldShowLoadingIndicator(
+    UserPreferencesStore userPreferencesStore,
+  ) =>
+      userPreferencesStore.updateMarketingConsentFuture.status == FutureStatus.pending ||
+      userPreferencesStore.getMarketingConsentFuture?.status == FutureStatus.pending;
 }
