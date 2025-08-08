@@ -185,13 +185,6 @@ abstract class _AuthStore with Store {
         authTokens.refreshToken,
       );
       _analyticsStore.setLogin(grantType);
-      if (!grantType.isRefreshToken) {
-        unawaited(
-          _userPreferencesStore.setMarketingConsent(
-            consent: marketingConsent,
-          ),
-        );
-      }
     } on ApiException catch (e) {
       showSnackbar(e.message);
     } catch (e) {
@@ -207,7 +200,11 @@ abstract class _AuthStore with Store {
     // Set auth user
     await _localDb.setUser(user);
     final userSettings = await _localDb.getUserData();
-
+    final shouldCreateMarketingContact =
+        [GrantType.apple, GrantType.google, GrantType.email].contains(_authenticatingType);
+    _userPreferencesStore.initStore(
+      shouldCreateMarketingContact: shouldCreateMarketingContact,
+    );
     _logger.info(userSettings.toString());
   }
 

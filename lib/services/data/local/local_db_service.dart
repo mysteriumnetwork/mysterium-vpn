@@ -188,4 +188,16 @@ class LocalDBService {
       for (final entry in coordinates.entries) entry.key.toString(): entry.value,
     };
   }
+
+  Future<bool> getMarketingConsentShown() async {
+    final userData = await _loadUserData();
+    return userData.marketingConsentShown;
+  }
+
+  Future<void> setMarketingConsentShown() async {
+    final userData = await _loadUserData();
+    userData.marketingConsentShown = true;
+
+    await _saveUserData(userData);
+  }
 }
