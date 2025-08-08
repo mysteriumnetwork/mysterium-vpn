@@ -13,20 +13,12 @@ import 'package:styled_widget/styled_widget.dart';
 Future<void> showMarketingConsentDialog(
   BuildContext context, {
   required bool desktopSize,
-}) async {
-  if (desktopSize) {
-    return showDialog(
+}) async =>
+    showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => _DesktopDialog(),
+      builder: (context) => desktopSize ? _DesktopDialog() : _MobileDialog(),
     );
-  }
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) => _MobileDialog(),
-  );
-}
 
 class _DesktopDialog extends StatelessWidget {
   @override
