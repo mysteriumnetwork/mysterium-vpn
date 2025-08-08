@@ -24,6 +24,7 @@ class UserData {
     this.subscriptionPurchaseId,
     this.shownBanners = const [],
     this.recentLocationCodes = const [],
+    this.marketingConsentShown = false,
   });
 
   @HiveField(0)
@@ -67,6 +68,9 @@ class UserData {
   @HiveField(12, defaultValue: <BannerType>[])
   List<BannerType> shownBanners;
 
+  @HiveField(13, defaultValue: false)
+  bool marketingConsentShown;
+
   set recentLocations(List<VPNLocation> locations) {
     recentVPNLocations = [
       ...locations,
@@ -93,6 +97,8 @@ recentVPNLocations: $recentVPNLocations,
 shownBanners: $shownBanners
 notSafeContentBlocker: $notSafeContentBlocker
 vpnPrivacyPolicyConsent: $vpnPrivacyPolicyConsent
+recentLocationCodes: $recentLocationCodes
+marketingConsentShown: $marketingConsentShown
 ''';
 }
 
