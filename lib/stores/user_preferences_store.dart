@@ -99,7 +99,7 @@ abstract class _UserPreferencesStore with Store {
       _analyticsStore.logEvent(
         AnalyticsEvent.updateMarketingContactSuccess,
       );
-      getMarketingConsentFuture = ObservableFuture(Future.value(consent));
+      getMarketingConsentFuture = ObservableFuture.value(consent);
       if (fromPopup) {
         setMarketingConsentShown();
       }

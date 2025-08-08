@@ -36,6 +36,16 @@ void main() {
       realIPInfo: mockRealIPInfoStore,
       localDBService: mockLocalDBService,
     );
+
+    when(mockRealIPInfoStore.infoFuture).thenAnswer(
+      (_) => ObservableFuture.value(
+        IPInfo(
+          city: 'Test City',
+          country: 'Test Country',
+          ip: '',
+        ),
+      ),
+    );
   });
 
   test('shouldShowMarketingConsent returns false if consent is true or already shown', () async {
@@ -70,15 +80,7 @@ void main() {
   test('createMarketingContact logs success event', () async {
     when(mockApiService.createMarketingContact(country: anyNamed('country')))
         .thenAnswer((_) async => {});
-    when(mockRealIPInfoStore.infoFuture).thenAnswer(
-      (_) => ObservableFuture.value(
-        IPInfo(
-          city: 'Test City',
-          country: 'Test Country',
-          ip: '',
-        ),
-      ),
-    );
+
     await store.createMarketingContact();
     verify(mockAnalyticsStore.logEvent(AnalyticsEvent.createMarketingContactSuccess)).called(1);
   });
@@ -86,15 +88,7 @@ void main() {
   test('createMarketingContact logs error event on failure', () async {
     when(mockApiService.createMarketingContact(country: anyNamed('country')))
         .thenThrow(Exception('fail'));
-    when(mockRealIPInfoStore.infoFuture).thenAnswer(
-      (_) => ObservableFuture.value(
-        IPInfo(
-          city: 'Test City',
-          country: 'Test Country',
-          ip: '',
-        ),
-      ),
-    );
+
     await store.createMarketingContact();
     verify(
       mockAnalyticsStore.logEvent(
