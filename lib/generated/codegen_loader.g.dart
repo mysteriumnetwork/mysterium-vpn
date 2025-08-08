@@ -365,7 +365,17 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "全年{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "是",
-    "zh": "中国人"
+    "zh": "中国人",
+    "marketingConsentPopupTitle": "保持关注",
+    "marketingConsentPopupDesc": "您是否希望收到来自Mysterium Network的电子邮件更新、隐私提示和特别优惠？",
+    "signMeUpBtn": "是的，注册我",
+    "noThanksBtn": "不用了，谢谢",
+    "notificationsSetting": "通知",
+    "notificationsSettingDesc": "电子邮件和推送通知",
+    "emailNotificationsTitle": "电子邮件通知",
+    "emailNotificationsSetting": "优惠和更新",
+    "emailNotificationsSettingDesc": "产品更新、提示和特别优惠",
+    "preferences": "偏好设置"
   };
   static const Map<String, dynamic> _tr = {
     "LoggingYouIn": "Oturumunuz açılıyor...",
@@ -751,7 +761,18 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "Yıl için {amount}.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Evet",
-    "zh": "Çince"
+    "zh": "Çince",
+    "marketingConsentPopupTitle": "Güncel Kalın",
+    "marketingConsentPopupDesc":
+        "Mysterium Network'ten e-posta güncellemeleri, gizlilik ipuçları ve özel teklifler almak ister misiniz?",
+    "signMeUpBtn": "Evet, kaydolmak istiyorum",
+    "noThanksBtn": "Hayır, teşekkürler",
+    "notificationsSetting": "Bildirimler",
+    "notificationsSettingDesc": "E-posta ve push bildirimleri",
+    "emailNotificationsTitle": "E-posta Bildirimleri",
+    "emailNotificationsSetting": "Teklifler ve güncellemeler",
+    "emailNotificationsSettingDesc": "Ürün güncellemeleri, ipuçları ve özel teklifler",
+    "preferences": "Tercihler"
   };
   static const Map<String, dynamic> _ja = {
     "LoggingYouIn": "ログインしています...",
@@ -1109,7 +1130,17 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "年間{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "はい",
-    "zh": "中国語"
+    "zh": "中国語",
+    "marketingConsentPopupTitle": "最新情報を受け取る",
+    "marketingConsentPopupDesc": "Mysterium Networkからメールの更新、プライバシーのヒント、特別オファーを受け取りたいですか？",
+    "signMeUpBtn": "はい、登録します",
+    "noThanksBtn": "いいえ、結構です",
+    "notificationsSetting": "通知",
+    "notificationsSettingDesc": "メール＆プッシュ通知",
+    "emailNotificationsTitle": "メール通知",
+    "emailNotificationsSetting": "オファー＆アップデート",
+    "emailNotificationsSettingDesc": "製品のアップデート、ヒント、特別オファー",
+    "preferences": "設定"
   };
   static const Map<String, dynamic> _de = {
     "LoggingYouIn": "Melde Sie an...",
@@ -1519,7 +1550,18 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} für das Jahr.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Ja",
-    "zh": "Chinesisch"
+    "zh": "Chinesisch",
+    "marketingConsentPopupTitle": "Bleiben Sie informiert",
+    "marketingConsentPopupDesc":
+        "Möchten Sie E-Mail-Updates, Datenschutz-Tipps und Sonderangebote von Mysterium Network erhalten?",
+    "signMeUpBtn": "Ja, melden Sie mich an",
+    "noThanksBtn": "Nein, danke",
+    "notificationsSetting": "Benachrichtigungen",
+    "notificationsSettingDesc": "E-Mail- & Push-Benachrichtigungen",
+    "emailNotificationsTitle": "E-Mail-Benachrichtigungen",
+    "emailNotificationsSetting": "Angebote & Updates",
+    "emailNotificationsSettingDesc": "Produktupdates, Tipps und Sonderangebote",
+    "preferences": "Einstellungen"
   };
   static const Map<String, dynamic> _pt = {
     "LoggingYouIn": "Registrando você em ...",
@@ -1921,7 +1963,18 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} por ano.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "sim",
-    "zh": "Chinês"
+    "zh": "Chinês",
+    "marketingConsentPopupTitle": "Fique informado",
+    "marketingConsentPopupDesc":
+        "Gostaria de receber atualizações por e-mail, dicas de privacidade e ofertas especiais da Mysterium Network?",
+    "signMeUpBtn": "Sim, quero me inscrever",
+    "noThanksBtn": "Não, obrigado",
+    "notificationsSetting": "Notificações",
+    "notificationsSettingDesc": "Notificações por e-mail e push",
+    "emailNotificationsTitle": "Notificações por e-mail",
+    "emailNotificationsSetting": "Ofertas e atualizações",
+    "emailNotificationsSettingDesc": "Atualizações de produtos, dicas e ofertas especiais",
+    "preferences": "Preferências"
   };
   static const Map<String, dynamic> _en = {
     "LoggingYouIn": "Logging you in...",
@@ -2312,7 +2365,18 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} for the year.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Yes",
-    "zh": "Chinese"
+    "zh": "Chinese",
+    "marketingConsentPopupTitle": "Stay in Loop",
+    "marketingConsentPopupDesc":
+        "Would you like to receive email updates, privacy tips, and special offers from Mysterium Network?",
+    "signMeUpBtn": "Yes, Sign me up",
+    "noThanksBtn": "No thanks",
+    "notificationsSetting": "Notifications",
+    "notificationsSettingDesc": "Email & push notifications",
+    "emailNotificationsTitle": "Email Notifications",
+    "emailNotificationsSetting": "Offers & updates",
+    "emailNotificationsSettingDesc": "Product updates, tips, and special offers",
+    "preferences": "Preferences"
   };
   static const Map<String, dynamic> _it = {
     "LoggingYouIn": "Accesso in corso...",
@@ -2717,7 +2781,18 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} per l'anno.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sì",
-    "zh": "Cinese"
+    "zh": "Cinese",
+    "marketingConsentPopupTitle": "Rimani aggiornato",
+    "marketingConsentPopupDesc":
+        "Vuoi ricevere aggiornamenti via email, consigli sulla privacy e offerte speciali da Mysterium Network?",
+    "signMeUpBtn": "Sì, iscrivimi",
+    "noThanksBtn": "No, grazie",
+    "notificationsSetting": "Notifiche",
+    "notificationsSettingDesc": "Notifiche email e push",
+    "emailNotificationsTitle": "Notifiche email",
+    "emailNotificationsSetting": "Offerte e aggiornamenti",
+    "emailNotificationsSettingDesc": "Aggiornamenti sui prodotti, consigli e offerte speciali",
+    "preferences": "Preferenze"
   };
   static const Map<String, dynamic> _fr = {
     "LoggingYouIn": "Vous enregistrer ...",
@@ -3126,7 +3201,18 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} pour l'année.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Oui",
-    "zh": "Chinois"
+    "zh": "Chinois",
+    "marketingConsentPopupTitle": "Restez informé",
+    "marketingConsentPopupDesc":
+        "Souhaitez-vous recevoir des mises à jour par e-mail, des conseils de confidentialité et des offres spéciales de Mysterium Network ?",
+    "signMeUpBtn": "Oui, inscrivez-moi",
+    "noThanksBtn": "Non merci",
+    "notificationsSetting": "Notifications",
+    "notificationsSettingDesc": "Notifications par e-mail et push",
+    "emailNotificationsTitle": "Notifications par e-mail",
+    "emailNotificationsSetting": "Offres et mises à jour",
+    "emailNotificationsSettingDesc": "Mises à jour de produits, conseils et offres spéciales",
+    "preferences": "Préférences"
   };
   static const Map<String, dynamic> _id = {
     "LoggingYouIn": "Membuat Anda masuk...",
@@ -3519,7 +3605,18 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} untuk tahun.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Iya",
-    "zh": "Cina"
+    "zh": "Cina",
+    "marketingConsentPopupTitle": "Tetap Terinformasi",
+    "marketingConsentPopupDesc":
+        "Apakah Anda ingin menerima pembaruan email, tips privasi, dan penawaran khusus dari Mysterium Network?",
+    "signMeUpBtn": "Ya, daftarkan saya",
+    "noThanksBtn": "Tidak, terima kasih",
+    "notificationsSetting": "Notifikasi",
+    "notificationsSettingDesc": "Notifikasi email & push",
+    "emailNotificationsTitle": "Notifikasi Email",
+    "emailNotificationsSetting": "Penawaran & pembaruan",
+    "emailNotificationsSettingDesc": "Pembaruan produk, tips, dan penawaran khusus",
+    "preferences": "Preferensi"
   };
   static const Map<String, dynamic> _es = {
     "LoggingYouIn": "Iniciando sesión...",
@@ -3923,7 +4020,18 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} por el año.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sí",
-    "zh": "Chino"
+    "zh": "Chino",
+    "marketingConsentPopupTitle": "Mantente informado",
+    "marketingConsentPopupDesc":
+        "¿Te gustaría recibir actualizaciones por correo electrónico, consejos de privacidad y ofertas especiales de Mysterium Network?",
+    "signMeUpBtn": "Sí, apúntame",
+    "noThanksBtn": "No, gracias",
+    "notificationsSetting": "Notificaciones",
+    "notificationsSettingDesc": "Notificaciones por correo electrónico y push",
+    "emailNotificationsTitle": "Notificaciones por correo electrónico",
+    "emailNotificationsSetting": "Ofertas y actualizaciones",
+    "emailNotificationsSettingDesc": "Actualizaciones de productos, consejos y ofertas especiales",
+    "preferences": "Preferencias"
   };
   static const Map<String, dynamic> _ar = {
     "LoggingYouIn": "جاري تسجيل دخولك...",
@@ -4305,7 +4413,18 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{المبلغ} للسنة.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "نعم",
-    "zh": "صينى"
+    "zh": "صينى",
+    "marketingConsentPopupTitle": "ابق على اطلاع",
+    "marketingConsentPopupDesc":
+        "هل ترغب في تلقي تحديثات البريد الإلكتروني ونصائح الخصوصية والعروض الخاصة من شبكة Mysterium؟",
+    "signMeUpBtn": "نعم، سجلني",
+    "noThanksBtn": "لا، شكرًا",
+    "notificationsSetting": "الإشعارات",
+    "notificationsSettingDesc": "إشعارات البريد الإلكتروني والدفع",
+    "emailNotificationsTitle": "إشعارات البريد الإلكتروني",
+    "emailNotificationsSetting": "العروض والتحديثات",
+    "emailNotificationsSettingDesc": "تحديثات المنتج، نصائح، وعروض خاصة",
+    "preferences": "التفضيلات"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,
