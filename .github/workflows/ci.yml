@@ -17,7 +17,7 @@ jobs:
       dev_build: ${{ steps.calculate-build.outputs.build }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       
       - name: Setup Flutter Version Management CLI
         uses: flutter-actions/setup-fvm@v1.0 #v1.0 is tag, v1 is branch
