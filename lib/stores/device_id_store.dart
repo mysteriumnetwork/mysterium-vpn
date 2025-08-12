@@ -34,17 +34,17 @@ abstract class _DeviceIDStore with Store {
   @action
   Future<String> getDeviceId() async {
     try {
-      var deviceId = await _secureStorageService.getDeviceId();
+      var deviceId = await _getDeviceIdFromStorage();
       if (deviceId == null) {
         // Makes the function testable by allowing injection of FlutterUdid
         _flutterUdid ??= () => FlutterUdid.consistentUdid;
         deviceId = await _flutterUdid!();
-        await _secureStorageService.saveDeviceId(deviceId);
+        await _saveDeviceId(deviceId);
       }
       return deviceId;
     } catch (e) {
       final deviceId = await getDeviceIdFromDeviceInfo();
-      await _secureStorageService.saveDeviceId(deviceId);
+      await _saveDeviceId(deviceId);
       Sentry.captureException(
         e,
         stackTrace: StackTrace.current,
@@ -57,6 +57,41 @@ abstract class _DeviceIDStore with Store {
       );
       return deviceId;
     }
+  }
+
+  Future<void> _saveDeviceId(String deviceId) async {
+    try {
+      await _secureStorageService.saveDeviceId(deviceId);
+    } catch (e) {
+      Sentry.captureException(
+        e,
+        stackTrace: StackTrace.current,
+        hint: Hint.withMap(
+          {
+            'platform': defaultTargetPlatform.name,
+            'hint': 'Failed to save device ID',
+          },
+        ),
+      );
+    }
+  }
+
+  Future<String?> _getDeviceIdFromStorage() async {
+    try {
+      return await _secureStorageService.getDeviceId();
+    } catch (e) {
+      Sentry.captureException(
+        e,
+        stackTrace: StackTrace.current,
+        hint: Hint.withMap(
+          {
+            'platform': defaultTargetPlatform.name,
+            'hint': 'Failed to retrieve device ID from storage',
+          },
+        ),
+      );
+    }
+    return null;
   }
 
   @computed
