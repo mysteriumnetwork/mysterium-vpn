@@ -128,11 +128,11 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
       ActionController(name: '_UserPreferencesStore', context: context);
 
   @override
-  void initStore({required bool shouldCreateMarketingContact}) {
+  void initStore() {
     final _$actionInfo = _$_UserPreferencesStoreActionController.startAction(
         name: '_UserPreferencesStore.initStore');
     try {
-      return super.initStore(shouldCreateMarketingContact: shouldCreateMarketingContact);
+      return super.initStore();
     } finally {
       _$_UserPreferencesStoreActionController.endAction(_$actionInfo);
     }
