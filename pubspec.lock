@@ -2005,11 +2005,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "1.0.28"
-      resolved-ref: "1df39a240bd0e5c1589e72a01e4cc135e4d79f72"
+      ref: "1.0.29"
+      resolved-ref: "008b95030906c7b0c5d201ecc78a81653f515c8a"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git"
     source: git
-    version: "1.0.28+8"
+    version: "1.0.29+9"
   watcher:
     dependency: transitive
     description:
