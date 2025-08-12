@@ -250,7 +250,8 @@ final deviceIDStorePOD = Provider<DeviceIDStore>(
 
 final latLngStorePOD = Provider<LatLngStore>((ref) {
   final assetsService = ref.watch(assetsServicePOD);
-  return LatLngStore(assetsService);
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+  return LatLngStore(assetsService, remoteConfigStore);
 });
 
 final networkStatisticsStorePOD = Provider.autoDispose<NetworkStatisticsStore>((ref) {
