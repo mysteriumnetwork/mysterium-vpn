@@ -200,11 +200,7 @@ abstract class _AuthStore with Store {
     // Set auth user
     await _localDb.setUser(user);
     final userSettings = await _localDb.getUserData();
-    final shouldCreateMarketingContact =
-        [GrantType.apple, GrantType.google, GrantType.email].contains(_authenticatingType);
-    _userPreferencesStore.initStore(
-      shouldCreateMarketingContact: shouldCreateMarketingContact,
-    );
+    _userPreferencesStore.initStore();
     _logger.info(userSettings.toString());
   }
 
