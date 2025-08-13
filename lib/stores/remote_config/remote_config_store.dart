@@ -37,6 +37,7 @@ enum _FeatureToggleKey {
   useStoreVersionChecker,
   enableQaHelpers,
   showCitiesAndStates,
+  countriesWithCitiesOnMap,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -283,6 +284,20 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return config[_FeatureToggleKey.showCitiesAndStates.name] as bool;
     }
     return false;
+  }
+
+  @computed
+  Set<String> get countriesWithCitiesOnMap {
+    try {
+      if (config.containsKey(_FeatureToggleKey.countriesWithCitiesOnMap.name)) {
+        final raw = config[_FeatureToggleKey.countriesWithCitiesOnMap.name];
+        final decoded = jsonDecode(raw.toString()) as List;
+        return decoded.map((it) => it.toString()).toSet();
+      }
+    } catch (e, stack) {
+      logger.handle(e, stack);
+    }
+    return const <String>{};
   }
 
   Map<String, String> get asUserProperties =>

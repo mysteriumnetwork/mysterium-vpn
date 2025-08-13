@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -382,11 +383,17 @@ VPNLocation _mapCity(
   ConnectionLocationCity response,
   String country,
   IPType ipType,
-) =>
-    VPNLocation(
-      id: response.city,
-      ipType: ipType,
-      translations: response.translations,
-      nodeCount: response.total.toInt(),
-      countryCode: country,
-    );
+) {
+  LatLng? coordinates;
+  if (response.latitude != null && response.longitude != null) {
+    coordinates = LatLng(response.latitude!.toDouble(), response.longitude!.toDouble());
+  }
+  return VPNLocation(
+    id: response.city,
+    ipType: ipType,
+    translations: response.translations,
+    nodeCount: response.total.toInt(),
+    countryCode: country,
+    coordinates: coordinates,
+  );
+}

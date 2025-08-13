@@ -120,8 +120,7 @@ List<Marker> _useLocationMarkers({
   return useComputedValue<List<Marker>>(
     () => sorted
         .map((it) {
-          final point =
-              latLngStore.coordinatesFor(it.id) ?? latLngStore.coordinatesFor(it.countryCode);
+          final point = latLngStore.coordinatesFor(it);
           if (point == null) {
             return null;
           }
