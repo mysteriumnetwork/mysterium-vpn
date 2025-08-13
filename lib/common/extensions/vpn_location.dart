@@ -23,4 +23,25 @@ extension VPNLocationExtensions on VPNLocation {
   }
 
   bool get isCountry => id == countryCode;
+
+  VPNLocation? queried(String query, String locale) {
+    if (query.isEmpty) {
+      return this;
+    }
+
+    final code = id.trim().toLowerCase();
+    final name = translations[locale]?.trim().toLowerCase();
+    if ((name?.contains(query) ?? false) || code.contains(query)) {
+      return this;
+    }
+
+    if (children != null) {
+      final children = this.children!.map((it) => it.queried(query, locale)).nonNulls.toList();
+      if (children.isNotEmpty) {
+        return copyWith(children: children);
+      }
+    }
+
+    return null;
+  }
 }
