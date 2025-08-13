@@ -51,15 +51,19 @@ class LocationItem extends HookConsumerWidget {
       }
     }
 
-    useEffect(() {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (context.mounted) {
-          isExpanded.value = query.isNotEmpty &&
-              childrenRef.value.any((it) => it.queried(query, context.locale.languageCode) != null);
-        }
-      });
-      return null;
-    }, [query, isExpanded, childrenRef]);
+    useEffect(
+      () {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (context.mounted) {
+            isExpanded.value = query.isNotEmpty &&
+                childrenRef.value
+                    .any((it) => it.queried(query, context.locale.languageCode) != null);
+          }
+        });
+        return null;
+      },
+      [query, isExpanded, childrenRef],
+    );
 
     return Container(
       constraints: const BoxConstraints(minHeight: 64),
@@ -196,7 +200,9 @@ class _LocationItem extends HookWidget {
                               ),
                               TextSpan(
                                 text: title.substring(
-                                    queryMatchIndex, queryMatchIndex + query.length),
+                                  queryMatchIndex,
+                                  queryMatchIndex + query.length,
+                                ),
                                 style: GoogleFonts.montserrat(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 14,

@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/common/exceptions/api.dart';
 import 'package:mysterium_vpn/common/extensions/stream_extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
@@ -31,6 +32,7 @@ abstract class _LocationsStore with Store {
     this._filterService,
     this._analyticsStore,
     this._remoteConfigStore,
+    this._authSessionStore,
     this._prefs,
     this._localDB,
     this._logger,
@@ -50,6 +52,12 @@ abstract class _LocationsStore with Store {
       }
     });
 
+    reaction((_) => _authSessionStore.user?.userId, (id) {
+      _recentLocationsFuture = _recentLocationsFuture.replace(
+        _fetchRecentLocations(),
+      );
+    });
+
     _autoRefresh();
   }
 
@@ -58,6 +66,7 @@ abstract class _LocationsStore with Store {
   final AnalyticsStore _analyticsStore;
   final RemoteConfigStore _remoteConfigStore;
   final LocaleStore _localeStore;
+  final AuthSessionStore _authSessionStore;
   final SharedPreferenceService _prefs;
   final LocalDBService _localDB;
   final Talker _logger;
@@ -100,6 +109,11 @@ abstract class _LocationsStore with Store {
 
   @action
   Future<List<VPNLocation>> _fetchRecentLocations() async {
+    final hasUser = (await _authSessionStore.userFuture) != null;
+    if (!hasUser) {
+      return [];
+    }
+
     final locations = await _localDB.getRecentLocations();
     final availableLocations = {
       ...?_dcLocationsStream.value?.allLocationsFlattened,
