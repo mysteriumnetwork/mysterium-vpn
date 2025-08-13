@@ -56,6 +56,7 @@ class LocationsSliverView extends HookConsumerWidget {
         final locations = locationsStore.locations;
         final topLocations = locationsStore.topLocations;
         final recentLocations = locationsStore.recentLocations;
+
         return _Body(
           stream: stream,
           recentLocations: recentLocations,
