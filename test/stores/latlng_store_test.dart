@@ -5,20 +5,24 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/services/data/local/assets_service.dart';
 import 'package:mysterium_vpn/services/data/network/nominatim_service.dart';
 import 'package:mysterium_vpn/stores/latlng_store.dart';
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 
 import 'latlng_store_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<AssetsService>(),
   MockSpec<NominatimService>(),
+  MockSpec<RemoteConfigStore>(),
 ])
 void main() {
   late MockAssetsService mockAssetsService;
   late LatLngStore latLngStore;
+  late MockRemoteConfigStore mockRemoteConfigStore;
 
   setUp(() {
     mockAssetsService = MockAssetsService();
-    latLngStore = LatLngStore(mockAssetsService);
+    mockRemoteConfigStore = MockRemoteConfigStore();
+    latLngStore = LatLngStore(mockAssetsService, mockRemoteConfigStore);
   });
 
   group('LatLngStore', () {
@@ -28,7 +32,7 @@ void main() {
 
       await latLngStore.countryCoordinatesFuture;
 
-      final result = latLngStore.coordinatesFor('us');
+      final result = latLngStore.coordinatesForCountry('us');
       expect(result, mockData['US']);
     });
 
@@ -38,7 +42,7 @@ void main() {
 
       await latLngStore.countryCoordinatesFuture;
 
-      final result = latLngStore.coordinatesFor('invalid');
+      final result = latLngStore.coordinatesForCountry('invalid');
       expect(result, isNull);
     });
 
@@ -47,7 +51,7 @@ void main() {
 
       await latLngStore.countryCoordinatesFuture;
 
-      final result = latLngStore.coordinatesFor('US');
+      final result = latLngStore.coordinatesForCountry('US');
       expect(result, isNull);
     });
   });

@@ -11,23 +11,18 @@ class FilterService {
     String? keyword,
     bool shouldSortList = true,
   }) {
-    final query = keyword?.toLowerCase().trim();
+    final query = keyword?.normalized ?? '';
 
     var result = [...data];
-    if (query != null && query.isNotEmpty) {
-      result = data.where(
-        (it) {
-          final code = it.id.toLowerCase();
-          final name = it.translations[locale]?.toLowerCase();
-          return (name?.contains(query) ?? false) || code.contains(query);
-        },
-      ).toList();
+    if (query.isNotEmpty) {
+      result = data.map((it) => query.matched(it, locale)).nonNulls.toList();
     }
+
     if (shouldSortList) {
-      return result.sortedBy((it) => it.translations[locale] ?? it.id);
-    } else {
-      return result;
+      result = result.sortedBy((it) => it.translations[locale] ?? it.id);
     }
+
+    return result;
   }
 
   List<VPNLocation> filterRecentLocations(
@@ -43,5 +38,31 @@ class FilterService {
       shouldSortList: false,
       locale: locale,
     );
+  }
+}
+
+extension _QueryExtension on String {
+  String get normalized => trim().toLowerCase();
+
+  VPNLocation? matched(VPNLocation location, String locale) {
+    if (isEmpty) {
+      return location;
+    }
+
+    final code = location.id.normalized;
+    final name = location.translations[locale]?.normalized;
+
+    if (location.children != null) {
+      final children = location.children!.map((it) => matched(it, locale)).nonNulls.toList();
+      if (children.isNotEmpty) {
+        return location.copyWith(children: children);
+      }
+    }
+
+    if ((name?.contains(this) ?? false) || code.contains(this)) {
+      return location;
+    }
+
+    return null;
   }
 }

@@ -115,6 +115,7 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
   final filterService = ref.watch(filterServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
   final localeStore = ref.watch(localeStorePOD);
   final logger = ref.watch(loggerPOD);
 
@@ -123,6 +124,7 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
     filterService,
     analyticsStore,
     remoteConfigStore,
+    authSessionStore,
     SharedPreferenceService.instance,
     LocalDBService.instance,
     logger,
@@ -253,7 +255,8 @@ final deviceIDStorePOD = Provider<DeviceIDStore>(
 
 final latLngStorePOD = Provider<LatLngStore>((ref) {
   final assetsService = ref.watch(assetsServicePOD);
-  return LatLngStore(assetsService);
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+  return LatLngStore(assetsService, remoteConfigStore);
 });
 
 final networkStatisticsStorePOD = Provider.autoDispose<NetworkStatisticsStore>((ref) {
