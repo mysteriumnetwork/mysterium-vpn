@@ -7,7 +7,14 @@ extension StringExtensions on String {
 
   bool isUUID() => _uuidRegex.hasMatch(toUpperCase());
 
-  String capitalize() => '${this[0].toUpperCase()}${substring(1).toLowerCase()}';
+  String capitalize() {
+    if (length <= 1) {
+      return toUpperCase();
+    }
+    return '${this[0].toUpperCase()}${substring(1).toLowerCase()}';
+  }
+
+  String capitalizeWords() => split(RegExp(r'\s+')).map((word) => word.capitalize()).join(' ');
 
   bool get hasMultipleWords {
     final words = split(RegExp(r'\s+'));
@@ -53,5 +60,6 @@ extension StringExtensions on String {
 
 extension NullableStringExtensions on String? {
   bool get isNullOrEmpty => this == null || this!.isEmpty;
+
   bool get isNotNullOrEmpty => !isNullOrEmpty;
 }
