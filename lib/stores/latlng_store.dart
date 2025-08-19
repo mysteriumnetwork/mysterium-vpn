@@ -30,7 +30,8 @@ abstract class _LatLngStore with Store {
   @action
   LatLng? coordinatesFor(VPNLocation location) {
     final supportsCities = _remoteConfigStore.showCitiesAndStates &&
-        _remoteConfigStore.countriesWithCitiesOnMap.contains(location.countryCode.toUpperCase());
+        _remoteConfigStore.countriesWithCitiesOnMap.contains(location.countryCode.toUpperCase()) &&
+        (location.children?.isNotEmpty ?? false);
 
     // we don't want to show "country coordinates" if it already has its cities on the map
     if (location.isCountry && !supportsCities) {
