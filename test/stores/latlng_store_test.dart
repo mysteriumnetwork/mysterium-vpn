@@ -54,6 +54,7 @@ void main() {
     });
 
     test('handles empty coordinates map gracefully', () async {
+      // for this test, we need a new latlngstore because the previous one has already fetched data
       final latLngStore = LatLngStore(mockAssetsService, mockRemoteConfigStore);
       when(mockAssetsService.getCoordinates()).thenAnswer((_) async => {});
 
