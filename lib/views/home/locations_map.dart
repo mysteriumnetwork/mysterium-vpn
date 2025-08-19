@@ -10,6 +10,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/map_controller_hook.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
@@ -110,36 +111,63 @@ List<Marker> _useLocationMarkers({
   required VPNLocation? activeLocation,
   required Function(VPNLocation, LatLng)? onLocationPressed,
 }) {
+  final remoteConfigStore = useProvider(remoteConfigStorePOD);
   final latLngStore = useProvider(latLngStorePOD);
   final onLocationPressedRef = useRef(onLocationPressed)..value = onLocationPressed;
-  final sorted = {
-    ...data.where((it) => activeLocation?.id != it.id),
-    ...data.where((it) => it.id == activeLocation?.id),
-  };
 
   return useComputedValue<List<Marker>>(
-    () => sorted
-        .map((it) {
-          final point = latLngStore.coordinatesFor(it);
-          if (point == null) {
-            return null;
-          }
+    () {
+      final cities = remoteConfigStore.showCitiesAndStates
+          ? {
+              ...data.where(
+                (it) =>
+                    !it.isCountry &&
+                    remoteConfigStore.countriesWithCitiesOnMap
+                        .contains(it.countryCode.toUpperCase()),
+              ),
+            }
+          : const <VPNLocation>{};
 
-          final isActive = activeLocation?.id == it.id;
-          final size = isActive ? const Size.square(42) : const Size.square(16);
+      final countries = {
+        ...data.where(
+          (it) =>
+              it.isCountry &&
+              cities.none((city) => city.countryCode.toUpperCase() == it.countryCode.toUpperCase()),
+        ),
+      };
 
-          return Marker(
-            point: point,
-            height: size.height,
-            width: size.width,
-            child: _GestureHandler(
-              onPressed: () => onLocationPressedRef.value?.call(it, point),
-              child: LocationMarker(size: size * .7, isActive: isActive),
-            ),
-          );
-        })
-        .nonNulls
-        .toList(),
+      final sorted = {
+        ...cities,
+        ...countries.where((it) => it.id != activeLocation?.id),
+        ...countries.where((it) => it.id == activeLocation?.id),
+      };
+
+      return sorted
+          .map((it) {
+            final point = it.isCountry
+                ? latLngStore.coordinatesForCountry(it.countryCode)
+                : latLngStore.coordinatesForCity(it);
+
+            if (point == null) {
+              return null;
+            }
+
+            final isActive = activeLocation?.id == it.id;
+            final size = isActive ? const Size.square(42) : const Size.square(16);
+
+            return Marker(
+              point: point,
+              height: size.height,
+              width: size.width,
+              child: _GestureHandler(
+                onPressed: () => onLocationPressedRef.value?.call(it, point),
+                child: LocationMarker(size: size * .7, isActive: isActive),
+              ),
+            );
+          })
+          .nonNulls
+          .toList();
+    },
     [onLocationPressedRef, latLngStore, data, activeLocation?.id],
   );
 }

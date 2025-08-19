@@ -47,11 +47,11 @@ mixin _$LatLngStore on _LatLngStore, Store {
   }
 
   @override
-  LatLng? coordinatesFor(VPNLocation location) {
+  LatLng? coordinatesForCity(VPNLocation location) {
     final _$actionInfo =
-        _$_LatLngStoreActionController.startAction(name: '_LatLngStore.coordinatesFor');
+        _$_LatLngStoreActionController.startAction(name: '_LatLngStore.coordinatesForCity');
     try {
-      return super.coordinatesFor(location);
+      return super.coordinatesForCity(location);
     } finally {
       _$_LatLngStoreActionController.endAction(_$actionInfo);
     }
