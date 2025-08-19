@@ -29,18 +29,19 @@ abstract class _LatLngStore with Store {
 
   @action
   LatLng? coordinatesFor(VPNLocation location) {
-    final supportsCities = _remoteConfigStore.countriesWithCitiesOnMap.contains(
-      location.countryCode.toUpperCase(),
-    );
+    final supportsCities = _remoteConfigStore.showCitiesAndStates &&
+        _remoteConfigStore.countriesWithCitiesOnMap.contains(location.countryCode.toUpperCase());
+
+    // we don't want to show "country coordinates" if it already has its cities on the map
     if (location.isCountry && !supportsCities) {
       return coordinatesForCountry(location.countryCode);
-    } else if (location.isCountry) {
-      return null;
     }
 
-    if (!_remoteConfigStore.countriesWithCitiesOnMap.contains(location.countryCode.toUpperCase())) {
-      return null;
+    // if location is a city, we return its coordinates (if available)
+    if (supportsCities) {
+      return location.coordinates;
     }
-    return location.coordinates;
+
+    return null;
   }
 }
