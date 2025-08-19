@@ -8,13 +8,21 @@ extension StringExtensions on String {
   bool isUUID() => _uuidRegex.hasMatch(toUpperCase());
 
   String capitalize() {
-    if (length <= 1) {
+    if (isEmpty) {
+      return this;
+    }
+    if (length == 1) {
       return toUpperCase();
     }
     return '${this[0].toUpperCase()}${substring(1).toLowerCase()}';
   }
 
-  String capitalizeWords() => split(RegExp(r'\s+')).map((word) => word.capitalize()).join(' ');
+  String capitalizeWords() {
+    if (isEmpty) {
+      return this;
+    }
+    return split(RegExp(r'\s+')).map((word) => word.capitalize()).join(' ');
+  }
 
   bool get hasMultipleWords {
     final words = split(RegExp(r'\s+'));
