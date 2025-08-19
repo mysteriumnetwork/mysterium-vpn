@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/stun_binding_request.dart';
+import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -174,5 +175,11 @@ class RestApiService extends ApiService {
       _logger.handle(e, stackTrace);
       rethrow;
     }
+  }
+
+  @override
+  Future<Set<UserIntent>> fetchUserIntents() async {
+    await Future.delayed(Duration(seconds: 10));
+    return {...UserIntent.values}..remove(UserIntent.nearestLocation);
   }
 }

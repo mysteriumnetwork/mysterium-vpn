@@ -109,6 +109,16 @@ abstract class _LocationsStore with Store {
   @readonly
   String _searchKeyword = '';
 
+  @computed
+  Set<String> get availableCountries => {
+        ...?_dcLocationsStream.value?.allLocations
+            .where((it) => it.isCountry)
+            .map((it) => it.countryCode),
+        ...?_residentialLocationsStream.value?.allLocations
+            .where((it) => it.isCountry)
+            .map((it) => it.countryCode),
+      };
+
   @action
   Future<List<VPNLocation>> _fetchRecentLocations() async {
     final hasUser = (await _authSessionStore.userFuture) != null;
