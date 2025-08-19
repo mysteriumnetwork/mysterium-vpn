@@ -44,17 +44,11 @@ void main() {
     });
 
     test('returns coordinates for a valid country code', () async {
-      await latLngStore.countryCoordinatesFuture;
-
       final result = latLngStore.coordinatesForCountry('us');
       expect(result, mockData['US']);
     });
 
     test('returns null for an invalid country code', () async {
-      when(mockAssetsService.getCoordinates()).thenAnswer((_) async => mockData);
-
-      await latLngStore.countryCoordinatesFuture;
-
       final result = latLngStore.coordinatesForCountry('invalid');
       expect(result, isNull);
     });
