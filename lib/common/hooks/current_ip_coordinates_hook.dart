@@ -14,7 +14,7 @@ LatLng? useCurrentIPCoordinates() {
           vpnStore.connectionStatus == ConnectionStatus.connected) {
         final location = vpnStore.location ?? vpnStore.connectingLocation;
         if (location != null) {
-          return latLngStore.coordinatesFor(location) ??
+          return latLngStore.coordinatesForCity(location) ??
               latLngStore.coordinatesForCountry(location.countryCode);
         }
       }
