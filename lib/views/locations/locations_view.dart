@@ -157,13 +157,16 @@ class _UserIntent extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
+    final userIntentsStore = ref.watch(userIntentsStorePOD);
     final isLoading = useComputedValue(
       () =>
           vpnStore.connectionStatus == ConnectionStatus.connecting ||
           vpnStore.connectionStatus == ConnectionStatus.disconnecting,
     );
 
-    final intents = useComputedValue(() => vpnStore.userIntents);
+    final intents = useComputedValue(
+      () => userIntentsStore.isLoading ? null : userIntentsStore.intents,
+    );
     final selected = useComputedValue(() => vpnStore.userIntent);
     final handleToggleConnection = useHandleToggleConnection();
 
@@ -186,7 +189,7 @@ class _UserIntent extends HookConsumerWidget {
         ),
         const SizedBox(height: 16),
         UserIntentPicker(
-          items: intents.toList(),
+          items: intents?.toList(),
           onChanged: isLoading ? null : (value) => handleToggleConnection(intent: value),
           value: selected,
         ),

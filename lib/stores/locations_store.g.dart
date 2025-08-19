@@ -16,6 +16,13 @@ mixin _$LocationsStore on _LocationsStore, Store {
           Computed<ObservableStream<VPNLocations>>(() => super.locationsStream,
               name: '_LocationsStore.locationsStream'))
       .value;
+  Computed<Set<String>>? _$availableCountriesComputed;
+
+  @override
+  Set<String> get availableCountries =>
+      (_$availableCountriesComputed ??= Computed<Set<String>>(() => super.availableCountries,
+              name: '_LocationsStore.availableCountries'))
+          .value;
   Computed<bool>? _$_locationsNotEmptyComputed;
 
   @override
@@ -247,6 +254,7 @@ mixin _$LocationsStore on _LocationsStore, Store {
     return '''
 selectedLocation: ${selectedLocation},
 locationsStream: ${locationsStream},
+availableCountries: ${availableCountries},
 recentLocations: ${recentLocations},
 locations: ${locations},
 topLocations: ${topLocations},

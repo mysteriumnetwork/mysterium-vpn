@@ -30,6 +30,7 @@ import 'package:mysterium_vpn/stores/remote_config/texts_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/update_availabe_store.dart';
+import 'package:mysterium_vpn/stores/user_intents_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 
@@ -272,3 +273,19 @@ final updateAvailableStorePOD = Provider.autoDispose<UpdateAvailableStore>((ref)
     ref.watch(environmentPOD),
   );
 });
+
+final userIntentsStorePOD = Provider.autoDispose<UserIntentsStore>(
+  (ref) {
+    final apiService = ref.watch(apiServicePOD);
+    final realIPInfoStore = ref.watch(realIPInfoStorePOD);
+    final locationsStore = ref.watch(locationsStorePOD);
+    final logger = ref.watch(loggerPOD);
+
+    return UserIntentsStore(
+      apiService,
+      realIPInfoStore,
+      locationsStore,
+      logger,
+    );
+  },
+);

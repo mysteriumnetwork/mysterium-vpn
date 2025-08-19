@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/user_intent.dart';
+import 'package:shimmer/shimmer.dart';
 
 class UserIntentPicker extends StatelessWidget {
   const UserIntentPicker({
@@ -15,7 +17,7 @@ class UserIntentPicker extends StatelessWidget {
   });
 
   final UserIntent? value;
-  final List<UserIntent> items;
+  final List<UserIntent>? items;
   final ValueChanged<UserIntent?>? onChanged;
 
   @override
@@ -24,10 +26,23 @@ class UserIntentPicker extends StatelessWidget {
         child: ListView.separated(
           clipBehavior: Clip.none,
           scrollDirection: Axis.horizontal,
-          itemCount: items.length,
+          itemCount: items?.length ?? UserIntent.values.length,
           separatorBuilder: (_, __) => const SizedBox(width: 10),
           itemBuilder: (context, index) {
-            final item = items[index];
+            if (items == null) {
+              final theme = Theme.of(context);
+              return Shimmer.fromColors(
+                baseColor: theme.colorScheme.secondary,
+                highlightColor: theme.colorScheme.secondary.darken(20),
+                child: _Item(
+                  value: UserIntent.nearestLocation,
+                  isSelected: false,
+                  onPressed: () {},
+                ),
+              );
+            }
+
+            final item = items![index];
             final isSelected = value == item;
             return _Item(
               value: item,
