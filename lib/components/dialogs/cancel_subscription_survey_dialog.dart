@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -33,7 +34,7 @@ class CancelSubscriptionSurveyDialog extends HookConsumerWidget {
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
     final reasons = useComputedValue(
-      () => remoteConfigStore.cancelSubscriptionReasonKeys ?? <String>{},
+      () => remoteConfigStore.cancelSubscriptionReasonKeys?.shuffled().toSet() ?? <String>{},
     );
 
     final form = _useForm();
