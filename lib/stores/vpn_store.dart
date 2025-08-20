@@ -618,10 +618,7 @@ abstract class _VpnStore with Store {
             countryOriginate: (await _realIPInfo.infoFuture)?.country,
             country: location.countryCode,
             city: location.isCountry ? null : location.id,
-            ipType: switch (location.ipType) {
-              IPType.datacenter => 'hosting',
-              _ => null,
-            },
+            ipType: location.ipType.toSerializedString,
             resetConnection: refreshIP ?? _refreshIPConnection,
             osType: Platform.operatingSystem,
           ),
