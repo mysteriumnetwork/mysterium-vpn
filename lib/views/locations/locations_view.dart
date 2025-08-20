@@ -99,13 +99,20 @@ class _Body extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsStore = ref.watch(locationsStorePOD);
+    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+    final userIntentsStore = ref.watch(userIntentsStorePOD);
     final recentsFutureStatus = useComputedValue(() => locationsStore.recentLocationsFuture.status);
+    final showUserIntents = useComputedValue(
+      () =>
+          remoteConfigStore.showUserIntents &&
+          (userIntentsStore.intents.isNotEmpty || userIntentsStore.isLoading),
+    );
 
     if (stream.value != null) {
       return MultiSliver(
         children: [
-          const _UserIntent(),
-          const SizedBox(height: 24),
+          if (showUserIntents) const _UserIntent(),
+          if (showUserIntents) const SizedBox(height: 24),
           if (recentsFutureStatus == FutureStatus.pending) ...[
             const RecentLocationsLoading(),
             const SizedBox(height: 24),
@@ -169,10 +176,6 @@ class _UserIntent extends HookConsumerWidget {
     );
     final selected = useComputedValue(() => vpnStore.userIntent);
     final handleToggleConnection = useHandleToggleConnection();
-
-    if (intents?.isEmpty ?? false) {
-      return const SizedBox.shrink();
-    }
 
     return MultiSliver(
       children: [
