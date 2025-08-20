@@ -205,6 +205,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
           Computed<Set<String>>(() => super.countriesWithCitiesOnMap,
               name: 'RemoteConfigStoreBase.countriesWithCitiesOnMap'))
       .value;
+  Computed<bool>? _$showUserIntentsComputed;
+
+  @override
+  bool get showUserIntents =>
+      (_$showUserIntentsComputed ??= Computed<bool>(() => super.showUserIntents,
+              name: 'RemoteConfigStoreBase.showUserIntents'))
+          .value;
 
   @override
   String toString() {
@@ -237,7 +244,8 @@ cancelSubscriptionReasonKeys: ${cancelSubscriptionReasonKeys},
 useStoreVersionChecker: ${useStoreVersionChecker},
 enableQaHelpers: ${enableQaHelpers},
 showCitiesAndStates: ${showCitiesAndStates},
-countriesWithCitiesOnMap: ${countriesWithCitiesOnMap}
+countriesWithCitiesOnMap: ${countriesWithCitiesOnMap},
+showUserIntents: ${showUserIntents}
     ''';
   }
 }
