@@ -150,6 +150,7 @@
   "iUnderstandBtn": "Anladım",
   "id": "Endonezya dili",
   "incorrectCode": "Yanlış kod. 😕",
+  "incorrectLocationReason": "Hatalı konum",
   "incorrectMagicLink": "Yanlış sihirli link. Lütfen son gelen linke tıklayın. 😕",
   "installVpnProfile": "Mysterium VPN'i kullanmaya başlamak için VPN Profili kurma izninize ihtiyacımız var.",
   "internetConnectionRestored": "İnternet bağlantınız geri yüklendi.",
