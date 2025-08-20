@@ -72,4 +72,8 @@ class _FormGroup extends FormGroup {
   FormControl<String> get feedback => control('feedback') as FormControl<String>;
 }
 
-_FormGroup _useForm() => useMemoized(_FormGroup._);
+_FormGroup _useForm() {
+  final form = useMemoized(_FormGroup._);
+  useStream(form.valueChanges);
+  return form;
+}

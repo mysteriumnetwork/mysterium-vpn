@@ -131,6 +131,7 @@
   "fetchSubsFailedDesc": "您的订阅出了点问题。请再试一次。",
   "fieldRequired": "此字段是必需的",
   "first": "第一",
+  "formValidationError": "表单数据无效。请检查各个字段并重试。",
   "fr": "法语",
   "france": "法国",
   "freeTrialDesc": "保护您的连接，解锁内容，并控制您的在线隐私。",

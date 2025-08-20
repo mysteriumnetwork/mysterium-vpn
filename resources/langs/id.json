@@ -131,6 +131,7 @@
   "fetchSubsFailedDesc": "Ada yang salah dengan langganan Anda. Silakan coba lagi.",
   "fieldRequired": "Bagian ini diperlukan",
   "first": "pertama",
+  "formValidationError": "Data formulir tidak valid. Silakan periksa kolom dan coba lagi.",
   "fr": "Perancis",
   "france": "Perancis",
   "freeTrialDesc": "Amankan koneksi Anda, buka konten, dan kendalikan privasi online Anda.",

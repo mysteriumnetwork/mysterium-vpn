@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/exceptions/form_validation_exception.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/app_alert_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -45,7 +47,7 @@ class CancelSubscriptionSurveyDialog extends HookConsumerWidget {
     void handleSubmit() {
       submitFuture.value = () async {
         if (!form.valid) {
-          return;
+          throw FormValidationException(form.errors);
         }
 
         final reasons = form.reasons.value!;
@@ -63,6 +65,12 @@ class CancelSubscriptionSurveyDialog extends HookConsumerWidget {
     useValueChanged<ConnectionState, void>(submitState.connectionState, (_, __) {
       if (submitState.connectionState == ConnectionState.done) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (submitState.hasError) {
+            final error = submitState.error;
+            if (error is FormValidationException) {
+              showSnackbar(error.message);
+            }
+          }
           Navigator.of(context, rootNavigator: true).pop(!submitState.hasError);
         });
       }
@@ -87,6 +95,7 @@ class CancelSubscriptionSurveyDialog extends HookConsumerWidget {
           onPressed: submitState.connectionState == ConnectionState.waiting ? null : handleSubmit,
           style: TextButton.styleFrom(
             foregroundColor: theme.palette.highlightColor,
+            disabledForegroundColor: theme.palette.highlightColor.withValues(alpha: .5),
           ),
           child: Text(
             LocaleKeys.submitBtn.tr(),
