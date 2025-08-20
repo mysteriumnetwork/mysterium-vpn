@@ -131,6 +131,7 @@
   "fetchSubsFailedDesc": "Qualcosa è andato storto con il tuo abbonamento. Per favore riprova.",
   "fieldRequired": "Questo campo è obbligatorio",
   "first": "primo",
+  "formValidationError": "Dati del modulo non validi. Controlla i campi e riprova.",
   "fr": "Francese",
   "france": "Francia",
   "freeTrialDesc": "Proteggi la tua connessione, sblocca contenuti e prendi il controllo della tua privacy online.",

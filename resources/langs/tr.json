@@ -131,6 +131,7 @@
   "fetchSubsFailedDesc": "Abonelik paketinizi bulmakta sorun yaşıyoruz. ",
   "fieldRequired": "Bu alan gereklidir",
   "first": "ilk",
+  "formValidationError": "Geçersiz form verisi. Lütfen alanları kontrol edip tekrar deneyin.",
   "fr": "Fransızca",
   "france": "Fransa",
   "freeTrialDesc": "Bağlantınızı güvence altına alın, içeriğin kilidini açın ve çevrimiçi gizliliğinizi kontrol edin.",

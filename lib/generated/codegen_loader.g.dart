@@ -147,6 +147,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc": "您的订阅出了点问题。请再试一次。",
     "fieldRequired": "此字段是必需的",
     "first": "第一",
+    "formValidationError": "表单数据无效。请检查各个字段并重试。",
     "fr": "法语",
     "france": "法国",
     "freeTrialDesc": "保护您的连接，解锁内容，并控制您的在线隐私。",
@@ -525,6 +526,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc": "Abonelik paketinizi bulmakta sorun yaşıyoruz. ",
     "fieldRequired": "Bu alan gereklidir",
     "first": "ilk",
+    "formValidationError": "Geçersiz form verisi. Lütfen alanları kontrol edip tekrar deneyin.",
     "fr": "Fransızca",
     "france": "Fransa",
     "freeTrialDesc":
@@ -908,6 +910,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc": "サブスクリプションで問題が発生しました。もう一度試してください。",
     "fieldRequired": "この項目は必須です",
     "first": "最初",
+    "formValidationError": "フォームのデータが無効です。項目を確認してもう一度お試しください。",
     "fr": "フランス語",
     "france": "フランス",
     "freeTrialDesc": "あなたの接続を保護し、コンテンツのブロックを解除し、オンラインプライバシーをコントロールしましょう。",
@@ -1303,6 +1306,8 @@ class CodegenLoader extends AssetLoader {
         "Bei Ihrem Abonnement ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
     "fieldRequired": "Dieses Feld ist erforderlich",
     "first": "erste",
+    "formValidationError":
+        "Ungültige Formulardaten. Bitte überprüfe die Felder und versuche es erneut.",
     "fr": "Französisch",
     "france": "Frankreich",
     "freeTrialDesc":
@@ -1718,6 +1723,7 @@ class CodegenLoader extends AssetLoader {
         "Não conseguimos buscar seu pacote de assinatura. Clique no botão abaixo para tentar novamente.",
     "fieldRequired": "Este campo é obrigatório",
     "first": "primeiro",
+    "formValidationError": "Dados do formulário inválidos. Verifique os campos e tente novamente.",
     "fr": "Francês",
     "france": "França",
     "freeTrialDesc": "Proteja sua conexão, desbloqueie conteúdo e controle sua privacidade online.",
@@ -2126,6 +2132,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc": "Something went wrong with your subscription. Please try again.",
     "fieldRequired": "This field is required",
     "first": "first",
+    "formValidationError": "Invalid form data. Please check the fields and try again.",
     "fr": "French",
     "france": "France",
     "freeTrialDesc":
@@ -2536,6 +2543,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc": "Qualcosa è andato storto con il tuo abbonamento. Per favore riprova.",
     "fieldRequired": "Questo campo è obbligatorio",
     "first": "primo",
+    "formValidationError": "Dati del modulo non validi. Controlla i campi e riprova.",
     "fr": "Francese",
     "france": "Francia",
     "freeTrialDesc":
@@ -2954,6 +2962,8 @@ class CodegenLoader extends AssetLoader {
         "Nous n'avons pas pu récupérer votre package d'abonnement. Cliquez sur le bouton ci-dessous pour réessayer.",
     "fieldRequired": "Ce champ est obligatoire",
     "first": "premier",
+    "formValidationError":
+        "Données du formulaire invalides. Veuillez vérifier les champs et réessayer.",
     "fr": "Français",
     "france": "France",
     "freeTrialDesc":
@@ -3366,6 +3376,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc": "Ada yang salah dengan langganan Anda. Silakan coba lagi.",
     "fieldRequired": "Bagian ini diperlukan",
     "first": "pertama",
+    "formValidationError": "Data formulir tidak valid. Silakan periksa kolom dan coba lagi.",
     "fr": "Perancis",
     "france": "Perancis",
     "freeTrialDesc": "Amankan koneksi Anda, buka konten, dan kendalikan privasi online Anda.",
@@ -3774,6 +3785,8 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc": "Algo salió mal con tu suscripción. Inténtalo de nuevo.",
     "fieldRequired": "Este campo es obligatorio",
     "first": "primero",
+    "formValidationError":
+        "Datos del formulario no válidos. Por favor, revisa los campos e inténtalo de nuevo.",
     "fr": "Francés",
     "france": "Francia",
     "freeTrialDesc":
@@ -4179,6 +4192,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc": "حدث خطأ ما في اشتراكك. حاول مرة أخرى.",
     "fieldRequired": "هذه الخانة مطلوبه",
     "first": "أول",
+    "formValidationError": "بيانات النموذج غير صالحة. يرجى التحقق من الحقول والمحاولة مرة أخرى.",
     "fr": "فرنسي",
     "france": "فرنسا",
     "freeTrialDesc": "أمن اتصالك، افتح المحتوى المحظور، وتحكم في خصوصيتك على الإنترنت.",

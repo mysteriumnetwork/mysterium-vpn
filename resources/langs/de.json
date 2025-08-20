@@ -131,6 +131,7 @@
   "fetchSubsFailedDesc": "Bei Ihrem Abonnement ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
   "fieldRequired": "Dieses Feld ist erforderlich",
   "first": "erste",
+  "formValidationError": "Ungültige Formulardaten. Bitte überprüfe die Felder und versuche es erneut.",
   "fr": "Französisch",
   "france": "Frankreich",
   "freeTrialDesc": "Sichern Sie Ihre Verbindung, entsperren Sie Inhalte und übernehmen Sie die Kontrolle über Ihre Online-Privatsphäre.",
