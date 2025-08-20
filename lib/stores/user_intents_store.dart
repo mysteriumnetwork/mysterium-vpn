@@ -78,12 +78,11 @@ abstract class _UserIntentsStore with Store {
 
   Stream<Set<UserIntent>> _watchAPIIntents() async* {
     yield (await _fetchAPIIntents()) ?? const <UserIntent>{};
-    // Emit periodically
-    await for (final _ in Stream.periodic(const Duration(seconds: 2))) {
-      final intents = await _fetchAPIIntents();
-      if (intents != null) {
-        yield intents;
-      }
-    }
+    yield* Stream.periodic(const Duration(seconds: 2))
+        .asyncMap((_) async => (await _fetchAPIIntents()) ?? const <UserIntent>{});
+  }
+
+  Future<void> dispose() async {
+    await _apiIntentsStream.close();
   }
 }

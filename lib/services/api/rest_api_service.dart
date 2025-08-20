@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/stun_binding_request.dart';
 import 'package:mysterium_vpn/models/user_intent.dart';
@@ -179,7 +180,17 @@ class RestApiService extends ApiService {
 
   @override
   Future<Set<UserIntent>> fetchUserIntents() async {
-    await Future.delayed(Duration(seconds: 10));
-    return {...UserIntent.values}..remove(UserIntent.nearestLocation);
+    try {
+      final res = await _apiConnection.userIntents();
+      final data = res.data ?? const <String>[];
+
+      return data
+          .map((it) => UserIntent.values.firstWhereOrNull((value) => value.key == it))
+          .nonNulls
+          .toSet();
+    } catch (e, stack) {
+      _logger.handle(e, stack);
+      rethrow;
+    }
   }
 }
