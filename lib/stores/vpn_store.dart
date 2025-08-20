@@ -656,6 +656,8 @@ abstract class _VpnStore with Store {
         ..reset()
         ..start();
       final realIpInfo = await _realIPInfo.infoFuture;
+      final ipType = location?.ipType ??
+          (intent == UserIntent.nearestLocation ? _locationsStore.ipType : null);
       _fetchConfigFuture = ObservableFuture(
         _apiService.fetchVpnConfig(
           request: WireguardConnectRequest(
@@ -668,7 +670,7 @@ abstract class _VpnStore with Store {
                 : (location?.isCountry ?? true)
                     ? null
                     : location?.id,
-            ipType: location?.ipType.key,
+            ipType: ipType?.key,
             resetConnection: refreshIP ?? _refreshIPConnection,
             osType: Platform.operatingSystem,
             userIntent: intent?.key,

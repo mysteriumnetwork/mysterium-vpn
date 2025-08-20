@@ -385,6 +385,8 @@ abstract class _LocationsStore with Store {
   FutureOr<void> dispose() async {
     _debouncer.dispose();
     await _autoRefreshSubscription?.cancel();
+    await _dcLocationsStream.close();
+    await _residentialLocationsStream.close();
   }
 
   @action

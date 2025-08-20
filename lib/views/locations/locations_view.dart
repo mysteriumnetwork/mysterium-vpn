@@ -170,6 +170,10 @@ class _UserIntent extends HookConsumerWidget {
     final selected = useComputedValue(() => vpnStore.userIntent);
     final handleToggleConnection = useHandleToggleConnection();
 
+    if (intents?.isEmpty ?? false) {
+      return const SizedBox.shrink();
+    }
+
     return MultiSliver(
       children: [
         Row(

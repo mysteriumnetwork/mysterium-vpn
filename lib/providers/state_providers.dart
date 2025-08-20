@@ -281,11 +281,14 @@ final userIntentsStorePOD = Provider.autoDispose<UserIntentsStore>(
     final locationsStore = ref.watch(locationsStorePOD);
     final logger = ref.watch(loggerPOD);
 
-    return UserIntentsStore(
+    final store = UserIntentsStore(
       apiService,
       realIPInfoStore,
       locationsStore,
       logger,
     );
+
+    ref.onDispose(store.dispose);
+    return store;
   },
 );
