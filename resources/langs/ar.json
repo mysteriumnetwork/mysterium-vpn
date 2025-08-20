@@ -150,6 +150,7 @@
   "iUnderstandBtn": "أنا أفهم",
   "id": "الاندونيسية",
   "incorrectCode": "شفرة خاطئة. حاول مرة أخرى. 😕",
+  "incorrectLocationReason": "موقع غير صحيح",
   "incorrectMagicLink": "رابط سحري غير صحيح. حاول مرة أخرى. 😕",
   "installVpnProfile": "لبدء استخدام Mysterium VPN ، نحتاج إلى إذنك لتثبيت ملف تعريف VPN.",
   "internetConnectionRestored": "تمت استعادة اتصالك بالإنترنت.",
