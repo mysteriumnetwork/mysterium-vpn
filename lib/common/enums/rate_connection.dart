@@ -7,8 +7,8 @@ enum RateConnectionReason {
   unstableSpeed,
   highLatency,
   geoBlockedSites,
-  other,
-  incorrectLocation;
+  incorrectLocation,
+  other;
 
   static const List<RateConnectionReason> likeReasons = [
     stableConnection,
