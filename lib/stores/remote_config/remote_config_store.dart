@@ -38,6 +38,7 @@ enum _FeatureToggleKey {
   enableQaHelpers,
   showCitiesAndStates,
   countriesWithCitiesOnMap,
+  showUserIntents,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -298,6 +299,14 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       logger.handle(e, stack);
     }
     return const <String>{};
+  }
+
+  @computed
+  bool get showUserIntents {
+    if (config.containsKey(_FeatureToggleKey.showUserIntents.name)) {
+      return config[_FeatureToggleKey.showUserIntents.name] as bool;
+    }
+    return false;
   }
 
   Map<String, String> get asUserProperties =>

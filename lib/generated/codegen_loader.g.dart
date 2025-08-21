@@ -360,6 +360,19 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "不稳定的速度",
     "updateBtn": "更新",
     "upload": "上传",
+    "userIntentBestSpeed": "最佳速度",
+    "userIntentBestSpeedDesc": "连接到最快的可用服务器以获得最佳性能",
+    "userIntentLabel": "选择专用服务器",
+    "userIntentLowLatency": "低延迟",
+    "userIntentLowLatencyDesc": "自动连接到最近的服务器，以实现稳定可靠的访问",
+    "userIntentMaxPrivacy": "最大隐私",
+    "userIntentMaxPrivacyDesc": "根据国家获取提供最佳言论自由和速度选项的服务器",
+    "userIntentNearestLocation": "最近的位置",
+    "userIntentNearestLocationDesc": "根据你当前位置，连接到最近可用的 VPN IP，以获得最佳速度和性能",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc": "选择最适合进行安全加密交易、文件共享、游戏托管和通信的服务器",
+    "userIntentStreaming": "流媒体",
+    "userIntentStreamingDesc": "从特定地区的平台访问你喜爱的节目和电影",
     "was": "原价",
     "weNeedPermission": "我们需要您的许可",
     "year": "年",
@@ -758,6 +771,23 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "Kararsız hız",
     "updateBtn": "Güncelle",
     "upload": "Yükleme",
+    "userIntentBestSpeed": "En iyi hız",
+    "userIntentBestSpeedDesc": "En iyi performans için mevcut en hızlı sunucuya bağlanın",
+    "userIntentLabel": "Uzmanlaşmış sunucu seç",
+    "userIntentLowLatency": "Düşük gecikme",
+    "userIntentLowLatencyDesc":
+        "Kararlı ve güvenilir erişim için en yakın sunucuya otomatik olarak bağlanır",
+    "userIntentMaxPrivacy": "Maksimum gizlilik",
+    "userIntentMaxPrivacyDesc":
+        "Ülkeye göre en iyi ifade özgürlüğü ve hız seçeneklerine sahip bir sunucu alın",
+    "userIntentNearestLocation": "En yakın konum",
+    "userIntentNearestLocationDesc":
+        "Mevcut konumuna göre en iyi hız ve performans için en yakın uygun VPN IP’sine bağlanır",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc":
+        "Güvenli kripto işlemleri, dosya paylaşımı, oyun barındırma ve iletişim için en iyi sunucuyu seçin",
+    "userIntentStreaming": "Akış",
+    "userIntentStreamingDesc": "Bölgeye özel platformlardan favori dizi ve filmlerinize erişin",
     "was": "Önce",
     "weNeedPermission": "İzninize ihtiyacımız var",
     "year": "yıl",
@@ -1129,6 +1159,19 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "不安定な速度",
     "updateBtn": "アップデート",
     "upload": "アップロード",
+    "userIntentBestSpeed": "最速",
+    "userIntentBestSpeedDesc": "最適なパフォーマンスのために、最も高速な利用可能サーバーに接続します",
+    "userIntentLabel": "専用サーバーを選択",
+    "userIntentLowLatency": "低遅延",
+    "userIntentLowLatencyDesc": "安定して信頼できるアクセスのために、最も近いサーバーに自動接続します",
+    "userIntentMaxPrivacy": "最大限のプライバシー",
+    "userIntentMaxPrivacyDesc": "国に基づいて、言論の自由と速度の最適なオプションを備えたサーバーを取得します",
+    "userIntentNearestLocation": "最寄りのロケーション",
+    "userIntentNearestLocationDesc": "現在地に基づいて最適な速度とパフォーマンスを得るために、最も近い利用可能なVPN IPに接続します",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc": "暗号通貨の安全な取引、ファイル共有、ゲームホスティング、通信に最適なサーバーを選択してください",
+    "userIntentStreaming": "ストリーミング",
+    "userIntentStreamingDesc": "地域別のプラットフォームからお気に入りの番組や映画にアクセスできます",
     "was": "以前は",
     "weNeedPermission": "あなたの許可が必要です",
     "year": "年",
@@ -1552,6 +1595,25 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "Instabile Geschwindigkeit",
     "updateBtn": "Aktualisieren",
     "upload": "Hochladen",
+    "userIntentBestSpeed": "Beste Geschwindigkeit",
+    "userIntentBestSpeedDesc":
+        "Verbinde dich mit dem schnellsten verfügbaren Server für optimale Leistung",
+    "userIntentLabel": "Spezialserver auswählen",
+    "userIntentLowLatency": "Niedrige Latenz",
+    "userIntentLowLatencyDesc":
+        "Verbindet dich automatisch mit dem nächstgelegenen Server für stabilen und zuverlässigen Zugriff",
+    "userIntentMaxPrivacy": "Maximale Privatsphäre",
+    "userIntentMaxPrivacyDesc":
+        "Erhalte einen Server mit den besten Optionen für Meinungsfreiheit und Geschwindigkeit je nach Land",
+    "userIntentNearestLocation": "Nächster Standort",
+    "userIntentNearestLocationDesc":
+        "Verbindet dich mit der nächstgelegenen verfügbaren VPN-IP für optimale Geschwindigkeit und Leistung basierend auf deinem aktuellen Standort",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc":
+        "Wähle den besten Server für sichere Krypto-Transaktionen, Dateifreigabe, Game-Hosting und Kommunikation",
+    "userIntentStreaming": "Streaming",
+    "userIntentStreamingDesc":
+        "Greife auf deine Lieblingsserien und -filme von regionalspezifischen Plattformen zu",
     "was": "War",
     "weNeedPermission": "Wir benötigen Ihre Erlaubnis",
     "year": "Jahr",
@@ -1967,6 +2029,25 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "Velocidade instável",
     "updateBtn": "Atualização",
     "upload": "Carregar",
+    "userIntentBestSpeed": "Melhor velocidade",
+    "userIntentBestSpeedDesc":
+        "Conecte-se ao servidor disponível mais rápido para um desempenho ideal",
+    "userIntentLabel": "Selecionar servidor especializado",
+    "userIntentLowLatency": "Baixa latência",
+    "userIntentLowLatencyDesc":
+        "Conecta automaticamente ao servidor mais próximo para um acesso estável e confiável",
+    "userIntentMaxPrivacy": "Máxima privacidade",
+    "userIntentMaxPrivacyDesc":
+        "Obtenha um servidor com as melhores opções de liberdade de expressão e velocidade com base no país",
+    "userIntentNearestLocation": "Localização mais próxima",
+    "userIntentNearestLocationDesc":
+        "Conecta você ao IP de VPN mais próximo disponível para obter a melhor velocidade e desempenho com base na sua localização atual",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc":
+        "Escolha o melhor servidor para transações de criptomoeda seguras, compartilhamento de arquivos, hospedagem de jogos e comunicações",
+    "userIntentStreaming": "Streaming",
+    "userIntentStreamingDesc":
+        "Acesse seus programas e filmes favoritos de plataformas específicas da região",
     "was": "Era",
     "weNeedPermission": "Precisamos da sua permissão",
     "year": "ano",
@@ -2371,6 +2452,24 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "Unstable speed",
     "updateBtn": "Update",
     "upload": "Upload",
+    "userIntentBestSpeed": "Best speed",
+    "userIntentBestSpeedDesc": "Connect to the fastest available server for optimal performance",
+    "userIntentLabel": "Select speciality server",
+    "userIntentLowLatency": "Low latency",
+    "userIntentLowLatencyDesc":
+        "Automatically connects you to the closest server for stable and reliable access",
+    "userIntentMaxPrivacy": "Max privacy",
+    "userIntentMaxPrivacyDesc":
+        "Get a server with the best free speech and speed options based on country",
+    "userIntentNearestLocation": "Nearest location",
+    "userIntentNearestLocationDesc":
+        "Connects you to the closest available VPN IP for the best speed and performance based on your current location",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc":
+        "Pick the best server for secure crypto transactions, file sharing, game hosting, and communications",
+    "userIntentStreaming": "Streaming",
+    "userIntentStreamingDesc":
+        "Access your favorite shows and movies from region-specific platforms",
     "was": "Was",
     "weNeedPermission": "We need your permission",
     "year": "year",
@@ -2789,6 +2888,25 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "Velocità instabile",
     "updateBtn": "Aggiorna",
     "upload": "Upload",
+    "userIntentBestSpeed": "Massima velocità",
+    "userIntentBestSpeedDesc":
+        "Connettiti al server disponibile più veloce per prestazioni ottimali",
+    "userIntentLabel": "Seleziona server specializzato",
+    "userIntentLowLatency": "Bassa latenza",
+    "userIntentLowLatencyDesc":
+        "Si connette automaticamente al server più vicino per un accesso stabile e affidabile",
+    "userIntentMaxPrivacy": "Massima privacy",
+    "userIntentMaxPrivacyDesc":
+        "Ottieni un server con le migliori opzioni per la libertà di parola e la velocità in base al paese",
+    "userIntentNearestLocation": "Posizione più vicina",
+    "userIntentNearestLocationDesc":
+        "Ti connette all’indirizzo IP VPN disponibile più vicino per ottenere la massima velocità e prestazioni in base alla tua posizione attuale",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc":
+        "Scegli il miglior server per transazioni crypto sicure, condivisione di file, hosting di giochi e comunicazioni",
+    "userIntentStreaming": "Streaming",
+    "userIntentStreamingDesc":
+        "Accedi ai tuoi programmi e film preferiti da piattaforme specifiche per regione",
     "was": "Era",
     "weNeedPermission": "Abbiamo bisogno del tuo permesso",
     "year": "anno",
@@ -3212,6 +3330,25 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "Vitesse instable",
     "updateBtn": "Mettre à jour",
     "upload": "Télécharger",
+    "userIntentBestSpeed": "Meilleure vitesse",
+    "userIntentBestSpeedDesc":
+        "Connectez-vous au serveur disponible le plus rapide pour des performances optimales",
+    "userIntentLabel": "Sélectionner un serveur spécialisé",
+    "userIntentLowLatency": "Faible latence",
+    "userIntentLowLatencyDesc":
+        "Se connecte automatiquement au serveur le plus proche pour un accès stable et fiable",
+    "userIntentMaxPrivacy": "Confidentialité maximale",
+    "userIntentMaxPrivacyDesc":
+        "Obtenez un serveur offrant les meilleures options de liberté d’expression et de vitesse selon le pays",
+    "userIntentNearestLocation": "Emplacement le plus proche",
+    "userIntentNearestLocationDesc":
+        "Vous connecte à l’adresse IP VPN disponible la plus proche pour une vitesse et des performances optimales selon votre position actuelle",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc":
+        "Choisissez le meilleur serveur pour les transactions crypto sécurisées, le partage de fichiers, l’hébergement de jeux et les communications",
+    "userIntentStreaming": "Streaming",
+    "userIntentStreamingDesc":
+        "Accédez à vos émissions et films préférés depuis des plateformes spécifiques à votre région",
     "was": "Était",
     "weNeedPermission": "Nous avons besoin de votre autorisation",
     "year": "année",
@@ -3618,6 +3755,24 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "Kecepatan tidak stabil",
     "updateBtn": "Perbarui",
     "upload": "Mengunggah",
+    "userIntentBestSpeed": "Kecepatan terbaik",
+    "userIntentBestSpeedDesc": "Hubungkan ke server tercepat yang tersedia untuk performa optimal",
+    "userIntentLabel": "Pilih server khusus",
+    "userIntentLowLatency": "Latensi rendah",
+    "userIntentLowLatencyDesc":
+        "Secara otomatis menghubungkan Anda ke server terdekat untuk akses yang stabil dan andal",
+    "userIntentMaxPrivacy": "Privasi maksimal",
+    "userIntentMaxPrivacyDesc":
+        "Dapatkan server dengan opsi kebebasan berbicara dan kecepatan terbaik berdasarkan negara",
+    "userIntentNearestLocation": "Lokasi terdekat",
+    "userIntentNearestLocationDesc":
+        "Menghubungkan Anda ke IP VPN terdekat yang tersedia untuk kecepatan dan performa terbaik berdasarkan lokasi Anda saat ini",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc":
+        "Pilih server terbaik untuk transaksi kripto yang aman, berbagi file, hosting game, dan komunikasi",
+    "userIntentStreaming": "Streaming",
+    "userIntentStreamingDesc":
+        "Akses acara dan film favorit Anda dari platform yang khusus untuk wilayah tertentu",
     "was": "Sebelumnya",
     "weNeedPermission": "Kami membutuhkan izin Anda",
     "year": "tahun",
@@ -4036,6 +4191,25 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "Velocidad inestable",
     "updateBtn": "Actualizar",
     "upload": "Subir",
+    "userIntentBestSpeed": "Mejor velocidad",
+    "userIntentBestSpeedDesc":
+        "Conéctate al servidor disponible más rápido para un rendimiento óptimo",
+    "userIntentLabel": "Seleccionar servidor especializado",
+    "userIntentLowLatency": "Baja latencia",
+    "userIntentLowLatencyDesc":
+        "Se conecta automáticamente al servidor más cercano para un acceso estable y confiable",
+    "userIntentMaxPrivacy": "Máxima privacidad",
+    "userIntentMaxPrivacyDesc":
+        "Obtén un servidor con las mejores opciones de libertad de expresión y velocidad según el país",
+    "userIntentNearestLocation": "Ubicación más cercana",
+    "userIntentNearestLocationDesc":
+        "Te conecta a la IP de VPN disponible más cercana para obtener la mejor velocidad y rendimiento según tu ubicación actual",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc":
+        "Elige el mejor servidor para transacciones seguras con criptomonedas, compartir archivos, alojar juegos y comunicaciones",
+    "userIntentStreaming": "Streaming",
+    "userIntentStreamingDesc":
+        "Accede a tus programas y películas favoritos desde plataformas específicas de la región",
     "was": "Antes",
     "weNeedPermission": "Necesitamos tu permiso",
     "year": "año",
@@ -4431,6 +4605,22 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "سرعة غير مستقرة",
     "updateBtn": "تحديث",
     "upload": "رفع",
+    "userIntentBestSpeed": "أفضل سرعة",
+    "userIntentBestSpeedDesc": "اتصل بأسرع خادم متاح للحصول على أفضل أداء",
+    "userIntentLabel": "اختر خادمًا متخصصًا",
+    "userIntentLowLatency": "كمون منخفض",
+    "userIntentLowLatencyDesc": "يتصل تلقائيًا بأقرب خادم لتوفير وصول مستقر وموثوق",
+    "userIntentMaxPrivacy": "أقصى قدر من الخصوصية",
+    "userIntentMaxPrivacyDesc":
+        "احصل على خادم يوفر أفضل خيارات حرية التعبير والسرعة بناءً على الدولة",
+    "userIntentNearestLocation": "أقرب موقع",
+    "userIntentNearestLocationDesc":
+        "يوصلك بأقرب عنوان IP VPN متاح للحصول على أفضل سرعة وأداء بناءً على موقعك الحالي",
+    "userIntentP2P": "نظير إلى نظير",
+    "userIntentP2PDesc":
+        "اختر أفضل خادم للمعاملات المشفرة الآمنة ومشاركة الملفات واستضافة الألعاب والاتصالات",
+    "userIntentStreaming": "البث",
+    "userIntentStreamingDesc": "شاهد برامجك وأفلامك المفضلة من منصات مخصصة حسب المنطقة",
     "was": "كان",
     "weNeedPermission": "نحن بحاجة إلى إذنك",
     "year": "سنة",

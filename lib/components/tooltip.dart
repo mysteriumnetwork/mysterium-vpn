@@ -73,7 +73,11 @@ class Tooltip extends HookConsumerWidget {
           visible: visibility,
           child: buildEntry(context),
         ),
-        child: GestureDetector(key: key, onTap: enabled ? handleToggle : null, child: child),
+        child: MouseRegion(
+          onEnter: (_) => visibility.value = true,
+          onExit: (_) => visibility.value = false,
+          child: GestureDetector(key: key, onTap: enabled ? handleToggle : null, child: child),
+        ),
       ),
     );
   }
@@ -81,6 +85,48 @@ class Tooltip extends HookConsumerWidget {
 
 class TooltipEntry extends StatelessWidget {
   const TooltipEntry({
+    required this.child,
+    this.margin = const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+    this.padding = const EdgeInsets.all(8),
+    this.constraints = const BoxConstraints(),
+    super.key,
+  });
+
+  final Widget child;
+  final EdgeInsets margin;
+  final EdgeInsets padding;
+  final BoxConstraints constraints;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final controller = _TooltipController.of(context);
+    return Padding(
+      padding: margin,
+      child: ConstrainedBox(
+        constraints: constraints,
+        child: Material(
+          color: theme.palette.tooltipBackgroundColor,
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(color: theme.palette.highlightColor),
+          ),
+          child: InkWell(
+            onTap: () => controller.value = false,
+            child: Padding(
+              padding: padding,
+              child: child,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class TooltipTextEntry extends StatelessWidget {
+  const TooltipTextEntry({
     required this.title,
     required this.message,
     this.constraints = const BoxConstraints(),
@@ -92,43 +138,29 @@ class TooltipEntry extends StatelessWidget {
   final BoxConstraints constraints;
 
   @override
-  Widget build(BuildContext context) {
-    final controller = _TooltipController.of(context);
-    return ConstrainedBox(
-      constraints: constraints,
-      child: Material(
-        color: Palette.mediumBlack,
-        borderRadius: BorderRadius.circular(8),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: () => controller.value = false,
-          child: Padding(
-            padding: const EdgeInsets.all(6),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                EasyText(
-                  title,
-                  color: Palette.white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-                const SizedBox(height: 4),
-                EasyText(
-                  message,
-                  color: Palette.lightBlue,
-                  fontSize: 8,
-                  fontWeight: FontWeight.w400,
-                  maxLines: 6,
-                ),
-              ],
+  Widget build(BuildContext context) => TooltipEntry(
+        constraints: constraints,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            EasyText(
+              title,
+              color: Palette.white,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
             ),
-          ),
+            const SizedBox(height: 4),
+            EasyText(
+              message,
+              color: Palette.lightBlue,
+              fontSize: 8,
+              fontWeight: FontWeight.w400,
+              maxLines: 6,
+            ),
+          ],
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _TooltipController extends InheritedWidget {

@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/stun_binding_request.dart';
+import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -172,6 +174,22 @@ class RestApiService extends ApiService {
       );
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Set<UserIntent>> fetchUserIntents() async {
+    try {
+      final res = await _apiConnection.userIntents();
+      final data = res.data ?? const <String>[];
+
+      return data
+          .map((it) => UserIntent.values.firstWhereOrNull((value) => value.key == it))
+          .nonNulls
+          .toSet();
+    } catch (e, stack) {
+      _logger.handle(e, stack);
       rethrow;
     }
   }
