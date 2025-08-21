@@ -68,7 +68,7 @@ jobs:
         run: |
           fvm dart run msix:create `
             --build-windows false --install-certificate false --output-name "Mysterium VPN" `
-            --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" --override-executable "mysterium_vpn.exe" `
+            --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
             --sign-msix "true"
         continue-on-error: true
       - name: Build Windows installer
@@ -76,7 +76,7 @@ jobs:
         run: |
           fvm dart run msix:create `
             --build-windows false --install-certificate false --output-name "Mysterium VPN" `
-            --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" --override-executable "mysterium_vpn.exe" `
+            --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
             --sign-msix false --publisher "CN=UAB MN Technologijos, O=UAB MN Technologijos, L=Vilnius, S=Vilniaus, C=LT"
         continue-on-error: true
 
@@ -110,7 +110,7 @@ jobs:
         run: |
           fvm dart run msix:create `
             --build-windows false --install-certificate false --output-name "Mysterium VPN" `
-            --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" --override-executable "mysterium_vpn.exe" `
+            --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
             --store --identity-name "${{ inputs.product_identity }}" --publisher "CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC" --publisher-display-name "UAB MN Technologijos"
         continue-on-error: true
 
