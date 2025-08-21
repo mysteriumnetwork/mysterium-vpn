@@ -131,6 +131,7 @@
   "fetchSubsFailedDesc": "Nous n'avons pas pu récupérer votre package d'abonnement. Cliquez sur le bouton ci-dessous pour réessayer.",
   "fieldRequired": "Ce champ est obligatoire",
   "first": "premier",
+  "formValidationError": "Données du formulaire invalides. Veuillez vérifier les champs et réessayer.",
   "fr": "Français",
   "france": "France",
   "freeTrialDesc": "Sécurisez votre connexion, débloquez du contenu et prenez le contrôle de votre vie privée en ligne.",

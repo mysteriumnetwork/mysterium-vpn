@@ -131,6 +131,7 @@
   "fetchSubsFailedDesc": "Não conseguimos buscar seu pacote de assinatura. Clique no botão abaixo para tentar novamente.",
   "fieldRequired": "Este campo é obrigatório",
   "first": "primeiro",
+  "formValidationError": "Dados do formulário inválidos. Verifique os campos e tente novamente.",
   "fr": "Francês",
   "france": "França",
   "freeTrialDesc": "Proteja sua conexão, desbloqueie conteúdo e controle sua privacidade online.",
