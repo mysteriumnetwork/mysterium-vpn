@@ -150,6 +150,7 @@
   "iUnderstandBtn": "理解しました",
   "id": "インドネシア語",
   "incorrectCode": "コードが間違っています。もう一度試してください。😕?",
+  "incorrectLocationReason": "位置情報が正しくありません",
   "incorrectMagicLink": "マジックリンクが間違っています。もう一度試してください。😕?",
   "installVpnProfile": "Mysterium VPN の使用を開始するには、VPN プロファイルをインストールする許可が必要です。",
   "internetConnectionRestored": "インターネット接続が復元されました。",
