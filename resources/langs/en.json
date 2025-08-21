@@ -131,6 +131,7 @@
   "fetchSubsFailedDesc": "Something went wrong with your subscription. Please try again.",
   "fieldRequired": "This field is required",
   "first": "first",
+  "formValidationError": "Invalid form data. Please check the fields and try again.",
   "fr": "French",
   "france": "France",
   "freeTrialDesc": "Secure your connection, unblock content, and take control of your online privacy.",

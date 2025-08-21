@@ -135,6 +135,7 @@ abstract class LocaleKeys {
   static const fetchSubsFailedDesc = 'fetchSubsFailedDesc';
   static const fieldRequired = 'fieldRequired';
   static const first = 'first';
+  static const formValidationError = 'formValidationError';
   static const fr = 'fr';
   static const france = 'france';
   static const freeTrialDesc = 'freeTrialDesc';
