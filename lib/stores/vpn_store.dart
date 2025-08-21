@@ -490,10 +490,19 @@ abstract class _VpnStore with Store {
     UserIntent? intent,
     bool isRetrying = false,
   }) async {
-    if (_connectionStatus == ConnectionStatus.connected &&
-        (location == null || location == _vpnConnection?.location)) {
+    if (_connectionStatus == ConnectionStatus.connected) {
+      final connectedLocation = _vpnConnection?.location;
+      final connectedIntent = _userIntent;
       await disconnectWireguard();
-      return;
+      if (location == null && intent == null) {
+        return;
+      }
+      if (location != null && location == connectedLocation) {
+        return;
+      }
+      if (intent != null && intent == connectedIntent) {
+        return;
+      }
     }
 
     await _startConnection(location: location, intent: intent, isRetrying: isRetrying);
