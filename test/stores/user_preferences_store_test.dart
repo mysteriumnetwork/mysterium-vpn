@@ -39,7 +39,7 @@ void main() {
 
     when(mockRealIPInfoStore.infoFuture).thenAnswer(
       (_) => ObservableFuture.value(
-        IPInfo(
+        const IPInfo(
           city: 'Test City',
           country: 'Test Country',
           ip: '',

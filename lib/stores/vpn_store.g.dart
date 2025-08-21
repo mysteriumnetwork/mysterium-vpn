@@ -58,6 +58,12 @@ mixin _$VpnStore on _VpnStore, Store {
       (_$potentialLocationComputed ??= Computed<VPNLocation?>(() => super.potentialLocation,
               name: '_VpnStore.potentialLocation'))
           .value;
+  Computed<Set<UserIntent>>? _$userIntentsComputed;
+
+  @override
+  Set<UserIntent> get userIntents => (_$userIntentsComputed ??=
+          Computed<Set<UserIntent>>(() => super.userIntents, name: '_VpnStore.userIntents'))
+      .value;
 
   late final _$_refreshIPConnectionAtom =
       Atom(name: '_VpnStore._refreshIPConnection', context: context);
@@ -143,6 +149,23 @@ mixin _$VpnStore on _VpnStore, Store {
   set _vpnConnection(VpnConnection? value) {
     _$_vpnConnectionAtom.reportWrite(value, super._vpnConnection, () {
       super._vpnConnection = value;
+    });
+  }
+
+  late final _$_userIntentAtom = Atom(name: '_VpnStore._userIntent', context: context);
+
+  UserIntent? get userIntent {
+    _$_userIntentAtom.reportRead();
+    return super._userIntent;
+  }
+
+  @override
+  UserIntent? get _userIntent => userIntent;
+
+  @override
+  set _userIntent(UserIntent? value) {
+    _$_userIntentAtom.reportWrite(value, super._userIntent, () {
+      super._userIntent = value;
     });
   }
 
@@ -405,9 +428,10 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore.toggleConnection', context: context);
 
   @override
-  Future<void> toggleConnection({VPNLocation? location, bool isRetrying = false}) {
-    return _$toggleConnectionAsyncAction
-        .run(() => super.toggleConnection(location: location, isRetrying: isRetrying));
+  Future<void> toggleConnection(
+      {VPNLocation? location, UserIntent? intent, bool isRetrying = false}) {
+    return _$toggleConnectionAsyncAction.run(
+        () => super.toggleConnection(location: location, intent: intent, isRetrying: isRetrying));
   }
 
   late final _$startConnectionWithRefreshIPAsyncAction =
@@ -423,18 +447,19 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore._startConnection', context: context);
 
   @override
-  Future<void> _startConnection({VPNLocation? location, bool? refreshIP, bool isRetrying = false}) {
-    return _$_startConnectionAsyncAction.run(() =>
-        super._startConnection(location: location, refreshIP: refreshIP, isRetrying: isRetrying));
+  Future<void> _startConnection(
+      {VPNLocation? location, bool? refreshIP, bool isRetrying = false, UserIntent? intent}) {
+    return _$_startConnectionAsyncAction.run(() => super._startConnection(
+        location: location, refreshIP: refreshIP, isRetrying: isRetrying, intent: intent));
   }
 
   late final _$_completeConnectionAsyncAction =
       AsyncAction('_VpnStore._completeConnection', context: context);
 
   @override
-  Future<void> _completeConnection(VPNLocation location, bool? refreshIP) {
+  Future<void> _completeConnection(VPNLocation? location, UserIntent? intent, bool? refreshIP) {
     return _$_completeConnectionAsyncAction
-        .run(() => super._completeConnection(location, refreshIP));
+        .run(() => super._completeConnection(location, intent, refreshIP));
   }
 
   late final _$disconnectAllDevicesAsyncAction =
@@ -485,7 +510,8 @@ isLoading: ${isLoading},
 isFetchingLocation: ${isFetchingLocation},
 isFetchingConfig: ${isFetchingConfig},
 location: ${location},
-potentialLocation: ${potentialLocation}
+potentialLocation: ${potentialLocation},
+userIntents: ${userIntents}
     ''';
   }
 }
