@@ -166,6 +166,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "我明白了",
     "id": "印度尼西亚",
     "incorrectCode": "不正确的代码。请再试一次。😕?",
+    "incorrectLocationReason": "位置不正确",
     "incorrectMagicLink": "魔法链接不正确。请再试一次。😕?",
     "installVpnProfile": "要开始使用 Mysterium VPN，我们需要您的许可才能安装 VPN 配置文件。",
     "internetConnectionRestored": "您的互联网连接已恢复。",
@@ -545,6 +546,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "Anladım",
     "id": "Endonezya dili",
     "incorrectCode": "Yanlış kod. 😕",
+    "incorrectLocationReason": "Hatalı konum",
     "incorrectMagicLink": "Yanlış sihirli link. Lütfen son gelen linke tıklayın. 😕",
     "installVpnProfile":
         "Mysterium VPN'i kullanmaya başlamak için VPN Profili kurma izninize ihtiyacımız var.",
@@ -927,6 +929,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "理解しました",
     "id": "インドネシア語",
     "incorrectCode": "コードが間違っています。もう一度試してください。😕?",
+    "incorrectLocationReason": "位置情報が正しくありません",
     "incorrectMagicLink": "マジックリンクが間違っています。もう一度試してください。😕?",
     "installVpnProfile": "Mysterium VPN の使用を開始するには、VPN プロファイルをインストールする許可が必要です。",
     "internetConnectionRestored": "インターネット接続が復元されました。",
@@ -1323,6 +1326,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "Ich verstehe",
     "id": "Indonesisch",
     "incorrectCode": "Falscher Code. Bitte versuchen Sie es erneut. 😕",
+    "incorrectLocationReason": "Falscher Standort",
     "incorrectMagicLink": "Falscher Magic-Link. Bitte versuchen Sie es erneut. 😕",
     "installVpnProfile":
         "Um Mysterium VPN nutzen zu können, benötigen wir Ihre Erlaubnis zur Installation eines VPN-Profils.",
@@ -1737,6 +1741,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "Eu entendo",
     "id": "Indonésio",
     "incorrectCode": "Código incorreto. Por favor, tente novamente. 😕",
+    "incorrectLocationReason": "Localização incorreta",
     "incorrectMagicLink": "Link mágico incorreto. Por favor, tente novamente. 😕",
     "installVpnProfile":
         "Para começar a usar o Mysterium VPN, precisamos da sua permissão para instalar um perfil VPN.",
@@ -2146,6 +2151,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "I understand",
     "id": "Indonesian",
     "incorrectCode": "Incorrect code. Please try again. 😕",
+    "incorrectLocationReason": "Incorrect location",
     "incorrectMagicLink": "Incorrect magic link. Please try again. 😕",
     "installVpnProfile":
         "To start using Mysterium VPN, we need your permission to install a VPN Profile.",
@@ -2556,6 +2562,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "Ho capito",
     "id": "Indonesiano",
     "incorrectCode": "Codice non corretto. Per favore riprova. 😕",
+    "incorrectLocationReason": "Posizione errata",
     "incorrectMagicLink": "Collegamento magico errato. Per favore riprova. 😕",
     "installVpnProfile":
         "Per iniziare a utilizzare Mysterium VPN, abbiamo bisogno della tua autorizzazione per installare un profilo VPN.",
@@ -2974,6 +2981,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "Je comprends",
     "id": "Indonésien",
     "incorrectCode": "Code incorrect. Veuillez réessayer. 😕",
+    "incorrectLocationReason": "Emplacement incorrect",
     "incorrectMagicLink": "Lien magique incorrect. Veuillez réessayer. 😕",
     "installVpnProfile":
         "Pour commencer à utiliser Mysterium VPN, nous avons besoin de votre permission pour installer un profil VPN.",
@@ -3385,6 +3393,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "Saya mengerti",
     "id": "Bahasa Indonesia",
     "incorrectCode": "Kode salah. Silakan coba lagi. 😕",
+    "incorrectLocationReason": "Lokasi tidak benar",
     "incorrectMagicLink": "Tautan ajaib salah. Silakan coba lagi. 😕",
     "installVpnProfile":
         "Untuk mulai menggunakan Mysterium VPN, kami memerlukan izin Anda untuk memasang Profil VPN.",
@@ -3794,6 +3803,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "Lo entiendo",
     "id": "Indonesio",
     "incorrectCode": "Código incorrecto. Inténtalo de nuevo. 😕",
+    "incorrectLocationReason": "Ubicación incorrecta",
     "incorrectMagicLink": "Enlace mágico incorrecto. Inténtalo de nuevo. 😕",
     "installVpnProfile":
         "Para comenzar a usar Mysterium VPN, necesitamos tu permiso para instalar un perfil de VPN.",
@@ -4198,6 +4208,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "أنا أفهم",
     "id": "الاندونيسية",
     "incorrectCode": "شفرة خاطئة. حاول مرة أخرى. 😕",
+    "incorrectLocationReason": "موقع غير صحيح",
     "incorrectMagicLink": "رابط سحري غير صحيح. حاول مرة أخرى. 😕",
     "installVpnProfile": "لبدء استخدام Mysterium VPN ، نحتاج إلى إذنك لتثبيت ملف تعريف VPN.",
     "internetConnectionRestored": "تمت استعادة اتصالك بالإنترنت.",
