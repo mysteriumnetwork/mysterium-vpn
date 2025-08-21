@@ -93,7 +93,9 @@ class CancelSubscriptionSurveyDialog extends HookConsumerWidget {
           ),
         ),
         TextButton(
-          onPressed: submitState.connectionState == ConnectionState.waiting ? null : handleSubmit,
+          onPressed: form.invalid || submitState.connectionState == ConnectionState.waiting
+              ? null
+              : handleSubmit,
           style: TextButton.styleFrom(
             foregroundColor: theme.palette.highlightColor,
             disabledForegroundColor: theme.palette.highlightColor.withValues(alpha: .5),
