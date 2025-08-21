@@ -155,6 +155,7 @@ abstract class LocaleKeys {
   static const iUnderstandBtn = 'iUnderstandBtn';
   static const id = 'id';
   static const incorrectCode = 'incorrectCode';
+  static const incorrectLocationReason = 'incorrectLocationReason';
   static const incorrectMagicLink = 'incorrectMagicLink';
   static const installVpnProfile = 'installVpnProfile';
   static const internetConnectionRestored = 'internetConnectionRestored';

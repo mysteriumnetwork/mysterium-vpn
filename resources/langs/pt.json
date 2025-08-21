@@ -151,6 +151,7 @@
   "iUnderstandBtn": "Eu entendo",
   "id": "Indonésio",
   "incorrectCode": "Código incorreto. Por favor, tente novamente. 😕",
+  "incorrectLocationReason": "Localização incorreta",
   "incorrectMagicLink": "Link mágico incorreto. Por favor, tente novamente. 😕",
   "installVpnProfile": "Para começar a usar o Mysterium VPN, precisamos da sua permissão para instalar um perfil VPN.",
   "internetConnectionRestored": "Sua conexão com a Internet foi restaurada.",
