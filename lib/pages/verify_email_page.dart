@@ -7,6 +7,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/unauthenticated_page_view.dart';
 import 'package:mysterium_vpn/views/verify_email_view.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -20,39 +21,41 @@ class VerifyEmailPage extends ConsumerWidget {
     final analyticsStore = ref.read(analyticsStorePOD);
     final size = Size(getMediaWidth(context), getMediaHeight(context));
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Row(
-              children: [
-                SvgIconButton(
-                  onPressed: () {
-                    analyticsStore.logEvent(AnalyticsEvent.backButtonClick);
-                    context.beamBack();
-                  },
-                  asset: context.c.isDarkMode
-                      ? Assets.navigateBackLightGrey
-                      : Assets.navigateBackLightBlack,
-                ).padding(left: 20),
-                const AppLogo().expanded(),
-                const SizedBox(width: 70),
-              ],
-            ).padding(
-              top: size.height * 0.02,
-              bottom: size.height * 0.03,
-            ),
-            const VerifyEmailView()
-                .decorated(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                )
-                .expanded(),
-          ],
+    return UnauthenticatedPageView(
+      child: Scaffold(
+        backgroundColor: Theme.of(context).primaryColor,
+        body: SafeArea(
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  SvgIconButton(
+                    onPressed: () {
+                      analyticsStore.logEvent(AnalyticsEvent.backButtonClick);
+                      context.beamBack();
+                    },
+                    asset: context.c.isDarkMode
+                        ? Assets.navigateBackLightGrey
+                        : Assets.navigateBackLightBlack,
+                  ).padding(left: 20),
+                  const AppLogo().expanded(),
+                  const SizedBox(width: 70),
+                ],
+              ).padding(
+                top: size.height * 0.02,
+                bottom: size.height * 0.03,
+              ),
+              const VerifyEmailView()
+                  .decorated(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                  )
+                  .expanded(),
+            ],
+          ),
         ),
       ),
     );

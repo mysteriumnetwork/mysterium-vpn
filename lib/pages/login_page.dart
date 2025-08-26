@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/login/login_view.dart';
+import 'package:mysterium_vpn/views/unauthenticated_page_view.dart';
 
 class LoginPage extends HookConsumerWidget {
   const LoginPage({
@@ -26,10 +27,12 @@ class LoginPage extends HookConsumerWidget {
       fireImmediately: true,
     );
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: const SafeArea(
-        child: SignInView(),
+    return UnauthenticatedPageView(
+      child: Scaffold(
+        backgroundColor: Theme.of(context).primaryColor,
+        body: const SafeArea(
+          child: SignInView(),
+        ),
       ),
     );
   }
