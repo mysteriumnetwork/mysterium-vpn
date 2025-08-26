@@ -10,7 +10,7 @@ class AnimatedLogoPanel extends HookWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return ColoredBox(
-      color: theme.palette.backgroundGolor,
+      color: theme.palette.backgroundColor,
       child: Stack(
         children: [
           Lottie.asset(Assets.backgroundElements),
