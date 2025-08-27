@@ -3,12 +3,10 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/components/unauthenticated_header.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/login/login_form.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class SignInView extends HookConsumerWidget {
   const SignInView({super.key});
@@ -17,7 +15,6 @@ class SignInView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final authStore = ref.read(authStorePOD);
-    final size = Size(getMediaWidth(context), getMediaHeight(context));
     final formDecoration = useResponsiveValue(
       BoxDecoration(
         color: theme.colorScheme.surface,
@@ -34,11 +31,7 @@ class SignInView extends HookConsumerWidget {
         children: [
           Column(
             children: [
-              const UnauthenticatedHeader().padding(
-                horizontal: size.width * 0.05,
-                top: size.height * 0.02,
-                bottom: size.height * 0.03,
-              ),
+              const UnauthenticatedHeader(),
               Expanded(
                 child: DecoratedBox(
                   decoration: formDecoration,
