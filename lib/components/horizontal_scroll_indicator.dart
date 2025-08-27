@@ -135,7 +135,7 @@ class _Indicator extends HookWidget {
           ),
         ),
         child: const Padding(
-          padding: EdgeInsets.only(top: 25, bottom: 25, left: 25, right: 8),
+          padding: EdgeInsets.only(left: 25, right: 8),
           child: SvgIcon(asset: Assets.chevronRight),
         ),
       ),

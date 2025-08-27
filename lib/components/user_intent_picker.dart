@@ -1,14 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
+import 'package:mysterium_vpn/components/horizontal_scroll_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:shimmer/shimmer.dart';
 
-class UserIntentPicker extends StatelessWidget {
+class UserIntentPicker extends HookWidget {
   const UserIntentPicker({
     required this.onChanged,
     required this.value,
@@ -21,10 +24,54 @@ class UserIntentPicker extends StatelessWidget {
   final ValueChanged<UserIntent?>? onChanged;
 
   @override
+  Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+    final hasIndicator = useResponsiveValue(
+      false,
+      desktop: true,
+      tablet: true,
+    );
+
+    final child = _List(
+      scrollController: scrollController,
+      hasIndicator: hasIndicator,
+      items: items,
+      value: value,
+      onChanged: onChanged,
+    );
+
+    if (!hasIndicator) {
+      return child;
+    }
+
+    return HorizontalScrollIndicator(
+      controller: scrollController,
+      child: child,
+    );
+  }
+}
+
+class _List extends StatelessWidget {
+  const _List({
+    required this.scrollController,
+    required this.hasIndicator,
+    required this.items,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final ScrollController scrollController;
+  final bool hasIndicator;
+  final List<UserIntent>? items;
+  final UserIntent? value;
+  final ValueChanged<UserIntent?>? onChanged;
+
+  @override
   Widget build(BuildContext context) => ConstrainedBox(
         constraints: const BoxConstraints(maxHeight: 46),
         child: ListView.separated(
-          clipBehavior: Clip.none,
+          controller: scrollController,
+          clipBehavior: hasIndicator ? Clip.hardEdge : Clip.none,
           scrollDirection: Axis.horizontal,
           itemCount: items?.length ?? UserIntent.values.length,
           separatorBuilder: (_, __) => const SizedBox(width: 10),
