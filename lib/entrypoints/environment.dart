@@ -77,7 +77,7 @@ class Environment {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
     );
     SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.manual,
+      Platform.isAndroid ? SystemUiMode.edgeToEdge : SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
     );
 
