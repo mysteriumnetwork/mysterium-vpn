@@ -26,7 +26,7 @@ class UnauthenticatedHeader extends HookConsumerWidget {
         if (!canBrowseApp) const SizedBox.shrink(),
         const AppLogo(),
         SvgIconButton(
-          asset: Assets.messageSvg,
+          asset: Assets.supportLight,
           onPressed: () {
             handleOnSupportPage(
               context: context,
