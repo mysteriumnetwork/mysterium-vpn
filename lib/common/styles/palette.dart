@@ -35,7 +35,7 @@ abstract class Palette {
   Color get secondaryColor;
   Color get subtitleColor;
   Color get lightTextColor;
-  Color get backgroundGolor;
+  Color get backgroundColor;
   Color get darkTextColor;
   Color get primaryColor;
   Color get surfaceColor;
@@ -80,7 +80,7 @@ class LightPalette implements Palette {
   Color get darkTextColor => Palette.lightBlack;
 
   @override
-  Color get backgroundGolor => Palette.veryLightGrey;
+  Color get backgroundColor => Palette.veryLightGrey;
 
   @override
   Color get primaryColor => Palette.white;
@@ -169,7 +169,7 @@ class DarkPalette implements Palette {
   Color get darkTextColor => Palette.lightBlack;
 
   @override
-  Color get backgroundGolor => Palette.darkBlue;
+  Color get backgroundColor => Palette.darkBlue;
 
   @override
   Color get primaryColor => Palette.black;

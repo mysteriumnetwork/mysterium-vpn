@@ -7,7 +7,7 @@ ThemeData themeData(Palette palette) => ThemeData(
       useMaterial3: true,
       primaryColor: palette.primaryColor,
       colorScheme: ColorScheme.fromSwatch().copyWith(
-        onSurface: palette.backgroundGolor,
+        onSurface: palette.backgroundColor,
         surface: palette.surfaceColor,
         primary: palette.swatchColor,
         brightness: palette is LightPalette ? Brightness.light : Brightness.dark,
