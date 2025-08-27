@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
@@ -112,7 +113,7 @@ class _DialogContent extends ConsumerWidget {
                     ),
                     child: Text(
                       LocaleKeys.signMeUpBtn.tr(),
-                      style: const TextStyle(
+                      style: GoogleFonts.montserrat(
                         color: Palette.white,
                         fontWeight: FontWeight.w700,
                         fontSize: 14,
