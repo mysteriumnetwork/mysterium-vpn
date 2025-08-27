@@ -57,19 +57,47 @@ class _Form extends StatelessWidget {
 
 class _FormGroup extends FormGroup {
   _FormGroup._()
-      : super({
-          'reasons': FormControl<Set<String>>(
-            value: {},
-            validators: [
-              Validators.minLength(1),
-            ],
-          ),
-          'feedback': FormControl<String>(value: ''),
-        });
+      : super(
+          {
+            'reasons': FormControl<Set<String>>(
+              value: {},
+              validators: [Validators.minLength(1)],
+            ),
+            'feedback': FormControl<String>(
+              value: '',
+            ),
+          },
+          validators: [const _FeedbackLengthValidator(5)],
+        );
 
   FormControl<Set<String>> get reasons => control('reasons') as FormControl<Set<String>>;
 
   FormControl<String> get feedback => control('feedback') as FormControl<String>;
+}
+
+class _FeedbackLengthValidator extends Validator<dynamic> {
+  const _FeedbackLengthValidator(this.minLength);
+
+  final int minLength;
+
+  @override
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+    final form = control;
+    if (form is! _FormGroup) {
+      return null;
+    }
+    final reasons = form.reasons.value ?? const <String>{};
+    final feedback = form.feedback.value ?? '';
+    if (reasons.every((it) => it == kCancelReasonOther) && feedback.length < minLength) {
+      return <String, dynamic>{
+        'feedbackLength': {
+          'requiredLength': minLength,
+          'actualLength': feedback.length,
+        },
+      };
+    }
+    return null;
+  }
 }
 
 _FormGroup _useForm() {
