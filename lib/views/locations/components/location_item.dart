@@ -161,6 +161,7 @@ class _LocationItem extends HookWidget {
         padding: const EdgeInsets.all(12),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: flag == null ? CrossAxisAlignment.start : CrossAxisAlignment.center,
           spacing: 20,
           children: [
             if (flag != null) Flag(countryCode: flag!, size: 30),
@@ -170,8 +171,8 @@ class _LocationItem extends HookWidget {
                 height: 30,
                 alignment: Alignment.centerRight,
                 child: SvgIcon(
-                  height: 20,
-                  width: 20,
+                  height: 24,
+                  width: 24,
                   asset: (isConnected ?? false)
                       ? Assets.cityConnected
                       : switch (theme.brightness) {
