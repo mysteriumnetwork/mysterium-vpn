@@ -1,10 +1,14 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/adaptive_action_sheet/adaptive_action_sheet.dart';
@@ -25,9 +29,9 @@ class VerifyEmailView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final authStore = ref.watch(authStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
-    final height = getMediaHeight(context);
     final timer = useCountdownTimer(
       initialCountdown: 60,
     );
@@ -39,30 +43,17 @@ class VerifyEmailView extends HookConsumerWidget {
           children: [
             Column(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: 30,
               children: [
-                EasyText(
-                  LocaleKeys.checkYourEmail.tr(),
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
-                ).padding(bottom: 20),
-                const SvgIcon(
-                  asset: Assets.checkEmail,
-                ).padding(bottom: height * .03),
-                EasyText(
-                  LocaleKeys.emailSentTo.tr(namedArgs: {'email': '${authStore.email}'}),
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                ).padding(bottom: height * .02),
-                EasyText(
-                  LocaleKeys.linkExpires.tr(),
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                ).padding(bottom: height * .02),
-                EasyText(
-                  LocaleKeys.consumeLink.tr(),
-                  maxLines: 5,
-                  textAlign: TextAlign.center,
-                ).padding(bottom: height * .05),
+                const _Subheader(),
+                if (authStore.email != null) _Email(email: authStore.email!),
+                _Excerpt(
+                  items: [
+                    LocaleKeys.linkExpires.tr(),
+                    LocaleKeys.consumeLink.tr(),
+                  ],
+                ),
                 Visibility(
                   visible: isMobile(),
                   child: EasyButton(
@@ -80,6 +71,8 @@ class VerifyEmailView extends HookConsumerWidget {
                   width: 200,
                   color: Palette.purple,
                   useSystemColor: false,
+                  disabledBackgroundColor: theme.palette.disabledButtonBackgroundColor,
+                  disabledForegroundColor: theme.palette.disabledButtonForegroundColor,
                   onPressed: isActive
                       ? null
                       : () async {
@@ -94,7 +87,7 @@ class VerifyEmailView extends HookConsumerWidget {
                         )
                       : EasyText(
                           LocaleKeys.sendAgain.plural(timer.countdown),
-                          color: Palette.white,
+                          color: theme.palette.disabledButtonForegroundColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
                         ),
@@ -106,7 +99,7 @@ class VerifyEmailView extends HookConsumerWidget {
                   horizontal: getMediaWidth(context) > 650 ? 60 : 20,
                 ),
             if (authStore.authenticateFeature?.status == FutureStatus.pending)
-              LoadingBarrier(color: Theme.of(context).primaryColor),
+              LoadingBarrier(color: theme.primaryColor),
           ],
         );
       },
@@ -151,4 +144,84 @@ class VerifyEmailView extends HookConsumerWidget {
       );
     }
   }
+}
+
+class _Subheader extends HookWidget {
+  const _Subheader();
+
+  @override
+  Widget build(BuildContext context) {
+    final children = <Widget>[
+      EasyText(
+        LocaleKeys.checkYourEmail.tr(),
+        fontSize: useResponsiveValue(20, desktop: 28),
+        fontWeight: FontWeight.w600,
+        textAlign: TextAlign.center,
+      ),
+      const SvgIcon(asset: Assets.checkEmail),
+    ];
+    return Column(
+      spacing: 30,
+      children: useResponsiveValue(children, desktop: children.reversed.toList()),
+    );
+  }
+}
+
+class _Email extends HookWidget {
+  const _Email({required this.email});
+
+  final String email;
+
+  @override
+  Widget build(BuildContext context) {
+    final text = LocaleKeys.emailSentTo.tr(namedArgs: {'email': email});
+    final label = text.replaceAll(email, '').trim();
+    final separator = useResponsiveValue('\n', desktop: ' ');
+    return AutoSizeText.rich(
+      TextSpan(
+        children: [
+          TextSpan(text: label),
+          TextSpan(text: separator),
+          TextSpan(
+            text: email,
+            style: GoogleFonts.montserrat(fontWeight: FontWeight.w600),
+          ),
+        ],
+      ),
+      maxLines: 2,
+      textAlign: TextAlign.center,
+      style: GoogleFonts.montserrat(fontSize: 16),
+    );
+  }
+}
+
+class _Excerpt extends StatelessWidget {
+  const _Excerpt({required this.items});
+
+  final List<String> items;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: 8,
+        children: [
+          for (final item in items) _BulletItem(text: item),
+        ],
+      );
+}
+
+class _BulletItem extends StatelessWidget {
+  const _BulletItem({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const EasyText('•'),
+          const SizedBox(width: 12),
+          Expanded(child: EasyText(text, maxLines: 3)),
+        ],
+      );
 }
