@@ -43,12 +43,8 @@ class LocationItem extends HookConsumerWidget {
     );
     final isExpanded = useState(false);
 
-    void handleParentPressed() {
-      if (showCitiesAndStates) {
-        isExpanded.value = !isExpanded.value;
-      } else {
-        onTap?.call(location);
-      }
+    void handleToggleExpanded() {
+      isExpanded.value = !isExpanded.value;
     }
 
     useEffect(
@@ -77,7 +73,7 @@ class LocationItem extends HookConsumerWidget {
         children: [
           _LocationItem(
             location: location,
-            onTap: handleParentPressed,
+            onTap: showCitiesAndStates ? handleToggleExpanded : null,
             onToggleConnectionTap: onTap == null ? null : () => onTap(location),
             label: showCitiesAndStates
                 ? LocaleKeys.locationItemCityCount.plural(children.length)
@@ -90,7 +86,7 @@ class LocationItem extends HookConsumerWidget {
             for (final child in children)
               _ChildLocationItem(
                 value: child,
-                onTap: onTap == null ? null : () => onTap(child),
+                onTap: null,
                 query: query,
               ),
         ],
@@ -161,6 +157,7 @@ class _LocationItem extends HookWidget {
         padding: const EdgeInsets.all(12),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: flag == null ? CrossAxisAlignment.start : CrossAxisAlignment.center,
           spacing: 20,
           children: [
             if (flag != null) Flag(countryCode: flag!, size: 30),
@@ -170,8 +167,8 @@ class _LocationItem extends HookWidget {
                 height: 30,
                 alignment: Alignment.centerRight,
                 child: SvgIcon(
-                  height: 20,
-                  width: 20,
+                  height: 24,
+                  width: 24,
                   asset: (isConnected ?? false)
                       ? Assets.cityConnected
                       : switch (theme.brightness) {

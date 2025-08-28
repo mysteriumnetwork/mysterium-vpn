@@ -50,10 +50,10 @@ class SubscriptionFormVariantC extends HookConsumerWidget {
         children: [
           EasyText(
             LocaleKeys.pricingPlanTitle.tr(),
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: FontWeight.w700,
           ),
-          SizedBox(height: getMediaHeight(context) * 0.01),
+          SizedBox(height: getMediaHeight(context) * 0.005),
           if (highlightedProduct != null)
             HighlightedProduct(
               product: highlightedProduct,
@@ -73,7 +73,7 @@ class SubscriptionFormVariantC extends HookConsumerWidget {
             fontSize: 12,
             textAlign: TextAlign.center,
             color: context.c.isDarkMode ? Palette.veryLightGrey : Palette.darkGrey,
-          ).padding(bottom: getMediaHeight(context) * 0.025),
+          ).padding(bottom: getMediaHeight(context) * 0.005),
           SubscriptionButton(
             onPressed: () {
               if (highlightedProduct == null) {
@@ -110,7 +110,7 @@ class SubscriptionFormVariantC extends HookConsumerWidget {
           ),
           Agreements(
             analyticsStore: analyticsStore,
-          ).padding(top: 10),
+          ).padding(top: 6),
           const BottomSpacer(),
         ],
       ),
