@@ -62,7 +62,7 @@ class ConnectionTile extends HookConsumerWidget {
     }
 
     return RawMaterialButton(
-      onPressed: onTap,
+      onPressed: null,
       fillColor: theme.palette.connectionTileBackgroundColor,
       elevation: 0,
       focusElevation: 0,
