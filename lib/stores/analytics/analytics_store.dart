@@ -259,12 +259,15 @@ mixin AnalyticsStore {
   }
 
   Future<void> logMapScroll({MapCamera? from, MapCamera? to}) async {
-    await logEvent(
-      AnalyticsEvent.mapScroll,
-      parameters: {
-        ...?from?.toMap(),
-        ...?to?.toMap(),
-      },
+    _debouncer.debounce(
+      () => logEvent(
+        AnalyticsEvent.mapScroll,
+        parameters: {
+          ...?from?.toMap().map((key, value) => MapEntry('from_$key', value)),
+          ...?to?.toMap().map((key, value) => MapEntry('to_$key', value)),
+        },
+      ),
+      const Duration(milliseconds: 800),
     );
   }
 
