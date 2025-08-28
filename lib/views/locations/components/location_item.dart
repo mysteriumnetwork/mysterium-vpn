@@ -43,12 +43,8 @@ class LocationItem extends HookConsumerWidget {
     );
     final isExpanded = useState(false);
 
-    void handleParentPressed() {
-      if (showCitiesAndStates) {
-        isExpanded.value = !isExpanded.value;
-      } else {
-        onTap?.call(location);
-      }
+    void handleToggleExpanded() {
+      isExpanded.value = !isExpanded.value;
     }
 
     useEffect(
@@ -77,7 +73,7 @@ class LocationItem extends HookConsumerWidget {
         children: [
           _LocationItem(
             location: location,
-            onTap: handleParentPressed,
+            onTap: showCitiesAndStates ? handleToggleExpanded : null,
             onToggleConnectionTap: onTap == null ? null : () => onTap(location),
             label: showCitiesAndStates
                 ? LocaleKeys.locationItemCityCount.plural(children.length)
@@ -90,7 +86,7 @@ class LocationItem extends HookConsumerWidget {
             for (final child in children)
               _ChildLocationItem(
                 value: child,
-                onTap: onTap == null ? null : () => onTap(child),
+                onTap: null,
                 query: query,
               ),
         ],
