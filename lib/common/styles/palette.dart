@@ -59,6 +59,8 @@ abstract class Palette {
   Color get alertButtonsOutlineColor;
   Color get connectionTileBackgroundColor;
   Color get tooltipBackgroundColor;
+  Color get disabledButtonBackgroundColor;
+  Color get disabledButtonForegroundColor;
 
   MaterialColor get swatchColor;
 }
@@ -150,6 +152,12 @@ class LightPalette implements Palette {
 
   @override
   Color get tooltipBackgroundColor => Palette.white;
+
+  @override
+  Color get disabledButtonBackgroundColor => Palette.lightBlue;
+
+  @override
+  Color get disabledButtonForegroundColor => Palette.lightBlack;
 }
 
 class DarkPalette implements Palette {
@@ -239,6 +247,12 @@ class DarkPalette implements Palette {
 
   @override
   Color get tooltipBackgroundColor => Palette.duskyPurple;
+
+  @override
+  Color get disabledButtonBackgroundColor => Palette.lightBlue;
+
+  @override
+  Color get disabledButtonForegroundColor => Palette.lightBlack;
 }
 
 Map<int, Color> color = const {

@@ -10,6 +10,8 @@ class EasyButton extends ConsumerWidget {
     this.text,
     this.child,
     this.color,
+    this.disabledBackgroundColor,
+    this.disabledForegroundColor,
     this.useSystemColor = true,
     this.isDisabled = false,
     this.width,
@@ -21,10 +23,13 @@ class EasyButton extends ConsumerWidget {
   final Widget? child;
   final VoidCallback? onPressed;
   final Color? color;
+  final Color? disabledBackgroundColor;
+  final Color? disabledForegroundColor;
   final bool useSystemColor;
   final bool isDisabled;
   final double? width;
   final double? height;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.read(themeStorePOD);
@@ -37,6 +42,8 @@ class EasyButton extends ConsumerWidget {
           backgroundColor: useSystemColor
               ? null
               : color ?? (themeStore.isDarkMode ? Palette.lightBlack : Palette.black),
+          disabledBackgroundColor: disabledBackgroundColor,
+          disabledForegroundColor: disabledForegroundColor,
         ),
         child: text != null
             ? EasyText(
