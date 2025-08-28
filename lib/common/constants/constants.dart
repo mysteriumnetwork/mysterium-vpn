@@ -64,3 +64,4 @@ final kWorldBounds = LatLngBounds(
 const kMapZoomLevels = <double>[3, 4];
 // unlike kMapZoomLevels, these are the zoom levels used for the tiles - meaning that we support only tiles with these levels, and other zoom levels will use one of these as well
 const kTileZoomLevels = <double>[3, 4];
+const kCancelReasonOther = 'cancelOther';
