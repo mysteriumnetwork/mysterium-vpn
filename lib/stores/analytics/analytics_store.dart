@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/enums/indicator_type.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/common/extensions/map_extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
@@ -252,6 +255,26 @@ mixin AnalyticsStore {
         'reasons': reasons.join(','),
         if (feedback != null) 'feedback': feedback,
       },
+    );
+  }
+
+  Future<void> logMapScroll({MapCamera? from, MapCamera? to}) async {
+    _debouncer.debounce(
+      () => logEvent(
+        AnalyticsEvent.mapScroll,
+        parameters: {
+          ...?from?.toMap().map((key, value) => MapEntry('from_$key', value)),
+          ...?to?.toMap().map((key, value) => MapEntry('to_$key', value)),
+        },
+      ),
+      const Duration(milliseconds: 800),
+    );
+  }
+
+  Future<void> logMapLocationClick(String id, LatLng point) async {
+    await logEvent(
+      AnalyticsEvent.mapPointClick,
+      parameters: {'location': id, 'point': point.toShortString()},
     );
   }
 }
