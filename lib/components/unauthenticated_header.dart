@@ -31,7 +31,7 @@ class UnauthenticatedHeader extends HookConsumerWidget {
         children: [
           if (canBrowseApp) const _BackButton(),
           if (!canBrowseApp) const SizedBox.shrink(),
-          const AppLogo(),
+          const Expanded(child: AppLogo()),
           SvgIconButton(
             asset: Assets.supportLight,
             onPressed: () {
