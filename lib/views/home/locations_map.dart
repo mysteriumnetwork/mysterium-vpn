@@ -38,6 +38,7 @@ class LocationsMap extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final analyticsStore = ref.watch(analyticsStorePOD);
     final theme = Theme.of(context);
     final controller = useMapController();
     final screenType = useScreenType();
@@ -58,6 +59,7 @@ class LocationsMap extends HookConsumerWidget {
     void handlePressed(VPNLocation location, LatLng point) {
       handleMove(point);
       onLocationPressed?.call(location);
+      analyticsStore.logMapLocationClick(location.id, point);
     }
 
     final locations = useMemoized(
@@ -83,6 +85,17 @@ class LocationsMap extends HookConsumerWidget {
         handleMove(center);
       });
     });
+
+    useEffect(
+      () => controller.mapEventStream
+          .where((it) => it is MapEventMove)
+          .cast<MapEventMove>()
+          .listen(
+            (it) => ref.read(analyticsStorePOD).logMapScroll(from: it.oldCamera, to: it.camera),
+          )
+          .cancel,
+      [controller],
+    );
 
     return FlutterMap(
       mapController: controller,
