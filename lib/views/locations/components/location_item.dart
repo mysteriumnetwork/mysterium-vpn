@@ -86,7 +86,7 @@ class LocationItem extends HookConsumerWidget {
             for (final child in children)
               _ChildLocationItem(
                 value: child,
-                onTap: null,
+                onTap: onTap == null ? null : () => onTap(child),
                 query: query,
               ),
         ],
