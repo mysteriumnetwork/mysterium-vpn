@@ -32,10 +32,8 @@ class VerifyEmailView extends HookConsumerWidget {
     final theme = Theme.of(context);
     final authStore = ref.watch(authStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
-    final timer = useCountdownTimer(
-      initialCountdown: 60,
-    );
-    final isActive = timer.countdown > 0;
+    final timer = useCountdownTimer(initialCountdown: 60);
+    final resendDisabled = timer.countdown > 0;
     return Observer(
       builder: (context) {
         final signInStatus = authStore.signInFeature.status;
@@ -44,15 +42,22 @@ class VerifyEmailView extends HookConsumerWidget {
             Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: 30,
+              spacing: 20,
               children: [
                 const _Subheader(),
-                if (authStore.email != null) _Email(email: authStore.email!),
-                _Excerpt(
-                  items: [
-                    LocaleKeys.linkExpires.tr(),
-                    LocaleKeys.consumeLink.tr(),
-                  ],
+                if (authStore.email != null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: _Email(email: authStore.email!),
+                  ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: _Excerpt(
+                    items: [
+                      LocaleKeys.linkExpires.tr(),
+                      LocaleKeys.consumeLink.tr(),
+                    ],
+                  ),
                 ),
                 Visibility(
                   visible: isMobile(),
@@ -63,8 +68,6 @@ class VerifyEmailView extends HookConsumerWidget {
                       analyticsStore.logEvent(AnalyticsEvent.openEmailClicked);
                       openEmailApp(context, analyticsStore);
                     },
-                  ).padding(
-                    bottom: 20,
                   ),
                 ),
                 EasyButton(
@@ -73,7 +76,7 @@ class VerifyEmailView extends HookConsumerWidget {
                   useSystemColor: false,
                   disabledBackgroundColor: theme.palette.disabledButtonBackgroundColor,
                   disabledForegroundColor: theme.palette.disabledButtonForegroundColor,
-                  onPressed: isActive
+                  onPressed: resendDisabled
                       ? null
                       : () async {
                           analyticsStore.logEvent(AnalyticsEvent.resendEmailClicked);
@@ -82,12 +85,12 @@ class VerifyEmailView extends HookConsumerWidget {
                               .whenComplete(timer.reset);
                         },
                   child: signInStatus == FutureStatus.pending
-                      ? const LoadingIndicator(
-                          indicatorColor: Palette.white,
-                        )
+                      ? const LoadingIndicator(indicatorColor: Palette.white)
                       : EasyText(
                           LocaleKeys.sendAgain.plural(timer.countdown),
-                          color: theme.palette.disabledButtonForegroundColor,
+                          color: resendDisabled
+                              ? theme.palette.disabledButtonForegroundColor
+                              : Palette.white,
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
                         ),
