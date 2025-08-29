@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
+import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:mysterium_vpn/stores/remote_config/config_cat_store.dart';
 
 part 'remote_config_store.g.dart';
@@ -39,6 +41,7 @@ enum _FeatureToggleKey {
   showCitiesAndStates,
   countriesWithCitiesOnMap,
   showUserIntents,
+  userIntentBlacklist,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -307,6 +310,29 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return config[_FeatureToggleKey.showUserIntents.name] as bool;
     }
     return false;
+  }
+
+  @computed
+  Set<UserIntent> get userIntentBlacklist {
+    try {
+      if (config.containsKey(_FeatureToggleKey.userIntentBlacklist.name)) {
+        final raw = config[_FeatureToggleKey.userIntentBlacklist.name];
+        final decoded = jsonDecode(raw.toString()) as List;
+        final keys = decoded.map((it) => it.toString()).toSet();
+
+        return keys
+            .map(
+              (key) => UserIntent.values.firstWhereOrNull(
+                (it) => it.key == key || it.name == key,
+              ),
+            )
+            .nonNulls
+            .toSet();
+      }
+    } catch (e, stack) {
+      logger.handle(e, stack);
+    }
+    return {};
   }
 
   Map<String, String> get asUserProperties =>

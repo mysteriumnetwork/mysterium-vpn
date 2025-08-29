@@ -5,6 +5,7 @@ import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:talker/talker.dart';
 
 part 'user_intents_store.g.dart';
@@ -17,6 +18,7 @@ abstract class _UserIntentsStore with Store {
     this._apiService,
     this._realIPInfoStore,
     this._locationsStore,
+    this.remoteConfigStore,
     this._logger,
   ) {
     autorun((_) {
@@ -35,6 +37,7 @@ abstract class _UserIntentsStore with Store {
   final ApiService _apiService;
   final RealIPInfoStore _realIPInfoStore;
   final LocationsStore _locationsStore;
+  final RemoteConfigStore remoteConfigStore;
   final Talker _logger;
 
   @readonly
@@ -45,10 +48,13 @@ abstract class _UserIntentsStore with Store {
       ObservableFuture(_fetchLocalIntents());
 
   @computed
-  Set<UserIntent> get intents => {
-        ...?_apiIntentsStream.value,
-        ...?_localIntentsFuture.value,
-      };
+  Set<UserIntent> get intents {
+    final merged = {
+      ...?_apiIntentsStream.value,
+      ...?_localIntentsFuture.value,
+    };
+    return merged.where((it) => !remoteConfigStore.userIntentBlacklist.contains(it)).toSet();
+  }
 
   @computed
   bool get isLoading =>
