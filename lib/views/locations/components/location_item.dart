@@ -111,7 +111,8 @@ class _ChildLocationItem extends StatelessWidget {
     final nodeCount = value.nodeCount ?? 0;
     return _LocationItem(
       location: value,
-      onTap: onTap,
+      onTap: null,
+      onToggleConnectionTap: onTap,
       label: LocaleKeys.locationItemNodeCount.plural(nodeCount),
       query: query,
     );
