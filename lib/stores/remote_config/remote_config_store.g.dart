@@ -212,6 +212,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$showUserIntentsComputed ??= Computed<bool>(() => super.showUserIntents,
               name: 'RemoteConfigStoreBase.showUserIntents'))
           .value;
+  Computed<Set<UserIntent>>? _$userIntentBlacklistComputed;
+
+  @override
+  Set<UserIntent> get userIntentBlacklist =>
+      (_$userIntentBlacklistComputed ??= Computed<Set<UserIntent>>(() => super.userIntentBlacklist,
+              name: 'RemoteConfigStoreBase.userIntentBlacklist'))
+          .value;
 
   @override
   String toString() {
@@ -245,7 +252,8 @@ useStoreVersionChecker: ${useStoreVersionChecker},
 enableQaHelpers: ${enableQaHelpers},
 showCitiesAndStates: ${showCitiesAndStates},
 countriesWithCitiesOnMap: ${countriesWithCitiesOnMap},
-showUserIntents: ${showUserIntents}
+showUserIntents: ${showUserIntents},
+userIntentBlacklist: ${userIntentBlacklist}
     ''';
   }
 }
