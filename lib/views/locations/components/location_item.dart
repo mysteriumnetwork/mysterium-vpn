@@ -86,7 +86,7 @@ class LocationItem extends HookConsumerWidget {
             for (final child in children)
               _ChildLocationItem(
                 value: child,
-                onTap: null,
+                onTap: onTap == null ? null : () => onTap(child),
                 query: query,
               ),
         ],
@@ -111,7 +111,8 @@ class _ChildLocationItem extends StatelessWidget {
     final nodeCount = value.nodeCount ?? 0;
     return _LocationItem(
       location: value,
-      onTap: onTap,
+      onTap: null,
+      onToggleConnectionTap: onTap,
       label: LocaleKeys.locationItemNodeCount.plural(nodeCount),
       query: query,
     );
