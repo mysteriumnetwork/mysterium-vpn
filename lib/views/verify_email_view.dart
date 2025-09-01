@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -45,18 +47,13 @@ class VerifyEmailView extends HookConsumerWidget {
         return Stack(
           children: [
             Column(
-              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               spacing: 20,
               children: [
                 const _Subheader(),
-                if (authStore.email != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: _Email(email: authStore.email!),
-                  ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
+                if (authStore.email != null) Flexible(child: _Email(email: authStore.email!)),
+                Expanded(
+                  flex: 2,
                   child: _Excerpt(
                     items: [
                       LocaleKeys.linkExpires.tr(),
@@ -64,28 +61,39 @@ class VerifyEmailView extends HookConsumerWidget {
                     ],
                   ),
                 ),
-                Visibility(
-                  visible: isMobile(),
-                  child: EasyButton(
-                    color: Palette.purple,
-                    useSystemColor: false,
-                    text: LocaleKeys.openEmailApp.tr(),
-                    onPressed: () {
-                      analyticsStore.logEvent(AnalyticsEvent.openEmailClicked);
-                      openEmailApp(context, analyticsStore);
-                    },
-                  ),
-                ),
-                _ResendButton(
-                  onPressed: handleResend,
-                  isLoading: signInStatus == FutureStatus.pending,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  spacing: 20,
+                  children: [
+                    Flexible(
+                      child: Visibility(
+                        visible: isMobile(),
+                        child: EasyButton(
+                          color: Palette.purple,
+                          useSystemColor: false,
+                          text: LocaleKeys.openEmailApp.tr(),
+                          onPressed: () {
+                            analyticsStore.logEvent(AnalyticsEvent.openEmailClicked);
+                            openEmailApp(context, analyticsStore);
+                          },
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: _ResendButton(
+                        onPressed: handleResend,
+                        isLoading: signInStatus == FutureStatus.pending,
+                      ),
+                    ),
+                  ],
                 ),
               ],
-            ).scrollable().padding(
-                  top: 20,
-                  bottom: 10,
-                  horizontal: getMediaWidth(context) > 650 ? 60 : 20,
-                ),
+            ).padding(
+              vertical: 20,
+              horizontal: getMediaWidth(context) > 650 ? 60 : 20,
+            ),
             if (authStore.authenticateFeature?.status == FutureStatus.pending)
               LoadingBarrier(color: theme.primaryColor),
           ],
@@ -139,16 +147,23 @@ class _Subheader extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.sizeOf(context).height;
     final children = <Widget>[
-      EasyText(
-        LocaleKeys.checkYourEmail.tr(),
-        fontSize: useResponsiveValue(20, desktop: 28),
-        fontWeight: FontWeight.w600,
-        textAlign: TextAlign.center,
+      Flexible(
+        child: EasyText(
+          LocaleKeys.checkYourEmail.tr(),
+          fontSize: useResponsiveValue(20, desktop: 28),
+          fontWeight: FontWeight.w600,
+          textAlign: TextAlign.center,
+        ),
       ),
-      const SvgIcon(asset: Assets.checkEmail),
+      SvgIcon(
+        asset: Assets.checkEmail,
+        height: min(120, height * .15),
+      ),
     ];
     return Column(
+      mainAxisSize: MainAxisSize.min,
       spacing: 30,
       children: useResponsiveValue(children, desktop: children.reversed.toList()),
     );
@@ -183,34 +198,41 @@ class _Email extends HookWidget {
   }
 }
 
-class _Excerpt extends StatelessWidget {
+class _Excerpt extends HookWidget {
   const _Excerpt({required this.items});
 
   final List<String> items;
 
   @override
-  Widget build(BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        spacing: 8,
-        children: [
-          for (final item in items) _BulletItem(text: item),
-        ],
-      );
+  Widget build(BuildContext context) {
+    final sizeGroup = useMemoized(AutoSizeGroup.new);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      spacing: 8,
+      children: [
+        for (final item in items) _BulletItem(text: item, sizeGroup: sizeGroup),
+      ],
+    );
+  }
 }
 
 class _BulletItem extends StatelessWidget {
-  const _BulletItem({required this.text});
+  const _BulletItem({required this.text, required this.sizeGroup});
 
   final String text;
+  final AutoSizeGroup sizeGroup;
 
   @override
-  Widget build(BuildContext context) => Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const EasyText('•'),
-          const SizedBox(width: 12),
-          Expanded(child: EasyText(text, maxLines: 3)),
-        ],
+  Widget build(BuildContext context) => Flexible(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            EasyText('•', autoSizeGroup: sizeGroup),
+            const SizedBox(width: 12),
+            Expanded(child: EasyText(text, maxLines: 3, autoSizeGroup: sizeGroup)),
+          ],
+        ),
       );
 }
 
@@ -226,7 +248,7 @@ class _ResendButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final timer = useCountdownTimer(initialCountdown: 3);
+    final timer = useCountdownTimer(initialCountdown: 60);
     final resendDisabled = isLoading || timer.countdown > 0;
     final onPressed = resendDisabled ? null : () => this.onPressed().whenComplete(timer.reset);
 
