@@ -24,7 +24,8 @@ Future<void> Function({
           vpnStore.isConnected ? analyticsStore.logDisconnect : analyticsStore.logConnect;
       logEvent(
         location,
-        selectEvent?.call(vpnStore.isConnected),
+        event: selectEvent?.call(vpnStore.isConnected),
+        intent: intent,
       );
 
       try {
