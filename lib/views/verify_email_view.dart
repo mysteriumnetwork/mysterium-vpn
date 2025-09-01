@@ -32,11 +32,16 @@ class VerifyEmailView extends HookConsumerWidget {
     final theme = Theme.of(context);
     final authStore = ref.watch(authStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
-    final timer = useCountdownTimer(initialCountdown: 60);
-    final resendDisabled = timer.countdown > 0;
+
     return Observer(
       builder: (context) {
         final signInStatus = authStore.signInFeature.status;
+
+        Future<void> handleResend() async {
+          analyticsStore.logEvent(AnalyticsEvent.resendEmailClicked);
+          await authStore.signInwithEmail(email: authStore.email!);
+        }
+
         return Stack(
           children: [
             Column(
@@ -62,7 +67,8 @@ class VerifyEmailView extends HookConsumerWidget {
                 Visibility(
                   visible: isMobile(),
                   child: EasyButton(
-                    width: 200,
+                    color: Palette.purple,
+                    useSystemColor: false,
                     text: LocaleKeys.openEmailApp.tr(),
                     onPressed: () {
                       analyticsStore.logEvent(AnalyticsEvent.openEmailClicked);
@@ -70,30 +76,9 @@ class VerifyEmailView extends HookConsumerWidget {
                     },
                   ),
                 ),
-                EasyButton(
-                  width: 200,
-                  color: Palette.purple,
-                  useSystemColor: false,
-                  disabledBackgroundColor: theme.palette.disabledButtonBackgroundColor,
-                  disabledForegroundColor: theme.palette.disabledButtonForegroundColor,
-                  onPressed: resendDisabled
-                      ? null
-                      : () async {
-                          analyticsStore.logEvent(AnalyticsEvent.resendEmailClicked);
-                          authStore
-                              .signInwithEmail(email: authStore.email!)
-                              .whenComplete(timer.reset);
-                        },
-                  child: signInStatus == FutureStatus.pending
-                      ? const LoadingIndicator(indicatorColor: Palette.white)
-                      : EasyText(
-                          LocaleKeys.sendAgain.plural(timer.countdown),
-                          color: resendDisabled
-                              ? theme.palette.disabledButtonForegroundColor
-                              : Palette.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                        ),
+                _ResendButton(
+                  onPressed: handleResend,
+                  isLoading: signInStatus == FutureStatus.pending,
                 ),
               ],
             ).scrollable().padding(
@@ -227,4 +212,55 @@ class _BulletItem extends StatelessWidget {
           Expanded(child: EasyText(text, maxLines: 3)),
         ],
       );
+}
+
+class _ResendButton extends HookWidget {
+  const _ResendButton({
+    required this.onPressed,
+    required this.isLoading,
+  });
+
+  final Future<void> Function() onPressed;
+  final bool isLoading;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final timer = useCountdownTimer(initialCountdown: 3);
+    final resendDisabled = isLoading || timer.countdown > 0;
+    final onPressed = resendDisabled ? null : () => this.onPressed().whenComplete(timer.reset);
+
+    final child = isLoading
+        ? LoadingIndicator(indicatorColor: theme.palette.disabledButtonForegroundColor)
+        : Text(
+            LocaleKeys.sendAgain.plural(timer.countdown),
+            style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w700),
+          );
+
+    if (isMobile()) {
+      return OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          disabledBackgroundColor: theme.palette.disabledButtonBackgroundColor,
+          disabledForegroundColor: theme.palette.disabledButtonForegroundColor,
+          side: resendDisabled ? BorderSide.none : null,
+          minimumSize: const Size(200, 50),
+          backgroundColor: Colors.transparent,
+        ),
+        child: child,
+      );
+    }
+
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        disabledBackgroundColor: theme.palette.disabledButtonBackgroundColor,
+        disabledForegroundColor: theme.palette.disabledButtonForegroundColor,
+        minimumSize: const Size(200, 50),
+        foregroundColor: theme.palette.filledButtonTextColor,
+        backgroundColor: Palette.purple,
+      ),
+      child: child,
+    );
+  }
 }
