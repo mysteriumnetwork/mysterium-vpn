@@ -11,6 +11,7 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/extensions/map_extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:vpn_api/vpn_api.dart';
 
@@ -23,17 +24,25 @@ mixin AnalyticsStore {
     Object? reason,
     bool fatal = false,
   });
+
   List<NavigatorObserver> navigationObservers();
+
   Future<void> logEvent(
     AnalyticsEvent event, {
     Map<String, dynamic>? parameters,
   });
+
   Future<void> setUserId(String id);
+
   Future<void> setUserProperty(String name, String value);
+
   Future<void> setLogin([GrantType loginMethod = GrantType.email]);
+
   Future<void> setSearchEvent(String searchTerm) =>
       logEvent(AnalyticsEvent.search, parameters: {'search_term': searchTerm});
+
   Future<void> logMessage(String message);
+
   Future<void> logScreenViewed(String screenName);
 
   Future<void> logLocationsListScroll() async {
@@ -99,30 +108,34 @@ mixin AnalyticsStore {
   }
 
   Future<void> logConnect(
-    VPNLocation? location, [
+    VPNLocation? location, {
     AnalyticsEvent? event,
-  ]) async {
+    UserIntent? intent,
+  }) async {
     await logEvent(
       AnalyticsEvent.connectToVpn,
       parameters: location != null
           ? {
               'location': location.id,
               'ip_type': location.ipType.name.toSnakeCase,
+              if (intent != null) 'user_intent': intent.key,
             }
           : null,
     );
   }
 
   Future<void> logDisconnect(
-    VPNLocation? location, [
+    VPNLocation? location, {
     AnalyticsEvent? event,
-  ]) async {
+    UserIntent? intent,
+  }) async {
     await logEvent(
       AnalyticsEvent.disconnectFromVpn,
       parameters: location != null
           ? {
               'location': location.id,
               'ip_type': location.ipType.name.toSnakeCase,
+              if (intent != null) 'user_intent': intent.key,
             }
           : null,
     );
