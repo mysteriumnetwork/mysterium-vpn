@@ -55,7 +55,7 @@ class HorizontalScrollIndicator extends HookWidget {
         final stackWidth = stackBox?.size.width ?? 0;
         final currentPosition = controller.positions.isNotEmpty ? controller.position.pixels : 0.0;
         controller.animateTo(
-          currentPosition + stackWidth,
+          min(currentPosition + stackWidth, controller.position.maxScrollExtent),
           duration: animationDuration,
           curve: Curves.easeInOut,
         );

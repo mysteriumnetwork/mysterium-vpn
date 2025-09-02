@@ -2481,7 +2481,7 @@ class CodegenLoader extends AssetLoader {
     "marketingConsentPopupTitle": "Stay in Loop",
     "marketingConsentPopupDesc":
         "Would you like to receive email updates, privacy tips, and special offers from Mysterium Network?",
-    "signMeUpBtn": "Yes, Sign me up",
+    "signMeUpBtn": "Yes, sign me up",
     "noThanksBtn": "No thanks",
     "notificationsSetting": "Notifications",
     "notificationsSettingDesc": "Email & push notifications",

@@ -19,6 +19,7 @@ class EasyText extends StatelessWidget {
     this.color,
     this.cursor,
     this.colorDecoration,
+    this.autoSizeGroup,
   });
 
   final String text;
@@ -32,11 +33,13 @@ class EasyText extends StatelessWidget {
   final TextDecoration? textDecoration;
   final Color? color;
   final Color? colorDecoration;
+  final AutoSizeGroup? autoSizeGroup;
   @override
   Widget build(BuildContext context) => MouseRegion(
         cursor: cursor ?? MouseCursor.defer,
         child: AutoSizeText(
           text,
+          group: autoSizeGroup,
           textAlign: textAlign,
           overflow: overflow,
           maxLines: maxLines,
