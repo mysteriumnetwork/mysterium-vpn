@@ -16,7 +16,7 @@ import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/entrypoints/firebase/firebase_options_dev.dart' as dev;
 import 'package:mysterium_vpn/entrypoints/firebase/firebase_options_prod.dart' as prod;
-import 'package:mysterium_vpn/models/flavor_config.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
@@ -24,22 +24,18 @@ import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/stores/latlng_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
-import 'package:store_checker_windows/store_checker_windows.dart';
 import 'package:talker/talker.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:url_protocol/url_protocol.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
-class Environment {
-  Environment(this.flavor);
+class AppInitializer {
+  AppInitializer();
 
-  final String flavor;
   late final ProviderContainer providerContainer;
-  late final FlavorConfig flavorConfig;
   late final RemoteConfigStore? remoteConfigStore;
   late final Talker logger;
 
@@ -61,7 +57,10 @@ class Environment {
       await windowManager.ensureInitialized();
       await windowManager.setPreventClose(true);
       // Give option to resize on DEV env for testing
-      final minimumSize = flavor == 'DEV' ? const Size(400, 600) : const Size(1040, 700);
+      final minimumSize = switch (Env.flavor) {
+        Flavor.dev => const Size(400, 600),
+        Flavor.production => const Size(1040, 700),
+      };
       await windowManager.setMinimumSize(minimumSize);
       final actualSize = await windowManager.getSize();
       final desiredSize = Size(
@@ -102,17 +101,14 @@ class Environment {
       return stack;
     };
 
-    flavorConfig = await _setupFlavor();
-    await _setupTrayIcon(flavorConfig);
+    await _setupTrayIcon();
     await Future.wait([
       SharedPreferenceService.instance.init(),
-      SecureStorageService.instance.init(flavorConfig),
+      SecureStorageService.instance.init(),
       EasyLocalization.ensureInitialized(),
       LocalDBService.initialize(),
     ]);
-    providerContainer = ProviderContainer(
-      overrides: [environmentPOD.overrideWithValue(flavorConfig)],
-    );
+    providerContainer = ProviderContainer();
 
     final firebaseOptions = _getFirebaseOptions();
     await providerContainer.read(analyticsInitPOD(firebaseOptions).future);
@@ -124,7 +120,7 @@ class Environment {
     logger = providerContainer.read(loggerPOD);
 
     logger.log(
-      'App started in ${flavorConfig.flavor} mode\nBase URL ${flavorConfig.values.baseUrl}',
+      'App started in ${Env.flavor.name} mode\nBase URL ${Env.baseUrl}',
     );
   }
 
@@ -150,41 +146,6 @@ class Environment {
     }
   }
 
-  Future<FlavorConfig> _setupFlavor() async {
-    var buildInfo = BuildInfo(
-      buildNumber: 0,
-      buildVersion: '0',
-    );
-    try {
-      final info = await PackageInfo.fromPlatform();
-      var installerStore = info.installerStore;
-      if (Platform.isWindows) {
-        installerStore = getCurrentPackageFullName();
-      }
-      buildInfo = BuildInfo(
-        buildNumber: int.tryParse(info.buildNumber) ?? 0,
-        buildVersion: info.version,
-        installerStore: installerStore,
-      );
-    } catch (e) {
-      debugPrint('Error getting package info');
-      Sentry.captureException(e);
-    }
-
-    return switch (flavor) {
-      'PROD' => FlavorConfig(
-          flavor: Flavor.production,
-          values: FlavorValues.production(),
-          buildInfo: buildInfo,
-        ),
-      _ => FlavorConfig(
-          flavor: Flavor.dev,
-          values: FlavorValues.dev(),
-          buildInfo: buildInfo,
-        ),
-    };
-  }
-
   Future<void> _nativeInitBackground(List<Object> args) async {
     final rootIsolateToken = args[0] as RootIsolateToken;
     BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
@@ -202,13 +163,13 @@ class Environment {
     Isolate.spawn(_nativeInitBackground, [rootIsolateToken]);
   }
 
-  Future<void> _setupTrayIcon(FlavorConfig flavor) async {
+  Future<void> _setupTrayIcon() async {
     if (!Platform.isWindows) {
       return;
     }
     try {
       await trayManager.setIcon(
-        flavor.isDev ? 'assets/logo/dev/app_icon.ico' : 'assets/logo/prod/app_icon.ico',
+        Env.flavor.isDev ? 'assets/logo/dev/app_icon.ico' : 'assets/logo/prod/app_icon.ico',
         iconPosition: TrayIconPosition.right,
       );
       final items = Menu(
@@ -233,11 +194,10 @@ class Environment {
 
   FirebaseOptions? _getFirebaseOptions() {
     try {
-      if (flavor == Flavor.dev.name) {
-        return dev.DefaultFirebaseOptions.currentPlatform;
-      } else {
-        return prod.DefaultFirebaseOptions.currentPlatform;
-      }
+      return switch (Env.flavor) {
+        Flavor.dev => dev.DefaultFirebaseOptions.currentPlatform,
+        Flavor.production => prod.DefaultFirebaseOptions.currentPlatform,
+      };
     } catch (_) {
       return null;
     }
