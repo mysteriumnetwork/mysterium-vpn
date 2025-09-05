@@ -3,31 +3,30 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/entrypoints/environment.dart';
+import 'package:mysterium_vpn/entrypoints/app_initializer.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 void main() async {
-  const flavor = String.fromEnvironment('FLAVOR');
-  final environment = Environment(flavor);
-
   WidgetsFlutterBinding.ensureInitialized();
-  await environment.init();
+  await Env.init();
+  final initializer = AppInitializer();
+  await initializer.init();
   FlutterError.onError = (details) {
-    environment.logger.handle(
+    initializer.logger.handle(
       details.exception,
       details.stack,
     );
   };
   PlatformDispatcher.instance.onError = (error, stack) {
-    environment.logger.handle(error, stack, 'fatal');
+    initializer.logger.handle(error, stack, 'fatal');
     return true;
   };
 
   await SentryFlutter.init(
     (options) {
       options
-        ..dsn =
-            environment.remoteConfigStore?.sentryDsn ?? environment.flavorConfig.values.sentryDsn
+        ..dsn = initializer.remoteConfigStore?.sentryDsn ?? Env.sentryDsn
         ..sendClientReports = true
         ..maxRequestBodySize = MaxRequestBodySize.small
         ..beforeSend = (event, hint) {
@@ -45,6 +44,6 @@ void main() async {
           return event;
         };
     },
-    appRunner: () => runApp(environment.getApp()),
+    appRunner: () => runApp(initializer.getApp()),
   );
 }

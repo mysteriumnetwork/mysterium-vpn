@@ -12,6 +12,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 
@@ -954,7 +955,6 @@ class _ConfigPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final config = ref.watch(environmentPOD);
     final remoteConfigs = ref.watch(remoteConfigStorePOD);
     final abTesting = ref.watch(abTestingStorePOD);
     return Scaffold(
@@ -979,7 +979,7 @@ class _ConfigPage extends ConsumerWidget {
                 color: Palette.purple,
               ),
               EasyText(
-                config.values.toString(),
+                Env.stringify(),
                 maxLines: 20,
               ),
               const SizedBox(height: 8),
