@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/analytics_logger_overlay.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -124,6 +125,17 @@ class QAToolbox extends HookConsumerWidget {
                 },
               ),
             ),
+            SettingItem(
+              asset: isDarkTheme ? Assets.settingsDark : Assets.settingsLight,
+              title: 'Check analytics logs',
+              subtitle: const EasyText('Will list and observe all analytics logs'),
+              actionWidget: TextButton.icon(
+                label: const EasyText('Check'),
+                icon: const Icon(Icons.open_in_new),
+                onPressed: () => AnalyticsLoggerOverlay.show(context),
+              ),
+            ),
+            const SizedBox(height: 36),
           ],
         );
       },

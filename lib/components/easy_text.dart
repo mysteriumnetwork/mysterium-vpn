@@ -20,6 +20,7 @@ class EasyText extends StatelessWidget {
     this.cursor,
     this.colorDecoration,
     this.autoSizeGroup,
+    this.minFontSize = 10,
   });
 
   final String text;
@@ -34,6 +35,8 @@ class EasyText extends StatelessWidget {
   final Color? color;
   final Color? colorDecoration;
   final AutoSizeGroup? autoSizeGroup;
+  final double minFontSize;
+
   @override
   Widget build(BuildContext context) => MouseRegion(
         cursor: cursor ?? MouseCursor.defer,
@@ -43,7 +46,7 @@ class EasyText extends StatelessWidget {
           textAlign: textAlign,
           overflow: overflow,
           maxLines: maxLines,
-          minFontSize: 10,
+          minFontSize: minFontSize,
           style: GoogleFonts.montserrat(
             decoration: textDecoration,
             decorationColor: colorDecoration,
