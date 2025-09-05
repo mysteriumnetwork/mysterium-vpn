@@ -14,10 +14,10 @@ on:
         required: true
         type: string
         default: "dev"
-      flavor_dart:
+      env_file:
         required: true
         type: string
-        default: "DEV"
+        default: ".env.dev"
 
 jobs:
   # iOS Build
@@ -82,7 +82,7 @@ jobs:
 
       - name: Build iOS app
         run: |
-          fvm flutter build ipa --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define "FLAVOR=${{ inputs.flavor_dart }}" --export-options-plist=ios/export_options.plist
+          fvm flutter build ipa --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define-from-file="${{ inputs.env_file }}" --export-options-plist=ios/export_options.plist
           cat build/ios/ipa/ExportOptions.plist
 
       - name: Publish to Apple Store
