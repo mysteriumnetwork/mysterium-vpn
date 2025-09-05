@@ -42,40 +42,45 @@ class AnalyticsLoggerOverlay extends HookConsumerWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverSafeArea(
-            bottom: false,
-            sliver: SliverPadding(
-              padding: const EdgeInsets.only(top: 24),
-              sliver: SliverPinnedHeader(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: theme.highlightColor, width: 2),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                    child: Row(
-                      spacing: 16,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        IconButton(
-                          color: theme.textTheme.bodyLarge?.color,
-                          onPressed: onDismissPressed,
-                          icon: const Icon(Icons.close),
+          SliverStack(
+            children: [
+              SliverPositioned.fill(
+                child: ColoredBox(color: theme.palette.backgroundColor),
+              ),
+              SliverSafeArea(
+                bottom: false,
+                sliver: SliverPadding(
+                  padding: const EdgeInsets.only(top: 24),
+                  sliver: SliverPinnedHeader(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: theme.palette.backgroundColor,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                        child: Row(
+                          spacing: 16,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            IconButton(
+                              color: theme.textTheme.bodyLarge?.color,
+                              onPressed: onDismissPressed,
+                              icon: const Icon(Icons.close),
+                            ),
+                            Expanded(
+                              child: _TypePicker(
+                                selected: types.value,
+                                onChanged: (value) => types.value = value,
+                              ),
+                            ),
+                          ],
                         ),
-                        Expanded(
-                          child: _TypePicker(
-                            selected: types.value,
-                            onChanged: (value) => types.value = value,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
           SliverClip(
             child: MultiSliver(
