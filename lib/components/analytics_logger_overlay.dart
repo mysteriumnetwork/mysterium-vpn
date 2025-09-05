@@ -45,18 +45,16 @@ class AnalyticsLoggerOverlay extends HookConsumerWidget {
           SliverSafeArea(
             bottom: false,
             sliver: SliverPadding(
-              padding: const EdgeInsets.only(top: 24, left: 12, right: 12),
+              padding: const EdgeInsets.only(top: 24),
               sliver: SliverPinnedHeader(
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(
-                        color: theme.dividerColor,
-                      ),
+                      bottom: BorderSide(color: theme.highlightColor, width: 2),
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                     child: Row(
                       spacing: 16,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,8 +194,13 @@ class _LogsList extends StatelessWidget {
   final List<AnalyticsLogEntry> items;
 
   @override
-  Widget build(BuildContext context) => SliverList.builder(
+  Widget build(BuildContext context) => SliverList.separated(
         itemCount: items.length,
+        separatorBuilder: (_, __) => const Divider(
+          thickness: 0.5,
+          color: Palette.lightBlue,
+          height: 0,
+        ),
         itemBuilder: (context, index) {
           final item = items[index];
           return _LogListItem(value: item);
@@ -275,6 +278,7 @@ class _ParamsView extends HookWidget {
                       autoSizeGroup: group,
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
+                      color: Palette.white,
                     ),
                   ),
                   Flexible(
