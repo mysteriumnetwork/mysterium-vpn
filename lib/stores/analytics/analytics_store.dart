@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/common/enums/indicator_type.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/extensions/map_extensions.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
+import 'package:mysterium_vpn/common/utils/replay_stream_controller.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
@@ -17,20 +18,39 @@ import 'package:vpn_api/vpn_api.dart';
 
 mixin AnalyticsStore {
   final Debouncer _debouncer = Debouncer();
+  final ReplayStreamController<AnalyticsLogEntry> _logStreamController = ReplayStreamController();
 
   Future<void> logError({
     required Object err,
     StackTrace? stack,
     Object? reason,
     bool fatal = false,
-  });
+  }) async {
+    _logStreamController.add(
+      AnalyticsLogEntry(
+        type: AnalyticsLogType.error,
+        message: err.toString(),
+        params: {'fatal': fatal},
+        timestamp: DateTime.now(),
+      ),
+    );
+  }
 
   List<NavigatorObserver> navigationObservers();
 
   Future<void> logEvent(
     AnalyticsEvent event, {
     Map<String, dynamic>? parameters,
-  });
+  }) async {
+    _logStreamController.add(
+      AnalyticsLogEntry(
+        message: event.formattedName,
+        type: AnalyticsLogType.event,
+        params: parameters,
+        timestamp: DateTime.now(),
+      ),
+    );
+  }
 
   Future<void> setUserId(String id);
 
@@ -41,9 +61,25 @@ mixin AnalyticsStore {
   Future<void> setSearchEvent(String searchTerm) =>
       logEvent(AnalyticsEvent.search, parameters: {'search_term': searchTerm});
 
-  Future<void> logMessage(String message);
+  Future<void> logMessage(String message) async {
+    _logStreamController.add(
+      AnalyticsLogEntry(
+        message: message,
+        type: AnalyticsLogType.message,
+        timestamp: DateTime.now(),
+      ),
+    );
+  }
 
-  Future<void> logScreenViewed(String screenName);
+  Future<void> logScreenViewed(String screenName) async {
+    _logStreamController.add(
+      AnalyticsLogEntry(
+        message: screenName,
+        type: AnalyticsLogType.screenView,
+        timestamp: DateTime.now(),
+      ),
+    );
+  }
 
   Future<void> logLocationsListScroll() async {
     _debouncer.debounce(
@@ -199,6 +235,7 @@ mixin AnalyticsStore {
 
   void dispose() {
     _debouncer.dispose();
+    _logStreamController.close();
   }
 
   Future<void> logTabChange(IPType type) async {
@@ -290,4 +327,22 @@ mixin AnalyticsStore {
       parameters: {'location': id, 'point': point.toShortString()},
     );
   }
+
+  Stream<AnalyticsLogEntry> watchLogs() => _logStreamController.stream;
 }
+
+class AnalyticsLogEntry {
+  const AnalyticsLogEntry({
+    required this.message,
+    required this.type,
+    required this.timestamp,
+    this.params,
+  });
+
+  final String message;
+  final AnalyticsLogType type;
+  final Map<String, Object?>? params;
+  final DateTime timestamp;
+}
+
+enum AnalyticsLogType { event, screenView, message, error }

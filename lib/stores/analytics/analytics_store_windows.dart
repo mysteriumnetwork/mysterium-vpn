@@ -55,7 +55,8 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
     AnalyticsEvent event, {
     Map<String, dynamic>? parameters,
   }) async {
-    _session.logEvent(event.name.toSnakeCase, parameters);
+    _session.logEvent(event.formattedName, parameters);
+    super.logEvent(event, parameters: parameters);
   }
 
   @override
@@ -85,6 +86,7 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
   @action
   Future<void> logScreenViewed(String screenName) async {
     _session.logEvent(screenName);
+    super.logScreenViewed(screenName);
   }
 
   @override
