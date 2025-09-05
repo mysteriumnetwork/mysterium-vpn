@@ -57,19 +57,21 @@ mixin _$LocationsStore on _LocationsStore, Store {
               name: '_LocationsStore.randomLocation'))
           .value;
 
-  late final _$clearFetchedLocationsAtom =
-      Atom(name: '_LocationsStore.clearFetchedLocations', context: context);
+  late final _$_clearFetchedLocationsAtom =
+      Atom(name: '_LocationsStore._clearFetchedLocations', context: context);
 
-  @override
   bool get clearFetchedLocations {
-    _$clearFetchedLocationsAtom.reportRead();
-    return super.clearFetchedLocations;
+    _$_clearFetchedLocationsAtom.reportRead();
+    return super._clearFetchedLocations;
   }
 
   @override
-  set clearFetchedLocations(bool value) {
-    _$clearFetchedLocationsAtom.reportWrite(value, super.clearFetchedLocations, () {
-      super.clearFetchedLocations = value;
+  bool get _clearFetchedLocations => clearFetchedLocations;
+
+  @override
+  set _clearFetchedLocations(bool value) {
+    _$_clearFetchedLocationsAtom.reportWrite(value, super._clearFetchedLocations, () {
+      super._clearFetchedLocations = value;
     });
   }
 
@@ -214,14 +216,6 @@ mixin _$LocationsStore on _LocationsStore, Store {
     });
   }
 
-  late final _$_fetchRecentLocationsAsyncAction =
-      AsyncAction('_LocationsStore._fetchRecentLocations', context: context);
-
-  @override
-  Future<List<VPNLocation>> _fetchRecentLocations() {
-    return _$_fetchRecentLocationsAsyncAction.run(() => super._fetchRecentLocations());
-  }
-
   late final _$refreshAsyncAction = AsyncAction('_LocationsStore.refresh', context: context);
 
   @override
@@ -287,6 +281,17 @@ mixin _$LocationsStore on _LocationsStore, Store {
       ActionController(name: '_LocationsStore', context: context);
 
   @override
+  void setClearFetchedLocations(bool value) {
+    final _$actionInfo = _$_LocationsStoreActionController.startAction(
+        name: '_LocationsStore.setClearFetchedLocations');
+    try {
+      return super.setClearFetchedLocations(value);
+    } finally {
+      _$_LocationsStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   VPNLocation findLocation(String id, {String? countryCode, IPType ipType = IPType.datacenter}) {
     final _$actionInfo =
         _$_LocationsStoreActionController.startAction(name: '_LocationsStore.findLocation');
@@ -311,7 +316,6 @@ mixin _$LocationsStore on _LocationsStore, Store {
   @override
   String toString() {
     return '''
-clearFetchedLocations: ${clearFetchedLocations},
 selectedLocation: ${selectedLocation},
 locationsFuture: ${locationsFuture},
 availableCountries: ${availableCountries},
