@@ -143,24 +143,31 @@ void main() {
   group('LocationsStore', () {
     test('returns filtered recent locations', () async {
       when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => mockResidential);
+      when(mockLocalDB.getLocations(IPType.residential)).thenReturn(
+        VPNLocations(locations: mockResidential),
+      );
       when(
         mockFilterService.filterRecentLocations(
           mockResidential,
           availableLocations: {...mockResidential},
-          keyword: 'us',
+          keyword: 'un',
           locale: 'en',
         ),
       ).thenReturn([Mocks.locationResidentialUS]);
 
-      locationsStore.setLocationKeyword('US', Duration.zero);
-      await Future.delayed(Duration.zero); // ensure the debounce time has passed
+      await locationsStore.residentialLocationsFuture;
       await locationsStore.recentLocationsFuture;
+
+      locationsStore.setLocationKeyword('un', Duration.zero);
+      await Future.delayed(
+        const Duration(milliseconds: 500),
+      ); // ensure the debounce time has passed
 
       expect(locationsStore.recentLocations, [Mocks.locationResidentialUS]);
     });
 
     test('returns filtered locations', () async {
-      await locationsStore.locationsStream.first;
+      await locationsStore.locationsFuture;
 
       when(
         mockFilterService.filterLocations(
@@ -260,7 +267,7 @@ void main() {
       ).thenReturn(mockResidential);
 
       await locationsStore.refresh();
-      await locationsStore.locationsStream.first;
+      await locationsStore.locationsFuture;
 
       expect(locationsStore.locations, mockResidential);
     });

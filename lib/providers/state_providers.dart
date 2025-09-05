@@ -219,7 +219,6 @@ final bannersStorePOD = Provider<BannersStore>(
   (ref) => BannersStore(
     LocalDBService.instance,
     ref.watch(subscriptionStorePOD),
-    ref.watch(locationsStorePOD),
     ref.watch(authSessionStorePOD),
     ref.watch(vpnStorePOD),
     ref.watch(updateAvailableStorePOD),

@@ -47,4 +47,6 @@ extension VPNLocationExtensions on VPNLocation {
 
     return null;
   }
+
+  String get shortString => '${{id, countryCode}.join('-')} ($nodeCount)';
 }
