@@ -26,7 +26,7 @@ jobs:
       build_number: ${{ needs.setup.outputs.release_build }}
       bundle_id: com.mysteriumvpn
       flavor: "prod"
-      flavor_dart: "PROD"
+      env_file: ".env.prod"
     secrets: inherit
 
   # Publish build of application to https://appstoreconnect.apple.com/apps/6446624307/distribution/macos/version/inflight
@@ -40,7 +40,7 @@ jobs:
       bundle_id: com.mysteriumvpn
       product_name: "Mysterium VPN"
       flavor: "prod"
-      flavor_dart: "PROD"
+      env_file: ".env.prod"
     secrets: inherit
 
   # Publish build of application to https://play.google.com/console/u/0/developers/7955390843158584488/app/4973980590971676436/bundle-explorer-selector
@@ -55,7 +55,7 @@ jobs:
       package_track: internal
       package_status: draft
       flavor: "prod"
-      flavor_dart: "PROD"
+      env_file: ".env.prod"
     secrets: inherit
 
   # Publish build of application to https://partner.microsoft.com/en-us/dashboard/products/9NGWJCZSB5MK/overview
@@ -70,7 +70,7 @@ jobs:
       product_identity: "UABMNTechnologijos.MysteriumVPN"
       application_name: "Mysterium VPN"
       application_logo: "assets/logo/prod/desktop.png"
-      flavor_dart: "PROD"
+      env_file: ".env.prod"
       standalone_sign: true
     secrets: inherit
 
