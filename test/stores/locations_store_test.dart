@@ -7,9 +7,8 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/mocks.dart';
+import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
-import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
@@ -28,11 +27,11 @@ import 'locations_store_test.mocks.dart';
   MockSpec<FilterService>(),
   MockSpec<AnalyticsStore>(),
   MockSpec<RemoteConfigStore>(),
-  MockSpec<AuthSessionStore>(),
   MockSpec<SharedPreferenceService>(),
   MockSpec<LocaleStore>(),
   MockSpec<LocalDBService>(),
   MockSpec<Ping>(),
+  MockSpec<FlavorConfig>(),
 ])
 void main() {
   late LocationsStore locationsStore;
@@ -40,15 +39,14 @@ void main() {
   late MockFilterService mockFilterService;
   late MockAnalyticsStore mockAnalyticsStore;
   late MockRemoteConfigStore mockRemoteConfigStore;
-  late MockAuthSessionStore mockAuthSessionStore;
   late MockSharedPreferenceService mockPrefs;
   late MockLocalDBService mockLocalDB;
   late MockLocaleStore mockLocaleStore;
   late MockPing mockPing;
+  late MockFlavorConfig mockFlavorConfig;
 
   late List<VPNLocation> mockResidential;
   late List<VPNLocation> mockDatacenter;
-  late AuthUser mockUser;
 
   void mockConnectionConfig(String expectedIPType, ConnectionConfigResponse data) {
     when(mockApiConnection.connectionConfig(ipType: expectedIPType)).thenAnswer(
@@ -79,11 +77,13 @@ void main() {
     mockFilterService = MockFilterService();
     mockAnalyticsStore = MockAnalyticsStore();
     mockRemoteConfigStore = MockRemoteConfigStore();
-    mockAuthSessionStore = MockAuthSessionStore();
     mockPrefs = MockSharedPreferenceService();
     mockLocalDB = MockLocalDBService();
     mockLocaleStore = MockLocaleStore();
     mockPing = MockPing();
+    mockFlavorConfig = MockFlavorConfig();
+
+    when(mockFlavorConfig.isDev).thenReturn(true);
 
     mockResidential = const [
       Mocks.locationResidentialUS,
@@ -94,9 +94,6 @@ void main() {
       Mocks.locationDatacenterDE,
     ];
 
-    mockUser = AuthUser(userId: 'mock', username: 'mock');
-
-    when(mockAuthSessionStore.userFuture).thenAnswer((_) => ObservableFuture.value(mockUser));
     when(mockLocaleStore.currentLocale).thenAnswer((_) => const Locale('en'));
 
     when(mockLocalDB.getLocations(IPType.residential)).thenAnswer(
@@ -131,12 +128,12 @@ void main() {
       mockFilterService,
       mockAnalyticsStore,
       mockRemoteConfigStore,
-      mockAuthSessionStore,
       mockPrefs,
       mockLocalDB,
       Talker(),
       mockLocaleStore,
       mockPing,
+      mockFlavorConfig,
     );
   });
 
@@ -159,9 +156,7 @@ void main() {
       await locationsStore.recentLocationsFuture;
 
       locationsStore.setLocationKeyword('un', Duration.zero);
-      await Future.delayed(
-        const Duration(milliseconds: 500),
-      ); // ensure the debounce time has passed
+      await Future.delayed(Duration.zero); // ensure the debounce time has passed
 
       expect(locationsStore.recentLocations, [Mocks.locationResidentialUS]);
     });
@@ -207,12 +202,12 @@ void main() {
         mockFilterService,
         mockAnalyticsStore,
         mockRemoteConfigStore,
-        mockAuthSessionStore,
         mockPrefs,
         mockLocalDB,
         Talker(),
         mockLocaleStore,
         mockPing,
+        mockFlavorConfig,
       );
       mockConnectionConfig(
         'residential',
@@ -239,12 +234,12 @@ void main() {
         mockFilterService,
         mockAnalyticsStore,
         mockRemoteConfigStore,
-        mockAuthSessionStore,
         mockPrefs,
         mockLocalDB,
         Talker(),
         mockLocaleStore,
         mockPing,
+        mockFlavorConfig,
       );
       when(mockLocalDB.getLocations(IPType.residential)).thenAnswer((_) => VPNLocations());
       mockConnectionConfig(

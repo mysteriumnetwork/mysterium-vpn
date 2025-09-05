@@ -132,7 +132,7 @@ class QAToolbox extends HookConsumerWidget {
                 label: EasyText(locationsStore.clearFetchedLocations ? 'Restore' : 'Clear'),
                 icon: Icon(locationsStore.clearFetchedLocations ? Icons.restore : Icons.clear),
                 onPressed: () async {
-                  locationsStore.clearFetchedLocations = !locationsStore.clearFetchedLocations;
+                  locationsStore.setClearFetchedLocations(!locationsStore.clearFetchedLocations);
                   await locationsStore.refreshAll();
                 },
               ),

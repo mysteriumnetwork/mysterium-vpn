@@ -11,8 +11,8 @@ import 'package:mysterium_vpn/common/exceptions/api.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
+import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
@@ -34,12 +34,12 @@ abstract class _LocationsStore with Store {
     this._filterService,
     this._analyticsStore,
     this._remoteConfigStore,
-    this._authSessionStore,
     this._prefs,
     this._localDB,
     this._logger,
     this._localeStore,
     this._ping,
+    this._env,
   ) {
     reaction((_) => _localeStore.currentLocale, (locale) {
       if (_searchKeyword.isNotEmpty) {
@@ -74,17 +74,17 @@ abstract class _LocationsStore with Store {
   final AnalyticsStore _analyticsStore;
   final RemoteConfigStore _remoteConfigStore;
   final LocaleStore _localeStore;
-  final AuthSessionStore _authSessionStore;
   final SharedPreferenceService _prefs;
   final LocalDBService _localDB;
   final Talker _logger;
   final Ping? _ping;
+  final FlavorConfig _env;
 
   final Debouncer _debouncer = Debouncer();
   StreamSubscription<dynamic>? _autoRefreshSubscription;
 
-  @observable
-  bool clearFetchedLocations = false;
+  @readonly
+  bool _clearFetchedLocations = false;
 
   @observable
   VPNLocation? selectedLocation;
@@ -127,24 +127,12 @@ abstract class _LocationsStore with Store {
       };
 
   @action
-  Future<List<VPNLocation>> _fetchRecentLocations() async {
-    final hasUser = (await _authSessionStore.userFuture) != null;
-    if (!hasUser) {
-      return [];
+  // ignore: avoid_positional_boolean_parameters
+  void setClearFetchedLocations(bool value) {
+    if (!_env.isDev) {
+      throw Exception('clearFetchedLocations can only be set in dev environment');
     }
-
-    final locations = await _localDB.getRecentLocations();
-    final availableLocations = {
-      ...?_dcLocationsFuture.value?.allLocationsFlattened,
-      ...?_residentialLocationsFuture.value?.allLocationsFlattened,
-    };
-
-    return _filterService.filterRecentLocations(
-      locations,
-      availableLocations: availableLocations,
-      keyword: _searchKeyword,
-      locale: _localeStore.currentLocale.languageCode.toLowerCase(),
-    );
+    _clearFetchedLocations = value;
   }
 
   @computed
@@ -343,7 +331,7 @@ abstract class _LocationsStore with Store {
         throw Exception('No data found');
       }
 
-      if (clearFetchedLocations) {
+      if (_clearFetchedLocations) {
         connectionConfig.clear();
       }
 
