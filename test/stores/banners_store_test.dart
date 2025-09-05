@@ -3,8 +3,6 @@ import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/utils/mocks.dart';
-import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
@@ -30,22 +28,14 @@ void main() {
     late BannersStore bannersStore;
     late MockLocalDBService mockLocalDBService;
     late MockSubscriptionStore mockSubscriptionStore;
-    late MockLocationsStore mockLocationsStore;
     late MockAuthSessionStore mockAuthSessionStore;
     late MockVpnStore mockVpnStore;
 
     late MockUpdateAvailableStore mockUpdateAvailableStore;
-    final mockDCLocations = VPNLocations(
-      locations: [
-        Mocks.locationDatacenterNL,
-        Mocks.locationDatacenterDE,
-      ],
-    );
 
     setUp(() async {
       mockLocalDBService = MockLocalDBService();
       mockSubscriptionStore = MockSubscriptionStore();
-      mockLocationsStore = MockLocationsStore();
       mockAuthSessionStore = MockAuthSessionStore();
       mockVpnStore = MockVpnStore();
 
@@ -56,14 +46,9 @@ void main() {
       when(mockLocalDBService.getMainBanners()).thenAnswer((_) async => <BannerType>[]);
       when(mockSubscriptionStore.isSubscribed).thenReturn(true);
       when(mockAuthSessionStore.status).thenReturn(AuthStatus.unauthenticated);
-      when(mockLocationsStore.dcLocationsStream).thenAnswer(
-        (_) => ObservableStream(Stream.value(mockDCLocations), initialValue: mockDCLocations),
-      );
-
       bannersStore = BannersStore(
         mockLocalDBService,
         mockSubscriptionStore,
-        mockLocationsStore,
         mockAuthSessionStore,
         mockVpnStore,
         mockUpdateAvailableStore,
@@ -84,9 +69,6 @@ void main() {
       test('returns empty list when shown banners and subscription status are null', () async {
         when(mockAuthSessionStore.status).thenReturn(AuthStatus.authenticated);
         when(mockSubscriptionStore.isSubscribed).thenReturn(null);
-        when(mockLocationsStore.dcLocationsStream).thenAnswer(
-          (_) => ObservableStream(Stream.value(VPNLocations()), initialValue: VPNLocations()),
-        );
 
         await bannersStore.shownBanners;
 
@@ -94,10 +76,8 @@ void main() {
       });
 
       test('excludes shown banners from the list', () async {
-        when(mockLocalDBService.getMainBanners()).thenAnswer((_) async => [BannerType.datacenter]);
-        when(mockLocationsStore.dcLocationsStream).thenAnswer(
-          (_) => ObservableStream(Stream.value(VPNLocations()), initialValue: VPNLocations()),
-        );
+        when(mockLocalDBService.getMainBanners())
+            .thenAnswer((_) async => [BannerType.highSpeedIPs]);
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
         when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
         when(mockVpnStore.connectionLimitReached).thenReturn(true);
@@ -106,7 +86,7 @@ void main() {
 
         expect(
           bannersStore.mainBanners,
-          BannerType.mainBanners.where((b) => b != BannerType.datacenter).toList(),
+          BannerType.mainBanners.where((b) => b != BannerType.highSpeedIPs).toList(),
         );
       });
 
@@ -118,21 +98,6 @@ void main() {
         expect(
           bannersStore.mainBanners,
           BannerType.mainBanners.where((b) => b != BannerType.subscription).toList(),
-        );
-      });
-
-      test('excludes datacenter banner when dataCenterCountries is empty', () async {
-        when(mockSubscriptionStore.isSubscribed).thenReturn(false);
-        when(mockLocationsStore.dcLocationsStream).thenAnswer(
-          (_) => ObservableStream(Stream.value(VPNLocations()), initialValue: VPNLocations()),
-        );
-        when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
-        when(mockVpnStore.connectionLimitReached).thenReturn(true);
-        await bannersStore.shownBanners;
-
-        expect(
-          bannersStore.mainBanners,
-          BannerType.mainBanners.where((b) => b != BannerType.datacenter).toList(),
         );
       });
 

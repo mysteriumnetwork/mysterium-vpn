@@ -106,6 +106,9 @@ class LocalDBService {
 
   Future<List<VPNLocation>> getRecentLocations() async => (await _loadUserData()).recentLocations;
 
+  Stream<List<VPNLocation>> watchRecentLocations() =>
+      _watchUserData().map((it) => it.recentLocations);
+
   Future<void> setShownBanners(List<BannerType> banners) async {
     final userData = await _loadUserData();
     userData.shownBanners = banners;
@@ -144,6 +147,21 @@ class LocalDBService {
     }
 
     return _userBox.get(cacheId)!;
+  }
+
+  Stream<UserData> _watchUserData() async* {
+    final user = await _ensureUserSet();
+    final cacheId = user.username;
+
+    if (!_userBox.containsKey(cacheId)) {
+      await _setInitUserData(cacheId);
+    }
+
+    yield* _userBox
+        .watch(key: cacheId)
+        .map((_) => _userBox.get(cacheId))
+        .where((it) => it != null)
+        .cast();
   }
 
   Future<void> _saveUserData(UserData userData) async {
