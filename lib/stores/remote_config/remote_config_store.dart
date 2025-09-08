@@ -42,6 +42,7 @@ enum _FeatureToggleKey {
   countriesWithCitiesOnMap,
   showUserIntents,
   userIntentBlacklist,
+  userIntentsRefreshInterval,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -333,6 +334,17 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       logger.handle(e, stack);
     }
     return {};
+  }
+
+  @computed
+  Duration get userIntentsRefreshInterval {
+    if (config.containsKey(_FeatureToggleKey.userIntentsRefreshInterval.name)) {
+      final raw = config[_FeatureToggleKey.userIntentsRefreshInterval.name];
+      if (raw is int) {
+        return Duration(seconds: raw);
+      }
+    }
+    return const Duration(minutes: 10);
   }
 
   Map<String, String> get asUserProperties =>
