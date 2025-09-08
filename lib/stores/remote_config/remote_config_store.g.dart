@@ -219,6 +219,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$userIntentBlacklistComputed ??= Computed<Set<UserIntent>>(() => super.userIntentBlacklist,
               name: 'RemoteConfigStoreBase.userIntentBlacklist'))
           .value;
+  Computed<Duration>? _$userIntentsRefreshIntervalComputed;
+
+  @override
+  Duration get userIntentsRefreshInterval => (_$userIntentsRefreshIntervalComputed ??=
+          Computed<Duration>(() => super.userIntentsRefreshInterval,
+              name: 'RemoteConfigStoreBase.userIntentsRefreshInterval'))
+      .value;
 
   @override
   String toString() {
@@ -253,7 +260,8 @@ enableQaHelpers: ${enableQaHelpers},
 showCitiesAndStates: ${showCitiesAndStates},
 countriesWithCitiesOnMap: ${countriesWithCitiesOnMap},
 showUserIntents: ${showUserIntents},
-userIntentBlacklist: ${userIntentBlacklist}
+userIntentBlacklist: ${userIntentBlacklist},
+userIntentsRefreshInterval: ${userIntentsRefreshInterval}
     ''';
   }
 }

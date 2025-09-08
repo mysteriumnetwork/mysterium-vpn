@@ -105,7 +105,8 @@ class _Body extends HookConsumerWidget {
     final showUserIntents = useComputedValue(
       () =>
           remoteConfigStore.showUserIntents &&
-          (userIntentsStore.intents.isNotEmpty || userIntentsStore.isLoading),
+          (userIntentsStore.intents.isNotEmpty ||
+              userIntentsStore.intentsFuture.status == FutureStatus.pending),
     );
 
     if (stream.value != null) {
@@ -171,9 +172,7 @@ class _UserIntent extends HookConsumerWidget {
           vpnStore.connectionStatus == ConnectionStatus.disconnecting,
     );
 
-    final intents = useComputedValue(
-      () => userIntentsStore.isLoading ? null : userIntentsStore.intents,
-    );
+    final intents = useComputedValue(() => userIntentsStore.intentsFuture.value);
     final selected = useComputedValue(() => vpnStore.userIntent);
     final handleToggleConnection = useHandleToggleConnection();
 

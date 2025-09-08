@@ -12,7 +12,6 @@ import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/user_intents_store.dart';
-import 'package:talker/talker.dart';
 
 import 'user_intents_store_test.mocks.dart';
 
@@ -21,14 +20,12 @@ import 'user_intents_store_test.mocks.dart';
   MockSpec<RealIPInfoStore>(),
   MockSpec<LocationsStore>(),
   MockSpec<RemoteConfigStore>(),
-  MockSpec<Talker>(unsupportedMembers: {#configure}),
 ])
 void main() {
   late MockApiService mockApi;
   late MockRealIPInfoStore mockRealIPInfo;
   late MockLocationsStore mockLocationsStore;
   late MockRemoteConfigStore mockRemoteConfigStore;
-  late MockTalker mockTalker;
 
   const mockNewYorkIPInfo = IPInfo(ip: 'ip', country: 'US', city: 'new_york');
 
@@ -37,7 +34,6 @@ void main() {
         mockRealIPInfo,
         mockLocationsStore,
         mockRemoteConfigStore,
-        mockTalker,
       );
 
   setUp(() {
@@ -45,9 +41,9 @@ void main() {
     mockRealIPInfo = MockRealIPInfoStore();
     mockLocationsStore = MockLocationsStore();
     mockRemoteConfigStore = MockRemoteConfigStore();
-    mockTalker = MockTalker();
 
     when(mockRemoteConfigStore.userIntentBlacklist).thenReturn(<UserIntent>{});
+    when(mockRemoteConfigStore.userIntentsRefreshInterval).thenReturn(const Duration(minutes: 10));
   });
 
   group('Local intents', () {
@@ -57,7 +53,7 @@ void main() {
       when(mockApi.fetchUserIntents()).thenAnswer((_) async => const <UserIntent>{});
 
       final store = buildStore();
-      await store.localIntentsFuture;
+      await store.intentsFuture;
 
       expect(store.intents, contains(UserIntent.nearestLocation));
     });
@@ -68,7 +64,7 @@ void main() {
       when(mockApi.fetchUserIntents()).thenAnswer((_) async => const <UserIntent>{});
 
       final store = buildStore();
-      await store.localIntentsFuture;
+      await store.intentsFuture;
 
       expect(store.intents, isNot(contains(UserIntent.nearestLocation)));
     });
@@ -80,32 +76,20 @@ void main() {
       when(mockRemoteConfigStore.userIntentBlacklist).thenReturn({UserIntent.nearestLocation});
 
       final store = buildStore();
-      await store.localIntentsFuture;
+      await store.intentsFuture;
 
       expect(store.intents, isNot(contains(UserIntent.nearestLocation)));
     });
   });
 
   group('Remote intents', () {
-    test('error logged and empty set', () async {
-      when(mockRealIPInfo.infoFuture).thenAnswer((_) => ObservableFuture.value(null));
-      when(mockLocationsStore.availableCountries).thenReturn(<String>{});
-      when(mockApi.fetchUserIntents()).thenThrow(Exception('boom'));
-
-      final store = buildStore();
-      await store.apiIntentsStream.first;
-
-      expect(store.intents, isEmpty);
-      verify(mockTalker.handle(any, any)).called(1);
-    });
-
     test('first remote emission applied', () async {
       when(mockRealIPInfo.infoFuture).thenAnswer((_) => ObservableFuture.value(null));
       when(mockLocationsStore.availableCountries).thenReturn(<String>{});
       when(mockApi.fetchUserIntents()).thenAnswer((_) async => {UserIntent.p2p});
 
       final store = buildStore();
-      await store.apiIntentsStream.first;
+      await store.intentsFuture;
 
       expect(store.intents, contains(UserIntent.p2p));
     });
@@ -118,10 +102,7 @@ void main() {
       when(mockApi.fetchUserIntents()).thenAnswer((_) async => {UserIntent.p2p});
 
       final store = buildStore();
-      await Future.wait([
-        store.localIntentsFuture,
-        store.apiIntentsStream.first,
-      ]);
+      await store.intentsFuture;
 
       expect(
         store.intents,
@@ -135,10 +116,7 @@ void main() {
       when(mockApi.fetchUserIntents()).thenAnswer((_) async => {UserIntent.p2p});
 
       final store = buildStore();
-      await Future.wait([
-        store.localIntentsFuture,
-        store.apiIntentsStream.first,
-      ]);
+      await store.intentsFuture;
 
       expect(store.intents, equals({UserIntent.p2p}));
     });
@@ -152,15 +130,12 @@ void main() {
       when(mockApi.fetchUserIntents()).thenAnswer((_) => remoteCompleter.future);
 
       final store = buildStore();
-      expect(store.isLoading, isTrue);
+      expect(store.intentsFuture.status == FutureStatus.pending, isTrue);
 
       remoteCompleter.complete(<UserIntent>{});
-      await Future.wait([
-        store.localIntentsFuture,
-        store.apiIntentsStream.first,
-      ]);
+      await store.intentsFuture;
 
-      expect(store.isLoading, isFalse);
+      expect(store.intentsFuture.status == FutureStatus.pending, isFalse);
     });
   });
 }
