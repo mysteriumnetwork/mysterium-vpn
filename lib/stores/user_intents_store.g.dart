@@ -15,32 +15,26 @@ mixin _$UserIntentsStore on _UserIntentsStore, Store {
   Set<UserIntent> get intents => (_$intentsComputed ??=
           Computed<Set<UserIntent>>(() => super.intents, name: '_UserIntentsStore.intents'))
       .value;
-  Computed<bool>? _$isLoadingComputed;
 
-  @override
-  bool get isLoading => (_$isLoadingComputed ??=
-          Computed<bool>(() => super.isLoading, name: '_UserIntentsStore.isLoading'))
-      .value;
+  late final _$_apiIntentsFutureAtom =
+      Atom(name: '_UserIntentsStore._apiIntentsFuture', context: context);
 
-  late final _$_apiIntentsStreamAtom =
-      Atom(name: '_UserIntentsStore._apiIntentsStream', context: context);
-
-  ObservableStream<Set<UserIntent>> get apiIntentsStream {
-    _$_apiIntentsStreamAtom.reportRead();
-    return super._apiIntentsStream;
+  ObservableFuture<Set<UserIntent>> get apiIntentsFuture {
+    _$_apiIntentsFutureAtom.reportRead();
+    return super._apiIntentsFuture;
   }
 
   @override
-  ObservableStream<Set<UserIntent>> get _apiIntentsStream => apiIntentsStream;
+  ObservableFuture<Set<UserIntent>> get _apiIntentsFuture => apiIntentsFuture;
 
-  bool __apiIntentsStreamIsInitialized = false;
+  bool __apiIntentsFutureIsInitialized = false;
 
   @override
-  set _apiIntentsStream(ObservableStream<Set<UserIntent>> value) {
-    _$_apiIntentsStreamAtom
-        .reportWrite(value, __apiIntentsStreamIsInitialized ? super._apiIntentsStream : null, () {
-      super._apiIntentsStream = value;
-      __apiIntentsStreamIsInitialized = true;
+  set _apiIntentsFuture(ObservableFuture<Set<UserIntent>> value) {
+    _$_apiIntentsFutureAtom
+        .reportWrite(value, __apiIntentsFutureIsInitialized ? super._apiIntentsFuture : null, () {
+      super._apiIntentsFuture = value;
+      __apiIntentsFutureIsInitialized = true;
     });
   }
 
@@ -66,11 +60,32 @@ mixin _$UserIntentsStore on _UserIntentsStore, Store {
     });
   }
 
+  late final _$_intentsFutureAtom =
+      Atom(name: '_UserIntentsStore._intentsFuture', context: context);
+
+  ObservableFuture<Set<UserIntent>> get intentsFuture {
+    _$_intentsFutureAtom.reportRead();
+    return super._intentsFuture;
+  }
+
+  @override
+  ObservableFuture<Set<UserIntent>> get _intentsFuture => intentsFuture;
+
+  bool __intentsFutureIsInitialized = false;
+
+  @override
+  set _intentsFuture(ObservableFuture<Set<UserIntent>> value) {
+    _$_intentsFutureAtom
+        .reportWrite(value, __intentsFutureIsInitialized ? super._intentsFuture : null, () {
+      super._intentsFuture = value;
+      __intentsFutureIsInitialized = true;
+    });
+  }
+
   @override
   String toString() {
     return '''
-intents: ${intents},
-isLoading: ${isLoading}
+intents: ${intents}
     ''';
   }
 }
