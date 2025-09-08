@@ -280,17 +280,15 @@ final userIntentsStorePOD = Provider.autoDispose<UserIntentsStore>(
     final realIPInfoStore = ref.watch(realIPInfoStorePOD);
     final locationsStore = ref.watch(locationsStorePOD);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
-    final logger = ref.watch(loggerPOD);
 
     final store = UserIntentsStore(
       apiService,
       realIPInfoStore,
       locationsStore,
       remoteConfigStore,
-      logger,
     );
 
-    ref.onDispose(store.dispose);
+    ref.onCancel(store.dispose);
     return store;
   },
 );
