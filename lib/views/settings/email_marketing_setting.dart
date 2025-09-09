@@ -4,12 +4,13 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
@@ -49,9 +50,7 @@ class EmailMarketingSetting extends HookConsumerWidget {
                 right: 0,
               ),
               SwitchItem(
-                asset: context.c.isDarkMode
-                    ? Assets.emailNotificationDark
-                    : Assets.emailNotificationLight,
+                asset: Asset.icons.emailNotification(context),
                 title: LocaleKeys.emailNotificationsSetting.tr(),
                 subtitle: LocaleKeys.emailNotificationsSettingDesc.tr(),
                 actionWidget: Observer(

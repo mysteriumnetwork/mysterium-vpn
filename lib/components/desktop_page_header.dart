@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -19,12 +20,12 @@ class DesktopPageHeader extends ConsumerWidget {
     super.key,
   });
 
-  final String asset;
+  final SvgGenImage asset;
   final VoidCallback onPressed;
   final bool showNavigationButton;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeStore = ref.read(themeStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
 
     return Observer(
@@ -37,9 +38,7 @@ class DesktopPageHeader extends ConsumerWidget {
                 onPressed: () {
                   onNavigationButtonPressed(context, analyticsStore);
                 },
-                asset: themeStore.isDarkMode
-                    ? Assets.navigateBackLightGrey
-                    : Assets.navigateBackLightBlack,
+                asset: Asset.icons.navigateBackLighter(context),
               ),
               TextButton(
                 onPressed: () {

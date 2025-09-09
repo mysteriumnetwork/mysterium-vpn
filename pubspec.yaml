@@ -103,8 +103,8 @@ dependencies:
 
 dev_dependencies:
   build_runner: 2.5.4
-  flutter_gen_runner: ^5.10.0
   cider: 0.2.8
+  flutter_gen_runner: ^5.10.0
   flutter_lints: 4.0.0
   flutter_test:
     sdk: flutter

@@ -7,6 +7,7 @@ import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -47,19 +48,21 @@ class _InfoDialog extends HookWidget {
     this.onConfirm,
     this.confirmText,
   });
+
   final String title;
   final List<String>? messages;
   final AsyncCallback? onConfirm;
   final String? confirmText;
+
   @override
   Widget build(BuildContext context) => Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.center,
         children: [
-          const Positioned(
+          Positioned(
             top: -15,
             child: SvgIcon(
-              asset: Assets.warning,
+              asset: Asset.icons.warning,
             ),
           ),
           Column(

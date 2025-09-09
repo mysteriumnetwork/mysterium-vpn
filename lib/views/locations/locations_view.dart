@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/retry_widget.dart';
 import 'package:mysterium_vpn/components/user_intent_picker.dart';
 import 'package:mysterium_vpn/components/user_intent_tooltip.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -150,7 +151,7 @@ class _Body extends HookConsumerWidget {
         ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 260),
           child: RetryWdiget(
-            asset: Assets.globe,
+            asset: Asset.icons.globe,
             onRetry: locationsStore.refresh,
             error: future.error,
           ),

@@ -22,6 +22,8 @@ analyzer:
     - "**/*.g.dart"
     - "**/*.freezed.dart"    
     - "packages/vpn_api/**"
+    - "lib/gen/**"
+    - "lib/generated/**"
 
 linter: 
   rules:

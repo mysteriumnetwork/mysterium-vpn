@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/components/color_filtered_optional.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/horizontal_scroll_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:shimmer/shimmer.dart';
@@ -162,12 +163,12 @@ class _Item extends StatelessWidget {
             SvgIcon(
               color: isSelected ? Colors.white : theme.palette.highlightColor,
               asset: switch (value) {
-                UserIntent.bestSpeed => Assets.flash,
-                UserIntent.lowLatency => Assets.clockCircle,
-                UserIntent.nearestLocation => Assets.locationPin,
-                UserIntent.maxPrivacy => Assets.incognito,
-                UserIntent.streaming => Assets.film,
-                UserIntent.p2p => Assets.shareCircle,
+                UserIntent.bestSpeed => Asset.icons.flash,
+                UserIntent.lowLatency => Asset.icons.clockCircle,
+                UserIntent.nearestLocation => Asset.icons.locationPin,
+                UserIntent.maxPrivacy => Asset.icons.incognito,
+                UserIntent.streaming => Asset.icons.film,
+                UserIntent.p2p => Asset.icons.shareCircle,
               },
             ),
           ],

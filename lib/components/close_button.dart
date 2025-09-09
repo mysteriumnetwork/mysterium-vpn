@@ -1,7 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 
 class CloseButton extends StatelessWidget {
   const CloseButton({
@@ -28,7 +28,7 @@ class CloseButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           SvgIconButton(
-            asset: Assets.closeDark,
+            asset: Asset.icons.closeDark,
             onPressed: onPressed,
           ),
         ],

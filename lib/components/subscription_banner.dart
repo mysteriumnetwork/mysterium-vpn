@@ -11,6 +11,7 @@ import 'package:mysterium_vpn/components/banners/banner_body.dart';
 import 'package:mysterium_vpn/components/banners/banner_cta.dart';
 import 'package:mysterium_vpn/components/banners/banner_title.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
@@ -36,7 +37,7 @@ class SubscriptionBanner extends HookConsumerWidget {
           ),
         FutureStatus.rejected => Banner(
             title: BannerTitle(
-              iconAsset: Assets.infoOutline,
+              iconAsset: Asset.icons.infoOutline,
               text: LocaleKeys.checkSubsStatusFailedTitle.tr(),
             ),
             body: BannerBody(

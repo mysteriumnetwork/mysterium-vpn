@@ -7,6 +7,7 @@ import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -16,7 +17,9 @@ class ProductFeatures extends HookConsumerWidget {
     required this.formVariant,
     super.key,
   });
+
   final String formVariant;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final config = ref.watch(remoteConfigStorePOD);
@@ -72,6 +75,7 @@ class _FeatureItem extends StatelessWidget {
     required this.title,
     this.isLastItem = false,
   });
+
   final String title;
   final bool isLastItem;
 
@@ -85,9 +89,7 @@ class _FeatureItem extends StatelessWidget {
           children: [
             Row(
               children: [
-                const SvgIcon(
-                  asset: Assets.checkmark,
-                ),
+                SvgIcon(asset: Asset.icons.checkmark),
                 const SizedBox(width: 10),
                 Expanded(
                   child: EasyText(
