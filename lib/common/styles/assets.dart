@@ -1,4 +1,5 @@
 // TODO(Kristijan): Deprecate and use library to generate assets
+@Deprecated('We are switching to fluttergen for asset management instead of this')
 abstract class Assets {
   //LOGO
   static const String logoBlackSvg = 'assets/logo/logo_black.svg';
