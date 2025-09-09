@@ -1,11 +1,11 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_search.dart';
 
@@ -15,8 +15,9 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
     required this.settingsIcon,
     super.key,
   });
-  final String supportIcon;
-  final String settingsIcon;
+
+  final SvgGenImage supportIcon;
+  final SvgGenImage settingsIcon;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,11 +37,10 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
               spacing: 4,
               children: [
                 Expanded(
-                  child: SvgPicture.asset(
-                    context.c.isDarkMode ? Assets.logoWhiteSvg : Assets.logoBlackSvg,
-                    height: 24,
-                    alignment: Alignment.centerLeft,
-                  ),
+                  child: Asset.logo.logo(context).svg(
+                        height: 24,
+                        alignment: Alignment.centerLeft,
+                      ),
                 ),
                 SvgIconButton(
                   onPressed: () => handleOnSupportPage(

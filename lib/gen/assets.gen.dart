@@ -229,6 +229,13 @@ class $AssetsIconsGen {
   /// File path: assets/icons/film.svg
   SvgGenImage get film => const SvgGenImage('assets/icons/film.svg', size: Size(21.0, 21.0));
 
+  /// File path: assets/icons/fix_dark.svg
+  SvgGenImage get fixDark => const SvgGenImage('assets/icons/fix_dark.svg', size: Size(30.0, 30.0));
+
+  /// File path: assets/icons/fix_light.svg
+  SvgGenImage get fixLight =>
+      const SvgGenImage('assets/icons/fix_light.svg', size: Size(30.0, 30.0));
+
   /// File path: assets/icons/flash.svg
   SvgGenImage get flash => const SvgGenImage('assets/icons/flash.svg', size: Size(20.0, 21.0));
 
@@ -519,6 +526,8 @@ class $AssetsIconsGen {
         emailNotificationLight,
         feedback,
         film,
+        fixDark,
+        fixLight,
         flash,
         flashDark,
         flashLight,

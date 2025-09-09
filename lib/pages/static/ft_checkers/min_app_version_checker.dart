@@ -11,6 +11,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -47,9 +48,7 @@ class MinAppVersionChecker extends HookConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 64),
-                    const SvgIcon(
-                      asset: Assets.splashLogo,
-                    ),
+                    SvgIcon(asset: Asset.logo.splashLogo),
                     const Spacer(),
                     EasyText(
                       LocaleKeys.featureToggleMinVersionNotSatisfied.tr(),

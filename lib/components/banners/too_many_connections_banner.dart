@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/components/banners/banner_body.dart';
 import 'package:mysterium_vpn/components/banners/banner_cta.dart';
 import 'package:mysterium_vpn/components/banners/banner_title.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
@@ -32,7 +33,7 @@ class TooManyConnectionsBanner extends HookConsumerWidget {
         text: LocaleKeys.tooManyConnectionsBannerTitle.tr(),
         icon: SvgIcon(
           color: bannerStyle.foregroundColor,
-          asset: Assets.infoOutline,
+          asset: Asset.icons.infoOutline,
           width: 20,
           height: 20,
         ),

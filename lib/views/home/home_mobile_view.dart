@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_app_bar.dart';
 import 'package:mysterium_vpn/views/home/home_connection_view.dart';
@@ -98,10 +99,8 @@ class HomeMobileView extends HookConsumerWidget {
                         decoration: BoxDecoration(color: theme.colorScheme.surfaceContainerHighest),
                         child: HomeAppBar(
                           key: appBarKey,
-                          supportIcon:
-                              context.c.isDarkMode ? Assets.supportDark : Assets.supportLight,
-                          settingsIcon:
-                              context.c.isDarkMode ? Assets.settingsDark : Assets.settingsLight,
+                          supportIcon: Asset.icons.support(context),
+                          settingsIcon: Asset.icons.settingsAdaptive(context),
                         ),
                       ),
                       const Expanded(child: HomeConnectionView()),

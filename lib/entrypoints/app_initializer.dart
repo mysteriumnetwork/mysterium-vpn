@@ -12,10 +12,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/app.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/entrypoints/firebase/firebase_options_dev.dart' as dev;
 import 'package:mysterium_vpn/entrypoints/firebase/firebase_options_prod.dart' as prod;
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -44,7 +45,7 @@ class AppInitializer {
         child: EasyLocalization(
           useOnlyLangCode: true,
           supportedLocales: kSupportedLocales,
-          path: Assets.langs,
+          path: Asset.resources.langs.path,
           fallbackLocale: kFallbackLocale,
           startLocale: kFallbackLocale,
           assetLoader: providerContainer.read(assetsLoaderPOD),
