@@ -112,4 +112,6 @@ enum AnalyticsEvent {
   marketingConsentMarkedAccepted,
   marketingConsentMarkedDeclined,
   toggleMarketingConsent,
+  mapScroll,
+  mapPointClick,
 }

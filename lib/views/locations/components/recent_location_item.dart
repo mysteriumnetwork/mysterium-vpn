@@ -28,7 +28,7 @@ class RecentLocationItem extends HookConsumerWidget {
     final onTap = useComputedValue(() => vpnStore.isLoading ? null : this.onTap, [this.onTap]);
     final countryName = location.getName(context);
     return RawMaterialButton(
-      onPressed: onTap,
+      onPressed: null,
       elevation: 0,
       hoverElevation: 0,
       highlightElevation: 0,

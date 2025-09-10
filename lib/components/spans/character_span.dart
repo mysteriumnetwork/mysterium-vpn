@@ -26,4 +26,9 @@ class CharacterSpan extends TextSpan {
         character: '%',
         style: style,
       );
+
+  factory CharacterSpan.bullet({TextStyle? style}) => CharacterSpan._(
+        character: '•',
+        style: style,
+      );
 }

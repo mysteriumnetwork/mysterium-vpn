@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
+import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -60,8 +61,16 @@ class Environment {
       await windowManager.ensureInitialized();
       await windowManager.setPreventClose(true);
       // Give option to resize on DEV env for testing
-      final size = flavor == 'DEV' ? const Size(400, 600) : const Size(1040, 700);
-      await windowManager.setMinimumSize(size);
+      final minimumSize = flavor == 'DEV' ? const Size(400, 600) : const Size(1040, 700);
+      await windowManager.setMinimumSize(minimumSize);
+      final actualSize = await windowManager.getSize();
+      final desiredSize = Size(
+        max(minimumSize.width, actualSize.width),
+        max(minimumSize.height, actualSize.height),
+      );
+      if (actualSize != desiredSize) {
+        await windowManager.setSize(desiredSize);
+      }
     }
 
     if (Platform.isWindows) {
@@ -77,7 +86,7 @@ class Environment {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
     );
     SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.manual,
+      Platform.isAndroid ? SystemUiMode.edgeToEdge : SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
     );
 

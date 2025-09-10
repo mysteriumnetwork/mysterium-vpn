@@ -777,10 +777,10 @@ packages:
     dependency: transitive
     description:
       name: get_it
-      sha256: d85128a5dae4ea777324730dc65edd9c9f43155c109d5cc0a69cab74139fbac1
+      sha256: a4292e7cf67193f8e7c1258203104eb2a51ec8b3a04baa14695f4064c144297b
       url: "https://pub.dev"
     source: hosted
-    version: "7.7.0"
+    version: "8.2.0"
   glob:
     dependency: transitive
     description:
@@ -1237,12 +1237,11 @@ packages:
   msix:
     dependency: "direct dev"
     description:
-      path: "."
-      ref: "3.17.0"
-      resolved-ref: "6ceffb5e4341c2a6f60932fa460f18f6b1ef5f8c"
-      url: "https://github.com/KristijanMitrik/msix.git"
-    source: git
-    version: "3.16.9"
+      name: msix
+      sha256: f88033fcb9e0dd8de5b18897cbebbd28ea30596810f4a7c86b12b0c03ace87e5
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.16.12"
   nested:
     dependency: transitive
     description:
@@ -2005,11 +2004,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "1.0.28"
-      resolved-ref: "1df39a240bd0e5c1589e72a01e4cc135e4d79f72"
+      ref: "1.0.31"
+      resolved-ref: "2275d0a7de5422f0b7f01f6a41c6ae52733854f4"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git"
     source: git
-    version: "1.0.28+8"
+    version: "1.0.31+11"
   watcher:
     dependency: transitive
     description:

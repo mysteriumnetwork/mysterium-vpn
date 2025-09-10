@@ -30,6 +30,7 @@ import 'package:mysterium_vpn/stores/remote_config/texts_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/update_availabe_store.dart';
+import 'package:mysterium_vpn/stores/user_intents_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 
@@ -115,6 +116,7 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
   final filterService = ref.watch(filterServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
   final localeStore = ref.watch(localeStorePOD);
   final logger = ref.watch(loggerPOD);
 
@@ -123,6 +125,7 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
     filterService,
     analyticsStore,
     remoteConfigStore,
+    authSessionStore,
     SharedPreferenceService.instance,
     LocalDBService.instance,
     logger,
@@ -270,3 +273,22 @@ final updateAvailableStorePOD = Provider.autoDispose<UpdateAvailableStore>((ref)
     ref.watch(environmentPOD),
   );
 });
+
+final userIntentsStorePOD = Provider.autoDispose<UserIntentsStore>(
+  (ref) {
+    final apiService = ref.watch(apiServicePOD);
+    final realIPInfoStore = ref.watch(realIPInfoStorePOD);
+    final locationsStore = ref.watch(locationsStorePOD);
+    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+
+    final store = UserIntentsStore(
+      apiService,
+      realIPInfoStore,
+      locationsStore,
+      remoteConfigStore,
+    );
+
+    ref.onCancel(store.dispose);
+    return store;
+  },
+);

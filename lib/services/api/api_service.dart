@@ -1,3 +1,4 @@
+import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 abstract class ApiService {
@@ -9,4 +10,5 @@ abstract class ApiService {
   Future<void> updateMarketingContact({required bool consent});
   Future<bool> getMarketingContactStatus();
   Future<void> disconnect({required String publicKey});
+  Future<Set<UserIntent>> fetchUserIntents();
 }

@@ -1,14 +1,18 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/api.dart';
 import 'package:mysterium_vpn/common/extensions/stream_extensions.dart';
+import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
 import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
@@ -30,6 +34,7 @@ abstract class _LocationsStore with Store {
     this._filterService,
     this._analyticsStore,
     this._remoteConfigStore,
+    this._authSessionStore,
     this._prefs,
     this._localDB,
     this._logger,
@@ -49,6 +54,12 @@ abstract class _LocationsStore with Store {
       }
     });
 
+    reaction((_) => _authSessionStore.user?.userId, (id) {
+      _recentLocationsFuture = _recentLocationsFuture.replace(
+        _fetchRecentLocations(),
+      );
+    });
+
     _autoRefresh();
   }
 
@@ -57,6 +68,7 @@ abstract class _LocationsStore with Store {
   final AnalyticsStore _analyticsStore;
   final RemoteConfigStore _remoteConfigStore;
   final LocaleStore _localeStore;
+  final AuthSessionStore _authSessionStore;
   final SharedPreferenceService _prefs;
   final LocalDBService _localDB;
   final Talker _logger;
@@ -97,8 +109,23 @@ abstract class _LocationsStore with Store {
   @readonly
   String _searchKeyword = '';
 
+  @computed
+  Set<String> get availableCountries => {
+        ...?_dcLocationsStream.value?.allLocations
+            .where((it) => it.isCountry)
+            .map((it) => it.countryCode),
+        ...?_residentialLocationsStream.value?.allLocations
+            .where((it) => it.isCountry)
+            .map((it) => it.countryCode),
+      };
+
   @action
   Future<List<VPNLocation>> _fetchRecentLocations() async {
+    final hasUser = (await _authSessionStore.userFuture) != null;
+    if (!hasUser) {
+      return [];
+    }
+
     final locations = await _localDB.getRecentLocations();
     final availableLocations = {
       ...?_dcLocationsStream.value?.allLocationsFlattened,
@@ -173,7 +200,53 @@ abstract class _LocationsStore with Store {
     return null;
   }
 
+  @action
+  VPNLocation findLocation(
+    String id, {
+    String? countryCode,
+    IPType ipType = IPType.datacenter,
+  }) {
+    final locations = switch (ipType) {
+          IPType.datacenter => _dcLocationsStream.value?.allLocationsFlattened,
+          IPType.residential => _residentialLocationsStream.value?.allLocationsFlattened,
+          _ => null,
+        } ??
+        const <VPNLocation>[];
+
+    var match = locations.firstWhereOrNull((it) => it.id == id);
+
+    // if no city is in our list, we try to find a country
+    match ??= locations.firstWhereOrNull(
+      (it) => it.isCountry && it.countryCode == (countryCode ?? id),
+    );
+
+    match ??= VPNLocation(
+      id: id,
+      ipType: ipType,
+      translations: const {},
+      countryCode: countryCode ?? id,
+    );
+
+    return match;
+  }
+
   Future<VPNLocation?> closestLocation([IPType? type]) async {
+    final closestRegion = await this.closestRegion(type);
+
+    if (closestRegion == null) {
+      return null;
+    }
+
+    final closestLocations = countriesToLocations(closestRegion.topCountries, type);
+    if (closestLocations.isEmpty) {
+      return null;
+    }
+
+    final r = Random();
+    return closestLocations[r.nextInt(closestLocations.length)];
+  }
+
+  Future<ConnectionRegion?> closestRegion([IPType? type]) async {
     final connectionConfigRegions = (await _apiConnection.connectionConfigRegions(
       ipType: switch (type) {
         IPType.datacenter => 'hosting',
@@ -186,15 +259,7 @@ abstract class _LocationsStore with Store {
       return null;
     }
 
-    final closestRegion = await _detectClosestRegion(connectionConfigRegions.regions);
-
-    final closestLocations = countriesToLocations(closestRegion.topCountries, type);
-    if (closestLocations.isEmpty) {
-      return null;
-    }
-
-    final r = Random();
-    return closestLocations[r.nextInt(closestLocations.length)];
+    return _detectClosestRegion(connectionConfigRegions.regions);
   }
 
   Stream<VPNLocations> _watch(IPType ipType) async* {
@@ -320,6 +385,8 @@ abstract class _LocationsStore with Store {
   FutureOr<void> dispose() async {
     _debouncer.dispose();
     await _autoRefreshSubscription?.cancel();
+    await _dcLocationsStream.close();
+    await _residentialLocationsStream.close();
   }
 
   @action
@@ -382,11 +449,17 @@ VPNLocation _mapCity(
   ConnectionLocationCity response,
   String country,
   IPType ipType,
-) =>
-    VPNLocation(
-      id: response.city,
-      ipType: ipType,
-      translations: response.translations,
-      nodeCount: response.total.toInt(),
-      countryCode: country,
-    );
+) {
+  LatLng? coordinates;
+  if (response.latitude != null && response.longitude != null) {
+    coordinates = LatLng(response.latitude!.toDouble(), response.longitude!.toDouble());
+  }
+  return VPNLocation(
+    id: response.city,
+    ipType: ipType,
+    translations: response.translations,
+    nodeCount: response.total.toInt(),
+    countryCode: country,
+    coordinates: coordinates,
+  );
+}

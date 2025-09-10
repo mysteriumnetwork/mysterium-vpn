@@ -198,6 +198,34 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$showCitiesAndStatesComputed ??= Computed<bool>(() => super.showCitiesAndStates,
               name: 'RemoteConfigStoreBase.showCitiesAndStates'))
           .value;
+  Computed<Set<String>>? _$countriesWithCitiesOnMapComputed;
+
+  @override
+  Set<String> get countriesWithCitiesOnMap => (_$countriesWithCitiesOnMapComputed ??=
+          Computed<Set<String>>(() => super.countriesWithCitiesOnMap,
+              name: 'RemoteConfigStoreBase.countriesWithCitiesOnMap'))
+      .value;
+  Computed<bool>? _$showUserIntentsComputed;
+
+  @override
+  bool get showUserIntents =>
+      (_$showUserIntentsComputed ??= Computed<bool>(() => super.showUserIntents,
+              name: 'RemoteConfigStoreBase.showUserIntents'))
+          .value;
+  Computed<Set<UserIntent>>? _$userIntentBlacklistComputed;
+
+  @override
+  Set<UserIntent> get userIntentBlacklist =>
+      (_$userIntentBlacklistComputed ??= Computed<Set<UserIntent>>(() => super.userIntentBlacklist,
+              name: 'RemoteConfigStoreBase.userIntentBlacklist'))
+          .value;
+  Computed<Duration>? _$userIntentsRefreshIntervalComputed;
+
+  @override
+  Duration get userIntentsRefreshInterval => (_$userIntentsRefreshIntervalComputed ??=
+          Computed<Duration>(() => super.userIntentsRefreshInterval,
+              name: 'RemoteConfigStoreBase.userIntentsRefreshInterval'))
+      .value;
 
   @override
   String toString() {
@@ -229,7 +257,11 @@ isRateConnectionAvailable: ${isRateConnectionAvailable},
 cancelSubscriptionReasonKeys: ${cancelSubscriptionReasonKeys},
 useStoreVersionChecker: ${useStoreVersionChecker},
 enableQaHelpers: ${enableQaHelpers},
-showCitiesAndStates: ${showCitiesAndStates}
+showCitiesAndStates: ${showCitiesAndStates},
+countriesWithCitiesOnMap: ${countriesWithCitiesOnMap},
+showUserIntents: ${showUserIntents},
+userIntentBlacklist: ${userIntentBlacklist},
+userIntentsRefreshInterval: ${userIntentsRefreshInterval}
     ''';
   }
 }

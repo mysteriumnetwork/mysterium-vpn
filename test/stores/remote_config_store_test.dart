@@ -31,7 +31,9 @@ void main() {
     flavorConfig = MockFlavorConfig();
 
     when(ipInfoStore.infoFuture).thenAnswer(
-      (_) => ObservableFuture.value(IPInfo(ip: '192.168.1.1', country: 'LT', city: 'Vilnius')),
+      (_) => ObservableFuture.value(
+        const IPInfo(ip: '192.168.1.1', country: 'LT', city: 'Vilnius'),
+      ),
     );
     when(logger.handle(any, any)).thenAnswer((_) async {});
     when(logger.warning(any)).thenAnswer((_) async {});

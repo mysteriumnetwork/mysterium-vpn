@@ -25,10 +25,8 @@ abstract class _UserPreferencesStore with Store {
         localDb = localDBService;
 
   @action
-  void initStore({required bool shouldCreateMarketingContact}) {
-    setMarketingConsentFuture = shouldCreateMarketingContact
-        ? ObservableFuture(createMarketingContact())
-        : ObservableFuture.value(null);
+  void initStore() {
+    setMarketingConsentFuture = ObservableFuture(createMarketingContact());
     getMarketingConsentFuture = ObservableFuture(getMarketingConsent());
     shouldShowMarketingConsent();
   }
