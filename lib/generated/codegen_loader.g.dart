@@ -147,6 +147,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc": "您的订阅出了点问题。请再试一次。",
     "fieldRequired": "此字段是必需的",
     "first": "第一",
+    "formValidationError": "表单数据无效。请检查各个字段并重试。",
     "fr": "法语",
     "france": "法国",
     "freeTrialDesc": "保护您的连接，解锁内容，并控制您的在线隐私。",
@@ -166,6 +167,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "我明白了",
     "id": "印度尼西亚",
     "incorrectCode": "不正确的代码。请再试一次。😕?",
+    "incorrectLocationReason": "位置不正确",
     "incorrectMagicLink": "魔法链接不正确。请再试一次。😕?",
     "installVpnProfile": "要开始使用 Mysterium VPN，我们需要您的许可才能安装 VPN 配置文件。",
     "internetConnectionRestored": "您的互联网连接已恢复。",
@@ -358,6 +360,19 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "不稳定的速度",
     "updateBtn": "更新",
     "upload": "上传",
+    "userIntentBestSpeed": "最佳速度",
+    "userIntentBestSpeedDesc": "连接到最快的可用服务器以获得最佳性能",
+    "userIntentLabel": "选择专用服务器",
+    "userIntentLowLatency": "低延迟",
+    "userIntentLowLatencyDesc": "自动连接到最近的服务器，以实现稳定可靠的访问",
+    "userIntentMaxPrivacy": "最大隐私",
+    "userIntentMaxPrivacyDesc": "根据国家获取提供最佳言论自由和速度选项的服务器",
+    "userIntentNearestLocation": "最近的位置",
+    "userIntentNearestLocationDesc": "根据你当前位置，连接到最近可用的 VPN IP，以获得最佳速度和性能",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc": "选择最适合进行安全加密交易、文件共享、游戏托管和通信的服务器",
+    "userIntentStreaming": "流媒体",
+    "userIntentStreamingDesc": "从特定地区的平台访问你喜爱的节目和电影",
     "was": "原价",
     "weNeedPermission": "我们需要您的许可",
     "year": "年",
@@ -525,6 +540,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc": "Abonelik paketinizi bulmakta sorun yaşıyoruz. ",
     "fieldRequired": "Bu alan gereklidir",
     "first": "ilk",
+    "formValidationError": "Geçersiz form verisi. Lütfen alanları kontrol edip tekrar deneyin.",
     "fr": "Fransızca",
     "france": "Fransa",
     "freeTrialDesc":
@@ -545,6 +561,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "Anladım",
     "id": "Endonezya dili",
     "incorrectCode": "Yanlış kod. 😕",
+    "incorrectLocationReason": "Hatalı konum",
     "incorrectMagicLink": "Yanlış sihirli link. Lütfen son gelen linke tıklayın. 😕",
     "installVpnProfile":
         "Mysterium VPN'i kullanmaya başlamak için VPN Profili kurma izninize ihtiyacımız var.",
@@ -754,6 +771,23 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "Kararsız hız",
     "updateBtn": "Güncelle",
     "upload": "Yükleme",
+    "userIntentBestSpeed": "En iyi hız",
+    "userIntentBestSpeedDesc": "En iyi performans için mevcut en hızlı sunucuya bağlanın",
+    "userIntentLabel": "Uzmanlaşmış sunucu seç",
+    "userIntentLowLatency": "Düşük gecikme",
+    "userIntentLowLatencyDesc":
+        "Kararlı ve güvenilir erişim için en yakın sunucuya otomatik olarak bağlanır",
+    "userIntentMaxPrivacy": "Maksimum gizlilik",
+    "userIntentMaxPrivacyDesc":
+        "Ülkeye göre en iyi ifade özgürlüğü ve hız seçeneklerine sahip bir sunucu alın",
+    "userIntentNearestLocation": "En yakın konum",
+    "userIntentNearestLocationDesc":
+        "Mevcut konumuna göre en iyi hız ve performans için en yakın uygun VPN IP’sine bağlanır",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc":
+        "Güvenli kripto işlemleri, dosya paylaşımı, oyun barındırma ve iletişim için en iyi sunucuyu seçin",
+    "userIntentStreaming": "Akış",
+    "userIntentStreamingDesc": "Bölgeye özel platformlardan favori dizi ve filmlerinize erişin",
     "was": "Önce",
     "weNeedPermission": "İzninize ihtiyacımız var",
     "year": "yıl",
@@ -908,6 +942,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc": "サブスクリプションで問題が発生しました。もう一度試してください。",
     "fieldRequired": "この項目は必須です",
     "first": "最初",
+    "formValidationError": "フォームのデータが無効です。項目を確認してもう一度お試しください。",
     "fr": "フランス語",
     "france": "フランス",
     "freeTrialDesc": "あなたの接続を保護し、コンテンツのブロックを解除し、オンラインプライバシーをコントロールしましょう。",
@@ -927,6 +962,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "理解しました",
     "id": "インドネシア語",
     "incorrectCode": "コードが間違っています。もう一度試してください。😕?",
+    "incorrectLocationReason": "位置情報が正しくありません",
     "incorrectMagicLink": "マジックリンクが間違っています。もう一度試してください。😕?",
     "installVpnProfile": "Mysterium VPN の使用を開始するには、VPN プロファイルをインストールする許可が必要です。",
     "internetConnectionRestored": "インターネット接続が復元されました。",
@@ -1123,6 +1159,19 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "不安定な速度",
     "updateBtn": "アップデート",
     "upload": "アップロード",
+    "userIntentBestSpeed": "最速",
+    "userIntentBestSpeedDesc": "最適なパフォーマンスのために、最も高速な利用可能サーバーに接続します",
+    "userIntentLabel": "専用サーバーを選択",
+    "userIntentLowLatency": "低遅延",
+    "userIntentLowLatencyDesc": "安定して信頼できるアクセスのために、最も近いサーバーに自動接続します",
+    "userIntentMaxPrivacy": "最大限のプライバシー",
+    "userIntentMaxPrivacyDesc": "国に基づいて、言論の自由と速度の最適なオプションを備えたサーバーを取得します",
+    "userIntentNearestLocation": "最寄りのロケーション",
+    "userIntentNearestLocationDesc": "現在地に基づいて最適な速度とパフォーマンスを得るために、最も近い利用可能なVPN IPに接続します",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc": "暗号通貨の安全な取引、ファイル共有、ゲームホスティング、通信に最適なサーバーを選択してください",
+    "userIntentStreaming": "ストリーミング",
+    "userIntentStreamingDesc": "地域別のプラットフォームからお気に入りの番組や映画にアクセスできます",
     "was": "以前は",
     "weNeedPermission": "あなたの許可が必要です",
     "year": "年",
@@ -1303,6 +1352,8 @@ class CodegenLoader extends AssetLoader {
         "Bei Ihrem Abonnement ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
     "fieldRequired": "Dieses Feld ist erforderlich",
     "first": "erste",
+    "formValidationError":
+        "Ungültige Formulardaten. Bitte überprüfe die Felder und versuche es erneut.",
     "fr": "Französisch",
     "france": "Frankreich",
     "freeTrialDesc":
@@ -1323,6 +1374,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "Ich verstehe",
     "id": "Indonesisch",
     "incorrectCode": "Falscher Code. Bitte versuchen Sie es erneut. 😕",
+    "incorrectLocationReason": "Falscher Standort",
     "incorrectMagicLink": "Falscher Magic-Link. Bitte versuchen Sie es erneut. 😕",
     "installVpnProfile":
         "Um Mysterium VPN nutzen zu können, benötigen wir Ihre Erlaubnis zur Installation eines VPN-Profils.",
@@ -1543,6 +1595,25 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "Instabile Geschwindigkeit",
     "updateBtn": "Aktualisieren",
     "upload": "Hochladen",
+    "userIntentBestSpeed": "Beste Geschwindigkeit",
+    "userIntentBestSpeedDesc":
+        "Verbinde dich mit dem schnellsten verfügbaren Server für optimale Leistung",
+    "userIntentLabel": "Spezialserver auswählen",
+    "userIntentLowLatency": "Niedrige Latenz",
+    "userIntentLowLatencyDesc":
+        "Verbindet dich automatisch mit dem nächstgelegenen Server für stabilen und zuverlässigen Zugriff",
+    "userIntentMaxPrivacy": "Maximale Privatsphäre",
+    "userIntentMaxPrivacyDesc":
+        "Erhalte einen Server mit den besten Optionen für Meinungsfreiheit und Geschwindigkeit je nach Land",
+    "userIntentNearestLocation": "Nächster Standort",
+    "userIntentNearestLocationDesc":
+        "Verbindet dich mit der nächstgelegenen verfügbaren VPN-IP für optimale Geschwindigkeit und Leistung basierend auf deinem aktuellen Standort",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc":
+        "Wähle den besten Server für sichere Krypto-Transaktionen, Dateifreigabe, Game-Hosting und Kommunikation",
+    "userIntentStreaming": "Streaming",
+    "userIntentStreamingDesc":
+        "Greife auf deine Lieblingsserien und -filme von regionalspezifischen Plattformen zu",
     "was": "War",
     "weNeedPermission": "Wir benötigen Ihre Erlaubnis",
     "year": "Jahr",
@@ -1718,6 +1789,7 @@ class CodegenLoader extends AssetLoader {
         "Não conseguimos buscar seu pacote de assinatura. Clique no botão abaixo para tentar novamente.",
     "fieldRequired": "Este campo é obrigatório",
     "first": "primeiro",
+    "formValidationError": "Dados do formulário inválidos. Verifique os campos e tente novamente.",
     "fr": "Francês",
     "france": "França",
     "freeTrialDesc": "Proteja sua conexão, desbloqueie conteúdo e controle sua privacidade online.",
@@ -1737,6 +1809,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "Eu entendo",
     "id": "Indonésio",
     "incorrectCode": "Código incorreto. Por favor, tente novamente. 😕",
+    "incorrectLocationReason": "Localização incorreta",
     "incorrectMagicLink": "Link mágico incorreto. Por favor, tente novamente. 😕",
     "installVpnProfile":
         "Para começar a usar o Mysterium VPN, precisamos da sua permissão para instalar um perfil VPN.",
@@ -1956,6 +2029,25 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "Velocidade instável",
     "updateBtn": "Atualização",
     "upload": "Carregar",
+    "userIntentBestSpeed": "Melhor velocidade",
+    "userIntentBestSpeedDesc":
+        "Conecte-se ao servidor disponível mais rápido para um desempenho ideal",
+    "userIntentLabel": "Selecionar servidor especializado",
+    "userIntentLowLatency": "Baixa latência",
+    "userIntentLowLatencyDesc":
+        "Conecta automaticamente ao servidor mais próximo para um acesso estável e confiável",
+    "userIntentMaxPrivacy": "Máxima privacidade",
+    "userIntentMaxPrivacyDesc":
+        "Obtenha um servidor com as melhores opções de liberdade de expressão e velocidade com base no país",
+    "userIntentNearestLocation": "Localização mais próxima",
+    "userIntentNearestLocationDesc":
+        "Conecta você ao IP de VPN mais próximo disponível para obter a melhor velocidade e desempenho com base na sua localização atual",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc":
+        "Escolha o melhor servidor para transações de criptomoeda seguras, compartilhamento de arquivos, hospedagem de jogos e comunicações",
+    "userIntentStreaming": "Streaming",
+    "userIntentStreamingDesc":
+        "Acesse seus programas e filmes favoritos de plataformas específicas da região",
     "was": "Era",
     "weNeedPermission": "Precisamos da sua permissão",
     "year": "ano",
@@ -2126,6 +2218,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc": "Something went wrong with your subscription. Please try again.",
     "fieldRequired": "This field is required",
     "first": "first",
+    "formValidationError": "Invalid form data. Please check the fields and try again.",
     "fr": "French",
     "france": "France",
     "freeTrialDesc":
@@ -2146,6 +2239,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "I understand",
     "id": "Indonesian",
     "incorrectCode": "Incorrect code. Please try again. 😕",
+    "incorrectLocationReason": "Incorrect location",
     "incorrectMagicLink": "Incorrect magic link. Please try again. 😕",
     "installVpnProfile":
         "To start using Mysterium VPN, we need your permission to install a VPN Profile.",
@@ -2358,6 +2452,24 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "Unstable speed",
     "updateBtn": "Update",
     "upload": "Upload",
+    "userIntentBestSpeed": "Best speed",
+    "userIntentBestSpeedDesc": "Connect to the fastest available server for optimal performance",
+    "userIntentLabel": "Select speciality server",
+    "userIntentLowLatency": "Low latency",
+    "userIntentLowLatencyDesc":
+        "Automatically connects you to the closest server for stable and reliable access",
+    "userIntentMaxPrivacy": "Max privacy",
+    "userIntentMaxPrivacyDesc":
+        "Get a server with the best free speech and speed options based on country",
+    "userIntentNearestLocation": "Nearest location",
+    "userIntentNearestLocationDesc":
+        "Connects you to the closest available VPN IP for the best speed and performance based on your current location",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc":
+        "Pick the best server for secure crypto transactions, file sharing, game hosting, and communications",
+    "userIntentStreaming": "Streaming",
+    "userIntentStreamingDesc":
+        "Access your favorite shows and movies from region-specific platforms",
     "was": "Was",
     "weNeedPermission": "We need your permission",
     "year": "year",
@@ -2369,7 +2481,7 @@ class CodegenLoader extends AssetLoader {
     "marketingConsentPopupTitle": "Stay in Loop",
     "marketingConsentPopupDesc":
         "Would you like to receive email updates, privacy tips, and special offers from Mysterium Network?",
-    "signMeUpBtn": "Yes, Sign me up",
+    "signMeUpBtn": "Yes, sign me up",
     "noThanksBtn": "No thanks",
     "notificationsSetting": "Notifications",
     "notificationsSettingDesc": "Email & push notifications",
@@ -2536,6 +2648,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc": "Qualcosa è andato storto con il tuo abbonamento. Per favore riprova.",
     "fieldRequired": "Questo campo è obbligatorio",
     "first": "primo",
+    "formValidationError": "Dati del modulo non validi. Controlla i campi e riprova.",
     "fr": "Francese",
     "france": "Francia",
     "freeTrialDesc":
@@ -2556,6 +2669,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "Ho capito",
     "id": "Indonesiano",
     "incorrectCode": "Codice non corretto. Per favore riprova. 😕",
+    "incorrectLocationReason": "Posizione errata",
     "incorrectMagicLink": "Collegamento magico errato. Per favore riprova. 😕",
     "installVpnProfile":
         "Per iniziare a utilizzare Mysterium VPN, abbiamo bisogno della tua autorizzazione per installare un profilo VPN.",
@@ -2774,6 +2888,25 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "Velocità instabile",
     "updateBtn": "Aggiorna",
     "upload": "Upload",
+    "userIntentBestSpeed": "Massima velocità",
+    "userIntentBestSpeedDesc":
+        "Connettiti al server disponibile più veloce per prestazioni ottimali",
+    "userIntentLabel": "Seleziona server specializzato",
+    "userIntentLowLatency": "Bassa latenza",
+    "userIntentLowLatencyDesc":
+        "Si connette automaticamente al server più vicino per un accesso stabile e affidabile",
+    "userIntentMaxPrivacy": "Massima privacy",
+    "userIntentMaxPrivacyDesc":
+        "Ottieni un server con le migliori opzioni per la libertà di parola e la velocità in base al paese",
+    "userIntentNearestLocation": "Posizione più vicina",
+    "userIntentNearestLocationDesc":
+        "Ti connette all’indirizzo IP VPN disponibile più vicino per ottenere la massima velocità e prestazioni in base alla tua posizione attuale",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc":
+        "Scegli il miglior server per transazioni crypto sicure, condivisione di file, hosting di giochi e comunicazioni",
+    "userIntentStreaming": "Streaming",
+    "userIntentStreamingDesc":
+        "Accedi ai tuoi programmi e film preferiti da piattaforme specifiche per regione",
     "was": "Era",
     "weNeedPermission": "Abbiamo bisogno del tuo permesso",
     "year": "anno",
@@ -2954,6 +3087,8 @@ class CodegenLoader extends AssetLoader {
         "Nous n'avons pas pu récupérer votre package d'abonnement. Cliquez sur le bouton ci-dessous pour réessayer.",
     "fieldRequired": "Ce champ est obligatoire",
     "first": "premier",
+    "formValidationError":
+        "Données du formulaire invalides. Veuillez vérifier les champs et réessayer.",
     "fr": "Français",
     "france": "France",
     "freeTrialDesc":
@@ -2974,6 +3109,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "Je comprends",
     "id": "Indonésien",
     "incorrectCode": "Code incorrect. Veuillez réessayer. 😕",
+    "incorrectLocationReason": "Emplacement incorrect",
     "incorrectMagicLink": "Lien magique incorrect. Veuillez réessayer. 😕",
     "installVpnProfile":
         "Pour commencer à utiliser Mysterium VPN, nous avons besoin de votre permission pour installer un profil VPN.",
@@ -3194,6 +3330,25 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "Vitesse instable",
     "updateBtn": "Mettre à jour",
     "upload": "Télécharger",
+    "userIntentBestSpeed": "Meilleure vitesse",
+    "userIntentBestSpeedDesc":
+        "Connectez-vous au serveur disponible le plus rapide pour des performances optimales",
+    "userIntentLabel": "Sélectionner un serveur spécialisé",
+    "userIntentLowLatency": "Faible latence",
+    "userIntentLowLatencyDesc":
+        "Se connecte automatiquement au serveur le plus proche pour un accès stable et fiable",
+    "userIntentMaxPrivacy": "Confidentialité maximale",
+    "userIntentMaxPrivacyDesc":
+        "Obtenez un serveur offrant les meilleures options de liberté d’expression et de vitesse selon le pays",
+    "userIntentNearestLocation": "Emplacement le plus proche",
+    "userIntentNearestLocationDesc":
+        "Vous connecte à l’adresse IP VPN disponible la plus proche pour une vitesse et des performances optimales selon votre position actuelle",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc":
+        "Choisissez le meilleur serveur pour les transactions crypto sécurisées, le partage de fichiers, l’hébergement de jeux et les communications",
+    "userIntentStreaming": "Streaming",
+    "userIntentStreamingDesc":
+        "Accédez à vos émissions et films préférés depuis des plateformes spécifiques à votre région",
     "was": "Était",
     "weNeedPermission": "Nous avons besoin de votre autorisation",
     "year": "année",
@@ -3366,6 +3521,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc": "Ada yang salah dengan langganan Anda. Silakan coba lagi.",
     "fieldRequired": "Bagian ini diperlukan",
     "first": "pertama",
+    "formValidationError": "Data formulir tidak valid. Silakan periksa kolom dan coba lagi.",
     "fr": "Perancis",
     "france": "Perancis",
     "freeTrialDesc": "Amankan koneksi Anda, buka konten, dan kendalikan privasi online Anda.",
@@ -3385,6 +3541,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "Saya mengerti",
     "id": "Bahasa Indonesia",
     "incorrectCode": "Kode salah. Silakan coba lagi. 😕",
+    "incorrectLocationReason": "Lokasi tidak benar",
     "incorrectMagicLink": "Tautan ajaib salah. Silakan coba lagi. 😕",
     "installVpnProfile":
         "Untuk mulai menggunakan Mysterium VPN, kami memerlukan izin Anda untuk memasang Profil VPN.",
@@ -3598,6 +3755,24 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "Kecepatan tidak stabil",
     "updateBtn": "Perbarui",
     "upload": "Mengunggah",
+    "userIntentBestSpeed": "Kecepatan terbaik",
+    "userIntentBestSpeedDesc": "Hubungkan ke server tercepat yang tersedia untuk performa optimal",
+    "userIntentLabel": "Pilih server khusus",
+    "userIntentLowLatency": "Latensi rendah",
+    "userIntentLowLatencyDesc":
+        "Secara otomatis menghubungkan Anda ke server terdekat untuk akses yang stabil dan andal",
+    "userIntentMaxPrivacy": "Privasi maksimal",
+    "userIntentMaxPrivacyDesc":
+        "Dapatkan server dengan opsi kebebasan berbicara dan kecepatan terbaik berdasarkan negara",
+    "userIntentNearestLocation": "Lokasi terdekat",
+    "userIntentNearestLocationDesc":
+        "Menghubungkan Anda ke IP VPN terdekat yang tersedia untuk kecepatan dan performa terbaik berdasarkan lokasi Anda saat ini",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc":
+        "Pilih server terbaik untuk transaksi kripto yang aman, berbagi file, hosting game, dan komunikasi",
+    "userIntentStreaming": "Streaming",
+    "userIntentStreamingDesc":
+        "Akses acara dan film favorit Anda dari platform yang khusus untuk wilayah tertentu",
     "was": "Sebelumnya",
     "weNeedPermission": "Kami membutuhkan izin Anda",
     "year": "tahun",
@@ -3774,6 +3949,8 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc": "Algo salió mal con tu suscripción. Inténtalo de nuevo.",
     "fieldRequired": "Este campo es obligatorio",
     "first": "primero",
+    "formValidationError":
+        "Datos del formulario no válidos. Por favor, revisa los campos e inténtalo de nuevo.",
     "fr": "Francés",
     "france": "Francia",
     "freeTrialDesc":
@@ -3794,6 +3971,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "Lo entiendo",
     "id": "Indonesio",
     "incorrectCode": "Código incorrecto. Inténtalo de nuevo. 😕",
+    "incorrectLocationReason": "Ubicación incorrecta",
     "incorrectMagicLink": "Enlace mágico incorrecto. Inténtalo de nuevo. 😕",
     "installVpnProfile":
         "Para comenzar a usar Mysterium VPN, necesitamos tu permiso para instalar un perfil de VPN.",
@@ -4013,6 +4191,25 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "Velocidad inestable",
     "updateBtn": "Actualizar",
     "upload": "Subir",
+    "userIntentBestSpeed": "Mejor velocidad",
+    "userIntentBestSpeedDesc":
+        "Conéctate al servidor disponible más rápido para un rendimiento óptimo",
+    "userIntentLabel": "Seleccionar servidor especializado",
+    "userIntentLowLatency": "Baja latencia",
+    "userIntentLowLatencyDesc":
+        "Se conecta automáticamente al servidor más cercano para un acceso estable y confiable",
+    "userIntentMaxPrivacy": "Máxima privacidad",
+    "userIntentMaxPrivacyDesc":
+        "Obtén un servidor con las mejores opciones de libertad de expresión y velocidad según el país",
+    "userIntentNearestLocation": "Ubicación más cercana",
+    "userIntentNearestLocationDesc":
+        "Te conecta a la IP de VPN disponible más cercana para obtener la mejor velocidad y rendimiento según tu ubicación actual",
+    "userIntentP2P": "P2P",
+    "userIntentP2PDesc":
+        "Elige el mejor servidor para transacciones seguras con criptomonedas, compartir archivos, alojar juegos y comunicaciones",
+    "userIntentStreaming": "Streaming",
+    "userIntentStreamingDesc":
+        "Accede a tus programas y películas favoritos desde plataformas específicas de la región",
     "was": "Antes",
     "weNeedPermission": "Necesitamos tu permiso",
     "year": "año",
@@ -4179,6 +4376,7 @@ class CodegenLoader extends AssetLoader {
     "fetchSubsFailedDesc": "حدث خطأ ما في اشتراكك. حاول مرة أخرى.",
     "fieldRequired": "هذه الخانة مطلوبه",
     "first": "أول",
+    "formValidationError": "بيانات النموذج غير صالحة. يرجى التحقق من الحقول والمحاولة مرة أخرى.",
     "fr": "فرنسي",
     "france": "فرنسا",
     "freeTrialDesc": "أمن اتصالك، افتح المحتوى المحظور، وتحكم في خصوصيتك على الإنترنت.",
@@ -4198,6 +4396,7 @@ class CodegenLoader extends AssetLoader {
     "iUnderstandBtn": "أنا أفهم",
     "id": "الاندونيسية",
     "incorrectCode": "شفرة خاطئة. حاول مرة أخرى. 😕",
+    "incorrectLocationReason": "موقع غير صحيح",
     "incorrectMagicLink": "رابط سحري غير صحيح. حاول مرة أخرى. 😕",
     "installVpnProfile": "لبدء استخدام Mysterium VPN ، نحتاج إلى إذنك لتثبيت ملف تعريف VPN.",
     "internetConnectionRestored": "تمت استعادة اتصالك بالإنترنت.",
@@ -4406,6 +4605,22 @@ class CodegenLoader extends AssetLoader {
     "unstableSpeedReason": "سرعة غير مستقرة",
     "updateBtn": "تحديث",
     "upload": "رفع",
+    "userIntentBestSpeed": "أفضل سرعة",
+    "userIntentBestSpeedDesc": "اتصل بأسرع خادم متاح للحصول على أفضل أداء",
+    "userIntentLabel": "اختر خادمًا متخصصًا",
+    "userIntentLowLatency": "كمون منخفض",
+    "userIntentLowLatencyDesc": "يتصل تلقائيًا بأقرب خادم لتوفير وصول مستقر وموثوق",
+    "userIntentMaxPrivacy": "أقصى قدر من الخصوصية",
+    "userIntentMaxPrivacyDesc":
+        "احصل على خادم يوفر أفضل خيارات حرية التعبير والسرعة بناءً على الدولة",
+    "userIntentNearestLocation": "أقرب موقع",
+    "userIntentNearestLocationDesc":
+        "يوصلك بأقرب عنوان IP VPN متاح للحصول على أفضل سرعة وأداء بناءً على موقعك الحالي",
+    "userIntentP2P": "نظير إلى نظير",
+    "userIntentP2PDesc":
+        "اختر أفضل خادم للمعاملات المشفرة الآمنة ومشاركة الملفات واستضافة الألعاب والاتصالات",
+    "userIntentStreaming": "البث",
+    "userIntentStreamingDesc": "شاهد برامجك وأفلامك المفضلة من منصات مخصصة حسب المنطقة",
     "was": "كان",
     "weNeedPermission": "نحن بحاجة إلى إذنك",
     "year": "سنة",

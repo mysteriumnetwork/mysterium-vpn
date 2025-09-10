@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
@@ -19,6 +20,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/api/external_api_service.dart';
@@ -116,6 +118,9 @@ abstract class _VpnStore with Store {
   VpnConnection? _vpnConnection;
 
   @readonly
+  UserIntent? _userIntent;
+
+  @readonly
   WireguardConnectResponse? _vpnConfig;
 
   @readonly
@@ -169,6 +174,27 @@ abstract class _VpnStore with Store {
 
   @computed
   VPNLocation? get potentialLocation => _locationsStore.randomLocation;
+
+  @computed
+  Set<UserIntent> get userIntents {
+    final intents = {...UserIntent.values};
+    final myCountry = _realIPInfo.info?.country;
+
+    if (myCountry != null) {
+      final availableCountries = {
+        ...?_locationsStore.dcLocationsStream.value?.allLocations,
+        ...?_locationsStore.residentialLocationsStream.value?.allLocations,
+      };
+
+      if (availableCountries.none((it) => it.countryCode == myCountry)) {
+        intents.remove(UserIntent.nearestLocation);
+      }
+    } else {
+      intents.remove(UserIntent.nearestLocation);
+    }
+
+    return intents;
+  }
 
   @readonly
   ObservableFuture<void>? _resolveConnectionLocationFuture;
@@ -425,6 +451,7 @@ abstract class _VpnStore with Store {
     if (status == ConnectionStatus.connected) {
       await _wireguardService.disconnect();
       if (!isReconnecting) {
+        _userIntent = null;
         _connectingLocation = null;
         await notifyApiVpnDisconnected();
       }
@@ -460,15 +487,25 @@ abstract class _VpnStore with Store {
   @action
   Future<void> toggleConnection({
     VPNLocation? location,
+    UserIntent? intent,
     bool isRetrying = false,
   }) async {
-    if (_connectionStatus == ConnectionStatus.connected &&
-        (location == null || location == _vpnConnection?.location)) {
+    if (_connectionStatus == ConnectionStatus.connected) {
+      final connectedLocation = _vpnConnection?.location;
+      final connectedIntent = _userIntent;
       await disconnectWireguard();
-      return;
+      if (location == null && intent == null) {
+        return;
+      }
+      if (location != null && location == connectedLocation) {
+        return;
+      }
+      if (intent != null && intent == connectedIntent) {
+        return;
+      }
     }
 
-    await _startConnection(location: location, isRetrying: isRetrying);
+    await _startConnection(location: location, intent: intent, isRetrying: isRetrying);
   }
 
   /// Connect to VPN by refreshing IP address
@@ -500,6 +537,7 @@ abstract class _VpnStore with Store {
     VPNLocation? location,
     bool? refreshIP,
     bool isRetrying = false,
+    UserIntent? intent,
   }) async {
     await _authSessionStore.accessTokenFuture;
     if (_authSessionStore.status != AuthStatus.authenticated) {
@@ -518,17 +556,25 @@ abstract class _VpnStore with Store {
       }
     }
 
-    _connectingLocation =
-        location ?? (refreshIP ?? false ? _vpnConnection?.location : potentialLocation);
+    _userIntent = intent;
+    if (location != null) {
+      _connectingLocation = location;
+    } else if (refreshIP ?? false) {
+      _connectingLocation = _vpnConnection?.location;
+    } else if (_userIntent != null) {
+      _connectingLocation = null;
+    } else {
+      _connectingLocation = potentialLocation;
+    }
 
-    if (_connectingLocation!.ipType == IPType.closest) {
+    if (_connectingLocation?.ipType == IPType.closest) {
       _fetchLocationFuture = ObservableFuture(_locationsStore.closestLocation(IPType.datacenter));
       final location = await _fetchLocationFuture;
       if (location != null) {
         _connectingLocation = location;
       }
     }
-    if (_connectingLocation == null) {
+    if (_connectingLocation == null && _userIntent == null) {
       return;
     }
 
@@ -545,10 +591,10 @@ abstract class _VpnStore with Store {
         });
       }
 
-      await _completeConnection(_connectingLocation!, refreshIP);
+      await _completeConnection(_connectingLocation, _userIntent, refreshIP);
 
       _stopwatch.stop();
-      if (_vpnConnection != null) {
+      if (_vpnConnection?.location != null) {
         _analyticsStore.logConnectSuccess(
           location: _vpnConnection!.location,
           time: _stopwatch.elapsed,
@@ -556,6 +602,7 @@ abstract class _VpnStore with Store {
         );
       }
     } on TimeoutException catch (e, stackTrace) {
+      _userIntent = null;
       _logger.handle(e);
       Sentry.captureException(e, stackTrace: stackTrace);
 
@@ -570,8 +617,10 @@ abstract class _VpnStore with Store {
       );
       _stopwatch.stop();
     } on OperationCancelledException {
+      _userIntent = null;
       _logger.info('Operation cancelled by user');
     } catch (e, stackTrace) {
+      _userIntent = null;
       _logger.handle(e, stackTrace);
       Sentry.captureException(e, stackTrace: stackTrace);
 
@@ -603,32 +652,59 @@ abstract class _VpnStore with Store {
 
   @action
   Future<void> _completeConnection(
-    VPNLocation location,
+    VPNLocation? location,
+    UserIntent? intent,
     bool? refreshIP,
   ) async {
     try {
       final key = _wireguardKey ?? await _wireguardKeyService.getWireguradKey();
+      final closestRegion = (intent?.requiresCluster ?? false)
+          ? await _locationsStore.closestRegion(location?.ipType ?? IPType.datacenter)
+          : null;
       _stopwatch
         ..reset()
         ..start();
+      final realIpInfo = await _realIPInfo.infoFuture;
+      final ipType = location?.ipType ??
+          (intent == UserIntent.nearestLocation ? _locationsStore.ipType : null);
       _fetchConfigFuture = ObservableFuture(
         _apiService.fetchVpnConfig(
           request: WireguardConnectRequest(
             publicKey: key.publicKey,
-            countryOriginate: (await _realIPInfo.infoFuture)?.country,
-            country: location.countryCode,
-            city: location.isCountry ? null : location.id,
-            ipType: switch (location.ipType) {
-              IPType.datacenter => 'hosting',
-              _ => null,
-            },
+            countryOriginate: realIpInfo?.country,
+            country:
+                intent == UserIntent.nearestLocation ? realIpInfo?.country : location?.countryCode,
+            city: intent == UserIntent.nearestLocation
+                ? null
+                : (location?.isCountry ?? true)
+                    ? null
+                    : location?.id,
+            ipType: ipType?.key,
             resetConnection: refreshIP ?? _refreshIPConnection,
             osType: Platform.operatingSystem,
+            userIntent: intent?.key,
+            cluster: closestRegion?.id,
           ),
         ),
       );
       _vpnConfig = await _fetchConfigFuture;
       await _locationsStore.recentLocationsFuture;
+
+      final locationId = _vpnConfig?.city ?? _vpnConfig?.country;
+      VPNLocation? connectedLocation;
+      if (locationId != null) {
+        connectedLocation = _locationsStore.findLocation(
+          locationId,
+          countryCode: _vpnConfig?.country,
+          ipType:
+              _vpnConfig?.ipType == null ? IPType.datacenter : IPType.fromKey(_vpnConfig!.ipType!),
+        );
+      }
+      connectedLocation ??= potentialLocation;
+
+      if (connectedLocation == null) {
+        throw Exception('Could not find connected location information');
+      }
 
       await _connectWireguard(
         privateKey: key.privateKey,
@@ -642,9 +718,9 @@ abstract class _VpnStore with Store {
               _vpnConnection = _vpnConnection?.copyWith(connectionIP: _vpnConfig!.exitIp!);
               return;
             }
-            _resolveIPAddress(location);
+            await _resolveIPAddress(connectedLocation);
           },
-          location: location,
+          location: connectedLocation,
           hash: _vpnConfig?.hash ?? '',
         ),
       );

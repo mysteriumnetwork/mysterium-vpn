@@ -14,14 +14,14 @@ LatLng? useCurrentIPCoordinates() {
           vpnStore.connectionStatus == ConnectionStatus.connected) {
         final location = vpnStore.location ?? vpnStore.connectingLocation;
         if (location != null) {
-          return latLngStore.coordinatesFor(location.id) ??
-              latLngStore.coordinatesFor(location.countryCode);
+          return latLngStore.coordinatesForCity(location) ??
+              latLngStore.coordinatesForCountry(location.countryCode);
         }
       }
 
       final realCountry = realIPStore.info?.country;
       if (realCountry != null) {
-        return latLngStore.coordinatesFor(realCountry);
+        return latLngStore.coordinatesForCountry(realCountry);
       }
 
       return null;

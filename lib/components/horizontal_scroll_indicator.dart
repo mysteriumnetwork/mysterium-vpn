@@ -55,7 +55,7 @@ class HorizontalScrollIndicator extends HookWidget {
         final stackWidth = stackBox?.size.width ?? 0;
         final currentPosition = controller.positions.isNotEmpty ? controller.position.pixels : 0.0;
         controller.animateTo(
-          currentPosition + stackWidth,
+          min(currentPosition + stackWidth, controller.position.maxScrollExtent),
           duration: animationDuration,
           curve: Curves.easeInOut,
         );
@@ -135,7 +135,7 @@ class _Indicator extends HookWidget {
           ),
         ),
         child: const Padding(
-          padding: EdgeInsets.only(top: 25, bottom: 25, left: 25, right: 8),
+          padding: EdgeInsets.only(left: 25, right: 8),
           child: SvgIcon(asset: Assets.chevronRight),
         ),
       ),

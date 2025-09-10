@@ -135,6 +135,7 @@ abstract class LocaleKeys {
   static const fetchSubsFailedDesc = 'fetchSubsFailedDesc';
   static const fieldRequired = 'fieldRequired';
   static const first = 'first';
+  static const formValidationError = 'formValidationError';
   static const fr = 'fr';
   static const france = 'france';
   static const freeTrialDesc = 'freeTrialDesc';
@@ -154,6 +155,7 @@ abstract class LocaleKeys {
   static const iUnderstandBtn = 'iUnderstandBtn';
   static const id = 'id';
   static const incorrectCode = 'incorrectCode';
+  static const incorrectLocationReason = 'incorrectLocationReason';
   static const incorrectMagicLink = 'incorrectMagicLink';
   static const installVpnProfile = 'installVpnProfile';
   static const internetConnectionRestored = 'internetConnectionRestored';
@@ -345,6 +347,19 @@ abstract class LocaleKeys {
   static const unstableSpeedReason = 'unstableSpeedReason';
   static const updateBtn = 'updateBtn';
   static const upload = 'upload';
+  static const userIntentBestSpeed = 'userIntentBestSpeed';
+  static const userIntentBestSpeedDesc = 'userIntentBestSpeedDesc';
+  static const userIntentLabel = 'userIntentLabel';
+  static const userIntentLowLatency = 'userIntentLowLatency';
+  static const userIntentLowLatencyDesc = 'userIntentLowLatencyDesc';
+  static const userIntentMaxPrivacy = 'userIntentMaxPrivacy';
+  static const userIntentMaxPrivacyDesc = 'userIntentMaxPrivacyDesc';
+  static const userIntentNearestLocation = 'userIntentNearestLocation';
+  static const userIntentNearestLocationDesc = 'userIntentNearestLocationDesc';
+  static const userIntentP2P = 'userIntentP2P';
+  static const userIntentP2PDesc = 'userIntentP2PDesc';
+  static const userIntentStreaming = 'userIntentStreaming';
+  static const userIntentStreamingDesc = 'userIntentStreamingDesc';
   static const was = 'was';
   static const weNeedPermission = 'weNeedPermission';
   static const year = 'year';

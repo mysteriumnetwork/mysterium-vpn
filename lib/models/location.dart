@@ -2,9 +2,11 @@ import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/ip_type.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/models/converters/lat_lng_converter.dart';
 
 part 'location.freezed.dart';
 
@@ -34,6 +36,7 @@ class VPNLocation with _$VPNLocation {
     required IPType ipType,
     required Map<String, String> translations,
     required String countryCode,
+    @LatLngConverter() LatLng? coordinates,
     List<VPNLocation>? children,
     int? nodeCount,
   }) = _VPNLocation;

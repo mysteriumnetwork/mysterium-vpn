@@ -8,6 +8,8 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/mocks.dart';
 import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
+import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
@@ -26,6 +28,7 @@ import 'locations_store_test.mocks.dart';
   MockSpec<FilterService>(),
   MockSpec<AnalyticsStore>(),
   MockSpec<RemoteConfigStore>(),
+  MockSpec<AuthSessionStore>(),
   MockSpec<SharedPreferenceService>(),
   MockSpec<LocaleStore>(),
   MockSpec<LocalDBService>(),
@@ -37,6 +40,7 @@ void main() {
   late MockFilterService mockFilterService;
   late MockAnalyticsStore mockAnalyticsStore;
   late MockRemoteConfigStore mockRemoteConfigStore;
+  late MockAuthSessionStore mockAuthSessionStore;
   late MockSharedPreferenceService mockPrefs;
   late MockLocalDBService mockLocalDB;
   late MockLocaleStore mockLocaleStore;
@@ -44,6 +48,7 @@ void main() {
 
   late List<VPNLocation> mockResidential;
   late List<VPNLocation> mockDatacenter;
+  late AuthUser mockUser;
 
   void mockConnectionConfig(String expectedIPType, ConnectionConfigResponse data) {
     when(mockApiConnection.connectionConfig(ipType: expectedIPType)).thenAnswer(
@@ -74,6 +79,7 @@ void main() {
     mockFilterService = MockFilterService();
     mockAnalyticsStore = MockAnalyticsStore();
     mockRemoteConfigStore = MockRemoteConfigStore();
+    mockAuthSessionStore = MockAuthSessionStore();
     mockPrefs = MockSharedPreferenceService();
     mockLocalDB = MockLocalDBService();
     mockLocaleStore = MockLocaleStore();
@@ -88,6 +94,9 @@ void main() {
       Mocks.locationDatacenterDE,
     ];
 
+    mockUser = AuthUser(userId: 'mock', username: 'mock');
+
+    when(mockAuthSessionStore.userFuture).thenAnswer((_) => ObservableFuture.value(mockUser));
     when(mockLocaleStore.currentLocale).thenAnswer((_) => const Locale('en'));
 
     when(mockLocalDB.getLocations(IPType.residential)).thenAnswer(
@@ -122,6 +131,7 @@ void main() {
       mockFilterService,
       mockAnalyticsStore,
       mockRemoteConfigStore,
+      mockAuthSessionStore,
       mockPrefs,
       mockLocalDB,
       Talker(),
@@ -190,6 +200,7 @@ void main() {
         mockFilterService,
         mockAnalyticsStore,
         mockRemoteConfigStore,
+        mockAuthSessionStore,
         mockPrefs,
         mockLocalDB,
         Talker(),
@@ -221,6 +232,7 @@ void main() {
         mockFilterService,
         mockAnalyticsStore,
         mockRemoteConfigStore,
+        mockAuthSessionStore,
         mockPrefs,
         mockLocalDB,
         Talker(),

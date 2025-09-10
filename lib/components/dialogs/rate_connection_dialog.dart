@@ -43,6 +43,7 @@ class _ConfirmDialog extends HookConsumerWidget {
         Brightness.light => Palette.white,
         Brightness.dark => Palette.darkIndigo,
       };
+
   Color getDialogTextColor(Brightness brightness) => switch (brightness) {
         Brightness.light => Palette.darkIndigo,
         Brightness.dark => Palette.white,
@@ -68,6 +69,7 @@ class _ConfirmDialog extends HookConsumerWidget {
         RateConnectionReason.highLatency => LocaleKeys.highLatencyReason.tr(),
         RateConnectionReason.consistentSpeed => LocaleKeys.consistentSpeedReason.tr(),
         RateConnectionReason.geoBlockedSites => LocaleKeys.accessBlockedSitesReason.tr(),
+        RateConnectionReason.incorrectLocation => LocaleKeys.incorrectLocationReason.tr(),
       };
 
   @override

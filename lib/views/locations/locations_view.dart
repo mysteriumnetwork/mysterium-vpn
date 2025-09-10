@@ -8,6 +8,8 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/retry_widget.dart';
+import 'package:mysterium_vpn/components/user_intent_picker.dart';
+import 'package:mysterium_vpn/components/user_intent_tooltip.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -20,6 +22,7 @@ import 'package:mysterium_vpn/views/locations/components/locations_sliver_loadin
 import 'package:mysterium_vpn/views/locations/components/recent_locations_list.dart';
 import 'package:mysterium_vpn/views/locations/components/recent_locations_loading.dart';
 import 'package:sliver_tools/sliver_tools.dart';
+import 'package:wireguard_dart/connection_status.dart';
 
 class LocationsSliverView extends HookConsumerWidget {
   const LocationsSliverView({super.key});
@@ -56,6 +59,7 @@ class LocationsSliverView extends HookConsumerWidget {
         final locations = locationsStore.locations;
         final topLocations = locationsStore.topLocations;
         final recentLocations = locationsStore.recentLocations;
+
         return _Body(
           stream: stream,
           recentLocations: recentLocations,
@@ -95,11 +99,21 @@ class _Body extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsStore = ref.watch(locationsStorePOD);
+    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+    final userIntentsStore = ref.watch(userIntentsStorePOD);
     final recentsFutureStatus = useComputedValue(() => locationsStore.recentLocationsFuture.status);
+    final showUserIntents = useComputedValue(
+      () =>
+          remoteConfigStore.showUserIntents &&
+          (userIntentsStore.intents.isNotEmpty ||
+              userIntentsStore.intentsFuture.status == FutureStatus.pending),
+    );
 
     if (stream.value != null) {
       return MultiSliver(
         children: [
+          if (showUserIntents) const _UserIntent(),
+          if (showUserIntents) const SizedBox(height: 24),
           if (recentsFutureStatus == FutureStatus.pending) ...[
             const RecentLocationsLoading(),
             const SizedBox(height: 24),
@@ -139,6 +153,51 @@ class _Body extends HookConsumerWidget {
             onRetry: locationsStore.refresh,
             error: stream.error,
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class _UserIntent extends HookConsumerWidget {
+  const _UserIntent();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final vpnStore = ref.watch(vpnStorePOD);
+    final userIntentsStore = ref.watch(userIntentsStorePOD);
+    final isLoading = useComputedValue(
+      () =>
+          vpnStore.connectionStatus == ConnectionStatus.connecting ||
+          vpnStore.connectionStatus == ConnectionStatus.disconnecting,
+    );
+
+    final intents = useComputedValue(() => userIntentsStore.intentsFuture.value);
+    final selected = useComputedValue(() => vpnStore.userIntent);
+    final handleToggleConnection = useHandleToggleConnection();
+
+    return MultiSliver(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          spacing: 8,
+          children: [
+            Flexible(
+              child: EasyText(
+                LocaleKeys.userIntentLabel.tr(),
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const UserIntentTooltip(),
+          ],
+        ),
+        const SizedBox(height: 16),
+        UserIntentPicker(
+          items: intents?.toList(),
+          onChanged: isLoading ? null : (value) => handleToggleConnection(intent: value),
+          value: selected,
         ),
       ],
     );

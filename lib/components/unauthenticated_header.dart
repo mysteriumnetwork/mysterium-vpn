@@ -11,30 +11,38 @@ import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class UnauthenticatedHeader extends HookConsumerWidget {
-  const UnauthenticatedHeader({super.key});
+  const UnauthenticatedHeader({
+    this.padding = const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
+    super.key,
+  });
+
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authSessionStore = ref.read(authSessionStorePOD);
     final canBrowseApp = useComputedValue(() => authSessionStore.canBrowseApp);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      spacing: 24,
-      children: [
-        if (canBrowseApp) const _BackButton(),
-        if (!canBrowseApp) const SizedBox.shrink(),
-        const AppLogo(),
-        SvgIconButton(
-          asset: Assets.messageSvg,
-          onPressed: () {
-            handleOnSupportPage(
-              context: context,
-              analyticsStore: ref.read(analyticsStorePOD),
-            );
-          },
-        ),
-      ],
+    return Padding(
+      padding: padding,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        spacing: 24,
+        children: [
+          if (canBrowseApp) const _BackButton(),
+          if (!canBrowseApp) const SizedBox.shrink(),
+          const Expanded(child: AppLogo()),
+          SvgIconButton(
+            asset: Assets.supportLight,
+            onPressed: () {
+              handleOnSupportPage(
+                context: context,
+                analyticsStore: ref.read(analyticsStorePOD),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

@@ -84,9 +84,11 @@ jobs:
           configcat setup --username ${{ secrets.CONFIGCAT_API_USER }} --password ${{ secrets.CONFIGCAT_API_PASS }}
       - name: Configure "hideDeleteAccount" - show button
         run: |
-          configcat flag-v2 targeting rule create user --flag-id 587567 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --attribute platform --comparator containsAnyOf --comparison-value "macos:" --comparison-value "ios:" --served-value false
-          configcat flag-v2 targeting condition add user --flag-id 587567 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --rule-position 1 --attribute version --comparator textEquals --comparison-value "${{ github.event.release.tag_name }}"
+          configcat flag-v2 targeting rule create user --flag-id 587567 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --attribute version --comparator textEquals --comparison-value "${{ github.event.release.tag_name }}" --served-value false
+          position=`configcat flag-v2 value show --flag-id 587567 --json | jq '.values[] | select(.environmentId=="08dcf9bb-7e45-4853-8b0e-0129d6009a4e") | .targetingRules | range(length) as $i | select(.[$i].conditions[].userCondition.comparisonAttribute == "version" and .[$i].conditions[].userCondition.comparisonValue.stringValue == "${{ github.event.release.tag_name }}") | $i + 1'`
+          configcat flag-v2 targeting condition add user --flag-id 587567 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --rule-position $position --attribute platform --comparator containsAnyOf --comparison-value "macos:" --comparison-value "ios:"
       - name: Configure "pricingMonthly" - no monthly plan
         run: |
-          configcat flag-v2 targeting rule create user --flag-id 614140 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --attribute platform --comparator containsAnyOf --comparison-value "macos:" --comparison-value "ios:" --served-value false
-          configcat flag-v2 targeting condition add user --flag-id 614140 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --rule-position 1 --attribute version --comparator textEquals --comparison-value "${{ github.event.release.tag_name }}"
+          configcat flag-v2 targeting rule create user --flag-id 614140 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --attribute version --comparator textEquals --comparison-value "${{ github.event.release.tag_name }}" --served-value false
+          position=`configcat flag-v2 value show --flag-id 614140 --json | jq '.values[] | select(.environmentId=="08dcf9bb-7e45-4853-8b0e-0129d6009a4e") | .targetingRules | range(length) as $i | select(.[$i].conditions[].userCondition.comparisonAttribute == "version" and .[$i].conditions[].userCondition.comparisonValue.stringValue == "${{ github.event.release.tag_name }}") | $i + 1'`
+          configcat flag-v2 targeting condition add user --flag-id 614140 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --rule-position $position --attribute platform --comparator containsAnyOf --comparison-value "macos:" --comparison-value "ios:"

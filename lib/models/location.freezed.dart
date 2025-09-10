@@ -206,6 +206,8 @@ mixin _$VPNLocation {
   IPType get ipType => throw _privateConstructorUsedError;
   Map<String, String> get translations => throw _privateConstructorUsedError;
   String get countryCode => throw _privateConstructorUsedError;
+  @LatLngConverter()
+  LatLng? get coordinates => throw _privateConstructorUsedError;
   List<VPNLocation>? get children => throw _privateConstructorUsedError;
   int? get nodeCount => throw _privateConstructorUsedError;
 
@@ -228,6 +230,7 @@ abstract class $VPNLocationCopyWith<$Res> {
       IPType ipType,
       Map<String, String> translations,
       String countryCode,
+      @LatLngConverter() LatLng? coordinates,
       List<VPNLocation>? children,
       int? nodeCount});
 }
@@ -251,6 +254,7 @@ class _$VPNLocationCopyWithImpl<$Res, $Val extends VPNLocation>
     Object? ipType = null,
     Object? translations = null,
     Object? countryCode = null,
+    Object? coordinates = freezed,
     Object? children = freezed,
     Object? nodeCount = freezed,
   }) {
@@ -271,6 +275,10 @@ class _$VPNLocationCopyWithImpl<$Res, $Val extends VPNLocation>
           ? _value.countryCode
           : countryCode // ignore: cast_nullable_to_non_nullable
               as String,
+      coordinates: freezed == coordinates
+          ? _value.coordinates
+          : coordinates // ignore: cast_nullable_to_non_nullable
+              as LatLng?,
       children: freezed == children
           ? _value.children
           : children // ignore: cast_nullable_to_non_nullable
@@ -295,6 +303,7 @@ abstract class _$$VPNLocationImplCopyWith<$Res> implements $VPNLocationCopyWith<
       IPType ipType,
       Map<String, String> translations,
       String countryCode,
+      @LatLngConverter() LatLng? coordinates,
       List<VPNLocation>? children,
       int? nodeCount});
 }
@@ -315,6 +324,7 @@ class __$$VPNLocationImplCopyWithImpl<$Res>
     Object? ipType = null,
     Object? translations = null,
     Object? countryCode = null,
+    Object? coordinates = freezed,
     Object? children = freezed,
     Object? nodeCount = freezed,
   }) {
@@ -335,6 +345,10 @@ class __$$VPNLocationImplCopyWithImpl<$Res>
           ? _value.countryCode
           : countryCode // ignore: cast_nullable_to_non_nullable
               as String,
+      coordinates: freezed == coordinates
+          ? _value.coordinates
+          : coordinates // ignore: cast_nullable_to_non_nullable
+              as LatLng?,
       children: freezed == children
           ? _value._children
           : children // ignore: cast_nullable_to_non_nullable
@@ -355,6 +369,7 @@ class _$VPNLocationImpl extends _VPNLocation {
       required this.ipType,
       required final Map<String, String> translations,
       required this.countryCode,
+      @LatLngConverter() this.coordinates,
       final List<VPNLocation>? children,
       this.nodeCount})
       : _translations = translations,
@@ -377,6 +392,9 @@ class _$VPNLocationImpl extends _VPNLocation {
 
   @override
   final String countryCode;
+  @override
+  @LatLngConverter()
+  final LatLng? coordinates;
   final List<VPNLocation>? _children;
   @override
   List<VPNLocation>? get children {
@@ -392,7 +410,7 @@ class _$VPNLocationImpl extends _VPNLocation {
 
   @override
   String toString() {
-    return 'VPNLocation(id: $id, ipType: $ipType, translations: $translations, countryCode: $countryCode, children: $children, nodeCount: $nodeCount)';
+    return 'VPNLocation(id: $id, ipType: $ipType, translations: $translations, countryCode: $countryCode, coordinates: $coordinates, children: $children, nodeCount: $nodeCount)';
   }
 
   /// Create a copy of VPNLocation
@@ -417,6 +435,7 @@ abstract class _VPNLocation extends VPNLocation {
       required final IPType ipType,
       required final Map<String, String> translations,
       required final String countryCode,
+      @LatLngConverter() final LatLng? coordinates,
       final List<VPNLocation>? children,
       final int? nodeCount}) = _$VPNLocationImpl;
   const _VPNLocation._() : super._();
@@ -431,6 +450,9 @@ abstract class _VPNLocation extends VPNLocation {
   Map<String, String> get translations;
   @override
   String get countryCode;
+  @override
+  @LatLngConverter()
+  LatLng? get coordinates;
   @override
   List<VPNLocation>? get children;
   @override
