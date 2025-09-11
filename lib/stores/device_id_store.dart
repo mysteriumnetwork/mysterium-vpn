@@ -5,6 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/utils/uuid.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -28,6 +29,8 @@ abstract class _DeviceIDStore with Store {
   final DeviceInfoPlugin _deviceInfoPlugin;
   Future<String> Function()? _flutterUdid;
 
+  static final _sha256Regex = RegExp(r'^[a-f0-9]{64}$');
+
   @observable
   late ObservableFuture<String> deviceIdFuture;
 
@@ -35,13 +38,13 @@ abstract class _DeviceIDStore with Store {
   Future<String> getDeviceId() async {
     try {
       var deviceId = await _getDeviceIdFromStorage();
-      if (deviceId == null) {
+      if (!isSha256Digest(deviceId)) {
         // Makes the function testable by allowing injection of FlutterUdid
         _flutterUdid ??= () => FlutterUdid.consistentUdid;
         deviceId = await _flutterUdid!();
         await _saveDeviceId(deviceId);
       }
-      return deviceId;
+      return deviceId!;
     } catch (e) {
       final deviceId = await getDeviceIdFromDeviceInfo();
       await _saveDeviceId(deviceId);
@@ -57,6 +60,14 @@ abstract class _DeviceIDStore with Store {
       );
       return deviceId;
     }
+  }
+
+  /// Check if the provided deviceId is a valid SHA-256 digest
+  bool isSha256Digest(String? deviceId) {
+    if (deviceId == null || deviceId.isEmpty) {
+      return false;
+    }
+    return _sha256Regex.hasMatch(deviceId);
   }
 
   Future<void> _saveDeviceId(String deviceId) async {
@@ -120,14 +131,9 @@ abstract class _DeviceIDStore with Store {
           break;
         default:
           // For other platforms, we can return an empty string or handle accordingly
-          return '';
+          deviceId = null;
       }
-      if (deviceId == null || deviceId.isEmpty) {
-        return '';
-      }
-      final bytes = utf8.encode(deviceId);
-      final digest = sha256.convert(bytes);
-      return digest.toString();
+      return _generateSha256(deviceId);
     } catch (e) {
       Sentry.captureException(
         e,
@@ -139,7 +145,12 @@ abstract class _DeviceIDStore with Store {
           },
         ),
       );
-      return '';
+      return _generateSha256(null);
     }
+  }
+
+  String _generateSha256(String? deviceId) {
+    final id = (deviceId == null || deviceId.isEmpty) ? generateUuidV4() : deviceId;
+    return sha256.convert(utf8.encode(id)).toString();
   }
 }
