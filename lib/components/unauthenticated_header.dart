@@ -2,12 +2,13 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/keys.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/app_logo.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class UnauthenticatedHeader extends HookConsumerWidget {
@@ -33,7 +34,7 @@ class UnauthenticatedHeader extends HookConsumerWidget {
           if (!canBrowseApp) const SizedBox.shrink(),
           const Expanded(child: AppLogo()),
           SvgIconButton(
-            asset: Assets.supportLight,
+            asset: Asset.icons.supportLight,
             onPressed: () {
               handleOnSupportPage(
                 context: context,
@@ -62,7 +63,7 @@ class _BackButton extends StatelessWidget {
 
     return SvgIconButton(
       key: K.backButton,
-      asset: context.c.isDarkMode ? Assets.navigateBackLightGrey : Assets.navigateBackLightBlack,
+      asset: Asset.icons.navigateBackLighter(context),
       onPressed: handleBackOrHome,
     );
   }

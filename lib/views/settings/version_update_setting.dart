@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
@@ -48,11 +49,11 @@ class AppVersionUpdateSetting extends ConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 17,
                   backgroundColor: Palette.purple,
                   child: SvgIcon(
-                    asset: Assets.appUpdate,
+                    asset: Asset.icons.appUpdate,
                     width: 16,
                     height: 16,
                   ),

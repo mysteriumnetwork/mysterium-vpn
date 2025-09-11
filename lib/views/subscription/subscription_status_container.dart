@@ -16,6 +16,7 @@ import 'package:mysterium_vpn/components/error_widget.dart';
 import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
@@ -136,7 +137,7 @@ void _subscriptionStatusReaction(
           store.retryVerificationProcess();
         },
         context: context,
-        asset: Assets.subscription,
+        asset: Asset.icons.subscription,
         title: LocaleKeys.subscriptionVerificationFailed.tr(),
         subtitle: LocaleKeys.failedToVerifySubs.tr(),
         dismissText: LocaleKeys.cancelBtn.tr(),
@@ -177,7 +178,7 @@ Future<void> _checkForExistingSubscription(
       confirmText: LocaleKeys.logout.tr(),
       cancelText: LocaleKeys.stayButton.tr(),
       dismissible: false,
-      icon: const SvgIcon(asset: Assets.warning),
+      icon: SvgIcon(asset: Asset.icons.warning),
       content: Text(
         LocaleKeys.existingSubscriptionTitle.tr(),
         style: const TextStyle(

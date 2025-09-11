@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
@@ -39,9 +40,7 @@ class RefreshConnection extends HookConsumerWidget {
             fontSize: 12,
             color: Palette.white,
           ),
-          icon: const SvgIcon(
-            asset: Assets.refreshConn,
-          ),
+          icon: SvgIcon(asset: Asset.icons.refresh),
         ),
       ),
     );

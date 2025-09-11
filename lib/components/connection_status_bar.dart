@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:wireguard_dart/connection_status.dart';
@@ -130,13 +131,13 @@ class ConnectionStatusBar extends HookConsumerWidget {
       return const LoadingIndicator(radius: 16);
     }
     return switch (connectionStatus) {
-      ConnectionStatus.connected => const SvgIcon(
-          asset: Assets.killSwitch,
+      ConnectionStatus.connected => SvgIcon(
+          asset: Asset.icons.killSwitch,
           height: 16,
           width: 16,
         ),
-      ConnectionStatus.disconnected => const SvgIcon(
-          asset: Assets.lockOpen,
+      ConnectionStatus.disconnected => SvgIcon(
+          asset: Asset.icons.lockOpen,
           height: 14,
           width: 16,
         ),

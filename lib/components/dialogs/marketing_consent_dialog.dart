@@ -5,9 +5,11 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
@@ -92,13 +94,7 @@ class _DialogContent extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (isMobile) const Spacer(),
-        Image(
-          width: 150,
-          height: 150,
-          image: AssetImage(
-            context.c.isDarkMode ? Assets.marketingConsentDark : Assets.marketingConsentLight,
-          ),
-        ),
+        Asset.images.marketingConsent(context).image(width: 150, height: 150),
         Text(
           LocaleKeys.marketingConsentPopupTitle.tr(),
           style: GoogleFonts.montserrat(
