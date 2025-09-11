@@ -7,7 +7,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/mocks.dart';
-import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
@@ -31,7 +30,6 @@ import 'locations_store_test.mocks.dart';
   MockSpec<LocaleStore>(),
   MockSpec<LocalDBService>(),
   MockSpec<Ping>(),
-  MockSpec<FlavorConfig>(),
 ])
 void main() {
   late LocationsStore locationsStore;
@@ -43,7 +41,6 @@ void main() {
   late MockLocalDBService mockLocalDB;
   late MockLocaleStore mockLocaleStore;
   late MockPing mockPing;
-  late MockFlavorConfig mockFlavorConfig;
 
   late List<VPNLocation> mockResidential;
   late List<VPNLocation> mockDatacenter;
@@ -81,9 +78,6 @@ void main() {
     mockLocalDB = MockLocalDBService();
     mockLocaleStore = MockLocaleStore();
     mockPing = MockPing();
-    mockFlavorConfig = MockFlavorConfig();
-
-    when(mockFlavorConfig.isDev).thenReturn(true);
 
     mockResidential = const [
       Mocks.locationResidentialUS,
@@ -133,7 +127,6 @@ void main() {
       Talker(),
       mockLocaleStore,
       mockPing,
-      mockFlavorConfig,
     );
   });
 
@@ -207,7 +200,6 @@ void main() {
         Talker(),
         mockLocaleStore,
         mockPing,
-        mockFlavorConfig,
       );
       mockConnectionConfig(
         'residential',
@@ -239,7 +231,6 @@ void main() {
         Talker(),
         mockLocaleStore,
         mockPing,
-        mockFlavorConfig,
       );
       when(mockLocalDB.getLocations(IPType.residential)).thenAnswer((_) => VPNLocations());
       mockConnectionConfig(
