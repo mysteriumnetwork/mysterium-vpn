@@ -39,6 +39,8 @@ abstract class Assets {
   static const String flash = 'assets/icons/flash.svg';
   static const String flashLight = 'assets/icons/flash_light.svg';
   static const String flashDark = 'assets/icons/flash_dark.svg';
+  static const String fixLight = 'assets/icons/fix_light.svg';
+  static const String fixDark = 'assets/icons/fix_dark.svg';
   static const String globe = 'assets/icons/globe.svg';
   static const String googleLogo = 'assets/icons/google.svg';
   static const String incognito = 'assets/icons/incognito.svg';
@@ -115,6 +117,7 @@ abstract class Assets {
   static const String marketingConsentLight = 'assets/images/marketing_consent_light.png';
   static const String notificationDark = 'assets/images/notification_dark.png';
   static const String notificationLight = 'assets/images/notification_light.png';
+
   //Animations
   static const String backgroundElements = 'assets/animations/background_elements.json';
   static const String circlesGrey = 'assets/animations/circles_grey.json';

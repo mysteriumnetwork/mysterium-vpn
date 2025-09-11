@@ -27,6 +27,8 @@ class VPNLocations with _$VPNLocations {
   late final Set<VPNLocation> allLocationsFlattened =
       allLocations.flattenBy((it) => it.children ?? const <VPNLocation>[]).toSet();
   late final bool isEmpty = allLocations.isEmpty;
+
+  bool get isNotEmpty => !isEmpty;
 }
 
 @Freezed(equal: false)

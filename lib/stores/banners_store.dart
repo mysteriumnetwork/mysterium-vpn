@@ -4,7 +4,6 @@ import 'package:mysterium_vpn/common/enums/banner_type.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
-import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/update_availabe_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
@@ -18,7 +17,6 @@ abstract class _BannersStore with Store {
   _BannersStore(
     this._localDBService,
     this._subscriptionStore,
-    this._locationsStore,
     this._authSessionStore,
     this._vpnStore,
     this._updateAvailableStore,
@@ -26,7 +24,6 @@ abstract class _BannersStore with Store {
 
   final LocalDBService _localDBService;
   final SubscriptionStore _subscriptionStore;
-  final LocationsStore _locationsStore;
   final AuthSessionStore _authSessionStore;
   final VpnStore _vpnStore;
   final UpdateAvailableStore _updateAvailableStore;
@@ -42,7 +39,6 @@ abstract class _BannersStore with Store {
   final Set<BannerType> _bannerRequireConditions = {
     BannerType.unauthenticated,
     BannerType.subscription,
-    BannerType.datacenter,
     BannerType.appUpdateAvailable,
     BannerType.tooManyConnections,
   };
@@ -73,8 +69,6 @@ abstract class _BannersStore with Store {
       if (authStatus == AuthStatus.unauthenticated) BannerType.unauthenticated,
       if (shouldShowSubscriptionBanner) BannerType.subscription,
       if (shouldShowAppUpdateBanner) BannerType.appUpdateAvailable,
-      if (_locationsStore.dcLocationsStream.value?.isEmpty == false && shown != null)
-        BannerType.datacenter,
       if (_vpnStore.connectionLimitReached) BannerType.tooManyConnections,
 
       // Add remaining main banners which require no conditions

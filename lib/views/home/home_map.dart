@@ -15,8 +15,8 @@ class HomeMap extends HookConsumerWidget {
     final vpnStore = ref.watch(vpnStorePOD);
     final locations = useComputedValue(
       () => [
-        ...?locationsStore.locationsStream.value?.allLocations,
-        ...?locationsStore.dcLocationsStream.value?.allLocations,
+        ...?locationsStore.residentialLocationsFuture.value?.allLocations,
+        ...?locationsStore.dcLocationsFuture.value?.allLocations,
       ].distinctBy((it) => it.id).toList(),
     );
     final myLocation = useCurrentIPCoordinates();
