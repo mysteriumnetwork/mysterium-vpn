@@ -21,7 +21,8 @@ enum BannerType {
   /// Whether the banner should shown again after app restart.
   final bool shouldPersist;
 
-  static List<BannerType> get allBanners => BannerType.values.toList();
+  static List<BannerType> get allBanners =>
+      BannerType.values.toList().where((it) => it != BannerType.datacenter).toList();
   static List<BannerType> get mainBanners => allBanners.where((it) => it.mainBanner).toList();
   static List<BannerType> get secondaryBanners => allBanners.where((it) => !it.mainBanner).toList();
   static List<BannerType> get nonDismissableBanners =>

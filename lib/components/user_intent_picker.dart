@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/components/color_filtered_optional.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/horizontal_scroll_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
@@ -82,6 +83,7 @@ class _List extends StatelessWidget {
                 baseColor: theme.colorScheme.secondary,
                 highlightColor: theme.colorScheme.secondary.darken(20),
                 child: _Item(
+                  isEnabled: true,
                   value: UserIntent.nearestLocation,
                   isSelected: false,
                   onPressed: () {},
@@ -92,6 +94,7 @@ class _List extends StatelessWidget {
             final item = items![index];
             final isSelected = value == item;
             return _Item(
+              isEnabled: onChanged != null,
               value: item,
               isSelected: isSelected,
               onPressed: onChanged == null
@@ -114,10 +117,12 @@ class _Item extends StatelessWidget {
     required this.value,
     required this.isSelected,
     required this.onPressed,
+    required this.isEnabled,
   });
 
   final UserIntent value;
   final bool isSelected;
+  final bool isEnabled;
   final VoidCallback? onPressed;
 
   @override
@@ -132,33 +137,41 @@ class _Item extends StatelessWidget {
       onPressed: onPressed,
       fillColor: isSelected ? theme.palette.highlightColor : theme.colorScheme.tertiaryContainer,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Row(
-        spacing: 6,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          EasyText(
-            switch (value) {
-              UserIntent.bestSpeed => LocaleKeys.userIntentBestSpeed.tr(),
-              UserIntent.lowLatency => LocaleKeys.userIntentLowLatency.tr(),
-              UserIntent.nearestLocation => LocaleKeys.userIntentNearestLocation.tr(),
-              UserIntent.maxPrivacy => LocaleKeys.userIntentMaxPrivacy.tr(),
-              UserIntent.streaming => LocaleKeys.userIntentStreaming.tr(),
-              UserIntent.p2p => LocaleKeys.userIntentP2P.tr(),
-            },
-            color: isSelected ? Colors.white : theme.palette.secondaryColor,
-          ),
-          SvgIcon(
-            color: isSelected ? Colors.white : theme.palette.highlightColor,
-            asset: switch (value) {
-              UserIntent.bestSpeed => Assets.flash,
-              UserIntent.lowLatency => Assets.clockCircle,
-              UserIntent.nearestLocation => Assets.locationPin,
-              UserIntent.maxPrivacy => Assets.incognito,
-              UserIntent.streaming => Assets.film,
-              UserIntent.p2p => Assets.shareCircle,
-            },
-          ),
-        ],
+      child: ColorFilteredOptional(
+        colorFilter: isEnabled
+            ? null
+            : ColorFilter.mode(
+                theme.palette.lightTextColor,
+                BlendMode.srcIn,
+              ),
+        child: Row(
+          spacing: 6,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            EasyText(
+              switch (value) {
+                UserIntent.bestSpeed => LocaleKeys.userIntentBestSpeed.tr(),
+                UserIntent.lowLatency => LocaleKeys.userIntentLowLatency.tr(),
+                UserIntent.nearestLocation => LocaleKeys.userIntentNearestLocation.tr(),
+                UserIntent.maxPrivacy => LocaleKeys.userIntentMaxPrivacy.tr(),
+                UserIntent.streaming => LocaleKeys.userIntentStreaming.tr(),
+                UserIntent.p2p => LocaleKeys.userIntentP2P.tr(),
+              },
+              color: isSelected ? Colors.white : theme.palette.secondaryColor,
+            ),
+            SvgIcon(
+              color: isSelected ? Colors.white : theme.palette.highlightColor,
+              asset: switch (value) {
+                UserIntent.bestSpeed => Assets.flash,
+                UserIntent.lowLatency => Assets.clockCircle,
+                UserIntent.nearestLocation => Assets.locationPin,
+                UserIntent.maxPrivacy => Assets.incognito,
+                UserIntent.streaming => Assets.film,
+                UserIntent.p2p => Assets.shareCircle,
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
