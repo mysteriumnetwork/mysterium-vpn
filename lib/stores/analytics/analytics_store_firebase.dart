@@ -37,6 +37,7 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
   final FirebaseCrashlytics _crashlytics;
   final DeviceInfoStore _deviceInfoStore;
   final DeviceIDStore _deviceIDStore;
+
   @override
   Future<void> logError({
     required Object err,
@@ -44,13 +45,14 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
     Object? reason,
     bool fatal = false,
   }) async {
-    _crashlytics.recordError(
+    await _crashlytics.recordError(
       err,
       stack,
       reason: reason,
       printDetails: true,
       fatal: fatal,
     );
+    super.logError(err: err, stack: stack, reason: reason, fatal: fatal).ignore();
   }
 
   @override
@@ -66,6 +68,7 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
   @action
   Future<void> logMessage(String message) async {
     _crashlytics.log(message);
+    super.logMessage(message).ignore();
   }
 
   @override
@@ -74,7 +77,7 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
     AnalyticsEvent event, {
     Map<String, dynamic>? parameters,
   }) async {
-    final eventName = event.name.toSnakeCase;
+    final eventName = event.formattedName;
     assert(
       !reservedGa4Events.contains(event.name),
       'Event name ${event.name} is reserved by GA4',
@@ -96,6 +99,8 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
         (key, value) => MapEntry(key.truncate(40), value.toString().truncate(100)),
       ),
     );
+
+    super.logEvent(event, parameters: parameters).ignore();
   }
 
   @override
@@ -127,6 +132,7 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
   @action
   Future<void> logScreenViewed(String screenName) async {
     await _analytics.logEvent(name: screenName);
+    super.logScreenViewed(screenName).ignore();
   }
 
   @override
