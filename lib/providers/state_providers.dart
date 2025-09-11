@@ -114,7 +114,6 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   final localeStore = ref.watch(localeStorePOD);
   final logger = ref.watch(loggerPOD);
-  final env = ref.watch(environmentPOD);
 
   final store = LocationsStore(
     api.getConnection(),
@@ -126,7 +125,6 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
     logger,
     localeStore,
     null,
-    env,
   );
 
   ref.onCancel(store.dispose);
