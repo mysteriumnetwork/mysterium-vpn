@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Flutter Version Management CLI
         uses: flutter-actions/setup-fvm@v1.0 #v1.0 is tag, v1 is branch
 
@@ -55,7 +55,7 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y ninja-build libgtk-3-dev libayatana-appindicator3-dev libsecret-1-dev libjsoncpp-dev libcurl4-openssl-dev
       - name: Build Check (Linux, fast and cheap)
-        run: fvm flutter build linux --no-pub --debug --dart-define FLAVOR=DEV
+        run: fvm flutter build linux --no-pub --debug --dart-define-from-file=".env.dev"
 
       # We assume that version for DEV builds is commited
       - name: Decide build version
@@ -77,7 +77,7 @@ jobs:
       build_number: ${{ needs.quality_checks.outputs.dev_build }}
       bundle_id: com.mysteriumvpn.test
       flavor: "dev"
-      flavor_dart: "DEV"
+      env_file: ".env.dev"
     secrets: inherit
 
   # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
@@ -92,7 +92,7 @@ jobs:
       bundle_id: com.mysteriumvpn.test
       product_name: "Mysterium VPN Test"
       flavor: "dev"
-      flavor_dart: "DEV"
+      env_file: ".env.dev"
     secrets: inherit
 
   # Published as TestFlight build of separate application to https://play.google.com/console/u/0/developers/7955390843158584488/app/4973980590971676436/bundle-explorer-selector
@@ -108,7 +108,7 @@ jobs:
       package_track: internal
       package_status: completed
       flavor: "dev"
-      flavor_dart: "DEV"
+      env_file: ".env.dev"
     secrets: inherit
 
   # Published as build of separate application to https://partner.microsoft.com/en-us/dashboard/apps/9MZRX8P6FXC4/managepackages
@@ -124,6 +124,6 @@ jobs:
       product_identity: "UABMNTechnologijos.MysteriumVPNTest"
       application_name: "Mysterium VPN Test"
       application_logo: "assets/logo/dev/desktop.png"
-      flavor_dart: "DEV"
+      env_file: ".env.dev"
       standalone_sign: false
     secrets: inherit

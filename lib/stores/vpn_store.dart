@@ -17,8 +17,8 @@ import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
@@ -59,7 +59,6 @@ abstract class _VpnStore with Store {
     required LocationsStore locationsStore,
     required WireguardDart wireguardService,
     required SubscriptionStore subscriptionStore,
-    required FlavorConfig env,
     required Talker logger,
     required AnalyticsStore analyticsStore,
     required RemoteConfigStore remoteConfigStore,
@@ -72,7 +71,6 @@ abstract class _VpnStore with Store {
         _locationsStore = locationsStore,
         _wireguardService = wireguardService,
         _subscriptionStore = subscriptionStore,
-        _env = env,
         _analyticsStore = analyticsStore,
         _remoteConfigStore = remoteConfigStore,
         _authSessionStore = authSessionStore,
@@ -93,7 +91,6 @@ abstract class _VpnStore with Store {
   final AuthSessionStore _authSessionStore;
   final RealIPInfoStore _realIPInfo;
 
-  final FlavorConfig _env;
   final WireguradKeyService _wireguardKeyService;
   final LocalDBService _localDBService = LocalDBService.instance;
   final Talker _logger;
@@ -312,8 +309,8 @@ abstract class _VpnStore with Store {
   Future<bool> _checkTunelConfigured() async {
     try {
       return await _wireguardService.checkTunnelConfiguration(
-        bundleId: _env.getBundleId(),
-        tunnelName: _env.values.tunnelName,
+        bundleId: Env.bundleId,
+        tunnelName: Env.tunnelName,
       );
     } catch (e) {
       return false;
@@ -363,9 +360,9 @@ abstract class _VpnStore with Store {
   Future<void> setupTunnel() async {
     try {
       await _wireguardService.setupTunnel(
-        bundleId: _env.getBundleId(),
+        bundleId: Env.bundleId,
         win32ServiceName: win32ServiceName,
-        tunnelName: _env.values.tunnelName,
+        tunnelName: Env.tunnelName,
       );
       _logger.info('Tunnel setup done');
       await _setupAndListenToConnectionStatus();
@@ -546,8 +543,8 @@ abstract class _VpnStore with Store {
     await _checkSubscriptionStatus();
 
     if (!(await _wireguardService.checkTunnelConfiguration(
-      bundleId: _env.getBundleId(),
-      tunnelName: _env.values.tunnelName,
+      bundleId: Env.bundleId,
+      tunnelName: Env.tunnelName,
     ))) {
       if (Platform.isWindows) {
         await setupTunnel();
@@ -824,8 +821,8 @@ abstract class _VpnStore with Store {
       } else {
         _resetAppFuture = ObservableFuture(
           _wireguardService.removeTunnelConfiguration(
-            bundleId: _env.getBundleId(),
-            tunnelName: _env.values.tunnelName,
+            bundleId: Env.bundleId,
+            tunnelName: Env.tunnelName,
           ),
         );
       }

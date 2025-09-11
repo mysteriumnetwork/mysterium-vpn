@@ -4,7 +4,6 @@ import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
-import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:mysterium_vpn/stores/remote_config/config_cat_store.dart';
 
@@ -51,11 +50,11 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   RemoteConfigStoreBase(
     super.client,
     super.logger,
-    super.ipInfoStore,
-    this._env,
-  );
+    super.ipInfoStore, {
+    bool isDev = false,
+  }) : _isDev = isDev;
 
-  final FlavorConfig _env;
+  final bool _isDev;
 
   @computed
   bool get isServiceAvailable {
@@ -277,10 +276,7 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
     if (config.containsKey(_FeatureToggleKey.enableQaHelpers.name)) {
       return config[_FeatureToggleKey.enableQaHelpers.name] as bool;
     }
-    if (_env.isDev) {
-      return true; // Enable QA helpers in development mode
-    }
-    return false; // Disable QA helpers in production
+    return _isDev; // Enable QA helpers in development mode
   }
 
   @computed
