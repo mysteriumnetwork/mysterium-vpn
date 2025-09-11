@@ -179,8 +179,8 @@ abstract class _VpnStore with Store {
 
     if (myCountry != null) {
       final availableCountries = {
-        ...?_locationsStore.dcLocationsStream.value?.allLocations,
-        ...?_locationsStore.residentialLocationsStream.value?.allLocations,
+        ...?_locationsStore.dcLocationsFuture.value?.allLocations,
+        ...?_locationsStore.residentialLocationsFuture.value?.allLocations,
       };
 
       if (availableCountries.none((it) => it.countryCode == myCountry)) {

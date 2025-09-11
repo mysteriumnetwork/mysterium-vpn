@@ -14,6 +14,7 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
+import 'package:mysterium_vpn/views/locations/components/location_item_empty.dart';
 import 'package:mysterium_vpn/views/locations/components/location_type_switcher.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_container.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_disclaimer.dart';
@@ -55,13 +56,13 @@ class LocationsSliverView extends HookConsumerWidget {
     return Observer(
       builder: (context) {
         final locationType = locationsStore.ipType;
-        final stream = locationsStore.locationsStream;
+        final future = locationsStore.locationsFuture;
         final locations = locationsStore.locations;
         final topLocations = locationsStore.topLocations;
         final recentLocations = locationsStore.recentLocations;
 
         return _Body(
-          stream: stream,
+          future: future,
           recentLocations: recentLocations,
           locationType: locationType,
           locations: locations,
@@ -77,7 +78,7 @@ class LocationsSliverView extends HookConsumerWidget {
 
 class _Body extends HookConsumerWidget {
   const _Body({
-    required this.stream,
+    required this.future,
     required this.recentLocations,
     required this.locationType,
     required this.locations,
@@ -87,7 +88,7 @@ class _Body extends HookConsumerWidget {
     required this.onLocationTapped,
   });
 
-  final ObservableStream<VPNLocations> stream;
+  final ObservableFuture<VPNLocations> future;
   final List<VPNLocation> recentLocations;
   final IPType locationType;
   final List<VPNLocation> locations;
@@ -109,7 +110,7 @@ class _Body extends HookConsumerWidget {
               userIntentsStore.intentsFuture.status == FutureStatus.pending),
     );
 
-    if (stream.value != null) {
+    if (future.value != null) {
       return MultiSliver(
         children: [
           if (showUserIntents) const _UserIntent(),
@@ -134,7 +135,7 @@ class _Body extends HookConsumerWidget {
         ],
       );
     }
-    if (stream.status == StreamStatus.waiting) {
+    if (future.status == FutureStatus.pending) {
       return MultiSliver(
         children: const [
           RecentLocationsLoading(),
@@ -151,7 +152,7 @@ class _Body extends HookConsumerWidget {
           child: RetryWdiget(
             asset: Assets.globe,
             onRetry: locationsStore.refresh,
-            error: stream.error,
+            error: future.error,
           ),
         ),
       ],
@@ -166,6 +167,8 @@ class _UserIntent extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
     final userIntentsStore = ref.watch(userIntentsStorePOD);
+    final locationsStore = ref.watch(locationsStorePOD);
+    final locationsEmpty = useComputedValue(() => locationsStore.isEmpty);
     final isLoading = useComputedValue(
       () =>
           vpnStore.connectionStatus == ConnectionStatus.connecting ||
@@ -196,7 +199,9 @@ class _UserIntent extends HookConsumerWidget {
         const SizedBox(height: 16),
         UserIntentPicker(
           items: intents?.toList(),
-          onChanged: isLoading ? null : (value) => handleToggleConnection(intent: value),
+          onChanged: isLoading || (locationsEmpty ?? true)
+              ? null
+              : (value) => handleToggleConnection(intent: value),
           value: selected,
         ),
       ],
@@ -252,6 +257,7 @@ class _Locations extends HookConsumerWidget {
     final typeSwitcherKey = ref.watch(homeStateProvider.select((it) => it.typeSwitcherKey));
     final locationsKey = ref.watch(homeStateProvider.select((it) => it.locationsKey));
     final searchKeyword = useComputedValue(() => locationsStore.searchKeyword);
+    final isEmpty = useComputedValue(() => locationsStore.isEmpty);
 
     return MultiSliver(
       children: [
@@ -295,13 +301,13 @@ class _Locations extends HookConsumerWidget {
                       items: locations,
                       onItemPressed: onLocationTapped,
                     ),
-                    if (topLocations.isEmpty && locations.isEmpty)
+                    if ((isEmpty ?? false) && searchKeyword.isNotEmpty)
                       _Empty(
-                        text: searchKeyword.isEmpty
-                            ? LocaleKeys.noLocations.tr()
-                            : LocaleKeys.noLocationsKeyword
-                                .tr(namedArgs: {'keyword': searchKeyword}),
+                        text: LocaleKeys.noLocationsKeyword.tr(
+                          namedArgs: {'keyword': searchKeyword},
+                        ),
                       ),
+                    if ((isEmpty ?? false) && searchKeyword.isEmpty) const LocationItemEmpty(),
                   ],
                 ),
               ),

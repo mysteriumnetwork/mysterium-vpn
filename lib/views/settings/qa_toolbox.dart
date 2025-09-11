@@ -127,6 +127,18 @@ class QAToolbox extends HookConsumerWidget {
             ),
             SettingItem(
               asset: isDarkTheme ? Assets.settingsDark : Assets.settingsLight,
+              title: locationsStore.clearFetchedLocations ? 'Restore locations' : 'Clear locations',
+              actionWidget: TextButton.icon(
+                label: EasyText(locationsStore.clearFetchedLocations ? 'Restore' : 'Clear'),
+                icon: Icon(locationsStore.clearFetchedLocations ? Icons.restore : Icons.clear),
+                onPressed: () async {
+                  locationsStore.setClearFetchedLocations(!locationsStore.clearFetchedLocations);
+                  await locationsStore.refreshAll();
+                },
+              ),
+            ),
+            SettingItem(
+              asset: isDarkTheme ? Assets.settingsDark : Assets.settingsLight,
               title: 'Check analytics logs',
               subtitle: const EasyText('Will list and observe all analytics logs'),
               actionWidget: TextButton.icon(

@@ -9,12 +9,12 @@ part of 'locations_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$LocationsStore on _LocationsStore, Store {
-  Computed<ObservableStream<VPNLocations>>? _$locationsStreamComputed;
+  Computed<ObservableFuture<VPNLocations>>? _$locationsFutureComputed;
 
   @override
-  ObservableStream<VPNLocations> get locationsStream => (_$locationsStreamComputed ??=
-          Computed<ObservableStream<VPNLocations>>(() => super.locationsStream,
-              name: '_LocationsStore.locationsStream'))
+  ObservableFuture<VPNLocations> get locationsFuture => (_$locationsFutureComputed ??=
+          Computed<ObservableFuture<VPNLocations>>(() => super.locationsFuture,
+              name: '_LocationsStore.locationsFuture'))
       .value;
   Computed<Set<String>>? _$availableCountriesComputed;
 
@@ -22,13 +22,6 @@ mixin _$LocationsStore on _LocationsStore, Store {
   Set<String> get availableCountries =>
       (_$availableCountriesComputed ??= Computed<Set<String>>(() => super.availableCountries,
               name: '_LocationsStore.availableCountries'))
-          .value;
-  Computed<bool>? _$_locationsNotEmptyComputed;
-
-  @override
-  bool get _locationsNotEmpty =>
-      (_$_locationsNotEmptyComputed ??= Computed<bool>(() => super._locationsNotEmpty,
-              name: '_LocationsStore._locationsNotEmpty'))
           .value;
   Computed<List<VPNLocation>>? _$recentLocationsComputed;
 
@@ -50,6 +43,12 @@ mixin _$LocationsStore on _LocationsStore, Store {
       (_$topLocationsComputed ??= Computed<List<VPNLocation>>(() => super.topLocations,
               name: '_LocationsStore.topLocations'))
           .value;
+  Computed<bool?>? _$isEmptyComputed;
+
+  @override
+  bool? get isEmpty =>
+      (_$isEmptyComputed ??= Computed<bool?>(() => super.isEmpty, name: '_LocationsStore.isEmpty'))
+          .value;
   Computed<VPNLocation?>? _$randomLocationComputed;
 
   @override
@@ -58,48 +57,82 @@ mixin _$LocationsStore on _LocationsStore, Store {
               name: '_LocationsStore.randomLocation'))
           .value;
 
-  late final _$_dcLocationsStreamAtom =
-      Atom(name: '_LocationsStore._dcLocationsStream', context: context);
+  late final _$_clearFetchedLocationsAtom =
+      Atom(name: '_LocationsStore._clearFetchedLocations', context: context);
 
-  ObservableStream<VPNLocations> get dcLocationsStream {
-    _$_dcLocationsStreamAtom.reportRead();
-    return super._dcLocationsStream;
+  bool get clearFetchedLocations {
+    _$_clearFetchedLocationsAtom.reportRead();
+    return super._clearFetchedLocations;
   }
 
   @override
-  ObservableStream<VPNLocations> get _dcLocationsStream => dcLocationsStream;
-
-  bool __dcLocationsStreamIsInitialized = false;
+  bool get _clearFetchedLocations => clearFetchedLocations;
 
   @override
-  set _dcLocationsStream(ObservableStream<VPNLocations> value) {
-    _$_dcLocationsStreamAtom
-        .reportWrite(value, __dcLocationsStreamIsInitialized ? super._dcLocationsStream : null, () {
-      super._dcLocationsStream = value;
-      __dcLocationsStreamIsInitialized = true;
+  set _clearFetchedLocations(bool value) {
+    _$_clearFetchedLocationsAtom.reportWrite(value, super._clearFetchedLocations, () {
+      super._clearFetchedLocations = value;
     });
   }
 
-  late final _$_residentialLocationsStreamAtom =
-      Atom(name: '_LocationsStore._residentialLocationsStream', context: context);
+  late final _$selectedLocationAtom =
+      Atom(name: '_LocationsStore.selectedLocation', context: context);
 
-  ObservableStream<VPNLocations> get residentialLocationsStream {
-    _$_residentialLocationsStreamAtom.reportRead();
-    return super._residentialLocationsStream;
+  @override
+  VPNLocation? get selectedLocation {
+    _$selectedLocationAtom.reportRead();
+    return super.selectedLocation;
   }
 
   @override
-  ObservableStream<VPNLocations> get _residentialLocationsStream => residentialLocationsStream;
+  set selectedLocation(VPNLocation? value) {
+    _$selectedLocationAtom.reportWrite(value, super.selectedLocation, () {
+      super.selectedLocation = value;
+    });
+  }
 
-  bool __residentialLocationsStreamIsInitialized = false;
+  late final _$_dcLocationsFutureAtom =
+      Atom(name: '_LocationsStore._dcLocationsFuture', context: context);
+
+  ObservableFuture<VPNLocations> get dcLocationsFuture {
+    _$_dcLocationsFutureAtom.reportRead();
+    return super._dcLocationsFuture;
+  }
 
   @override
-  set _residentialLocationsStream(ObservableStream<VPNLocations> value) {
-    _$_residentialLocationsStreamAtom.reportWrite(
-        value, __residentialLocationsStreamIsInitialized ? super._residentialLocationsStream : null,
+  ObservableFuture<VPNLocations> get _dcLocationsFuture => dcLocationsFuture;
+
+  bool __dcLocationsFutureIsInitialized = false;
+
+  @override
+  set _dcLocationsFuture(ObservableFuture<VPNLocations> value) {
+    _$_dcLocationsFutureAtom
+        .reportWrite(value, __dcLocationsFutureIsInitialized ? super._dcLocationsFuture : null, () {
+      super._dcLocationsFuture = value;
+      __dcLocationsFutureIsInitialized = true;
+    });
+  }
+
+  late final _$_residentialLocationsFutureAtom =
+      Atom(name: '_LocationsStore._residentialLocationsFuture', context: context);
+
+  ObservableFuture<VPNLocations> get residentialLocationsFuture {
+    _$_residentialLocationsFutureAtom.reportRead();
+    return super._residentialLocationsFuture;
+  }
+
+  @override
+  ObservableFuture<VPNLocations> get _residentialLocationsFuture => residentialLocationsFuture;
+
+  bool __residentialLocationsFutureIsInitialized = false;
+
+  @override
+  set _residentialLocationsFuture(ObservableFuture<VPNLocations> value) {
+    _$_residentialLocationsFutureAtom.reportWrite(
+        value, __residentialLocationsFutureIsInitialized ? super._residentialLocationsFuture : null,
         () {
-      super._residentialLocationsStream = value;
-      __residentialLocationsStreamIsInitialized = true;
+      super._residentialLocationsFuture = value;
+      __residentialLocationsFutureIsInitialized = true;
     });
   }
 
@@ -122,6 +155,27 @@ mixin _$LocationsStore on _LocationsStore, Store {
         value, __recentLocationsFutureIsInitialized ? super._recentLocationsFuture : null, () {
       super._recentLocationsFuture = value;
       __recentLocationsFutureIsInitialized = true;
+    });
+  }
+
+  late final _$_refreshFutureAtom = Atom(name: '_LocationsStore._refreshFuture', context: context);
+
+  ObservableFuture<void> get refreshFuture {
+    _$_refreshFutureAtom.reportRead();
+    return super._refreshFuture;
+  }
+
+  @override
+  ObservableFuture<void> get _refreshFuture => refreshFuture;
+
+  bool __refreshFutureIsInitialized = false;
+
+  @override
+  set _refreshFuture(ObservableFuture<void> value) {
+    _$_refreshFutureAtom
+        .reportWrite(value, __refreshFutureIsInitialized ? super._refreshFuture : null, () {
+      super._refreshFuture = value;
+      __refreshFutureIsInitialized = true;
     });
   }
 
@@ -162,35 +216,34 @@ mixin _$LocationsStore on _LocationsStore, Store {
     });
   }
 
-  late final _$selectedLocationAtom =
-      Atom(name: '_LocationsStore.selectedLocation', context: context);
-
-  @override
-  VPNLocation? get selectedLocation {
-    _$selectedLocationAtom.reportRead();
-    return super.selectedLocation;
-  }
-
-  @override
-  set selectedLocation(VPNLocation? value) {
-    _$selectedLocationAtom.reportWrite(value, super.selectedLocation, () {
-      super.selectedLocation = value;
-    });
-  }
-
-  late final _$_fetchRecentLocationsAsyncAction =
-      AsyncAction('_LocationsStore._fetchRecentLocations', context: context);
-
-  @override
-  Future<List<VPNLocation>> _fetchRecentLocations() {
-    return _$_fetchRecentLocationsAsyncAction.run(() => super._fetchRecentLocations());
-  }
-
   late final _$refreshAsyncAction = AsyncAction('_LocationsStore.refresh', context: context);
 
   @override
   Future<void> refresh([IPType? ipType]) {
     return _$refreshAsyncAction.run(() => super.refresh(ipType));
+  }
+
+  late final _$refreshAllAsyncAction = AsyncAction('_LocationsStore.refreshAll', context: context);
+
+  @override
+  Future<void> refreshAll() {
+    return _$refreshAllAsyncAction.run(() => super.refreshAll());
+  }
+
+  late final _$_fetchLocationsAsyncAction =
+      AsyncAction('_LocationsStore._fetchLocations', context: context);
+
+  @override
+  Future<VPNLocations> _fetchLocations(IPType ipType) {
+    return _$_fetchLocationsAsyncAction.run(() => super._fetchLocations(ipType));
+  }
+
+  late final _$_loadLocationsAsyncAction =
+      AsyncAction('_LocationsStore._loadLocations', context: context);
+
+  @override
+  Future<VPNLocations> _loadLocations(IPType ipType) {
+    return _$_loadLocationsAsyncAction.run(() => super._loadLocations(ipType));
   }
 
   late final _$addRecentLocationAsyncAction =
@@ -228,6 +281,17 @@ mixin _$LocationsStore on _LocationsStore, Store {
       ActionController(name: '_LocationsStore', context: context);
 
   @override
+  void setClearFetchedLocations(bool value) {
+    final _$actionInfo = _$_LocationsStoreActionController.startAction(
+        name: '_LocationsStore.setClearFetchedLocations');
+    try {
+      return super.setClearFetchedLocations(value);
+    } finally {
+      _$_LocationsStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   VPNLocation findLocation(String id, {String? countryCode, IPType ipType = IPType.datacenter}) {
     final _$actionInfo =
         _$_LocationsStoreActionController.startAction(name: '_LocationsStore.findLocation');
@@ -253,11 +317,12 @@ mixin _$LocationsStore on _LocationsStore, Store {
   String toString() {
     return '''
 selectedLocation: ${selectedLocation},
-locationsStream: ${locationsStream},
+locationsFuture: ${locationsFuture},
 availableCountries: ${availableCountries},
 recentLocations: ${recentLocations},
 locations: ${locations},
 topLocations: ${topLocations},
+isEmpty: ${isEmpty},
 randomLocation: ${randomLocation}
     ''';
   }

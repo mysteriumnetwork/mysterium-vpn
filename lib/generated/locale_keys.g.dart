@@ -211,6 +211,7 @@ abstract class LocaleKeys {
   static const noInternetConnectionSub = 'noInternetConnectionSub';
   static const noLocations = 'noLocations';
   static const noLocationsKeyword = 'noLocationsKeyword';
+  static const noServersAvailable = 'noServersAvailable';
   static const noSubscriptionAction = 'noSubscriptionAction';
   static const noSubscriptionTitle = 'noSubscriptionTitle';
   static const notificationsDesktop = 'notificationsDesktop';
@@ -270,6 +271,7 @@ abstract class LocaleKeys {
   static const reconnectBtn = 'reconnectBtn';
   static const redeemCode = 'redeemCode';
   static const redirectToLoginPage = 'redirectToLoginPage';
+  static const refresh = 'refresh';
   static const refreshIP = 'refreshIP';
   static const refreshIPAddress = 'refreshIPAddress';
   static const renewSubsBtn = 'renewSubsBtn';
@@ -334,6 +336,7 @@ abstract class LocaleKeys {
   static const topLocations = 'topLocations';
   static const tr = 'tr';
   static const tryAgainBtn = 'tryAgainBtn';
+  static const tryAgainOrContactSupport = 'tryAgainOrContactSupport';
   static const turnOnNotificationsBtn = 'turnOnNotificationsBtn';
   static const typeDelete = 'typeDelete';
   static const typeFeedback = 'typeFeedback';
