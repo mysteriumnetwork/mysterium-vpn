@@ -5,6 +5,7 @@ import 'package:mysterium_vpn/common/utils/resolve_error_msg.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -18,15 +19,13 @@ class RetryWdiget extends StatelessWidget {
 
   final VoidCallback onRetry;
   final dynamic error;
-  final String asset;
+  final SvgGenImage asset;
 
   @override
   Widget build(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgIcon(
-            asset: asset,
-          ).padding(top: 10, bottom: 10),
+          SvgIcon(asset: asset).padding(top: 10, bottom: 10),
           EasyText(
             error is Object
                 ? resolveErrorMessage(error as Object)

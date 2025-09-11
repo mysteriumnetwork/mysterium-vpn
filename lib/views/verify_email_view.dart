@@ -20,6 +20,7 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -158,7 +159,7 @@ class _Subheader extends HookWidget {
         ),
       ),
       SvgIcon(
-        asset: Assets.checkEmail,
+        asset: Asset.images.checkEmail,
         height: min(120, height * .15),
       ),
     ];

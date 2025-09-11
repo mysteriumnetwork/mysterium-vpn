@@ -9,6 +9,7 @@ import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/header_title.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -17,7 +18,7 @@ Future<void> shownRetryDialog({
   required BuildContext context,
   required String title,
   required String subtitle,
-  required String asset,
+  required SvgGenImage asset,
   FutureOr<void> Function(BuildContext context)? onDismiss,
   String? dismissText,
   bool? isDismissible,
@@ -57,8 +58,9 @@ class VerificationFailedDialog extends StatelessWidget {
   final FutureOr<void> Function(BuildContext context)? onDismiss;
   final String title;
   final String subtitle;
-  final String asset;
+  final SvgGenImage asset;
   final String? dismissText;
+
   @override
   Widget build(BuildContext context) => Stack(
         clipBehavior: Clip.none,
@@ -66,9 +68,7 @@ class VerificationFailedDialog extends StatelessWidget {
         children: [
           Positioned(
             top: -15,
-            child: SvgIcon(
-              asset: asset,
-            ),
+            child: SvgIcon(asset: asset),
           ),
           Column(
             mainAxisSize: MainAxisSize.min,

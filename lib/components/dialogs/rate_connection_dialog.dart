@@ -11,11 +11,11 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/enums/rate_connection.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -109,11 +109,7 @@ class _ConfirmDialog extends HookConsumerWidget {
           iconPadding: const EdgeInsets.only(top: 30, bottom: 20),
           backgroundColor: getDialogBackgroundColor(brightness),
           actionsAlignment: MainAxisAlignment.spaceEvenly,
-          icon: futureStatusFulfilled
-              ? const SvgIcon(
-                  asset: Assets.feedback,
-                )
-              : null,
+          icon: futureStatusFulfilled ? SvgIcon(asset: Asset.icons.feedback) : null,
           title: Text(
             futureStatusFulfilled
                 ? LocaleKeys.thanksForFeedback.tr()
