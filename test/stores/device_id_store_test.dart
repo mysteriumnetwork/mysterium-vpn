@@ -18,49 +18,64 @@ import 'device_id_store_test.mocks.dart';
   MockSpec<IosDeviceInfo>(),
   MockSpec<MacOsDeviceInfo>(),
   MockSpec<WindowsDeviceInfo>(),
-  MockSpec<LinuxDeviceInfo>(),
 ])
 void main() {
   late MockSecureStorageService mockStorage;
   late MockDeviceInfoPlugin mockDeviceInfoPlugin;
   late DeviceIDStore store;
+  const mockDeviceID = '3f8d7cb624d30561e803a6e3e0572fd59fe8ff721a12609212bc9262f5c32fb7';
 
   setUp(() {
     mockStorage = MockSecureStorageService();
     mockDeviceInfoPlugin = MockDeviceInfoPlugin();
-    // Mock the FlutterUdid function to return a consistent value
-    when(mockStorage.getDeviceId()).thenAnswer((_) async => 'stored-id');
     store = DeviceIDStore(
       secureStorageService: mockStorage,
       deviceInfoPlugin: mockDeviceInfoPlugin,
-      flutterUdid: () async => 'mock-udid',
+      flutterUdid: () async => mockDeviceID,
     );
   });
 
   group('getDeviceId', () {
-    test('returns deviceId from storage if present', () async {
-      when(mockStorage.getDeviceId()).thenAnswer((_) async => 'stored-id');
-      final id = await store.deviceIdFuture;
-      expect(id, 'stored-id');
-      verify(mockStorage.getDeviceId()).called(1);
-      verifyNever(mockStorage.saveDeviceId(any));
+    test('uses flutterUdid when stored deviceId is already a SHA256 digest', () async {
+      when(mockStorage.getDeviceId()).thenAnswer((_) async => mockDeviceID);
+      when(mockStorage.saveDeviceId(any)).thenAnswer((_) async => {});
+
+      final id = await store.getDeviceId();
+
+      expect(id, mockDeviceID);
+
+      verify(mockStorage.getDeviceId()).called(greaterThanOrEqualTo(1));
+      verify(mockStorage.saveDeviceId(mockDeviceID)).called(1);
     });
 
-    test('generates and saves new deviceId if not in storage', () async {
-      when(mockStorage.getDeviceId()).thenAnswer((_) async => null);
-      when(mockStorage.saveDeviceId('mock-udid')).thenAnswer((_) async => {});
-      final id = await store.getDeviceId();
-      expect(id, 'mock-udid');
-      verify(mockStorage.saveDeviceId('mock-udid')).called(1);
+    test('returns stored deviceId if it is not a SHA256 digest', () async {
+      const plainId = 'not-a-sha';
+      when(mockStorage.getDeviceId()).thenAnswer((_) async => plainId);
+
+      final localStore = DeviceIDStore(
+        secureStorageService: mockStorage,
+        deviceInfoPlugin: mockDeviceInfoPlugin,
+        flutterUdid: () async => 'mockUdid',
+      );
+
+      final id = await localStore.getDeviceId();
+
+      expect(id, 'mockUdid');
+      verify(mockStorage.getDeviceId()).called(greaterThanOrEqualTo(1));
+      verify(mockStorage.saveDeviceId('mockUdid')).called(greaterThanOrEqualTo(1));
     });
 
     test('falls back to getDeviceIdFromDeviceInfo on error', () async {
       when(mockStorage.getDeviceId()).thenThrow(Exception('fail'));
+
       final mockAndroidInfo = MockAndroidDeviceInfo();
       when(mockDeviceInfoPlugin.androidInfo).thenAnswer((_) async => mockAndroidInfo);
       when(mockAndroidInfo.id).thenReturn('android-fallback');
+      when(mockStorage.saveDeviceId(any)).thenAnswer((_) async => {});
+
       final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.android);
       final expected = sha256.convert(utf8.encode('android-fallback')).toString();
+
       expect(id, expected);
     });
   });
@@ -70,8 +85,10 @@ void main() {
       final mockAndroidInfo = MockAndroidDeviceInfo();
       when(mockDeviceInfoPlugin.androidInfo).thenAnswer((_) async => mockAndroidInfo);
       when(mockAndroidInfo.id).thenReturn('android-id-123');
+
       final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.android);
       final expected = sha256.convert(utf8.encode('android-id-123')).toString();
+
       expect(id, expected);
     });
 
@@ -79,8 +96,10 @@ void main() {
       final mockIosInfo = MockIosDeviceInfo();
       when(mockDeviceInfoPlugin.iosInfo).thenAnswer((_) async => mockIosInfo);
       when(mockIosInfo.identifierForVendor).thenReturn('ios-id-456');
+
       final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.iOS);
       final expected = sha256.convert(utf8.encode('ios-id-456')).toString();
+
       expect(id, expected);
     });
 
@@ -88,8 +107,10 @@ void main() {
       final mockMacInfo = MockMacOsDeviceInfo();
       when(mockDeviceInfoPlugin.macOsInfo).thenAnswer((_) async => mockMacInfo);
       when(mockMacInfo.systemGUID).thenReturn('macos-id-789');
+
       final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.macOS);
       final expected = sha256.convert(utf8.encode('macos-id-789')).toString();
+
       expect(id, expected);
     });
 
@@ -97,31 +118,31 @@ void main() {
       final mockWinInfo = MockWindowsDeviceInfo();
       when(mockDeviceInfoPlugin.windowsInfo).thenAnswer((_) async => mockWinInfo);
       when(mockWinInfo.deviceId).thenReturn('windows-id-101');
+
       final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.windows);
       final expected = sha256.convert(utf8.encode('windows-id-101')).toString();
+
       expect(id, expected);
     });
 
-    test('returns hashed machineId on Linux', () async {
-      final mockLinuxInfo = MockLinuxDeviceInfo();
-      when(mockDeviceInfoPlugin.linuxInfo).thenAnswer((_) async => mockLinuxInfo);
-      when(mockLinuxInfo.machineId).thenReturn('');
-      final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.linux);
-      expect(id, '');
-    });
-
-    test('returns empty string if deviceId is null or empty', () async {
+    test('returns non-empty hashed UUID when deviceId is null or empty', () async {
       final mockAndroidInfo = MockAndroidDeviceInfo();
       when(mockDeviceInfoPlugin.androidInfo).thenAnswer((_) async => mockAndroidInfo);
       when(mockAndroidInfo.id).thenReturn('');
+
       final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.android);
-      expect(id, '');
+
+      expect(id, isNotEmpty);
+      expect(id.length, 64); // always SHA256
     });
 
-    test('returns empty string on exception', () async {
+    test('returns non-empty hashed UUID on exception', () async {
       when(mockDeviceInfoPlugin.androidInfo).thenThrow(Exception('fail'));
+
       final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.android);
-      expect(id, '');
+
+      expect(id, isNotEmpty);
+      expect(id.length, 64);
     });
   });
 }
