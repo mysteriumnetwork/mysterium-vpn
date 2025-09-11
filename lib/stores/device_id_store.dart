@@ -29,6 +29,8 @@ abstract class _DeviceIDStore with Store {
   final DeviceInfoPlugin _deviceInfoPlugin;
   Future<String> Function()? _flutterUdid;
 
+  static final _sha256Regex = RegExp(r'^[a-f0-9]{64}$');
+
   @observable
   late ObservableFuture<String> deviceIdFuture;
 
@@ -65,7 +67,7 @@ abstract class _DeviceIDStore with Store {
     if (deviceId == null || deviceId.isEmpty) {
       return false;
     }
-    return RegExp(r'^[a-f0-9]{64}$').hasMatch(deviceId);
+    return _sha256Regex.hasMatch(deviceId);
   }
 
   Future<void> _saveDeviceId(String deviceId) async {
