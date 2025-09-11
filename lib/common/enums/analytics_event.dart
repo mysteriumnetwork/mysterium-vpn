@@ -1,3 +1,5 @@
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
+
 /// Analytics events that are sent to the analytics service.
 /// Events are sent as strings and converted to snake_case.
 /// The [name] of the event. Should contain 1 to 40 alphanumeric characters or underscores
@@ -21,7 +23,6 @@ enum AnalyticsEvent {
   emailLogin,
   gLogin,
   loginSignupScreen,
-  marketingConsentClicked,
   ppClickLoginScreen,
   tcsClickLoginScreen,
   signInButton,
@@ -100,10 +101,21 @@ enum AnalyticsEvent {
   paymentSuccess1m,
   paymentSuccess6m,
   paymentSuccess1y,
-  setMarketingConsentSuccess,
-  setMarketingConsentError,
   subscriptionCancellationSurvey,
   getWireguradKeyError,
   wireguardKeyUnavailable,
   wireguardKeysDoNotMatch,
+  createMarketingContactSuccess,
+  createMarketingContactError,
+  getMarketingContactSuccess,
+  getMarketingContactError,
+  updateMarketingContactSuccess,
+  updateMarketingContactError,
+  marketingConsentMarkedAccepted,
+  marketingConsentMarkedDeclined,
+  toggleMarketingConsent,
+  mapScroll,
+  mapPointClick;
+
+  String get formattedName => name.toSnakeCase;
 }

@@ -119,8 +119,8 @@ class __$$IPInfoImplCopyWithImpl<$Res> extends _$IPInfoCopyWithImpl<$Res, _$IPIn
 
 /// @nodoc
 @JsonSerializable()
-class _$IPInfoImpl implements _IPInfo {
-  _$IPInfoImpl({required this.ip, required this.country, required this.city});
+class _$IPInfoImpl extends _IPInfo {
+  const _$IPInfoImpl({required this.ip, required this.country, required this.city}) : super._();
 
   factory _$IPInfoImpl.fromJson(Map<String, dynamic> json) => _$$IPInfoImplFromJson(json);
 
@@ -166,11 +166,12 @@ class _$IPInfoImpl implements _IPInfo {
   }
 }
 
-abstract class _IPInfo implements IPInfo {
-  factory _IPInfo(
+abstract class _IPInfo extends IPInfo {
+  const factory _IPInfo(
       {required final String ip,
       required final String country,
       required final String city}) = _$IPInfoImpl;
+  const _IPInfo._() : super._();
 
   factory _IPInfo.fromJson(Map<String, dynamic> json) = _$IPInfoImpl.fromJson;
 

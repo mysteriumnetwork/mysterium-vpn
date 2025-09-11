@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 
 class SaleTag extends HookWidget {
@@ -27,16 +27,14 @@ class SaleTag extends HookWidget {
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
-            SvgPicture.asset(
-              Assets.tag,
+            Asset.icons.tag.svg(
               height: 240,
               fit: BoxFit.fill,
             ),
             Positioned.fill(
               child: Column(
                 children: [
-                  SvgPicture.asset(
-                    Assets.barcode,
+                  Asset.icons.barcode.svg(
                     fit: BoxFit.fill,
                     allowDrawingOutsideViewBox: true,
                     alignment: Alignment.topLeft,

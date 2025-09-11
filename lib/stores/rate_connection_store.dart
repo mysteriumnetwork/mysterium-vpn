@@ -68,7 +68,7 @@ abstract class _RateConnectionStore with Store {
                 ? RateConnectionReason.other.name
                 : _rateConnectionReasons.toList().map((e) => e.name).join(','),
             feedback: feedback,
-            country: _vpnStore.vpnConnection!.location.code,
+            country: _vpnStore.vpnConnection!.location.id,
             ipType: _vpnStore.vpnConnection!.location.ipType.name,
             publicKey: _vpnStore.wireguardKey!.publicKey,
           ),

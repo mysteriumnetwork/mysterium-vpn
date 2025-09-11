@@ -29,7 +29,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
         ).padding(bottom: 50),
         const AppVersionUpdateSetting(),
         if (settingCategory == SettingCategory.connection) const ConnectionSettings(),
-        if (settingCategory == SettingCategory.application) const ApplicationSettings(),
+        if (settingCategory == SettingCategory.preferences) const ApplicationSettings(),
         if (settingCategory == SettingCategory.account) const AccountSettings(),
         if (settingCategory == SettingCategory.qaToolbox) const QAToolbox(),
       ],
@@ -66,7 +66,7 @@ class _HeaderTitle extends StatelessWidget {
             title,
             fontSize: 20,
             fontWeight: FontWeight.w300,
-            color: Theme.of(context).secondaryHeaderColor,
+            color: Palette.purple,
           ),
         ],
       );

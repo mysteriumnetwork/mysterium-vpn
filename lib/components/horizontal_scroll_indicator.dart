@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 
 class HorizontalScrollIndicator extends HookWidget {
   const HorizontalScrollIndicator({
@@ -55,7 +55,7 @@ class HorizontalScrollIndicator extends HookWidget {
         final stackWidth = stackBox?.size.width ?? 0;
         final currentPosition = controller.positions.isNotEmpty ? controller.position.pixels : 0.0;
         controller.animateTo(
-          currentPosition + stackWidth,
+          min(currentPosition + stackWidth, controller.position.maxScrollExtent),
           duration: animationDuration,
           curve: Curves.easeInOut,
         );
@@ -134,9 +134,9 @@ class _Indicator extends HookWidget {
             ],
           ),
         ),
-        child: const Padding(
-          padding: EdgeInsets.only(top: 25, bottom: 25, left: 25, right: 8),
-          child: SvgIcon(asset: Assets.chevronRight),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 25, right: 8),
+          child: SvgIcon(asset: Asset.icons.chevronRight),
         ),
       ),
     );

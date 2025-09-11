@@ -21,10 +21,10 @@ on:
         required: true
         type: string
         default: "dev"
-      flavor_dart:
+      env_file:
         required: true
         type: string
-        default: "DEV"
+        default: ".env.dev"
 
 jobs:
 
@@ -77,7 +77,7 @@ jobs:
           git diff
 
       - name: Build Android app
-        run: fvm flutter build appbundle --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define "FLAVOR=${{ inputs.flavor_dart }}"
+        run: fvm flutter build appbundle --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define-from-file="${{ inputs.env_file }}"
 
       - name: Authenticate to Play Store
         id: google-play-auth

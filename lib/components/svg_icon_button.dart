@@ -1,6 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 // Project imports:
 
 class SvgIconButton extends StatelessWidget {
@@ -10,8 +11,9 @@ class SvgIconButton extends StatelessWidget {
     super.key,
   });
 
-  final String asset;
+  final SvgGenImage asset;
   final VoidCallback? onPressed;
+
   @override
   Widget build(BuildContext context) => IconButton(
         style: IconButton.styleFrom(

@@ -24,7 +24,9 @@ class UserData {
     this.subscriptionPurchaseId,
     this.shownBanners = const [],
     this.recentLocationCodes = const [],
+    this.marketingConsentShown = false,
   });
+
   @HiveField(0)
   String userId;
 
@@ -66,19 +68,21 @@ class UserData {
   @HiveField(12, defaultValue: <BannerType>[])
   List<BannerType> shownBanners;
 
+  @HiveField(13, defaultValue: false)
+  bool marketingConsentShown;
+
   set recentLocations(List<VPNLocation> locations) {
     recentVPNLocations = [
       ...locations,
-      if (recentLocationCodes.isNotEmpty)
-        ...recentLocationCodes.map((code) => VPNLocation(code: code)),
-    ].distinctBy((it) => (it.code, it.ipType)).toList();
+      if (recentLocationCodes.isNotEmpty) ...recentLocationCodes.map(VPNLocation.fromCode),
+    ].distinctBy((it) => (it.id, it.ipType)).toList();
     recentLocationCodes = [];
   }
 
   List<VPNLocation> get recentLocations => [
-        ...recentLocationCodes.map((code) => VPNLocation(code: code)),
+        ...recentLocationCodes.map(VPNLocation.fromCode),
         ...recentVPNLocations,
-      ].distinctBy((it) => (it.code, it.ipType)).toList();
+      ].distinctBy((it) => (it.id, it.ipType)).toList();
 
   @override
   String toString() => '''
@@ -93,6 +97,8 @@ recentVPNLocations: $recentVPNLocations,
 shownBanners: $shownBanners
 notSafeContentBlocker: $notSafeContentBlocker
 vpnPrivacyPolicyConsent: $vpnPrivacyPolicyConsent
+recentLocationCodes: $recentLocationCodes
+marketingConsentShown: $marketingConsentShown
 ''';
 }
 

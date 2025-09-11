@@ -19,6 +19,7 @@ import 'package:mysterium_vpn/components/lifecycle_listener.dart';
 import 'package:mysterium_vpn/components/network_logger_overlay.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/components/shortcuts.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/ft_checkers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
@@ -34,9 +35,7 @@ class MyApp extends HookConsumerWidget {
     final authSessionStore = ref.read(authSessionStorePOD);
     final routeDelegate = ref.read(routerDelegatePOD);
     final localStore = ref.read(localeStorePOD);
-    final env = ref.read(environmentPOD);
-    final appName = env.values.appName;
-    final flavor = env.flavor;
+    const appName = Env.appName;
     ref.watch(realIPInfoStorePOD);
 
     useEffect(
@@ -100,10 +99,7 @@ class MyApp extends HookConsumerWidget {
                             physics: const BouncingScrollPhysics(),
                           ),
                           child: FTCheckers(
-                            child: NetworkLoggerOverlayView(
-                              flavor: flavor,
-                              child: child!,
-                            ),
+                            child: NetworkLoggerOverlayView(child: child!),
                           ),
                         ),
                       ),

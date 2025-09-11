@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/components/circle_box.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/ripple.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/product_pricing.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -21,6 +22,7 @@ class ProductItemVariantA extends StatelessWidget {
   final PurchasableProduct productDetails;
   final Function(String productId) onProductSelected;
   final String? selectedProductId;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -29,8 +31,8 @@ class ProductItemVariantA extends StatelessWidget {
       onTap: () => onProductSelected(productDetails.id),
       child: Row(
         children: [
-          const SvgIcon(
-            asset: Assets.subscriptionItem,
+          SvgIcon(
+            asset: Asset.icons.subscriptionItem,
           ).paddingDirectional(end: getMediaWidth(context) * 0.05),
           Expanded(
             child: DefaultTextStyle(
@@ -73,11 +75,10 @@ class _CheckMark extends StatelessWidget {
   });
 
   final bool isSelected;
+
   @override
   Widget build(BuildContext context) => isSelected
-      ? const SvgIcon(
-          asset: Assets.checkmark,
-        )
+      ? SvgIcon(asset: Asset.icons.checkmark)
       : CircleBox(
           color: Theme.of(context).secondaryHeaderColor,
           size: 20,

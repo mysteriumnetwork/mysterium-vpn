@@ -1,12 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/api_version.dart';
 import 'package:mysterium_vpn/components/app_version.dart';
 import 'package:mysterium_vpn/components/desktop_page_header.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/category_item.dart';
@@ -17,6 +19,7 @@ class SettingsDesktopLeftPanel extends HookConsumerWidget {
   const SettingsDesktopLeftPanel({
     super.key,
   });
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settingCategory = ref.watch(selectedCategoryProvider);
@@ -32,7 +35,7 @@ class SettingsDesktopLeftPanel extends HookConsumerWidget {
             context: context,
             analyticsStore: ref.read(analyticsStorePOD),
           ),
-          asset: context.c.isDarkMode ? Assets.reportDarkIcon : Assets.reportLightIcon,
+          asset: Asset.icons.reportAdaptive(context),
         ).padding(bottom: 10),
         ListView(
           shrinkWrap: true,
@@ -43,9 +46,9 @@ class SettingsDesktopLeftPanel extends HookConsumerWidget {
               onTap: () => updateSelectedCategory(ref, SettingCategory.connection),
             ),
             CategoryItem(
-              isSelected: settingCategory == SettingCategory.application,
-              title: SettingCategory.application.trKey.tr(),
-              onTap: () => updateSelectedCategory(ref, SettingCategory.application),
+              isSelected: settingCategory == SettingCategory.preferences,
+              title: SettingCategory.preferences.trKey.tr(),
+              onTap: () => updateSelectedCategory(ref, SettingCategory.preferences),
             ),
             CategoryItem(
               isSelected: settingCategory == SettingCategory.account,

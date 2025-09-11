@@ -1,9 +1,12 @@
+import 'dart:ui';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/utils/mocks.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
@@ -46,6 +49,24 @@ void main() {
     when(mockApiConnection.connectionConfig(ipType: expectedIPType)).thenAnswer(
       (_) async => Response(requestOptions: RequestOptions(), data: data),
     );
+
+    when(mockApiConnection.connectionLocations(ipType: expectedIPType)).thenAnswer(
+      (_) async {
+        final countries = {...data.countries, ...data.topCountries};
+        return Response(
+          requestOptions: RequestOptions(),
+          data: [
+            for (final country in countries)
+              ConnectionLocation(
+                country: country,
+                total: 5,
+                cities: [],
+                translations: {'en': country},
+              ),
+          ],
+        );
+      },
+    );
   }
 
   setUp(() async {
@@ -59,13 +80,15 @@ void main() {
     mockPing = MockPing();
 
     mockResidential = const [
-      VPNLocation(code: 'US'),
-      VPNLocation(code: 'DE'),
+      Mocks.locationResidentialUS,
+      Mocks.locationResidentialDE,
     ];
     mockDatacenter = const [
-      VPNLocation(code: 'US', ipType: IPType.datacenter),
-      VPNLocation(code: 'DE', ipType: IPType.datacenter),
+      Mocks.locationDatacenterUS,
+      Mocks.locationDatacenterDE,
     ];
+
+    when(mockLocaleStore.currentLocale).thenAnswer((_) => const Locale('en'));
 
     when(mockLocalDB.getLocations(IPType.residential)).thenAnswer(
       (_) => VPNLocations(locations: mockResidential),
@@ -110,32 +133,43 @@ void main() {
   group('LocationsStore', () {
     test('returns filtered recent locations', () async {
       when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => mockResidential);
+      when(mockLocalDB.getLocations(IPType.residential)).thenReturn(
+        VPNLocations(locations: mockResidential),
+      );
       when(
         mockFilterService.filterRecentLocations(
           mockResidential,
           availableLocations: {...mockResidential},
-          keyword: 'us',
+          keyword: 'un',
+          locale: 'en',
         ),
-      ).thenReturn([const VPNLocation(code: 'US')]);
+      ).thenReturn([Mocks.locationResidentialUS]);
 
-      locationsStore.setLocationKeyword('US', Duration.zero);
-      await Future.delayed(Duration.zero); // ensure the debounce time has passed
+      await locationsStore.residentialLocationsFuture;
       await locationsStore.recentLocationsFuture;
 
-      expect(locationsStore.recentLocations, [const VPNLocation(code: 'US')]);
+      locationsStore.setLocationKeyword('un', Duration.zero);
+      await Future.delayed(Duration.zero); // ensure the debounce time has passed
+
+      expect(locationsStore.recentLocations, [Mocks.locationResidentialUS]);
     });
 
     test('returns filtered locations', () async {
-      await locationsStore.locationsStream.first;
+      await locationsStore.locationsFuture;
 
-      when(mockFilterService.filterLocations(mockResidential, keyword: 'de'))
-          .thenReturn([const VPNLocation(code: 'DE')]);
+      when(
+        mockFilterService.filterLocations(
+          mockResidential,
+          keyword: 'de',
+          locale: 'en',
+        ),
+      ).thenReturn([Mocks.locationResidentialDE]);
 
       locationsStore.setLocationKeyword('de', Duration.zero);
 
       await Future.delayed(Duration.zero); // ensure the debounce time has passed
 
-      expect(locationsStore.locations, [const VPNLocation(code: 'DE')]);
+      expect(locationsStore.locations, [Mocks.locationResidentialDE]);
     });
 
     test('returns random location from recent locations', () async {
@@ -145,6 +179,7 @@ void main() {
           mockResidential,
           keyword: '',
           availableLocations: {...mockResidential},
+          locale: 'en',
         ),
       ).thenReturn(mockResidential);
 
@@ -174,7 +209,15 @@ void main() {
       await newStore.recentLocationsFuture;
       await newStore.refresh(IPType.residential);
       final randomLocation = newStore.randomLocation;
-      expect(randomLocation, const VPNLocation(ipType: IPType.closest));
+      expect(
+        randomLocation,
+        const VPNLocation(
+          ipType: IPType.closest,
+          countryCode: '',
+          id: '',
+          translations: {'en': ''},
+        ),
+      );
     });
 
     test('returns null when no locations available for random selection', () async {
@@ -201,11 +244,16 @@ void main() {
     });
 
     test('refresh updates locations', () async {
-      when(mockFilterService.filterLocations(mockResidential, keyword: ''))
-          .thenReturn(mockResidential);
+      when(
+        mockFilterService.filterLocations(
+          mockResidential,
+          keyword: '',
+          locale: 'en',
+        ),
+      ).thenReturn(mockResidential);
 
       await locationsStore.refresh();
-      await locationsStore.locationsStream.first;
+      await locationsStore.locationsFuture;
 
       expect(locationsStore.locations, mockResidential);
     });

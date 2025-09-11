@@ -3,7 +3,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/enums/rate_connection.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/common/utils/mocks.dart';
 import 'package:mysterium_vpn/models/vpn_connection.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -99,9 +99,7 @@ void main() {
       when(mockVpnStore.vpnConnection).thenReturn(mockVpnConnection);
       when(mockVpnStore.wireguardKey).thenReturn(mockKeyPair);
       when(mockKeyPair.publicKey).thenReturn('pubkey');
-      when(mockVpnConnection.location).thenReturn(
-        const VPNLocation(code: 'US'),
-      );
+      when(mockVpnConnection.location).thenReturn(Mocks.locationResidentialUS);
       when(
         mockApiService.rateConnection(
           request: anyNamed('request'),
@@ -143,9 +141,7 @@ void main() {
       when(mockVpnStore.vpnConnection).thenReturn(mockVpnConnection);
       when(mockVpnStore.wireguardKey).thenReturn(mockKeyPair);
       when(mockKeyPair.publicKey).thenReturn('pubkey');
-      when(mockVpnConnection.location).thenReturn(
-        const VPNLocation(code: 'US'),
-      );
+      when(mockVpnConnection.location).thenReturn(Mocks.locationResidentialUS);
       when(
         mockApiService.rateConnection(
           request: anyNamed('request'),
@@ -189,9 +185,7 @@ void main() {
       when(mockVpnStore.vpnConnection).thenReturn(mockVpnConnection);
       when(mockVpnStore.wireguardKey).thenReturn(mockKeyPair);
       when(mockKeyPair.publicKey).thenReturn('pubkey');
-      when(mockVpnConnection.location).thenReturn(
-        const VPNLocation(code: 'US'),
-      );
+      when(mockVpnConnection.location).thenReturn(Mocks.locationResidentialUS);
       when(
         mockApiService.rateConnection(
           request: anyNamed('request'),

@@ -1,9 +1,10 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
-import 'package:mysterium_vpn/models/flavor_config.dart';
+import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:mysterium_vpn/stores/remote_config/config_cat_store.dart';
 
 part 'remote_config_store.g.dart';
@@ -36,6 +37,11 @@ enum _FeatureToggleKey {
   cancelSurveyOptions,
   useStoreVersionChecker,
   enableQaHelpers,
+  showCitiesAndStates,
+  countriesWithCitiesOnMap,
+  showUserIntents,
+  userIntentBlacklist,
+  userIntentsRefreshInterval,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -44,11 +50,11 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   RemoteConfigStoreBase(
     super.client,
     super.logger,
-    super.ipInfoStore,
-    this._env,
-  );
+    super.ipInfoStore, {
+    bool isDev = false,
+  }) : _isDev = isDev;
 
-  final FlavorConfig _env;
+  final bool _isDev;
 
   @computed
   bool get isServiceAvailable {
@@ -270,10 +276,71 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
     if (config.containsKey(_FeatureToggleKey.enableQaHelpers.name)) {
       return config[_FeatureToggleKey.enableQaHelpers.name] as bool;
     }
-    if (_env.isDev) {
-      return true; // Enable QA helpers in development mode
+    return _isDev; // Enable QA helpers in development mode
+  }
+
+  @computed
+  bool get showCitiesAndStates {
+    if (config.containsKey(_FeatureToggleKey.showCitiesAndStates.name)) {
+      return config[_FeatureToggleKey.showCitiesAndStates.name] as bool;
     }
-    return false; // Disable QA helpers in production
+    return false;
+  }
+
+  @computed
+  Set<String> get countriesWithCitiesOnMap {
+    try {
+      if (config.containsKey(_FeatureToggleKey.countriesWithCitiesOnMap.name)) {
+        final raw = config[_FeatureToggleKey.countriesWithCitiesOnMap.name];
+        final decoded = jsonDecode(raw.toString()) as List;
+        return decoded.map((it) => it.toString()).toSet();
+      }
+    } catch (e, stack) {
+      logger.handle(e, stack);
+    }
+    return const <String>{};
+  }
+
+  @computed
+  bool get showUserIntents {
+    if (config.containsKey(_FeatureToggleKey.showUserIntents.name)) {
+      return config[_FeatureToggleKey.showUserIntents.name] as bool;
+    }
+    return false;
+  }
+
+  @computed
+  Set<UserIntent> get userIntentBlacklist {
+    try {
+      if (config.containsKey(_FeatureToggleKey.userIntentBlacklist.name)) {
+        final raw = config[_FeatureToggleKey.userIntentBlacklist.name];
+        final decoded = jsonDecode(raw.toString()) as List;
+        final keys = decoded.map((it) => it.toString()).toSet();
+
+        return keys
+            .map(
+              (key) => UserIntent.values.firstWhereOrNull(
+                (it) => it.key == key || it.name == key,
+              ),
+            )
+            .nonNulls
+            .toSet();
+      }
+    } catch (e, stack) {
+      logger.handle(e, stack);
+    }
+    return {};
+  }
+
+  @computed
+  Duration get userIntentsRefreshInterval {
+    if (config.containsKey(_FeatureToggleKey.userIntentsRefreshInterval.name)) {
+      final raw = config[_FeatureToggleKey.userIntentsRefreshInterval.name];
+      if (raw is int) {
+        return Duration(seconds: raw);
+      }
+    }
+    return const Duration(minutes: 10);
   }
 
   Map<String, String> get asUserProperties =>

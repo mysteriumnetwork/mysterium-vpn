@@ -1,0 +1,34 @@
+targets:
+  $default:
+    builders:
+      flutter_gen_runner: # or flutter_gen
+        options:
+          output: lib/gen/ # Optional
+          line_length: 100 # Optional
+          parse_metadata: true # Optional
+
+          # Optional
+          integrations:
+            image: true
+            flutter_svg: true
+            lottie: true
+            rive: false
+
+          assets:
+            exclude:
+              - assets/map_tiles/
+              - assets/flags/
+            enabled: true # Optional
+            outputs: # Optional
+              # Set to true if you want this package to be a package dependency
+              # See: https://flutter.dev/docs/development/ui/assets-and-images#from-packages
+              package_parameter_enabled: false # Optional
+              # Available values:
+              # - camel-case
+              # - snake-case
+              # - dot-delimiter
+              style: dot-delimiter # Optional
+              class_name: Asset # Since we already have Assets class that we are deprecating
+
+          colors:
+            enabled: false # Optional

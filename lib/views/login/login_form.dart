@@ -17,6 +17,7 @@ import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/social_login_button.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
@@ -35,7 +36,6 @@ class SignInForm extends HookConsumerWidget {
       final form = singIn();
       return form;
     });
-    final marketingConsentForm = useMemoized(marketingConsent);
     final height = getMediaHeight(context);
 
     useEffect(
@@ -75,7 +75,7 @@ class SignInForm extends HookConsumerWidget {
                           },
                     isLoading: signInStatus == FutureStatus.pending &&
                         store.authenticatingType == GrantType.apple,
-                    asset: Assets.appleLogo,
+                    asset: Asset.icons.apple,
                     label: LocaleKeys.continueWithApple.tr(),
                   ).padding(bottom: 20),
                   SocialLoginButton(
@@ -87,7 +87,7 @@ class SignInForm extends HookConsumerWidget {
                           },
                     isLoading: signInStatus == FutureStatus.pending &&
                         store.authenticatingType == GrantType.google,
-                    asset: Assets.googleLogo,
+                    asset: Asset.icons.google,
                     label: LocaleKeys.continueWithGoogle.tr(),
                   ),
                   Row(
@@ -138,33 +138,6 @@ class SignInForm extends HookConsumerWidget {
                         ValidationMessage.email: (_) => LocaleKeys.emailIsNotValid.tr(),
                       },
                     ).padding(bottom: 10),
-                  ),
-                  ReactiveForm(
-                    formGroup: marketingConsentForm,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ReactiveCheckbox(
-                          formControlName: 'consent',
-                          onChanged: (control) {
-                            if (control.value != null) {
-                              analyticsStore.logEvent(
-                                AnalyticsEvent.marketingConsentClicked,
-                                parameters: {
-                                  'consent': control.value,
-                                },
-                              );
-                              store.marketingConsent = control.value!;
-                            }
-                          },
-                        ),
-                        EasyText(
-                          LocaleKeys.emaillCommunicationsApproval.tr(),
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
-                        ).expanded(),
-                      ],
-                    ).padding(bottom: height * 0.03),
                   ),
                   ReactiveFormConsumer(
                     builder: (_, signInForm, child) => EasyButton(

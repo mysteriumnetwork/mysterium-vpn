@@ -7,6 +7,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -15,6 +16,7 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/ripple.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -100,7 +102,7 @@ class _ProductPickerDialog extends HookConsumerWidget {
                 width: 35,
                 height: 35,
                 child: SvgIconButton(
-                  asset: context.c.isDarkMode ? Assets.closeDark : Assets.closeLight,
+                  asset: Asset.icons.close(context),
                   onPressed: Navigator.of(context).pop,
                 ),
               ),
@@ -183,9 +185,11 @@ class _ProductsContainer extends StatelessWidget {
     required this.selectedProductId,
     required this.analyticsStore,
   });
+
   final List<PurchasableProduct> products;
   final ValueNotifier<String> selectedProductId;
   final AnalyticsStore analyticsStore;
+
   @override
   Widget build(BuildContext context) => ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(16)),
@@ -228,6 +232,7 @@ class ContaineredProduct extends StatelessWidget {
     this.selectProduct,
     super.key,
   });
+
   final PurchasableProduct product;
   final VoidCallback? selectProduct;
   final bool isSelected;
@@ -249,9 +254,9 @@ class ContaineredProduct extends StatelessWidget {
             ),
           ),
           if (isSelected)
-            const Padding(
-              padding: EdgeInsets.only(left: 8),
-              child: SvgIcon(asset: Assets.checkmark),
+            Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: SvgIcon(asset: Asset.icons.checkmark),
             ),
         ],
       ).padding(horizontal: 14, vertical: 14).width(double.infinity),

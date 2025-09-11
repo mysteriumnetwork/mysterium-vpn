@@ -2,6 +2,7 @@ part of 'hooks.dart';
 
 Future<void> Function({
   VPNLocation? location,
+  UserIntent? intent,
   AnalyticsEventSelector? selectEvent,
 }) useHandleToggleConnection() {
   final context = useContext();
@@ -9,7 +10,11 @@ Future<void> Function({
   final handleSetupTunnel = useHandleSetupTunnel();
 
   return useCallback(
-    ({VPNLocation? location, AnalyticsEventSelector? selectEvent}) async {
+    ({
+      VPNLocation? location,
+      UserIntent? intent,
+      AnalyticsEventSelector? selectEvent,
+    }) async {
       final ref = ProviderScope.containerOf(context, listen: false);
       final vpnStore = ref.read(vpnStorePOD);
       final analyticsStore = ref.read(analyticsStorePOD);
@@ -19,14 +24,15 @@ Future<void> Function({
           vpnStore.isConnected ? analyticsStore.logDisconnect : analyticsStore.logConnect;
       logEvent(
         location,
-        selectEvent?.call(vpnStore.isConnected),
+        event: selectEvent?.call(vpnStore.isConnected),
+        intent: intent,
       );
 
       try {
         if (location != null) {
           await locationsStore.setIPType(location.ipType);
         }
-        await vpnStore.toggleConnection(location: location);
+        await vpnStore.toggleConnection(location: location, intent: intent);
         if (location == null && vpnStore.location != null) {
           await locationsStore.setIPType(vpnStore.location!.ipType);
         }
@@ -39,7 +45,7 @@ Future<void> Function({
       } on TunnelSetupRequiredException catch (_) {
         final permissionsGiven = await handleSetupTunnel();
         if (permissionsGiven) {
-          await vpnStore.toggleConnection(location: location);
+          await vpnStore.toggleConnection(location: location, intent: intent);
         }
       }
     },

@@ -9,6 +9,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/map_controller_hook.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
@@ -36,6 +38,7 @@ class LocationsMap extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final analyticsStore = ref.watch(analyticsStorePOD);
     final theme = Theme.of(context);
     final controller = useMapController();
     final screenType = useScreenType();
@@ -56,10 +59,18 @@ class LocationsMap extends HookConsumerWidget {
     void handlePressed(VPNLocation location, LatLng point) {
       handleMove(point);
       onLocationPressed?.call(location);
+      analyticsStore.logMapLocationClick(location.id, point);
     }
 
+    final locations = useMemoized(
+      () =>
+          this.locations?.flattenBy((it) => it.children ?? const <VPNLocation>[]).toList() ??
+          const <VPNLocation>[],
+      [this.locations],
+    );
+
     final markers = _useLocationMarkers(
-      locations: locations,
+      data: locations,
       activeLocation: activeLocation,
       onLocationPressed: handlePressed,
     );
@@ -75,10 +86,21 @@ class LocationsMap extends HookConsumerWidget {
       });
     });
 
+    useEffect(
+      () => controller.mapEventStream
+          .where((it) => it is MapEventMove)
+          .cast<MapEventMove>()
+          .listen(
+            (it) => ref.read(analyticsStorePOD).logMapScroll(from: it.oldCamera, to: it.camera),
+          )
+          .cancel,
+      [controller],
+    );
+
     return FlutterMap(
       mapController: controller,
       options: MapOptions(
-        initialZoom: kMapZoomLevels.max,
+        initialZoom: kTileZoomLevels.max,
         initialCenter: position ?? const LatLng(0, 0),
         cameraConstraint: CameraConstraint.contain(bounds: kWorldBounds),
         backgroundColor: theme.colorScheme.surface,
@@ -98,27 +120,52 @@ class LocationsMap extends HookConsumerWidget {
 }
 
 List<Marker> _useLocationMarkers({
-  required List<VPNLocation>? locations,
+  required List<VPNLocation> data,
   required VPNLocation? activeLocation,
   required Function(VPNLocation, LatLng)? onLocationPressed,
 }) {
+  final remoteConfigStore = useProvider(remoteConfigStorePOD);
   final latLngStore = useProvider(latLngStorePOD);
   final onLocationPressedRef = useRef(onLocationPressed)..value = onLocationPressed;
 
   return useComputedValue<List<Marker>>(
     () {
-      if (locations == null || latLngStore.coordinatesFuture.value == null) {
-        return [];
-      }
+      final cities = remoteConfigStore.showCitiesAndStates
+          ? {
+              ...data.where(
+                (it) =>
+                    !it.isCountry &&
+                    remoteConfigStore.countriesWithCitiesOnMap
+                        .contains(it.countryCode.toUpperCase()),
+              ),
+            }
+          : const <VPNLocation>{};
 
-      return locations
+      final countries = {
+        ...data.where(
+          (it) =>
+              it.isCountry &&
+              cities.none((city) => city.countryCode.toUpperCase() == it.countryCode.toUpperCase()),
+        ),
+      };
+
+      final sorted = {
+        ...cities,
+        ...countries.where((it) => it.id != activeLocation?.id),
+        ...countries.where((it) => it.id == activeLocation?.id),
+      };
+
+      return sorted
           .map((it) {
-            final point = latLngStore.coordinatesFor(it.code);
+            final point = it.isCountry
+                ? latLngStore.coordinatesForCountry(it.countryCode)
+                : latLngStore.coordinatesForCity(it);
+
             if (point == null) {
               return null;
             }
 
-            final isActive = activeLocation?.code == it.code;
+            final isActive = activeLocation?.id == it.id;
             final size = isActive ? const Size.square(42) : const Size.square(16);
 
             return Marker(
@@ -127,18 +174,14 @@ List<Marker> _useLocationMarkers({
               width: size.width,
               child: _GestureHandler(
                 onPressed: () => onLocationPressedRef.value?.call(it, point),
-                child: LocationMarker(
-                  size: size * .7,
-                  txt: it.code,
-                  isActive: isActive,
-                ),
+                child: LocationMarker(size: size * .7, isActive: isActive),
               ),
             );
           })
           .nonNulls
           .toList();
     },
-    [onLocationPressedRef, latLngStore, locations, activeLocation],
+    [onLocationPressedRef, latLngStore, data, activeLocation?.id],
   );
 }
 

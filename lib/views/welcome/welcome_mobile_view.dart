@@ -19,9 +19,11 @@ class WelcomeMobileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          const UnauthenticatedHeader().padding(
-            vertical: getMediaHeight(context) * 0.03,
-            horizontal: 30,
+          UnauthenticatedHeader(
+            padding: EdgeInsets.symmetric(
+              vertical: getMediaHeight(context) * 0.03,
+              horizontal: 30,
+            ),
           ),
           const Expanded(
             child: LoginHeadlines(),

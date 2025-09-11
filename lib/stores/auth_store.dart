@@ -11,8 +11,8 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/models/token_request.dart';
 import 'package:mysterium_vpn/models/token_response.dart';
@@ -41,7 +41,6 @@ abstract class _AuthStore with Store {
     required AuthSessionStore authSessionStore,
     required AppLinks appLinks,
     required AnalyticsStore analyticsStore,
-    required FlavorConfig env,
     required Talker logger,
     required ABTestingStore abTestingStore,
     required UserPreferencesStore userPreferencesStore,
@@ -50,7 +49,6 @@ abstract class _AuthStore with Store {
         _authSessionStore = authSessionStore,
         _appLinks = appLinks,
         _analyticsStore = analyticsStore,
-        _env = env,
         _logger = logger,
         _abTestingStore = abTestingStore {
     refreshTokenCallback = refreshAuthToken;
@@ -62,7 +60,6 @@ abstract class _AuthStore with Store {
   final AppLinks _appLinks;
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
   final AnalyticsStore _analyticsStore;
-  final FlavorConfig _env;
   final Talker _logger;
   final ABTestingStore _abTestingStore;
   final UserPreferencesStore _userPreferencesStore;
@@ -107,7 +104,7 @@ abstract class _AuthStore with Store {
               appLink: appLink.toString(),
             );
 
-            verifyMagicLinkAndAuthenticate(appLink);
+            await verifyMagicLinkAndAuthenticate(appLink);
           } else {
             Sentry.captureException(TokenAlreadyUsedException());
             showSnackbar(LocaleKeys.tokenAlreadyUsed.tr());
@@ -185,13 +182,6 @@ abstract class _AuthStore with Store {
         authTokens.refreshToken,
       );
       _analyticsStore.setLogin(grantType);
-      if (!grantType.isRefreshToken) {
-        unawaited(
-          _userPreferencesStore.setMarketingConsent(
-            consent: marketingConsent,
-          ),
-        );
-      }
     } on ApiException catch (e) {
       showSnackbar(e.message);
     } catch (e) {
@@ -207,7 +197,7 @@ abstract class _AuthStore with Store {
     // Set auth user
     await _localDb.setUser(user);
     final userSettings = await _localDb.getUserData();
-
+    _userPreferencesStore.initStore();
     _logger.info(userSettings.toString());
   }
 
@@ -346,7 +336,7 @@ abstract class _AuthStore with Store {
     );
     final authUri = Uri(
       scheme: 'https',
-      host: _env.values.webAppUrl,
+      host: Env.webAppUrl,
       path: '/oauth/authorize',
       queryParameters: {
         'client_id': 'app',
