@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/connect_text_button.dart';
 import 'package:mysterium_vpn/components/flag.dart';
@@ -25,9 +26,9 @@ class RecentLocationItem extends HookConsumerWidget {
     final theme = Theme.of(context);
     final vpnStore = ref.watch(vpnStorePOD);
     final onTap = useComputedValue(() => vpnStore.isLoading ? null : this.onTap, [this.onTap]);
-    final countryName = location.code.tr();
+    final countryName = location.getName(context);
     return RawMaterialButton(
-      onPressed: onTap,
+      onPressed: null,
       elevation: 0,
       hoverElevation: 0,
       highlightElevation: 0,
@@ -45,7 +46,7 @@ class RecentLocationItem extends HookConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               spacing: 12,
               children: [
-                Flag(countryCode: location.code, size: 30),
+                Flag(countryCode: location.countryCode, size: 30),
                 Flexible(
                   child: AutoSizeText(
                     countryName,

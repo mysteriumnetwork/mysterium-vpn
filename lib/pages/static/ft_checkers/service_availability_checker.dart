@@ -5,10 +5,12 @@ import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/bottom_spacer.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class ServiceAvailabilityChecker extends ConsumerWidget {
   const ServiceAvailabilityChecker({required this.child, super.key});
+
   final Widget child;
 
   @override
@@ -30,8 +32,8 @@ class ServiceAvailabilityChecker extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SvgIcon(
-                    asset: Assets.splashLogo,
+                  SvgIcon(
+                    asset: Asset.logo.splashLogo,
                     width: 150,
                   ),
                   const SizedBox(height: 40),

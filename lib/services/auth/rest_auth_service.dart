@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
-import 'package:mysterium_vpn/models/flavor_config.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/pkce.dart';
 import 'package:mysterium_vpn/models/token_request.dart';
 import 'package:mysterium_vpn/models/token_response.dart';
@@ -24,22 +24,20 @@ class RestAuthService extends AuthService {
     required NetworkService networkService,
     required AuthSessionStore authSessionStore,
     required Talker logger,
-    required FlavorValues env,
   })  : _apiAuth = api.getAuthentication(),
         _networkService = networkService,
         _authSessionStore = authSessionStore,
-        _logger = logger,
-        _env = env {
+        _logger = logger {
     _init();
   }
 
   final Authentication _apiAuth;
   final NetworkService _networkService;
+
   // TODO(Kristiajn):  Remove this dependency store should not be used in a service
   final AuthSessionStore _authSessionStore;
   final _securedStorage = SecureStorageService.instance;
   final Talker _logger;
-  final FlavorValues _env;
   final GoogleSignIn googleSignIn = GoogleSignIn.instance;
   late final Future<void> _ensureInitialized;
 
@@ -161,10 +159,8 @@ class RestAuthService extends AuthService {
           AppleIDAuthorizationScopes.fullName,
         ],
         webAuthenticationOptions: WebAuthenticationOptions(
-          clientId: _env.appleClientId,
-          redirectUri: Uri.parse(
-            _env.appleRedirectUri,
-          ),
+          clientId: Env.appleClientId,
+          redirectUri: Uri.parse(Env.appleRedirectUri),
         ),
       );
       return credential.identityToken!;

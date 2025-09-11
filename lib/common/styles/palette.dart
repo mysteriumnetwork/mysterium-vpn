@@ -29,11 +29,13 @@ abstract class Palette {
   static const Color grayScaffold = Color(0xFFA09EB7);
   static const Color darkPurple = Color(0xFF4B486C);
   static const Color semiTransparentLightBlack = Color(0x666A678E);
+  static const Color duskyPurple = Color(0xff524E77);
 
   Color get highlightColor;
   Color get secondaryColor;
+  Color get subtitleColor;
   Color get lightTextColor;
-  Color get backgroundGolor;
+  Color get backgroundColor;
   Color get darkTextColor;
   Color get primaryColor;
   Color get surfaceColor;
@@ -56,6 +58,9 @@ abstract class Palette {
   Color get tertiaryContainer;
   Color get alertButtonsOutlineColor;
   Color get connectionTileBackgroundColor;
+  Color get tooltipBackgroundColor;
+  Color get disabledButtonBackgroundColor;
+  Color get disabledButtonForegroundColor;
 
   MaterialColor get swatchColor;
 }
@@ -68,13 +73,16 @@ class LightPalette implements Palette {
   Color get secondaryColor => Palette.black;
 
   @override
+  Color get subtitleColor => Palette.lightBlack;
+
+  @override
   Color get lightTextColor => Palette.lightBlue;
 
   @override
   Color get darkTextColor => Palette.lightBlack;
 
   @override
-  Color get backgroundGolor => Palette.veryLightGrey;
+  Color get backgroundColor => Palette.veryLightGrey;
 
   @override
   Color get primaryColor => Palette.white;
@@ -141,6 +149,15 @@ class LightPalette implements Palette {
 
   @override
   Color get connectionTileBackgroundColor => Palette.white;
+
+  @override
+  Color get tooltipBackgroundColor => Palette.white;
+
+  @override
+  Color get disabledButtonBackgroundColor => Palette.lightBlue;
+
+  @override
+  Color get disabledButtonForegroundColor => Palette.lightBlack;
 }
 
 class DarkPalette implements Palette {
@@ -151,13 +168,16 @@ class DarkPalette implements Palette {
   Color get secondaryColor => Palette.white;
 
   @override
+  Color get subtitleColor => Palette.lightBlue;
+
+  @override
   Color get lightTextColor => Palette.lightBlack;
 
   @override
   Color get darkTextColor => Palette.lightBlack;
 
   @override
-  Color get backgroundGolor => Palette.darkBlue;
+  Color get backgroundColor => Palette.darkBlue;
 
   @override
   Color get primaryColor => Palette.black;
@@ -224,6 +244,15 @@ class DarkPalette implements Palette {
 
   @override
   Color get connectionTileBackgroundColor => Palette.deepPurple;
+
+  @override
+  Color get tooltipBackgroundColor => Palette.duskyPurple;
+
+  @override
+  Color get disabledButtonBackgroundColor => Palette.lightBlue;
+
+  @override
+  Color get disabledButtonForegroundColor => Palette.lightBlack;
 }
 
 Map<int, Color> color = const {

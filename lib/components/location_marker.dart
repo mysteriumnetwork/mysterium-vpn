@@ -5,13 +5,11 @@ class LocationMarker extends StatelessWidget {
   const LocationMarker({
     required this.size,
     this.isActive = false,
-    this.txt = '',
     super.key,
   });
 
   final Size size;
   final bool isActive;
-  final String txt;
 
   @override
   Widget build(BuildContext context) {

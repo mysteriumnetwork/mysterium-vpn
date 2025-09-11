@@ -7,8 +7,9 @@ import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/flavor_config.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/views/settings/action_button.dart';
@@ -21,16 +22,12 @@ class AppVersionUpdateSetting extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final config = ref.watch(environmentPOD);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
 
     return Observer(
       builder: (context) {
-        if (!shouldShowAppUpdateBanner(
-          remoteConfigStore,
-          config,
-        )) {
+        if (!shouldShowAppUpdateBanner(remoteConfigStore)) {
           return const SizedBox.shrink();
         }
 
@@ -52,11 +49,11 @@ class AppVersionUpdateSetting extends ConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 17,
                   backgroundColor: Palette.purple,
                   child: SvgIcon(
-                    asset: Assets.appUpdate,
+                    asset: Asset.icons.appUpdate,
                     width: 16,
                     height: 16,
                   ),
@@ -89,10 +86,9 @@ class AppVersionUpdateSetting extends ConsumerWidget {
 
   bool shouldShowAppUpdateBanner(
     RemoteConfigStore remoteConfigStore,
-    FlavorConfig flavorConfig,
   ) {
     final latestStableAppVersion = remoteConfigStore.latestStableAppVersion;
-    final currentBuildVersion = flavorConfig.buildInfo.buildVersion;
+    final currentBuildVersion = Env.buildInfo.buildVersion;
 
     if (currentBuildVersion.compareTo(latestStableAppVersion) >= 0) {
       return false;

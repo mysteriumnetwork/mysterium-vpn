@@ -1,12 +1,15 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mysterium_vpn/entrypoints/environment.dart';
+import 'package:mysterium_vpn/entrypoints/app_initializer.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:patrol/patrol.dart';
 
 void main() {
-  final environment = Environment('DEV');
+  late final AppInitializer environment;
   patrolSetUp(() async {
     WidgetsFlutterBinding.ensureInitialized();
+    await Env.init();
+    environment = AppInitializer();
     await environment.init();
   });
 

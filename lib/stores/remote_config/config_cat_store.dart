@@ -13,14 +13,15 @@ import 'package:talker/talker.dart';
 abstract class ConfigCatStore with Store {
   ConfigCatStore(
     this._client,
-    this._logger,
+    this.logger,
     this._ipInfoStore,
   ) {
     _init();
   }
 
   final ConfigCatClient _client;
-  final Talker _logger;
+  @protected
+  final Talker logger;
   final RealIPInfoStore _ipInfoStore;
 
   @readonly
@@ -42,7 +43,7 @@ abstract class ConfigCatStore with Store {
       configFuture = configFuture.replace(_fetch());
       await configFuture;
     } catch (e, stack) {
-      _logger.handle(e, stack);
+      logger.handle(e, stack);
     }
   }
 
@@ -54,12 +55,12 @@ abstract class ConfigCatStore with Store {
 
       final result = await _client.forceRefresh();
       if (!result.isSuccess) {
-        _logger.warning('Failed to refresh ConfigCat: ${result.error}');
+        logger.warning('Failed to refresh ConfigCat: ${result.error}');
       }
 
       return await _client.getAllValues();
     } catch (e, stack) {
-      _logger.handle(e, stack);
+      logger.handle(e, stack);
       return {};
     }
   }
@@ -72,7 +73,7 @@ abstract class ConfigCatStore with Store {
       }
       return await _client.getAllValues();
     } catch (e, stack) {
-      _logger.handle(e, stack);
+      logger.handle(e, stack);
       return {};
     }
   }
@@ -93,7 +94,7 @@ abstract class ConfigCatStore with Store {
       }
       user = (identifier, email);
     } catch (e, stack) {
-      _logger.handle(e, stack);
+      logger.handle(e, stack);
       user = ('anonymous', 'anonymous');
     }
 
@@ -102,7 +103,7 @@ abstract class ConfigCatStore with Store {
       try {
         ipInfo = await _ipInfoStore.infoFuture;
       } catch (e, stack) {
-        _logger.handle(e, stack);
+        logger.handle(e, stack);
         ipInfo = null;
       }
     }
@@ -111,7 +112,7 @@ abstract class ConfigCatStore with Store {
     try {
       version = await PackageInfo.fromPlatform().then((value) => value.version);
     } catch (e, stack) {
-      _logger.handle(e, stack);
+      logger.handle(e, stack);
       version = null;
     }
 

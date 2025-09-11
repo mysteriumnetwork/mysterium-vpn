@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 
 class LocationTypeSwitcher extends HookConsumerWidget {
@@ -38,7 +38,7 @@ class LocationTypeSwitcher extends HookConsumerWidget {
                     : LocaleKeys.allLocations.tr(),
               },
               icon: switch (value) {
-                IPType.datacenter => const SvgIcon(asset: Assets.speed, height: 20),
+                IPType.datacenter => SvgIcon(asset: Asset.icons.speed, height: 20),
                 _ => null,
               },
               selected: values.length > 1 && value == this.value,

@@ -24,7 +24,7 @@ class LocationsSliverList extends StatelessWidget {
           final item = items[index];
           return LocationItem(
             location: item,
-            onTap: () => onItemPressed(item),
+            onTap: onItemPressed,
           );
         },
       );

@@ -4,7 +4,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
+import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/connection_status_color_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
@@ -13,6 +15,7 @@ import 'package:mysterium_vpn/components/dialogs/rate_connection_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/flag.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -30,11 +33,14 @@ class ConnectionTile extends HookConsumerWidget {
     final analyticsStore = ref.watch(analyticsStorePOD);
 
     final location = useComputedValue(
-      () =>
-          locationsStore.selectedLocation ??
-          vpnStore.location ??
-          vpnStore.connectingLocation ??
-          vpnStore.potentialLocation,
+      () {
+        final selectedLocation = locationsStore.selectedLocation;
+        final location = vpnStore.location;
+        final connectingLocation = vpnStore.connectingLocation;
+        final potentialLocation = vpnStore.potentialLocation;
+
+        return selectedLocation ?? location ?? connectingLocation ?? potentialLocation;
+      },
       [vpnStore, locationsStore],
     );
 
@@ -58,7 +64,7 @@ class ConnectionTile extends HookConsumerWidget {
     }
 
     return RawMaterialButton(
-      onPressed: onTap,
+      onPressed: null,
       fillColor: theme.palette.connectionTileBackgroundColor,
       elevation: 0,
       focusElevation: 0,
@@ -115,8 +121,7 @@ class _ConnectingLocation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final brightness = Theme.of(context).brightness;
-    final countryName = location.code.tr();
+    final countryName = location.getName(context);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,10 +129,7 @@ class _ConnectingLocation extends StatelessWidget {
       children: [
         if (location.ipType == IPType.closest) ...[
           SvgIcon(
-            asset: switch (brightness) {
-              Brightness.dark => Assets.flashDark,
-              Brightness.light => Assets.flashLight,
-            },
+            asset: Asset.icons.flashAdaptive(context),
           ).padding(right: 10),
           Expanded(
             child: Column(
@@ -151,7 +153,7 @@ class _ConnectingLocation extends StatelessWidget {
             ),
           ),
         ] else ...[
-          Flag(countryCode: location.code, size: 30),
+          Flag(countryCode: location.countryCode, size: 30),
           Expanded(
             child: EasyText(
               countryName,
@@ -194,7 +196,7 @@ class _IPIndicator extends HookWidget {
         ),
         IconButton(
           onPressed: onRefreshPressed,
-          icon: const SvgIcon(asset: Assets.refreshConn, height: 12, width: 12),
+          icon: SvgIcon(asset: Asset.icons.refresh, height: 12, width: 12),
           style: IconButton.styleFrom(
             backgroundColor: Palette.blue,
             foregroundColor: Palette.white,
@@ -238,8 +240,8 @@ class _IPTypeIndicator extends HookWidget {
           ),
         ),
         if (ipType == IPType.datacenter)
-          const SvgIcon(
-            asset: Assets.speed,
+          SvgIcon(
+            asset: Asset.icons.speed,
             width: 12,
             height: 14,
           ),
@@ -305,21 +307,14 @@ class _RateConnectionIconBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isActive = connectionRated == rateConnectionMode;
 
     return IconButton(
       onPressed: () => handleRateConnection(context, rateConnectionMode),
       icon: SvgIcon(
         asset: switch (rateConnectionMode) {
-          RateConnectionRequestModeEnum.like => switch (theme.brightness) {
-              Brightness.light => Assets.thumbsUpLight,
-              Brightness.dark => Assets.thumbsUpDark,
-            },
-          RateConnectionRequestModeEnum.dislike => switch (theme.brightness) {
-              Brightness.light => Assets.thumbsDownLight,
-              Brightness.dark => Assets.thumbsDownDark,
-            },
+          RateConnectionRequestModeEnum.like => Asset.icons.thumbsUp(context),
+          RateConnectionRequestModeEnum.dislike => Asset.icons.thumbsDown(context),
         },
         color: isActive ? Palette.purple : null,
       ),

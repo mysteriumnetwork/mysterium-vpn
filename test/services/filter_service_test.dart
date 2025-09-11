@@ -1,45 +1,46 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/common/utils/mocks.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 
 void main() {
   final filterService = FilterService();
+  const locale = 'en';
 
   group('FilterService', () {
     test('returns all locations when keyword is null', () {
-      final locations = [const VPNLocation(code: 'DE'), const VPNLocation(code: 'US')];
-      final result = filterService.filterLocations(locations);
+      final locations = [Mocks.locationResidentialDE, Mocks.locationResidentialUS];
+      final result = filterService.filterLocations(locations, locale: locale);
       expect(result, locations);
     });
 
     test('returns all locations when keyword is empty', () {
-      final locations = [const VPNLocation(code: 'DE'), const VPNLocation(code: 'US')];
-      final result = filterService.filterLocations(locations, keyword: '');
+      final locations = [Mocks.locationResidentialDE, Mocks.locationResidentialUS];
+      final result = filterService.filterLocations(locations, keyword: '', locale: locale);
       expect(result, locations);
     });
 
     test('filters locations by keyword', () {
-      final locations = [const VPNLocation(code: 'DE'), const VPNLocation(code: 'US')];
-      final result = filterService.filterLocations(locations, keyword: 'us');
-      expect(result, [const VPNLocation(code: 'US')]);
+      final locations = [Mocks.locationResidentialDE, Mocks.locationResidentialUS];
+      final result = filterService.filterLocations(locations, keyword: 'us', locale: locale);
+      expect(result, [Mocks.locationResidentialUS]);
     });
 
     test('filters locations by keyword case insensitive', () {
-      final locations = [const VPNLocation(code: 'DE'), const VPNLocation(code: 'US')];
-      final result = filterService.filterLocations(locations, keyword: 'Us');
-      expect(result, [const VPNLocation(code: 'US')]);
+      final locations = [Mocks.locationResidentialDE, Mocks.locationResidentialUS];
+      final result = filterService.filterLocations(locations, keyword: 'Us', locale: locale);
+      expect(result, [Mocks.locationResidentialUS]);
     });
 
     test('returns empty list when no locations match keyword', () {
-      final locations = [const VPNLocation(code: 'DE'), const VPNLocation(code: 'US')];
-      final result = filterService.filterLocations(locations, keyword: 'FR');
+      final locations = [Mocks.locationResidentialDE, Mocks.locationResidentialUS];
+      final result = filterService.filterLocations(locations, keyword: 'FR', locale: locale);
       expect(result, []);
     });
 
     test('filters locations by translated code', () {
-      final locations = [const VPNLocation(code: 'DE'), const VPNLocation(code: 'US')];
-      final result = filterService.filterLocations(locations, keyword: 'de');
-      expect(result, [const VPNLocation(code: 'DE')]);
+      final locations = [Mocks.locationResidentialDE, Mocks.locationResidentialUS];
+      final result = filterService.filterLocations(locations, keyword: 'de', locale: locale);
+      expect(result, [Mocks.locationResidentialDE]);
     });
   });
 }

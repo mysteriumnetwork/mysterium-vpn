@@ -26,7 +26,7 @@ jobs:
       build_number: ${{ needs.setup.outputs.release_build }}
       bundle_id: com.mysteriumvpn
       flavor: "prod"
-      flavor_dart: "PROD"
+      env_file: ".env.prod"
     secrets: inherit
 
   # Publish build of application to https://appstoreconnect.apple.com/apps/6446624307/distribution/macos/version/inflight
@@ -40,7 +40,7 @@ jobs:
       bundle_id: com.mysteriumvpn
       product_name: "Mysterium VPN"
       flavor: "prod"
-      flavor_dart: "PROD"
+      env_file: ".env.prod"
     secrets: inherit
 
   # Publish build of application to https://play.google.com/console/u/0/developers/7955390843158584488/app/4973980590971676436/bundle-explorer-selector
@@ -55,7 +55,7 @@ jobs:
       package_track: internal
       package_status: draft
       flavor: "prod"
-      flavor_dart: "PROD"
+      env_file: ".env.prod"
     secrets: inherit
 
   # Publish build of application to https://partner.microsoft.com/en-us/dashboard/products/9NGWJCZSB5MK/overview
@@ -70,7 +70,7 @@ jobs:
       product_identity: "UABMNTechnologijos.MysteriumVPN"
       application_name: "Mysterium VPN"
       application_logo: "assets/logo/prod/desktop.png"
-      flavor_dart: "PROD"
+      env_file: ".env.prod"
       standalone_sign: true
     secrets: inherit
 
@@ -84,9 +84,11 @@ jobs:
           configcat setup --username ${{ secrets.CONFIGCAT_API_USER }} --password ${{ secrets.CONFIGCAT_API_PASS }}
       - name: Configure "hideDeleteAccount" - show button
         run: |
-          configcat flag-v2 targeting rule create user --flag-id 587567 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --attribute platform --comparator containsAnyOf --comparison-value "macos:" --comparison-value "ios:" --served-value false
-          configcat flag-v2 targeting condition add user --flag-id 587567 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --rule-position 1 --attribute version --comparator textEquals --comparison-value "${{ github.event.release.tag_name }}"
+          configcat flag-v2 targeting rule create user --flag-id 587567 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --attribute version --comparator textEquals --comparison-value "${{ github.event.release.tag_name }}" --served-value false
+          position=`configcat flag-v2 value show --flag-id 587567 --json | jq '.values[] | select(.environmentId=="08dcf9bb-7e45-4853-8b0e-0129d6009a4e") | .targetingRules | range(length) as $i | select(.[$i].conditions[].userCondition.comparisonAttribute == "version" and .[$i].conditions[].userCondition.comparisonValue.stringValue == "${{ github.event.release.tag_name }}") | $i + 1'`
+          configcat flag-v2 targeting condition add user --flag-id 587567 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --rule-position $position --attribute platform --comparator containsAnyOf --comparison-value "macos:" --comparison-value "ios:"
       - name: Configure "pricingMonthly" - no monthly plan
         run: |
-          configcat flag-v2 targeting rule create user --flag-id 614140 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --attribute platform --comparator containsAnyOf --comparison-value "macos:" --comparison-value "ios:" --served-value false
-          configcat flag-v2 targeting condition add user --flag-id 614140 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --rule-position 1 --attribute version --comparator textEquals --comparison-value "${{ github.event.release.tag_name }}"
+          configcat flag-v2 targeting rule create user --flag-id 614140 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --attribute version --comparator textEquals --comparison-value "${{ github.event.release.tag_name }}" --served-value false
+          position=`configcat flag-v2 value show --flag-id 614140 --json | jq '.values[] | select(.environmentId=="08dcf9bb-7e45-4853-8b0e-0129d6009a4e") | .targetingRules | range(length) as $i | select(.[$i].conditions[].userCondition.comparisonAttribute == "version" and .[$i].conditions[].userCondition.comparisonValue.stringValue == "${{ github.event.release.tag_name }}") | $i + 1'`
+          configcat flag-v2 targeting condition add user --flag-id 614140 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --rule-position $position --attribute platform --comparator containsAnyOf --comparison-value "macos:" --comparison-value "ios:"

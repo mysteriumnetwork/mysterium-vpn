@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/stun_binding_request.dart';
+import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -123,15 +125,12 @@ class RestApiService extends ApiService {
   }
 
   @override
-  Future<void> setMarketingConsentStatus({required bool consent}) async {
+  Future<void> createMarketingContact({required String? country}) async {
     try {
-      await _apiEmailMarketing.setMarketingConsent(
-        marketingPermissionsRequest: MarketingPermissionsRequest(
-          consent: consent,
+      await _apiEmailMarketing.createContactRequest(
+        createContactRequest: CreateContactRequest(
+          country: country,
         ),
-      );
-      _logger.info(
-        'Marketing consent status set to $consent',
       );
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
@@ -150,6 +149,47 @@ class RestApiService extends ApiService {
       );
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> getMarketingContactStatus() async {
+    try {
+      final res = await _apiEmailMarketing.contactStatusRequest();
+      return res.data?.consent ?? false;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateMarketingContact({required bool consent}) {
+    try {
+      return _apiEmailMarketing.updateContactRequest(
+        updateContactRequest: UpdateContactRequest(
+          consent: consent,
+        ),
+      );
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Set<UserIntent>> fetchUserIntents() async {
+    try {
+      final res = await _apiConnection.userIntents();
+      final data = res.data ?? const <String>[];
+
+      return data
+          .map((it) => UserIntent.values.firstWhereOrNull((value) => value.key == it))
+          .nonNulls
+          .toSet();
+    } catch (e, stack) {
+      _logger.handle(e, stack);
       rethrow;
     }
   }

@@ -7,6 +7,7 @@ import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/header_title.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -25,15 +26,16 @@ Future<void> shownNoMailAppDialog(BuildContext context) async {
 
 class NoMailAppDialog extends StatelessWidget {
   const NoMailAppDialog({super.key});
+
   @override
   Widget build(BuildContext context) => Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.center,
         children: [
-          const Positioned(
+          Positioned(
             top: -15,
             child: SvgIcon(
-              asset: Assets.messageSvg,
+              asset: Asset.icons.message,
             ),
           ),
           Column(
