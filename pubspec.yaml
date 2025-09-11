@@ -69,7 +69,7 @@ dependencies:
       url: https://github.com/KristijanMitrik/open-mail-app-flutter.git
       ref: upgrade-dependencies
   open_store: 0.5.0
-  package_info_plus: 8.3.0
+  package_info_plus: 9.0.0
   path_provider: 2.1.5
   reactive_forms: 17.0.1
   retry: ^3.1.2
@@ -83,8 +83,8 @@ dependencies:
   store_checker_windows:
     path: ./packages/store_checker_windows
   styled_widget: 0.4.1
-  talker: 4.9.3
-  talker_dio_logger: 4.9.3
+  talker: 5.0.0
+  talker_dio_logger: 5.0.0
   tray_manager: 0.5.0
   url_launcher: 6.3.2
   url_protocol:
