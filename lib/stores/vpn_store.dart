@@ -508,7 +508,7 @@ abstract class _VpnStore with Store {
   /// Connect to VPN by refreshing IP address
   @action
   Future<void> startConnectionWithRefreshIP() async {
-    await _startConnection(refreshIP: true);
+    await _startConnection(refreshIP: true, location: _vpnConnection?.location);
   }
 
   Future<void> _checkSubscriptionStatus() async {
