@@ -9,7 +9,7 @@ environment:
   flutter: 3.29.3
 
 dependencies:
-  app_links: 6.4.0
+  app_links: 6.4.1
   async: 2.12.0
   auto_size_text: 3.0.0
   beamer: 1.7.0
