@@ -1,9 +1,8 @@
 import 'dart:math';
 
 String generateUuidV4() {
-  int rand() =>
-      (DateTime.now().microsecondsSinceEpoch + (1000000 * (Random().nextDouble()))).toInt();
-  final bytes = List<int>.generate(16, (_) => rand() & 0xff);
+  final random = Random.secure();
+  final bytes = List<int>.generate(16, (_) => random.nextInt(256));
 
   // Set version (4) and variant bits
   bytes[6] = (bytes[6] & 0x0f) | 0x40;
