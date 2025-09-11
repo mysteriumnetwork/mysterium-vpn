@@ -21,10 +21,10 @@ on:
         required: true
         type: string
         default: "assets/logo/dev/desktop.png"
-      flavor_dart:
+      env_file:
         required: true
         type: string
-        default: "DEV"
+        default: ".env.dev"
       standalone_sign:
         required: true
         type: boolean
@@ -58,7 +58,7 @@ jobs:
           git diff
 
       - name: Build Windows app
-        run: fvm flutter build windows --no-pub --release --dart-define "FLAVOR=${{ inputs.flavor_dart }}"
+        run: fvm flutter build windows --no-pub --release --dart-define-from-file="${{ inputs.env_file }}"
 
       # Sign DEV builds with self-signed test certificate for QA process.
       # Documentation: https://github.com/YehudaKremer/msix?tab=readme-ov-file#%EF%B8%8F-signing-options

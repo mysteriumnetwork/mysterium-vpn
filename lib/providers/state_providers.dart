@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/models/flavor_config.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
@@ -49,7 +49,6 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final authSessionStore = ref.watch(authSessionStorePOD);
   final appLinks = ref.watch(appLinksPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
-  final env = ref.watch(environmentPOD);
   final logger = ref.watch(loggerPOD);
   final abTestingStore = ref.watch(abTestingStorePOD);
 
@@ -59,7 +58,6 @@ final authStorePOD = Provider<AuthStore>((ref) {
     authSessionStore: authSessionStore,
     appLinks: appLinks,
     analyticsStore: analyticsStore,
-    env: env,
     logger: logger,
     abTestingStore: abTestingStore,
   );
@@ -87,7 +85,6 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final locationsStore = ref.watch(locationsStorePOD);
   final wireguardService = ref.watch(wireguardServicePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
-  final env = ref.watch(environmentPOD);
   final logger = ref.watch(loggerPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
@@ -101,7 +98,6 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     locationsStore: locationsStore,
     wireguardService: wireguardService,
     subscriptionStore: subscriptionStore,
-    env: env,
     logger: logger,
     analyticsStore: analyticsStore,
     remoteConfigStore: remoteConfigStore,
@@ -154,10 +150,6 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   return store;
 });
 
-final environmentPOD = Provider<FlavorConfig>(
-  (ref) => throw UnimplementedError(),
-);
-
 final analyticsInitPOD = FutureProviderFamily<void, FirebaseOptions?>((ref, options) async {
   if (options == null) {
     return;
@@ -169,10 +161,9 @@ final analyticsInitPOD = FutureProviderFamily<void, FirebaseOptions?>((ref, opti
 
 final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
   if (isWindowsOrLinux()) {
-    final env = ref.watch(environmentPOD);
     return AnalyticsStoreWindows(
-      measurementId: env.values.measurementId,
-      apiSecret: env.values.apiSecret,
+      measurementId: Env.measurementId,
+      apiSecret: Env.apiSecret,
       deviceInfoStore: ref.watch(deviceInfoStorePOD),
       deviceIDStore: ref.watch(deviceIDStorePOD),
     );
@@ -204,9 +195,7 @@ final remoteConfigStorePOD = Provider<RemoteConfigStore>((ref) {
   final client = ref.watch(remoteConfigClientPOD);
   final logger = ref.watch(loggerPOD);
   final realIPInfoStore = ref.watch(realIPInfoStorePOD);
-  final env = ref.watch(environmentPOD);
-
-  return RemoteConfigStore(client, logger, realIPInfoStore, env);
+  return RemoteConfigStore(client, logger, realIPInfoStore, isDev: Env.flavor.isDev);
 });
 
 final abTestingStorePOD = Provider<ABTestingStore>((ref) {
@@ -268,10 +257,7 @@ final networkStatisticsStorePOD = Provider.autoDispose<NetworkStatisticsStore>((
 
 final updateAvailableStorePOD = Provider.autoDispose<UpdateAvailableStore>((ref) {
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
-  return UpdateAvailableStore(
-    remoteConfigStore,
-    ref.watch(environmentPOD),
-  );
+  return UpdateAvailableStore(remoteConfigStore, Env.buildInfo);
 });
 
 final userIntentsStorePOD = Provider.autoDispose<UserIntentsStore>(
