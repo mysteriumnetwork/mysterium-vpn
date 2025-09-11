@@ -32,6 +32,12 @@ extension $AssetsIconsGenExtensions on $AssetsIconsGen {
         dark: deleteAccountDark,
       );
 
+  SvgGenImage fix(BuildContext context) => _withBrightness(
+        context,
+        light: fixLight,
+        dark: fixDark,
+      );
+
   SvgGenImage flashAdaptive(BuildContext context) => _withBrightness(
         context,
         light: flashLight,

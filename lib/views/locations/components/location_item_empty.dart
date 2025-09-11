@@ -1,8 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
+import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_refresh_button.dart';
 
@@ -33,10 +34,7 @@ class LocationItemEmpty extends StatelessWidget {
               child: SvgIcon(
                 height: 30,
                 width: 30,
-                asset: switch (theme.brightness) {
-                  Brightness.light => Assets.fixLight,
-                  Brightness.dark => Assets.fixDark,
-                },
+                asset: Asset.icons.fix(context),
               ),
             ),
             Expanded(
