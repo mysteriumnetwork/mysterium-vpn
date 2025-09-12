@@ -9,7 +9,7 @@ init:
 	fvm flutter pub get
 
 run-dev: init generate
-	fvm flutter run --debug --flavor "dev" --dart-define "FLAVOR=DEV"
+	fvm flutter run --debug --flavor "dev" --dart-define-from-file ".env.dev"
 
 clean:
 	fvm flutter clean
