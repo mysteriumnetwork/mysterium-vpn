@@ -12,8 +12,8 @@
                 "dev",
             ],
             "toolArgs": [
-                "--dart-define",
-                "FLAVOR=DEV",
+                "--dart-define-from-file",
+                ".env.dev",
             ]
         },
         {
@@ -26,9 +26,9 @@
                 "--flavor",
                 "dev",
             ],
-            "toolArgs": [
-                "--dart-define",
-                "FLAVOR=DEV",
+             "toolArgs": [
+                "--dart-define-from-file",
+                ".env.dev",
             ]
         },
         {
@@ -41,9 +41,9 @@
                 "--flavor",
                 "dev",
             ],
-            "toolArgs": [
-                "--dart-define",
-                "FLAVOR=DEV",
+             "toolArgs": [
+                "--dart-define-from-file",
+                ".env.dev",
             ]
         },
         {
@@ -56,9 +56,9 @@
                 "--flavor",
                 "prod",
             ],
-            "toolArgs": [
-                "--dart-define",
-                "FLAVOR=PROD",
+             "toolArgs": [
+                "--dart-define-from-file",
+                ".env.prod",
             ]
         },
         {
@@ -72,8 +72,8 @@
                 "prod",
             ],
             "toolArgs": [
-                "--dart-define",
-                "FLAVOR=PROD",
+                "--dart-define-from-file",
+                ".env.prod",
             ]
         },
         {
@@ -87,8 +87,8 @@
                 "prod",
             ],
             "toolArgs": [
-                "--dart-define",
-                "FLAVOR=PROD",
+                "--dart-define-from-file",
+                ".env.prod",
             ]
         },
         {
