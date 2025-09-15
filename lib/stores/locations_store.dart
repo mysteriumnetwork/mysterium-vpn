@@ -214,7 +214,12 @@ abstract class _LocationsStore with Store {
         } ??
         const <VPNLocation>[];
 
-    var match = locations.firstWhereOrNull((it) => it.id == id);
+    var match = locations.firstWhereOrNull((it) {
+      if (countryCode != null) {
+        return it.id == id && it.countryCode == countryCode;
+      }
+      return it.id == id;
+    });
 
     // if no city is in our list, we try to find a country
     match ??= locations.firstWhereOrNull(
