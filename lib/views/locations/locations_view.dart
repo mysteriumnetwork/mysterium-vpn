@@ -6,6 +6,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/components/block_vertical_scroll.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/retry_widget.dart';
 import 'package:mysterium_vpn/components/user_intent_picker.dart';
@@ -198,12 +199,14 @@ class _UserIntent extends HookConsumerWidget {
           ],
         ),
         const SizedBox(height: 16),
-        UserIntentPicker(
-          items: intents?.toList(),
-          onChanged: isLoading || (locationsEmpty ?? true)
-              ? null
-              : (value) => handleToggleConnection(intent: value),
-          value: selected,
+        BlockVerticalScroll(
+          child: UserIntentPicker(
+            items: intents?.toList(),
+            onChanged: isLoading || (locationsEmpty ?? true)
+                ? null
+                : (value) => handleToggleConnection(intent: value),
+            value: selected,
+          ),
         ),
       ],
     );
@@ -228,9 +231,11 @@ class _RecentLocations extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
           const SizedBox(height: 12),
-          RecentLocationsList(
-            items: recentLocations,
-            onItemPressed: onLocationTapped,
+          BlockVerticalScroll(
+            child: RecentLocationsList(
+              items: recentLocations,
+              onItemPressed: onLocationTapped,
+            ),
           ),
         ],
       );
