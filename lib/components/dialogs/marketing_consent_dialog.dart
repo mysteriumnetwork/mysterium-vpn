@@ -8,6 +8,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/utils/keys.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -90,6 +91,7 @@ class _DialogContent extends ConsumerWidget {
     }
 
     return Column(
+      key: Keys.marketingConsentDialog,
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -177,6 +179,7 @@ class _Actions extends StatelessWidget {
 
     final children = <Widget>[
       ElevatedButton(
+        key: Keys.marketingConsentAcceptButton,
         style: ElevatedButton.styleFrom(
           minimumSize: minButtonSize,
           backgroundColor: theme.palette.outlinedButtonBorderColor,
@@ -192,6 +195,7 @@ class _Actions extends StatelessWidget {
         ),
       ),
       OutlinedButton(
+        key: Keys.marketingConsentDeclineButton,
         onPressed: onCancelPressed,
         style: OutlinedButton.styleFrom(
           minimumSize: minButtonSize,
