@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class BlockVerticalScroll extends StatelessWidget {
-  const BlockVerticalScroll({super.key, required this.child});
+  const BlockVerticalScroll({
+    required this.child,
+    super.key,
+  });
 
   final Widget child;
 
