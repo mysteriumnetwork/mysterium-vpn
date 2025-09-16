@@ -239,4 +239,8 @@ class SecureStorageService {
   Future<void> removeDeviceId() async {
     await remove(StorageKeys.deviceId.name);
   }
+
+  Future<void> clearAll() async {
+    await _securedStorage.deleteAll();
+  }
 }
