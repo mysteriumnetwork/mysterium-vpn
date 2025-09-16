@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/components/block_vertical_scroll.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/horizontal_scroll_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
@@ -77,9 +78,11 @@ class _Container extends HookWidget {
       tablet: true,
     );
 
-    Widget child = ConstrainedBox(
-      constraints: constraints,
-      child: this.child,
+    Widget child = BlockVerticalScroll(
+      child: ConstrainedBox(
+        constraints: constraints,
+        child: this.child,
+      ),
     );
 
     if (hasIndicator) {
