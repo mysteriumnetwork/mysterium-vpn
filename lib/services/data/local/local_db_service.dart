@@ -218,4 +218,19 @@ class LocalDBService {
 
     await _saveUserData(userData);
   }
+
+  Future<void> setFavouriteLocations(List<VPNLocation> locations) async {
+    final userData = await _loadUserData();
+    userData.favouriteLocations = locations;
+
+    await _saveUserData(userData);
+  }
+
+  Future<List<VPNLocation>> getFavouriteLocations() async {
+    final userData = await _loadUserData();
+    return userData.favouriteLocations;
+  }
+
+  Stream<List<VPNLocation>> watchFavouriteLocations() =>
+      _watchUserData().map((it) => it.favouriteLocations);
 }

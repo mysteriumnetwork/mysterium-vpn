@@ -30,13 +30,14 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       shownBanners: fields[12] == null ? [] : (fields[12] as List).cast<BannerType>(),
       recentLocationCodes: (fields[2] as List).cast<String>(),
       marketingConsentShown: fields[13] == null ? false : fields[13] as bool,
+      favouriteLocations: fields[14] == null ? [] : (fields[14] as List).cast<VPNLocation>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, UserData obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.userId)
       ..writeByte(1)
@@ -62,7 +63,9 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       ..writeByte(12)
       ..write(obj.shownBanners)
       ..writeByte(13)
-      ..write(obj.marketingConsentShown);
+      ..write(obj.marketingConsentShown)
+      ..writeByte(14)
+      ..write(obj.favouriteLocations);
   }
 
   @override

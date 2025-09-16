@@ -30,6 +30,13 @@ mixin _$LocationsStore on _LocationsStore, Store {
       (_$recentLocationsComputed ??= Computed<List<VPNLocation>>(() => super.recentLocations,
               name: '_LocationsStore.recentLocations'))
           .value;
+  Computed<List<VPNLocation>>? _$favouriteLocationsComputed;
+
+  @override
+  List<VPNLocation> get favouriteLocations =>
+      (_$favouriteLocationsComputed ??= Computed<List<VPNLocation>>(() => super.favouriteLocations,
+              name: '_LocationsStore.favouriteLocations'))
+          .value;
   Computed<List<VPNLocation>>? _$locationsComputed;
 
   @override
@@ -158,6 +165,29 @@ mixin _$LocationsStore on _LocationsStore, Store {
     });
   }
 
+  late final _$_favouriteLocationsFutureAtom =
+      Atom(name: '_LocationsStore._favouriteLocationsFuture', context: context);
+
+  ObservableFuture<List<VPNLocation>> get favouriteLocationsFuture {
+    _$_favouriteLocationsFutureAtom.reportRead();
+    return super._favouriteLocationsFuture;
+  }
+
+  @override
+  ObservableFuture<List<VPNLocation>> get _favouriteLocationsFuture => favouriteLocationsFuture;
+
+  bool __favouriteLocationsFutureIsInitialized = false;
+
+  @override
+  set _favouriteLocationsFuture(ObservableFuture<List<VPNLocation>> value) {
+    _$_favouriteLocationsFutureAtom.reportWrite(
+        value, __favouriteLocationsFutureIsInitialized ? super._favouriteLocationsFuture : null,
+        () {
+      super._favouriteLocationsFuture = value;
+      __favouriteLocationsFutureIsInitialized = true;
+    });
+  }
+
   late final _$_refreshFutureAtom = Atom(name: '_LocationsStore._refreshFuture', context: context);
 
   ObservableFuture<void> get refreshFuture {
@@ -261,6 +291,15 @@ mixin _$LocationsStore on _LocationsStore, Store {
     return _$setIPTypeAsyncAction.run(() => super.setIPType(type));
   }
 
+  late final _$toggleFavouriteLocationAsyncAction =
+      AsyncAction('_LocationsStore.toggleFavouriteLocation', context: context);
+
+  @override
+  Future<void> toggleFavouriteLocation(VPNLocation location, {bool? toggle}) {
+    return _$toggleFavouriteLocationAsyncAction
+        .run(() => super.toggleFavouriteLocation(location, toggle: toggle));
+  }
+
   late final _$resetRecentLocationsAsyncAction =
       AsyncAction('_LocationsStore.resetRecentLocations', context: context);
 
@@ -275,6 +314,14 @@ mixin _$LocationsStore on _LocationsStore, Store {
   @override
   Future<void> resetStoredLocations() {
     return _$resetStoredLocationsAsyncAction.run(() => super.resetStoredLocations());
+  }
+
+  late final _$resetFavouriteLocationsAsyncAction =
+      AsyncAction('_LocationsStore.resetFavouriteLocations', context: context);
+
+  @override
+  Future<void> resetFavouriteLocations() {
+    return _$resetFavouriteLocationsAsyncAction.run(() => super.resetFavouriteLocations());
   }
 
   late final _$_LocationsStoreActionController =
@@ -314,12 +361,24 @@ mixin _$LocationsStore on _LocationsStore, Store {
   }
 
   @override
+  VPNLocation? parentOf(VPNLocation location) {
+    final _$actionInfo =
+        _$_LocationsStoreActionController.startAction(name: '_LocationsStore.parentOf');
+    try {
+      return super.parentOf(location);
+    } finally {
+      _$_LocationsStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 selectedLocation: ${selectedLocation},
 locationsFuture: ${locationsFuture},
 availableCountries: ${availableCountries},
 recentLocations: ${recentLocations},
+favouriteLocations: ${favouriteLocations},
 locations: ${locations},
 topLocations: ${topLocations},
 isEmpty: ${isEmpty},

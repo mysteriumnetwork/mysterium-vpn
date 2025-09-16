@@ -137,9 +137,8 @@ void main() {
         VPNLocations(locations: mockResidential),
       );
       when(
-        mockFilterService.filterRecentLocations(
+        mockFilterService.filterLocations(
           mockResidential,
-          availableLocations: {...mockResidential},
           keyword: 'un',
           locale: 'en',
         ),
@@ -175,10 +174,9 @@ void main() {
     test('returns random location from recent locations', () async {
       when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => mockResidential);
       when(
-        mockFilterService.filterRecentLocations(
+        mockFilterService.filterLocations(
           mockResidential,
           keyword: '',
-          availableLocations: {...mockResidential},
           locale: 'en',
         ),
       ).thenReturn(mockResidential);
