@@ -18,4 +18,9 @@ class Keys {
 
   // subscription
   static const subscriptionPage = Key('subscriptionPage');
+
+  // marketing consent
+  static const marketingConsentDialog = Key('marketingConsentDialog');
+  static const marketingConsentAcceptButton = Key('marketingConsentAcceptButton');
+  static const marketingConsentDeclineButton = Key('marketingConsentDeclineButton');
 }
