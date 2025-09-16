@@ -1,3 +1,4 @@
+import 'package:circle_flags/circle_flags.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -5,7 +6,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
-import 'package:mysterium_vpn/common/extensions/string.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/connection_status_color_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
@@ -13,13 +14,11 @@ import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/connect_text_button.dart';
 import 'package:mysterium_vpn/components/dialogs/rate_connection_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/components/flag.dart';
-import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:styled_widget/styled_widget.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 class ConnectionTile extends HookConsumerWidget {
@@ -27,7 +26,6 @@ class ConnectionTile extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final locationsStore = ref.watch(locationsStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
@@ -44,9 +42,29 @@ class ConnectionTile extends HookConsumerWidget {
       [vpnStore, locationsStore],
     );
 
+    final parent = useComputedValue(
+      () {
+        if (location == null) {
+          return null;
+        }
+        return locationsStore.parentOf(location);
+      },
+      [location],
+    );
+
+    final isFavourite = useComputedValue(
+      () {
+        if (location == null) {
+          return false;
+        }
+
+        return locationsStore.favouriteLocationsFuture.value?.contains(location) ?? false;
+      },
+      [location],
+    );
+
     final isConnected = useIsLocationConnected(location);
     final ipInfo = useComputedValue(() => vpnStore.vpnConnection?.connectionIP);
-    final outlineColor = useConnectionStatusColor();
 
     final handleToggleConnection = useHandleToggleConnection();
     final onTap = useComputedValue(
@@ -59,192 +77,210 @@ class ConnectionTile extends HookConsumerWidget {
       await vpnStore.startConnectionWithRefreshIP();
     }
 
-    if (location == null) {
-      return const SizedBox.shrink();
+    Future<void> handleToggleFavourite() async {
+      if (location == null) {
+        return;
+      }
+      await locationsStore.toggleFavouriteLocation(location);
     }
 
-    return RawMaterialButton(
-      onPressed: null,
-      fillColor: theme.palette.connectionTileBackgroundColor,
-      elevation: 0,
-      focusElevation: 0,
-      highlightElevation: 0,
-      hoverElevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: BorderSide(color: outlineColor),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          spacing: 12,
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              spacing: 5,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(child: _ConnectingLocation(location: location)),
-                ConnectTextButton(
-                  onPressed: onTap,
-                  location: location,
-                  size: const Size(106, 38),
-                ),
-              ],
+    return _Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (location == null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: _NoLocation(),
+            )
+          else
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: _Location(
+                location: location,
+                parent: parent,
+                ip: ipInfo,
+                isFavourite: isFavourite,
+                onToggleFavouritePressed: handleToggleFavourite,
+                onRefreshIPPressed: handleRefreshIP,
+              ),
             ),
-            if (location.ipType != IPType.closest)
-              Row(
-                spacing: 12,
-                children: [
-                  if (ipInfo != null && (isConnected ?? false))
-                    _IPIndicator(
-                      ip: ipInfo,
-                      onRefreshPressed: handleRefreshIP,
-                    ),
-                  Expanded(child: _IPTypeIndicator(ipType: location.ipType)),
-                ],
-              ).padding(left: 40),
-            if (location.ipType != IPType.closest) _RateConnection(),
-          ],
-        ),
+          ConnectTextButton(
+            onPressed: onTap,
+            location: location,
+            size: const Size(double.infinity, 42),
+          ),
+          if (isConnected ?? false) const SizedBox(height: 16),
+          if (isConnected ?? false) _RateConnection(),
+        ],
       ),
     );
   }
 }
 
-class _ConnectingLocation extends StatelessWidget {
-  const _ConnectingLocation({required this.location});
+class _Card extends HookWidget {
+  const _Card({
+    required this.child,
+  });
 
-  final VPNLocation location;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final countryName = location.getName(context);
+    final borderColor = useConnectionStatusColor();
+
+    return Material(
+      color: theme.palette.connectionTileBackgroundColor,
+      shadowColor: Colors.transparent,
+      surfaceTintColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(color: borderColor),
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: child,
+      ),
+    );
+  }
+}
+
+class _NoLocation extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 8,
+      children: [
+        Asset.icons.connectPrompt(context).svg(width: 38, height: 38),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            spacing: 2,
+            children: [
+              EasyText(
+                LocaleKeys.connectBestServer.tr(),
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+              EasyText(
+                LocaleKeys.orSelectCountryManually.tr(),
+                fontSize: 12,
+                color: theme.palette.subtitleColor,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _Location extends StatelessWidget {
+  const _Location({
+    required this.location,
+    required this.parent,
+    required this.ip,
+    required this.isFavourite,
+    required this.onToggleFavouritePressed,
+    required this.onRefreshIPPressed,
+  });
+
+  final VPNLocation location;
+  final VPNLocation? parent;
+  final String? ip;
+  final bool isFavourite;
+  final VoidCallback onToggleFavouritePressed;
+  final VoidCallback onRefreshIPPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final ipType = location.ipType;
+    final title = parent?.getName(context) ?? location.getName(context);
+    final subtitle = parent != null ? location.getName(context) : null;
+
+    final extras = [
+      if (ip != null) ip!,
+      if (ipType == IPType.datacenter) LocaleKeys.highSpeed.tr(),
+    ];
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 10,
+      spacing: 8,
       children: [
-        if (location.ipType == IPType.closest) ...[
-          SvgIcon(
-            asset: Asset.icons.flashAdaptive(context),
-          ).padding(right: 10),
-          Expanded(
-            child: Column(
-              spacing: 18,
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                EasyText(
-                  LocaleKeys.connectBestServer.tr(),
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18,
-                  maxLines: 2,
-                  color: theme.colorScheme.onSecondaryContainer,
+        CircleFlag(location.countryCode, size: 38),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              EasyText(
+                title,
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+              if (subtitle != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 2),
+                  child: EasyText(subtitle, fontSize: 12, color: theme.palette.subtitleColor),
                 ),
-                EasyText(
-                  LocaleKeys.orSelectCountryManually.tr(),
-                  fontSize: 12,
-                  color: theme.colorScheme.onSecondaryContainer,
+              ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 32),
+                child: Row(
+                  spacing: 16,
+                  children: [
+                    Expanded(
+                      child: Row(
+                        spacing: 8,
+                        children: [
+                          ...extras
+                              .map(
+                                (it) => Flexible(
+                                  child: EasyText(
+                                    it,
+                                    fontSize: 12,
+                                    color: theme.palette.subtitleColor,
+                                  ),
+                                ),
+                              )
+                              .cast<Widget>()
+                              .separateWith(
+                                Container(
+                                  color: theme.palette.subtitleColor,
+                                  width: 1,
+                                  height: 20,
+                                ),
+                              ),
+                        ],
+                      ),
+                    ),
+                    if (ip != null)
+                      SvgIconButton(
+                        asset: Asset.icons.refresh,
+                        size: 16,
+                        color: theme.palette.subtitleColor,
+                        visualDensity: VisualDensity.compact,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        onPressed: onRefreshIPPressed,
+                      ),
+                    if (ip != null)
+                      SvgIconButton(
+                        asset: isFavourite ? Asset.icons.heartFilled : Asset.icons.heartOutlined,
+                        size: 16,
+                        color: theme.palette.subtitleColor,
+                        visualDensity: VisualDensity.compact,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        onPressed: onToggleFavouritePressed,
+                      ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        ] else ...[
-          Flag(countryCode: location.countryCode, size: 30),
-          Expanded(
-            child: EasyText(
-              countryName,
-              fontWeight: FontWeight.w500,
-              fontSize: 18,
-              maxLines: countryName.hasMultipleWords ? 2 : 1,
-              color: theme.colorScheme.onSecondaryContainer,
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-}
-
-class _IPIndicator extends HookWidget {
-  const _IPIndicator({
-    required this.ip,
-    required this.onRefreshPressed,
-  });
-
-  final String ip;
-  final VoidCallback onRefreshPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      spacing: 12,
-      children: [
-        Flexible(
-          child: EasyText(
-            ip,
-            fontSize: 12,
-            color: theme.colorScheme.onSecondaryContainer,
-            fontWeight: FontWeight.w500,
+              ),
+            ],
           ),
         ),
-        IconButton(
-          onPressed: onRefreshPressed,
-          icon: SvgIcon(asset: Asset.icons.refresh, height: 12, width: 12),
-          style: IconButton.styleFrom(
-            backgroundColor: Palette.blue,
-            foregroundColor: Palette.white,
-            visualDensity: VisualDensity.compact,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-            padding: const EdgeInsets.all(6),
-            minimumSize: const Size.square(25),
-          ),
-        ),
-        DecoratedBox(
-          decoration: BoxDecoration(color: Theme.of(context).colorScheme.onSecondaryContainer),
-          child: const SizedBox(height: 20, width: 1),
-        ),
-      ],
-    );
-  }
-}
-
-class _IPTypeIndicator extends HookWidget {
-  const _IPTypeIndicator({required this.ipType});
-
-  final IPType ipType;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      spacing: 6,
-      children: [
-        Flexible(
-          child: EasyText(
-            switch (ipType) {
-              IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
-              IPType.residential => LocaleKeys.ipTypeResidential.tr(),
-              _ => '',
-            },
-            fontSize: 12,
-            color: theme.colorScheme.onSecondaryContainer,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        if (ipType == IPType.datacenter)
-          SvgIcon(
-            asset: Asset.icons.speed,
-            width: 12,
-            height: 14,
-          ),
       ],
     );
   }
@@ -261,35 +297,25 @@ class _RateConnection extends ConsumerWidget {
       return const SizedBox.shrink();
     }
     return Observer(
-      builder: (context) => Column(
+      builder: (context) => Row(
+        spacing: 16,
         children: [
-          Divider(
-            height: 0,
-            color: switch (theme.brightness) {
-              Brightness.light => Palette.lightBlue,
-              Brightness.dark => Palette.darkIndigo,
-            },
-          ).padding(left: 40),
-          Row(
-            children: [
-              Expanded(
-                child: EasyText(
-                  LocaleKeys.rateConnection.tr(),
-                  color: theme.colorScheme.onSecondaryContainer,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              _RateConnectionIconBtn(
-                connectionRated: vpnStore.connectionRated,
-                rateConnectionMode: RateConnectionRequestModeEnum.like,
-              ),
-              _RateConnectionIconBtn(
-                connectionRated: vpnStore.connectionRated,
-                rateConnectionMode: RateConnectionRequestModeEnum.dislike,
-              ),
-            ],
-          ).padding(left: 40),
+          Expanded(
+            child: EasyText(
+              LocaleKeys.rateConnection.tr(),
+              color: theme.palette.subtitleColor,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          _RateConnectionIconBtn(
+            connectionRated: vpnStore.connectionRated,
+            rateConnectionMode: RateConnectionRequestModeEnum.like,
+          ),
+          _RateConnectionIconBtn(
+            connectionRated: vpnStore.connectionRated,
+            rateConnectionMode: RateConnectionRequestModeEnum.dislike,
+          ),
         ],
       ),
     );
@@ -307,21 +333,19 @@ class _RateConnectionIconBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final isActive = connectionRated == rateConnectionMode;
 
-    return IconButton(
+    return SvgIconButton(
+      asset: switch (rateConnectionMode) {
+        RateConnectionRequestModeEnum.like => Asset.icons.thumbsUp(context),
+        RateConnectionRequestModeEnum.dislike => Asset.icons.thumbsDown(context),
+      },
+      color: isActive ? Palette.purple : theme.palette.darkTextColor,
+      visualDensity: VisualDensity.compact,
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      size: 24,
       onPressed: () => handleRateConnection(context, rateConnectionMode),
-      icon: SvgIcon(
-        asset: switch (rateConnectionMode) {
-          RateConnectionRequestModeEnum.like => Asset.icons.thumbsUp(context),
-          RateConnectionRequestModeEnum.dislike => Asset.icons.thumbsDown(context),
-        },
-        color: isActive ? Palette.purple : null,
-      ),
-      style: IconButton.styleFrom(
-        visualDensity: VisualDensity.compact,
-        padding: const EdgeInsets.all(2),
-      ),
     );
   }
 

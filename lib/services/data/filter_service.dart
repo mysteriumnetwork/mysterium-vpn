@@ -25,20 +25,18 @@ class FilterService {
     return result;
   }
 
-  List<VPNLocation> filterRecentLocations(
+  List<VPNLocation> filterAvailableLocations(
     List<VPNLocation> data, {
     required String keyword,
     required String locale,
     required Set<VPNLocation> availableLocations,
-  }) {
-    final availableRecents = availableLocations.where(data.contains).toList();
-    return filterLocations(
-      availableRecents,
-      keyword: keyword,
-      shouldSortList: false,
-      locale: locale,
-    );
-  }
+  }) =>
+      filterLocations(
+        availableLocations.where(data.contains).toList(),
+        keyword: keyword,
+        shouldSortList: false,
+        locale: locale,
+      );
 }
 
 extension _QueryExtension on String {

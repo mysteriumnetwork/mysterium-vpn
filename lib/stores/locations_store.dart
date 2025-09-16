@@ -64,6 +64,11 @@ abstract class _LocationsStore with Store {
               Future.value(it),
             ),
           ),
+      _localDB.watchFavouriteLocations().listen(
+            (it) => _favouriteLocationsFuture = _favouriteLocationsFuture.replaceOrReset(
+              Future.value(it),
+            ),
+          ),
     ]);
   }
 
@@ -100,6 +105,10 @@ abstract class _LocationsStore with Store {
       ObservableFuture(_localDB.getRecentLocations());
 
   @readonly
+  late ObservableFuture<List<VPNLocation>> _favouriteLocationsFuture =
+      ObservableFuture(_localDB.getFavouriteLocations());
+
+  @readonly
   late ObservableFuture<void> _refreshFuture = ObservableFuture.value(null);
 
   @readonly
@@ -134,23 +143,14 @@ abstract class _LocationsStore with Store {
   }
 
   @computed
-  List<VPNLocation> get recentLocations {
-    final value = _recentLocationsFuture.value ?? const <VPNLocation>[];
-    if (value.isEmpty) {
-      return [];
-    }
-    final availableLocations = {
-      ...?_dcLocationsFuture.value?.allLocationsFlattened,
-      ...?_residentialLocationsFuture.value?.allLocationsFlattened,
-    };
+  List<VPNLocation> get recentLocations =>
+      _filterAvailableLocations(_recentLocationsFuture.value ?? const <VPNLocation>[]);
 
-    return _filterService.filterRecentLocations(
-      value,
-      availableLocations: availableLocations,
-      keyword: _searchKeyword,
-      locale: _localeStore.currentLocale.languageCode.toLowerCase(),
-    );
-  }
+  @computed
+  List<VPNLocation> get favouriteLocations =>
+      _filterAvailableLocations(_favouriteLocationsFuture.value ?? const <VPNLocation>[])
+          .take(5)
+          .toList();
 
   @computed
   List<VPNLocation> get locations {
@@ -418,6 +418,18 @@ abstract class _LocationsStore with Store {
   }
 
   @action
+  Future<void> toggleFavouriteLocation(VPNLocation location, {bool? toggle}) async {
+    var favourites = {...(await _favouriteLocationsFuture)};
+    toggle ??= !favourites.contains(location);
+    if (toggle) {
+      favourites = {location, ...favourites};
+    } else {
+      favourites.remove(location);
+    }
+    await _localDB.setFavouriteLocations(favourites.toList());
+  }
+
+  @action
   Future<void> resetRecentLocations() async {
     await _localDB.setRecentLocation([]);
   }
@@ -428,6 +440,42 @@ abstract class _LocationsStore with Store {
       _localDB.setLocations(VPNLocations(), type: IPType.residential),
       _localDB.setLocations(VPNLocations(), type: IPType.datacenter),
     ]);
+  }
+
+  @action
+  Future<void> resetFavouriteLocations() async {
+    await _localDB.setFavouriteLocations([]);
+  }
+
+  @action
+  VPNLocation? parentOf(VPNLocation location) {
+    if (location.isCountry) {
+      return null;
+    }
+    final allLocations = [
+      ...?_dcLocationsFuture.value?.allLocations,
+      ...?_residentialLocationsFuture.value?.allLocations,
+    ];
+
+    return allLocations.firstWhereOrNull(
+      (it) => it.isCountry && it.countryCode == location.countryCode,
+    );
+  }
+
+  List<VPNLocation> _filterAvailableLocations(List<VPNLocation> locations) {
+    if (locations.isEmpty) {
+      return [];
+    }
+    final availableLocations = {
+      ...?_dcLocationsFuture.value?.allLocationsFlattened,
+      ...?_residentialLocationsFuture.value?.allLocationsFlattened,
+    };
+
+    return _filterService.filterLocations(
+      availableLocations.where(locations.contains).toList(),
+      keyword: _searchKeyword,
+      locale: _localeStore.currentLocale.languageCode.toLowerCase(),
+    );
   }
 }
 

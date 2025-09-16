@@ -130,6 +130,7 @@ abstract class LocaleKeys {
   static const failedToSubscribe = 'failedToSubscribe';
   static const failedToVerifySubs = 'failedToVerifySubs';
   static const fast = 'fast';
+  static const favourites = 'favourites';
   static const featureToggleMinVersionNotSatisfied = 'featureToggleMinVersionNotSatisfied';
   static const fetchSubsFailed = 'fetchSubsFailed';
   static const fetchSubsFailedDesc = 'fetchSubsFailedDesc';
@@ -151,6 +152,7 @@ abstract class LocaleKeys {
   static const goToBillingPage = 'goToBillingPage';
   static const here = 'here';
   static const highLatencyReason = 'highLatencyReason';
+  static const highSpeed = 'highSpeed';
   static const history = 'history';
   static const iUnderstandBtn = 'iUnderstandBtn';
   static const id = 'id';
