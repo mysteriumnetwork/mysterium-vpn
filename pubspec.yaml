@@ -51,7 +51,7 @@ dependencies:
       url: https://github.com/mysteriumnetwork/flutter_udid.git
       ref: 1.0.1
   freezed_annotation: 2.4.4
-  google_fonts: 6.3.0
+  google_fonts: 6.3.1
   google_sign_in: 7.1.1
   hive: 2.2.3
   hive_flutter: 1.1.0
