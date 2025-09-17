@@ -29,6 +29,7 @@ class ConnectionTile extends HookConsumerWidget {
     final locationsStore = ref.watch(locationsStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
+    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
 
     final location = useComputedValue(
       () {
@@ -54,8 +55,8 @@ class ConnectionTile extends HookConsumerWidget {
 
     final isFavourite = useComputedValue(
       () {
-        if (location == null) {
-          return false;
+        if (location == null || !remoteConfigStore.favouritesEnabled) {
+          return null;
         }
 
         return locationsStore.favouriteLocationsFuture.value?.contains(location) ?? false;
@@ -192,7 +193,7 @@ class _Location extends StatelessWidget {
   final VPNLocation location;
   final VPNLocation? parent;
   final String? ip;
-  final bool isFavourite;
+  final bool? isFavourite;
   final VoidCallback onToggleFavouritePressed;
   final VoidCallback onRefreshIPPressed;
 
@@ -266,9 +267,9 @@ class _Location extends StatelessWidget {
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         onPressed: onRefreshIPPressed,
                       ),
-                    if (ip != null)
+                    if (ip != null && isFavourite != null)
                       SvgIconButton(
-                        asset: isFavourite ? Asset.icons.heartFilled : Asset.icons.heartOutlined,
+                        asset: isFavourite! ? Asset.icons.heartFilled : Asset.icons.heartOutlined,
                         size: 16,
                         color: theme.palette.subtitleColor,
                         visualDensity: VisualDensity.compact,

@@ -108,6 +108,8 @@ class _Body extends HookConsumerWidget {
     final locationsStore = ref.watch(locationsStorePOD);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     final userIntentsStore = ref.watch(userIntentsStorePOD);
+
+    final favouritesEnabled = useComputedValue(() => remoteConfigStore.favouritesEnabled);
     final recentsFutureStatus = useComputedValue(() => locationsStore.recentLocationsFuture.status);
     final showUserIntents = useComputedValue(
       () =>
@@ -121,7 +123,7 @@ class _Body extends HookConsumerWidget {
         children: [
           if (showUserIntents) const _UserIntent(),
           if (showUserIntents) const SizedBox(height: 24),
-          if (favouriteLocations.isNotEmpty) ...[
+          if (favouritesEnabled && favouriteLocations.isNotEmpty) ...[
             _FavouriteLocations(
               favoriteLocations: favouriteLocations,
               onLocationTapped: onLocationTapped,
