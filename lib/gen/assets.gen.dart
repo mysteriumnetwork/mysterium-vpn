@@ -664,6 +664,11 @@ class $AssetsLogoGen {
   AssetGenImage get nativeSplashLogo =>
       const AssetGenImage('assets/logo/native_splash_logo.png', size: Size(1280.0, 512.0));
 
+  /// File path: assets/logo/native_splash_logo_android12.png
+  AssetGenImage get nativeSplashLogoAndroid12 =>
+      const AssetGenImage('assets/logo/native_splash_logo_android12.png',
+          size: Size(1152.0, 1152.0));
+
   /// Directory path: assets/logo/prod
   $AssetsLogoProdGen get prod => const $AssetsLogoProdGen();
 
@@ -672,7 +677,8 @@ class $AssetsLogoGen {
       const SvgGenImage('assets/logo/splash_logo.svg', size: Size(320.0, 128.0));
 
   /// List of all assets
-  List<dynamic> get values => [logoBlack, logoGrey, logoWhite, nativeSplashLogo, splashLogo];
+  List<dynamic> get values =>
+      [logoBlack, logoGrey, logoWhite, nativeSplashLogo, nativeSplashLogoAndroid12, splashLogo];
 }
 
 class $AssetsMapTilesGen {

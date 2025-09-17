@@ -1,4 +1,14 @@
 flutter_native_splash: 
   color: "#2D2A49"
+  color_dark: "#2D2A49"
   image: assets/logo/native_splash_logo.png
+  image_dark: assets/logo/native_splash_logo.png
   fullscreen: true
+  android_12:
+    image: assets/logo/native_splash_logo_android12.png
+    color: "#2D2A49"
+    icon_background_color: "#2D2A49"
+  web: false
+  android_gravity: fill 
+  ios_content_mode: scaleAspectFill
+  

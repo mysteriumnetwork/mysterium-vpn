@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -158,6 +159,7 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
       await _analytics.setUserProperty(name: 'device_id', value: deviceId);
       await _analytics.setUserProperty(name: 'device_name', value: _deviceInfoStore.deviceName);
       await _analytics.setUserProperty(name: 'device_model', value: _deviceInfoStore.deviceModel);
+      await setUserProperty('device_platform', defaultTargetPlatform.name);
     } catch (e) {
       logError(err: e);
     }
