@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/async_text_button.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class ConnectTextButton extends HookConsumerWidget {
   const ConnectTextButton({
@@ -31,7 +32,19 @@ class ConnectTextButton extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final locationsStore = ref.watch(locationsStorePOD);
+
     final isConnected = useIsLocationConnected(location);
+    final isAvailable = useComputedValue(
+      () {
+        if (location == null) {
+          return true;
+        }
+
+        return !locationsStore.unavailableLocations.contains(location);
+      },
+      [location],
+    );
 
     void onPressed() {
       this.onPressed?.call();
@@ -48,7 +61,7 @@ class ConnectTextButton extends HookConsumerWidget {
           : outlinedButton
               ? AsyncTextButtonMode.outlined
               : AsyncTextButtonMode.elevated,
-      onPressed: isConnected == null ? null : onPressed,
+      onPressed: (isConnected == null || !isAvailable) ? null : onPressed,
     );
   }
 }

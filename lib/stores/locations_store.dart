@@ -108,6 +108,9 @@ abstract class _LocationsStore with Store {
   @readonly
   late IPType _ipType = _prefs.getIPType() ?? IPType.residential;
 
+  @readonly
+  late Set<VPNLocation> _unavailableLocations = <VPNLocation>{};
+
   @computed
   ObservableFuture<VPNLocations> get locationsFuture => switch (_ipType) {
         IPType.datacenter => _dcLocationsFuture,

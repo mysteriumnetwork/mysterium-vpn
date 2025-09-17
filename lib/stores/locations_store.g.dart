@@ -216,6 +216,28 @@ mixin _$LocationsStore on _LocationsStore, Store {
     });
   }
 
+  late final _$_unavailableLocationsAtom =
+      Atom(name: '_LocationsStore._unavailableLocations', context: context);
+
+  Set<VPNLocation> get unavailableLocations {
+    _$_unavailableLocationsAtom.reportRead();
+    return super._unavailableLocations;
+  }
+
+  @override
+  Set<VPNLocation> get _unavailableLocations => unavailableLocations;
+
+  bool __unavailableLocationsIsInitialized = false;
+
+  @override
+  set _unavailableLocations(Set<VPNLocation> value) {
+    _$_unavailableLocationsAtom.reportWrite(
+        value, __unavailableLocationsIsInitialized ? super._unavailableLocations : null, () {
+      super._unavailableLocations = value;
+      __unavailableLocationsIsInitialized = true;
+    });
+  }
+
   late final _$refreshAsyncAction = AsyncAction('_LocationsStore.refresh', context: context);
 
   @override
