@@ -766,10 +766,11 @@ packages:
   flutter_udid:
     dependency: "direct main"
     description:
-      name: flutter_udid
-      sha256: "166bee5989a58c66b8b62000ea65edccc7c8167bbafdbb08022638db330dd030"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: "1.0.1"
+      resolved-ref: "27c589ecb89c1424a071e162b938c8df98127578"
+      url: "https://github.com/mysteriumnetwork/flutter_udid.git"
+    source: git
     version: "4.0.0"
   flutter_web_plugins:
     dependency: transitive
