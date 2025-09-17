@@ -226,6 +226,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
           Computed<Duration>(() => super.userIntentsRefreshInterval,
               name: 'RemoteConfigStoreBase.userIntentsRefreshInterval'))
       .value;
+  Computed<bool>? _$favouritesEnabledComputed;
+
+  @override
+  bool get favouritesEnabled =>
+      (_$favouritesEnabledComputed ??= Computed<bool>(() => super.favouritesEnabled,
+              name: 'RemoteConfigStoreBase.favouritesEnabled'))
+          .value;
 
   @override
   String toString() {
@@ -261,7 +268,8 @@ showCitiesAndStates: ${showCitiesAndStates},
 countriesWithCitiesOnMap: ${countriesWithCitiesOnMap},
 showUserIntents: ${showUserIntents},
 userIntentBlacklist: ${userIntentBlacklist},
-userIntentsRefreshInterval: ${userIntentsRefreshInterval}
+userIntentsRefreshInterval: ${userIntentsRefreshInterval},
+favouritesEnabled: ${favouritesEnabled}
     ''';
   }
 }

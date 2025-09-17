@@ -42,6 +42,7 @@ enum _FeatureToggleKey {
   showUserIntents,
   userIntentBlacklist,
   userIntentsRefreshInterval,
+  favouritesEnabled,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -341,6 +342,14 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       }
     }
     return const Duration(minutes: 10);
+  }
+
+  @computed
+  bool get favouritesEnabled {
+    if (config.containsKey(_FeatureToggleKey.favouritesEnabled.name)) {
+      return config[_FeatureToggleKey.favouritesEnabled.name] as bool;
+    }
+    return false;
   }
 
   Map<String, String> get asUserProperties =>
