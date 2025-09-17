@@ -107,6 +107,7 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
       await setUserProperty('device_id', deviceId);
       await setUserProperty('device_name', _deviceInfoStore.deviceName);
       await setUserProperty('device_model', _deviceInfoStore.deviceModel);
+      await setUserProperty('device_platform', defaultTargetPlatform.name);
     } catch (e) {
       logError(err: e);
     }
