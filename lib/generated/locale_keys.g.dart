@@ -19,7 +19,7 @@ abstract class LocaleKeys {
   static const allowPermissionsBtn = 'allowPermissionsBtn';
   static const almostThere = 'almostThere';
   static const and = 'and';
-  static const anonimityIsSafe = 'anonimityIsSafe';
+  static const anonymityIsSafe = 'anonymityIsSafe';
   static const anonymous = 'anonymous';
   static const apiVersion = 'apiVersion';
   static const appLang = 'appLang';

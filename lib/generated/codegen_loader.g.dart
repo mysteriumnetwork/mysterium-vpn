@@ -31,7 +31,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "允许",
     "almostThere": "差不多了！",
     "and": "和",
-    "anonimityIsSafe": "您的匿名是安全的。我们不会查看、收集或存储您的任何浏览活动。",
+    "anonymityIsSafe": "您的匿名是安全的。我们不会查看、收集或存储您的任何浏览活动。",
     "anonymous": "匿名的",
     "apiVersion": "API版本",
     "appLang": "应用语言",
@@ -413,7 +413,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "İzin vermek",
     "almostThere": "Neredeyse!",
     "and": " Ve ",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "Anonimliğiniz güvende. İnternet etkinliğinizin hiçbirini görüntülemiyor, toplamıyor veya saklamıyoruz.",
     "anonymous": "Anonim",
     "apiVersion": "API Sürümü",
@@ -831,7 +831,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "許可する",
     "almostThere": "もうすぐそこです!",
     "and": "および",
-    "anonimityIsSafe": "あなたの匿名性は安全です。当社は、お客様の閲覧活動を閲覧、収集、保存することはありません。",
+    "anonymityIsSafe": "あなたの匿名性は安全です。当社は、お客様の閲覧活動を閲覧、収集、保存することはありません。",
     "anonymous": "匿名",
     "apiVersion": "APIバージョン",
     "appLang": "アプリケーション言語",
@@ -1220,7 +1220,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "Erlauben",
     "almostThere": "Fast fertig!",
     "and": "und der",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "Ihre Anonymität ist sicher. Wir sehen, sammeln oder speichern keine Ihrer Browsing-Aktivitäten.",
     "anonymous": "Anonym",
     "apiVersion": "API Version",
@@ -1665,7 +1665,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "Permitir",
     "almostThere": "Quase lá!",
     "and": "e",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "Seu anonimato é seguro. Não visualizamos, coletamos ou armazenamos nenhuma de suas atividades de navegação.",
     "anonymous": "Anônima",
     "apiVersion": "Versão da API",
@@ -2104,7 +2104,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "Allow",
     "almostThere": "Almost there!",
     "and": " and ",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "Your anonymity is safe. We don't view, collect or store any of your browsing activity.",
     "anonymous": "Anonymous",
     "apiVersion": "API Version",
@@ -2360,7 +2360,7 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanPunchLineTitle": "Protect your online browsing.",
     "pricingPlanSaleDesc": "Full Privacy without being pricy",
     "pricingPlanSaleTag": "Sale",
-    "pricingPlanSaleTitle": "BEST VPN FOR VALUE & ANONIMITY",
+    "pricingPlanSaleTitle": "BEST VPN FOR VALUE & ANONYMITY",
     "pricingPlanSeePlansBtn": "See all plans",
     "pricingPlanTitle": "Our recommended plan",
     "privacyPolicy": "Privacy Policy",
@@ -2530,7 +2530,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "Permettere",
     "almostThere": "Quasi lì!",
     "and": "e",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "Il tuo anonimato è al sicuro. Non visualizziamo, raccogliamo o memorizziamo nessuna delle tue attività di navigazione.",
     "anonymous": "Anonimo",
     "apiVersion": "Versione dell'API",
@@ -2970,7 +2970,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "Permettre",
     "almostThere": "Presque là!",
     "and": "et",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "Votre anonymat est protégé. Nous ne visualisons, ne collectons ni ne stockons aucune de vos activités de navigation.",
     "anonymous": "Anonyme",
     "apiVersion": "Version de l'API",
@@ -3416,7 +3416,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "Mengizinkan",
     "almostThere": "Hampir sampai!",
     "and": "Dan",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "Anonimitas Anda aman. Kami tidak melihat, mengumpulkan, atau menyimpan aktivitas penjelajahan Anda.",
     "anonymous": "Anonim",
     "apiVersion": "Versi API",
@@ -3844,7 +3844,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "Permitir",
     "almostThere": "¡Casi llegamos!",
     "and": "y",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "Tu anonimato está a salvo. No vemos, recopilamos ni almacenamos nada de tu actividad de navegación.",
     "anonymous": "Anónimo",
     "apiVersion": "Versión API",
@@ -4284,7 +4284,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "يسمح",
     "almostThere": "اوشكت على الوصول!",
     "and": "و",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "إخفاء هويتك في أمان. نحن لا نعرض أو نجمع أو نخزن أيًا من أنشطة التصفح الخاصة بك.",
     "anonymous": "مجهول",
     "apiVersion": "أبي الإصدار",
