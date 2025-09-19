@@ -9,6 +9,5 @@ flutter_native_splash:
     color: "#2D2A49"
     icon_background_color: "#2D2A49"
   web: false
-  android_gravity: fill 
-  ios_content_mode: scaleAspectFill
+  android_gravity: fill
   
