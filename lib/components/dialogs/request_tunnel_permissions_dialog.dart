@@ -119,7 +119,7 @@ class _RequestTunnelPermissionsOptionB extends HookConsumerWidget {
               textAlign: TextAlign.center,
             ).padding(bottom: height * 0.03),
             EasyText(
-              LocaleKeys.anonimityIsSafe.tr(),
+              LocaleKeys.anonymityIsSafe.tr(),
               fontSize: 16,
               maxLines: 3,
               textAlign: TextAlign.center,
