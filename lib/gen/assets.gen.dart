@@ -401,6 +401,10 @@ class $AssetsIconsGen {
   SvgGenImage get resetAppSettingDark =>
       const SvgGenImage('assets/icons/reset_app_setting_dark.svg', size: Size(34.0, 34.0));
 
+  /// File path: assets/icons/reset_app_setting_light.svg
+  SvgGenImage get resetAppSettingLight =>
+      const SvgGenImage('assets/icons/reset_app_setting_light.svg', size: Size(34.0, 34.0));
+
   /// File path: assets/icons/search.svg
   SvgGenImage get search => const SvgGenImage('assets/icons/search.svg', size: Size(12.0, 13.0));
 
@@ -579,6 +583,7 @@ class $AssetsIconsGen {
         reportLight,
         reportPurple,
         resetAppSettingDark,
+        resetAppSettingLight,
         search,
         settings,
         settingsDark,
