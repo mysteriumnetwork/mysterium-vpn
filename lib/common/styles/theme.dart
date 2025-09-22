@@ -23,7 +23,9 @@ ThemeData themeData(Palette palette) => ThemeData(
         tertiaryContainer: palette.tertiaryContainer,
         outline: palette.scrimColor,
       ),
-      indicatorColor: palette.secondaryColor,
+      tabBarTheme: TabBarThemeData(
+        indicatorColor: palette.secondaryColor,
+      ),
       hintColor: palette.darkTextColor,
       secondaryHeaderColor: palette.lightTextColor,
       highlightColor: palette.highlightColor.withValues(alpha: 0.4),
