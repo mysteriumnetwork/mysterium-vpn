@@ -314,6 +314,17 @@ mixin _$LocationsStore on _LocationsStore, Store {
   }
 
   @override
+  VPNLocation? parentOf(VPNLocation location) {
+    final _$actionInfo =
+        _$_LocationsStoreActionController.startAction(name: '_LocationsStore.parentOf');
+    try {
+      return super.parentOf(location);
+    } finally {
+      _$_LocationsStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 selectedLocation: ${selectedLocation},

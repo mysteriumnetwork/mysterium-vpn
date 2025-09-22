@@ -6,7 +6,6 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
-import 'package:mysterium_vpn/components/block_vertical_scroll.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/retry_widget.dart';
 import 'package:mysterium_vpn/components/user_intent_picker.dart';
@@ -20,9 +19,9 @@ import 'package:mysterium_vpn/views/locations/components/location_item_empty.dar
 import 'package:mysterium_vpn/views/locations/components/location_type_switcher.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_container.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_disclaimer.dart';
+import 'package:mysterium_vpn/views/locations/components/locations_horizontal_list.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_sliver_list.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_sliver_loading.dart';
-import 'package:mysterium_vpn/views/locations/components/recent_locations_list.dart';
 import 'package:mysterium_vpn/views/locations/components/recent_locations_loading.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:wireguard_dart/connection_status.dart';
@@ -199,14 +198,12 @@ class _UserIntent extends HookConsumerWidget {
           ],
         ),
         const SizedBox(height: 16),
-        BlockVerticalScroll(
-          child: UserIntentPicker(
-            items: intents?.toList(),
-            onChanged: isLoading || (locationsEmpty ?? true)
-                ? null
-                : (value) => handleToggleConnection(intent: value),
-            value: selected,
-          ),
+        UserIntentPicker(
+          items: intents?.toList(),
+          onChanged: isLoading || (locationsEmpty ?? true)
+              ? null
+              : (value) => handleToggleConnection(intent: value),
+          value: selected,
         ),
       ],
     );
@@ -223,21 +220,12 @@ class _RecentLocations extends StatelessWidget {
   final void Function(VPNLocation) onLocationTapped;
 
   @override
-  Widget build(BuildContext context) => MultiSliver(
-        children: [
-          EasyText(
-            LocaleKeys.recentLocations.tr(),
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-          ),
-          const SizedBox(height: 12),
-          BlockVerticalScroll(
-            child: RecentLocationsList(
-              items: recentLocations,
-              onItemPressed: onLocationTapped,
-            ),
-          ),
-        ],
+  Widget build(BuildContext context) => SliverToBoxAdapter(
+        child: LocationsHorizontalList(
+          title: LocaleKeys.recentLocations.tr(),
+          items: recentLocations,
+          onItemPressed: onLocationTapped,
+        ),
       );
 }
 

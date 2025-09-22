@@ -429,6 +429,21 @@ abstract class _LocationsStore with Store {
       _localDB.setLocations(VPNLocations(), type: IPType.datacenter),
     ]);
   }
+
+  @action
+  VPNLocation? parentOf(VPNLocation location) {
+    if (location.isCountry) {
+      return null;
+    }
+    final allLocations = [
+      ...?_dcLocationsFuture.value?.allLocations,
+      ...?_residentialLocationsFuture.value?.allLocations,
+    ];
+
+    return allLocations.firstWhereOrNull(
+      (it) => it.isCountry && it.countryCode == location.countryCode,
+    );
+  }
 }
 
 List<VPNLocation> countriesToLocations(Iterable<String> countries, IPType? ipType) {
