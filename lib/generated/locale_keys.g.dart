@@ -151,6 +151,7 @@ abstract class LocaleKeys {
   static const goToBillingPage = 'goToBillingPage';
   static const here = 'here';
   static const highLatencyReason = 'highLatencyReason';
+  static const highSpeed = 'highSpeed';
   static const history = 'history';
   static const iUnderstandBtn = 'iUnderstandBtn';
   static const id = 'id';

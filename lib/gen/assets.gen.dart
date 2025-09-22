@@ -190,6 +190,14 @@ class $AssetsIconsGen {
   SvgGenImage get closeLight =>
       const SvgGenImage('assets/icons/close_light.svg', size: Size(24.0, 24.0));
 
+  /// File path: assets/icons/connect_prompt_dark.svg
+  SvgGenImage get connectPromptDark =>
+      const SvgGenImage('assets/icons/connect_prompt_dark.svg', size: Size(32.0, 32.0));
+
+  /// File path: assets/icons/connect_prompt_light.svg
+  SvgGenImage get connectPromptLight =>
+      const SvgGenImage('assets/icons/connect_prompt_light.svg', size: Size(32.0, 32.0));
+
   /// File path: assets/icons/delete_account_dark.svg
   SvgGenImage get deleteAccountDark =>
       const SvgGenImage('assets/icons/delete_account_dark.svg', size: Size(34.0, 34.0));
@@ -516,6 +524,8 @@ class $AssetsIconsGen {
         clockCircle,
         closeDark,
         closeLight,
+        connectPromptDark,
+        connectPromptLight,
         deleteAccountDark,
         deleteAccountLight,
         download,
