@@ -89,11 +89,11 @@ abstract class _LocationsStore with Store {
 
   @readonly
   late ObservableFuture<VPNLocations> _dcLocationsFuture =
-      ObservableFuture(_loadLocations(IPType.datacenter));
+      ObservableFuture(_fetchLocations(IPType.datacenter));
 
   @readonly
   late ObservableFuture<VPNLocations> _residentialLocationsFuture =
-      ObservableFuture(_loadLocations(IPType.residential));
+      ObservableFuture(_fetchLocations(IPType.residential));
 
   @readonly
   late ObservableFuture<List<VPNLocation>> _recentLocationsFuture =
@@ -270,7 +270,7 @@ abstract class _LocationsStore with Store {
 
   Stream<VPNLocations> _watch(IPType ipType) async* {
     final cached = _localDB.getLocations(_ipType);
-    if (cached != null) {
+    if (cached != null && cached.isNotEmpty) {
       yield cached;
     }
 
@@ -349,15 +349,6 @@ abstract class _LocationsStore with Store {
       _logger.handle(e, stackTrace);
       rethrow;
     }
-  }
-
-  @action
-  Future<VPNLocations> _loadLocations(IPType ipType) async {
-    final cached = _localDB.getLocations(ipType);
-    if (cached != null) {
-      return cached;
-    }
-    return _fetchLocations(ipType);
   }
 
   @action
