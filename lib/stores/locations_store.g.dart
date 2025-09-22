@@ -238,14 +238,6 @@ mixin _$LocationsStore on _LocationsStore, Store {
     return _$_fetchLocationsAsyncAction.run(() => super._fetchLocations(ipType));
   }
 
-  late final _$_loadLocationsAsyncAction =
-      AsyncAction('_LocationsStore._loadLocations', context: context);
-
-  @override
-  Future<VPNLocations> _loadLocations(IPType ipType) {
-    return _$_loadLocationsAsyncAction.run(() => super._loadLocations(ipType));
-  }
-
   late final _$addRecentLocationAsyncAction =
       AsyncAction('_LocationsStore.addRecentLocation', context: context);
 
