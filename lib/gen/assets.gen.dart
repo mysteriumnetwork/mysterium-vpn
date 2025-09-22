@@ -190,6 +190,14 @@ class $AssetsIconsGen {
   SvgGenImage get closeLight =>
       const SvgGenImage('assets/icons/close_light.svg', size: Size(24.0, 24.0));
 
+  /// File path: assets/icons/connect_prompt_dark.svg
+  SvgGenImage get connectPromptDark =>
+      const SvgGenImage('assets/icons/connect_prompt_dark.svg', size: Size(32.0, 32.0));
+
+  /// File path: assets/icons/connect_prompt_light.svg
+  SvgGenImage get connectPromptLight =>
+      const SvgGenImage('assets/icons/connect_prompt_light.svg', size: Size(32.0, 32.0));
+
   /// File path: assets/icons/delete_account_dark.svg
   SvgGenImage get deleteAccountDark =>
       const SvgGenImage('assets/icons/delete_account_dark.svg', size: Size(34.0, 34.0));
@@ -252,6 +260,14 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/google.svg
   SvgGenImage get google => const SvgGenImage('assets/icons/google.svg', size: Size(14.0, 14.0));
+
+  /// File path: assets/icons/heart_filled.svg
+  SvgGenImage get heartFilled =>
+      const SvgGenImage('assets/icons/heart_filled.svg', size: Size(22.0, 20.0));
+
+  /// File path: assets/icons/heart_outlined.svg
+  SvgGenImage get heartOutlined =>
+      const SvgGenImage('assets/icons/heart_outlined.svg', size: Size(22.0, 20.0));
 
   /// File path: assets/icons/incognito.svg
   SvgGenImage get incognito =>
@@ -516,6 +532,8 @@ class $AssetsIconsGen {
         clockCircle,
         closeDark,
         closeLight,
+        connectPromptDark,
+        connectPromptLight,
         deleteAccountDark,
         deleteAccountLight,
         download,
@@ -533,6 +551,8 @@ class $AssetsIconsGen {
         flashLight,
         globe,
         google,
+        heartFilled,
+        heartOutlined,
         incognito,
         infoCircleDark,
         infoCircleLight,

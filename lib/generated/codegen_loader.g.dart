@@ -142,6 +142,7 @@ class CodegenLoader extends AssetLoader {
     "failedToSubscribe": "您的订阅出了点问题。请再试一次！😕?",
     "failedToVerifySubs": "我们无法验证您上次购买的订阅包。单击下面的按钮重试验证。",
     "fast": "快速地",
+    "favourites": "收藏夹",
     "featureToggleMinVersionNotSatisfied": "您的应用程序版本已过时。请更新应用程序以继续使用。",
     "fetchSubsFailed": "无法获取您的订阅",
     "fetchSubsFailedDesc": "您的订阅出了点问题。请再试一次。",
@@ -163,6 +164,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "管理订阅",
     "here": "这里",
     "highLatencyReason": "高延迟",
+    "highSpeed": "高速",
     "history": "历史",
     "iUnderstandBtn": "我明白了",
     "id": "印度尼西亚",
@@ -537,6 +539,7 @@ class CodegenLoader extends AssetLoader {
     "failedToVerifySubs":
         "Abonelik paketimiz için son satın alma işleminizi doğrulayamadık. Doğrulamayı yeniden denemek için aşağıdaki düğmeyi tıklayın.",
     "fast": "Hızlı",
+    "favourites": "Favoriler",
     "featureToggleMinVersionNotSatisfied":
         "Uygulama sürümünüz eski. Kullanmaya devam etmek için lütfen uygulamayı güncelleyin.",
     "fetchSubsFailed": "Abonelik getirilemiyor",
@@ -560,6 +563,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "Aboneliğimi yönet",
     "here": "Burada",
     "highLatencyReason": "Yüksek gecikme",
+    "highSpeed": "Yüksek hız",
     "history": "Tarih",
     "iUnderstandBtn": "Anladım",
     "id": "Endonezya dili",
@@ -943,6 +947,7 @@ class CodegenLoader extends AssetLoader {
     "failedToSubscribe": "サブスクリプションで問題が発生しました。もう一度試してください。 😕?",
     "failedToVerifySubs": "サブスクリプション パッケージの最後の購入を確認できませんでした。検証を再試行するには、下のボタンをクリックしてください。",
     "fast": "速い",
+    "favourites": "お気に入り",
     "featureToggleMinVersionNotSatisfied": "アプリのバージョンが古いです。引き続き使用するには、アプリを更新してください。",
     "fetchSubsFailed": "サブスクリプションを取得できません",
     "fetchSubsFailedDesc": "サブスクリプションで問題が発生しました。もう一度試してください。",
@@ -964,6 +969,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "サブスクリプションの管理",
     "here": "ここ",
     "highLatencyReason": "高遅延",
+    "highSpeed": "高速",
     "history": "履歴",
     "iUnderstandBtn": "理解しました",
     "id": "インドネシア語",
@@ -1354,6 +1360,7 @@ class CodegenLoader extends AssetLoader {
     "failedToVerifySubs":
         "Wir konnten Ihren letzten Kauf für unser Abonnementpaket nicht bestätigen. Klicken Sie auf die Schaltfläche unten, um die Überprüfung erneut zu versuchen.",
     "fast": "Schnell",
+    "favourites": "Favoriten",
     "featureToggleMinVersionNotSatisfied":
         "Ihre App-Version ist veraltet. Bitte aktualisieren Sie die App, um sie weiterhin verwenden zu können.",
     "fetchSubsFailed": "Ihr Abonnement kann nicht abgerufen werden",
@@ -1379,6 +1386,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "Abonnement verwalten",
     "here": "Hier",
     "highLatencyReason": "Hohe Latenz",
+    "highSpeed": "Highspeed",
     "history": "Verlauf",
     "iUnderstandBtn": "Ich verstehe",
     "id": "Indonesisch",
@@ -1795,6 +1803,7 @@ class CodegenLoader extends AssetLoader {
     "failedToVerifySubs":
         "Não foi possível verificar sua última compra de nosso pacote de assinatura.Clique no botão abaixo para tentar a verificação novamente.",
     "fast": "Rápida",
+    "favourites": "Favoritos",
     "featureToggleMinVersionNotSatisfied":
         "A versão do seu aplicativo está desatualizada. Atualize o aplicativo para continuar a usá-lo.",
     "fetchSubsFailed": "Incapaz de buscar assinatura",
@@ -1818,6 +1827,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "Vá para a página de cobrança",
     "here": "aqui",
     "highLatencyReason": "Alta latência",
+    "highSpeed": "Alta velocidade",
     "history": "História",
     "iUnderstandBtn": "Eu entendo",
     "id": "Indonésio",
@@ -2229,6 +2239,7 @@ class CodegenLoader extends AssetLoader {
     "failedToVerifySubs":
         "We couldn't verify your last purchase for our subscription package. Click the button below to retry verification.",
     "fast": "Fast",
+    "favourites": "Favourites",
     "featureToggleMinVersionNotSatisfied":
         "Your app version is outdated. Please update the app to continue using it.",
     "fetchSubsFailed": "Unable to get your subscription",
@@ -2252,6 +2263,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "Manage Subscription",
     "here": "here",
     "highLatencyReason": "High latency",
+    "highSpeed": "High-speed",
     "history": "History",
     "iUnderstandBtn": "I understand",
     "id": "Indonesian",
@@ -2663,6 +2675,7 @@ class CodegenLoader extends AssetLoader {
     "failedToVerifySubs":
         "Non siamo riusciti a verificare il tuo ultimo acquisto per il nostro pacchetto di abbonamento. Fai clic sul pulsante in basso per ritentare la verifica.",
     "fast": "Veloce",
+    "favourites": "Preferiti",
     "featureToggleMinVersionNotSatisfied":
         "La versione dell'app è obsoleta. Aggiorna l'app per continuare a utilizzarla.",
     "fetchSubsFailed": "Impossibile ottenere l'abbonamento",
@@ -2686,6 +2699,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "Gestisci abbonamento",
     "here": "qui",
     "highLatencyReason": "Alta latenza",
+    "highSpeed": "Alta velocità",
     "history": "Storia",
     "iUnderstandBtn": "Ho capito",
     "id": "Indonesiano",
@@ -3104,6 +3118,7 @@ class CodegenLoader extends AssetLoader {
     "failedToVerifySubs":
         "Nous n'avons pas pu vérifier votre dernier achat pour notre forfait d'abonnement.Cliquez sur le bouton ci-dessous pour réessayer la vérification.",
     "fast": "Rapide",
+    "favourites": "Favoris",
     "featureToggleMinVersionNotSatisfied":
         "La version de votre application est obsolète. Veuillez mettre à jour l'application pour continuer à l'utiliser.",
     "fetchSubsFailed": "Impossible de récupérer l'abonnement",
@@ -3129,6 +3144,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "Aller à la page de facturation",
     "here": "ici",
     "highLatencyReason": "Latence élevée",
+    "highSpeed": "Haut débit",
     "history": "Histoire",
     "iUnderstandBtn": "Je comprends",
     "id": "Indonésien",
@@ -3543,6 +3559,7 @@ class CodegenLoader extends AssetLoader {
     "failedToVerifySubs":
         "Kami tidak dapat memverifikasi pembelian terakhir Anda untuk paket langganan kami. Klik tombol di bawah untuk mencoba verifikasi lagi.",
     "fast": "Cepat",
+    "favourites": "Favorit",
     "featureToggleMinVersionNotSatisfied":
         "Versi aplikasi Anda sudah usang. Harap perbarui aplikasi untuk terus menggunakannya.",
     "fetchSubsFailed": "Tidak bisa mendapatkan langganan Anda",
@@ -3565,6 +3582,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "Kelola Langganan",
     "here": "Di Sini",
     "highLatencyReason": "Latensi tinggi",
+    "highSpeed": "Kecepatan tinggi",
     "history": "Sejarah",
     "iUnderstandBtn": "Saya mengerti",
     "id": "Bahasa Indonesia",
@@ -3975,6 +3993,7 @@ class CodegenLoader extends AssetLoader {
     "failedToVerifySubs":
         "No pudimos verificar tu última compra para nuestro paquete de suscripción. Haz clic en el botón de abajo para volver a intentar la verificación.",
     "fast": "Rápido",
+    "favourites": "Favoritos",
     "featureToggleMinVersionNotSatisfied":
         "La versión de tu aplicación está desactualizada. Actualízala para continuar usándola.",
     "fetchSubsFailed": "No se puede obtener tu suscripción",
@@ -3999,6 +4018,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "Administrar suscripción",
     "here": "aquí",
     "highLatencyReason": "Alta latencia",
+    "highSpeed": "Alta velocidad",
     "history": "Historia",
     "iUnderstandBtn": "Lo entiendo",
     "id": "Indonesio",
@@ -4406,6 +4426,7 @@ class CodegenLoader extends AssetLoader {
     "failedToVerifySubs":
         "لم نتمكن من التحقق من آخر عملية شراء لحزمة الاشتراك الخاصة بنا. انقر فوق الزر أدناه لإعادة محاولة التحقق.",
     "fast": "سريع",
+    "favourites": "المفضلة",
     "featureToggleMinVersionNotSatisfied":
         "إصدار تطبيقك قديم. يُرجى تحديث التطبيق لمواصلة استخدامه.",
     "fetchSubsFailed": "غير قادر على الحصول على اشتراكك",
@@ -4428,6 +4449,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "إدارة الاشتراك",
     "here": "هنا",
     "highLatencyReason": "زمن انتقال مرتفع",
+    "highSpeed": "عالي السرعة",
     "history": "تاريخ",
     "iUnderstandBtn": "أنا أفهم",
     "id": "الاندونيسية",
