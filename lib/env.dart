@@ -27,7 +27,7 @@ abstract class Env {
   static const bool isAutomated = bool.fromEnvironment('IS_AUTOMATED');
 
   static final String bundleId = _getBundleId();
-  static final Flavor flavor = Flavor.fromEnvironment('FLAVOR');
+  static final Flavor flavor = Flavor.fromEnvironment();
 
   static late final PackageInfo _packageInfo;
   static BuildInfo _buildInfo = BuildInfo(buildNumber: 0, buildVersion: '0.0.0');
@@ -72,8 +72,8 @@ enum Flavor {
 
   const Flavor(this.name);
 
-  static Flavor fromEnvironment(String variableName) {
-    final flavor = String.fromEnvironment(variableName, defaultValue: dev.name);
+  static Flavor fromEnvironment() {
+    const flavor = String.fromEnvironment('ENV_APP');
     return Flavor.values.firstWhere(
       (f) => f.name == flavor,
       orElse: () => Flavor.production,
