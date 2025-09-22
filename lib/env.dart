@@ -62,7 +62,7 @@ abstract class Env {
     if (Platform.isIOS || Platform.isMacOS) {
       return flavor.isDev ? iosTestBundleId : iosBundleId;
     }
-    return flavor.isDev ? testBundleId : bundleId;
+    return flavor.isDev ? testAndroidBundleId : androidBundleId;
   }
 }
 
