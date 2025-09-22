@@ -92,6 +92,12 @@ extension $AssetsIconsGenExtensions on $AssetsIconsGen {
         dark: reportDark,
       );
 
+  SvgGenImage resetAppSetting(BuildContext context) => _withBrightness(
+        context,
+        light: resetAppSettingLight,
+        dark: resetAppSettingDark,
+      );
+
   SvgGenImage settingsAdaptive(BuildContext context) => _withBrightness(
         context,
         light: settingsLight,
