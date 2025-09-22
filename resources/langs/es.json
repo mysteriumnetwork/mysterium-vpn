@@ -126,7 +126,6 @@
   "failedToSubscribe": "Algo salió mal con tu suscripción. ¡Inténtalo de nuevo! 😕",
   "failedToVerifySubs": "No pudimos verificar tu última compra para nuestro paquete de suscripción. Haz clic en el botón de abajo para volver a intentar la verificación.",
   "fast": "Rápido",
-  "favourites": "Favoritos",
   "featureToggleMinVersionNotSatisfied": "La versión de tu aplicación está desactualizada. Actualízala para continuar usándola.",
   "fetchSubsFailed": "No se puede obtener tu suscripción",
   "fetchSubsFailedDesc": "Algo salió mal con tu suscripción. Inténtalo de nuevo.",

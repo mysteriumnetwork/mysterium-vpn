@@ -126,7 +126,6 @@
   "failedToSubscribe": "Something went wrong with your subscription. Please try again! 😕",
   "failedToVerifySubs": "We couldn't verify your last purchase for our subscription package. Click the button below to retry verification.",
   "fast": "Fast",
-  "favourites": "Favourites",
   "featureToggleMinVersionNotSatisfied": "Your app version is outdated. Please update the app to continue using it.",
   "fetchSubsFailed": "Unable to get your subscription",
   "fetchSubsFailedDesc": "Something went wrong with your subscription. Please try again.",

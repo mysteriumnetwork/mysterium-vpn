@@ -126,7 +126,6 @@
   "failedToSubscribe": "サブスクリプションで問題が発生しました。もう一度試してください。 😕?",
   "failedToVerifySubs": "サブスクリプション パッケージの最後の購入を確認できませんでした。検証を再試行するには、下のボタンをクリックしてください。",
   "fast": "速い",
-  "favourites": "お気に入り",
   "featureToggleMinVersionNotSatisfied": "アプリのバージョンが古いです。引き続き使用するには、アプリを更新してください。",
   "fetchSubsFailed": "サブスクリプションを取得できません",
   "fetchSubsFailedDesc": "サブスクリプションで問題が発生しました。もう一度試してください。",

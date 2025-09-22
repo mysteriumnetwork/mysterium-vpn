@@ -213,7 +213,7 @@ class _Location extends StatelessWidget {
                         spacing: 8,
                         children: [
                           ...extras
-                              .map(
+                              .map<Widget>(
                                 (it) => Flexible(
                                   child: EasyText(
                                     it,
@@ -222,7 +222,6 @@ class _Location extends StatelessWidget {
                                   ),
                                 ),
                               )
-                              .cast<Widget>()
                               .separateWith(
                                 Container(
                                   color: theme.palette.subtitleColor,
