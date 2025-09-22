@@ -126,7 +126,6 @@
   "failedToSubscribe": "Aboneliğinizle ilgili bir sorun oluştu. 😕",
   "failedToVerifySubs": "Abonelik paketimiz için son satın alma işleminizi doğrulayamadık. Doğrulamayı yeniden denemek için aşağıdaki düğmeyi tıklayın.",
   "fast": "Hızlı",
-  "favourites": "Favoriler",
   "featureToggleMinVersionNotSatisfied": "Uygulama sürümünüz eski. Kullanmaya devam etmek için lütfen uygulamayı güncelleyin.",
   "fetchSubsFailed": "Abonelik getirilemiyor",
   "fetchSubsFailedDesc": "Abonelik paketinizi bulmakta sorun yaşıyoruz. ",

@@ -126,7 +126,6 @@
   "failedToSubscribe": "您的订阅出了点问题。请再试一次！😕?",
   "failedToVerifySubs": "我们无法验证您上次购买的订阅包。单击下面的按钮重试验证。",
   "fast": "快速地",
-  "favourites": "收藏夹",
   "featureToggleMinVersionNotSatisfied": "您的应用程序版本已过时。请更新应用程序以继续使用。",
   "fetchSubsFailed": "无法获取您的订阅",
   "fetchSubsFailedDesc": "您的订阅出了点问题。请再试一次。",

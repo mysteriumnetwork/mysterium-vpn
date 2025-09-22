@@ -130,7 +130,6 @@ abstract class LocaleKeys {
   static const failedToSubscribe = 'failedToSubscribe';
   static const failedToVerifySubs = 'failedToVerifySubs';
   static const fast = 'fast';
-  static const favourites = 'favourites';
   static const featureToggleMinVersionNotSatisfied = 'featureToggleMinVersionNotSatisfied';
   static const fetchSubsFailed = 'fetchSubsFailed';
   static const fetchSubsFailedDesc = 'fetchSubsFailedDesc';

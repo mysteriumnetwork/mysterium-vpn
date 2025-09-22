@@ -261,14 +261,6 @@ class $AssetsIconsGen {
   /// File path: assets/icons/google.svg
   SvgGenImage get google => const SvgGenImage('assets/icons/google.svg', size: Size(14.0, 14.0));
 
-  /// File path: assets/icons/heart_filled.svg
-  SvgGenImage get heartFilled =>
-      const SvgGenImage('assets/icons/heart_filled.svg', size: Size(22.0, 20.0));
-
-  /// File path: assets/icons/heart_outlined.svg
-  SvgGenImage get heartOutlined =>
-      const SvgGenImage('assets/icons/heart_outlined.svg', size: Size(22.0, 20.0));
-
   /// File path: assets/icons/incognito.svg
   SvgGenImage get incognito =>
       const SvgGenImage('assets/icons/incognito.svg', size: Size(20.0, 20.0));
@@ -551,8 +543,6 @@ class $AssetsIconsGen {
         flashLight,
         globe,
         google,
-        heartFilled,
-        heartOutlined,
         incognito,
         infoCircleDark,
         infoCircleLight,
