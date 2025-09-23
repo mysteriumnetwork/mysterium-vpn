@@ -8,6 +8,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/api.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/utils/debouncer.dart';
@@ -160,21 +161,24 @@ abstract class _LocationsStore with Store {
   /// Also applies search keyword filtering.
   @computed
   List<VPNLocation> get recentLocations {
-    final value = _recentLocationsFuture.value ?? const <VPNLocation>[];
-    if (value.isEmpty) {
-      return [];
+    var recents = _recentLocationsFuture.value ?? const <VPNLocation>[];
+    if (recents.isEmpty) {
+      return const <VPNLocation>[];
     }
-    final availableLocations = {
+
+    recents = recents.intersect({
       ...?_dcLocationsFuture.value?.allLocationsFlattened,
       ...?_residentialLocationsFuture.value?.allLocationsFlattened,
-    };
+    }).toList();
 
-    return _filterService.filterRecentLocations(
-      value,
-      availableLocations: availableLocations,
+    recents = _filterService.filterLocations(
+      recents,
       keyword: _searchKeyword,
       locale: _localeStore.currentLocale.languageCode.toLowerCase(),
+      shouldSortList: false,
     );
+
+    return recents.take(_remoteConfigStore.recentLocationsLimit).toList();
   }
 
   /// Computed observable for the list of locations, filtered based on the search keyword.
@@ -225,12 +229,7 @@ abstract class _LocationsStore with Store {
         (_residentialLocationsFuture.value?.isNotEmpty ?? false);
 
     if (isLocationsNotEmpty) {
-      return const VPNLocation(
-        id: '',
-        translations: {},
-        ipType: IPType.closest,
-        countryCode: '',
-      );
+      return VPNLocation.closest;
     }
     return null;
   }
@@ -435,16 +434,18 @@ abstract class _LocationsStore with Store {
     if (_shouldSkipLocation(location)) {
       return;
     }
-    if (location.id.isNotEmpty) {
-      if (recentLocations.contains(location)) {
-        recentLocations.remove(location);
-      }
-      recentLocations.insert(0, location);
-      if (recentLocations.length > 5) {
-        recentLocations.removeLast();
-      }
-      await _localDB.setRecentLocation(recentLocations);
+    if (location.id.isEmpty) {
+      _ipType = location.ipType;
+      return;
     }
+
+    // insert location at the start, removing duplicates
+    final recents = {location, ...(await _recentLocationsFuture)}
+        // keep some extra buffer in case some locations become unavailable
+        .take(_remoteConfigStore.recentLocationsLimit * 3)
+        .toList();
+
+    await _localDB.setRecentLocations(recents);
 
     _ipType = location.ipType;
   }
@@ -499,7 +500,7 @@ abstract class _LocationsStore with Store {
   /// Clears the recent locations list from the local database.
   @action
   Future<void> resetRecentLocations() async {
-    await _localDB.setRecentLocation([]);
+    await _localDB.setRecentLocations([]);
   }
 
   /// Clears all stored locations (both datacenter and residential) from the local database.

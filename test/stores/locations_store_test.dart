@@ -100,6 +100,7 @@ void main() {
 
     when(mockRemoteConfigStore.configFuture).thenAnswer((_) => ObservableFuture.value({}));
     when(mockRemoteConfigStore.locationsRefreshInterval).thenReturn(Duration.zero);
+    when(mockRemoteConfigStore.recentLocationsLimit).thenReturn(5);
     when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => const <VPNLocation>[]);
 
     // Add stubs for fetchVPNLocations
@@ -137,11 +138,11 @@ void main() {
         (_) async => VPNLocations(locations: mockResidential),
       );
       when(
-        mockFilterService.filterRecentLocations(
+        mockFilterService.filterLocations(
           mockResidential,
-          availableLocations: {...mockResidential},
           keyword: 'un',
           locale: 'en',
+          shouldSortList: false,
         ),
       ).thenReturn([Mocks.locationResidentialUS]);
 
@@ -175,11 +176,11 @@ void main() {
     test('returns random location from recent locations', () async {
       when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => mockResidential);
       when(
-        mockFilterService.filterRecentLocations(
+        mockFilterService.filterLocations(
           mockResidential,
           keyword: '',
-          availableLocations: {...mockResidential},
           locale: 'en',
+          shouldSortList: false,
         ),
       ).thenReturn(mockResidential);
 

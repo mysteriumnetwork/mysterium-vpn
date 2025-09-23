@@ -72,4 +72,62 @@ void main() {
       expect(flattened.map((e) => e['id']).toList(), equals([1, 2]));
     });
   });
+
+  group('IterableExtensions.intersect', () {
+    test('returns common elements in order of the first iterable', () {
+      final first = [1, 2, 3, 4];
+      final second = [3, 4, 5, 6];
+      final result = first.intersect(second).toList();
+      expect(result, [3, 4]);
+    });
+
+    test('returns an empty iterable when there are no common elements', () {
+      final first = [1, 2, 3];
+      final second = [4, 5, 6];
+      final result = first.intersect(second).toList();
+      expect(result, []);
+    });
+
+    test('handles duplicates in the first iterable', () {
+      final first = [1, 2, 2, 3];
+      final second = [2, 3];
+      final result = first.intersect(second).toList();
+      expect(result, [2, 2, 3]);
+    });
+
+    test('handles duplicates in the second iterable', () {
+      final first = [1, 2, 3];
+      final second = [2, 2, 3];
+      final result = first.intersect(second).toList();
+      expect(result, [2, 3]);
+    });
+
+    test('returns an empty iterable when the first iterable is empty', () {
+      final first = <int>[];
+      final second = [1, 2, 3];
+      final result = first.intersect(second).toList();
+      expect(result, []);
+    });
+
+    test('returns an empty iterable when the second iterable is empty', () {
+      final first = [1, 2, 3];
+      final second = <int>[];
+      final result = first.intersect(second).toList();
+      expect(result, []);
+    });
+
+    test('returns an empty iterable when both iterables are empty', () {
+      final first = <int>[];
+      final second = <int>[];
+      final result = first.intersect(second).toList();
+      expect(result, []);
+    });
+
+    test('handles iterables with different types', () {
+      final first = ['a', 'b', 'c'];
+      final second = ['b', 'c', 'd'];
+      final result = first.intersect(second).toList();
+      expect(result, ['b', 'c']);
+    });
+  });
 }
