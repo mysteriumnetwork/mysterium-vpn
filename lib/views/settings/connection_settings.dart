@@ -142,13 +142,11 @@ class ConnectionSettings extends HookConsumerWidget {
             ),
           ),
           Visibility(
-            visible: false,
+            visible: remoteConfigStore.isProtocolPickerAvailable,
             child: SettingItem(
               asset: Asset.icons.protocol(context),
               title: LocaleKeys.protocol.tr(),
-              actionWidget: ProtocolPicker(
-                store: vpnStore,
-              ),
+              actionWidget: const ProtocolPicker(),
             ),
           ),
         ],

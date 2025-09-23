@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/models/user_data.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/banner_type_adapter.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/lat_lng_adapter.dart';
+import 'package:mysterium_vpn/services/data/local/adapters/protocol_type.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/vpn_location_adapter.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/vpn_locations_adapter.dart';
 
@@ -26,7 +27,10 @@ class LocalDBService {
       ..registerAdapter(const VPNLocationAdapter(typeId: 3))
       ..registerAdapter(const BannerTypeAdapter(typeId: 4))
       ..registerAdapter(const VpnLocationsAdapter(typeId: 5))
-      ..registerAdapter(const LatLngAdapter(typeId: 6));
+      ..registerAdapter(const LatLngAdapter(typeId: 6))
+      ..registerAdapter(
+        const ProtocolTypeAdapter(typeId: 7),
+      );
 
     await Future.wait([
       Hive.openBox<UserData>('user_data', compactionStrategy: (e, d) => false),
@@ -228,6 +232,17 @@ class LocalDBService {
     final userData = await _loadUserData();
     userData.marketingConsentShown = true;
 
+    await _saveUserData(userData);
+  }
+
+  Future<ProtocolType> getProtocolType() async {
+    final userData = await _loadUserData();
+    return userData.protocolType;
+  }
+
+  Future<void> setProtocolType(ProtocolType protocolType) async {
+    final userData = await _loadUserData();
+    userData.protocolType = protocolType;
     await _saveUserData(userData);
   }
 }

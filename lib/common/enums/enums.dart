@@ -6,6 +6,7 @@ export 'ip_type.dart';
 export 'marketing_analytics_event.dart';
 export 'message_type.dart';
 export 'orientation_type.dart';
+export 'protocol_type.dart';
 export 'routes.dart';
 export 'screen_type.dart';
 export 'size_type.dart';

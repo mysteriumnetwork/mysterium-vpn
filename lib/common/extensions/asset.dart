@@ -82,8 +82,8 @@ extension $AssetsIconsGenExtensions on $AssetsIconsGen {
 
   SvgGenImage protocol(BuildContext context) => _withBrightness(
         context,
-        light: protocolDark,
-        dark: protocolLight,
+        light: protocolLight,
+        dark: protocolDark,
       );
 
   SvgGenImage refreshIpSetting(BuildContext context) => _withBrightness(
