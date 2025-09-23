@@ -9,7 +9,7 @@ updates:
     commit-message:
       prefix: "chore(pub)"
       include: "scope"
-    reviewers:
+    assignees:
       - KristijanMitrik
       - dmacan23
 
@@ -21,7 +21,7 @@ updates:
     open-pull-requests-limit: 10
     commit-message:
       prefix: "chore(android)"
-    reviewers:
+    assignees:
       - KristijanMitrik
       - dmacan23
 
@@ -33,6 +33,6 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: "chore(ci)"
-    reviewers:
+    assignees:
       - KristijanMitrik
       - dmacan23
