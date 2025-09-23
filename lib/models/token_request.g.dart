@@ -6,7 +6,7 @@ part of 'token_request.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$TokenRequestImpl _$$TokenRequestImplFromJson(Map<String, dynamic> json) => _$TokenRequestImpl(
+_TokenRequest _$TokenRequestFromJson(Map<String, dynamic> json) => _TokenRequest(
       grantType: $enumDecode(_$GrantTypeEnumMap, json['grant_type']),
       clientId: json['client_id'] as String? ?? 'app',
       refreshToken: json['refresh_token'] as String?,
@@ -17,7 +17,7 @@ _$TokenRequestImpl _$$TokenRequestImplFromJson(Map<String, dynamic> json) => _$T
       authorization: json['authorization'] as String?,
     );
 
-Map<String, dynamic> _$$TokenRequestImplToJson(_$TokenRequestImpl instance) => <String, dynamic>{
+Map<String, dynamic> _$TokenRequestToJson(_TokenRequest instance) => <String, dynamic>{
       'grant_type': grantTypeToJson(instance.grantType),
       'client_id': instance.clientId,
       'refresh_token': instance.refreshToken,

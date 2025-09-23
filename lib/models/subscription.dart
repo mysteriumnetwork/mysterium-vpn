@@ -6,7 +6,7 @@ part 'subscription.freezed.dart';
 part 'subscription.g.dart';
 
 @freezed
-class Subscription with _$Subscription {
+abstract class Subscription with _$Subscription {
   factory Subscription({
     required bool active,
     @JsonKey(name: 'plan_id') String? planId,

@@ -8,7 +8,7 @@ part of 'user_data.dart';
 
 class UserDataAdapter extends TypeAdapter<UserData> {
   @override
-  final int typeId = 1;
+  final typeId = 1;
 
   @override
   UserData read(BinaryReader reader) {
@@ -19,8 +19,8 @@ class UserDataAdapter extends TypeAdapter<UserData> {
     return UserData(
       userId: fields[0] as String,
       recentVPNLocations: fields[11] == null ? [] : (fields[11] as List).cast<VPNLocation>(),
-      emailCommunication: fields[1] as Approval,
-      notifications: fields[3] as Approval,
+      emailCommunication: fields[1] == null ? Approval.notSet : fields[1] as Approval,
+      notifications: fields[3] == null ? Approval.notSet : fields[3] as Approval,
       subscriptionPlan: fields[4] as String?,
       refreshIPConnection: fields[7] == null ? true : fields[7] as bool,
       malwareBlocker: fields[8] == null ? false : fields[8] as bool,
@@ -28,7 +28,7 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       vpnPrivacyPolicyConsent: fields[10] == null ? false : fields[10] as bool,
       subscriptionPurchaseId: fields[5] as String?,
       shownBanners: fields[12] == null ? [] : (fields[12] as List).cast<BannerType>(),
-      recentLocationCodes: (fields[2] as List).cast<String>(),
+      recentLocationCodes: fields[2] == null ? const [] : (fields[2] as List).cast<String>(),
       marketingConsentShown: fields[13] == null ? false : fields[13] as bool,
     );
   }
@@ -76,7 +76,7 @@ class UserDataAdapter extends TypeAdapter<UserData> {
 
 class ApprovalAdapter extends TypeAdapter<Approval> {
   @override
-  final int typeId = 2;
+  final typeId = 2;
 
   @override
   Approval read(BinaryReader reader) {
@@ -97,13 +97,10 @@ class ApprovalAdapter extends TypeAdapter<Approval> {
     switch (obj) {
       case Approval.approved:
         writer.writeByte(0);
-        break;
       case Approval.declined:
         writer.writeByte(1);
-        break;
       case Approval.notSet:
         writer.writeByte(2);
-        break;
     }
   }
 
