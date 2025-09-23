@@ -22,13 +22,10 @@ abstract class VPNLocations with _$VPNLocations {
 
   factory VPNLocations.fromJson(Map<String, dynamic> json) => _$VPNLocationsFromJson(json);
 
-  @override
-  late final Set<VPNLocation> allLocations = {...locations, ...topLocations};
-  @override
-  late final Set<VPNLocation> allLocationsFlattened =
+  Set<VPNLocation> get allLocations => {...locations, ...topLocations};
+  Set<VPNLocation> get allLocationsFlattened =>
       allLocations.flattenBy((it) => it.children ?? const <VPNLocation>[]).toSet();
-  @override
-  late final bool isEmpty = allLocations.isEmpty;
+  bool get isEmpty => allLocations.isEmpty;
 
   bool get isNotEmpty => !isEmpty;
 }
