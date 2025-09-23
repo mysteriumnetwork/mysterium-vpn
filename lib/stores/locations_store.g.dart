@@ -238,14 +238,6 @@ mixin _$LocationsStore on _LocationsStore, Store {
     return _$_fetchLocationsAsyncAction.run(() => super._fetchLocations(ipType));
   }
 
-  late final _$_loadLocationsAsyncAction =
-      AsyncAction('_LocationsStore._loadLocations', context: context);
-
-  @override
-  Future<VPNLocations> _loadLocations(IPType ipType) {
-    return _$_loadLocationsAsyncAction.run(() => super._loadLocations(ipType));
-  }
-
   late final _$addRecentLocationAsyncAction =
       AsyncAction('_LocationsStore.addRecentLocation', context: context);
 
@@ -308,6 +300,17 @@ mixin _$LocationsStore on _LocationsStore, Store {
         _$_LocationsStoreActionController.startAction(name: '_LocationsStore.setLocationKeyword');
     try {
       return super.setLocationKeyword(text, duration);
+    } finally {
+      _$_LocationsStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  VPNLocation? parentOf(VPNLocation location) {
+    final _$actionInfo =
+        _$_LocationsStoreActionController.startAction(name: '_LocationsStore.parentOf');
+    try {
+      return super.parentOf(location);
     } finally {
       _$_LocationsStoreActionController.endAction(_$actionInfo);
     }

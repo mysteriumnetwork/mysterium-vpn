@@ -58,6 +58,8 @@ abstract class Palette {
   Color get tertiaryContainer;
   Color get alertButtonsOutlineColor;
   Color get connectionTileBackgroundColor;
+  Color get connectionTileOutlineConnectedColor;
+  Color get connectionTileOutlineDisconnectedColor;
   Color get tooltipBackgroundColor;
   Color get disabledButtonBackgroundColor;
   Color get disabledButtonForegroundColor;
@@ -148,7 +150,13 @@ class LightPalette implements Palette {
   Color get alertButtonsOutlineColor => Palette.semiTransparentLightBlack;
 
   @override
-  Color get connectionTileBackgroundColor => Palette.white;
+  Color get connectionTileBackgroundColor => const Color(0xFFEFEFF3);
+
+  @override
+  Color get connectionTileOutlineConnectedColor => Palette.forestGreen;
+
+  @override
+  Color get connectionTileOutlineDisconnectedColor => Palette.crimsonRed;
 
   @override
   Color get tooltipBackgroundColor => Palette.white;
@@ -244,6 +252,12 @@ class DarkPalette implements Palette {
 
   @override
   Color get connectionTileBackgroundColor => Palette.deepPurple;
+
+  @override
+  Color get connectionTileOutlineConnectedColor => Palette.forestGreen;
+
+  @override
+  Color get connectionTileOutlineDisconnectedColor => Palette.crimsonRed;
 
   @override
   Color get tooltipBackgroundColor => Palette.duskyPurple;

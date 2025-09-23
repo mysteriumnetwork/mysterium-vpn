@@ -31,7 +31,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "允许",
     "almostThere": "差不多了！",
     "and": "和",
-    "anonimityIsSafe": "您的匿名是安全的。我们不会查看、收集或存储您的任何浏览活动。",
+    "anonymityIsSafe": "您的匿名是安全的。我们不会查看、收集或存储您的任何浏览活动。",
     "anonymous": "匿名的",
     "apiVersion": "API版本",
     "appLang": "应用语言",
@@ -163,6 +163,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "管理订阅",
     "here": "这里",
     "highLatencyReason": "高延迟",
+    "highSpeed": "高速",
     "history": "历史",
     "iUnderstandBtn": "我明白了",
     "id": "印度尼西亚",
@@ -259,7 +260,7 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanJoinNowBtn": "立即加入可节省49%",
     "pricingPlanLetsGoBtn": "走吧！",
     "pricingPlanPunchLineDesc": "隐私、安全和在线自由近在咫尺。无论你在哪里，无论你什么时候。",
-    "pricingPlanPunchLineTitle": "准备好无国界的互联网了吗？",
+    "pricingPlanPunchLineTitle": "保护您的在线浏览。",
     "pricingPlanSaleDesc": "完全隐私，价格实惠",
     "pricingPlanSaleTag": "促销",
     "pricingPlanSaleTitle": "最佳性价比和匿名性VPN",
@@ -413,7 +414,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "İzin vermek",
     "almostThere": "Neredeyse!",
     "and": " Ve ",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "Anonimliğiniz güvende. İnternet etkinliğinizin hiçbirini görüntülemiyor, toplamıyor veya saklamıyoruz.",
     "anonymous": "Anonim",
     "apiVersion": "API Sürümü",
@@ -560,6 +561,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "Aboneliğimi yönet",
     "here": "Burada",
     "highLatencyReason": "Yüksek gecikme",
+    "highSpeed": "Yüksek hız",
     "history": "Tarih",
     "iUnderstandBtn": "Anladım",
     "id": "Endonezya dili",
@@ -664,7 +666,7 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanLetsGoBtn": "Hadi gidelim!",
     "pricingPlanPunchLineDesc":
         "Gizlilik, güvenlik ve çevrimiçi özgürlük sadece bir adım ötede. Nerede olursanız olun, ne zaman olursanız olun.",
-    "pricingPlanPunchLineTitle": "Sınırsız internet için hazır mısınız?",
+    "pricingPlanPunchLineTitle": "Çevrimiçi gezinmenizi koruyun.",
     "pricingPlanSaleDesc": "Yüksek maliyet olmadan tam gizlilik",
     "pricingPlanSaleTag": "İndirim",
     "pricingPlanSaleTitle": "DEĞER VE ANONİMLİK İÇİN EN İYİ VPN",
@@ -831,7 +833,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "許可する",
     "almostThere": "もうすぐそこです!",
     "and": "および",
-    "anonimityIsSafe": "あなたの匿名性は安全です。当社は、お客様の閲覧活動を閲覧、収集、保存することはありません。",
+    "anonymityIsSafe": "あなたの匿名性は安全です。当社は、お客様の閲覧活動を閲覧、収集、保存することはありません。",
     "anonymous": "匿名",
     "apiVersion": "APIバージョン",
     "appLang": "アプリケーション言語",
@@ -964,6 +966,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "サブスクリプションの管理",
     "here": "ここ",
     "highLatencyReason": "高遅延",
+    "highSpeed": "高速",
     "history": "履歴",
     "iUnderstandBtn": "理解しました",
     "id": "インドネシア語",
@@ -1061,7 +1064,7 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanJoinNowBtn": "今すぐ参加して49％節約",
     "pricingPlanLetsGoBtn": "行こう！",
     "pricingPlanPunchLineDesc": "プライバシー、セキュリティ、オンラインの自由はすぐそこにあります。どこにいても、いつでも。",
-    "pricingPlanPunchLineTitle": "国境のないインターネットの準備はできましたか？",
+    "pricingPlanPunchLineTitle": "オンライン閲覧を保護します。",
     "pricingPlanSaleDesc": "高額にならずに完全なプライバシー",
     "pricingPlanSaleTag": "セール",
     "pricingPlanSaleTitle": "価値と匿名性に最適なVPN",
@@ -1220,7 +1223,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "Erlauben",
     "almostThere": "Fast fertig!",
     "and": "und der",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "Ihre Anonymität ist sicher. Wir sehen, sammeln oder speichern keine Ihrer Browsing-Aktivitäten.",
     "anonymous": "Anonym",
     "apiVersion": "API Version",
@@ -1379,6 +1382,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "Abonnement verwalten",
     "here": "Hier",
     "highLatencyReason": "Hohe Latenz",
+    "highSpeed": "Highspeed",
     "history": "Verlauf",
     "iUnderstandBtn": "Ich verstehe",
     "id": "Indonesisch",
@@ -1488,7 +1492,7 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanLetsGoBtn": "Los geht's!",
     "pricingPlanPunchLineDesc":
         "Privatsphäre, Sicherheit und Online-Freiheit sind gleich um die Ecke. Wo auch immer Sie sind, wann auch immer Sie sind.",
-    "pricingPlanPunchLineTitle": "Bereit für grenzenloses Internet?",
+    "pricingPlanPunchLineTitle": "Schützen Sie Ihr Online-Browsing.",
     "pricingPlanSaleDesc": "Volle Privatsphäre ohne hohen Preis",
     "pricingPlanSaleTag": "Angebot",
     "pricingPlanSaleTitle": "BESTES VPN FÜR WERT & ANONYMITÄT",
@@ -1665,7 +1669,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "Permitir",
     "almostThere": "Quase lá!",
     "and": "e",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "Seu anonimato é seguro. Não visualizamos, coletamos ou armazenamos nenhuma de suas atividades de navegação.",
     "anonymous": "Anônima",
     "apiVersion": "Versão da API",
@@ -1818,6 +1822,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "Vá para a página de cobrança",
     "here": "aqui",
     "highLatencyReason": "Alta latência",
+    "highSpeed": "Alta velocidade",
     "history": "História",
     "iUnderstandBtn": "Eu entendo",
     "id": "Indonésio",
@@ -1926,7 +1931,7 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanLetsGoBtn": "Vamos!",
     "pricingPlanPunchLineDesc":
         "Privacidade, segurança e liberdade online estão ao seu alcance. Onde quer que você esteja, a qualquer momento.",
-    "pricingPlanPunchLineTitle": "Pronto para uma internet sem fronteiras?",
+    "pricingPlanPunchLineTitle": "Proteja sua navegação online.",
     "pricingPlanSaleDesc": "Privacidade total sem ser caro",
     "pricingPlanSaleTag": "Promoção",
     "pricingPlanSaleTitle": "MELHOR VPN PARA CUSTO-BENEFÍCIO E ANONIMATO",
@@ -2104,7 +2109,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "Allow",
     "almostThere": "Almost there!",
     "and": " and ",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "Your anonymity is safe. We don't view, collect or store any of your browsing activity.",
     "anonymous": "Anonymous",
     "apiVersion": "API Version",
@@ -2252,6 +2257,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "Manage Subscription",
     "here": "here",
     "highLatencyReason": "High latency",
+    "highSpeed": "High-speed",
     "history": "History",
     "iUnderstandBtn": "I understand",
     "id": "Indonesian",
@@ -2357,10 +2363,10 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanLetsGoBtn": "Let’s go!",
     "pricingPlanPunchLineDesc":
         "Privacy, security, and online freedom are just around the corner. Wherever you are, whenever you are.",
-    "pricingPlanPunchLineTitle": "Ready for borderless internet?",
+    "pricingPlanPunchLineTitle": "Protect your online browsing.",
     "pricingPlanSaleDesc": "Full Privacy without being pricy",
     "pricingPlanSaleTag": "Sale",
-    "pricingPlanSaleTitle": "BEST VPN FOR VALUE & ANONIMITY",
+    "pricingPlanSaleTitle": "BEST VPN FOR VALUE & ANONYMITY",
     "pricingPlanSeePlansBtn": "See all plans",
     "pricingPlanTitle": "Our recommended plan",
     "privacyPolicy": "Privacy Policy",
@@ -2530,7 +2536,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "Permettere",
     "almostThere": "Quasi lì!",
     "and": "e",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "Il tuo anonimato è al sicuro. Non visualizziamo, raccogliamo o memorizziamo nessuna delle tue attività di navigazione.",
     "anonymous": "Anonimo",
     "apiVersion": "Versione dell'API",
@@ -2686,6 +2692,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "Gestisci abbonamento",
     "here": "qui",
     "highLatencyReason": "Alta latenza",
+    "highSpeed": "Alta velocità",
     "history": "Storia",
     "iUnderstandBtn": "Ho capito",
     "id": "Indonesiano",
@@ -2793,7 +2800,7 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanLetsGoBtn": "Andiamo!",
     "pricingPlanPunchLineDesc":
         "Privacy, sicurezza e libertà online sono a portata di mano. Ovunque tu sia, in qualsiasi momento.",
-    "pricingPlanPunchLineTitle": "Pronto per un internet senza confini?",
+    "pricingPlanPunchLineTitle": "Proteggi la tua navigazione online.",
     "pricingPlanSaleDesc": "Privacy totale senza costi elevati",
     "pricingPlanSaleTag": "Sconto",
     "pricingPlanSaleTitle": "MIGLIOR VPN PER VALORE E ANONIMATO",
@@ -2970,7 +2977,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "Permettre",
     "almostThere": "Presque là!",
     "and": "et",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "Votre anonymat est protégé. Nous ne visualisons, ne collectons ni ne stockons aucune de vos activités de navigation.",
     "anonymous": "Anonyme",
     "apiVersion": "Version de l'API",
@@ -3129,6 +3136,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "Aller à la page de facturation",
     "here": "ici",
     "highLatencyReason": "Latence élevée",
+    "highSpeed": "Haut débit",
     "history": "Histoire",
     "iUnderstandBtn": "Je comprends",
     "id": "Indonésien",
@@ -3236,7 +3244,7 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanLetsGoBtn": "Allons-y!",
     "pricingPlanPunchLineDesc":
         "Confidentialité, sécurité et liberté en ligne sont à portée de main. Où que vous soyez, quand que ce soit.",
-    "pricingPlanPunchLineTitle": "Prêt pour un internet sans frontières?",
+    "pricingPlanPunchLineTitle": "Protégez votre navigation en ligne.",
     "pricingPlanSaleDesc": "Confidentialité totale sans être cher",
     "pricingPlanSaleTag": "Soldes",
     "pricingPlanSaleTitle": "MEILLEUR VPN POUR VALEUR & ANONYMAT",
@@ -3416,7 +3424,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "Mengizinkan",
     "almostThere": "Hampir sampai!",
     "and": "Dan",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "Anonimitas Anda aman. Kami tidak melihat, mengumpulkan, atau menyimpan aktivitas penjelajahan Anda.",
     "anonymous": "Anonim",
     "apiVersion": "Versi API",
@@ -3565,6 +3573,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "Kelola Langganan",
     "here": "Di Sini",
     "highLatencyReason": "Latensi tinggi",
+    "highSpeed": "Kecepatan tinggi",
     "history": "Sejarah",
     "iUnderstandBtn": "Saya mengerti",
     "id": "Bahasa Indonesia",
@@ -3671,7 +3680,7 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanLetsGoBtn": "Ayo pergi!",
     "pricingPlanPunchLineDesc":
         "Privasi, keamanan, dan kebebasan online hanya beberapa langkah lagi. Di mana pun Anda berada, kapan pun Anda berada.",
-    "pricingPlanPunchLineTitle": "Siap untuk internet tanpa batas?",
+    "pricingPlanPunchLineTitle": "Lindungi penjelajahan online Anda.",
     "pricingPlanSaleDesc": "Privasi penuh tanpa mahal",
     "pricingPlanSaleTag": "Diskon",
     "pricingPlanSaleTitle": "VPN TERBAIK UNTUK NILAI & ANONIMITAS",
@@ -3844,7 +3853,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "Permitir",
     "almostThere": "¡Casi llegamos!",
     "and": "y",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "Tu anonimato está a salvo. No vemos, recopilamos ni almacenamos nada de tu actividad de navegación.",
     "anonymous": "Anónimo",
     "apiVersion": "Versión API",
@@ -3999,6 +4008,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "Administrar suscripción",
     "here": "aquí",
     "highLatencyReason": "Alta latencia",
+    "highSpeed": "Alta velocidad",
     "history": "Historia",
     "iUnderstandBtn": "Lo entiendo",
     "id": "Indonesio",
@@ -4107,7 +4117,7 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanLetsGoBtn": "¡Vamos!",
     "pricingPlanPunchLineDesc":
         "Privacidad, seguridad y libertad en línea están a la vuelta de la esquina. Dondequiera que estés, cuando sea.",
-    "pricingPlanPunchLineTitle": "¿Listo para un internet sin fronteras?",
+    "pricingPlanPunchLineTitle": "Protege tu navegación en línea.",
     "pricingPlanSaleDesc": "Privacidad total sin ser costoso",
     "pricingPlanSaleTag": "Oferta",
     "pricingPlanSaleTitle": "MEJOR VPN POR SU VALOR Y ANONIMATO",
@@ -4284,7 +4294,7 @@ class CodegenLoader extends AssetLoader {
     "allowPermissionsBtn": "يسمح",
     "almostThere": "اوشكت على الوصول!",
     "and": "و",
-    "anonimityIsSafe":
+    "anonymityIsSafe":
         "إخفاء هويتك في أمان. نحن لا نعرض أو نجمع أو نخزن أيًا من أنشطة التصفح الخاصة بك.",
     "anonymous": "مجهول",
     "apiVersion": "أبي الإصدار",
@@ -4428,6 +4438,7 @@ class CodegenLoader extends AssetLoader {
     "goToBillingPage": "إدارة الاشتراك",
     "here": "هنا",
     "highLatencyReason": "زمن انتقال مرتفع",
+    "highSpeed": "عالي السرعة",
     "history": "تاريخ",
     "iUnderstandBtn": "أنا أفهم",
     "id": "الاندونيسية",
@@ -4531,7 +4542,7 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanJoinNowBtn": "وفر 49% من خلال الانضمام الآن",
     "pricingPlanLetsGoBtn": "دعنا نذهب!",
     "pricingPlanPunchLineDesc": "الخصوصية والأمان والحرية عبر الإنترنت أصبحت قاب قوسين أو أدنى. ",
-    "pricingPlanPunchLineTitle": "هل أنت مستعد للإنترنت بلا حدود؟",
+    "pricingPlanPunchLineTitle": "احمِ تصفحك عبر الإنترنت.",
     "pricingPlanSaleDesc": "خصوصية كاملة بدون تكلفة باهظة",
     "pricingPlanSaleTag": "تخفيض",
     "pricingPlanSaleTitle": "أفضل VPN للقيمة والخصوصية",
