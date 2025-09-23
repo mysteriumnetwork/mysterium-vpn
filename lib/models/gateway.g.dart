@@ -6,12 +6,12 @@ part of 'gateway.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GatewayImpl _$$GatewayImplFromJson(Map<String, dynamic> json) => _$GatewayImpl(
+_Gateway _$GatewayFromJson(Map<String, dynamic> json) => _Gateway(
       name: json['name'] as String,
       enabled: json['enabled'] as bool,
     );
 
-Map<String, dynamic> _$$GatewayImplToJson(_$GatewayImpl instance) => <String, dynamic>{
+Map<String, dynamic> _$GatewayToJson(_Gateway instance) => <String, dynamic>{
       'name': instance.name,
       'enabled': instance.enabled,
     };

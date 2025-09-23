@@ -5,7 +5,7 @@ part 'auth_user.freezed.dart';
 part 'auth_user.g.dart';
 
 @freezed
-class AuthUser with _$AuthUser {
+abstract class AuthUser with _$AuthUser {
   factory AuthUser({
     @JsonKey(name: 'sub') required String userId,
     @JsonKey(name: 'username') required String username,

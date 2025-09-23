@@ -6,12 +6,12 @@ part of 'auth_user.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$AuthDataImpl _$$AuthDataImplFromJson(Map<String, dynamic> json) => _$AuthDataImpl(
+_AuthData _$AuthDataFromJson(Map<String, dynamic> json) => _AuthData(
       userId: json['sub'] as String,
       username: json['username'] as String,
     );
 
-Map<String, dynamic> _$$AuthDataImplToJson(_$AuthDataImpl instance) => <String, dynamic>{
+Map<String, dynamic> _$AuthDataToJson(_AuthData instance) => <String, dynamic>{
       'sub': instance.userId,
       'username': instance.username,
     };
