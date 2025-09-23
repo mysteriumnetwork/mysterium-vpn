@@ -281,5 +281,6 @@ final vpnProtocolStorePOD = Provider<VpnProtocolStore>(
   (ref) => VpnProtocolStore(
     LocalDBService.instance,
     ref.watch(analyticsStorePOD),
+    ref.watch(remoteConfigStorePOD),
   ),
 );
