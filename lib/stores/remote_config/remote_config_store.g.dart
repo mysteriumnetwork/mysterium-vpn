@@ -233,6 +233,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$recentLocationsLimitComputed ??= Computed<int>(() => super.recentLocationsLimit,
               name: 'RemoteConfigStoreBase.recentLocationsLimit'))
           .value;
+  Computed<bool>? _$isProtocolPickerAvailableComputed;
+
+  @override
+  bool get isProtocolPickerAvailable =>
+      (_$isProtocolPickerAvailableComputed ??= Computed<bool>(() => super.isProtocolPickerAvailable,
+              name: 'RemoteConfigStoreBase.isProtocolPickerAvailable'))
+          .value;
 
   @override
   String toString() {
@@ -269,7 +276,8 @@ countriesWithCitiesOnMap: ${countriesWithCitiesOnMap},
 showUserIntents: ${showUserIntents},
 userIntentBlacklist: ${userIntentBlacklist},
 userIntentsRefreshInterval: ${userIntentsRefreshInterval},
-recentLocationsLimit: ${recentLocationsLimit}
+recentLocationsLimit: ${recentLocationsLimit},
+isProtocolPickerAvailable: ${isProtocolPickerAvailable}
     ''';
   }
 }
