@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/location.dart';
@@ -23,10 +23,10 @@ class LocalDBService {
     Hive
       ..registerAdapter(UserDataAdapter())
       ..registerAdapter(ApprovalAdapter())
-      ..registerAdapter(VPNLocationAdapter(typeId: 3))
-      ..registerAdapter(BannerTypeAdapter(typeId: 4))
-      ..registerAdapter(VpnLocationsAdapter(typeId: 5))
-      ..registerAdapter(LatLngAdapter(typeId: 6));
+      ..registerAdapter(const VPNLocationAdapter(typeId: 3))
+      ..registerAdapter(const BannerTypeAdapter(typeId: 4))
+      ..registerAdapter(const VpnLocationsAdapter(typeId: 5))
+      ..registerAdapter(const LatLngAdapter(typeId: 6));
 
     await Future.wait([
       Hive.openBox<UserData>('user_data', compactionStrategy: (e, d) => false),

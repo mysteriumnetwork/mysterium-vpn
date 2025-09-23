@@ -4,7 +4,7 @@ import 'package:mysterium_vpn/models/location.dart';
 part 'vpn_connection.freezed.dart';
 
 @freezed
-class VpnConnection with _$VpnConnection {
+abstract class VpnConnection with _$VpnConnection {
   const factory VpnConnection({
     required String connectionIP,
     required VPNLocation location,

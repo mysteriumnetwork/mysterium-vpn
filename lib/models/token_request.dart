@@ -6,7 +6,7 @@ part 'token_request.freezed.dart';
 part 'token_request.g.dart';
 
 @freezed
-class TokenRequest with _$TokenRequest {
+abstract class TokenRequest with _$TokenRequest {
   factory TokenRequest({
     @JsonKey(name: 'grant_type', toJson: grantTypeToJson) required GrantType grantType,
     @JsonKey(name: 'client_id') @Default('app') String clientId,
