@@ -22,7 +22,7 @@ class RestApiService extends ApiService {
   final Talker _logger;
 
   @override
-  Future<WireguardConnectResponse> fetchVpnConfig({
+  Future<WireguardConnectResponse> fetchWireguardVpnConfig({
     required WireguardConnectRequest request,
   }) async {
     try {
@@ -190,6 +190,25 @@ class RestApiService extends ApiService {
           .toSet();
     } catch (e, stack) {
       _logger.handle(e, stack);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<OpenVpnConnectResponse> fetchOpenVpnConfig({
+    required OpenVpnConnectRequest request,
+  }) async {
+    try {
+      final response = await _apiConnection.connectOpenvpn(openVpnConnectRequest: request);
+      if (response.data == null) {
+        throw Exception("openvpn config wasn't created");
+      }
+
+      return response.data!;
+    } on ApiException {
+      rethrow;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
       rethrow;
     }
   }
