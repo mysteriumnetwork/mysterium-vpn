@@ -42,6 +42,7 @@ enum _FeatureToggleKey {
   showUserIntents,
   userIntentBlacklist,
   userIntentsRefreshInterval,
+  recentLocationsLimit,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -341,6 +342,17 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       }
     }
     return const Duration(minutes: 10);
+  }
+
+  @computed
+  int get recentLocationsLimit {
+    if (config.containsKey(_FeatureToggleKey.recentLocationsLimit.name)) {
+      final raw = config[_FeatureToggleKey.recentLocationsLimit.name];
+      if (raw is int && raw >= 0) {
+        return raw;
+      }
+    }
+    return 5;
   }
 
   Map<String, String> get asUserProperties =>

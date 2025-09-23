@@ -226,6 +226,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
           Computed<Duration>(() => super.userIntentsRefreshInterval,
               name: 'RemoteConfigStoreBase.userIntentsRefreshInterval'))
       .value;
+  Computed<int>? _$recentLocationsLimitComputed;
+
+  @override
+  int get recentLocationsLimit =>
+      (_$recentLocationsLimitComputed ??= Computed<int>(() => super.recentLocationsLimit,
+              name: 'RemoteConfigStoreBase.recentLocationsLimit'))
+          .value;
 
   @override
   String toString() {
@@ -261,7 +268,8 @@ showCitiesAndStates: ${showCitiesAndStates},
 countriesWithCitiesOnMap: ${countriesWithCitiesOnMap},
 showUserIntents: ${showUserIntents},
 userIntentBlacklist: ${userIntentBlacklist},
-userIntentsRefreshInterval: ${userIntentsRefreshInterval}
+userIntentsRefreshInterval: ${userIntentsRefreshInterval},
+recentLocationsLimit: ${recentLocationsLimit}
     ''';
   }
 }
