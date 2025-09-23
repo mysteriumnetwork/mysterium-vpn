@@ -315,7 +315,7 @@ abstract class _LocationsStore with Store {
   /// Emits synchronously from cache (if present) then live updates from DB.
   /// This ensures the UI can reactively update as location data changes.
   Stream<VPNLocations> _watch(IPType ipType) async* {
-    final cached = _localDB.getLocations(_ipType);
+    final cached = await _localDB.getLocations(_ipType);
 
     // Emit cached locations first if available for immediate UI responsiveness.
     if (cached != null && cached.isNotEmpty) {
@@ -421,6 +421,15 @@ abstract class _LocationsStore with Store {
   /// It also updates the selected IP type based on the added location.
   /// If the location is not part of the currently available locations (based on IP type), it is skipped.
   /// This method is useful for tracking user preferences and providing quick access to frequently used locations.
+  @action
+  Future<VPNLocations> _loadLocations(IPType ipType) async {
+    final cached = await _localDB.getLocations(ipType);
+    if (cached != null) {
+      return cached;
+    }
+    return _fetchLocations(ipType);
+  }
+
   @action
   Future<void> addRecentLocation(VPNLocation location) async {
     if (_shouldSkipLocation(location)) {

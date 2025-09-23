@@ -91,12 +91,12 @@ void main() {
     when(mockLocaleStore.currentLocale).thenAnswer((_) => const Locale('en'));
 
     when(mockLocalDB.getLocations(IPType.residential)).thenAnswer(
-      (_) => VPNLocations(locations: mockResidential),
+      (_) async => VPNLocations(locations: mockResidential),
     );
     when(mockLocalDB.getLocations(IPType.datacenter)).thenAnswer(
-      (_) => VPNLocations(locations: mockDatacenter),
+      (_) async => VPNLocations(locations: mockDatacenter),
     );
-    when(mockLocalDB.getLocations(null)).thenAnswer((_) => null);
+    when(mockLocalDB.getLocations(null)).thenAnswer((_) async => null);
 
     when(mockRemoteConfigStore.configFuture).thenAnswer((_) => ObservableFuture.value({}));
     when(mockRemoteConfigStore.locationsRefreshInterval).thenReturn(Duration.zero);
@@ -133,8 +133,8 @@ void main() {
   group('LocationsStore', () {
     test('returns filtered recent locations', () async {
       when(mockLocalDB.getRecentLocations()).thenAnswer((_) async => mockResidential);
-      when(mockLocalDB.getLocations(IPType.residential)).thenReturn(
-        VPNLocations(locations: mockResidential),
+      when(mockLocalDB.getLocations(IPType.residential)).thenAnswer(
+        (_) async => VPNLocations(locations: mockResidential),
       );
       when(
         mockFilterService.filterRecentLocations(
@@ -183,6 +183,10 @@ void main() {
         ),
       ).thenReturn(mockResidential);
 
+      await Future.wait([
+        locationsStore.residentialLocationsFuture,
+        locationsStore.dcLocationsFuture,
+      ]);
       final recentLocations = await locationsStore.recentLocationsFuture;
 
       final randomLocation = locationsStore.randomLocation;
@@ -232,7 +236,7 @@ void main() {
         mockLocaleStore,
         mockPing,
       );
-      when(mockLocalDB.getLocations(IPType.residential)).thenAnswer((_) => VPNLocations());
+      when(mockLocalDB.getLocations(IPType.residential)).thenAnswer((_) async => VPNLocations());
       mockConnectionConfig(
         'residential',
         ConnectionConfigResponse(countries: [], topCountries: []),
