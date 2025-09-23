@@ -62,6 +62,13 @@ class VPNLocation with _$VPNLocation {
     );
   }
 
+  static const closest = VPNLocation(
+    id: '',
+    translations: {},
+    ipType: IPType.closest,
+    countryCode: '',
+  );
+
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
   bool operator ==(Object other) {
