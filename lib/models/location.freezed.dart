@@ -14,6 +14,9 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$VPNLocations {
+  Set<VPNLocation> get allLocations;
+  Set<VPNLocation> get allLocationsFlattened;
+  bool get isEmpty;
   List<VPNLocation> get locations;
   List<VPNLocation> get topLocations;
 
@@ -32,18 +35,27 @@ mixin _$VPNLocations {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is VPNLocations &&
+            const DeepCollectionEquality().equals(other.allLocations, allLocations) &&
+            const DeepCollectionEquality()
+                .equals(other.allLocationsFlattened, allLocationsFlattened) &&
+            (identical(other.isEmpty, isEmpty) || other.isEmpty == isEmpty) &&
             const DeepCollectionEquality().equals(other.locations, locations) &&
             const DeepCollectionEquality().equals(other.topLocations, topLocations));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(locations),
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(allLocations),
+      const DeepCollectionEquality().hash(allLocationsFlattened),
+      isEmpty,
+      const DeepCollectionEquality().hash(locations),
       const DeepCollectionEquality().hash(topLocations));
 
   @override
   String toString() {
-    return 'VPNLocations(locations: $locations, topLocations: $topLocations)';
+    return 'VPNLocations(allLocations: $allLocations, allLocationsFlattened: $allLocationsFlattened, isEmpty: $isEmpty, locations: $locations, topLocations: $topLocations)';
   }
 }
 
