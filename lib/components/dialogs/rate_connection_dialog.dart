@@ -204,7 +204,9 @@ class _ConfirmDialog extends HookConsumerWidget {
                       ...rateConnectionStore.showReasons.mapIndexed(
                         (i, element) => CheckboxListTile(
                           contentPadding: EdgeInsets.zero,
-                          side: BorderSide(color: Theme.of(context).indicatorColor),
+                          side: BorderSide(
+                            color: Theme.of(context).tabBarTheme.indicatorColor ?? Palette.purple,
+                          ),
                           checkboxShape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4),
                           ),

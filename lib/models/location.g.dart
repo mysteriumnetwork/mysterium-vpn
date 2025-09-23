@@ -6,7 +6,7 @@ part of 'location.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$VPNLocationsImpl _$$VPNLocationsImplFromJson(Map<String, dynamic> json) => _$VPNLocationsImpl(
+_VPNLocations _$VPNLocationsFromJson(Map<String, dynamic> json) => _VPNLocations(
       locations: (json['locations'] as List<dynamic>?)
               ?.map((e) => VPNLocation.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -17,12 +17,12 @@ _$VPNLocationsImpl _$$VPNLocationsImplFromJson(Map<String, dynamic> json) => _$V
           const [],
     );
 
-Map<String, dynamic> _$$VPNLocationsImplToJson(_$VPNLocationsImpl instance) => <String, dynamic>{
+Map<String, dynamic> _$VPNLocationsToJson(_VPNLocations instance) => <String, dynamic>{
       'locations': instance.locations,
       'topLocations': instance.topLocations,
     };
 
-_$VPNLocationImpl _$$VPNLocationImplFromJson(Map<String, dynamic> json) => _$VPNLocationImpl(
+_VPNLocation _$VPNLocationFromJson(Map<String, dynamic> json) => _VPNLocation(
       id: json['id'] as String,
       ipType: $enumDecode(_$IPTypeEnumMap, json['ipType']),
       translations: Map<String, String>.from(json['translations'] as Map),
@@ -35,7 +35,7 @@ _$VPNLocationImpl _$$VPNLocationImplFromJson(Map<String, dynamic> json) => _$VPN
       nodeCount: (json['nodeCount'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$$VPNLocationImplToJson(_$VPNLocationImpl instance) => <String, dynamic>{
+Map<String, dynamic> _$VPNLocationToJson(_VPNLocation instance) => <String, dynamic>{
       'id': instance.id,
       'ipType': _$IPTypeEnumMap[instance.ipType]!,
       'translations': instance.translations,

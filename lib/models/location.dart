@@ -9,11 +9,10 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/models/converters/lat_lng_converter.dart';
 
 part 'location.freezed.dart';
-
 part 'location.g.dart';
 
 @freezed
-class VPNLocations with _$VPNLocations {
+abstract class VPNLocations with _$VPNLocations {
   factory VPNLocations({
     @Default([]) List<VPNLocation> locations,
     @Default([]) List<VPNLocation> topLocations,
@@ -23,16 +22,19 @@ class VPNLocations with _$VPNLocations {
 
   factory VPNLocations.fromJson(Map<String, dynamic> json) => _$VPNLocationsFromJson(json);
 
+  @override
   late final Set<VPNLocation> allLocations = {...locations, ...topLocations};
+  @override
   late final Set<VPNLocation> allLocationsFlattened =
       allLocations.flattenBy((it) => it.children ?? const <VPNLocation>[]).toSet();
+  @override
   late final bool isEmpty = allLocations.isEmpty;
 
   bool get isNotEmpty => !isEmpty;
 }
 
 @Freezed(equal: false)
-class VPNLocation with _$VPNLocation {
+abstract class VPNLocation with _$VPNLocation {
   const factory VPNLocation({
     required String id,
     required IPType ipType,
