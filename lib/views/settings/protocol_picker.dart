@@ -1,38 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mysterium_vpn/common/constants/mock.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/components/easy_dropdown.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:mysterium_vpn/components/loading_indicator.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 
-class ProtocolPicker extends StatelessWidget {
+class ProtocolPicker extends ConsumerWidget {
   const ProtocolPicker({
-    required this.store,
     super.key,
   });
 
-  final VpnStore store;
   @override
-  Widget build(BuildContext context) => Observer(
-        builder: (context) => EasyDropdown<String>(
-          value: '',
-          onChanged: (String? newProtocol) async {
-            if (newProtocol == null) {
-              return;
-            }
-            return;
-          },
-          items: protocols
-              .map<DropdownMenuItem<String>>(
-                (protocol) => DropdownMenuItem<String>(
-                  value: protocol,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: EasyText(protocol),
-                  ),
-                ),
-              )
-              .toList(),
-        ),
-      );
+  Widget build(BuildContext context, WidgetRef ref) {
+    final vpnProtocolStore = ref.watch(vpnProtocolStorePOD);
+    return Observer(
+      builder: (context) => vpnProtocolStore.protocolFuture.status == FutureStatus.pending
+          ? const LoadingIndicator()
+          : EasyDropdown<ProtocolType>(
+              value: vpnProtocolStore.protocol,
+              onChanged: (ProtocolType? newProtocol) async {
+                if (newProtocol == null) {
+                  return;
+                }
+                vpnProtocolStore.setProtocol(newProtocol);
+              },
+              items: ProtocolType.values
+                  .map<DropdownMenuItem<ProtocolType>>(
+                    (protocol) => DropdownMenuItem<ProtocolType>(
+                      value: protocol,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: EasyText(protocol.label),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+    );
+  }
 }

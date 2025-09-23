@@ -2,7 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:hive_ce/hive.dart';
-import 'package:mysterium_vpn/common/enums/banner_type.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/models/location.dart';
 
@@ -25,6 +25,7 @@ class UserData {
     this.shownBanners = const [],
     this.recentLocationCodes = const [],
     this.marketingConsentShown = false,
+    this.protocolType = ProtocolType.wireguard,
   });
 
   @HiveField(0)
@@ -71,6 +72,9 @@ class UserData {
   @HiveField(13, defaultValue: false)
   bool marketingConsentShown;
 
+  @HiveField(14, defaultValue: ProtocolType.wireguard)
+  ProtocolType protocolType;
+
   set recentLocations(List<VPNLocation> locations) {
     recentVPNLocations = [
       ...locations,
@@ -99,6 +103,7 @@ notSafeContentBlocker: $notSafeContentBlocker
 vpnPrivacyPolicyConsent: $vpnPrivacyPolicyConsent
 recentLocationCodes: $recentLocationCodes
 marketingConsentShown: $marketingConsentShown
+protocolType: $protocolType
 ''';
 }
 

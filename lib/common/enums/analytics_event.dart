@@ -115,7 +115,9 @@ enum AnalyticsEvent {
   marketingConsentMarkedDeclined,
   toggleMarketingConsent,
   mapScroll,
-  mapPointClick;
+  mapPointClick,
+  changeProtocolType,
+  changeProtocolTypeError;
 
   String get formattedName => name.toSnakeCase;
 }

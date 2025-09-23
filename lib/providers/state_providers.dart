@@ -32,6 +32,7 @@ import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/update_availabe_store.dart';
 import 'package:mysterium_vpn/stores/user_intents_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
+import 'package:mysterium_vpn/stores/vpn_protocol_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
@@ -274,4 +275,11 @@ final userIntentsStorePOD = Provider.autoDispose<UserIntentsStore>(
     ref.onCancel(store.dispose);
     return store;
   },
+);
+
+final vpnProtocolStorePOD = Provider<VpnProtocolStore>(
+  (ref) => VpnProtocolStore(
+    LocalDBService.instance,
+    ref.watch(analyticsStorePOD),
+  ),
 );
