@@ -229,12 +229,7 @@ abstract class _LocationsStore with Store {
         (_residentialLocationsFuture.value?.isNotEmpty ?? false);
 
     if (isLocationsNotEmpty) {
-      return const VPNLocation(
-        id: '',
-        translations: {},
-        ipType: IPType.closest,
-        countryCode: '',
-      );
+      return VPNLocation.closest;
     }
     return null;
   }
