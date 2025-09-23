@@ -25,7 +25,7 @@ class QAToolbox extends HookConsumerWidget {
         children: [
           if (vpnStore.isConnected && Platform.isAndroid) const NetworkStatistics(),
           SettingItem(
-            asset: Asset.icons.resetAppSettingDark,
+            asset: Asset.icons.resetAppSetting(context),
             title: 'Reset hidden banners',
             subtitle: const EasyText('This will reset all hidden banners to be shown again'),
             actionWidget: TextButton.icon(
@@ -40,7 +40,7 @@ class QAToolbox extends HookConsumerWidget {
             ),
           ),
           SettingItem(
-            asset: Asset.icons.resetAppSettingDark,
+            asset: Asset.icons.resetAppSetting(context),
             title: 'Reset recent locations',
             subtitle: const EasyText('This will remove all recent locations'),
             actionWidget: TextButton.icon(

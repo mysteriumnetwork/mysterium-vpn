@@ -42,7 +42,7 @@ class ConnectionSettings extends HookConsumerWidget {
           Visibility(
             visible: !remoteConfigStore.hideResetAppSetting && !Platform.isAndroid,
             child: SettingItem(
-              asset: Asset.icons.resetAppSettingDark,
+              asset: Asset.icons.resetAppSetting(context),
               title: LocaleKeys.resetAppTitle.tr(),
               subtitle: EasyText(
                 LocaleKeys.resetAppDesc.tr(),
