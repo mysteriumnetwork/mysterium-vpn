@@ -30,17 +30,24 @@ class LocalDBService {
 
     await Future.wait([
       Hive.openBox<UserData>('user_data', compactionStrategy: (e, d) => false),
-      Hive.openBox<VPNLocations>('locations_data', compactionStrategy: (e, d) => false),
       Hive.openBox<LatLng>('coordinates_data', compactionStrategy: (e, d) => false),
     ]);
   }
 
   final _userBox = Hive.box<UserData>('user_data');
-  final _locationsBox = Hive.box<VPNLocations>('locations_data');
   final _coordinatesBox = Hive.box<LatLng>('coordinates_data');
 
   Completer<AuthUser> _userSetCompleter = Completer<AuthUser>();
   AuthUser? _currentUser;
+  LazyBox<VPNLocations>? _locationsBox;
+
+  Future<LazyBox<VPNLocations>> _getLocationsBox() async {
+    _locationsBox ??= await Hive.openLazyBox<VPNLocations>(
+      'locations_data',
+      compactionStrategy: (e, d) => false,
+    );
+    return _locationsBox!;
+  }
 
   Future<void> setUser(AuthUser user) async {
     _currentUser = user;
@@ -181,13 +188,18 @@ class LocalDBService {
   }
 
   Future<void> setLocations(VPNLocations locations, {required IPType type}) async {
-    await _locationsBox.put(type.name, locations);
+    final box = await _getLocationsBox();
+    await box.put(type.name, locations);
   }
 
-  VPNLocations? getLocations(IPType type) => _locationsBox.get(type.name);
+  Future<VPNLocations?> getLocations(IPType type) async {
+    final box = await _getLocationsBox();
+    return box.get(type.name);
+  }
 
   Stream<VPNLocations?> watchLocations(IPType type) async* {
-    yield* _locationsBox.watch(key: type.name).asyncMap((_) => getLocations(type));
+    final box = await _getLocationsBox();
+    yield* box.watch(key: type.name).asyncMap((_) => getLocations(type));
   }
 
   Future<void> putCoordinates(String id, LatLng coordinates) async {
