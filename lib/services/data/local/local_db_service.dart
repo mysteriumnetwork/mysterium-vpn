@@ -104,7 +104,7 @@ class LocalDBService {
     await _saveUserData(userData);
   }
 
-  Future<void> setRecentLocation(List<VPNLocation> locations) async {
+  Future<void> setRecentLocations(List<VPNLocation> locations) async {
     final userData = await _loadUserData();
     userData.recentLocations = locations;
 
