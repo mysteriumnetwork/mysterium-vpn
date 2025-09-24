@@ -48,18 +48,18 @@ abstract class _LocationsStore with Store {
     this._localeStore,
     this._ping,
   ) {
-    // React to locale changes and reset the search keyword to avoid stale matches.
-    reaction((_) => _localeStore.currentLocale, (locale) {
-      if (_searchKeyword.isNotEmpty) {
-        setLocationKeyword('');
-      }
-    });
+    _reactions = [
+      // React to locale changes and reset the search keyword to avoid stale matches.
+      reaction((_) => _localeStore.currentLocale, (locale) {
+        if (_searchKeyword.isNotEmpty) {
+          setLocationKeyword('');
+        }
+      }),
+    ];
 
-    // Start the periodic auto-refresh cycle.
-    _autoRefresh();
-
-    // Attach watchers to listen for database changes and update observable futures. These watchers are all disposed of in the dispose method to avoid memory leaks.
-    _subs.addAll([
+    // Attach watchers to listen for database changes and update observable futures.
+    // These watchers are all disposed of in the dispose method to avoid memory leaks.
+    _subs = [
       // Watch for changes in residential locations and update the value of observable future.
       _watch(IPType.residential).listen(
         (it) => _residentialLocationsFuture = _residentialLocationsFuture.replaceOrReset(
@@ -74,14 +74,22 @@ abstract class _LocationsStore with Store {
       ),
       // Watch for changes in recent locations and update the value of observable future.
       _localDB.watchRecentLocations().listen(
-            (it) => _recentLocationsFuture = _recentLocationsFuture.replaceOrReset(
-              Future.value(it),
-            ),
-          ),
-    ]);
+        (it) {
+          _recentLocationsFuture = _recentLocationsFuture.replaceOrReset(
+            Future.value(it),
+          );
+        },
+      ),
+      // Sets up periodic auto-refresh of location data based on the configured interval.
+      // This ensures the app maintains up-to-date location information without user intervention.
+      Stream.periodic(_remoteConfigStore.locationsRefreshInterval).listen(
+        (_) => refresh(),
+      ),
+    ];
   }
 
-  final List<StreamSubscription<Object?>> _subs = [];
+  late final List<StreamSubscription<Object?>> _subs;
+  late final List<ReactionDisposer> _reactions;
   final Connection _apiConnection;
   final FilterService _filterService;
   final AnalyticsStore _analyticsStore;
@@ -93,7 +101,6 @@ abstract class _LocationsStore with Store {
   final Ping? _ping;
 
   final Debouncer _debouncer = Debouncer();
-  StreamSubscription<dynamic>? _autoRefreshSubscription;
 
   /// Flag to clear fetched locations (used for development purposes).
   @readonly
@@ -342,15 +349,6 @@ abstract class _LocationsStore with Store {
     return region.region;
   }
 
-  /// Sets up periodic auto-refresh of location data based on the configured interval.
-  /// This ensures the app maintains up-to-date location information without user intervention.
-  Future<void> _autoRefresh() async {
-    await _remoteConfigStore.configFuture;
-    _autoRefreshSubscription = Stream.periodic(_remoteConfigStore.locationsRefreshInterval).listen(
-      (_) => refresh(),
-    );
-  }
-
   /// Refreshes location data from the backend for the specified IP type.
   /// If no IP type is provided, it refreshes the currently selected type.
   /// If a refresh is already in progress, it returns the existing future to avoid duplicate requests.
@@ -491,10 +489,14 @@ abstract class _LocationsStore with Store {
   /// Disposes of resources such as debouncers and stream subscriptions to prevent memory leaks.
   FutureOr<void> dispose() async {
     _debouncer.dispose();
-    await _autoRefreshSubscription?.cancel();
 
     // Cancel all stream subscriptions
     await Future.wait(_subs.map((it) => it.cancel()));
+
+    // Dispose all MobX reactions
+    for (final reaction in _reactions) {
+      reaction();
+    }
   }
 
   /// Clears the recent locations list from the local database.
