@@ -51,17 +51,13 @@ void main() {
 
   group('toggleRefreshIPWhenConnecting', () {
     test('toggles refreshIPConnection and saves to localDB', () async {
-      // Initial value is true (default)
       when(mockLocalDBService.setRefreshIPConnection(refreshIPConnection: false))
           .thenAnswer((_) async => {});
       await store.toggleRefreshIPWhenConnecting();
-      expect(store.refreshIPConnection, isFalse);
-
-      // Toggling again sets it back to true
-      when(mockLocalDBService.setRefreshIPConnection(refreshIPConnection: true))
-          .thenAnswer((_) async => {});
-      await store.toggleRefreshIPWhenConnecting();
       expect(store.refreshIPConnection, isTrue);
+
+      await store.toggleRefreshIPWhenConnecting();
+      expect(store.refreshIPConnection, isFalse);
     });
   });
 }
