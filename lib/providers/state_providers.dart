@@ -19,6 +19,7 @@ import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/banners_store.dart';
 import 'package:mysterium_vpn/stores/device_id_store.dart';
 import 'package:mysterium_vpn/stores/device_info_store.dart';
+import 'package:mysterium_vpn/stores/dns_store.dart';
 import 'package:mysterium_vpn/stores/latlng_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
@@ -91,6 +92,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final authSessionStore = ref.watch(authSessionStorePOD);
   final realIPInfoStore = ref.watch(realIPInfoStorePOD);
   final wireguardKeyService = ref.watch(wireguradKeyServicePOD);
+  final dnsStore = ref.watch(dnsStorePOD);
   return VpnStore(
     apiService: apiService,
     externalApiService: externalApiService,
@@ -104,6 +106,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     authSessionStore: authSessionStore,
     realIPInfo: realIPInfoStore,
     wireguardKeyService: wireguardKeyService,
+    dnsStore: dnsStore,
   );
 });
 
@@ -274,4 +277,13 @@ final userIntentsStorePOD = Provider.autoDispose<UserIntentsStore>(
     ref.onCancel(store.dispose);
     return store;
   },
+);
+
+final dnsStorePOD = Provider.autoDispose<DNSStore>(
+  (ref) => DNSStore(
+    LocalDBService.instance,
+    ref.watch(remoteConfigStorePOD),
+    ref.watch(loggerPOD),
+    ref.watch(authSessionStorePOD),
+  ),
 );
