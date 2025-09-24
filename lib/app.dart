@@ -125,11 +125,19 @@ class MyApp extends HookConsumerWidget {
         await ref.read(vpnStorePOD).disposeStore();
         ref.invalidate(vpnStorePOD);
       }
+      if (ref.exists(dnsStorePOD)) {
+        await ref.read(dnsStorePOD).disposeStore();
+        ref.invalidate(dnsStorePOD);
+      }
       if (ref.exists(locationsStorePOD)) {
         ref.invalidate(locationsStorePOD);
       }
       if (ref.exists(subscriptionStorePOD)) {
         ref.invalidate(subscriptionStorePOD);
+      }
+      if (ref.exists(refreshIPStorePOD)) {
+        ref.read(refreshIPStorePOD).disposeStore();
+        ref.invalidate(refreshIPStorePOD);
       }
     }
   }
