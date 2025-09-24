@@ -22,6 +22,8 @@ abstract class _RefreshIPStore with Store {
           refreshIPFuture = ObservableFuture(getRefreshIPConnection());
         }
       },
+      fireImmediately: true,
+      equals: (p0, p1) => p0?.name == p1?.name,
     );
   }
 
