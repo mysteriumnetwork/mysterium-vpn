@@ -152,7 +152,7 @@ abstract class _AuthStore with Store {
   Future<void> fetchAuthUser() async {
     try {
       final user = await _authService.currentUser();
-      _initializeAuthenticatedUser(user);
+      await _initializeAuthenticatedUser(user);
     } on ApiException catch (e, stackTrace) {
       // We want to make call to user details endpoint to introspect AccessToken, and if it's invalid when logout the user
       if (e.code == 401) {

@@ -133,7 +133,7 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
     null,
   );
 
-  ref.onCancel(store.dispose);
+  ref.onDispose(store.dispose);
 
   return store;
 });
@@ -150,7 +150,7 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
     authSessionStore: authSessionStore,
     analyticsStore: analyticsStore,
   );
-  ref.onCancel(store.dispose);
+  ref.onDispose(store.dispose);
   return store;
 });
 
@@ -277,7 +277,7 @@ final userIntentsStorePOD = Provider.autoDispose<UserIntentsStore>(
       remoteConfigStore,
     );
 
-    ref.onCancel(store.dispose);
+    ref.onDispose(store.dispose);
     return store;
   },
 );
