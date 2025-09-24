@@ -126,6 +126,7 @@ class MyApp extends HookConsumerWidget {
         ref.invalidate(vpnStorePOD);
       }
       if (ref.exists(dnsStorePOD)) {
+        await ref.read(dnsStorePOD).disposeStore();
         ref.invalidate(dnsStorePOD);
       }
       if (ref.exists(locationsStorePOD)) {
