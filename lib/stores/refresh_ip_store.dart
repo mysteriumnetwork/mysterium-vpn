@@ -40,6 +40,7 @@ abstract class _RefreshIPStore with Store {
   Future<bool> getRefreshIPConnection() =>
       refreshIPFuture = ObservableFuture(_getAndSetRefreshIPConnection());
 
+  @action
   Future<bool> _getAndSetRefreshIPConnection() async {
     try {
       return _refreshIPConnection = await _localDBService.getRefreshIPConnection();

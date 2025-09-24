@@ -93,20 +93,22 @@ mixin _$DNSStore on _DNSStore, Store {
     });
   }
 
-  late final _$getMalwareBlockerContentAsyncAction =
-      AsyncAction('_DNSStore.getMalwareBlockerContent', context: context);
+  late final _$_getAndSetMalwareBlockerContentAsyncAction =
+      AsyncAction('_DNSStore._getAndSetMalwareBlockerContent', context: context);
 
   @override
-  Future<bool> getMalwareBlockerContent() {
-    return _$getMalwareBlockerContentAsyncAction.run(() => super.getMalwareBlockerContent());
+  Future<bool> _getAndSetMalwareBlockerContent() {
+    return _$_getAndSetMalwareBlockerContentAsyncAction
+        .run(() => super._getAndSetMalwareBlockerContent());
   }
 
-  late final _$getNotSafeContentBlockerAsyncAction =
-      AsyncAction('_DNSStore.getNotSafeContentBlocker', context: context);
+  late final _$_getAndSetNotSafeContentBlockerAsyncAction =
+      AsyncAction('_DNSStore._getAndSetNotSafeContentBlocker', context: context);
 
   @override
-  Future<bool> getNotSafeContentBlocker() {
-    return _$getNotSafeContentBlockerAsyncAction.run(() => super.getNotSafeContentBlocker());
+  Future<bool> _getAndSetNotSafeContentBlocker() {
+    return _$_getAndSetNotSafeContentBlockerAsyncAction
+        .run(() => super._getAndSetNotSafeContentBlocker());
   }
 
   late final _$toggleMalwareBlockerAsyncAction =
@@ -123,6 +125,30 @@ mixin _$DNSStore on _DNSStore, Store {
   @override
   Future<void> toggleNotSafeContentBlocker() {
     return _$toggleNotSafeContentBlockerAsyncAction.run(() => super.toggleNotSafeContentBlocker());
+  }
+
+  late final _$_DNSStoreActionController = ActionController(name: '_DNSStore', context: context);
+
+  @override
+  Future<bool> getMalwareBlockerContent() {
+    final _$actionInfo =
+        _$_DNSStoreActionController.startAction(name: '_DNSStore.getMalwareBlockerContent');
+    try {
+      return super.getMalwareBlockerContent();
+    } finally {
+      _$_DNSStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future<bool> getNotSafeContentBlocker() {
+    final _$actionInfo =
+        _$_DNSStoreActionController.startAction(name: '_DNSStore.getNotSafeContentBlocker');
+    try {
+      return super.getNotSafeContentBlocker();
+    } finally {
+      _$_DNSStoreActionController.endAction(_$actionInfo);
+    }
   }
 
   @override

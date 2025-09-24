@@ -63,7 +63,15 @@ abstract class _DNSStore with Store {
   }
 
   @action
-  Future<bool> getMalwareBlockerContent() async {
+  Future<bool> getMalwareBlockerContent() =>
+      malwareBlockerFuture = ObservableFuture(_getAndSetMalwareBlockerContent());
+
+  @action
+  Future<bool> getNotSafeContentBlocker() =>
+      notSafeContentBlockerFuture = ObservableFuture(_getAndSetNotSafeContentBlocker());
+
+  @action
+  Future<bool> _getAndSetMalwareBlockerContent() async {
     try {
       return _malwareBlockerContent = await _localDBService.getMalwareBlocker();
     } catch (e) {
@@ -73,7 +81,7 @@ abstract class _DNSStore with Store {
   }
 
   @action
-  Future<bool> getNotSafeContentBlocker() async {
+  Future<bool> _getAndSetNotSafeContentBlocker() async {
     try {
       return _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker();
     } catch (e) {
