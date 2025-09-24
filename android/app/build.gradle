@@ -9,11 +9,11 @@ plugins {
 
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
-   if (keystorePropertiesFile.exists()) {
-       keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-   }
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
 
-   android {
+android {
 
     ndkVersion = "27.0.12077973"
     compileSdk = 36
@@ -51,35 +51,35 @@ def keystorePropertiesFile = rootProject.file('key.properties')
         testInstrumentationRunnerArguments clearPackageData: "true"
     }
 
-       flavorDimensions "env"
-       productFlavors {
-           register("dev") {
-               dimension "env"
-               applicationIdSuffix ".test"
-               manifestPlaceholders = [ "appLabel": "Mysterium VPN Test"]
-           }
-       register("prod") {
-               dimension "env"
-               manifestPlaceholders = [ "appLabel": "Mysterium VPN"]
-           }
-       }
+    flavorDimensions "env"
+    productFlavors {
+        register("dev") {
+            dimension "env"
+            applicationIdSuffix ".test"
+            manifestPlaceholders = ["appLabel": "Mysterium VPN Test"]
+        }
+        register("prod") {
+            dimension "env"
+            manifestPlaceholders = ["appLabel": "Mysterium VPN"]
+        }
+    }
 
     signingConfigs {
-       release {
-           keyAlias keystoreProperties['keyAlias']
-           keyPassword keystoreProperties['keyPassword']
-           storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-           storePassword keystoreProperties['storePassword']
-       }
-   }
-   buildTypes {
-       release {
-           signingConfig signingConfigs.release
-       }
-   }
-       namespace 'com.mysteriumvpn.android'
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+    namespace 'com.mysteriumvpn.android'
 
-   }
+}
 
 dependencies {
     androidTestUtil "androidx.test:orchestrator:1.6.1"
