@@ -32,9 +32,11 @@ class ConnectionSettings extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.read(vpnStorePOD);
+    final refreshIPStore = ref.read(refreshIPStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
     final remoteConfigStore = ref.read(remoteConfigStorePOD);
     final handleToggleConnection = useHandleToggleConnection();
+    final dnsStore = ref.watch(dnsStorePOD);
 
     return Observer(
       builder: (_) => Column(
@@ -77,33 +79,37 @@ class ConnectionSettings extends HookConsumerWidget {
             title: LocaleKeys.refreshIPAddress.tr(),
             subtitle: LocaleKeys.getNewIPAddress.tr(),
             actionWidget: Observer(
-              builder: (context) => Switch(
-                value: vpnStore.refreshIPConnection,
-                onChanged: (val) async {
-                  await vpnStore.toggleRefreshIPWhenConnecting();
-                  analyticsStore.logEvent(
-                    val ? AnalyticsEvent.refreshIpEnable : AnalyticsEvent.refreshIpDisable,
-                  );
-                },
-              ),
+              builder: (context) => refreshIPStore.refreshIPFuture.status == FutureStatus.pending
+                  ? const LoadingIndicator()
+                  : Switch(
+                      value: refreshIPStore.refreshIPConnection,
+                      onChanged: (val) async {
+                        await refreshIPStore.toggleRefreshIPWhenConnecting();
+                        analyticsStore.logEvent(
+                          val ? AnalyticsEvent.refreshIpEnable : AnalyticsEvent.refreshIpDisable,
+                        );
+                      },
+                    ),
             ),
           ),
           Visibility(
             visible: !remoteConfigStore.hideMalwareBlocker,
             child: SwitchItem(
-              enabled: !vpnStore.notSafeContentBlocker,
+              enabled: !dnsStore.notSafeContentBlocker,
               asset: Asset.icons.locker(context),
               title: LocaleKeys.malwareBlocker.tr(),
               subtitle: '',
               actionWidget: Observer(
-                builder: (context) => Switch(
-                  value: vpnStore.malwareBlockerContent,
-                  onChanged: (val) async {
-                    await vpnStore.toggleMalwareBlocker();
-                    analyticsStore
-                        .logEvent(val ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff);
-                  },
-                ),
+                builder: (context) => dnsStore.malwareBlockerFuture.status == FutureStatus.pending
+                    ? const LoadingIndicator()
+                    : Switch(
+                        value: dnsStore.malwareBlockerContent,
+                        onChanged: (val) async {
+                          await dnsStore.toggleMalwareBlocker();
+                          analyticsStore
+                              .logEvent(val ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff);
+                        },
+                      ),
               ),
             ),
           ),
@@ -114,13 +120,17 @@ class ConnectionSettings extends HookConsumerWidget {
               title: LocaleKeys.contentBlockerTitle.tr(),
               subtitle: LocaleKeys.contentBlockerDesc.tr(),
               actionWidget: Observer(
-                builder: (context) => Switch(
-                  value: vpnStore.notSafeContentBlocker,
-                  onChanged: (val) async {
-                    await vpnStore.toggleNotSafeContentBlocker();
-                    analyticsStore.logEvent(val ? AnalyticsEvent.nsfwOn : AnalyticsEvent.nsfwOff);
-                  },
-                ),
+                builder: (context) =>
+                    dnsStore.notSafeContentBlockerFuture.status == FutureStatus.pending
+                        ? const LoadingIndicator()
+                        : Switch(
+                            value: dnsStore.notSafeContentBlocker,
+                            onChanged: (val) async {
+                              await dnsStore.toggleNotSafeContentBlocker();
+                              analyticsStore
+                                  .logEvent(val ? AnalyticsEvent.nsfwOn : AnalyticsEvent.nsfwOff);
+                            },
+                          ),
               ),
             ),
           ),

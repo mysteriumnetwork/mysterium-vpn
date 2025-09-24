@@ -14,7 +14,6 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
@@ -26,12 +25,13 @@ import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/api/external_api_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/services/wiregurad/wiregurad_key_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:mysterium_vpn/stores/dns_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
+import 'package:mysterium_vpn/stores/refresh_ip_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -65,6 +65,8 @@ abstract class _VpnStore with Store {
     required AuthSessionStore authSessionStore,
     required RealIPInfoStore realIPInfo,
     required WireguradKeyService wireguardKeyService,
+    required DNSStore dnsStore,
+    required RefreshIPStore refreshIPStore,
   })  : _apiService = apiService,
         _externalApiService = externalApiService,
         _mqtt = mqtt,
@@ -76,7 +78,9 @@ abstract class _VpnStore with Store {
         _authSessionStore = authSessionStore,
         _realIPInfo = realIPInfo,
         _logger = logger,
-        _wireguardKeyService = wireguardKeyService {
+        _dnsStore = dnsStore,
+        _wireguardKeyService = wireguardKeyService,
+        _refreshIPStore = refreshIPStore {
     _init();
   }
 
@@ -92,24 +96,16 @@ abstract class _VpnStore with Store {
   final RealIPInfoStore _realIPInfo;
 
   final WireguradKeyService _wireguardKeyService;
-  final LocalDBService _localDBService = LocalDBService.instance;
   final Talker _logger;
+  final DNSStore _dnsStore;
+  final RefreshIPStore _refreshIPStore;
   final Stopwatch _stopwatch = Stopwatch();
   StreamSubscription<String>? _connectionDataSub;
   StreamSubscription<String>? _connectionKilledSub;
   StreamSubscription<ConnectionStatus>? _wireguradConnectionStatus;
 
-  @readonly
-  bool _refreshIPConnection = true;
-
-  @readonly
-  bool _malwareBlockerContent = false;
-
   @observable
   bool connectionLimitReached = false;
-
-  @readonly
-  bool _notSafeContentBlocker = false;
 
   @readonly
   VpnConnection? _vpnConnection;
@@ -133,17 +129,6 @@ abstract class _VpnStore with Store {
 
   @observable
   RateConnectionRequestModeEnum? connectionRated;
-
-  @computed
-  String? get replaceDNSAddress {
-    String? replaceDNS;
-    if (!_remoteConfigStore.hideNotSafeContentBlocker && _notSafeContentBlocker) {
-      replaceDNS = _remoteConfigStore.notSafeContentBlockerDnsAddress;
-    } else if (!_remoteConfigStore.hideMalwareBlocker && _malwareBlockerContent) {
-      replaceDNS = _remoteConfigStore.malwareBlockerDnsAddress;
-    }
-    return replaceDNS;
-  }
 
   @computed
   bool get isConnected =>
@@ -221,9 +206,6 @@ abstract class _VpnStore with Store {
             [
               _initTunnel(),
               _initWireguardKey(),
-              _initRefreshIPConnection(),
-              _initMalwareBlockerContent(),
-              _initNotSafeContentBlocker(),
             ],
           );
         }
@@ -247,30 +229,6 @@ abstract class _VpnStore with Store {
     _wireguradConnectionStatus?.cancel();
     _authReactionDisposer?.call();
     _selectedLocationReactionDisposer?.call();
-  }
-
-  Future<void> _initMalwareBlockerContent() async {
-    try {
-      _malwareBlockerContent = await _localDBService.getMalwareBlocker();
-    } catch (e) {
-      _logger.handle(e);
-    }
-  }
-
-  Future<void> _initRefreshIPConnection() async {
-    try {
-      _refreshIPConnection = await _localDBService.getRefreshIPConnection();
-    } catch (e) {
-      _logger.handle(e);
-    }
-  }
-
-  Future<void> _initNotSafeContentBlocker() async {
-    try {
-      _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker();
-    } catch (e) {
-      _logger.handle(e);
-    }
   }
 
   @action
@@ -380,35 +338,6 @@ abstract class _VpnStore with Store {
     }
   }
 
-  @action
-  Future<void> toggleRefreshIPWhenConnecting() async {
-    await _localDBService.setRefreshIPConnection(
-      refreshIPConnection: !_refreshIPConnection,
-    );
-    _refreshIPConnection = !_refreshIPConnection;
-  }
-
-  @action
-  Future<void> toggleMalwareBlocker() async {
-    await _localDBService.setMalwareBlocker(
-      malwareBlocker: !_malwareBlockerContent,
-    );
-    _malwareBlockerContent = !_malwareBlockerContent;
-  }
-
-  @action
-  Future<void> toggleNotSafeContentBlocker() async {
-    final value = !_notSafeContentBlocker;
-    if (value) {
-      await _localDBService.setMalwareBlocker(malwareBlocker: value);
-      _malwareBlockerContent = value;
-    }
-    await _localDBService.setNotSafeContentBlocker(
-      notSafeContentBlocker: value,
-    );
-    _notSafeContentBlocker = value;
-  }
-
   /// Connect to Wireguard tunnel
   @action
   Future<void> _connectWireguard({
@@ -417,15 +346,8 @@ abstract class _VpnStore with Store {
   }) async {
     // TODO(Waldz): Move to separate function, which mutates variable
     var config = vpnConfig;
-    if (replaceDNSAddress.isNotNullOrEmpty) {
-      // Find all matches in the content
-      final match = dnsRegex.firstMatch(config);
-      if (match?[0] != null) {
-        final dnsLine = match![0]!;
-        config = config.replaceFirst(dnsLine, 'DNS = $replaceDNSAddress');
-      }
-    }
     config = config.replaceFirst('%private_key%', privateKey);
+    config = _dnsStore.replaceDNSAddress(config);
 
     try {
       await _wireguardService.connect(cfg: config).timeout(
@@ -677,7 +599,7 @@ abstract class _VpnStore with Store {
                     ? null
                     : location?.id,
             ipType: ipType?.key,
-            resetConnection: refreshIP ?? _refreshIPConnection,
+            resetConnection: refreshIP ?? _refreshIPStore.refreshIPConnection,
             osType: Platform.operatingSystem,
             userIntent: intent?.key,
             cluster: closestRegion?.id,

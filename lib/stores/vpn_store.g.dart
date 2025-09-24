@@ -15,12 +15,6 @@ mixin _$VpnStore on _VpnStore, Store {
   ConnectionStatus get vpnStatus => (_$vpnStatusComputed ??=
           Computed<ConnectionStatus>(() => super.vpnStatus, name: '_VpnStore.vpnStatus'))
       .value;
-  Computed<String?>? _$replaceDNSAddressComputed;
-
-  @override
-  String? get replaceDNSAddress => (_$replaceDNSAddressComputed ??=
-          Computed<String?>(() => super.replaceDNSAddress, name: '_VpnStore.replaceDNSAddress'))
-      .value;
   Computed<bool>? _$isConnectedComputed;
 
   @override
@@ -65,42 +59,6 @@ mixin _$VpnStore on _VpnStore, Store {
           Computed<Set<UserIntent>>(() => super.userIntents, name: '_VpnStore.userIntents'))
       .value;
 
-  late final _$_refreshIPConnectionAtom =
-      Atom(name: '_VpnStore._refreshIPConnection', context: context);
-
-  bool get refreshIPConnection {
-    _$_refreshIPConnectionAtom.reportRead();
-    return super._refreshIPConnection;
-  }
-
-  @override
-  bool get _refreshIPConnection => refreshIPConnection;
-
-  @override
-  set _refreshIPConnection(bool value) {
-    _$_refreshIPConnectionAtom.reportWrite(value, super._refreshIPConnection, () {
-      super._refreshIPConnection = value;
-    });
-  }
-
-  late final _$_malwareBlockerContentAtom =
-      Atom(name: '_VpnStore._malwareBlockerContent', context: context);
-
-  bool get malwareBlockerContent {
-    _$_malwareBlockerContentAtom.reportRead();
-    return super._malwareBlockerContent;
-  }
-
-  @override
-  bool get _malwareBlockerContent => malwareBlockerContent;
-
-  @override
-  set _malwareBlockerContent(bool value) {
-    _$_malwareBlockerContentAtom.reportWrite(value, super._malwareBlockerContent, () {
-      super._malwareBlockerContent = value;
-    });
-  }
-
   late final _$connectionLimitReachedAtom =
       Atom(name: '_VpnStore.connectionLimitReached', context: context);
 
@@ -114,24 +72,6 @@ mixin _$VpnStore on _VpnStore, Store {
   set connectionLimitReached(bool value) {
     _$connectionLimitReachedAtom.reportWrite(value, super.connectionLimitReached, () {
       super.connectionLimitReached = value;
-    });
-  }
-
-  late final _$_notSafeContentBlockerAtom =
-      Atom(name: '_VpnStore._notSafeContentBlocker', context: context);
-
-  bool get notSafeContentBlocker {
-    _$_notSafeContentBlockerAtom.reportRead();
-    return super._notSafeContentBlocker;
-  }
-
-  @override
-  bool get _notSafeContentBlocker => notSafeContentBlocker;
-
-  @override
-  set _notSafeContentBlocker(bool value) {
-    _$_notSafeContentBlockerAtom.reportWrite(value, super._notSafeContentBlocker, () {
-      super._notSafeContentBlocker = value;
     });
   }
 
@@ -381,31 +321,6 @@ mixin _$VpnStore on _VpnStore, Store {
     return _$setupTunnelAsyncAction.run(() => super.setupTunnel());
   }
 
-  late final _$toggleRefreshIPWhenConnectingAsyncAction =
-      AsyncAction('_VpnStore.toggleRefreshIPWhenConnecting', context: context);
-
-  @override
-  Future<void> toggleRefreshIPWhenConnecting() {
-    return _$toggleRefreshIPWhenConnectingAsyncAction
-        .run(() => super.toggleRefreshIPWhenConnecting());
-  }
-
-  late final _$toggleMalwareBlockerAsyncAction =
-      AsyncAction('_VpnStore.toggleMalwareBlocker', context: context);
-
-  @override
-  Future<void> toggleMalwareBlocker() {
-    return _$toggleMalwareBlockerAsyncAction.run(() => super.toggleMalwareBlocker());
-  }
-
-  late final _$toggleNotSafeContentBlockerAsyncAction =
-      AsyncAction('_VpnStore.toggleNotSafeContentBlocker', context: context);
-
-  @override
-  Future<void> toggleNotSafeContentBlocker() {
-    return _$toggleNotSafeContentBlockerAsyncAction.run(() => super.toggleNotSafeContentBlocker());
-  }
-
   late final _$_connectWireguardAsyncAction =
       AsyncAction('_VpnStore._connectWireguard', context: context);
 
@@ -504,7 +419,6 @@ mixin _$VpnStore on _VpnStore, Store {
 connectionLimitReached: ${connectionLimitReached},
 connectionRated: ${connectionRated},
 vpnStatus: ${vpnStatus},
-replaceDNSAddress: ${replaceDNSAddress},
 isConnected: ${isConnected},
 isLoading: ${isLoading},
 isFetchingLocation: ${isFetchingLocation},
