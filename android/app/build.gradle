@@ -47,8 +47,7 @@ def keystorePropertiesFile = rootProject.file('key.properties')
 
         ndk.abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86_64'
 
-        testInstrumentationRunner "pl.leancode.patrol.PatrolJUnitRunner"
-        testInstrumentationRunnerArguments clearPackageData: "true"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
        flavorDimensions "env"
@@ -76,6 +75,10 @@ def keystorePropertiesFile = rootProject.file('key.properties')
        release {
            signingConfig signingConfigs.release
        }
+       debug {
+            testInstrumentationRunner "pl.leancode.patrol.PatrolJUnitRunner"
+            testInstrumentationRunnerArguments clearPackageData: "true"
+        }
    }
        namespace 'com.mysteriumvpn.android'
 
