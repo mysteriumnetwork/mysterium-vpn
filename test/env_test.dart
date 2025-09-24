@@ -33,9 +33,6 @@ void main() {
     final file = _parseDotEnvFile();
     final actual = Env.asMap();
 
-    print('File: $file');
-    print('Actual: $actual');
-
     test('all keys are present', () {
       for (final key in actual.keys) {
         expect(file.containsKey(key), true, reason: 'missing key $key in .env file');
