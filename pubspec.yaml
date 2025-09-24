@@ -119,7 +119,7 @@ dev_dependencies:
   mobx_codegen: 2.7.3
   mockito: ^5.4.4
   msix: 3.16.12
-  patrol: 3.19.0
+  patrol: ^3.19.0
 
 msix_config:
   display_name: Mysterium VPN
