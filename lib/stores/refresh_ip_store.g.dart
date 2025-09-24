@@ -47,6 +47,15 @@ mixin _$RefreshIPStore on _RefreshIPStore, Store {
     });
   }
 
+  late final _$_getAndSetRefreshIPConnectionAsyncAction =
+      AsyncAction('_RefreshIPStore._getAndSetRefreshIPConnection', context: context);
+
+  @override
+  Future<bool> _getAndSetRefreshIPConnection() {
+    return _$_getAndSetRefreshIPConnectionAsyncAction
+        .run(() => super._getAndSetRefreshIPConnection());
+  }
+
   late final _$toggleRefreshIPWhenConnectingAsyncAction =
       AsyncAction('_RefreshIPStore.toggleRefreshIPWhenConnecting', context: context);
 
