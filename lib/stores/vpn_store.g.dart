@@ -59,24 +59,6 @@ mixin _$VpnStore on _VpnStore, Store {
           Computed<Set<UserIntent>>(() => super.userIntents, name: '_VpnStore.userIntents'))
       .value;
 
-  late final _$_refreshIPConnectionAtom =
-      Atom(name: '_VpnStore._refreshIPConnection', context: context);
-
-  bool get refreshIPConnection {
-    _$_refreshIPConnectionAtom.reportRead();
-    return super._refreshIPConnection;
-  }
-
-  @override
-  bool get _refreshIPConnection => refreshIPConnection;
-
-  @override
-  set _refreshIPConnection(bool value) {
-    _$_refreshIPConnectionAtom.reportWrite(value, super._refreshIPConnection, () {
-      super._refreshIPConnection = value;
-    });
-  }
-
   late final _$connectionLimitReachedAtom =
       Atom(name: '_VpnStore.connectionLimitReached', context: context);
 
@@ -337,15 +319,6 @@ mixin _$VpnStore on _VpnStore, Store {
   @override
   Future<void> setupTunnel() {
     return _$setupTunnelAsyncAction.run(() => super.setupTunnel());
-  }
-
-  late final _$toggleRefreshIPWhenConnectingAsyncAction =
-      AsyncAction('_VpnStore.toggleRefreshIPWhenConnecting', context: context);
-
-  @override
-  Future<void> toggleRefreshIPWhenConnecting() {
-    return _$toggleRefreshIPWhenConnectingAsyncAction
-        .run(() => super.toggleRefreshIPWhenConnecting());
   }
 
   late final _$_connectWireguardAsyncAction =

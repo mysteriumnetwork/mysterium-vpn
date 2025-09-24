@@ -32,6 +32,7 @@ class ConnectionSettings extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.read(vpnStorePOD);
+    final refreshIPStore = ref.read(refreshIPStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
     final remoteConfigStore = ref.read(remoteConfigStorePOD);
     final handleToggleConnection = useHandleToggleConnection();
@@ -78,15 +79,17 @@ class ConnectionSettings extends HookConsumerWidget {
             title: LocaleKeys.refreshIPAddress.tr(),
             subtitle: LocaleKeys.getNewIPAddress.tr(),
             actionWidget: Observer(
-              builder: (context) => Switch(
-                value: vpnStore.refreshIPConnection,
-                onChanged: (val) async {
-                  await vpnStore.toggleRefreshIPWhenConnecting();
-                  analyticsStore.logEvent(
-                    val ? AnalyticsEvent.refreshIpEnable : AnalyticsEvent.refreshIpDisable,
-                  );
-                },
-              ),
+              builder: (context) => refreshIPStore.refreshIPFuture.status == FutureStatus.pending
+                  ? const LoadingIndicator()
+                  : Switch(
+                      value: refreshIPStore.refreshIPConnection,
+                      onChanged: (val) async {
+                        await refreshIPStore.toggleRefreshIPWhenConnecting();
+                        analyticsStore.logEvent(
+                          val ? AnalyticsEvent.refreshIpEnable : AnalyticsEvent.refreshIpDisable,
+                        );
+                      },
+                    ),
             ),
           ),
           Visibility(
