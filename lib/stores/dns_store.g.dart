@@ -93,6 +93,22 @@ mixin _$DNSStore on _DNSStore, Store {
     });
   }
 
+  late final _$getMalwareBlockerContentAsyncAction =
+      AsyncAction('_DNSStore.getMalwareBlockerContent', context: context);
+
+  @override
+  Future<bool> getMalwareBlockerContent() {
+    return _$getMalwareBlockerContentAsyncAction.run(() => super.getMalwareBlockerContent());
+  }
+
+  late final _$getNotSafeContentBlockerAsyncAction =
+      AsyncAction('_DNSStore.getNotSafeContentBlocker', context: context);
+
+  @override
+  Future<bool> getNotSafeContentBlocker() {
+    return _$getNotSafeContentBlockerAsyncAction.run(() => super.getNotSafeContentBlocker());
+  }
+
   late final _$toggleMalwareBlockerAsyncAction =
       AsyncAction('_DNSStore.toggleMalwareBlocker', context: context);
 

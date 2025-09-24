@@ -62,6 +62,7 @@ abstract class _DNSStore with Store {
     return replaceDNS;
   }
 
+  @action
   Future<bool> getMalwareBlockerContent() async {
     try {
       return _malwareBlockerContent = await _localDBService.getMalwareBlocker();
@@ -71,6 +72,7 @@ abstract class _DNSStore with Store {
     }
   }
 
+  @action
   Future<bool> getNotSafeContentBlocker() async {
     try {
       return _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker();
