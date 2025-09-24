@@ -11,6 +11,7 @@ import 'package:mysterium_vpn/services/data/local/adapters/banner_type_adapter.d
 import 'package:mysterium_vpn/services/data/local/adapters/lat_lng_adapter.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/vpn_location_adapter.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/vpn_locations_adapter.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class LocalDBService {
   factory LocalDBService() => instance;
@@ -41,6 +42,15 @@ class LocalDBService {
       // This will result in loss of data, but at least the app will continue to work.
       // In a real app, we might want to notify the user about this.
       debugPrint('Failed to open Hive boxes: $e');
+      Sentry.captureException(
+        e,
+        stackTrace: StackTrace.current,
+        hint: Hint.withMap(
+          {
+            'hint': 'Failed to open Hive boxes, deleting and recreating them',
+          },
+        ),
+      );
       await Hive.deleteBoxFromDisk('user_data');
       await Hive.deleteBoxFromDisk('coordinates_data');
       await Future.wait([
