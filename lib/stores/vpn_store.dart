@@ -25,13 +25,13 @@ import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/api/external_api_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/services/wiregurad/wiregurad_key_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/dns_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
+import 'package:mysterium_vpn/stores/refresh_ip_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -66,6 +66,7 @@ abstract class _VpnStore with Store {
     required RealIPInfoStore realIPInfo,
     required WireguradKeyService wireguardKeyService,
     required DNSStore dnsStore,
+    required RefreshIPStore refreshIPStore,
   })  : _apiService = apiService,
         _externalApiService = externalApiService,
         _mqtt = mqtt,
@@ -78,7 +79,8 @@ abstract class _VpnStore with Store {
         _realIPInfo = realIPInfo,
         _logger = logger,
         _dnsStore = dnsStore,
-        _wireguardKeyService = wireguardKeyService {
+        _wireguardKeyService = wireguardKeyService,
+        _refreshIPStore = refreshIPStore {
     _init();
   }
 
@@ -94,16 +96,13 @@ abstract class _VpnStore with Store {
   final RealIPInfoStore _realIPInfo;
 
   final WireguradKeyService _wireguardKeyService;
-  final LocalDBService _localDBService = LocalDBService.instance;
   final Talker _logger;
   final DNSStore _dnsStore;
+  final RefreshIPStore _refreshIPStore;
   final Stopwatch _stopwatch = Stopwatch();
   StreamSubscription<String>? _connectionDataSub;
   StreamSubscription<String>? _connectionKilledSub;
   StreamSubscription<ConnectionStatus>? _wireguradConnectionStatus;
-
-  @readonly
-  bool _refreshIPConnection = true;
 
   @observable
   bool connectionLimitReached = false;
@@ -207,7 +206,6 @@ abstract class _VpnStore with Store {
             [
               _initTunnel(),
               _initWireguardKey(),
-              _initRefreshIPConnection(),
             ],
           );
         }
@@ -231,14 +229,6 @@ abstract class _VpnStore with Store {
     _wireguradConnectionStatus?.cancel();
     _authReactionDisposer?.call();
     _selectedLocationReactionDisposer?.call();
-  }
-
-  Future<void> _initRefreshIPConnection() async {
-    try {
-      _refreshIPConnection = await _localDBService.getRefreshIPConnection();
-    } catch (e) {
-      _logger.handle(e);
-    }
   }
 
   @action
@@ -346,14 +336,6 @@ abstract class _VpnStore with Store {
       showSnackbar(message);
       rethrow;
     }
-  }
-
-  @action
-  Future<void> toggleRefreshIPWhenConnecting() async {
-    await _localDBService.setRefreshIPConnection(
-      refreshIPConnection: !_refreshIPConnection,
-    );
-    _refreshIPConnection = !_refreshIPConnection;
   }
 
   /// Connect to Wireguard tunnel
@@ -617,7 +599,7 @@ abstract class _VpnStore with Store {
                     ? null
                     : location?.id,
             ipType: ipType?.key,
-            resetConnection: refreshIP ?? _refreshIPConnection,
+            resetConnection: refreshIP ?? _refreshIPStore.refreshIPConnection,
             osType: Platform.operatingSystem,
             userIntent: intent?.key,
             cluster: closestRegion?.id,

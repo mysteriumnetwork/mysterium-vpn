@@ -135,6 +135,10 @@ class MyApp extends HookConsumerWidget {
       if (ref.exists(subscriptionStorePOD)) {
         ref.invalidate(subscriptionStorePOD);
       }
+      if (ref.exists(refreshIPStorePOD)) {
+        ref.read(refreshIPStorePOD).disposeStore();
+        ref.invalidate(refreshIPStorePOD);
+      }
     }
   }
 }
