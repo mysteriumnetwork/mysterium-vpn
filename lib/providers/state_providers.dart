@@ -282,7 +282,7 @@ final userIntentsStorePOD = Provider.autoDispose<UserIntentsStore>(
   },
 );
 
-final dnsStorePOD = Provider.autoDispose<DNSStore>(
+final dnsStorePOD = Provider<DNSStore>(
   (ref) => DNSStore(
     LocalDBService.instance,
     ref.watch(remoteConfigStorePOD),
@@ -291,7 +291,7 @@ final dnsStorePOD = Provider.autoDispose<DNSStore>(
   ),
 );
 
-final refreshIPStorePOD = Provider.autoDispose<RefreshIPStore>(
+final refreshIPStorePOD = Provider<RefreshIPStore>(
   (ref) => RefreshIPStore(
     LocalDBService.instance,
     ref.watch(loggerPOD),
