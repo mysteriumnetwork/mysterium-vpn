@@ -18,14 +18,10 @@ mixin _$RefreshIPStore on _RefreshIPStore, Store {
     return super.refreshIPFuture;
   }
 
-  bool _refreshIPFutureIsInitialized = false;
-
   @override
   set refreshIPFuture(ObservableFuture<bool> value) {
-    _$refreshIPFutureAtom
-        .reportWrite(value, _refreshIPFutureIsInitialized ? super.refreshIPFuture : null, () {
+    _$refreshIPFutureAtom.reportWrite(value, super.refreshIPFuture, () {
       super.refreshIPFuture = value;
-      _refreshIPFutureIsInitialized = true;
     });
   }
 

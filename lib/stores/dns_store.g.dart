@@ -61,14 +61,10 @@ mixin _$DNSStore on _DNSStore, Store {
     return super.malwareBlockerFuture;
   }
 
-  bool _malwareBlockerFutureIsInitialized = false;
-
   @override
   set malwareBlockerFuture(ObservableFuture<bool> value) {
-    _$malwareBlockerFutureAtom.reportWrite(
-        value, _malwareBlockerFutureIsInitialized ? super.malwareBlockerFuture : null, () {
+    _$malwareBlockerFutureAtom.reportWrite(value, super.malwareBlockerFuture, () {
       super.malwareBlockerFuture = value;
-      _malwareBlockerFutureIsInitialized = true;
     });
   }
 
@@ -81,15 +77,10 @@ mixin _$DNSStore on _DNSStore, Store {
     return super.notSafeContentBlockerFuture;
   }
 
-  bool _notSafeContentBlockerFutureIsInitialized = false;
-
   @override
   set notSafeContentBlockerFuture(ObservableFuture<bool> value) {
-    _$notSafeContentBlockerFutureAtom.reportWrite(
-        value, _notSafeContentBlockerFutureIsInitialized ? super.notSafeContentBlockerFuture : null,
-        () {
+    _$notSafeContentBlockerFutureAtom.reportWrite(value, super.notSafeContentBlockerFuture, () {
       super.notSafeContentBlockerFuture = value;
-      _notSafeContentBlockerFutureIsInitialized = true;
     });
   }
 

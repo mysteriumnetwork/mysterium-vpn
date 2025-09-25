@@ -33,7 +33,7 @@ abstract class _RefreshIPStore with Store {
   ReactionDisposer? _authReactionDisposer;
 
   @observable
-  late ObservableFuture<bool> refreshIPFuture;
+  ObservableFuture<bool> refreshIPFuture = ObservableFuture.value(true);
 
   @readonly
   bool _refreshIPConnection = true;
