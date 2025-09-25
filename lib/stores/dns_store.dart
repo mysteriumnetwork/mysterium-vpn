@@ -46,10 +46,10 @@ abstract class _DNSStore with Store {
   bool _notSafeContentBlocker = false;
 
   @observable
-  late ObservableFuture<bool> malwareBlockerFuture;
+  ObservableFuture<bool> malwareBlockerFuture = ObservableFuture.value(false);
 
   @observable
-  late ObservableFuture<bool> notSafeContentBlockerFuture;
+  ObservableFuture<bool> notSafeContentBlockerFuture = ObservableFuture.value(false);
 
   @computed
   String? get dnsAddress {
