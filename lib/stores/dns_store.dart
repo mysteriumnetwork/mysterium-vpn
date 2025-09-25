@@ -41,11 +41,12 @@ abstract class _DNSStore with Store {
   final AuthSessionStore _authSessionStore;
   ReactionDisposer? _authReactionDisposer;
 
-  @readonly
-  bool _malwareBlockerContent = _initialMalwareBlockerValue;
+  @computed
+  bool get malwareBlockerContent => malwareBlockerFuture.value ?? _initialMalwareBlockerValue;
 
-  @readonly
-  bool _notSafeContentBlocker = _initialNotSafeContentBlockerValue;
+  @computed
+  bool get notSafeContentBlocker =>
+      notSafeContentBlockerFuture.value ?? _initialNotSafeContentBlockerValue;
 
   @observable
   ObservableFuture<bool> malwareBlockerFuture = ObservableFuture.value(_initialMalwareBlockerValue);
@@ -57,9 +58,9 @@ abstract class _DNSStore with Store {
   @computed
   String? get dnsAddress {
     String? replaceDNS;
-    if (!_remoteConfigStore.hideNotSafeContentBlocker && _notSafeContentBlocker) {
+    if (!_remoteConfigStore.hideNotSafeContentBlocker && notSafeContentBlocker) {
       replaceDNS = _remoteConfigStore.notSafeContentBlockerDnsAddress;
-    } else if (!_remoteConfigStore.hideMalwareBlocker && _malwareBlockerContent) {
+    } else if (!_remoteConfigStore.hideMalwareBlocker && malwareBlockerContent) {
       replaceDNS = _remoteConfigStore.malwareBlockerDnsAddress;
     }
     return replaceDNS;
@@ -76,7 +77,7 @@ abstract class _DNSStore with Store {
   @action
   Future<bool> _getAndSetMalwareBlockerContent() async {
     try {
-      return _malwareBlockerContent = await _localDBService.getMalwareBlocker();
+      return await _localDBService.getMalwareBlocker();
     } catch (e) {
       _logger.handle(e);
       return false;
@@ -86,7 +87,7 @@ abstract class _DNSStore with Store {
   @action
   Future<bool> _getAndSetNotSafeContentBlocker() async {
     try {
-      return _notSafeContentBlocker = await _localDBService.getNotSafeContentBlocker();
+      return await _localDBService.getNotSafeContentBlocker();
     } catch (e) {
       _logger.handle(e);
       return false;
@@ -96,22 +97,22 @@ abstract class _DNSStore with Store {
   @action
   Future<void> toggleMalwareBlocker() async {
     await _localDBService.setMalwareBlocker(
-      malwareBlocker: !_malwareBlockerContent,
+      malwareBlocker: !malwareBlockerContent,
     );
-    _malwareBlockerContent = !_malwareBlockerContent;
+    malwareBlockerFuture = ObservableFuture.value(!malwareBlockerContent);
   }
 
   @action
   Future<void> toggleNotSafeContentBlocker() async {
-    final value = !_notSafeContentBlocker;
+    final value = !notSafeContentBlocker;
     if (value) {
       await _localDBService.setMalwareBlocker(malwareBlocker: value);
-      _malwareBlockerContent = value;
+      malwareBlockerFuture = ObservableFuture.value(value);
     }
     await _localDBService.setNotSafeContentBlocker(
       notSafeContentBlocker: value,
     );
-    _notSafeContentBlocker = value;
+    notSafeContentBlockerFuture = ObservableFuture.value(value);
   }
 
   String replaceDNSAddress(String config) {
