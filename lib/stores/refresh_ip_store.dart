@@ -6,6 +6,7 @@ import 'package:talker/talker.dart';
 
 part 'refresh_ip_store.g.dart';
 
+const _initialRefreshIPConnectionValue = true;
 // ignore: library_private_types_in_public_api
 class RefreshIPStore = _RefreshIPStore with _$RefreshIPStore;
 
@@ -33,10 +34,10 @@ abstract class _RefreshIPStore with Store {
   ReactionDisposer? _authReactionDisposer;
 
   @observable
-  ObservableFuture<bool> refreshIPFuture = ObservableFuture.value(true);
+  ObservableFuture<bool> refreshIPFuture = ObservableFuture.value(_initialRefreshIPConnectionValue);
 
   @readonly
-  bool _refreshIPConnection = true;
+  bool _refreshIPConnection = _initialRefreshIPConnectionValue;
 
   @action
   Future<bool> getRefreshIPConnection() =>

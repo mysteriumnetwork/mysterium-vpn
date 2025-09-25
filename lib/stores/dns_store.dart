@@ -9,6 +9,8 @@ import 'package:talker/talker.dart';
 part 'dns_store.g.dart';
 
 final dnsRegex = RegExp(r'.*(\DNS\b).*', caseSensitive: false);
+const _initialMalwareBlockerValue = false;
+const _initialNotSafeContentBlockerValue = false;
 
 // ignore: library_private_types_in_public_api
 class DNSStore = _DNSStore with _$DNSStore;
@@ -40,16 +42,17 @@ abstract class _DNSStore with Store {
   ReactionDisposer? _authReactionDisposer;
 
   @readonly
-  bool _malwareBlockerContent = false;
+  bool _malwareBlockerContent = _initialMalwareBlockerValue;
 
   @readonly
-  bool _notSafeContentBlocker = false;
+  bool _notSafeContentBlocker = _initialNotSafeContentBlockerValue;
 
   @observable
-  ObservableFuture<bool> malwareBlockerFuture = ObservableFuture.value(false);
+  ObservableFuture<bool> malwareBlockerFuture = ObservableFuture.value(_initialMalwareBlockerValue);
 
   @observable
-  ObservableFuture<bool> notSafeContentBlockerFuture = ObservableFuture.value(false);
+  ObservableFuture<bool> notSafeContentBlockerFuture =
+      ObservableFuture.value(_initialNotSafeContentBlockerValue);
 
   @computed
   String? get dnsAddress {
