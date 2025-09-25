@@ -9,48 +9,26 @@ part of 'dns_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$DNSStore on _DNSStore, Store {
+  Computed<bool>? _$malwareBlockerContentComputed;
+
+  @override
+  bool get malwareBlockerContent =>
+      (_$malwareBlockerContentComputed ??= Computed<bool>(() => super.malwareBlockerContent,
+              name: '_DNSStore.malwareBlockerContent'))
+          .value;
+  Computed<bool>? _$notSafeContentBlockerComputed;
+
+  @override
+  bool get notSafeContentBlocker =>
+      (_$notSafeContentBlockerComputed ??= Computed<bool>(() => super.notSafeContentBlocker,
+              name: '_DNSStore.notSafeContentBlocker'))
+          .value;
   Computed<String?>? _$dnsAddressComputed;
 
   @override
   String? get dnsAddress => (_$dnsAddressComputed ??=
           Computed<String?>(() => super.dnsAddress, name: '_DNSStore.dnsAddress'))
       .value;
-
-  late final _$_malwareBlockerContentAtom =
-      Atom(name: '_DNSStore._malwareBlockerContent', context: context);
-
-  bool get malwareBlockerContent {
-    _$_malwareBlockerContentAtom.reportRead();
-    return super._malwareBlockerContent;
-  }
-
-  @override
-  bool get _malwareBlockerContent => malwareBlockerContent;
-
-  @override
-  set _malwareBlockerContent(bool value) {
-    _$_malwareBlockerContentAtom.reportWrite(value, super._malwareBlockerContent, () {
-      super._malwareBlockerContent = value;
-    });
-  }
-
-  late final _$_notSafeContentBlockerAtom =
-      Atom(name: '_DNSStore._notSafeContentBlocker', context: context);
-
-  bool get notSafeContentBlocker {
-    _$_notSafeContentBlockerAtom.reportRead();
-    return super._notSafeContentBlocker;
-  }
-
-  @override
-  bool get _notSafeContentBlocker => notSafeContentBlocker;
-
-  @override
-  set _notSafeContentBlocker(bool value) {
-    _$_notSafeContentBlockerAtom.reportWrite(value, super._notSafeContentBlocker, () {
-      super._notSafeContentBlocker = value;
-    });
-  }
 
   late final _$malwareBlockerFutureAtom =
       Atom(name: '_DNSStore.malwareBlockerFuture', context: context);
@@ -147,6 +125,8 @@ mixin _$DNSStore on _DNSStore, Store {
     return '''
 malwareBlockerFuture: ${malwareBlockerFuture},
 notSafeContentBlockerFuture: ${notSafeContentBlockerFuture},
+malwareBlockerContent: ${malwareBlockerContent},
+notSafeContentBlocker: ${notSafeContentBlocker},
 dnsAddress: ${dnsAddress}
     ''';
   }
