@@ -1,25 +1,17 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/api.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
-import 'package:mysterium_vpn/common/utils/debouncer.dart';
-import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
-import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
-import 'package:mysterium_vpn/services/location/ping.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:mysterium_vpn/services/location/locations_service.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
+import 'package:mysterium_vpn/stores/locations_query_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -34,32 +26,21 @@ class LocationsStore = _LocationsStore with _$LocationsStore;
 /// - Loading and caching location lists (datacenter and residential).
 /// - Keeping an up-to-date in-memory view of locations using MobX.
 /// - Auto-refreshing location data from the backend at a configurable interval.
-/// - Providing filtered and computed projections for the UI (e.g., recent, top, search, random, closest locations).
-/// - Persisting user preferences such as recent locations and chosen IP type.
+/// - Providing filtered and computed projections for the UI
 abstract class _LocationsStore with Store {
   _LocationsStore(
-    this._apiConnection,
-    this._filterService,
-    this._analyticsStore,
-    this._remoteConfigStore,
-    this._prefs,
-    this._localDB,
+    this._connection,
+    this._filter,
+    this._db,
+    this._locationsService,
     this._logger,
-    this._localeStore,
-    this._ping,
+    this._config,
+    this._query,
+    this._locale,
   ) {
-    _reactions = [
-      // React to locale changes and reset the search keyword to avoid stale matches.
-      reaction((_) => _localeStore.currentLocale, (locale) {
-        if (_searchKeyword.isNotEmpty) {
-          setLocationKeyword('');
-        }
-      }),
-    ];
-
     // Attach watchers to listen for database changes and update observable futures.
     // These watchers are all disposed of in the dispose method to avoid memory leaks.
-    _subs = [
+    _streamSubscriptions = [
       // Watch for changes in residential locations and update the value of observable future.
       _watch(IPType.residential).listen(
         (it) => _residentialLocationsFuture = _residentialLocationsFuture.replaceOrReset(
@@ -68,83 +49,46 @@ abstract class _LocationsStore with Store {
       ),
       // Watch for changes in datacenter locations and update the value of observable future.
       _watch(IPType.datacenter).listen(
-        (it) => _dcLocationsFuture = _dcLocationsFuture.replaceOrReset(
-          Future.value(it),
-        ),
-      ),
-      // Watch for changes in recent locations and update the value of observable future.
-      _localDB.watchRecentLocations().listen(
-        (it) {
-          _recentLocationsFuture = _recentLocationsFuture.replaceOrReset(
-            Future.value(it),
-          );
-        },
+        (it) => _dcLocationsFuture = _dcLocationsFuture.replaceOrReset(Future.value(it)),
       ),
       // Sets up periodic auto-refresh of location data based on the configured interval.
       // This ensures the app maintains up-to-date location information without user intervention.
-      Stream.periodic(_remoteConfigStore.locationsRefreshInterval).listen(
-        (_) => refresh(),
-      ),
+      Stream.periodic(_config.locationsRefreshInterval).listen((_) => refresh()),
     ];
   }
 
-  late final List<StreamSubscription<Object?>> _subs;
-  late final List<ReactionDisposer> _reactions;
-  final Connection _apiConnection;
-  final FilterService _filterService;
-  final AnalyticsStore _analyticsStore;
-  final RemoteConfigStore _remoteConfigStore;
-  final LocaleStore _localeStore;
-  final SharedPreferenceService _prefs;
-  final LocalDBService _localDB;
+  final Connection _connection;
+  final FilterService _filter;
+  final LocalDBService _db;
+  final LocationsService _locationsService;
   final Talker _logger;
-  final Ping? _ping;
 
-  final Debouncer _debouncer = Debouncer();
+  final RemoteConfigStore _config;
+  final LocationsQueryStore _query;
+  final LocaleStore _locale;
 
-  /// Flag to clear fetched locations (used for development purposes).
-  @readonly
-  bool _clearFetchedLocations = false;
-
-  /// The currently selected VPN location.
-  @observable
-  VPNLocation? selectedLocation;
+  late final List<StreamSubscription<Object?>> _streamSubscriptions;
 
   /// Observable future for datacenter locations. By default, it fetches locations from remote API.
   @readonly
   late ObservableFuture<VPNLocations> _dcLocationsFuture =
-      ObservableFuture(_fetchLocations(IPType.datacenter));
+      ObservableFuture(_fetch(IPType.datacenter));
 
   /// Observable future for residential locations. By default, it fetches locations from remote API.
   @readonly
   late ObservableFuture<VPNLocations> _residentialLocationsFuture =
-      ObservableFuture(_fetchLocations(IPType.residential));
-
-  /// Observable future for recent locations. By default, it fetches recent locations from local database.
-  @readonly
-  late ObservableFuture<List<VPNLocation>> _recentLocationsFuture =
-      ObservableFuture(_localDB.getRecentLocations());
-
-  /// Observable future for refresh operations. It is used to track the status of ongoing refreshes.
-  @readonly
-  late ObservableFuture<void> _refreshFuture = ObservableFuture.value(null);
-
-  @readonly
-  String _searchKeyword = '';
-
-  @readonly
-  late IPType _ipType = _prefs.getIPType() ?? IPType.residential;
+      ObservableFuture(_fetch(IPType.residential));
 
   /// Computed observable for the active locations future based on the selected IP type.
   @computed
-  ObservableFuture<VPNLocations> get locationsFuture => switch (_ipType) {
+  ObservableFuture<VPNLocations> get locationsFuture => switch (_query.ipType) {
         IPType.datacenter => _dcLocationsFuture,
         _ => _residentialLocationsFuture,
       };
 
   /// Computed observable for the set of available countries across all locations.
   @computed
-  Set<String> get availableCountries => {
+  Set<String> get countryCodes => {
         ...?_dcLocationsFuture.value?.allLocations
             .where((it) => it.isCountry)
             .map((it) => it.countryCode),
@@ -153,50 +97,16 @@ abstract class _LocationsStore with Store {
             .map((it) => it.countryCode),
       };
 
-  /// Sets the `_clearFetchedLocations` flag, which is only allowed in the development environment (in QA Toolbox).
-  @action
-  // ignore: avoid_positional_boolean_parameters
-  void setClearFetchedLocations(bool value) {
-    if (!Env.flavor.isDev) {
-      throw Exception('clearFetchedLocations can only be set in dev environment');
-    }
-    _clearFetchedLocations = value;
-  }
-
-  /// Computed observable for the list of recent locations, filtered and sorted.
-  /// It cross-references with available locations to ensure we only show recent locations that are currently available.
-  /// Also applies search keyword filtering.
-  @computed
-  List<VPNLocation> get recentLocations {
-    var recents = _recentLocationsFuture.value ?? const <VPNLocation>[];
-    if (recents.isEmpty) {
-      return const <VPNLocation>[];
-    }
-
-    recents = recents.intersect({
-      ...?_dcLocationsFuture.value?.allLocationsFlattened,
-      ...?_residentialLocationsFuture.value?.allLocationsFlattened,
-    }).toList();
-
-    recents = _filterService.filterLocations(
-      recents,
-      keyword: _searchKeyword,
-      locale: _localeStore.currentLocale.languageCode.toLowerCase(),
-      shouldSortList: false,
-    );
-
-    return recents.take(_remoteConfigStore.recentLocationsLimit).toList();
-  }
-
   /// Computed observable for the list of locations, filtered based on the search keyword.
   @computed
   List<VPNLocation> get locations {
     final value = locationsFuture.value?.locations;
     if (value != null) {
-      return _filterService.filterLocations(
+      return _filter.filterLocations(
         value,
-        keyword: _searchKeyword,
-        locale: _localeStore.currentLocale.languageCode.toLowerCase(),
+        keyword: _query.searchTrimmed,
+        locale: _locale.currentLocale.languageCode.toLowerCase(),
+        shouldSortList: true,
       );
     }
     return [];
@@ -207,10 +117,11 @@ abstract class _LocationsStore with Store {
   List<VPNLocation> get topLocations {
     final value = locationsFuture.value?.topLocations;
     if (value != null) {
-      return _filterService.filterLocations(
+      return _filter.filterLocations(
         value,
-        keyword: _searchKeyword,
-        locale: _localeStore.currentLocale.languageCode.toLowerCase(),
+        keyword: _query.searchTrimmed,
+        locale: _locale.currentLocale.languageCode.toLowerCase(),
+        shouldSortList: true,
       );
     }
     return [];
@@ -221,190 +132,28 @@ abstract class _LocationsStore with Store {
   @computed
   bool? get isEmpty => locationsFuture.value == null ? null : locations.isEmpty;
 
-  /// Computed observable for a random location, prioritizing recent locations.
-  /// If no recent locations exist, returns a placeholder "closest" location if any locations are available.
-  /// Returns null if no locations are available.
-  /// This is useful for suggesting a location when the user has no recent selections.
-  /// The "closest" location acts as a prompt for the user to connect to the nearest server.
-  @computed
-  VPNLocation? get randomLocation {
-    if (recentLocations.isNotEmpty) {
-      return recentLocations.first;
-    }
-
-    final isLocationsNotEmpty = (_dcLocationsFuture.value?.isNotEmpty ?? false) &&
-        (_residentialLocationsFuture.value?.isNotEmpty ?? false);
-
-    if (isLocationsNotEmpty) {
-      return VPNLocation.closest;
-    }
-    return null;
-  }
-
-  /// Finds a location by its ID, optionally filtering by country code and IP type.
-  /// If no exact match is found, it attempts to find a country-level match.
-  @action
-  VPNLocation findLocation(
-    String id, {
-    String? countryCode,
-    IPType ipType = IPType.datacenter,
-  }) {
-    final locations = switch (ipType) {
-          IPType.datacenter => _dcLocationsFuture.value?.allLocationsFlattened,
-          IPType.residential => _residentialLocationsFuture.value?.allLocationsFlattened,
-          _ => null,
-        } ??
-        const <VPNLocation>[];
-
-    var match = locations.firstWhereOrNull((it) {
-      if (countryCode != null) {
-        return it.id == id && it.countryCode == countryCode;
-      }
-      return it.id == id;
-    });
-
-    // if no city is in our list, we try to find a country
-    match ??= locations.firstWhereOrNull(
-      (it) => it.isCountry && it.countryCode == (countryCode ?? id),
-    );
-
-    // If no match is found, create a placeholder location.
-    match ??= VPNLocation(
-      id: id,
-      ipType: ipType,
-      translations: const {},
-      countryCode: countryCode ?? id,
-    );
-
-    return match;
-  }
-
-  /// Finds the closest VPN location based on latency to the user's current region.
-  /// It first determines the closest region by pinging known hosts, then selects a random location from the top countries in that region.
-  Future<VPNLocation?> closestLocation([IPType? type]) async {
-    final closestRegion = await this.closestRegion(type);
-
-    if (closestRegion == null) {
-      return null;
-    }
-
-    final closestLocations = countriesToLocations(closestRegion.topCountries, type);
-    if (closestLocations.isEmpty) {
-      return null;
-    }
-
-    final r = Random();
-    return closestLocations[r.nextInt(closestLocations.length)];
-  }
-
-  /// Determines the closest connection region by pinging known hosts and measuring latency.
-  /// Optionally filters regions by IP type (datacenter or residential).
-  /// Returns null if no regions are available.
-  /// This method is useful for selecting the optimal server region for the user based on network performance.
-  Future<ConnectionRegion?> closestRegion([IPType? type]) async {
-    final connectionConfigRegions = (await _apiConnection.connectionConfigRegions(
-      ipType: switch (type) {
-        IPType.datacenter => 'hosting',
-        IPType.residential => 'residential',
-        _ => null,
-      },
-    ))
-        .data!;
-    if (connectionConfigRegions.regions.isEmpty) {
-      return null;
-    }
-
-    return _detectClosestRegion(connectionConfigRegions.regions);
-  }
-
-  /// Stream current + future location sets for a given IP type.
-  /// Emits synchronously from cache (if present) then live updates from DB.
-  /// This ensures the UI can reactively update as location data changes.
-  Stream<VPNLocations> _watch(IPType ipType) async* {
-    final cached = await _localDB.getLocations(_ipType);
-
-    // Emit cached locations first if available for immediate UI responsiveness.
-    if (cached != null && cached.isNotEmpty) {
-      yield cached;
-    }
-
-    // Then yield live updates from the database.
-    yield* _localDB.watchLocations(ipType).where((it) => it != null).map((it) => it!);
-  }
-
-  /// Detects the closest connection region by pinging each region's host and measuring latency.
-  /// Returns the region with the lowest median latency.
-  /// This method is useful for optimizing server selection based on network performance.
-  Future<ConnectionRegion> _detectClosestRegion(List<ConnectionRegion> regions) async {
-    // Ensures all pings complete before finding the lowest latency
-    final regionsWithLatencies = await Future.wait(
-      regions.map((region) async {
-        final ping = _ping ?? Ping(region.host, 80);
-        return RegionWithLatency(region, await ping.latencyMedian());
-      }),
-    );
-
-    // Find region with lowest latency
-    final region = regionsWithLatencies.reduce((a, b) => a.latency < b.latency ? a : b);
-    return region.region;
-  }
-
-  /// Refreshes location data from the backend for the specified IP type.
-  /// If no IP type is provided, it refreshes the currently selected type.
-  /// If a refresh is already in progress, it returns the existing future to avoid duplicate requests.
-  /// This method is useful for ensuring the app has the latest location data, either on-demand or via auto-refresh.
-  @action
-  Future<void> refresh([IPType? ipType]) async {
-    if (_refreshFuture.status == FutureStatus.pending) {
-      return _refreshFuture;
-    }
-    _refreshFuture = ObservableFuture(_fetchLocations(ipType ?? _ipType));
-    await _refreshFuture;
-  }
-
-  /// Refreshes all location data (both datacenter and residential) from the backend.
-  /// This method is useful for ensuring the app has the latest location data across all types, either on-demand or via auto-refresh.
-  /// If a refresh is already in progress, it waits for the existing future to complete before starting a new one.
-  /// This prevents overlapping refresh operations.
-  @action
-  Future<void> refreshAll() async {
-    await _refreshFuture;
-    _refreshFuture = ObservableFuture(
-      Future.wait([
-        _fetchLocations(IPType.datacenter),
-        _fetchLocations(IPType.residential),
-      ]),
-    );
-    await _refreshFuture;
-  }
-
   /// Fetches location data from the backend API for the specified IP type.
   /// It maps the raw API response to the internal `VPNLocations` model, persists it to the local database, and returns the data.
   /// If an error occurs during the fetch or mapping process, it logs the error and rethrows it.
   /// Even if error occurs, previously cached locations remain available for use. Database is only updated on successful fetch.
   @action
-  Future<VPNLocations> _fetchLocations(IPType ipType) async {
+  Future<VPNLocations> _fetch(IPType ipType) async {
     try {
-      final response = await _apiConnection.connectionLocations(
+      final response = await _connection.connectionLocations(
         ipType: switch (ipType) {
-          IPType.datacenter => 'hosting',
-          IPType.residential => 'residential',
-          _ => null,
+          IPType.closest => null,
+          _ => ipType.key,
         },
       );
-      final connectionConfig = response.data;
-      if (connectionConfig == null) {
+      final config = response.data;
+      if (config == null) {
         throw Exception('No data found');
       }
 
-      if (_clearFetchedLocations) {
-        connectionConfig.clear();
-      }
-
-      final locations = _mapLocations(connectionConfig, ipType);
+      final locations = config.map((it) => VPNLocation.fromAPICountry(it, ipType: ipType)).toList();
       final data = VPNLocations(topLocations: [], locations: locations);
 
-      await _localDB.setLocations(data, type: ipType);
+      await _db.setLocations(data, type: ipType);
       return data;
     } on ApiException {
       rethrow;
@@ -414,182 +163,137 @@ abstract class _LocationsStore with Store {
     }
   }
 
-  /// Adds a location to the recent locations list, ensuring no duplicates and maintaining a maximum of 5 entries.
-  /// It also updates the selected IP type based on the added location.
-  /// If the location is not part of the currently available locations (based on IP type), it is skipped.
-  /// This method is useful for tracking user preferences and providing quick access to frequently used locations.
-  @action
-  Future<VPNLocations> _loadLocations(IPType ipType) async {
-    final cached = await _localDB.getLocations(ipType);
-    if (cached != null) {
-      return cached;
+  /// Stream current + future location sets for a given IP type.
+  /// Emits synchronously from cache (if present) then live updates from DB.
+  /// This ensures the UI can reactively update as location data changes.
+  Stream<VPNLocations> _watch(IPType ipType) async* {
+    final cached = await _db.getLocations(ipType);
+
+    // Emit cached locations first if available for immediate UI responsiveness.
+    if (cached != null && cached.isNotEmpty) {
+      yield cached;
     }
-    return _fetchLocations(ipType);
+
+    // Then yield live updates from the database.
+    yield* _db.watchLocations(ipType).where((it) => it != null).map((it) => it!);
   }
 
+  /// Refreshes location data from the backend for the specified IP type.
+  /// If no IP type is provided, it refreshes the currently selected type.
+  /// If a refresh is already in progress, it returns the existing future to avoid duplicate requests.
+  /// This method is useful for ensuring the app has the latest location data, either on-demand or via auto-refresh.
   @action
-  Future<void> addRecentLocation(VPNLocation location) async {
-    if (_shouldSkipLocation(location)) {
-      return;
-    }
-    if (location.id.isEmpty) {
-      _ipType = location.ipType;
-      return;
-    }
+  Future<void> refresh([IPType? ipType]) async {
+    try {
+      ipType ??= _query.ipType;
+      if (ipType == IPType.closest) {
+        return;
+      }
 
-    // insert location at the start, removing duplicates
-    final recents = {location, ...(await _recentLocationsFuture)}
-        // keep some extra buffer in case some locations become unavailable
-        .take(_remoteConfigStore.recentLocationsLimit * 3)
-        .toList();
-
-    await _localDB.setRecentLocations(recents);
-
-    _ipType = location.ipType;
-  }
-
-  /// Determines if a location should be skipped when adding to recent locations.
-  /// A location is skipped if it is not part of the currently available locations based on its IP type.
-  bool _shouldSkipLocation(VPNLocation location) => switch (location.ipType) {
-        IPType.datacenter => !_listContainsLocation(_dcLocationsFuture.value, location),
-        IPType.residential => !_listContainsLocation(_residentialLocationsFuture.value, location),
-        IPType.closest => true,
+      await switch (ipType) {
+        IPType.datacenter => _dcLocationsFuture,
+        IPType.residential => _residentialLocationsFuture,
+        _ => throw Exception('Invalid IP type for refresh'),
       };
 
-  /// Checks if a given location exists in the provided list of locations.
-  /// Returns false if the list is null or the location is not found.
-  bool _listContainsLocation(VPNLocations? list, VPNLocation location) {
-    if (list == null) {
-      return false;
+      await _fetch(ipType);
+    } on ApiException catch (_) {
+      // do nothing. previously cached locations remain available for use
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
     }
-    return list.allLocationsFlattened.any((it) => it == location);
   }
 
-  /// Sets the search keyword for filtering locations, applying a debounce to avoid excessive updates.
+  /// Refreshes all location data (both datacenter and residential) from the backend.
+  /// This method is useful for ensuring the app has the latest location data across all types, either on-demand or via auto-refresh.
+  /// If a refresh is already in progress, it waits for the existing future to complete before starting a new one.
+  /// This prevents overlapping refresh operations.
   @action
-  void setLocationKeyword(String text, [Duration duration = const Duration(milliseconds: 500)]) {
-    _debouncer.debounce(
-      () async {
-        _searchKeyword = text.toLowerCase().trim();
-        _analyticsStore
-          ..setSearchEvent(_searchKeyword)
-          ..logEvent(AnalyticsEvent.search);
-      },
-      duration,
+  Future<void> refreshAll() => Future.wait([
+        refresh(IPType.datacenter),
+        refresh(IPType.residential),
+      ]);
+
+  /// Finds a location by its ID, optionally filtering by country code and IP type.
+  /// If no exact match is found, it attempts to find a country-level match.
+  @action
+  Future<VPNLocation?> findById(
+    String id, {
+    String? countryCode,
+    IPType ipType = IPType.datacenter,
+  }) async {
+    if (ipType == IPType.closest) {
+      return null;
+    }
+
+    final data = await switch (ipType) {
+      IPType.datacenter => _dcLocationsFuture,
+      IPType.residential => _residentialLocationsFuture,
+      _ => throw Exception('Invalid IP type for findById'),
+    };
+
+    final locations = data.allLocationsFlattened;
+
+    var match = locations.firstWhereOrNull((it) {
+      if (countryCode != null) {
+        return it.id == id && it.countryCode == countryCode;
+      }
+      return it.id == id;
+    });
+
+    // if no city is in our list, we try to find a country
+    return match ??=
+        locations.firstWhereOrNull((it) => it.isCountry && it.countryCode == (countryCode ?? id));
+  }
+
+  /// Finds the closest VPN location based on latency to the user's current region.
+  /// It first determines the closest region by pinging known hosts, then selects a random location from the top countries in that region.
+  @action
+  Future<VPNLocation?> findClosest([IPType? type]) async {
+    final [datacenter, residential] = await Future.wait([
+      _dcLocationsFuture,
+      _residentialLocationsFuture,
+    ]);
+
+    final locations = switch (type) {
+      IPType.datacenter => datacenter.allLocations,
+      IPType.residential => residential.allLocations,
+      _ => {...datacenter.allLocations, ...residential.allLocations},
+    };
+
+    return _locationsService.closestLocation(locations.toList(), type: type);
+  }
+
+  @action
+  VPNLocation? findParent(VPNLocation location) {
+    if (location.isCountry) {
+      return null;
+    }
+
+    final locations = switch (location.ipType) {
+      IPType.datacenter => _dcLocationsFuture.value?.allLocations,
+      IPType.residential => _residentialLocationsFuture.value?.allLocations,
+      _ => null,
+    };
+
+    return locations?.firstWhereOrNull(
+      (it) => it.isCountry && it.countryCode == location.countryCode,
     );
-  }
-
-  /// Sets the current IP type (datacenter or residential) and persists the preference.
-  @action
-  Future<void> setIPType(IPType type) async {
-    _ipType = type;
-    await _prefs.setIPType(type);
-  }
-
-  /// Disposes of resources such as debouncers and stream subscriptions to prevent memory leaks.
-  FutureOr<void> dispose() async {
-    _debouncer.dispose();
-
-    // Cancel all stream subscriptions
-    await Future.wait(_subs.map((it) => it.cancel()));
-
-    // Dispose all MobX reactions
-    for (final reaction in _reactions) {
-      reaction();
-    }
-  }
-
-  /// Clears the recent locations list from the local database.
-  @action
-  Future<void> resetRecentLocations() async {
-    await _localDB.setRecentLocations([]);
   }
 
   /// Clears all stored locations (both datacenter and residential) from the local database.
   /// This is primarily used for development purposes to reset cached data.
   @action
-  Future<void> resetStoredLocations() async {
+  Future<void> clear() async {
     await Future.wait([
-      _localDB.setLocations(VPNLocations(), type: IPType.residential),
-      _localDB.setLocations(VPNLocations(), type: IPType.datacenter),
+      _db.setLocations(VPNLocations(), type: IPType.residential),
+      _db.setLocations(VPNLocations(), type: IPType.datacenter),
     ]);
   }
 
-  @action
-  VPNLocation? parentOf(VPNLocation location) {
-    if (location.isCountry) {
-      return null;
-    }
-    final allLocations = [
-      ...?_dcLocationsFuture.value?.allLocations,
-      ...?_residentialLocationsFuture.value?.allLocations,
-    ];
-
-    return allLocations.firstWhereOrNull(
-      (it) => it.isCountry && it.countryCode == location.countryCode,
-    );
+  /// Disposes of resources such as debouncers and stream subscriptions to prevent memory leaks.
+  FutureOr<void> dispose() async {
+    // Cancel all stream subscriptions
+    await Future.wait(_streamSubscriptions.map((it) => it.cancel()));
   }
-}
-
-/// Maps a list of country codes to `VPNLocation` objects with localized names.
-/// Each location is assigned the specified IP type (defaulting to residential if not provided).
-/// This is useful for creating location entries for countries without specific city data.
-/// The country codes should be in ISO 3166-1 alpha-2 format.
-List<VPNLocation> countriesToLocations(Iterable<String> countries, IPType? ipType) {
-  final locales = kSupportedLocales;
-
-  return countries
-      .map(
-        (code) => VPNLocation(
-          id: code,
-          translations: {
-            for (final locale in locales) locale.languageCode.toLowerCase(): code.tr(),
-          },
-          ipType: ipType ?? IPType.residential,
-          countryCode: code,
-        ),
-      )
-      .toList();
-}
-
-class RegionWithLatency {
-  const RegionWithLatency(this.region, this.latency);
-
-  final ConnectionRegion region;
-  final Duration latency;
-}
-
-List<VPNLocation> _mapLocations(
-  List<ConnectionLocation> response, [
-  IPType ipType = IPType.residential,
-]) =>
-    response.map((it) => _mapCountry(it, ipType)).toList();
-
-VPNLocation _mapCountry(ConnectionLocation response, [IPType ipType = IPType.residential]) =>
-    VPNLocation(
-      id: response.country,
-      ipType: ipType,
-      translations: response.translations,
-      nodeCount: response.total.toInt(),
-      children: response.cities.map((it) => _mapCity(it, response.country, ipType)).toList(),
-      countryCode: response.country,
-    );
-
-VPNLocation _mapCity(
-  ConnectionLocationCity response,
-  String country,
-  IPType ipType,
-) {
-  LatLng? coordinates;
-  if (response.latitude != null && response.longitude != null) {
-    coordinates = LatLng(response.latitude!.toDouble(), response.longitude!.toDouble());
-  }
-  return VPNLocation(
-    id: response.city,
-    ipType: ipType,
-    translations: response.translations,
-    nodeCount: response.total.toInt(),
-    countryCode: country,
-    coordinates: coordinates,
-  );
 }

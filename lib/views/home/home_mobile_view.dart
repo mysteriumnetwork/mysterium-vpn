@@ -27,7 +27,7 @@ class HomeMobileView extends HookConsumerWidget {
     final homeState = ref.watch(homeStateProvider.notifier);
     final (appBarKey, appBarBox) = useRenderObject<RenderBox>();
     final appBarHeight = appBarBox?.size.height ?? kToolbarHeight;
-    final locationsStore = ref.watch(locationsStorePOD);
+    final locationsQueryStore = ref.watch(locationsQueryStorePOD);
     final topSectionHeight = appBarHeight + 40;
 
     useReaction(
@@ -45,7 +45,7 @@ class HomeMobileView extends HookConsumerWidget {
     );
 
     useReaction(
-      () => locationsStore.searchKeyword,
+      () => locationsQueryStore.search,
       (_) {
         homeState.scrollToLocations();
       },

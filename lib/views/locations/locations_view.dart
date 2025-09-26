@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/hooks/auto_select_ip_type_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
@@ -33,13 +34,14 @@ class LocationsSliverView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final analyticsStore = ref.watch(analyticsStorePOD);
     final locationsStore = ref.watch(locationsStorePOD);
+    final recentLocationsStore = ref.watch(recentLocationsStorePOD);
+    final locationsQueryStore = ref.watch(locationsQueryStorePOD);
 
     final handleToggleConnection = useHandleToggleConnection();
 
     void handleSetLocationType(IPType value) {
       analyticsStore.logTabChange(value);
-      locationsStore.setIPType(value);
-      analyticsStore.logLocationTabOpen(value);
+      locationsQueryStore.setIPType(value);
     }
 
     void handleLocationTapped(VPNLocation location) {
@@ -56,11 +58,11 @@ class LocationsSliverView extends HookConsumerWidget {
 
     return Observer(
       builder: (context) {
-        final locationType = locationsStore.ipType;
+        final locationType = locationsQueryStore.ipType;
         final future = locationsStore.locationsFuture;
         final locations = locationsStore.locations;
         final topLocations = locationsStore.topLocations;
-        final recentLocations = locationsStore.recentLocations;
+        final recentLocations = recentLocationsStore.value;
 
         return _Body(
           future: future,
@@ -101,9 +103,10 @@ class _Body extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsStore = ref.watch(locationsStorePOD);
+    final recentLocationsStore = ref.watch(recentLocationsStorePOD);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     final userIntentsStore = ref.watch(userIntentsStorePOD);
-    final recentsFutureStatus = useComputedValue(() => locationsStore.recentLocationsFuture.status);
+    final recentsFutureStatus = useComputedValue(() => recentLocationsStore.future.status);
     final showUserIntents = useComputedValue(
       () =>
           remoteConfigStore.showUserIntents &&
@@ -246,12 +249,15 @@ class _Locations extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final locationsQueryStore = ref.watch(locationsQueryStorePOD);
     final locationsStore = ref.watch(locationsStorePOD);
 
     final typeSwitcherKey = ref.watch(homeStateProvider.select((it) => it.typeSwitcherKey));
     final locationsKey = ref.watch(homeStateProvider.select((it) => it.locationsKey));
-    final searchKeyword = useComputedValue(() => locationsStore.searchKeyword);
+    final searchKeyword = useComputedValue(() => locationsQueryStore.searchTrimmed);
     final isEmpty = useComputedValue(() => locationsStore.isEmpty);
+
+    useAutoSelectIPType();
 
     return MultiSliver(
       children: [
