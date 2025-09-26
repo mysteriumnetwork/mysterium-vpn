@@ -25,12 +25,15 @@ import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/api/external_api_service.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
+import 'package:mysterium_vpn/services/location/locations_service.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/services/wiregurad/wiregurad_key_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/dns_store.dart';
+import 'package:mysterium_vpn/stores/locations_query_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
+import 'package:mysterium_vpn/stores/recent_locations_store.dart';
 import 'package:mysterium_vpn/stores/refresh_ip_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
@@ -57,6 +60,7 @@ abstract class _VpnStore with Store {
     required ExternalApiService externalApiService,
     required MQTTService mqtt,
     required LocationsStore locationsStore,
+    required LocationsService locationsService,
     required WireguardDart wireguardService,
     required SubscriptionStore subscriptionStore,
     required Talker logger,
@@ -67,6 +71,8 @@ abstract class _VpnStore with Store {
     required WireguradKeyService wireguardKeyService,
     required DNSStore dnsStore,
     required RefreshIPStore refreshIPStore,
+    required RecentLocationsStore recentLocationsStore,
+    required LocationsQueryStore locationsQueryStore,
   })  : _apiService = apiService,
         _externalApiService = externalApiService,
         _mqtt = mqtt,
@@ -80,7 +86,10 @@ abstract class _VpnStore with Store {
         _logger = logger,
         _dnsStore = dnsStore,
         _wireguardKeyService = wireguardKeyService,
-        _refreshIPStore = refreshIPStore {
+        _refreshIPStore = refreshIPStore,
+        _recentLocationsStore = recentLocationsStore,
+        _locationsService = locationsService,
+        _locationsQueryStore = locationsQueryStore {
     _init();
   }
 
@@ -94,7 +103,10 @@ abstract class _VpnStore with Store {
   final RemoteConfigStore _remoteConfigStore;
   final AuthSessionStore _authSessionStore;
   final RealIPInfoStore _realIPInfo;
+  final RecentLocationsStore _recentLocationsStore;
+  final LocationsQueryStore _locationsQueryStore;
 
+  final LocationsService _locationsService;
   final WireguradKeyService _wireguardKeyService;
   final Talker _logger;
   final DNSStore _dnsStore;
@@ -155,7 +167,22 @@ abstract class _VpnStore with Store {
   VPNLocation? get location => _vpnConnection?.location ?? _connectingLocation;
 
   @computed
-  VPNLocation? get potentialLocation => _locationsStore.randomLocation;
+  VPNLocation? get potentialLocation {
+    final recent = _recentLocationsStore.future.value?.firstOrNull;
+    if (recent != null) {
+      return recent;
+    }
+    final all = [
+      ...?_locationsStore.dcLocationsFuture.value?.allLocations,
+      ...?_locationsStore.residentialLocationsFuture.value?.allLocations,
+    ];
+
+    if (all.isEmpty) {
+      return VPNLocation.closest;
+    }
+
+    return null;
+  }
 
   @computed
   Set<UserIntent> get userIntents {
@@ -194,7 +221,6 @@ abstract class _VpnStore with Store {
   ObservableFuture<void>? _resetAppFuture;
 
   ReactionDisposer? _authReactionDisposer;
-  ReactionDisposer? _selectedLocationReactionDisposer;
 
   @action
   Future<void> _init() async {
@@ -213,22 +239,12 @@ abstract class _VpnStore with Store {
       fireImmediately: true,
       equals: (p0, p1) => p0?.name == p1?.name,
     );
-
-    _selectedLocationReactionDisposer = reaction<ConnectionStatus>(
-      (_) => _connectionStatus,
-      (status) {
-        if (status == ConnectionStatus.connected || status == ConnectionStatus.connecting) {
-          _locationsStore.selectedLocation = null;
-        }
-      },
-    );
   }
 
   // Call on log out or app termiantion
   Future<void> disposeStore() async {
     _wireguradConnectionStatus?.cancel();
     _authReactionDisposer?.call();
-    _selectedLocationReactionDisposer?.call();
   }
 
   @action
@@ -281,7 +297,7 @@ abstract class _VpnStore with Store {
     _connectingLocation = null;
     _setConnectionStatus(await checkTunnelStatus());
 
-    await _locationsStore.recentLocationsFuture;
+    await _recentLocationsStore.future;
     if (_connectionStatus == ConnectionStatus.connected) {
       final location = potentialLocation;
       _connectingLocation = location;
@@ -487,7 +503,7 @@ abstract class _VpnStore with Store {
     }
 
     if (_connectingLocation?.ipType == IPType.closest) {
-      _fetchLocationFuture = ObservableFuture(_locationsStore.closestLocation(IPType.datacenter));
+      _fetchLocationFuture = ObservableFuture(_locationsStore.findClosest(IPType.datacenter));
       final location = await _fetchLocationFuture;
       if (location != null) {
         _connectingLocation = location;
@@ -578,14 +594,14 @@ abstract class _VpnStore with Store {
     try {
       final key = _wireguardKey ?? await _wireguardKeyService.getWireguradKey();
       final closestRegion = (intent?.requiresCluster ?? false)
-          ? await _locationsStore.closestRegion(location?.ipType ?? IPType.datacenter)
+          ? await _locationsService.closestRegion(location?.ipType ?? IPType.datacenter)
           : null;
       _stopwatch
         ..reset()
         ..start();
       final realIpInfo = await _realIPInfo.infoFuture;
       final ipType = location?.ipType ??
-          (intent == UserIntent.nearestLocation ? _locationsStore.ipType : null);
+          (intent == UserIntent.nearestLocation ? _locationsQueryStore.ipType : null);
       _fetchConfigFuture = ObservableFuture(
         _apiService.fetchVpnConfig(
           request: WireguardConnectRequest(
@@ -607,17 +623,28 @@ abstract class _VpnStore with Store {
         ),
       );
       _vpnConfig = await _fetchConfigFuture;
-      await _locationsStore.recentLocationsFuture;
+      await _recentLocationsStore.future;
 
       final locationId = _vpnConfig?.city ?? _vpnConfig?.country;
       VPNLocation? connectedLocation;
       if (locationId != null) {
-        connectedLocation = _locationsStore.findLocation(
+        final countryCode = _vpnConfig?.country;
+        final ipType =
+            _vpnConfig?.ipType == null ? IPType.datacenter : IPType.fromKey(_vpnConfig!.ipType!);
+
+        final match = await _locationsStore.findById(
           locationId,
-          countryCode: _vpnConfig?.country,
-          ipType:
-              _vpnConfig?.ipType == null ? IPType.datacenter : IPType.fromKey(_vpnConfig!.ipType!),
+          countryCode: countryCode,
+          ipType: ipType,
         );
+
+        connectedLocation = match ??
+            VPNLocation(
+              id: locationId,
+              ipType: ipType,
+              translations: const {},
+              countryCode: countryCode ?? locationId,
+            );
       }
       connectedLocation ??= potentialLocation;
 
@@ -645,7 +672,7 @@ abstract class _VpnStore with Store {
       );
       await _resolveConnectionLocationFuture!;
       if (_vpnConnection?.location != null) {
-        _locationsStore.addRecentLocation(_vpnConnection!.location);
+        await _recentLocationsStore.add(_vpnConnection!.location);
       }
       unawaited(_subscribeConnectionChanges(_vpnConfig!.id));
       unawaited(_udpBlockedCheck());
@@ -695,7 +722,7 @@ abstract class _VpnStore with Store {
     required String hash,
   }) async {
     try {
-      await _locationsStore.addRecentLocation(location);
+      await _recentLocationsStore.add(location);
       _vpnConnection = VpnConnection(connectionIP: '', location: location);
       await checkLocation();
     } catch (e) {

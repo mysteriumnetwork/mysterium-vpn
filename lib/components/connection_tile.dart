@@ -28,12 +28,14 @@ class ConnectionTile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsStore = ref.watch(locationsStorePOD);
+    final selectedLocationStore = ref.watch(selectedLocationStorePOD);
+    final recentLocationsStore = ref.watch(recentLocationsStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
 
     final location = useComputedValue(
       () {
-        final selectedLocation = locationsStore.selectedLocation;
+        final selectedLocation = selectedLocationStore.value;
         final location = vpnStore.location;
         final connectingLocation = vpnStore.connectingLocation;
         final potentialLocation = vpnStore.potentialLocation;
@@ -45,7 +47,7 @@ class ConnectionTile extends HookConsumerWidget {
 
         return result;
       },
-      [vpnStore, locationsStore],
+      [vpnStore, locationsStore, selectedLocationStore],
     );
 
     final parent = useComputedValue(
@@ -53,14 +55,14 @@ class ConnectionTile extends HookConsumerWidget {
         if (location == null) {
           return null;
         }
-        return locationsStore.parentOf(location);
+        return locationsStore.findParent(location);
       },
       [location],
     );
 
     final isLoading = useComputedValue(
       () =>
-          locationsStore.recentLocationsFuture.status == FutureStatus.pending ||
+          recentLocationsStore.future.status == FutureStatus.pending ||
           locationsStore.dcLocationsFuture.status == FutureStatus.pending ||
           locationsStore.residentialLocationsFuture.status == FutureStatus.pending,
     );

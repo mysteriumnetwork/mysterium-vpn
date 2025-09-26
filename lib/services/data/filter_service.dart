@@ -9,7 +9,7 @@ class FilterService {
     List<VPNLocation> data, {
     required String locale,
     String? keyword,
-    bool shouldSortList = true,
+    bool shouldSortList = false,
   }) {
     final query = keyword?.normalized ?? '';
 

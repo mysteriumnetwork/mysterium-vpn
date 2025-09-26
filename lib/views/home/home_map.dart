@@ -9,9 +9,11 @@ import 'package:mysterium_vpn/views/home/locations_map.dart';
 
 class HomeMap extends HookConsumerWidget {
   const HomeMap({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsStore = ref.watch(locationsStorePOD);
+    final selectedLocationStore = ref.watch(selectedLocationStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
     final locations = useComputedValue(
       () => [
@@ -25,11 +27,11 @@ class HomeMap extends HookConsumerWidget {
     );
 
     void handleSelectLocation(VPNLocation location) {
-      locationsStore.selectedLocation = location;
+      selectedLocationStore.value = location;
     }
 
     void handleClearSelectedLocation() {
-      locationsStore.selectedLocation = null;
+      selectedLocationStore.value = null;
     }
 
     return LocationsMap(

@@ -1,9 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/async_text_button.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -25,9 +24,12 @@ class LocationsRefreshButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsStore = ref.watch(locationsStorePOD);
-    final isRefreshing = useComputedValue(
-      () => locationsStore.refreshFuture.status == FutureStatus.pending,
-    );
+    final refreshFuture = useState<Future<void>?>(null);
+    final isRefreshing = useFuture(refreshFuture.value).connectionState == ConnectionState.waiting;
+
+    void handleRefresh() {
+      refreshFuture.value = locationsStore.refreshAll();
+    }
 
     return AsyncTextButton(
       text: LocaleKeys.refresh.tr(),
@@ -36,7 +38,7 @@ class LocationsRefreshButton extends HookConsumerWidget {
       minimumSize: minimumSize,
       isLoading: isRefreshing,
       borderRadius: borderRadius,
-      onPressed: isRefreshing ? null : locationsStore.refreshAll,
+      onPressed: isRefreshing ? null : handleRefresh,
     );
   }
 }

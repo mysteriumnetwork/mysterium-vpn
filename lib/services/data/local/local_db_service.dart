@@ -64,7 +64,6 @@ class LocalDBService {
   final _coordinatesBox = Hive.box<LatLng>('coordinates_data');
 
   Completer<AuthUser> _userSetCompleter = Completer<AuthUser>();
-  AuthUser? _currentUser;
   LazyBox<VPNLocations>? _locationsBox;
 
   Future<LazyBox<VPNLocations>> _getLocationsBox() async {
@@ -76,20 +75,16 @@ class LocalDBService {
   }
 
   Future<void> setUser(AuthUser user) async {
-    _currentUser = user;
     if (!_userSetCompleter.isCompleted) {
       _userSetCompleter.complete(user);
     }
   }
 
   void clearUser() {
-    _currentUser = null;
     if (_userSetCompleter.isCompleted) {
       _userSetCompleter = Completer<AuthUser>();
     }
   }
-
-  Future<AuthUser> _ensureUserSet() async => _userSetCompleter.future;
 
   Future<UserData> getUserData() async => _loadUserData();
 
@@ -173,7 +168,7 @@ class LocalDBService {
   }
 
   Future<UserData> _loadUserData() async {
-    final user = await _ensureUserSet();
+    final user = await _userSetCompleter.future;
     final cacheId = user.username;
     if (!_userBox.containsKey(cacheId)) {
       await _setInitUserData(cacheId);
@@ -183,22 +178,23 @@ class LocalDBService {
   }
 
   Stream<UserData> _watchUserData() async* {
-    final user = await _ensureUserSet();
+    final user = await _userSetCompleter.future;
     final cacheId = user.username;
 
-    if (!_userBox.containsKey(cacheId)) {
-      await _setInitUserData(cacheId);
-    }
+    final current = await _loadUserData();
+
+    yield current;
 
     yield* _userBox
         .watch(key: cacheId)
         .map((_) => _userBox.get(cacheId))
-        .where((it) => it != null)
-        .cast();
+        .where((it) => it is UserData)
+        .cast<UserData>();
   }
 
   Future<void> _saveUserData(UserData userData) async {
-    final cacheId = _currentUser!.username;
+    final user = await _userSetCompleter.future;
+    final cacheId = user.username;
 
     await _userBox.put(cacheId, userData);
   }
