@@ -37,6 +37,7 @@ import 'package:mysterium_vpn/stores/recent_locations_store.dart';
 import 'package:mysterium_vpn/stores/refresh_ip_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
+import 'package:mysterium_vpn/stores/vpn/i_vpn.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -54,7 +55,7 @@ final dnsRegex = RegExp(r'.*(\DNS\b).*', caseSensitive: false);
 // ignore: library_private_types_in_public_api
 class VpnStore = _VpnStore with _$VpnStore;
 
-abstract class _VpnStore with Store {
+abstract class _VpnStore with Store implements IVpnStore {
   _VpnStore({
     required ApiService apiService,
     required ExternalApiService externalApiService,
@@ -132,37 +133,43 @@ abstract class _VpnStore with Store {
   KeyPair? _wireguardKey;
 
   @readonly
-  ConnectionStatus _connectionStatus = ConnectionStatus.disconnected;
+  VpnConnectionStatus _connectionStatus = VpnConnectionStatus.disconnected;
 
+  @override
   @computed
-  ConnectionStatus get vpnStatus => _connectionStatus == ConnectionStatus.unknown
-      ? ConnectionStatus.disconnected
+  VpnConnectionStatus get vpnStatus => _connectionStatus == VpnConnectionStatus.unknown
+      ? VpnConnectionStatus.disconnected
       : _connectionStatus;
 
   @observable
   RateConnectionRequestModeEnum? connectionRated;
 
+  @override
   @computed
   bool get isConnected =>
-      _connectionStatus == ConnectionStatus.connected &&
+      _connectionStatus == VpnConnectionStatus.connected &&
       _fetchConfigFuture?.status != FutureStatus.pending;
 
+  @override
   @computed
   bool get isLoading =>
-      _connectionStatus == ConnectionStatus.connecting ||
+      _connectionStatus == VpnConnectionStatus.connecting ||
       isFetchingConfig ||
       isFetchingLocation ||
-      _connectionStatus == ConnectionStatus.disconnecting;
+      _connectionStatus == VpnConnectionStatus.disconnecting;
 
+  @override
   @computed
   bool get isFetchingLocation => _fetchLocationFuture?.status == FutureStatus.pending;
 
+  @override
   @computed
   bool get isFetchingConfig => _fetchConfigFuture?.status == FutureStatus.pending;
 
   @readonly
   VPNLocation? _connectingLocation;
 
+  @override
   @computed
   VPNLocation? get location => _vpnConnection?.location ?? _connectingLocation;
 
@@ -184,6 +191,7 @@ abstract class _VpnStore with Store {
     return null;
   }
 
+  @override
   @computed
   Set<UserIntent> get userIntents {
     final intents = {...UserIntent.values};
@@ -272,7 +280,7 @@ abstract class _VpnStore with Store {
 
   Future<void> regenerateWireguradKey() async {
     try {
-      await disconnectWireguard();
+      await disconnectFromVpn();
       _wireguardKey = await _wireguardKeyService.regenerateWireguardKeys();
     } catch (e) {
       _logger.handle(e);
@@ -298,7 +306,7 @@ abstract class _VpnStore with Store {
     _setConnectionStatus(await checkTunnelStatus());
 
     await _recentLocationsStore.future;
-    if (_connectionStatus == ConnectionStatus.connected) {
+    if (_connectionStatus == VpnConnectionStatus.connected) {
       final location = potentialLocation;
       _connectingLocation = location;
       try {
@@ -311,21 +319,22 @@ abstract class _VpnStore with Store {
         );
         await _resolveConnectionLocationFuture;
       } catch (e) {
-        await disconnectWireguard();
+        await disconnectFromVpn();
       }
     }
     final stream = _wireguardService.statusStream();
     _wireguradConnectionStatus = stream.listen((event) async {
-      if (event == ConnectionStatus.disconnecting) {
+      final vpnConnectionStatus = VpnConnectionStatus.fromString(event.name);
+      if (vpnConnectionStatus == VpnConnectionStatus.disconnecting) {
         _vpnConnection = null;
         connectionRated = null;
       }
-      _setConnectionStatus(event);
+      _setConnectionStatus(vpnConnectionStatus);
     });
   }
 
   @action
-  void _setConnectionStatus(ConnectionStatus status) {
+  void _setConnectionStatus(VpnConnectionStatus status) {
     _connectionStatus = status;
   }
 
@@ -380,10 +389,11 @@ abstract class _VpnStore with Store {
   }
 
   /// Disconnect from Wireguard tunnel
+  @override
   @action
-  Future<void> disconnectWireguard({bool isReconnecting = false}) async {
+  Future<void> disconnectFromVpn({bool isReconnecting = false}) async {
     final status = await checkTunnelStatus();
-    if (status == ConnectionStatus.connected) {
+    if (status == VpnConnectionStatus.connected) {
       await _wireguardService.disconnect();
       if (!isReconnecting) {
         _userIntent = null;
@@ -419,16 +429,17 @@ abstract class _VpnStore with Store {
   }
 
   /// Connect/Disconnect from VPN
+  @override
   @action
   Future<void> toggleConnection({
     VPNLocation? location,
     UserIntent? intent,
     bool isRetrying = false,
   }) async {
-    if (_connectionStatus == ConnectionStatus.connected) {
+    if (_connectionStatus == VpnConnectionStatus.connected) {
       final connectedLocation = _vpnConnection?.location;
       final connectedIntent = _userIntent;
-      await disconnectWireguard();
+      await disconnectFromVpn();
       if (location == null && intent == null) {
         return;
       }
@@ -514,12 +525,12 @@ abstract class _VpnStore with Store {
     }
 
     try {
-      if ((await checkTunnelStatus()) == ConnectionStatus.connected) {
-        await disconnectWireguard(isReconnecting: true);
+      if ((await checkTunnelStatus()) == VpnConnectionStatus.connected) {
+        await disconnectFromVpn(isReconnecting: true);
         // Wait until connection is disconnected
         await Future.doWhile(() async {
           final tunnelStatus = await checkTunnelStatus();
-          if (tunnelStatus == ConnectionStatus.disconnected) {
+          if (tunnelStatus == VpnConnectionStatus.disconnected) {
             return false;
           }
           return true;
@@ -735,18 +746,19 @@ abstract class _VpnStore with Store {
     if (ipAddress != null && ipAddress.isNotEmpty) {
       _vpnConnection = _vpnConnection?.copyWith(connectionIP: ipAddress);
     } else if ((_vpnConnection?.connectionIP.isEmpty ?? true) && _connectingLocation == location) {
-      disconnectWireguard();
+      disconnectFromVpn();
       _vpnConnection = null;
     }
   }
 
+  @override
   @action
   Future<void> disconnectAllDevices() async {
     try {
       _disconnectAllDevicesFuture = ObservableFuture(
         _apiService.disconnectAllDevices(),
       );
-      await disconnectWireguard();
+      await disconnectFromVpn();
       await _disconnectAllDevicesFuture;
     } catch (e) {
       _logger.handle(e);
@@ -754,6 +766,7 @@ abstract class _VpnStore with Store {
     }
   }
 
+  @override
   @action
   Future<void> resetApp() async {
     try {
@@ -803,13 +816,15 @@ abstract class _VpnStore with Store {
     }
   }
 
-  Future<ConnectionStatus> checkTunnelStatus() async {
+  @override
+  Future<VpnConnectionStatus> checkTunnelStatus() async {
     try {
-      return await _wireguardService.status();
+      final status = await _wireguardService.status();
+      return VpnConnectionStatus.fromString(status.name);
     } catch (e) {
       _logger.handle(e);
       Sentry.captureException(e);
-      return ConnectionStatus.unknown;
+      return VpnConnectionStatus.unknown;
     }
   }
 }

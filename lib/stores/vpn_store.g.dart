@@ -9,11 +9,11 @@ part of 'vpn_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$VpnStore on _VpnStore, Store {
-  Computed<ConnectionStatus>? _$vpnStatusComputed;
+  Computed<VpnConnectionStatus>? _$vpnStatusComputed;
 
   @override
-  ConnectionStatus get vpnStatus => (_$vpnStatusComputed ??=
-          Computed<ConnectionStatus>(() => super.vpnStatus, name: '_VpnStore.vpnStatus'))
+  VpnConnectionStatus get vpnStatus => (_$vpnStatusComputed ??=
+          Computed<VpnConnectionStatus>(() => super.vpnStatus, name: '_VpnStore.vpnStatus'))
       .value;
   Computed<bool>? _$isConnectedComputed;
 
@@ -145,16 +145,16 @@ mixin _$VpnStore on _VpnStore, Store {
 
   late final _$_connectionStatusAtom = Atom(name: '_VpnStore._connectionStatus', context: context);
 
-  ConnectionStatus get connectionStatus {
+  VpnConnectionStatus get connectionStatus {
     _$_connectionStatusAtom.reportRead();
     return super._connectionStatus;
   }
 
   @override
-  ConnectionStatus get _connectionStatus => connectionStatus;
+  VpnConnectionStatus get _connectionStatus => connectionStatus;
 
   @override
-  set _connectionStatus(ConnectionStatus value) {
+  set _connectionStatus(VpnConnectionStatus value) {
     _$_connectionStatusAtom.reportWrite(value, super._connectionStatus, () {
       super._connectionStatus = value;
     });
@@ -330,13 +330,13 @@ mixin _$VpnStore on _VpnStore, Store {
         .run(() => super._connectWireguard(privateKey: privateKey, vpnConfig: vpnConfig));
   }
 
-  late final _$disconnectWireguardAsyncAction =
-      AsyncAction('_VpnStore.disconnectWireguard', context: context);
+  late final _$disconnectFromVpnAsyncAction =
+      AsyncAction('_VpnStore.disconnectFromVpn', context: context);
 
   @override
-  Future<void> disconnectWireguard({bool isReconnecting = false}) {
-    return _$disconnectWireguardAsyncAction
-        .run(() => super.disconnectWireguard(isReconnecting: isReconnecting));
+  Future<void> disconnectFromVpn({bool isReconnecting = false}) {
+    return _$disconnectFromVpnAsyncAction
+        .run(() => super.disconnectFromVpn(isReconnecting: isReconnecting));
   }
 
   late final _$toggleConnectionAsyncAction =
@@ -403,7 +403,7 @@ mixin _$VpnStore on _VpnStore, Store {
   late final _$_VpnStoreActionController = ActionController(name: '_VpnStore', context: context);
 
   @override
-  void _setConnectionStatus(ConnectionStatus status) {
+  void _setConnectionStatus(VpnConnectionStatus status) {
     final _$actionInfo =
         _$_VpnStoreActionController.startAction(name: '_VpnStore._setConnectionStatus');
     try {
