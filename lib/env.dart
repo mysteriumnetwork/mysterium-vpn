@@ -64,6 +64,28 @@ abstract class Env {
     }
     return flavor.isDev ? testAndroidBundleId : androidBundleId;
   }
+
+  static Map<String, String> asMap() => {
+        'BASE_URL': baseUrl,
+        'MQTT_URL': mqttUrl,
+        'MQTT_USERNAME': mqttUsername,
+        'MQTT_PASSWORD': mqttPassword,
+        'WEB_APP_URL': webAppUrl,
+        'SENTRY_DSN': sentryDsn,
+        'BILLING_PAGE': billingPage,
+        'ACCOUNT_NAME': accountName,
+        'APP_NAME': appName,
+        'APPLE_CLIENT_ID': appleClientId,
+        'APPLE_REDIRECT_URI': appleRedirectUri,
+        'TUNNEL_NAME': tunnelName,
+        'REMOTE_CONFIG_SDK_KEY': remoteConfigSdkKey,
+        'AB_TESTING_SDK_KEY': abTestingSdkKey,
+        'TEXTS_SDK_KEY': textsSdkKey,
+        'MEASUREMENT_ID': measurementId,
+        'API_SECRET': apiSecret,
+        'IS_AUTOMATED': isAutomated.toString(),
+        'ENV_APP': flavor.name,
+      };
 }
 
 enum Flavor {
