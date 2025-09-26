@@ -32,6 +32,7 @@ import 'package:mysterium_vpn/services/data/network/dio_network_service.dart';
 import 'package:mysterium_vpn/services/data/network/network_service.dart';
 import 'package:mysterium_vpn/services/data/network/nominatim_service.dart';
 import 'package:mysterium_vpn/services/dio_network_logger/dio_network_logger.dart';
+import 'package:mysterium_vpn/services/location/locations_service.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
@@ -233,6 +234,13 @@ final assetsLoaderPOD = Provider<AssetLoader>((ref) {
 });
 
 final filterServicePOD = Provider<FilterService>((ref) => FilterService());
+
+final locationsServicePOD = Provider<LocationsService>(
+  (ref) {
+    final api = ref.watch(vpnApiPOD);
+    return LocationsService(api.getConnection());
+  },
+);
 
 final assetsServicePOD = Provider((_) => const AssetsService());
 

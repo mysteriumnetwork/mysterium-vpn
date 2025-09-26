@@ -49,7 +49,7 @@ void main() {
   group('Local intents', () {
     test('adds nearestLocation intent when country available', () async {
       when(mockRealIPInfo.infoFuture).thenAnswer((_) => ObservableFuture.value(mockNewYorkIPInfo));
-      when(mockLocationsStore.availableCountries).thenReturn({'US', 'CA'});
+      when(mockLocationsStore.countryCodes).thenReturn({'US', 'CA'});
       when(mockApi.fetchUserIntents()).thenAnswer((_) async => const <UserIntent>{});
 
       final store = buildStore();
@@ -60,7 +60,7 @@ void main() {
 
     test('no nearestLocation when country not available', () async {
       when(mockRealIPInfo.infoFuture).thenAnswer((_) => ObservableFuture.value(mockNewYorkIPInfo));
-      when(mockLocationsStore.availableCountries).thenReturn({'CA'});
+      when(mockLocationsStore.countryCodes).thenReturn({'CA'});
       when(mockApi.fetchUserIntents()).thenAnswer((_) async => const <UserIntent>{});
 
       final store = buildStore();
@@ -71,7 +71,7 @@ void main() {
 
     test('no nearestLocation when country is available but the intent is blacklisted', () async {
       when(mockRealIPInfo.infoFuture).thenAnswer((_) => ObservableFuture.value(mockNewYorkIPInfo));
-      when(mockLocationsStore.availableCountries).thenReturn({'US', 'CA'});
+      when(mockLocationsStore.countryCodes).thenReturn({'US', 'CA'});
       when(mockApi.fetchUserIntents()).thenAnswer((_) async => const <UserIntent>{});
       when(mockRemoteConfigStore.userIntentBlacklist).thenReturn({UserIntent.nearestLocation});
 
@@ -85,7 +85,7 @@ void main() {
   group('Remote intents', () {
     test('first remote emission applied', () async {
       when(mockRealIPInfo.infoFuture).thenAnswer((_) => ObservableFuture.value(null));
-      when(mockLocationsStore.availableCountries).thenReturn(<String>{});
+      when(mockLocationsStore.countryCodes).thenReturn(<String>{});
       when(mockApi.fetchUserIntents()).thenAnswer((_) async => {UserIntent.p2p});
 
       final store = buildStore();
@@ -98,7 +98,7 @@ void main() {
   group('Union logic', () {
     test('remote + local merged', () async {
       when(mockRealIPInfo.infoFuture).thenAnswer((_) => ObservableFuture.value(mockNewYorkIPInfo));
-      when(mockLocationsStore.availableCountries).thenReturn({'US'});
+      when(mockLocationsStore.countryCodes).thenReturn({'US'});
       when(mockApi.fetchUserIntents()).thenAnswer((_) async => {UserIntent.p2p});
 
       final store = buildStore();
@@ -112,7 +112,7 @@ void main() {
 
     test('one side empty equals other', () async {
       when(mockRealIPInfo.infoFuture).thenAnswer((_) => ObservableFuture.value(null));
-      when(mockLocationsStore.availableCountries).thenReturn(<String>{});
+      when(mockLocationsStore.countryCodes).thenReturn(<String>{});
       when(mockApi.fetchUserIntents()).thenAnswer((_) async => {UserIntent.p2p});
 
       final store = buildStore();
@@ -125,7 +125,7 @@ void main() {
   group('Loading state', () {
     test('isLoading true until first remote completes', () async {
       when(mockRealIPInfo.infoFuture).thenAnswer((_) => ObservableFuture.value(mockNewYorkIPInfo));
-      when(mockLocationsStore.availableCountries).thenReturn({'US'});
+      when(mockLocationsStore.countryCodes).thenReturn({'US'});
       final remoteCompleter = Completer<Set<UserIntent>>();
       when(mockApi.fetchUserIntents()).thenAnswer((_) => remoteCompleter.future);
 

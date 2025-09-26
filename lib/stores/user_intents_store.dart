@@ -21,7 +21,7 @@ abstract class _UserIntentsStore with Store {
     this._remoteConfigStore,
   ) {
     _reactionDisposers.addAll([
-      reaction((_) => _locationsStore.availableCountries, (_) {
+      reaction((_) => _locationsStore.countryCodes, (_) {
         _localIntentsFuture = _localIntentsFuture.replace(_fetchLocalIntents());
       }),
       reaction((_) => _realIPInfoStore.infoFuture.value, (_) {
@@ -64,7 +64,7 @@ abstract class _UserIntentsStore with Store {
     final info = await _realIPInfoStore.infoFuture;
     final myCountry = info?.country;
 
-    final countries = _locationsStore.availableCountries;
+    final countries = _locationsStore.countryCodes;
     if (myCountry != null && countries.contains(myCountry)) {
       return {UserIntent.nearestLocation};
     } else {
