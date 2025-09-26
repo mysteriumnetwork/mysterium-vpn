@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/analytics_logger_overlay.dart';
+import 'package:mysterium_vpn/components/analytics_user_properties_overlay.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
@@ -129,6 +130,16 @@ class QAToolbox extends HookConsumerWidget {
               label: const EasyText('Check'),
               icon: const Icon(Icons.open_in_new),
               onPressed: () => AnalyticsLoggerOverlay.show(context),
+            ),
+          ),
+          SettingItem(
+            asset: Asset.icons.settingsAdaptive(context),
+            title: 'Check analytics user properties',
+            subtitle: const EasyText('Will list and observe all analytics user properties'),
+            actionWidget: TextButton.icon(
+              label: const EasyText('Check'),
+              icon: const Icon(Icons.open_in_new),
+              onPressed: () => AnalyticsUserPropertiesOverlay.show(context),
             ),
           ),
           const SizedBox(height: 36),

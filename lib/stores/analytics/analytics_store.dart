@@ -19,6 +19,8 @@ import 'package:vpn_api/vpn_api.dart';
 mixin AnalyticsStore {
   final Debouncer _debouncer = Debouncer();
   final ReplayStreamController<AnalyticsLogEntry> _logStreamController = ReplayStreamController();
+  final ReplayStreamController<AnalyticsUserProperty> _userPropertiesStreamController =
+      ReplayStreamController();
 
   Future<void> logError({
     required Object err,
@@ -54,7 +56,17 @@ mixin AnalyticsStore {
 
   Future<void> setUserId(String id);
 
-  Future<void> setUserProperty({required String propertyName, required String propertyValue});
+  Future<void> setUserProperty({
+    required String propertyName,
+    required String propertyValue,
+  }) async {
+    _userPropertiesStreamController.add(
+      AnalyticsUserProperty(
+        name: propertyName.truncate(24),
+        value: propertyValue.truncate(36),
+      ),
+    );
+  }
 
   Future<void> setLogin([GrantType loginMethod = GrantType.email]);
 
@@ -236,6 +248,7 @@ mixin AnalyticsStore {
   void dispose() {
     _debouncer.dispose();
     _logStreamController.close();
+    _userPropertiesStreamController.close();
   }
 
   Future<void> logTabChange(IPType type) async {
@@ -329,6 +342,7 @@ mixin AnalyticsStore {
   }
 
   Stream<AnalyticsLogEntry> watchLogs() => _logStreamController.stream;
+  Stream<AnalyticsUserProperty> watchUserProperties() => _userPropertiesStreamController.stream;
 }
 
 class AnalyticsLogEntry {
@@ -346,3 +360,14 @@ class AnalyticsLogEntry {
 }
 
 enum AnalyticsLogType { event, screenView, message, error }
+
+class AnalyticsUserProperty {
+  AnalyticsUserProperty({
+    required this.name,
+    required this.value,
+  }) : setAt = DateTime.now();
+
+  final String name;
+  final String value;
+  final DateTime setAt;
+}
