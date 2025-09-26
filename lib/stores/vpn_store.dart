@@ -49,9 +49,6 @@ import 'package:wireguard_dart/wireguard_dart.dart';
 
 part 'vpn_store.g.dart';
 
-// Regular expression pattern to match lines containing "DNS"
-final dnsRegex = RegExp(r'.*(\DNS\b).*', caseSensitive: false);
-
 // ignore: library_private_types_in_public_api
 class VpnStore = _VpnStore with _$VpnStore;
 
