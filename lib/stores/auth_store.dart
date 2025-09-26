@@ -210,7 +210,7 @@ abstract class _AuthStore with Store {
     }
     await _abTestingStore.configFuture;
     await _analyticsStore.setUserId(userId);
-    await _analyticsStore.setUserProperty('email', username);
+    await _analyticsStore.setUserProperty(propertyName: 'email', propertyValue: username);
     Sentry.configureScope(
       (scope) => scope.setUser(
         SentryUser(
