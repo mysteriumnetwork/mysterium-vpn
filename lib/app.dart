@@ -139,6 +139,9 @@ class MyApp extends HookConsumerWidget {
         ref.read(refreshIPStorePOD).disposeStore();
         ref.invalidate(refreshIPStorePOD);
       }
+      if (ref.exists(recentLocationsStorePOD)) {
+        ref.invalidate(recentLocationsStorePOD);
+      }
     }
   }
 }

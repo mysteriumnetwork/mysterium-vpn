@@ -19,6 +19,7 @@ class QAToolbox extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bannerStore = ref.read(bannersStorePOD);
     final locationsStore = ref.read(locationsStorePOD);
+    final recentLocationsStore = ref.read(recentLocationsStorePOD);
     final vpnStore = ref.read(vpnStorePOD);
     return Observer(
       builder: (context) => Column(
@@ -47,10 +48,8 @@ class QAToolbox extends HookConsumerWidget {
               label: const EasyText('Reset'),
               icon: const Icon(Icons.refresh),
               onPressed: () async {
-                await locationsStore.resetRecentLocations();
-                showSnackbar(
-                  'Recent locations reset successfully',
-                );
+                await recentLocationsStore.clear();
+                showSnackbar('Recent locations reset successfully');
               },
             ),
           ),
@@ -98,7 +97,7 @@ class QAToolbox extends HookConsumerWidget {
               ),
               icon: const Icon(Icons.refresh),
               onPressed: () async {
-                await ref.read(locationsStorePOD).resetStoredLocations();
+                await locationsStore.clear();
                 showSnackbar(
                   'Locations cleared',
                 );
@@ -119,18 +118,6 @@ class QAToolbox extends HookConsumerWidget {
                 showSnackbar(
                   'Tunnel status: $status',
                 );
-              },
-            ),
-          ),
-          SettingItem(
-            asset: Asset.icons.settingsAdaptive(context),
-            title: locationsStore.clearFetchedLocations ? 'Restore locations' : 'Clear locations',
-            actionWidget: TextButton.icon(
-              label: EasyText(locationsStore.clearFetchedLocations ? 'Restore' : 'Clear'),
-              icon: Icon(locationsStore.clearFetchedLocations ? Icons.restore : Icons.clear),
-              onPressed: () async {
-                locationsStore.setClearFetchedLocations(!locationsStore.clearFetchedLocations);
-                await locationsStore.refreshAll();
               },
             ),
           ),

@@ -62,10 +62,8 @@ class LocalDBService {
 
   final _userBox = Hive.box<UserData>('user_data');
   final _coordinatesBox = Hive.box<LatLng>('coordinates_data');
-  final List<void Function(AuthUser user)> _userChangedListeners = [];
 
   Completer<AuthUser> _userSetCompleter = Completer<AuthUser>();
-  AuthUser? _currentUser;
   LazyBox<VPNLocations>? _locationsBox;
 
   Future<LazyBox<VPNLocations>> _getLocationsBox() async {
@@ -77,17 +75,12 @@ class LocalDBService {
   }
 
   Future<void> setUser(AuthUser user) async {
-    _currentUser = user;
     if (!_userSetCompleter.isCompleted) {
       _userSetCompleter.complete(user);
-    }
-    for (final listener in _userChangedListeners) {
-      listener(user);
     }
   }
 
   void clearUser() {
-    _currentUser = null;
     if (_userSetCompleter.isCompleted) {
       _userSetCompleter = Completer<AuthUser>();
     }
@@ -184,32 +177,24 @@ class LocalDBService {
     return _userBox.get(cacheId)!;
   }
 
-  Stream<UserData> _watchUserData() => Stream.multi((controller) async {
-        StreamSubscription<UserData>? subscription;
-        Future<void> watchForUser(AuthUser user) async {
-          final cacheId = user.username;
+  Stream<UserData> _watchUserData() async* {
+    final user = await _userSetCompleter.future;
+    final cacheId = user.username;
 
-          controller.add(await _loadUserData());
-          await subscription?.cancel();
-          subscription = _userBox
-              .watch(key: cacheId)
-              .map((_) => _userBox.get(cacheId))
-              .where((it) => it is UserData)
-              .cast<UserData>()
-              .listen(controller.add);
-        }
+    final current = await _loadUserData();
 
-        controller.onCancel = () {
-          subscription?.cancel();
-          _userChangedListeners.remove(watchForUser);
-        };
+    yield current;
 
-        _userChangedListeners.add(watchForUser);
-        watchForUser(await _userSetCompleter.future);
-      });
+    yield* _userBox
+        .watch(key: cacheId)
+        .map((_) => _userBox.get(cacheId))
+        .where((it) => it is UserData)
+        .cast<UserData>();
+  }
 
   Future<void> _saveUserData(UserData userData) async {
-    final cacheId = _currentUser!.username;
+    final user = await _userSetCompleter.future;
+    final cacheId = user.username;
 
     await _userBox.put(cacheId, userData);
   }

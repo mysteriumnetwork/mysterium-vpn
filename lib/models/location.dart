@@ -7,8 +7,10 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/ip_type.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/models/converters/lat_lng_converter.dart';
+import 'package:vpn_api/vpn_api.dart';
 
 part 'location.freezed.dart';
+
 part 'location.g.dart';
 
 @freezed
@@ -61,6 +63,37 @@ abstract class VPNLocation with _$VPNLocation {
       ipType: ipType,
       translations: translations,
       countryCode: code,
+    );
+  }
+
+  factory VPNLocation.fromAPICountry(ConnectionLocation response, {required IPType ipType}) =>
+      VPNLocation(
+        id: response.country,
+        ipType: ipType,
+        translations: response.translations,
+        nodeCount: response.total.toInt(),
+        children: response.cities
+            .map((it) => VPNLocation.fromAPICity(it, response.country, ipType))
+            .toList(),
+        countryCode: response.country,
+      );
+
+  factory VPNLocation.fromAPICity(
+    ConnectionLocationCity response,
+    String country,
+    IPType ipType,
+  ) {
+    LatLng? coordinates;
+    if (response.latitude != null && response.longitude != null) {
+      coordinates = LatLng(response.latitude!.toDouble(), response.longitude!.toDouble());
+    }
+    return VPNLocation(
+      id: response.city,
+      ipType: ipType,
+      translations: response.translations,
+      nodeCount: response.total.toInt(),
+      countryCode: country,
+      coordinates: coordinates,
     );
   }
 

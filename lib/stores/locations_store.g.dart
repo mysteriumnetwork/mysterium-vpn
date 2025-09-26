@@ -16,20 +16,12 @@ mixin _$LocationsStore on _LocationsStore, Store {
           Computed<ObservableFuture<VPNLocations>>(() => super.locationsFuture,
               name: '_LocationsStore.locationsFuture'))
       .value;
-  Computed<Set<String>>? _$availableCountriesComputed;
+  Computed<Set<String>>? _$countryCodesComputed;
 
   @override
-  Set<String> get availableCountries =>
-      (_$availableCountriesComputed ??= Computed<Set<String>>(() => super.availableCountries,
-              name: '_LocationsStore.availableCountries'))
-          .value;
-  Computed<List<VPNLocation>>? _$recentLocationsComputed;
-
-  @override
-  List<VPNLocation> get recentLocations =>
-      (_$recentLocationsComputed ??= Computed<List<VPNLocation>>(() => super.recentLocations,
-              name: '_LocationsStore.recentLocations'))
-          .value;
+  Set<String> get countryCodes => (_$countryCodesComputed ??=
+          Computed<Set<String>>(() => super.countryCodes, name: '_LocationsStore.countryCodes'))
+      .value;
   Computed<List<VPNLocation>>? _$locationsComputed;
 
   @override
@@ -49,47 +41,6 @@ mixin _$LocationsStore on _LocationsStore, Store {
   bool? get isEmpty =>
       (_$isEmptyComputed ??= Computed<bool?>(() => super.isEmpty, name: '_LocationsStore.isEmpty'))
           .value;
-  Computed<VPNLocation?>? _$randomLocationComputed;
-
-  @override
-  VPNLocation? get randomLocation =>
-      (_$randomLocationComputed ??= Computed<VPNLocation?>(() => super.randomLocation,
-              name: '_LocationsStore.randomLocation'))
-          .value;
-
-  late final _$_clearFetchedLocationsAtom =
-      Atom(name: '_LocationsStore._clearFetchedLocations', context: context);
-
-  bool get clearFetchedLocations {
-    _$_clearFetchedLocationsAtom.reportRead();
-    return super._clearFetchedLocations;
-  }
-
-  @override
-  bool get _clearFetchedLocations => clearFetchedLocations;
-
-  @override
-  set _clearFetchedLocations(bool value) {
-    _$_clearFetchedLocationsAtom.reportWrite(value, super._clearFetchedLocations, () {
-      super._clearFetchedLocations = value;
-    });
-  }
-
-  late final _$selectedLocationAtom =
-      Atom(name: '_LocationsStore.selectedLocation', context: context);
-
-  @override
-  VPNLocation? get selectedLocation {
-    _$selectedLocationAtom.reportRead();
-    return super.selectedLocation;
-  }
-
-  @override
-  set selectedLocation(VPNLocation? value) {
-    _$selectedLocationAtom.reportWrite(value, super.selectedLocation, () {
-      super.selectedLocation = value;
-    });
-  }
 
   late final _$_dcLocationsFutureAtom =
       Atom(name: '_LocationsStore._dcLocationsFuture', context: context);
@@ -136,84 +87,11 @@ mixin _$LocationsStore on _LocationsStore, Store {
     });
   }
 
-  late final _$_recentLocationsFutureAtom =
-      Atom(name: '_LocationsStore._recentLocationsFuture', context: context);
-
-  ObservableFuture<List<VPNLocation>> get recentLocationsFuture {
-    _$_recentLocationsFutureAtom.reportRead();
-    return super._recentLocationsFuture;
-  }
+  late final _$_fetchAsyncAction = AsyncAction('_LocationsStore._fetch', context: context);
 
   @override
-  ObservableFuture<List<VPNLocation>> get _recentLocationsFuture => recentLocationsFuture;
-
-  bool __recentLocationsFutureIsInitialized = false;
-
-  @override
-  set _recentLocationsFuture(ObservableFuture<List<VPNLocation>> value) {
-    _$_recentLocationsFutureAtom.reportWrite(
-        value, __recentLocationsFutureIsInitialized ? super._recentLocationsFuture : null, () {
-      super._recentLocationsFuture = value;
-      __recentLocationsFutureIsInitialized = true;
-    });
-  }
-
-  late final _$_refreshFutureAtom = Atom(name: '_LocationsStore._refreshFuture', context: context);
-
-  ObservableFuture<void> get refreshFuture {
-    _$_refreshFutureAtom.reportRead();
-    return super._refreshFuture;
-  }
-
-  @override
-  ObservableFuture<void> get _refreshFuture => refreshFuture;
-
-  bool __refreshFutureIsInitialized = false;
-
-  @override
-  set _refreshFuture(ObservableFuture<void> value) {
-    _$_refreshFutureAtom
-        .reportWrite(value, __refreshFutureIsInitialized ? super._refreshFuture : null, () {
-      super._refreshFuture = value;
-      __refreshFutureIsInitialized = true;
-    });
-  }
-
-  late final _$_searchKeywordAtom = Atom(name: '_LocationsStore._searchKeyword', context: context);
-
-  String get searchKeyword {
-    _$_searchKeywordAtom.reportRead();
-    return super._searchKeyword;
-  }
-
-  @override
-  String get _searchKeyword => searchKeyword;
-
-  @override
-  set _searchKeyword(String value) {
-    _$_searchKeywordAtom.reportWrite(value, super._searchKeyword, () {
-      super._searchKeyword = value;
-    });
-  }
-
-  late final _$_ipTypeAtom = Atom(name: '_LocationsStore._ipType', context: context);
-
-  IPType get ipType {
-    _$_ipTypeAtom.reportRead();
-    return super._ipType;
-  }
-
-  @override
-  IPType get _ipType => ipType;
-
-  bool __ipTypeIsInitialized = false;
-
-  @override
-  set _ipType(IPType value) {
-    _$_ipTypeAtom.reportWrite(value, __ipTypeIsInitialized ? super._ipType : null, () {
-      super._ipType = value;
-      __ipTypeIsInitialized = true;
-    });
+  Future<VPNLocations> _fetch(IPType ipType) {
+    return _$_fetchAsyncAction.run(() => super._fetch(ipType));
   }
 
   late final _$refreshAsyncAction = AsyncAction('_LocationsStore.refresh', context: context);
@@ -223,102 +101,50 @@ mixin _$LocationsStore on _LocationsStore, Store {
     return _$refreshAsyncAction.run(() => super.refresh(ipType));
   }
 
-  late final _$refreshAllAsyncAction = AsyncAction('_LocationsStore.refreshAll', context: context);
+  late final _$findByIdAsyncAction = AsyncAction('_LocationsStore.findById', context: context);
 
   @override
-  Future<void> refreshAll() {
-    return _$refreshAllAsyncAction.run(() => super.refreshAll());
+  Future<VPNLocation?> findById(String id,
+      {String? countryCode, IPType ipType = IPType.datacenter}) {
+    return _$findByIdAsyncAction
+        .run(() => super.findById(id, countryCode: countryCode, ipType: ipType));
   }
 
-  late final _$_fetchLocationsAsyncAction =
-      AsyncAction('_LocationsStore._fetchLocations', context: context);
+  late final _$findClosestAsyncAction =
+      AsyncAction('_LocationsStore.findClosest', context: context);
 
   @override
-  Future<VPNLocations> _fetchLocations(IPType ipType) {
-    return _$_fetchLocationsAsyncAction.run(() => super._fetchLocations(ipType));
+  Future<VPNLocation?> findClosest([IPType? type]) {
+    return _$findClosestAsyncAction.run(() => super.findClosest(type));
   }
 
-  late final _$_loadLocationsAsyncAction =
-      AsyncAction('_LocationsStore._loadLocations', context: context);
+  late final _$clearAsyncAction = AsyncAction('_LocationsStore.clear', context: context);
 
   @override
-  Future<VPNLocations> _loadLocations(IPType ipType) {
-    return _$_loadLocationsAsyncAction.run(() => super._loadLocations(ipType));
-  }
-
-  late final _$addRecentLocationAsyncAction =
-      AsyncAction('_LocationsStore.addRecentLocation', context: context);
-
-  @override
-  Future<void> addRecentLocation(VPNLocation location) {
-    return _$addRecentLocationAsyncAction.run(() => super.addRecentLocation(location));
-  }
-
-  late final _$setIPTypeAsyncAction = AsyncAction('_LocationsStore.setIPType', context: context);
-
-  @override
-  Future<void> setIPType(IPType type) {
-    return _$setIPTypeAsyncAction.run(() => super.setIPType(type));
-  }
-
-  late final _$resetRecentLocationsAsyncAction =
-      AsyncAction('_LocationsStore.resetRecentLocations', context: context);
-
-  @override
-  Future<void> resetRecentLocations() {
-    return _$resetRecentLocationsAsyncAction.run(() => super.resetRecentLocations());
-  }
-
-  late final _$resetStoredLocationsAsyncAction =
-      AsyncAction('_LocationsStore.resetStoredLocations', context: context);
-
-  @override
-  Future<void> resetStoredLocations() {
-    return _$resetStoredLocationsAsyncAction.run(() => super.resetStoredLocations());
+  Future<void> clear() {
+    return _$clearAsyncAction.run(() => super.clear());
   }
 
   late final _$_LocationsStoreActionController =
       ActionController(name: '_LocationsStore', context: context);
 
   @override
-  void setClearFetchedLocations(bool value) {
-    final _$actionInfo = _$_LocationsStoreActionController.startAction(
-        name: '_LocationsStore.setClearFetchedLocations');
+  Future<void> refreshAll() {
+    final _$actionInfo =
+        _$_LocationsStoreActionController.startAction(name: '_LocationsStore.refreshAll');
     try {
-      return super.setClearFetchedLocations(value);
+      return super.refreshAll();
     } finally {
       _$_LocationsStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  VPNLocation findLocation(String id, {String? countryCode, IPType ipType = IPType.datacenter}) {
+  VPNLocation? findParent(VPNLocation location) {
     final _$actionInfo =
-        _$_LocationsStoreActionController.startAction(name: '_LocationsStore.findLocation');
+        _$_LocationsStoreActionController.startAction(name: '_LocationsStore.findParent');
     try {
-      return super.findLocation(id, countryCode: countryCode, ipType: ipType);
-    } finally {
-      _$_LocationsStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setLocationKeyword(String text, [Duration duration = const Duration(milliseconds: 500)]) {
-    final _$actionInfo =
-        _$_LocationsStoreActionController.startAction(name: '_LocationsStore.setLocationKeyword');
-    try {
-      return super.setLocationKeyword(text, duration);
-    } finally {
-      _$_LocationsStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  VPNLocation? parentOf(VPNLocation location) {
-    final _$actionInfo =
-        _$_LocationsStoreActionController.startAction(name: '_LocationsStore.parentOf');
-    try {
-      return super.parentOf(location);
+      return super.findParent(location);
     } finally {
       _$_LocationsStoreActionController.endAction(_$actionInfo);
     }
@@ -327,14 +153,11 @@ mixin _$LocationsStore on _LocationsStore, Store {
   @override
   String toString() {
     return '''
-selectedLocation: ${selectedLocation},
 locationsFuture: ${locationsFuture},
-availableCountries: ${availableCountries},
-recentLocations: ${recentLocations},
+countryCodes: ${countryCodes},
 locations: ${locations},
 topLocations: ${topLocations},
-isEmpty: ${isEmpty},
-randomLocation: ${randomLocation}
+isEmpty: ${isEmpty}
     ''';
   }
 }
