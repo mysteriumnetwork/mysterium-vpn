@@ -185,7 +185,7 @@ class _Authenticated extends HookConsumerWidget {
                         ),
                         onConfirm: () async {
                           analyticsStore.logEvent(AnalyticsEvent.logOutConfirm);
-                          await vpnStore.disconnectWireguard();
+                          await vpnStore.disconnectFromVpn();
                           authStore.logout();
                         },
                         onCancel: () {

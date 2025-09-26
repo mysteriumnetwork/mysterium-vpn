@@ -25,7 +25,6 @@ import 'package:mysterium_vpn/views/locations/components/locations_sliver_list.d
 import 'package:mysterium_vpn/views/locations/components/locations_sliver_loading.dart';
 import 'package:mysterium_vpn/views/locations/components/recent_locations_loading.dart';
 import 'package:sliver_tools/sliver_tools.dart';
-import 'package:wireguard_dart/connection_status.dart';
 
 class LocationsSliverView extends HookConsumerWidget {
   const LocationsSliverView({super.key});
@@ -175,8 +174,8 @@ class _UserIntent extends HookConsumerWidget {
     final locationsEmpty = useComputedValue(() => locationsStore.isEmpty);
     final isLoading = useComputedValue(
       () =>
-          vpnStore.connectionStatus == ConnectionStatus.connecting ||
-          vpnStore.connectionStatus == ConnectionStatus.disconnecting,
+          vpnStore.connectionStatus == VpnConnectionStatus.connecting ||
+          vpnStore.connectionStatus == VpnConnectionStatus.disconnecting,
     );
 
     final intents = useComputedValue(() => userIntentsStore.intentsFuture.value);
