@@ -85,10 +85,18 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
         'Truncated name: "${propertyName.truncate(24)}"',
       );
     }
-    _session.userProperties[propertyName.truncate(24)] = {
-      'value': propertyValue.truncate(36),
+    final name = propertyName.truncate(24);
+    final value = propertyValue.truncate(36);
+    _session.userProperties[name] = {
+      'value': value,
       'timestamp_micros': DateTime.now().microsecondsSinceEpoch,
     };
+    super
+        .setUserProperty(
+          propertyName: name,
+          propertyValue: value,
+        )
+        .ignore();
   }
 
   @override
