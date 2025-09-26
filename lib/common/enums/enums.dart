@@ -13,3 +13,4 @@ export 'size_type.dart';
 export 'storage_keys.dart';
 export 'store_state.dart';
 export 'subscription_status.dart';
+export 'vpn_connection_status.dart';
