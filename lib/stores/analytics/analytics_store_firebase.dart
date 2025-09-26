@@ -134,10 +134,18 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
         'Truncated name: "${propertyName.truncate(24)}"',
       );
     }
+    final name = propertyName.truncate(24);
+    final value = propertyValue.truncate(36);
     await _analytics.setUserProperty(
-      name: propertyName.truncate(24),
-      value: propertyValue.truncate(36),
+      name: name,
+      value: value,
     );
+    super
+        .setUserProperty(
+          propertyName: name,
+          propertyValue: value,
+        )
+        .ignore();
   }
 
   @override
