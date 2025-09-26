@@ -54,7 +54,7 @@ mixin AnalyticsStore {
 
   Future<void> setUserId(String id);
 
-  Future<void> setUserProperty(String name, String value);
+  Future<void> setUserProperty({required String propertyName, required String propertyValue});
 
   Future<void> setLogin([GrantType loginMethod = GrantType.email]);
 

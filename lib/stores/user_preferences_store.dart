@@ -117,7 +117,7 @@ abstract class _UserPreferencesStore with Store {
       getMarketingConsentFuture = ObservableFuture(_apiService.getMarketingContactStatus());
       final consent = await getMarketingConsentFuture!;
       _analyticsStore
-        ..setUserProperty('marketing_consent', consent.toString())
+        ..setUserProperty(propertyName: 'marketing_consent', propertyValue: consent.toString())
         ..logEvent(
           AnalyticsEvent.getMarketingContactSuccess,
         );

@@ -116,10 +116,13 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
 
   @override
   @action
-  Future<void> setUserProperty(String name, String value) async {
+  Future<void> setUserProperty({
+    required String propertyName,
+    required String propertyValue,
+  }) async {
     await _analytics.setUserProperty(
-      name: name.truncate(24),
-      value: value,
+      name: propertyName.truncate(24),
+      value: propertyValue.truncate(36),
     );
   }
 
@@ -156,10 +159,19 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
     try {
       await _deviceInfoStore.deviceInfoFuture;
       final deviceId = await _deviceIDStore.deviceIdFuture;
-      await _analytics.setUserProperty(name: 'device_id', value: deviceId);
-      await _analytics.setUserProperty(name: 'device_name', value: _deviceInfoStore.deviceName);
-      await _analytics.setUserProperty(name: 'device_model', value: _deviceInfoStore.deviceModel);
-      await setUserProperty('device_platform', defaultTargetPlatform.name);
+      await setUserProperty(propertyName: 'device_id', propertyValue: deviceId);
+      await setUserProperty(
+        propertyName: 'device_name',
+        propertyValue: _deviceInfoStore.deviceName,
+      );
+      await setUserProperty(
+        propertyName: 'device_model',
+        propertyValue: _deviceInfoStore.deviceModel,
+      );
+      await setUserProperty(
+        propertyName: 'device_platform',
+        propertyValue: defaultTargetPlatform.name,
+      );
     } catch (e) {
       logError(err: e);
     }
