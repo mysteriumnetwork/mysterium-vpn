@@ -121,7 +121,12 @@ void main() {
   test('getMarketingConsent returns consent and logs success', () async {
     when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => true);
     await store.getMarketingConsent();
-    verify(mockAnalyticsStore.setUserProperty('marketing_consent', 'true')).called(1);
+    verify(
+      mockAnalyticsStore.setUserProperty(
+        propertyName: 'marketing_consent',
+        propertyValue: 'true',
+      ),
+    ).called(1);
     verify(mockAnalyticsStore.logEvent(AnalyticsEvent.getMarketingContactSuccess)).called(1);
   });
 

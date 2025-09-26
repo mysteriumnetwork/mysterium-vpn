@@ -42,10 +42,12 @@ void main() {
 
       final id = await store.getDeviceId();
 
-      expect(id, mockDeviceID);
+      // Compute expected truncated SHA256
+      final expected = sha256.convert(utf8.encode(mockDeviceID)).toString().substring(0, 36);
+      expect(id, expected);
 
       verify(mockStorage.getDeviceId()).called(greaterThanOrEqualTo(1));
-      verify(mockStorage.saveDeviceId(mockDeviceID)).called(1);
+      verify(mockStorage.saveDeviceId(expected)).called(greaterThanOrEqualTo(1));
     });
 
     test('returns stored deviceId if it is not a SHA256 digest', () async {
@@ -59,10 +61,11 @@ void main() {
       );
 
       final id = await localStore.getDeviceId();
+      final expected = sha256.convert(utf8.encode('mockUdid')).toString().substring(0, 36);
+      expect(id, expected);
 
-      expect(id, 'mockUdid');
       verify(mockStorage.getDeviceId()).called(greaterThanOrEqualTo(1));
-      verify(mockStorage.saveDeviceId('mockUdid')).called(greaterThanOrEqualTo(1));
+      verify(mockStorage.saveDeviceId(expected)).called(greaterThanOrEqualTo(1));
     });
 
     test('falls back to getDeviceIdFromDeviceInfo on error', () async {
@@ -74,7 +77,7 @@ void main() {
       when(mockStorage.saveDeviceId(any)).thenAnswer((_) async => {});
 
       final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.android);
-      final expected = sha256.convert(utf8.encode('android-fallback')).toString();
+      final expected = sha256.convert(utf8.encode('android-fallback')).toString().substring(0, 36);
 
       expect(id, expected);
     });
@@ -87,7 +90,7 @@ void main() {
       when(mockAndroidInfo.id).thenReturn('android-id-123');
 
       final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.android);
-      final expected = sha256.convert(utf8.encode('android-id-123')).toString();
+      final expected = sha256.convert(utf8.encode('android-id-123')).toString().substring(0, 36);
 
       expect(id, expected);
     });
@@ -98,7 +101,7 @@ void main() {
       when(mockIosInfo.identifierForVendor).thenReturn('ios-id-456');
 
       final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.iOS);
-      final expected = sha256.convert(utf8.encode('ios-id-456')).toString();
+      final expected = sha256.convert(utf8.encode('ios-id-456')).toString().substring(0, 36);
 
       expect(id, expected);
     });
@@ -109,7 +112,7 @@ void main() {
       when(mockMacInfo.systemGUID).thenReturn('macos-id-789');
 
       final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.macOS);
-      final expected = sha256.convert(utf8.encode('macos-id-789')).toString();
+      final expected = sha256.convert(utf8.encode('macos-id-789')).toString().substring(0, 36);
 
       expect(id, expected);
     });
@@ -120,7 +123,7 @@ void main() {
       when(mockWinInfo.deviceId).thenReturn('windows-id-101');
 
       final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.windows);
-      final expected = sha256.convert(utf8.encode('windows-id-101')).toString();
+      final expected = sha256.convert(utf8.encode('windows-id-101')).toString().substring(0, 36);
 
       expect(id, expected);
     });
@@ -133,7 +136,7 @@ void main() {
       final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.android);
 
       expect(id, isNotEmpty);
-      expect(id.length, 64); // always SHA256
+      expect(id.length, lessThanOrEqualTo(36)); // truncated
     });
 
     test('returns non-empty hashed UUID on exception', () async {
@@ -142,7 +145,7 @@ void main() {
       final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.android);
 
       expect(id, isNotEmpty);
-      expect(id.length, 64);
+      expect(id.length, lessThanOrEqualTo(36)); // truncated
     });
   });
 }

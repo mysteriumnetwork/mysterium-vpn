@@ -6,6 +6,7 @@ import 'package:talker/talker.dart';
 
 part 'refresh_ip_store.g.dart';
 
+const _initialRefreshIPConnectionValue = true;
 // ignore: library_private_types_in_public_api
 class RefreshIPStore = _RefreshIPStore with _$RefreshIPStore;
 
@@ -33,10 +34,10 @@ abstract class _RefreshIPStore with Store {
   ReactionDisposer? _authReactionDisposer;
 
   @observable
-  late ObservableFuture<bool> refreshIPFuture;
+  ObservableFuture<bool> refreshIPFuture = ObservableFuture.value(_initialRefreshIPConnectionValue);
 
-  @readonly
-  bool _refreshIPConnection = true;
+  @computed
+  bool get refreshIPConnection => refreshIPFuture.value ?? _initialRefreshIPConnectionValue;
 
   @action
   Future<bool> getRefreshIPConnection() =>
@@ -45,7 +46,7 @@ abstract class _RefreshIPStore with Store {
   @action
   Future<bool> _getAndSetRefreshIPConnection() async {
     try {
-      return _refreshIPConnection = await _localDBService.getRefreshIPConnection();
+      return await _localDBService.getRefreshIPConnection();
     } catch (e) {
       _logger.handle(e);
       return true;
@@ -54,10 +55,14 @@ abstract class _RefreshIPStore with Store {
 
   @action
   Future<void> toggleRefreshIPWhenConnecting() async {
-    await _localDBService.setRefreshIPConnection(
-      refreshIPConnection: !_refreshIPConnection,
-    );
-    _refreshIPConnection = !_refreshIPConnection;
+    try {
+      await _localDBService.setRefreshIPConnection(
+        refreshIPConnection: !refreshIPConnection,
+      );
+      refreshIPFuture = ObservableFuture.value(!refreshIPConnection);
+    } catch (e) {
+      _logger.handle(e);
+    }
   }
 
   void disposeStore() {

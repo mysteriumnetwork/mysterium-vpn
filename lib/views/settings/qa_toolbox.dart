@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/analytics_logger_overlay.dart';
+import 'package:mysterium_vpn/components/analytics_user_properties_overlay.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
@@ -19,6 +20,7 @@ class QAToolbox extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bannerStore = ref.read(bannersStorePOD);
     final locationsStore = ref.read(locationsStorePOD);
+    final recentLocationsStore = ref.read(recentLocationsStorePOD);
     final vpnStore = ref.read(vpnStorePOD);
     return Observer(
       builder: (context) => Column(
@@ -47,10 +49,8 @@ class QAToolbox extends HookConsumerWidget {
               label: const EasyText('Reset'),
               icon: const Icon(Icons.refresh),
               onPressed: () async {
-                await locationsStore.resetRecentLocations();
-                showSnackbar(
-                  'Recent locations reset successfully',
-                );
+                await recentLocationsStore.clear();
+                showSnackbar('Recent locations reset successfully');
               },
             ),
           ),
@@ -98,7 +98,7 @@ class QAToolbox extends HookConsumerWidget {
               ),
               icon: const Icon(Icons.refresh),
               onPressed: () async {
-                await ref.read(locationsStorePOD).resetStoredLocations();
+                await locationsStore.clear();
                 showSnackbar(
                   'Locations cleared',
                 );
@@ -124,24 +124,22 @@ class QAToolbox extends HookConsumerWidget {
           ),
           SettingItem(
             asset: Asset.icons.settingsAdaptive(context),
-            title: locationsStore.clearFetchedLocations ? 'Restore locations' : 'Clear locations',
-            actionWidget: TextButton.icon(
-              label: EasyText(locationsStore.clearFetchedLocations ? 'Restore' : 'Clear'),
-              icon: Icon(locationsStore.clearFetchedLocations ? Icons.restore : Icons.clear),
-              onPressed: () async {
-                locationsStore.setClearFetchedLocations(!locationsStore.clearFetchedLocations);
-                await locationsStore.refreshAll();
-              },
-            ),
-          ),
-          SettingItem(
-            asset: Asset.icons.settingsAdaptive(context),
             title: 'Check analytics logs',
             subtitle: const EasyText('Will list and observe all analytics logs'),
             actionWidget: TextButton.icon(
               label: const EasyText('Check'),
               icon: const Icon(Icons.open_in_new),
               onPressed: () => AnalyticsLoggerOverlay.show(context),
+            ),
+          ),
+          SettingItem(
+            asset: Asset.icons.settingsAdaptive(context),
+            title: 'Check analytics user properties',
+            subtitle: const EasyText('Will list and observe all analytics user properties'),
+            actionWidget: TextButton.icon(
+              label: const EasyText('Check'),
+              icon: const Icon(Icons.open_in_new),
+              onPressed: () => AnalyticsUserPropertiesOverlay.show(context),
             ),
           ),
           const SizedBox(height: 36),

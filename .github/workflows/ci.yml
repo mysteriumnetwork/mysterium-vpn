@@ -49,7 +49,7 @@ jobs:
         run: fvm flutter analyze
 
       - name: Run Flutter Unit Tests
-        run: fvm flutter test
+        run: make run-unit-tests
 
       - run: |
           sudo apt-get update -y
