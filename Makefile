@@ -28,6 +28,10 @@ generate-localization:
 update-tile-assets-declaration:
 	fvm dart run assets/map_tiles/list_assets.dart
 
+run-unit-tests:
+	fvm flutter test --dart-define-from-file=.env.dev --dart-define _DOTENV_FILE=.env.dev ;\
+    fvm flutter test --dart-define-from-file=.env.prod --dart-define _DOTENV_FILE=.env.prod test/env_test.dart
+
 debug-integration-tests:
 	patrol develop --flavor dev --flutter-command="fvm flutter" --dart-define-from-file "integration_test/.env" $(flags)
 

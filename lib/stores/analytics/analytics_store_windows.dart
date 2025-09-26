@@ -67,11 +67,36 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
 
   @override
   @action
-  Future<void> setUserProperty(String name, String value) async {
-    _session.userProperties[name.truncate(24)] = {
+  Future<void> setUserProperty({
+    required String propertyName,
+    required String propertyValue,
+  }) async {
+    if (propertyValue.length > 36) {
+      debugPrint(
+        '[Analytics] Warning: property "$propertyName" value exceeded 36 characters and was truncated.\n'
+        'Original value: "$propertyValue"\n'
+        'Truncated value: "${propertyValue.truncate(36)}"',
+      );
+    }
+    if (propertyName.length > 24) {
+      debugPrint(
+        '[Analytics] Warning: property name "$propertyName" exceeded 24 characters and was truncated.\n'
+        'Original name: "$propertyName"\n'
+        'Truncated name: "${propertyName.truncate(24)}"',
+      );
+    }
+    final name = propertyName.truncate(24);
+    final value = propertyValue.truncate(36);
+    _session.userProperties[name] = {
       'value': value,
       'timestamp_micros': DateTime.now().microsecondsSinceEpoch,
     };
+    super
+        .setUserProperty(
+          propertyName: name,
+          propertyValue: value,
+        )
+        .ignore();
   }
 
   @override
@@ -104,10 +129,19 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
         debugPrint('Device name: ${_deviceInfoStore.deviceName}');
         debugPrint('Device model: ${_deviceInfoStore.deviceModel}');
       }
-      await setUserProperty('device_id', deviceId);
-      await setUserProperty('device_name', _deviceInfoStore.deviceName);
-      await setUserProperty('device_model', _deviceInfoStore.deviceModel);
-      await setUserProperty('device_platform', defaultTargetPlatform.name);
+      await setUserProperty(propertyName: 'device_id', propertyValue: deviceId);
+      await setUserProperty(
+        propertyName: 'device_name',
+        propertyValue: _deviceInfoStore.deviceName,
+      );
+      await setUserProperty(
+        propertyName: 'device_model',
+        propertyValue: _deviceInfoStore.deviceModel,
+      );
+      await setUserProperty(
+        propertyName: 'device_platform',
+        propertyValue: defaultTargetPlatform.name,
+      );
     } catch (e) {
       logError(err: e);
     }

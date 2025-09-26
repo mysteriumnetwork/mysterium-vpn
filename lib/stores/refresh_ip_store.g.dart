@@ -9,6 +9,14 @@ part of 'refresh_ip_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$RefreshIPStore on _RefreshIPStore, Store {
+  Computed<bool>? _$refreshIPConnectionComputed;
+
+  @override
+  bool get refreshIPConnection =>
+      (_$refreshIPConnectionComputed ??= Computed<bool>(() => super.refreshIPConnection,
+              name: '_RefreshIPStore.refreshIPConnection'))
+          .value;
+
   late final _$refreshIPFutureAtom =
       Atom(name: '_RefreshIPStore.refreshIPFuture', context: context);
 
@@ -18,32 +26,10 @@ mixin _$RefreshIPStore on _RefreshIPStore, Store {
     return super.refreshIPFuture;
   }
 
-  bool _refreshIPFutureIsInitialized = false;
-
   @override
   set refreshIPFuture(ObservableFuture<bool> value) {
-    _$refreshIPFutureAtom
-        .reportWrite(value, _refreshIPFutureIsInitialized ? super.refreshIPFuture : null, () {
+    _$refreshIPFutureAtom.reportWrite(value, super.refreshIPFuture, () {
       super.refreshIPFuture = value;
-      _refreshIPFutureIsInitialized = true;
-    });
-  }
-
-  late final _$_refreshIPConnectionAtom =
-      Atom(name: '_RefreshIPStore._refreshIPConnection', context: context);
-
-  bool get refreshIPConnection {
-    _$_refreshIPConnectionAtom.reportRead();
-    return super._refreshIPConnection;
-  }
-
-  @override
-  bool get _refreshIPConnection => refreshIPConnection;
-
-  @override
-  set _refreshIPConnection(bool value) {
-    _$_refreshIPConnectionAtom.reportWrite(value, super._refreshIPConnection, () {
-      super._refreshIPConnection = value;
     });
   }
 
@@ -82,7 +68,8 @@ mixin _$RefreshIPStore on _RefreshIPStore, Store {
   @override
   String toString() {
     return '''
-refreshIPFuture: ${refreshIPFuture}
+refreshIPFuture: ${refreshIPFuture},
+refreshIPConnection: ${refreshIPConnection}
     ''';
   }
 }

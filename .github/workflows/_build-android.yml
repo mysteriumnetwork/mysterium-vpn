@@ -77,7 +77,9 @@ jobs:
           git diff
 
       - name: Build Android app
-        run: fvm flutter build appbundle --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define-from-file="${{ inputs.env_file }}"
+        run: |
+          fvm flutter build apk --config-only --flavor "${{ inputs.flavor }}" --dart-define-from-file="${{ inputs.env_file }}"
+          fvm flutter build appbundle --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define-from-file="${{ inputs.env_file }}"
 
       - name: Authenticate to Play Store
         id: google-play-auth
