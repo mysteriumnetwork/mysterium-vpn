@@ -21,8 +21,8 @@ abstract class ABTestingStoreBase extends ConfigCatStore with Store {
       (_) => configFuture,
       (future) async {
         await future;
-        asUserProperties.forEach((key, value) {
-          _analytics.setUserProperty(propertyName: key, propertyValue: value);
+        asUserProperties.forEach((key, value) async {
+          await _analytics.setUserProperty(propertyName: key, propertyValue: value);
         });
       },
       fireImmediately: true,
