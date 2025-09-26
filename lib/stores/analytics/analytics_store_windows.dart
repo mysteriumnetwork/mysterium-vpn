@@ -71,6 +71,20 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
     required String propertyName,
     required String propertyValue,
   }) async {
+    if (propertyValue.length > 36) {
+      debugPrint(
+        '[Analytics] Warning: property "$propertyName" value exceeded 36 characters and was truncated.\n'
+        'Original value: "$propertyValue"\n'
+        'Truncated value: "${propertyValue.truncate(36)}"',
+      );
+    }
+    if (propertyName.length > 24) {
+      debugPrint(
+        '[Analytics] Warning: property name "$propertyName" exceeded 24 characters and was truncated.\n'
+        'Original name: "$propertyName"\n'
+        'Truncated name: "${propertyName.truncate(24)}"',
+      );
+    }
     _session.userProperties[propertyName.truncate(24)] = {
       'value': propertyValue.truncate(36),
       'timestamp_micros': DateTime.now().microsecondsSinceEpoch,
