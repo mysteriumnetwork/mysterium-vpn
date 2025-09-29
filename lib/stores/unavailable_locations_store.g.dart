@@ -35,17 +35,6 @@ mixin _$UnavailableLocationsStore on _UnavailableLocationsStore, Store {
       ActionController(name: '_UnavailableLocationsStore', context: context);
 
   @override
-  bool isAvailable(VPNLocation location) {
-    final _$actionInfo = _$_UnavailableLocationsStoreActionController.startAction(
-        name: '_UnavailableLocationsStore.isAvailable');
-    try {
-      return super.isAvailable(location);
-    } finally {
-      _$_UnavailableLocationsStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void toggleAvailability(VPNLocation location, {bool? availability}) {
     final _$actionInfo = _$_UnavailableLocationsStoreActionController.startAction(
         name: '_UnavailableLocationsStore.toggleAvailability');
