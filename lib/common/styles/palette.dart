@@ -52,6 +52,7 @@ abstract class Palette {
   Color get outlinedButtonTextColor;
   Color get outlinedButtonBorderColor;
   Color get outlinedButtonBackgroundColor;
+  Color get outlinedButtonDisabledColor;
   Color get headerColor;
   Color get inputColor;
   Color get inputHintColor;
@@ -130,6 +131,9 @@ class LightPalette implements Palette {
 
   @override
   Color get outlinedButtonTextColor => Palette.purple;
+
+  @override
+  Color get outlinedButtonDisabledColor => const Color(0xFFA7A7A7);
 
   @override
   Color get headerColor => Palette.white;
@@ -228,6 +232,9 @@ class DarkPalette implements Palette {
 
   @override
   Color get outlinedButtonBorderColor => Palette.purple;
+
+  @override
+  Color get outlinedButtonDisabledColor => const Color(0xFFA7A7A7);
 
   @override
   Color get outlinedButtonTextColor => Palette.white;
