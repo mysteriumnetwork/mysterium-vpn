@@ -216,7 +216,6 @@ abstract class _LocationsStore with Store {
 
   /// Finds a location by its ID, optionally filtering by country code and IP type.
   /// If no exact match is found, it attempts to find a country-level match.
-  @action
   Future<VPNLocation?> findById(
     String id, {
     String? countryCode,
@@ -248,7 +247,6 @@ abstract class _LocationsStore with Store {
 
   /// Finds the closest VPN location based on latency to the user's current region.
   /// It first determines the closest region by pinging known hosts, then selects a random location from the top countries in that region.
-  @action
   Future<VPNLocation?> findClosest([IPType? type]) async {
     final [datacenter, residential] = await Future.wait([
       _dcLocationsFuture,
@@ -264,7 +262,6 @@ abstract class _LocationsStore with Store {
     return _locationsService.closestLocation(locations.toList(), type: type);
   }
 
-  @action
   VPNLocation? findParent(VPNLocation location) {
     if (location.isCountry) {
       return null;
