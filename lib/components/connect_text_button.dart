@@ -18,6 +18,8 @@ class ConnectTextButton extends HookConsumerWidget {
     this.outlinedButton = false,
     this.borderRadius,
     this.fontStyle,
+    this.textConnect,
+    this.textDisconnect,
     super.key,
   });
 
@@ -29,6 +31,8 @@ class ConnectTextButton extends HookConsumerWidget {
   final bool outlinedButton;
   final double? borderRadius;
   final TextStyle? fontStyle;
+  final String? textConnect;
+  final String? textDisconnect;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -48,7 +52,9 @@ class ConnectTextButton extends HookConsumerWidget {
       minimumSize: size,
       textScaleGroup: textScaleGroup,
       borderRadius: borderRadius == null ? null : BorderRadius.circular(borderRadius!),
-      text: (isConnected ?? false) ? LocaleKeys.disconnect.tr() : LocaleKeys.connect.tr(),
+      text: (isConnected ?? false)
+          ? (textDisconnect ?? LocaleKeys.disconnect.tr())
+          : (textConnect ?? LocaleKeys.connect.tr()),
       mode: (isConnected ?? true)
           ? AsyncTextButtonMode.filled
           : outlinedButton

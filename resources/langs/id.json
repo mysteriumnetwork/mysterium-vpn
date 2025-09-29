@@ -179,6 +179,9 @@
   "locationItemNodeCount": {
     "other": "{} server"
   },
+  "locationUnavailableTitle": "{} tidak tersedia",
+  "locationUnavailableSubtitle": "Hubungkan ke IP terdekat – atau pilih secara manual",
+  "locationUnavailableAction": "Hubungkan ke IP terdekat",
   "loginQuote": "Tingkatkan pengalaman pribadi Anda.\nJadilah anonim. Jadilah bebas.",
   "loginSessionExpired": "Sesi Anda telah kedaluwarsa. Silakan login kembali.",
   "logout": "Keluar",

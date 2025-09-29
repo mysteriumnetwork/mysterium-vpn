@@ -32,11 +32,8 @@ abstract class _UnavailableLocationsStore with Store, Disposeable {
   late Set<VPNLocation> _unavailableLocations = const <VPNLocation>{};
 
   @action
-  bool isAvailable(VPNLocation location) => !_unavailableLocations.contains(location);
-
-  @action
   void toggleAvailability(VPNLocation location, {bool? availability}) {
-    availability ??= !isAvailable(location);
+    availability ??= !_unavailableLocations.contains(location);
     if (availability) {
       _unavailableLocations = _unavailableLocations.where((l) => l != location).toSet();
     } else {

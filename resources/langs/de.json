@@ -181,6 +181,9 @@
     "one": "{} Server",
     "other": "{} Server"
   },
+  "locationUnavailableTitle": "{} ist nicht verfügbar",
+  "locationUnavailableSubtitle": "Verbinde dich mit der nächsten IP – oder wähle sie manuell aus",
+  "locationUnavailableAction": "Mit nächster IP verbinden",
   "loginQuote": "Steigern Sie Ihre persönliche Erfahrung.\nBleiben Sie anonym. Seien Sie frei.",
   "loginSessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
   "logout": "Abmelden",

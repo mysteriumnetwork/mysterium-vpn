@@ -179,6 +179,9 @@
   "locationItemNodeCount": {
     "other": "{} sunucu"
   },
+  "locationUnavailableTitle": "{} kullanılamıyor",
+  "locationUnavailableSubtitle": "En yakın IP'ye bağlanın – ya da manuel olarak seçin",
+  "locationUnavailableAction": "En yakın IP'ye bağlan",
   "loginQuote": "Kişisel deneyiminizi yükseltin.\n",
   "loginSessionExpired": "Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın.",
   "logout": "Çıkış Yap",
