@@ -184,6 +184,14 @@ class $AssetsIconsGen {
   SvgGenImage get clockCircle =>
       const SvgGenImage('assets/icons/clock_circle.svg', size: Size(24.0, 24.0));
 
+  /// File path: assets/icons/close2_dark.svg
+  SvgGenImage get close2Dark =>
+      const SvgGenImage('assets/icons/close2_dark.svg', size: Size(32.0, 32.0));
+
+  /// File path: assets/icons/close2_light.svg
+  SvgGenImage get close2Light =>
+      const SvgGenImage('assets/icons/close2_light.svg', size: Size(32.0, 32.0));
+
   /// File path: assets/icons/close_dark.svg
   SvgGenImage get closeDark =>
       const SvgGenImage('assets/icons/close_dark.svg', size: Size(24.0, 24.0));
@@ -528,6 +536,8 @@ class $AssetsIconsGen {
         cityLight,
         clear,
         clockCircle,
+        close2Dark,
+        close2Light,
         closeDark,
         closeLight,
         connectPromptDark,
