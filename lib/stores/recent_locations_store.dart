@@ -67,7 +67,6 @@ abstract class _RecentLocationsStore with Store {
     return data.take(_config.recentLocationsLimit).toList();
   }
 
-  @action
   Future<void> add(VPNLocation location) async {
     if (location.ipType == IPType.closest) {
       return;

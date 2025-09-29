@@ -36,13 +36,6 @@ mixin _$RecentLocationsStore on _RecentLocationsStore, Store {
     });
   }
 
-  late final _$addAsyncAction = AsyncAction('_RecentLocationsStore.add', context: context);
-
-  @override
-  Future<void> add(VPNLocation location) {
-    return _$addAsyncAction.run(() => super.add(location));
-  }
-
   @override
   String toString() {
     return '''
