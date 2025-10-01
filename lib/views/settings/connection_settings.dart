@@ -167,7 +167,7 @@ class ConnectionSettings extends HookConsumerWidget {
             ),
           ),
           Visibility(
-            visible: remoteConfigStore.isProtocolPickerAvailable,
+            visible: remoteConfigStore.isProtocolPickerAvailable && isMacOSorIOS(),
             child: SettingItem(
               asset: Asset.icons.protocol(context),
               title: LocaleKeys.protocol.tr(),

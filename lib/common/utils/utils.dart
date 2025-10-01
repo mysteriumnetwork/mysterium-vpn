@@ -268,6 +268,8 @@ bool isMobile() => Platform.isAndroid || Platform.isIOS;
 
 bool isWindowsOrLinux() => Platform.isWindows || Platform.isLinux;
 
+bool isMacOSorIOS() => Platform.isMacOS || Platform.isIOS;
+
 TargetPlatform getPlatform() {
   if (Platform.isAndroid) {
     return TargetPlatform.android;

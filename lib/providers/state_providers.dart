@@ -89,6 +89,9 @@ final apiStorePOD = Provider<ApiStore>((ref) {
 final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
 
 final vpnStorePOD = StateProvider<IVpnStore>((ref) {
+  if (!isMacOSorIOS()) {
+    return ref.read(wireguardVpnStorePOD);
+  }
   final vpnProtocolStore = ref.watch(vpnProtocolStorePOD);
 
   void update() {

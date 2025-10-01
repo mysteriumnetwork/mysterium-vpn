@@ -471,6 +471,7 @@ abstract class _VpnStore with Store implements IVpnStore {
     await _startConnection(refreshIP: true, location: _vpnConnection?.location);
   }
 
+  // TODO(Kristijan): Move this check to out of vpn store
   Future<void> _checkSubscriptionStatus() async {
     if (_subscriptionStore.subscriptionFuture.status == FutureStatus.pending) {
       return;
@@ -496,6 +497,7 @@ abstract class _VpnStore with Store implements IVpnStore {
     bool isRetrying = false,
     UserIntent? intent,
   }) async {
+    // TODO(Kristijan): Move this check to out of vpn store
     await _authSessionStore.accessTokenFuture;
     if (_authSessionStore.status != AuthStatus.authenticated) {
       throw AuthenticationRequiredException();
