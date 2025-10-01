@@ -6,6 +6,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/auto_select_ip_type_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/hooks/is_authenticated_hook.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/retry_widget.dart';
@@ -106,6 +107,7 @@ class _Body extends HookConsumerWidget {
     final recentLocationsStore = ref.watch(recentLocationsStorePOD);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     final userIntentsStore = ref.watch(userIntentsStorePOD);
+    final isAuthenticated = useIsAuthenticated();
     final recentsFutureStatus = useComputedValue(() => recentLocationsStore.future.status);
     final showUserIntents = useComputedValue(
       () =>
@@ -119,7 +121,7 @@ class _Body extends HookConsumerWidget {
         children: [
           if (showUserIntents) const _UserIntent(),
           if (showUserIntents) const SizedBox(height: 24),
-          if (recentsFutureStatus == FutureStatus.pending) ...[
+          if (isAuthenticated && recentsFutureStatus == FutureStatus.pending) ...[
             const RecentLocationsLoading(),
             const SizedBox(height: 24),
           ] else if (recentLocations.isNotEmpty) ...[
