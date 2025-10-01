@@ -34,6 +34,7 @@ import 'package:mysterium_vpn/stores/remote_config/texts_store.dart';
 import 'package:mysterium_vpn/stores/selected_location_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
+import 'package:mysterium_vpn/stores/unavailable_locations_store.dart';
 import 'package:mysterium_vpn/stores/update_availabe_store.dart';
 import 'package:mysterium_vpn/stores/user_intents_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
@@ -101,6 +102,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final locationsQueryStore = ref.watch(locationsQueryStorePOD);
   final recentLocationsStore = ref.watch(recentLocationsStorePOD);
   final locationsService = ref.watch(locationsServicePOD);
+  final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
   return VpnStore(
     apiService: apiService,
     externalApiService: externalApiService,
@@ -119,6 +121,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     locationsQueryStore: locationsQueryStore,
     recentLocationsStore: recentLocationsStore,
     locationsService: locationsService,
+    unavailableLocationsStore: unavailableLocationsStore,
   );
 });
 
@@ -183,6 +186,15 @@ final recentLocationsStorePOD = Provider<RecentLocationsStore>((ref) {
 
   return store;
 });
+
+final unavailableLocationsStorePOD = Provider<UnavailableLocationsStore>(
+  (ref) {
+    final store = UnavailableLocationsStore(ref.watch(locationsStorePOD));
+    ref.onDispose(store.dispose);
+
+    return store;
+  },
+);
 
 final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   final inAppPurchase = ref.read(inAppPurchasePOD);

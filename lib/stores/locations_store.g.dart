@@ -123,6 +123,17 @@ mixin _$LocationsStore on _LocationsStore, Store {
   }
 
   @override
+  void insertInvalidLocations() {
+    final _$actionInfo = _$_LocationsStoreActionController.startAction(
+        name: '_LocationsStore.insertInvalidLocations');
+    try {
+      return super.insertInvalidLocations();
+    } finally {
+      _$_LocationsStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 locationsFuture: ${locationsFuture},

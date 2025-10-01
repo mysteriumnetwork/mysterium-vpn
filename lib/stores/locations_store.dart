@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/api.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
+import 'package:mysterium_vpn/common/utils/mocks.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
@@ -276,6 +277,46 @@ abstract class _LocationsStore with Store {
     return locations?.firstWhereOrNull(
       (it) => it.isCountry && it.countryCode == location.countryCode,
     );
+  }
+
+  /// Inserts invalid locations into the current list of locations for testing purposes.
+  /// This is useful for QA and development to simulate scenarios with unavailable or malformed locations.
+  /// It adds one invalid country location to both datacenter and residential lists.
+  @action
+  void insertInvalidLocations() {
+    final invalidResidential = _residentialLocationsFuture.value?.copyWith(
+      locations: [
+        Mocks.createInvalidCountry(ipType: IPType.residential),
+        ...?_residentialLocationsFuture.value?.locations,
+      ],
+    );
+
+    final invalidDatacenter = _dcLocationsFuture.value?.copyWith(
+      locations: [
+        Mocks.createInvalidCountry(ipType: IPType.datacenter),
+        ...?_dcLocationsFuture.value?.locations.map(
+          (it) {
+            if (it.isCountry && it.countryCode == 'US') {
+              return it.copyWith(
+                children: [
+                  Mocks.createInvalidCity(ipType: IPType.datacenter, countryCode: 'US'),
+                  ...?it.children,
+                ],
+              );
+            }
+            return it;
+          },
+        ),
+      ],
+    );
+
+    if (invalidResidential != null) {
+      _residentialLocationsFuture = ObservableFuture.value(invalidResidential);
+    }
+
+    if (invalidDatacenter != null) {
+      _dcLocationsFuture = ObservableFuture.value(invalidDatacenter);
+    }
   }
 
   /// Clears all stored locations (both datacenter and residential) from the local database.
