@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
+import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/analytics_logger_overlay.dart';
 import 'package:mysterium_vpn/components/analytics_user_properties_overlay.dart';
+import 'package:mysterium_vpn/components/dialogs/marketing_consent_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
@@ -22,6 +25,7 @@ class QAToolbox extends HookConsumerWidget {
     final locationsStore = ref.read(locationsStorePOD);
     final recentLocationsStore = ref.read(recentLocationsStorePOD);
     final vpnStore = ref.read(vpnStorePOD);
+    final screenType = useScreenType();
     return Observer(
       builder: (context) => Column(
         children: [
@@ -140,6 +144,19 @@ class QAToolbox extends HookConsumerWidget {
               label: const EasyText('Check'),
               icon: const Icon(Icons.open_in_new),
               onPressed: () => AnalyticsUserPropertiesOverlay.show(context),
+            ),
+          ),
+          SettingItem(
+            asset: Asset.icons.settingsAdaptive(context),
+            title: 'Show marketing consent popup',
+            subtitle: const EasyText('Will show the marketing consent dialog'),
+            actionWidget: TextButton.icon(
+              label: const EasyText('Show'),
+              icon: const Icon(Icons.open_in_new),
+              onPressed: () => showMarketingConsentDialog(
+                context,
+                desktopSize: screenType == ScreenType.desktop,
+              ),
             ),
           ),
           const SizedBox(height: 36),
