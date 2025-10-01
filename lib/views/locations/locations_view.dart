@@ -174,8 +174,8 @@ class _UserIntent extends HookConsumerWidget {
     final locationsEmpty = useComputedValue(() => locationsStore.isEmpty);
     final isLoading = useComputedValue(
       () =>
-          vpnStore.connectionStatus == VpnConnectionStatus.connecting ||
-          vpnStore.connectionStatus == VpnConnectionStatus.disconnecting,
+          vpnStore.vpnStatus == VpnConnectionStatus.connecting ||
+          vpnStore.vpnStatus == VpnConnectionStatus.disconnecting,
     );
 
     final intents = useComputedValue(() => userIntentsStore.intentsFuture.value);

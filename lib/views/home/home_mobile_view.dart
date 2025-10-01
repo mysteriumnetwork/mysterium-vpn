@@ -31,7 +31,7 @@ class HomeMobileView extends HookConsumerWidget {
     final topSectionHeight = appBarHeight + 40;
 
     useReaction(
-      () => vpnStore.connectionStatus,
+      () => vpnStore.vpnStatus,
       (status) {
         if (status != VpnConnectionStatus.connected) {
           return;

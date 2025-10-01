@@ -37,6 +37,7 @@ import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
 import 'package:mysterium_vpn/services/wiregurad/wiregurad_key_service.dart';
+import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:talker/talker.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -48,6 +49,10 @@ final inAppPurchasePOD = Provider(
 
 final wireguardServicePOD = Provider(
   (ref) => WireguardDart(),
+);
+
+final openVpnServicePOD = Provider(
+  (ref) => OpenVPNDart(),
 );
 
 final appLinksPOD = Provider(

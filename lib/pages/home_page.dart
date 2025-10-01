@@ -15,7 +15,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/in_app_review/in_app_review.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
-import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:mysterium_vpn/stores/vpn/i_vpn.dart';
 import 'package:mysterium_vpn/views/home/home_desktop_view.dart';
 import 'package:mysterium_vpn/views/home/home_mobile_view.dart';
 
@@ -63,9 +63,8 @@ class HomePage extends HookConsumerWidget {
     );
   }
 
-  void connectionLimitAutorun(VpnStore vpnStore, BuildContext context) {
-    if ((vpnStore.vpnConfig?.limitExceeded ?? false) &&
-        vpnStore.vpnStatus == VpnConnectionStatus.connected) {
+  void connectionLimitAutorun(IVpnStore vpnStore, BuildContext context) {
+    if ((vpnStore.limitExceeded) && vpnStore.vpnStatus == VpnConnectionStatus.connected) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         shownInfoDialog(
           context,

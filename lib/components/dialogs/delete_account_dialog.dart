@@ -18,13 +18,13 @@ import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
-import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:mysterium_vpn/stores/vpn/i_vpn.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 Future<void> shownDeleteAccountDialog(
   BuildContext context, {
   required AuthStore authStore,
-  required VpnStore vpnStore,
+  required IVpnStore vpnStore,
   required AnalyticsStore analyticsStore,
 }) async {
   analyticsStore.logEvent(AnalyticsEvent.deleteAccountPopup);
@@ -57,7 +57,7 @@ class _DeleteAccountDialog extends HookWidget {
 
   final AuthStore authStore;
   final AnalyticsStore analyticsStore;
-  final VpnStore vpnStore;
+  final IVpnStore vpnStore;
 
   @override
   Widget build(BuildContext context) {

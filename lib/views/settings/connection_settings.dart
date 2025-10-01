@@ -21,7 +21,7 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:mysterium_vpn/stores/vpn/i_vpn.dart';
 import 'package:mysterium_vpn/views/settings/action_button.dart';
 import 'package:mysterium_vpn/views/settings/protocol_picker.dart';
 import 'package:mysterium_vpn/views/settings/switch_item.dart';
@@ -32,7 +32,7 @@ class ConnectionSettings extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final vpnStore = ref.read(vpnStorePOD);
+    final vpnStore = ref.watch(vpnStorePOD);
     final refreshIPStore = ref.read(refreshIPStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
     final remoteConfigStore = ref.read(remoteConfigStorePOD);
@@ -45,6 +45,7 @@ class ConnectionSettings extends HookConsumerWidget {
     return Observer(
       builder: (_) => Column(
         children: [
+          Text('VPN SGTORE TUYPE : ${vpnStore.runtimeType}').padding(bottom: 10),
           Visibility(
             visible: !remoteConfigStore.hideResetAppSetting && !Platform.isAndroid,
             child: SettingItem(
@@ -181,7 +182,7 @@ class ConnectionSettings extends HookConsumerWidget {
   void _onConfirmResetApp({
     required BuildContext context,
     required AnalyticsStore analyticsStore,
-    required VpnStore vpnStore,
+    required IVpnStore vpnStore,
     required VoidCallback handleToggleConnection,
   }) {
     analyticsStore.logEvent(AnalyticsEvent.resetApp);
@@ -221,7 +222,7 @@ class ConnectionSettings extends HookConsumerWidget {
 
   Future<void> _onResetApp(
     BuildContext context,
-    VpnStore vpnStore,
+    IVpnStore vpnStore,
     AnalyticsStore analyticsStore, [
     VoidCallback? handleToggleConnection,
   ]) async {

@@ -24,7 +24,7 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:mysterium_vpn/stores/vpn/i_vpn.dart';
 import 'package:mysterium_vpn/views/settings/action_button.dart';
 import 'package:mysterium_vpn/views/settings/purchased_plan.dart';
 
@@ -74,7 +74,7 @@ class _Authenticated extends HookConsumerWidget {
     final authSessionStore = ref.watch(authSessionStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
     final remoteConfigStore = ref.read(remoteConfigStorePOD);
-    final vpnStore = ref.read(vpnStorePOD);
+    final vpnStore = ref.watch(vpnStorePOD);
     final handleToggleConnection = useHandleToggleConnection();
     return Observer(
       builder: (ctx) {
@@ -243,7 +243,7 @@ class _Authenticated extends HookConsumerWidget {
   Future<void> _onDisconnectedAllDevices(
     BuildContext context,
     AnalyticsStore analyticsStore,
-    VpnStore vpnStore,
+    IVpnStore vpnStore,
     VoidCallback handleToggleConnection,
   ) async {
     analyticsStore.logEvent(AnalyticsEvent.logOutAll);
@@ -293,7 +293,7 @@ class _Authenticated extends HookConsumerWidget {
   Future<void> _onConfirmDisconnectedAllDevices(
     BuildContext context,
     AnalyticsStore analyticsStore,
-    VpnStore vpnStore,
+    IVpnStore vpnStore,
     VoidCallback handleToggleConnection,
   ) async {
     analyticsStore.logEvent(AnalyticsEvent.logOutAllConfirm);

@@ -4,6 +4,7 @@ export 'incorrect_code.dart';
 export 'incorrect_magic_link.dart';
 export 'key_does_not_exists.dart';
 export 'no_internet_connection.dart';
+export 'openvpn_connect.dart';
 export 'operation_cancelled.dart';
 export 'package_not_found.dart';
 export 'pkce_pair_not_found.dart';
