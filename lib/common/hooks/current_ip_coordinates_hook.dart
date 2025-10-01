@@ -10,8 +10,8 @@ LatLng? useCurrentIPCoordinates() {
 
   return useComputedValue(
     () {
-      if (vpnStore.connectionStatus == VpnConnectionStatus.connecting ||
-          vpnStore.connectionStatus == VpnConnectionStatus.connected) {
+      if (vpnStore.vpnStatus == VpnConnectionStatus.connecting ||
+          vpnStore.vpnStatus == VpnConnectionStatus.connected) {
         final location = vpnStore.location ?? vpnStore.connectingLocation;
         if (location != null) {
           return latLngStore.coordinatesForCity(location) ??

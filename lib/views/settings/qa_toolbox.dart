@@ -21,7 +21,7 @@ class QAToolbox extends HookConsumerWidget {
     final bannerStore = ref.read(bannersStorePOD);
     final locationsStore = ref.read(locationsStorePOD);
     final recentLocationsStore = ref.read(recentLocationsStorePOD);
-    final vpnStore = ref.read(vpnStorePOD);
+    final vpnStore = ref.watch(vpnStorePOD);
     return Observer(
       builder: (context) => Column(
         children: [

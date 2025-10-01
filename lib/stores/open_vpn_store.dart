@@ -10,13 +10,10 @@ import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/user_intent.dart';
@@ -29,7 +26,6 @@ import 'package:mysterium_vpn/services/location/locations_service.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/services/wiregurad/wiregurad_key_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/dns_store.dart';
 import 'package:mysterium_vpn/stores/locations_query_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
@@ -38,28 +34,28 @@ import 'package:mysterium_vpn/stores/refresh_ip_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/vpn/i_vpn.dart';
+import 'package:openvpn_dart/openvpn_dart.dart';
+import 'package:openvpn_dart/vpn_status.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
-import 'package:wireguard_dart/connection_status.dart';
 import 'package:wireguard_dart/key_pair.dart';
-import 'package:wireguard_dart/wireguard_dart.dart';
 
 // Project imports:
 
-part 'vpn_store.g.dart';
+part 'open_vpn_store.g.dart';
 
 // ignore: library_private_types_in_public_api
-class VpnStore = _VpnStore with _$VpnStore;
+class OpenVpnStore = _OpenVpnStore with _$OpenVpnStore;
 
-abstract class _VpnStore with Store implements IVpnStore {
-  _VpnStore({
+abstract class _OpenVpnStore with Store implements IVpnStore {
+  _OpenVpnStore({
     required ApiService apiService,
     required ExternalApiService externalApiService,
     required MQTTService mqtt,
     required LocationsStore locationsStore,
     required LocationsService locationsService,
-    required WireguardDart wireguardService,
+    required OpenVPNDart openVpnService,
     required SubscriptionStore subscriptionStore,
     required Talker logger,
     required AnalyticsStore analyticsStore,
@@ -67,7 +63,6 @@ abstract class _VpnStore with Store implements IVpnStore {
     required AuthSessionStore authSessionStore,
     required RealIPInfoStore realIPInfo,
     required WireguradKeyService wireguardKeyService,
-    required DNSStore dnsStore,
     required RefreshIPStore refreshIPStore,
     required RecentLocationsStore recentLocationsStore,
     required LocationsQueryStore locationsQueryStore,
@@ -75,14 +70,13 @@ abstract class _VpnStore with Store implements IVpnStore {
         _externalApiService = externalApiService,
         _mqtt = mqtt,
         _locationsStore = locationsStore,
-        _wireguardService = wireguardService,
+        _openVpnService = openVpnService,
         _subscriptionStore = subscriptionStore,
         _analyticsStore = analyticsStore,
         _remoteConfigStore = remoteConfigStore,
         _authSessionStore = authSessionStore,
         _realIPInfo = realIPInfo,
         _logger = logger,
-        _dnsStore = dnsStore,
         _wireguardKeyService = wireguardKeyService,
         _refreshIPStore = refreshIPStore,
         _recentLocationsStore = recentLocationsStore,
@@ -96,7 +90,7 @@ abstract class _VpnStore with Store implements IVpnStore {
   final MQTTService _mqtt;
   final LocationsStore _locationsStore;
   final AnalyticsStore _analyticsStore;
-  final WireguardDart _wireguardService;
+  final OpenVPNDart _openVpnService;
   final SubscriptionStore _subscriptionStore;
   final RemoteConfigStore _remoteConfigStore;
   final AuthSessionStore _authSessionStore;
@@ -107,12 +101,11 @@ abstract class _VpnStore with Store implements IVpnStore {
   final LocationsService _locationsService;
   final WireguradKeyService _wireguardKeyService;
   final Talker _logger;
-  final DNSStore _dnsStore;
   final RefreshIPStore _refreshIPStore;
   final Stopwatch _stopwatch = Stopwatch();
   StreamSubscription<String>? _connectionDataSub;
   StreamSubscription<String>? _connectionKilledSub;
-  StreamSubscription<ConnectionStatus>? _wireguradConnectionStatus;
+  StreamSubscription<VpnConnectionStatus>? _openVpnConnectionStatus;
 
   @override
   @observable
@@ -125,10 +118,11 @@ abstract class _VpnStore with Store implements IVpnStore {
   UserIntent? _userIntent;
 
   @readonly
-  WireguardConnectResponse? _vpnConfig;
+  OpenVpnConnectResponse? _vpnConfig;
 
+  // TODO(Kristijan): Remove/Create service for openvpn
   @readonly
-  KeyPair? _wireguardKey;
+  KeyPair? _openVpnKey;
 
   @readonly
   VpnConnectionStatus _connectionStatus = VpnConnectionStatus.disconnected;
@@ -215,7 +209,7 @@ abstract class _VpnStore with Store implements IVpnStore {
 
   @override
   @computed
-  String? get publicKey => _wireguardKey?.publicKey;
+  String? get publicKey => _openVpnKey?.publicKey;
 
   @override
   @computed
@@ -228,7 +222,7 @@ abstract class _VpnStore with Store implements IVpnStore {
   ObservableFuture<VPNLocation?>? _fetchLocationFuture;
 
   @readonly
-  ObservableFuture<WireguardConnectResponse>? _fetchConfigFuture;
+  ObservableFuture<OpenVpnConnectResponse>? _fetchConfigFuture;
 
   @readonly
   ObservableFuture<void>? _disconnectAllDevicesFuture;
@@ -240,6 +234,12 @@ abstract class _VpnStore with Store implements IVpnStore {
 
   @action
   Future<void> _init() async {
+    await _openVpnService.initialize(
+      providerBundleIdentifier: Platform.isIOS
+          ? 'com.mysteriumvpn.openvpnDartExample.VPNExtension'
+          : 'com.mysteriumvpn.openvpnDartExample.VPNMExtension',
+      localizedDescription: 'Mysterium OVPN',
+    );
     _authReactionDisposer = reaction<AuthStatus>(
       (_) => _authSessionStore.status,
       (status) async {
@@ -247,7 +247,7 @@ abstract class _VpnStore with Store implements IVpnStore {
           await Future.wait<void>(
             [
               _initTunnel(),
-              _initWireguardKey(),
+              _initOpenVpndKey(),
             ],
           );
         }
@@ -260,7 +260,7 @@ abstract class _VpnStore with Store implements IVpnStore {
   // Call on log out or app termiantion
   @override
   Future<void> disposeStore() async {
-    _wireguradConnectionStatus?.cancel();
+    _openVpnConnectionStatus?.cancel();
     _authReactionDisposer?.call();
   }
 
@@ -279,18 +279,11 @@ abstract class _VpnStore with Store implements IVpnStore {
     }
   }
 
-  Future<void> _initWireguardKey() async {
+  // TODO(Kristijan): Remove/Create service for openvpn
+  @action
+  Future<void> _initOpenVpndKey() async {
     try {
-      _wireguardKey = await _wireguardKeyService.getWireguradKey();
-    } catch (e) {
-      _logger.handle(e);
-    }
-  }
-
-  Future<void> regenerateWireguradKey() async {
-    try {
-      await disconnectFromVpn();
-      _wireguardKey = await _wireguardKeyService.regenerateWireguardKeys();
+      _openVpnKey = await _wireguardKeyService.getWireguradKey();
     } catch (e) {
       _logger.handle(e);
     }
@@ -299,10 +292,7 @@ abstract class _VpnStore with Store implements IVpnStore {
   @action
   Future<bool> _checkTunelConfigured() async {
     try {
-      return await _wireguardService.checkTunnelConfiguration(
-        bundleId: Env.bundleId,
-        tunnelName: Env.tunnelName,
-      );
+      return await _openVpnService.checkTunnelConfiguration();
     } catch (e) {
       return false;
     }
@@ -331,32 +321,30 @@ abstract class _VpnStore with Store implements IVpnStore {
         await disconnectFromVpn();
       }
     }
-    final stream = _wireguardService.statusStream();
-    _wireguradConnectionStatus = stream.listen((event) async {
-      final vpnConnectionStatus = VpnConnectionStatus.fromString(event.name);
-      if (vpnConnectionStatus == VpnConnectionStatus.disconnecting) {
+    final stream = _openVpnService.statusStream();
+    _openVpnConnectionStatus = stream.map(mapToVpnConnectionStatus).listen((status) async {
+      if (status == VpnConnectionStatus.disconnecting) {
         _vpnConnection = null;
         connectionRated = null;
       }
-      _setConnectionStatus(vpnConnectionStatus);
+      _setConnectionStatus(status);
     });
   }
+
+  VpnConnectionStatus mapToVpnConnectionStatus(ConnectionStatus status) =>
+      VpnConnectionStatus.fromString(status.name);
 
   @action
   void _setConnectionStatus(VpnConnectionStatus status) {
     _connectionStatus = status;
   }
 
-  /// Setup Wireguard tunnel
+  /// Setup OpenVPN tunnel
   @override
   @action
   Future<void> setupTunnel() async {
     try {
-      await _wireguardService.setupTunnel(
-        bundleId: Env.bundleId,
-        win32ServiceName: win32ServiceName,
-        tunnelName: Env.tunnelName,
-      );
+      await _openVpnService.setupTunnel();
       _logger.info('Tunnel setup done');
       await _setupAndListenToConnectionStatus();
     } catch (e, stackTrace) {
@@ -375,36 +363,30 @@ abstract class _VpnStore with Store implements IVpnStore {
 
   /// Connect to Wireguard tunnel
   @action
-  Future<void> _connectWireguard({
-    required String privateKey,
+  Future<void> _connectOpenVpn({
     required String vpnConfig,
   }) async {
-    // TODO(Waldz): Move to separate function, which mutates variable
-    var config = vpnConfig;
-    config = config.replaceFirst('%private_key%', privateKey);
-    config = _dnsStore.replaceDNSAddress(config);
-
     try {
-      await _wireguardService.connect(cfg: config).timeout(
+      await _openVpnService.connect(vpnConfig).timeout(
             const Duration(seconds: 10),
-            onTimeout: () => throw TimeoutException('Wireguard connection timeout'),
+            onTimeout: () => throw TimeoutException('OpenVPN connection timeout'),
           );
     } on TimeoutException catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
-      throw WireguardConnectException(e.toString());
+      throw OpenVpnConnectException(e.toString());
     }
   }
 
-  /// Disconnect from Wireguard tunnel
+  /// Disconnect from OpenVPN tunnel
   @override
   @action
   Future<void> disconnectFromVpn({bool isReconnecting = false}) async {
     final status = await checkTunnelStatus();
     if (status == VpnConnectionStatus.connected) {
-      await _wireguardService.disconnect();
+      await _openVpnService.disconnect();
       if (!isReconnecting) {
         _userIntent = null;
         _connectingLocation = null;
@@ -425,12 +407,12 @@ abstract class _VpnStore with Store implements IVpnStore {
   /// Notify the API that the user has disconnected from the VPN tunnel.
   Future<void> notifyApiVpnDisconnected() async {
     try {
-      if (_wireguardKey?.publicKey == null) {
-        _logger.warning('Wireguard key is not initialized, cannot disconnect');
+      if (_openVpnKey?.publicKey == null) {
+        _logger.warning('OpenVPN key is not initialized, cannot disconnect');
         return;
       }
       await _apiService.disconnect(
-        publicKey: _wireguardKey!.publicKey,
+        publicKey: _openVpnKey!.publicKey,
       );
     } catch (e) {
       _logger.handle(e);
@@ -502,15 +484,8 @@ abstract class _VpnStore with Store implements IVpnStore {
     }
     await _checkSubscriptionStatus();
 
-    if (!(await _wireguardService.checkTunnelConfiguration(
-      bundleId: Env.bundleId,
-      tunnelName: Env.tunnelName,
-    ))) {
-      if (Platform.isWindows) {
-        await setupTunnel();
-      } else {
-        throw const TunnelSetupRequiredException();
-      }
+    if (!(await _openVpnService.checkTunnelConfiguration())) {
+      throw const TunnelSetupRequiredException();
     }
 
     _userIntent = intent;
@@ -581,7 +556,7 @@ abstract class _VpnStore with Store implements IVpnStore {
       _logger.handle(e, stackTrace);
       Sentry.captureException(e, stackTrace: stackTrace);
 
-      final errorCode = e is WireguardConnectException
+      final errorCode = e is OpenVpnConnectException
           ? e.code
           : e is ApiException
               ? e.code
@@ -614,7 +589,7 @@ abstract class _VpnStore with Store implements IVpnStore {
     bool? refreshIP,
   ) async {
     try {
-      final key = _wireguardKey ?? await _wireguardKeyService.getWireguradKey();
+      final key = _openVpnKey ?? await _wireguardKeyService.getWireguradKey();
       final closestRegion = (intent?.requiresCluster ?? false)
           ? await _locationsService.closestRegion(location?.ipType ?? IPType.datacenter)
           : null;
@@ -625,8 +600,8 @@ abstract class _VpnStore with Store implements IVpnStore {
       final ipType = location?.ipType ??
           (intent == UserIntent.nearestLocation ? _locationsQueryStore.ipType : null);
       _fetchConfigFuture = ObservableFuture(
-        _apiService.fetchWireguardVpnConfig(
-          request: WireguardConnectRequest(
+        _apiService.fetchOpenVpnConfig(
+          request: OpenVpnConnectRequest(
             publicKey: key.publicKey,
             countryOriginate: realIpInfo?.country,
             country:
@@ -674,9 +649,8 @@ abstract class _VpnStore with Store implements IVpnStore {
         throw Exception('Could not find connected location information');
       }
 
-      await _connectWireguard(
-        privateKey: key.privateKey,
-        vpnConfig: _vpnConfig!.wgConfig,
+      await _connectOpenVpn(
+        vpnConfig: _vpnConfig!.ovpnConfig,
       );
 
       _resolveConnectionLocationFuture = ObservableFuture(
@@ -785,20 +759,13 @@ abstract class _VpnStore with Store implements IVpnStore {
         /// If tunnel is not configured, no need to reset the app
         return;
       }
-      if (Platform.isAndroid) {
+      if (Platform.isAndroid || Platform.isIOS) {
         return;
-      } else if (Platform.isWindows) {
-        _resetAppFuture = ObservableFuture(
-          regenerateWireguradKey(),
-        );
-      } else {
-        _resetAppFuture = ObservableFuture(
-          _wireguardService.removeTunnelConfiguration(
-            bundleId: Env.bundleId,
-            tunnelName: Env.tunnelName,
-          ),
-        );
       }
+
+      _resetAppFuture = ObservableFuture(
+        _openVpnService.removeTunnelConfiguration(),
+      );
 
       await _resetAppFuture;
     } catch (e) {
@@ -830,7 +797,7 @@ abstract class _VpnStore with Store implements IVpnStore {
   @override
   Future<VpnConnectionStatus> checkTunnelStatus() async {
     try {
-      final status = await _wireguardService.status();
+      final status = await _openVpnService.getVPNStatus();
       return VpnConnectionStatus.fromString(status.name);
     } catch (e) {
       _logger.handle(e);

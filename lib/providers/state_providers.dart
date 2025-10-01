@@ -4,6 +4,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
@@ -25,6 +27,7 @@ import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_query_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/network_statistics_store.dart';
+import 'package:mysterium_vpn/stores/open_vpn_store.dart';
 import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
 import 'package:mysterium_vpn/stores/recent_locations_store.dart';
 import 'package:mysterium_vpn/stores/refresh_ip_store.dart';
@@ -37,6 +40,7 @@ import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/update_availabe_store.dart';
 import 'package:mysterium_vpn/stores/user_intents_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
+import 'package:mysterium_vpn/stores/vpn/i_vpn.dart';
 import 'package:mysterium_vpn/stores/vpn_protocol_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 
@@ -84,7 +88,29 @@ final apiStorePOD = Provider<ApiStore>((ref) {
 
 final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
 
-final vpnStorePOD = Provider<VpnStore>((ref) {
+final vpnStorePOD = StateProvider<IVpnStore>((ref) {
+  final vpnProtocolStore = ref.watch(vpnProtocolStorePOD);
+
+  void update() {
+    ref.controller.state = vpnProtocolStore.protocol == ProtocolType.wireguard
+        ? ref.read(wireguardVpnStorePOD)
+        : ref.read(openVpnStorePOD);
+  }
+
+  // react to changes
+  final disposer = reaction<ProtocolType>(
+    (_) => vpnProtocolStore.protocol,
+    (_) => update(),
+  );
+
+  ref.onDispose(disposer.call);
+
+  return vpnProtocolStore.protocol == ProtocolType.wireguard
+      ? ref.read(wireguardVpnStorePOD)
+      : ref.read(openVpnStorePOD);
+});
+
+final wireguardVpnStorePOD = Provider<VpnStore>((ref) {
   final apiService = ref.read(apiServicePOD);
   final externalApiService = ref.watch(externalApiServicePOD);
   final mqttService = ref.watch(vpnApiMQTTPOD);
@@ -116,6 +142,43 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     realIPInfo: realIPInfoStore,
     wireguardKeyService: wireguardKeyService,
     dnsStore: dnsStore,
+    refreshIPStore: refreshIPStore,
+    locationsQueryStore: locationsQueryStore,
+    recentLocationsStore: recentLocationsStore,
+    locationsService: locationsService,
+  );
+});
+
+final openVpnStorePOD = Provider<OpenVpnStore>((ref) {
+  final apiService = ref.read(apiServicePOD);
+  final externalApiService = ref.watch(externalApiServicePOD);
+  final mqttService = ref.watch(vpnApiMQTTPOD);
+  final locationsStore = ref.watch(locationsStorePOD);
+  final openVpnService = ref.watch(openVpnServicePOD);
+  final subscriptionStore = ref.watch(subscriptionStorePOD);
+  final logger = ref.watch(loggerPOD);
+  final analyticsStore = ref.watch(analyticsStorePOD);
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
+  final realIPInfoStore = ref.watch(realIPInfoStorePOD);
+  final wireguardKeyService = ref.watch(wireguradKeyServicePOD);
+  final refreshIPStore = ref.watch(refreshIPStorePOD);
+  final locationsQueryStore = ref.watch(locationsQueryStorePOD);
+  final recentLocationsStore = ref.watch(recentLocationsStorePOD);
+  final locationsService = ref.watch(locationsServicePOD);
+  return OpenVpnStore(
+    apiService: apiService,
+    externalApiService: externalApiService,
+    mqtt: mqttService,
+    locationsStore: locationsStore,
+    openVpnService: openVpnService,
+    subscriptionStore: subscriptionStore,
+    logger: logger,
+    analyticsStore: analyticsStore,
+    remoteConfigStore: remoteConfigStore,
+    authSessionStore: authSessionStore,
+    realIPInfo: realIPInfoStore,
+    wireguardKeyService: wireguardKeyService,
     refreshIPStore: refreshIPStore,
     locationsQueryStore: locationsQueryStore,
     recentLocationsStore: recentLocationsStore,

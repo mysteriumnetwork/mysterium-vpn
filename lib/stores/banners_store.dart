@@ -6,7 +6,7 @@ import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/update_availabe_store.dart';
-import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:mysterium_vpn/stores/vpn/i_vpn.dart';
 
 part 'banners_store.g.dart';
 
@@ -25,7 +25,7 @@ abstract class _BannersStore with Store {
   final LocalDBService _localDBService;
   final SubscriptionStore _subscriptionStore;
   final AuthSessionStore _authSessionStore;
-  final VpnStore _vpnStore;
+  final IVpnStore _vpnStore;
   final UpdateAvailableStore _updateAvailableStore;
 
   /// User can dismiss the banner when unauthenticated
