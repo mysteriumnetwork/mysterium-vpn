@@ -37,7 +37,6 @@ class LocationsHorizontalList extends HookWidget {
         controller: scrollController,
         scrollDirection: Axis.horizontal,
         separatorBuilder: (_, __) => const SizedBox(width: 12),
-        clipBehavior: Clip.none,
         itemBuilder: (_, index) {
           final item = items[index];
           return _Item(
