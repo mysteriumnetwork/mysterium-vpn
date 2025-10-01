@@ -148,6 +148,18 @@ class QAToolbox extends HookConsumerWidget {
           ),
           SettingItem(
             asset: Asset.icons.settingsAdaptive(context),
+            title: 'Insert invalid locations',
+            subtitle: const EasyText(
+              'Will add invalid location to a list of locations for testing connection to unavailable locations',
+            ),
+            actionWidget: TextButton.icon(
+              label: const EasyText('Insert'),
+              icon: const Icon(Icons.open_in_new),
+              onPressed: locationsStore.insertInvalidLocations,
+            ),
+          ),
+          SettingItem(
+            asset: Asset.icons.settingsAdaptive(context),
             title: 'Show marketing consent popup',
             subtitle: const EasyText('Will show the marketing consent dialog'),
             actionWidget: TextButton.icon(
