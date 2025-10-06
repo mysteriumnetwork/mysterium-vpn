@@ -45,7 +45,6 @@ class ConnectionSettings extends HookConsumerWidget {
     return Observer(
       builder: (_) => Column(
         children: [
-          Text('VPN SGTORE TUYPE : ${vpnStore.runtimeType}').padding(bottom: 10),
           Visibility(
             visible: !remoteConfigStore.hideResetAppSetting && !Platform.isAndroid,
             child: SettingItem(
