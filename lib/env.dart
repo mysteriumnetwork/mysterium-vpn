@@ -28,6 +28,8 @@ abstract class Env {
 
   static final String bundleId = _getBundleId();
   static final Flavor flavor = Flavor.fromEnvironment();
+  static final String openVpnExtensionBundleId = _getOpenVpnExtensionId();
+  static final String openVpnExtensionName = _getOpenVpnExtensionName();
 
   static late final PackageInfo _packageInfo;
   static BuildInfo _buildInfo = BuildInfo(buildNumber: 0, buildVersion: '0.0.0');
@@ -63,6 +65,20 @@ abstract class Env {
       return flavor.isDev ? iosTestBundleId : iosBundleId;
     }
     return flavor.isDev ? testAndroidBundleId : androidBundleId;
+  }
+
+  static String _getOpenVpnExtensionId() {
+    if (Platform.isIOS || Platform.isMacOS) {
+      return flavor.isDev ? openVpnTestExtensionId : openVpnExtensionId;
+    }
+    return '';
+  }
+
+  static String _getOpenVpnExtensionName() {
+    if (Platform.isIOS || Platform.isMacOS) {
+      return flavor.isDev ? 'Mysterium Test OVPN' : 'Mysterium OVPN';
+    }
+    return '';
   }
 
   static Map<String, String> asMap() => {
