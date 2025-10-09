@@ -66,7 +66,6 @@ const kMapZoomLevels = <double>[3, 4];
 const kTileZoomLevels = <double>[3, 4];
 const kCancelReasonOther = 'cancelOther';
 
-
 //OpenVPN Extension
 const openVpnExtensionId = 'com.mysteriumvpn.OVpnExtension';
 const openVpnTestExtensionId = 'com.mysteriumvpn.test.OVpnExtension';
