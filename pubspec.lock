@@ -1301,7 +1301,7 @@ packages:
       path: "."
       ref: fix-dissconnect
       resolved-ref: "9c315125e65e2254fc5c489a69370481180b34a3"
-      url: "https://github.com/mysteriumnetwork/openvpn_dart.git"
+      url: "git@github.com:mysteriumnetwork/openvpn_dart.git"
     source: git
     version: "0.0.1"
   package_config:
