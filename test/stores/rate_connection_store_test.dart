@@ -95,10 +95,8 @@ void main() {
         ..toggleRateConnectionReason(RateConnectionReason.likeReasons.first);
 
       final mockVpnConnection = MockVpnConnection();
-      final mockKeyPair = MockKeyPair();
       when(mockVpnStore.vpnConnection).thenReturn(mockVpnConnection);
-      when(mockVpnStore.wireguardKey).thenReturn(mockKeyPair);
-      when(mockKeyPair.publicKey).thenReturn('pubkey');
+      when(mockVpnStore.publicKey).thenReturn('pubkey'); // <-- critical fix
       when(mockVpnConnection.location).thenReturn(Mocks.locationResidentialUS);
       when(
         mockApiService.rateConnection(
@@ -137,10 +135,8 @@ void main() {
       likeModeStore.feedback = 'Great connection!';
 
       final mockVpnConnection = MockVpnConnection();
-      final mockKeyPair = MockKeyPair();
       when(mockVpnStore.vpnConnection).thenReturn(mockVpnConnection);
-      when(mockVpnStore.wireguardKey).thenReturn(mockKeyPair);
-      when(mockKeyPair.publicKey).thenReturn('pubkey');
+      when(mockVpnStore.publicKey).thenReturn('pubkey'); // <-- critical fix
       when(mockVpnConnection.location).thenReturn(Mocks.locationResidentialUS);
       when(
         mockApiService.rateConnection(
@@ -181,10 +177,8 @@ void main() {
         ..toggleRateConnectionReason(RateConnectionReason.likeReasons.first);
 
       final mockVpnConnection = MockVpnConnection();
-      final mockKeyPair = MockKeyPair();
       when(mockVpnStore.vpnConnection).thenReturn(mockVpnConnection);
-      when(mockVpnStore.wireguardKey).thenReturn(mockKeyPair);
-      when(mockKeyPair.publicKey).thenReturn('pubkey');
+      when(mockVpnStore.publicKey).thenReturn('pubkey'); // <-- critical fix
       when(mockVpnConnection.location).thenReturn(Mocks.locationResidentialUS);
       when(
         mockApiService.rateConnection(
