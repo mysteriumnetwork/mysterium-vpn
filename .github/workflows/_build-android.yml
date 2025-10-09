@@ -37,6 +37,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Replace Git URL in pubspec.yaml with PAT
+        run: |
+          sed -i.bak "s|git@github.com:mysteriumnetwork/openvpn_dart.git|https://${GITHUB_PAT}@github.com/mysteriumnetwork/openvpn_dart.git|g" pubspec.yaml
+        env:
+          GITHUB_PAT: ${{ secrets.OPENVPI_GITHUB_PAT }}
+
       - uses: actions/setup-java@v4
         with:
           distribution: "zulu"
