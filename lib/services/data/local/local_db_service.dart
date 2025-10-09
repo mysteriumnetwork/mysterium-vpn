@@ -32,8 +32,8 @@ class LocalDBService {
 
     try {
       await Future.wait([
-        Hive.openBox<UserData>('user_data', compactionStrategy: (e, d) => false),
-        Hive.openBox<LatLng>('coordinates_data', compactionStrategy: (e, d) => false),
+        Hive.openBox<UserData>('user_data'),
+        Hive.openBox<LatLng>('coordinates_data'),
       ]);
     } catch (e) {
       // If we fail to open the boxes, we log the error and continue.
@@ -54,7 +54,7 @@ class LocalDBService {
       await Hive.deleteBoxFromDisk('user_data');
       await Hive.deleteBoxFromDisk('coordinates_data');
       await Future.wait([
-        Hive.openBox<UserData>('user_data', compactionStrategy: (e, d) => false),
+        Hive.openBox<UserData>('user_data'),
         Hive.openBox<LatLng>('coordinates_data'),
       ]);
     }
