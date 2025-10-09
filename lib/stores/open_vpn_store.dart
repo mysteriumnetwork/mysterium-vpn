@@ -14,6 +14,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/user_intent.dart';
@@ -235,10 +236,8 @@ abstract class _OpenVpnStore with Store implements IVpnStore {
   @action
   Future<void> _init() async {
     await _openVpnService.initialize(
-      providerBundleIdentifier: Platform.isIOS
-          ? 'com.mysteriumvpn.openvpnDartExample.VPNExtension'
-          : 'com.mysteriumvpn.openvpnDartExample.VPNMExtension',
-      localizedDescription: 'Mysterium OVPN',
+      providerBundleIdentifier: Env.openVpnExtensionBundleId,
+      localizedDescription: Env.openVpnExtensionName,
     );
     _authReactionDisposer = reaction<AuthStatus>(
       (_) => _authSessionStore.status,
