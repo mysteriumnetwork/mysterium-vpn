@@ -55,7 +55,7 @@ class LocalDBService {
       await Hive.deleteBoxFromDisk('coordinates_data');
       await Future.wait([
         Hive.openBox<UserData>('user_data', compactionStrategy: (e, d) => false),
-        Hive.openBox<LatLng>('coordinates_data', compactionStrategy: (e, d) => false),
+        Hive.openBox<LatLng>('coordinates_data'),
       ]);
     }
   }
@@ -67,10 +67,7 @@ class LocalDBService {
   LazyBox<VPNLocations>? _locationsBox;
 
   Future<LazyBox<VPNLocations>> _getLocationsBox() async {
-    _locationsBox ??= await Hive.openLazyBox<VPNLocations>(
-      'locations_data',
-      compactionStrategy: (e, d) => false,
-    );
+    _locationsBox ??= await Hive.openLazyBox<VPNLocations>('locations_data');
     return _locationsBox!;
   }
 

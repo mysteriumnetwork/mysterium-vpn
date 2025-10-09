@@ -4,7 +4,6 @@ import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/api.dart';
-import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/utils/mocks.dart';
 import 'package:mysterium_vpn/models/location.dart';
@@ -44,13 +43,11 @@ abstract class _LocationsStore with Store {
     _streamSubscriptions = [
       // Watch for changes in residential locations and update the value of observable future.
       _watch(IPType.residential).listen(
-        (it) => _residentialLocationsFuture = _residentialLocationsFuture.replaceOrReset(
-          Future.value(it),
-        ),
+        (it) => _residentialLocationsFuture = ObservableFuture.value(it),
       ),
       // Watch for changes in datacenter locations and update the value of observable future.
       _watch(IPType.datacenter).listen(
-        (it) => _dcLocationsFuture = _dcLocationsFuture.replaceOrReset(Future.value(it)),
+        (it) => _dcLocationsFuture = ObservableFuture.value(it),
       ),
       // Sets up periodic auto-refresh of location data based on the configured interval.
       // This ensures the app maintains up-to-date location information without user intervention.
@@ -146,13 +143,14 @@ abstract class _LocationsStore with Store {
           _ => ipType.key,
         },
       );
+      await Future.delayed(const Duration(seconds: 10)); // simulate network delay
       final config = response.data;
       if (config == null) {
         throw Exception('No data found');
       }
 
       final locations = config.map((it) => VPNLocation.fromAPICountry(it, ipType: ipType)).toList();
-      final data = VPNLocations(topLocations: [], locations: locations);
+      final data = VPNLocations(locations: locations);
 
       await _db.setLocations(data, type: ipType);
       return data;
