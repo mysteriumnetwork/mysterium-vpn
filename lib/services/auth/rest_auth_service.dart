@@ -42,10 +42,7 @@ class RestAuthService extends AuthService {
   late final Future<void> _ensureInitialized;
 
   Future<void> _init() async {
-    if (Platform.isWindows) {
-      return;
-    }
-    _ensureInitialized = googleSignIn.initialize();
+    _ensureInitialized = Platform.isWindows ? Future.value() : googleSignIn.initialize();
     await _ensureInitialized;
   }
 
