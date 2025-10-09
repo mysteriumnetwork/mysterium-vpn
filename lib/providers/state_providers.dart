@@ -18,7 +18,6 @@ import 'package:mysterium_vpn/stores/analytics/analytics_store_windows.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/banners_store.dart';
 import 'package:mysterium_vpn/stores/device_id_store.dart';
-import 'package:mysterium_vpn/stores/device_info_store.dart';
 import 'package:mysterium_vpn/stores/dns_store.dart';
 import 'package:mysterium_vpn/stores/latlng_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
@@ -57,6 +56,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final analyticsStore = ref.watch(analyticsStorePOD);
   final logger = ref.watch(loggerPOD);
   final abTestingStore = ref.watch(abTestingStorePOD);
+  final deviceIDStore = ref.watch(deviceIDStorePOD);
 
   return AuthStore(
     authService: authService,
@@ -66,6 +66,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
     analyticsStore: analyticsStore,
     logger: logger,
     abTestingStore: abTestingStore,
+    deviceIDStore: deviceIDStore,
   );
 });
 
@@ -226,7 +227,6 @@ final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
     return AnalyticsStoreWindows(
       measurementId: Env.measurementId,
       apiSecret: Env.apiSecret,
-      deviceInfoStore: ref.watch(deviceInfoStorePOD),
       deviceIDStore: ref.watch(deviceIDStorePOD),
     );
   }
@@ -234,7 +234,6 @@ final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
   return AnalyticsStoreFirebase(
     analytics: FirebaseAnalytics.instance,
     crashlytics: FirebaseCrashlytics.instance,
-    deviceInfoStore: ref.watch(deviceInfoStorePOD),
     deviceIDStore: ref.watch(deviceIDStorePOD),
   );
 });
@@ -294,10 +293,6 @@ final realIPInfoStorePOD = Provider<RealIPInfoStore>(
     ref.watch(wireguardServicePOD),
     ref.watch(analyticsStorePOD),
   ),
-);
-
-final deviceInfoStorePOD = Provider<DeviceInfoStore>(
-  (ref) => DeviceInfoStore(),
 );
 
 final deviceIDStorePOD = Provider<DeviceIDStore>(

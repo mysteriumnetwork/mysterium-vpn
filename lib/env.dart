@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:store_checker_windows/store_checker_windows.dart';
@@ -32,15 +33,25 @@ abstract class Env {
   static late final PackageInfo _packageInfo;
   static BuildInfo _buildInfo = BuildInfo(buildNumber: 0, buildVersion: '0.0.0');
   static late final String _userAgent;
+  static late final BaseDeviceInfo _deviceInfo;
+  static late final String _deviceName;
+  static late final String _deviceModel;
 
   static PackageInfo get packageInfo => _packageInfo;
 
   static BuildInfo get buildInfo => _buildInfo;
 
+  static BaseDeviceInfo get deviceInfo => _deviceInfo;
+
+  static String get deviceName => _deviceName;
+
+  static String get deviceModel => _deviceModel;
+
   static String get userAgent => _userAgent;
 
   static Future<void> init() async {
     _packageInfo = await PackageInfo.fromPlatform();
+    await _initDeviceInfo();
     _buildInfo = BuildInfo(
       buildNumber: int.tryParse(_packageInfo.buildNumber) ?? 0,
       buildVersion: _packageInfo.version,
@@ -53,6 +64,24 @@ abstract class Env {
       _buildInfo.buildVersion,
       '(${_buildInfo.buildNumber})',
     ].join(' ');
+  }
+
+  static Future<void> _initDeviceInfo() async {
+    _deviceInfo = await DeviceInfoPlugin().deviceInfo;
+    _deviceName = switch (_deviceInfo) {
+      final AndroidDeviceInfo android => android.name,
+      final IosDeviceInfo iOS => iOS.name,
+      final MacOsDeviceInfo macOS => macOS.computerName,
+      final WindowsDeviceInfo windows => windows.computerName,
+      _ => 'Unknown',
+    };
+    _deviceModel = switch (_deviceInfo) {
+      final AndroidDeviceInfo android => android.model,
+      final IosDeviceInfo iOS => iOS.model,
+      final MacOsDeviceInfo macOS => macOS.model,
+      final WindowsDeviceInfo windows => windows.productName,
+      _ => 'Unknown',
+    };
   }
 
   static String stringify() =>
