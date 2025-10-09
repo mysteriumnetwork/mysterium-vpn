@@ -22,15 +22,19 @@ import 'package:mysterium_vpn/stores/device_info_store.dart';
 import 'package:mysterium_vpn/stores/dns_store.dart';
 import 'package:mysterium_vpn/stores/latlng_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
+import 'package:mysterium_vpn/stores/locations_query_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/network_statistics_store.dart';
 import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
+import 'package:mysterium_vpn/stores/recent_locations_store.dart';
 import 'package:mysterium_vpn/stores/refresh_ip_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/texts_store.dart';
+import 'package:mysterium_vpn/stores/selected_location_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
+import 'package:mysterium_vpn/stores/unavailable_locations_store.dart';
 import 'package:mysterium_vpn/stores/update_availabe_store.dart';
 import 'package:mysterium_vpn/stores/user_intents_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
@@ -95,6 +99,10 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final wireguardKeyService = ref.watch(wireguradKeyServicePOD);
   final dnsStore = ref.watch(dnsStorePOD);
   final refreshIPStore = ref.watch(refreshIPStorePOD);
+  final locationsQueryStore = ref.watch(locationsQueryStorePOD);
+  final recentLocationsStore = ref.watch(recentLocationsStorePOD);
+  final locationsService = ref.watch(locationsServicePOD);
+  final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
   return VpnStore(
     apiService: apiService,
     externalApiService: externalApiService,
@@ -110,33 +118,83 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     wireguardKeyService: wireguardKeyService,
     dnsStore: dnsStore,
     refreshIPStore: refreshIPStore,
+    locationsQueryStore: locationsQueryStore,
+    recentLocationsStore: recentLocationsStore,
+    locationsService: locationsService,
+    unavailableLocationsStore: unavailableLocationsStore,
   );
+});
+
+final selectedLocationStorePOD = Provider<SelectedLocationStore>((ref) => SelectedLocationStore());
+
+final locationsQueryStorePOD = Provider<LocationsQueryStore>((ref) {
+  final prefs = SharedPreferenceService.instance;
+  final analyticsStore = ref.watch(analyticsStorePOD);
+  final localeStore = ref.watch(localeStorePOD);
+  final store = LocationsQueryStore(prefs, analyticsStore, localeStore);
+
+  ref.onDispose(store.dispose);
+
+  return store;
 });
 
 final locationsStorePOD = Provider<LocationsStore>((ref) {
   final api = ref.watch(vpnApiPOD);
   final filterService = ref.watch(filterServicePOD);
-  final analyticsStore = ref.watch(analyticsStorePOD);
+  final dbService = LocalDBService.instance;
+  final locationsService = ref.watch(locationsServicePOD);
+  final logger = ref.watch(loggerPOD);
+
+  final queryStore = ref.watch(locationsQueryStorePOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   final localeStore = ref.watch(localeStorePOD);
-  final logger = ref.watch(loggerPOD);
 
   final store = LocationsStore(
     api.getConnection(),
     filterService,
-    analyticsStore,
-    remoteConfigStore,
-    SharedPreferenceService.instance,
-    LocalDBService.instance,
+    dbService,
+    locationsService,
     logger,
+    remoteConfigStore,
+    queryStore,
     localeStore,
-    null,
   );
 
-  ref.onCancel(store.dispose);
+  ref.onDispose(store.dispose);
 
   return store;
 });
+
+final recentLocationsStorePOD = Provider<RecentLocationsStore>((ref) {
+  final dbService = LocalDBService.instance;
+  final filterService = ref.watch(filterServicePOD);
+  final queryStore = ref.watch(locationsQueryStorePOD);
+  final localeStore = ref.watch(localeStorePOD);
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+  final locationsStore = ref.watch(locationsStorePOD);
+
+  final store = RecentLocationsStore(
+    dbService,
+    filterService,
+    queryStore,
+    remoteConfigStore,
+    locationsStore,
+    localeStore,
+  );
+
+  ref.onDispose(store.dispose);
+
+  return store;
+});
+
+final unavailableLocationsStorePOD = Provider<UnavailableLocationsStore>(
+  (ref) {
+    final store = UnavailableLocationsStore(ref.watch(locationsStorePOD));
+    ref.onDispose(store.dispose);
+
+    return store;
+  },
+);
 
 final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   final inAppPurchase = ref.read(inAppPurchasePOD);
@@ -150,7 +208,7 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
     authSessionStore: authSessionStore,
     analyticsStore: analyticsStore,
   );
-  ref.onCancel(store.dispose);
+  ref.onDispose(store.dispose);
   return store;
 });
 
@@ -277,7 +335,7 @@ final userIntentsStorePOD = Provider.autoDispose<UserIntentsStore>(
       remoteConfigStore,
     );
 
-    ref.onCancel(store.dispose);
+    ref.onDispose(store.dispose);
     return store;
   },
 );

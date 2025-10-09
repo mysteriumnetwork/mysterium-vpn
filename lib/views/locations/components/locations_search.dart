@@ -19,11 +19,11 @@ class LocationsSearch extends HookConsumerWidget {
 
     void handleSearch(String? value) {
       final keyword = value?.trim() ?? '';
-      final locationsStore = ref.read(locationsStorePOD);
-      if (locationsStore.searchKeyword != keyword) {
-        locationsStore.setLocationKeyword(
+      final locationsQuery = ref.read(locationsQueryStorePOD);
+      if (locationsQuery.searchTrimmed != keyword) {
+        locationsQuery.setSearch(
           keyword,
-          keyword.isEmpty ? Duration.zero : const Duration(milliseconds: 500),
+          debounce: keyword.isEmpty ? Duration.zero : const Duration(milliseconds: 500),
         );
       }
     }

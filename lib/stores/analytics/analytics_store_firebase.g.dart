@@ -37,8 +37,9 @@ mixin _$AnalyticsStoreFirebase on _AnalyticsStoreFirebase, Store {
       AsyncAction('_AnalyticsStoreFirebase.setUserProperty', context: context);
 
   @override
-  Future<void> setUserProperty(String name, String value) {
-    return _$setUserPropertyAsyncAction.run(() => super.setUserProperty(name, value));
+  Future<void> setUserProperty({required String propertyName, required String propertyValue}) {
+    return _$setUserPropertyAsyncAction
+        .run(() => super.setUserProperty(propertyName: propertyName, propertyValue: propertyValue));
   }
 
   late final _$setLoginAsyncAction =
