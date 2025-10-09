@@ -20,7 +20,7 @@ jobs:
 
       - name: Replace Git URL in pubspec.yaml with PAT
         run: |
-          sed -i.bak "s|git@github.com:mysteriumnetwork/mysterium-vpn-api-client-dart.git|https://${GITHUB_PAT}@github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git.git|g" pubspec.yaml
+          sed -i.bak "s|git@github.com:mysteriumnetwork/mysterium-vpn-api-client-dart.git|https://${GITHUB_PAT}@github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git|g" pubspec.yaml
         env:
           GITHUB_PAT: ${{ secrets.VPNAPI_GITHUB_PAT }}
 
