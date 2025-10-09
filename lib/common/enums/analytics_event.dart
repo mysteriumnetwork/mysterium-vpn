@@ -117,7 +117,9 @@ enum AnalyticsEvent {
   mapScroll,
   mapPointClick,
   changeProtocolType,
-  changeProtocolTypeError;
+  changeProtocolTypeError,
+  changeProtocolTypeApproved,
+  changeProtocolTypeDeclined;
 
   String get formattedName => name.toSnakeCase;
 }
