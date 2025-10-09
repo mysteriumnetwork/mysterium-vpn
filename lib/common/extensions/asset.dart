@@ -26,6 +26,12 @@ extension $AssetsIconsGenExtensions on $AssetsIconsGen {
         dark: closeDark,
       );
 
+  SvgGenImage close2(BuildContext context) => _withBrightness(
+        context,
+        light: close2Light,
+        dark: close2Dark,
+      );
+
   SvgGenImage connectPrompt(BuildContext context) => _withBrightness(
         context,
         light: connectPromptLight,

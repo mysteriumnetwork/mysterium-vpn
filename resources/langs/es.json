@@ -181,6 +181,9 @@
     "one": "{} servidor",
     "other": "{} servidores"
   },
+  "locationUnavailableTitle": "{} no está disponible",
+  "locationUnavailableSubtitle": "Conéctate a la IP más cercana o elige una manualmente",
+  "locationUnavailableAction": "Conectarse a la IP más cercana",
   "loginQuote": "Sube de nivel tu experiencia personal.\nSé anónimo. Sé libre.",
   "loginSessionExpired": "Su sesión ha caducado. Inicie sesión nuevamente.",
   "logout": "Cerrar sesión",
