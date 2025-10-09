@@ -143,7 +143,6 @@ abstract class _LocationsStore with Store {
           _ => ipType.key,
         },
       );
-      await Future.delayed(const Duration(seconds: 10)); // simulate network delay
       final config = response.data;
       if (config == null) {
         throw Exception('No data found');
