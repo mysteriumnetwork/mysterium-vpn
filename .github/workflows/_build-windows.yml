@@ -40,12 +40,13 @@ jobs:
       - name: Install yq using Chocolatey
         run: choco install yq -y
 
-      - name: Replace Git URL in pubspec.yaml with PAT
-        run: |
-          sed -i.bak "s|git@github.com:mysteriumnetwork/openvpn_dart.git|https://${GITHUB_PAT}@github.com/mysteriumnetwork/openvpn_dart.git|g" pubspec.yaml
-          rm -f pubspec.yaml.bak
+      - name: Replace SSH with HTTPS in pubspec.yaml
+        shell: pwsh
         env:
           GITHUB_PAT: ${{ secrets.OVPN_GITHUB_PAT }}
+        run: |
+          yq -i '.dependencies."openvpn_dart".git = "https://${env:GITHUB_PAT}@github.com/mysteriumnetwork/openvpn_dart.git"' pubspec.yaml
+          (Get-Content pubspec.yaml) -replace 'git@github.com:mysteriumnetwork/openvpn_dart.git', "https://$env:GITHUB_PAT@github.com/mysteriumnetwork/openvpn_dart.git" | Set-Content pubspec.yaml
 
       - name: Setup Flutter Version Management CLI
         run: choco install yq fvm -y
