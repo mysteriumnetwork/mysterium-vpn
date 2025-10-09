@@ -52,3 +52,9 @@ post_install do |installer|
     flutter_additional_ios_build_settings(target)
   end
 end
+
+target 'OVpnExtension' do
+  use_frameworks!
+  use_modular_headers!
+  pod 'OpenVPNAdapter', :git => 'https://github.com/ss-abramchuk/OpenVPNAdapter.git', :tag => '0.7.0'
+end
