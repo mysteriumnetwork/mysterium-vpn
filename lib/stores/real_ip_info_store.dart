@@ -41,7 +41,7 @@ abstract class _RealIPInfoStore with Store {
       await _preferences.setIPInfo(info);
     }
     if (info != null) {
-      _analyticsStore.setUserProperty('country_user', info.country);
+      _analyticsStore.setUserProperty(propertyName: 'country_user', propertyValue: info.country);
     }
     return info;
   }

@@ -42,7 +42,7 @@ class RestAuthService extends AuthService {
   late final Future<void> _ensureInitialized;
 
   Future<void> _init() async {
-    _ensureInitialized = googleSignIn.initialize();
+    _ensureInitialized = Platform.isWindows ? Future.value() : googleSignIn.initialize();
     await _ensureInitialized;
   }
 
@@ -131,8 +131,8 @@ class RestAuthService extends AuthService {
 
   Future<void> removeLocalData() async {
     final currentUsername = _authSessionStore.user?.username;
-    await _authSessionStore.setUnauthenticated();
     LocalDBService.instance.clearUser();
+    await _authSessionStore.setUnauthenticated();
 
     if (currentUsername != null && currentUsername.isNotEmpty) {
       _logger.info('User $currentUsername logged out');
@@ -148,7 +148,6 @@ class RestAuthService extends AuthService {
   @override
   Future<String> signInWithApple() async {
     try {
-      await _ensureInitialized;
       if (!await SignInWithApple.isAvailable()) {
         throw NotAvailableException();
       }

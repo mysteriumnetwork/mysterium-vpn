@@ -179,6 +179,9 @@ abstract class LocaleKeys {
   static const location = 'location';
   static const locationItemCityCount = 'locationItemCityCount';
   static const locationItemNodeCount = 'locationItemNodeCount';
+  static const locationUnavailableTitle = 'locationUnavailableTitle';
+  static const locationUnavailableSubtitle = 'locationUnavailableSubtitle';
+  static const locationUnavailableAction = 'locationUnavailableAction';
   static const loginQuote = 'loginQuote';
   static const loginSessionExpired = 'loginSessionExpired';
   static const logout = 'logout';

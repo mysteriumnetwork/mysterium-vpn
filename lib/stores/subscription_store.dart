@@ -140,9 +140,12 @@ abstract class _SubscriptionStore with Store {
             ? 'expired_paid'
             : 'not_paid';
     _analyticsStore
-      ..setUserProperty('plan_id', subscription.planId ?? '')
-      ..setUserProperty('valid_to', subscription.activeUntil.toString())
-      ..setUserProperty('user_status', userStatus);
+      ..setUserProperty(propertyName: 'plan_id', propertyValue: subscription.planId ?? '')
+      ..setUserProperty(
+        propertyName: 'valid_to',
+        propertyValue: subscription.activeUntil.toString(),
+      )
+      ..setUserProperty(propertyName: 'user_status', propertyValue: userStatus);
   }
 
   Future<api.SubscriptionConfigResponse?> _fetchSubscriptionConfig() async {
