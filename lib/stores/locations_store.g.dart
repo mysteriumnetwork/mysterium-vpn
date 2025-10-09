@@ -101,23 +101,6 @@ mixin _$LocationsStore on _LocationsStore, Store {
     return _$refreshAsyncAction.run(() => super.refresh(ipType));
   }
 
-  late final _$findByIdAsyncAction = AsyncAction('_LocationsStore.findById', context: context);
-
-  @override
-  Future<VPNLocation?> findById(String id,
-      {String? countryCode, IPType ipType = IPType.datacenter}) {
-    return _$findByIdAsyncAction
-        .run(() => super.findById(id, countryCode: countryCode, ipType: ipType));
-  }
-
-  late final _$findClosestAsyncAction =
-      AsyncAction('_LocationsStore.findClosest', context: context);
-
-  @override
-  Future<VPNLocation?> findClosest([IPType? type]) {
-    return _$findClosestAsyncAction.run(() => super.findClosest(type));
-  }
-
   late final _$clearAsyncAction = AsyncAction('_LocationsStore.clear', context: context);
 
   @override
@@ -140,11 +123,11 @@ mixin _$LocationsStore on _LocationsStore, Store {
   }
 
   @override
-  VPNLocation? findParent(VPNLocation location) {
-    final _$actionInfo =
-        _$_LocationsStoreActionController.startAction(name: '_LocationsStore.findParent');
+  void insertInvalidLocations() {
+    final _$actionInfo = _$_LocationsStoreActionController.startAction(
+        name: '_LocationsStore.insertInvalidLocations');
     try {
-      return super.findParent(location);
+      return super.insertInvalidLocations();
     } finally {
       _$_LocationsStoreActionController.endAction(_$actionInfo);
     }

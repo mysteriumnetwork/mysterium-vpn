@@ -13,6 +13,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/exceptions/unavailable_location_exception.dart';
 import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -37,6 +38,7 @@ import 'package:mysterium_vpn/stores/recent_locations_store.dart';
 import 'package:mysterium_vpn/stores/refresh_ip_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
+import 'package:mysterium_vpn/stores/unavailable_locations_store.dart';
 import 'package:mysterium_vpn/stores/vpn/i_vpn.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
@@ -71,6 +73,7 @@ abstract class _VpnStore with Store implements IVpnStore {
     required RefreshIPStore refreshIPStore,
     required RecentLocationsStore recentLocationsStore,
     required LocationsQueryStore locationsQueryStore,
+    required UnavailableLocationsStore unavailableLocationsStore,
   })  : _apiService = apiService,
         _externalApiService = externalApiService,
         _mqtt = mqtt,
@@ -87,7 +90,8 @@ abstract class _VpnStore with Store implements IVpnStore {
         _refreshIPStore = refreshIPStore,
         _recentLocationsStore = recentLocationsStore,
         _locationsService = locationsService,
-        _locationsQueryStore = locationsQueryStore {
+        _locationsQueryStore = locationsQueryStore,
+        _unavailableLocationsStore = unavailableLocationsStore {
     _init();
   }
 
@@ -103,6 +107,7 @@ abstract class _VpnStore with Store implements IVpnStore {
   final RealIPInfoStore _realIPInfo;
   final RecentLocationsStore _recentLocationsStore;
   final LocationsQueryStore _locationsQueryStore;
+  final UnavailableLocationsStore _unavailableLocationsStore;
 
   final LocationsService _locationsService;
   final WireguradKeyService _wireguardKeyService;
@@ -184,7 +189,7 @@ abstract class _VpnStore with Store implements IVpnStore {
       ...?_locationsStore.residentialLocationsFuture.value?.allLocations,
     ];
 
-    if (all.isEmpty) {
+    if (all.isNotEmpty) {
       return VPNLocation.closest;
     }
 
@@ -583,20 +588,26 @@ abstract class _VpnStore with Store implements IVpnStore {
       _logger.handle(e, stackTrace);
       Sentry.captureException(e, stackTrace: stackTrace);
 
-      final errorCode = e is WireguardConnectException
-          ? e.code
-          : e is ApiException
-              ? e.code
-              : 1113;
-      final errorMessage = errorCode == 4029
-          ? LocaleKeys.toManyRequestsErrorMsg.tr()
-          : LocaleKeys.failedToConnectError.tr(
-              namedArgs: {
-                'errorCode': errorCode.toString(),
-              },
-            );
+      final errorCode = switch (e) {
+        final WireguardConnectException e => e.code,
+        final ApiException e => e.code,
+        _ => 1113,
+      };
 
-      showSnackbar(errorMessage);
+      final errorMessage = switch (e) {
+        final UnavailableLocationException _ => null,
+        _ => errorCode == 4029
+            ? LocaleKeys.toManyRequestsErrorMsg.tr()
+            : LocaleKeys.failedToConnectError.tr(
+                namedArgs: {
+                  'errorCode': errorCode.toString(),
+                },
+              ),
+      };
+
+      if (errorMessage != null) {
+        showSnackbar(errorMessage);
+      }
       _analyticsStore.logConnectFailure(
         time: _stopwatch.elapsed,
         error: e.toString(),
@@ -646,7 +657,16 @@ abstract class _VpnStore with Store implements IVpnStore {
           ),
         ),
       );
-      _vpnConfig = await _fetchConfigFuture;
+
+      try {
+        _vpnConfig = await _fetchConfigFuture;
+      } on ApiException catch (e) {
+        if (e.code == 2332 && location != null) {
+          _unavailableLocationsStore.toggleAvailability(location, availability: false);
+          throw UnavailableLocationException(location);
+        }
+        rethrow;
+      }
       await _recentLocationsStore.future;
 
       final locationId = _vpnConfig?.city ?? _vpnConfig?.country;

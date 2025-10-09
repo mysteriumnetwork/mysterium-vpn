@@ -4,8 +4,8 @@ import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/api.dart';
-import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
+import 'package:mysterium_vpn/common/utils/mocks.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
@@ -43,13 +43,11 @@ abstract class _LocationsStore with Store {
     _streamSubscriptions = [
       // Watch for changes in residential locations and update the value of observable future.
       _watch(IPType.residential).listen(
-        (it) => _residentialLocationsFuture = _residentialLocationsFuture.replaceOrReset(
-          Future.value(it),
-        ),
+        (it) => _residentialLocationsFuture = ObservableFuture.value(it),
       ),
       // Watch for changes in datacenter locations and update the value of observable future.
       _watch(IPType.datacenter).listen(
-        (it) => _dcLocationsFuture = _dcLocationsFuture.replaceOrReset(Future.value(it)),
+        (it) => _dcLocationsFuture = ObservableFuture.value(it),
       ),
       // Sets up periodic auto-refresh of location data based on the configured interval.
       // This ensures the app maintains up-to-date location information without user intervention.
@@ -151,7 +149,7 @@ abstract class _LocationsStore with Store {
       }
 
       final locations = config.map((it) => VPNLocation.fromAPICountry(it, ipType: ipType)).toList();
-      final data = VPNLocations(topLocations: [], locations: locations);
+      final data = VPNLocations(locations: locations);
 
       await _db.setLocations(data, type: ipType);
       return data;
@@ -216,7 +214,6 @@ abstract class _LocationsStore with Store {
 
   /// Finds a location by its ID, optionally filtering by country code and IP type.
   /// If no exact match is found, it attempts to find a country-level match.
-  @action
   Future<VPNLocation?> findById(
     String id, {
     String? countryCode,
@@ -248,7 +245,6 @@ abstract class _LocationsStore with Store {
 
   /// Finds the closest VPN location based on latency to the user's current region.
   /// It first determines the closest region by pinging known hosts, then selects a random location from the top countries in that region.
-  @action
   Future<VPNLocation?> findClosest([IPType? type]) async {
     final [datacenter, residential] = await Future.wait([
       _dcLocationsFuture,
@@ -264,7 +260,6 @@ abstract class _LocationsStore with Store {
     return _locationsService.closestLocation(locations.toList(), type: type);
   }
 
-  @action
   VPNLocation? findParent(VPNLocation location) {
     if (location.isCountry) {
       return null;
@@ -279,6 +274,46 @@ abstract class _LocationsStore with Store {
     return locations?.firstWhereOrNull(
       (it) => it.isCountry && it.countryCode == location.countryCode,
     );
+  }
+
+  /// Inserts invalid locations into the current list of locations for testing purposes.
+  /// This is useful for QA and development to simulate scenarios with unavailable or malformed locations.
+  /// It adds one invalid country location to both datacenter and residential lists.
+  @action
+  void insertInvalidLocations() {
+    final invalidResidential = _residentialLocationsFuture.value?.copyWith(
+      locations: [
+        Mocks.createInvalidCountry(ipType: IPType.residential),
+        ...?_residentialLocationsFuture.value?.locations,
+      ],
+    );
+
+    final invalidDatacenter = _dcLocationsFuture.value?.copyWith(
+      locations: [
+        Mocks.createInvalidCountry(ipType: IPType.datacenter),
+        ...?_dcLocationsFuture.value?.locations.map(
+          (it) {
+            if (it.isCountry && it.countryCode == 'US') {
+              return it.copyWith(
+                children: [
+                  Mocks.createInvalidCity(ipType: IPType.datacenter, countryCode: 'US'),
+                  ...?it.children,
+                ],
+              );
+            }
+            return it;
+          },
+        ),
+      ],
+    );
+
+    if (invalidResidential != null) {
+      _residentialLocationsFuture = ObservableFuture.value(invalidResidential);
+    }
+
+    if (invalidDatacenter != null) {
+      _dcLocationsFuture = ObservableFuture.value(invalidDatacenter);
+    }
   }
 
   /// Clears all stored locations (both datacenter and residential) from the local database.
