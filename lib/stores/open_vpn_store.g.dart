@@ -132,23 +132,6 @@ mixin _$OpenVpnStore on _OpenVpnStore, Store {
     });
   }
 
-  late final _$_openVpnKeyAtom = Atom(name: '_OpenVpnStore._openVpnKey', context: context);
-
-  String? get openVpnKey {
-    _$_openVpnKeyAtom.reportRead();
-    return super._openVpnKey;
-  }
-
-  @override
-  String? get _openVpnKey => openVpnKey;
-
-  @override
-  set _openVpnKey(String? value) {
-    _$_openVpnKeyAtom.reportWrite(value, super._openVpnKey, () {
-      super._openVpnKey = value;
-    });
-  }
-
   late final _$_connectionStatusAtom =
       Atom(name: '_OpenVpnStore._connectionStatus', context: context);
 

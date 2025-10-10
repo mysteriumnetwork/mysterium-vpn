@@ -117,10 +117,6 @@ abstract class _OpenVpnStore extends IVpnStore with Store {
   @readonly
   OpenVpnConnectResponse? _vpnConfig;
 
-  // TODO(Kristijan): Remove/Create service for openvpn
-  @readonly
-  String? _openVpnKey;
-
   @readonly
   VpnConnectionStatus _connectionStatus = VpnConnectionStatus.disconnected;
 
@@ -276,7 +272,7 @@ abstract class _OpenVpnStore extends IVpnStore with Store {
   @action
   Future<void> _initOpenVpndKey() async {
     try {
-      _openVpnKey = await _openVpnKeyService.getOpenVpnKey();
+      _publicKey = await _openVpnKeyService.getOpenVpnKey();
     } catch (e) {
       _logger.handle(e);
     }
@@ -561,7 +557,7 @@ abstract class _OpenVpnStore extends IVpnStore with Store {
     bool? refreshIP,
   ) async {
     try {
-      final key = _openVpnKey ?? await _openVpnKeyService.getOpenVpnKey();
+      final key = _publicKey ?? await _openVpnKeyService.getOpenVpnKey();
       final closestRegion = (intent?.requiresCluster ?? false)
           ? await _locationsService.closestRegion(location?.ipType ?? IPType.datacenter)
           : null;
