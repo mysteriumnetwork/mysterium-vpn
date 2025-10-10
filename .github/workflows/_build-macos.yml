@@ -24,12 +24,10 @@ on:
         default: ".env.dev"
 
 jobs:
-  # macOS Build
-  # Based on documentation https://docs.flutter.dev/deployment/macos#create-a-build-archive-with-codemagic-cli-tools
-  # And tutorial https://docs.codemagic.io/yaml-quick-start/building-a-flutter-app/#code-signing
   release:
     name: Build & Publish
     runs-on: macos-14
+
     steps:
       - uses: actions/checkout@v4
 
@@ -63,9 +61,6 @@ jobs:
           keychain initialize
           keychain get-default
 
-      # Signing files are imported to keychain from:
-      #  ls -la ~/Library/MobileDevice/Provisioning\ Profiles
-      #  ls -la ~/Library/MobileDevice/Certificates/
       - name: Fetch signing files
         env:
           APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
@@ -103,22 +98,45 @@ jobs:
       - name: Build macOS app
         run: fvm flutter build macos --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define-from-file="${{ inputs.env_file }}"
 
+      # ✅ Improved Signing + Bonus Diagnostic Section
       - name: Build macOS installer
-        run: |
-          xcrun productbuild --component "${{ inputs.product_name }}.app" /Applications/ unsigned.pkg
-          xcrun productsign --sign "$(keychain list-certificates | jq '[.[] | select(.common_name | contains("Mac Developer Installer")) | .common_name][0]' | xargs)" unsigned.pkg "Mysterium VPN.pkg"
         working-directory: build/macos/Build/Products/Release-${{ inputs.flavor }}
+        run: |
+          echo "🔐 Unlocking keychain..."
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$(keychain get-default)"
+
+          echo "📋 Available identities:"
+          security find-identity -v -p codesigning
+
+          echo "📦 Creating unsigned installer..."
+          xcrun productbuild --component "${{ inputs.product_name }}.app" /Applications/ unsigned.pkg
+
+          echo "🔍 Detecting correct signing identity..."
+          SIGN_IDENTITY=$(keychain list-certificates | jq '[.[] | select(.common_name | test("Developer ID Installer|3rd Party Mac Developer Installer")) | .common_name][0]' | xargs)
+
+          if [ -z "$SIGN_IDENTITY" ]; then
+            echo "❌ No suitable Mac Installer signing identity found."
+            echo "Please ensure a 'Developer ID Installer' or '3rd Party Mac Developer Installer' certificate is installed."
+            exit 1
+          fi
+
+          echo "✅ Using signing identity: $SIGN_IDENTITY"
+          xcrun productsign --sign "$SIGN_IDENTITY" unsigned.pkg "Mysterium VPN.pkg"
+
+          echo "🔏 Verifying signature..."
+          pkgutil --check-signature "Mysterium VPN.pkg"
 
       - name: Publish to Apple Store
         env:
           APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
-        run: app-store-connect publish --path "build/macos/Build/Products/Release-${{ inputs.flavor }}/Mysterium VPN.pkg" --platform MAC_OS
+        run: |
+          app-store-connect publish --path "build/macos/Build/Products/Release-${{ inputs.flavor }}/Mysterium VPN.pkg" --platform MAC_OS
 
       - name: Post Set up keychain
+        if: always()
         run: |
           keychain delete
           keychain use-login
           keychain list-certificates
-        if: always()
