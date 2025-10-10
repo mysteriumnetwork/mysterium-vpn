@@ -21,7 +21,7 @@ abstract class _RateConnectionStore with Store {
 
   final AnalyticsStore _analyticsStore;
   final ApiService _apiService;
-  final IVpnStore _vpnStore;
+  final VpnStore _vpnStore;
   final RateConnectionRequestModeEnum _rateConnectionMode;
 
   final ObservableList<RateConnectionReason> _rateConnectionReasons =

@@ -27,7 +27,7 @@ import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_query_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/network_statistics_store.dart';
-import 'package:mysterium_vpn/stores/open_vpn_store.dart';
+import 'package:mysterium_vpn/stores/vpn/open_vpn_store.dart';
 import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
 import 'package:mysterium_vpn/stores/recent_locations_store.dart';
 import 'package:mysterium_vpn/stores/refresh_ip_store.dart';
@@ -43,7 +43,7 @@ import 'package:mysterium_vpn/stores/user_intents_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:mysterium_vpn/stores/vpn/i_vpn.dart';
 import 'package:mysterium_vpn/stores/vpn_protocol_store.dart';
-import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:mysterium_vpn/stores/vpn/wireguard_vpn_store.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
@@ -89,7 +89,7 @@ final apiStorePOD = Provider<ApiStore>((ref) {
 
 final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
 
-final vpnStorePOD = StateProvider<IVpnStore>((ref) {
+final vpnStorePOD = StateProvider<VpnStore>((ref) {
   if (!isMacOSorIOS()) {
     return ref.read(wireguardVpnStorePOD);
   }
@@ -114,7 +114,7 @@ final vpnStorePOD = StateProvider<IVpnStore>((ref) {
       : ref.read(openVpnStorePOD);
 });
 
-final wireguardVpnStorePOD = Provider<VpnStore>((ref) {
+final wireguardVpnStorePOD = Provider<WireguardVpnStore>((ref) {
   final apiService = ref.read(apiServicePOD);
   final externalApiService = ref.watch(externalApiServicePOD);
   final mqttService = ref.watch(vpnApiMQTTPOD);
@@ -133,7 +133,7 @@ final wireguardVpnStorePOD = Provider<VpnStore>((ref) {
   final recentLocationsStore = ref.watch(recentLocationsStorePOD);
   final locationsService = ref.watch(locationsServicePOD);
   final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
-  return VpnStore(
+  return WireguardVpnStore(
     apiService: apiService,
     externalApiService: externalApiService,
     mqtt: mqttService,

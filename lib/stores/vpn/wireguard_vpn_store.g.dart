@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'vpn_store.dart';
+part of 'wireguard_vpn_store.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,71 +8,74 @@ part of 'vpn_store.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$VpnStore on _VpnStore, Store {
+mixin _$WireguardVpnStore on _WireguardVpnStore, Store {
   Computed<VpnConnectionStatus>? _$vpnStatusComputed;
 
   @override
-  VpnConnectionStatus get vpnStatus => (_$vpnStatusComputed ??=
-          Computed<VpnConnectionStatus>(() => super.vpnStatus, name: '_VpnStore.vpnStatus'))
-      .value;
+  VpnConnectionStatus get vpnStatus =>
+      (_$vpnStatusComputed ??= Computed<VpnConnectionStatus>(() => super.vpnStatus,
+              name: '_WireguardVpnStore.vpnStatus'))
+          .value;
   Computed<bool>? _$isConnectedComputed;
 
   @override
   bool get isConnected => (_$isConnectedComputed ??=
-          Computed<bool>(() => super.isConnected, name: '_VpnStore.isConnected'))
+          Computed<bool>(() => super.isConnected, name: '_WireguardVpnStore.isConnected'))
       .value;
   Computed<bool>? _$isLoadingComputed;
 
   @override
-  bool get isLoading =>
-      (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading, name: '_VpnStore.isLoading'))
-          .value;
+  bool get isLoading => (_$isLoadingComputed ??=
+          Computed<bool>(() => super.isLoading, name: '_WireguardVpnStore.isLoading'))
+      .value;
   Computed<bool>? _$isFetchingLocationComputed;
 
   @override
-  bool get isFetchingLocation => (_$isFetchingLocationComputed ??=
-          Computed<bool>(() => super.isFetchingLocation, name: '_VpnStore.isFetchingLocation'))
-      .value;
+  bool get isFetchingLocation =>
+      (_$isFetchingLocationComputed ??= Computed<bool>(() => super.isFetchingLocation,
+              name: '_WireguardVpnStore.isFetchingLocation'))
+          .value;
   Computed<bool>? _$isFetchingConfigComputed;
 
   @override
   bool get isFetchingConfig => (_$isFetchingConfigComputed ??=
-          Computed<bool>(() => super.isFetchingConfig, name: '_VpnStore.isFetchingConfig'))
+          Computed<bool>(() => super.isFetchingConfig, name: '_WireguardVpnStore.isFetchingConfig'))
       .value;
   Computed<VPNLocation?>? _$locationComputed;
 
   @override
   VPNLocation? get location => (_$locationComputed ??=
-          Computed<VPNLocation?>(() => super.location, name: '_VpnStore.location'))
+          Computed<VPNLocation?>(() => super.location, name: '_WireguardVpnStore.location'))
       .value;
   Computed<VPNLocation?>? _$potentialLocationComputed;
 
   @override
   VPNLocation? get potentialLocation =>
       (_$potentialLocationComputed ??= Computed<VPNLocation?>(() => super.potentialLocation,
-              name: '_VpnStore.potentialLocation'))
+              name: '_WireguardVpnStore.potentialLocation'))
           .value;
   Computed<Set<UserIntent>>? _$userIntentsComputed;
 
   @override
-  Set<UserIntent> get userIntents => (_$userIntentsComputed ??=
-          Computed<Set<UserIntent>>(() => super.userIntents, name: '_VpnStore.userIntents'))
-      .value;
+  Set<UserIntent> get userIntents =>
+      (_$userIntentsComputed ??= Computed<Set<UserIntent>>(() => super.userIntents,
+              name: '_WireguardVpnStore.userIntents'))
+          .value;
   Computed<String?>? _$publicKeyComputed;
 
   @override
   String? get publicKey => (_$publicKeyComputed ??=
-          Computed<String?>(() => super.publicKey, name: '_VpnStore.publicKey'))
+          Computed<String?>(() => super.publicKey, name: '_WireguardVpnStore.publicKey'))
       .value;
   Computed<bool>? _$limitExceededComputed;
 
   @override
   bool get limitExceeded => (_$limitExceededComputed ??=
-          Computed<bool>(() => super.limitExceeded, name: '_VpnStore.limitExceeded'))
+          Computed<bool>(() => super.limitExceeded, name: '_WireguardVpnStore.limitExceeded'))
       .value;
 
   late final _$connectionLimitReachedAtom =
-      Atom(name: '_VpnStore.connectionLimitReached', context: context);
+      Atom(name: '_WireguardVpnStore.connectionLimitReached', context: context);
 
   @override
   bool get connectionLimitReached {
@@ -87,7 +90,8 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$_vpnConnectionAtom = Atom(name: '_VpnStore._vpnConnection', context: context);
+  late final _$_vpnConnectionAtom =
+      Atom(name: '_WireguardVpnStore._vpnConnection', context: context);
 
   VpnConnection? get vpnConnection {
     _$_vpnConnectionAtom.reportRead();
@@ -104,7 +108,7 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$_userIntentAtom = Atom(name: '_VpnStore._userIntent', context: context);
+  late final _$_userIntentAtom = Atom(name: '_WireguardVpnStore._userIntent', context: context);
 
   UserIntent? get userIntent {
     _$_userIntentAtom.reportRead();
@@ -121,7 +125,7 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$_vpnConfigAtom = Atom(name: '_VpnStore._vpnConfig', context: context);
+  late final _$_vpnConfigAtom = Atom(name: '_WireguardVpnStore._vpnConfig', context: context);
 
   WireguardConnectResponse? get vpnConfig {
     _$_vpnConfigAtom.reportRead();
@@ -138,7 +142,7 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$_wireguardKeyAtom = Atom(name: '_VpnStore._wireguardKey', context: context);
+  late final _$_wireguardKeyAtom = Atom(name: '_WireguardVpnStore._wireguardKey', context: context);
 
   KeyPair? get wireguardKey {
     _$_wireguardKeyAtom.reportRead();
@@ -155,7 +159,8 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$_connectionStatusAtom = Atom(name: '_VpnStore._connectionStatus', context: context);
+  late final _$_connectionStatusAtom =
+      Atom(name: '_WireguardVpnStore._connectionStatus', context: context);
 
   VpnConnectionStatus get connectionStatus {
     _$_connectionStatusAtom.reportRead();
@@ -172,7 +177,8 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$connectionRatedAtom = Atom(name: '_VpnStore.connectionRated', context: context);
+  late final _$connectionRatedAtom =
+      Atom(name: '_WireguardVpnStore.connectionRated', context: context);
 
   @override
   RateConnectionRequestModeEnum? get connectionRated {
@@ -188,7 +194,7 @@ mixin _$VpnStore on _VpnStore, Store {
   }
 
   late final _$_connectingLocationAtom =
-      Atom(name: '_VpnStore._connectingLocation', context: context);
+      Atom(name: '_WireguardVpnStore._connectingLocation', context: context);
 
   VPNLocation? get connectingLocation {
     _$_connectingLocationAtom.reportRead();
@@ -206,7 +212,7 @@ mixin _$VpnStore on _VpnStore, Store {
   }
 
   late final _$_resolveConnectionLocationFutureAtom =
-      Atom(name: '_VpnStore._resolveConnectionLocationFuture', context: context);
+      Atom(name: '_WireguardVpnStore._resolveConnectionLocationFuture', context: context);
 
   ObservableFuture<void>? get resolveConnectionLocationFuture {
     _$_resolveConnectionLocationFutureAtom.reportRead();
@@ -225,7 +231,7 @@ mixin _$VpnStore on _VpnStore, Store {
   }
 
   late final _$_fetchLocationFutureAtom =
-      Atom(name: '_VpnStore._fetchLocationFuture', context: context);
+      Atom(name: '_WireguardVpnStore._fetchLocationFuture', context: context);
 
   ObservableFuture<VPNLocation?>? get fetchLocationFuture {
     _$_fetchLocationFutureAtom.reportRead();
@@ -243,7 +249,7 @@ mixin _$VpnStore on _VpnStore, Store {
   }
 
   late final _$_fetchConfigFutureAtom =
-      Atom(name: '_VpnStore._fetchConfigFuture', context: context);
+      Atom(name: '_WireguardVpnStore._fetchConfigFuture', context: context);
 
   ObservableFuture<WireguardConnectResponse>? get fetchConfigFuture {
     _$_fetchConfigFutureAtom.reportRead();
@@ -261,7 +267,7 @@ mixin _$VpnStore on _VpnStore, Store {
   }
 
   late final _$_disconnectAllDevicesFutureAtom =
-      Atom(name: '_VpnStore._disconnectAllDevicesFuture', context: context);
+      Atom(name: '_WireguardVpnStore._disconnectAllDevicesFuture', context: context);
 
   ObservableFuture<void>? get disconnectAllDevicesFuture {
     _$_disconnectAllDevicesFutureAtom.reportRead();
@@ -278,7 +284,8 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$_resetAppFutureAtom = Atom(name: '_VpnStore._resetAppFuture', context: context);
+  late final _$_resetAppFutureAtom =
+      Atom(name: '_WireguardVpnStore._resetAppFuture', context: context);
 
   ObservableFuture<void>? get resetAppFuture {
     _$_resetAppFutureAtom.reportRead();
@@ -295,14 +302,15 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$_initAsyncAction = AsyncAction('_VpnStore._init', context: context);
+  late final _$_initAsyncAction = AsyncAction('_WireguardVpnStore._init', context: context);
 
   @override
   Future<void> _init() {
     return _$_initAsyncAction.run(() => super._init());
   }
 
-  late final _$_initTunnelAsyncAction = AsyncAction('_VpnStore._initTunnel', context: context);
+  late final _$_initTunnelAsyncAction =
+      AsyncAction('_WireguardVpnStore._initTunnel', context: context);
 
   @override
   Future<void> _initTunnel() {
@@ -310,7 +318,7 @@ mixin _$VpnStore on _VpnStore, Store {
   }
 
   late final _$_checkTunelConfiguredAsyncAction =
-      AsyncAction('_VpnStore._checkTunelConfigured', context: context);
+      AsyncAction('_WireguardVpnStore._checkTunelConfigured', context: context);
 
   @override
   Future<bool> _checkTunelConfigured() {
@@ -318,7 +326,7 @@ mixin _$VpnStore on _VpnStore, Store {
   }
 
   late final _$_setupAndListenToConnectionStatusAsyncAction =
-      AsyncAction('_VpnStore._setupAndListenToConnectionStatus', context: context);
+      AsyncAction('_WireguardVpnStore._setupAndListenToConnectionStatus', context: context);
 
   @override
   Future<void> _setupAndListenToConnectionStatus() {
@@ -326,7 +334,8 @@ mixin _$VpnStore on _VpnStore, Store {
         .run(() => super._setupAndListenToConnectionStatus());
   }
 
-  late final _$setupTunnelAsyncAction = AsyncAction('_VpnStore.setupTunnel', context: context);
+  late final _$setupTunnelAsyncAction =
+      AsyncAction('_WireguardVpnStore.setupTunnel', context: context);
 
   @override
   Future<void> setupTunnel() {
@@ -334,7 +343,7 @@ mixin _$VpnStore on _VpnStore, Store {
   }
 
   late final _$_connectWireguardAsyncAction =
-      AsyncAction('_VpnStore._connectWireguard', context: context);
+      AsyncAction('_WireguardVpnStore._connectWireguard', context: context);
 
   @override
   Future<void> _connectWireguard({required String privateKey, required String vpnConfig}) {
@@ -343,7 +352,7 @@ mixin _$VpnStore on _VpnStore, Store {
   }
 
   late final _$disconnectFromVpnAsyncAction =
-      AsyncAction('_VpnStore.disconnectFromVpn', context: context);
+      AsyncAction('_WireguardVpnStore.disconnectFromVpn', context: context);
 
   @override
   Future<void> disconnectFromVpn({bool isReconnecting = false}) {
@@ -352,7 +361,7 @@ mixin _$VpnStore on _VpnStore, Store {
   }
 
   late final _$toggleConnectionAsyncAction =
-      AsyncAction('_VpnStore.toggleConnection', context: context);
+      AsyncAction('_WireguardVpnStore.toggleConnection', context: context);
 
   @override
   Future<void> toggleConnection(
@@ -362,7 +371,7 @@ mixin _$VpnStore on _VpnStore, Store {
   }
 
   late final _$startConnectionWithRefreshIPAsyncAction =
-      AsyncAction('_VpnStore.startConnectionWithRefreshIP', context: context);
+      AsyncAction('_WireguardVpnStore.startConnectionWithRefreshIP', context: context);
 
   @override
   Future<void> startConnectionWithRefreshIP() {
@@ -371,7 +380,7 @@ mixin _$VpnStore on _VpnStore, Store {
   }
 
   late final _$_startConnectionAsyncAction =
-      AsyncAction('_VpnStore._startConnection', context: context);
+      AsyncAction('_WireguardVpnStore._startConnection', context: context);
 
   @override
   Future<void> _startConnection(
@@ -381,7 +390,7 @@ mixin _$VpnStore on _VpnStore, Store {
   }
 
   late final _$_completeConnectionAsyncAction =
-      AsyncAction('_VpnStore._completeConnection', context: context);
+      AsyncAction('_WireguardVpnStore._completeConnection', context: context);
 
   @override
   Future<void> _completeConnection(VPNLocation? location, UserIntent? intent, bool? refreshIP) {
@@ -390,7 +399,7 @@ mixin _$VpnStore on _VpnStore, Store {
   }
 
   late final _$_checkConnectionQualityAsyncAction =
-      AsyncAction('_VpnStore._checkConnectionQuality', context: context);
+      AsyncAction('_WireguardVpnStore._checkConnectionQuality', context: context);
 
   @override
   Future<void> _checkConnectionQuality(
@@ -402,14 +411,14 @@ mixin _$VpnStore on _VpnStore, Store {
   }
 
   late final _$disconnectAllDevicesAsyncAction =
-      AsyncAction('_VpnStore.disconnectAllDevices', context: context);
+      AsyncAction('_WireguardVpnStore.disconnectAllDevices', context: context);
 
   @override
   Future<void> disconnectAllDevices() {
     return _$disconnectAllDevicesAsyncAction.run(() => super.disconnectAllDevices());
   }
 
-  late final _$resetAppAsyncAction = AsyncAction('_VpnStore.resetApp', context: context);
+  late final _$resetAppAsyncAction = AsyncAction('_WireguardVpnStore.resetApp', context: context);
 
   @override
   Future<void> resetApp() {
@@ -417,23 +426,24 @@ mixin _$VpnStore on _VpnStore, Store {
   }
 
   late final _$_udpBlockedCheckAsyncAction =
-      AsyncAction('_VpnStore._udpBlockedCheck', context: context);
+      AsyncAction('_WireguardVpnStore._udpBlockedCheck', context: context);
 
   @override
   Future<void> _udpBlockedCheck() {
     return _$_udpBlockedCheckAsyncAction.run(() => super._udpBlockedCheck());
   }
 
-  late final _$_VpnStoreActionController = ActionController(name: '_VpnStore', context: context);
+  late final _$_WireguardVpnStoreActionController =
+      ActionController(name: '_WireguardVpnStore', context: context);
 
   @override
   void _setConnectionStatus(VpnConnectionStatus status) {
-    final _$actionInfo =
-        _$_VpnStoreActionController.startAction(name: '_VpnStore._setConnectionStatus');
+    final _$actionInfo = _$_WireguardVpnStoreActionController.startAction(
+        name: '_WireguardVpnStore._setConnectionStatus');
     try {
       return super._setConnectionStatus(status);
     } finally {
-      _$_VpnStoreActionController.endAction(_$actionInfo);
+      _$_WireguardVpnStoreActionController.endAction(_$actionInfo);
     }
   }
 

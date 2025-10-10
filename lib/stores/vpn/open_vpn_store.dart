@@ -47,7 +47,7 @@ part 'open_vpn_store.g.dart';
 // ignore: library_private_types_in_public_api
 class OpenVpnStore = _OpenVpnStore with _$OpenVpnStore;
 
-abstract class _OpenVpnStore extends IVpnStore with Store {
+abstract class _OpenVpnStore extends VpnStore with Store {
   _OpenVpnStore({
     required super.subscriptionStore,
     required super.authSessionStore,

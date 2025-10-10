@@ -48,13 +48,13 @@ import 'package:wireguard_dart/wireguard_dart.dart';
 
 // Project imports:
 
-part 'vpn_store.g.dart';
+part 'wireguard_vpn_store.g.dart';
 
 // ignore: library_private_types_in_public_api
-class VpnStore = _VpnStore with _$VpnStore;
+class WireguardVpnStore = _WireguardVpnStore with _$WireguardVpnStore;
 
-abstract class _VpnStore extends IVpnStore with Store {
-  _VpnStore({
+abstract class _WireguardVpnStore extends VpnStore with Store {
+  _WireguardVpnStore({
     required super.subscriptionStore,
     required super.authSessionStore,
     required ApiService apiService,

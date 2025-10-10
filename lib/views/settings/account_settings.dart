@@ -243,7 +243,7 @@ class _Authenticated extends HookConsumerWidget {
   Future<void> _onDisconnectedAllDevices(
     BuildContext context,
     AnalyticsStore analyticsStore,
-    IVpnStore vpnStore,
+    VpnStore vpnStore,
     VoidCallback handleToggleConnection,
   ) async {
     analyticsStore.logEvent(AnalyticsEvent.logOutAll);
@@ -293,7 +293,7 @@ class _Authenticated extends HookConsumerWidget {
   Future<void> _onConfirmDisconnectedAllDevices(
     BuildContext context,
     AnalyticsStore analyticsStore,
-    IVpnStore vpnStore,
+    VpnStore vpnStore,
     VoidCallback handleToggleConnection,
   ) async {
     analyticsStore.logEvent(AnalyticsEvent.logOutAllConfirm);
