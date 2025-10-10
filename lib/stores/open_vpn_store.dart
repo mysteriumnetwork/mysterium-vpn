@@ -727,7 +727,7 @@ abstract class _OpenVpnStore extends IVpnStore with Store {
         /// If tunnel is not configured, no need to reset the app
         return;
       }
-      if (Platform.isAndroid || Platform.isIOS) {
+      if (Platform.isAndroid) {
         return;
       }
 
