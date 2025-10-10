@@ -52,8 +52,6 @@ abstract class IVpnStore extends VpnGuard {
   Future<void> setupTunnel();
   Future<void> startConnectionWithRefreshIP();
   Future<void> disposeStore();
-
-  // TODO(Kristijan): Move this check to out of vpn store
 }
 
 class VpnGuard {
