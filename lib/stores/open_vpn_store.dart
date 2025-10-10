@@ -324,7 +324,7 @@ abstract class _OpenVpnStore extends IVpnStore with Store {
       VpnConnectionStatus.fromString(status.name);
 
   @action
-  void _setConnectionStatus(VpnConnectionStatus status) {
+  Future<void> _setConnectionStatus(VpnConnectionStatus status) async {
     _connectionStatus = status;
   }
 

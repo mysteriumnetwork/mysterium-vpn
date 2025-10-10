@@ -5,7 +5,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/vpn_connection_status.dart';
-import 'package:mysterium_vpn/common/hooks/connection_status_color_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
@@ -19,6 +18,8 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 class ConnectionStatusBar extends HookConsumerWidget {
   const ConnectionStatusBar({super.key});
 
+  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final horizontalPadding = useResponsiveValue<double>(
@@ -29,7 +30,6 @@ class ConnectionStatusBar extends HookConsumerWidget {
 
     final vpnStore = ref.watch(vpnStorePOD);
     final isExpanded = useState(false);
-    final statusColor = useConnectionStatusColor();
 
     useReaction(
       () => vpnStore.vpnStatus,
@@ -50,7 +50,10 @@ class ConnectionStatusBar extends HookConsumerWidget {
           highlightColor: Colors.transparent,
           focusColor: Colors.transparent,
           hoverColor: Colors.transparent,
-          fillColor: statusColor,
+          fillColor: _connectionStatusColor(
+            connectionStatus: connectionStatus,
+            isFetchingConfig: isFetchingConfig,
+          ),
           splashColor: Palette.white.withValues(alpha: .2),
           visualDensity: VisualDensity.compact,
           clipBehavior: Clip.antiAlias,
@@ -103,6 +106,22 @@ class ConnectionStatusBar extends HookConsumerWidget {
         );
       },
     );
+  }
+
+  Color _connectionStatusColor({
+    required VpnConnectionStatus connectionStatus,
+    required bool isFetchingConfig,
+  }) {
+    if (isFetchingConfig) {
+      return Palette.yellow;
+    }
+    return switch (connectionStatus) {
+      VpnConnectionStatus.connected => Palette.forestGreen,
+      VpnConnectionStatus.disconnected => Palette.crimsonRed,
+      VpnConnectionStatus.connecting => Palette.yellow,
+      VpnConnectionStatus.disconnecting => Palette.yellow,
+      _ => Palette.crimsonRed,
+    };
   }
 
   String _statusText(
