@@ -33,7 +33,6 @@ import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
 import 'package:mysterium_vpn/stores/recent_locations_store.dart';
 import 'package:mysterium_vpn/stores/refresh_ip_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
-import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/vpn/i_vpn.dart';
 import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:openvpn_dart/vpn_status.dart';
@@ -48,19 +47,19 @@ part 'open_vpn_store.g.dart';
 // ignore: library_private_types_in_public_api
 class OpenVpnStore = _OpenVpnStore with _$OpenVpnStore;
 
-abstract class _OpenVpnStore with Store implements IVpnStore {
+abstract class _OpenVpnStore extends IVpnStore with Store {
   _OpenVpnStore({
+    required super.subscriptionStore,
+    required super.authSessionStore,
     required ApiService apiService,
     required ExternalApiService externalApiService,
     required MQTTService mqtt,
     required LocationsStore locationsStore,
     required LocationsService locationsService,
     required OpenVPNDart openVpnService,
-    required SubscriptionStore subscriptionStore,
     required Talker logger,
     required AnalyticsStore analyticsStore,
     required RemoteConfigStore remoteConfigStore,
-    required AuthSessionStore authSessionStore,
     required RealIPInfoStore realIPInfo,
     required OpenVpnKeyService openVpnKeyService,
     required RefreshIPStore refreshIPStore,
@@ -71,7 +70,6 @@ abstract class _OpenVpnStore with Store implements IVpnStore {
         _mqtt = mqtt,
         _locationsStore = locationsStore,
         _openVpnService = openVpnService,
-        _subscriptionStore = subscriptionStore,
         _analyticsStore = analyticsStore,
         _remoteConfigStore = remoteConfigStore,
         _authSessionStore = authSessionStore,
@@ -91,7 +89,6 @@ abstract class _OpenVpnStore with Store implements IVpnStore {
   final LocationsStore _locationsStore;
   final AnalyticsStore _analyticsStore;
   final OpenVPNDart _openVpnService;
-  final SubscriptionStore _subscriptionStore;
   final RemoteConfigStore _remoteConfigStore;
   final AuthSessionStore _authSessionStore;
   final RealIPInfoStore _realIPInfo;
@@ -449,23 +446,6 @@ abstract class _OpenVpnStore with Store implements IVpnStore {
     await _startConnection(refreshIP: true, location: _vpnConnection?.location);
   }
 
-  Future<void> _checkSubscriptionStatus() async {
-    if (_subscriptionStore.subscriptionFuture.status == FutureStatus.pending) {
-      return;
-    }
-    try {
-      final subscription = await _subscriptionStore.subscriptionFuture;
-      if (!subscription.active) {
-        throw const SubscriptionRequiredException();
-      }
-    } catch (e) {
-      if (e is! SubscriptionRequiredException) {
-        _subscriptionStore.refreshSubscription();
-      }
-      rethrow;
-    }
-  }
-
   /// Connect to VPN
   @action
   Future<void> _startConnection({
@@ -474,11 +454,7 @@ abstract class _OpenVpnStore with Store implements IVpnStore {
     bool isRetrying = false,
     UserIntent? intent,
   }) async {
-    await _authSessionStore.accessTokenFuture;
-    if (_authSessionStore.status != AuthStatus.authenticated) {
-      throw AuthenticationRequiredException();
-    }
-    await _checkSubscriptionStatus();
+    await checkVpnGuards();
 
     if (!(await _openVpnService.checkTunnelConfiguration())) {
       throw const TunnelSetupRequiredException();
