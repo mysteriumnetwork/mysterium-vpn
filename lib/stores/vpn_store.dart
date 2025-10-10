@@ -734,6 +734,7 @@ abstract class _VpnStore extends IVpnStore with Store {
     }
   }
 
+  @action
   Future<void> _checkConnectionQuality({
     required Future<void> Function() checkLocation,
     required VPNLocation location,

@@ -389,6 +389,18 @@ mixin _$VpnStore on _VpnStore, Store {
         .run(() => super._completeConnection(location, intent, refreshIP));
   }
 
+  late final _$_checkConnectionQualityAsyncAction =
+      AsyncAction('_VpnStore._checkConnectionQuality', context: context);
+
+  @override
+  Future<void> _checkConnectionQuality(
+      {required Future<void> Function() checkLocation,
+      required VPNLocation location,
+      required String hash}) {
+    return _$_checkConnectionQualityAsyncAction.run(() => super
+        ._checkConnectionQuality(checkLocation: checkLocation, location: location, hash: hash));
+  }
+
   late final _$disconnectAllDevicesAsyncAction =
       AsyncAction('_VpnStore.disconnectAllDevices', context: context);
 
