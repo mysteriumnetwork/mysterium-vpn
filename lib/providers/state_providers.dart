@@ -167,7 +167,7 @@ final openVpnStorePOD = Provider<OpenVpnStore>((ref) {
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
   final realIPInfoStore = ref.watch(realIPInfoStorePOD);
-  final wireguardKeyService = ref.watch(wireguradKeyServicePOD);
+  final openVpnKeyService = ref.watch(openVpnKeyServicePOD);
   final refreshIPStore = ref.watch(refreshIPStorePOD);
   final locationsQueryStore = ref.watch(locationsQueryStorePOD);
   final recentLocationsStore = ref.watch(recentLocationsStorePOD);
@@ -184,7 +184,7 @@ final openVpnStorePOD = Provider<OpenVpnStore>((ref) {
     remoteConfigStore: remoteConfigStore,
     authSessionStore: authSessionStore,
     realIPInfo: realIPInfoStore,
-    wireguardKeyService: wireguardKeyService,
+    openVpnKeyService: openVpnKeyService,
     refreshIPStore: refreshIPStore,
     locationsQueryStore: locationsQueryStore,
     recentLocationsStore: recentLocationsStore,

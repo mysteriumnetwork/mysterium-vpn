@@ -170,6 +170,13 @@ class SecureStorageService {
 
   Future<void> removeWireguardPrivateKey() async => remove(StorageKeys.wireguardPrivateKey.name);
 
+  Future<String?> getOpenVpnPublicKey() async => readOrNull(StorageKeys.openVpnPublicKey.name);
+
+  Future<void> saveOpenVpnPublicKey({required String publicKey}) async =>
+      write(StorageKeys.openVpnPublicKey.name, publicKey);
+
+  Future<void> removeOpenVpnPublicKey() async => remove(StorageKeys.openVpnPublicKey.name);
+
   Future<PkcePair?> getPkcePair() async {
     try {
       final codeChallenge = await read(StorageKeys.codeChallenge.name);

@@ -36,6 +36,7 @@ import 'package:mysterium_vpn/services/location/locations_service.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
+import 'package:mysterium_vpn/services/wiregurad/openvpn_key_service.dart';
 import 'package:mysterium_vpn/services/wiregurad/wiregurad_key_service.dart';
 import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:talker/talker.dart';
@@ -251,6 +252,14 @@ final assetsServicePOD = Provider((_) => const AssetsService());
 
 final wireguradKeyServicePOD = Provider<WireguradKeyService>(
   (ref) => WireguradKeyService(
+    wireguardService: ref.watch(wireguardServicePOD),
+    secureStorageService: SecureStorageService.instance,
+    analyticsStore: ref.watch(analyticsStorePOD),
+  ),
+);
+
+final openVpnKeyServicePOD = Provider<OpenVpnKeyService>(
+  (ref) => OpenVpnKeyService(
     wireguardService: ref.watch(wireguardServicePOD),
     secureStorageService: SecureStorageService.instance,
     analyticsStore: ref.watch(analyticsStorePOD),

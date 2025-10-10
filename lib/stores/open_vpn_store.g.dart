@@ -58,12 +58,6 @@ mixin _$OpenVpnStore on _OpenVpnStore, Store {
   Set<UserIntent> get userIntents => (_$userIntentsComputed ??=
           Computed<Set<UserIntent>>(() => super.userIntents, name: '_OpenVpnStore.userIntents'))
       .value;
-  Computed<String?>? _$publicKeyComputed;
-
-  @override
-  String? get publicKey => (_$publicKeyComputed ??=
-          Computed<String?>(() => super.publicKey, name: '_OpenVpnStore.publicKey'))
-      .value;
   Computed<bool>? _$limitExceededComputed;
 
   @override
@@ -140,16 +134,16 @@ mixin _$OpenVpnStore on _OpenVpnStore, Store {
 
   late final _$_openVpnKeyAtom = Atom(name: '_OpenVpnStore._openVpnKey', context: context);
 
-  KeyPair? get openVpnKey {
+  String? get openVpnKey {
     _$_openVpnKeyAtom.reportRead();
     return super._openVpnKey;
   }
 
   @override
-  KeyPair? get _openVpnKey => openVpnKey;
+  String? get _openVpnKey => openVpnKey;
 
   @override
-  set _openVpnKey(KeyPair? value) {
+  set _openVpnKey(String? value) {
     _$_openVpnKeyAtom.reportWrite(value, super._openVpnKey, () {
       super._openVpnKey = value;
     });
@@ -203,6 +197,23 @@ mixin _$OpenVpnStore on _OpenVpnStore, Store {
   set _connectingLocation(VPNLocation? value) {
     _$_connectingLocationAtom.reportWrite(value, super._connectingLocation, () {
       super._connectingLocation = value;
+    });
+  }
+
+  late final _$_publicKeyAtom = Atom(name: '_OpenVpnStore._publicKey', context: context);
+
+  String? get publicKey {
+    _$_publicKeyAtom.reportRead();
+    return super._publicKey;
+  }
+
+  @override
+  String? get _publicKey => publicKey;
+
+  @override
+  set _publicKey(String? value) {
+    _$_publicKeyAtom.reportWrite(value, super._publicKey, () {
+      super._publicKey = value;
     });
   }
 
@@ -447,7 +458,6 @@ isFetchingConfig: ${isFetchingConfig},
 location: ${location},
 potentialLocation: ${potentialLocation},
 userIntents: ${userIntents},
-publicKey: ${publicKey},
 limitExceeded: ${limitExceeded}
     ''';
   }
