@@ -723,11 +723,12 @@ abstract class _OpenVpnStore extends IVpnStore with Store {
   @action
   Future<void> resetApp() async {
     try {
-      if (!await _checkTunelConfigured()) {
-        /// If tunnel is not configured, no need to reset the app
+      if (Platform.isAndroid || Platform.isWindows) {
         return;
       }
-      if (Platform.isAndroid || Platform.isWindows) {
+
+      if (!await _checkTunelConfigured()) {
+        /// If tunnel is not configured, no need to reset the app
         return;
       }
 
