@@ -27,7 +27,6 @@ import 'package:mysterium_vpn/stores/locale_store.dart';
 import 'package:mysterium_vpn/stores/locations_query_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 import 'package:mysterium_vpn/stores/network_statistics_store.dart';
-import 'package:mysterium_vpn/stores/vpn/open_vpn_store.dart';
 import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
 import 'package:mysterium_vpn/stores/recent_locations_store.dart';
 import 'package:mysterium_vpn/stores/refresh_ip_store.dart';
@@ -42,8 +41,9 @@ import 'package:mysterium_vpn/stores/update_availabe_store.dart';
 import 'package:mysterium_vpn/stores/user_intents_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:mysterium_vpn/stores/vpn/i_vpn.dart';
-import 'package:mysterium_vpn/stores/vpn_protocol_store.dart';
+import 'package:mysterium_vpn/stores/vpn/open_vpn_store.dart';
 import 'package:mysterium_vpn/stores/vpn/wireguard_vpn_store.dart';
+import 'package:mysterium_vpn/stores/vpn_protocol_store.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
