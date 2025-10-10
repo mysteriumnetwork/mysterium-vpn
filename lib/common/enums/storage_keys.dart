@@ -12,6 +12,7 @@ enum StorageKeys {
   appLink,
   wireguardPublicKey,
   wireguardPrivateKey,
+  openVpnPublicKey,
   codeChallenge,
   codeVerifier,
   vpnConfigConsent,

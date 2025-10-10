@@ -13,6 +13,7 @@ import 'package:mysterium_vpn/components/dialogs/marketing_consent_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/network_statistics.dart';
 
@@ -169,6 +170,36 @@ class QAToolbox extends HookConsumerWidget {
                 context,
                 desktopSize: screenType == ScreenType.desktop,
               ),
+            ),
+          ),
+          SettingItem(
+            asset: Asset.icons.settingsAdaptive(context),
+            title: 'Regenerate Wireguard keys',
+            subtitle: const EasyText('Will delete and regenerate Wireguard keys'),
+            actionWidget: TextButton.icon(
+              label: const EasyText('Remove'),
+              icon: const Icon(Icons.open_in_new),
+              onPressed: () {
+                ref.read(wireguradKeyServicePOD).regenerateWireguardKeys();
+                showSnackbar(
+                  'Wireguard keys regenerated',
+                );
+              },
+            ),
+          ),
+          SettingItem(
+            asset: Asset.icons.settingsAdaptive(context),
+            title: 'Regenerate OpenVpn keys',
+            subtitle: const EasyText('Will delete and regenerate OpenVpn keys'),
+            actionWidget: TextButton.icon(
+              label: const EasyText('Remove'),
+              icon: const Icon(Icons.open_in_new),
+              onPressed: () {
+                ref.read(openVpnKeyServicePOD).regenerateOpenVpnKeys();
+                showSnackbar(
+                  'OpenVpn keys regenerated',
+                );
+              },
             ),
           ),
           const SizedBox(height: 36),

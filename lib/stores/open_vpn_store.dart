@@ -25,7 +25,7 @@ import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/location/locations_service.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
-import 'package:mysterium_vpn/services/wiregurad/wiregurad_key_service.dart';
+import 'package:mysterium_vpn/services/wiregurad/openvpn_key_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/locations_query_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
@@ -40,7 +40,6 @@ import 'package:openvpn_dart/vpn_status.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
-import 'package:wireguard_dart/key_pair.dart';
 
 // Project imports:
 
@@ -63,7 +62,7 @@ abstract class _OpenVpnStore with Store implements IVpnStore {
     required RemoteConfigStore remoteConfigStore,
     required AuthSessionStore authSessionStore,
     required RealIPInfoStore realIPInfo,
-    required WireguradKeyService wireguardKeyService,
+    required OpenVpnKeyService openVpnKeyService,
     required RefreshIPStore refreshIPStore,
     required RecentLocationsStore recentLocationsStore,
     required LocationsQueryStore locationsQueryStore,
@@ -78,7 +77,7 @@ abstract class _OpenVpnStore with Store implements IVpnStore {
         _authSessionStore = authSessionStore,
         _realIPInfo = realIPInfo,
         _logger = logger,
-        _wireguardKeyService = wireguardKeyService,
+        _openVpnKeyService = openVpnKeyService,
         _refreshIPStore = refreshIPStore,
         _recentLocationsStore = recentLocationsStore,
         _locationsService = locationsService,
@@ -100,7 +99,7 @@ abstract class _OpenVpnStore with Store implements IVpnStore {
   final LocationsQueryStore _locationsQueryStore;
 
   final LocationsService _locationsService;
-  final WireguradKeyService _wireguardKeyService;
+  final OpenVpnKeyService _openVpnKeyService;
   final Talker _logger;
   final RefreshIPStore _refreshIPStore;
   final Stopwatch _stopwatch = Stopwatch();
@@ -123,7 +122,7 @@ abstract class _OpenVpnStore with Store implements IVpnStore {
 
   // TODO(Kristijan): Remove/Create service for openvpn
   @readonly
-  KeyPair? _openVpnKey;
+  String? _openVpnKey;
 
   @readonly
   VpnConnectionStatus _connectionStatus = VpnConnectionStatus.disconnected;
@@ -208,9 +207,8 @@ abstract class _OpenVpnStore with Store implements IVpnStore {
     return intents;
   }
 
-  @override
-  @computed
-  String? get publicKey => _openVpnKey?.publicKey;
+  @readonly
+  String? _publicKey;
 
   @override
   @computed
@@ -278,11 +276,10 @@ abstract class _OpenVpnStore with Store implements IVpnStore {
     }
   }
 
-  // TODO(Kristijan): Remove/Create service for openvpn
   @action
   Future<void> _initOpenVpndKey() async {
     try {
-      _openVpnKey = await _wireguardKeyService.getWireguradKey();
+      _openVpnKey = await _openVpnKeyService.getOpenVpnKey();
     } catch (e) {
       _logger.handle(e);
     }
@@ -406,12 +403,12 @@ abstract class _OpenVpnStore with Store implements IVpnStore {
   /// Notify the API that the user has disconnected from the VPN tunnel.
   Future<void> notifyApiVpnDisconnected() async {
     try {
-      if (_openVpnKey?.publicKey == null) {
+      if (_publicKey == null) {
         _logger.warning('OpenVPN key is not initialized, cannot disconnect');
         return;
       }
       await _apiService.disconnect(
-        publicKey: _openVpnKey!.publicKey,
+        publicKey: _publicKey!,
       );
     } catch (e) {
       _logger.handle(e);
@@ -588,7 +585,7 @@ abstract class _OpenVpnStore with Store implements IVpnStore {
     bool? refreshIP,
   ) async {
     try {
-      final key = _openVpnKey ?? await _wireguardKeyService.getWireguradKey();
+      final key = _openVpnKey ?? await _openVpnKeyService.getOpenVpnKey();
       final closestRegion = (intent?.requiresCluster ?? false)
           ? await _locationsService.closestRegion(location?.ipType ?? IPType.datacenter)
           : null;
@@ -601,7 +598,7 @@ abstract class _OpenVpnStore with Store implements IVpnStore {
       _fetchConfigFuture = ObservableFuture(
         _apiService.fetchOpenVpnConfig(
           request: OpenVpnConnectRequest(
-            publicKey: key.publicKey,
+            publicKey: key,
             countryOriginate: realIpInfo?.country,
             country:
                 intent == UserIntent.nearestLocation ? realIpInfo?.country : location?.countryCode,
