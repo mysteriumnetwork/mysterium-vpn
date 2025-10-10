@@ -18,8 +18,6 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 class ConnectionStatusBar extends HookConsumerWidget {
   const ConnectionStatusBar({super.key});
 
-  
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final horizontalPadding = useResponsiveValue<double>(

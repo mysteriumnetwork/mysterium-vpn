@@ -24,7 +24,7 @@ import 'package:styled_widget/styled_widget.dart';
 Future<void> shownDeleteAccountDialog(
   BuildContext context, {
   required AuthStore authStore,
-  required IVpnStore vpnStore,
+  required VpnStore vpnStore,
   required AnalyticsStore analyticsStore,
 }) async {
   analyticsStore.logEvent(AnalyticsEvent.deleteAccountPopup);
@@ -57,7 +57,7 @@ class _DeleteAccountDialog extends HookWidget {
 
   final AuthStore authStore;
   final AnalyticsStore analyticsStore;
-  final IVpnStore vpnStore;
+  final VpnStore vpnStore;
 
   @override
   Widget build(BuildContext context) {

@@ -10,8 +10,8 @@ import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:vpn_api/vpn_api.dart';
 
-abstract class IVpnStore extends VpnGuard {
-  IVpnStore({
+abstract class VpnStore extends VpnGuard {
+  VpnStore({
     required super.subscriptionStore,
     required super.authSessionStore,
   });

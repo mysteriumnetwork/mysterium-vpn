@@ -63,7 +63,7 @@ class HomePage extends HookConsumerWidget {
     );
   }
 
-  void connectionLimitAutorun(IVpnStore vpnStore, BuildContext context) {
+  void connectionLimitAutorun(VpnStore vpnStore, BuildContext context) {
     if ((vpnStore.limitExceeded) && vpnStore.vpnStatus == VpnConnectionStatus.connected) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         shownInfoDialog(

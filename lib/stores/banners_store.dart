@@ -25,7 +25,7 @@ abstract class _BannersStore with Store {
   final LocalDBService _localDBService;
   final SubscriptionStore _subscriptionStore;
   final AuthSessionStore _authSessionStore;
-  final IVpnStore _vpnStore;
+  final VpnStore _vpnStore;
   final UpdateAvailableStore _updateAvailableStore;
 
   /// User can dismiss the banner when unauthenticated

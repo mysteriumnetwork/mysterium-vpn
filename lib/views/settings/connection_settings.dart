@@ -181,7 +181,7 @@ class ConnectionSettings extends HookConsumerWidget {
   void _onConfirmResetApp({
     required BuildContext context,
     required AnalyticsStore analyticsStore,
-    required IVpnStore vpnStore,
+    required VpnStore vpnStore,
     required VoidCallback handleToggleConnection,
   }) {
     analyticsStore.logEvent(AnalyticsEvent.resetApp);
@@ -221,7 +221,7 @@ class ConnectionSettings extends HookConsumerWidget {
 
   Future<void> _onResetApp(
     BuildContext context,
-    IVpnStore vpnStore,
+    VpnStore vpnStore,
     AnalyticsStore analyticsStore, [
     VoidCallback? handleToggleConnection,
   ]) async {
