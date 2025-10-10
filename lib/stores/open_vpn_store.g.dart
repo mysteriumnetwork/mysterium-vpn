@@ -329,6 +329,14 @@ mixin _$OpenVpnStore on _OpenVpnStore, Store {
         .run(() => super._setupAndListenToConnectionStatus());
   }
 
+  late final _$_setConnectionStatusAsyncAction =
+      AsyncAction('_OpenVpnStore._setConnectionStatus', context: context);
+
+  @override
+  Future<void> _setConnectionStatus(VpnConnectionStatus status) {
+    return _$_setConnectionStatusAsyncAction.run(() => super._setConnectionStatus(status));
+  }
+
   late final _$setupTunnelAsyncAction = AsyncAction('_OpenVpnStore.setupTunnel', context: context);
 
   @override
@@ -424,20 +432,6 @@ mixin _$OpenVpnStore on _OpenVpnStore, Store {
   @override
   Future<void> _udpBlockedCheck() {
     return _$_udpBlockedCheckAsyncAction.run(() => super._udpBlockedCheck());
-  }
-
-  late final _$_OpenVpnStoreActionController =
-      ActionController(name: '_OpenVpnStore', context: context);
-
-  @override
-  void _setConnectionStatus(VpnConnectionStatus status) {
-    final _$actionInfo =
-        _$_OpenVpnStoreActionController.startAction(name: '_OpenVpnStore._setConnectionStatus');
-    try {
-      return super._setConnectionStatus(status);
-    } finally {
-      _$_OpenVpnStoreActionController.endAction(_$actionInfo);
-    }
   }
 
   @override
