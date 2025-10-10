@@ -109,56 +109,55 @@ class ConnectionTile extends HookConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    return Observer(
-      builder: (context) {
-        final ipInfo = vpnStore.vpnConnection?.connectionIP;
+    return _Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (location == null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: _Placeholder(
+                title: LocaleKeys.connectBestServer.tr(),
+                subtitle: LocaleKeys.orSelectCountryManually.tr(),
+                icon: Asset.icons.connectPrompt(context),
+              ),
+            )
+          else if (!isLocationAvailable)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: _Placeholder(
+                title: LocaleKeys.locationUnavailableTitle.tr(args: [location.getName(context)]),
+                subtitle: LocaleKeys.locationUnavailableSubtitle.tr(),
+                icon: Asset.icons.fix(context),
+              ),
+            )
+          else
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Observer(
+                builder: (context) {
+                  final ipInfo = vpnStore.vpnConnection?.connectionIP;
 
-        return _Card(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (location == null)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: _Placeholder(
-                    title: LocaleKeys.connectBestServer.tr(),
-                    subtitle: LocaleKeys.orSelectCountryManually.tr(),
-                    icon: Asset.icons.connectPrompt(context),
-                  ),
-                )
-              else if (!isLocationAvailable)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: _Placeholder(
-                    title:
-                        LocaleKeys.locationUnavailableTitle.tr(args: [location.getName(context)]),
-                    subtitle: LocaleKeys.locationUnavailableSubtitle.tr(),
-                    icon: Asset.icons.fix(context),
-                  ),
-                )
-              else
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: _Location(
+                  return _Location(
                     location: location,
                     parent: parent,
                     ip: ipInfo,
                     onRefreshIPPressed: () => handleRefreshIP(ipInfo),
-                  ),
-                ),
-              ConnectTextButton(
-                onPressed: onTap,
-                location: targetLocation,
-                size: const Size(double.infinity, 42),
-                textConnect:
-                    targetLocation != location ? LocaleKeys.locationUnavailableAction.tr() : null,
+                  );
+                },
               ),
-              if (isConnected ?? false) const SizedBox(height: 16),
-              if (isConnected ?? false) _RateConnection(),
-            ],
+            ),
+          ConnectTextButton(
+            onPressed: onTap,
+            location: targetLocation,
+            size: const Size(double.infinity, 42),
+            textConnect:
+                targetLocation != location ? LocaleKeys.locationUnavailableAction.tr() : null,
           ),
-        );
-      },
+          if (isConnected ?? false) const SizedBox(height: 16),
+          if (isConnected ?? false) _RateConnection(),
+        ],
+      ),
     );
   }
 }
