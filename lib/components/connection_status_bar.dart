@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/vpn_connection_status.dart';
@@ -27,20 +28,8 @@ class ConnectionStatusBar extends HookConsumerWidget {
     );
 
     final vpnStore = ref.watch(vpnStorePOD);
-    final connectionStatus = useComputedValue(() => vpnStore.vpnStatus);
-    final isFetchingConfig = useComputedValue(() => vpnStore.isFetchingConfig);
     final isExpanded = useState(false);
     final statusColor = useConnectionStatusColor();
-
-    final handleToggleExpanded = useMemoized(
-      () {
-        if (connectionStatus != VpnConnectionStatus.connected) {
-          return null;
-        }
-        return () => isExpanded.value = !isExpanded.value;
-      },
-      [connectionStatus, isExpanded],
-    );
 
     useReaction(
       () => vpnStore.vpnStatus,
@@ -48,65 +37,71 @@ class ConnectionStatusBar extends HookConsumerWidget {
       keys: [isExpanded],
     );
 
-    return RawMaterialButton(
-      onPressed: handleToggleExpanded,
-      elevation: 0,
-      hoverElevation: 0,
-      highlightElevation: 0,
-      focusElevation: 0,
-      highlightColor: Colors.transparent,
-      focusColor: Colors.transparent,
-      hoverColor: Colors.transparent,
-      fillColor: statusColor,
-      splashColor: Palette.white.withValues(alpha: .2),
-      visualDensity: VisualDensity.compact,
-      clipBehavior: Clip.antiAlias,
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Stack(
-                children: [
-                  Row(
-                    spacing: 6,
-                    mainAxisAlignment: MainAxisAlignment.center,
+    return Observer(
+      builder: (context) {
+        final connectionStatus = vpnStore.vpnStatus;
+        final isFetchingConfig = vpnStore.isFetchingConfig;
+        return RawMaterialButton(
+          onPressed: () => _handleToggleExpanded(connectionStatus, isExpanded),
+          elevation: 0,
+          hoverElevation: 0,
+          highlightElevation: 0,
+          focusElevation: 0,
+          highlightColor: Colors.transparent,
+          focusColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+          fillColor: statusColor,
+          splashColor: Palette.white.withValues(alpha: .2),
+          visualDensity: VisualDensity.compact,
+          clipBehavior: Clip.antiAlias,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Stack(
                     children: [
-                      _statusIcon(connectionStatus, isFetchingConfig),
-                      Flexible(
-                        child: EasyText(
-                          _statusText(connectionStatus, isFetchingConfig),
-                          color: Palette.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14,
-                          textAlign: TextAlign.center,
-                        ),
+                      Row(
+                        spacing: 6,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _statusIcon(connectionStatus, isFetchingConfig),
+                          Flexible(
+                            child: EasyText(
+                              _statusText(connectionStatus, isFetchingConfig),
+                              color: Palette.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
                       ),
+                      if (connectionStatus == VpnConnectionStatus.connected)
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          bottom: 0,
+                          child: Center(
+                            child: _ToggleExpandIndicator(value: isExpanded.value),
+                          ),
+                        ),
                     ],
                   ),
-                  if (handleToggleExpanded != null)
-                    Positioned(
-                      right: 0,
-                      top: 0,
-                      bottom: 0,
-                      child: Center(
-                        child: _ToggleExpandIndicator(value: isExpanded.value),
-                      ),
-                    ),
-                ],
-              ),
+                ),
+                AnimatedSize(
+                  alignment: Alignment.topCenter,
+                  duration: const Duration(milliseconds: 150),
+                  child: !isExpanded.value ? const SizedBox.shrink() : const _Expanded(),
+                ),
+              ],
             ),
-            AnimatedSize(
-              alignment: Alignment.topCenter,
-              duration: const Duration(milliseconds: 150),
-              child: !isExpanded.value ? const SizedBox.shrink() : const _Expanded(),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -145,6 +140,13 @@ class ConnectionStatusBar extends HookConsumerWidget {
       VpnConnectionStatus.disconnecting => const LoadingIndicator(radius: 16),
       _ => const SizedBox.shrink(),
     };
+  }
+
+  void _handleToggleExpanded(VpnConnectionStatus connectionStatus, ValueNotifier<bool> isExpanded) {
+    if (connectionStatus != VpnConnectionStatus.connected) {
+      return;
+    }
+    isExpanded.value = !isExpanded.value;
   }
 }
 
