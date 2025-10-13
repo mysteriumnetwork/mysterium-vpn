@@ -7,8 +7,26 @@ import NetworkExtension
 import OpenVPNAdapter
 import os.log
 
-extension NEPacketTunnelFlow: OpenVPNAdapterPacketFlow {}
+// MARK: - Wrapper for NEPacketTunnelFlow
+class PacketFlowWrapper: OpenVPNAdapterPacketFlow {
+    private let flow: NEPacketTunnelFlow
 
+    init(flow: NEPacketTunnelFlow) {
+        self.flow = flow
+    }
+
+    func readPackets(completionHandler: @escaping ([Data], [NSNumber]) -> Void) {
+        flow.readPackets { packets, protocols in
+            completionHandler(packets, protocols)
+        }
+    }
+
+    func writePackets(_ packets: [Data], withProtocols protocols: [NSNumber]) {
+        flow.writePackets(packets, withProtocols: protocols)
+    }
+}
+
+// MARK: - PacketTunnelProvider
 class PacketTunnelProvider: NEPacketTunnelProvider {
 
     static let vpnLog = OSLog(subsystem: "com.mysteriumvpn.OVpnExtension", category: "VPN")
@@ -75,7 +93,10 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         }
         
         startHandler = completionHandler
-        vpnAdapter.connect(using: packetFlow)
+        
+        // Wrap packetFlow in the wrapper
+        let wrapperFlow = PacketFlowWrapper(flow: packetFlow)
+        vpnAdapter.connect(using: wrapperFlow)
         os_log("[VPN] OpenVPNAdapter connecting...", log: PacketTunnelProvider.vpnLog, type: .info)
     }
     
@@ -115,6 +136,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     }
 }
 
+// MARK: - OpenVPNAdapterDelegate
 extension PacketTunnelProvider: OpenVPNAdapterDelegate {
     
     func openVPNAdapter(_ openVPNAdapter: OpenVPNAdapter,
