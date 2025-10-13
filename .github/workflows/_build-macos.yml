@@ -60,7 +60,6 @@ jobs:
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
-          # Fetch signing certificates for App Store only
           app-store-connect fetch-signing-files "${{ inputs.bundle_id }}" \
             --platform MAC_OS \
             --type MAC_APP_STORE \
@@ -91,10 +90,21 @@ jobs:
             --flavor "${{ inputs.flavor }}" \
             --dart-define-from-file="${{ inputs.env_file }}"
 
-      - name: Build unsigned macOS installer (App Store does not require local signing)
+      - name: Build signed macOS installer
         working-directory: build/macos/Build/Products/Release-${{ inputs.flavor }}
         run: |
-          xcrun productbuild --component "${{ inputs.product_name }}.app" /Applications/ "${{ inputs.product_name }}.pkg"
+          # Pick 3rd Party Mac Developer Installer certificate
+          INSTALLER_CERT=$(security find-identity -v -p codesigning | grep "3rd Party Mac Developer Installer" | head -n1 | awk -F '"' '{print $2}')
+          echo "Using installer certificate: $INSTALLER_CERT"
+
+          # Build unsigned pkg
+          xcrun productbuild --component "${{ inputs.product_name }}.app" /Applications/ unsigned.pkg
+
+          # Sign the pkg with the correct certificate
+          xcrun productsign --sign "$INSTALLER_CERT" unsigned.pkg "${{ inputs.product_name }}.pkg"
+
+          # Verify signature
+          pkgutil --check-signature "${{ inputs.product_name }}.pkg"
 
       - name: Publish to Apple Store
         env:
