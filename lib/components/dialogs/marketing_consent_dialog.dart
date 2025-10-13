@@ -175,6 +175,7 @@ class _CloseButton extends StatelessWidget {
     }
 
     return SvgIconButton(
+      key: Keys.marketingConsentDeclineButton,
       asset: Asset.icons.close2(context),
       onPressed: handleCancel,
       size: 32,
