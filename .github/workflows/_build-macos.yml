@@ -25,7 +25,7 @@ on:
 
 jobs:
   release:
-    name: Build & Publish
+    name: Build & Publish (App Store Only)
     runs-on: macos-14
 
     steps:
@@ -61,31 +61,26 @@ jobs:
           keychain initialize
           keychain get-default
 
-      - name: Fetch signing files
+      - name: Fetch App Store signing files
         env:
           APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
-          app-store-connect fetch-signing-files "${{ inputs.bundle_id }}" --platform MAC_OS --type MAC_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
-          keychain add-certificates
-
-      - name: Fetch Installer Distribution certificates
-        env:
-          APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
-          APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
-          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
-        run: |
-          app-store-connect certificates list --type MAC_INSTALLER_DISTRIBUTION --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --save \
-          || app-store-connect certificates create --type MAC_INSTALLER_DISTRIBUTION --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --save
+          # Fetch signing certificates for App Store only
+          app-store-connect fetch-signing-files "${{ inputs.bundle_id }}" \
+            --platform MAC_OS \
+            --type MAC_APP_STORE \
+            --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" \
+            --create
           keychain add-certificates
 
       - name: Set up signing preferences on Xcode project
         run: |
           keychain list-certificates
-          xcode-project use-profiles --project macos/Runner.xcodeproj --export-options-plist macos/export_options.plist
-          git status
-          git diff
+          xcode-project use-profiles \
+            --project macos/Runner.xcodeproj \
+            --export-options-plist macos/export_options.plist
 
       - name: Install dependencies
         run: make init
@@ -96,35 +91,17 @@ jobs:
           git diff
 
       - name: Build macOS app
-        run: fvm flutter build macos --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define-from-file="${{ inputs.env_file }}"
+        run: |
+          fvm flutter build macos \
+            --no-pub \
+            --release \
+            --flavor "${{ inputs.flavor }}" \
+            --dart-define-from-file="${{ inputs.env_file }}"
 
-      # ✅ Improved Signing + Bonus Diagnostic Section
-      - name: Build macOS installer
+      - name: Build unsigned macOS installer (App Store does not require local signing)
         working-directory: build/macos/Build/Products/Release-${{ inputs.flavor }}
         run: |
-          echo "🔐 Unlocking keychain..."
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$(keychain get-default)"
-
-          echo "📋 Available identities:"
-          security find-identity -v -p codesigning
-
-          echo "📦 Creating unsigned installer..."
-          xcrun productbuild --component "${{ inputs.product_name }}.app" /Applications/ unsigned.pkg
-
-          echo "🔍 Detecting correct signing identity..."
-          SIGN_IDENTITY=$(keychain list-certificates | jq '[.[] | select(.common_name | test("Developer ID Installer|3rd Party Mac Developer Installer")) | .common_name][0]' | xargs)
-
-          if [ -z "$SIGN_IDENTITY" ]; then
-            echo "❌ No suitable Mac Installer signing identity found."
-            echo "Please ensure a 'Developer ID Installer' or '3rd Party Mac Developer Installer' certificate is installed."
-            exit 1
-          fi
-
-          echo "✅ Using signing identity: $SIGN_IDENTITY"
-          xcrun productsign --sign "$SIGN_IDENTITY" unsigned.pkg "Mysterium VPN.pkg"
-
-          echo "🔏 Verifying signature..."
-          pkgutil --check-signature "Mysterium VPN.pkg"
+          xcrun productbuild --component "${{ inputs.product_name }}.app" /Applications/ "${{ inputs.product_name }}.pkg"
 
       - name: Publish to Apple Store
         env:
@@ -132,9 +109,11 @@ jobs:
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
-          app-store-connect publish --path "build/macos/Build/Products/Release-${{ inputs.flavor }}/Mysterium VPN.pkg" --platform MAC_OS
+          app-store-connect publish \
+            --path "build/macos/Build/Products/Release-${{ inputs.flavor }}/${{ inputs.product_name }}.pkg" \
+            --platform MAC_OS
 
-      - name: Post Set up keychain
+      - name: Clean up keychain
         if: always()
         run: |
           keychain delete
