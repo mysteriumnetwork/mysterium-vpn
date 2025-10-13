@@ -24,12 +24,10 @@ on:
         default: ".env.dev"
 
 jobs:
-  # macOS Build
-  # Based on documentation https://docs.flutter.dev/deployment/macos#create-a-build-archive-with-codemagic-cli-tools
-  # And tutorial https://docs.codemagic.io/yaml-quick-start/building-a-flutter-app/#code-signing
   release:
-    name: Build & Publish
+    name: Build & Publish (App Store Only)
     runs-on: macos-14
+
     steps:
       - uses: actions/checkout@v4
 
@@ -56,34 +54,26 @@ jobs:
           keychain initialize
           keychain get-default
 
-      # Signing files are imported to keychain from:
-      #  ls -la ~/Library/MobileDevice/Provisioning\ Profiles
-      #  ls -la ~/Library/MobileDevice/Certificates/
-      - name: Fetch signing files
+      - name: Fetch App Store signing files
         env:
           APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
-          app-store-connect fetch-signing-files "${{ inputs.bundle_id }}" --platform MAC_OS --type MAC_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
-          keychain add-certificates
-
-      - name: Fetch Installer Distribution certificates
-        env:
-          APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
-          APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
-          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
-        run: |
-          app-store-connect certificates list --type MAC_INSTALLER_DISTRIBUTION --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --save \
-          || app-store-connect certificates create --type MAC_INSTALLER_DISTRIBUTION --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --save
+          # Fetch signing certificates for App Store only
+          app-store-connect fetch-signing-files "${{ inputs.bundle_id }}" \
+            --platform MAC_OS \
+            --type MAC_APP_STORE \
+            --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" \
+            --create
           keychain add-certificates
 
       - name: Set up signing preferences on Xcode project
         run: |
           keychain list-certificates
-          xcode-project use-profiles --project macos/Runner.xcodeproj --export-options-plist macos/export_options.plist
-          git status
-          git diff
+          xcode-project use-profiles \
+            --project macos/Runner.xcodeproj \
+            --export-options-plist macos/export_options.plist
 
       - name: Install dependencies
         run: make init
@@ -94,24 +84,31 @@ jobs:
           git diff
 
       - name: Build macOS app
-        run: fvm flutter build macos --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define-from-file="${{ inputs.env_file }}"
-
-      - name: Build macOS installer
         run: |
-          xcrun productbuild --component "${{ inputs.product_name }}.app" /Applications/ unsigned.pkg
-          xcrun productsign --sign "$(keychain list-certificates | jq '[.[] | select(.common_name | contains("Mac Developer Installer")) | .common_name][0]' | xargs)" unsigned.pkg "Mysterium VPN.pkg"
+          fvm flutter build macos \
+            --no-pub \
+            --release \
+            --flavor "${{ inputs.flavor }}" \
+            --dart-define-from-file="${{ inputs.env_file }}"
+
+      - name: Build unsigned macOS installer (App Store does not require local signing)
         working-directory: build/macos/Build/Products/Release-${{ inputs.flavor }}
+        run: |
+          xcrun productbuild --component "${{ inputs.product_name }}.app" /Applications/ "${{ inputs.product_name }}.pkg"
 
       - name: Publish to Apple Store
         env:
           APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
-        run: app-store-connect publish --path "build/macos/Build/Products/Release-${{ inputs.flavor }}/Mysterium VPN.pkg" --platform MAC_OS
+        run: |
+          app-store-connect publish \
+            --path "build/macos/Build/Products/Release-${{ inputs.flavor }}/${{ inputs.product_name }}.pkg" \
+            --platform MAC_OS
 
-      - name: Post Set up keychain
+      - name: Clean up keychain
+        if: always()
         run: |
           keychain delete
           keychain use-login
           keychain list-certificates
-        if: always()
