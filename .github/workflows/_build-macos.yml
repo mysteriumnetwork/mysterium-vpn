@@ -67,12 +67,22 @@ jobs:
             --create
           keychain add-certificates
 
+      - name: Fetch Installer Distribution certificates
+        env:
+          APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
+        run: |
+          app-store-connect certificates list --type MAC_INSTALLER_DISTRIBUTION --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --save \
+          || app-store-connect certificates create --type MAC_INSTALLER_DISTRIBUTION --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --save
+          keychain add-certificates
+
       - name: Set up signing preferences on Xcode project
         run: |
           keychain list-certificates
-          xcode-project use-profiles \
-            --project macos/Runner.xcodeproj \
-            --export-options-plist macos/export_options.plist
+          xcode-project use-profiles --project macos/Runner.xcodeproj --export-options-plist macos/export_options.plist
+          git status
+          git diff
 
       - name: Install dependencies
         run: make init
@@ -92,61 +102,39 @@ jobs:
 
       - name: Build signed macOS installer
         working-directory: build/macos/Build/Products/Release-${{ inputs.flavor }}
-        env:
-          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-          CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
-          CERT_P12: ${{ secrets.CERT_P12 }} # base64-encoded P12 of 3rd Party Mac Developer Installer
         run: |
           set -euo pipefail
-          echo "=== Starting macOS installer build ==="
+          echo "=== Building macOS installer ==="
 
-          # --- Setup temporary keychain ---
-          echo "Creating temporary keychain..."
-          security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
-          security list-keychains -s ~/Library/Keychains/build.keychain
-
-          # --- Import certificate ---
-          echo "Importing installer certificate..."
-          echo "$CERT_P12" | base64 --decode > installer_cert.p12
-          security import installer_cert.p12 -k ~/Library/Keychains/build.keychain -P "$CERT_PASSWORD" -T /usr/bin/codesign
-          rm installer_cert.p12
-
-          # --- Verify certificates installed ---
-          echo "Listing installer certificates..."
-          security find-identity -v -p installer
-
-          # --- Pick 3rd Party Mac Developer Installer certificate ---
-          INSTALLER_CERT=$(security find-identity -v -p installer | grep "3rd Party Mac Developer Installer" | head -n1 | awk -F '"' '{print $2}')
-          echo "Installer certificate selected: '$INSTALLER_CERT'"
-
-          if [ -z "$INSTALLER_CERT" ]; then
-            echo "ERROR: No 3rd Party Mac Developer Installer certificate found!"
-            exit 1
-          fi
-
-          # --- Build unsigned pkg ---
+          # Build unsigned pkg
           echo "Building unsigned pkg..."
           xcrun productbuild --component "${{ inputs.product_name }}.app" /Applications/ unsigned.pkg
+          if [ ! -f unsigned.pkg ]; then
+            echo "ERROR: unsigned.pkg not created!"
+            exit 1
+          fi
           echo "Unsigned pkg created."
 
-          # --- Verify unsigned pkg exists ---
-          if [ ! -f unsigned.pkg ]; then
-            echo "ERROR: unsigned.pkg was not created!"
+          # Find 3rd Party Mac Developer Installer certificate
+          INSTALLER_CERT=$(keychain list-certificates | jq -r '[.[] | select(.common_name | test("Mac.*Installer")) | .common_name][0]')
+          echo "Installer certificate selected: '$INSTALLER_CERT'"
+
+          if [ -z "$INSTALLER_CERT" ] || [ "$INSTALLER_CERT" = "null" ]; then
+            echo "ERROR: No 3rd Party Mac Developer Installer certificate found!"
+            keychain list-certificates
             exit 1
           fi
 
-          # --- Sign the pkg ---
-          echo "Signing pkg with certificate..."
+          # Sign pkg
+          echo "Signing pkg..."
           xcrun productsign --sign "$INSTALLER_CERT" unsigned.pkg "${{ inputs.product_name }}.pkg"
 
-          # --- Verify signed pkg exists ---
           if [ ! -f "${{ inputs.product_name }}.pkg" ]; then
-            echo "ERROR: Signed pkg was not created!"
+            echo "ERROR: Signed pkg not created!"
             exit 1
           fi
 
-          # --- Verify signature ---
+          # Verify signature
           echo "Verifying pkg signature..."
           pkgutil --check-signature "${{ inputs.product_name }}.pkg"
 
