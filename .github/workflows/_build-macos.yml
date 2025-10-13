@@ -67,7 +67,6 @@ jobs:
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
-          # Fetch signing certificates for App Store only
           app-store-connect fetch-signing-files "${{ inputs.bundle_id }}" \
             --platform MAC_OS \
             --type MAC_APP_STORE \
@@ -75,12 +74,27 @@ jobs:
             --create
           keychain add-certificates
 
+      - name: Fetch or create Installer Distribution certificate
+        env:
+          APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
+        run: |
+          echo "Checking for existing Mac Installer Distribution certificate..."
+          if ! app-store-connect certificates list --type MAC_INSTALLER_DISTRIBUTION --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --save | grep -q "Apple"; then
+            echo "No Installer certificate found, creating one..."
+            app-store-connect certificates create --type MAC_INSTALLER_DISTRIBUTION --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --save
+          fi
+          keychain add-certificates
+          echo "Installed certificates in keychain:"
+          keychain list-certificates
+
       - name: Set up signing preferences on Xcode project
         run: |
           keychain list-certificates
-          xcode-project use-profiles \
-            --project macos/Runner.xcodeproj \
-            --export-options-plist macos/export_options.plist
+          xcode-project use-profiles --project macos/Runner.xcodeproj --export-options-plist macos/export_options.plist
+          git status
+          git diff
 
       - name: Install dependencies
         run: make init
@@ -98,10 +112,42 @@ jobs:
             --flavor "${{ inputs.flavor }}" \
             --dart-define-from-file="${{ inputs.env_file }}"
 
-      - name: Build unsigned macOS installer (App Store does not require local signing)
+      - name: Build signed macOS installer
         working-directory: build/macos/Build/Products/Release-${{ inputs.flavor }}
         run: |
-          xcrun productbuild --component "${{ inputs.product_name }}.app" /Applications/ "${{ inputs.product_name }}.pkg"
+          set -euo pipefail
+          echo "=== Building macOS installer ==="
+
+          echo "Building unsigned pkg..."
+          xcrun productbuild --component "${{ inputs.product_name }}.app" /Applications/ unsigned.pkg
+          if [ ! -f unsigned.pkg ]; then
+            echo "ERROR: unsigned.pkg not created!"
+            exit 1
+          fi
+          echo "Unsigned pkg created."
+
+          echo "Selecting Mac Installer Distribution certificate..."
+          INSTALLER_CERT=$(keychain list-certificates | jq -r '[.[] | select(.common_name | test("Mac.*Installer")) | .common_name][0]')
+          echo "Installer certificate selected: '$INSTALLER_CERT'"
+
+          if [ -z "$INSTALLER_CERT" ] || [ "$INSTALLER_CERT" = "null" ]; then
+            echo "ERROR: No Mac Installer Distribution certificate found!"
+            keychain list-certificates
+            exit 1
+          fi
+
+          echo "Signing pkg..."
+          xcrun productsign --sign "$INSTALLER_CERT" unsigned.pkg "${{ inputs.product_name }}.pkg"
+
+          if [ ! -f "${{ inputs.product_name }}.pkg" ]; then
+            echo "ERROR: Signed pkg not created!"
+            exit 1
+          fi
+
+          echo "Verifying pkg signature..."
+          pkgutil --check-signature "${{ inputs.product_name }}.pkg"
+
+          echo "=== macOS installer build complete ==="
 
       - name: Publish to Apple Store
         env:
