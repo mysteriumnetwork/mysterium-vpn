@@ -120,4 +120,12 @@ abstract class _AuthSessionStore with Store {
     await _secureStorage.removeUserId();
     await _secureStorage.removeUsername();
   }
+
+  Future<void> invalidateAccessToken() async {
+    _accessTokenFuture = _accessTokenFuture.replace(() async {
+      await _secureStorage.saveAccessToken('invalid');
+      return _secureStorage.getAccessToken();
+    }());
+    await _accessTokenFuture;
+  }
 }
