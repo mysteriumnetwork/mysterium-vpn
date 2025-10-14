@@ -76,14 +76,20 @@ void main() {
       expect(dislikeModeStore.showReasons, RateConnectionReason.dislikeReasons);
     });
 
-    test('submitRateConnection does nothing if vpnConnection is null (like)', () async {
-      await likeModeStore.submitRateConnection();
+    test('submitRateConnection throws if vpnConnection is null (like)', () async {
+      await expectLater(
+        likeModeStore.submitRateConnection(),
+        throwsAssertionError,
+      );
       verifyNever(mockAnalyticsStore.logEvent(any));
       verifyNever(mockApiService.rateConnection(request: anyNamed('request')));
     });
 
-    test('submitRateConnection does nothing if vpnConnection is null (dislike)', () async {
-      await dislikeModeStore.submitRateConnection();
+    test('submitRateConnection throws if vpnConnection is null (dislike)', () async {
+      await expectLater(
+        dislikeModeStore.submitRateConnection(),
+        throwsAssertionError,
+      );
       verifyNever(mockAnalyticsStore.logEvent(any));
       verifyNever(mockApiService.rateConnection(request: anyNamed('request')));
     });
@@ -129,7 +135,6 @@ void main() {
           ),
         ),
       ).called(1);
-      expect(likeModeStore.submitRateConnectionFuture, isNotNull);
     });
 
     test('submitRateConnection calls api and logs analytics no reasons', () async {
@@ -171,7 +176,6 @@ void main() {
           ),
         ),
       ).called(1);
-      expect(likeModeStore.submitRateConnectionFuture, isNotNull);
     });
 
     test('submitRateConnection completes with error if api throws', () async {
@@ -194,8 +198,6 @@ void main() {
 
       // Act & Assert
       await expectLater(likeModeStore.submitRateConnection(), throwsA(isA<Exception>()));
-      expect(likeModeStore.submitRateConnectionFuture, isNotNull);
-      await expectLater(likeModeStore.submitRateConnectionFuture, throwsA(isA<Exception>()));
     });
 
     test('cancelRateConnection logs analytics event', () {
