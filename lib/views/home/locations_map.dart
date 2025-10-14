@@ -166,7 +166,7 @@ List<Marker> _useLocationMarkers({
             }
 
             final isActive = activeLocation?.id == it.id;
-            final size = isActive ? const Size.square(42) : const Size.square(16);
+            final size = isActive ? const Size.square(56) : const Size.square(32);
 
             return Marker(
               point: point,
