@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/exceptions/unavailable_location_exception.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
@@ -33,6 +34,7 @@ import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
 import 'package:mysterium_vpn/stores/recent_locations_store.dart';
 import 'package:mysterium_vpn/stores/refresh_ip_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
+import 'package:mysterium_vpn/stores/unavailable_locations_store.dart';
 import 'package:mysterium_vpn/stores/vpn/i_vpn.dart';
 import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:openvpn_dart/vpn_status.dart';
@@ -65,6 +67,7 @@ abstract class _OpenVpnStore extends VpnStore with Store {
     required RefreshIPStore refreshIPStore,
     required RecentLocationsStore recentLocationsStore,
     required LocationsQueryStore locationsQueryStore,
+    required UnavailableLocationsStore unavailableLocationsStore,
   })  : _apiService = apiService,
         _externalApiService = externalApiService,
         _mqtt = mqtt,
@@ -79,7 +82,8 @@ abstract class _OpenVpnStore extends VpnStore with Store {
         _refreshIPStore = refreshIPStore,
         _recentLocationsStore = recentLocationsStore,
         _locationsService = locationsService,
-        _locationsQueryStore = locationsQueryStore {
+        _locationsQueryStore = locationsQueryStore,
+        _unavailableLocationsStore = unavailableLocationsStore {
     _init();
   }
 
@@ -94,6 +98,7 @@ abstract class _OpenVpnStore extends VpnStore with Store {
   final RealIPInfoStore _realIPInfo;
   final RecentLocationsStore _recentLocationsStore;
   final LocationsQueryStore _locationsQueryStore;
+  final UnavailableLocationsStore _unavailableLocationsStore;
 
   final LocationsService _locationsService;
   final OpenVpnKeyService _openVpnKeyService;
@@ -529,15 +534,21 @@ abstract class _OpenVpnStore extends VpnStore with Store {
           : e is ApiException
               ? e.code
               : 1113;
-      final errorMessage = errorCode == 4029
-          ? LocaleKeys.toManyRequestsErrorMsg.tr()
-          : LocaleKeys.failedToConnectError.tr(
-              namedArgs: {
-                'errorCode': errorCode.toString(),
-              },
-            );
 
-      showSnackbar(errorMessage);
+      final errorMessage = switch (e) {
+        final UnavailableLocationException _ => null,
+        _ => errorCode == 4029
+            ? LocaleKeys.toManyRequestsErrorMsg.tr()
+            : LocaleKeys.failedToConnectError.tr(
+                namedArgs: {
+                  'errorCode': errorCode.toString(),
+                },
+              ),
+      };
+
+      if (errorMessage != null) {
+        showSnackbar(errorMessage);
+      }
       _analyticsStore.logConnectFailure(
         time: _stopwatch.elapsed,
         error: e.toString(),
@@ -587,7 +598,15 @@ abstract class _OpenVpnStore extends VpnStore with Store {
           ),
         ),
       );
-      _vpnConfig = await _fetchConfigFuture;
+      try {
+        _vpnConfig = await _fetchConfigFuture;
+      } on ApiException catch (e) {
+        if (e.code == 2332 && location != null) {
+          _unavailableLocationsStore.toggleAvailability(location, availability: false);
+          throw UnavailableLocationException(location);
+        }
+        rethrow;
+      }
       await _recentLocationsStore.future;
 
       final locationId = _vpnConfig?.city ?? _vpnConfig?.country;
