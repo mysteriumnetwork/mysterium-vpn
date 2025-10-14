@@ -172,6 +172,7 @@ final openVpnStorePOD = Provider<OpenVpnStore>((ref) {
   final locationsQueryStore = ref.watch(locationsQueryStorePOD);
   final recentLocationsStore = ref.watch(recentLocationsStorePOD);
   final locationsService = ref.watch(locationsServicePOD);
+  final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
   return OpenVpnStore(
     apiService: apiService,
     externalApiService: externalApiService,
@@ -189,6 +190,7 @@ final openVpnStorePOD = Provider<OpenVpnStore>((ref) {
     locationsQueryStore: locationsQueryStore,
     recentLocationsStore: recentLocationsStore,
     locationsService: locationsService,
+    unavailableLocationsStore: unavailableLocationsStore,
   );
 });
 
