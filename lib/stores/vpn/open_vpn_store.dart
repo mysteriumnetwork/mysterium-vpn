@@ -176,7 +176,7 @@ abstract class _OpenVpnStore extends VpnStore with Store {
       ...?_locationsStore.residentialLocationsFuture.value?.allLocations,
     ];
 
-    if (all.isEmpty) {
+    if (all.isNotEmpty) {
       return VPNLocation.closest;
     }
 
