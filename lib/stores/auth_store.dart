@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
+import 'package:mysterium_vpn/common/utils/disposeable.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -35,7 +36,7 @@ part 'auth_store.g.dart';
 // ignore: library_private_types_in_public_api
 class AuthStore = _AuthStore with _$AuthStore;
 
-abstract class _AuthStore with Store {
+abstract class _AuthStore with Store, Disposeable {
   _AuthStore({
     required AuthService authService,
     required AuthSessionStore authSessionStore,
@@ -52,6 +53,17 @@ abstract class _AuthStore with Store {
         _logger = logger,
         _abTestingStore = abTestingStore {
     refreshTokenCallback = refreshAuthToken;
+    _userReactionDisposer = reaction(
+      (_) => authSessionStore.user,
+      (user) {
+        if (user != null) {
+          _localDb.setUser(user);
+        } else {
+          _localDb.clearUser();
+        }
+      },
+      fireImmediately: true,
+    );
   }
 
   final AuthService _authService;
@@ -63,6 +75,7 @@ abstract class _AuthStore with Store {
   final Talker _logger;
   final ABTestingStore _abTestingStore;
   final UserPreferencesStore _userPreferencesStore;
+  late final ReactionDisposer _userReactionDisposer;
 
   @readonly
   PkcePair? _pkcePair;
@@ -384,5 +397,10 @@ abstract class _AuthStore with Store {
 
       rethrow;
     }
+  }
+
+  @override
+  void dispose() {
+    _userReactionDisposer();
   }
 }
