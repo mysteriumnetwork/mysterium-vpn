@@ -58,7 +58,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final logger = ref.watch(loggerPOD);
   final abTestingStore = ref.watch(abTestingStorePOD);
 
-  return AuthStore(
+  final store = AuthStore(
     authService: authService,
     userPreferencesStore: userPreferencesStore,
     authSessionStore: authSessionStore,
@@ -67,6 +67,10 @@ final authStorePOD = Provider<AuthStore>((ref) {
     logger: logger,
     abTestingStore: abTestingStore,
   );
+
+  ref.onDispose(store.dispose);
+
+  return store;
 });
 
 final apiStorePOD = Provider<ApiStore>((ref) {
