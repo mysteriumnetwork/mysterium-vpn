@@ -28,6 +28,7 @@ class QAToolbox extends HookConsumerWidget {
     final locationsStore = ref.read(locationsStorePOD);
     final recentLocationsStore = ref.read(recentLocationsStorePOD);
     final vpnStore = ref.read(vpnStorePOD);
+    final sessionStore = ref.read(authSessionStorePOD);
     final screenType = useScreenType();
     return Observer(
       builder: (context) => Column(
@@ -190,6 +191,19 @@ class QAToolbox extends HookConsumerWidget {
                 onDismiss: (context) => Navigator.of(context).pop(),
                 onRetry: (context) => Navigator.of(context).pop(),
               ),
+            ),
+          ),
+          SettingItem(
+            asset: Asset.icons.settingsAdaptive(context),
+            title: 'Invalidate access token',
+            subtitle: const EasyText('For testing if token refreshes correctly'),
+            actionWidget: TextButton.icon(
+              label: const EasyText('Show'),
+              icon: const Icon(Icons.open_in_new),
+              onPressed: () async {
+                await sessionStore.invalidateAccessToken();
+                showSnackbar('Access token invalidated');
+              },
             ),
           ),
           const SizedBox(height: 36),
