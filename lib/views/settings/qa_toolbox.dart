@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,9 +11,11 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/analytics_logger_overlay.dart';
 import 'package:mysterium_vpn/components/analytics_user_properties_overlay.dart';
 import 'package:mysterium_vpn/components/dialogs/marketing_consent_dialog.dart';
+import 'package:mysterium_vpn/components/dialogs/retry_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/network_statistics.dart';
 
@@ -168,6 +171,24 @@ class QAToolbox extends HookConsumerWidget {
               onPressed: () => showMarketingConsentDialog(
                 context,
                 desktopSize: screenType == ScreenType.desktop,
+              ),
+            ),
+          ),
+          SettingItem(
+            asset: Asset.icons.settingsAdaptive(context),
+            title: 'Show retry verification dialog',
+            subtitle: const EasyText('Will show the retry verification for subscription'),
+            actionWidget: TextButton.icon(
+              label: const EasyText('Show'),
+              icon: const Icon(Icons.open_in_new),
+              onPressed: () => showRetryDialog(
+                context: context,
+                asset: Asset.icons.subscription,
+                title: LocaleKeys.subscriptionVerificationFailed.tr(),
+                subtitle: LocaleKeys.failedToVerifySubs.tr(),
+                dismissText: LocaleKeys.cancelBtn.tr(),
+                onDismiss: (context) => Navigator.of(context).pop(),
+                onRetry: (context) => Navigator.of(context).pop(),
               ),
             ),
           ),
