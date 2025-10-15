@@ -131,7 +131,7 @@ void _subscriptionStatusReaction(
       );
     } else if (status == SubscriptionStatus.notVerified ||
         status == SubscriptionStatus.verifyingError) {
-      shownRetryDialog(
+      showRetryDialog(
         onRetry: (_) {
           Navigator.of(context).pop();
           store.retryVerificationProcess();

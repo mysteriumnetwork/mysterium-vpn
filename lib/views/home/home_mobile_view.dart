@@ -61,7 +61,8 @@ class HomeMobileView extends HookConsumerWidget {
     return LayoutBuilder(
       builder: (context, layoutConstraints) => Observer(
         builder: (context) {
-          final minHeight = vpnStore.isConnected ? 270.0 : 200.0;
+          final bottomOffset = MediaQuery.paddingOf(context).bottom + 16;
+          final minHeight = (vpnStore.isConnected ? 270.0 : 200.0) + bottomOffset;
           final constraints = layoutConstraints.copyWith(
             maxHeight: max(
               (layoutConstraints.maxHeight * PanelState.open.extent) - topSectionHeight,
