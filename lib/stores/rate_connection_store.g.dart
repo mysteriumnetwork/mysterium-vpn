@@ -36,22 +36,6 @@ mixin _$RateConnectionStore on _RateConnectionStore, Store {
               name: '_RateConnectionStore.showReasons'))
           .value;
 
-  late final _$submitRateConnectionFutureAtom =
-      Atom(name: '_RateConnectionStore.submitRateConnectionFuture', context: context);
-
-  @override
-  ObservableFuture<void>? get submitRateConnectionFuture {
-    _$submitRateConnectionFutureAtom.reportRead();
-    return super.submitRateConnectionFuture;
-  }
-
-  @override
-  set submitRateConnectionFuture(ObservableFuture<void>? value) {
-    _$submitRateConnectionFutureAtom.reportWrite(value, super.submitRateConnectionFuture, () {
-      super.submitRateConnectionFuture = value;
-    });
-  }
-
   late final _$feedbackAtom = Atom(name: '_RateConnectionStore.feedback', context: context);
 
   @override
@@ -103,7 +87,6 @@ mixin _$RateConnectionStore on _RateConnectionStore, Store {
   @override
   String toString() {
     return '''
-submitRateConnectionFuture: ${submitRateConnectionFuture},
 feedback: ${feedback},
 isLikeMode: ${isLikeMode},
 isDislikeMode: ${isDislikeMode},
