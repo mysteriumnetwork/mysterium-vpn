@@ -67,7 +67,15 @@ abstract class Env {
   }
 
   static Future<void> _initDeviceInfo() async {
-    _deviceInfo = await DeviceInfoPlugin().deviceInfo;
+    try {
+      _deviceInfo = await DeviceInfoPlugin().deviceInfo;
+    } catch (_) {
+      // In case of any error, we assign an empty BaseDeviceInfo to avoid null issues.
+      // Since we never access things from _deviceInfo without checking its type first,
+      // this should be safe. In this case, deviceName and deviceModel will be 'Unknown'.
+      _deviceInfo = BaseDeviceInfo({});
+    }
+
     _deviceName = switch (_deviceInfo) {
       final AndroidDeviceInfo android => android.name,
       final IosDeviceInfo iOS => iOS.name,
