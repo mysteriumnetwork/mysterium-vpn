@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:store_checker_windows/store_checker_windows.dart';
@@ -51,7 +52,7 @@ abstract class Env {
 
   static Future<void> init() async {
     _packageInfo = await PackageInfo.fromPlatform();
-    await _initDeviceInfo();
+    await initDeviceInfo();
     _buildInfo = BuildInfo(
       buildNumber: int.tryParse(_packageInfo.buildNumber) ?? 0,
       buildVersion: _packageInfo.version,
@@ -66,9 +67,11 @@ abstract class Env {
     ].join(' ');
   }
 
-  static Future<void> _initDeviceInfo() async {
+  @visibleForTesting
+  static Future<void> initDeviceInfo([DeviceInfoPlugin? plugin]) async {
     try {
-      _deviceInfo = await DeviceInfoPlugin().deviceInfo;
+      plugin ??= DeviceInfoPlugin();
+      _deviceInfo = await plugin.deviceInfo;
     } catch (_) {
       // In case of any error, we assign an empty BaseDeviceInfo to avoid null issues.
       // Since we never access things from _deviceInfo without checking its type first,
