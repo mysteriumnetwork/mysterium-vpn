@@ -23,6 +23,7 @@ class NetworkLoggerOverlay extends StatefulWidget {
     required this.bottom,
     required this.draggable,
   });
+
   static const double _defaultPadding = 30;
 
   final double bottom;
@@ -768,6 +769,7 @@ class NetworkEventList {
 /// Event notified by [NetworkEventList.stream].
 class UpdateEvent {
   const UpdateEvent(this.event);
+
   const UpdateEvent.clear() : event = null;
 
   final NetworkEvent? event;
@@ -800,12 +802,14 @@ class NetworkEvent {
 /// Used for storing [Request] and [Response] headers.
 class Headers {
   Headers(Iterable<MapEntry<String, String>> entries) : entries = entries.toList();
+
   Headers.fromMap(Map<String, String> map)
       : entries = map.entries as List<MapEntry<String, String>>;
 
   final List<MapEntry<String, String>> entries;
 
   bool get isNotEmpty => entries.isNotEmpty;
+
   bool get isEmpty => entries.isEmpty;
 
   Iterable<T> map<T>(T Function(String key, String value) cb) =>
@@ -1026,7 +1030,6 @@ class _DeviceInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final deviceInfo = ref.watch(deviceInfoStorePOD);
     final deviceIDStore = ref.watch(deviceIDStorePOD);
     return Scaffold(
       appBar: AppBar(
@@ -1059,21 +1062,16 @@ class _DeviceInfo extends ConsumerWidget {
                   fontWeight: FontWeight.bold,
                   color: Palette.purple,
                 ),
-                Observer(
-                  builder: (context) {
-                    final info = deviceInfo.deviceInfo ?? {};
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ...info.entries.map(
-                          (e) => EasyText(
-                            '${e.key}: ${e.value}',
-                            maxLines: 20,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ...Env.deviceInfo.data.entries.map(
+                      (e) => EasyText(
+                        '${e.key}: ${e.value}',
+                        maxLines: 20,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -1129,14 +1127,14 @@ class _SecuredStorageValues extends ConsumerWidget {
                                 text: '${e.key}: ',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.deepPurple, // or any color you prefer for the key
+                                  color: Colors.deepPurple,
                                   fontSize: 14,
                                 ),
                               ),
                               TextSpan(
                                 text: '${e.value}',
                                 style: const TextStyle(
-                                  color: Colors.black87, // or any color you prefer for the value
+                                  color: Colors.black87,
                                   fontSize: 14,
                                 ),
                               ),
