@@ -31,6 +31,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Materialize .env from repo secrets
+        shell: bash
+        env:
+          ENV_DEV: ${{ secrets.ENV_DEV }}
+          ENV_PROD: ${{ secrets.ENV_PROD }}
+        run: |
+          set -euo pipefail
+          ENV_PATH="${{ inputs.env_file }}"
+          FILE_NAME="$(basename "$ENV_PATH")"
+          case "$FILE_NAME" in
+            .env.prod) CONTENT="$ENV_PROD" ;;
+            .env.dev)  CONTENT="$ENV_DEV" ;;
+            *)
+              echo "Unsupported env file: $FILE_NAME (expected .env.dev or .env.prod)" >&2
+              exit 1
+              ;;
+          esac
+          printf '%s' "$CONTENT" > "$ENV_PATH"
+          chmod 600 "$ENV_PATH"
+
       - name: Set up XCode
         run: sudo xcode-select --switch /Applications/Xcode_16.1.0.app
 
