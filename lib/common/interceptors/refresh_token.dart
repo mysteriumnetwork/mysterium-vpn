@@ -14,6 +14,8 @@ class RefreshTokenInterceptor extends Interceptor {
   final Dio dio;
   final Talker logger;
 
+  Future<void>? _refreshFuture;
+
   @override
   Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
     if (!_isUnauthorizedError(err)) {
@@ -26,8 +28,11 @@ class RefreshTokenInterceptor extends Interceptor {
     }
 
     try {
-      await refreshTokenCallback();
+      _refreshFuture ??= refreshTokenCallback();
+      await _refreshFuture;
+      _refreshFuture = null;
     } catch (e, stackTrace) {
+      _refreshFuture = null;
       logger.handle(e, stackTrace, 'Failed to refresh expired authorization');
       return handler.next(err);
     }
