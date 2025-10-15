@@ -36,8 +36,6 @@ jobs:
           esac
           printf '%s' "$CONTENT" > "$ENV_PATH"
           chmod 600 "$ENV_PATH"
-          echo "Contents of $ENV_PATH:"
-          cat "$ENV_PATH"
 
       - name: Setup Flutter Version Management CLI
         uses: flutter-actions/setup-fvm@v1.0 #v1.0 is tag, v1 is branch
