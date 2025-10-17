@@ -9,10 +9,10 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/observers/navigator_observer.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/analytics/constants.dart';
 import 'package:mysterium_vpn/stores/device_id_store.dart';
-import 'package:mysterium_vpn/stores/device_info_store.dart';
 
 part 'analytics_store_windows.g.dart';
 
@@ -23,18 +23,16 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
   _AnalyticsStoreWindows({
     required String measurementId,
     required String apiSecret,
-    required DeviceInfoStore deviceInfoStore,
     required DeviceIDStore deviceIDStore,
-  })  : _deviceInfoStore = deviceInfoStore,
-        _deviceIDStore = deviceIDStore,
+  })  : _deviceIDStore = deviceIDStore,
         _session = AnalyticsSession(measurementId, apiSecret) {
     logAppLaunchEvent();
     setDeviceInfo();
   }
 
   final AnalyticsSession _session;
-  final DeviceInfoStore _deviceInfoStore;
   final DeviceIDStore _deviceIDStore;
+
   @override
   Future<void> logError({
     required Object err,
@@ -122,21 +120,20 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
   @action
   Future<void> setDeviceInfo() async {
     try {
-      await _deviceInfoStore.deviceInfoFuture;
       final deviceId = await _deviceIDStore.deviceIdFuture;
       if (kDebugMode) {
         debugPrint('Device ID: $deviceId');
-        debugPrint('Device name: ${_deviceInfoStore.deviceName}');
-        debugPrint('Device model: ${_deviceInfoStore.deviceModel}');
+        debugPrint('Device name: ${Env.deviceName}');
+        debugPrint('Device model: ${Env.deviceModel}');
       }
       await setUserProperty(propertyName: 'device_id', propertyValue: deviceId);
       await setUserProperty(
         propertyName: 'device_name',
-        propertyValue: _deviceInfoStore.deviceName,
+        propertyValue: Env.deviceName,
       );
       await setUserProperty(
         propertyName: 'device_model',
-        propertyValue: _deviceInfoStore.deviceModel,
+        propertyValue: Env.deviceModel,
       );
       await setUserProperty(
         propertyName: 'device_platform',
@@ -162,6 +159,7 @@ class AnalyticsSession {
   Map<String, dynamic> userProperties = {};
 
   final DateTime sessionStarted = DateTime.now().toUtc();
+
   String get sessionId => _sessionId;
   String _sessionId = '';
 
@@ -228,6 +226,7 @@ bool defaultRouteFilter(Route<dynamic>? route) => route is PageRoute;
 
 /// Accepts any routes, e.g. the ones added via showDialog()
 bool anyRouteFilter(Route<dynamic>? route) => true;
+
 String? defaultNameExtractor(RouteSettings settings) => settings.name;
 
 class WindowsAnalyticsObserver extends RouteObserver<ModalRoute<dynamic>> {

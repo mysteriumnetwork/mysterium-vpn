@@ -3,12 +3,14 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mysterium_vpn/common/enums/grant_type.dart';
 
 part 'token_request.freezed.dart';
+
 part 'token_request.g.dart';
 
 @freezed
 abstract class TokenRequest with _$TokenRequest {
   factory TokenRequest({
     @JsonKey(name: 'grant_type', toJson: grantTypeToJson) required GrantType grantType,
+    @JsonKey(name: 'device_id') required String deviceId,
     @JsonKey(name: 'client_id') @Default('app') String clientId,
     @JsonKey(name: 'refresh_token') String? refreshToken,
     @JsonKey(name: 'code_verifier') String? codeVerifier,

@@ -74,6 +74,13 @@ class LocalDBService {
   Future<void> setUser(AuthUser user) async {
     if (!_userSetCompleter.isCompleted) {
       _userSetCompleter.complete(user);
+      return;
+    }
+
+    final value = await _userSetCompleter.future;
+    if (value != user) {
+      _userSetCompleter = Completer<AuthUser>();
+      _userSetCompleter.complete(user);
     }
   }
 
