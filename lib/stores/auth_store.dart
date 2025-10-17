@@ -23,6 +23,7 @@ import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:mysterium_vpn/stores/device_id_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -44,13 +45,15 @@ abstract class _AuthStore with Store {
     required Talker logger,
     required ABTestingStore abTestingStore,
     required UserPreferencesStore userPreferencesStore,
+    required DeviceIDStore deviceIDStore,
   })  : _authService = authService,
         _userPreferencesStore = userPreferencesStore,
         _authSessionStore = authSessionStore,
         _appLinks = appLinks,
         _analyticsStore = analyticsStore,
         _logger = logger,
-        _abTestingStore = abTestingStore {
+        _abTestingStore = abTestingStore,
+        _deviceIDStore = deviceIDStore {
     refreshTokenCallback = refreshAuthToken;
   }
 
@@ -63,6 +66,7 @@ abstract class _AuthStore with Store {
   final Talker _logger;
   final ABTestingStore _abTestingStore;
   final UserPreferencesStore _userPreferencesStore;
+  final DeviceIDStore _deviceIDStore;
 
   @readonly
   PkcePair? _pkcePair;
@@ -131,8 +135,9 @@ abstract class _AuthStore with Store {
       }
       authenticate(
         GrantType.email,
-        _authService.singInComplete(
+        _authService.signInComplete(
           tokenRequest: TokenRequest(
+            deviceId: await _deviceIDStore.deviceIdFuture,
             grantType: GrantType.email,
             code: code,
             codeVerifier: _pkcePair!.codeVerifier,
@@ -249,8 +254,9 @@ abstract class _AuthStore with Store {
       if (code != null) {
         authenticate(
           GrantType.email,
-          _authService.singInComplete(
+          _authService.signInComplete(
             tokenRequest: TokenRequest(
+              deviceId: await _deviceIDStore.deviceIdFuture,
               grantType: GrantType.email,
               code: code,
               codeVerifier: _pkcePair!.codeVerifier,
@@ -280,8 +286,9 @@ abstract class _AuthStore with Store {
       if (code != null) {
         authenticate(
           GrantType.google,
-          _authService.singInComplete(
+          _authService.signInComplete(
             tokenRequest: TokenRequest(
+              deviceId: await _deviceIDStore.deviceIdFuture,
               grantType: GrantType.google,
               googleIdToken: code,
             ),
@@ -308,8 +315,9 @@ abstract class _AuthStore with Store {
       if (code != null) {
         authenticate(
           GrantType.apple,
-          _authService.singInComplete(
+          _authService.signInComplete(
             tokenRequest: TokenRequest(
+              deviceId: await _deviceIDStore.deviceIdFuture,
               grantType: GrantType.apple,
               authorization: code,
             ),
@@ -368,8 +376,9 @@ abstract class _AuthStore with Store {
         throw RefreshTokenNotFoundException();
       }
 
-      final authTokens = await _authService.singInComplete(
+      final authTokens = await _authService.signInComplete(
         tokenRequest: TokenRequest(
+          deviceId: await _deviceIDStore.deviceIdFuture,
           grantType: GrantType.refreshToken,
           refreshToken: refreshToken,
         ),
