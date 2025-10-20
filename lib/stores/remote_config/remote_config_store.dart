@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
+import 'package:mysterium_vpn/models/map_config.dart';
 import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:mysterium_vpn/stores/remote_config/config_cat_store.dart';
 
@@ -43,6 +44,7 @@ enum _FeatureToggleKey {
   userIntentBlacklist,
   userIntentsRefreshInterval,
   recentLocationsLimit,
+  mapConfig,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -353,6 +355,21 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       }
     }
     return 5;
+  }
+
+  @computed
+  MapConfig get mapConfig {
+    if (config.containsKey(_FeatureToggleKey.mapConfig.name)) {
+      final raw = config[_FeatureToggleKey.mapConfig.name];
+      try {
+        final decoded = jsonDecode(raw.toString()) as Map<String, dynamic>;
+        return MapConfig.fromJson(decoded);
+      } catch (e, stack) {
+        logger.handle(e, stack);
+      }
+    }
+
+    return const MapConfig();
   }
 
   Map<String, String> get asUserProperties =>

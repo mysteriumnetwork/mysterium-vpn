@@ -233,6 +233,12 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$recentLocationsLimitComputed ??= Computed<int>(() => super.recentLocationsLimit,
               name: 'RemoteConfigStoreBase.recentLocationsLimit'))
           .value;
+  Computed<MapConfig>? _$mapConfigComputed;
+
+  @override
+  MapConfig get mapConfig => (_$mapConfigComputed ??=
+          Computed<MapConfig>(() => super.mapConfig, name: 'RemoteConfigStoreBase.mapConfig'))
+      .value;
 
   @override
   String toString() {
@@ -269,7 +275,8 @@ countriesWithCitiesOnMap: ${countriesWithCitiesOnMap},
 showUserIntents: ${showUserIntents},
 userIntentBlacklist: ${userIntentBlacklist},
 userIntentsRefreshInterval: ${userIntentsRefreshInterval},
-recentLocationsLimit: ${recentLocationsLimit}
+recentLocationsLimit: ${recentLocationsLimit},
+mapConfig: ${mapConfig}
     ''';
   }
 }
