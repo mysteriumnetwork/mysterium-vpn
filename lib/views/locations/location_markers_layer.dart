@@ -111,6 +111,8 @@ List<Marker> _useLocationMarkers({
       data,
       selectedLocation?.id,
       connectedLocation?.id,
+      remoteConfigStore.showCitiesAndStates,
+      remoteConfigStore.countriesWithCitiesOnMap,
     ],
   );
 }
