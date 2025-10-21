@@ -75,6 +75,43 @@ jobs:
       standalone_keyvault_certificate: "mysteriumvpn"
     secrets: inherit
 
+  release:
+    needs: [ release_windows ]
+    name: Publish release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Windows (Standalone) artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: Windows app (Standalone)
+          path: ./release
+
+      - name: Publish assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.release.tag_name }}
+          files: ./release/Mysterium VPN.msix
+
+  release_public:
+    needs: [ release_windows ]
+    name: Publish public release
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Download Windows (Standalone) artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: Windows app (Standalone)
+          path: ./release
+
+      - name: Publish assets to public release
+        uses: softprops/action-gh-release@v1
+        with:
+          repository: mysteriumnetwork/mysterium-vpn-release
+          tag_name: ${{ github.event.release.tag_name }}
+          files: ./release/Mysterium VPN.msix
+          token: ${{ secrets.GH_RELEASE_PAT }}
+
   configure:
     name: Fix release to pass review in app stores
     runs-on: ubuntu-latest
