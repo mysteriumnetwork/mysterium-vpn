@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 
 class LocationMarker extends StatelessWidget {
@@ -23,13 +22,11 @@ class LocationMarker extends StatelessWidget {
       return _Inactive(size: size, onPressed: onPressed);
     }
 
-    final color = isConnected ? Palette.forestGreen : Palette.purple;
     final animation = isConnected ? Asset.animations.pulseGreen : Asset.animations.pulsePurple;
 
     return _Active(
       animation: animation,
-      color: color,
-      size: size * 5,
+      onPressed: onPressed,
     );
   }
 }
@@ -71,19 +68,21 @@ class _Inactive extends StatelessWidget {
 class _Active extends StatelessWidget {
   const _Active({
     required this.animation,
-    required this.color,
-    required this.size,
+    required this.onPressed,
   });
 
   final LottieGenImage animation;
-  final Color color;
-  final Size size;
+  final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) => animation.lottie(
-        repeat: true,
-        fit: BoxFit.contain,
-        alignment: Alignment.center,
+  Widget build(BuildContext context) => _GestureHandler(
+        onPressed: onPressed,
+        size: const Size.square(24),
+        child: animation.lottie(
+          repeat: true,
+          fit: BoxFit.contain,
+          alignment: Alignment.center,
+        ),
       );
 }
 
