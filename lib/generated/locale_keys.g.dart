@@ -148,6 +148,7 @@ abstract class LocaleKeys {
   static const gettingIPAddress = 'gettingIPAddress';
   static const gettingYourPlan = 'gettingYourPlan';
   static const goBackButton = 'goBackButton';
+  static const goToHome = 'goToHome';
   static const goToBillingPage = 'goToBillingPage';
   static const here = 'here';
   static const highLatencyReason = 'highLatencyReason';
@@ -320,6 +321,8 @@ abstract class LocaleKeys {
   static const subscriptionDesktop = 'subscriptionDesktop';
   static const subscriptionProcessCanceled = 'subscriptionProcessCanceled';
   static const subscriptionRenewalDisclaimer = 'subscriptionRenewalDisclaimer';
+  static const subscriptionUpgradeSuccessTitle = 'subscriptionUpgradeSuccessTitle';
+  static const subscriptionUpgradeSuccessMessage = 'subscriptionUpgradeSuccessMessage';
   static const subscriptionVerificationFailed = 'subscriptionVerificationFailed';
   static const subscripton = 'subscripton';
   static const system = 'system';
