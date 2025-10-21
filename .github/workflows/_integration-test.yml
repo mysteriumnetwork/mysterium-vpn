@@ -28,6 +28,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Materialize .env file from repo secrets
+        shell: bash
+        env:
+          ENV_E2E: ${{ secrets.ENV_E2E }}
+        run: |
+          set -euo pipefail
+          mkdir -p integration_test
+          printf '%s' "$ENV_E2E" > integration_test/.env
+          chmod 600 integration_test/.env
+
       - name: Set up Google Cloud SDK
         uses: 'google-github-actions/auth@v2'
         with:
