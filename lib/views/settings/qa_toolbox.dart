@@ -12,6 +12,7 @@ import 'package:mysterium_vpn/components/analytics_logger_overlay.dart';
 import 'package:mysterium_vpn/components/analytics_user_properties_overlay.dart';
 import 'package:mysterium_vpn/components/dialogs/marketing_consent_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/retry_dialog.dart';
+import 'package:mysterium_vpn/components/dialogs/subscription_upgrade_success_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
@@ -203,6 +204,18 @@ class QAToolbox extends HookConsumerWidget {
               onPressed: () async {
                 await sessionStore.invalidateAccessToken();
                 showSnackbar('Access token invalidated');
+              },
+            ),
+          ),
+          SettingItem(
+            asset: Asset.icons.settingsAdaptive(context),
+            title: 'Show upgrade page',
+            subtitle: const EasyText('Internal'),
+            actionWidget: TextButton.icon(
+              label: const EasyText('Show'),
+              icon: const Icon(Icons.open_in_new),
+              onPressed: () async {
+                await showSubscriptionUpgradeSuccessDialog(context);
               },
             ),
           ),
