@@ -98,7 +98,6 @@ jobs:
             --build-windows false --install-certificate false --output-name "Mysterium VPN" `
             --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
             --sign-msix false --publisher "$certificate_publisher"
-        continue-on-error: true
 
       - name: Sign Windows Installer (GlobalSign HSM certificate in Azure Key Vault)
         run: |
@@ -128,7 +127,6 @@ jobs:
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
           timestamp-digest: SHA256
           cache-dependencies: true
-        continue-on-error: true
 
       - name: Upload to Github
         uses: actions/upload-artifact@v4
@@ -136,7 +134,6 @@ jobs:
           name: Windows app (Standalone)
           path: build/windows/x64/runner/Release/Mysterium VPN.msix
           if-no-files-found: error
-        continue-on-error: true
 
       - name: Build Windows installer
         run: |
@@ -144,7 +141,6 @@ jobs:
             --build-windows false --install-certificate false --output-name "Mysterium VPN" `
             --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
             --store --identity-name "${{ inputs.product_identity }}" --publisher "CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC" --publisher-display-name "UAB MN Technologijos"
-        continue-on-error: true
 
       - name: Upload to Github
         uses: actions/upload-artifact@v4
@@ -152,7 +148,6 @@ jobs:
           name: Windows app (Store)
           path: build/windows/x64/runner/Release/Mysterium VPN.msix
           if-no-files-found: error
-        continue-on-error: true
 
       - name: Download Microsoft Store Developer CLI
         uses: microsoft/setup-msstore-cli@v1
@@ -160,13 +155,11 @@ jobs:
         run: |
           msstore reconfigure --tenantId "${{ vars.MICROSOFT_AZURE_AD_TENANT_ID }}" --clientId "${{ vars.MICROSOFT_AZURE_AD_ClIENT_ID }}" --clientSecret "${{ secrets.MICROSOFT_AZURE_AD_CLIENT_SECRET }}" --sellerId "${{ vars.MICROSOFT_PARTNER_CENTER_SELLER_ID }}"
           msstore info
-        continue-on-error: true
       - name: Publish to Microsoft Store
         run: |
           msstore submission status ${{ inputs.product_store_id }} -v
           msstore publish --inputDirectory "build/windows/x64/runner/Release" --appId ${{ inputs.product_store_id }} --noCommit -v
           msstore submission status ${{ inputs.product_store_id }} -v
-        continue-on-error: true
 #      - name: Publish to Microsoft Store (commit right away)
 #        run: msstore submission publish ${{ inputs.product_store_id }}
 #        continue-on-error: true
