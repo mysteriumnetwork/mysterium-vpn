@@ -90,7 +90,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.release.tag_name }}
-          files: ./release/Mysterium VPN.msix
+          files: ./release/MysteriumVPN.msix
 
   release_public:
     needs: [ release_windows ]
@@ -109,7 +109,7 @@ jobs:
         with:
           repository: mysteriumnetwork/mysterium-vpn-release
           tag_name: ${{ github.event.release.tag_name }}
-          files: ./release/Mysterium VPN.msix
+          files: ./release/MysteriumVPN.msix
           token: ${{ secrets.GH_RELEASE_PAT }}
 
   configure:

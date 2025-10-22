@@ -95,7 +95,7 @@ jobs:
           $certificate_publisher = (Get-AzKeyVaultCertificate -VaultName "${{ vars.MICROSOFT_AZURE_KEYVAULT_NAME }}" -Name "${{ inputs.standalone_keyvault_certificate }}").Certificate.Subject
           
           fvm dart run msix:create `
-            --build-windows false --install-certificate false --output-name "Mysterium VPN" `
+            --build-windows false --install-certificate false --output-name "MysteriumVPN" `
             --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
             --sign-msix false --publisher "$certificate_publisher"
 
@@ -110,7 +110,7 @@ jobs:
             -tr http://timestamp.globalsign.com/tsa/advanced `
             -td sha256 `
             -fd sha256 `
-            "build/windows/x64/runner/Release/Mysterium VPN.msix"
+            "build/windows/x64/runner/Release/MysteriumVPN.msix"
       - name: Sign Windows installer (Azure Trusted Signing)
         if: false
         uses: azure/trusted-signing-action@v0.5.1
@@ -132,13 +132,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Windows app (Standalone)
-          path: build/windows/x64/runner/Release/Mysterium VPN.msix
+          path: build/windows/x64/runner/Release/MysteriumVPN.msix
           if-no-files-found: error
 
       - name: Build Windows installer
         run: |
           fvm dart run msix:create `
-            --build-windows false --install-certificate false --output-name "Mysterium VPN" `
+            --build-windows false --install-certificate false --output-name "MysteriumVPN" `
             --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
             --store --identity-name "${{ inputs.product_identity }}" --publisher "CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC" --publisher-display-name "UAB MN Technologijos"
 
@@ -146,7 +146,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Windows app (Store)
-          path: build/windows/x64/runner/Release/Mysterium VPN.msix
+          path: build/windows/x64/runner/Release/MysteriumVPN.msix
           if-no-files-found: error
 
       - name: Download Microsoft Store Developer CLI
