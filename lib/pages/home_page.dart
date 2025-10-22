@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/screen_type.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
@@ -9,6 +12,7 @@ import 'package:mysterium_vpn/common/layout_builders/screen_type_builder.dart';
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/components/dialogs/info_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/marketing_consent_dialog.dart';
+import 'package:mysterium_vpn/components/dialogs/push_notifications_dialog.dart';
 import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -18,7 +22,7 @@ import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 import 'package:mysterium_vpn/views/home/home_desktop_view.dart';
 import 'package:mysterium_vpn/views/home/home_mobile_view.dart';
-import 'package:wireguard_dart/connection_status.dart';
+import 'package:wireguard_dart/wireguard_dart.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
@@ -42,7 +46,7 @@ class HomePage extends HookConsumerWidget {
     useAutorun(() {
       connectionLimitAutorun(vpnStore, context);
     });
-    useAutorun(() {
+    autorun((_) {
       marketingConsentAutorun(userPreferencesStore, context, screenType);
     });
 
@@ -86,10 +90,23 @@ class HomePage extends HookConsumerWidget {
     BuildContext context,
     ScreenType screenType,
   ) {
-    if (userPreferencesStore.canShowMarketingConsentDialog) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        showMarketingConsentDialog(context, desktopSize: screenType == ScreenType.desktop);
-      });
+    final value = userPreferencesStore.nextPromptToShow;
+    if (value == UserPromptType.none) {
+      return;
     }
+
+    scheduleMicrotask(() {
+      if (value case UserPromptType.marketingConsent) {
+        showMarketingConsentDialog(
+          context,
+          desktopSize: screenType == ScreenType.desktop,
+        );
+      } else if (value case UserPromptType.pushNotifications) {
+        showPushNotificationsPermissionDialog(
+          context,
+          desktopSize: screenType == ScreenType.desktop,
+        );
+      }
+    });
   }
 }

@@ -116,4 +116,18 @@ class SharedPreferenceService {
 
     return PanelState.fromName(panelState);
   }
+
+  Future<void> setPushNotificationsShown({required bool shown}) async => setBool(
+        StorageKeys.pushNotificationsPermissionPromptShown.name,
+        value: shown,
+      );
+
+  bool getPushNotificationsShown() {
+    final shown = getBool(StorageKeys.pushNotificationsPermissionPromptShown.name);
+    if (shown == null) {
+      return false;
+    }
+
+    return shown;
+  }
 }
