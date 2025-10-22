@@ -15,7 +15,7 @@ import 'package:mysterium_vpn/views/home/home_connection_view.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/locations_slider_mobile_view.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart' hide PanelState;
-import 'package:wireguard_dart/connection_status.dart';
+import 'package:wireguard_dart/wireguard_dart.dart';
 
 class HomeMobileView extends HookConsumerWidget {
   const HomeMobileView({super.key});

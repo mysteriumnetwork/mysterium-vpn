@@ -26,4 +26,5 @@ enum StorageKeys {
   ipType,
   panelState,
   deviceId,
+  pushNotificationsPermissionPromptShown
 }
