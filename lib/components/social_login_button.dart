@@ -52,26 +52,29 @@ class SocialLoginButton extends ConsumerWidget {
               horizontal: 16,
             ),
             height: 44,
-            child: isLoading
-                ? const LoadingIndicator()
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _SocialLoginIcon(
-                        asset: asset,
-                        height: height,
-                        iconSize: fontSize,
-                      ),
-                      Flexible(
-                        child: EasyText(
-                          label,
-                          color: Colors.black,
-                          fontSize: fontSize,
-                          letterSpacing: -0.41,
+            child: SizedBox(
+              width: double.infinity,
+              child: isLoading
+                  ? const LoadingIndicator()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _SocialLoginIcon(
+                          asset: asset,
+                          height: height,
+                          iconSize: fontSize,
                         ),
-                      ),
-                    ],
-                  ),
+                        Flexible(
+                          child: EasyText(
+                            label,
+                            color: Colors.black,
+                            fontSize: fontSize,
+                            letterSpacing: -0.41,
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
           ),
         ).width(width ?? double.infinity).height(height);
       },
