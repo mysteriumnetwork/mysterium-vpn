@@ -15,6 +15,7 @@ class HomeMap extends HookConsumerWidget {
     final locationsStore = ref.watch(locationsStorePOD);
     final selectedLocationStore = ref.watch(selectedLocationStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
+    final selectedLocation = useComputedValue(() => selectedLocationStore.value);
     final locations = useComputedValue(
       () => [
         ...?locationsStore.residentialLocationsFuture.value?.allLocations,
@@ -48,7 +49,8 @@ class HomeMap extends HookConsumerWidget {
     return LocationsMap(
       locations: locations,
       position: myLocation,
-      activeLocation: connectedLocation,
+      selectedLocation: selectedLocation,
+      connectedLocation: connectedLocation,
       onLocationPressed: handleSelectLocation,
       onTapOutside: handleClearSelectedLocation,
     );

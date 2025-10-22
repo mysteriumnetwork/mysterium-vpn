@@ -228,7 +228,7 @@ class _Placeholder extends StatelessWidget {
   }
 }
 
-class _Location extends StatelessWidget {
+class _Location extends HookWidget {
   const _Location({
     required this.location,
     required this.parent,
@@ -247,6 +247,7 @@ class _Location extends StatelessWidget {
     final ipType = location.ipType;
     final title = parent?.getName(context) ?? location.getName(context);
     final subtitle = parent != null ? location.getName(context) : null;
+    final isConnected = useIsLocationConnected(location);
 
     final extras = [
       if (ip != null) ip!,
@@ -301,7 +302,7 @@ class _Location extends StatelessWidget {
                         ],
                       ),
                     ),
-                    if (ip != null)
+                    if (ip != null && (isConnected ?? false))
                       SvgIconButton(
                         asset: Asset.icons.refresh,
                         size: 16,
