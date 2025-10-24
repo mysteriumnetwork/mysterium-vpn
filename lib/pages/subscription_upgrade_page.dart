@@ -251,7 +251,7 @@ class _Footer extends HookWidget {
           ),
           SimpleMenuItem(
             label: LocaleKeys.upgradeSubscriptionInfo.tr(),
-            onTap: () => openUrlLink(Uri.parse(termsOfServiceUrl)),
+            onTap: () => openUrlLink(Uri.parse(subscriptionInfoUrl)),
           ),
         ],
       );
