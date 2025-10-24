@@ -17,10 +17,12 @@ class SubscriptionUpgradeBanner extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final subscriptionUpgradeStore = ref.read(subscriptionUpgradeStorePOD);
     final remoteConfigStore = ref.read(remoteConfigStorePOD);
+    final analyticsStore = ref.read(analyticsStorePOD);
 
     return Observer(
       builder: (context) {
         Future<void> handleUpgrade() async {
+          analyticsStore.logSubscriptionUpgradeBannerClick();
           await showSubscriptionUpgradePage(context);
         }
 
