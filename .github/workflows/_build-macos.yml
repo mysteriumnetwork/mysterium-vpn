@@ -93,6 +93,7 @@ jobs:
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
+          set -euo pipefail
           echo "Checking for existing Mac Installer Distribution certificate..."
 
           EXISTING_CERTS=$(app-store-connect certificates list --type MAC_INSTALLER_DISTRIBUTION \
@@ -100,20 +101,17 @@ jobs:
 
           echo "$EXISTING_CERTS"
 
-          if echo "$EXISTING_CERTS" | grep -q "Mac Installer Distribution"; then
-            echo "✅ Existing Mac Installer Distribution certificate found."
+          if echo "$EXISTING_CERTS" | grep -iq "Mac.*Installer"; then
+              echo "✅ Existing Mac Installer Distribution certificate found."
           else
-            echo "⚠️  No Installer certificate found, attempting to create one..."
-            if ! app-store-connect certificates create \
-              --type MAC_INSTALLER_DISTRIBUTION \
-              --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" \
-              --save; then
-              echo "⚠️  Certificate creation failed (likely because one already exists). Continuing..."
-            fi
+              echo "⚠️  No Installer certificate found, attempting to create one..."
+              if ! app-store-connect certificates create \
+                --type MAC_INSTALLER_DISTRIBUTION \
+                --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" \
+                --save; then
+                  echo "⚠️  Certificate creation failed (likely because one already exists). Continuing..."
+              fi
           fi
-
-          # Enable strict error handling after potentially failing command
-          set -euo pipefail
 
           echo "Adding certificates to keychain..."
           keychain add-certificates
