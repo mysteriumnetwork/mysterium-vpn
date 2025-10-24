@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +23,16 @@ import 'package:mysterium_vpn/models/purchasable_product.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 Future<void> showSubscriptionUpgradePage(BuildContext context) async {
-  await showModalPage(
+  final analyticsStore = ProviderScope.containerOf(context, listen: false).read(analyticsStorePOD);
+  unawaited(analyticsStore.logSubscriptionUpgradePopupShow());
+  final hasPickedUpgrade = await showModalPage<bool>(
     context,
     builder: (_) => _Page(),
+  );
+  unawaited(
+    (hasPickedUpgrade ?? false)
+        ? analyticsStore.logSubscriptionUpgradePopupConfirm()
+        : analyticsStore.logSubscriptionUpgradePopupClose(),
   );
 }
 
@@ -50,7 +59,7 @@ class _Page extends HookConsumerWidget {
           };
 
           Future<void> handleUpgrade() async {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(true);
             await subscriptionUpgradeStore.upgrade();
           }
 
@@ -228,7 +237,7 @@ class _FeatureItem extends HookWidget {
   }
 }
 
-class _Footer extends HookWidget {
+class _Footer extends HookConsumerWidget {
   const _Footer({
     required this.onUpgradePressed,
   });
@@ -236,22 +245,28 @@ class _Footer extends HookWidget {
   final VoidCallback onUpgradePressed;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final analyticsStore = ref.read(analyticsStorePOD);
+    void handleOpenUrl(String url) {
+      unawaited(analyticsStore.logSubscriptionUpgradeInfoClick(url));
+      openUrlLink(Uri.parse(url));
+    }
+
     Future<void> showPrivacyMenu() async {
       await showSimpleMenu(
         context,
         items: [
           SimpleMenuItem(
             label: LocaleKeys.upgradePrivacyPolicy.tr(),
-            onTap: () => openUrlLink(Uri.parse(privacyPolicyUrl)),
+            onTap: () => handleOpenUrl(privacyPolicyUrl),
           ),
           SimpleMenuItem(
             label: LocaleKeys.upgradeTermsAndConditions.tr(),
-            onTap: () => openUrlLink(Uri.parse(termsOfServiceUrl)),
+            onTap: () => handleOpenUrl(termsOfServiceUrl),
           ),
           SimpleMenuItem(
             label: LocaleKeys.upgradeSubscriptionInfo.tr(),
-            onTap: () => openUrlLink(Uri.parse(subscriptionInfoUrl)),
+            onTap: () => handleOpenUrl(subscriptionInfoUrl),
           ),
         ],
       );
