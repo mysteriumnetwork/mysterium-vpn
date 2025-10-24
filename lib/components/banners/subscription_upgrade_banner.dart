@@ -16,11 +16,16 @@ class SubscriptionUpgradeBanner extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subscriptionUpgradeStore = ref.read(subscriptionUpgradeStorePOD);
+    final remoteConfigStore = ref.read(remoteConfigStorePOD);
 
     return Observer(
       builder: (context) {
         Future<void> handleUpgrade() async {
           await showSubscriptionUpgradePage(context);
+        }
+
+        if (!remoteConfigStore.subscriptionUpgradeBannerEnabled) {
+          return const SizedBox.shrink();
         }
 
         final product = subscriptionUpgradeStore.upgradeProduct.value;

@@ -52,6 +52,12 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
   String get monthlyPrice => (_$monthlyPriceComputed ??=
           Computed<String>(() => super.monthlyPrice, name: '_PurchasableProduct.monthlyPrice'))
       .value;
+  Computed<String>? _$annualPriceComputed;
+
+  @override
+  String get annualPrice => (_$annualPriceComputed ??=
+          Computed<String>(() => super.annualPrice, name: '_PurchasableProduct.annualPrice'))
+      .value;
   Computed<bool>? _$isPupularComputed;
 
   @override
@@ -105,6 +111,7 @@ duration: ${duration},
 billedPerMonth: ${billedPerMonth},
 billedPerMonthShort: ${billedPerMonthShort},
 monthlyPrice: ${monthlyPrice},
+annualPrice: ${annualPrice},
 isPupular: ${isPupular},
 billedInTotal: ${billedInTotal}
     ''';
