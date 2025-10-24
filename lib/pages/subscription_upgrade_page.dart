@@ -8,6 +8,8 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/list.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/dialogs/simple_menu_dialog.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
@@ -235,7 +237,26 @@ class _Footer extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    void handleShowPrivacyAndInfo() {}
+    Future<void> showPrivacyMenu() async {
+      await showSimpleMenu(
+        context,
+        items: [
+          SimpleMenuItem(
+            label: LocaleKeys.upgradePrivacyPolicy.tr(),
+            onTap: () => openUrlLink(Uri.parse(privacyPolicyUrl)),
+          ),
+          SimpleMenuItem(
+            label: LocaleKeys.upgradeTermsAndConditions.tr(),
+            onTap: () => openUrlLink(Uri.parse(termsOfServiceUrl)),
+          ),
+          SimpleMenuItem(
+            label: LocaleKeys.upgradeSubscriptionInfo.tr(),
+            onTap: () => openUrlLink(Uri.parse(termsOfServiceUrl)),
+          ),
+        ],
+      );
+    }
+
     return Column(
       spacing: 16,
       mainAxisSize: MainAxisSize.min,
@@ -254,7 +275,7 @@ class _Footer extends HookWidget {
           maxLines: 3,
         ),
         TextButton(
-          onPressed: handleShowPrivacyAndInfo,
+          onPressed: showPrivacyMenu,
           child: EasyText(
             LocaleKeys.upgradeSubscriptionPrivacy.tr(),
             fontSize: 12,
