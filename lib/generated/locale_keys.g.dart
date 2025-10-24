@@ -290,6 +290,7 @@ abstract class LocaleKeys {
   static const resetAppTitle = 'resetAppTitle';
   static const resetBtn = 'resetBtn';
   static const retryBtn = 'retryBtn';
+  static const saveWithPlan = 'saveWithPlan';
   static const searchForLocations = 'searchForLocations';
   static const secure = 'secure';
   static const selectEmailApp = 'selectEmailApp';

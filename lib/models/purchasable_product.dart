@@ -51,7 +51,7 @@ abstract class _PurchasableProduct with Store {
   int periodDiscountPercentage(PurchasableProduct otherProduct) {
     final monthlyPrice = productPrice / duration;
     final otherMonthlyPrice = otherProduct.productPrice / otherProduct.duration;
-    return ((monthlyPrice - otherMonthlyPrice) / monthlyPrice * 100).toInt();
+    return ((monthlyPrice - otherMonthlyPrice) / monthlyPrice * 100).round();
   }
 
   @computed
