@@ -30,7 +30,7 @@ class SubscriptionUpgradeBanner extends HookConsumerWidget {
           return const SizedBox.shrink();
         }
 
-        final product = subscriptionUpgradeStore.upgradeProduct.value;
+        final product = subscriptionUpgradeStore.upgradeProduct;
         final discountPercent = subscriptionUpgradeStore.upgradeDiscountPercent;
         if (product == null || discountPercent == null) {
           return const SizedBox.shrink();

@@ -18,12 +18,12 @@ abstract class Subscription with _$Subscription {
     @JsonKey(name: 'recurring') bool? recurring,
   }) = _Subscription;
 
+  Subscription._();
+
   factory Subscription.fromJson(Map<String, dynamic> json) => _$SubscriptionFromJson(json);
 
   factory Subscription.empty() => Subscription(active: false, expired: false, recurring: false);
-}
 
-extension SubscriptionExtension on Subscription {
   bool get isExpired => activeUntil != null && activeUntil!.isBefore(DateTime.now());
 
   String get gatewayName => switch (gateway?.toLowerCase()) {

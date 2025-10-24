@@ -44,8 +44,8 @@ class _Page extends HookConsumerWidget {
       padding: EdgeInsets.zero,
       child: Observer(
         builder: (context) {
-          final downgradeProduct = subscriptionUpgradeStore.downgradeProduct.value;
-          final product = subscriptionUpgradeStore.upgradeProduct.value;
+          final downgradeProduct = subscriptionUpgradeStore.downgradeProduct;
+          final product = subscriptionUpgradeStore.upgradeProduct;
           final discountPercent = subscriptionUpgradeStore.upgradeDiscountPercent;
           if (product == null || discountPercent == null || downgradeProduct == null) {
             return const Center(child: LoadingIndicator());
@@ -159,7 +159,7 @@ class _Features extends HookWidget {
     const features = [
       LocaleKeys.upgradeFeature1,
       LocaleKeys.upgradeFeature2,
-      LocaleKeys.upgradeFeature3
+      LocaleKeys.upgradeFeature3,
     ];
     final autoSizeGroup = useMemoized(AutoSizeGroup.new);
     return Column(
