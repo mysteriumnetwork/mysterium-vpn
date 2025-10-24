@@ -35,7 +35,7 @@ abstract class Palette {
   static const Color deepPlum = Color(0xFF4A2055);
   static const Color charcoal = Color(0xFF333333);
   static const Color smokyViolet = Color(0xff544A78);
-  static const Color paleLavender = Color(0xffF1EFF5);
+  static const Color paleLavenderLight = Color(0xffF1EFF5);
 
   Color get highlightColor;
   Color get secondaryColor;
@@ -188,7 +188,7 @@ class LightPalette implements Palette {
   Color get modalBackgroundColor => Palette.white;
 
   @override
-  Color get modalGradientColor => Palette.paleLavender;
+  Color get modalGradientColor => Palette.paleLavenderLight;
 
   @override
   Color get modalBarrierColor => Palette.charcoal.withValues(alpha: .5);
