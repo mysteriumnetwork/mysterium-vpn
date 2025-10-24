@@ -216,7 +216,7 @@ class QAToolbox extends HookConsumerWidget {
               label: const EasyText('Show'),
               icon: const Icon(Icons.open_in_new),
               onPressed: () async {
-                final product = await subscriptionUpgradeStore.upgradeProduct;
+                final product = subscriptionUpgradeStore.upgradeProduct;
                 if (product != null) {
                   await showSubscriptionUpgradeSuccessDialog(context, purchasedPlan: product);
                 }

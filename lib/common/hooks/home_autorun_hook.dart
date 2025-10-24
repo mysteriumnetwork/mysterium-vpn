@@ -63,7 +63,7 @@ void useHomeAutorun() {
             if (!remoteConfigStore.subscriptionUpgradeAutoDisplayEnabled) {
               return;
             }
-            if (subscriptionUpgradeStore.upgradeProduct.value == null) {
+            if (subscriptionUpgradeStore.upgradeProduct == null) {
               return;
             }
 

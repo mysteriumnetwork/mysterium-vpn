@@ -9,28 +9,27 @@ part of 'subscription_upgrade_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$SubscriptionUpgradeStore on _SubscriptionUpgradeStore, Store {
-  Computed<ObservableFuture<List<PurchasableProduct>>>? _$purchasableProductsComputed;
+  Computed<List<PurchasableProduct>>? _$purchasableProductsComputed;
 
   @override
-  ObservableFuture<List<PurchasableProduct>> get purchasableProducts =>
-      (_$purchasableProductsComputed ??= Computed<ObservableFuture<List<PurchasableProduct>>>(
-              () => super.purchasableProducts,
+  List<PurchasableProduct> get purchasableProducts => (_$purchasableProductsComputed ??=
+          Computed<List<PurchasableProduct>>(() => super.purchasableProducts,
               name: '_SubscriptionUpgradeStore.purchasableProducts'))
-          .value;
-  Computed<ObservableFuture<PurchasableProduct?>>? _$downgradeProductComputed;
+      .value;
+  Computed<PurchasableProduct?>? _$downgradeProductComputed;
 
   @override
-  ObservableFuture<PurchasableProduct?> get downgradeProduct => (_$downgradeProductComputed ??=
-          Computed<ObservableFuture<PurchasableProduct?>>(() => super.downgradeProduct,
+  PurchasableProduct? get downgradeProduct =>
+      (_$downgradeProductComputed ??= Computed<PurchasableProduct?>(() => super.downgradeProduct,
               name: '_SubscriptionUpgradeStore.downgradeProduct'))
-      .value;
-  Computed<ObservableFuture<PurchasableProduct?>>? _$upgradeProductComputed;
+          .value;
+  Computed<PurchasableProduct?>? _$upgradeProductComputed;
 
   @override
-  ObservableFuture<PurchasableProduct?> get upgradeProduct => (_$upgradeProductComputed ??=
-          Computed<ObservableFuture<PurchasableProduct?>>(() => super.upgradeProduct,
+  PurchasableProduct? get upgradeProduct =>
+      (_$upgradeProductComputed ??= Computed<PurchasableProduct?>(() => super.upgradeProduct,
               name: '_SubscriptionUpgradeStore.upgradeProduct'))
-      .value;
+          .value;
   Computed<int?>? _$upgradeDiscountPercentComputed;
 
   @override

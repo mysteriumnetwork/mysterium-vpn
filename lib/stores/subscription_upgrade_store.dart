@@ -1,8 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/utils/computed_observable_future.dart';
 import 'package:mysterium_vpn/models/purchasable_product.dart';
-import 'package:mysterium_vpn/models/subscription.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 
 part 'subscription_upgrade_store.g.dart';
@@ -16,48 +14,44 @@ abstract class _SubscriptionUpgradeStore with Store {
   final SubscriptionStore _subscriptionStore;
 
   @computed
-  ObservableFuture<List<PurchasableProduct>> get purchasableProducts => ComputedObservableFuture(
-        _subscriptionStore.productsFuture,
-        transform: (products) =>
-            products.sortedByCompare((it) => it.duration, (d1, d2) => d1.compareTo(d2)),
-      );
+  List<PurchasableProduct> get purchasableProducts {
+    final products = _subscriptionStore.productsFuture.value;
+    if (products == null) {
+      return const <PurchasableProduct>[];
+    }
+
+    return products.sortedByCompare((it) => it.duration, (d1, d2) => d1.compareTo(d2));
+  }
 
   @computed
-  ObservableFuture<PurchasableProduct?> get downgradeProduct => ComputedObservableFuture.multi(
-        [_subscriptionStore.subscriptionFuture, purchasableProducts],
-        combine: (values) {
-          final [subscription as Subscription, plans as List<PurchasableProduct>] = values;
-          if (!subscription.isGatewayOnCurrentPlatform) {
-            return null;
-          }
+  PurchasableProduct? get downgradeProduct {
+    final subscription = _subscriptionStore.subscriptionFuture.value;
+    final plans = purchasableProducts;
+    if (subscription == null || !subscription.isGatewayOnCurrentPlatform) {
+      return null;
+    }
 
-          return plans.firstWhereOrNull(
-                  (it) => it.id == subscription.planId && !subscription.isExpired) ??
-              plans.firstOrNull;
-        },
-      );
+    if (!subscription.isExpired) {
+      return plans.firstWhereOrNull((it) => it.id == subscription.planId);
+    }
+    return plans.firstOrNull;
+  }
 
   @computed
-  ObservableFuture<PurchasableProduct?> get upgradeProduct => ComputedObservableFuture.multi(
-        [downgradeProduct, purchasableProducts],
-        combine: (values) {
-          final [
-            downgradeProduct as PurchasableProduct?,
-            purchasableProducts as List<PurchasableProduct>
-          ] = values;
+  PurchasableProduct? get upgradeProduct {
+    final downgradeProduct = this.downgradeProduct;
+    final plans = purchasableProducts;
+    if (downgradeProduct == null) {
+      return null;
+    }
 
-          if (downgradeProduct == null) {
-            return null;
-          }
-
-          return purchasableProducts.lastOrNull;
-        },
-      );
+    return plans.lastOrNull;
+  }
 
   @computed
   int? get upgradeDiscountPercent {
-    final downgrade = downgradeProduct.value;
-    final upgrade = upgradeProduct.value;
+    final downgrade = downgradeProduct;
+    final upgrade = upgradeProduct;
     if (downgrade == null || upgrade == null) {
       return null;
     }
@@ -67,7 +61,6 @@ abstract class _SubscriptionUpgradeStore with Store {
 
   @action
   Future<void> upgrade() async {
-    final product = await upgradeProduct;
-    await _subscriptionStore.subscribeToPackage(product: product!.productDetails);
+    await _subscriptionStore.subscribeToPackage(product: upgradeProduct!.productDetails);
   }
 }
