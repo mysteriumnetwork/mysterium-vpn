@@ -111,6 +111,30 @@ abstract class _SubscriptionStore with Store {
           _subscriptionConfigFuture.value != null ? StoreState.available : StoreState.notAvailable,
       };
 
+  @computed
+  PurchasableProduct? get upgradeablePlan {
+    final subscription = _subscriptionFuture.value;
+    if (subscription == null || !subscription.isGatewayOnCurrentPlatform) {
+      return null;
+    }
+
+    final plans = _productsFuture.value ?? const <PurchasableProduct>[];
+    final currentPlan = plans.firstWhereOrNull((it) => it.id == subscription.planId);
+
+    return plans
+        .where((it) {
+          if (it.status != ProductStatus.purchasable) {
+            return false;
+          }
+          if (currentPlan == null) {
+            return true;
+          }
+          return it.duration > currentPlan.duration;
+        })
+        .sortedByCompare((it) => it.duration, (d1, d2) => d1.compareTo(d2))
+        .lastOrNull;
+  }
+
   Future<List<PurchasableProduct>> _fetchProducts() async {
     final [subscription, config] = await Future.wait<Object?>([
       _subscriptionFuture,
