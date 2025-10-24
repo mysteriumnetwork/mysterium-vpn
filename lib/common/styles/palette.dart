@@ -36,6 +36,8 @@ abstract class Palette {
   static const Color charcoal = Color(0xFF333333);
   static const Color smokyViolet = Color(0xff544A78);
   static const Color paleLavenderLight = Color(0xffF1EFF5);
+  static const Color lavenderPink = Color(0xFFE8AAFD);
+  static const Color midnightCharcoal = Color(0xFF252B37);
 
   Color get highlightColor;
   Color get secondaryColor;

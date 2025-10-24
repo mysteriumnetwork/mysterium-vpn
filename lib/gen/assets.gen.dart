@@ -238,6 +238,9 @@ class $AssetsIconsGen {
   SvgGenImage get deleteAccountLight =>
       const SvgGenImage('assets/icons/delete_account_light.svg', size: Size(34.0, 34.0));
 
+  /// File path: assets/icons/diamond.svg
+  SvgGenImage get diamond => const SvgGenImage('assets/icons/diamond.svg', size: Size(24.0, 25.0));
+
   /// File path: assets/icons/download.svg
   SvgGenImage get download =>
       const SvgGenImage('assets/icons/download.svg', size: Size(18.0, 18.0));
@@ -576,6 +579,7 @@ class $AssetsIconsGen {
         connectPromptLight,
         deleteAccountDark,
         deleteAccountLight,
+        diamond,
         download,
         downloadActive,
         duration,
