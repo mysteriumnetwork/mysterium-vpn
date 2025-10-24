@@ -29,6 +29,9 @@ on:
         required: true
         type: boolean
         default: false
+      standalone_keyvault_certificate:
+        required: true
+        type: string
 
 jobs:
   release:
@@ -39,6 +42,7 @@ jobs:
 
       - name: Install yq using Chocolatey
         run: choco install yq -y
+      - run: dotnet tool install --global AzureSignTool
 
       - name: Setup Flutter Version Management CLI
         run: choco install yq fvm -y
@@ -60,28 +64,35 @@ jobs:
       - name: Build Windows app
         run: fvm flutter build windows --no-pub --release --dart-define-from-file="${{ inputs.env_file }}"
 
-      # Sign DEV builds with self-signed test certificate for QA process.
-      # Documentation: https://github.com/YehudaKremer/msix?tab=readme-ov-file#%EF%B8%8F-signing-options
-      # Instructions how to use installer which such certificate: https://medium.com/flutter-community/publishing-flutter-windows-apps-to-microsoft-partner-center-with-codemagic-b1962575510c#f083
-      - name: Build Windows installer
-        if: ${{ inputs.standalone_sign != true }}
-        run: |
-          fvm dart run msix:create `
-            --build-windows false --install-certificate false --output-name "Mysterium VPN" `
-            --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
-            --sign-msix "true"
-        continue-on-error: true
       - name: Build Windows installer
         if: ${{ inputs.standalone_sign == true }}
+        shell: pwsh
         run: |
+          Install-Module -Name Az.KeyVault -Scope CurrentUser -Force 
+          Connect-AzAccount -ServicePrincipal `
+            -TenantId "${{ vars.MICROSOFT_AZURE_SIGNING_TENANT_ID }}" `
+            -Credential (New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList "${{ vars.MICROSOFT_AZURE_SIGNING_CLIENT_ID }}", (ConvertTo-SecureString -String "${{ secrets.MICROSOFT_AZURE_SIGNING_CLIENT_SECRET }}" -AsPlainText -Force));
+          $certificate_publisher = (Get-AzKeyVaultCertificate -VaultName "${{ vars.MICROSOFT_AZURE_KEYVAULT_NAME }}" -Name "${{ inputs.standalone_keyvault_certificate }}").Certificate.Subject
+          
           fvm dart run msix:create `
-            --build-windows false --install-certificate false --output-name "Mysterium VPN" `
+            --build-windows false --install-certificate false --output-name "MysteriumVPN" `
             --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
-            --sign-msix false --publisher "CN=UAB MN Technologijos, O=UAB MN Technologijos, L=Vilnius, S=Vilniaus, C=LT"
-        continue-on-error: true
+            --sign-msix false --publisher "$certificate_publisher"
 
-      - name: Sign Windows installer
-        if: ${{ inputs.standalone_sign == true }}
+      - name: Sign Windows Installer (GlobalSign HSM certificate in Azure Key Vault)
+        run: |
+          AzureSignTool sign `
+            -kvu ${{ vars.MICROSOFT_AZURE_KEYVAULT_URL }} `
+            -kvt ${{ vars.MICROSOFT_AZURE_SIGNING_TENANT_ID }} `
+            -kvi ${{ vars.MICROSOFT_AZURE_SIGNING_CLIENT_ID }} `
+            -kvs ${{ secrets.MICROSOFT_AZURE_SIGNING_CLIENT_SECRET }} `
+            -kvc ${{ inputs.standalone_keyvault_certificate }} `
+            -tr http://timestamp.globalsign.com/tsa/advanced `
+            -td sha256 `
+            -fd sha256 `
+            "build/windows/x64/runner/Release/MysteriumVPN.msix"
+      - name: Sign Windows installer (Azure Trusted Signing)
+        if: false
         uses: azure/trusted-signing-action@v0.5.1
         with:
           azure-tenant-id: ${{ vars.MICROSOFT_AZURE_AD_TENANT_ID }}
@@ -96,31 +107,27 @@ jobs:
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
           timestamp-digest: SHA256
           cache-dependencies: true
-        continue-on-error: true
 
       - name: Upload to Github
         uses: actions/upload-artifact@v4
         with:
           name: Windows app (Standalone)
-          path: build/windows/x64/runner/Release/Mysterium VPN.msix
+          path: build/windows/x64/runner/Release/MysteriumVPN.msix
           if-no-files-found: error
-        continue-on-error: true
 
       - name: Build Windows installer
         run: |
           fvm dart run msix:create `
-            --build-windows false --install-certificate false --output-name "Mysterium VPN" `
+            --build-windows false --install-certificate false --output-name "MysteriumVPN" `
             --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
             --store --identity-name "${{ inputs.product_identity }}" --publisher "CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC" --publisher-display-name "UAB MN Technologijos"
-        continue-on-error: true
 
       - name: Upload to Github
         uses: actions/upload-artifact@v4
         with:
           name: Windows app (Store)
-          path: build/windows/x64/runner/Release/Mysterium VPN.msix
+          path: build/windows/x64/runner/Release/MysteriumVPN.msix
           if-no-files-found: error
-        continue-on-error: true
 
       - name: Download Microsoft Store Developer CLI
         uses: microsoft/setup-msstore-cli@v1
@@ -128,13 +135,11 @@ jobs:
         run: |
           msstore reconfigure --tenantId "${{ vars.MICROSOFT_AZURE_AD_TENANT_ID }}" --clientId "${{ vars.MICROSOFT_AZURE_AD_ClIENT_ID }}" --clientSecret "${{ secrets.MICROSOFT_AZURE_AD_CLIENT_SECRET }}" --sellerId "${{ vars.MICROSOFT_PARTNER_CENTER_SELLER_ID }}"
           msstore info
-        continue-on-error: true
       - name: Publish to Microsoft Store
         run: |
           msstore submission status ${{ inputs.product_store_id }} -v
           msstore publish --inputDirectory "build/windows/x64/runner/Release" --appId ${{ inputs.product_store_id }} --noCommit -v
           msstore submission status ${{ inputs.product_store_id }} -v
-        continue-on-error: true
 #      - name: Publish to Microsoft Store (commit right away)
 #        run: msstore submission publish ${{ inputs.product_store_id }}
 #        continue-on-error: true
