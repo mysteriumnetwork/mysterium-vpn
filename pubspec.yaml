@@ -13,7 +13,7 @@ dependencies:
   async: 2.12.0
   auto_size_text: 3.0.0
   beamer: 1.7.0
-  circle_flags: 5.0.0
+  circle_flags: 5.0.1
   clipboard: 2.0.2
   collection: 1.19.1
   configcat_client: 4.1.1
