@@ -42,13 +42,6 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
   StoreState get storeState => (_$storeStateComputed ??=
           Computed<StoreState>(() => super.storeState, name: '_SubscriptionStore.storeState'))
       .value;
-  Computed<PurchasableProduct?>? _$upgradeablePlanComputed;
-
-  @override
-  PurchasableProduct? get upgradeablePlan =>
-      (_$upgradeablePlanComputed ??= Computed<PurchasableProduct?>(() => super.upgradeablePlan,
-              name: '_SubscriptionStore.upgradeablePlan'))
-          .value;
 
   late final _$_subscriptionFutureAtom =
       Atom(name: '_SubscriptionStore._subscriptionFuture', context: context);
@@ -314,8 +307,7 @@ monthlyProduct: ${monthlyProduct},
 highlightedProduct: ${highlightedProduct},
 isSubscribed: ${isSubscribed},
 isSubscriptionLoading: ${isSubscriptionLoading},
-storeState: ${storeState},
-upgradeablePlan: ${upgradeablePlan}
+storeState: ${storeState}
     ''';
   }
 }
