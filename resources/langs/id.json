@@ -392,5 +392,18 @@
   "emailNotificationsTitle": "Notifikasi Email",
   "emailNotificationsSetting": "Penawaran & pembaruan",
   "emailNotificationsSettingDesc": "Pembaruan produk, tips, dan penawaran khusus",
-  "preferences": "Preferensi"
+  "preferences": "Preferensi",
+  "savePercent": "Hemat {}%",
+  "upgradeToPlan": "Tingkatkan ke {}",
+  "upgradeFeature1": "Ditagih sebesar {} untuk 12 bulan pertama",
+  "upgradeFeature2": "Garansi uang kembali 7 hari",
+  "upgradeFeature3": "Dukungan pelanggan 24 jam",
+  "upgradeAndSave": "Tingkatkan dan hemat",
+  "upgradeDisclaimerRefund": "Sisa waktu tidak terpakai dari paket bulanan Anda akan dikembalikan ke metode pembayaran asli.",
+  "upgradeSubscriptionPrivacy": "Info langganan dan privasi",
+  "upgradePrivacyPolicy": "Kebijakan Privasi",
+  "upgradeTermsAndConditions": "Syarat dan Ketentuan",
+  "upgradeSubscriptionInfo": "Info langganan",
+  "upgradeSuccessTitle": "Berhasil!",
+  "upgradeSuccessText": "Pembayaran Anda berhasil dan paket {} Anda sekarang aktif"
 }

@@ -394,5 +394,18 @@
   "emailNotificationsTitle": "E-Mail-Benachrichtigungen",
   "emailNotificationsSetting": "Angebote & Updates",
   "emailNotificationsSettingDesc": "Produktupdates, Tipps und Sonderangebote",
-  "preferences": "Einstellungen"
+  "preferences": "Einstellungen",
+  "savePercent": "Spare {}%",
+  "upgradeToPlan": "Upgrade auf {}",
+  "upgradeFeature1": "Abgerechnet mit {} für die ersten 12 Monate",
+  "upgradeFeature2": "7 Tage Geld-zurück-Garantie",
+  "upgradeFeature3": "24h Kundensupport",
+  "upgradeAndSave": "Upgrade und sparen",
+  "upgradeDisclaimerRefund": "Nicht genutzte Anteile deines monatlichen Tarifs werden deiner ursprünglichen Zahlungsmethode erstattet.",
+  "upgradeSubscriptionPrivacy": "Abo- und Datenschutzinformationen",
+  "upgradePrivacyPolicy": "Datenschutzerklärung",
+  "upgradeTermsAndConditions": "Allgemeine Geschäftsbedingungen",
+  "upgradeSubscriptionInfo": "Abo-Informationen",
+  "upgradeSuccessTitle": "Erfolg!",
+  "upgradeSuccessText": "Deine Zahlung war erfolgreich und dein {} ist jetzt aktiv"
 }

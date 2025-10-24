@@ -33,21 +33,38 @@ Future<T?> showModalPage<T>(
     barrierColor: palette.modalBarrierColor,
     backgroundColor: Colors.transparent,
     shape: const RoundedRectangleBorder(),
-    builder: (context) => SafeArea(
-      bottom: false,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 60),
-        child: builder(context),
-      ),
-    ),
     isScrollControlled: true,
+    builder: (context) {
+      final topInset = MediaQuery.of(context).padding.top;
+      final ignoreHeight = topInset + 60.0;
+      return Stack(
+        fit: StackFit.expand,
+        children: [
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: ignoreHeight,
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () => Navigator.of(context).pop(),
+              child: SizedBox(height: ignoreHeight),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: ignoreHeight),
+            child: builder(context),
+          ),
+        ],
+      );
+    },
   );
 }
 
 class ModalPageScaffold extends HookWidget {
   const ModalPageScaffold({
     required this.child,
-    this.padding = const EdgeInsets.only(bottom: 32, left: 16, right: 16, top: 16),
+    this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
     this.header = const _Header(),
     super.key,
   });
@@ -76,6 +93,7 @@ class ModalPageScaffold extends HookWidget {
       child: Scaffold(
         appBar: header,
         backgroundColor: Colors.transparent,
+        extendBodyBehindAppBar: true,
         body: Padding(
           padding: padding,
           child: child,

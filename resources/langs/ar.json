@@ -394,5 +394,18 @@
   "emailNotificationsTitle": "إشعارات البريد الإلكتروني",
   "emailNotificationsSetting": "العروض والتحديثات",
   "emailNotificationsSettingDesc": "تحديثات المنتج، نصائح، وعروض خاصة",
-  "preferences": "التفضيلات"
+  "preferences": "التفضيلات",
+  "savePercent": "وفّر {}%",
+  "upgradeToPlan": "الترقية إلى {}",
+  "upgradeFeature1": "يتم الفوترة بمبلغ {} لأول 12 شهرًا",
+  "upgradeFeature2": "ضمان استرداد الأموال خلال 7 أيام",
+  "upgradeFeature3": "دعم عملاء على مدار 24 ساعة",
+  "upgradeAndSave": "قم بالترقية ووفّر",
+  "upgradeDisclaimerRefund": "سيتم رد أي جزء غير مستخدم من خطتك الشهرية إلى طريقة الدفع الأصلية.",
+  "upgradeSubscriptionPrivacy": "معلومات الاشتراك والخصوصية",
+  "upgradePrivacyPolicy": "سياسة الخصوصية",
+  "upgradeTermsAndConditions": "الشروط والأحكام",
+  "upgradeSubscriptionInfo": "معلومات الاشتراك",
+  "upgradeSuccessTitle": "تم بنجاح!",
+  "upgradeSuccessText": "تمت معالجة دفعتك و{} نشطة الآن"
 }

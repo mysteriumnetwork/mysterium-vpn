@@ -392,5 +392,18 @@
   "emailNotificationsTitle": "メール通知",
   "emailNotificationsSetting": "オファー＆アップデート",
   "emailNotificationsSettingDesc": "製品のアップデート、ヒント、特別オファー",
-  "preferences": "設定"
+  "preferences": "設定",
+  "savePercent": "{}% お得",
+  "upgradeToPlan": "{} にアップグレード",
+  "upgradeFeature1": "最初の12か月間は {} で請求されます",
+  "upgradeFeature2": "7日間返金保証",
+  "upgradeFeature3": "24時間カスタマーサポート",
+  "upgradeAndSave": "アップグレードしてお得に",
+  "upgradeDisclaimerRefund": "未使用の月額プラン分は元のお支払い方法に返金されます。",
+  "upgradeSubscriptionPrivacy": "サブスクリプションとプライバシー情報",
+  "upgradePrivacyPolicy": "プライバシーポリシー",
+  "upgradeTermsAndConditions": "利用規約",
+  "upgradeSubscriptionInfo": "サブスクリプション情報",
+  "upgradeSuccessTitle": "成功！",
+  "upgradeSuccessText": "お支払いが完了し、{} が有効になりました"
 }

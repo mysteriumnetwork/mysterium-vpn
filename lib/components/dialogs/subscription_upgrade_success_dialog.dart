@@ -9,16 +9,22 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/modal_page_scaffold.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/models/purchasable_product.dart';
 
-Future<void> showSubscriptionUpgradeSuccessDialog(BuildContext context) async {
+Future<void> showSubscriptionUpgradeSuccessDialog(
+  BuildContext context, {
+  required PurchasableProduct purchasedPlan,
+}) async {
   await showModalPage(
     context,
-    builder: (_) => const _Page(),
+    builder: (_) => _Page(purchasedPlan: purchasedPlan),
   );
 }
 
 class _Page extends StatelessWidget {
-  const _Page();
+  const _Page({required this.purchasedPlan});
+
+  final PurchasableProduct purchasedPlan;
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +55,12 @@ class _Page extends StatelessWidget {
                 children: [
                   Asset.icons.successCup(context).svg(),
                   EasyText(
-                    LocaleKeys.subscriptionUpgradeSuccessTitle.tr(),
+                    LocaleKeys.upgradeSuccessTitle.tr(),
                     fontSize: 48,
                     fontWeight: FontWeight.w700,
                   ),
                   EasyText(
-                    LocaleKeys.subscriptionUpgradeSuccessMessage.tr(args: ['1-year']),
+                    LocaleKeys.upgradeSuccessText.tr(args: ['1-year']),
                     maxLines: 3,
                   ),
                 ],
