@@ -54,7 +54,7 @@ dependencies:
   google_fonts: 6.3.2
   google_sign_in: 7.1.1
   hive_ce: 2.13.2
-  hive_ce_flutter: 2.3.2
+  hive_ce_flutter: 2.3.3
   hooks_riverpod: 2.6.1
   in_app_purchase: 3.2.3
   in_app_purchase_storekit: 0.4.4
