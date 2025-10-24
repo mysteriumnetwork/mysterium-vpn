@@ -32,8 +32,8 @@ class LocationItem extends HookConsumerWidget {
     final theme = Theme.of(context);
     final vpnStore = ref.watch(vpnStorePOD);
     final remoteConfig = ref.watch(remoteConfigStorePOD);
-    final locationsStore = ref.watch(locationsStorePOD);
-    final query = useComputedValue(() => locationsStore.searchKeyword);
+    final locationsQueryStore = ref.watch(locationsQueryStorePOD);
+    final query = useComputedValue(() => locationsQueryStore.searchTrimmed);
 
     final onTap = useComputedValue(() => vpnStore.isLoading ? null : this.onTap, [this.onTap]);
     final children = location.children ?? const <VPNLocation>[];

@@ -9,10 +9,10 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/observers/navigator_observer.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/analytics/constants.dart';
 import 'package:mysterium_vpn/stores/device_id_store.dart';
-import 'package:mysterium_vpn/stores/device_info_store.dart';
 
 part 'analytics_store_windows.g.dart';
 
@@ -23,18 +23,16 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
   _AnalyticsStoreWindows({
     required String measurementId,
     required String apiSecret,
-    required DeviceInfoStore deviceInfoStore,
     required DeviceIDStore deviceIDStore,
-  })  : _deviceInfoStore = deviceInfoStore,
-        _deviceIDStore = deviceIDStore,
+  })  : _deviceIDStore = deviceIDStore,
         _session = AnalyticsSession(measurementId, apiSecret) {
     logAppLaunchEvent();
     setDeviceInfo();
   }
 
   final AnalyticsSession _session;
-  final DeviceInfoStore _deviceInfoStore;
   final DeviceIDStore _deviceIDStore;
+
   @override
   Future<void> logError({
     required Object err,
@@ -67,11 +65,36 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
 
   @override
   @action
-  Future<void> setUserProperty(String name, String value) async {
-    _session.userProperties[name.truncate(24)] = {
+  Future<void> setUserProperty({
+    required String propertyName,
+    required String propertyValue,
+  }) async {
+    if (propertyValue.length > 36) {
+      debugPrint(
+        '[Analytics] Warning: property "$propertyName" value exceeded 36 characters and was truncated.\n'
+        'Original value: "$propertyValue"\n'
+        'Truncated value: "${propertyValue.truncate(36)}"',
+      );
+    }
+    if (propertyName.length > 24) {
+      debugPrint(
+        '[Analytics] Warning: property name "$propertyName" exceeded 24 characters and was truncated.\n'
+        'Original name: "$propertyName"\n'
+        'Truncated name: "${propertyName.truncate(24)}"',
+      );
+    }
+    final name = propertyName.truncate(24);
+    final value = propertyValue.truncate(36);
+    _session.userProperties[name] = {
       'value': value,
       'timestamp_micros': DateTime.now().microsecondsSinceEpoch,
     };
+    super
+        .setUserProperty(
+          propertyName: name,
+          propertyValue: value,
+        )
+        .ignore();
   }
 
   @override
@@ -97,17 +120,25 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
   @action
   Future<void> setDeviceInfo() async {
     try {
-      await _deviceInfoStore.deviceInfoFuture;
       final deviceId = await _deviceIDStore.deviceIdFuture;
       if (kDebugMode) {
         debugPrint('Device ID: $deviceId');
-        debugPrint('Device name: ${_deviceInfoStore.deviceName}');
-        debugPrint('Device model: ${_deviceInfoStore.deviceModel}');
+        debugPrint('Device name: ${Env.deviceName}');
+        debugPrint('Device model: ${Env.deviceModel}');
       }
-      await setUserProperty('device_id', deviceId);
-      await setUserProperty('device_name', _deviceInfoStore.deviceName);
-      await setUserProperty('device_model', _deviceInfoStore.deviceModel);
-      await setUserProperty('device_platform', defaultTargetPlatform.name);
+      await setUserProperty(propertyName: 'device_id', propertyValue: deviceId);
+      await setUserProperty(
+        propertyName: 'device_name',
+        propertyValue: Env.deviceName,
+      );
+      await setUserProperty(
+        propertyName: 'device_model',
+        propertyValue: Env.deviceModel,
+      );
+      await setUserProperty(
+        propertyName: 'device_platform',
+        propertyValue: defaultTargetPlatform.name,
+      );
     } catch (e) {
       logError(err: e);
     }
@@ -128,6 +159,7 @@ class AnalyticsSession {
   Map<String, dynamic> userProperties = {};
 
   final DateTime sessionStarted = DateTime.now().toUtc();
+
   String get sessionId => _sessionId;
   String _sessionId = '';
 
@@ -194,6 +226,7 @@ bool defaultRouteFilter(Route<dynamic>? route) => route is PageRoute;
 
 /// Accepts any routes, e.g. the ones added via showDialog()
 bool anyRouteFilter(Route<dynamic>? route) => true;
+
 String? defaultNameExtractor(RouteSettings settings) => settings.name;
 
 class WindowsAnalyticsObserver extends RouteObserver<ModalRoute<dynamic>> {

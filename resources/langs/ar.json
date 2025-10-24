@@ -181,6 +181,9 @@
     "one": "{} خادم",
     "other": "{} خوادم"
   },
+  "locationUnavailableTitle": "{} غير متاح",
+  "locationUnavailableSubtitle": "اتصل بأقرب عنوان IP - أو اختره يدويًا",
+  "locationUnavailableAction": "اتصل بأقرب عنوان IP",
   "loginQuote": "ارفع مستوى تجربتك الشخصية.\nكن مجهول الهوية. كن حرا.",
   "loginSessionExpired": "لقد انتهت جلستك. الرجاء تسجيل الدخول مرة أخرى.",
   "logout": "تسجيل الخروج",

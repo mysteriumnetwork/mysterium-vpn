@@ -179,6 +179,9 @@
   "locationItemNodeCount": {
     "other": "{} 台服务器"
   },
+  "locationUnavailableTitle": "{} 当前不可用",
+  "locationUnavailableSubtitle": "连接到最近的 IP，或手动选择",
+  "locationUnavailableAction": "连接到最近的 IP",
   "loginQuote": "提升您的个人体验。\n匿名。是自由的。",
   "loginSessionExpired": "您的会话已过期。请重新登录。",
   "logout": "登出",

@@ -61,12 +61,21 @@ ThemeData themeData(Palette palette) => ThemeData(
           Palette.lightGrey,
         ),
         trackColor: WidgetStateProperty.resolveWith(
-          (states) => states.contains(WidgetState.selected) ? Palette.purple : Palette.lightBlue,
+          (states) => states.contains(WidgetState.disabled)
+              ? palette.filledButtonTextColor.withValues(alpha: .7)
+              : states.contains(WidgetState.selected)
+                  ? Palette.purple
+                  : Palette.lightBlue,
         ),
         thumbIcon: WidgetStateProperty.resolveWith(
-          (states) => states.contains(WidgetState.selected)
-              ? const Icon(Icons.check, color: Palette.purple)
-              : const Icon(Icons.close, color: Palette.lightBlue),
+          (states) => states.contains(WidgetState.disabled)
+              ? Icon(
+                  Icons.remove,
+                  color: palette.filledButtonTextColor.withValues(alpha: .7),
+                )
+              : states.contains(WidgetState.selected)
+                  ? const Icon(Icons.check, color: Palette.purple)
+                  : const Icon(Icons.close, color: Palette.lightBlue),
         ),
         trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
         trackOutlineWidth: WidgetStateProperty.all(0),
@@ -109,13 +118,21 @@ ThemeData themeData(Palette palette) => ThemeData(
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          side: BorderSide(color: palette.outlinedButtonBorderColor),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           foregroundColor: palette.outlinedButtonTextColor,
           backgroundColor: palette.outlinedButtonBackgroundColor,
-          disabledForegroundColor: palette.outlinedButtonTextColor.withValues(alpha: .5),
+          disabledForegroundColor: palette.outlinedButtonDisabledColor,
           disabledBackgroundColor: palette.outlinedButtonBackgroundColor.withValues(alpha: .5),
           padding: const EdgeInsets.all(10),
+        ).merge(
+          ButtonStyle(
+            side: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.disabled)) {
+                return BorderSide(color: palette.outlinedButtonDisabledColor);
+              }
+              return BorderSide(color: palette.outlinedButtonBorderColor);
+            }),
+          ),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
