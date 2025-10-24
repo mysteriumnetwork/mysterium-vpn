@@ -389,4 +389,17 @@ abstract class LocaleKeys {
   static const emailNotificationsSetting = 'emailNotificationsSetting';
   static const emailNotificationsSettingDesc = 'emailNotificationsSettingDesc';
   static const preferences = 'preferences';
+  static const savePercent = 'savePercent';
+  static const upgradeToPlan = 'upgradeToPlan';
+  static const upgradeFeature1 = 'upgradeFeature1';
+  static const upgradeFeature2 = 'upgradeFeature2';
+  static const upgradeFeature3 = 'upgradeFeature3';
+  static const upgradeAndSave = 'upgradeAndSave';
+  static const upgradeDisclaimerRefund = 'upgradeDisclaimerRefund';
+  static const upgradeSubscriptionPrivacy = 'upgradeSubscriptionPrivacy';
+  static const upgradePrivacyPolicy = 'upgradePrivacyPolicy';
+  static const upgradeTermsAndConditions = 'upgradeTermsAndConditions';
+  static const upgradeSubscriptionInfo = 'upgradeSubscriptionInfo';
+  static const upgradeSuccessTitle = 'upgradeSuccessTitle';
+  static const upgradeSuccessText = 'upgradeSuccessText';
 }

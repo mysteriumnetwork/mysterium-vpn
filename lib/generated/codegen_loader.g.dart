@@ -401,7 +401,20 @@ class CodegenLoader extends AssetLoader {
     "emailNotificationsTitle": "电子邮件通知",
     "emailNotificationsSetting": "优惠和更新",
     "emailNotificationsSettingDesc": "产品更新、提示和特别优惠",
-    "preferences": "偏好设置"
+    "preferences": "偏好设置",
+    "savePercent": "节省 {}%",
+    "upgradeToPlan": "升级到 {}",
+    "upgradeFeature1": "前 12 个月按 {} 计费",
+    "upgradeFeature2": "7 天退款保证",
+    "upgradeFeature3": "24 小时客户支持",
+    "upgradeAndSave": "升级并省钱",
+    "upgradeDisclaimerRefund": "您未使用的月度计划部分将退还到原始付款方式。",
+    "upgradeSubscriptionPrivacy": "订阅和隐私信息",
+    "upgradePrivacyPolicy": "隐私政策",
+    "upgradeTermsAndConditions": "条款和条件",
+    "upgradeSubscriptionInfo": "订阅信息",
+    "upgradeSuccessTitle": "成功！",
+    "upgradeSuccessText": "您的付款已完成，{} 计划现已激活"
   };
   static const Map<String, dynamic> _tr = {
     "LoggingYouIn": "Oturumunuz açılıyor...",
@@ -828,7 +841,21 @@ class CodegenLoader extends AssetLoader {
     "emailNotificationsTitle": "E-posta Bildirimleri",
     "emailNotificationsSetting": "Teklifler ve güncellemeler",
     "emailNotificationsSettingDesc": "Ürün güncellemeleri, ipuçları ve özel teklifler",
-    "preferences": "Tercihler"
+    "preferences": "Tercihler",
+    "savePercent": "{}% tasarruf et",
+    "upgradeToPlan": "{} planına geç",
+    "upgradeFeature1": "İlk 12 ay boyunca {} olarak faturalandırılır",
+    "upgradeFeature2": "7 gün para iade garantisi",
+    "upgradeFeature3": "7/24 müşteri desteği",
+    "upgradeAndSave": "Yükselt ve tasarruf et",
+    "upgradeDisclaimerRefund":
+        "Aylık planınızın kullanılmayan kısmı, orijinal ödeme yönteminize iade edilecektir.",
+    "upgradeSubscriptionPrivacy": "Abonelik ve gizlilik bilgileri",
+    "upgradePrivacyPolicy": "Gizlilik Politikası",
+    "upgradeTermsAndConditions": "Şartlar ve Koşullar",
+    "upgradeSubscriptionInfo": "Abonelik bilgileri",
+    "upgradeSuccessTitle": "Başarılı!",
+    "upgradeSuccessText": "Ödemeniz alındı ve {} planınız artık aktif"
   };
   static const Map<String, dynamic> _ja = {
     "LoggingYouIn": "ログインしています...",
@@ -1222,7 +1249,20 @@ class CodegenLoader extends AssetLoader {
     "emailNotificationsTitle": "メール通知",
     "emailNotificationsSetting": "オファー＆アップデート",
     "emailNotificationsSettingDesc": "製品のアップデート、ヒント、特別オファー",
-    "preferences": "設定"
+    "preferences": "設定",
+    "savePercent": "{}% お得",
+    "upgradeToPlan": "{} にアップグレード",
+    "upgradeFeature1": "最初の12か月間は {} で請求されます",
+    "upgradeFeature2": "7日間返金保証",
+    "upgradeFeature3": "24時間カスタマーサポート",
+    "upgradeAndSave": "アップグレードしてお得に",
+    "upgradeDisclaimerRefund": "未使用の月額プラン分は元のお支払い方法に返金されます。",
+    "upgradeSubscriptionPrivacy": "サブスクリプションとプライバシー情報",
+    "upgradePrivacyPolicy": "プライバシーポリシー",
+    "upgradeTermsAndConditions": "利用規約",
+    "upgradeSubscriptionInfo": "サブスクリプション情報",
+    "upgradeSuccessTitle": "成功！",
+    "upgradeSuccessText": "お支払いが完了し、{} が有効になりました"
   };
   static const Map<String, dynamic> _de = {
     "LoggingYouIn": "Melde Sie an...",
@@ -1678,7 +1718,21 @@ class CodegenLoader extends AssetLoader {
     "emailNotificationsTitle": "E-Mail-Benachrichtigungen",
     "emailNotificationsSetting": "Angebote & Updates",
     "emailNotificationsSettingDesc": "Produktupdates, Tipps und Sonderangebote",
-    "preferences": "Einstellungen"
+    "preferences": "Einstellungen",
+    "savePercent": "Spare {}%",
+    "upgradeToPlan": "Upgrade auf {}",
+    "upgradeFeature1": "Abgerechnet mit {} für die ersten 12 Monate",
+    "upgradeFeature2": "7 Tage Geld-zurück-Garantie",
+    "upgradeFeature3": "24h Kundensupport",
+    "upgradeAndSave": "Upgrade und sparen",
+    "upgradeDisclaimerRefund":
+        "Nicht genutzte Anteile deines monatlichen Tarifs werden deiner ursprünglichen Zahlungsmethode erstattet.",
+    "upgradeSubscriptionPrivacy": "Abo- und Datenschutzinformationen",
+    "upgradePrivacyPolicy": "Datenschutzerklärung",
+    "upgradeTermsAndConditions": "Allgemeine Geschäftsbedingungen",
+    "upgradeSubscriptionInfo": "Abo-Informationen",
+    "upgradeSuccessTitle": "Erfolg!",
+    "upgradeSuccessText": "Deine Zahlung war erfolgreich und dein {} ist jetzt aktiv"
   };
   static const Map<String, dynamic> _pt = {
     "LoggingYouIn": "Registrando você em ...",
@@ -2125,7 +2179,21 @@ class CodegenLoader extends AssetLoader {
     "emailNotificationsTitle": "Notificações por e-mail",
     "emailNotificationsSetting": "Ofertas e atualizações",
     "emailNotificationsSettingDesc": "Atualizações de produtos, dicas e ofertas especiais",
-    "preferences": "Preferências"
+    "preferences": "Preferências",
+    "savePercent": "Economize {}%",
+    "upgradeToPlan": "Atualizar para {}",
+    "upgradeFeature1": "Cobrado {} pelos primeiros 12 meses",
+    "upgradeFeature2": "Garantia de devolução de 7 dias",
+    "upgradeFeature3": "Suporte ao cliente 24h",
+    "upgradeAndSave": "Atualize e economize",
+    "upgradeDisclaimerRefund":
+        "Qualquer valor não utilizado do seu plano mensal será reembolsado ao método de pagamento original.",
+    "upgradeSubscriptionPrivacy": "Informações de assinatura e privacidade",
+    "upgradePrivacyPolicy": "Política de Privacidade",
+    "upgradeTermsAndConditions": "Termos e Condições",
+    "upgradeSubscriptionInfo": "Informações da assinatura",
+    "upgradeSuccessTitle": "Sucesso!",
+    "upgradeSuccessText": "Seu pagamento foi realizado e seu plano {} está agora ativo"
   };
   static const Map<String, dynamic> _en = {
     "LoggingYouIn": "Logging you in...",
@@ -2560,7 +2628,21 @@ class CodegenLoader extends AssetLoader {
     "emailNotificationsTitle": "Email Notifications",
     "emailNotificationsSetting": "Offers & updates",
     "emailNotificationsSettingDesc": "Product updates, tips, and special offers",
-    "preferences": "Preferences"
+    "preferences": "Preferences",
+    "savePercent": "Save {}%",
+    "upgradeToPlan": "Upgrade to {}",
+    "upgradeFeature1": "Billed at {} for the first 12 months",
+    "upgradeFeature2": "7 days money back guarantee",
+    "upgradeFeature3": "24h customer support",
+    "upgradeAndSave": "Upgrade and save",
+    "upgradeDisclaimerRefund":
+        "Any unused portion of your monthly plan will be refunded to your original payment method.",
+    "upgradeSubscriptionPrivacy": "Subscription and privacy info",
+    "upgradePrivacyPolicy": "Privacy Policy",
+    "upgradeTermsAndConditions": "Terms and Conditions",
+    "upgradeSubscriptionInfo": "Subscription info",
+    "upgradeSuccessTitle": "Success!",
+    "upgradeSuccessText": "Your payment went through and your {} is now active"
   };
   static const Map<String, dynamic> _it = {
     "LoggingYouIn": "Accesso in corso...",
@@ -3009,7 +3091,21 @@ class CodegenLoader extends AssetLoader {
     "emailNotificationsTitle": "Notifiche email",
     "emailNotificationsSetting": "Offerte e aggiornamenti",
     "emailNotificationsSettingDesc": "Aggiornamenti sui prodotti, consigli e offerte speciali",
-    "preferences": "Preferenze"
+    "preferences": "Preferenze",
+    "savePercent": "Risparmia {}%",
+    "upgradeToPlan": "Passa a {}",
+    "upgradeFeature1": "Fatturazione di {} per i primi 12 mesi",
+    "upgradeFeature2": "Garanzia di rimborso di 7 giorni",
+    "upgradeFeature3": "Supporto clienti 24 ore su 24",
+    "upgradeAndSave": "Passa di piano e risparmia",
+    "upgradeDisclaimerRefund":
+        "Eventuali giorni inutilizzati del piano mensile verranno rimborsati sul metodo di pagamento originale.",
+    "upgradeSubscriptionPrivacy": "Info su abbonamento e privacy",
+    "upgradePrivacyPolicy": "Informativa sulla privacy",
+    "upgradeTermsAndConditions": "Termini e condizioni",
+    "upgradeSubscriptionInfo": "Info sull'abbonamento",
+    "upgradeSuccessTitle": "Successo!",
+    "upgradeSuccessText": "Il pagamento è andato a buon fine e il tuo {} è ora attivo"
   };
   static const Map<String, dynamic> _fr = {
     "LoggingYouIn": "Vous enregistrer ...",
@@ -3465,7 +3561,21 @@ class CodegenLoader extends AssetLoader {
     "emailNotificationsTitle": "Notifications par e-mail",
     "emailNotificationsSetting": "Offres et mises à jour",
     "emailNotificationsSettingDesc": "Mises à jour de produits, conseils et offres spéciales",
-    "preferences": "Préférences"
+    "preferences": "Préférences",
+    "savePercent": "Économisez {}%",
+    "upgradeToPlan": "Passer à {}",
+    "upgradeFeature1": "Facturé {} pour les 12 premiers mois",
+    "upgradeFeature2": "Garantie satisfait ou remboursé 7 jours",
+    "upgradeFeature3": "Assistance client 24h/24",
+    "upgradeAndSave": "Passez à un plan supérieur et économisez",
+    "upgradeDisclaimerRefund":
+        "Toute portion inutilisée de votre plan mensuel sera remboursée sur votre mode de paiement d'origine.",
+    "upgradeSubscriptionPrivacy": "Infos abonnement et confidentialité",
+    "upgradePrivacyPolicy": "Politique de confidentialité",
+    "upgradeTermsAndConditions": "Conditions générales",
+    "upgradeSubscriptionInfo": "Infos sur l’abonnement",
+    "upgradeSuccessTitle": "Succès !",
+    "upgradeSuccessText": "Votre paiement a été effectué et votre {} est maintenant actif"
   };
   static const Map<String, dynamic> _id = {
     "LoggingYouIn": "Membuat Anda masuk...",
@@ -3902,7 +4012,21 @@ class CodegenLoader extends AssetLoader {
     "emailNotificationsTitle": "Notifikasi Email",
     "emailNotificationsSetting": "Penawaran & pembaruan",
     "emailNotificationsSettingDesc": "Pembaruan produk, tips, dan penawaran khusus",
-    "preferences": "Preferensi"
+    "preferences": "Preferensi",
+    "savePercent": "Hemat {}%",
+    "upgradeToPlan": "Tingkatkan ke {}",
+    "upgradeFeature1": "Ditagih sebesar {} untuk 12 bulan pertama",
+    "upgradeFeature2": "Garansi uang kembali 7 hari",
+    "upgradeFeature3": "Dukungan pelanggan 24 jam",
+    "upgradeAndSave": "Tingkatkan dan hemat",
+    "upgradeDisclaimerRefund":
+        "Sisa waktu tidak terpakai dari paket bulanan Anda akan dikembalikan ke metode pembayaran asli.",
+    "upgradeSubscriptionPrivacy": "Info langganan dan privasi",
+    "upgradePrivacyPolicy": "Kebijakan Privasi",
+    "upgradeTermsAndConditions": "Syarat dan Ketentuan",
+    "upgradeSubscriptionInfo": "Info langganan",
+    "upgradeSuccessTitle": "Berhasil!",
+    "upgradeSuccessText": "Pembayaran Anda berhasil dan paket {} Anda sekarang aktif"
   };
   static const Map<String, dynamic> _es = {
     "LoggingYouIn": "Iniciando sesión...",
@@ -4350,7 +4474,21 @@ class CodegenLoader extends AssetLoader {
     "emailNotificationsTitle": "Notificaciones por correo electrónico",
     "emailNotificationsSetting": "Ofertas y actualizaciones",
     "emailNotificationsSettingDesc": "Actualizaciones de productos, consejos y ofertas especiales",
-    "preferences": "Preferencias"
+    "preferences": "Preferencias",
+    "savePercent": "Ahorra {}%",
+    "upgradeToPlan": "Actualizar a {}",
+    "upgradeFeature1": "Facturado {} por los primeros 12 meses",
+    "upgradeFeature2": "Garantía de devolución de dinero de 7 días",
+    "upgradeFeature3": "Soporte al cliente 24h",
+    "upgradeAndSave": "Actualiza y ahorra",
+    "upgradeDisclaimerRefund":
+        "Cualquier parte no utilizada de tu plan mensual será reembolsada al método de pago original.",
+    "upgradeSubscriptionPrivacy": "Información sobre suscripción y privacidad",
+    "upgradePrivacyPolicy": "Política de privacidad",
+    "upgradeTermsAndConditions": "Términos y condiciones",
+    "upgradeSubscriptionInfo": "Información de la suscripción",
+    "upgradeSuccessTitle": "¡Éxito!",
+    "upgradeSuccessText": "Tu pago se ha procesado y tu {} ya está activo"
   };
   static const Map<String, dynamic> _ar = {
     "LoggingYouIn": "جاري تسجيل دخولك...",
@@ -4773,7 +4911,20 @@ class CodegenLoader extends AssetLoader {
     "emailNotificationsTitle": "إشعارات البريد الإلكتروني",
     "emailNotificationsSetting": "العروض والتحديثات",
     "emailNotificationsSettingDesc": "تحديثات المنتج، نصائح، وعروض خاصة",
-    "preferences": "التفضيلات"
+    "preferences": "التفضيلات",
+    "savePercent": "وفّر {}%",
+    "upgradeToPlan": "الترقية إلى {}",
+    "upgradeFeature1": "يتم الفوترة بمبلغ {} لأول 12 شهرًا",
+    "upgradeFeature2": "ضمان استرداد الأموال خلال 7 أيام",
+    "upgradeFeature3": "دعم عملاء على مدار 24 ساعة",
+    "upgradeAndSave": "قم بالترقية ووفّر",
+    "upgradeDisclaimerRefund": "سيتم رد أي جزء غير مستخدم من خطتك الشهرية إلى طريقة الدفع الأصلية.",
+    "upgradeSubscriptionPrivacy": "معلومات الاشتراك والخصوصية",
+    "upgradePrivacyPolicy": "سياسة الخصوصية",
+    "upgradeTermsAndConditions": "الشروط والأحكام",
+    "upgradeSubscriptionInfo": "معلومات الاشتراك",
+    "upgradeSuccessTitle": "تم بنجاح!",
+    "upgradeSuccessText": "تمت معالجة دفعتك و{} نشطة الآن"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

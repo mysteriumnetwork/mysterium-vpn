@@ -391,5 +391,18 @@
   "emailNotificationsTitle": "E-posta Bildirimleri",
   "emailNotificationsSetting": "Teklifler ve güncellemeler",
   "emailNotificationsSettingDesc": "Ürün güncellemeleri, ipuçları ve özel teklifler",
-  "preferences": "Tercihler"
+  "preferences": "Tercihler",
+  "savePercent": "{}% tasarruf et",
+  "upgradeToPlan": "{} planına geç",
+  "upgradeFeature1": "İlk 12 ay boyunca {} olarak faturalandırılır",
+  "upgradeFeature2": "7 gün para iade garantisi",
+  "upgradeFeature3": "7/24 müşteri desteği",
+  "upgradeAndSave": "Yükselt ve tasarruf et",
+  "upgradeDisclaimerRefund": "Aylık planınızın kullanılmayan kısmı, orijinal ödeme yönteminize iade edilecektir.",
+  "upgradeSubscriptionPrivacy": "Abonelik ve gizlilik bilgileri",
+  "upgradePrivacyPolicy": "Gizlilik Politikası",
+  "upgradeTermsAndConditions": "Şartlar ve Koşullar",
+  "upgradeSubscriptionInfo": "Abonelik bilgileri",
+  "upgradeSuccessTitle": "Başarılı!",
+  "upgradeSuccessText": "Ödemeniz alındı ve {} planınız artık aktif"
 }

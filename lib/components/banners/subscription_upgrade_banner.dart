@@ -7,6 +7,7 @@ import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/pages/subscription_upgrade_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class SubscriptionUpgradeBanner extends HookConsumerWidget {
@@ -19,7 +20,7 @@ class SubscriptionUpgradeBanner extends HookConsumerWidget {
     return Observer(
       builder: (context) {
         Future<void> handleUpgrade() async {
-          await subscriptionUpgradeStore.upgrade();
+          await showSubscriptionUpgradePage(context);
         }
 
         final product = subscriptionUpgradeStore.upgradeProduct.value;

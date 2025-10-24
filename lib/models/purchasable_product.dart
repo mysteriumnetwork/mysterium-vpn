@@ -87,19 +87,24 @@ abstract class _PurchasableProduct with Store {
                   : LocaleKeys.yearly.tr(),
         },
       );
+
   @computed
   String get monthlyPrice => productPrice.pricePerMonth(
-        months: planDetails.id == kMonthlyPlan
-            ? 1
-            : planDetails.id == ksemiAnnualPlan
-                ? 6
-                : 12,
+        months: duration,
+        currencySymbol: currencySymbol,
+        currencyCode: currencyCode,
+      );
+
+  @computed
+  String get annualPrice => productPrice.pricePerYear(
+        months: duration,
         currencySymbol: currencySymbol,
         currencyCode: currencyCode,
       );
 
   @computed
   bool get isPupular => planDetails.id == kPopularPlan;
+
   @computed
   String get billedInTotal => LocaleKeys.billedInTotal.tr(
         namedArgs: {

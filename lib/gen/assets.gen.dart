@@ -697,6 +697,11 @@ class $AssetsImagesGen {
   SvgGenImage get settings =>
       const SvgGenImage('assets/images/settings.svg', size: Size(120.0, 120.0));
 
+  /// File path: assets/images/subscription_upgrade.png
+  AssetGenImage get subscriptionUpgrade =>
+      const AssetGenImage('assets/images/subscription_upgrade.png',
+          size: const Size(1024.0, 1024.0));
+
   /// List of all assets
   List<dynamic> get values => [
         checkEmail,
@@ -705,7 +710,8 @@ class $AssetsImagesGen {
         notifications,
         reportDark,
         reportLight,
-        settings
+        settings,
+        subscriptionUpgrade
       ];
 }
 

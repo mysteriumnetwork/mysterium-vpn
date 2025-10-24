@@ -394,5 +394,18 @@
   "emailNotificationsTitle": "Notifications par e-mail",
   "emailNotificationsSetting": "Offres et mises à jour",
   "emailNotificationsSettingDesc": "Mises à jour de produits, conseils et offres spéciales",
-  "preferences": "Préférences"
+  "preferences": "Préférences",
+  "savePercent": "Économisez {}%",
+  "upgradeToPlan": "Passer à {}",
+  "upgradeFeature1": "Facturé {} pour les 12 premiers mois",
+  "upgradeFeature2": "Garantie satisfait ou remboursé 7 jours",
+  "upgradeFeature3": "Assistance client 24h/24",
+  "upgradeAndSave": "Passez à un plan supérieur et économisez",
+  "upgradeDisclaimerRefund": "Toute portion inutilisée de votre plan mensuel sera remboursée sur votre mode de paiement d'origine.",
+  "upgradeSubscriptionPrivacy": "Infos abonnement et confidentialité",
+  "upgradePrivacyPolicy": "Politique de confidentialité",
+  "upgradeTermsAndConditions": "Conditions générales",
+  "upgradeSubscriptionInfo": "Infos sur l’abonnement",
+  "upgradeSuccessTitle": "Succès !",
+  "upgradeSuccessText": "Votre paiement a été effectué et votre {} est maintenant actif"
 }

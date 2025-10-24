@@ -392,5 +392,18 @@
   "emailNotificationsTitle": "电子邮件通知",
   "emailNotificationsSetting": "优惠和更新",
   "emailNotificationsSettingDesc": "产品更新、提示和特别优惠",
-  "preferences": "偏好设置"
+  "preferences": "偏好设置",
+  "savePercent": "节省 {}%",
+  "upgradeToPlan": "升级到 {}",
+  "upgradeFeature1": "前 12 个月按 {} 计费",
+  "upgradeFeature2": "7 天退款保证",
+  "upgradeFeature3": "24 小时客户支持",
+  "upgradeAndSave": "升级并省钱",
+  "upgradeDisclaimerRefund": "您未使用的月度计划部分将退还到原始付款方式。",
+  "upgradeSubscriptionPrivacy": "订阅和隐私信息",
+  "upgradePrivacyPolicy": "隐私政策",
+  "upgradeTermsAndConditions": "条款和条件",
+  "upgradeSubscriptionInfo": "订阅信息",
+  "upgradeSuccessTitle": "成功！",
+  "upgradeSuccessText": "您的付款已完成，{} 计划现已激活"
 }

@@ -394,5 +394,18 @@
   "emailNotificationsTitle": "Email Notifications",
   "emailNotificationsSetting": "Offers & updates",
   "emailNotificationsSettingDesc": "Product updates, tips, and special offers",
-  "preferences": "Preferences"
+  "preferences": "Preferences",
+  "savePercent": "Save {}%",
+  "upgradeToPlan": "Upgrade to {}",
+  "upgradeFeature1": "Billed at {} for the first 12 months",
+  "upgradeFeature2": "7 days money back guarantee",
+  "upgradeFeature3": "24h customer support",
+  "upgradeAndSave": "Upgrade and save",
+  "upgradeDisclaimerRefund": "Any unused portion of your monthly plan will be refunded to your original payment method.",
+  "upgradeSubscriptionPrivacy": "Subscription and privacy info",
+  "upgradePrivacyPolicy": "Privacy Policy",
+  "upgradeTermsAndConditions": "Terms and Conditions",
+  "upgradeSubscriptionInfo": "Subscription info",
+  "upgradeSuccessTitle": "Success!",
+  "upgradeSuccessText": "Your payment went through and your {} is now active"
 }

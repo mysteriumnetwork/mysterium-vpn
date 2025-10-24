@@ -31,6 +31,7 @@ class QAToolbox extends HookConsumerWidget {
     final vpnStore = ref.read(vpnStorePOD);
     final sessionStore = ref.read(authSessionStorePOD);
     final screenType = useScreenType();
+    final subscriptionUpgradeStore = ref.read(subscriptionUpgradeStorePOD);
     return Observer(
       builder: (context) => Column(
         children: [
@@ -209,13 +210,16 @@ class QAToolbox extends HookConsumerWidget {
           ),
           SettingItem(
             asset: Asset.icons.settingsAdaptive(context),
-            title: 'Show upgrade page',
-            subtitle: const EasyText('Internal'),
+            title: 'Show upgrade success page',
+            subtitle: const EasyText('Just to test the design of upgrade success page.'),
             actionWidget: TextButton.icon(
               label: const EasyText('Show'),
               icon: const Icon(Icons.open_in_new),
               onPressed: () async {
-                await showSubscriptionUpgradeSuccessDialog(context);
+                final product = await subscriptionUpgradeStore.upgradeProduct;
+                if (product != null) {
+                  await showSubscriptionUpgradeSuccessDialog(context, purchasedPlan: product);
+                }
               },
             ),
           ),
