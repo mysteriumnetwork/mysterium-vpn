@@ -21,7 +21,7 @@ dependencies:
   crypto: 3.0.6
   cupertino_icons: 1.0.8
   curl_logger_dio_interceptor: ^1.0.0
-  device_info_plus: 11.5.0
+  device_info_plus: 12.2.0
   dio: 5.9.0
   easy_localization: 3.0.8
   easy_localization_loader: ^2.0.2
@@ -63,7 +63,7 @@ dependencies:
   intl: 0.20.2
   json_annotation: 4.9.0
   latlong2: 0.9.1
-  lottie: 3.3.1
+  lottie: 3.3.2
   mobx: 2.5.0
   modal_bottom_sheet: 3.0.0
   mqtt5_client: 4.12.1
