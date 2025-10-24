@@ -51,7 +51,7 @@ jobs:
           printf '%s' "$CONTENT" > "$ENV_PATH"
           chmod 600 "$ENV_PATH"
 
-      - name: Set up XCode
+      - name: Set up Xcode
         run: sudo xcode-select --switch /Applications/Xcode_16.1.0.app
 
       - name: Setup Flutter Version Management CLI
@@ -93,11 +93,32 @@ jobs:
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
+          set -euo pipefail
           echo "Checking for existing Mac Installer Distribution certificate..."
-          if ! app-store-connect certificates list --type MAC_INSTALLER_DISTRIBUTION --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --save | grep -q "Apple"; then
-            echo "No Installer certificate found, creating one..."
-            app-store-connect certificates create --type MAC_INSTALLER_DISTRIBUTION --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --save
+
+          EXISTING_CERTS=$(app-store-connect certificates list --type MAC_INSTALLER_DISTRIBUTION \
+            --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --save || true)
+
+          echo "$EXISTING_CERTS"
+
+          if echo "$EXISTING_CERTS" | grep -q "Mac Installer Distribution"; then
+            echo "✅ Existing Mac Installer Distribution certificate found."
+          else
+            echo "⚠️  No Installer certificate found, attempting to create one..."
+            set +e
+            app-store-connect certificates create \
+              --type MAC_INSTALLER_DISTRIBUTION \
+              --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" \
+              --save
+            CREATE_STATUS=$?
+            set -e
+
+            if [ $CREATE_STATUS -ne 0 ]; then
+              echo "⚠️  Certificate creation failed (likely because one already exists). Continuing..."
+            fi
           fi
+
+          echo "Adding certificates to keychain..."
           keychain add-certificates
           echo "Installed certificates in keychain:"
           keychain list-certificates
@@ -131,8 +152,14 @@ jobs:
           set -euo pipefail
           echo "=== Building macOS installer ==="
 
-          echo "Building unsigned pkg..."
-          xcrun productbuild --component "${{ inputs.product_name }}.app" /Applications/ unsigned.pkg
+          APP_PATH=$(find . -maxdepth 1 -type d -name "*.app" | head -n 1)
+          if [ -z "$APP_PATH" ]; then
+            echo "ERROR: No .app bundle found in $(pwd)"
+            exit 1
+          fi
+
+          echo "Building unsigned pkg for $APP_PATH..."
+          xcrun productbuild --component "$APP_PATH" /Applications/ unsigned.pkg
           if [ ! -f unsigned.pkg ]; then
             echo "ERROR: unsigned.pkg not created!"
             exit 1
