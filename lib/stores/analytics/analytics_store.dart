@@ -341,6 +341,29 @@ mixin AnalyticsStore {
     );
   }
 
+  Future<void> logSubscriptionUpgradeBannerClick() async {
+    await logEvent(AnalyticsEvent.subUpgradeBannerClick);
+  }
+
+  Future<void> logSubscriptionUpgradePopupShow() async {
+    await logEvent(AnalyticsEvent.subUpgradePopupShow);
+  }
+
+  Future<void> logSubscriptionUpgradePopupClose() async {
+    await logEvent(AnalyticsEvent.subUpgradePopupClose);
+  }
+
+  Future<void> logSubscriptionUpgradePopupConfirm() async {
+    await logEvent(AnalyticsEvent.subUpgradePopupConfirm);
+  }
+
+  Future<void> logSubscriptionUpgradeInfoClick(String url) async {
+    await logEvent(
+      AnalyticsEvent.subUpgradeInfoClick,
+      parameters: {'url': url},
+    );
+  }
+
   Stream<AnalyticsLogEntry> watchLogs() => _logStreamController.stream;
   Stream<AnalyticsUserProperty> watchUserProperties() => _userPropertiesStreamController.stream;
 }
