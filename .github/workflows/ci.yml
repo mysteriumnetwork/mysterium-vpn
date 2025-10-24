@@ -136,5 +136,6 @@ jobs:
       application_name: "Mysterium VPN Test"
       application_logo: "assets/logo/dev/desktop.png"
       env_file: ".env.dev"
-      standalone_sign: false
+      standalone_sign: true
+      standalone_keyvault_certificate: "mysteriumvpn-selfsigned"
     secrets: inherit
