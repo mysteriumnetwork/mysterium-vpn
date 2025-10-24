@@ -93,7 +93,6 @@ jobs:
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
-          set -euo pipefail
           echo "Checking for existing Mac Installer Distribution certificate..."
 
           EXISTING_CERTS=$(app-store-connect certificates list --type MAC_INSTALLER_DISTRIBUTION \
@@ -105,18 +104,16 @@ jobs:
             echo "✅ Existing Mac Installer Distribution certificate found."
           else
             echo "⚠️  No Installer certificate found, attempting to create one..."
-            set +e
-            app-store-connect certificates create \
+            if ! app-store-connect certificates create \
               --type MAC_INSTALLER_DISTRIBUTION \
               --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" \
-              --save
-            CREATE_STATUS=$?
-            set -e
-
-            if [ $CREATE_STATUS -ne 0 ]; then
+              --save; then
               echo "⚠️  Certificate creation failed (likely because one already exists). Continuing..."
             fi
           fi
+
+          # Enable strict error handling after potentially failing command
+          set -euo pipefail
 
           echo "Adding certificates to keychain..."
           keychain add-certificates
@@ -149,12 +146,13 @@ jobs:
       - name: Build signed macOS installer
         working-directory: build/macos/Build/Products/Release-${{ inputs.flavor }}
         run: |
-          set -euo pipefail
           echo "=== Building macOS installer ==="
 
-          APP_PATH=$(find . -maxdepth 1 -type d -name "*.app" | head -n 1)
-          if [ -z "$APP_PATH" ]; then
-            echo "ERROR: No .app bundle found in $(pwd)"
+          APP_PATH="${{ inputs.product_name }}.app"
+          if [ ! -d "$APP_PATH" ]; then
+            echo "ERROR: App bundle not found at $APP_PATH"
+            echo "Available .app bundles:"
+            ls -1d *.app || true
             exit 1
           fi
 
