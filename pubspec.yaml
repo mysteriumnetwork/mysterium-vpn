@@ -2,7 +2,7 @@ name: mysterium_vpn
 description: Next-gen Mysterium VPN client for mobile (iOS/Android) and desktop (Windows/MacOS/Linux).
 
 publish_to: "none"
-version: 2.2.2-dev
+version: 2.2.3-dev
 
 environment:
   sdk: "^3.0.0"
@@ -51,14 +51,14 @@ dependencies:
       url: https://github.com/mysteriumnetwork/flutter_udid.git
       ref: 1.0.1
   freezed_annotation: 3.1.0
-  google_fonts: 6.3.0
+  google_fonts: 6.3.2
   google_sign_in: 7.1.1
   hive_ce: 2.13.2
   hive_ce_flutter: 2.3.2
   hooks_riverpod: 2.6.1
   in_app_purchase: 3.2.3
   in_app_purchase_storekit: 0.4.4
-  in_app_review: 2.0.10
+  in_app_review: 2.0.11
   in_app_update: ^4.2.4
   intl: 0.20.2
   json_annotation: 4.9.0
@@ -70,7 +70,7 @@ dependencies:
   open_mail_app:
     git:
       url: https://github.com/KristijanMitrik/open-mail-app-flutter.git
-      ref: upgrade-dependencies
+      ref: 0.4.5
   open_store: 0.5.0
   package_info_plus: 9.0.0
   path_provider: 2.1.5
@@ -97,29 +97,29 @@ dependencies:
   vpn_api:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git
-      ref: 1.0.31
+      ref: 1.0.37
   window_manager: 0.5.1
   wireguard_dart:
     git:
       url: https://github.com/mysteriumnetwork/wireguard_dart.git
-      ref: 0.9.6
+      ref: 0.9.7
 
 dev_dependencies:
-  build_runner: 2.7.1
+  build_runner: 2.8.0
   cider: 0.2.8
-  flutter_gen_runner: 5.11.0
+  flutter_gen_runner: 5.12.0
   flutter_lints: 5.0.0
   flutter_test:
     sdk: flutter
   freezed: 3.2.3
-  hive_ce_generator: 1.9.3
+  hive_ce_generator: 1.9.5
   integration_test:
     sdk: flutter
   json_serializable: 6.11.1
-  mobx_codegen: 2.7.3
+  mobx_codegen: 2.7.4
   mockito: ^5.4.4
   msix: 3.16.12
-  patrol: ^3.15.1
+  patrol: 3.19.0
 
 msix_config:
   display_name: Mysterium VPN

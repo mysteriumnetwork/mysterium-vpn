@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:store_checker_windows/store_checker_windows.dart';
@@ -32,15 +34,25 @@ abstract class Env {
   static late final PackageInfo _packageInfo;
   static BuildInfo _buildInfo = BuildInfo(buildNumber: 0, buildVersion: '0.0.0');
   static late final String _userAgent;
+  static late final BaseDeviceInfo _deviceInfo;
+  static late final String _deviceName;
+  static late final String _deviceModel;
 
   static PackageInfo get packageInfo => _packageInfo;
 
   static BuildInfo get buildInfo => _buildInfo;
 
+  static BaseDeviceInfo get deviceInfo => _deviceInfo;
+
+  static String get deviceName => _deviceName;
+
+  static String get deviceModel => _deviceModel;
+
   static String get userAgent => _userAgent;
 
   static Future<void> init() async {
     _packageInfo = await PackageInfo.fromPlatform();
+    await initDeviceInfo();
     _buildInfo = BuildInfo(
       buildNumber: int.tryParse(_packageInfo.buildNumber) ?? 0,
       buildVersion: _packageInfo.version,
@@ -55,6 +67,34 @@ abstract class Env {
     ].join(' ');
   }
 
+  @visibleForTesting
+  static Future<void> initDeviceInfo([DeviceInfoPlugin? plugin]) async {
+    try {
+      plugin ??= DeviceInfoPlugin();
+      _deviceInfo = await plugin.deviceInfo;
+    } catch (_) {
+      // In case of any error, we assign an empty BaseDeviceInfo to avoid null issues.
+      // Since we never access things from _deviceInfo without checking its type first,
+      // this should be safe. In this case, deviceName and deviceModel will be 'Unknown'.
+      _deviceInfo = BaseDeviceInfo({});
+    }
+
+    _deviceName = switch (_deviceInfo) {
+      final AndroidDeviceInfo android => android.name,
+      final IosDeviceInfo iOS => iOS.name,
+      final MacOsDeviceInfo macOS => macOS.computerName,
+      final WindowsDeviceInfo windows => windows.computerName,
+      _ => 'Unknown',
+    };
+    _deviceModel = switch (_deviceInfo) {
+      final AndroidDeviceInfo android => android.model,
+      final IosDeviceInfo iOS => iOS.model,
+      final MacOsDeviceInfo macOS => macOS.model,
+      final WindowsDeviceInfo windows => windows.productName,
+      _ => 'Unknown',
+    };
+  }
+
   static String stringify() =>
       'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, billingPage: $billingPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret, isAutomated: $isAutomated';
 
@@ -64,6 +104,28 @@ abstract class Env {
     }
     return flavor.isDev ? testAndroidBundleId : androidBundleId;
   }
+
+  static Map<String, String> asMap() => {
+        'BASE_URL': baseUrl,
+        'MQTT_URL': mqttUrl,
+        'MQTT_USERNAME': mqttUsername,
+        'MQTT_PASSWORD': mqttPassword,
+        'WEB_APP_URL': webAppUrl,
+        'SENTRY_DSN': sentryDsn,
+        'BILLING_PAGE': billingPage,
+        'ACCOUNT_NAME': accountName,
+        'APP_NAME': appName,
+        'APPLE_CLIENT_ID': appleClientId,
+        'APPLE_REDIRECT_URI': appleRedirectUri,
+        'TUNNEL_NAME': tunnelName,
+        'REMOTE_CONFIG_SDK_KEY': remoteConfigSdkKey,
+        'AB_TESTING_SDK_KEY': abTestingSdkKey,
+        'TEXTS_SDK_KEY': textsSdkKey,
+        'MEASUREMENT_ID': measurementId,
+        'API_SECRET': apiSecret,
+        'IS_AUTOMATED': isAutomated.toString(),
+        'ENV_APP': flavor.name,
+      };
 }
 
 enum Flavor {

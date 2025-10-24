@@ -179,6 +179,9 @@
   "locationItemNodeCount": {
     "other": "{} サーバー"
   },
+  "locationUnavailableTitle": "{} は利用できません",
+  "locationUnavailableSubtitle": "最寄りのIPに接続するか、手動で選択してください",
+  "locationUnavailableAction": "最寄りのIPに接続",
   "loginQuote": "あなたの個人的な経験をレベルアップしてください。\n匿名であること。自由。",
   "loginSessionExpired": "セッションの有効期限が切れました。再度ログインしてください。",
   "logout": "ログアウト",

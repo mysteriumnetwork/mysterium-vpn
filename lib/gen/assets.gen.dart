@@ -38,6 +38,12 @@ class $AssetsAnimationsGen {
   /// File path: assets/animations/circles_purple.json
   LottieGenImage get circlesPurple => const LottieGenImage('assets/animations/circles_purple.json');
 
+  /// File path: assets/animations/pulse_green.json
+  LottieGenImage get pulseGreen => const LottieGenImage('assets/animations/pulse_green.json');
+
+  /// File path: assets/animations/pulse_purple.json
+  LottieGenImage get pulsePurple => const LottieGenImage('assets/animations/pulse_purple.json');
+
   /// File path: assets/animations/slide_up.json
   LottieGenImage get slideUp => const LottieGenImage('assets/animations/slide_up.json');
 
@@ -45,8 +51,16 @@ class $AssetsAnimationsGen {
   LottieGenImage get startLogo => const LottieGenImage('assets/animations/start_logo.json');
 
   /// List of all assets
-  List<LottieGenImage> get values =>
-      [backgroundElements, circlesGrey, circlesLogo, circlesPurple, slideUp, startLogo];
+  List<LottieGenImage> get values => [
+        backgroundElements,
+        circlesGrey,
+        circlesLogo,
+        circlesPurple,
+        pulseGreen,
+        pulsePurple,
+        slideUp,
+        startLogo
+      ];
 }
 
 class $AssetsDataGen {
@@ -183,6 +197,14 @@ class $AssetsIconsGen {
   /// File path: assets/icons/clock_circle.svg
   SvgGenImage get clockCircle =>
       const SvgGenImage('assets/icons/clock_circle.svg', size: Size(24.0, 24.0));
+
+  /// File path: assets/icons/close2_dark.svg
+  SvgGenImage get close2Dark =>
+      const SvgGenImage('assets/icons/close2_dark.svg', size: Size(32.0, 32.0));
+
+  /// File path: assets/icons/close2_light.svg
+  SvgGenImage get close2Light =>
+      const SvgGenImage('assets/icons/close2_light.svg', size: Size(32.0, 32.0));
 
   /// File path: assets/icons/close_dark.svg
   SvgGenImage get closeDark =>
@@ -528,6 +550,8 @@ class $AssetsIconsGen {
         cityLight,
         clear,
         clockCircle,
+        close2Dark,
+        close2Light,
         closeDark,
         closeLight,
         connectPromptDark,
