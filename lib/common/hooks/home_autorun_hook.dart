@@ -6,12 +6,15 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/screen_type.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/components/dialogs/info_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/marketing_consent_dialog.dart';
+import 'package:mysterium_vpn/components/dialogs/push_notifications_dialog.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:wireguard_dart/connection_status.dart';
+import 'package:mysterium_vpn/stores/user_preferences_store.dart';
+import 'package:wireguard_dart/wireguard_dart.dart';
 
 void useHomeAutorun() {
   final context = useContext();
@@ -20,6 +23,7 @@ void useHomeAutorun() {
   final remoteConfigStore = useProvider(remoteConfigStorePOD);
   final subscriptionUpgradeStore = useProvider(subscriptionUpgradeStorePOD);
   final subscriptionUpgradeShown = useRef(false);
+  final screenType = useScreenType();
 
   return useEffect(
     () {
@@ -42,14 +46,24 @@ void useHomeAutorun() {
         ),
         autorun(
           (_) {
-            if (userPreferencesStore.canShowMarketingConsentDialog) {
-              controller.add(
-                () => showMarketingConsentDialog(
-                  context,
-                  desktopSize: ScreenType.of(context) == ScreenType.desktop,
-                ),
-              );
+            final value = userPreferencesStore.nextPromptToShow;
+            if (value == UserPromptType.none) {
+              return;
             }
+
+            scheduleMicrotask(() {
+              if (value case UserPromptType.marketingConsent) {
+                showMarketingConsentDialog(
+                  context,
+                  desktopSize: screenType == ScreenType.desktop,
+                );
+              } else if (value case UserPromptType.pushNotifications) {
+                showPushNotificationsPermissionDialog(
+                  context,
+                  desktopSize: screenType == ScreenType.desktop,
+                );
+              }
+            });
           },
         ),
         autorun(
