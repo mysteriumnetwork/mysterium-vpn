@@ -45,7 +45,11 @@ abstract class _SubscriptionUpgradeStore with Store {
       return null;
     }
 
-    return plans.lastOrNull;
+    final largestPlan = plans.lastOrNull;
+    if (largestPlan != null && largestPlan.id != downgradeProduct.id) {
+      return largestPlan;
+    }
+    return null;
   }
 
   @computed
@@ -57,6 +61,12 @@ abstract class _SubscriptionUpgradeStore with Store {
     }
 
     return downgrade.periodDiscountPercentage(upgrade);
+  }
+
+  @computed
+  bool get isEligibleForUpgrade {
+    final discount = upgradeDiscountPercent;
+    return discount != null && discount > 0;
   }
 
   @action
