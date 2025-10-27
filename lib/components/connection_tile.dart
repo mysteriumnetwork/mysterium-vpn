@@ -251,7 +251,10 @@ class _Location extends HookWidget {
 
     final extras = [
       if (ip != null) ip!,
-      if (ipType == IPType.datacenter) LocaleKeys.highSpeed.tr(),
+      if (ipType == IPType.residential)
+        LocaleKeys.residential.tr()
+      else if (ipType == IPType.datacenter)
+        LocaleKeys.highSpeed.tr(),
     ];
 
     return Row(

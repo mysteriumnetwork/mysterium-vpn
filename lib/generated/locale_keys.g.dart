@@ -152,6 +152,7 @@ abstract class LocaleKeys {
   static const here = 'here';
   static const highLatencyReason = 'highLatencyReason';
   static const highSpeed = 'highSpeed';
+  static const residential = 'residential';
   static const history = 'history';
   static const iUnderstandBtn = 'iUnderstandBtn';
   static const id = 'id';
