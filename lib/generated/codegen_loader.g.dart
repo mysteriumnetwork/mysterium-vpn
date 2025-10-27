@@ -810,7 +810,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Evet",
     "zh": "Çince",
-    "marketingConsentPopupTitle": "Güncel Kalın",
+    "marketingConsentPopupTitle": "Güncel kal",
     "marketingConsentPopupDesc":
         "Mysterium Network'ten e-posta güncellemeleri, gizlilik ipuçları ve özel teklifler almak ister misiniz?",
     "signMeUpBtn": "Evet, kaydolmak istiyorum",
@@ -1651,7 +1651,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Ja",
     "zh": "Chinesisch",
-    "marketingConsentPopupTitle": "Bleiben Sie informiert",
+    "marketingConsentPopupTitle": "Bleib auf dem Laufenden",
     "marketingConsentPopupDesc":
         "Möchten Sie E-Mail-Updates, Datenschutz-Tipps und Sonderangebote von Mysterium Network erhalten?",
     "signMeUpBtn": "Ja, melden Sie mich an",
@@ -2093,7 +2093,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "sim",
     "zh": "Chinês",
-    "marketingConsentPopupTitle": "Fique informado",
+    "marketingConsentPopupTitle": "Fique por dentro",
     "marketingConsentPopupDesc":
         "Gostaria de receber atualizações por e-mail, dicas de privacidade e ofertas especiais da Mysterium Network?",
     "signMeUpBtn": "Sim, quero me inscrever",
@@ -2523,7 +2523,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Yes",
     "zh": "Chinese",
-    "marketingConsentPopupTitle": "Stay in Loop",
+    "marketingConsentPopupTitle": "Stay in the Loop",
     "marketingConsentPopupDesc":
         "Would you like to receive email updates, privacy tips, and special offers from Mysterium Network?",
     "signMeUpBtn": "Yes, sign me up",
@@ -2967,7 +2967,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sì",
     "zh": "Cinese",
-    "marketingConsentPopupTitle": "Rimani aggiornato",
+    "marketingConsentPopupTitle": "Resta aggiornato",
     "marketingConsentPopupDesc":
         "Vuoi ricevere aggiornamenti via email, consigli sulla privacy e offerte speciali da Mysterium Network?",
     "signMeUpBtn": "Sì, iscrivimi",
@@ -3850,7 +3850,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Iya",
     "zh": "Cina",
-    "marketingConsentPopupTitle": "Tetap Terinformasi",
+    "marketingConsentPopupTitle": "Tetap terhubung",
     "marketingConsentPopupDesc":
         "Apakah Anda ingin menerima pembaruan email, tips privasi, dan penawaran khusus dari Mysterium Network?",
     "signMeUpBtn": "Ya, daftarkan saya",
@@ -4295,7 +4295,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sí",
     "zh": "Chino",
-    "marketingConsentPopupTitle": "Mantente informado",
+    "marketingConsentPopupTitle": "Mantente al tanto",
     "marketingConsentPopupDesc":
         "¿Te gustaría recibir actualizaciones por correo electrónico, consejos de privacidad y ofertas especiales de Mysterium Network?",
     "signMeUpBtn": "Sí, apúntame",
