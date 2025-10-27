@@ -1,6 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
@@ -28,6 +29,13 @@ class _Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final planName = switch (purchasedPlan.planDetails.id) {
+      kAnnualPlan => LocaleKeys.plan_yearly.tr(),
+      ksemiAnnualPlan => LocaleKeys.plan_6_months.tr(),
+      kMonthlyPlan => LocaleKeys.plan_monthly.tr(),
+      _ => LocaleKeys.plan_2_years.tr(),
+    };
+
     void handleGoHome() {
       final beamer = Beamer.of(context);
       final navigator = Navigator.of(context);
@@ -60,7 +68,7 @@ class _Page extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                   EasyText(
-                    LocaleKeys.upgradeSuccessText.tr(args: ['1-year']),
+                    LocaleKeys.upgradeSuccessText.tr(args: [planName]),
                     maxLines: 3,
                   ),
                 ],
@@ -70,7 +78,7 @@ class _Page extends StatelessWidget {
           const Spacer(),
           EasyButton(
             onPressed: handleGoHome,
-            text: 'Go to home',
+            text: LocaleKeys.goToHome.tr(),
             useSystemColor: false,
             color: Palette.purple,
           ),
