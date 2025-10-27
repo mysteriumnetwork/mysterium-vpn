@@ -37,6 +37,13 @@ mixin _$SubscriptionUpgradeStore on _SubscriptionUpgradeStore, Store {
       (_$upgradeDiscountPercentComputed ??= Computed<int?>(() => super.upgradeDiscountPercent,
               name: '_SubscriptionUpgradeStore.upgradeDiscountPercent'))
           .value;
+  Computed<bool>? _$isEligibleForUpgradeComputed;
+
+  @override
+  bool get isEligibleForUpgrade =>
+      (_$isEligibleForUpgradeComputed ??= Computed<bool>(() => super.isEligibleForUpgrade,
+              name: '_SubscriptionUpgradeStore.isEligibleForUpgrade'))
+          .value;
 
   late final _$upgradeAsyncAction =
       AsyncAction('_SubscriptionUpgradeStore.upgrade', context: context);
@@ -52,7 +59,8 @@ mixin _$SubscriptionUpgradeStore on _SubscriptionUpgradeStore, Store {
 purchasableProducts: ${purchasableProducts},
 downgradeProduct: ${downgradeProduct},
 upgradeProduct: ${upgradeProduct},
-upgradeDiscountPercent: ${upgradeDiscountPercent}
+upgradeDiscountPercent: ${upgradeDiscountPercent},
+isEligibleForUpgrade: ${isEligibleForUpgrade}
     ''';
   }
 }

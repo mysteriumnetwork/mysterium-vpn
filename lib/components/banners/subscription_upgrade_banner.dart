@@ -26,7 +26,8 @@ class SubscriptionUpgradeBanner extends HookConsumerWidget {
           await showSubscriptionUpgradePage(context);
         }
 
-        if (!remoteConfigStore.subscriptionUpgradeBannerEnabled) {
+        if (!remoteConfigStore.subscriptionUpgradeBannerEnabled ||
+            !subscriptionUpgradeStore.isEligibleForUpgrade) {
           return const SizedBox.shrink();
         }
 
