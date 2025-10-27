@@ -16,12 +16,12 @@ mixin _$SubscriptionUpgradeStore on _SubscriptionUpgradeStore, Store {
           Computed<List<PurchasableProduct>>(() => super.purchasableProducts,
               name: '_SubscriptionUpgradeStore.purchasableProducts'))
       .value;
-  Computed<PurchasableProduct?>? _$downgradeProductComputed;
+  Computed<PurchasableProduct?>? _$currentProductComputed;
 
   @override
-  PurchasableProduct? get downgradeProduct =>
-      (_$downgradeProductComputed ??= Computed<PurchasableProduct?>(() => super.downgradeProduct,
-              name: '_SubscriptionUpgradeStore.downgradeProduct'))
+  PurchasableProduct? get currentProduct =>
+      (_$currentProductComputed ??= Computed<PurchasableProduct?>(() => super.currentProduct,
+              name: '_SubscriptionUpgradeStore.currentProduct'))
           .value;
   Computed<PurchasableProduct?>? _$upgradeProductComputed;
 
@@ -57,7 +57,7 @@ mixin _$SubscriptionUpgradeStore on _SubscriptionUpgradeStore, Store {
   String toString() {
     return '''
 purchasableProducts: ${purchasableProducts},
-downgradeProduct: ${downgradeProduct},
+currentProduct: ${currentProduct},
 upgradeProduct: ${upgradeProduct},
 upgradeDiscountPercent: ${upgradeDiscountPercent},
 isEligibleForUpgrade: ${isEligibleForUpgrade}

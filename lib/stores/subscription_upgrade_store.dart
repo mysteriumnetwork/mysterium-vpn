@@ -24,29 +24,28 @@ abstract class _SubscriptionUpgradeStore with Store {
   }
 
   @computed
-  PurchasableProduct? get downgradeProduct {
+  PurchasableProduct? get currentProduct {
     final subscription = _subscriptionStore.subscriptionFuture.value;
     final plans = purchasableProducts;
-    if (subscription == null || !subscription.isGatewayOnCurrentPlatform) {
+    if (subscription == null ||
+        !subscription.isGatewayOnCurrentPlatform ||
+        subscription.isExpired) {
       return null;
     }
 
-    if (!subscription.isExpired) {
-      return plans.firstWhereOrNull((it) => it.id == subscription.planId);
-    }
-    return plans.firstOrNull;
+    return plans.firstWhereOrNull((it) => it.id == subscription.planId);
   }
 
   @computed
   PurchasableProduct? get upgradeProduct {
-    final downgradeProduct = this.downgradeProduct;
-    final plans = purchasableProducts;
-    if (downgradeProduct == null) {
+    final currentProduct = this.currentProduct;
+    if (currentProduct == null) {
       return null;
     }
 
+    final plans = purchasableProducts;
     final largestPlan = plans.lastOrNull;
-    if (largestPlan != null && largestPlan.id != downgradeProduct.id) {
+    if (largestPlan != null && largestPlan.id != currentProduct.id) {
       return largestPlan;
     }
     return null;
@@ -54,13 +53,13 @@ abstract class _SubscriptionUpgradeStore with Store {
 
   @computed
   int? get upgradeDiscountPercent {
-    final downgrade = downgradeProduct;
+    final current = currentProduct;
     final upgrade = upgradeProduct;
-    if (downgrade == null || upgrade == null) {
+    if (current == null || upgrade == null) {
       return null;
     }
 
-    return downgrade.periodDiscountPercentage(upgrade);
+    return current.periodDiscountPercentage(upgrade);
   }
 
   @computed
