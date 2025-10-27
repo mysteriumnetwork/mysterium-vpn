@@ -19,7 +19,7 @@ import 'package:styled_widget/styled_widget.dart';
 Future<void> showMarketingConsentDialog(
   BuildContext context, {
   required bool desktopSize,
-}) async =>
+}) =>
     showDialog(
       context: context,
       barrierDismissible: false,
