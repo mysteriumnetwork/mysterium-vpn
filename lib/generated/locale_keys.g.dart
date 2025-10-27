@@ -148,6 +148,7 @@ abstract class LocaleKeys {
   static const gettingIPAddress = 'gettingIPAddress';
   static const gettingYourPlan = 'gettingYourPlan';
   static const goBackButton = 'goBackButton';
+  static const goToHome = 'goToHome';
   static const goToBillingPage = 'goToBillingPage';
   static const here = 'here';
   static const highLatencyReason = 'highLatencyReason';
@@ -289,6 +290,7 @@ abstract class LocaleKeys {
   static const resetAppTitle = 'resetAppTitle';
   static const resetBtn = 'resetBtn';
   static const retryBtn = 'retryBtn';
+  static const saveWithPlan = 'saveWithPlan';
   static const searchForLocations = 'searchForLocations';
   static const secure = 'secure';
   static const selectEmailApp = 'selectEmailApp';
@@ -320,6 +322,8 @@ abstract class LocaleKeys {
   static const subscriptionDesktop = 'subscriptionDesktop';
   static const subscriptionProcessCanceled = 'subscriptionProcessCanceled';
   static const subscriptionRenewalDisclaimer = 'subscriptionRenewalDisclaimer';
+  static const subscriptionUpgradeSuccessTitle = 'subscriptionUpgradeSuccessTitle';
+  static const subscriptionUpgradeSuccessMessage = 'subscriptionUpgradeSuccessMessage';
   static const subscriptionVerificationFailed = 'subscriptionVerificationFailed';
   static const subscripton = 'subscripton';
   static const system = 'system';
@@ -385,4 +389,17 @@ abstract class LocaleKeys {
   static const emailNotificationsSetting = 'emailNotificationsSetting';
   static const emailNotificationsSettingDesc = 'emailNotificationsSettingDesc';
   static const preferences = 'preferences';
+  static const savePercent = 'savePercent';
+  static const upgradeToPlan = 'upgradeToPlan';
+  static const upgradeFeature1 = 'upgradeFeature1';
+  static const upgradeFeature2 = 'upgradeFeature2';
+  static const upgradeFeature3 = 'upgradeFeature3';
+  static const upgradeAndSave = 'upgradeAndSave';
+  static const upgradeDisclaimerRefund = 'upgradeDisclaimerRefund';
+  static const upgradeSubscriptionPrivacy = 'upgradeSubscriptionPrivacy';
+  static const upgradePrivacyPolicy = 'upgradePrivacyPolicy';
+  static const upgradeTermsAndConditions = 'upgradeTermsAndConditions';
+  static const upgradeSubscriptionInfo = 'upgradeSubscriptionInfo';
+  static const upgradeSuccessTitle = 'upgradeSuccessTitle';
+  static const upgradeSuccessText = 'upgradeSuccessText';
 }
