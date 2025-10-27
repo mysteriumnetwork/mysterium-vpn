@@ -35,24 +35,21 @@ void useHomeAutorun() {
         autorun(
           (_) {
             final limitExceeded = vpnStore.vpnConfig?.limitExceeded ?? false;
-            if (limitExceeded || vpnStore.vpnStatus != ConnectionStatus.connected) {
-              return;
+            if (limitExceeded && vpnStore.vpnStatus == ConnectionStatus.connected) {
+              controller.add(() => _showOrSkipConnectionLimitDialog(context));
             }
-            controller.add(() => _showOrSkipConnectionLimitDialog(context));
           },
         ),
         autorun(
           (_) {
-            final screenType = ScreenType.of(context);
-            if (!userPreferencesStore.canShowMarketingConsentDialog) {
-              return;
+            if (userPreferencesStore.canShowMarketingConsentDialog) {
+              controller.add(
+                () => showMarketingConsentDialog(
+                  context,
+                  desktopSize: ScreenType.of(context) == ScreenType.desktop,
+                ),
+              );
             }
-            controller.add(
-              () => showMarketingConsentDialog(
-                context,
-                desktopSize: screenType == ScreenType.desktop,
-              ),
-            );
           },
         ),
         autorun(
