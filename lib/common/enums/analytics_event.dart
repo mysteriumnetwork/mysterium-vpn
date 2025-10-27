@@ -119,7 +119,12 @@ enum AnalyticsEvent {
   togglePushNotifications,
   pushNotificationsPromptShown,
   pushNotificationsPermissionsGranted,
-  pushNotificationsPermissionsDenied;
+  pushNotificationsPermissionsDenied,
+  subUpgradeBannerClick,
+  subUpgradePopupShow,
+  subUpgradePopupClose,
+  subUpgradePopupConfirm,
+  subUpgradeInfoClick;
 
   String get formattedName => name.toSnakeCase;
 }

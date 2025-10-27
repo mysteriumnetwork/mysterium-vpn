@@ -32,6 +32,7 @@ import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/texts_store.dart';
 import 'package:mysterium_vpn/stores/selected_location_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
+import 'package:mysterium_vpn/stores/subscription_upgrade_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/unavailable_locations_store.dart';
 import 'package:mysterium_vpn/stores/update_availabe_store.dart';
@@ -357,5 +358,11 @@ final refreshIPStorePOD = Provider<RefreshIPStore>(
     LocalDBService.instance,
     ref.watch(loggerPOD),
     ref.watch(authSessionStorePOD),
+  ),
+);
+
+final subscriptionUpgradeStorePOD = Provider<SubscriptionUpgradeStore>(
+  (ref) => SubscriptionUpgradeStore(
+    ref.watch(subscriptionStorePOD),
   ),
 );

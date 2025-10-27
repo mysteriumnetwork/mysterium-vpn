@@ -206,6 +206,14 @@ class $AssetsIconsGen {
   SvgGenImage get close2Light =>
       const SvgGenImage('assets/icons/close2_light.svg', size: Size(32.0, 32.0));
 
+  /// File path: assets/icons/close_3_dark.svg
+  SvgGenImage get close3Dark =>
+      const SvgGenImage('assets/icons/close_3_dark.svg', size: Size(24.0, 24.0));
+
+  /// File path: assets/icons/close_3_light.svg
+  SvgGenImage get close3Light =>
+      const SvgGenImage('assets/icons/close_3_light.svg', size: Size(24.0, 24.0));
+
   /// File path: assets/icons/close_dark.svg
   SvgGenImage get closeDark =>
       const SvgGenImage('assets/icons/close_dark.svg', size: Size(24.0, 24.0));
@@ -229,6 +237,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/delete_account_light.svg
   SvgGenImage get deleteAccountLight =>
       const SvgGenImage('assets/icons/delete_account_light.svg', size: Size(34.0, 34.0));
+
+  /// File path: assets/icons/diamond.svg
+  SvgGenImage get diamond => const SvgGenImage('assets/icons/diamond.svg', size: Size(24.0, 25.0));
 
   /// File path: assets/icons/download.svg
   SvgGenImage get download =>
@@ -479,6 +490,14 @@ class $AssetsIconsGen {
   SvgGenImage get subscriptionItem =>
       const SvgGenImage('assets/icons/subscription_item.svg', size: Size(44.0, 44.0));
 
+  /// File path: assets/icons/success_cup_dark.svg
+  SvgGenImage get successCupDark =>
+      const SvgGenImage('assets/icons/success_cup_dark.svg', size: Size(49.0, 48.0));
+
+  /// File path: assets/icons/success_cup_light.svg
+  SvgGenImage get successCupLight =>
+      const SvgGenImage('assets/icons/success_cup_light.svg', size: Size(49.0, 48.0));
+
   /// File path: assets/icons/support_dark.svg
   SvgGenImage get supportDark =>
       const SvgGenImage('assets/icons/support_dark.svg', size: Size(32.0, 32.0));
@@ -552,12 +571,15 @@ class $AssetsIconsGen {
         clockCircle,
         close2Dark,
         close2Light,
+        close3Dark,
+        close3Light,
         closeDark,
         closeLight,
         connectPromptDark,
         connectPromptLight,
         deleteAccountDark,
         deleteAccountLight,
+        diamond,
         download,
         downloadActive,
         duration,
@@ -623,6 +645,8 @@ class $AssetsIconsGen {
         stopLight,
         subscription,
         subscriptionItem,
+        successCupDark,
+        successCupLight,
         supportDark,
         supportDarkDesktop,
         supportLight,
@@ -673,6 +697,11 @@ class $AssetsImagesGen {
   SvgGenImage get settings =>
       const SvgGenImage('assets/images/settings.svg', size: Size(120.0, 120.0));
 
+  /// File path: assets/images/subscription_upgrade.png
+  AssetGenImage get subscriptionUpgrade =>
+      const AssetGenImage('assets/images/subscription_upgrade.png',
+          size: const Size(1024.0, 1024.0));
+
   /// List of all assets
   List<dynamic> get values => [
         checkEmail,
@@ -681,7 +710,8 @@ class $AssetsImagesGen {
         notifications,
         reportDark,
         reportLight,
-        settings
+        settings,
+        subscriptionUpgrade
       ];
 }
 
