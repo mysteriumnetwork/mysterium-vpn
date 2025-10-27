@@ -44,10 +44,10 @@ class _Page extends HookConsumerWidget {
       padding: EdgeInsets.zero,
       child: Observer(
         builder: (context) {
-          final downgradeProduct = subscriptionUpgradeStore.downgradeProduct;
+          final currentProduct = subscriptionUpgradeStore.currentProduct;
           final product = subscriptionUpgradeStore.upgradeProduct;
           final discountPercent = subscriptionUpgradeStore.upgradeDiscountPercent;
-          if (product == null || discountPercent == null || downgradeProduct == null) {
+          if (product == null || discountPercent == null || currentProduct == null) {
             return const Center(child: LoadingIndicator());
           }
 
@@ -90,7 +90,7 @@ class _Page extends HookConsumerWidget {
                       monthlyPrice: product.monthlyPrice,
                     ),
                     Asset.images.subscriptionUpgrade.image(width: 184, height: 184),
-                    _Features(downgrade: downgradeProduct, upgrade: product),
+                    _Features(current: currentProduct, upgrade: product),
                     _Footer(onUpgradePressed: handleUpgrade),
                   ],
                 ),
@@ -147,11 +147,11 @@ class _Prompt extends StatelessWidget {
 
 class _Features extends HookWidget {
   const _Features({
-    required this.downgrade,
+    required this.current,
     required this.upgrade,
   });
 
-  final PurchasableProduct downgrade;
+  final PurchasableProduct current;
   final PurchasableProduct upgrade;
 
   @override
@@ -172,7 +172,7 @@ class _Features extends HookWidget {
             text: feature,
             sizeGroup: autoSizeGroup,
             discountedPrice: upgrade.annualPrice,
-            fullPrice: downgrade.annualPrice,
+            fullPrice: current.annualPrice,
           ),
       ],
     );

@@ -45,19 +45,19 @@ void main() {
     expect(result, equals([prodB, prodA]));
   });
 
-  test('downgradeProduct returns null when subscription gateway is off', () async {
+  test('currentProduct returns null when subscription gateway is off', () async {
     when(mockSubscriptionStore.subscriptionFuture)
         .thenAnswer((_) => ObservableFuture.value(mockSubscription));
     when(mockSubscription.isGatewayOnCurrentPlatform).thenReturn(false);
     when(mockSubscriptionStore.productsFuture)
         .thenAnswer((_) => ObservableFuture.value([prodA, prodB]));
 
-    final result = store.downgradeProduct;
+    final result = store.currentProduct;
 
     expect(result, isNull);
   });
 
-  test('downgradeProduct picks product matching subscription planId when available and not expired',
+  test('currentProduct picks product matching subscription planId when available and not expired',
       () async {
     when(mockSubscriptionStore.subscriptionFuture)
         .thenAnswer((_) => ObservableFuture.value(mockSubscription));
@@ -70,13 +70,12 @@ void main() {
     when(mockSubscriptionStore.productsFuture)
         .thenAnswer((_) => ObservableFuture.value([prodA, prodB]));
 
-    final result = store.downgradeProduct;
+    final result = store.currentProduct;
 
     expect(result, equals(prodB));
   });
 
-  test('upgradeProduct returns last purchasable product when downgradeProduct is present',
-      () async {
+  test('upgradeProduct returns last purchasable product when currentProduct is present', () async {
     when(mockSubscriptionStore.subscriptionFuture)
         .thenAnswer((_) => ObservableFuture.value(mockSubscription));
     when(mockSubscription.isGatewayOnCurrentPlatform).thenReturn(true);
@@ -96,7 +95,7 @@ void main() {
     expect(result, equals(prodC));
   });
 
-  test('upgradeDiscountPercent uses downgrade.periodDiscountPercentage(upgrade)', () async {
+  test('upgradeDiscountPercent uses current.periodDiscountPercentage(upgrade)', () async {
     when(mockSubscriptionStore.subscriptionFuture)
         .thenAnswer((_) => ObservableFuture.value(mockSubscription));
     when(mockSubscription.isGatewayOnCurrentPlatform).thenReturn(true);
