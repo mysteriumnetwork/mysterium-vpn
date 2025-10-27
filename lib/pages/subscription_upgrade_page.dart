@@ -229,9 +229,16 @@ class _FeatureItem extends HookWidget {
 
     return Row(
       spacing: 8,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Icon(Icons.check_circle_outline_rounded),
-        AutoSizeText.rich(TextSpan(children: spans), style: textStyle),
+        Expanded(
+          child: AutoSizeText.rich(
+            TextSpan(children: spans),
+            style: textStyle,
+            group: sizeGroup,
+          ),
+        ),
       ],
     );
   }
