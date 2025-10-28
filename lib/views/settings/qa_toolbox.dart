@@ -32,6 +32,7 @@ class QAToolbox extends HookConsumerWidget {
     final sessionStore = ref.read(authSessionStorePOD);
     final screenType = useScreenType();
     final subscriptionUpgradeStore = ref.read(subscriptionUpgradeStorePOD);
+    final connectionsLimitStore = ref.read(connectionsLimitStorePOD);
     return Observer(
       builder: (context) => Column(
         children: [
@@ -67,16 +68,17 @@ class QAToolbox extends HookConsumerWidget {
           SettingItem(
             asset: Asset.icons.settingsAdaptive(context),
             title: 'VPN Connection limit',
-            subtitle: EasyText('Exceeded: ${vpnStore.connectionLimitReached}'),
+            subtitle: EasyText('Exceeded: ${connectionsLimitStore.connectionLimitReached}'),
             actionWidget: TextButton.icon(
               label: EasyText(
-                vpnStore.connectionLimitReached ? 'Mark not reached' : 'Mark reached',
+                connectionsLimitStore.connectionLimitReached ? 'Mark not reached' : 'Mark reached',
               ),
               icon: const Icon(Icons.refresh),
               onPressed: () async {
-                vpnStore.connectionLimitReached = !vpnStore.connectionLimitReached;
+                connectionsLimitStore.connectionLimitReached =
+                    !connectionsLimitStore.connectionLimitReached;
                 showSnackbar(
-                  'Connection limit reached: ${vpnStore.connectionLimitReached}',
+                  'Connection limit reached: ${connectionsLimitStore.connectionLimitReached}',
                 );
               },
             ),
