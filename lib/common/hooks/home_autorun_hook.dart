@@ -50,17 +50,18 @@ void useHomeAutorun() {
             if (value == UserPromptType.none) {
               return;
             }
+            final isDesktop = screenType == ScreenType.desktop;
 
             scheduleMicrotask(() {
               if (value case UserPromptType.marketingConsent) {
                 showMarketingConsentDialog(
                   context,
-                  desktopSize: screenType == ScreenType.desktop,
+                  desktopSize: isDesktop,
                 );
               } else if (value case UserPromptType.pushNotifications) {
                 showPushNotificationsPermissionDialog(
                   context,
-                  desktopSize: screenType == ScreenType.desktop,
+                  desktopSize: isDesktop,
                 );
               }
             });

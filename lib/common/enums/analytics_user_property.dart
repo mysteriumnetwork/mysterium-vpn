@@ -58,7 +58,7 @@ class AnalyticsUserProperty {
   final String value;
   final DateTime setAt;
 
-  String get name24chars => rawName.length > 24 ? rawName.substring(0, 24) : rawName;
+  String get name24chars => rawName.truncate(24);
 
-  String get value36chars => value.length > 36 ? value.substring(0, 36) : value;
+  String get value36chars => value.truncate(36);
 }
