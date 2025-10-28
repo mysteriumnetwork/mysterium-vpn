@@ -402,4 +402,12 @@ abstract class LocaleKeys {
   static const upgradeSubscriptionInfo = 'upgradeSubscriptionInfo';
   static const upgradeSuccessTitle = 'upgradeSuccessTitle';
   static const upgradeSuccessText = 'upgradeSuccessText';
+  static const pushNotificationsTitle = 'pushNotificationsTitle';
+  static const pushNotificationsSetting = 'pushNotificationsSetting';
+  static const pushNotificationsSettingDesc = 'pushNotificationsSettingDesc';
+  static const pushNotificationsConsentPopupTitle = 'pushNotificationsConsentPopupTitle';
+  static const pushNotificationsConsentPopupDesc = 'pushNotificationsConsentPopupDesc';
+  static const pushNotificaitonsPermissionPoint1 = 'pushNotificaitonsPermissionPoint1';
+  static const pushNotificaitonsPermissionPoint2 = 'pushNotificaitonsPermissionPoint2';
+  static const allowPushNotificationsBtn = 'allowPushNotificationsBtn';
 }

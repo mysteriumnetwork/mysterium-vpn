@@ -407,5 +407,13 @@
   "upgradeTermsAndConditions": "الشروط والأحكام",
   "upgradeSubscriptionInfo": "معلومات الاشتراك",
   "upgradeSuccessTitle": "تم بنجاح!",
-  "upgradeSuccessText": "تمت معالجة دفعتك و{} نشطة الآن"
+  "upgradeSuccessText": "تمت معالجة دفعتك و{} نشطة الآن",
+  "pushNotificationsTitle": "الإشعارات الفورية",
+  "pushNotificationsSetting": "الأمان",
+  "pushNotificationsSettingDesc": "حالة VPN وتحديثات نشاط الحساب",
+  "pushNotificationsConsentPopupTitle": "هل يمكننا إعلامك؟",
+  "pushNotificationsConsentPopupDesc": "سنرسل فقط الإشعارات المهمة التي نعتقد أنك تريد معرفتها.",
+  "pushNotificaitonsPermissionPoint1": "• حالة اتصال VPN",
+  "pushNotificaitonsPermissionPoint2": "• تنبيهات نشاط الحساب والخدمة",
+  "allowPushNotificationsBtn": "السماح بالإشعارات"
 }
