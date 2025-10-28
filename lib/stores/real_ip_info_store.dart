@@ -44,7 +44,7 @@ abstract class _RealIPInfoStore with Store {
       _analyticsStore.setUserProperty(
         AnalyticsUserProperty.fromEnum(
           name: AnalyticsUserPropName.countryUser,
-          value: info.ip,
+          value: info.country,
         ),
       );
     }
