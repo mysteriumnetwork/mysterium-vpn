@@ -2097,8 +2097,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: implement-android-foreground-service
-      resolved-ref: e61f5744ba06761d344011ad669b8da92ac0ab28
+      ref: "0.9.8"
+      resolved-ref: e345853d5a6625fdde081ea2a149f42d9726188f
       url: "https://github.com/mysteriumnetwork/wireguard_dart.git"
     source: git
     version: "0.4.5"

@@ -102,7 +102,7 @@ dependencies:
   wireguard_dart:
     git:
       url: https://github.com/mysteriumnetwork/wireguard_dart.git
-      ref: implement-android-foreground-service
+      ref: 0.9.8
 
 dev_dependencies:
   build_runner: 2.8.0
