@@ -404,5 +404,13 @@
   "upgradeTermsAndConditions": "Şartlar ve Koşullar",
   "upgradeSubscriptionInfo": "Abonelik bilgileri",
   "upgradeSuccessTitle": "Başarılı!",
-  "upgradeSuccessText": "Ödemeniz alındı ve {} planınız artık aktif"
+  "upgradeSuccessText": "Ödemeniz alındı ve {} planınız artık aktif",
+  "pushNotificationsTitle": "Anlık Bildirimler",
+  "pushNotificationsSetting": "Güvenlik",
+  "pushNotificationsSettingDesc": "VPN durumu ve hesap etkinliği güncellemeleri",
+  "pushNotificationsConsentPopupTitle": "Size bildirim gönderebilir miyiz?",
+  "pushNotificationsConsentPopupDesc": "Yalnızca bilmek isteyeceğinizi düşündüğümüz önemli bildirimleri göndereceğiz.",
+  "pushNotificaitonsPermissionPoint1": "• VPN bağlantı durumu",
+  "pushNotificaitonsPermissionPoint2": "• Hesap ve hizmet etkinliği uyarıları",
+  "allowPushNotificationsBtn": "Bildirimlere İzin Ver"
 }

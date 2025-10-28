@@ -405,5 +405,13 @@
   "upgradeTermsAndConditions": "Syarat dan Ketentuan",
   "upgradeSubscriptionInfo": "Info langganan",
   "upgradeSuccessTitle": "Berhasil!",
-  "upgradeSuccessText": "Pembayaran Anda berhasil dan paket {} Anda sekarang aktif"
+  "upgradeSuccessText": "Pembayaran Anda berhasil dan paket {} Anda sekarang aktif",
+  "pushNotificationsTitle": "Notifikasi Push",
+  "pushNotificationsSetting": "Keamanan",
+  "pushNotificationsSettingDesc": "Status VPN dan pembaruan aktivitas akun",
+  "pushNotificationsConsentPopupTitle": "Bolehkah kami memberi tahu Anda?",
+  "pushNotificationsConsentPopupDesc": "Kami hanya akan mengirim notifikasi penting yang menurut kami ingin Anda ketahui.",
+  "pushNotificationsPermissionPoint1": "• Status koneksi VPN",
+  "pushNotificationsPermissionPoint2": "• Peringatan aktivitas akun dan layanan",
+  "allowPushNotificationsBtn": "Izinkan Notifikasi"
 }
