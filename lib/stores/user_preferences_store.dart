@@ -200,7 +200,7 @@ abstract class _UserPreferencesStore with Store {
     if (userAllowed) {
       final result = await _wireguardService.requestNotificationPermission();
       _analyticsStore.logPushNotificationsPermissionsChanged(result);
-      evaluateNextPromptToShow();
+      unawaited(evaluateNextPromptToShow());
     }
   }
 
