@@ -413,7 +413,7 @@
   "pushNotificationsSettingDesc": "Status da VPN e atualizações de atividade da conta",
   "pushNotificationsConsentPopupTitle": "Podemos notificá-lo?",
   "pushNotificationsConsentPopupDesc": "Enviaremos apenas notificações importantes que achamos que você vai querer saber.",
-  "pushNotificaitonsPermissionPoint1": "• Status da conexão VPN",
-  "pushNotificaitonsPermissionPoint2": "• Alertas de atividade da conta e do serviço",
+  "pushNotificationsPermissionPoint1": "• Status da conexão VPN",
+  "pushNotificationsPermissionPoint2": "• Alertas de atividade da conta e do serviço",
   "allowPushNotificationsBtn": "Permitir notificações"
 }

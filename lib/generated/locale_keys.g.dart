@@ -407,7 +407,7 @@ abstract class LocaleKeys {
   static const pushNotificationsSettingDesc = 'pushNotificationsSettingDesc';
   static const pushNotificationsConsentPopupTitle = 'pushNotificationsConsentPopupTitle';
   static const pushNotificationsConsentPopupDesc = 'pushNotificationsConsentPopupDesc';
-  static const pushNotificaitonsPermissionPoint1 = 'pushNotificaitonsPermissionPoint1';
-  static const pushNotificaitonsPermissionPoint2 = 'pushNotificaitonsPermissionPoint2';
+  static const pushNotificationsPermissionPoint1 = 'pushNotificationsPermissionPoint1';
+  static const pushNotificationsPermissionPoint2 = 'pushNotificationsPermissionPoint2';
   static const allowPushNotificationsBtn = 'allowPushNotificationsBtn';
 }
