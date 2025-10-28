@@ -1,20 +1,18 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
-import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-/// Displays a dialog asking for push notification permissions.
 Future<void> showPushNotificationsPermissionDialog(
   BuildContext context, {
   required bool desktopSize,
@@ -30,7 +28,6 @@ Future<void> showPushNotificationsPermissionDialog(
       ),
     );
 
-/// -------- Desktop Layout --------
 class _DesktopDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -65,7 +62,6 @@ class _DesktopDialog extends StatelessWidget {
   }
 }
 
-/// -------- Mobile Layout --------
 class _MobileDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -94,7 +90,6 @@ class _MobileDialog extends ConsumerWidget {
   }
 }
 
-/// -------- Shared Dialog Content --------
 class _DialogContent extends ConsumerWidget {
   const _DialogContent({required this.isMobile});
 
@@ -117,55 +112,39 @@ class _DialogContent extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (isMobile) const Spacer(),
-        Asset.images
-            .marketingConsent(context)
-            .image(width: 150, height: 150), // Replace with your icon
+        Asset.images.marketingConsent(context).image(width: 150, height: 150),
         Text(
-          'Can we notify you?',
+          LocaleKeys.pushNotificationsConsentPopupTitle.tr(),
           style: GoogleFonts.montserrat(
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
         ),
         Text(
-          "We'll only send important notifications we think you'll want to know about.",
+          LocaleKeys.pushNotificationsConsentPopupDesc.tr(),
           style: GoogleFonts.montserrat(
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
           textAlign: TextAlign.center,
         ).padding(bottom: 24, top: 12),
-
-        // Points
-        const Column(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _PermissionPoint(text: '• VPN Connection status'),
-            _PermissionPoint(text: '• Server maintenance'),
+            _PermissionPoint(text: LocaleKeys.pushNotificaitonsPermissionPoint1.tr()),
+            _PermissionPoint(text: LocaleKeys.pushNotificaitonsPermissionPoint2.tr()),
           ],
         ).padding(bottom: 40),
-
         if (isMobile) const Spacer(),
-
-        Observer(
-          builder: (context) {
-            // You can show loading if you ever add async update logic
-            const futureStatus = FutureStatus.fulfilled;
-            if (futureStatus == FutureStatus.pending) {
-              return const LoadingIndicator();
-            }
-            return _Actions(
-              onAllowPressed: handleAllow,
-              flexDirection: isMobile ? Axis.vertical : Axis.horizontal,
-            );
-          },
+        _Actions(
+          onAllowPressed: handleAllow,
+          flexDirection: isMobile ? Axis.vertical : Axis.horizontal,
         ),
       ],
     );
   }
 }
 
-/// -------- Close Button --------
 class _CloseButton extends ConsumerWidget {
   const _CloseButton();
 
@@ -189,7 +168,6 @@ class _CloseButton extends ConsumerWidget {
   }
 }
 
-/// -------- Text Bullet Point Widget --------
 class _PermissionPoint extends StatelessWidget {
   const _PermissionPoint({required this.text});
   final String text;
@@ -205,7 +183,6 @@ class _PermissionPoint extends StatelessWidget {
       ).padding(bottom: 4);
 }
 
-/// -------- Action Buttons --------
 class _Actions extends StatelessWidget {
   const _Actions({
     required this.flexDirection,
@@ -228,7 +205,7 @@ class _Actions extends StatelessWidget {
         ),
         onPressed: onAllowPressed,
         child: Text(
-          'Allow Notifications',
+          LocaleKeys.allowPushNotificationsBtn.tr(),
           style: GoogleFonts.montserrat(
             color: Palette.white,
             fontWeight: FontWeight.w700,
@@ -256,7 +233,6 @@ class _Actions extends StatelessWidget {
   }
 }
 
-/// -------- Handle State Update --------
 Future<void> _completePushNotificationsFlow(
   BuildContext context, {
   required UserPreferencesStore userPreferencesStore,
