@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/analytics_user_property.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
@@ -105,6 +106,12 @@ abstract class _UserPreferencesStore with Store {
     }
     final status = await _wireguardService.checkNotificationPermission();
     _pushNotificationsPermissionGranted = status == NotificationPermission.granted;
+    _analyticsStore.setUserProperty(
+      AnalyticsUserProperty.fromEnum(
+        name: AnalyticsUserPropName.pnPermissionStatus,
+        value: status.name,
+      ),
+    );
     return !_pushNotificationsPermissionGranted!;
   }
 
@@ -165,7 +172,12 @@ abstract class _UserPreferencesStore with Store {
       getMarketingConsentFuture = ObservableFuture(_apiService.getMarketingContactStatus());
       final consent = await getMarketingConsentFuture!;
       _analyticsStore
-        ..setUserProperty(propertyName: 'marketing_consent', propertyValue: consent.toString())
+        ..setUserProperty(
+          AnalyticsUserProperty.fromEnum(
+            name: AnalyticsUserPropName.marketingConsent,
+            value: consent.toString(),
+          ),
+        )
         ..logEvent(
           AnalyticsEvent.getMarketingContactSuccess,
         );
@@ -187,24 +199,18 @@ abstract class _UserPreferencesStore with Store {
     pushNotificationsPromptShown = true;
     if (userAllowed) {
       final result = await _wireguardService.requestNotificationPermission();
-      _analyticsStore.logEvent(
-        result == NotificationPermission.granted
-            ? AnalyticsEvent.pushNotificationsPermissionsGranted
-            : AnalyticsEvent.pushNotificationsPermissionsDenied,
-      );
+      _analyticsStore.logPushNotificationsPermissionsChanged(result);
       evaluateNextPromptToShow();
     }
   }
 
+  @action
   Future<void> updatePushNotificationsPermissions() async {
     if (!isAndroid) {
       return;
     }
     final result = await _wireguardService.openAppNotificationSettings();
-    _analyticsStore.logEvent(
-      result == NotificationPermission.granted
-          ? AnalyticsEvent.pushNotificationsPermissionsGranted
-          : AnalyticsEvent.pushNotificationsPermissionsDenied,
-    );
+    _pushNotificationsPermissionGranted = result == NotificationPermission.granted;
+    _analyticsStore.logPushNotificationsPermissionsChanged(result);
   }
 }

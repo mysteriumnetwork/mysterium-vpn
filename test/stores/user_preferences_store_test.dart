@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/common/enums/analytics_user_property.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/ip_info.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
@@ -119,8 +120,10 @@ void main() {
       await store.getMarketingConsent();
       verify(
         mockAnalyticsStore.setUserProperty(
-          propertyName: 'marketing_consent',
-          propertyValue: 'true',
+          AnalyticsUserProperty.fromEnum(
+            name: AnalyticsUserPropName.marketingConsent,
+            value: 'true',
+          ),
         ),
       ).called(1);
       verify(mockAnalyticsStore.logEvent(AnalyticsEvent.getMarketingContactSuccess)).called(1);
