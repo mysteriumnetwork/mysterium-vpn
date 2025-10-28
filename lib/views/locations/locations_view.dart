@@ -182,7 +182,7 @@ class _UserIntent extends HookConsumerWidget {
     );
 
     final intents = useComputedValue(() => userIntentsStore.intentsFuture.value);
-    final selected = useComputedValue(() => vpnStore.userIntent);
+    final selected = useComputedValue(() => userIntentsStore.userIntent);
     final handleToggleConnection = useHandleToggleConnection();
 
     return MultiSliver(

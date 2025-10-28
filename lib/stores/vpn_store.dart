@@ -39,6 +39,7 @@ import 'package:mysterium_vpn/stores/refresh_ip_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/unavailable_locations_store.dart';
+import 'package:mysterium_vpn/stores/user_intents_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -76,6 +77,7 @@ abstract class _VpnStore with Store {
     required RecentLocationsStore recentLocationsStore,
     required LocationsQueryStore locationsQueryStore,
     required UnavailableLocationsStore unavailableLocationsStore,
+    required UserIntentsStore userIntentsStore,
   })  : _apiService = apiService,
         _externalApiService = externalApiService,
         _mqtt = mqtt,
@@ -93,7 +95,8 @@ abstract class _VpnStore with Store {
         _recentLocationsStore = recentLocationsStore,
         _locationsService = locationsService,
         _locationsQueryStore = locationsQueryStore,
-        _unavailableLocationsStore = unavailableLocationsStore {
+        _unavailableLocationsStore = unavailableLocationsStore,
+        _userIntentsStore = userIntentsStore {
     _init();
   }
 
@@ -110,7 +113,7 @@ abstract class _VpnStore with Store {
   final RecentLocationsStore _recentLocationsStore;
   final LocationsQueryStore _locationsQueryStore;
   final UnavailableLocationsStore _unavailableLocationsStore;
-
+  final UserIntentsStore _userIntentsStore;
   final LocationsService _locationsService;
   final WireguradKeyService _wireguardKeyService;
   final Talker _logger;
@@ -126,9 +129,6 @@ abstract class _VpnStore with Store {
 
   @readonly
   VpnConnection? _vpnConnection;
-
-  @readonly
-  UserIntent? _userIntent;
 
   @readonly
   WireguardConnectResponse? _vpnConfig;
@@ -187,27 +187,6 @@ abstract class _VpnStore with Store {
     }
 
     return null;
-  }
-
-  @computed
-  Set<UserIntent> get userIntents {
-    final intents = {...UserIntent.values};
-    final myCountry = _realIPInfo.info?.country;
-
-    if (myCountry != null) {
-      final availableCountries = {
-        ...?_locationsStore.dcLocationsFuture.value?.allLocations,
-        ...?_locationsStore.residentialLocationsFuture.value?.allLocations,
-      };
-
-      if (availableCountries.none((it) => it.countryCode == myCountry)) {
-        intents.remove(UserIntent.nearestLocation);
-      }
-    } else {
-      intents.remove(UserIntent.nearestLocation);
-    }
-
-    return intents;
   }
 
   @readonly
@@ -391,7 +370,7 @@ abstract class _VpnStore with Store {
     if (status == ConnectionStatus.connected) {
       await _wireguardService.disconnect();
       if (!isReconnecting) {
-        _userIntent = null;
+        _userIntentsStore.userIntent = null;
         _connectingLocation = null;
         await notifyApiVpnDisconnected();
       }
@@ -432,7 +411,7 @@ abstract class _VpnStore with Store {
   }) async {
     if (_connectionStatus == ConnectionStatus.connected) {
       final connectedLocation = _vpnConnection?.location;
-      final connectedIntent = _userIntent;
+      final connectedIntent = _userIntentsStore.userIntent;
       await disconnectWireguard();
       if (location == null && intent == null) {
         return;
@@ -496,12 +475,12 @@ abstract class _VpnStore with Store {
       }
     }
 
-    _userIntent = intent;
+    _userIntentsStore.userIntent = intent;
     if (location != null) {
       _connectingLocation = location;
     } else if (refreshIP ?? false) {
       _connectingLocation = _vpnConnection?.location;
-    } else if (_userIntent != null) {
+    } else if (_userIntentsStore.userIntent != null) {
       _connectingLocation = null;
     } else {
       _connectingLocation = potentialLocation;
@@ -514,7 +493,7 @@ abstract class _VpnStore with Store {
         _connectingLocation = location;
       }
     }
-    if (_connectingLocation == null && _userIntent == null) {
+    if (_connectingLocation == null && _userIntentsStore.userIntent == null) {
       return;
     }
 
@@ -531,7 +510,7 @@ abstract class _VpnStore with Store {
         });
       }
 
-      await _completeConnection(_connectingLocation, _userIntent, refreshIP);
+      await _completeConnection(_connectingLocation, _userIntentsStore.userIntent, refreshIP);
 
       _stopwatch.stop();
       if (_vpnConnection?.location != null) {
@@ -542,7 +521,7 @@ abstract class _VpnStore with Store {
         );
       }
     } on TimeoutException catch (e, stackTrace) {
-      _userIntent = null;
+      _userIntentsStore.userIntent = null;
       _logger.handle(e);
       Sentry.captureException(e, stackTrace: stackTrace);
 
@@ -557,10 +536,10 @@ abstract class _VpnStore with Store {
       );
       _stopwatch.stop();
     } on OperationCancelledException {
-      _userIntent = null;
+      _userIntentsStore.userIntent = null;
       _logger.info('Operation cancelled by user');
     } catch (e, stackTrace) {
-      _userIntent = null;
+      _userIntentsStore.userIntent = null;
       _logger.handle(e, stackTrace);
       Sentry.captureException(e, stackTrace: stackTrace);
 
