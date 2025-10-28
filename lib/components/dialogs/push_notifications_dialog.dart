@@ -131,8 +131,8 @@ class _DialogContent extends ConsumerWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _PermissionPoint(text: LocaleKeys.pushNotificaitonsPermissionPoint1.tr()),
-            _PermissionPoint(text: LocaleKeys.pushNotificaitonsPermissionPoint2.tr()),
+            _PermissionPoint(text: LocaleKeys.pushNotificationsPermissionPoint1.tr()),
+            _PermissionPoint(text: LocaleKeys.pushNotificationsPermissionPoint2.tr()),
           ],
         ).padding(bottom: 40),
         if (isMobile) const Spacer(),

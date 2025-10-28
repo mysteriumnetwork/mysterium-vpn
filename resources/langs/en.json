@@ -413,7 +413,7 @@
   "pushNotificationsSettingDesc": "VPN Status and account activity updates",
   "pushNotificationsConsentPopupTitle": "Can we notify you?",
   "pushNotificationsConsentPopupDesc":"We'll only send important notifications we think you'll want to know about.",
-  "pushNotificaitonsPermissionPoint1":"• VPN Connection status",
-  "pushNotificaitonsPermissionPoint2":"• Account and Service activity alerts",
+  "pushNotificationsPermissionPoint1":"• VPN Connection status",
+  "pushNotificationsPermissionPoint2":"• Account and Service activity alerts",
   "allowPushNotificationsBtn": "Allow Notifications"
 }

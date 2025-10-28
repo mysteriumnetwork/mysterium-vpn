@@ -413,7 +413,7 @@
   "pushNotificationsSettingDesc": "حالة VPN وتحديثات نشاط الحساب",
   "pushNotificationsConsentPopupTitle": "هل يمكننا إعلامك؟",
   "pushNotificationsConsentPopupDesc": "سنرسل فقط الإشعارات المهمة التي نعتقد أنك تريد معرفتها.",
-  "pushNotificaitonsPermissionPoint1": "• حالة اتصال VPN",
-  "pushNotificaitonsPermissionPoint2": "• تنبيهات نشاط الحساب والخدمة",
+  "pushNotificationsPermissionPoint1": "• حالة اتصال VPN",
+  "pushNotificationsPermissionPoint2": "• تنبيهات نشاط الحساب والخدمة",
   "allowPushNotificationsBtn": "السماح بالإشعارات"
 }

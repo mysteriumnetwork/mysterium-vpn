@@ -420,8 +420,8 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsSettingDesc": "VPN状态和帐户活动更新",
     "pushNotificationsConsentPopupTitle": "我们可以通知您吗？",
     "pushNotificationsConsentPopupDesc": "我们只会发送我们认为您想要了解的重要通知。",
-    "pushNotificaitonsPermissionPoint1": "• VPN连接状态",
-    "pushNotificaitonsPermissionPoint2": "• 帐户和服务活动警报",
+    "pushNotificationsPermissionPoint1": "• VPN连接状态",
+    "pushNotificationsPermissionPoint2": "• 帐户和服务活动警报",
     "allowPushNotificationsBtn": "允许通知"
   };
   static const Map<String, dynamic> _tr = {
@@ -870,8 +870,8 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsConsentPopupTitle": "Size bildirim gönderebilir miyiz?",
     "pushNotificationsConsentPopupDesc":
         "Yalnızca bilmek isteyeceğinizi düşündüğümüz önemli bildirimleri göndereceğiz.",
-    "pushNotificaitonsPermissionPoint1": "• VPN bağlantı durumu",
-    "pushNotificaitonsPermissionPoint2": "• Hesap ve hizmet etkinliği uyarıları",
+    "pushNotificationsPermissionPoint1": "• VPN bağlantı durumu",
+    "pushNotificationsPermissionPoint2": "• Hesap ve hizmet etkinliği uyarıları",
     "allowPushNotificationsBtn": "Bildirimlere İzin Ver"
   };
   static const Map<String, dynamic> _ja = {
@@ -1285,8 +1285,8 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsSettingDesc": "VPNステータスとアカウントアクティビティの更新",
     "pushNotificationsConsentPopupTitle": "通知を送信してもよろしいですか？",
     "pushNotificationsConsentPopupDesc": "重要な通知のみをお送りします。",
-    "pushNotificaitonsPermissionPoint1": "• VPN接続ステータス",
-    "pushNotificaitonsPermissionPoint2": "• アカウントとサービスのアクティビティアラート",
+    "pushNotificationsPermissionPoint1": "• VPN接続ステータス",
+    "pushNotificationsPermissionPoint2": "• アカウントとサービスのアクティビティアラート",
     "allowPushNotificationsBtn": "通知を許可"
   };
   static const Map<String, dynamic> _de = {
@@ -1764,8 +1764,8 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsConsentPopupTitle": "Dürfen wir Sie benachrichtigen?",
     "pushNotificationsConsentPopupDesc":
         "Wir senden nur wichtige Benachrichtigungen, von denen wir glauben, dass Sie darüber Bescheid wissen möchten.",
-    "pushNotificaitonsPermissionPoint1": "• VPN-Verbindungsstatus",
-    "pushNotificaitonsPermissionPoint2": "• Konto- und Dienstaktivitätswarnungen",
+    "pushNotificationsPermissionPoint1": "• VPN-Verbindungsstatus",
+    "pushNotificationsPermissionPoint2": "• Konto- und Dienstaktivitätswarnungen",
     "allowPushNotificationsBtn": "Benachrichtigungen zulassen"
   };
   static const Map<String, dynamic> _pt = {
@@ -2234,8 +2234,8 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsConsentPopupTitle": "Podemos notificá-lo?",
     "pushNotificationsConsentPopupDesc":
         "Enviaremos apenas notificações importantes que achamos que você vai querer saber.",
-    "pushNotificaitonsPermissionPoint1": "• Status da conexão VPN",
-    "pushNotificaitonsPermissionPoint2": "• Alertas de atividade da conta e do serviço",
+    "pushNotificationsPermissionPoint1": "• Status da conexão VPN",
+    "pushNotificationsPermissionPoint2": "• Alertas de atividade da conta e do serviço",
     "allowPushNotificationsBtn": "Permitir notificações"
   };
   static const Map<String, dynamic> _en = {
@@ -2692,8 +2692,8 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsConsentPopupTitle": "Can we notify you?",
     "pushNotificationsConsentPopupDesc":
         "We'll only send important notifications we think you'll want to know about.",
-    "pushNotificaitonsPermissionPoint1": "• VPN Connection status",
-    "pushNotificaitonsPermissionPoint2": "• Account and Service activity alerts",
+    "pushNotificationsPermissionPoint1": "• VPN Connection status",
+    "pushNotificationsPermissionPoint2": "• Account and Service activity alerts",
     "allowPushNotificationsBtn": "Allow Notifications"
   };
   static const Map<String, dynamic> _it = {
@@ -3164,8 +3164,8 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsConsentPopupTitle": "Possiamo notificarti?",
     "pushNotificationsConsentPopupDesc":
         "Invieremo solo notifiche importanti che pensiamo tu voglia conoscere.",
-    "pushNotificaitonsPermissionPoint1": "• Stato della connessione VPN",
-    "pushNotificaitonsPermissionPoint2": "• Avvisi di attività dell'account e del servizio",
+    "pushNotificationsPermissionPoint1": "• Stato della connessione VPN",
+    "pushNotificationsPermissionPoint2": "• Avvisi di attività dell'account e del servizio",
     "allowPushNotificationsBtn": "Consenti notifiche"
   };
   static const Map<String, dynamic> _fr = {
@@ -3643,8 +3643,8 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsConsentPopupTitle": "Pouvons-nous vous notifier ?",
     "pushNotificationsConsentPopupDesc":
         "Nous n'enverrons que des notifications importantes que nous pensons que vous voudrez connaître.",
-    "pushNotificaitonsPermissionPoint1": "• État de la connexion VPN",
-    "pushNotificaitonsPermissionPoint2": "• Alertes d'activité de compte et de service",
+    "pushNotificationsPermissionPoint1": "• État de la connexion VPN",
+    "pushNotificationsPermissionPoint2": "• Alertes d'activité de compte et de service",
     "allowPushNotificationsBtn": "Autoriser les notifications"
   };
   static const Map<String, dynamic> _id = {
@@ -4574,8 +4574,8 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsConsentPopupTitle": "¿Podemos notificarte?",
     "pushNotificationsConsentPopupDesc":
         "Solo enviaremos notificaciones importantes que creemos que querrás conocer.",
-    "pushNotificaitonsPermissionPoint1": "• Estado de conexión VPN",
-    "pushNotificaitonsPermissionPoint2": "• Alertas de actividad de cuenta y servicio",
+    "pushNotificationsPermissionPoint1": "• Estado de conexión VPN",
+    "pushNotificationsPermissionPoint2": "• Alertas de actividad de cuenta y servicio",
     "allowPushNotificationsBtn": "Permitir notificaciones"
   };
   static const Map<String, dynamic> _ar = {
@@ -5018,8 +5018,8 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsSettingDesc": "حالة VPN وتحديثات نشاط الحساب",
     "pushNotificationsConsentPopupTitle": "هل يمكننا إعلامك؟",
     "pushNotificationsConsentPopupDesc": "سنرسل فقط الإشعارات المهمة التي نعتقد أنك تريد معرفتها.",
-    "pushNotificaitonsPermissionPoint1": "• حالة اتصال VPN",
-    "pushNotificaitonsPermissionPoint2": "• تنبيهات نشاط الحساب والخدمة",
+    "pushNotificationsPermissionPoint1": "• حالة اتصال VPN",
+    "pushNotificationsPermissionPoint2": "• تنبيهات نشاط الحساب والخدمة",
     "allowPushNotificationsBtn": "السماح بالإشعارات"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {

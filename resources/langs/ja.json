@@ -411,7 +411,7 @@
   "pushNotificationsSettingDesc": "VPNステータスとアカウントアクティビティの更新",
   "pushNotificationsConsentPopupTitle": "通知を送信してもよろしいですか？",
   "pushNotificationsConsentPopupDesc": "重要な通知のみをお送りします。",
-  "pushNotificaitonsPermissionPoint1": "• VPN接続ステータス",
-  "pushNotificaitonsPermissionPoint2": "• アカウントとサービスのアクティビティアラート",
+  "pushNotificationsPermissionPoint1": "• VPN接続ステータス",
+  "pushNotificationsPermissionPoint2": "• アカウントとサービスのアクティビティアラート",
   "allowPushNotificationsBtn": "通知を許可"
 }
