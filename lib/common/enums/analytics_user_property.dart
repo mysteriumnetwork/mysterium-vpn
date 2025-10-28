@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/env.dart';
 
 enum AnalyticsUserPropName {
   pnPermissionStatus,
@@ -22,12 +23,12 @@ class AnalyticsUserProperty {
     required this.rawName,
     required this.value,
   }) : setAt = DateTime.now() {
-    if (rawName.length > 24) {
+    if (Env.flavor.isDev && rawName.length > 24) {
       debugPrint(
         'Warning: AnalyticsUserProperty name exceeds 24 characters: "$rawName" (${rawName.length} chars)',
       );
     }
-    if (value.length > 36) {
+    if (Env.flavor.isDev && value.length > 36) {
       debugPrint(
         'Warning: AnalyticsUserProperty value exceeds 36 characters: "$value" (${value.length} chars)',
       );

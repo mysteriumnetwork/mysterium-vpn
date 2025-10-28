@@ -101,7 +101,10 @@ abstract class _UserPreferencesStore with Store {
   @visibleForTesting
   @action
   Future<bool> shouldShowPushNotificationsPermissionPrompt() async {
-    if (!isAndroid || pushNotificationsPromptShown) {
+    // Skip the push notifications prompt if the platform is not Android,
+    // or if the prompt has already been shown.
+    final shouldSkipPushNotificationsPrompt = !isAndroid || pushNotificationsPromptShown;
+    if (shouldSkipPushNotificationsPrompt) {
       return false;
     }
     final status = await _wireguardService.checkNotificationPermission();
