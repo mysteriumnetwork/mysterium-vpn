@@ -35,6 +35,7 @@ class PushNotificationsSetting extends HookConsumerWidget {
             authStatus == AuthStatus.authenticated &&
             userPreferencesStore.pushNotificationsPermissionGranted != null,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             EasyText(
               LocaleKeys.pushNotificationsTitle.tr(),

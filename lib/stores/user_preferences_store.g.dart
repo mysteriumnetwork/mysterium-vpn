@@ -172,6 +172,15 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
         .run(() => super.setPushNotificationsShown(userAllowed: userAllowed));
   }
 
+  late final _$updatePushNotificationsPermissionsAsyncAction =
+      AsyncAction('_UserPreferencesStore.updatePushNotificationsPermissions', context: context);
+
+  @override
+  Future<void> updatePushNotificationsPermissions() {
+    return _$updatePushNotificationsPermissionsAsyncAction
+        .run(() => super.updatePushNotificationsPermissions());
+  }
+
   late final _$_UserPreferencesStoreActionController =
       ActionController(name: '_UserPreferencesStore', context: context);
 
