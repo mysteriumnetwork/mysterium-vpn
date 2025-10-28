@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 
 enum AnalyticsUserPropName {
@@ -20,7 +21,18 @@ class AnalyticsUserProperty {
   AnalyticsUserProperty._({
     required this.rawName,
     required this.value,
-  }) : setAt = DateTime.now();
+  }) : setAt = DateTime.now() {
+    if (rawName.length > 24) {
+      debugPrint(
+        'Warning: AnalyticsUserProperty name exceeds 24 characters: "$rawName" (${rawName.length} chars)',
+      );
+    }
+    if (value.length > 36) {
+      debugPrint(
+        'Warning: AnalyticsUserProperty value exceeds 36 characters: "$value" (${value.length} chars)',
+      );
+    }
+  }
 
   /// Factory constructor that creates an AnalyticsUserProperty from an enum
   factory AnalyticsUserProperty.fromEnum({
