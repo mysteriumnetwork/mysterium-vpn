@@ -1,8 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/remote_config/config_cat_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'ab_testing_store.g.dart';
 

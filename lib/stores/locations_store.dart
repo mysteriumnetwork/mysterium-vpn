@@ -10,9 +10,7 @@ import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/data/filter_service.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/location/locations_service.dart';
-import 'package:mysterium_vpn/stores/locale_store.dart';
-import 'package:mysterium_vpn/stores/locations_query_store.dart';
-import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
 

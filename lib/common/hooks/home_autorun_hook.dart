@@ -13,7 +13,7 @@ import 'package:mysterium_vpn/components/dialogs/push_notifications_dialog.dart'
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/user_preferences_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 void useHomeAutorun() {
   final context = useContext();

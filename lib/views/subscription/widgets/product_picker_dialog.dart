@@ -20,7 +20,7 @@ import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/subscription/subscription_button.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/highlighted_product.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/product_pricing.dart';

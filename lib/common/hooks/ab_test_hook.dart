@@ -1,7 +1,7 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 String useABTest(String Function(ABTestingStore store) selector) {
   final store = useProvider(abTestingStorePOD);

@@ -4,9 +4,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
-import 'package:mysterium_vpn/stores/connections_limit_store.dart';
-import 'package:mysterium_vpn/stores/subscription_store.dart';
-import 'package:mysterium_vpn/stores/update_availabe_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'banners_store.g.dart';
 

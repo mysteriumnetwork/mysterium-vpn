@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
-import 'package:mysterium_vpn/stores/device_id_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 import 'device_id_store_test.mocks.dart';
 

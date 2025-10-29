@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
-import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:talker/talker.dart';
 

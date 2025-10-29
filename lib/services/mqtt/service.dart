@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:mqtt5_client/mqtt5_client.dart';
 import 'package:mqtt5_client/mqtt5_server_client.dart';
 import 'package:mysterium_vpn/services/mqtt/exceptions.dart';
-import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
 class MQTTService {

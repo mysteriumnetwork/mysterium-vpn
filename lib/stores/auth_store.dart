@@ -20,10 +20,7 @@ import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/device_id_store.dart';
-import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
-import 'package:mysterium_vpn/stores/user_preferences_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
 

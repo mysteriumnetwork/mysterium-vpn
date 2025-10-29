@@ -9,8 +9,7 @@ import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/subscription_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:vpn_api/vpn_api.dart' hide Subscription;
 
 import 'subscription_store_test.mocks.dart';

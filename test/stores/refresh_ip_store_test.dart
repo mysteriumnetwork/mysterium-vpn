@@ -4,7 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
-import 'package:mysterium_vpn/stores/refresh_ip_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
 import 'refresh_ip_store_test.mocks.dart';

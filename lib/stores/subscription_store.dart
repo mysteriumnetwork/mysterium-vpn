@@ -17,7 +17,7 @@ import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
 
 // Include generated file
