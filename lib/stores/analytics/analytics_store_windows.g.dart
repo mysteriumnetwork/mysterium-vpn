@@ -29,9 +29,8 @@ mixin _$AnalyticsStoreWindows on _AnalyticsStoreWindows, Store {
       AsyncAction('_AnalyticsStoreWindows.setUserProperty', context: context);
 
   @override
-  Future<void> setUserProperty({required String propertyName, required String propertyValue}) {
-    return _$setUserPropertyAsyncAction
-        .run(() => super.setUserProperty(propertyName: propertyName, propertyValue: propertyValue));
+  Future<void> setUserProperty(AnalyticsUserProperty property) {
+    return _$setUserPropertyAsyncAction.run(() => super.setUserProperty(property));
   }
 
   late final _$setLoginAsyncAction =

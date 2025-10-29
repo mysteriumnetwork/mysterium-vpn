@@ -4,7 +4,6 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/services/wiregurad/wiregurad_key_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:wireguard_dart/key_pair.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
 import 'wiregurad_key_service_test.mocks.dart';

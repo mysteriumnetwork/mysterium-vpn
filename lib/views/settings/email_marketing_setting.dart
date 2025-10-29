@@ -44,7 +44,7 @@ class EmailMarketingSetting extends HookConsumerWidget {
                 fontSize: isMobile ? 16 : 14,
                 fontWeight: isMobile ? FontWeight.w600 : FontWeight.w400,
               ).padding(
-                bottom: isMobile ? 16 : 16,
+                bottom: 16,
                 left: isMobile ? 40 : 20,
                 top: isMobile ? 16 : 30,
                 right: 0,
