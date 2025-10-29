@@ -8,17 +8,18 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/utils/keys.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
+import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 Future<void> showMarketingConsentDialog(
   BuildContext context, {
   required bool desktopSize,
-}) async =>
+}) =>
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -39,23 +40,34 @@ class _DesktopDialog extends StatelessWidget {
       child: Container(
         width: 600,
         height: 400,
-        padding: const EdgeInsets.symmetric(
-          vertical: 32,
-          horizontal: 120,
-        ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: Palette.purple),
         ),
-        child: const _DialogContent(isMobile: false),
+        child: const Stack(
+          children: [
+            Positioned(
+              top: 16,
+              right: 16,
+              child: _CloseButton(),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 32,
+                horizontal: 120,
+              ),
+              child: _DialogContent(isMobile: false),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-class _MobileDialog extends StatelessWidget {
+class _MobileDialog extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     return Dialog.fullscreen(
       backgroundColor: theme.palette.connectionTileBackgroundColor,
@@ -64,7 +76,16 @@ class _MobileDialog extends StatelessWidget {
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 420),
-            child: const _DialogContent(isMobile: true),
+            child: const Stack(
+              children: [
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: _CloseButton(),
+                ),
+                _DialogContent(isMobile: true),
+              ],
+            ),
           ),
         ),
       ),
@@ -82,14 +103,11 @@ class _DialogContent extends ConsumerWidget {
     final userPreferencesStore = ref.watch(userPreferencesStorePOD);
 
     Future<void> handleSignMeUp() async {
-      await _updateMarketingConsent(userPreferencesStore, context, consent: true);
-    }
-
-    Future<void> handleCancel() async {
-      await _updateMarketingConsent(userPreferencesStore, context, consent: false);
+      await _updateMarketingConsent(context, consent: true);
     }
 
     return Column(
+      key: Keys.marketingConsentDialog,
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -124,7 +142,6 @@ class _DialogContent extends ConsumerWidget {
               children: [
                 _Actions(
                   onSignMeUpPressed: handleSignMeUp,
-                  onCancelPressed: handleCancel,
                   flexDirection: isMobile ? Axis.vertical : Axis.horizontal,
                 ),
                 if (futureStatus == FutureStatus.rejected)
@@ -146,16 +163,23 @@ class _DialogContent extends ConsumerWidget {
       ],
     );
   }
+}
 
-  Future<void> _updateMarketingConsent(
-    UserPreferencesStore userPreferencesStore,
-    BuildContext context, {
-    required bool consent,
-  }) async {
-    await userPreferencesStore.updateMarketingContact(consent: consent, fromPopup: true);
-    if (context.mounted) {
-      Navigator.of(context).pop();
+class _CloseButton extends StatelessWidget {
+  const _CloseButton();
+
+  @override
+  Widget build(BuildContext context) {
+    Future<void> handleCancel() async {
+      await _updateMarketingConsent(context, consent: false);
     }
+
+    return SvgIconButton(
+      key: Keys.marketingConsentDeclineButton,
+      asset: Asset.icons.close2(context),
+      onPressed: handleCancel,
+      size: 32,
+    );
   }
 }
 
@@ -163,11 +187,9 @@ class _Actions extends StatelessWidget {
   const _Actions({
     required this.flexDirection,
     required this.onSignMeUpPressed,
-    required this.onCancelPressed,
   });
 
   final VoidCallback? onSignMeUpPressed;
-  final VoidCallback? onCancelPressed;
   final Axis flexDirection;
 
   @override
@@ -177,6 +199,7 @@ class _Actions extends StatelessWidget {
 
     final children = <Widget>[
       ElevatedButton(
+        key: Keys.marketingConsentAcceptButton,
         style: ElevatedButton.styleFrom(
           minimumSize: minButtonSize,
           backgroundColor: theme.palette.outlinedButtonBorderColor,
@@ -186,22 +209,6 @@ class _Actions extends StatelessWidget {
           LocaleKeys.signMeUpBtn.tr(),
           style: GoogleFonts.montserrat(
             color: Palette.white,
-            fontWeight: FontWeight.w700,
-            fontSize: 14,
-          ),
-        ),
-      ),
-      OutlinedButton(
-        onPressed: onCancelPressed,
-        style: OutlinedButton.styleFrom(
-          minimumSize: minButtonSize,
-          side: BorderSide(color: theme.palette.outlinedButtonBorderColor),
-          foregroundColor: theme.palette.outlinedButtonBorderColor,
-          backgroundColor: Colors.transparent,
-        ),
-        child: Text(
-          LocaleKeys.noThanksBtn.tr(),
-          style: GoogleFonts.montserrat(
             fontWeight: FontWeight.w700,
             fontSize: 14,
           ),
@@ -224,5 +231,21 @@ class _Actions extends StatelessWidget {
         },
       ],
     );
+  }
+}
+
+Future<void> _updateMarketingConsent(
+  BuildContext context, {
+  required bool consent,
+}) async {
+  await ProviderScope.containerOf(context, listen: false)
+      .read(userPreferencesStorePOD)
+      .updateMarketingContact(
+        consent: consent,
+        fromPopup: true,
+      );
+
+  if (context.mounted) {
+    Navigator.of(context).pop();
   }
 }

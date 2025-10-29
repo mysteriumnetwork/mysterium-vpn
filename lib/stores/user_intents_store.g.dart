@@ -9,12 +9,33 @@ part of 'user_intents_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$UserIntentsStore on _UserIntentsStore, Store {
+  Computed<Set<UserIntent>>? _$userIntentsComputed;
+
+  @override
+  Set<UserIntent> get userIntents => (_$userIntentsComputed ??=
+          Computed<Set<UserIntent>>(() => super.userIntents, name: '_UserIntentsStore.userIntents'))
+      .value;
   Computed<Set<UserIntent>>? _$intentsComputed;
 
   @override
   Set<UserIntent> get intents => (_$intentsComputed ??=
           Computed<Set<UserIntent>>(() => super.intents, name: '_UserIntentsStore.intents'))
       .value;
+
+  late final _$userIntentAtom = Atom(name: '_UserIntentsStore.userIntent', context: context);
+
+  @override
+  UserIntent? get userIntent {
+    _$userIntentAtom.reportRead();
+    return super.userIntent;
+  }
+
+  @override
+  set userIntent(UserIntent? value) {
+    _$userIntentAtom.reportWrite(value, super.userIntent, () {
+      super.userIntent = value;
+    });
+  }
 
   late final _$_apiIntentsFutureAtom =
       Atom(name: '_UserIntentsStore._apiIntentsFuture', context: context);
@@ -85,6 +106,8 @@ mixin _$UserIntentsStore on _UserIntentsStore, Store {
   @override
   String toString() {
     return '''
+userIntent: ${userIntent},
+userIntents: ${userIntents},
 intents: ${intents}
     ''';
   }

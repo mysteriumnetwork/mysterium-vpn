@@ -26,6 +26,24 @@ extension $AssetsIconsGenExtensions on $AssetsIconsGen {
         dark: closeDark,
       );
 
+  SvgGenImage close2(BuildContext context) => _withBrightness(
+        context,
+        light: close2Light,
+        dark: close2Dark,
+      );
+
+  SvgGenImage close3(BuildContext context) => _withBrightness(
+        context,
+        light: close3Light,
+        dark: close3Dark,
+      );
+
+  SvgGenImage connectPrompt(BuildContext context) => _withBrightness(
+        context,
+        light: connectPromptLight,
+        dark: connectPromptDark,
+      );
+
   SvgGenImage deleteAccount(BuildContext context) => _withBrightness(
         context,
         light: deleteAccountLight,
@@ -92,6 +110,12 @@ extension $AssetsIconsGenExtensions on $AssetsIconsGen {
         dark: reportDark,
       );
 
+  SvgGenImage resetAppSetting(BuildContext context) => _withBrightness(
+        context,
+        light: resetAppSettingLight,
+        dark: resetAppSettingDark,
+      );
+
   SvgGenImage settingsAdaptive(BuildContext context) => _withBrightness(
         context,
         light: settingsLight,
@@ -102,6 +126,12 @@ extension $AssetsIconsGenExtensions on $AssetsIconsGen {
         context,
         light: settingsLightDesktop,
         dark: settingsDarkDesktop,
+      );
+
+  SvgGenImage successCup(BuildContext context) => _withBrightness(
+        context,
+        light: successCupLight,
+        dark: successCupDark,
       );
 
   SvgGenImage support(BuildContext context) => _withBrightness(

@@ -43,6 +43,26 @@ jobs:
           java-version: "17.x"
           cache: "gradle"
 
+      - name: Materialize .env from repo secrets
+        shell: bash
+        env:
+          ENV_DEV: ${{ secrets.ENV_DEV }}
+          ENV_PROD: ${{ secrets.ENV_PROD }}
+        run: |
+          set -euo pipefail
+          ENV_PATH="${{ inputs.env_file }}"
+          FILE_NAME="$(basename "$ENV_PATH")"
+          case "$FILE_NAME" in
+            .env.prod) CONTENT="$ENV_PROD" ;;
+            .env.dev)  CONTENT="$ENV_DEV" ;;
+            *)
+              echo "Unsupported env file: $FILE_NAME (expected .env.dev or .env.prod)" >&2
+              exit 1
+              ;;
+          esac
+          printf '%s' "$CONTENT" > "$ENV_PATH"
+          chmod 600 "$ENV_PATH"
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         # Enable caching on feature branches
@@ -77,7 +97,9 @@ jobs:
           git diff
 
       - name: Build Android app
-        run: fvm flutter build appbundle --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define-from-file="${{ inputs.env_file }}"
+        run: |
+          fvm flutter build apk --config-only --flavor "${{ inputs.flavor }}" --dart-define-from-file="${{ inputs.env_file }}"
+          fvm flutter build appbundle --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define-from-file="${{ inputs.env_file }}"
 
       - name: Authenticate to Play Store
         id: google-play-auth

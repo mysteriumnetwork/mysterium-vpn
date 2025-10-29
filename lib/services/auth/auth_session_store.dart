@@ -1,6 +1,8 @@
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/utils/disposeable.dart';
 import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 
@@ -10,15 +12,29 @@ part 'auth_session_store.g.dart';
 // ignore: library_private_types_in_public_api
 class AuthSessionStore = _AuthSessionStore with _$AuthSessionStore;
 
-abstract class _AuthSessionStore with Store {
+abstract class _AuthSessionStore with Store, Disposeable {
   _AuthSessionStore({
     required SecureStorageService secureStorage,
     required RemoteConfigStore remoteConfigStore,
   })  : _secureStorage = secureStorage,
-        _remoteConfigStore = remoteConfigStore;
+        _remoteConfigStore = remoteConfigStore {
+    _userReactionDisposer = reaction(
+      (_) => user,
+      (user) {
+        if (user != null) {
+          _localDb.setUser(user);
+        } else {
+          _localDb.clearUser();
+        }
+      },
+      fireImmediately: true,
+    );
+  }
 
   final SecureStorageService _secureStorage;
   final RemoteConfigStore _remoteConfigStore;
+  final LocalDBService _localDb = LocalDBService.instance;
+  late final ReactionDisposer _userReactionDisposer;
 
   @observable
   AuthStatus status = AuthStatus.unknown;
@@ -119,5 +135,18 @@ abstract class _AuthSessionStore with Store {
     await _secureStorage.removeRefreshToken();
     await _secureStorage.removeUserId();
     await _secureStorage.removeUsername();
+  }
+
+  Future<void> invalidateAccessToken() async {
+    _accessTokenFuture = _accessTokenFuture.replace(() async {
+      await _secureStorage.saveAccessToken('invalid');
+      return _secureStorage.getAccessToken();
+    }());
+    await _accessTokenFuture;
+  }
+
+  @override
+  void dispose() {
+    _userReactionDisposer();
   }
 }
