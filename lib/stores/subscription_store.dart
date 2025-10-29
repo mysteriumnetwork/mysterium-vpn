@@ -170,7 +170,10 @@ abstract class _SubscriptionStore with Store {
       _purchaseStream ??= _inAppPurchase.purchaseStream.listen(
         _onPurchaseUpdate,
         onDone: _updateStreamOnDone,
-        onError: _updateStreamOnError,
+        onError: (error) async {
+          debugPrint('Purchase stream error: $error');
+          await _updateStreamOnError();
+        },
       );
       await _subscriptionService.clearPendingTransactions();
       return config;
@@ -308,7 +311,7 @@ abstract class _SubscriptionStore with Store {
     _purchaseStream = null;
   }
 
-  Future<void> _updateStreamOnError(error) async {
+  Future<void> _updateStreamOnError() async {
     await _purchaseStream?.cancel();
     _purchaseStream = null;
   }
