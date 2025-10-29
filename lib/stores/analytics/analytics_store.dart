@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/common/enums/analytics_user_property.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/enums/indicator_type.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
@@ -15,6 +16,7 @@ import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:vpn_api/vpn_api.dart';
+import 'package:wireguard_dart/wireguard_dart.dart';
 
 mixin AnalyticsStore {
   final Debouncer _debouncer = Debouncer();
@@ -56,15 +58,9 @@ mixin AnalyticsStore {
 
   Future<void> setUserId(String id);
 
-  Future<void> setUserProperty({
-    required String propertyName,
-    required String propertyValue,
-  }) async {
+  Future<void> setUserProperty(AnalyticsUserProperty property) async {
     _userPropertiesStreamController.add(
-      AnalyticsUserProperty(
-        name: propertyName.truncate(24),
-        value: propertyValue.truncate(36),
-      ),
+      property,
     );
   }
 
@@ -341,6 +337,44 @@ mixin AnalyticsStore {
     );
   }
 
+  Future<void> logSubscriptionUpgradeBannerClick() async {
+    await logEvent(AnalyticsEvent.subUpgradeBannerClick);
+  }
+
+  Future<void> logSubscriptionUpgradePopupShow() async {
+    await logEvent(AnalyticsEvent.subUpgradePopupShow);
+  }
+
+  Future<void> logSubscriptionUpgradePopupClose() async {
+    await logEvent(AnalyticsEvent.subUpgradePopupClose);
+  }
+
+  Future<void> logSubscriptionUpgradePopupConfirm() async {
+    await logEvent(AnalyticsEvent.subUpgradePopupConfirm);
+  }
+
+  Future<void> logSubscriptionUpgradeInfoClick(String url) async {
+    await logEvent(
+      AnalyticsEvent.subUpgradeInfoClick,
+      parameters: {'url': url},
+    );
+  }
+
+  Future<void> logPushNotificationsPermissionsChanged(NotificationPermission permission) async {
+    await logEvent(
+      permission == NotificationPermission.granted
+          ? AnalyticsEvent.pushNotificationsPermissionsGranted
+          : AnalyticsEvent.pushNotificationsPermissionsDenied,
+      parameters: {'permission': permission.name},
+    );
+    await setUserProperty(
+      AnalyticsUserProperty.fromEnum(
+        name: AnalyticsUserPropName.pnPermissionStatus,
+        value: permission.name,
+      ),
+    );
+  }
+
   Stream<AnalyticsLogEntry> watchLogs() => _logStreamController.stream;
   Stream<AnalyticsUserProperty> watchUserProperties() => _userPropertiesStreamController.stream;
 }
@@ -360,14 +394,3 @@ class AnalyticsLogEntry {
 }
 
 enum AnalyticsLogType { event, screenView, message, error }
-
-class AnalyticsUserProperty {
-  AnalyticsUserProperty({
-    required this.name,
-    required this.value,
-  }) : setAt = DateTime.now();
-
-  final String name;
-  final String value;
-  final DateTime setAt;
-}

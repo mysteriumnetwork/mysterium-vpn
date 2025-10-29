@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/analytics_user_property.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/config_cat_store.dart';
@@ -22,7 +23,12 @@ abstract class ABTestingStoreBase extends ConfigCatStore with Store {
       (future) async {
         await future;
         asUserProperties.forEach((key, value) async {
-          await _analytics.setUserProperty(propertyName: key, propertyValue: value);
+          await _analytics.setUserProperty(
+            AnalyticsUserProperty.fromString(
+              name: key,
+              value: value,
+            ),
+          );
         });
       },
       fireImmediately: true,
