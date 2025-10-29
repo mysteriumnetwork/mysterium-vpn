@@ -104,21 +104,6 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$connectionRatedAtom = Atom(name: '_VpnStore.connectionRated', context: context);
-
-  @override
-  RateConnectionRequestModeEnum? get connectionRated {
-    _$connectionRatedAtom.reportRead();
-    return super.connectionRated;
-  }
-
-  @override
-  set connectionRated(RateConnectionRequestModeEnum? value) {
-    _$connectionRatedAtom.reportWrite(value, super.connectionRated, () {
-      super.connectionRated = value;
-    });
-  }
-
   late final _$_connectingLocationAtom =
       Atom(name: '_VpnStore._connectingLocation', context: context);
 
@@ -227,6 +212,21 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$connectionRatedAtom = Atom(name: '_VpnStore.connectionRated', context: context);
+
+  @override
+  RateConnectionRequestModeEnum? get connectionRated {
+    _$connectionRatedAtom.reportRead();
+    return super.connectionRated;
+  }
+
+  @override
+  set connectionRated(RateConnectionRequestModeEnum? value) {
+    _$connectionRatedAtom.reportWrite(value, super.connectionRated, () {
+      super.connectionRated = value;
+    });
+  }
+
   late final _$_initAsyncAction = AsyncAction('_VpnStore._init', context: context);
 
   @override
@@ -241,15 +241,6 @@ mixin _$VpnStore on _VpnStore, Store {
     return _$_initTunnelAsyncAction.run(() => super._initTunnel());
   }
 
-  late final _$_setupAndListenToConnectionStatusAsyncAction =
-      AsyncAction('_VpnStore._setupAndListenToConnectionStatus', context: context);
-
-  @override
-  Future<void> _setupAndListenToConnectionStatus() {
-    return _$_setupAndListenToConnectionStatusAsyncAction
-        .run(() => super._setupAndListenToConnectionStatus());
-  }
-
   late final _$setupTunnelAsyncAction = AsyncAction('_VpnStore.setupTunnel', context: context);
 
   @override
@@ -257,21 +248,13 @@ mixin _$VpnStore on _VpnStore, Store {
     return _$setupTunnelAsyncAction.run(() => super.setupTunnel());
   }
 
-  late final _$_connectTunnelAsyncAction =
-      AsyncAction('_VpnStore._connectTunnel', context: context);
+  late final _$_setupAndListenToConnectionStatusAsyncAction =
+      AsyncAction('_VpnStore._setupAndListenToConnectionStatus', context: context);
 
   @override
-  Future<void> _connectTunnel({required String vpnConfig}) {
-    return _$_connectTunnelAsyncAction.run(() => super._connectTunnel(vpnConfig: vpnConfig));
-  }
-
-  late final _$disconnectTunnelAsyncAction =
-      AsyncAction('_VpnStore.disconnectTunnel', context: context);
-
-  @override
-  Future<void> disconnectTunnel({bool isReconnecting = false}) {
-    return _$disconnectTunnelAsyncAction
-        .run(() => super.disconnectTunnel(isReconnecting: isReconnecting));
+  Future<void> _setupAndListenToConnectionStatus() {
+    return _$_setupAndListenToConnectionStatusAsyncAction
+        .run(() => super._setupAndListenToConnectionStatus());
   }
 
   late final _$toggleConnectionAsyncAction =
@@ -312,6 +295,23 @@ mixin _$VpnStore on _VpnStore, Store {
         .run(() => super._completeConnection(location, intent, refreshIP));
   }
 
+  late final _$_connectTunnelAsyncAction =
+      AsyncAction('_VpnStore._connectTunnel', context: context);
+
+  @override
+  Future<void> _connectTunnel({required String vpnConfig}) {
+    return _$_connectTunnelAsyncAction.run(() => super._connectTunnel(vpnConfig: vpnConfig));
+  }
+
+  late final _$disconnectTunnelAsyncAction =
+      AsyncAction('_VpnStore.disconnectTunnel', context: context);
+
+  @override
+  Future<void> disconnectTunnel({bool isReconnecting = false}) {
+    return _$disconnectTunnelAsyncAction
+        .run(() => super.disconnectTunnel(isReconnecting: isReconnecting));
+  }
+
   late final _$disconnectAllDevicesAsyncAction =
       AsyncAction('_VpnStore.disconnectAllDevices', context: context);
 
@@ -320,19 +320,19 @@ mixin _$VpnStore on _VpnStore, Store {
     return _$disconnectAllDevicesAsyncAction.run(() => super.disconnectAllDevices());
   }
 
-  late final _$resetAppAsyncAction = AsyncAction('_VpnStore.resetApp', context: context);
-
-  @override
-  Future<void> resetApp() {
-    return _$resetAppAsyncAction.run(() => super.resetApp());
-  }
-
   late final _$_udpBlockedCheckAsyncAction =
       AsyncAction('_VpnStore._udpBlockedCheck', context: context);
 
   @override
   Future<void> _udpBlockedCheck() {
     return _$_udpBlockedCheckAsyncAction.run(() => super._udpBlockedCheck());
+  }
+
+  late final _$resetAppAsyncAction = AsyncAction('_VpnStore.resetApp', context: context);
+
+  @override
+  Future<void> resetApp() {
+    return _$resetAppAsyncAction.run(() => super.resetApp());
   }
 
   late final _$submitRateConnectionAsyncAction =
@@ -345,19 +345,6 @@ mixin _$VpnStore on _VpnStore, Store {
       required String? feedback}) {
     return _$submitRateConnectionAsyncAction
         .run(() => super.submitRateConnection(mode: mode, reasons: reasons, feedback: feedback));
-  }
-
-  late final _$_VpnStoreActionController = ActionController(name: '_VpnStore', context: context);
-
-  @override
-  void _setConnectionStatus(VpnConnectionStatus status) {
-    final _$actionInfo =
-        _$_VpnStoreActionController.startAction(name: '_VpnStore._setConnectionStatus');
-    try {
-      return super._setConnectionStatus(status);
-    } finally {
-      _$_VpnStoreActionController.endAction(_$actionInfo);
-    }
   }
 
   @override
