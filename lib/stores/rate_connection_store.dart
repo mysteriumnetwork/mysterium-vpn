@@ -1,6 +1,5 @@
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/enums/analytics_event.dart';
-import 'package:mysterium_vpn/common/enums/rate_connection.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 import 'package:vpn_api/vpn_api.dart';

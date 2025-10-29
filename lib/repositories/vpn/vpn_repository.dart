@@ -1,4 +1,4 @@
-import 'package:mysterium_vpn/common/enums/vpn_connection_status.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:vpn_api/vpn_api.dart';
 

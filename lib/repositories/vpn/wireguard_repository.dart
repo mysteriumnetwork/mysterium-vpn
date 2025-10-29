@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/common/enums/vpn_connection_status.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/vpn_config.dart';
