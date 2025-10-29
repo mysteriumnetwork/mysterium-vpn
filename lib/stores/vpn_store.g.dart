@@ -257,21 +257,21 @@ mixin _$VpnStore on _VpnStore, Store {
     return _$setupTunnelAsyncAction.run(() => super.setupTunnel());
   }
 
-  late final _$_connectWireguardAsyncAction =
-      AsyncAction('_VpnStore._connectWireguard', context: context);
+  late final _$_connectTunnelAsyncAction =
+      AsyncAction('_VpnStore._connectTunnel', context: context);
 
   @override
-  Future<void> _connectWireguard({required String vpnConfig}) {
-    return _$_connectWireguardAsyncAction.run(() => super._connectWireguard(vpnConfig: vpnConfig));
+  Future<void> _connectTunnel({required String vpnConfig}) {
+    return _$_connectTunnelAsyncAction.run(() => super._connectTunnel(vpnConfig: vpnConfig));
   }
 
-  late final _$disconnectWireguardAsyncAction =
-      AsyncAction('_VpnStore.disconnectWireguard', context: context);
+  late final _$disconnectTunnelAsyncAction =
+      AsyncAction('_VpnStore.disconnectTunnel', context: context);
 
   @override
-  Future<void> disconnectWireguard({bool isReconnecting = false}) {
-    return _$disconnectWireguardAsyncAction
-        .run(() => super.disconnectWireguard(isReconnecting: isReconnecting));
+  Future<void> disconnectTunnel({bool isReconnecting = false}) {
+    return _$disconnectTunnelAsyncAction
+        .run(() => super.disconnectTunnel(isReconnecting: isReconnecting));
   }
 
   late final _$toggleConnectionAsyncAction =

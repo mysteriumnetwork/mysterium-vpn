@@ -137,7 +137,7 @@ class _DeleteAccountDialog extends HookWidget {
                               LocaleKeys.redirectToLoginPage.tr(),
                             ],
                             onConfirm: () async {
-                              await vpnStore.disconnectWireguard();
+                              await vpnStore.disconnectTunnel();
                               authStore.logout();
                             },
                           );

@@ -1,5 +1,5 @@
-class WireguardConnectException implements Exception {
-  WireguardConnectException(this.message);
+class VpnConnectException implements Exception {
+  VpnConnectException(this.message);
   final String message;
   final int code = 1111;
   @override
