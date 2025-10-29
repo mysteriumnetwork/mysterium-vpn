@@ -415,7 +415,15 @@ class CodegenLoader extends AssetLoader {
     "upgradeTermsAndConditions": "条款和条件",
     "upgradeSubscriptionInfo": "订阅信息",
     "upgradeSuccessTitle": "成功！",
-    "upgradeSuccessText": "您的付款已完成，{} 计划现已激活"
+    "upgradeSuccessText": "您的付款已完成，{} 计划现已激活",
+    "pushNotificationsTitle": "推送通知",
+    "pushNotificationsSetting": "安全",
+    "pushNotificationsSettingDesc": "VPN状态和帐户活动更新",
+    "pushNotificationsConsentPopupTitle": "我们可以通知您吗？",
+    "pushNotificationsConsentPopupDesc": "我们只会发送我们认为您想要了解的重要通知。",
+    "pushNotificationsPermissionPoint1": "• VPN连接状态",
+    "pushNotificationsPermissionPoint2": "• 帐户和服务活动警报",
+    "allowPushNotificationsBtn": "允许通知"
   };
   static const Map<String, dynamic> _tr = {
     "LoggingYouIn": "Oturumunuz açılıyor...",
@@ -857,7 +865,16 @@ class CodegenLoader extends AssetLoader {
     "upgradeTermsAndConditions": "Şartlar ve Koşullar",
     "upgradeSubscriptionInfo": "Abonelik bilgileri",
     "upgradeSuccessTitle": "Başarılı!",
-    "upgradeSuccessText": "Ödemeniz alındı ve {} planınız artık aktif"
+    "upgradeSuccessText": "Ödemeniz alındı ve {} planınız artık aktif",
+    "pushNotificationsTitle": "Anlık Bildirimler",
+    "pushNotificationsSetting": "Güvenlik",
+    "pushNotificationsSettingDesc": "VPN durumu ve hesap etkinliği güncellemeleri",
+    "pushNotificationsConsentPopupTitle": "Size bildirim gönderebilir miyiz?",
+    "pushNotificationsConsentPopupDesc":
+        "Yalnızca bilmek isteyeceğinizi düşündüğümüz önemli bildirimleri göndereceğiz.",
+    "pushNotificationsPermissionPoint1": "• VPN bağlantı durumu",
+    "pushNotificationsPermissionPoint2": "• Hesap ve hizmet etkinliği uyarıları",
+    "allowPushNotificationsBtn": "Bildirimlere İzin Ver"
   };
   static const Map<String, dynamic> _ja = {
     "LoggingYouIn": "ログインしています...",
@@ -1265,7 +1282,15 @@ class CodegenLoader extends AssetLoader {
     "upgradeTermsAndConditions": "利用規約",
     "upgradeSubscriptionInfo": "サブスクリプション情報",
     "upgradeSuccessTitle": "成功！",
-    "upgradeSuccessText": "お支払いが完了し、{} が有効になりました"
+    "upgradeSuccessText": "お支払いが完了し、{} が有効になりました",
+    "pushNotificationsTitle": "プッシュ通知",
+    "pushNotificationsSetting": "セキュリティ",
+    "pushNotificationsSettingDesc": "VPNステータスとアカウントアクティビティの更新",
+    "pushNotificationsConsentPopupTitle": "通知を送信してもよろしいですか？",
+    "pushNotificationsConsentPopupDesc": "重要な通知のみをお送りします。",
+    "pushNotificationsPermissionPoint1": "• VPN接続ステータス",
+    "pushNotificationsPermissionPoint2": "• アカウントとサービスのアクティビティアラート",
+    "allowPushNotificationsBtn": "通知を許可"
   };
   static const Map<String, dynamic> _de = {
     "LoggingYouIn": "Melde Sie an...",
@@ -1736,7 +1761,16 @@ class CodegenLoader extends AssetLoader {
     "upgradeTermsAndConditions": "Allgemeine Geschäftsbedingungen",
     "upgradeSubscriptionInfo": "Abo-Informationen",
     "upgradeSuccessTitle": "Erfolg!",
-    "upgradeSuccessText": "Deine Zahlung war erfolgreich und dein {} ist jetzt aktiv"
+    "upgradeSuccessText": "Deine Zahlung war erfolgreich und dein {} ist jetzt aktiv",
+    "pushNotificationsTitle": "Push-Benachrichtigungen",
+    "pushNotificationsSetting": "Sicherheit",
+    "pushNotificationsSettingDesc": "VPN-Status und Kontoaktivitätsaktualisierungen",
+    "pushNotificationsConsentPopupTitle": "Dürfen wir Sie benachrichtigen?",
+    "pushNotificationsConsentPopupDesc":
+        "Wir senden nur wichtige Benachrichtigungen, von denen wir glauben, dass Sie darüber Bescheid wissen möchten.",
+    "pushNotificationsPermissionPoint1": "• VPN-Verbindungsstatus",
+    "pushNotificationsPermissionPoint2": "• Konto- und Dienstaktivitätswarnungen",
+    "allowPushNotificationsBtn": "Benachrichtigungen zulassen"
   };
   static const Map<String, dynamic> _pt = {
     "LoggingYouIn": "Registrando você em ...",
@@ -2198,7 +2232,16 @@ class CodegenLoader extends AssetLoader {
     "upgradeTermsAndConditions": "Termos e Condições",
     "upgradeSubscriptionInfo": "Informações da assinatura",
     "upgradeSuccessTitle": "Sucesso!",
-    "upgradeSuccessText": "Seu pagamento foi realizado e seu plano {} está agora ativo"
+    "upgradeSuccessText": "Seu pagamento foi realizado e seu plano {} está agora ativo",
+    "pushNotificationsTitle": "Notificações Push",
+    "pushNotificationsSetting": "Segurança",
+    "pushNotificationsSettingDesc": "Status da VPN e atualizações de atividade da conta",
+    "pushNotificationsConsentPopupTitle": "Podemos notificá-lo?",
+    "pushNotificationsConsentPopupDesc":
+        "Enviaremos apenas notificações importantes que achamos que você vai querer saber.",
+    "pushNotificationsPermissionPoint1": "• Status da conexão VPN",
+    "pushNotificationsPermissionPoint2": "• Alertas de atividade da conta e do serviço",
+    "allowPushNotificationsBtn": "Permitir notificações"
   };
   static const Map<String, dynamic> _en = {
     "LoggingYouIn": "Logging you in...",
@@ -2648,7 +2691,16 @@ class CodegenLoader extends AssetLoader {
     "upgradeTermsAndConditions": "Terms and Conditions",
     "upgradeSubscriptionInfo": "Subscription info",
     "upgradeSuccessTitle": "Success!",
-    "upgradeSuccessText": "Your payment went through and your {} is now active"
+    "upgradeSuccessText": "Your payment went through and your {} is now active",
+    "pushNotificationsTitle": "Push Notifications",
+    "pushNotificationsSetting": "Security",
+    "pushNotificationsSettingDesc": "VPN Status and account activity updates",
+    "pushNotificationsConsentPopupTitle": "Can we notify you?",
+    "pushNotificationsConsentPopupDesc":
+        "We'll only send important notifications we think you'll want to know about.",
+    "pushNotificationsPermissionPoint1": "• VPN Connection status",
+    "pushNotificationsPermissionPoint2": "• Account and Service activity alerts",
+    "allowPushNotificationsBtn": "Allow Notifications"
   };
   static const Map<String, dynamic> _it = {
     "LoggingYouIn": "Accesso in corso...",
@@ -3112,7 +3164,16 @@ class CodegenLoader extends AssetLoader {
     "upgradeTermsAndConditions": "Termini e condizioni",
     "upgradeSubscriptionInfo": "Info sull'abbonamento",
     "upgradeSuccessTitle": "Successo!",
-    "upgradeSuccessText": "Il pagamento è andato a buon fine e il tuo {} è ora attivo"
+    "upgradeSuccessText": "Il pagamento è andato a buon fine e il tuo {} è ora attivo",
+    "pushNotificationsTitle": "Notifiche Push",
+    "pushNotificationsSetting": "Sicurezza",
+    "pushNotificationsSettingDesc": "Stato VPN e aggiornamenti sull'attività dell'account",
+    "pushNotificationsConsentPopupTitle": "Possiamo notificarti?",
+    "pushNotificationsConsentPopupDesc":
+        "Invieremo solo notifiche importanti che pensiamo tu voglia conoscere.",
+    "pushNotificationsPermissionPoint1": "• Stato della connessione VPN",
+    "pushNotificationsPermissionPoint2": "• Avvisi di attività dell'account e del servizio",
+    "allowPushNotificationsBtn": "Consenti notifiche"
   };
   static const Map<String, dynamic> _fr = {
     "LoggingYouIn": "Vous enregistrer ...",
@@ -3583,7 +3644,16 @@ class CodegenLoader extends AssetLoader {
     "upgradeTermsAndConditions": "Conditions générales",
     "upgradeSubscriptionInfo": "Infos sur l’abonnement",
     "upgradeSuccessTitle": "Succès !",
-    "upgradeSuccessText": "Votre paiement a été effectué et votre {} est maintenant actif"
+    "upgradeSuccessText": "Votre paiement a été effectué et votre {} est maintenant actif",
+    "pushNotificationsTitle": "Notifications Push",
+    "pushNotificationsSetting": "Sécurité",
+    "pushNotificationsSettingDesc": "État du VPN et mises à jour de l'activité du compte",
+    "pushNotificationsConsentPopupTitle": "Pouvons-nous vous notifier ?",
+    "pushNotificationsConsentPopupDesc":
+        "Nous n'enverrons que des notifications importantes que nous pensons que vous voudrez connaître.",
+    "pushNotificationsPermissionPoint1": "• État de la connexion VPN",
+    "pushNotificationsPermissionPoint2": "• Alertes d'activité de compte et de service",
+    "allowPushNotificationsBtn": "Autoriser les notifications"
   };
   static const Map<String, dynamic> _id = {
     "LoggingYouIn": "Membuat Anda masuk...",
@@ -4035,7 +4105,16 @@ class CodegenLoader extends AssetLoader {
     "upgradeTermsAndConditions": "Syarat dan Ketentuan",
     "upgradeSubscriptionInfo": "Info langganan",
     "upgradeSuccessTitle": "Berhasil!",
-    "upgradeSuccessText": "Pembayaran Anda berhasil dan paket {} Anda sekarang aktif"
+    "upgradeSuccessText": "Pembayaran Anda berhasil dan paket {} Anda sekarang aktif",
+    "pushNotificationsTitle": "Notifikasi Push",
+    "pushNotificationsSetting": "Keamanan",
+    "pushNotificationsSettingDesc": "Status VPN dan pembaruan aktivitas akun",
+    "pushNotificationsConsentPopupTitle": "Bolehkah kami memberi tahu Anda?",
+    "pushNotificationsConsentPopupDesc":
+        "Kami hanya akan mengirim notifikasi penting yang menurut kami ingin Anda ketahui.",
+    "pushNotificationsPermissionPoint1": "• Status koneksi VPN",
+    "pushNotificationsPermissionPoint2": "• Peringatan aktivitas akun dan layanan",
+    "allowPushNotificationsBtn": "Izinkan Notifikasi"
   };
   static const Map<String, dynamic> _es = {
     "LoggingYouIn": "Iniciando sesión...",
@@ -4498,7 +4577,16 @@ class CodegenLoader extends AssetLoader {
     "upgradeTermsAndConditions": "Términos y condiciones",
     "upgradeSubscriptionInfo": "Información de la suscripción",
     "upgradeSuccessTitle": "¡Éxito!",
-    "upgradeSuccessText": "Tu pago se ha procesado y tu {} ya está activo"
+    "upgradeSuccessText": "Tu pago se ha procesado y tu {} ya está activo",
+    "pushNotificationsTitle": "Notificaciones Push",
+    "pushNotificationsSetting": "Seguridad",
+    "pushNotificationsSettingDesc": "Estado de VPN y actualizaciones de actividad de cuenta",
+    "pushNotificationsConsentPopupTitle": "¿Podemos notificarte?",
+    "pushNotificationsConsentPopupDesc":
+        "Solo enviaremos notificaciones importantes que creemos que querrás conocer.",
+    "pushNotificationsPermissionPoint1": "• Estado de conexión VPN",
+    "pushNotificationsPermissionPoint2": "• Alertas de actividad de cuenta y servicio",
+    "allowPushNotificationsBtn": "Permitir notificaciones"
   };
   static const Map<String, dynamic> _ar = {
     "LoggingYouIn": "جاري تسجيل دخولك...",
@@ -4935,7 +5023,15 @@ class CodegenLoader extends AssetLoader {
     "upgradeTermsAndConditions": "الشروط والأحكام",
     "upgradeSubscriptionInfo": "معلومات الاشتراك",
     "upgradeSuccessTitle": "تم بنجاح!",
-    "upgradeSuccessText": "تمت معالجة دفعتك و{} نشطة الآن"
+    "upgradeSuccessText": "تمت معالجة دفعتك و{} نشطة الآن",
+    "pushNotificationsTitle": "الإشعارات الفورية",
+    "pushNotificationsSetting": "الأمان",
+    "pushNotificationsSettingDesc": "حالة VPN وتحديثات نشاط الحساب",
+    "pushNotificationsConsentPopupTitle": "هل يمكننا إعلامك؟",
+    "pushNotificationsConsentPopupDesc": "سنرسل فقط الإشعارات المهمة التي نعتقد أنك تريد معرفتها.",
+    "pushNotificationsPermissionPoint1": "• حالة اتصال VPN",
+    "pushNotificationsPermissionPoint2": "• تنبيهات نشاط الحساب والخدمة",
+    "allowPushNotificationsBtn": "السماح بالإشعارات"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

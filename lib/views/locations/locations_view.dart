@@ -26,7 +26,7 @@ import 'package:mysterium_vpn/views/locations/components/locations_sliver_list.d
 import 'package:mysterium_vpn/views/locations/components/locations_sliver_loading.dart';
 import 'package:mysterium_vpn/views/locations/components/recent_locations_loading.dart';
 import 'package:sliver_tools/sliver_tools.dart';
-import 'package:wireguard_dart/connection_status.dart';
+import 'package:wireguard_dart/wireguard_dart.dart';
 
 class LocationsSliverView extends HookConsumerWidget {
   const LocationsSliverView({super.key});

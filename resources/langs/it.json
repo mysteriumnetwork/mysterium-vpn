@@ -408,5 +408,13 @@
   "upgradeTermsAndConditions": "Termini e condizioni",
   "upgradeSubscriptionInfo": "Info sull'abbonamento",
   "upgradeSuccessTitle": "Successo!",
-  "upgradeSuccessText": "Il pagamento è andato a buon fine e il tuo {} è ora attivo"
+  "upgradeSuccessText": "Il pagamento è andato a buon fine e il tuo {} è ora attivo",
+  "pushNotificationsTitle": "Notifiche Push",
+  "pushNotificationsSetting": "Sicurezza",
+  "pushNotificationsSettingDesc": "Stato VPN e aggiornamenti sull'attività dell'account",
+  "pushNotificationsConsentPopupTitle": "Possiamo notificarti?",
+  "pushNotificationsConsentPopupDesc": "Invieremo solo notifiche importanti che pensiamo tu voglia conoscere.",
+  "pushNotificationsPermissionPoint1": "• Stato della connessione VPN",
+  "pushNotificationsPermissionPoint2": "• Avvisi di attività dell'account e del servizio",
+  "allowPushNotificationsBtn": "Consenti notifiche"
 }
