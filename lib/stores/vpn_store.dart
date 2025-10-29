@@ -30,6 +30,7 @@ import 'package:mysterium_vpn/services/location/locations_service.dart';
 import 'package:mysterium_vpn/services/mqtt/service.dart';
 import 'package:mysterium_vpn/services/wiregurad/wiregurad_key_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:mysterium_vpn/stores/connections_limit_store.dart';
 import 'package:mysterium_vpn/stores/dns_store.dart';
 import 'package:mysterium_vpn/stores/locations_query_store.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
@@ -78,11 +79,13 @@ abstract class _VpnStore with Store {
     required LocationsQueryStore locationsQueryStore,
     required UnavailableLocationsStore unavailableLocationsStore,
     required UserIntentsStore userIntentsStore,
+    required ConnectionsLimitStore connectionsLimitStore,
   })  : _apiService = apiService,
         _externalApiService = externalApiService,
         _mqtt = mqtt,
         _locationsStore = locationsStore,
         _wireguardService = wireguardService,
+        _connectionsLimitStore = connectionsLimitStore,
         _subscriptionStore = subscriptionStore,
         _analyticsStore = analyticsStore,
         _remoteConfigStore = remoteConfigStore,
@@ -120,12 +123,10 @@ abstract class _VpnStore with Store {
   final DNSStore _dnsStore;
   final RefreshIPStore _refreshIPStore;
   final Stopwatch _stopwatch = Stopwatch();
+  final ConnectionsLimitStore _connectionsLimitStore;
   StreamSubscription<String>? _connectionDataSub;
   StreamSubscription<String>? _connectionKilledSub;
   StreamSubscription<ConnectionStatus>? _wireguradConnectionStatus;
-
-  @observable
-  bool connectionLimitReached = false;
 
   @readonly
   VpnConnection? _vpnConnection;
@@ -706,7 +707,7 @@ abstract class _VpnStore with Store {
 
       _connectionKilledSub =
           _mqtt.subscribe('mysterium-vpn/connection/$connectionID/killed').listen((_) {
-        connectionLimitReached = true;
+        _connectionsLimitStore.connectionLimitReached = true;
       });
     } catch (e) {
       _logger.handle(e);

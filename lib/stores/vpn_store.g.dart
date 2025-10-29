@@ -53,22 +53,6 @@ mixin _$VpnStore on _VpnStore, Store {
               name: '_VpnStore.potentialLocation'))
           .value;
 
-  late final _$connectionLimitReachedAtom =
-      Atom(name: '_VpnStore.connectionLimitReached', context: context);
-
-  @override
-  bool get connectionLimitReached {
-    _$connectionLimitReachedAtom.reportRead();
-    return super.connectionLimitReached;
-  }
-
-  @override
-  set connectionLimitReached(bool value) {
-    _$connectionLimitReachedAtom.reportWrite(value, super.connectionLimitReached, () {
-      super.connectionLimitReached = value;
-    });
-  }
-
   late final _$_vpnConnectionAtom = Atom(name: '_VpnStore._vpnConnection', context: context);
 
   VpnConnection? get vpnConnection {
@@ -393,7 +377,6 @@ mixin _$VpnStore on _VpnStore, Store {
   @override
   String toString() {
     return '''
-connectionLimitReached: ${connectionLimitReached},
 connectionRated: ${connectionRated},
 vpnStatus: ${vpnStatus},
 isConnected: ${isConnected},
