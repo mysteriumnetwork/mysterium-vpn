@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/utils/disposeable.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/locations_store.dart';
 
 part 'unavailable_locations_store.g.dart';

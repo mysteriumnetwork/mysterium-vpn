@@ -5,7 +5,7 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/models/vpn_config.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/vpn/vpn_repository.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/services/wiregurad/wiregurad_key_service.dart';

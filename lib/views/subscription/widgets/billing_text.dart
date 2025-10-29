@@ -4,7 +4,7 @@ import 'package:mysterium_vpn/common/extensions/number.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/purchasable_product.dart';
+import 'package:mysterium_vpn/models/models.dart';
 
 class BillingText extends StatelessWidget {
   const BillingText({

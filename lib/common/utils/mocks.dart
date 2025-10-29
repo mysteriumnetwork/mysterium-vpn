@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
 
 sealed class Mocks {
   static const locationResidentialUS = VPNLocation(

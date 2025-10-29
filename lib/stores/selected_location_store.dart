@@ -1,5 +1,5 @@
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
 
 part 'selected_location_store.g.dart';
 

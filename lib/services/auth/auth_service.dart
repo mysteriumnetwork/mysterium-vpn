@@ -1,6 +1,4 @@
-import 'package:mysterium_vpn/models/pkce.dart';
-import 'package:mysterium_vpn/models/token_request.dart';
-import 'package:mysterium_vpn/models/token_response.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/auth/auth_user.dart';
 
 abstract class AuthService {
