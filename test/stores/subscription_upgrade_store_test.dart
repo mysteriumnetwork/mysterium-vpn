@@ -3,8 +3,7 @@ import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/stores/subscription_store.dart';
-import 'package:mysterium_vpn/stores/subscription_upgrade_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 import 'subscription_upgrade_store_test.mocks.dart';
 

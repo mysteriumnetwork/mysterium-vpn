@@ -4,8 +4,7 @@ import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
-import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
 import 'remote_config_store_test.mocks.dart';

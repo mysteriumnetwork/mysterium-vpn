@@ -16,9 +16,7 @@ import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/auth_store.dart';
-import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 Future<void> shownDeleteAccountDialog(
