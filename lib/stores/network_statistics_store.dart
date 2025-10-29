@@ -2,7 +2,6 @@
 // Package imports:
 
 import 'package:mobx/mobx.dart';
-import 'package:wireguard_dart/tunnel_statistics.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
 // Project imports:

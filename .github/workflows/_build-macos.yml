@@ -24,16 +24,34 @@ on:
         default: ".env.dev"
 
 jobs:
-  # macOS Build
-  # Based on documentation https://docs.flutter.dev/deployment/macos#create-a-build-archive-with-codemagic-cli-tools
-  # And tutorial https://docs.codemagic.io/yaml-quick-start/building-a-flutter-app/#code-signing
   release:
-    name: Build & Publish
+    name: Build & Publish (App Store Only)
     runs-on: macos-14
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up XCode
+      - name: Materialize .env from repo secrets
+        shell: bash
+        env:
+          ENV_DEV: ${{ secrets.ENV_DEV }}
+          ENV_PROD: ${{ secrets.ENV_PROD }}
+        run: |
+          set -euo pipefail
+          ENV_PATH="${{ inputs.env_file }}"
+          FILE_NAME="$(basename "$ENV_PATH")"
+          case "$FILE_NAME" in
+            .env.prod) CONTENT="$ENV_PROD" ;;
+            .env.dev)  CONTENT="$ENV_DEV" ;;
+            *)
+              echo "Unsupported env file: $FILE_NAME (expected .env.dev or .env.prod)" >&2
+              exit 1
+              ;;
+          esac
+          printf '%s' "$CONTENT" > "$ENV_PATH"
+          chmod 600 "$ENV_PATH"
+
+      - name: Set up Xcode
         run: sudo xcode-select --switch /Applications/Xcode_16.1.0.app
 
       - name: Setup Flutter Version Management CLI
@@ -56,27 +74,49 @@ jobs:
           keychain initialize
           keychain get-default
 
-      # Signing files are imported to keychain from:
-      #  ls -la ~/Library/MobileDevice/Provisioning\ Profiles
-      #  ls -la ~/Library/MobileDevice/Certificates/
-      - name: Fetch signing files
+      - name: Fetch App Store signing files
         env:
           APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
-          app-store-connect fetch-signing-files "${{ inputs.bundle_id }}" --platform MAC_OS --type MAC_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
+          app-store-connect fetch-signing-files "${{ inputs.bundle_id }}" \
+            --platform MAC_OS \
+            --type MAC_APP_STORE \
+            --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" \
+            --create
           keychain add-certificates
 
-      - name: Fetch Installer Distribution certificates
+      - name: Fetch or create Installer Distribution certificate
         env:
           APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
-          app-store-connect certificates list --type MAC_INSTALLER_DISTRIBUTION --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --save \
-          || app-store-connect certificates create --type MAC_INSTALLER_DISTRIBUTION --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --save
+          set -euo pipefail
+          echo "Checking for existing Mac Installer Distribution certificate..."
+
+          EXISTING_CERTS=$(app-store-connect certificates list --type MAC_INSTALLER_DISTRIBUTION \
+            --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --save || true)
+
+          echo "$EXISTING_CERTS"
+
+          if echo "$EXISTING_CERTS" | grep -iq "Mac.*Installer"; then
+              echo "✅ Existing Mac Installer Distribution certificate found."
+          else
+              echo "⚠️  No Installer certificate found, attempting to create one..."
+              if ! app-store-connect certificates create \
+                --type MAC_INSTALLER_DISTRIBUTION \
+                --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" \
+                --save; then
+                  echo "⚠️  Certificate creation failed (likely because one already exists). Continuing..."
+              fi
+          fi
+
+          echo "Adding certificates to keychain..."
           keychain add-certificates
+          echo "Installed certificates in keychain:"
+          keychain list-certificates
 
       - name: Set up signing preferences on Xcode project
         run: |
@@ -94,24 +134,70 @@ jobs:
           git diff
 
       - name: Build macOS app
-        run: fvm flutter build macos --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define-from-file="${{ inputs.env_file }}"
-
-      - name: Build macOS installer
         run: |
-          xcrun productbuild --component "${{ inputs.product_name }}.app" /Applications/ unsigned.pkg
-          xcrun productsign --sign "$(keychain list-certificates | jq '[.[] | select(.common_name | contains("Mac Developer Installer")) | .common_name][0]' | xargs)" unsigned.pkg "Mysterium VPN.pkg"
+          fvm flutter build macos \
+            --no-pub \
+            --release \
+            --flavor "${{ inputs.flavor }}" \
+            --dart-define-from-file="${{ inputs.env_file }}"
+
+      - name: Build signed macOS installer
         working-directory: build/macos/Build/Products/Release-${{ inputs.flavor }}
+        run: |
+          echo "=== Building macOS installer ==="
+
+          APP_PATH="${{ inputs.product_name }}.app"
+          if [ ! -d "$APP_PATH" ]; then
+            echo "ERROR: App bundle not found at $APP_PATH"
+            echo "Available .app bundles:"
+            ls -1d *.app || true
+            exit 1
+          fi
+
+          echo "Building unsigned pkg for $APP_PATH..."
+          xcrun productbuild --component "$APP_PATH" /Applications/ unsigned.pkg
+          if [ ! -f unsigned.pkg ]; then
+            echo "ERROR: unsigned.pkg not created!"
+            exit 1
+          fi
+          echo "Unsigned pkg created."
+
+          echo "Selecting Mac Installer Distribution certificate..."
+          INSTALLER_CERT=$(keychain list-certificates | jq -r '[.[] | select(.common_name | test("Mac.*Installer")) | .common_name][0]')
+          echo "Installer certificate selected: '$INSTALLER_CERT'"
+
+          if [ -z "$INSTALLER_CERT" ] || [ "$INSTALLER_CERT" = "null" ]; then
+            echo "ERROR: No Mac Installer Distribution certificate found!"
+            keychain list-certificates
+            exit 1
+          fi
+
+          echo "Signing pkg..."
+          xcrun productsign --sign "$INSTALLER_CERT" unsigned.pkg "${{ inputs.product_name }}.pkg"
+
+          if [ ! -f "${{ inputs.product_name }}.pkg" ]; then
+            echo "ERROR: Signed pkg not created!"
+            exit 1
+          fi
+
+          echo "Verifying pkg signature..."
+          pkgutil --check-signature "${{ inputs.product_name }}.pkg"
+
+          echo "=== macOS installer build complete ==="
 
       - name: Publish to Apple Store
         env:
           APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
-        run: app-store-connect publish --path "build/macos/Build/Products/Release-${{ inputs.flavor }}/Mysterium VPN.pkg" --platform MAC_OS
+        run: |
+          app-store-connect publish \
+            --path "build/macos/Build/Products/Release-${{ inputs.flavor }}/${{ inputs.product_name }}.pkg" \
+            --platform MAC_OS
 
-      - name: Post Set up keychain
+      - name: Clean up keychain
+        if: always()
         run: |
           keychain delete
           keychain use-login
           keychain list-certificates
-        if: always()
