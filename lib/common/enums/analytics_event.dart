@@ -115,7 +115,16 @@ enum AnalyticsEvent {
   marketingConsentMarkedDeclined,
   toggleMarketingConsent,
   mapScroll,
-  mapPointClick;
+  mapPointClick,
+  togglePushNotifications,
+  pushNotificationsPromptShown,
+  pushNotificationsPermissionsGranted,
+  pushNotificationsPermissionsDenied,
+  subUpgradeBannerClick,
+  subUpgradePopupShow,
+  subUpgradePopupClose,
+  subUpgradePopupConfirm,
+  subUpgradeInfoClick;
 
   String get formattedName => name.toSnakeCase;
 }

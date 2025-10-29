@@ -305,14 +305,15 @@ extension SubscriptionPatterns on Subscription {
 
 /// @nodoc
 @JsonSerializable()
-class _Subscription implements Subscription {
+class _Subscription extends Subscription {
   _Subscription(
       {required this.active,
       @JsonKey(name: 'plan_id') this.planId,
       @JsonKey(name: 'gateway') this.gateway,
       @JsonKey(name: 'active_until') this.activeUntil,
       @JsonKey(name: 'expired') this.expired,
-      @JsonKey(name: 'recurring') this.recurring});
+      @JsonKey(name: 'recurring') this.recurring})
+      : super._();
   factory _Subscription.fromJson(Map<String, dynamic> json) => _$SubscriptionFromJson(json);
 
   @override

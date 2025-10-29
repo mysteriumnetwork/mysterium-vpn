@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/banners/subscription_upgrade_banner.dart';
 import 'package:mysterium_vpn/components/circle_box.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -23,23 +24,28 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final settingCategory = ref.watch(selectedCategoryProvider);
     return Column(
+      spacing: 10,
       children: [
-        _HeaderTitle(
-          title: settingCategory.trKey.tr(),
-        ).padding(bottom: 50),
+        Padding(
+          padding: const EdgeInsets.only(left: 40, right: 40, top: 40, bottom: 12),
+          child: _HeaderTitle(title: settingCategory.trKey.tr()),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(bottom: 18),
+          child: SubscriptionUpgradeBanner(),
+        ),
         const AppVersionUpdateSetting(),
-        if (settingCategory == SettingCategory.connection) const ConnectionSettings(),
-        if (settingCategory == SettingCategory.preferences) const ApplicationSettings(),
-        if (settingCategory == SettingCategory.account) const AccountSettings(),
-        if (settingCategory == SettingCategory.qaToolbox) const QAToolbox(),
+        switch (settingCategory) {
+          SettingCategory.connection => const ConnectionSettings(),
+          SettingCategory.preferences => const ApplicationSettings(),
+          SettingCategory.account => const AccountSettings(),
+          SettingCategory.qaToolbox => const QAToolbox(),
+        },
       ],
     )
         .scrollable()
-        .padding(horizontal: 40, vertical: 40)
         .height(getMediaHeight(context))
-        .backgroundColor(
-          context.c.isDarkMode ? Palette.darkBlue : Palette.white,
-        );
+        .backgroundColor(context.c.isDarkMode ? Palette.darkBlue : Palette.white);
   }
 }
 

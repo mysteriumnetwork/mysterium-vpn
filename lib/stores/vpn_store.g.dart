@@ -52,28 +52,6 @@ mixin _$VpnStore on _VpnStore, Store {
       (_$potentialLocationComputed ??= Computed<VPNLocation?>(() => super.potentialLocation,
               name: '_VpnStore.potentialLocation'))
           .value;
-  Computed<Set<UserIntent>>? _$userIntentsComputed;
-
-  @override
-  Set<UserIntent> get userIntents => (_$userIntentsComputed ??=
-          Computed<Set<UserIntent>>(() => super.userIntents, name: '_VpnStore.userIntents'))
-      .value;
-
-  late final _$connectionLimitReachedAtom =
-      Atom(name: '_VpnStore.connectionLimitReached', context: context);
-
-  @override
-  bool get connectionLimitReached {
-    _$connectionLimitReachedAtom.reportRead();
-    return super.connectionLimitReached;
-  }
-
-  @override
-  set connectionLimitReached(bool value) {
-    _$connectionLimitReachedAtom.reportWrite(value, super.connectionLimitReached, () {
-      super.connectionLimitReached = value;
-    });
-  }
 
   late final _$_vpnConnectionAtom = Atom(name: '_VpnStore._vpnConnection', context: context);
 
@@ -89,23 +67,6 @@ mixin _$VpnStore on _VpnStore, Store {
   set _vpnConnection(VpnConnection? value) {
     _$_vpnConnectionAtom.reportWrite(value, super._vpnConnection, () {
       super._vpnConnection = value;
-    });
-  }
-
-  late final _$_userIntentAtom = Atom(name: '_VpnStore._userIntent', context: context);
-
-  UserIntent? get userIntent {
-    _$_userIntentAtom.reportRead();
-    return super._userIntent;
-  }
-
-  @override
-  UserIntent? get _userIntent => userIntent;
-
-  @override
-  set _userIntent(UserIntent? value) {
-    _$_userIntentAtom.reportWrite(value, super._userIntent, () {
-      super._userIntent = value;
     });
   }
 
@@ -416,7 +377,6 @@ mixin _$VpnStore on _VpnStore, Store {
   @override
   String toString() {
     return '''
-connectionLimitReached: ${connectionLimitReached},
 connectionRated: ${connectionRated},
 vpnStatus: ${vpnStatus},
 isConnected: ${isConnected},
@@ -424,8 +384,7 @@ isLoading: ${isLoading},
 isFetchingLocation: ${isFetchingLocation},
 isFetchingConfig: ${isFetchingConfig},
 location: ${location},
-potentialLocation: ${potentialLocation},
-userIntents: ${userIntents}
+potentialLocation: ${potentialLocation}
     ''';
   }
 }
