@@ -9,6 +9,7 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/email_marketing_setting.dart';
 import 'package:mysterium_vpn/views/settings/language_picker.dart';
+import 'package:mysterium_vpn/views/settings/push_notifications_settings.dart';
 import 'package:mysterium_vpn/views/settings/theme_picker.dart';
 
 class ApplicationSettings extends HookConsumerWidget {
@@ -40,6 +41,7 @@ class ApplicationSettings extends HookConsumerWidget {
             ),
           ),
           const EmailMarketingSetting(),
+          const PushNotificationsSetting(),
         ],
       ),
     );

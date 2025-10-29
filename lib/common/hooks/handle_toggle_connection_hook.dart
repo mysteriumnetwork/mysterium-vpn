@@ -18,7 +18,6 @@ Future<void> Function({
       final ref = ProviderScope.containerOf(context, listen: false);
       final vpnStore = ref.read(vpnStorePOD);
       final analyticsStore = ref.read(analyticsStorePOD);
-      final locationsStore = ref.read(locationsStorePOD);
 
       final logEvent =
           vpnStore.isConnected ? analyticsStore.logDisconnect : analyticsStore.logConnect;
@@ -29,13 +28,7 @@ Future<void> Function({
       );
 
       try {
-        if (location != null) {
-          await locationsStore.setIPType(location.ipType);
-        }
         await vpnStore.toggleConnection(location: location, intent: intent);
-        if (location == null && vpnStore.location != null) {
-          await locationsStore.setIPType(vpnStore.location!.ipType);
-        }
       } on AuthenticationRequiredException catch (_) {
         if (context.mounted) {
           Beamer.of(context).beamToNamed(Routes.platformLogin.path);

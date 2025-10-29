@@ -28,6 +28,10 @@ generate-localization:
 update-tile-assets-declaration:
 	fvm dart run assets/map_tiles/list_assets.dart
 
+run-unit-tests:
+	fvm flutter test --dart-define-from-file=.env.dev --dart-define _DOTENV_FILE=.env.dev ;\
+    fvm flutter test --dart-define-from-file=.env.prod --dart-define _DOTENV_FILE=.env.prod test/env_test.dart
+
 debug-integration-tests:
 	patrol develop --flavor dev --flutter-command="fvm flutter" --dart-define-from-file "integration_test/.env" $(flags)
 
@@ -41,6 +45,13 @@ build-ios-integration-test:
 build-android-integration-test:
 	patrol build android --flavor dev --dart-define-from-file "integration_test/.env" --flutter-command="fvm flutter" --verbose $(flags)
 
+build-android-dev-debug:
+	fvm flutter build apk --debug --flavor dev --dart-define-from-file ".env.dev"
+
+build-android-dev-release:
+	fvm flutter build apk --release --flavor dev --dart-define-from-file ".env.dev"
+	
+	
 run-ios-testlab:
 	cd build/ios_integ/Build/Products && \
     rm -f ios_tests.zip && \

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
@@ -19,6 +18,7 @@ import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/user_intent.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:vpn_api/vpn_api.dart';
 
@@ -28,12 +28,14 @@ class ConnectionTile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsStore = ref.watch(locationsStorePOD);
+    final selectedLocationStore = ref.watch(selectedLocationStorePOD);
+    final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
 
     final location = useComputedValue(
       () {
-        final selectedLocation = locationsStore.selectedLocation;
+        final selectedLocation = selectedLocationStore.value;
         final location = vpnStore.location;
         final connectingLocation = vpnStore.connectingLocation;
         final potentialLocation = vpnStore.potentialLocation;
@@ -45,7 +47,7 @@ class ConnectionTile extends HookConsumerWidget {
 
         return result;
       },
-      [vpnStore, locationsStore],
+      [vpnStore, locationsStore, selectedLocationStore],
     );
 
     final parent = useComputedValue(
@@ -53,33 +55,47 @@ class ConnectionTile extends HookConsumerWidget {
         if (location == null) {
           return null;
         }
-        return locationsStore.parentOf(location);
+        return locationsStore.findParent(location);
       },
       [location],
     );
 
-    final isLoading = useComputedValue(
-      () =>
-          locationsStore.recentLocationsFuture.status == FutureStatus.pending ||
-          locationsStore.dcLocationsFuture.status == FutureStatus.pending ||
-          locationsStore.residentialLocationsFuture.status == FutureStatus.pending,
+    /// If selected location is unavailable, we show parent location (country) instead.
+    /// If parent location is also unavailable (all locations in that country are unavailable),
+    /// we show best location (closest).
+    final targetLocation = useComputedValue(
+      () {
+        if (location == null) {
+          return null;
+        }
+        return unavailableLocationsStore.unavailableLocations.contains(location)
+            ? parent
+            : location;
+      },
+      [location, parent],
     );
+
     final isConnected = useIsLocationConnected(location);
     final ipInfo = useComputedValue(() => vpnStore.vpnConnection?.connectionIP);
+    final isLocationAvailable = location != null && location == targetLocation;
 
     final handleToggleConnection = useHandleToggleConnection();
     final onTap = useComputedValue(
-      () => vpnStore.isLoading ? null : () => handleToggleConnection(location: location),
-      [handleToggleConnection, location],
+      () {
+        if (vpnStore.isLoading) {
+          return null;
+        }
+
+        final intent = targetLocation == null && location != null ? UserIntent.bestSpeed : null;
+
+        return () => handleToggleConnection(location: targetLocation, intent: intent);
+      },
+      [handleToggleConnection, targetLocation, location],
     );
 
     Future<void> handleRefreshIP() async {
       analyticsStore.logRefreshIP(ipInfo);
       await vpnStore.startConnectionWithRefreshIP();
-    }
-
-    if (isLoading) {
-      return const SizedBox.shrink();
     }
 
     return _Card(
@@ -89,7 +105,20 @@ class ConnectionTile extends HookConsumerWidget {
           if (location == null)
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
-              child: _NoLocation(),
+              child: _Placeholder(
+                title: LocaleKeys.connectBestServer.tr(),
+                subtitle: LocaleKeys.orSelectCountryManually.tr(),
+                icon: Asset.icons.connectPrompt(context),
+              ),
+            )
+          else if (!isLocationAvailable)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: _Placeholder(
+                title: LocaleKeys.locationUnavailableTitle.tr(args: [location.getName(context)]),
+                subtitle: LocaleKeys.locationUnavailableSubtitle.tr(),
+                icon: Asset.icons.fix(context),
+              ),
             )
           else
             Padding(
@@ -103,8 +132,10 @@ class ConnectionTile extends HookConsumerWidget {
             ),
           ConnectTextButton(
             onPressed: onTap,
-            location: location,
+            location: targetLocation,
             size: const Size(double.infinity, 42),
+            textConnect:
+                targetLocation != location ? LocaleKeys.locationUnavailableAction.tr() : null,
           ),
           if (isConnected ?? false) const SizedBox(height: 16),
           if (isConnected ?? false) _RateConnection(),
@@ -143,7 +174,17 @@ class _Card extends HookWidget {
   }
 }
 
-class _NoLocation extends StatelessWidget {
+class _Placeholder extends StatelessWidget {
+  const _Placeholder({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+  });
+
+  final String title;
+  final String subtitle;
+  final SvgGenImage icon;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -151,19 +192,19 @@ class _NoLocation extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 8,
       children: [
-        Asset.icons.connectPrompt(context).svg(width: 38, height: 38),
+        icon.svg(width: 38, height: 38),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             spacing: 2,
             children: [
               EasyText(
-                LocaleKeys.connectBestServer.tr(),
+                title,
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
               EasyText(
-                LocaleKeys.orSelectCountryManually.tr(),
+                subtitle,
                 fontSize: 12,
                 color: theme.palette.subtitleColor,
               ),
@@ -175,7 +216,7 @@ class _NoLocation extends StatelessWidget {
   }
 }
 
-class _Location extends StatelessWidget {
+class _Location extends HookWidget {
   const _Location({
     required this.location,
     required this.parent,
@@ -194,10 +235,14 @@ class _Location extends StatelessWidget {
     final ipType = location.ipType;
     final title = parent?.getName(context) ?? location.getName(context);
     final subtitle = parent != null ? location.getName(context) : null;
+    final isConnected = useIsLocationConnected(location);
 
     final extras = [
       if (ip != null) ip!,
-      if (ipType == IPType.datacenter) LocaleKeys.highSpeed.tr(),
+      if (ipType == IPType.residential)
+        LocaleKeys.residential.tr()
+      else if (ipType == IPType.datacenter)
+        LocaleKeys.highSpeed.tr(),
     ];
 
     return Row(
@@ -248,7 +293,7 @@ class _Location extends StatelessWidget {
                         ],
                       ),
                     ),
-                    if (ip != null)
+                    if (ip != null && (isConnected ?? false))
                       SvgIconButton(
                         asset: Asset.icons.refresh,
                         size: 16,

@@ -30,6 +30,14 @@ abstract class Palette {
   static const Color darkPurple = Color(0xFF4B486C);
   static const Color semiTransparentLightBlack = Color(0x666A678E);
   static const Color duskyPurple = Color(0xff524E77);
+  static const Color paleLavender = Color(0xFFF2DAFF);
+  static const Color deepIndigo = Color(0xFF342055);
+  static const Color deepPlum = Color(0xFF4A2055);
+  static const Color charcoal = Color(0xFF333333);
+  static const Color smokyViolet = Color(0xff544A78);
+  static const Color paleLavenderLight = Color(0xffF1EFF5);
+  static const Color lavenderPink = Color(0xFFE8AAFD);
+  static const Color midnightCharcoal = Color(0xFF252B37);
 
   Color get highlightColor;
   Color get secondaryColor;
@@ -52,6 +60,7 @@ abstract class Palette {
   Color get outlinedButtonTextColor;
   Color get outlinedButtonBorderColor;
   Color get outlinedButtonBackgroundColor;
+  Color get outlinedButtonDisabledColor;
   Color get headerColor;
   Color get inputColor;
   Color get inputHintColor;
@@ -63,6 +72,10 @@ abstract class Palette {
   Color get tooltipBackgroundColor;
   Color get disabledButtonBackgroundColor;
   Color get disabledButtonForegroundColor;
+  Color get mapBackgroundColor;
+  Color get modalBackgroundColor;
+  Color get modalGradientColor;
+  Color get modalBarrierColor;
 
   MaterialColor get swatchColor;
 }
@@ -132,6 +145,9 @@ class LightPalette implements Palette {
   Color get outlinedButtonTextColor => Palette.purple;
 
   @override
+  Color get outlinedButtonDisabledColor => const Color(0xFFA7A7A7);
+
+  @override
   Color get headerColor => Palette.white;
 
   @override
@@ -166,6 +182,18 @@ class LightPalette implements Palette {
 
   @override
   Color get disabledButtonForegroundColor => Palette.lightBlack;
+
+  @override
+  Color get mapBackgroundColor => Palette.paleLavender;
+
+  @override
+  Color get modalBackgroundColor => Palette.white;
+
+  @override
+  Color get modalGradientColor => Palette.paleLavenderLight;
+
+  @override
+  Color get modalBarrierColor => Palette.charcoal.withValues(alpha: .5);
 }
 
 class DarkPalette implements Palette {
@@ -230,6 +258,9 @@ class DarkPalette implements Palette {
   Color get outlinedButtonBorderColor => Palette.purple;
 
   @override
+  Color get outlinedButtonDisabledColor => const Color(0xFFA7A7A7);
+
+  @override
   Color get outlinedButtonTextColor => Palette.white;
 
   @override
@@ -267,6 +298,18 @@ class DarkPalette implements Palette {
 
   @override
   Color get disabledButtonForegroundColor => Palette.lightBlack;
+
+  @override
+  Color get mapBackgroundColor => Palette.duskyPurple;
+
+  @override
+  Color get modalBackgroundColor => Palette.deepIndigo;
+
+  @override
+  Color get modalGradientColor => Palette.deepPlum;
+
+  @override
+  Color get modalBarrierColor => Palette.charcoal.withValues(alpha: .5);
 }
 
 Map<int, Color> color = const {

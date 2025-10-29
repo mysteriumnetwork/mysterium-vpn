@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:wireguard_dart/connection_status.dart';
+import 'package:wireguard_dart/wireguard_dart.dart';
 
 Color useConnectionStatusColor() {
   final vpnStore = useProvider(vpnStorePOD);

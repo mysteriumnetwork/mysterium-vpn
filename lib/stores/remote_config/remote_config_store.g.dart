@@ -233,6 +233,27 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$recentLocationsLimitComputed ??= Computed<int>(() => super.recentLocationsLimit,
               name: 'RemoteConfigStoreBase.recentLocationsLimit'))
           .value;
+  Computed<MapConfig>? _$mapConfigComputed;
+
+  @override
+  MapConfig get mapConfig => (_$mapConfigComputed ??=
+          Computed<MapConfig>(() => super.mapConfig, name: 'RemoteConfigStoreBase.mapConfig'))
+      .value;
+  Computed<bool>? _$subscriptionUpgradeBannerEnabledComputed;
+
+  @override
+  bool get subscriptionUpgradeBannerEnabled => (_$subscriptionUpgradeBannerEnabledComputed ??=
+          Computed<bool>(() => super.subscriptionUpgradeBannerEnabled,
+              name: 'RemoteConfigStoreBase.subscriptionUpgradeBannerEnabled'))
+      .value;
+  Computed<bool>? _$subscriptionUpgradeAutoDisplayEnabledComputed;
+
+  @override
+  bool get subscriptionUpgradeAutoDisplayEnabled =>
+      (_$subscriptionUpgradeAutoDisplayEnabledComputed ??= Computed<bool>(
+              () => super.subscriptionUpgradeAutoDisplayEnabled,
+              name: 'RemoteConfigStoreBase.subscriptionUpgradeAutoDisplayEnabled'))
+          .value;
 
   @override
   String toString() {
@@ -269,7 +290,10 @@ countriesWithCitiesOnMap: ${countriesWithCitiesOnMap},
 showUserIntents: ${showUserIntents},
 userIntentBlacklist: ${userIntentBlacklist},
 userIntentsRefreshInterval: ${userIntentsRefreshInterval},
-recentLocationsLimit: ${recentLocationsLimit}
+recentLocationsLimit: ${recentLocationsLimit},
+mapConfig: ${mapConfig},
+subscriptionUpgradeBannerEnabled: ${subscriptionUpgradeBannerEnabled},
+subscriptionUpgradeAutoDisplayEnabled: ${subscriptionUpgradeAutoDisplayEnabled}
     ''';
   }
 }

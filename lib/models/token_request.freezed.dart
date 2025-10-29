@@ -16,6 +16,8 @@ T _$identity<T>(T value) => value;
 mixin _$TokenRequest {
   @JsonKey(name: 'grant_type', toJson: grantTypeToJson)
   GrantType get grantType;
+  @JsonKey(name: 'device_id')
+  String get deviceId;
   @JsonKey(name: 'client_id')
   String get clientId;
   @JsonKey(name: 'refresh_token')
@@ -46,6 +48,7 @@ mixin _$TokenRequest {
         (other.runtimeType == runtimeType &&
             other is TokenRequest &&
             (identical(other.grantType, grantType) || other.grantType == grantType) &&
+            (identical(other.deviceId, deviceId) || other.deviceId == deviceId) &&
             (identical(other.clientId, clientId) || other.clientId == clientId) &&
             (identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken) &&
             (identical(other.codeVerifier, codeVerifier) || other.codeVerifier == codeVerifier) &&
@@ -59,12 +62,12 @@ mixin _$TokenRequest {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, grantType, clientId, refreshToken, codeVerifier,
-      code, googleIdToken, idToken, authorization);
+  int get hashCode => Object.hash(runtimeType, grantType, deviceId, clientId, refreshToken,
+      codeVerifier, code, googleIdToken, idToken, authorization);
 
   @override
   String toString() {
-    return 'TokenRequest(grantType: $grantType, clientId: $clientId, refreshToken: $refreshToken, codeVerifier: $codeVerifier, code: $code, googleIdToken: $googleIdToken, idToken: $idToken, authorization: $authorization)';
+    return 'TokenRequest(grantType: $grantType, deviceId: $deviceId, clientId: $clientId, refreshToken: $refreshToken, codeVerifier: $codeVerifier, code: $code, googleIdToken: $googleIdToken, idToken: $idToken, authorization: $authorization)';
   }
 }
 
@@ -75,6 +78,7 @@ abstract mixin class $TokenRequestCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'grant_type', toJson: grantTypeToJson) GrantType grantType,
+      @JsonKey(name: 'device_id') String deviceId,
       @JsonKey(name: 'client_id') String clientId,
       @JsonKey(name: 'refresh_token') String? refreshToken,
       @JsonKey(name: 'code_verifier') String? codeVerifier,
@@ -97,6 +101,7 @@ class _$TokenRequestCopyWithImpl<$Res> implements $TokenRequestCopyWith<$Res> {
   @override
   $Res call({
     Object? grantType = null,
+    Object? deviceId = null,
     Object? clientId = null,
     Object? refreshToken = freezed,
     Object? codeVerifier = freezed,
@@ -110,6 +115,10 @@ class _$TokenRequestCopyWithImpl<$Res> implements $TokenRequestCopyWith<$Res> {
           ? _self.grantType
           : grantType // ignore: cast_nullable_to_non_nullable
               as GrantType,
+      deviceId: null == deviceId
+          ? _self.deviceId
+          : deviceId // ignore: cast_nullable_to_non_nullable
+              as String,
       clientId: null == clientId
           ? _self.clientId
           : clientId // ignore: cast_nullable_to_non_nullable
@@ -237,6 +246,7 @@ extension TokenRequestPatterns on TokenRequest {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(
             @JsonKey(name: 'grant_type', toJson: grantTypeToJson) GrantType grantType,
+            @JsonKey(name: 'device_id') String deviceId,
             @JsonKey(name: 'client_id') String clientId,
             @JsonKey(name: 'refresh_token') String? refreshToken,
             @JsonKey(name: 'code_verifier') String? codeVerifier,
@@ -250,8 +260,16 @@ extension TokenRequestPatterns on TokenRequest {
     final _that = this;
     switch (_that) {
       case _TokenRequest() when $default != null:
-        return $default(_that.grantType, _that.clientId, _that.refreshToken, _that.codeVerifier,
-            _that.code, _that.googleIdToken, _that.idToken, _that.authorization);
+        return $default(
+            _that.grantType,
+            _that.deviceId,
+            _that.clientId,
+            _that.refreshToken,
+            _that.codeVerifier,
+            _that.code,
+            _that.googleIdToken,
+            _that.idToken,
+            _that.authorization);
       case _:
         return orElse();
     }
@@ -274,6 +292,7 @@ extension TokenRequestPatterns on TokenRequest {
   TResult when<TResult extends Object?>(
     TResult Function(
             @JsonKey(name: 'grant_type', toJson: grantTypeToJson) GrantType grantType,
+            @JsonKey(name: 'device_id') String deviceId,
             @JsonKey(name: 'client_id') String clientId,
             @JsonKey(name: 'refresh_token') String? refreshToken,
             @JsonKey(name: 'code_verifier') String? codeVerifier,
@@ -286,8 +305,16 @@ extension TokenRequestPatterns on TokenRequest {
     final _that = this;
     switch (_that) {
       case _TokenRequest():
-        return $default(_that.grantType, _that.clientId, _that.refreshToken, _that.codeVerifier,
-            _that.code, _that.googleIdToken, _that.idToken, _that.authorization);
+        return $default(
+            _that.grantType,
+            _that.deviceId,
+            _that.clientId,
+            _that.refreshToken,
+            _that.codeVerifier,
+            _that.code,
+            _that.googleIdToken,
+            _that.idToken,
+            _that.authorization);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -309,6 +336,7 @@ extension TokenRequestPatterns on TokenRequest {
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(
             @JsonKey(name: 'grant_type', toJson: grantTypeToJson) GrantType grantType,
+            @JsonKey(name: 'device_id') String deviceId,
             @JsonKey(name: 'client_id') String clientId,
             @JsonKey(name: 'refresh_token') String? refreshToken,
             @JsonKey(name: 'code_verifier') String? codeVerifier,
@@ -321,8 +349,16 @@ extension TokenRequestPatterns on TokenRequest {
     final _that = this;
     switch (_that) {
       case _TokenRequest() when $default != null:
-        return $default(_that.grantType, _that.clientId, _that.refreshToken, _that.codeVerifier,
-            _that.code, _that.googleIdToken, _that.idToken, _that.authorization);
+        return $default(
+            _that.grantType,
+            _that.deviceId,
+            _that.clientId,
+            _that.refreshToken,
+            _that.codeVerifier,
+            _that.code,
+            _that.googleIdToken,
+            _that.idToken,
+            _that.authorization);
       case _:
         return null;
     }
@@ -334,6 +370,7 @@ extension TokenRequestPatterns on TokenRequest {
 class _TokenRequest implements TokenRequest {
   _TokenRequest(
       {@JsonKey(name: 'grant_type', toJson: grantTypeToJson) required this.grantType,
+      @JsonKey(name: 'device_id') required this.deviceId,
       @JsonKey(name: 'client_id') this.clientId = 'app',
       @JsonKey(name: 'refresh_token') this.refreshToken,
       @JsonKey(name: 'code_verifier') this.codeVerifier,
@@ -346,6 +383,9 @@ class _TokenRequest implements TokenRequest {
   @override
   @JsonKey(name: 'grant_type', toJson: grantTypeToJson)
   final GrantType grantType;
+  @override
+  @JsonKey(name: 'device_id')
+  final String deviceId;
   @override
   @JsonKey(name: 'client_id')
   final String clientId;
@@ -388,6 +428,7 @@ class _TokenRequest implements TokenRequest {
         (other.runtimeType == runtimeType &&
             other is _TokenRequest &&
             (identical(other.grantType, grantType) || other.grantType == grantType) &&
+            (identical(other.deviceId, deviceId) || other.deviceId == deviceId) &&
             (identical(other.clientId, clientId) || other.clientId == clientId) &&
             (identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken) &&
             (identical(other.codeVerifier, codeVerifier) || other.codeVerifier == codeVerifier) &&
@@ -401,12 +442,12 @@ class _TokenRequest implements TokenRequest {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, grantType, clientId, refreshToken, codeVerifier,
-      code, googleIdToken, idToken, authorization);
+  int get hashCode => Object.hash(runtimeType, grantType, deviceId, clientId, refreshToken,
+      codeVerifier, code, googleIdToken, idToken, authorization);
 
   @override
   String toString() {
-    return 'TokenRequest(grantType: $grantType, clientId: $clientId, refreshToken: $refreshToken, codeVerifier: $codeVerifier, code: $code, googleIdToken: $googleIdToken, idToken: $idToken, authorization: $authorization)';
+    return 'TokenRequest(grantType: $grantType, deviceId: $deviceId, clientId: $clientId, refreshToken: $refreshToken, codeVerifier: $codeVerifier, code: $code, googleIdToken: $googleIdToken, idToken: $idToken, authorization: $authorization)';
   }
 }
 
@@ -418,6 +459,7 @@ abstract mixin class _$TokenRequestCopyWith<$Res> implements $TokenRequestCopyWi
   @useResult
   $Res call(
       {@JsonKey(name: 'grant_type', toJson: grantTypeToJson) GrantType grantType,
+      @JsonKey(name: 'device_id') String deviceId,
       @JsonKey(name: 'client_id') String clientId,
       @JsonKey(name: 'refresh_token') String? refreshToken,
       @JsonKey(name: 'code_verifier') String? codeVerifier,
@@ -440,6 +482,7 @@ class __$TokenRequestCopyWithImpl<$Res> implements _$TokenRequestCopyWith<$Res> 
   @pragma('vm:prefer-inline')
   $Res call({
     Object? grantType = null,
+    Object? deviceId = null,
     Object? clientId = null,
     Object? refreshToken = freezed,
     Object? codeVerifier = freezed,
@@ -453,6 +496,10 @@ class __$TokenRequestCopyWithImpl<$Res> implements _$TokenRequestCopyWith<$Res> 
           ? _self.grantType
           : grantType // ignore: cast_nullable_to_non_nullable
               as GrantType,
+      deviceId: null == deviceId
+          ? _self.deviceId
+          : deviceId // ignore: cast_nullable_to_non_nullable
+              as String,
       clientId: null == clientId
           ? _self.clientId
           : clientId // ignore: cast_nullable_to_non_nullable
