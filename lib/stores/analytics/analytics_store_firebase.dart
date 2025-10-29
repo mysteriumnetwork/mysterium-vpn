@@ -6,13 +6,14 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/analytics_user_property.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/observers/navigator_observer.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/analytics/constants.dart';
 import 'package:mysterium_vpn/stores/device_id_store.dart';
-import 'package:mysterium_vpn/stores/device_info_store.dart';
 
 part 'analytics_store_firebase.g.dart';
 
@@ -23,11 +24,9 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
   _AnalyticsStoreFirebase({
     required FirebaseAnalytics analytics,
     required FirebaseCrashlytics crashlytics,
-    required DeviceInfoStore deviceInfoStore,
     required DeviceIDStore deviceIDStore,
   })  : _analytics = analytics,
         _crashlytics = crashlytics,
-        _deviceInfoStore = deviceInfoStore,
         _deviceIDStore = deviceIDStore {
     setConsents();
     logAppLaunchEvent();
@@ -36,7 +35,6 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
 
   final FirebaseAnalytics _analytics;
   final FirebaseCrashlytics _crashlytics;
-  final DeviceInfoStore _deviceInfoStore;
   final DeviceIDStore _deviceIDStore;
 
   @override
@@ -116,34 +114,14 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
 
   @override
   @action
-  Future<void> setUserProperty({
-    required String propertyName,
-    required String propertyValue,
-  }) async {
-    if (propertyValue.length > 36) {
-      debugPrint(
-        '[Analytics] Warning: property "$propertyName" value exceeded 36 characters and was truncated.\n'
-        'Original value: "$propertyValue"\n'
-        'Truncated value: "${propertyValue.truncate(36)}"',
-      );
-    }
-    if (propertyName.length > 24) {
-      debugPrint(
-        '[Analytics] Warning: property name "$propertyName" exceeded 24 characters and was truncated.\n'
-        'Original name: "$propertyName"\n'
-        'Truncated name: "${propertyName.truncate(24)}"',
-      );
-    }
-    final name = propertyName.truncate(24);
-    final value = propertyValue.truncate(36);
+  Future<void> setUserProperty(AnalyticsUserProperty property) async {
     await _analytics.setUserProperty(
-      name: name,
-      value: value,
+      name: property.name24chars,
+      value: property.value36chars,
     );
     super
         .setUserProperty(
-          propertyName: name,
-          propertyValue: value,
+          property,
         )
         .ignore();
   }
@@ -179,20 +157,30 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
   @action
   Future<void> setDeviceInfo() async {
     try {
-      await _deviceInfoStore.deviceInfoFuture;
       final deviceId = await _deviceIDStore.deviceIdFuture;
-      await setUserProperty(propertyName: 'device_id', propertyValue: deviceId);
       await setUserProperty(
-        propertyName: 'device_name',
-        propertyValue: _deviceInfoStore.deviceName,
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.deviceId,
+          value: deviceId,
+        ),
       );
       await setUserProperty(
-        propertyName: 'device_model',
-        propertyValue: _deviceInfoStore.deviceModel,
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.deviceName,
+          value: Env.deviceName,
+        ),
       );
       await setUserProperty(
-        propertyName: 'device_platform',
-        propertyValue: defaultTargetPlatform.name,
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.deviceModel,
+          value: Env.deviceModel,
+        ),
+      );
+      await setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.devicePlatform,
+          value: defaultTargetPlatform.name,
+        ),
       );
     } catch (e) {
       logError(err: e);

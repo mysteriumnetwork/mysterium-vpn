@@ -17,8 +17,8 @@ import 'package:mysterium_vpn/stores/analytics/analytics_store_firebase.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_windows.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/banners_store.dart';
+import 'package:mysterium_vpn/stores/connections_limit_store.dart';
 import 'package:mysterium_vpn/stores/device_id_store.dart';
-import 'package:mysterium_vpn/stores/device_info_store.dart';
 import 'package:mysterium_vpn/stores/dns_store.dart';
 import 'package:mysterium_vpn/stores/latlng_store.dart';
 import 'package:mysterium_vpn/stores/locale_store.dart';
@@ -33,6 +33,7 @@ import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/texts_store.dart';
 import 'package:mysterium_vpn/stores/selected_location_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
+import 'package:mysterium_vpn/stores/subscription_upgrade_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
 import 'package:mysterium_vpn/stores/unavailable_locations_store.dart';
 import 'package:mysterium_vpn/stores/update_availabe_store.dart';
@@ -43,10 +44,16 @@ import 'package:mysterium_vpn/stores/vpn_store.dart';
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
 final authSessionStorePOD = Provider<AuthSessionStore>(
-  (ref) => AuthSessionStore(
-    secureStorage: SecureStorageService.instance,
-    remoteConfigStore: ref.watch(remoteConfigStorePOD),
-  ),
+  (ref) {
+    final store = AuthSessionStore(
+      secureStorage: SecureStorageService.instance,
+      remoteConfigStore: ref.watch(remoteConfigStorePOD),
+    );
+
+    ref.onDispose(store.dispose);
+
+    return store;
+  },
 );
 
 final authStorePOD = Provider<AuthStore>((ref) {
@@ -57,6 +64,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final analyticsStore = ref.watch(analyticsStorePOD);
   final logger = ref.watch(loggerPOD);
   final abTestingStore = ref.watch(abTestingStorePOD);
+  final deviceIDStore = ref.watch(deviceIDStorePOD);
 
   return AuthStore(
     authService: authService,
@@ -66,6 +74,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
     analyticsStore: analyticsStore,
     logger: logger,
     abTestingStore: abTestingStore,
+    deviceIDStore: deviceIDStore,
   );
 });
 
@@ -103,6 +112,8 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final recentLocationsStore = ref.watch(recentLocationsStorePOD);
   final locationsService = ref.watch(locationsServicePOD);
   final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
+  final userIntentsStore = ref.watch(userIntentsStorePOD);
+  final connectionsLimitStore = ref.watch(connectionsLimitStorePOD);
   return VpnStore(
     apiService: apiService,
     externalApiService: externalApiService,
@@ -122,6 +133,8 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     recentLocationsStore: recentLocationsStore,
     locationsService: locationsService,
     unavailableLocationsStore: unavailableLocationsStore,
+    userIntentsStore: userIntentsStore,
+    connectionsLimitStore: connectionsLimitStore,
   );
 });
 
@@ -226,7 +239,6 @@ final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
     return AnalyticsStoreWindows(
       measurementId: Env.measurementId,
       apiSecret: Env.apiSecret,
-      deviceInfoStore: ref.watch(deviceInfoStorePOD),
       deviceIDStore: ref.watch(deviceIDStorePOD),
     );
   }
@@ -234,7 +246,6 @@ final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
   return AnalyticsStoreFirebase(
     analytics: FirebaseAnalytics.instance,
     crashlytics: FirebaseCrashlytics.instance,
-    deviceInfoStore: ref.watch(deviceInfoStorePOD),
     deviceIDStore: ref.watch(deviceIDStorePOD),
   );
 });
@@ -245,11 +256,13 @@ final userPreferencesStorePOD = StateProvider<UserPreferencesStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final realIPInfoStore = ref.watch(realIPInfoStorePOD);
+  final wireguardService = ref.watch(wireguardServicePOD);
   return UserPreferencesStore(
     apiService: apiService,
     analyticsStore: analyticsStore,
     realIPInfo: realIPInfoStore,
     localDBService: LocalDBService.instance,
+    wireguardService: wireguardService,
   );
 });
 
@@ -282,7 +295,7 @@ final bannersStorePOD = Provider<BannersStore>(
     LocalDBService.instance,
     ref.watch(subscriptionStorePOD),
     ref.watch(authSessionStorePOD),
-    ref.watch(vpnStorePOD),
+    ref.watch(connectionsLimitStorePOD),
     ref.watch(updateAvailableStorePOD),
   ),
 );
@@ -294,10 +307,6 @@ final realIPInfoStorePOD = Provider<RealIPInfoStore>(
     ref.watch(wireguardServicePOD),
     ref.watch(analyticsStorePOD),
   ),
-);
-
-final deviceInfoStorePOD = Provider<DeviceInfoStore>(
-  (ref) => DeviceInfoStore(),
 );
 
 final deviceIDStorePOD = Provider<DeviceIDStore>(
@@ -355,4 +364,14 @@ final refreshIPStorePOD = Provider<RefreshIPStore>(
     ref.watch(loggerPOD),
     ref.watch(authSessionStorePOD),
   ),
+);
+
+final subscriptionUpgradeStorePOD = Provider<SubscriptionUpgradeStore>(
+  (ref) => SubscriptionUpgradeStore(
+    ref.watch(subscriptionStorePOD),
+  ),
+);
+
+final connectionsLimitStorePOD = Provider<ConnectionsLimitStore>(
+  (ref) => ConnectionsLimitStore(),
 );

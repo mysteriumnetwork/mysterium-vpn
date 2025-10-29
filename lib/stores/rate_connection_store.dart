@@ -26,11 +26,10 @@ abstract class _RateConnectionStore with Store {
 
   final ObservableList<RateConnectionReason> _rateConnectionReasons =
       ObservableList<RateConnectionReason>();
-  @observable
-  ObservableFuture<void>? submitRateConnectionFuture;
 
   @computed
   bool get isLikeMode => _rateConnectionMode == RateConnectionRequestModeEnum.like;
+
   @computed
   bool get isDislikeMode => _rateConnectionMode == RateConnectionRequestModeEnum.dislike;
 
@@ -58,31 +57,27 @@ abstract class _RateConnectionStore with Store {
 
   @action
   Future<void> submitRateConnection() async {
-    if (_vpnStore.vpnConnection != null && _vpnStore.wireguardKey?.publicKey != null) {
-      _analyticsStore.logEvent(AnalyticsEvent.rateConnectionSubmit);
-      submitRateConnectionFuture = ObservableFuture(
-        _apiService.rateConnection(
-          request: RateConnectionRequest(
-            mode: _rateConnectionMode,
-            reasons: _rateConnectionReasons.isEmpty
-                ? RateConnectionReason.other.name
-                : _rateConnectionReasons.toList().map((e) => e.name).join(','),
-            feedback: feedback,
-            country: _vpnStore.vpnConnection!.location.id,
-            ipType: _vpnStore.vpnConnection!.location.ipType.name,
-            publicKey: _vpnStore.wireguardKey!.publicKey,
-          ),
-        ),
-      );
-      await submitRateConnectionFuture;
-      _vpnStore.connectionRated = _rateConnectionMode;
-    }
+    assert(_vpnStore.vpnConnection != null, 'VPN connection must not be null');
+    assert(_vpnStore.wireguardKey?.publicKey != null, 'Wireguard public key must not be null');
+
+    _analyticsStore.logEvent(AnalyticsEvent.rateConnectionSubmit);
+    await _apiService.rateConnection(
+      request: RateConnectionRequest(
+        mode: _rateConnectionMode,
+        reasons: _rateConnectionReasons.isEmpty
+            ? RateConnectionReason.other.name
+            : _rateConnectionReasons.toList().map((e) => e.name).join(','),
+        feedback: feedback,
+        country: _vpnStore.vpnConnection!.location.id,
+        ipType: _vpnStore.vpnConnection!.location.ipType.name,
+        publicKey: _vpnStore.wireguardKey!.publicKey,
+      ),
+    );
+    _vpnStore.connectionRated = _rateConnectionMode;
   }
 
   @action
   void cancelRateConnection() {
-    _analyticsStore.logRateConnectionCancel(
-      _rateConnectionMode,
-    );
+    _analyticsStore.logRateConnectionCancel(_rateConnectionMode);
   }
 }

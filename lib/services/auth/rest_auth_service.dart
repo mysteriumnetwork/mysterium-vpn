@@ -48,9 +48,17 @@ class RestAuthService extends AuthService {
 
   // TODO(Waldz): Fix schema for this endpoint (JSON encoding needed)
   Future<TokenResponse> signIn(TokenRequest request) async {
+    final device = AuthorizationDevice(
+      osType: Platform.operatingSystem,
+      id: request.deviceId,
+      title: Env.deviceName,
+    );
     final response = await _networkService.post(
       '/oauth/token',
-      data: request.toJson(),
+      data: {
+        ...request.toJson(),
+        'device': device.toJson(),
+      },
       headers: {'content-type': 'application/x-www-form-urlencoded'},
     );
 
@@ -64,7 +72,6 @@ class RestAuthService extends AuthService {
   Future<AuthUser> currentUser() async {
     final response = await _apiAuth.checkAuth();
     final authCheck = response.data!;
-
     return AuthUser(
       userId: authCheck.userId,
       username: authCheck.username,
@@ -72,7 +79,7 @@ class RestAuthService extends AuthService {
   }
 
   @override
-  Future<TokenResponse> singInComplete({
+  Future<TokenResponse> signInComplete({
     required TokenRequest tokenRequest,
   }) async {
     try {

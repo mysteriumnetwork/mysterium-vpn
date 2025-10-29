@@ -83,3 +83,6 @@ android/app/.cxx/
 /test/**/*.mocks.dart
 /integration_test/test_bundle.dart
 /.sentry-native
+
+.env
+.env.*

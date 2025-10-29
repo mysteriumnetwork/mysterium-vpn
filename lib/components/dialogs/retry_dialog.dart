@@ -13,7 +13,7 @@ import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-Future<void> shownRetryDialog({
+Future<void> showRetryDialog({
   required FutureOr<void> Function(BuildContext context) onRetry,
   required BuildContext context,
   required String title,
@@ -62,52 +62,55 @@ class VerificationFailedDialog extends StatelessWidget {
   final String? dismissText;
 
   @override
-  Widget build(BuildContext context) => Stack(
-        clipBehavior: Clip.none,
-        alignment: Alignment.center,
-        children: [
-          Positioned(
-            top: -15,
-            child: SvgIcon(asset: asset),
-          ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              HeaderTitle(
-                text: title,
-              ),
-              EasyText(
-                subtitle,
-                fontSize: 14,
-                maxLines: 4,
-                textAlign: TextAlign.center,
-              ).padding(bottom: 30),
-              Row(
-                mainAxisAlignment:
-                    onDismiss != null ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
-                children: [
-                  if (onDismiss != null)
+  Widget build(BuildContext context) => SafeArea(
+        top: false,
+        child: Stack(
+          clipBehavior: Clip.none,
+          alignment: Alignment.center,
+          children: [
+            Positioned(
+              top: -15,
+              child: SvgIcon(asset: asset),
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                HeaderTitle(
+                  text: title,
+                ),
+                EasyText(
+                  subtitle,
+                  fontSize: 14,
+                  maxLines: 4,
+                  textAlign: TextAlign.center,
+                ).padding(bottom: 30),
+                Row(
+                  mainAxisAlignment:
+                      onDismiss != null ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
+                  children: [
+                    if (onDismiss != null)
+                      EasyButton(
+                        useSystemColor: false,
+                        color: Palette.lightBlack,
+                        text: dismissText ?? LocaleKeys.goBackButton.tr(),
+                        onPressed: () => onDismiss!(context),
+                        width: 160,
+                      ),
                     EasyButton(
                       useSystemColor: false,
-                      color: Palette.lightBlack,
-                      text: dismissText ?? LocaleKeys.goBackButton.tr(),
-                      onPressed: () => onDismiss!(context),
-                      width: 160,
+                      color: Palette.purple,
+                      text: LocaleKeys.retryBtn.tr(),
+                      onPressed: () async {
+                        onRetry(context);
+                        Beamer.of(context).popRoute();
+                      },
+                      width: onDismiss != null ? 160 : 200,
                     ),
-                  EasyButton(
-                    useSystemColor: false,
-                    color: Palette.purple,
-                    text: LocaleKeys.retryBtn.tr(),
-                    onPressed: () async {
-                      onRetry(context);
-                      Beamer.of(context).popRoute();
-                    },
-                    width: onDismiss != null ? 160 : 200,
-                  ),
-                ],
-              ),
-            ],
-          ).padding(horizontal: 20, vertical: 40),
-        ],
+                  ],
+                ),
+              ],
+            ).padding(horizontal: 20, top: 40, bottom: 24),
+          ],
+        ),
       );
 }
