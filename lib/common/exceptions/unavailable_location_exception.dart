@@ -1,4 +1,4 @@
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
 
 class UnavailableLocationException implements Exception {
   const UnavailableLocationException(this.location);

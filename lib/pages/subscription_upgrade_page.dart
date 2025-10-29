@@ -19,7 +19,7 @@ import 'package:mysterium_vpn/components/modal_page_scaffold.dart';
 import 'package:mysterium_vpn/components/spans/character_span.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/purchasable_product.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 Future<void> showSubscriptionUpgradePage(BuildContext context) async {

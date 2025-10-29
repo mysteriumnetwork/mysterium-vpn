@@ -1,5 +1,5 @@
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/models/vpn_config.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 abstract class VpnRepository {

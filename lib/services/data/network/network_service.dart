@@ -1,4 +1,4 @@
-import 'package:mysterium_vpn/models/response.dart';
+import 'package:mysterium_vpn/models/models.dart';
 
 // TODO(Waldz): Generate API client from API documentation openapi.yaml
 abstract class NetworkService {

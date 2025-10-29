@@ -3,7 +3,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/data/local/assets_service.dart';
 import 'package:mysterium_vpn/services/data/network/nominatim_service.dart';
 import 'package:mysterium_vpn/stores/latlng_store.dart';

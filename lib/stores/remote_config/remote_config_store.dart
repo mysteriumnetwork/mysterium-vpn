@@ -4,8 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
-import 'package:mysterium_vpn/models/map_config.dart';
-import 'package:mysterium_vpn/models/user_intent.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/remote_config/config_cat_store.dart';
 
 part 'remote_config_store.g.dart';

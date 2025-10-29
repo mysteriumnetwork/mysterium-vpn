@@ -2,8 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:mysterium_vpn/models/purchasable_product.dart';
-import 'package:mysterium_vpn/models/subscription.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/subscription_upgrade_store.dart';
 
