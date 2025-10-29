@@ -9,11 +9,11 @@ part of 'vpn_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$VpnStore on _VpnStore, Store {
-  Computed<ConnectionStatus>? _$vpnStatusComputed;
+  Computed<VpnConnectionStatus>? _$vpnStatusComputed;
 
   @override
-  ConnectionStatus get vpnStatus => (_$vpnStatusComputed ??=
-          Computed<ConnectionStatus>(() => super.vpnStatus, name: '_VpnStore.vpnStatus'))
+  VpnConnectionStatus get vpnStatus => (_$vpnStatusComputed ??=
+          Computed<VpnConnectionStatus>(() => super.vpnStatus, name: '_VpnStore.vpnStatus'))
       .value;
   Computed<bool>? _$isConnectedComputed;
 
@@ -72,50 +72,33 @@ mixin _$VpnStore on _VpnStore, Store {
 
   late final _$_vpnConfigAtom = Atom(name: '_VpnStore._vpnConfig', context: context);
 
-  WireguardConnectResponse? get vpnConfig {
+  VpnConfig? get vpnConfig {
     _$_vpnConfigAtom.reportRead();
     return super._vpnConfig;
   }
 
   @override
-  WireguardConnectResponse? get _vpnConfig => vpnConfig;
+  VpnConfig? get _vpnConfig => vpnConfig;
 
   @override
-  set _vpnConfig(WireguardConnectResponse? value) {
+  set _vpnConfig(VpnConfig? value) {
     _$_vpnConfigAtom.reportWrite(value, super._vpnConfig, () {
       super._vpnConfig = value;
     });
   }
 
-  late final _$_wireguardKeyAtom = Atom(name: '_VpnStore._wireguardKey', context: context);
-
-  KeyPair? get wireguardKey {
-    _$_wireguardKeyAtom.reportRead();
-    return super._wireguardKey;
-  }
-
-  @override
-  KeyPair? get _wireguardKey => wireguardKey;
-
-  @override
-  set _wireguardKey(KeyPair? value) {
-    _$_wireguardKeyAtom.reportWrite(value, super._wireguardKey, () {
-      super._wireguardKey = value;
-    });
-  }
-
   late final _$_connectionStatusAtom = Atom(name: '_VpnStore._connectionStatus', context: context);
 
-  ConnectionStatus get connectionStatus {
+  VpnConnectionStatus get connectionStatus {
     _$_connectionStatusAtom.reportRead();
     return super._connectionStatus;
   }
 
   @override
-  ConnectionStatus get _connectionStatus => connectionStatus;
+  VpnConnectionStatus get _connectionStatus => connectionStatus;
 
   @override
-  set _connectionStatus(ConnectionStatus value) {
+  set _connectionStatus(VpnConnectionStatus value) {
     _$_connectionStatusAtom.reportWrite(value, super._connectionStatus, () {
       super._connectionStatus = value;
     });
@@ -194,16 +177,16 @@ mixin _$VpnStore on _VpnStore, Store {
   late final _$_fetchConfigFutureAtom =
       Atom(name: '_VpnStore._fetchConfigFuture', context: context);
 
-  ObservableFuture<WireguardConnectResponse>? get fetchConfigFuture {
+  ObservableFuture<VpnConfig>? get fetchConfigFuture {
     _$_fetchConfigFutureAtom.reportRead();
     return super._fetchConfigFuture;
   }
 
   @override
-  ObservableFuture<WireguardConnectResponse>? get _fetchConfigFuture => fetchConfigFuture;
+  ObservableFuture<VpnConfig>? get _fetchConfigFuture => fetchConfigFuture;
 
   @override
-  set _fetchConfigFuture(ObservableFuture<WireguardConnectResponse>? value) {
+  set _fetchConfigFuture(ObservableFuture<VpnConfig>? value) {
     _$_fetchConfigFutureAtom.reportWrite(value, super._fetchConfigFuture, () {
       super._fetchConfigFuture = value;
     });
@@ -258,14 +241,6 @@ mixin _$VpnStore on _VpnStore, Store {
     return _$_initTunnelAsyncAction.run(() => super._initTunnel());
   }
 
-  late final _$_checkTunelConfiguredAsyncAction =
-      AsyncAction('_VpnStore._checkTunelConfigured', context: context);
-
-  @override
-  Future<bool> _checkTunelConfigured() {
-    return _$_checkTunelConfiguredAsyncAction.run(() => super._checkTunelConfigured());
-  }
-
   late final _$_setupAndListenToConnectionStatusAsyncAction =
       AsyncAction('_VpnStore._setupAndListenToConnectionStatus', context: context);
 
@@ -286,9 +261,8 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore._connectWireguard', context: context);
 
   @override
-  Future<void> _connectWireguard({required String privateKey, required String vpnConfig}) {
-    return _$_connectWireguardAsyncAction
-        .run(() => super._connectWireguard(privateKey: privateKey, vpnConfig: vpnConfig));
+  Future<void> _connectWireguard({required String vpnConfig}) {
+    return _$_connectWireguardAsyncAction.run(() => super._connectWireguard(vpnConfig: vpnConfig));
   }
 
   late final _$disconnectWireguardAsyncAction =
@@ -361,10 +335,22 @@ mixin _$VpnStore on _VpnStore, Store {
     return _$_udpBlockedCheckAsyncAction.run(() => super._udpBlockedCheck());
   }
 
+  late final _$submitRateConnectionAsyncAction =
+      AsyncAction('_VpnStore.submitRateConnection', context: context);
+
+  @override
+  Future<void> submitRateConnection(
+      {required RateConnectionRequestModeEnum mode,
+      required String? reasons,
+      required String? feedback}) {
+    return _$submitRateConnectionAsyncAction
+        .run(() => super.submitRateConnection(mode: mode, reasons: reasons, feedback: feedback));
+  }
+
   late final _$_VpnStoreActionController = ActionController(name: '_VpnStore', context: context);
 
   @override
-  void _setConnectionStatus(ConnectionStatus status) {
+  void _setConnectionStatus(VpnConnectionStatus status) {
     final _$actionInfo =
         _$_VpnStoreActionController.startAction(name: '_VpnStore._setConnectionStatus');
     try {

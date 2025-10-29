@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/screen_type.dart';
+import 'package:mysterium_vpn/common/enums/vpn_connection_status.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/components/dialogs/info_dialog.dart';
@@ -14,7 +15,6 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
-import 'package:wireguard_dart/wireguard_dart.dart';
 
 void useHomeAutorun() {
   final context = useContext();
@@ -39,7 +39,7 @@ void useHomeAutorun() {
         autorun(
           (_) {
             final limitExceeded = vpnStore.vpnConfig?.limitExceeded ?? false;
-            if (limitExceeded && vpnStore.vpnStatus == ConnectionStatus.connected) {
+            if (limitExceeded && vpnStore.vpnStatus == VpnConnectionStatus.connected) {
               controller.add(() => _showOrSkipConnectionLimitDialog(context));
             }
           },

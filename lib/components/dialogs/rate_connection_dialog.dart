@@ -13,7 +13,6 @@ import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/rate_connection_store.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -81,7 +80,6 @@ class _ConfirmDialog extends HookConsumerWidget {
       () => RateConnectionStore(
         rateConnectionMode,
         ref.read(analyticsStorePOD),
-        ref.read(apiServicePOD),
         ref.read(vpnStorePOD),
       ),
     );

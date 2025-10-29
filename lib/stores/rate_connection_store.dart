@@ -1,7 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/analytics_event.dart';
 import 'package:mysterium_vpn/common/enums/rate_connection.dart';
-import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/vpn_store.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -15,12 +14,10 @@ abstract class _RateConnectionStore with Store {
   _RateConnectionStore(
     this._rateConnectionMode,
     this._analyticsStore,
-    this._apiService,
     this._vpnStore,
   );
 
   final AnalyticsStore _analyticsStore;
-  final ApiService _apiService;
   final VpnStore _vpnStore;
   final RateConnectionRequestModeEnum _rateConnectionMode;
 
@@ -57,23 +54,20 @@ abstract class _RateConnectionStore with Store {
 
   @action
   Future<void> submitRateConnection() async {
-    assert(_vpnStore.vpnConnection != null, 'VPN connection must not be null');
-    assert(_vpnStore.wireguardKey?.publicKey != null, 'Wireguard public key must not be null');
-
     _analyticsStore.logEvent(AnalyticsEvent.rateConnectionSubmit);
-    await _apiService.rateConnection(
-      request: RateConnectionRequest(
+    try {
+      await _vpnStore.submitRateConnection(
         mode: _rateConnectionMode,
         reasons: _rateConnectionReasons.isEmpty
             ? RateConnectionReason.other.name
             : _rateConnectionReasons.toList().map((e) => e.name).join(','),
         feedback: feedback,
-        country: _vpnStore.vpnConnection!.location.id,
-        ipType: _vpnStore.vpnConnection!.location.ipType.name,
-        publicKey: _vpnStore.wireguardKey!.publicKey,
-      ),
-    );
-    _vpnStore.connectionRated = _rateConnectionMode;
+      );
+      _analyticsStore.logEvent(AnalyticsEvent.reteConnectionSubmitSuccess);
+    } catch (e) {
+      _analyticsStore.logEvent(AnalyticsEvent.rateConnectionSubmitError);
+      rethrow;
+    }
   }
 
   @action
