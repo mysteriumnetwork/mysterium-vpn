@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/vpn_connection_status.dart';
+import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/vpn_config.dart';
 import 'package:mysterium_vpn/repositories/vpn/vpn_repository.dart';
@@ -78,9 +80,24 @@ class WireguardRepository implements VpnRepository {
   Future<void> connect({
     required String config,
   }) async {
-    final key = await _getWireguradKey();
-    final replaced = config.replaceFirst('%private_key%', key.privateKey);
-    await _service.connect(cfg: replaced);
+    try {
+      final key = await _getWireguradKey();
+      final replaced = config.replaceFirst('%private_key%', key.privateKey);
+      await _service.connect(cfg: replaced).timeout(
+        const Duration(seconds: vpnConnectionTimeoutSeconds),
+        onTimeout: () {
+          throw TimeoutException(
+            'Wireguard connection timed out after $vpnConnectionTimeoutSeconds seconds',
+          );
+        },
+      );
+    } on TimeoutException catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      throw VpnConnectException(e.toString());
+    }
   }
 
   @override

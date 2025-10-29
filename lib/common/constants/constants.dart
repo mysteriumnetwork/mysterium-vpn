@@ -72,3 +72,4 @@ final kWorldBounds = LatLngBounds(
   const LatLng(90, 180),
 );
 const kCancelReasonOther = 'cancelOther';
+const vpnConnectionTimeoutSeconds = 15;

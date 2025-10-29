@@ -38,7 +38,6 @@ import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
 import 'package:mysterium_vpn/stores/recent_locations_store.dart';
 import 'package:mysterium_vpn/stores/refresh_ip_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
-import 'package:mysterium_vpn/stores/subscription_store.dart';
 import 'package:mysterium_vpn/stores/unavailable_locations_store.dart';
 import 'package:mysterium_vpn/stores/user_intents_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -55,18 +54,18 @@ final dnsRegex = RegExp(r'.*(\DNS\b).*', caseSensitive: false);
 // ignore: library_private_types_in_public_api
 class VpnStore = _VpnStore with _$VpnStore;
 
-abstract class _VpnStore with Store {
+abstract class _VpnStore extends VpnGuard with Store {
   _VpnStore({
     required ApiService apiService,
     required ExternalApiService externalApiService,
     required MQTTService mqtt,
     required LocationsStore locationsStore,
     required LocationsService locationsService,
-    required SubscriptionStore subscriptionStore,
+    required super.subscriptionStore,
     required Talker logger,
     required AnalyticsStore analyticsStore,
     required RemoteConfigStore remoteConfigStore,
-    required AuthSessionStore authSessionStore,
+    required super.authSessionStore,
     required RealIPInfoStore realIPInfo,
     required DNSStore dnsStore,
     required RefreshIPStore refreshIPStore,
@@ -81,7 +80,6 @@ abstract class _VpnStore with Store {
         _mqtt = mqtt,
         _locationsStore = locationsStore,
         _connectionsLimitStore = connectionsLimitStore,
-        _subscriptionStore = subscriptionStore,
         _analyticsStore = analyticsStore,
         _remoteConfigStore = remoteConfigStore,
         _authSessionStore = authSessionStore,
@@ -103,7 +101,6 @@ abstract class _VpnStore with Store {
   final MQTTService _mqtt;
   final LocationsStore _locationsStore;
   final AnalyticsStore _analyticsStore;
-  final SubscriptionStore _subscriptionStore;
   final RemoteConfigStore _remoteConfigStore;
   final AuthSessionStore _authSessionStore;
   final RealIPInfoStore _realIPInfo;
@@ -119,7 +116,7 @@ abstract class _VpnStore with Store {
   final ConnectionsLimitStore _connectionsLimitStore;
   StreamSubscription<String>? _connectionDataSub;
   StreamSubscription<String>? _connectionKilledSub;
-  StreamSubscription<VpnConnectionStatus>? _wireguradConnectionStatus;
+  StreamSubscription<VpnConnectionStatus>? _connectionStatusStream;
   final VpnRepository _vpnRepository;
 
   @readonly
@@ -219,7 +216,7 @@ abstract class _VpnStore with Store {
 
   // Call on log out or app termiantion
   Future<void> disposeStore() async {
-    _wireguradConnectionStatus?.cancel();
+    _connectionStatusStream?.cancel();
     _authReactionDisposer?.call();
   }
 
@@ -258,11 +255,11 @@ abstract class _VpnStore with Store {
         );
         await _resolveConnectionLocationFuture;
       } catch (e) {
-        await disconnectWireguard();
+        await disconnectTunnel();
       }
     }
     final stream = _vpnRepository.statusStream();
-    _wireguradConnectionStatus = stream.listen((event) async {
+    _connectionStatusStream = stream.listen((event) async {
       if (event == VpnConnectionStatus.disconnecting) {
         _vpnConnection = null;
         connectionRated = null;
@@ -276,7 +273,7 @@ abstract class _VpnStore with Store {
     _connectionStatus = status;
   }
 
-  /// Setup Wireguard tunnel
+  /// Setup VPN tunnel
   @action
   Future<void> setupTunnel() async {
     try {
@@ -295,29 +292,18 @@ abstract class _VpnStore with Store {
     }
   }
 
-  /// Connect to Wireguard tunnel
+  /// Connect to VPN tunnel
   @action
-  Future<void> _connectWireguard({
+  Future<void> _connectTunnel({
     required String vpnConfig,
   }) async {
     final config = _dnsStore.replaceDNSAddress(vpnConfig);
-    try {
-      await _vpnRepository.connect(config: config).timeout(
-            const Duration(seconds: 10),
-            onTimeout: () => throw TimeoutException('Wireguard connection timeout'),
-          );
-    } on TimeoutException catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      throw WireguardConnectException(e.toString());
-    }
+    await _vpnRepository.connect(config: config);
   }
 
-  /// Disconnect from Wireguard tunnel
+  /// Disconnect from VPN tunnel
   @action
-  Future<void> disconnectWireguard({bool isReconnecting = false}) async {
+  Future<void> disconnectTunnel({bool isReconnecting = false}) async {
     final disconnectSucceeded = await _vpnRepository.disconnectFromVpn();
     if (disconnectSucceeded) {
       if (!isReconnecting) {
@@ -347,7 +333,7 @@ abstract class _VpnStore with Store {
     if (_connectionStatus == VpnConnectionStatus.connected) {
       final connectedLocation = _vpnConnection?.location;
       final connectedIntent = _userIntentsStore.userIntent;
-      await disconnectWireguard();
+      await disconnectTunnel();
       if (location == null && intent == null) {
         return;
       }
@@ -368,23 +354,6 @@ abstract class _VpnStore with Store {
     await _startConnection(refreshIP: true, location: _vpnConnection?.location);
   }
 
-  Future<void> _checkSubscriptionStatus() async {
-    if (_subscriptionStore.subscriptionFuture.status == FutureStatus.pending) {
-      return;
-    }
-    try {
-      final subscription = await _subscriptionStore.subscriptionFuture;
-      if (!subscription.active) {
-        throw const SubscriptionRequiredException();
-      }
-    } catch (e) {
-      if (e is! SubscriptionRequiredException) {
-        _subscriptionStore.refreshSubscription();
-      }
-      rethrow;
-    }
-  }
-
   /// Connect to VPN
   @action
   Future<void> _startConnection({
@@ -397,7 +366,7 @@ abstract class _VpnStore with Store {
     if (_authSessionStore.status != AuthStatus.authenticated) {
       throw AuthenticationRequiredException();
     }
-    await _checkSubscriptionStatus();
+    await checkVpnGuards();
 
     if (!(await _vpnRepository.isTunnelConfigured())) {
       if (Platform.isWindows) {
@@ -431,7 +400,7 @@ abstract class _VpnStore with Store {
 
     try {
       if ((await checkTunnelStatus()) == VpnConnectionStatus.connected) {
-        await disconnectWireguard(isReconnecting: true);
+        await disconnectTunnel(isReconnecting: true);
         // Wait until connection is disconnected
         await Future.doWhile(() async {
           final tunnelStatus = await checkTunnelStatus();
@@ -476,7 +445,7 @@ abstract class _VpnStore with Store {
       Sentry.captureException(e, stackTrace: stackTrace);
 
       final errorCode = switch (e) {
-        final WireguardConnectException e => e.code,
+        final VpnConnectException e => e.code,
         final ApiException e => e.code,
         _ => 1113,
       };
@@ -578,7 +547,7 @@ abstract class _VpnStore with Store {
         throw Exception('Could not find connected location information');
       }
 
-      await _connectWireguard(
+      await _connectTunnel(
         vpnConfig: _vpnConfig!.config,
       );
 
@@ -660,7 +629,7 @@ abstract class _VpnStore with Store {
     if (ipAddress != null && ipAddress.isNotEmpty) {
       _vpnConnection = _vpnConnection?.copyWith(connectionIP: ipAddress);
     } else if ((_vpnConnection?.connectionIP.isEmpty ?? true) && _connectingLocation == location) {
-      disconnectWireguard();
+      disconnectTunnel();
       _vpnConnection = null;
     }
   }
@@ -671,7 +640,7 @@ abstract class _VpnStore with Store {
       _disconnectAllDevicesFuture = ObservableFuture(
         _apiService.disconnectAllDevices(),
       );
-      await disconnectWireguard();
+      await disconnectTunnel();
       await _disconnectAllDevicesFuture;
     } catch (e) {
       _logger.handle(e);
