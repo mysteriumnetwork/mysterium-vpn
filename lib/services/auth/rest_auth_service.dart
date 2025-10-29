@@ -42,15 +42,23 @@ class RestAuthService extends AuthService {
   late final Future<void> _ensureInitialized;
 
   Future<void> _init() async {
-    _ensureInitialized = googleSignIn.initialize();
+    _ensureInitialized = Platform.isWindows ? Future.value() : googleSignIn.initialize();
     await _ensureInitialized;
   }
 
   // TODO(Waldz): Fix schema for this endpoint (JSON encoding needed)
   Future<TokenResponse> signIn(TokenRequest request) async {
+    final device = AuthorizationDevice(
+      osType: Platform.operatingSystem,
+      id: request.deviceId,
+      title: Env.deviceName,
+    );
     final response = await _networkService.post(
       '/oauth/token',
-      data: request.toJson(),
+      data: {
+        ...request.toJson(),
+        'device': device.toJson(),
+      },
       headers: {'content-type': 'application/x-www-form-urlencoded'},
     );
 
@@ -64,7 +72,6 @@ class RestAuthService extends AuthService {
   Future<AuthUser> currentUser() async {
     final response = await _apiAuth.checkAuth();
     final authCheck = response.data!;
-
     return AuthUser(
       userId: authCheck.userId,
       username: authCheck.username,
@@ -72,7 +79,7 @@ class RestAuthService extends AuthService {
   }
 
   @override
-  Future<TokenResponse> singInComplete({
+  Future<TokenResponse> signInComplete({
     required TokenRequest tokenRequest,
   }) async {
     try {
@@ -131,8 +138,8 @@ class RestAuthService extends AuthService {
 
   Future<void> removeLocalData() async {
     final currentUsername = _authSessionStore.user?.username;
-    await _authSessionStore.setUnauthenticated();
     LocalDBService.instance.clearUser();
+    await _authSessionStore.setUnauthenticated();
 
     if (currentUsername != null && currentUsername.isNotEmpty) {
       _logger.info('User $currentUsername logged out');
@@ -148,7 +155,6 @@ class RestAuthService extends AuthService {
   @override
   Future<String> signInWithApple() async {
     try {
-      await _ensureInitialized;
       if (!await SignInWithApple.isAvailable()) {
         throw NotAvailableException();
       }

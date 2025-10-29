@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/async_text_button.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class ConnectTextButton extends HookConsumerWidget {
   const ConnectTextButton({
@@ -17,6 +18,8 @@ class ConnectTextButton extends HookConsumerWidget {
     this.outlinedButton = false,
     this.borderRadius,
     this.fontStyle,
+    this.textConnect,
+    this.textDisconnect,
     super.key,
   });
 
@@ -28,10 +31,17 @@ class ConnectTextButton extends HookConsumerWidget {
   final bool outlinedButton;
   final double? borderRadius;
   final TextStyle? fontStyle;
+  final String? textConnect;
+  final String? textDisconnect;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
     final isConnected = useIsLocationConnected(location);
+    final isAvailable = useComputedValue(
+      () => location == null || !unavailableLocationsStore.unavailableLocations.contains(location),
+      [location],
+    );
 
     void onPressed() {
       this.onPressed?.call();
@@ -42,13 +52,15 @@ class ConnectTextButton extends HookConsumerWidget {
       minimumSize: size,
       textScaleGroup: textScaleGroup,
       borderRadius: borderRadius == null ? null : BorderRadius.circular(borderRadius!),
-      text: (isConnected ?? false) ? LocaleKeys.disconnect.tr() : LocaleKeys.connect.tr(),
+      text: (isConnected ?? false)
+          ? (textDisconnect ?? LocaleKeys.disconnect.tr())
+          : (textConnect ?? LocaleKeys.connect.tr()),
       mode: (isConnected ?? true)
           ? AsyncTextButtonMode.filled
           : outlinedButton
               ? AsyncTextButtonMode.outlined
               : AsyncTextButtonMode.elevated,
-      onPressed: isConnected == null ? null : onPressed,
+      onPressed: isConnected == null || !isAvailable ? null : onPressed,
     );
   }
 }

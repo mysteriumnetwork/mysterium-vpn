@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:mysterium_vpn/models/location.dart';
 
 class VPNLocationAdapter extends TypeAdapter<VPNLocation> {
-  VPNLocationAdapter({required this.typeId});
+  const VPNLocationAdapter({required this.typeId});
 
   @override
   final int typeId;

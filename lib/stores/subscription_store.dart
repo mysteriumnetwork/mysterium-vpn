@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/analytics_user_property.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
@@ -140,9 +141,24 @@ abstract class _SubscriptionStore with Store {
             ? 'expired_paid'
             : 'not_paid';
     _analyticsStore
-      ..setUserProperty('plan_id', subscription.planId ?? '')
-      ..setUserProperty('valid_to', subscription.activeUntil.toString())
-      ..setUserProperty('user_status', userStatus);
+      ..setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.planId,
+          value: subscription.planId ?? '',
+        ),
+      )
+      ..setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.validTo,
+          value: subscription.activeUntil.toString(),
+        ),
+      )
+      ..setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.userStatus,
+          value: userStatus,
+        ),
+      );
   }
 
   Future<api.SubscriptionConfigResponse?> _fetchSubscriptionConfig() async {
