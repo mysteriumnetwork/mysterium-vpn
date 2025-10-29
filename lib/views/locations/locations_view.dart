@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/enums/vpn_connection_status.dart';
 import 'package:mysterium_vpn/common/hooks/auto_select_ip_type_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/is_authenticated_hook.dart';
@@ -26,7 +27,6 @@ import 'package:mysterium_vpn/views/locations/components/locations_sliver_list.d
 import 'package:mysterium_vpn/views/locations/components/locations_sliver_loading.dart';
 import 'package:mysterium_vpn/views/locations/components/recent_locations_loading.dart';
 import 'package:sliver_tools/sliver_tools.dart';
-import 'package:wireguard_dart/wireguard_dart.dart';
 
 class LocationsSliverView extends HookConsumerWidget {
   const LocationsSliverView({super.key});
@@ -177,8 +177,8 @@ class _UserIntent extends HookConsumerWidget {
     final locationsEmpty = useComputedValue(() => locationsStore.isEmpty);
     final isLoading = useComputedValue(
       () =>
-          vpnStore.connectionStatus == ConnectionStatus.connecting ||
-          vpnStore.connectionStatus == ConnectionStatus.disconnecting,
+          vpnStore.connectionStatus == VpnConnectionStatus.connecting ||
+          vpnStore.connectionStatus == VpnConnectionStatus.disconnecting,
     );
 
     final intents = useComputedValue(() => userIntentsStore.intentsFuture.value);

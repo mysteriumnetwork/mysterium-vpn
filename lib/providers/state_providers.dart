@@ -6,6 +6,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
@@ -98,14 +99,12 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final externalApiService = ref.watch(externalApiServicePOD);
   final mqttService = ref.watch(vpnApiMQTTPOD);
   final locationsStore = ref.watch(locationsStorePOD);
-  final wireguardService = ref.watch(wireguardServicePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
   final logger = ref.watch(loggerPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
   final realIPInfoStore = ref.watch(realIPInfoStorePOD);
-  final wireguardKeyService = ref.watch(wireguradKeyServicePOD);
   final dnsStore = ref.watch(dnsStorePOD);
   final refreshIPStore = ref.watch(refreshIPStorePOD);
   final locationsQueryStore = ref.watch(locationsQueryStorePOD);
@@ -114,19 +113,18 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
   final userIntentsStore = ref.watch(userIntentsStorePOD);
   final connectionsLimitStore = ref.watch(connectionsLimitStorePOD);
+  final vpnRepository = ref.watch(wireguardRepositoryPOD);
   return VpnStore(
     apiService: apiService,
     externalApiService: externalApiService,
     mqtt: mqttService,
     locationsStore: locationsStore,
-    wireguardService: wireguardService,
     subscriptionStore: subscriptionStore,
     logger: logger,
     analyticsStore: analyticsStore,
     remoteConfigStore: remoteConfigStore,
     authSessionStore: authSessionStore,
     realIPInfo: realIPInfoStore,
-    wireguardKeyService: wireguardKeyService,
     dnsStore: dnsStore,
     refreshIPStore: refreshIPStore,
     locationsQueryStore: locationsQueryStore,
@@ -135,6 +133,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     unavailableLocationsStore: unavailableLocationsStore,
     userIntentsStore: userIntentsStore,
     connectionsLimitStore: connectionsLimitStore,
+    vpnRepository: vpnRepository,
   );
 });
 

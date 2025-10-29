@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/vpn_connection_status.dart';
 import 'package:mysterium_vpn/common/hooks/connection_status_color_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
@@ -13,7 +14,6 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:wireguard_dart/wireguard_dart.dart';
 
 class ConnectionStatusBar extends HookConsumerWidget {
   const ConnectionStatusBar({super.key});
@@ -34,7 +34,7 @@ class ConnectionStatusBar extends HookConsumerWidget {
 
     final handleToggleExpanded = useMemoized(
       () {
-        if (connectionStatus != ConnectionStatus.connected) {
+        if (connectionStatus != VpnConnectionStatus.connected) {
           return null;
         }
         return () => isExpanded.value = !isExpanded.value;
@@ -111,38 +111,38 @@ class ConnectionStatusBar extends HookConsumerWidget {
   }
 
   String _statusText(
-    ConnectionStatus connectionStatus,
+    VpnConnectionStatus connectionStatus,
     bool isLoading,
   ) {
     if (isLoading) {
       return LocaleKeys.gettingIPAddress.tr();
     }
     return switch (connectionStatus) {
-      ConnectionStatus.connected => LocaleKeys.connected.tr(),
-      ConnectionStatus.connecting => LocaleKeys.connecting.tr(),
-      ConnectionStatus.disconnected => LocaleKeys.disconnected.tr(),
-      ConnectionStatus.disconnecting => LocaleKeys.disconnecting.tr(),
-      ConnectionStatus.unknown => '',
+      VpnConnectionStatus.connected => LocaleKeys.connected.tr(),
+      VpnConnectionStatus.connecting => LocaleKeys.connecting.tr(),
+      VpnConnectionStatus.disconnected => LocaleKeys.disconnected.tr(),
+      VpnConnectionStatus.disconnecting => LocaleKeys.disconnecting.tr(),
+      VpnConnectionStatus.unknown => '',
     };
   }
 
-  Widget _statusIcon(ConnectionStatus connectionStatus, bool isLoading) {
+  Widget _statusIcon(VpnConnectionStatus connectionStatus, bool isLoading) {
     if (isLoading) {
       return const LoadingIndicator(radius: 16);
     }
     return switch (connectionStatus) {
-      ConnectionStatus.connected => SvgIcon(
+      VpnConnectionStatus.connected => SvgIcon(
           asset: Asset.icons.killSwitch,
           height: 16,
           width: 16,
         ),
-      ConnectionStatus.disconnected => SvgIcon(
+      VpnConnectionStatus.disconnected => SvgIcon(
           asset: Asset.icons.lockOpen,
           height: 14,
           width: 16,
         ),
-      ConnectionStatus.connecting => const LoadingIndicator(radius: 16),
-      ConnectionStatus.disconnecting => const LoadingIndicator(radius: 16),
+      VpnConnectionStatus.connecting => const LoadingIndicator(radius: 16),
+      VpnConnectionStatus.disconnecting => const LoadingIndicator(radius: 16),
       _ => const SizedBox.shrink(),
     };
   }
