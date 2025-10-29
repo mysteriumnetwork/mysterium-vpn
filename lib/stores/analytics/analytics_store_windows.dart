@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/analytics_user_property.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/observers/navigator_observer.dart';
@@ -65,34 +66,16 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
 
   @override
   @action
-  Future<void> setUserProperty({
-    required String propertyName,
-    required String propertyValue,
-  }) async {
-    if (propertyValue.length > 36) {
-      debugPrint(
-        '[Analytics] Warning: property "$propertyName" value exceeded 36 characters and was truncated.\n'
-        'Original value: "$propertyValue"\n'
-        'Truncated value: "${propertyValue.truncate(36)}"',
-      );
-    }
-    if (propertyName.length > 24) {
-      debugPrint(
-        '[Analytics] Warning: property name "$propertyName" exceeded 24 characters and was truncated.\n'
-        'Original name: "$propertyName"\n'
-        'Truncated name: "${propertyName.truncate(24)}"',
-      );
-    }
-    final name = propertyName.truncate(24);
-    final value = propertyValue.truncate(36);
-    _session.userProperties[name] = {
-      'value': value,
+  Future<void> setUserProperty(
+    AnalyticsUserProperty property,
+  ) async {
+    _session.userProperties[property.name24chars] = {
+      'value': property.value36chars,
       'timestamp_micros': DateTime.now().microsecondsSinceEpoch,
     };
     super
         .setUserProperty(
-          propertyName: name,
-          propertyValue: value,
+          property,
         )
         .ignore();
   }
@@ -126,18 +109,29 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
         debugPrint('Device name: ${Env.deviceName}');
         debugPrint('Device model: ${Env.deviceModel}');
       }
-      await setUserProperty(propertyName: 'device_id', propertyValue: deviceId);
       await setUserProperty(
-        propertyName: 'device_name',
-        propertyValue: Env.deviceName,
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.deviceId,
+          value: deviceId,
+        ),
       );
       await setUserProperty(
-        propertyName: 'device_model',
-        propertyValue: Env.deviceModel,
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.deviceName,
+          value: Env.deviceName,
+        ),
       );
       await setUserProperty(
-        propertyName: 'device_platform',
-        propertyValue: defaultTargetPlatform.name,
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.deviceModel,
+          value: Env.deviceModel,
+        ),
+      );
+      await setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.devicePlatform,
+          value: defaultTargetPlatform.name,
+        ),
       );
     } catch (e) {
       logError(err: e);

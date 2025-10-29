@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
@@ -30,7 +29,6 @@ class ConnectionTile extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsStore = ref.watch(locationsStorePOD);
     final selectedLocationStore = ref.watch(selectedLocationStorePOD);
-    final recentLocationsStore = ref.watch(recentLocationsStorePOD);
     final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
@@ -77,12 +75,6 @@ class ConnectionTile extends HookConsumerWidget {
       [location, parent],
     );
 
-    final isLoading = useComputedValue(
-      () =>
-          recentLocationsStore.future.status == FutureStatus.pending ||
-          locationsStore.dcLocationsFuture.status == FutureStatus.pending ||
-          locationsStore.residentialLocationsFuture.status == FutureStatus.pending,
-    );
     final isConnected = useIsLocationConnected(location);
     final ipInfo = useComputedValue(() => vpnStore.vpnConnection?.connectionIP);
     final isLocationAvailable = location != null && location == targetLocation;
@@ -104,10 +96,6 @@ class ConnectionTile extends HookConsumerWidget {
     Future<void> handleRefreshIP() async {
       analyticsStore.logRefreshIP(ipInfo);
       await vpnStore.startConnectionWithRefreshIP();
-    }
-
-    if (isLoading) {
-      return const SizedBox.shrink();
     }
 
     return _Card(
@@ -251,7 +239,10 @@ class _Location extends HookWidget {
 
     final extras = [
       if (ip != null) ip!,
-      if (ipType == IPType.datacenter) LocaleKeys.highSpeed.tr(),
+      if (ipType == IPType.residential)
+        LocaleKeys.residential.tr()
+      else if (ipType == IPType.datacenter)
+        LocaleKeys.highSpeed.tr(),
     ];
 
     return Row(

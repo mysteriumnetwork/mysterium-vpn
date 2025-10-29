@@ -13,7 +13,7 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:wireguard_dart/connection_status.dart';
+import 'package:wireguard_dart/wireguard_dart.dart';
 
 class ConnectionStatusBar extends HookConsumerWidget {
   const ConnectionStatusBar({super.key});

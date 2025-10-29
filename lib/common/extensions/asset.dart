@@ -32,6 +32,12 @@ extension $AssetsIconsGenExtensions on $AssetsIconsGen {
         dark: close2Dark,
       );
 
+  SvgGenImage close3(BuildContext context) => _withBrightness(
+        context,
+        light: close3Light,
+        dark: close3Dark,
+      );
+
   SvgGenImage connectPrompt(BuildContext context) => _withBrightness(
         context,
         light: connectPromptLight,
@@ -120,6 +126,12 @@ extension $AssetsIconsGenExtensions on $AssetsIconsGen {
         context,
         light: settingsLightDesktop,
         dark: settingsDarkDesktop,
+      );
+
+  SvgGenImage successCup(BuildContext context) => _withBrightness(
+        context,
+        light: successCupLight,
+        dark: successCupDark,
       );
 
   SvgGenImage support(BuildContext context) => _withBrightness(
