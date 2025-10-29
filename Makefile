@@ -45,6 +45,13 @@ build-ios-integration-test:
 build-android-integration-test:
 	patrol build android --flavor dev --dart-define-from-file "integration_test/.env" --flutter-command="fvm flutter" --verbose $(flags)
 
+build-android-dev-debug:
+	fvm flutter build apk --debug --flavor dev --dart-define-from-file ".env.dev"
+
+build-android-dev-release:
+	fvm flutter build apk --release --flavor dev --dart-define-from-file ".env.dev"
+	
+	
 run-ios-testlab:
 	cd build/ios_integ/Build/Products && \
     rm -f ios_tests.zip && \

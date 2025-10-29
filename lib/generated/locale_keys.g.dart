@@ -403,4 +403,12 @@ abstract class LocaleKeys {
   static const upgradeSubscriptionInfo = 'upgradeSubscriptionInfo';
   static const upgradeSuccessTitle = 'upgradeSuccessTitle';
   static const upgradeSuccessText = 'upgradeSuccessText';
+  static const pushNotificationsTitle = 'pushNotificationsTitle';
+  static const pushNotificationsSetting = 'pushNotificationsSetting';
+  static const pushNotificationsSettingDesc = 'pushNotificationsSettingDesc';
+  static const pushNotificationsConsentPopupTitle = 'pushNotificationsConsentPopupTitle';
+  static const pushNotificationsConsentPopupDesc = 'pushNotificationsConsentPopupDesc';
+  static const pushNotificationsPermissionPoint1 = 'pushNotificationsPermissionPoint1';
+  static const pushNotificationsPermissionPoint2 = 'pushNotificationsPermissionPoint2';
+  static const allowPushNotificationsBtn = 'allowPushNotificationsBtn';
 }

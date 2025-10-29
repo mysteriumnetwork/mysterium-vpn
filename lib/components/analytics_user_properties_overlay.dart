@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/analytics_user_property.dart';
 import 'package:mysterium_vpn/common/extensions/date.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class AnalyticsUserPropertiesOverlay extends HookConsumerWidget {
@@ -158,7 +158,7 @@ class _UserPropertyListItem extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: '${property.name}: ',
+                  text: '${property.name24chars}: ',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -166,7 +166,7 @@ class _UserPropertyListItem extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: property.value,
+                  text: property.value36chars,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,

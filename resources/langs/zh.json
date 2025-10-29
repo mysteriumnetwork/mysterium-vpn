@@ -406,5 +406,13 @@
   "upgradeTermsAndConditions": "条款和条件",
   "upgradeSubscriptionInfo": "订阅信息",
   "upgradeSuccessTitle": "成功！",
-  "upgradeSuccessText": "您的付款已完成，{} 计划现已激活"
+  "upgradeSuccessText": "您的付款已完成，{} 计划现已激活",
+  "pushNotificationsTitle": "推送通知",
+  "pushNotificationsSetting": "安全",
+  "pushNotificationsSettingDesc": "VPN状态和帐户活动更新",
+  "pushNotificationsConsentPopupTitle": "我们可以通知您吗？",
+  "pushNotificationsConsentPopupDesc": "我们只会发送我们认为您想要了解的重要通知。",
+  "pushNotificationsPermissionPoint1": "• VPN连接状态",
+  "pushNotificationsPermissionPoint2": "• 帐户和服务活动警报",
+  "allowPushNotificationsBtn": "允许通知"
 }

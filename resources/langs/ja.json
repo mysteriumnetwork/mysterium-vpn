@@ -406,5 +406,13 @@
   "upgradeTermsAndConditions": "利用規約",
   "upgradeSubscriptionInfo": "サブスクリプション情報",
   "upgradeSuccessTitle": "成功！",
-  "upgradeSuccessText": "お支払いが完了し、{} が有効になりました"
+  "upgradeSuccessText": "お支払いが完了し、{} が有効になりました",
+  "pushNotificationsTitle": "プッシュ通知",
+  "pushNotificationsSetting": "セキュリティ",
+  "pushNotificationsSettingDesc": "VPNステータスとアカウントアクティビティの更新",
+  "pushNotificationsConsentPopupTitle": "通知を送信してもよろしいですか？",
+  "pushNotificationsConsentPopupDesc": "重要な通知のみをお送りします。",
+  "pushNotificationsPermissionPoint1": "• VPN接続ステータス",
+  "pushNotificationsPermissionPoint2": "• アカウントとサービスのアクティビティアラート",
+  "allowPushNotificationsBtn": "通知を許可"
 }
