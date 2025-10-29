@@ -17,6 +17,7 @@ import 'package:mysterium_vpn/stores/analytics/analytics_store_firebase.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_windows.dart';
 import 'package:mysterium_vpn/stores/auth_store.dart';
 import 'package:mysterium_vpn/stores/banners_store.dart';
+import 'package:mysterium_vpn/stores/connections_limit_store.dart';
 import 'package:mysterium_vpn/stores/device_id_store.dart';
 import 'package:mysterium_vpn/stores/dns_store.dart';
 import 'package:mysterium_vpn/stores/latlng_store.dart';
@@ -111,6 +112,8 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final recentLocationsStore = ref.watch(recentLocationsStorePOD);
   final locationsService = ref.watch(locationsServicePOD);
   final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
+  final userIntentsStore = ref.watch(userIntentsStorePOD);
+  final connectionsLimitStore = ref.watch(connectionsLimitStorePOD);
   return VpnStore(
     apiService: apiService,
     externalApiService: externalApiService,
@@ -130,6 +133,8 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     recentLocationsStore: recentLocationsStore,
     locationsService: locationsService,
     unavailableLocationsStore: unavailableLocationsStore,
+    userIntentsStore: userIntentsStore,
+    connectionsLimitStore: connectionsLimitStore,
   );
 });
 
@@ -290,7 +295,7 @@ final bannersStorePOD = Provider<BannersStore>(
     LocalDBService.instance,
     ref.watch(subscriptionStorePOD),
     ref.watch(authSessionStorePOD),
-    ref.watch(vpnStorePOD),
+    ref.watch(connectionsLimitStorePOD),
     ref.watch(updateAvailableStorePOD),
   ),
 );
@@ -365,4 +370,8 @@ final subscriptionUpgradeStorePOD = Provider<SubscriptionUpgradeStore>(
   (ref) => SubscriptionUpgradeStore(
     ref.watch(subscriptionStorePOD),
   ),
+);
+
+final connectionsLimitStorePOD = Provider<ConnectionsLimitStore>(
+  (ref) => ConnectionsLimitStore(),
 );
