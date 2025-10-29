@@ -122,12 +122,6 @@ class SharedPreferenceService {
         value: shown,
       );
 
-  bool getPushNotificationsShown() {
-    final shown = getBool(StorageKeys.pushNotificationsPermissionPromptShown.name);
-    if (shown == null) {
-      return false;
-    }
-
-    return shown;
-  }
+  bool getPushNotificationsShown() =>
+      getBool(StorageKeys.pushNotificationsPermissionPromptShown.name) ?? false;
 }

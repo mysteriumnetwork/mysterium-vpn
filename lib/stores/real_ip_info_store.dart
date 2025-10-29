@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/analytics_user_property.dart';
 import 'package:mysterium_vpn/models/ip_info.dart';
@@ -41,10 +43,12 @@ abstract class _RealIPInfoStore with Store {
       await _preferences.setIPInfo(info);
     }
     if (info != null) {
-      _analyticsStore.setUserProperty(
-        AnalyticsUserProperty.fromEnum(
-          name: AnalyticsUserPropName.countryUser,
-          value: info.country,
+      unawaited(
+        _analyticsStore.setUserProperty(
+          AnalyticsUserProperty.fromEnum(
+            name: AnalyticsUserPropName.countryUser,
+            value: info.country,
+          ),
         ),
       );
     }
