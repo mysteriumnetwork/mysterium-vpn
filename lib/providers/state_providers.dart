@@ -112,6 +112,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final recentLocationsStore = ref.watch(recentLocationsStorePOD);
   final locationsService = ref.watch(locationsServicePOD);
   final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
+  final userIntentsStore = ref.watch(userIntentsStorePOD);
   final connectionsLimitStore = ref.watch(connectionsLimitStorePOD);
   return VpnStore(
     apiService: apiService,
@@ -132,6 +133,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     recentLocationsStore: recentLocationsStore,
     locationsService: locationsService,
     unavailableLocationsStore: unavailableLocationsStore,
+    userIntentsStore: userIntentsStore,
     connectionsLimitStore: connectionsLimitStore,
   );
 });
