@@ -1,6 +1,5 @@
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/api/external_api_service.dart';
-import 'package:mysterium_vpn/services/data/network/network_service.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:talker/talker.dart';
 
 const kFetchIP = 'https://location.mysterium.network/api/v1/location';

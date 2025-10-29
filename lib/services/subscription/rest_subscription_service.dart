@@ -16,7 +16,7 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart' hide Response;
-import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
+import 'package:mysterium_vpn/services/services.dart' hide Response;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:retry/retry.dart';
 import 'package:talker/talker.dart';

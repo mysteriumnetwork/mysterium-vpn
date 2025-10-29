@@ -1,5 +1,6 @@
 export 'analytics_event.dart';
 export 'analytics_user_property.dart';
+export 'auth_status.dart';
 export 'banner_type.dart';
 export 'exception_severity.dart';
 export 'grant_type.dart';

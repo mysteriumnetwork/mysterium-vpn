@@ -8,11 +8,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
-import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
-import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
-import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
-import 'package:mysterium_vpn/services/mqtt/api_store.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
@@ -52,11 +48,11 @@ final authStorePOD = Provider<AuthStore>((ref) {
   );
 });
 
-final apiStorePOD = Provider<ApiStore>((ref) {
+final apiStorePOD = Provider<MqttStore>((ref) {
   final mqttService = ref.watch(vpnApiMQTTPOD);
   final logger = ref.watch(loggerPOD);
 
-  final store = ApiStore(
+  final store = MqttStore(
     mqtt: mqttService,
     logger: logger,
   );
