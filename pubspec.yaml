@@ -13,7 +13,7 @@ dependencies:
   async: 2.12.0
   auto_size_text: 3.0.0
   beamer: 1.7.0
-  circle_flags: 5.0.0
+  circle_flags: 5.0.1
   clipboard: 2.0.2
   collection: 1.19.1
   configcat_client: 4.1.1
@@ -25,9 +25,9 @@ dependencies:
   dio: 5.9.0
   easy_localization: 3.0.8
   easy_localization_loader: ^2.0.2
-  firebase_analytics: 12.0.0
+  firebase_analytics: 12.0.1
   firebase_core: 4.1.0
-  firebase_crashlytics: 5.0.0
+  firebase_crashlytics: 5.0.1
   firebase_performance: 0.11.0
   flutter:
     sdk: flutter
@@ -86,9 +86,9 @@ dependencies:
   store_checker_windows:
     path: ./packages/store_checker_windows
   styled_widget: 0.4.1
-  talker: 5.0.0
+  talker: 5.0.2
   talker_dio_logger: 5.0.0
-  tray_manager: 0.5.0
+  tray_manager: 0.5.1
   url_launcher: 6.3.2
   url_protocol:
     git:
