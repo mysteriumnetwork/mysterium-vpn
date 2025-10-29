@@ -367,7 +367,7 @@ mixin AnalyticsStore {
           : AnalyticsEvent.pushNotificationsPermissionsDenied,
       parameters: {'permission': permission.name},
     );
-    setUserProperty(
+    await setUserProperty(
       AnalyticsUserProperty.fromEnum(
         name: AnalyticsUserPropName.pnPermissionStatus,
         value: permission.name,

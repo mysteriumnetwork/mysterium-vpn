@@ -52,19 +52,21 @@ void useHomeAutorun() {
             }
             final isDesktop = screenType == ScreenType.desktop;
 
-            scheduleMicrotask(() {
-              if (value case UserPromptType.marketingConsent) {
-                showMarketingConsentDialog(
+            if (value case UserPromptType.marketingConsent) {
+              controller.add(
+                () => showMarketingConsentDialog(
                   context,
                   desktopSize: isDesktop,
-                );
-              } else if (value case UserPromptType.pushNotifications) {
-                showPushNotificationsPermissionDialog(
+                ),
+              );
+            } else if (value case UserPromptType.pushNotifications) {
+              controller.add(
+                () => showPushNotificationsPermissionDialog(
                   context,
                   desktopSize: isDesktop,
-                );
-              }
-            });
+                ),
+              );
+            }
           },
         ),
         autorun(
