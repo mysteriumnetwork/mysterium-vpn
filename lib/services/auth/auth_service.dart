@@ -1,5 +1,4 @@
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/auth/auth_user.dart';
 
 abstract class AuthService {
   Future<AuthUser> currentUser();

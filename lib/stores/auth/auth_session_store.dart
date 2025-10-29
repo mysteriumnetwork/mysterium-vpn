@@ -1,9 +1,8 @@
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/auth_status.dart';
 import 'package:mysterium_vpn/common/utils/disposeable.dart';
-import 'package:mysterium_vpn/services/auth/auth_status.dart';
-import 'package:mysterium_vpn/services/auth/auth_user.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
-import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
+import 'package:mysterium_vpn/models/auth_user.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 // Include generated file

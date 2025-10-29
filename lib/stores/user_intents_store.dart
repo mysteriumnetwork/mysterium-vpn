@@ -4,7 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/api/api_service.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'user_intents_store.g.dart';

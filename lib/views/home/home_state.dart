@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 

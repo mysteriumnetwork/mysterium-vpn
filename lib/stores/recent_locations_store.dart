@@ -5,8 +5,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/data/filter_service.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'recent_locations_store.g.dart';
