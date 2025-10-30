@@ -90,7 +90,7 @@ void main() {
           feedback: 'Great connection!',
         ),
       ).called(1);
-      verify(mockAnalyticsStore.logEvent(AnalyticsEvent.reteConnectionSubmitSuccess)).called(1);
+      verify(mockAnalyticsStore.logEvent(AnalyticsEvent.rateConnectionSubmitSuccess)).called(1);
     });
 
     test('submitRateConnection calls vpnStore and logs analytics (no reasons)', () async {

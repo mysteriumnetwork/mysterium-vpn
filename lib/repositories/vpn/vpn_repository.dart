@@ -7,7 +7,7 @@ abstract class VpnRepository {
   Future<void> connect({
     required String config,
   });
-  Future<bool> disconnectFromVpn();
+  Future<bool> disconnect();
   Future<bool> isTunnelConfigured();
   Stream<VpnConnectionStatus> statusStream();
   Future<VpnConnectionStatus> currentStatus();

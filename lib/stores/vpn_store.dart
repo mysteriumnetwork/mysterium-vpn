@@ -371,12 +371,6 @@ abstract class _VpnStore extends VpnGuard with Store {
   }
 
   Future<void> _validateConnectionPrerequisites() async {
-    await _authSessionStore.accessTokenFuture;
-
-    if (_authSessionStore.status != AuthStatus.authenticated) {
-      throw AuthenticationRequiredException();
-    }
-
     await checkVpnGuards();
 
     if (!(await _vpnRepository.isTunnelConfigured())) {
@@ -696,7 +690,7 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   @action
   Future<void> disconnectTunnel({bool isReconnecting = false}) async {
-    final disconnectSucceeded = await _vpnRepository.disconnectFromVpn();
+    final disconnectSucceeded = await _vpnRepository.disconnect();
 
     if (disconnectSucceeded && !isReconnecting) {
       _userIntentsStore.userIntent = null;
