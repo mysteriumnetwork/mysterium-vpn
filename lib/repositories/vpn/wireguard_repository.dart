@@ -46,7 +46,7 @@ class WireguardRepository implements VpnRepository {
 
   Future<void> _regenerateWireguardKey() async {
     try {
-      await disconnectFromVpn();
+      await disconnect();
       _wireguardKey = await _wireguradKeyService.regenerateWireguardKeys();
     } catch (e) {
       _logger.handle(e);
@@ -100,7 +100,7 @@ class WireguardRepository implements VpnRepository {
   }
 
   @override
-  Future<bool> disconnectFromVpn() async {
+  Future<bool> disconnect() async {
     final status = await currentStatus();
     if (status == VpnConnectionStatus.connected) {
       await _service.disconnect();

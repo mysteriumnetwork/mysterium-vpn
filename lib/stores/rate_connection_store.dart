@@ -61,7 +61,7 @@ abstract class _RateConnectionStore with Store {
             : _rateConnectionReasons.toList().map((e) => e.name).join(','),
         feedback: feedback,
       );
-      _analyticsStore.logEvent(AnalyticsEvent.reteConnectionSubmitSuccess);
+      _analyticsStore.logEvent(AnalyticsEvent.rateConnectionSubmitSuccess);
     } catch (e) {
       _analyticsStore.logEvent(AnalyticsEvent.rateConnectionSubmitError);
       rethrow;
