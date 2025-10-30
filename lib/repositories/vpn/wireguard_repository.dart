@@ -32,7 +32,6 @@ class WireguardRepository implements VpnRepository {
 
   @override
   Future<void> init() async {
-    await setupTunnel();
     await _initWireguardKey();
   }
 

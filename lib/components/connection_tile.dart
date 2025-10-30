@@ -94,7 +94,7 @@ class ConnectionTile extends HookConsumerWidget {
 
     Future<void> handleRefreshIP() async {
       analyticsStore.logRefreshIP(ipInfo);
-      await vpnStore.startConnectionWithRefreshIP();
+      await vpnStore.manageConnection(refreshIP: true);
     }
 
     return _Card(

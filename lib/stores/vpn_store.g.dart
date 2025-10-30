@@ -257,23 +257,17 @@ mixin _$VpnStore on _VpnStore, Store {
         .run(() => super._setupAndListenToConnectionStatus());
   }
 
-  late final _$toggleConnectionAsyncAction =
-      AsyncAction('_VpnStore.toggleConnection', context: context);
+  late final _$manageConnectionAsyncAction =
+      AsyncAction('_VpnStore.manageConnection', context: context);
 
   @override
-  Future<void> toggleConnection(
-      {VPNLocation? location, UserIntent? intent, bool isRetrying = false}) {
-    return _$toggleConnectionAsyncAction.run(
-        () => super.toggleConnection(location: location, intent: intent, isRetrying: isRetrying));
-  }
-
-  late final _$startConnectionWithRefreshIPAsyncAction =
-      AsyncAction('_VpnStore.startConnectionWithRefreshIP', context: context);
-
-  @override
-  Future<void> startConnectionWithRefreshIP() {
-    return _$startConnectionWithRefreshIPAsyncAction
-        .run(() => super.startConnectionWithRefreshIP());
+  Future<void> manageConnection(
+      {VPNLocation? location,
+      UserIntent? intent,
+      bool isRetrying = false,
+      bool refreshIP = false}) {
+    return _$manageConnectionAsyncAction.run(() => super.manageConnection(
+        location: location, intent: intent, isRetrying: isRetrying, refreshIP: refreshIP));
   }
 
   late final _$_startConnectionAsyncAction =
@@ -281,7 +275,10 @@ mixin _$VpnStore on _VpnStore, Store {
 
   @override
   Future<void> _startConnection(
-      {VPNLocation? location, bool? refreshIP, bool isRetrying = false, UserIntent? intent}) {
+      {VPNLocation? location,
+      bool refreshIP = false,
+      bool isRetrying = false,
+      UserIntent? intent}) {
     return _$_startConnectionAsyncAction.run(() => super._startConnection(
         location: location, refreshIP: refreshIP, isRetrying: isRetrying, intent: intent));
   }
@@ -290,7 +287,7 @@ mixin _$VpnStore on _VpnStore, Store {
       AsyncAction('_VpnStore._completeConnection', context: context);
 
   @override
-  Future<void> _completeConnection(VPNLocation? location, UserIntent? intent, bool? refreshIP) {
+  Future<void> _completeConnection(VPNLocation? location, UserIntent? intent, bool refreshIP) {
     return _$_completeConnectionAsyncAction
         .run(() => super._completeConnection(location, intent, refreshIP));
   }
