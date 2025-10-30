@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -496,7 +497,8 @@ abstract class _VpnStore extends VpnGuard with Store {
     bool refreshIP,
   ) async {
     try {
-      _vpnConfig = await _fetchVpnConfiguration(location, intent, refreshIP);
+      _vpnConfig =
+          await fetchVpnConfiguration(location: location, intent: intent, refreshIP: refreshIP);
       await _recentLocationsStore.future;
 
       final connectedLocation = await _resolveConnectedLocation(location);
@@ -511,11 +513,12 @@ abstract class _VpnStore extends VpnGuard with Store {
     }
   }
 
-  Future<VpnConfig> _fetchVpnConfiguration(
-    VPNLocation? location,
-    UserIntent? intent,
-    bool refreshIP,
-  ) async {
+  @visibleForTesting
+  Future<VpnConfig> fetchVpnConfiguration({
+    required VPNLocation? location,
+    required UserIntent? intent,
+    required bool refreshIP,
+  }) async {
     final closestRegion = (intent?.requiresCluster ?? false)
         ? await _locationsService.closestRegion(
             location?.ipType ?? IPType.datacenter,
@@ -540,9 +543,20 @@ abstract class _VpnStore extends VpnGuard with Store {
     try {
       return await _fetchConfigFuture!;
     } on ApiException catch (e) {
+      final loc = VPNLocation(
+        id: location?.id ?? '',
+        ipType: location?.ipType ?? IPType.datacenter,
+        translations: location?.translations ?? {},
+        countryCode: location?.countryCode ?? '',
+      );
       if (e.code == 2332 && location != null) {
         _unavailableLocationsStore.toggleAvailability(
-          location,
+          VPNLocation(
+            id: location.id,
+            ipType: location.ipType,
+            translations: location.translations,
+            countryCode: location.countryCode,
+          ),
           availability: false,
         );
         throw UnavailableLocationException(location);
