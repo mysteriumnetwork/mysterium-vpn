@@ -83,6 +83,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final userIntentsStore = ref.watch(userIntentsStorePOD);
   final connectionsLimitStore = ref.watch(connectionsLimitStorePOD);
   final vpnRepository = ref.watch(wireguardRepositoryPOD);
+  final connectionDecisionStore = ref.watch(connectionDecisionStorePOD);
   return VpnStore(
     apiService: apiService,
     externalApiService: externalApiService,
@@ -103,6 +104,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     userIntentsStore: userIntentsStore,
     connectionsLimitStore: connectionsLimitStore,
     vpnRepository: vpnRepository,
+    connectionDecisionStore: connectionDecisionStore,
   );
 });
 
@@ -342,4 +344,12 @@ final subscriptionUpgradeStorePOD = Provider<SubscriptionUpgradeStore>(
 
 final connectionsLimitStorePOD = Provider<ConnectionsLimitStore>(
   (ref) => ConnectionsLimitStore(),
+);
+
+final connectionDecisionStorePOD = Provider<ConnectionDecisionStore>(
+  (ref) => ConnectionDecisionStore(
+    locationsStore: ref.watch(locationsStorePOD),
+    recentLocationsStore: ref.watch(recentLocationsStorePOD),
+    userIntentsStore: ref.watch(userIntentsStorePOD),
+  ),
 );
