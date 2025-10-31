@@ -543,12 +543,6 @@ abstract class _VpnStore extends VpnGuard with Store {
     try {
       return await _fetchConfigFuture!;
     } on ApiException catch (e) {
-      final loc = VPNLocation(
-        id: location?.id ?? '',
-        ipType: location?.ipType ?? IPType.datacenter,
-        translations: location?.translations ?? {},
-        countryCode: location?.countryCode ?? '',
-      );
       if (e.code == 2332 && location != null) {
         _unavailableLocationsStore.toggleAvailability(
           VPNLocation(
