@@ -71,7 +71,10 @@ jobs:
       # We assume that version for DEV builds is commited
       - name: Decide build version
         id: calculate-version
-        run: echo "version=`fvm dart run cider version`" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "version<<EOF" >> "$GITHUB_OUTPUT"
+          fvm dart run cider version >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
 
       - name: Decide build number
         id: calculate-build
