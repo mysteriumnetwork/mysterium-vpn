@@ -271,10 +271,6 @@ class _Footer extends HookConsumerWidget {
             label: LocaleKeys.upgradeTermsAndConditions.tr(),
             onTap: () => handleOpenUrl(termsOfServiceUrl),
           ),
-          SimpleMenuItem(
-            label: LocaleKeys.upgradeSubscriptionInfo.tr(),
-            onTap: () => handleOpenUrl(subscriptionInfoUrl),
-          ),
         ],
       );
     }
