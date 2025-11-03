@@ -21,6 +21,7 @@ generate-code:
 	fvm dart format --line-length 100 .
 
 generate-localization:
+	fvm dart run easy_localization_sheet ;\
 	fvm dart run easy_localization:generate ;\
     fvm dart run easy_localization:generate -f keys -o locale_keys.g.dart ;\
     fvm dart format --line-length 100 .
