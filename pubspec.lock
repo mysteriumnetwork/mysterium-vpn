@@ -433,6 +433,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
+  easy_localization_sheet:
+    dependency: "direct dev"
+    description:
+      name: easy_localization_sheet
+      sha256: "5548bcabee6e43a35925e2854db15387ca1e1d8a371d19715929afafb8bc0596"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   easy_logger:
     dependency: transitive
     description:
