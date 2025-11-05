@@ -30,7 +30,7 @@ Future<String> _parseCSV(Directory directory) async {
     ...files
         .whereType<File>()
         .map((it) => it.path.split(Platform.pathSeparator).last.split('.').first)
-        .sortedBy((it) => it)
+        .sortedBy((it) => it),
   };
 
   final translations = Map.fromEntries(
