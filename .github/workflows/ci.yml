@@ -73,9 +73,9 @@ jobs:
         id: calculate-version
         run: |
           FULL_VERSION=$(fvm dart run cider version)
-          # Remove build number if present (everything after +)
-          VERSION_WITHOUT_BUILD=$(echo "$FULL_VERSION" | sed 's/+.*//')
-          echo "version=$VERSION_WITHOUT_BUILD" >> "$GITHUB_OUTPUT"
+          # Remove build number if present (everything after +) and trim whitespace
+          VERSION_WITHOUT_BUILD=$(echo "$FULL_VERSION" | sed 's/+.*//' | tr -d '[:space:]')
+          echo "version=${VERSION_WITHOUT_BUILD}" >> "$GITHUB_OUTPUT"
 
       - name: Decide build number
         id: calculate-build
@@ -84,7 +84,7 @@ jobs:
   # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
   build_ios:
     name: Publish iOS app to TestFlight
-    needs: [quality_checks]
+    needs: [ quality_checks ]
     if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
     uses: ./.github/workflows/_build-ios.yml
     with:
@@ -98,7 +98,7 @@ jobs:
   # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
   build_macos:
     name: Publish macOS app to TestFlight
-    needs: [quality_checks]
+    needs: [ quality_checks ]
     if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
     uses: ./.github/workflows/_build-macos.yml
     with:
@@ -113,7 +113,7 @@ jobs:
   # Published as TestFlight build of separate application to https://play.google.com/console/u/0/developers/7955390843158584488/app/4973980590971676436/bundle-explorer-selector
   build_android:
     name: Publish Android app to Internal Testing
-    needs: [quality_checks]
+    needs: [ quality_checks ]
     if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
     uses: ./.github/workflows/_build-android.yml
     with:
@@ -129,7 +129,7 @@ jobs:
   # Published as build of separate application to https://partner.microsoft.com/en-us/dashboard/apps/9MZRX8P6FXC4/managepackages
   build_windows:
     name: Publish Windows app
-    needs: [quality_checks]
+    needs: [ quality_checks ]
     if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
     uses: ./.github/workflows/_build-windows.yml
     with:
