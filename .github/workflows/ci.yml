@@ -72,9 +72,10 @@ jobs:
       - name: Decide build version
         id: calculate-version
         run: |
-          echo "version<<EOF" >> "$GITHUB_OUTPUT"
-          fvm dart run cider version >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
+          FULL_VERSION=$(fvm dart run cider version)
+          # Remove build number if present (everything after +) and trim whitespace
+          VERSION_WITHOUT_BUILD=$(echo "$FULL_VERSION" | sed 's/+.*//' | tr -d '[:space:]')
+          echo "version=${VERSION_WITHOUT_BUILD}" >> "$GITHUB_OUTPUT"
 
       - name: Decide build number
         id: calculate-build
