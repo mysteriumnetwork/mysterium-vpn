@@ -123,6 +123,11 @@ class RestAuthService extends AuthService {
 
   @override
   Future<void> logout() async {
+    try {
+      await _apiAuth.logout();
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+    }
     await removeLocalData();
     if (!Platform.isWindows) {
       await _ensureInitialized;
