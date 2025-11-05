@@ -177,8 +177,8 @@ mixin _$AuthStore on _AuthStore, Store {
   late final _$logoutAsyncAction = AsyncAction('_AuthStore.logout', context: context);
 
   @override
-  Future<void> logout({String? email}) {
-    return _$logoutAsyncAction.run(() => super.logout(email: email));
+  Future<void> logout({bool invalidateRemotely = true}) {
+    return _$logoutAsyncAction.run(() => super.logout(invalidateRemotely: invalidateRemotely));
   }
 
   late final _$signInwithEmailAsyncAction =
