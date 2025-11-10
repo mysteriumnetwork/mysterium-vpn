@@ -25,6 +25,9 @@ generate-localization:
     fvm dart run easy_localization:generate -f keys -o locale_keys.g.dart ;\
     fvm dart format --line-length 100 .
 
+fetch-localization:
+	fvm dart run easy_localization_sheet
+
 update-tile-assets-declaration:
 	fvm dart run assets/map_tiles/list_assets.dart
 
