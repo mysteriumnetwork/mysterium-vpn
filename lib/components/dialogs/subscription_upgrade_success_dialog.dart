@@ -10,7 +10,7 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/modal_page_scaffold.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/purchasable_product.dart';
+import 'package:mysterium_vpn/models/models.dart';
 
 Future<void> showSubscriptionUpgradeSuccessDialog(
   BuildContext context, {

@@ -1,5 +1,5 @@
 import 'package:hive_ce/hive.dart';
-import 'package:mysterium_vpn/common/enums/banner_type.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 
 class BannerTypeAdapter extends TypeAdapter<BannerType> {
   const BannerTypeAdapter({required this.typeId});

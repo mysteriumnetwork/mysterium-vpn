@@ -1,76 +1,44 @@
-// Flutter imports:
-// Package imports:
-// ignore_for_file: use_setters_to_change_properties
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/unavailable_location_exception.dart';
 import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/models/user_intent.dart';
-import 'package:mysterium_vpn/models/vpn_connection.dart';
-import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/services/api/external_api_service.dart';
-import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
-import 'package:mysterium_vpn/services/auth/auth_status.dart';
-import 'package:mysterium_vpn/services/location/locations_service.dart';
-import 'package:mysterium_vpn/services/mqtt/service.dart';
-import 'package:mysterium_vpn/services/wiregurad/wiregurad_key_service.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/connections_limit_store.dart';
-import 'package:mysterium_vpn/stores/dns_store.dart';
-import 'package:mysterium_vpn/stores/locations_query_store.dart';
-import 'package:mysterium_vpn/stores/locations_store.dart';
-import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
-import 'package:mysterium_vpn/stores/recent_locations_store.dart';
-import 'package:mysterium_vpn/stores/refresh_ip_store.dart';
-import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
-import 'package:mysterium_vpn/stores/subscription_store.dart';
-import 'package:mysterium_vpn/stores/unavailable_locations_store.dart';
-import 'package:mysterium_vpn/stores/user_intents_store.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
+import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
-import 'package:wireguard_dart/wireguard_dart.dart';
-
-// Project imports:
 
 part 'vpn_store.g.dart';
-
-// Regular expression pattern to match lines containing "DNS"
-final dnsRegex = RegExp(r'.*(\DNS\b).*', caseSensitive: false);
 
 // ignore: library_private_types_in_public_api
 class VpnStore = _VpnStore with _$VpnStore;
 
-abstract class _VpnStore with Store {
+abstract class _VpnStore extends VpnGuard with Store {
   _VpnStore({
     required ApiService apiService,
     required ExternalApiService externalApiService,
     required MQTTService mqtt,
     required LocationsStore locationsStore,
     required LocationsService locationsService,
-    required WireguardDart wireguardService,
-    required SubscriptionStore subscriptionStore,
+    required super.subscriptionStore,
     required Talker logger,
     required AnalyticsStore analyticsStore,
     required RemoteConfigStore remoteConfigStore,
-    required AuthSessionStore authSessionStore,
+    required super.authSessionStore,
     required RealIPInfoStore realIPInfo,
-    required WireguradKeyService wireguardKeyService,
     required DNSStore dnsStore,
     required RefreshIPStore refreshIPStore,
     required RecentLocationsStore recentLocationsStore,
@@ -78,36 +46,40 @@ abstract class _VpnStore with Store {
     required UnavailableLocationsStore unavailableLocationsStore,
     required UserIntentsStore userIntentsStore,
     required ConnectionsLimitStore connectionsLimitStore,
+    required VpnRepository vpnRepository,
+    required ConnectionDecisionStore connectionDecisionStore,
   })  : _apiService = apiService,
         _externalApiService = externalApiService,
         _mqtt = mqtt,
         _locationsStore = locationsStore,
-        _wireguardService = wireguardService,
         _connectionsLimitStore = connectionsLimitStore,
-        _subscriptionStore = subscriptionStore,
         _analyticsStore = analyticsStore,
         _remoteConfigStore = remoteConfigStore,
         _authSessionStore = authSessionStore,
         _realIPInfo = realIPInfo,
         _logger = logger,
         _dnsStore = dnsStore,
-        _wireguardKeyService = wireguardKeyService,
         _refreshIPStore = refreshIPStore,
         _recentLocationsStore = recentLocationsStore,
         _locationsService = locationsService,
         _locationsQueryStore = locationsQueryStore,
         _unavailableLocationsStore = unavailableLocationsStore,
-        _userIntentsStore = userIntentsStore {
+        _userIntentsStore = userIntentsStore,
+        _vpnRepository = vpnRepository,
+        _connectionDecisionStore = connectionDecisionStore {
     _init();
   }
 
+  // Services & Repositories
   final ApiService _apiService;
   final ExternalApiService _externalApiService;
   final MQTTService _mqtt;
+  final VpnRepository _vpnRepository;
+  final Talker _logger;
+
+  // Stores
   final LocationsStore _locationsStore;
   final AnalyticsStore _analyticsStore;
-  final WireguardDart _wireguardService;
-  final SubscriptionStore _subscriptionStore;
   final RemoteConfigStore _remoteConfigStore;
   final AuthSessionStore _authSessionStore;
   final RealIPInfoStore _realIPInfo;
@@ -116,77 +88,29 @@ abstract class _VpnStore with Store {
   final UnavailableLocationsStore _unavailableLocationsStore;
   final UserIntentsStore _userIntentsStore;
   final LocationsService _locationsService;
-  final WireguradKeyService _wireguardKeyService;
-  final Talker _logger;
   final DNSStore _dnsStore;
   final RefreshIPStore _refreshIPStore;
-  final Stopwatch _stopwatch = Stopwatch();
   final ConnectionsLimitStore _connectionsLimitStore;
+  final ConnectionDecisionStore _connectionDecisionStore;
+
+  // State
+  final Stopwatch _stopwatch = Stopwatch();
   StreamSubscription<String>? _connectionDataSub;
   StreamSubscription<String>? _connectionKilledSub;
-  StreamSubscription<ConnectionStatus>? _wireguradConnectionStatus;
+  StreamSubscription<VpnConnectionStatus>? _connectionStatusStream;
+  ReactionDisposer? _authReactionDisposer;
 
   @readonly
   VpnConnection? _vpnConnection;
 
   @readonly
-  WireguardConnectResponse? _vpnConfig;
+  VpnConfig? _vpnConfig;
 
   @readonly
-  KeyPair? _wireguardKey;
-
-  @readonly
-  ConnectionStatus _connectionStatus = ConnectionStatus.disconnected;
-
-  @computed
-  ConnectionStatus get vpnStatus => _connectionStatus == ConnectionStatus.unknown
-      ? ConnectionStatus.disconnected
-      : _connectionStatus;
-
-  @observable
-  RateConnectionRequestModeEnum? connectionRated;
-
-  @computed
-  bool get isConnected =>
-      _connectionStatus == ConnectionStatus.connected &&
-      _fetchConfigFuture?.status != FutureStatus.pending;
-
-  @computed
-  bool get isLoading =>
-      _connectionStatus == ConnectionStatus.connecting ||
-      isFetchingConfig ||
-      isFetchingLocation ||
-      _connectionStatus == ConnectionStatus.disconnecting;
-
-  @computed
-  bool get isFetchingLocation => _fetchLocationFuture?.status == FutureStatus.pending;
-
-  @computed
-  bool get isFetchingConfig => _fetchConfigFuture?.status == FutureStatus.pending;
+  VpnConnectionStatus _connectionStatus = VpnConnectionStatus.disconnected;
 
   @readonly
   VPNLocation? _connectingLocation;
-
-  @computed
-  VPNLocation? get location => _vpnConnection?.location ?? _connectingLocation;
-
-  @computed
-  VPNLocation? get potentialLocation {
-    final recent = _recentLocationsStore.future.value?.firstOrNull;
-    if (recent != null) {
-      return recent;
-    }
-    final all = [
-      ...?_locationsStore.dcLocationsFuture.value?.allLocations,
-      ...?_locationsStore.residentialLocationsFuture.value?.allLocations,
-    ];
-
-    if (all.isNotEmpty) {
-      return VPNLocation.closest;
-    }
-
-    return null;
-  }
 
   @readonly
   ObservableFuture<void>? _resolveConnectionLocationFuture;
@@ -195,7 +119,7 @@ abstract class _VpnStore with Store {
   ObservableFuture<VPNLocation?>? _fetchLocationFuture;
 
   @readonly
-  ObservableFuture<WireguardConnectResponse>? _fetchConfigFuture;
+  ObservableFuture<VpnConfig>? _fetchConfigFuture;
 
   @readonly
   ObservableFuture<void>? _disconnectAllDevicesFuture;
@@ -203,41 +127,67 @@ abstract class _VpnStore with Store {
   @readonly
   ObservableFuture<void>? _resetAppFuture;
 
-  ReactionDisposer? _authReactionDisposer;
+  @observable
+  RateConnectionRequestModeEnum? connectionRated;
+
+  // Computed Properties
+  @computed
+  VpnConnectionStatus get vpnStatus => _connectionStatus == VpnConnectionStatus.unknown
+      ? VpnConnectionStatus.disconnected
+      : _connectionStatus;
+
+  @computed
+  bool get isConnected =>
+      _connectionStatus == VpnConnectionStatus.connected &&
+      _fetchConfigFuture?.status != FutureStatus.pending;
+
+  @computed
+  bool get isLoading =>
+      _connectionStatus == VpnConnectionStatus.connecting ||
+      isFetchingConfig ||
+      isFetchingLocation ||
+      _connectionStatus == VpnConnectionStatus.disconnecting;
+
+  @computed
+  bool get isFetchingLocation => _fetchLocationFuture?.status == FutureStatus.pending;
+
+  @computed
+  bool get isFetchingConfig => _fetchConfigFuture?.status == FutureStatus.pending;
+
+  @computed
+  VPNLocation? get location => _vpnConnection?.location ?? _connectingLocation;
+
+  @computed
+  VPNLocation? get potentialLocation => _connectionDecisionStore.potentialLocation;
+
+  // ==================== Initialization ====================
 
   @action
   Future<void> _init() async {
     _authReactionDisposer = reaction<AuthStatus>(
       (_) => _authSessionStore.status,
-      (status) async {
-        if (status == AuthStatus.authenticated) {
-          await Future.wait<void>(
-            [
-              _initTunnel(),
-              _initWireguardKey(),
-            ],
-          );
-        }
-      },
+      _handleAuthStatusChange,
       fireImmediately: true,
       equals: (p0, p1) => p0?.name == p1?.name,
     );
   }
 
-  // Call on log out or app termiantion
-  Future<void> disposeStore() async {
-    _wireguradConnectionStatus?.cancel();
-    _authReactionDisposer?.call();
+  Future<void> _handleAuthStatusChange(AuthStatus status) async {
+    if (status == AuthStatus.authenticated) {
+      await Future.wait<void>([
+        _initTunnel(),
+        _vpnRepository.init(),
+      ]);
+    }
   }
 
   @action
   Future<void> _initTunnel() async {
     try {
-      final isConfigured = await _checkTunelConfigured();
+      final isConfigured = await _vpnRepository.isTunnelConfigured();
       if (isConfigured) {
         await _setupAndListenToConnectionStatus();
       } else if (Platform.isWindows) {
-        // Has to be called on init
         await setupTunnel();
       }
     } catch (e) {
@@ -245,433 +195,316 @@ abstract class _VpnStore with Store {
     }
   }
 
-  Future<void> _initWireguardKey() async {
-    try {
-      _wireguardKey = await _wireguardKeyService.getWireguradKey();
-    } catch (e) {
-      _logger.handle(e);
-    }
+  Future<void> disposeStore() async {
+    await _connectionStatusStream?.cancel();
+    _authReactionDisposer?.call();
   }
 
-  Future<void> regenerateWireguradKey() async {
-    try {
-      await disconnectWireguard();
-      _wireguardKey = await _wireguardKeyService.regenerateWireguardKeys();
-    } catch (e) {
-      _logger.handle(e);
-    }
-  }
+  // ==================== Tunnel Management ====================
 
-  @action
-  Future<bool> _checkTunelConfigured() async {
-    try {
-      return await _wireguardService.checkTunnelConfiguration(
-        bundleId: Env.bundleId,
-        tunnelName: Env.tunnelName,
-      );
-    } catch (e) {
-      return false;
-    }
-  }
-
-  /// Setup initial connection status and listen to connection status changes
-  @action
-  Future<void> _setupAndListenToConnectionStatus() async {
-    _connectingLocation = null;
-    _setConnectionStatus(await checkTunnelStatus());
-
-    await _recentLocationsStore.future;
-    if (_connectionStatus == ConnectionStatus.connected) {
-      final location = potentialLocation;
-      _connectingLocation = location;
-      try {
-        _resolveConnectionLocationFuture = ObservableFuture(
-          _checkConnectionQuality(
-            checkLocation: () => _resolveIPAddress(location),
-            location: location!,
-            hash: _vpnConfig?.hash ?? '',
-          ),
-        );
-        await _resolveConnectionLocationFuture;
-      } catch (e) {
-        await disconnectWireguard();
-      }
-    }
-    final stream = _wireguardService.statusStream();
-    _wireguradConnectionStatus = stream.listen((event) async {
-      if (event == ConnectionStatus.disconnecting) {
-        _vpnConnection = null;
-        connectionRated = null;
-      }
-      _setConnectionStatus(event);
-    });
-  }
-
-  @action
-  void _setConnectionStatus(ConnectionStatus status) {
-    _connectionStatus = status;
-  }
-
-  /// Setup Wireguard tunnel
   @action
   Future<void> setupTunnel() async {
     try {
-      await _wireguardService.setupTunnel(
-        bundleId: Env.bundleId,
-        win32ServiceName: win32ServiceName,
-        tunnelName: Env.tunnelName,
-      );
-      _logger.info('Tunnel setup done');
+      await _vpnRepository.setupTunnel();
       await _setupAndListenToConnectionStatus();
-    } catch (e, stackTrace) {
-      var message = 'Error occured while setting up tunnel';
-      if (e is PlatformException) {
-        if ((e.message?.contains('Permissions are not given') ?? false) ||
-            (e.message?.contains('permission denied') ?? false)) {
-          message = 'You need to grant permission to start VPN tunnel.';
-        }
-      }
-      _logger.handle(e, stackTrace);
-      showSnackbar(message);
+    } catch (e) {
+      _handleTunnelSetupError(e);
       rethrow;
     }
   }
 
-  /// Connect to Wireguard tunnel
-  @action
-  Future<void> _connectWireguard({
-    required String privateKey,
-    required String vpnConfig,
-  }) async {
-    // TODO(Waldz): Move to separate function, which mutates variable
-    var config = vpnConfig;
-    config = config.replaceFirst('%private_key%', privateKey);
-    config = _dnsStore.replaceDNSAddress(config);
+  void _handleTunnelSetupError(Object e) {
+    var message = 'Error occurred while setting up tunnel';
 
-    try {
-      await _wireguardService.connect(cfg: config).timeout(
-            const Duration(seconds: 10),
-            onTimeout: () => throw TimeoutException('Wireguard connection timeout'),
-          );
-    } on TimeoutException catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      throw WireguardConnectException(e.toString());
-    }
-  }
-
-  /// Disconnect from Wireguard tunnel
-  @action
-  Future<void> disconnectWireguard({bool isReconnecting = false}) async {
-    final status = await checkTunnelStatus();
-    if (status == ConnectionStatus.connected) {
-      await _wireguardService.disconnect();
-      if (!isReconnecting) {
-        _userIntentsStore.userIntent = null;
-        _connectingLocation = null;
-        await notifyApiVpnDisconnected();
+    if (e is PlatformException) {
+      final errorMsg = e.message ?? '';
+      if (errorMsg.contains('Permissions are not given') ||
+          errorMsg.contains('permission denied')) {
+        message = 'You need to grant permission to start VPN tunnel.';
       }
     }
 
-    if (_connectionDataSub != null) {
-      _connectionDataSub!.cancel();
-      _connectionDataSub = null;
-    }
-    if (_connectionKilledSub != null) {
-      _connectionKilledSub?.cancel();
-      _connectionKilledSub = null;
-    }
+    showSnackbar(message);
   }
 
-  /// Notify the API that the user has disconnected from the VPN tunnel.
-  Future<void> notifyApiVpnDisconnected() async {
+  @action
+  Future<void> _setupAndListenToConnectionStatus() async {
+    _connectingLocation = null;
+    _connectionStatus = await _vpnRepository.currentStatus();
+
+    await _recentLocationsStore.future;
+
+    if (_connectionStatus == VpnConnectionStatus.connected) {
+      await _resolveExistingConnection();
+    }
+
+    _listenToConnectionStatusChanges();
+  }
+
+  Future<void> _resolveExistingConnection() async {
+    final location = potentialLocation;
+    _connectingLocation = location;
+
     try {
-      if (_wireguardKey?.publicKey == null) {
-        _logger.warning('Wireguard key is not initialized, cannot disconnect');
-        return;
-      }
-      await _apiService.disconnect(
-        publicKey: _wireguardKey!.publicKey,
+      _resolveConnectionLocationFuture = ObservableFuture(
+        _checkConnectionQuality(
+          checkLocation: () => _resolveIPAddress(location),
+          location: location!,
+          hash: _vpnConfig?.hash ?? '',
+        ),
       );
+      await _resolveConnectionLocationFuture;
+    } catch (e) {
+      await disconnectTunnel();
+    }
+  }
+
+  void _listenToConnectionStatusChanges() {
+    final stream = _vpnRepository.statusStream();
+    _connectionStatusStream = stream.listen((status) async {
+      if (status == VpnConnectionStatus.disconnecting) {
+        _clearConnectionData();
+      }
+      _connectionStatus = status;
+    });
+  }
+
+  void _clearConnectionData() {
+    _vpnConnection = null;
+    connectionRated = null;
+  }
+
+  Future<VpnConnectionStatus> checkTunnelStatus() async {
+    try {
+      return await _vpnRepository.currentStatus();
     } catch (e) {
       _logger.handle(e);
       Sentry.captureException(e);
+      return VpnConnectionStatus.unknown;
     }
   }
 
-  /// Connect/Disconnect from VPN
+  // ==================== Connection Management ====================
+
   @action
-  Future<void> toggleConnection({
+  Future<void> manageConnection({
     VPNLocation? location,
     UserIntent? intent,
     bool isRetrying = false,
+    bool refreshIP = false,
   }) async {
-    if (_connectionStatus == ConnectionStatus.connected) {
-      final connectedLocation = _vpnConnection?.location;
-      final connectedIntent = _userIntentsStore.userIntent;
-      await disconnectWireguard();
-      if (location == null && intent == null) {
-        return;
-      }
-      if (location != null && location == connectedLocation) {
-        return;
-      }
-      if (intent != null && intent == connectedIntent) {
-        return;
-      }
-    }
+    final action = _connectionDecisionStore.determineToggleAction(
+      currentStatus: _connectionStatus,
+      currentLocation: _vpnConnection?.location,
+      requestedLocation: location,
+      requestedIntent: intent,
+      isRefreshIP: refreshIP,
+    );
 
-    await _startConnection(location: location, intent: intent, isRetrying: isRetrying);
-  }
+    switch (action) {
+      case ConnectionAction.disconnect:
+        await disconnectTunnel();
+        break;
 
-  /// Connect to VPN by refreshing IP address
-  @action
-  Future<void> startConnectionWithRefreshIP() async {
-    await _startConnection(refreshIP: true, location: _vpnConnection?.location);
-  }
+      case ConnectionAction.connect:
+      case ConnectionAction.reconnect:
+        await _startConnection(
+          location: location,
+          intent: intent,
+          isRetrying: isRetrying,
+          refreshIP: refreshIP,
+        );
+        break;
 
-  Future<void> _checkSubscriptionStatus() async {
-    if (_subscriptionStore.subscriptionFuture.status == FutureStatus.pending) {
-      return;
-    }
-    try {
-      final subscription = await _subscriptionStore.subscriptionFuture;
-      if (!subscription.active) {
-        throw const SubscriptionRequiredException();
-      }
-    } catch (e) {
-      if (e is! SubscriptionRequiredException) {
-        _subscriptionStore.refreshSubscription();
-      }
-      rethrow;
+      case ConnectionAction.refreshIP:
+        await _startConnection(
+          refreshIP: true,
+          location: _vpnConnection?.location,
+        );
+        break;
     }
   }
 
-  /// Connect to VPN
   @action
   Future<void> _startConnection({
     VPNLocation? location,
-    bool? refreshIP,
+    bool refreshIP = false,
     bool isRetrying = false,
     UserIntent? intent,
   }) async {
-    await _authSessionStore.accessTokenFuture;
-    if (_authSessionStore.status != AuthStatus.authenticated) {
-      throw AuthenticationRequiredException();
-    }
-    await _checkSubscriptionStatus();
+    await _validateConnectionPrerequisites();
+    await _prepareConnection(location, intent, refreshIP);
 
-    if (!(await _wireguardService.checkTunnelConfiguration(
-      bundleId: Env.bundleId,
-      tunnelName: Env.tunnelName,
-    ))) {
+    if (_connectingLocation == null && _userIntentsStore.userIntent == null) {
+      return;
+    }
+
+    try {
+      await _ensureDisconnected();
+      await _executeConnection(refreshIP);
+      _logConnectionSuccess(refreshIP);
+    } on TimeoutException catch (e, stackTrace) {
+      _handleConnectionTimeout(e, stackTrace);
+    } on OperationCancelledException {
+      _handleOperationCancelled();
+    } catch (e, stackTrace) {
+      _handleConnectionError(e, stackTrace);
+    } finally {
+      _stopwatch.stop();
+    }
+  }
+
+  Future<void> _validateConnectionPrerequisites() async {
+    await checkVpnGuards();
+
+    if (!(await _vpnRepository.isTunnelConfigured())) {
       if (Platform.isWindows) {
         await setupTunnel();
       } else {
         throw const TunnelSetupRequiredException();
       }
     }
+  }
 
+  Future<void> _prepareConnection(
+    VPNLocation? location,
+    UserIntent? intent,
+    bool refreshIP,
+  ) async {
     _userIntentsStore.userIntent = intent;
+
+    _connectingLocation = _connectionDecisionStore.determineConnectingLocation(
+      requestedLocation: location,
+      currentLocation: _vpnConnection?.location,
+      isRefreshIP: refreshIP,
+      intent: intent,
+    );
+
+    if (_connectionDecisionStore.shouldResolveClosestLocation(_connectingLocation)) {
+      await _resolveClosestLocation();
+    }
+  }
+
+  Future<void> _resolveClosestLocation() async {
+    _fetchLocationFuture = ObservableFuture(
+      _locationsStore.findClosest(IPType.datacenter),
+    );
+    final location = await _fetchLocationFuture;
     if (location != null) {
       _connectingLocation = location;
-    } else if (refreshIP ?? false) {
-      _connectingLocation = _vpnConnection?.location;
-    } else if (_userIntentsStore.userIntent != null) {
-      _connectingLocation = null;
-    } else {
-      _connectingLocation = potentialLocation;
     }
+  }
 
-    if (_connectingLocation?.ipType == IPType.closest) {
-      _fetchLocationFuture = ObservableFuture(_locationsStore.findClosest(IPType.datacenter));
-      final location = await _fetchLocationFuture;
-      if (location != null) {
-        _connectingLocation = location;
-      }
+  Future<void> _ensureDisconnected() async {
+    if (await checkTunnelStatus() == VpnConnectionStatus.connected) {
+      await disconnectTunnel(isReconnecting: true);
+      await _waitForDisconnection();
     }
-    if (_connectingLocation == null && _userIntentsStore.userIntent == null) {
-      return;
-    }
+  }
 
-    try {
-      if ((await checkTunnelStatus()) == ConnectionStatus.connected) {
-        await disconnectWireguard(isReconnecting: true);
-        // Wait until connection is disconnected
-        await Future.doWhile(() async {
-          final tunnelStatus = await checkTunnelStatus();
-          if (tunnelStatus == ConnectionStatus.disconnected) {
-            return false;
-          }
-          return true;
-        });
-      }
+  Future<void> _waitForDisconnection() async {
+    await Future.doWhile(() async {
+      final status = await checkTunnelStatus();
+      return status != VpnConnectionStatus.disconnected;
+    });
+  }
 
-      await _completeConnection(_connectingLocation, _userIntentsStore.userIntent, refreshIP);
+  Future<void> _executeConnection(bool refreshIP) async {
+    _stopwatch
+      ..reset()
+      ..start();
 
-      _stopwatch.stop();
-      if (_vpnConnection?.location != null) {
-        _analyticsStore.logConnectSuccess(
-          location: _vpnConnection!.location,
-          time: _stopwatch.elapsed,
-          isRefresh: refreshIP,
-        );
-      }
-    } on TimeoutException catch (e, stackTrace) {
-      _userIntentsStore.userIntent = null;
-      _logger.handle(e);
-      Sentry.captureException(e, stackTrace: stackTrace);
+    await _completeConnection(
+      _connectingLocation,
+      _userIntentsStore.userIntent,
+      refreshIP,
+    );
+  }
 
-      showSnackbar(
-        LocaleKeys.connectionTimeout.tr(),
-      );
-
-      _analyticsStore.logConnectFailure(
+  void _logConnectionSuccess(bool refreshIP) {
+    _stopwatch.stop();
+    if (_vpnConnection?.location != null) {
+      _analyticsStore.logConnectSuccess(
+        location: _vpnConnection!.location,
         time: _stopwatch.elapsed,
-        error: e.message ?? e.toString(),
-        errorType: e.runtimeType.toString(),
+        isRefresh: refreshIP,
       );
-      _stopwatch.stop();
-    } on OperationCancelledException {
-      _userIntentsStore.userIntent = null;
-      _logger.info('Operation cancelled by user');
-    } catch (e, stackTrace) {
-      _userIntentsStore.userIntent = null;
-      _logger.handle(e, stackTrace);
-      Sentry.captureException(e, stackTrace: stackTrace);
+    }
+  }
 
-      final errorCode = switch (e) {
-        final WireguardConnectException e => e.code,
-        final ApiException e => e.code,
+  // ==================== Error Handling ====================
+
+  void _handleConnectionTimeout(TimeoutException e, StackTrace stackTrace) {
+    _userIntentsStore.userIntent = null;
+    _logger.handle(e);
+    Sentry.captureException(e, stackTrace: stackTrace);
+    showSnackbar(LocaleKeys.connectionTimeout.tr());
+
+    _analyticsStore.logConnectFailure(
+      time: _stopwatch.elapsed,
+      error: e.message ?? e.toString(),
+      errorType: e.runtimeType.toString(),
+    );
+  }
+
+  void _handleOperationCancelled() {
+    _userIntentsStore.userIntent = null;
+    _logger.info('Operation cancelled by user');
+  }
+
+  void _handleConnectionError(Object e, StackTrace stackTrace) {
+    _userIntentsStore.userIntent = null;
+    _logger.handle(e, stackTrace);
+    Sentry.captureException(e, stackTrace: stackTrace);
+
+    final errorCode = _extractErrorCode(e);
+    final errorMessage = _buildErrorMessage(e, errorCode);
+
+    if (errorMessage != null) {
+      showSnackbar(errorMessage);
+    }
+
+    _analyticsStore.logConnectFailure(
+      time: _stopwatch.elapsed,
+      error: e.toString(),
+      errorType: e.runtimeType.toString(),
+      errorCode: errorCode,
+      errorMessage: errorMessage,
+    );
+  }
+
+  int _extractErrorCode(Object e) => switch (e) {
+        VpnConnectException(:final code) => code,
+        ApiException(:final code) => code,
         _ => 1113,
       };
 
-      final errorMessage = switch (e) {
-        final UnavailableLocationException _ => null,
+  String? _buildErrorMessage(Object e, int errorCode) => switch (e) {
+        UnavailableLocationException() => null,
         _ => errorCode == 4029
             ? LocaleKeys.toManyRequestsErrorMsg.tr()
             : LocaleKeys.failedToConnectError.tr(
-                namedArgs: {
-                  'errorCode': errorCode.toString(),
-                },
+                namedArgs: {'errorCode': errorCode.toString()},
               ),
       };
 
-      if (errorMessage != null) {
-        showSnackbar(errorMessage);
-      }
-      _analyticsStore.logConnectFailure(
-        time: _stopwatch.elapsed,
-        error: e.toString(),
-        errorType: e.runtimeType.toString(),
-        errorCode: errorCode,
-        errorMessage: errorMessage,
-      );
-    } finally {
-      _stopwatch.stop();
-    }
-  }
+  // ==================== Connection Completion ====================
 
   @action
   Future<void> _completeConnection(
     VPNLocation? location,
     UserIntent? intent,
-    bool? refreshIP,
+    bool refreshIP,
   ) async {
     try {
-      final key = _wireguardKey ?? await _wireguardKeyService.getWireguradKey();
-      final closestRegion = (intent?.requiresCluster ?? false)
-          ? await _locationsService.closestRegion(location?.ipType ?? IPType.datacenter)
-          : null;
-      _stopwatch
-        ..reset()
-        ..start();
-      final realIpInfo = await _realIPInfo.infoFuture;
-      final ipType = location?.ipType ??
-          (intent == UserIntent.nearestLocation ? _locationsQueryStore.ipType : null);
-      _fetchConfigFuture = ObservableFuture(
-        _apiService.fetchVpnConfig(
-          request: WireguardConnectRequest(
-            publicKey: key.publicKey,
-            countryOriginate: realIpInfo?.country,
-            country:
-                intent == UserIntent.nearestLocation ? realIpInfo?.country : location?.countryCode,
-            city: intent == UserIntent.nearestLocation
-                ? null
-                : (location?.isCountry ?? true)
-                    ? null
-                    : location?.id,
-            ipType: ipType?.key,
-            resetConnection: refreshIP ?? _refreshIPStore.refreshIPConnection,
-            osType: Platform.operatingSystem,
-            userIntent: intent?.key,
-            cluster: closestRegion?.id,
-          ),
-        ),
-      );
-
-      try {
-        _vpnConfig = await _fetchConfigFuture;
-      } on ApiException catch (e) {
-        if (e.code == 2332 && location != null) {
-          _unavailableLocationsStore.toggleAvailability(location, availability: false);
-          throw UnavailableLocationException(location);
-        }
-        rethrow;
-      }
+      _vpnConfig =
+          await fetchVpnConfiguration(location: location, intent: intent, refreshIP: refreshIP);
       await _recentLocationsStore.future;
 
-      final locationId = _vpnConfig?.city ?? _vpnConfig?.country;
-      VPNLocation? connectedLocation;
-      if (locationId != null) {
-        final countryCode = _vpnConfig?.country;
-        final ipType =
-            _vpnConfig?.ipType == null ? IPType.datacenter : IPType.fromKey(_vpnConfig!.ipType!);
+      final connectedLocation = await _resolveConnectedLocation(location);
+      await _connectToTunnel();
+      await _finalizeConnection(connectedLocation);
 
-        final match = await _locationsStore.findById(
-          locationId,
-          countryCode: countryCode,
-          ipType: ipType,
-        );
-
-        connectedLocation = match ??
-            VPNLocation(
-              id: locationId,
-              ipType: ipType,
-              translations: const {},
-              countryCode: countryCode ?? locationId,
-            );
-      }
-      connectedLocation ??= potentialLocation;
-
-      if (connectedLocation == null) {
-        throw Exception('Could not find connected location information');
-      }
-
-      await _connectWireguard(
-        privateKey: key.privateKey,
-        vpnConfig: _vpnConfig!.wgConfig,
-      );
-
-      _resolveConnectionLocationFuture = ObservableFuture(
-        _checkConnectionQuality(
-          checkLocation: () async {
-            if (_vpnConfig?.exitIp != null) {
-              _vpnConnection = _vpnConnection?.copyWith(connectionIP: _vpnConfig!.exitIp!);
-              return;
-            }
-            await _resolveIPAddress(connectedLocation);
-          },
-          location: connectedLocation,
-          hash: _vpnConfig?.hash ?? '',
-        ),
-      );
-      await _resolveConnectionLocationFuture!;
-      if (_vpnConnection?.location != null) {
-        await _recentLocationsStore.add(_vpnConnection!.location);
-      }
       unawaited(_subscribeConnectionChanges(_vpnConfig!.id));
       unawaited(_udpBlockedCheck());
     } catch (e) {
@@ -680,38 +513,136 @@ abstract class _VpnStore with Store {
     }
   }
 
-  Future<void> _subscribeConnectionChanges(String connectionID) async {
-    try {
-      _connectionDataSub =
-          _mqtt.subscribe('mysterium-vpn/connection/$connectionID').listen((event) {
-        final connection = _vpnConnection;
-        if (connection == null) {
-          return;
-        }
-        final connectionUpdate = ConnectionMessage.fromJson(
-          json.decode(event) as Map<String, dynamic>,
-        );
-        _vpnConnection = connection.copyWith(
-          connectionIP: connectionUpdate.location.ip,
-          // TODO(dmacan): update with proper IPType once we receive it within ConnectionMessage
-          location: connection.location.copyWith(
-            id: connectionUpdate.location.country,
-          ),
-        );
-        _analyticsStore.logEvent(
-          AnalyticsEvent.ipChanged,
-        );
-      });
+  @visibleForTesting
+  Future<VpnConfig> fetchVpnConfiguration({
+    required VPNLocation? location,
+    required UserIntent? intent,
+    required bool refreshIP,
+  }) async {
+    final closestRegion = (intent?.requiresCluster ?? false)
+        ? await _locationsService.closestRegion(
+            location?.ipType ?? IPType.datacenter,
+          )
+        : null;
 
-      _connectionKilledSub =
-          _mqtt.subscribe('mysterium-vpn/connection/$connectionID/killed').listen((_) {
-        _connectionsLimitStore.connectionLimitReached = true;
-      });
-    } catch (e) {
-      _logger.handle(e);
-      // Do not throw error, until it's safe to do so
-      //rethrow;
+    final realIpInfo = await _realIPInfo.infoFuture;
+    final ipType = _determineIpType(location, intent);
+
+    _fetchConfigFuture = ObservableFuture(
+      _vpnRepository.fetchVpnConfig(
+        countryOriginate: realIpInfo?.country,
+        country: _determineCountry(location, intent, realIpInfo),
+        city: _determineCity(location, intent),
+        ipType: ipType?.key,
+        resetConnection: refreshIP || _refreshIPStore.refreshIPConnection,
+        userIntent: intent?.key,
+        cluster: closestRegion?.id,
+      ),
+    );
+
+    try {
+      return await _fetchConfigFuture!;
+    } on ApiException catch (e) {
+      if (e.code == 2332 && location != null) {
+        _unavailableLocationsStore.toggleAvailability(
+          VPNLocation(
+            id: location.id,
+            ipType: location.ipType,
+            translations: location.translations,
+            countryCode: location.countryCode,
+          ),
+          availability: false,
+        );
+        throw UnavailableLocationException(location);
+      }
+      rethrow;
     }
+  }
+
+  IPType? _determineIpType(VPNLocation? location, UserIntent? intent) =>
+      location?.ipType ??
+      (intent == UserIntent.nearestLocation ? _locationsQueryStore.ipType : null);
+
+  String? _determineCountry(
+    VPNLocation? location,
+    UserIntent? intent,
+    IPInfo? realIpInfo,
+  ) =>
+      intent == UserIntent.nearestLocation ? realIpInfo?.country : location?.countryCode;
+
+  String? _determineCity(VPNLocation? location, UserIntent? intent) {
+    if (intent == UserIntent.nearestLocation) {
+      return null;
+    }
+    if (location?.isCountry ?? true) {
+      return null;
+    }
+    return location?.id;
+  }
+
+  Future<VPNLocation> _resolveConnectedLocation(VPNLocation? requestedLocation) async {
+    final locationId = _vpnConfig?.city ?? _vpnConfig?.country;
+
+    if (locationId != null) {
+      final countryCode = _vpnConfig?.country;
+      final ipType =
+          _vpnConfig?.ipType == null ? IPType.datacenter : IPType.fromKey(_vpnConfig!.ipType!);
+
+      final match = await _locationsStore.findById(
+        locationId,
+        countryCode: countryCode,
+        ipType: ipType,
+      );
+
+      if (match != null) {
+        return match;
+      }
+
+      return VPNLocation(
+        id: locationId,
+        ipType: ipType,
+        translations: const {},
+        countryCode: countryCode ?? locationId,
+      );
+    }
+
+    return potentialLocation ?? (throw Exception('Could not find connected location information'));
+  }
+
+  Future<void> _connectToTunnel() async {
+    await _connectTunnel(vpnConfig: _vpnConfig!.config);
+  }
+
+  @action
+  Future<void> _connectTunnel({required String vpnConfig}) async {
+    final config = _dnsStore.replaceDNSAddress(vpnConfig);
+    await _vpnRepository.connect(config: config);
+  }
+
+  Future<void> _finalizeConnection(VPNLocation connectedLocation) async {
+    _resolveConnectionLocationFuture = ObservableFuture(
+      _checkConnectionQuality(
+        checkLocation: () => _updateConnectionIP(connectedLocation),
+        location: connectedLocation,
+        hash: _vpnConfig?.hash ?? '',
+      ),
+    );
+
+    await _resolveConnectionLocationFuture!;
+
+    if (_vpnConnection?.location != null) {
+      await _recentLocationsStore.add(_vpnConnection!.location);
+    }
+  }
+
+  Future<void> _updateConnectionIP(VPNLocation connectedLocation) async {
+    if (_vpnConfig?.exitIp != null) {
+      _vpnConnection = _vpnConnection?.copyWith(
+        connectionIP: _vpnConfig!.exitIp!,
+      );
+      return;
+    }
+    await _resolveIPAddress(connectedLocation);
   }
 
   Future<void> _checkConnectionQuality({
@@ -719,23 +650,43 @@ abstract class _VpnStore with Store {
     required VPNLocation location,
     required String hash,
   }) async {
-    try {
-      await _recentLocationsStore.add(location);
-      _vpnConnection = VpnConnection(connectionIP: '', location: location);
-      await checkLocation();
-    } catch (e) {
-      rethrow;
-    }
+    await _recentLocationsStore.add(location);
+    _vpnConnection = VpnConnection(connectionIP: '', location: location);
+    await checkLocation();
   }
 
   Future<void> _resolveIPAddress(VPNLocation? location) async {
     final ipAddress = await _externalApiService.getIPAddress();
+
     if (ipAddress != null && ipAddress.isNotEmpty) {
       _vpnConnection = _vpnConnection?.copyWith(connectionIP: ipAddress);
     } else if ((_vpnConnection?.connectionIP.isEmpty ?? true) && _connectingLocation == location) {
-      disconnectWireguard();
+      await disconnectTunnel();
       _vpnConnection = null;
     }
+  }
+
+  // ==================== Disconnection ====================
+
+  @action
+  Future<void> disconnectTunnel({bool isReconnecting = false}) async {
+    final disconnectSucceeded = await _vpnRepository.disconnect();
+
+    if (disconnectSucceeded && !isReconnecting) {
+      _userIntentsStore.userIntent = null;
+      _connectingLocation = null;
+      await _vpnRepository.notifyApiVpnDisconnected();
+    }
+
+    _cancelSubscriptions();
+  }
+
+  void _cancelSubscriptions() {
+    _connectionDataSub?.cancel();
+    _connectionDataSub = null;
+
+    _connectionKilledSub?.cancel();
+    _connectionKilledSub = null;
   }
 
   @action
@@ -744,7 +695,7 @@ abstract class _VpnStore with Store {
       _disconnectAllDevicesFuture = ObservableFuture(
         _apiService.disconnectAllDevices(),
       );
-      await disconnectWireguard();
+      await disconnectTunnel();
       await _disconnectAllDevicesFuture;
     } catch (e) {
       _logger.handle(e);
@@ -752,41 +703,52 @@ abstract class _VpnStore with Store {
     }
   }
 
-  @action
-  Future<void> resetApp() async {
-    try {
-      if (!await _checkTunelConfigured()) {
-        /// If tunnel is not configured, no need to reset the app
-        return;
-      }
-      if (Platform.isAndroid) {
-        return;
-      } else if (Platform.isWindows) {
-        _resetAppFuture = ObservableFuture(
-          regenerateWireguradKey(),
-        );
-      } else {
-        _resetAppFuture = ObservableFuture(
-          _wireguardService.removeTunnelConfiguration(
-            bundleId: Env.bundleId,
-            tunnelName: Env.tunnelName,
-          ),
-        );
-      }
+  // ==================== MQTT & Monitoring ====================
 
-      await _resetAppFuture;
+  Future<void> _subscribeConnectionChanges(String connectionID) async {
+    try {
+      _connectionDataSub =
+          _mqtt.subscribe('mysterium-vpn/connection/$connectionID').listen(_handleConnectionUpdate);
+
+      _connectionKilledSub = _mqtt
+          .subscribe('mysterium-vpn/connection/$connectionID/killed')
+          .listen(_handleConnectionKilled);
     } catch (e) {
       _logger.handle(e);
-      rethrow;
     }
+  }
+
+  void _handleConnectionUpdate(String event) {
+    final connection = _vpnConnection;
+    if (connection == null) {
+      return;
+    }
+
+    final update = ConnectionMessage.fromJson(
+      json.decode(event) as Map<String, dynamic>,
+    );
+
+    _vpnConnection = connection.copyWith(
+      connectionIP: update.location.ip,
+      location: connection.location.copyWith(
+        id: update.location.country,
+      ),
+    );
+
+    _analyticsStore.logEvent(AnalyticsEvent.ipChanged);
+  }
+
+  void _handleConnectionKilled(String _) {
+    _connectionsLimitStore.connectionLimitReached = true;
   }
 
   @action
   Future<void> _udpBlockedCheck() async {
+    if (!_remoteConfigStore.shouldCheckUdp) {
+      return;
+    }
+
     try {
-      if (!_remoteConfigStore.shouldCheckUdp) {
-        return;
-      }
       await _apiService.udpBlockedCheck();
       _logger.info(
         'UDP block check completed in less than 2sec and it is not blocked',
@@ -794,20 +756,39 @@ abstract class _VpnStore with Store {
     } catch (e) {
       _analyticsStore.logEvent(
         AnalyticsEvent.udpBlocked,
-        parameters: {
-          'error': e.toString(),
-        },
+        parameters: {'error': e.toString()},
       );
     }
   }
 
-  Future<ConnectionStatus> checkTunnelStatus() async {
+  // ==================== App Management ====================
+
+  @action
+  Future<void> resetApp() async {
     try {
-      return await _wireguardService.status();
+      _resetAppFuture = ObservableFuture(_vpnRepository.resetApp());
+      await _resetAppFuture;
     } catch (e) {
-      _logger.handle(e);
-      Sentry.captureException(e);
-      return ConnectionStatus.unknown;
+      rethrow;
     }
+  }
+
+  @action
+  Future<void> submitRateConnection({
+    required RateConnectionRequestModeEnum mode,
+    required String? reasons,
+    required String? feedback,
+  }) async {
+    assert(_vpnConnection != null, 'VPN connection must not be null');
+
+    await _vpnRepository.rateConnection(
+      mode: mode,
+      reasons: reasons,
+      feedback: feedback,
+      country: _vpnConnection!.location.id,
+      ipType: _vpnConnection!.location.ipType.name,
+    );
+
+    connectionRated = mode;
   }
 }

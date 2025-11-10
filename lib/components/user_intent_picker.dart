@@ -10,7 +10,7 @@ import 'package:mysterium_vpn/components/horizontal_scroll_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/user_intent.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:shimmer/shimmer.dart';
 
 class UserIntentPicker extends HookWidget {

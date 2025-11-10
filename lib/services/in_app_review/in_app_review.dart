@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:mysterium_vpn/services/in_app_review/in_app_review_service.dart';
+import 'package:mysterium_vpn/services/services.dart';
 
 class InAppReviewObserver with WidgetsBindingObserver {
   factory InAppReviewObserver() => _singleton;

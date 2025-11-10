@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -19,7 +20,7 @@ import 'package:mysterium_vpn/components/modal_page_scaffold.dart';
 import 'package:mysterium_vpn/components/spans/character_span.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/purchasable_product.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 Future<void> showSubscriptionUpgradePage(BuildContext context) async {
@@ -206,7 +207,10 @@ class _FeatureItem extends HookWidget {
                 children: [
                   TextSpan(
                     text: fullPrice,
-                    style: const TextStyle(decoration: TextDecoration.lineThrough),
+                    style: TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                      decorationColor: textStyle!.color,
+                    ),
                   ),
                   CharacterSpan.space(),
                   TextSpan(
@@ -253,6 +257,7 @@ class _Footer extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final analyticsStore = ref.read(analyticsStorePOD);
     void handleOpenUrl(String url) {
       unawaited(analyticsStore.logSubscriptionUpgradeInfoClick(url));
@@ -271,10 +276,6 @@ class _Footer extends HookConsumerWidget {
             label: LocaleKeys.upgradeTermsAndConditions.tr(),
             onTap: () => handleOpenUrl(termsOfServiceUrl),
           ),
-          SimpleMenuItem(
-            label: LocaleKeys.upgradeSubscriptionInfo.tr(),
-            onTap: () => handleOpenUrl(subscriptionInfoUrl),
-          ),
         ],
       );
     }
@@ -287,21 +288,27 @@ class _Footer extends HookConsumerWidget {
         EasyButton(
           color: Palette.purple,
           onPressed: onUpgradePressed,
+          useSystemColor: false,
           text: LocaleKeys.upgradeAndSave.tr(),
         ),
         EasyText(
           LocaleKeys.upgradeDisclaimerRefund.tr(),
           fontSize: 12,
-          color: Theme.of(context).palette.darkTextColor,
+          color: theme.palette.darkTextColor,
           textAlign: TextAlign.center,
           maxLines: 3,
         ),
         TextButton(
           onPressed: showPrivacyMenu,
-          child: EasyText(
+          style: TextButton.styleFrom(
+            foregroundColor: switch (theme.brightness) {
+              Brightness.dark => Palette.lavenderPink,
+              Brightness.light => Palette.purple,
+            },
+          ),
+          child: Text(
             LocaleKeys.upgradeSubscriptionPrivacy.tr(),
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
+            style: GoogleFonts.montserrat(fontSize: 12, fontWeight: FontWeight.w600),
           ),
         ),
       ],
