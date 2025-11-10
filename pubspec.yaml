@@ -87,7 +87,7 @@ dependencies:
     path: ./packages/store_checker_windows
   styled_widget: 0.4.1
   talker: 5.0.2
-  talker_dio_logger: 5.0.0
+  talker_dio_logger: 5.0.2
   tray_manager: 0.5.1
   url_launcher: 6.3.2
   url_protocol:
