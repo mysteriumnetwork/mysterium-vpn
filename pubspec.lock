@@ -909,10 +909,10 @@ packages:
     dependency: "direct dev"
     description:
       name: hive_ce_generator
-      sha256: "8c677690c8ead43778ddf7ed8ff17e852dd5d22d082c75182b072842c0dc5055"
+      sha256: b19ac263cb37529513508ba47352c41e6de72ba879952898d9c18c9c8a955921
       url: "https://pub.dev"
     source: hosted
-    version: "1.9.5"
+    version: "1.10.0"
   hooks_riverpod:
     dependency: "direct main"
     description:
