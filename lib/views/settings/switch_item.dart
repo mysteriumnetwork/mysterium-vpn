@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SwitchItem extends StatelessWidget {
@@ -14,11 +15,12 @@ class SwitchItem extends StatelessWidget {
     super.key,
   });
 
-  final String asset;
+  final SvgGenImage asset;
   final String title;
   final String subtitle;
   final Widget actionWidget;
   final bool enabled;
+
   @override
   Widget build(BuildContext context) => IgnorePointer(
         ignoring: !enabled,

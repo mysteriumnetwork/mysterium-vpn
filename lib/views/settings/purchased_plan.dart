@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/subscription.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class PurchasedPlan extends StatelessWidget {
@@ -15,6 +15,7 @@ class PurchasedPlan extends StatelessWidget {
   });
 
   final Subscription subscription;
+
   @override
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,7 +27,11 @@ class PurchasedPlan extends StatelessWidget {
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
               ).paddingDirectional(end: 4),
-              const SizedBox(width: 25, height: 25, child: SvgIcon(asset: Assets.subscription)),
+              SizedBox(
+                width: 25,
+                height: 25,
+                child: SvgIcon(asset: Asset.icons.subscription),
+              ),
             ],
           ),
           EasyText(

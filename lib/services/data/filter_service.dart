@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
 
 class FilterService {
   static String currentLocale = kFallbackLocale.languageCode;
@@ -9,7 +9,7 @@ class FilterService {
     List<VPNLocation> data, {
     required String locale,
     String? keyword,
-    bool shouldSortList = true,
+    bool shouldSortList = false,
   }) {
     final query = keyword?.normalized ?? '';
 
@@ -23,21 +23,6 @@ class FilterService {
     }
 
     return result;
-  }
-
-  List<VPNLocation> filterRecentLocations(
-    List<VPNLocation> data, {
-    required String keyword,
-    required String locale,
-    required Set<VPNLocation> availableLocations,
-  }) {
-    final availableRecents = availableLocations.where(data.contains).toList();
-    return filterLocations(
-      availableRecents,
-      keyword: keyword,
-      shouldSortList: false,
-      locale: locale,
-    );
   }
 }
 

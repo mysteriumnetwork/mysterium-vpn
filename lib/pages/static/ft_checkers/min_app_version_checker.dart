@@ -11,28 +11,30 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 /// Checks if the current app version is greater than or equal to the minimum required app version.
 /// Works only with PROD flavor.
 class MinAppVersionChecker extends HookConsumerWidget {
   const MinAppVersionChecker({required this.child, super.key});
+
   final Widget child;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final env = ref.watch(environmentPOD);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     final canContinue = useState(false);
 
     return Observer(
       builder: (context) {
-        final currentBuildVersion = env.buildInfo.buildVersion;
+        final currentBuildVersion = Env.buildInfo.buildVersion;
         final minAppBuildNumber = getMinAppBuildNumber(
           remoteConfigStore: remoteConfigStore,
-          installerStore: env.buildInfo.installerStore,
+          installerStore: Env.buildInfo.installerStore,
         );
         if (currentBuildVersion.compareTo(minAppBuildNumber) >= 0 || canContinue.value) {
           return child;
@@ -46,9 +48,7 @@ class MinAppVersionChecker extends HookConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 64),
-                    const SvgIcon(
-                      asset: Assets.splashLogo,
-                    ),
+                    SvgIcon(asset: Asset.logo.splashLogo),
                     const Spacer(),
                     EasyText(
                       LocaleKeys.featureToggleMinVersionNotSatisfied.tr(),
@@ -61,7 +61,7 @@ class MinAppVersionChecker extends HookConsumerWidget {
                     EasyButton(
                       onPressed: () async {
                         try {
-                          if (env.buildInfo.installerStore
+                          if (Env.buildInfo.installerStore
                                   ?.toLowerCase()
                                   .contains(windowsStandAloneProductId.toLowerCase()) ??
                               false) {

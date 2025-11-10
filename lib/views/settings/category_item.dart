@@ -42,7 +42,7 @@ class CategoryItem extends StatelessWidget {
                 title,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                 fontSize: 16,
-                color: isSelected ? Palette.purple : Theme.of(context).indicatorColor,
+                color: isSelected ? Palette.purple : Theme.of(context).tabBarTheme.indicatorColor,
               ).expanded(),
             ],
           ).width(190).height(38).padding(horizontal: 20, vertical: 10),
@@ -74,6 +74,6 @@ class _SelectionIndicator extends StatelessWidget {
         )
       : CircleBox(
           size: 4,
-          color: Theme.of(context).indicatorColor,
+          color: Theme.of(context).tabBarTheme.indicatorColor ?? Palette.purple,
         );
 }

@@ -51,6 +51,14 @@ extension IterableExtensions<T> on Iterable<T> {
       }
     }
   }
+
+  Iterable<T> intersect(Iterable<T> other) sync* {
+    for (final element in this) {
+      if (other.contains(element)) {
+        yield other.firstWhere((it) => it == element);
+      }
+    }
+  }
 }
 
 extension SetExtensions<T> on Set<T> {

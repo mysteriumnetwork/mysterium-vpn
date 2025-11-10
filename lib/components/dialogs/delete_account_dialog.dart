@@ -14,10 +14,9 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/header_title.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/auth_store.dart';
-import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 Future<void> shownDeleteAccountDialog(
@@ -53,6 +52,7 @@ class _DeleteAccountDialog extends HookWidget {
     required this.analyticsStore,
     required this.vpnStore,
   });
+
   final AuthStore authStore;
   final AnalyticsStore analyticsStore;
   final VpnStore vpnStore;
@@ -64,10 +64,10 @@ class _DeleteAccountDialog extends HookWidget {
       clipBehavior: Clip.none,
       alignment: Alignment.center,
       children: [
-        const Positioned(
+        Positioned(
           top: -15,
           child: SvgIcon(
-            asset: Assets.warning,
+            asset: Asset.icons.warning,
           ),
         ),
         Observer(
@@ -135,7 +135,7 @@ class _DeleteAccountDialog extends HookWidget {
                               LocaleKeys.redirectToLoginPage.tr(),
                             ],
                             onConfirm: () async {
-                              await vpnStore.disconnectWireguard();
+                              await vpnStore.disconnectTunnel();
                               authStore.logout();
                             },
                           );

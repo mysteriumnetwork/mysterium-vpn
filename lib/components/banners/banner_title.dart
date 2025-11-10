@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/components/banners/banner.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 
 class BannerTitle extends HookWidget {
   const BannerTitle({
@@ -14,7 +15,7 @@ class BannerTitle extends HookWidget {
   });
 
   final String text;
-  final String? iconAsset;
+  final SvgGenImage? iconAsset;
   final double? iconSize;
   final Widget? icon;
 

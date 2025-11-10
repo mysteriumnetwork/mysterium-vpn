@@ -7,6 +7,7 @@ import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -24,11 +25,12 @@ class SocialLoginButton extends ConsumerWidget {
   });
 
   final String label;
-  final String asset;
+  final SvgGenImage asset;
   final bool isLoading;
   final VoidCallback? onPressed;
   final double? width;
   final double height;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final fontSize = height * 0.43;
@@ -50,26 +52,29 @@ class SocialLoginButton extends ConsumerWidget {
               horizontal: 16,
             ),
             height: 44,
-            child: isLoading
-                ? const LoadingIndicator()
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _SocialLoginIcon(
-                        asset: asset,
-                        height: height,
-                        iconSize: fontSize,
-                      ),
-                      Flexible(
-                        child: EasyText(
-                          label,
-                          color: Colors.black,
-                          fontSize: fontSize,
-                          letterSpacing: -0.41,
+            child: SizedBox(
+              width: double.infinity,
+              child: isLoading
+                  ? const LoadingIndicator()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _SocialLoginIcon(
+                          asset: asset,
+                          height: height,
+                          iconSize: fontSize,
                         ),
-                      ),
-                    ],
-                  ),
+                        Flexible(
+                          child: EasyText(
+                            label,
+                            color: Colors.black,
+                            fontSize: fontSize,
+                            letterSpacing: -0.41,
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
           ),
         ).width(width ?? double.infinity).height(height);
       },
@@ -83,9 +88,11 @@ class _SocialLoginIcon extends StatelessWidget {
     required this.height,
     required this.iconSize,
   });
-  final String asset;
+
+  final SvgGenImage asset;
   final double height;
   final double iconSize;
+
   @override
   Widget build(BuildContext context) => SvgIcon(
         asset: asset,

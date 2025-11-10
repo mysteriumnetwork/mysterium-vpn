@@ -4,9 +4,8 @@ import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
-import 'package:mysterium_vpn/models/flavor_config.dart';
-import 'package:mysterium_vpn/models/user_intent.dart';
-import 'package:mysterium_vpn/stores/remote_config/config_cat_store.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'remote_config_store.g.dart';
 
@@ -42,6 +41,11 @@ enum _FeatureToggleKey {
   countriesWithCitiesOnMap,
   showUserIntents,
   userIntentBlacklist,
+  userIntentsRefreshInterval,
+  recentLocationsLimit,
+  mapConfig,
+  subscriptionUpgradeBannerEnabled,
+  subscriptionUpgradeAutoDisplayEnabled,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -50,11 +54,11 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   RemoteConfigStoreBase(
     super.client,
     super.logger,
-    super.ipInfoStore,
-    this._env,
-  );
+    super.ipInfoStore, {
+    bool isDev = false,
+  }) : _isDev = isDev;
 
-  final FlavorConfig _env;
+  final bool _isDev;
 
   @computed
   bool get isServiceAvailable {
@@ -276,10 +280,7 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
     if (config.containsKey(_FeatureToggleKey.enableQaHelpers.name)) {
       return config[_FeatureToggleKey.enableQaHelpers.name] as bool;
     }
-    if (_env.isDev) {
-      return true; // Enable QA helpers in development mode
-    }
-    return false; // Disable QA helpers in production
+    return _isDev; // Enable QA helpers in development mode
   }
 
   @computed
@@ -333,6 +334,59 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       logger.handle(e, stack);
     }
     return {};
+  }
+
+  @computed
+  Duration get userIntentsRefreshInterval {
+    if (config.containsKey(_FeatureToggleKey.userIntentsRefreshInterval.name)) {
+      final raw = config[_FeatureToggleKey.userIntentsRefreshInterval.name];
+      if (raw is int) {
+        return Duration(seconds: raw);
+      }
+    }
+    return const Duration(minutes: 10);
+  }
+
+  @computed
+  int get recentLocationsLimit {
+    if (config.containsKey(_FeatureToggleKey.recentLocationsLimit.name)) {
+      final raw = config[_FeatureToggleKey.recentLocationsLimit.name];
+      if (raw is int && raw >= 0) {
+        return raw;
+      }
+    }
+    return 5;
+  }
+
+  @computed
+  MapConfig get mapConfig {
+    if (config.containsKey(_FeatureToggleKey.mapConfig.name)) {
+      final raw = config[_FeatureToggleKey.mapConfig.name];
+      try {
+        final decoded = jsonDecode(raw.toString()) as Map<String, dynamic>;
+        return MapConfig.fromJson(decoded);
+      } catch (e, stack) {
+        logger.handle(e, stack);
+      }
+    }
+
+    return const MapConfig();
+  }
+
+  @computed
+  bool get subscriptionUpgradeBannerEnabled {
+    if (config.containsKey(_FeatureToggleKey.subscriptionUpgradeBannerEnabled.name)) {
+      return config[_FeatureToggleKey.subscriptionUpgradeBannerEnabled.name] as bool;
+    }
+    return true;
+  }
+
+  @computed
+  bool get subscriptionUpgradeAutoDisplayEnabled {
+    if (config.containsKey(_FeatureToggleKey.subscriptionUpgradeAutoDisplayEnabled.name)) {
+      return config[_FeatureToggleKey.subscriptionUpgradeAutoDisplayEnabled.name] as bool;
+    }
+    return true;
   }
 
   Map<String, String> get asUserProperties =>

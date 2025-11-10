@@ -1,10 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:mysterium_vpn/common/enums/vpn_connection_status.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:wireguard_dart/connection_status.dart';
 
 Color useConnectionStatusColor() {
   final vpnStore = useProvider(vpnStorePOD);
@@ -17,10 +17,10 @@ Color useConnectionStatusColor() {
         return Palette.yellow;
       }
       return switch (connectionStatus) {
-        ConnectionStatus.connected => Palette.forestGreen,
-        ConnectionStatus.disconnected => Palette.crimsonRed,
-        ConnectionStatus.connecting => Palette.yellow,
-        ConnectionStatus.disconnecting => Palette.yellow,
+        VpnConnectionStatus.connected => Palette.forestGreen,
+        VpnConnectionStatus.disconnected => Palette.crimsonRed,
+        VpnConnectionStatus.connecting => Palette.yellow,
+        VpnConnectionStatus.disconnecting => Palette.yellow,
         _ => Palette.crimsonRed,
       };
     },
