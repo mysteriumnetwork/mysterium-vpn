@@ -105,7 +105,7 @@ jobs:
           path: ./release
 
       - name: Publish assets to public release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           repository: mysteriumnetwork/mysterium-vpn-release
           tag_name: ${{ github.event.release.tag_name }}
