@@ -223,9 +223,9 @@ abstract class _AuthStore with Store {
 
   @action
   Future<void> logout({
-    String? email,
+    bool invalidateRemotely = true,
   }) async {
-    logoutFeature = ObservableFuture(_authService.logout());
+    logoutFeature = ObservableFuture(_authService.logout(invalidateRemotely: invalidateRemotely));
 
     await logoutFeature;
   }
@@ -384,7 +384,7 @@ abstract class _AuthStore with Store {
       );
     } catch (e) {
       showSnackbar(LocaleKeys.loginSessionExpired.tr());
-      await logout();
+      await logout(invalidateRemotely: false);
 
       rethrow;
     }
