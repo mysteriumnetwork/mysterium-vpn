@@ -96,6 +96,8 @@ enum AnalyticsEvent {
   rateConnectionClicked,
   rateConnectionCancel,
   rateConnectionSubmit,
+  rateConnectionSubmitSuccess,
+  rateConnectionSubmitError,
   apiError,
   ipChanged,
   paymentSuccess1m,

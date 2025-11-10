@@ -1,6 +1,6 @@
 // Package imports:
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mysterium_vpn/common/enums/grant_type.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 
 part 'token_request.freezed.dart';
 

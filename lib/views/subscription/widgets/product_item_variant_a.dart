@@ -7,7 +7,7 @@ import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/ripple.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/models/purchasable_product.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/product_pricing.dart';
 import 'package:styled_widget/styled_widget.dart';
 

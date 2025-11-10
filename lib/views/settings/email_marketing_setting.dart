@@ -13,8 +13,7 @@ import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/auth/auth_status.dart';
-import 'package:mysterium_vpn/stores/user_preferences_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/settings/switch_item.dart';
 import 'package:styled_widget/styled_widget.dart';
 
