@@ -9,6 +9,7 @@ import 'package:flutter_portal/flutter_portal.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/config_cat_user_updater_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/mqtt_service.dart';
@@ -22,7 +23,6 @@ import 'package:mysterium_vpn/components/shortcuts.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/ft_checkers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/auth/auth_status.dart';
 
 class MyApp extends HookConsumerWidget {
   const MyApp({super.key});

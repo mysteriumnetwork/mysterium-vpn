@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
 
 class FilterService {
   static String currentLocale = kFallbackLocale.languageCode;
