@@ -13,6 +13,7 @@ import 'package:mysterium_vpn/components/dialogs/push_notifications_dialog.dart'
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/services/auth/auth_status.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
@@ -22,6 +23,7 @@ void useHomeAutorun() {
   final userPreferencesStore = useProvider(userPreferencesStorePOD);
   final remoteConfigStore = useProvider(remoteConfigStorePOD);
   final subscriptionUpgradeStore = useProvider(subscriptionUpgradeStorePOD);
+  final authSessionStore = useProvider(authSessionStorePOD);
   final subscriptionUpgradeShown = useRef(false);
   final screenType = useScreenType();
 
@@ -46,6 +48,9 @@ void useHomeAutorun() {
         ),
         autorun(
           (_) {
+            if (authSessionStore.status != AuthStatus.authenticated) {
+              return;
+            }
             final value = userPreferencesStore.nextPromptToShow;
             if (value == UserPromptType.none) {
               return;
@@ -101,6 +106,7 @@ void useHomeAutorun() {
       remoteConfigStore,
       subscriptionUpgradeStore,
       subscriptionUpgradeShown,
+      authSessionStore,
     ],
   );
 }
