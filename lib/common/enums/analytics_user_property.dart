@@ -18,6 +18,7 @@ enum AnalyticsUserPropName {
   String get formattedName => name.toSnakeCase;
 }
 
+@immutable
 class AnalyticsUserProperty {
   AnalyticsUserProperty._({
     required this.rawName,
@@ -62,4 +63,19 @@ class AnalyticsUserProperty {
   String get name24chars => rawName.truncate(24);
 
   String get value36chars => value.truncate(36);
+
+  @override
+  String toString() => 'AnalyticsUserProperty(name: $rawName, value: $value, setAt: $setAt)';
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+
+    return other is AnalyticsUserProperty && other.rawName == rawName && other.value == value;
+  }
+
+  @override
+  int get hashCode => rawName.hashCode ^ value.hashCode;
 }
