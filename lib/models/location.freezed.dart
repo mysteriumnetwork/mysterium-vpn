@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,85 +9,70 @@ part of 'location.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-VPNLocations _$VPNLocationsFromJson(Map<String, dynamic> json) {
-  return _VPNLocations.fromJson(json);
-}
 
 /// @nodoc
 mixin _$VPNLocations {
-  List<VPNLocation> get locations => throw _privateConstructorUsedError;
-  List<VPNLocation> get topLocations => throw _privateConstructorUsedError;
-
-  /// Serializes this VPNLocations to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  Set<VPNLocation> get allLocations;
+  Set<VPNLocation> get allLocationsFlattened;
+  bool get isEmpty;
+  List<VPNLocation> get locations;
+  List<VPNLocation> get topLocations;
 
   /// Create a copy of VPNLocations
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $VPNLocationsCopyWith<VPNLocations> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $VPNLocationsCopyWith<$Res> {
-  factory $VPNLocationsCopyWith(VPNLocations value, $Res Function(VPNLocations) then) =
-      _$VPNLocationsCopyWithImpl<$Res, VPNLocations>;
-  @useResult
-  $Res call({List<VPNLocation> locations, List<VPNLocation> topLocations});
-}
-
-/// @nodoc
-class _$VPNLocationsCopyWithImpl<$Res, $Val extends VPNLocations>
-    implements $VPNLocationsCopyWith<$Res> {
-  _$VPNLocationsCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of VPNLocations
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $VPNLocationsCopyWith<VPNLocations> get copyWith =>
+      _$VPNLocationsCopyWithImpl<VPNLocations>(this as VPNLocations, _$identity);
+
+  /// Serializes this VPNLocations to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? locations = null,
-    Object? topLocations = null,
-  }) {
-    return _then(_value.copyWith(
-      locations: null == locations
-          ? _value.locations
-          : locations // ignore: cast_nullable_to_non_nullable
-              as List<VPNLocation>,
-      topLocations: null == topLocations
-          ? _value.topLocations
-          : topLocations // ignore: cast_nullable_to_non_nullable
-              as List<VPNLocation>,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is VPNLocations &&
+            const DeepCollectionEquality().equals(other.allLocations, allLocations) &&
+            const DeepCollectionEquality()
+                .equals(other.allLocationsFlattened, allLocationsFlattened) &&
+            (identical(other.isEmpty, isEmpty) || other.isEmpty == isEmpty) &&
+            const DeepCollectionEquality().equals(other.locations, locations) &&
+            const DeepCollectionEquality().equals(other.topLocations, topLocations));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(allLocations),
+      const DeepCollectionEquality().hash(allLocationsFlattened),
+      isEmpty,
+      const DeepCollectionEquality().hash(locations),
+      const DeepCollectionEquality().hash(topLocations));
+
+  @override
+  String toString() {
+    return 'VPNLocations(allLocations: $allLocations, allLocationsFlattened: $allLocationsFlattened, isEmpty: $isEmpty, locations: $locations, topLocations: $topLocations)';
   }
 }
 
 /// @nodoc
-abstract class _$$VPNLocationsImplCopyWith<$Res> implements $VPNLocationsCopyWith<$Res> {
-  factory _$$VPNLocationsImplCopyWith(
-          _$VPNLocationsImpl value, $Res Function(_$VPNLocationsImpl) then) =
-      __$$VPNLocationsImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $VPNLocationsCopyWith<$Res> {
+  factory $VPNLocationsCopyWith(VPNLocations value, $Res Function(VPNLocations) _then) =
+      _$VPNLocationsCopyWithImpl;
   @useResult
   $Res call({List<VPNLocation> locations, List<VPNLocation> topLocations});
 }
 
 /// @nodoc
-class __$$VPNLocationsImplCopyWithImpl<$Res>
-    extends _$VPNLocationsCopyWithImpl<$Res, _$VPNLocationsImpl>
-    implements _$$VPNLocationsImplCopyWith<$Res> {
-  __$$VPNLocationsImplCopyWithImpl(
-      _$VPNLocationsImpl _value, $Res Function(_$VPNLocationsImpl) _then)
-      : super(_value, _then);
+class _$VPNLocationsCopyWithImpl<$Res> implements $VPNLocationsCopyWith<$Res> {
+  _$VPNLocationsCopyWithImpl(this._self, this._then);
+
+  final VPNLocations _self;
+  final $Res Function(VPNLocations) _then;
 
   /// Create a copy of VPNLocations
   /// with the given fields replaced by the non-null parameter values.
@@ -97,31 +82,186 @@ class __$$VPNLocationsImplCopyWithImpl<$Res>
     Object? locations = null,
     Object? topLocations = null,
   }) {
-    return _then(_$VPNLocationsImpl(
+    return _then(_self.copyWith(
       locations: null == locations
-          ? _value._locations
+          ? _self.locations
           : locations // ignore: cast_nullable_to_non_nullable
               as List<VPNLocation>,
       topLocations: null == topLocations
-          ? _value._topLocations
+          ? _self.topLocations
           : topLocations // ignore: cast_nullable_to_non_nullable
               as List<VPNLocation>,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [VPNLocations].
+extension VPNLocationsPatterns on VPNLocations {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_VPNLocations value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _VPNLocations() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_VPNLocations value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _VPNLocations():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_VPNLocations value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _VPNLocations() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(List<VPNLocation> locations, List<VPNLocation> topLocations)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _VPNLocations() when $default != null:
+        return $default(_that.locations, _that.topLocations);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(List<VPNLocation> locations, List<VPNLocation> topLocations) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _VPNLocations():
+        return $default(_that.locations, _that.topLocations);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(List<VPNLocation> locations, List<VPNLocation> topLocations)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _VPNLocations() when $default != null:
+        return $default(_that.locations, _that.topLocations);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 @JsonSerializable()
-class _$VPNLocationsImpl extends _VPNLocations {
-  _$VPNLocationsImpl(
+class _VPNLocations extends VPNLocations {
+  _VPNLocations(
       {final List<VPNLocation> locations = const [],
       final List<VPNLocation> topLocations = const []})
       : _locations = locations,
         _topLocations = topLocations,
         super._();
-
-  factory _$VPNLocationsImpl.fromJson(Map<String, dynamic> json) =>
-      _$$VPNLocationsImplFromJson(json);
+  factory _VPNLocations.fromJson(Map<String, dynamic> json) => _$VPNLocationsFromJson(json);
 
   final List<VPNLocation> _locations;
   @override
@@ -141,16 +281,26 @@ class _$VPNLocationsImpl extends _VPNLocations {
     return EqualUnmodifiableListView(_topLocations);
   }
 
+  /// Create a copy of VPNLocations
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'VPNLocations(locations: $locations, topLocations: $topLocations)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$VPNLocationsCopyWith<_VPNLocations> get copyWith =>
+      __$VPNLocationsCopyWithImpl<_VPNLocations>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$VPNLocationsToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$VPNLocationsImpl &&
+            other is _VPNLocations &&
             const DeepCollectionEquality().equals(other._locations, _locations) &&
             const DeepCollectionEquality().equals(other._topLocations, _topLocations));
   }
@@ -160,151 +310,97 @@ class _$VPNLocationsImpl extends _VPNLocations {
   int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(_locations),
       const DeepCollectionEquality().hash(_topLocations));
 
-  /// Create a copy of VPNLocations
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$VPNLocationsImplCopyWith<_$VPNLocationsImpl> get copyWith =>
-      __$$VPNLocationsImplCopyWithImpl<_$VPNLocationsImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$VPNLocationsImplToJson(
-      this,
-    );
+  String toString() {
+    return 'VPNLocations(locations: $locations, topLocations: $topLocations)';
   }
 }
 
-abstract class _VPNLocations extends VPNLocations {
-  factory _VPNLocations({final List<VPNLocation> locations, final List<VPNLocation> topLocations}) =
-      _$VPNLocationsImpl;
-  _VPNLocations._() : super._();
-
-  factory _VPNLocations.fromJson(Map<String, dynamic> json) = _$VPNLocationsImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$VPNLocationsCopyWith<$Res> implements $VPNLocationsCopyWith<$Res> {
+  factory _$VPNLocationsCopyWith(_VPNLocations value, $Res Function(_VPNLocations) _then) =
+      __$VPNLocationsCopyWithImpl;
   @override
-  List<VPNLocation> get locations;
-  @override
-  List<VPNLocation> get topLocations;
+  @useResult
+  $Res call({List<VPNLocation> locations, List<VPNLocation> topLocations});
+}
+
+/// @nodoc
+class __$VPNLocationsCopyWithImpl<$Res> implements _$VPNLocationsCopyWith<$Res> {
+  __$VPNLocationsCopyWithImpl(this._self, this._then);
+
+  final _VPNLocations _self;
+  final $Res Function(_VPNLocations) _then;
 
   /// Create a copy of VPNLocations
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$VPNLocationsImplCopyWith<_$VPNLocationsImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-VPNLocation _$VPNLocationFromJson(Map<String, dynamic> json) {
-  return _VPNLocation.fromJson(json);
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? locations = null,
+    Object? topLocations = null,
+  }) {
+    return _then(_VPNLocations(
+      locations: null == locations
+          ? _self._locations
+          : locations // ignore: cast_nullable_to_non_nullable
+              as List<VPNLocation>,
+      topLocations: null == topLocations
+          ? _self._topLocations
+          : topLocations // ignore: cast_nullable_to_non_nullable
+              as List<VPNLocation>,
+    ));
+  }
 }
 
 /// @nodoc
 mixin _$VPNLocation {
-  String get id => throw _privateConstructorUsedError;
-  IPType get ipType => throw _privateConstructorUsedError;
-  Map<String, String> get translations => throw _privateConstructorUsedError;
-  String get countryCode => throw _privateConstructorUsedError;
-  List<VPNLocation>? get children => throw _privateConstructorUsedError;
-  int? get nodeCount => throw _privateConstructorUsedError;
-
-  /// Serializes this VPNLocation to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get id;
+  IPType get ipType;
+  Map<String, String> get translations;
+  String get countryCode;
+  @LatLngConverter()
+  LatLng? get coordinates;
+  List<VPNLocation>? get children;
+  int? get nodeCount;
 
   /// Create a copy of VPNLocation
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $VPNLocationCopyWith<VPNLocation> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $VPNLocationCopyWith<$Res> {
-  factory $VPNLocationCopyWith(VPNLocation value, $Res Function(VPNLocation) then) =
-      _$VPNLocationCopyWithImpl<$Res, VPNLocation>;
-  @useResult
-  $Res call(
-      {String id,
-      IPType ipType,
-      Map<String, String> translations,
-      String countryCode,
-      List<VPNLocation>? children,
-      int? nodeCount});
-}
-
-/// @nodoc
-class _$VPNLocationCopyWithImpl<$Res, $Val extends VPNLocation>
-    implements $VPNLocationCopyWith<$Res> {
-  _$VPNLocationCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of VPNLocation
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $VPNLocationCopyWith<VPNLocation> get copyWith =>
+      _$VPNLocationCopyWithImpl<VPNLocation>(this as VPNLocation, _$identity);
+
+  /// Serializes this VPNLocation to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? id = null,
-    Object? ipType = null,
-    Object? translations = null,
-    Object? countryCode = null,
-    Object? children = freezed,
-    Object? nodeCount = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      ipType: null == ipType
-          ? _value.ipType
-          : ipType // ignore: cast_nullable_to_non_nullable
-              as IPType,
-      translations: null == translations
-          ? _value.translations
-          : translations // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
-      countryCode: null == countryCode
-          ? _value.countryCode
-          : countryCode // ignore: cast_nullable_to_non_nullable
-              as String,
-      children: freezed == children
-          ? _value.children
-          : children // ignore: cast_nullable_to_non_nullable
-              as List<VPNLocation>?,
-      nodeCount: freezed == nodeCount
-          ? _value.nodeCount
-          : nodeCount // ignore: cast_nullable_to_non_nullable
-              as int?,
-    ) as $Val);
+  String toString() {
+    return 'VPNLocation(id: $id, ipType: $ipType, translations: $translations, countryCode: $countryCode, coordinates: $coordinates, children: $children, nodeCount: $nodeCount)';
   }
 }
 
 /// @nodoc
-abstract class _$$VPNLocationImplCopyWith<$Res> implements $VPNLocationCopyWith<$Res> {
-  factory _$$VPNLocationImplCopyWith(
-          _$VPNLocationImpl value, $Res Function(_$VPNLocationImpl) then) =
-      __$$VPNLocationImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $VPNLocationCopyWith<$Res> {
+  factory $VPNLocationCopyWith(VPNLocation value, $Res Function(VPNLocation) _then) =
+      _$VPNLocationCopyWithImpl;
   @useResult
   $Res call(
       {String id,
       IPType ipType,
       Map<String, String> translations,
       String countryCode,
+      @LatLngConverter() LatLng? coordinates,
       List<VPNLocation>? children,
       int? nodeCount});
 }
 
 /// @nodoc
-class __$$VPNLocationImplCopyWithImpl<$Res>
-    extends _$VPNLocationCopyWithImpl<$Res, _$VPNLocationImpl>
-    implements _$$VPNLocationImplCopyWith<$Res> {
-  __$$VPNLocationImplCopyWithImpl(_$VPNLocationImpl _value, $Res Function(_$VPNLocationImpl) _then)
-      : super(_value, _then);
+class _$VPNLocationCopyWithImpl<$Res> implements $VPNLocationCopyWith<$Res> {
+  _$VPNLocationCopyWithImpl(this._self, this._then);
+
+  final VPNLocation _self;
+  final $Res Function(VPNLocation) _then;
 
   /// Create a copy of VPNLocation
   /// with the given fields replaced by the non-null parameter values.
@@ -315,53 +411,230 @@ class __$$VPNLocationImplCopyWithImpl<$Res>
     Object? ipType = null,
     Object? translations = null,
     Object? countryCode = null,
+    Object? coordinates = freezed,
     Object? children = freezed,
     Object? nodeCount = freezed,
   }) {
-    return _then(_$VPNLocationImpl(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
       ipType: null == ipType
-          ? _value.ipType
+          ? _self.ipType
           : ipType // ignore: cast_nullable_to_non_nullable
               as IPType,
       translations: null == translations
-          ? _value._translations
+          ? _self.translations
           : translations // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
       countryCode: null == countryCode
-          ? _value.countryCode
+          ? _self.countryCode
           : countryCode // ignore: cast_nullable_to_non_nullable
               as String,
+      coordinates: freezed == coordinates
+          ? _self.coordinates
+          : coordinates // ignore: cast_nullable_to_non_nullable
+              as LatLng?,
       children: freezed == children
-          ? _value._children
+          ? _self.children
           : children // ignore: cast_nullable_to_non_nullable
               as List<VPNLocation>?,
       nodeCount: freezed == nodeCount
-          ? _value.nodeCount
+          ? _self.nodeCount
           : nodeCount // ignore: cast_nullable_to_non_nullable
               as int?,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [VPNLocation].
+extension VPNLocationPatterns on VPNLocation {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_VPNLocation value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _VPNLocation() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_VPNLocation value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _VPNLocation():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_VPNLocation value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _VPNLocation() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(String id, IPType ipType, Map<String, String> translations, String countryCode,
+            @LatLngConverter() LatLng? coordinates, List<VPNLocation>? children, int? nodeCount)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _VPNLocation() when $default != null:
+        return $default(_that.id, _that.ipType, _that.translations, _that.countryCode,
+            _that.coordinates, _that.children, _that.nodeCount);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(String id, IPType ipType, Map<String, String> translations, String countryCode,
+            @LatLngConverter() LatLng? coordinates, List<VPNLocation>? children, int? nodeCount)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _VPNLocation():
+        return $default(_that.id, _that.ipType, _that.translations, _that.countryCode,
+            _that.coordinates, _that.children, _that.nodeCount);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            String id,
+            IPType ipType,
+            Map<String, String> translations,
+            String countryCode,
+            @LatLngConverter() LatLng? coordinates,
+            List<VPNLocation>? children,
+            int? nodeCount)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _VPNLocation() when $default != null:
+        return $default(_that.id, _that.ipType, _that.translations, _that.countryCode,
+            _that.coordinates, _that.children, _that.nodeCount);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 @JsonSerializable()
-class _$VPNLocationImpl extends _VPNLocation {
-  const _$VPNLocationImpl(
+class _VPNLocation extends VPNLocation {
+  const _VPNLocation(
       {required this.id,
       required this.ipType,
       required final Map<String, String> translations,
       required this.countryCode,
+      @LatLngConverter() this.coordinates,
       final List<VPNLocation>? children,
       this.nodeCount})
       : _translations = translations,
         _children = children,
         super._();
-
-  factory _$VPNLocationImpl.fromJson(Map<String, dynamic> json) => _$$VPNLocationImplFromJson(json);
+  factory _VPNLocation.fromJson(Map<String, dynamic> json) => _$VPNLocationFromJson(json);
 
   @override
   final String id;
@@ -377,6 +650,9 @@ class _$VPNLocationImpl extends _VPNLocation {
 
   @override
   final String countryCode;
+  @override
+  @LatLngConverter()
+  final LatLng? coordinates;
   final List<VPNLocation>? _children;
   @override
   List<VPNLocation>? get children {
@@ -390,55 +666,94 @@ class _$VPNLocationImpl extends _VPNLocation {
   @override
   final int? nodeCount;
 
-  @override
-  String toString() {
-    return 'VPNLocation(id: $id, ipType: $ipType, translations: $translations, countryCode: $countryCode, children: $children, nodeCount: $nodeCount)';
-  }
-
   /// Create a copy of VPNLocation
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  _$$VPNLocationImplCopyWith<_$VPNLocationImpl> get copyWith =>
-      __$$VPNLocationImplCopyWithImpl<_$VPNLocationImpl>(this, _$identity);
+  _$VPNLocationCopyWith<_VPNLocation> get copyWith =>
+      __$VPNLocationCopyWithImpl<_VPNLocation>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$VPNLocationImplToJson(
+    return _$VPNLocationToJson(
       this,
     );
   }
+
+  @override
+  String toString() {
+    return 'VPNLocation(id: $id, ipType: $ipType, translations: $translations, countryCode: $countryCode, coordinates: $coordinates, children: $children, nodeCount: $nodeCount)';
+  }
 }
 
-abstract class _VPNLocation extends VPNLocation {
-  const factory _VPNLocation(
-      {required final String id,
-      required final IPType ipType,
-      required final Map<String, String> translations,
-      required final String countryCode,
-      final List<VPNLocation>? children,
-      final int? nodeCount}) = _$VPNLocationImpl;
-  const _VPNLocation._() : super._();
+/// @nodoc
+abstract mixin class _$VPNLocationCopyWith<$Res> implements $VPNLocationCopyWith<$Res> {
+  factory _$VPNLocationCopyWith(_VPNLocation value, $Res Function(_VPNLocation) _then) =
+      __$VPNLocationCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      IPType ipType,
+      Map<String, String> translations,
+      String countryCode,
+      @LatLngConverter() LatLng? coordinates,
+      List<VPNLocation>? children,
+      int? nodeCount});
+}
 
-  factory _VPNLocation.fromJson(Map<String, dynamic> json) = _$VPNLocationImpl.fromJson;
+/// @nodoc
+class __$VPNLocationCopyWithImpl<$Res> implements _$VPNLocationCopyWith<$Res> {
+  __$VPNLocationCopyWithImpl(this._self, this._then);
 
-  @override
-  String get id;
-  @override
-  IPType get ipType;
-  @override
-  Map<String, String> get translations;
-  @override
-  String get countryCode;
-  @override
-  List<VPNLocation>? get children;
-  @override
-  int? get nodeCount;
+  final _VPNLocation _self;
+  final $Res Function(_VPNLocation) _then;
 
   /// Create a copy of VPNLocation
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$VPNLocationImplCopyWith<_$VPNLocationImpl> get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? ipType = null,
+    Object? translations = null,
+    Object? countryCode = null,
+    Object? coordinates = freezed,
+    Object? children = freezed,
+    Object? nodeCount = freezed,
+  }) {
+    return _then(_VPNLocation(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      ipType: null == ipType
+          ? _self.ipType
+          : ipType // ignore: cast_nullable_to_non_nullable
+              as IPType,
+      translations: null == translations
+          ? _self._translations
+          : translations // ignore: cast_nullable_to_non_nullable
+              as Map<String, String>,
+      countryCode: null == countryCode
+          ? _self.countryCode
+          : countryCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      coordinates: freezed == coordinates
+          ? _self.coordinates
+          : coordinates // ignore: cast_nullable_to_non_nullable
+              as LatLng?,
+      children: freezed == children
+          ? _self._children
+          : children // ignore: cast_nullable_to_non_nullable
+              as List<VPNLocation>?,
+      nodeCount: freezed == nodeCount
+          ? _self.nodeCount
+          : nodeCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
 }
+
+// dart format on

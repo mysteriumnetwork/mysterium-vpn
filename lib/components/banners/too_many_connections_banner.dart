@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/components/banners/banner_body.dart';
 import 'package:mysterium_vpn/components/banners/banner_cta.dart';
 import 'package:mysterium_vpn/components/banners/banner_title.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
@@ -17,13 +18,15 @@ class TooManyConnectionsBanner extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
+    final connectionsLimitStore = ref.watch(connectionsLimitStorePOD);
+
     final handleToggleConnection = useHandleToggleConnection();
     final isConnected = useComputedValue(() => vpnStore.isConnected);
     final bannerStyle = context.c.isDarkMode ? BannerStyle.warningDark : BannerStyle.warningLight;
 
     Future<void> handleDisconnect() async {
       await handleToggleConnection();
-      vpnStore.connectionLimitReached = false;
+      connectionsLimitStore.connectionLimitReached = false;
     }
 
     return Banner(
@@ -32,7 +35,7 @@ class TooManyConnectionsBanner extends HookConsumerWidget {
         text: LocaleKeys.tooManyConnectionsBannerTitle.tr(),
         icon: SvgIcon(
           color: bannerStyle.foregroundColor,
-          asset: Assets.infoOutline,
+          asset: Asset.icons.infoOutline,
           width: 20,
           height: 20,
         ),

@@ -8,7 +8,6 @@ on:
       - master
 
 jobs:
-
   quality_checks:
     name: Quality Checks (Lint, Test, Build Check)
     runs-on: ubuntu-latest
@@ -18,7 +17,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-      
+
+      - name: Materialize .env files from repo secrets
+        shell: bash
+        env:
+          ENV_DEV: ${{ secrets.ENV_DEV }}
+          ENV_PROD: ${{ secrets.ENV_PROD }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$ENV_DEV" > .env.dev
+          chmod 600 .env.dev
+          printf '%s' "$ENV_PROD" > .env.prod
+          chmod 600 .env.prod
+
       - name: Setup Flutter Version Management CLI
         uses: flutter-actions/setup-fvm@v1.0 #v1.0 is tag, v1 is branch
 
@@ -49,18 +60,22 @@ jobs:
         run: fvm flutter analyze
 
       - name: Run Flutter Unit Tests
-        run: fvm flutter test
+        run: make run-unit-tests
 
       - run: |
           sudo apt-get update -y
           sudo apt-get install -y ninja-build libgtk-3-dev libayatana-appindicator3-dev libsecret-1-dev libjsoncpp-dev libcurl4-openssl-dev
       - name: Build Check (Linux, fast and cheap)
-        run: fvm flutter build linux --no-pub --debug --dart-define FLAVOR=DEV
+        run: fvm flutter build linux --no-pub --debug --dart-define-from-file=".env.dev"
 
       # We assume that version for DEV builds is commited
       - name: Decide build version
         id: calculate-version
-        run: echo "version=`fvm dart run cider version`" >> "$GITHUB_OUTPUT"
+        run: |
+          FULL_VERSION=$(fvm dart run cider version)
+          # Remove build number if present (everything after +) and trim whitespace
+          VERSION_WITHOUT_BUILD=$(echo "$FULL_VERSION" | sed 's/+.*//' | tr -d '[:space:]')
+          echo "version=${VERSION_WITHOUT_BUILD}" >> "$GITHUB_OUTPUT"
 
       - name: Decide build number
         id: calculate-build
@@ -70,21 +85,21 @@ jobs:
   build_ios:
     name: Publish iOS app to TestFlight
     needs: [ quality_checks ]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
     uses: ./.github/workflows/_build-ios.yml
     with:
       build_version: ${{ needs.quality_checks.outputs.dev_version }}
       build_number: ${{ needs.quality_checks.outputs.dev_build }}
       bundle_id: com.mysteriumvpn.test
       flavor: "dev"
-      flavor_dart: "DEV"
+      env_file: ".env.dev"
     secrets: inherit
 
   # Published as TestFlight build of separate application to https://appstoreconnect.apple.com/apps/6450715542/distribution/ios/version/inflight
   build_macos:
     name: Publish macOS app to TestFlight
     needs: [ quality_checks ]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
     uses: ./.github/workflows/_build-macos.yml
     with:
       build_version: ${{ needs.quality_checks.outputs.dev_version }}
@@ -92,14 +107,14 @@ jobs:
       bundle_id: com.mysteriumvpn.test
       product_name: "Mysterium VPN Test"
       flavor: "dev"
-      flavor_dart: "DEV"
+      env_file: ".env.dev"
     secrets: inherit
 
   # Published as TestFlight build of separate application to https://play.google.com/console/u/0/developers/7955390843158584488/app/4973980590971676436/bundle-explorer-selector
   build_android:
     name: Publish Android app to Internal Testing
     needs: [ quality_checks ]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
     uses: ./.github/workflows/_build-android.yml
     with:
       build_version: ${{ needs.quality_checks.outputs.dev_version }}
@@ -108,14 +123,14 @@ jobs:
       package_track: internal
       package_status: completed
       flavor: "dev"
-      flavor_dart: "DEV"
+      env_file: ".env.dev"
     secrets: inherit
 
   # Published as build of separate application to https://partner.microsoft.com/en-us/dashboard/apps/9MZRX8P6FXC4/managepackages
   build_windows:
     name: Publish Windows app
     needs: [ quality_checks ]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
     uses: ./.github/workflows/_build-windows.yml
     with:
       build_version: ${{ needs.quality_checks.outputs.dev_version }}
@@ -124,6 +139,7 @@ jobs:
       product_identity: "UABMNTechnologijos.MysteriumVPNTest"
       application_name: "Mysterium VPN Test"
       application_logo: "assets/logo/dev/desktop.png"
-      flavor_dart: "DEV"
-      standalone_sign: false
+      env_file: ".env.dev"
+      standalone_sign: true
+      standalone_keyvault_certificate: "mysteriumvpn-selfsigned"
     secrets: inherit

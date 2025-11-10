@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
 
 class FilterService {
   static String currentLocale = kFallbackLocale.languageCode;
@@ -9,39 +9,45 @@ class FilterService {
     List<VPNLocation> data, {
     required String locale,
     String? keyword,
-    bool shouldSortList = true,
+    bool shouldSortList = false,
   }) {
-    final query = keyword?.toLowerCase().trim();
+    final query = keyword?.normalized ?? '';
 
     var result = [...data];
-    if (query != null && query.isNotEmpty) {
-      result = data.where(
-        (it) {
-          final code = it.id.toLowerCase();
-          final name = it.translations[locale]?.toLowerCase();
-          return (name?.contains(query) ?? false) || code.contains(query);
-        },
-      ).toList();
+    if (query.isNotEmpty) {
+      result = data.map((it) => query.matched(it, locale)).nonNulls.toList();
     }
-    if (shouldSortList) {
-      return result.sortedBy((it) => it.translations[locale] ?? it.id);
-    } else {
-      return result;
-    }
-  }
 
-  List<VPNLocation> filterRecentLocations(
-    List<VPNLocation> data, {
-    required String keyword,
-    required String locale,
-    required Set<VPNLocation> availableLocations,
-  }) {
-    final availableRecents = availableLocations.where(data.contains).toList();
-    return filterLocations(
-      availableRecents,
-      keyword: keyword,
-      shouldSortList: false,
-      locale: locale,
-    );
+    if (shouldSortList) {
+      result = result.sortedBy((it) => it.translations[locale] ?? it.id);
+    }
+
+    return result;
+  }
+}
+
+extension _QueryExtension on String {
+  String get normalized => trim().toLowerCase();
+
+  VPNLocation? matched(VPNLocation location, String locale) {
+    if (isEmpty) {
+      return location;
+    }
+
+    final code = location.id.normalized;
+    final name = location.translations[locale]?.normalized;
+
+    if (location.children != null) {
+      final children = location.children!.map((it) => matched(it, locale)).nonNulls.toList();
+      if (children.isNotEmpty) {
+        return location.copyWith(children: children);
+      }
+    }
+
+    if ((name?.contains(this) ?? false) || code.contains(this)) {
+      return location;
+    }
+
+    return null;
   }
 }

@@ -4,8 +4,9 @@ import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/ripple.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/purchasable_product.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/product_pricing.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -24,6 +25,7 @@ class ProductItemVariantD extends StatelessWidget {
   final bool isSelected;
   final bool isDarkTheme;
   final bool isPopular;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -46,12 +48,10 @@ class ProductItemVariantD extends StatelessWidget {
                 ),
           ),
         if (isSelected)
-          const Positioned(
+          Positioned(
             top: 10,
             right: 10,
-            child: SvgIcon(
-              asset: Assets.checkmark,
-            ),
+            child: SvgIcon(asset: Asset.icons.checkmark),
           ),
         RippleWidget(
           onTap: onProductSelected,

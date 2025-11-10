@@ -65,20 +65,48 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
     });
   }
 
-  late final _$canShowMarketingConsentDialogAtom =
-      Atom(name: '_UserPreferencesStore.canShowMarketingConsentDialog', context: context);
+  late final _$_pushNotificationsPermissionGrantedAtom =
+      Atom(name: '_UserPreferencesStore._pushNotificationsPermissionGranted', context: context);
 
-  @override
-  bool get canShowMarketingConsentDialog {
-    _$canShowMarketingConsentDialogAtom.reportRead();
-    return super.canShowMarketingConsentDialog;
+  bool? get pushNotificationsPermissionGranted {
+    _$_pushNotificationsPermissionGrantedAtom.reportRead();
+    return super._pushNotificationsPermissionGranted;
   }
 
   @override
-  set canShowMarketingConsentDialog(bool value) {
-    _$canShowMarketingConsentDialogAtom.reportWrite(value, super.canShowMarketingConsentDialog, () {
-      super.canShowMarketingConsentDialog = value;
+  bool? get _pushNotificationsPermissionGranted => pushNotificationsPermissionGranted;
+
+  @override
+  set _pushNotificationsPermissionGranted(bool? value) {
+    _$_pushNotificationsPermissionGrantedAtom
+        .reportWrite(value, super._pushNotificationsPermissionGranted, () {
+      super._pushNotificationsPermissionGranted = value;
     });
+  }
+
+  late final _$nextPromptToShowAtom =
+      Atom(name: '_UserPreferencesStore.nextPromptToShow', context: context);
+
+  @override
+  UserPromptType get nextPromptToShow {
+    _$nextPromptToShowAtom.reportRead();
+    return super.nextPromptToShow;
+  }
+
+  @override
+  set nextPromptToShow(UserPromptType value) {
+    _$nextPromptToShowAtom.reportWrite(value, super.nextPromptToShow, () {
+      super.nextPromptToShow = value;
+    });
+  }
+
+  late final _$evaluateNextPromptToShowAsyncAction =
+      AsyncAction('_UserPreferencesStore.evaluateNextPromptToShow', context: context);
+
+  @override
+  @visibleForTesting
+  Future<void> evaluateNextPromptToShow() {
+    return _$evaluateNextPromptToShowAsyncAction.run(() => super.evaluateNextPromptToShow());
   }
 
   late final _$shouldShowMarketingConsentAsyncAction =
@@ -86,8 +114,19 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
 
   @override
   @visibleForTesting
-  Future<void> shouldShowMarketingConsent() {
+  Future<bool> shouldShowMarketingConsent() {
     return _$shouldShowMarketingConsentAsyncAction.run(() => super.shouldShowMarketingConsent());
+  }
+
+  late final _$shouldShowPushNotificationsPermissionPromptAsyncAction = AsyncAction(
+      '_UserPreferencesStore.shouldShowPushNotificationsPermissionPrompt',
+      context: context);
+
+  @override
+  @visibleForTesting
+  Future<bool> shouldShowPushNotificationsPermissionPrompt() {
+    return _$shouldShowPushNotificationsPermissionPromptAsyncAction
+        .run(() => super.shouldShowPushNotificationsPermissionPrompt());
   }
 
   late final _$setMarketingConsentShownAsyncAction =
@@ -124,15 +163,33 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
     return _$getMarketingConsentAsyncAction.run(() => super.getMarketingConsent());
   }
 
+  late final _$setPushNotificationsShownAsyncAction =
+      AsyncAction('_UserPreferencesStore.setPushNotificationsShown', context: context);
+
+  @override
+  Future<void> setPushNotificationsShown({required bool userAllowed}) {
+    return _$setPushNotificationsShownAsyncAction
+        .run(() => super.setPushNotificationsShown(userAllowed: userAllowed));
+  }
+
+  late final _$updatePushNotificationsPermissionsAsyncAction =
+      AsyncAction('_UserPreferencesStore.updatePushNotificationsPermissions', context: context);
+
+  @override
+  Future<void> updatePushNotificationsPermissions() {
+    return _$updatePushNotificationsPermissionsAsyncAction
+        .run(() => super.updatePushNotificationsPermissions());
+  }
+
   late final _$_UserPreferencesStoreActionController =
       ActionController(name: '_UserPreferencesStore', context: context);
 
   @override
-  void initStore({required bool shouldCreateMarketingContact}) {
+  void initStore() {
     final _$actionInfo = _$_UserPreferencesStoreActionController.startAction(
         name: '_UserPreferencesStore.initStore');
     try {
-      return super.initStore(shouldCreateMarketingContact: shouldCreateMarketingContact);
+      return super.initStore();
     } finally {
       _$_UserPreferencesStoreActionController.endAction(_$actionInfo);
     }
@@ -144,7 +201,7 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
 setMarketingConsentFuture: ${setMarketingConsentFuture},
 updateMarketingConsentFuture: ${updateMarketingConsentFuture},
 getMarketingConsentFuture: ${getMarketingConsentFuture},
-canShowMarketingConsentDialog: ${canShowMarketingConsentDialog},
+nextPromptToShow: ${nextPromptToShow},
 marketingConsent: ${marketingConsent}
     ''';
   }

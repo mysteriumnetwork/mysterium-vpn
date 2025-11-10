@@ -32,37 +32,26 @@ mixin _$LatLngStore on _LatLngStore, Store {
     });
   }
 
-  late final _$_cityCoordinatesFutureAtom =
-      Atom(name: '_LatLngStore._cityCoordinatesFuture', context: context);
-
-  ObservableFuture<Map<String, LatLng>> get cityCoordinatesFuture {
-    _$_cityCoordinatesFutureAtom.reportRead();
-    return super._cityCoordinatesFuture;
-  }
-
-  @override
-  ObservableFuture<Map<String, LatLng>> get _cityCoordinatesFuture => cityCoordinatesFuture;
-
-  bool __cityCoordinatesFutureIsInitialized = false;
-
-  @override
-  set _cityCoordinatesFuture(ObservableFuture<Map<String, LatLng>> value) {
-    _$_cityCoordinatesFutureAtom.reportWrite(
-        value, __cityCoordinatesFutureIsInitialized ? super._cityCoordinatesFuture : null, () {
-      super._cityCoordinatesFuture = value;
-      __cityCoordinatesFutureIsInitialized = true;
-    });
-  }
-
   late final _$_LatLngStoreActionController =
       ActionController(name: '_LatLngStore', context: context);
 
   @override
-  LatLng? coordinatesFor(String locationId) {
+  LatLng? coordinatesForCountry(String countryCode) {
     final _$actionInfo =
-        _$_LatLngStoreActionController.startAction(name: '_LatLngStore.coordinatesFor');
+        _$_LatLngStoreActionController.startAction(name: '_LatLngStore.coordinatesForCountry');
     try {
-      return super.coordinatesFor(locationId);
+      return super.coordinatesForCountry(countryCode);
+    } finally {
+      _$_LatLngStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  LatLng? coordinatesForCity(VPNLocation location) {
+    final _$actionInfo =
+        _$_LatLngStoreActionController.startAction(name: '_LatLngStore.coordinatesForCity');
+    try {
+      return super.coordinatesForCity(location);
     } finally {
       _$_LatLngStoreActionController.endAction(_$actionInfo);
     }

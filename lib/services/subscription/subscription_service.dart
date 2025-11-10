@@ -1,6 +1,5 @@
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:mysterium_vpn/models/purchasable_product.dart';
-import 'package:mysterium_vpn/models/subscription.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
 
 abstract class SubscriptionService {

@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/components/horizontal_scroll_indicator.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/views/locations/components/recent_location_item.dart';
 
 class RecentLocationsList extends HookWidget {

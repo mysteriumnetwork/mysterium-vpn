@@ -4,23 +4,24 @@ import 'package:collection/collection.dart';
 import 'package:configcat_client/configcat_client.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/models/ip_info.dart';
-import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
-import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:talker/talker.dart';
 
 abstract class ConfigCatStore with Store {
   ConfigCatStore(
     this._client,
-    this._logger,
+    this.logger,
     this._ipInfoStore,
   ) {
     _init();
   }
 
   final ConfigCatClient _client;
-  final Talker _logger;
+  @protected
+  final Talker logger;
   final RealIPInfoStore _ipInfoStore;
 
   @readonly
@@ -42,7 +43,7 @@ abstract class ConfigCatStore with Store {
       configFuture = configFuture.replace(_fetch());
       await configFuture;
     } catch (e, stack) {
-      _logger.handle(e, stack);
+      logger.handle(e, stack);
     }
   }
 
@@ -54,12 +55,12 @@ abstract class ConfigCatStore with Store {
 
       final result = await _client.forceRefresh();
       if (!result.isSuccess) {
-        _logger.warning('Failed to refresh ConfigCat: ${result.error}');
+        logger.warning('Failed to refresh ConfigCat: ${result.error}');
       }
 
       return await _client.getAllValues();
     } catch (e, stack) {
-      _logger.handle(e, stack);
+      logger.handle(e, stack);
       return {};
     }
   }
@@ -72,7 +73,7 @@ abstract class ConfigCatStore with Store {
       }
       return await _client.getAllValues();
     } catch (e, stack) {
-      _logger.handle(e, stack);
+      logger.handle(e, stack);
       return {};
     }
   }
@@ -93,7 +94,7 @@ abstract class ConfigCatStore with Store {
       }
       user = (identifier, email);
     } catch (e, stack) {
-      _logger.handle(e, stack);
+      logger.handle(e, stack);
       user = ('anonymous', 'anonymous');
     }
 
@@ -102,7 +103,7 @@ abstract class ConfigCatStore with Store {
       try {
         ipInfo = await _ipInfoStore.infoFuture;
       } catch (e, stack) {
-        _logger.handle(e, stack);
+        logger.handle(e, stack);
         ipInfo = null;
       }
     }
@@ -111,7 +112,7 @@ abstract class ConfigCatStore with Store {
     try {
       version = await PackageInfo.fromPlatform().then((value) => value.version);
     } catch (e, stack) {
-      _logger.handle(e, stack);
+      logger.handle(e, stack);
       version = null;
     }
 

@@ -1,6 +1,8 @@
 import 'package:latlong2/latlong.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/services/data/local/assets_service.dart';
+import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
 
 part 'latlng_store.g.dart';
 
@@ -16,11 +18,16 @@ abstract class _LatLngStore with Store {
   late ObservableFuture<Map<String, LatLng>> _countryCoordinatesFuture =
       ObservableFuture(_assetsService.getCoordinates());
 
-  @readonly
-  late ObservableFuture<Map<String, LatLng>> _cityCoordinatesFuture = ObservableFuture.value({});
+  @action
+  LatLng? coordinatesForCountry(String countryCode) =>
+      _countryCoordinatesFuture.value?[countryCode.toUpperCase()];
 
   @action
-  LatLng? coordinatesFor(String locationId) =>
-      _countryCoordinatesFuture.value?[locationId.toUpperCase()] ??
-      _cityCoordinatesFuture.value?[locationId];
+  LatLng? coordinatesForCity(VPNLocation location) {
+    if (location.isCountry) {
+      return null;
+    }
+
+    return location.coordinates;
+  }
 }

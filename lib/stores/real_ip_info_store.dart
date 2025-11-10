@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/models/ip_info.dart';
-import 'package:mysterium_vpn/services/api/external_api_service.dart';
-import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:wireguard_dart/connection_status.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
 part 'real_ip_info_store.g.dart';
@@ -41,7 +42,14 @@ abstract class _RealIPInfoStore with Store {
       await _preferences.setIPInfo(info);
     }
     if (info != null) {
-      _analyticsStore.setUserProperty('country_user', info.country);
+      unawaited(
+        _analyticsStore.setUserProperty(
+          AnalyticsUserProperty.fromEnum(
+            name: AnalyticsUserPropName.countryUser,
+            value: info.country,
+          ),
+        ),
+      );
     }
     return info;
   }

@@ -1,8 +1,8 @@
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:latlong2/latlong.dart';
 
 class LatLngAdapter extends TypeAdapter<LatLng> {
-  LatLngAdapter({required this.typeId});
+  const LatLngAdapter({required this.typeId});
 
   @override
   final int typeId;

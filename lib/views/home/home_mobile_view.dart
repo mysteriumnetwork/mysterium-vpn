@@ -4,17 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_app_bar.dart';
 import 'package:mysterium_vpn/views/home/home_connection_view.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/locations_slider_mobile_view.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart' hide PanelState;
-import 'package:wireguard_dart/connection_status.dart';
 
 class HomeMobileView extends HookConsumerWidget {
   const HomeMobileView({super.key});
@@ -26,13 +27,13 @@ class HomeMobileView extends HookConsumerWidget {
     final homeState = ref.watch(homeStateProvider.notifier);
     final (appBarKey, appBarBox) = useRenderObject<RenderBox>();
     final appBarHeight = appBarBox?.size.height ?? kToolbarHeight;
-    final locationsStore = ref.watch(locationsStorePOD);
+    final locationsQueryStore = ref.watch(locationsQueryStorePOD);
     final topSectionHeight = appBarHeight + 40;
 
     useReaction(
       () => vpnStore.connectionStatus,
       (status) {
-        if (status != ConnectionStatus.connected) {
+        if (status != VpnConnectionStatus.connected) {
           return;
         }
 
@@ -44,7 +45,7 @@ class HomeMobileView extends HookConsumerWidget {
     );
 
     useReaction(
-      () => locationsStore.searchKeyword,
+      () => locationsQueryStore.search,
       (_) {
         homeState.scrollToLocations();
       },
@@ -60,7 +61,8 @@ class HomeMobileView extends HookConsumerWidget {
     return LayoutBuilder(
       builder: (context, layoutConstraints) => Observer(
         builder: (context) {
-          final minHeight = vpnStore.isConnected ? 270.0 : 200.0;
+          final bottomOffset = MediaQuery.paddingOf(context).bottom + 16;
+          final minHeight = (vpnStore.isConnected ? 270.0 : 200.0) + bottomOffset;
           final constraints = layoutConstraints.copyWith(
             maxHeight: max(
               (layoutConstraints.maxHeight * PanelState.open.extent) - topSectionHeight,
@@ -98,10 +100,8 @@ class HomeMobileView extends HookConsumerWidget {
                         decoration: BoxDecoration(color: theme.colorScheme.surfaceContainerHighest),
                         child: HomeAppBar(
                           key: appBarKey,
-                          supportIcon:
-                              context.c.isDarkMode ? Assets.supportDark : Assets.supportLight,
-                          settingsIcon:
-                              context.c.isDarkMode ? Assets.settingsDark : Assets.settingsLight,
+                          supportIcon: Asset.icons.support(context),
+                          settingsIcon: Asset.icons.settingsAdaptive(context),
                         ),
                       ),
                       const Expanded(child: HomeConnectionView()),

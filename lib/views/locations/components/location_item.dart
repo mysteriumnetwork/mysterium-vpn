@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
@@ -10,8 +12,9 @@ import 'package:mysterium_vpn/components/connect_text_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/flag.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class LocationItem extends HookConsumerWidget {
@@ -29,21 +32,36 @@ class LocationItem extends HookConsumerWidget {
     final theme = Theme.of(context);
     final vpnStore = ref.watch(vpnStorePOD);
     final remoteConfig = ref.watch(remoteConfigStorePOD);
+    final locationsQueryStore = ref.watch(locationsQueryStorePOD);
+    final query = useComputedValue(() => locationsQueryStore.searchTrimmed);
+
     final onTap = useComputedValue(() => vpnStore.isLoading ? null : this.onTap, [this.onTap]);
     final children = location.children ?? const <VPNLocation>[];
+    final childrenRef = useRef(children)..value = children;
+
     final showCitiesAndStates = useComputedValue(
       () => remoteConfig.showCitiesAndStates && children.isNotEmpty,
       [children],
     );
     final isExpanded = useState(false);
 
-    void handleParentPressed() {
-      if (showCitiesAndStates) {
-        isExpanded.value = !isExpanded.value;
-      } else {
-        onTap?.call(location);
-      }
+    void handleToggleExpanded() {
+      isExpanded.value = !isExpanded.value;
     }
+
+    useEffect(
+      () {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (context.mounted) {
+            isExpanded.value = query.isNotEmpty &&
+                childrenRef.value
+                    .any((it) => it.queried(query, context.locale.languageCode) != null);
+          }
+        });
+        return null;
+      },
+      [query, isExpanded, childrenRef],
+    );
 
     return Container(
       constraints: const BoxConstraints(minHeight: 64),
@@ -57,19 +75,21 @@ class LocationItem extends HookConsumerWidget {
         children: [
           _LocationItem(
             location: location,
-            onTap: handleParentPressed,
+            onTap: showCitiesAndStates ? handleToggleExpanded : null,
             onToggleConnectionTap: onTap == null ? null : () => onTap(location),
             label: showCitiesAndStates
                 ? LocaleKeys.locationItemCityCount.plural(children.length)
                 : LocaleKeys.locationItemNodeCount.plural(location.nodeCount ?? 0),
             isExpanded: showCitiesAndStates ? isExpanded.value : null,
             flag: location.countryCode,
+            query: query,
           ),
           if (showCitiesAndStates && isExpanded.value)
             for (final child in children)
               _ChildLocationItem(
                 value: child,
                 onTap: onTap == null ? null : () => onTap(child),
+                query: query,
               ),
         ],
       ),
@@ -81,18 +101,22 @@ class _ChildLocationItem extends StatelessWidget {
   const _ChildLocationItem({
     required this.value,
     required this.onTap,
+    required this.query,
   });
 
   final VPNLocation value;
   final VoidCallback? onTap;
+  final String query;
 
   @override
   Widget build(BuildContext context) {
     final nodeCount = value.nodeCount ?? 0;
     return _LocationItem(
       location: value,
-      onTap: onTap,
+      onTap: null,
+      onToggleConnectionTap: onTap,
       label: LocaleKeys.locationItemNodeCount.plural(nodeCount),
+      query: query,
     );
   }
 }
@@ -102,6 +126,7 @@ class _LocationItem extends HookWidget {
     required this.location,
     required this.onTap,
     required this.label,
+    required this.query,
     this.onToggleConnectionTap,
     this.isExpanded,
     this.flag,
@@ -113,12 +138,16 @@ class _LocationItem extends HookWidget {
   final String label;
   final bool? isExpanded;
   final String? flag;
+  final String query;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final title = location.getName(context);
     final isConnected = useIsLocationConnected(location);
+
+    final queryMatchIndex = title.trim().toLowerCase().indexOf(query.trim().toLowerCase());
+
     return RawMaterialButton(
       fillColor: theme.colorScheme.primaryContainer,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -131,6 +160,7 @@ class _LocationItem extends HookWidget {
         padding: const EdgeInsets.all(12),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: flag == null ? CrossAxisAlignment.start : CrossAxisAlignment.center,
           spacing: 20,
           children: [
             if (flag != null) Flag(countryCode: flag!, size: 30),
@@ -140,14 +170,11 @@ class _LocationItem extends HookWidget {
                 height: 30,
                 alignment: Alignment.centerRight,
                 child: SvgIcon(
-                  height: 20,
-                  width: 20,
+                  height: 24,
+                  width: 24,
                   asset: (isConnected ?? false)
-                      ? Assets.cityConnected
-                      : switch (theme.brightness) {
-                          Brightness.light => Assets.cityLight,
-                          Brightness.dark => Assets.cityDark,
-                        },
+                      ? Asset.icons.cityConnected
+                      : Asset.icons.city(context),
                 ),
               ),
             Expanded(
@@ -156,10 +183,42 @@ class _LocationItem extends HookWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 spacing: 6,
                 children: [
-                  EasyText(
-                    title,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
+                  Text.rich(
+                    queryMatchIndex == -1
+                        ? TextSpan(text: title)
+                        : TextSpan(
+                            children: [
+                              TextSpan(
+                                text: title.substring(0, queryMatchIndex),
+                                style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              TextSpan(
+                                text: title.substring(
+                                  queryMatchIndex,
+                                  queryMatchIndex + query.length,
+                                ),
+                                style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                  backgroundColor: theme.colorScheme.primary.withValues(alpha: .3),
+                                ),
+                              ),
+                              TextSpan(
+                                text: title.substring(queryMatchIndex + query.length),
+                                style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                    style: GoogleFonts.montserrat(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                    ),
                     maxLines: title.hasMultipleWords ? 2 : 1,
                   ),
                   Row(
@@ -182,10 +241,7 @@ class _LocationItem extends HookWidget {
                           child: SvgIcon(
                             height: 12,
                             width: 12,
-                            asset: switch (theme.brightness) {
-                              Brightness.light => Assets.chevronRight,
-                              Brightness.dark => Assets.chevronRight,
-                            },
+                            asset: Asset.icons.chevronRight,
                             color: switch (theme.brightness) {
                               Brightness.light => Palette.lightBlack,
                               Brightness.dark => Palette.white,

@@ -9,14 +9,14 @@ plugins {
 
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
-   if (keystorePropertiesFile.exists()) {
-       keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-   }
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
 
-   android {
+android {
 
     ndkVersion = "27.0.12077973"
-    compileSdk = 35
+    compileSdk = 36
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -39,8 +39,8 @@ def keystorePropertiesFile = rootProject.file('key.properties')
         applicationId "com.mysteriumvpn.android"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 23
-        targetSdk = 35
+        minSdkVersion = flutter.minSdkVersion
+        targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
         multiDexEnabled true
@@ -51,38 +51,38 @@ def keystorePropertiesFile = rootProject.file('key.properties')
         testInstrumentationRunnerArguments clearPackageData: "true"
     }
 
-       flavorDimensions "env"
-       productFlavors {
-           create("dev") {
-               dimension "env"
-               applicationIdSuffix ".test"
-               manifestPlaceholders = [ "appLabel": "Mysterium VPN Test"]
-           }
-       create("prod") {
-               dimension "env"
-               manifestPlaceholders = [ "appLabel": "Mysterium VPN"]
-           }
-       }
+    flavorDimensions "env"
+    productFlavors {
+        register("dev") {
+            dimension "env"
+            applicationIdSuffix ".test"
+            manifestPlaceholders = ["appLabel": "Mysterium VPN Test"]
+        }
+        register("prod") {
+            dimension "env"
+            manifestPlaceholders = ["appLabel": "Mysterium VPN"]
+        }
+    }
 
     signingConfigs {
-       release {
-           keyAlias keystoreProperties['keyAlias']
-           keyPassword keystoreProperties['keyPassword']
-           storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-           storePassword keystoreProperties['storePassword']
-       }
-   }
-   buildTypes {
-       release {
-           signingConfig signingConfigs.release
-       }
-   }
-       namespace 'com.mysteriumvpn.android'
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+    namespace 'com.mysteriumvpn.android'
 
-   }
+}
 
 dependencies {
-    androidTestUtil "androidx.test:orchestrator:1.5.1"
+    androidTestUtil "androidx.test:orchestrator:1.6.1"
 }
 
 flutter {

@@ -2,12 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' hide Banner;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/styles/assets.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/banners/banner.dart';
 import 'package:mysterium_vpn/components/banners/banner_body.dart';
 import 'package:mysterium_vpn/components/banners/banner_cta.dart';
 import 'package:mysterium_vpn/components/banners/banner_title.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
@@ -31,7 +31,7 @@ class AppVersionUpdateBanner extends HookConsumerWidget {
 
     return Banner(
       title: BannerTitle(
-        iconAsset: Assets.appUpdate,
+        iconAsset: Asset.icons.appUpdate,
         text: LocaleKeys.appUpdateAvailableTitle.tr(),
       ),
       body: BannerBody(text: LocaleKeys.appUpdateAvailableDesc.tr()),
