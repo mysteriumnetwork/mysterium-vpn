@@ -20,7 +20,9 @@ class WelcomeDesktopViewLeftPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          const UnauthenticatedHeader().padding(bottom: getMediaHeight(context) * 0.02),
+          UnauthenticatedHeader(
+            padding: EdgeInsets.only(bottom: getMediaHeight(context) * 0.02),
+          ),
           const LoginHeadlines().expanded(),
           EasyButton(
             height: 60,

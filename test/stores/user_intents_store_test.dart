@@ -5,13 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:mysterium_vpn/models/ip_info.dart';
-import 'package:mysterium_vpn/models/user_intent.dart';
-import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/stores/locations_store.dart';
-import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
-import 'package:mysterium_vpn/stores/user_intents_store.dart';
-import 'package:talker/talker.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 import 'user_intents_store_test.mocks.dart';
 
@@ -19,13 +15,13 @@ import 'user_intents_store_test.mocks.dart';
   MockSpec<ApiService>(),
   MockSpec<RealIPInfoStore>(),
   MockSpec<LocationsStore>(),
-  MockSpec<Talker>(unsupportedMembers: {#configure}),
+  MockSpec<RemoteConfigStore>(),
 ])
 void main() {
   late MockApiService mockApi;
   late MockRealIPInfoStore mockRealIPInfo;
   late MockLocationsStore mockLocationsStore;
-  late MockTalker mockTalker;
+  late MockRemoteConfigStore mockRemoteConfigStore;
 
   const mockNewYorkIPInfo = IPInfo(ip: 'ip', country: 'US', city: 'new_york');
 
@@ -33,60 +29,63 @@ void main() {
         mockApi,
         mockRealIPInfo,
         mockLocationsStore,
-        mockTalker,
+        mockRemoteConfigStore,
       );
 
   setUp(() {
     mockApi = MockApiService();
     mockRealIPInfo = MockRealIPInfoStore();
     mockLocationsStore = MockLocationsStore();
-    mockTalker = MockTalker();
+    mockRemoteConfigStore = MockRemoteConfigStore();
+
+    when(mockRemoteConfigStore.userIntentBlacklist).thenReturn(<UserIntent>{});
+    when(mockRemoteConfigStore.userIntentsRefreshInterval).thenReturn(const Duration(minutes: 10));
   });
 
   group('Local intents', () {
     test('adds nearestLocation intent when country available', () async {
       when(mockRealIPInfo.infoFuture).thenAnswer((_) => ObservableFuture.value(mockNewYorkIPInfo));
-      when(mockLocationsStore.availableCountries).thenReturn({'US', 'CA'});
+      when(mockLocationsStore.countryCodes).thenReturn({'US', 'CA'});
       when(mockApi.fetchUserIntents()).thenAnswer((_) async => const <UserIntent>{});
 
       final store = buildStore();
-      await store.localIntentsFuture;
+      await store.intentsFuture;
 
       expect(store.intents, contains(UserIntent.nearestLocation));
     });
 
     test('no nearestLocation when country not available', () async {
       when(mockRealIPInfo.infoFuture).thenAnswer((_) => ObservableFuture.value(mockNewYorkIPInfo));
-      when(mockLocationsStore.availableCountries).thenReturn({'CA'});
+      when(mockLocationsStore.countryCodes).thenReturn({'CA'});
       when(mockApi.fetchUserIntents()).thenAnswer((_) async => const <UserIntent>{});
 
       final store = buildStore();
-      await store.localIntentsFuture;
+      await store.intentsFuture;
+
+      expect(store.intents, isNot(contains(UserIntent.nearestLocation)));
+    });
+
+    test('no nearestLocation when country is available but the intent is blacklisted', () async {
+      when(mockRealIPInfo.infoFuture).thenAnswer((_) => ObservableFuture.value(mockNewYorkIPInfo));
+      when(mockLocationsStore.countryCodes).thenReturn({'US', 'CA'});
+      when(mockApi.fetchUserIntents()).thenAnswer((_) async => const <UserIntent>{});
+      when(mockRemoteConfigStore.userIntentBlacklist).thenReturn({UserIntent.nearestLocation});
+
+      final store = buildStore();
+      await store.intentsFuture;
 
       expect(store.intents, isNot(contains(UserIntent.nearestLocation)));
     });
   });
 
   group('Remote intents', () {
-    test('error logged and empty set', () async {
-      when(mockRealIPInfo.infoFuture).thenAnswer((_) => ObservableFuture.value(null));
-      when(mockLocationsStore.availableCountries).thenReturn(<String>{});
-      when(mockApi.fetchUserIntents()).thenThrow(Exception('boom'));
-
-      final store = buildStore();
-      await store.apiIntentsStream.first;
-
-      expect(store.intents, isEmpty);
-      verify(mockTalker.handle(any, any)).called(1);
-    });
-
     test('first remote emission applied', () async {
       when(mockRealIPInfo.infoFuture).thenAnswer((_) => ObservableFuture.value(null));
-      when(mockLocationsStore.availableCountries).thenReturn(<String>{});
+      when(mockLocationsStore.countryCodes).thenReturn(<String>{});
       when(mockApi.fetchUserIntents()).thenAnswer((_) async => {UserIntent.p2p});
 
       final store = buildStore();
-      await store.apiIntentsStream.first;
+      await store.intentsFuture;
 
       expect(store.intents, contains(UserIntent.p2p));
     });
@@ -95,14 +94,11 @@ void main() {
   group('Union logic', () {
     test('remote + local merged', () async {
       when(mockRealIPInfo.infoFuture).thenAnswer((_) => ObservableFuture.value(mockNewYorkIPInfo));
-      when(mockLocationsStore.availableCountries).thenReturn({'US'});
+      when(mockLocationsStore.countryCodes).thenReturn({'US'});
       when(mockApi.fetchUserIntents()).thenAnswer((_) async => {UserIntent.p2p});
 
       final store = buildStore();
-      await Future.wait([
-        store.localIntentsFuture,
-        store.apiIntentsStream.first,
-      ]);
+      await store.intentsFuture;
 
       expect(
         store.intents,
@@ -112,14 +108,11 @@ void main() {
 
     test('one side empty equals other', () async {
       when(mockRealIPInfo.infoFuture).thenAnswer((_) => ObservableFuture.value(null));
-      when(mockLocationsStore.availableCountries).thenReturn(<String>{});
+      when(mockLocationsStore.countryCodes).thenReturn(<String>{});
       when(mockApi.fetchUserIntents()).thenAnswer((_) async => {UserIntent.p2p});
 
       final store = buildStore();
-      await Future.wait([
-        store.localIntentsFuture,
-        store.apiIntentsStream.first,
-      ]);
+      await store.intentsFuture;
 
       expect(store.intents, equals({UserIntent.p2p}));
     });
@@ -128,20 +121,17 @@ void main() {
   group('Loading state', () {
     test('isLoading true until first remote completes', () async {
       when(mockRealIPInfo.infoFuture).thenAnswer((_) => ObservableFuture.value(mockNewYorkIPInfo));
-      when(mockLocationsStore.availableCountries).thenReturn({'US'});
+      when(mockLocationsStore.countryCodes).thenReturn({'US'});
       final remoteCompleter = Completer<Set<UserIntent>>();
       when(mockApi.fetchUserIntents()).thenAnswer((_) => remoteCompleter.future);
 
       final store = buildStore();
-      expect(store.isLoading, isTrue);
+      expect(store.intentsFuture.status == FutureStatus.pending, isTrue);
 
       remoteCompleter.complete(<UserIntent>{});
-      await Future.wait([
-        store.localIntentsFuture,
-        store.apiIntentsStream.first,
-      ]);
+      await store.intentsFuture;
 
-      expect(store.isLoading, isFalse);
+      expect(store.intentsFuture.status == FutureStatus.pending, isFalse);
     });
   });
 }

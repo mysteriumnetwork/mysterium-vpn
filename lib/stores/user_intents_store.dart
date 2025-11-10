@@ -1,11 +1,11 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/models/user_intent.dart';
-import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/stores/locations_store.dart';
-import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
-import 'package:talker/talker.dart';
+import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'user_intents_store.g.dart';
 
@@ -17,49 +17,77 @@ abstract class _UserIntentsStore with Store {
     this._apiService,
     this._realIPInfoStore,
     this._locationsStore,
-    this._logger,
+    this._remoteConfigStore,
   ) {
-    autorun((_) {
-      _apiIntentsStream.value;
-    });
+    _reactionDisposers.addAll([
+      reaction((_) => _locationsStore.countryCodes, (_) {
+        _localIntentsFuture = _localIntentsFuture.replace(_fetchLocalIntents());
+      }),
+      reaction((_) => _realIPInfoStore.infoFuture.value, (_) {
+        _localIntentsFuture = _localIntentsFuture.replace(_fetchLocalIntents());
+      }),
+      reaction((_) => (_apiIntentsFuture, _localIntentsFuture), (_) {
+        _intentsFuture = _intentsFuture.replace(_fetchIntents());
+      }),
+    ]);
 
-    reaction((_) => _locationsStore.availableCountries, (_) {
-      _localIntentsFuture = _localIntentsFuture.replace(_fetchLocalIntents());
-    });
-
-    reaction((_) => _realIPInfoStore.infoFuture.value, (_) {
-      _localIntentsFuture = _localIntentsFuture.replace(_fetchLocalIntents());
-    });
+    _streamSubscriptions.addAll([
+      _watchAPIIntents().listen((data) {
+        _apiIntentsFuture = _apiIntentsFuture.replaceOrReset(Future.value(data));
+      }),
+    ]);
   }
 
   final ApiService _apiService;
   final RealIPInfoStore _realIPInfoStore;
   final LocationsStore _locationsStore;
-  final Talker _logger;
+  final RemoteConfigStore _remoteConfigStore;
+  final List<StreamSubscription<Object?>> _streamSubscriptions = [];
+  final List<ReactionDisposer> _reactionDisposers = [];
+
+  @observable
+  UserIntent? userIntent;
+
+  @computed
+  Set<UserIntent> get userIntents {
+    final intents = {...UserIntent.values};
+    final myCountry = _realIPInfoStore.info?.country;
+
+    if (myCountry != null) {
+      final availableCountries = {
+        ...?_locationsStore.dcLocationsFuture.value?.allLocations,
+        ...?_locationsStore.residentialLocationsFuture.value?.allLocations,
+      };
+
+      if (availableCountries.none((it) => it.countryCode == myCountry)) {
+        intents.remove(UserIntent.nearestLocation);
+      }
+    } else {
+      intents.remove(UserIntent.nearestLocation);
+    }
+
+    return intents;
+  }
 
   @readonly
-  late ObservableStream<Set<UserIntent>> _apiIntentsStream = ObservableStream(_watchAPIIntents());
+  late ObservableFuture<Set<UserIntent>> _apiIntentsFuture =
+      ObservableFuture(_apiService.fetchUserIntents());
 
   @readonly
   late ObservableFuture<Set<UserIntent>> _localIntentsFuture =
       ObservableFuture(_fetchLocalIntents());
 
-  @computed
-  Set<UserIntent> get intents => {
-        ...?_apiIntentsStream.value,
-        ...?_localIntentsFuture.value,
-      };
+  @readonly
+  late ObservableFuture<Set<UserIntent>> _intentsFuture = ObservableFuture(_fetchIntents());
 
   @computed
-  bool get isLoading =>
-      _apiIntentsStream.status == StreamStatus.waiting ||
-      _localIntentsFuture.status == FutureStatus.pending;
+  Set<UserIntent> get intents => _intentsFuture.value ?? const <UserIntent>{};
 
   Future<Set<UserIntent>> _fetchLocalIntents() async {
     final info = await _realIPInfoStore.infoFuture;
     final myCountry = info?.country;
 
-    final countries = _locationsStore.availableCountries;
+    final countries = _locationsStore.countryCodes;
     if (myCountry != null && countries.contains(myCountry)) {
       return {UserIntent.nearestLocation};
     } else {
@@ -67,22 +95,23 @@ abstract class _UserIntentsStore with Store {
     }
   }
 
-  Future<Set<UserIntent>?> _fetchAPIIntents() async {
-    try {
-      return await _apiService.fetchUserIntents();
-    } catch (error, stack) {
-      _logger.handle(error, stack);
-      return null;
-    }
+  Future<Set<UserIntent>> _fetchIntents() async {
+    final [apiIntents, localIntents] = await Future.wait([_apiIntentsFuture, _localIntentsFuture]);
+    final merged = {...apiIntents, ...localIntents};
+
+    return merged.where((it) => !_remoteConfigStore.userIntentBlacklist.contains(it)).toSet();
   }
 
   Stream<Set<UserIntent>> _watchAPIIntents() async* {
-    yield (await _fetchAPIIntents()) ?? const <UserIntent>{};
-    yield* Stream.periodic(const Duration(seconds: 2))
-        .asyncMap((_) async => (await _fetchAPIIntents()) ?? const <UserIntent>{});
+    await _apiIntentsFuture;
+    yield* Stream.periodic(_remoteConfigStore.userIntentsRefreshInterval)
+        .asyncMap((_) => _apiService.fetchUserIntents());
   }
 
   Future<void> dispose() async {
-    await _apiIntentsStream.close();
+    for (final disposer in _reactionDisposers) {
+      disposer();
+    }
+    await Future.wait(_streamSubscriptions.map((it) => it.cancel()));
   }
 }

@@ -4,16 +4,10 @@ import 'dart:io';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
-import 'package:mysterium_vpn/models/flavor_config.dart';
-import 'package:mysterium_vpn/models/pkce.dart';
-import 'package:mysterium_vpn/models/token_request.dart';
-import 'package:mysterium_vpn/models/token_response.dart';
-import 'package:mysterium_vpn/services/auth/auth_service.dart';
-import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
-import 'package:mysterium_vpn/services/auth/auth_user.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
-import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
-import 'package:mysterium_vpn/services/data/network/network_service.dart';
+import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -24,35 +18,41 @@ class RestAuthService extends AuthService {
     required NetworkService networkService,
     required AuthSessionStore authSessionStore,
     required Talker logger,
-    required FlavorValues env,
   })  : _apiAuth = api.getAuthentication(),
         _networkService = networkService,
         _authSessionStore = authSessionStore,
-        _logger = logger,
-        _env = env {
+        _logger = logger {
     _init();
   }
 
   final Authentication _apiAuth;
   final NetworkService _networkService;
+
   // TODO(Kristiajn):  Remove this dependency store should not be used in a service
   final AuthSessionStore _authSessionStore;
   final _securedStorage = SecureStorageService.instance;
   final Talker _logger;
-  final FlavorValues _env;
   final GoogleSignIn googleSignIn = GoogleSignIn.instance;
   late final Future<void> _ensureInitialized;
 
   Future<void> _init() async {
-    _ensureInitialized = googleSignIn.initialize();
+    _ensureInitialized = Platform.isWindows ? Future.value() : googleSignIn.initialize();
     await _ensureInitialized;
   }
 
   // TODO(Waldz): Fix schema for this endpoint (JSON encoding needed)
   Future<TokenResponse> signIn(TokenRequest request) async {
+    final device = AuthorizationDevice(
+      osType: Platform.operatingSystem,
+      id: request.deviceId,
+      title: Env.deviceName,
+    );
     final response = await _networkService.post(
       '/oauth/token',
-      data: request.toJson(),
+      data: {
+        ...request.toJson(),
+        'device': device.toJson(),
+      },
       headers: {'content-type': 'application/x-www-form-urlencoded'},
     );
 
@@ -66,7 +66,6 @@ class RestAuthService extends AuthService {
   Future<AuthUser> currentUser() async {
     final response = await _apiAuth.checkAuth();
     final authCheck = response.data!;
-
     return AuthUser(
       userId: authCheck.userId,
       username: authCheck.username,
@@ -74,7 +73,7 @@ class RestAuthService extends AuthService {
   }
 
   @override
-  Future<TokenResponse> singInComplete({
+  Future<TokenResponse> signInComplete({
     required TokenRequest tokenRequest,
   }) async {
     try {
@@ -123,7 +122,14 @@ class RestAuthService extends AuthService {
   }
 
   @override
-  Future<void> logout() async {
+  Future<void> logout({required bool invalidateRemotely}) async {
+    if (invalidateRemotely) {
+      try {
+        await _apiAuth.logout();
+      } catch (e, stackTrace) {
+        _logger.handle(e, stackTrace);
+      }
+    }
     await removeLocalData();
     if (!Platform.isWindows) {
       await _ensureInitialized;
@@ -133,8 +139,8 @@ class RestAuthService extends AuthService {
 
   Future<void> removeLocalData() async {
     final currentUsername = _authSessionStore.user?.username;
-    await _authSessionStore.setUnauthenticated();
     LocalDBService.instance.clearUser();
+    await _authSessionStore.setUnauthenticated();
 
     if (currentUsername != null && currentUsername.isNotEmpty) {
       _logger.info('User $currentUsername logged out');
@@ -150,7 +156,6 @@ class RestAuthService extends AuthService {
   @override
   Future<String> signInWithApple() async {
     try {
-      await _ensureInitialized;
       if (!await SignInWithApple.isAvailable()) {
         throw NotAvailableException();
       }
@@ -161,10 +166,8 @@ class RestAuthService extends AuthService {
           AppleIDAuthorizationScopes.fullName,
         ],
         webAuthenticationOptions: WebAuthenticationOptions(
-          clientId: _env.appleClientId,
-          redirectUri: Uri.parse(
-            _env.appleRedirectUri,
-          ),
+          clientId: Env.appleClientId,
+          redirectUri: Uri.parse(Env.appleRedirectUri),
         ),
       );
       return credential.identityToken!;

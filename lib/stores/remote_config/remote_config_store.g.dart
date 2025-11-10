@@ -212,6 +212,48 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$showUserIntentsComputed ??= Computed<bool>(() => super.showUserIntents,
               name: 'RemoteConfigStoreBase.showUserIntents'))
           .value;
+  Computed<Set<UserIntent>>? _$userIntentBlacklistComputed;
+
+  @override
+  Set<UserIntent> get userIntentBlacklist =>
+      (_$userIntentBlacklistComputed ??= Computed<Set<UserIntent>>(() => super.userIntentBlacklist,
+              name: 'RemoteConfigStoreBase.userIntentBlacklist'))
+          .value;
+  Computed<Duration>? _$userIntentsRefreshIntervalComputed;
+
+  @override
+  Duration get userIntentsRefreshInterval => (_$userIntentsRefreshIntervalComputed ??=
+          Computed<Duration>(() => super.userIntentsRefreshInterval,
+              name: 'RemoteConfigStoreBase.userIntentsRefreshInterval'))
+      .value;
+  Computed<int>? _$recentLocationsLimitComputed;
+
+  @override
+  int get recentLocationsLimit =>
+      (_$recentLocationsLimitComputed ??= Computed<int>(() => super.recentLocationsLimit,
+              name: 'RemoteConfigStoreBase.recentLocationsLimit'))
+          .value;
+  Computed<MapConfig>? _$mapConfigComputed;
+
+  @override
+  MapConfig get mapConfig => (_$mapConfigComputed ??=
+          Computed<MapConfig>(() => super.mapConfig, name: 'RemoteConfigStoreBase.mapConfig'))
+      .value;
+  Computed<bool>? _$subscriptionUpgradeBannerEnabledComputed;
+
+  @override
+  bool get subscriptionUpgradeBannerEnabled => (_$subscriptionUpgradeBannerEnabledComputed ??=
+          Computed<bool>(() => super.subscriptionUpgradeBannerEnabled,
+              name: 'RemoteConfigStoreBase.subscriptionUpgradeBannerEnabled'))
+      .value;
+  Computed<bool>? _$subscriptionUpgradeAutoDisplayEnabledComputed;
+
+  @override
+  bool get subscriptionUpgradeAutoDisplayEnabled =>
+      (_$subscriptionUpgradeAutoDisplayEnabledComputed ??= Computed<bool>(
+              () => super.subscriptionUpgradeAutoDisplayEnabled,
+              name: 'RemoteConfigStoreBase.subscriptionUpgradeAutoDisplayEnabled'))
+          .value;
 
   @override
   String toString() {
@@ -245,7 +287,13 @@ useStoreVersionChecker: ${useStoreVersionChecker},
 enableQaHelpers: ${enableQaHelpers},
 showCitiesAndStates: ${showCitiesAndStates},
 countriesWithCitiesOnMap: ${countriesWithCitiesOnMap},
-showUserIntents: ${showUserIntents}
+showUserIntents: ${showUserIntents},
+userIntentBlacklist: ${userIntentBlacklist},
+userIntentsRefreshInterval: ${userIntentsRefreshInterval},
+recentLocationsLimit: ${recentLocationsLimit},
+mapConfig: ${mapConfig},
+subscriptionUpgradeBannerEnabled: ${subscriptionUpgradeBannerEnabled},
+subscriptionUpgradeAutoDisplayEnabled: ${subscriptionUpgradeAutoDisplayEnabled}
     ''';
   }
 }

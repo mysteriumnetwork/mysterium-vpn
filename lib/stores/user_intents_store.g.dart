@@ -9,38 +9,53 @@ part of 'user_intents_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$UserIntentsStore on _UserIntentsStore, Store {
+  Computed<Set<UserIntent>>? _$userIntentsComputed;
+
+  @override
+  Set<UserIntent> get userIntents => (_$userIntentsComputed ??=
+          Computed<Set<UserIntent>>(() => super.userIntents, name: '_UserIntentsStore.userIntents'))
+      .value;
   Computed<Set<UserIntent>>? _$intentsComputed;
 
   @override
   Set<UserIntent> get intents => (_$intentsComputed ??=
           Computed<Set<UserIntent>>(() => super.intents, name: '_UserIntentsStore.intents'))
       .value;
-  Computed<bool>? _$isLoadingComputed;
+
+  late final _$userIntentAtom = Atom(name: '_UserIntentsStore.userIntent', context: context);
 
   @override
-  bool get isLoading => (_$isLoadingComputed ??=
-          Computed<bool>(() => super.isLoading, name: '_UserIntentsStore.isLoading'))
-      .value;
-
-  late final _$_apiIntentsStreamAtom =
-      Atom(name: '_UserIntentsStore._apiIntentsStream', context: context);
-
-  ObservableStream<Set<UserIntent>> get apiIntentsStream {
-    _$_apiIntentsStreamAtom.reportRead();
-    return super._apiIntentsStream;
+  UserIntent? get userIntent {
+    _$userIntentAtom.reportRead();
+    return super.userIntent;
   }
 
   @override
-  ObservableStream<Set<UserIntent>> get _apiIntentsStream => apiIntentsStream;
+  set userIntent(UserIntent? value) {
+    _$userIntentAtom.reportWrite(value, super.userIntent, () {
+      super.userIntent = value;
+    });
+  }
 
-  bool __apiIntentsStreamIsInitialized = false;
+  late final _$_apiIntentsFutureAtom =
+      Atom(name: '_UserIntentsStore._apiIntentsFuture', context: context);
+
+  ObservableFuture<Set<UserIntent>> get apiIntentsFuture {
+    _$_apiIntentsFutureAtom.reportRead();
+    return super._apiIntentsFuture;
+  }
 
   @override
-  set _apiIntentsStream(ObservableStream<Set<UserIntent>> value) {
-    _$_apiIntentsStreamAtom
-        .reportWrite(value, __apiIntentsStreamIsInitialized ? super._apiIntentsStream : null, () {
-      super._apiIntentsStream = value;
-      __apiIntentsStreamIsInitialized = true;
+  ObservableFuture<Set<UserIntent>> get _apiIntentsFuture => apiIntentsFuture;
+
+  bool __apiIntentsFutureIsInitialized = false;
+
+  @override
+  set _apiIntentsFuture(ObservableFuture<Set<UserIntent>> value) {
+    _$_apiIntentsFutureAtom
+        .reportWrite(value, __apiIntentsFutureIsInitialized ? super._apiIntentsFuture : null, () {
+      super._apiIntentsFuture = value;
+      __apiIntentsFutureIsInitialized = true;
     });
   }
 
@@ -66,11 +81,34 @@ mixin _$UserIntentsStore on _UserIntentsStore, Store {
     });
   }
 
+  late final _$_intentsFutureAtom =
+      Atom(name: '_UserIntentsStore._intentsFuture', context: context);
+
+  ObservableFuture<Set<UserIntent>> get intentsFuture {
+    _$_intentsFutureAtom.reportRead();
+    return super._intentsFuture;
+  }
+
+  @override
+  ObservableFuture<Set<UserIntent>> get _intentsFuture => intentsFuture;
+
+  bool __intentsFutureIsInitialized = false;
+
+  @override
+  set _intentsFuture(ObservableFuture<Set<UserIntent>> value) {
+    _$_intentsFutureAtom
+        .reportWrite(value, __intentsFutureIsInitialized ? super._intentsFuture : null, () {
+      super._intentsFuture = value;
+      __intentsFutureIsInitialized = true;
+    });
+  }
+
   @override
   String toString() {
     return '''
-intents: ${intents},
-isLoading: ${isLoading}
+userIntent: ${userIntent},
+userIntents: ${userIntents},
+intents: ${intents}
     ''';
   }
 }

@@ -1,7 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:styled_widget/styled_widget.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 // Project imports:
 
 class SvgIcon extends StatelessWidget {
@@ -13,19 +12,21 @@ class SvgIcon extends StatelessWidget {
     this.color,
   });
 
-  final String asset;
+  final SvgGenImage asset;
   final double? width;
   final double? height;
   final Color? color;
+
   @override
   Widget build(BuildContext context) => Directionality(
         textDirection: TextDirection.ltr,
-        child: SvgPicture.asset(
-          asset,
-          matchTextDirection: true,
-          width: width,
-          height: height,
-          colorFilter: color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
+        child: Center(
+          child: asset.svg(
+            width: width,
+            height: height,
+            colorFilter: color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
+            matchTextDirection: true,
+          ),
         ),
-      ).center();
+      );
 }

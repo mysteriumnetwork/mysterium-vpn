@@ -9,6 +9,7 @@ import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/header_title.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/consent/agreements.dart';
@@ -41,6 +42,7 @@ Future<bool?> showRequestTunnelPermissionsDialog(
 
 class _RequestTunnelPermissionsOptionA extends StatelessWidget {
   const _RequestTunnelPermissionsOptionA();
+
   @override
   Widget build(BuildContext context) => Dialog(
         backgroundColor: Palette.black,
@@ -108,7 +110,7 @@ class _RequestTunnelPermissionsOptionB extends HookConsumerWidget {
         ).padding(bottom: height * 0.01),
         Column(
           children: [
-            const SvgIcon(asset: Assets.settingsImg).padding(bottom: height * 0.02),
+            SvgIcon(asset: Asset.images.settings).padding(bottom: height * 0.02),
             EasyText(
               LocaleKeys.installVpnProfile.tr(),
               fontSize: 16,
@@ -117,7 +119,7 @@ class _RequestTunnelPermissionsOptionB extends HookConsumerWidget {
               textAlign: TextAlign.center,
             ).padding(bottom: height * 0.03),
             EasyText(
-              LocaleKeys.anonimityIsSafe.tr(),
+              LocaleKeys.anonymityIsSafe.tr(),
               fontSize: 16,
               maxLines: 3,
               textAlign: TextAlign.center,

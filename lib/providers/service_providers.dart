@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:app_links/app_links.dart';
 import 'package:configcat_client/configcat_client.dart';
-import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
@@ -16,27 +15,9 @@ import 'package:mysterium_vpn/common/interceptors/retry_request.dart';
 import 'package:mysterium_vpn/common/interceptors/test_flags_interceptor.dart';
 import 'package:mysterium_vpn/common/observers/crashlytics_talker_observer.dart';
 import 'package:mysterium_vpn/common/utils/translation_asset_loader.dart';
-import 'package:mysterium_vpn/models/flavor_config.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/services/api/external_api_service.dart';
-import 'package:mysterium_vpn/services/api/rest_api_service.dart';
-import 'package:mysterium_vpn/services/api/rest_external_api_service.dart';
-import 'package:mysterium_vpn/services/auth/auth_service.dart';
-import 'package:mysterium_vpn/services/auth/rest_auth_service.dart';
-import 'package:mysterium_vpn/services/data/filter_service.dart';
-import 'package:mysterium_vpn/services/data/local/assets_service.dart';
-import 'package:mysterium_vpn/services/data/local/config_cat_cache.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
-import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
-import 'package:mysterium_vpn/services/data/network/dio_network_service.dart';
-import 'package:mysterium_vpn/services/data/network/network_service.dart';
-import 'package:mysterium_vpn/services/data/network/nominatim_service.dart';
-import 'package:mysterium_vpn/services/dio_network_logger/dio_network_logger.dart';
-import 'package:mysterium_vpn/services/mqtt/service.dart';
-import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
-import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
-import 'package:mysterium_vpn/services/wiregurad/wiregurad_key_service.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:talker/talker.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -63,7 +44,6 @@ final networkServicePOD = Provider<DioNetworkService>((ref) {
 final vpnApiDioPOD = Provider<Dio>((ref) {
   final options = ref.watch(dioOptionsPOD);
   final logger = ref.watch(loggerPOD);
-  final environment = ref.watch(environmentPOD);
   final sessionStore = ref.watch(authSessionStorePOD);
   final dio = Dio(options);
 
@@ -81,7 +61,7 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
       ),
       RefreshTokenInterceptor(dio: dio, logger: logger),
       RetryRequestInterceptor(dio: dio),
-      if (kDebugMode || environment.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
+      if (kDebugMode || Env.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
       ApiErrorsInterceptor(),
       if (kDebugMode)
         TalkerDioLogger(
@@ -92,43 +72,39 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
             printErrorData: false,
           ),
         ),
-      if (environment.flavor == Flavor.dev && environment.values.isAutomated)
-        TestFlagsInterceptor(),
-      if (kDebugMode || environment.flavor == Flavor.dev)
-        CurlLoggerDioInterceptor(printOnSuccess: true, convertFormData: false),
+      if (Env.flavor == Flavor.dev && Env.isAutomated) TestFlagsInterceptor(),
     ],
   );
 
   return dio;
 });
 
-final dioOptionsPOD = Provider((ref) {
-  final environment = ref.watch(environmentPOD);
-  return BaseOptions(
-    baseUrl: environment.values.baseUrl,
+final dioOptionsPOD = Provider(
+  (ref) => BaseOptions(
+    // ignore: avoid_redundant_argument_values
+    baseUrl: Env.baseUrl,
     headers: {
       'Content-Type': 'application/json',
       'accept': 'application/json',
-      'User-Agent': environment.appUserAgent(),
-      'x-client-version': environment.buildInfo.buildVersion,
+      'User-Agent': Env.userAgent,
+      'x-client-version': Env.buildInfo.buildVersion,
       'x-client-platform': Platform.operatingSystem,
     },
     connectTimeout: const Duration(seconds: 15),
     receiveTimeout: const Duration(seconds: 15),
     sendTimeout: const Duration(seconds: 15),
-  );
-});
+  ),
+);
 
 final vpnApiMQTTPOD = Provider<MQTTService>((ref) {
-  final environment = ref.watch(environmentPOD);
   final logger = ref.watch(loggerPOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
 
   return MQTTService(
-    environment.values.mqttUrl,
-    environment.values.mqttUsername,
-    environment.values.mqttPassword,
-    'mysterium-vpn-${environment.buildInfo.buildVersion}'.truncate(23),
+    Env.mqttUrl,
+    Env.mqttUsername,
+    Env.mqttPassword,
+    'mysterium-vpn-${Env.buildInfo.buildVersion}'.truncate(23),
     logger,
     remoteConfigStore,
   );
@@ -180,7 +156,6 @@ final authServicePOD = Provider<AuthService>((ref) {
   final api = ref.watch(vpnApiPOD);
   final networkService = ref.watch(networkServicePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
-  final env = ref.watch(environmentPOD).values;
   final logger = ref.watch(loggerPOD);
 
   return RestAuthService(
@@ -188,7 +163,6 @@ final authServicePOD = Provider<AuthService>((ref) {
     networkService: networkService,
     authSessionStore: authSessionStore,
     logger: logger,
-    env: env,
   );
 });
 final loggerPOD = Provider<Talker>((ref) {
@@ -198,51 +172,42 @@ final loggerPOD = Provider<Talker>((ref) {
   );
 });
 
-final remoteConfigClientPOD = Provider<ConfigCatClient>((ref) {
-  final environment = ref.watch(environmentPOD);
-  final isTestEnv = environment.flavor == Flavor.dev;
-
-  return ConfigCatClient.get(
-    sdkKey: environment.values.remoteConfigSdkKey,
+final remoteConfigClientPOD = Provider<ConfigCatClient>(
+  (ref) => ConfigCatClient.get(
+    sdkKey: Env.remoteConfigSdkKey,
     options: ConfigCatOptions(
       pollingMode: PollingMode.manualPoll(),
-      logger: isTestEnv ? ConfigCatLogger() : null,
+      logger: Env.flavor.isDev ? ConfigCatLogger() : null,
       cache: ConfigCatPreferencesCache(),
     ),
-  );
-});
+  ),
+);
 
-final abTestingClientPOD = Provider<ConfigCatClient>((ref) {
-  final environment = ref.watch(environmentPOD);
-  final isTestEnv = environment.flavor == Flavor.dev;
-
-  return ConfigCatClient.get(
-    sdkKey: environment.values.abTestingSdkKey,
+final abTestingClientPOD = Provider<ConfigCatClient>(
+  (ref) => ConfigCatClient.get(
+    sdkKey: Env.abTestingSdkKey,
     options: ConfigCatOptions(
       pollingMode: PollingMode.lazyLoad(
-        cacheRefreshInterval: Duration(seconds: isTestEnv ? 30 : 60 * 180),
+        cacheRefreshInterval: Duration(seconds: Env.flavor.isDev ? 30 : 60 * 180),
       ),
-      logger: isTestEnv ? ConfigCatLogger() : null,
+      logger: Env.flavor.isDev ? ConfigCatLogger() : null,
       cache: ConfigCatPreferencesCache(),
     ),
-  );
-});
+  ),
+);
 
-final textsClientPOD = Provider<ConfigCatClient>((ref) {
-  final environment = ref.watch(environmentPOD);
-  final isTestEnv = environment.flavor == Flavor.dev;
-
-  return ConfigCatClient.get(
-    sdkKey: environment.values.textsSdkKey,
+final textsClientPOD = Provider<ConfigCatClient>(
+  (ref) => ConfigCatClient.get(
+    sdkKey: Env.textsSdkKey,
     options: ConfigCatOptions(
       pollingMode: PollingMode.lazyLoad(
-        cacheRefreshInterval: Duration(seconds: isTestEnv ? 30 : 60 * 180),
+        cacheRefreshInterval: Duration(seconds: Env.flavor.isDev ? 30 : 60 * 180),
       ),
-      logger: isTestEnv ? ConfigCatLogger() : null,
+      logger: Env.flavor.isDev ? ConfigCatLogger() : null,
       cache: ConfigCatPreferencesCache(),
     ),
-  );
-});
+  ),
+);
 
 final assetsLoaderPOD = Provider<AssetLoader>((ref) {
   final textsStore = ref.watch(textsStorePOD);
@@ -250,6 +215,13 @@ final assetsLoaderPOD = Provider<AssetLoader>((ref) {
 });
 
 final filterServicePOD = Provider<FilterService>((ref) => FilterService());
+
+final locationsServicePOD = Provider<LocationsService>(
+  (ref) {
+    final api = ref.watch(vpnApiPOD);
+    return LocationsService(api.getConnection());
+  },
+);
 
 final assetsServicePOD = Provider((_) => const AssetsService());
 
@@ -262,16 +234,13 @@ final wireguradKeyServicePOD = Provider<WireguradKeyService>(
 );
 
 final nominatimServicePOD = Provider<NominatimService>(
-  (ref) {
-    final env = ref.watch(environmentPOD);
-    return NominatimService(
-      LocalDBService.instance,
-      Dio(
-        BaseOptions(
-          baseUrl: 'https://nominatim.openstreetmap.org/',
-          headers: {HttpHeaders.userAgentHeader: env.appUserAgent()},
-        ),
+  (ref) => NominatimService(
+    LocalDBService.instance,
+    Dio(
+      BaseOptions(
+        baseUrl: 'https://nominatim.openstreetmap.org/',
+        headers: {HttpHeaders.userAgentHeader: Env.userAgent},
       ),
-    );
-  },
+    ),
+  ),
 );

@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:in_app_update/in_app_update.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/models/flavor_config.dart';
-import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
+import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 part 'update_availabe_store.g.dart';
@@ -12,17 +12,14 @@ part 'update_availabe_store.g.dart';
 class UpdateAvailableStore = _UpdateAvailableStore with _$UpdateAvailableStore;
 
 abstract class _UpdateAvailableStore with Store {
-  _UpdateAvailableStore(
-    this._remoteConfigStore,
-    this._flavorConfig,
-  ) {
+  _UpdateAvailableStore(this._remoteConfigStore, this._buildInfo) {
     updateAvailabilityFuture = ObservableFuture(
       _getNewVersionStatus(),
     );
   }
 
   final RemoteConfigStore _remoteConfigStore;
-  final FlavorConfig _flavorConfig;
+  final BuildInfo _buildInfo;
 
   @observable
   late ObservableFuture<UpdateAvailability?> updateAvailabilityFuture;
@@ -49,7 +46,7 @@ abstract class _UpdateAvailableStore with Store {
   @computed
   bool get appUpdateAvailable {
     final latestStableAppVersion = _remoteConfigStore.latestStableAppVersion;
-    final currentBuildVersion = _flavorConfig.buildInfo.buildVersion;
+    final currentBuildVersion = _buildInfo.buildVersion;
     final updateAvailable = updateAvailabilityFuture.value == UpdateAvailability.updateAvailable;
     if (latestStableAppVersion.compareTo(currentBuildVersion) > 0 || updateAvailable) {
       return true;

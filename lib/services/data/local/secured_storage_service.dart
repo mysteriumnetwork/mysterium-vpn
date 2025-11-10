@@ -3,35 +3,28 @@ import 'dart:async' show Future;
 import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:mysterium_vpn/common/enums/storage_keys.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/models/flavor_config.dart';
-import 'package:mysterium_vpn/models/pkce.dart';
+import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:retry/retry.dart';
 // Project imports:
 
 class SecureStorageService {
   factory SecureStorageService() => instance;
+
   SecureStorageService._internal();
+
   late FlutterSecureStorage _securedStorage;
 
   static final SecureStorageService instance = SecureStorageService._internal();
 
-  Future<void> init(FlavorConfig flavor) async {
-    _securedStorage = FlutterSecureStorage(
-      iOptions: IOSOptions(
-        accountName: flavor.values.accountName,
-      ),
-      mOptions: MacOsOptions(
-        accountName: flavor.values.accountName,
-        synchronizable: true,
-      ),
-      wOptions: const WindowsOptions(
-        useBackwardCompatibility: true,
-      ),
-      aOptions: const AndroidOptions(
-        resetOnError: true,
-      ),
+  Future<void> init() async {
+    _securedStorage = const FlutterSecureStorage(
+      iOptions: IOSOptions(accountName: Env.accountName),
+      mOptions: MacOsOptions(accountName: Env.accountName, synchronizable: true),
+      wOptions: WindowsOptions(useBackwardCompatibility: true),
+      aOptions: AndroidOptions(resetOnError: true),
     );
   }
 
@@ -126,39 +119,57 @@ class SecureStorageService {
   }
 
   Future<String?> getAccessToken() async => readOrNull(StorageKeys.accessToken.name);
+
   Future<void> saveAccessToken(String token) async => write(StorageKeys.accessToken.name, token);
+
   Future<void> removeAccessToken() async => remove(StorageKeys.accessToken.name);
 
   Future<String?> getRefreshToken() async => readOrNull(StorageKeys.refreshToken.name);
+
   Future<void> saveRefreshToken(String token) async => write(StorageKeys.refreshToken.name, token);
+
   Future<void> removeRefreshToken() async => remove(StorageKeys.refreshToken.name);
 
   Future<String?> getUserId() async => readOrNull(StorageKeys.userId.name);
+
   Future<void> saveUserId({required String userId}) async => write(StorageKeys.userId.name, userId);
+
   Future<void> removeUserId() async => remove(StorageKeys.userId.name);
 
   Future<String?> getUsername() async => readOrNull(StorageKeys.username.name);
+
   Future<void> saveUsername({required String username}) async =>
       write(StorageKeys.username.name, username);
+
   Future<void> removeUsername() async => remove(StorageKeys.username.name);
 
   Future<void> saveLastLoggedInUser({required String username}) async =>
       write(StorageKeys.lastLoggedInUser.name, username);
+
   Future<String?> getLastLoggedInUser() async => readOrNull(StorageKeys.lastLoggedInUser.name);
+
   Future<void> removeLastLoggedInUser() async => remove(StorageKeys.lastLoggedInUser.name);
 
   Future<String?> getAppLink() async => readOrNull(StorageKeys.appLink.name);
+
   Future<void> saveAppLink({required String appLink}) async =>
       write(StorageKeys.appLink.name, appLink);
+
   Future<String?> getWireguardPublicKey() async => readOrNull(StorageKeys.wireguardPublicKey.name);
+
   Future<void> saveWireguardPublicKey({required String publicKey}) async =>
       write(StorageKeys.wireguardPublicKey.name, publicKey);
+
   Future<void> removeWireguardPublicKey() async => remove(StorageKeys.wireguardPublicKey.name);
+
   Future<String?> getWireguardPrivateKey() async =>
       readOrNull(StorageKeys.wireguardPrivateKey.name);
+
   Future<void> saveWireguardPrivateKey({required String privateKey}) async =>
       write(StorageKeys.wireguardPrivateKey.name, privateKey);
+
   Future<void> removeWireguardPrivateKey() async => remove(StorageKeys.wireguardPrivateKey.name);
+
   Future<PkcePair?> getPkcePair() async {
     try {
       final codeChallenge = await read(StorageKeys.codeChallenge.name);
@@ -227,5 +238,9 @@ class SecureStorageService {
 
   Future<void> removeDeviceId() async {
     await remove(StorageKeys.deviceId.name);
+  }
+
+  Future<void> clearAll() async {
+    await _securedStorage.deleteAll();
   }
 }

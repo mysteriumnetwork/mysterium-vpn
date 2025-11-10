@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -18,11 +19,10 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/auth/auth_status.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/settings/action_button.dart';
 import 'package:mysterium_vpn/views/settings/purchased_plan.dart';
 
@@ -47,15 +47,12 @@ class _Unauthenticated extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeStore = ref.read(themeStorePOD);
-    final isDarkMode = useComputedValue(() => themeStore.isDarkMode);
-
     void handleSignIn() {
       context.beamToNamed(Routes.platformLogin.path);
     }
 
     return SettingItem(
-      asset: isDarkMode ? Assets.accountNameDark : Assets.accountNameLight,
+      asset: Asset.icons.accountName(context),
       title: LocaleKeys.accountSignInTitle.tr(),
       actionWidget: EasyButton(
         text: LocaleKeys.accountSignIn.tr(),
@@ -70,7 +67,6 @@ class _Authenticated extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeStore = ref.read(themeStorePOD);
     final subscriptionStore = ref.read(subscriptionStorePOD);
     final authStore = ref.watch(authStorePOD);
     final authSessionStore = ref.watch(authSessionStorePOD);
@@ -80,13 +76,12 @@ class _Authenticated extends HookConsumerWidget {
     final handleToggleConnection = useHandleToggleConnection();
     return Observer(
       builder: (ctx) {
-        final isDarkTheme = themeStore.isDarkMode;
         final subscription = subscriptionStore.subscriptionFuture.value;
         final isLoading = subscriptionStore.subscriptionFuture.status == FutureStatus.pending;
         return Column(
           children: [
             SettingItem(
-              asset: isDarkTheme ? Assets.billingDark : Assets.billingLight,
+              asset: Asset.icons.billing(context),
               title: LocaleKeys.myBillingPackage.tr(),
               description: subscription != null && subscription.active
                   ? PurchasedPlan(subscription: subscription)
@@ -155,7 +150,7 @@ class _Authenticated extends HookConsumerWidget {
               ),
             ),
             SettingItem(
-              asset: isDarkTheme ? Assets.accountNameDark : Assets.accountNameLight,
+              asset: Asset.icons.accountName(context),
               title: authSessionStore.user?.username ?? '',
               actionWidget: Wrap(
                 runSpacing: 10,
@@ -172,9 +167,7 @@ class _Authenticated extends HookConsumerWidget {
                         context,
                         confirmText: LocaleKeys.confirm.tr(),
                         cancelText: LocaleKeys.cancelBtn.tr(),
-                        icon: const SvgIcon(
-                          asset: Assets.warning,
-                        ),
+                        icon: SvgIcon(asset: Asset.icons.warning),
                         title: LocaleKeys.logoutConfirmationTitle.tr(),
                         content: Text(
                           vpnStore.isConnected
@@ -190,7 +183,7 @@ class _Authenticated extends HookConsumerWidget {
                         ),
                         onConfirm: () async {
                           analyticsStore.logEvent(AnalyticsEvent.logOutConfirm);
-                          await vpnStore.disconnectWireguard();
+                          await vpnStore.disconnectTunnel();
                           authStore.logout();
                         },
                         onCancel: () {
@@ -221,7 +214,7 @@ class _Authenticated extends HookConsumerWidget {
             ),
             if (!remoteConfigStore.hideDeleteAccount)
               SettingItem(
-                asset: isDarkTheme ? Assets.deleteAccountDark : Assets.deleteAccountLight,
+                asset: Asset.icons.deleteAccount(context),
                 title: LocaleKeys.cancelMyAccount.tr(),
                 actionWidget: SettingActionButton(
                   child: EasyText(

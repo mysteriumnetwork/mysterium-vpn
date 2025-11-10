@@ -78,8 +78,12 @@ devtools_options.yaml
 /assets/certificates
 android/app/.cxx/
 .scripts/
+scripts/outputs
 
 # Tests
 /test/**/*.mocks.dart
 /integration_test/test_bundle.dart
 /.sentry-native
+
+.env
+.env.*

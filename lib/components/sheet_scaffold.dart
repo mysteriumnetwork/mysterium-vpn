@@ -8,12 +8,14 @@ class SheetScaffold extends HookWidget {
     required this.sliver,
     this.headerTitle = '',
     this.header,
+    this.subheaderSliver,
     super.key,
   });
 
   final Widget sliver;
   final String headerTitle;
   final Widget? header;
+  final Widget? subheaderSliver;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class SheetScaffold extends HookWidget {
             color: context.c.isDarkMode ? Palette.deepPurple : Palette.grayScaffold,
           ),
         ),
+        if (subheaderSliver != null) subheaderSliver!,
         // Content below the header
         SliverToBoxAdapter(
           child: Container(

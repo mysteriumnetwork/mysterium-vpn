@@ -8,9 +8,5 @@
 		<string>content-filter-provider</string>
 		<string>packet-tunnel-provider</string>
 	</array>
-	<key>com.apple.security.application-groups</key>
-	<array>
-		<string>group.com.mysteriumvpn</string>
-	</array>
 </dict>
 </plist>

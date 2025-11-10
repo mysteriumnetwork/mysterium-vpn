@@ -6,7 +6,7 @@ part 'ip_info.freezed.dart';
 part 'ip_info.g.dart';
 
 @freezed
-class IPInfo with _$IPInfo {
+abstract class IPInfo with _$IPInfo {
   const factory IPInfo({
     required String ip,
     required String country,

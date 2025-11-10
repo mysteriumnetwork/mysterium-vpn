@@ -1,15 +1,12 @@
 import 'dart:async';
 
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter/widgets.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/models/user_data.dart';
-import 'package:mysterium_vpn/services/auth/auth_user.dart';
-import 'package:mysterium_vpn/services/data/local/adapters/banner_type_adapter.dart';
-import 'package:mysterium_vpn/services/data/local/adapters/lat_lng_adapter.dart';
-import 'package:mysterium_vpn/services/data/local/adapters/vpn_location_adapter.dart';
-import 'package:mysterium_vpn/services/data/local/adapters/vpn_locations_adapter.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class LocalDBService {
   factory LocalDBService() => instance;
@@ -23,40 +20,70 @@ class LocalDBService {
     Hive
       ..registerAdapter(UserDataAdapter())
       ..registerAdapter(ApprovalAdapter())
-      ..registerAdapter(VPNLocationAdapter(typeId: 3))
-      ..registerAdapter(BannerTypeAdapter(typeId: 4))
-      ..registerAdapter(VpnLocationsAdapter(typeId: 5))
-      ..registerAdapter(LatLngAdapter(typeId: 6));
+      ..registerAdapter(const VPNLocationAdapter(typeId: 3))
+      ..registerAdapter(const BannerTypeAdapter(typeId: 4))
+      ..registerAdapter(const VpnLocationsAdapter(typeId: 5))
+      ..registerAdapter(const LatLngAdapter(typeId: 6));
 
-    await Future.wait([
-      Hive.openBox<UserData>('user_data', compactionStrategy: (e, d) => false),
-      Hive.openBox<VPNLocations>('locations_data', compactionStrategy: (e, d) => false),
-      Hive.openBox<LatLng>('coordinates_data', compactionStrategy: (e, d) => false),
-    ]);
+    try {
+      await Future.wait([
+        Hive.openBox<UserData>('user_data'),
+        Hive.openBox<LatLng>('coordinates_data'),
+      ]);
+    } catch (e) {
+      // If we fail to open the boxes, we log the error and continue.
+      // This can happen if the database is corrupted.
+      // In this case, we delete the boxes and try to open them again.
+      // This will result in loss of data, but at least the app will continue to work.
+      // In a real app, we might want to notify the user about this.
+      debugPrint('Failed to open Hive boxes: $e');
+      Sentry.captureException(
+        e,
+        stackTrace: StackTrace.current,
+        hint: Hint.withMap(
+          {
+            'hint': 'Failed to open Hive boxes, deleting and recreating them',
+          },
+        ),
+      );
+      await Hive.deleteBoxFromDisk('user_data');
+      await Hive.deleteBoxFromDisk('coordinates_data');
+      await Future.wait([
+        Hive.openBox<UserData>('user_data'),
+        Hive.openBox<LatLng>('coordinates_data'),
+      ]);
+    }
   }
 
   final _userBox = Hive.box<UserData>('user_data');
-  final _locationsBox = Hive.box<VPNLocations>('locations_data');
   final _coordinatesBox = Hive.box<LatLng>('coordinates_data');
 
   Completer<AuthUser> _userSetCompleter = Completer<AuthUser>();
-  AuthUser? _currentUser;
+  LazyBox<VPNLocations>? _locationsBox;
+
+  Future<LazyBox<VPNLocations>> _getLocationsBox() async {
+    _locationsBox ??= await Hive.openLazyBox<VPNLocations>('locations_data');
+    return _locationsBox!;
+  }
 
   Future<void> setUser(AuthUser user) async {
-    _currentUser = user;
     if (!_userSetCompleter.isCompleted) {
+      _userSetCompleter.complete(user);
+      return;
+    }
+
+    final value = await _userSetCompleter.future;
+    if (value != user) {
+      _userSetCompleter = Completer<AuthUser>();
       _userSetCompleter.complete(user);
     }
   }
 
   void clearUser() {
-    _currentUser = null;
     if (_userSetCompleter.isCompleted) {
       _userSetCompleter = Completer<AuthUser>();
     }
   }
-
-  Future<AuthUser> _ensureUserSet() async => _userSetCompleter.future;
 
   Future<UserData> getUserData() async => _loadUserData();
 
@@ -97,7 +124,7 @@ class LocalDBService {
     await _saveUserData(userData);
   }
 
-  Future<void> setRecentLocation(List<VPNLocation> locations) async {
+  Future<void> setRecentLocations(List<VPNLocation> locations) async {
     final userData = await _loadUserData();
     userData.recentLocations = locations;
 
@@ -105,6 +132,9 @@ class LocalDBService {
   }
 
   Future<List<VPNLocation>> getRecentLocations() async => (await _loadUserData()).recentLocations;
+
+  Stream<List<VPNLocation>> watchRecentLocations() =>
+      _watchUserData().map((it) => it.recentLocations);
 
   Future<void> setShownBanners(List<BannerType> banners) async {
     final userData = await _loadUserData();
@@ -137,7 +167,7 @@ class LocalDBService {
   }
 
   Future<UserData> _loadUserData() async {
-    final user = await _ensureUserSet();
+    final user = await _userSetCompleter.future;
     final cacheId = user.username;
     if (!_userBox.containsKey(cacheId)) {
       await _setInitUserData(cacheId);
@@ -146,8 +176,24 @@ class LocalDBService {
     return _userBox.get(cacheId)!;
   }
 
+  Stream<UserData> _watchUserData() async* {
+    final user = await _userSetCompleter.future;
+    final cacheId = user.username;
+
+    final current = await _loadUserData();
+
+    yield current;
+
+    yield* _userBox
+        .watch(key: cacheId)
+        .map((_) => _userBox.get(cacheId))
+        .where((it) => it is UserData)
+        .cast<UserData>();
+  }
+
   Future<void> _saveUserData(UserData userData) async {
-    final cacheId = _currentUser!.username;
+    final user = await _userSetCompleter.future;
+    final cacheId = user.username;
 
     await _userBox.put(cacheId, userData);
   }
@@ -163,13 +209,18 @@ class LocalDBService {
   }
 
   Future<void> setLocations(VPNLocations locations, {required IPType type}) async {
-    await _locationsBox.put(type.name, locations);
+    final box = await _getLocationsBox();
+    await box.put(type.name, locations);
   }
 
-  VPNLocations? getLocations(IPType type) => _locationsBox.get(type.name);
+  Future<VPNLocations?> getLocations(IPType type) async {
+    final box = await _getLocationsBox();
+    return box.get(type.name);
+  }
 
   Stream<VPNLocations?> watchLocations(IPType type) async* {
-    yield* _locationsBox.watch(key: type.name).asyncMap((_) => getLocations(type));
+    final box = await _getLocationsBox();
+    yield* box.watch(key: type.name).asyncMap((_) => getLocations(type));
   }
 
   Future<void> putCoordinates(String id, LatLng coordinates) async {
