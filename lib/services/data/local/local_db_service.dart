@@ -4,13 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/models/user_data.dart';
-import 'package:mysterium_vpn/services/auth/auth_user.dart';
-import 'package:mysterium_vpn/services/data/local/adapters/banner_type_adapter.dart';
-import 'package:mysterium_vpn/services/data/local/adapters/lat_lng_adapter.dart';
-import 'package:mysterium_vpn/services/data/local/adapters/vpn_location_adapter.dart';
-import 'package:mysterium_vpn/services/data/local/adapters/vpn_locations_adapter.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 class LocalDBService {
@@ -73,6 +68,13 @@ class LocalDBService {
 
   Future<void> setUser(AuthUser user) async {
     if (!_userSetCompleter.isCompleted) {
+      _userSetCompleter.complete(user);
+      return;
+    }
+
+    final value = await _userSetCompleter.future;
+    if (value != user) {
+      _userSetCompleter = Completer<AuthUser>();
       _userSetCompleter.complete(user);
     }
   }

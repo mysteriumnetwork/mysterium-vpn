@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mysterium_vpn/entrypoints/app_initializer.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:patrol/patrol.dart';
 
 void main() {

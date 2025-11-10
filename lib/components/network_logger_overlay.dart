@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/dio_network_logger/dio_network_logger.dart';
+import 'package:mysterium_vpn/services/services.dart';
 
 class NetworkLoggerOverlayView extends StatefulHookConsumerWidget {
   const NetworkLoggerOverlayView({

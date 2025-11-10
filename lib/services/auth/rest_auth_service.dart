@@ -5,15 +5,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/models/pkce.dart';
-import 'package:mysterium_vpn/models/token_request.dart';
-import 'package:mysterium_vpn/models/token_response.dart';
-import 'package:mysterium_vpn/services/auth/auth_service.dart';
-import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
-import 'package:mysterium_vpn/services/auth/auth_user.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
-import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
-import 'package:mysterium_vpn/services/data/network/network_service.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -48,9 +42,17 @@ class RestAuthService extends AuthService {
 
   // TODO(Waldz): Fix schema for this endpoint (JSON encoding needed)
   Future<TokenResponse> signIn(TokenRequest request) async {
+    final device = AuthorizationDevice(
+      osType: Platform.operatingSystem,
+      id: request.deviceId,
+      title: Env.deviceName,
+    );
     final response = await _networkService.post(
       '/oauth/token',
-      data: request.toJson(),
+      data: {
+        ...request.toJson(),
+        'device': device.toJson(),
+      },
       headers: {'content-type': 'application/x-www-form-urlencoded'},
     );
 
@@ -64,7 +66,6 @@ class RestAuthService extends AuthService {
   Future<AuthUser> currentUser() async {
     final response = await _apiAuth.checkAuth();
     final authCheck = response.data!;
-
     return AuthUser(
       userId: authCheck.userId,
       username: authCheck.username,
@@ -72,7 +73,7 @@ class RestAuthService extends AuthService {
   }
 
   @override
-  Future<TokenResponse> singInComplete({
+  Future<TokenResponse> signInComplete({
     required TokenRequest tokenRequest,
   }) async {
     try {

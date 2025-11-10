@@ -1,6 +1,6 @@
 import 'package:in_app_review/in_app_review.dart';
-import 'package:mysterium_vpn/common/enums/storage_keys.dart';
-import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/services/services.dart';
 
 class InAppReviewService {
   factory InAppReviewService() => _singleton;

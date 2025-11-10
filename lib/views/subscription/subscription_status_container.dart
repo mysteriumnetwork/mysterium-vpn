@@ -19,7 +19,7 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/subscription_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SubscriptionStatusContainer extends HookConsumerWidget {
@@ -131,7 +131,7 @@ void _subscriptionStatusReaction(
       );
     } else if (status == SubscriptionStatus.notVerified ||
         status == SubscriptionStatus.verifyingError) {
-      shownRetryDialog(
+      showRetryDialog(
         onRetry: (_) {
           Navigator.of(context).pop();
           store.retryVerificationProcess();

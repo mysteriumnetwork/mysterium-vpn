@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 class MystNavigationObserver extends RouteObserver<ModalRoute<dynamic>> {
   MystNavigationObserver({
