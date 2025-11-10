@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -15,10 +16,10 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/settings/action_button.dart';
 import 'package:mysterium_vpn/views/settings/protocol_picker.dart';
 import 'package:mysterium_vpn/views/settings/switch_item.dart';
@@ -29,135 +30,151 @@ class ConnectionSettings extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeStore = ref.read(themeStorePOD);
     final vpnStore = ref.read(vpnStorePOD);
+    final refreshIPStore = ref.read(refreshIPStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
     final remoteConfigStore = ref.read(remoteConfigStorePOD);
     final handleToggleConnection = useHandleToggleConnection();
+    final dnsStore = ref.watch(dnsStorePOD);
+    final authSessionStore = ref.watch(authSessionStorePOD);
+    final disableSettings =
+        useComputedValue(() => authSessionStore.status != AuthStatus.authenticated);
 
     return Observer(
-      builder: (_) {
-        final isDarkTheme = themeStore.isDarkMode;
-
-        return Column(
-          children: [
-            Visibility(
-              visible: !remoteConfigStore.hideResetAppSetting && !Platform.isAndroid,
-              child: SettingItem(
-                asset: isDarkTheme ? Assets.resetAppSettingDark : Assets.resetAppSettingLight,
-                title: LocaleKeys.resetAppTitle.tr(),
-                subtitle: EasyText(
-                  LocaleKeys.resetAppDesc.tr(),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  maxLines: 3,
-                ),
-                actionWidget: SettingActionButton(
-                  action: vpnStore.resetAppFuture?.status == FutureStatus.pending
-                      ? null
-                      : () => _onConfirmResetApp(
-                            context: context,
-                            analyticsStore: analyticsStore,
-                            vpnStore: vpnStore,
-                            handleToggleConnection: handleToggleConnection,
-                          ),
-                  backgroundColor: Palette.purple,
-                  child: vpnStore.resetAppFuture?.status == FutureStatus.pending
-                      ? const LoadingIndicator(
-                          radius: 16,
-                          indicatorColor: Palette.white,
-                        )
-                      : EasyText(
-                          LocaleKeys.resetAppTitle.tr(),
-                          color: Palette.white,
+      builder: (_) => Column(
+        children: [
+          Visibility(
+            visible: !remoteConfigStore.hideResetAppSetting && !Platform.isAndroid,
+            child: SettingItem(
+              asset: Asset.icons.resetAppSetting(context),
+              title: LocaleKeys.resetAppTitle.tr(),
+              subtitle: EasyText(
+                LocaleKeys.resetAppDesc.tr(),
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                maxLines: 3,
+              ),
+              actionWidget: SettingActionButton(
+                action: vpnStore.resetAppFuture?.status == FutureStatus.pending || disableSettings
+                    ? null
+                    : () => _onConfirmResetApp(
+                          context: context,
+                          analyticsStore: analyticsStore,
+                          vpnStore: vpnStore,
+                          handleToggleConnection: handleToggleConnection,
                         ),
-                ),
+                backgroundColor: Palette.purple,
+                child: vpnStore.resetAppFuture?.status == FutureStatus.pending
+                    ? const LoadingIndicator(
+                        radius: 16,
+                        indicatorColor: Palette.white,
+                      )
+                    : EasyText(
+                        LocaleKeys.resetAppTitle.tr(),
+                        color: Palette.white,
+                      ),
               ),
             ),
-            SwitchItem(
-              asset: isDarkTheme ? Assets.refreshIpSettingDark : Assets.refreshIpSettingLight,
-              title: LocaleKeys.refreshIPAddress.tr(),
-              subtitle: LocaleKeys.getNewIPAddress.tr(),
-              actionWidget: Observer(
-                builder: (context) => Switch(
-                  value: vpnStore.refreshIPConnection,
-                  onChanged: (val) async {
-                    await vpnStore.toggleRefreshIPWhenConnecting();
-                    analyticsStore.logEvent(
-                      val ? AnalyticsEvent.refreshIpEnable : AnalyticsEvent.refreshIpDisable,
-                    );
-                  },
-                ),
-              ),
-            ),
-            Visibility(
-              visible: !remoteConfigStore.hideMalwareBlocker,
-              child: SwitchItem(
-                enabled: !vpnStore.notSafeContentBlocker,
-                asset: isDarkTheme ? Assets.lockerDark : Assets.lockerLight,
-                title: LocaleKeys.malwareBlocker.tr(),
-                subtitle: '',
-                actionWidget: Observer(
-                  builder: (context) => Switch(
-                    value: vpnStore.malwareBlockerContent,
-                    onChanged: (val) async {
-                      await vpnStore.toggleMalwareBlocker();
-                      analyticsStore
-                          .logEvent(val ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff);
-                    },
-                  ),
-                ),
-              ),
-            ),
-            Visibility(
-              visible: !remoteConfigStore.hideNotSafeContentBlocker,
-              child: SwitchItem(
-                asset: isDarkTheme ? Assets.stopDark : Assets.stopLight,
-                title: LocaleKeys.contentBlockerTitle.tr(),
-                subtitle: LocaleKeys.contentBlockerDesc.tr(),
-                actionWidget: Observer(
-                  builder: (context) => Switch(
-                    value: vpnStore.notSafeContentBlocker,
-                    onChanged: (val) async {
-                      await vpnStore.toggleNotSafeContentBlocker();
-                      analyticsStore.logEvent(val ? AnalyticsEvent.nsfwOn : AnalyticsEvent.nsfwOff);
-                    },
-                  ),
-                ),
-              ),
-            ),
-            Visibility(
-              visible: !remoteConfigStore.hideKillSwitch,
-              child: SwitchItem(
-                asset: isDarkTheme ? Assets.refreshIpSettingDark : Assets.refreshIpSettingLight,
-                title: LocaleKeys.killSwitch.tr(),
-                subtitle: LocaleKeys.killSwitchDesc.tr(),
-                actionWidget: Row(
-                  children: [
-                    EasyText(
-                      LocaleKeys.on.tr(),
-                      color: Palette.lightBlue,
-                    ).paddingDirectional(end: 5),
-                    const SvgIcon(
-                      asset: Assets.checkmark,
+          ),
+          SwitchItem(
+            asset: Asset.icons.refreshIpSetting(context),
+            title: LocaleKeys.refreshIPAddress.tr(),
+            subtitle: LocaleKeys.getNewIPAddress.tr(),
+            actionWidget: Observer(
+              builder: (context) => refreshIPStore.refreshIPFuture.status == FutureStatus.pending
+                  ? const LoadingIndicator()
+                  : Switch(
+                      value: refreshIPStore.refreshIPConnection,
+                      onChanged: disableSettings
+                          ? null
+                          : (val) async {
+                              await refreshIPStore.toggleRefreshIPWhenConnecting();
+                              analyticsStore.logEvent(
+                                val
+                                    ? AnalyticsEvent.refreshIpEnable
+                                    : AnalyticsEvent.refreshIpDisable,
+                              );
+                            },
                     ),
-                  ],
-                ),
+            ),
+          ),
+          Visibility(
+            visible: !remoteConfigStore.hideMalwareBlocker,
+            child: SwitchItem(
+              enabled: !dnsStore.notSafeContentBlocker,
+              asset: Asset.icons.locker(context),
+              title: LocaleKeys.malwareBlocker.tr(),
+              subtitle: '',
+              actionWidget: Observer(
+                builder: (context) => dnsStore.malwareBlockerFuture.status == FutureStatus.pending
+                    ? const LoadingIndicator()
+                    : Switch(
+                        value: dnsStore.malwareBlockerContent,
+                        onChanged: disableSettings
+                            ? null
+                            : (val) async {
+                                await dnsStore.toggleMalwareBlocker();
+                                analyticsStore.logEvent(
+                                  val ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff,
+                                );
+                              },
+                      ),
               ),
             ),
-            Visibility(
-              visible: false,
-              child: SettingItem(
-                asset: isDarkTheme ? Assets.protocolDark : Assets.protocolLight,
-                title: LocaleKeys.protocol.tr(),
-                actionWidget: ProtocolPicker(
-                  store: vpnStore,
-                ),
+          ),
+          Visibility(
+            visible: !remoteConfigStore.hideNotSafeContentBlocker,
+            child: SwitchItem(
+              asset: Asset.icons.stop(context),
+              title: LocaleKeys.contentBlockerTitle.tr(),
+              subtitle: LocaleKeys.contentBlockerDesc.tr(),
+              actionWidget: Observer(
+                builder: (context) =>
+                    dnsStore.notSafeContentBlockerFuture.status == FutureStatus.pending
+                        ? const LoadingIndicator()
+                        : Switch(
+                            value: dnsStore.notSafeContentBlocker,
+                            onChanged: disableSettings
+                                ? null
+                                : (val) async {
+                                    await dnsStore.toggleNotSafeContentBlocker();
+                                    analyticsStore.logEvent(
+                                      val ? AnalyticsEvent.nsfwOn : AnalyticsEvent.nsfwOff,
+                                    );
+                                  },
+                          ),
               ),
             ),
-          ],
-        );
-      },
+          ),
+          Visibility(
+            visible: !remoteConfigStore.hideKillSwitch,
+            child: SwitchItem(
+              asset: Asset.icons.refreshIpSetting(context),
+              title: LocaleKeys.killSwitch.tr(),
+              subtitle: LocaleKeys.killSwitchDesc.tr(),
+              actionWidget: Row(
+                children: [
+                  EasyText(
+                    LocaleKeys.on.tr(),
+                    color: Palette.lightBlue,
+                  ).paddingDirectional(end: 5),
+                  SvgIcon(asset: Asset.icons.checkmark),
+                ],
+              ),
+            ),
+          ),
+          Visibility(
+            visible: false,
+            child: SettingItem(
+              asset: Asset.icons.protocol(context),
+              title: LocaleKeys.protocol.tr(),
+              actionWidget: ProtocolPicker(
+                store: vpnStore,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

@@ -3,20 +3,23 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/current_ip_coordinates_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/locations_map.dart';
 
 class HomeMap extends HookConsumerWidget {
   const HomeMap({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsStore = ref.watch(locationsStorePOD);
+    final selectedLocationStore = ref.watch(selectedLocationStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
+    final selectedLocation = useComputedValue(() => selectedLocationStore.value);
     final locations = useComputedValue(
       () => [
-        ...?locationsStore.locationsStream.value?.allLocations,
-        ...?locationsStore.dcLocationsStream.value?.allLocations,
+        ...?locationsStore.residentialLocationsFuture.value?.allLocations,
+        ...?locationsStore.dcLocationsFuture.value?.allLocations,
       ].distinctBy((it) => it.id).toList(),
     );
     final myLocation = useCurrentIPCoordinates();
@@ -25,17 +28,29 @@ class HomeMap extends HookConsumerWidget {
     );
 
     void handleSelectLocation(VPNLocation location) {
-      locationsStore.selectedLocation = location;
+      selectedLocationStore.value = location;
     }
 
     void handleClearSelectedLocation() {
-      locationsStore.selectedLocation = null;
+      selectedLocationStore.value = null;
     }
+
+    useReaction(
+      () => vpnStore.location,
+      (location) {
+        if (location == null) {
+          return;
+        }
+        handleClearSelectedLocation();
+      },
+      fireImmediately: true,
+    );
 
     return LocationsMap(
       locations: locations,
       position: myLocation,
-      activeLocation: connectedLocation,
+      selectedLocation: selectedLocation,
+      connectedLocation: connectedLocation,
       onLocationPressed: handleSelectLocation,
       onTapOutside: handleClearSelectedLocation,
     );

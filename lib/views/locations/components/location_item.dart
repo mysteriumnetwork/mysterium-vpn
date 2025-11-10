@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
@@ -11,8 +12,9 @@ import 'package:mysterium_vpn/components/connect_text_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/flag.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class LocationItem extends HookConsumerWidget {
@@ -30,8 +32,8 @@ class LocationItem extends HookConsumerWidget {
     final theme = Theme.of(context);
     final vpnStore = ref.watch(vpnStorePOD);
     final remoteConfig = ref.watch(remoteConfigStorePOD);
-    final locationsStore = ref.watch(locationsStorePOD);
-    final query = useComputedValue(() => locationsStore.searchKeyword);
+    final locationsQueryStore = ref.watch(locationsQueryStorePOD);
+    final query = useComputedValue(() => locationsQueryStore.searchTrimmed);
 
     final onTap = useComputedValue(() => vpnStore.isLoading ? null : this.onTap, [this.onTap]);
     final children = location.children ?? const <VPNLocation>[];
@@ -171,11 +173,8 @@ class _LocationItem extends HookWidget {
                   height: 24,
                   width: 24,
                   asset: (isConnected ?? false)
-                      ? Assets.cityConnected
-                      : switch (theme.brightness) {
-                          Brightness.light => Assets.cityLight,
-                          Brightness.dark => Assets.cityDark,
-                        },
+                      ? Asset.icons.cityConnected
+                      : Asset.icons.city(context),
                 ),
               ),
             Expanded(
@@ -242,10 +241,7 @@ class _LocationItem extends HookWidget {
                           child: SvgIcon(
                             height: 12,
                             width: 12,
-                            asset: switch (theme.brightness) {
-                              Brightness.light => Assets.chevronRight,
-                              Brightness.dark => Assets.chevronRight,
-                            },
+                            asset: Asset.icons.chevronRight,
                             color: switch (theme.brightness) {
                               Brightness.light => Palette.lightBlack,
                               Brightness.dark => Palette.white,

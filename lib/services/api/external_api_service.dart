@@ -1,4 +1,4 @@
-import 'package:mysterium_vpn/models/ip_info.dart';
+import 'package:mysterium_vpn/models/models.dart';
 
 mixin ExternalApiService {
   Future<IPInfo?> getIPInfo();

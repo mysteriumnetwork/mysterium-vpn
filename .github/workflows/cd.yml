@@ -26,7 +26,7 @@ jobs:
       build_number: ${{ needs.setup.outputs.release_build }}
       bundle_id: com.mysteriumvpn
       flavor: "prod"
-      flavor_dart: "PROD"
+      env_file: ".env.prod"
     secrets: inherit
 
   # Publish build of application to https://appstoreconnect.apple.com/apps/6446624307/distribution/macos/version/inflight
@@ -40,7 +40,7 @@ jobs:
       bundle_id: com.mysteriumvpn
       product_name: "Mysterium VPN"
       flavor: "prod"
-      flavor_dart: "PROD"
+      env_file: ".env.prod"
     secrets: inherit
 
   # Publish build of application to https://play.google.com/console/u/0/developers/7955390843158584488/app/4973980590971676436/bundle-explorer-selector
@@ -55,7 +55,7 @@ jobs:
       package_track: internal
       package_status: draft
       flavor: "prod"
-      flavor_dart: "PROD"
+      env_file: ".env.prod"
     secrets: inherit
 
   # Publish build of application to https://partner.microsoft.com/en-us/dashboard/products/9NGWJCZSB5MK/overview
@@ -70,9 +70,47 @@ jobs:
       product_identity: "UABMNTechnologijos.MysteriumVPN"
       application_name: "Mysterium VPN"
       application_logo: "assets/logo/prod/desktop.png"
-      flavor_dart: "PROD"
+      env_file: ".env.prod"
       standalone_sign: true
+      standalone_keyvault_certificate: "mysteriumvpn"
     secrets: inherit
+
+  release:
+    needs: [ release_windows ]
+    name: Publish release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Windows (Standalone) artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: Windows app (Standalone)
+          path: ./release
+
+      - name: Publish assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.release.tag_name }}
+          files: ./release/MysteriumVPN.msix
+
+  release_public:
+    needs: [ release_windows ]
+    name: Publish public release
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Download Windows (Standalone) artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: Windows app (Standalone)
+          path: ./release
+
+      - name: Publish assets to public release
+        uses: softprops/action-gh-release@v1
+        with:
+          repository: mysteriumnetwork/mysterium-vpn-release
+          tag_name: ${{ github.event.release.tag_name }}
+          files: ./release/MysteriumVPN.msix
+          token: ${{ secrets.GH_RELEASE_PAT }}
 
   configure:
     name: Fix release to pass review in app stores

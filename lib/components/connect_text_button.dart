@@ -3,10 +3,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
-import 'package:mysterium_vpn/components/loading_indicator.dart';
+import 'package:mysterium_vpn/components/async_text_button.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class ConnectTextButton extends HookConsumerWidget {
   const ConnectTextButton({
@@ -18,6 +18,8 @@ class ConnectTextButton extends HookConsumerWidget {
     this.outlinedButton = false,
     this.borderRadius,
     this.fontStyle,
+    this.textConnect,
+    this.textDisconnect,
     super.key,
   });
 
@@ -29,83 +31,36 @@ class ConnectTextButton extends HookConsumerWidget {
   final bool outlinedButton;
   final double? borderRadius;
   final TextStyle? fontStyle;
+  final String? textConnect;
+  final String? textDisconnect;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
     final isConnected = useIsLocationConnected(location);
+    final isAvailable = useComputedValue(
+      () => location == null || !unavailableLocationsStore.unavailableLocations.contains(location),
+      [location],
+    );
 
     void onPressed() {
       this.onPressed?.call();
     }
 
-    return switch (isConnected) {
-      false => outlinedButton
-          ? OutlinedButton(
-              onPressed: onPressed,
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.all(6),
-                minimumSize: size,
-                shape: borderRadius != null
-                    ? RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(borderRadius!),
-                      )
-                    : null,
-              ),
-              child: AutoSizeText(
-                LocaleKeys.connect.tr(),
-                group: textScaleGroup,
-                style: fontStyle ??
-                    TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: context.c.isDarkMode ? Palette.white : Palette.purple,
-                    ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            )
-          : ElevatedButton(
-              onPressed: onPressed,
-              style: ElevatedButton.styleFrom(
-                minimumSize: size,
-                backgroundColor: Palette.purple,
-                elevation: 0,
-              ),
-              child: AutoSizeText(
-                LocaleKeys.connect.tr(),
-                group: textScaleGroup,
-                style: fontStyle ??
-                    const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Palette.white,
-                    ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-      true => FilledButton(
-          onPressed: onPressed,
-          style: FilledButton.styleFrom(
-            minimumSize: size,
-            padding: const EdgeInsets.all(6),
-          ),
-          child: AutoSizeText(
-            LocaleKeys.disconnect.tr(),
-            group: textScaleGroup,
-            style: fontStyle ??
-                const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      null => FilledButton(
-          onPressed: null,
-          style: FilledButton.styleFrom(minimumSize: size),
-          child: const LoadingIndicator(radius: 14),
-        ),
-    };
+    return AsyncTextButton(
+      isLoading: isConnected == null,
+      minimumSize: size,
+      textScaleGroup: textScaleGroup,
+      borderRadius: borderRadius == null ? null : BorderRadius.circular(borderRadius!),
+      text: (isConnected ?? false)
+          ? (textDisconnect ?? LocaleKeys.disconnect.tr())
+          : (textConnect ?? LocaleKeys.connect.tr()),
+      mode: (isConnected ?? true)
+          ? AsyncTextButtonMode.filled
+          : outlinedButton
+              ? AsyncTextButtonMode.outlined
+              : AsyncTextButtonMode.elevated,
+      onPressed: isConnected == null || !isAvailable ? null : onPressed,
+    );
   }
 }

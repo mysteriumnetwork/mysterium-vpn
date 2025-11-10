@@ -9,10 +9,9 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/observers/navigator_observer.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/stores/analytics/constants.dart';
-import 'package:mysterium_vpn/stores/device_id_store.dart';
-import 'package:mysterium_vpn/stores/device_info_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'analytics_store_windows.g.dart';
 
@@ -23,18 +22,16 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
   _AnalyticsStoreWindows({
     required String measurementId,
     required String apiSecret,
-    required DeviceInfoStore deviceInfoStore,
     required DeviceIDStore deviceIDStore,
-  })  : _deviceInfoStore = deviceInfoStore,
-        _deviceIDStore = deviceIDStore,
+  })  : _deviceIDStore = deviceIDStore,
         _session = AnalyticsSession(measurementId, apiSecret) {
     logAppLaunchEvent();
     setDeviceInfo();
   }
 
   final AnalyticsSession _session;
-  final DeviceInfoStore _deviceInfoStore;
   final DeviceIDStore _deviceIDStore;
+
   @override
   Future<void> logError({
     required Object err,
@@ -55,7 +52,8 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
     AnalyticsEvent event, {
     Map<String, dynamic>? parameters,
   }) async {
-    _session.logEvent(event.name.toSnakeCase, parameters);
+    _session.logEvent(event.formattedName, parameters);
+    super.logEvent(event, parameters: parameters).ignore();
   }
 
   @override
@@ -66,11 +64,18 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
 
   @override
   @action
-  Future<void> setUserProperty(String name, String value) async {
-    _session.userProperties[name.truncate(24)] = {
-      'value': value,
+  Future<void> setUserProperty(
+    AnalyticsUserProperty property,
+  ) async {
+    _session.userProperties[property.name24chars] = {
+      'value': property.value36chars,
       'timestamp_micros': DateTime.now().microsecondsSinceEpoch,
     };
+    super
+        .setUserProperty(
+          property,
+        )
+        .ignore();
   }
 
   @override
@@ -85,6 +90,7 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
   @action
   Future<void> logScreenViewed(String screenName) async {
     _session.logEvent(screenName);
+    super.logScreenViewed(screenName).ignore();
   }
 
   @override
@@ -95,16 +101,36 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
   @action
   Future<void> setDeviceInfo() async {
     try {
-      await _deviceInfoStore.deviceInfoFuture;
       final deviceId = await _deviceIDStore.deviceIdFuture;
       if (kDebugMode) {
         debugPrint('Device ID: $deviceId');
-        debugPrint('Device name: ${_deviceInfoStore.deviceName}');
-        debugPrint('Device model: ${_deviceInfoStore.deviceModel}');
+        debugPrint('Device name: ${Env.deviceName}');
+        debugPrint('Device model: ${Env.deviceModel}');
       }
-      await setUserProperty('device_id', deviceId);
-      await setUserProperty('device_name', _deviceInfoStore.deviceName);
-      await setUserProperty('device_model', _deviceInfoStore.deviceModel);
+      await setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.deviceId,
+          value: deviceId,
+        ),
+      );
+      await setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.deviceName,
+          value: Env.deviceName,
+        ),
+      );
+      await setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.deviceModel,
+          value: Env.deviceModel,
+        ),
+      );
+      await setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.devicePlatform,
+          value: defaultTargetPlatform.name,
+        ),
+      );
     } catch (e) {
       logError(err: e);
     }
@@ -125,6 +151,7 @@ class AnalyticsSession {
   Map<String, dynamic> userProperties = {};
 
   final DateTime sessionStarted = DateTime.now().toUtc();
+
   String get sessionId => _sessionId;
   String _sessionId = '';
 
@@ -191,6 +218,7 @@ bool defaultRouteFilter(Route<dynamic>? route) => route is PageRoute;
 
 /// Accepts any routes, e.g. the ones added via showDialog()
 bool anyRouteFilter(Route<dynamic>? route) => true;
+
 String? defaultNameExtractor(RouteSettings settings) => settings.name;
 
 class WindowsAnalyticsObserver extends RouteObserver<ModalRoute<dynamic>> {

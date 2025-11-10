@@ -3,15 +3,15 @@ import 'dart:io';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/observers/navigator_observer.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/stores/analytics/constants.dart';
-import 'package:mysterium_vpn/stores/device_id_store.dart';
-import 'package:mysterium_vpn/stores/device_info_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'analytics_store_firebase.g.dart';
 
@@ -22,11 +22,9 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
   _AnalyticsStoreFirebase({
     required FirebaseAnalytics analytics,
     required FirebaseCrashlytics crashlytics,
-    required DeviceInfoStore deviceInfoStore,
     required DeviceIDStore deviceIDStore,
   })  : _analytics = analytics,
         _crashlytics = crashlytics,
-        _deviceInfoStore = deviceInfoStore,
         _deviceIDStore = deviceIDStore {
     setConsents();
     logAppLaunchEvent();
@@ -35,8 +33,8 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
 
   final FirebaseAnalytics _analytics;
   final FirebaseCrashlytics _crashlytics;
-  final DeviceInfoStore _deviceInfoStore;
   final DeviceIDStore _deviceIDStore;
+
   @override
   Future<void> logError({
     required Object err,
@@ -44,13 +42,14 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
     Object? reason,
     bool fatal = false,
   }) async {
-    _crashlytics.recordError(
+    await _crashlytics.recordError(
       err,
       stack,
       reason: reason,
       printDetails: true,
       fatal: fatal,
     );
+    super.logError(err: err, stack: stack, reason: reason, fatal: fatal).ignore();
   }
 
   @override
@@ -66,6 +65,7 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
   @action
   Future<void> logMessage(String message) async {
     _crashlytics.log(message);
+    super.logMessage(message).ignore();
   }
 
   @override
@@ -74,7 +74,7 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
     AnalyticsEvent event, {
     Map<String, dynamic>? parameters,
   }) async {
-    final eventName = event.name.toSnakeCase;
+    final eventName = event.formattedName;
     assert(
       !reservedGa4Events.contains(event.name),
       'Event name ${event.name} is reserved by GA4',
@@ -96,6 +96,8 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
         (key, value) => MapEntry(key.truncate(40), value.toString().truncate(100)),
       ),
     );
+
+    super.logEvent(event, parameters: parameters).ignore();
   }
 
   @override
@@ -110,11 +112,16 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
 
   @override
   @action
-  Future<void> setUserProperty(String name, String value) async {
+  Future<void> setUserProperty(AnalyticsUserProperty property) async {
     await _analytics.setUserProperty(
-      name: name.truncate(24),
-      value: value,
+      name: property.name24chars,
+      value: property.value36chars,
     );
+    super
+        .setUserProperty(
+          property,
+        )
+        .ignore();
   }
 
   @override
@@ -127,6 +134,7 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
   @action
   Future<void> logScreenViewed(String screenName) async {
     await _analytics.logEvent(name: screenName);
+    super.logScreenViewed(screenName).ignore();
   }
 
   @override
@@ -147,11 +155,31 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
   @action
   Future<void> setDeviceInfo() async {
     try {
-      await _deviceInfoStore.deviceInfoFuture;
       final deviceId = await _deviceIDStore.deviceIdFuture;
-      await _analytics.setUserProperty(name: 'device_id', value: deviceId);
-      await _analytics.setUserProperty(name: 'device_name', value: _deviceInfoStore.deviceName);
-      await _analytics.setUserProperty(name: 'device_model', value: _deviceInfoStore.deviceModel);
+      await setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.deviceId,
+          value: deviceId,
+        ),
+      );
+      await setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.deviceName,
+          value: Env.deviceName,
+        ),
+      );
+      await setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.deviceModel,
+          value: Env.deviceModel,
+        ),
+      );
+      await setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.devicePlatform,
+          value: defaultTargetPlatform.name,
+        ),
+      );
     } catch (e) {
       logError(err: e);
     }
