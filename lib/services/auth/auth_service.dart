@@ -6,6 +6,6 @@ abstract class AuthService {
   Future<String> signInWithGoogle();
   Future<String> signInWithApple();
   Future<TokenResponse> signInComplete({required TokenRequest tokenRequest});
-  Future<void> logout();
+  Future<void> logout({required bool invalidateRemotely});
   Future<void> deleteAccount();
 }
