@@ -1250,10 +1250,10 @@ packages:
     dependency: "direct main"
     description:
       name: mqtt5_client
-      sha256: "54402d78bd8c47244adc7f3f908905b86529c8c1c472c22e5a9ddc99f70ce8ce"
+      sha256: d05b57241deb5b78302def74f2c5fc7a7f911ccc6fcb95fa3c51df65ef312d1d
       url: "https://pub.dev"
     source: hosted
-    version: "4.12.1"
+    version: "4.14.0"
   msix:
     dependency: "direct dev"
     description:
