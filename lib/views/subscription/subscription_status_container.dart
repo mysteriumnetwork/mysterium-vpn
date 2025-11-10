@@ -190,7 +190,7 @@ Future<void> _checkForExistingSubscription(
         textAlign: TextAlign.center,
       ),
       title: LocaleKeys.existingSubscriptionDesc.tr(namedArgs: {'email': email}),
-      onConfirm: () => ref.read(authStorePOD).logout(email: email),
+      onConfirm: () => ref.read(authStorePOD).logout(),
     );
   }
 
