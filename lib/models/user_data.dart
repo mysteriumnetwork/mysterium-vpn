@@ -2,9 +2,9 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:hive_ce/hive.dart';
-import 'package:mysterium_vpn/common/enums/banner_type.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
 
 part 'user_data.g.dart';
 

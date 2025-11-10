@@ -1,8 +1,8 @@
 import 'package:latlong2/latlong.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
-import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/services/data/local/assets_service.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
 
 part 'latlng_store.g.dart';
 

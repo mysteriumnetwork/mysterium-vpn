@@ -8,14 +8,12 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/enums/rate_connection.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/rate_connection_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:vpn_api/vpn_api.dart';
 
@@ -81,7 +79,6 @@ class _ConfirmDialog extends HookConsumerWidget {
       () => RateConnectionStore(
         rateConnectionMode,
         ref.read(analyticsStorePOD),
-        ref.read(apiServicePOD),
         ref.read(vpnStorePOD),
       ),
     );

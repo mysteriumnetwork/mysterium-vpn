@@ -28,7 +28,7 @@ Future<void> Function({
       );
 
       try {
-        await vpnStore.toggleConnection(location: location, intent: intent);
+        await vpnStore.manageConnection(location: location, intent: intent);
       } on AuthenticationRequiredException catch (_) {
         if (context.mounted) {
           Beamer.of(context).beamToNamed(Routes.platformLogin.path);
@@ -38,7 +38,7 @@ Future<void> Function({
       } on TunnelSetupRequiredException catch (_) {
         final permissionsGiven = await handleSetupTunnel();
         if (permissionsGiven) {
-          await vpnStore.toggleConnection(location: location, intent: intent);
+          await vpnStore.manageConnection(location: location, intent: intent);
         }
       }
     },

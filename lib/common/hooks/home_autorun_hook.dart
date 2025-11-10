@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/enums/screen_type.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/components/dialogs/info_dialog.dart';
@@ -13,8 +13,8 @@ import 'package:mysterium_vpn/components/dialogs/push_notifications_dialog.dart'
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
-import 'package:wireguard_dart/wireguard_dart.dart';
 
 void useHomeAutorun() {
   final context = useContext();
@@ -22,6 +22,7 @@ void useHomeAutorun() {
   final userPreferencesStore = useProvider(userPreferencesStorePOD);
   final remoteConfigStore = useProvider(remoteConfigStorePOD);
   final subscriptionUpgradeStore = useProvider(subscriptionUpgradeStorePOD);
+  final authSessionStore = useProvider(authSessionStorePOD);
   final subscriptionUpgradeShown = useRef(false);
   final screenType = useScreenType();
 
@@ -39,13 +40,16 @@ void useHomeAutorun() {
         autorun(
           (_) {
             final limitExceeded = vpnStore.vpnConfig?.limitExceeded ?? false;
-            if (limitExceeded && vpnStore.vpnStatus == ConnectionStatus.connected) {
+            if (limitExceeded && vpnStore.vpnStatus == VpnConnectionStatus.connected) {
               controller.add(() => _showOrSkipConnectionLimitDialog(context));
             }
           },
         ),
         autorun(
           (_) {
+            if (authSessionStore.status != AuthStatus.authenticated) {
+              return;
+            }
             final value = userPreferencesStore.nextPromptToShow;
             if (value == UserPromptType.none) {
               return;
@@ -101,6 +105,7 @@ void useHomeAutorun() {
       remoteConfigStore,
       subscriptionUpgradeStore,
       subscriptionUpgradeShown,
+      authSessionStore,
     ],
   );
 }

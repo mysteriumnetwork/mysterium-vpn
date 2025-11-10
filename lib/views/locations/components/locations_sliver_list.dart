@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/views/locations/components/location_item.dart';
 
 class LocationsSliverList extends StatelessWidget {

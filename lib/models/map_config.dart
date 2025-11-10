@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mysterium_vpn/models/converters/brightness_converter.dart';
+import 'package:mysterium_vpn/models/models.dart';
 
 part 'map_config.freezed.dart';
 part 'map_config.g.dart';
