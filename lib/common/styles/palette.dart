@@ -184,7 +184,7 @@ class LightPalette implements Palette {
   Color get disabledButtonForegroundColor => Palette.lightBlack;
 
   @override
-  Color get mapBackgroundColor => Palette.paleLavender;
+  Color get mapBackgroundColor => Palette.lightGrey;
 
   @override
   Color get modalBackgroundColor => Palette.white;
