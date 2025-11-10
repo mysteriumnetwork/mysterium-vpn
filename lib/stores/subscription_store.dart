@@ -12,13 +12,9 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/common/utils/comparator_utils.dart';
-import 'package:mysterium_vpn/models/purchasable_product.dart';
-import 'package:mysterium_vpn/models/subscription.dart';
-import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
-import 'package:mysterium_vpn/services/auth/auth_status.dart';
-import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
-import 'package:mysterium_vpn/services/subscription/subscription_service.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
 
 // Include generated file
@@ -140,12 +136,24 @@ abstract class _SubscriptionStore with Store {
             ? 'expired_paid'
             : 'not_paid';
     _analyticsStore
-      ..setUserProperty(propertyName: 'plan_id', propertyValue: subscription.planId ?? '')
       ..setUserProperty(
-        propertyName: 'valid_to',
-        propertyValue: subscription.activeUntil.toString(),
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.planId,
+          value: subscription.planId ?? '',
+        ),
       )
-      ..setUserProperty(propertyName: 'user_status', propertyValue: userStatus);
+      ..setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.validTo,
+          value: subscription.activeUntil.toString(),
+        ),
+      )
+      ..setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.userStatus,
+          value: userStatus,
+        ),
+      );
   }
 
   Future<api.SubscriptionConfigResponse?> _fetchSubscriptionConfig() async {
@@ -157,7 +165,10 @@ abstract class _SubscriptionStore with Store {
       _purchaseStream ??= _inAppPurchase.purchaseStream.listen(
         _onPurchaseUpdate,
         onDone: _updateStreamOnDone,
-        onError: _updateStreamOnError,
+        onError: (error) async {
+          debugPrint('Purchase stream error: $error');
+          await _updateStreamOnError();
+        },
       );
       await _subscriptionService.clearPendingTransactions();
       return config;
@@ -295,7 +306,7 @@ abstract class _SubscriptionStore with Store {
     _purchaseStream = null;
   }
 
-  Future<void> _updateStreamOnError(error) async {
+  Future<void> _updateStreamOnError() async {
     await _purchaseStream?.cancel();
     _purchaseStream = null;
   }

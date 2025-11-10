@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
-import 'package:mysterium_vpn/models/location.dart';
-import 'package:mysterium_vpn/services/location/ping.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 class LocationsService {

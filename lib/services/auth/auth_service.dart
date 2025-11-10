@@ -1,7 +1,4 @@
-import 'package:mysterium_vpn/models/pkce.dart';
-import 'package:mysterium_vpn/models/token_request.dart';
-import 'package:mysterium_vpn/models/token_response.dart';
-import 'package:mysterium_vpn/services/auth/auth_user.dart';
+import 'package:mysterium_vpn/models/models.dart';
 
 abstract class AuthService {
   Future<AuthUser> currentUser();
@@ -9,6 +6,6 @@ abstract class AuthService {
   Future<String> signInWithGoogle();
   Future<String> signInWithApple();
   Future<TokenResponse> signInComplete({required TokenRequest tokenRequest});
-  Future<void> logout();
+  Future<void> logout({required bool invalidateRemotely});
   Future<void> deleteAccount();
 }

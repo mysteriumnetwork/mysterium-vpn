@@ -13,19 +13,9 @@ import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/pkce.dart';
-import 'package:mysterium_vpn/models/token_request.dart';
-import 'package:mysterium_vpn/models/token_response.dart';
-import 'package:mysterium_vpn/services/auth/auth_service.dart';
-import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
-import 'package:mysterium_vpn/services/auth/auth_status.dart';
-import 'package:mysterium_vpn/services/auth/auth_user.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
-import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/device_id_store.dart';
-import 'package:mysterium_vpn/stores/remote_config/ab_testing_store.dart';
-import 'package:mysterium_vpn/stores/user_preferences_store.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
 
@@ -215,7 +205,12 @@ abstract class _AuthStore with Store {
     }
     await _abTestingStore.configFuture;
     await _analyticsStore.setUserId(userId);
-    await _analyticsStore.setUserProperty(propertyName: 'email', propertyValue: username);
+    await _analyticsStore.setUserProperty(
+      AnalyticsUserProperty.fromEnum(
+        name: AnalyticsUserPropName.email,
+        value: username,
+      ),
+    );
     Sentry.configureScope(
       (scope) => scope.setUser(
         SentryUser(
@@ -228,9 +223,9 @@ abstract class _AuthStore with Store {
 
   @action
   Future<void> logout({
-    String? email,
+    bool invalidateRemotely = true,
   }) async {
-    logoutFeature = ObservableFuture(_authService.logout());
+    logoutFeature = ObservableFuture(_authService.logout(invalidateRemotely: invalidateRemotely));
 
     await logoutFeature;
   }
@@ -389,7 +384,7 @@ abstract class _AuthStore with Store {
       );
     } catch (e) {
       showSnackbar(LocaleKeys.loginSessionExpired.tr());
-      await logout();
+      await logout(invalidateRemotely: false);
 
       rethrow;
     }

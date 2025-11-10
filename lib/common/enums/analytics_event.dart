@@ -96,6 +96,8 @@ enum AnalyticsEvent {
   rateConnectionClicked,
   rateConnectionCancel,
   rateConnectionSubmit,
+  rateConnectionSubmitSuccess,
+  rateConnectionSubmitError,
   apiError,
   ipChanged,
   paymentSuccess1m,
@@ -115,7 +117,16 @@ enum AnalyticsEvent {
   marketingConsentMarkedDeclined,
   toggleMarketingConsent,
   mapScroll,
-  mapPointClick;
+  mapPointClick,
+  togglePushNotifications,
+  pushNotificationsPromptShown,
+  pushNotificationsPermissionsGranted,
+  pushNotificationsPermissionsDenied,
+  subUpgradeBannerClick,
+  subUpgradePopupShow,
+  subUpgradePopupClose,
+  subUpgradePopupConfirm,
+  subUpgradeInfoClick;
 
   String get formattedName => name.toSnakeCase;
 }

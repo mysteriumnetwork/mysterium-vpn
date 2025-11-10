@@ -3,15 +3,9 @@ import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/models/subscription.dart';
-import 'package:mysterium_vpn/services/auth/auth_session_store.dart';
-import 'package:mysterium_vpn/services/auth/auth_status.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
-import 'package:mysterium_vpn/stores/banners_store.dart';
-import 'package:mysterium_vpn/stores/locations_store.dart';
-import 'package:mysterium_vpn/stores/subscription_store.dart';
-import 'package:mysterium_vpn/stores/update_availabe_store.dart';
-import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 import 'banners_store_test.mocks.dart';
 
@@ -20,7 +14,7 @@ import 'banners_store_test.mocks.dart';
   MockSpec<LocationsStore>(),
   MockSpec<AuthSessionStore>(),
   MockSpec<LocalDBService>(),
-  MockSpec<VpnStore>(),
+  MockSpec<ConnectionsLimitStore>(),
   MockSpec<UpdateAvailableStore>(),
 ])
 void main() {
@@ -29,7 +23,7 @@ void main() {
     late MockLocalDBService mockLocalDBService;
     late MockSubscriptionStore mockSubscriptionStore;
     late MockAuthSessionStore mockAuthSessionStore;
-    late MockVpnStore mockVpnStore;
+    late MockConnectionsLimitStore mockConnectionsLimitStore;
 
     late MockUpdateAvailableStore mockUpdateAvailableStore;
 
@@ -37,7 +31,7 @@ void main() {
       mockLocalDBService = MockLocalDBService();
       mockSubscriptionStore = MockSubscriptionStore();
       mockAuthSessionStore = MockAuthSessionStore();
-      mockVpnStore = MockVpnStore();
+      mockConnectionsLimitStore = MockConnectionsLimitStore();
 
       when(mockLocalDBService.getShownBanners()).thenAnswer((_) async => <BannerType>[]);
       mockUpdateAvailableStore = MockUpdateAvailableStore();
@@ -50,7 +44,7 @@ void main() {
         mockLocalDBService,
         mockSubscriptionStore,
         mockAuthSessionStore,
-        mockVpnStore,
+        mockConnectionsLimitStore,
         mockUpdateAvailableStore,
       );
     });
@@ -59,7 +53,7 @@ void main() {
       test('returns all banners when no banners are shown and not subscribed', () async {
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
         when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
-        when(mockVpnStore.connectionLimitReached).thenReturn(true);
+        when(mockConnectionsLimitStore.connectionLimitReached).thenReturn(true);
 
         await bannersStore.shownBanners;
 
@@ -80,7 +74,7 @@ void main() {
             .thenAnswer((_) async => [BannerType.highSpeedIPs]);
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
         when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
-        when(mockVpnStore.connectionLimitReached).thenReturn(true);
+        when(mockConnectionsLimitStore.connectionLimitReached).thenReturn(true);
 
         await bannersStore.shownBanners;
 
@@ -93,7 +87,7 @@ void main() {
       test('excludes subscription banner when subscribed', () async {
         await bannersStore.shownBanners;
         when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
-        when(mockVpnStore.connectionLimitReached).thenReturn(true);
+        when(mockConnectionsLimitStore.connectionLimitReached).thenReturn(true);
 
         expect(
           bannersStore.mainBanners,
@@ -104,7 +98,7 @@ void main() {
       test('excludes tooManyConnections banner when connectionLimitReached is false', () async {
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
         when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
-        when(mockVpnStore.connectionLimitReached).thenReturn(false);
+        when(mockConnectionsLimitStore.connectionLimitReached).thenReturn(false);
         await bannersStore.shownBanners;
 
         expect(
@@ -117,7 +111,7 @@ void main() {
         when(mockAuthSessionStore.status).thenReturn(AuthStatus.unauthenticated);
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
         when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
-        when(mockVpnStore.connectionLimitReached).thenReturn(true);
+        when(mockConnectionsLimitStore.connectionLimitReached).thenReturn(true);
 
         await bannersStore.shownBanners;
 
@@ -128,7 +122,7 @@ void main() {
         when(mockAuthSessionStore.status).thenReturn(AuthStatus.authenticated);
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
         when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
-        when(mockVpnStore.connectionLimitReached).thenReturn(true);
+        when(mockConnectionsLimitStore.connectionLimitReached).thenReturn(true);
 
         await bannersStore.shownBanners;
 
@@ -138,7 +132,7 @@ void main() {
       test('includes appUpdateAvailable banner when update is available', () async {
         when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
-        when(mockVpnStore.connectionLimitReached).thenReturn(true);
+        when(mockConnectionsLimitStore.connectionLimitReached).thenReturn(true);
 
         await bannersStore.shownBanners;
 
@@ -148,7 +142,7 @@ void main() {
       test('excludes appUpdateAvailable banner when no update is available', () async {
         when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(false);
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
-        when(mockVpnStore.connectionLimitReached).thenReturn(true);
+        when(mockConnectionsLimitStore.connectionLimitReached).thenReturn(true);
 
         await bannersStore.shownBanners;
 
