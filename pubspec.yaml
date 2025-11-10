@@ -18,7 +18,7 @@ dependencies:
   collection: 1.19.1
   configcat_client: 4.1.1
   connectivity_plus: 6.1.5
-  crypto: 3.0.6
+  crypto: 3.0.7
   cupertino_icons: 1.0.8
   curl_logger_dio_interceptor: ^1.0.0
   device_info_plus: 12.2.0
