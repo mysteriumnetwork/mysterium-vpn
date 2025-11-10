@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/current_ip_coordinates_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/locations_map.dart';
 
@@ -15,6 +15,7 @@ class HomeMap extends HookConsumerWidget {
     final locationsStore = ref.watch(locationsStorePOD);
     final selectedLocationStore = ref.watch(selectedLocationStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
+    final selectedLocation = useComputedValue(() => selectedLocationStore.value);
     final locations = useComputedValue(
       () => [
         ...?locationsStore.residentialLocationsFuture.value?.allLocations,
@@ -48,7 +49,8 @@ class HomeMap extends HookConsumerWidget {
     return LocationsMap(
       locations: locations,
       position: myLocation,
-      activeLocation: connectedLocation,
+      selectedLocation: selectedLocation,
+      connectedLocation: connectedLocation,
       onLocationPressed: handleSelectLocation,
       onTapOutside: handleClearSelectedLocation,
     );

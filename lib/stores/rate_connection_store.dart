@@ -1,9 +1,6 @@
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/enums/analytics_event.dart';
-import 'package:mysterium_vpn/common/enums/rate_connection.dart';
-import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 part 'rate_connection_store.g.dart';
@@ -15,22 +12,19 @@ abstract class _RateConnectionStore with Store {
   _RateConnectionStore(
     this._rateConnectionMode,
     this._analyticsStore,
-    this._apiService,
     this._vpnStore,
   );
 
   final AnalyticsStore _analyticsStore;
-  final ApiService _apiService;
   final VpnStore _vpnStore;
   final RateConnectionRequestModeEnum _rateConnectionMode;
 
   final ObservableList<RateConnectionReason> _rateConnectionReasons =
       ObservableList<RateConnectionReason>();
-  @observable
-  ObservableFuture<void>? submitRateConnectionFuture;
 
   @computed
   bool get isLikeMode => _rateConnectionMode == RateConnectionRequestModeEnum.like;
+
   @computed
   bool get isDislikeMode => _rateConnectionMode == RateConnectionRequestModeEnum.dislike;
 
@@ -58,31 +52,24 @@ abstract class _RateConnectionStore with Store {
 
   @action
   Future<void> submitRateConnection() async {
-    if (_vpnStore.vpnConnection != null && _vpnStore.wireguardKey?.publicKey != null) {
-      _analyticsStore.logEvent(AnalyticsEvent.rateConnectionSubmit);
-      submitRateConnectionFuture = ObservableFuture(
-        _apiService.rateConnection(
-          request: RateConnectionRequest(
-            mode: _rateConnectionMode,
-            reasons: _rateConnectionReasons.isEmpty
-                ? RateConnectionReason.other.name
-                : _rateConnectionReasons.toList().map((e) => e.name).join(','),
-            feedback: feedback,
-            country: _vpnStore.vpnConnection!.location.id,
-            ipType: _vpnStore.vpnConnection!.location.ipType.name,
-            publicKey: _vpnStore.wireguardKey!.publicKey,
-          ),
-        ),
+    _analyticsStore.logEvent(AnalyticsEvent.rateConnectionSubmit);
+    try {
+      await _vpnStore.submitRateConnection(
+        mode: _rateConnectionMode,
+        reasons: _rateConnectionReasons.isEmpty
+            ? RateConnectionReason.other.name
+            : _rateConnectionReasons.toList().map((e) => e.name).join(','),
+        feedback: feedback,
       );
-      await submitRateConnectionFuture;
-      _vpnStore.connectionRated = _rateConnectionMode;
+      _analyticsStore.logEvent(AnalyticsEvent.rateConnectionSubmitSuccess);
+    } catch (e) {
+      _analyticsStore.logEvent(AnalyticsEvent.rateConnectionSubmitError);
+      rethrow;
     }
   }
 
   @action
   void cancelRateConnection() {
-    _analyticsStore.logRateConnectionCancel(
-      _rateConnectionMode,
-    );
+    _analyticsStore.logRateConnectionCancel(_rateConnectionMode);
   }
 }

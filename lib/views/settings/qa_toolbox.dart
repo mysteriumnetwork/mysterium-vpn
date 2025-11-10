@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,9 +11,12 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/analytics_logger_overlay.dart';
 import 'package:mysterium_vpn/components/analytics_user_properties_overlay.dart';
 import 'package:mysterium_vpn/components/dialogs/marketing_consent_dialog.dart';
+import 'package:mysterium_vpn/components/dialogs/retry_dialog.dart';
+import 'package:mysterium_vpn/components/dialogs/subscription_upgrade_success_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/network_statistics.dart';
 
@@ -25,7 +29,10 @@ class QAToolbox extends HookConsumerWidget {
     final locationsStore = ref.read(locationsStorePOD);
     final recentLocationsStore = ref.read(recentLocationsStorePOD);
     final vpnStore = ref.read(vpnStorePOD);
+    final sessionStore = ref.read(authSessionStorePOD);
     final screenType = useScreenType();
+    final subscriptionUpgradeStore = ref.read(subscriptionUpgradeStorePOD);
+    final connectionsLimitStore = ref.read(connectionsLimitStorePOD);
     return Observer(
       builder: (context) => Column(
         children: [
@@ -61,16 +68,17 @@ class QAToolbox extends HookConsumerWidget {
           SettingItem(
             asset: Asset.icons.settingsAdaptive(context),
             title: 'VPN Connection limit',
-            subtitle: EasyText('Exceeded: ${vpnStore.connectionLimitReached}'),
+            subtitle: EasyText('Exceeded: ${connectionsLimitStore.connectionLimitReached}'),
             actionWidget: TextButton.icon(
               label: EasyText(
-                vpnStore.connectionLimitReached ? 'Mark not reached' : 'Mark reached',
+                connectionsLimitStore.connectionLimitReached ? 'Mark not reached' : 'Mark reached',
               ),
               icon: const Icon(Icons.refresh),
               onPressed: () async {
-                vpnStore.connectionLimitReached = !vpnStore.connectionLimitReached;
+                connectionsLimitStore.connectionLimitReached =
+                    !connectionsLimitStore.connectionLimitReached;
                 showSnackbar(
-                  'Connection limit reached: ${vpnStore.connectionLimitReached}',
+                  'Connection limit reached: ${connectionsLimitStore.connectionLimitReached}',
                 );
               },
             ),
@@ -169,6 +177,52 @@ class QAToolbox extends HookConsumerWidget {
                 context,
                 desktopSize: screenType == ScreenType.desktop,
               ),
+            ),
+          ),
+          SettingItem(
+            asset: Asset.icons.settingsAdaptive(context),
+            title: 'Show retry verification dialog',
+            subtitle: const EasyText('Will show the retry verification for subscription'),
+            actionWidget: TextButton.icon(
+              label: const EasyText('Show'),
+              icon: const Icon(Icons.open_in_new),
+              onPressed: () => showRetryDialog(
+                context: context,
+                asset: Asset.icons.subscription,
+                title: LocaleKeys.subscriptionVerificationFailed.tr(),
+                subtitle: LocaleKeys.failedToVerifySubs.tr(),
+                dismissText: LocaleKeys.cancelBtn.tr(),
+                onDismiss: (context) => Navigator.of(context).pop(),
+                onRetry: (context) => Navigator.of(context).pop(),
+              ),
+            ),
+          ),
+          SettingItem(
+            asset: Asset.icons.settingsAdaptive(context),
+            title: 'Invalidate access token',
+            subtitle: const EasyText('For testing if token refreshes correctly'),
+            actionWidget: TextButton.icon(
+              label: const EasyText('Show'),
+              icon: const Icon(Icons.open_in_new),
+              onPressed: () async {
+                await sessionStore.invalidateAccessToken();
+                showSnackbar('Access token invalidated');
+              },
+            ),
+          ),
+          SettingItem(
+            asset: Asset.icons.settingsAdaptive(context),
+            title: 'Show upgrade success page',
+            subtitle: const EasyText('Just to test the design of upgrade success page.'),
+            actionWidget: TextButton.icon(
+              label: const EasyText('Show'),
+              icon: const Icon(Icons.open_in_new),
+              onPressed: () async {
+                final product = subscriptionUpgradeStore.upgradeProduct;
+                if (product != null) {
+                  await showSubscriptionUpgradeSuccessDialog(context, purchasedPlan: product);
+                }
+              },
             ),
           ),
           const SizedBox(height: 36),

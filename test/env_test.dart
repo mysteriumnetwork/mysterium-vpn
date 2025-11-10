@@ -1,8 +1,13 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/env.dart';
+
+import 'env_test.mocks.dart';
 
 Map<String, String> _parseDotEnvFile() {
   const path = String.fromEnvironment('_DOTENV_FILE', defaultValue: '.env.dev');
@@ -28,6 +33,9 @@ Map<String, String> _parseDotEnvFile() {
   return out;
 }
 
+@GenerateNiceMocks([
+  MockSpec<DeviceInfoPlugin>(),
+])
 void main() {
   group('env file parsing', () {
     final file = _parseDotEnvFile();
@@ -52,6 +60,19 @@ void main() {
           reason: 'mismatch for key $key between .env file and environment',
         );
       }
+    });
+  });
+
+  group('DeviceInfo initialization', () {
+    test('fallbacks to BaseDeviceInfo and Unknown values on error', () async {
+      final mockPlugin = MockDeviceInfoPlugin();
+      when(mockPlugin.deviceInfo).thenThrow(Exception('fail'));
+
+      await Env.initDeviceInfo(mockPlugin);
+
+      expect(Env.deviceInfo, isA<BaseDeviceInfo>());
+      expect(Env.deviceName, 'Unknown');
+      expect(Env.deviceModel, 'Unknown');
     });
   });
 }

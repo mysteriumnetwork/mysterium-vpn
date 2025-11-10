@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:mysterium_vpn/models/response.dart' as response;
-import 'package:mysterium_vpn/services/data/network/network_service.dart';
+import 'package:mysterium_vpn/models/models.dart' as response;
+import 'package:mysterium_vpn/services/services.dart';
 
 class DioNetworkService extends NetworkService {
   DioNetworkService(
