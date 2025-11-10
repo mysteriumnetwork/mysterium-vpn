@@ -14,7 +14,7 @@ import 'package:mysterium_vpn/components/flag.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class LocationItem extends HookConsumerWidget {
@@ -32,8 +32,8 @@ class LocationItem extends HookConsumerWidget {
     final theme = Theme.of(context);
     final vpnStore = ref.watch(vpnStorePOD);
     final remoteConfig = ref.watch(remoteConfigStorePOD);
-    final locationsStore = ref.watch(locationsStorePOD);
-    final query = useComputedValue(() => locationsStore.searchKeyword);
+    final locationsQueryStore = ref.watch(locationsQueryStorePOD);
+    final query = useComputedValue(() => locationsQueryStore.searchTrimmed);
 
     final onTap = useComputedValue(() => vpnStore.isLoading ? null : this.onTap, [this.onTap]);
     final children = location.children ?? const <VPNLocation>[];

@@ -19,8 +19,7 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/vpn_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/settings/action_button.dart';
 import 'package:mysterium_vpn/views/settings/protocol_picker.dart';
 import 'package:mysterium_vpn/views/settings/switch_item.dart';
@@ -32,9 +31,14 @@ class ConnectionSettings extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.read(vpnStorePOD);
+    final refreshIPStore = ref.read(refreshIPStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
     final remoteConfigStore = ref.read(remoteConfigStorePOD);
     final handleToggleConnection = useHandleToggleConnection();
+    final dnsStore = ref.watch(dnsStorePOD);
+    final authSessionStore = ref.watch(authSessionStorePOD);
+    final disableSettings =
+        useComputedValue(() => authSessionStore.status != AuthStatus.authenticated);
 
     return Observer(
       builder: (_) => Column(
@@ -42,7 +46,7 @@ class ConnectionSettings extends HookConsumerWidget {
           Visibility(
             visible: !remoteConfigStore.hideResetAppSetting && !Platform.isAndroid,
             child: SettingItem(
-              asset: Asset.icons.resetAppSettingDark,
+              asset: Asset.icons.resetAppSetting(context),
               title: LocaleKeys.resetAppTitle.tr(),
               subtitle: EasyText(
                 LocaleKeys.resetAppDesc.tr(),
@@ -51,7 +55,7 @@ class ConnectionSettings extends HookConsumerWidget {
                 maxLines: 3,
               ),
               actionWidget: SettingActionButton(
-                action: vpnStore.resetAppFuture?.status == FutureStatus.pending
+                action: vpnStore.resetAppFuture?.status == FutureStatus.pending || disableSettings
                     ? null
                     : () => _onConfirmResetApp(
                           context: context,
@@ -77,33 +81,44 @@ class ConnectionSettings extends HookConsumerWidget {
             title: LocaleKeys.refreshIPAddress.tr(),
             subtitle: LocaleKeys.getNewIPAddress.tr(),
             actionWidget: Observer(
-              builder: (context) => Switch(
-                value: vpnStore.refreshIPConnection,
-                onChanged: (val) async {
-                  await vpnStore.toggleRefreshIPWhenConnecting();
-                  analyticsStore.logEvent(
-                    val ? AnalyticsEvent.refreshIpEnable : AnalyticsEvent.refreshIpDisable,
-                  );
-                },
-              ),
+              builder: (context) => refreshIPStore.refreshIPFuture.status == FutureStatus.pending
+                  ? const LoadingIndicator()
+                  : Switch(
+                      value: refreshIPStore.refreshIPConnection,
+                      onChanged: disableSettings
+                          ? null
+                          : (val) async {
+                              await refreshIPStore.toggleRefreshIPWhenConnecting();
+                              analyticsStore.logEvent(
+                                val
+                                    ? AnalyticsEvent.refreshIpEnable
+                                    : AnalyticsEvent.refreshIpDisable,
+                              );
+                            },
+                    ),
             ),
           ),
           Visibility(
             visible: !remoteConfigStore.hideMalwareBlocker,
             child: SwitchItem(
-              enabled: !vpnStore.notSafeContentBlocker,
+              enabled: !dnsStore.notSafeContentBlocker,
               asset: Asset.icons.locker(context),
               title: LocaleKeys.malwareBlocker.tr(),
               subtitle: '',
               actionWidget: Observer(
-                builder: (context) => Switch(
-                  value: vpnStore.malwareBlockerContent,
-                  onChanged: (val) async {
-                    await vpnStore.toggleMalwareBlocker();
-                    analyticsStore
-                        .logEvent(val ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff);
-                  },
-                ),
+                builder: (context) => dnsStore.malwareBlockerFuture.status == FutureStatus.pending
+                    ? const LoadingIndicator()
+                    : Switch(
+                        value: dnsStore.malwareBlockerContent,
+                        onChanged: disableSettings
+                            ? null
+                            : (val) async {
+                                await dnsStore.toggleMalwareBlocker();
+                                analyticsStore.logEvent(
+                                  val ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff,
+                                );
+                              },
+                      ),
               ),
             ),
           ),
@@ -114,13 +129,20 @@ class ConnectionSettings extends HookConsumerWidget {
               title: LocaleKeys.contentBlockerTitle.tr(),
               subtitle: LocaleKeys.contentBlockerDesc.tr(),
               actionWidget: Observer(
-                builder: (context) => Switch(
-                  value: vpnStore.notSafeContentBlocker,
-                  onChanged: (val) async {
-                    await vpnStore.toggleNotSafeContentBlocker();
-                    analyticsStore.logEvent(val ? AnalyticsEvent.nsfwOn : AnalyticsEvent.nsfwOff);
-                  },
-                ),
+                builder: (context) =>
+                    dnsStore.notSafeContentBlockerFuture.status == FutureStatus.pending
+                        ? const LoadingIndicator()
+                        : Switch(
+                            value: dnsStore.notSafeContentBlocker,
+                            onChanged: disableSettings
+                                ? null
+                                : (val) async {
+                                    await dnsStore.toggleNotSafeContentBlocker();
+                                    analyticsStore.logEvent(
+                                      val ? AnalyticsEvent.nsfwOn : AnalyticsEvent.nsfwOff,
+                                    );
+                                  },
+                          ),
               ),
             ),
           ),

@@ -1,12 +1,11 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
-import 'package:mysterium_vpn/models/user_intent.dart';
-import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/stores/locations_store.dart';
-import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
-import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'user_intents_store.g.dart';
 
@@ -21,7 +20,7 @@ abstract class _UserIntentsStore with Store {
     this._remoteConfigStore,
   ) {
     _reactionDisposers.addAll([
-      reaction((_) => _locationsStore.availableCountries, (_) {
+      reaction((_) => _locationsStore.countryCodes, (_) {
         _localIntentsFuture = _localIntentsFuture.replace(_fetchLocalIntents());
       }),
       reaction((_) => _realIPInfoStore.infoFuture.value, (_) {
@@ -46,6 +45,30 @@ abstract class _UserIntentsStore with Store {
   final List<StreamSubscription<Object?>> _streamSubscriptions = [];
   final List<ReactionDisposer> _reactionDisposers = [];
 
+  @observable
+  UserIntent? userIntent;
+
+  @computed
+  Set<UserIntent> get userIntents {
+    final intents = {...UserIntent.values};
+    final myCountry = _realIPInfoStore.info?.country;
+
+    if (myCountry != null) {
+      final availableCountries = {
+        ...?_locationsStore.dcLocationsFuture.value?.allLocations,
+        ...?_locationsStore.residentialLocationsFuture.value?.allLocations,
+      };
+
+      if (availableCountries.none((it) => it.countryCode == myCountry)) {
+        intents.remove(UserIntent.nearestLocation);
+      }
+    } else {
+      intents.remove(UserIntent.nearestLocation);
+    }
+
+    return intents;
+  }
+
   @readonly
   late ObservableFuture<Set<UserIntent>> _apiIntentsFuture =
       ObservableFuture(_apiService.fetchUserIntents());
@@ -64,7 +87,7 @@ abstract class _UserIntentsStore with Store {
     final info = await _realIPInfoStore.infoFuture;
     final myCountry = info?.country;
 
-    final countries = _locationsStore.availableCountries;
+    final countries = _locationsStore.countryCodes;
     if (myCountry != null && countries.contains(myCountry)) {
       return {UserIntent.nearestLocation};
     } else {
