@@ -1,5 +1,5 @@
 import 'package:configcat_client/configcat_client.dart';
-import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/services/services.dart';
 
 /// ConfigCat Flutter Cache based on shared_preferences.
 class ConfigCatPreferencesCache extends ConfigCatCache {

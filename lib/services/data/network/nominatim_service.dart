@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
+import 'package:mysterium_vpn/services/services.dart';
 
 class NominatimService {
   const NominatimService(this._db, this._dio);

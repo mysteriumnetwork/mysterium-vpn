@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -37,6 +39,14 @@ final GlobalKey<ScaffoldMessengerState> snackbarKey = GlobalKey<ScaffoldMessenge
 
 const privacyPolicyUrl = 'https://www.mysteriumvpn.com/privacy-policy-vpn';
 const termsOfServiceUrl = 'https://www.mysteriumvpn.com/terms-conditions-vpn';
+const subscriptionInfoUrlGooglePlay = 'https://www.mysteriumvpn.com/google-play-subscription-faq';
+const subscriptionInfoUrlAppStore = 'https://www.mysteriumvpn.com/ios-subscription-faq';
+const subscriptionInfoOtherUrl = 'https://www.mysteriumvpn.com/subscription-faq';
+final subscriptionInfoUrl = Platform.isIOS || Platform.isMacOS
+    ? subscriptionInfoUrlAppStore
+    : Platform.isAndroid
+        ? subscriptionInfoUrlGooglePlay
+        : subscriptionInfoOtherUrl;
 const windowsGithubDownloadLink =
     'https://github.com/mysteriumnetwork/mysterium-vpn-release/releases/latest/download/MysteriumVPN.msix';
 const String androidBundleId = 'mysteriumvpn';
@@ -62,3 +72,4 @@ final kWorldBounds = LatLngBounds(
   const LatLng(90, 180),
 );
 const kCancelReasonOther = 'cancelOther';
+const vpnConnectionTimeoutSeconds = 15;

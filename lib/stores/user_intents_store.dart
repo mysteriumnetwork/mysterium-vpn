@@ -1,12 +1,11 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
-import 'package:mysterium_vpn/models/user_intent.dart';
-import 'package:mysterium_vpn/services/api/api_service.dart';
-import 'package:mysterium_vpn/stores/locations_store.dart';
-import 'package:mysterium_vpn/stores/real_ip_info_store.dart';
-import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'user_intents_store.g.dart';
 
@@ -45,6 +44,30 @@ abstract class _UserIntentsStore with Store {
   final RemoteConfigStore _remoteConfigStore;
   final List<StreamSubscription<Object?>> _streamSubscriptions = [];
   final List<ReactionDisposer> _reactionDisposers = [];
+
+  @observable
+  UserIntent? userIntent;
+
+  @computed
+  Set<UserIntent> get userIntents {
+    final intents = {...UserIntent.values};
+    final myCountry = _realIPInfoStore.info?.country;
+
+    if (myCountry != null) {
+      final availableCountries = {
+        ...?_locationsStore.dcLocationsFuture.value?.allLocations,
+        ...?_locationsStore.residentialLocationsFuture.value?.allLocations,
+      };
+
+      if (availableCountries.none((it) => it.countryCode == myCountry)) {
+        intents.remove(UserIntent.nearestLocation);
+      }
+    } else {
+      intents.remove(UserIntent.nearestLocation);
+    }
+
+    return intents;
+  }
 
   @readonly
   late ObservableFuture<Set<UserIntent>> _apiIntentsFuture =
