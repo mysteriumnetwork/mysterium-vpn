@@ -107,6 +107,7 @@ dependencies:
 dev_dependencies:
   build_runner: 2.8.0
   cider: 0.2.8
+  easy_localization_sheet: ^1.1.0
   flutter_gen_runner: 5.12.0
   flutter_lints: 6.0.0
   flutter_test:
@@ -209,3 +210,7 @@ patrol:
     bundle_id: com.mysteriumvpn.test
   macos:
     bundle_id: com.mysteriumvpn.test
+
+easy_localization_sheet:
+  csv_url: 'https://docs.google.com/spreadsheets/d/1_rcGKCSnaBzF-dHnow53aBxBu_av_jhLS-x0HGeY5tE/export?format=csv&gid=216784309'
+  output_dir: 'resources/langs' # Optional, default is assets
