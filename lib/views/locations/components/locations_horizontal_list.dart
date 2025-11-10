@@ -9,7 +9,7 @@ import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/horizontal_scroll_indicator.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/location.dart';
+import 'package:mysterium_vpn/models/models.dart';
 
 class LocationsHorizontalList extends HookWidget {
   const LocationsHorizontalList({

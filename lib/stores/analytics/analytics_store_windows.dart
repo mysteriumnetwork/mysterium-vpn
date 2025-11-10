@@ -6,14 +6,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/enums/analytics_user_property.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/observers/navigator_observer.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/analytics/constants.dart';
-import 'package:mysterium_vpn/stores/device_id_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'analytics_store_windows.g.dart';
 

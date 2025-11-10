@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/models/ip_info.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

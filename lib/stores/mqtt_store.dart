@@ -5,18 +5,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/services/mqtt/service.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 // Include generated file
-part 'api_store.g.dart';
+part 'mqtt_store.g.dart';
 
 // ignore: library_private_types_in_public_api
-class ApiStore = _ApiStore with _$ApiStore;
+class MqttStore = _MqttStore with _$MqttStore;
 
-abstract class _ApiStore with Store {
-  _ApiStore({
+abstract class _MqttStore with Store {
+  _MqttStore({
     required MQTTService mqtt,
     required Talker logger,
   })  : _mqtt = mqtt,
