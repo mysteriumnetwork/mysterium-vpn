@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/components/easy_dropdown.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/stores/locale_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 class LanguagePicker extends StatelessWidget {
   const LanguagePicker({

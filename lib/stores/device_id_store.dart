@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/utils/uuid.dart';
-import 'package:mysterium_vpn/services/data/local/secured_storage_service.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 part 'device_id_store.g.dart';

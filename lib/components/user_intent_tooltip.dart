@@ -2,14 +2,14 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' hide Tooltip;
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mysterium_vpn/common/enums/indicator_type.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/components/spans/character_span.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/components/tooltip.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/user_intent.dart';
+import 'package:mysterium_vpn/models/models.dart';
 
 class UserIntentTooltip extends StatelessWidget {
   const UserIntentTooltip({super.key});

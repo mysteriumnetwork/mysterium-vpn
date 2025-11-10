@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 part 'update_availabe_store.g.dart';
