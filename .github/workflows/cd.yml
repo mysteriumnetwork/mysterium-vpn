@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download Windows (Standalone) artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: Windows app (Standalone)
           path: ./release
@@ -99,13 +99,13 @@ jobs:
     permissions: write-all
     steps:
       - name: Download Windows (Standalone) artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: Windows app (Standalone)
           path: ./release
 
       - name: Publish assets to public release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           repository: mysteriumnetwork/mysterium-vpn-release
           tag_name: ${{ github.event.release.tag_name }}
