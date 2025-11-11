@@ -557,10 +557,10 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_performance
-      sha256: "3db95272fe954e8c6b1ff8a1b0ef38f35093da7f3ee909a6608eee3f067d4b99"
+      sha256: dcfb4d674502866f0489a8ce0d96e0d43e0129375cea8bb73183a5ea02b4c4de
       url: "https://pub.dev"
     source: hosted
-    version: "0.11.0"
+    version: "0.11.1+1"
   firebase_performance_platform_interface:
     dependency: transitive
     description:
