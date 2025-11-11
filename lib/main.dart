@@ -12,6 +12,7 @@ void main() async {
   await Env.init();
   final initializer = AppInitializer();
   await initializer.init();
+  debugPrint('App initialized');
   FlutterError.onError = (details) {
     initializer.logger.handle(
       details.exception,
