@@ -23,12 +23,8 @@ jobs:
         env:
           ENV_DEV: ${{ secrets.ENV_DEV }}
           ENV_PROD: ${{ secrets.ENV_PROD }}
-        run: |
-          set -euo pipefail
-          printf '%s' "$ENV_DEV" > .env.dev
-          chmod 600 .env.dev
-          printf '%s' "$ENV_PROD" > .env.prod
-          chmod 600 .env.prod
+          ENV_E2E: ${{ secrets.ENV_E2E }}
+        run: bash .github/scripts/materialize-envs.sh
 
       - name: Setup Flutter Version Management CLI
         uses: flutter-actions/setup-fvm@v1.0 #v1.0 is tag, v1 is branch
