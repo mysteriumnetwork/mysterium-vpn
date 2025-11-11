@@ -33,12 +33,3 @@ for f in .env.dev .env.prod integration_test/.env; do
     printf "%s=<redacted> (%d bytes)\n", key, length(val)
   }' "$f" || true
 done
-
-# Uncomment the following block to print raw files (DO NOT ENABLE IN PUBLIC CI)
-echo "WARNING: printing raw files (DO NOT ENABLE IN PUBLIC CI)"
-echo "---- raw .env.dev ----"
-sed -n '1,200p' .env.dev || true
-echo "---- raw .env.prod ----"
-sed -n '1,200p' .env.prod || true
-echo "---- raw integration_test/.env ----"
-sed -n '1,200p' integration_test/.env || true
