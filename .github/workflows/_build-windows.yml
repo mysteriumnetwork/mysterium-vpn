@@ -40,25 +40,13 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Materialize .env from repo secrets
+      - name: Materialize .env files from repo secrets
         shell: bash
         env:
           ENV_DEV: ${{ secrets.ENV_DEV }}
           ENV_PROD: ${{ secrets.ENV_PROD }}
-        run: |
-          set -euo pipefail
-          ENV_PATH="${{ inputs.env_file }}"
-          FILE_NAME="$(basename "$ENV_PATH")"
-          case "$FILE_NAME" in
-            .env.prod) CONTENT="$ENV_PROD" ;;
-            .env.dev)  CONTENT="$ENV_DEV" ;;
-            *)
-              echo "Unsupported env file: $FILE_NAME (expected .env.dev or .env.prod)" >&2
-              exit 1
-              ;;
-          esac
-          printf '%s' "$CONTENT" > "$ENV_PATH"
-          chmod 600 "$ENV_PATH"
+          ENV_E2E: ${{ secrets.ENV_E2E }}
+        run: bash .github/scripts/materialize-envs.sh
 
       - name: Install yq using Chocolatey
         run: choco install yq -y
@@ -129,7 +117,7 @@ jobs:
           cache-dependencies: true
 
       - name: Upload to Github
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: Windows app (Standalone)
           path: build/windows/x64/runner/Release/MysteriumVPN.msix
@@ -143,7 +131,7 @@ jobs:
             --store --identity-name "${{ inputs.product_identity }}" --publisher "CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC" --publisher-display-name "UAB MN Technologijos"
 
       - name: Upload to Github
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: Windows app (Store)
           path: build/windows/x64/runner/Release/MysteriumVPN.msix
