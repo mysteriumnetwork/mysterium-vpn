@@ -14,7 +14,6 @@ import 'package:talker/talker.dart';
 
 @GenerateNiceMocks([
   MockSpec<VpnRepository>(),
-  MockSpec<ApiService>(),
   MockSpec<ExternalApiService>(),
   MockSpec<MQTTService>(),
   MockSpec<LocationsStore>(),
@@ -39,7 +38,6 @@ import 'vpn_store_test.mocks.dart';
 void main() {
   late VpnStore vpnStore;
   late MockVpnRepository mockVpnRepo;
-  late MockApiService mockApi;
   late MockExternalApiService mockExternalApi;
   late MockMQTTService mockMqtt;
   late MockLocationsStore mockLocationsStore;
@@ -61,7 +59,6 @@ void main() {
 
   setUp(() {
     mockVpnRepo = MockVpnRepository();
-    mockApi = MockApiService();
     mockExternalApi = MockExternalApiService();
     mockMqtt = MockMQTTService();
     mockLocationsStore = MockLocationsStore();
@@ -82,7 +79,6 @@ void main() {
     mockSubscriptionStore = MockSubscriptionStore();
 
     vpnStore = VpnStore(
-      apiService: mockApi,
       externalApiService: mockExternalApi,
       mqtt: mockMqtt,
       locationsStore: mockLocationsStore,

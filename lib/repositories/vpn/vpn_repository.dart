@@ -31,4 +31,6 @@ abstract class VpnRepository {
     required bool? resetConnection,
   });
   Future<void> resetApp();
+  Future<void> disconnectAllDevices();
+  Future<void> udpBlockedCheck();
 }
