@@ -14,7 +14,6 @@ abstract class BaseVpnRepository implements VpnRepository {
   final Talker _logger;
   final ApiService _apiService;
 
-
   /// Rate the VPN connection by sending the relevant data to the API.
   @override
   Future<void> rateConnection({
@@ -62,7 +61,6 @@ abstract class BaseVpnRepository implements VpnRepository {
       rethrow;
     }
   }
-
 
   /// Check if UDP is blocked by making a request to the API.
   @override
