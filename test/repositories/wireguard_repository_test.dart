@@ -101,11 +101,11 @@ void main() {
     test('notifyApiVpnDisconnected calls api if key initialized', () async {
       await repository.init();
 
-      when(mockApiService.disconnect(publicKey: anyNamed('publicKey'))).thenAnswer((_) async {});
+      when(mockApiService.disconnect()).thenAnswer((_) async {});
 
       await repository.notifyApiVpnDisconnected();
 
-      verify(mockApiService.disconnect(publicKey: 'pub')).called(1);
+      verify(mockApiService.disconnect()).called(1);
     });
 
     test('notifyApiVpnDisconnected logs warning if key null', () async {

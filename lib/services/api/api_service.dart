@@ -9,6 +9,6 @@ abstract class ApiService {
   Future<void> createMarketingContact({required String? country});
   Future<void> updateMarketingContact({required bool consent});
   Future<bool> getMarketingContactStatus();
-  Future<void> disconnect({required String publicKey});
+  Future<void> disconnect();
   Future<Set<UserIntent>> fetchUserIntents();
 }
