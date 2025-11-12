@@ -747,9 +747,6 @@ abstract class _VpnStore extends VpnGuard with Store {
 
     try {
       await _vpnRepository.udpBlockedCheck();
-      _logger.info(
-        'UDP block check completed in less than 2sec and it is not blocked',
-      );
     } catch (e) {
       _analyticsStore.logEvent(
         AnalyticsEvent.udpBlocked,
