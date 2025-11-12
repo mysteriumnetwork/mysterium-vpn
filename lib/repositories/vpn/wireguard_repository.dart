@@ -8,7 +8,6 @@ import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/vpn/base_vpn_repository.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
@@ -19,14 +18,10 @@ class WireguardRepository extends BaseVpnRepository {
     required super.apiService,
     required super.logger,
   })  : _service = service,
-        _wireguradKeyService = wireguradKeyService,
-        _apiService = apiService,
-        _logger = logger;
+        _wireguradKeyService = wireguradKeyService;
 
   final WireguardDart _service;
   final WireguradKeyService _wireguradKeyService;
-  final Talker _logger;
-  final ApiService _apiService;
 
   KeyPair? _wireguardKey;
 
@@ -39,7 +34,7 @@ class WireguardRepository extends BaseVpnRepository {
     try {
       _wireguardKey = await _wireguradKeyService.getWireguradKey();
     } catch (e) {
-      _logger.handle(e);
+      logger.handle(e);
     }
   }
 
@@ -48,7 +43,7 @@ class WireguardRepository extends BaseVpnRepository {
       await disconnect();
       _wireguardKey = await _wireguradKeyService.regenerateWireguardKeys();
     } catch (e) {
-      _logger.handle(e);
+      logger.handle(e);
     }
   }
 
@@ -67,9 +62,9 @@ class WireguardRepository extends BaseVpnRepository {
         win32ServiceName: win32ServiceName,
         tunnelName: Env.tunnelName,
       );
-      _logger.info('Wireguard tunnel setup completed');
+      logger.info('Wireguard tunnel setup completed');
     } catch (e) {
-      _logger.handle(e);
+      logger.handle(e);
       rethrow;
     }
   }
@@ -90,10 +85,10 @@ class WireguardRepository extends BaseVpnRepository {
         },
       );
     } on TimeoutException catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
+      logger.handle(e, stackTrace);
       rethrow;
     } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
+      logger.handle(e, stackTrace);
       throw VpnConnectException(e.toString());
     }
   }
@@ -130,9 +125,9 @@ class WireguardRepository extends BaseVpnRepository {
         bundleId: Env.bundleId,
         tunnelName: Env.tunnelName,
       );
-      _logger.info('Wireguard tunnel configuration removed');
+      logger.info('Wireguard tunnel configuration removed');
     } catch (e) {
-      _logger.handle(e);
+      logger.handle(e);
       rethrow;
     }
   }
@@ -149,7 +144,7 @@ class WireguardRepository extends BaseVpnRepository {
   }) async {
     try {
       final key = await _getWireguradKey();
-      final response = await _apiService.fetchVpnConfig(
+      final response = await apiService.fetchVpnConfig(
         request: WireguardConnectRequest(
           publicKey: key.publicKey,
           countryOriginate: countryOriginate,
@@ -164,7 +159,7 @@ class WireguardRepository extends BaseVpnRepository {
       );
       return VpnConfig.fromWireguard(response);
     } catch (e) {
-      _logger.handle(e);
+      logger.handle(e);
       rethrow;
     }
   }
@@ -184,7 +179,7 @@ class WireguardRepository extends BaseVpnRepository {
         await removeTunnelConfiguration();
       }
     } catch (e) {
-      _logger.handle(e);
+      logger.handle(e);
       rethrow;
     }
   }

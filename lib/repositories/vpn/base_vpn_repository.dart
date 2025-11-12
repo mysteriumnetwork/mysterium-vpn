@@ -6,13 +6,12 @@ import 'package:vpn_api/vpn_api.dart';
 
 abstract class BaseVpnRepository implements VpnRepository {
   BaseVpnRepository({
-    required Talker logger,
-    required ApiService apiService,
-  })  : _logger = logger,
-        _apiService = apiService;
+    required this.logger,
+    required this.apiService,
+  });
 
-  final Talker _logger;
-  final ApiService _apiService;
+  final Talker logger;
+  final ApiService apiService;
 
   /// Rate the VPN connection by sending the relevant data to the API.
   @override
@@ -24,7 +23,7 @@ abstract class BaseVpnRepository implements VpnRepository {
     required RateConnectionRequestModeEnum mode,
   }) async {
     try {
-      await _apiService.rateConnection(
+      await apiService.rateConnection(
         request: RateConnectionRequest(
           mode: mode,
           reasons: reasons,
@@ -34,7 +33,7 @@ abstract class BaseVpnRepository implements VpnRepository {
         ),
       );
     } catch (e) {
-      _logger.handle(e);
+      logger.handle(e);
       rethrow;
     }
   }
@@ -43,9 +42,9 @@ abstract class BaseVpnRepository implements VpnRepository {
   @override
   Future<void> notifyApiVpnDisconnected() async {
     try {
-      await _apiService.disconnect();
+      await apiService.disconnect();
     } catch (e) {
-      _logger.handle(e);
+      logger.handle(e);
       Sentry.captureException(e);
     }
   }
@@ -54,9 +53,9 @@ abstract class BaseVpnRepository implements VpnRepository {
   @override
   Future<void> disconnectAllDevices() async {
     try {
-      await _apiService.disconnectAllDevices();
+      await apiService.disconnectAllDevices();
     } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
+      logger.handle(e, stackTrace);
       Sentry.captureException(e, stackTrace: stackTrace);
       rethrow;
     }
@@ -66,12 +65,12 @@ abstract class BaseVpnRepository implements VpnRepository {
   @override
   Future<void> udpBlockedCheck() async {
     try {
-      await _apiService.udpBlockedCheck();
-      _logger.info(
+      await apiService.udpBlockedCheck();
+      logger.info(
         'UDP block check completed in less than 2sec and it is not blocked',
       );
     } catch (e) {
-      _logger.handle(e);
+      logger.handle(e);
       Sentry.captureException(e);
       rethrow;
     }
