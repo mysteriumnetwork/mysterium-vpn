@@ -6,23 +6,23 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/repositories/vpn/vpn_repository.dart';
+import 'package:mysterium_vpn/repositories/vpn/base_vpn_repository.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
-class WireguardRepository implements VpnRepository {
+class WireguardRepository extends BaseVpnRepository {
   WireguardRepository({
     required WireguardDart service,
     required WireguradKeyService wireguradKeyService,
-    required ApiService apiService,
-    required Talker logger,
+    required super.apiService,
+    required super.logger,
   })  : _service = service,
         _wireguradKeyService = wireguradKeyService,
         _apiService = apiService,
         _logger = logger;
+
   final WireguardDart _service;
   final WireguradKeyService _wireguradKeyService;
   final Talker _logger;
@@ -123,23 +123,6 @@ class WireguardRepository implements VpnRepository {
     return VpnConnectionStatus.fromString(status.name);
   }
 
-  /// Notify the API that the user has disconnected from the VPN tunnel.
-  @override
-  Future<void> notifyApiVpnDisconnected() async {
-    try {
-      if (_wireguardKey?.publicKey == null) {
-        _logger.warning('Wireguard key is not initialized, cannot disconnect');
-        return;
-      }
-      await _apiService.disconnect(
-        publicKey: _wireguardKey!.publicKey,
-      );
-    } catch (e) {
-      _logger.handle(e);
-      Sentry.captureException(e);
-    }
-  }
-
   @override
   Future<void> removeTunnelConfiguration() async {
     try {
@@ -180,32 +163,6 @@ class WireguardRepository implements VpnRepository {
         ),
       );
       return VpnConfig.fromWireguard(response);
-    } catch (e) {
-      _logger.handle(e);
-      rethrow;
-    }
-  }
-
-  @override
-  Future<void> rateConnection({
-    required String ipType,
-    required String country,
-    required String? feedback,
-    required String? reasons,
-    required RateConnectionRequestModeEnum mode,
-  }) async {
-    try {
-      final key = await _getWireguradKey();
-      await _apiService.rateConnection(
-        request: RateConnectionRequest(
-          mode: mode,
-          reasons: reasons,
-          feedback: feedback,
-          country: country,
-          ipType: ipType,
-          publicKey: key.publicKey,
-        ),
-      );
     } catch (e) {
       _logger.handle(e);
       rethrow;

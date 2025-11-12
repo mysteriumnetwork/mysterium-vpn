@@ -28,7 +28,6 @@ class VpnStore = _VpnStore with _$VpnStore;
 
 abstract class _VpnStore extends VpnGuard with Store {
   _VpnStore({
-    required ApiService apiService,
     required ExternalApiService externalApiService,
     required MQTTService mqtt,
     required LocationsStore locationsStore,
@@ -48,8 +47,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     required ConnectionsLimitStore connectionsLimitStore,
     required VpnRepository vpnRepository,
     required ConnectionDecisionStore connectionDecisionStore,
-  })  : _apiService = apiService,
-        _externalApiService = externalApiService,
+  })  : _externalApiService = externalApiService,
         _mqtt = mqtt,
         _locationsStore = locationsStore,
         _connectionsLimitStore = connectionsLimitStore,
@@ -71,7 +69,6 @@ abstract class _VpnStore extends VpnGuard with Store {
   }
 
   // Services & Repositories
-  final ApiService _apiService;
   final ExternalApiService _externalApiService;
   final MQTTService _mqtt;
   final VpnRepository _vpnRepository;
@@ -693,7 +690,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   Future<void> disconnectAllDevices() async {
     try {
       _disconnectAllDevicesFuture = ObservableFuture(
-        _apiService.disconnectAllDevices(),
+        _vpnRepository.disconnectAllDevices(),
       );
       await disconnectTunnel();
       await _disconnectAllDevicesFuture;
@@ -749,7 +746,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     }
 
     try {
-      await _apiService.udpBlockedCheck();
+      await _vpnRepository.udpBlockedCheck();
       _logger.info(
         'UDP block check completed in less than 2sec and it is not blocked',
       );
