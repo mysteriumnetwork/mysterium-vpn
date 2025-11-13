@@ -28,7 +28,7 @@ Future<void> showSubscriptionUpgradePage(BuildContext context) async {
   unawaited(analyticsStore.logSubscriptionUpgradePopupShow());
   final hasPickedUpgrade = await showModalPage<bool>(
     context,
-    builder: (_) => _Page(),
+    builder: (_) => const _Page(),
   );
   unawaited(
     (hasPickedUpgrade ?? false)
@@ -38,6 +38,8 @@ Future<void> showSubscriptionUpgradePage(BuildContext context) async {
 }
 
 class _Page extends HookConsumerWidget {
+  const _Page();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subscriptionUpgradeStore = ref.watch(subscriptionUpgradeStorePOD);

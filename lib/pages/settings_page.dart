@@ -10,6 +10,8 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ColoredScaffold(
         extendBodyBehindAppBar: true,
+        backgroundColor: Theme.of(context).primaryColor,
+        forceBackgroundColor: true,
         body: ScreenTypeLayoutBuilder(
           mobile: (BuildContext context) => const SettingsMobileView(),
           tablet: (BuildContext context) => const SettingsDesktopView(),
