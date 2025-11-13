@@ -14,9 +14,9 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$ProductOffer {
-  String get id;
-  bool get isIntroductory;
+  String? get id;
   double get price;
+  double get fullPrice;
   OfferDuration get durationUnit;
   int get durationValue;
 
@@ -36,9 +36,8 @@ mixin _$ProductOffer {
         (other.runtimeType == runtimeType &&
             other is ProductOffer &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.isIntroductory, isIntroductory) ||
-                other.isIntroductory == isIntroductory) &&
             (identical(other.price, price) || other.price == price) &&
+            (identical(other.fullPrice, fullPrice) || other.fullPrice == fullPrice) &&
             (identical(other.durationUnit, durationUnit) || other.durationUnit == durationUnit) &&
             (identical(other.durationValue, durationValue) ||
                 other.durationValue == durationValue));
@@ -46,12 +45,11 @@ mixin _$ProductOffer {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, isIntroductory, price, durationUnit, durationValue);
+  int get hashCode => Object.hash(runtimeType, id, price, fullPrice, durationUnit, durationValue);
 
   @override
   String toString() {
-    return 'ProductOffer(id: $id, isIntroductory: $isIntroductory, price: $price, durationUnit: $durationUnit, durationValue: $durationValue)';
+    return 'ProductOffer(id: $id, price: $price, fullPrice: $fullPrice, durationUnit: $durationUnit, durationValue: $durationValue)';
   }
 }
 
@@ -61,11 +59,7 @@ abstract mixin class $ProductOfferCopyWith<$Res> {
       _$ProductOfferCopyWithImpl;
   @useResult
   $Res call(
-      {String id,
-      bool isIntroductory,
-      double price,
-      OfferDuration durationUnit,
-      int durationValue});
+      {String? id, double price, double fullPrice, OfferDuration durationUnit, int durationValue});
 }
 
 /// @nodoc
@@ -80,24 +74,24 @@ class _$ProductOfferCopyWithImpl<$Res> implements $ProductOfferCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? isIntroductory = null,
+    Object? id = freezed,
     Object? price = null,
+    Object? fullPrice = null,
     Object? durationUnit = null,
     Object? durationValue = null,
   }) {
     return _then(_self.copyWith(
-      id: null == id
+      id: freezed == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      isIntroductory: null == isIntroductory
-          ? _self.isIntroductory
-          : isIntroductory // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as String?,
       price: null == price
           ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
+              as double,
+      fullPrice: null == fullPrice
+          ? _self.fullPrice
+          : fullPrice // ignore: cast_nullable_to_non_nullable
               as double,
       durationUnit: null == durationUnit
           ? _self.durationUnit
@@ -204,7 +198,7 @@ extension ProductOfferPatterns on ProductOffer {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String id, bool isIntroductory, double price, OfferDuration durationUnit,
+    TResult Function(String? id, double price, double fullPrice, OfferDuration durationUnit,
             int durationValue)?
         $default, {
     required TResult orElse(),
@@ -213,7 +207,7 @@ extension ProductOfferPatterns on ProductOffer {
     switch (_that) {
       case _ProductOffer() when $default != null:
         return $default(
-            _that.id, _that.isIntroductory, _that.price, _that.durationUnit, _that.durationValue);
+            _that.id, _that.price, _that.fullPrice, _that.durationUnit, _that.durationValue);
       case _:
         return orElse();
     }
@@ -234,7 +228,7 @@ extension ProductOfferPatterns on ProductOffer {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(String id, bool isIntroductory, double price, OfferDuration durationUnit,
+    TResult Function(String? id, double price, double fullPrice, OfferDuration durationUnit,
             int durationValue)
         $default,
   ) {
@@ -242,7 +236,7 @@ extension ProductOfferPatterns on ProductOffer {
     switch (_that) {
       case _ProductOffer():
         return $default(
-            _that.id, _that.isIntroductory, _that.price, _that.durationUnit, _that.durationValue);
+            _that.id, _that.price, _that.fullPrice, _that.durationUnit, _that.durationValue);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -262,7 +256,7 @@ extension ProductOfferPatterns on ProductOffer {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String id, bool isIntroductory, double price, OfferDuration durationUnit,
+    TResult? Function(String? id, double price, double fullPrice, OfferDuration durationUnit,
             int durationValue)?
         $default,
   ) {
@@ -270,7 +264,7 @@ extension ProductOfferPatterns on ProductOffer {
     switch (_that) {
       case _ProductOffer() when $default != null:
         return $default(
-            _that.id, _that.isIntroductory, _that.price, _that.durationUnit, _that.durationValue);
+            _that.id, _that.price, _that.fullPrice, _that.durationUnit, _that.durationValue);
       case _:
         return null;
     }
@@ -279,21 +273,22 @@ extension ProductOfferPatterns on ProductOffer {
 
 /// @nodoc
 @JsonSerializable()
-class _ProductOffer implements ProductOffer {
+class _ProductOffer extends ProductOffer {
   _ProductOffer(
       {required this.id,
-      required this.isIntroductory,
       required this.price,
+      required this.fullPrice,
       required this.durationUnit,
-      required this.durationValue});
+      required this.durationValue})
+      : super._();
   factory _ProductOffer.fromJson(Map<String, dynamic> json) => _$ProductOfferFromJson(json);
 
   @override
-  final String id;
-  @override
-  final bool isIntroductory;
+  final String? id;
   @override
   final double price;
+  @override
+  final double fullPrice;
   @override
   final OfferDuration durationUnit;
   @override
@@ -320,9 +315,8 @@ class _ProductOffer implements ProductOffer {
         (other.runtimeType == runtimeType &&
             other is _ProductOffer &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.isIntroductory, isIntroductory) ||
-                other.isIntroductory == isIntroductory) &&
             (identical(other.price, price) || other.price == price) &&
+            (identical(other.fullPrice, fullPrice) || other.fullPrice == fullPrice) &&
             (identical(other.durationUnit, durationUnit) || other.durationUnit == durationUnit) &&
             (identical(other.durationValue, durationValue) ||
                 other.durationValue == durationValue));
@@ -330,12 +324,11 @@ class _ProductOffer implements ProductOffer {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, isIntroductory, price, durationUnit, durationValue);
+  int get hashCode => Object.hash(runtimeType, id, price, fullPrice, durationUnit, durationValue);
 
   @override
   String toString() {
-    return 'ProductOffer(id: $id, isIntroductory: $isIntroductory, price: $price, durationUnit: $durationUnit, durationValue: $durationValue)';
+    return 'ProductOffer(id: $id, price: $price, fullPrice: $fullPrice, durationUnit: $durationUnit, durationValue: $durationValue)';
   }
 }
 
@@ -346,11 +339,7 @@ abstract mixin class _$ProductOfferCopyWith<$Res> implements $ProductOfferCopyWi
   @override
   @useResult
   $Res call(
-      {String id,
-      bool isIntroductory,
-      double price,
-      OfferDuration durationUnit,
-      int durationValue});
+      {String? id, double price, double fullPrice, OfferDuration durationUnit, int durationValue});
 }
 
 /// @nodoc
@@ -365,24 +354,24 @@ class __$ProductOfferCopyWithImpl<$Res> implements _$ProductOfferCopyWith<$Res> 
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? id = null,
-    Object? isIntroductory = null,
+    Object? id = freezed,
     Object? price = null,
+    Object? fullPrice = null,
     Object? durationUnit = null,
     Object? durationValue = null,
   }) {
     return _then(_ProductOffer(
-      id: null == id
+      id: freezed == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      isIntroductory: null == isIntroductory
-          ? _self.isIntroductory
-          : isIntroductory // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as String?,
       price: null == price
           ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
+              as double,
+      fullPrice: null == fullPrice
+          ? _self.fullPrice
+          : fullPrice // ignore: cast_nullable_to_non_nullable
               as double,
       durationUnit: null == durationUnit
           ? _self.durationUnit

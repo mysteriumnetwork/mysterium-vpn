@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
+import 'package:mysterium_vpn/common/utils/comparator_utils.dart';
 import 'package:mysterium_vpn/common/utils/disposeable.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/models/product_offer.dart';
@@ -31,6 +33,9 @@ abstract class _SubscriptionLimitedTimeOfferStore with Store, Disposeable {
   @readonly
   late ObservableFuture<LimitedTimeOffer?> _future = ObservableFuture(_fetch());
 
+  @computed
+  int get discountPercent => _future.value?.offer.discountPercent ?? 0;
+
   void _refresh() {
     _future = _future.replaceOrReset(_fetch());
   }
@@ -46,11 +51,17 @@ abstract class _SubscriptionLimitedTimeOfferStore with Store, Disposeable {
 
     final products = await _subscriptionStore.productsFuture;
     for (final product in products) {
-      final offers = product.offers;
-      for (final offer in offers) {
-        if (offer.id == offerId) {
-          return (product: product, offer: offer, expiryDate: expiryDate);
-        }
+      final matching = product.offers
+          .where((it) => it.id == offerId)
+          .sortedByCompare((it) => it.price, compareNums)
+          .firstOrNull;
+
+      if (matching != null) {
+        return (
+          product: product,
+          offer: matching,
+          expiryDate: expiryDate,
+        );
       }
     }
     return null;

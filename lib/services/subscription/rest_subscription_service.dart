@@ -220,7 +220,6 @@ class RestSubscriptionService extends SubscriptionService {
         double? introductoryPrice;
         final offers = <ProductOffer>[];
         if (Platform.isAndroid) {
-          // todo: implement offers for google play
           final products = storePlans
               .where(
                 (element) => element.id == plan.googleProductId,
@@ -236,6 +235,19 @@ class RestSubscriptionService extends SubscriptionService {
               (element) => element.id == plan.googleProductId,
             );
           }
+
+          if (productDetails is GooglePlayProductDetails) {
+            final subOfferDetails = productDetails.productDetails.subscriptionOfferDetails;
+            if (subOfferDetails != null) {
+              for (final detail in subOfferDetails) {
+                try {
+                  offers.add(ProductOffer.fromGooglePlay(detail));
+                } catch (e, stack) {
+                  _logger.handle(e, stack);
+                }
+              }
+            }
+          }
         } else {
           productDetails = storePlans.firstWhereOrNull(
             (element) => element.id == plan.appleProductId,
@@ -244,7 +256,13 @@ class RestSubscriptionService extends SubscriptionService {
             final skProduct = productDetails.sk2Product;
             final promoOffers = skProduct.subscription?.promotionalOffers;
             if (promoOffers != null && promoOffers.isNotEmpty) {
-              offers.addAll(promoOffers.map(ProductOffer.fromAppStore));
+              for (final offer in promoOffers) {
+                try {
+                  offers.add(ProductOffer.fromAppStore(offer, productDetails));
+                } catch (e, stack) {
+                  _logger.handle(e, stack);
+                }
+              }
               final offer = promoOffers.firstWhereOrNull(
                 (element) => element.type == SK2SubscriptionOfferType.introductory,
               );
