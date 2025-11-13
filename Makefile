@@ -27,6 +27,7 @@ generate-localization:
 
 fetch-localization:
 	fvm dart run easy_localization_sheet
+	rm resources/langs/JSON.json
 
 update-tile-assets-declaration:
 	fvm dart run assets/map_tiles/list_assets.dart

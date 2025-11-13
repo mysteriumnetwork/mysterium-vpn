@@ -46,6 +46,8 @@ enum _FeatureToggleKey {
   mapConfig,
   subscriptionUpgradeBannerEnabled,
   subscriptionUpgradeAutoDisplayEnabled,
+  limitedTimeOfferExpiryDate,
+  limitedTimeOfferId,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -387,6 +389,28 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return config[_FeatureToggleKey.subscriptionUpgradeAutoDisplayEnabled.name] as bool;
     }
     return true;
+  }
+
+  @computed
+  String? get limitedTimeOfferId {
+    if (config.containsKey(_FeatureToggleKey.limitedTimeOfferId.name)) {
+      final raw = config[_FeatureToggleKey.limitedTimeOfferId.name];
+      return raw.toString();
+    }
+    return null;
+  }
+
+  @computed
+  DateTime? get limitedTimeOfferExpiryDate {
+    if (config.containsKey(_FeatureToggleKey.limitedTimeOfferExpiryDate.name)) {
+      final raw = config[_FeatureToggleKey.limitedTimeOfferExpiryDate.name];
+      try {
+        return DateTime.parse(raw.toString());
+      } catch (e, stack) {
+        logger.handle(e, stack);
+      }
+    }
+    return null;
   }
 
   Map<String, String> get asUserProperties =>

@@ -4,6 +4,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/models/product_offer.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 part 'purchasable_product.g.dart';
@@ -21,6 +22,7 @@ abstract class _PurchasableProduct with Store {
     required this.currencyCode,
     required this.introductoryPrice,
     required this.hasIntroductoryPrice,
+    required this.offers,
   });
 
   final SubscriptionConfigResponsePlansInner planDetails;
@@ -30,6 +32,7 @@ abstract class _PurchasableProduct with Store {
   final String currencyCode;
   final double? introductoryPrice;
   final bool hasIntroductoryPrice;
+  final List<ProductOffer> offers;
 
   late final currency = currencySymbol.isEmpty ? currencyCode : currencySymbol;
 

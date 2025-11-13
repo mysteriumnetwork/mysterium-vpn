@@ -276,6 +276,15 @@ abstract class LocaleKeys {
   static const protocol = 'protocol';
   static const pt = 'pt';
   static const purchased = 'purchased';
+  static const purchasePromoCTA = 'purchasePromoCTA';
+  static const purchasePromoEnds = 'purchasePromoEnds';
+  static const purchasePromoFeatures = 'purchasePromoFeatures';
+  static const purchasePromoPPTOC = 'purchasePromoPPTOC';
+  static const purchasePromoPrivacyPolicy = 'purchasePromoPrivacyPolicy';
+  static const purchasePromoSeeAllPlans = 'purchasePromoSeeAllPlans';
+  static const purchasePromoSubtitle = 'purchasePromoSubtitle';
+  static const purchasePromoTermsAndConditions = 'purchasePromoTermsAndConditions';
+  static const purchasePromoTitle = 'purchasePromoTitle';
   static const pushNotificationsConsentPopupDesc = 'pushNotificationsConsentPopupDesc';
   static const pushNotificationsConsentPopupTitle = 'pushNotificationsConsentPopupTitle';
   static const pushNotificationsPermissionPoint1 = 'pushNotificationsPermissionPoint1';

@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/subscription_limited_time_offer_store.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
@@ -350,4 +351,17 @@ final connectionDecisionStorePOD = Provider<ConnectionDecisionStore>(
     recentLocationsStore: ref.watch(recentLocationsStorePOD),
     userIntentsStore: ref.watch(userIntentsStorePOD),
   ),
+);
+
+final subscriptionLimitedTimeOfferStorePOD = Provider<SubscriptionLimitedTimeOfferStore>(
+  (ref) {
+    final store = SubscriptionLimitedTimeOfferStore(
+      ref.watch(subscriptionStorePOD),
+      ref.watch(remoteConfigStorePOD),
+    );
+
+    ref.onDispose(store.dispose);
+
+    return store;
+  },
 );
