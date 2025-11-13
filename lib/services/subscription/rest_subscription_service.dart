@@ -16,6 +16,7 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart' hide Response;
+import 'package:mysterium_vpn/models/product_offer.dart';
 import 'package:mysterium_vpn/services/services.dart' hide Response;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:retry/retry.dart';
@@ -217,6 +218,7 @@ class RestSubscriptionService extends SubscriptionService {
         ProductDetails? productDetails;
         double? rawPrice;
         double? introductoryPrice;
+        final offers = <ProductOffer>[];
         if (Platform.isAndroid) {
           final products = storePlans
               .where(
@@ -233,6 +235,19 @@ class RestSubscriptionService extends SubscriptionService {
               (element) => element.id == plan.googleProductId,
             );
           }
+
+          if (productDetails is GooglePlayProductDetails) {
+            final subOfferDetails = productDetails.productDetails.subscriptionOfferDetails;
+            if (subOfferDetails != null) {
+              for (final detail in subOfferDetails) {
+                try {
+                  offers.add(ProductOffer.fromGooglePlay(detail));
+                } catch (e, stack) {
+                  _logger.handle(e, stack);
+                }
+              }
+            }
+          }
         } else {
           productDetails = storePlans.firstWhereOrNull(
             (element) => element.id == plan.appleProductId,
@@ -241,6 +256,13 @@ class RestSubscriptionService extends SubscriptionService {
             final skProduct = productDetails.sk2Product;
             final promoOffers = skProduct.subscription?.promotionalOffers;
             if (promoOffers != null && promoOffers.isNotEmpty) {
+              for (final offer in promoOffers) {
+                try {
+                  offers.add(ProductOffer.fromAppStore(offer, productDetails));
+                } catch (e, stack) {
+                  _logger.handle(e, stack);
+                }
+              }
               final offer = promoOffers.firstWhereOrNull(
                 (element) => element.type == SK2SubscriptionOfferType.introductory,
               );
@@ -262,6 +284,7 @@ class RestSubscriptionService extends SubscriptionService {
             currencySymbol: productDetails.currencySymbol,
             introductoryPrice: introductoryPrice,
             hasIntroductoryPrice: await _hasIntroductoryPrice(productDetails.id, introductoryPrice),
+            offers: offers,
           ),
         );
       }

@@ -254,6 +254,20 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
               () => super.subscriptionUpgradeAutoDisplayEnabled,
               name: 'RemoteConfigStoreBase.subscriptionUpgradeAutoDisplayEnabled'))
           .value;
+  Computed<String?>? _$limitedTimeOfferIdComputed;
+
+  @override
+  String? get limitedTimeOfferId =>
+      (_$limitedTimeOfferIdComputed ??= Computed<String?>(() => super.limitedTimeOfferId,
+              name: 'RemoteConfigStoreBase.limitedTimeOfferId'))
+          .value;
+  Computed<DateTime?>? _$limitedTimeOfferExpiryDateComputed;
+
+  @override
+  DateTime? get limitedTimeOfferExpiryDate => (_$limitedTimeOfferExpiryDateComputed ??=
+          Computed<DateTime?>(() => super.limitedTimeOfferExpiryDate,
+              name: 'RemoteConfigStoreBase.limitedTimeOfferExpiryDate'))
+      .value;
 
   @override
   String toString() {
@@ -293,7 +307,9 @@ userIntentsRefreshInterval: ${userIntentsRefreshInterval},
 recentLocationsLimit: ${recentLocationsLimit},
 mapConfig: ${mapConfig},
 subscriptionUpgradeBannerEnabled: ${subscriptionUpgradeBannerEnabled},
-subscriptionUpgradeAutoDisplayEnabled: ${subscriptionUpgradeAutoDisplayEnabled}
+subscriptionUpgradeAutoDisplayEnabled: ${subscriptionUpgradeAutoDisplayEnabled},
+limitedTimeOfferId: ${limitedTimeOfferId},
+limitedTimeOfferExpiryDate: ${limitedTimeOfferExpiryDate}
     ''';
   }
 }
