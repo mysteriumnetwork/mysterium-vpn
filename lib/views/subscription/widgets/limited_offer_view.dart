@@ -43,7 +43,6 @@ class LimitedOfferView extends HookConsumerWidget {
         }
 
         final product = offer.product;
-        final discount = ((offer.offer.price / product.productPrice) * 100).round();
 
         Future<void> handleSubscribe() async {
           await handleSubscribeToProduct(product.id);
@@ -54,7 +53,9 @@ class LimitedOfferView extends HookConsumerWidget {
           onPressed: handleSubscribe,
           onShowProductsPressed: showProducts,
           image: Asset.images.purchasePromo,
-          title: LocaleKeys.purchasePromoTitle.tr(args: [discount.toString()]),
+          title: LocaleKeys.purchasePromoTitle.tr(
+            args: [subscriptionStore.discountPercent.toString()],
+          ),
           subtitle: LocaleKeys.purchasePromoSubtitle.tr(),
           features: (jsonDecode(LocaleKeys.purchasePromoFeatures.tr()) as Iterable)
               .map((it) => it.toString())
@@ -277,7 +278,11 @@ class _Plan extends StatelessWidget {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: offer.product.annualPrice,
+                        text: offer.offer.fullPrice.pricePerYear(
+                          months: offer.product.duration,
+                          currencySymbol: offer.product.currencySymbol,
+                          currencyCode: offer.product.currencyCode,
+                        ),
                         style: const TextStyle(
                           decoration: TextDecoration.lineThrough,
                           decorationColor: Palette.white,
