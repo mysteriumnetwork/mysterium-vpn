@@ -138,13 +138,11 @@ class RestApiService extends ApiService {
   }
 
   @override
-  Future<void> disconnect({required String publicKey}) async {
+  Future<void> disconnect() async {
     try {
-      await _apiConnection.disconnect(
-        publicKey: publicKey,
-      );
+      await _apiConnection.disconnect();
       _logger.info(
-        'Disconnected successfully with public key: $publicKey',
+        'Disconnected successfully',
       );
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
