@@ -20,7 +20,7 @@ dependencies:
   connectivity_plus: 6.1.5
   crypto: 3.0.7
   cupertino_icons: 1.0.8
-  curl_logger_dio_interceptor: ^1.0.0
+  curl_logger_dio_interceptor: ^1.0.1
   device_info_plus: 12.2.0
   dio: 5.9.0
   easy_localization: 3.0.8

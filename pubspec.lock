@@ -333,10 +333,10 @@ packages:
     dependency: "direct main"
     description:
       name: curl_logger_dio_interceptor
-      sha256: f20d89187a321d2150e1412bca30ebf4d89130bafc648ce21bd4f1ef4062b214
+      sha256: "0702d32b8ff1b451ba1d9882d57b885061872ebc38384c18243b18b2a0db2a5b"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.1"
   dart_earcut:
     dependency: transitive
     description:
