@@ -202,7 +202,7 @@ class _Title extends StatelessWidget {
         children: [
           EasyText(
             title,
-            color: Palette.purple,
+            color: const Color(0xFFE651FF),
             fontSize: 34,
             fontWeight: FontWeight.w700,
             textAlign: TextAlign.center,
@@ -344,32 +344,35 @@ class _Features extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: 2,
-        children: [
+        children: <Widget>[
           for (final feature in features)
-            DecoratedBox(
-              decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: Palette.lightBlack.withValues(alpha: .4))),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Row(
-                  spacing: 12,
-                  children: [
-                    Asset.icons.checkmarkGreen.svg(height: 18),
-                    Expanded(
-                      child: EasyText(
-                        feature,
-                        color: Palette.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        maxLines: 2,
-                      ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Row(
+                spacing: 12,
+                children: [
+                  Asset.icons.checkmarkGreen.svg(height: 18),
+                  Expanded(
+                    child: EasyText(
+                      feature,
+                      color: Palette.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      maxLines: 2,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-        ],
+        ]
+            .separateWith(
+              Divider(
+                height: 1,
+                thickness: 1,
+                color: Palette.lightBlack.withValues(alpha: .4),
+              ),
+            )
+            .toList(),
       );
 }
 
