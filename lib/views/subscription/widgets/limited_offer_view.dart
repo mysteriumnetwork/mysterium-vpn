@@ -11,8 +11,8 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart';
+import 'package:mysterium_vpn/common/hooks/show_products_hook.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
-import 'package:mysterium_vpn/common/utils/comparator_utils.dart';
 import 'package:mysterium_vpn/components/circle_box.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
@@ -21,42 +21,41 @@ import 'package:mysterium_vpn/components/spans/character_span.dart';
 import 'package:mysterium_vpn/components/spans/link_span.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/subscription_limited_time_offer_store.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LimitedOfferView extends HookConsumerWidget {
   const LimitedOfferView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final subscriptionStore = ref.watch(subscriptionLimitedTimeOfferStorePOD);
     final handleSubscribeToProduct = useHandleSubscribeToProduct();
+    final showProducts = useShowProducts();
 
     return Observer(
       builder: (context) {
-        final product = subscriptionStore.highlightedProduct ??
-            subscriptionStore.productsFuture.value
-                ?.sortedByCompare((it) => it.duration, compareNums)
-                .lastOrNull;
+        final offer = subscriptionStore.future.value;
 
-        if (product == null) {
+        if (offer == null) {
           return const Center(child: LoadingIndicator());
         }
 
+        final product = offer.product;
+        final discount = ((offer.offer.price / product.productPrice) * 100).round();
+
         Future<void> handleSubscribe() async {
           await handleSubscribeToProduct(product.id);
-          if (context.mounted) {
-            Navigator.of(context).pop();
-          }
         }
 
         return _Content(
-          product: product,
+          offer: offer,
           onPressed: handleSubscribe,
+          onShowProductsPressed: showProducts,
           image: Asset.images.purchasePromo,
-          title: LocaleKeys.purchasePromoTitle.tr(args: ['50']),
+          title: LocaleKeys.purchasePromoTitle.tr(args: [discount.toString()]),
           subtitle: LocaleKeys.purchasePromoSubtitle.tr(),
-          endDate: DateTime.now().add(const Duration(days: 7)),
           features: (jsonDecode(LocaleKeys.purchasePromoFeatures.tr()) as Iterable)
               .map((it) => it.toString())
               .toList(),
@@ -68,22 +67,22 @@ class LimitedOfferView extends HookConsumerWidget {
 
 class _Content extends StatelessWidget {
   const _Content({
+    required this.offer,
     required this.image,
     required this.title,
     required this.subtitle,
-    required this.product,
     required this.features,
-    required this.endDate,
     required this.onPressed,
+    required this.onShowProductsPressed,
   });
 
   final Object? image;
   final String title;
   final String subtitle;
-  final PurchasableProduct product;
+  final LimitedTimeOffer offer;
   final List<String> features;
-  final DateTime endDate;
   final VoidCallback onPressed;
+  final VoidCallback onShowProductsPressed;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -108,7 +107,7 @@ class _Content extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 36),
-                _Plan(product: product, endDate: endDate),
+                _Plan(offer: offer),
                 const SizedBox(height: 24),
                 _Features(features: features),
                 const SizedBox(height: 16),
@@ -129,7 +128,7 @@ class _Content extends StatelessWidget {
                         useSystemColor: false,
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: onShowProductsPressed,
                         style: TextButton.styleFrom(
                           foregroundColor: Palette.purple,
                           visualDensity: VisualDensity.comfortable,
@@ -206,6 +205,7 @@ class _Title extends StatelessWidget {
             fontSize: 34,
             fontWeight: FontWeight.w700,
             textAlign: TextAlign.center,
+            height: 35 / 34,
           ),
           EasyText(
             subtitle,
@@ -219,14 +219,13 @@ class _Title extends StatelessWidget {
 }
 
 class _Plan extends StatelessWidget {
-  const _Plan({required this.product, required this.endDate});
+  const _Plan({required this.offer});
 
-  final PurchasableProduct product;
-  final DateTime endDate;
+  final LimitedTimeOffer offer;
 
   @override
   Widget build(BuildContext context) {
-    final planName = switch (product.planDetails.id) {
+    final planName = switch (offer.product.planDetails.id) {
       kAnnualPlan => LocaleKeys.plan_yearly.tr(),
       ksemiAnnualPlan => LocaleKeys.plan_6_months.tr(),
       kMonthlyPlan => LocaleKeys.plan_monthly.tr(),
@@ -259,7 +258,11 @@ class _Plan extends StatelessWidget {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: product.monthlyPrice,
+                        text: offer.offer.price.pricePerMonth(
+                          months: offer.product.duration,
+                          currencySymbol: offer.product.currencySymbol,
+                          currencyCode: offer.product.currencyCode,
+                        ),
                         style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
                       ),
                       TextSpan(
@@ -269,11 +272,35 @@ class _Plan extends StatelessWidget {
                     ],
                   ),
                 ),
-                EasyText(
-                  product.annualPrice,
-                  color: Palette.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+                AutoSizeText.rich(
+                  style: GoogleFonts.montserrat(color: Palette.white),
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: offer.product.annualPrice,
+                        style: const TextStyle(
+                          decoration: TextDecoration.lineThrough,
+                          decorationColor: Palette.white,
+                        ),
+                      ),
+                      CharacterSpan.space(),
+                      TextSpan(
+                        text: offer.offer.price.pricePerYear(
+                          months: offer.product.duration,
+                          currencySymbol: offer.product.currencySymbol,
+                          currencyCode: offer.product.currencyCode,
+                        ),
+                      ),
+                      CharacterSpan.space(),
+                      TextSpan(
+                        text: switch (offer.product.duration) {
+                          12 => LocaleKeys.pricingIntroductoryPeriod12.tr(),
+                          6 => LocaleKeys.pricingIntroductoryPeriod6.tr(),
+                          _ => '',
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -284,7 +311,7 @@ class _Plan extends StatelessWidget {
           right: 24,
           child: Transform.rotate(
             angle: -0.174533, // -10 degrees in radians
-            child: _Sticker(endDate: endDate),
+            child: _Sticker(endDate: offer.expiryDate),
           ),
         ),
       ],
@@ -343,7 +370,6 @@ class _Features extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        spacing: 2,
         children: <Widget>[
           for (final feature in features)
             Padding(
@@ -388,6 +414,17 @@ class _Footer extends StatelessWidget {
       LocaleKeys.termsAndConditions.tr(),
     ].reversed.toList();
 
+    LinkSpan buildLinkSpan(String text) => LinkSpan(
+          text: text,
+          onTap: () {
+            if (text == LocaleKeys.privacyPolicy.tr()) {
+              launchUrl(Uri.parse(privacyPolicyUrl));
+            } else if (text == LocaleKeys.termsAndConditions.tr()) {
+              launchUrl(Uri.parse(termsOfServiceUrl));
+            }
+          },
+        );
+
     return AutoSizeText.rich(
       textAlign: TextAlign.center,
       maxLines: 2,
@@ -403,7 +440,7 @@ class _Footer extends StatelessWidget {
               children: [
                 TextSpan(text: segment),
                 CharacterSpan.space(),
-                LinkSpan(text: highlights.removeLast(), onTap: () {}),
+                buildLinkSpan(highlights.removeLast()),
               ],
             ),
         ].separateWith(CharacterSpan.space()).toList(),

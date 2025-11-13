@@ -21,11 +21,13 @@ class EasyText extends StatelessWidget {
     this.colorDecoration,
     this.autoSizeGroup,
     this.minFontSize = 10,
+    this.height,
   });
 
   final String text;
   final double? fontSize;
   final double? letterSpacing;
+  final double? height;
   final FontWeight? fontWeight;
   final MouseCursor? cursor;
   final TextAlign? textAlign;
@@ -54,6 +56,7 @@ class EasyText extends StatelessWidget {
             fontSize: fontSize ?? 16,
             letterSpacing: letterSpacing,
             fontWeight: fontWeight,
+            height: height,
           ),
         ),
       );
