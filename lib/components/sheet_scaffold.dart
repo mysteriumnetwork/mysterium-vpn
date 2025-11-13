@@ -96,7 +96,7 @@ class _ColoredScrollGapFiller extends HookWidget {
       }
 
       final position = controller.positions.first;
-      return max(position.pixels - position.maxScrollExtent, 0);
+      return max(0, position.pixels - position.maxScrollExtent);
     });
 
     return Container(
