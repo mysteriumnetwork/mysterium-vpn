@@ -175,6 +175,10 @@ class $AssetsIconsGen {
   SvgGenImage get checkmark =>
       const SvgGenImage('assets/icons/checkmark.svg', size: Size(20.0, 20.0));
 
+  /// File path: assets/icons/checkmark_green.svg
+  SvgGenImage get checkmarkGreen =>
+      const SvgGenImage('assets/icons/checkmark_green.svg', size: Size(18.0, 18.0));
+
   /// File path: assets/icons/chevron_right.svg
   SvgGenImage get chevronRight =>
       const SvgGenImage('assets/icons/chevron_right.svg', size: Size(16.0, 16.0));
@@ -563,6 +567,7 @@ class $AssetsIconsGen {
         billingDark,
         billingLight,
         checkmark,
+        checkmarkGreen,
         chevronRight,
         cityConnected,
         cityDark,
@@ -685,6 +690,10 @@ class $AssetsImagesGen {
   SvgGenImage get notifications =>
       const SvgGenImage('assets/images/notifications.svg', size: Size(150.0, 121.0));
 
+  /// File path: assets/images/purchase_promo.png
+  AssetGenImage get purchasePromo =>
+      const AssetGenImage('assets/images/purchase_promo.png', size: const Size(1024.0, 1024.0));
+
   /// File path: assets/images/report_dark.svg
   SvgGenImage get reportDark =>
       const SvgGenImage('assets/images/report_dark.svg', size: Size(190.0, 290.0));
@@ -708,6 +717,7 @@ class $AssetsImagesGen {
         marketingConsentDark,
         marketingConsentLight,
         notifications,
+        purchasePromo,
         reportDark,
         reportLight,
         settings,

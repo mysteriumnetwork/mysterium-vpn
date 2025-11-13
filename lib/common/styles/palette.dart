@@ -21,6 +21,7 @@ abstract class Palette {
   static const Color lightLavender = Color(0xffDED9EF);
   static const Color darkIndigo = Color(0xff353352);
   static const Color deepPurple = Color(0xff1E1632);
+  static const Color midnightInk = Color(0xFF161424);
   static const Color veryLightBlue = Color(0xffF0F2FF);
   static const Color yellow = Color(0xffE2AF00);
   static const Color darkOliveBrown = Color(0xff514314);
@@ -76,6 +77,8 @@ abstract class Palette {
   Color get modalBackgroundColor;
   Color get modalGradientColor;
   Color get modalBarrierColor;
+  Color get limitedOfferBackgroundColor;
+  Color get limitedOfferSheetColor;
 
   MaterialColor get swatchColor;
 }
@@ -194,6 +197,12 @@ class LightPalette implements Palette {
 
   @override
   Color get modalBarrierColor => Palette.charcoal.withValues(alpha: .5);
+
+  @override
+  Color get limitedOfferBackgroundColor => Palette.white;
+
+  @override
+  Color get limitedOfferSheetColor => Palette.midnightInk;
 }
 
 class DarkPalette implements Palette {
@@ -310,6 +319,12 @@ class DarkPalette implements Palette {
 
   @override
   Color get modalBarrierColor => Palette.charcoal.withValues(alpha: .5);
+
+  @override
+  Color get limitedOfferBackgroundColor => Palette.darkBlue;
+
+  @override
+  Color get limitedOfferSheetColor => Palette.midnightInk;
 }
 
 Map<int, Color> color = const {

@@ -2,13 +2,16 @@ import 'dart:math';
 
 import 'package:flutter/material.dart' hide CloseButton;
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/close_button.dart';
 import 'package:mysterium_vpn/components/inherited/parent_scroll_controller.dart';
+import 'package:mysterium_vpn/components/sheet_scaffold.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/subscription/subscription_status_container.dart';
+import 'package:mysterium_vpn/views/subscription/widgets/limited_offer_view.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/subscription_form.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/subscription_mobile_header.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/subscription_sales_view.dart';
@@ -24,12 +27,6 @@ class SubscriptionMobileScaffold extends HookConsumerWidget {
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     final subscriptionStore = ref.watch(subscriptionStorePOD);
 
-    final showSalesPage = useComputedValue(
-      () =>
-          remoteConfigStore.showSalesView &&
-          (subscriptionStore.highlightedProduct?.hasIntroductoryPrice ?? false),
-    );
-
     final offset = useListenableSelector<double>(controller, () {
       if (!controller.hasClients || controller.positions.isEmpty) {
         return 0.0;
@@ -41,37 +38,52 @@ class SubscriptionMobileScaffold extends HookConsumerWidget {
 
     return ParentScrollController(
       controller: controller,
-      child: Stack(
-        children: [
-          if (!showSalesPage)
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: DecoratedBox(
-                decoration: BoxDecoration(color: theme.colorScheme.surface),
-                child: SizedBox(height: offset + kToolbarHeight),
-              ),
-            )
-          else
-            const Positioned.fill(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0xff1E1632), Color(0xff47215E)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+      child: Observer(
+        builder: (context) {
+          final showSalesView = remoteConfigStore.showSalesView &&
+              (subscriptionStore.highlightedProduct?.hasIntroductoryPrice ?? false);
+          final showLimitedOfferView = remoteConfigStore.limitedTimeOfferExpiryDate != null &&
+              remoteConfigStore.limitedTimeOfferExpiryDate!.isAfter(DateTime.now());
+          final pricing = showLimitedOfferView
+              ? const _LimitedOfferPricing()
+              : showSalesView
+                  ? const _SalesPricing()
+                  : const _RegularPricing();
+
+          return Stack(
+            children: [
+              if (pricing is _RegularPricing)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(color: theme.colorScheme.surface),
+                    child: SizedBox(height: offset + kToolbarHeight),
+                  ),
+                )
+              else if (pricing is _SalesPricing)
+                const Positioned.fill(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Color(0xff1E1632), Color(0xff47215E)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          CustomScrollView(
-            controller: controller,
-            slivers: [
-              if (!showSalesPage) const _RegularPricing() else const _SalesPricing(),
+              if (pricing is _LimitedOfferPricing)
+                pricing
+              else
+                CustomScrollView(
+                  controller: controller,
+                  slivers: [pricing],
+                ),
             ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -79,6 +91,7 @@ class SubscriptionMobileScaffold extends HookConsumerWidget {
 
 class _RegularPricing extends HookWidget {
   const _RegularPricing();
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -131,6 +144,7 @@ class _RegularPricing extends HookWidget {
 
 class _SalesPricing extends HookWidget {
   const _SalesPricing();
+
   @override
   Widget build(BuildContext context) => SliverStack(
         children: const [
@@ -149,4 +163,31 @@ class _SalesPricing extends HookWidget {
           ),
         ],
       );
+}
+
+class _LimitedOfferPricing extends HookConsumerWidget {
+  const _LimitedOfferPricing();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final height = MediaQuery.of(context).size.height;
+
+    return Scaffold(
+      backgroundColor: theme.palette.limitedOfferBackgroundColor,
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      body: SheetScaffold(
+        sheetColor: theme.palette.limitedOfferSheetColor,
+        scaffoldColor: theme.palette.limitedOfferBackgroundColor,
+        header: const SubscriptionMobileHeader(),
+        sliver: SliverToBoxAdapter(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: height),
+            child: const SubscriptionStatusContainer(child: LimitedOfferView()),
+          ),
+        ),
+      ),
+    );
+  }
 }
