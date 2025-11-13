@@ -16,6 +16,7 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/exceptions/store_not_available.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart' hide Response;
+import 'package:mysterium_vpn/models/product_offer.dart';
 import 'package:mysterium_vpn/services/services.dart' hide Response;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:retry/retry.dart';
@@ -217,7 +218,9 @@ class RestSubscriptionService extends SubscriptionService {
         ProductDetails? productDetails;
         double? rawPrice;
         double? introductoryPrice;
+        final offers = <ProductOffer>[];
         if (Platform.isAndroid) {
+          // todo: implement offers for google play
           final products = storePlans
               .where(
                 (element) => element.id == plan.googleProductId,
@@ -241,6 +244,7 @@ class RestSubscriptionService extends SubscriptionService {
             final skProduct = productDetails.sk2Product;
             final promoOffers = skProduct.subscription?.promotionalOffers;
             if (promoOffers != null && promoOffers.isNotEmpty) {
+              offers.addAll(promoOffers.map(ProductOffer.fromAppStore));
               final offer = promoOffers.firstWhereOrNull(
                 (element) => element.type == SK2SubscriptionOfferType.introductory,
               );
@@ -262,6 +266,7 @@ class RestSubscriptionService extends SubscriptionService {
             currencySymbol: productDetails.currencySymbol,
             introductoryPrice: introductoryPrice,
             hasIntroductoryPrice: await _hasIntroductoryPrice(productDetails.id, introductoryPrice),
+            offers: offers,
           ),
         );
       }

@@ -26,6 +26,7 @@ class SubscriptionMobileScaffold extends HookConsumerWidget {
     final controller = useScrollController();
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final subscriptionLimitedTimeOfferStore = ref.watch(subscriptionLimitedTimeOfferStorePOD);
 
     final offset = useListenableSelector<double>(controller, () {
       if (!controller.hasClients || controller.positions.isEmpty) {
@@ -42,8 +43,7 @@ class SubscriptionMobileScaffold extends HookConsumerWidget {
         builder: (context) {
           final showSalesView = remoteConfigStore.showSalesView &&
               (subscriptionStore.highlightedProduct?.hasIntroductoryPrice ?? false);
-          final showLimitedOfferView = remoteConfigStore.limitedTimeOfferExpiryDate != null &&
-              remoteConfigStore.limitedTimeOfferExpiryDate!.isAfter(DateTime.now());
+          final showLimitedOfferView = subscriptionLimitedTimeOfferStore.future.value != null;
           final pricing = showLimitedOfferView
               ? const _LimitedOfferPricing()
               : showSalesView
