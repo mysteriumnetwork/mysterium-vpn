@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$ProductOffer {
-  String? get id;
+  String get id;
   double get price;
   double get fullPrice;
   OfferDuration get durationUnit;
@@ -59,7 +59,7 @@ abstract mixin class $ProductOfferCopyWith<$Res> {
       _$ProductOfferCopyWithImpl;
   @useResult
   $Res call(
-      {String? id, double price, double fullPrice, OfferDuration durationUnit, int durationValue});
+      {String id, double price, double fullPrice, OfferDuration durationUnit, int durationValue});
 }
 
 /// @nodoc
@@ -74,17 +74,17 @@ class _$ProductOfferCopyWithImpl<$Res> implements $ProductOfferCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
+    Object? id = null,
     Object? price = null,
     Object? fullPrice = null,
     Object? durationUnit = null,
     Object? durationValue = null,
   }) {
     return _then(_self.copyWith(
-      id: freezed == id
+      id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       price: null == price
           ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -198,7 +198,7 @@ extension ProductOfferPatterns on ProductOffer {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String? id, double price, double fullPrice, OfferDuration durationUnit,
+    TResult Function(String id, double price, double fullPrice, OfferDuration durationUnit,
             int durationValue)?
         $default, {
     required TResult orElse(),
@@ -228,7 +228,7 @@ extension ProductOfferPatterns on ProductOffer {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(String? id, double price, double fullPrice, OfferDuration durationUnit,
+    TResult Function(String id, double price, double fullPrice, OfferDuration durationUnit,
             int durationValue)
         $default,
   ) {
@@ -256,7 +256,7 @@ extension ProductOfferPatterns on ProductOffer {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String? id, double price, double fullPrice, OfferDuration durationUnit,
+    TResult? Function(String id, double price, double fullPrice, OfferDuration durationUnit,
             int durationValue)?
         $default,
   ) {
@@ -284,7 +284,7 @@ class _ProductOffer extends ProductOffer {
   factory _ProductOffer.fromJson(Map<String, dynamic> json) => _$ProductOfferFromJson(json);
 
   @override
-  final String? id;
+  final String id;
   @override
   final double price;
   @override
@@ -339,7 +339,7 @@ abstract mixin class _$ProductOfferCopyWith<$Res> implements $ProductOfferCopyWi
   @override
   @useResult
   $Res call(
-      {String? id, double price, double fullPrice, OfferDuration durationUnit, int durationValue});
+      {String id, double price, double fullPrice, OfferDuration durationUnit, int durationValue});
 }
 
 /// @nodoc
@@ -354,17 +354,17 @@ class __$ProductOfferCopyWithImpl<$Res> implements _$ProductOfferCopyWith<$Res> 
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? id = freezed,
+    Object? id = null,
     Object? price = null,
     Object? fullPrice = null,
     Object? durationUnit = null,
     Object? durationValue = null,
   }) {
     return _then(_ProductOffer(
-      id: freezed == id
+      id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       price: null == price
           ? _self.price
           : price // ignore: cast_nullable_to_non_nullable

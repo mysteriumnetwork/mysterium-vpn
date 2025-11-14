@@ -7,7 +7,7 @@ part of 'product_offer.dart';
 // **************************************************************************
 
 _ProductOffer _$ProductOfferFromJson(Map<String, dynamic> json) => _ProductOffer(
-      id: json['id'] as String?,
+      id: json['id'] as String,
       price: (json['price'] as num).toDouble(),
       fullPrice: (json['fullPrice'] as num).toDouble(),
       durationUnit: $enumDecode(_$OfferDurationEnumMap, json['durationUnit']),
