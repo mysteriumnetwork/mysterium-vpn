@@ -383,7 +383,10 @@ abstract class _AuthStore with Store {
         authTokens.refreshToken,
       );
     } catch (e) {
-      showSnackbar(LocaleKeys.loginSessionExpired.tr());
+      final authState = _authSessionStore.status;
+      if (authState == AuthStatus.authenticated) {
+        showSnackbar(LocaleKeys.loginSessionExpired.tr());
+      }
       await logout(invalidateRemotely: false);
 
       rethrow;
