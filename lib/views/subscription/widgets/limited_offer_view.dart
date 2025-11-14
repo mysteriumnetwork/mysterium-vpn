@@ -445,7 +445,7 @@ class _Footer extends StatelessWidget {
               children: [
                 TextSpan(text: segment),
                 CharacterSpan.space(),
-                buildLinkSpan(highlights.removeLast()),
+                if (highlights.isNotEmpty) buildLinkSpan(highlights.removeLast()),
               ],
             ),
         ].separateWith(CharacterSpan.space()).toList(),
