@@ -11,7 +11,7 @@ part 'product_offer.g.dart';
 @freezed
 abstract class ProductOffer with _$ProductOffer {
   factory ProductOffer({
-    required String? id,
+    required String id,
     required double price,
     required double fullPrice,
     required OfferDuration durationUnit,
@@ -24,7 +24,8 @@ abstract class ProductOffer with _$ProductOffer {
 
   factory ProductOffer.fromAppStore(SK2SubscriptionOffer offer, AppStoreProduct2Details details) =>
       ProductOffer(
-        id: offer.id,
+        // we cannot have proper filter with null ID because ConfigCat doesn't support null values, and all appstore intro offers have null IDs
+        id: offer.id ?? 'default',
         price: offer.price,
         durationUnit: OfferDuration.fromAppStore(offer.period.unit),
         durationValue: offer.period.value,
@@ -32,7 +33,7 @@ abstract class ProductOffer with _$ProductOffer {
       );
 
   factory ProductOffer.fromGooglePlay(SubscriptionOfferDetailsWrapper offer) {
-    final id = offer.offerId;
+    final id = offer.offerId ?? 'default';
     final phase = offer.pricingPhases.firstOrNull;
     if (phase == null) {
       throw ArgumentError('Google Play offer has no pricing phases: $offer');

@@ -45,11 +45,14 @@ abstract class _SubscriptionLimitedTimeOfferStore with Store, Disposeable {
 
     final offerId = _remoteConfigStore.limitedTimeOfferId;
     final expiryDate = _remoteConfigStore.limitedTimeOfferExpiryDate;
-    if (offerId == null || expiryDate == null || expiryDate.isBefore(DateTime.now())) {
+
+    if (expiryDate == null || expiryDate.isBefore(DateTime.now())) {
       return null;
     }
 
-    final products = await _subscriptionStore.productsFuture;
+    final products = (await _subscriptionStore.productsFuture)
+        .sortedByCompare((it) => it.duration, compareNums)
+        .reversed;
     for (final product in products) {
       final matching = product.offers
           .where((it) => it.id == offerId)
