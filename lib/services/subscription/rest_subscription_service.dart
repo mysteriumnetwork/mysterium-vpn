@@ -255,10 +255,13 @@ class RestSubscriptionService extends SubscriptionService {
           if (productDetails is AppStoreProduct2Details) {
             final skProduct = productDetails.sk2Product;
             final promoOffers = skProduct.subscription?.promotionalOffers;
+            final isEligibleForIntro = await isEligibleForIntroOffer(productDetails.id);
             if (promoOffers != null && promoOffers.isNotEmpty) {
               for (final offer in promoOffers) {
                 try {
-                  offers.add(ProductOffer.fromAppStore(offer, productDetails));
+                  if (isEligibleForIntro || offer.type != SK2SubscriptionOfferType.introductory) {
+                    offers.add(ProductOffer.fromAppStore(offer, productDetails));
+                  }
                 } catch (e, stack) {
                   _logger.handle(e, stack);
                 }
