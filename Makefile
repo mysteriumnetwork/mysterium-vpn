@@ -27,7 +27,7 @@ generate-localization:
 
 fetch-localization:
 	fvm dart run easy_localization_sheet
-	rm resources/langs/JSON.json
+	rm resources/langs/JSON.json # Remove file generated from JSON column (used for configcat only)
 
 update-tile-assets-declaration:
 	fvm dart run assets/map_tiles/list_assets.dart

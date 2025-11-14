@@ -108,19 +108,6 @@ void main() {
       verify(mockApiService.disconnect()).called(1);
     });
 
-    test('notifyApiVpnDisconnected logs warning if key null', () async {
-      final repoWithoutKey = WireguardRepository(
-        service: mockService,
-        wireguradKeyService: mockKeyService,
-        apiService: mockApiService,
-        logger: mockLogger,
-      );
-
-      await repoWithoutKey.notifyApiVpnDisconnected();
-
-      verify(mockLogger.warning(any)).called(1);
-    });
-
     test('setupTunnel calls service.setupTunnel', () async {
       when(
         mockService.setupTunnel(

@@ -297,7 +297,7 @@ class CodegenLoader extends AssetLoader {
     "purchasePromoSeeAllPlans": "查看所有方案",
     "purchasePromoSubtitle": "黑色星期五优惠",
     "purchasePromoTermsAndConditions": "条款和条件",
-    "purchasePromoTitle": "{}％ 离开",
+    "purchasePromoTitle": "{}% 关闭",
     "pushNotificationsConsentPopupDesc": "我们只会发送我们认为您想要了解的重要通知。",
     "pushNotificationsConsentPopupTitle": "我们可以通知您吗？",
     "pushNotificationsPermissionPoint1": "• VPN连接状态",
@@ -744,7 +744,7 @@ class CodegenLoader extends AssetLoader {
     "purchasePromoSeeAllPlans": "Tüm planları görün",
     "purchasePromoSubtitle": "Kara Cuma Teklifi",
     "purchasePromoTermsAndConditions": "Şartlar ve koşullar",
-    "purchasePromoTitle": "{}% KAPALI",
+    "purchasePromoTitle": "{}% İNDİRİM",
     "pushNotificationsConsentPopupDesc":
         "Yalnızca bilmek isteyeceğinizi düşündüğümüz önemli bildirimleri göndereceğiz.",
     "pushNotificationsConsentPopupTitle": "Size bildirim gönderebilir miyiz?",
@@ -2131,7 +2131,7 @@ class CodegenLoader extends AssetLoader {
     "purchasePromoSeeAllPlans": "Veja todos os planos",
     "purchasePromoSubtitle": "Oferta da Black Friday",
     "purchasePromoTermsAndConditions": "Termos e Condições",
-    "purchasePromoTitle": "{}% DESLIGADO",
+    "purchasePromoTitle": "{}% DE DESCONTO",
     "pushNotificationsConsentPopupDesc":
         "Enviaremos apenas notificações importantes que achamos que você vai querer saber.",
     "pushNotificationsConsentPopupTitle": "Podemos notificá-lo?",
@@ -4048,7 +4048,7 @@ class CodegenLoader extends AssetLoader {
     "purchasePromoSeeAllPlans": "Lihat semua rencana",
     "purchasePromoSubtitle": "Penawaran Black Friday",
     "purchasePromoTermsAndConditions": "syarat dan Ketentuan",
-    "purchasePromoTitle": "{}% MATI",
+    "purchasePromoTitle": "DISKON {}%",
     "pushNotificationsConsentPopupDesc":
         "Kami hanya akan mengirim notifikasi penting yang menurut kami ingin Anda ketahui.",
     "pushNotificationsConsentPopupTitle": "Bolehkah kami memberi tahu Anda?",
@@ -4528,7 +4528,7 @@ class CodegenLoader extends AssetLoader {
     "purchasePromoSeeAllPlans": "Ver todos los planes",
     "purchasePromoSubtitle": "Oferta del Black Friday",
     "purchasePromoTermsAndConditions": "Términos y condiciones",
-    "purchasePromoTitle": "{}% APAGADO",
+    "purchasePromoTitle": "{}% DE DESCUENTO",
     "pushNotificationsConsentPopupDesc":
         "Solo enviaremos notificaciones importantes que creemos que querrás conocer.",
     "pushNotificationsConsentPopupTitle": "¿Podemos notificarte?",
