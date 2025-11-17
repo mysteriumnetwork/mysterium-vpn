@@ -82,7 +82,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
   final userIntentsStore = ref.watch(userIntentsStorePOD);
   final connectionsLimitStore = ref.watch(connectionsLimitStorePOD);
-  final wireguradRepository = ref.watch(wireguardRepositoryPOD);
+  final wireguardRepository = ref.watch(wireguardRepositoryPOD);
   final openVpnRepository = ref.watch(openVpnRepositoryPOD);
   final protocolStore = ref.watch(vpnProtocolStorePOD);
   final connectionDecisionStore = ref.watch(connectionDecisionStorePOD);
@@ -105,7 +105,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     unavailableLocationsStore: unavailableLocationsStore,
     userIntentsStore: userIntentsStore,
     connectionsLimitStore: connectionsLimitStore,
-    wireguardRepository: wireguradRepository,
+    wireguardRepository: wireguardRepository,
     openVpnRepository: openVpnRepository,
     protocolStore: protocolStore,
     connectionDecisionStore: connectionDecisionStore,
