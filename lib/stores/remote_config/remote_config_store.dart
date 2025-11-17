@@ -48,6 +48,7 @@ enum _FeatureToggleKey {
   subscriptionUpgradeAutoDisplayEnabled,
   limitedTimeOfferExpiryDate,
   limitedTimeOfferId,
+  isProtocolPickerAvailable,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -411,6 +412,14 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       }
     }
     return null;
+  }
+
+  @computed
+  bool get isProtocolPickerAvailable {
+    if (config.containsKey(_FeatureToggleKey.isProtocolPickerAvailable.name)) {
+      return config[_FeatureToggleKey.isProtocolPickerAvailable.name] as bool;
+    }
+    return false;
   }
 
   Map<String, String> get asUserProperties =>
