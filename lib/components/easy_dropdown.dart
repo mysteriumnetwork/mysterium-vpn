@@ -17,11 +17,25 @@ class EasyDropdown<T> extends StatelessWidget {
   final T value;
   final VoidCallback? onTap;
 
+  bool get isDisabled => onChanged == null;
+
   @override
   Widget build(BuildContext context) => DropdownButton<T>(
         isExpanded: true,
         value: value,
-        icon: const Icon(Icons.arrow_drop_down),
+        icon: Icon(
+          Icons.arrow_drop_down,
+          color: isDisabled ? Palette.lightBlack.withValues(alpha: .3) : Palette.lightBlack,
+        ),
+        disabledHint: Text(
+          value.toString(),
+          style: TextStyle(
+            color: Palette.lightBlack.withValues(alpha: .3),
+          ),
+        ),
+        style: TextStyle(
+          color: isDisabled ? Palette.lightBlack.withValues(alpha: .3) : Palette.lightBlack,
+        ),
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         underline: const SizedBox.shrink(),
         onChanged: onChanged,
@@ -33,11 +47,10 @@ class EasyDropdown<T> extends StatelessWidget {
           .padding(horizontal: 10)
           .decorated(
             color: context.c.isDarkMode ? Palette.black : Palette.white,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10),
-            ),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             border: Border.all(
-              color: Palette.lightBlack,
+              color: isDisabled ? Palette.lightBlack.withValues(alpha: .3) : Palette.lightBlack,
             ),
-          );
+          )
+          .opacity(isDisabled ? 0.6 : 1.0);
 }

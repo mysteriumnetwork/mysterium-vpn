@@ -58,7 +58,7 @@ ThemeData themeData(Palette palette) => ThemeData(
       ),
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.all(
-          Palette.lightGrey,
+          Palette.veryLightBlue,
         ),
         trackColor: WidgetStateProperty.resolveWith(
           (states) => states.contains(WidgetState.disabled)
@@ -69,9 +69,9 @@ ThemeData themeData(Palette palette) => ThemeData(
         ),
         thumbIcon: WidgetStateProperty.resolveWith(
           (states) => states.contains(WidgetState.disabled)
-              ? Icon(
+              ? const Icon(
                   Icons.remove,
-                  color: palette.filledButtonTextColor.withValues(alpha: .7),
+                  color: Palette.lightBlue,
                 )
               : states.contains(WidgetState.selected)
                   ? const Icon(Icons.check, color: Palette.purple)
