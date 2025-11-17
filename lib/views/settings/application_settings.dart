@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';
@@ -21,29 +20,27 @@ class ApplicationSettings extends HookConsumerWidget {
     final localeStore = ref.read(localeStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
 
-    return Observer(
-      builder: (context) => Column(
-        children: [
-          SettingItem(
-            asset: Asset.icons.language(context),
-            title: LocaleKeys.appLang.tr(),
-            actionWidget: LanguagePicker(
-              store: localeStore,
-              analyticsStore: analyticsStore,
-            ),
+    return Column(
+      children: [
+        SettingItem(
+          asset: Asset.icons.language(context),
+          title: LocaleKeys.appLang.tr(),
+          actionWidget: LanguagePicker(
+            store: localeStore,
+            analyticsStore: analyticsStore,
           ),
-          SettingItem(
-            asset: Asset.icons.theme(context),
-            title: LocaleKeys.theme.tr(),
-            actionWidget: ThemePicker(
-              store: themeStore,
-              analyticsStore: analyticsStore,
-            ),
+        ),
+        SettingItem(
+          asset: Asset.icons.theme(context),
+          title: LocaleKeys.theme.tr(),
+          actionWidget: ThemePicker(
+            store: themeStore,
+            analyticsStore: analyticsStore,
           ),
-          const EmailMarketingSetting(),
-          const PushNotificationsSetting(),
-        ],
-      ),
+        ),
+        const EmailMarketingSetting(),
+        const PushNotificationsSetting(),
+      ],
     );
   }
 }
