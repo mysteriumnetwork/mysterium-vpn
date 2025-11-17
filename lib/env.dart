@@ -30,7 +30,8 @@ abstract class Env {
 
   static final String bundleId = _getBundleId();
   static final Flavor flavor = Flavor.fromEnvironment();
-
+  static const String openVpnExtensionId = String.fromEnvironment('OPENVPN_EXTENSION_ID');
+  static const String openVpnExtensionName = String.fromEnvironment('OPENVPN_EXTENSION_NAME');
   static late final PackageInfo _packageInfo;
   static BuildInfo _buildInfo = BuildInfo(buildNumber: 0, buildVersion: '0.0.0');
   static late final String _userAgent;
@@ -96,7 +97,7 @@ abstract class Env {
   }
 
   static String stringify() =>
-      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, billingPage: $billingPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret, isAutomated: $isAutomated';
+      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, billingPage: $billingPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret, isAutomated: $isAutomated, openVpnExtensionId: $openVpnExtensionId, openVpnExtensionName: $openVpnExtensionName';
 
   static String _getBundleId() {
     if (Platform.isIOS || Platform.isMacOS) {
@@ -125,6 +126,8 @@ abstract class Env {
         'API_SECRET': apiSecret,
         'IS_AUTOMATED': isAutomated.toString(),
         'ENV_APP': flavor.name,
+        'OPENVPN_EXTENSION_ID': openVpnExtensionId,
+        'OPENVPN_EXTENSION_NAME': openVpnExtensionName,
       };
 }
 
