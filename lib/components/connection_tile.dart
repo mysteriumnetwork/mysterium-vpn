@@ -141,9 +141,11 @@ class ConnectionTile extends HookConsumerWidget {
           if (isConnected ?? false) const SizedBox(height: 16),
           if (isConnected ?? false) _RateConnection(),
           if (Env.flavor.isDev)
-            Text(
-              'Protocol: ${vpnProtocol.protocol.name}',
-              style: const TextStyle(fontSize: 8, color: Palette.lavenderPink),
+            Observer(
+              builder: (context) => Text(
+                'Protocol: ${vpnProtocol.protocol.name}',
+                style: const TextStyle(fontSize: 8, color: Palette.lavenderPink),
+              ),
             ),
         ],
       ),
