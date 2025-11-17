@@ -425,5 +425,7 @@
   "yearlyPlanDiscountPrice": "Yıl için {amount}.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Evet",
-  "zh": "Çince"
+  "zh": "Çince",
+  "protocolPickerSettingTitle": "VPN protokolünü değiştirme",
+  "protocolPickerSettingDesc": "VPN protokolünü değiştirdiğinizde bağlantınız kesilecektir. Sonrasında yeniden bağlanmanız gerekecektir."
 }

@@ -425,5 +425,7 @@
   "yearlyPlanDiscountPrice": "年間{amount}。",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "はい",
-  "zh": "中国語"
+  "zh": "中国語",
+  "protocolPickerSettingTitle": "VPNプロトコルの切り替え",
+  "protocolPickerSettingDesc": "VPNプロトコルを切り替えると接続が切断されます。その後、再接続する必要があります。"
 }

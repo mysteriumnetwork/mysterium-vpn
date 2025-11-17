@@ -425,5 +425,7 @@
   "yearlyPlanDiscountPrice": "{amount} untuk tahun.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Iya",
-  "zh": "Cina"
+  "zh": "Cina",
+  "protocolPickerSettingTitle": "Mengganti protokol VPN",
+  "protocolPickerSettingDesc": "Mengganti protokol VPN akan memutuskan koneksi Anda. Anda perlu menyambungkannya kembali setelahnya."
 }
