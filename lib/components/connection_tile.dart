@@ -15,6 +15,7 @@ import 'package:mysterium_vpn/components/connect_text_button.dart';
 import 'package:mysterium_vpn/components/dialogs/rate_connection_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
@@ -31,6 +32,7 @@ class ConnectionTile extends HookConsumerWidget {
     final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
+    final vpnProtocol = ref.watch(vpnProtocolStorePOD);
 
     final location = useComputedValue(
       () {
@@ -138,6 +140,11 @@ class ConnectionTile extends HookConsumerWidget {
           ),
           if (isConnected ?? false) const SizedBox(height: 16),
           if (isConnected ?? false) _RateConnection(),
+          if (Env.flavor.isDev)
+            Text(
+              'Protocol: ${vpnProtocol.protocol.name}',
+              style: const TextStyle(fontSize: 8, color: Palette.lavenderPink),
+            ),
         ],
       ),
     );
