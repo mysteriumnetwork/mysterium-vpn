@@ -21,6 +21,7 @@ import 'package:mysterium_vpn/components/spans/character_span.dart';
 import 'package:mysterium_vpn/components/spans/link_span.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/subscription_limited_time_offer_store.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -121,13 +122,7 @@ class _Content extends StatelessWidget {
                         : CrossAxisAlignment.center,
                     spacing: 16,
                     children: [
-                      EasyButton(
-                        width: 230,
-                        onPressed: onPressed,
-                        color: Palette.purple,
-                        text: LocaleKeys.purchasePromoCTA.tr(),
-                        useSystemColor: false,
-                      ),
+                      _SubscribeButton(product: offer.product),
                       TextButton(
                         onPressed: onShowProductsPressed,
                         style: TextButton.styleFrom(
@@ -450,6 +445,34 @@ class _Footer extends StatelessWidget {
             ),
         ].separateWith(CharacterSpan.space()).toList(),
       ),
+    );
+  }
+}
+
+class _SubscribeButton extends HookConsumerWidget {
+  const _SubscribeButton({required this.product});
+
+  final PurchasableProduct product;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final store = ref.watch(subscriptionStorePOD);
+    final handleSubscribe = useHandleSubscribeToProduct();
+    return Observer(
+      builder: (context) {
+        final isLoading = store.isSubscriptionLoading;
+        if (isLoading) {
+          return const SizedBox(child: LoadingIndicator());
+        }
+
+        return EasyButton(
+          width: 230,
+          onPressed: () => handleSubscribe(product.id),
+          color: Palette.purple,
+          text: LocaleKeys.purchasePromoCTA.tr(),
+          useSystemColor: false,
+        );
+      },
     );
   }
 }
