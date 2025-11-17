@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,11 +14,10 @@
 		3EA225D929D42E5C001CD70B /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA225D829D42E5C001CD70B /* PacketTunnelProvider.swift */; };
 		3EA225DE29D42E5C001CD70B /* tun.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3EA225D429D42E5C001CD70B /* tun.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4FC2971EC5E181F7A3BDD0DB /* Pods_Runner_RunnerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B2E407CE1D671151F053AAC /* Pods_Runner_RunnerUITests.framework */; };
-		5461D01B945D1ACD831A34BA /* Pods_OVpnExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E28BD8191D3AA3BDEF5B6DF9 /* Pods_OVpnExtension.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		9729FC4D2BC6D94700E926F9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9729FC4C2BC6D94700E926F9 /* PrivacyInfo.xcprivacy */; };
-		977663012ECB980800BC54E9 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EA225D529D42E5C001CD70B /* NetworkExtension.framework */; };
-		977663092ECB980800BC54E9 /* OVpnExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 977663002ECB980800BC54E9 /* OVpnExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9776639A2ECBA38400BC54E9 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EA225D529D42E5C001CD70B /* NetworkExtension.framework */; };
+		977663A22ECBA38400BC54E9 /* OVpnExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 977663992ECBA38400BC54E9 /* OVpnExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		977D12872D5E43A900223A2A /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 977D12852D5E43A400223A2A /* AdServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		977D12892D5E43AC00223A2A /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97A7065A2CE64C7D00413133 /* AdSupport.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		977D128D2D5E43C400223A2A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 977D128B2D5E43BD00223A2A /* StoreKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
@@ -36,11 +35,11 @@
 			remoteGlobalIDString = 3EA225D329D42E5C001CD70B;
 			remoteInfo = tun;
 		};
-		977663072ECB980800BC54E9 /* PBXContainerItemProxy */ = {
+		977663A02ECBA38400BC54E9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 977662FF2ECB980800BC54E9;
+			remoteGlobalIDString = 977663982ECBA38400BC54E9;
 			remoteInfo = OVpnExtension;
 		};
 		991544342DD20A7100D6F505 /* PBXContainerItemProxy */ = {
@@ -60,7 +59,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				3EA225DE29D42E5C001CD70B /* tun.appex in Embed Foundation Extensions */,
-				977663092ECB980800BC54E9 /* OVpnExtension.appex in Embed Foundation Extensions */,
+				977663A22ECBA38400BC54E9 /* OVpnExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -103,7 +102,7 @@
 		9729FC4C2BC6D94700E926F9 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
-		977663002ECB980800BC54E9 /* OVpnExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OVpnExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		977663992ECBA38400BC54E9 /* OVpnExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OVpnExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		977D12852D5E43A400223A2A /* AdServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdServices.framework; path = System/Library/Frameworks/AdServices.framework; sourceTree = SDKROOT; };
 		977D128B2D5E43BD00223A2A /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		97A7065A2CE64C7D00413133 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -131,50 +130,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		9776630A2ECB980800BC54E9 /* Exceptions for "OVpnExtension" folder in "OVpnExtension" target */ = {
+		977663A32ECBA38500BC54E9 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 977662FF2ECB980800BC54E9 /* OVpnExtension */;
+			target = 977663982ECBA38400BC54E9 /* OVpnExtension */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		977662EB2ECB974500BC54E9 /* OVpnExtension */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = OVpnExtension;
-			sourceTree = "<group>";
-		};
-		977663022ECB980800BC54E9 /* OVpnExtension */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				9776630A2ECB980800BC54E9 /* Exceptions for "OVpnExtension" folder in "OVpnExtension" target */,
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = OVpnExtension;
-			sourceTree = "<group>";
-		};
-		9915442F2DD20A7100D6F505 /* RunnerUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = RunnerUITests;
-			sourceTree = "<group>";
-		};
+		977662EB2ECB974500BC54E9 /* OVpnExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = OVpnExtension; sourceTree = "<group>"; };
+		977663022ECB980800BC54E9 /* OVpnExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = OVpnExtension; sourceTree = "<group>"; };
+		9776639B2ECBA38400BC54E9 /* OVpnExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (977663A32ECBA38500BC54E9 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = OVpnExtension; sourceTree = "<group>"; };
+		9915442F2DD20A7100D6F505 /* RunnerUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = RunnerUITests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,12 +156,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		977662FD2ECB980800BC54E9 /* Frameworks */ = {
+		977663962ECBA38400BC54E9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				977663012ECB980800BC54E9 /* NetworkExtension.framework in Frameworks */,
-				5461D01B945D1ACD831A34BA /* Pods_OVpnExtension.framework in Frameworks */,
+				9776639A2ECBA38400BC54E9 /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,6 +232,7 @@
 				9915442F2DD20A7100D6F505 /* RunnerUITests */,
 				977662EB2ECB974500BC54E9 /* OVpnExtension */,
 				977663022ECB980800BC54E9 /* OVpnExtension */,
+				9776639B2ECBA38400BC54E9 /* OVpnExtension */,
 				97C146EF1CF9000F007C117D /* Products */,
 				C2B878B38229C444F4BCECA3 /* Pods */,
 				3ADBFD7F2A7974A6B75C50EC /* Frameworks */,
@@ -277,7 +246,7 @@
 				97C146EE1CF9000F007C117D /* Runner.app */,
 				3EA225D429D42E5C001CD70B /* tun.appex */,
 				9915442E2DD20A7100D6F505 /* RunnerUITests.xctest */,
-				977663002ECB980800BC54E9 /* OVpnExtension.appex */,
+				977663992ECBA38400BC54E9 /* OVpnExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -357,25 +326,26 @@
 			productReference = 3EA225D429D42E5C001CD70B /* tun.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		977662FF2ECB980800BC54E9 /* OVpnExtension */ = {
+		977663982ECBA38400BC54E9 /* OVpnExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9776630B2ECB980800BC54E9 /* Build configuration list for PBXNativeTarget "OVpnExtension" */;
+			buildConfigurationList = 977663A42ECBA38500BC54E9 /* Build configuration list for PBXNativeTarget "OVpnExtension" */;
 			buildPhases = (
-				A0F953A226FB1187C80402A5 /* [CP] Check Pods Manifest.lock */,
-				977662FC2ECB980800BC54E9 /* Sources */,
-				977662FD2ECB980800BC54E9 /* Frameworks */,
-				977662FE2ECB980800BC54E9 /* Resources */,
+				977663952ECBA38400BC54E9 /* Sources */,
+				977663962ECBA38400BC54E9 /* Frameworks */,
+				977663972ECBA38400BC54E9 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				977663022ECB980800BC54E9 /* OVpnExtension */,
+				9776639B2ECBA38400BC54E9 /* OVpnExtension */,
 			);
 			name = OVpnExtension;
+			packageProductDependencies = (
+			);
 			productName = OVpnExtension;
-			productReference = 977663002ECB980800BC54E9 /* OVpnExtension.appex */;
+			productReference = 977663992ECBA38400BC54E9 /* OVpnExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		97C146ED1CF9000F007C117D /* Runner */ = {
@@ -398,7 +368,7 @@
 			);
 			dependencies = (
 				3EA225DD29D42E5C001CD70B /* PBXTargetDependency */,
-				977663082ECB980800BC54E9 /* PBXTargetDependency */,
+				977663A12ECBA38400BC54E9 /* PBXTargetDependency */,
 			);
 			name = Runner;
 			productName = Runner;
@@ -445,7 +415,7 @@
 					3EA225D329D42E5C001CD70B = {
 						CreatedOnToolsVersion = 14.2;
 					};
-					977662FF2ECB980800BC54E9 = {
+					977663982ECBA38400BC54E9 = {
 						CreatedOnToolsVersion = 16.1;
 					};
 					97C146ED1CF9000F007C117D = {
@@ -474,7 +444,7 @@
 				97C146ED1CF9000F007C117D /* Runner */,
 				3EA225D329D42E5C001CD70B /* tun */,
 				9915442D2DD20A7100D6F505 /* RunnerUITests */,
-				977662FF2ECB980800BC54E9 /* OVpnExtension */,
+				977663982ECBA38400BC54E9 /* OVpnExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -487,7 +457,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		977662FE2ECB980800BC54E9 /* Resources */ = {
+		977663972ECBA38400BC54E9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -739,28 +709,6 @@
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin\n";
 		};
-		A0F953A226FB1187C80402A5 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-OVpnExtension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		A6A4F1FAEC4EE922063352A0 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -806,7 +754,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		977662FC2ECB980800BC54E9 /* Sources */ = {
+		977663952ECBA38400BC54E9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -837,10 +785,10 @@
 			target = 3EA225D329D42E5C001CD70B /* tun */;
 			targetProxy = 3EA225DC29D42E5C001CD70B /* PBXContainerItemProxy */;
 		};
-		977663082ECB980800BC54E9 /* PBXTargetDependency */ = {
+		977663A12ECBA38400BC54E9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 977662FF2ECB980800BC54E9 /* OVpnExtension */;
-			targetProxy = 977663072ECB980800BC54E9 /* PBXContainerItemProxy */;
+			target = 977663982ECBA38400BC54E9 /* OVpnExtension */;
+			targetProxy = 977663A02ECBA38400BC54E9 /* PBXContainerItemProxy */;
 		};
 		991544352DD20A7100D6F505 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1455,9 +1403,8 @@
 			};
 			name = "Profile-dev";
 		};
-		9776630C2ECB980800BC54E9 /* Debug-prod */ = {
+		977663A52ECBA38500BC54E9 /* Debug-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BFBFC0BF0A14BC01C0C20108 /* Pods-OVpnExtension.debug-prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1540,9 +1487,8 @@
 			};
 			name = "Debug-prod";
 		};
-		9776630D2ECB980800BC54E9 /* Debug-dev */ = {
+		977663A62ECBA38500BC54E9 /* Debug-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2AF93CD147418FB2003DC6E3 /* Pods-OVpnExtension.debug-dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1625,9 +1571,8 @@
 			};
 			name = "Debug-dev";
 		};
-		9776630E2ECB980800BC54E9 /* Release-prod */ = {
+		977663A72ECBA38500BC54E9 /* Release-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F74D8BB42D65AE98EC1C183D /* Pods-OVpnExtension.release-prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1703,9 +1648,8 @@
 			};
 			name = "Release-prod";
 		};
-		9776630F2ECB980800BC54E9 /* Release-dev */ = {
+		977663A82ECBA38500BC54E9 /* Release-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6B21E297E1606CCD0C76D2D6 /* Pods-OVpnExtension.release-dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1781,9 +1725,8 @@
 			};
 			name = "Release-dev";
 		};
-		977663102ECB980800BC54E9 /* Profile-prod */ = {
+		977663A92ECBA38500BC54E9 /* Profile-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2FC83420FE1CA7C2D46095C5 /* Pods-OVpnExtension.profile-prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1859,9 +1802,8 @@
 			};
 			name = "Profile-prod";
 		};
-		977663112ECB980800BC54E9 /* Profile-dev */ = {
+		977663AA2ECBA38500BC54E9 /* Profile-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F6FD4F02CFF71CA27D4EC457 /* Pods-OVpnExtension.profile-dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -2575,15 +2517,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug-dev";
 		};
-		9776630B2ECB980800BC54E9 /* Build configuration list for PBXNativeTarget "OVpnExtension" */ = {
+		977663A42ECBA38500BC54E9 /* Build configuration list for PBXNativeTarget "OVpnExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9776630C2ECB980800BC54E9 /* Debug-prod */,
-				9776630D2ECB980800BC54E9 /* Debug-dev */,
-				9776630E2ECB980800BC54E9 /* Release-prod */,
-				9776630F2ECB980800BC54E9 /* Release-dev */,
-				977663102ECB980800BC54E9 /* Profile-prod */,
-				977663112ECB980800BC54E9 /* Profile-dev */,
+				977663A52ECBA38500BC54E9 /* Debug-prod */,
+				977663A62ECBA38500BC54E9 /* Debug-dev */,
+				977663A72ECBA38500BC54E9 /* Release-prod */,
+				977663A82ECBA38500BC54E9 /* Release-dev */,
+				977663A92ECBA38500BC54E9 /* Profile-prod */,
+				977663AA2ECBA38500BC54E9 /* Profile-dev */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug-dev";
