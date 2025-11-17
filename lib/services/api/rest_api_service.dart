@@ -190,4 +190,23 @@ class RestApiService extends ApiService {
       rethrow;
     }
   }
+
+  @override
+  Future<OpenVpnConnectResponse> fetchOpenVpnConfig({
+    required OpenVpnConnectRequest request,
+  }) async {
+    try {
+      final response = await _apiConnection.connectOpenvpn(openVpnConnectRequest: request);
+      if (response.data == null) {
+        throw Exception("openvpn config wasn't created");
+      }
+
+      return response.data!;
+    } on ApiException {
+      rethrow;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
+  }
 }
