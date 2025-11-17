@@ -234,6 +234,14 @@ mixin _$VpnStore on _VpnStore, Store {
     return _$_initAsyncAction.run(() => super._init());
   }
 
+  late final _$_handleProtocolChangeAsyncAction =
+      AsyncAction('_VpnStore._handleProtocolChange', context: context);
+
+  @override
+  Future<void> _handleProtocolChange(ProtocolType protocol) {
+    return _$_handleProtocolChangeAsyncAction.run(() => super._handleProtocolChange(protocol));
+  }
+
   late final _$_initTunnelAsyncAction = AsyncAction('_VpnStore._initTunnel', context: context);
 
   @override
