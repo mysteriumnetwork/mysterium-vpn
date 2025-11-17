@@ -31,7 +31,7 @@ class OpenVpnRepository extends BaseVpnRepository {
   Future<void> setupTunnel() async {
     try {
       await _service.setupTunnel();
-      logger.info('Wireguard tunnel setup completed');
+      logger.info('OpenVPN tunnel setup completed');
     } catch (e) {
       logger.handle(e);
       rethrow;
