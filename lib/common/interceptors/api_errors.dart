@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/exceptions/api.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 
 class ApiErrorsInterceptor extends Interceptor {

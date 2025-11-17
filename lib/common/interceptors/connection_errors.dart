@@ -1,7 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/exceptions/api.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 
 class ConnectionErrorsInterceptor extends Interceptor {
   @override
