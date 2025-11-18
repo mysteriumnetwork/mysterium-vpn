@@ -144,7 +144,8 @@ class ConnectionTile extends HookConsumerWidget {
             Observer(
               builder: (context) => Text(
                 'Protocol: ${vpnProtocol.protocol.name}',
-                style: const TextStyle(fontSize: 8, color: Palette.lavenderPink),
+                style: const TextStyle(
+                    fontSize: 8, color: Palette.pink, fontWeight: FontWeight.bold),
               ),
             ),
         ],
