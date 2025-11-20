@@ -111,18 +111,6 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     connectionDecisionStore: connectionDecisionStore,
   );
 
-  // // Listen to protocol changes using MobX reaction
-  // final disposer = autorun(
-  //   (_) => protocolStore.protocol,
-  //   () {
-  //     final newRepository =
-  //         protocol == ProtocolType.wireguard ? wireguardRepository : openVpnRepository;
-  //     vpnStore.updateRepository(newRepository);
-  //   },
-  // );
-
-  // ref.onDispose(disposer.call);
-
   return vpnStore;
 });
 
@@ -389,10 +377,11 @@ final vpnProtocolStorePOD = Provider<VpnProtocolStore>((ref) {
   final localDB = LocalDBService.instance;
   final analyticsStore = ref.watch(analyticsStorePOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
-
+  final authSessionStore = ref.watch(authSessionStorePOD);
   return VpnProtocolStore(
     localDB,
     analyticsStore,
     remoteConfigStore,
+    authSessionStore,
   );
 });
