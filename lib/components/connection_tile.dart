@@ -27,129 +27,88 @@ class ConnectionTile extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final locationsStore = ref.watch(locationsStorePOD);
-    final selectedLocationStore = ref.watch(selectedLocationStorePOD);
-    final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
+    final connectionDisplayStore = ref.watch(connectionDisplayStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
     final vpnProtocol = ref.watch(vpnProtocolStorePOD);
 
-    final location = useComputedValue(
-      () {
-        final selectedLocation = selectedLocationStore.value;
-        final location = vpnStore.location;
-        final connectingLocation = vpnStore.connectingLocation;
-        final potentialLocation = vpnStore.potentialLocation;
-
-        final result = selectedLocation ?? location ?? connectingLocation ?? potentialLocation;
-        if (result == VPNLocation.closest) {
-          return null;
-        }
-
-        return result;
-      },
-      [vpnStore, locationsStore, selectedLocationStore],
-    );
-
-    final parent = useComputedValue(
-      () {
-        if (location == null) {
-          return null;
-        }
-        return locationsStore.findParent(location);
-      },
-      [location],
-    );
-
-    /// If selected location is unavailable, we show parent location (country) instead.
-    /// If parent location is also unavailable (all locations in that country are unavailable),
-    /// we show best location (closest).
-    final targetLocation = useComputedValue(
-      () {
-        if (location == null) {
-          return null;
-        }
-        return unavailableLocationsStore.unavailableLocations.contains(location)
-            ? parent
-            : location;
-      },
-      [location, parent],
-    );
-
-    final isConnected = useIsLocationConnected(location);
-    final ipInfo = useComputedValue(() => vpnStore.vpnConnection?.connectionIP);
-    final isLocationAvailable = location != null && location == targetLocation;
-
     final handleToggleConnection = useHandleToggleConnection();
-    final onTap = useComputedValue(
-      () {
-        if (vpnStore.isLoading) {
-          return null;
-        }
-
-        final intent = targetLocation == null && location != null ? UserIntent.bestSpeed : null;
-
-        return () => handleToggleConnection(location: targetLocation, intent: intent);
-      },
-      [handleToggleConnection, targetLocation, location],
-    );
 
     Future<void> handleRefreshIP() async {
-      analyticsStore.logRefreshIP(ipInfo);
+      analyticsStore.logRefreshIP(connectionDisplayStore.connectionIP);
       await vpnStore.manageConnection(refreshIP: true);
     }
 
-    return _Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (location == null)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: _Placeholder(
-                title: LocaleKeys.connectBestServer.tr(),
-                subtitle: LocaleKeys.orSelectCountryManually.tr(),
-                icon: Asset.icons.connectPrompt(context),
+    return Observer(
+      builder: (context) {
+        final location = connectionDisplayStore.displayLocation;
+        final parent = connectionDisplayStore.parentLocation;
+        final targetLocation = connectionDisplayStore.targetLocation;
+        final isLocationAvailable = connectionDisplayStore.isLocationAvailable;
+        final ipInfo = connectionDisplayStore.connectionIP;
+        final isLoading = connectionDisplayStore.isLoading;
+        final intent = connectionDisplayStore.connectionIntent;
+        final isConnected = connectionDisplayStore.isLocationConnected;
+
+        final onTap = isLoading
+            ? null
+            : () => handleToggleConnection(location: targetLocation, intent: intent);
+
+        return _Card(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (location == null)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: _Placeholder(
+                    title: LocaleKeys.connectBestServer.tr(),
+                    subtitle: LocaleKeys.orSelectCountryManually.tr(),
+                    icon: Asset.icons.connectPrompt(context),
+                  ),
+                )
+              else if (!isLocationAvailable)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: _Placeholder(
+                    title:
+                        LocaleKeys.locationUnavailableTitle.tr(args: [location.getName(context)]),
+                    subtitle: LocaleKeys.locationUnavailableSubtitle.tr(),
+                    icon: Asset.icons.fix(context),
+                  ),
+                )
+              else
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: _Location(
+                    location: location,
+                    parent: parent,
+                    ip: ipInfo,
+                    onRefreshIPPressed: handleRefreshIP,
+                  ),
+                ),
+              ConnectTextButton(
+                onPressed: onTap,
+                location: targetLocation,
+                size: const Size(double.infinity, 42),
+                textConnect:
+                    targetLocation != location ? LocaleKeys.locationUnavailableAction.tr() : null,
               ),
-            )
-          else if (!isLocationAvailable)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: _Placeholder(
-                title: LocaleKeys.locationUnavailableTitle.tr(args: [location.getName(context)]),
-                subtitle: LocaleKeys.locationUnavailableSubtitle.tr(),
-                icon: Asset.icons.fix(context),
-              ),
-            )
-          else
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: _Location(
-                location: location,
-                parent: parent,
-                ip: ipInfo,
-                onRefreshIPPressed: handleRefreshIP,
-              ),
-            ),
-          ConnectTextButton(
-            onPressed: onTap,
-            location: targetLocation,
-            size: const Size(double.infinity, 42),
-            textConnect:
-                targetLocation != location ? LocaleKeys.locationUnavailableAction.tr() : null,
+              if (isConnected ?? false) const SizedBox(height: 16),
+              if (isConnected ?? false) _RateConnection(),
+              if (Env.flavor.isDev)
+                Text(
+                  'Protocol: ${vpnProtocol.protocol.name}',
+                  style: const TextStyle(
+                    fontSize: 8,
+                    color: Palette.pink,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+            ],
           ),
-          if (isConnected ?? false) const SizedBox(height: 16),
-          if (isConnected ?? false) _RateConnection(),
-          if (Env.flavor.isDev)
-            Observer(
-              builder: (context) => Text(
-                'Protocol: ${vpnProtocol.protocol.name}',
-                style:
-                    const TextStyle(fontSize: 8, color: Palette.pink, fontWeight: FontWeight.bold),
-              ),
-            ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -326,34 +285,37 @@ class _RateConnection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-
-    final vpnStore = ref.watch(vpnStorePOD);
+    final connectionDisplayStore = ref.watch(connectionDisplayStorePOD);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
-    if (!vpnStore.isConnected || !remoteConfigStore.isRateConnectionAvailable) {
-      return const SizedBox.shrink();
-    }
+
     return Observer(
-      builder: (context) => Row(
-        spacing: 16,
-        children: [
-          Expanded(
-            child: EasyText(
-              LocaleKeys.rateConnection.tr(),
-              color: theme.palette.subtitleColor,
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
+      builder: (context) {
+        if (!connectionDisplayStore.isConnected || !remoteConfigStore.isRateConnectionAvailable) {
+          return const SizedBox.shrink();
+        }
+
+        return Row(
+          spacing: 16,
+          children: [
+            Expanded(
+              child: EasyText(
+                LocaleKeys.rateConnection.tr(),
+                color: theme.palette.subtitleColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          ),
-          _RateConnectionIconBtn(
-            connectionRated: vpnStore.connectionRated,
-            rateConnectionMode: RateConnectionRequestModeEnum.like,
-          ),
-          _RateConnectionIconBtn(
-            connectionRated: vpnStore.connectionRated,
-            rateConnectionMode: RateConnectionRequestModeEnum.dislike,
-          ),
-        ],
-      ),
+            _RateConnectionIconBtn(
+              connectionRated: connectionDisplayStore.connectionRated,
+              rateConnectionMode: RateConnectionRequestModeEnum.like,
+            ),
+            _RateConnectionIconBtn(
+              connectionRated: connectionDisplayStore.connectionRated,
+              rateConnectionMode: RateConnectionRequestModeEnum.dislike,
+            ),
+          ],
+        );
+      },
     );
   }
 }

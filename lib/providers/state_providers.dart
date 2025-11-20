@@ -385,3 +385,12 @@ final vpnProtocolStorePOD = Provider<VpnProtocolStore>((ref) {
     authSessionStore,
   );
 });
+
+final connectionDisplayStorePOD = Provider<ConnectionDisplayStore>(
+  (ref) => ConnectionDisplayStore(
+    ref.watch(vpnStorePOD),
+    ref.watch(locationsStorePOD),
+    ref.watch(selectedLocationStorePOD),
+    ref.watch(unavailableLocationsStorePOD),
+  ),
+);
