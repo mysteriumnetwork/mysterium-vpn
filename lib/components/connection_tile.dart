@@ -48,7 +48,7 @@ class ConnectionTile extends HookConsumerWidget {
         final ipInfo = connectionDisplayStore.connectionIP;
         final isLoading = connectionDisplayStore.isLoading;
         final intent = connectionDisplayStore.connectionIntent;
-        final isConnected = connectionDisplayStore.isLocationConnected;
+        final isConnected = connectionDisplayStore.isConnected;
 
         final onTap = isLoading
             ? null

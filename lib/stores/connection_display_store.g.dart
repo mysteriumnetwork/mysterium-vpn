@@ -69,13 +69,6 @@ mixin _$ConnectionDisplayStore on _ConnectionDisplayStore, Store {
           Computed<RateConnectionRequestModeEnum?>(() => super.connectionRated,
               name: '_ConnectionDisplayStore.connectionRated'))
       .value;
-  Computed<bool>? _$isLocationConnectedComputed;
-
-  @override
-  bool get isLocationConnected =>
-      (_$isLocationConnectedComputed ??= Computed<bool>(() => super.isLocationConnected,
-              name: '_ConnectionDisplayStore.isLocationConnected'))
-          .value;
 
   @override
   String toString() {
@@ -88,8 +81,7 @@ connectionIP: ${connectionIP},
 isLoading: ${isLoading},
 isConnected: ${isConnected},
 connectionIntent: ${connectionIntent},
-connectionRated: ${connectionRated},
-isLocationConnected: ${isLocationConnected}
+connectionRated: ${connectionRated}
     ''';
   }
 }
