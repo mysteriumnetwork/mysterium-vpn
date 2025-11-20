@@ -5,6 +5,7 @@ export 'auth/auth_session_store.dart';
 export 'auth/auth_store.dart';
 export 'banners_store.dart';
 export 'connection_decision_store.dart';
+export 'connection_display_store.dart';
 export 'connections_limit_store.dart';
 export 'device_id_store.dart';
 export 'dns_store.dart';
