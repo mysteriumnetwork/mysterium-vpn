@@ -52,14 +52,14 @@ class ProtocolPicker extends ConsumerWidget {
                     onConfirm: () async {
                       analyticsStore.logEvent(AnalyticsEvent.changeProtocolTypeApproved);
                       await vpnStore.disconnectTunnel();
-                      vpnProtocolStore.setProtocol(newProtocol);
+                      await vpnProtocolStore.setProtocol(newProtocol);
                     },
                     onCancel: () {
                       analyticsStore.logEvent(AnalyticsEvent.changeProtocolTypeDeclined);
                     },
                   );
                 } else {
-                  vpnProtocolStore.setProtocol(newProtocol);
+                  await vpnProtocolStore.setProtocol(newProtocol);
                 }
               }
             : null,
