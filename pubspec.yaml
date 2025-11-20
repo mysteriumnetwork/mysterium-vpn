@@ -121,7 +121,7 @@ dev_dependencies:
   hive_ce_generator: 1.10.0
   integration_test:
     sdk: flutter
-  json_serializable: 6.11.1
+  json_serializable: 6.11.2
   mobx_codegen: 2.7.4
   mockito: ^5.4.4
   msix: 3.16.12
