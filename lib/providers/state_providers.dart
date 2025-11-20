@@ -82,9 +82,12 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
   final userIntentsStore = ref.watch(userIntentsStorePOD);
   final connectionsLimitStore = ref.watch(connectionsLimitStorePOD);
-  final vpnRepository = ref.watch(wireguardRepositoryPOD);
+  final wireguardRepository = ref.watch(wireguardRepositoryPOD);
+  final openVpnRepository = ref.watch(openVpnRepositoryPOD);
+  final protocolStore = ref.watch(vpnProtocolStorePOD);
   final connectionDecisionStore = ref.watch(connectionDecisionStorePOD);
-  return VpnStore(
+
+  final vpnStore = VpnStore(
     externalApiService: externalApiService,
     mqtt: mqttService,
     locationsStore: locationsStore,
@@ -102,9 +105,13 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     unavailableLocationsStore: unavailableLocationsStore,
     userIntentsStore: userIntentsStore,
     connectionsLimitStore: connectionsLimitStore,
-    vpnRepository: vpnRepository,
+    wireguardRepository: wireguardRepository,
+    openVpnRepository: openVpnRepository,
+    protocolStore: protocolStore,
     connectionDecisionStore: connectionDecisionStore,
   );
+
+  return vpnStore;
 });
 
 final selectedLocationStorePOD = Provider<SelectedLocationStore>((ref) => SelectedLocationStore());
@@ -365,3 +372,16 @@ final subscriptionLimitedTimeOfferStorePOD = Provider<SubscriptionLimitedTimeOff
     return store;
   },
 );
+
+final vpnProtocolStorePOD = Provider<VpnProtocolStore>((ref) {
+  final localDB = LocalDBService.instance;
+  final analyticsStore = ref.watch(analyticsStorePOD);
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
+  return VpnProtocolStore(
+    localDB,
+    analyticsStore,
+    remoteConfigStore,
+    authSessionStore,
+  );
+});

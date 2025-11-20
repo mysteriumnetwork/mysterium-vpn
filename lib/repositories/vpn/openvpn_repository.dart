@@ -7,62 +7,31 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/vpn/base_vpn_repository.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:vpn_api/vpn_api.dart';
-import 'package:wireguard_dart/wireguard_dart.dart';
 
-class WireguardRepository extends BaseVpnRepository {
-  WireguardRepository({
-    required WireguardDart service,
-    required WireguradKeyService wireguradKeyService,
+class OpenVpnRepository extends BaseVpnRepository {
+  OpenVpnRepository({
+    required OpenVPNDart service,
     required super.apiService,
     required super.logger,
-  })  : _service = service,
-        _wireguradKeyService = wireguradKeyService;
+  }) : _service = service;
 
-  final WireguardDart _service;
-  final WireguradKeyService _wireguradKeyService;
-
-  KeyPair? _wireguardKey;
+  final OpenVPNDart _service;
 
   @override
   Future<void> init() async {
-    await _initWireguardKey();
-  }
-
-  Future<void> _initWireguardKey() async {
-    try {
-      _wireguardKey = await _wireguradKeyService.getWireguradKey();
-    } catch (e) {
-      logger.handle(e);
-    }
-  }
-
-  Future<void> _regenerateWireguardKey() async {
-    try {
-      await disconnect();
-      _wireguardKey = await _wireguradKeyService.regenerateWireguardKeys();
-    } catch (e) {
-      logger.handle(e);
-    }
-  }
-
-  Future<KeyPair> _getWireguradKey() async {
-    if (_wireguardKey == null) {
-      await _initWireguardKey();
-    }
-    return _wireguardKey!;
+    await _service.initialize(
+      providerBundleIdentifier: Env.openVpnExtensionId,
+      localizedDescription: Env.openVpnExtensionName,
+    );
   }
 
   @override
   Future<void> setupTunnel() async {
     try {
-      await _service.setupTunnel(
-        bundleId: Env.bundleId,
-        win32ServiceName: win32ServiceName,
-        tunnelName: Env.tunnelName,
-      );
-      logger.info('Wireguard tunnel setup completed');
+      await _service.setupTunnel();
+      logger.info('OpenVPN tunnel setup completed');
     } catch (e) {
       logger.handle(e);
       rethrow;
@@ -74,13 +43,11 @@ class WireguardRepository extends BaseVpnRepository {
     required String config,
   }) async {
     try {
-      final key = await _getWireguradKey();
-      final replaced = config.replaceFirst('%private_key%', key.privateKey);
-      await _service.connect(cfg: replaced).timeout(
+      await _service.connect(config).timeout(
         const Duration(seconds: vpnConnectionTimeoutSeconds),
         onTimeout: () {
           throw TimeoutException(
-            'Wireguard connection timed out after $vpnConnectionTimeoutSeconds seconds',
+            'OpenVPN connection timed out after $vpnConnectionTimeoutSeconds seconds',
           );
         },
       );
@@ -97,15 +64,14 @@ class WireguardRepository extends BaseVpnRepository {
   Future<bool> disconnect() async {
     final status = await currentStatus();
     if (status == VpnConnectionStatus.connected) {
-      await _service.disconnect();
+      _service.disconnect();
       return true;
     }
     return false;
   }
 
   @override
-  Future<bool> isTunnelConfigured() =>
-      _service.checkTunnelConfiguration(bundleId: Env.bundleId, tunnelName: Env.tunnelName);
+  Future<bool> isTunnelConfigured() => _service.checkTunnelConfiguration();
 
   @override
   Stream<VpnConnectionStatus> statusStream() => _service.statusStream().map(
@@ -114,18 +80,15 @@ class WireguardRepository extends BaseVpnRepository {
 
   @override
   Future<VpnConnectionStatus> currentStatus() async {
-    final status = await _service.status();
+    final status = await _service.getVPNStatus();
     return VpnConnectionStatus.fromString(status.name);
   }
 
   @override
   Future<void> removeTunnelConfiguration() async {
     try {
-      await _service.removeTunnelConfiguration(
-        bundleId: Env.bundleId,
-        tunnelName: Env.tunnelName,
-      );
-      logger.info('Wireguard tunnel configuration removed');
+      await _service.removeTunnelConfiguration();
+      logger.info('OpenVPN tunnel configuration removed');
     } catch (e) {
       logger.handle(e);
       rethrow;
@@ -143,10 +106,8 @@ class WireguardRepository extends BaseVpnRepository {
     required bool? resetConnection,
   }) async {
     try {
-      final key = await _getWireguradKey();
-      final response = await apiService.fetchVpnConfig(
-        request: WireguardConnectRequest(
-          publicKey: key.publicKey,
+      final response = await apiService.fetchOpenVpnConfig(
+        request: OpenVpnConnectRequest(
           countryOriginate: countryOriginate,
           country: country,
           city: city,
@@ -157,7 +118,7 @@ class WireguardRepository extends BaseVpnRepository {
           cluster: cluster,
         ),
       );
-      return VpnConfig.fromWireguard(response);
+      return VpnConfig.fromOpenVpn(response);
     } catch (e) {
       logger.handle(e);
       rethrow;
@@ -167,17 +128,10 @@ class WireguardRepository extends BaseVpnRepository {
   @override
   Future<void> resetApp() async {
     try {
-      if (!await isTunnelConfigured()) {
-        /// If tunnel is not configured, no need to reset the app
+      if (Platform.isAndroid || Platform.isWindows) {
         return;
       }
-      if (Platform.isAndroid) {
-        return;
-      } else if (Platform.isWindows) {
-        await _regenerateWireguardKey();
-      } else {
-        await removeTunnelConfiguration();
-      }
+      await removeTunnelConfiguration();
     } catch (e) {
       logger.handle(e);
       rethrow;

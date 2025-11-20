@@ -425,5 +425,7 @@
   "yearlyPlanDiscountPrice": "{amount} pour l'année.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Oui",
-  "zh": "Chinois"
+  "zh": "Chinois",
+  "protocolPickerSettingTitle": "Changement de protocole VPN",
+  "protocolPickerSettingDesc": "Changer de protocole VPN vous déconnectera. Vous devrez vous reconnecter ensuite."
 }

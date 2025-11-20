@@ -8,8 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/exceptions/unavailable_location_exception.dart';
-import 'package:mysterium_vpn/common/exceptions/wireguard_connect.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -45,8 +43,10 @@ abstract class _VpnStore extends VpnGuard with Store {
     required UnavailableLocationsStore unavailableLocationsStore,
     required UserIntentsStore userIntentsStore,
     required ConnectionsLimitStore connectionsLimitStore,
-    required VpnRepository vpnRepository,
+    required WireguardRepository wireguardRepository,
+    required OpenVpnRepository openVpnRepository,
     required ConnectionDecisionStore connectionDecisionStore,
+    required VpnProtocolStore protocolStore,
   })  : _externalApiService = externalApiService,
         _mqtt = mqtt,
         _locationsStore = locationsStore,
@@ -63,7 +63,12 @@ abstract class _VpnStore extends VpnGuard with Store {
         _locationsQueryStore = locationsQueryStore,
         _unavailableLocationsStore = unavailableLocationsStore,
         _userIntentsStore = userIntentsStore,
-        _vpnRepository = vpnRepository,
+        _protocolStore = protocolStore,
+        _wireguardRepository = wireguardRepository,
+        _openVpnRepository = openVpnRepository,
+        _vpnRepository = protocolStore.protocol == ProtocolType.wireguard
+            ? wireguardRepository
+            : openVpnRepository,
         _connectionDecisionStore = connectionDecisionStore {
     _init();
   }
@@ -71,7 +76,9 @@ abstract class _VpnStore extends VpnGuard with Store {
   // Services & Repositories
   final ExternalApiService _externalApiService;
   final MQTTService _mqtt;
-  final VpnRepository _vpnRepository;
+  VpnRepository _vpnRepository;
+  final WireguardRepository _wireguardRepository;
+  final OpenVpnRepository _openVpnRepository;
   final Talker _logger;
 
   // Stores
@@ -89,6 +96,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   final RefreshIPStore _refreshIPStore;
   final ConnectionsLimitStore _connectionsLimitStore;
   final ConnectionDecisionStore _connectionDecisionStore;
+  final VpnProtocolStore _protocolStore;
 
   // State
   final Stopwatch _stopwatch = Stopwatch();
@@ -96,6 +104,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   StreamSubscription<String>? _connectionKilledSub;
   StreamSubscription<VpnConnectionStatus>? _connectionStatusStream;
   ReactionDisposer? _authReactionDisposer;
+  ReactionDisposer? _protocolReactionDisposer;
 
   @readonly
   VpnConnection? _vpnConnection;
@@ -167,14 +176,43 @@ abstract class _VpnStore extends VpnGuard with Store {
       fireImmediately: true,
       equals: (p0, p1) => p0?.name == p1?.name,
     );
+
+    // Set up protocol change reaction
+    _protocolReactionDisposer = reaction<ProtocolType>(
+      (_) => _protocolStore.protocol,
+      _handleProtocolChange,
+    );
+  }
+
+  @action
+  Future<void> _handleProtocolChange(ProtocolType protocol) async {
+    if ((protocol == ProtocolType.wireguard && _vpnRepository is WireguardRepository) ||
+        (protocol == ProtocolType.openvpn && _vpnRepository is OpenVpnRepository)) {
+      _logger.info('Protocol is already set to: ${protocol.name}, no change needed');
+      return;
+    }
+    _logger.info('Protocol changed to: ${protocol.name}');
+
+    // Update the repository based on the new protocol
+    final newRepository =
+        protocol == ProtocolType.wireguard ? _wireguardRepository : _openVpnRepository;
+
+    // If currently connected, disconnect before switching
+    if (isConnected || isLoading) {
+      _logger.info('Disconnecting before protocol switch');
+      await disconnectTunnel();
+    }
+
+    _vpnRepository = newRepository;
+
+    // Reinitialize the new repository if authenticated
+    _handleAuthStatusChange(_authSessionStore.status);
   }
 
   Future<void> _handleAuthStatusChange(AuthStatus status) async {
     if (status == AuthStatus.authenticated) {
-      await Future.wait<void>([
-        _initTunnel(),
-        _vpnRepository.init(),
-      ]);
+      await _vpnRepository.init();
+      await _initTunnel();
     }
   }
 
@@ -195,6 +233,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   Future<void> disposeStore() async {
     await _connectionStatusStream?.cancel();
     _authReactionDisposer?.call();
+    _protocolReactionDisposer?.call();
   }
 
   // ==================== Tunnel Management ====================

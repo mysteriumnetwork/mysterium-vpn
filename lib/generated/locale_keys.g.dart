@@ -420,4 +420,6 @@ abstract class LocaleKeys {
   static const yearlyPlanFullPrice = 'yearlyPlanFullPrice';
   static const yes = 'yes';
   static const zh = 'zh';
+  static const protocolPickerSettingTitle = 'protocolPickerSettingTitle';
+  static const protocolPickerSettingDesc = 'protocolPickerSettingDesc';
 }
