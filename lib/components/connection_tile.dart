@@ -12,15 +12,14 @@ import 'package:mysterium_vpn/common/hooks/connection_status_color_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/connect_text_button.dart';
-import 'package:mysterium_vpn/components/dialogs/rate_connection_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
+import 'package:mysterium_vpn/components/rate_connection_button.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 class ConnectionTile extends HookConsumerWidget {
   const ConnectionTile({super.key});
@@ -96,7 +95,7 @@ class ConnectionTile extends HookConsumerWidget {
                     targetLocation != location ? LocaleKeys.locationUnavailableAction.tr() : null,
               ),
               if (isConnected) const SizedBox(height: 16),
-              if (isConnected) _RateConnection(),
+              if (isConnected) const RateConnection(),
               if (Env.flavor.isDev)
                 Text(
                   'Protocol: ${vpnProtocol.protocol.name}',
@@ -280,79 +279,5 @@ class _Location extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-class _RateConnection extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final connectionDisplayStore = ref.watch(connectionDisplayStorePOD);
-    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
-
-    return Observer(
-      builder: (context) {
-        if (!connectionDisplayStore.isConnected || !remoteConfigStore.isRateConnectionAvailable) {
-          return const SizedBox.shrink();
-        }
-
-        return Row(
-          spacing: 16,
-          children: [
-            Expanded(
-              child: EasyText(
-                LocaleKeys.rateConnection.tr(),
-                color: theme.palette.subtitleColor,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            _RateConnectionIconBtn(
-              connectionRated: connectionDisplayStore.connectionRated,
-              rateConnectionMode: RateConnectionRequestModeEnum.like,
-            ),
-            _RateConnectionIconBtn(
-              connectionRated: connectionDisplayStore.connectionRated,
-              rateConnectionMode: RateConnectionRequestModeEnum.dislike,
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
-
-class _RateConnectionIconBtn extends StatelessWidget {
-  const _RateConnectionIconBtn({
-    required this.connectionRated,
-    required this.rateConnectionMode,
-  });
-
-  final RateConnectionRequestModeEnum rateConnectionMode;
-  final RateConnectionRequestModeEnum? connectionRated;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isActive = connectionRated == rateConnectionMode;
-
-    return SvgIconButton(
-      asset: switch (rateConnectionMode) {
-        RateConnectionRequestModeEnum.like => Asset.icons.thumbsUp(context),
-        RateConnectionRequestModeEnum.dislike => Asset.icons.thumbsDown(context),
-      },
-      color: isActive ? Palette.purple : theme.palette.darkTextColor,
-      visualDensity: VisualDensity.compact,
-      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      size: 24,
-      onPressed: () => handleRateConnection(context, rateConnectionMode),
-    );
-  }
-
-  Future<void> handleRateConnection(
-    BuildContext context,
-    RateConnectionRequestModeEnum rateConnectionMode,
-  ) async {
-    showRateConnectionDialog(context, rateConnectionMode);
   }
 }
