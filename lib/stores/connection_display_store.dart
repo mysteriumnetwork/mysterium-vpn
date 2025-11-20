@@ -85,27 +85,4 @@ abstract class _ConnectionDisplayStore with Store {
   /// The current connection rating
   @computed
   RateConnectionRequestModeEnum? get connectionRated => _vpnStore.connectionRated;
-
-  @computed
-  bool get isLocationConnected {
-    final location = displayLocation;
-
-    // If loading, always return false
-    if (isLoading) {
-      return false;
-    }
-
-    // If not connected, return false
-    if (!isConnected) {
-      return false;
-    }
-
-    // If no location specified, return current connection state
-    if (location == null) {
-      return isConnected;
-    }
-
-    // Check if the display location matches the connected location
-    return location == _vpnStore.location;
-  }
 }
