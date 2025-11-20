@@ -85,6 +85,7 @@ class ConnectionTile extends HookConsumerWidget {
                     parent: parent,
                     ip: ipInfo,
                     onRefreshIPPressed: handleRefreshIP,
+                    isLocationConnected: isConnected,
                   ),
                 ),
               ConnectTextButton(
@@ -94,8 +95,8 @@ class ConnectionTile extends HookConsumerWidget {
                 textConnect:
                     targetLocation != location ? LocaleKeys.locationUnavailableAction.tr() : null,
               ),
-              if (isConnected ?? false) const SizedBox(height: 16),
-              if (isConnected ?? false) _RateConnection(),
+              if (isConnected) const SizedBox(height: 16),
+              if (isConnected) _RateConnection(),
               if (Env.flavor.isDev)
                 Text(
                   'Protocol: ${vpnProtocol.protocol.name}',
@@ -184,18 +185,20 @@ class _Placeholder extends StatelessWidget {
   }
 }
 
-class _Location extends HookWidget {
+class _Location extends StatelessWidget {
   const _Location({
     required this.location,
     required this.parent,
     required this.ip,
     required this.onRefreshIPPressed,
+    required this.isLocationConnected,
   });
 
   final VPNLocation location;
   final VPNLocation? parent;
   final String? ip;
   final VoidCallback onRefreshIPPressed;
+  final bool isLocationConnected;
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +206,6 @@ class _Location extends HookWidget {
     final ipType = location.ipType;
     final title = parent?.getName(context) ?? location.getName(context);
     final subtitle = parent != null ? location.getName(context) : null;
-    final isConnected = useIsLocationConnected(location);
 
     final extras = [
       if (ip != null) ip!,
@@ -261,7 +263,7 @@ class _Location extends HookWidget {
                         ],
                       ),
                     ),
-                    if (ip != null && (isConnected ?? false))
+                    if (ip != null && isLocationConnected)
                       SvgIconButton(
                         asset: Asset.icons.refresh,
                         size: 16,
