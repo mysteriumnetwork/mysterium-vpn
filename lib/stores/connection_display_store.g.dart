@@ -69,11 +69,11 @@ mixin _$ConnectionDisplayStore on _ConnectionDisplayStore, Store {
           Computed<RateConnectionRequestModeEnum?>(() => super.connectionRated,
               name: '_ConnectionDisplayStore.connectionRated'))
       .value;
-  Computed<bool?>? _$isLocationConnectedComputed;
+  Computed<bool>? _$isLocationConnectedComputed;
 
   @override
-  bool? get isLocationConnected =>
-      (_$isLocationConnectedComputed ??= Computed<bool?>(() => super.isLocationConnected,
+  bool get isLocationConnected =>
+      (_$isLocationConnectedComputed ??= Computed<bool>(() => super.isLocationConnected,
               name: '_ConnectionDisplayStore.isLocationConnected'))
           .value;
 
