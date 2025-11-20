@@ -425,5 +425,7 @@
   "yearlyPlanDiscountPrice": "{المبلغ} للسنة.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "نعم",
-  "zh": "صينى"
+  "zh": "صينى",
+  "protocolPickerSettingTitle": "تبديل بروتوكول VPN",
+  "protocolPickerSettingDesc": "سيؤدي تغيير بروتوكول VPN إلى قطع اتصالك. ستحتاج إلى إعادة الاتصال لاحقًا."
 }

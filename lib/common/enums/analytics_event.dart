@@ -126,7 +126,14 @@ enum AnalyticsEvent {
   subUpgradePopupShow,
   subUpgradePopupClose,
   subUpgradePopupConfirm,
-  subUpgradeInfoClick;
+  subUpgradeInfoClick,
+  changeProtocolType,
+  changeProtocolTypeError,
+  changeProtocolTypeApproved,
+  changeProtocolTypeDeclined,
+  getOpenVpnKeyError,
+  openVpnKeyUnavailable,
+  openVpnKeysDoNotMatch;
 
   String get formattedName => name.toSnakeCase;
 }

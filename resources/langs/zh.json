@@ -425,5 +425,7 @@
   "yearlyPlanDiscountPrice": "全年{amount}。",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "是",
-  "zh": "中国人"
+  "zh": "中国人",
+  "protocolPickerSettingTitle": "切换 VPN 协议",
+  "protocolPickerSettingDesc": "切换 VPN 协议会断开您的连接。之后您需要重新连接。"
 }

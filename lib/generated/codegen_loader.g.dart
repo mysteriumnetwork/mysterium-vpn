@@ -432,7 +432,9 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "全年{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "是",
-    "zh": "中国人"
+    "zh": "中国人",
+    "protocolPickerSettingTitle": "切换 VPN 协议",
+    "protocolPickerSettingDesc": "切换 VPN 协议会断开您的连接。之后您需要重新连接。"
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -894,7 +896,10 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "Yıl için {amount}.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Evet",
-    "zh": "Çince"
+    "zh": "Çince",
+    "protocolPickerSettingTitle": "VPN protokolünü değiştirme",
+    "protocolPickerSettingDesc":
+        "VPN protokolünü değiştirdiğinizde bağlantınız kesilecektir. Sonrasında yeniden bağlanmanız gerekecektir."
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1319,7 +1324,9 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "年間{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "はい",
-    "zh": "中国語"
+    "zh": "中国語",
+    "protocolPickerSettingTitle": "VPNプロトコルの切り替え",
+    "protocolPickerSettingDesc": "VPNプロトコルを切り替えると接続が切断されます。その後、再接続する必要があります。"
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -1809,7 +1816,10 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} für das Jahr.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Ja",
-    "zh": "Chinesisch"
+    "zh": "Chinesisch",
+    "protocolPickerSettingTitle": "VPN-Protokoll wechseln",
+    "protocolPickerSettingDesc":
+        "Durch das Wechseln des VPN-Protokolls wird die Verbindung getrennt. Sie müssen sich anschließend erneut verbinden."
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2290,7 +2300,10 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} por ano.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "sim",
-    "zh": "Chinês"
+    "zh": "Chinês",
+    "protocolPickerSettingTitle": "Troca de protocolo VPN",
+    "protocolPickerSettingDesc":
+        "A troca do protocolo VPN irá desconectá-lo. Você precisará se reconectar em seguida."
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -2759,7 +2772,10 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} for the year.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Yes",
-    "zh": "Chinese"
+    "zh": "Chinese",
+    "protocolPickerSettingTitle": "Switching VPN protocol",
+    "protocolPickerSettingDesc":
+        "Switching the VPN protocol will disconnect you. You’ll need to reconnect afterwards."
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3242,7 +3258,10 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} per l'anno.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sì",
-    "zh": "Cinese"
+    "zh": "Cinese",
+    "protocolPickerSettingTitle": "Commutazione del protocollo VPN",
+    "protocolPickerSettingDesc":
+        "Cambiare il protocollo VPN ti disconnetterà. Dovrai riconnetterti in seguito."
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -3732,7 +3751,10 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} pour l'année.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Oui",
-    "zh": "Chinois"
+    "zh": "Chinois",
+    "protocolPickerSettingTitle": "Changement de protocole VPN",
+    "protocolPickerSettingDesc":
+        "Changer de protocole VPN vous déconnectera. Vous devrez vous reconnecter ensuite."
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4203,7 +4225,10 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} untuk tahun.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Iya",
-    "zh": "Cina"
+    "zh": "Cina",
+    "protocolPickerSettingTitle": "Mengganti protokol VPN",
+    "protocolPickerSettingDesc":
+        "Mengganti protokol VPN akan memutuskan koneksi Anda. Anda perlu menyambungkannya kembali setelahnya."
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -4686,7 +4711,10 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} por el año.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sí",
-    "zh": "Chino"
+    "zh": "Chino",
+    "protocolPickerSettingTitle": "Cambio de protocolo VPN",
+    "protocolPickerSettingDesc":
+        "Cambiar el protocolo VPN te desconectará. Tendrás que volver a conectarte después."
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5141,7 +5169,10 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{المبلغ} للسنة.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "نعم",
-    "zh": "صينى"
+    "zh": "صينى",
+    "protocolPickerSettingTitle": "تبديل بروتوكول VPN",
+    "protocolPickerSettingDesc":
+        "سيؤدي تغيير بروتوكول VPN إلى قطع اتصالك. ستحتاج إلى إعادة الاتصال لاحقًا."
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

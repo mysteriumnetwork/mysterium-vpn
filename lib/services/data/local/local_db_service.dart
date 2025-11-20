@@ -5,7 +5,7 @@ import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/services/data/local/adapters/adapters.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 class LocalDBService {
@@ -23,7 +23,10 @@ class LocalDBService {
       ..registerAdapter(const VPNLocationAdapter(typeId: 3))
       ..registerAdapter(const BannerTypeAdapter(typeId: 4))
       ..registerAdapter(const VpnLocationsAdapter(typeId: 5))
-      ..registerAdapter(const LatLngAdapter(typeId: 6));
+      ..registerAdapter(const LatLngAdapter(typeId: 6))
+      ..registerAdapter(
+        const ProtocolTypeAdapter(typeId: 7),
+      );
 
     try {
       await Future.wait([
@@ -249,6 +252,17 @@ class LocalDBService {
     final userData = await _loadUserData();
     userData.marketingConsentShown = true;
 
+    await _saveUserData(userData);
+  }
+
+  Future<ProtocolType> getProtocolType() async {
+    final userData = await _loadUserData();
+    return userData.protocolType;
+  }
+
+  Future<void> setProtocolType(ProtocolType protocolType) async {
+    final userData = await _loadUserData();
+    userData.protocolType = protocolType;
     await _saveUserData(userData);
   }
 }
