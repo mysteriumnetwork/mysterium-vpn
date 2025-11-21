@@ -207,7 +207,7 @@ class _Location extends StatelessWidget {
     final subtitle = parent != null ? location.getName(context) : null;
 
     final extras = [
-      if (ip != null) ip!,
+      if (ip != null && isLocationConnected) ip!,
       if (ipType == IPType.residential)
         LocaleKeys.residential.tr()
       else if (ipType == IPType.datacenter)
