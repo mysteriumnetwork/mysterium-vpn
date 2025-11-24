@@ -88,6 +88,9 @@
   "deleteAccount": "Hesabımı Sil",
   "deleteAccountQuestion": "Hesabını silmek üzeresin!",
   "describeYourIssue": "Sorununuzu açıklayın",
+  "deviceLimitReachedDesc": "Maksimum 6 bağlı cihaz sayısına ulaştınız. Yeni bir cihaz eklemek için mevcut bir cihazı hesabınızdan kaldırın.",
+  "deviceLimitReachedOpenDashboard": "Panoyu Aç",
+  "deviceLimitReachedTitle": "Cihaz Sınırına Ulaşıldı",
   "disconnect": "Bağlantıyı kes",
   "disconnectAllDevices": "Tüm cihazların bağlantısını kesin",
   "disconnectAllDevicesConfirmation": "Tüm cihazların bağlantısını kesmek istediğinizden emin misiniz?",
@@ -276,6 +279,8 @@
   "productsNotAvailable": "Şu anda mevcut ürün yok.",
   "productUpdates": "Ürün güncellemelerini alın",
   "protocol": "Protokol",
+  "protocolPickerSettingDesc": "VPN protokolünü değiştirdiğinizde bağlantınız kesilecektir. Sonrasında yeniden bağlanmanız gerekecektir.",
+  "protocolPickerSettingTitle": "VPN protokolünü değiştirme",
   "pt": "Portekizce",
   "purchased": "satın alındı",
   "purchasePromoCTA": "Hadi gidelim",
@@ -425,7 +430,5 @@
   "yearlyPlanDiscountPrice": "Yıl için {amount}.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Evet",
-  "zh": "Çince",
-  "protocolPickerSettingTitle": "VPN protokolünü değiştirme",
-  "protocolPickerSettingDesc": "VPN protokolünü değiştirdiğinizde bağlantınız kesilecektir. Sonrasında yeniden bağlanmanız gerekecektir."
+  "zh": "Çince"
 }
