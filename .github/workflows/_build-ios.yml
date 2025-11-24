@@ -27,7 +27,7 @@ jobs:
     name: Build & Publish
     runs-on: macos-14
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Materialize .env files from repo secrets
         shell: bash
