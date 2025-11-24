@@ -88,6 +88,9 @@
   "deleteAccount": "アカウントを削除",
   "deleteAccountQuestion": "アカウントを削除?",
   "describeYourIssue": "問題を説明",
+  "deviceLimitReachedDesc": "接続可能なデバイスの数が最大6台に達しました。新しいデバイスを追加するには、アカウントから既存のデバイスを削除してください。",
+  "deviceLimitReachedOpenDashboard": "ダッシュボードを開く",
+  "deviceLimitReachedTitle": "デバイス制限に達しました",
   "disconnect": "切断",
   "disconnectAllDevices": "すべてのデバイスを切断します",
   "disconnectAllDevicesConfirmation": "すべてのデバイスを切断したいですか？",
@@ -276,6 +279,8 @@
   "productsNotAvailable": "現在、ご利用いただける商品はございません。後でもう一度試してください。",
   "productUpdates": "製品のアップデートを入手",
   "protocol": "プロトコル",
+  "protocolPickerSettingDesc": "VPNプロトコルを切り替えると接続が切断されます。その後、再接続する必要があります。",
+  "protocolPickerSettingTitle": "VPNプロトコルの切り替え",
   "pt": "ポルトガル語",
   "purchased": "購入した",
   "purchasePromoCTA": "さあ行こう",
@@ -425,7 +430,5 @@
   "yearlyPlanDiscountPrice": "年間{amount}。",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "はい",
-  "zh": "中国語",
-  "protocolPickerSettingTitle": "VPNプロトコルの切り替え",
-  "protocolPickerSettingDesc": "VPNプロトコルを切り替えると接続が切断されます。その後、再接続する必要があります。"
+  "zh": "中国語"
 }

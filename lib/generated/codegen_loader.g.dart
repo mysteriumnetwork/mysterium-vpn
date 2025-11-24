@@ -104,6 +104,9 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "删除帐号",
     "deleteAccountQuestion": "删除帐号？",
     "describeYourIssue": "描述您的问题",
+    "deviceLimitReachedDesc": "您已达到连接设备数量的上限 6 台。要添加新设备，请先从您的帐户中移除现有设备。",
+    "deviceLimitReachedOpenDashboard": "打开仪表盘",
+    "deviceLimitReachedTitle": "设备数量已达上限",
     "disconnect": "断开连接",
     "disconnectAllDevices": "断开所有设备",
     "disconnectAllDevicesConfirmation": "您确定要断开所有设备吗？",
@@ -287,6 +290,8 @@ class CodegenLoader extends AssetLoader {
     "productsNotAvailable": "目前没有可用的产品。请稍后再试。",
     "productUpdates": "获取产品更新",
     "protocol": "协议",
+    "protocolPickerSettingDesc": "切换 VPN 协议会断开您的连接。之后您需要重新连接。",
+    "protocolPickerSettingTitle": "切换 VPN 协议",
     "pt": "葡萄牙语",
     "purchased": "已购买",
     "purchasePromoCTA": "我们走吧",
@@ -432,9 +437,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "全年{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "是",
-    "zh": "中国人",
-    "protocolPickerSettingTitle": "切换 VPN 协议",
-    "protocolPickerSettingDesc": "切换 VPN 协议会断开您的连接。之后您需要重新连接。"
+    "zh": "中国人"
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -533,6 +536,10 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Hesabımı Sil",
     "deleteAccountQuestion": "Hesabını silmek üzeresin!",
     "describeYourIssue": "Sorununuzu açıklayın",
+    "deviceLimitReachedDesc":
+        "Maksimum 6 bağlı cihaz sayısına ulaştınız. Yeni bir cihaz eklemek için mevcut bir cihazı hesabınızdan kaldırın.",
+    "deviceLimitReachedOpenDashboard": "Panoyu Aç",
+    "deviceLimitReachedTitle": "Cihaz Sınırına Ulaşıldı",
     "disconnect": "Bağlantıyı kes",
     "disconnectAllDevices": "Tüm cihazların bağlantısını kesin",
     "disconnectAllDevicesConfirmation":
@@ -735,6 +742,9 @@ class CodegenLoader extends AssetLoader {
     "productsNotAvailable": "Şu anda mevcut ürün yok.",
     "productUpdates": "Ürün güncellemelerini alın",
     "protocol": "Protokol",
+    "protocolPickerSettingDesc":
+        "VPN protokolünü değiştirdiğinizde bağlantınız kesilecektir. Sonrasında yeniden bağlanmanız gerekecektir.",
+    "protocolPickerSettingTitle": "VPN protokolünü değiştirme",
     "pt": "Portekizce",
     "purchased": "satın alındı",
     "purchasePromoCTA": "Hadi gidelim",
@@ -896,10 +906,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "Yıl için {amount}.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Evet",
-    "zh": "Çince",
-    "protocolPickerSettingTitle": "VPN protokolünü değiştirme",
-    "protocolPickerSettingDesc":
-        "VPN protokolünü değiştirdiğinizde bağlantınız kesilecektir. Sonrasında yeniden bağlanmanız gerekecektir."
+    "zh": "Çince"
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -991,6 +998,9 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "アカウントを削除",
     "deleteAccountQuestion": "アカウントを削除?",
     "describeYourIssue": "問題を説明",
+    "deviceLimitReachedDesc": "接続可能なデバイスの数が最大6台に達しました。新しいデバイスを追加するには、アカウントから既存のデバイスを削除してください。",
+    "deviceLimitReachedOpenDashboard": "ダッシュボードを開く",
+    "deviceLimitReachedTitle": "デバイス制限に達しました",
     "disconnect": "切断",
     "disconnectAllDevices": "すべてのデバイスを切断します",
     "disconnectAllDevicesConfirmation": "すべてのデバイスを切断したいですか？",
@@ -1176,6 +1186,8 @@ class CodegenLoader extends AssetLoader {
     "productsNotAvailable": "現在、ご利用いただける商品はございません。後でもう一度試してください。",
     "productUpdates": "製品のアップデートを入手",
     "protocol": "プロトコル",
+    "protocolPickerSettingDesc": "VPNプロトコルを切り替えると接続が切断されます。その後、再接続する必要があります。",
+    "protocolPickerSettingTitle": "VPNプロトコルの切り替え",
     "pt": "ポルトガル語",
     "purchased": "購入した",
     "purchasePromoCTA": "さあ行こう",
@@ -1324,9 +1336,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "年間{amount}。",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "はい",
-    "zh": "中国語",
-    "protocolPickerSettingTitle": "VPNプロトコルの切り替え",
-    "protocolPickerSettingDesc": "VPNプロトコルを切り替えると接続が切断されます。その後、再接続する必要があります。"
+    "zh": "中国語"
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -1429,6 +1439,10 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Konto löschen",
     "deleteAccountQuestion": "Konto löschen?",
     "describeYourIssue": "Beschreiben Sie Ihr Problem",
+    "deviceLimitReachedDesc":
+        "Sie haben die maximale Anzahl von 6 verbundenen Geräten erreicht. Um ein neues Gerät hinzuzufügen, entfernen Sie ein vorhandenes aus Ihrem Konto.",
+    "deviceLimitReachedOpenDashboard": "Dashboard öffnen",
+    "deviceLimitReachedTitle": "Gerätelimit erreicht",
     "disconnect": "Trennen",
     "disconnectAllDevices": "Trennen Sie alle Geräte",
     "disconnectAllDevicesConfirmation": "Sind Sie sicher, dass Sie alle Geräte trennen möchten?",
@@ -1646,6 +1660,9 @@ class CodegenLoader extends AssetLoader {
         "Zur Zeit sind keine Produkte verfügbar. Bitte versuchen Sie es später noch einmal.",
     "productUpdates": "Erhalten Sie Produktaktualisierungen",
     "protocol": "Protokoll",
+    "protocolPickerSettingDesc":
+        "Durch das Wechseln des VPN-Protokolls wird die Verbindung getrennt. Sie müssen sich anschließend erneut verbinden.",
+    "protocolPickerSettingTitle": "VPN-Protokoll wechseln",
     "pt": "Portugiesisch",
     "purchased": "Gekauft",
     "purchasePromoCTA": "Lass uns gehen",
@@ -1816,10 +1833,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} für das Jahr.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Ja",
-    "zh": "Chinesisch",
-    "protocolPickerSettingTitle": "VPN-Protokoll wechseln",
-    "protocolPickerSettingDesc":
-        "Durch das Wechseln des VPN-Protokolls wird die Verbindung getrennt. Sie müssen sich anschließend erneut verbinden."
+    "zh": "Chinesisch"
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -1921,6 +1935,10 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Deletar conta",
     "deleteAccountQuestion": "Deletar conta?",
     "describeYourIssue": "descreva seu problema",
+    "deviceLimitReachedDesc":
+        "Você atingiu o limite máximo de 6 dispositivos conectados. Para adicionar um novo dispositivo, remova um existente da sua conta.",
+    "deviceLimitReachedOpenDashboard": "Abrir painel de controle",
+    "deviceLimitReachedTitle": "Limite de dispositivos atingido",
     "disconnect": "Desconectar",
     "disconnectAllDevices": "Desconecte todos os dispositivos",
     "disconnectAllDevicesConfirmation":
@@ -2130,6 +2148,9 @@ class CodegenLoader extends AssetLoader {
         "Não há produtos disponíveis no momento. Por favor, tente novamente mais tarde.",
     "productUpdates": "Obtenha atualizações do produto",
     "protocol": "Protocolo",
+    "protocolPickerSettingDesc":
+        "A troca do protocolo VPN irá desconectá-lo. Você precisará se reconectar em seguida.",
+    "protocolPickerSettingTitle": "Troca de protocolo VPN",
     "pt": "Português",
     "purchased": "Comprada",
     "purchasePromoCTA": "Vamos",
@@ -2300,10 +2321,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} por ano.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "sim",
-    "zh": "Chinês",
-    "protocolPickerSettingTitle": "Troca de protocolo VPN",
-    "protocolPickerSettingDesc":
-        "A troca do protocolo VPN irá desconectá-lo. Você precisará se reconectar em seguida."
+    "zh": "Chinês"
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -2404,6 +2422,10 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Delete account",
     "deleteAccountQuestion": "Delete Account?",
     "describeYourIssue": "Describe your issue",
+    "deviceLimitReachedDesc":
+        "You have reached the maximum of 6 connected devices. To add a new device, remove an existing one from your account.",
+    "deviceLimitReachedOpenDashboard": "Open Dashboard",
+    "deviceLimitReachedTitle": "Device Limit Reached",
     "disconnect": "Disconnect",
     "disconnectAllDevices": "Disconnect all devices",
     "disconnectAllDevicesConfirmation": "Are you sure you want to disconnect all devices?",
@@ -2607,6 +2629,9 @@ class CodegenLoader extends AssetLoader {
         "There are no available products at the moment. Please try again later.",
     "productUpdates": "Get product updates",
     "protocol": "Protocol",
+    "protocolPickerSettingDesc":
+        "Switching the VPN protocol will disconnect you. You’ll need to reconnect afterwards.",
+    "protocolPickerSettingTitle": "Switching VPN protocol",
     "pt": "Portuguese",
     "purchased": "Purchased",
     "purchasePromoCTA": "Let's go",
@@ -2772,10 +2797,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} for the year.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Yes",
-    "zh": "Chinese",
-    "protocolPickerSettingTitle": "Switching VPN protocol",
-    "protocolPickerSettingDesc":
-        "Switching the VPN protocol will disconnect you. You’ll need to reconnect afterwards."
+    "zh": "Chinese"
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -2880,6 +2902,10 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Elimina account",
     "deleteAccountQuestion": "Vuoi eliminare l'account?",
     "describeYourIssue": "Descrivi il tuo problema",
+    "deviceLimitReachedDesc":
+        "Hai raggiunto il numero massimo di 6 dispositivi connessi. Per aggiungere un nuovo dispositivo, rimuovine uno esistente dal tuo account.",
+    "deviceLimitReachedOpenDashboard": "Apri Dashboard",
+    "deviceLimitReachedTitle": "Limite dispositivi raggiunto",
     "disconnect": "Disconnetti",
     "disconnectAllDevices": "Scollegare tutti i dispositivi",
     "disconnectAllDevicesConfirmation": "Sei sicuro di voler scollegare tutti i dispositivi?",
@@ -3089,6 +3115,9 @@ class CodegenLoader extends AssetLoader {
         "Non ci sono prodotti disponibili al momento. Per favore riprova più tardi.",
     "productUpdates": "Ricevi gli aggiornamenti del prodotto",
     "protocol": "Protocollo",
+    "protocolPickerSettingDesc":
+        "Cambiare il protocollo VPN ti disconnetterà. Dovrai riconnetterti in seguito.",
+    "protocolPickerSettingTitle": "Commutazione del protocollo VPN",
     "pt": "Portoghese",
     "purchased": "Acquistato",
     "purchasePromoCTA": "Andiamo",
@@ -3258,10 +3287,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} per l'anno.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sì",
-    "zh": "Cinese",
-    "protocolPickerSettingTitle": "Commutazione del protocollo VPN",
-    "protocolPickerSettingDesc":
-        "Cambiare il protocollo VPN ti disconnetterà. Dovrai riconnetterti in seguito."
+    "zh": "Cinese"
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -3367,6 +3393,10 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Supprimer le compte",
     "deleteAccountQuestion": "Supprimer le compte?",
     "describeYourIssue": "Décrivez votre problème",
+    "deviceLimitReachedDesc":
+        "Vous avez atteint la limite de 6 appareils connectés. Pour ajouter un nouvel appareil, supprimez-en un de votre compte.",
+    "deviceLimitReachedOpenDashboard": "Ouvrir le tableau de bord",
+    "deviceLimitReachedTitle": "Limite de l'appareil atteinte",
     "disconnect": "Déconnecter",
     "disconnectAllDevices": "Débrancher tous les appareils",
     "disconnectAllDevicesConfirmation": "Êtes-vous sûr de vouloir déconnecter tous les appareils?",
@@ -3579,6 +3609,9 @@ class CodegenLoader extends AssetLoader {
         "Il n'y a pas de produits disponibles pour le moment. Veuillez réessayer plus tard.",
     "productUpdates": "Obtenez des mises à jour de produit",
     "protocol": "Protocole",
+    "protocolPickerSettingDesc":
+        "Changer de protocole VPN vous déconnectera. Vous devrez vous reconnecter ensuite.",
+    "protocolPickerSettingTitle": "Changement de protocole VPN",
     "pt": "Portugais",
     "purchased": "Achetée",
     "purchasePromoCTA": "Allons-y",
@@ -3751,10 +3784,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} pour l'année.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Oui",
-    "zh": "Chinois",
-    "protocolPickerSettingTitle": "Changement de protocole VPN",
-    "protocolPickerSettingDesc":
-        "Changer de protocole VPN vous déconnectera. Vous devrez vous reconnecter ensuite."
+    "zh": "Chinois"
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -3856,6 +3886,10 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Hapus akun",
     "deleteAccountQuestion": "Hapus akun?",
     "describeYourIssue": "jelaskan permasalahanmu",
+    "deviceLimitReachedDesc":
+        "Anda telah mencapai batas maksimum 6 perangkat yang terhubung. Untuk menambahkan perangkat baru, hapus perangkat yang sudah ada dari akun Anda.",
+    "deviceLimitReachedOpenDashboard": "Buka Dasbor",
+    "deviceLimitReachedTitle": "Batas Perangkat Tercapai",
     "disconnect": "Putuskan",
     "disconnectAllDevices": "Lepaskan semua perangkat",
     "disconnectAllDevicesConfirmation": "Apakah Anda yakin ingin memutuskan semua perangkat?",
@@ -4059,6 +4093,9 @@ class CodegenLoader extends AssetLoader {
     "productsNotAvailable": "Tidak ada produk yang tersedia saat ini. Coba lagi nanti.",
     "productUpdates": "Dapatkan pembaruan produk",
     "protocol": "Protokol",
+    "protocolPickerSettingDesc":
+        "Mengganti protokol VPN akan memutuskan koneksi Anda. Anda perlu menyambungkannya kembali setelahnya.",
+    "protocolPickerSettingTitle": "Mengganti protokol VPN",
     "pt": "Portugis",
     "purchased": "Dibeli",
     "purchasePromoCTA": "Ayo pergi",
@@ -4225,10 +4262,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} untuk tahun.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Iya",
-    "zh": "Cina",
-    "protocolPickerSettingTitle": "Mengganti protokol VPN",
-    "protocolPickerSettingDesc":
-        "Mengganti protokol VPN akan memutuskan koneksi Anda. Anda perlu menyambungkannya kembali setelahnya."
+    "zh": "Cina"
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -4331,6 +4365,10 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "Borrar cuenta",
     "deleteAccountQuestion": "¿Borrar cuenta?",
     "describeYourIssue": "Describe tu problema",
+    "deviceLimitReachedDesc":
+        "Has alcanzado el máximo de 6 dispositivos conectados. Para añadir un nuevo dispositivo, elimina uno existente de tu cuenta.",
+    "deviceLimitReachedOpenDashboard": "Abrir el panel de control",
+    "deviceLimitReachedTitle": "Límite de dispositivos alcanzado",
     "disconnect": "Desconectar",
     "disconnectAllDevices": "Desconectar todos los dispositivos",
     "disconnectAllDevicesConfirmation":
@@ -4542,16 +4580,19 @@ class CodegenLoader extends AssetLoader {
         "No hay productos disponibles en este momento. Por favor, inténtalo de nuevo más tarde.",
     "productUpdates": "Obtén actualizaciones de productos",
     "protocol": "Protocolo",
+    "protocolPickerSettingDesc":
+        "Cambiar el protocolo VPN te desconectará. Tendrás que volver a conectarte después.",
+    "protocolPickerSettingTitle": "Cambiar el protocolo VPN",
     "pt": "Portugués",
     "purchased": "Comprado",
     "purchasePromoCTA": "Vamos",
-    "purchasePromoEnds": "Finaliza {}",
+    "purchasePromoEnds": "Termina {}",
     "purchasePromoFeatures":
-        "[\"Más de 100 países\", \"Más de 19 000 direcciones IP residenciales\", \"Garantía de devolución de dinero de 7 días\"]",
+        "[\"Más de 100 países\", \"Más de 19 000 IP residenciales\", \"Garantía de devolución de dinero de 7 días\"]",
     "purchasePromoPPTOC": "Lea nuestros {} y {}",
     "purchasePromoPrivacyPolicy": "política de privacidad",
     "purchasePromoSeeAllPlans": "Ver todos los planes",
-    "purchasePromoSubtitle": "Oferta del Black Friday",
+    "purchasePromoSubtitle": "Oferta de Black Friday",
     "purchasePromoTermsAndConditions": "Términos y condiciones",
     "purchasePromoTitle": "{}% DE DESCUENTO",
     "pushNotificationsConsentPopupDesc":
@@ -4711,10 +4752,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{amount} por el año.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sí",
-    "zh": "Chino",
-    "protocolPickerSettingTitle": "Cambio de protocolo VPN",
-    "protocolPickerSettingDesc":
-        "Cambiar el protocolo VPN te desconectará. Tendrás que volver a conectarte después."
+    "zh": "Chino"
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -4812,6 +4850,10 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "حذف الحساب",
     "deleteAccountQuestion": "حذف الحساب؟",
     "describeYourIssue": "صف مشكلتك",
+    "deviceLimitReachedDesc":
+        "لقد وصلت إلى الحد الأقصى وهو ٦ أجهزة متصلة. لإضافة جهاز جديد، احذف جهازًا موجودًا من حسابك.",
+    "deviceLimitReachedOpenDashboard": "افتح لوحة التحكم",
+    "deviceLimitReachedTitle": "تم الوصول إلى حد الجهاز",
     "disconnect": "اتصال",
     "disconnectAllDevices": "افصل جميع الأجهزة",
     "disconnectAllDevicesConfirmation": "هل أنت متأكد أنك تريد فصل جميع الأجهزة؟",
@@ -5011,6 +5053,9 @@ class CodegenLoader extends AssetLoader {
         "لا توجد منتجات متاحة في الوقت الحالي. الرجاء معاودة المحاولة في وقت لاحق.",
     "productUpdates": "احصل على تحديثات المنتج",
     "protocol": "بروتوكول",
+    "protocolPickerSettingDesc":
+        "سيؤدي تغيير بروتوكول VPN إلى قطع اتصالك. ستحتاج إلى إعادة الاتصال لاحقًا.",
+    "protocolPickerSettingTitle": "تبديل بروتوكول VPN",
     "pt": "البرتغالية",
     "purchased": "تم شراؤها",
     "purchasePromoCTA": "دعنا نذهب",
@@ -5169,10 +5214,7 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanDiscountPrice": "{المبلغ} للسنة.",
     "yearlyPlanFullPrice": "{amount}",
     "yes": "نعم",
-    "zh": "صينى",
-    "protocolPickerSettingTitle": "تبديل بروتوكول VPN",
-    "protocolPickerSettingDesc":
-        "سيؤدي تغيير بروتوكول VPN إلى قطع اتصالك. ستحتاج إلى إعادة الاتصال لاحقًا."
+    "zh": "صينى"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

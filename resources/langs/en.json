@@ -88,6 +88,9 @@
   "deleteAccount": "Delete account",
   "deleteAccountQuestion": "Delete Account?",
   "describeYourIssue": "Describe your issue",
+  "deviceLimitReachedDesc": "You have reached the maximum of 6 connected devices. To add a new device, remove an existing one from your account.",
+  "deviceLimitReachedOpenDashboard": "Open Dashboard",
+  "deviceLimitReachedTitle": "Device Limit Reached",
   "disconnect": "Disconnect",
   "disconnectAllDevices": "Disconnect all devices",
   "disconnectAllDevicesConfirmation": "Are you sure you want to disconnect all devices?",
@@ -276,6 +279,8 @@
   "productsNotAvailable": "There are no available products at the moment. Please try again later.",
   "productUpdates": "Get product updates",
   "protocol": "Protocol",
+  "protocolPickerSettingDesc": "Switching the VPN protocol will disconnect you. You’ll need to reconnect afterwards.",
+  "protocolPickerSettingTitle": "Switching VPN protocol",
   "pt": "Portuguese",
   "purchased": "Purchased",
   "purchasePromoCTA": "Let's go",
@@ -425,7 +430,5 @@
   "yearlyPlanDiscountPrice": "{amount} for the year.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Yes",
-  "zh": "Chinese",
-  "protocolPickerSettingTitle": "Switching VPN protocol",
-  "protocolPickerSettingDesc": "Switching the VPN protocol will disconnect you. You’ll need to reconnect afterwards."
+  "zh": "Chinese"
 }
