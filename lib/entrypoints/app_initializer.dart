@@ -70,7 +70,7 @@ class AppInitializer {
     }
 
     if (Platform.isWindows) {
-      registerProtocolHandler('mysteriumvpn');
+      registerProtocolHandler(Env.appCustomSchemeUrl);
       _nativeWindowsInit();
     }
 
