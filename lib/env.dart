@@ -129,6 +129,7 @@ abstract class Env {
         'ENV_APP': flavor.name,
         'OPENVPN_EXTENSION_ID': openVpnExtensionId,
         'OPENVPN_EXTENSION_NAME': openVpnExtensionName,
+        'APP_CUSTOM_SCHEME_URL': appCustomSchemeUrl,
       };
 }
 
