@@ -1,6 +1,6 @@
 //
 //  PacketTunnelProvider.swift
-//  VPNExtension
+//  OVpnExtension
 //
 
 import NetworkExtension
