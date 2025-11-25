@@ -65,6 +65,28 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     });
   }
 
+  late final _$_subscriptionPlanFutureAtom =
+      Atom(name: '_SubscriptionStore._subscriptionPlanFuture', context: context);
+
+  ObservableFuture<api.GetPlanResponse> get subscriptionPlanFuture {
+    _$_subscriptionPlanFutureAtom.reportRead();
+    return super._subscriptionPlanFuture;
+  }
+
+  @override
+  ObservableFuture<api.GetPlanResponse> get _subscriptionPlanFuture => subscriptionPlanFuture;
+
+  bool __subscriptionPlanFutureIsInitialized = false;
+
+  @override
+  set _subscriptionPlanFuture(ObservableFuture<api.GetPlanResponse> value) {
+    _$_subscriptionPlanFutureAtom.reportWrite(
+        value, __subscriptionPlanFutureIsInitialized ? super._subscriptionPlanFuture : null, () {
+      super._subscriptionPlanFuture = value;
+      __subscriptionPlanFutureIsInitialized = true;
+    });
+  }
+
   late final _$_subscriptionConfigFutureAtom =
       Atom(name: '_SubscriptionStore._subscriptionConfigFuture', context: context);
 
