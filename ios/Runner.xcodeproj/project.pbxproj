@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -131,7 +131,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		977663A32ECBA38500BC54E9 /* Exceptions for "OVpnExtension" folder in "OVpnExtension" target */ = {
+		977663A32ECBA38500BC54E9 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -141,51 +141,10 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		977662EB2ECB974500BC54E9 /* OVpnExtension */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = OVpnExtension;
-			sourceTree = "<group>";
-		};
-		977663022ECB980800BC54E9 /* OVpnExtension */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = OVpnExtension;
-			sourceTree = "<group>";
-		};
-		9776639B2ECBA38400BC54E9 /* OVpnExtension */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				977663A32ECBA38500BC54E9 /* Exceptions for "OVpnExtension" folder in "OVpnExtension" target */,
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = OVpnExtension;
-			sourceTree = "<group>";
-		};
-		9915442F2DD20A7100D6F505 /* RunnerUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = RunnerUITests;
-			sourceTree = "<group>";
-		};
+		977662EB2ECB974500BC54E9 /* OVpnExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = OVpnExtension; sourceTree = "<group>"; };
+		977663022ECB980800BC54E9 /* OVpnExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = OVpnExtension; sourceTree = "<group>"; };
+		9776639B2ECBA38400BC54E9 /* OVpnExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (977663A32ECBA38500BC54E9 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = OVpnExtension; sourceTree = "<group>"; };
+		9915442F2DD20A7100D6F505 /* RunnerUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = RunnerUITests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1533,7 +1492,7 @@
 				INFOPLIST_FILE = OVpnExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OVpnExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1618,7 +1577,7 @@
 				INFOPLIST_FILE = OVpnExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OVpnExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1697,7 +1656,7 @@
 				INFOPLIST_FILE = OVpnExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OVpnExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1775,7 +1734,7 @@
 				INFOPLIST_FILE = OVpnExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OVpnExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1853,7 +1812,7 @@
 				INFOPLIST_FILE = OVpnExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OVpnExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1931,7 +1890,7 @@
 				INFOPLIST_FILE = OVpnExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OVpnExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
