@@ -58,7 +58,7 @@ android {
             applicationIdSuffix ".test"
             manifestPlaceholders = [
             "appLabel": "Mysterium VPN Test",
-            "appCustomSchemeUrl": "mysteriumvpnDev"
+            "appCustomSchemeUrl": "mysteriumvpntest"
             ]
         }
         register("prod") {
