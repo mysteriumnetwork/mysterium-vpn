@@ -337,6 +337,12 @@ class RestSubscriptionService extends SubscriptionService {
   }
 
   @override
+  Future<api.GetPlanResponse> fetchSubscriptionPlan() async {
+    final res = await _apiSubscription.plan();
+    return res.data!;
+  }
+
+  @override
   Future<api.SubscriptionConfigResponse> fetchSubscriptionConfig() async {
     try {
       final isStoreAvailable = await _inAppPurchase.isAvailable();
