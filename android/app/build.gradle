@@ -56,11 +56,17 @@ android {
         register("dev") {
             dimension "env"
             applicationIdSuffix ".test"
-            manifestPlaceholders = ["appLabel": "Mysterium VPN Test"]
+            manifestPlaceholders = [
+            "appLabel": "Mysterium VPN Test",
+            "appCustomSchemeUrl": "mysteriumvpntest"
+            ]
         }
         register("prod") {
             dimension "env"
-            manifestPlaceholders = ["appLabel": "Mysterium VPN"]
+            manifestPlaceholders = [
+            "appLabel": "Mysterium VPN",
+            "appCustomSchemeUrl": "mysteriumvpn"
+            ]
         }
     }
 

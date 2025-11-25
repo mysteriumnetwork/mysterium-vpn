@@ -900,6 +900,7 @@
 			baseConfigurationReference = 0F969F4DA2DECFD2A7DC09F7 /* Pods-Runner.profile-prod.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
+				APP_CUSTOM_SCHEME_URL = mysteriumvpn;
 				APP_NAME = "Mysterium VPN";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-prod";
 				CLANG_ENABLE_MODULES = YES;
@@ -1107,6 +1108,7 @@
 			baseConfigurationReference = BACD40A1D539DDD4BF2E8128 /* Pods-Runner.debug-dev.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
+				APP_CUSTOM_SCHEME_URL = mysteriumvpntest;
 				APP_NAME = "Mysterium VPN Test";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
@@ -1240,6 +1242,7 @@
 			baseConfigurationReference = 0396409251F10374BE9DA258 /* Pods-Runner.release-dev.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
+				APP_CUSTOM_SCHEME_URL = mysteriumvpntest;
 				APP_NAME = "Mysterium VPN Test";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
@@ -1365,6 +1368,7 @@
 			baseConfigurationReference = C8FAC1EB378822D8D73B5FCD /* Pods-Runner.profile-dev.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
+				APP_CUSTOM_SCHEME_URL = mysteriumvpntest;
 				APP_NAME = "Mysterium VPN Test";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
@@ -2034,6 +2038,7 @@
 			baseConfigurationReference = 0D3C50D397FB137A78B3E498 /* Pods-Runner.debug-prod.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
+				APP_CUSTOM_SCHEME_URL = mysteriumvpn;
 				APP_NAME = "Mysterium VPN";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-prod";
 				CLANG_ENABLE_MODULES = YES;
@@ -2069,6 +2074,7 @@
 			baseConfigurationReference = BFD9F06C1779ACD99E4DEFAD /* Pods-Runner.release-prod.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
+				APP_CUSTOM_SCHEME_URL = mysteriumvpn;
 				APP_NAME = "Mysterium VPN";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-prod";
 				CLANG_ENABLE_MODULES = YES;

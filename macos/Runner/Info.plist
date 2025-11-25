@@ -43,7 +43,7 @@
 			<string>com.mysteriumvpn</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>mysteriumvpn</string>
+				<string>$(APP_CUSTOM_SCHEME_URL)</string>
 			</array>
 		</dict>
 		<dict>
