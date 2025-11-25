@@ -27,6 +27,7 @@ abstract class Env {
   static const String measurementId = String.fromEnvironment('MEASUREMENT_ID');
   static const String apiSecret = String.fromEnvironment('API_SECRET');
   static const bool isAutomated = bool.fromEnvironment('IS_AUTOMATED');
+  static const String appCustomSchemeUrl = String.fromEnvironment('APP_CUSTOM_SCHEME_URL');
 
   static final String bundleId = _getBundleId();
   static final Flavor flavor = Flavor.fromEnvironment();
@@ -128,6 +129,7 @@ abstract class Env {
         'ENV_APP': flavor.name,
         'OPENVPN_EXTENSION_ID': openVpnExtensionId,
         'OPENVPN_EXTENSION_NAME': openVpnExtensionName,
+        'APP_CUSTOM_SCHEME_URL': appCustomSchemeUrl,
       };
 }
 

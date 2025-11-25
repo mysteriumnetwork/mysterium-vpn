@@ -57,7 +57,7 @@
 
                 <data
                     android:host="login"
-                    android:scheme="mysteriumvpn" />
+                    android:scheme="${appCustomSchemeUrl}" />
             </intent-filter>
 
             <meta-data
