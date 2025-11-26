@@ -9,6 +9,7 @@ import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/stores/remote_config/config_cat_user_store.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_limited_time_offer_store.dart';
 
@@ -242,28 +243,47 @@ final userPreferencesStorePOD = StateProvider<UserPreferencesStore>((ref) {
   );
 });
 
+final configCatUserStorePOD = Provider<ConfigCatUserStore>((ref) {
+  final authSessionStore = ref.watch(authSessionStorePOD);
+  final ipInfoStore = ref.watch(realIPInfoStorePOD);
+  final subscriptionStore = ref.watch(subscriptionStorePOD);
+  final logger = ref.watch(loggerPOD);
+
+  final store = ConfigCatUserStore(
+    authSessionStore,
+    ipInfoStore,
+    subscriptionStore,
+    logger,
+  );
+
+  ref.onDispose(store.dispose);
+
+  return store;
+});
+
 final remoteConfigStorePOD = Provider<RemoteConfigStore>((ref) {
   final client = ref.watch(remoteConfigClientPOD);
   final logger = ref.watch(loggerPOD);
-  final realIPInfoStore = ref.watch(realIPInfoStorePOD);
-  return RemoteConfigStore(client, logger, realIPInfoStore, isDev: Env.flavor.isDev);
+  return RemoteConfigStore(
+    client,
+    logger,
+    isDev: Env.flavor.isDev,
+  );
 });
 
 final abTestingStorePOD = Provider<ABTestingStore>((ref) {
   final client = ref.watch(abTestingClientPOD);
   final logger = ref.watch(loggerPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
-  final realIPInfoStore = ref.watch(realIPInfoStorePOD);
 
-  return ABTestingStore(client, logger, realIPInfoStore, analyticsStore);
+  return ABTestingStore(client, logger, analyticsStore);
 });
 
 final textsStorePOD = Provider<TextsStore>((ref) {
   final client = ref.watch(textsClientPOD);
   final logger = ref.watch(loggerPOD);
-  final realIPInfoStore = ref.watch(realIPInfoStorePOD);
 
-  return TextsStore(client, logger, realIPInfoStore);
+  return TextsStore(client, logger);
 });
 
 final bannersStorePOD = Provider<BannersStore>(
