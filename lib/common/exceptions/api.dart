@@ -9,6 +9,7 @@ class ApiException extends DioException {
     required this.identifier,
     required this.endpoint,
     required this.severity,
+    this.errorCode,
   }) : super(requestOptions: requestOptions, message: message);
   @override
   String get message => super.message!;
@@ -16,6 +17,7 @@ class ApiException extends DioException {
   final int code;
   final String endpoint;
   final ExceptionSeverity severity;
+  final String? errorCode;
 
   @override
   String toString() => '$message [code: $code]';
