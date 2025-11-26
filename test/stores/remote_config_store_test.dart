@@ -13,6 +13,7 @@ import 'remote_config_store_test.mocks.dart';
   MockSpec<ConfigCatClient>(),
   MockSpec<Talker>(unsupportedMembers: {#configure}),
   MockSpec<RealIPInfoStore>(),
+  MockSpec<SubscriptionStore>(),
 ])
 void main() {
   late RemoteConfigStore store;
@@ -39,7 +40,7 @@ void main() {
   });
 
   RemoteConfigStore createStore({bool isDev = true}) =>
-      RemoteConfigStore(client, logger, ipInfoStore, isDev: isDev);
+      RemoteConfigStore(client, logger, isDev: isDev);
 
   group('RemoteConfigStore.cancelSubscriptionReasonKeys', () {
     test('returns null if config does not have the key', () async {

@@ -10,7 +10,10 @@ part 'texts_store.g.dart';
 class TextsStore = _TextsStore with _$TextsStore;
 
 abstract class _TextsStore extends ConfigCatStore with Store {
-  _TextsStore(super.client, super.logger, super.ipInfoStore) : _logger = logger;
+  _TextsStore(
+    super.client,
+    super.logger,
+  ) : _logger = logger;
 
   final Talker _logger;
 
