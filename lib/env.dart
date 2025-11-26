@@ -27,6 +27,7 @@ abstract class Env {
   static const String measurementId = String.fromEnvironment('MEASUREMENT_ID');
   static const String apiSecret = String.fromEnvironment('API_SECRET');
   static const bool isAutomated = bool.fromEnvironment('IS_AUTOMATED');
+  static const String manageDevicesPage = String.fromEnvironment('MANAGE_DEVICES_PAGE');
   static const String appCustomSchemeUrl = String.fromEnvironment('APP_CUSTOM_SCHEME_URL');
 
   static final String bundleId = _getBundleId();
@@ -98,7 +99,7 @@ abstract class Env {
   }
 
   static String stringify() =>
-      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, billingPage: $billingPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret, isAutomated: $isAutomated, openVpnExtensionId: $openVpnExtensionId, openVpnExtensionName: $openVpnExtensionName';
+      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, billingPage: $billingPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret, isAutomated: $isAutomated, openVpnExtensionId: $openVpnExtensionId, openVpnExtensionName: $openVpnExtensionName, manageDevicesPage: $manageDevicesPage, flavor: ${flavor.name}';
 
   static String _getBundleId() {
     if (Platform.isIOS || Platform.isMacOS) {
@@ -129,6 +130,7 @@ abstract class Env {
         'ENV_APP': flavor.name,
         'OPENVPN_EXTENSION_ID': openVpnExtensionId,
         'OPENVPN_EXTENSION_NAME': openVpnExtensionName,
+        'MANAGE_DEVICES_PAGE': manageDevicesPage,
         'APP_CUSTOM_SCHEME_URL': appCustomSchemeUrl,
       };
 }

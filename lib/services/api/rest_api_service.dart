@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:mysterium_vpn/common/exceptions/device_limit_reached_exception.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -31,7 +32,10 @@ class RestApiService extends ApiService {
       }
 
       return response.data!;
-    } on ApiException {
+    } on ApiException catch (e) {
+      if (e.errorCode == DeviceLimitReachedException.code) {
+        throw const DeviceLimitReachedException();
+      }
       rethrow;
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);

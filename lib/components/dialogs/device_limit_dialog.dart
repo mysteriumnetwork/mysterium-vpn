@@ -7,8 +7,10 @@ import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/keys.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 Future<void> showDeviceLimitDialog(BuildContext context) async {
   await showDialog(
@@ -96,7 +98,12 @@ class _Body extends ConsumerWidget {
     final theme = Theme.of(context);
     const minButtonSize = Size(164, 48);
 
-    void handleOpenDashboard() {}
+    void handleOpenDashboard() {
+      launchUrlString(
+        Env.manageDevicesPage,
+        mode: LaunchMode.externalApplication,
+      );
+    }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
