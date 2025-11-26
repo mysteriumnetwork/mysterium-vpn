@@ -202,6 +202,7 @@ void main() {
         userIntent: 'bestSpeed',
         cluster: 'cluster1',
         resetConnection: false,
+        dnsAddress: '1.1.1.1',
       );
 
       expect(config.config, 'cfg');
