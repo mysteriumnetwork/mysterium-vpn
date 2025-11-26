@@ -573,6 +573,7 @@ abstract class _VpnStore extends VpnGuard with Store {
         resetConnection: refreshIP || _refreshIPStore.refreshIPConnection,
         userIntent: intent?.key,
         cluster: closestRegion?.id,
+        dnsAddress: _dnsStore.dnsAddress,
       ),
     );
 
@@ -651,8 +652,7 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   @action
   Future<void> _connectTunnel({required String vpnConfig}) async {
-    final config = _dnsStore.replaceDNSAddress(vpnConfig);
-    await _vpnRepository.connect(config: config);
+    await _vpnRepository.connect(config: vpnConfig);
   }
 
   Future<void> _finalizeConnection(VPNLocation connectedLocation) async {
