@@ -156,6 +156,7 @@ class WireguardRepository extends BaseVpnRepository {
           osType: Platform.operatingSystem,
           userIntent: userIntent,
           cluster: cluster,
+          dns: dnsAddress,
         ),
       );
       return VpnConfig.fromWireguard(response);
