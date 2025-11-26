@@ -92,6 +92,9 @@ abstract class LocaleKeys {
   static const deleteAccount = 'deleteAccount';
   static const deleteAccountQuestion = 'deleteAccountQuestion';
   static const describeYourIssue = 'describeYourIssue';
+  static const deviceLimitReachedDesc = 'deviceLimitReachedDesc';
+  static const deviceLimitReachedOpenDashboard = 'deviceLimitReachedOpenDashboard';
+  static const deviceLimitReachedTitle = 'deviceLimitReachedTitle';
   static const disconnect = 'disconnect';
   static const disconnectAllDevices = 'disconnectAllDevices';
   static const disconnectAllDevicesConfirmation = 'disconnectAllDevicesConfirmation';
@@ -274,6 +277,8 @@ abstract class LocaleKeys {
   static const productsNotAvailable = 'productsNotAvailable';
   static const productUpdates = 'productUpdates';
   static const protocol = 'protocol';
+  static const protocolPickerSettingDesc = 'protocolPickerSettingDesc';
+  static const protocolPickerSettingTitle = 'protocolPickerSettingTitle';
   static const pt = 'pt';
   static const purchased = 'purchased';
   static const purchasePromoCTA = 'purchasePromoCTA';
@@ -420,6 +425,4 @@ abstract class LocaleKeys {
   static const yearlyPlanFullPrice = 'yearlyPlanFullPrice';
   static const yes = 'yes';
   static const zh = 'zh';
-  static const protocolPickerSettingTitle = 'protocolPickerSettingTitle';
-  static const protocolPickerSettingDesc = 'protocolPickerSettingDesc';
 }

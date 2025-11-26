@@ -517,6 +517,7 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   String? _buildErrorMessage(Object e, int errorCode) => switch (e) {
         UnavailableLocationException() => null,
+        DeviceLimitReachedException() => null,
         _ => errorCode == 4029
             ? LocaleKeys.toManyRequestsErrorMsg.tr()
             : LocaleKeys.failedToConnectError.tr(
