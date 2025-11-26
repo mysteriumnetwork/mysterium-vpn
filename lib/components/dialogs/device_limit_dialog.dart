@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
-import 'package:mysterium_vpn/common/utils/keys.dart';
 import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
@@ -162,7 +161,6 @@ class _CloseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SvgIconButton(
-        key: Keys.marketingConsentDeclineButton,
         asset: Asset.icons.close2(context),
         onPressed: Navigator.of(context).pop,
         size: 32,
