@@ -109,11 +109,12 @@ class AppInitializer {
 
     final firebaseOptions = _getFirebaseOptions();
     await providerContainer.read(analyticsInitPOD(firebaseOptions).future);
-    final [rcStore, _] = await Future.wait([
+    final [rcStore as RemoteConfigStore, _, _] = await Future.wait([
       _initRemoteConfig(providerContainer),
       _initLatLngStore(providerContainer),
+      _initOtherConfigCatStores(providerContainer),
     ]);
-    remoteConfigStore = rcStore! as RemoteConfigStore;
+    remoteConfigStore = rcStore;
     logger = providerContainer.read(loggerPOD);
 
     logger.log(
@@ -123,12 +124,33 @@ class AppInitializer {
 
   Future<RemoteConfigStore?> _initRemoteConfig(ProviderContainer container) async {
     try {
+      final configCatUserStore = container.read(configCatUserStorePOD);
       final remoteConfigStore = container.read(remoteConfigStorePOD);
+
+      final configCatUser = await configCatUserStore.future;
+      await remoteConfigStore.setUser(configCatUser);
+
       await remoteConfigStore.configFuture;
       return remoteConfigStore;
     } catch (e) {
       debugPrint('Error initializing remote config $e');
       return null;
+    }
+  }
+
+  Future<void> _initOtherConfigCatStores(ProviderContainer container) async {
+    try {
+      final configCatUserStore = container.read(configCatUserStorePOD);
+      final abTestingStore = container.read(abTestingStorePOD);
+      final textsStore = container.read(textsStorePOD);
+
+      final configCatUser = await configCatUserStore.future;
+      await Future.wait([
+        abTestingStore.setUser(configCatUser),
+        textsStore.setUser(configCatUser),
+      ]);
+    } catch (e) {
+      debugPrint('Error initializing other ConfigCat stores $e');
     }
   }
 

@@ -16,7 +16,11 @@ enum _ABKey {
 class ABTestingStore = ABTestingStoreBase with _$ABTestingStore;
 
 abstract class ABTestingStoreBase extends ConfigCatStore with Store {
-  ABTestingStoreBase(super.client, super.logger, super.ipInfoStore, this._analytics) {
+  ABTestingStoreBase(
+    super.client,
+    super.logger,
+    this._analytics,
+  ) {
     reaction(
       (_) => configFuture,
       (future) async {

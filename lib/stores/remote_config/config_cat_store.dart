@@ -1,20 +1,15 @@
-import 'dart:io';
+import 'dart:async';
 
-import 'package:collection/collection.dart';
 import 'package:configcat_client/configcat_client.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'package:mysterium_vpn/stores/remote_config/config_cat_user_store.dart';
 import 'package:talker/talker.dart';
 
 abstract class ConfigCatStore with Store {
   ConfigCatStore(
     this._client,
     this.logger,
-    this._ipInfoStore,
   ) {
     _init();
   }
@@ -22,15 +17,15 @@ abstract class ConfigCatStore with Store {
   final ConfigCatClient _client;
   @protected
   final Talker logger;
-  final RealIPInfoStore _ipInfoStore;
+
+  final Completer<void> _initUserCompleter = Completer<void>();
+  ConfigCatUser? _user;
 
   @readonly
   late ObservableFuture<Map<String, dynamic>> configFuture = ObservableFuture(_fetchCached());
 
   @computed
   Map<String, dynamic> get config => configFuture.value ?? {};
-
-  ConfigCatUser? _user;
 
   @action
   Future<void> _init() async {
@@ -47,11 +42,29 @@ abstract class ConfigCatStore with Store {
     }
   }
 
+  Future<void> setUser(ConfigCatUser user) async {
+    final current = _user;
+    _user = user;
+    _client.setDefaultUser(user);
+    if (!_initUserCompleter.isCompleted) {
+      _initUserCompleter.complete();
+    }
+
+    // Refresh config only if the user has changed
+    if (current != null && !current.equals(user)) {
+      await refresh();
+    }
+  }
+
+  Future<ConfigCatUser> _fetchUser() async {
+    await _initUserCompleter.future;
+    return _user!;
+  }
+
   @protected
   Future<Map<String, dynamic>> _fetch() async {
     try {
-      _user = await _fetchUser(skipIpInfo: _user?.country != null);
-      _client.setDefaultUser(_user);
+      await _fetchUser();
 
       final result = await _client.forceRefresh();
       if (!result.isSuccess) {
@@ -67,93 +80,11 @@ abstract class ConfigCatStore with Store {
 
   Future<Map<String, dynamic>> _fetchCached() async {
     try {
-      if (_user == null) {
-        _user = await _fetchUser(skipIpInfo: true);
-        _client.setDefaultUser(_user);
-      }
+      await _fetchUser();
       return await _client.getAllValues();
     } catch (e, stack) {
       logger.handle(e, stack);
       return {};
     }
   }
-
-  Future<ConfigCatUser> _fetchUser({bool skipIpInfo = false}) async {
-    final platform = Platform.operatingSystem;
-    (String id, String email) user;
-    try {
-      var [identifier, email] = await Future.wait([
-        SecureStorageService.instance.getUserId(),
-        SecureStorageService.instance.getUsername(),
-      ]);
-      if (identifier == null || identifier.isEmpty) {
-        identifier = 'anonymous';
-      }
-      if (email == null || email.isEmpty) {
-        email = 'anonymous';
-      }
-      user = (identifier, email);
-    } catch (e, stack) {
-      logger.handle(e, stack);
-      user = ('anonymous', 'anonymous');
-    }
-
-    IPInfo? ipInfo;
-    if (!skipIpInfo) {
-      try {
-        ipInfo = await _ipInfoStore.infoFuture;
-      } catch (e, stack) {
-        logger.handle(e, stack);
-        ipInfo = null;
-      }
-    }
-
-    String? version;
-    try {
-      version = await PackageInfo.fromPlatform().then((value) => value.version);
-    } catch (e, stack) {
-      logger.handle(e, stack);
-      version = null;
-    }
-
-    return ConfigCatUser(
-      identifier: user.$1,
-      email: user.$2,
-      country: ipInfo?.country,
-      custom: {
-        'platform': platform,
-        if (version != null) 'version': version,
-        if (ipInfo?.city != null) 'city': ipInfo!.city,
-      },
-    );
-  }
-
-  @action
-  Future<void> notifyUserChanged() async {
-    final user = await _fetchUser();
-    if (!user.equals(_user)) {
-      _client.setDefaultUser(user);
-      _user = user;
-
-      // TODO(dmacan): re-fetch config on user info change if needed. right now we're not doing that in order to reduce number of requests towards ConfigCat service
-      // configFuture = ObservableFuture(_fetch());
-      // await configFuture;
-    }
-  }
-}
-
-extension _ConfigCatUserExtension on ConfigCatUser {
-  static const nativeKeys = ['Identifier', 'Email', 'Country'];
-  static const customKeys = ['platform', 'version', 'city'];
-
-  Map<String, dynamic> toMap() {
-    const keys = [...nativeKeys, ...customKeys];
-
-    return {for (final key in keys) key: getAttribute(key)};
-  }
-
-  String? get country => getAttribute('Country') as String?;
-
-  bool equals(ConfigCatUser? user) =>
-      user != null && const MapEquality().equals(toMap(), user.toMap());
 }
