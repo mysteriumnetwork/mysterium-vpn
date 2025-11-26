@@ -48,6 +48,7 @@ enum _FeatureToggleKey {
   subscriptionUpgradeAutoDisplayEnabled,
   limitedTimeOfferExpiryDate,
   limitedTimeOfferId,
+  limitedTimeOfferImage,
   isProtocolPickerAvailable,
 }
 
@@ -408,6 +409,18 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
         return DateTime.parse(raw.toString());
       } catch (e, stack) {
         logger.handle(e, stack);
+      }
+    }
+    return null;
+  }
+
+  @computed
+  String? get limitedTimeOfferImage {
+    if (config.containsKey(_FeatureToggleKey.limitedTimeOfferImage.name)) {
+      final raw = config[_FeatureToggleKey.limitedTimeOfferImage.name];
+      final trimmed = raw.toString().trim();
+      if (trimmed.isNotEmpty) {
+        return trimmed;
       }
     }
     return null;

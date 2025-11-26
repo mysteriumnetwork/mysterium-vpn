@@ -42,6 +42,14 @@ mixin _$SubscriptionLimitedTimeOfferStore on _SubscriptionLimitedTimeOfferStore,
     });
   }
 
+  late final _$mockOfferAsyncAction =
+      AsyncAction('_SubscriptionLimitedTimeOfferStore.mockOffer', context: context);
+
+  @override
+  Future<void> mockOffer() {
+    return _$mockOfferAsyncAction.run(() => super.mockOffer());
+  }
+
   @override
   String toString() {
     return '''
