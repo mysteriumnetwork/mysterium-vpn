@@ -23,11 +23,11 @@ mixin _$DNSStore on _DNSStore, Store {
       (_$notSafeContentBlockerComputed ??= Computed<bool>(() => super.notSafeContentBlocker,
               name: '_DNSStore.notSafeContentBlocker'))
           .value;
-  Computed<String?>? _$dnsAddressComputed;
+  Computed<String>? _$dnsAddressComputed;
 
   @override
-  String? get dnsAddress => (_$dnsAddressComputed ??=
-          Computed<String?>(() => super.dnsAddress, name: '_DNSStore.dnsAddress'))
+  String get dnsAddress => (_$dnsAddressComputed ??=
+          Computed<String>(() => super.dnsAddress, name: '_DNSStore.dnsAddress'))
       .value;
 
   late final _$malwareBlockerFutureAtom =

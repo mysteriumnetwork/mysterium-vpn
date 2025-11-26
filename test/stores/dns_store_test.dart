@@ -109,10 +109,10 @@ void main() {
     test('returns notSafeContentBlockerDnsAddress if not safe content blocker is enabled',
         () async {
       when(mockRemoteConfigStore.hideNotSafeContentBlocker).thenReturn(false);
-      when(mockRemoteConfigStore.notSafeContentBlockerDnsAddress).thenReturn('1.1.1.1');
+      when(mockRemoteConfigStore.notSafeContentBlockerDnsAddress).thenReturn('1.1.1.3');
       when(mockLocalDBService.getNotSafeContentBlocker()).thenAnswer((_) async => true);
       await store.getNotSafeContentBlocker();
-      expect(store.dnsAddress, '1.1.1.1');
+      expect(store.dnsAddress, '1.1.1.3');
     });
 
     test('returns malwareBlockerDnsAddress if malware blocker is enabled', () async {
@@ -124,32 +124,11 @@ void main() {
       expect(store.dnsAddress, '8.8.8.8');
     });
 
-    test('returns null if no blockers are enabled', () {
+    test('returns default DNS address if no blockers are enabled', () {
       when(mockRemoteConfigStore.hideNotSafeContentBlocker).thenReturn(true);
       when(mockRemoteConfigStore.hideMalwareBlocker).thenReturn(true);
       // Both blockers are false by default
-      expect(store.dnsAddress, isNull);
-    });
-  });
-
-  group('replaceDNSAddress', () {
-    test('replaces DNS line if dnsAddress is set', () async {
-      when(mockRemoteConfigStore.hideNotSafeContentBlocker).thenReturn(false);
-      when(mockRemoteConfigStore.notSafeContentBlockerDnsAddress).thenReturn('1.1.1.1');
-      when(mockLocalDBService.getNotSafeContentBlocker()).thenAnswer((_) async => true);
-      await store.getNotSafeContentBlocker();
-      const config = 'some config\nDNS = 8.8.8.8\nother config';
-      final result = store.replaceDNSAddress(config);
-      expect(result, contains('DNS = 1.1.1.1'));
-    });
-
-    test('returns config unchanged if dnsAddress is null', () {
-      when(mockRemoteConfigStore.hideNotSafeContentBlocker).thenReturn(true);
-      when(mockRemoteConfigStore.hideMalwareBlocker).thenReturn(true);
-      // Both blockers are false by default
-      const config = 'some config\nDNS = 8.8.8.8\nother config';
-      final result = store.replaceDNSAddress(config);
-      expect(result, config);
+      expect(store.dnsAddress, '1.1.1.1');
     });
   });
 }

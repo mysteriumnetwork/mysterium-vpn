@@ -1,15 +1,14 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/auth_status.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
 part 'dns_store.g.dart';
 
-final dnsRegex = RegExp(r'.*(\DNS\b).*', caseSensitive: false);
 const _initialMalwareBlockerValue = false;
 const _initialNotSafeContentBlockerValue = false;
+const _defaultDNSAddress = '1.1.1.1';
 
 // ignore: library_private_types_in_public_api
 class DNSStore = _DNSStore with _$DNSStore;
@@ -55,8 +54,8 @@ abstract class _DNSStore with Store {
       ObservableFuture.value(_initialNotSafeContentBlockerValue);
 
   @computed
-  String? get dnsAddress {
-    String? replaceDNS;
+  String get dnsAddress {
+    var replaceDNS = _defaultDNSAddress;
     if (!_remoteConfigStore.hideNotSafeContentBlocker && notSafeContentBlocker) {
       replaceDNS = _remoteConfigStore.notSafeContentBlockerDnsAddress;
     } else if (!_remoteConfigStore.hideMalwareBlocker && malwareBlockerContent) {
@@ -112,18 +111,6 @@ abstract class _DNSStore with Store {
       notSafeContentBlocker: value,
     );
     notSafeContentBlockerFuture = ObservableFuture.value(value);
-  }
-
-  String replaceDNSAddress(String config) {
-    if (dnsAddress.isNotNullOrEmpty) {
-      // Find all matches in the content
-      final match = dnsRegex.firstMatch(config);
-      if (match?[0] != null) {
-        final dnsLine = match![0]!;
-        return config.replaceFirst(dnsLine, 'DNS = $dnsAddress');
-      }
-    }
-    return config;
   }
 
   // Call on log out or app termiantion

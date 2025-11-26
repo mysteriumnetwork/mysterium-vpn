@@ -298,6 +298,7 @@ void main() {
             resetConnection: anyNamed('resetConnection'),
             userIntent: anyNamed('userIntent'),
             cluster: anyNamed('cluster'),
+            dnsAddress: anyNamed('dnsAddress'),
           ),
         ).thenAnswer((_) async => vpnConfig);
 
@@ -317,6 +318,7 @@ void main() {
             resetConnection: anyNamed('resetConnection'),
             userIntent: anyNamed('userIntent'),
             cluster: anyNamed('cluster'),
+            dnsAddress: anyNamed('dnsAddress'),
           ),
         ).called(1);
       });
@@ -365,6 +367,7 @@ void main() {
             resetConnection: anyNamed('resetConnection'),
             userIntent: anyNamed('userIntent'),
             cluster: anyNamed('cluster'),
+            dnsAddress: anyNamed('dnsAddress'),
           ),
         ).thenAnswer((_) async => vpnConfig);
 
@@ -384,6 +387,7 @@ void main() {
             resetConnection: anyNamed('resetConnection'),
             userIntent: anyNamed('userIntent'),
             cluster: anyNamed('cluster'),
+            dnsAddress: anyNamed('dnsAddress'),
           ),
         ).called(1);
 
@@ -417,6 +421,7 @@ void main() {
             resetConnection: anyNamed('resetConnection'),
             userIntent: anyNamed('userIntent'),
             cluster: anyNamed('cluster'),
+            dnsAddress: anyNamed('dnsAddress'),
           ),
         ).thenAnswer(
           (_) async => throw ApiException(
@@ -467,6 +472,7 @@ void main() {
             resetConnection: anyNamed('resetConnection'),
             userIntent: anyNamed('userIntent'),
             cluster: anyNamed('cluster'),
+            dnsAddress: anyNamed('dnsAddress'),
           ),
         ).thenThrow(
           ApiException(
