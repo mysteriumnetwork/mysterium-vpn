@@ -76,6 +76,24 @@ abstract class _SubscriptionLimitedTimeOfferStore with Store, Disposeable {
       disposer();
     }
   }
+
+  @action
+  Future<void> mockOffer() async {
+    final product = (await _subscriptionStore.productsFuture).first;
+    _future = ObservableFuture.value(
+      (
+        product: product,
+        offer: ProductOffer(
+          id: 'mock_offer',
+          price: 49.99,
+          durationUnit: OfferDuration.month,
+          durationValue: 1,
+          fullPrice: 200,
+        ),
+        expiryDate: DateTime.now().add(const Duration(days: 7)),
+      ),
+    );
+  }
 }
 
 typedef LimitedTimeOffer = ({PurchasableProduct product, ProductOffer offer, DateTime expiryDate});

@@ -32,6 +32,7 @@ class LimitedOfferView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subscriptionStore = ref.watch(subscriptionLimitedTimeOfferStorePOD);
+    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     final handleSubscribeToProduct = useHandleSubscribeToProduct();
     final showProducts = useShowProducts();
 
@@ -53,7 +54,7 @@ class LimitedOfferView extends HookConsumerWidget {
           offer: offer,
           onPressed: handleSubscribe,
           onShowProductsPressed: showProducts,
-          image: Asset.images.purchasePromo,
+          image: remoteConfigStore.limitedTimeOfferImage ?? Asset.images.purchasePromo,
           title: LocaleKeys.purchasePromoTitle.tr(
             args: [subscriptionStore.discountPercent.toString()],
           ),
@@ -171,12 +172,23 @@ class _Image extends StatelessWidget {
           width: size.width,
           height: size.height,
         ),
-      _ => Image.network(
-          image.toString(),
+      final String path when path.startsWith('http') => Image.network(
+          path,
           width: size.width,
           height: size.height,
           fit: BoxFit.contain,
-        )
+        ),
+      final String path when path.endsWith('.svg') => SvgGenImage(path).svg(
+          width: size.width,
+          height: size.height,
+        ),
+      final String path => Image.asset(
+          path,
+          width: size.width,
+          height: size.height,
+          fit: BoxFit.contain,
+        ),
+      _ => SizedBox.fromSize(size: size),
     };
   }
 }
