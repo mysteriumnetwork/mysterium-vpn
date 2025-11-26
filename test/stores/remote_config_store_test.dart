@@ -14,17 +14,20 @@ import 'remote_config_store_test.mocks.dart';
   MockSpec<Talker>(unsupportedMembers: {#configure}),
   MockSpec<RealIPInfoStore>(),
   MockSpec<SubscriptionStore>(),
+  MockSpec<ConfigCatUser>(),
 ])
 void main() {
   late RemoteConfigStore store;
   late MockConfigCatClient client;
   late MockTalker logger;
   late MockRealIPInfoStore ipInfoStore;
+  late ConfigCatUser configCatUser;
 
-  setUp(() {
+  setUp(() async {
     client = MockConfigCatClient();
     logger = MockTalker();
     ipInfoStore = MockRealIPInfoStore();
+    configCatUser = ConfigCatUser(identifier: 'mock');
 
     when(ipInfoStore.infoFuture).thenAnswer(
       (_) => ObservableFuture.value(
@@ -40,7 +43,7 @@ void main() {
   });
 
   RemoteConfigStore createStore({bool isDev = true}) =>
-      RemoteConfigStore(client, logger, isDev: isDev);
+      RemoteConfigStore(client, logger, isDev: isDev)..setUser(configCatUser);
 
   group('RemoteConfigStore.cancelSubscriptionReasonKeys', () {
     test('returns null if config does not have the key', () async {
