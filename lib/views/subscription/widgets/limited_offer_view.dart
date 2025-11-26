@@ -5,6 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
@@ -172,25 +173,38 @@ class _Image extends StatelessWidget {
           width: size.width,
           height: size.height,
         ),
+      final String path when path.startsWith('http') && path.endsWith('.svg') => SvgPicture.network(
+          path,
+          width: size.width,
+          height: size.height,
+          errorBuilder: _errorBuilder,
+        ),
       final String path when path.startsWith('http') => Image.network(
           path,
           width: size.width,
           height: size.height,
           fit: BoxFit.contain,
+          errorBuilder: _errorBuilder,
         ),
-      final String path when path.endsWith('.svg') => SvgGenImage(path).svg(
+      final String path when path.startsWith('assets/') && path.endsWith('.svg') =>
+        SvgPicture.asset(
+          path,
           width: size.width,
           height: size.height,
+          errorBuilder: _errorBuilder,
         ),
-      final String path => Image.asset(
+      final String path when path.startsWith('assets/') => Image.asset(
           path,
           width: size.width,
           height: size.height,
           fit: BoxFit.contain,
+          errorBuilder: _errorBuilder,
         ),
-      _ => SizedBox.fromSize(size: size),
+      _ => _errorBuilder(context, null, null),
     };
   }
+
+  Widget _errorBuilder(BuildContext _, Object? __, StackTrace? ___) => const SizedBox.shrink();
 }
 
 class _Title extends StatelessWidget {
