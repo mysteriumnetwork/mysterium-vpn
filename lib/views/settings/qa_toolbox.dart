@@ -228,6 +228,21 @@ class QAToolbox extends HookConsumerWidget {
           ),
           SettingItem(
             asset: Asset.icons.settingsAdaptive(context),
+            title: 'Mock limited time offer',
+            subtitle: const EasyText(
+              'Creates fake limited time offer so dialog can pop up when pressing "subscribe"',
+            ),
+            actionWidget: TextButton.icon(
+              label: const EasyText('Show'),
+              icon: const Icon(Icons.open_in_new),
+              onPressed: () async {
+                final store = ref.read(subscriptionLimitedTimeOfferStorePOD);
+                await store.mockOffer();
+              },
+            ),
+          ),
+          SettingItem(
+            asset: Asset.icons.settingsAdaptive(context),
             title: 'Show device limit reached dialog',
             subtitle:
                 const EasyText('Just for testing dialog UI without actually having 6 devices.'),

@@ -268,6 +268,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
           Computed<DateTime?>(() => super.limitedTimeOfferExpiryDate,
               name: 'RemoteConfigStoreBase.limitedTimeOfferExpiryDate'))
       .value;
+  Computed<String?>? _$limitedTimeOfferImageComputed;
+
+  @override
+  String? get limitedTimeOfferImage =>
+      (_$limitedTimeOfferImageComputed ??= Computed<String?>(() => super.limitedTimeOfferImage,
+              name: 'RemoteConfigStoreBase.limitedTimeOfferImage'))
+          .value;
   Computed<bool>? _$isProtocolPickerAvailableComputed;
 
   @override
@@ -317,6 +324,7 @@ subscriptionUpgradeBannerEnabled: ${subscriptionUpgradeBannerEnabled},
 subscriptionUpgradeAutoDisplayEnabled: ${subscriptionUpgradeAutoDisplayEnabled},
 limitedTimeOfferId: ${limitedTimeOfferId},
 limitedTimeOfferExpiryDate: ${limitedTimeOfferExpiryDate},
+limitedTimeOfferImage: ${limitedTimeOfferImage},
 isProtocolPickerAvailable: ${isProtocolPickerAvailable}
     ''';
   }
