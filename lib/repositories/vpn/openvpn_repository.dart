@@ -117,6 +117,7 @@ class OpenVpnRepository extends BaseVpnRepository {
           osType: Platform.operatingSystem,
           userIntent: userIntent,
           cluster: cluster,
+          dns: dnsAddress,
         ),
       );
       return VpnConfig.fromOpenVpn(response);
