@@ -6,7 +6,6 @@ import 'package:talker/talker.dart';
 
 part 'dns_store.g.dart';
 
-final dnsRegex = RegExp(r'.*(\DNS\b).*', caseSensitive: false);
 const _initialMalwareBlockerValue = false;
 const _initialNotSafeContentBlockerValue = false;
 const _defaultDNSAddress = '1.1.1.1';
