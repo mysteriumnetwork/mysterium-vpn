@@ -1,5 +1,6 @@
 export 'api.dart';
 export 'authentication_required.dart';
+export 'device_limit_reached_exception.dart';
 export 'form_validation_exception.dart';
 export 'incorrect_code.dart';
 export 'incorrect_magic_link.dart';
