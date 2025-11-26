@@ -124,7 +124,7 @@ void main() {
       expect(store.dnsAddress, '8.8.8.8');
     });
 
-    test('returns null if no blockers are enabled', () {
+    test('returns default DNS address if no blockers are enabled', () {
       when(mockRemoteConfigStore.hideNotSafeContentBlocker).thenReturn(true);
       when(mockRemoteConfigStore.hideMalwareBlocker).thenReturn(true);
       // Both blockers are false by default
