@@ -88,6 +88,9 @@
   "deleteAccount": "حذف الحساب",
   "deleteAccountQuestion": "حذف الحساب؟",
   "describeYourIssue": "صف مشكلتك",
+  "deviceLimitReachedDesc": "لقد وصلت إلى الحد الأقصى وهو ٦ أجهزة متصلة. لإضافة جهاز جديد، احذف جهازًا موجودًا من حسابك.",
+  "deviceLimitReachedOpenDashboard": "افتح لوحة التحكم",
+  "deviceLimitReachedTitle": "تم الوصول إلى حد الجهاز",
   "disconnect": "اتصال",
   "disconnectAllDevices": "افصل جميع الأجهزة",
   "disconnectAllDevicesConfirmation": "هل أنت متأكد أنك تريد فصل جميع الأجهزة؟",
@@ -276,6 +279,8 @@
   "productsNotAvailable": "لا توجد منتجات متاحة في الوقت الحالي. الرجاء معاودة المحاولة في وقت لاحق.",
   "productUpdates": "احصل على تحديثات المنتج",
   "protocol": "بروتوكول",
+  "protocolPickerSettingDesc": "سيؤدي تغيير بروتوكول VPN إلى قطع اتصالك. ستحتاج إلى إعادة الاتصال لاحقًا.",
+  "protocolPickerSettingTitle": "تبديل بروتوكول VPN",
   "pt": "البرتغالية",
   "purchased": "تم شراؤها",
   "purchasePromoCTA": "دعنا نذهب",
@@ -425,7 +430,5 @@
   "yearlyPlanDiscountPrice": "{المبلغ} للسنة.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "نعم",
-  "zh": "صينى",
-  "protocolPickerSettingTitle": "تبديل بروتوكول VPN",
-  "protocolPickerSettingDesc": "سيؤدي تغيير بروتوكول VPN إلى قطع اتصالك. ستحتاج إلى إعادة الاتصال لاحقًا."
+  "zh": "صينى"
 }

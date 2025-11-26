@@ -12,13 +12,15 @@ class ApiErrorsInterceptor extends Interceptor {
     if (err.response?.data != null && err.response?.data is Map<String, dynamic>) {
       final data = err.response?.data as Map<String, dynamic>;
 
+      String? errorBodyCode;
       var errorCode = err.response?.statusCode ?? 500;
       if (data.containsKey('error') &&
           data['error'] is Map &&
           (data['error'] as Map).containsKey('code')) {
-        errorCode =
+        errorBodyCode =
             // ignore: avoid_dynamic_calls
-            int.tryParse(data['error']['code'].toString()) ?? errorCode;
+            data['error']['code'].toString();
+        errorCode = int.tryParse(errorBodyCode) ?? errorCode;
       }
 
       var message = '';
@@ -45,6 +47,7 @@ class ApiErrorsInterceptor extends Interceptor {
           identifier: 'Dio Exception ${err.message} \nat  $endpoint',
           endpoint: endpoint,
           severity: errorCode >= 500 ? ExceptionSeverity.high : ExceptionSeverity.medium,
+          errorCode: errorBodyCode,
         ),
       );
     }

@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/analytics_logger_overlay.dart';
 import 'package:mysterium_vpn/components/analytics_user_properties_overlay.dart';
+import 'package:mysterium_vpn/components/dialogs/device_limit_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/marketing_consent_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/retry_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/subscription_upgrade_success_dialog.dart';
@@ -222,6 +223,19 @@ class QAToolbox extends HookConsumerWidget {
                 if (product != null) {
                   await showSubscriptionUpgradeSuccessDialog(context, purchasedPlan: product);
                 }
+              },
+            ),
+          ),
+          SettingItem(
+            asset: Asset.icons.settingsAdaptive(context),
+            title: 'Show device limit reached dialog',
+            subtitle:
+                const EasyText('Just for testing dialog UI without actually having 6 devices.'),
+            actionWidget: TextButton.icon(
+              label: const EasyText('Show'),
+              icon: const Icon(Icons.open_in_new),
+              onPressed: () async {
+                await showDeviceLimitDialog(context);
               },
             ),
           ),

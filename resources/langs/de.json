@@ -88,6 +88,9 @@
   "deleteAccount": "Konto löschen",
   "deleteAccountQuestion": "Konto löschen?",
   "describeYourIssue": "Beschreiben Sie Ihr Problem",
+  "deviceLimitReachedDesc": "Sie haben die maximale Anzahl von 6 verbundenen Geräten erreicht. Um ein neues Gerät hinzuzufügen, entfernen Sie ein vorhandenes aus Ihrem Konto.",
+  "deviceLimitReachedOpenDashboard": "Dashboard öffnen",
+  "deviceLimitReachedTitle": "Gerätelimit erreicht",
   "disconnect": "Trennen",
   "disconnectAllDevices": "Trennen Sie alle Geräte",
   "disconnectAllDevicesConfirmation": "Sind Sie sicher, dass Sie alle Geräte trennen möchten?",
@@ -276,6 +279,8 @@
   "productsNotAvailable": "Zur Zeit sind keine Produkte verfügbar. Bitte versuchen Sie es später noch einmal.",
   "productUpdates": "Erhalten Sie Produktaktualisierungen",
   "protocol": "Protokoll",
+  "protocolPickerSettingDesc": "Durch das Wechseln des VPN-Protokolls wird die Verbindung getrennt. Sie müssen sich anschließend erneut verbinden.",
+  "protocolPickerSettingTitle": "VPN-Protokoll wechseln",
   "pt": "Portugiesisch",
   "purchased": "Gekauft",
   "purchasePromoCTA": "Lass uns gehen",
@@ -425,7 +430,5 @@
   "yearlyPlanDiscountPrice": "{amount} für das Jahr.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Ja",
-  "zh": "Chinesisch",
-  "protocolPickerSettingTitle": "VPN-Protokoll wechseln",
-  "protocolPickerSettingDesc": "Durch das Wechseln des VPN-Protokolls wird die Verbindung getrennt. Sie müssen sich anschließend erneut verbinden."
+  "zh": "Chinesisch"
 }

@@ -88,6 +88,9 @@
   "deleteAccount": "Hapus akun",
   "deleteAccountQuestion": "Hapus akun?",
   "describeYourIssue": "jelaskan permasalahanmu",
+  "deviceLimitReachedDesc": "Anda telah mencapai batas maksimum 6 perangkat yang terhubung. Untuk menambahkan perangkat baru, hapus perangkat yang sudah ada dari akun Anda.",
+  "deviceLimitReachedOpenDashboard": "Buka Dasbor",
+  "deviceLimitReachedTitle": "Batas Perangkat Tercapai",
   "disconnect": "Putuskan",
   "disconnectAllDevices": "Lepaskan semua perangkat",
   "disconnectAllDevicesConfirmation": "Apakah Anda yakin ingin memutuskan semua perangkat?",
@@ -276,6 +279,8 @@
   "productsNotAvailable": "Tidak ada produk yang tersedia saat ini. Coba lagi nanti.",
   "productUpdates": "Dapatkan pembaruan produk",
   "protocol": "Protokol",
+  "protocolPickerSettingDesc": "Mengganti protokol VPN akan memutuskan koneksi Anda. Anda perlu menyambungkannya kembali setelahnya.",
+  "protocolPickerSettingTitle": "Mengganti protokol VPN",
   "pt": "Portugis",
   "purchased": "Dibeli",
   "purchasePromoCTA": "Ayo pergi",
@@ -425,7 +430,5 @@
   "yearlyPlanDiscountPrice": "{amount} untuk tahun.",
   "yearlyPlanFullPrice": "{amount}",
   "yes": "Iya",
-  "zh": "Cina",
-  "protocolPickerSettingTitle": "Mengganti protokol VPN",
-  "protocolPickerSettingDesc": "Mengganti protokol VPN akan memutuskan koneksi Anda. Anda perlu menyambungkannya kembali setelahnya."
+  "zh": "Cina"
 }
