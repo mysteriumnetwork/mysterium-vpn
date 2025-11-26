@@ -56,8 +56,7 @@ class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
 abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   RemoteConfigStoreBase(
     super.client,
-    super.logger,
-    super.ipInfoStore, {
+    super.logger, {
     bool isDev = false,
   }) : _isDev = isDev;
 
