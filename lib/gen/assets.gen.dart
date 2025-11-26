@@ -676,6 +676,10 @@ class $AssetsImagesGen {
   SvgGenImage get checkEmail =>
       const SvgGenImage('assets/images/check_email.svg', size: Size(120.0, 120.0));
 
+  /// File path: assets/images/devices_limit.svg
+  SvgGenImage get devicesLimit =>
+      const SvgGenImage('assets/images/devices_limit.svg', size: Size(149.0, 101.0));
+
   /// File path: assets/images/marketing_consent_dark.png
   AssetGenImage get marketingConsentDark =>
       const AssetGenImage('assets/images/marketing_consent_dark.png',
@@ -714,6 +718,7 @@ class $AssetsImagesGen {
   /// List of all assets
   List<dynamic> get values => [
         checkEmail,
+        devicesLimit,
         marketingConsentDark,
         marketingConsentLight,
         notifications,
