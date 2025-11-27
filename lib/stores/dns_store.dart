@@ -56,11 +56,17 @@ abstract class _DNSStore with Store {
       ObservableFuture.value(_initialNotSafeContentBlockerValue);
 
   @computed
+  bool get hideNotSafeContentBlocker => _remoteConfigStore.hideNotSafeContentBlocker;
+
+  @computed
+  bool get hideMalwareContentBlocker => _remoteConfigStore.hideMalwareBlocker;
+
+  @computed
   String get dnsAddress {
     var replaceDNS = _defaultDNSAddress;
-    if (!_remoteConfigStore.hideNotSafeContentBlocker && notSafeContentBlocker) {
+    if (!hideNotSafeContentBlocker && notSafeContentBlocker) {
       replaceDNS = _remoteConfigStore.notSafeContentBlockerDnsAddress;
-    } else if (!_remoteConfigStore.hideMalwareBlocker && malwareContentBlocker) {
+    } else if (!hideMalwareContentBlocker && malwareContentBlocker) {
       replaceDNS = _remoteConfigStore.malwareBlockerDnsAddress;
     }
     return replaceDNS;
