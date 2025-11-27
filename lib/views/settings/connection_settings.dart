@@ -99,7 +99,7 @@ class ConnectionSettings extends HookConsumerWidget {
             ),
           ),
           Visibility(
-            visible: !remoteConfigStore.hideMalwareBlocker,
+            visible: !dnsStore.hideMalwareContentBlocker,
             child: SwitchItem(
               enabled: !dnsStore.notSafeContentBlocker,
               asset: Asset.icons.locker(context),
@@ -124,7 +124,7 @@ class ConnectionSettings extends HookConsumerWidget {
             ),
           ),
           Visibility(
-            visible: !remoteConfigStore.hideNotSafeContentBlocker,
+            visible: !dnsStore.hideNotSafeContentBlocker,
             child: SwitchItem(
               asset: Asset.icons.stop(context),
               title: LocaleKeys.contentBlockerTitle.tr(),

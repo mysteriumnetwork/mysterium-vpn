@@ -23,6 +23,20 @@ mixin _$DNSStore on _DNSStore, Store {
       (_$notSafeContentBlockerComputed ??= Computed<bool>(() => super.notSafeContentBlocker,
               name: '_DNSStore.notSafeContentBlocker'))
           .value;
+  Computed<bool>? _$hideNotSafeContentBlockerComputed;
+
+  @override
+  bool get hideNotSafeContentBlocker =>
+      (_$hideNotSafeContentBlockerComputed ??= Computed<bool>(() => super.hideNotSafeContentBlocker,
+              name: '_DNSStore.hideNotSafeContentBlocker'))
+          .value;
+  Computed<bool>? _$hideMalwareContentBlockerComputed;
+
+  @override
+  bool get hideMalwareContentBlocker =>
+      (_$hideMalwareContentBlockerComputed ??= Computed<bool>(() => super.hideMalwareContentBlocker,
+              name: '_DNSStore.hideMalwareContentBlocker'))
+          .value;
   Computed<String>? _$dnsAddressComputed;
 
   @override
@@ -127,6 +141,8 @@ malwareContentBlockerFuture: ${malwareContentBlockerFuture},
 notSafeContentBlockerFuture: ${notSafeContentBlockerFuture},
 malwareContentBlocker: ${malwareContentBlocker},
 notSafeContentBlocker: ${notSafeContentBlocker},
+hideNotSafeContentBlocker: ${hideNotSafeContentBlocker},
+hideMalwareContentBlocker: ${hideMalwareContentBlocker},
 dnsAddress: ${dnsAddress}
     ''';
   }
