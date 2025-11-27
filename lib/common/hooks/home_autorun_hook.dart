@@ -91,9 +91,16 @@ void useHomeAutorun() {
             controller.add(() => showSubscriptionUpgradePage(context));
           },
         ),
-        autorun(
+        reaction(
           (_) {
-            if (vpnStore.fetchConfigFuture?.error is DeviceLimitReachedException) {
+            final error = vpnStore.fetchConfigFuture?.error;
+            if (error is DeviceLimitReachedException) {
+              return error;
+            }
+            return null;
+          },
+          (error) {
+            if (error != null) {
               controller.add(() => showDeviceLimitDialog(context));
             }
           },
