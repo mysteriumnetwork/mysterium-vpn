@@ -63,7 +63,7 @@ const windowsProductId = '9NGWJCZSB5MK';
 const windowsStandAloneProductId = 'te4cyv5h340wa';
 
 //DNS Addresses
-const malwareBlockerDomainAddress = '1.1.1.2';
+const malwareContentBlockerDomainAddress = '1.1.1.2';
 const notSafeContentBlockerDomainAddress = '1.1.1.3';
 
 // wold bounds

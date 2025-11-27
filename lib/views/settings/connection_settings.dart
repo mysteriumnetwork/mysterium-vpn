@@ -106,19 +106,20 @@ class ConnectionSettings extends HookConsumerWidget {
               title: LocaleKeys.malwareBlocker.tr(),
               subtitle: '',
               actionWidget: Observer(
-                builder: (context) => dnsStore.malwareBlockerFuture.status == FutureStatus.pending
-                    ? const LoadingIndicator()
-                    : Switch(
-                        value: dnsStore.malwareBlockerContent,
-                        onChanged: disableSettings
-                            ? null
-                            : (val) async {
-                                await dnsStore.toggleMalwareBlocker();
-                                analyticsStore.logEvent(
-                                  val ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff,
-                                );
-                              },
-                      ),
+                builder: (context) =>
+                    dnsStore.malwareContentBlockerFuture.status == FutureStatus.pending
+                        ? const LoadingIndicator()
+                        : Switch(
+                            value: dnsStore.malwareContentBlocker,
+                            onChanged: disableSettings
+                                ? null
+                                : (val) async {
+                                    await dnsStore.toggleMalwareBlocker();
+                                    analyticsStore.logEvent(
+                                      val ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff,
+                                    );
+                                  },
+                          ),
               ),
             ),
           ),

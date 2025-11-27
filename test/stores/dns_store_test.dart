@@ -39,15 +39,15 @@ void main() {
 
   group('getMalwareBlockerContent', () {
     test('returns true when localDB returns true', () async {
-      when(mockLocalDBService.getMalwareBlocker()).thenAnswer((_) async => true);
-      final result = await store.getMalwareBlockerContent();
+      when(mockLocalDBService.getMalwareContentBlocker()).thenAnswer((_) async => true);
+      final result = await store.getMalwareContentBlocker();
       expect(result, isTrue);
-      expect(store.malwareBlockerContent, isTrue);
+      expect(store.malwareContentBlocker, isTrue);
     });
 
     test('returns false and logs error when localDB throws', () async {
-      when(mockLocalDBService.getMalwareBlocker()).thenThrow(Exception('fail'));
-      final result = await store.getMalwareBlockerContent();
+      when(mockLocalDBService.getMalwareContentBlocker()).thenThrow(Exception('fail'));
+      final result = await store.getMalwareContentBlocker();
       expect(result, isFalse);
       verify(mockLogger.handle(any)).called(1);
     });
@@ -72,36 +72,34 @@ void main() {
   group('toggleMalwareBlocker', () {
     test('toggles malware blocker and saves to localDB', () async {
       // Initial value is false, toggling will set to true
-      when(mockLocalDBService.setMalwareBlocker(malwareBlocker: true)).thenAnswer((_) async => {});
+      when(mockLocalDBService.setMalwareContentBlocker(value: true)).thenAnswer((_) async => {});
       await store.toggleMalwareBlocker();
-      expect(store.malwareBlockerContent, isTrue);
-      verify(mockLocalDBService.setMalwareBlocker(malwareBlocker: true)).called(1);
+      expect(store.malwareContentBlocker, isTrue);
+      verify(mockLocalDBService.setMalwareContentBlocker(value: true)).called(1);
 
       // Toggling again will set to false
-      when(mockLocalDBService.setMalwareBlocker(malwareBlocker: false)).thenAnswer((_) async => {});
+      when(mockLocalDBService.setMalwareContentBlocker(value: false)).thenAnswer((_) async => {});
       await store.toggleMalwareBlocker();
-      expect(store.malwareBlockerContent, isFalse);
-      verify(mockLocalDBService.setMalwareBlocker(malwareBlocker: false)).called(1);
+      expect(store.malwareContentBlocker, isFalse);
+      verify(mockLocalDBService.setMalwareContentBlocker(value: false)).called(1);
     });
   });
 
   group('toggleNotSafeContentBlocker', () {
     test('toggles not safe content blocker and saves to localDB', () async {
       // Initial value is false, toggling will set to true
-      when(mockLocalDBService.setNotSafeContentBlocker(notSafeContentBlocker: true))
-          .thenAnswer((_) async => {});
-      when(mockLocalDBService.setMalwareBlocker(malwareBlocker: true)).thenAnswer((_) async => {});
+      when(mockLocalDBService.setNotSafeContentBlocker(value: true)).thenAnswer((_) async => {});
+      when(mockLocalDBService.setMalwareContentBlocker(value: true)).thenAnswer((_) async => {});
       await store.toggleNotSafeContentBlocker();
       expect(store.notSafeContentBlocker, isTrue);
-      verify(mockLocalDBService.setNotSafeContentBlocker(notSafeContentBlocker: true)).called(1);
-      verify(mockLocalDBService.setMalwareBlocker(malwareBlocker: true)).called(1);
+      verify(mockLocalDBService.setNotSafeContentBlocker(value: true)).called(1);
+      verify(mockLocalDBService.setMalwareContentBlocker(value: true)).called(1);
 
       // Toggling again will set to false
-      when(mockLocalDBService.setNotSafeContentBlocker(notSafeContentBlocker: false))
-          .thenAnswer((_) async => {});
+      when(mockLocalDBService.setNotSafeContentBlocker(value: false)).thenAnswer((_) async => {});
       await store.toggleNotSafeContentBlocker();
       expect(store.notSafeContentBlocker, isFalse);
-      verify(mockLocalDBService.setNotSafeContentBlocker(notSafeContentBlocker: false)).called(1);
+      verify(mockLocalDBService.setNotSafeContentBlocker(value: false)).called(1);
     });
   });
 
@@ -119,8 +117,8 @@ void main() {
       when(mockRemoteConfigStore.hideNotSafeContentBlocker).thenReturn(true);
       when(mockRemoteConfigStore.hideMalwareBlocker).thenReturn(false);
       when(mockRemoteConfigStore.malwareBlockerDnsAddress).thenReturn('8.8.8.8');
-      when(mockLocalDBService.getMalwareBlocker()).thenAnswer((_) async => true);
-      await store.getMalwareBlockerContent();
+      when(mockLocalDBService.getMalwareContentBlocker()).thenAnswer((_) async => true);
+      await store.getMalwareContentBlocker();
       expect(store.dnsAddress, '8.8.8.8');
     });
 
