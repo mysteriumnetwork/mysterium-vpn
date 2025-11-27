@@ -19,6 +19,7 @@ abstract class _DNSStore with Store {
     this._remoteConfigStore,
     this._logger,
     this._authSessionStore,
+    this._subscriptionStore,
   ) {
     _authReactionDisposer = reaction<AuthStatus>(
       (_) => _authSessionStore.status,
@@ -37,6 +38,7 @@ abstract class _DNSStore with Store {
   final RemoteConfigStore _remoteConfigStore;
   final Talker _logger;
   final AuthSessionStore _authSessionStore;
+  final SubscriptionStore _subscriptionStore;
   ReactionDisposer? _authReactionDisposer;
 
   @computed
@@ -56,10 +58,23 @@ abstract class _DNSStore with Store {
       ObservableFuture.value(_initialNotSafeContentBlockerValue);
 
   @computed
-  bool get hideNotSafeContentBlocker => _remoteConfigStore.hideNotSafeContentBlocker;
+  bool get hideNotSafeContentBlocker =>
+      _remoteConfigStore.hideNotSafeContentBlocker || !malwareBlockingAllowed;
 
   @computed
-  bool get hideMalwareContentBlocker => _remoteConfigStore.hideMalwareBlocker;
+  bool get hideMalwareContentBlocker =>
+      _remoteConfigStore.hideMalwareBlocker || !malwareBlockingAllowed;
+
+  bool get malwareBlockingAllowed {
+    var allow = false;
+    final subscriptionPlanMetadata = _subscriptionStore.subscriptionPlanFuture.value?.metadata;
+    if (subscriptionPlanMetadata != null) {
+      // Misconfigured plans works with old logic - always allow blockers
+      allow = subscriptionPlanMetadata.malwareBlockingAllowed ?? true;
+    }
+
+    return allow;
+  }
 
   @computed
   String get dnsAddress {

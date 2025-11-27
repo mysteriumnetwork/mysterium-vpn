@@ -13,12 +13,14 @@ import 'dns_store_test.mocks.dart';
   MockSpec<RemoteConfigStore>(),
   MockSpec<Talker>(),
   MockSpec<AuthSessionStore>(),
+  MockSpec<SubscriptionStore>(),
 ])
 void main() {
   late MockLocalDBService mockLocalDBService;
   late MockRemoteConfigStore mockRemoteConfigStore;
   late MockTalker mockLogger;
   late MockAuthSessionStore mockAuthSessionStore;
+  late MockSubscriptionStore mockSubscriptionStore;
   late DNSStore store;
 
   setUp(() {
@@ -26,6 +28,7 @@ void main() {
     mockRemoteConfigStore = MockRemoteConfigStore();
     mockLogger = MockTalker();
     mockAuthSessionStore = MockAuthSessionStore();
+    mockSubscriptionStore = MockSubscriptionStore();
 
     when(mockAuthSessionStore.status).thenReturn(AuthStatus.authenticated);
 
@@ -34,6 +37,7 @@ void main() {
       mockRemoteConfigStore,
       mockLogger,
       mockAuthSessionStore,
+      mockSubscriptionStore,
     );
   });
 
