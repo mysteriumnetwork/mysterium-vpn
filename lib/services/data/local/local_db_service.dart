@@ -109,20 +109,20 @@ class LocalDBService {
     await _saveUserData(userData);
   }
 
-  Future<bool> getMalwareBlocker() async => (await _loadUserData()).malwareBlocker;
+  Future<bool> getMalwareContentBlocker() async => (await _loadUserData()).malwareContentBlocker;
 
-  Future<void> setMalwareBlocker({required bool malwareBlocker}) async {
+  Future<void> setMalwareContentBlocker({required bool value}) async {
     final userData = await _loadUserData();
-    userData.malwareBlocker = malwareBlocker;
+    userData.malwareContentBlocker = value;
 
     await _saveUserData(userData);
   }
 
   Future<bool> getNotSafeContentBlocker() async => (await _loadUserData()).notSafeContentBlocker;
 
-  Future<void> setNotSafeContentBlocker({required bool notSafeContentBlocker}) async {
+  Future<void> setNotSafeContentBlocker({required bool value}) async {
     final userData = await _loadUserData();
-    userData.notSafeContentBlocker = notSafeContentBlocker;
+    userData.notSafeContentBlocker = value;
 
     await _saveUserData(userData);
   }
