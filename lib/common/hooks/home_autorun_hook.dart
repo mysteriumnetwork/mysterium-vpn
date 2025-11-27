@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -9,10 +7,8 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/components/dialogs/device_limit_dialog.dart';
-import 'package:mysterium_vpn/components/dialogs/info_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/marketing_consent_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/push_notifications_dialog.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -39,14 +35,6 @@ void useHomeAutorun() {
         return it();
       }).listen((_) {});
       final disposers = <ReactionDisposer>[
-        autorun(
-          (_) {
-            final limitExceeded = vpnStore.vpnConfig?.limitExceeded ?? false;
-            if (limitExceeded && vpnStore.vpnStatus == VpnConnectionStatus.connected) {
-              controller.add(() => _showOrSkipConnectionLimitDialog(context));
-            }
-          },
-        ),
         autorun(
           (_) {
             if (authSessionStore.status != AuthStatus.authenticated) {
@@ -123,15 +111,5 @@ void useHomeAutorun() {
       subscriptionUpgradeShown,
       authSessionStore,
     ],
-  );
-}
-
-Future<void> _showOrSkipConnectionLimitDialog(BuildContext context) async {
-  await shownInfoDialog(
-    context,
-    LocaleKeys.connectionLimitExceededTitle.tr(),
-    messages: [LocaleKeys.connectionLimitExceededDesc.tr()],
-    isDismissible: true,
-    confirmText: LocaleKeys.iUnderstandBtn.tr(),
   );
 }
