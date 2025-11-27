@@ -15,6 +15,7 @@ Future<void> showDeviceLimitDialog(BuildContext context) async {
   await showDialog(
     context: context,
     barrierDismissible: false,
+    useSafeArea: false,
     fullscreenDialog: ScreenType.of(context) < ScreenType.desktop,
     builder: (_) {
       if (ScreenType.of(context) >= ScreenType.desktop) {
@@ -35,23 +36,25 @@ class _DesktopDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         side: BorderSide(color: theme.palette.outlinedButtonBorderColor),
       ),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 600, minHeight: 400),
-        child: const Stack(
-          children: [
-            Positioned(
-              top: 16,
-              right: 16,
-              child: _CloseButton(),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 32,
-                horizontal: 120,
+      child: SafeArea(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 600, minHeight: 400),
+          child: const Stack(
+            children: [
+              Positioned(
+                top: 16,
+                right: 16,
+                child: _CloseButton(),
               ),
-              child: _Body(isMobile: false),
-            ),
-          ],
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 32,
+                  horizontal: 120,
+                ),
+                child: _Body(isMobile: false),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -64,20 +67,22 @@ class _MobileDialog extends StatelessWidget {
     final theme = Theme.of(context);
     return Dialog.fullscreen(
       backgroundColor: theme.palette.connectionTileBackgroundColor,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 420),
-            child: const Stack(
-              children: [
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: _CloseButton(),
-                ),
-                _Body(isMobile: true),
-              ],
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 420),
+              child: const Stack(
+                children: [
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: _CloseButton(),
+                  ),
+                  _Body(isMobile: true),
+                ],
+              ),
             ),
           ),
         ),
