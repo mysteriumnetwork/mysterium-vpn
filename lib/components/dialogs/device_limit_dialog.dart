@@ -15,6 +15,7 @@ Future<void> showDeviceLimitDialog(BuildContext context) async {
   await showDialog(
     context: context,
     barrierDismissible: false,
+    fullscreenDialog: ScreenType.of(context) < ScreenType.desktop,
     builder: (_) {
       if (ScreenType.of(context) >= ScreenType.desktop) {
         return _DesktopDialog();
@@ -30,29 +31,27 @@ class _DesktopDialog extends StatelessWidget {
     final theme = Theme.of(context);
     return Dialog(
       backgroundColor: theme.palette.connectionTileBackgroundColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(color: theme.palette.outlinedButtonBorderColor),
+      ),
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 600, minHeight: 400),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Palette.purple),
-          ),
-          child: const Stack(
-            children: [
-              Positioned(
-                top: 16,
-                right: 16,
-                child: _CloseButton(),
+        child: const Stack(
+          children: [
+            Positioned(
+              top: 16,
+              right: 16,
+              child: _CloseButton(),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 32,
+                horizontal: 120,
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 32,
-                  horizontal: 120,
-                ),
-                child: _Body(isMobile: false),
-              ),
-            ],
-          ),
+              child: _Body(isMobile: false),
+            ),
+          ],
         ),
       ),
     );
