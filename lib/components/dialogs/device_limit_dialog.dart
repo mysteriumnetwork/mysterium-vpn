@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,7 +18,7 @@ Future<void> showDeviceLimitDialog(BuildContext context) async {
     context: context,
     barrierDismissible: false,
     useSafeArea: false,
-    fullscreenDialog: ScreenType.of(context) < ScreenType.desktop,
+    fullscreenDialog: Platform.isAndroid || Platform.isIOS,
     builder: (_) {
       if (ScreenType.of(context) >= ScreenType.desktop) {
         return _DesktopDialog();
