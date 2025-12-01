@@ -99,31 +99,32 @@ class ConnectionSettings extends HookConsumerWidget {
             ),
           ),
           Visibility(
-            visible: !remoteConfigStore.hideMalwareBlocker,
+            visible: !dnsStore.hideMalwareContentBlocker,
             child: SwitchItem(
               enabled: !dnsStore.notSafeContentBlocker,
               asset: Asset.icons.locker(context),
               title: LocaleKeys.malwareBlocker.tr(),
               subtitle: '',
               actionWidget: Observer(
-                builder: (context) => dnsStore.malwareBlockerFuture.status == FutureStatus.pending
-                    ? const LoadingIndicator()
-                    : Switch(
-                        value: dnsStore.malwareBlockerContent,
-                        onChanged: disableSettings
-                            ? null
-                            : (val) async {
-                                await dnsStore.toggleMalwareBlocker();
-                                analyticsStore.logEvent(
-                                  val ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff,
-                                );
-                              },
-                      ),
+                builder: (context) =>
+                    dnsStore.malwareContentBlockerFuture.status == FutureStatus.pending
+                        ? const LoadingIndicator()
+                        : Switch(
+                            value: dnsStore.malwareContentBlocker,
+                            onChanged: disableSettings
+                                ? null
+                                : (val) async {
+                                    await dnsStore.toggleMalwareBlocker();
+                                    analyticsStore.logEvent(
+                                      val ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff,
+                                    );
+                                  },
+                          ),
               ),
             ),
           ),
           Visibility(
-            visible: !remoteConfigStore.hideNotSafeContentBlocker,
+            visible: !dnsStore.hideNotSafeContentBlocker,
             child: SwitchItem(
               asset: Asset.icons.stop(context),
               title: LocaleKeys.contentBlockerTitle.tr(),

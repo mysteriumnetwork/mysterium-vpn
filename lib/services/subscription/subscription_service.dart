@@ -11,6 +11,8 @@ abstract class SubscriptionService {
 
   Future<Subscription> fetchSubscriptionDetails();
 
+  Future<api.GetPlanResponse> fetchSubscriptionPlan();
+
   Future<void> subscribeToPackage({
     required ProductDetails productDetails,
     required String? purchasedProductId,

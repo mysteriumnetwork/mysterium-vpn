@@ -23,7 +23,7 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       notifications: fields[3] == null ? Approval.notSet : fields[3] as Approval,
       subscriptionPlan: fields[4] as String?,
       refreshIPConnection: fields[7] == null ? true : fields[7] as bool,
-      malwareBlocker: fields[8] == null ? false : fields[8] as bool,
+      malwareContentBlocker: fields[8] == null ? false : fields[8] as bool,
       notSafeContentBlocker: fields[9] == null ? false : fields[9] as bool,
       vpnPrivacyPolicyConsent: fields[10] == null ? false : fields[10] as bool,
       subscriptionPurchaseId: fields[5] as String?,
@@ -53,7 +53,7 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       ..writeByte(7)
       ..write(obj.refreshIPConnection)
       ..writeByte(8)
-      ..write(obj.malwareBlocker)
+      ..write(obj.malwareContentBlocker)
       ..writeByte(9)
       ..write(obj.notSafeContentBlocker)
       ..writeByte(10)

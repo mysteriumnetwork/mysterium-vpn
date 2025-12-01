@@ -8,7 +8,7 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:vpn_api/vpn_api.dart' hide Subscription;
+import 'package:vpn_api/vpn_api.dart' as vpn_api;
 
 import 'subscription_store_test.mocks.dart';
 
@@ -78,7 +78,7 @@ void main() {
     });
 
     test('fetches subscription config successfully', () async {
-      final config = SubscriptionConfigResponse(
+      final config = vpn_api.SubscriptionConfigResponse(
         gateways: [],
         plans: [],
         countries: [],
@@ -110,7 +110,7 @@ void main() {
         (_) async => subscriptionActive,
       );
       when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer(
-        (_) async => SubscriptionConfigResponse(
+        (_) async => vpn_api.SubscriptionConfigResponse(
           gateways: [],
           plans: [],
           countries: [],
@@ -133,7 +133,7 @@ void main() {
         (_) async => subscriptionActive,
       );
       when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer(
-        (_) async => SubscriptionConfigResponse(
+        (_) async => vpn_api.SubscriptionConfigResponse(
           gateways: [],
           plans: [],
           countries: [],
@@ -196,7 +196,7 @@ void main() {
         (_) async => subscriptionActive,
       );
       when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer(
-        (_) async => SubscriptionConfigResponse(
+        (_) async => vpn_api.SubscriptionConfigResponse(
           gateways: [],
           plans: [],
           countries: [],

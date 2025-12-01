@@ -36,6 +36,9 @@ abstract class _SubscriptionStore with Store {
       (_) => _authSessionStore.status == AuthStatus.authenticated,
       (status) async {
         _subscriptionFuture = ObservableFuture(_fetchSubscription());
+        if (_authSessionStore.status == AuthStatus.authenticated) {
+          _subscriptionPlanFuture = ObservableFuture(_subscriptionService.fetchSubscriptionPlan());
+        }
       },
       fireImmediately: true,
     );
@@ -51,6 +54,9 @@ abstract class _SubscriptionStore with Store {
 
   @readonly
   late ObservableFuture<Subscription> _subscriptionFuture = ObservableFuture(_fetchSubscription());
+
+  @readonly
+  late ObservableFuture<api.GetPlanResponse> _subscriptionPlanFuture;
 
   @readonly
   late ObservableFuture<api.SubscriptionConfigResponse?> _subscriptionConfigFuture =
