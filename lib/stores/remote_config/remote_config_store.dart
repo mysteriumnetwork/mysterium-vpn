@@ -164,7 +164,7 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
     if (config.containsKey(_FeatureToggleKey.malwareBlockerDnsAddress.name)) {
       return config[_FeatureToggleKey.malwareBlockerDnsAddress.name] as String;
     }
-    return malwareBlockerDomainAddress;
+    return malwareContentBlockerDomainAddress;
   }
 
   @computed

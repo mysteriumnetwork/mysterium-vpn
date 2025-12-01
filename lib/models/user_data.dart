@@ -18,7 +18,7 @@ class UserData {
     this.notifications = Approval.notSet,
     this.subscriptionPlan,
     this.refreshIPConnection = true,
-    this.malwareBlocker = false,
+    this.malwareContentBlocker = false,
     this.notSafeContentBlocker = false,
     this.vpnPrivacyPolicyConsent = false,
     this.subscriptionPurchaseId,
@@ -54,7 +54,7 @@ class UserData {
   bool refreshIPConnection;
 
   @HiveField(8, defaultValue: false)
-  bool malwareBlocker;
+  bool malwareContentBlocker;
 
   @HiveField(9, defaultValue: false)
   bool notSafeContentBlocker;
@@ -95,7 +95,7 @@ userId: $userId,
 subscriptionPlan: $subscriptionPlan,
 subscriptionPurchaseId: $subscriptionPurchaseId
 resetConnection: $refreshIPConnection
-malwareBlocker: $malwareBlocker
+malwareBlocker: $malwareContentBlocker
 notSafeContentBlocker: $notSafeContentBlocker,
 recentVPNLocations: $recentVPNLocations,
 shownBanners: $shownBanners

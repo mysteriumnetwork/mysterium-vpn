@@ -9,12 +9,12 @@ part of 'dns_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$DNSStore on _DNSStore, Store {
-  Computed<bool>? _$malwareBlockerContentComputed;
+  Computed<bool>? _$malwareContentBlockerComputed;
 
   @override
-  bool get malwareBlockerContent =>
-      (_$malwareBlockerContentComputed ??= Computed<bool>(() => super.malwareBlockerContent,
-              name: '_DNSStore.malwareBlockerContent'))
+  bool get malwareContentBlocker =>
+      (_$malwareContentBlockerComputed ??= Computed<bool>(() => super.malwareContentBlocker,
+              name: '_DNSStore.malwareContentBlocker'))
           .value;
   Computed<bool>? _$notSafeContentBlockerComputed;
 
@@ -23,6 +23,20 @@ mixin _$DNSStore on _DNSStore, Store {
       (_$notSafeContentBlockerComputed ??= Computed<bool>(() => super.notSafeContentBlocker,
               name: '_DNSStore.notSafeContentBlocker'))
           .value;
+  Computed<bool>? _$hideNotSafeContentBlockerComputed;
+
+  @override
+  bool get hideNotSafeContentBlocker =>
+      (_$hideNotSafeContentBlockerComputed ??= Computed<bool>(() => super.hideNotSafeContentBlocker,
+              name: '_DNSStore.hideNotSafeContentBlocker'))
+          .value;
+  Computed<bool>? _$hideMalwareContentBlockerComputed;
+
+  @override
+  bool get hideMalwareContentBlocker =>
+      (_$hideMalwareContentBlockerComputed ??= Computed<bool>(() => super.hideMalwareContentBlocker,
+              name: '_DNSStore.hideMalwareContentBlocker'))
+          .value;
   Computed<String>? _$dnsAddressComputed;
 
   @override
@@ -30,19 +44,19 @@ mixin _$DNSStore on _DNSStore, Store {
           Computed<String>(() => super.dnsAddress, name: '_DNSStore.dnsAddress'))
       .value;
 
-  late final _$malwareBlockerFutureAtom =
-      Atom(name: '_DNSStore.malwareBlockerFuture', context: context);
+  late final _$malwareContentBlockerFutureAtom =
+      Atom(name: '_DNSStore.malwareContentBlockerFuture', context: context);
 
   @override
-  ObservableFuture<bool> get malwareBlockerFuture {
-    _$malwareBlockerFutureAtom.reportRead();
-    return super.malwareBlockerFuture;
+  ObservableFuture<bool> get malwareContentBlockerFuture {
+    _$malwareContentBlockerFutureAtom.reportRead();
+    return super.malwareContentBlockerFuture;
   }
 
   @override
-  set malwareBlockerFuture(ObservableFuture<bool> value) {
-    _$malwareBlockerFutureAtom.reportWrite(value, super.malwareBlockerFuture, () {
-      super.malwareBlockerFuture = value;
+  set malwareContentBlockerFuture(ObservableFuture<bool> value) {
+    _$malwareContentBlockerFutureAtom.reportWrite(value, super.malwareContentBlockerFuture, () {
+      super.malwareContentBlockerFuture = value;
     });
   }
 
@@ -99,11 +113,11 @@ mixin _$DNSStore on _DNSStore, Store {
   late final _$_DNSStoreActionController = ActionController(name: '_DNSStore', context: context);
 
   @override
-  Future<bool> getMalwareBlockerContent() {
+  Future<bool> getMalwareContentBlocker() {
     final _$actionInfo =
-        _$_DNSStoreActionController.startAction(name: '_DNSStore.getMalwareBlockerContent');
+        _$_DNSStoreActionController.startAction(name: '_DNSStore.getMalwareContentBlocker');
     try {
-      return super.getMalwareBlockerContent();
+      return super.getMalwareContentBlocker();
     } finally {
       _$_DNSStoreActionController.endAction(_$actionInfo);
     }
@@ -123,10 +137,12 @@ mixin _$DNSStore on _DNSStore, Store {
   @override
   String toString() {
     return '''
-malwareBlockerFuture: ${malwareBlockerFuture},
+malwareContentBlockerFuture: ${malwareContentBlockerFuture},
 notSafeContentBlockerFuture: ${notSafeContentBlockerFuture},
-malwareBlockerContent: ${malwareBlockerContent},
+malwareContentBlocker: ${malwareContentBlocker},
 notSafeContentBlocker: ${notSafeContentBlocker},
+hideNotSafeContentBlocker: ${hideNotSafeContentBlocker},
+hideMalwareContentBlocker: ${hideMalwareContentBlocker},
 dnsAddress: ${dnsAddress}
     ''';
   }
