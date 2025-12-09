@@ -14,7 +14,7 @@ abstract class VpnGuard {
 
   Future<void> checkVpnGuards() async {
     await _authSessionStore.accessTokenFuture;
-    if (_authSessionStore.status != AuthStatus.authenticated) {
+    if (!_authSessionStore.isAuthenticated) {
       throw AuthenticationRequiredException();
     }
     if (_subscriptionStore.subscriptionFuture.status == FutureStatus.pending) {

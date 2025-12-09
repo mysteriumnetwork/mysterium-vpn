@@ -43,7 +43,7 @@ class _SubscriptionWatcherHookState extends HookState<void, _SubscriptionWatcher
   void onResumed() {
     final ref = ProviderScope.containerOf(context, listen: false);
     final authSessionStore = ref.read(authSessionStorePOD);
-    if (authSessionStore.status != AuthStatus.authenticated) {
+    if (!authSessionStore.isAuthenticated) {
       return;
     }
 
