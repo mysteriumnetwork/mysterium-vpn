@@ -1038,7 +1038,9 @@ class _DeviceInfo extends ConsumerWidget {
     required BuildContext context,
   }) {
     Future.delayed(Duration.zero, () {
-      if (!context.mounted) return;
+      if (!context.mounted) {
+        return;
+      }
       Navigator.of(context).push(
         MaterialPageRoute<void>(
           builder: (context) => const _DeviceInfo._(),
@@ -1109,7 +1111,9 @@ class _SecuredStorageValues extends ConsumerWidget {
     required BuildContext context,
   }) {
     Future.delayed(Duration.zero, () {
-      if (!context.mounted) return;
+      if (!context.mounted) {
+        return;
+      }
       Navigator.of(context).push(
         MaterialPageRoute<void>(
           builder: (context) => const _SecuredStorageValues._(),
