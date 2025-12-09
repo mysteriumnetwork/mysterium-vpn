@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -7,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
+import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/analytics_logger_overlay.dart';
 import 'package:mysterium_vpn/components/analytics_user_properties_overlay.dart';
@@ -41,7 +43,9 @@ class QAToolbox extends HookConsumerWidget {
           SettingItem(
             asset: Asset.icons.resetAppSetting(context),
             title: 'Reset hidden banners',
-            subtitle: const EasyText('This will reset all hidden banners to be shown again'),
+            subtitle: const EasyText(
+              'This will reset all hidden banners to be shown again',
+            ),
             actionWidget: TextButton.icon(
               label: const EasyText('Reset'),
               icon: const Icon(Icons.refresh),
@@ -69,7 +73,9 @@ class QAToolbox extends HookConsumerWidget {
           SettingItem(
             asset: Asset.icons.settingsAdaptive(context),
             title: 'VPN Connection limit',
-            subtitle: EasyText('Exceeded: ${connectionsLimitStore.connectionLimitReached}'),
+            subtitle: EasyText(
+              'Exceeded: ${connectionsLimitStore.connectionLimitReached}',
+            ),
             actionWidget: TextButton.icon(
               label: EasyText(
                 connectionsLimitStore.connectionLimitReached ? 'Mark not reached' : 'Mark reached',
@@ -148,7 +154,9 @@ class QAToolbox extends HookConsumerWidget {
           SettingItem(
             asset: Asset.icons.settingsAdaptive(context),
             title: 'Check analytics user properties',
-            subtitle: const EasyText('Will list and observe all analytics user properties'),
+            subtitle: const EasyText(
+              'Will list and observe all analytics user properties',
+            ),
             actionWidget: TextButton.icon(
               label: const EasyText('Check'),
               icon: const Icon(Icons.open_in_new),
@@ -183,7 +191,9 @@ class QAToolbox extends HookConsumerWidget {
           SettingItem(
             asset: Asset.icons.settingsAdaptive(context),
             title: 'Show retry verification dialog',
-            subtitle: const EasyText('Will show the retry verification for subscription'),
+            subtitle: const EasyText(
+              'Will show the retry verification for subscription',
+            ),
             actionWidget: TextButton.icon(
               label: const EasyText('Show'),
               icon: const Icon(Icons.open_in_new),
@@ -214,14 +224,19 @@ class QAToolbox extends HookConsumerWidget {
           SettingItem(
             asset: Asset.icons.settingsAdaptive(context),
             title: 'Show upgrade success page',
-            subtitle: const EasyText('Just to test the design of upgrade success page.'),
+            subtitle: const EasyText(
+              'Just to test the design of upgrade success page.',
+            ),
             actionWidget: TextButton.icon(
               label: const EasyText('Show'),
               icon: const Icon(Icons.open_in_new),
               onPressed: () async {
                 final product = subscriptionUpgradeStore.upgradeProduct;
                 if (product != null) {
-                  await showSubscriptionUpgradeSuccessDialog(context, purchasedPlan: product);
+                  await showSubscriptionUpgradeSuccessDialog(
+                    context,
+                    purchasedPlan: product,
+                  );
                 }
               },
             ),
@@ -244,14 +259,74 @@ class QAToolbox extends HookConsumerWidget {
           SettingItem(
             asset: Asset.icons.settingsAdaptive(context),
             title: 'Show device limit reached dialog',
-            subtitle:
-                const EasyText('Just for testing dialog UI without actually having 6 devices.'),
+            subtitle: const EasyText(
+              'Just for testing dialog UI without actually having 6 devices.',
+            ),
             actionWidget: TextButton.icon(
               label: const EasyText('Show'),
               icon: const Icon(Icons.open_in_new),
               onPressed: () async {
                 await showDeviceLimitDialog(context);
               },
+            ),
+          ),
+          Visibility(
+            visible: Platform.isWindows,
+            child: SettingItem(
+              asset: Asset.icons.settingsAdaptive(context),
+              title: 'Show OpenVPN logs',
+              actionWidget: TextButton.icon(
+                label: const EasyText(
+                  'Show logs',
+                ),
+                icon: const Icon(Icons.read_more),
+                onPressed: () async {
+                  try {
+                    final logPath =
+                        '${Platform.environment['LOCALAPPDATA']}\\OpenVPNDart\\config\\openvpn.log';
+                    final logFile = File(logPath);
+
+                    if (logFile.existsSync()) {
+                      // Read only last 200 lines to avoid memory issues with large log files
+                      final allLines = await logFile.readAsLines();
+                      final lastLines = allLines.length > 300
+                          ? allLines.sublist(allLines.length - 300)
+                          : allLines;
+                      final logs = lastLines.join('\n');
+
+                      debugPrint(
+                        '===== OpenVPN Logs (last ${lastLines.length} lines) =====\n$logs\n===== End Logs =====',
+                      );
+
+                      final logPreview =
+                          logs.length > 200 ? '...${logs.substring(logs.length - 200)}' : logs;
+
+                      showSnackbar(
+                        'Log preview:\n$logPreview',
+                        action: SnackBarAction(
+                          textColor: Palette.black,
+                          label: LocaleKeys.copyBtn.tr(),
+                          onPressed: () => FlutterClipboard.copy(logs).then(
+                            (value) => showSnackbar(
+                              LocaleKeys.linkCopied.tr(),
+                              type: MessageType.success,
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      showSnackbar(
+                        'Log file not found at: $logPath',
+                      );
+                    }
+                  } catch (e, stackTrace) {
+                    debugPrint('Show Logs Error: $e\nStack trace: $stackTrace');
+                    showSnackbar(
+                      'Error reading log file: $e',
+                    );
+                  }
+                },
+              ),
             ),
           ),
           const SizedBox(height: 36),
