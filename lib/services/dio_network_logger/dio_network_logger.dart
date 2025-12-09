@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -186,25 +187,28 @@ class NetworkLoggerButton extends StatefulWidget {
 class _NetworkLoggerButtonState extends State<NetworkLoggerButton> {
   bool _visible = true;
 
-  Future<void> _press() async {
+  void _press() {
     if (mounted) {
       setState(() {
         _visible = false;
       });
     }
 
-    try {
-      await NetworkLoggerScreen.open(
-        widget.globalNavKey?.currentState?.context ?? context,
-        eventList: widget.eventList,
-      );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _visible = true;
-        });
+    // Defer navigation to avoid '_debugLocked' assertion error
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      try {
+        await NetworkLoggerScreen.open(
+          widget.globalNavKey?.currentState?.context ?? context,
+          eventList: widget.eventList,
+        );
+      } finally {
+        if (mounted) {
+          setState(() {
+            _visible = true;
+          });
+        }
       }
-    }
+    });
   }
 
   @override
@@ -253,6 +257,7 @@ class NetworkLoggerScreen extends StatefulWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
+          settings: const RouteSettings(name: '/network_logger'),
           builder: (context) => NetworkLoggerScreen(eventList: eventList),
         ),
       );

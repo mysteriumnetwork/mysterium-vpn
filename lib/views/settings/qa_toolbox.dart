@@ -39,8 +39,7 @@ class QAToolbox extends HookConsumerWidget {
     return Observer(
       builder: (context) => Column(
         children: [
-          if (vpnStore.isConnected && Platform.isAndroid)
-            const NetworkStatistics(),
+          if (vpnStore.isConnected && Platform.isAndroid) const NetworkStatistics(),
           SettingItem(
             asset: Asset.icons.resetAppSetting(context),
             title: 'Reset hidden banners',
@@ -79,9 +78,7 @@ class QAToolbox extends HookConsumerWidget {
             ),
             actionWidget: TextButton.icon(
               label: EasyText(
-                connectionsLimitStore.connectionLimitReached
-                    ? 'Mark not reached'
-                    : 'Mark reached',
+                connectionsLimitStore.connectionLimitReached ? 'Mark not reached' : 'Mark reached',
               ),
               icon: const Icon(Icons.refresh),
               onPressed: () async {
@@ -147,8 +144,7 @@ class QAToolbox extends HookConsumerWidget {
           SettingItem(
             asset: Asset.icons.settingsAdaptive(context),
             title: 'Check analytics logs',
-            subtitle:
-                const EasyText('Will list and observe all analytics logs'),
+            subtitle: const EasyText('Will list and observe all analytics logs'),
             actionWidget: TextButton.icon(
               label: const EasyText('Check'),
               icon: const Icon(Icons.open_in_new),
@@ -215,8 +211,7 @@ class QAToolbox extends HookConsumerWidget {
           SettingItem(
             asset: Asset.icons.settingsAdaptive(context),
             title: 'Invalidate access token',
-            subtitle:
-                const EasyText('For testing if token refreshes correctly'),
+            subtitle: const EasyText('For testing if token refreshes correctly'),
             actionWidget: TextButton.icon(
               label: const EasyText('Show'),
               icon: const Icon(Icons.open_in_new),
