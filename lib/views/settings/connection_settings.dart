@@ -40,7 +40,7 @@ class ConnectionSettings extends HookConsumerWidget {
     final vpnProtocolStore = ref.watch(vpnProtocolStorePOD);
     return Observer(
       builder: (_) {
-        final disableSettings = authSessionStore.isAuthenticated;
+        final disableSettings = !authSessionStore.isAuthenticated;
         return Column(
           children: [
             Visibility(

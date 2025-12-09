@@ -103,7 +103,7 @@
             ],
             "toolArgs": [
                 "--dart-define-from-file",
-                "env.prod",
+                ".env.prod",
             ]
         },
         {
@@ -118,7 +118,7 @@
             ],
             "toolArgs": [
                 "--dart-define-from-file",
-                "env.dev",
+                ".env.dev",
             ]
         },
         {
@@ -133,7 +133,7 @@
             ],
             "toolArgs": [
                 "--dart-define-from-file",
-                "env.dev",
+                ".env.dev",
             ]
         },
         {
@@ -148,7 +148,7 @@
             ],
             "toolArgs": [
                 "--dart-define-from-file",
-                "env.dev",
+                ".env.dev",
             ]
         },
     ]
