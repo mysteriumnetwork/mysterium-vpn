@@ -186,25 +186,28 @@ class NetworkLoggerButton extends StatefulWidget {
 class _NetworkLoggerButtonState extends State<NetworkLoggerButton> {
   bool _visible = true;
 
-  Future<void> _press() async {
+  void _press() {
     if (mounted) {
       setState(() {
         _visible = false;
       });
     }
 
-    try {
-      await NetworkLoggerScreen.open(
-        widget.globalNavKey?.currentState?.context ?? context,
-        eventList: widget.eventList,
-      );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _visible = true;
-        });
+    // Use Future.delayed to ensure navigation happens after current frame completes
+    Future.delayed(Duration.zero, () async {
+      try {
+        await NetworkLoggerScreen.open(
+          widget.globalNavKey?.currentState?.context ?? context,
+          eventList: widget.eventList,
+        );
+      } finally {
+        if (mounted) {
+          setState(() {
+            _visible = true;
+          });
+        }
       }
-    }
+    });
   }
 
   @override
@@ -253,6 +256,7 @@ class NetworkLoggerScreen extends StatefulWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
+          settings: const RouteSettings(name: 'network_logger'),
           builder: (context) => NetworkLoggerScreen(eventList: eventList),
         ),
       );
@@ -425,6 +429,7 @@ class NetworkLoggerEventScreen extends StatelessWidget {
     required NetworkEventList eventList,
   }) =>
       MaterialPageRoute(
+        settings: const RouteSettings(name: 'network_logger'),
         builder: (context) => StreamBuilder(
           stream: eventList.stream.where((item) => item.event == event),
           builder: (context, snapshot) => NetworkLoggerEventScreen(event: event),
@@ -432,12 +437,19 @@ class NetworkLoggerEventScreen extends StatelessWidget {
       );
 
   /// Opens screen.
-  static Future<void> open(
+  static void open(
     BuildContext context,
     NetworkEvent event,
     NetworkEventList eventList,
-  ) =>
+  ) {
+    // Use Future.delayed to ensure navigation happens after current frame completes
+    Future.delayed(Duration.zero, () {
+      if (!context.mounted) {
+        return;
+      }
       Navigator.of(context).push(route(event: event, eventList: eventList));
+    });
+  }
 
   /// Which event to display details for.
   final NetworkEvent event;
@@ -949,12 +961,17 @@ class _ConfigPage extends ConsumerWidget {
   static void show({
     required BuildContext context,
   }) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) => const _ConfigPage._(),
-        settings: const RouteSettings(name: 'configPage'),
-      ),
-    );
+    Future.delayed(Duration.zero, () {
+      if (!context.mounted) {
+        return;
+      }
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (context) => const _ConfigPage._(),
+          settings: const RouteSettings(name: 'configPage'),
+        ),
+      );
+    });
   }
 
   @override
@@ -1020,12 +1037,17 @@ class _DeviceInfo extends ConsumerWidget {
   static void show({
     required BuildContext context,
   }) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) => const _DeviceInfo._(),
-        settings: const RouteSettings(name: 'deviceInfoPage'),
-      ),
-    );
+    Future.delayed(Duration.zero, () {
+      if (!context.mounted) {
+        return;
+      }
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (context) => const _DeviceInfo._(),
+          settings: const RouteSettings(name: 'deviceInfoPage'),
+        ),
+      );
+    });
   }
 
   @override
@@ -1088,12 +1110,17 @@ class _SecuredStorageValues extends ConsumerWidget {
   static void show({
     required BuildContext context,
   }) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) => const _SecuredStorageValues._(),
-        settings: const RouteSettings(name: 'securedStorageValuesPage'),
-      ),
-    );
+    Future.delayed(Duration.zero, () {
+      if (!context.mounted) {
+        return;
+      }
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (context) => const _SecuredStorageValues._(),
+          settings: const RouteSettings(name: 'securedStorageValuesPage'),
+        ),
+      );
+    });
   }
 
   @override
