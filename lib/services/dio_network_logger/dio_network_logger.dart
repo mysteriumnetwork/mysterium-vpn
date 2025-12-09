@@ -6,7 +6,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -194,8 +193,8 @@ class _NetworkLoggerButtonState extends State<NetworkLoggerButton> {
       });
     }
 
-    // Defer navigation to avoid '_debugLocked' assertion error
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
+    // Use Future.delayed to ensure navigation happens after current frame completes
+    Future.delayed(Duration.zero, () async {
       try {
         await NetworkLoggerScreen.open(
           widget.globalNavKey?.currentState?.context ?? context,
@@ -257,7 +256,7 @@ class NetworkLoggerScreen extends StatefulWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-          settings: const RouteSettings(name: '/network_logger'),
+          settings: const RouteSettings(name: 'network_logger'),
           builder: (context) => NetworkLoggerScreen(eventList: eventList),
         ),
       );
@@ -430,6 +429,7 @@ class NetworkLoggerEventScreen extends StatelessWidget {
     required NetworkEventList eventList,
   }) =>
       MaterialPageRoute(
+        settings: const RouteSettings(name: 'network_logger'),
         builder: (context) => StreamBuilder(
           stream: eventList.stream.where((item) => item.event == event),
           builder: (context, snapshot) => NetworkLoggerEventScreen(event: event),
@@ -437,12 +437,19 @@ class NetworkLoggerEventScreen extends StatelessWidget {
       );
 
   /// Opens screen.
-  static Future<void> open(
+  static void open(
     BuildContext context,
     NetworkEvent event,
     NetworkEventList eventList,
-  ) =>
+  ) {
+    // Use Future.delayed to ensure navigation happens after current frame completes
+    Future.delayed(Duration.zero, () {
+      if (!context.mounted) {
+        return;
+      }
       Navigator.of(context).push(route(event: event, eventList: eventList));
+    });
+  }
 
   /// Which event to display details for.
   final NetworkEvent event;
@@ -954,12 +961,17 @@ class _ConfigPage extends ConsumerWidget {
   static void show({
     required BuildContext context,
   }) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) => const _ConfigPage._(),
-        settings: const RouteSettings(name: 'configPage'),
-      ),
-    );
+    Future.delayed(Duration.zero, () {
+      if (!context.mounted) {
+        return;
+      }
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (context) => const _ConfigPage._(),
+          settings: const RouteSettings(name: 'configPage'),
+        ),
+      );
+    });
   }
 
   @override
@@ -1025,12 +1037,15 @@ class _DeviceInfo extends ConsumerWidget {
   static void show({
     required BuildContext context,
   }) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) => const _DeviceInfo._(),
-        settings: const RouteSettings(name: 'deviceInfoPage'),
-      ),
-    );
+    Future.delayed(Duration.zero, () {
+      if (!context.mounted) return;
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (context) => const _DeviceInfo._(),
+          settings: const RouteSettings(name: 'deviceInfoPage'),
+        ),
+      );
+    });
   }
 
   @override
@@ -1093,12 +1108,15 @@ class _SecuredStorageValues extends ConsumerWidget {
   static void show({
     required BuildContext context,
   }) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) => const _SecuredStorageValues._(),
-        settings: const RouteSettings(name: 'securedStorageValuesPage'),
-      ),
-    );
+    Future.delayed(Duration.zero, () {
+      if (!context.mounted) return;
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (context) => const _SecuredStorageValues._(),
+          settings: const RouteSettings(name: 'securedStorageValuesPage'),
+        ),
+      );
+    });
   }
 
   @override
