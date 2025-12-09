@@ -274,7 +274,7 @@ class QAToolbox extends HookConsumerWidget {
             visible: Platform.isWindows,
             child: SettingItem(
               asset: Asset.icons.settingsAdaptive(context),
-              title: 'Show logs (windows)',
+              title: 'Show OpenVPN logs',
               actionWidget: TextButton.icon(
                 label: const EasyText(
                   'Show logs',
@@ -286,14 +286,23 @@ class QAToolbox extends HookConsumerWidget {
                         '${Platform.environment['LOCALAPPDATA']}\\OpenVPNDart\\config\\openvpn.log';
                     final logFile = File(logPath);
 
-                    if (await logFile.exists()) {
-                      final logs = await logFile.readAsString();
+                    if (logFile.existsSync()) {
+                      // Read only last 200 lines to avoid memory issues with large log files
+                      final allLines = await logFile.readAsLines();
+                      final lastLines = allLines.length > 300
+                          ? allLines.sublist(allLines.length - 300)
+                          : allLines;
+                      final logs = lastLines.join('\n');
+
                       debugPrint(
-                        '===== OpenVPN Logs =====\n$logs\n===== End Logs =====',
+                        '===== OpenVPN Logs (last ${lastLines.length} lines) =====\n$logs\n===== End Logs =====',
                       );
 
+                      final logPreview =
+                          logs.length > 200 ? '...${logs.substring(logs.length - 200)}' : logs;
+
                       showSnackbar(
-                        'Log preview:\n$logs',
+                        'Log preview:\n$logPreview',
                         action: SnackBarAction(
                           textColor: Palette.black,
                           label: LocaleKeys.copyBtn.tr(),
