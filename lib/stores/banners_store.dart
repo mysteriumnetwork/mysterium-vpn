@@ -44,7 +44,7 @@ abstract class _BannersStore with Store {
       ObservableFuture(_localDBService.getShownBanners());
 
   @computed
-  List<BannerType>? get shown => _authSessionStore.status == AuthStatus.authenticated
+  List<BannerType>? get shown => _authSessionStore.isAuthenticated
       ? _shownBanners.value
       : _unauthenticatedHidden;
 

@@ -37,7 +37,7 @@ void useHomeAutorun() {
       final disposers = <ReactionDisposer>[
         autorun(
           (_) {
-            if (authSessionStore.status != AuthStatus.authenticated) {
+            if (!authSessionStore.isAuthenticated) {
               return;
             }
             final value = userPreferencesStore.nextPromptToShow;

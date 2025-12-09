@@ -88,7 +88,7 @@ abstract class _AuthStore with Store {
       email = await _secureStorageService.getLastLoggedInUser();
       _appLinks.uriLinkStream.listen(
         (appLink) async {
-          if (_authSessionStore.status == AuthStatus.authenticated) {
+          if (_authSessionStore.isAuthenticated) {
             return;
           }
           final storedLink = await _secureStorageService.getAppLink();
