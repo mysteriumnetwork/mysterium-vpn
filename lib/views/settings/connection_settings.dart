@@ -37,143 +37,144 @@ class ConnectionSettings extends HookConsumerWidget {
     final handleToggleConnection = useHandleToggleConnection();
     final dnsStore = ref.watch(dnsStorePOD);
     final authSessionStore = ref.watch(authSessionStorePOD);
-    final disableSettings =
-        useComputedValue(() => authSessionStore.status != AuthStatus.authenticated);
-
+    final vpnProtocolStore = ref.watch(vpnProtocolStorePOD);
     return Observer(
-      builder: (_) => Column(
-        children: [
-          Visibility(
-            visible: !remoteConfigStore.hideResetAppSetting && !Platform.isAndroid,
-            child: SettingItem(
-              asset: Asset.icons.resetAppSetting(context),
-              title: LocaleKeys.resetAppTitle.tr(),
-              subtitle: EasyText(
-                LocaleKeys.resetAppDesc.tr(),
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-                maxLines: 3,
-              ),
-              actionWidget: SettingActionButton(
-                action: vpnStore.resetAppFuture?.status == FutureStatus.pending || disableSettings
-                    ? null
-                    : () => _onConfirmResetApp(
-                          context: context,
-                          analyticsStore: analyticsStore,
-                          vpnStore: vpnStore,
-                          handleToggleConnection: handleToggleConnection,
+      builder: (_) {
+        final disableSettings = !authSessionStore.isAuthenticated;
+        return Column(
+          children: [
+            Visibility(
+              visible: !remoteConfigStore.hideResetAppSetting && !Platform.isAndroid,
+              child: SettingItem(
+                asset: Asset.icons.resetAppSetting(context),
+                title: LocaleKeys.resetAppTitle.tr(),
+                subtitle: EasyText(
+                  LocaleKeys.resetAppDesc.tr(),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  maxLines: 3,
+                ),
+                actionWidget: SettingActionButton(
+                  action: vpnStore.resetAppFuture?.status == FutureStatus.pending || disableSettings
+                      ? null
+                      : () => _onConfirmResetApp(
+                            context: context,
+                            analyticsStore: analyticsStore,
+                            vpnStore: vpnStore,
+                            handleToggleConnection: handleToggleConnection,
+                          ),
+                  backgroundColor: Palette.purple,
+                  child: vpnStore.resetAppFuture?.status == FutureStatus.pending
+                      ? const LoadingIndicator(
+                          radius: 16,
+                          indicatorColor: Palette.white,
+                        )
+                      : EasyText(
+                          LocaleKeys.resetAppTitle.tr(),
+                          color: Palette.white,
                         ),
-                backgroundColor: Palette.purple,
-                child: vpnStore.resetAppFuture?.status == FutureStatus.pending
-                    ? const LoadingIndicator(
-                        radius: 16,
-                        indicatorColor: Palette.white,
-                      )
-                    : EasyText(
-                        LocaleKeys.resetAppTitle.tr(),
-                        color: Palette.white,
+                ),
+              ),
+            ),
+            SwitchItem(
+              asset: Asset.icons.refreshIpSetting(context),
+              title: LocaleKeys.refreshIPAddress.tr(),
+              subtitle: LocaleKeys.getNewIPAddress.tr(),
+              actionWidget: Observer(
+                builder: (context) => refreshIPStore.refreshIPFuture.status == FutureStatus.pending
+                    ? const LoadingIndicator()
+                    : Switch(
+                        value: refreshIPStore.refreshIPConnection,
+                        onChanged: disableSettings
+                            ? null
+                            : (val) async {
+                                await refreshIPStore.toggleRefreshIPWhenConnecting();
+                                analyticsStore.logEvent(
+                                  val
+                                      ? AnalyticsEvent.refreshIpEnable
+                                      : AnalyticsEvent.refreshIpDisable,
+                                );
+                              },
                       ),
               ),
             ),
-          ),
-          SwitchItem(
-            asset: Asset.icons.refreshIpSetting(context),
-            title: LocaleKeys.refreshIPAddress.tr(),
-            subtitle: LocaleKeys.getNewIPAddress.tr(),
-            actionWidget: Observer(
-              builder: (context) => refreshIPStore.refreshIPFuture.status == FutureStatus.pending
-                  ? const LoadingIndicator()
-                  : Switch(
-                      value: refreshIPStore.refreshIPConnection,
-                      onChanged: disableSettings
-                          ? null
-                          : (val) async {
-                              await refreshIPStore.toggleRefreshIPWhenConnecting();
-                              analyticsStore.logEvent(
-                                val
-                                    ? AnalyticsEvent.refreshIpEnable
-                                    : AnalyticsEvent.refreshIpDisable,
-                              );
-                            },
-                    ),
-            ),
-          ),
-          Visibility(
-            visible: !dnsStore.hideMalwareContentBlocker,
-            child: SwitchItem(
-              enabled: !dnsStore.notSafeContentBlocker,
-              asset: Asset.icons.locker(context),
-              title: LocaleKeys.malwareBlocker.tr(),
-              subtitle: '',
-              actionWidget: Observer(
-                builder: (context) =>
-                    dnsStore.malwareContentBlockerFuture.status == FutureStatus.pending
-                        ? const LoadingIndicator()
-                        : Switch(
-                            value: dnsStore.malwareContentBlocker,
-                            onChanged: disableSettings
-                                ? null
-                                : (val) async {
-                                    await dnsStore.toggleMalwareBlocker();
-                                    analyticsStore.logEvent(
-                                      val ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff,
-                                    );
-                                  },
-                          ),
+            Visibility(
+              visible: !dnsStore.hideMalwareContentBlocker,
+              child: SwitchItem(
+                enabled: !dnsStore.notSafeContentBlocker,
+                asset: Asset.icons.locker(context),
+                title: LocaleKeys.malwareBlocker.tr(),
+                subtitle: '',
+                actionWidget: Observer(
+                  builder: (context) =>
+                      dnsStore.malwareContentBlockerFuture.status == FutureStatus.pending
+                          ? const LoadingIndicator()
+                          : Switch(
+                              value: dnsStore.malwareContentBlocker,
+                              onChanged: disableSettings
+                                  ? null
+                                  : (val) async {
+                                      await dnsStore.toggleMalwareBlocker();
+                                      analyticsStore.logEvent(
+                                        val ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff,
+                                      );
+                                    },
+                            ),
+                ),
               ),
             ),
-          ),
-          Visibility(
-            visible: !dnsStore.hideNotSafeContentBlocker,
-            child: SwitchItem(
-              asset: Asset.icons.stop(context),
-              title: LocaleKeys.contentBlockerTitle.tr(),
-              subtitle: LocaleKeys.contentBlockerDesc.tr(),
-              actionWidget: Observer(
-                builder: (context) =>
-                    dnsStore.notSafeContentBlockerFuture.status == FutureStatus.pending
-                        ? const LoadingIndicator()
-                        : Switch(
-                            value: dnsStore.notSafeContentBlocker,
-                            onChanged: disableSettings
-                                ? null
-                                : (val) async {
-                                    await dnsStore.toggleNotSafeContentBlocker();
-                                    analyticsStore.logEvent(
-                                      val ? AnalyticsEvent.nsfwOn : AnalyticsEvent.nsfwOff,
-                                    );
-                                  },
-                          ),
+            Visibility(
+              visible: !dnsStore.hideNotSafeContentBlocker,
+              child: SwitchItem(
+                asset: Asset.icons.stop(context),
+                title: LocaleKeys.contentBlockerTitle.tr(),
+                subtitle: LocaleKeys.contentBlockerDesc.tr(),
+                actionWidget: Observer(
+                  builder: (context) =>
+                      dnsStore.notSafeContentBlockerFuture.status == FutureStatus.pending
+                          ? const LoadingIndicator()
+                          : Switch(
+                              value: dnsStore.notSafeContentBlocker,
+                              onChanged: disableSettings
+                                  ? null
+                                  : (val) async {
+                                      await dnsStore.toggleNotSafeContentBlocker();
+                                      analyticsStore.logEvent(
+                                        val ? AnalyticsEvent.nsfwOn : AnalyticsEvent.nsfwOff,
+                                      );
+                                    },
+                            ),
+                ),
               ),
             ),
-          ),
-          Visibility(
-            visible: !remoteConfigStore.hideKillSwitch,
-            child: SwitchItem(
-              asset: Asset.icons.refreshIpSetting(context),
-              title: LocaleKeys.killSwitch.tr(),
-              subtitle: LocaleKeys.killSwitchDesc.tr(),
-              actionWidget: Row(
-                children: [
-                  EasyText(
-                    LocaleKeys.on.tr(),
-                    color: Palette.lightBlue,
-                  ).paddingDirectional(end: 5),
-                  SvgIcon(asset: Asset.icons.checkmark),
-                ],
+            Visibility(
+              visible: !remoteConfigStore.hideKillSwitch,
+              child: SwitchItem(
+                asset: Asset.icons.refreshIpSetting(context),
+                title: LocaleKeys.killSwitch.tr(),
+                subtitle: LocaleKeys.killSwitchDesc.tr(),
+                actionWidget: Row(
+                  children: [
+                    EasyText(
+                      LocaleKeys.on.tr(),
+                      color: Palette.lightBlue,
+                    ).paddingDirectional(end: 5),
+                    SvgIcon(asset: Asset.icons.checkmark),
+                  ],
+                ),
               ),
             ),
-          ),
-          Visibility(
-            visible: remoteConfigStore.isProtocolPickerAvailable && isMacOSOrIOS(),
-            child: SettingItem(
-              asset: Asset.icons.protocol(context),
-              title: LocaleKeys.protocol.tr(),
-              actionWidget: const ProtocolPicker(),
+            Visibility(
+              visible: vpnProtocolStore.isProtocolPickerAvailable,
+              child: SettingItem(
+                asset: Asset.icons.protocol(context),
+                title: LocaleKeys.protocol.tr(),
+                actionWidget: const ProtocolPicker(),
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      },
     );
   }
 

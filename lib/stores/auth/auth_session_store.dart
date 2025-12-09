@@ -41,6 +41,9 @@ abstract class _AuthSessionStore with Store, Disposeable {
   @observable
   bool authShown = false;
 
+  @computed
+  bool get isAuthenticated => status == AuthStatus.authenticated;
+
   @readonly
   late ObservableFuture<String?> _accessTokenFuture = ObservableFuture(
     _secureStorage.getAccessToken(),

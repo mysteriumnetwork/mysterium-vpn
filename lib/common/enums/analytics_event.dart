@@ -130,10 +130,7 @@ enum AnalyticsEvent {
   changeProtocolType,
   changeProtocolTypeError,
   changeProtocolTypeApproved,
-  changeProtocolTypeDeclined,
-  getOpenVpnKeyError,
-  openVpnKeyUnavailable,
-  openVpnKeysDoNotMatch;
+  changeProtocolTypeDeclined;
 
   String get formattedName => name.toSnakeCase;
 }
