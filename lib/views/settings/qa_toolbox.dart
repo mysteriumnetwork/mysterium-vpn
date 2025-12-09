@@ -282,27 +282,69 @@ class QAToolbox extends HookConsumerWidget {
                 icon: const Icon(Icons.read_more),
                 onPressed: () async {
                   try {
-                    final logPath =
-                        '${Platform.environment['LOCALAPPDATA']}\\OpenVPNDart\\config\\openvpn.log';
-                    final logFile = File(logPath);
+                    final localAppData = Platform.environment['LOCALAPPDATA'];
+                    if (localAppData == null) {
+                      showSnackbar(
+                        'LOCALAPPDATA environment variable not found',
+                      );
+                      return;
+                    }
 
-                    if (logFile.existsSync()) {
-                      // Read only last 200 lines to avoid memory issues with large log files
-                      final allLines = await logFile.readAsLines();
+                    // Try multiple possible log locations
+                    final possiblePaths = [
+                      '$localAppData\\OpenVPNDart\\config\\openvpn.log',
+                      '$localAppData\\OpenVPNDart\\openvpn.log',
+                      '$localAppData\\Temp\\openvpn.log',
+                      r'C:\ProgramData\OpenVPNDart\config\openvpn.log',
+                      r'C:\Program Files\OpenVPN\log\openvpn.log',
+                    ];
+
+                    File? foundLogFile;
+                    String? foundPath;
+
+                    debugPrint('===== Searching for OpenVPN log files =====');
+                    for (final path in possiblePaths) {
+                      final file = File(path);
+                      debugPrint(
+                        'Checking: $path - ${file.existsSync() ? "FOUND" : "not found"}',
+                      );
+                      if (file.existsSync()) {
+                        foundLogFile = file;
+                        foundPath = path;
+                        break;
+                      }
+                    }
+
+                    // Also check if config directory exists
+                    final configDir = Directory('$localAppData\\OpenVPNDart\\config');
+                    debugPrint(
+                      'Config directory exists: ${configDir.existsSync()} at ${configDir.path}',
+                    );
+                    if (configDir.existsSync()) {
+                      debugPrint('Config directory contents:');
+                      final files = configDir.listSync();
+                      for (final file in files) {
+                        debugPrint('  - ${file.path}');
+                      }
+                    }
+
+                    if (foundLogFile != null && foundPath != null) {
+                      // Read only last 300 lines to avoid memory issues with large log files
+                      final allLines = await foundLogFile.readAsLines();
                       final lastLines = allLines.length > 300
                           ? allLines.sublist(allLines.length - 300)
                           : allLines;
                       final logs = lastLines.join('\n');
 
                       debugPrint(
-                        '===== OpenVPN Logs (last ${lastLines.length} lines) =====\n$logs\n===== End Logs =====',
+                        '===== OpenVPN Logs (last ${lastLines.length} lines from $foundPath) =====\n$logs\n===== End Logs =====',
                       );
 
                       final logPreview =
                           logs.length > 200 ? '...${logs.substring(logs.length - 200)}' : logs;
 
                       showSnackbar(
-                        'Log preview:\n$logPreview',
+                        'Log preview (from ${foundPath.split(r'\').last}):\n$logPreview',
                         action: SnackBarAction(
                           textColor: Palette.black,
                           label: LocaleKeys.copyBtn.tr(),
@@ -315,8 +357,9 @@ class QAToolbox extends HookConsumerWidget {
                         ),
                       );
                     } else {
+                      final pathsList = possiblePaths.map((p) => '  • $p').join('\n');
                       showSnackbar(
-                        'Log file not found at: $logPath',
+                        'Log file not found. Checked:\n$pathsList\n\nCheck debug console for details.',
                       );
                     }
                   } catch (e, stackTrace) {
