@@ -51,6 +51,17 @@ class OpenVpnRepository extends BaseVpnRepository {
           'client-cert-not-required',
           '',
         );
+
+        // Fix cipher negotiation - replace CBC-only ciphers with GCM ciphers
+        // Modern OpenVPN servers require AEAD ciphers (GCM) for security
+        finalConfig = finalConfig.replaceAll(
+          RegExp(r'cipher\s+AES-256-CBC', multiLine: true),
+          'cipher AES-256-GCM',
+        );
+        finalConfig = finalConfig.replaceAll(
+          RegExp(r'data-ciphers\s+AES-256-CBC', multiLine: true),
+          'data-ciphers AES-256-GCM:AES-128-GCM:CHACHA20-POLY1305',
+        );
       }
       await _service.connect(finalConfig).timeout(
         const Duration(seconds: vpnConnectionTimeoutSeconds),
