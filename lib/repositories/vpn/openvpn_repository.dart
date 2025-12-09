@@ -45,6 +45,8 @@ class OpenVpnRepository extends BaseVpnRepository {
     try {
       var finalConfig = config;
       if (Platform.isWindows) {
+        // Remove 'client-cert-not-required' for Windows as it causes issues
+        // Windows OpenVPN client doesn't support 'client-cert-not-required' directive
         finalConfig = config.replaceAll(
           'client-cert-not-required',
           '',
