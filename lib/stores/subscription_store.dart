@@ -32,11 +32,11 @@ abstract class _SubscriptionStore with Store {
         _subscriptionService = subscriptionService,
         _authSessionStore = authSessionStore,
         _analyticsStore = analyticsStore {
-    _authReactionDisposer = reaction<void>(
-      (_) => _authSessionStore.status == AuthStatus.authenticated,
+    _authReactionDisposer = reaction<bool>(
+      (_) => _authSessionStore.isAuthenticated,
       (status) async {
-        _subscriptionFuture = ObservableFuture(_fetchSubscription());
-        if (_authSessionStore.status == AuthStatus.authenticated) {
+        if (status) {
+          _subscriptionFuture = ObservableFuture(_fetchSubscription());
           _subscriptionPlanFuture = ObservableFuture(_subscriptionService.fetchSubscriptionPlan());
         }
       },
@@ -126,7 +126,7 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<Subscription> _fetchSubscription() async {
-    if (_authSessionStore.status != AuthStatus.authenticated) {
+    if (!_authSessionStore.isAuthenticated) {
       return Subscription.empty();
     }
     final subscription = await _subscriptionService.fetchSubscriptionDetails();
