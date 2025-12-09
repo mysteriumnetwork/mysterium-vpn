@@ -43,7 +43,16 @@ class OpenVpnRepository extends BaseVpnRepository {
     required String config,
   }) async {
     try {
-      await _service.connect(config).timeout(
+      var finalConfig = config;
+      if (Platform.isWindows) {
+        // Remove 'client-cert-not-required' for Windows as it causes issues
+        // Windows OpenVPN client doesn't support 'client-cert-not-required' directive
+        finalConfig = config.replaceAll(
+          'client-cert-not-required',
+          '',
+        );
+      }
+      await _service.connect(finalConfig).timeout(
         const Duration(seconds: vpnConnectionTimeoutSeconds),
         onTimeout: () {
           throw TimeoutException(

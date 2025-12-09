@@ -27,7 +27,7 @@ class ProtocolPicker extends ConsumerWidget {
     return Observer(
       builder: (context) => EasyDropdown<ProtocolType>(
         value: vpnProtocolStore.protocol,
-        onChanged: authSessionStore.status == AuthStatus.authenticated
+        onChanged: authSessionStore.isAuthenticated
             ? (ProtocolType? newProtocol) async {
                 if (newProtocol == null) {
                   return;

@@ -66,6 +66,9 @@ abstract class _DNSStore with Store {
       _remoteConfigStore.hideMalwareBlocker || !malwareBlockingAllowed;
 
   bool get malwareBlockingAllowed {
+    if (!_authSessionStore.isAuthenticated) {
+      return true;
+    }
     var allow = false;
     final subscriptionPlanMetadata = _subscriptionStore.subscriptionPlanFuture.value?.metadata;
     if (subscriptionPlanMetadata != null) {

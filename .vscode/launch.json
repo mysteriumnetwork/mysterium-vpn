@@ -26,7 +26,7 @@
                 "--flavor",
                 "dev",
             ],
-             "toolArgs": [
+            "toolArgs": [
                 "--dart-define-from-file",
                 ".env.dev",
             ]
@@ -41,7 +41,7 @@
                 "--flavor",
                 "dev",
             ],
-             "toolArgs": [
+            "toolArgs": [
                 "--dart-define-from-file",
                 ".env.dev",
             ]
@@ -56,7 +56,7 @@
                 "--flavor",
                 "prod",
             ],
-             "toolArgs": [
+            "toolArgs": [
                 "--dart-define-from-file",
                 ".env.prod",
             ]
@@ -97,9 +97,13 @@
             "type": "dart",
             "program": "lib/main.dart",
             "flutterMode": "debug",
+            "args": [
+                "--flavor",
+                "prod",
+            ],
             "toolArgs": [
-                "--dart-define",
-                "FLAVOR=PROD",
+                "--dart-define-from-file",
+                ".env.prod",
             ]
         },
         {
@@ -108,9 +112,13 @@
             "type": "dart",
             "program": "lib/main.dart",
             "flutterMode": "debug",
+            "args": [
+                "--flavor",
+                "dev",
+            ],
             "toolArgs": [
-                "--dart-define",
-                "FLAVOR=DEV",
+                "--dart-define-from-file",
+                ".env.dev",
             ]
         },
         {
@@ -119,9 +127,13 @@
             "type": "dart",
             "program": "lib/main.dart",
             "flutterMode": "profile",
+            "args": [
+                "--flavor",
+                "dev",
+            ],
             "toolArgs": [
-                "--dart-define",
-                "FLAVOR=DEV",
+                "--dart-define-from-file",
+                ".env.dev",
             ]
         },
         {
@@ -130,9 +142,13 @@
             "type": "dart",
             "program": "lib/main.dart",
             "flutterMode": "release",
+            "args": [
+                "--flavor",
+                "dev",
+            ],
             "toolArgs": [
-                "--dart-define",
-                "FLAVOR=DEV",
+                "--dart-define-from-file",
+                ".env.dev",
             ]
         },
     ]

@@ -1,5 +1,4 @@
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/enums/auth_status.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
@@ -14,7 +13,7 @@ abstract class VpnGuard {
 
   Future<void> checkVpnGuards() async {
     await _authSessionStore.accessTokenFuture;
-    if (_authSessionStore.status != AuthStatus.authenticated) {
+    if (!_authSessionStore.isAuthenticated) {
       throw AuthenticationRequiredException();
     }
     if (_subscriptionStore.subscriptionFuture.status == FutureStatus.pending) {

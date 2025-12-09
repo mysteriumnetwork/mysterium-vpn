@@ -15,6 +15,13 @@ mixin _$VpnProtocolStore on _VpnProtocolStore, Store {
   ProtocolType get protocol => (_$protocolComputed ??=
           Computed<ProtocolType>(() => super.protocol, name: '_VpnProtocolStore.protocol'))
       .value;
+  Computed<bool>? _$isProtocolPickerAvailableComputed;
+
+  @override
+  bool get isProtocolPickerAvailable =>
+      (_$isProtocolPickerAvailableComputed ??= Computed<bool>(() => super.isProtocolPickerAvailable,
+              name: '_VpnProtocolStore.isProtocolPickerAvailable'))
+          .value;
 
   late final _$protocolFutureAtom =
       Atom(name: '_VpnProtocolStore.protocolFuture', context: context);
@@ -52,7 +59,8 @@ mixin _$VpnProtocolStore on _VpnProtocolStore, Store {
   String toString() {
     return '''
 protocolFuture: ${protocolFuture},
-protocol: ${protocol}
+protocol: ${protocol},
+isProtocolPickerAvailable: ${isProtocolPickerAvailable}
     ''';
   }
 }
