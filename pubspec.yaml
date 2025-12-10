@@ -76,7 +76,7 @@ dependencies:
   openvpn_dart:
     git:
       url: https://github.com/mysteriumnetwork/openvpn_dart.git
-      ref: 0.0.6
+      ref: extract-driver
   package_info_plus: 9.0.0
   path_provider: 2.1.5
   reactive_forms: 17.0.1
