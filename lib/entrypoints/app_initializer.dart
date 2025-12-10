@@ -21,6 +21,7 @@ import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:talker/talker.dart';
@@ -165,7 +166,7 @@ class AppInitializer {
     }
   }
 
-  Future<void> _nativeInitBackground(List<Object> args) async {
+  Future<void> _wireguardInitBackground(List<Object> args) async {
     final rootIsolateToken = args[0] as RootIsolateToken;
     BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
 
@@ -177,9 +178,25 @@ class AppInitializer {
     }
   }
 
+  Future<void> _openvpnInitBackground(List<Object> args) async {
+    final rootIsolateToken = args[0] as RootIsolateToken;
+    BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
+
+    try {
+      await OpenVPNDart().ensureTapDriver();
+      debugPrint('OpenVPN native init done');
+    } catch (e) {
+      debugPrint('OpenVPN native init error');
+    }
+  }
+
   Future<void> _nativeWindowsInit() async {
     final rootIsolateToken = RootIsolateToken.instance!;
-    Isolate.spawn(_nativeInitBackground, [rootIsolateToken]);
+// Spawn both isolates in parallel
+    await Future.wait([
+      Isolate.spawn(_wireguardInitBackground, [rootIsolateToken]),
+      Isolate.spawn(_openvpnInitBackground, [rootIsolateToken]),
+    ]);
   }
 
   Future<void> _setupTrayIcon() async {
