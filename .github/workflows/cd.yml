@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download Windows (Standalone) artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: Windows app (Standalone)
           path: ./release
@@ -99,7 +99,7 @@ jobs:
     permissions: write-all
     steps:
       - name: Download Windows (Standalone) artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: Windows app (Standalone)
           path: ./release
