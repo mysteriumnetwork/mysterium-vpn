@@ -1262,6 +1262,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.16.12"
+  mysterium_vpn_design:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "8d5bec5cc1a8775a21c1d7dd13d605c38f856cd1"
+      resolved-ref: "8d5bec5cc1a8775a21c1d7dd13d605c38f856cd1"
+      url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
+    source: git
+    version: "0.0.4"
   nested:
     dependency: transitive
     description:
