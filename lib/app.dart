@@ -23,6 +23,7 @@ import 'package:mysterium_vpn/components/shortcuts.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/ft_checkers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class MyApp extends HookConsumerWidget {
   const MyApp({super.key});
@@ -87,19 +88,21 @@ class MyApp extends HookConsumerWidget {
                       backButtonDispatcher: BeamerBackButtonDispatcher(
                         delegate: routeDelegate,
                       ),
-                      builder: (context, child) => MediaQuery(
-                        data: MediaQuery.of(context).copyWith(
-                          textScaler: TextScaler.noScaling,
-                        ),
-                        child: ScrollConfiguration(
-                          behavior: ScrollConfiguration.of(context).copyWith(
-                            dragDevices: PointerDeviceKind.values.toSet(),
-                            scrollbars: false,
-                            overscroll: true,
-                            physics: const BouncingScrollPhysics(),
+                      builder: (context, child) => ScreenTypeObserver(
+                        child: MediaQuery(
+                          data: MediaQuery.of(context).copyWith(
+                            textScaler: TextScaler.noScaling,
                           ),
-                          child: FTCheckers(
-                            child: NetworkLoggerOverlayView(child: child!),
+                          child: ScrollConfiguration(
+                            behavior: ScrollConfiguration.of(context).copyWith(
+                              dragDevices: PointerDeviceKind.values.toSet(),
+                              scrollbars: false,
+                              overscroll: true,
+                              physics: const BouncingScrollPhysics(),
+                            ),
+                            child: FTCheckers(
+                              child: NetworkLoggerOverlayView(child: child!),
+                            ),
                           ),
                         ),
                       ),

@@ -12,6 +12,7 @@ import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/remote_config/config_cat_user_store.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_limited_time_offer_store.dart';
+import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
@@ -414,4 +415,20 @@ final connectionDisplayStorePOD = Provider<ConnectionDisplayStore>(
     ref.watch(selectedLocationStorePOD),
     ref.watch(unavailableLocationsStorePOD),
   ),
+);
+
+final subscriptionPlansStorePOD = Provider<SubscriptionPlansStore>(
+  (ref) {
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+
+    final store = SubscriptionPlansStore(
+      subscriptionStore,
+      remoteConfigStore,
+    );
+
+    ref.onDispose(store.dispose);
+
+    return store;
+  },
 );

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mobx/mobx.dart';
+import 'package:money2/money2.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -43,6 +44,40 @@ abstract class _PurchasableProduct with Store {
   String get id => planDetails.id;
 
   @computed
+  Money get moneyMonthly {
+    if (duration == 1) {
+      return Money.fromNum(
+        productPrice,
+        isoCode: currencyCode,
+      );
+    }
+    return Money.fromNum(
+      monthlyValue,
+      isoCode: currencyCode,
+    );
+  }
+
+  @computed
+  Money get moneyAnnual {
+    if (duration == 12) {
+      return Money.fromNum(
+        productPrice,
+        isoCode: currencyCode,
+      );
+    }
+    return Money.fromNum(
+      monthlyValue * 12,
+      isoCode: currencyCode,
+    );
+  }
+
+  @computed
+  Money get money => Money.fromNum(
+        productPrice,
+        isoCode: currencyCode,
+      );
+
+  @computed
   int get introductoryDiscountPercentage {
     if (!hasIntroductoryPrice || introductoryPrice == null) {
       return 0;
@@ -61,7 +96,7 @@ abstract class _PurchasableProduct with Store {
   double get productPrice => hasIntroductoryPrice ? introductoryPrice! : rawPrice;
 
   @computed
-  int get duration => planDetails.id == kMonthlyPlan
+  int get duration => planDetails.id.contains('monthly')
       ? 1
       : planDetails.id == ksemiAnnualPlan
           ? 6
@@ -90,6 +125,9 @@ abstract class _PurchasableProduct with Store {
                   : LocaleKeys.yearly.tr(),
         },
       );
+
+  @computed
+  double get monthlyValue => productPrice / duration;
 
   @computed
   String get monthlyPrice => productPrice.pricePerMonth(

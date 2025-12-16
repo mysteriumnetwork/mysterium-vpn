@@ -8,7 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/analytics_logger_overlay.dart';
 import 'package:mysterium_vpn/components/analytics_user_properties_overlay.dart';
@@ -20,6 +20,7 @@ import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/network_statistics.dart';
 
@@ -369,6 +370,22 @@ class QAToolbox extends HookConsumerWidget {
                     );
                   }
                 },
+              ),
+            ),
+          ),
+          SettingItem(
+            asset: Asset.icons.settingsAdaptive(context),
+            title: 'Show subscription upgrade modal page',
+            actionWidget: Theme(
+              data: Theme.of(context).designSystem,
+              child: Builder(
+                builder: (context) => TextButton.icon(
+                  label: const EasyText('Show'),
+                  icon: const Icon(Icons.open_in_new),
+                  onPressed: () async {
+                    await showSubscriptionUpgradeModalPage(context);
+                  },
+                ),
               ),
             ),
           ),

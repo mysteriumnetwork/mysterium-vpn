@@ -5,6 +5,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/models/subscription_plan_features.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'remote_config_store.g.dart';
@@ -50,6 +51,8 @@ enum _FeatureToggleKey {
   limitedTimeOfferId,
   limitedTimeOfferImage,
   isProtocolPickerAvailable,
+  planFeatures,
+  plansBestValue,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -432,6 +435,81 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return config[_FeatureToggleKey.isProtocolPickerAvailable.name] as bool;
     }
     return false;
+  }
+
+  @computed
+  List<SubscriptionPlanFeatures> get planFeatures {
+    try {
+      if (config.containsKey(_FeatureToggleKey.planFeatures.name)) {
+        final raw = config[_FeatureToggleKey.planFeatures.name].toString();
+        final json = jsonDecode(raw) as Iterable;
+        return json
+            .map((it) => SubscriptionPlanFeatures.fromJson(it as Map<String, dynamic>))
+            .toList();
+      }
+    } catch (e, stack) {
+      logger.handle(e, stack);
+    }
+    return [
+      SubscriptionPlanFeatures(
+        name: 'subscriptionPlanNameBasic',
+        planIds: {'plan_monthly_basic', 'plan_yearly_basic'},
+        previewFeatures: {
+          'subscriptionPlanPF1Basic',
+          'subscriptionPlanPF2Basic',
+          'subscriptionPlanPF3Basic',
+          'subscriptionPlanPF4Basic',
+        },
+        detailedFeatures: {
+          'subscriptionPlanMoneyBack': true,
+          'subscriptionPlanDevicesSecured': 6,
+          'subscriptionPlanSupportedCountries': 57,
+          'subscriptionPlanServers': 10,
+          'subscriptionPlanWireGuard': true,
+          'subscriptionPlanDoubleVPN': true,
+          'subscriptionPlanResidentialIPs': false,
+          'subscriptionPlanCityLevel': false,
+          'subscriptionPlanMalwareBlocker': false,
+        },
+      ),
+      SubscriptionPlanFeatures(
+        name: 'subscriptionPlanNamePlus',
+        planIds: {'plan_monthly_plus', 'plan_yearly_plus'},
+        previewFeatures: {
+          'subscriptionPlanPF1Plus',
+          'subscriptionPlanPF2Plus',
+          'subscriptionPlanPF3Plus',
+          'subscriptionPlanPF4Plus',
+          'subscriptionPlanPF5Plus',
+          'subscriptionPlanPF6Plus',
+        },
+        detailedFeatures: {
+          'subscriptionPlanMoneyBack': true,
+          'subscriptionPlanDevicesSecured': 10,
+          'subscriptionPlanSupportedCountries': '100+',
+          'subscriptionPlanServers': 100,
+          'subscriptionPlanWireGuard': true,
+          'subscriptionPlanDoubleVPN': true,
+          'subscriptionPlanResidentialIPs': '7.500+',
+          'subscriptionPlanCityLevel': true,
+          'subscriptionPlanMalwareBlocker': false,
+        },
+      ),
+    ];
+  }
+
+  @computed
+  Set<String> get plansBestValue {
+    if (config.containsKey(_FeatureToggleKey.plansBestValue.name)) {
+      final raw = config[_FeatureToggleKey.plansBestValue.name];
+      try {
+        final decoded = jsonDecode(raw.toString()) as List;
+        return decoded.map((it) => it.toString()).toSet();
+      } catch (e, stack) {
+        logger.handle(e, stack);
+      }
+    }
+    return {'plan_monthly', 'plan_yearly', 'plan_yearly_plus', 'plan_monthly_plus'};
   }
 
   Map<String, String> get asUserProperties =>
