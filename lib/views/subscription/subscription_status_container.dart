@@ -33,6 +33,7 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final plansStore = ref.watch(subscriptionPlansStorePOD);
     final products = useComputedValue(() => subscriptionStore.productsFuture.value);
 
     useEffect(
@@ -66,12 +67,16 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
 
         final isVerifyingPayment =
             subscriptionStore.subscriptionStatus == SubscriptionStatus.verifying;
-        final barrierContentColor =
-            (context.c.isDarkMode ? Palette.white : Palette.purple).withValues(alpha: 0.8);
+        final barrierContentColor = switch (Theme.of(context).brightness) {
+          Brightness.dark => Palette.white,
+          Brightness.light => Palette.purple,
+        }
+            .withValues(alpha: .8);
 
         final isLoading = storeState == StoreState.loading ||
             subscriptionStore.subscriptionFuture.status == FutureStatus.pending ||
-            subscriptionStore.productsFuture.status == FutureStatus.pending;
+            subscriptionStore.productsFuture.status == FutureStatus.pending ||
+            plansStore.future.status == FutureStatus.pending;
 
         if (isLoading) {
           return LoadingIndicator(

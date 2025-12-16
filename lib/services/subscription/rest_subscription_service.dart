@@ -201,6 +201,7 @@ class RestSubscriptionService extends SubscriptionService {
     try {
       final plans = (subscriptionConfig.plans
           .map((e) => Platform.isAndroid ? e.googleProductId : e.appleProductId)
+          .nonNulls
           .toSet())
         ..removeWhere(
           (element) => element.isEmpty || element == 'not_supported' || element == 'not_found',
