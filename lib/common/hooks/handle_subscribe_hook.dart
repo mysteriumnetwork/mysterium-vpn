@@ -4,14 +4,16 @@ FutureOr<void> Function() useHandleSubscribe() {
   final context = useContext();
   final beamer = Beamer.of(context);
 
-  final sessionStore = useProvider(authSessionStorePOD);
-  final subscriptionStore = useProvider(subscriptionStorePOD);
-  final upgradeSubscriptionStore = useProvider(subscriptionUpgradeStorePOD);
-
-  final accessToken = useComputedValue(() => sessionStore.accessToken, [sessionStore]);
-
   return useCallback(
     () async {
+      final ref = ProviderScope.containerOf(context, listen: false);
+      final sessionStore = ref.read(authSessionStorePOD);
+      final subscriptionStore = ref.read(subscriptionStorePOD);
+      final upgradeSubscriptionStore = ref.read(subscriptionUpgradeStorePOD);
+      final subscriptionPurchaseStore = ref.read(subscriptionPurchaseStorePOD);
+
+      final accessToken = sessionStore.accessToken;
+
       try {
         final subscription = await subscriptionStore.subscriptionFuture;
         if (!context.mounted) {
@@ -24,17 +26,12 @@ FutureOr<void> Function() useHandleSubscribe() {
           gateway: subscription.gateway,
           subscriptionActive: subscription.active,
           accessToken: accessToken,
-          onManageSubscription: subscriptionStore.manageSubscription,
+          onManageSubscription: subscriptionPurchaseStore.manageSubscription,
         );
       } on SubscriptionRequiredException catch (_) {
         // ignore and let the flow continue
       }
     },
-    [
-      beamer,
-      accessToken,
-      subscriptionStore,
-      upgradeSubscriptionStore,
-    ],
+    [beamer],
   );
 }

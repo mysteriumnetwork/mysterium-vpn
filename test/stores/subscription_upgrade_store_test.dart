@@ -4,16 +4,19 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 
 import 'subscription_upgrade_store_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<SubscriptionStore>(),
+  MockSpec<SubscriptionPlansStore>(),
   MockSpec<PurchasableProduct>(),
   MockSpec<Subscription>(),
 ])
 void main() {
   late MockSubscriptionStore mockSubscriptionStore;
+  late MockSubscriptionPlansStore mockSubscriptionPlansStore;
   late MockPurchasableProduct prodA;
   late MockPurchasableProduct prodB;
   late MockPurchasableProduct prodC;
@@ -22,19 +25,20 @@ void main() {
 
   setUp(() {
     mockSubscriptionStore = MockSubscriptionStore();
+    mockSubscriptionPlansStore = MockSubscriptionPlansStore();
     prodA = MockPurchasableProduct();
     prodB = MockPurchasableProduct();
     prodC = MockPurchasableProduct();
     mockSubscription = MockSubscription();
 
-    store = SubscriptionUpgradeStore(mockSubscriptionStore);
+    store = SubscriptionUpgradeStore(mockSubscriptionStore, mockSubscriptionPlansStore);
     when(mockSubscription.gateway).thenReturn('apple');
   });
 
   test('purchasableProducts are sorted by duration ascending', () async {
     when(prodA.duration).thenReturn(12);
     when(prodB.duration).thenReturn(6);
-    when(mockSubscriptionStore.productsFuture)
+    when(mockSubscriptionPlansStore.future)
         .thenAnswer((_) => ObservableFuture.value([prodA, prodB]));
 
     // access computed to ensure it reads the mocked future
@@ -47,7 +51,7 @@ void main() {
     when(mockSubscriptionStore.subscriptionFuture)
         .thenAnswer((_) => ObservableFuture.value(mockSubscription));
     when(mockSubscription.isGatewayOnCurrentPlatform).thenReturn(false);
-    when(mockSubscriptionStore.productsFuture)
+    when(mockSubscriptionPlansStore.future)
         .thenAnswer((_) => ObservableFuture.value([prodA, prodB]));
 
     final result = store.currentProduct;
@@ -65,7 +69,7 @@ void main() {
 
     when(prodA.id).thenReturn('plan-a');
     when(prodB.id).thenReturn('plan-b');
-    when(mockSubscriptionStore.productsFuture)
+    when(mockSubscriptionPlansStore.future)
         .thenAnswer((_) => ObservableFuture.value([prodA, prodB]));
 
     final result = store.currentProduct;
@@ -85,7 +89,7 @@ void main() {
     when(prodB.duration).thenReturn(6);
     when(prodC.duration).thenReturn(12);
 
-    when(mockSubscriptionStore.productsFuture)
+    when(mockSubscriptionPlansStore.future)
         .thenAnswer((_) => ObservableFuture.value([prodA, prodB, prodC]));
 
     final result = store.upgradeProduct;
@@ -104,7 +108,7 @@ void main() {
     when(prodB.duration).thenReturn(6);
     when(prodA.duration).thenReturn(1);
 
-    when(mockSubscriptionStore.productsFuture)
+    when(mockSubscriptionPlansStore.future)
         .thenAnswer((_) => ObservableFuture.value([prodA, prodB]));
 
     when(prodA.periodDiscountPercentage(prodB)).thenReturn(42);

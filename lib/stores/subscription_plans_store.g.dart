@@ -47,18 +47,18 @@ mixin _$SubscriptionPlansStore on _SubscriptionPlansStore, Store {
 
   late final _$_futureAtom = Atom(name: '_SubscriptionPlansStore._future', context: context);
 
-  ObservableFuture<void> get future {
+  ObservableFuture<List<PurchasableProduct>> get future {
     _$_futureAtom.reportRead();
     return super._future;
   }
 
   @override
-  ObservableFuture<void> get _future => future;
+  ObservableFuture<List<PurchasableProduct>> get _future => future;
 
   bool __futureIsInitialized = false;
 
   @override
-  set _future(ObservableFuture<void> value) {
+  set _future(ObservableFuture<List<PurchasableProduct>> value) {
     _$_futureAtom.reportWrite(value, __futureIsInitialized ? super._future : null, () {
       super._future = value;
       __futureIsInitialized = true;

@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/utils/disposeable.dart';
-import 'package:mysterium_vpn/models/purchasable_product.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/models/subscription_plan_features.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:vpn_api/vpn_api.dart' hide Subscription;
 
 part 'subscription_plans_store.g.dart';
 
@@ -14,35 +16,44 @@ class SubscriptionPlansStore = _SubscriptionPlansStore with _$SubscriptionPlansS
 
 abstract class _SubscriptionPlansStore with Store, Disposeable {
   _SubscriptionPlansStore(
+    this._service,
     this._subscriptionStore,
     this._remoteConfigStore,
   ) {
     _reactions = [
       reaction(
-        (_) => _subscriptionStore.productsFuture,
-        (_) => _future = ObservableFuture(_refresh()),
-      ),
-      reaction(
-        (_) => _remoteConfigStore.configFuture,
-        (_) => _future = ObservableFuture(_refresh()),
+        (_) => _subscriptionStore.subscriptionFuture.value?.planId,
+        (_) => refresh(),
       ),
     ];
   }
 
+  final SubscriptionService _service;
   final SubscriptionStore _subscriptionStore;
   final RemoteConfigStore _remoteConfigStore;
   late final List<ReactionDisposer> _reactions;
 
-  Future<void> _refresh() async {
-    await Future.wait([
-      _subscriptionStore.subscriptionFuture,
-      _subscriptionStore.productsFuture,
-      _remoteConfigStore.configFuture,
-    ]);
+  @readonly
+  late ObservableFuture<List<PurchasableProduct>> _future = ObservableFuture(_fetchProducts());
+
+  Future<List<PurchasableProduct>> refresh() async {
+    _future = _future.replace(_fetchProducts());
+    return await _future;
   }
 
-  @readonly
-  late ObservableFuture<void> _future = ObservableFuture(_refresh());
+  Future<List<PurchasableProduct>> _fetchProducts() async {
+    final [subscription, config, _] = await Future.wait<Object?>([
+      _subscriptionStore.subscriptionFuture,
+      _subscriptionStore.subscriptionConfigFuture,
+      _remoteConfigStore.configFuture,
+    ]);
+    if (subscription is! Subscription || config is! SubscriptionConfigResponse) {
+      return const [];
+    }
+
+    final data = await _service.getProductsDetails(config, subscription.planId);
+    return data;
+  }
 
   @computed
   PurchasableProduct? get purchasedProduct {
@@ -50,13 +61,13 @@ abstract class _SubscriptionPlansStore with Store, Disposeable {
     if (subscription == null) {
       return null;
     }
-    final allProducts = _subscriptionStore.productsFuture.value ?? const [];
+    final allProducts = _future.value ?? const [];
     return allProducts.firstWhereOrNull((it) => it.id == subscription.planId);
   }
 
   @computed
   List<PurchasableProduct> get products {
-    final all = _subscriptionStore.productsFuture.value ?? const [];
+    final all = _future.value ?? const [];
     final ids = _remoteConfigStore.planFeatures.map((it) => it.planIds).flattenedToSet;
     return all.where((it) => ids.contains(it.id)).toList();
   }

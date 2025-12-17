@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/scroll_controller_extensions.dart';
+import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart';
 import 'package:mysterium_vpn/common/hooks/plan_data_hook.dart';
 import 'package:mysterium_vpn/common/utils/comparator_utils.dart';
 import 'package:mysterium_vpn/common/utils/design_system_theme.dart';
@@ -34,20 +35,20 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
     final tableKey = useRef(GlobalKey()).value;
 
     final store = ref.watch(subscriptionPlansStorePOD);
-    final subscriptionStore = ref.watch(subscriptionStorePOD);
     final upgradeStore = ref.watch(subscriptionUpgradeStorePOD);
 
     final theme = Theme.of(context);
     final tabController = useTabController(initialLength: 2);
     final scrollController = useScrollController();
     final selectedProduct = useState<PurchasableProduct?>(null);
+    final handleSubscribe = useHandleSubscribeToProduct();
 
     Future<void> handlePurchasePressed() async {
       final product = selectedProduct.value;
       if (product == null) {
         return;
       }
-      await subscriptionStore.subscribeToPackage(product: product.productDetails);
+      await handleSubscribe(product.id);
       if (context.mounted) {
         Navigator.of(context).pop();
       }

@@ -12,9 +12,11 @@ Future<void> Function(String id) useHandleSubscribeToProduct() {
         return;
       }
       final ref = ProviderScope.containerOf(context, listen: false);
-      final subscriptionStore = ref.read(subscriptionStorePOD);
       final analyticsStore = ref.read(analyticsStorePOD);
-      final products = await subscriptionStore.productsFuture;
+      final plansStore = ref.read(subscriptionPlansStorePOD);
+      final purchaseStore = ref.read(subscriptionPurchaseStorePOD);
+
+      final products = await plansStore.future;
 
       final selectedProduct = products.firstWhereOrNull((it) => it.id == id);
       if (selectedProduct == null) {
@@ -26,7 +28,7 @@ Future<void> Function(String id) useHandleSubscribeToProduct() {
         parameters: {'item_ids': products.map((e) => e.id).toList()},
       );
 
-      await subscriptionStore.subscribeToPackage(product: selectedProduct.productDetails);
+      await purchaseStore.subscribeToPackage(product: selectedProduct.productDetails);
     },
     [context],
   );
