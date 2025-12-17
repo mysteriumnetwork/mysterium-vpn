@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart';
 import 'package:mysterium_vpn/common/hooks/plan_data_hook.dart';
 import 'package:mysterium_vpn/common/utils/design_system_theme.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -34,7 +35,6 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(subscriptionPlansStorePOD);
-    final subscriptionStore = ref.watch(subscriptionStorePOD);
 
     final theme = Theme.of(context);
     final scrollController = useScrollController();
@@ -48,16 +48,17 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
       builder: (context) {
         final product = store.bestValueProducts.last;
 
-        Future<void> handleUpgrade() async {
-          await subscriptionStore.subscribeToPackage(product: product.productDetails);
-          if (context.mounted) {
-            Navigator.of(context).pop();
-          }
-        }
-
         return HookBuilder(
           builder: (context) {
             final planData = usePlanData(product, otherProduct: store.purchasedProduct);
+            final handleSubscribe = useHandleSubscribeToProduct();
+            Future<void> handlePurchase() async {
+              await handleSubscribe(product.id);
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
+            }
+
             return ModalScaffold(
               autoApplyPadding: false,
               body: SingleChildScrollView(
@@ -119,7 +120,7 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
               footer: ModalFooter(
                 children: [
                   ButtonPrimary(
-                    onPressed: handleUpgrade,
+                    onPressed: handlePurchase,
                     child: Text(LocaleKeys.subscriptionUpgradeCTA.tr(args: [planData.name])),
                   ),
                   ButtonTertiary(
