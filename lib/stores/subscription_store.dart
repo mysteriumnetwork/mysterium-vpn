@@ -280,6 +280,7 @@ abstract class _SubscriptionStore with Store {
           'item_ids': products.map((e) => e.id).toList(),
         },
       );
+      _subscriptionStatus = null;
     } catch (e) {
       _subscriptionService.clearPendingTransactions();
       if (await _subscriptionService.hasApplePendingPurchasingTransactions()) {
