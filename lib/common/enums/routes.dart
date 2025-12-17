@@ -7,8 +7,6 @@ enum Routes {
   checkYourEmail('/login/check-your-email'),
   splash('/splash'),
   settings('/main/settings'),
-  payment('/main/payment'),
-  paymentSettings('/main/settings/payment'),
   // Deep link route should be guarded and replaced with correct route
   // Do not use this route in the app
   emailToken('/email-token');

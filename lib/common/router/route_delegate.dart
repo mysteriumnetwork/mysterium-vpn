@@ -28,14 +28,6 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
       ),
       BeamGuard(
         pathPatterns: [
-          Routes.payment.path,
-          Routes.paymentSettings.path,
-        ],
-        check: (context, state) => authSessionStore.isAuthenticated,
-        beamToNamed: (_, __) => Routes.platformLogin.path,
-      ),
-      BeamGuard(
-        pathPatterns: [
           Routes.platformLogin.path,
           Routes.checkYourEmail.path,
         ],
