@@ -29,7 +29,7 @@ void main() {
     recurring: false,
   );
 
-  vpn_api.SubscriptionConfigResponse _config() => vpn_api.SubscriptionConfigResponse(
+  vpn_api.SubscriptionConfigResponse config() => vpn_api.SubscriptionConfigResponse(
         gateways: [],
         plans: [],
         countries: [],
@@ -47,7 +47,7 @@ void main() {
         .thenAnswer((_) async => subscriptionExpired);
 
     // Make constructor-time config fetch safe/deterministic.
-    when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer((_) async => _config());
+    when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer((_) async => config());
     when(mockSubscriptionService.clearPendingTransactions()).thenAnswer((_) async {});
 
     subscriptionStore = SubscriptionStore(
@@ -63,7 +63,7 @@ void main() {
 
   group('SubscriptionStore', () {
     test('fetches subscription config successfully', () async {
-      when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer((_) async => _config());
+      when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer((_) async => config());
 
       await subscriptionStore.refreshSubscriptionConfig();
 
