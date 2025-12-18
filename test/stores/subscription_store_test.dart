@@ -68,5 +68,79 @@ void main() {
 
       expect(subscriptionStore.storeState, StoreState.notAvailable);
     });
+
+// Add these tests to `test/stores/subscription_store_test.dart`
+
+    test('updateSubscription replaces subscription and updates isSubscribed', () async {
+      final mockSubscriptionService = MockSubscriptionService();
+      final mockAuthSessionStore = MockAuthSessionStore();
+      final mockAnalyticsStore = MockAnalyticsStore();
+
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+      // initial fetch returns an empty/expired subscription
+      when(mockSubscriptionService.fetchSubscriptionDetails())
+          .thenAnswer((_) async => Subscription.empty());
+
+      final store = SubscriptionStore(
+        subscriptionService: mockSubscriptionService,
+        authSessionStore: mockAuthSessionStore,
+        analyticsStore: mockAnalyticsStore,
+      );
+
+      final newSubscription = Subscription(
+        active: true,
+        activeUntil: DateTime.now().add(const Duration(days: 30)),
+        expired: false,
+        recurring: true,
+      );
+
+      final result = await store.updateSubscription(() async => newSubscription);
+
+      expect(result.active, isTrue);
+      expect(store.isSubscribed, isTrue);
+    });
+    test('refreshSubscription calls fetchSubscriptionDetails again when expired', () async {
+      final mockSubscriptionService = MockSubscriptionService();
+      final mockAuthSessionStore = MockAuthSessionStore();
+      final mockAnalyticsStore = MockAnalyticsStore();
+
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+
+      var callCount = 0;
+      final expiredSub = Subscription(
+        active: false,
+        activeUntil: DateTime.now().subtract(const Duration(days: 1)),
+        expired: true,
+        recurring: false,
+      );
+      final activeSub = Subscription(
+        active: true,
+        activeUntil: DateTime.now().add(const Duration(days: 30)),
+        expired: false,
+        recurring: true,
+      );
+
+      when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer((_) async {
+        callCount++;
+        return callCount == 1 ? expiredSub : activeSub;
+      });
+
+      final store = SubscriptionStore(
+        subscriptionService: mockSubscriptionService,
+        authSessionStore: mockAuthSessionStore,
+        analyticsStore: mockAnalyticsStore,
+      );
+
+      // allow the initial fetch's future to complete (microtask)
+      await Future.delayed(Duration.zero);
+
+      // initial fetch happens during store creation (callCount == 1)
+      expect(callCount, 1);
+
+      final refreshed = await store.refreshSubscription();
+
+      expect(callCount, 2);
+      expect(refreshed.active, isTrue);
+    });
   });
 }
