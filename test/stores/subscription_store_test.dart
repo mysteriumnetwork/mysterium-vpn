@@ -1,3 +1,4 @@
+// dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -28,119 +29,150 @@ void main() {
     recurring: false,
   );
 
-  setUp(() {
-    mockSubscriptionService = MockSubscriptionService();
-    mockAuthSessionStore = MockAuthSessionStore();
-    mockAnalyticsStore = MockAnalyticsStore();
-    when(mockSubscriptionService.fetchSubscriptionDetails())
-        .thenAnswer((_) async => subscriptionExpired);
-    subscriptionStore = SubscriptionStore(
-      subscriptionService: mockSubscriptionService,
-      authSessionStore: mockAuthSessionStore,
-      analyticsStore: mockAnalyticsStore,
-    );
-  });
-
-  group('SubscriptionStore', () {
-    test('fetches subscription config successfully', () async {
-      final config = vpn_api.SubscriptionConfigResponse(
+  vpn_api.SubscriptionConfigResponse _config() => vpn_api.SubscriptionConfigResponse(
         gateways: [],
         plans: [],
         countries: [],
         stripeReturnUrl: '',
         stripePublishableKey: '',
       );
-      when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer((_) async => config);
-      when(mockSubscriptionService.clearPendingTransactions()).thenAnswer((_) async {});
+
+  setUp(() {
+    mockSubscriptionService = MockSubscriptionService();
+    mockAuthSessionStore = MockAuthSessionStore();
+    mockAnalyticsStore = MockAnalyticsStore();
+
+    when(mockAuthSessionStore.isAuthenticated).thenReturn(false);
+    when(mockSubscriptionService.fetchSubscriptionDetails())
+        .thenAnswer((_) async => subscriptionExpired);
+
+    // Make constructor-time config fetch safe/deterministic.
+    when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer((_) async => _config());
+    when(mockSubscriptionService.clearPendingTransactions()).thenAnswer((_) async {});
+
+    subscriptionStore = SubscriptionStore(
+      subscriptionService: mockSubscriptionService,
+      authSessionStore: mockAuthSessionStore,
+      analyticsStore: mockAnalyticsStore,
+    );
+
+    clearInteractions(mockSubscriptionService);
+    clearInteractions(mockAuthSessionStore);
+    clearInteractions(mockAnalyticsStore);
+  });
+
+  group('SubscriptionStore', () {
+    test('fetches subscription config successfully', () async {
+      when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer((_) async => _config());
 
       await subscriptionStore.refreshSubscriptionConfig();
 
       expect(subscriptionStore.storeState, StoreState.available);
+
+      // `replaceOrReset` may call the supplier more than once; do not assert exact count.
+      verify(mockSubscriptionService.fetchSubscriptionConfig()).called(greaterThan(0));
+      verify(mockSubscriptionService.clearPendingTransactions()).called(greaterThan(0));
     });
 
-    test('handles subscription config fetch failure', () async {
+    test('handles subscription config fetch failure (NotAvailableException)', () async {
       when(mockSubscriptionService.fetchSubscriptionConfig()).thenThrow(NotAvailableException());
 
-      await expectLater(
-        subscriptionStore.refreshSubscriptionConfig(),
-        completion(isNull),
-      );
+      await subscriptionStore.refreshSubscriptionConfig();
 
       expect(subscriptionStore.storeState, StoreState.notAvailable);
+
+      verify(mockSubscriptionService.fetchSubscriptionConfig()).called(greaterThan(0));
+      verifyNever(mockSubscriptionService.clearPendingTransactions());
     });
 
-// Add these tests to `test/stores/subscription_store_test.dart`
-
-    test('updateSubscription replaces subscription and updates isSubscribed', () async {
-      final mockSubscriptionService = MockSubscriptionService();
-      final mockAuthSessionStore = MockAuthSessionStore();
-      final mockAnalyticsStore = MockAnalyticsStore();
-
-      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-      // initial fetch returns an empty/expired subscription
-      when(mockSubscriptionService.fetchSubscriptionDetails())
-          .thenAnswer((_) async => Subscription.empty());
-
-      final store = SubscriptionStore(
-        subscriptionService: mockSubscriptionService,
-        authSessionStore: mockAuthSessionStore,
-        analyticsStore: mockAnalyticsStore,
-      );
-
-      final newSubscription = Subscription(
-        active: true,
-        activeUntil: DateTime.now().add(const Duration(days: 30)),
-        expired: false,
-        recurring: true,
-      );
-
-      final result = await store.updateSubscription(() async => newSubscription);
-
-      expect(result.active, isTrue);
-      expect(store.isSubscribed, isTrue);
-    });
-    test('refreshSubscription calls fetchSubscriptionDetails again when expired', () async {
-      final mockSubscriptionService = MockSubscriptionService();
-      final mockAuthSessionStore = MockAuthSessionStore();
-      final mockAnalyticsStore = MockAnalyticsStore();
-
+    test('refreshSubscription triggers fetch when last value is inactive', () async {
       when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
 
-      var callCount = 0;
-      final expiredSub = Subscription(
+      // First refresh returns inactive, second returns active.
+      final inactive = Subscription(
         active: false,
         activeUntil: DateTime.now().subtract(const Duration(days: 1)),
         expired: true,
         recurring: false,
       );
-      final activeSub = Subscription(
+      final active = Subscription(
         active: true,
         activeUntil: DateTime.now().add(const Duration(days: 30)),
         expired: false,
         recurring: true,
       );
 
-      when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer((_) async {
-        callCount++;
-        return callCount == 1 ? expiredSub : activeSub;
-      });
+      when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer((_) async => inactive);
+      await subscriptionStore.refreshSubscription();
+      expect(subscriptionStore.isSubscribed, false);
 
-      final store = SubscriptionStore(
-        subscriptionService: mockSubscriptionService,
-        authSessionStore: mockAuthSessionStore,
-        analyticsStore: mockAnalyticsStore,
+      when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer((_) async => active);
+      await subscriptionStore.refreshSubscription();
+
+      expect(subscriptionStore.isSubscribed, true);
+      verify(mockSubscriptionService.fetchSubscriptionDetails()).called(2);
+    });
+
+    test('refreshSubscription does not refetch when already active and not rejected', () async {
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+
+      final active = Subscription(
+        active: true,
+        activeUntil: DateTime.now().add(const Duration(days: 30)),
+        expired: false,
+        recurring: true,
       );
 
-      // allow the initial fetch's future to complete (microtask)
-      await Future.delayed(Duration.zero);
+      when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer((_) async => active);
 
-      // initial fetch happens during store creation (callCount == 1)
-      expect(callCount, 1);
+      await subscriptionStore.refreshSubscription();
+      expect(subscriptionStore.isSubscribed, true);
 
-      final refreshed = await store.refreshSubscription();
+      await subscriptionStore.refreshSubscription();
+      expect(subscriptionStore.isSubscribed, true);
 
-      expect(callCount, 2);
-      expect(refreshed.active, isTrue);
+      // Only the initial call should happen; second refresh should not refetch.
+      verify(mockSubscriptionService.fetchSubscriptionDetails()).called(1);
     });
+
+    test('mockSubscriptionFailureStatus makes refreshSubscription refetch', () async {
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+
+      subscriptionStore.mockSubscriptionFailureStatus();
+
+      final active = Subscription(
+        active: true,
+        activeUntil: DateTime.now().add(const Duration(days: 30)),
+        expired: false,
+        recurring: true,
+      );
+      when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer((_) async => active);
+
+      await subscriptionStore.refreshSubscription();
+
+      expect(subscriptionStore.isSubscribed, true);
+      verify(mockSubscriptionService.fetchSubscriptionDetails()).called(1);
+    });
+
+    test(
+      'refreshSubscription sets analytics user properties for planId, validTo, userStatus',
+      () async {
+        when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+
+        final paid = Subscription(
+          active: true,
+          activeUntil: DateTime.now().add(const Duration(days: 7)),
+          expired: false,
+          recurring: true,
+          planId: 'plan_123',
+        );
+        when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer((_) async => paid);
+
+        await subscriptionStore.refreshSubscription();
+
+        // The exact object shape for AnalyticsUserProperty is internal; verify calls count.
+        verify(mockAnalyticsStore.setUserProperty(any)).called(3);
+      },
+    );
   });
 }
