@@ -24,6 +24,7 @@ abstract class _SubscriptionPlansStore with Store, Disposeable {
       reaction(
         (_) => _subscriptionStore.subscriptionFuture.value?.planId,
         (_) => refresh(),
+        fireImmediately: false,
       ),
     ];
   }
