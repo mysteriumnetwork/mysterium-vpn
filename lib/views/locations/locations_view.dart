@@ -266,6 +266,7 @@ class _Locations extends HookConsumerWidget {
           child: LocationTypeSwitcher(
             key: typeSwitcherKey,
             value: locationType,
+            options: locationsStore.locationTypes,
             onChanged: onLocationTypeChanged,
           ),
         ),
