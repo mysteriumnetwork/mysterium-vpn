@@ -41,6 +41,12 @@ mixin _$LocationsStore on _LocationsStore, Store {
   bool? get isEmpty =>
       (_$isEmptyComputed ??= Computed<bool?>(() => super.isEmpty, name: '_LocationsStore.isEmpty'))
           .value;
+  Computed<List<IPType>>? _$locationTypesComputed;
+
+  @override
+  List<IPType> get locationTypes => (_$locationTypesComputed ??=
+          Computed<List<IPType>>(() => super.locationTypes, name: '_LocationsStore.locationTypes'))
+      .value;
 
   late final _$_dcLocationsFutureAtom =
       Atom(name: '_LocationsStore._dcLocationsFuture', context: context);
@@ -140,7 +146,8 @@ locationsFuture: ${locationsFuture},
 countryCodes: ${countryCodes},
 locations: ${locations},
 topLocations: ${topLocations},
-isEmpty: ${isEmpty}
+isEmpty: ${isEmpty},
+locationTypes: ${locationTypes}
     ''';
   }
 }

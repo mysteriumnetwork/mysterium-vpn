@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 
 part 'subscription_upgrade_store.g.dart';
 
@@ -9,13 +10,14 @@ part 'subscription_upgrade_store.g.dart';
 class SubscriptionUpgradeStore = _SubscriptionUpgradeStore with _$SubscriptionUpgradeStore;
 
 abstract class _SubscriptionUpgradeStore with Store {
-  _SubscriptionUpgradeStore(this._subscriptionStore);
+  _SubscriptionUpgradeStore(this._subscriptionStore, this._plansStore);
 
   final SubscriptionStore _subscriptionStore;
+  final SubscriptionPlansStore _plansStore;
 
   @computed
   List<PurchasableProduct> get purchasableProducts {
-    final products = _subscriptionStore.productsFuture.value;
+    final products = _plansStore.future.value;
     if (products == null) {
       return const <PurchasableProduct>[];
     }
@@ -66,10 +68,5 @@ abstract class _SubscriptionUpgradeStore with Store {
   bool get isEligibleForUpgrade {
     final discount = upgradeDiscountPercent;
     return discount != null && discount > 0;
-  }
-
-  @action
-  Future<void> upgrade() async {
-    await _subscriptionStore.subscribeToPackage(product: upgradeProduct!.productDetails);
   }
 }

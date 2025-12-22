@@ -7,7 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
@@ -20,6 +19,7 @@ import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SubscriptionStatusContainer extends HookConsumerWidget {
@@ -33,22 +33,25 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subscriptionStore = ref.watch(subscriptionStorePOD);
-    final products = useComputedValue(() => subscriptionStore.productsFuture.value);
+    final plansStore = ref.watch(subscriptionPlansStorePOD);
+    final purchaseStore = ref.watch(subscriptionPurchaseStorePOD);
 
     useEffect(
       () {
-        if (products == null) {
-          return;
-        }
-        if (products.isEmpty) {
-          Future.microtask(() async {
+        final ref = ProviderScope.containerOf(context, listen: false);
+        final plansStore = ref.read(subscriptionPlansStorePOD);
+        final subscriptionStore = ref.read(subscriptionStorePOD);
+        Future.microtask(() async {
+          final products = await plansStore.future;
+          if (products.isEmpty) {
             await subscriptionStore.refreshSubscriptionConfig();
-            await subscriptionStore.refreshProducts();
-          });
-        }
+            await plansStore.refresh();
+          }
+        });
+
         return null;
       },
-      [products, subscriptionStore],
+      [],
     );
 
     useEffect(
@@ -62,16 +65,20 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
     return Observer(
       builder: (context) {
         final storeState = subscriptionStore.storeState;
-        final products = subscriptionStore.productsFuture.value;
+        final products = plansStore.future.value;
 
         final isVerifyingPayment =
             subscriptionStore.subscriptionStatus == SubscriptionStatus.verifying;
-        final barrierContentColor =
-            (context.c.isDarkMode ? Palette.white : Palette.purple).withValues(alpha: 0.8);
+        final barrierContentColor = switch (Theme.of(context).brightness) {
+          Brightness.dark => Palette.white,
+          Brightness.light => Palette.purple,
+        }
+            .withValues(alpha: .8);
 
         final isLoading = storeState == StoreState.loading ||
             subscriptionStore.subscriptionFuture.status == FutureStatus.pending ||
-            subscriptionStore.productsFuture.status == FutureStatus.pending;
+            plansStore.future.status == FutureStatus.pending ||
+            subscriptionStore.subscriptionStatus == SubscriptionStatus.pending;
 
         if (isLoading) {
           return LoadingIndicator(
@@ -87,7 +94,7 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
         }
         return ReactionBuilder(
           builder: (context) => reaction((_) => subscriptionStore.subscriptionStatus, (status) {
-            _subscriptionStatusReaction(context, status, subscriptionStore);
+            _subscriptionStatusReaction(context, status, subscriptionStore, purchaseStore);
           }),
           child: Stack(
             children: [
@@ -116,6 +123,7 @@ void _subscriptionStatusReaction(
   BuildContext context,
   SubscriptionStatus? status,
   SubscriptionStore store,
+  SubscriptionPurchaseStore purchaseStore,
 ) {
   if (context.mounted) {
     if (status == SubscriptionStatus.purchased) {
@@ -134,7 +142,7 @@ void _subscriptionStatusReaction(
       showRetryDialog(
         onRetry: (_) {
           Navigator.of(context).pop();
-          store.retryVerificationProcess();
+          purchaseStore.retryVerificationProcess();
         },
         context: context,
         asset: Asset.icons.subscription,

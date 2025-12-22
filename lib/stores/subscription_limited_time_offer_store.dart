@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/common/utils/disposeable.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/models/product_offer.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 
 part 'subscription_limited_time_offer_store.g.dart';
 
@@ -16,17 +17,16 @@ class SubscriptionLimitedTimeOfferStore = _SubscriptionLimitedTimeOfferStore
     with _$SubscriptionLimitedTimeOfferStore;
 
 abstract class _SubscriptionLimitedTimeOfferStore with Store, Disposeable {
-  _SubscriptionLimitedTimeOfferStore(this._subscriptionStore, this._remoteConfigStore) {
+  _SubscriptionLimitedTimeOfferStore(this._plansStore, this._remoteConfigStore) {
     _disposers.addAll(
       [
-        reaction((_) => _subscriptionStore.productsFuture.value, (_) => _refresh()),
         reaction((_) => _remoteConfigStore.limitedTimeOfferId, (_) => _refresh()),
         reaction((_) => _remoteConfigStore.limitedTimeOfferExpiryDate, (_) => _refresh()),
       ],
     );
   }
 
-  final SubscriptionStore _subscriptionStore;
+  final SubscriptionPlansStore _plansStore;
   final RemoteConfigStore _remoteConfigStore;
   final List<ReactionDisposer> _disposers = [];
 
@@ -50,9 +50,8 @@ abstract class _SubscriptionLimitedTimeOfferStore with Store, Disposeable {
       return null;
     }
 
-    final products = (await _subscriptionStore.productsFuture)
-        .sortedByCompare((it) => it.duration, compareNums)
-        .reversed;
+    final products =
+        (await _plansStore.future).sortedByCompare((it) => it.duration, compareNums).reversed;
     for (final product in products) {
       final matching = product.offers
           .where((it) => it.id == offerId)
@@ -79,7 +78,7 @@ abstract class _SubscriptionLimitedTimeOfferStore with Store, Disposeable {
 
   @action
   Future<void> mockOffer() async {
-    final product = (await _subscriptionStore.productsFuture).first;
+    final product = (await _plansStore.future).first;
     _future = ObservableFuture.value(
       (
         product: product,

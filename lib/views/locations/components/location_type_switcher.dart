@@ -10,39 +10,37 @@ class LocationTypeSwitcher extends StatelessWidget {
   const LocationTypeSwitcher({
     required this.value,
     required this.onChanged,
+    required this.options,
     super.key,
   });
 
   final IPType value;
+  final List<IPType> options;
   final ValueChanged<IPType> onChanged;
 
   @override
-  Widget build(BuildContext context) {
-    final values = [IPType.datacenter, IPType.residential];
-
-    return Row(
-      children: [
-        for (final value in values)
-          Expanded(
-            child: _Item(
-              alignment: values.length > 1 ? MainAxisAlignment.center : MainAxisAlignment.start,
-              onTap: values.length > 1 ? () => onChanged(value) : null,
-              label: switch (value) {
-                IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
-                _ => values.length > 1
-                    ? LocaleKeys.ipTypeResidential.tr()
-                    : LocaleKeys.allLocations.tr(),
-              },
-              icon: switch (value) {
-                IPType.datacenter => SvgIcon(asset: Asset.icons.speed, height: 20),
-                _ => null,
-              },
-              selected: values.length > 1 && value == this.value,
+  Widget build(BuildContext context) => Row(
+        children: [
+          for (final value in options)
+            Expanded(
+              child: _Item(
+                alignment: options.length > 1 ? MainAxisAlignment.center : MainAxisAlignment.start,
+                onTap: options.length > 1 ? () => onChanged(value) : null,
+                label: switch (value) {
+                  IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
+                  _ => options.length > 1
+                      ? LocaleKeys.ipTypeResidential.tr()
+                      : LocaleKeys.allLocations.tr(),
+                },
+                icon: switch (value) {
+                  IPType.datacenter => SvgIcon(asset: Asset.icons.speed, height: 20),
+                  _ => null,
+                },
+                selected: options.length > 1 && value == this.value,
+              ),
             ),
-          ),
-      ],
-    );
-  }
+        ],
+      );
 }
 
 class _Item extends StatelessWidget {

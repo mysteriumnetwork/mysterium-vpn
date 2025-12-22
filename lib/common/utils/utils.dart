@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:beamer/beamer.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
@@ -16,6 +15,9 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/pages/subscription_plans_modal_page.dart';
+import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:open_store/open_store.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -344,11 +346,12 @@ String? getMagicLinkCode(String query) {
 }
 
 FutureOr<void> handleOnBillingPage({
-  required BeamerDelegate beamer,
+  required BuildContext context,
   required bool subscriptionActive,
   required String billingPage,
   required String? gateway,
   required String? accessToken,
+  required PurchasableProduct? upgradeProduct,
   FutureOr<void> Function()? onManageSubscription,
 }) async {
   final isMobileGateway = isMobilePaymentGateway(gateway);
@@ -369,10 +372,11 @@ FutureOr<void> handleOnBillingPage({
   }
 
   if (!subscriptionActive && !Platform.isWindows) {
-    final currentLocation = beamer.currentConfiguration?.uri.path;
-    currentLocation == Routes.settings.path
-        ? beamer.beamToNamed(Routes.paymentSettings.path)
-        : beamer.beamToNamed(Routes.payment.path);
+    if (upgradeProduct != null) {
+      await showSubscriptionUpgradeModalPage(context);
+    } else {
+      await showSubscriptionPlansModalPage(context);
+    }
     return;
   }
 

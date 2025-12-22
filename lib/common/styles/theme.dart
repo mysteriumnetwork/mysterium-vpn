@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' as design;
 
 ThemeData themeData(Palette palette) => ThemeData(
       useMaterial3: true,
@@ -150,12 +151,33 @@ ThemeData themeData(Palette palette) => ThemeData(
         _ThemeColorsX(
           isDarkMode: palette is DarkPalette,
         ),
+        _DesignSystemThemeX(
+          designSystem: palette is LightPalette
+              ? design.DesignSystem.lightTheme
+              : design.DesignSystem.darkTheme,
+        ),
       ],
     );
 
 extension ThemeExtensionX on BuildContext {
   // ignore: library_private_types_in_public_api
   _ThemeColorsX get c => Theme.of(this).extension<_ThemeColorsX>()!;
+}
+
+class _DesignSystemThemeX extends ThemeExtension<_DesignSystemThemeX> {
+  const _DesignSystemThemeX({required this.designSystem});
+
+  final ThemeData designSystem;
+
+  @override
+  ThemeExtension<_DesignSystemThemeX> copyWith() => this;
+
+  @override
+  ThemeExtension<_DesignSystemThemeX> lerp(
+    covariant ThemeExtension<_DesignSystemThemeX>? other,
+    double t,
+  ) =>
+      this;
 }
 
 class _ThemeColorsX extends ThemeExtension<_ThemeColorsX> {
@@ -169,10 +191,20 @@ class _ThemeColorsX extends ThemeExtension<_ThemeColorsX> {
   ThemeExtension<_ThemeColorsX> copyWith() => this;
 
   @override
-  ThemeExtension<_ThemeColorsX> lerp(covariant ThemeExtension<_ThemeColorsX>? other, double t) =>
+  ThemeExtension<_ThemeColorsX> lerp(
+    covariant ThemeExtension<_ThemeColorsX>? other,
+    double t,
+  ) =>
       this;
 }
 
 extension ThemeExtensions on ThemeData {
   Palette get palette => extension<_ThemeColorsX>()!.palette;
+
+  ThemeData get designSystem {
+    if (isDesignSystem) {
+      return this;
+    }
+    return extension<_DesignSystemThemeX>()!.designSystem;
+  }
 }

@@ -8,6 +8,16 @@ int compareNums<T extends num>(T a, T b) {
   }
 }
 
+int compareNumsDesc<T extends num>(T a, T b) {
+  if (a > b) {
+    return -1;
+  } else if (a < b) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
 class NumComparable<T extends num> implements Comparable<T> {
   const NumComparable(this.value);
 

@@ -377,6 +377,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.11"
+  decimal:
+    dependency: transitive
+    description:
+      name: decimal
+      sha256: fc706a5618b81e5b367b01dd62621def37abc096f2b46a9bd9068b64c1fa36d0
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.4"
   device_info_plus:
     dependency: "direct main"
     description:
@@ -577,6 +585,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.8"
+  fixed:
+    dependency: transitive
+    description:
+      name: fixed
+      sha256: "233bf345eefebd10ef382054060de4d60eab452455391b03ba8e2ff3fe45777f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.1"
   fixnum:
     dependency: transitive
     description:
@@ -1246,6 +1262,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  money2:
+    dependency: "direct main"
+    description:
+      name: money2
+      sha256: "1bb17f92cb9b740e671888998669bef95707565962383e7c183d351a00395505"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.9"
   mqtt5_client:
     dependency: "direct main"
     description:
@@ -1262,6 +1286,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.16.12"
+  mysterium_vpn_design:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "8a5ae6895cc0e262ddcfa46c63364d7f9364aa91"
+      resolved-ref: "8a5ae6895cc0e262ddcfa46c63364d7f9364aa91"
+      url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
+    source: git
+    version: "0.0.4"
   nested:
     dependency: transitive
     description:
@@ -1504,6 +1537,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.0"
+  rational:
+    dependency: transitive
+    description:
+      name: rational
+      sha256: cb808fb6f1a839e6fc5f7d8cb3b0a10e1db48b3be102de73938c627f0b636336
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.3"
   reactive_forms:
     dependency: "direct main"
     description:
@@ -2033,11 +2074,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "1.0.46"
-      resolved-ref: "31a52c8e8c3bd72946dc80e79c21b8d4a602b329"
+      ref: "1.0.49"
+      resolved-ref: dc2bb1e48910ed3045ee5ab3b1c158cdcaef0655
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git"
     source: git
-    version: "1.0.46+26"
+    version: "1.0.49+29"
   watcher:
     dependency: transitive
     description:

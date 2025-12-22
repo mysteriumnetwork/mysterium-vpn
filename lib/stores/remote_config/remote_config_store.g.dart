@@ -282,6 +282,20 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$isProtocolPickerAvailableComputed ??= Computed<bool>(() => super.isProtocolPickerAvailable,
               name: 'RemoteConfigStoreBase.isProtocolPickerAvailable'))
           .value;
+  Computed<List<SubscriptionPlanFeatures>>? _$planFeaturesComputed;
+
+  @override
+  List<SubscriptionPlanFeatures> get planFeatures =>
+      (_$planFeaturesComputed ??= Computed<List<SubscriptionPlanFeatures>>(() => super.planFeatures,
+              name: 'RemoteConfigStoreBase.planFeatures'))
+          .value;
+  Computed<Set<String>>? _$plansBestValueComputed;
+
+  @override
+  Set<String> get plansBestValue =>
+      (_$plansBestValueComputed ??= Computed<Set<String>>(() => super.plansBestValue,
+              name: 'RemoteConfigStoreBase.plansBestValue'))
+          .value;
 
   @override
   String toString() {
@@ -325,7 +339,9 @@ subscriptionUpgradeAutoDisplayEnabled: ${subscriptionUpgradeAutoDisplayEnabled},
 limitedTimeOfferId: ${limitedTimeOfferId},
 limitedTimeOfferExpiryDate: ${limitedTimeOfferExpiryDate},
 limitedTimeOfferImage: ${limitedTimeOfferImage},
-isProtocolPickerAvailable: ${isProtocolPickerAvailable}
+isProtocolPickerAvailable: ${isProtocolPickerAvailable},
+planFeatures: ${planFeatures},
+plansBestValue: ${plansBestValue}
     ''';
   }
 }
