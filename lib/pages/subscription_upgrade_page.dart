@@ -10,6 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/list.dart';
+import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/simple_menu_dialog.dart';
@@ -43,6 +44,7 @@ class _Page extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subscriptionUpgradeStore = ref.watch(subscriptionUpgradeStorePOD);
+    final handleSubscribeToProduct = useHandleSubscribeToProduct();
     return ModalPageScaffold(
       padding: EdgeInsets.zero,
       child: Observer(
@@ -62,8 +64,14 @@ class _Page extends HookConsumerWidget {
           };
 
           Future<void> handleUpgrade() async {
-            Navigator.of(context).pop(true);
-            await subscriptionUpgradeStore.upgrade();
+            final product = subscriptionUpgradeStore.upgradeProduct;
+            if (product == null) {
+              return;
+            }
+            await handleSubscribeToProduct(product.id);
+            if (context.mounted) {
+              Navigator.of(context).pop(true);
+            }
           }
 
           return Align(

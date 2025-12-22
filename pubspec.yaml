@@ -67,7 +67,12 @@ dependencies:
   lottie: 3.3.2
   mobx: 2.5.0
   modal_bottom_sheet: 3.0.0
+  money2: ^6.0.9
   mqtt5_client: 4.15.1
+  mysterium_vpn_design:
+    git:
+      url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
+      ref: 8a5ae6895cc0e262ddcfa46c63364d7f9364aa91
   open_mail_app:
     git:
       url: https://github.com/KristijanMitrik/open-mail-app-flutter.git
@@ -102,7 +107,7 @@ dependencies:
   vpn_api:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git
-      ref: 1.0.46
+      ref: 1.0.49
   window_manager: 0.5.1
   wireguard_dart:
     git:

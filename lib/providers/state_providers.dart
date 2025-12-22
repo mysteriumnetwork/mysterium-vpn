@@ -12,6 +12,8 @@ import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/remote_config/config_cat_user_store.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_limited_time_offer_store.dart';
+import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
+import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
@@ -187,13 +189,11 @@ final unavailableLocationsStorePOD = Provider<UnavailableLocationsStore>(
 );
 
 final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
-  final inAppPurchase = ref.read(inAppPurchasePOD);
   final subscriptionService = ref.read(subscriptionServicePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
 
   final store = SubscriptionStore(
-    inAppPurchase: inAppPurchase,
     subscriptionService: subscriptionService,
     authSessionStore: authSessionStore,
     analyticsStore: analyticsStore,
@@ -366,6 +366,7 @@ final refreshIPStorePOD = Provider<RefreshIPStore>(
 final subscriptionUpgradeStorePOD = Provider<SubscriptionUpgradeStore>(
   (ref) => SubscriptionUpgradeStore(
     ref.watch(subscriptionStorePOD),
+    ref.watch(subscriptionPlansStorePOD),
   ),
 );
 
@@ -384,7 +385,7 @@ final connectionDecisionStorePOD = Provider<ConnectionDecisionStore>(
 final subscriptionLimitedTimeOfferStorePOD = Provider<SubscriptionLimitedTimeOfferStore>(
   (ref) {
     final store = SubscriptionLimitedTimeOfferStore(
-      ref.watch(subscriptionStorePOD),
+      ref.watch(subscriptionPlansStorePOD),
       ref.watch(remoteConfigStorePOD),
     );
 
@@ -414,4 +415,50 @@ final connectionDisplayStorePOD = Provider<ConnectionDisplayStore>(
     ref.watch(selectedLocationStorePOD),
     ref.watch(unavailableLocationsStorePOD),
   ),
+);
+
+final subscriptionPlansStorePOD = Provider<SubscriptionPlansStore>(
+  (ref) {
+    final subscriptionService = ref.read(subscriptionServicePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+
+    final store = SubscriptionPlansStore(
+      subscriptionService,
+      subscriptionStore,
+      remoteConfigStore,
+    );
+
+    ref.onDispose(store.dispose);
+
+    return store;
+  },
+);
+
+final subscriptionPurchaseStorePOD = Provider<SubscriptionPurchaseStore>(
+  (ref) {
+    final inAppPurchase = ref.read(inAppPurchasePOD);
+    final secureStorageService = SecureStorageService.instance;
+    final subscriptionService = ref.read(subscriptionServicePOD);
+    final logger = ref.watch(loggerPOD);
+    final analyticsStore = ref.watch(analyticsStorePOD);
+    final authSessionStore = ref.watch(authSessionStorePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final subscriptionPlansStore = ref.watch(subscriptionPlansStorePOD);
+
+    final store = SubscriptionPurchaseStore(
+      inAppPurchase,
+      secureStorageService,
+      subscriptionService,
+      logger,
+      analyticsStore,
+      authSessionStore,
+      subscriptionStore,
+      subscriptionPlansStore,
+    );
+
+    ref.onDispose(store.dispose);
+
+    return store;
+  },
 );

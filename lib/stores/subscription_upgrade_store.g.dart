@@ -45,14 +45,6 @@ mixin _$SubscriptionUpgradeStore on _SubscriptionUpgradeStore, Store {
               name: '_SubscriptionUpgradeStore.isEligibleForUpgrade'))
           .value;
 
-  late final _$upgradeAsyncAction =
-      AsyncAction('_SubscriptionUpgradeStore.upgrade', context: context);
-
-  @override
-  Future<void> upgrade() {
-    return _$upgradeAsyncAction.run(() => super.upgrade());
-  }
-
   @override
   String toString() {
     return '''

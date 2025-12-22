@@ -14,6 +14,24 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
   @override
   String get id =>
       (_$idComputed ??= Computed<String>(() => super.id, name: '_PurchasableProduct.id')).value;
+  Computed<Money>? _$moneyMonthlyComputed;
+
+  @override
+  Money get moneyMonthly => (_$moneyMonthlyComputed ??=
+          Computed<Money>(() => super.moneyMonthly, name: '_PurchasableProduct.moneyMonthly'))
+      .value;
+  Computed<Money>? _$moneyAnnualComputed;
+
+  @override
+  Money get moneyAnnual => (_$moneyAnnualComputed ??=
+          Computed<Money>(() => super.moneyAnnual, name: '_PurchasableProduct.moneyAnnual'))
+      .value;
+  Computed<Money>? _$moneyComputed;
+
+  @override
+  Money get money =>
+      (_$moneyComputed ??= Computed<Money>(() => super.money, name: '_PurchasableProduct.money'))
+          .value;
   Computed<int>? _$introductoryDiscountPercentageComputed;
 
   @override
@@ -46,6 +64,12 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
       (_$billedPerMonthShortComputed ??= Computed<String>(() => super.billedPerMonthShort,
               name: '_PurchasableProduct.billedPerMonthShort'))
           .value;
+  Computed<double>? _$monthlyValueComputed;
+
+  @override
+  double get monthlyValue => (_$monthlyValueComputed ??=
+          Computed<double>(() => super.monthlyValue, name: '_PurchasableProduct.monthlyValue'))
+      .value;
   Computed<String>? _$monthlyPriceComputed;
 
   @override
@@ -105,11 +129,15 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
     return '''
 status: ${status},
 id: ${id},
+moneyMonthly: ${moneyMonthly},
+moneyAnnual: ${moneyAnnual},
+money: ${money},
 introductoryDiscountPercentage: ${introductoryDiscountPercentage},
 productPrice: ${productPrice},
 duration: ${duration},
 billedPerMonth: ${billedPerMonth},
 billedPerMonthShort: ${billedPerMonthShort},
+monthlyValue: ${monthlyValue},
 monthlyPrice: ${monthlyPrice},
 annualPrice: ${annualPrice},
 isPupular: ${isPupular},

@@ -101,6 +101,33 @@ class $AssetsFlagsGen {
 class $AssetsGoogleFontsGen {
   const $AssetsGoogleFontsGen();
 
+  /// File path: assets/google_fonts/Inter-Black.ttf
+  String get interBlack => 'assets/google_fonts/Inter-Black.ttf';
+
+  /// File path: assets/google_fonts/Inter-Bold.ttf
+  String get interBold => 'assets/google_fonts/Inter-Bold.ttf';
+
+  /// File path: assets/google_fonts/Inter-ExtraBold.ttf
+  String get interExtraBold => 'assets/google_fonts/Inter-ExtraBold.ttf';
+
+  /// File path: assets/google_fonts/Inter-ExtraLight.ttf
+  String get interExtraLight => 'assets/google_fonts/Inter-ExtraLight.ttf';
+
+  /// File path: assets/google_fonts/Inter-Light.ttf
+  String get interLight => 'assets/google_fonts/Inter-Light.ttf';
+
+  /// File path: assets/google_fonts/Inter-Medium.ttf
+  String get interMedium => 'assets/google_fonts/Inter-Medium.ttf';
+
+  /// File path: assets/google_fonts/Inter-Regular.ttf
+  String get interRegular => 'assets/google_fonts/Inter-Regular.ttf';
+
+  /// File path: assets/google_fonts/Inter-SemiBold.ttf
+  String get interSemiBold => 'assets/google_fonts/Inter-SemiBold.ttf';
+
+  /// File path: assets/google_fonts/Inter-Thin.ttf
+  String get interThin => 'assets/google_fonts/Inter-Thin.ttf';
+
   /// File path: assets/google_fonts/Montserrat-Black.ttf
   String get montserratBlack => 'assets/google_fonts/Montserrat-Black.ttf';
 
@@ -124,6 +151,15 @@ class $AssetsGoogleFontsGen {
 
   /// List of all assets
   List<String> get values => [
+        interBlack,
+        interBold,
+        interExtraBold,
+        interExtraLight,
+        interLight,
+        interMedium,
+        interRegular,
+        interSemiBold,
+        interThin,
         montserratBlack,
         montserratBold,
         montserratExtraBold,

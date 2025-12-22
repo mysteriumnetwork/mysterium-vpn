@@ -1,6 +1,5 @@
+// dart
 import 'package:flutter_test/flutter_test.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -16,25 +15,12 @@ import 'subscription_store_test.mocks.dart';
   MockSpec<SubscriptionService>(),
   MockSpec<AuthSessionStore>(),
   MockSpec<AnalyticsStore>(),
-  MockSpec<InAppPurchase>(),
-  MockSpec<PurchasableProduct>(),
-  MockSpec<ProductDetails>(),
 ])
 void main() {
   late SubscriptionStore subscriptionStore;
   late MockSubscriptionService mockSubscriptionService;
   late MockAuthSessionStore mockAuthSessionStore;
   late MockAnalyticsStore mockAnalyticsStore;
-  late MockInAppPurchase mockInAppPurchase;
-  late MockPurchasableProduct mockPurchasableProduct;
-  late MockProductDetails mockProductDetails;
-
-  final subscriptionActive = Subscription(
-    active: true,
-    activeUntil: DateTime.now().add(const Duration(days: 1)),
-    expired: false,
-    recurring: true,
-  );
 
   final subscriptionExpired = Subscription(
     active: false,
@@ -43,182 +29,150 @@ void main() {
     recurring: false,
   );
 
-  setUp(() {
-    mockSubscriptionService = MockSubscriptionService();
-    mockAuthSessionStore = MockAuthSessionStore();
-    mockAnalyticsStore = MockAnalyticsStore();
-    mockInAppPurchase = MockInAppPurchase();
-    mockPurchasableProduct = MockPurchasableProduct();
-    mockProductDetails = MockProductDetails();
-    when(mockSubscriptionService.fetchSubscriptionDetails())
-        .thenAnswer((_) async => subscriptionExpired);
-    subscriptionStore = SubscriptionStore(
-      inAppPurchase: mockInAppPurchase,
-      subscriptionService: mockSubscriptionService,
-      authSessionStore: mockAuthSessionStore,
-      analyticsStore: mockAnalyticsStore,
-    );
-  });
-
-  group('SubscriptionStore', () {
-    test('fetches subscription details successfully', () async {
-      when(mockSubscriptionService.fetchSubscriptionDetails())
-          .thenAnswer((_) async => subscriptionActive);
-
-      await expectLater(subscriptionStore.refreshSubscription(), completes);
-
-      expect(subscriptionStore.isSubscribed, isTrue);
-    });
-
-    test('handles subscription fetch failure', () async {
-      when(mockSubscriptionService.fetchSubscriptionDetails())
-          .thenThrow(Exception('Failed to fetch subscription'));
-
-      await expectLater(subscriptionStore.refreshSubscription(), throwsA(isException));
-    });
-
-    test('fetches subscription config successfully', () async {
-      final config = vpn_api.SubscriptionConfigResponse(
+  vpn_api.SubscriptionConfigResponse config() => vpn_api.SubscriptionConfigResponse(
         gateways: [],
         plans: [],
         countries: [],
         stripeReturnUrl: '',
         stripePublishableKey: '',
       );
-      when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer((_) async => config);
-      when(mockSubscriptionService.clearPendingTransactions()).thenAnswer((_) async {});
+
+  setUp(() {
+    mockSubscriptionService = MockSubscriptionService();
+    mockAuthSessionStore = MockAuthSessionStore();
+    mockAnalyticsStore = MockAnalyticsStore();
+
+    when(mockAuthSessionStore.isAuthenticated).thenReturn(false);
+    when(mockSubscriptionService.fetchSubscriptionDetails())
+        .thenAnswer((_) async => subscriptionExpired);
+
+    // Make constructor-time config fetch safe/deterministic.
+    when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer((_) async => config());
+    when(mockSubscriptionService.clearPendingTransactions()).thenAnswer((_) async {});
+
+    subscriptionStore = SubscriptionStore(
+      subscriptionService: mockSubscriptionService,
+      authSessionStore: mockAuthSessionStore,
+      analyticsStore: mockAnalyticsStore,
+    );
+
+    clearInteractions(mockSubscriptionService);
+    clearInteractions(mockAuthSessionStore);
+    clearInteractions(mockAnalyticsStore);
+  });
+
+  group('SubscriptionStore', () {
+    test('fetches subscription config successfully', () async {
+      when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer((_) async => config());
 
       await subscriptionStore.refreshSubscriptionConfig();
 
       expect(subscriptionStore.storeState, StoreState.available);
+
+      // `replaceOrReset` may call the supplier more than once; do not assert exact count.
+      verify(mockSubscriptionService.fetchSubscriptionConfig()).called(greaterThan(0));
+      verify(mockSubscriptionService.clearPendingTransactions()).called(greaterThan(0));
     });
 
-    test('handles subscription config fetch failure', () async {
+    test('handles subscription config fetch failure (NotAvailableException)', () async {
       when(mockSubscriptionService.fetchSubscriptionConfig()).thenThrow(NotAvailableException());
 
-      await expectLater(
-        subscriptionStore.refreshSubscriptionConfig(),
-        completion(isNull),
-      );
+      await subscriptionStore.refreshSubscriptionConfig();
 
       expect(subscriptionStore.storeState, StoreState.notAvailable);
+
+      verify(mockSubscriptionService.fetchSubscriptionConfig()).called(greaterThan(0));
+      verifyNever(mockSubscriptionService.clearPendingTransactions());
     });
 
-    test('fetches products successfully', () async {
-      when(mockPurchasableProduct.duration).thenReturn(1);
-      when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer(
-        (_) async => subscriptionActive,
+    test('refreshSubscription triggers fetch when last value is inactive', () async {
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+
+      // First refresh returns inactive, second returns active.
+      final inactive = Subscription(
+        active: false,
+        activeUntil: DateTime.now().subtract(const Duration(days: 1)),
+        expired: true,
+        recurring: false,
       );
-      when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer(
-        (_) async => vpn_api.SubscriptionConfigResponse(
-          gateways: [],
-          plans: [],
-          countries: [],
-          stripeReturnUrl: '',
-          stripePublishableKey: '',
-        ),
+      final active = Subscription(
+        active: true,
+        activeUntil: DateTime.now().add(const Duration(days: 30)),
+        expired: false,
+        recurring: true,
       );
 
-      final products = [mockPurchasableProduct];
-      when(mockSubscriptionService.getProductsDetails(any, any)).thenAnswer((_) async => products);
+      when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer((_) async => inactive);
+      await subscriptionStore.refreshSubscription();
+      expect(subscriptionStore.isSubscribed, false);
 
-      await expectLater(subscriptionStore.refreshProducts(), completes);
+      when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer((_) async => active);
+      await subscriptionStore.refreshSubscription();
 
-      expect(subscriptionStore.monthlyProduct, isNotNull);
+      expect(subscriptionStore.isSubscribed, true);
+      verify(mockSubscriptionService.fetchSubscriptionDetails()).called(2);
     });
 
-    test('handles product fetch failure', () async {
-      when(mockPurchasableProduct.duration).thenReturn(1);
-      when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer(
-        (_) async => subscriptionActive,
-      );
-      when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer(
-        (_) async => vpn_api.SubscriptionConfigResponse(
-          gateways: [],
-          plans: [],
-          countries: [],
-          stripeReturnUrl: '',
-          stripePublishableKey: '',
-        ),
-      );
-      when(mockSubscriptionService.getProductsDetails(any, any))
-          .thenThrow(Exception('Failed to fetch products'));
+    test('refreshSubscription does not refetch when already active and not rejected', () async {
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
 
-      await expectLater(subscriptionStore.refreshProducts(), throwsA(isException));
+      final active = Subscription(
+        active: true,
+        activeUntil: DateTime.now().add(const Duration(days: 30)),
+        expired: false,
+        recurring: true,
+      );
 
-      expect(subscriptionStore.monthlyProduct, isNull);
+      when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer((_) async => active);
+
+      await subscriptionStore.refreshSubscription();
+      expect(subscriptionStore.isSubscribed, true);
+
+      await subscriptionStore.refreshSubscription();
+      expect(subscriptionStore.isSubscribed, true);
+
+      // Only the initial call should happen; second refresh should not refetch.
+      verify(mockSubscriptionService.fetchSubscriptionDetails()).called(1);
     });
 
-    test('subscribes to package successfully', () async {
-      when(mockProductDetails.id).thenReturn('product1');
-      when(mockProductDetails.rawPrice).thenReturn(9.99);
-      when(mockProductDetails.currencySymbol).thenReturn(r'$');
-      when(mockProductDetails.currencyCode).thenReturn('USD');
-      when(mockProductDetails.price).thenReturn(r'$9.99');
+    test('mockSubscriptionFailureStatus makes refreshSubscription refetch', () async {
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
 
-      when(mockAuthSessionStore.userFuture).thenAnswer(
-        (_) => ObservableFuture.value(AuthUser(username: 'user1', userId: 'id1')),
+      subscriptionStore.mockSubscriptionFailureStatus();
+
+      final active = Subscription(
+        active: true,
+        activeUntil: DateTime.now().add(const Duration(days: 30)),
+        expired: false,
+        recurring: true,
       );
+      when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer((_) async => active);
 
-      when(
-        mockSubscriptionService.subscribeToPackage(
-          productDetails: mockProductDetails,
-          purchasedProductId: mockProductDetails.id,
-          userId: 'id1',
-        ),
-      ).thenAnswer((_) async => true);
+      await subscriptionStore.refreshSubscription();
 
-      when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer(
-        (_) async => subscriptionActive,
-      );
-
-      await expectLater(
-        subscriptionStore.subscribeToPackage(product: mockProductDetails),
-        completes,
-      );
-
-      expect(subscriptionStore.subscriptionStatus, SubscriptionStatus.pending);
+      expect(subscriptionStore.isSubscribed, true);
+      verify(mockSubscriptionService.fetchSubscriptionDetails()).called(1);
     });
 
-    test('handles subscription error', () async {
-      when(mockProductDetails.id).thenReturn('product1');
-      when(mockProductDetails.rawPrice).thenReturn(9.99);
-      when(mockProductDetails.currencySymbol).thenReturn(r'$');
-      when(mockProductDetails.currencyCode).thenReturn('USD');
-      when(mockProductDetails.price).thenReturn(r'$9.99');
+    test(
+      'refreshSubscription sets analytics user properties for planId, validTo, userStatus',
+      () async {
+        when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
 
-      when(mockAuthSessionStore.userFuture).thenAnswer(
-        (_) => ObservableFuture.value(AuthUser(username: 'user1', userId: 'id1')),
-      );
+        final paid = Subscription(
+          active: true,
+          activeUntil: DateTime.now().add(const Duration(days: 7)),
+          expired: false,
+          recurring: true,
+          planId: 'plan_123',
+        );
+        when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer((_) async => paid);
 
-      when(mockPurchasableProduct.duration).thenReturn(1);
-      when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer(
-        (_) async => subscriptionActive,
-      );
-      when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer(
-        (_) async => vpn_api.SubscriptionConfigResponse(
-          gateways: [],
-          plans: [],
-          countries: [],
-          stripeReturnUrl: '',
-          stripePublishableKey: '',
-        ),
-      );
+        await subscriptionStore.refreshSubscription();
 
-      when(
-        mockSubscriptionService.subscribeToPackage(
-          productDetails: mockProductDetails,
-          purchasedProductId: null,
-          userId: 'id1',
-        ),
-      ).thenThrow(Exception('Subscription error'));
-
-      await expectLater(
-        subscriptionStore.subscribeToPackage(product: mockProductDetails),
-        completes,
-      );
-
-      expect(subscriptionStore.subscriptionStatus, SubscriptionStatus.error);
-    });
+        // The exact object shape for AnalyticsUserProperty is internal; verify calls count.
+        verify(mockAnalyticsStore.setUserProperty(any)).called(3);
+      },
+    );
   });
 }

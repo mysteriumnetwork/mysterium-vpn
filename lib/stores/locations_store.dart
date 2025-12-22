@@ -126,6 +126,12 @@ abstract class _LocationsStore with Store {
   @computed
   bool? get isEmpty => locationsFuture.value == null ? null : locations.isEmpty;
 
+  @computed
+  List<IPType> get locationTypes => [
+        if (_dcLocationsFuture.value?.isNotEmpty ?? false) IPType.datacenter,
+        if (_residentialLocationsFuture.value?.isNotEmpty ?? false) IPType.residential,
+      ];
+
   /// Fetches location data from the backend API for the specified IP type.
   /// It maps the raw API response to the internal `VPNLocations` model, persists it to the local database, and returns the data.
   /// If an error occurs during the fetch or mapping process, it logs the error and rethrows it.
