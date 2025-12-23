@@ -31,7 +31,6 @@ abstract class _SubscriptionStore with Store {
       (status) async {
         if (status) {
           _subscriptionFuture = ObservableFuture(_fetchSubscription());
-          _subscriptionPlanFuture = ObservableFuture(_subscriptionService.fetchSubscriptionPlan());
         }
       },
       fireImmediately: true,
@@ -95,6 +94,9 @@ abstract class _SubscriptionStore with Store {
       return Subscription.empty();
     }
     final subscription = await _subscriptionService.fetchSubscriptionDetails();
+    if (subscription.active) {
+      _subscriptionPlanFuture = ObservableFuture(_subscriptionService.fetchSubscriptionPlan());
+    }
     _setSubscriptionAnalyticsProps(subscription).ignore();
     return subscription;
   }
