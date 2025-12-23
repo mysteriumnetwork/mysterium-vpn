@@ -6,7 +6,7 @@ enum SubscriptionStatus {
   error(isError: true, isLoading: false),
   restored(isError: false, isLoading: false),
   canceled(isError: false, isLoading: false),
-  verifyingError(isError: true, isLoading: true),
+  verifyingError(isError: true, isLoading: false),
   verifying(isError: false, isLoading: true),
   notVerified(isError: false, isLoading: false),
   pendingTransaction(isError: false, isLoading: true);
