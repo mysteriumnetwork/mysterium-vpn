@@ -72,7 +72,7 @@ dependencies:
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      ref: d7d1f3a51e65ac689c1ebae3928fe9bec91a5b2f
+      ref: 2bf2bc455448995283158df9d251b4e6455cde60
   open_mail_app:
     git:
       url: https://github.com/KristijanMitrik/open-mail-app-flutter.git
