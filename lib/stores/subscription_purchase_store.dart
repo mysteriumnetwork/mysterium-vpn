@@ -130,20 +130,13 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
       return;
     }
 
-    try {
-      _subscriptionStatus = SubscriptionStatus.verifying;
-      final subscription = await _subscriptionStore.updateSubscription(
-        () => _subscriptionService.verifyPurchase(
-          serverVerificationData: lastPurchase.verificationData.serverVerificationData,
-          planId: product.id,
-          transactionId: lastPurchase.purchaseID ?? '',
-        ),
-      );
-      _subscriptionStatus =
-          subscription.active ? SubscriptionStatus.purchased : SubscriptionStatus.notVerified;
-    } catch (e) {
-      _subscriptionStatus = SubscriptionStatus.verifyingError;
-    }
+    _verifyPurchase(
+      productId: product.id,
+      price: product.productDetails.rawPrice.toString(),
+      currency: product.productDetails.currencyCode,
+      duration: product.duration,
+      purchaseDetails: lastPurchase,
+    );
   }
 
   @action
