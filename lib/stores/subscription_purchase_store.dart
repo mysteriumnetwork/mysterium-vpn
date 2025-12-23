@@ -288,6 +288,15 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
     required int duration,
     required PurchaseDetails purchaseDetails,
   }) async {
+    _analyticsStore.logEvent(
+      AnalyticsEvent.subscriptionVerifyAttempt,
+      parameters: {
+        'planType': productId,
+        'price': price,
+        'status': purchaseDetails.status.toString(),
+        'id': purchaseDetails.purchaseID,
+      },
+    );
     if (_subscriptionStatus == SubscriptionStatus.pending) {
       _subscriptionStatus = SubscriptionStatus.verifying;
     }
