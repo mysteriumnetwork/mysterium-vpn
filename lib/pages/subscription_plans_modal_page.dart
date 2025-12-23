@@ -56,6 +56,9 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
       if (status?.isError ?? false) {
         showError(purchaseStore.subscriptionError);
       }
+      if (status != null && !status.isLoading) {
+        Navigator.of(context).pop();
+      }
     });
 
     Future<void> handlePurchasePressed() async {
