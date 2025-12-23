@@ -20,12 +20,13 @@ analyzer:
     todo: ignore
   exclude:
     - "**/*.g.dart"
-    - "**/*.freezed.dart"    
+    - "**/*.freezed.dart"
     - "packages/vpn_api/**"
     - "lib/gen/**"
     - "lib/generated/**"
-
-linter: 
+formatter:
+  page_width: 100
+linter:
   rules:
     - always_declare_return_types
     - always_put_control_body_on_new_line
