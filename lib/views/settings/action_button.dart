@@ -1,6 +1,13 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-class SettingActionButton extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/hooks/future_status_hook.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
+
+class SettingActionButton extends HookWidget {
   const SettingActionButton({
     required this.action,
     required this.child,
@@ -15,19 +22,33 @@ class SettingActionButton extends StatelessWidget {
   final double height;
   final double width;
   final double borderRadius;
-  final VoidCallback? action;
+  final FutureOr<void> Function()? action;
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => FilledButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius),
-          ),
+  Widget build(BuildContext context) {
+    final (notifier, status) = useFutureStatus();
+
+    void handlePressed() {
+      Future<void> action() async {
+        await this.action?.call();
+      }
+
+      notifier.value = action();
+    }
+
+    return Theme(
+      data: Theme.of(context).designSystem,
+      child: ButtonPrimary(
+        decoration: ButtonDecoration(
+          decorationColor: backgroundColor,
           minimumSize: Size(width, height),
         ),
-        onPressed: action,
+        size: ButtonSize.small,
+        onPressed: action == null ? null : handlePressed,
+        loading: status == FutureStatus.pending ? const ButtonLoading() : null,
         child: child,
-      );
+      ),
+    );
+  }
 }
