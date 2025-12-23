@@ -71,12 +71,6 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$minIosBuildNumberComputed ??= Computed<String>(() => super.minIosBuildNumber,
               name: 'RemoteConfigStoreBase.minIosBuildNumber'))
           .value;
-  Computed<bool>? _$hideReedemCodeComputed;
-
-  @override
-  bool get hideReedemCode => (_$hideReedemCodeComputed ??=
-          Computed<bool>(() => super.hideReedemCode, name: 'RemoteConfigStoreBase.hideReedemCode'))
-      .value;
   Computed<bool>? _$hideMalwareBlockerComputed;
 
   @override
@@ -105,12 +99,6 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
           Computed<String>(() => super.notSafeContentBlockerDnsAddress,
               name: 'RemoteConfigStoreBase.notSafeContentBlockerDnsAddress'))
       .value;
-  Computed<bool>? _$pricingMonthlyComputed;
-
-  @override
-  bool get pricingMonthly => (_$pricingMonthlyComputed ??=
-          Computed<bool>(() => super.pricingMonthly, name: 'RemoteConfigStoreBase.pricingMonthly'))
-      .value;
   Computed<bool>? _$mqttExperimentComputed;
 
   @override
@@ -123,12 +111,6 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   Duration get locationsRefreshInterval => (_$locationsRefreshIntervalComputed ??=
           Computed<Duration>(() => super.locationsRefreshInterval,
               name: 'RemoteConfigStoreBase.locationsRefreshInterval'))
-      .value;
-  Computed<bool>? _$showSalesViewComputed;
-
-  @override
-  bool get showSalesView => (_$showSalesViewComputed ??=
-          Computed<bool>(() => super.showSalesView, name: 'RemoteConfigStoreBase.showSalesView'))
       .value;
   Computed<String?>? _$sentryDsnComputed;
 
@@ -309,15 +291,12 @@ minWindowsStandAloneBuildNumber: ${minWindowsStandAloneBuildNumber},
 minWindowsBuildNumber: ${minWindowsBuildNumber},
 minAndroidBuildNumber: ${minAndroidBuildNumber},
 minIosBuildNumber: ${minIosBuildNumber},
-hideReedemCode: ${hideReedemCode},
 hideMalwareBlocker: ${hideMalwareBlocker},
 hideNotSafeContentBlocker: ${hideNotSafeContentBlocker},
 malwareBlockerDnsAddress: ${malwareBlockerDnsAddress},
 notSafeContentBlockerDnsAddress: ${notSafeContentBlockerDnsAddress},
-pricingMonthly: ${pricingMonthly},
 mqttExperiment: ${mqttExperiment},
 locationsRefreshInterval: ${locationsRefreshInterval},
-showSalesView: ${showSalesView},
 sentryDsn: ${sentryDsn},
 hideResetAppSetting: ${hideResetAppSetting},
 browseUnauthenticated: ${browseUnauthenticated},

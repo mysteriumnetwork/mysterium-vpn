@@ -36,6 +36,14 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
     final plansStore = ref.watch(subscriptionPlansStorePOD);
     final purchaseStore = ref.watch(subscriptionPurchaseStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
+
+    Future<void> refreshAll() async {
+      await Future.wait([
+        subscriptionStore.refreshAll(),
+        plansStore.refresh(),
+      ]);
+    }
+
     useEffect(
       () {
         final ref = ProviderScope.containerOf(context, listen: false);
@@ -89,7 +97,7 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
             error: (products?.isEmpty ?? true)
                 ? LocaleKeys.productsNotAvailable.tr()
                 : LocaleKeys.unableToConnectToPaymentProcesor.tr(),
-            onRetry: subscriptionStore.refreshAll,
+            onRetry: refreshAll,
           ).padding(top: 36);
         }
         return ReactionBuilder(

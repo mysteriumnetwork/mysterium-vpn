@@ -20,15 +20,12 @@ enum _FeatureToggleKey {
   minWindowsBuildNumber,
   minWindowsStandAloneBuildNumber,
   minMacosBuildNumber,
-  hideReedemCode,
   hideMalwareBlocker,
   hideNotSafeContentBlocker,
   malwareBlockerDnsAddress,
   notSafeContentBlockerDnsAddress,
-  pricingMonthly,
   mqttExperiment,
   locationsRefreshInterval,
-  showSalesView,
   sentryDsn,
   hideResetAppSetting,
   browseUnauthenticated,
@@ -139,14 +136,6 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   }
 
   @computed
-  bool get hideReedemCode {
-    if (config.containsKey(_FeatureToggleKey.hideReedemCode.name)) {
-      return config[_FeatureToggleKey.hideReedemCode.name] as bool;
-    }
-    return false;
-  }
-
-  @computed
   bool get hideMalwareBlocker {
     if (config.containsKey(_FeatureToggleKey.hideMalwareBlocker.name)) {
       return config[_FeatureToggleKey.hideMalwareBlocker.name] as bool;
@@ -179,14 +168,6 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   }
 
   @computed
-  bool get pricingMonthly {
-    if (config.containsKey(_FeatureToggleKey.pricingMonthly.name)) {
-      return config[_FeatureToggleKey.pricingMonthly.name] as bool;
-    }
-    return false;
-  }
-
-  @computed
   bool get mqttExperiment {
     if (config.containsKey(_FeatureToggleKey.mqttExperiment.name)) {
       return config[_FeatureToggleKey.mqttExperiment.name] as bool;
@@ -203,14 +184,6 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       }
     }
     return const Duration(minutes: 10);
-  }
-
-  @computed
-  bool get showSalesView {
-    if (config.containsKey(_FeatureToggleKey.showSalesView.name)) {
-      return config[_FeatureToggleKey.showSalesView.name] as bool;
-    }
-    return false;
   }
 
   @computed
