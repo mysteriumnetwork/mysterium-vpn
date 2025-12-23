@@ -1,20 +1,28 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mobx/mobx.dart';
 
-(ValueNotifier<Future<T>?> notifier, FutureStatus? status) useFutureStatus<T>() {
+(ValueNotifier<Future<T>?> notifier, AsyncSnapshot<T> status) useFutureStatus<T>() {
   final notifier = useState<Future<T>?>(null);
   final future = useFuture(notifier.value);
 
-  var status = future.connectionState == ConnectionState.waiting ? FutureStatus.pending : null;
+  return (notifier, future);
+}
 
-  if (future.hasError) {
-    status = FutureStatus.rejected;
+extension ValueNotifierFutureExtension<T> on ValueNotifier<Future<T>?> {
+  void run(Future<T> Function() futureBuilder) {
+    final future = futureBuilder();
+    value = future;
   }
 
-  if (future.hasData) {
-    status = FutureStatus.fulfilled;
+  Future<void> runAndAwait(Future<T> Function() futureBuilder) async {
+    final future = futureBuilder();
+    value = future;
+    await future;
   }
+}
 
-  return (notifier, status);
+extension AsyncSnapshotExtension<T> on AsyncSnapshot<T> {
+  bool get isLoading => connectionState == ConnectionState.waiting;
 }
