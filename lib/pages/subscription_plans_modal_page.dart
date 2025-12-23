@@ -6,9 +6,11 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/scroll_controller_extensions.dart';
 import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/plan_data_hook.dart';
 import 'package:mysterium_vpn/common/utils/comparator_utils.dart';
 import 'package:mysterium_vpn/common/utils/design_system_theme.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -36,12 +38,21 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
 
     final store = ref.watch(subscriptionPlansStorePOD);
     final upgradeStore = ref.watch(subscriptionUpgradeStorePOD);
+    final purchaseStore = ref.watch(subscriptionPurchaseStorePOD);
 
     final theme = Theme.of(context);
     final tabController = useTabController(initialLength: 2);
     final scrollController = useScrollController();
     final selectedProduct = useState<PurchasableProduct?>(null);
     final handleSubscribe = useHandleSubscribeToProduct();
+    final isLoading = useState(false);
+
+    useReaction(() => purchaseStore.subscriptionStatus, (status) {
+      isLoading.value = status?.isLoading ?? false;
+      if (status?.isError ?? false) {
+        showError(purchaseStore.subscriptionError);
+      }
+    });
 
     Future<void> handlePurchasePressed() async {
       final product = selectedProduct.value;
@@ -49,9 +60,6 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
         return;
       }
       await handleSubscribe(product.id);
-      if (context.mounted) {
-        Navigator.of(context).pop();
-      }
     }
 
     return ModalScaffold(
@@ -146,6 +154,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
         children: [
           ButtonPrimary(
             onPressed: handlePurchasePressed,
+            loading: isLoading.value ? const ButtonLoading() : null,
             child: Text(
               upgradeStore.currentProduct != null
                   ? LocaleKeys.subscriptionAllPlansUpgrade.tr()
