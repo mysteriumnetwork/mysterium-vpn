@@ -69,6 +69,9 @@ abstract class _DNSStore with Store {
     if (!_authSessionStore.isAuthenticated) {
       return true;
     }
+    if (!(_subscriptionStore.isSubscribed ?? false)) {
+      return true;
+    }
     var allow = false;
     final subscriptionPlanMetadata = _subscriptionStore.subscriptionPlanFuture.value?.metadata;
     if (subscriptionPlanMetadata != null) {
