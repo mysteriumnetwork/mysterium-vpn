@@ -35,7 +35,7 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
     final subscriptionStore = ref.watch(subscriptionStorePOD);
     final plansStore = ref.watch(subscriptionPlansStorePOD);
     final purchaseStore = ref.watch(subscriptionPurchaseStorePOD);
-
+    final analyticsStore = ref.watch(analyticsStorePOD);
     useEffect(
       () {
         final ref = ProviderScope.containerOf(context, listen: false);
@@ -94,7 +94,13 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
         }
         return ReactionBuilder(
           builder: (context) => reaction((_) => subscriptionStore.subscriptionStatus, (status) {
-            _subscriptionStatusReaction(context, status, subscriptionStore, purchaseStore);
+            _subscriptionStatusReaction(
+              context,
+              status,
+              subscriptionStore,
+              purchaseStore,
+              analyticsStore,
+            );
           }),
           child: Stack(
             children: [
@@ -124,6 +130,7 @@ void _subscriptionStatusReaction(
   SubscriptionStatus? status,
   SubscriptionStore store,
   SubscriptionPurchaseStore purchaseStore,
+  AnalyticsStore analyticsStore,
 ) {
   if (context.mounted) {
     if (status == SubscriptionStatus.purchased) {
@@ -140,8 +147,9 @@ void _subscriptionStatusReaction(
     } else if (status == SubscriptionStatus.notVerified ||
         status == SubscriptionStatus.verifyingError) {
       showRetryDialog(
-        onRetry: (_) {
+        onRetry: () {
           Navigator.of(context).pop();
+          analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryClick);
           purchaseStore.retryVerificationProcess();
         },
         context: context,
@@ -149,7 +157,10 @@ void _subscriptionStatusReaction(
         title: LocaleKeys.subscriptionVerificationFailed.tr(),
         subtitle: LocaleKeys.failedToVerifySubs.tr(),
         dismissText: LocaleKeys.cancelBtn.tr(),
-        onDismiss: (context) => Navigator.of(context).pop(),
+        onDismiss: () {
+          analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryCancel);
+          Navigator.of(context).pop();
+        },
       );
     }
   }

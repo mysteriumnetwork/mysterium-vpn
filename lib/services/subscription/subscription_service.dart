@@ -28,8 +28,6 @@ abstract class SubscriptionService {
 
   Future<void> clearPendingTransactions();
 
-  Future<bool> hasApplePendingPurchasingTransactions();
-
   Future<bool> isEligibleForIntroOffer(String productId);
 
   Future<void> manageSubscription({

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -14,12 +13,12 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 Future<void> showRetryDialog({
-  required FutureOr<void> Function(BuildContext context) onRetry,
+  required VoidCallback onRetry,
   required BuildContext context,
   required String title,
   required String subtitle,
   required SvgGenImage asset,
-  FutureOr<void> Function(BuildContext context)? onDismiss,
+  required VoidCallback onDismiss,
   String? dismissText,
   bool? isDismissible,
 }) async {
@@ -49,13 +48,13 @@ class VerificationFailedDialog extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.asset,
-    this.onDismiss,
+    required this.onDismiss,
     this.dismissText,
     super.key,
   });
 
-  final FutureOr<void> Function(BuildContext context) onRetry;
-  final FutureOr<void> Function(BuildContext context)? onDismiss;
+  final VoidCallback onRetry;
+  final VoidCallback onDismiss;
   final String title;
   final String subtitle;
   final SvgGenImage asset;
@@ -85,26 +84,21 @@ class VerificationFailedDialog extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ).padding(bottom: 30),
                 Row(
-                  mainAxisAlignment:
-                      onDismiss != null ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    if (onDismiss != null)
-                      EasyButton(
-                        useSystemColor: false,
-                        color: Palette.lightBlack,
-                        text: dismissText ?? LocaleKeys.goBackButton.tr(),
-                        onPressed: () => onDismiss!(context),
-                        width: 160,
-                      ),
+                    EasyButton(
+                      useSystemColor: false,
+                      color: Palette.lightBlack,
+                      text: dismissText ?? LocaleKeys.goBackButton.tr(),
+                      onPressed: onDismiss,
+                      width: 160,
+                    ),
                     EasyButton(
                       useSystemColor: false,
                       color: Palette.purple,
                       text: LocaleKeys.retryBtn.tr(),
-                      onPressed: () async {
-                        onRetry(context);
-                        Beamer.of(context).popRoute();
-                      },
-                      width: onDismiss != null ? 160 : 200,
+                      onPressed: onRetry,
+                      width: 160,
                     ),
                   ],
                 ),

@@ -54,6 +54,7 @@ enum AnalyticsEvent {
   manageSubscription,
   subscriptionCancel,
   subscriptionError,
+  subscriptionVerifyAttempt,
   clickStartNow,
   returnStore,
   paymentVerificationSuccess,
@@ -130,7 +131,9 @@ enum AnalyticsEvent {
   changeProtocolType,
   changeProtocolTypeError,
   changeProtocolTypeApproved,
-  changeProtocolTypeDeclined;
+  changeProtocolTypeDeclined,
+  subscriptionVerificationRetryClick,
+  subscriptionVerificationRetryCancel;
 
   String get formattedName => name.toSnakeCase;
 }

@@ -11,7 +11,6 @@ import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:in_app_purchase_platform_interface/in_app_purchase_platform_interface.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_2_wrappers.dart';
-import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart' hide Response;
@@ -36,53 +35,6 @@ class RestSubscriptionService extends SubscriptionService {
   final api.Subscription _apiSubscription;
   final InAppPurchase _inAppPurchase;
   final Talker _logger;
-
-  /// Experiment on verifying purchase using server side verification (webhooks)
-  /// Downside: It's taking too long to verify the purchase (1-2min)
-  /// Upside: It's more secure and reliable
-  /// Might need to be optimized and used in the future
-  // @override
-  // Future<Subscription> verifyPurchase({
-  //   required String serverVerificationData,
-  //   required String planId,
-  //   required String transactionId,
-  // }) async {
-  //   try {
-  //     late Subscription subs;
-  //     var retries = 0;
-  //     await Future.doWhile(
-  //       () async {
-  //         subs = await fetchSubscriptionDetails();
-  //         if (subs.active && subs.planId == planId) {
-  //           return false;
-  //         }
-  //         if (retries >= 15) {
-  //           return false;
-  //         }
-  //         await Future.delayed(
-  //           const Duration(
-  //             milliseconds: 1500,
-  //           ),
-  //         );
-  //         retries++;
-  //         return true;
-  //       },
-  //     );
-  //     if (!subs.active || subs.planId != planId) {
-  //       throw SubscriptionVerificationException();
-  //     }
-
-  //     unawaited(
-  //       _localDb.setSubscriptionPurchase(
-  //         subscriptionPlan: subs.planId!,
-  //         subscriptionPurchaseId: transactionId,
-  //       ),
-  //     );
-  //     return subs;
-  //   } catch (e) {
-  //     throw SubscriptionVerificationException();
-  //   }
-  // }
 
   @override
   Future<Subscription> verifyPurchase({
@@ -304,11 +256,9 @@ class RestSubscriptionService extends SubscriptionService {
   @override
   Future<void> clearPendingTransactions() async {
     if (Platform.isIOS || Platform.isMacOS) {
-      final transactions = await SKPaymentQueueWrapper().transactions();
+      final transactions = await SK2Transaction.transactions();
       for (final transaction in transactions) {
-        if (transaction.transactionState != SKPaymentTransactionStateWrapper.purchasing) {
-          await SKPaymentQueueWrapper().finishTransaction(transaction);
-        }
+        await SK2Transaction.finish(int.parse(transaction.id));
       }
     }
   }
@@ -371,22 +321,6 @@ class RestSubscriptionService extends SubscriptionService {
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
-    }
-  }
-
-  @override
-  Future<bool> hasApplePendingPurchasingTransactions() async {
-    try {
-      if (Platform.isIOS || Platform.isMacOS) {
-        final transactions = await SKPaymentQueueWrapper().transactions();
-        return transactions.any(
-          (element) => element.transactionState == SKPaymentTransactionStateWrapper.purchasing,
-        );
-      }
-      return false;
-    } catch (e, s) {
-      _logger.handle(e, s);
-      return false;
     }
   }
 
