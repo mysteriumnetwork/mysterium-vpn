@@ -36,6 +36,8 @@ class MyApp extends HookConsumerWidget {
     final authSessionStore = ref.read(authSessionStorePOD);
     final routeDelegate = ref.read(routerDelegatePOD);
     final localStore = ref.read(localeStorePOD);
+    ref.read(smartRefreshStorePOD);
+
     const appName = Env.appName;
     ref.watch(realIPInfoStorePOD);
 

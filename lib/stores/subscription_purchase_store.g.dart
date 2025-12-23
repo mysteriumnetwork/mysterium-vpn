@@ -65,6 +65,24 @@ mixin _$SubscriptionPurchaseStore on _SubscriptionPurchaseStore, Store {
     });
   }
 
+  late final _$_subscriptionErrorAtom =
+      Atom(name: '_SubscriptionPurchaseStore._subscriptionError', context: context);
+
+  Object? get subscriptionError {
+    _$_subscriptionErrorAtom.reportRead();
+    return super._subscriptionError;
+  }
+
+  @override
+  Object? get _subscriptionError => subscriptionError;
+
+  @override
+  set _subscriptionError(Object? value) {
+    _$_subscriptionErrorAtom.reportWrite(value, super._subscriptionError, () {
+      super._subscriptionError = value;
+    });
+  }
+
   late final _$subscribeToPackageAsyncAction =
       AsyncAction('_SubscriptionPurchaseStore.subscribeToPackage', context: context);
 

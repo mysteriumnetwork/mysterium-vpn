@@ -337,6 +337,10 @@ void showSnackbar(
     ..showSnackBar(snackBar);
 }
 
+void showError(Object? error) {
+  showSnackbar(error?.toString() ?? LocaleKeys.somethingWentWrong.tr());
+}
+
 String? getMagicLinkCode(String query) {
   if (!query.contains('code=') ||
       !query.substring(query.indexOf('code=') + 5, query.length).isUUID()) {

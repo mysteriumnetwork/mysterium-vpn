@@ -54,6 +54,8 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
   late ObservableFuture<void> _future = ObservableFuture(_refresh());
   @readonly
   SubscriptionStatus? _subscriptionStatus;
+  @readonly
+  Object? _subscriptionError;
 
   @action
   Future<void> subscribeToPackage({required ProductDetails product}) async {
@@ -90,6 +92,7 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
       }
       _subscriptionService.clearPendingTransactions();
       _subscriptionStatus = SubscriptionStatus.error;
+      _subscriptionError = e;
       _analyticsStore.logEvent(
         AnalyticsEvent.subscriptionError,
         parameters: {
@@ -216,6 +219,10 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
         await _subscriptionService.clearPendingTransactions();
       }
       _subscriptionStatus = purchaseDetails.status.subscriptionStatus;
+      if (_subscriptionStatus?.isError ?? false) {
+        _subscriptionError =
+            purchaseDetails.error?.details?.toString() ?? purchaseDetails.error?.message;
+      }
       _analyticsStore.logEvent(
         purchaseDetails.status == PurchaseStatus.error
             ? AnalyticsEvent.subscriptionError
@@ -309,6 +316,7 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
       );
     } catch (e) {
       _subscriptionStatus = SubscriptionStatus.verifyingError;
+      _subscriptionError = e;
       _analyticsStore.logEvent(
         AnalyticsEvent.paymentVerificationError,
         parameters: {
