@@ -52,8 +52,7 @@ abstract class _SubscriptionPlansStore with Store, Disposeable {
       return const [];
     }
 
-    final data = await _service.getProductsDetails(config, subscription.planId);
-    return data;
+    return _service.getProductsDetails(config, subscription.planId);
   }
 
   @computed
