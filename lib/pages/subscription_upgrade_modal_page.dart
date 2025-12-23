@@ -14,6 +14,10 @@ import 'package:mysterium_vpn/views/subscription/widgets/subscription_privacy_an
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> showSubscriptionUpgradeModalPage(BuildContext context) async {
+  ProviderScope.containerOf(context, listen: false)
+      .read(analyticsStorePOD)
+      .logScreenViewed('subscription_upgrade_modal')
+      .ignore();
   await showModal(
     context,
     builder: (context) => Theme(
