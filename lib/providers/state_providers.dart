@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/remote_config/config_cat_user_store.dart';
+import 'package:mysterium_vpn/stores/smart_refresh_store.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_limited_time_offer_store.dart';
 import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
@@ -455,6 +456,24 @@ final subscriptionPurchaseStorePOD = Provider<SubscriptionPurchaseStore>(
       authSessionStore,
       subscriptionStore,
       subscriptionPlansStore,
+    );
+
+    ref.onDispose(store.dispose);
+
+    return store;
+  },
+);
+
+final smartRefreshStorePOD = Provider<SmartRefreshStore>(
+  (ref) {
+    final locationsStore = ref.watch(locationsStorePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final logger = ref.watch(loggerPOD);
+
+    final store = SmartRefreshStore(
+      locationsStore,
+      subscriptionStore,
+      logger,
     );
 
     ref.onDispose(store.dispose);
