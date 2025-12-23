@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/hooks/future_status_hook.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -30,11 +29,7 @@ class SettingActionButton extends HookWidget {
     final (notifier, status) = useFutureStatus();
 
     void handlePressed() {
-      Future<void> action() async {
-        await this.action?.call();
-      }
-
-      notifier.value = action();
+      notifier.run(() async => action?.call());
     }
 
     return Theme(
@@ -46,7 +41,7 @@ class SettingActionButton extends HookWidget {
         ),
         size: ButtonSize.small,
         onPressed: action == null ? null : handlePressed,
-        loading: status == FutureStatus.pending ? const ButtonLoading() : null,
+        loading: status.isLoading ? const ButtonLoading() : null,
         child: child,
       ),
     );
