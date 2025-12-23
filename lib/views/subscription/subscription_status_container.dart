@@ -147,7 +147,7 @@ void _subscriptionStatusReaction(
     } else if (status == SubscriptionStatus.notVerified ||
         status == SubscriptionStatus.verifyingError) {
       showRetryDialog(
-        onRetry: (_) {
+        onRetry: () {
           Navigator.of(context).pop();
           analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryClick);
           purchaseStore.retryVerificationProcess();
@@ -157,7 +157,7 @@ void _subscriptionStatusReaction(
         title: LocaleKeys.subscriptionVerificationFailed.tr(),
         subtitle: LocaleKeys.failedToVerifySubs.tr(),
         dismissText: LocaleKeys.cancelBtn.tr(),
-        onDismiss: (context) {
+        onDismiss: () {
           analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryCancel);
           Navigator.of(context).pop();
         },
