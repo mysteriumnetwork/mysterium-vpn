@@ -40,7 +40,7 @@ class SettingActionButton extends HookWidget {
           minimumSize: Size(width, height),
         ),
         size: ButtonSize.small,
-        onPressed: action == null ? null : handlePressed,
+        onPressed: action == null || status.isLoading ? null : handlePressed,
         loading: status.isLoading ? const ButtonLoading() : null,
         child: child,
       ),
