@@ -24,7 +24,7 @@ Future<void> showSubscriptionPlansModalPage(BuildContext context) async {
     context,
     builder: (ctx) => Theme(
       data: DesignSystemTheme.of(context),
-      child: const SubscriptionStatusContainer(child: _SubscriptionPlansModalPage()),
+      child: const _SubscriptionPlansModalPage(),
     ),
   );
 }
@@ -64,105 +64,115 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
 
     return ModalScaffold(
       autoApplyPadding: false,
-      body: SingleChildScrollView(
-        controller: scrollController,
-        padding: ModalPadding.insets(
-          context,
-          add: EdgeInsets.symmetric(vertical: theme.spacing.xl),
-        ),
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
-                child: ModalHeader(
-                  emblem: const DecoratedIcon(icon: UntitledUI.shield_02),
-                  title: LocaleKeys.subscriptionAllPlansTitle.tr(),
-                  description: LocaleKeys.subscriptionAllPlansDescription.tr(),
+      body: SubscriptionStatusContainer(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                controller: scrollController,
+                padding: ModalPadding.insets(
+                  context,
+                  add: EdgeInsets.symmetric(vertical: theme.spacing.xl),
+                ),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
+                        child: ModalHeader(
+                          emblem: const DecoratedIcon(icon: UntitledUI.shield_02),
+                          title: LocaleKeys.subscriptionAllPlansTitle.tr(),
+                          description: LocaleKeys.subscriptionAllPlansDescription.tr(),
+                        ),
+                      ),
+                      SizedBox(height: theme.spacing.xl2),
+                      TabBar(
+                        controller: tabController,
+                        tabs: [
+                          Tab(text: LocaleKeys.subscriptionAllPlansTabYear.tr()),
+                          Tab(text: LocaleKeys.subscriptionAllPlansTabMonth.tr()),
+                        ],
+                      ),
+                      Observer(
+                        builder: (context) {
+                          final monthly = store.monthlyProducts;
+                          final annual = store.annualProducts;
+                          return HookBuilder(
+                            builder: (context) {
+                              final products = useListenableSelector(
+                                tabController,
+                                () => switch (tabController.index) {
+                                  1 => monthly,
+                                  _ => annual,
+                                }
+                                    .sortedByCompare((it) => it.monthlyValue, compareNumsDesc),
+                              );
+
+                              final productsRef = useRef(products)..value = products;
+
+                              useEffect(
+                                () {
+                                  void listener() {
+                                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                                      selectedProduct.value = productsRef.value.first;
+                                    });
+                                  }
+
+                                  listener();
+                                  tabController.addListener(listener);
+                                  return () => tabController.removeListener(listener);
+                                },
+                                [tabController, selectedProduct, productsRef],
+                              );
+
+                              return RadioGroup<PurchasableProduct>(
+                                groupValue: selectedProduct.value,
+                                onChanged: (value) => selectedProduct.value = value,
+                                child: _SubscriptionPlans(
+                                  products: products,
+                                  onCompareFeaturesPressed: () =>
+                                      scrollController.scrollToKey(tableKey),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                      SizedBox(height: theme.spacing.md),
+                      Text(
+                        LocaleKeys.subscriptionAllPlansCompareAll.tr(),
+                        style: theme.textStyles.textMd.medium,
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: theme.spacing.xl3),
+                      SubscriptionComparisonTable(
+                        key: tableKey,
+                        onShowPlansPressed: () => scrollController.scrollToPosition(-1),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              SizedBox(height: theme.spacing.xl2),
-              TabBar(
-                controller: tabController,
-                tabs: [
-                  Tab(text: LocaleKeys.subscriptionAllPlansTabYear.tr()),
-                  Tab(text: LocaleKeys.subscriptionAllPlansTabMonth.tr()),
-                ],
-              ),
-              Observer(
-                builder: (context) {
-                  final monthly = store.monthlyProducts;
-                  final annual = store.annualProducts;
-                  return HookBuilder(
-                    builder: (context) {
-                      final products = useListenableSelector(
-                        tabController,
-                        () => switch (tabController.index) {
-                          1 => monthly,
-                          _ => annual,
-                        }
-                            .sortedByCompare((it) => it.monthlyValue, compareNumsDesc),
-                      );
-
-                      final productsRef = useRef(products)..value = products;
-
-                      useEffect(
-                        () {
-                          void listener() {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              selectedProduct.value = productsRef.value.first;
-                            });
-                          }
-
-                          listener();
-                          tabController.addListener(listener);
-                          return () => tabController.removeListener(listener);
-                        },
-                        [tabController, selectedProduct, productsRef],
-                      );
-
-                      return RadioGroup<PurchasableProduct>(
-                        groupValue: selectedProduct.value,
-                        onChanged: (value) => selectedProduct.value = value,
-                        child: _SubscriptionPlans(
-                          products: products,
-                          onCompareFeaturesPressed: () => scrollController.scrollToKey(tableKey),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-              SizedBox(height: theme.spacing.md),
-              Text(
-                LocaleKeys.subscriptionAllPlansCompareAll.tr(),
-                style: theme.textStyles.textMd.medium,
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: theme.spacing.xl3),
-              SubscriptionComparisonTable(
-                key: tableKey,
-                onShowPlansPressed: () => scrollController.scrollToPosition(-1),
-              ),
-            ],
-          ),
-        ),
-      ),
-      footer: ModalFooter(
-        children: [
-          ButtonPrimary(
-            onPressed: handlePurchasePressed,
-            loading: isLoading.value ? const ButtonLoading() : null,
-            child: Text(
-              upgradeStore.currentProduct != null
-                  ? LocaleKeys.subscriptionAllPlansUpgrade.tr()
-                  : LocaleKeys.subscriptionAllPlansPurchase.tr(),
             ),
-          ),
-          const SubscriptionPrivacyAndTerms(),
-        ],
+            ModalFooter(
+              children: [
+                ButtonPrimary(
+                  onPressed: handlePurchasePressed,
+                  loading: isLoading.value ? const ButtonLoading() : null,
+                  child: Text(
+                    upgradeStore.currentProduct != null
+                        ? LocaleKeys.subscriptionAllPlansUpgrade.tr()
+                        : LocaleKeys.subscriptionAllPlansPurchase.tr(),
+                  ),
+                ),
+                const SubscriptionPrivacyAndTerms(),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
