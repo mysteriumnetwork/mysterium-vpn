@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
@@ -83,12 +84,12 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
       );
       _subscriptionStatus = null;
     } catch (e, stack) {
-      _subscriptionService.clearPendingTransactions();
-      if (await _subscriptionService.hasApplePendingPurchasingTransactions()) {
-        _subscriptionStatus = SubscriptionStatus.pendingTransaction;
-      } else {
-        _subscriptionStatus = SubscriptionStatus.error;
+      if (e is PlatformException && e.code == 'storekit2_purchase_cancelled') {
+        _subscriptionStatus = SubscriptionStatus.canceled;
+        return;
       }
+      _subscriptionService.clearPendingTransactions();
+      _subscriptionStatus = SubscriptionStatus.error;
       _analyticsStore.logEvent(
         AnalyticsEvent.subscriptionError,
         parameters: {
@@ -147,25 +148,34 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
 
   @action
   Future<void> manageSubscription() async {
-    final subscription = await _subscriptionStore.subscriptionFuture;
-    final user = (await _authSessionStore.userFuture)!;
+    try {
+      final subscription = await _subscriptionStore.subscriptionFuture;
+      final user = (await _authSessionStore.userFuture)!;
 
-    if (!subscription.active) {
-      throw const SubscriptionRequiredException();
-    }
-    var products = await _plansStore.future;
-    if (products.isEmpty) {
-      products = await _plansStore.refresh();
-    }
-    final product = products.firstWhereOrNull((it) => it.id == subscription.planId);
-    if (product == null) {
-      throw const SubscriptionRequiredException();
-    }
+      if (!subscription.active) {
+        throw const SubscriptionRequiredException();
+      }
+      var products = await _plansStore.future;
+      if (products.isEmpty) {
+        products = await _plansStore.refresh();
+      }
+      final product = products.firstWhereOrNull((it) => it.id == subscription.planId);
+      if (product == null) {
+        throw const SubscriptionRequiredException();
+      }
 
-    await _subscriptionService.manageSubscription(
-      productDetails: product.productDetails,
-      userId: user.userId,
-    );
+      await _subscriptionService.manageSubscription(
+        productDetails: product.productDetails,
+        userId: user.userId,
+      );
+    } catch (e, stack) {
+      if (e is PlatformException && e.code == 'storekit2_purchase_cancelled') {
+        return;
+      }
+      debugPrint('Error managing subscription: $e');
+      _logger.handle(e, stack);
+      rethrow;
+    }
   }
 
   Future<void> _refresh() async {
@@ -233,6 +243,10 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
       return;
     }
 
+    if (purchaseDetails.pendingCompletePurchase) {
+      await _inAppPurchase.completePurchase(purchaseDetails);
+    }
+
     try {
       await _verifyPurchase(
         productId: product?.id ?? '',
@@ -257,10 +271,6 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
         );
       } else {
         _subscriptionStatus = SubscriptionStatus.notVerified;
-      }
-
-      if (purchaseDetails.pendingCompletePurchase) {
-        await _inAppPurchase.completePurchase(purchaseDetails);
       }
     } catch (e, stack) {
       debugPrint('Error handling purchase details');

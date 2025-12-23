@@ -9,6 +9,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/cancel_subscription_survey_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/delete_account_dialog.dart';
@@ -85,6 +86,21 @@ class _Authenticated extends HookConsumerWidget {
               actionWidget: HookBuilder(
                 builder: (context) {
                   final handleSubscribe = useHandleSubscribe();
+                  final isSubscribing = useState(false);
+
+                  Future<void> onSubscribePress() async {
+                    isSubscribing.value = true;
+                    try {
+                      await handleSubscribe();
+                    } catch (e) {
+                      showSnackbar(
+                        LocaleKeys.somethingWentWrong.tr(),
+                      );
+                    } finally {
+                      isSubscribing.value = false;
+                    }
+                  }
+
                   if (isLoading) {
                     return const LoadingIndicator();
                   }
@@ -101,11 +117,13 @@ class _Authenticated extends HookConsumerWidget {
 
                   if (subscription == null || !subscription.active) {
                     return SettingActionButton(
-                      action: handleSubscribe,
-                      child: EasyText(
-                        LocaleKeys.pricingPlanSeePlansBtn.tr(),
-                        color: Palette.white,
-                      ),
+                      action: isSubscribing.value ? null : onSubscribePress,
+                      child: isSubscribing.value
+                          ? const LoadingIndicator()
+                          : EasyText(
+                              LocaleKeys.pricingPlanSeePlansBtn.tr(),
+                              color: Palette.white,
+                            ),
                     );
                   }
 
@@ -118,26 +136,35 @@ class _Authenticated extends HookConsumerWidget {
                       children: [
                         SettingActionButton(
                           backgroundColor: Palette.purple,
-                          child: EasyText(
-                            LocaleKeys.goToBillingPage.tr(),
-                            color: Palette.white,
-                          ),
-                          action: () {
-                            analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
-                            handleSubscribe();
-                          },
+                          action: isSubscribing.value
+                              ? null
+                              : () {
+                                  analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
+                                  onSubscribePress();
+                                },
+                          child: isSubscribing.value
+                              ? const LoadingIndicator()
+                              : EasyText(
+                                  LocaleKeys.goToBillingPage.tr(),
+                                  color: Palette.white,
+                                ),
                         ),
                         SettingActionButton(
-                          child: EasyText(
-                            LocaleKeys.cancelSubscriptionBtn.tr(),
-                            color: Palette.white,
-                          ),
-                          action: () async {
-                            final shouldProceed = await showCancelSubscriptionSurveyDialog(context);
-                            if (shouldProceed ?? false) {
-                              handleSubscribe();
-                            }
-                          },
+                          action: isSubscribing.value
+                              ? null
+                              : () async {
+                                  final shouldProceed =
+                                      await showCancelSubscriptionSurveyDialog(context);
+                                  if (shouldProceed ?? false) {
+                                    onSubscribePress();
+                                  }
+                                },
+                          child: isSubscribing.value
+                              ? const LoadingIndicator()
+                              : EasyText(
+                                  LocaleKeys.cancelSubscriptionBtn.tr(),
+                                  color: Palette.white,
+                                ),
                         ),
                       ],
                     ),
