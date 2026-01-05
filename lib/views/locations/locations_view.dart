@@ -263,11 +263,13 @@ class _Locations extends HookConsumerWidget {
     return MultiSliver(
       children: [
         SliverPinnedHeader(
-          child: LocationTypeSwitcher(
-            key: typeSwitcherKey,
-            value: locationType,
-            options: locationsStore.locationTypes,
-            onChanged: onLocationTypeChanged,
+          child: Observer(
+            builder: (context) => LocationTypeSwitcher(
+                key: typeSwitcherKey,
+                value: locationType,
+                options: locationsStore.locationTypes,
+                onChanged: onLocationTypeChanged,
+              ),
           ),
         ),
         SliverClip(
