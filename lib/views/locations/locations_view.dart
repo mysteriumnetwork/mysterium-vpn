@@ -265,11 +265,11 @@ class _Locations extends HookConsumerWidget {
         SliverPinnedHeader(
           child: Observer(
             builder: (context) => LocationTypeSwitcher(
-                key: typeSwitcherKey,
-                value: locationType,
-                options: locationsStore.locationTypes,
-                onChanged: onLocationTypeChanged,
-              ),
+              key: typeSwitcherKey,
+              value: locationType,
+              options: locationsStore.locationTypes,
+              onChanged: onLocationTypeChanged,
+            ),
           ),
         ),
         SliverClip(
