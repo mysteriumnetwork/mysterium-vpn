@@ -24,7 +24,7 @@ class LocationTypeSwitcher extends StatelessWidget {
           for (final value in options)
             Expanded(
               child: _Item(
-                alignment: options.length > 1 ? MainAxisAlignment.center : MainAxisAlignment.start,
+                alignment: MainAxisAlignment.center,
                 onTap: options.length > 1 ? () => onChanged(value) : null,
                 label: switch (value) {
                   IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
@@ -36,9 +36,10 @@ class LocationTypeSwitcher extends StatelessWidget {
                   IPType.datacenter => SvgIcon(asset: Asset.icons.speed, height: 20),
                   _ => null,
                 },
-                selected: options.length > 1 && value == this.value,
+                selected: value == this.value,
               ),
             ),
+          if (options.length == 1) const Spacer(),
         ],
       );
 }
