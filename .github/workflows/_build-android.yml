@@ -86,8 +86,8 @@ jobs:
 
       - name: Build Android app
         run: |
-          fvm flutter build apk --config-only --flavor "${{ inputs.flavor }}" --dart-define-from-file="${{ inputs.env_file }}"
-          fvm flutter build appbundle --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define-from-file="${{ inputs.env_file }}"
+          fvm flutter build apk --config-only --flavor "${{ inputs.flavor }}" --dart-define-from-file="${{ inputs.env_file }}" -- --init-script init.gradle
+          fvm flutter build appbundle --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define-from-file="${{ inputs.env_file }}" -- --init-script init.gradle
 
       - name: Authenticate to Play Store
         id: google-play-auth
