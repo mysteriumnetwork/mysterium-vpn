@@ -47,9 +47,6 @@ abstract class _SubscriptionStore with Store {
   late ObservableFuture<Subscription> _subscriptionFuture = ObservableFuture(_fetchSubscription());
 
   @readonly
-  late ObservableFuture<api.GetPlanResponse> _subscriptionPlanFuture;
-
-  @readonly
   late ObservableFuture<api.SubscriptionConfigResponse?> _subscriptionConfigFuture =
       ObservableFuture(_fetchSubscriptionConfig());
 
@@ -94,9 +91,6 @@ abstract class _SubscriptionStore with Store {
       return Subscription.empty();
     }
     final subscription = await _subscriptionService.fetchSubscriptionDetails();
-    if (subscription.active) {
-      _subscriptionPlanFuture = ObservableFuture(_subscriptionService.fetchSubscriptionPlan());
-    }
     _setSubscriptionAnalyticsProps(subscription).ignore();
     return subscription;
   }

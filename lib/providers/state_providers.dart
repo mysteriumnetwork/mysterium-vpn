@@ -355,6 +355,7 @@ final dnsStorePOD = Provider<DNSStore>(
     ref.watch(loggerPOD),
     ref.watch(authSessionStorePOD),
     ref.watch(subscriptionStorePOD),
+    ref.watch(subscriptionConfigStorePOD),
   ),
 );
 

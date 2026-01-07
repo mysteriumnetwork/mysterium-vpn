@@ -4,6 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/auth_status.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/subscription_config_store.dart';
 import 'package:talker/talker.dart';
 
 import 'dns_store_test.mocks.dart';
@@ -14,6 +15,7 @@ import 'dns_store_test.mocks.dart';
   MockSpec<Talker>(),
   MockSpec<AuthSessionStore>(),
   MockSpec<SubscriptionStore>(),
+  MockSpec<SubscriptionConfigStore>(),
 ])
 void main() {
   late MockLocalDBService mockLocalDBService;
@@ -21,6 +23,7 @@ void main() {
   late MockTalker mockLogger;
   late MockAuthSessionStore mockAuthSessionStore;
   late MockSubscriptionStore mockSubscriptionStore;
+  late MockSubscriptionConfigStore mockSubscriptionConfigStore;
   late DNSStore store;
 
   setUp(() {
@@ -29,6 +32,7 @@ void main() {
     mockLogger = MockTalker();
     mockAuthSessionStore = MockAuthSessionStore();
     mockSubscriptionStore = MockSubscriptionStore();
+    mockSubscriptionConfigStore = MockSubscriptionConfigStore();
 
     when(mockAuthSessionStore.status).thenReturn(AuthStatus.authenticated);
 
@@ -38,6 +42,7 @@ void main() {
       mockLogger,
       mockAuthSessionStore,
       mockSubscriptionStore,
+      mockSubscriptionConfigStore,
     );
   });
 
