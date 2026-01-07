@@ -468,5 +468,14 @@
   "subscriptionPlanResidentialIPs": "住宅用IP",
   "subscriptionPlanCityLevel": "都市レベルの選択",
   "subscriptionPlanMalwareBlocker": "マルウェアブロッカー",
-  "subscriptionAllPlansBackToPlans": "計画に戻る"
+  "subscriptionAllPlansBackToPlans": "計画に戻る",
+  "plan_yearly_plus": "プラス年間",
+  "plan_monthly_plus": "プラス月額",
+  "plan_yearly_basic": "基本年間",
+  "plan_monthly_basic": "基本月額",
+  "plan_monthly_pro": "プロ月額",
+  "plan_yearly_pro": "プロ年間",
+  "subscriptionUpgrade": "アップグレード",
+  "plan_2_years_basic": "ベーシック2年",
+  "plan_2_years_pro": "プロ 2年"
 }

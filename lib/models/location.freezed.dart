@@ -363,6 +363,7 @@ mixin _$VPNLocation {
   LatLng? get coordinates;
   List<VPNLocation>? get children;
   int? get nodeCount;
+  bool get isAvailable;
 
   /// Create a copy of VPNLocation
   /// with the given fields replaced by the non-null parameter values.
@@ -376,7 +377,7 @@ mixin _$VPNLocation {
 
   @override
   String toString() {
-    return 'VPNLocation(id: $id, ipType: $ipType, translations: $translations, countryCode: $countryCode, coordinates: $coordinates, children: $children, nodeCount: $nodeCount)';
+    return 'VPNLocation(id: $id, ipType: $ipType, translations: $translations, countryCode: $countryCode, coordinates: $coordinates, children: $children, nodeCount: $nodeCount, isAvailable: $isAvailable)';
   }
 }
 
@@ -392,7 +393,8 @@ abstract mixin class $VPNLocationCopyWith<$Res> {
       String countryCode,
       @LatLngConverter() LatLng? coordinates,
       List<VPNLocation>? children,
-      int? nodeCount});
+      int? nodeCount,
+      bool isAvailable});
 }
 
 /// @nodoc
@@ -414,6 +416,7 @@ class _$VPNLocationCopyWithImpl<$Res> implements $VPNLocationCopyWith<$Res> {
     Object? coordinates = freezed,
     Object? children = freezed,
     Object? nodeCount = freezed,
+    Object? isAvailable = null,
   }) {
     return _then(_self.copyWith(
       id: null == id
@@ -444,6 +447,10 @@ class _$VPNLocationCopyWithImpl<$Res> implements $VPNLocationCopyWith<$Res> {
           ? _self.nodeCount
           : nodeCount // ignore: cast_nullable_to_non_nullable
               as int?,
+      isAvailable: null == isAvailable
+          ? _self.isAvailable
+          : isAvailable // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -541,8 +548,15 @@ extension VPNLocationPatterns on VPNLocation {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String id, IPType ipType, Map<String, String> translations, String countryCode,
-            @LatLngConverter() LatLng? coordinates, List<VPNLocation>? children, int? nodeCount)?
+    TResult Function(
+            String id,
+            IPType ipType,
+            Map<String, String> translations,
+            String countryCode,
+            @LatLngConverter() LatLng? coordinates,
+            List<VPNLocation>? children,
+            int? nodeCount,
+            bool isAvailable)?
         $default, {
     required TResult orElse(),
   }) {
@@ -550,7 +564,7 @@ extension VPNLocationPatterns on VPNLocation {
     switch (_that) {
       case _VPNLocation() when $default != null:
         return $default(_that.id, _that.ipType, _that.translations, _that.countryCode,
-            _that.coordinates, _that.children, _that.nodeCount);
+            _that.coordinates, _that.children, _that.nodeCount, _that.isAvailable);
       case _:
         return orElse();
     }
@@ -571,15 +585,22 @@ extension VPNLocationPatterns on VPNLocation {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(String id, IPType ipType, Map<String, String> translations, String countryCode,
-            @LatLngConverter() LatLng? coordinates, List<VPNLocation>? children, int? nodeCount)
+    TResult Function(
+            String id,
+            IPType ipType,
+            Map<String, String> translations,
+            String countryCode,
+            @LatLngConverter() LatLng? coordinates,
+            List<VPNLocation>? children,
+            int? nodeCount,
+            bool isAvailable)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _VPNLocation():
         return $default(_that.id, _that.ipType, _that.translations, _that.countryCode,
-            _that.coordinates, _that.children, _that.nodeCount);
+            _that.coordinates, _that.children, _that.nodeCount, _that.isAvailable);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -606,14 +627,15 @@ extension VPNLocationPatterns on VPNLocation {
             String countryCode,
             @LatLngConverter() LatLng? coordinates,
             List<VPNLocation>? children,
-            int? nodeCount)?
+            int? nodeCount,
+            bool isAvailable)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _VPNLocation() when $default != null:
         return $default(_that.id, _that.ipType, _that.translations, _that.countryCode,
-            _that.coordinates, _that.children, _that.nodeCount);
+            _that.coordinates, _that.children, _that.nodeCount, _that.isAvailable);
       case _:
         return null;
     }
@@ -630,7 +652,8 @@ class _VPNLocation extends VPNLocation {
       required this.countryCode,
       @LatLngConverter() this.coordinates,
       final List<VPNLocation>? children,
-      this.nodeCount})
+      this.nodeCount,
+      this.isAvailable = true})
       : _translations = translations,
         _children = children,
         super._();
@@ -665,6 +688,9 @@ class _VPNLocation extends VPNLocation {
 
   @override
   final int? nodeCount;
+  @override
+  @JsonKey()
+  final bool isAvailable;
 
   /// Create a copy of VPNLocation
   /// with the given fields replaced by the non-null parameter values.
@@ -683,7 +709,7 @@ class _VPNLocation extends VPNLocation {
 
   @override
   String toString() {
-    return 'VPNLocation(id: $id, ipType: $ipType, translations: $translations, countryCode: $countryCode, coordinates: $coordinates, children: $children, nodeCount: $nodeCount)';
+    return 'VPNLocation(id: $id, ipType: $ipType, translations: $translations, countryCode: $countryCode, coordinates: $coordinates, children: $children, nodeCount: $nodeCount, isAvailable: $isAvailable)';
   }
 }
 
@@ -700,7 +726,8 @@ abstract mixin class _$VPNLocationCopyWith<$Res> implements $VPNLocationCopyWith
       String countryCode,
       @LatLngConverter() LatLng? coordinates,
       List<VPNLocation>? children,
-      int? nodeCount});
+      int? nodeCount,
+      bool isAvailable});
 }
 
 /// @nodoc
@@ -722,6 +749,7 @@ class __$VPNLocationCopyWithImpl<$Res> implements _$VPNLocationCopyWith<$Res> {
     Object? coordinates = freezed,
     Object? children = freezed,
     Object? nodeCount = freezed,
+    Object? isAvailable = null,
   }) {
     return _then(_VPNLocation(
       id: null == id
@@ -752,6 +780,10 @@ class __$VPNLocationCopyWithImpl<$Res> implements _$VPNLocationCopyWith<$Res> {
           ? _self.nodeCount
           : nodeCount // ignore: cast_nullable_to_non_nullable
               as int?,
+      isAvailable: null == isAvailable
+          ? _self.isAvailable
+          : isAvailable // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
