@@ -1,14 +1,11 @@
 allprojects {
+    // Only apply this to the buildscript (where the plugins live)
+    // This fixes the "403 Forbidden" download error
     buildscript {
         repositories {
             mavenCentral()
             google()
             gradlePluginPortal()
         }
-    }
-    repositories {
-        mavenCentral()
-        google()
-        gradlePluginPortal()
     }
 }
