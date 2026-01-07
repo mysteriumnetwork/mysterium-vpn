@@ -1,6 +1,6 @@
 part of 'hooks.dart';
 
-FutureOr<void> Function() useHandleSubscribe() {
+FutureOr<void> Function() useHandleSubscribe({bool skipManage = false}) {
   final context = useContext();
   final beamer = Beamer.of(context);
 
@@ -26,7 +26,7 @@ FutureOr<void> Function() useHandleSubscribe() {
           gateway: subscription.gateway,
           subscriptionActive: subscription.active,
           accessToken: accessToken,
-          onManageSubscription: subscriptionPurchaseStore.manageSubscription,
+          onManageSubscription: skipManage ? null : subscriptionPurchaseStore.manageSubscription,
         );
       } on SubscriptionRequiredException catch (_) {
         // ignore and let the flow continue
@@ -35,3 +35,5 @@ FutureOr<void> Function() useHandleSubscribe() {
     [beamer],
   );
 }
+
+FutureOr<void> Function() useHandleSubscribeOrUpgrade() => useHandleSubscribe(skipManage: true);

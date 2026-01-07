@@ -45,6 +45,7 @@ abstract class VPNLocation with _$VPNLocation {
     @LatLngConverter() LatLng? coordinates,
     List<VPNLocation>? children,
     int? nodeCount,
+    @Default(true) bool isAvailable,
   }) = _VPNLocation;
 
   const VPNLocation._();
@@ -76,6 +77,7 @@ abstract class VPNLocation with _$VPNLocation {
             .map((it) => VPNLocation.fromAPICity(it, response.country, ipType))
             .toList(),
         countryCode: response.country,
+        isAvailable: response.isAvailable ?? true,
       );
 
   factory VPNLocation.fromAPICity(
@@ -94,6 +96,7 @@ abstract class VPNLocation with _$VPNLocation {
       nodeCount: response.total.toInt(),
       countryCode: country,
       coordinates: coordinates,
+      isAvailable: response.isAvailable ?? true,
     );
   }
 

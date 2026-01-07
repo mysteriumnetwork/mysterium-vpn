@@ -33,6 +33,7 @@ _VPNLocation _$VPNLocationFromJson(Map<String, dynamic> json) => _VPNLocation(
           ?.map((e) => VPNLocation.fromJson(e as Map<String, dynamic>))
           .toList(),
       nodeCount: (json['nodeCount'] as num?)?.toInt(),
+      isAvailable: json['isAvailable'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$VPNLocationToJson(_VPNLocation instance) => <String, dynamic>{
@@ -44,6 +45,7 @@ Map<String, dynamic> _$VPNLocationToJson(_VPNLocation instance) => <String, dyna
           instance.coordinates, const LatLngConverter().toJson),
       'children': instance.children,
       'nodeCount': instance.nodeCount,
+      'isAvailable': instance.isAvailable,
     };
 
 const _$IPTypeEnumMap = {

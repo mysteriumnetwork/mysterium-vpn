@@ -463,4 +463,13 @@ abstract class LocaleKeys {
   static const subscriptionPlanCityLevel = 'subscriptionPlanCityLevel';
   static const subscriptionPlanMalwareBlocker = 'subscriptionPlanMalwareBlocker';
   static const subscriptionAllPlansBackToPlans = 'subscriptionAllPlansBackToPlans';
+  static const plan_yearly_plus = 'plan_yearly_plus';
+  static const plan_monthly_plus = 'plan_monthly_plus';
+  static const plan_yearly_basic = 'plan_yearly_basic';
+  static const plan_monthly_basic = 'plan_monthly_basic';
+  static const plan_monthly_pro = 'plan_monthly_pro';
+  static const plan_yearly_pro = 'plan_yearly_pro';
+  static const subscriptionUpgrade = 'subscriptionUpgrade';
+  static const plan_2_years_basic = 'plan_2_years_basic';
+  static const plan_2_years_pro = 'plan_2_years_pro';
 }

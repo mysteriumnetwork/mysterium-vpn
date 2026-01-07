@@ -468,5 +468,14 @@
   "subscriptionPlanResidentialIPs": "住宅 IP",
   "subscriptionPlanCityLevel": "城市层面的选择",
   "subscriptionPlanMalwareBlocker": "恶意软件拦截器",
-  "subscriptionAllPlansBackToPlans": "回到计划"
+  "subscriptionAllPlansBackToPlans": "回到计划",
+  "plan_yearly_plus": "另加年费",
+  "plan_monthly_plus": "每月加",
+  "plan_yearly_basic": "基本年",
+  "plan_monthly_basic": "基本月度",
+  "plan_monthly_pro": "专业月度",
+  "plan_yearly_pro": "专业年度",
+  "subscriptionUpgrade": "升级",
+  "plan_2_years_basic": "基础2年",
+  "plan_2_years_pro": "专业版 2 年"
 }

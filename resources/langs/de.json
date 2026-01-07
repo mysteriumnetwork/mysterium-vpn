@@ -457,7 +457,7 @@
   "subscriptionPlanPF2Plus": "Mehr als 100 unterstützte Länder",
   "subscriptionPlanPF3Plus": "100 Server",
   "subscriptionPlanPF4Plus": "WireGuard-Protokoll",
-  "subscriptionPlanPF5Plus": "Mehr als 7.500 IP-Adressen für Privatkunden",
+  "subscriptionPlanPF5Plus": "Mehr als 7.500 Wohn-IPs",
   "subscriptionPlanPF6Plus": "Entscheidungen auf Stadtebene",
   "subscriptionPlanMoneyBack": "7-Tage-Geld-zurück-Garantie",
   "subscriptionPlanDevicesSecured": "Geräte sofort gesichert",
@@ -468,5 +468,14 @@
   "subscriptionPlanResidentialIPs": "Wohn-IPs",
   "subscriptionPlanCityLevel": "Entscheidungen auf Stadtebene",
   "subscriptionPlanMalwareBlocker": "Malware-Blocker",
-  "subscriptionAllPlansBackToPlans": "Zurück zu den Plänen"
+  "subscriptionAllPlansBackToPlans": "Zurück zu den Plänen",
+  "plan_yearly_plus": "Plus jährlich",
+  "plan_monthly_plus": "Plus monatlich",
+  "plan_yearly_basic": "Grundlegende Jahresgebühr",
+  "plan_monthly_basic": "monatliche Grundgebühr",
+  "plan_monthly_pro": "Pro monatlich",
+  "plan_yearly_pro": "Pro jährlich",
+  "subscriptionUpgrade": "Upgrade",
+  "plan_2_years_basic": "Grundausbildung 2 Jahre",
+  "plan_2_years_pro": "Pro 2 Jahre"
 }
