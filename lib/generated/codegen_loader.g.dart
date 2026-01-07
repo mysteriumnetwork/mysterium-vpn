@@ -482,7 +482,9 @@ class CodegenLoader extends AssetLoader {
     "plan_monthly_basic": "基本月度",
     "plan_monthly_pro": "专业月度",
     "plan_yearly_pro": "专业年度",
-    "subscriptionUpgrade": "升级"
+    "subscriptionUpgrade": "升级",
+    "plan_2_years_basic": "基础2年",
+    "plan_2_years_pro": "专业版 2 年"
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -996,7 +998,9 @@ class CodegenLoader extends AssetLoader {
     "plan_monthly_basic": "Temel aylık",
     "plan_monthly_pro": "Profesyonel aylık",
     "plan_yearly_pro": "Yıllık profesyonel",
-    "subscriptionUpgrade": "Güncelleme"
+    "subscriptionUpgrade": "Güncelleme",
+    "plan_2_years_basic": "Temel 2 yıl",
+    "plan_2_years_pro": "2 yıllık profesyonel hizmet"
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1471,7 +1475,9 @@ class CodegenLoader extends AssetLoader {
     "plan_monthly_basic": "基本月額",
     "plan_monthly_pro": "プロ月額",
     "plan_yearly_pro": "プロ年間",
-    "subscriptionUpgrade": "アップグレード"
+    "subscriptionUpgrade": "アップグレード",
+    "plan_2_years_basic": "ベーシック2年",
+    "plan_2_years_pro": "プロ 2年"
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2013,7 +2019,9 @@ class CodegenLoader extends AssetLoader {
     "plan_monthly_basic": "monatliche Grundgebühr",
     "plan_monthly_pro": "Pro monatlich",
     "plan_yearly_pro": "Pro jährlich",
-    "subscriptionUpgrade": "Upgrade"
+    "subscriptionUpgrade": "Upgrade",
+    "plan_2_years_basic": "Grundausbildung 2 Jahre",
+    "plan_2_years_pro": "Pro 2 Jahre"
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2546,7 +2554,9 @@ class CodegenLoader extends AssetLoader {
     "plan_monthly_basic": "Básico mensal",
     "plan_monthly_pro": "Pro mensal",
     "plan_yearly_pro": "Pro anual",
-    "subscriptionUpgrade": "Atualizar"
+    "subscriptionUpgrade": "Atualizar",
+    "plan_2_years_basic": "Básico 2 anos",
+    "plan_2_years_pro": "Profissional 2 anos"
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3067,7 +3077,9 @@ class CodegenLoader extends AssetLoader {
     "plan_monthly_basic": "Basic monthly",
     "plan_monthly_pro": "Pro monthly",
     "plan_yearly_pro": "Pro annual",
-    "subscriptionUpgrade": "Upgrade"
+    "subscriptionUpgrade": "Upgrade",
+    "plan_2_years_basic": "Basic 2-years",
+    "plan_2_years_pro": "Pro 2-years"
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3602,7 +3614,9 @@ class CodegenLoader extends AssetLoader {
     "plan_monthly_basic": "Mensile base",
     "plan_monthly_pro": "Pro mensile",
     "plan_yearly_pro": "Pro annuale",
-    "subscriptionUpgrade": "Aggiornamento"
+    "subscriptionUpgrade": "Aggiornamento",
+    "plan_2_years_basic": "Base 2 anni",
+    "plan_2_years_pro": "Pro 2 anni"
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4145,7 +4159,9 @@ class CodegenLoader extends AssetLoader {
     "plan_monthly_basic": "Mois de base",
     "plan_monthly_pro": "Pro mensuel",
     "plan_yearly_pro": "Pro annuel",
-    "subscriptionUpgrade": "Mise à niveau"
+    "subscriptionUpgrade": "Mise à niveau",
+    "plan_2_years_basic": "Formation de base de 2 ans",
+    "plan_2_years_pro": "Pro 2 ans"
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4668,7 +4684,9 @@ class CodegenLoader extends AssetLoader {
     "plan_monthly_basic": "Dasar bulanan",
     "plan_monthly_pro": "Pro bulanan",
     "plan_yearly_pro": "Pro tahunan",
-    "subscriptionUpgrade": "Meningkatkan"
+    "subscriptionUpgrade": "Meningkatkan",
+    "plan_2_years_basic": "Dasar 2 tahun",
+    "plan_2_years_pro": "Pro 2 tahun"
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5203,7 +5221,9 @@ class CodegenLoader extends AssetLoader {
     "plan_monthly_basic": "Mensual básico",
     "plan_monthly_pro": "Pro mensual",
     "plan_yearly_pro": "Pro anual",
-    "subscriptionUpgrade": "Mejora"
+    "subscriptionUpgrade": "Mejora",
+    "plan_2_years_basic": "Básico de 2 años",
+    "plan_2_years_pro": "Pro 2 años"
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5710,7 +5730,9 @@ class CodegenLoader extends AssetLoader {
     "plan_monthly_basic": "اشتراك شهري أساسي",
     "plan_monthly_pro": "برو مونثلي",
     "plan_yearly_pro": "برو أنوال",
-    "subscriptionUpgrade": "يرقي"
+    "subscriptionUpgrade": "يرقي",
+    "plan_2_years_basic": "سنتان أساسيتان",
+    "plan_2_years_pro": "محترف لمدة عامين"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

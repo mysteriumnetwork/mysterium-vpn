@@ -475,5 +475,7 @@
   "plan_monthly_basic": "اشتراك شهري أساسي",
   "plan_monthly_pro": "برو مونثلي",
   "plan_yearly_pro": "برو أنوال",
-  "subscriptionUpgrade": "يرقي"
+  "subscriptionUpgrade": "يرقي",
+  "plan_2_years_basic": "سنتان أساسيتان",
+  "plan_2_years_pro": "محترف لمدة عامين"
 }
