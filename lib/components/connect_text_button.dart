@@ -38,6 +38,7 @@ class ConnectTextButton extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
     final subscriptionFeaturesStore = ref.watch(subscriptionFeaturesStorePOD);
     final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
     final isConnected = useIsLocationConnected(location);
@@ -45,7 +46,7 @@ class ConnectTextButton extends HookConsumerWidget {
     final textDisconnect = this.textDisconnect ?? LocaleKeys.disconnect.tr();
     final buttonFallbackMode =
         outlinedButton ? AsyncTextButtonMode.outlined : AsyncTextButtonMode.elevated;
-    final handleSubscribe = useHandleSubscribeOrUpgrade();
+    final handleUpgradeSub = useHandleUpgradePlan();
 
     void onPressed() {
       this.onPressed?.call();
@@ -58,6 +59,7 @@ class ConnectTextButton extends HookConsumerWidget {
           residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
           location: location,
           unavailableLocations: unavailableLocationsStore.unavailableLocations,
+          subscription: subscriptionStore.subscriptionFuture.value,
         );
         return AsyncTextButton(
           isLoading: mode == _Mode.connecting,
@@ -67,7 +69,7 @@ class ConnectTextButton extends HookConsumerWidget {
           text: switch (mode) {
             _Mode.connecting => LocaleKeys.connecting.tr(),
             _Mode.connected => textDisconnect,
-            _Mode.available || _Mode.unavailable => textConnect,
+            _Mode.available || _Mode.unavailable || _Mode.unsubscribed => textConnect,
             _Mode.unsupportedByPlan => LocaleKeys.subscriptionUpgrade.tr(),
           },
           mode: switch (mode) {
@@ -81,7 +83,8 @@ class ConnectTextButton extends HookConsumerWidget {
             _Mode.unavailable => null,
             _Mode.connecting => null,
             _Mode.connected || _Mode.available => onPressed,
-            _Mode.unsupportedByPlan => handleSubscribe,
+            _Mode.unsupportedByPlan => handleUpgradeSub,
+            _Mode.unsubscribed => onPressed,
           },
         );
       },
@@ -94,6 +97,7 @@ enum _Mode {
   connected,
   available,
   unavailable,
+  unsubscribed,
   unsupportedByPlan;
 
   static _Mode from({
@@ -101,12 +105,16 @@ enum _Mode {
     required bool residentialIPsAllowed,
     required VPNLocation? location,
     required Iterable<VPNLocation> unavailableLocations,
+    required Subscription? subscription,
   }) {
     if (isConnected == null) {
       return _Mode.connecting;
     }
     if (isConnected) {
       return _Mode.connected;
+    }
+    if (subscription == null || !subscription.active) {
+      return _Mode.unsubscribed;
     }
     if (location != null && location.ipType == IPType.residential) {
       if (!residentialIPsAllowed || !location.isAvailable) {

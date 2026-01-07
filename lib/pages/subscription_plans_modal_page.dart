@@ -43,6 +43,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
     final store = ref.watch(subscriptionPlansStorePOD);
     final upgradeStore = ref.watch(subscriptionUpgradeStorePOD);
     final purchaseStore = ref.watch(subscriptionPurchaseStorePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
 
     final theme = Theme.of(context);
     final tabController = useTabController(initialLength: 2);
@@ -58,6 +59,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
       }
       if (status != null && !status.isLoading) {
         Navigator.of(context).pop();
+        subscriptionStore.refreshAll().ignore();
       }
     });
 
