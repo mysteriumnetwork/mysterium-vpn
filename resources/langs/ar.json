@@ -468,5 +468,12 @@
   "subscriptionPlanResidentialIPs": "عناوين IP السكنية",
   "subscriptionPlanCityLevel": "خيارات على مستوى المدينة",
   "subscriptionPlanMalwareBlocker": "مانع البرامج الضارة",
-  "subscriptionAllPlansBackToPlans": "العودة إلى الخطط"
+  "subscriptionAllPlansBackToPlans": "العودة إلى الخطط",
+  "plan_yearly_plus": "بالإضافة إلى السنة السنوية",
+  "plan_monthly_plus": "بالإضافة إلى الشهر",
+  "plan_yearly_basic": "السنة السنوية الأساسية",
+  "plan_monthly_basic": "اشتراك شهري أساسي",
+  "plan_monthly_pro": "برو مونثلي",
+  "plan_yearly_pro": "برو أنوال",
+  "subscriptionUpgrade": "يرقي"
 }

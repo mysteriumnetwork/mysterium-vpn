@@ -468,5 +468,12 @@
   "subscriptionPlanResidentialIPs": "Residential IPs",
   "subscriptionPlanCityLevel": "City-level choices",
   "subscriptionPlanMalwareBlocker": "Malware blocker",
-  "subscriptionAllPlansBackToPlans": "Back to plans"
+  "subscriptionAllPlansBackToPlans": "Back to plans",
+  "plan_yearly_plus": "Plus annual",
+  "plan_monthly_plus": "Plus monthly",
+  "plan_yearly_basic": "Basic annual",
+  "plan_monthly_basic": "Basic monthly",
+  "plan_monthly_pro": "Pro monthly",
+  "plan_yearly_pro": "Pro annual",
+  "subscriptionUpgrade": "Upgrade"
 }

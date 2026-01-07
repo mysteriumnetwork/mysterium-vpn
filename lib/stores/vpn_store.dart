@@ -588,6 +588,7 @@ abstract class _VpnStore extends VpnGuard with Store {
             ipType: location.ipType,
             translations: location.translations,
             countryCode: location.countryCode,
+            isAvailable: location.isAvailable,
           ),
           availability: false,
         );

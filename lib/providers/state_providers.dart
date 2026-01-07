@@ -12,6 +12,8 @@ import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/remote_config/config_cat_user_store.dart';
 import 'package:mysterium_vpn/stores/smart_refresh_store.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/subscription_config_store.dart';
+import 'package:mysterium_vpn/stores/subscription_features_store.dart';
 import 'package:mysterium_vpn/stores/subscription_limited_time_offer_store.dart';
 import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
@@ -474,6 +476,40 @@ final smartRefreshStorePOD = Provider<SmartRefreshStore>(
       locationsStore,
       subscriptionStore,
       logger,
+    );
+
+    ref.onDispose(store.dispose);
+
+    return store;
+  },
+);
+
+final subscriptionConfigStorePOD = Provider<SubscriptionConfigStore>(
+  (ref) {
+    final subscriptionService = ref.read(subscriptionServicePOD);
+    final authSessionStore = ref.watch(authSessionStorePOD);
+    final analyticsStore = ref.watch(analyticsStorePOD);
+
+    final store = SubscriptionConfigStore(
+      authSessionStore,
+      subscriptionService,
+      analyticsStore,
+    );
+
+    ref.onDispose(store.dispose);
+
+    return store;
+  },
+);
+
+final subscriptionFeaturesStorePOD = Provider<SubscriptionFeaturesStore>(
+  (ref) {
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final configStore = ref.watch(subscriptionConfigStorePOD);
+
+    final store = SubscriptionFeaturesStore(
+      subscriptionStore,
+      configStore,
     );
 
     ref.onDispose(store.dispose);
