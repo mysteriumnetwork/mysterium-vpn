@@ -475,5 +475,7 @@
   "plan_monthly_basic": "monatliche Grundgebühr",
   "plan_monthly_pro": "Pro monatlich",
   "plan_yearly_pro": "Pro jährlich",
-  "subscriptionUpgrade": "Upgrade"
+  "subscriptionUpgrade": "Upgrade",
+  "plan_2_years_basic": "Grundausbildung 2 Jahre",
+  "plan_2_years_pro": "Pro 2 Jahre"
 }

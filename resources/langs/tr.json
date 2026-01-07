@@ -475,5 +475,7 @@
   "plan_monthly_basic": "Temel aylık",
   "plan_monthly_pro": "Profesyonel aylık",
   "plan_yearly_pro": "Yıllık profesyonel",
-  "subscriptionUpgrade": "Güncelleme"
+  "subscriptionUpgrade": "Güncelleme",
+  "plan_2_years_basic": "Temel 2 yıl",
+  "plan_2_years_pro": "2 yıllık profesyonel hizmet"
 }

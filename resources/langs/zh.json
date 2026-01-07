@@ -475,5 +475,7 @@
   "plan_monthly_basic": "基本月度",
   "plan_monthly_pro": "专业月度",
   "plan_yearly_pro": "专业年度",
-  "subscriptionUpgrade": "升级"
+  "subscriptionUpgrade": "升级",
+  "plan_2_years_basic": "基础2年",
+  "plan_2_years_pro": "专业版 2 年"
 }
