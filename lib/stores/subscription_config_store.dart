@@ -32,6 +32,9 @@ abstract class _SubscriptionConfigStore with Store, Disposeable {
         },
         fireImmediately: true,
       ),
+      reaction((_) => _subscriptionFuture.value?.planId, (plan) {
+        _subscriptionPlanFuture = ObservableFuture(_service.fetchSubscriptionPlan());
+      }),
     ];
   }
 
