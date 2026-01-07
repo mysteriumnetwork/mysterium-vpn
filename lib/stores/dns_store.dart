@@ -2,6 +2,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/auth_status.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/subscription_config_store.dart';
 import 'package:talker/talker.dart';
 
 part 'dns_store.g.dart';
@@ -20,6 +21,7 @@ abstract class _DNSStore with Store {
     this._logger,
     this._authSessionStore,
     this._subscriptionStore,
+    this._subscriptionConfigStore,
   ) {
     _authReactionDisposer = reaction<AuthStatus>(
       (_) => _authSessionStore.status,
@@ -39,6 +41,7 @@ abstract class _DNSStore with Store {
   final Talker _logger;
   final AuthSessionStore _authSessionStore;
   final SubscriptionStore _subscriptionStore;
+  final SubscriptionConfigStore _subscriptionConfigStore;
   ReactionDisposer? _authReactionDisposer;
 
   @computed
@@ -73,7 +76,8 @@ abstract class _DNSStore with Store {
       return true;
     }
     var allow = false;
-    final subscriptionPlanMetadata = _subscriptionStore.subscriptionPlanFuture.value?.metadata;
+    final subscriptionPlanMetadata =
+        _subscriptionConfigStore.subscriptionPlanFuture.value?.metadata;
     if (subscriptionPlanMetadata != null) {
       // Misconfigured plans works with old logic - always allow blockers
       allow = subscriptionPlanMetadata.malwareBlockingAllowed ?? true;
