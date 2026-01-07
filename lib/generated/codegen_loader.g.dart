@@ -475,7 +475,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPs": "住宅 IP",
     "subscriptionPlanCityLevel": "城市层面的选择",
     "subscriptionPlanMalwareBlocker": "恶意软件拦截器",
-    "subscriptionAllPlansBackToPlans": "回到计划"
+    "subscriptionAllPlansBackToPlans": "回到计划",
+    "plan_yearly_plus": "另加年费",
+    "plan_monthly_plus": "每月加",
+    "plan_yearly_basic": "基本年",
+    "plan_monthly_basic": "基本月度",
+    "plan_monthly_pro": "专业月度",
+    "plan_yearly_pro": "专业年度",
+    "subscriptionUpgrade": "升级"
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -575,7 +582,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccountQuestion": "Hesabını silmek üzeresin!",
     "describeYourIssue": "Sorununuzu açıklayın",
     "deviceLimitReachedDesc":
-        "Hesabınızda en fazla 6 cihaz bağlı olarak kullanılabiliyor. Yeni bir cihaz eklemek için mevcut bir cihazı hesabınızdan kaldırın.",
+        "Hesabınızda en fazla 6 cihaz bağlı kalabilir. Yeni bir cihaz eklemek için mevcut bir cihazı hesabınızdan kaldırın.",
     "deviceLimitReachedOpenDashboard": "Kontrol Panelini Aç",
     "deviceLimitReachedTitle": "Cihaz Sınırına Ulaşıldı",
     "disconnect": "Bağlantıyı kes",
@@ -982,7 +989,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPs": "Konut IP'leri",
     "subscriptionPlanCityLevel": "Şehir düzeyindeki tercihler",
     "subscriptionPlanMalwareBlocker": "Kötü amaçlı yazılım engelleyici",
-    "subscriptionAllPlansBackToPlans": "Planlara geri dön"
+    "subscriptionAllPlansBackToPlans": "Planlara geri dön",
+    "plan_yearly_plus": "Artı yıllık",
+    "plan_monthly_plus": "Ayrıca aylık",
+    "plan_yearly_basic": "Temel yıllık",
+    "plan_monthly_basic": "Temel aylık",
+    "plan_monthly_pro": "Profesyonel aylık",
+    "plan_yearly_pro": "Yıllık profesyonel",
+    "subscriptionUpgrade": "Güncelleme"
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1450,7 +1464,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPs": "住宅用IP",
     "subscriptionPlanCityLevel": "都市レベルの選択",
     "subscriptionPlanMalwareBlocker": "マルウェアブロッカー",
-    "subscriptionAllPlansBackToPlans": "計画に戻る"
+    "subscriptionAllPlansBackToPlans": "計画に戻る",
+    "plan_yearly_plus": "プラス年間",
+    "plan_monthly_plus": "プラス月額",
+    "plan_yearly_basic": "基本年間",
+    "plan_monthly_basic": "基本月額",
+    "plan_monthly_pro": "プロ月額",
+    "plan_yearly_pro": "プロ年間",
+    "subscriptionUpgrade": "アップグレード"
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -1974,7 +1995,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF2Plus": "Mehr als 100 unterstützte Länder",
     "subscriptionPlanPF3Plus": "100 Server",
     "subscriptionPlanPF4Plus": "WireGuard-Protokoll",
-    "subscriptionPlanPF5Plus": "Mehr als 7.500 IP-Adressen für Privatkunden",
+    "subscriptionPlanPF5Plus": "Mehr als 7.500 Wohn-IPs",
     "subscriptionPlanPF6Plus": "Entscheidungen auf Stadtebene",
     "subscriptionPlanMoneyBack": "7-Tage-Geld-zurück-Garantie",
     "subscriptionPlanDevicesSecured": "Geräte sofort gesichert",
@@ -1985,7 +2006,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPs": "Wohn-IPs",
     "subscriptionPlanCityLevel": "Entscheidungen auf Stadtebene",
     "subscriptionPlanMalwareBlocker": "Malware-Blocker",
-    "subscriptionAllPlansBackToPlans": "Zurück zu den Plänen"
+    "subscriptionAllPlansBackToPlans": "Zurück zu den Plänen",
+    "plan_yearly_plus": "Plus jährlich",
+    "plan_monthly_plus": "Plus monatlich",
+    "plan_yearly_basic": "Grundlegende Jahresgebühr",
+    "plan_monthly_basic": "monatliche Grundgebühr",
+    "plan_monthly_pro": "Pro monatlich",
+    "plan_yearly_pro": "Pro jährlich",
+    "subscriptionUpgrade": "Upgrade"
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2511,7 +2539,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPs": "IPs residenciais",
     "subscriptionPlanCityLevel": "Opções a nível municipal",
     "subscriptionPlanMalwareBlocker": "Bloqueador de malware",
-    "subscriptionAllPlansBackToPlans": "Voltar aos planos"
+    "subscriptionAllPlansBackToPlans": "Voltar aos planos",
+    "plan_yearly_plus": "Mais anual",
+    "plan_monthly_plus": "Mais mensal",
+    "plan_yearly_basic": "Básico anual",
+    "plan_monthly_basic": "Básico mensal",
+    "plan_monthly_pro": "Pro mensal",
+    "plan_yearly_pro": "Pro anual",
+    "subscriptionUpgrade": "Atualizar"
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3025,7 +3060,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPs": "Residential IPs",
     "subscriptionPlanCityLevel": "City-level choices",
     "subscriptionPlanMalwareBlocker": "Malware blocker",
-    "subscriptionAllPlansBackToPlans": "Back to plans"
+    "subscriptionAllPlansBackToPlans": "Back to plans",
+    "plan_yearly_plus": "Plus annual",
+    "plan_monthly_plus": "Plus monthly",
+    "plan_yearly_basic": "Basic annual",
+    "plan_monthly_basic": "Basic monthly",
+    "plan_monthly_pro": "Pro monthly",
+    "plan_yearly_pro": "Pro annual",
+    "subscriptionUpgrade": "Upgrade"
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3553,7 +3595,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPs": "IP residenziali",
     "subscriptionPlanCityLevel": "Scelte a livello di città",
     "subscriptionPlanMalwareBlocker": "Blocco malware",
-    "subscriptionAllPlansBackToPlans": "Torna ai piani"
+    "subscriptionAllPlansBackToPlans": "Torna ai piani",
+    "plan_yearly_plus": "Più annuale",
+    "plan_monthly_plus": "Più mensile",
+    "plan_yearly_basic": "Annuale di base",
+    "plan_monthly_basic": "Mensile base",
+    "plan_monthly_pro": "Pro mensile",
+    "plan_yearly_pro": "Pro annuale",
+    "subscriptionUpgrade": "Aggiornamento"
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4089,7 +4138,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPs": "Adresses IP résidentielles",
     "subscriptionPlanCityLevel": "choix au niveau de la ville",
     "subscriptionPlanMalwareBlocker": "bloqueur de logiciels malveillants",
-    "subscriptionAllPlansBackToPlans": "Retour aux plans"
+    "subscriptionAllPlansBackToPlans": "Retour aux plans",
+    "plan_yearly_plus": "Plus annuel",
+    "plan_monthly_plus": "Plus un abonnement mensuel",
+    "plan_yearly_basic": "annuel de base",
+    "plan_monthly_basic": "Mois de base",
+    "plan_monthly_pro": "Pro mensuel",
+    "plan_yearly_pro": "Pro annuel",
+    "subscriptionUpgrade": "Mise à niveau"
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4605,7 +4661,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPs": "IP Perumahan",
     "subscriptionPlanCityLevel": "Pilihan tingkat kota",
     "subscriptionPlanMalwareBlocker": "Pemblokir malware",
-    "subscriptionAllPlansBackToPlans": "Kembali ke rencana"
+    "subscriptionAllPlansBackToPlans": "Kembali ke rencana",
+    "plan_yearly_plus": "Ditambah biaya tahunan",
+    "plan_monthly_plus": "Ditambah bulanan",
+    "plan_yearly_basic": "Dasar tahunan",
+    "plan_monthly_basic": "Dasar bulanan",
+    "plan_monthly_pro": "Pro bulanan",
+    "plan_yearly_pro": "Pro tahunan",
+    "subscriptionUpgrade": "Meningkatkan"
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5133,7 +5196,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPs": "IP residenciales",
     "subscriptionPlanCityLevel": "Decisiones a nivel de ciudad",
     "subscriptionPlanMalwareBlocker": "Bloqueador de malware",
-    "subscriptionAllPlansBackToPlans": "Volver a los planes"
+    "subscriptionAllPlansBackToPlans": "Volver a los planes",
+    "plan_yearly_plus": "Más anual",
+    "plan_monthly_plus": "Más mensual",
+    "plan_yearly_basic": "Anual básico",
+    "plan_monthly_basic": "Mensual básico",
+    "plan_monthly_pro": "Pro mensual",
+    "plan_yearly_pro": "Pro anual",
+    "subscriptionUpgrade": "Mejora"
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5633,7 +5703,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPs": "عناوين IP السكنية",
     "subscriptionPlanCityLevel": "خيارات على مستوى المدينة",
     "subscriptionPlanMalwareBlocker": "مانع البرامج الضارة",
-    "subscriptionAllPlansBackToPlans": "العودة إلى الخطط"
+    "subscriptionAllPlansBackToPlans": "العودة إلى الخطط",
+    "plan_yearly_plus": "بالإضافة إلى السنة السنوية",
+    "plan_monthly_plus": "بالإضافة إلى الشهر",
+    "plan_yearly_basic": "السنة السنوية الأساسية",
+    "plan_monthly_basic": "اشتراك شهري أساسي",
+    "plan_monthly_pro": "برو مونثلي",
+    "plan_yearly_pro": "برو أنوال",
+    "subscriptionUpgrade": "يرقي"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

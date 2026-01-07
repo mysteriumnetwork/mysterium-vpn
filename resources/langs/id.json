@@ -468,5 +468,12 @@
   "subscriptionPlanResidentialIPs": "IP Perumahan",
   "subscriptionPlanCityLevel": "Pilihan tingkat kota",
   "subscriptionPlanMalwareBlocker": "Pemblokir malware",
-  "subscriptionAllPlansBackToPlans": "Kembali ke rencana"
+  "subscriptionAllPlansBackToPlans": "Kembali ke rencana",
+  "plan_yearly_plus": "Ditambah biaya tahunan",
+  "plan_monthly_plus": "Ditambah bulanan",
+  "plan_yearly_basic": "Dasar tahunan",
+  "plan_monthly_basic": "Dasar bulanan",
+  "plan_monthly_pro": "Pro bulanan",
+  "plan_yearly_pro": "Pro tahunan",
+  "subscriptionUpgrade": "Meningkatkan"
 }

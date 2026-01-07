@@ -375,7 +375,7 @@ FutureOr<void> handleOnBillingPage({
     return;
   }
 
-  if (!subscriptionActive && !Platform.isWindows) {
+  if ((onManageSubscription == null || !subscriptionActive) && !Platform.isWindows) {
     if (upgradeProduct != null) {
       await showSubscriptionUpgradeModalPage(context);
     } else {

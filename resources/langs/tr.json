@@ -88,7 +88,7 @@
   "deleteAccount": "Hesabımı Sil",
   "deleteAccountQuestion": "Hesabını silmek üzeresin!",
   "describeYourIssue": "Sorununuzu açıklayın",
-  "deviceLimitReachedDesc": "Hesabınızda en fazla 6 cihaz bağlı olarak kullanılabiliyor. Yeni bir cihaz eklemek için mevcut bir cihazı hesabınızdan kaldırın.",
+  "deviceLimitReachedDesc": "Hesabınızda en fazla 6 cihaz bağlı kalabilir. Yeni bir cihaz eklemek için mevcut bir cihazı hesabınızdan kaldırın.",
   "deviceLimitReachedOpenDashboard": "Kontrol Panelini Aç",
   "deviceLimitReachedTitle": "Cihaz Sınırına Ulaşıldı",
   "disconnect": "Bağlantıyı kes",
@@ -468,5 +468,12 @@
   "subscriptionPlanResidentialIPs": "Konut IP'leri",
   "subscriptionPlanCityLevel": "Şehir düzeyindeki tercihler",
   "subscriptionPlanMalwareBlocker": "Kötü amaçlı yazılım engelleyici",
-  "subscriptionAllPlansBackToPlans": "Planlara geri dön"
+  "subscriptionAllPlansBackToPlans": "Planlara geri dön",
+  "plan_yearly_plus": "Artı yıllık",
+  "plan_monthly_plus": "Ayrıca aylık",
+  "plan_yearly_basic": "Temel yıllık",
+  "plan_monthly_basic": "Temel aylık",
+  "plan_monthly_pro": "Profesyonel aylık",
+  "plan_yearly_pro": "Yıllık profesyonel",
+  "subscriptionUpgrade": "Güncelleme"
 }
