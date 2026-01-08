@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/models/subscription_plan_features.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -50,6 +51,8 @@ enum _FeatureToggleKey {
   isProtocolPickerAvailable,
   planFeatures,
   plansBestValue,
+  upgradeSubscriptionPage,
+  manageSubscriptionPage,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -483,6 +486,18 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       }
     }
     return {'plan_monthly', 'plan_yearly', 'plan_yearly_plus', 'plan_monthly_plus'};
+  }
+
+  @computed
+  String get upgradeSubscriptionPage {
+    final value = config[_FeatureToggleKey.upgradeSubscriptionPage.name] as String?;
+    return (value?.isNotEmpty ?? false ? value! : Env.upgradeSubscriptionPage).trim();
+  }
+
+  @computed
+  String get manageSubscriptionPage {
+    final value = config[_FeatureToggleKey.manageSubscriptionPage.name] as String?;
+    return (value?.isNotEmpty ?? false ? value! : Env.manageSubscriptionPage).trim();
   }
 
   Map<String, String> get asUserProperties =>

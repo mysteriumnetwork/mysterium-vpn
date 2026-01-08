@@ -86,7 +86,7 @@ class _Authenticated extends HookConsumerWidget {
                   : null,
               actionWidget: HookBuilder(
                 builder: (context) {
-                  final handleSubscribe = useHandleSubscribe();
+                  final handleSubscribe = useHandleSubscribe(manageSubscription: true);
                   final (notifier, subscribeStatus) = useFutureStatus();
 
                   useValueChanged<AsyncSnapshot<void>, void>(subscribeStatus, (_, __) {

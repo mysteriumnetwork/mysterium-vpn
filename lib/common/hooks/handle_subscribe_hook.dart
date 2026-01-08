@@ -1,6 +1,6 @@
 part of 'hooks.dart';
 
-FutureOr<void> Function() useHandleSubscribe() {
+FutureOr<void> Function() useHandleSubscribe({bool manageSubscription = false}) {
   final context = useContext();
   final beamer = Beamer.of(context);
 
@@ -11,6 +11,7 @@ FutureOr<void> Function() useHandleSubscribe() {
       final subscriptionStore = ref.read(subscriptionStorePOD);
       final upgradeSubscriptionStore = ref.read(subscriptionUpgradeStorePOD);
       final subscriptionPurchaseStore = ref.read(subscriptionPurchaseStorePOD);
+      final remoteConfigStore = ref.read(remoteConfigStorePOD);
 
       final accessToken = sessionStore.accessToken;
 
@@ -22,11 +23,13 @@ FutureOr<void> Function() useHandleSubscribe() {
         await handleOnBillingPage(
           context: context,
           upgradeProduct: upgradeSubscriptionStore.upgradeProduct,
-          billingPage: Env.billingPage,
+          manageSubscriptionPage: remoteConfigStore.manageSubscriptionPage,
+          upgradeSubscriptionPage: remoteConfigStore.upgradeSubscriptionPage,
           gateway: subscription.gateway,
           subscriptionActive: subscription.active,
           accessToken: accessToken,
           onManageSubscription: subscriptionPurchaseStore.manageSubscription,
+          manageSubscription: manageSubscription,
         );
       } on SubscriptionRequiredException catch (_) {
         // ignore and let the flow continue
@@ -43,6 +46,7 @@ FutureOr<void> Function() useHandleUpgradePlan() {
     final ref = ProviderScope.containerOf(context, listen: false);
     final subscriptionStore = ref.read(subscriptionStorePOD);
     final subscription = await subscriptionStore.subscriptionFuture;
+    final remoteConfigStore = ref.read(remoteConfigStorePOD);
 
     final isCorrectGateway = switch (subscription.gateway) {
       'google' => Platform.isAndroid,
@@ -56,7 +60,7 @@ FutureOr<void> Function() useHandleUpgradePlan() {
     }
 
     if (!isMobilePaymentGateway(subscription.gateway)) {
-      final uri = Uri.parse(Env.billingPage);
+      final uri = Uri.parse(remoteConfigStore.upgradeSubscriptionPage);
       final sessionStore = ref.read(authSessionStorePOD);
       final token = await sessionStore.accessTokenFuture;
       final httpsUri = Uri(
