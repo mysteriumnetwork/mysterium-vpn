@@ -1,11 +1,11 @@
 part of 'hooks.dart';
 
-FutureOr<void> Function() useHandleSubscribe({bool manageSubscription = false}) {
+FutureOr<void> Function({bool manageSubscription}) useHandleSubscribe() {
   final context = useContext();
   final beamer = Beamer.of(context);
 
   return useCallback(
-    () async {
+    ({bool manageSubscription = false}) async {
       final ref = ProviderScope.containerOf(context, listen: false);
       final sessionStore = ref.read(authSessionStorePOD);
       final subscriptionStore = ref.read(subscriptionStorePOD);
