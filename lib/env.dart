@@ -15,7 +15,8 @@ abstract class Env {
   static const String mqttPassword = String.fromEnvironment('MQTT_PASSWORD');
   static const String webAppUrl = String.fromEnvironment('WEB_APP_URL');
   static const String sentryDsn = String.fromEnvironment('SENTRY_DSN');
-  static const String billingPage = String.fromEnvironment('BILLING_PAGE');
+  static const String manageSubscriptionPage = String.fromEnvironment('BILLING_PAGE');
+  static const String upgradeSubscriptionPage = String.fromEnvironment('UPGRADE_SUBS_PAGE');
   static const String accountName = String.fromEnvironment('ACCOUNT_NAME');
   static const String appName = String.fromEnvironment('APP_NAME');
   static const String appleClientId = String.fromEnvironment('APPLE_CLIENT_ID');
@@ -99,7 +100,7 @@ abstract class Env {
   }
 
   static String stringify() =>
-      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, billingPage: $billingPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret, isAutomated: $isAutomated, openVpnExtensionId: $openVpnExtensionId, openVpnExtensionName: $openVpnExtensionName, manageDevicesPage: $manageDevicesPage, flavor: ${flavor.name}';
+      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, manageSubscriptionPage: $manageSubscriptionPage, upgradeSubscriptionPage: $upgradeSubscriptionPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret, isAutomated: $isAutomated, openVpnExtensionId: $openVpnExtensionId, openVpnExtensionName: $openVpnExtensionName, manageDevicesPage: $manageDevicesPage, flavor: ${flavor.name}';
 
   static String _getBundleId() {
     if (Platform.isIOS || Platform.isMacOS) {
@@ -115,7 +116,8 @@ abstract class Env {
         'MQTT_PASSWORD': mqttPassword,
         'WEB_APP_URL': webAppUrl,
         'SENTRY_DSN': sentryDsn,
-        'BILLING_PAGE': billingPage,
+        'BILLING_PAGE': manageSubscriptionPage,
+        'UPGRADE_SUBS_PAGE': upgradeSubscriptionPage,
         'ACCOUNT_NAME': accountName,
         'APP_NAME': appName,
         'APPLE_CLIENT_ID': appleClientId,

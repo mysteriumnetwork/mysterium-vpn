@@ -96,7 +96,11 @@ class _Authenticated extends HookConsumerWidget {
                   });
 
                   Future<void> onSubscribePress() async {
-                    await notifier.runAndAwait(() async => await handleSubscribe());
+                    await notifier.runAndAwait(
+                      () async => await handleSubscribe(
+                        manageSubscription: subscription?.active ?? false,
+                      ),
+                    );
                   }
 
                   if (isLoading) {
