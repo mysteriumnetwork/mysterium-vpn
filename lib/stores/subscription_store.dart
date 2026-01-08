@@ -162,8 +162,9 @@ abstract class _SubscriptionStore with Store {
   }
 
   @action
-  Future<Subscription> refreshSubscription() async {
-    if (_subscriptionFuture.value?.active == false ||
+  Future<Subscription> refreshSubscription({bool force = false}) async {
+    if (force ||
+        _subscriptionFuture.value?.active == false ||
         (_subscriptionFuture.value?.isExpired ?? false) ||
         _subscriptionFuture.status == FutureStatus.rejected) {
       _subscriptionFuture = _subscriptionFuture.replaceOrReset(
