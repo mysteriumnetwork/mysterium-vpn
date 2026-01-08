@@ -256,7 +256,8 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
         purchaseDetails: purchaseDetails,
       );
       final subscription = await _subscriptionStore.subscriptionFuture;
-      if (purchaseDetails.status == PurchaseStatus.purchased && subscription.active) {
+      if (purchaseDetails.status == PurchaseStatus.restored ||
+          purchaseDetails.status == PurchaseStatus.purchased && subscription.active) {
         if (product != null) {
           for (final product in products) {
             product.status = product.id == subscription.planId

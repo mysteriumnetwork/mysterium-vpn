@@ -207,7 +207,7 @@ class SecureStorageService {
       'email': email,
       'activeUntil': activeUntil.toIso8601String(),
     };
-    write(StorageKeys.subscriptionPaymentInfo.name, jsonEncode(value));
+    await write(StorageKeys.subscriptionPaymentInfo.name, jsonEncode(value));
   }
 
   Future<(String, DateTime)> getSubscriptionPaymentInfo() async {
