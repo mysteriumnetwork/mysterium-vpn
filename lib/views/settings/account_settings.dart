@@ -86,8 +86,7 @@ class _Authenticated extends HookConsumerWidget {
                   : null,
               actionWidget: HookBuilder(
                 builder: (context) {
-                  final handleSubscribe =
-                      useHandleSubscribe(manageSubscription: subscription?.active ?? false);
+                  final handleSubscribe = useHandleSubscribe();
                   final (notifier, subscribeStatus) = useFutureStatus();
 
                   useValueChanged<AsyncSnapshot<void>, void>(subscribeStatus, (_, __) {
@@ -97,7 +96,11 @@ class _Authenticated extends HookConsumerWidget {
                   });
 
                   Future<void> onSubscribePress() async {
-                    await notifier.runAndAwait(() async => await handleSubscribe());
+                    await notifier.runAndAwait(
+                      () async => await handleSubscribe(
+                        manageSubscription: subscription?.active ?? false,
+                      ),
+                    );
                   }
 
                   if (isLoading) {
