@@ -278,6 +278,20 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$plansBestValueComputed ??= Computed<Set<String>>(() => super.plansBestValue,
               name: 'RemoteConfigStoreBase.plansBestValue'))
           .value;
+  Computed<String>? _$upgradeSubscriptionPageComputed;
+
+  @override
+  String get upgradeSubscriptionPage =>
+      (_$upgradeSubscriptionPageComputed ??= Computed<String>(() => super.upgradeSubscriptionPage,
+              name: 'RemoteConfigStoreBase.upgradeSubscriptionPage'))
+          .value;
+  Computed<String>? _$manageSubscriptionPageComputed;
+
+  @override
+  String get manageSubscriptionPage =>
+      (_$manageSubscriptionPageComputed ??= Computed<String>(() => super.manageSubscriptionPage,
+              name: 'RemoteConfigStoreBase.manageSubscriptionPage'))
+          .value;
 
   @override
   String toString() {
@@ -320,7 +334,9 @@ limitedTimeOfferExpiryDate: ${limitedTimeOfferExpiryDate},
 limitedTimeOfferImage: ${limitedTimeOfferImage},
 isProtocolPickerAvailable: ${isProtocolPickerAvailable},
 planFeatures: ${planFeatures},
-plansBestValue: ${plansBestValue}
+plansBestValue: ${plansBestValue},
+upgradeSubscriptionPage: ${upgradeSubscriptionPage},
+manageSubscriptionPage: ${manageSubscriptionPage}
     ''';
   }
 }
