@@ -32,9 +32,9 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
 
     _disposers = [
       reaction(
-        (_) => _subscriptionStore.isSubscribed ?? false,
+        (_) => _subscriptionStore.subscriptionFuture.value?.planId ?? '',
         (_) => _refreshLocations(),
-        delay: 500,
+        delay: 200,
         fireImmediately: false,
       ),
     ];
