@@ -85,7 +85,7 @@ jobs:
           fvm dart run msix:create `
             --build-windows false --install-certificate false --output-name "MysteriumVPN" `
             --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
-            --sign-msix false --publisher "$certificate_publisher"
+            --sign-msix false --publisher "$certificate_publisher" --protocol-activation "${{ inputs.protocol_activation }}"
 
       - name: Sign Windows Installer (GlobalSign HSM certificate in Azure Key Vault)
         run: |
@@ -128,7 +128,7 @@ jobs:
           fvm dart run msix:create `
             --build-windows false --install-certificate false --output-name "MysteriumVPN" `
             --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
-            --store --identity-name "${{ inputs.product_identity }}" --publisher "CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC" --publisher-display-name "UAB MN Technologijos"
+            --store --identity-name "${{ inputs.product_identity }}" --publisher "CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC" --publisher-display-name "UAB MN Technologijos" --protocol-activation "${{ inputs.protocol_activation }}"
 
       - name: Upload to Github
         uses: actions/upload-artifact@v5

@@ -73,6 +73,7 @@ jobs:
       env_file: ".env.prod"
       standalone_sign: true
       standalone_keyvault_certificate: "mysteriumvpn"
+      protocol_activation: "mysteriumvpn"
     secrets: inherit
 
   release:
