@@ -47,7 +47,7 @@ class _SubscriptionWatcherHookState extends HookState<void, _SubscriptionWatcher
     }
 
     final subscriptionStore = ref.read(subscriptionStorePOD);
-    Future.microtask(subscriptionStore.refreshSubscription);
+    Future.microtask(() => subscriptionStore.refreshSubscription(force: true));
   }
 
   @override
