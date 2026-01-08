@@ -32,6 +32,9 @@ on:
       standalone_keyvault_certificate:
         required: true
         type: string
+      protocol_activation:
+        required: true
+        type: string  
 
 jobs:
   release:
