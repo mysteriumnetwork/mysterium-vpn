@@ -34,7 +34,7 @@ on:
         type: string
       protocol_activation:
         required: true
-        type: string  
+        type: string
 
 jobs:
   release:
