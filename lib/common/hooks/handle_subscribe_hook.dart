@@ -47,7 +47,7 @@ FutureOr<void> Function() useHandleUpgradePlan() {
     final isCorrectGateway = switch (subscription.gateway) {
       'google' => Platform.isAndroid,
       'apple' => Platform.isIOS || Platform.isMacOS,
-      _ => Platform.isWindows,
+      _ => true,
     };
 
     if (!isCorrectGateway) {
