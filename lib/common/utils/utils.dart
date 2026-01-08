@@ -352,10 +352,12 @@ String? getMagicLinkCode(String query) {
 FutureOr<void> handleOnBillingPage({
   required BuildContext context,
   required bool subscriptionActive,
-  required String billingPage,
+  required String manageSubscriptionPage,
+  required String upgradeSubscriptionPage,
   required String? gateway,
   required String? accessToken,
   required PurchasableProduct? upgradeProduct,
+  required bool manageSubscription,
   FutureOr<void> Function()? onManageSubscription,
 }) async {
   final isMobileGateway = isMobilePaymentGateway(gateway);
@@ -384,7 +386,9 @@ FutureOr<void> handleOnBillingPage({
     return;
   }
 
-  final uri = Uri.parse(billingPage);
+  final uri = Uri.parse(
+    manageSubscription ? manageSubscriptionPage : upgradeSubscriptionPage,
+  );
   final httpsUri = Uri(
     scheme: uri.scheme,
     host: uri.host,
