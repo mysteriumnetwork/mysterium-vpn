@@ -128,8 +128,8 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
       AsyncAction('_SubscriptionStore.refreshSubscription', context: context);
 
   @override
-  Future<Subscription> refreshSubscription() {
-    return _$refreshSubscriptionAsyncAction.run(() => super.refreshSubscription());
+  Future<Subscription> refreshSubscription({bool force = false}) {
+    return _$refreshSubscriptionAsyncAction.run(() => super.refreshSubscription(force: force));
   }
 
   late final _$refreshSubscriptionConfigAsyncAction =
