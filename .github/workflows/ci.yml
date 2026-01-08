@@ -138,4 +138,5 @@ jobs:
       env_file: ".env.dev"
       standalone_sign: true
       standalone_keyvault_certificate: "mysteriumvpn-selfsigned"
+      protocol_activation: "mysteriumvpntest"
     secrets: inherit
