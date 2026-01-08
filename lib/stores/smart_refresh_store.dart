@@ -71,7 +71,6 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
   Future<void> _onPause() async {}
 
   Future<void> _refreshLocations() async {
-    print('Triggering locations refresh due to subscription change');
     try {
       await _locationsStore.refreshAll();
     } catch (e, stack) {
