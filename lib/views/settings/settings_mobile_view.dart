@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
-import 'package:mysterium_vpn/components/banners/subscription_upgrade_banner.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/sheet_scaffold.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/components/banners/in_app_message_banner.dart';
 import 'package:mysterium_vpn/views/settings/account_settings.dart';
 import 'package:mysterium_vpn/views/settings/application_settings.dart';
 import 'package:mysterium_vpn/views/settings/connection_settings.dart';
@@ -27,7 +27,7 @@ class SettingsMobileView extends HookConsumerWidget {
     );
     return SheetScaffold(
       headerTitle: LocaleKeys.settings.tr(),
-      subheaderSliver: const SliverPinnedHeader(child: SubscriptionUpgradeBanner()),
+      subheaderSliver: const SliverPinnedHeader(child: InAppMessageBanner()),
       sliver: SliverClip(
         child: DecoratedSliver(
           decoration: BoxDecoration(

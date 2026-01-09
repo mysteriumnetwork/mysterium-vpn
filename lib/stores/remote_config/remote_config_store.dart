@@ -5,6 +5,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/models/in_app_message.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/models/subscription_plan_features.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -53,6 +54,7 @@ enum _FeatureToggleKey {
   plansBestValue,
   upgradeSubscriptionPage,
   manageSubscriptionPage,
+  inAppMessages,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -498,6 +500,69 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   String get manageSubscriptionPage {
     final value = config[_FeatureToggleKey.manageSubscriptionPage.name] as String?;
     return (value?.isNotEmpty ?? false ? value! : Env.manageSubscriptionPage).trim();
+  }
+
+  @computed
+  List<InAppMessage> get inAppMessages {
+    try {
+      final config = {
+        ...this.config,
+        _FeatureToggleKey.inAppMessages.name: '''
+      [
+  {
+    "type": "popup",
+    "id": "welcome_promo_2025",
+    "title": "Get 20% Off Premium!",
+    "message": "Thanks for joining us. As a welcome gift, enjoy a discount on your first month.",
+    "imageUrl": "https://my-cdn.com/images/welcome-hero.png",
+    "actions": [
+      {
+        "type": "primary",
+        "label": "Claim Offer",
+        "url": "app://subscribe?code=WELCOME20"
+      },
+      {
+        "type": "secondary",
+        "label": "No Thanks",
+        "url": "action://dismiss"
+      }
+    ]
+  },
+  {
+    "type": "banner",
+    "id": "maintenance_warning",
+    "title": "Scheduled Maintenance: Tonight at 2 AM",
+    "iconUrl": "https://raw.githubusercontent.com/untitleduico/icons/refs/heads/main/icons/diamond-01.svg",
+    "action": {
+      "type": "primary",
+      "label": "Details",
+      "url": "https://status.myapp.com"
+    }
+  }
+]
+      '''
+            .trim()
+      };
+      if (config.containsKey(_FeatureToggleKey.inAppMessages.name)) {
+        final raw = config[_FeatureToggleKey.inAppMessages.name].toString();
+        final json = jsonDecode(raw) as Iterable;
+        return json
+            // in case of one bad message, we still want to parse others
+            .map((it) {
+              try {
+                return InAppMessage.fromJson(it as Map<String, dynamic>);
+              } catch (e, stack) {
+                logger.handle(e, stack);
+                return null;
+              }
+            })
+            .nonNulls
+            .toList();
+      }
+    } catch (e, stack) {
+      logger.handle(e, stack);
+    }
+    return [];
   }
 
   Map<String, String> get asUserProperties =>
