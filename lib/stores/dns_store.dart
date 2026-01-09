@@ -2,7 +2,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/auth_status.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn/stores/subscription_config_store.dart';
+import 'package:mysterium_vpn/stores/subscription_features_store.dart';
 import 'package:talker/talker.dart';
 
 part 'dns_store.g.dart';
@@ -20,8 +20,7 @@ abstract class _DNSStore with Store {
     this._remoteConfigStore,
     this._logger,
     this._authSessionStore,
-    this._subscriptionStore,
-    this._subscriptionConfigStore,
+    this._subscriptionFeaturesStore,
   ) {
     _authReactionDisposer = reaction<AuthStatus>(
       (_) => _authSessionStore.status,
@@ -40,8 +39,7 @@ abstract class _DNSStore with Store {
   final RemoteConfigStore _remoteConfigStore;
   final Talker _logger;
   final AuthSessionStore _authSessionStore;
-  final SubscriptionStore _subscriptionStore;
-  final SubscriptionConfigStore _subscriptionConfigStore;
+  final SubscriptionFeaturesStore _subscriptionFeaturesStore;
   ReactionDisposer? _authReactionDisposer;
 
   @computed
@@ -62,29 +60,12 @@ abstract class _DNSStore with Store {
 
   @computed
   bool get hideNotSafeContentBlocker =>
-      _remoteConfigStore.hideNotSafeContentBlocker || !malwareBlockingAllowed;
+      _remoteConfigStore.hideNotSafeContentBlocker ||
+      !_subscriptionFeaturesStore.malwareBlockingAllowed;
 
   @computed
   bool get hideMalwareContentBlocker =>
-      _remoteConfigStore.hideMalwareBlocker || !malwareBlockingAllowed;
-
-  bool get malwareBlockingAllowed {
-    if (!_authSessionStore.isAuthenticated) {
-      return true;
-    }
-    if (!(_subscriptionStore.isSubscribed ?? false)) {
-      return true;
-    }
-    var allow = false;
-    final subscriptionPlanMetadata =
-        _subscriptionConfigStore.subscriptionPlanFuture.value?.metadata;
-    if (subscriptionPlanMetadata != null) {
-      // Misconfigured plans works with old logic - always allow blockers
-      allow = subscriptionPlanMetadata.malwareBlockingAllowed ?? true;
-    }
-
-    return allow;
-  }
+      _remoteConfigStore.hideMalwareBlocker || !_subscriptionFeaturesStore.malwareBlockingAllowed;
 
   @computed
   String get dnsAddress {

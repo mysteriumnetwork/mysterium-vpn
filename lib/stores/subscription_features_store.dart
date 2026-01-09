@@ -31,6 +31,9 @@ abstract class _SubscriptionFeaturesStore with Store, Disposeable {
   @computed
   bool get residentialIPsAllowed => metadata?.residentialIpsAllowed ?? true;
 
+  @computed
+  bool get malwareBlockingAllowed => metadata?.malwareBlockingAllowed ?? false;
+
   @override
   void dispose() {}
 }
