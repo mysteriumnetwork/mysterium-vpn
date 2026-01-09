@@ -23,12 +23,20 @@ mixin _$SubscriptionFeaturesStore on _SubscriptionFeaturesStore, Store {
       (_$residentialIPsAllowedComputed ??= Computed<bool>(() => super.residentialIPsAllowed,
               name: '_SubscriptionFeaturesStore.residentialIPsAllowed'))
           .value;
+  Computed<bool>? _$malwareBlockingAllowedComputed;
+
+  @override
+  bool get malwareBlockingAllowed =>
+      (_$malwareBlockingAllowedComputed ??= Computed<bool>(() => super.malwareBlockingAllowed,
+              name: '_SubscriptionFeaturesStore.malwareBlockingAllowed'))
+          .value;
 
   @override
   String toString() {
     return '''
 metadata: ${metadata},
-residentialIPsAllowed: ${residentialIPsAllowed}
+residentialIPsAllowed: ${residentialIPsAllowed},
+malwareBlockingAllowed: ${malwareBlockingAllowed}
     ''';
   }
 }
