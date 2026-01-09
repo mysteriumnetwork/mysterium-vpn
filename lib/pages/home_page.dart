@@ -34,6 +34,7 @@ class HomePage extends HookConsumerWidget {
       extendBodyBehindAppBar: true,
       body: Stack(
         children: [
+          _Test(),
           ScreenTypeLayoutBuilder(
             mobile: (BuildContext context) => const HomeMobileView(),
             tablet: (BuildContext context) => const HomeDesktopView(),
@@ -46,5 +47,15 @@ class HomePage extends HookConsumerWidget {
         ],
       ),
     );
+  }
+}
+
+class _Test extends HookConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final inAppMessagesStore = ref.watch(inAppMessagesStorePOD);
+    print('inAppMessagesStore.messages');
+    print(inAppMessagesStore.messages);
+    return const SizedBox.shrink();
   }
 }

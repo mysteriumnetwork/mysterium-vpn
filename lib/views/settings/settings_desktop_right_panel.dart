@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/banners/subscription_upgrade_banner.dart';
 import 'package:mysterium_vpn/components/circle_box.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/components/banners/in_app_message_banner.dart';
 import 'package:mysterium_vpn/views/settings/account_settings.dart';
 import 'package:mysterium_vpn/views/settings/application_settings.dart';
 import 'package:mysterium_vpn/views/settings/connection_settings.dart';
@@ -32,7 +32,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
         ),
         const Padding(
           padding: EdgeInsets.only(bottom: 18),
-          child: SubscriptionUpgradeBanner(),
+          child: InAppMessageBanner(),
         ),
         const AppVersionUpdateSetting(),
         switch (settingCategory) {
