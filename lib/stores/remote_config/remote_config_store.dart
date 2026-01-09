@@ -505,44 +505,6 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   @computed
   List<InAppMessage> get inAppMessages {
     try {
-      final config = {
-        ...this.config,
-        _FeatureToggleKey.inAppMessages.name: '''
-      [
-  {
-    "type": "popup",
-    "id": "welcome_promo_2025",
-    "title": "Get 20% Off Premium!",
-    "message": "Thanks for joining us. As a welcome gift, enjoy a discount on your first month.",
-    "imageUrl": "https://my-cdn.com/images/welcome-hero.png",
-    "actions": [
-      {
-        "type": "primary",
-        "label": "Claim Offer",
-        "url": "app://subscribe?code=WELCOME20"
-      },
-      {
-        "type": "secondary",
-        "label": "No Thanks",
-        "url": "action://dismiss"
-      }
-    ]
-  },
-  {
-    "type": "banner",
-    "id": "maintenance_warning",
-    "title": "Scheduled Maintenance: Tonight at 2 AM",
-    "iconUrl": "https://raw.githubusercontent.com/untitleduico/icons/refs/heads/main/icons/diamond-01.svg",
-    "action": {
-      "type": "primary",
-      "label": "Details",
-      "url": "https://status.myapp.com"
-    }
-  }
-]
-      '''
-            .trim()
-      };
       if (config.containsKey(_FeatureToggleKey.inAppMessages.name)) {
         final raw = config[_FeatureToggleKey.inAppMessages.name].toString();
         final json = jsonDecode(raw) as Iterable;
