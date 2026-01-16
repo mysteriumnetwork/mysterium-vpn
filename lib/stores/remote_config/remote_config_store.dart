@@ -53,6 +53,7 @@ enum _FeatureToggleKey {
   plansBestValue,
   upgradeSubscriptionPage,
   manageSubscriptionPage,
+  promotionalBannerContent,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -498,6 +499,23 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   String get manageSubscriptionPage {
     final value = config[_FeatureToggleKey.manageSubscriptionPage.name] as String?;
     return (value?.isNotEmpty ?? false ? value! : Env.manageSubscriptionPage).trim();
+  }
+
+  @computed
+  PromotionalBanner? get promotionalBanner {
+    try {
+      if (config.containsKey(_FeatureToggleKey.promotionalBannerContent.name)) {
+        final raw = config[_FeatureToggleKey.promotionalBannerContent.name].toString();
+        if (raw == 'null' || raw.isEmpty) {
+          return null;
+        }
+        final json = jsonDecode(raw) as Map<String, dynamic>;
+        return PromotionalBanner.fromJson(json);
+      }
+    } catch (e, stack) {
+      logger.handle(e, stack);
+    }
+    return null;
   }
 
   Map<String, String> get asUserProperties =>

@@ -6,6 +6,7 @@ export 'ip_info.dart';
 export 'location.dart';
 export 'map_config.dart';
 export 'pkce.dart';
+export 'promotional_banner.dart';
 export 'purchasable_product.dart';
 export 'response.dart';
 export 'stun_binding_request.dart';

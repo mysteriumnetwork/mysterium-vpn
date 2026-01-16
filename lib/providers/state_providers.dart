@@ -517,3 +517,10 @@ final subscriptionFeaturesStorePOD = Provider<SubscriptionFeaturesStore>(
     return store;
   },
 );
+
+final promotionalContentStorePOD = Provider<PromotionalContentStore>(
+  (ref) {
+    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+    return PromotionalContentStore(remoteConfigStore);
+  },
+);
