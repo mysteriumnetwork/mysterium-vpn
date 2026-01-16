@@ -292,6 +292,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$manageSubscriptionPageComputed ??= Computed<String>(() => super.manageSubscriptionPage,
               name: 'RemoteConfigStoreBase.manageSubscriptionPage'))
           .value;
+  Computed<PromotionalBanner?>? _$promotionalBannerComputed;
+
+  @override
+  PromotionalBanner? get promotionalBanner =>
+      (_$promotionalBannerComputed ??= Computed<PromotionalBanner?>(() => super.promotionalBanner,
+              name: 'RemoteConfigStoreBase.promotionalBanner'))
+          .value;
 
   @override
   String toString() {
@@ -336,7 +343,8 @@ isProtocolPickerAvailable: ${isProtocolPickerAvailable},
 planFeatures: ${planFeatures},
 plansBestValue: ${plansBestValue},
 upgradeSubscriptionPage: ${upgradeSubscriptionPage},
-manageSubscriptionPage: ${manageSubscriptionPage}
+manageSubscriptionPage: ${manageSubscriptionPage},
+promotionalBanner: ${promotionalBanner}
     ''';
   }
 }
