@@ -15,5 +15,24 @@ abstract class _PromotionalContentStore with Store {
   final RemoteConfigStore _remoteConfigStore;
 
   @computed
-  PromotionalBanner? get activeBanner => _remoteConfigStore.promotionalBanner;
+  PromotionalBanner? get activeBanner {
+    final banner = _remoteConfigStore.promotionalBanner;
+    if (banner == null) {
+      return null;
+    }
+
+    final now = DateTime.now();
+
+    // Check if banner has started
+    if (banner.startDate != null && now.isBefore(banner.startDate!)) {
+      return null;
+    }
+
+    // Check if banner has ended
+    if (banner.endDate != null && now.isAfter(banner.endDate!)) {
+      return null;
+    }
+
+    return banner;
+  }
 }
