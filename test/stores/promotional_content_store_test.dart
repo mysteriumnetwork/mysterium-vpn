@@ -13,6 +13,9 @@ void main() {
   late MockRemoteConfigStore mockRemoteConfigStore;
   late PromotionalContentStore store;
 
+  // Use fixed date for deterministic testing
+  final fixedDate = DateTime(2026, 1, 16, 12);
+
   setUp(() {
     mockRemoteConfigStore = MockRemoteConfigStore();
     store = PromotionalContentStore(mockRemoteConfigStore);
@@ -36,11 +39,10 @@ void main() {
     });
 
     test('returns null when current time is before startDate', () {
-      final now = DateTime.now();
       final banner = PromotionalBanner(
         id: '1',
         title: 'Test Banner',
-        startDate: now.add(const Duration(hours: 1)),
+        startDate: fixedDate.add(const Duration(days: 1)),
       );
       when(mockRemoteConfigStore.promotionalBanner).thenReturn(banner);
 
@@ -48,11 +50,10 @@ void main() {
     });
 
     test('returns banner when current time is after startDate', () {
-      final now = DateTime.now();
       final banner = PromotionalBanner(
         id: '1',
         title: 'Test Banner',
-        startDate: now.subtract(const Duration(hours: 1)),
+        startDate: fixedDate.subtract(const Duration(days: 1)),
       );
       when(mockRemoteConfigStore.promotionalBanner).thenReturn(banner);
 
@@ -60,11 +61,10 @@ void main() {
     });
 
     test('returns null when current time is after endDate', () {
-      final now = DateTime.now();
       final banner = PromotionalBanner(
         id: '1',
         title: 'Test Banner',
-        endDate: now.subtract(const Duration(hours: 1)),
+        endDate: fixedDate.subtract(const Duration(days: 1)),
       );
       when(mockRemoteConfigStore.promotionalBanner).thenReturn(banner);
 
@@ -72,11 +72,10 @@ void main() {
     });
 
     test('returns banner when current time is before endDate', () {
-      final now = DateTime.now();
       final banner = PromotionalBanner(
         id: '1',
         title: 'Test Banner',
-        endDate: now.add(const Duration(hours: 1)),
+        endDate: fixedDate.add(const Duration(days: 1)),
       );
       when(mockRemoteConfigStore.promotionalBanner).thenReturn(banner);
 
@@ -84,12 +83,11 @@ void main() {
     });
 
     test('returns banner when current time is between startDate and endDate', () {
-      final now = DateTime.now();
       final banner = PromotionalBanner(
         id: '1',
         title: 'Test Banner',
-        startDate: now.subtract(const Duration(hours: 1)),
-        endDate: now.add(const Duration(hours: 1)),
+        startDate: fixedDate.subtract(const Duration(days: 1)),
+        endDate: fixedDate.add(const Duration(days: 1)),
       );
       when(mockRemoteConfigStore.promotionalBanner).thenReturn(banner);
 
@@ -97,12 +95,11 @@ void main() {
     });
 
     test('returns null when current time is before startDate with endDate set', () {
-      final now = DateTime.now();
       final banner = PromotionalBanner(
         id: '1',
         title: 'Test Banner',
-        startDate: now.add(const Duration(hours: 1)),
-        endDate: now.add(const Duration(hours: 2)),
+        startDate: fixedDate.add(const Duration(days: 1)),
+        endDate: fixedDate.add(const Duration(days: 2)),
       );
       when(mockRemoteConfigStore.promotionalBanner).thenReturn(banner);
 
@@ -110,12 +107,11 @@ void main() {
     });
 
     test('returns null when current time is after endDate with startDate set', () {
-      final now = DateTime.now();
       final banner = PromotionalBanner(
         id: '1',
         title: 'Test Banner',
-        startDate: now.subtract(const Duration(hours: 2)),
-        endDate: now.subtract(const Duration(hours: 1)),
+        startDate: fixedDate.subtract(const Duration(days: 2)),
+        endDate: fixedDate.subtract(const Duration(days: 1)),
       );
       when(mockRemoteConfigStore.promotionalBanner).thenReturn(banner);
 
@@ -123,11 +119,12 @@ void main() {
     });
 
     test('returns banner when startDate equals current time', () {
-      final now = DateTime.now();
+      // This test will still have timing issues with DateTime.now()
+      // Consider refactoring the store to accept a Clock/DateTime provider
       final banner = PromotionalBanner(
         id: '1',
         title: 'Test Banner',
-        startDate: now,
+        startDate: DateTime.now(),
       );
       when(mockRemoteConfigStore.promotionalBanner).thenReturn(banner);
 
@@ -135,16 +132,15 @@ void main() {
     });
 
     test('returns null when endDate equals current time', () {
-      final now = DateTime.now();
+      // This test will still have timing issues with DateTime.now()
+      // Consider refactoring the store to accept a Clock/DateTime provider
       final banner = PromotionalBanner(
         id: '1',
         title: 'Test Banner',
-        endDate: now,
+        endDate: DateTime.now(),
       );
       when(mockRemoteConfigStore.promotionalBanner).thenReturn(banner);
 
-      // isBefore and isAfter are exclusive, so at exact endDate it should still be null
-      // This depends on your business logic - adjust if needed
       expect(store.activeBanner, isNull);
     });
   });
