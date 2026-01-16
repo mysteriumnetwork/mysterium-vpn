@@ -40,32 +40,7 @@ class _Banner extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final icon = useMemoized<Widget?>(
-      () {
-        if (data.iconUrl == null) {
-          return Icon(
-            Icons.campaign,
-            size: 24,
-            color: Palette.brand.shade700,
-          );
-        }
-        if (data.iconUrl?.endsWith('svg') ?? false) {
-          return SvgPicture.network(
-            data.iconUrl!,
-            width: 24,
-            height: 24,
-            colorFilter: ColorFilter.mode(Palette.brand.shade700, BlendMode.srcIn),
-          );
-        }
-        return Image.network(
-          data.iconUrl!,
-          fit: BoxFit.contain,
-          width: 24,
-          height: 24,
-        );
-      },
-      [data.iconUrl],
-    );
+    final icon = useMemoized(() => _buildIcon(data.iconUrl), [data.iconUrl]);
 
     return PromoBar(
       icon: icon,
@@ -73,6 +48,36 @@ class _Banner extends HookWidget {
       onTap: data.redirectUrl != null
           ? () => Beamer.of(context).navigateToUrl(data.redirectUrl!, context)
           : null,
+    );
+  }
+
+  Widget _buildIcon(String? iconUrl) {
+    final defaultIcon = Icon(
+      Icons.campaign,
+      size: 24,
+      color: Palette.brand.shade700,
+    );
+
+    if (iconUrl == null) {
+      return defaultIcon;
+    }
+
+    if (iconUrl.toLowerCase().endsWith('.svg')) {
+      return SvgPicture.network(
+        iconUrl,
+        width: 24,
+        height: 24,
+        colorFilter: ColorFilter.mode(Palette.brand.shade700, BlendMode.srcIn),
+        placeholderBuilder: (_) => defaultIcon,
+      );
+    }
+
+    return Image.network(
+      iconUrl,
+      width: 24,
+      height: 24,
+      fit: BoxFit.contain,
+      errorBuilder: (_, __, ___) => defaultIcon,
     );
   }
 }
