@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
+import 'package:mysterium_vpn/components/banners/promotional_banner.dart';
 import 'package:mysterium_vpn/components/connection_status_bar.dart';
 import 'package:mysterium_vpn/views/home/home_banner.dart';
 import 'package:mysterium_vpn/views/home/home_map.dart';
-import 'package:mysterium_vpn/components/banners/in_app_message_banner.dart';
 
 class HomeConnectionView extends HookConsumerWidget {
   const HomeConnectionView({
@@ -20,7 +20,7 @@ class HomeConnectionView extends HookConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const ConnectionStatusBar(),
-        const InAppMessageBanner(),
+        const PromoBanner(),
         Expanded(
           child: Stack(
             children: [

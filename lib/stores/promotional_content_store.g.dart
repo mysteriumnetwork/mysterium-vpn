@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'in_app_messages_store.dart';
+part of 'promotional_content_store.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,18 +8,19 @@ part of 'in_app_messages_store.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$InAppMessagesStore on _InAppMessagesStore, Store {
-  Computed<List<InAppMessage>>? _$messagesComputed;
+mixin _$PromotionalContentStore on _PromotionalContentStore, Store {
+  Computed<PromotionalBanner?>? _$activeBannerComputed;
 
   @override
-  List<InAppMessage> get messages => (_$messagesComputed ??=
-          Computed<List<InAppMessage>>(() => super.messages, name: '_InAppMessagesStore.messages'))
-      .value;
+  PromotionalBanner? get activeBanner =>
+      (_$activeBannerComputed ??= Computed<PromotionalBanner?>(() => super.activeBanner,
+              name: '_PromotionalContentStore.activeBanner'))
+          .value;
 
   @override
   String toString() {
     return '''
-messages: ${messages}
+activeBanner: ${activeBanner}
     ''';
   }
 }

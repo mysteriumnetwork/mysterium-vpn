@@ -292,12 +292,12 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$manageSubscriptionPageComputed ??= Computed<String>(() => super.manageSubscriptionPage,
               name: 'RemoteConfigStoreBase.manageSubscriptionPage'))
           .value;
-  Computed<List<InAppMessage>>? _$inAppMessagesComputed;
+  Computed<PromotionalBanner?>? _$promotionalBannerComputed;
 
   @override
-  List<InAppMessage> get inAppMessages =>
-      (_$inAppMessagesComputed ??= Computed<List<InAppMessage>>(() => super.inAppMessages,
-              name: 'RemoteConfigStoreBase.inAppMessages'))
+  PromotionalBanner? get promotionalBanner =>
+      (_$promotionalBannerComputed ??= Computed<PromotionalBanner?>(() => super.promotionalBanner,
+              name: 'RemoteConfigStoreBase.promotionalBanner'))
           .value;
 
   @override
@@ -344,7 +344,7 @@ planFeatures: ${planFeatures},
 plansBestValue: ${plansBestValue},
 upgradeSubscriptionPage: ${upgradeSubscriptionPage},
 manageSubscriptionPage: ${manageSubscriptionPage},
-inAppMessages: ${inAppMessages}
+promotionalBanner: ${promotionalBanner}
     ''';
   }
 }

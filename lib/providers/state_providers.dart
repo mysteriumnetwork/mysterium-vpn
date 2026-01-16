@@ -9,7 +9,6 @@ import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/stores/in_app_messages_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/config_cat_user_store.dart';
 import 'package:mysterium_vpn/stores/smart_refresh_store.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -519,9 +518,9 @@ final subscriptionFeaturesStorePOD = Provider<SubscriptionFeaturesStore>(
   },
 );
 
-final inAppMessagesStorePOD = Provider<InAppMessagesStore>(
+final promotionalContentStorePOD = Provider<PromotionalContentStore>(
   (ref) {
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
-    return InAppMessagesStore(remoteConfigStore);
+    return PromotionalContentStore(remoteConfigStore);
   },
 );

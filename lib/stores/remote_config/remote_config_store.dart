@@ -5,7 +5,6 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/models/in_app_message.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/models/subscription_plan_features.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -54,7 +53,7 @@ enum _FeatureToggleKey {
   plansBestValue,
   upgradeSubscriptionPage,
   manageSubscriptionPage,
-  inAppMessages,
+  promotionalBannerContent,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -503,28 +502,20 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   }
 
   @computed
-  List<InAppMessage> get inAppMessages {
+  PromotionalBanner? get promotionalBanner {
     try {
-      if (config.containsKey(_FeatureToggleKey.inAppMessages.name)) {
-        final raw = config[_FeatureToggleKey.inAppMessages.name].toString();
-        final json = jsonDecode(raw) as Iterable;
-        return json
-            // in case of one bad message, we still want to parse others
-            .map((it) {
-              try {
-                return InAppMessage.fromJson(it as Map<String, dynamic>);
-              } catch (e, stack) {
-                logger.handle(e, stack);
-                return null;
-              }
-            })
-            .nonNulls
-            .toList();
+      if (config.containsKey(_FeatureToggleKey.promotionalBannerContent.name)) {
+        final raw = config[_FeatureToggleKey.promotionalBannerContent.name].toString();
+        if (raw == 'null' || raw.isEmpty) {
+          return null;
+        }
+        final json = jsonDecode(raw) as Map<String, dynamic>;
+        return PromotionalBanner.fromJson(json);
       }
     } catch (e, stack) {
       logger.handle(e, stack);
     }
-    return [];
+    return null;
   }
 
   Map<String, String> get asUserProperties =>
