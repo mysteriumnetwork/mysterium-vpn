@@ -15,6 +15,7 @@ export 'locations_query_store.dart';
 export 'locations_store.dart';
 export 'mqtt_store.dart';
 export 'network_statistics_store.dart';
+export 'promotional_content_store.dart';
 export 'rate_connection_store.dart';
 export 'real_ip_info_store.dart';
 export 'recent_locations_store.dart';
