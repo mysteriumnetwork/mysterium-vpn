@@ -19,7 +19,6 @@ void useHomeAutorun() {
   final userPreferencesStore = useProvider(userPreferencesStorePOD);
   final remoteConfigStore = useProvider(remoteConfigStorePOD);
   final authSessionStore = useProvider(authSessionStorePOD);
-  final subscriptionUpgradeShown = useRef(false);
   final screenType = useScreenType();
 
   return useEffect(
@@ -89,7 +88,6 @@ void useHomeAutorun() {
       vpnStore,
       userPreferencesStore,
       remoteConfigStore,
-      subscriptionUpgradeShown,
       authSessionStore,
     ],
   );
