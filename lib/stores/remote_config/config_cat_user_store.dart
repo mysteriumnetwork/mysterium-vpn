@@ -72,6 +72,9 @@ abstract class _ConfigCatUserStore with Store, Disposeable {
               custom: current.custom.copyWith(
                 subscriptionPlan: data.plan,
                 subscriptionSource: data.gateway,
+                expirationDate: data.expirationDate,
+                subscriptionDuration: data.duration,
+                recurring: data.recurring,
               ),
             ),
           );
@@ -82,6 +85,9 @@ abstract class _ConfigCatUserStore with Store, Disposeable {
 
   @readonly
   late ObservableFuture<ConfigCatUser> _future = ObservableFuture(_fetchUser());
+
+  @computed
+  String? get user => _future.value?.stringify();
 
   Future<_UserData> _fetchUserData() async {
     try {
@@ -135,6 +141,9 @@ abstract class _ConfigCatUserStore with Store, Disposeable {
         city: locationData.city,
         subscriptionSource: subscriptionData.gateway,
         subscriptionPlan: subscriptionData.plan,
+        expirationDate: subscriptionData.expirationDate,
+        subscriptionDuration: subscriptionData.duration,
+        recurring: subscriptionData.recurring,
       ).toAttributes(),
     );
   }
@@ -195,7 +204,13 @@ extension ConfigCatUserExtensions on ConfigCatUser {
 
 typedef _UserData = ({String id, String email});
 typedef _LocationData = ({String country, String city});
-typedef _SubscriptionData = ({String gateway, String plan});
+typedef _SubscriptionData = ({
+  String gateway,
+  String plan,
+  String? expirationDate,
+  String? duration,
+  String? recurring
+});
 
 extension _AuthUserDataExtensions on AuthUser? {
   ({String id, String email}) toUserData() => (
@@ -212,12 +227,22 @@ extension _IPInfoExtensions on IPInfo? {
 }
 
 extension _SubscriptionExtensions on Subscription? {
-  ({String gateway, String plan}) toSubscriptionData() {
+  ({String gateway, String plan, String? expirationDate, String? duration, String? recurring})
+      toSubscriptionData() {
     final plan = this?.planId;
     final gateway = this?.gatewayName;
+    final expirationDate = this?.activeUntil;
+    final duration = this?.durationInMonthsBasedOnPlanId;
+    final recurring = this?.recurring?.toString();
     if (plan != null && gateway != null) {
-      return (gateway: gateway, plan: plan);
+      return (
+        gateway: gateway,
+        plan: plan,
+        expirationDate: expirationDate?.toIso8601String(),
+        duration: duration,
+        recurring: recurring
+      );
     }
-    return (gateway: 'null', plan: 'null');
+    return (gateway: 'null', plan: 'null', expirationDate: null, duration: null, recurring: null);
   }
 }

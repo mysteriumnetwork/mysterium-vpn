@@ -13,6 +13,9 @@ abstract class ConfigCatUserCustom with _$ConfigCatUserCustom {
     required String? city,
     required String? subscriptionSource,
     required String? subscriptionPlan,
+    required String? expirationDate,
+    required String? subscriptionDuration,
+    required String? recurring,
   }) = _ConfigCatUserCustom;
 
   const ConfigCatUserCustom._();
@@ -26,6 +29,9 @@ abstract class ConfigCatUserCustom with _$ConfigCatUserCustom {
         city: user.getAttributeOrNull<String>('city'),
         subscriptionSource: user.getAttributeOrNull<String>('subscriptionSource'),
         subscriptionPlan: user.getAttributeOrNull<String>('subscriptionPlan'),
+        expirationDate: user.getAttributeOrNull<String>('expirationDate'),
+        subscriptionDuration: user.getAttributeOrNull<String>('subscriptionDuration'),
+        recurring: user.getAttributeOrNull<String>('recurring'),
       );
 
   Map<String, String> toAttributes() {

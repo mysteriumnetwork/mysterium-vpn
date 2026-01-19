@@ -19,6 +19,9 @@ mixin _$ConfigCatUserCustom {
   String? get city;
   String? get subscriptionSource;
   String? get subscriptionPlan;
+  String? get expirationDate;
+  String? get subscriptionDuration;
+  String? get recurring;
 
   /// Create a copy of ConfigCatUserCustom
   /// with the given fields replaced by the non-null parameter values.
@@ -42,17 +45,22 @@ mixin _$ConfigCatUserCustom {
             (identical(other.subscriptionSource, subscriptionSource) ||
                 other.subscriptionSource == subscriptionSource) &&
             (identical(other.subscriptionPlan, subscriptionPlan) ||
-                other.subscriptionPlan == subscriptionPlan));
+                other.subscriptionPlan == subscriptionPlan) &&
+            (identical(other.expirationDate, expirationDate) ||
+                other.expirationDate == expirationDate) &&
+            (identical(other.subscriptionDuration, subscriptionDuration) ||
+                other.subscriptionDuration == subscriptionDuration) &&
+            (identical(other.recurring, recurring) || other.recurring == recurring));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, platform, version, city, subscriptionSource, subscriptionPlan);
+  int get hashCode => Object.hash(runtimeType, platform, version, city, subscriptionSource,
+      subscriptionPlan, expirationDate, subscriptionDuration, recurring);
 
   @override
   String toString() {
-    return 'ConfigCatUserCustom(platform: $platform, version: $version, city: $city, subscriptionSource: $subscriptionSource, subscriptionPlan: $subscriptionPlan)';
+    return 'ConfigCatUserCustom(platform: $platform, version: $version, city: $city, subscriptionSource: $subscriptionSource, subscriptionPlan: $subscriptionPlan, expirationDate: $expirationDate, subscriptionDuration: $subscriptionDuration, recurring: $recurring)';
   }
 }
 
@@ -67,7 +75,10 @@ abstract mixin class $ConfigCatUserCustomCopyWith<$Res> {
       String version,
       String? city,
       String? subscriptionSource,
-      String? subscriptionPlan});
+      String? subscriptionPlan,
+      String? expirationDate,
+      String? subscriptionDuration,
+      String? recurring});
 }
 
 /// @nodoc
@@ -87,6 +98,9 @@ class _$ConfigCatUserCustomCopyWithImpl<$Res> implements $ConfigCatUserCustomCop
     Object? city = freezed,
     Object? subscriptionSource = freezed,
     Object? subscriptionPlan = freezed,
+    Object? expirationDate = freezed,
+    Object? subscriptionDuration = freezed,
+    Object? recurring = freezed,
   }) {
     return _then(_self.copyWith(
       platform: null == platform
@@ -108,6 +122,18 @@ class _$ConfigCatUserCustomCopyWithImpl<$Res> implements $ConfigCatUserCustomCop
       subscriptionPlan: freezed == subscriptionPlan
           ? _self.subscriptionPlan
           : subscriptionPlan // ignore: cast_nullable_to_non_nullable
+              as String?,
+      expirationDate: freezed == expirationDate
+          ? _self.expirationDate
+          : expirationDate // ignore: cast_nullable_to_non_nullable
+              as String?,
+      subscriptionDuration: freezed == subscriptionDuration
+          ? _self.subscriptionDuration
+          : subscriptionDuration // ignore: cast_nullable_to_non_nullable
+              as String?,
+      recurring: freezed == recurring
+          ? _self.recurring
+          : recurring // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -206,16 +232,30 @@ extension ConfigCatUserCustomPatterns on ConfigCatUserCustom {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String platform, String version, String? city, String? subscriptionSource,
-            String? subscriptionPlan)?
+    TResult Function(
+            String platform,
+            String version,
+            String? city,
+            String? subscriptionSource,
+            String? subscriptionPlan,
+            String? expirationDate,
+            String? subscriptionDuration,
+            String? recurring)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _ConfigCatUserCustom() when $default != null:
-        return $default(_that.platform, _that.version, _that.city, _that.subscriptionSource,
-            _that.subscriptionPlan);
+        return $default(
+            _that.platform,
+            _that.version,
+            _that.city,
+            _that.subscriptionSource,
+            _that.subscriptionPlan,
+            _that.expirationDate,
+            _that.subscriptionDuration,
+            _that.recurring);
       case _:
         return orElse();
     }
@@ -236,15 +276,29 @@ extension ConfigCatUserCustomPatterns on ConfigCatUserCustom {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(String platform, String version, String? city, String? subscriptionSource,
-            String? subscriptionPlan)
+    TResult Function(
+            String platform,
+            String version,
+            String? city,
+            String? subscriptionSource,
+            String? subscriptionPlan,
+            String? expirationDate,
+            String? subscriptionDuration,
+            String? recurring)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _ConfigCatUserCustom():
-        return $default(_that.platform, _that.version, _that.city, _that.subscriptionSource,
-            _that.subscriptionPlan);
+        return $default(
+            _that.platform,
+            _that.version,
+            _that.city,
+            _that.subscriptionSource,
+            _that.subscriptionPlan,
+            _that.expirationDate,
+            _that.subscriptionDuration,
+            _that.recurring);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -264,15 +318,29 @@ extension ConfigCatUserCustomPatterns on ConfigCatUserCustom {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String platform, String version, String? city, String? subscriptionSource,
-            String? subscriptionPlan)?
+    TResult? Function(
+            String platform,
+            String version,
+            String? city,
+            String? subscriptionSource,
+            String? subscriptionPlan,
+            String? expirationDate,
+            String? subscriptionDuration,
+            String? recurring)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _ConfigCatUserCustom() when $default != null:
-        return $default(_that.platform, _that.version, _that.city, _that.subscriptionSource,
-            _that.subscriptionPlan);
+        return $default(
+            _that.platform,
+            _that.version,
+            _that.city,
+            _that.subscriptionSource,
+            _that.subscriptionPlan,
+            _that.expirationDate,
+            _that.subscriptionDuration,
+            _that.recurring);
       case _:
         return null;
     }
@@ -287,7 +355,10 @@ class _ConfigCatUserCustom extends ConfigCatUserCustom {
       required this.version,
       required this.city,
       required this.subscriptionSource,
-      required this.subscriptionPlan})
+      required this.subscriptionPlan,
+      required this.expirationDate,
+      required this.subscriptionDuration,
+      required this.recurring})
       : super._();
   factory _ConfigCatUserCustom.fromJson(Map<String, dynamic> json) =>
       _$ConfigCatUserCustomFromJson(json);
@@ -302,6 +373,12 @@ class _ConfigCatUserCustom extends ConfigCatUserCustom {
   final String? subscriptionSource;
   @override
   final String? subscriptionPlan;
+  @override
+  final String? expirationDate;
+  @override
+  final String? subscriptionDuration;
+  @override
+  final String? recurring;
 
   /// Create a copy of ConfigCatUserCustom
   /// with the given fields replaced by the non-null parameter values.
@@ -329,17 +406,22 @@ class _ConfigCatUserCustom extends ConfigCatUserCustom {
             (identical(other.subscriptionSource, subscriptionSource) ||
                 other.subscriptionSource == subscriptionSource) &&
             (identical(other.subscriptionPlan, subscriptionPlan) ||
-                other.subscriptionPlan == subscriptionPlan));
+                other.subscriptionPlan == subscriptionPlan) &&
+            (identical(other.expirationDate, expirationDate) ||
+                other.expirationDate == expirationDate) &&
+            (identical(other.subscriptionDuration, subscriptionDuration) ||
+                other.subscriptionDuration == subscriptionDuration) &&
+            (identical(other.recurring, recurring) || other.recurring == recurring));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, platform, version, city, subscriptionSource, subscriptionPlan);
+  int get hashCode => Object.hash(runtimeType, platform, version, city, subscriptionSource,
+      subscriptionPlan, expirationDate, subscriptionDuration, recurring);
 
   @override
   String toString() {
-    return 'ConfigCatUserCustom(platform: $platform, version: $version, city: $city, subscriptionSource: $subscriptionSource, subscriptionPlan: $subscriptionPlan)';
+    return 'ConfigCatUserCustom(platform: $platform, version: $version, city: $city, subscriptionSource: $subscriptionSource, subscriptionPlan: $subscriptionPlan, expirationDate: $expirationDate, subscriptionDuration: $subscriptionDuration, recurring: $recurring)';
   }
 }
 
@@ -356,7 +438,10 @@ abstract mixin class _$ConfigCatUserCustomCopyWith<$Res>
       String version,
       String? city,
       String? subscriptionSource,
-      String? subscriptionPlan});
+      String? subscriptionPlan,
+      String? expirationDate,
+      String? subscriptionDuration,
+      String? recurring});
 }
 
 /// @nodoc
@@ -376,6 +461,9 @@ class __$ConfigCatUserCustomCopyWithImpl<$Res> implements _$ConfigCatUserCustomC
     Object? city = freezed,
     Object? subscriptionSource = freezed,
     Object? subscriptionPlan = freezed,
+    Object? expirationDate = freezed,
+    Object? subscriptionDuration = freezed,
+    Object? recurring = freezed,
   }) {
     return _then(_ConfigCatUserCustom(
       platform: null == platform
@@ -397,6 +485,18 @@ class __$ConfigCatUserCustomCopyWithImpl<$Res> implements _$ConfigCatUserCustomC
       subscriptionPlan: freezed == subscriptionPlan
           ? _self.subscriptionPlan
           : subscriptionPlan // ignore: cast_nullable_to_non_nullable
+              as String?,
+      expirationDate: freezed == expirationDate
+          ? _self.expirationDate
+          : expirationDate // ignore: cast_nullable_to_non_nullable
+              as String?,
+      subscriptionDuration: freezed == subscriptionDuration
+          ? _self.subscriptionDuration
+          : subscriptionDuration // ignore: cast_nullable_to_non_nullable
+              as String?,
+      recurring: freezed == recurring
+          ? _self.recurring
+          : recurring // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
