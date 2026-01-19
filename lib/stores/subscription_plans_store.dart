@@ -94,11 +94,10 @@ abstract class _SubscriptionPlansStore with Store, Disposeable {
   @computed
   List<PurchasableProduct> get bestValueProducts {
     final config = _remoteConfigStore.plansBestValue;
-    final asd = products
+    return products
         .where((product) => config.contains(product.id))
         .sortedByCompare((it) => it.rawPrice, (p1, p2) => p1.compareTo(p2))
         .toList();
-    return asd;
   }
 
   @override
