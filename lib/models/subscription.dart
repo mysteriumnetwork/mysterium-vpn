@@ -40,4 +40,26 @@ abstract class Subscription with _$Subscription {
         'google' => Platform.isAndroid,
         _ => false,
       };
+
+  String? get durationInMonthsBasedOnPlanId {
+    final id = planId;
+    if (id == null || id.isEmpty) {
+      return null;
+    }
+
+    if (id.contains('monthly')) {
+      return '1';
+    }
+    if (id.contains('years') && id.contains('2')) {
+      return '24';
+    }
+    if (id.contains('yearly')) {
+      return '12';
+    }
+    if (id.contains('months') && id.contains('6')) {
+      return '6';
+    }
+
+    return null;
+  }
 }
