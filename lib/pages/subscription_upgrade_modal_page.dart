@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart';
 import 'package:mysterium_vpn/common/hooks/plan_data_hook.dart';
 import 'package:mysterium_vpn/common/utils/design_system_theme.dart';
+import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_plans_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -46,25 +47,29 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
       onShowAllPlansPressed();
     }
 
-    return Observer(
-      builder: (context) {
-        final product = store.bestValueProducts.last;
-
-        return HookBuilder(
+    return ModalScaffold(
+      autoApplyPadding: false,
+      body: SubscriptionStatusContainer(
+        child: Observer(
           builder: (context) {
-            final planData = usePlanData(product, otherProduct: store.purchasedProduct);
-            final handleSubscribe = useHandleSubscribeToProduct();
-            Future<void> handlePurchase() async {
-              await handleSubscribe(product.id);
-              if (context.mounted) {
-                Navigator.of(context).pop();
-              }
+            final product = store.bestValueProducts.lastOrNull;
+            if (product == null) {
+              return const Center(
+                child: LoadingIndicator(),
+              );
             }
+            return HookBuilder(
+              builder: (context) {
+                final planData = usePlanData(product, otherProduct: store.purchasedProduct);
+                final handleSubscribe = useHandleSubscribeToProduct();
+                Future<void> handlePurchase() async {
+                  await handleSubscribe(product.id);
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
+                }
 
-            return ModalScaffold(
-              autoApplyPadding: false,
-              body: SubscriptionStatusContainer(
-                child: Column(
+                return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(
@@ -140,12 +145,12 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                       ],
                     ),
                   ],
-                ),
-              ),
+                );
+              },
             );
           },
-        );
-      },
+        ),
+      ),
     );
   }
 }
