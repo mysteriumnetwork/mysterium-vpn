@@ -9,7 +9,6 @@ import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/components/dialogs/device_limit_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/marketing_consent_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/push_notifications_dialog.dart';
-import 'package:mysterium_vpn/pages/subscription_upgrade_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/user_preferences_store.dart';
@@ -19,7 +18,6 @@ void useHomeAutorun() {
   final vpnStore = useProvider(vpnStorePOD);
   final userPreferencesStore = useProvider(userPreferencesStorePOD);
   final remoteConfigStore = useProvider(remoteConfigStorePOD);
-  final subscriptionUpgradeStore = useProvider(subscriptionUpgradeStorePOD);
   final authSessionStore = useProvider(authSessionStorePOD);
   final subscriptionUpgradeShown = useRef(false);
   final screenType = useScreenType();
@@ -63,22 +61,6 @@ void useHomeAutorun() {
             }
           },
         ),
-        autorun(
-          (_) {
-            if (subscriptionUpgradeShown.value) {
-              return;
-            }
-            if (!remoteConfigStore.subscriptionUpgradeAutoDisplayEnabled) {
-              return;
-            }
-            if (!subscriptionUpgradeStore.isEligibleForUpgrade) {
-              return;
-            }
-
-            subscriptionUpgradeShown.value = true;
-            controller.add(() => showSubscriptionUpgradePage(context));
-          },
-        ),
         reaction(
           (_) {
             final error = vpnStore.fetchConfigFuture?.error;
@@ -107,7 +89,6 @@ void useHomeAutorun() {
       vpnStore,
       userPreferencesStore,
       remoteConfigStore,
-      subscriptionUpgradeStore,
       subscriptionUpgradeShown,
       authSessionStore,
     ],
