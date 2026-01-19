@@ -486,12 +486,7 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
         logger.handle(e, stack);
       }
     }
-    return {
-      'plan_monthly',
-      'plan_yearly',
-      'plan_monthly_plus',
-      'plan_yearly_plus',
-    };
+    return {'plan_monthly', 'plan_yearly', 'plan_yearly_plus', 'plan_monthly_plus'};
   }
 
   @computed
