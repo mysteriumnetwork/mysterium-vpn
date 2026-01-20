@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:in_app_review/in_app_review.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/services/services.dart';
 
 class InAppReviewService {
@@ -28,10 +31,18 @@ class InAppReviewService {
 
   Future<void> _showDialog() async {
     final inAppReview = InAppReview.instance;
-    if (await inAppReview.isAvailable()) {
+    /// On Samsung devices the in-app review dialog does not work properly
+    if (await inAppReview.isAvailable() && !isSamsung()) {
       inAppReview.requestReview();
     }
     _setRemindTimestamp();
+  }
+
+  bool isSamsung() {
+    if (Platform.isAndroid) {
+      return Env.deviceManufacturer.toLowerCase().contains('samsung');
+    }
+    return false;
   }
 
   bool _shouldShowRateDialog() => _isOverInstallDate() && _isOverRemindDate();
