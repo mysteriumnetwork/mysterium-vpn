@@ -31,6 +31,7 @@ class InAppReviewService {
 
   Future<void> _showDialog() async {
     final inAppReview = InAppReview.instance;
+
     /// On Samsung devices the in-app review dialog does not work properly
     if (await inAppReview.isAvailable() && !isSamsung()) {
       inAppReview.requestReview();
