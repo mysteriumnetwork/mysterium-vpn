@@ -88,7 +88,7 @@
   "deleteAccount": "删除帐号",
   "deleteAccountQuestion": "删除帐号？",
   "describeYourIssue": "描述您的问题",
-  "deviceLimitReachedDesc": "您已达到连接设备数量的上限 6 台。要添加新设备，请先从您的帐户中移除现有设备。",
+  "deviceLimitReachedDesc": "您已达到连接设备数量上限。要添加新设备，请先从您的帐户中移除现有设备。",
   "deviceLimitReachedOpenDashboard": "打开仪表盘",
   "deviceLimitReachedTitle": "设备数量已达上限",
   "disconnect": "断开连接",

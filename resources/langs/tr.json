@@ -88,7 +88,7 @@
   "deleteAccount": "Hesabımı Sil",
   "deleteAccountQuestion": "Hesabını silmek üzeresin!",
   "describeYourIssue": "Sorununuzu açıklayın",
-  "deviceLimitReachedDesc": "Hesabınızda en fazla 6 cihaz bağlı kalabilir. Yeni bir cihaz eklemek için mevcut bir cihazı hesabınızdan kaldırın.",
+  "deviceLimitReachedDesc": "Hesabınızda bağlı cihaz sayısı maksimum sınıra ulaştı. Yeni bir cihaz eklemek için, hesabınızdan mevcut bir cihazı kaldırın.",
   "deviceLimitReachedOpenDashboard": "Kontrol Panelini Aç",
   "deviceLimitReachedTitle": "Cihaz Sınırına Ulaşıldı",
   "disconnect": "Bağlantıyı kes",
