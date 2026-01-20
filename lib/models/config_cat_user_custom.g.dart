@@ -13,6 +13,9 @@ _ConfigCatUserCustom _$ConfigCatUserCustomFromJson(Map<String, dynamic> json) =>
       city: json['city'] as String?,
       subscriptionSource: json['subscriptionSource'] as String?,
       subscriptionPlan: json['subscriptionPlan'] as String?,
+      expirationDate: json['expirationDate'] as String?,
+      subscriptionDuration: json['subscriptionDuration'] as String?,
+      recurring: json['recurring'] as String?,
     );
 
 Map<String, dynamic> _$ConfigCatUserCustomToJson(_ConfigCatUserCustom instance) =>
@@ -22,4 +25,7 @@ Map<String, dynamic> _$ConfigCatUserCustomToJson(_ConfigCatUserCustom instance) 
       'city': instance.city,
       'subscriptionSource': instance.subscriptionSource,
       'subscriptionPlan': instance.subscriptionPlan,
+      'expirationDate': instance.expirationDate,
+      'subscriptionDuration': instance.subscriptionDuration,
+      'recurring': instance.recurring,
     };
