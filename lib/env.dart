@@ -85,7 +85,7 @@ abstract class Env {
 
     _deviceName = switch (_deviceInfo) {
       final AndroidDeviceInfo android => android.name,
-      final IosDeviceInfo iOS => iOS.name,
+      final IosDeviceInfo iOS => '${iOS.modelName} ${iOS.systemVersion}',
       final MacOsDeviceInfo macOS => macOS.computerName,
       final WindowsDeviceInfo windows => windows.computerName,
       _ => 'Unknown',
