@@ -88,7 +88,7 @@
   "deleteAccount": "Hapus akun",
   "deleteAccountQuestion": "Hapus akun?",
   "describeYourIssue": "jelaskan permasalahanmu",
-  "deviceLimitReachedDesc": "Anda telah mencapai batas maksimum 6 perangkat yang terhubung. Untuk menambahkan perangkat baru, hapus perangkat yang sudah ada dari akun Anda.",
+  "deviceLimitReachedDesc": "Anda telah mencapai jumlah maksimum perangkat yang terhubung. Untuk menambahkan perangkat baru, hapus perangkat yang sudah ada dari akun Anda.",
   "deviceLimitReachedOpenDashboard": "Buka Dasbor",
   "deviceLimitReachedTitle": "Batas Perangkat Tercapai",
   "disconnect": "Putuskan",
