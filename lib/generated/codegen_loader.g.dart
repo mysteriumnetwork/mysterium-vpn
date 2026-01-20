@@ -104,7 +104,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "删除帐号",
     "deleteAccountQuestion": "删除帐号？",
     "describeYourIssue": "描述您的问题",
-    "deviceLimitReachedDesc": "您已达到连接设备数量的上限 6 台。要添加新设备，请先从您的帐户中移除现有设备。",
+    "deviceLimitReachedDesc": "您已达到连接设备数量上限。要添加新设备，请先从您的帐户中移除现有设备。",
     "deviceLimitReachedOpenDashboard": "打开仪表盘",
     "deviceLimitReachedTitle": "设备数量已达上限",
     "disconnect": "断开连接",
@@ -584,7 +584,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccountQuestion": "Hesabını silmek üzeresin!",
     "describeYourIssue": "Sorununuzu açıklayın",
     "deviceLimitReachedDesc":
-        "Hesabınızda en fazla 6 cihaz bağlı kalabilir. Yeni bir cihaz eklemek için mevcut bir cihazı hesabınızdan kaldırın.",
+        "Hesabınızda bağlı cihaz sayısı maksimum sınıra ulaştı. Yeni bir cihaz eklemek için, hesabınızdan mevcut bir cihazı kaldırın.",
     "deviceLimitReachedOpenDashboard": "Kontrol Panelini Aç",
     "deviceLimitReachedTitle": "Cihaz Sınırına Ulaşıldı",
     "disconnect": "Bağlantıyı kes",
@@ -1092,7 +1092,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccount": "アカウントを削除",
     "deleteAccountQuestion": "アカウントを削除?",
     "describeYourIssue": "問題を説明",
-    "deviceLimitReachedDesc": "接続可能なデバイスの数が最大6台に達しました。新しいデバイスを追加するには、アカウントから既存のデバイスを削除してください。",
+    "deviceLimitReachedDesc": "接続可能なデバイスの数が上限に達しました。新しいデバイスを追加するには、アカウントから既存のデバイスを削除してください。",
     "deviceLimitReachedOpenDashboard": "ダッシュボードを開く",
     "deviceLimitReachedTitle": "デバイス制限に達しました",
     "disconnect": "切断",
@@ -1581,7 +1581,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccountQuestion": "Konto löschen?",
     "describeYourIssue": "Beschreiben Sie Ihr Problem",
     "deviceLimitReachedDesc":
-        "Sie haben die maximale Anzahl von 6 verbundenen Geräten erreicht. Um ein neues Gerät hinzuzufügen, entfernen Sie ein vorhandenes aus Ihrem Konto.",
+        "Sie haben die maximale Anzahl verbundener Geräte erreicht. Um ein neues Gerät hinzuzufügen, entfernen Sie ein vorhandenes aus Ihrem Konto.",
     "deviceLimitReachedOpenDashboard": "Dashboard öffnen",
     "deviceLimitReachedTitle": "Gerätelimit erreicht",
     "disconnect": "Trennen",
@@ -2124,7 +2124,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccountQuestion": "Deletar conta?",
     "describeYourIssue": "descreva seu problema",
     "deviceLimitReachedDesc":
-        "Você atingiu o limite máximo de 6 dispositivos conectados. Para adicionar um novo dispositivo, remova um existente da sua conta.",
+        "Você atingiu o número máximo de dispositivos conectados. Para adicionar um novo dispositivo, remova um existente da sua conta.",
     "deviceLimitReachedOpenDashboard": "Abrir painel de controle",
     "deviceLimitReachedTitle": "Limite de dispositivos atingido",
     "disconnect": "Desconectar",
@@ -2658,7 +2658,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccountQuestion": "Delete Account?",
     "describeYourIssue": "Describe your issue",
     "deviceLimitReachedDesc":
-        "You have reached the maximum of 6 connected devices. To add a new device, remove an existing one from your account.",
+        "You have reached the maximum number of connected devices. To add a new device, remove an existing one from your account.",
     "deviceLimitReachedOpenDashboard": "Open Dashboard",
     "deviceLimitReachedTitle": "Device Limit Reached",
     "disconnect": "Disconnect",
@@ -3185,7 +3185,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccountQuestion": "Vuoi eliminare l'account?",
     "describeYourIssue": "Descrivi il tuo problema",
     "deviceLimitReachedDesc":
-        "Hai raggiunto il numero massimo di 6 dispositivi connessi. Per aggiungere un nuovo dispositivo, rimuovine uno esistente dal tuo account.",
+        "Hai raggiunto il numero massimo di dispositivi connessi. Per aggiungere un nuovo dispositivo, rimuovine uno esistente dal tuo account.",
     "deviceLimitReachedOpenDashboard": "Apri Dashboard",
     "deviceLimitReachedTitle": "Limite dispositivi raggiunto",
     "disconnect": "Disconnetti",
@@ -3723,7 +3723,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccountQuestion": "Supprimer le compte?",
     "describeYourIssue": "Décrivez votre problème",
     "deviceLimitReachedDesc":
-        "Vous avez atteint la limite de 6 appareils connectés. Pour ajouter un nouvel appareil, supprimez-en un de votre compte.",
+        "Vous avez atteint le nombre maximal d'appareils connectés. Pour ajouter un nouvel appareil, supprimez-en un de votre compte.",
     "deviceLimitReachedOpenDashboard": "Ouvrir le tableau de bord",
     "deviceLimitReachedTitle": "Limite de l'appareil atteinte",
     "disconnect": "Déconnecter",
@@ -4264,7 +4264,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccountQuestion": "Hapus akun?",
     "describeYourIssue": "jelaskan permasalahanmu",
     "deviceLimitReachedDesc":
-        "Anda telah mencapai batas maksimum 6 perangkat yang terhubung. Untuk menambahkan perangkat baru, hapus perangkat yang sudah ada dari akun Anda.",
+        "Anda telah mencapai jumlah maksimum perangkat yang terhubung. Untuk menambahkan perangkat baru, hapus perangkat yang sudah ada dari akun Anda.",
     "deviceLimitReachedOpenDashboard": "Buka Dasbor",
     "deviceLimitReachedTitle": "Batas Perangkat Tercapai",
     "disconnect": "Putuskan",
@@ -4790,7 +4790,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccountQuestion": "¿Borrar cuenta?",
     "describeYourIssue": "Describe tu problema",
     "deviceLimitReachedDesc":
-        "Has alcanzado el máximo de 6 dispositivos conectados. Para añadir un nuevo dispositivo, elimina uno existente de tu cuenta.",
+        "Has alcanzado el número máximo de dispositivos conectados. Para añadir un nuevo dispositivo, elimina uno existente de tu cuenta.",
     "deviceLimitReachedOpenDashboard": "Abrir el panel de control",
     "deviceLimitReachedTitle": "Límite de dispositivos alcanzado",
     "disconnect": "Desconectar",
@@ -5322,7 +5322,7 @@ class CodegenLoader extends AssetLoader {
     "deleteAccountQuestion": "حذف الحساب؟",
     "describeYourIssue": "صف مشكلتك",
     "deviceLimitReachedDesc":
-        "لقد وصلت إلى الحد الأقصى لعدد الأجهزة المتصلة وهو 6 أجهزة. لإضافة جهاز جديد، قم بإزالة جهاز موجود من حسابك.",
+        "لقد وصلت إلى الحد الأقصى لعدد الأجهزة المتصلة. لإضافة جهاز جديد، قم بإزالة جهاز موجود من حسابك.",
     "deviceLimitReachedOpenDashboard": "افتح لوحة التحكم",
     "deviceLimitReachedTitle": "تم الوصول إلى الحد الأقصى للأجهزة",
     "disconnect": "اتصال",

@@ -88,7 +88,7 @@
   "deleteAccount": "Konto löschen",
   "deleteAccountQuestion": "Konto löschen?",
   "describeYourIssue": "Beschreiben Sie Ihr Problem",
-  "deviceLimitReachedDesc": "Sie haben die maximale Anzahl von 6 verbundenen Geräten erreicht. Um ein neues Gerät hinzuzufügen, entfernen Sie ein vorhandenes aus Ihrem Konto.",
+  "deviceLimitReachedDesc": "Sie haben die maximale Anzahl verbundener Geräte erreicht. Um ein neues Gerät hinzuzufügen, entfernen Sie ein vorhandenes aus Ihrem Konto.",
   "deviceLimitReachedOpenDashboard": "Dashboard öffnen",
   "deviceLimitReachedTitle": "Gerätelimit erreicht",
   "disconnect": "Trennen",
