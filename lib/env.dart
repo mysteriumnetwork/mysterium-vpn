@@ -41,6 +41,7 @@ abstract class Env {
   static late final BaseDeviceInfo _deviceInfo;
   static late final String _deviceName;
   static late final String _deviceModel;
+  static late final String _deviceManufacturer;
 
   static PackageInfo get packageInfo => _packageInfo;
 
@@ -53,6 +54,8 @@ abstract class Env {
   static String get deviceModel => _deviceModel;
 
   static String get userAgent => _userAgent;
+
+  static String get deviceManufacturer => _deviceManufacturer;
 
   static Future<void> init() async {
     _packageInfo = await PackageInfo.fromPlatform();
@@ -95,6 +98,13 @@ abstract class Env {
       final IosDeviceInfo iOS => iOS.model,
       final MacOsDeviceInfo macOS => macOS.model,
       final WindowsDeviceInfo windows => windows.productName,
+      _ => 'Unknown',
+    };
+    _deviceManufacturer = switch (_deviceInfo) {
+      final AndroidDeviceInfo android => android.manufacturer,
+      final IosDeviceInfo _ => 'Apple',
+      final MacOsDeviceInfo _ => 'Apple',
+      final WindowsDeviceInfo _ => 'Microsoft',
       _ => 'Unknown',
     };
   }
