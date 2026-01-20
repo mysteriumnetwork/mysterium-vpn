@@ -290,25 +290,24 @@ class _NetworkLoggerScreenState extends State<NetworkLoggerScreen> {
           'Network Logs',
         ),
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () => _ConfigPage.show(context: context),
-            color: Theme.of(context).textTheme.bodyLarge?.color,
+          _ActionButton(
+            onTap: () => _ConfigPage.show(context: context),
+            child: const Icon(
+              Icons.settings,
+              color: Colors.amber,
+            ),
           ),
-          IconButton(
-            icon: const Icon(Icons.info_outline),
-            onPressed: () => _DeviceInfo.show(context: context),
-            color: Theme.of(context).textTheme.bodyLarge?.color,
+          _ActionButton(
+            onTap: () => _DeviceInfo.show(context: context),
+            child: const Icon(Icons.info_outline, color: Colors.amber),
           ),
-          IconButton(
-            icon: const Icon(Icons.key),
-            onPressed: () => _SecuredStorageValues.show(context: context),
-            color: Theme.of(context).textTheme.bodyLarge?.color,
+          _ActionButton(
+            onTap: () => _SecuredStorageValues.show(context: context),
+            child: const Icon(Icons.key, color: Colors.amber),
           ),
-          IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: widget.eventList.clear,
-            color: Theme.of(context).textTheme.bodyLarge?.color,
+          _ActionButton(
+            onTap: widget.eventList.clear,
+            child: const Icon(Icons.delete, color: Colors.amber),
           ),
         ],
       ),
@@ -419,6 +418,28 @@ String _timeDifference(DateTime time, [DateTime? origin]) {
 }
 
 const _jsonEncoder = JsonEncoder.withIndent('  ');
+
+class _ActionButton extends StatelessWidget {
+  const _ActionButton({
+    required this.child,
+    required this.onTap,
+  });
+
+  final Widget child;
+  final VoidCallback onTap;
+  static const EdgeInsets padding = EdgeInsets.all(4);
+  static const HitTestBehavior hitTestBehavior = HitTestBehavior.opaque;
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+        behavior: hitTestBehavior,
+        onTap: onTap,
+        child: Padding(
+          padding: padding,
+          child: child,
+        ),
+      );
+}
 
 /// Screen that displays log entry details.
 class NetworkLoggerEventScreen extends StatelessWidget {
@@ -977,6 +998,7 @@ class _ConfigPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final remoteConfigs = ref.watch(remoteConfigStorePOD);
+    final configcatUser = ref.watch(configCatUserStorePOD);
     final abTesting = ref.watch(abTestingStorePOD);
     return Scaffold(
       appBar: AppBar(
@@ -1012,6 +1034,16 @@ class _ConfigPage extends ConsumerWidget {
               EasyText(
                 remoteConfigs.asUserProperties.toString(),
                 maxLines: 20,
+              ),
+              const SizedBox(height: 8),
+              const EasyText(
+                'ConfigCat User: ',
+                fontWeight: FontWeight.bold,
+                color: Palette.purple,
+              ),
+              EasyText(
+                configcatUser.user ?? 'Loading...',
+                maxLines: 100,
               ),
               const SizedBox(height: 8),
               const EasyText(
