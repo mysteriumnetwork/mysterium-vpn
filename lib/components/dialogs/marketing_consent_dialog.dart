@@ -15,7 +15,7 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 Future<void> showMarketingConsentDialog(BuildContext context) async {
-  showModal<void>(
+  await showModal<void>(
     context,
     builder: (_) => Theme(
       data: DesignSystemTheme.of(context),

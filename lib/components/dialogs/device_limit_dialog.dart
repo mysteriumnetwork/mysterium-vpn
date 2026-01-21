@@ -34,17 +34,18 @@ class _DialogContent extends ConsumerWidget {
       final accessToken = sessionStore.accessToken;
       final queryParameters = (accessToken?.isNotEmpty ?? false)
           ? {
-              'access_token': sessionStore.accessToken ?? '',
+              ...uri.queryParameters,
+              'access_token': accessToken,
             }
           : null;
-      final httpsUri = Uri(
+      final targetUri = Uri(
         scheme: uri.scheme,
         host: uri.host,
         path: uri.path,
         queryParameters: queryParameters,
       );
       openUrlLink(
-        httpsUri,
+        targetUri,
         mode: LaunchMode.externalApplication,
       );
     }

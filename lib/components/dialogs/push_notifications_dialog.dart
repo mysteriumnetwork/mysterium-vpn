@@ -12,7 +12,7 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 Future<void> showPushNotificationsPermissionDialog(BuildContext context) async {
-  showModal(
+  await showModal(
     context,
     builder: (_) => Theme(
       data: DesignSystemTheme.of(context),
@@ -31,7 +31,7 @@ class _DialogContent extends ConsumerWidget {
     return ModalScaffold(
       onModalClose: () => _completePushNotificationsFlow(
         context,
-        userPreferencesStore: ref.read(userPreferencesStorePOD),
+        userPreferencesStore: userPreferencesStore,
         userAllowed: false,
       ),
       body: Padding(

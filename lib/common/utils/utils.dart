@@ -414,6 +414,9 @@ void handleOnSupportPage({
 /// Opens a URL link in the default browser.
 /// If the URL cannot be launched, it copies the URL to the clipboard and shows a snackbar.
 /// [url] is the URL to be opened.
+/// [mode] specifies how the URL should be launched (for example, using the
+/// platform default, an in-app web view, or an external application). The
+/// default is [LaunchMode.platformDefault].
 Future<void> openUrlLink(Uri url, {LaunchMode mode = LaunchMode.platformDefault}) async {
   try {
     if (await canLaunchUrl(url)) {
