@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:wireguard_dart/wireguard_dart.dart';
 
 part 'user_preferences_store.g.dart';
 
@@ -25,13 +25,12 @@ abstract class _UserPreferencesStore with Store {
     required AnalyticsStore analyticsStore,
     required RealIPInfoStore realIPInfo,
     required LocalDBService localDBService,
-    required WireguardDart wireguardService,
+    required NotificationsRepository pushNotificationsRepository,
   })  : _apiService = apiService,
         _analyticsStore = analyticsStore,
         _realIPInfo = realIPInfo,
         localDb = localDBService,
-        _wireguardService = wireguardService;
-
+        _pushNotificationsRepository = pushNotificationsRepository;
   @action
   void initStore() {
     setMarketingConsentFuture = ObservableFuture(createMarketingContact());
@@ -43,7 +42,7 @@ abstract class _UserPreferencesStore with Store {
   final AnalyticsStore _analyticsStore;
   final RealIPInfoStore _realIPInfo;
   final LocalDBService localDb;
-  final WireguardDart _wireguardService;
+  final NotificationsRepository _pushNotificationsRepository;
 
   @observable
   ObservableFuture<void>? setMarketingConsentFuture;
@@ -67,10 +66,10 @@ abstract class _UserPreferencesStore with Store {
   bool pushNotificationsPromptShown = false;
 
   @visibleForTesting
-  bool testIsAndroid = false; // default false, will override in tests
+  bool testIsMobile = false; // default false, will override in tests
 
   @visibleForTesting
-  bool get isAndroid => testIsAndroid || Platform.isAndroid;
+  bool get isMobilePlatform => testIsMobile || isMobile();
 
   @visibleForTesting
   @action
@@ -98,18 +97,18 @@ abstract class _UserPreferencesStore with Store {
   @visibleForTesting
   @action
   Future<bool> shouldShowPushNotificationsPermissionPrompt() async {
-    // Skip the push notifications prompt if the platform is not Android,
+    // Skip the push notifications prompt if the platform is not mobile
     // or if the prompt has already been shown.
-    final shouldSkipPushNotificationsPrompt = !isAndroid || pushNotificationsPromptShown;
+    final shouldSkipPushNotificationsPrompt = !isMobilePlatform || pushNotificationsPromptShown;
     if (shouldSkipPushNotificationsPrompt) {
       return false;
     }
-    final status = await _wireguardService.checkNotificationPermission();
-    _pushNotificationsPermissionGranted = status == NotificationPermission.granted;
+    final status = _pushNotificationsRepository.getPermissionStatus();
+    _pushNotificationsPermissionGranted = status;
     _analyticsStore.setUserProperty(
       AnalyticsUserProperty.fromEnum(
         name: AnalyticsUserPropName.pnPermissionStatus,
-        value: status.name,
+        value: status.toString(),
       ),
     );
     return !_pushNotificationsPermissionGranted!;
@@ -193,24 +192,24 @@ abstract class _UserPreferencesStore with Store {
 
   @action
   Future<void> setPushNotificationsShown({required bool userAllowed}) async {
-    if (!isAndroid) {
+    if (!isMobilePlatform) {
       return;
     }
     pushNotificationsPromptShown = true;
     if (userAllowed) {
-      final result = await _wireguardService.requestNotificationPermission();
-      _analyticsStore.logPushNotificationsPermissionsChanged(result);
+      final result = await _pushNotificationsRepository.requestPermission();
+      _analyticsStore.logPushNotificationsPermissionsChanged(permissionsGranted: result);
       unawaited(evaluateNextPromptToShow());
     }
   }
 
   @action
   Future<void> updatePushNotificationsPermissions() async {
-    if (!isAndroid) {
+    if (!isMobilePlatform) {
       return;
     }
-    final result = await _wireguardService.openAppNotificationSettings();
-    _pushNotificationsPermissionGranted = result == NotificationPermission.granted;
-    _analyticsStore.logPushNotificationsPermissionsChanged(result);
+    final result = await _pushNotificationsRepository.openAppNotificationsSettings();
+    _pushNotificationsPermissionGranted = result;
+    _analyticsStore.logPushNotificationsPermissionsChanged(permissionsGranted: result);
   }
 }

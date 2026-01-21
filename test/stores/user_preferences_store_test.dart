@@ -4,9 +4,9 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:wireguard_dart/wireguard_dart.dart';
 
 import 'user_preferences_store_test.mocks.dart';
 
@@ -15,7 +15,7 @@ import 'user_preferences_store_test.mocks.dart';
   MockSpec<AnalyticsStore>(),
   MockSpec<RealIPInfoStore>(),
   MockSpec<LocalDBService>(),
-  MockSpec<WireguardDart>(),
+  MockSpec<NotificationsRepository>(),
 ])
 void main() {
   late UserPreferencesStore store;
@@ -23,70 +23,119 @@ void main() {
   late MockAnalyticsStore mockAnalyticsStore;
   late MockRealIPInfoStore mockRealIPInfoStore;
   late MockLocalDBService mockLocalDBService;
-  late MockWireguardDart mockWireguardService;
+  late MockNotificationsRepository mockPushNotificationsRepository;
 
   setUp(() {
     mockApiService = MockApiService();
     mockAnalyticsStore = MockAnalyticsStore();
     mockRealIPInfoStore = MockRealIPInfoStore();
     mockLocalDBService = MockLocalDBService();
-    mockWireguardService = MockWireguardDart();
-
-    store = UserPreferencesStore(
-      apiService: mockApiService,
-      analyticsStore: mockAnalyticsStore,
-      realIPInfo: mockRealIPInfoStore,
-      localDBService: mockLocalDBService,
-      wireguardService: mockWireguardService,
-    )..testIsAndroid = true;
+    mockPushNotificationsRepository = MockNotificationsRepository();
 
     when(mockRealIPInfoStore.infoFuture).thenAnswer(
       (_) => ObservableFuture.value(
         const IPInfo(city: 'Test City', country: 'Test Country', ip: ''),
       ),
     );
+
+    // Default stubs to prevent null errors during initStore
+    when(mockApiService.createMarketingContact(country: anyNamed('country')))
+        .thenAnswer((_) async => {});
+    when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => false);
+    when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
+    when(mockPushNotificationsRepository.getPermissionStatus()).thenReturn(false);
+
+    store = UserPreferencesStore(
+      apiService: mockApiService,
+      analyticsStore: mockAnalyticsStore,
+      realIPInfo: mockRealIPInfoStore,
+      localDBService: mockLocalDBService,
+      pushNotificationsRepository: mockPushNotificationsRepository,
+    )..testIsMobile = true;
+  });
+
+  group('Initialization', () {
+    test('initStore creates marketing contact and gets consent', () async {
+      store.initStore();
+
+      // Wait for futures to complete
+      await store.setMarketingConsentFuture;
+      await store.getMarketingConsentFuture;
+
+      verify(mockApiService.createMarketingContact(country: 'Test Country')).called(1);
+      verify(mockApiService.getMarketingContactStatus()).called(1);
+    });
+
+    test('initStore evaluates next prompt to show', () async {
+      when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => false);
+      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
+      when(mockPushNotificationsRepository.getPermissionStatus()).thenReturn(false);
+
+      store.initStore();
+
+      await store.setMarketingConsentFuture;
+      await store.getMarketingConsentFuture;
+
+      // Give evaluateNextPromptToShow time to complete
+      await Future.delayed(Duration.zero);
+
+      // Should show marketing consent first
+      expect(store.nextPromptToShow, UserPromptType.marketingConsent);
+    });
   });
 
   group('Marketing Consent', () {
-    test('shouldShowMarketingConsent returns false if consent is true or already shown', () async {
+    test('shouldShowMarketingConsent returns false if consent is true', () async {
       store.getMarketingConsentFuture = ObservableFuture.value(true);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-      final result1 = await store.shouldShowMarketingConsent();
-      expect(result1, isFalse);
 
+      final result = await store.shouldShowMarketingConsent();
+      expect(result, isFalse);
+    });
+
+    test('shouldShowMarketingConsent returns false if already shown', () async {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => true);
-      final result2 = await store.shouldShowMarketingConsent();
-      expect(result2, isFalse);
+
+      final result = await store.shouldShowMarketingConsent();
+      expect(result, isFalse);
     });
 
     test('shouldShowMarketingConsent returns true if consent is false and not shown', () async {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
+
       final result = await store.shouldShowMarketingConsent();
       expect(result, isTrue);
     });
 
     test('setMarketingConsentShown calls localDb and re-evaluates prompt', () async {
+      store.getMarketingConsentFuture = ObservableFuture.value(true);
       when(mockLocalDBService.setMarketingConsentShown()).thenAnswer((_) async {});
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => true);
-      when(mockWireguardService.checkNotificationPermission())
-          .thenAnswer((_) async => NotificationPermission.granted);
+      when(mockPushNotificationsRepository.getPermissionStatus()).thenReturn(true);
 
       await store.setMarketingConsentShown();
+
       verify(mockLocalDBService.setMarketingConsentShown()).called(1);
       expect(store.nextPromptToShow, UserPromptType.none);
     });
 
-    test('createMarketingContact logs success and failure events', () async {
+    test('createMarketingContact logs success event', () async {
       when(mockApiService.createMarketingContact(country: anyNamed('country')))
           .thenAnswer((_) async => {});
-      await store.createMarketingContact();
-      verify(mockAnalyticsStore.logEvent(AnalyticsEvent.createMarketingContactSuccess)).called(1);
 
+      await store.createMarketingContact();
+
+      verify(mockAnalyticsStore.logEvent(AnalyticsEvent.createMarketingContactSuccess)).called(1);
+    });
+
+    test('createMarketingContact logs error event on failure', () async {
       when(mockApiService.createMarketingContact(country: anyNamed('country')))
           .thenThrow(Exception('fail'));
+
       await store.createMarketingContact();
+
       verify(
         mockAnalyticsStore.logEvent(
           AnalyticsEvent.createMarketingContactError,
@@ -95,14 +144,44 @@ void main() {
       ).called(1);
     });
 
-    test('updateMarketingContact updates consent and logs events', () async {
+    test('updateMarketingContact updates consent and logs success', () async {
       when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
+
       await store.updateMarketingContact(consent: true);
+
       expect(store.getMarketingConsentFuture?.value, isTrue);
       verify(mockAnalyticsStore.logEvent(AnalyticsEvent.updateMarketingContactSuccess)).called(1);
+    });
 
+    test('updateMarketingContact calls setMarketingConsentShown when fromPopup is true', () async {
+      store.getMarketingConsentFuture = ObservableFuture.value(true);
+      when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
+      when(mockLocalDBService.setMarketingConsentShown()).thenAnswer((_) async {});
+      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => true);
+      when(mockPushNotificationsRepository.getPermissionStatus()).thenReturn(true);
+
+      await store.updateMarketingContact(consent: true, fromPopup: true);
+
+      verify(mockLocalDBService.setMarketingConsentShown()).called(1);
+    });
+
+    test('updateMarketingContact does not call setMarketingConsentShown when fromPopup is false',
+        () async {
+      when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
+
+      await store.updateMarketingContact(consent: true);
+
+      verifyNever(mockLocalDBService.setMarketingConsentShown());
+    });
+
+    test('updateMarketingContact logs error and rethrows on failure', () async {
       when(mockApiService.updateMarketingContact(consent: false)).thenThrow(Exception('fail'));
-      await expectLater(store.updateMarketingContact(consent: false), throwsException);
+
+      await expectLater(
+        store.updateMarketingContact(consent: false),
+        throwsException,
+      );
+
       verify(
         mockAnalyticsStore.logEvent(
           AnalyticsEvent.updateMarketingContactError,
@@ -111,9 +190,13 @@ void main() {
       ).called(1);
     });
 
-    test('getMarketingConsent returns consent and logs success and failure', () async {
+    test('getMarketingConsent returns consent and sets user property', () async {
+      store.setMarketingConsentFuture = ObservableFuture.value(null);
       when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => true);
-      await store.getMarketingConsent();
+
+      final result = await store.getMarketingConsent();
+
+      expect(result, isTrue);
       verify(
         mockAnalyticsStore.setUserProperty(
           AnalyticsUserProperty.fromEnum(
@@ -123,9 +206,26 @@ void main() {
         ),
       ).called(1);
       verify(mockAnalyticsStore.logEvent(AnalyticsEvent.getMarketingContactSuccess)).called(1);
+    });
 
+    test('getMarketingConsent waits for setMarketingConsentFuture', () async {
+      var setCompleted = false;
+      store.setMarketingConsentFuture = ObservableFuture(
+        Future.delayed(const Duration(milliseconds: 100), () => setCompleted = true),
+      );
+      when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => true);
+
+      await store.getMarketingConsent();
+
+      expect(setCompleted, isTrue);
+    });
+
+    test('getMarketingConsent logs error and rethrows on failure', () async {
+      store.setMarketingConsentFuture = ObservableFuture.value(null);
       when(mockApiService.getMarketingContactStatus()).thenThrow(Exception('fail'));
+
       await expectLater(store.getMarketingConsent(), throwsException);
+
       verify(
         mockAnalyticsStore.logEvent(
           AnalyticsEvent.getMarketingContactError,
@@ -133,80 +233,202 @@ void main() {
         ),
       ).called(1);
     });
+
+    test('marketingConsent computed property returns correct value', () {
+      store.getMarketingConsentFuture = ObservableFuture.value(true);
+      expect(store.marketingConsent, isTrue);
+
+      store.getMarketingConsentFuture = ObservableFuture.value(false);
+      expect(store.marketingConsent, isFalse);
+
+      store.getMarketingConsentFuture = null;
+      expect(store.marketingConsent, isNull);
+    });
+  });
+
+  group('Push Notifications', () {
+    test('shouldShowPushNotificationsPermissionPrompt returns true when permission not granted',
+        () async {
+      store.pushNotificationsPromptShown = false;
+      when(mockPushNotificationsRepository.getPermissionStatus()).thenReturn(false);
+
+      final result = await store.shouldShowPushNotificationsPermissionPrompt();
+
+      expect(result, isTrue);
+      verify(
+        mockAnalyticsStore.setUserProperty(
+          AnalyticsUserProperty.fromEnum(
+            name: AnalyticsUserPropName.pnPermissionStatus,
+            value: 'false',
+          ),
+        ),
+      ).called(1);
+    });
+
+    test('shouldShowPushNotificationsPermissionPrompt returns false when already shown', () async {
+      store.pushNotificationsPromptShown = true;
+
+      final result = await store.shouldShowPushNotificationsPermissionPrompt();
+
+      expect(result, isFalse);
+      verifyNever(mockPushNotificationsRepository.getPermissionStatus());
+    });
+
+    test('shouldShowPushNotificationsPermissionPrompt returns false on non-mobile', () async {
+      store
+        ..testIsMobile = false
+        ..pushNotificationsPromptShown = false;
+
+      final result = await store.shouldShowPushNotificationsPermissionPrompt();
+
+      expect(result, isFalse);
+      verifyNever(mockPushNotificationsRepository.getPermissionStatus());
+    });
+
+    test('shouldShowPushNotificationsPermissionPrompt returns false when permission granted',
+        () async {
+      store.pushNotificationsPromptShown = false;
+      when(mockPushNotificationsRepository.getPermissionStatus()).thenReturn(true);
+
+      final result = await store.shouldShowPushNotificationsPermissionPrompt();
+
+      expect(result, isFalse);
+    });
+
+    test('setPushNotificationsShown sets flag and requests permission when allowed', () async {
+      store
+        ..pushNotificationsPromptShown = false
+        ..getMarketingConsentFuture = ObservableFuture.value(true);
+      when(mockPushNotificationsRepository.requestPermission()).thenAnswer((_) async => true);
+      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => true);
+      when(mockPushNotificationsRepository.getPermissionStatus()).thenReturn(true);
+
+      await store.setPushNotificationsShown(userAllowed: true);
+
+      expect(store.pushNotificationsPromptShown, isTrue);
+      verify(mockPushNotificationsRepository.requestPermission()).called(1);
+      verify(
+        mockAnalyticsStore.logPushNotificationsPermissionsChanged(permissionsGranted: true),
+      ).called(1);
+    });
+
+    test('setPushNotificationsShown sets flag but does not request permission when not allowed',
+        () async {
+      store.pushNotificationsPromptShown = false;
+
+      await store.setPushNotificationsShown(userAllowed: false);
+
+      expect(store.pushNotificationsPromptShown, isTrue);
+      verifyNever(mockPushNotificationsRepository.requestPermission());
+    });
+
+    test('setPushNotificationsShown does nothing on non-mobile', () async {
+      store
+        ..testIsMobile = false
+        ..pushNotificationsPromptShown = false;
+
+      await store.setPushNotificationsShown(userAllowed: true);
+
+      expect(store.pushNotificationsPromptShown, isFalse);
+      verifyNever(mockPushNotificationsRepository.requestPermission());
+    });
+
+    test('updatePushNotificationsPermissions opens settings on mobile', () async {
+      store.testIsMobile = true;
+      when(mockPushNotificationsRepository.openAppNotificationsSettings())
+          .thenAnswer((_) async => true);
+
+      await store.updatePushNotificationsPermissions();
+
+      verify(mockPushNotificationsRepository.openAppNotificationsSettings()).called(1);
+      verify(
+        mockAnalyticsStore.logPushNotificationsPermissionsChanged(permissionsGranted: true),
+      ).called(1);
+    });
+
+    test('updatePushNotificationsPermissions does nothing on non-mobile', () async {
+      store.testIsMobile = false;
+
+      await store.updatePushNotificationsPermissions();
+
+      verifyNever(mockPushNotificationsRepository.openAppNotificationsSettings());
+      verifyNever(
+        mockAnalyticsStore.logPushNotificationsPermissionsChanged(
+          permissionsGranted: anyNamed('permissionsGranted'),
+        ),
+      );
+    });
   });
 
   group('Next Prompt Logic', () {
-    test('evaluateNextPromptToShow sets nextPromptToShow correctly', () async {
-      // Case 1: Marketing consent
-      store.getMarketingConsentFuture = ObservableFuture.value(false);
+    test('evaluateNextPromptToShow prioritizes marketing consent', () async {
+      store
+        ..pushNotificationsPromptShown = false
+        ..getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-      when(mockWireguardService.checkNotificationPermission())
-          .thenAnswer((_) async => NotificationPermission.denied);
+      when(mockPushNotificationsRepository.getPermissionStatus()).thenReturn(false);
 
       await store.evaluateNextPromptToShow();
-      expect(store.nextPromptToShow, UserPromptType.marketingConsent);
 
-      // Reset push notification flag for next evaluation
+      expect(store.nextPromptToShow, UserPromptType.marketingConsent);
+    });
+
+    test('evaluateNextPromptToShow shows push notifications when marketing consent done', () async {
       store
         ..pushNotificationsPromptShown = false
         ..getMarketingConsentFuture = ObservableFuture.value(true);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => true);
-      when(mockWireguardService.checkNotificationPermission())
-          .thenAnswer((_) async => NotificationPermission.denied);
+      when(mockPushNotificationsRepository.getPermissionStatus()).thenReturn(false);
 
       await store.evaluateNextPromptToShow();
+
       expect(store.nextPromptToShow, UserPromptType.pushNotifications);
+    });
 
-      // Case 3: None to show
-      when(mockWireguardService.checkNotificationPermission())
-          .thenAnswer((_) async => NotificationPermission.granted);
+    test('evaluateNextPromptToShow shows none when all prompts done', () async {
+      store
+        ..pushNotificationsPromptShown = false
+        ..getMarketingConsentFuture = ObservableFuture.value(true);
+      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => true);
+      when(mockPushNotificationsRepository.getPermissionStatus()).thenReturn(true);
 
       await store.evaluateNextPromptToShow();
+
       expect(store.nextPromptToShow, UserPromptType.none);
     });
 
-    test('shouldShowPushNotificationsPermissionPrompt works with Android flag', () async {
-      store.pushNotificationsPromptShown = false;
-
-      when(mockWireguardService.checkNotificationPermission())
-          .thenAnswer((_) async => NotificationPermission.denied);
-
-      final result = await store.shouldShowPushNotificationsPermissionPrompt();
-      expect(result, isTrue);
-
-      // Already shown
-      store.pushNotificationsPromptShown = true;
-      final result2 = await store.shouldShowPushNotificationsPermissionPrompt();
-      expect(result2, isFalse);
-
-      // Non-Android device
+    test('evaluateNextPromptToShow shows none when push prompt already shown', () async {
       store
-        ..testIsAndroid = false
-        ..pushNotificationsPromptShown = false;
-      final result3 = await store.shouldShowPushNotificationsPermissionPrompt();
-      expect(result3, isFalse);
+        ..pushNotificationsPromptShown = true
+        ..getMarketingConsentFuture = ObservableFuture.value(true);
+      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => true);
+      when(mockPushNotificationsRepository.getPermissionStatus()).thenReturn(false);
+
+      await store.evaluateNextPromptToShow();
+
+      expect(store.nextPromptToShow, UserPromptType.none);
     });
 
-    test('setPushNotificationsShown sets flag and calls requestPermission', () async {
-      store.pushNotificationsPromptShown = false;
-      when(mockWireguardService.requestNotificationPermission())
-          .thenAnswer((_) async => NotificationPermission.granted);
-      await store.setPushNotificationsShown(userAllowed: true);
-      expect(store.pushNotificationsPromptShown, isTrue);
-      verify(mockWireguardService.requestNotificationPermission()).called(1);
+    test('evaluateNextPromptToShow shows none on non-mobile (no push notifications)', () async {
+      store
+        ..testIsMobile = false
+        ..pushNotificationsPromptShown = false
+        ..getMarketingConsentFuture = ObservableFuture.value(true);
+      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => true);
+
+      await store.evaluateNextPromptToShow();
+
+      expect(store.nextPromptToShow, UserPromptType.none);
     });
+  });
 
-    test('updatePushNotificationsPermissions calls openAppNotificationSettings only on Android',
-        () async {
-      store.testIsAndroid = true;
-      when(mockWireguardService.openAppNotificationSettings())
-          .thenAnswer((_) async => NotificationPermission.granted);
-      await store.updatePushNotificationsPermissions();
-      verify(mockWireguardService.openAppNotificationSettings()).called(1);
+  group('Platform Detection', () {
+    test('isMobilePlatform returns testIsMobile value', () {
+      store.testIsMobile = true;
+      expect(store.isMobilePlatform, isTrue);
 
-      store.testIsAndroid = false;
-      await store.updatePushNotificationsPermissions();
-      verifyNever(mockWireguardService.openAppNotificationSettings());
+      store.testIsMobile = false;
+      expect(store.isMobilePlatform, isFalse);
     });
   });
 }
