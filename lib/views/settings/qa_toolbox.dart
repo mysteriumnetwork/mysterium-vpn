@@ -227,11 +227,11 @@ class QAToolbox extends HookConsumerWidget {
             subtitle: 'Show various app dialogs for testing',
             actions: [
               _QAActionButton(
-                label: 'Marketing',
+                label: 'Marketing Consent',
                 onPressed: () => showMarketingConsentDialog(context),
               ),
               _QAActionButton(
-                label: 'Retry',
+                label: 'Retry Subscription Verification',
                 onPressed: () => showRetryDialog(
                   context: context,
                   asset: Asset.icons.subscription,
@@ -247,18 +247,11 @@ class QAToolbox extends HookConsumerWidget {
                 onPressed: () => showDeviceLimitDialog(context),
               ),
               _QAActionButton(
-                label: 'Push Notif',
+                label: 'Push Notifications',
                 onPressed: () => showPushNotificationsPermissionDialog(context),
               ),
-            ],
-          ),
-          _QAActionItem(
-            icon: Icons.upgrade,
-            title: 'Subscription upgrade modal',
-            subtitle: 'Show subscription upgrade page',
-            actions: [
               _QAActionButton(
-                label: 'Show',
+                label: 'Subscription upgrade modal',
                 onPressed: () => showSubscriptionUpgradeModalPage(context),
               ),
             ],
@@ -483,10 +476,14 @@ class _QAActionItem extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 12),
-            Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: actions,
+            Expanded(
+              child: Wrap(
+                alignment: WrapAlignment.end,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 6,
+                runSpacing: 6,
+                children: actions,
+              ),
             ),
           ],
         ),
