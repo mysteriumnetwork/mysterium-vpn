@@ -1,169 +1,83 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
-import 'package:mysterium_vpn/components/svg_icon_button.dart';
+import 'package:mysterium_vpn/common/utils/design_system_theme.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-Future<void> showPushNotificationsPermissionDialog(
-  BuildContext context, {
-  required bool desktopSize,
-}) async =>
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => HookBuilder(
-        builder: (context) {
-          final isDesktop = useResponsiveValue(false, desktop: true);
-          return isDesktop ? _DesktopDialog() : _MobileDialog();
-        },
-      ),
-    );
-
-class _DesktopDialog extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Dialog(
-      backgroundColor: theme.palette.connectionTileBackgroundColor,
-      child: Container(
-        width: 600,
-        height: 400,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Palette.purple),
-        ),
-        child: const Stack(
-          children: [
-            Positioned(
-              top: 16,
-              right: 16,
-              child: _CloseButton(),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 32,
-                horizontal: 120,
-              ),
-              child: _DialogContent(isMobile: false),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _MobileDialog extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    return Dialog.fullscreen(
-      backgroundColor: theme.palette.connectionTileBackgroundColor,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 420),
-            child: const Stack(
-              children: [
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: _CloseButton(),
-                ),
-                _DialogContent(isMobile: true),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+Future<void> showPushNotificationsPermissionDialog(BuildContext context) async {
+  await showModal(
+    context,
+    builder: (_) => Theme(
+      data: DesignSystemTheme.of(context),
+      child: const _DialogContent(),
+    ),
+  );
 }
 
 class _DialogContent extends ConsumerWidget {
-  const _DialogContent({required this.isMobile});
-
-  final bool isMobile;
+  const _DialogContent();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userPreferencesStore = ref.watch(userPreferencesStorePOD);
-
-    Future<void> handleAllow() async {
-      await _completePushNotificationsFlow(
+    final theme = Theme.of(context);
+    return ModalScaffold(
+      onModalClose: () => _completePushNotificationsFlow(
         context,
         userPreferencesStore: userPreferencesStore,
-        userAllowed: true,
-      );
-    }
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (isMobile) const Spacer(),
-        Asset.images.marketingConsent(context).image(width: 150, height: 150),
-        Text(
-          LocaleKeys.pushNotificationsConsentPopupTitle.tr(),
-          style: GoogleFonts.montserrat(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        Text(
-          LocaleKeys.pushNotificationsConsentPopupDesc.tr(),
-          style: GoogleFonts.montserrat(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
-          textAlign: TextAlign.center,
-        ).padding(bottom: 24, top: 12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _PermissionPoint(text: LocaleKeys.pushNotificationsPermissionPoint1.tr()),
-            _PermissionPoint(text: LocaleKeys.pushNotificationsPermissionPoint2.tr()),
-          ],
-        ).padding(bottom: 40),
-        if (isMobile) const Spacer(),
-        _Actions(
-          onAllowPressed: handleAllow,
-          flexDirection: isMobile ? Axis.vertical : Axis.horizontal,
-        ),
-      ],
-    );
-  }
-}
-
-class _CloseButton extends ConsumerWidget {
-  const _CloseButton();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    Future<void> handleCancel() async {
-      if (context.mounted) {
-        _completePushNotificationsFlow(
+        userAllowed: false,
+      ),
+      body: Padding(
+        padding: ModalPadding.insets(
           context,
-          userPreferencesStore: ref.read(userPreferencesStorePOD),
-          userAllowed: false,
-        );
-      }
-    }
-
-    return SvgIconButton(
-      asset: Asset.icons.close2(context),
-      onPressed: handleCancel,
-      size: 32,
+          add: EdgeInsets.symmetric(
+            vertical: theme.spacing.xl,
+            horizontal: theme.spacing.md,
+          ),
+        ),
+        child: Column(
+          children: [
+            const Spacer(),
+            Asset.images.marketingConsent(context).image(width: 150, height: 150),
+            Text(
+              LocaleKeys.pushNotificationsConsentPopupTitle.tr(),
+              style: GoogleFonts.montserrat(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Text(
+              LocaleKeys.pushNotificationsConsentPopupDesc.tr(),
+              style: GoogleFonts.montserrat(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+              textAlign: TextAlign.center,
+            ).padding(bottom: 24, top: 12),
+            _PermissionPoint(text: LocaleKeys.pushNotificationsPermissionPoint1.tr()),
+            _PermissionPoint(text: LocaleKeys.pushNotificationsPermissionPoint2.tr())
+                .padding(bottom: 40),
+            const Spacer(),
+            ButtonPrimary(
+              onPressed: () => _completePushNotificationsFlow(
+                context,
+                userPreferencesStore: userPreferencesStore,
+                userAllowed: true,
+              ),
+              child: Text(
+                LocaleKeys.allowPushNotificationsBtn.tr(),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -181,56 +95,6 @@ class _PermissionPoint extends StatelessWidget {
         ),
         textAlign: TextAlign.left,
       ).padding(bottom: 4);
-}
-
-class _Actions extends StatelessWidget {
-  const _Actions({
-    required this.flexDirection,
-    required this.onAllowPressed,
-  });
-
-  final VoidCallback? onAllowPressed;
-  final Axis flexDirection;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    const minButtonSize = Size(164, 48);
-
-    final children = <Widget>[
-      ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          minimumSize: minButtonSize,
-          backgroundColor: theme.palette.outlinedButtonBorderColor,
-        ),
-        onPressed: onAllowPressed,
-        child: Text(
-          LocaleKeys.allowPushNotificationsBtn.tr(),
-          style: GoogleFonts.montserrat(
-            color: Palette.white,
-            fontWeight: FontWeight.w700,
-            fontSize: 14,
-          ),
-        ),
-      ),
-    ];
-
-    return Flex(
-      mainAxisSize: MainAxisSize.min,
-      direction: flexDirection,
-      spacing: 20,
-      crossAxisAlignment: switch (flexDirection) {
-        Axis.vertical => CrossAxisAlignment.stretch,
-        Axis.horizontal => CrossAxisAlignment.center,
-      },
-      children: [
-        ...switch (flexDirection) {
-          Axis.vertical => children,
-          Axis.horizontal => children.reversed,
-        },
-      ],
-    );
-  }
 }
 
 Future<void> _completePushNotificationsFlow(

@@ -88,7 +88,7 @@
   "deleteAccount": "Delete account",
   "deleteAccountQuestion": "Delete Account?",
   "describeYourIssue": "Describe your issue",
-  "deviceLimitReachedDesc": "You have reached the maximum of 6 connected devices. To add a new device, remove an existing one from your account.",
+  "deviceLimitReachedDesc": "You have reached the maximum number of connected devices. To add a new device, remove an existing one from your account.",
   "deviceLimitReachedOpenDashboard": "Open Dashboard",
   "deviceLimitReachedTitle": "Device Limit Reached",
   "disconnect": "Disconnect",

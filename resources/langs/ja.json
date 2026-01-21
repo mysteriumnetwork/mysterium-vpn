@@ -88,7 +88,7 @@
   "deleteAccount": "アカウントを削除",
   "deleteAccountQuestion": "アカウントを削除?",
   "describeYourIssue": "問題を説明",
-  "deviceLimitReachedDesc": "接続可能なデバイスの数が最大6台に達しました。新しいデバイスを追加するには、アカウントから既存のデバイスを削除してください。",
+  "deviceLimitReachedDesc": "接続可能なデバイスの数が上限に達しました。新しいデバイスを追加するには、アカウントから既存のデバイスを削除してください。",
   "deviceLimitReachedOpenDashboard": "ダッシュボードを開く",
   "deviceLimitReachedTitle": "デバイス制限に達しました",
   "disconnect": "切断",

@@ -88,7 +88,7 @@
   "deleteAccount": "Supprimer le compte",
   "deleteAccountQuestion": "Supprimer le compte?",
   "describeYourIssue": "Décrivez votre problème",
-  "deviceLimitReachedDesc": "Vous avez atteint la limite de 6 appareils connectés. Pour ajouter un nouvel appareil, supprimez-en un de votre compte.",
+  "deviceLimitReachedDesc": "Vous avez atteint le nombre maximal d'appareils connectés. Pour ajouter un nouvel appareil, supprimez-en un de votre compte.",
   "deviceLimitReachedOpenDashboard": "Ouvrir le tableau de bord",
   "deviceLimitReachedTitle": "Limite de l'appareil atteinte",
   "disconnect": "Déconnecter",
