@@ -11,6 +11,7 @@ export 'operation_cancelled.dart';
 export 'package_not_found.dart';
 export 'pkce_pair_not_found.dart';
 export 'refresh_token_not_found_exception.dart';
+export 'request_pn_permissions_not_allowed.dart';
 export 'sign_in_aborted.dart';
 export 'store_not_available.dart';
 export 'subscription_required_exception.dart';
