@@ -14,10 +14,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-Future<void> showMarketingConsentDialog(
-  BuildContext context, {
-  required bool desktopSize,
-}) async {
+Future<void> showMarketingConsentDialog(BuildContext context) async {
   showModal<void>(
     context,
     builder: (_) => Theme(

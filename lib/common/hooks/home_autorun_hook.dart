@@ -2,10 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/components/dialogs/device_limit_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/marketing_consent_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/push_notifications_dialog.dart';
@@ -19,7 +17,6 @@ void useHomeAutorun() {
   final userPreferencesStore = useProvider(userPreferencesStorePOD);
   final remoteConfigStore = useProvider(remoteConfigStorePOD);
   final authSessionStore = useProvider(authSessionStorePOD);
-  final screenType = useScreenType();
 
   return useEffect(
     () {
@@ -41,21 +38,14 @@ void useHomeAutorun() {
             if (value == UserPromptType.none) {
               return;
             }
-            final isDesktop = screenType == ScreenType.desktop;
 
             if (value case UserPromptType.marketingConsent) {
               controller.add(
-                () => showMarketingConsentDialog(
-                  context,
-                  desktopSize: isDesktop,
-                ),
+                () => showMarketingConsentDialog(context),
               );
             } else if (value case UserPromptType.pushNotifications) {
               controller.add(
-                () => showPushNotificationsPermissionDialog(
-                  context,
-                  desktopSize: isDesktop,
-                ),
+                () => showPushNotificationsPermissionDialog(context),
               );
             }
           },
