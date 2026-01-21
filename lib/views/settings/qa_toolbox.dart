@@ -7,7 +7,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/analytics_logger_overlay.dart';
@@ -16,8 +15,6 @@ import 'package:mysterium_vpn/components/dialogs/device_limit_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/marketing_consent_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/push_notifications_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/retry_dialog.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/components/setting_item.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
@@ -81,221 +78,204 @@ class QAToolbox extends HookConsumerWidget {
     final bannerStore = ref.read(bannersStorePOD);
     final recentLocationsStore = ref.read(recentLocationsStorePOD);
 
-    return SettingItem(
-      asset: Asset.icons.resetAppSetting(context),
+    return _QAActionItem(
+      icon: Icons.refresh,
       title: 'Reset cached data',
-      subtitle: const EasyText('Reset banners and recent locations'),
-      actionWidget: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextButton(
-            onPressed: () async {
-              await bannerStore.resetShown();
-              showSnackbar('Banners reset successfully');
-            },
-            child: const EasyText('Banners'),
-          ),
-          const SizedBox(width: 8),
-          TextButton(
-            onPressed: () async {
-              await recentLocationsStore.clear();
-              showSnackbar('Recent locations reset successfully');
-            },
-            child: const EasyText('Locations'),
-          ),
-        ],
-      ),
+      subtitle: 'Reset banners and recent locations',
+      actions: [
+        _QAActionButton(
+          label: 'Banners',
+          onPressed: () async {
+            await bannerStore.resetShown();
+            showSnackbar('Banners reset successfully');
+          },
+        ),
+        _QAActionButton(
+          label: 'Locations',
+          onPressed: () async {
+            await recentLocationsStore.clear();
+            showSnackbar('Recent locations reset successfully');
+          },
+        ),
+      ],
     );
   }
 
-  Widget _buildClearLocationsAction(BuildContext context, WidgetRef ref) => SettingItem(
-        asset: Asset.icons.settingsAdaptive(context),
+  Widget _buildClearLocationsAction(BuildContext context, WidgetRef ref) => _QAActionItem(
+        icon: Icons.delete_outline,
         title: 'Clear cached locations',
-        subtitle: const EasyText('Delete all VPN locations from database'),
-        actionWidget: TextButton.icon(
-          label: const EasyText('Clear'),
-          icon: const Icon(Icons.delete_outline),
-          onPressed: () async {
-            await ref.read(locationsStorePOD).clear();
-            showSnackbar('Locations cleared');
-          },
-        ),
+        subtitle: 'Delete all VPN locations from database',
+        actions: [
+          _QAActionButton(
+            label: 'Clear',
+            onPressed: () async {
+              await ref.read(locationsStorePOD).clear();
+              showSnackbar('Locations cleared');
+            },
+          ),
+        ],
       );
 
   Widget _buildConnectionLimitAction(BuildContext context, WidgetRef ref) {
     final connectionsLimitStore = ref.read(connectionsLimitStorePOD);
 
-    return SettingItem(
-      asset: Asset.icons.settingsAdaptive(context),
+    return _QAActionItem(
+      icon: Icons.swap_horiz,
       title: 'VPN connection limit',
-      subtitle: EasyText(
-        'Status: ${connectionsLimitStore.connectionLimitReached ? "Reached" : "Not reached"}',
-      ),
-      actionWidget: TextButton.icon(
-        label: const EasyText('Toggle'),
-        icon: const Icon(Icons.swap_horiz),
-        onPressed: () {
-          connectionsLimitStore.connectionLimitReached =
-              !connectionsLimitStore.connectionLimitReached;
-          showSnackbar(
-            'Connection limit: ${connectionsLimitStore.connectionLimitReached ? "reached" : "not reached"}',
-          );
-        },
-      ),
+      subtitle:
+          'Status: ${connectionsLimitStore.connectionLimitReached ? "Reached" : "Not reached"}',
+      actions: [
+        _QAActionButton(
+          label: 'Toggle',
+          onPressed: () {
+            connectionsLimitStore.connectionLimitReached =
+                !connectionsLimitStore.connectionLimitReached;
+            showSnackbar(
+              'Connection limit: ${connectionsLimitStore.connectionLimitReached ? "reached" : "not reached"}',
+            );
+          },
+        ),
+      ],
     );
   }
 
-  Widget _buildTunnelStatusAction(BuildContext context, WidgetRef ref) => SettingItem(
-        asset: Asset.icons.settingsAdaptive(context),
+  Widget _buildTunnelStatusAction(BuildContext context, WidgetRef ref) => _QAActionItem(
+        icon: Icons.network_check,
         title: 'Check tunnel status',
-        subtitle: const EasyText('Query current tunnel connection status'),
-        actionWidget: TextButton.icon(
-          label: const EasyText('Check'),
-          icon: const Icon(Icons.network_check),
-          onPressed: () async {
-            final status = await ref.read(vpnStorePOD).checkTunnelStatus();
-            showSnackbar('Tunnel status: $status');
-          },
-        ),
-      );
-
-  Widget _buildInvalidLocationsAction(BuildContext context, WidgetRef ref) => SettingItem(
-        asset: Asset.icons.settingsAdaptive(context),
-        title: 'Insert invalid locations',
-        subtitle: const EasyText('Add test locations for testing unavailable connections'),
-        actionWidget: TextButton.icon(
-          label: const EasyText('Insert'),
-          icon: const Icon(Icons.add_location_alt_outlined),
-          onPressed: ref.read(locationsStorePOD).insertInvalidLocations,
-        ),
-      );
-
-  Widget _buildSubscriptionActions(BuildContext context, WidgetRef ref) => SettingItem(
-        asset: Asset.icons.settingsAdaptive(context),
-        title: 'Subscription testing',
-        subtitle: const EasyText('Mock subscription states and offers'),
-        actionWidget: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextButton(
-              onPressed: () async {
-                ref.read(subscriptionStorePOD).mockSubscriptionFailureStatus();
-                showSnackbar('Subscription set to failed');
-              },
-              child: const EasyText('Fail'),
-            ),
-            const SizedBox(width: 8),
-            TextButton(
-              onPressed: () async {
-                await ref.read(subscriptionLimitedTimeOfferStorePOD).mockOffer();
-                showSnackbar('Limited time offer created');
-              },
-              child: const EasyText('Mock Offer'),
-            ),
-          ],
-        ),
-      );
-
-  Widget _buildAuthActions(BuildContext context, WidgetRef ref) => SettingItem(
-        asset: Asset.icons.settingsAdaptive(context),
-        title: 'Invalidate access token',
-        subtitle: const EasyText('Test token refresh mechanism'),
-        actionWidget: TextButton.icon(
-          label: const EasyText('Invalidate'),
-          icon: const Icon(Icons.key_off),
-          onPressed: () async {
-            await ref.read(authSessionStorePOD).invalidateAccessToken();
-            showSnackbar('Access token invalidated');
-          },
-        ),
-      );
-
-  Widget _buildAnalyticsActions(BuildContext context) => SettingItem(
-        asset: Asset.icons.settingsAdaptive(context),
-        title: 'Analytics inspection',
-        subtitle: const EasyText('View logs and user properties'),
-        actionWidget: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextButton(
-              onPressed: () => AnalyticsLoggerOverlay.show(context),
-              child: const EasyText('Logs'),
-            ),
-            const SizedBox(width: 8),
-            TextButton(
-              onPressed: () => AnalyticsUserPropertiesOverlay.show(context),
-              child: const EasyText('Properties'),
-            ),
-          ],
-        ),
-      );
-
-  Widget _buildDialogTestActions(BuildContext context, WidgetRef ref) => Column(
-        children: [
-          SettingItem(
-            asset: Asset.icons.settingsAdaptive(context),
-            title: 'Test dialogs',
-            subtitle: const EasyText('Show various app dialogs for testing'),
-            actionWidget: Wrap(
-              spacing: 8,
-              runSpacing: 4,
-              children: [
-                _buildDialogButton(
-                  'Marketing Consent',
-                  () => showMarketingConsentDialog(context),
-                ),
-                _buildDialogButton(
-                  'Retry Subscription Verification',
-                  () => showRetryDialog(
-                    context: context,
-                    asset: Asset.icons.subscription,
-                    title: LocaleKeys.subscriptionVerificationFailed.tr(),
-                    subtitle: LocaleKeys.failedToVerifySubs.tr(),
-                    dismissText: LocaleKeys.cancelBtn.tr(),
-                    onDismiss: () => Navigator.of(context).pop(),
-                    onRetry: () => Navigator.of(context).pop(),
-                  ),
-                ),
-                _buildDialogButton(
-                  'Device Limit',
-                  () => showDeviceLimitDialog(context),
-                ),
-                _buildDialogButton(
-                  'Push Notifications',
-                  () => showPushNotificationsPermissionDialog(context),
-                ),
-                _buildDialogButton(
-                  'Subscription Upgrade',
-                  () => showSubscriptionUpgradeModalPage(context),
-                ),
-              ],
-            ),
+        subtitle: 'Query current tunnel connection status',
+        actions: [
+          _QAActionButton(
+            label: 'Check',
+            onPressed: () async {
+              final status = await ref.read(vpnStorePOD).checkTunnelStatus();
+              showSnackbar('Tunnel status: $status');
+            },
           ),
         ],
       );
 
-  Widget _buildDialogButton(String label, VoidCallback onPressed) => TextButton(
-        onPressed: onPressed,
-        style: TextButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          minimumSize: Size.zero,
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        ),
-        child: EasyText(
-          label,
-          textDecoration: TextDecoration.underline,
-        ),
+  Widget _buildInvalidLocationsAction(BuildContext context, WidgetRef ref) => _QAActionItem(
+        icon: Icons.add_location_alt_outlined,
+        title: 'Insert invalid locations',
+        subtitle: 'Add test locations for testing unavailable connections',
+        actions: [
+          _QAActionButton(
+            label: 'Insert',
+            onPressed: ref.read(locationsStorePOD).insertInvalidLocations,
+          ),
+        ],
       );
 
-  Widget _buildOpenVPNLogsAction(BuildContext context) => SettingItem(
-        asset: Asset.icons.settingsAdaptive(context),
+  Widget _buildSubscriptionActions(BuildContext context, WidgetRef ref) => _QAActionItem(
+        icon: Icons.science_outlined,
+        title: 'Subscription testing',
+        subtitle: 'Mock subscription states and offers',
+        actions: [
+          _QAActionButton(
+            label: 'Fail',
+            onPressed: () async {
+              ref.read(subscriptionStorePOD).mockSubscriptionFailureStatus();
+              showSnackbar('Subscription set to failed');
+            },
+          ),
+          _QAActionButton(
+            label: 'Mock Offer',
+            onPressed: () async {
+              await ref.read(subscriptionLimitedTimeOfferStorePOD).mockOffer();
+              showSnackbar('Limited time offer created');
+            },
+          ),
+        ],
+      );
+
+  Widget _buildAuthActions(BuildContext context, WidgetRef ref) => _QAActionItem(
+        icon: Icons.key_off,
+        title: 'Invalidate access token',
+        subtitle: 'Test token refresh mechanism',
+        actions: [
+          _QAActionButton(
+            label: 'Invalidate',
+            onPressed: () async {
+              await ref.read(authSessionStorePOD).invalidateAccessToken();
+              showSnackbar('Access token invalidated');
+            },
+          ),
+        ],
+      );
+
+  Widget _buildAnalyticsActions(BuildContext context) => _QAActionItem(
+        icon: Icons.bug_report_outlined,
+        title: 'Analytics inspection',
+        subtitle: 'View logs and user properties',
+        actions: [
+          _QAActionButton(
+            label: 'Logs',
+            onPressed: () => AnalyticsLoggerOverlay.show(context),
+          ),
+          _QAActionButton(
+            label: 'Properties',
+            onPressed: () => AnalyticsUserPropertiesOverlay.show(context),
+          ),
+        ],
+      );
+
+  Widget _buildDialogTestActions(BuildContext context, WidgetRef ref) => Column(
+        children: [
+          _QAActionItem(
+            icon: Icons.check,
+            title: 'Test dialogs',
+            subtitle: 'Show various app dialogs for testing',
+            actions: [
+              _QAActionButton(
+                label: 'Marketing',
+                onPressed: () => showMarketingConsentDialog(context),
+              ),
+              _QAActionButton(
+                label: 'Retry',
+                onPressed: () => showRetryDialog(
+                  context: context,
+                  asset: Asset.icons.subscription,
+                  title: LocaleKeys.subscriptionVerificationFailed.tr(),
+                  subtitle: LocaleKeys.failedToVerifySubs.tr(),
+                  dismissText: LocaleKeys.cancelBtn.tr(),
+                  onDismiss: () => Navigator.of(context).pop(),
+                  onRetry: () => Navigator.of(context).pop(),
+                ),
+              ),
+              _QAActionButton(
+                label: 'Device Limit',
+                onPressed: () => showDeviceLimitDialog(context),
+              ),
+              _QAActionButton(
+                label: 'Push Notif',
+                onPressed: () => showPushNotificationsPermissionDialog(context),
+              ),
+            ],
+          ),
+          _QAActionItem(
+            icon: Icons.upgrade,
+            title: 'Subscription upgrade modal',
+            subtitle: 'Show subscription upgrade page',
+            actions: [
+              _QAActionButton(
+                label: 'Show',
+                onPressed: () => showSubscriptionUpgradeModalPage(context),
+              ),
+            ],
+          ),
+        ],
+      );
+
+  Widget _buildOpenVPNLogsAction(BuildContext context) => _QAActionItem(
+        icon: Icons.description_outlined,
         title: 'Show OpenVPN logs',
-        subtitle: const EasyText('View recent OpenVPN connection logs'),
-        actionWidget: TextButton.icon(
-          label: const EasyText('Show logs'),
-          icon: const Icon(Icons.description_outlined),
-          onPressed: () => _showOpenVPNLogs(context),
-        ),
+        subtitle: 'View recent OpenVPN connection logs',
+        actions: [
+          _QAActionButton(
+            label: 'Show Logs',
+            onPressed: () => _showOpenVPNLogs(context),
+          ),
+        ],
       );
 
   Future<void> _showOpenVPNLogs(BuildContext context) async {
@@ -446,4 +426,102 @@ class _ExpandableSection extends HookWidget {
       ],
     );
   }
+}
+
+class _QAActionItem extends StatelessWidget {
+  const _QAActionItem({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.actions,
+  });
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final List<_QAActionButton> actions;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(
+                icon,
+                size: 18,
+                color: Colors.grey[700],
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 12),
+            Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: actions,
+            ),
+          ],
+        ),
+      );
+}
+
+class _QAActionButton extends StatelessWidget {
+  const _QAActionButton({
+    required this.label,
+    required this.onPressed,
+  });
+  final String label;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(6),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: Palette.lightPurple,
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(
+              color: Palette.purple,
+            ),
+          ),
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: Palette.white,
+            ),
+          ),
+        ),
+      );
 }
