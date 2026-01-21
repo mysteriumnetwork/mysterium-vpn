@@ -11,10 +11,7 @@ import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-Future<void> showPushNotificationsPermissionDialog(
-  BuildContext context, {
-  required bool desktopSize,
-}) async {
+Future<void> showPushNotificationsPermissionDialog(BuildContext context) async {
   showModal(
     context,
     builder: (_) => Theme(

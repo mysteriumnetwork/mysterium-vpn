@@ -7,13 +7,13 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
-import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/analytics_logger_overlay.dart';
 import 'package:mysterium_vpn/components/analytics_user_properties_overlay.dart';
 import 'package:mysterium_vpn/components/dialogs/device_limit_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/marketing_consent_dialog.dart';
+import 'package:mysterium_vpn/components/dialogs/push_notifications_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/retry_dialog.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';
@@ -33,7 +33,6 @@ class QAToolbox extends HookConsumerWidget {
     final recentLocationsStore = ref.read(recentLocationsStorePOD);
     final vpnStore = ref.read(vpnStorePOD);
     final sessionStore = ref.read(authSessionStorePOD);
-    final screenType = useScreenType();
     final connectionsLimitStore = ref.read(connectionsLimitStorePOD);
     return Observer(
       builder: (context) => Column(
@@ -181,10 +180,7 @@ class QAToolbox extends HookConsumerWidget {
             actionWidget: TextButton.icon(
               label: const EasyText('Show'),
               icon: const Icon(Icons.open_in_new),
-              onPressed: () => showMarketingConsentDialog(
-                context,
-                desktopSize: screenType == ScreenType.desktop,
-              ),
+              onPressed: () => showMarketingConsentDialog(context),
             ),
           ),
           SettingItem(
@@ -362,6 +358,22 @@ class QAToolbox extends HookConsumerWidget {
                   icon: const Icon(Icons.open_in_new),
                   onPressed: () async {
                     await showSubscriptionUpgradeModalPage(context);
+                  },
+                ),
+              ),
+            ),
+          ),
+          SettingItem(
+            asset: Asset.icons.settingsAdaptive(context),
+            title: 'Show push notifications consent dialog',
+            actionWidget: Theme(
+              data: Theme.of(context).designSystem,
+              child: Builder(
+                builder: (context) => TextButton.icon(
+                  label: const EasyText('Show'),
+                  icon: const Icon(Icons.open_in_new),
+                  onPressed: () async {
+                    await showPushNotificationsPermissionDialog(context);
                   },
                 ),
               ),
