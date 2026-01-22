@@ -1,19 +1,26 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:talker/talker.dart';
 
 class OnesignalNotificationsRepository implements NotificationsRepository {
-  OnesignalNotificationsRepository({required this.logger});
+  OnesignalNotificationsRepository({required this.logger}) {
+    init();
+  }
 
   final Talker logger;
 
   @override
   Future<void> init() async {
+    if (!isMobile()) {
+      return;
+    }
     if (kDebugMode) {
-      OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+      await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
     }
     OneSignal.initialize(Env.oneSignalAppId);
   }
@@ -50,7 +57,11 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
   @override
   Future<bool> openAppNotificationsSettings() async {
     try {
-      return await OneSignal.Notifications.requestPermission(true);
+      await AppSettings.openAppSettings(
+        type: AppSettingsType.notification,
+        asAnotherTask: true,
+      );
+      return getPermissionStatus();
     } catch (e) {
       logger.error('Error opening app notification settings: $e');
       rethrow;

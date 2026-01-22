@@ -68,8 +68,7 @@ abstract class _UserPreferencesStore with Store {
   @visibleForTesting
   bool testIsMobile = false; // default false, will override in tests
 
-  @visibleForTesting
-  bool get isMobilePlatform => testIsMobile || isMobile();
+  bool get supportsPushNotifications => testIsMobile || isMobile();
 
   @visibleForTesting
   @action
@@ -99,7 +98,8 @@ abstract class _UserPreferencesStore with Store {
   Future<bool> shouldShowPushNotificationsPermissionPrompt() async {
     // Skip the push notifications prompt if the platform is not mobile
     // or if the prompt has already been shown.
-    final shouldSkipPushNotificationsPrompt = !isMobilePlatform || pushNotificationsPromptShown;
+    final shouldSkipPushNotificationsPrompt =
+        !supportsPushNotifications || pushNotificationsPromptShown;
     if (shouldSkipPushNotificationsPrompt) {
       return false;
     }
@@ -192,20 +192,24 @@ abstract class _UserPreferencesStore with Store {
 
   @action
   Future<void> setPushNotificationsShown({required bool userAllowed}) async {
-    if (!isMobilePlatform) {
+    if (!supportsPushNotifications) {
       return;
     }
     pushNotificationsPromptShown = true;
     if (userAllowed) {
-      final result = await _pushNotificationsRepository.requestPermission();
-      _analyticsStore.logPushNotificationsPermissionsChanged(permissionsGranted: result);
+      try {
+        final result = await _pushNotificationsRepository.requestPermission();
+        _analyticsStore.logPushNotificationsPermissionsChanged(permissionsGranted: result);
+      } catch (e) {
+        debugPrint(e.toString());
+      }
       unawaited(evaluateNextPromptToShow());
     }
   }
 
   @action
   Future<void> updatePushNotificationsPermissions() async {
-    if (!isMobilePlatform) {
+    if (!supportsPushNotifications) {
       return;
     }
     final result = await _pushNotificationsRepository.openAppNotificationsSettings();

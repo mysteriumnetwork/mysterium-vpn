@@ -425,10 +425,10 @@ void main() {
   group('Platform Detection', () {
     test('isMobilePlatform returns testIsMobile value', () {
       store.testIsMobile = true;
-      expect(store.isMobilePlatform, isTrue);
+      expect(store.supportsPushNotifications, isTrue);
 
       store.testIsMobile = false;
-      expect(store.isMobilePlatform, isFalse);
+      expect(store.supportsPushNotifications, isFalse);
     });
   });
 }
