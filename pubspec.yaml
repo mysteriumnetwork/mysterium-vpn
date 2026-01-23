@@ -73,7 +73,6 @@ dependencies:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
       ref: 0.0.2
-  onesignal_flutter: ^5.3.5
   open_mail_app:
     git:
       url: https://github.com/KristijanMitrik/open-mail-app-flutter.git
