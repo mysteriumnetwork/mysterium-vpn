@@ -1319,14 +1319,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.0.0"
-  onesignal_flutter:
-    dependency: "direct main"
-    description:
-      name: onesignal_flutter
-      sha256: "97aa641092f73c56498f04081f5eaa591018c6c46b5cb500939270d0282bc7bf"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.3.5"
   open_mail_app:
     dependency: "direct main"
     description:
