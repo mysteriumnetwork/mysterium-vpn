@@ -1290,8 +1290,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.0.2"
-      resolved-ref: "607be0565ae7e0a177d871f63c36d1f4c508fc22"
+      ref: "0.0.3"
+      resolved-ref: c152679629fd1f6f3e0e3c394a0aaa6c2fb86b99
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
