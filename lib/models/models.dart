@@ -8,6 +8,7 @@ export 'map_config.dart';
 export 'pkce.dart';
 export 'promotional_banner.dart';
 export 'purchasable_product.dart';
+export 'push_notifications_user.dart';
 export 'response.dart';
 export 'stun_binding_request.dart';
 export 'subscription.dart';
