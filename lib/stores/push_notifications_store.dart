@@ -41,6 +41,9 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
   bool get supportsPushNotifications => testIsMobile || isMobile();
 
+  @visibleForTesting
+  bool pushNotificationsPromptShown = false;
+
   Future<void> _init() async {
     await _notificationsRepository.init();
     _disposers.addAll([
@@ -130,6 +133,33 @@ abstract class _PushNotificationsStore with Store, Disposeable {
       return;
     }
     await _notificationsRepository.openAppNotificationsSettings();
+  }
+
+  @action
+  Future<void> setPushNotificationsShown({required bool userAllowed}) async {
+    if (!supportsPushNotifications) {
+      return;
+    }
+    pushNotificationsPromptShown = true;
+    if (userAllowed) {
+      try {
+        await _notificationsRepository.requestPermission();
+      } catch (e) {
+        debugPrint(e.toString());
+      }
+    }
+  }
+
+  @action
+  Future<bool> shouldShowPushNotificationsPermissionPrompt() async {
+    // Skip the push notifications prompt if the platform is not mobile
+    // or if the prompt has already been shown.
+    final shouldSkipPushNotificationsPrompt =
+        !supportsPushNotifications || pushNotificationsPromptShown;
+    if (shouldSkipPushNotificationsPrompt) {
+      return false;
+    }
+    return !_notificationsRepository.getPermissionStatus();
   }
 
   @override

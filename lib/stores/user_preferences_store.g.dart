@@ -99,17 +99,6 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
     return _$shouldShowMarketingConsentAsyncAction.run(() => super.shouldShowMarketingConsent());
   }
 
-  late final _$shouldShowPushNotificationsPermissionPromptAsyncAction = AsyncAction(
-      '_UserPreferencesStore.shouldShowPushNotificationsPermissionPrompt',
-      context: context);
-
-  @override
-  @visibleForTesting
-  Future<bool> shouldShowPushNotificationsPermissionPrompt() {
-    return _$shouldShowPushNotificationsPermissionPromptAsyncAction
-        .run(() => super.shouldShowPushNotificationsPermissionPrompt());
-  }
-
   late final _$setMarketingConsentShownAsyncAction =
       AsyncAction('_UserPreferencesStore.setMarketingConsentShown', context: context);
 

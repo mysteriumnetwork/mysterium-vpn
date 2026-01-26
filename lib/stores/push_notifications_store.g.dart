@@ -80,6 +80,25 @@ mixin _$PushNotificationsStore on _PushNotificationsStore, Store {
         .run(() => super.updatePushNotificationsPermissions());
   }
 
+  late final _$setPushNotificationsShownAsyncAction =
+      AsyncAction('_PushNotificationsStore.setPushNotificationsShown', context: context);
+
+  @override
+  Future<void> setPushNotificationsShown({required bool userAllowed}) {
+    return _$setPushNotificationsShownAsyncAction
+        .run(() => super.setPushNotificationsShown(userAllowed: userAllowed));
+  }
+
+  late final _$shouldShowPushNotificationsPermissionPromptAsyncAction = AsyncAction(
+      '_PushNotificationsStore.shouldShowPushNotificationsPermissionPrompt',
+      context: context);
+
+  @override
+  Future<bool> shouldShowPushNotificationsPermissionPrompt() {
+    return _$shouldShowPushNotificationsPermissionPromptAsyncAction
+        .run(() => super.shouldShowPushNotificationsPermissionPrompt());
+  }
+
   @override
   String toString() {
     return '''

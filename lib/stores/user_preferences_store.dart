@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
@@ -25,12 +24,12 @@ abstract class _UserPreferencesStore with Store {
     required AnalyticsStore analyticsStore,
     required RealIPInfoStore realIPInfo,
     required LocalDBService localDBService,
-    required NotificationsRepository pushNotificationsRepository,
+    required PushNotificationsStore pushNotificationsStore,
   })  : _apiService = apiService,
         _analyticsStore = analyticsStore,
         _realIPInfo = realIPInfo,
         localDb = localDBService,
-        _pushNotificationsRepository = pushNotificationsRepository;
+        _pushNotificationsStore = pushNotificationsStore;
   @action
   void initStore() {
     setMarketingConsentFuture = ObservableFuture(createMarketingContact());
@@ -42,7 +41,7 @@ abstract class _UserPreferencesStore with Store {
   final AnalyticsStore _analyticsStore;
   final RealIPInfoStore _realIPInfo;
   final LocalDBService localDb;
-  final NotificationsRepository _pushNotificationsRepository;
+  final PushNotificationsStore _pushNotificationsStore;
 
   @observable
   ObservableFuture<void>? setMarketingConsentFuture;
@@ -70,7 +69,8 @@ abstract class _UserPreferencesStore with Store {
   @visibleForTesting
   @action
   Future<void> evaluateNextPromptToShow() async {
-    final pushPromptShown = await shouldShowPushNotificationsPermissionPrompt();
+    final pushPromptShown =
+        await _pushNotificationsStore.shouldShowPushNotificationsPermissionPrompt();
     final marketingConsentShown = await shouldShowMarketingConsent();
 
     if (marketingConsentShown) {
@@ -88,20 +88,6 @@ abstract class _UserPreferencesStore with Store {
     final consentValue = await getMarketingConsentFuture;
     final consentShown = await localDb.getMarketingConsentShown();
     return consentValue == false && !consentShown;
-  }
-
-  @visibleForTesting
-  @action
-  Future<bool> shouldShowPushNotificationsPermissionPrompt() async {
-    // Skip the push notifications prompt if the platform is not mobile
-    // or if the prompt has already been shown.
-    final shouldSkipPushNotificationsPrompt =
-        !supportsPushNotifications || pushNotificationsPromptShown;
-    if (shouldSkipPushNotificationsPrompt) {
-      return false;
-    }
-    final status = _pushNotificationsRepository.getPermissionStatus();
-    return !status;
   }
 
   @visibleForTesting
@@ -182,17 +168,7 @@ abstract class _UserPreferencesStore with Store {
 
   @action
   Future<void> setPushNotificationsShown({required bool userAllowed}) async {
-    if (!supportsPushNotifications) {
-      return;
-    }
-    pushNotificationsPromptShown = true;
-    if (userAllowed) {
-      try {
-        await _pushNotificationsRepository.requestPermission();
-      } catch (e) {
-        debugPrint(e.toString());
-      }
-      unawaited(evaluateNextPromptToShow());
-    }
+    await _pushNotificationsStore.setPushNotificationsShown(userAllowed: userAllowed);
+    unawaited(evaluateNextPromptToShow());
   }
 }

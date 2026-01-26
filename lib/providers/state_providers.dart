@@ -236,14 +236,14 @@ final userPreferencesStorePOD = StateProvider<UserPreferencesStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final realIPInfoStore = ref.watch(realIPInfoStorePOD);
-  final pushNotificationsRepository = ref.watch(pushNotificationsRepositoryPOD);
+  final pushNotificationsStore = ref.watch(pushNotificationsStorePOD);
 
   return UserPreferencesStore(
     apiService: apiService,
     analyticsStore: analyticsStore,
     realIPInfo: realIPInfoStore,
     localDBService: LocalDBService.instance,
-    pushNotificationsRepository: pushNotificationsRepository,
+    pushNotificationsStore: pushNotificationsStore,
   );
 });
 
