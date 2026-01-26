@@ -533,6 +533,7 @@ final pushNotificationsStorePOD = Provider<PushNotificationsStore>(
     final subscriptionStore = ref.watch(subscriptionStorePOD);
     final notificationsRepository = ref.watch(pushNotificationsRepositoryPOD);
     final logger = ref.watch(loggerPOD);
+    final analyticsStore = ref.watch(analyticsStorePOD);
 
     final store = PushNotificationsStore(
       authSessionStore,
@@ -540,6 +541,7 @@ final pushNotificationsStorePOD = Provider<PushNotificationsStore>(
       subscriptionStore,
       logger,
       notificationsRepository,
+      analyticsStore,
     );
 
     ref.onDispose(store.dispose);

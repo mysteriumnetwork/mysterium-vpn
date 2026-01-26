@@ -332,32 +332,6 @@ void main() {
       expect(store.pushNotificationsPromptShown, isFalse);
       verifyNever(mockPushNotificationsRepository.requestPermission());
     });
-
-    test('updatePushNotificationsPermissions opens settings on mobile', () async {
-      store.testIsMobile = true;
-      when(mockPushNotificationsRepository.openAppNotificationsSettings())
-          .thenAnswer((_) async => true);
-
-      await store.updatePushNotificationsPermissions();
-
-      verify(mockPushNotificationsRepository.openAppNotificationsSettings()).called(1);
-      verify(
-        mockAnalyticsStore.logPushNotificationsPermissionsChanged(permissionsGranted: true),
-      ).called(1);
-    });
-
-    test('updatePushNotificationsPermissions does nothing on non-mobile', () async {
-      store.testIsMobile = false;
-
-      await store.updatePushNotificationsPermissions();
-
-      verifyNever(mockPushNotificationsRepository.openAppNotificationsSettings());
-      verifyNever(
-        mockAnalyticsStore.logPushNotificationsPermissionsChanged(
-          permissionsGranted: anyNamed('permissionsGranted'),
-        ),
-      );
-    });
   });
 
   group('Next Prompt Logic', () {

@@ -65,25 +65,6 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
     });
   }
 
-  late final _$_pushNotificationsPermissionGrantedAtom =
-      Atom(name: '_UserPreferencesStore._pushNotificationsPermissionGranted', context: context);
-
-  bool? get pushNotificationsPermissionGranted {
-    _$_pushNotificationsPermissionGrantedAtom.reportRead();
-    return super._pushNotificationsPermissionGranted;
-  }
-
-  @override
-  bool? get _pushNotificationsPermissionGranted => pushNotificationsPermissionGranted;
-
-  @override
-  set _pushNotificationsPermissionGranted(bool? value) {
-    _$_pushNotificationsPermissionGrantedAtom
-        .reportWrite(value, super._pushNotificationsPermissionGranted, () {
-      super._pushNotificationsPermissionGranted = value;
-    });
-  }
-
   late final _$nextPromptToShowAtom =
       Atom(name: '_UserPreferencesStore.nextPromptToShow', context: context);
 
@@ -170,15 +151,6 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
   Future<void> setPushNotificationsShown({required bool userAllowed}) {
     return _$setPushNotificationsShownAsyncAction
         .run(() => super.setPushNotificationsShown(userAllowed: userAllowed));
-  }
-
-  late final _$updatePushNotificationsPermissionsAsyncAction =
-      AsyncAction('_UserPreferencesStore.updatePushNotificationsPermissions', context: context);
-
-  @override
-  Future<void> updatePushNotificationsPermissions() {
-    return _$updatePushNotificationsPermissionsAsyncAction
-        .run(() => super.updatePushNotificationsPermissions());
   }
 
   late final _$_UserPreferencesStoreActionController =

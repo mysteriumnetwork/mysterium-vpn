@@ -21,15 +21,14 @@ class PushNotificationsSetting extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authSessionStore = ref.watch(authSessionStorePOD);
     final authStatus = useComputedValue(() => authSessionStore.status);
-    final userPreferencesStore = ref.watch(userPreferencesStorePOD);
+    final pushNotificationsStore = ref.watch(pushNotificationsStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
 
     final screenType = useScreenType();
     final isMobile = screenType == ScreenType.mobile;
     return Visibility(
-      visible: userPreferencesStore.supportsPushNotifications &&
-          authStatus == AuthStatus.authenticated &&
-          userPreferencesStore.pushNotificationsPermissionGranted != null,
+      visible: pushNotificationsStore.supportsPushNotifications &&
+          authStatus == AuthStatus.authenticated,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -49,10 +48,10 @@ class PushNotificationsSetting extends HookConsumerWidget {
             subtitle: LocaleKeys.pushNotificationsSettingDesc.tr(),
             actionWidget: Observer(
               builder: (context) => Switch(
-                value: userPreferencesStore.pushNotificationsPermissionGranted!,
+                value: pushNotificationsStore.pushNotificationsPermissionGranted,
                 onChanged: (val) async {
                   try {
-                    await userPreferencesStore.updatePushNotificationsPermissions();
+                    await pushNotificationsStore.updatePushNotificationsPermissions();
                     analyticsStore.logEvent(
                       AnalyticsEvent.togglePushNotifications,
                       parameters: {'value': val.toString()},

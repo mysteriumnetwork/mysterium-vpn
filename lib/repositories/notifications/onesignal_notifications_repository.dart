@@ -102,13 +102,12 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
   bool getPermissionStatus() => OneSignal.Notifications.permission;
 
   @override
-  Future<bool> openAppNotificationsSettings() async {
+  Future<void> openAppNotificationsSettings() async {
     try {
       await AppSettings.openAppSettings(
         type: AppSettingsType.notification,
         asAnotherTask: true,
       );
-      return getPermissionStatus();
     } catch (e) {
       logger.error('Error opening app notification settings: $e');
       rethrow;
@@ -185,5 +184,24 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
       logger.error('Error emitting OneSignal user/device state: $e');
       _controller!.addError(e);
     }
+  }
+
+  @override
+  Stream<bool> getPermissionStatusStream() {
+    final controller = StreamController<bool>();
+
+    // Emit initial status
+    final current = OneSignal.Notifications.permission;
+    controller.add(current);
+
+    OneSignal.Notifications.addPermissionObserver((granted) {
+      if (!controller.isClosed) {
+        controller.add(granted);
+      }
+    });
+
+    controller.onCancel = controller.close;
+
+    return controller.stream;
   }
 }

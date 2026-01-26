@@ -15,6 +15,13 @@ mixin _$PushNotificationsStore on _PushNotificationsStore, Store {
   String? get user =>
       (_$userComputed ??= Computed<String?>(() => super.user, name: '_PushNotificationsStore.user'))
           .value;
+  Computed<bool>? _$pushNotificationsPermissionGrantedComputed;
+
+  @override
+  bool get pushNotificationsPermissionGranted => (_$pushNotificationsPermissionGrantedComputed ??=
+          Computed<bool>(() => super.pushNotificationsPermissionGranted,
+              name: '_PushNotificationsStore.pushNotificationsPermissionGranted'))
+      .value;
 
   late final _$_pushNotificationsUserAtom =
       Atom(name: '_PushNotificationsStore._pushNotificationsUser', context: context);
@@ -38,10 +45,46 @@ mixin _$PushNotificationsStore on _PushNotificationsStore, Store {
     });
   }
 
+  late final _$_pushNotificationsPermissionStreamAtom =
+      Atom(name: '_PushNotificationsStore._pushNotificationsPermissionStream', context: context);
+
+  ObservableStream<bool> get pushNotificationsPermissionStream {
+    _$_pushNotificationsPermissionStreamAtom.reportRead();
+    return super._pushNotificationsPermissionStream;
+  }
+
+  @override
+  ObservableStream<bool> get _pushNotificationsPermissionStream =>
+      pushNotificationsPermissionStream;
+
+  bool __pushNotificationsPermissionStreamIsInitialized = false;
+
+  @override
+  set _pushNotificationsPermissionStream(ObservableStream<bool> value) {
+    _$_pushNotificationsPermissionStreamAtom.reportWrite(
+        value,
+        __pushNotificationsPermissionStreamIsInitialized
+            ? super._pushNotificationsPermissionStream
+            : null, () {
+      super._pushNotificationsPermissionStream = value;
+      __pushNotificationsPermissionStreamIsInitialized = true;
+    });
+  }
+
+  late final _$updatePushNotificationsPermissionsAsyncAction =
+      AsyncAction('_PushNotificationsStore.updatePushNotificationsPermissions', context: context);
+
+  @override
+  Future<void> updatePushNotificationsPermissions() {
+    return _$updatePushNotificationsPermissionsAsyncAction
+        .run(() => super.updatePushNotificationsPermissions());
+  }
+
   @override
   String toString() {
     return '''
-user: ${user}
+user: ${user},
+pushNotificationsPermissionGranted: ${pushNotificationsPermissionGranted}
     ''';
   }
 }

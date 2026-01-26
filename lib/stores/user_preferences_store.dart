@@ -56,9 +56,6 @@ abstract class _UserPreferencesStore with Store {
   @computed
   bool? get marketingConsent => getMarketingConsentFuture?.value;
 
-  @readonly
-  bool? _pushNotificationsPermissionGranted;
-
   @observable
   UserPromptType nextPromptToShow = UserPromptType.none;
 
@@ -104,14 +101,7 @@ abstract class _UserPreferencesStore with Store {
       return false;
     }
     final status = _pushNotificationsRepository.getPermissionStatus();
-    _pushNotificationsPermissionGranted = status;
-    _analyticsStore.setUserProperty(
-      AnalyticsUserProperty.fromEnum(
-        name: AnalyticsUserPropName.pnPermissionStatus,
-        value: status.toString(),
-      ),
-    );
-    return !_pushNotificationsPermissionGranted!;
+    return !status;
   }
 
   @visibleForTesting
@@ -198,22 +188,11 @@ abstract class _UserPreferencesStore with Store {
     pushNotificationsPromptShown = true;
     if (userAllowed) {
       try {
-        final result = await _pushNotificationsRepository.requestPermission();
-        _analyticsStore.logPushNotificationsPermissionsChanged(permissionsGranted: result);
+        await _pushNotificationsRepository.requestPermission();
       } catch (e) {
         debugPrint(e.toString());
       }
       unawaited(evaluateNextPromptToShow());
     }
-  }
-
-  @action
-  Future<void> updatePushNotificationsPermissions() async {
-    if (!supportsPushNotifications) {
-      return;
-    }
-    final result = await _pushNotificationsRepository.openAppNotificationsSettings();
-    _pushNotificationsPermissionGranted = result;
-    _analyticsStore.logPushNotificationsPermissionsChanged(permissionsGranted: result);
   }
 }

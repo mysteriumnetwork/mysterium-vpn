@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/disposeable.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -20,6 +23,7 @@ abstract class _PushNotificationsStore with Store, Disposeable {
     this._subscriptionStore,
     this._logger,
     this._notificationsRepository,
+    this._analyticsStore,
   ) {
     _init();
   }
@@ -30,6 +34,12 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   final SubscriptionStore _subscriptionStore;
   final Talker _logger;
   final NotificationsRepository _notificationsRepository;
+  final AnalyticsStore _analyticsStore;
+
+  @visibleForTesting
+  bool testIsMobile = false; // default false, will override in tests
+
+  bool get supportsPushNotifications => testIsMobile || isMobile();
 
   Future<void> _init() async {
     await _notificationsRepository.init();
@@ -86,14 +96,41 @@ abstract class _PushNotificationsStore with Store, Disposeable {
         fireImmediately: true,
       ),
     ]);
+
+    _pushNotificationsPermissionStream.listen((granted) {
+      _analyticsStore
+        ..setUserProperty(
+          AnalyticsUserProperty.fromEnum(
+            name: AnalyticsUserPropName.pnPermissionStatus,
+            value: granted.toString(),
+          ),
+        )
+        ..logPushNotificationsPermissionsChanged(permissionsGranted: granted);
+    });
   }
 
   @readonly
   late ObservableStream<PushNotificationsUser> _pushNotificationsUser =
       ObservableStream(_notificationsRepository.getUser());
 
+  @readonly
+  late ObservableStream<bool> _pushNotificationsPermissionStream = ObservableStream(
+    _notificationsRepository.getPermissionStatusStream(),
+  );
+
   @computed
   String? get user => _pushNotificationsUser.value?.toString();
+
+  @computed
+  bool get pushNotificationsPermissionGranted => _pushNotificationsPermissionStream.value ?? false;
+
+  @action
+  Future<void> updatePushNotificationsPermissions() async {
+    if (!supportsPushNotifications) {
+      return;
+    }
+    await _notificationsRepository.openAppNotificationsSettings();
+  }
 
   @override
   FutureOr<void> dispose() {
