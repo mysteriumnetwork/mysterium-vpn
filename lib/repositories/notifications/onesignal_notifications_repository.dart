@@ -28,6 +28,8 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
     OneSignal.initialize(Env.oneSignalAppId);
 
+    debugPrint('INIT: OneSignal initialized');
+
     // Setup push subscription observer
     OneSignal.User.pushSubscription.addObserver((state) {
       logger.info('PushSubscription changed: ${state.current.jsonRepresentation()}');
@@ -187,21 +189,34 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
   }
 
   @override
-  Stream<bool> getPermissionStatusStream() {
+  Stream<bool> getPermissionStatusStream() async* {
+    await Future.delayed(const Duration(milliseconds: 300));
     final controller = StreamController<bool>();
 
     // Emit initial status
-    final current = OneSignal.Notifications.permission;
+    final current = getPermissionStatus();
     controller.add(current);
 
-    OneSignal.Notifications.addPermissionObserver((granted) {
+    OneSignal.Notifications.addPermissionObserver((_) {
       if (!controller.isClosed) {
-        controller.add(granted);
+        final current = getPermissionStatus();
+        debugPrint('INIT: Current permission status1: $current');
+        controller.add(current);
       }
     });
 
     controller.onCancel = controller.close;
 
-    return controller.stream;
+    yield* controller.stream;
+  }
+
+  @override
+  Future<bool> canRequestPermission() async {
+    try {
+      return await OneSignal.Notifications.canRequest();
+    } catch (e) {
+      logger.error('Error checking if can request PN permissions: $e');
+      return Future.value(false);
+    }
   }
 }

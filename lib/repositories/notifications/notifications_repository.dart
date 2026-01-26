@@ -10,4 +10,5 @@ abstract class NotificationsRepository {
   Future<void> setTags(Map<String, String> tags);
   Stream<PushNotificationsUser> getUser();
   Stream<bool> getPermissionStatusStream();
+  Future<bool> canRequestPermission();
 }

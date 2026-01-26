@@ -139,6 +139,7 @@ void main() {
         () async {
       store.pushNotificationsPromptShown = false;
       when(mockNotificationsRepository.getPermissionStatus()).thenReturn(false);
+      when(mockNotificationsRepository.canRequestPermission()).thenAnswer((_) async => true);
 
       final result = await store.shouldShowPushNotificationsPermissionPrompt();
 
@@ -148,6 +149,26 @@ void main() {
     test('shouldShowPushNotificationsPermissionPrompt returns false when prompt already shown',
         () async {
       store.pushNotificationsPromptShown = true;
+
+      final result = await store.shouldShowPushNotificationsPermissionPrompt();
+
+      expect(result, isFalse);
+    });
+
+    test('shouldShowPushNotificationsPermissionPrompt returns false when already granted',
+        () async {
+      store.pushNotificationsPromptShown = false;
+      when(mockNotificationsRepository.getPermissionStatus()).thenReturn(true);
+
+      final result = await store.shouldShowPushNotificationsPermissionPrompt();
+
+      expect(result, isFalse);
+    });
+
+    test('shouldShowPushNotificationsPermissionPrompt returns false when cannot request', () async {
+      store.pushNotificationsPromptShown = false;
+      when(mockNotificationsRepository.getPermissionStatus()).thenReturn(false);
+      when(mockNotificationsRepository.canRequestPermission()).thenAnswer((_) async => false);
 
       final result = await store.shouldShowPushNotificationsPermissionPrompt();
 

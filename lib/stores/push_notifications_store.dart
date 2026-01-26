@@ -46,6 +46,16 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
   Future<void> _init() async {
     await _notificationsRepository.init();
+    _pushNotificationsPermissionStream.listen((granted) {
+      _analyticsStore
+        ..setUserProperty(
+          AnalyticsUserProperty.fromEnum(
+            name: AnalyticsUserPropName.pnPermissionStatus,
+            value: granted.toString(),
+          ),
+        )
+        ..logPushNotificationsPermissionsChanged(permissionsGranted: granted);
+    });
     _disposers.addAll([
       reaction(
         (_) => _authSessionStore.userFuture.value.toUserData(),
@@ -99,17 +109,6 @@ abstract class _PushNotificationsStore with Store, Disposeable {
         fireImmediately: true,
       ),
     ]);
-
-    _pushNotificationsPermissionStream.listen((granted) {
-      _analyticsStore
-        ..setUserProperty(
-          AnalyticsUserProperty.fromEnum(
-            name: AnalyticsUserPropName.pnPermissionStatus,
-            value: granted.toString(),
-          ),
-        )
-        ..logPushNotificationsPermissionsChanged(permissionsGranted: granted);
-    });
   }
 
   @readonly
@@ -159,7 +158,8 @@ abstract class _PushNotificationsStore with Store, Disposeable {
     if (shouldSkipPushNotificationsPrompt) {
       return false;
     }
-    return !_notificationsRepository.getPermissionStatus();
+    return !_notificationsRepository.getPermissionStatus() &&
+        await _notificationsRepository.canRequestPermission();
   }
 
   @override
