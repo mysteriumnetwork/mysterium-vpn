@@ -14,39 +14,88 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
   OnesignalNotificationsRepository({required this.logger});
 
   final Talker logger;
+  StreamController<PushNotificationsUser>? _controller;
 
   @override
   Future<void> init() async {
     if (!isMobile()) {
       return;
     }
+
     if (kDebugMode) {
       await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
     }
+
     OneSignal.initialize(Env.oneSignalAppId);
+
+    // Setup push subscription observer
+    OneSignal.User.pushSubscription.addObserver((state) {
+      logger.info('PushSubscription changed: ${state.current.jsonRepresentation()}');
+      _emitCurrentUser(); // update stream whenever subscription changes
+    });
+
+    // Setup user observer
+    OneSignal.User.addObserver((state) {
+      logger.info('User state changed: ${state.current.jsonRepresentation()}');
+      _emitCurrentUser(); // update stream whenever user changes
+    });
+
+    //
+    OneSignal.Notifications.addForegroundWillDisplayListener((event) {
+      event.preventDefault();
+      event.notification.display();
+    });
+
+    OneSignal.Notifications.addClickListener((event) {
+      debugPrint(
+        'NOTIFICATION CLICK LISTENER CALLED WITH EVENT: ${event.notification.title}',
+      );
+    });
+
+    OneSignal.InAppMessages.addClickListener((event) {
+      final debugLabelString =
+          "In App Message Clicked: \n${event.result.jsonRepresentation().replaceAll(r"\n", "\n")}";
+      debugPrint(debugLabelString);
+    });
+    OneSignal.Notifications.addForegroundWillDisplayListener((event) {
+      event.preventDefault();
+      event.notification.display();
+    });
   }
 
   @override
   Future<bool> requestPermission() async {
     try {
-      if (getPermissionStatus()) {
+      if (await _isSubscribed()) {
         return true;
       }
+
       if (!(await OneSignal.Notifications.canRequest())) {
         throw RequestPushNotificationsPermissionsNotAllowed();
       }
+
       final granted = await OneSignal.Notifications.requestPermission(false);
-      if (!granted) {
-        logger.info('Push notifications permission not granted by the user.');
-      } else {
+
+      if (granted) {
         logger.info('Push notifications permission granted by the user.');
-        OneSignal.consentGiven(true);
+        // Opt-in if permission granted
+        if (!(await _isSubscribed())) {
+          OneSignal.User.pushSubscription.optIn();
+        }
+      } else {
+        logger.info('Push notifications permission not granted by the user.');
       }
+
       return granted;
     } catch (e) {
       logger.error('Error requesting PN permissions: $e');
       rethrow;
     }
+  }
+
+  Future<bool> _isSubscribed() async {
+    final subscription = OneSignal.User.pushSubscription;
+    return (subscription.optedIn ?? false) && getPermissionStatus() && (subscription.token) != null;
   }
 
   @override
@@ -99,43 +148,42 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   @override
   Stream<PushNotificationsUser> getUser() {
-    final controller = StreamController<PushNotificationsUser>();
-
-    // Emit initial state
-    _emitCurrentUser(controller, null);
-
-    // Listen for changes
-    OneSignal.User.addObserver((state) {
-      _emitCurrentUser(controller, state);
-    });
-
-    return controller.stream;
+    _controller ??= StreamController<PushNotificationsUser>.broadcast(
+      onListen: _emitCurrentUser,
+      onCancel: () => _controller?.close(),
+    );
+    return _controller!.stream;
   }
 
-  Future<void> _emitCurrentUser(
-    StreamController<PushNotificationsUser> controller,
-    OSUserChangedState? state,
-  ) async {
+  Future<void> _emitCurrentUser() async {
+    if (_controller == null || _controller!.isClosed) {
+      return;
+    }
+
     try {
       final oneSignalId = await OneSignal.User.getOnesignalId();
       final userId = await OneSignal.User.getExternalId();
       final tags = await OneSignal.User.getTags();
-      final current = state?.jsonRepresentation();
-      if (!controller.isClosed) {
-        controller.add(
-          PushNotificationsUser(
-            pushNotificationsId: oneSignalId,
-            userId: userId,
-            tags: tags,
-            current: current,
-          ),
-        );
-      }
+      final subscription = OneSignal.User.pushSubscription;
+      final current = <String, String>{
+        'optedIn': subscription.optedIn.toString(),
+        'token': subscription.token ?? '',
+        'id': subscription.id ?? '',
+      };
+
+      _controller!.add(
+        PushNotificationsUser(
+          pushNotificationsId: oneSignalId,
+          userId: userId,
+          tags: {
+            ...tags,
+            ...current,
+          },
+        ),
+      );
     } catch (e) {
-      logger.error('Error getting OneSignal user/device state: $e');
-      if (!controller.isClosed) {
-        controller.addError(e);
-      }
+      logger.error('Error emitting OneSignal user/device state: $e');
+      _controller!.addError(e);
     }
   }
 }

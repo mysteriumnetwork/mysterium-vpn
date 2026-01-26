@@ -10,7 +10,6 @@ abstract class PushNotificationsUser with _$PushNotificationsUser {
     required String? pushNotificationsId,
     required String? userId,
     required Map<String, String>? tags,
-    required String? current,
   }) = _PushNotificationsUser;
   factory PushNotificationsUser.fromJson(Map<String, dynamic> json) =>
       _$PushNotificationsUserFromJson(json);

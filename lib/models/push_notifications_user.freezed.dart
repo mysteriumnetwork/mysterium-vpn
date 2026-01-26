@@ -17,7 +17,6 @@ mixin _$PushNotificationsUser {
   String? get pushNotificationsId;
   String? get userId;
   Map<String, String>? get tags;
-  String? get current;
 
   /// Create a copy of PushNotificationsUser
   /// with the given fields replaced by the non-null parameter values.
@@ -38,18 +37,17 @@ mixin _$PushNotificationsUser {
             (identical(other.pushNotificationsId, pushNotificationsId) ||
                 other.pushNotificationsId == pushNotificationsId) &&
             (identical(other.userId, userId) || other.userId == userId) &&
-            const DeepCollectionEquality().equals(other.tags, tags) &&
-            (identical(other.current, current) || other.current == current));
+            const DeepCollectionEquality().equals(other.tags, tags));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, pushNotificationsId, userId, const DeepCollectionEquality().hash(tags), current);
+      runtimeType, pushNotificationsId, userId, const DeepCollectionEquality().hash(tags));
 
   @override
   String toString() {
-    return 'PushNotificationsUser(pushNotificationsId: $pushNotificationsId, userId: $userId, tags: $tags, current: $current)';
+    return 'PushNotificationsUser(pushNotificationsId: $pushNotificationsId, userId: $userId, tags: $tags)';
   }
 }
 
@@ -59,8 +57,7 @@ abstract mixin class $PushNotificationsUserCopyWith<$Res> {
           PushNotificationsUser value, $Res Function(PushNotificationsUser) _then) =
       _$PushNotificationsUserCopyWithImpl;
   @useResult
-  $Res call(
-      {String? pushNotificationsId, String? userId, Map<String, String>? tags, String? current});
+  $Res call({String? pushNotificationsId, String? userId, Map<String, String>? tags});
 }
 
 /// @nodoc
@@ -78,7 +75,6 @@ class _$PushNotificationsUserCopyWithImpl<$Res> implements $PushNotificationsUse
     Object? pushNotificationsId = freezed,
     Object? userId = freezed,
     Object? tags = freezed,
-    Object? current = freezed,
   }) {
     return _then(_self.copyWith(
       pushNotificationsId: freezed == pushNotificationsId
@@ -93,10 +89,6 @@ class _$PushNotificationsUserCopyWithImpl<$Res> implements $PushNotificationsUse
           ? _self.tags
           : tags // ignore: cast_nullable_to_non_nullable
               as Map<String, String>?,
-      current: freezed == current
-          ? _self.current
-          : current // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
@@ -194,15 +186,14 @@ extension PushNotificationsUserPatterns on PushNotificationsUser {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String? pushNotificationsId, String? userId, Map<String, String>? tags,
-            String? current)?
+    TResult Function(String? pushNotificationsId, String? userId, Map<String, String>? tags)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _PushNotificationsUser() when $default != null:
-        return $default(_that.pushNotificationsId, _that.userId, _that.tags, _that.current);
+        return $default(_that.pushNotificationsId, _that.userId, _that.tags);
       case _:
         return orElse();
     }
@@ -223,14 +214,13 @@ extension PushNotificationsUserPatterns on PushNotificationsUser {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(
-            String? pushNotificationsId, String? userId, Map<String, String>? tags, String? current)
+    TResult Function(String? pushNotificationsId, String? userId, Map<String, String>? tags)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _PushNotificationsUser():
-        return $default(_that.pushNotificationsId, _that.userId, _that.tags, _that.current);
+        return $default(_that.pushNotificationsId, _that.userId, _that.tags);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -250,14 +240,13 @@ extension PushNotificationsUserPatterns on PushNotificationsUser {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String? pushNotificationsId, String? userId, Map<String, String>? tags,
-            String? current)?
+    TResult? Function(String? pushNotificationsId, String? userId, Map<String, String>? tags)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _PushNotificationsUser() when $default != null:
-        return $default(_that.pushNotificationsId, _that.userId, _that.tags, _that.current);
+        return $default(_that.pushNotificationsId, _that.userId, _that.tags);
       case _:
         return null;
     }
@@ -270,8 +259,7 @@ class _PushNotificationsUser implements PushNotificationsUser {
   _PushNotificationsUser(
       {required this.pushNotificationsId,
       required this.userId,
-      required final Map<String, String>? tags,
-      required this.current})
+      required final Map<String, String>? tags})
       : _tags = tags;
   factory _PushNotificationsUser.fromJson(Map<String, dynamic> json) =>
       _$PushNotificationsUserFromJson(json);
@@ -289,9 +277,6 @@ class _PushNotificationsUser implements PushNotificationsUser {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(value);
   }
-
-  @override
-  final String? current;
 
   /// Create a copy of PushNotificationsUser
   /// with the given fields replaced by the non-null parameter values.
@@ -316,18 +301,17 @@ class _PushNotificationsUser implements PushNotificationsUser {
             (identical(other.pushNotificationsId, pushNotificationsId) ||
                 other.pushNotificationsId == pushNotificationsId) &&
             (identical(other.userId, userId) || other.userId == userId) &&
-            const DeepCollectionEquality().equals(other._tags, _tags) &&
-            (identical(other.current, current) || other.current == current));
+            const DeepCollectionEquality().equals(other._tags, _tags));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, pushNotificationsId, userId,
-      const DeepCollectionEquality().hash(_tags), current);
+  int get hashCode => Object.hash(
+      runtimeType, pushNotificationsId, userId, const DeepCollectionEquality().hash(_tags));
 
   @override
   String toString() {
-    return 'PushNotificationsUser(pushNotificationsId: $pushNotificationsId, userId: $userId, tags: $tags, current: $current)';
+    return 'PushNotificationsUser(pushNotificationsId: $pushNotificationsId, userId: $userId, tags: $tags)';
   }
 }
 
@@ -339,8 +323,7 @@ abstract mixin class _$PushNotificationsUserCopyWith<$Res>
       __$PushNotificationsUserCopyWithImpl;
   @override
   @useResult
-  $Res call(
-      {String? pushNotificationsId, String? userId, Map<String, String>? tags, String? current});
+  $Res call({String? pushNotificationsId, String? userId, Map<String, String>? tags});
 }
 
 /// @nodoc
@@ -358,7 +341,6 @@ class __$PushNotificationsUserCopyWithImpl<$Res> implements _$PushNotificationsU
     Object? pushNotificationsId = freezed,
     Object? userId = freezed,
     Object? tags = freezed,
-    Object? current = freezed,
   }) {
     return _then(_PushNotificationsUser(
       pushNotificationsId: freezed == pushNotificationsId
@@ -373,10 +355,6 @@ class __$PushNotificationsUserCopyWithImpl<$Res> implements _$PushNotificationsU
           ? _self._tags
           : tags // ignore: cast_nullable_to_non_nullable
               as Map<String, String>?,
-      current: freezed == current
-          ? _self.current
-          : current // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }

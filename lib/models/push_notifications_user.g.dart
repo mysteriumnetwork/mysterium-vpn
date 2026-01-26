@@ -13,7 +13,6 @@ _PushNotificationsUser _$PushNotificationsUserFromJson(Map<String, dynamic> json
       tags: (json['tags'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
-      current: json['current'] as String?,
     );
 
 Map<String, dynamic> _$PushNotificationsUserToJson(_PushNotificationsUser instance) =>
@@ -21,5 +20,4 @@ Map<String, dynamic> _$PushNotificationsUserToJson(_PushNotificationsUser instan
       'pushNotificationsId': instance.pushNotificationsId,
       'userId': instance.userId,
       'tags': instance.tags,
-      'current': instance.current,
     };
