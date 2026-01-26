@@ -525,3 +525,25 @@ final promotionalContentStorePOD = Provider<PromotionalContentStore>(
     return PromotionalContentStore(remoteConfigStore);
   },
 );
+
+final pushNotificationsStorePOD = Provider<PushNotificationsStore>(
+  (ref) {
+    final authSessionStore = ref.watch(authSessionStorePOD);
+    final ipInfoStore = ref.watch(realIPInfoStorePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final notificationsRepository = ref.watch(pushNotificationsRepositoryPOD);
+    final logger = ref.watch(loggerPOD);
+
+    final store = PushNotificationsStore(
+      authSessionStore,
+      ipInfoStore,
+      subscriptionStore,
+      logger,
+      notificationsRepository,
+    );
+
+    ref.onDispose(store.dispose);
+
+    return store;
+  },
+);

@@ -1000,6 +1000,7 @@ class _ConfigPage extends ConsumerWidget {
     final remoteConfigs = ref.watch(remoteConfigStorePOD);
     final configcatUser = ref.watch(configCatUserStorePOD);
     final abTesting = ref.watch(abTestingStorePOD);
+    final pushNotificationStore = ref.watch(pushNotificationsStorePOD);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -1013,49 +1014,61 @@ class _ConfigPage extends ConsumerWidget {
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const EasyText(
-                'Environment: ',
-                fontWeight: FontWeight.bold,
-                color: Palette.purple,
-              ),
-              EasyText(
-                Env.stringify(),
-                maxLines: 20,
-              ),
-              const SizedBox(height: 8),
-              const EasyText(
-                'Remote Configs: ',
-                fontWeight: FontWeight.bold,
-                color: Palette.purple,
-              ),
-              EasyText(
-                remoteConfigs.asUserProperties.toString(),
-                maxLines: 20,
-              ),
-              const SizedBox(height: 8),
-              const EasyText(
-                'ConfigCat User: ',
-                fontWeight: FontWeight.bold,
-                color: Palette.purple,
-              ),
-              EasyText(
-                configcatUser.user ?? 'Loading...',
-                maxLines: 100,
-              ),
-              const SizedBox(height: 8),
-              const EasyText(
-                'AB Testing: ',
-                fontWeight: FontWeight.bold,
-                color: Palette.purple,
-              ),
-              EasyText(
-                abTesting.asUserProperties.toString(),
-                maxLines: 20,
-              ),
-            ],
+          child: Observer(
+            builder: (context) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const EasyText(
+                  'Environment: ',
+                  fontWeight: FontWeight.bold,
+                  color: Palette.purple,
+                ),
+                EasyText(
+                  Env.stringify(),
+                  maxLines: 20,
+                ),
+                const SizedBox(height: 8),
+                const EasyText(
+                  'Remote Configs: ',
+                  fontWeight: FontWeight.bold,
+                  color: Palette.purple,
+                ),
+                EasyText(
+                  remoteConfigs.asUserProperties.toString(),
+                  maxLines: 20,
+                ),
+                const SizedBox(height: 8),
+                const EasyText(
+                  'ConfigCat User: ',
+                  fontWeight: FontWeight.bold,
+                  color: Palette.purple,
+                ),
+                EasyText(
+                  configcatUser.user ?? 'Loading...',
+                  maxLines: 100,
+                ),
+                const SizedBox(height: 8),
+                const EasyText(
+                  'Push Notifications User: ',
+                  fontWeight: FontWeight.bold,
+                  color: Palette.purple,
+                ),
+                EasyText(
+                  pushNotificationStore.user ?? 'Loading...',
+                  maxLines: 100,
+                ),
+                const SizedBox(height: 8),
+                const EasyText(
+                  'AB Testing: ',
+                  fontWeight: FontWeight.bold,
+                  color: Palette.purple,
+                ),
+                EasyText(
+                  abTesting.asUserProperties.toString(),
+                  maxLines: 20,
+                ),
+              ],
+            ),
           ),
         ),
       ),
