@@ -265,4 +265,15 @@ class LocalDBService {
     userData.protocolType = protocolType;
     await _saveUserData(userData);
   }
+
+  Future<DateTime?> getPushNotificationsPromptLastShownAt() async {
+    final userData = await _loadUserData();
+    return userData.pushNotificationsPromptLastShownAt;
+  }
+
+  Future<void> setPushNotificationsPromptLastShownAt(DateTime dateTime) async {
+    final userData = await _loadUserData();
+    userData.pushNotificationsPromptLastShownAt = dateTime;
+    await _saveUserData(userData);
+  }
 }

@@ -75,6 +75,9 @@ class UserData {
   @HiveField(14, defaultValue: ProtocolType.wireguard)
   ProtocolType protocolType;
 
+  @HiveField(15, defaultValue: null)
+  DateTime? pushNotificationsPromptLastShownAt;
+
   set recentLocations(List<VPNLocation> locations) {
     recentVPNLocations = [
       ...locations,
@@ -104,6 +107,7 @@ vpnPrivacyPolicyConsent: $vpnPrivacyPolicyConsent
 recentLocationCodes: $recentLocationCodes
 marketingConsentShown: $marketingConsentShown
 protocolType: $protocolType
+pushNotificationsPromptLastShownAt: $pushNotificationsPromptLastShownAt
 ''';
 }
 
