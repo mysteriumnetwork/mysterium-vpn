@@ -26,12 +26,12 @@ class _DialogContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userPreferencesStore = ref.watch(userPreferencesStorePOD);
+    final pushNotificationsStore = ref.watch(pushNotificationsStorePOD);
     final theme = Theme.of(context);
     return ModalScaffold(
       onModalClose: () => _completePushNotificationsFlow(
         context,
-        userPreferencesStore: userPreferencesStore,
+        pushNotificationsStore: pushNotificationsStore,
         userAllowed: false,
       ),
       body: Padding(
@@ -68,7 +68,7 @@ class _DialogContent extends ConsumerWidget {
             ButtonPrimary(
               onPressed: () => _completePushNotificationsFlow(
                 context,
-                userPreferencesStore: userPreferencesStore,
+                pushNotificationsStore: pushNotificationsStore,
                 userAllowed: true,
               ),
               child: Text(
@@ -99,10 +99,10 @@ class _PermissionPoint extends StatelessWidget {
 
 Future<void> _completePushNotificationsFlow(
   BuildContext context, {
-  required UserPreferencesStore userPreferencesStore,
+  required PushNotificationsStore pushNotificationsStore,
   required bool userAllowed,
 }) async {
-  await userPreferencesStore.setPushNotificationsShown(userAllowed: userAllowed);
+  await pushNotificationsStore.setPushNotificationsShown(userAllowed: userAllowed);
 
   if (context.mounted) {
     Navigator.of(context).pop();
