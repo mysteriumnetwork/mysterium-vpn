@@ -433,7 +433,7 @@
   "zh": "中国人",
   "subscriptionUpgradeModalTitle": "升级到 {}",
   "subscriptionUpgradeModalDescription": "可访问 7500 多个住宅 IP 地址",
-  "subscriptionPlanBestValue": "性价比最高",
+  "subscriptionPlanBestValue": "最佳性价比",
   "subscriptionPlanPeriodMonth": "莫",
   "subscriptionPlanBillingInfo": "每期账单金额为{amount}",
   "subscriptionPlanSavePercent": "节省 {}％",
@@ -477,5 +477,6 @@
   "plan_yearly_pro": "专业年度",
   "subscriptionUpgrade": "升级",
   "plan_2_years_basic": "基础2年",
-  "plan_2_years_pro": "专业版 2 年"
+  "plan_2_years_pro": "专业版 2 年",
+  "notNowBtn": "现在不要"
 }

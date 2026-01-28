@@ -472,4 +472,5 @@ abstract class LocaleKeys {
   static const subscriptionUpgrade = 'subscriptionUpgrade';
   static const plan_2_years_basic = 'plan_2_years_basic';
   static const plan_2_years_pro = 'plan_2_years_pro';
+  static const notNowBtn = 'notNowBtn';
 }
