@@ -276,4 +276,15 @@ class LocalDBService {
     userData.pushNotificationsPromptLastShownAt = dateTime;
     await _saveUserData(userData);
   }
+
+  Future<int> getAppOpenCount() async {
+    final userData = await _loadUserData();
+    return userData.appOpenCount;
+  }
+
+  Future<void> setAppOpenCount(int count) async {
+    final userData = await _loadUserData();
+    userData.appOpenCount = count;
+    await _saveUserData(userData);
+  }
 }

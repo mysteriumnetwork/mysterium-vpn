@@ -26,6 +26,8 @@ class UserData {
     this.recentLocationCodes = const [],
     this.marketingConsentShown = false,
     this.protocolType = ProtocolType.wireguard,
+    this.pushNotificationsPromptLastShownAt,
+    this.appOpenCount = 0,
   });
 
   @HiveField(0)
@@ -74,6 +76,9 @@ class UserData {
 
   @HiveField(14, defaultValue: ProtocolType.wireguard)
   ProtocolType protocolType;
+
+  @HiveField(16, defaultValue: 0)
+  int appOpenCount;
 
   @HiveField(15, defaultValue: null)
   DateTime? pushNotificationsPromptLastShownAt;
