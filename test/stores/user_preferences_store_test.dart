@@ -117,8 +117,9 @@ void main() {
 
   group('Marketing Consent', () {
     test('shouldShowMarketingConsent returns false if consent is true', () async {
-      store.appOpenCount = 3;
-      store.getMarketingConsentFuture = ObservableFuture.value(true);
+      store
+        ..appOpenCount = 3
+        ..getMarketingConsentFuture = ObservableFuture.value(true);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
 
       final result = await store.shouldShowMarketingConsent();
@@ -126,8 +127,9 @@ void main() {
     });
 
     test('shouldShowMarketingConsent returns false if already shown', () async {
-      store.appOpenCount = 3;
-      store.getMarketingConsentFuture = ObservableFuture.value(false);
+      store
+        ..appOpenCount = 3
+        ..getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => true);
 
       final result = await store.shouldShowMarketingConsent();
@@ -135,8 +137,9 @@ void main() {
     });
 
     test('shouldShowMarketingConsent returns false if app open count is less than 3', () async {
-      store.appOpenCount = 2;
-      store.getMarketingConsentFuture = ObservableFuture.value(false);
+      store
+        ..appOpenCount = 2
+        ..getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
 
       final result = await store.shouldShowMarketingConsent();
@@ -144,8 +147,9 @@ void main() {
     });
 
     test('shouldShowMarketingConsent returns true on 3rd open and beyond', () async {
-      store.appOpenCount = 3;
-      store.getMarketingConsentFuture = ObservableFuture.value(false);
+      store
+        ..appOpenCount = 3
+        ..getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
 
       final result = await store.shouldShowMarketingConsent();
@@ -153,8 +157,9 @@ void main() {
     });
 
     test('shouldShowMarketingConsent returns true on 4th open if not shown yet', () async {
-      store.appOpenCount = 4;
-      store.getMarketingConsentFuture = ObservableFuture.value(false);
+      store
+        ..appOpenCount = 4
+        ..getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
 
       final result = await store.shouldShowMarketingConsent();
