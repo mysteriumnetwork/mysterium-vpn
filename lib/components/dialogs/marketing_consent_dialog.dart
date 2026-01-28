@@ -34,6 +34,8 @@ class _DialogContent extends ConsumerWidget {
     return ModalScaffold(
       onModalClose: () => _updateMarketingConsent(context, consent: false),
       autoApplyPadding: false,
+      showGradient: false,
+      showCloseButton: false,
       body: Padding(
         padding: ModalPadding.insets(
           context,
@@ -83,6 +85,13 @@ class _DialogContent extends ConsumerWidget {
                         LocaleKeys.signMeUpBtn.tr(),
                       ),
                     ),
+                    ButtonSecondary(
+                      key: Keys.marketingConsentDeclineButton,
+                      onPressed: () => _updateMarketingConsent(context, consent: false),
+                      child: Text(
+                        LocaleKeys.noThanksBtn.tr(),
+                      ),
+                    ).padding(top: 12),
                     if (futureStatus == FutureStatus.rejected)
                       Padding(
                         padding: const EdgeInsets.only(top: 16),

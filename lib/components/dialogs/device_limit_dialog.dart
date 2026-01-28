@@ -52,6 +52,7 @@ class _DialogContent extends ConsumerWidget {
 
     return ModalScaffold(
       autoApplyPadding: false,
+      showGradient: false,
       body: Padding(
         padding: ModalPadding.insets(
           context,

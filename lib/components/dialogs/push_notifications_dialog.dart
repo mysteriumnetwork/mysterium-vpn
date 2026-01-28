@@ -29,11 +29,8 @@ class _DialogContent extends ConsumerWidget {
     final pushNotificationsStore = ref.watch(pushNotificationsStorePOD);
     final theme = Theme.of(context);
     return ModalScaffold(
-      onModalClose: () => _completePushNotificationsFlow(
-        context,
-        pushNotificationsStore: pushNotificationsStore,
-        userAllowed: false,
-      ),
+      showGradient: false,
+      showCloseButton: false,
       body: Padding(
         padding: ModalPadding.insets(
           context,
@@ -42,59 +39,53 @@ class _DialogContent extends ConsumerWidget {
             horizontal: theme.spacing.md,
           ),
         ),
-        child: Column(
-          children: [
-            const Spacer(),
-            Asset.images.marketingConsent(context).image(width: 150, height: 150),
-            Text(
-              LocaleKeys.pushNotificationsConsentPopupTitle.tr(),
-              style: GoogleFonts.montserrat(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+        child: Center(
+          child: Column(
+            children: [
+              const Spacer(),
+              Asset.images.marketingConsent(context).image(width: 150, height: 150),
+              Text(
+                LocaleKeys.pushNotificationsConsentPopupTitle.tr(),
+                style: GoogleFonts.montserrat(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
-            Text(
-              LocaleKeys.pushNotificationsConsentPopupDesc.tr(),
-              style: GoogleFonts.montserrat(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
+              Text(
+                LocaleKeys.pushNotificationsConsentPopupDesc.tr(),
+                style: GoogleFonts.montserrat(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+                textAlign: TextAlign.center,
+              ).padding(bottom: 24, top: 12),
+              const Spacer(),
+              ButtonPrimary(
+                onPressed: () => _completePushNotificationsFlow(
+                  context,
+                  pushNotificationsStore: pushNotificationsStore,
+                  userAllowed: true,
+                ),
+                child: Text(
+                  LocaleKeys.allowPushNotificationsBtn.tr(),
+                ),
               ),
-              textAlign: TextAlign.center,
-            ).padding(bottom: 24, top: 12),
-            _PermissionPoint(text: LocaleKeys.pushNotificationsPermissionPoint1.tr()),
-            _PermissionPoint(text: LocaleKeys.pushNotificationsPermissionPoint2.tr())
-                .padding(bottom: 40),
-            const Spacer(),
-            ButtonPrimary(
-              onPressed: () => _completePushNotificationsFlow(
-                context,
-                pushNotificationsStore: pushNotificationsStore,
-                userAllowed: true,
-              ),
-              child: Text(
-                LocaleKeys.allowPushNotificationsBtn.tr(),
-              ),
-            ),
-          ],
+              ButtonSecondary(
+                onPressed: () => _completePushNotificationsFlow(
+                  context,
+                  pushNotificationsStore: pushNotificationsStore,
+                  userAllowed: false,
+                ),
+                child: Text(
+                  LocaleKeys.notNowBtn.tr(),
+                ),
+              ).padding(top: 12),
+            ],
+          ),
         ),
       ),
     );
   }
-}
-
-class _PermissionPoint extends StatelessWidget {
-  const _PermissionPoint({required this.text});
-  final String text;
-
-  @override
-  Widget build(BuildContext context) => Text(
-        text,
-        style: GoogleFonts.montserrat(
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-        ),
-        textAlign: TextAlign.left,
-      ).padding(bottom: 4);
 }
 
 Future<void> _completePushNotificationsFlow(
