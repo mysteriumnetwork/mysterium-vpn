@@ -534,6 +534,8 @@ final pushNotificationsStorePOD = Provider<PushNotificationsStore>(
     final notificationsRepository = ref.watch(pushNotificationsRepositoryPOD);
     final logger = ref.watch(loggerPOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
+    final localDb = LocalDBService.instance;
+    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
 
     final store = PushNotificationsStore(
       authSessionStore,
@@ -542,6 +544,8 @@ final pushNotificationsStorePOD = Provider<PushNotificationsStore>(
       logger,
       notificationsRepository,
       analyticsStore,
+      localDb,
+      remoteConfigStore,
     );
 
     ref.onDispose(store.dispose);

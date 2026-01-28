@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/common/utils/disposeable.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
@@ -24,6 +25,8 @@ abstract class _PushNotificationsStore with Store, Disposeable {
     this._logger,
     this._notificationsRepository,
     this._analyticsStore,
+    this._localDb,
+    this._remoteConfigStore,
   ) {
     _init();
   }
@@ -35,14 +38,13 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   final Talker _logger;
   final NotificationsRepository _notificationsRepository;
   final AnalyticsStore _analyticsStore;
+  final LocalDBService _localDb;
+  final RemoteConfigStore _remoteConfigStore;
 
   @visibleForTesting
   bool testIsMobile = false; // default false, will override in tests
 
   bool get supportsPushNotifications => testIsMobile || isMobile();
-
-  @visibleForTesting
-  bool pushNotificationsPromptShown = false;
 
   Future<void> _init() async {
     await _notificationsRepository.init();
@@ -139,7 +141,6 @@ abstract class _PushNotificationsStore with Store, Disposeable {
     if (!supportsPushNotifications) {
       return;
     }
-    pushNotificationsPromptShown = true;
     if (userAllowed) {
       try {
         await _notificationsRepository.requestPermission();
@@ -147,15 +148,19 @@ abstract class _PushNotificationsStore with Store, Disposeable {
         debugPrint(e.toString());
       }
     }
+    await _localDb.setPushNotificationsPromptLastShownAt(DateTime.now());
   }
 
   @action
   Future<bool> shouldShowPushNotificationsPermissionPrompt() async {
     // Skip the push notifications prompt if the platform is not mobile
     // or if the prompt has already been shown.
-    final shouldSkipPushNotificationsPrompt =
-        !supportsPushNotifications || pushNotificationsPromptShown;
-    if (shouldSkipPushNotificationsPrompt) {
+    if (!supportsPushNotifications) {
+      return false;
+    }
+    final cooldownHours = _remoteConfigStore.pushNotifPermissionPromptCooldown;
+    final lastShownAt = await _localDb.getPushNotificationsPromptLastShownAt();
+    if (lastShownAt?.add(Duration(hours: cooldownHours)).isAfter(DateTime.now()) ?? false) {
       return false;
     }
     return !_notificationsRepository.getPermissionStatus() &&

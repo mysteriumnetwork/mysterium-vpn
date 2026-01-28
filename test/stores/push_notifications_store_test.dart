@@ -6,6 +6,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
@@ -18,6 +19,8 @@ import 'push_notifications_store_test.mocks.dart';
   MockSpec<NotificationsRepository>(),
   MockSpec<AnalyticsStore>(),
   MockSpec<Talker>(),
+  MockSpec<LocalDBService>(),
+  MockSpec<RemoteConfigStore>(),
 ])
 void main() {
   late PushNotificationsStore store;
@@ -27,6 +30,8 @@ void main() {
   late MockNotificationsRepository mockNotificationsRepository;
   late MockAnalyticsStore mockAnalyticsStore;
   late MockTalker mockLogger;
+  late MockLocalDBService mockLocalDb;
+  late MockRemoteConfigStore mockRemoteConfigStore;
 
   setUp(() {
     mockAuthSessionStore = MockAuthSessionStore();
@@ -35,8 +40,10 @@ void main() {
     mockNotificationsRepository = MockNotificationsRepository();
     mockAnalyticsStore = MockAnalyticsStore();
     mockLogger = MockTalker();
+    mockLocalDb = MockLocalDBService();
+    mockRemoteConfigStore = MockRemoteConfigStore();
 
-    // Default stubs
+    // Notifications repository
     when(mockNotificationsRepository.init()).thenAnswer((_) async {});
     when(mockNotificationsRepository.getUser()).thenAnswer(
       (_) => Stream.value(
@@ -52,16 +59,17 @@ void main() {
     when(mockNotificationsRepository.getPermissionStatus()).thenReturn(false);
     when(mockNotificationsRepository.requestPermission()).thenAnswer((_) async => true);
     when(mockNotificationsRepository.openAppNotificationsSettings()).thenAnswer((_) async => true);
-    when(mockNotificationsRepository.setTags(any)).thenAnswer((_) async => {});
+    when(mockNotificationsRepository.setTags(any)).thenAnswer((_) async {});
+    when(mockNotificationsRepository.canRequestPermission()).thenAnswer((_) async => true);
+    when(mockNotificationsRepository.logout()).thenAnswer((_) async {});
     when(
       mockNotificationsRepository.login(
         userId: anyNamed('userId'),
         userEmail: anyNamed('userEmail'),
       ),
-    ).thenAnswer((_) async => {});
-    when(mockNotificationsRepository.logout()).thenAnswer((_) async => {});
+    ).thenAnswer((_) async {});
 
-    // User session
+    // Auth session
     when(mockAuthSessionStore.userFuture).thenAnswer(
       (_) => ObservableFuture.value(
         AuthUser(
@@ -74,7 +82,13 @@ void main() {
 
     // IP info
     when(mockRealIPInfoStore.infoFuture).thenAnswer(
-      (_) => ObservableFuture.value(const IPInfo(city: 'City', country: 'Country', ip: '')),
+      (_) => ObservableFuture.value(
+        const IPInfo(
+          city: 'City',
+          country: 'Country',
+          ip: '',
+        ),
+      ),
     );
 
     // Subscription
@@ -90,6 +104,13 @@ void main() {
       ),
     );
 
+    // Local DB
+    when(mockLocalDb.getPushNotificationsPromptLastShownAt()).thenAnswer((_) async => null);
+    when(mockLocalDb.setPushNotificationsPromptLastShownAt(any)).thenAnswer((_) async {});
+
+    // Remote config
+    when(mockRemoteConfigStore.pushNotifPermissionPromptCooldown).thenReturn(24);
+
     store = PushNotificationsStore(
       mockAuthSessionStore,
       mockRealIPInfoStore,
@@ -97,6 +118,8 @@ void main() {
       mockLogger,
       mockNotificationsRepository,
       mockAnalyticsStore,
+      mockLocalDb,
+      mockRemoteConfigStore,
     )..testIsMobile = true;
   });
 
@@ -107,8 +130,13 @@ void main() {
       await mockSubscriptionStore.subscriptionFuture;
 
       verify(mockNotificationsRepository.init()).called(1);
-      verify(mockNotificationsRepository.login(userId: 'u1', userEmail: 'test@example.com'))
-          .called(1);
+      verify(
+        mockNotificationsRepository.login(
+          userId: 'u1',
+          userEmail: 'test@example.com',
+        ),
+      ).called(1);
+
       verify(
         mockNotificationsRepository.setTags(
           argThat(
@@ -119,11 +147,12 @@ void main() {
           ),
         ),
       ).called(1);
+
       verify(
         mockNotificationsRepository.setTags(
           argThat(
             allOf(
-              containsPair('subscription_gateway', 'Credit Card'),
+              containsPair('subscription_gateway', 'stripe'),
               containsPair('subscription_plan', 'plan_monthly'),
               containsPair('subscription_recurring', 'true'),
             ),
@@ -135,9 +164,8 @@ void main() {
 
   group('Push Notifications Permission', () {
     test(
-        'shouldShowPushNotificationsPermissionPrompt returns true when not granted and prompt not shown',
+        'shouldShowPushNotificationsPermissionPrompt returns true when not granted and cooldown passed',
         () async {
-      store.pushNotificationsPromptShown = false;
       when(mockNotificationsRepository.getPermissionStatus()).thenReturn(false);
       when(mockNotificationsRepository.canRequestPermission()).thenAnswer((_) async => true);
 
@@ -146,9 +174,9 @@ void main() {
       expect(result, isTrue);
     });
 
-    test('shouldShowPushNotificationsPermissionPrompt returns false when prompt already shown',
-        () async {
-      store.pushNotificationsPromptShown = true;
+    test('shouldShowPushNotificationsPermissionPrompt returns false during cooldown', () async {
+      when(mockLocalDb.getPushNotificationsPromptLastShownAt())
+          .thenAnswer((_) async => DateTime.now());
 
       final result = await store.shouldShowPushNotificationsPermissionPrompt();
 
@@ -157,7 +185,6 @@ void main() {
 
     test('shouldShowPushNotificationsPermissionPrompt returns false when already granted',
         () async {
-      store.pushNotificationsPromptShown = false;
       when(mockNotificationsRepository.getPermissionStatus()).thenReturn(true);
 
       final result = await store.shouldShowPushNotificationsPermissionPrompt();
@@ -166,7 +193,6 @@ void main() {
     });
 
     test('shouldShowPushNotificationsPermissionPrompt returns false when cannot request', () async {
-      store.pushNotificationsPromptShown = false;
       when(mockNotificationsRepository.getPermissionStatus()).thenReturn(false);
       when(mockNotificationsRepository.canRequestPermission()).thenAnswer((_) async => false);
 
@@ -176,36 +202,42 @@ void main() {
     });
 
     test('setPushNotificationsShown requests permission when allowed', () async {
-      store.pushNotificationsPromptShown = false;
       await store.setPushNotificationsShown(userAllowed: true);
 
-      expect(store.pushNotificationsPromptShown, isTrue);
       verify(mockNotificationsRepository.requestPermission()).called(1);
+      verify(
+        mockLocalDb.setPushNotificationsPromptLastShownAt(any),
+      ).called(1);
     });
 
     test('setPushNotificationsShown does not request permission when not allowed', () async {
-      store.pushNotificationsPromptShown = false;
       await store.setPushNotificationsShown(userAllowed: false);
 
-      expect(store.pushNotificationsPromptShown, isTrue);
       verifyNever(mockNotificationsRepository.requestPermission());
+      verify(
+        mockLocalDb.setPushNotificationsPromptLastShownAt(any),
+      ).called(1);
     });
 
     test('updatePushNotificationsPermissions opens app settings when supported', () async {
       await store.updatePushNotificationsPermissions();
 
-      verify(mockNotificationsRepository.openAppNotificationsSettings()).called(1);
+      verify(
+        mockNotificationsRepository.openAppNotificationsSettings(),
+      ).called(1);
     });
 
     test('updatePushNotificationsPermissions does nothing on non-mobile', () async {
       store.testIsMobile = false;
+
       await store.updatePushNotificationsPermissions();
 
-      verifyNever(mockNotificationsRepository.openAppNotificationsSettings());
+      verifyNever(
+        mockNotificationsRepository.openAppNotificationsSettings(),
+      );
     });
 
-    test('pushNotificationsPermissionGranted reflects stream value', () async {
-      // Already default to false
+    test('pushNotificationsPermissionGranted reflects stream value', () {
       expect(store.pushNotificationsPermissionGranted, isFalse);
     });
   });
@@ -217,9 +249,11 @@ void main() {
       expect(store.user, isNotNull);
       expect(store.user, contains('id'));
     });
+
     test('supportsPushNotifications returns testIsMobile', () {
       store.testIsMobile = true;
       expect(store.supportsPushNotifications, isTrue);
+
       store.testIsMobile = false;
       expect(store.supportsPushNotifications, isFalse);
     });
