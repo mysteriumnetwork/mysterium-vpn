@@ -30,11 +30,13 @@ abstract class _UserPreferencesStore with Store {
         _realIPInfo = realIPInfo,
         localDb = localDBService,
         _pushNotificationsStore = pushNotificationsStore;
+
   @action
-  void initStore() {
+  Future<void> initStore() async {
+    await incrementAppOpenCount();
     setMarketingConsentFuture = ObservableFuture(createMarketingContact());
     getMarketingConsentFuture = ObservableFuture(getMarketingConsent());
-    evaluateNextPromptToShow();
+    await evaluatePromptToShow();
   }
 
   final ApiService _apiService;
@@ -58,17 +60,30 @@ abstract class _UserPreferencesStore with Store {
   @observable
   UserPromptType nextPromptToShow = UserPromptType.none;
 
+  @observable
+  int appOpenCount = 0;
+
   @visibleForTesting
   bool pushNotificationsPromptShown = false;
+
+  @visibleForTesting
+  bool marketingConsentPromptShown = false;
 
   @visibleForTesting
   bool testIsMobile = false; // default false, will override in tests
 
   bool get supportsPushNotifications => testIsMobile || isMobile();
 
+  @action
+  Future<void> incrementAppOpenCount() async {
+    appOpenCount = await localDb.getAppOpenCount();
+    appOpenCount++;
+    await localDb.setAppOpenCount(appOpenCount);
+  }
+
   @visibleForTesting
   @action
-  Future<void> evaluateNextPromptToShow() async {
+  Future<void> evaluatePromptToShow() async {
     final pushPromptShown =
         await _pushNotificationsStore.shouldShowPushNotificationsPermissionPrompt();
     final marketingConsentShown = await shouldShowMarketingConsent();
@@ -87,18 +102,18 @@ abstract class _UserPreferencesStore with Store {
   Future<bool> shouldShowMarketingConsent() async {
     final consentValue = await getMarketingConsentFuture;
     final consentShown = await localDb.getMarketingConsentShown();
-    return consentValue == false && !consentShown;
+
+    return consentValue == false && !consentShown && appOpenCount >= 3;
   }
 
   @visibleForTesting
   @action
   Future<void> setMarketingConsentShown() async {
     await localDb.setMarketingConsentShown();
-    await evaluateNextPromptToShow();
   }
 
   // Create a marketing contact in Omnisend
-  // Will be called after login/signup and API will decide if the user is already subscribed
+// Will be called after login/signup and API will decide if the user is already subscribed
   @action
   Future<void> createMarketingContact() async {
     try {
@@ -164,11 +179,5 @@ abstract class _UserPreferencesStore with Store {
       );
       rethrow;
     }
-  }
-
-  @action
-  Future<void> setPushNotificationsShown({required bool userAllowed}) async {
-    await _pushNotificationsStore.setPushNotificationsShown(userAllowed: userAllowed);
-    unawaited(evaluateNextPromptToShow());
   }
 }

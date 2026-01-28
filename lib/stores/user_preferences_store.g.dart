@@ -81,13 +81,45 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
     });
   }
 
-  late final _$evaluateNextPromptToShowAsyncAction =
-      AsyncAction('_UserPreferencesStore.evaluateNextPromptToShow', context: context);
+  late final _$appOpenCountAtom =
+      Atom(name: '_UserPreferencesStore.appOpenCount', context: context);
+
+  @override
+  int get appOpenCount {
+    _$appOpenCountAtom.reportRead();
+    return super.appOpenCount;
+  }
+
+  @override
+  set appOpenCount(int value) {
+    _$appOpenCountAtom.reportWrite(value, super.appOpenCount, () {
+      super.appOpenCount = value;
+    });
+  }
+
+  late final _$initStoreAsyncAction =
+      AsyncAction('_UserPreferencesStore.initStore', context: context);
+
+  @override
+  Future<void> initStore() {
+    return _$initStoreAsyncAction.run(() => super.initStore());
+  }
+
+  late final _$incrementAppOpenCountAsyncAction =
+      AsyncAction('_UserPreferencesStore.incrementAppOpenCount', context: context);
+
+  @override
+  Future<void> incrementAppOpenCount() {
+    return _$incrementAppOpenCountAsyncAction.run(() => super.incrementAppOpenCount());
+  }
+
+  late final _$evaluatePromptToShowAsyncAction =
+      AsyncAction('_UserPreferencesStore.evaluatePromptToShow', context: context);
 
   @override
   @visibleForTesting
-  Future<void> evaluateNextPromptToShow() {
-    return _$evaluateNextPromptToShowAsyncAction.run(() => super.evaluateNextPromptToShow());
+  Future<void> evaluatePromptToShow() {
+    return _$evaluatePromptToShowAsyncAction.run(() => super.evaluatePromptToShow());
   }
 
   late final _$shouldShowMarketingConsentAsyncAction =
@@ -133,29 +165,6 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
     return _$getMarketingConsentAsyncAction.run(() => super.getMarketingConsent());
   }
 
-  late final _$setPushNotificationsShownAsyncAction =
-      AsyncAction('_UserPreferencesStore.setPushNotificationsShown', context: context);
-
-  @override
-  Future<void> setPushNotificationsShown({required bool userAllowed}) {
-    return _$setPushNotificationsShownAsyncAction
-        .run(() => super.setPushNotificationsShown(userAllowed: userAllowed));
-  }
-
-  late final _$_UserPreferencesStoreActionController =
-      ActionController(name: '_UserPreferencesStore', context: context);
-
-  @override
-  void initStore() {
-    final _$actionInfo = _$_UserPreferencesStoreActionController.startAction(
-        name: '_UserPreferencesStore.initStore');
-    try {
-      return super.initStore();
-    } finally {
-      _$_UserPreferencesStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
   @override
   String toString() {
     return '''
@@ -163,6 +172,7 @@ setMarketingConsentFuture: ${setMarketingConsentFuture},
 updateMarketingConsentFuture: ${updateMarketingConsentFuture},
 getMarketingConsentFuture: ${getMarketingConsentFuture},
 nextPromptToShow: ${nextPromptToShow},
+appOpenCount: ${appOpenCount},
 marketingConsent: ${marketingConsent}
     ''';
   }
