@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 
@@ -20,7 +21,9 @@ final openVpnRepositoryPOD = Provider<OpenVpnRepository>(
 );
 
 final pushNotificationsRepositoryPOD = Provider<NotificationsRepository>(
-  (ref) => OnesignalNotificationsRepository(
-    logger: ref.watch(loggerPOD),
-  ),
+  (ref) => isDesktop()
+      ? DesktopNotificationsRepository()
+      : OnesignalNotificationsRepository(
+          logger: ref.watch(loggerPOD),
+        ),
 );
