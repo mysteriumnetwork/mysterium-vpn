@@ -58,12 +58,12 @@ class ApplicationSettings extends HookConsumerWidget {
             return Visibility(
               visible: notificationsTitleVisible,
               child: EasyText(
-                LocaleKeys.emailNotificationsTitle.tr(),
+                LocaleKeys.notificationsSettingTitle.tr(),
                 fontSize: isMobile ? 16 : 14,
                 fontWeight: isMobile ? FontWeight.w600 : FontWeight.w400,
               ).padding(
                 bottom: 16,
-                left: isMobile ? 40 : 20,
+                left: 20,
                 top: isMobile ? 16 : 30,
                 right: 0,
               ),
