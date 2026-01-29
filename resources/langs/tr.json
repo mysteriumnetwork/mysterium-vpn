@@ -292,13 +292,8 @@
   "purchasePromoSubtitle": "Noel Kampanyası",
   "purchasePromoTermsAndConditions": "Şartlar ve koşullar",
   "purchasePromoTitle": "{}% İNDİRİM",
-  "pushNotificationsConsentPopupDesc": "Yalnızca bilmek isteyeceğinizi düşündüğümüz önemli bildirimleri göndereceğiz.",
-  "pushNotificationsConsentPopupTitle": "Size bildirim gönderebilir miyiz?",
   "pushNotificationsPermissionPoint1": "• VPN bağlantı durumu",
   "pushNotificationsPermissionPoint2": "• Hesap ve hizmet etkinliği uyarıları",
-  "pushNotificationsSetting": "Güvenlik",
-  "pushNotificationsSettingDesc": "VPN durumu ve hesap etkinliği güncellemeleri",
-  "pushNotificationsTitle": "Anlık Bildirimler",
   "questions": "Sorular?",
   "rateConnection": "Bağlantınız nasıl?",
   "rateConnectionDislike": "Bunu duyduğuma üzüldüm! Sorun neydi?",
@@ -478,5 +473,11 @@
   "subscriptionUpgrade": "Güncelleme",
   "plan_2_years_basic": "Temel 2 yıl",
   "plan_2_years_pro": "2 yıllık profesyonel hizmet",
-  "notNowBtn": "Şimdi değil"
+  "notNowBtn": "Şimdi değil",
+  "pushNotificationsConsentPopupTitle": "Anlık bildirimlerle her zaman güncel kalın.",
+  "pushNotificationsConsentPopupDesc": "Yeni özellikler, faydalı ipuçları ve özel teklifler hakkında bildirim alın - sadece yararlı güncellemeler.",
+  "notificationsSettingTitle": "Bildirimler",
+  "pushNotificationsSetting": "Anlık Bildirimler",
+  "pushNotificationsSettingDesc": "Ürün güncellemeleri, ipuçları ve özel teklifler",
+  "openSystemSettingsBtn": "Sistem ayarlarını açın"
 }

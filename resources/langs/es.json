@@ -292,13 +292,8 @@
   "purchasePromoSubtitle": "Oferta de Navidad",
   "purchasePromoTermsAndConditions": "Términos y condiciones",
   "purchasePromoTitle": "{}% DE DESCUENTO",
-  "pushNotificationsConsentPopupDesc": "Solo enviaremos notificaciones importantes que creemos que querrás conocer.",
-  "pushNotificationsConsentPopupTitle": "¿Podemos notificarte?",
   "pushNotificationsPermissionPoint1": "• Estado de conexión VPN",
   "pushNotificationsPermissionPoint2": "• Alertas de actividad de cuenta y servicio",
-  "pushNotificationsSetting": "Seguridad",
-  "pushNotificationsSettingDesc": "Estado de VPN y actualizaciones de actividad de cuenta",
-  "pushNotificationsTitle": "Notificaciones Push",
   "questions": "¿Preguntas?",
   "rateConnection": "¿Cómo está tu conexión?",
   "rateConnectionDislike": "¡Lamentamos escuchar eso! ¿Cuál fue el problema?",
@@ -478,5 +473,11 @@
   "subscriptionUpgrade": "Mejora",
   "plan_2_years_basic": "Básico de 2 años",
   "plan_2_years_pro": "Pro 2 años",
-  "notNowBtn": "Ahora no"
+  "notNowBtn": "Ahora no",
+  "pushNotificationsConsentPopupTitle": "Manténgase actualizado con notificaciones push",
+  "pushNotificationsConsentPopupDesc": "Reciba notificaciones sobre nuevas funciones, consejos útiles y ofertas exclusivas: solo actualizaciones útiles.",
+  "notificationsSettingTitle": "Notificaciones",
+  "pushNotificationsSetting": "Notificaciones push",
+  "pushNotificationsSettingDesc": "Actualizaciones de productos, consejos y ofertas especiales",
+  "openSystemSettingsBtn": "Abra la configuración del sistema"
 }

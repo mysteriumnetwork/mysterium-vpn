@@ -292,13 +292,8 @@
   "purchasePromoSubtitle": "Penawaran Natal",
   "purchasePromoTermsAndConditions": "syarat dan Ketentuan",
   "purchasePromoTitle": "DISKON {}%",
-  "pushNotificationsConsentPopupDesc": "Kami hanya akan mengirim notifikasi penting yang menurut kami ingin Anda ketahui.",
-  "pushNotificationsConsentPopupTitle": "Bolehkah kami memberi tahu Anda?",
   "pushNotificationsPermissionPoint1": "• Status koneksi VPN",
   "pushNotificationsPermissionPoint2": "• Peringatan aktivitas akun dan layanan",
-  "pushNotificationsSetting": "Keamanan",
-  "pushNotificationsSettingDesc": "Status VPN dan pembaruan aktivitas akun",
-  "pushNotificationsTitle": "Notifikasi Push",
   "questions": "Pertanyaan?",
   "rateConnection": "Bagaimana koneksi Anda?",
   "rateConnectionDislike": "Maaf mendengarnya! Apa masalahnya?",
@@ -478,5 +473,11 @@
   "subscriptionUpgrade": "Meningkatkan",
   "plan_2_years_basic": "Dasar 2 tahun",
   "plan_2_years_pro": "Pro 2 tahun",
-  "notNowBtn": "Tidak sekarang"
+  "notNowBtn": "Tidak sekarang",
+  "pushNotificationsConsentPopupTitle": "Tetap terhubung dengan notifikasi push.",
+  "pushNotificationsConsentPopupDesc": "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
+  "notificationsSettingTitle": "Pemberitahuan",
+  "pushNotificationsSetting": "Notifikasi Push",
+  "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
+  "openSystemSettingsBtn": "Buka pengaturan sistem"
 }

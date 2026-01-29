@@ -292,13 +292,8 @@
   "purchasePromoSubtitle": "クリスマスオファー",
   "purchasePromoTermsAndConditions": "利用規約",
   "purchasePromoTitle": "{}％ オフ",
-  "pushNotificationsConsentPopupDesc": "重要な通知のみをお送りします。",
-  "pushNotificationsConsentPopupTitle": "通知を送信してもよろしいですか？",
   "pushNotificationsPermissionPoint1": "• VPN接続ステータス",
   "pushNotificationsPermissionPoint2": "• アカウントとサービスのアクティビティアラート",
-  "pushNotificationsSetting": "セキュリティ",
-  "pushNotificationsSettingDesc": "VPNステータスとアカウントアクティビティの更新",
-  "pushNotificationsTitle": "プッシュ通知",
   "questions": "質問がありますか?",
   "rateConnection": "接続状況はいかがですか？",
   "rateConnectionDislike": "それは残念です！問題は何でしたか？",
@@ -478,5 +473,11 @@
   "subscriptionUpgrade": "アップグレード",
   "plan_2_years_basic": "ベーシック2年",
   "plan_2_years_pro": "プロ 2年",
-  "notNowBtn": "今じゃない"
+  "notNowBtn": "今じゃない",
+  "pushNotificationsConsentPopupTitle": "プッシュ通知で最新情報を入手",
+  "pushNotificationsConsentPopupDesc": "新しい機能、役立つヒント、限定オファーなど、役立つ最新情報に関する通知を受け取ります。",
+  "notificationsSettingTitle": "通知",
+  "pushNotificationsSetting": "プッシュ通知",
+  "pushNotificationsSettingDesc": "製品の更新情報、ヒント、特別オファー",
+  "openSystemSettingsBtn": "システム設定を開く"
 }
