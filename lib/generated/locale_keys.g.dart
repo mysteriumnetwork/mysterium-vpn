@@ -290,13 +290,8 @@ abstract class LocaleKeys {
   static const purchasePromoSubtitle = 'purchasePromoSubtitle';
   static const purchasePromoTermsAndConditions = 'purchasePromoTermsAndConditions';
   static const purchasePromoTitle = 'purchasePromoTitle';
-  static const pushNotificationsConsentPopupDesc = 'pushNotificationsConsentPopupDesc';
-  static const pushNotificationsConsentPopupTitle = 'pushNotificationsConsentPopupTitle';
   static const pushNotificationsPermissionPoint1 = 'pushNotificationsPermissionPoint1';
   static const pushNotificationsPermissionPoint2 = 'pushNotificationsPermissionPoint2';
-  static const pushNotificationsSetting = 'pushNotificationsSetting';
-  static const pushNotificationsSettingDesc = 'pushNotificationsSettingDesc';
-  static const pushNotificationsTitle = 'pushNotificationsTitle';
   static const questions = 'questions';
   static const rateConnection = 'rateConnection';
   static const rateConnectionDislike = 'rateConnectionDislike';
@@ -473,4 +468,10 @@ abstract class LocaleKeys {
   static const plan_2_years_basic = 'plan_2_years_basic';
   static const plan_2_years_pro = 'plan_2_years_pro';
   static const notNowBtn = 'notNowBtn';
+  static const pushNotificationsConsentPopupTitle = 'pushNotificationsConsentPopupTitle';
+  static const pushNotificationsConsentPopupDesc = 'pushNotificationsConsentPopupDesc';
+  static const notificationsSettingTitle = 'notificationsSettingTitle';
+  static const pushNotificationsSetting = 'pushNotificationsSetting';
+  static const pushNotificationsSettingDesc = 'pushNotificationsSettingDesc';
+  static const openSystemSettingsBtn = 'openSystemSettingsBtn';
 }

@@ -303,13 +303,8 @@ class CodegenLoader extends AssetLoader {
     "purchasePromoSubtitle": "圣诞优惠",
     "purchasePromoTermsAndConditions": "条款和条件",
     "purchasePromoTitle": "{}% 关闭",
-    "pushNotificationsConsentPopupDesc": "我们只会发送我们认为您想要了解的重要通知。",
-    "pushNotificationsConsentPopupTitle": "我们可以通知您吗？",
     "pushNotificationsPermissionPoint1": "• VPN连接状态",
     "pushNotificationsPermissionPoint2": "• 帐户和服务活动警报",
-    "pushNotificationsSetting": "安全",
-    "pushNotificationsSettingDesc": "VPN状态和帐户活动更新",
-    "pushNotificationsTitle": "推送通知",
     "questions": "问题？",
     "rateConnection": "您的连接如何？",
     "rateConnectionDislike": "很抱歉听到这个！问题是什么？",
@@ -485,7 +480,13 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "升级",
     "plan_2_years_basic": "基础2年",
     "plan_2_years_pro": "专业版 2 年",
-    "notNowBtn": "现在不要"
+    "notNowBtn": "现在不要",
+    "pushNotificationsConsentPopupTitle": "随时通过推送通知获取最新资讯",
+    "pushNotificationsConsentPopupDesc": "获取有关新功能、实用技巧和独家优惠的通知——只有实用更新。",
+    "notificationsSettingTitle": "通知",
+    "pushNotificationsSetting": "推送通知",
+    "pushNotificationsSettingDesc": "产品更新、使用技巧和特惠活动",
+    "openSystemSettingsBtn": "打开系统设置"
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -805,14 +806,8 @@ class CodegenLoader extends AssetLoader {
     "purchasePromoSubtitle": "Noel Kampanyası",
     "purchasePromoTermsAndConditions": "Şartlar ve koşullar",
     "purchasePromoTitle": "{}% İNDİRİM",
-    "pushNotificationsConsentPopupDesc":
-        "Yalnızca bilmek isteyeceğinizi düşündüğümüz önemli bildirimleri göndereceğiz.",
-    "pushNotificationsConsentPopupTitle": "Size bildirim gönderebilir miyiz?",
     "pushNotificationsPermissionPoint1": "• VPN bağlantı durumu",
     "pushNotificationsPermissionPoint2": "• Hesap ve hizmet etkinliği uyarıları",
-    "pushNotificationsSetting": "Güvenlik",
-    "pushNotificationsSettingDesc": "VPN durumu ve hesap etkinliği güncellemeleri",
-    "pushNotificationsTitle": "Anlık Bildirimler",
     "questions": "Sorular?",
     "rateConnection": "Bağlantınız nasıl?",
     "rateConnectionDislike": "Bunu duyduğuma üzüldüm! Sorun neydi?",
@@ -1002,7 +997,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "Güncelleme",
     "plan_2_years_basic": "Temel 2 yıl",
     "plan_2_years_pro": "2 yıllık profesyonel hizmet",
-    "notNowBtn": "Şimdi değil"
+    "notNowBtn": "Şimdi değil",
+    "pushNotificationsConsentPopupTitle": "Anlık bildirimlerle her zaman güncel kalın.",
+    "pushNotificationsConsentPopupDesc":
+        "Yeni özellikler, faydalı ipuçları ve özel teklifler hakkında bildirim alın - sadece yararlı güncellemeler.",
+    "notificationsSettingTitle": "Bildirimler",
+    "pushNotificationsSetting": "Anlık Bildirimler",
+    "pushNotificationsSettingDesc": "Ürün güncellemeleri, ipuçları ve özel teklifler",
+    "openSystemSettingsBtn": "Sistem ayarlarını açın"
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1295,13 +1297,8 @@ class CodegenLoader extends AssetLoader {
     "purchasePromoSubtitle": "クリスマスオファー",
     "purchasePromoTermsAndConditions": "利用規約",
     "purchasePromoTitle": "{}％ オフ",
-    "pushNotificationsConsentPopupDesc": "重要な通知のみをお送りします。",
-    "pushNotificationsConsentPopupTitle": "通知を送信してもよろしいですか？",
     "pushNotificationsPermissionPoint1": "• VPN接続ステータス",
     "pushNotificationsPermissionPoint2": "• アカウントとサービスのアクティビティアラート",
-    "pushNotificationsSetting": "セキュリティ",
-    "pushNotificationsSettingDesc": "VPNステータスとアカウントアクティビティの更新",
-    "pushNotificationsTitle": "プッシュ通知",
     "questions": "質問がありますか?",
     "rateConnection": "接続状況はいかがですか？",
     "rateConnectionDislike": "それは残念です！問題は何でしたか？",
@@ -1480,7 +1477,13 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "アップグレード",
     "plan_2_years_basic": "ベーシック2年",
     "plan_2_years_pro": "プロ 2年",
-    "notNowBtn": "今じゃない"
+    "notNowBtn": "今じゃない",
+    "pushNotificationsConsentPopupTitle": "プッシュ通知で最新情報を入手",
+    "pushNotificationsConsentPopupDesc": "新しい機能、役立つヒント、限定オファーなど、役立つ最新情報に関する通知を受け取ります。",
+    "notificationsSettingTitle": "通知",
+    "pushNotificationsSetting": "プッシュ通知",
+    "pushNotificationsSettingDesc": "製品の更新情報、ヒント、特別オファー",
+    "openSystemSettingsBtn": "システム設定を開く"
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -1819,14 +1822,8 @@ class CodegenLoader extends AssetLoader {
     "purchasePromoSubtitle": "Weihnachtsangebot",
     "purchasePromoTermsAndConditions": "Geschäftsbedingungen",
     "purchasePromoTitle": "{}% AUS",
-    "pushNotificationsConsentPopupDesc":
-        "Wir senden nur wichtige Benachrichtigungen, von denen wir glauben, dass Sie darüber Bescheid wissen möchten.",
-    "pushNotificationsConsentPopupTitle": "Dürfen wir Sie benachrichtigen?",
     "pushNotificationsPermissionPoint1": "• VPN-Verbindungsstatus",
     "pushNotificationsPermissionPoint2": "• Konto- und Dienstaktivitätswarnungen",
-    "pushNotificationsSetting": "Sicherheit",
-    "pushNotificationsSettingDesc": "VPN-Status und Kontoaktivitätsaktualisierungen",
-    "pushNotificationsTitle": "Push-Benachrichtigungen",
     "questions": "Fragen?",
     "rateConnection": "Wie ist Ihre Verbindung?",
     "rateConnectionDislike": "Tut mir leid zu hören! Was war das Problem?",
@@ -1996,7 +1993,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionAllPlansPurchase": "Kaufen",
     "subscriptionPlanNameBasic": "Basic",
     "subscriptionPlanNamePlus": "Plus",
-    "subscriptionPlanPF1Basic": "Sichern Sie 6 Geräte gleichzeitig",
+    "subscriptionPlanPF1Basic": "Sichern Sie bis zu 6 Geräte gleichzeitig",
     "subscriptionPlanPF2Basic": "57 unterstützte Länder",
     "subscriptionPlanPF3Basic": "10 Server",
     "subscriptionPlanPF4Basic": "WireGuard-Protokoll",
@@ -2025,7 +2022,15 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "Upgrade",
     "plan_2_years_basic": "Grundausbildung 2 Jahre",
     "plan_2_years_pro": "Pro 2 Jahre",
-    "notNowBtn": "Nicht jetzt."
+    "notNowBtn": "Nicht jetzt.",
+    "pushNotificationsConsentPopupTitle":
+        "Bleiben Sie mit Push-Benachrichtigungen auf dem Laufenden.",
+    "pushNotificationsConsentPopupDesc":
+        "Lassen Sie sich über neue Funktionen, hilfreiche Tipps und exklusive Angebote informieren – einfach über nützliche Updates.",
+    "notificationsSettingTitle": "Benachrichtigungen",
+    "pushNotificationsSetting": "Push-Benachrichtigungen",
+    "pushNotificationsSettingDesc": "Produktneuheiten, Tipps und Sonderangebote",
+    "openSystemSettingsBtn": "Systemeinstellungen öffnen"
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2355,14 +2360,8 @@ class CodegenLoader extends AssetLoader {
     "purchasePromoSubtitle": "Oferta de Natal",
     "purchasePromoTermsAndConditions": "Termos e Condições",
     "purchasePromoTitle": "{}% DE DESCONTO",
-    "pushNotificationsConsentPopupDesc":
-        "Enviaremos apenas notificações importantes que achamos que você vai querer saber.",
-    "pushNotificationsConsentPopupTitle": "Podemos notificá-lo?",
     "pushNotificationsPermissionPoint1": "• Status da conexão VPN",
     "pushNotificationsPermissionPoint2": "• Alertas de atividade da conta e do serviço",
-    "pushNotificationsSetting": "Segurança",
-    "pushNotificationsSettingDesc": "Status da VPN e atualizações de atividade da conta",
-    "pushNotificationsTitle": "Notificações Push",
     "questions": "Questões?",
     "rateConnection": "Como está sua conexão?",
     "rateConnectionDislike": "Lamentamos ouvir isso! Qual foi o problema?",
@@ -2561,7 +2560,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "Atualizar",
     "plan_2_years_basic": "Básico 2 anos",
     "plan_2_years_pro": "Profissional 2 anos",
-    "notNowBtn": "Agora não"
+    "notNowBtn": "Agora não",
+    "pushNotificationsConsentPopupTitle": "Mantenha-se atualizado com notificações push.",
+    "pushNotificationsConsentPopupDesc":
+        "Receba notificações sobre novos recursos, dicas úteis e ofertas exclusivas — apenas atualizações úteis.",
+    "notificationsSettingTitle": "Notificações",
+    "pushNotificationsSetting": "Notificações Push",
+    "pushNotificationsSettingDesc": "Atualizações de produtos, dicas e ofertas especiais",
+    "openSystemSettingsBtn": "Abra as configurações do sistema"
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -2884,14 +2890,8 @@ class CodegenLoader extends AssetLoader {
     "purchasePromoSubtitle": "Christmas Offer",
     "purchasePromoTermsAndConditions": "Terms and Conditions",
     "purchasePromoTitle": "{}% OFF",
-    "pushNotificationsConsentPopupDesc":
-        "We'll only send important notifications we think you'll want to know about.",
-    "pushNotificationsConsentPopupTitle": "Can we notify you?",
     "pushNotificationsPermissionPoint1": "• VPN Connection status",
     "pushNotificationsPermissionPoint2": "• Account and Service activity alerts",
-    "pushNotificationsSetting": "Security",
-    "pushNotificationsSettingDesc": "VPN Status and account activity updates",
-    "pushNotificationsTitle": "Push Notifications",
     "questions": "Questions?",
     "rateConnection": "How is your connection?",
     "rateConnectionDislike": "Sorry to hear that! What was the issue?",
@@ -3085,7 +3085,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "Upgrade",
     "plan_2_years_basic": "Basic 2-years",
     "plan_2_years_pro": "Pro 2-years",
-    "notNowBtn": "Not now"
+    "notNowBtn": "Not now",
+    "pushNotificationsConsentPopupTitle": "Stay up to date with push notifications",
+    "pushNotificationsConsentPopupDesc":
+        "Get notified about new features, helpful tips, and exclusive offers - just useful updates.",
+    "notificationsSettingTitle": "Notifications",
+    "pushNotificationsSetting": "Push Notifications",
+    "pushNotificationsSettingDesc": "Product updates, tips, and special offers",
+    "openSystemSettingsBtn": "Open system settings"
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3418,14 +3425,8 @@ class CodegenLoader extends AssetLoader {
     "purchasePromoSubtitle": "Offerta di Natale",
     "purchasePromoTermsAndConditions": "Termini e Condizioni",
     "purchasePromoTitle": "{}% SPENTO",
-    "pushNotificationsConsentPopupDesc":
-        "Invieremo solo notifiche importanti che pensiamo tu voglia conoscere.",
-    "pushNotificationsConsentPopupTitle": "Possiamo notificarti?",
     "pushNotificationsPermissionPoint1": "• Stato della connessione VPN",
     "pushNotificationsPermissionPoint2": "• Avvisi di attività dell'account e del servizio",
-    "pushNotificationsSetting": "Sicurezza",
-    "pushNotificationsSettingDesc": "Stato VPN e aggiornamenti sull'attività dell'account",
-    "pushNotificationsTitle": "Notifiche Push",
     "questions": "Domande?",
     "rateConnection": "Com'è la tua connessione?",
     "rateConnectionDislike": "Spiacente di sentirlo! Qual è stato il problema?",
@@ -3623,7 +3624,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "Aggiornamento",
     "plan_2_years_basic": "Base 2 anni",
     "plan_2_years_pro": "Pro 2 anni",
-    "notNowBtn": "Non adesso"
+    "notNowBtn": "Non adesso",
+    "pushNotificationsConsentPopupTitle": "Rimani aggiornato con le notifiche push",
+    "pushNotificationsConsentPopupDesc":
+        "Ricevi notifiche sulle nuove funzionalità, suggerimenti utili e offerte esclusive: solo aggiornamenti utili.",
+    "notificationsSettingTitle": "Notifiche",
+    "pushNotificationsSetting": "Notifiche push",
+    "pushNotificationsSettingDesc": "Aggiornamenti sui prodotti, suggerimenti e offerte speciali",
+    "openSystemSettingsBtn": "Apri le impostazioni di sistema"
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -3960,14 +3968,8 @@ class CodegenLoader extends AssetLoader {
     "purchasePromoSubtitle": "Offre de Noël",
     "purchasePromoTermsAndConditions": "Termes et conditions",
     "purchasePromoTitle": "{}% DÉSACTIVÉ",
-    "pushNotificationsConsentPopupDesc":
-        "Nous n'enverrons que des notifications importantes que nous pensons que vous voudrez connaître.",
-    "pushNotificationsConsentPopupTitle": "Pouvons-nous vous notifier ?",
     "pushNotificationsPermissionPoint1": "• État de la connexion VPN",
     "pushNotificationsPermissionPoint2": "• Alertes d'activité de compte et de service",
-    "pushNotificationsSetting": "Sécurité",
-    "pushNotificationsSettingDesc": "État du VPN et mises à jour de l'activité du compte",
-    "pushNotificationsTitle": "Notifications Push",
     "questions": "Des questions?",
     "rateConnection": "Comment est votre connexion ?",
     "rateConnectionDislike": "Désolé de l'entendre ! Quel était le problème ?",
@@ -4169,7 +4171,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "Mise à niveau",
     "plan_2_years_basic": "Formation de base de 2 ans",
     "plan_2_years_pro": "Pro 2 ans",
-    "notNowBtn": "Pas maintenant"
+    "notNowBtn": "Pas maintenant",
+    "pushNotificationsConsentPopupTitle": "Restez informé grâce aux notifications push",
+    "pushNotificationsConsentPopupDesc":
+        "Soyez informé des nouvelles fonctionnalités, des conseils utiles et des offres exclusives – des mises à jour toujours pertinentes.",
+    "notificationsSettingTitle": "Notifications",
+    "pushNotificationsSetting": "Notifications push",
+    "pushNotificationsSettingDesc": "Mises à jour produits, conseils et offres spéciales",
+    "openSystemSettingsBtn": "Ouvrir les paramètres système"
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4493,14 +4502,8 @@ class CodegenLoader extends AssetLoader {
     "purchasePromoSubtitle": "Penawaran Natal",
     "purchasePromoTermsAndConditions": "syarat dan Ketentuan",
     "purchasePromoTitle": "DISKON {}%",
-    "pushNotificationsConsentPopupDesc":
-        "Kami hanya akan mengirim notifikasi penting yang menurut kami ingin Anda ketahui.",
-    "pushNotificationsConsentPopupTitle": "Bolehkah kami memberi tahu Anda?",
     "pushNotificationsPermissionPoint1": "• Status koneksi VPN",
     "pushNotificationsPermissionPoint2": "• Peringatan aktivitas akun dan layanan",
-    "pushNotificationsSetting": "Keamanan",
-    "pushNotificationsSettingDesc": "Status VPN dan pembaruan aktivitas akun",
-    "pushNotificationsTitle": "Notifikasi Push",
     "questions": "Pertanyaan?",
     "rateConnection": "Bagaimana koneksi Anda?",
     "rateConnectionDislike": "Maaf mendengarnya! Apa masalahnya?",
@@ -4695,7 +4698,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "Meningkatkan",
     "plan_2_years_basic": "Dasar 2 tahun",
     "plan_2_years_pro": "Pro 2 tahun",
-    "notNowBtn": "Tidak sekarang"
+    "notNowBtn": "Tidak sekarang",
+    "pushNotificationsConsentPopupTitle": "Tetap terhubung dengan notifikasi push.",
+    "pushNotificationsConsentPopupDesc":
+        "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
+    "notificationsSettingTitle": "Pemberitahuan",
+    "pushNotificationsSetting": "Notifikasi Push",
+    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
+    "openSystemSettingsBtn": "Buka pengaturan sistem"
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5028,14 +5038,8 @@ class CodegenLoader extends AssetLoader {
     "purchasePromoSubtitle": "Oferta de Navidad",
     "purchasePromoTermsAndConditions": "Términos y condiciones",
     "purchasePromoTitle": "{}% DE DESCUENTO",
-    "pushNotificationsConsentPopupDesc":
-        "Solo enviaremos notificaciones importantes que creemos que querrás conocer.",
-    "pushNotificationsConsentPopupTitle": "¿Podemos notificarte?",
     "pushNotificationsPermissionPoint1": "• Estado de conexión VPN",
     "pushNotificationsPermissionPoint2": "• Alertas de actividad de cuenta y servicio",
-    "pushNotificationsSetting": "Seguridad",
-    "pushNotificationsSettingDesc": "Estado de VPN y actualizaciones de actividad de cuenta",
-    "pushNotificationsTitle": "Notificaciones Push",
     "questions": "¿Preguntas?",
     "rateConnection": "¿Cómo está tu conexión?",
     "rateConnectionDislike": "¡Lamentamos escuchar eso! ¿Cuál fue el problema?",
@@ -5233,7 +5237,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "Mejora",
     "plan_2_years_basic": "Básico de 2 años",
     "plan_2_years_pro": "Pro 2 años",
-    "notNowBtn": "Ahora no"
+    "notNowBtn": "Ahora no",
+    "pushNotificationsConsentPopupTitle": "Manténgase actualizado con notificaciones push",
+    "pushNotificationsConsentPopupDesc":
+        "Reciba notificaciones sobre nuevas funciones, consejos útiles y ofertas exclusivas: solo actualizaciones útiles.",
+    "notificationsSettingTitle": "Notificaciones",
+    "pushNotificationsSetting": "Notificaciones push",
+    "pushNotificationsSettingDesc": "Actualizaciones de productos, consejos y ofertas especiales",
+    "openSystemSettingsBtn": "Abra la configuración del sistema"
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5549,13 +5560,8 @@ class CodegenLoader extends AssetLoader {
     "purchasePromoSubtitle": "عرض عيد الميلاد",
     "purchasePromoTermsAndConditions": "الشروط والأحكام",
     "purchasePromoTitle": "{}٪ عن",
-    "pushNotificationsConsentPopupDesc": "سنرسل فقط الإشعارات المهمة التي نعتقد أنك تريد معرفتها.",
-    "pushNotificationsConsentPopupTitle": "هل يمكننا إعلامك؟",
     "pushNotificationsPermissionPoint1": "• حالة اتصال VPN",
     "pushNotificationsPermissionPoint2": "• تنبيهات نشاط الحساب والخدمة",
-    "pushNotificationsSetting": "الأمان",
-    "pushNotificationsSettingDesc": "حالة VPN وتحديثات نشاط الحساب",
-    "pushNotificationsTitle": "الإشعارات الفورية",
     "questions": "أسئلة؟",
     "rateConnection": "كيف هي اتصالك؟",
     "rateConnectionDislike": "نأسف لسماع ذلك! ما هي المشكلة؟",
@@ -5739,11 +5745,18 @@ class CodegenLoader extends AssetLoader {
     "plan_yearly_basic": "السنة السنوية الأساسية",
     "plan_monthly_basic": "اشتراك شهري أساسي",
     "plan_monthly_pro": "برو مونثلي",
-    "plan_yearly_pro": "برو أنوال",
+    "plan_yearly_pro": "برو سنوي",
     "subscriptionUpgrade": "يرقي",
     "plan_2_years_basic": "سنتان أساسيتان",
     "plan_2_years_pro": "محترف لمدة عامين",
-    "notNowBtn": "ليس الآن"
+    "notNowBtn": "ليس الآن",
+    "pushNotificationsConsentPopupTitle": "ابقَ على اطلاع دائم من خلال الإشعارات الفورية",
+    "pushNotificationsConsentPopupDesc":
+        "احصل على إشعارات حول الميزات الجديدة والنصائح المفيدة والعروض الحصرية - تحديثات مفيدة فقط.",
+    "notificationsSettingTitle": "إشعارات",
+    "pushNotificationsSetting": "الإشعارات الفورية",
+    "pushNotificationsSettingDesc": "تحديثات المنتجات، والنصائح، والعروض الخاصة",
+    "openSystemSettingsBtn": "افتح إعدادات النظام"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,
