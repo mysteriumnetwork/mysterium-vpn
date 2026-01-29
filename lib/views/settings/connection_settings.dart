@@ -64,15 +64,9 @@ class ConnectionSettings extends HookConsumerWidget {
                             handleToggleConnection: handleToggleConnection,
                           ),
                   backgroundColor: Palette.purple,
-                  child: vpnStore.resetAppFuture?.status == FutureStatus.pending
-                      ? const LoadingIndicator(
-                          radius: 16,
-                          indicatorColor: Palette.white,
-                        )
-                      : EasyText(
-                          LocaleKeys.resetAppTitle.tr(),
-                          color: Palette.white,
-                        ),
+                  child: Text(
+                    LocaleKeys.resetAppTitle.tr(),
+                  ),
                 ),
               ),
             ),
