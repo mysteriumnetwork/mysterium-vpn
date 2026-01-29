@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
@@ -18,10 +17,6 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   @override
   Future<void> init() async {
-    if (!isMobile()) {
-      return;
-    }
-
     if (kDebugMode) {
       await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
     }
