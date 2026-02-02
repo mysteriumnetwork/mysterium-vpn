@@ -1323,10 +1323,10 @@ packages:
     dependency: "direct main"
     description:
       name: onesignal_flutter
-      sha256: "0008a1ab56b5eae4ad7ece4464cbc19b4afda6c7a4f9f7d22163a719d0e96834"
+      sha256: f3b74f0ed20923bfcb8aa1b6bcdb6be49c4574b1fbae0fdcaba189f44597db37
       url: "https://pub.dev"
     source: hosted
-    version: "5.3.7"
+    version: "5.4.0"
   open_mail_app:
     dependency: "direct main"
     description:
