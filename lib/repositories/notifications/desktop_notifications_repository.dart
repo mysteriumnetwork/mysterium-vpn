@@ -54,5 +54,5 @@ class DesktopNotificationsRepository implements NotificationsRepository {
   Stream<PushNotification> getNotificationsStream() async* {}
 
   @override
-  Future<void> dispose() async {
+  Future<void> dispose() async {}
 }

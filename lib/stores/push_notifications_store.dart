@@ -6,7 +6,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/disposeable.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/models/models.dart' hide UserData;
 import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -60,8 +60,23 @@ abstract class _PushNotificationsStore with Store, Disposeable {
       await _notificationsRepository.init();
       _isInitialized = true;
 
-      // Listen to permission changes and track analytics
-      final permissionSubscription = _pushNotificationsPermissionStream.listen((granted) {
+      _setupStreamListeners();
+      _setupReactions();
+    } catch (e, stack) {
+      _logger.handle(e, stack, 'Error initializing push notifications store');
+      _isInitialized = false;
+    }
+  }
+
+  void _setupStreamListeners() {
+    _subscriptions.addAll([
+      _createPermissionListener(),
+      _createNotificationClickListener(),
+    ]);
+  }
+
+  StreamSubscription<bool> _createPermissionListener() =>
+      _pushNotificationsPermissionStream.listen((granted) {
         if (_isDisposed) {
           return;
         }
@@ -79,90 +94,120 @@ abstract class _PushNotificationsStore with Store, Disposeable {
           _logger.handle(e, stack, 'Error tracking push notifications permission change');
         }
       });
-      _subscriptions.add(permissionSubscription);
 
-      // Setup reactions
-      _disposers.addAll([
-        // React to authentication changes
-        reaction(
-          (_) => _authSessionStore.userFuture.value.toUserData(),
-          (data) async {
-            if (_isDisposed) {
-              return;
-            }
+  StreamSubscription<PushNotification> _createNotificationClickListener() =>
+      _notificationsStream.listen((notification) {
+        if (_isDisposed) {
+          return;
+        }
 
-            if (_authSessionStore.userFuture.value == null) {
-              try {
-                await _notificationsRepository.logout();
-              } catch (e, stack) {
-                _logger.handle(e, stack, 'Error logging out from push notifications');
-              }
-              return;
-            }
+        try {
+          _analyticsStore.logEvent(
+            AnalyticsEvent.pushNotificationClicked,
+            parameters: {
+              'notification_id': notification.id,
+              'title': notification.title,
+              'body': notification.body,
+            },
+          );
+        } catch (e, stack) {
+          _logger.handle(e, stack, 'Error tracking push notification open event');
+        }
+      });
 
-            try {
-              await _notificationsRepository.login(
-                userId: data.id,
-                userEmail: data.email,
-              );
-            } catch (e, stack) {
-              _logger.handle(e, stack, 'Error logging in to push notifications');
-            }
-          },
-          fireImmediately: true,
-        ),
+  void _setupReactions() {
+    _disposers.addAll([
+      _createAuthReaction(),
+      _createLocationReaction(),
+      _createSubscriptionReaction(),
+    ]);
+  }
 
-        // React to location changes
-        reaction(
-          (_) => _ipInfoStore.infoFuture.value.toLocationData(),
-          (data) async {
-            if (_isDisposed) {
-              return;
-            }
+  ReactionDisposer _createAuthReaction() => reaction(
+        (_) => _authSessionStore.userFuture.value.toUserData(),
+        (data) async {
+          if (_isDisposed) {
+            return;
+          }
 
-            try {
-              final tags = <String, String>{
-                'country': data.country,
-                'city': data.city,
-              };
-              await _notificationsRepository.setTags(tags);
-            } catch (e, stack) {
-              _logger.handle(e, stack, 'Error setting location tags');
-            }
-          },
-          fireImmediately: true,
-        ),
+          if (_authSessionStore.userFuture.value == null) {
+            await _handleLogout();
+            return;
+          }
 
-        // React to subscription changes
-        reaction(
-          (_) => _subscriptionStore.subscriptionFuture.value.toSubscriptionData(),
-          (data) async {
-            if (_isDisposed) {
-              return;
-            }
-            if (!_authSessionStore.isAuthenticated) {
-              return;
-            }
+          await _handleLogin(data);
+        },
+        fireImmediately: true,
+      );
 
-            try {
-              final tags = <String, String>{
-                'subscription_duration': data.duration,
-                'subscription_exp_date': data.expirationDate,
-                'subscription_gateway': data.gateway,
-                'subscription_plan': data.plan,
-                'subscription_recurring': data.recurring,
-              };
-              await _notificationsRepository.setTags(tags);
-            } catch (e, stack) {
-              _logger.handle(e, stack, 'Error setting subscription tags');
-            }
-          },
-          fireImmediately: true,
-        ),
-      ]);
+  ReactionDisposer _createLocationReaction() => reaction(
+        (_) => _ipInfoStore.infoFuture.value.toLocationData(),
+        (data) async {
+          if (_isDisposed) {
+            return;
+          }
+          await _updateLocationTags(data);
+        },
+        fireImmediately: true,
+      );
+
+  ReactionDisposer _createSubscriptionReaction() => reaction(
+        (_) => _subscriptionStore.subscriptionFuture.value.toSubscriptionData(),
+        (data) async {
+          if (_isDisposed) {
+            return;
+          }
+          if (!_authSessionStore.isAuthenticated) {
+            return;
+          }
+          await _updateSubscriptionTags(data);
+        },
+        fireImmediately: true,
+      );
+
+  Future<void> _handleLogout() async {
+    try {
+      await _notificationsRepository.logout();
     } catch (e, stack) {
-      _logger.handle(e, stack, 'Error initializing push notifications store');
-      _isInitialized = false;
+      _logger.handle(e, stack, 'Error logging out from push notifications');
+    }
+  }
+
+  Future<void> _handleLogin(UserData data) async {
+    try {
+      await _notificationsRepository.login(
+        userId: data.id,
+        userEmail: data.email,
+      );
+    } catch (e, stack) {
+      _logger.handle(e, stack, 'Error logging in to push notifications');
+    }
+  }
+
+  Future<void> _updateLocationTags(LocationData data) async {
+    try {
+      final tags = <String, String>{
+        'country': data.country,
+        'city': data.city,
+      };
+      await _notificationsRepository.setTags(tags);
+    } catch (e, stack) {
+      _logger.handle(e, stack, 'Error setting location tags');
+    }
+  }
+
+  Future<void> _updateSubscriptionTags(SubscriptionData data) async {
+    try {
+      final tags = <String, String>{
+        'subscription_duration': data.duration,
+        'subscription_exp_date': data.expirationDate,
+        'subscription_gateway': data.gateway,
+        'subscription_plan': data.plan,
+        'subscription_recurring': data.recurring,
+      };
+      await _notificationsRepository.setTags(tags);
+    } catch (e, stack) {
+      _logger.handle(e, stack, 'Error setting subscription tags');
     }
   }
 
@@ -173,6 +218,11 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   @readonly
   late ObservableStream<bool> _pushNotificationsPermissionStream = ObservableStream(
     _notificationsRepository.getPermissionStatusStream(),
+  );
+
+  @readonly
+  late final ObservableStream<PushNotification> _notificationsStream = ObservableStream(
+    _notificationsRepository.getNotificationsStream(),
   );
 
   @computed
@@ -234,34 +284,36 @@ abstract class _PushNotificationsStore with Store, Disposeable {
       return false;
     }
 
-    // Skip the push notifications prompt if the platform is not mobile
     if (!supportsPushNotifications) {
       return false;
     }
 
     try {
-      // Check cooldown period
-      final cooldownHours = _remoteConfigStore.pushNotifPermissionPromptCooldown;
-      final lastShownAt = await _localDb.getPushNotificationsPromptLastShownAt();
-
-      if (lastShownAt != null) {
-        final nextAllowedTime = lastShownAt.add(Duration(hours: cooldownHours));
-        if (nextAllowedTime.isAfter(DateTime.now())) {
-          return false;
-        }
+      if (await _isInCooldownPeriod()) {
+        return false;
       }
 
-      // Check if permission is already granted
       if (_notificationsRepository.getPermissionStatus()) {
         return false;
       }
 
-      // Check if we can request permission
       return await _notificationsRepository.canRequestPermission();
     } catch (e, stack) {
       _logger.handle(e, stack, 'Error checking if should show PN prompt');
       return false;
     }
+  }
+
+  Future<bool> _isInCooldownPeriod() async {
+    final cooldownHours = _remoteConfigStore.pushNotifPermissionPromptCooldown;
+    final lastShownAt = await _localDb.getPushNotificationsPromptLastShownAt();
+
+    if (lastShownAt == null) {
+      return false;
+    }
+
+    final nextAllowedTime = lastShownAt.add(Duration(hours: cooldownHours));
+    return nextAllowedTime.isAfter(DateTime.now());
   }
 
   @override
@@ -272,7 +324,14 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
     _isDisposed = true;
 
-    // Dispose all MobX reactions
+    await _disposeReactions();
+    await _disposeSubscriptions();
+    await _disposeRepository();
+
+    _logger.debug('PushNotificationsStore disposed');
+  }
+
+  Future<void> _disposeReactions() async {
     for (final disposer in _disposers) {
       try {
         disposer();
@@ -281,8 +340,9 @@ abstract class _PushNotificationsStore with Store, Disposeable {
       }
     }
     _disposers.clear();
+  }
 
-    // Cancel all stream subscriptions
+  Future<void> _disposeSubscriptions() async {
     for (final subscription in _subscriptions) {
       try {
         await subscription.cancel();
@@ -291,15 +351,13 @@ abstract class _PushNotificationsStore with Store, Disposeable {
       }
     }
     _subscriptions.clear();
+  }
 
-    // Dispose the notifications repository if it has a dispose method
+  Future<void> _disposeRepository() async {
     try {
-      // Check if the repository has a dispose method
-      _notificationsRepository.dispose();
+      await _notificationsRepository.dispose();
     } catch (e, stack) {
       _logger.handle(e, stack, 'Error disposing notifications repository');
     }
-
-    _logger.debug('PushNotificationsStore disposed');
   }
 }
