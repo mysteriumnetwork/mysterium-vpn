@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:mysterium_vpn/models/push_notification.dart';
 import 'package:mysterium_vpn/models/push_notifications_user.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 
@@ -48,4 +49,7 @@ class DesktopNotificationsRepository implements NotificationsRepository {
   Future<void> setTags(Map<String, String> tags) async {
     // no-op
   }
+
+  @override
+  Stream<PushNotification> getNotificationsStream() async* {}
 }

@@ -11,4 +11,5 @@ abstract class NotificationsRepository {
   Stream<PushNotificationsUser> getUser();
   Stream<bool> getPermissionStatusStream();
   Future<bool> canRequestPermission();
+  Stream<PushNotification> getNotificationsStream();
 }
