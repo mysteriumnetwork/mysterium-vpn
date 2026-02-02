@@ -299,6 +299,7 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   /// Dispose of all resources and close all streams.
   /// Call this when the repository is no longer needed.
+  @override
   Future<void> dispose() async {
     if (_isDisposed) {
       return;

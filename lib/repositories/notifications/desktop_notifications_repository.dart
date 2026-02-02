@@ -52,4 +52,7 @@ class DesktopNotificationsRepository implements NotificationsRepository {
 
   @override
   Stream<PushNotification> getNotificationsStream() async* {}
+
+  @override
+  Future<void> dispose() async {
 }
