@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/pages/subscription_plans_modal_page.dart';
+import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 
 extension NavigationExtensions on BeamerDelegate {
   /// Navigates based on the given [url], handling internal routes and external links.
@@ -20,6 +21,10 @@ extension NavigationExtensions on BeamerDelegate {
   Future<void> navigateToUrl(String url, BuildContext context) async {
     if (url == '/subscribe') {
       showSubscriptionPlansModalPage(context);
+      return;
+    }
+    if (url == '/subscription-upgrade') {
+      showSubscriptionUpgradeModalPage(context);
       return;
     }
     final route = Routes.values.firstWhereOrNull((it) => it.name == url || it.path == url);

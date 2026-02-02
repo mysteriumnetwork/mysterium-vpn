@@ -39,7 +39,6 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
       }
 
       OneSignal.initialize(Env.oneSignalAppId);
-
       debugPrint('INIT: OneSignal initialized');
 
       // Setup push subscription observer
@@ -207,6 +206,9 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
     _permissionStatusController ??= StreamController<bool>.broadcast();
     _initializePermissionListener();
+
+    // Small delay to ensure listener is set up before emitting initial value
+    await Future.delayed(const Duration(milliseconds: 100));
 
     // Emit initial status once
     yield getPermissionStatus();

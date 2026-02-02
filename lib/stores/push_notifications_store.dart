@@ -108,6 +108,7 @@ abstract class _PushNotificationsStore with Store, Disposeable {
               'notification_id': notification.id,
               'title': notification.title,
               'body': notification.body,
+              'additional_data': notification.additionalData.toString(),
             },
           );
         } catch (e, stack) {
@@ -221,7 +222,7 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   );
 
   @readonly
-  late final ObservableStream<PushNotification> _notificationsStream = ObservableStream(
+  late ObservableStream<PushNotification> _notificationsStream = ObservableStream(
     _notificationsRepository.getNotificationsStream(),
   );
 
@@ -230,6 +231,9 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
   @computed
   bool get pushNotificationsPermissionGranted => _pushNotificationsPermissionStream.value ?? false;
+
+  @computed
+  PushNotification? get lastNotification => _notificationsStream.value;
 
   @action
   Future<void> updatePushNotificationsPermissions() async {

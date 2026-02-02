@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:beamer/beamer.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/extensions/navigation_extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/dialogs/device_limit_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/marketing_consent_dialog.dart';
@@ -17,7 +19,7 @@ void useHomeAutorun() {
   final userPreferencesStore = useProvider(userPreferencesStorePOD);
   final remoteConfigStore = useProvider(remoteConfigStorePOD);
   final authSessionStore = useProvider(authSessionStorePOD);
-
+  final pushNotificationsStore = useProvider(pushNotificationsStorePOD);
   return useEffect(
     () {
       final controller = StreamController<Future<Object?> Function()>(sync: true);
@@ -50,20 +52,24 @@ void useHomeAutorun() {
             }
           },
         ),
-        reaction(
-          (_) {
-            final error = vpnStore.fetchConfigFuture?.error;
-            if (error is DeviceLimitReachedException) {
-              return error;
+        autorun((_) {
+          final error = vpnStore.fetchConfigFuture?.error;
+          if (error is DeviceLimitReachedException) {
+            controller.add(() => showDeviceLimitDialog(context));
+          }
+          return null;
+        }),
+        autorun((_) {
+          final notification = pushNotificationsStore.lastNotification;
+          if (notification?.additionalData != null &&
+              notification!.additionalData!.containsKey('redirect_url')) {
+            final redirectUrl = notification.additionalData!['redirect_url'];
+            if (redirectUrl is! String || redirectUrl.isEmpty) {
+              return;
             }
-            return null;
-          },
-          (error) {
-            if (error != null) {
-              controller.add(() => showDeviceLimitDialog(context));
-            }
-          },
-        ),
+            Beamer.of(context).navigateToUrl(redirectUrl, context);
+          }
+        }),
       ];
 
       return () async {

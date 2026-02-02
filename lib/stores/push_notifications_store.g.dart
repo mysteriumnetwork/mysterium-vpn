@@ -22,6 +22,13 @@ mixin _$PushNotificationsStore on _PushNotificationsStore, Store {
           Computed<bool>(() => super.pushNotificationsPermissionGranted,
               name: '_PushNotificationsStore.pushNotificationsPermissionGranted'))
       .value;
+  Computed<PushNotification?>? _$lastNotificationComputed;
+
+  @override
+  PushNotification? get lastNotification =>
+      (_$lastNotificationComputed ??= Computed<PushNotification?>(() => super.lastNotification,
+              name: '_PushNotificationsStore.lastNotification'))
+          .value;
 
   late final _$_pushNotificationsUserAtom =
       Atom(name: '_PushNotificationsStore._pushNotificationsUser', context: context);
@@ -71,6 +78,28 @@ mixin _$PushNotificationsStore on _PushNotificationsStore, Store {
     });
   }
 
+  late final _$_notificationsStreamAtom =
+      Atom(name: '_PushNotificationsStore._notificationsStream', context: context);
+
+  ObservableStream<PushNotification> get notificationsStream {
+    _$_notificationsStreamAtom.reportRead();
+    return super._notificationsStream;
+  }
+
+  @override
+  ObservableStream<PushNotification> get _notificationsStream => notificationsStream;
+
+  bool __notificationsStreamIsInitialized = false;
+
+  @override
+  set _notificationsStream(ObservableStream<PushNotification> value) {
+    _$_notificationsStreamAtom.reportWrite(
+        value, __notificationsStreamIsInitialized ? super._notificationsStream : null, () {
+      super._notificationsStream = value;
+      __notificationsStreamIsInitialized = true;
+    });
+  }
+
   late final _$updatePushNotificationsPermissionsAsyncAction =
       AsyncAction('_PushNotificationsStore.updatePushNotificationsPermissions', context: context);
 
@@ -103,7 +132,8 @@ mixin _$PushNotificationsStore on _PushNotificationsStore, Store {
   String toString() {
     return '''
 user: ${user},
-pushNotificationsPermissionGranted: ${pushNotificationsPermissionGranted}
+pushNotificationsPermissionGranted: ${pushNotificationsPermissionGranted},
+lastNotification: ${lastNotification}
     ''';
   }
 }
