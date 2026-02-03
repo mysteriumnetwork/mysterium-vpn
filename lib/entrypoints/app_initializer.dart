@@ -74,9 +74,8 @@ class AppInitializer {
     if (isMobile()) {
       if (kDebugMode) {
         await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-
-        OneSignal.initialize(Env.oneSignalAppId);
       }
+      OneSignal.initialize(Env.oneSignalAppId);
     }
 
     if (Platform.isWindows) {

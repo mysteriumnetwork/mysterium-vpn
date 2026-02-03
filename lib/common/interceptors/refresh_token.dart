@@ -28,8 +28,7 @@ class RefreshTokenInterceptor extends Interceptor {
     }
 
     try {
-      _refreshFuture ??= refreshTokenCallback?.call();
-      if (refreshTokenCallback == null) {
+      if (_refreshFuture == null && refreshTokenCallback == null) {
         logger.handle(
           err,
           err.stackTrace,
@@ -37,6 +36,7 @@ class RefreshTokenInterceptor extends Interceptor {
         );
         return handler.next(err);
       }
+      _refreshFuture ??= refreshTokenCallback!.call();
       await _refreshFuture;
       _refreshFuture = null;
     } catch (e, stackTrace) {
