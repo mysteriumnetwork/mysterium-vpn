@@ -229,12 +229,18 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
   @computed
   bool get pushNotificationsPermissionGranted {
-    final value = _pushNotificationsPermissionStream.value;
-    if (value == null) {
-      // If stream value is null, check repository directly
+    try {
+      final value = _pushNotificationsPermissionStream.value;
+      if (value == null) {
+        // If stream value is null, check repository directly
+        return _notificationsRepository.getPermissionStatus();
+      }
+      return value;
+    } catch (e) {
+      // Stream may be closed if repository was disposed
+      // Fall back to checking repository directly
       return _notificationsRepository.getPermissionStatus();
     }
-    return value;
   }
 
   @computed

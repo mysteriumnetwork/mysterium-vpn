@@ -120,7 +120,7 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
   Stream<PushNotificationsUser> getUser() {
     _controller ??= StreamController<PushNotificationsUser>.broadcast();
     _emitCurrentUser();
-    return _controller!.stream;
+    return _controller?.stream ?? const Stream<PushNotificationsUser>.empty();
   }
 
   Future<void> _emitCurrentUser() async {
@@ -176,10 +176,12 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
       _initializePermissionListener();
 
       // Emit initial permission status
-      _permissionStatusController!.add(getPermissionStatus());
+      if (_permissionStatusController != null && !_permissionStatusController!.isClosed) {
+        _permissionStatusController!.add(getPermissionStatus());
+      }
     }
 
-    return _permissionStatusController!.stream;
+    return _permissionStatusController?.stream ?? const Stream<bool>.empty();
   }
 
   void _initializePermissionListener() {
@@ -216,7 +218,7 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
   Stream<PushNotification> getNotificationsStream() {
     _notificationsController ??= StreamController<PushNotification>.broadcast();
     _initializeNotificationListener();
-    return _notificationsController!.stream;
+    return _notificationsController?.stream ?? const Stream<PushNotification>.empty();
   }
 
   void _initializeNotificationListener() {
