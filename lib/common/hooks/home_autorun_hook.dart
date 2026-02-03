@@ -67,7 +67,11 @@ void useHomeAutorun() {
             if (redirectUrl is! String || redirectUrl.isEmpty) {
               return;
             }
-            Beamer.of(context).navigateToUrl(redirectUrl, context);
+            Beamer.of(context).navigateToUrl(
+              url: redirectUrl,
+              context: context,
+              isAuthenticated: authSessionStore.isAuthenticated,
+            );
           }
         }),
       ];
