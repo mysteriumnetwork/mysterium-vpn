@@ -47,11 +47,8 @@ abstract class _UserPreferencesStore with Store, Disposeable {
 
   @action
   Future<void> initStore() async {
-    setMarketingConsentFuture = ObservableFuture(createMarketingContact());
-    setMarketingConsentFuture?.whenComplete(() async {
-      getMarketingConsentFuture = ObservableFuture(getMarketingConsent());
-      await evaluatePromptToShow();
-    });
+    getMarketingConsentFuture = ObservableFuture(getMarketingConsent());
+    await evaluatePromptToShow();
   }
 
   final ApiService _apiService;
@@ -168,6 +165,11 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   @action
   Future<bool> getMarketingConsent() async {
     try {
+      if (setMarketingConsentFuture == null ||
+          setMarketingConsentFuture?.status != FutureStatus.fulfilled) {
+        setMarketingConsentFuture = ObservableFuture(createMarketingContact());
+        await setMarketingConsentFuture;
+      }
       final consent = await _apiService.getMarketingContactStatus();
       _analyticsStore
         ..setUserProperty(
