@@ -154,8 +154,7 @@ abstract class _PushNotificationsStore with Store, Disposeable {
           }
           await _updateSubscriptionTags(data);
         },
-        // Don't fire immediately - let the auth reaction complete first
-        fireImmediately: false,
+        fireImmediately: true,
       );
 
   Future<void> _handleLogout() async {
@@ -174,10 +173,6 @@ abstract class _PushNotificationsStore with Store, Disposeable {
         userId: data.id,
         userEmail: data.email,
       );
-
-      // Update subscription tags immediately after login
-      final subscriptionData = _subscriptionStore.subscriptionFuture.value.toSubscriptionData();
-      await _updateSubscriptionTags(subscriptionData);
     } catch (e, stack) {
       _logger.handle(e, stack, 'Error logging in to push notifications');
     }
