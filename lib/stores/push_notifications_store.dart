@@ -315,7 +315,6 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   Future<void> dispose() async {
     await _disposeReactions();
     await _disposeSubscriptions();
-    await _disposeRepository();
 
     _logger.debug('PushNotificationsStore disposed');
   }
@@ -342,15 +341,5 @@ abstract class _PushNotificationsStore with Store, Disposeable {
     _subscriptions.clear();
   }
 
-  Future<void> _disposeRepository() async {
-    // Don't dispose the repository - it needs to remain functional for logout/login cycles.
-    // The repository manages its own lifecycle and streams independently.
-    // The store's disposal only means this store instance is no longer in use.
-    try {
-      // Cancel any active listeners at the store level, but don't dispose the repository
-      _logger.debug('PushNotificationsStore disconnecting from notifications repository');
-    } catch (e, stack) {
-      _logger.handle(e, stack, 'Error disconnecting from notifications repository');
-    }
-  }
+ 
 }
