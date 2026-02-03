@@ -77,11 +77,11 @@ class UserData {
   @HiveField(14, defaultValue: ProtocolType.wireguard)
   ProtocolType protocolType;
 
-  @HiveField(16, defaultValue: 0)
-  int appOpenCount;
-
   @HiveField(15, defaultValue: null)
   DateTime? pushNotificationsPromptLastShownAt;
+
+  @HiveField(16, defaultValue: 0)
+  int appOpenCount;
 
   set recentLocations(List<VPNLocation> locations) {
     recentVPNLocations = [
