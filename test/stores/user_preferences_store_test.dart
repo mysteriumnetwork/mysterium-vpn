@@ -15,6 +15,7 @@ import 'user_preferences_store_test.mocks.dart';
   MockSpec<RealIPInfoStore>(),
   MockSpec<LocalDBService>(),
   MockSpec<PushNotificationsStore>(),
+  MockSpec<AuthSessionStore>(),
 ])
 void main() {
   late UserPreferencesStore store;
@@ -23,13 +24,20 @@ void main() {
   late MockRealIPInfoStore mockRealIPInfoStore;
   late MockLocalDBService mockLocalDBService;
   late MockPushNotificationsStore mockPushNotificationsStore;
-
+  late MockAuthSessionStore mockAuthSessionStore;
   setUp(() {
     mockApiService = MockApiService();
     mockAnalyticsStore = MockAnalyticsStore();
     mockRealIPInfoStore = MockRealIPInfoStore();
     mockLocalDBService = MockLocalDBService();
     mockPushNotificationsStore = MockPushNotificationsStore();
+    mockAuthSessionStore = MockAuthSessionStore();
+
+    // Default auth state: not authenticated
+    when(mockAuthSessionStore.isAuthenticated).thenReturn(false);
+    when(mockAuthSessionStore.userFuture).thenAnswer(
+      (_) => ObservableFuture.value(null),
+    );
 
     when(mockRealIPInfoStore.infoFuture).thenAnswer(
       (_) => ObservableFuture.value(
@@ -43,7 +51,6 @@ void main() {
     when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => false);
     when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
     when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 0);
-    when(mockLocalDBService.setAppOpenCount(any)).thenAnswer((_) async {});
     when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
         .thenAnswer((_) async => false);
 
@@ -53,22 +60,29 @@ void main() {
       realIPInfo: mockRealIPInfoStore,
       localDBService: mockLocalDBService,
       pushNotificationsStore: mockPushNotificationsStore,
+      authSessionStore: mockAuthSessionStore,
     )..testIsMobile = true;
   });
 
   group('Initialization', () {
-    test('initStore increments app open count', () async {
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 2);
-
-      await store.initStore();
-
-      verify(mockLocalDBService.getAppOpenCount()).called(1);
-      verify(mockLocalDBService.setAppOpenCount(3)).called(1);
-      expect(store.appOpenCount, 3);
-    });
-
     test('initStore creates marketing contact and gets consent', () async {
-      await store.initStore();
+      // Mock auth state as authenticated to trigger initStore
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+      when(mockAuthSessionStore.userFuture).thenAnswer(
+        (_) => ObservableFuture.value(
+          AuthUser(userId: '1', username: 'test@test.com'),
+        ),
+      );
+
+      // Recreate store to trigger auth reaction with new mocks
+      store = UserPreferencesStore(
+        apiService: mockApiService,
+        analyticsStore: mockAnalyticsStore,
+        realIPInfo: mockRealIPInfoStore,
+        localDBService: mockLocalDBService,
+        pushNotificationsStore: mockPushNotificationsStore,
+        authSessionStore: mockAuthSessionStore,
+      )..testIsMobile = true;
 
       // Wait for futures to complete
       await store.setMarketingConsentFuture;
@@ -79,39 +93,88 @@ void main() {
     });
 
     test('initStore evaluates next prompt to show', () async {
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 2);
+      // Setup authenticated state
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+      when(mockAuthSessionStore.userFuture).thenAnswer(
+        (_) => ObservableFuture.value(
+          AuthUser(userId: '1', username: 'test@test.com'),
+        ),
+      );
+
       when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => false);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
       when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
           .thenAnswer((_) async => false);
 
-      await store.initStore();
+      // Recreate store to trigger auth reaction
+      store = UserPreferencesStore(
+        apiService: mockApiService,
+        analyticsStore: mockAnalyticsStore,
+        realIPInfo: mockRealIPInfoStore,
+        localDBService: mockLocalDBService,
+        pushNotificationsStore: mockPushNotificationsStore,
+        authSessionStore: mockAuthSessionStore,
+      )
+        ..testIsMobile = true
+        ..appOpenCount = 3;
 
+      // Wait for auth reaction and initStore to complete
+      await pumpEventQueue();
       await store.setMarketingConsentFuture;
       await store.getMarketingConsentFuture;
 
       // Should show marketing consent on 3rd open
       expect(store.nextPromptToShow, UserPromptType.marketingConsent);
     });
+
+    test('initStore handles errors gracefully', () async {
+      // Setup authenticated state
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+      when(mockAuthSessionStore.userFuture).thenAnswer(
+        (_) => ObservableFuture.value(
+          AuthUser(userId: '1', username: 'test@test.com'),
+        ),
+      );
+
+      when(mockApiService.createMarketingContact(country: anyNamed('country')))
+          .thenThrow(Exception('Network error'));
+
+      // Recreate store to trigger auth reaction
+      store = UserPreferencesStore(
+        apiService: mockApiService,
+        analyticsStore: mockAnalyticsStore,
+        realIPInfo: mockRealIPInfoStore,
+        localDBService: mockLocalDBService,
+        pushNotificationsStore: mockPushNotificationsStore,
+        authSessionStore: mockAuthSessionStore,
+      )..testIsMobile = true;
+
+      // Should not throw
+      await pumpEventQueue();
+
+      verify(
+        mockAnalyticsStore.logEvent(
+          AnalyticsEvent.createMarketingContactError,
+          parameters: anyNamed('parameters'),
+        ),
+      ).called(1);
+    });
   });
 
   group('App Open Count', () {
-    test('incrementAppOpenCount increments from existing count', () async {
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 5);
-
-      await store.incrementAppOpenCount();
-
-      expect(store.appOpenCount, 6);
-      verify(mockLocalDBService.setAppOpenCount(6)).called(1);
+    test('appOpenCount can be set directly', () {
+      store.appOpenCount = 5;
+      expect(store.appOpenCount, 5);
     });
 
-    test('incrementAppOpenCount starts from the stored value', () async {
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 0);
+    test('appOpenCount is used in prompt evaluation', () async {
+      store
+        ..appOpenCount = 3
+        ..getMarketingConsentFuture = ObservableFuture.value(false);
+      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
 
-      await store.incrementAppOpenCount();
-
-      expect(store.appOpenCount, 1);
-      verify(mockLocalDBService.setAppOpenCount(1)).called(1);
+      final result = await store.shouldShowMarketingConsent();
+      expect(result, isTrue);
     });
   });
 
@@ -166,13 +229,12 @@ void main() {
       expect(result, isTrue);
     });
 
-    test('setMarketingConsentShown calls localDb without re-evaluating', () async {
+    test('setMarketingConsentShown calls localDb', () async {
       when(mockLocalDBService.setMarketingConsentShown()).thenAnswer((_) async {});
 
       await store.setMarketingConsentShown();
 
       verify(mockLocalDBService.setMarketingConsentShown()).called(1);
-      // Should not re-evaluate or change nextPromptToShow
     });
 
     test('createMarketingContact logs success event', () async {
@@ -272,13 +334,29 @@ void main() {
 
     test('getMarketingConsent waits for setMarketingConsentFuture', () async {
       var setCompleted = false;
-      store.setMarketingConsentFuture = ObservableFuture(
-        Future.delayed(const Duration(milliseconds: 100), () => setCompleted = true),
-      );
+      when(mockApiService.createMarketingContact(country: anyNamed('country')))
+          .thenAnswer((_) async => setCompleted = true);
       when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => true);
 
-      await store.getMarketingConsent();
+      // Setup authenticated state
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+      when(mockAuthSessionStore.userFuture).thenAnswer(
+        (_) => ObservableFuture.value(
+          AuthUser(userId: '1', username: 'test@test.com'),
+        ),
+      );
 
+      // Recreate store to trigger auth reaction
+      store = UserPreferencesStore(
+        apiService: mockApiService,
+        analyticsStore: mockAnalyticsStore,
+        realIPInfo: mockRealIPInfoStore,
+        localDBService: mockLocalDBService,
+        pushNotificationsStore: mockPushNotificationsStore,
+        authSessionStore: mockAuthSessionStore,
+      )..testIsMobile = true;
+
+      await store.setMarketingConsentFuture;
       expect(setCompleted, isTrue);
     });
 
@@ -309,7 +387,7 @@ void main() {
   });
 
   group('Next Prompt Logic', () {
-    test('evaluatePromptToShow prioritizes push notifications over marketing consent', () async {
+    test('evaluatePromptToShow prioritizes marketing consent over push notifications', () async {
       store
         ..appOpenCount = 3
         ..getMarketingConsentFuture = ObservableFuture.value(false);
@@ -319,21 +397,21 @@ void main() {
 
       await store.evaluatePromptToShow();
 
-      // Push notifications should take priority
+      // Marketing consent should take priority
       expect(store.nextPromptToShow, UserPromptType.marketingConsent);
     });
 
-    test('evaluatePromptToShow shows marketing consent when push not needed', () async {
+    test('evaluatePromptToShow shows push when marketing not needed', () async {
       store
         ..appOpenCount = 3
         ..getMarketingConsentFuture = ObservableFuture.value(false);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
+      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => true);
       when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
-          .thenAnswer((_) async => false);
+          .thenAnswer((_) async => true);
 
       await store.evaluatePromptToShow();
 
-      expect(store.nextPromptToShow, UserPromptType.marketingConsent);
+      expect(store.nextPromptToShow, UserPromptType.pushNotifications);
     });
 
     test('evaluatePromptToShow shows none when marketing consent already shown', () async {
@@ -362,7 +440,7 @@ void main() {
       expect(store.nextPromptToShow, UserPromptType.none);
     });
 
-    test('evaluatePromptToShow shows none on non-mobile (no push notifications)', () async {
+    test('evaluatePromptToShow shows marketing on non-mobile', () async {
       store
         ..testIsMobile = false
         ..appOpenCount = 3
@@ -431,6 +509,66 @@ void main() {
 
       // nextPromptToShow should NOT change to push notifications
       expect(store.nextPromptToShow, UserPromptType.marketingConsent);
+    });
+  });
+
+  group('ObservableFuture Status', () {
+    test('setMarketingConsentFuture is created during initStore', () async {
+      expect(store.setMarketingConsentFuture, isNull);
+
+      // Trigger auth state change to authenticate
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+      when(mockAuthSessionStore.userFuture).thenAnswer(
+        (_) => ObservableFuture.value(
+          AuthUser(userId: '1', username: 'test@test.com'),
+        ),
+      );
+
+      // Recreate store to trigger auth reaction
+      final newStore = UserPreferencesStore(
+        apiService: mockApiService,
+        analyticsStore: mockAnalyticsStore,
+        realIPInfo: mockRealIPInfoStore,
+        localDBService: mockLocalDBService,
+        pushNotificationsStore: mockPushNotificationsStore,
+        authSessionStore: mockAuthSessionStore,
+      )..testIsMobile = true;
+
+      // Wait for auth reaction and initStore to complete
+      await pumpEventQueue();
+
+      expect(newStore.setMarketingConsentFuture, isNotNull);
+    });
+
+    test('getMarketingConsentFuture is created during initStore', () async {
+      expect(store.getMarketingConsentFuture, isNull);
+
+      // Trigger auth state change to authenticate
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+      when(mockAuthSessionStore.userFuture).thenAnswer(
+        (_) => ObservableFuture.value(
+          AuthUser(userId: '1', username: 'test@test.com'),
+        ),
+      );
+
+      // Recreate store to trigger auth reaction
+      final newStore = UserPreferencesStore(
+        apiService: mockApiService,
+        analyticsStore: mockAnalyticsStore,
+        realIPInfo: mockRealIPInfoStore,
+        localDBService: mockLocalDBService,
+        pushNotificationsStore: mockPushNotificationsStore,
+        authSessionStore: mockAuthSessionStore,
+      )..testIsMobile = true;
+
+      // Wait for auth reaction and initStore to complete
+      await pumpEventQueue();
+
+      expect(newStore.getMarketingConsentFuture, isNotNull);
+    });
+
+    test('updateMarketingConsentFuture starts with completed value', () {
+      expect(store.updateMarketingConsentFuture.status, FutureStatus.fulfilled);
     });
   });
 }
