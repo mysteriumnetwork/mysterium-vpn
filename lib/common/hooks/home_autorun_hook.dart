@@ -85,6 +85,7 @@ void useHomeAutorun() {
       userPreferencesStore,
       remoteConfigStore,
       authSessionStore,
+      pushNotificationsStore,
     ],
   );
 }

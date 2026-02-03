@@ -53,17 +53,13 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   @override
   Future<void> logout() async {
-    // Don't close user or permission controllers - streams persist across logout/login
-    // User data will be updated when login happens, permissions are device-level
-    // Only close notification-specific stream
-
-    await _notificationsController?.close();
-    _notificationsController = null;
-    _notificationListenerInitialized = false;
-
-    // Just logout from OneSignal to clear user-specific data (userId, email, tags)
-    // User and permission observers stay active and controllers stay alive
-    await OneSignal.logout();
+    try {
+      await OneSignal.logout();
+      _emitCurrentUser();
+    } catch (e) {
+      logger.error('Error during OneSignal logout: $e');
+      rethrow;
+    }
   }
 
   @override

@@ -18,15 +18,24 @@ extension NavigationExtensions on BeamerDelegate {
   ///
   /// If [url] cannot be parsed as a [Uri], or if `canLaunchUrl` returns `false`,
   /// the method returns without performing any navigation.
-  Future<void> navigateToUrl(String url, BuildContext context) async {
-    if (url == '/subscribe') {
-      showSubscriptionPlansModalPage(context);
+  Future<void> navigateToUrl({
+    required String url,
+    required bool isAuthenticated,
+    required BuildContext context,
+  }) async {
+    final authenticatedRoutes = {
+      '/subscribe': () => showSubscriptionPlansModalPage(context),
+      '/subscription-upgrade': () => showSubscriptionUpgradeModalPage(context),
+    };
+
+    if (authenticatedRoutes.containsKey(url)) {
+      if (!isAuthenticated) {
+        return;
+      }
+      authenticatedRoutes[url]!.call();
       return;
     }
-    if (url == '/subscription-upgrade') {
-      showSubscriptionUpgradeModalPage(context);
-      return;
-    }
+
     final route = Routes.values.firstWhereOrNull((it) => it.name == url || it.path == url);
     if (route != null) {
       beamToNamed(route.path);
