@@ -29,6 +29,14 @@ class RefreshTokenInterceptor extends Interceptor {
 
     try {
       _refreshFuture ??= refreshTokenCallback?.call();
+      if (refreshTokenCallback == null) {
+        logger.handle(
+          err,
+          err.stackTrace,
+          'Unable to refresh authorization: refreshTokenCallback is not set',
+        );
+        return handler.next(err);
+      }
       await _refreshFuture;
       _refreshFuture = null;
     } catch (e, stackTrace) {
