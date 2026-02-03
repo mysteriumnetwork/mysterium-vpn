@@ -31,6 +31,7 @@ class _DialogContent extends ConsumerWidget {
     return ModalScaffold(
       showGradient: false,
       showCloseButton: false,
+      autoApplyPadding: false,
       body: Padding(
         padding: ModalPadding.insets(
           context,
@@ -39,49 +40,49 @@ class _DialogContent extends ConsumerWidget {
             horizontal: theme.spacing.md,
           ),
         ),
-        child: Center(
-          child: Column(
-            children: [
-              const Spacer(),
-              Asset.images.marketingConsent(context).image(width: 150, height: 150),
-              Text(
-                LocaleKeys.pushNotificationsConsentPopupTitle.tr(),
-                style: GoogleFonts.montserrat(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
+        child: Column(
+          children: [
+            const Spacer(),
+            Asset.images.marketingConsent(context).image(width: 150, height: 150),
+            const SizedBox(height: 12),
+            Text(
+              LocaleKeys.pushNotificationsConsentPopupTitle.tr(),
+              style: GoogleFonts.montserrat(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
               ),
-              Text(
-                LocaleKeys.pushNotificationsConsentPopupDesc.tr(),
-                style: GoogleFonts.montserrat(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-                textAlign: TextAlign.center,
-              ).padding(bottom: 24, top: 12),
-              const Spacer(),
-              ButtonPrimary(
-                onPressed: () => _completePushNotificationsFlow(
-                  context,
-                  pushNotificationsStore: pushNotificationsStore,
-                  userAllowed: true,
-                ),
-                child: Text(
-                  LocaleKeys.allowPushNotificationsBtn.tr(),
-                ),
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              LocaleKeys.pushNotificationsConsentPopupDesc.tr(),
+              style: GoogleFonts.montserrat(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
               ),
-              ButtonSecondary(
-                onPressed: () => _completePushNotificationsFlow(
-                  context,
-                  pushNotificationsStore: pushNotificationsStore,
-                  userAllowed: false,
-                ),
-                child: Text(
-                  LocaleKeys.notNowBtn.tr(),
-                ),
-              ).padding(top: 12),
-            ],
-          ),
+              textAlign: TextAlign.center,
+            ).padding(bottom: 24, top: 12),
+            const Spacer(),
+            ButtonPrimary(
+              onPressed: () => _completePushNotificationsFlow(
+                context,
+                pushNotificationsStore: pushNotificationsStore,
+                userAllowed: true,
+              ),
+              child: Text(
+                LocaleKeys.allowPushNotificationsBtn.tr(),
+              ),
+            ).width(double.infinity),
+            ButtonSecondary(
+              onPressed: () => _completePushNotificationsFlow(
+                context,
+                pushNotificationsStore: pushNotificationsStore,
+                userAllowed: false,
+              ),
+              child: Text(
+                LocaleKeys.notNowBtn.tr(),
+              ),
+            ).padding(top: 16).width(double.infinity),
+          ],
         ),
       ),
     );
