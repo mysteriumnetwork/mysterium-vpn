@@ -217,32 +217,27 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
   }
 
   @override
-  Stream<bool> getPermissionStatusStream() async* {
+  Stream<bool> getPermissionStatusStream() {
     if (_isDisposed) {
-      return;
+      return const Stream<bool>.empty();
     }
 
-    final controller = _permissionStatusController ??= StreamController<bool>.broadcast(
-      onCancel: () => _permissionStatusController?.close(),
-    );
-    _initializePermissionListener();
-
-    // Small delay to ensure listener is set up before emitting initial value
-    await Future.delayed(const Duration(milliseconds: 100));
-
-    if (_isDisposed) {
-      return;
+    if (_permissionStatusController == null) {
+      _permissionStatusController = StreamController<bool>.broadcast(
+        onCancel: () => _permissionStatusController?.close(),
+      );
+      _initializePermissionListener();
+      // Wait 100ms for the initial OneSignal permission event to arrive before emitting
+      Future.delayed(const Duration(milliseconds: 100), () {
+        if (!_isDisposed &&
+            _permissionStatusController != null &&
+            !_permissionStatusController!.isClosed) {
+          _permissionStatusController!.add(getPermissionStatus());
+        }
+      });
     }
 
-    // Emit initial status once
-    yield getPermissionStatus();
-
-    if (_isDisposed || controller.isClosed) {
-      return;
-    }
-
-    // Then yield all future changes
-    yield* controller.stream;
+    return _permissionStatusController!.stream;
   }
 
   void _initializePermissionListener() {
@@ -251,13 +246,12 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
     }
 
     try {
-      OneSignal.Notifications.addPermissionObserver((_) {
+      OneSignal.Notifications.addPermissionObserver((status) {
         if (_isDisposed || (_permissionStatusController?.isClosed ?? true)) {
           return;
         }
-        final current = getPermissionStatus();
-        debugPrint('INIT: Current permission status: $current');
-        _permissionStatusController!.add(current);
+        debugPrint('INIT: Current permission status: $status');
+        _permissionStatusController!.add(status);
       });
       _permissionListenerInitialized = true;
       logger.debug('OneSignal permission status listener initialized');
@@ -282,16 +276,16 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
   }
 
   @override
-  Stream<PushNotification> getNotificationsStream() async* {
+  Stream<PushNotification> getNotificationsStream() {
     if (_isDisposed) {
-      return;
+      return const Stream<PushNotification>.empty();
     }
 
     _notificationsController ??= StreamController<PushNotification>.broadcast(
       onCancel: () => _notificationsController?.close(),
     );
     _initializeNotificationListener();
-    yield* _notificationsController!.stream;
+    return _notificationsController!.stream;
   }
 
   void _initializeNotificationListener() {
