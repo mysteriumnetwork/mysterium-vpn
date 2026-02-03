@@ -75,46 +75,63 @@ abstract class _PushNotificationsStore with Store, Disposeable {
     ]);
   }
 
-  StreamSubscription<bool> _createPermissionListener() =>
-      _pushNotificationsPermissionStream.listen((granted) {
-        if (_isDisposed) {
-          return;
-        }
+  StreamSubscription<bool> _createPermissionListener() => _pushNotificationsPermissionStream.listen(
+        (granted) {
+          if (_isDisposed) {
+            return;
+          }
 
-        try {
-          _analyticsStore
-            ..setUserProperty(
-              AnalyticsUserProperty.fromEnum(
-                name: AnalyticsUserPropName.pnPermissionStatus,
-                value: granted.toString(),
-              ),
-            )
-            ..logPushNotificationsPermissionsChanged(permissionsGranted: granted);
-        } catch (e, stack) {
-          _logger.handle(e, stack, 'Error tracking push notifications permission change');
-        }
-      });
+          try {
+            _analyticsStore
+              ..setUserProperty(
+                AnalyticsUserProperty.fromEnum(
+                  name: AnalyticsUserPropName.pnPermissionStatus,
+                  value: granted.toString(),
+                ),
+              )
+              ..logPushNotificationsPermissionsChanged(permissionsGranted: granted);
+          } catch (e, stack) {
+            _logger.handle(e, stack, 'Error tracking push notifications permission change');
+          }
+        },
+        onError: (error, [stackTrace]) {
+          _logger.handle(
+            error.toString(),
+            stackTrace as StackTrace?,
+            'Error in push notifications permission status stream',
+          );
+        },
+      );
 
   StreamSubscription<PushNotification> _createNotificationClickListener() =>
-      _notificationsStream.listen((notification) {
-        if (_isDisposed) {
-          return;
-        }
+      _notificationsStream.listen(
+        (notification) {
+          if (_isDisposed) {
+            return;
+          }
 
-        try {
-          _analyticsStore.logEvent(
-            AnalyticsEvent.pushNotificationClicked,
-            parameters: {
-              'notification_id': notification.id,
-              'title': notification.title,
-              'body': notification.body,
-              'additional_data': notification.additionalData.toString(),
-            },
+          try {
+            _analyticsStore.logEvent(
+              AnalyticsEvent.pushNotificationClicked,
+              parameters: {
+                'notification_id': notification.id,
+                'title': notification.title,
+                'body': notification.body,
+                'additional_data': notification.additionalData.toString(),
+              },
+            );
+          } catch (e, stack) {
+            _logger.handle(e, stack, 'Error tracking push notification open event');
+          }
+        },
+        onError: (error, [stackTrace]) {
+          _logger.handle(
+            error.toString(),
+            stackTrace as StackTrace?,
+            'Error in notifications stream',
           );
-        } catch (e, stack) {
-          _logger.handle(e, stack, 'Error tracking push notification open event');
-        }
-      });
+        },
+      );
 
   void _setupReactions() {
     _disposers.addAll([
@@ -227,13 +244,28 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   );
 
   @computed
-  String? get user => _pushNotificationsUser.value?.toString();
+  String? get user {
+    if (_isDisposed) {
+      return null;
+    }
+    return _pushNotificationsUser.value?.toString();
+  }
 
   @computed
-  bool get pushNotificationsPermissionGranted => _pushNotificationsPermissionStream.value ?? false;
+  bool get pushNotificationsPermissionGranted {
+    if (_isDisposed) {
+      return false;
+    }
+    return _pushNotificationsPermissionStream.value ?? false;
+  }
 
   @computed
-  PushNotification? get lastNotification => _notificationsStream.value;
+  PushNotification? get lastNotification {
+    if (_isDisposed) {
+      return null;
+    }
+    return _notificationsStream.value;
+  }
 
   @action
   Future<void> updatePushNotificationsPermissions() async {

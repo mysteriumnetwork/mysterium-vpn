@@ -86,7 +86,9 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   @override
   Future<bool> requestPermission() async {
-    _checkDisposed();
+    if (_isDisposed) {
+      return false;
+    }
 
     if (await _isSubscribed()) {
       return true;
@@ -121,7 +123,9 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   @override
   Future<void> openAppNotificationsSettings() async {
-    _checkDisposed();
+    if (_isDisposed) {
+      return;
+    }
 
     await AppSettings.openAppSettings(
       type: AppSettingsType.notification,
@@ -131,7 +135,9 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   @override
   Future<void> login({required String userId, required String userEmail}) async {
-    _checkDisposed();
+    if (_isDisposed) {
+      return;
+    }
 
     await OneSignal.login(userId);
     await OneSignal.User.addEmail(userEmail);
@@ -139,21 +145,31 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   @override
   Future<void> logout() async {
-    _checkDisposed();
+    if (_isDisposed) {
+      return;
+    }
+
     await OneSignal.logout();
   }
 
   @override
   Future<void> setTags(Map<String, String> tags) async {
-    _checkDisposed();
+    if (_isDisposed) {
+      return;
+    }
+
     await OneSignal.User.addTags(tags);
   }
 
   @override
   Stream<PushNotificationsUser> getUser() {
-    _checkDisposed();
+    if (_isDisposed) {
+      return const Stream.empty();
+    }
 
-    _controller ??= StreamController<PushNotificationsUser>.broadcast();
+    _controller ??= StreamController<PushNotificationsUser>.broadcast(
+      onCancel: () => _controller?.close(),
+    );
     _emitCurrentUser();
     return _controller!.stream;
   }
@@ -202,19 +218,31 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   @override
   Stream<bool> getPermissionStatusStream() async* {
-    _checkDisposed();
+    if (_isDisposed) {
+      return;
+    }
 
-    _permissionStatusController ??= StreamController<bool>.broadcast();
+    final controller = _permissionStatusController ??= StreamController<bool>.broadcast(
+      onCancel: () => _permissionStatusController?.close(),
+    );
     _initializePermissionListener();
 
     // Small delay to ensure listener is set up before emitting initial value
     await Future.delayed(const Duration(milliseconds: 100));
 
+    if (_isDisposed) {
+      return;
+    }
+
     // Emit initial status once
     yield getPermissionStatus();
 
+    if (_isDisposed || controller.isClosed) {
+      return;
+    }
+
     // Then yield all future changes
-    yield* _permissionStatusController!.stream;
+    yield* controller.stream;
   }
 
   void _initializePermissionListener() {
@@ -240,7 +268,9 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   @override
   Future<bool> canRequestPermission() async {
-    _checkDisposed();
+    if (_isDisposed) {
+      return false;
+    }
 
     try {
       return await OneSignal.Notifications.canRequest();
@@ -253,9 +283,13 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   @override
   Stream<PushNotification> getNotificationsStream() async* {
-    _checkDisposed();
+    if (_isDisposed) {
+      return;
+    }
 
-    _notificationsController ??= StreamController<PushNotification>.broadcast();
+    _notificationsController ??= StreamController<PushNotification>.broadcast(
+      onCancel: () => _notificationsController?.close(),
+    );
     _initializeNotificationListener();
     yield* _notificationsController!.stream;
   }
@@ -319,11 +353,5 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
     _permissionStatusController = null;
 
     logger.debug('OnesignalNotificationsRepository disposed');
-  }
-
-  void _checkDisposed() {
-    if (_isDisposed) {
-      throw StateError('OnesignalNotificationsRepository has been disposed');
-    }
   }
 }
