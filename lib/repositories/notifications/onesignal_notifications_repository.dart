@@ -39,7 +39,6 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
       }
 
       OneSignal.initialize(Env.oneSignalAppId);
-      debugPrint('INIT: OneSignal initialized');
 
       // Setup push subscription observer
       OneSignal.User.pushSubscription.addObserver((state) {
@@ -66,16 +65,6 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
         }
         event.preventDefault();
         event.notification.display();
-      });
-
-      // Handle in-app message clicks
-      OneSignal.InAppMessages.addClickListener((event) {
-        if (_isDisposed) {
-          return;
-        }
-        final debugLabelString =
-            "In App Message Clicked: \n${event.result.jsonRepresentation().replaceAll(r"\n", "\n")}";
-        debugPrint(debugLabelString);
       });
 
       _observersInitialized = true;
@@ -250,7 +239,6 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
         if (_isDisposed || (_permissionStatusController?.isClosed ?? true)) {
           return;
         }
-        debugPrint('INIT: Current permission status: $status');
         _permissionStatusController!.add(status);
       });
       _permissionListenerInitialized = true;
