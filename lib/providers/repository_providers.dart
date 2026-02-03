@@ -20,10 +20,14 @@ final openVpnRepositoryPOD = Provider<OpenVpnRepository>(
   ),
 );
 
-final pushNotificationsRepositoryPOD = Provider<NotificationsRepository>(
-  (ref) => isDesktop()
+final pushNotificationsRepositoryPOD = Provider<NotificationsRepository>((ref) {
+  final repository = isDesktop()
       ? DesktopNotificationsRepository()
       : OnesignalNotificationsRepository(
           logger: ref.watch(loggerPOD),
-        ),
-);
+        );
+  ref.onDispose(() async {
+    await repository.dispose();
+  });
+  return repository;
+});
