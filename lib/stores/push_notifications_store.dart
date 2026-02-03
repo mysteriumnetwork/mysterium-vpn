@@ -340,6 +340,4 @@ abstract class _PushNotificationsStore with Store, Disposeable {
     }
     _subscriptions.clear();
   }
-
- 
 }
