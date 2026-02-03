@@ -43,28 +43,19 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   final LocalDBService _localDb;
   final RemoteConfigStore _remoteConfigStore;
 
-  bool _isDisposed = false;
-  bool _isInitialized = false;
-
   @visibleForTesting
   bool testIsMobile = false; // default false, will override in tests
 
   bool get supportsPushNotifications => testIsMobile || isMobile();
 
   Future<void> _init() async {
-    if (_isDisposed || _isInitialized) {
-      return;
-    }
-
     try {
       await _notificationsRepository.init();
-      _isInitialized = true;
 
-      _setupStreamListeners();
       _setupReactions();
+      _setupStreamListeners();
     } catch (e, stack) {
       _logger.handle(e, stack, 'Error initializing push notifications store');
-      _isInitialized = false;
     }
   }
 
@@ -77,10 +68,6 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
   StreamSubscription<bool> _createPermissionListener() => _pushNotificationsPermissionStream.listen(
         (granted) {
-          if (_isDisposed) {
-            return;
-          }
-
           try {
             _analyticsStore
               ..setUserProperty(
@@ -106,10 +93,6 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   StreamSubscription<PushNotification> _createNotificationClickListener() =>
       _notificationsStream.listen(
         (notification) {
-          if (_isDisposed) {
-            return;
-          }
-
           try {
             _analyticsStore.logEvent(
               AnalyticsEvent.pushNotificationClicked,
@@ -144,10 +127,6 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   ReactionDisposer _createAuthReaction() => reaction(
         (_) => _authSessionStore.userFuture.value.toUserData(),
         (data) async {
-          if (_isDisposed) {
-            return;
-          }
-
           if (_authSessionStore.userFuture.value == null) {
             await _handleLogout();
             return;
@@ -161,9 +140,6 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   ReactionDisposer _createLocationReaction() => reaction(
         (_) => _ipInfoStore.infoFuture.value.toLocationData(),
         (data) async {
-          if (_isDisposed) {
-            return;
-          }
           await _updateLocationTags(data);
         },
         fireImmediately: true,
@@ -172,19 +148,20 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   ReactionDisposer _createSubscriptionReaction() => reaction(
         (_) => _subscriptionStore.subscriptionFuture.value.toSubscriptionData(),
         (data) async {
-          if (_isDisposed) {
-            return;
-          }
+          // Only update subscription tags if user is authenticated
           if (!_authSessionStore.isAuthenticated) {
             return;
           }
           await _updateSubscriptionTags(data);
         },
-        fireImmediately: true,
+        // Don't fire immediately - let the auth reaction complete first
+        fireImmediately: false,
       );
 
   Future<void> _handleLogout() async {
     try {
+      // Only logout from OneSignal to clear user-specific data (userId, email, tags)
+      // Keep the store, repository, and streams alive since permissions are device-level
       await _notificationsRepository.logout();
     } catch (e, stack) {
       _logger.handle(e, stack, 'Error logging out from push notifications');
@@ -197,6 +174,10 @@ abstract class _PushNotificationsStore with Store, Disposeable {
         userId: data.id,
         userEmail: data.email,
       );
+
+      // Update subscription tags immediately after login
+      final subscriptionData = _subscriptionStore.subscriptionFuture.value.toSubscriptionData();
+      await _updateSubscriptionTags(subscriptionData);
     } catch (e, stack) {
       _logger.handle(e, stack, 'Error logging in to push notifications');
     }
@@ -244,36 +225,23 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   );
 
   @computed
-  String? get user {
-    if (_isDisposed) {
-      return null;
-    }
-    return _pushNotificationsUser.value?.toString();
-  }
+  String? get user => _pushNotificationsUser.value?.toString();
 
   @computed
   bool get pushNotificationsPermissionGranted {
-    if (_isDisposed) {
-      return false;
+    final value = _pushNotificationsPermissionStream.value;
+    if (value == null) {
+      // If stream value is null, check repository directly
+      return _notificationsRepository.getPermissionStatus();
     }
-    return _pushNotificationsPermissionStream.value ?? false;
+    return value;
   }
 
   @computed
-  PushNotification? get lastNotification {
-    if (_isDisposed) {
-      return null;
-    }
-    return _notificationsStream.value;
-  }
+  PushNotification? get lastNotification => _notificationsStream.value;
 
   @action
   Future<void> updatePushNotificationsPermissions() async {
-    if (_isDisposed) {
-      _logger.warning('Attempted to update permissions on disposed store');
-      return;
-    }
-
     if (!supportsPushNotifications) {
       return;
     }
@@ -288,11 +256,6 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
   @action
   Future<void> setPushNotificationsShown({required bool userAllowed}) async {
-    if (_isDisposed) {
-      _logger.warning('Attempted to set notifications shown on disposed store');
-      return;
-    }
-
     if (!supportsPushNotifications) {
       return;
     }
@@ -315,11 +278,6 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
   @action
   Future<bool> shouldShowPushNotificationsPermissionPrompt() async {
-    if (_isDisposed) {
-      _logger.warning('Attempted to check prompt status on disposed store');
-      return false;
-    }
-
     if (!supportsPushNotifications) {
       return false;
     }
@@ -354,12 +312,6 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
   @override
   Future<void> dispose() async {
-    if (_isDisposed) {
-      return;
-    }
-
-    _isDisposed = true;
-
     await _disposeReactions();
     await _disposeSubscriptions();
     await _disposeRepository();
@@ -390,10 +342,14 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   }
 
   Future<void> _disposeRepository() async {
+    // Don't dispose the repository - it needs to remain functional for logout/login cycles.
+    // The repository manages its own lifecycle and streams independently.
+    // The store's disposal only means this store instance is no longer in use.
     try {
-      await _notificationsRepository.dispose();
+      // Cancel any active listeners at the store level, but don't dispose the repository
+      _logger.debug('PushNotificationsStore disconnecting from notifications repository');
     } catch (e, stack) {
-      _logger.handle(e, stack, 'Error disposing notifications repository');
+      _logger.handle(e, stack, 'Error disconnecting from notifications repository');
     }
   }
 }

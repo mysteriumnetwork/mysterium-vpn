@@ -80,6 +80,7 @@ class LocalDBService {
       _userSetCompleter = Completer<AuthUser>();
       _userSetCompleter.complete(user);
     }
+    unawaited(incrementAppOpenCount());
   }
 
   void clearUser() {
@@ -282,9 +283,9 @@ class LocalDBService {
     return userData.appOpenCount;
   }
 
-  Future<void> setAppOpenCount(int count) async {
+  Future<void> incrementAppOpenCount() async {
     final userData = await _loadUserData();
-    userData.appOpenCount = count;
+    userData.appOpenCount = userData.appOpenCount + 1;
     await _saveUserData(userData);
   }
 }

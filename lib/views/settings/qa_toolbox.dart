@@ -35,6 +35,7 @@ class QAToolbox extends HookConsumerWidget {
               children: [
                 _buildResetActions(context, ref),
                 _buildClearLocationsAction(context, ref),
+                _buildGetMarketingConsent(context, ref),
               ],
             ),
             _ExpandableSection(
@@ -132,6 +133,29 @@ class QAToolbox extends HookConsumerWidget {
                 !connectionsLimitStore.connectionLimitReached;
             showSnackbar(
               'Connection limit: ${connectionsLimitStore.connectionLimitReached ? "reached" : "not reached"}',
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGetMarketingConsent(BuildContext context, WidgetRef ref) {
+    final userPreferencesStore = ref.read(userPreferencesStorePOD);
+
+    return _QAActionItem(
+      icon: Icons.swap_horiz,
+      title: 'Get marketing consent',
+      subtitle:
+          'Status: ${userPreferencesStore.marketingConsent ?? false ? "Consented" : "Not consented"}',
+      actions: [
+        _QAActionButton(
+          label: 'Toggle',
+          onPressed: () async {
+            final consent = await userPreferencesStore.getMarketingConsent();
+            final newConsent = userPreferencesStore.marketingConsent;
+            showSnackbar(
+              'Marketing consent fetched: $consent, current state: $newConsent',
             );
           },
         ),

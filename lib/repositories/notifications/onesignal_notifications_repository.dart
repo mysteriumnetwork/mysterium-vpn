@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:app_settings/app_settings.dart';
-import 'package:flutter/foundation.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -17,52 +15,32 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
   StreamController<PushNotification>? _notificationsController;
   StreamController<bool>? _permissionStatusController;
   bool _notificationListenerInitialized = false;
-  bool _permissionListenerInitialized = false;
+  bool _permissionObserverRegistered = false; // Track if observer is registered globally
   bool _observersInitialized = false;
   bool _isInitializing = false;
-  bool _isDisposed = false;
 
   @override
   Future<void> init() async {
-    if (_isDisposed) {
-      throw StateError('Cannot initialize a disposed repository');
-    }
-
-    if (_observersInitialized || _isInitializing) {
+    if (_isInitializing || _observersInitialized) {
       return;
     }
 
     _isInitializing = true;
     try {
-      if (kDebugMode) {
-        await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-      }
-
-      OneSignal.initialize(Env.oneSignalAppId);
-
       // Setup push subscription observer
       OneSignal.User.pushSubscription.addObserver((state) {
-        if (_isDisposed) {
-          return;
-        }
         logger.info('PushSubscription changed: ${state.current.jsonRepresentation()}');
         _emitCurrentUser(); // update stream whenever subscription changes
       });
 
       // Setup user observer
       OneSignal.User.addObserver((state) {
-        if (_isDisposed) {
-          return;
-        }
         logger.info('User state changed: ${state.current.jsonRepresentation()}');
         _emitCurrentUser(); // update stream whenever user changes
       });
 
       // Handle foreground notifications
       OneSignal.Notifications.addForegroundWillDisplayListener((event) {
-        if (_isDisposed) {
-          return;
-        }
         event.preventDefault();
         event.notification.display();
       });
@@ -74,15 +52,22 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
   }
 
   @override
+  Future<void> logout() async {
+    // Don't close user or permission controllers - streams persist across logout/login
+    // User data will be updated when login happens, permissions are device-level
+    // Only close notification-specific stream
+
+    await _notificationsController?.close();
+    _notificationsController = null;
+    _notificationListenerInitialized = false;
+
+    // Just logout from OneSignal to clear user-specific data (userId, email, tags)
+    // User and permission observers stay active and controllers stay alive
+    await OneSignal.logout();
+  }
+
+  @override
   Future<bool> requestPermission() async {
-    if (_isDisposed) {
-      return false;
-    }
-
-    if (await _isSubscribed()) {
-      return true;
-    }
-
     if (!(await OneSignal.Notifications.canRequest())) {
       throw RequestPushNotificationsPermissionsNotAllowed();
     }
@@ -92,9 +77,7 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
     if (granted) {
       logger.info('Push notifications permission granted by the user.');
       // Opt-in if permission granted
-      if (!(await _isSubscribed())) {
-        OneSignal.User.pushSubscription.optIn();
-      }
+      OneSignal.User.pushSubscription.optIn();
     } else {
       logger.info('Push notifications permission not granted by the user.');
     }
@@ -102,20 +85,11 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
     return granted;
   }
 
-  Future<bool> _isSubscribed() async {
-    final subscription = OneSignal.User.pushSubscription;
-    return (subscription.optedIn ?? false) && getPermissionStatus() && (subscription.token != null);
-  }
-
   @override
   bool getPermissionStatus() => OneSignal.Notifications.permission;
 
   @override
   Future<void> openAppNotificationsSettings() async {
-    if (_isDisposed) {
-      return;
-    }
-
     await AppSettings.openAppSettings(
       type: AppSettingsType.notification,
       asAnotherTask: true,
@@ -124,47 +98,33 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   @override
   Future<void> login({required String userId, required String userEmail}) async {
-    if (_isDisposed) {
-      return;
-    }
-
     await OneSignal.login(userId);
     await OneSignal.User.addEmail(userEmail);
-  }
-
-  @override
-  Future<void> logout() async {
-    if (_isDisposed) {
-      return;
-    }
-
-    await OneSignal.logout();
+    _emitCurrentUser();
   }
 
   @override
   Future<void> setTags(Map<String, String> tags) async {
-    if (_isDisposed) {
-      return;
+    try {
+      await OneSignal.User.addTags(tags);
+      logger.debug('OneSignal tags set: $tags');
+      // Emit updated user state after tags change
+      await _emitCurrentUser();
+    } catch (e) {
+      logger.error('Error setting OneSignal tags: $e');
+      rethrow;
     }
-
-    await OneSignal.User.addTags(tags);
   }
 
   @override
   Stream<PushNotificationsUser> getUser() {
-    if (_isDisposed) {
-      return const Stream.empty();
-    }
-
-    _controller ??= StreamController<PushNotificationsUser>.broadcast(
-      onCancel: () => _controller?.close(),
-    );
+    _controller ??= StreamController<PushNotificationsUser>.broadcast();
     _emitCurrentUser();
     return _controller!.stream;
   }
 
   Future<void> _emitCurrentUser() async {
-    if (_isDisposed || _controller == null || _controller!.isClosed) {
+    if (_controller == null || _controller!.isClosed) {
       return;
     }
 
@@ -183,7 +143,7 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
       final tags = await OneSignal.User.getTags();
 
       // Check again after async operations
-      if (_isDisposed || _controller == null || _controller!.isClosed) {
+      if (_controller == null || _controller!.isClosed) {
         return;
       }
 
@@ -207,53 +167,42 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   @override
   Stream<bool> getPermissionStatusStream() {
-    if (_isDisposed) {
-      return const Stream<bool>.empty();
-    }
-
     if (_permissionStatusController == null) {
-      _permissionStatusController = StreamController<bool>.broadcast(
-        onCancel: () => _permissionStatusController?.close(),
-      );
+      // Permission controller doesn't close on subscription cancel since permissions are device-level
+      // It persists across logout/login cycles
+      _permissionStatusController = StreamController<bool>.broadcast();
+
+      // Register listener FIRST before emitting any values
       _initializePermissionListener();
-      // Wait 100ms for the initial OneSignal permission event to arrive before emitting
-      Future.delayed(const Duration(milliseconds: 100), () {
-        if (!_isDisposed &&
-            _permissionStatusController != null &&
-            !_permissionStatusController!.isClosed) {
-          _permissionStatusController!.add(getPermissionStatus());
-        }
-      });
+
+      // Emit initial permission status
+      _permissionStatusController!.add(getPermissionStatus());
     }
 
     return _permissionStatusController!.stream;
   }
 
   void _initializePermissionListener() {
-    if (_permissionListenerInitialized || _isDisposed) {
+    if (_permissionObserverRegistered) {
       return;
     }
 
     try {
       OneSignal.Notifications.addPermissionObserver((status) {
-        if (_isDisposed || (_permissionStatusController?.isClosed ?? true)) {
-          return;
+        // Controller persists across logout/login since permissions are device-level
+        if (_permissionStatusController != null && !_permissionStatusController!.isClosed) {
+          _permissionStatusController!.add(status);
         }
-        _permissionStatusController!.add(status);
       });
-      _permissionListenerInitialized = true;
-      logger.debug('OneSignal permission status listener initialized');
+      _permissionObserverRegistered = true; // Mark as registered globally
+      logger.debug('OneSignal permission status observer registered');
     } catch (e) {
-      logger.error('Failed to initialize permission listener: $e');
+      logger.error('Failed to register permission observer: $e');
     }
   }
 
   @override
   Future<bool> canRequestPermission() async {
-    if (_isDisposed) {
-      return false;
-    }
-
     try {
       return await OneSignal.Notifications.canRequest();
     } catch (e) {
@@ -265,19 +214,13 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   @override
   Stream<PushNotification> getNotificationsStream() {
-    if (_isDisposed) {
-      return const Stream<PushNotification>.empty();
-    }
-
-    _notificationsController ??= StreamController<PushNotification>.broadcast(
-      onCancel: () => _notificationsController?.close(),
-    );
+    _notificationsController ??= StreamController<PushNotification>.broadcast();
     _initializeNotificationListener();
     return _notificationsController!.stream;
   }
 
   void _initializeNotificationListener() {
-    if (_notificationListenerInitialized || _isDisposed) {
+    if (_notificationListenerInitialized) {
       return;
     }
 
@@ -291,7 +234,7 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
   }
 
   void _handleNotificationClick(OSNotificationClickEvent event) {
-    if (_isDisposed || (_notificationsController?.isClosed ?? true)) {
+    if (_notificationsController?.isClosed ?? true) {
       return;
     }
 
@@ -319,12 +262,6 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
   /// Call this when the repository is no longer needed.
   @override
   Future<void> dispose() async {
-    if (_isDisposed) {
-      return;
-    }
-
-    _isDisposed = true;
-
     await _controller?.close();
     _controller = null;
 

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/utils/disposeable.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -18,25 +19,39 @@ enum UserPromptType {
 // ignore: library_private_types_in_public_api
 class UserPreferencesStore = _UserPreferencesStore with _$UserPreferencesStore;
 
-abstract class _UserPreferencesStore with Store {
+abstract class _UserPreferencesStore with Store, Disposeable {
   _UserPreferencesStore({
     required ApiService apiService,
     required AnalyticsStore analyticsStore,
     required RealIPInfoStore realIPInfo,
     required LocalDBService localDBService,
     required PushNotificationsStore pushNotificationsStore,
+    required AuthSessionStore authSessionStore,
   })  : _apiService = apiService,
         _analyticsStore = analyticsStore,
         _realIPInfo = realIPInfo,
         localDb = localDBService,
-        _pushNotificationsStore = pushNotificationsStore;
+        _pushNotificationsStore = pushNotificationsStore,
+        _authSessionStore = authSessionStore {
+    _authReactionDisposer = reaction<bool>(
+      (_) => _authSessionStore.isAuthenticated,
+      (status) async {
+        if (status) {
+          await initStore();
+        }
+      },
+      fireImmediately: true,
+      equals: (a, b) => a == b,
+    );
+  }
 
   @action
   Future<void> initStore() async {
-    await incrementAppOpenCount();
     setMarketingConsentFuture = ObservableFuture(createMarketingContact());
-    getMarketingConsentFuture = ObservableFuture(getMarketingConsent());
-    await evaluatePromptToShow();
+    setMarketingConsentFuture?.whenComplete(() async {
+      getMarketingConsentFuture = ObservableFuture(getMarketingConsent());
+      await evaluatePromptToShow();
+    });
   }
 
   final ApiService _apiService;
@@ -44,6 +59,8 @@ abstract class _UserPreferencesStore with Store {
   final RealIPInfoStore _realIPInfo;
   final LocalDBService localDb;
   final PushNotificationsStore _pushNotificationsStore;
+  final AuthSessionStore _authSessionStore;
+  ReactionDisposer? _authReactionDisposer;
 
   @observable
   ObservableFuture<void>? setMarketingConsentFuture;
@@ -73,13 +90,6 @@ abstract class _UserPreferencesStore with Store {
   bool testIsMobile = false; // default false, will override in tests
 
   bool get supportsPushNotifications => testIsMobile || isMobile();
-
-  @action
-  Future<void> incrementAppOpenCount() async {
-    appOpenCount = await localDb.getAppOpenCount();
-    appOpenCount++;
-    await localDb.setAppOpenCount(appOpenCount);
-  }
 
   @visibleForTesting
   @action
@@ -158,9 +168,7 @@ abstract class _UserPreferencesStore with Store {
   @action
   Future<bool> getMarketingConsent() async {
     try {
-      await setMarketingConsentFuture;
-      getMarketingConsentFuture = ObservableFuture(_apiService.getMarketingContactStatus());
-      final consent = await getMarketingConsentFuture!;
+      final consent = await _apiService.getMarketingContactStatus();
       _analyticsStore
         ..setUserProperty(
           AnalyticsUserProperty.fromEnum(
@@ -179,5 +187,10 @@ abstract class _UserPreferencesStore with Store {
       );
       rethrow;
     }
+  }
+
+  @override
+  FutureOr<void> dispose() async {
+    _authReactionDisposer?.call();
   }
 }

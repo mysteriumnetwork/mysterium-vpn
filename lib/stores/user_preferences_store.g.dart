@@ -105,14 +105,6 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
     return _$initStoreAsyncAction.run(() => super.initStore());
   }
 
-  late final _$incrementAppOpenCountAsyncAction =
-      AsyncAction('_UserPreferencesStore.incrementAppOpenCount', context: context);
-
-  @override
-  Future<void> incrementAppOpenCount() {
-    return _$incrementAppOpenCountAsyncAction.run(() => super.incrementAppOpenCount());
-  }
-
   late final _$evaluatePromptToShowAsyncAction =
       AsyncAction('_UserPreferencesStore.evaluatePromptToShow', context: context);
 

@@ -35,7 +35,6 @@ final authSessionStorePOD = Provider<AuthSessionStore>(
 
 final authStorePOD = Provider<AuthStore>((ref) {
   final authService = ref.watch(authServicePOD);
-  final userPreferencesStore = ref.watch(userPreferencesStorePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
   final appLinks = ref.watch(appLinksPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
@@ -45,7 +44,6 @@ final authStorePOD = Provider<AuthStore>((ref) {
 
   return AuthStore(
     authService: authService,
-    userPreferencesStore: userPreferencesStore,
     authSessionStore: authSessionStore,
     appLinks: appLinks,
     analyticsStore: analyticsStore,
@@ -237,6 +235,7 @@ final userPreferencesStorePOD = StateProvider<UserPreferencesStore>((ref) {
   final analyticsStore = ref.watch(analyticsStorePOD);
   final realIPInfoStore = ref.watch(realIPInfoStorePOD);
   final pushNotificationsStore = ref.watch(pushNotificationsStorePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
 
   return UserPreferencesStore(
     apiService: apiService,
@@ -244,6 +243,7 @@ final userPreferencesStorePOD = StateProvider<UserPreferencesStore>((ref) {
     realIPInfo: realIPInfoStore,
     localDBService: LocalDBService.instance,
     pushNotificationsStore: pushNotificationsStore,
+    authSessionStore: authSessionStore,
   );
 });
 
