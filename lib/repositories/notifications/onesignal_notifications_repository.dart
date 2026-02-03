@@ -147,20 +147,30 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
         return;
       }
 
-      _controller!.add(
-        PushNotificationsUser(
-          pushNotificationsId: oneSignalId,
-          userId: userId,
-          tags: {
-            ...tags,
-            ...subscriptionData,
-          },
-        ),
-      );
+      try {
+        _controller!.add(
+          PushNotificationsUser(
+            pushNotificationsId: oneSignalId,
+            userId: userId,
+            tags: {
+              ...tags,
+              ...subscriptionData,
+            },
+          ),
+        );
+      } catch (e) {
+        // Handle race condition where stream was closed between check and add
+        logger.debug('Stream closed before emission could complete: $e');
+      }
     } catch (e) {
       logger.error('Error emitting OneSignal user/device state: $e');
       if (!(_controller?.isClosed ?? true)) {
-        _controller!.addError(e);
+        try {
+          _controller!.addError(e);
+        } catch (_) {
+          // Stream may have been closed during error reporting
+          logger.debug('Failed to add error to stream - stream already closed');
+        }
       }
     }
   }
@@ -193,7 +203,12 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
       OneSignal.Notifications.addPermissionObserver((status) {
         // Controller persists across logout/login since permissions are device-level
         if (_permissionStatusController != null && !_permissionStatusController!.isClosed) {
-          _permissionStatusController!.add(status);
+          try {
+            _permissionStatusController!.add(status);
+          } catch (_) {
+            // Handle race condition where stream was closed between check and add
+            logger.debug('Permission stream closed before emission could complete');
+          }
         }
       });
       _permissionObserverRegistered = true; // Mark as registered globally
@@ -251,11 +266,21 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
         rawPayload: notification.rawPayload,
         category: notification.category,
       );
-      _notificationsController!.add(pushNotification);
+      try {
+        _notificationsController!.add(pushNotification);
+      } catch (_) {
+        // Handle race condition where stream was closed between check and add
+        logger.debug('Notifications stream closed before emission could complete');
+      }
     } catch (e) {
       logger.error('Error processing notification click: $e');
       if (!(_notificationsController?.isClosed ?? true)) {
-        _notificationsController!.addError(e);
+        try {
+          _notificationsController!.addError(e);
+        } catch (_) {
+          // Stream may have been closed during error reporting
+          logger.debug('Failed to add error to stream - stream already closed');
+        }
       }
     }
   }
