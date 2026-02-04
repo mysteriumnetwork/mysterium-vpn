@@ -48,6 +48,8 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
   bool get supportsPushNotifications => testIsMobile || isMobile();
 
+  String? lastShownPushNotificationId;
+
   Future<void> _init() async {
     try {
       await _notificationsRepository.init();

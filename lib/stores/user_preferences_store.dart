@@ -74,9 +74,6 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   @observable
   UserPromptType nextPromptToShow = UserPromptType.none;
 
-  @observable
-  int appOpenCount = 0;
-
   @visibleForTesting
   bool pushNotificationsPromptShown = false;
 
@@ -87,6 +84,30 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   bool testIsMobile = false; // default false, will override in tests
 
   bool get supportsPushNotifications => testIsMobile || isMobile();
+
+  @action
+  bool isPromptShown(UserPromptType type) {
+    switch (type) {
+      case UserPromptType.marketingConsent:
+        return marketingConsentPromptShown;
+      case UserPromptType.pushNotifications:
+        return pushNotificationsPromptShown;
+      case UserPromptType.none:
+        return false;
+    }
+  }
+
+  @action
+  void markPromptAsShown(UserPromptType type) {
+    switch (type) {
+      case UserPromptType.marketingConsent:
+        marketingConsentPromptShown = true;
+      case UserPromptType.pushNotifications:
+        pushNotificationsPromptShown = true;
+      case UserPromptType.none:
+        break;
+    }
+  }
 
   @visibleForTesting
   @action
@@ -109,6 +130,7 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   Future<bool> shouldShowMarketingConsent() async {
     final consentValue = await getMarketingConsentFuture;
     final consentShown = await localDb.getMarketingConsentShown();
+    final appOpenCount = await localDb.getAppOpenCount();
 
     return consentValue == false && !consentShown && appOpenCount >= 3;
   }
@@ -189,6 +211,12 @@ abstract class _UserPreferencesStore with Store, Disposeable {
       );
       rethrow;
     }
+  }
+
+  @action
+  Future<void> setPushNotificationsShown({required bool userAllowed}) async {
+    await _pushNotificationsStore.setPushNotificationsShown(userAllowed: userAllowed);
+    await evaluatePromptToShow();
   }
 
   @override

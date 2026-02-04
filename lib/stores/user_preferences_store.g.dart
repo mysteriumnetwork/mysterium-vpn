@@ -81,22 +81,6 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
     });
   }
 
-  late final _$appOpenCountAtom =
-      Atom(name: '_UserPreferencesStore.appOpenCount', context: context);
-
-  @override
-  int get appOpenCount {
-    _$appOpenCountAtom.reportRead();
-    return super.appOpenCount;
-  }
-
-  @override
-  set appOpenCount(int value) {
-    _$appOpenCountAtom.reportWrite(value, super.appOpenCount, () {
-      super.appOpenCount = value;
-    });
-  }
-
   late final _$initStoreAsyncAction =
       AsyncAction('_UserPreferencesStore.initStore', context: context);
 
@@ -157,6 +141,15 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
     return _$getMarketingConsentAsyncAction.run(() => super.getMarketingConsent());
   }
 
+  late final _$setPushNotificationsShownAsyncAction =
+      AsyncAction('_UserPreferencesStore.setPushNotificationsShown', context: context);
+
+  @override
+  Future<void> setPushNotificationsShown({required bool userAllowed}) {
+    return _$setPushNotificationsShownAsyncAction
+        .run(() => super.setPushNotificationsShown(userAllowed: userAllowed));
+  }
+
   @override
   String toString() {
     return '''
@@ -164,7 +157,6 @@ setMarketingConsentFuture: ${setMarketingConsentFuture},
 updateMarketingConsentFuture: ${updateMarketingConsentFuture},
 getMarketingConsentFuture: ${getMarketingConsentFuture},
 nextPromptToShow: ${nextPromptToShow},
-appOpenCount: ${appOpenCount},
 marketingConsent: ${marketingConsent}
     ''';
   }

@@ -136,6 +136,9 @@ abstract class _VpnStore extends VpnGuard with Store {
   @observable
   RateConnectionRequestModeEnum? connectionRated;
 
+  @observable
+  bool _isDeviceLimitErrorShown = false;
+
   // Computed Properties
   @computed
   VpnConnectionStatus get vpnStatus => _connectionStatus == VpnConnectionStatus.unknown
@@ -165,6 +168,13 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   @computed
   VPNLocation? get potentialLocation => _connectionDecisionStore.potentialLocation;
+
+  bool get isDeviceLimitErrorShown => _isDeviceLimitErrorShown;
+
+  @action
+  void markDeviceLimitErrorAsShown() {
+    _isDeviceLimitErrorShown = true;
+  }
 
   // ==================== Initialization ====================
 
@@ -564,6 +574,9 @@ abstract class _VpnStore extends VpnGuard with Store {
 
     final realIpInfo = await _realIPInfo.infoFuture;
     final ipType = _determineIpType(location, intent);
+
+    // Reset error tracking when fetching new config
+    _isDeviceLimitErrorShown = false;
 
     _fetchConfigFuture = ObservableFuture(
       _vpnRepository.fetchVpnConfig(

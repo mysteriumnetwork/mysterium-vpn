@@ -17,9 +17,9 @@ void useHomeAutorun() {
   final context = useContext();
   final vpnStore = useProvider(vpnStorePOD);
   final userPreferencesStore = useProvider(userPreferencesStorePOD);
-  final remoteConfigStore = useProvider(remoteConfigStorePOD);
   final authSessionStore = useProvider(authSessionStorePOD);
   final pushNotificationsStore = useProvider(pushNotificationsStorePOD);
+
   return useEffect(
     () {
       final controller = StreamController<Future<Object?> Function()>(sync: true);
@@ -41,26 +41,36 @@ void useHomeAutorun() {
               return;
             }
 
-            if (value case UserPromptType.marketingConsent) {
-              controller.add(
-                () => showMarketingConsentDialog(context),
-              );
-            } else if (value case UserPromptType.pushNotifications) {
-              controller.add(
-                () => showPushNotificationsPermissionDialog(context),
-              );
+            // Only show dialog if not already shown
+            if (!userPreferencesStore.isPromptShown(value)) {
+              userPreferencesStore.markPromptAsShown(value);
+
+              if (value case UserPromptType.marketingConsent) {
+                controller.add(
+                  () => showMarketingConsentDialog(context),
+                );
+              } else if (value case UserPromptType.pushNotifications) {
+                controller.add(
+                  () => showPushNotificationsPermissionDialog(context),
+                );
+              }
             }
           },
         ),
         autorun((_) {
           final error = vpnStore.fetchConfigFuture?.error;
-          if (error is DeviceLimitReachedException) {
+          if (error is DeviceLimitReachedException && !vpnStore.isDeviceLimitErrorShown) {
+            vpnStore.markDeviceLimitErrorAsShown();
             controller.add(() => showDeviceLimitDialog(context));
           }
           return null;
         }),
         autorun((_) {
           final notification = pushNotificationsStore.lastNotification;
+          if (notification?.id == pushNotificationsStore.lastShownPushNotificationId) {
+            return;
+          }
+          pushNotificationsStore.lastShownPushNotificationId = notification?.id;
           if (notification?.additionalData != null &&
               notification!.additionalData!.containsKey('redirect_url')) {
             final redirectUrl = notification.additionalData!['redirect_url'];
@@ -84,12 +94,8 @@ void useHomeAutorun() {
         await controller.close();
       };
     },
-    [
-      vpnStore,
-      userPreferencesStore,
-      remoteConfigStore,
-      authSessionStore,
-      pushNotificationsStore,
-    ],
+    // Empty dependency array - disposers are only set up once
+    // MobX reactions handle their own reactivity without needing widget rebuild
+    [],
   );
 }

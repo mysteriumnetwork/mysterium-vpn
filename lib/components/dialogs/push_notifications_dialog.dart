@@ -26,7 +26,7 @@ class _DialogContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pushNotificationsStore = ref.watch(pushNotificationsStorePOD);
+    final userPreferencesStore = ref.watch(userPreferencesStorePOD);
     final theme = Theme.of(context);
     return ModalScaffold(
       showGradient: false,
@@ -65,7 +65,7 @@ class _DialogContent extends ConsumerWidget {
             ButtonPrimary(
               onPressed: () => _completePushNotificationsFlow(
                 context,
-                pushNotificationsStore: pushNotificationsStore,
+                userPreferencesStore: userPreferencesStore,
                 userAllowed: true,
               ),
               child: Text(
@@ -75,7 +75,7 @@ class _DialogContent extends ConsumerWidget {
             ButtonSecondary(
               onPressed: () => _completePushNotificationsFlow(
                 context,
-                pushNotificationsStore: pushNotificationsStore,
+                userPreferencesStore: userPreferencesStore,
                 userAllowed: false,
               ),
               child: Text(
@@ -91,10 +91,10 @@ class _DialogContent extends ConsumerWidget {
 
 Future<void> _completePushNotificationsFlow(
   BuildContext context, {
-  required PushNotificationsStore pushNotificationsStore,
+  required UserPreferencesStore userPreferencesStore,
   required bool userAllowed,
 }) async {
-  await pushNotificationsStore.setPushNotificationsShown(userAllowed: userAllowed);
+  await userPreferencesStore.setPushNotificationsShown(userAllowed: userAllowed);
 
   if (context.mounted) {
     Navigator.of(context).pop();
