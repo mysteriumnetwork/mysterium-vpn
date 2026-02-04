@@ -150,6 +150,31 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
         .run(() => super.setPushNotificationsShown(userAllowed: userAllowed));
   }
 
+  late final _$_UserPreferencesStoreActionController =
+      ActionController(name: '_UserPreferencesStore', context: context);
+
+  @override
+  bool isPromptShown(UserPromptType type) {
+    final _$actionInfo = _$_UserPreferencesStoreActionController.startAction(
+        name: '_UserPreferencesStore.isPromptShown');
+    try {
+      return super.isPromptShown(type);
+    } finally {
+      _$_UserPreferencesStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void markPromptAsShown(UserPromptType type) {
+    final _$actionInfo = _$_UserPreferencesStoreActionController.startAction(
+        name: '_UserPreferencesStore.markPromptAsShown');
+    try {
+      return super.markPromptAsShown(type);
+    } finally {
+      _$_UserPreferencesStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
