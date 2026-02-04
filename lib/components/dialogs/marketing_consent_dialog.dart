@@ -76,9 +76,9 @@ class _DialogContent extends ConsumerWidget {
                   return const LoadingIndicator();
                 }
                 return ScreenTypeLayoutBuilder(
-                  mobile: (context) => _buildButtonsColumn(context, futureStatus, theme),
-                  tablet: (context) => _buildButtonsColumn(context, futureStatus, theme),
-                  desktop: (context) => _buildButtonsRow(context, futureStatus, theme),
+                  mobile: (_) => _buildButtonsColumn(context, futureStatus, theme),
+                  tablet: (_) => _buildButtonsColumn(context, futureStatus, theme),
+                  desktop: (_) => _buildButtonsRow(context, futureStatus, theme),
                 );
               },
             ),
