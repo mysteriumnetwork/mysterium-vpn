@@ -171,6 +171,64 @@ void main() {
     });
   });
 
+  group('Prompt Tracking', () {
+    test('isPromptShown returns false for none type', () {
+      expect(store.isPromptShown(UserPromptType.none), isFalse);
+    });
+
+    test('isPromptShown returns false for unshown marketing consent', () {
+      store.marketingConsentPromptShown = false;
+      expect(store.isPromptShown(UserPromptType.marketingConsent), isFalse);
+    });
+
+    test('isPromptShown returns true for shown marketing consent', () {
+      store.marketingConsentPromptShown = true;
+      expect(store.isPromptShown(UserPromptType.marketingConsent), isTrue);
+    });
+
+    test('isPromptShown returns false for unshown push notifications', () {
+      store.pushNotificationsPromptShown = false;
+      expect(store.isPromptShown(UserPromptType.pushNotifications), isFalse);
+    });
+
+    test('isPromptShown returns true for shown push notifications', () {
+      store.pushNotificationsPromptShown = true;
+      expect(store.isPromptShown(UserPromptType.pushNotifications), isTrue);
+    });
+
+    test('markPromptAsShown marks marketing consent as shown', () {
+      store
+        ..marketingConsentPromptShown = false
+        ..markPromptAsShown(UserPromptType.marketingConsent);
+      expect(store.marketingConsentPromptShown, isTrue);
+    });
+
+    test('markPromptAsShown marks push notifications as shown', () {
+      store
+        ..pushNotificationsPromptShown = false
+        ..markPromptAsShown(UserPromptType.pushNotifications);
+      expect(store.pushNotificationsPromptShown, isTrue);
+    });
+
+    test('markPromptAsShown does nothing for none type', () {
+      store
+        ..marketingConsentPromptShown = false
+        ..pushNotificationsPromptShown = false
+        ..markPromptAsShown(UserPromptType.none);
+      expect(store.marketingConsentPromptShown, isFalse);
+      expect(store.pushNotificationsPromptShown, isFalse);
+    });
+
+    test('marked prompts prevent re-showing', () async {
+      store
+        ..getMarketingConsentFuture = ObservableFuture.value(false)
+        ..marketingConsentPromptShown = true;
+
+      // Even though conditions are met for showing, it should not show again
+      expect(store.isPromptShown(UserPromptType.marketingConsent), isTrue);
+    });
+  });
+
   group('Marketing Consent', () {
     test('shouldShowMarketingConsent returns false if consent is true', () async {
       store.getMarketingConsentFuture = ObservableFuture.value(true);
