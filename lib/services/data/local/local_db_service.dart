@@ -278,6 +278,12 @@ class LocalDBService {
     await _saveUserData(userData);
   }
 
+  Future<void> resetPushNotificationsPromptLastShownAt() async {
+    final userData = await _loadUserData();
+    userData.pushNotificationsPromptLastShownAt = null;
+    await _saveUserData(userData);
+  }
+
   Future<int> getAppOpenCount() async {
     final userData = await _loadUserData();
     return userData.appOpenCount;
@@ -286,6 +292,12 @@ class LocalDBService {
   Future<void> incrementAppOpenCount() async {
     final userData = await _loadUserData();
     userData.appOpenCount = userData.appOpenCount + 1;
+    await _saveUserData(userData);
+  }
+
+  Future<void> resetAppOpenCount() async {
+    final userData = await _loadUserData();
+    userData.appOpenCount = 0;
     await _saveUserData(userData);
   }
 }

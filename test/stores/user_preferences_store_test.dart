@@ -425,8 +425,9 @@ void main() {
     });
 
     test('evaluatePromptToShow shows marketing on non-mobile', () async {
-      store.testIsMobile = false;
-      store.getMarketingConsentFuture = ObservableFuture.value(false);
+      store
+        ..testIsMobile = false
+        ..getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
       when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
       when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
@@ -466,8 +467,9 @@ void main() {
 
   group('Integration - One Popup Per App Open', () {
     test('closing marketing consent does not trigger push notifications in same session', () async {
-      store.nextPromptToShow = UserPromptType.marketingConsent;
-      store.getMarketingConsentFuture = ObservableFuture.value(false);
+      store
+        ..nextPromptToShow = UserPromptType.marketingConsent
+        ..getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
 
       when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});

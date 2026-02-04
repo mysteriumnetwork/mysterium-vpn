@@ -19,6 +19,7 @@ import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/views/settings/network_statistics.dart';
 
 class QAToolbox extends HookConsumerWidget {
@@ -96,6 +97,20 @@ class QAToolbox extends HookConsumerWidget {
           onPressed: () async {
             await recentLocationsStore.clear();
             showSnackbar('Recent locations reset successfully');
+          },
+        ),
+        _QAActionButton(
+          label: 'Reset PN Cooldown',
+          onPressed: () async {
+            await LocalDBService.instance.resetPushNotificationsPromptLastShownAt();
+            showSnackbar('Push notifications prompt cooldown reset successfully');
+          },
+        ),
+        _QAActionButton(
+          label: 'Reset App open count',
+          onPressed: () async {
+            await LocalDBService.instance.resetAppOpenCount();
+            showSnackbar('App open count reset successfully');
           },
         ),
       ],
