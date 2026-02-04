@@ -27,18 +27,14 @@ class _DialogContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userPreferencesStore = ref.watch(userPreferencesStorePOD);
-    final theme = Theme.of(context);
     return ModalScaffold(
       showGradient: false,
       showCloseButton: false,
       autoApplyPadding: false,
       body: Padding(
-        padding: ModalPadding.insets(
-          context,
-          add: EdgeInsets.symmetric(
-            vertical: theme.spacing.xl,
-            horizontal: theme.spacing.md,
-          ),
+        padding: const EdgeInsets.symmetric(
+          vertical: 40,
+          horizontal: 40,
         ),
         child: Column(
           children: [

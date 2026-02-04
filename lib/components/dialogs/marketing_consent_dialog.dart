@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
+import 'package:mysterium_vpn/common/layout_builders/screen_type_builder.dart';
 import 'package:mysterium_vpn/common/utils/design_system_theme.dart';
 import 'package:mysterium_vpn/common/utils/keys.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
@@ -37,12 +38,9 @@ class _DialogContent extends ConsumerWidget {
       showGradient: false,
       showCloseButton: false,
       body: Padding(
-        padding: ModalPadding.insets(
-          context,
-          add: EdgeInsets.symmetric(
-            vertical: theme.spacing.xl,
-            horizontal: theme.spacing.md,
-          ),
+        padding: const EdgeInsets.symmetric(
+          vertical: 40,
+          horizontal: 40,
         ),
         child: Column(
           key: Keys.marketingConsentDialog,
@@ -74,35 +72,10 @@ class _DialogContent extends ConsumerWidget {
                 if (futureStatus == FutureStatus.pending) {
                   return const LoadingIndicator();
                 }
-                return Column(
-                  children: [
-                    ButtonPrimary(
-                      key: Keys.marketingConsentAcceptButton,
-                      onPressed: () => _updateMarketingConsent(context, consent: true),
-                      child: Text(
-                        LocaleKeys.signMeUpBtn.tr(),
-                      ),
-                    ).width(double.infinity),
-                    ButtonSecondary(
-                      key: Keys.marketingConsentDeclineButton,
-                      onPressed: () => _updateMarketingConsent(context, consent: false),
-                      child: Text(
-                        LocaleKeys.noThanksBtn.tr(),
-                      ),
-                    ).padding(top: 16).width(double.infinity),
-                    if (futureStatus == FutureStatus.rejected)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16),
-                        child: Text(
-                          LocaleKeys.somethingWentWrong.tr(),
-                          style: TextStyle(
-                            color: theme.palette.textErrorPrimary,
-                            fontSize: 14,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                  ],
+                return ScreenTypeLayoutBuilder(
+                  mobile: (context) => _buildButtonsColumn(context, futureStatus, theme),
+                  tablet: (context) => _buildButtonsColumn(context, futureStatus, theme),
+                  desktop: (context) => _buildButtonsRow(context, futureStatus, theme),
                 );
               },
             ),
@@ -112,6 +85,75 @@ class _DialogContent extends ConsumerWidget {
     );
   }
 }
+
+Widget _buildButtonsColumn(BuildContext context, FutureStatus futureStatus, ThemeData theme) =>
+    Column(
+      children: [
+        ButtonPrimary(
+          key: Keys.marketingConsentAcceptButton,
+          onPressed: () => _updateMarketingConsent(context, consent: true),
+          child: Text(
+            LocaleKeys.signMeUpBtn.tr(),
+          ),
+        ).width(double.infinity),
+        ButtonSecondary(
+          key: Keys.marketingConsentDeclineButton,
+          onPressed: () => _updateMarketingConsent(context, consent: false),
+          child: Text(
+            LocaleKeys.noThanksBtn.tr(),
+          ),
+        ).padding(top: 16).width(double.infinity),
+        if (futureStatus == FutureStatus.rejected)
+          Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: Text(
+              LocaleKeys.somethingWentWrong.tr(),
+              style: TextStyle(
+                color: theme.palette.textErrorPrimary,
+                fontSize: 14,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+      ],
+    );
+
+Widget _buildButtonsRow(BuildContext context, FutureStatus futureStatus, ThemeData theme) => Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ButtonSecondary(
+              key: Keys.marketingConsentDeclineButton,
+              onPressed: () => _updateMarketingConsent(context, consent: false),
+              child: Text(
+                LocaleKeys.noThanksBtn.tr(),
+              ),
+            ),
+            SizedBox(width: theme.spacing.md),
+            ButtonPrimary(
+              key: Keys.marketingConsentAcceptButton,
+              onPressed: () => _updateMarketingConsent(context, consent: true),
+              child: Text(
+                LocaleKeys.signMeUpBtn.tr(),
+              ),
+            ),
+          ],
+        ),
+        if (futureStatus == FutureStatus.rejected)
+          Padding(
+            padding: EdgeInsets.only(top: theme.spacing.md),
+            child: Text(
+              LocaleKeys.somethingWentWrong.tr(),
+              style: TextStyle(
+                color: theme.palette.textErrorPrimary,
+                fontSize: 14,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+      ],
+    );
 
 Future<void> _updateMarketingConsent(
   BuildContext context, {
