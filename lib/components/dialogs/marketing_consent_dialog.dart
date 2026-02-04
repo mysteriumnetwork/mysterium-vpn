@@ -65,10 +65,7 @@ class _DialogContent extends ConsumerWidget {
                 fontWeight: FontWeight.w400,
               ),
               textAlign: TextAlign.center,
-            ).padding(
-              bottom: 40,
-              top: 16,
-            ),
+            ).padding(bottom: 24, top: 12),
             const Spacer(),
             Observer(
               builder: (context) {
@@ -84,14 +81,14 @@ class _DialogContent extends ConsumerWidget {
                       child: Text(
                         LocaleKeys.signMeUpBtn.tr(),
                       ),
-                    ),
+                    ).width(double.infinity),
                     ButtonSecondary(
                       key: Keys.marketingConsentDeclineButton,
                       onPressed: () => _updateMarketingConsent(context, consent: false),
                       child: Text(
                         LocaleKeys.noThanksBtn.tr(),
                       ),
-                    ).padding(top: 12),
+                    ).padding(top: 16).width(double.infinity),
                     if (futureStatus == FutureStatus.rejected)
                       Padding(
                         padding: const EdgeInsets.only(top: 16),
