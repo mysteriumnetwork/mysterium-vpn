@@ -57,6 +57,7 @@ class _DialogContent extends ConsumerWidget {
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
               ),
+              textAlign: TextAlign.center,
             ),
             Text(
               LocaleKeys.marketingConsentPopupDesc.tr(),
