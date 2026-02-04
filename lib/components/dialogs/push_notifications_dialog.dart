@@ -32,9 +32,12 @@ class _DialogContent extends ConsumerWidget {
       showCloseButton: false,
       autoApplyPadding: false,
       body: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 40,
-          horizontal: 40,
+        padding: ModalPadding.insets(
+          context,
+          add: const EdgeInsets.symmetric(
+            vertical: 40,
+            horizontal: 40,
+          ),
         ),
         child: Column(
           children: [

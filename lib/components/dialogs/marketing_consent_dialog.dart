@@ -38,9 +38,12 @@ class _DialogContent extends ConsumerWidget {
       showGradient: false,
       showCloseButton: false,
       body: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 40,
-          horizontal: 40,
+        padding: ModalPadding.insets(
+          context,
+          add: const EdgeInsets.symmetric(
+            vertical: 40,
+            horizontal: 40,
+          ),
         ),
         child: Column(
           key: Keys.marketingConsentDialog,
