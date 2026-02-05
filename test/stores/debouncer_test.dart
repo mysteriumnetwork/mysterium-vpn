@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mysterium_vpn/common/utils/debouncer.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 
 void main() {
   group('Debouncer', () {
