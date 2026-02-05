@@ -1,11 +1,11 @@
 /// Compares semantic versions (e.g., "2.3.10" vs "2.3.8").
-/// Returns: positive if version1 > version2, negative if version1 < version2, 0 if equal.
+/// Returns: positive if versionA > versionB, negative if versionA < versionB, 0 if equal.
 int compareSemanticVersions({
-  required String currentAppVersion,
-  required String otherVersion,
+  required String versionA,
+  required String versionB,
 }) {
-  final v1Parts = currentAppVersion.split('.');
-  final v2Parts = otherVersion.split('.');
+  final v1Parts = versionA.split('.');
+  final v2Parts = versionB.split('.');
 
   for (var i = 0; i < (v1Parts.length > v2Parts.length ? v1Parts.length : v2Parts.length); i++) {
     final v1 =
@@ -30,7 +30,7 @@ bool isCurrentVersionBehind({
   required String comparisonVersion,
 }) =>
     compareSemanticVersions(
-      currentAppVersion: currentAppVersion,
-      otherVersion: comparisonVersion,
+      versionA: currentAppVersion,
+      versionB: comparisonVersion,
     ) <
     0;
