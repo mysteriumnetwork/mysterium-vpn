@@ -39,7 +39,9 @@ class MyApp extends HookConsumerWidget {
     ref.read(smartRefreshStorePOD);
 
     const appName = Env.appName;
-    ref.watch(realIPInfoStorePOD);
+    ref
+      ..watch(realIPInfoStorePOD)
+      ..watch(pushNotificationsStorePOD);
 
     useEffect(
       () {

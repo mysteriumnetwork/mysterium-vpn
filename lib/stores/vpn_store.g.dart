@@ -227,6 +227,22 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_isDeviceLimitErrorShownAtom =
+      Atom(name: '_VpnStore._isDeviceLimitErrorShown', context: context);
+
+  @override
+  bool get _isDeviceLimitErrorShown {
+    _$_isDeviceLimitErrorShownAtom.reportRead();
+    return super._isDeviceLimitErrorShown;
+  }
+
+  @override
+  set _isDeviceLimitErrorShown(bool value) {
+    _$_isDeviceLimitErrorShownAtom.reportWrite(value, super._isDeviceLimitErrorShown, () {
+      super._isDeviceLimitErrorShown = value;
+    });
+  }
+
   late final _$_initAsyncAction = AsyncAction('_VpnStore._init', context: context);
 
   @override
@@ -350,6 +366,19 @@ mixin _$VpnStore on _VpnStore, Store {
       required String? feedback}) {
     return _$submitRateConnectionAsyncAction
         .run(() => super.submitRateConnection(mode: mode, reasons: reasons, feedback: feedback));
+  }
+
+  late final _$_VpnStoreActionController = ActionController(name: '_VpnStore', context: context);
+
+  @override
+  void markDeviceLimitErrorAsShown() {
+    final _$actionInfo =
+        _$_VpnStoreActionController.startAction(name: '_VpnStore.markDeviceLimitErrorAsShown');
+    try {
+      return super.markDeviceLimitErrorAsShown();
+    } finally {
+      _$_VpnStoreActionController.endAction(_$actionInfo);
+    }
   }
 
   @override

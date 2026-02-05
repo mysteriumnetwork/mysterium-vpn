@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/pages/subscription_plans_modal_page.dart';
+import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 extension NavigationExtensions on BeamerDelegate {
   /// Navigates based on the given [url], handling internal routes and external links.
@@ -17,11 +19,24 @@ extension NavigationExtensions on BeamerDelegate {
   ///
   /// If [url] cannot be parsed as a [Uri], or if `canLaunchUrl` returns `false`,
   /// the method returns without performing any navigation.
-  Future<void> navigateToUrl(String url, BuildContext context) async {
-    if (url == '/subscribe') {
-      showSubscriptionPlansModalPage(context);
+  Future<void> navigateToUrl({
+    required String url,
+    required bool isAuthenticated,
+    required BuildContext context,
+  }) async {
+    final authenticatedRoutes = {
+      '/subscribe': () => showSubscriptionPlansModalPage(context),
+      '/subscription-upgrade': () => showSubscriptionUpgradeModalPage(context),
+    };
+
+    if (authenticatedRoutes.containsKey(url)) {
+      if (!isAuthenticated) {
+        return;
+      }
+      authenticatedRoutes[url]!.call();
       return;
     }
+
     final route = Routes.values.firstWhereOrNull((it) => it.name == url || it.path == url);
     if (route != null) {
       beamToNamed(route.path);
@@ -31,6 +46,17 @@ extension NavigationExtensions on BeamerDelegate {
     final uri = Uri.tryParse(url);
 
     if (uri == null) {
+      return;
+    }
+
+    // Only open if it's a valid HTTP(S) URL
+    if (uri.scheme != 'http' && uri.scheme != 'https') {
+      return;
+    }
+
+    // Check if the URL can actually be launched before opening
+    final canLaunch = await canLaunchUrl(uri);
+    if (!canLaunch) {
       return;
     }
 

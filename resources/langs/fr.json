@@ -292,13 +292,8 @@
   "purchasePromoSubtitle": "Offre de Noël",
   "purchasePromoTermsAndConditions": "Termes et conditions",
   "purchasePromoTitle": "{}% DÉSACTIVÉ",
-  "pushNotificationsConsentPopupDesc": "Nous n'enverrons que des notifications importantes que nous pensons que vous voudrez connaître.",
-  "pushNotificationsConsentPopupTitle": "Pouvons-nous vous notifier ?",
   "pushNotificationsPermissionPoint1": "• État de la connexion VPN",
   "pushNotificationsPermissionPoint2": "• Alertes d'activité de compte et de service",
-  "pushNotificationsSetting": "Sécurité",
-  "pushNotificationsSettingDesc": "État du VPN et mises à jour de l'activité du compte",
-  "pushNotificationsTitle": "Notifications Push",
   "questions": "Des questions?",
   "rateConnection": "Comment est votre connexion ?",
   "rateConnectionDislike": "Désolé de l'entendre ! Quel était le problème ?",
@@ -477,5 +472,12 @@
   "plan_yearly_pro": "Pro annuel",
   "subscriptionUpgrade": "Mise à niveau",
   "plan_2_years_basic": "Formation de base de 2 ans",
-  "plan_2_years_pro": "Pro 2 ans"
+  "plan_2_years_pro": "Pro 2 ans",
+  "notNowBtn": "Pas maintenant",
+  "pushNotificationsConsentPopupTitle": "Restez informé grâce aux notifications push",
+  "pushNotificationsConsentPopupDesc": "Soyez informé des nouvelles fonctionnalités, des conseils utiles et des offres exclusives – des mises à jour toujours pertinentes.",
+  "notificationsSettingTitle": "Notifications",
+  "pushNotificationsSetting": "Notifications push",
+  "pushNotificationsSettingDesc": "Mises à jour produits, conseils et offres spéciales",
+  "openSystemSettingsBtn": "Ouvrir les paramètres système"
 }

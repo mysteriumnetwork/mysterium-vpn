@@ -70,10 +70,15 @@ ThemeData themeData(Palette palette) => ThemeData(
         ),
         thumbIcon: WidgetStateProperty.resolveWith(
           (states) => states.contains(WidgetState.disabled)
-              ? const Icon(
-                  Icons.remove,
-                  color: Palette.lightBlue,
-                )
+              ? states.contains(WidgetState.selected)
+                  ? const Icon(
+                      Icons.check,
+                      color: Palette.purple,
+                    )
+                  : const Icon(
+                      Icons.close,
+                      color: Palette.lightBlue,
+                    )
               : states.contains(WidgetState.selected)
                   ? const Icon(Icons.check, color: Palette.purple)
                   : const Icon(Icons.close, color: Palette.lightBlue),

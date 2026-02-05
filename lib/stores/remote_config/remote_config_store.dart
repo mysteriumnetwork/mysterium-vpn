@@ -54,6 +54,7 @@ enum _FeatureToggleKey {
   upgradeSubscriptionPage,
   manageSubscriptionPage,
   promotionalBannerContent,
+  pushNotifPermissionPromptCooldown,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -516,6 +517,19 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       logger.handle(e, stack);
     }
     return null;
+  }
+
+  @computed
+
+  /// Cooldown period (in hours) for prompting the user for push notification permission
+  int get pushNotifPermissionPromptCooldown {
+    if (config.containsKey(_FeatureToggleKey.pushNotifPermissionPromptCooldown.name)) {
+      final raw = config[_FeatureToggleKey.pushNotifPermissionPromptCooldown.name];
+      if (raw is int) {
+        return raw;
+      }
+    }
+    return 24;
   }
 
   Map<String, String> get asUserProperties =>

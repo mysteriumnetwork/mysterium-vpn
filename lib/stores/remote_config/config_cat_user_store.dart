@@ -3,10 +3,10 @@ import 'dart:io';
 
 import 'package:configcat_client/configcat_client.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/disposeable.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/config_cat_user_custom.dart';
-import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
@@ -89,7 +89,7 @@ abstract class _ConfigCatUserStore with Store, Disposeable {
   @computed
   String? get user => _future.value?.stringify();
 
-  Future<_UserData> _fetchUserData() async {
+  Future<UserData> _fetchUserData() async {
     try {
       final user = await _authSessionStore.userFuture;
       return user.toUserData();
@@ -100,7 +100,7 @@ abstract class _ConfigCatUserStore with Store, Disposeable {
     return null.toUserData();
   }
 
-  Future<_LocationData> _fetchLocationData() async {
+  Future<LocationData> _fetchLocationData() async {
     try {
       final info = await _ipInfoStore.infoFuture;
       return info.toLocationData();
@@ -110,7 +110,7 @@ abstract class _ConfigCatUserStore with Store, Disposeable {
     return null.toLocationData();
   }
 
-  Future<_SubscriptionData> _fetchSubscription() async {
+  Future<SubscriptionData> _fetchSubscription() async {
     try {
       final subscription = await _subscriptionStore.subscriptionFuture;
       return subscription.toSubscriptionData();
@@ -122,9 +122,9 @@ abstract class _ConfigCatUserStore with Store, Disposeable {
 
   Future<ConfigCatUser> _fetchUser() async {
     final [
-      userData as _UserData,
-      locationData as _LocationData,
-      subscriptionData as _SubscriptionData,
+      userData as UserData,
+      locationData as LocationData,
+      subscriptionData as SubscriptionData,
     ] = await Future.wait([
       _fetchUserData(),
       _fetchLocationData(),
@@ -200,49 +200,4 @@ extension ConfigCatUserExtensions on ConfigCatUser {
 
   String stringify() =>
       'ConfigCatUser(identifier: $identifier, email: $email, country: $country, custom: $custom)';
-}
-
-typedef _UserData = ({String id, String email});
-typedef _LocationData = ({String country, String city});
-typedef _SubscriptionData = ({
-  String gateway,
-  String plan,
-  String? expirationDate,
-  String? duration,
-  String? recurring
-});
-
-extension _AuthUserDataExtensions on AuthUser? {
-  ({String id, String email}) toUserData() => (
-        id: this?.userId ?? 'null',
-        email: this?.username ?? 'null',
-      );
-}
-
-extension _IPInfoExtensions on IPInfo? {
-  ({String country, String city}) toLocationData() => (
-        country: this?.country ?? 'null',
-        city: this?.city ?? 'null',
-      );
-}
-
-extension _SubscriptionExtensions on Subscription? {
-  ({String gateway, String plan, String? expirationDate, String? duration, String? recurring})
-      toSubscriptionData() {
-    final plan = this?.planId;
-    final gateway = this?.gatewayName;
-    final expirationDate = this?.activeUntil;
-    final duration = this?.durationInMonthsBasedOnPlanId;
-    final recurring = this?.recurring?.toString();
-    if (plan != null && gateway != null) {
-      return (
-        gateway: gateway,
-        plan: plan,
-        expirationDate: expirationDate?.toIso8601String(),
-        duration: duration,
-        recurring: recurring
-      );
-    }
-    return (gateway: 'null', plan: 'null', expirationDate: null, duration: null, recurring: null);
-  }
 }

@@ -133,7 +133,9 @@ enum AnalyticsEvent {
   changeProtocolTypeApproved,
   changeProtocolTypeDeclined,
   subscriptionVerificationRetryClick,
-  subscriptionVerificationRetryCancel;
+  subscriptionVerificationRetryCancel,
+  pushNotificationReceived,
+  pushNotificationClicked;
 
   String get formattedName => name.toSnakeCase;
 }

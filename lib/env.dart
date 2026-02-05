@@ -30,6 +30,7 @@ abstract class Env {
   static const bool isAutomated = bool.fromEnvironment('IS_AUTOMATED');
   static const String manageDevicesPage = String.fromEnvironment('MANAGE_DEVICES_PAGE');
   static const String appCustomSchemeUrl = String.fromEnvironment('APP_CUSTOM_SCHEME_URL');
+  static const String oneSignalAppId = String.fromEnvironment('ONE_SIGNAL_APP_ID');
 
   static final String bundleId = _getBundleId();
   static final Flavor flavor = Flavor.fromEnvironment();
@@ -110,7 +111,7 @@ abstract class Env {
   }
 
   static String stringify() =>
-      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, manageSubscriptionPage: $manageSubscriptionPage, upgradeSubscriptionPage: $upgradeSubscriptionPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret, isAutomated: $isAutomated, openVpnExtensionId: $openVpnExtensionId, openVpnExtensionName: $openVpnExtensionName, manageDevicesPage: $manageDevicesPage, flavor: ${flavor.name}';
+      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, manageSubscriptionPage: $manageSubscriptionPage, upgradeSubscriptionPage: $upgradeSubscriptionPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret, isAutomated: $isAutomated, openVpnExtensionId: $openVpnExtensionId, openVpnExtensionName: $openVpnExtensionName, manageDevicesPage: $manageDevicesPage, flavor: ${flavor.name}, oneSignalAppId: $oneSignalAppId';
 
   static String _getBundleId() {
     if (Platform.isIOS || Platform.isMacOS) {
@@ -144,6 +145,7 @@ abstract class Env {
         'OPENVPN_EXTENSION_NAME': openVpnExtensionName,
         'MANAGE_DEVICES_PAGE': manageDevicesPage,
         'APP_CUSTOM_SCHEME_URL': appCustomSchemeUrl,
+        'ONE_SIGNAL_APP_ID': oneSignalAppId,
       };
 }
 

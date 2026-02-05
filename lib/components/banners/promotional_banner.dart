@@ -18,15 +18,17 @@ class PromoBanner extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final promotionalContentStore = ref.watch(promotionalContentStorePOD);
+    final authSessionStore = ref.watch(authSessionStorePOD);
     return Observer(
       builder: (context) {
         final banner = promotionalContentStore.activeBanner;
+        final isAuthenticated = authSessionStore.isAuthenticated;
         if (banner == null) {
           return const SizedBox.shrink();
         }
         return Theme(
           data: Theme.of(context).designSystem,
-          child: _Banner(data: banner),
+          child: _Banner(data: banner, isAuthenticated: isAuthenticated),
         );
       },
     );
@@ -34,9 +36,10 @@ class PromoBanner extends HookConsumerWidget {
 }
 
 class _Banner extends HookWidget {
-  const _Banner({required this.data});
+  const _Banner({required this.data, required this.isAuthenticated});
 
   final PromotionalBanner data;
+  final bool isAuthenticated;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +49,11 @@ class _Banner extends HookWidget {
       icon: icon,
       text: data.getLocalizedTitle(context.locale.languageCode),
       onTap: data.redirectUrl != null
-          ? () => Beamer.of(context).navigateToUrl(data.redirectUrl!, context)
+          ? () => Beamer.of(context).navigateToUrl(
+                url: data.redirectUrl!,
+                context: context,
+                isAuthenticated: isAuthenticated,
+              )
           : null,
     );
   }

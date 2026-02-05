@@ -35,7 +35,6 @@ final authSessionStorePOD = Provider<AuthSessionStore>(
 
 final authStorePOD = Provider<AuthStore>((ref) {
   final authService = ref.watch(authServicePOD);
-  final userPreferencesStore = ref.watch(userPreferencesStorePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
   final appLinks = ref.watch(appLinksPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
@@ -45,7 +44,6 @@ final authStorePOD = Provider<AuthStore>((ref) {
 
   return AuthStore(
     authService: authService,
-    userPreferencesStore: userPreferencesStore,
     authSessionStore: authSessionStore,
     appLinks: appLinks,
     analyticsStore: analyticsStore,
@@ -236,13 +234,16 @@ final userPreferencesStorePOD = StateProvider<UserPreferencesStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final realIPInfoStore = ref.watch(realIPInfoStorePOD);
-  final wireguardService = ref.watch(wireguardServicePOD);
+  final pushNotificationsStore = ref.watch(pushNotificationsStorePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
+
   return UserPreferencesStore(
     apiService: apiService,
     analyticsStore: analyticsStore,
     realIPInfo: realIPInfoStore,
     localDBService: LocalDBService.instance,
-    wireguardService: wireguardService,
+    pushNotificationsStore: pushNotificationsStore,
+    authSessionStore: authSessionStore,
   );
 });
 
@@ -522,5 +523,33 @@ final promotionalContentStorePOD = Provider<PromotionalContentStore>(
   (ref) {
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     return PromotionalContentStore(remoteConfigStore);
+  },
+);
+
+final pushNotificationsStorePOD = Provider<PushNotificationsStore>(
+  (ref) {
+    final authSessionStore = ref.watch(authSessionStorePOD);
+    final ipInfoStore = ref.watch(realIPInfoStorePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final notificationsRepository = ref.watch(pushNotificationsRepositoryPOD);
+    final logger = ref.watch(loggerPOD);
+    final analyticsStore = ref.watch(analyticsStorePOD);
+    final localDb = LocalDBService.instance;
+    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+
+    final store = PushNotificationsStore(
+      authSessionStore,
+      ipInfoStore,
+      subscriptionStore,
+      logger,
+      notificationsRepository,
+      analyticsStore,
+      localDb,
+      remoteConfigStore,
+    );
+
+    ref.onDispose(store.dispose);
+
+    return store;
   },
 );

@@ -31,13 +31,15 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       recentLocationCodes: fields[2] == null ? const [] : (fields[2] as List).cast<String>(),
       marketingConsentShown: fields[13] == null ? false : fields[13] as bool,
       protocolType: fields[14] == null ? ProtocolType.wireguard : fields[14] as ProtocolType,
+      pushNotificationsPromptLastShownAt: fields[15] as DateTime?,
+      appOpenCount: fields[16] == null ? 0 : (fields[16] as num).toInt(),
     );
   }
 
   @override
   void write(BinaryWriter writer, UserData obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(16)
       ..writeByte(0)
       ..write(obj.userId)
       ..writeByte(1)
@@ -65,7 +67,11 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       ..writeByte(13)
       ..write(obj.marketingConsentShown)
       ..writeByte(14)
-      ..write(obj.protocolType);
+      ..write(obj.protocolType)
+      ..writeByte(15)
+      ..write(obj.pushNotificationsPromptLastShownAt)
+      ..writeByte(16)
+      ..write(obj.appOpenCount);
   }
 
   @override

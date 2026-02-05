@@ -33,10 +33,8 @@ abstract class _AuthStore with Store {
     required AnalyticsStore analyticsStore,
     required Talker logger,
     required ABTestingStore abTestingStore,
-    required UserPreferencesStore userPreferencesStore,
     required DeviceIDStore deviceIDStore,
   })  : _authService = authService,
-        _userPreferencesStore = userPreferencesStore,
         _authSessionStore = authSessionStore,
         _appLinks = appLinks,
         _analyticsStore = analyticsStore,
@@ -54,7 +52,6 @@ abstract class _AuthStore with Store {
   final AnalyticsStore _analyticsStore;
   final Talker _logger;
   final ABTestingStore _abTestingStore;
-  final UserPreferencesStore _userPreferencesStore;
   final DeviceIDStore _deviceIDStore;
 
   @readonly
@@ -191,7 +188,6 @@ abstract class _AuthStore with Store {
     // Set auth user
     await _localDb.setUser(user);
     final userSettings = await _localDb.getUserData();
-    _userPreferencesStore.initStore();
     _logger.info(userSettings.toString());
   }
 
