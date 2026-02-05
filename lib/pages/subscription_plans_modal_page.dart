@@ -8,8 +8,6 @@ import 'package:mysterium_vpn/common/extensions/scroll_controller_extensions.dar
 import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/plan_data_hook.dart';
-import 'package:mysterium_vpn/common/utils/comparator_utils.dart';
-import 'package:mysterium_vpn/common/utils/design_system_theme.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';

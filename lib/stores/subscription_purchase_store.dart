@@ -10,7 +10,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/analytics_event.dart';
 import 'package:mysterium_vpn/common/enums/subscription_status.dart';
 import 'package:mysterium_vpn/common/exceptions/subscription_required_exception.dart';
-import 'package:mysterium_vpn/common/utils/disposeable.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';

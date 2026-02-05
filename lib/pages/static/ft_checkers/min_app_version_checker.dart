@@ -36,7 +36,11 @@ class MinAppVersionChecker extends HookConsumerWidget {
           remoteConfigStore: remoteConfigStore,
           installerStore: Env.buildInfo.installerStore,
         );
-        if (currentBuildVersion.compareTo(minAppBuildNumber) >= 0 || canContinue.value) {
+        if (!isCurrentVersionBehind(
+              currentAppVersion: currentBuildVersion,
+              comparisonVersion: minAppBuildNumber,
+            ) ||
+            canContinue.value) {
           return child;
         } else {
           return Scaffold(
