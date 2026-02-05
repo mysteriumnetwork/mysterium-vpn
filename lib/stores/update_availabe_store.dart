@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:in_app_update/in_app_update.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -48,7 +49,11 @@ abstract class _UpdateAvailableStore with Store {
     final latestStableAppVersion = _remoteConfigStore.latestStableAppVersion;
     final currentBuildVersion = _buildInfo.buildVersion;
     final updateAvailable = updateAvailabilityFuture.value == UpdateAvailability.updateAvailable;
-    if (latestStableAppVersion.compareTo(currentBuildVersion) > 0 || updateAvailable) {
+    if (isCurrentVersionBehind(
+          currentAppVersion: currentBuildVersion,
+          comparisonVersion: latestStableAppVersion,
+        ) ||
+        updateAvailable) {
       return true;
     }
     return false;

@@ -5,7 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart';
 import 'package:mysterium_vpn/common/hooks/plan_data_hook.dart';
-import 'package:mysterium_vpn/common/utils/design_system_theme.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_plans_modal_page.dart';

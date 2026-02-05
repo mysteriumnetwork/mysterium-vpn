@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
-import 'package:mysterium_vpn/common/utils/disposeable.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart' hide UserData;
 import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
@@ -250,7 +249,11 @@ abstract class _PushNotificationsStore with Store, Disposeable {
     }
 
     try {
-      await _notificationsRepository.openAppNotificationsSettings();
+      if (await _notificationsRepository.canRequestPermission()) {
+        await _notificationsRepository.requestPermission();
+      } else {
+        await _notificationsRepository.openAppNotificationsSettings();
+      }
     } catch (e, stack) {
       _logger.handle(e, stack, 'Error opening app notification settings');
       rethrow;

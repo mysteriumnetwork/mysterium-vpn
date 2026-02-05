@@ -14,7 +14,7 @@ import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/interceptors/retry_request.dart';
 import 'package:mysterium_vpn/common/interceptors/test_flags_interceptor.dart';
 import 'package:mysterium_vpn/common/observers/crashlytics_talker_observer.dart';
-import 'package:mysterium_vpn/common/utils/translation_asset_loader.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
