@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:talker/talker.dart';
 
-late final Future<void> Function() refreshTokenCallback;
+Future<void> Function()? refreshTokenCallback;
 
 class RefreshTokenInterceptor extends Interceptor {
   RefreshTokenInterceptor({
@@ -28,7 +28,15 @@ class RefreshTokenInterceptor extends Interceptor {
     }
 
     try {
-      _refreshFuture ??= refreshTokenCallback();
+      if (_refreshFuture == null && refreshTokenCallback == null) {
+        logger.handle(
+          err,
+          err.stackTrace,
+          'Unable to refresh authorization: refreshTokenCallback is not set',
+        );
+        return handler.next(err);
+      }
+      _refreshFuture ??= refreshTokenCallback!.call();
       await _refreshFuture;
       _refreshFuture = null;
     } catch (e, stackTrace) {

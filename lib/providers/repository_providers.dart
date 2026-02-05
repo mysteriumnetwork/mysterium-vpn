@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
-import 'package:mysterium_vpn/repositories/vpn/openvpn_repository.dart';
-import 'package:mysterium_vpn/repositories/vpn/wireguard_repository.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 
 final wireguardRepositoryPOD = Provider<WireguardRepository>(
   (ref) => WireguardRepository(
@@ -18,4 +18,12 @@ final openVpnRepositoryPOD = Provider<OpenVpnRepository>(
     logger: ref.watch(loggerPOD),
     apiService: ref.watch(apiServicePOD),
   ),
+);
+
+final pushNotificationsRepositoryPOD = Provider<NotificationsRepository>(
+  (ref) => isDesktop()
+      ? DesktopNotificationsRepository()
+      : OnesignalNotificationsRepository(
+          logger: ref.watch(loggerPOD),
+        ),
 );

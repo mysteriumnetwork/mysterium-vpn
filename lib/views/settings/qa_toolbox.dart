@@ -19,6 +19,7 @@ import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/views/settings/network_statistics.dart';
 
 class QAToolbox extends HookConsumerWidget {
@@ -35,6 +36,7 @@ class QAToolbox extends HookConsumerWidget {
               children: [
                 _buildResetActions(context, ref),
                 _buildClearLocationsAction(context, ref),
+                _buildGetMarketingConsent(context, ref),
               ],
             ),
             _ExpandableSection(
@@ -97,6 +99,20 @@ class QAToolbox extends HookConsumerWidget {
             showSnackbar('Recent locations reset successfully');
           },
         ),
+        _QAActionButton(
+          label: 'Reset PN Cooldown',
+          onPressed: () async {
+            await LocalDBService.instance.resetPushNotificationsPromptLastShownAt();
+            showSnackbar('Push notifications prompt cooldown reset successfully');
+          },
+        ),
+        _QAActionButton(
+          label: 'Reset App open count',
+          onPressed: () async {
+            await LocalDBService.instance.resetAppOpenCount();
+            showSnackbar('App open count reset successfully');
+          },
+        ),
       ],
     );
   }
@@ -132,6 +148,29 @@ class QAToolbox extends HookConsumerWidget {
                 !connectionsLimitStore.connectionLimitReached;
             showSnackbar(
               'Connection limit: ${connectionsLimitStore.connectionLimitReached ? "reached" : "not reached"}',
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGetMarketingConsent(BuildContext context, WidgetRef ref) {
+    final userPreferencesStore = ref.read(userPreferencesStorePOD);
+
+    return _QAActionItem(
+      icon: Icons.swap_horiz,
+      title: 'Get marketing consent',
+      subtitle:
+          'Status: ${userPreferencesStore.marketingConsent ?? false ? "Consented" : "Not consented"}',
+      actions: [
+        _QAActionButton(
+          label: 'Toggle',
+          onPressed: () async {
+            final consent = await userPreferencesStore.getMarketingConsent();
+            final newConsent = userPreferencesStore.marketingConsent;
+            showSnackbar(
+              'Marketing consent fetched: $consent, current state: $newConsent',
             );
           },
         ),

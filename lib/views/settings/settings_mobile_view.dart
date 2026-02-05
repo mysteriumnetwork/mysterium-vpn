@@ -70,5 +70,5 @@ class _HeaderTitle extends StatelessWidget {
         title,
         fontSize: 16,
         fontWeight: FontWeight.w600,
-      ).padding(vertical: 16, horizontal: 40);
+      ).padding(vertical: 16, horizontal: 20);
 }

@@ -27,31 +27,30 @@ class _DialogContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userPreferencesStore = ref.watch(userPreferencesStorePOD);
-    final theme = Theme.of(context);
     return ModalScaffold(
-      onModalClose: () => _completePushNotificationsFlow(
-        context,
-        userPreferencesStore: userPreferencesStore,
-        userAllowed: false,
-      ),
+      showGradient: false,
+      showCloseButton: false,
+      autoApplyPadding: false,
       body: Padding(
         padding: ModalPadding.insets(
           context,
-          add: EdgeInsets.symmetric(
-            vertical: theme.spacing.xl,
-            horizontal: theme.spacing.md,
+          add: const EdgeInsets.symmetric(
+            vertical: 40,
+            horizontal: 40,
           ),
         ),
         child: Column(
           children: [
             const Spacer(),
             Asset.images.marketingConsent(context).image(width: 150, height: 150),
+            const SizedBox(height: 12),
             Text(
               LocaleKeys.pushNotificationsConsentPopupTitle.tr(),
               style: GoogleFonts.montserrat(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
               ),
+              textAlign: TextAlign.center,
             ),
             Text(
               LocaleKeys.pushNotificationsConsentPopupDesc.tr(),
@@ -61,9 +60,6 @@ class _DialogContent extends ConsumerWidget {
               ),
               textAlign: TextAlign.center,
             ).padding(bottom: 24, top: 12),
-            _PermissionPoint(text: LocaleKeys.pushNotificationsPermissionPoint1.tr()),
-            _PermissionPoint(text: LocaleKeys.pushNotificationsPermissionPoint2.tr())
-                .padding(bottom: 40),
             const Spacer(),
             ButtonPrimary(
               onPressed: () => _completePushNotificationsFlow(
@@ -74,27 +70,22 @@ class _DialogContent extends ConsumerWidget {
               child: Text(
                 LocaleKeys.allowPushNotificationsBtn.tr(),
               ),
-            ),
+            ).width(double.infinity),
+            ButtonSecondary(
+              onPressed: () => _completePushNotificationsFlow(
+                context,
+                userPreferencesStore: userPreferencesStore,
+                userAllowed: false,
+              ),
+              child: Text(
+                LocaleKeys.notNowBtn.tr(),
+              ),
+            ).padding(top: 16).width(double.infinity),
           ],
         ),
       ),
     );
   }
-}
-
-class _PermissionPoint extends StatelessWidget {
-  const _PermissionPoint({required this.text});
-  final String text;
-
-  @override
-  Widget build(BuildContext context) => Text(
-        text,
-        style: GoogleFonts.montserrat(
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-        ),
-        textAlign: TextAlign.left,
-      ).padding(bottom: 4);
 }
 
 Future<void> _completePushNotificationsFlow(

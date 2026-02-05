@@ -12,5 +12,9 @@
 	<array>
 		<string>packet-tunnel-provider</string>
 	</array>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.com.mysteriumvpn.onesignal</string>
+	</array>
 </dict>
 </plist>

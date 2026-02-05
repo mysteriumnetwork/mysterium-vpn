@@ -13,7 +13,6 @@ import 'package:mysterium_vpn/common/utils/replay_stream_controller.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:vpn_api/vpn_api.dart';
-import 'package:wireguard_dart/wireguard_dart.dart';
 
 mixin AnalyticsStore {
   final Debouncer _debouncer = Debouncer();
@@ -357,17 +356,17 @@ mixin AnalyticsStore {
     );
   }
 
-  Future<void> logPushNotificationsPermissionsChanged(NotificationPermission permission) async {
+  Future<void> logPushNotificationsPermissionsChanged({required bool permissionsGranted}) async {
     await logEvent(
-      permission == NotificationPermission.granted
+      permissionsGranted
           ? AnalyticsEvent.pushNotificationsPermissionsGranted
           : AnalyticsEvent.pushNotificationsPermissionsDenied,
-      parameters: {'permission': permission.name},
+      parameters: {'permission': permissionsGranted.toString()},
     );
     await setUserProperty(
       AnalyticsUserProperty.fromEnum(
         name: AnalyticsUserPropName.pnPermissionStatus,
-        value: permission.name,
+        value: permissionsGranted.toString(),
       ),
     );
   }

@@ -80,6 +80,7 @@ class LocalDBService {
       _userSetCompleter = Completer<AuthUser>();
       _userSetCompleter.complete(user);
     }
+    unawaited(incrementAppOpenCount());
   }
 
   void clearUser() {
@@ -263,6 +264,40 @@ class LocalDBService {
   Future<void> setProtocolType(ProtocolType protocolType) async {
     final userData = await _loadUserData();
     userData.protocolType = protocolType;
+    await _saveUserData(userData);
+  }
+
+  Future<DateTime?> getPushNotificationsPromptLastShownAt() async {
+    final userData = await _loadUserData();
+    return userData.pushNotificationsPromptLastShownAt;
+  }
+
+  Future<void> setPushNotificationsPromptLastShownAt(DateTime dateTime) async {
+    final userData = await _loadUserData();
+    userData.pushNotificationsPromptLastShownAt = dateTime;
+    await _saveUserData(userData);
+  }
+
+  Future<void> resetPushNotificationsPromptLastShownAt() async {
+    final userData = await _loadUserData();
+    userData.pushNotificationsPromptLastShownAt = null;
+    await _saveUserData(userData);
+  }
+
+  Future<int> getAppOpenCount() async {
+    final userData = await _loadUserData();
+    return userData.appOpenCount;
+  }
+
+  Future<void> incrementAppOpenCount() async {
+    final userData = await _loadUserData();
+    userData.appOpenCount = userData.appOpenCount + 1;
+    await _saveUserData(userData);
+  }
+
+  Future<void> resetAppOpenCount() async {
+    final userData = await _loadUserData();
+    userData.appOpenCount = 0;
     await _saveUserData(userData);
   }
 }

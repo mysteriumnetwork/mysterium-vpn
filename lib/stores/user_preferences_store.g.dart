@@ -65,25 +65,6 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
     });
   }
 
-  late final _$_pushNotificationsPermissionGrantedAtom =
-      Atom(name: '_UserPreferencesStore._pushNotificationsPermissionGranted', context: context);
-
-  bool? get pushNotificationsPermissionGranted {
-    _$_pushNotificationsPermissionGrantedAtom.reportRead();
-    return super._pushNotificationsPermissionGranted;
-  }
-
-  @override
-  bool? get _pushNotificationsPermissionGranted => pushNotificationsPermissionGranted;
-
-  @override
-  set _pushNotificationsPermissionGranted(bool? value) {
-    _$_pushNotificationsPermissionGrantedAtom
-        .reportWrite(value, super._pushNotificationsPermissionGranted, () {
-      super._pushNotificationsPermissionGranted = value;
-    });
-  }
-
   late final _$nextPromptToShowAtom =
       Atom(name: '_UserPreferencesStore.nextPromptToShow', context: context);
 
@@ -100,13 +81,21 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
     });
   }
 
-  late final _$evaluateNextPromptToShowAsyncAction =
-      AsyncAction('_UserPreferencesStore.evaluateNextPromptToShow', context: context);
+  late final _$initStoreAsyncAction =
+      AsyncAction('_UserPreferencesStore.initStore', context: context);
+
+  @override
+  Future<void> initStore() {
+    return _$initStoreAsyncAction.run(() => super.initStore());
+  }
+
+  late final _$evaluatePromptToShowAsyncAction =
+      AsyncAction('_UserPreferencesStore.evaluatePromptToShow', context: context);
 
   @override
   @visibleForTesting
-  Future<void> evaluateNextPromptToShow() {
-    return _$evaluateNextPromptToShowAsyncAction.run(() => super.evaluateNextPromptToShow());
+  Future<void> evaluatePromptToShow() {
+    return _$evaluatePromptToShowAsyncAction.run(() => super.evaluatePromptToShow());
   }
 
   late final _$shouldShowMarketingConsentAsyncAction =
@@ -116,17 +105,6 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
   @visibleForTesting
   Future<bool> shouldShowMarketingConsent() {
     return _$shouldShowMarketingConsentAsyncAction.run(() => super.shouldShowMarketingConsent());
-  }
-
-  late final _$shouldShowPushNotificationsPermissionPromptAsyncAction = AsyncAction(
-      '_UserPreferencesStore.shouldShowPushNotificationsPermissionPrompt',
-      context: context);
-
-  @override
-  @visibleForTesting
-  Future<bool> shouldShowPushNotificationsPermissionPrompt() {
-    return _$shouldShowPushNotificationsPermissionPromptAsyncAction
-        .run(() => super.shouldShowPushNotificationsPermissionPrompt());
   }
 
   late final _$setMarketingConsentShownAsyncAction =
@@ -172,24 +150,26 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
         .run(() => super.setPushNotificationsShown(userAllowed: userAllowed));
   }
 
-  late final _$updatePushNotificationsPermissionsAsyncAction =
-      AsyncAction('_UserPreferencesStore.updatePushNotificationsPermissions', context: context);
-
-  @override
-  Future<void> updatePushNotificationsPermissions() {
-    return _$updatePushNotificationsPermissionsAsyncAction
-        .run(() => super.updatePushNotificationsPermissions());
-  }
-
   late final _$_UserPreferencesStoreActionController =
       ActionController(name: '_UserPreferencesStore', context: context);
 
   @override
-  void initStore() {
+  bool isPromptShown(UserPromptType type) {
     final _$actionInfo = _$_UserPreferencesStoreActionController.startAction(
-        name: '_UserPreferencesStore.initStore');
+        name: '_UserPreferencesStore.isPromptShown');
     try {
-      return super.initStore();
+      return super.isPromptShown(type);
+    } finally {
+      _$_UserPreferencesStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void markPromptAsShown(UserPromptType type) {
+    final _$actionInfo = _$_UserPreferencesStoreActionController.startAction(
+        name: '_UserPreferencesStore.markPromptAsShown');
+    try {
+      return super.markPromptAsShown(type);
     } finally {
       _$_UserPreferencesStoreActionController.endAction(_$actionInfo);
     }

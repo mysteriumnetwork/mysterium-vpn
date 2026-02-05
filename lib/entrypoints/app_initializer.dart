@@ -5,6 +5,7 @@ import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart' hide runApp;
 import 'package:google_fonts/google_fonts.dart';
@@ -21,6 +22,7 @@ import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
@@ -68,6 +70,12 @@ class AppInitializer {
       if (actualSize != desiredSize) {
         await windowManager.setSize(desiredSize);
       }
+    }
+    if (isMobile()) {
+      if (kDebugMode) {
+        await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+      }
+      OneSignal.initialize(Env.oneSignalAppId);
     }
 
     if (Platform.isWindows) {

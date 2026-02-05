@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/utils/disposeable.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:wireguard_dart/wireguard_dart.dart';
 
 part 'user_preferences_store.g.dart';
 
@@ -19,31 +19,45 @@ enum UserPromptType {
 // ignore: library_private_types_in_public_api
 class UserPreferencesStore = _UserPreferencesStore with _$UserPreferencesStore;
 
-abstract class _UserPreferencesStore with Store {
+abstract class _UserPreferencesStore with Store, Disposeable {
   _UserPreferencesStore({
     required ApiService apiService,
     required AnalyticsStore analyticsStore,
     required RealIPInfoStore realIPInfo,
     required LocalDBService localDBService,
-    required WireguardDart wireguardService,
+    required PushNotificationsStore pushNotificationsStore,
+    required AuthSessionStore authSessionStore,
   })  : _apiService = apiService,
         _analyticsStore = analyticsStore,
         _realIPInfo = realIPInfo,
         localDb = localDBService,
-        _wireguardService = wireguardService;
+        _pushNotificationsStore = pushNotificationsStore,
+        _authSessionStore = authSessionStore {
+    _authReactionDisposer = reaction<bool>(
+      (_) => _authSessionStore.isAuthenticated,
+      (status) async {
+        if (status) {
+          await initStore();
+        }
+      },
+      fireImmediately: true,
+      equals: (a, b) => a == b,
+    );
+  }
 
   @action
-  void initStore() {
-    setMarketingConsentFuture = ObservableFuture(createMarketingContact());
+  Future<void> initStore() async {
     getMarketingConsentFuture = ObservableFuture(getMarketingConsent());
-    evaluateNextPromptToShow();
+    await evaluatePromptToShow();
   }
 
   final ApiService _apiService;
   final AnalyticsStore _analyticsStore;
   final RealIPInfoStore _realIPInfo;
   final LocalDBService localDb;
-  final WireguardDart _wireguardService;
+  final PushNotificationsStore _pushNotificationsStore;
+  final AuthSessionStore _authSessionStore;
+  ReactionDisposer? _authReactionDisposer;
 
   @observable
   ObservableFuture<void>? setMarketingConsentFuture;
@@ -57,9 +71,6 @@ abstract class _UserPreferencesStore with Store {
   @computed
   bool? get marketingConsent => getMarketingConsentFuture?.value;
 
-  @readonly
-  bool? _pushNotificationsPermissionGranted;
-
   @observable
   UserPromptType nextPromptToShow = UserPromptType.none;
 
@@ -67,15 +78,42 @@ abstract class _UserPreferencesStore with Store {
   bool pushNotificationsPromptShown = false;
 
   @visibleForTesting
-  bool testIsAndroid = false; // default false, will override in tests
+  bool marketingConsentPromptShown = false;
 
   @visibleForTesting
-  bool get isAndroid => testIsAndroid || Platform.isAndroid;
+  bool testIsMobile = false; // default false, will override in tests
+
+  bool get supportsPushNotifications => testIsMobile || isMobile();
+
+  @action
+  bool isPromptShown(UserPromptType type) {
+    switch (type) {
+      case UserPromptType.marketingConsent:
+        return marketingConsentPromptShown;
+      case UserPromptType.pushNotifications:
+        return pushNotificationsPromptShown;
+      case UserPromptType.none:
+        return false;
+    }
+  }
+
+  @action
+  void markPromptAsShown(UserPromptType type) {
+    switch (type) {
+      case UserPromptType.marketingConsent:
+        marketingConsentPromptShown = true;
+      case UserPromptType.pushNotifications:
+        pushNotificationsPromptShown = true;
+      case UserPromptType.none:
+        break;
+    }
+  }
 
   @visibleForTesting
   @action
-  Future<void> evaluateNextPromptToShow() async {
-    final pushPromptShown = await shouldShowPushNotificationsPermissionPrompt();
+  Future<void> evaluatePromptToShow() async {
+    final pushPromptShown =
+        await _pushNotificationsStore.shouldShowPushNotificationsPermissionPrompt();
     final marketingConsentShown = await shouldShowMarketingConsent();
 
     if (marketingConsentShown) {
@@ -92,38 +130,19 @@ abstract class _UserPreferencesStore with Store {
   Future<bool> shouldShowMarketingConsent() async {
     final consentValue = await getMarketingConsentFuture;
     final consentShown = await localDb.getMarketingConsentShown();
-    return consentValue == false && !consentShown;
-  }
+    final appOpenCount = await localDb.getAppOpenCount();
 
-  @visibleForTesting
-  @action
-  Future<bool> shouldShowPushNotificationsPermissionPrompt() async {
-    // Skip the push notifications prompt if the platform is not Android,
-    // or if the prompt has already been shown.
-    final shouldSkipPushNotificationsPrompt = !isAndroid || pushNotificationsPromptShown;
-    if (shouldSkipPushNotificationsPrompt) {
-      return false;
-    }
-    final status = await _wireguardService.checkNotificationPermission();
-    _pushNotificationsPermissionGranted = status == NotificationPermission.granted;
-    _analyticsStore.setUserProperty(
-      AnalyticsUserProperty.fromEnum(
-        name: AnalyticsUserPropName.pnPermissionStatus,
-        value: status.name,
-      ),
-    );
-    return !_pushNotificationsPermissionGranted!;
+    return consentValue == false && !consentShown && appOpenCount >= 3;
   }
 
   @visibleForTesting
   @action
   Future<void> setMarketingConsentShown() async {
     await localDb.setMarketingConsentShown();
-    await evaluateNextPromptToShow();
   }
 
   // Create a marketing contact in Omnisend
-  // Will be called after login/signup and API will decide if the user is already subscribed
+// Will be called after login/signup and API will decide if the user is already subscribed
   @action
   Future<void> createMarketingContact() async {
     try {
@@ -168,9 +187,12 @@ abstract class _UserPreferencesStore with Store {
   @action
   Future<bool> getMarketingConsent() async {
     try {
-      await setMarketingConsentFuture;
-      getMarketingConsentFuture = ObservableFuture(_apiService.getMarketingContactStatus());
-      final consent = await getMarketingConsentFuture!;
+      if (setMarketingConsentFuture == null ||
+          setMarketingConsentFuture?.status != FutureStatus.fulfilled) {
+        setMarketingConsentFuture = ObservableFuture(createMarketingContact());
+        await setMarketingConsentFuture;
+      }
+      final consent = await _apiService.getMarketingContactStatus();
       _analyticsStore
         ..setUserProperty(
           AnalyticsUserProperty.fromEnum(
@@ -193,24 +215,12 @@ abstract class _UserPreferencesStore with Store {
 
   @action
   Future<void> setPushNotificationsShown({required bool userAllowed}) async {
-    if (!isAndroid) {
-      return;
-    }
-    pushNotificationsPromptShown = true;
-    if (userAllowed) {
-      final result = await _wireguardService.requestNotificationPermission();
-      _analyticsStore.logPushNotificationsPermissionsChanged(result);
-      unawaited(evaluateNextPromptToShow());
-    }
+    await _pushNotificationsStore.setPushNotificationsShown(userAllowed: userAllowed);
+    await evaluatePromptToShow();
   }
 
-  @action
-  Future<void> updatePushNotificationsPermissions() async {
-    if (!isAndroid) {
-      return;
-    }
-    final result = await _wireguardService.openAppNotificationSettings();
-    _pushNotificationsPermissionGranted = result == NotificationPermission.granted;
-    _analyticsStore.logPushNotificationsPermissionsChanged(result);
+  @override
+  FutureOr<void> dispose() async {
+    _authReactionDisposer?.call();
   }
 }

@@ -299,6 +299,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$promotionalBannerComputed ??= Computed<PromotionalBanner?>(() => super.promotionalBanner,
               name: 'RemoteConfigStoreBase.promotionalBanner'))
           .value;
+  Computed<int>? _$pushNotifPermissionPromptCooldownComputed;
+
+  @override
+  int get pushNotifPermissionPromptCooldown => (_$pushNotifPermissionPromptCooldownComputed ??=
+          Computed<int>(() => super.pushNotifPermissionPromptCooldown,
+              name: 'RemoteConfigStoreBase.pushNotifPermissionPromptCooldown'))
+      .value;
 
   @override
   String toString() {
@@ -344,7 +351,8 @@ planFeatures: ${planFeatures},
 plansBestValue: ${plansBestValue},
 upgradeSubscriptionPage: ${upgradeSubscriptionPage},
 manageSubscriptionPage: ${manageSubscriptionPage},
-promotionalBanner: ${promotionalBanner}
+promotionalBanner: ${promotionalBanner},
+pushNotifPermissionPromptCooldown: ${pushNotifPermissionPromptCooldown}
     ''';
   }
 }
