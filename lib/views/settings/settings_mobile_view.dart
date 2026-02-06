@@ -52,7 +52,7 @@ class SettingsMobileView extends HookConsumerWidget {
           ),
         ),
       ),
-    ).backgroundColor(
+    ).padding(bottom: 30).backgroundColor(
       context.c.isDarkMode ? Palette.darkBlue : Palette.white,
     );
   }

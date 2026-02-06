@@ -6,8 +6,8 @@ import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart' hide runApp;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/app.dart';
@@ -84,7 +84,13 @@ class AppInitializer {
     }
 
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle.light.copyWith(statusBarIconBrightness: Brightness.light),
+      Platform.isAndroid
+          ? const SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent,
+              systemNavigationBarColor: Colors.transparent,
+              systemNavigationBarDividerColor: Colors.transparent,
+            )
+          : SystemUiOverlayStyle.light.copyWith(statusBarIconBrightness: Brightness.light),
     );
 
     SystemChrome.setPreferredOrientations(

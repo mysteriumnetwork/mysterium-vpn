@@ -1,8 +1,7 @@
-// Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/layout_builders/edge_to_edge_handler.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-// Project imports:
 
 class ColoredScaffold extends StatelessWidget {
   const ColoredScaffold({
@@ -31,15 +30,10 @@ class ColoredScaffold extends StatelessWidget {
           ? Palette.darkBlue
           : this.backgroundColor ?? Theme.of(context).primaryColor;
     }
-    return Scaffold(
-      extendBody: true,
+    return EdgeToEdgeScaffold(
       extendBodyBehindAppBar: extendBodyBehindAppBar,
       backgroundColor: backgroundColor,
-      body: SafeArea(
-        top: !extendBodyBehindAppBar,
-        bottom: false,
-        child: body,
-      ),
+      body: body,
     );
   }
 }
