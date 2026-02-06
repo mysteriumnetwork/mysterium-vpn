@@ -730,6 +730,14 @@ class $AssetsImagesGen {
   SvgGenImage get notifications =>
       const SvgGenImage('assets/images/notifications.svg', size: Size(150.0, 121.0));
 
+  /// File path: assets/images/pn_consent_dark.png
+  AssetGenImage get pnConsentDark =>
+      const AssetGenImage('assets/images/pn_consent_dark.png', size: const Size(168.0, 168.0));
+
+  /// File path: assets/images/pn_consent_light.png
+  AssetGenImage get pnConsentLight =>
+      const AssetGenImage('assets/images/pn_consent_light.png', size: const Size(168.0, 168.0));
+
   /// File path: assets/images/purchase_promo.png
   AssetGenImage get purchasePromo =>
       const AssetGenImage('assets/images/purchase_promo.png', size: const Size(1024.0, 1024.0));
@@ -758,6 +766,8 @@ class $AssetsImagesGen {
         marketingConsentDark,
         marketingConsentLight,
         notifications,
+        pnConsentDark,
+        pnConsentLight,
         purchasePromo,
         reportDark,
         reportLight,

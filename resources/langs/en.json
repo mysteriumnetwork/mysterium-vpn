@@ -111,7 +111,6 @@
   "emailIsNotValid": "Email address is not valid",
   "emailIsRequired": "Email address is required",
   "emaillCommunicationsApproval": "Yes, I'd like to receive marketing emails.",
-  "emailNotificationsSetting": "Offers & updates",
   "emailNotificationsSettingDesc": "Product updates, tips, and special offers",
   "emailNotificationsTitle": "Email Notifications",
   "emailSentTo": "We sent an email to {email}",
@@ -479,5 +478,6 @@
   "notificationsSettingTitle": "Notifications",
   "pushNotificationsSetting": "Push Notifications",
   "pushNotificationsSettingDesc": "Product updates, tips, and special offers",
-  "openSystemSettingsBtn": "Open system settings"
+  "openSystemSettingsBtn": "Open system settings",
+  "emailNotificationsSetting": "Email Notifications"
 }

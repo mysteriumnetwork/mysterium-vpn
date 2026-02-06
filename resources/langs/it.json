@@ -111,7 +111,6 @@
   "emailIsNotValid": "Indirizzo email non valido",
   "emailIsRequired": "L'indirizzo e-mail è obbligatorio",
   "emaillCommunicationsApproval": "Sì, desidero ricevere e-mail commerciali.",
-  "emailNotificationsSetting": "Offerte e aggiornamenti",
   "emailNotificationsSettingDesc": "Aggiornamenti sui prodotti, consigli e offerte speciali",
   "emailNotificationsTitle": "Notifiche email",
   "emailSentTo": "Abbiamo inviato un'email a {email}",
@@ -479,5 +478,6 @@
   "notificationsSettingTitle": "Notifiche",
   "pushNotificationsSetting": "Notifiche push",
   "pushNotificationsSettingDesc": "Aggiornamenti sui prodotti, suggerimenti e offerte speciali",
-  "openSystemSettingsBtn": "Apri le impostazioni di sistema"
+  "openSystemSettingsBtn": "Apri le impostazioni di sistema",
+  "emailNotificationsSetting": "Notifiche e-mail"
 }

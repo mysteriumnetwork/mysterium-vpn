@@ -111,7 +111,6 @@
   "emailIsNotValid": "alamat email tidak valid",
   "emailIsRequired": "Alamat email diperlukan",
   "emaillCommunicationsApproval": "Ya, saya ingin menerima email pemasaran.",
-  "emailNotificationsSetting": "Penawaran & pembaruan",
   "emailNotificationsSettingDesc": "Pembaruan produk, tips, dan penawaran khusus",
   "emailNotificationsTitle": "Notifikasi Email",
   "emailSentTo": "Kami mengirim email ke {email}",
@@ -479,5 +478,6 @@
   "notificationsSettingTitle": "Pemberitahuan",
   "pushNotificationsSetting": "Notifikasi Push",
   "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
-  "openSystemSettingsBtn": "Buka pengaturan sistem"
+  "openSystemSettingsBtn": "Buka pengaturan sistem",
+  "emailNotificationsSetting": "Notifikasi Email"
 }

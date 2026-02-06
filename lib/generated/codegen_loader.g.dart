@@ -127,7 +127,6 @@ class CodegenLoader extends AssetLoader {
     "emailIsNotValid": "电子邮件地址无效",
     "emailIsRequired": "电子邮件地址为必填项",
     "emaillCommunicationsApproval": "是的，我想接收营销电子邮件。",
-    "emailNotificationsSetting": "优惠和更新",
     "emailNotificationsSettingDesc": "产品更新、提示和特别优惠",
     "emailNotificationsTitle": "电子邮件通知",
     "emailSentTo": "我们向 {email} 发送了一封电子邮件",
@@ -435,7 +434,7 @@ class CodegenLoader extends AssetLoader {
     "zh": "中国人",
     "subscriptionUpgradeModalTitle": "升级到 {}",
     "subscriptionUpgradeModalDescription": "可访问 7500 多个住宅 IP 地址",
-    "subscriptionPlanBestValue": "最佳性价比",
+    "subscriptionPlanBestValue": "性价比最高",
     "subscriptionPlanPeriodMonth": "莫",
     "subscriptionPlanBillingInfo": "每期账单金额为{amount}",
     "subscriptionPlanSavePercent": "节省 {}％",
@@ -486,7 +485,8 @@ class CodegenLoader extends AssetLoader {
     "notificationsSettingTitle": "通知",
     "pushNotificationsSetting": "推送通知",
     "pushNotificationsSettingDesc": "产品更新、使用技巧和特惠活动",
-    "openSystemSettingsBtn": "打开系统设置"
+    "openSystemSettingsBtn": "打开系统设置",
+    "emailNotificationsSetting": "电子邮件通知"
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -614,7 +614,6 @@ class CodegenLoader extends AssetLoader {
     "emailIsNotValid": "E-posta adresi geçerli değil",
     "emailIsRequired": "E-posta adresi gerekli",
     "emaillCommunicationsApproval": "Evet, pazarlama e-postaları almak istiyorum.",
-    "emailNotificationsSetting": "Teklifler ve güncellemeler",
     "emailNotificationsSettingDesc": "Ürün güncellemeleri, ipuçları ve özel teklifler",
     "emailNotificationsTitle": "E-posta Bildirimleri",
     "emailSentTo": "{email} adresine bir e-posta gönderdik",
@@ -1004,7 +1003,8 @@ class CodegenLoader extends AssetLoader {
     "notificationsSettingTitle": "Bildirimler",
     "pushNotificationsSetting": "Anlık Bildirimler",
     "pushNotificationsSettingDesc": "Ürün güncellemeleri, ipuçları ve özel teklifler",
-    "openSystemSettingsBtn": "Sistem ayarlarını açın"
+    "openSystemSettingsBtn": "Sistem ayarlarını açın",
+    "emailNotificationsSetting": "E-posta Bildirimleri"
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1120,7 +1120,6 @@ class CodegenLoader extends AssetLoader {
     "emailIsNotValid": "メールアドレスが無効です",
     "emailIsRequired": "メールアドレスは必須です",
     "emaillCommunicationsApproval": "はい、マーケティングメールの受信を希望します。",
-    "emailNotificationsSetting": "オファー＆アップデート",
     "emailNotificationsSettingDesc": "製品のアップデート、ヒント、特別オファー",
     "emailNotificationsTitle": "メール通知",
     "emailSentTo": "{email} にメールを送信しました",
@@ -1483,7 +1482,8 @@ class CodegenLoader extends AssetLoader {
     "notificationsSettingTitle": "通知",
     "pushNotificationsSetting": "プッシュ通知",
     "pushNotificationsSettingDesc": "製品の更新情報、ヒント、特別オファー",
-    "openSystemSettingsBtn": "システム設定を開く"
+    "openSystemSettingsBtn": "システム設定を開く",
+    "emailNotificationsSetting": "メール通知"
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -1614,7 +1614,6 @@ class CodegenLoader extends AssetLoader {
     "emailIsNotValid": "E-Mail-Adresse ist nicht gültig",
     "emailIsRequired": "E-Mail-Adresse wird benötigt",
     "emaillCommunicationsApproval": "Ja, ich möchte Marketing-E-Mails erhalten.",
-    "emailNotificationsSetting": "Angebote & Updates",
     "emailNotificationsSettingDesc": "Produktupdates, Tipps und Sonderangebote",
     "emailNotificationsTitle": "E-Mail-Benachrichtigungen",
     "emailSentTo": "Wir haben eine E-Mail an {email} gesendet",
@@ -1993,7 +1992,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionAllPlansPurchase": "Kaufen",
     "subscriptionPlanNameBasic": "Basic",
     "subscriptionPlanNamePlus": "Plus",
-    "subscriptionPlanPF1Basic": "Sichern Sie bis zu 6 Geräte gleichzeitig",
+    "subscriptionPlanPF1Basic": "Sichern Sie 6 Geräte gleichzeitig",
     "subscriptionPlanPF2Basic": "57 unterstützte Länder",
     "subscriptionPlanPF3Basic": "10 Server",
     "subscriptionPlanPF4Basic": "WireGuard-Protokoll",
@@ -2030,7 +2029,8 @@ class CodegenLoader extends AssetLoader {
     "notificationsSettingTitle": "Benachrichtigungen",
     "pushNotificationsSetting": "Push-Benachrichtigungen",
     "pushNotificationsSettingDesc": "Produktneuheiten, Tipps und Sonderangebote",
-    "openSystemSettingsBtn": "Systemeinstellungen öffnen"
+    "openSystemSettingsBtn": "Systemeinstellungen öffnen",
+    "emailNotificationsSetting": "E-Mail-Benachrichtigungen"
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2162,7 +2162,6 @@ class CodegenLoader extends AssetLoader {
     "emailIsNotValid": "o endereço de email não é válido",
     "emailIsRequired": "É necessário um endereço de e-mail",
     "emaillCommunicationsApproval": "Sim, eu gostaria de receber e -mails de marketing.",
-    "emailNotificationsSetting": "Ofertas e atualizações",
     "emailNotificationsSettingDesc": "Atualizações de produtos, dicas e ofertas especiais",
     "emailNotificationsTitle": "Notificações por e-mail",
     "emailSentTo": "Enviamos um email para {email}",
@@ -2567,7 +2566,8 @@ class CodegenLoader extends AssetLoader {
     "notificationsSettingTitle": "Notificações",
     "pushNotificationsSetting": "Notificações Push",
     "pushNotificationsSettingDesc": "Atualizações de produtos, dicas e ofertas especiais",
-    "openSystemSettingsBtn": "Abra as configurações do sistema"
+    "openSystemSettingsBtn": "Abra as configurações do sistema",
+    "emailNotificationsSetting": "Notificações por e-mail"
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -2697,7 +2697,6 @@ class CodegenLoader extends AssetLoader {
     "emailIsNotValid": "Email address is not valid",
     "emailIsRequired": "Email address is required",
     "emaillCommunicationsApproval": "Yes, I'd like to receive marketing emails.",
-    "emailNotificationsSetting": "Offers & updates",
     "emailNotificationsSettingDesc": "Product updates, tips, and special offers",
     "emailNotificationsTitle": "Email Notifications",
     "emailSentTo": "We sent an email to {email}",
@@ -3092,7 +3091,8 @@ class CodegenLoader extends AssetLoader {
     "notificationsSettingTitle": "Notifications",
     "pushNotificationsSetting": "Push Notifications",
     "pushNotificationsSettingDesc": "Product updates, tips, and special offers",
-    "openSystemSettingsBtn": "Open system settings"
+    "openSystemSettingsBtn": "Open system settings",
+    "emailNotificationsSetting": "Email Notifications"
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3226,7 +3226,6 @@ class CodegenLoader extends AssetLoader {
     "emailIsNotValid": "Indirizzo email non valido",
     "emailIsRequired": "L'indirizzo e-mail è obbligatorio",
     "emaillCommunicationsApproval": "Sì, desidero ricevere e-mail commerciali.",
-    "emailNotificationsSetting": "Offerte e aggiornamenti",
     "emailNotificationsSettingDesc": "Aggiornamenti sui prodotti, consigli e offerte speciali",
     "emailNotificationsTitle": "Notifiche email",
     "emailSentTo": "Abbiamo inviato un'email a {email}",
@@ -3631,7 +3630,8 @@ class CodegenLoader extends AssetLoader {
     "notificationsSettingTitle": "Notifiche",
     "pushNotificationsSetting": "Notifiche push",
     "pushNotificationsSettingDesc": "Aggiornamenti sui prodotti, suggerimenti e offerte speciali",
-    "openSystemSettingsBtn": "Apri le impostazioni di sistema"
+    "openSystemSettingsBtn": "Apri le impostazioni di sistema",
+    "emailNotificationsSetting": "Notifiche e-mail"
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -3766,7 +3766,6 @@ class CodegenLoader extends AssetLoader {
     "emailIsNotValid": "l'adresse email n'est pas valide",
     "emailIsRequired": "Adresse e-mail est nécessaire",
     "emaillCommunicationsApproval": "Oui, j'aimerais recevoir des e-mails marketing.",
-    "emailNotificationsSetting": "Offres et mises à jour",
     "emailNotificationsSettingDesc": "Mises à jour de produits, conseils et offres spéciales",
     "emailNotificationsTitle": "Notifications par e-mail",
     "emailSentTo": "Nous avons envoyé un e-mail à {email}",
@@ -4178,7 +4177,8 @@ class CodegenLoader extends AssetLoader {
     "notificationsSettingTitle": "Notifications",
     "pushNotificationsSetting": "Notifications push",
     "pushNotificationsSettingDesc": "Mises à jour produits, conseils et offres spéciales",
-    "openSystemSettingsBtn": "Ouvrir les paramètres système"
+    "openSystemSettingsBtn": "Ouvrir les paramètres système",
+    "emailNotificationsSetting": "Notifications par e-mail"
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4309,7 +4309,6 @@ class CodegenLoader extends AssetLoader {
     "emailIsNotValid": "alamat email tidak valid",
     "emailIsRequired": "Alamat email diperlukan",
     "emaillCommunicationsApproval": "Ya, saya ingin menerima email pemasaran.",
-    "emailNotificationsSetting": "Penawaran & pembaruan",
     "emailNotificationsSettingDesc": "Pembaruan produk, tips, dan penawaran khusus",
     "emailNotificationsTitle": "Notifikasi Email",
     "emailSentTo": "Kami mengirim email ke {email}",
@@ -4705,7 +4704,8 @@ class CodegenLoader extends AssetLoader {
     "notificationsSettingTitle": "Pemberitahuan",
     "pushNotificationsSetting": "Notifikasi Push",
     "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
-    "openSystemSettingsBtn": "Buka pengaturan sistem"
+    "openSystemSettingsBtn": "Buka pengaturan sistem",
+    "emailNotificationsSetting": "Notifikasi Email"
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -4838,7 +4838,6 @@ class CodegenLoader extends AssetLoader {
     "emailIsNotValid": "La dirección de correo electrónico es inválida",
     "emailIsRequired": "Se requiere dirección de correo electrónico",
     "emaillCommunicationsApproval": "Sí, me gustaría recibir correos electrónicos de marketing.",
-    "emailNotificationsSetting": "Ofertas y actualizaciones",
     "emailNotificationsSettingDesc": "Actualizaciones de productos, consejos y ofertas especiales",
     "emailNotificationsTitle": "Notificaciones por correo electrónico",
     "emailSentTo": "Enviamos un correo electrónico a {email}",
@@ -5244,7 +5243,8 @@ class CodegenLoader extends AssetLoader {
     "notificationsSettingTitle": "Notificaciones",
     "pushNotificationsSetting": "Notificaciones push",
     "pushNotificationsSettingDesc": "Actualizaciones de productos, consejos y ofertas especiales",
-    "openSystemSettingsBtn": "Abra la configuración del sistema"
+    "openSystemSettingsBtn": "Abra la configuración del sistema",
+    "emailNotificationsSetting": "Notificaciones por correo electrónico"
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5370,7 +5370,6 @@ class CodegenLoader extends AssetLoader {
     "emailIsNotValid": "عنوان البريد الإلكتروني غير صالح",
     "emailIsRequired": "مطلوب عنوان البريد الإلكتروني",
     "emaillCommunicationsApproval": "نعم ، أرغب في تلقي رسائل بريد إلكتروني تسويقية.",
-    "emailNotificationsSetting": "العروض والتحديثات",
     "emailNotificationsSettingDesc": "تحديثات المنتج، نصائح، وعروض خاصة",
     "emailNotificationsTitle": "إشعارات البريد الإلكتروني",
     "emailSentTo": "لقد أرسلنا بريدًا إلكترونيًا إلى {email}",
@@ -5745,7 +5744,7 @@ class CodegenLoader extends AssetLoader {
     "plan_yearly_basic": "السنة السنوية الأساسية",
     "plan_monthly_basic": "اشتراك شهري أساسي",
     "plan_monthly_pro": "برو مونثلي",
-    "plan_yearly_pro": "برو سنوي",
+    "plan_yearly_pro": "برو أنوال",
     "subscriptionUpgrade": "يرقي",
     "plan_2_years_basic": "سنتان أساسيتان",
     "plan_2_years_pro": "محترف لمدة عامين",
@@ -5756,7 +5755,8 @@ class CodegenLoader extends AssetLoader {
     "notificationsSettingTitle": "إشعارات",
     "pushNotificationsSetting": "الإشعارات الفورية",
     "pushNotificationsSettingDesc": "تحديثات المنتجات، والنصائح، والعروض الخاصة",
-    "openSystemSettingsBtn": "افتح إعدادات النظام"
+    "openSystemSettingsBtn": "افتح إعدادات النظام",
+    "emailNotificationsSetting": "إشعارات البريد الإلكتروني"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,
