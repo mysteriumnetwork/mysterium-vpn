@@ -77,6 +77,8 @@ class EdgeToEdgeScaffold extends StatelessWidget {
         floatingActionButtonLocation: floatingActionButtonLocation,
         appBar: appBar != null ? _buildAppBar(context) : null,
         body: SafeAreaWrapper(
+          applyTop: !extendBodyBehindAppBar,
+          applyBottom: false,
           customPadding: customPadding,
           maintainBottomViewPadding: maintainBottomViewPadding,
           child: body,
