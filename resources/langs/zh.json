@@ -111,7 +111,6 @@
   "emailIsNotValid": "电子邮件地址无效",
   "emailIsRequired": "电子邮件地址为必填项",
   "emaillCommunicationsApproval": "是的，我想接收营销电子邮件。",
-  "emailNotificationsSetting": "优惠和更新",
   "emailNotificationsSettingDesc": "产品更新、提示和特别优惠",
   "emailNotificationsTitle": "电子邮件通知",
   "emailSentTo": "我们向 {email} 发送了一封电子邮件",
@@ -428,7 +427,7 @@
   "zh": "中国人",
   "subscriptionUpgradeModalTitle": "升级到 {}",
   "subscriptionUpgradeModalDescription": "可访问 7500 多个住宅 IP 地址",
-  "subscriptionPlanBestValue": "最佳性价比",
+  "subscriptionPlanBestValue": "性价比最高",
   "subscriptionPlanPeriodMonth": "莫",
   "subscriptionPlanBillingInfo": "每期账单金额为{amount}",
   "subscriptionPlanSavePercent": "节省 {}％",
@@ -479,5 +478,6 @@
   "notificationsSettingTitle": "通知",
   "pushNotificationsSetting": "推送通知",
   "pushNotificationsSettingDesc": "产品更新、使用技巧和特惠活动",
-  "openSystemSettingsBtn": "打开系统设置"
+  "openSystemSettingsBtn": "打开系统设置",
+  "emailNotificationsSetting": "电子邮件通知"
 }

@@ -111,7 +111,6 @@
   "emailIsNotValid": "La dirección de correo electrónico es inválida",
   "emailIsRequired": "Se requiere dirección de correo electrónico",
   "emaillCommunicationsApproval": "Sí, me gustaría recibir correos electrónicos de marketing.",
-  "emailNotificationsSetting": "Ofertas y actualizaciones",
   "emailNotificationsSettingDesc": "Actualizaciones de productos, consejos y ofertas especiales",
   "emailNotificationsTitle": "Notificaciones por correo electrónico",
   "emailSentTo": "Enviamos un correo electrónico a {email}",
@@ -479,5 +478,6 @@
   "notificationsSettingTitle": "Notificaciones",
   "pushNotificationsSetting": "Notificaciones push",
   "pushNotificationsSettingDesc": "Actualizaciones de productos, consejos y ofertas especiales",
-  "openSystemSettingsBtn": "Abra la configuración del sistema"
+  "openSystemSettingsBtn": "Abra la configuración del sistema",
+  "emailNotificationsSetting": "Notificaciones por correo electrónico"
 }

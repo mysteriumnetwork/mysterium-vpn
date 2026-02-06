@@ -111,7 +111,6 @@
   "emailIsNotValid": "E-Mail-Adresse ist nicht gültig",
   "emailIsRequired": "E-Mail-Adresse wird benötigt",
   "emaillCommunicationsApproval": "Ja, ich möchte Marketing-E-Mails erhalten.",
-  "emailNotificationsSetting": "Angebote & Updates",
   "emailNotificationsSettingDesc": "Produktupdates, Tipps und Sonderangebote",
   "emailNotificationsTitle": "E-Mail-Benachrichtigungen",
   "emailSentTo": "Wir haben eine E-Mail an {email} gesendet",
@@ -444,7 +443,7 @@
   "subscriptionAllPlansPurchase": "Kaufen",
   "subscriptionPlanNameBasic": "Basic",
   "subscriptionPlanNamePlus": "Plus",
-  "subscriptionPlanPF1Basic": "Sichern Sie bis zu 6 Geräte gleichzeitig",
+  "subscriptionPlanPF1Basic": "Sichern Sie 6 Geräte gleichzeitig",
   "subscriptionPlanPF2Basic": "57 unterstützte Länder",
   "subscriptionPlanPF3Basic": "10 Server",
   "subscriptionPlanPF4Basic": "WireGuard-Protokoll",
@@ -479,5 +478,6 @@
   "notificationsSettingTitle": "Benachrichtigungen",
   "pushNotificationsSetting": "Push-Benachrichtigungen",
   "pushNotificationsSettingDesc": "Produktneuheiten, Tipps und Sonderangebote",
-  "openSystemSettingsBtn": "Systemeinstellungen öffnen"
+  "openSystemSettingsBtn": "Systemeinstellungen öffnen",
+  "emailNotificationsSetting": "E-Mail-Benachrichtigungen"
 }
