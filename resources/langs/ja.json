@@ -111,7 +111,6 @@
   "emailIsNotValid": "メールアドレスが無効です",
   "emailIsRequired": "メールアドレスは必須です",
   "emaillCommunicationsApproval": "はい、マーケティングメールの受信を希望します。",
-  "emailNotificationsSetting": "オファー＆アップデート",
   "emailNotificationsSettingDesc": "製品のアップデート、ヒント、特別オファー",
   "emailNotificationsTitle": "メール通知",
   "emailSentTo": "{email} にメールを送信しました",
@@ -479,5 +478,6 @@
   "notificationsSettingTitle": "通知",
   "pushNotificationsSetting": "プッシュ通知",
   "pushNotificationsSettingDesc": "製品の更新情報、ヒント、特別オファー",
-  "openSystemSettingsBtn": "システム設定を開く"
+  "openSystemSettingsBtn": "システム設定を開く",
+  "emailNotificationsSetting": "メール通知"
 }

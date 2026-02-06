@@ -115,7 +115,6 @@ abstract class LocaleKeys {
   static const emailIsNotValid = 'emailIsNotValid';
   static const emailIsRequired = 'emailIsRequired';
   static const emaillCommunicationsApproval = 'emaillCommunicationsApproval';
-  static const emailNotificationsSetting = 'emailNotificationsSetting';
   static const emailNotificationsSettingDesc = 'emailNotificationsSettingDesc';
   static const emailNotificationsTitle = 'emailNotificationsTitle';
   static const emailSentTo = 'emailSentTo';
@@ -474,4 +473,5 @@ abstract class LocaleKeys {
   static const pushNotificationsSetting = 'pushNotificationsSetting';
   static const pushNotificationsSettingDesc = 'pushNotificationsSettingDesc';
   static const openSystemSettingsBtn = 'openSystemSettingsBtn';
+  static const emailNotificationsSetting = 'emailNotificationsSetting';
 }

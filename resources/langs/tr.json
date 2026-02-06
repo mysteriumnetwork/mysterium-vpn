@@ -111,7 +111,6 @@
   "emailIsNotValid": "E-posta adresi geçerli değil",
   "emailIsRequired": "E-posta adresi gerekli",
   "emaillCommunicationsApproval": "Evet, pazarlama e-postaları almak istiyorum.",
-  "emailNotificationsSetting": "Teklifler ve güncellemeler",
   "emailNotificationsSettingDesc": "Ürün güncellemeleri, ipuçları ve özel teklifler",
   "emailNotificationsTitle": "E-posta Bildirimleri",
   "emailSentTo": "{email} adresine bir e-posta gönderdik",
@@ -479,5 +478,6 @@
   "notificationsSettingTitle": "Bildirimler",
   "pushNotificationsSetting": "Anlık Bildirimler",
   "pushNotificationsSettingDesc": "Ürün güncellemeleri, ipuçları ve özel teklifler",
-  "openSystemSettingsBtn": "Sistem ayarlarını açın"
+  "openSystemSettingsBtn": "Sistem ayarlarını açın",
+  "emailNotificationsSetting": "E-posta Bildirimleri"
 }

@@ -195,6 +195,12 @@ extension $AssetsImagesGenExtensions on $AssetsImagesGen {
         light: marketingConsentLight,
         dark: marketingConsentDark,
       );
+
+  AssetGenImage pnConsent(BuildContext context) => _withBrightness(
+        context,
+        light: pnConsentLight,
+        dark: pnConsentDark,
+      );
 }
 
 extension $AssetsLogoGenExtensions on $AssetsLogoGen {

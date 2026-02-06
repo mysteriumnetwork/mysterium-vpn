@@ -28,26 +28,29 @@ class SettingsMobileView extends HookConsumerWidget {
     return SheetScaffold(
       headerTitle: LocaleKeys.settings.tr(),
       subheaderSliver: const SliverPinnedHeader(child: PromoBanner()),
-      sliver: SliverClip(
-        child: DecoratedSliver(
-          decoration: BoxDecoration(
-            color: context.c.isDarkMode ? Palette.darkBlue : Palette.white,
-          ),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                const AppVersionUpdateSetting(),
-                _HeaderTitle(title: LocaleKeys.connection.tr()),
-                const ConnectionSettings(),
-                _HeaderTitle(title: LocaleKeys.application.tr()),
-                const ApplicationSettings(),
-                _HeaderTitle(title: LocaleKeys.account.tr()),
-                const AccountSettings(),
-                if (enableQaHelpers) ...[
-                  const _HeaderTitle(title: 'QA Toolbox'),
-                  const QAToolbox(),
+      sliver: SliverPadding(
+        padding: const EdgeInsets.only(bottom: 30),
+        sliver: SliverClip(
+          child: DecoratedSliver(
+            decoration: BoxDecoration(
+              color: context.c.isDarkMode ? Palette.darkBlue : Palette.white,
+            ),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  const AppVersionUpdateSetting(),
+                  _HeaderTitle(title: LocaleKeys.connection.tr()),
+                  const ConnectionSettings(),
+                  _HeaderTitle(title: LocaleKeys.application.tr()),
+                  const ApplicationSettings(),
+                  _HeaderTitle(title: LocaleKeys.account.tr()),
+                  const AccountSettings(),
+                  if (enableQaHelpers) ...[
+                    const _HeaderTitle(title: 'QA Toolbox'),
+                    const QAToolbox(),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         ),
