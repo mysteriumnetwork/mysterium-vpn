@@ -70,8 +70,8 @@ class ApplicationSettings extends HookConsumerWidget {
             );
           },
         ),
-        const EmailMarketingSetting(),
         const PushNotificationsSetting(),
+        const EmailMarketingSetting(),
       ],
     );
   }
