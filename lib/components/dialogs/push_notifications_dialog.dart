@@ -42,7 +42,7 @@ class _DialogContent extends ConsumerWidget {
         child: Column(
           children: [
             const Spacer(),
-            Asset.images.marketingConsent(context).image(width: 150, height: 150),
+            Asset.images.pnConsent(context).image(width: 150, height: 150),
             const SizedBox(height: 12),
             Text(
               LocaleKeys.pushNotificationsConsentPopupTitle.tr(),
