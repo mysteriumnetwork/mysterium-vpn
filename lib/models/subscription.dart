@@ -28,10 +28,11 @@ abstract class Subscription with _$Subscription {
 
   String get gatewayName => switch (gateway?.toLowerCase()) {
         null => '',
-        'stripe' => 'Credit Card',
+        'stripe' || 'adyen' => 'Credit Card',
         'apple' => 'Apple',
         'google' => 'Google',
         'paypal' => 'PayPal',
+        'coingate' => 'Crypto',
         _ => gateway!.capitalize()
       };
 
