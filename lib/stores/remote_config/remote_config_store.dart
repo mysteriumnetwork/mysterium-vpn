@@ -55,6 +55,8 @@ enum _FeatureToggleKey {
   manageSubscriptionPage,
   promotionalBannerContent,
   pushNotifPermissionPromptCooldown,
+  checkoutWebRedirectUrl,
+  gatewaysSupportingUpgrade,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -519,9 +521,8 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
     return null;
   }
 
-  @computed
-
   /// Cooldown period (in hours) for prompting the user for push notification permission
+  @computed
   int get pushNotifPermissionPromptCooldown {
     if (config.containsKey(_FeatureToggleKey.pushNotifPermissionPromptCooldown.name)) {
       final raw = config[_FeatureToggleKey.pushNotifPermissionPromptCooldown.name];
@@ -530,6 +531,37 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       }
     }
     return 24;
+  }
+
+  @computed
+  Set<String> get gatewaysSupportingUpgrade {
+    try {
+      if (config.containsKey(_FeatureToggleKey.gatewaysSupportingUpgrade.name)) {
+        final raw = config[_FeatureToggleKey.gatewaysSupportingUpgrade.name];
+        final decoded = jsonDecode(raw.toString()) as List;
+        final keys = decoded.map((it) => it.toString());
+        return keys
+            .map(
+              (key) => key.toLowerCase(),
+            )
+            .toSet();
+      }
+    } catch (e, stack) {
+      logger.handle(e, stack);
+    }
+    return {'stripe', 'adyen'};
+  }
+
+  @computed
+  Uri get checkoutWebRedirectUrl {
+    const webAppUrl = Env.webAppUrl;
+    final localUri = Uri.https(webAppUrl, '/checkout/payment-options');
+    if (config.containsKey(_FeatureToggleKey.checkoutWebRedirectUrl.name)) {
+      final raw = config[_FeatureToggleKey.checkoutWebRedirectUrl.name];
+      final uri = Uri.tryParse(raw.toString());
+      return uri ?? localUri;
+    }
+    return localUri;
   }
 
   Map<String, String> get asUserProperties =>
