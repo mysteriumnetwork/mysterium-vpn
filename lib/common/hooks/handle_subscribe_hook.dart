@@ -59,7 +59,8 @@ FutureOr<void> Function() useHandleUpgradePlan() {
       return;
     }
 
-    if (!isMobilePaymentGateway(subscription.gateway)) {
+    if (!remoteConfigStore.gatewaysSupportingUpgrade.contains(subscription.gateway) ||
+        Platform.isWindows) {
       final uri = Uri.parse(remoteConfigStore.upgradeSubscriptionPage);
       final sessionStore = ref.read(authSessionStorePOD);
       final token = await sessionStore.accessTokenFuture;
