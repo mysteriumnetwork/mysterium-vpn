@@ -472,12 +472,17 @@
   "subscriptionUpgrade": "Meningkatkan",
   "plan_2_years_basic": "Dasar 2 tahun",
   "plan_2_years_pro": "Pro 2 tahun",
-  "notNowBtn": "Tidak sekarang",
   "pushNotificationsConsentPopupTitle": "Tetap terhubung dengan notifikasi push.",
   "pushNotificationsConsentPopupDesc": "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
   "notificationsSettingTitle": "Pemberitahuan",
   "pushNotificationsSetting": "Notifikasi Push",
-  "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
+  "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus.",
   "openSystemSettingsBtn": "Buka pengaturan sistem",
-  "emailNotificationsSetting": "Notifikasi Email"
+  "emailNotificationsSetting": "Notifikasi Email",
+  "subscriptionPlanWireGuardDesc": "WireGuard - protokol cepat terbaik untuk bermain game dan streaming. OpenVPN - protokol yang sangat mudah dikonfigurasi dan berfungsi di tempat protokol lain gagal (tidak tersedia di Android).",
+  "subscriptionPlanDoubleVPNDesc": "Lapisan keamanan ekstra. Mengarahkan lalu lintas internet Anda melalui dua server VPN yang berbeda, mengenkripsi data Anda dua kali dan menyembunyikan alamat IP Anda di balik server kedua.",
+  "subscriptionPlanResidentialIPsDesc": "Tampil sebagai pengguna rumahan biasa, memungkinkan Anda mengakses layanan streaming dan menghindari deteksi VPN.",
+  "subscriptionPlanCityLevelDesc": "Menyediakan kontrol lokasi yang lebih tepat daripada kebanyakan VPN, yang biasanya membatasi Anda untuk memilih seluruh negara atau wilayah.",
+  "subscriptionPlanMalwareBlockerDesc": "Melindungi perangkat Anda dengan menghentikan ancaman sebelum mencapai perangkat, berjalan dengan tenang di latar belakang tanpa mengganggu Anda.",
+  "notNowBtn": "Tidak sekarang"
 }

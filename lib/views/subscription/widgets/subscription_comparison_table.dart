@@ -54,8 +54,13 @@ class SubscriptionComparisonTable extends HookConsumerWidget {
           if (values.length != count) {
             continue;
           }
-
-          list.add(ComparisonFeature(values: Map.fromEntries(values), label: key.tr()));
+          list.add(
+            ComparisonFeature(
+              values: Map.fromEntries(values),
+              label: key.tr(),
+              description: _getDescriptionIfExists(key),
+            ),
+          );
         }
 
         return list;
@@ -73,5 +78,11 @@ class SubscriptionComparisonTable extends HookConsumerWidget {
       headerColumns: Map.fromEntries(columns.map((it) => MapEntry(it, it.tr()))),
       features: features,
     );
+  }
+
+  String? _getDescriptionIfExists(String key) {
+    final id = '${key}Desc';
+    final translated = id.tr();
+    return translated != id && translated.isNotEmpty ? translated : null;
   }
 }

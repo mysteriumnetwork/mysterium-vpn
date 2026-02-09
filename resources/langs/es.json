@@ -472,12 +472,17 @@
   "subscriptionUpgrade": "Mejora",
   "plan_2_years_basic": "Básico de 2 años",
   "plan_2_years_pro": "Pro 2 años",
-  "notNowBtn": "Ahora no",
   "pushNotificationsConsentPopupTitle": "Manténgase actualizado con notificaciones push",
   "pushNotificationsConsentPopupDesc": "Reciba notificaciones sobre nuevas funciones, consejos útiles y ofertas exclusivas: solo actualizaciones útiles.",
   "notificationsSettingTitle": "Notificaciones",
   "pushNotificationsSetting": "Notificaciones push",
   "pushNotificationsSettingDesc": "Actualizaciones de productos, consejos y ofertas especiales",
   "openSystemSettingsBtn": "Abra la configuración del sistema",
-  "emailNotificationsSetting": "Notificaciones por correo electrónico"
+  "emailNotificationsSetting": "Notificaciones por correo electrónico",
+  "subscriptionPlanWireGuardDesc": "WireGuard: protocolo rápido ideal para juegos y streaming OpenVPN: protocolo altamente configurable que funciona donde otros protocolos fallan (no disponible en Android)",
+  "subscriptionPlanDoubleVPNDesc": "Capa adicional de seguridad. Enruta tu tráfico de internet a través de dos servidores VPN diferentes, cifrando tus datos dos veces y ocultando tu dirección IP tras un segundo servidor.",
+  "subscriptionPlanResidentialIPsDesc": "Aparece como un usuario doméstico normal, lo que le permite acceder a servicios de transmisión y evitar la detección de VPN.",
+  "subscriptionPlanCityLevelDesc": "Proporciona un control de ubicación más preciso que la mayoría de las VPN, que normalmente lo limitan a seleccionar países o estados enteros.",
+  "subscriptionPlanMalwareBlockerDesc": "Protege su dispositivo deteniendo las amenazas antes de que puedan alcanzarlo, ejecutándose silenciosamente en segundo plano sin interrumpirlo.",
+  "notNowBtn": "Ahora no"
 }

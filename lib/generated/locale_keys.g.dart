@@ -466,7 +466,6 @@ abstract class LocaleKeys {
   static const subscriptionUpgrade = 'subscriptionUpgrade';
   static const plan_2_years_basic = 'plan_2_years_basic';
   static const plan_2_years_pro = 'plan_2_years_pro';
-  static const notNowBtn = 'notNowBtn';
   static const pushNotificationsConsentPopupTitle = 'pushNotificationsConsentPopupTitle';
   static const pushNotificationsConsentPopupDesc = 'pushNotificationsConsentPopupDesc';
   static const notificationsSettingTitle = 'notificationsSettingTitle';
@@ -474,4 +473,10 @@ abstract class LocaleKeys {
   static const pushNotificationsSettingDesc = 'pushNotificationsSettingDesc';
   static const openSystemSettingsBtn = 'openSystemSettingsBtn';
   static const emailNotificationsSetting = 'emailNotificationsSetting';
+  static const subscriptionPlanWireGuardDesc = 'subscriptionPlanWireGuardDesc';
+  static const subscriptionPlanDoubleVPNDesc = 'subscriptionPlanDoubleVPNDesc';
+  static const subscriptionPlanResidentialIPsDesc = 'subscriptionPlanResidentialIPsDesc';
+  static const subscriptionPlanCityLevelDesc = 'subscriptionPlanCityLevelDesc';
+  static const subscriptionPlanMalwareBlockerDesc = 'subscriptionPlanMalwareBlockerDesc';
+  static const notNowBtn = 'notNowBtn';
 }

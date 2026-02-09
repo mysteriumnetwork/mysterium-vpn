@@ -472,12 +472,17 @@
   "subscriptionUpgrade": "アップグレード",
   "plan_2_years_basic": "ベーシック2年",
   "plan_2_years_pro": "プロ 2年",
-  "notNowBtn": "今じゃない",
   "pushNotificationsConsentPopupTitle": "プッシュ通知で最新情報を入手",
   "pushNotificationsConsentPopupDesc": "新しい機能、役立つヒント、限定オファーなど、役立つ最新情報に関する通知を受け取ります。",
   "notificationsSettingTitle": "通知",
   "pushNotificationsSetting": "プッシュ通知",
   "pushNotificationsSettingDesc": "製品の更新情報、ヒント、特別オファー",
   "openSystemSettingsBtn": "システム設定を開く",
-  "emailNotificationsSetting": "メール通知"
+  "emailNotificationsSetting": "メール通知",
+  "subscriptionPlanWireGuardDesc": "WireGuard - ゲームやストリーミングに最適な高速プロトコル OpenVPN - 他のプロトコルが機能しない場所でも機能する、高度に設定可能なプロトコル（Android では利用できません）",
+  "subscriptionPlanDoubleVPNDesc": "さらなるセキュリティレイヤー。インターネットトラフィックを2つの異なるVPNサーバーにルーティングし、データを2回暗号化し、IPアドレスを2つ目のサーバーの背後に隠します。",
+  "subscriptionPlanResidentialIPsDesc": "通常のホームユーザーとして表示され、ストリーミング サービスにアクセスして VPN 検出を回避できます。",
+  "subscriptionPlanCityLevelDesc": "通常は国全体または州全体の選択に制限されるほとんどの VPN よりも正確な位置情報制御を提供します。",
+  "subscriptionPlanMalwareBlockerDesc": "邪魔をすることなくバックグラウンドで静かに実行され、脅威がデバイスに到達する前に阻止することでデバイスを保護します。",
+  "notNowBtn": "今じゃない"
 }

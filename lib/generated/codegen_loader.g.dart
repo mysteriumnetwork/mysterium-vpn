@@ -434,7 +434,7 @@ class CodegenLoader extends AssetLoader {
     "zh": "中国人",
     "subscriptionUpgradeModalTitle": "升级到 {}",
     "subscriptionUpgradeModalDescription": "可访问 7500 多个住宅 IP 地址",
-    "subscriptionPlanBestValue": "性价比最高",
+    "subscriptionPlanBestValue": "最佳性价比",
     "subscriptionPlanPeriodMonth": "莫",
     "subscriptionPlanBillingInfo": "每期账单金额为{amount}",
     "subscriptionPlanSavePercent": "节省 {}％",
@@ -479,14 +479,21 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "升级",
     "plan_2_years_basic": "基础2年",
     "plan_2_years_pro": "专业版 2 年",
-    "notNowBtn": "现在不要",
     "pushNotificationsConsentPopupTitle": "随时通过推送通知获取最新资讯",
     "pushNotificationsConsentPopupDesc": "获取有关新功能、实用技巧和独家优惠的通知——只有实用更新。",
     "notificationsSettingTitle": "通知",
     "pushNotificationsSetting": "推送通知",
     "pushNotificationsSettingDesc": "产品更新、使用技巧和特惠活动",
     "openSystemSettingsBtn": "打开系统设置",
-    "emailNotificationsSetting": "电子邮件通知"
+    "emailNotificationsSetting": "电子邮件通知",
+    "subscriptionPlanWireGuardDesc":
+        "WireGuard - 速度快的协议，最适合游戏和流媒体；OpenVPN - 高度可配置的协议，在其他协议失效的情况下也能工作（Android 系统不支持）。",
+    "subscriptionPlanDoubleVPNDesc":
+        "额外的安全保障。它会将您的互联网流量路由到两个不同的 VPN 服务器，对您的数据进行双重加密，并将您的 IP 地址隐藏在第二台服务器之后。",
+    "subscriptionPlanResidentialIPsDesc": "伪装成普通家庭用户，让您可以访问流媒体服务并避免 VPN 检测。",
+    "subscriptionPlanCityLevelDesc": "它提供比大多数 VPN 更精确的位置控制，大多数 VPN 通常限制您只能选择整个国家或地区。",
+    "subscriptionPlanMalwareBlockerDesc": "它能在威胁到达您的设备之前将其拦截，从而保护您的设备，并在后台静默运行，不会打扰您。",
+    "notNowBtn": "现在不要"
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -796,7 +803,7 @@ class CodegenLoader extends AssetLoader {
     "pt": "Portekizce",
     "purchased": "satın alındı",
     "purchasePromoCTA": "Haydi gidelim",
-    "purchasePromoEnds": "Sonlar {}",
+    "purchasePromoEnds": "Uçlar {}",
     "purchasePromoFeatures":
         "[\"100'den fazla ülke\", \"19.000'den fazla konut IP adresi\", \"7 günlük para iade garantisi\"]",
     "purchasePromoPPTOC": "{} ve {} sayfalarımızı okuyun.",
@@ -996,7 +1003,6 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "Güncelleme",
     "plan_2_years_basic": "Temel 2 yıl",
     "plan_2_years_pro": "2 yıllık profesyonel hizmet",
-    "notNowBtn": "Şimdi değil",
     "pushNotificationsConsentPopupTitle": "Anlık bildirimlerle her zaman güncel kalın.",
     "pushNotificationsConsentPopupDesc":
         "Yeni özellikler, faydalı ipuçları ve özel teklifler hakkında bildirim alın - sadece yararlı güncellemeler.",
@@ -1004,7 +1010,18 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsSetting": "Anlık Bildirimler",
     "pushNotificationsSettingDesc": "Ürün güncellemeleri, ipuçları ve özel teklifler",
     "openSystemSettingsBtn": "Sistem ayarlarını açın",
-    "emailNotificationsSetting": "E-posta Bildirimleri"
+    "emailNotificationsSetting": "E-posta Bildirimleri",
+    "subscriptionPlanWireGuardDesc":
+        "WireGuard - oyun ve yayın akışı için en iyi olan hızlı protokol. OpenVPN - diğer protokollerin başarısız olduğu yerlerde çalışan, yüksek düzeyde yapılandırılabilir bir protokol (Android'de mevcut değil).",
+    "subscriptionPlanDoubleVPNDesc":
+        "Ekstra güvenlik katmanı. İnternet trafiğinizi iki farklı VPN sunucusu üzerinden yönlendirir, verilerinizi iki kez şifreler ve IP adresinizi ikinci bir sunucunun arkasında gizler.",
+    "subscriptionPlanResidentialIPsDesc":
+        "Normal bir ev kullanıcısı gibi görünerek, yayın hizmetlerine erişmenizi ve VPN tespitinden kaçınmanızı sağlar.",
+    "subscriptionPlanCityLevelDesc":
+        "Çoğu VPN'in aksine, daha hassas konum kontrolü sağlar; VPN'ler genellikle sizi tüm ülkeleri veya eyaletleri seçmekle sınırlandırır.",
+    "subscriptionPlanMalwareBlockerDesc":
+        "Cihazınıza ulaşmadan önce tehditleri durdurarak onu korur, sizi rahatsız etmeden arka planda sessizce çalışır.",
+    "notNowBtn": "Şimdi değil"
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1476,14 +1493,22 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "アップグレード",
     "plan_2_years_basic": "ベーシック2年",
     "plan_2_years_pro": "プロ 2年",
-    "notNowBtn": "今じゃない",
     "pushNotificationsConsentPopupTitle": "プッシュ通知で最新情報を入手",
     "pushNotificationsConsentPopupDesc": "新しい機能、役立つヒント、限定オファーなど、役立つ最新情報に関する通知を受け取ります。",
     "notificationsSettingTitle": "通知",
     "pushNotificationsSetting": "プッシュ通知",
     "pushNotificationsSettingDesc": "製品の更新情報、ヒント、特別オファー",
     "openSystemSettingsBtn": "システム設定を開く",
-    "emailNotificationsSetting": "メール通知"
+    "emailNotificationsSetting": "メール通知",
+    "subscriptionPlanWireGuardDesc":
+        "WireGuard - ゲームやストリーミングに最適な高速プロトコル OpenVPN - 他のプロトコルが機能しない場所でも機能する、高度に設定可能なプロトコル（Android では利用できません）",
+    "subscriptionPlanDoubleVPNDesc":
+        "さらなるセキュリティレイヤー。インターネットトラフィックを2つの異なるVPNサーバーにルーティングし、データを2回暗号化し、IPアドレスを2つ目のサーバーの背後に隠します。",
+    "subscriptionPlanResidentialIPsDesc": "通常のホームユーザーとして表示され、ストリーミング サービスにアクセスして VPN 検出を回避できます。",
+    "subscriptionPlanCityLevelDesc": "通常は国全体または州全体の選択に制限されるほとんどの VPN よりも正確な位置情報制御を提供します。",
+    "subscriptionPlanMalwareBlockerDesc":
+        "邪魔をすることなくバックグラウンドで静かに実行され、脅威がデバイスに到達する前に阻止することでデバイスを保護します。",
+    "notNowBtn": "今じゃない"
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2021,7 +2046,6 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "Upgrade",
     "plan_2_years_basic": "Grundausbildung 2 Jahre",
     "plan_2_years_pro": "Pro 2 Jahre",
-    "notNowBtn": "Nicht jetzt.",
     "pushNotificationsConsentPopupTitle":
         "Bleiben Sie mit Push-Benachrichtigungen auf dem Laufenden.",
     "pushNotificationsConsentPopupDesc":
@@ -2030,7 +2054,18 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsSetting": "Push-Benachrichtigungen",
     "pushNotificationsSettingDesc": "Produktneuheiten, Tipps und Sonderangebote",
     "openSystemSettingsBtn": "Systemeinstellungen öffnen",
-    "emailNotificationsSetting": "E-Mail-Benachrichtigungen"
+    "emailNotificationsSetting": "E-Mail-Benachrichtigungen",
+    "subscriptionPlanWireGuardDesc":
+        "WireGuard – schnelles Protokoll, ideal für Gaming und Streaming. OpenVPN – hochgradig konfigurierbares Protokoll, das auch dort funktioniert, wo andere Protokolle versagen (nicht für Android verfügbar).",
+    "subscriptionPlanDoubleVPNDesc":
+        "Zusätzliche Sicherheitsebene. Leitet Ihren Internetverkehr über zwei verschiedene VPN-Server, verschlüsselt Ihre Daten doppelt und maskiert Ihre IP-Adresse hinter einem zweiten Server.",
+    "subscriptionPlanResidentialIPsDesc":
+        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen und eine VPN-Erkennung vermeiden zu können.",
+    "subscriptionPlanCityLevelDesc":
+        "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
+    "subscriptionPlanMalwareBlockerDesc":
+        "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
+    "notNowBtn": "Nicht jetzt"
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2559,7 +2594,6 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "Atualizar",
     "plan_2_years_basic": "Básico 2 anos",
     "plan_2_years_pro": "Profissional 2 anos",
-    "notNowBtn": "Agora não",
     "pushNotificationsConsentPopupTitle": "Mantenha-se atualizado com notificações push.",
     "pushNotificationsConsentPopupDesc":
         "Receba notificações sobre novos recursos, dicas úteis e ofertas exclusivas — apenas atualizações úteis.",
@@ -2567,7 +2601,18 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsSetting": "Notificações Push",
     "pushNotificationsSettingDesc": "Atualizações de produtos, dicas e ofertas especiais",
     "openSystemSettingsBtn": "Abra as configurações do sistema",
-    "emailNotificationsSetting": "Notificações por e-mail"
+    "emailNotificationsSetting": "Notificações por e-mail",
+    "subscriptionPlanWireGuardDesc":
+        "WireGuard - protocolo rápido, ideal para jogos e streaming. OpenVPN - protocolo altamente configurável que funciona onde outros protocolos falham (não disponível para Android).",
+    "subscriptionPlanDoubleVPNDesc":
+        "Camada extra de segurança. Direciona seu tráfego de internet por meio de dois servidores VPN diferentes, criptografando seus dados duas vezes e mascarando seu endereço IP por trás de um segundo servidor.",
+    "subscriptionPlanResidentialIPsDesc":
+        "Finja ser um usuário doméstico comum, o que permite acessar serviços de streaming e evitar a detecção por VPN.",
+    "subscriptionPlanCityLevelDesc":
+        "Oferece um controle de localização mais preciso do que a maioria das VPNs, que normalmente limitam você à seleção de países ou estados inteiros.",
+    "subscriptionPlanMalwareBlockerDesc":
+        "Protege seu dispositivo, impedindo ameaças antes que elas o alcancem, funcionando silenciosamente em segundo plano sem interrompê-lo.",
+    "notNowBtn": "Agora não"
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3084,7 +3129,6 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "Upgrade",
     "plan_2_years_basic": "Basic 2-years",
     "plan_2_years_pro": "Pro 2-years",
-    "notNowBtn": "Not now",
     "pushNotificationsConsentPopupTitle": "Stay up to date with push notifications",
     "pushNotificationsConsentPopupDesc":
         "Get notified about new features, helpful tips, and exclusive offers - just useful updates.",
@@ -3092,7 +3136,18 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsSetting": "Push Notifications",
     "pushNotificationsSettingDesc": "Product updates, tips, and special offers",
     "openSystemSettingsBtn": "Open system settings",
-    "emailNotificationsSetting": "Email Notifications"
+    "emailNotificationsSetting": "Email Notifications",
+    "subscriptionPlanWireGuardDesc":
+        "WireGuard - fast protocol best for gaming and streaming OpenVPN - highly configurable protocol that works where other protocols fail (not available on Android)",
+    "subscriptionPlanDoubleVPNDesc":
+        "Extra layer of security. Routes your internet traffic through two different VPN servers, encrypting your data twice and masking your IP address behind a second server",
+    "subscriptionPlanResidentialIPsDesc":
+        "Appear as a normal home user, letting you access streaming services and avoid VPN detection.",
+    "subscriptionPlanCityLevelDesc":
+        "Provides more precise location control than most VPNs, which typically limit you to selecting entire countries or states.",
+    "subscriptionPlanMalwareBlockerDesc":
+        "Protects your device by stopping threats before they can reach it, running quietly in the background without interrupting you.",
+    "notNowBtn": "Not Now"
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3623,7 +3678,6 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "Aggiornamento",
     "plan_2_years_basic": "Base 2 anni",
     "plan_2_years_pro": "Pro 2 anni",
-    "notNowBtn": "Non adesso",
     "pushNotificationsConsentPopupTitle": "Rimani aggiornato con le notifiche push",
     "pushNotificationsConsentPopupDesc":
         "Ricevi notifiche sulle nuove funzionalità, suggerimenti utili e offerte esclusive: solo aggiornamenti utili.",
@@ -3631,7 +3685,18 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsSetting": "Notifiche push",
     "pushNotificationsSettingDesc": "Aggiornamenti sui prodotti, suggerimenti e offerte speciali",
     "openSystemSettingsBtn": "Apri le impostazioni di sistema",
-    "emailNotificationsSetting": "Notifiche e-mail"
+    "emailNotificationsSetting": "Notifiche e-mail",
+    "subscriptionPlanWireGuardDesc":
+        "WireGuard: protocollo veloce ideale per giochi e streaming OpenVPN: protocollo altamente configurabile che funziona dove altri protocolli falliscono (non disponibile su Android)",
+    "subscriptionPlanDoubleVPNDesc":
+        "Livello di sicurezza aggiuntivo. Instrada il tuo traffico Internet attraverso due server VPN diversi, crittografando i tuoi dati due volte e mascherando il tuo indirizzo IP dietro un secondo server.",
+    "subscriptionPlanResidentialIPsDesc":
+        "Appari come un normale utente domestico, consentendoti di accedere ai servizi di streaming ed evitare il rilevamento VPN.",
+    "subscriptionPlanCityLevelDesc":
+        "Fornisce un controllo della posizione più preciso rispetto alla maggior parte delle VPN, che in genere limitano la selezione a interi paesi o stati.",
+    "subscriptionPlanMalwareBlockerDesc":
+        "Protegge il tuo dispositivo bloccando le minacce prima che possano raggiungerlo, eseguendo silenziosamente in background senza interromperti.",
+    "notNowBtn": "Non adesso"
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4170,7 +4235,6 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "Mise à niveau",
     "plan_2_years_basic": "Formation de base de 2 ans",
     "plan_2_years_pro": "Pro 2 ans",
-    "notNowBtn": "Pas maintenant",
     "pushNotificationsConsentPopupTitle": "Restez informé grâce aux notifications push",
     "pushNotificationsConsentPopupDesc":
         "Soyez informé des nouvelles fonctionnalités, des conseils utiles et des offres exclusives – des mises à jour toujours pertinentes.",
@@ -4178,7 +4242,18 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsSetting": "Notifications push",
     "pushNotificationsSettingDesc": "Mises à jour produits, conseils et offres spéciales",
     "openSystemSettingsBtn": "Ouvrir les paramètres système",
-    "emailNotificationsSetting": "Notifications par e-mail"
+    "emailNotificationsSetting": "Notifications par e-mail",
+    "subscriptionPlanWireGuardDesc":
+        "WireGuard : protocole rapide idéal pour les jeux et le streaming. OpenVPN : protocole hautement configurable qui fonctionne là où d’autres protocoles échouent (non disponible sur Android).",
+    "subscriptionPlanDoubleVPNDesc":
+        "Couche de sécurité supplémentaire. Votre trafic internet est acheminé via deux serveurs VPN différents, ce qui chiffre vos données deux fois et masque votre adresse IP derrière un second serveur.",
+    "subscriptionPlanResidentialIPsDesc":
+        "Vous apparaîtrez comme un utilisateur domestique normal, ce qui vous permettra d'accéder aux services de streaming et d'éviter la détection par VPN.",
+    "subscriptionPlanCityLevelDesc":
+        "Offre un contrôle de localisation plus précis que la plupart des VPN, qui vous limitent généralement à la sélection de pays ou d'États entiers.",
+    "subscriptionPlanMalwareBlockerDesc":
+        "Protège votre appareil en bloquant les menaces avant qu'elles ne l'atteignent, fonctionnant discrètement en arrière-plan sans vous interrompre.",
+    "notNowBtn": "Pas maintenant"
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4697,15 +4772,25 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "Meningkatkan",
     "plan_2_years_basic": "Dasar 2 tahun",
     "plan_2_years_pro": "Pro 2 tahun",
-    "notNowBtn": "Tidak sekarang",
     "pushNotificationsConsentPopupTitle": "Tetap terhubung dengan notifikasi push.",
     "pushNotificationsConsentPopupDesc":
         "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
     "notificationsSettingTitle": "Pemberitahuan",
     "pushNotificationsSetting": "Notifikasi Push",
-    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
+    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus.",
     "openSystemSettingsBtn": "Buka pengaturan sistem",
-    "emailNotificationsSetting": "Notifikasi Email"
+    "emailNotificationsSetting": "Notifikasi Email",
+    "subscriptionPlanWireGuardDesc":
+        "WireGuard - protokol cepat terbaik untuk bermain game dan streaming. OpenVPN - protokol yang sangat mudah dikonfigurasi dan berfungsi di tempat protokol lain gagal (tidak tersedia di Android).",
+    "subscriptionPlanDoubleVPNDesc":
+        "Lapisan keamanan ekstra. Mengarahkan lalu lintas internet Anda melalui dua server VPN yang berbeda, mengenkripsi data Anda dua kali dan menyembunyikan alamat IP Anda di balik server kedua.",
+    "subscriptionPlanResidentialIPsDesc":
+        "Tampil sebagai pengguna rumahan biasa, memungkinkan Anda mengakses layanan streaming dan menghindari deteksi VPN.",
+    "subscriptionPlanCityLevelDesc":
+        "Menyediakan kontrol lokasi yang lebih tepat daripada kebanyakan VPN, yang biasanya membatasi Anda untuk memilih seluruh negara atau wilayah.",
+    "subscriptionPlanMalwareBlockerDesc":
+        "Melindungi perangkat Anda dengan menghentikan ancaman sebelum mencapai perangkat, berjalan dengan tenang di latar belakang tanpa mengganggu Anda.",
+    "notNowBtn": "Tidak sekarang"
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5236,7 +5321,6 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "Mejora",
     "plan_2_years_basic": "Básico de 2 años",
     "plan_2_years_pro": "Pro 2 años",
-    "notNowBtn": "Ahora no",
     "pushNotificationsConsentPopupTitle": "Manténgase actualizado con notificaciones push",
     "pushNotificationsConsentPopupDesc":
         "Reciba notificaciones sobre nuevas funciones, consejos útiles y ofertas exclusivas: solo actualizaciones útiles.",
@@ -5244,7 +5328,18 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsSetting": "Notificaciones push",
     "pushNotificationsSettingDesc": "Actualizaciones de productos, consejos y ofertas especiales",
     "openSystemSettingsBtn": "Abra la configuración del sistema",
-    "emailNotificationsSetting": "Notificaciones por correo electrónico"
+    "emailNotificationsSetting": "Notificaciones por correo electrónico",
+    "subscriptionPlanWireGuardDesc":
+        "WireGuard: protocolo rápido ideal para juegos y streaming OpenVPN: protocolo altamente configurable que funciona donde otros protocolos fallan (no disponible en Android)",
+    "subscriptionPlanDoubleVPNDesc":
+        "Capa adicional de seguridad. Enruta tu tráfico de internet a través de dos servidores VPN diferentes, cifrando tus datos dos veces y ocultando tu dirección IP tras un segundo servidor.",
+    "subscriptionPlanResidentialIPsDesc":
+        "Aparece como un usuario doméstico normal, lo que le permite acceder a servicios de transmisión y evitar la detección de VPN.",
+    "subscriptionPlanCityLevelDesc":
+        "Proporciona un control de ubicación más preciso que la mayoría de las VPN, que normalmente lo limitan a seleccionar países o estados enteros.",
+    "subscriptionPlanMalwareBlockerDesc":
+        "Protege su dispositivo deteniendo las amenazas antes de que puedan alcanzarlo, ejecutándose silenciosamente en segundo plano sin interrumpirlo.",
+    "notNowBtn": "Ahora no"
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5748,7 +5843,6 @@ class CodegenLoader extends AssetLoader {
     "subscriptionUpgrade": "يرقي",
     "plan_2_years_basic": "سنتان أساسيتان",
     "plan_2_years_pro": "محترف لمدة عامين",
-    "notNowBtn": "ليس الآن",
     "pushNotificationsConsentPopupTitle": "ابقَ على اطلاع دائم من خلال الإشعارات الفورية",
     "pushNotificationsConsentPopupDesc":
         "احصل على إشعارات حول الميزات الجديدة والنصائح المفيدة والعروض الحصرية - تحديثات مفيدة فقط.",
@@ -5756,7 +5850,18 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsSetting": "الإشعارات الفورية",
     "pushNotificationsSettingDesc": "تحديثات المنتجات، والنصائح، والعروض الخاصة",
     "openSystemSettingsBtn": "افتح إعدادات النظام",
-    "emailNotificationsSetting": "إشعارات البريد الإلكتروني"
+    "emailNotificationsSetting": "إشعارات البريد الإلكتروني",
+    "subscriptionPlanWireGuardDesc":
+        "WireGuard - بروتوكول سريع مثالي للألعاب والبث المباشر. OpenVPN - بروتوكول قابل للتخصيص بدرجة عالية ويعمل حيث تفشل البروتوكولات الأخرى (غير متوفر على نظام Android).",
+    "subscriptionPlanDoubleVPNDesc":
+        "طبقة أمان إضافية. يقوم بتوجيه حركة مرور الإنترنت الخاصة بك عبر خادمين VPN مختلفين، مما يؤدي إلى تشفير بياناتك مرتين وإخفاء عنوان IP الخاص بك خلف خادم ثانٍ.",
+    "subscriptionPlanResidentialIPsDesc":
+        "يمكنك الظهور كمستخدم منزلي عادي، مما يتيح لك الوصول إلى خدمات البث وتجنب اكتشاف VPN.",
+    "subscriptionPlanCityLevelDesc":
+        "يوفر تحكمًا أكثر دقة في الموقع مقارنة بمعظم شبكات VPN، والتي عادةً ما تحد من اختيارك لبلدان أو ولايات بأكملها.",
+    "subscriptionPlanMalwareBlockerDesc":
+        "يحمي جهازك عن طريق إيقاف التهديدات قبل أن تتمكن من الوصول إليه، ويعمل بهدوء في الخلفية دون مقاطعتك.",
+    "notNowBtn": "ليس الآن"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,
