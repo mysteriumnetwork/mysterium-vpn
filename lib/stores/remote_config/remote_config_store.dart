@@ -57,6 +57,7 @@ enum _FeatureToggleKey {
   pushNotifPermissionPromptCooldown,
   checkoutWebRedirectUrl,
   gatewaysSupportingUpgrade,
+  pricingMonthly,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -555,13 +556,21 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   @computed
   Uri get checkoutWebRedirectUrl {
     const webAppUrl = Env.webAppUrl;
-    final localUri = Uri.https(webAppUrl, '/checkout/payment-options');
+    final localUri = Uri.https(webAppUrl, '/checkout/payment-upgrade');
     if (config.containsKey(_FeatureToggleKey.checkoutWebRedirectUrl.name)) {
       final raw = config[_FeatureToggleKey.checkoutWebRedirectUrl.name];
       final uri = Uri.tryParse(raw.toString());
       return uri ?? localUri;
     }
     return localUri;
+  }
+
+  @computed
+  bool get pricingMonthly {
+    if (config.containsKey(_FeatureToggleKey.pricingMonthly.name)) {
+      return config[_FeatureToggleKey.pricingMonthly.name] as bool;
+    }
+    return true;
   }
 
   Map<String, String> get asUserProperties =>

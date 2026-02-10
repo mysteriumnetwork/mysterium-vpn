@@ -320,6 +320,12 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$checkoutWebRedirectUrlComputed ??= Computed<Uri>(() => super.checkoutWebRedirectUrl,
               name: 'RemoteConfigStoreBase.checkoutWebRedirectUrl'))
           .value;
+  Computed<bool>? _$pricingMonthlyComputed;
+
+  @override
+  bool get pricingMonthly => (_$pricingMonthlyComputed ??=
+          Computed<bool>(() => super.pricingMonthly, name: 'RemoteConfigStoreBase.pricingMonthly'))
+      .value;
 
   @override
   String toString() {
@@ -368,7 +374,8 @@ manageSubscriptionPage: ${manageSubscriptionPage},
 promotionalBanner: ${promotionalBanner},
 pushNotifPermissionPromptCooldown: ${pushNotifPermissionPromptCooldown},
 gatewaysSupportingUpgrade: ${gatewaysSupportingUpgrade},
-checkoutWebRedirectUrl: ${checkoutWebRedirectUrl}
+checkoutWebRedirectUrl: ${checkoutWebRedirectUrl},
+pricingMonthly: ${pricingMonthly}
     ''';
   }
 }
