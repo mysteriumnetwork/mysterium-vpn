@@ -403,7 +403,7 @@ FutureOr<void> handleOnBillingPage({
     },
   );
 
-  await launchUrl(httpsUri);
+  await openUrlLink(httpsUri);
 }
 
 void handleOnSupportPage({

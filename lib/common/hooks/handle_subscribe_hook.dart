@@ -71,7 +71,7 @@ FutureOr<void> Function() useHandleUpgradePlan() {
         },
       );
 
-      launchUrl(httpsUri).ignore();
+      openUrlLink(httpsUri).ignore();
       return;
     }
     if (!context.mounted) {

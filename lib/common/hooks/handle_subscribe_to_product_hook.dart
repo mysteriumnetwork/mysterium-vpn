@@ -50,7 +50,7 @@ Future<void> Function(String id) useHandleSubscribeToProduct() {
             'access_token': accessToken ?? '',
           },
         );
-        await launchUrl(uri);
+        await openUrlLink(uri);
         if (context.mounted) {
           Navigator.of(context).pop();
         }
