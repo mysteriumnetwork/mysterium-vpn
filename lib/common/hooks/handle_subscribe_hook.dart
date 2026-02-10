@@ -57,7 +57,8 @@ FutureOr<void> Function() useHandleUpgradePlan() {
       return;
     }
 
-    if (!remoteConfigStore.gatewaysSupportingUpgrade.contains(subscription.gateway) ||
+    if (!remoteConfigStore.gatewaysSupportingUpgrade
+            .contains(subscription.gateway?.toLowerCase()) ||
         Platform.isWindows) {
       final uri = Uri.parse(remoteConfigStore.upgradeSubscriptionPage);
       final sessionStore = ref.read(authSessionStorePOD);

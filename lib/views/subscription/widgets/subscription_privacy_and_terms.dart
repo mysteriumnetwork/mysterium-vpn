@@ -4,7 +4,6 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SubscriptionPrivacyAndTerms extends StatelessWidget {
   const SubscriptionPrivacyAndTerms({super.key});

@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 Future<void> Function(String id) useHandleSubscribeToProduct() {
   final context = useContext();
@@ -43,7 +42,7 @@ Future<void> Function(String id) useHandleSubscribeToProduct() {
         parameters: {'item_ids': products.map((e) => e.id).toList()},
       );
 
-      if (remoteConfigStore.gatewaysSupportingUpgrade.contains(gateway)) {
+      if (remoteConfigStore.gatewaysSupportingUpgrade.contains(gateway?.toLowerCase())) {
         final uri = remoteConfigStore.checkoutWebRedirectUrl.replace(
           queryParameters: {
             'plan': selectedProduct.id,
