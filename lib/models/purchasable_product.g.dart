@@ -20,6 +20,20 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
   Money get moneyMonthly => (_$moneyMonthlyComputed ??=
           Computed<Money>(() => super.moneyMonthly, name: '_PurchasableProduct.moneyMonthly'))
       .value;
+  Computed<Money>? _$moneyMonthlyBackendComputed;
+
+  @override
+  Money get moneyMonthlyBackend =>
+      (_$moneyMonthlyBackendComputed ??= Computed<Money>(() => super.moneyMonthlyBackend,
+              name: '_PurchasableProduct.moneyMonthlyBackend'))
+          .value;
+  Computed<Money>? _$moneyAnnualBackendComputed;
+
+  @override
+  Money get moneyAnnualBackend =>
+      (_$moneyAnnualBackendComputed ??= Computed<Money>(() => super.moneyAnnualBackend,
+              name: '_PurchasableProduct.moneyAnnualBackend'))
+          .value;
   Computed<Money>? _$moneyAnnualComputed;
 
   @override
@@ -32,6 +46,12 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
   Money get money =>
       (_$moneyComputed ??= Computed<Money>(() => super.money, name: '_PurchasableProduct.money'))
           .value;
+  Computed<Money>? _$backendMoneyComputed;
+
+  @override
+  Money get backendMoney => (_$backendMoneyComputed ??=
+          Computed<Money>(() => super.backendMoney, name: '_PurchasableProduct.backendMoney'))
+      .value;
   Computed<int>? _$introductoryDiscountPercentageComputed;
 
   @override
@@ -125,13 +145,27 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
   }
 
   @override
+  int discountPercentageBackend(PurchasableProduct otherProduct) {
+    final _$actionInfo = _$_PurchasableProductActionController.startAction(
+        name: '_PurchasableProduct.discountPercentageBackend');
+    try {
+      return super.discountPercentageBackend(otherProduct);
+    } finally {
+      _$_PurchasableProductActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 status: ${status},
 id: ${id},
 moneyMonthly: ${moneyMonthly},
+moneyMonthlyBackend: ${moneyMonthlyBackend},
+moneyAnnualBackend: ${moneyAnnualBackend},
 moneyAnnual: ${moneyAnnual},
 money: ${money},
+backendMoney: ${backendMoney},
 introductoryDiscountPercentage: ${introductoryDiscountPercentage},
 productPrice: ${productPrice},
 duration: ${duration},

@@ -1,8 +1,10 @@
+import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart';
 import 'package:mysterium_vpn/common/hooks/plan_data_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -38,6 +40,7 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(subscriptionPlansStorePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
 
     final theme = Theme.of(context);
     final scrollController = useScrollController();
@@ -53,14 +56,28 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
         child: Observer(
           builder: (context) {
             final product = store.bestValueProducts.lastOrNull;
-            if (product == null) {
+            final subscription = subscriptionStore.subscriptionFuture.value;
+            if (product == null || subscription == null) {
               return const Center(
                 child: LoadingIndicator(),
               );
             }
+            final hasPlan = subscription.active;
             return HookBuilder(
               builder: (context) {
-                final planData = usePlanData(product, otherProduct: store.purchasedProduct);
+                // Find the monthly version of the best value product for comparison
+                final bestConfig = store.findConfig(product);
+                final allProducts = [...store.annualProducts, ...store.monthlyProducts];
+                final monthlyComparison = allProducts.firstWhereOrNull(
+                  (p) => store.findConfig(p).name == bestConfig.name && p.duration == 1,
+                );
+
+                final planData = usePlanData(
+                  product: product,
+                  otherProduct: monthlyComparison ?? store.purchasedProduct,
+                  isOffer: true,
+                );
+                final planWithDuration = '${planData.name} 1-${planData.period.capitalize()}';
                 final handleSubscribe = useHandleSubscribeToProduct();
                 Future<void> handlePurchase() async {
                   await handleSubscribe(product.id);
@@ -91,9 +108,14 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                               children: [
                                 ModalHeader(
                                   emblem: const DecoratedIcon(icon: UntitledUI.stars_02),
-                                  title: LocaleKeys.subscriptionUpgradeModalTitle
-                                      .tr(args: [planData.name]),
-                                  description: LocaleKeys.subscriptionUpgradeModalDescription.tr(),
+                                  title: hasPlan
+                                      ? LocaleKeys.subscriptionUpgradeModalTitle
+                                          .tr(args: [planData.name])
+                                      : LocaleKeys.getSubscriptionModalTitle
+                                          .tr(args: [planWithDuration]),
+                                  description: hasPlan
+                                      ? LocaleKeys.subscriptionUpgradeModalDescription.tr()
+                                      : LocaleKeys.getSubscriptionModalDesc.tr(),
                                 ),
                                 SizedBox(height: theme.spacing.xl2),
                                 PlanCard.features(
@@ -104,6 +126,8 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                                       .previewFeatures
                                       .map((it) => it.tr())
                                       .toList(),
+                                  viewMoreLabel: LocaleKeys.viewAllFeaturesBtn.tr(),
+                                  viewLessLabel: LocaleKeys.viewLessBtn.tr(),
                                 ),
                                 SizedBox(height: theme.spacing.xl3),
                                 Text.rich(
@@ -135,7 +159,11 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                       children: [
                         ButtonPrimary(
                           onPressed: handlePurchase,
-                          child: Text(LocaleKeys.subscriptionUpgradeCTA.tr(args: [planData.name])),
+                          child: Text(
+                            hasPlan
+                                ? LocaleKeys.subscriptionUpgradeCTA.tr(args: [planData.name])
+                                : LocaleKeys.getSubscriptionPlanBtn.tr(args: [planWithDuration]),
+                          ),
                         ),
                         ButtonTertiary(
                           onPressed: handleSeeAllPlans,

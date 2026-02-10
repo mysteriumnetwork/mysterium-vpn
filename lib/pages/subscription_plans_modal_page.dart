@@ -12,6 +12,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 import 'package:mysterium_vpn/views/subscription/subscription_status_container.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/subscription_comparison_table.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/subscription_privacy_and_terms.dart';
@@ -39,7 +40,6 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
     final tableKey = useRef(GlobalKey()).value;
 
     final store = ref.watch(subscriptionPlansStorePOD);
-    final upgradeStore = ref.watch(subscriptionUpgradeStorePOD);
     final purchaseStore = ref.watch(subscriptionPurchaseStorePOD);
     final subscriptionStore = ref.watch(subscriptionStorePOD);
 
@@ -90,7 +90,6 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
                         child: ModalHeader(
-                          emblem: const DecoratedIcon(icon: UntitledUI.shield_02),
                           title: LocaleKeys.subscriptionAllPlansTitle.tr(),
                           description: LocaleKeys.subscriptionAllPlansDescription.tr(),
                         ),
@@ -140,6 +139,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                                 onChanged: (value) => selectedProduct.value = value,
                                 child: _SubscriptionPlans(
                                   products: products,
+                                  allProducts: [...annual, ...monthly],
                                   onCompareFeaturesPressed: () =>
                                       scrollController.scrollToKey(tableKey),
                                 ),
@@ -170,7 +170,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                   onPressed: handlePurchasePressed,
                   loading: isLoading.value ? const ButtonLoading() : null,
                   child: Text(
-                    upgradeStore.currentProduct != null
+                    (subscriptionStore.isSubscribed ?? false)
                         ? LocaleKeys.subscriptionAllPlansUpgrade.tr()
                         : LocaleKeys.subscriptionAllPlansPurchase.tr(),
                   ),
@@ -188,49 +188,57 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
 class _SubscriptionPlans extends HookWidget {
   const _SubscriptionPlans({
     required this.products,
+    required this.allProducts,
     required this.onCompareFeaturesPressed,
   });
 
   final List<PurchasableProduct> products;
+  final List<PurchasableProduct> allProducts;
   final VoidCallback onCompareFeaturesPressed;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final lowest = products.lastOrNull;
 
     final direction = switch (ScreenType.of(context)) {
       < ScreenType.desktop => Axis.vertical,
       _ => Axis.horizontal,
     };
 
+    final isDesktop = direction == Axis.horizontal;
+
     return Padding(
       padding: EdgeInsets.all(theme.spacing.md),
-      child: Flex(
-        spacing: theme.spacing.s,
-        mainAxisSize: switch (direction) {
-          Axis.vertical => MainAxisSize.max,
-          Axis.horizontal => MainAxisSize.min,
-        },
-        crossAxisAlignment: switch (direction) {
-          Axis.vertical => CrossAxisAlignment.stretch,
-          Axis.horizontal => CrossAxisAlignment.end,
-        },
-        direction: direction,
-        children: [
-          for (final product in products)
-            Expanded(
-              flex: switch (direction) {
-                Axis.horizontal => 1,
-                Axis.vertical => 0,
-              },
-              child: _Plan(
-                value: product,
-                lowest: lowest,
-                onCompareFeaturesPressed: onCompareFeaturesPressed,
-              ),
-            ),
-        ],
+      child: IntrinsicHeight(
+        child: Flex(
+          spacing: theme.spacing.s,
+          mainAxisSize: switch (direction) {
+            Axis.vertical => MainAxisSize.max,
+            Axis.horizontal => MainAxisSize.max,
+          },
+          crossAxisAlignment: switch (direction) {
+            Axis.vertical => CrossAxisAlignment.stretch,
+            Axis.horizontal => CrossAxisAlignment.stretch,
+          },
+          direction: direction,
+          children: [
+            for (final product in products)
+              if (isDesktop)
+                Expanded(
+                  child: _Plan(
+                    value: product,
+                    allProducts: allProducts,
+                    onCompareFeaturesPressed: onCompareFeaturesPressed,
+                  ),
+                )
+              else
+                _Plan(
+                  value: product,
+                  allProducts: allProducts,
+                  onCompareFeaturesPressed: onCompareFeaturesPressed,
+                ),
+          ],
+        ),
       ),
     );
   }
@@ -239,23 +247,43 @@ class _SubscriptionPlans extends HookWidget {
 class _Plan extends HookWidget {
   const _Plan({
     required this.value,
-    required this.lowest,
+    required this.allProducts,
     required this.onCompareFeaturesPressed,
   });
 
   final PurchasableProduct value;
-  final PurchasableProduct? lowest;
+  final List<PurchasableProduct> allProducts;
   final VoidCallback onCompareFeaturesPressed;
 
   @override
   Widget build(BuildContext context) {
-    final data = usePlanData(value, otherProduct: lowest);
+    final store = ProviderScope.containerOf(context, listen: false).read(subscriptionPlansStorePOD);
+    final upgradeStore =
+        ProviderScope.containerOf(context, listen: false).read(subscriptionUpgradeStorePOD);
 
-    return PlanCard.actions(
+    final allProducts = [...store.annualProducts, ...store.monthlyProducts];
+    final comparisonProduct = upgradeStore.getComparisonProduct(value, allProducts);
+
+    final data = usePlanData(product: value, otherProduct: comparisonProduct, isOffer: false);
+    final features = _getPreviewFeatures(store, value);
+
+    return PlanCard.features(
       data: data,
-      onPressed: onCompareFeaturesPressed,
-      text: LocaleKeys.subscriptionAllPlansCompare.tr(),
       value: value,
+      features: features,
+      viewMoreLabel: LocaleKeys.viewAllFeaturesBtn.tr(),
+      viewLessLabel: LocaleKeys.viewLessBtn.tr(),
     );
+  }
+
+  List<String> _getPreviewFeatures(SubscriptionPlansStore store, PurchasableProduct product) {
+    final config = store.findConfig(product);
+    final allFeatures = config.previewFeatures.map((it) => it.tr()).toList();
+
+    // Basic plan: show 3 features, Pro/Plus plan: show 4 features
+    final isBasic = config.name == LocaleKeys.subscriptionPlanNameBasic;
+    final featureCount = isBasic ? 3 : 4;
+
+    return allFeatures.take(featureCount).toList();
   }
 }
