@@ -106,8 +106,15 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
+                                SizedBox(height: theme.spacing.xl),
                                 ModalHeader(
-                                  emblem: const DecoratedIcon(icon: UntitledUI.stars_02),
+                                  emblem: const DecoratedIcon(
+                                    icon: UntitledUI.stars_02,
+                                    decoration: IconDecoration(
+                                      padding: EdgeInsets.all(14),
+                                      iconSize: 20,
+                                    ),
+                                  ),
                                   title: hasPlan
                                       ? LocaleKeys.subscriptionUpgradeModalTitle
                                           .tr(args: [planData.name])
@@ -159,6 +166,13 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                       children: [
                         ButtonPrimary(
                           onPressed: handlePurchase,
+                          decoration: ButtonDecoration(
+                            decorationColor: theme.palette.bgBrandPrimary,
+                            padding: EdgeInsets.symmetric(
+                              vertical: theme.spacing.lg,
+                              horizontal: 18,
+                            ),
+                          ),
                           child: Text(
                             hasPlan
                                 ? LocaleKeys.subscriptionUpgradeCTA.tr(args: [planData.name])

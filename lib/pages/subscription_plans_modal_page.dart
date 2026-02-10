@@ -71,6 +71,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
 
     return ModalScaffold(
       autoApplyPadding: false,
+      showGradient: false,
       body: SubscriptionStatusContainer(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -87,11 +88,12 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      SizedBox(height: theme.spacing.xl),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
                         child: ModalHeader(
                           title: LocaleKeys.subscriptionAllPlansTitle.tr(),
-                          description: LocaleKeys.subscriptionAllPlansDescription.tr(),
+                          titleStyle: theme.textStyles.textLg.semibold,
                         ),
                       ),
                       SizedBox(height: theme.spacing.xl2),
@@ -169,6 +171,13 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                 ButtonPrimary(
                   onPressed: handlePurchasePressed,
                   loading: isLoading.value ? const ButtonLoading() : null,
+                  decoration: ButtonDecoration(
+                    decorationColor: theme.palette.bgBrandPrimary,
+                    padding: EdgeInsets.symmetric(
+                      vertical: theme.spacing.lg,
+                      horizontal: 18,
+                    ),
+                  ),
                   child: Text(
                     (subscriptionStore.isSubscribed ?? false)
                         ? LocaleKeys.subscriptionAllPlansUpgrade.tr()

@@ -68,12 +68,21 @@ class SubscriptionComparisonTable extends HookConsumerWidget {
       [columns, config],
     );
 
+    final theme = Theme.of(context);
+
     return ComparisonTable(
       headerIndexColumn: ButtonTertiary(
         size: ButtonSize.small,
         onPressed: onShowPlansPressed,
-        leading: const Icon(UntitledUI.arrow_up),
-        child: Text(LocaleKeys.subscriptionAllPlansBackToPlans.tr()),
+        leading: Icon(
+          UntitledUI.arrow_up,
+          size: 16,
+          color: theme.palette.textPrimarySelected,
+        ),
+        child: Text(
+          LocaleKeys.subscriptionAllPlansBackToPlans.tr(),
+          style: theme.textStyles.textSm.regular.copyWith(color: theme.palette.textPrimarySelected),
+        ),
       ),
       headerColumns: Map.fromEntries(columns.map((it) => MapEntry(it, it.tr()))),
       features: features,
