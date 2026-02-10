@@ -2088,7 +2088,7 @@ class CodegenLoader extends AssetLoader {
         "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
     "subscriptionPlanMalwareBlockerDesc":
         "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
-    "notNowBtn": "Nicht jetzt",
+    "notNowBtn": "Nicht jetzt.",
     "viewAllFeaturesBtn": "Alle Funktionen anzeigen",
     "viewLessBtn": "Weniger anzeigen",
     "subscriptionPlanSaveWith": "Sparen Sie {percent}% mit einem {planId}-Tarif",
@@ -2672,7 +2672,7 @@ class CodegenLoader extends AssetLoader {
     "affordable": "Affordable",
     "allLocations": "All locations",
     "allowPermissionsBtn": "Allow",
-    "allowPushNotificationsBtn": "Allow Notifications",
+    "allowPushNotificationsBtn": "Allow notifications",
     "almostThere": "Almost there!",
     "and": " and ",
     "anonymityIsSafe":
@@ -3188,7 +3188,7 @@ class CodegenLoader extends AssetLoader {
         "Provides more precise location control than most VPNs, which typically limit you to selecting entire countries or states.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protects your device by stopping threats before they can reach it, running quietly in the background without interrupting you.",
-    "notNowBtn": "Not Now",
+    "notNowBtn": "Not now",
     "viewAllFeaturesBtn": "View all features",
     "viewLessBtn": "View less",
     "subscriptionPlanSaveWith": "Save {percent}% with a {planId} plan",

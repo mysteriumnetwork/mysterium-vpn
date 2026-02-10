@@ -482,7 +482,7 @@
   "subscriptionPlanResidentialIPsDesc": "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen und eine VPN-Erkennung vermeiden zu können.",
   "subscriptionPlanCityLevelDesc": "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
   "subscriptionPlanMalwareBlockerDesc": "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
-  "notNowBtn": "Nicht jetzt",
+  "notNowBtn": "Nicht jetzt.",
   "viewAllFeaturesBtn": "Alle Funktionen anzeigen",
   "viewLessBtn": "Weniger anzeigen",
   "subscriptionPlanSaveWith": "Sparen Sie {percent}% mit einem {planId}-Tarif",
