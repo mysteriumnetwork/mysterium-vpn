@@ -25,26 +25,25 @@ PlanData usePlanData({
       final isBestValue = store.bestValueProducts.any((it) => it.id == product.id);
       final config = store.findConfig(product);
       final period = switch (product.duration) {
-        1 => LocaleKeys.month.tr(),
-        12 => LocaleKeys.year.tr(),
+        1 => LocaleKeys.month,
+        12 => LocaleKeys.year,
         _ => '',
       };
 
       final discount = otherProduct != null
           ? useStorePrices
               ? otherProduct.periodDiscountPercentage(product)
-              : otherProduct.periodDiscountPercentage(product)
+              : otherProduct.discountPercentageBackend(product)
           : 0;
       final price = useStorePrices ? product.moneyMonthly : product.moneyMonthlyBackend;
       final money = useStorePrices ? product.money : product.backendMoney;
       final oldPrice = otherProduct != null
           ? useStorePrices
               ? otherProduct.moneyMonthly
-              : otherProduct.backendMoney
+              : otherProduct.moneyMonthlyBackend
           : null;
 
       return PlanData(
-        period: period,
         fullPriceLabel: LocaleKeys.fullPriceLabel.tr(),
         discountedLabel: LocaleKeys.discountedPriceLabel.tr(),
         isOffer: isOffer,

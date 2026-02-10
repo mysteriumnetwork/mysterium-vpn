@@ -77,7 +77,7 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                   otherProduct: monthlyComparison ?? store.purchasedProduct,
                   isOffer: true,
                 );
-                final planWithDuration = '${planData.name} 1-${planData.period.capitalize()}';
+                final planWithDuration = '${planData.name} 1-${planData.periodLabel.capitalize()}';
                 final handleSubscribe = useHandleSubscribeToProduct();
                 Future<void> handlePurchase() async {
                   await handleSubscribe(product.id);
