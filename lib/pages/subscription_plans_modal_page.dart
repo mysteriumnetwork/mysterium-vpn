@@ -228,14 +228,12 @@ class _SubscriptionPlans extends HookWidget {
                   child: _Plan(
                     value: product,
                     allProducts: allProducts,
-                    onCompareFeaturesPressed: onCompareFeaturesPressed,
                   ),
                 )
               else
                 _Plan(
                   value: product,
                   allProducts: allProducts,
-                  onCompareFeaturesPressed: onCompareFeaturesPressed,
                 ),
           ],
         ),
@@ -248,12 +246,10 @@ class _Plan extends HookWidget {
   const _Plan({
     required this.value,
     required this.allProducts,
-    required this.onCompareFeaturesPressed,
   });
 
   final PurchasableProduct value;
   final List<PurchasableProduct> allProducts;
-  final VoidCallback onCompareFeaturesPressed;
 
   @override
   Widget build(BuildContext context) {
