@@ -241,7 +241,6 @@ abstract class LocaleKeys {
   static const otherReason = 'otherReason';
   static const paymentMethod = 'paymentMethod';
   static const pendingTransactionMessage = 'pendingTransactionMessage';
-  static const perMonth = 'perMonth';
   static const plan_2_years = 'plan_2_years';
   static const plan_6_months = 'plan_6_months';
   static const plan_monthly = 'plan_monthly';
@@ -419,7 +418,6 @@ abstract class LocaleKeys {
   static const yearlyPlanFullPrice = 'yearlyPlanFullPrice';
   static const yes = 'yes';
   static const zh = 'zh';
-  static const subscriptionUpgradeModalTitle = 'subscriptionUpgradeModalTitle';
   static const subscriptionUpgradeModalDescription = 'subscriptionUpgradeModalDescription';
   static const subscriptionPlanBestValue = 'subscriptionPlanBestValue';
   static const subscriptionPlanPeriodMonth = 'subscriptionPlanPeriodMonth';
@@ -479,4 +477,14 @@ abstract class LocaleKeys {
   static const subscriptionPlanCityLevelDesc = 'subscriptionPlanCityLevelDesc';
   static const subscriptionPlanMalwareBlockerDesc = 'subscriptionPlanMalwareBlockerDesc';
   static const notNowBtn = 'notNowBtn';
+  static const viewAllFeaturesBtn = 'viewAllFeaturesBtn';
+  static const viewLessBtn = 'viewLessBtn';
+  static const subscriptionPlanSaveWith = 'subscriptionPlanSaveWith';
+  static const perMonth = 'perMonth';
+  static const subscriptionUpgradeModalTitle = 'subscriptionUpgradeModalTitle';
+  static const getSubscriptionModalTitle = 'getSubscriptionModalTitle';
+  static const getSubscriptionModalDesc = 'getSubscriptionModalDesc';
+  static const getSubscriptionPlanBtn = 'getSubscriptionPlanBtn';
+  static const fullPriceLabel = 'fullPriceLabel';
+  static const discountedPriceLabel = 'discountedPriceLabel';
 }

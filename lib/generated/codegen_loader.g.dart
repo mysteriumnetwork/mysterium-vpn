@@ -253,7 +253,6 @@ class CodegenLoader extends AssetLoader {
     "otherReason": "其他...",
     "paymentMethod": "付款方式：{method}",
     "pendingTransactionMessage": "您已经有一个正在进行的付款流程。请先完成该流程，然后再开始新的付款流程。",
-    "perMonth": " /月",
     "plan_2_years": "2年计划",
     "plan_6_months": "6 个月计划",
     "plan_monthly": "月度计划",
@@ -432,7 +431,6 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "是",
     "zh": "中国人",
-    "subscriptionUpgradeModalTitle": "升级到 {}",
     "subscriptionUpgradeModalDescription": "可访问 7500 多个住宅 IP 地址",
     "subscriptionPlanBestValue": "最佳性价比",
     "subscriptionPlanPeriodMonth": "莫",
@@ -453,18 +451,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Basic": "一次保护 6 台设备",
     "subscriptionPlanPF2Basic": "57个受支持国家",
     "subscriptionPlanPF3Basic": "10台服务器",
-    "subscriptionPlanPF4Basic": "WireGuard协议",
+    "subscriptionPlanPF4Basic": "VPN协议",
     "subscriptionPlanPF1Plus": "一次保护 10 台设备",
     "subscriptionPlanPF2Plus": "支持的国家/地区超过 100 个",
     "subscriptionPlanPF3Plus": "100台服务器",
-    "subscriptionPlanPF4Plus": "WireGuard协议",
+    "subscriptionPlanPF4Plus": "VPN协议",
     "subscriptionPlanPF5Plus": "7500+ 个住宅 IP 地址",
     "subscriptionPlanPF6Plus": "城市层面的选择",
     "subscriptionPlanMoneyBack": "7天退款保证",
     "subscriptionPlanDevicesSecured": "设备立即安全",
     "subscriptionPlanSupportedCountries": "支持的国家",
     "subscriptionPlanServers": "服务器",
-    "subscriptionPlanWireGuard": "WireGuard协议",
+    "subscriptionPlanWireGuard": "VPN协议",
     "subscriptionPlanDoubleVPN": "双 VPN",
     "subscriptionPlanResidentialIPs": "住宅 IP",
     "subscriptionPlanCityLevel": "城市层面的选择",
@@ -487,13 +485,23 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "打开系统设置",
     "emailNotificationsSetting": "电子邮件通知",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard - 速度快的协议，最适合游戏和流媒体；OpenVPN - 高度可配置的协议，在其他协议失效的情况下也能工作（Android 系统不支持）。",
+        "WireGuard——速度快，最适合游戏和流媒体播放\n\nOpenVPN——高度可配置的协议，在其他协议失效的情况下也能正常工作（Android 系统不支持）。",
     "subscriptionPlanDoubleVPNDesc":
         "额外的安全保障。它会将您的互联网流量路由到两个不同的 VPN 服务器，对您的数据进行双重加密，并将您的 IP 地址隐藏在第二台服务器之后。",
     "subscriptionPlanResidentialIPsDesc": "伪装成普通家庭用户，让您可以访问流媒体服务并避免 VPN 检测。",
     "subscriptionPlanCityLevelDesc": "它提供比大多数 VPN 更精确的位置控制，大多数 VPN 通常限制您只能选择整个国家或地区。",
     "subscriptionPlanMalwareBlockerDesc": "它能在威胁到达您的设备之前将其拦截，从而保护您的设备，并在后台静默运行，不会打扰您。",
-    "notNowBtn": "现在不要"
+    "notNowBtn": "现在不要",
+    "viewAllFeaturesBtn": "查看所有功能",
+    "viewLessBtn": "收起",
+    "subscriptionPlanSaveWith": "选择 {planId} 计划，节省 {percent}%。",
+    "perMonth": "莫",
+    "subscriptionUpgradeModalTitle": "升级到 {} 套餐",
+    "getSubscriptionModalTitle": "得到 {}",
+    "getSubscriptionModalDesc": "保护您的连接，立即享受私密浏览体验。",
+    "getSubscriptionPlanBtn": "获取 {} 计划",
+    "fullPriceLabel": "全价：",
+    "discountedPriceLabel": "仅有的"
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -759,7 +767,6 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Ödeme Yöntemi: {method}",
     "pendingTransactionMessage":
         "Halihazırda devam eden bir ödeme işleminiz var. Lütfen yeni bir ödeme işlemine başlamadan önce işlemi tamamlayın.",
-    "perMonth": " /ay",
     "plan_2_years": "2 Yıllık Plan",
     "plan_6_months": "6 Aylık Plan",
     "plan_monthly": "Aylık plan",
@@ -803,7 +810,7 @@ class CodegenLoader extends AssetLoader {
     "pt": "Portekizce",
     "purchased": "satın alındı",
     "purchasePromoCTA": "Haydi gidelim",
-    "purchasePromoEnds": "Uçlar {}",
+    "purchasePromoEnds": "Sonlar {}",
     "purchasePromoFeatures":
         "[\"100'den fazla ülke\", \"19.000'den fazla konut IP adresi\", \"7 günlük para iade garantisi\"]",
     "purchasePromoPPTOC": "{} ve {} sayfalarımızı okuyun.",
@@ -956,7 +963,6 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Evet",
     "zh": "Çince",
-    "subscriptionUpgradeModalTitle": "Şuna yükseltin: {}",
     "subscriptionUpgradeModalDescription": "7.500'den fazla konut IP adresine erişmek için",
     "subscriptionPlanBestValue": "En İyi Değer",
     "subscriptionPlanPeriodMonth": "mo",
@@ -977,18 +983,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Basic": "Aynı anda 6 cihazı güvenli hale getirin.",
     "subscriptionPlanPF2Basic": "57 desteklenen ülke",
     "subscriptionPlanPF3Basic": "10 sunucu",
-    "subscriptionPlanPF4Basic": "WireGuard protokolü",
+    "subscriptionPlanPF4Basic": "VPN protokolü",
     "subscriptionPlanPF1Plus": "Aynı anda 10 cihazı güvenli hale getirin.",
     "subscriptionPlanPF2Plus": "100'den fazla desteklenen ülke",
     "subscriptionPlanPF3Plus": "100 sunucu",
-    "subscriptionPlanPF4Plus": "WireGuard protokolü",
+    "subscriptionPlanPF4Plus": "VPN protokolü",
     "subscriptionPlanPF5Plus": "7.500'den fazla konut IP adresi",
     "subscriptionPlanPF6Plus": "Şehir düzeyindeki tercihler",
     "subscriptionPlanMoneyBack": "7 günlük para iade garantisi",
     "subscriptionPlanDevicesSecured": "Cihazlar aynı anda güvenli hale getirildi.",
     "subscriptionPlanSupportedCountries": "Desteklenen ülkeler",
     "subscriptionPlanServers": "Sunucular",
-    "subscriptionPlanWireGuard": "WireGuard protokolü",
+    "subscriptionPlanWireGuard": "VPN protokolü",
     "subscriptionPlanDoubleVPN": "Çift VPN",
     "subscriptionPlanResidentialIPs": "Konut IP'leri",
     "subscriptionPlanCityLevel": "Şehir düzeyindeki tercihler",
@@ -1012,7 +1018,7 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Sistem ayarlarını açın",
     "emailNotificationsSetting": "E-posta Bildirimleri",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard - oyun ve yayın akışı için en iyi olan hızlı protokol. OpenVPN - diğer protokollerin başarısız olduğu yerlerde çalışan, yüksek düzeyde yapılandırılabilir bir protokol (Android'de mevcut değil).",
+        "WireGuard - oyun ve yayın için en iyi hızlı protokol\nOpenVPN - diğer protokollerin başarısız olduğu yerlerde çalışan, yüksek düzeyde yapılandırılabilir bir protokol (Android'de mevcut değil)",
     "subscriptionPlanDoubleVPNDesc":
         "Ekstra güvenlik katmanı. İnternet trafiğinizi iki farklı VPN sunucusu üzerinden yönlendirir, verilerinizi iki kez şifreler ve IP adresinizi ikinci bir sunucunun arkasında gizler.",
     "subscriptionPlanResidentialIPsDesc":
@@ -1021,7 +1027,18 @@ class CodegenLoader extends AssetLoader {
         "Çoğu VPN'in aksine, daha hassas konum kontrolü sağlar; VPN'ler genellikle sizi tüm ülkeleri veya eyaletleri seçmekle sınırlandırır.",
     "subscriptionPlanMalwareBlockerDesc":
         "Cihazınıza ulaşmadan önce tehditleri durdurarak onu korur, sizi rahatsız etmeden arka planda sessizce çalışır.",
-    "notNowBtn": "Şimdi değil"
+    "notNowBtn": "Şimdi değil",
+    "viewAllFeaturesBtn": "Tüm özellikleri görüntüle",
+    "viewLessBtn": "Daha az göster",
+    "subscriptionPlanSaveWith": "{planId} planıyla % {percent} tasarruf edin",
+    "perMonth": "mo",
+    "subscriptionUpgradeModalTitle": "Planınızı yükseltin: {}",
+    "getSubscriptionModalTitle": "Elde etmek {}",
+    "getSubscriptionModalDesc":
+        "Bağlantınızı güvenli hale getirin ve anında özel taramanın keyfini çıkarın.",
+    "getSubscriptionPlanBtn": "{} planını al",
+    "fullPriceLabel": "Tam fiyat:",
+    "discountedPriceLabel": "Sadece"
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1264,7 +1281,6 @@ class CodegenLoader extends AssetLoader {
     "otherReason": "その他...",
     "paymentMethod": "支払い方法: {method}",
     "pendingTransactionMessage": "すでに支払いプロセスが進行中です。新しい支払いプロセスを開始する前に完了してください。",
-    "perMonth": " /月",
     "plan_2_years": "2年計画",
     "plan_6_months": "6 ヶ月プラン",
     "plan_monthly": "月額プラン",
@@ -1446,7 +1462,6 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "はい",
     "zh": "中国語",
-    "subscriptionUpgradeModalTitle": "{} にアップグレード",
     "subscriptionUpgradeModalDescription": "7,500以上の住宅IPにアクセス",
     "subscriptionPlanBestValue": "最高の価値",
     "subscriptionPlanPeriodMonth": "モ",
@@ -1467,18 +1482,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Basic": "一度に6台のデバイスを保護",
     "subscriptionPlanPF2Basic": "57か国でサポート",
     "subscriptionPlanPF3Basic": "10台のサーバー",
-    "subscriptionPlanPF4Basic": "WireGuardプロトコル",
+    "subscriptionPlanPF4Basic": "VPNプロトコル",
     "subscriptionPlanPF1Plus": "一度に10台のデバイスを保護",
     "subscriptionPlanPF2Plus": "100か国以上でサポート",
     "subscriptionPlanPF3Plus": "100台のサーバー",
-    "subscriptionPlanPF4Plus": "WireGuardプロトコル",
+    "subscriptionPlanPF4Plus": "VPNプロトコル",
     "subscriptionPlanPF5Plus": "7,500以上の住宅IP",
     "subscriptionPlanPF6Plus": "都市レベルの選択",
     "subscriptionPlanMoneyBack": "7日間返金保証",
     "subscriptionPlanDevicesSecured": "デバイスをすぐに保護",
     "subscriptionPlanSupportedCountries": "サポートされている国",
     "subscriptionPlanServers": "サーバー",
-    "subscriptionPlanWireGuard": "WireGuardプロトコル",
+    "subscriptionPlanWireGuard": "VPNプロトコル",
     "subscriptionPlanDoubleVPN": "ダブルVPN",
     "subscriptionPlanResidentialIPs": "住宅用IP",
     "subscriptionPlanCityLevel": "都市レベルの選択",
@@ -1501,14 +1516,24 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "システム設定を開く",
     "emailNotificationsSetting": "メール通知",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard - ゲームやストリーミングに最適な高速プロトコル OpenVPN - 他のプロトコルが機能しない場所でも機能する、高度に設定可能なプロトコル（Android では利用できません）",
+        "WireGuard - ゲームやストリーミングに最適な高速プロトコル\nOpenVPN - 他のプロトコルが機能しない場所でも動作する、高度に設定可能なプロトコル（Androidでは利用できません）",
     "subscriptionPlanDoubleVPNDesc":
         "さらなるセキュリティレイヤー。インターネットトラフィックを2つの異なるVPNサーバーにルーティングし、データを2回暗号化し、IPアドレスを2つ目のサーバーの背後に隠します。",
     "subscriptionPlanResidentialIPsDesc": "通常のホームユーザーとして表示され、ストリーミング サービスにアクセスして VPN 検出を回避できます。",
     "subscriptionPlanCityLevelDesc": "通常は国全体または州全体の選択に制限されるほとんどの VPN よりも正確な位置情報制御を提供します。",
     "subscriptionPlanMalwareBlockerDesc":
         "邪魔をすることなくバックグラウンドで静かに実行され、脅威がデバイスに到達する前に阻止することでデバイスを保護します。",
-    "notNowBtn": "今じゃない"
+    "notNowBtn": "今じゃない",
+    "viewAllFeaturesBtn": "すべての機能を見る",
+    "viewLessBtn": "表示を減らす",
+    "subscriptionPlanSaveWith": "{planId} プランで {percent}% 節約できます",
+    "perMonth": "モ",
+    "subscriptionUpgradeModalTitle": "{} プランにアップグレード",
+    "getSubscriptionModalTitle": "得る {}",
+    "getSubscriptionModalDesc": "接続を保護し、プライベートブラウジングをすぐに楽しむ",
+    "getSubscriptionPlanBtn": "{} プランを取得",
+    "fullPriceLabel": "定価:",
+    "discountedPriceLabel": "のみ"
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -1792,7 +1817,6 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Zahlungsmethode: {method}",
     "pendingTransactionMessage":
         "Sie haben bereits einen laufenden Zahlungsvorgang. Bitte schließen Sie ihn ab, bevor Sie einen neuen starten.",
-    "perMonth": " /Monat",
     "plan_2_years": "2-Jahres-Plan",
     "plan_6_months": "6-Monats-Abo",
     "plan_monthly": "Monatsabo",
@@ -1999,7 +2023,6 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Ja",
     "zh": "Chinesisch",
-    "subscriptionUpgradeModalTitle": "Upgrade auf {}",
     "subscriptionUpgradeModalDescription": "Zugriff auf mehr als 7.500 private IP-Adressen",
     "subscriptionPlanBestValue": "Bestes Preis-Leistungs-Verhältnis",
     "subscriptionPlanPeriodMonth": "mo",
@@ -2020,18 +2043,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Basic": "Sichern Sie 6 Geräte gleichzeitig",
     "subscriptionPlanPF2Basic": "57 unterstützte Länder",
     "subscriptionPlanPF3Basic": "10 Server",
-    "subscriptionPlanPF4Basic": "WireGuard-Protokoll",
+    "subscriptionPlanPF4Basic": "VPN-Protokoll",
     "subscriptionPlanPF1Plus": "Sichern Sie 10 Geräte gleichzeitig",
     "subscriptionPlanPF2Plus": "Mehr als 100 unterstützte Länder",
     "subscriptionPlanPF3Plus": "100 Server",
-    "subscriptionPlanPF4Plus": "WireGuard-Protokoll",
+    "subscriptionPlanPF4Plus": "VPN-Protokoll",
     "subscriptionPlanPF5Plus": "Mehr als 7.500 Wohn-IPs",
     "subscriptionPlanPF6Plus": "Entscheidungen auf Stadtebene",
     "subscriptionPlanMoneyBack": "7-Tage-Geld-zurück-Garantie",
     "subscriptionPlanDevicesSecured": "Geräte sofort gesichert",
     "subscriptionPlanSupportedCountries": "Unterstützte Länder",
     "subscriptionPlanServers": "Server",
-    "subscriptionPlanWireGuard": "WireGuard-Protokoll",
+    "subscriptionPlanWireGuard": "VPN-Protokoll",
     "subscriptionPlanDoubleVPN": "Doppeltes VPN",
     "subscriptionPlanResidentialIPs": "Wohn-IPs",
     "subscriptionPlanCityLevel": "Entscheidungen auf Stadtebene",
@@ -2056,7 +2079,7 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Systemeinstellungen öffnen",
     "emailNotificationsSetting": "E-Mail-Benachrichtigungen",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard – schnelles Protokoll, ideal für Gaming und Streaming. OpenVPN – hochgradig konfigurierbares Protokoll, das auch dort funktioniert, wo andere Protokolle versagen (nicht für Android verfügbar).",
+        "WireGuard – schnelles Protokoll, ideal für Gaming und Streaming\nOpenVPN – hochgradig konfigurierbares Protokoll, das auch dort funktioniert, wo andere Protokolle versagen (nicht für Android verfügbar)",
     "subscriptionPlanDoubleVPNDesc":
         "Zusätzliche Sicherheitsebene. Leitet Ihren Internetverkehr über zwei verschiedene VPN-Server, verschlüsselt Ihre Daten doppelt und maskiert Ihre IP-Adresse hinter einem zweiten Server.",
     "subscriptionPlanResidentialIPsDesc":
@@ -2065,7 +2088,18 @@ class CodegenLoader extends AssetLoader {
         "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
     "subscriptionPlanMalwareBlockerDesc":
         "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
-    "notNowBtn": "Nicht jetzt"
+    "notNowBtn": "Nicht jetzt",
+    "viewAllFeaturesBtn": "Alle Funktionen anzeigen",
+    "viewLessBtn": "Weniger anzeigen",
+    "subscriptionPlanSaveWith": "Sparen Sie {percent}% mit einem {planId}-Tarif",
+    "perMonth": "mo",
+    "subscriptionUpgradeModalTitle": "Upgrade auf den {}-Plan",
+    "getSubscriptionModalTitle": "Erhalten {}",
+    "getSubscriptionModalDesc":
+        "Sichern Sie Ihre Verbindung und genießen Sie sofort privates Surfen.",
+    "getSubscriptionPlanBtn": "{} Plan abrufen",
+    "fullPriceLabel": "Voller Preis:",
+    "discountedPriceLabel": "Nur"
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2340,7 +2374,6 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Método de pagamento: {method}",
     "pendingTransactionMessage":
         "Você já tem um processo de pagamento em andamento. Conclua-o antes de iniciar um novo.",
-    "perMonth": " /mês",
     "plan_2_years": "Plano de 2 anos",
     "plan_6_months": "Plano de 6 meses",
     "plan_monthly": "Plano mensal",
@@ -2547,7 +2580,6 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "sim",
     "zh": "Chinês",
-    "subscriptionUpgradeModalTitle": "Atualize para {}",
     "subscriptionUpgradeModalDescription": "para acessar mais de 7.500 IPs residenciais",
     "subscriptionPlanBestValue": "Melhor custo-benefício",
     "subscriptionPlanPeriodMonth": "mo",
@@ -2568,18 +2600,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Basic": "Proteja até 6 dispositivos simultaneamente.",
     "subscriptionPlanPF2Basic": "57 países apoiados",
     "subscriptionPlanPF3Basic": "10 servidores",
-    "subscriptionPlanPF4Basic": "Protocolo WireGuard",
+    "subscriptionPlanPF4Basic": "protocolo VPN",
     "subscriptionPlanPF1Plus": "Proteja até 10 dispositivos simultaneamente.",
     "subscriptionPlanPF2Plus": "Mais de 100 países apoiados",
     "subscriptionPlanPF3Plus": "100 servidores",
-    "subscriptionPlanPF4Plus": "Protocolo WireGuard",
+    "subscriptionPlanPF4Plus": "protocolo VPN",
     "subscriptionPlanPF5Plus": "Mais de 7.500 endereços IP residenciais",
     "subscriptionPlanPF6Plus": "Opções a nível municipal",
     "subscriptionPlanMoneyBack": "Garantia de reembolso de 7 dias",
     "subscriptionPlanDevicesSecured": "Dispositivos imediatamente protegidos",
     "subscriptionPlanSupportedCountries": "Países apoiados",
     "subscriptionPlanServers": "Servidores",
-    "subscriptionPlanWireGuard": "Protocolo WireGuard",
+    "subscriptionPlanWireGuard": "protocolo VPN",
     "subscriptionPlanDoubleVPN": "VPN dupla",
     "subscriptionPlanResidentialIPs": "IPs residenciais",
     "subscriptionPlanCityLevel": "Opções a nível municipal",
@@ -2603,7 +2635,7 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Abra as configurações do sistema",
     "emailNotificationsSetting": "Notificações por e-mail",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard - protocolo rápido, ideal para jogos e streaming. OpenVPN - protocolo altamente configurável que funciona onde outros protocolos falham (não disponível para Android).",
+        "WireGuard - protocolo rápido, ideal para jogos e streaming.\nOpenVPN - protocolo altamente configurável que funciona onde outros protocolos falham (não disponível para Android).",
     "subscriptionPlanDoubleVPNDesc":
         "Camada extra de segurança. Direciona seu tráfego de internet por meio de dois servidores VPN diferentes, criptografando seus dados duas vezes e mascarando seu endereço IP por trás de um segundo servidor.",
     "subscriptionPlanResidentialIPsDesc":
@@ -2612,7 +2644,18 @@ class CodegenLoader extends AssetLoader {
         "Oferece um controle de localização mais preciso do que a maioria das VPNs, que normalmente limitam você à seleção de países ou estados inteiros.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protege seu dispositivo, impedindo ameaças antes que elas o alcancem, funcionando silenciosamente em segundo plano sem interrompê-lo.",
-    "notNowBtn": "Agora não"
+    "notNowBtn": "Agora não",
+    "viewAllFeaturesBtn": "Ver todas as funcionalidades",
+    "viewLessBtn": "Ver menos",
+    "subscriptionPlanSaveWith": "Economize {percent}% com um plano {planId}",
+    "perMonth": "mo",
+    "subscriptionUpgradeModalTitle": "Faça upgrade para o plano {}",
+    "getSubscriptionModalTitle": "Pegar {}",
+    "getSubscriptionModalDesc":
+        "Proteja sua conexão e desfrute de navegação privada instantaneamente.",
+    "getSubscriptionPlanBtn": "Obtenha o plano {}",
+    "fullPriceLabel": "Preço integral:",
+    "discountedPriceLabel": "Apenas"
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -2880,7 +2923,6 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Payment Method: {method}",
     "pendingTransactionMessage":
         "You already have an ongoing payment transaction. Please complete it before starting a new one.",
-    "perMonth": " /month",
     "plan_2_years": "2 Year Plan",
     "plan_6_months": "6-Months Plan",
     "plan_monthly": "Monthly Plan",
@@ -3082,7 +3124,6 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Yes",
     "zh": "Chinese",
-    "subscriptionUpgradeModalTitle": "Upgrade to {}",
     "subscriptionUpgradeModalDescription": "to access 7.500+ residential IPs",
     "subscriptionPlanBestValue": "Best Value",
     "subscriptionPlanPeriodMonth": "mo",
@@ -3103,18 +3144,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Basic": "Secure 6 devices at a time",
     "subscriptionPlanPF2Basic": "57 supported countries",
     "subscriptionPlanPF3Basic": "10 servers",
-    "subscriptionPlanPF4Basic": "WireGuard protocol",
+    "subscriptionPlanPF4Basic": "VPN protocol",
     "subscriptionPlanPF1Plus": "Secure 10 devices at a time",
     "subscriptionPlanPF2Plus": "100+ supported countries",
     "subscriptionPlanPF3Plus": "100 servers",
-    "subscriptionPlanPF4Plus": "WireGuard protocol",
+    "subscriptionPlanPF4Plus": "VPN protocol",
     "subscriptionPlanPF5Plus": "7.500+ residential IPs",
     "subscriptionPlanPF6Plus": "City-level choices",
     "subscriptionPlanMoneyBack": "7-day money-back guarantee",
     "subscriptionPlanDevicesSecured": "Devices secured at once",
     "subscriptionPlanSupportedCountries": "Supported countries",
     "subscriptionPlanServers": "Servers",
-    "subscriptionPlanWireGuard": "WireGuard protocol",
+    "subscriptionPlanWireGuard": "VPN protocol",
     "subscriptionPlanDoubleVPN": "Double VPN",
     "subscriptionPlanResidentialIPs": "Residential IPs",
     "subscriptionPlanCityLevel": "City-level choices",
@@ -3138,7 +3179,7 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Open system settings",
     "emailNotificationsSetting": "Email Notifications",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard - fast protocol best for gaming and streaming OpenVPN - highly configurable protocol that works where other protocols fail (not available on Android)",
+        "WireGuard - fast protocol best for gaming and streaming\nOpenVPN - highly configurable protocol that works where other protocols fail (not available on Android)",
     "subscriptionPlanDoubleVPNDesc":
         "Extra layer of security. Routes your internet traffic through two different VPN servers, encrypting your data twice and masking your IP address behind a second server",
     "subscriptionPlanResidentialIPsDesc":
@@ -3147,7 +3188,17 @@ class CodegenLoader extends AssetLoader {
         "Provides more precise location control than most VPNs, which typically limit you to selecting entire countries or states.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protects your device by stopping threats before they can reach it, running quietly in the background without interrupting you.",
-    "notNowBtn": "Not Now"
+    "notNowBtn": "Not Now",
+    "viewAllFeaturesBtn": "View all features",
+    "viewLessBtn": "View less",
+    "subscriptionPlanSaveWith": "Save {percent}% with a {planId} plan",
+    "perMonth": "mo",
+    "subscriptionUpgradeModalTitle": "Upgrade to {} plan",
+    "getSubscriptionModalTitle": "Get {}",
+    "getSubscriptionModalDesc": "Secure your connection and enjoy private browsing instantly",
+    "getSubscriptionPlanBtn": "Get {} plan",
+    "fullPriceLabel": "Full price:",
+    "discountedPriceLabel": "Only"
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3425,7 +3476,6 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Metodo di pagamento: {method}",
     "pendingTransactionMessage":
         "Hai già un processo di pagamento in corso. Completalo prima di iniziarne uno nuovo.",
-    "perMonth": " /mese",
     "plan_2_years": "Piano biennale",
     "plan_6_months": "Piano semestrale",
     "plan_monthly": "Piano mensile",
@@ -3631,7 +3681,6 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sì",
     "zh": "Cinese",
-    "subscriptionUpgradeModalTitle": "Aggiorna a {}",
     "subscriptionUpgradeModalDescription": "per accedere a oltre 7.500 IP residenziali",
     "subscriptionPlanBestValue": "Miglior valore",
     "subscriptionPlanPeriodMonth": "mio",
@@ -3652,18 +3701,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Basic": "Proteggi 6 dispositivi alla volta",
     "subscriptionPlanPF2Basic": "57 paesi supportati",
     "subscriptionPlanPF3Basic": "10 server",
-    "subscriptionPlanPF4Basic": "Protocollo WireGuard",
+    "subscriptionPlanPF4Basic": "Protocollo VPN",
     "subscriptionPlanPF1Plus": "Proteggi 10 dispositivi alla volta",
     "subscriptionPlanPF2Plus": "Oltre 100 paesi supportati",
     "subscriptionPlanPF3Plus": "100 server",
-    "subscriptionPlanPF4Plus": "Protocollo WireGuard",
+    "subscriptionPlanPF4Plus": "Protocollo VPN",
     "subscriptionPlanPF5Plus": "Oltre 7.500 IP residenziali",
     "subscriptionPlanPF6Plus": "Scelte a livello di città",
     "subscriptionPlanMoneyBack": "Garanzia di rimborso di 7 giorni",
     "subscriptionPlanDevicesSecured": "Dispositivi protetti contemporaneamente",
     "subscriptionPlanSupportedCountries": "Paesi supportati",
     "subscriptionPlanServers": "Server",
-    "subscriptionPlanWireGuard": "Protocollo WireGuard",
+    "subscriptionPlanWireGuard": "Protocollo VPN",
     "subscriptionPlanDoubleVPN": "Doppia VPN",
     "subscriptionPlanResidentialIPs": "IP residenziali",
     "subscriptionPlanCityLevel": "Scelte a livello di città",
@@ -3687,7 +3736,7 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Apri le impostazioni di sistema",
     "emailNotificationsSetting": "Notifiche e-mail",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard: protocollo veloce ideale per giochi e streaming OpenVPN: protocollo altamente configurabile che funziona dove altri protocolli falliscono (non disponibile su Android)",
+        "WireGuard: protocollo veloce, ideale per gaming e streaming.\nOpenVPN: protocollo altamente configurabile che funziona dove altri protocolli falliscono (non disponibile su Android).",
     "subscriptionPlanDoubleVPNDesc":
         "Livello di sicurezza aggiuntivo. Instrada il tuo traffico Internet attraverso due server VPN diversi, crittografando i tuoi dati due volte e mascherando il tuo indirizzo IP dietro un secondo server.",
     "subscriptionPlanResidentialIPsDesc":
@@ -3696,7 +3745,18 @@ class CodegenLoader extends AssetLoader {
         "Fornisce un controllo della posizione più preciso rispetto alla maggior parte delle VPN, che in genere limitano la selezione a interi paesi o stati.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protegge il tuo dispositivo bloccando le minacce prima che possano raggiungerlo, eseguendo silenziosamente in background senza interromperti.",
-    "notNowBtn": "Non adesso"
+    "notNowBtn": "Non adesso",
+    "viewAllFeaturesBtn": "Visualizza tutte le funzionalità",
+    "viewLessBtn": "Visualizza meno",
+    "subscriptionPlanSaveWith": "Risparmia il {percent}% con un piano {planId}",
+    "perMonth": "mio",
+    "subscriptionUpgradeModalTitle": "Passa al piano {}",
+    "getSubscriptionModalTitle": "Ottenere {}",
+    "getSubscriptionModalDesc":
+        "Proteggi la tua connessione e goditi subito una navigazione privata",
+    "getSubscriptionPlanBtn": "Ottieni il piano {}",
+    "fullPriceLabel": "Prezzo intero:",
+    "discountedPriceLabel": "Soltanto"
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -3978,7 +4038,6 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Méthode de paiement : {method}",
     "pendingTransactionMessage":
         "Vous avez déjà un processus de paiement en cours. Veuillez le terminer avant d'en démarrer un nouveau.",
-    "perMonth": " /mois",
     "plan_2_years": "Plan de 2 ans",
     "plan_6_months": "Plan de 6 mois",
     "plan_monthly": "Plan mensuel",
@@ -4187,7 +4246,6 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Oui",
     "zh": "Chinois",
-    "subscriptionUpgradeModalTitle": "Passez à {}",
     "subscriptionUpgradeModalDescription":
         "pour accéder à plus de 7 500 adresses IP résidentielles",
     "subscriptionPlanBestValue": "Meilleure valeur",
@@ -4209,18 +4267,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Basic": "Sécurisez 6 appareils simultanément.",
     "subscriptionPlanPF2Basic": "57 pays soutenus",
     "subscriptionPlanPF3Basic": "10 serveurs",
-    "subscriptionPlanPF4Basic": "Protocole WireGuard",
+    "subscriptionPlanPF4Basic": "Protocole VPN",
     "subscriptionPlanPF1Plus": "Sécurisez 10 appareils simultanément.",
     "subscriptionPlanPF2Plus": "Plus de 100 pays pris en charge",
     "subscriptionPlanPF3Plus": "100 serveurs",
-    "subscriptionPlanPF4Plus": "Protocole WireGuard",
+    "subscriptionPlanPF4Plus": "Protocole VPN",
     "subscriptionPlanPF5Plus": "Plus de 7 500 adresses IP résidentielles",
     "subscriptionPlanPF6Plus": "choix au niveau de la ville",
     "subscriptionPlanMoneyBack": "Garantie de remboursement de 7 jours",
     "subscriptionPlanDevicesSecured": "Appareils sécurisés simultanément",
     "subscriptionPlanSupportedCountries": "Pays pris en charge",
     "subscriptionPlanServers": "Serveurs",
-    "subscriptionPlanWireGuard": "Protocole WireGuard",
+    "subscriptionPlanWireGuard": "Protocole VPN",
     "subscriptionPlanDoubleVPN": "Double VPN",
     "subscriptionPlanResidentialIPs": "Adresses IP résidentielles",
     "subscriptionPlanCityLevel": "choix au niveau de la ville",
@@ -4244,7 +4302,7 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Ouvrir les paramètres système",
     "emailNotificationsSetting": "Notifications par e-mail",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard : protocole rapide idéal pour les jeux et le streaming. OpenVPN : protocole hautement configurable qui fonctionne là où d’autres protocoles échouent (non disponible sur Android).",
+        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable fonctionnant là où d’autres protocoles échouent (non disponible sur Android).",
     "subscriptionPlanDoubleVPNDesc":
         "Couche de sécurité supplémentaire. Votre trafic internet est acheminé via deux serveurs VPN différents, ce qui chiffre vos données deux fois et masque votre adresse IP derrière un second serveur.",
     "subscriptionPlanResidentialIPsDesc":
@@ -4253,7 +4311,18 @@ class CodegenLoader extends AssetLoader {
         "Offre un contrôle de localisation plus précis que la plupart des VPN, qui vous limitent généralement à la sélection de pays ou d'États entiers.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protège votre appareil en bloquant les menaces avant qu'elles ne l'atteignent, fonctionnant discrètement en arrière-plan sans vous interrompre.",
-    "notNowBtn": "Pas maintenant"
+    "notNowBtn": "Pas maintenant",
+    "viewAllFeaturesBtn": "Afficher toutes les fonctionnalités",
+    "viewLessBtn": "Afficher moins",
+    "subscriptionPlanSaveWith": "Économisez {percent}% avec un forfait {planId}",
+    "perMonth": "mo",
+    "subscriptionUpgradeModalTitle": "Passez au forfait {}",
+    "getSubscriptionModalTitle": "Obtenir {}",
+    "getSubscriptionModalDesc":
+        "Sécurisez votre connexion et profitez instantanément d'une navigation privée.",
+    "getSubscriptionPlanBtn": "Obtenez le plan {}",
+    "fullPriceLabel": "Prix ​​plein :",
+    "discountedPriceLabel": "Seulement"
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4523,7 +4592,6 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Metode Pembayaran: {method}",
     "pendingTransactionMessage":
         "Anda sudah memiliki proses pembayaran yang sedang berjalan. Harap selesaikan sebelum memulai yang baru.",
-    "perMonth": " /bulan",
     "plan_2_years": "Paket 2 Tahun",
     "plan_6_months": "Paket 6 Bulan",
     "plan_monthly": "Rencana bulanan",
@@ -4725,7 +4793,6 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Iya",
     "zh": "Cina",
-    "subscriptionUpgradeModalTitle": "Tingkatkan ke {}",
     "subscriptionUpgradeModalDescription": "untuk mengakses 7.500+ IP residensial",
     "subscriptionPlanBestValue": "Nilai Terbaik",
     "subscriptionPlanPeriodMonth": "mo",
@@ -4746,18 +4813,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Basic": "Amankan 6 perangkat sekaligus.",
     "subscriptionPlanPF2Basic": "57 negara yang didukung",
     "subscriptionPlanPF3Basic": "10 server",
-    "subscriptionPlanPF4Basic": "Protokol WireGuard",
+    "subscriptionPlanPF4Basic": "Protokol VPN",
     "subscriptionPlanPF1Plus": "Amankan 10 perangkat sekaligus.",
     "subscriptionPlanPF2Plus": "Lebih dari 100 negara yang didukung",
     "subscriptionPlanPF3Plus": "100 server",
-    "subscriptionPlanPF4Plus": "Protokol WireGuard",
+    "subscriptionPlanPF4Plus": "Protokol VPN",
     "subscriptionPlanPF5Plus": "7.500+ IP residensial",
     "subscriptionPlanPF6Plus": "Pilihan tingkat kota",
     "subscriptionPlanMoneyBack": "Garansi uang kembali 7 hari",
     "subscriptionPlanDevicesSecured": "Perangkat diamankan sekaligus",
     "subscriptionPlanSupportedCountries": "Negara-negara yang didukung",
     "subscriptionPlanServers": "Server",
-    "subscriptionPlanWireGuard": "Protokol WireGuard",
+    "subscriptionPlanWireGuard": "Protokol VPN",
     "subscriptionPlanDoubleVPN": "VPN Ganda",
     "subscriptionPlanResidentialIPs": "IP Perumahan",
     "subscriptionPlanCityLevel": "Pilihan tingkat kota",
@@ -4781,7 +4848,7 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Buka pengaturan sistem",
     "emailNotificationsSetting": "Notifikasi Email",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard - protokol cepat terbaik untuk bermain game dan streaming. OpenVPN - protokol yang sangat mudah dikonfigurasi dan berfungsi di tempat protokol lain gagal (tidak tersedia di Android).",
+        "WireGuard - protokol cepat terbaik untuk bermain game dan streaming\nOpenVPN - protokol yang sangat mudah dikonfigurasi yang berfungsi di tempat protokol lain gagal (tidak tersedia di Android)",
     "subscriptionPlanDoubleVPNDesc":
         "Lapisan keamanan ekstra. Mengarahkan lalu lintas internet Anda melalui dua server VPN yang berbeda, mengenkripsi data Anda dua kali dan menyembunyikan alamat IP Anda di balik server kedua.",
     "subscriptionPlanResidentialIPsDesc":
@@ -4790,7 +4857,18 @@ class CodegenLoader extends AssetLoader {
         "Menyediakan kontrol lokasi yang lebih tepat daripada kebanyakan VPN, yang biasanya membatasi Anda untuk memilih seluruh negara atau wilayah.",
     "subscriptionPlanMalwareBlockerDesc":
         "Melindungi perangkat Anda dengan menghentikan ancaman sebelum mencapai perangkat, berjalan dengan tenang di latar belakang tanpa mengganggu Anda.",
-    "notNowBtn": "Tidak sekarang"
+    "notNowBtn": "Tidak sekarang",
+    "viewAllFeaturesBtn": "Lihat semua fitur",
+    "viewLessBtn": "Tampilkan lebih sedikit",
+    "subscriptionPlanSaveWith": "Hemat {percent}% dengan paket {planId}",
+    "perMonth": "mo",
+    "subscriptionUpgradeModalTitle": "Tingkatkan ke paket {}",
+    "getSubscriptionModalTitle": "Mendapatkan {}",
+    "getSubscriptionModalDesc":
+        "Amankan koneksi Anda dan nikmati penjelajahan pribadi secara instan.",
+    "getSubscriptionPlanBtn": "Dapatkan paket {}",
+    "fullPriceLabel": "Harga penuh:",
+    "discountedPriceLabel": "Hanya"
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5068,7 +5146,6 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "Método de pago: {method}",
     "pendingTransactionMessage":
         "Ya tienes un proceso de pago en curso. Termínalo antes de comenzar uno nuevo.",
-    "perMonth": " /mes",
     "plan_2_years": "Plan de 2 años",
     "plan_6_months": "Plan de 6 meses",
     "plan_monthly": "Plan mensual",
@@ -5274,7 +5351,6 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "Sí",
     "zh": "Chino",
-    "subscriptionUpgradeModalTitle": "Actualizar a {}",
     "subscriptionUpgradeModalDescription": "para acceder a más de 7.500 IP residenciales",
     "subscriptionPlanBestValue": "Mejor valor",
     "subscriptionPlanPeriodMonth": "mes",
@@ -5295,18 +5371,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Basic": "Asegure 6 dispositivos a la vez",
     "subscriptionPlanPF2Basic": "57 países admitidos",
     "subscriptionPlanPF3Basic": "10 servidores",
-    "subscriptionPlanPF4Basic": "Protocolo WireGuard",
+    "subscriptionPlanPF4Basic": "Protocolo VPN",
     "subscriptionPlanPF1Plus": "Asegure 10 dispositivos a la vez",
     "subscriptionPlanPF2Plus": "Más de 100 países compatibles",
     "subscriptionPlanPF3Plus": "100 servidores",
-    "subscriptionPlanPF4Plus": "Protocolo WireGuard",
+    "subscriptionPlanPF4Plus": "Protocolo VPN",
     "subscriptionPlanPF5Plus": "Más de 7.500 IP residenciales",
     "subscriptionPlanPF6Plus": "Decisiones a nivel de ciudad",
     "subscriptionPlanMoneyBack": "Garantía de devolución de dinero de 7 días",
     "subscriptionPlanDevicesSecured": "Dispositivos asegurados a la vez",
     "subscriptionPlanSupportedCountries": "Países admitidos",
     "subscriptionPlanServers": "Servidores",
-    "subscriptionPlanWireGuard": "Protocolo WireGuard",
+    "subscriptionPlanWireGuard": "Protocolo VPN",
     "subscriptionPlanDoubleVPN": "Doble VPN",
     "subscriptionPlanResidentialIPs": "IP residenciales",
     "subscriptionPlanCityLevel": "Decisiones a nivel de ciudad",
@@ -5330,7 +5406,7 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Abra la configuración del sistema",
     "emailNotificationsSetting": "Notificaciones por correo electrónico",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard: protocolo rápido ideal para juegos y streaming OpenVPN: protocolo altamente configurable que funciona donde otros protocolos fallan (no disponible en Android)",
+        "WireGuard: protocolo rápido ideal para juegos y streaming.\nOpenVPN: protocolo altamente configurable que funciona donde otros protocolos fallan (no disponible en Android).",
     "subscriptionPlanDoubleVPNDesc":
         "Capa adicional de seguridad. Enruta tu tráfico de internet a través de dos servidores VPN diferentes, cifrando tus datos dos veces y ocultando tu dirección IP tras un segundo servidor.",
     "subscriptionPlanResidentialIPsDesc":
@@ -5339,7 +5415,18 @@ class CodegenLoader extends AssetLoader {
         "Proporciona un control de ubicación más preciso que la mayoría de las VPN, que normalmente lo limitan a seleccionar países o estados enteros.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protege su dispositivo deteniendo las amenazas antes de que puedan alcanzarlo, ejecutándose silenciosamente en segundo plano sin interrumpirlo.",
-    "notNowBtn": "Ahora no"
+    "notNowBtn": "Ahora no",
+    "viewAllFeaturesBtn": "Ver todas las funciones",
+    "viewLessBtn": "Ver menos",
+    "subscriptionPlanSaveWith": "Ahorre un {percent}% con un plan {planId}",
+    "perMonth": "mes",
+    "subscriptionUpgradeModalTitle": "Actualice al plan {}",
+    "getSubscriptionModalTitle": "Conseguir {}",
+    "getSubscriptionModalDesc":
+        "Protege tu conexión y disfruta de una navegación privada al instante",
+    "getSubscriptionPlanBtn": "Obtener el plan {}",
+    "fullPriceLabel": "Precio completo:",
+    "discountedPriceLabel": "Solo"
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5601,7 +5688,6 @@ class CodegenLoader extends AssetLoader {
     "paymentMethod": "طريقة الدفع: {method}",
     "pendingTransactionMessage":
         "لديك بالفعل عملية دفع جارية. يرجى إكمالها قبل بدء عملية دفع جديدة.",
-    "perMonth": " /شهر",
     "plan_2_years": "خطة لمدة عامين",
     "plan_6_months": "خطة 6 أشهر",
     "plan_monthly": "خطة شهرية",
@@ -5796,7 +5882,6 @@ class CodegenLoader extends AssetLoader {
     "yearlyPlanFullPrice": "{amount}",
     "yes": "نعم",
     "zh": "صينى",
-    "subscriptionUpgradeModalTitle": "الترقية إلى {}",
     "subscriptionUpgradeModalDescription": "للوصول إلى أكثر من 7500 عنوان IP سكني",
     "subscriptionPlanBestValue": "أفضل قيمة",
     "subscriptionPlanPeriodMonth": "شهر",
@@ -5817,18 +5902,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Basic": "تأمين 6 أجهزة في وقت واحد",
     "subscriptionPlanPF2Basic": "57 دولة مدعومة",
     "subscriptionPlanPF3Basic": "10 خوادم",
-    "subscriptionPlanPF4Basic": "بروتوكول واير جارد",
+    "subscriptionPlanPF4Basic": "بروتوكول VPN",
     "subscriptionPlanPF1Plus": "قم بتأمين 10 أجهزة في وقت واحد",
     "subscriptionPlanPF2Plus": "أكثر من 100 دولة مدعومة",
     "subscriptionPlanPF3Plus": "100 خادم",
-    "subscriptionPlanPF4Plus": "بروتوكول واير جارد",
+    "subscriptionPlanPF4Plus": "بروتوكول VPN",
     "subscriptionPlanPF5Plus": "أكثر من 7500 عنوان IP سكني",
     "subscriptionPlanPF6Plus": "خيارات على مستوى المدينة",
     "subscriptionPlanMoneyBack": "ضمان استرداد الأموال لمدة 7 أيام",
     "subscriptionPlanDevicesSecured": "تأمين الأجهزة على الفور",
     "subscriptionPlanSupportedCountries": "الدول المدعومة",
     "subscriptionPlanServers": "الخوادم",
-    "subscriptionPlanWireGuard": "بروتوكول واير جارد",
+    "subscriptionPlanWireGuard": "بروتوكول VPN",
     "subscriptionPlanDoubleVPN": "VPN مزدوج",
     "subscriptionPlanResidentialIPs": "عناوين IP السكنية",
     "subscriptionPlanCityLevel": "خيارات على مستوى المدينة",
@@ -5852,7 +5937,7 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "افتح إعدادات النظام",
     "emailNotificationsSetting": "إشعارات البريد الإلكتروني",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard - بروتوكول سريع مثالي للألعاب والبث المباشر. OpenVPN - بروتوكول قابل للتخصيص بدرجة عالية ويعمل حيث تفشل البروتوكولات الأخرى (غير متوفر على نظام Android).",
+        "واير جارد - بروتوكول سريع، مثالي للألعاب والبث المباشر\nأوبن في بي إن - بروتوكول قابل للتخصيص بدرجة عالية، يعمل في الحالات التي تفشل فيها البروتوكولات الأخرى (غير متوفر على أندرويد)",
     "subscriptionPlanDoubleVPNDesc":
         "طبقة أمان إضافية. يقوم بتوجيه حركة مرور الإنترنت الخاصة بك عبر خادمين VPN مختلفين، مما يؤدي إلى تشفير بياناتك مرتين وإخفاء عنوان IP الخاص بك خلف خادم ثانٍ.",
     "subscriptionPlanResidentialIPsDesc":
@@ -5861,7 +5946,17 @@ class CodegenLoader extends AssetLoader {
         "يوفر تحكمًا أكثر دقة في الموقع مقارنة بمعظم شبكات VPN، والتي عادةً ما تحد من اختيارك لبلدان أو ولايات بأكملها.",
     "subscriptionPlanMalwareBlockerDesc":
         "يحمي جهازك عن طريق إيقاف التهديدات قبل أن تتمكن من الوصول إليه، ويعمل بهدوء في الخلفية دون مقاطعتك.",
-    "notNowBtn": "ليس الآن"
+    "notNowBtn": "ليس الآن",
+    "viewAllFeaturesBtn": "عرض جميع الميزات",
+    "viewLessBtn": "عرض أقل",
+    "subscriptionPlanSaveWith": "وفر {percent}% مع خطة {planId}",
+    "perMonth": "شهر",
+    "subscriptionUpgradeModalTitle": "الترقية إلى خطة {}",
+    "getSubscriptionModalTitle": "يحصل {}",
+    "getSubscriptionModalDesc": "قم بتأمين اتصالك واستمتع بتصفح خاص على الفور",
+    "getSubscriptionPlanBtn": "احصل على خطة {}",
+    "fullPriceLabel": "السعر الكامل:",
+    "discountedPriceLabel": "فقط"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,
