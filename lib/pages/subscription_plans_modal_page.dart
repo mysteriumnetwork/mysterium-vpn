@@ -261,7 +261,6 @@ class _Plan extends HookWidget {
     final upgradeStore =
         ProviderScope.containerOf(context, listen: false).read(subscriptionUpgradeStorePOD);
 
-    final allProducts = [...store.annualProducts, ...store.monthlyProducts];
     final comparisonProduct = upgradeStore.getComparisonProduct(value, allProducts);
 
     final data = usePlanData(product: value, otherProduct: comparisonProduct, isOffer: false);
