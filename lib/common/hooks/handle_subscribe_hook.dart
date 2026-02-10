@@ -9,7 +9,6 @@ FutureOr<void> Function({bool manageSubscription}) useHandleSubscribe() {
       final ref = ProviderScope.containerOf(context, listen: false);
       final sessionStore = ref.read(authSessionStorePOD);
       final subscriptionStore = ref.read(subscriptionStorePOD);
-      final upgradeSubscriptionStore = ref.read(subscriptionUpgradeStorePOD);
       final subscriptionPurchaseStore = ref.read(subscriptionPurchaseStorePOD);
       final remoteConfigStore = ref.read(remoteConfigStorePOD);
 
@@ -22,7 +21,6 @@ FutureOr<void> Function({bool manageSubscription}) useHandleSubscribe() {
         }
         await handleOnBillingPage(
           context: context,
-          upgradeProduct: upgradeSubscriptionStore.upgradeProduct,
           manageSubscriptionPage: remoteConfigStore.manageSubscriptionPage,
           upgradeSubscriptionPage: remoteConfigStore.upgradeSubscriptionPage,
           gateway: subscription.gateway,
