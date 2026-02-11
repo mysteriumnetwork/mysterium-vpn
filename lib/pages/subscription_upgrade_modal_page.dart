@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart';
 import 'package:mysterium_vpn/common/hooks/plan_data_hook.dart';
@@ -57,7 +58,47 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
           builder: (context) {
             final product = store.bestValueProducts.lastOrNull;
             final subscription = subscriptionStore.subscriptionFuture.value;
-            if (product == null || subscription == null) {
+            final subscriptionStatus = subscriptionStore.subscriptionFuture.status;
+
+            // Handle loading state
+            if (product == null || subscriptionStatus == FutureStatus.pending) {
+              return const Center(
+                child: LoadingIndicator(),
+              );
+            }
+
+            // Handle error state - future was rejected
+            if (subscriptionStatus == FutureStatus.rejected) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      UntitledUI.alert_circle,
+                      size: 48,
+                      color: Theme.of(context).palette.textTertiary,
+                    ),
+                    SizedBox(height: Theme.of(context).spacing.lg),
+                    Text(
+                      LocaleKeys.somethingWentWrong.tr(),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textStyles.textMd.regular,
+                    ),
+                    SizedBox(height: Theme.of(context).spacing.lg),
+                    ButtonPrimary(
+                      onPressed: subscriptionStore.refreshSubscription,
+                      decoration: ButtonDecoration(
+                        decorationColor: Theme.of(context).palette.bgBrandPrimary,
+                      ),
+                      child: Text(LocaleKeys.retryBtn.tr()),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            // Subscription data should be available at this point
+            if (subscription == null) {
               return const Center(
                 child: LoadingIndicator(),
               );
