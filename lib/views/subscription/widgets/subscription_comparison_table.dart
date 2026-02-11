@@ -74,6 +74,9 @@ class SubscriptionComparisonTable extends HookConsumerWidget {
       headerIndexColumn: ButtonTertiary(
         size: ButtonSize.small,
         onPressed: onShowPlansPressed,
+        decoration: const ButtonDecoration(
+          padding: EdgeInsets.zero,
+        ),
         leading: Icon(
           UntitledUI.arrow_up,
           size: 16,
