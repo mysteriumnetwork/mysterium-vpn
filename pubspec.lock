@@ -1299,7 +1299,7 @@ packages:
     description:
       path: "."
       ref: update-subscription-plans-design
-      resolved-ref: "79ca5c1f9cafca6a04310cbbf81a8492934decdd"
+      resolved-ref: dadfb9ad4211c17054cc95a9f64ad4cda2ff7d21
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
