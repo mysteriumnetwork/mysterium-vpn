@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/subscription_status.dart';
 import 'package:mysterium_vpn/common/extensions/scroll_controller_extensions.dart';
 import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
@@ -55,7 +56,13 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
       if (status?.isError ?? false) {
         showError(purchaseStore.subscriptionError);
       }
+      if (status == SubscriptionStatus.canceled) {
+        return;
+      }
       if (status != null && !status.isLoading) {
+        if (status == SubscriptionStatus.purchased) {
+          showSnackbar(LocaleKeys.subscriptionActive.tr());
+        }
         Navigator.of(context).pop();
         subscriptionStore.refreshAll().ignore();
       }

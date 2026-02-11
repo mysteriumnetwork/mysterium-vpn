@@ -5,8 +5,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/subscription_status.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/plan_data_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
@@ -42,9 +44,30 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(subscriptionPlansStorePOD);
     final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final purchaseStore = ref.watch(subscriptionPurchaseStorePOD);
 
     final theme = Theme.of(context);
     final scrollController = useScrollController();
+    final isLoading = useState(false);
+
+    useReaction(() => purchaseStore.subscriptionStatus, (status) {
+      isLoading.value = status?.isLoading ?? false;
+      if (status?.isError ?? false) {
+        showError(purchaseStore.subscriptionError);
+      }
+      if (status == SubscriptionStatus.canceled) {
+        return;
+      }
+      if (status != null && !status.isLoading) {
+        if (status == SubscriptionStatus.purchased) {
+          showSnackbar(LocaleKeys.subscriptionActive.tr());
+        }
+        if (context.mounted) {
+          Navigator.of(context).pop();
+        }
+        subscriptionStore.refreshAll().ignore();
+      }
+    });
 
     void handleSeeAllPlans() {
       Navigator.of(context).pop();
@@ -120,11 +143,9 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                 );
                 final planWithDuration = '${planData.name} 1-${planData.periodLabel.capitalize()}';
                 final handleSubscribe = useHandleSubscribeToProduct();
+
                 Future<void> handlePurchase() async {
                   await handleSubscribe(product.id);
-                  if (context.mounted) {
-                    Navigator.of(context).pop();
-                  }
                 }
 
                 return Column(
@@ -212,6 +233,7 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                       children: [
                         ButtonPrimary(
                           onPressed: handlePurchase,
+                          loading: isLoading.value ? const ButtonLoading() : null,
                           decoration: ButtonDecoration(
                             decorationColor: theme.palette.bgBrandPrimary,
                             padding: EdgeInsets.symmetric(

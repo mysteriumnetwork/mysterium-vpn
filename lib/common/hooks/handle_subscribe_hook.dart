@@ -56,11 +56,11 @@ FutureOr<void> Function() useHandleUpgradePlan() {
       showError(LocaleKeys.activeSubsPaidVia.tr(namedArgs: {'store': subscription.gatewayName}));
       return;
     }
+    final gateway = subscription.gateway?.toLowerCase();
+    final supportsUpgrade = remoteConfigStore.gatewaysSupportingUpgrade.contains(gateway) ||
+        isMobilePaymentGateway(gateway);
 
-    if (!remoteConfigStore.gatewaysSupportingUpgrade
-                .contains(subscription.gateway?.toLowerCase()) &&
-            !isCorrectGateway ||
-        Platform.isWindows) {
+    if (!supportsUpgrade || Platform.isWindows) {
       final uri = Uri.parse(remoteConfigStore.upgradeSubscriptionPage);
       final sessionStore = ref.read(authSessionStorePOD);
       final token = await sessionStore.accessTokenFuture;
