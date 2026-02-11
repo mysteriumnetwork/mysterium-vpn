@@ -249,6 +249,9 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                         ),
                         ButtonTertiary(
                           onPressed: handleSeeAllPlans,
+                          decoration: ButtonDecoration(
+                            foregroundColor: theme.palette.textPrimarySelected,
+                          ),
                           child: Text(LocaleKeys.subscriptionUpgradeSeeAllPlans.tr()),
                         ),
                         const SubscriptionPrivacyAndTerms(),

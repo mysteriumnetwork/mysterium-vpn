@@ -23,6 +23,7 @@ PlanData usePlanData({
           isMobilePaymentGateway(currentPlanGateway);
       final canUseSalesValues = remoteConfigStore.pricingMonthly;
       final isBestValue = store.bestValueProducts.any((it) => it.id == product.id);
+      final isBasic = product.id.contains('basic');
       final config = store.findConfig(product);
       final period = switch (product.duration) {
         1 => LocaleKeys.month,
@@ -59,7 +60,11 @@ PlanData usePlanData({
                   )
                 : LocaleKeys.subscriptionPlanSavePercent.tr(args: [discount.toString()])
             : null,
-        icon: isOffer ? null : UntitledUI.stars_02,
+        icon: isOffer
+            ? null
+            : isBasic
+                ? UntitledUI.star_01
+                : UntitledUI.stars_02,
         perMonth: LocaleKeys.perMonth.tr(),
         periodLabel: period.tr(),
       );

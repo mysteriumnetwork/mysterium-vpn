@@ -157,10 +157,31 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                           );
                         },
                       ),
-                      SizedBox(height: theme.spacing.md),
+                      SizedBox(height: theme.spacing.ms),
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            WidgetSpan(
+                              child: Icon(
+                                UntitledUI.currency_dollar_circle,
+                                size: 16,
+                                color: theme.palette.textTertiary,
+                              ),
+                            ),
+                            CharacterSpan.space(),
+                            TextSpan(text: LocaleKeys.subscriptionPlanMoneyBack.tr()),
+                          ],
+                        ),
+                        textAlign: TextAlign.center,
+                        style: theme.textStyles.textXs.regular.copyWith(
+                          color: theme.palette.textTertiary,
+                        ),
+                      ),
+                      const SizedBox(height: 32),
                       Text(
                         LocaleKeys.subscriptionAllPlansCompareAll.tr(),
-                        style: theme.textStyles.textMd.medium,
+                        style: theme.textStyles.textMd.medium
+                            .copyWith(color: theme.palette.textPrimary),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: theme.spacing.xl3),
@@ -189,6 +210,18 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                     (subscriptionStore.isSubscribed ?? false)
                         ? LocaleKeys.subscriptionAllPlansUpgrade.tr()
                         : LocaleKeys.subscriptionAllPlansPurchase.tr(),
+                  ),
+                ),
+                ButtonTertiary(
+                  onPressed: () {
+                    scrollController.scrollToKey(tableKey);
+                  },
+                  decoration: ButtonDecoration(
+                    foregroundColor: theme.palette.textPrimarySelected,
+                    textStyle: theme.textStyles.textMd.semibold,
+                  ),
+                  child: Text(
+                    LocaleKeys.subscriptionAllPlansCompareAll.tr(),
                   ),
                 ),
                 const SubscriptionPrivacyAndTerms(),
