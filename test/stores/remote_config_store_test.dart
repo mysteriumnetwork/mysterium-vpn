@@ -123,4 +123,222 @@ void main() {
       expect(store.enableQaHelpers, isFalse);
     });
   });
+
+  group('RemoteConfigStore.gatewaysSupportingUpgrade', () {
+    test('returns parsed set if valid JSON array is provided', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'gatewaysSupportingUpgrade': '["stripe", "adyen", "paypal"]'},
+      );
+      await store.configFuture;
+      expect(
+        store.gatewaysSupportingUpgrade,
+        equals({'stripe', 'adyen', 'paypal'}),
+      );
+    });
+
+    test('lowercases all keys from the array', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'gatewaysSupportingUpgrade': '["Stripe", "ADYEN", "PayPal"]'},
+      );
+      await store.configFuture;
+      expect(
+        store.gatewaysSupportingUpgrade,
+        equals({'stripe', 'adyen', 'paypal'}),
+      );
+    });
+
+    test('returns default set if key is not present in config', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      await store.configFuture;
+      expect(
+        store.gatewaysSupportingUpgrade,
+        equals({'stripe', 'adyen'}),
+      );
+    });
+
+    test('returns default set if JSON is invalid', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'gatewaysSupportingUpgrade': '{not valid json'},
+      );
+      await store.configFuture;
+      expect(
+        store.gatewaysSupportingUpgrade,
+        equals({'stripe', 'adyen'}),
+      );
+    });
+
+    test('returns default set if JSON is not an array', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'gatewaysSupportingUpgrade': '"just a string"'},
+      );
+      await store.configFuture;
+      expect(
+        store.gatewaysSupportingUpgrade,
+        equals({'stripe', 'adyen'}),
+      );
+    });
+
+    test('handles empty array gracefully', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'gatewaysSupportingUpgrade': '[]'},
+      );
+      await store.configFuture;
+      expect(store.gatewaysSupportingUpgrade, equals(<String>{}));
+    });
+
+    test('handles array with null values gracefully', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'gatewaysSupportingUpgrade': '["stripe", null, "adyen"]'},
+      );
+      await store.configFuture;
+      expect(
+        store.gatewaysSupportingUpgrade,
+        equals({'stripe', 'null', 'adyen'}),
+      );
+    });
+  });
+
+  group('RemoteConfigStore.checkoutWebRedirectUrl', () {
+    test('returns parsed Uri if valid URL string is provided', () async {
+      store = createStore();
+      const testUrl = 'https://example.com/checkout';
+
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'checkoutWebRedirectUrl': testUrl},
+      );
+      await store.configFuture;
+      expect(store.checkoutWebRedirectUrl, equals(Uri.parse(testUrl)));
+    });
+
+    test('returns default Uri if key is not present in config', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      await store.configFuture;
+
+      // The default should be Uri.https(Env.webAppUrl, '/checkout/payment-upgrade')
+      expect(store.checkoutWebRedirectUrl.path, contains('/checkout/payment-upgrade'));
+      expect(store.checkoutWebRedirectUrl.scheme, equals('https'));
+    });
+
+    test('returns default Uri if URL parsing fails with invalid scheme', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'checkoutWebRedirectUrl': ':::invalid:::'},
+      );
+      await store.configFuture;
+
+      expect(store.checkoutWebRedirectUrl.path, contains('/checkout/payment-upgrade'));
+      expect(store.checkoutWebRedirectUrl.scheme, equals('https'));
+    });
+
+    test('handles relative path gracefully', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'checkoutWebRedirectUrl': '/checkout/custom'},
+      );
+      await store.configFuture;
+
+      final uri = store.checkoutWebRedirectUrl;
+      expect(uri.path, equals('/checkout/custom'));
+    });
+
+    test('handles URL with path segments correctly', () async {
+      store = createStore();
+      const testUrl = 'https://api.example.com/v1/checkout/payment';
+
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'checkoutWebRedirectUrl': testUrl},
+      );
+      await store.configFuture;
+
+      final uri = store.checkoutWebRedirectUrl;
+      expect(uri.scheme, equals('https'));
+      expect(uri.host, equals('api.example.com'));
+      expect(uri.path, equals('/v1/checkout/payment'));
+    });
+
+    test('handles URL with query parameters correctly', () async {
+      store = createStore();
+      const testUrl = 'https://example.com/checkout?token=123&lang=en';
+
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'checkoutWebRedirectUrl': testUrl},
+      );
+      await store.configFuture;
+
+      final uri = store.checkoutWebRedirectUrl;
+      expect(uri.queryParameters['token'], equals('123'));
+      expect(uri.queryParameters['lang'], equals('en'));
+    });
+  });
+
+  group('RemoteConfigStore.pricingMonthly', () {
+    test('returns true if config has true value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'pricingMonthly': true},
+      );
+      await store.configFuture;
+      expect(store.pricingMonthly, isTrue);
+    });
+
+    test('returns false if config has false value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'pricingMonthly': false},
+      );
+      await store.configFuture;
+      expect(store.pricingMonthly, isFalse);
+    });
+
+    test('returns true if key is not present in config (default)', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      await store.configFuture;
+      expect(store.pricingMonthly, isTrue);
+    });
+
+    test('handles non-boolean values gracefully by type casting', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'pricingMonthly': 'true'},
+      );
+      await store.configFuture;
+
+      // This will throw because the string 'true' cannot be cast to bool
+      expect(
+        () => store.pricingMonthly,
+        throwsA(isA<MobXCaughtException>()),
+      );
+    });
+
+    test('returns default true when config is empty', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      await store.configFuture;
+      expect(store.pricingMonthly, isTrue);
+    });
+  });
 }

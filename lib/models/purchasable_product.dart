@@ -43,7 +43,7 @@ abstract class _PurchasableProduct with Store {
   @computed
   String get id => planDetails.id;
 
-  String usdIsoCode = CommonCurrencies().usd.isoCode;
+  final String usdIsoCode = CommonCurrencies().usd.isoCode;
 
   @computed
   Money get moneyMonthly {
