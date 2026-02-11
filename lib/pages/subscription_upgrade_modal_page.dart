@@ -172,6 +172,11 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                                   features: store
                                       .findConfig(product)
                                       .previewFeatures
+                                      .where(
+                                        (feature) =>
+                                            feature != 'subscriptionPlanPF4Basic' &&
+                                            feature != 'subscriptionPlanPF5Plus',
+                                      )
                                       .map((it) => it.tr())
                                       .toList(),
                                   viewMoreLabel: LocaleKeys.viewAllFeaturesBtn.tr(),
