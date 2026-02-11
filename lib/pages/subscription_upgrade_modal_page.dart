@@ -144,7 +144,7 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                                         child: Icon(
                                           UntitledUI.currency_dollar_circle,
                                           size: 16,
-                                          color: theme.palette.iconTertiary,
+                                          color: theme.palette.textTertiary,
                                         ),
                                       ),
                                       CharacterSpan.space(),
