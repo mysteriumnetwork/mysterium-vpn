@@ -41,15 +41,34 @@ abstract class _SubscriptionUpgradeStore with Store {
   @computed
   PurchasableProduct? get upgradeProduct {
     final currentProduct = this.currentProduct;
+    final plans = purchasableProducts;
+    final bestValueProducts = _plansStore.bestValueProducts;
+
+    // If no current product, return best value product for new users
     if (currentProduct == null) {
-      return null;
+      final bestProduct = bestValueProducts.lastOrNull;
+      return bestProduct;
     }
 
-    final plans = purchasableProducts;
-    final largestPlan = plans.lastOrNull;
-    if (largestPlan != null && largestPlan.id != currentProduct.id) {
-      return largestPlan;
+    // First priority: if user is on monthly, try to get yearly version of same tier
+    final currentConfig = _plansStore.findConfig(currentProduct);
+    final sameYearlyPlan = plans.firstWhereOrNull(
+      (p) =>
+          _plansStore.findConfig(p).name == currentConfig.name &&
+          p.duration == 12 &&
+          p.id != currentProduct.id,
+    );
+
+    if (sameYearlyPlan != null) {
+      return sameYearlyPlan;
     }
+
+    // Second priority: return the best value product if different from current
+    final bestProduct = bestValueProducts.lastOrNull;
+    if (bestProduct != null && bestProduct.id != currentProduct.id) {
+      return bestProduct;
+    }
+
     return null;
   }
 
@@ -68,5 +87,42 @@ abstract class _SubscriptionUpgradeStore with Store {
   bool get isEligibleForUpgrade {
     final discount = upgradeDiscountPercent;
     return discount != null && discount > 0;
+  }
+
+  /// Get comparison product for a given plan
+  /// If user has a plan: returns the plan to compare against (for upgrade savings)
+  /// If user has no plan: returns monthly of same tier (if yearly) or null (if monthly)
+  PurchasableProduct? getComparisonProduct(
+    PurchasableProduct product,
+    List<PurchasableProduct> allProducts,
+  ) {
+    final currentProduct = this.currentProduct;
+    final productConfig = _plansStore.findConfig(product);
+
+    // If user has a current plan
+    if (currentProduct != null) {
+      final currentPlan = purchasableProducts.firstWhereOrNull((p) => p.id == currentProduct.id);
+
+      if (currentPlan != null) {
+        // If user is on monthly and viewing yearly of same tier: show savings
+        if (currentPlan.duration == 1 && product.duration == 12) {
+          final currentConfig = _plansStore.findConfig(currentPlan);
+          if (currentConfig.name == productConfig.name) {
+            return currentPlan;
+          }
+        }
+        // Otherwise compare to their current plan
+        return currentPlan;
+      }
+    }
+
+    // No current plan: only compare yearly to monthly of same tier
+    if (product.duration == 12) {
+      return allProducts.firstWhereOrNull(
+        (p) => _plansStore.findConfig(p).name == productConfig.name && p.duration == 1,
+      );
+    }
+
+    return null;
   }
 }

@@ -43,6 +43,8 @@ abstract class _PurchasableProduct with Store {
   @computed
   String get id => planDetails.id;
 
+  final String usdIsoCode = CommonCurrencies().usd.isoCode;
+
   @computed
   Money get moneyMonthly {
     if (duration == 1) {
@@ -54,6 +56,34 @@ abstract class _PurchasableProduct with Store {
     return Money.fromNum(
       monthlyValue,
       isoCode: currencyCode,
+    );
+  }
+
+  @computed
+  Money get moneyMonthlyBackend {
+    if (duration == 1) {
+      return Money.fromNum(
+        planDetails.price.USD,
+        isoCode: usdIsoCode,
+      );
+    }
+    return Money.fromNum(
+      planDetails.price.USD / duration,
+      isoCode: usdIsoCode,
+    );
+  }
+
+  @computed
+  Money get moneyAnnualBackend {
+    if (duration == 12) {
+      return Money.fromNum(
+        planDetails.price.USD,
+        isoCode: usdIsoCode,
+      );
+    }
+    return Money.fromNum(
+      (planDetails.price.USD / duration) * 12,
+      isoCode: usdIsoCode,
     );
   }
 
@@ -78,6 +108,12 @@ abstract class _PurchasableProduct with Store {
       );
 
   @computed
+  Money get backendMoney => Money.fromNum(
+        planDetails.price.USD,
+        isoCode: usdIsoCode,
+      );
+
+  @computed
   int get introductoryDiscountPercentage {
     if (!hasIntroductoryPrice || introductoryPrice == null) {
       return 0;
@@ -89,6 +125,13 @@ abstract class _PurchasableProduct with Store {
   int periodDiscountPercentage(PurchasableProduct otherProduct) {
     final monthlyPrice = productPrice / duration;
     final otherMonthlyPrice = otherProduct.productPrice / otherProduct.duration;
+    return ((monthlyPrice - otherMonthlyPrice) / monthlyPrice * 100).round();
+  }
+
+  @action
+  int discountPercentageBackend(PurchasableProduct otherProduct) {
+    final monthlyPrice = planDetails.price.USD / duration;
+    final otherMonthlyPrice = otherProduct.planDetails.price.USD / otherProduct.duration;
     return ((monthlyPrice - otherMonthlyPrice) / monthlyPrice * 100).round();
   }
 

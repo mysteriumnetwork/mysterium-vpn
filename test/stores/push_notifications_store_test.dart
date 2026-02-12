@@ -153,32 +153,22 @@ void main() {
         ),
       ).called(1);
 
-      verify(
-        mockNotificationsRepository.setTags(
-          argThat(
-            allOf(
-              containsPair('country', 'Country'),
-              containsPair('city', 'City'),
-            ),
-          ),
-        ),
-      ).called(1);
+      // Capture all setTags calls
+      final captured = verify(mockNotificationsRepository.setTags(captureAny)).captured;
+      expect(captured.length, greaterThanOrEqualTo(2));
 
-      // Verify subscription tags - check for keys that should be present
-      // The actual values depend on what the extension method returns
-      verify(
-        mockNotificationsRepository.setTags(
-          argThat(
-            allOf(
-              contains('subscription_gateway'),
-              contains('subscription_plan'),
-              contains('subscription_recurring'),
-              contains('subscription_duration'),
-              contains('subscription_exp_date'),
-            ),
-          ),
-        ),
-      ).called(1);
+      // First call should have location tags
+      final locationTagsCall = captured[0] as Map<String, dynamic>;
+      expect(locationTagsCall['country'], 'Country');
+      expect(locationTagsCall['city'], 'City');
+
+      // Second call should have subscription tags
+      final subscriptionTagsCall = captured[1] as Map<String, dynamic>;
+      expect(subscriptionTagsCall['subscription_gateway'], 'Credit Card');
+      expect(subscriptionTagsCall['subscription_plan'], 'plan_monthly');
+      expect(subscriptionTagsCall['subscription_recurring'], isNotNull);
+      expect(subscriptionTagsCall['subscription_duration'].toString(), '1');
+      expect(subscriptionTagsCall.containsKey('subscription_exp_date'), true);
     });
   });
 
@@ -240,6 +230,11 @@ void main() {
     });
 
     test('updatePushNotificationsPermissions opens app settings when supported', () async {
+      // Reset mocks to clear any calls from initialization
+      reset(mockNotificationsRepository);
+      when(mockNotificationsRepository.openAppNotificationsSettings())
+          .thenAnswer((_) async => true);
+
       await store.updatePushNotificationsPermissions();
 
       verify(

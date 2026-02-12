@@ -18,7 +18,10 @@ void main() {
 
   setUp(() {
     mockRemoteConfigStore = MockRemoteConfigStore();
-    store = PromotionalContentStore(mockRemoteConfigStore);
+    store = PromotionalContentStore(
+      mockRemoteConfigStore,
+      getCurrentTime: () => fixedDate,
+    );
   });
 
   group('activeBanner', () {
@@ -119,12 +122,10 @@ void main() {
     });
 
     test('returns banner when startDate equals current time', () {
-      // This test will still have timing issues with DateTime.now()
-      // Consider refactoring the store to accept a Clock/DateTime provider
       final banner = PromotionalBanner(
         id: '1',
         title: 'Test Banner',
-        startDate: DateTime.now(),
+        startDate: fixedDate,
       );
       when(mockRemoteConfigStore.promotionalBanner).thenReturn(banner);
 
@@ -132,12 +133,10 @@ void main() {
     });
 
     test('returns null when endDate equals current time', () {
-      // This test will still have timing issues with DateTime.now()
-      // Consider refactoring the store to accept a Clock/DateTime provider
       final banner = PromotionalBanner(
         id: '1',
         title: 'Test Banner',
-        endDate: DateTime.now(),
+        endDate: fixedDate,
       );
       when(mockRemoteConfigStore.promotionalBanner).thenReturn(banner);
 

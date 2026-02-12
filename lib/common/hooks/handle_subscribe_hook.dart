@@ -9,7 +9,6 @@ FutureOr<void> Function({bool manageSubscription}) useHandleSubscribe() {
       final ref = ProviderScope.containerOf(context, listen: false);
       final sessionStore = ref.read(authSessionStorePOD);
       final subscriptionStore = ref.read(subscriptionStorePOD);
-      final upgradeSubscriptionStore = ref.read(subscriptionUpgradeStorePOD);
       final subscriptionPurchaseStore = ref.read(subscriptionPurchaseStorePOD);
       final remoteConfigStore = ref.read(remoteConfigStorePOD);
 
@@ -22,7 +21,6 @@ FutureOr<void> Function({bool manageSubscription}) useHandleSubscribe() {
         }
         await handleOnBillingPage(
           context: context,
-          upgradeProduct: upgradeSubscriptionStore.upgradeProduct,
           manageSubscriptionPage: remoteConfigStore.manageSubscriptionPage,
           upgradeSubscriptionPage: remoteConfigStore.upgradeSubscriptionPage,
           gateway: subscription.gateway,
@@ -58,8 +56,11 @@ FutureOr<void> Function() useHandleUpgradePlan() {
       showError(LocaleKeys.activeSubsPaidVia.tr(namedArgs: {'store': subscription.gatewayName}));
       return;
     }
+    final gateway = subscription.gateway?.toLowerCase();
+    final supportsUpgrade = remoteConfigStore.gatewaysSupportingUpgrade.contains(gateway) ||
+        isMobilePaymentGateway(gateway);
 
-    if (!isMobilePaymentGateway(subscription.gateway)) {
+    if (!supportsUpgrade || Platform.isWindows) {
       final uri = Uri.parse(remoteConfigStore.upgradeSubscriptionPage);
       final sessionStore = ref.read(authSessionStorePOD);
       final token = await sessionStore.accessTokenFuture;
@@ -72,7 +73,7 @@ FutureOr<void> Function() useHandleUpgradePlan() {
         },
       );
 
-      launchUrl(httpsUri).ignore();
+      openUrlLink(httpsUri).ignore();
       return;
     }
     if (!context.mounted) {
