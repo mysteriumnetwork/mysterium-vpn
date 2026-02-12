@@ -63,7 +63,7 @@ PlanData usePlanData({
         icon: isOffer
             ? null
             : isBasic
-                ? UntitledUI.star_01
+                ? UntitledUI.star_04
                 : UntitledUI.stars_02,
         perMonth: LocaleKeys.perMonth.tr(),
         periodLabel: period.tr(),
