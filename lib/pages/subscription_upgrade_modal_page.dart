@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -187,23 +189,28 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                                 ),
                               ),
                               SizedBox(height: theme.spacing.xl2),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
-                                child: PlanCard.features(
-                                  mode: PlanCardMode.highlight,
-                                  data: planData,
-                                  features: store
-                                      .findConfig(product)
-                                      .previewFeatures
-                                      .where(
-                                        (feature) =>
-                                            feature != 'subscriptionPlanPF4Basic' &&
-                                            feature != 'subscriptionPlanPF5Plus',
-                                      )
-                                      .map((it) => it.tr())
-                                      .toList(),
-                                  viewMoreLabel: LocaleKeys.viewAllFeaturesBtn.tr(),
-                                  viewLessLabel: LocaleKeys.viewLessBtn.tr(),
+                              Center(
+                                child: LayoutBuilder(
+                                  builder: (context, constraints) => Container(
+                                    width: min(constraints.maxWidth, 393),
+                                    padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
+                                    child: PlanCard.features(
+                                      mode: PlanCardMode.highlight,
+                                      data: planData,
+                                      features: store
+                                          .findConfig(product)
+                                          .previewFeatures
+                                          .where(
+                                            (feature) =>
+                                                feature != 'subscriptionPlanPF4Basic' &&
+                                                feature != 'subscriptionPlanPF5Plus',
+                                          )
+                                          .map((it) => it.tr())
+                                          .toList(),
+                                      viewMoreLabel: LocaleKeys.viewAllFeaturesBtn.tr(),
+                                      viewLessLabel: LocaleKeys.viewLessBtn.tr(),
+                                    ),
+                                  ),
                                 ),
                               ),
                               SizedBox(height: theme.spacing.xl3),
