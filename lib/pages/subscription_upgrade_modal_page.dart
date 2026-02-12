@@ -188,7 +188,7 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                                       : LocaleKeys.getSubscriptionModalDesc.tr(),
                                 ),
                               ),
-                              SizedBox(height: theme.spacing.xl2),
+                              SizedBox(height: theme.spacing.xl),
                               Center(
                                 child: LayoutBuilder(
                                   builder: (context, constraints) => Container(
@@ -213,7 +213,7 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: theme.spacing.xl3),
+                              SizedBox(height: theme.spacing.lg),
                               Text.rich(
                                 TextSpan(
                                   children: [
