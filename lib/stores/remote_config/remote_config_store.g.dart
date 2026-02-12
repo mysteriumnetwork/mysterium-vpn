@@ -306,6 +306,26 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
           Computed<int>(() => super.pushNotifPermissionPromptCooldown,
               name: 'RemoteConfigStoreBase.pushNotifPermissionPromptCooldown'))
       .value;
+  Computed<Set<String>>? _$gatewaysSupportingUpgradeComputed;
+
+  @override
+  Set<String> get gatewaysSupportingUpgrade => (_$gatewaysSupportingUpgradeComputed ??=
+          Computed<Set<String>>(() => super.gatewaysSupportingUpgrade,
+              name: 'RemoteConfigStoreBase.gatewaysSupportingUpgrade'))
+      .value;
+  Computed<Uri>? _$checkoutWebRedirectUrlComputed;
+
+  @override
+  Uri get checkoutWebRedirectUrl =>
+      (_$checkoutWebRedirectUrlComputed ??= Computed<Uri>(() => super.checkoutWebRedirectUrl,
+              name: 'RemoteConfigStoreBase.checkoutWebRedirectUrl'))
+          .value;
+  Computed<bool>? _$pricingMonthlyComputed;
+
+  @override
+  bool get pricingMonthly => (_$pricingMonthlyComputed ??=
+          Computed<bool>(() => super.pricingMonthly, name: 'RemoteConfigStoreBase.pricingMonthly'))
+      .value;
 
   @override
   String toString() {
@@ -352,7 +372,10 @@ plansBestValue: ${plansBestValue},
 upgradeSubscriptionPage: ${upgradeSubscriptionPage},
 manageSubscriptionPage: ${manageSubscriptionPage},
 promotionalBanner: ${promotionalBanner},
-pushNotifPermissionPromptCooldown: ${pushNotifPermissionPromptCooldown}
+pushNotifPermissionPromptCooldown: ${pushNotifPermissionPromptCooldown},
+gatewaysSupportingUpgrade: ${gatewaysSupportingUpgrade},
+checkoutWebRedirectUrl: ${checkoutWebRedirectUrl},
+pricingMonthly: ${pricingMonthly}
     ''';
   }
 }

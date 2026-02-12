@@ -15,8 +15,6 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/pages/subscription_plans_modal_page.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:open_store/open_store.dart';
@@ -368,7 +366,6 @@ FutureOr<void> handleOnBillingPage({
   required String upgradeSubscriptionPage,
   required String? gateway,
   required String? accessToken,
-  required PurchasableProduct? upgradeProduct,
   required bool manageSubscription,
   FutureOr<void> Function()? onManageSubscription,
 }) async {
@@ -390,11 +387,7 @@ FutureOr<void> handleOnBillingPage({
   }
 
   if (!subscriptionActive && !Platform.isWindows) {
-    if (upgradeProduct != null) {
-      await showSubscriptionUpgradeModalPage(context);
-    } else {
-      await showSubscriptionPlansModalPage(context);
-    }
+    await showSubscriptionUpgradeModalPage(context);
     return;
   }
 
@@ -410,7 +403,7 @@ FutureOr<void> handleOnBillingPage({
     },
   );
 
-  await launchUrl(httpsUri);
+  await openUrlLink(httpsUri);
 }
 
 void handleOnSupportPage({

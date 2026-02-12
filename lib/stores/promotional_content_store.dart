@@ -9,10 +9,12 @@ class PromotionalContentStore = _PromotionalContentStore with _$PromotionalConte
 
 abstract class _PromotionalContentStore with Store {
   _PromotionalContentStore(
-    this._remoteConfigStore,
-  );
+    this._remoteConfigStore, {
+    DateTime Function()? getCurrentTime,
+  }) : _getCurrentTime = getCurrentTime ?? DateTime.now;
 
   final RemoteConfigStore _remoteConfigStore;
+  final DateTime Function() _getCurrentTime;
 
   @computed
   PromotionalBanner? get activeBanner {
@@ -21,15 +23,15 @@ abstract class _PromotionalContentStore with Store {
       return null;
     }
 
-    final now = DateTime.now();
+    final now = _getCurrentTime();
 
     // Check if banner has started
     if (banner.startDate != null && now.isBefore(banner.startDate!)) {
       return null;
     }
 
-    // Check if banner has ended
-    if (banner.endDate != null && now.isAfter(banner.endDate!)) {
+    // Check if banner has ended (expired at or after endDate)
+    if (banner.endDate != null && !now.isBefore(banner.endDate!)) {
       return null;
     }
 

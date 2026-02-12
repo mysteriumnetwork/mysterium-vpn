@@ -54,8 +54,13 @@ class SubscriptionComparisonTable extends HookConsumerWidget {
           if (values.length != count) {
             continue;
           }
-
-          list.add(ComparisonFeature(values: Map.fromEntries(values), label: key.tr()));
+          list.add(
+            ComparisonFeature(
+              values: Map.fromEntries(values),
+              label: key.tr(),
+              description: _getDescriptionIfExists(key),
+            ),
+          );
         }
 
         return list;
@@ -63,15 +68,33 @@ class SubscriptionComparisonTable extends HookConsumerWidget {
       [columns, config],
     );
 
+    final theme = Theme.of(context);
+
     return ComparisonTable(
       headerIndexColumn: ButtonTertiary(
         size: ButtonSize.small,
         onPressed: onShowPlansPressed,
-        leading: const Icon(UntitledUI.arrow_up),
-        child: Text(LocaleKeys.subscriptionAllPlansBackToPlans.tr()),
+        decoration: const ButtonDecoration(
+          padding: EdgeInsets.zero,
+        ),
+        leading: Icon(
+          UntitledUI.arrow_up,
+          size: 16,
+          color: theme.palette.textPrimarySelected,
+        ),
+        child: Text(
+          LocaleKeys.subscriptionAllPlansBackToPlans.tr(),
+          style: theme.textStyles.textSm.regular.copyWith(color: theme.palette.textPrimarySelected),
+        ),
       ),
       headerColumns: Map.fromEntries(columns.map((it) => MapEntry(it, it.tr()))),
       features: features,
     );
+  }
+
+  String? _getDescriptionIfExists(String key) {
+    final id = '${key}Desc';
+    final translated = id.tr();
+    return translated != id && translated.isNotEmpty ? translated : null;
   }
 }

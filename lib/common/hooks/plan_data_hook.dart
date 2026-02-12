@@ -1,40 +1,72 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-PlanData usePlanData(PurchasableProduct product, {PurchasableProduct? otherProduct}) {
+PlanData usePlanData({
+  required PurchasableProduct product,
+  required bool isOffer,
+  PurchasableProduct? otherProduct,
+}) {
   final store = useProvider(subscriptionPlansStorePOD);
+  final remoteConfigStore = useProvider(remoteConfigStorePOD);
+  final subscriptionStore = useProvider(subscriptionStorePOD);
 
   return useComputedValue(
     () {
+      final currentPlanGateway = subscriptionStore.subscriptionFuture.value?.gateway;
+      final useStorePrices = currentPlanGateway == null ||
+          currentPlanGateway.isEmpty ||
+          isMobilePaymentGateway(currentPlanGateway);
+      final canUseSalesValues = remoteConfigStore.pricingMonthly;
       final isBestValue = store.bestValueProducts.any((it) => it.id == product.id);
+      final isBasic = product.id.contains('basic');
       final config = store.findConfig(product);
       final period = switch (product.duration) {
-        1 => LocaleKeys.month.tr(),
-        12 => LocaleKeys.year.tr(),
+        1 => LocaleKeys.month,
+        12 => LocaleKeys.year,
         _ => '',
       };
 
-      final discount = otherProduct != null ? otherProduct.periodDiscountPercentage(product) : 0;
+      final discount = otherProduct != null
+          ? useStorePrices
+              ? otherProduct.periodDiscountPercentage(product)
+              : otherProduct.discountPercentageBackend(product)
+          : 0;
+      final price = useStorePrices ? product.moneyMonthly : product.moneyMonthlyBackend;
+      final money = useStorePrices ? product.money : product.backendMoney;
+      final oldPrice = otherProduct != null
+          ? useStorePrices
+              ? otherProduct.moneyMonthly
+              : otherProduct.moneyMonthlyBackend
+          : null;
 
       return PlanData(
+        fullPriceLabel: LocaleKeys.fullPriceLabel.tr(),
+        discountedLabel: LocaleKeys.discountedPriceLabel.tr(),
+        isOffer: isOffer,
         name: config.name.tr(),
-        price: product.moneyMonthly.toString(),
-        period: LocaleKeys.month.tr(),
-        billingInfo: LocaleKeys.subscriptionPlanBillingInfo.tr(
-          namedArgs: {
-            'amount': product.money.toString(),
-            'period': period,
-          },
-        ),
+        monthlyFullPrice: canUseSalesValues ? oldPrice?.toString() : null,
+        monthlyDiscountedPrice: canUseSalesValues ? price.toString() : null,
+        fullPrice: '$money',
         bestValueBadge: isBestValue ? LocaleKeys.subscriptionPlanBestValue.tr() : null,
-        oldPrice: discount > 0 ? otherProduct!.money.toString() : null,
-        promoBadge: discount > 0
-            ? LocaleKeys.subscriptionPlanSavePercent.tr(args: [discount.toString()])
+        promoBadge: discount > 0 && canUseSalesValues
+            ? isOffer
+                ? LocaleKeys.subscriptionPlanSaveWith.tr(
+                    namedArgs: {'percent': discount.toString(), 'planId': '1-${period.tr()}'},
+                  )
+                : LocaleKeys.subscriptionPlanSavePercent.tr(args: [discount.toString()])
             : null,
+        icon: isOffer
+            ? null
+            : isBasic
+                ? UntitledUI.star_04
+                : UntitledUI.stars_02,
+        perMonth: LocaleKeys.perMonth.tr(),
+        periodLabel: period.tr(),
       );
     },
     [store, product, otherProduct],
