@@ -68,6 +68,13 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
       String? purchasedProductId;
       if (subscription.active && subscription.isGoogleGateway) {
         purchasedProductId = subscription.storePlanId;
+        // Fallback: if storePlanId is missing, derive product id from current plan
+        if (purchasedProductId == null || purchasedProductId.isEmpty) {
+          final currentPlan = products.firstWhereOrNull(
+            (plan) => plan.id == subscription.planId,
+          );
+          purchasedProductId = currentPlan?.productDetails.id;
+        }
       }
 
       await _subscriptionService.subscribeToPackage(
