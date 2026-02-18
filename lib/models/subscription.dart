@@ -5,22 +5,20 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 
 part 'subscription.freezed.dart';
-part 'subscription.g.dart';
 
 @freezed
 abstract class Subscription with _$Subscription {
   factory Subscription({
     required bool active,
-    @JsonKey(name: 'plan_id') String? planId,
-    @JsonKey(name: 'gateway') String? gateway,
-    @JsonKey(name: 'active_until') DateTime? activeUntil,
-    @JsonKey(name: 'expired') bool? expired,
-    @JsonKey(name: 'recurring') bool? recurring,
+    String? planId,
+    String? gateway,
+    DateTime? activeUntil,
+    bool? expired,
+    bool? recurring,
+    String? storePlanId,
   }) = _Subscription;
 
   Subscription._();
-
-  factory Subscription.fromJson(Map<String, dynamic> json) => _$SubscriptionFromJson(json);
 
   factory Subscription.empty() => Subscription(active: false, expired: false, recurring: false);
 
@@ -41,6 +39,10 @@ abstract class Subscription with _$Subscription {
         'google' => Platform.isAndroid,
         _ => false,
       };
+
+  bool get isGoogleGateway => gateway?.toLowerCase() == 'google';
+
+  bool get isAppleGateway => gateway?.toLowerCase() == 'apple';
 
   String? get durationInMonthsBasedOnPlanId {
     final id = planId;

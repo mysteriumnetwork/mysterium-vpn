@@ -66,11 +66,15 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
       final products = await _plansStore.future;
 
       String? purchasedProductId;
-      if (subscription.active &&
-          subscription.gateway?.toLowerCase() == 'google' &&
-          subscription.planId != null) {
-        final product = products.firstWhereOrNull((it) => it.id == subscription.planId!);
-        purchasedProductId = product?.productDetails.id;
+      if (subscription.active && subscription.isGoogleGateway) {
+        purchasedProductId = subscription.storePlanId;
+        // Fallback: if storePlanId is missing, derive product id from current plan
+        if (purchasedProductId == null || purchasedProductId.isEmpty) {
+          final currentPlan = products.firstWhereOrNull(
+            (plan) => plan.id == subscription.planId,
+          );
+          purchasedProductId = currentPlan?.productDetails.id;
+        }
       }
 
       await _subscriptionService.subscribeToPackage(
