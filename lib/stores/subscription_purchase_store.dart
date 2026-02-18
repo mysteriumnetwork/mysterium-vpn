@@ -66,11 +66,8 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
       final products = await _plansStore.future;
 
       String? purchasedProductId;
-      if (subscription.active &&
-          subscription.gateway?.toLowerCase() == 'google' &&
-          subscription.planId != null) {
-        final product = products.firstWhereOrNull((it) => it.id == subscription.planId!);
-        purchasedProductId = product?.productDetails.id;
+      if (subscription.active && subscription.isGoogleGateway) {
+        purchasedProductId = subscription.storePlanId;
       }
 
       await _subscriptionService.subscribeToPackage(
