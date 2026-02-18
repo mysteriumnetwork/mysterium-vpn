@@ -15,16 +15,12 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Subscription {
   bool get active;
-  @JsonKey(name: 'plan_id')
   String? get planId;
-  @JsonKey(name: 'gateway')
   String? get gateway;
-  @JsonKey(name: 'active_until')
   DateTime? get activeUntil;
-  @JsonKey(name: 'expired')
   bool? get expired;
-  @JsonKey(name: 'recurring')
   bool? get recurring;
+  String? get storePlanId;
 
   /// Create a copy of Subscription
   /// with the given fields replaced by the non-null parameter values.
@@ -32,9 +28,6 @@ mixin _$Subscription {
   @pragma('vm:prefer-inline')
   $SubscriptionCopyWith<Subscription> get copyWith =>
       _$SubscriptionCopyWithImpl<Subscription>(this as Subscription, _$identity);
-
-  /// Serializes this Subscription to a JSON map.
-  Map<String, dynamic> toJson();
 
   @override
   bool operator ==(Object other) {
@@ -46,17 +39,17 @@ mixin _$Subscription {
             (identical(other.gateway, gateway) || other.gateway == gateway) &&
             (identical(other.activeUntil, activeUntil) || other.activeUntil == activeUntil) &&
             (identical(other.expired, expired) || other.expired == expired) &&
-            (identical(other.recurring, recurring) || other.recurring == recurring));
+            (identical(other.recurring, recurring) || other.recurring == recurring) &&
+            (identical(other.storePlanId, storePlanId) || other.storePlanId == storePlanId));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, active, planId, gateway, activeUntil, expired, recurring);
+  int get hashCode => Object.hash(
+      runtimeType, active, planId, gateway, activeUntil, expired, recurring, storePlanId);
 
   @override
   String toString() {
-    return 'Subscription(active: $active, planId: $planId, gateway: $gateway, activeUntil: $activeUntil, expired: $expired, recurring: $recurring)';
+    return 'Subscription(active: $active, planId: $planId, gateway: $gateway, activeUntil: $activeUntil, expired: $expired, recurring: $recurring, storePlanId: $storePlanId)';
   }
 }
 
@@ -67,11 +60,12 @@ abstract mixin class $SubscriptionCopyWith<$Res> {
   @useResult
   $Res call(
       {bool active,
-      @JsonKey(name: 'plan_id') String? planId,
-      @JsonKey(name: 'gateway') String? gateway,
-      @JsonKey(name: 'active_until') DateTime? activeUntil,
-      @JsonKey(name: 'expired') bool? expired,
-      @JsonKey(name: 'recurring') bool? recurring});
+      String? planId,
+      String? gateway,
+      DateTime? activeUntil,
+      bool? expired,
+      bool? recurring,
+      String? storePlanId});
 }
 
 /// @nodoc
@@ -92,6 +86,7 @@ class _$SubscriptionCopyWithImpl<$Res> implements $SubscriptionCopyWith<$Res> {
     Object? activeUntil = freezed,
     Object? expired = freezed,
     Object? recurring = freezed,
+    Object? storePlanId = freezed,
   }) {
     return _then(_self.copyWith(
       active: null == active
@@ -118,6 +113,10 @@ class _$SubscriptionCopyWithImpl<$Res> implements $SubscriptionCopyWith<$Res> {
           ? _self.recurring
           : recurring // ignore: cast_nullable_to_non_nullable
               as bool?,
+      storePlanId: freezed == storePlanId
+          ? _self.storePlanId
+          : storePlanId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -215,13 +214,8 @@ extension SubscriptionPatterns on Subscription {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(
-            bool active,
-            @JsonKey(name: 'plan_id') String? planId,
-            @JsonKey(name: 'gateway') String? gateway,
-            @JsonKey(name: 'active_until') DateTime? activeUntil,
-            @JsonKey(name: 'expired') bool? expired,
-            @JsonKey(name: 'recurring') bool? recurring)?
+    TResult Function(bool active, String? planId, String? gateway, DateTime? activeUntil,
+            bool? expired, bool? recurring, String? storePlanId)?
         $default, {
     required TResult orElse(),
   }) {
@@ -229,7 +223,7 @@ extension SubscriptionPatterns on Subscription {
     switch (_that) {
       case _Subscription() when $default != null:
         return $default(_that.active, _that.planId, _that.gateway, _that.activeUntil, _that.expired,
-            _that.recurring);
+            _that.recurring, _that.storePlanId);
       case _:
         return orElse();
     }
@@ -250,20 +244,15 @@ extension SubscriptionPatterns on Subscription {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(
-            bool active,
-            @JsonKey(name: 'plan_id') String? planId,
-            @JsonKey(name: 'gateway') String? gateway,
-            @JsonKey(name: 'active_until') DateTime? activeUntil,
-            @JsonKey(name: 'expired') bool? expired,
-            @JsonKey(name: 'recurring') bool? recurring)
+    TResult Function(bool active, String? planId, String? gateway, DateTime? activeUntil,
+            bool? expired, bool? recurring, String? storePlanId)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _Subscription():
         return $default(_that.active, _that.planId, _that.gateway, _that.activeUntil, _that.expired,
-            _that.recurring);
+            _that.recurring, _that.storePlanId);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -283,20 +272,15 @@ extension SubscriptionPatterns on Subscription {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(
-            bool active,
-            @JsonKey(name: 'plan_id') String? planId,
-            @JsonKey(name: 'gateway') String? gateway,
-            @JsonKey(name: 'active_until') DateTime? activeUntil,
-            @JsonKey(name: 'expired') bool? expired,
-            @JsonKey(name: 'recurring') bool? recurring)?
+    TResult? Function(bool active, String? planId, String? gateway, DateTime? activeUntil,
+            bool? expired, bool? recurring, String? storePlanId)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _Subscription() when $default != null:
         return $default(_that.active, _that.planId, _that.gateway, _that.activeUntil, _that.expired,
-            _that.recurring);
+            _that.recurring, _that.storePlanId);
       case _:
         return null;
     }
@@ -304,35 +288,32 @@ extension SubscriptionPatterns on Subscription {
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _Subscription extends Subscription {
   _Subscription(
       {required this.active,
-      @JsonKey(name: 'plan_id') this.planId,
-      @JsonKey(name: 'gateway') this.gateway,
-      @JsonKey(name: 'active_until') this.activeUntil,
-      @JsonKey(name: 'expired') this.expired,
-      @JsonKey(name: 'recurring') this.recurring})
+      this.planId,
+      this.gateway,
+      this.activeUntil,
+      this.expired,
+      this.recurring,
+      this.storePlanId})
       : super._();
-  factory _Subscription.fromJson(Map<String, dynamic> json) => _$SubscriptionFromJson(json);
 
   @override
   final bool active;
   @override
-  @JsonKey(name: 'plan_id')
   final String? planId;
   @override
-  @JsonKey(name: 'gateway')
   final String? gateway;
   @override
-  @JsonKey(name: 'active_until')
   final DateTime? activeUntil;
   @override
-  @JsonKey(name: 'expired')
   final bool? expired;
   @override
-  @JsonKey(name: 'recurring')
   final bool? recurring;
+  @override
+  final String? storePlanId;
 
   /// Create a copy of Subscription
   /// with the given fields replaced by the non-null parameter values.
@@ -341,13 +322,6 @@ class _Subscription extends Subscription {
   @pragma('vm:prefer-inline')
   _$SubscriptionCopyWith<_Subscription> get copyWith =>
       __$SubscriptionCopyWithImpl<_Subscription>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$SubscriptionToJson(
-      this,
-    );
-  }
 
   @override
   bool operator ==(Object other) {
@@ -359,17 +333,17 @@ class _Subscription extends Subscription {
             (identical(other.gateway, gateway) || other.gateway == gateway) &&
             (identical(other.activeUntil, activeUntil) || other.activeUntil == activeUntil) &&
             (identical(other.expired, expired) || other.expired == expired) &&
-            (identical(other.recurring, recurring) || other.recurring == recurring));
+            (identical(other.recurring, recurring) || other.recurring == recurring) &&
+            (identical(other.storePlanId, storePlanId) || other.storePlanId == storePlanId));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, active, planId, gateway, activeUntil, expired, recurring);
+  int get hashCode => Object.hash(
+      runtimeType, active, planId, gateway, activeUntil, expired, recurring, storePlanId);
 
   @override
   String toString() {
-    return 'Subscription(active: $active, planId: $planId, gateway: $gateway, activeUntil: $activeUntil, expired: $expired, recurring: $recurring)';
+    return 'Subscription(active: $active, planId: $planId, gateway: $gateway, activeUntil: $activeUntil, expired: $expired, recurring: $recurring, storePlanId: $storePlanId)';
   }
 }
 
@@ -381,11 +355,12 @@ abstract mixin class _$SubscriptionCopyWith<$Res> implements $SubscriptionCopyWi
   @useResult
   $Res call(
       {bool active,
-      @JsonKey(name: 'plan_id') String? planId,
-      @JsonKey(name: 'gateway') String? gateway,
-      @JsonKey(name: 'active_until') DateTime? activeUntil,
-      @JsonKey(name: 'expired') bool? expired,
-      @JsonKey(name: 'recurring') bool? recurring});
+      String? planId,
+      String? gateway,
+      DateTime? activeUntil,
+      bool? expired,
+      bool? recurring,
+      String? storePlanId});
 }
 
 /// @nodoc
@@ -406,6 +381,7 @@ class __$SubscriptionCopyWithImpl<$Res> implements _$SubscriptionCopyWith<$Res> 
     Object? activeUntil = freezed,
     Object? expired = freezed,
     Object? recurring = freezed,
+    Object? storePlanId = freezed,
   }) {
     return _then(_Subscription(
       active: null == active
@@ -432,6 +408,10 @@ class __$SubscriptionCopyWithImpl<$Res> implements _$SubscriptionCopyWith<$Res> 
           ? _self.recurring
           : recurring // ignore: cast_nullable_to_non_nullable
               as bool?,
+      storePlanId: freezed == storePlanId
+          ? _self.storePlanId
+          : storePlanId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }

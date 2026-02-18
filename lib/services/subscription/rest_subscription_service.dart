@@ -278,6 +278,7 @@ class RestSubscriptionService extends SubscriptionService {
         activeUntil: res.data!.activeUntil,
         expired: res.data!.expired,
         recurring: res.data!.recurring,
+        storePlanId: res.data!.storePlanId,
       );
     } on ApiException {
       rethrow;
