@@ -94,6 +94,9 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   @override
   Future<void> login({required String userId, required String userEmail}) async {
+    if (!OneSignal.Notifications.permission) {
+      return;
+    }
     await OneSignal.login(userId);
     await OneSignal.User.addEmail(userEmail);
     _emitCurrentUser();

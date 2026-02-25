@@ -474,6 +474,7 @@ abstract class _VpnStore extends VpnGuard with Store {
         location: _vpnConnection!.location,
         time: _stopwatch.elapsed,
         isRefresh: refreshIP,
+        protocol: _protocolStore.protocol,
       );
     }
   }
@@ -490,6 +491,7 @@ abstract class _VpnStore extends VpnGuard with Store {
       time: _stopwatch.elapsed,
       error: e.message ?? e.toString(),
       errorType: e.runtimeType.toString(),
+      protocol: _protocolStore.protocol,
     );
   }
 
@@ -516,6 +518,7 @@ abstract class _VpnStore extends VpnGuard with Store {
       errorType: e.runtimeType.toString(),
       errorCode: errorCode,
       errorMessage: errorMessage,
+      protocol: _protocolStore.protocol,
     );
   }
 

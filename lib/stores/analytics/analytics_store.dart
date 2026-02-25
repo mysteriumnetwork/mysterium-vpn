@@ -184,6 +184,7 @@ mixin AnalyticsStore {
     required VPNLocation location,
     required Duration time,
     required bool? isRefresh,
+    required ProtocolType protocol,
   }) async {
     logEvent(
       AnalyticsEvent.connectSuccess,
@@ -192,6 +193,7 @@ mixin AnalyticsStore {
         'ipType': location.ipType.name.toSnakeCase,
         'time': time.inSeconds,
         'refresh_ip': isRefresh,
+        'protocol': protocol.name,
       },
     );
   }
@@ -200,6 +202,7 @@ mixin AnalyticsStore {
     required Duration time,
     required String error,
     required String errorType,
+    required ProtocolType protocol,
     int? errorCode,
     String? errorMessage,
   }) async {
@@ -211,6 +214,7 @@ mixin AnalyticsStore {
         'error_type': errorType,
         if (errorCode != null) 'error_code': errorCode,
         if (errorMessage != null) 'error_message': errorMessage,
+        'protocol': protocol.name,
       },
     );
   }

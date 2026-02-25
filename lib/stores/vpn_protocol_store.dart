@@ -59,7 +59,14 @@ abstract class _VpnProtocolStore with Store {
       if (!_remoteConfigStore.isProtocolPickerAvailable) {
         return _defaultProtocol;
       }
-      return await _localDB.getProtocolType();
+      final protocol = await _localDB.getProtocolType();
+      _analyticsStore.setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.protocol,
+          value: protocol.name,
+        ),
+      );
+      return protocol;
     } catch (e) {
       Sentry.captureException(
         e,
