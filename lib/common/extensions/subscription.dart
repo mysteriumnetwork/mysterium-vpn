@@ -5,24 +5,33 @@ typedef SubscriptionData = ({
   String plan,
   String expirationDate,
   String duration,
-  String recurring
+  String recurring,
+  String startDate,
+  String active,
+  String expired,
 });
 
 extension SubscriptionExtensions on Subscription? {
-  ({String gateway, String plan, String expirationDate, String duration, String recurring})
-      toSubscriptionData() {
-    final plan = this?.planId;
-    final gateway = this?.gatewayName;
-    final expirationDate = this?.activeUntil?.toIso8601String() ?? 'null';
-    final duration = this?.durationInMonthsBasedOnPlanId ?? 'null';
-    final recurring = this?.recurring?.toString() ?? 'null';
-    if (plan != null && gateway != null) {
+  ({
+    String gateway,
+    String plan,
+    String expirationDate,
+    String duration,
+    String recurring,
+    String startDate,
+    String active,
+    String expired
+  }) toSubscriptionData() {
+    if (this?.planId != null && this?.gatewayName != null) {
       return (
-        gateway: gateway,
-        plan: plan,
-        expirationDate: expirationDate,
-        duration: duration,
-        recurring: recurring
+        gateway: this!.gatewayName,
+        plan: this!.planId!,
+        expirationDate: this!.activeUntil?.toIso8601String() ?? 'null',
+        duration: this!.durationInMonthsBasedOnPlanId ?? 'null',
+        recurring: this!.recurring?.toString() ?? 'null',
+        startDate: this!.periodStart?.toIso8601String() ?? 'null',
+        active: this!.active.toString(),
+        expired: this!.expired.toString(),
       );
     }
     return (
@@ -30,7 +39,10 @@ extension SubscriptionExtensions on Subscription? {
       plan: 'null',
       expirationDate: 'null',
       duration: 'null',
-      recurring: 'null'
+      recurring: 'null',
+      startDate: 'null',
+      active: 'null',
+      expired: 'null',
     );
   }
 }

@@ -270,15 +270,17 @@ class RestSubscriptionService extends SubscriptionService {
       if (res.data == null) {
         throw Exception('No data found');
       }
+      final data = res.data!;
 
       return Subscription(
-        active: res.data!.active,
-        planId: res.data!.planId,
-        gateway: res.data!.gateway,
-        activeUntil: res.data!.activeUntil,
-        expired: res.data!.expired,
-        recurring: res.data!.recurring,
-        storePlanId: res.data!.storePlanId,
+        active: data.active,
+        planId: data.planId,
+        gateway: data.gateway,
+        activeUntil: data.activeUntil,
+        expired: data.expired,
+        recurring: data.recurring,
+        storePlanId: data.storePlanId,
+        periodStart: data.periodStart,
       );
     } on ApiException {
       rethrow;

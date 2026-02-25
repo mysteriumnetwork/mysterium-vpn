@@ -199,6 +199,9 @@ abstract class _PushNotificationsStore with Store, Disposeable {
         'subscription_gateway': data.gateway,
         'subscription_plan': data.plan,
         'subscription_recurring': data.recurring,
+        'subscription_active': data.active,
+        'subscription_start_date': data.startDate,
+        'subscription_expired': data.expired,
       };
       await _notificationsRepository.setTags(tags);
     } catch (e, stack) {
