@@ -21,6 +21,7 @@ mixin _$Subscription {
   bool? get expired;
   bool? get recurring;
   String? get storePlanId;
+  DateTime? get periodStart;
 
   /// Create a copy of Subscription
   /// with the given fields replaced by the non-null parameter values.
@@ -40,16 +41,17 @@ mixin _$Subscription {
             (identical(other.activeUntil, activeUntil) || other.activeUntil == activeUntil) &&
             (identical(other.expired, expired) || other.expired == expired) &&
             (identical(other.recurring, recurring) || other.recurring == recurring) &&
-            (identical(other.storePlanId, storePlanId) || other.storePlanId == storePlanId));
+            (identical(other.storePlanId, storePlanId) || other.storePlanId == storePlanId) &&
+            (identical(other.periodStart, periodStart) || other.periodStart == periodStart));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, active, planId, gateway, activeUntil, expired, recurring, storePlanId);
+  int get hashCode => Object.hash(runtimeType, active, planId, gateway, activeUntil, expired,
+      recurring, storePlanId, periodStart);
 
   @override
   String toString() {
-    return 'Subscription(active: $active, planId: $planId, gateway: $gateway, activeUntil: $activeUntil, expired: $expired, recurring: $recurring, storePlanId: $storePlanId)';
+    return 'Subscription(active: $active, planId: $planId, gateway: $gateway, activeUntil: $activeUntil, expired: $expired, recurring: $recurring, storePlanId: $storePlanId, periodStart: $periodStart)';
   }
 }
 
@@ -65,7 +67,8 @@ abstract mixin class $SubscriptionCopyWith<$Res> {
       DateTime? activeUntil,
       bool? expired,
       bool? recurring,
-      String? storePlanId});
+      String? storePlanId,
+      DateTime? periodStart});
 }
 
 /// @nodoc
@@ -87,6 +90,7 @@ class _$SubscriptionCopyWithImpl<$Res> implements $SubscriptionCopyWith<$Res> {
     Object? expired = freezed,
     Object? recurring = freezed,
     Object? storePlanId = freezed,
+    Object? periodStart = freezed,
   }) {
     return _then(_self.copyWith(
       active: null == active
@@ -117,6 +121,10 @@ class _$SubscriptionCopyWithImpl<$Res> implements $SubscriptionCopyWith<$Res> {
           ? _self.storePlanId
           : storePlanId // ignore: cast_nullable_to_non_nullable
               as String?,
+      periodStart: freezed == periodStart
+          ? _self.periodStart
+          : periodStart // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -215,7 +223,7 @@ extension SubscriptionPatterns on Subscription {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(bool active, String? planId, String? gateway, DateTime? activeUntil,
-            bool? expired, bool? recurring, String? storePlanId)?
+            bool? expired, bool? recurring, String? storePlanId, DateTime? periodStart)?
         $default, {
     required TResult orElse(),
   }) {
@@ -223,7 +231,7 @@ extension SubscriptionPatterns on Subscription {
     switch (_that) {
       case _Subscription() when $default != null:
         return $default(_that.active, _that.planId, _that.gateway, _that.activeUntil, _that.expired,
-            _that.recurring, _that.storePlanId);
+            _that.recurring, _that.storePlanId, _that.periodStart);
       case _:
         return orElse();
     }
@@ -245,14 +253,14 @@ extension SubscriptionPatterns on Subscription {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(bool active, String? planId, String? gateway, DateTime? activeUntil,
-            bool? expired, bool? recurring, String? storePlanId)
+            bool? expired, bool? recurring, String? storePlanId, DateTime? periodStart)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _Subscription():
         return $default(_that.active, _that.planId, _that.gateway, _that.activeUntil, _that.expired,
-            _that.recurring, _that.storePlanId);
+            _that.recurring, _that.storePlanId, _that.periodStart);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -273,14 +281,14 @@ extension SubscriptionPatterns on Subscription {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(bool active, String? planId, String? gateway, DateTime? activeUntil,
-            bool? expired, bool? recurring, String? storePlanId)?
+            bool? expired, bool? recurring, String? storePlanId, DateTime? periodStart)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _Subscription() when $default != null:
         return $default(_that.active, _that.planId, _that.gateway, _that.activeUntil, _that.expired,
-            _that.recurring, _that.storePlanId);
+            _that.recurring, _that.storePlanId, _that.periodStart);
       case _:
         return null;
     }
@@ -297,7 +305,8 @@ class _Subscription extends Subscription {
       this.activeUntil,
       this.expired,
       this.recurring,
-      this.storePlanId})
+      this.storePlanId,
+      this.periodStart})
       : super._();
 
   @override
@@ -314,6 +323,8 @@ class _Subscription extends Subscription {
   final bool? recurring;
   @override
   final String? storePlanId;
+  @override
+  final DateTime? periodStart;
 
   /// Create a copy of Subscription
   /// with the given fields replaced by the non-null parameter values.
@@ -334,16 +345,17 @@ class _Subscription extends Subscription {
             (identical(other.activeUntil, activeUntil) || other.activeUntil == activeUntil) &&
             (identical(other.expired, expired) || other.expired == expired) &&
             (identical(other.recurring, recurring) || other.recurring == recurring) &&
-            (identical(other.storePlanId, storePlanId) || other.storePlanId == storePlanId));
+            (identical(other.storePlanId, storePlanId) || other.storePlanId == storePlanId) &&
+            (identical(other.periodStart, periodStart) || other.periodStart == periodStart));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, active, planId, gateway, activeUntil, expired, recurring, storePlanId);
+  int get hashCode => Object.hash(runtimeType, active, planId, gateway, activeUntil, expired,
+      recurring, storePlanId, periodStart);
 
   @override
   String toString() {
-    return 'Subscription(active: $active, planId: $planId, gateway: $gateway, activeUntil: $activeUntil, expired: $expired, recurring: $recurring, storePlanId: $storePlanId)';
+    return 'Subscription(active: $active, planId: $planId, gateway: $gateway, activeUntil: $activeUntil, expired: $expired, recurring: $recurring, storePlanId: $storePlanId, periodStart: $periodStart)';
   }
 }
 
@@ -360,7 +372,8 @@ abstract mixin class _$SubscriptionCopyWith<$Res> implements $SubscriptionCopyWi
       DateTime? activeUntil,
       bool? expired,
       bool? recurring,
-      String? storePlanId});
+      String? storePlanId,
+      DateTime? periodStart});
 }
 
 /// @nodoc
@@ -382,6 +395,7 @@ class __$SubscriptionCopyWithImpl<$Res> implements _$SubscriptionCopyWith<$Res> 
     Object? expired = freezed,
     Object? recurring = freezed,
     Object? storePlanId = freezed,
+    Object? periodStart = freezed,
   }) {
     return _then(_Subscription(
       active: null == active
@@ -412,6 +426,10 @@ class __$SubscriptionCopyWithImpl<$Res> implements _$SubscriptionCopyWith<$Res> 
           ? _self.storePlanId
           : storePlanId // ignore: cast_nullable_to_non_nullable
               as String?,
+      periodStart: freezed == periodStart
+          ? _self.periodStart
+          : periodStart // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }

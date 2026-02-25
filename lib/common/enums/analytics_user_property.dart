@@ -13,7 +13,8 @@ enum AnalyticsUserPropName {
   validTo,
   userStatus,
   marketingConsent,
-  email;
+  email,
+  protocol;
 
   String get formattedName => name.toSnakeCase;
 }
