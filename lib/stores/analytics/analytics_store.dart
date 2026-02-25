@@ -214,6 +214,7 @@ mixin AnalyticsStore {
         'error_type': errorType,
         if (errorCode != null) 'error_code': errorCode,
         if (errorMessage != null) 'error_message': errorMessage,
+        'protocol': protocol.name,
       },
     );
   }
