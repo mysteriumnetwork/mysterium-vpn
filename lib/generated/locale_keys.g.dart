@@ -487,4 +487,5 @@ abstract class LocaleKeys {
   static const getSubscriptionPlanBtn = 'getSubscriptionPlanBtn';
   static const fullPriceLabel = 'fullPriceLabel';
   static const discountedPriceLabel = 'discountedPriceLabel';
+  static const ipPoolLabel = 'ipPoolLabel';
 }
