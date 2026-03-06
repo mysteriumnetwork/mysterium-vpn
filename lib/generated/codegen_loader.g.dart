@@ -501,7 +501,8 @@ class CodegenLoader extends AssetLoader {
     "getSubscriptionModalDesc": "保护您的连接，立即享受私密浏览体验。",
     "getSubscriptionPlanBtn": "获取 {} 计划",
     "fullPriceLabel": "全价：",
-    "discountedPriceLabel": "仅有的"
+    "discountedPriceLabel": "仅有的",
+    "ipPoolLabel": "IP地址池：{ips}"
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -1038,7 +1039,8 @@ class CodegenLoader extends AssetLoader {
         "Bağlantınızı güvenli hale getirin ve anında özel taramanın keyfini çıkarın.",
     "getSubscriptionPlanBtn": "{} planını al",
     "fullPriceLabel": "Tam fiyat:",
-    "discountedPriceLabel": "Sadece"
+    "discountedPriceLabel": "Sadece",
+    "ipPoolLabel": "IP Havuzu: {ips}"
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1533,7 +1535,8 @@ class CodegenLoader extends AssetLoader {
     "getSubscriptionModalDesc": "接続を保護してプライベートブラウジングをすぐに楽しむ",
     "getSubscriptionPlanBtn": "{} プランを取得",
     "fullPriceLabel": "定価:",
-    "discountedPriceLabel": "のみ"
+    "discountedPriceLabel": "のみ",
+    "ipPoolLabel": "IP プール: {ips}"
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2083,11 +2086,11 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "Zusätzliche Sicherheitsebene. Leitet Ihren Internetverkehr über zwei verschiedene VPN-Server, verschlüsselt Ihre Daten doppelt und maskiert Ihre IP-Adresse hinter einem zweiten Server.",
     "subscriptionPlanResidentialIPsDesc":
-        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen und eine VPN-Erkennung vermeiden zu können.",
+        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen zu können und eine VPN-Erkennung zu vermeiden.",
     "subscriptionPlanCityLevelDesc":
-        "Bietet eine präzisere Standortkontrolle als die meisten VPNs, bei denen man in der Regel nur ganze Länder oder Bundesstaaten auswählen kann.",
+        "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
     "subscriptionPlanMalwareBlockerDesc":
-        "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
+        "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu unterbrechen.",
     "notNowBtn": "Nicht jetzt.",
     "viewAllFeaturesBtn": "Alle Funktionen anzeigen",
     "viewLessBtn": "Weniger anzeigen",
@@ -2099,7 +2102,8 @@ class CodegenLoader extends AssetLoader {
         "Sichern Sie Ihre Verbindung und genießen Sie sofort privates Surfen.",
     "getSubscriptionPlanBtn": "{} Plan abrufen",
     "fullPriceLabel": "Voller Preis:",
-    "discountedPriceLabel": "Nur"
+    "discountedPriceLabel": "Nur",
+    "ipPoolLabel": "IP-Pool: {ips}"
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2655,7 +2659,8 @@ class CodegenLoader extends AssetLoader {
         "Proteja sua conexão e desfrute de navegação privada instantaneamente.",
     "getSubscriptionPlanBtn": "Obtenha o plano {}",
     "fullPriceLabel": "Preço integral:",
-    "discountedPriceLabel": "Apenas"
+    "discountedPriceLabel": "Apenas",
+    "ipPoolLabel": "Conjunto de IPs: {ips}"
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3198,7 +3203,8 @@ class CodegenLoader extends AssetLoader {
     "getSubscriptionModalDesc": "Secure your connection and enjoy private browsing instantly",
     "getSubscriptionPlanBtn": "Get {} plan",
     "fullPriceLabel": "Full price:",
-    "discountedPriceLabel": "Only"
+    "discountedPriceLabel": "Only",
+    "ipPoolLabel": "IP Pool: {ips}"
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3742,7 +3748,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPsDesc":
         "Appari come un normale utente domestico, consentendoti di accedere ai servizi di streaming ed evitare il rilevamento VPN.",
     "subscriptionPlanCityLevelDesc":
-        "Fornisce un controllo della posizione più preciso rispetto alla maggior parte delle VPN, che in genere limitano la selezione a interi paesi o stati.",
+        "Fornisce un controllo della posizione più preciso rispetto alla maggior parte delle VPN, che solitamente ti limitano a selezionare interi paesi o stati.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protegge il tuo dispositivo bloccando le minacce prima che possano raggiungerlo, eseguendo silenziosamente in background senza interromperti.",
     "notNowBtn": "Non adesso",
@@ -3756,7 +3762,8 @@ class CodegenLoader extends AssetLoader {
         "Proteggi la tua connessione e goditi subito una navigazione privata",
     "getSubscriptionPlanBtn": "Ottieni il piano {}",
     "fullPriceLabel": "Prezzo intero:",
-    "discountedPriceLabel": "Soltanto"
+    "discountedPriceLabel": "Soltanto",
+    "ipPoolLabel": "Pool IP: {ips}"
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4322,7 +4329,8 @@ class CodegenLoader extends AssetLoader {
         "Sécurisez votre connexion et profitez instantanément d'une navigation privée.",
     "getSubscriptionPlanBtn": "Obtenez le plan {}",
     "fullPriceLabel": "Prix ​​plein :",
-    "discountedPriceLabel": "Seulement"
+    "discountedPriceLabel": "Seulement",
+    "ipPoolLabel": "Pool d'adresses IP : {ips}"
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4844,7 +4852,7 @@ class CodegenLoader extends AssetLoader {
         "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
     "notificationsSettingTitle": "Pemberitahuan",
     "pushNotificationsSetting": "Notifikasi Push",
-    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
+    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus.",
     "openSystemSettingsBtn": "Buka pengaturan sistem",
     "emailNotificationsSetting": "Notifikasi Email",
     "subscriptionPlanWireGuardDesc":
@@ -4868,7 +4876,8 @@ class CodegenLoader extends AssetLoader {
         "Amankan koneksi Anda dan nikmati penjelajahan pribadi secara instan.",
     "getSubscriptionPlanBtn": "Dapatkan paket {}",
     "fullPriceLabel": "Harga penuh:",
-    "discountedPriceLabel": "Hanya"
+    "discountedPriceLabel": "Hanya",
+    "ipPoolLabel": "Kumpulan IP: {ips}"
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5426,7 +5435,8 @@ class CodegenLoader extends AssetLoader {
         "Protege tu conexión y disfruta de una navegación privada al instante",
     "getSubscriptionPlanBtn": "Obtener el plan {}",
     "fullPriceLabel": "Precio completo:",
-    "discountedPriceLabel": "Solo"
+    "discountedPriceLabel": "Solo",
+    "ipPoolLabel": "Grupo de IP: {ips}"
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5956,7 +5966,8 @@ class CodegenLoader extends AssetLoader {
     "getSubscriptionModalDesc": "قم بتأمين اتصالك واستمتع بتصفح خاص على الفور",
     "getSubscriptionPlanBtn": "احصل على خطة {}",
     "fullPriceLabel": "السعر الكامل:",
-    "discountedPriceLabel": "فقط"
+    "discountedPriceLabel": "فقط",
+    "ipPoolLabel": "مجموعة عناوين IP: {ips}"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,
