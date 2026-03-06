@@ -492,5 +492,6 @@
   "getSubscriptionModalDesc": "接続を保護してプライベートブラウジングをすぐに楽しむ",
   "getSubscriptionPlanBtn": "{} プランを取得",
   "fullPriceLabel": "定価:",
-  "discountedPriceLabel": "のみ"
+  "discountedPriceLabel": "のみ",
+  "ipPoolLabel": "IP プール: {ips}"
 }

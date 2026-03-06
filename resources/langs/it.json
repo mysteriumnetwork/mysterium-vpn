@@ -480,7 +480,7 @@
   "subscriptionPlanWireGuardDesc": "WireGuard: protocollo veloce, ideale per gaming e streaming.\nOpenVPN: protocollo altamente configurabile che funziona dove altri protocolli falliscono (non disponibile su Android).",
   "subscriptionPlanDoubleVPNDesc": "Livello di sicurezza aggiuntivo. Instrada il tuo traffico Internet attraverso due server VPN diversi, crittografando i tuoi dati due volte e mascherando il tuo indirizzo IP dietro un secondo server.",
   "subscriptionPlanResidentialIPsDesc": "Appari come un normale utente domestico, consentendoti di accedere ai servizi di streaming ed evitare il rilevamento VPN.",
-  "subscriptionPlanCityLevelDesc": "Fornisce un controllo della posizione più preciso rispetto alla maggior parte delle VPN, che in genere limitano la selezione a interi paesi o stati.",
+  "subscriptionPlanCityLevelDesc": "Fornisce un controllo della posizione più preciso rispetto alla maggior parte delle VPN, che solitamente ti limitano a selezionare interi paesi o stati.",
   "subscriptionPlanMalwareBlockerDesc": "Protegge il tuo dispositivo bloccando le minacce prima che possano raggiungerlo, eseguendo silenziosamente in background senza interromperti.",
   "notNowBtn": "Non adesso",
   "viewAllFeaturesBtn": "Visualizza tutte le funzionalità",
@@ -492,5 +492,6 @@
   "getSubscriptionModalDesc": "Proteggi la tua connessione e goditi subito una navigazione privata",
   "getSubscriptionPlanBtn": "Ottieni il piano {}",
   "fullPriceLabel": "Prezzo intero:",
-  "discountedPriceLabel": "Soltanto"
+  "discountedPriceLabel": "Soltanto",
+  "ipPoolLabel": "Pool IP: {ips}"
 }

@@ -492,5 +492,6 @@
   "getSubscriptionModalDesc": "Sécurisez votre connexion et profitez instantanément d'une navigation privée.",
   "getSubscriptionPlanBtn": "Obtenez le plan {}",
   "fullPriceLabel": "Prix ​​plein :",
-  "discountedPriceLabel": "Seulement"
+  "discountedPriceLabel": "Seulement",
+  "ipPoolLabel": "Pool d'adresses IP : {ips}"
 }
