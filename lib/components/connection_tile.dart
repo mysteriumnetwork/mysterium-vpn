@@ -85,7 +85,8 @@ class ConnectionTile extends HookConsumerWidget {
                     ip: ipInfo,
                     onRefreshIPPressed: handleRefreshIP,
                     isLocationConnected: isConnected,
-                    ipPoolCount: location.nodeCount ?? 0,
+                    ipPoolCount:
+                        (isConnected ? vpnStore.location?.nodeCount : location.nodeCount) ?? 0,
                   ),
                 ),
               ConnectTextButton(
