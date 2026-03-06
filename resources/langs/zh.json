@@ -492,5 +492,6 @@
   "getSubscriptionModalDesc": "保护您的连接，立即享受私密浏览体验。",
   "getSubscriptionPlanBtn": "获取 {} 计划",
   "fullPriceLabel": "全价：",
-  "discountedPriceLabel": "仅有的"
+  "discountedPriceLabel": "仅有的",
+  "ipPoolLabel": "IP地址池：{ips}"
 }

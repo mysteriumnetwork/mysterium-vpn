@@ -79,6 +79,8 @@ abstract class Palette {
   Color get modalBarrierColor;
   Color get limitedOfferBackgroundColor;
   Color get limitedOfferSheetColor;
+  Color get ipPoolEnabledColor;
+  Color get ipPoolDisabledColor;
 
   MaterialColor get swatchColor;
 }
@@ -203,6 +205,12 @@ class LightPalette implements Palette {
 
   @override
   Color get limitedOfferSheetColor => Palette.midnightInk;
+
+  @override
+  Color get ipPoolEnabledColor => const Color(0xFF6A607D);
+
+  @override
+  Color get ipPoolDisabledColor => const Color(0xFFC5BECD);
 }
 
 class DarkPalette implements Palette {
@@ -325,6 +333,12 @@ class DarkPalette implements Palette {
 
   @override
   Color get limitedOfferSheetColor => Palette.midnightInk;
+
+  @override
+  Color get ipPoolEnabledColor => Palette.white;
+
+  @override
+  Color get ipPoolDisabledColor => const Color(0xFF6A607D);
 }
 
 Map<int, Color> color = const {

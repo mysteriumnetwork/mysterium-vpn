@@ -85,6 +85,8 @@ class ConnectionTile extends HookConsumerWidget {
                     ip: ipInfo,
                     onRefreshIPPressed: handleRefreshIP,
                     isLocationConnected: isConnected,
+                    ipPoolCount:
+                        (isConnected ? vpnStore.location?.nodeCount : location.nodeCount) ?? 0,
                   ),
                 ),
               ConnectTextButton(
@@ -191,6 +193,7 @@ class _Location extends StatelessWidget {
     required this.ip,
     required this.onRefreshIPPressed,
     required this.isLocationConnected,
+    required this.ipPoolCount,
   });
 
   final VPNLocation location;
@@ -198,6 +201,7 @@ class _Location extends StatelessWidget {
   final String? ip;
   final VoidCallback onRefreshIPPressed;
   final bool isLocationConnected;
+  final int ipPoolCount;
 
   @override
   Widget build(BuildContext context) {
@@ -231,7 +235,22 @@ class _Location extends StatelessWidget {
               if (subtitle != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 2),
-                  child: EasyText(subtitle, fontSize: 12, color: theme.palette.subtitleColor),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: EasyText(
+                          subtitle,
+                          fontSize: 12,
+                          color: theme.palette.subtitleColor,
+                        ),
+                      ),
+                      if (ip != null && isLocationConnected)
+                        _RefreshIpButton(
+                          enabled: ipPoolCount >= 2,
+                          onPressed: onRefreshIPPressed,
+                        ),
+                    ],
+                  ),
                 ),
               ConstrainedBox(
                 constraints: const BoxConstraints(minHeight: 32),
@@ -263,13 +282,23 @@ class _Location extends StatelessWidget {
                       ),
                     ),
                     if (ip != null && isLocationConnected)
-                      SvgIconButton(
-                        asset: Asset.icons.refresh,
-                        size: 16,
-                        color: theme.palette.subtitleColor,
-                        visualDensity: VisualDensity.compact,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        onPressed: onRefreshIPPressed,
+                      Row(
+                        spacing: 8,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          EasyText(
+                            LocaleKeys.ipPoolLabel.tr(namedArgs: {'ips': '$ipPoolCount'}),
+                            fontSize: 12,
+                            color: ipPoolCount >= 2
+                                ? theme.palette.ipPoolEnabledColor
+                                : theme.palette.ipPoolDisabledColor,
+                          ),
+                          if (subtitle == null)
+                            _RefreshIpButton(
+                              enabled: ipPoolCount >= 2,
+                              onPressed: onRefreshIPPressed,
+                            ),
+                        ],
                       ),
                   ],
                 ),
@@ -278,6 +307,33 @@ class _Location extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _RefreshIpButton extends StatelessWidget {
+  const _RefreshIpButton({
+    required this.enabled,
+    required this.onPressed,
+  });
+
+  final bool enabled;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return SizedBox(
+      width: 18,
+      height: 18,
+      child: SvgIconButton(
+        asset: Asset.icons.refresh,
+        size: 16,
+        color: enabled ? theme.palette.ipPoolEnabledColor : theme.palette.ipPoolDisabledColor,
+        visualDensity: VisualDensity.compact,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        onPressed: enabled ? onPressed : null,
+      ),
     );
   }
 }
