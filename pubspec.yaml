@@ -113,7 +113,7 @@ dependencies:
   wireguard_dart:
     git:
       url: https://github.com/mysteriumnetwork/wireguard_dart.git
-      ref: fix-wiregurad-notifications
+      ref: 0.9.11
 
 dev_dependencies:
   build_runner: 2.10.5

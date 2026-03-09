@@ -2155,8 +2155,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: fix-wiregurad-notifications
-      resolved-ref: a5d09b98ba2ad52589045ef06884c9afb9d482af
+      ref: "0.9.11"
+      resolved-ref: "7a0ec2cdf88bc9c164b05455ec95363950f77152"
       url: "https://github.com/mysteriumnetwork/wireguard_dart.git"
     source: git
     version: "0.4.5"
