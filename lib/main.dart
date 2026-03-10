@@ -45,18 +45,14 @@ void _setupErrorHandlers(AppInitializer initializer) {
 SentryEvent? _sentryBeforeSend(SentryEvent event, Hint hint) {
   debugPrint(event.throwable.toString());
 
-  const ignoredTypes = {
-    ApiException,
-    SignInAborted,
-    KeyDoesntExistsException,
-    TimeoutException,
-    TokenAlreadyUsedException,
-    OperationCancelledException,
-    SubscriptionRequiredException,
-    RefreshTokenNotFoundException,
-  };
-
-  if (ignoredTypes.any((type) => event.throwable.runtimeType == type)) {
+  if (event.throwable is ApiException ||
+      event.throwable is SignInAborted ||
+      event.throwable is KeyDoesntExistsException ||
+      event.throwable is TimeoutException ||
+      event.throwable is TokenAlreadyUsedException ||
+      event.throwable is OperationCancelledException ||
+      event.throwable is SubscriptionRequiredException ||
+      event.throwable is RefreshTokenNotFoundException) {
     return null;
   }
   return event;
