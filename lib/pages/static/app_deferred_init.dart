@@ -10,20 +10,33 @@ import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/pages/static/splash_page.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:talker/talker.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:url_protocol/url_protocol.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
 final _appStartupPOD = FutureProvider<void>((ref) async {
+  final logger = ref.read(loggerPOD)..log('App startup initiated');
   await Future.wait([
-    _initRemoteConfig(ref).timeout(const Duration(seconds: 10), onTimeout: () => null),
-    _initLatLngStore(ref).timeout(const Duration(seconds: 10), onTimeout: () => null),
-    _initOtherConfigCatStores(ref).timeout(const Duration(seconds: 10)),
-    _initOneSignal(),
+    _initRemoteConfig(ref, logger).timeout(
+      const Duration(seconds: 10),
+      onTimeout: () => logger.log('Remote config init timed out'),
+    ),
+    _initLatLngStore(ref, logger).timeout(
+      const Duration(seconds: 10),
+      onTimeout: () => logger.log('LatLng store init timed out'),
+    ),
+    _initOtherConfigCatStores(ref, logger).timeout(
+      const Duration(seconds: 10),
+      onTimeout: () => logger.log('ConfigCat stores init timed out'),
+    ),
+    _initOneSignal(logger).timeout(
+      const Duration(seconds: 10),
+      onTimeout: () => logger.log('OneSignal init timed out'),
+    ),
     if (Platform.isWindows) _initWindows(),
   ]);
 
@@ -32,21 +45,19 @@ final _appStartupPOD = FutureProvider<void>((ref) async {
       );
 });
 
-Future<RemoteConfigStore?> _initRemoteConfig(Ref ref) async {
+Future<void> _initRemoteConfig(Ref ref, Talker talker) async {
   try {
     final configCatUserStore = ref.read(configCatUserStorePOD);
     final remoteConfigStore = ref.read(remoteConfigStorePOD);
     final configCatUser = await configCatUserStore.future;
     await remoteConfigStore.setUser(configCatUser);
     await remoteConfigStore.configFuture;
-    return remoteConfigStore;
   } catch (e) {
-    debugPrint('RemoteConfig init error (non-fatal): $e');
-    return null;
+    talker.log('Remote config init error (non-fatal): $e');
   }
 }
 
-Future<void> _initOtherConfigCatStores(Ref ref) async {
+Future<void> _initOtherConfigCatStores(Ref ref, Talker logger) async {
   try {
     final configCatUserStore = ref.read(configCatUserStorePOD);
     final configCatUser = await configCatUserStore.future;
@@ -55,22 +66,20 @@ Future<void> _initOtherConfigCatStores(Ref ref) async {
       ref.read(textsStorePOD).setUser(configCatUser),
     ]);
   } catch (e) {
-    debugPrint('ConfigCat stores init error (non-fatal): $e');
+    logger.log('ConfigCat stores init error (non-fatal): $e');
   }
 }
 
-Future<LatLngStore?> _initLatLngStore(Ref ref) async {
+Future<void> _initLatLngStore(Ref ref, Talker logger) async {
   try {
     final latLngStore = ref.read(latLngStorePOD);
     await latLngStore.countryCoordinatesFuture;
-    return latLngStore;
   } catch (e) {
-    debugPrint('LatLng store init error (non-fatal): $e');
-    return null;
+    logger.log('LatLng store init error (non-fatal): $e');
   }
 }
 
-Future<void> _initOneSignal() async {
+Future<void> _initOneSignal(Talker logger) async {
   if (!isMobile()) {
     return;
   }
@@ -80,7 +89,7 @@ Future<void> _initOneSignal() async {
     }
     OneSignal.initialize(Env.oneSignalAppId);
   } catch (e) {
-    debugPrint('OneSignal init error (non-fatal): $e');
+    logger.log('OneSignal init error (non-fatal): $e');
   }
 }
 
