@@ -71,7 +71,7 @@ class AppInitializer {
       };
       await providerContainer.read(analyticsInitPOD(options).future);
     } catch (e) {
-      debugPrint('Firebase SDK init (non-fatal): $e');
+      logger.log('Firebase SDK init error$e');
     }
   }
 

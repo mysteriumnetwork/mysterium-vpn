@@ -94,8 +94,13 @@ Future<void> _initOneSignal(Talker logger) async {
 }
 
 Future<void> _initWindows() async {
-  await Future.wait([_nativeWindowsInit(), _setupTrayIcon()]);
-  registerProtocolHandler(Env.appCustomSchemeUrl);
+  try {
+    await Future.wait([_nativeWindowsInit(), _setupTrayIcon()]);
+    registerProtocolHandler(Env.appCustomSchemeUrl);
+  } catch (e, stackTrace) {
+    debugPrint('Windows init error (non-fatal): $e');
+    await Sentry.captureException(e, stackTrace: stackTrace);
+  }
 }
 
 Future<void> _nativeWindowsInit() async {

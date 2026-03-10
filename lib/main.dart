@@ -31,8 +31,8 @@ void main() async {
   );
 }
 
-/// Attach error handlers as early as possible — before any async work —
-/// so crashes during init are not silently swallowed.
+/// Attach error handlers as early as practical in the startup flow so
+/// crashes during app initialization are not silently swallowed.
 void _setupErrorHandlers(AppInitializer initializer) {
   FlutterError.onError = (details) {
     initializer.logger.handle(details.exception, details.stack);
