@@ -11,11 +11,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Env.init();
   final initializer = AppInitializer();
-  _setupErrorHandlers(initializer);
-  await initializer.init();
-  initializer.logger.log(
-    'App started in ${Env.flavor.name} mode\nBase URL ${Env.baseUrl}',
-  );
+
   await SentryFlutter.init(
     (options) {
       options
@@ -24,7 +20,14 @@ void main() async {
         ..maxRequestBodySize = MaxRequestBodySize.small
         ..beforeSend = _sentryBeforeSend;
     },
-    appRunner: () => runApp(initializer.getApp()),
+    appRunner: () async {
+      _setupErrorHandlers(initializer);
+      await initializer.init();
+      initializer.logger.log(
+        'App started in ${Env.flavor.name} mode\nBase URL ${Env.baseUrl}',
+      );
+      runApp(initializer.getApp());
+    },
   );
 }
 
@@ -33,16 +36,10 @@ void main() async {
 void _setupErrorHandlers(AppInitializer initializer) {
   FlutterError.onError = (details) {
     initializer.logger.handle(details.exception, details.stack);
-    if (!Sentry.isEnabled) {
-      Sentry.captureException(details.exception, stackTrace: details.stack);
-    }
   };
 
   PlatformDispatcher.instance.onError = (error, stack) {
     initializer.logger.handle(error, stack, 'fatal');
-    if (!Sentry.isEnabled) {
-      Sentry.captureException(error, stackTrace: stack);
-    }
     return true;
   };
 }
