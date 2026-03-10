@@ -25,7 +25,7 @@ class AppInitializer {
   AppInitializer();
 
   final ProviderContainer providerContainer = ProviderContainer();
-  late final Talker logger;
+  Talker logger = Talker();
 
   Widget getApp() => UncontrolledProviderScope(
         container: providerContainer,
