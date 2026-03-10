@@ -33,10 +33,16 @@ void main() async {
 void _setupErrorHandlers(AppInitializer initializer) {
   FlutterError.onError = (details) {
     initializer.logger.handle(details.exception, details.stack);
+    if (!Sentry.isEnabled) {
+      Sentry.captureException(details.exception, stackTrace: details.stack);
+    }
   };
 
   PlatformDispatcher.instance.onError = (error, stack) {
     initializer.logger.handle(error, stack, 'fatal');
+    if (!Sentry.isEnabled) {
+      Sentry.captureException(error, stackTrace: stack);
+    }
     return true;
   };
 }
