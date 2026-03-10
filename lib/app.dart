@@ -21,7 +21,7 @@ import 'package:mysterium_vpn/components/network_logger_overlay.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/components/shortcuts.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/pages/static/app_deffered_init.dart';
+import 'package:mysterium_vpn/pages/static/app_deferred_init.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/ft_checkers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -46,12 +46,7 @@ class MyApp extends HookConsumerWidget {
 
     useEffect(
       () {
-        authSessionStore
-            .initStore()
-            .then((_) => authStore.initAuth())
-            .catchError((Object e, StackTrace st) {
-          debugPrint('Auth init error: $e\n$st');
-        });
+        authSessionStore.initStore().whenComplete(authStore.initAuth);
         return null;
       },
       [authStore, authSessionStore],
