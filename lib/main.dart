@@ -11,39 +11,53 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Env.init();
   final initializer = AppInitializer();
+  _setupErrorHandlers(initializer);
   await initializer.init();
+  initializer.logger.log(
+    'App started in ${Env.flavor.name} mode\nBase URL ${Env.baseUrl}',
+  );
+  await SentryFlutter.init(
+    (options) {
+      options
+        ..dsn = Env.sentryDsn
+        ..sendClientReports = true
+        ..maxRequestBodySize = MaxRequestBodySize.small
+        ..beforeSend = _sentryBeforeSend;
+    },
+    appRunner: () => runApp(initializer.getApp()),
+  );
+}
+
+/// Attach error handlers as early as possible — before any async work —
+/// so crashes during init are not silently swallowed.
+void _setupErrorHandlers(AppInitializer initializer) {
   FlutterError.onError = (details) {
-    initializer.logger.handle(
-      details.exception,
-      details.stack,
-    );
+    initializer.logger.handle(details.exception, details.stack);
   };
+
   PlatformDispatcher.instance.onError = (error, stack) {
     initializer.logger.handle(error, stack, 'fatal');
     return true;
   };
+}
 
-  await SentryFlutter.init(
-    (options) {
-      options
-        ..dsn = initializer.remoteConfigStore?.sentryDsn ?? Env.sentryDsn
-        ..sendClientReports = true
-        ..maxRequestBodySize = MaxRequestBodySize.small
-        ..beforeSend = (event, hint) {
-          debugPrint(event.throwable.toString());
-          if (event.throwable is ApiException ||
-              event.throwable is SignInAborted ||
-              event.throwable is KeyDoesntExistsException ||
-              event.throwable is TimeoutException ||
-              event.throwable is TokenAlreadyUsedException ||
-              event.throwable is OperationCancelledException ||
-              event.throwable is SubscriptionRequiredException ||
-              event.throwable is RefreshTokenNotFoundException) {
-            return null;
-          }
-          return event;
-        };
-    },
-    appRunner: () => runApp(initializer.getApp()),
-  );
+/// Filters out non-actionable exceptions from Sentry to reduce noise.
+SentryEvent? _sentryBeforeSend(SentryEvent event, Hint hint) {
+  debugPrint(event.throwable.toString());
+
+  const ignoredTypes = {
+    ApiException,
+    SignInAborted,
+    KeyDoesntExistsException,
+    TimeoutException,
+    TokenAlreadyUsedException,
+    OperationCancelledException,
+    SubscriptionRequiredException,
+    RefreshTokenNotFoundException,
+  };
+
+  if (ignoredTypes.any((type) => event.throwable.runtimeType == type)) {
+    return null;
+  }
+  return event;
 }
