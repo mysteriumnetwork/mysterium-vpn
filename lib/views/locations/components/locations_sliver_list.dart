@@ -57,7 +57,7 @@ class LocationsSliverList extends HookConsumerWidget {
       },
       [
         priorityIndex,
-      ], // fixed: was [priorityCountryCode], use index so re-scroll works if list reorders
+      ],
     );
 
     return SliverFillRemaining(
