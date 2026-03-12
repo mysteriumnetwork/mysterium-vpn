@@ -21,6 +21,7 @@ import 'package:mysterium_vpn/components/network_logger_overlay.dart';
 import 'package:mysterium_vpn/components/retake_fokus.dart';
 import 'package:mysterium_vpn/components/shortcuts.dart';
 import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/pages/static/app_deferred_init.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/ft_checkers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -36,12 +37,12 @@ class MyApp extends HookConsumerWidget {
     final authSessionStore = ref.read(authSessionStorePOD);
     final routeDelegate = ref.read(routerDelegatePOD);
     final localStore = ref.read(localeStorePOD);
-    ref.read(smartRefreshStorePOD);
 
-    const appName = Env.appName;
+    // Eagerly initialise these stores for their side-effects only.
     ref
-      ..watch(realIPInfoStorePOD)
-      ..watch(pushNotificationsStorePOD);
+      ..read(smartRefreshStorePOD)
+      ..read(realIPInfoStorePOD)
+      ..read(pushNotificationsStorePOD);
 
     useEffect(
       () {
@@ -50,11 +51,15 @@ class MyApp extends HookConsumerWidget {
       },
       [authStore, authSessionStore],
     );
-    useReaction(() => authSessionStore.isAuthenticated, (status) async {
-      if (status) {
-        await authStore.fetchAuthUser();
-      }
-    });
+
+    useReaction(
+      () => authSessionStore.isAuthenticated,
+      (isAuthenticated) async {
+        if (isAuthenticated) {
+          await authStore.fetchAuthUser();
+        }
+      },
+    );
 
     useMQTTService();
     useConfigCatUserUpdater();
@@ -64,7 +69,7 @@ class MyApp extends HookConsumerWidget {
       builder: (_) => reaction(
         (_) => authSessionStore.status,
         (status) {
-          authenticationReaction(status, routeDelegate, ref);
+          _authenticationReaction(status, routeDelegate, ref);
         },
       ),
       child: LifecycleListener(
@@ -73,13 +78,12 @@ class MyApp extends HookConsumerWidget {
           builder: (context) => RetakeFocusOnTap(
             child: ShortcutsWidget(
               child: CustomPlatformMenu(
-                appName: appName,
+                appName: Env.appName,
                 child: BeamerProvider(
                   routerDelegate: routeDelegate,
                   child: Portal(
                     child: MaterialApp.router(
-                      title: appName,
-                      key: UniqueKey(),
+                      title: Env.appName,
                       scaffoldMessengerKey: snackbarKey,
                       theme: themeStore.lightTheme,
                       darkTheme: themeStore.darkTheme,
@@ -104,8 +108,10 @@ class MyApp extends HookConsumerWidget {
                               overscroll: true,
                               physics: const BouncingScrollPhysics(),
                             ),
-                            child: FTCheckers(
-                              child: NetworkLoggerOverlayView(child: child!),
+                            child: AppDeferredInitWidget(
+                              child: FTCheckers(
+                                child: NetworkLoggerOverlayView(child: child!),
+                              ),
                             ),
                           ),
                         ),
@@ -121,34 +127,44 @@ class MyApp extends HookConsumerWidget {
     );
   }
 
-  Future<void> authenticationReaction(
+  Future<void> _authenticationReaction(
     AuthStatus authStatus,
     BeamerDelegate routeDelegate,
     WidgetRef ref,
   ) async {
     routeDelegate.update();
-    if (authStatus == AuthStatus.unauthenticated) {
-      if (ref.exists(vpnStorePOD)) {
-        await ref.read(vpnStorePOD).disposeStore();
-        ref.invalidate(vpnStorePOD);
-      }
-      if (ref.exists(dnsStorePOD)) {
-        await ref.read(dnsStorePOD).disposeStore();
-        ref.invalidate(dnsStorePOD);
-      }
-      if (ref.exists(locationsStorePOD)) {
-        ref.invalidate(locationsStorePOD);
-      }
-      if (ref.exists(subscriptionStorePOD)) {
-        ref.invalidate(subscriptionStorePOD);
-      }
-      if (ref.exists(refreshIPStorePOD)) {
-        ref.read(refreshIPStorePOD).disposeStore();
-        ref.invalidate(refreshIPStorePOD);
-      }
-      if (ref.exists(recentLocationsStorePOD)) {
-        ref.invalidate(recentLocationsStorePOD);
-      }
+
+    if (authStatus != AuthStatus.unauthenticated) {
+      return;
+    }
+
+    await _disposeStore(ref, vpnStorePOD, dispose: (s) => s.disposeStore());
+    await _disposeStore(ref, dnsStorePOD, dispose: (s) => s.disposeStore());
+    _invalidateIfExists(ref, locationsStorePOD);
+    _invalidateIfExists(ref, subscriptionStorePOD);
+    _invalidateIfExists(ref, recentLocationsStorePOD);
+
+    if (ref.exists(refreshIPStorePOD)) {
+      ref.read(refreshIPStorePOD).disposeStore();
+      ref.invalidate(refreshIPStorePOD);
+    }
+  }
+
+  Future<void> _disposeStore<T>(
+    WidgetRef ref,
+    ProviderBase<T> provider, {
+    required Future<void> Function(T store) dispose,
+  }) async {
+    if (!ref.exists(provider)) {
+      return;
+    }
+    await dispose(ref.read(provider));
+    ref.invalidate(provider);
+  }
+
+  void _invalidateIfExists(WidgetRef ref, ProviderBase<dynamic> provider) {
+    if (ref.exists(provider)) {
+      ref.invalidate(provider);
     }
   }
 }
