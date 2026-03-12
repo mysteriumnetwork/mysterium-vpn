@@ -272,7 +272,6 @@
   "pricingPlanTitle": "Il nostro piano consigliato",
   "privacyPolicy": "politica sulla riservatezza",
   "privacyPriority": "La tua privacy è la nostra priorità numero 1",
-  "privacyPriorityText": "Per fornirti un servizio VPN veloce e affidabile, raccogliamo una quantità minima di dati.\n\nRaccogliamo: \n\n1. Il tuo indirizzo e-mail per accedere e per risolvere i problemi relativi all'account.\n\n2. Le informazioni specifiche del dispositivo come la versione del sistema operativo, il modello hardware e i dati di utilizzo anonimi per ottimizzare la nostra applicazione migliorano l'esperienza dell'utente. Non memorizziamo o registriamo il tuo indirizzo IP.\n\nNon conserviamo registri delle tue attività online e non associamo mai domini o applicazioni che utilizzi a te, al tuo dispositivo, indirizzo IP o e-mail.",
   "processingPayment": "Stiamo elaborando il tuo pagamento. A breve sarai pronto...",
   "productsNotAvailable": "Non ci sono prodotti disponibili al momento. Per favore riprova più tardi.",
   "productUpdates": "Ricevi gli aggiornamenti del prodotto",
@@ -479,8 +478,8 @@
   "emailNotificationsSetting": "Notifiche e-mail",
   "subscriptionPlanWireGuardDesc": "WireGuard: protocollo veloce, ideale per gaming e streaming.\nOpenVPN: protocollo altamente configurabile che funziona dove altri protocolli falliscono (non disponibile su Android).",
   "subscriptionPlanDoubleVPNDesc": "Livello di sicurezza aggiuntivo. Instrada il tuo traffico Internet attraverso due server VPN diversi, crittografando i tuoi dati due volte e mascherando il tuo indirizzo IP dietro un secondo server.",
-  "subscriptionPlanResidentialIPsDesc": "Appari come un normale utente domestico, consentendoti di accedere ai servizi di streaming ed evitare il rilevamento VPN.",
-  "subscriptionPlanCityLevelDesc": "Fornisce un controllo della posizione più preciso rispetto alla maggior parte delle VPN, che solitamente ti limitano a selezionare interi paesi o stati.",
+  "subscriptionPlanResidentialIPsDesc": "Appari come un normale utente domestico, consentendoti di accedere ai servizi di streaming ed evitare il rilevamento della VPN.",
+  "subscriptionPlanCityLevelDesc": "Fornisce un controllo della posizione più preciso rispetto alla maggior parte delle VPN, che in genere limitano la selezione a interi paesi o stati.",
   "subscriptionPlanMalwareBlockerDesc": "Protegge il tuo dispositivo bloccando le minacce prima che possano raggiungerlo, eseguendo silenziosamente in background senza interromperti.",
   "notNowBtn": "Non adesso",
   "viewAllFeaturesBtn": "Visualizza tutte le funzionalità",
@@ -493,5 +492,10 @@
   "getSubscriptionPlanBtn": "Ottieni il piano {}",
   "fullPriceLabel": "Prezzo intero:",
   "discountedPriceLabel": "Soltanto",
-  "ipPoolLabel": "Pool IP: {ips}"
+  "ipPoolLabel": "Pool IP: {ips}",
+  "connectToTooltip": "Connettiti a {paese}",
+  "locationItemStatesCount": {
+    "one": "{} Stato",
+    "other": "{} Stati"
+  }
 }

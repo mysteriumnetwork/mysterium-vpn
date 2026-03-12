@@ -272,7 +272,6 @@
   "pricingPlanTitle": "Plans de tarification",
   "privacyPolicy": "Politique de confidentialité",
   "privacyPriority": "Votre vie privée est notre",
-  "privacyPriorityText": "Pour vous fournir un service VPN rapide et fiable, nous collectons un minimum de données.\n\nNous collectons :\n\n1. Votre adresse e-mail pour vous connecter et résoudre les problèmes liés au compte.\n\n2. Des informations spécifiques à l'appareil telles que la version du système d'exploitation, le modèle de matériel et les données d'utilisation anonymes pour optimiser notre application améliorent l'expérience utilisateur. Nous ne stockons ni n'enregistrons votre adresse IP.\n\nNous ne conservons pas de journaux de vos activités en ligne et ne les associons jamais tous les domaines ou applications que vous utilisez avec vous, votre appareil, votre adresse IP ou votre adresse e-mail.",
   "processingPayment": "Nous traitons votre paiement. Vous serez prêt sous peu…",
   "productsNotAvailable": "Il n'y a pas de produits disponibles pour le moment. Veuillez réessayer plus tard.",
   "productUpdates": "Obtenez des mises à jour de produit",
@@ -493,5 +492,10 @@
   "getSubscriptionPlanBtn": "Obtenez le plan {}",
   "fullPriceLabel": "Prix ​​plein :",
   "discountedPriceLabel": "Seulement",
-  "ipPoolLabel": "Pool d'adresses IP : {ips}"
+  "ipPoolLabel": "Pool d'adresses IP : {ips}",
+  "connectToTooltip": "Se connecter à {pays}",
+  "locationItemStatesCount": {
+    "one": "{} État",
+    "other": "États"
+  }
 }
