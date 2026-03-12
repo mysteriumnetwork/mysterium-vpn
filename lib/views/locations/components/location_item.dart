@@ -37,59 +37,48 @@ class LocationItem extends HookConsumerWidget {
     final selectedLocationStore = ref.watch(selectedLocationStorePOD);
     final selectedLocation = useComputedValue(() => selectedLocationStore.value);
 
-    final onTap = useComputedValue(() => vpnStore.isLoading ? null : this.onTap, [this.onTap]);
     final children = location.children ?? const <VPNLocation>[];
-    final childrenRef = useRef(children)..value = children;
+    final showCitiesAndStates = remoteConfig.showCitiesAndStates && children.isNotEmpty;
+    final locationHasStates = remoteConfig.countriesWithStates.contains(location.countryCode);
 
-    final showCitiesAndStates = useComputedValue(
-      () => remoteConfig.showCitiesAndStates && children.isNotEmpty,
-      [children],
-    );
-    final locationHasStates = useComputedValue(
-      () => remoteConfig.countriesWithStates.contains(location.countryCode),
-      [children, location.countryCode],
-    );
-    final isExpanded = useState(false);
+    // Manual toggle state
+    final userExpanded = useState<Set<String>>({});
 
+    // Derived expansion state
+    final isExpanded = useMemoized(
+      () {
+        final matchesQuery = query.isNotEmpty &&
+            children.any((it) => it.queried(query, context.locale.languageCode) != null);
+
+        final selectedMatch = selectedLocation != null &&
+            (selectedLocation.id == location.id &&
+                selectedLocation.countryCode == location.countryCode);
+
+        final manual = userExpanded.value.contains(location.id);
+
+        return showCitiesAndStates && (matchesQuery || selectedMatch || manual);
+      },
+      [
+        query.trim(),
+        selectedLocation?.id,
+        selectedLocation?.countryCode,
+        userExpanded.value,
+        children,
+      ],
+    );
+
+    // Toggle manual expansion
     void handleToggleExpanded() {
-      isExpanded.value = !isExpanded.value;
+      final current = {...userExpanded.value};
+      if (current.contains(location.id)) {
+        current.remove(location.id);
+      } else {
+        current.add(location.id);
+      }
+      userExpanded.value = current;
     }
 
-    useEffect(
-      () {
-        if (query.isEmpty) {
-          return null;
-        }
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (context.mounted) {
-            final matchesQuery = childrenRef.value
-                .any((it) => it.queried(query, context.locale.languageCode) != null);
-            if (matchesQuery) {
-              isExpanded.value = true;
-            }
-          }
-        });
-        return null;
-      },
-      [query],
-    );
-
-    useEffect(
-      () {
-        if (selectedLocation == null) {
-          return null;
-        }
-        final isSelected = selectedLocation.id == location.id &&
-            selectedLocation.countryCode == location.countryCode;
-        if (isSelected && children.isNotEmpty) {
-          isExpanded.value = true;
-        } else {
-          isExpanded.value = false;
-        }
-        return null;
-      },
-      [selectedLocation?.id, selectedLocation?.countryCode],
-    );
+    final onTapComputed = vpnStore.isLoading ? null : onTap;
 
     return Container(
       constraints: const BoxConstraints(minHeight: 64),
@@ -104,26 +93,24 @@ class LocationItem extends HookConsumerWidget {
           _LocationItem(
             location: location,
             onTap: showCitiesAndStates ? handleToggleExpanded : null,
-            onToggleConnectionTap: onTap == null ? null : () => onTap(location),
+            onToggleConnectionTap: onTapComputed == null ? null : () => onTapComputed(location),
             label: showCitiesAndStates
                 ? locationHasStates
                     ? LocaleKeys.locationItemStatesCount.plural(
                         children.length,
-                        namedArgs: {
-                          'statesNum': children.length.toString(),
-                        },
+                        namedArgs: {'statesNum': children.length.toString()},
                       )
                     : LocaleKeys.locationItemCityCount.plural(children.length)
                 : LocaleKeys.locationItemNodeCount.plural(location.nodeCount ?? 0),
-            isExpanded: showCitiesAndStates ? isExpanded.value : null,
+            isExpanded: isExpanded,
             flag: location.countryCode,
             query: query,
           ),
-          if (showCitiesAndStates && isExpanded.value)
+          if (showCitiesAndStates && isExpanded)
             for (final child in children)
               _ChildLocationItem(
                 value: child,
-                onTap: onTap == null ? null : () => onTap(child),
+                onTap: onTapComputed == null ? null : () => onTapComputed(child),
                 query: query,
               ),
         ],
