@@ -326,6 +326,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   bool get pricingMonthly => (_$pricingMonthlyComputed ??=
           Computed<bool>(() => super.pricingMonthly, name: 'RemoteConfigStoreBase.pricingMonthly'))
       .value;
+  Computed<Set<String>>? _$countriesWithStatesComputed;
+
+  @override
+  Set<String> get countriesWithStates =>
+      (_$countriesWithStatesComputed ??= Computed<Set<String>>(() => super.countriesWithStates,
+              name: 'RemoteConfigStoreBase.countriesWithStates'))
+          .value;
 
   @override
   String toString() {
@@ -375,7 +382,8 @@ promotionalBanner: ${promotionalBanner},
 pushNotifPermissionPromptCooldown: ${pushNotifPermissionPromptCooldown},
 gatewaysSupportingUpgrade: ${gatewaysSupportingUpgrade},
 checkoutWebRedirectUrl: ${checkoutWebRedirectUrl},
-pricingMonthly: ${pricingMonthly}
+pricingMonthly: ${pricingMonthly},
+countriesWithStates: ${countriesWithStates}
     ''';
   }
 }

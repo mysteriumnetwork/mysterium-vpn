@@ -58,6 +58,7 @@ enum _FeatureToggleKey {
   checkoutWebRedirectUrl,
   gatewaysSupportingUpgrade,
   pricingMonthly,
+  countriesWithStates,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -571,6 +572,20 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return config[_FeatureToggleKey.pricingMonthly.name] as bool;
     }
     return true;
+  }
+
+  @computed
+  Set<String> get countriesWithStates {
+    try {
+      if (config.containsKey(_FeatureToggleKey.countriesWithStates.name)) {
+        final raw = config[_FeatureToggleKey.countriesWithStates.name];
+        final decoded = jsonDecode(raw.toString()) as List;
+        return decoded.map((it) => it.toString()).toSet();
+      }
+    } catch (e, stack) {
+      logger.handle(e, stack);
+    }
+    return const <String>{};
   }
 
   Map<String, String> get asUserProperties =>
