@@ -493,9 +493,9 @@
   "fullPriceLabel": "Harga penuh:",
   "discountedPriceLabel": "Hanya",
   "ipPoolLabel": "Kumpulan IP: {ips}",
-  "connectToTooltip": "Terhubung ke {negara}",
+  "connectToTooltip": "Terhubung ke {countryNum}",
   "locationItemStatesCount": {
-    "one": "{} Negara",
-    "other": "Negara Bagian {}"
+    "one": "{statesNum} Negara Bagian",
+    "other": "{statesNum} Negara Bagian"
   }
 }

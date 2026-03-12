@@ -493,9 +493,9 @@
   "fullPriceLabel": "السعر الكامل:",
   "discountedPriceLabel": "فقط",
   "ipPoolLabel": "مجموعة عناوين IP: {ips}",
-  "connectToTooltip": "الاتصال بـ {country}",
+  "connectToTooltip": "اتصل بـ {countryNum}",
   "locationItemStatesCount": {
-    "one": "{} ولاية",
-    "other": "{} ولايات"
+    "one": "{statesNum} الولاية",
+    "other": "{statesNum} الولايات"
   }
 }

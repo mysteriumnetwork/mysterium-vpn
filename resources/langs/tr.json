@@ -493,9 +493,9 @@
   "fullPriceLabel": "Tam fiyat:",
   "discountedPriceLabel": "Sadece",
   "ipPoolLabel": "IP Havuzu: {ips}",
-  "connectToTooltip": "{country} ile bağlantı kurun",
+  "connectToTooltip": "{countryNum} ülkesine bağlanın",
   "locationItemStatesCount": {
-    "one": "{} Durum",
-    "other": "{} Eyaletler"
+    "one": "{statesNum} Eyalet",
+    "other": "{statesNum} Eyalet"
   }
 }

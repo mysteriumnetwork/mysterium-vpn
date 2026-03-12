@@ -493,9 +493,9 @@
   "fullPriceLabel": "Precio completo:",
   "discountedPriceLabel": "Solo",
   "ipPoolLabel": "Grupo de IP: {ips}",
-  "connectToTooltip": "Conectarse a {país}",
+  "connectToTooltip": "Conectarse a {countryNum}",
   "locationItemStatesCount": {
-    "one": "{} Estado",
-    "other": "{} Estados"
+    "one": "{statesNum} Estado",
+    "other": "{statesNum} Estados"
   }
 }

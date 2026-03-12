@@ -493,9 +493,9 @@
   "fullPriceLabel": "全价：",
   "discountedPriceLabel": "仅有的",
   "ipPoolLabel": "IP地址池：{ips}",
-  "connectToTooltip": "连接到{country}",
+  "connectToTooltip": "连接到 {countryNum}",
   "locationItemStatesCount": {
-    "one": "{} 状态",
-    "other": "{} 州"
+    "one": "{statesNum} 州",
+    "other": "{statesNum} 个州"
   }
 }

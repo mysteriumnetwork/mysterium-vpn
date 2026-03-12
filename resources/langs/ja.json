@@ -493,9 +493,9 @@
   "fullPriceLabel": "定価:",
   "discountedPriceLabel": "のみ",
   "ipPoolLabel": "IP プール: {ips}",
-  "connectToTooltip": "{country}に接続",
+  "connectToTooltip": "{countryNum}に接続",
   "locationItemStatesCount": {
-    "one": "{} 州",
-    "other": "{} 州"
+    "one": "{statesNum} 州",
+    "other": "{statesNum} 州"
   }
 }

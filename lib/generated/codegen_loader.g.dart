@@ -501,8 +501,8 @@ class CodegenLoader extends AssetLoader {
     "fullPriceLabel": "全价：",
     "discountedPriceLabel": "仅有的",
     "ipPoolLabel": "IP地址池：{ips}",
-    "connectToTooltip": "连接到{country}",
-    "locationItemStatesCount": {"one": "{} 状态", "other": "{} 州"}
+    "connectToTooltip": "连接到 {countryNum}",
+    "locationItemStatesCount": {"one": "{statesNum} 州", "other": "{statesNum} 个州"}
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -1039,8 +1039,8 @@ class CodegenLoader extends AssetLoader {
     "fullPriceLabel": "Tam fiyat:",
     "discountedPriceLabel": "Sadece",
     "ipPoolLabel": "IP Havuzu: {ips}",
-    "connectToTooltip": "{country} ile bağlantı kurun",
-    "locationItemStatesCount": {"one": "{} Durum", "other": "{} Eyaletler"}
+    "connectToTooltip": "{countryNum} ülkesine bağlanın",
+    "locationItemStatesCount": {"one": "{statesNum} Eyalet", "other": "{statesNum} Eyalet"}
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1535,8 +1535,8 @@ class CodegenLoader extends AssetLoader {
     "fullPriceLabel": "定価:",
     "discountedPriceLabel": "のみ",
     "ipPoolLabel": "IP プール: {ips}",
-    "connectToTooltip": "{country}に接続",
-    "locationItemStatesCount": {"one": "{} 州", "other": "{} 州"}
+    "connectToTooltip": "{countryNum}に接続",
+    "locationItemStatesCount": {"one": "{statesNum} 州", "other": "{statesNum} 州"}
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2102,8 +2102,8 @@ class CodegenLoader extends AssetLoader {
     "fullPriceLabel": "Voller Preis:",
     "discountedPriceLabel": "Nur",
     "ipPoolLabel": "IP-Pool: {ips}",
-    "connectToTooltip": "Verbindung zu {country} herstellen",
-    "locationItemStatesCount": {"one": "{} Zustand", "other": "{} Staaten"}
+    "connectToTooltip": "Verbindung zu {countryNum} herstellen",
+    "locationItemStatesCount": {"one": "{statesNum} Zustand", "other": "{statesNum} Staaten"}
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2659,8 +2659,8 @@ class CodegenLoader extends AssetLoader {
     "fullPriceLabel": "Preço integral:",
     "discountedPriceLabel": "Apenas",
     "ipPoolLabel": "Conjunto de IPs: {ips}",
-    "connectToTooltip": "Conecte-se a {country}",
-    "locationItemStatesCount": {"one": "{} Estado", "other": "{} Estados"}
+    "connectToTooltip": "Conecte-se a {countryNum}",
+    "locationItemStatesCount": {"one": "{statesNum} Estado", "other": "{statesNum} Estados"}
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3203,8 +3203,8 @@ class CodegenLoader extends AssetLoader {
     "fullPriceLabel": "Full price:",
     "discountedPriceLabel": "Only",
     "ipPoolLabel": "IP Pool: {ips}",
-    "connectToTooltip": "Connect to {country}",
-    "locationItemStatesCount": {"one": "{} State", "other": "{} States"}
+    "connectToTooltip": "Connect to {countryNum}",
+    "locationItemStatesCount": {"one": "{statesNum} State", "other": "{statesNum} States"}
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3762,8 +3762,8 @@ class CodegenLoader extends AssetLoader {
     "fullPriceLabel": "Prezzo intero:",
     "discountedPriceLabel": "Soltanto",
     "ipPoolLabel": "Pool IP: {ips}",
-    "connectToTooltip": "Connettiti a {paese}",
-    "locationItemStatesCount": {"one": "{} Stato", "other": "{} Stati"}
+    "connectToTooltip": "Connettiti a {countryNum}",
+    "locationItemStatesCount": {"one": "{statesNum} Stato", "other": "{statesNum} Stati"}
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4329,8 +4329,8 @@ class CodegenLoader extends AssetLoader {
     "fullPriceLabel": "Prix ​​plein :",
     "discountedPriceLabel": "Seulement",
     "ipPoolLabel": "Pool d'adresses IP : {ips}",
-    "connectToTooltip": "Se connecter à {pays}",
-    "locationItemStatesCount": {"one": "{} État", "other": "États"}
+    "connectToTooltip": "Se connecter à {countryNum}",
+    "locationItemStatesCount": {"one": "{statesNum} État", "other": "{statesNum} États"}
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4876,8 +4876,11 @@ class CodegenLoader extends AssetLoader {
     "fullPriceLabel": "Harga penuh:",
     "discountedPriceLabel": "Hanya",
     "ipPoolLabel": "Kumpulan IP: {ips}",
-    "connectToTooltip": "Terhubung ke {negara}",
-    "locationItemStatesCount": {"one": "{} Negara", "other": "Negara Bagian {}"}
+    "connectToTooltip": "Terhubung ke {countryNum}",
+    "locationItemStatesCount": {
+      "one": "{statesNum} Negara Bagian",
+      "other": "{statesNum} Negara Bagian"
+    }
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5435,8 +5438,8 @@ class CodegenLoader extends AssetLoader {
     "fullPriceLabel": "Precio completo:",
     "discountedPriceLabel": "Solo",
     "ipPoolLabel": "Grupo de IP: {ips}",
-    "connectToTooltip": "Conectarse a {país}",
-    "locationItemStatesCount": {"one": "{} Estado", "other": "{} Estados"}
+    "connectToTooltip": "Conectarse a {countryNum}",
+    "locationItemStatesCount": {"one": "{statesNum} Estado", "other": "{statesNum} Estados"}
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5966,8 +5969,8 @@ class CodegenLoader extends AssetLoader {
     "fullPriceLabel": "السعر الكامل:",
     "discountedPriceLabel": "فقط",
     "ipPoolLabel": "مجموعة عناوين IP: {ips}",
-    "connectToTooltip": "الاتصال بـ {country}",
-    "locationItemStatesCount": {"one": "{} ولاية", "other": "{} ولايات"}
+    "connectToTooltip": "اتصل بـ {countryNum}",
+    "locationItemStatesCount": {"one": "{statesNum} الولاية", "other": "{statesNum} الولايات"}
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,
