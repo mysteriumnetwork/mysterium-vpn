@@ -34,6 +34,8 @@ class LocationItem extends HookConsumerWidget {
     final remoteConfig = ref.watch(remoteConfigStorePOD);
     final locationsQueryStore = ref.watch(locationsQueryStorePOD);
     final query = useComputedValue(() => locationsQueryStore.searchTrimmed);
+    final selectedLocationStore = ref.watch(selectedLocationStorePOD);
+    final selectedLocation = useComputedValue(() => selectedLocationStore.value);
 
     final onTap = useComputedValue(() => vpnStore.isLoading ? null : this.onTap, [this.onTap]);
     final children = location.children ?? const <VPNLocation>[];
@@ -55,16 +57,38 @@ class LocationItem extends HookConsumerWidget {
 
     useEffect(
       () {
+        if (query.isEmpty) {
+          return null;
+        }
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (context.mounted) {
-            isExpanded.value = query.isNotEmpty &&
-                childrenRef.value
-                    .any((it) => it.queried(query, context.locale.languageCode) != null);
+            final matchesQuery = childrenRef.value
+                .any((it) => it.queried(query, context.locale.languageCode) != null);
+            if (matchesQuery) {
+              isExpanded.value = true;
+            }
           }
         });
         return null;
       },
-      [query, isExpanded, childrenRef],
+      [query],
+    );
+
+    useEffect(
+      () {
+        if (selectedLocation == null) {
+          return null;
+        }
+        final isSelected = selectedLocation.id == location.id &&
+            selectedLocation.countryCode == location.countryCode;
+        if (isSelected && children.isNotEmpty) {
+          isExpanded.value = true;
+        } else {
+          isExpanded.value = false;
+        }
+        return null;
+      },
+      [selectedLocation?.id, selectedLocation?.countryCode],
     );
 
     return Container(

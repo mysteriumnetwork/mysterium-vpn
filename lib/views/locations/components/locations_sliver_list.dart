@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/locations/components/location_item.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-class LocationsSliverList extends StatelessWidget {
+class LocationsSliverList extends HookConsumerWidget {
   const LocationsSliverList({
     required this.ipType,
     required this.items,
@@ -13,19 +18,58 @@ class LocationsSliverList extends StatelessWidget {
 
   final List<VPNLocation> items;
   final IPType ipType;
-
   final void Function(VPNLocation item) onItemPressed;
 
   @override
-  Widget build(BuildContext context) => SliverList.separated(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedLocationStore = ref.watch(selectedLocationStorePOD);
+    final vpnStore = ref.watch(vpnStorePOD);
+    final itemScrollController = useMemoized(ItemScrollController.new);
+    final selectedLocation = useComputedValue(() => selectedLocationStore.value);
+    final connectedLocation = useComputedValue(
+      () => vpnStore.isConnected ? vpnStore.location : null,
+    );
+
+    // Determine which country code should scroll into view (selected takes priority)
+    final priorityCountryCode = selectedLocation?.countryCode ?? connectedLocation?.countryCode;
+
+    // Find the index of the priority country (plain expression — no useMemoized needed)
+    final priorityIndex = priorityCountryCode == null
+        ? -1
+        : items.indexWhere((it) => it.countryCode == priorityCountryCode);
+
+    // Scroll to the priority country whenever the index changes
+    useEffect(
+      () {
+        if (priorityIndex == -1) {
+          return null;
+        }
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (itemScrollController.isAttached) {
+            itemScrollController.scrollTo(
+              index: priorityIndex,
+              duration: const Duration(milliseconds: 450),
+              curve: Curves.easeInOut,
+            );
+          }
+        });
+        return null;
+      },
+      [
+        priorityIndex,
+      ], // fixed: was [priorityCountryCode], use index so re-scroll works if list reorders
+    );
+
+    return SliverFillRemaining(
+      child: ScrollablePositionedList.separated(
+        itemScrollController: itemScrollController,
         itemCount: items.length,
         separatorBuilder: (_, __) => const SizedBox(height: 12),
-        itemBuilder: (_, index) {
-          final item = items[index];
-          return LocationItem(
-            location: item,
-            onTap: onItemPressed,
-          );
-        },
-      );
+        itemBuilder: (_, index) => LocationItem(
+          location: items[index],
+          onTap: onItemPressed,
+        ),
+      ),
+    );
+  }
 }
