@@ -41,41 +41,76 @@ class LocationItem extends HookConsumerWidget {
     final showCitiesAndStates = remoteConfig.showCitiesAndStates && children.isNotEmpty;
     final locationHasStates = remoteConfig.countriesWithStates.contains(location.countryCode);
 
+    final connectedLocation = useComputedValue(
+      () => vpnStore.isConnected ? vpnStore.location : null,
+    );
+
     // Manual toggle state
     final userExpanded = useState<Set<String>>({});
+    // Manual collapse override (lets user close auto-expanded items)
+    final userCollapsed = useState<Set<String>>({});
+
+    // Auto-expand on new connection, reset manual collapse for it
+    useValueChanged<String?, void>(connectedLocation?.countryCode, (_, __) {
+      if (connectedLocation != null &&
+          connectedLocation.countryCode == location.countryCode &&
+          showCitiesAndStates) {
+        userCollapsed.value = {...userCollapsed.value}..remove(location.id);
+        userExpanded.value = {...userExpanded.value, location.id};
+      }
+    });
+
+    // Auto-expand on map selection, reset manual collapse for it
+    useValueChanged<String?, void>(selectedLocation?.countryCode, (_, __) {
+      if (selectedLocation != null &&
+          selectedLocation.countryCode == location.countryCode &&
+          showCitiesAndStates) {
+        userCollapsed.value = {...userCollapsed.value}..remove(location.id);
+        userExpanded.value = {...userExpanded.value, location.id};
+      }
+    });
 
     // Derived expansion state
     final isExpanded = useMemoized(
       () {
+        if (userCollapsed.value.contains(location.id)) {
+          return false;
+        }
+
         final matchesQuery = query.isNotEmpty &&
             children.any((it) => it.queried(query, context.locale.languageCode) != null);
 
-        final selectedMatch = selectedLocation != null &&
-            (selectedLocation.id == location.id &&
-                selectedLocation.countryCode == location.countryCode);
+        final connectedMatch =
+            connectedLocation != null && connectedLocation.countryCode == location.countryCode;
+
+        final selectedMatch =
+            selectedLocation != null && selectedLocation.countryCode == location.countryCode;
 
         final manual = userExpanded.value.contains(location.id);
 
-        return showCitiesAndStates && (matchesQuery || selectedMatch || manual);
+        return showCitiesAndStates && (matchesQuery || connectedMatch || selectedMatch || manual);
       },
       [
         query.trim(),
-        selectedLocation?.id,
+        connectedLocation?.countryCode,
         selectedLocation?.countryCode,
         userExpanded.value,
+        userCollapsed.value,
         children,
       ],
     );
 
     // Toggle manual expansion
     void handleToggleExpanded() {
-      final current = {...userExpanded.value};
-      if (current.contains(location.id)) {
-        current.remove(location.id);
+      if (isExpanded) {
+        // Collapsing — add to collapsed set, remove from expanded set
+        userCollapsed.value = {...userCollapsed.value, location.id};
+        userExpanded.value = {...userExpanded.value}..remove(location.id);
       } else {
-        current.add(location.id);
+        // Expanding — add to expanded set, remove from collapsed set
+        userCollapsed.value = {...userCollapsed.value}..remove(location.id);
+        userExpanded.value = {...userExpanded.value, location.id};
       }
-      userExpanded.value = current;
     }
 
     final onTapComputed = vpnStore.isLoading ? null : onTap;

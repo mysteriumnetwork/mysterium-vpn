@@ -25,6 +25,9 @@ class LocationsSliverList extends HookConsumerWidget {
     final selectedLocationStore = ref.watch(selectedLocationStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
     final itemScrollController = useMemoized(ItemScrollController.new);
+    final scrollOffsetController = useMemoized(ScrollOffsetController.new);
+    final itemPositionsListener = useMemoized(ItemPositionsListener.create);
+    final scrollOffsetListener = useMemoized(ScrollOffsetListener.create);
     final selectedLocation = useComputedValue(() => selectedLocationStore.value);
     final connectedLocation = useComputedValue(
       () => vpnStore.isConnected ? vpnStore.location : null,
@@ -46,11 +49,7 @@ class LocationsSliverList extends HookConsumerWidget {
         }
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (itemScrollController.isAttached) {
-            itemScrollController.scrollTo(
-              index: priorityIndex,
-              duration: const Duration(milliseconds: 450),
-              curve: Curves.easeInOut,
-            );
+            itemScrollController.jumpTo(index: priorityIndex);
           }
         });
         return null;
@@ -63,6 +62,9 @@ class LocationsSliverList extends HookConsumerWidget {
     return SliverFillRemaining(
       child: ScrollablePositionedList.separated(
         itemScrollController: itemScrollController,
+        scrollOffsetController: scrollOffsetController,
+        itemPositionsListener: itemPositionsListener,
+        scrollOffsetListener: scrollOffsetListener,
         itemCount: items.length,
         separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemBuilder: (_, index) => LocationItem(
