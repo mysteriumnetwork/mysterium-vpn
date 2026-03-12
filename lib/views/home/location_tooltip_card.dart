@@ -41,6 +41,7 @@ class LocationTooltipCard extends StatelessWidget {
                   color: Palette.black,
                 ),
                 maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),
