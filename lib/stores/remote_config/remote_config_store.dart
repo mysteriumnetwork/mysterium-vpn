@@ -580,7 +580,7 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       if (config.containsKey(_FeatureToggleKey.countriesWithStates.name)) {
         final raw = config[_FeatureToggleKey.countriesWithStates.name];
         final decoded = jsonDecode(raw.toString()) as List;
-        return decoded.map((it) => it.toString()).toSet();
+        return decoded.map((it) => it.toString().toUpperCase()).toSet();
       }
     } catch (e, stack) {
       logger.handle(e, stack);
