@@ -16,6 +16,7 @@ class LocationMarkersLayer extends HookWidget {
     required this.selectedLocation,
     required this.connectedLocation,
     required this.onLocationPressed,
+    this.onLocationDoubleTapped,
     super.key,
   });
 
@@ -23,6 +24,7 @@ class LocationMarkersLayer extends HookWidget {
   final VPNLocation? selectedLocation;
   final VPNLocation? connectedLocation;
   final Function(VPNLocation location, LatLng point)? onLocationPressed;
+  final Function(VPNLocation location, LatLng point)? onLocationDoubleTapped;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class LocationMarkersLayer extends HookWidget {
       selectedLocation: selectedLocation,
       connectedLocation: connectedLocation,
       onLocationPressed: onLocationPressed,
+      onLocationDoubleTapped: onLocationDoubleTapped,
     );
 
     return MarkerLayer(markers: markers);
@@ -42,10 +45,12 @@ List<Marker> _useLocationMarkers({
   required VPNLocation? selectedLocation,
   required VPNLocation? connectedLocation,
   required Function(VPNLocation, LatLng)? onLocationPressed,
+  required Function(VPNLocation, LatLng)? onLocationDoubleTapped,
 }) {
   final remoteConfigStore = useProvider(remoteConfigStorePOD);
   final latLngStore = useProvider(latLngStorePOD);
   final onLocationPressedRef = useRef(onLocationPressed)..value = onLocationPressed;
+  final onLocationDoubleTappedRef = useRef(onLocationDoubleTapped)..value = onLocationDoubleTapped;
 
   return useComputedValue<List<Marker>>(
     () {
@@ -100,6 +105,9 @@ List<Marker> _useLocationMarkers({
                 isConnected: isConnected,
                 isSelected: isSelected,
                 onPressed: () => onLocationPressedRef.value?.call(it, point),
+                onDoubleTap: onLocationDoubleTappedRef.value != null
+                    ? () => onLocationDoubleTappedRef.value?.call(it, point)
+                    : null,
               ),
             );
           })
@@ -119,7 +127,9 @@ List<Marker> _useLocationMarkers({
               width: 400,
               height: 70,
               alignment: Alignment.topCenter,
-              child: LocationTooltipCard(location: selectedLocation),
+              child: IgnorePointer(
+                child: LocationTooltipCard(location: selectedLocation),
+              ),
             ),
           );
         }

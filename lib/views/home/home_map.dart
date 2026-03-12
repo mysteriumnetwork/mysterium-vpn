@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/current_ip_coordinates_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/locations_map.dart';
@@ -26,13 +27,22 @@ class HomeMap extends HookConsumerWidget {
     final connectedLocation = useComputedValue(
       () => vpnStore.isConnected ? vpnStore.location : null,
     );
+    final handleToggleConnection = useHandleToggleConnection();
+
+    void handleClearSelectedLocation() {
+      selectedLocationStore.value = null;
+    }
 
     void handleSelectLocation(VPNLocation location) {
       selectedLocationStore.value = location;
     }
 
-    void handleClearSelectedLocation() {
-      selectedLocationStore.value = null;
+    void handleDoubleTapLocation(VPNLocation location) {
+      if (vpnStore.isConnected && vpnStore.location?.countryCode == location.countryCode) {
+        return;
+      }
+      handleToggleConnection(location: location);
+      handleClearSelectedLocation();
     }
 
     useReaction(
@@ -52,6 +62,7 @@ class HomeMap extends HookConsumerWidget {
       selectedLocation: selectedLocation,
       connectedLocation: connectedLocation,
       onLocationPressed: handleSelectLocation,
+      onLocationDoubleTapped: isDesktop() ? handleDoubleTapLocation : null,
       onTapOutside: handleClearSelectedLocation,
     );
   }
