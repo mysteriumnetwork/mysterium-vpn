@@ -5,8 +5,8 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/components/location_item.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class LocationsSliverList extends HookConsumerWidget {
   const LocationsSliverList({
@@ -24,53 +24,73 @@ class LocationsSliverList extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedLocationStore = ref.watch(selectedLocationStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
-    final itemScrollController = useMemoized(ItemScrollController.new);
-    final scrollOffsetController = useMemoized(ScrollOffsetController.new);
-    final itemPositionsListener = useMemoized(ItemPositionsListener.create);
-    final scrollOffsetListener = useMemoized(ScrollOffsetListener.create);
+    final homeState = ref.watch(homeStateProvider);
     final selectedLocation = useComputedValue(() => selectedLocationStore.value);
     final connectedLocation = useComputedValue(
       () => vpnStore.isConnected ? vpnStore.location : null,
     );
 
-    // Determine which country code should scroll into view (selected takes priority)
     final priorityCountryCode = selectedLocation?.countryCode ?? connectedLocation?.countryCode;
-
-    // Find the index of the priority country (plain expression — no useMemoized needed)
     final priorityIndex = priorityCountryCode == null
         ? -1
         : items.indexWhere((it) => it.countryCode == priorityCountryCode);
 
-    // Scroll to the priority country whenever the index changes
+    final keys = useMemoized(
+      () => List.generate(items.length, (_) => GlobalKey()),
+      [items.length],
+    );
+
     useEffect(
       () {
         if (priorityIndex == -1) {
           return null;
         }
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (itemScrollController.isAttached) {
-            itemScrollController.jumpTo(index: priorityIndex);
+          final ctx = keys[priorityIndex].currentContext;
+          if (ctx == null || !ctx.mounted) {
+            return;
           }
+
+          // Get pinned header height to offset scroll position
+          final pinnedHeight =
+              homeState.typeSwitcherKey.currentContext?.findRenderObject()?.paintBounds.height ?? 0;
+
+          // Capture scrollable position before async gap
+          final position = Scrollable.of(ctx).position;
+
+          Scrollable.ensureVisible(ctx).then((_) {
+            if (!context.mounted) {
+              return;
+            }
+            final target = (position.pixels - pinnedHeight - 5).clamp(
+              position.minScrollExtent,
+              position.maxScrollExtent,
+            );
+            position.animateTo(
+              target,
+              duration: const Duration(milliseconds: 450),
+              curve: Curves.easeInOut,
+            );
+          });
         });
         return null;
       },
-      [
-        priorityIndex,
-      ],
+      [priorityIndex],
     );
 
-    return SliverFillRemaining(
-      child: ScrollablePositionedList.separated(
-        itemScrollController: itemScrollController,
-        scrollOffsetController: scrollOffsetController,
-        itemPositionsListener: itemPositionsListener,
-        scrollOffsetListener: scrollOffsetListener,
-        itemCount: items.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 12),
-        itemBuilder: (_, index) => LocationItem(
-          location: items[index],
-          onTap: onItemPressed,
-        ),
+    return SliverToBoxAdapter(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (int i = 0; i < items.length; i++) ...[
+            if (i > 0) const SizedBox(height: 12),
+            LocationItem(
+              key: keys[i],
+              location: items[i],
+              onTap: onItemPressed,
+            ),
+          ],
+        ],
       ),
     );
   }
