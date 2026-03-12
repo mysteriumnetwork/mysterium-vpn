@@ -43,6 +43,10 @@ class LocationItem extends HookConsumerWidget {
       () => remoteConfig.showCitiesAndStates && children.isNotEmpty,
       [children],
     );
+    final locationHasStates = useComputedValue(
+      () => remoteConfig.countriesWithStates.contains(location.countryCode),
+      [children],
+    );
     final isExpanded = useState(false);
 
     void handleToggleExpanded() {
@@ -78,7 +82,9 @@ class LocationItem extends HookConsumerWidget {
             onTap: showCitiesAndStates ? handleToggleExpanded : null,
             onToggleConnectionTap: onTap == null ? null : () => onTap(location),
             label: showCitiesAndStates
-                ? LocaleKeys.locationItemCityCount.plural(children.length)
+                ? locationHasStates
+                    ? LocaleKeys.locationItemStatesCount.plural(children.length)
+                    : LocaleKeys.locationItemCityCount.plural(children.length)
                 : LocaleKeys.locationItemNodeCount.plural(location.nodeCount ?? 0),
             isExpanded: showCitiesAndStates ? isExpanded.value : null,
             flag: location.countryCode,
