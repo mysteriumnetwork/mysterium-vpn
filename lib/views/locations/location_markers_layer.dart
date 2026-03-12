@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/location_marker.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/home/location_tooltip_card.dart';
 
 class LocationMarkersLayer extends HookWidget {
   const LocationMarkersLayer({
@@ -76,7 +77,7 @@ List<Marker> _useLocationMarkers({
         if (connectedLocation != null && connectedLocation != selectedLocation) connectedLocation,
       };
 
-      return sorted
+      final markers = sorted
           .map((it) {
             final point = it.isCountry
                 ? latLngStore.coordinatesForCountry(it.countryCode)
@@ -104,6 +105,27 @@ List<Marker> _useLocationMarkers({
           })
           .nonNulls
           .toList();
+
+      // Add tooltip marker for selected location
+      if (selectedLocation != null) {
+        final tooltipPoint = selectedLocation.isCountry
+            ? latLngStore.coordinatesForCountry(selectedLocation.countryCode)
+            : latLngStore.coordinatesForCity(selectedLocation);
+
+        if (tooltipPoint != null) {
+          markers.add(
+            Marker(
+              point: tooltipPoint,
+              width: 400,
+              height: 70,
+              alignment: Alignment.topCenter,
+              child: LocationTooltipCard(location: selectedLocation),
+            ),
+          );
+        }
+      }
+
+      return markers;
     },
     [
       onLocationPressedRef,
