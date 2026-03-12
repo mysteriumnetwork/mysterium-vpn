@@ -272,7 +272,6 @@
   "pricingPlanTitle": "选择您的计划",
   "privacyPolicy": "隐私政策",
   "privacyPriority": "您的隐私是我们的第一要务",
-  "privacyPriorityText": "为了向您提供快速、可靠的 VPN 服务，我们收集最少量的数据。\n\n我们收集：1. 您的电子邮件地址，用于登录并解决帐号相关问题。\n\n2. 特定于设备的信息（例如操作系统版本、硬件型号和匿名使用数据）可优化我们的应用程序，从而改善用户体验。我们不会存储或记录您的 IP 地址。\n\n我们不会保留您的在线活动日志，也不会将您使用的任何域或应用程序与您、您的设备、IP 地址或电子邮件关联起来。",
   "processingPayment": "我们正在处理您的付款。你很快就会准备好...",
   "productsNotAvailable": "目前没有可用的产品。请稍后再试。",
   "productUpdates": "获取产品更新",
@@ -493,5 +492,10 @@
   "getSubscriptionPlanBtn": "获取 {} 计划",
   "fullPriceLabel": "全价：",
   "discountedPriceLabel": "仅有的",
-  "ipPoolLabel": "IP地址池：{ips}"
+  "ipPoolLabel": "IP地址池：{ips}",
+  "connectToTooltip": "连接到 {countryNum}",
+  "locationItemStatesCount": {
+    "one": "{statesNum} 州",
+    "other": "{statesNum} 个州"
+  }
 }

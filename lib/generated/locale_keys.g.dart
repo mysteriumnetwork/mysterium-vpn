@@ -270,7 +270,6 @@ abstract class LocaleKeys {
   static const pricingPlanTitle = 'pricingPlanTitle';
   static const privacyPolicy = 'privacyPolicy';
   static const privacyPriority = 'privacyPriority';
-  static const privacyPriorityText = 'privacyPriorityText';
   static const processingPayment = 'processingPayment';
   static const productsNotAvailable = 'productsNotAvailable';
   static const productUpdates = 'productUpdates';
@@ -488,4 +487,6 @@ abstract class LocaleKeys {
   static const fullPriceLabel = 'fullPriceLabel';
   static const discountedPriceLabel = 'discountedPriceLabel';
   static const ipPoolLabel = 'ipPoolLabel';
+  static const connectToTooltip = 'connectToTooltip';
+  static const locationItemStatesCount = 'locationItemStatesCount';
 }

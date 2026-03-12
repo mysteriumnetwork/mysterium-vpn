@@ -282,8 +282,6 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanTitle": "选择您的计划",
     "privacyPolicy": "隐私政策",
     "privacyPriority": "您的隐私是我们的第一要务",
-    "privacyPriorityText":
-        "为了向您提供快速、可靠的 VPN 服务，我们收集最少量的数据。\n\n我们收集：1. 您的电子邮件地址，用于登录并解决帐号相关问题。\n\n2. 特定于设备的信息（例如操作系统版本、硬件型号和匿名使用数据）可优化我们的应用程序，从而改善用户体验。我们不会存储或记录您的 IP 地址。\n\n我们不会保留您的在线活动日志，也不会将您使用的任何域或应用程序与您、您的设备、IP 地址或电子邮件关联起来。",
     "processingPayment": "我们正在处理您的付款。你很快就会准备好...",
     "productsNotAvailable": "目前没有可用的产品。请稍后再试。",
     "productUpdates": "获取产品更新",
@@ -502,7 +500,9 @@ class CodegenLoader extends AssetLoader {
     "getSubscriptionPlanBtn": "获取 {} 计划",
     "fullPriceLabel": "全价：",
     "discountedPriceLabel": "仅有的",
-    "ipPoolLabel": "IP地址池：{ips}"
+    "ipPoolLabel": "IP地址池：{ips}",
+    "connectToTooltip": "连接到 {countryNum}",
+    "locationItemStatesCount": {"one": "{statesNum} 州", "other": "{statesNum} 个州"}
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -799,8 +799,6 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanTitle": "Önerilen planımız",
     "privacyPolicy": "Gizlilik Politikası",
     "privacyPriority": "Gizliliğiniz bizim",
-    "privacyPriorityText":
-        "Size hızlı ve güvenilir bir VPN hizmeti sunmak için minimum miktarda veri topluyoruz.\n\nToplarız:\n\n1. Oturum açmanız ve hesapla ilgili sorunları gidermeniz için E-posta adresiniz.\n\n2. Uygulamamızı optimize etmek için işletim sistemi sürümü, donanım modeli ve anonim kullanım verileri gibi cihaza özgü bilgiler, kullanıcı deneyimini iyileştirir. IP adresinizi saklamıyoruz veya günlüğe kaydetmiyoruz.\n\nÇevrimiçi etkinliklerinizin günlüklerini tutmuyoruz ve asla ilişkilendirmiyoruz sizinle, cihazınızla, IP adresinizle veya e-postanızla kullandığınız tüm etki alanları veya uygulamalar.",
     "processingPayment": "Ödemenizi işleme alıyoruz. Kısa süre içinde hazır olacaksınız...",
     "productsNotAvailable": "Şu anda mevcut ürün yok.",
     "productUpdates": "Ürün güncellemelerini alın",
@@ -1040,7 +1038,9 @@ class CodegenLoader extends AssetLoader {
     "getSubscriptionPlanBtn": "{} planını al",
     "fullPriceLabel": "Tam fiyat:",
     "discountedPriceLabel": "Sadece",
-    "ipPoolLabel": "IP Havuzu: {ips}"
+    "ipPoolLabel": "IP Havuzu: {ips}",
+    "connectToTooltip": "{countryNum} ülkesine bağlanın",
+    "locationItemStatesCount": {"one": "{statesNum} Eyalet", "other": "{statesNum} Eyalet"}
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1312,8 +1312,6 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanTitle": "おすすめのプラン",
     "privacyPolicy": "プライバシーポリシー",
     "privacyPriority": "あなたのプライバシーは私たちの最優先事項です",
-    "privacyPriorityText":
-        "高速で信頼性の高い VPN サービスを提供するために、当社は最小限のデータを収集します。\n\n私たちが収集するもの: 1. ログインしたり、アカウント関連の問題をトラブルシューティングしたりするための電子メール アドレス。\n\n2. アプリケーションを最適化するための OS バージョン、ハードウェアモデル、匿名の使用状況データなどのデバイス固有の情報により、ユーザーエクスペリエンスが向上します。当社はあなたの IP アドレスを保存または記録しません。\n\n当社はお客様のオンライン活動のログを保存せず、お客様が使用するドメインやアプリケーションをお客様、お客様のデバイス、IP アドレス、または電子メールに関連付けることはありません。",
     "processingPayment": "お支払いを処理中です。もうすぐ準備が完了します...",
     "productsNotAvailable": "現在、ご利用いただける商品はございません。後でもう一度試してください。",
     "productUpdates": "製品のアップデートを入手",
@@ -1532,11 +1530,13 @@ class CodegenLoader extends AssetLoader {
     "perMonth": "モ",
     "subscriptionUpgradeModalTitle": "{} プランにアップグレード",
     "getSubscriptionModalTitle": "得る {}",
-    "getSubscriptionModalDesc": "接続を保護してプライベートブラウジングをすぐに楽しむ",
+    "getSubscriptionModalDesc": "接続を保護し、プライベートブラウジングをすぐに楽しむ",
     "getSubscriptionPlanBtn": "{} プランを取得",
     "fullPriceLabel": "定価:",
     "discountedPriceLabel": "のみ",
-    "ipPoolLabel": "IP プール: {ips}"
+    "ipPoolLabel": "IP プール: {ips}",
+    "connectToTooltip": "{countryNum}に接続",
+    "locationItemStatesCount": {"one": "{statesNum} 州", "other": "{statesNum} 州"}
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -1851,8 +1851,6 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanTitle": "Wählen Sie Ihren Plan",
     "privacyPolicy": "Datenschutzrichtlinie zu",
     "privacyPriority": "Ihre Privatsphäre hat für uns oberste Priorität",
-    "privacyPriorityText":
-        "Um Ihnen einen schnellen und zuverlässigen VPN-Dienst anbieten zu können, erheben wir eine Mindestmenge an Daten.\n\nWir sammeln:\n\n1. Ihre E-Mail-Adresse, um Sie anzumelden und um kontobezogene Probleme zu beheben.\n\n2. Gerätespezifische Informationen wie Betriebssystemversion, Hardwaremodell und anonyme Nutzungsdaten zur Optimierung unserer Anwendung verbessern das Benutzererlebnis. Wir speichern oder protokollieren Ihre IP-Adresse nicht.\n\nWir führen keine Protokolle Ihrer Online-Aktivitäten und verknüpfen niemals die von Ihnen verwendeten Domänen oder Anwendungen mit Ihnen, Ihrem Gerät, Ihrer IP-Adresse oder Ihrer E-Mail-Adresse.",
     "processingPayment": "Wir bearbeiten Ihre Zahlung. In Kürze sind Sie startklar...",
     "productsNotAvailable":
         "Zur Zeit sind keine Produkte verfügbar. Bitte versuchen Sie es später noch einmal.",
@@ -2103,7 +2101,9 @@ class CodegenLoader extends AssetLoader {
     "getSubscriptionPlanBtn": "{} Plan abrufen",
     "fullPriceLabel": "Voller Preis:",
     "discountedPriceLabel": "Nur",
-    "ipPoolLabel": "IP-Pool: {ips}"
+    "ipPoolLabel": "IP-Pool: {ips}",
+    "connectToTooltip": "Verbindung zu {countryNum} herstellen",
+    "locationItemStatesCount": {"one": "{statesNum} Zustand", "other": "{statesNum} Staaten"}
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2409,8 +2409,6 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanTitle": "Nosso plano recomendado",
     "privacyPolicy": "Política de Privacidade",
     "privacyPriority": "Sua privacidade é nossa",
-    "privacyPriorityText":
-        "Para fornecer a você um serviço VPN rápido e confiável, coletamos uma quantidade mínima de dados.\n\nNós coletamos:\n\n1. Seu endereço de e-mail para fazer login e solucionar problemas relacionados à conta.\n\n2. Informações específicas do dispositivo, como versão do sistema operacional, modelo de hardware e dados de uso anônimos para otimizar nosso aplicativo, melhoram a experiência do usuário. Não armazenamos nem registramos seu endereço IP.\n\nNão mantemos registros de suas atividades online e nunca associamos quaisquer domínios ou aplicativos que você usa com você, seu dispositivo, endereço IP ou e-mail.",
     "processingPayment": "Estamos processando seu pagamento. Em breve tudo estará pronto...",
     "productsNotAvailable":
         "Não há produtos disponíveis no momento. Por favor, tente novamente mais tarde.",
@@ -2660,7 +2658,9 @@ class CodegenLoader extends AssetLoader {
     "getSubscriptionPlanBtn": "Obtenha o plano {}",
     "fullPriceLabel": "Preço integral:",
     "discountedPriceLabel": "Apenas",
-    "ipPoolLabel": "Conjunto de IPs: {ips}"
+    "ipPoolLabel": "Conjunto de IPs: {ips}",
+    "connectToTooltip": "Conecte-se a {countryNum}",
+    "locationItemStatesCount": {"one": "{statesNum} Estado", "other": "{statesNum} Estados"}
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -2959,8 +2959,6 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanTitle": "Our recommended plan",
     "privacyPolicy": "Privacy Policy",
     "privacyPriority": "Your privacy is our #1 priority",
-    "privacyPriorityText":
-        "To provide you with a fast and reliable VPN service, we collect a minimum amount of data.\n\nWe Collect:\n\n1. Your Email address to log you in and to troubleshoot account related issues.\n\n2. Device-specific information such as OS version, hardware model, and anonymous usage data to optimize our application improve the user experience. We do not store or log your IP address.\n\nWe do not keep logs of your online activities and never associate any domains or applications that you use with you, your device, IP address, or email.",
     "processingPayment": "We’re processing your payment. You’ll be all set shortly…",
     "productsNotAvailable":
         "There are no available products at the moment. Please try again later.",
@@ -3204,7 +3202,9 @@ class CodegenLoader extends AssetLoader {
     "getSubscriptionPlanBtn": "Get {} plan",
     "fullPriceLabel": "Full price:",
     "discountedPriceLabel": "Only",
-    "ipPoolLabel": "IP Pool: {ips}"
+    "ipPoolLabel": "IP Pool: {ips}",
+    "connectToTooltip": "Connect to {countryNum}",
+    "locationItemStatesCount": {"one": "{statesNum} State", "other": "{statesNum} States"}
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3513,8 +3513,6 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanTitle": "Il nostro piano consigliato",
     "privacyPolicy": "politica sulla riservatezza",
     "privacyPriority": "La tua privacy è la nostra priorità numero 1",
-    "privacyPriorityText":
-        "Per fornirti un servizio VPN veloce e affidabile, raccogliamo una quantità minima di dati.\n\nRaccogliamo: \n\n1. Il tuo indirizzo e-mail per accedere e per risolvere i problemi relativi all'account.\n\n2. Le informazioni specifiche del dispositivo come la versione del sistema operativo, il modello hardware e i dati di utilizzo anonimi per ottimizzare la nostra applicazione migliorano l'esperienza dell'utente. Non memorizziamo o registriamo il tuo indirizzo IP.\n\nNon conserviamo registri delle tue attività online e non associamo mai domini o applicazioni che utilizzi a te, al tuo dispositivo, indirizzo IP o e-mail.",
     "processingPayment": "Stiamo elaborando il tuo pagamento. A breve sarai pronto...",
     "productsNotAvailable":
         "Non ci sono prodotti disponibili al momento. Per favore riprova più tardi.",
@@ -3746,9 +3744,9 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "Livello di sicurezza aggiuntivo. Instrada il tuo traffico Internet attraverso due server VPN diversi, crittografando i tuoi dati due volte e mascherando il tuo indirizzo IP dietro un secondo server.",
     "subscriptionPlanResidentialIPsDesc":
-        "Appari come un normale utente domestico, consentendoti di accedere ai servizi di streaming ed evitare il rilevamento VPN.",
+        "Appari come un normale utente domestico, consentendoti di accedere ai servizi di streaming ed evitare il rilevamento della VPN.",
     "subscriptionPlanCityLevelDesc":
-        "Fornisce un controllo della posizione più preciso rispetto alla maggior parte delle VPN, che solitamente ti limitano a selezionare interi paesi o stati.",
+        "Fornisce un controllo della posizione più preciso rispetto alla maggior parte delle VPN, che in genere limitano la selezione a interi paesi o stati.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protegge il tuo dispositivo bloccando le minacce prima che possano raggiungerlo, eseguendo silenziosamente in background senza interromperti.",
     "notNowBtn": "Non adesso",
@@ -3763,7 +3761,9 @@ class CodegenLoader extends AssetLoader {
     "getSubscriptionPlanBtn": "Ottieni il piano {}",
     "fullPriceLabel": "Prezzo intero:",
     "discountedPriceLabel": "Soltanto",
-    "ipPoolLabel": "Pool IP: {ips}"
+    "ipPoolLabel": "Pool IP: {ips}",
+    "connectToTooltip": "Connettiti a {countryNum}",
+    "locationItemStatesCount": {"one": "{statesNum} Stato", "other": "{statesNum} Stati"}
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4076,8 +4076,6 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanTitle": "Plans de tarification",
     "privacyPolicy": "Politique de confidentialité",
     "privacyPriority": "Votre vie privée est notre",
-    "privacyPriorityText":
-        "Pour vous fournir un service VPN rapide et fiable, nous collectons un minimum de données.\n\nNous collectons :\n\n1. Votre adresse e-mail pour vous connecter et résoudre les problèmes liés au compte.\n\n2. Des informations spécifiques à l'appareil telles que la version du système d'exploitation, le modèle de matériel et les données d'utilisation anonymes pour optimiser notre application améliorent l'expérience utilisateur. Nous ne stockons ni n'enregistrons votre adresse IP.\n\nNous ne conservons pas de journaux de vos activités en ligne et ne les associons jamais tous les domaines ou applications que vous utilisez avec vous, votre appareil, votre adresse IP ou votre adresse e-mail.",
     "processingPayment": "Nous traitons votre paiement. Vous serez prêt sous peu…",
     "productsNotAvailable":
         "Il n'y a pas de produits disponibles pour le moment. Veuillez réessayer plus tard.",
@@ -4330,7 +4328,9 @@ class CodegenLoader extends AssetLoader {
     "getSubscriptionPlanBtn": "Obtenez le plan {}",
     "fullPriceLabel": "Prix ​​plein :",
     "discountedPriceLabel": "Seulement",
-    "ipPoolLabel": "Pool d'adresses IP : {ips}"
+    "ipPoolLabel": "Pool d'adresses IP : {ips}",
+    "connectToTooltip": "Se connecter à {countryNum}",
+    "locationItemStatesCount": {"one": "{statesNum} État", "other": "{statesNum} États"}
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4631,8 +4631,6 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanTitle": "Rencana yang kami rekomendasikan",
     "privacyPolicy": "Kebijakan pribadi",
     "privacyPriority": "Privasi Anda adalah prioritas #1 kami",
-    "privacyPriorityText":
-        "Untuk memberi Anda layanan VPN yang cepat dan andal, kami mengumpulkan data dalam jumlah minimum.\n\nKami Mengumpulkan: 1. Alamat Email Anda untuk memasukkan Anda dan memecahkan masalah terkait akun.\n\n2. Informasi khusus perangkat seperti versi OS, model perangkat keras, dan data penggunaan anonim untuk mengoptimalkan aplikasi kami meningkatkan pengalaman pengguna. Kami tidak menyimpan atau mencatat alamat IP Anda.\n\nKami tidak menyimpan log aktivitas online Anda dan tidak pernah mengaitkan domain atau aplikasi apa pun yang Anda gunakan dengan Anda, perangkat, alamat IP, atau email Anda.",
     "processingPayment": "Kami sedang memproses pembayaran Anda. Anda akan segera siap...",
     "productsNotAvailable": "Tidak ada produk yang tersedia saat ini. Coba lagi nanti.",
     "productUpdates": "Dapatkan pembaruan produk",
@@ -4852,7 +4850,7 @@ class CodegenLoader extends AssetLoader {
         "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
     "notificationsSettingTitle": "Pemberitahuan",
     "pushNotificationsSetting": "Notifikasi Push",
-    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus.",
+    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
     "openSystemSettingsBtn": "Buka pengaturan sistem",
     "emailNotificationsSetting": "Notifikasi Email",
     "subscriptionPlanWireGuardDesc":
@@ -4877,7 +4875,12 @@ class CodegenLoader extends AssetLoader {
     "getSubscriptionPlanBtn": "Dapatkan paket {}",
     "fullPriceLabel": "Harga penuh:",
     "discountedPriceLabel": "Hanya",
-    "ipPoolLabel": "Kumpulan IP: {ips}"
+    "ipPoolLabel": "Kumpulan IP: {ips}",
+    "connectToTooltip": "Terhubung ke {countryNum}",
+    "locationItemStatesCount": {
+      "one": "{statesNum} Negara Bagian",
+      "other": "{statesNum} Negara Bagian"
+    }
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5186,8 +5189,6 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanTitle": "Planes de precios",
     "privacyPolicy": "Política de privacidad",
     "privacyPriority": "Tu privacidad es nuestra prioridad #1",
-    "privacyPriorityText":
-        "Para brindarte un servicio VPN rápido y confiable, recopilamos una cantidad mínima de datos.\n\nRecolectamos:\n1. Tu dirección de correo electrónico para iniciar sesión y solucionar problemas relacionados con la cuenta.\n\n2. Información específica del dispositivo, como la versión del sistema operativo, el modelo de hardware y los datos de uso anónimos para optimizar nuestra aplicación y mejorar la experiencia del usuario. No almacenamos ni registramos tu dirección IP.\n\nNo mantenemos registros de tus actividades en línea y nunca asociamos ningún dominio o aplicación que use contigo, tu dispositivo, dirección IP o correo electrónico.",
     "processingPayment": "Estamos procesando tu pago. Estarás listo en breve...",
     "productsNotAvailable":
         "No hay productos disponibles en este momento. Por favor, inténtalo de nuevo más tarde.",
@@ -5436,7 +5437,9 @@ class CodegenLoader extends AssetLoader {
     "getSubscriptionPlanBtn": "Obtener el plan {}",
     "fullPriceLabel": "Precio completo:",
     "discountedPriceLabel": "Solo",
-    "ipPoolLabel": "Grupo de IP: {ips}"
+    "ipPoolLabel": "Grupo de IP: {ips}",
+    "connectToTooltip": "Conectarse a {countryNum}",
+    "locationItemStatesCount": {"one": "{statesNum} Estado", "other": "{statesNum} Estados"}
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5728,8 +5731,6 @@ class CodegenLoader extends AssetLoader {
     "pricingPlanTitle": "خطتنا الموصى بها",
     "privacyPolicy": "سياسة الخصوصية",
     "privacyPriority": "خصوصيتك هي أولويتنا رقم 1",
-    "privacyPriorityText":
-        "لتزويدك بخدمة VPN سريعة وموثوقة ، نقوم بجمع الحد الأدنى من البيانات.\n\nنحن نجمع: 1. عنوان بريدك الإلكتروني لتسجيل دخولك واستكشاف المشكلات المتعلقة بالحساب وإصلاحها.\n\n2. المعلومات الخاصة بالجهاز مثل إصدار نظام التشغيل وطراز الجهاز وبيانات الاستخدام المجهولة لتحسين تطبيقنا وتحسين تجربة المستخدم. نحن لا نقوم بتخزين أو تسجيل عنوان IP الخاص بك.\n\nنحن لا نحتفظ بسجلات لأنشطتك عبر الإنترنت ولا نربط أبدًا أي مجالات أو تطبيقات تستخدمها معك أو بجهازك أو عنوان IP أو بريدك الإلكتروني.",
     "processingPayment": "نحن نعالج دفعتك. ستكون جاهزًا بعد قليل...",
     "productsNotAvailable":
         "لا توجد منتجات متاحة في الوقت الحالي. الرجاء معاودة المحاولة في وقت لاحق.",
@@ -5967,7 +5968,9 @@ class CodegenLoader extends AssetLoader {
     "getSubscriptionPlanBtn": "احصل على خطة {}",
     "fullPriceLabel": "السعر الكامل:",
     "discountedPriceLabel": "فقط",
-    "ipPoolLabel": "مجموعة عناوين IP: {ips}"
+    "ipPoolLabel": "مجموعة عناوين IP: {ips}",
+    "connectToTooltip": "اتصل بـ {countryNum}",
+    "locationItemStatesCount": {"one": "{statesNum} الولاية", "other": "{statesNum} الولايات"}
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,
