@@ -291,7 +291,6 @@ class _Locations extends HookConsumerWidget {
                     },
                     if (topLocations.isNotEmpty)
                       LocationsSliverList(
-                        ipType: locationType,
                         items: topLocations,
                         onItemPressed: onLocationTapped,
                       ),
@@ -301,7 +300,6 @@ class _Locations extends HookConsumerWidget {
                         child: Divider(thickness: 0.5, color: Palette.lightBlue),
                       ),
                     LocationsSliverList(
-                      ipType: locationType,
                       items: locations,
                       onItemPressed: onLocationTapped,
                     ),
