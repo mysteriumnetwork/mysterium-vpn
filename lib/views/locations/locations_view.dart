@@ -302,6 +302,7 @@ class _Locations extends HookConsumerWidget {
                     LocationsSliverList(
                       items: locations,
                       onItemPressed: onLocationTapped,
+                      scrollToSelected: true,
                     ),
                     if ((isEmpty ?? false) && searchKeyword.isNotEmpty)
                       _Empty(
