@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -50,33 +51,33 @@ class LocationsSliverList extends HookConsumerWidget {
           if (ctx == null || !ctx.mounted) {
             return;
           }
+          final itemBox = ctx.findRenderObject();
+          if (itemBox is! RenderBox || !itemBox.attached) {
+            return;
+          }
 
-          // Get pinned header height to offset scroll position
-          final pinnedHeight =
+          final typeSwitcherHeight =
               homeState.typeSwitcherKey.currentContext?.findRenderObject()?.paintBounds.height ?? 0;
-
-          // Capture scrollable position before async gap
+          final pinnedHeight = typeSwitcherHeight;
           final position = Scrollable.of(ctx).position;
-
-          Scrollable.ensureVisible(ctx).then((_) {
-            if (!context.mounted) {
-              return;
-            }
-            final target = (position.pixels - pinnedHeight - 5).clamp(
-              position.minScrollExtent,
-              position.maxScrollExtent,
-            );
-            position.animateTo(
-              target,
-              duration: const Duration(milliseconds: 450),
-              curve: Curves.easeInOut,
-            );
-          });
+          final viewport = RenderAbstractViewport.of(itemBox);
+          final revealOffset = viewport.getOffsetToReveal(itemBox, 0).offset;
+          final target = (revealOffset - pinnedHeight - 5).clamp(
+            position.minScrollExtent,
+            position.maxScrollExtent,
+          );
+          position.animateTo(
+            target,
+            duration: const Duration(milliseconds: 450),
+            curve: Curves.easeInOut,
+          );
         });
         return null;
       },
-      [priorityIndex],
+      [priorityIndex, homeState.panelState],
     );
+
+    final mapSelectedCountryCode = selectedLocation?.countryCode;
 
     return SliverToBoxAdapter(
       child: Column(
@@ -88,6 +89,7 @@ class LocationsSliverList extends HookConsumerWidget {
               key: keys[i],
               location: items[i],
               onTap: onItemPressed,
+              mapSelectedCountryCode: mapSelectedCountryCode,
             ),
           ],
         ],

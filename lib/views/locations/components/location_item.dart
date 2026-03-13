@@ -21,11 +21,13 @@ class LocationItem extends HookConsumerWidget {
   const LocationItem({
     required this.location,
     required this.onTap,
+    this.mapSelectedCountryCode,
     super.key,
   });
 
   final VPNLocation location;
   final void Function(VPNLocation) onTap;
+  final String? mapSelectedCountryCode;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,8 +36,6 @@ class LocationItem extends HookConsumerWidget {
     final remoteConfig = ref.watch(remoteConfigStorePOD);
     final locationsQueryStore = ref.watch(locationsQueryStorePOD);
     final query = useComputedValue(() => locationsQueryStore.searchTrimmed);
-    final selectedLocationStore = ref.watch(selectedLocationStorePOD);
-    final selectedLocation = useComputedValue(() => selectedLocationStore.value);
 
     final children = location.children ?? const <VPNLocation>[];
     final showCitiesAndStates = remoteConfig.showCitiesAndStates && children.isNotEmpty;
@@ -60,15 +60,26 @@ class LocationItem extends HookConsumerWidget {
       }
     });
 
-    // Auto-expand on map selection, reset manual collapse for it
-    useValueChanged<String?, void>(selectedLocation?.countryCode, (_, __) {
-      if (selectedLocation != null &&
-          selectedLocation.countryCode == location.countryCode &&
-          showCitiesAndStates) {
-        userCollapsed.value = {...userCollapsed.value}..remove(location.id);
-        userExpanded.value = {...userExpanded.value, location.id};
-      }
-    });
+    // On map selection: expand the selected country, collapse all others.
+    // After this, manual toggles are respected until the next map selection.
+    useEffect(
+      () {
+        if (mapSelectedCountryCode == null) {
+          return null;
+        }
+        if (mapSelectedCountryCode == location.countryCode) {
+          if (showCitiesAndStates) {
+            userCollapsed.value = {...userCollapsed.value}..remove(location.id);
+            userExpanded.value = {...userExpanded.value, location.id};
+          }
+        } else if (showCitiesAndStates) {
+          userCollapsed.value = {...userCollapsed.value, location.id};
+          userExpanded.value = {...userExpanded.value}..remove(location.id);
+        }
+        return null;
+      },
+      [mapSelectedCountryCode],
+    );
 
     // Derived expansion state
     final isExpanded = useMemoized(
@@ -84,7 +95,7 @@ class LocationItem extends HookConsumerWidget {
             connectedLocation != null && connectedLocation.countryCode == location.countryCode;
 
         final selectedMatch =
-            selectedLocation != null && selectedLocation.countryCode == location.countryCode;
+            mapSelectedCountryCode != null && mapSelectedCountryCode == location.countryCode;
 
         final manual = userExpanded.value.contains(location.id);
 
@@ -93,7 +104,7 @@ class LocationItem extends HookConsumerWidget {
       [
         query.trim(),
         connectedLocation?.countryCode,
-        selectedLocation?.countryCode,
+        mapSelectedCountryCode,
         userExpanded.value,
         userCollapsed.value,
         children,
