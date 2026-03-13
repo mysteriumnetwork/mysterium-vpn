@@ -22,7 +22,10 @@ import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class ConnectionTile extends HookConsumerWidget {
-  const ConnectionTile({super.key});
+  const ConnectionTile({this.textConnect, this.showConnectedOnly = false, super.key});
+
+  final String? textConnect;
+  final bool showConnectedOnly;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,17 +33,21 @@ class ConnectionTile extends HookConsumerWidget {
     final vpnStore = ref.watch(vpnStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
     final vpnProtocol = ref.watch(vpnProtocolStorePOD);
+    final selectedLocationStore = ref.watch(selectedLocationStorePOD);
 
     final handleToggleConnection = useHandleToggleConnection();
 
     Future<void> handleRefreshIP() async {
       analyticsStore.logRefreshIP(connectionDisplayStore.connectionIP);
+      selectedLocationStore.value = null;
       await vpnStore.manageConnection(refreshIP: true);
     }
 
     return Observer(
       builder: (context) {
-        final location = connectionDisplayStore.displayLocation;
+        final location = showConnectedOnly
+            ? (vpnStore.location == VPNLocation.closest ? null : vpnStore.location)
+            : connectionDisplayStore.displayLocation;
         final parent = connectionDisplayStore.parentLocation;
         final targetLocation = connectionDisplayStore.targetLocation;
         final isLocationAvailable = connectionDisplayStore.isLocationAvailable;
@@ -91,10 +98,11 @@ class ConnectionTile extends HookConsumerWidget {
                 ),
               ConnectTextButton(
                 onPressed: onTap,
-                location: targetLocation,
+                location: showConnectedOnly ? location : targetLocation,
                 size: const Size(double.infinity, 42),
-                textConnect:
-                    targetLocation != location ? LocaleKeys.locationUnavailableAction.tr() : null,
+                textConnect: textConnect ??
+                    (targetLocation != location ? LocaleKeys.locationUnavailableAction.tr() : null),
+                textDisconnect: showConnectedOnly ? textConnect : null,
               ),
               if (isConnected) const SizedBox(height: 16),
               if (isConnected) const RateConnection(),
