@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/screen_type.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/locations/components/location_item.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class LocationsSliverList extends HookConsumerWidget {
   const LocationsSliverList({
@@ -22,13 +25,10 @@ class LocationsSliverList extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedLocationStore = ref.watch(selectedLocationStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
+    final screenType = useScreenType();
 
-    final scrollController = useScrollController();
-    final listKey = useMemoized(GlobalKey.new, []);
-    final keys = useMemoized(
-      () => List.generate(items.length, (_) => GlobalKey()),
-      [items.length],
-    );
+    final itemScrollController = useMemoized(ItemScrollController.new);
+
     final selectedLocation = useComputedValue(() => selectedLocationStore.value);
     final connectedLocation = useComputedValue(
       () => vpnStore.isConnected ? vpnStore.location : null,
@@ -45,36 +45,25 @@ class LocationsSliverList extends HookConsumerWidget {
           return null;
         }
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          final ctx = keys[priorityIndex].currentContext;
-          if (ctx == null || !ctx.mounted) {
+          if (!itemScrollController.isAttached) {
             return;
           }
-          final itemBox = ctx.findRenderObject();
-          if (itemBox is! RenderBox || !itemBox.attached) {
+          if (screenType == ScreenType.desktop) {
+            itemScrollController.scrollTo(
+              index: priorityIndex,
+              duration: const Duration(milliseconds: 450),
+              curve: Curves.easeOut,
+            );
             return;
+          } else {
+            itemScrollController.jumpTo(
+              index: priorityIndex,
+            );
           }
-          if (!scrollController.hasClients) {
-            return;
-          }
-          final listBox = listKey.currentContext?.findRenderObject();
-          if (listBox is! RenderBox || !listBox.attached) {
-            return;
-          }
-          final itemOffsetInList =
-              itemBox.localToGlobal(Offset.zero).dy - listBox.localToGlobal(Offset.zero).dy;
-          final target = (scrollController.offset + itemOffsetInList).clamp(
-            scrollController.position.minScrollExtent,
-            scrollController.position.maxScrollExtent,
-          );
-          scrollController.animateTo(
-            target,
-            duration: const Duration(milliseconds: 450),
-            curve: Curves.easeInOut,
-          );
         });
         return null;
       },
-      [priorityIndex],
+      [priorityCountryCode],
     );
 
     final mapSelectedCountryCode = selectedLocation?.countryCode;
@@ -84,17 +73,18 @@ class LocationsSliverList extends HookConsumerWidget {
         builder: (context, constraints) => SliverToBoxAdapter(
           child: SizedBox(
             height: constraints.remainingPaintExtent,
-            child: ListView.separated(
-              key: listKey,
-              controller: scrollController,
-              padding: EdgeInsets.zero,
+            child: ScrollablePositionedList.builder(
+              itemScrollController: itemScrollController,
+              padding: EdgeInsets.only(top: constraints.overlap),
               itemCount: items.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
-              itemBuilder: (_, index) => LocationItem(
-                key: keys[index],
-                location: items[index],
-                onTap: onItemPressed,
-                mapSelectedCountryCode: mapSelectedCountryCode,
+              itemBuilder: (_, index) => Padding(
+                padding: EdgeInsets.only(top: index == 0 ? 0 : 12),
+                child: LocationItem(
+                  key: ValueKey(items[index].countryCode),
+                  location: items[index],
+                  onTap: onItemPressed,
+                  mapSelectedCountryCode: mapSelectedCountryCode,
+                ),
               ),
             ),
           ),
@@ -106,7 +96,7 @@ class LocationsSliverList extends HookConsumerWidget {
       itemCount: items.length,
       separatorBuilder: (_, __) => const SizedBox(height: 12),
       itemBuilder: (_, index) => LocationItem(
-        key: keys[index],
+        key: ValueKey(items[index].countryCode),
         location: items[index],
         onTap: onItemPressed,
         mapSelectedCountryCode: mapSelectedCountryCode,
