@@ -86,7 +86,6 @@ class LocationsSliverList extends HookConsumerWidget {
       [effectivePriorityCountryCode],
     );
 
-
     if (scrollToSelected && items.isNotEmpty) {
       return SliverLayoutBuilder(
         builder: (context, constraints) => SliverToBoxAdapter(
