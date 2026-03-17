@@ -497,5 +497,6 @@
   "locationItemStatesCount": {
     "one": "{statesNum} 州",
     "other": "{statesNum} 个州"
-  }
+  },
+  "switchToLocationBtn": "切换到 {switchLocation}"
 }
