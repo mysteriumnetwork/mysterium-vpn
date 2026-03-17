@@ -1,4 +1,5 @@
 import 'package:circle_flags/circle_flags.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -11,6 +12,7 @@ import 'package:mysterium_vpn/components/connection_tile.dart';
 import 'package:mysterium_vpn/components/dragable_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/location.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
@@ -80,7 +82,11 @@ class LocationsSliderMobileView extends HookConsumerWidget {
                             offset: const Offset(0, -20),
                             child: ConnectionTile(
                               showConnectedOnly: true,
-                              textConnect: 'Switch to ${selectedLocation.getName(context)}',
+                              textConnect: LocaleKeys.switchToLocationBtn.tr(
+                                namedArgs: {
+                                  'switchLocation': selectedLocation.getName(context),
+                                },
+                              ),
                             ),
                           )
                         else if (selectedLocation != null && vpnStore.location != null)
@@ -135,9 +141,11 @@ class _SelectedLocationBanner extends StatelessWidget {
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: onDismiss,
-                child: SvgIcon(
+              IconButton(
+                onPressed: onDismiss,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                icon: SvgIcon(
                   asset: Asset.icons.close3(context),
                   color: context.c.isDarkMode ? Palette.white : const Color(0xFF6A678E),
                 ),
