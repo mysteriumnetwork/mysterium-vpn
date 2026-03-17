@@ -116,7 +116,7 @@ class LocationItem extends HookConsumerWidget {
       }
     }
 
-    final onTapComputed = vpnStore.isLoading ? null : onTap;
+    final onTapComputed = useComputedValue(() => vpnStore.isLoading ? null : onTap, [onTap]);
 
     return Container(
       constraints: const BoxConstraints(minHeight: 64),
