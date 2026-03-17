@@ -60,26 +60,18 @@ class LocationItem extends HookConsumerWidget {
       }
     });
 
-    // On map selection: expand the selected country, collapse all others.
-    // After this, manual toggles are respected until the next map selection.
-    useEffect(
-      () {
-        if (mapSelectedCountryCode == null) {
-          return null;
-        }
-        if (mapSelectedCountryCode == location.countryCode) {
-          if (showCitiesAndStates) {
-            userCollapsed.value = {...userCollapsed.value}..remove(location.id);
-            userExpanded.value = {...userExpanded.value, location.id};
-          }
-        } else if (showCitiesAndStates) {
-          userCollapsed.value = {...userCollapsed.value, location.id};
-          userExpanded.value = {...userExpanded.value}..remove(location.id);
-        }
-        return null;
-      },
-      [mapSelectedCountryCode],
-    );
+    // On map selection: synchronously update manual-override sets so the
+    // expansion state is correct in the same build frame (avoiding scroll/expand
+    // ordering issues that arise with post-frame effects).
+    useValueChanged<String?, void>(mapSelectedCountryCode, (newValue, _) {
+      if (newValue == location.countryCode) {
+        // This item is now map-selected: clear any manual collapse so it can expand.
+        userCollapsed.value = {...userCollapsed.value}..remove(location.id);
+      } else if (newValue != null) {
+        // Another item is map-selected: clear manual expansion so map-collapse applies.
+        userExpanded.value = {...userExpanded.value}..remove(location.id);
+      }
+    });
 
     // Derived expansion state
     final isExpanded = useMemoized(
