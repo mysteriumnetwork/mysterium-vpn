@@ -44,26 +44,33 @@ class LocationsSliverList extends HookConsumerWidget {
         if (!scrollToSelected || priorityIndex == -1) {
           return null;
         }
+        // Expansion state is updated synchronously during build (via useValueChanged
+        // in LocationItem), so the widget tree is correct by end of Frame N.
+        // However, ScrollablePositionedList measures item heights during layout —
+        // which also completes at end of Frame N. We need those measurements to be
+        // stable before calling jumpTo/scrollTo, so we wait one additional frame
+        // for ScrollablePositionedList's internal size cache to settle.
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (!itemScrollController.isAttached) {
-            return;
-          }
-          if (screenType == ScreenType.desktop) {
-            itemScrollController.scrollTo(
-              index: priorityIndex,
-              duration: const Duration(milliseconds: 450),
-              curve: Curves.easeOut,
-            );
-            return;
-          } else {
-            itemScrollController.jumpTo(
-              index: priorityIndex,
-            );
-          }
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!itemScrollController.isAttached) {
+              return;
+            }
+            if (screenType == ScreenType.desktop) {
+              itemScrollController.scrollTo(
+                index: priorityIndex,
+                duration: const Duration(milliseconds: 450),
+                curve: Curves.easeOut,
+              );
+            } else {
+              itemScrollController.jumpTo(
+                index: priorityIndex,
+              );
+            }
+          });
         });
         return null;
       },
-      [priorityCountryCode],
+      [priorityCountryCode, priorityIndex],
     );
 
     final mapSelectedCountryCode = selectedLocation?.countryCode;
@@ -72,7 +79,7 @@ class LocationsSliverList extends HookConsumerWidget {
       return SliverLayoutBuilder(
         builder: (context, constraints) => SliverToBoxAdapter(
           child: SizedBox(
-            height: constraints.remainingPaintExtent,
+            height: constraints.remainingPaintExtent.clamp(1.0, double.infinity),
             child: ScrollablePositionedList.builder(
               itemScrollController: itemScrollController,
               padding: EdgeInsets.only(top: constraints.overlap),
