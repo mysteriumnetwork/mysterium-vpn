@@ -50,7 +50,7 @@ class LocationItem extends HookConsumerWidget {
     // Manual collapse override (lets user close auto-expanded items)
     final userCollapsed = useState<Set<String>>({});
 
-    // Auto-expand on new connection, reset manual collapse for it
+    // When connecting to this country, clear any manual collapse so it re-opens.
     useValueChanged<String?, void>(connectedLocation?.countryCode, (_, __) {
       if (connectedLocation != null &&
           connectedLocation.countryCode == location.countryCode &&
@@ -60,45 +60,44 @@ class LocationItem extends HookConsumerWidget {
       }
     });
 
-    // On map selection: synchronously update manual-override sets so the
-    // expansion state is correct in the same build frame (avoiding scroll/expand
-    // ordering issues that arise with post-frame effects).
-    useValueChanged<String?, void>(mapSelectedCountryCode, (newValue, _) {
-      if (newValue == location.countryCode) {
-        // This item is now map-selected: clear any manual collapse so it can expand.
-        userCollapsed.value = {...userCollapsed.value}..remove(location.id);
-      } else if (newValue != null) {
-        // Another item is map-selected: clear manual expansion so map-collapse applies.
-        userExpanded.value = {...userExpanded.value}..remove(location.id);
-      }
-    });
-
-    // Derived expansion state
+    // Expansion priority (evaluated in order, first match wins):
+    //   1. Search match          — always expands, overrides everything
+    //   2. Manual user toggle    — userExpanded / userCollapsed wins over auto rules
+    //   3. Map-selected/connected — expand the priority country, collapse all others
     final isExpanded = useMemoized(
       () {
-        if (userCollapsed.value.contains(location.id)) {
+        if (!showCitiesAndStates) {
           return false;
         }
 
+        // Rule 1: search match always expands
         final matchesQuery = query.isNotEmpty &&
             children.any((it) => it.queried(query, context.locale.languageCode) != null);
+        if (matchesQuery) {
+          return true;
+        }
 
-        final connectedMatch =
-            connectedLocation != null && connectedLocation.countryCode == location.countryCode;
+        // Rule 2: explicit user toggle
+        if (userCollapsed.value.contains(location.id)) {
+          return false;
+        }
+        if (userExpanded.value.contains(location.id)) {
+          return true;
+        }
 
-        final selectedMatch =
-            mapSelectedCountryCode != null && mapSelectedCountryCode == location.countryCode;
+        // Rule 3: auto-expand the selected/connected country, collapse the rest
+        if (mapSelectedCountryCode != null) {
+          return mapSelectedCountryCode == location.countryCode;
+        }
 
-        final manual = userExpanded.value.contains(location.id);
-
-        return showCitiesAndStates && (matchesQuery || connectedMatch || selectedMatch || manual);
+        return false;
       },
       [
         query.trim(),
-        connectedLocation?.countryCode,
         mapSelectedCountryCode,
         userExpanded.value,
         userCollapsed.value,
+        showCitiesAndStates,
         children,
       ],
     );

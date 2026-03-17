@@ -38,7 +38,7 @@ class HomeMap extends HookConsumerWidget {
     }
 
     void handleDoubleTapLocation(VPNLocation location) {
-      if (vpnStore.isConnected && vpnStore.location?.countryCode == location.countryCode) {
+      if ((vpnStore.isConnected && vpnStore.location?.id == location.id) || vpnStore.isLoading) {
         return;
       }
       handleToggleConnection(location: location);

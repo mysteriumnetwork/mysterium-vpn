@@ -30,14 +30,27 @@ class LocationsSliverList extends HookConsumerWidget {
     final itemScrollController = useMemoized(ItemScrollController.new);
 
     final selectedLocation = useComputedValue(() => selectedLocationStore.value);
+    final connectingLocation = useComputedValue(() => vpnStore.connectingLocation);
     final connectedLocation = useComputedValue(
       () => vpnStore.isConnected ? vpnStore.location : null,
     );
 
-    final priorityCountryCode = selectedLocation?.countryCode ?? connectedLocation?.countryCode;
-    final priorityIndex = priorityCountryCode == null
+    final priorityCountryCode = selectedLocation?.countryCode ??
+        connectingLocation?.countryCode ??
+        connectedLocation?.countryCode;
+
+    // Preserve the last non-null value so that scroll target and expanded
+    // country are not lost during any brief window where all three sources
+    // are simultaneously null.
+    final lastPriorityRef = useRef<String?>(priorityCountryCode);
+    if (priorityCountryCode != null) {
+      lastPriorityRef.value = priorityCountryCode;
+    }
+    final effectivePriorityCountryCode = priorityCountryCode ?? lastPriorityRef.value;
+
+    final priorityIndex = effectivePriorityCountryCode == null
         ? -1
-        : items.indexWhere((it) => it.countryCode == priorityCountryCode);
+        : items.indexWhere((it) => it.countryCode == effectivePriorityCountryCode);
 
     useEffect(
       () {
@@ -70,10 +83,9 @@ class LocationsSliverList extends HookConsumerWidget {
         });
         return null;
       },
-      [priorityCountryCode, priorityIndex],
+      [effectivePriorityCountryCode],
     );
 
-    final mapSelectedCountryCode = selectedLocation?.countryCode;
 
     if (scrollToSelected && items.isNotEmpty) {
       return SliverLayoutBuilder(
@@ -90,7 +102,7 @@ class LocationsSliverList extends HookConsumerWidget {
                   key: ValueKey(items[index].countryCode),
                   location: items[index],
                   onTap: onItemPressed,
-                  mapSelectedCountryCode: mapSelectedCountryCode,
+                  mapSelectedCountryCode: effectivePriorityCountryCode,
                 ),
               ),
             ),
@@ -106,7 +118,7 @@ class LocationsSliverList extends HookConsumerWidget {
         key: ValueKey(items[index].countryCode),
         location: items[index],
         onTap: onItemPressed,
-        mapSelectedCountryCode: mapSelectedCountryCode,
+        mapSelectedCountryCode: effectivePriorityCountryCode,
       ),
     );
   }
