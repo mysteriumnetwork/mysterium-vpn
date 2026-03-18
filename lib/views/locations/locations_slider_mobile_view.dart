@@ -34,7 +34,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     final analyticsStore = ref.watch(analyticsStorePOD);
     final selectedLocationStore = ref.watch(selectedLocationStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
-    final homeState = ref.watch(homeStateProvider);
+    final panelState = ref.watch(homeStateProvider.select((s) => s.panelState));
 
     useEffect(
       () {
@@ -48,14 +48,14 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     // list always starts fresh when the panel is reopened.
     useEffect(
       () {
-        if (homeState.panelState != PanelState.open &&
+        if (panelState != PanelState.open &&
             controller.hasClients &&
             controller.offset != 0) {
           controller.jumpTo(0);
         }
         return null;
       },
-      [homeState.panelState],
+      [panelState],
     );
 
     void handleTogglePanel() {
@@ -63,7 +63,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     }
 
     return CustomScrollView(
-      physics: switch (homeState.panelState) {
+      physics: switch (panelState) {
         PanelState.open => const AlwaysScrollableScrollPhysics(),
         _ => const NeverScrollableScrollPhysics(),
       },

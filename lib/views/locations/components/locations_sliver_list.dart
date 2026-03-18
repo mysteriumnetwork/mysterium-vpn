@@ -6,22 +6,80 @@ import 'package:mysterium_vpn/common/enums/screen_type.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/packages/sliding_up_panel/panel.dart' show PanelController;
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/components/location_item.dart';
 
+/// Lightweight location list without scroll-to-selected logic.
+/// Used for top locations where no auto-scrolling is needed.
 class LocationsSliverList extends HookConsumerWidget {
   const LocationsSliverList({
     required this.items,
     required this.onItemPressed,
-    this.scrollToSelected = false,
+    super.key,
+  });
+
+  final List<VPNLocation> items;
+  final void Function(VPNLocation item) onItemPressed;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedLocationStore = ref.watch(selectedLocationStorePOD);
+    final vpnStore = ref.watch(vpnStorePOD);
+
+    final userExpanded = useMemoized(() => ValueNotifier<Set<String>>({}));
+    final userCollapsed = useMemoized(() => ValueNotifier<Set<String>>({}));
+    useEffect(
+      () => () {
+        userExpanded.dispose();
+        userCollapsed.dispose();
+      },
+      const [],
+    );
+
+    final selectedLocation = useComputedValue(() => selectedLocationStore.value);
+    final connectingLocation = useComputedValue(() => vpnStore.connectingLocation);
+    final connectedLocation = useComputedValue(
+      () => vpnStore.isConnected ? vpnStore.location : null,
+    );
+
+    final priorityCountryCode = selectedLocation?.countryCode ??
+        connectingLocation?.countryCode ??
+        connectedLocation?.countryCode;
+
+    final lastPriorityRef = useRef<String?>(priorityCountryCode);
+    if (priorityCountryCode != null) {
+      lastPriorityRef.value = priorityCountryCode;
+    }
+    final effectivePriorityCountryCode = priorityCountryCode ?? lastPriorityRef.value;
+
+    return SliverList.separated(
+      itemCount: items.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      itemBuilder: (_, index) => LocationItem(
+        location: items[index],
+        onTap: onItemPressed,
+        userExpanded: userExpanded,
+        userCollapsed: userCollapsed,
+        mapSelectedCountryCode: effectivePriorityCountryCode,
+      ),
+    );
+  }
+}
+
+/// Full-featured location list with scroll-to-selected support.
+/// Watches panel state and uses GlobalKeys to scroll to the selected item.
+class ScrollableLocationsSliverList extends HookConsumerWidget {
+  const ScrollableLocationsSliverList({
+    required this.items,
+    required this.onItemPressed,
     this.stickyHeaderKey,
     super.key,
   });
 
   final List<VPNLocation> items;
   final void Function(VPNLocation item) onItemPressed;
-  final bool scrollToSelected;
 
   /// Key of the pinned header widget sitting above this list. Its height is
   /// subtracted from the reveal offset so the selected item appears just below
@@ -77,114 +135,31 @@ class LocationsSliverList extends HookConsumerWidget {
       }),
     );
 
-    final homeState = ref.watch(homeStateProvider);
+    final homeState = ref.read(homeStateProvider);
 
     useEffect(
       () {
-        if (!scrollToSelected || priorityIndex == -1) {
+        if (priorityIndex == -1) {
           return null;
         }
-
-        // Already scrolled to this country — don't scroll again.
-        // Stored on homeState so it survives widget recreation on tab switch.
         if (homeState.lastScrolledCountryCode == effectivePriorityCountryCode) {
           return null;
         }
-
-        // On mobile wait until the panel animation is fully complete.
         if (!isDesktop && !isPanelFullyOpen) {
           return null;
         }
 
         homeState.lastScrolledCountryCode = effectivePriorityCountryCode;
 
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (!context.mounted) {
-            return;
-          }
-
-          final countryCode = effectivePriorityCountryCode;
-          if (countryCode == null) {
-            return;
-          }
-
-          final outerScrollable = Scrollable.maybeOf(context);
-          if (outerScrollable == null) {
-            return;
-          }
-
-          // Computes the absolute scroll offset that places the item just below
-          // the sticky header. getOffsetToReveal is position-independent so no
-          // rough-jump prerequisite is needed.
-          double computeTarget(RenderBox ro) {
-            final viewport = RenderAbstractViewport.of(ro);
-            final hRO = stickyHeaderKey?.currentContext?.findRenderObject();
-            final stickyHeight = hRO is RenderBox && hRO.attached ? hRO.size.height : 0.0;
-            return (viewport.getOffsetToReveal(ro, 0).offset - stickyHeight)
-                .clamp(0.0, outerScrollable.position.maxScrollExtent);
-          }
-
-          void applyScroll(RenderBox ro) {
-            final target = computeTarget(ro);
-            if (isDesktop) {
-              outerScrollable.position.animateTo(
-                target,
-                duration: const Duration(milliseconds: 450),
-                curve: Curves.easeOut,
-              );
-            } else {
-              // Enable scrolling on the panel BEFORE jumpTo so the panel's
-              // listener (which resets to 0 when !_scrollingEnabled) doesn't
-              // fight us. This also lets the user scroll normally afterwards.
-              final pc = homeState.panelController;
-              if (pc.isAttached) {
-                pc.enableScrolling();
-              }
-              outerScrollable.position.jumpTo(target);
-            }
-          }
-
-          // Fast path: item is already in the widget tree.
-          final itemCtx = _LocationKey(countryCode).currentContext;
-          if (itemCtx != null) {
-            final ro = itemCtx.findRenderObject() as RenderBox?;
-            if (ro != null && ro.attached) {
-              applyScroll(ro);
-              return;
-            }
-          }
-
-          // Slow path: item is off-screen (lazy list). Jump to a proportional
-          // estimate so it gets built, then refine on the next frame.
-          final pos = outerScrollable.position;
-          final estimated = items.isEmpty
-              ? 0.0
-              : (pos.maxScrollExtent * priorityIndex / items.length)
-                  .clamp(0.0, pos.maxScrollExtent);
-
-          if (!isDesktop) {
-            final pc = homeState.panelController;
-            if (pc.isAttached) {
-              pc.enableScrolling();
-            }
-          }
-          pos.jumpTo(estimated);
-
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (!context.mounted) {
-              return;
-            }
-            final refinedCtx = _LocationKey(countryCode).currentContext;
-            if (refinedCtx == null) {
-              return;
-            }
-            final ro = refinedCtx.findRenderObject() as RenderBox?;
-            if (ro == null || !ro.attached) {
-              return;
-            }
-            applyScroll(ro);
-          });
-        });
+        _scrollToCountry(
+          context: context,
+          countryCode: effectivePriorityCountryCode!,
+          stickyHeaderKey: stickyHeaderKey,
+          panelController: homeState.panelController,
+          isDesktop: isDesktop,
+          itemCount: items.length,
+          priorityIndex: priorityIndex,
+        );
 
         return null;
       },
@@ -195,9 +170,7 @@ class LocationsSliverList extends HookConsumerWidget {
       itemCount: items.length,
       separatorBuilder: (_, __) => const SizedBox(height: 12),
       itemBuilder: (_, index) => LocationItem(
-        key: scrollToSelected
-            ? _LocationKey(items[index].countryCode)
-            : ValueKey(items[index].countryCode),
+        key: _LocationKey(items[index].countryCode),
         location: items[index],
         onTap: onItemPressed,
         userExpanded: userExpanded,
@@ -205,6 +178,106 @@ class LocationsSliverList extends HookConsumerWidget {
         mapSelectedCountryCode: effectivePriorityCountryCode,
       ),
     );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Scroll-to-selected helpers
+// ---------------------------------------------------------------------------
+
+/// Finds the RenderBox for a location item by its country code GlobalKey.
+RenderBox? _findLocationRenderBox(String countryCode) {
+  final ctx = _LocationKey(countryCode).currentContext;
+  if (ctx == null) {
+    return null;
+  }
+  final ro = ctx.findRenderObject() as RenderBox?;
+  return (ro != null && ro.attached) ? ro : null;
+}
+
+/// Computes the scroll offset that places [ro] just below the sticky header.
+double _targetOffset(
+  RenderBox ro,
+  ScrollableState scrollable,
+  GlobalKey? stickyHeaderKey,
+) {
+  final viewport = RenderAbstractViewport.of(ro);
+  final hRO = stickyHeaderKey?.currentContext?.findRenderObject();
+  final stickyHeight = hRO is RenderBox && hRO.attached ? hRO.size.height : 0.0;
+  return (viewport.getOffsetToReveal(ro, 0).offset - stickyHeight)
+      .clamp(0.0, scrollable.position.maxScrollExtent);
+}
+
+/// Scrolls to [countryCode]'s item. On desktop animates; on mobile jumps
+/// (after enabling panel scrolling so the panel's reset listener doesn't
+/// fight the programmatic scroll).
+void _scrollToCountry({
+  required BuildContext context,
+  required String countryCode,
+  required GlobalKey? stickyHeaderKey,
+  required PanelController panelController,
+  required bool isDesktop,
+  required int itemCount,
+  required int priorityIndex,
+}) {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    if (!context.mounted) {
+      return;
+    }
+    final scrollable = Scrollable.maybeOf(context);
+    if (scrollable == null) {
+      return;
+    }
+
+    // On mobile, unlock panel scrolling once so the reset listener doesn't
+    // fight programmatic scrolls and the user can scroll normally afterwards.
+    if (!isDesktop && panelController.isAttached) {
+      panelController.enableScrolling();
+    }
+
+    // Fast path: item is already built in the widget tree.
+    final ro = _findLocationRenderBox(countryCode);
+    if (ro != null) {
+      _applyScroll(scrollable, ro, stickyHeaderKey, isDesktop);
+      return;
+    }
+
+    // Slow path: item is off-screen. Jump to a proportional estimate so the
+    // lazy list builds it, then refine to the exact position on the next frame.
+    final pos = scrollable.position;
+    final estimated = itemCount == 0
+        ? 0.0
+        : (pos.maxScrollExtent * priorityIndex / itemCount).clamp(0.0, pos.maxScrollExtent);
+    pos.jumpTo(estimated);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!context.mounted) {
+        return;
+      }
+      final refinedRo = _findLocationRenderBox(countryCode);
+      if (refinedRo != null) {
+        _applyScroll(scrollable, refinedRo, stickyHeaderKey, isDesktop);
+      }
+    });
+  });
+}
+
+/// Scrolls to the exact position of [ro]. Desktop animates, mobile jumps.
+void _applyScroll(
+  ScrollableState scrollable,
+  RenderBox ro,
+  GlobalKey? stickyHeaderKey,
+  bool isDesktop,
+) {
+  final target = _targetOffset(ro, scrollable, stickyHeaderKey);
+  if (isDesktop) {
+    scrollable.position.animateTo(
+      target,
+      duration: const Duration(milliseconds: 450),
+      curve: Curves.easeOut,
+    );
+  } else {
+    scrollable.position.jumpTo(target);
   }
 }
 

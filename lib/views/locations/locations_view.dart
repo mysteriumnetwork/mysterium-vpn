@@ -307,10 +307,9 @@ class _Locations extends HookConsumerWidget {
                         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
                         child: Divider(thickness: 0.5, color: Palette.lightBlue),
                       ),
-                    LocationsSliverList(
+                    ScrollableLocationsSliverList(
                       items: locations,
                       onItemPressed: onLocationTapped,
-                      scrollToSelected: true,
                       stickyHeaderKey: stickyKey,
                     ),
                     if ((isEmpty ?? false) && searchKeyword.isNotEmpty)
