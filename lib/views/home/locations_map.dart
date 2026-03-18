@@ -51,9 +51,9 @@ class LocationsMap extends HookConsumerWidget {
       var offset = Offset.zero;
       if (screenType == ScreenType.mobile) {
         offset = switch (ref.read(homeStateProvider).panelState) {
-          PanelState.closed => Offset.zero,
-          PanelState.snap => const Offset(0, -100),
-          PanelState.open => const Offset(0, -120),
+          PanelState.closed =>  const Offset(0, -100),
+          PanelState.snap => const Offset(0, -180),
+          PanelState.open => const Offset(0, -180),
         };
       }
       controller.move(point, zoom, offset: offset);
