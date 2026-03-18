@@ -29,6 +29,18 @@ class LocationsSliverList extends HookConsumerWidget {
 
     final itemScrollController = useMemoized(ItemScrollController.new);
 
+    // Expansion state lives here so it survives tab switches (this widget stays
+    // alive while the tab content changes, but LocationItem widgets are recreated).
+    final userExpanded = useMemoized(() => ValueNotifier<Set<String>>({}));
+    final userCollapsed = useMemoized(() => ValueNotifier<Set<String>>({}));
+    useEffect(
+      () => () {
+        userExpanded.dispose();
+        userCollapsed.dispose();
+      },
+      const [],
+    );
+
     final selectedLocation = useComputedValue(() => selectedLocationStore.value);
     final connectingLocation = useComputedValue(() => vpnStore.connectingLocation);
     final connectedLocation = useComputedValue(
@@ -100,6 +112,8 @@ class LocationsSliverList extends HookConsumerWidget {
                   key: ValueKey(items[index].countryCode),
                   location: items[index],
                   onTap: onItemPressed,
+                  userExpanded: userExpanded,
+                  userCollapsed: userCollapsed,
                   mapSelectedCountryCode: effectivePriorityCountryCode,
                 ),
               ),
@@ -116,6 +130,8 @@ class LocationsSliverList extends HookConsumerWidget {
         key: ValueKey(items[index].countryCode),
         location: items[index],
         onTap: onItemPressed,
+        userExpanded: userExpanded,
+        userCollapsed: userCollapsed,
         mapSelectedCountryCode: effectivePriorityCountryCode,
       ),
     );

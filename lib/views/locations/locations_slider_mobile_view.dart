@@ -68,16 +68,18 @@ class LocationsSliderMobileView extends HookConsumerWidget {
                 Observer(
                   builder: (context) {
                     final selectedLocation = selectedLocationStore.value;
-                    final showBanner = selectedLocation != null && vpnStore.isConnected;
                     return Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        if (showBanner)
+                        if (_shouldShowSelectedLocationBanner(
+                          connectedLocation: vpnStore.location,
+                          isConnected: vpnStore.isConnected,
+                          selectedLocation: selectedLocation,
+                        )) ...[
                           _SelectedLocationBanner(
-                            location: selectedLocation,
+                            location: selectedLocation!,
                             onDismiss: () => selectedLocationStore.value = null,
                           ),
-                        if (showBanner)
                           Transform.translate(
                             offset: const Offset(0, -20),
                             child: ConnectionTile(
@@ -88,8 +90,8 @@ class LocationsSliderMobileView extends HookConsumerWidget {
                                 },
                               ),
                             ),
-                          )
-                        else if (selectedLocation != null && vpnStore.location != null)
+                          ),
+                        ] else if (selectedLocation != null && vpnStore.location != null)
                           const ConnectionTile(showConnectedOnly: true)
                         else
                           const ConnectionTile(),
@@ -105,6 +107,20 @@ class LocationsSliderMobileView extends HookConsumerWidget {
         ),
       ],
     );
+  }
+
+  bool _shouldShowSelectedLocationBanner({
+    required VPNLocation? selectedLocation,
+    required bool isConnected,
+    required VPNLocation? connectedLocation,
+  }) {
+    if (!isConnected || selectedLocation == null || connectedLocation == null) {
+      return false;
+    }
+    if (selectedLocation.isCountry && selectedLocation.countryCode == connectedLocation.countryCode) {
+      return false;
+    }
+    return true;
   }
 }
 
