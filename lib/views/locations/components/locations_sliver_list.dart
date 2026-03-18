@@ -93,7 +93,6 @@ class LocationsSliverList extends HookConsumerWidget {
             height: constraints.remainingPaintExtent.clamp(1.0, double.infinity),
             child: ScrollablePositionedList.builder(
               itemScrollController: itemScrollController,
-              padding: EdgeInsets.only(top: constraints.overlap),
               itemCount: items.length,
               itemBuilder: (_, index) => Padding(
                 padding: EdgeInsets.only(top: index == 0 ? 0 : 12),

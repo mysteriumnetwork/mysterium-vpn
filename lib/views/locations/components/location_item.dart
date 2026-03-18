@@ -50,23 +50,28 @@ class LocationItem extends HookConsumerWidget {
     // Manual collapse override (lets user close auto-expanded items)
     final userCollapsed = useState<Set<String>>({});
 
-    // When connecting to this country, clear any manual collapse so Rule 3 can
-    // expand it. Do NOT add to userExpanded — that is reserved for explicit user
-    // toggles (chevron clicks) so that connection does not masquerade as a manual
-    // expansion and incorrectly keep the item open after another country is selected.
+    // When the connected country changes:
+    // - If this is the newly connected country: clear manual collapse so Rule 3 can expand it.
+    //   Do NOT add to userExpanded — reserved for explicit chevron clicks only.
+    // - If a different country connected: clear manual expansion so Rule 3 can collapse this one.
     useValueChanged<String?, void>(connectedLocation?.countryCode, (_, __) {
-      if (connectedLocation != null &&
-          connectedLocation.countryCode == location.countryCode &&
-          showCitiesAndStates) {
-        userCollapsed.value = {...userCollapsed.value}..remove(location.id);
+      if (connectedLocation != null && showCitiesAndStates) {
+        if (connectedLocation.countryCode == location.countryCode) {
+          userCollapsed.value = {...userCollapsed.value}..remove(location.id);
+        } else {
+          userExpanded.value = {...userExpanded.value}..remove(location.id);
+        }
       }
     });
 
-    // When this item is newly map-selected, clear any stale manual collapse so
-    // Rule 3 can expand it (e.g. user had manually closed it before re-selecting).
+    // When the map selection changes:
+    // - If this item is newly selected: clear stale manual collapse so Rule 3 can expand it.
+    // - If a different country is selected: clear manual expansion so Rule 3 can collapse this one.
     useValueChanged<String?, void>(mapSelectedCountryCode, (newValue, _) {
       if (newValue == location.countryCode) {
         userCollapsed.value = {...userCollapsed.value}..remove(location.id);
+      } else if (newValue != null) {
+        userExpanded.value = {...userExpanded.value}..remove(location.id);
       }
     });
 
