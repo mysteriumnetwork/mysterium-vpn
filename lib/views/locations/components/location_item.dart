@@ -21,6 +21,8 @@ class LocationItem extends HookConsumerWidget {
   const LocationItem({
     required this.location,
     required this.onTap,
+    required this.userExpanded,
+    required this.userCollapsed,
     this.mapSelectedCountryCode,
     super.key,
   });
@@ -28,6 +30,8 @@ class LocationItem extends HookConsumerWidget {
   final VPNLocation location;
   final void Function(VPNLocation) onTap;
   final String? mapSelectedCountryCode;
+  final ValueNotifier<Set<String>> userExpanded;
+  final ValueNotifier<Set<String>> userCollapsed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,21 +49,29 @@ class LocationItem extends HookConsumerWidget {
       () => vpnStore.isConnected ? vpnStore.location : null,
     );
 
-    // Manual toggle state
-    final userExpanded = useState<Set<String>>({});
-    // Manual collapse override (lets user close auto-expanded items)
-    final userCollapsed = useState<Set<String>>({});
+    // Subscribe to the shared expansion sets so this widget rebuilds when they change.
+    useListenable(userExpanded);
+    useListenable(userCollapsed);
 
     // When the connected country changes:
     // - If this is the newly connected country: clear manual collapse so Rule 3 can expand it.
     //   Do NOT add to userExpanded — reserved for explicit chevron clicks only.
     // - If a different country connected: clear manual expansion so Rule 3 can collapse this one.
+    //
+    // Mutations are deferred to addPostFrameCallback so they happen outside the build phase.
+    // This avoids "setState during build" errors that occur when useValueChanged fires
+    // synchronously and notifies sibling LocationItem widgets via useListenable.
+    // Timing still works: expansion settles before the double-postFrameCallback scroll fires.
     useValueChanged<String?, void>(connectedLocation?.countryCode, (_, __) {
       if (connectedLocation != null && showCitiesAndStates) {
         if (connectedLocation.countryCode == location.countryCode) {
-          userCollapsed.value = {...userCollapsed.value}..remove(location.id);
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            userCollapsed.value = {...userCollapsed.value}..remove(location.id);
+          });
         } else {
-          userExpanded.value = {...userExpanded.value}..remove(location.id);
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            userExpanded.value = {...userExpanded.value}..remove(location.id);
+          });
         }
       }
     });
@@ -69,9 +81,13 @@ class LocationItem extends HookConsumerWidget {
     // - If a different country is selected: clear manual expansion so Rule 3 can collapse this one.
     useValueChanged<String?, void>(mapSelectedCountryCode, (newValue, _) {
       if (newValue == location.countryCode) {
-        userCollapsed.value = {...userCollapsed.value}..remove(location.id);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          userCollapsed.value = {...userCollapsed.value}..remove(location.id);
+        });
       } else if (newValue != null) {
-        userExpanded.value = {...userExpanded.value}..remove(location.id);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          userExpanded.value = {...userExpanded.value}..remove(location.id);
+        });
       }
     });
 
