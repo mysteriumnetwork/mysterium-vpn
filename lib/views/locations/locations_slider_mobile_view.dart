@@ -117,7 +117,8 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     if (!isConnected || selectedLocation == null || connectedLocation == null) {
       return false;
     }
-    if (selectedLocation.isCountry && selectedLocation.countryCode == connectedLocation.countryCode) {
+    if (selectedLocation.isCountry &&
+        selectedLocation.countryCode == connectedLocation.countryCode) {
       return false;
     }
     return true;
