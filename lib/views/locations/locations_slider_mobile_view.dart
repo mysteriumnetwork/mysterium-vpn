@@ -48,9 +48,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     // list always starts fresh when the panel is reopened.
     useEffect(
       () {
-        if (panelState != PanelState.open &&
-            controller.hasClients &&
-            controller.offset != 0) {
+        if (panelState != PanelState.open && controller.hasClients && controller.offset != 0) {
           controller.jumpTo(0);
         }
         return null;
