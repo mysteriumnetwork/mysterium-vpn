@@ -76,7 +76,9 @@ List<Marker> _useLocationMarkers({
       final sorted = {
         ...cities,
         ...countries.whereNot(
-          (it) => it.countryCode == connectedLocation?.countryCode || it.countryCode == selectedLocation?.countryCode,
+          (it) =>
+              it.countryCode == connectedLocation?.countryCode ||
+              it.countryCode == selectedLocation?.countryCode,
         ),
         if (selectedLocation != null) selectedLocation,
         if (connectedLocation != null && connectedLocation != selectedLocation) connectedLocation,
@@ -128,7 +130,10 @@ List<Marker> _useLocationMarkers({
               height: 70,
               alignment: Alignment.topCenter,
               child: IgnorePointer(
-                child: LocationTooltipCard(location: selectedLocation,connectedLocation: connectedLocation,),
+                child: LocationTooltipCard(
+                  location: selectedLocation,
+                  connectedLocation: connectedLocation,
+                ),
               ),
             ),
           );

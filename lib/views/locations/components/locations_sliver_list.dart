@@ -107,17 +107,15 @@ class LocationsSliverList extends HookConsumerWidget {
                 final viewportTopY = viewport is RenderBox
                     ? (viewport as RenderBox).localToGlobal(Offset.zero).dy
                     : 0.0;
-                final roughOffset =
-                    (outerScrollable.position.pixels + itemGlobalY - viewportTopY)
-                        .clamp(0.0, outerScrollable.position.maxScrollExtent);
+                final roughOffset = (outerScrollable.position.pixels + itemGlobalY - viewportTopY)
+                    .clamp(0.0, outerScrollable.position.maxScrollExtent);
                 outerScrollable.position.jumpTo(roughOffset);
               }
             } else {
               // Item not in widget tree – jump to estimated offset so it renders.
               final pos = outerScrollable.position;
-              final estimated =
-                  (pos.maxScrollExtent * priorityIndex / items.length)
-                      .clamp(0.0, pos.maxScrollExtent);
+              final estimated = (pos.maxScrollExtent * priorityIndex / items.length)
+                  .clamp(0.0, pos.maxScrollExtent);
               pos.jumpTo(estimated);
             }
 
@@ -138,8 +136,7 @@ class LocationsSliverList extends HookConsumerWidget {
 
               // After the rough jump the sticky header is pinned, so
               // localToGlobal gives its real on-screen bottom coordinate.
-              final headerRO =
-                  stickyHeaderKey?.currentContext?.findRenderObject() as RenderBox?;
+              final headerRO = stickyHeaderKey?.currentContext?.findRenderObject() as RenderBox?;
               final double topY;
               if (headerRO != null && headerRO.attached) {
                 topY = headerRO.localToGlobal(Offset(0, headerRO.size.height)).dy;
@@ -151,9 +148,8 @@ class LocationsSliverList extends HookConsumerWidget {
               }
 
               // Scroll so that item's top lands at topY (just below sticky header).
-              final targetOffset =
-                  (scrollable.position.pixels + itemGlobalY - topY)
-                      .clamp(0.0, scrollable.position.maxScrollExtent);
+              final targetOffset = (scrollable.position.pixels + itemGlobalY - topY)
+                  .clamp(0.0, scrollable.position.maxScrollExtent);
 
               if (isDesktop) {
                 scrollable.position.animateTo(
@@ -199,8 +195,7 @@ class _LocationKey extends GlobalKey {
   final String countryCode;
 
   @override
-  bool operator ==(Object other) =>
-      other is _LocationKey && other.countryCode == countryCode;
+  bool operator ==(Object other) => other is _LocationKey && other.countryCode == countryCode;
 
   @override
   int get hashCode => Object.hash(_LocationKey, countryCode);
