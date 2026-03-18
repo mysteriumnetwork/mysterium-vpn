@@ -44,6 +44,20 @@ class LocationsSliderMobileView extends HookConsumerWidget {
       [analyticsStore],
     );
 
+    // When the panel is not fully open, reset the scroll to the top so the
+    // list always starts fresh when the panel is reopened.
+    useEffect(
+      () {
+        if (homeState.panelState != PanelState.open &&
+            controller.hasClients &&
+            controller.offset != 0) {
+          controller.jumpTo(0);
+        }
+        return null;
+      },
+      [homeState.panelState],
+    );
+
     void handleTogglePanel() {
       ref.read(homeStateProvider.notifier).togglePanel();
     }
@@ -117,8 +131,9 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     if (!isConnected || selectedLocation == null || connectedLocation == null) {
       return false;
     }
-    if (selectedLocation.isCountry &&
-        selectedLocation.countryCode == connectedLocation.countryCode) {
+    if (selectedLocation.id == connectedLocation.id ||
+        selectedLocation.isCountry &&
+            selectedLocation.countryCode == connectedLocation.countryCode) {
       return false;
     }
     return true;
