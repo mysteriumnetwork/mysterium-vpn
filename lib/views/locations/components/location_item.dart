@@ -50,13 +50,23 @@ class LocationItem extends HookConsumerWidget {
     // Manual collapse override (lets user close auto-expanded items)
     final userCollapsed = useState<Set<String>>({});
 
-    // When connecting to this country, clear any manual collapse so it re-opens.
+    // When connecting to this country, clear any manual collapse so Rule 3 can
+    // expand it. Do NOT add to userExpanded — that is reserved for explicit user
+    // toggles (chevron clicks) so that connection does not masquerade as a manual
+    // expansion and incorrectly keep the item open after another country is selected.
     useValueChanged<String?, void>(connectedLocation?.countryCode, (_, __) {
       if (connectedLocation != null &&
           connectedLocation.countryCode == location.countryCode &&
           showCitiesAndStates) {
         userCollapsed.value = {...userCollapsed.value}..remove(location.id);
-        userExpanded.value = {...userExpanded.value, location.id};
+      }
+    });
+
+    // When this item is newly map-selected, clear any stale manual collapse so
+    // Rule 3 can expand it (e.g. user had manually closed it before re-selecting).
+    useValueChanged<String?, void>(mapSelectedCountryCode, (newValue, _) {
+      if (newValue == location.countryCode) {
+        userCollapsed.value = {...userCollapsed.value}..remove(location.id);
       }
     });
 
