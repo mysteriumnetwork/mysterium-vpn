@@ -92,7 +92,6 @@ dependencies:
   shared_preferences: 2.5.3
   shimmer: 3.0.0
   sign_in_with_apple: 7.0.1
-  sliding_up_panel: 2.0.0+1
   sliver_tools: ^0.2.12
   stack_trace: 1.12.1
   store_checker_windows:

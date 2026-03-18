@@ -23,9 +23,9 @@ class LocationsSliverList extends HookConsumerWidget {
   final void Function(VPNLocation item) onItemPressed;
   final bool scrollToSelected;
 
-  /// Key of the pinned header widget sitting above this list. Its bottom
-  /// screen-coordinate is used as the anchor for scroll-to-selected, so the
-  /// selected item appears just below the header (not behind it).
+  /// Key of the pinned header widget sitting above this list. Its height is
+  /// subtracted from the reveal offset so the selected item appears just below
+  /// the header rather than behind it.
   final GlobalKey? stickyHeaderKey;
 
   @override
@@ -66,107 +66,129 @@ class LocationsSliverList extends HookConsumerWidget {
 
     final isDesktop = screenType == ScreenType.desktop;
 
-    // On mobile, only scroll when the panel is fully open so that a map
-    // selection does not try to scroll while the panel is still closed.
-    // On desktop there is no panel, so treat it as always open.
-    final panelState = ref.watch(homeStateProvider.select((s) => s.panelState));
-    final isPanelOpen = isDesktop || panelState == PanelState.open;
+    // Reactively tracks whether the panel is fully open (animation complete).
+    final isPanelFullyOpen = ref.watch(
+      homeStateProvider.select((s) {
+        final pc = s.panelController;
+        if (!pc.isAttached) {
+          return true;
+        }
+        return pc.isPanelOpen;
+      }),
+    );
+
+    final homeState = ref.watch(homeStateProvider);
 
     useEffect(
       () {
-        if (!scrollToSelected || priorityIndex == -1 || !isPanelOpen) {
+        if (!scrollToSelected || priorityIndex == -1) {
           return null;
         }
 
+        // Already scrolled to this country — don't scroll again.
+        // Stored on homeState so it survives widget recreation on tab switch.
+        if (homeState.lastScrolledCountryCode == effectivePriorityCountryCode) {
+          return null;
+        }
+
+        // On mobile wait until the panel animation is fully complete.
+        if (!isDesktop && !isPanelFullyOpen) {
+          return null;
+        }
+
+        homeState.lastScrolledCountryCode = effectivePriorityCountryCode;
+
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            final countryCode = effectivePriorityCountryCode;
-            if (countryCode == null) {
+          if (!context.mounted) {
+            return;
+          }
+
+          final countryCode = effectivePriorityCountryCode;
+          if (countryCode == null) {
+            return;
+          }
+
+          final outerScrollable = Scrollable.maybeOf(context);
+          if (outerScrollable == null) {
+            return;
+          }
+
+          // Computes the absolute scroll offset that places the item just below
+          // the sticky header. getOffsetToReveal is position-independent so no
+          // rough-jump prerequisite is needed.
+          double computeTarget(RenderBox ro) {
+            final viewport = RenderAbstractViewport.of(ro);
+            final hRO = stickyHeaderKey?.currentContext?.findRenderObject();
+            final stickyHeight = hRO is RenderBox && hRO.attached ? hRO.size.height : 0.0;
+            return (viewport.getOffsetToReveal(ro, 0).offset - stickyHeight)
+                .clamp(0.0, outerScrollable.position.maxScrollExtent);
+          }
+
+          void applyScroll(RenderBox ro) {
+            final target = computeTarget(ro);
+            if (isDesktop) {
+              outerScrollable.position.animateTo(
+                target,
+                duration: const Duration(milliseconds: 450),
+                curve: Curves.easeOut,
+              );
+            } else {
+              // Enable scrolling on the panel BEFORE jumpTo so the panel's
+              // listener (which resets to 0 when !_scrollingEnabled) doesn't
+              // fight us. This also lets the user scroll normally afterwards.
+              final pc = homeState.panelController;
+              if (pc.isAttached) {
+                pc.enableScrolling();
+              }
+              outerScrollable.position.jumpTo(target);
+            }
+          }
+
+          // Fast path: item is already in the widget tree.
+          final itemCtx = _LocationKey(countryCode).currentContext;
+          if (itemCtx != null) {
+            final ro = itemCtx.findRenderObject() as RenderBox?;
+            if (ro != null && ro.attached) {
+              applyScroll(ro);
               return;
             }
+          }
+
+          // Slow path: item is off-screen (lazy list). Jump to a proportional
+          // estimate so it gets built, then refine on the next frame.
+          final pos = outerScrollable.position;
+          final estimated = items.isEmpty
+              ? 0.0
+              : (pos.maxScrollExtent * priorityIndex / items.length)
+                  .clamp(0.0, pos.maxScrollExtent);
+
+          if (!isDesktop) {
+            final pc = homeState.panelController;
+            if (pc.isAttached) {
+              pc.enableScrolling();
+            }
+          }
+          pos.jumpTo(estimated);
+
+          WidgetsBinding.instance.addPostFrameCallback((_) {
             if (!context.mounted) {
               return;
             }
-
-            // Resolve the outer scrollable from the widget's own context so we
-            // can scroll even when the item is not yet in the widget tree.
-            final outerScrollable = Scrollable.maybeOf(context);
-            if (outerScrollable == null) {
+            final refinedCtx = _LocationKey(countryCode).currentContext;
+            if (refinedCtx == null) {
               return;
             }
-
-            // --- Pass 1: rough jump to bring the item to the viewport top ----
-            // This ensures every pinned header above the item is in its "pinned"
-            // state by the time we measure it in pass 2.
-            final itemCtx = _LocationKey(countryCode).currentContext;
-            if (itemCtx != null) {
-              final ro = itemCtx.findRenderObject() as RenderBox?;
-              if (ro != null && ro.attached) {
-                final itemGlobalY = ro.localToGlobal(Offset.zero).dy;
-                final viewport = RenderAbstractViewport.of(ro);
-                final viewportTopY = viewport is RenderBox
-                    ? (viewport as RenderBox).localToGlobal(Offset.zero).dy
-                    : 0.0;
-                final roughOffset = (outerScrollable.position.pixels + itemGlobalY - viewportTopY)
-                    .clamp(0.0, outerScrollable.position.maxScrollExtent);
-                outerScrollable.position.jumpTo(roughOffset);
-              }
-            } else {
-              // Item not in widget tree – jump to estimated offset so it renders.
-              final pos = outerScrollable.position;
-              final estimated = (pos.maxScrollExtent * priorityIndex / items.length)
-                  .clamp(0.0, pos.maxScrollExtent);
-              pos.jumpTo(estimated);
+            final ro = refinedCtx.findRenderObject() as RenderBox?;
+            if (ro == null || !ro.attached) {
+              return;
             }
-
-            // --- Pass 2: fine-tune using the now-pinned header's bottom Y ----
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              final refinedCtx = _LocationKey(countryCode).currentContext;
-              if (refinedCtx == null) {
-                return;
-              }
-
-              final scrollable = Scrollable.maybeOf(refinedCtx) ?? outerScrollable;
-              final ro = refinedCtx.findRenderObject() as RenderBox?;
-              if (ro == null || !ro.attached) {
-                return;
-              }
-
-              final itemGlobalY = ro.localToGlobal(Offset.zero).dy;
-
-              // After the rough jump the sticky header is pinned, so
-              // localToGlobal gives its real on-screen bottom coordinate.
-              final headerRO = stickyHeaderKey?.currentContext?.findRenderObject() as RenderBox?;
-              final double topY;
-              if (headerRO != null && headerRO.attached) {
-                topY = headerRO.localToGlobal(Offset(0, headerRO.size.height)).dy;
-              } else {
-                final viewport = RenderAbstractViewport.of(ro);
-                topY = viewport is RenderBox
-                    ? (viewport as RenderBox).localToGlobal(Offset.zero).dy
-                    : 0.0;
-              }
-
-              // Scroll so that item's top lands at topY (just below sticky header).
-              final targetOffset = (scrollable.position.pixels + itemGlobalY - topY)
-                  .clamp(0.0, scrollable.position.maxScrollExtent);
-
-              if (isDesktop) {
-                scrollable.position.animateTo(
-                  targetOffset,
-                  duration: const Duration(milliseconds: 450),
-                  curve: Curves.easeOut,
-                );
-              } else {
-                scrollable.position.jumpTo(targetOffset);
-              }
-            });
+            applyScroll(ro);
           });
         });
 
         return null;
       },
-      [effectivePriorityCountryCode, priorityIndex, isPanelOpen],
+      [effectivePriorityCountryCode, isPanelFullyOpen],
     );
 
     return SliverList.separated(
@@ -188,8 +210,7 @@ class LocationsSliverList extends HookConsumerWidget {
 
 // A GlobalKey that uniquely identifies a LocationItem by countryCode.
 // Uses value-based equality so _LocationKey('CA').currentContext finds the
-// registered element even when the String object is not identical (e.g.
-// runtime strings loaded from a store).
+// registered element even when the String object is not identical.
 class _LocationKey extends GlobalKey {
   const _LocationKey(this.countryCode) : super.constructor();
   final String countryCode;
