@@ -8,15 +8,19 @@ import 'package:mysterium_vpn/models/models.dart';
 class LocationTooltipCard extends StatelessWidget {
   const LocationTooltipCard({
     required this.location,
+    required this.connectedLocation,
     super.key,
   });
 
   final VPNLocation location;
+  final VPNLocation? connectedLocation;
 
   @override
   Widget build(BuildContext context) {
     final locationName = location.getName(context);
-
+    if (location.id == connectedLocation?.id) {
+      return const SizedBox.shrink();
+    }
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.end,
