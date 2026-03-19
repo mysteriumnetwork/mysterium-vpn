@@ -16,14 +16,18 @@ String? useEffectivePriorityCountryCode(WidgetRef ref) {
     () => vpnStore.isConnected ? vpnStore.location : null,
   );
 
-  final priorityCountryCode = selectedLocation?.countryCode ??
-      connectingLocation?.countryCode ??
-      connectedLocation?.countryCode;
+  // Active priority: from explicit selection or active connection attempt.
+  // Connected location is excluded so that deselecting doesn't immediately
+  // switch priority to the connected country (which would collapse the
+  // previously expanded item).
+  final activePriority = selectedLocation?.countryCode ?? connectingLocation?.countryCode;
 
-  final lastPriorityRef = useRef<String?>(priorityCountryCode);
-  if (priorityCountryCode != null) {
-    lastPriorityRef.value = priorityCountryCode;
+  // Sticky: remember last active priority so expansions survive deselect.
+  final lastPriorityRef = useRef<String?>(null);
+  if (activePriority != null) {
+    lastPriorityRef.value = activePriority;
   }
 
-  return priorityCountryCode ?? lastPriorityRef.value;
+  // Fall back to sticky value, then to connected location.
+  return activePriority ?? lastPriorityRef.value ?? connectedLocation?.countryCode;
 }

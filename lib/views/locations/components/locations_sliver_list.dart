@@ -3,10 +3,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/screen_type.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/location_list_state_hook.dart';
 import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/packages/sliding_up_panel/panel.dart' show PanelController;
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/components/location_item.dart';
 
@@ -75,16 +77,40 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
 
     final homeState = ref.read(homeStateProvider);
 
+    // Track selected location so we can re-scroll on re-selection of the
+    // same country (the priority stays sticky, so we need this as a dep).
+    final selectedLocationStore = ref.watch(selectedLocationStorePOD);
+    final selectedLocation = useComputedValue(() => selectedLocationStore.value);
+    final selectedCC = selectedLocation?.countryCode;
+
+    // Manual expansion overrides lifted to parent so they survive SliverList
+    // recycling (per-item useState is lost when items scroll off-screen).
+    final expansionOverrides = useRef<Map<String, bool>>({});
+    final overridesVersion = useState(0);
+
+    // Clear overrides when priority changes (new selection context).
+    final prevPriority = useRef(effectivePriorityCountryCode);
+    if (prevPriority.value != effectivePriorityCountryCode) {
+      expansionOverrides.value = {};
+      prevPriority.value = effectivePriorityCountryCode;
+    }
+
     useEffect(
       () {
         if (priorityIndex == -1) {
           return null;
         }
-        if (homeState.lastScrolledCountryCode == effectivePriorityCountryCode) {
-          return null;
-        }
         if (!isDesktop && !isPanelFullyOpen) {
           return null;
+        }
+
+        // When there's an active selection, always allow scroll (handles
+        // re-selection of the same country). For connected/connecting-only
+        // changes, use the guard to prevent redundant scrolls.
+        if (selectedCC == null) {
+          if (homeState.lastScrolledCountryCode == effectivePriorityCountryCode) {
+            return null;
+          }
         }
 
         homeState.lastScrolledCountryCode = effectivePriorityCountryCode;
@@ -101,18 +127,33 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
 
         return null;
       },
-      [effectivePriorityCountryCode, isPanelFullyOpen],
+      [effectivePriorityCountryCode, isPanelFullyOpen, selectedCC],
     );
+
+    // Reference overridesVersion so useState triggers rebuilds on toggle.
+    // ignore: unused_local_variable
+    final _ = overridesVersion.value;
 
     return SliverList.separated(
       itemCount: items.length,
       separatorBuilder: (_, __) => const SizedBox(height: 12),
-      itemBuilder: (_, index) => ExpandableLocationItem(
-        key: _LocationKey(items[index].countryCode),
-        location: items[index],
-        onTap: onItemPressed,
-        mapSelectedCountryCode: effectivePriorityCountryCode,
-      ),
+      itemBuilder: (_, index) {
+        final cc = items[index].countryCode;
+        return ExpandableLocationItem(
+          key: _LocationKey(cc),
+          location: items[index],
+          onTap: onItemPressed,
+          mapSelectedCountryCode: effectivePriorityCountryCode,
+          expansionOverride: expansionOverrides.value[cc],
+          onExpansionChanged: (expanded) {
+            expansionOverrides.value = {
+              ...expansionOverrides.value,
+              cc: expanded,
+            };
+            overridesVersion.value++;
+          },
+        );
+      },
     );
   }
 }

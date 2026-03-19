@@ -66,12 +66,20 @@ class ExpandableLocationItem extends HookConsumerWidget {
     required this.location,
     required this.onTap,
     this.mapSelectedCountryCode,
+    this.expansionOverride,
+    this.onExpansionChanged,
     super.key,
   });
 
   final VPNLocation location;
   final void Function(VPNLocation) onTap;
   final String? mapSelectedCountryCode;
+
+  /// Manual expansion override managed by the parent list (survives recycling).
+  final bool? expansionOverride;
+
+  /// Called when the user manually toggles expansion.
+  final ValueChanged<bool>? onExpansionChanged;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -84,14 +92,6 @@ class ExpandableLocationItem extends HookConsumerWidget {
     final children = location.children ?? const <VPNLocation>[];
     final showCitiesAndStates = remoteConfig.showCitiesAndStates && children.isNotEmpty;
     final locationHasStates = remoteConfig.countriesWithStates.contains(location.countryCode);
-
-    // Per-item manual expansion override. Keyed to the priority code that was
-    // active when the user toggled, so it auto-invalidates when selection changes.
-    final override = useState<bool?>(null);
-    final overrideForCode = useRef<String?>(null);
-
-    final effectiveOverride =
-        overrideForCode.value == mapSelectedCountryCode ? override.value : null;
 
     final isExpanded = useMemoized(
       () {
@@ -106,9 +106,9 @@ class ExpandableLocationItem extends HookConsumerWidget {
           return true;
         }
 
-        // Rule 2: explicit user toggle (valid only for current priority)
-        if (effectiveOverride != null) {
-          return effectiveOverride;
+        // Rule 2: explicit user toggle (managed by parent, survives recycling)
+        if (expansionOverride != null) {
+          return expansionOverride!;
         }
 
         // Rule 3: auto-expand the selected/connected country, collapse the rest
@@ -121,15 +121,14 @@ class ExpandableLocationItem extends HookConsumerWidget {
       [
         query,
         mapSelectedCountryCode,
-        effectiveOverride,
+        expansionOverride,
         showCitiesAndStates,
         children,
       ],
     );
 
     void handleToggleExpanded() {
-      override.value = !isExpanded;
-      overrideForCode.value = mapSelectedCountryCode;
+      onExpansionChanged?.call(!isExpanded);
     }
 
     final onTapComputed = useComputedValue(() => vpnStore.isLoading ? null : onTap, [onTap]);
