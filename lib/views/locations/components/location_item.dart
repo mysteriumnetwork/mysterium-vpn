@@ -17,8 +17,47 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
+/// Simple, non-expandable location item. No expansion hooks or state tracking.
+/// Used for top locations where cities/states are never shown.
 class LocationItem extends HookConsumerWidget {
   const LocationItem({
+    required this.location,
+    required this.onTap,
+    super.key,
+  });
+
+  final VPNLocation location;
+  final void Function(VPNLocation) onTap;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final vpnStore = ref.watch(vpnStorePOD);
+
+    final onTapComputed = useComputedValue(() => vpnStore.isLoading ? null : onTap, [onTap]);
+
+    return Container(
+      constraints: const BoxConstraints(minHeight: 64),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: _LocationTile(
+        location: location,
+        onTap: null,
+        onToggleConnectionTap: onTapComputed == null ? null : () => onTapComputed(location),
+        label: LocaleKeys.locationItemNodeCount.plural(location.nodeCount ?? 0),
+        flag: location.countryCode,
+        query: '',
+      ),
+    );
+  }
+}
+
+/// Expandable location item with full expansion/collapse logic,
+/// search-driven expansion, and sync with map selection & connection state.
+class ExpandableLocationItem extends HookConsumerWidget {
+  const ExpandableLocationItem({
     required this.location,
     required this.onTap,
     required this.userExpanded,
@@ -149,7 +188,7 @@ class LocationItem extends HookConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _LocationItem(
+          _LocationTile(
             location: location,
             onTap: showCitiesAndStates ? handleToggleExpanded : null,
             onToggleConnectionTap: onTapComputed == null ? null : () => onTapComputed(location),
@@ -192,7 +231,7 @@ class _ChildLocationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nodeCount = value.nodeCount ?? 0;
-    return _LocationItem(
+    return _LocationTile(
       location: value,
       onTap: null,
       onToggleConnectionTap: onTap,
@@ -202,8 +241,8 @@ class _ChildLocationItem extends StatelessWidget {
   }
 }
 
-class _LocationItem extends HookWidget {
-  const _LocationItem({
+class _LocationTile extends HookWidget {
+  const _LocationTile({
     required this.location,
     required this.onTap,
     required this.label,
@@ -227,7 +266,8 @@ class _LocationItem extends HookWidget {
     final title = location.getName(context);
     final isConnected = useIsLocationConnected(location);
 
-    final queryMatchIndex = title.trim().toLowerCase().indexOf(query.trim().toLowerCase());
+    final queryMatchIndex =
+        query.isEmpty ? -1 : title.trim().toLowerCase().indexOf(query.trim().toLowerCase());
 
     return RawMaterialButton(
       fillColor: theme.colorScheme.primaryContainer,

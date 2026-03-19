@@ -3,17 +3,16 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/screen_type.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/hooks/location_list_state_hook.dart';
 import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/packages/sliding_up_panel/panel.dart' show PanelController;
-import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/components/location_item.dart';
 
-/// Lightweight location list without scroll-to-selected logic.
-/// Used for top locations where no auto-scrolling is needed.
-class LocationsSliverList extends HookConsumerWidget {
+/// Lightweight location list without scroll-to-selected or expansion logic.
+/// Used for top locations which are never expandable.
+class LocationsSliverList extends StatelessWidget {
   const LocationsSliverList({
     required this.items,
     required this.onItemPressed,
@@ -24,48 +23,14 @@ class LocationsSliverList extends HookConsumerWidget {
   final void Function(VPNLocation item) onItemPressed;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final selectedLocationStore = ref.watch(selectedLocationStorePOD);
-    final vpnStore = ref.watch(vpnStorePOD);
-
-    final userExpanded = useMemoized(() => ValueNotifier<Set<String>>({}));
-    final userCollapsed = useMemoized(() => ValueNotifier<Set<String>>({}));
-    useEffect(
-      () => () {
-        userExpanded.dispose();
-        userCollapsed.dispose();
-      },
-      const [],
-    );
-
-    final selectedLocation = useComputedValue(() => selectedLocationStore.value);
-    final connectingLocation = useComputedValue(() => vpnStore.connectingLocation);
-    final connectedLocation = useComputedValue(
-      () => vpnStore.isConnected ? vpnStore.location : null,
-    );
-
-    final priorityCountryCode = selectedLocation?.countryCode ??
-        connectingLocation?.countryCode ??
-        connectedLocation?.countryCode;
-
-    final lastPriorityRef = useRef<String?>(priorityCountryCode);
-    if (priorityCountryCode != null) {
-      lastPriorityRef.value = priorityCountryCode;
-    }
-    final effectivePriorityCountryCode = priorityCountryCode ?? lastPriorityRef.value;
-
-    return SliverList.separated(
-      itemCount: items.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
-      itemBuilder: (_, index) => LocationItem(
-        location: items[index],
-        onTap: onItemPressed,
-        userExpanded: userExpanded,
-        userCollapsed: userCollapsed,
-        mapSelectedCountryCode: effectivePriorityCountryCode,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => SliverList.separated(
+        itemCount: items.length,
+        separatorBuilder: (_, __) => const SizedBox(height: 12),
+        itemBuilder: (_, index) => LocationItem(
+          location: items[index],
+          onTap: onItemPressed,
+        ),
+      );
 }
 
 /// Full-featured location list with scroll-to-selected support.
@@ -88,35 +53,10 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedLocationStore = ref.watch(selectedLocationStorePOD);
-    final vpnStore = ref.watch(vpnStorePOD);
+    final state = useLocationListState(ref);
     final screenType = useScreenType();
 
-    final userExpanded = useMemoized(() => ValueNotifier<Set<String>>({}));
-    final userCollapsed = useMemoized(() => ValueNotifier<Set<String>>({}));
-    useEffect(
-      () => () {
-        userExpanded.dispose();
-        userCollapsed.dispose();
-      },
-      const [],
-    );
-
-    final selectedLocation = useComputedValue(() => selectedLocationStore.value);
-    final connectingLocation = useComputedValue(() => vpnStore.connectingLocation);
-    final connectedLocation = useComputedValue(
-      () => vpnStore.isConnected ? vpnStore.location : null,
-    );
-
-    final priorityCountryCode = selectedLocation?.countryCode ??
-        connectingLocation?.countryCode ??
-        connectedLocation?.countryCode;
-
-    final lastPriorityRef = useRef<String?>(priorityCountryCode);
-    if (priorityCountryCode != null) {
-      lastPriorityRef.value = priorityCountryCode;
-    }
-    final effectivePriorityCountryCode = priorityCountryCode ?? lastPriorityRef.value;
+    final effectivePriorityCountryCode = state.effectivePriorityCountryCode;
 
     final priorityIndex = effectivePriorityCountryCode == null
         ? -1
@@ -169,12 +109,12 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
     return SliverList.separated(
       itemCount: items.length,
       separatorBuilder: (_, __) => const SizedBox(height: 12),
-      itemBuilder: (_, index) => LocationItem(
+      itemBuilder: (_, index) => ExpandableLocationItem(
         key: _LocationKey(items[index].countryCode),
         location: items[index],
         onTap: onItemPressed,
-        userExpanded: userExpanded,
-        userCollapsed: userCollapsed,
+        userExpanded: state.userExpanded,
+        userCollapsed: state.userCollapsed,
         mapSelectedCountryCode: effectivePriorityCountryCode,
       ),
     );
