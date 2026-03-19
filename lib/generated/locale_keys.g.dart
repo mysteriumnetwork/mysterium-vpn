@@ -489,4 +489,5 @@ abstract class LocaleKeys {
   static const ipPoolLabel = 'ipPoolLabel';
   static const connectToTooltip = 'connectToTooltip';
   static const locationItemStatesCount = 'locationItemStatesCount';
+  static const switchToLocationBtn = 'switchToLocationBtn';
 }

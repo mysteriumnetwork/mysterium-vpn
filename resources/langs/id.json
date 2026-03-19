@@ -497,5 +497,6 @@
   "locationItemStatesCount": {
     "one": "{statesNum} Negara Bagian",
     "other": "{statesNum} Negara Bagian"
-  }
+  },
+  "switchToLocationBtn": "Beralih ke {switchLocation}"
 }

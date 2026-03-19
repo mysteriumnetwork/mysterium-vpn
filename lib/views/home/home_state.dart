@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/packages/sliding_up_panel/panel.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class _HomeState extends ChangeNotifier {
   _HomeState(this._prefs, this._analytics) {
@@ -191,6 +191,10 @@ class _HomeState extends ChangeNotifier {
       }
     }
   }
+
+  /// Tracks the country code that was already scrolled to, so the
+  /// scroll-to-selected logic fires only once per selection.
+  String? lastScrolledCountryCode;
 
   void onPanelSlide([double? value]) {
     if (!panelController.isAttached) {
