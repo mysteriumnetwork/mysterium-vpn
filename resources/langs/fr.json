@@ -476,7 +476,7 @@
   "pushNotificationsSettingDesc": "Mises à jour produits, conseils et offres spéciales",
   "openSystemSettingsBtn": "Ouvrir les paramètres système",
   "emailNotificationsSetting": "Notifications par e-mail",
-  "subscriptionPlanWireGuardDesc": "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable qui fonctionne là où d’autres protocoles échouent (non disponible sur Android).",
+  "subscriptionPlanWireGuardDesc": "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable fonctionnant là où d’autres protocoles échouent (non disponible sur Android).",
   "subscriptionPlanDoubleVPNDesc": "Couche de sécurité supplémentaire. Votre trafic internet est acheminé via deux serveurs VPN différents, ce qui chiffre vos données deux fois et masque votre adresse IP derrière un second serveur.",
   "subscriptionPlanResidentialIPsDesc": "Vous apparaîtrez comme un utilisateur domestique normal, ce qui vous permettra d'accéder aux services de streaming et d'éviter la détection par VPN.",
   "subscriptionPlanCityLevelDesc": "Offre un contrôle de localisation plus précis que la plupart des VPN, qui vous limitent généralement à la sélection de pays ou d'États entiers.",
@@ -497,5 +497,6 @@
   "locationItemStatesCount": {
     "one": "{statesNum} État",
     "other": "{statesNum} États"
-  }
+  },
+  "switchToLocationBtn": "Passer à {switchLocation}"
 }

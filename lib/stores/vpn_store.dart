@@ -412,6 +412,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     }
   }
 
+  @action
   Future<void> _prepareConnection(
     VPNLocation? location,
     UserIntent? intent,

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
@@ -260,15 +261,22 @@ class _Locations extends HookConsumerWidget {
 
     useAutoSelectIPType();
 
+    // Used by LocationsSliverList to offset scroll-to-selected below the
+    // pinned header so the selected item isn't hidden behind it.
+    final stickyKey = useMemoized(GlobalKey.new);
+
     return MultiSliver(
       children: [
         SliverPinnedHeader(
-          child: Observer(
-            builder: (context) => LocationTypeSwitcher(
-              key: typeSwitcherKey,
-              value: locationType,
-              options: locationsStore.locationTypes,
-              onChanged: onLocationTypeChanged,
+          child: SizedBox(
+            key: stickyKey,
+            child: Observer(
+              builder: (context) => LocationTypeSwitcher(
+                key: typeSwitcherKey,
+                value: locationType,
+                options: locationsStore.locationTypes,
+                onChanged: onLocationTypeChanged,
+              ),
             ),
           ),
         ),
@@ -291,7 +299,6 @@ class _Locations extends HookConsumerWidget {
                     },
                     if (topLocations.isNotEmpty)
                       LocationsSliverList(
-                        ipType: locationType,
                         items: topLocations,
                         onItemPressed: onLocationTapped,
                       ),
@@ -300,10 +307,10 @@ class _Locations extends HookConsumerWidget {
                         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
                         child: Divider(thickness: 0.5, color: Palette.lightBlue),
                       ),
-                    LocationsSliverList(
-                      ipType: locationType,
+                    ScrollableLocationsSliverList(
                       items: locations,
                       onItemPressed: onLocationTapped,
+                      stickyHeaderKey: stickyKey,
                     ),
                     if ((isEmpty ?? false) && searchKeyword.isNotEmpty)
                       _Empty(
