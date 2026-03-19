@@ -497,5 +497,6 @@
   "locationItemStatesCount": {
     "one": "{statesNum} Eyalet",
     "other": "{statesNum} Eyalet"
-  }
+  },
+  "switchToLocationBtn": "{switchLocation} konumuna geçin"
 }

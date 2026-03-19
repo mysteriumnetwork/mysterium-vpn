@@ -10,12 +10,12 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/packages/sliding_up_panel/panel.dart' hide PanelState;
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_app_bar.dart';
 import 'package:mysterium_vpn/views/home/home_connection_view.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/locations_slider_mobile_view.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart' hide PanelState;
 
 class HomeMobileView extends HookConsumerWidget {
   const HomeMobileView({super.key});
@@ -58,7 +58,7 @@ class HomeMobileView extends HookConsumerWidget {
       builder: (context, layoutConstraints) => Observer(
         builder: (context) {
           final bottomOffset = MediaQuery.paddingOf(context).bottom + 16;
-          final minHeight = (vpnStore.isConnected ? 270.0 : 200.0) + bottomOffset;
+          final minHeight = (vpnStore.isConnected ? 300.0 : 200.0) + bottomOffset;
           final constraints = layoutConstraints.copyWith(
             maxHeight: max(
               (layoutConstraints.maxHeight * PanelState.open.extent) - topSectionHeight,

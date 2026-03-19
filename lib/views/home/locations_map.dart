@@ -25,6 +25,7 @@ class LocationsMap extends HookConsumerWidget {
     this.connectedLocation,
     this.position,
     this.onLocationPressed,
+    this.onLocationDoubleTapped,
     this.onTapOutside,
   });
 
@@ -33,6 +34,7 @@ class LocationsMap extends HookConsumerWidget {
   final VPNLocation? connectedLocation;
   final LatLng? position;
   final Function(VPNLocation location)? onLocationPressed;
+  final Function(VPNLocation location)? onLocationDoubleTapped;
   final VoidCallback? onTapOutside;
 
   @override
@@ -49,9 +51,9 @@ class LocationsMap extends HookConsumerWidget {
       var offset = Offset.zero;
       if (screenType == ScreenType.mobile) {
         offset = switch (ref.read(homeStateProvider).panelState) {
-          PanelState.closed => Offset.zero,
-          PanelState.snap => const Offset(0, -100),
-          PanelState.open => const Offset(0, -120),
+          PanelState.closed => const Offset(0, -100),
+          PanelState.snap => const Offset(0, -180),
+          PanelState.open => const Offset(0, -180),
         };
       }
       controller.move(point, zoom, offset: offset);
@@ -61,6 +63,10 @@ class LocationsMap extends HookConsumerWidget {
       handleMove(point);
       onLocationPressed?.call(location);
       analyticsStore.logMapLocationClick(location.id, point);
+    }
+
+    void handleDoubleTapped(VPNLocation location, LatLng point) {
+      onLocationDoubleTapped?.call(location);
     }
 
     final locations = useMemoized(
@@ -113,6 +119,7 @@ class LocationsMap extends HookConsumerWidget {
           selectedLocation: selectedLocation,
           connectedLocation: connectedLocation,
           onLocationPressed: handlePressed,
+          onLocationDoubleTapped: onLocationDoubleTapped != null ? handleDoubleTapped : null,
         ),
       ],
     );

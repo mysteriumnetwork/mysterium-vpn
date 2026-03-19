@@ -497,5 +497,6 @@
   "locationItemStatesCount": {
     "one": "{statesNum} State",
     "other": "{statesNum} States"
-  }
+  },
+  "switchToLocationBtn": "Switch to {switchLocation}"
 }

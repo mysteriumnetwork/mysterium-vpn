@@ -29,9 +29,10 @@ class RefreshConnection extends HookConsumerWidget {
             minimumSize: const Size(0, 36),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
-          onPressed: () {
+          onPressed: () async {
             analyticsStore.logEvent(AnalyticsEvent.refreshIp);
-            vpnStore.manageConnection(refreshIP: true);
+            ref.read(selectedLocationStorePOD).value = null;
+            await vpnStore.manageConnection(refreshIP: true);
           },
           label: EasyText(LocaleKeys.refreshIP.tr(), fontSize: 12, color: Palette.white),
           icon: SvgIcon(asset: Asset.icons.refresh),

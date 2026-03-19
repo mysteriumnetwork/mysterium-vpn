@@ -465,7 +465,7 @@
   "plan_yearly_basic": "السنة السنوية الأساسية",
   "plan_monthly_basic": "اشتراك شهري أساسي",
   "plan_monthly_pro": "برو مونثلي",
-  "plan_yearly_pro": "برو أنوال",
+  "plan_yearly_pro": "برو سنوي",
   "subscriptionUpgrade": "يرقي",
   "plan_2_years_basic": "سنتان أساسيتان",
   "plan_2_years_pro": "محترف لمدة عامين",
@@ -497,5 +497,6 @@
   "locationItemStatesCount": {
     "one": "{statesNum} الولاية",
     "other": "{statesNum} الولايات"
-  }
+  },
+  "switchToLocationBtn": "انتقل إلى {switchLocation}"
 }

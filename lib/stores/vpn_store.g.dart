@@ -351,6 +351,18 @@ mixin _$VpnStore on _VpnStore, Store {
     );
   }
 
+  late final _$_prepareConnectionAsyncAction = AsyncAction(
+    '_VpnStore._prepareConnection',
+    context: context,
+  );
+
+  @override
+  Future<void> _prepareConnection(VPNLocation? location, UserIntent? intent, bool refreshIP) {
+    return _$_prepareConnectionAsyncAction.run(
+      () => super._prepareConnection(location, intent, refreshIP),
+    );
+  }
+
   late final _$_completeConnectionAsyncAction = AsyncAction(
     '_VpnStore._completeConnection',
     context: context,
