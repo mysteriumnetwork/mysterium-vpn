@@ -498,5 +498,5 @@
     "one": "{statesNum} Estado",
     "other": "{statesNum} Estados"
   },
-  "switchToLocationBtn": "Cambiar a {switchLocation}"
+  "switchToLocationBtn": "Cambiar a {ubicación del switch}"
 }

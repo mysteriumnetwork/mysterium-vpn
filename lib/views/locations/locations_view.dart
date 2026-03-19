@@ -288,10 +288,7 @@ class _Locations extends HookConsumerWidget {
                       _ => LocationsDisclaimer.residential(),
                     },
                     if (topLocations.isNotEmpty)
-                      LocationsSliverList(
-                        items: topLocations,
-                        onItemPressed: onLocationTapped,
-                      ),
+                      LocationsSliverList(items: topLocations, onItemPressed: onLocationTapped),
                     if (topLocations.isNotEmpty && locations.isNotEmpty)
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
