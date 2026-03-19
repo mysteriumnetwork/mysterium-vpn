@@ -54,14 +54,17 @@ class LocationItem extends HookConsumerWidget {
   }
 }
 
-/// Expandable location item with full expansion/collapse logic,
-/// search-driven expansion, and sync with map selection & connection state.
+/// Expandable location item with per-item expansion state.
+///
+/// Expansion priority:
+///   1. Search match — always expands, overrides everything
+///   2. Manual user toggle — only valid while [mapSelectedCountryCode] stays
+///      the same; auto-invalidates when selection changes
+///   3. Auto — expand the priority country, collapse the rest
 class ExpandableLocationItem extends HookConsumerWidget {
   const ExpandableLocationItem({
     required this.location,
     required this.onTap,
-    required this.userExpanded,
-    required this.userCollapsed,
     this.mapSelectedCountryCode,
     super.key,
   });
@@ -69,8 +72,6 @@ class ExpandableLocationItem extends HookConsumerWidget {
   final VPNLocation location;
   final void Function(VPNLocation) onTap;
   final String? mapSelectedCountryCode;
-  final ValueNotifier<Set<String>> userExpanded;
-  final ValueNotifier<Set<String>> userCollapsed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -84,47 +85,14 @@ class ExpandableLocationItem extends HookConsumerWidget {
     final showCitiesAndStates = remoteConfig.showCitiesAndStates && children.isNotEmpty;
     final locationHasStates = remoteConfig.countriesWithStates.contains(location.countryCode);
 
-    final connectedLocation = useComputedValue(
-      () => vpnStore.isConnected ? vpnStore.location : null,
-    );
+    // Per-item manual expansion override. Keyed to the priority code that was
+    // active when the user toggled, so it auto-invalidates when selection changes.
+    final override = useState<bool?>(null);
+    final overrideForCode = useRef<String?>(null);
 
-    // Subscribe to the shared expansion sets so this widget rebuilds when they change.
-    useListenable(userExpanded);
-    useListenable(userCollapsed);
+    final effectiveOverride =
+        overrideForCode.value == mapSelectedCountryCode ? override.value : null;
 
-    // When the connected country or map selection changes, reset the manual
-    // expand/collapse override so Rule 3 (auto-expand priority country) works.
-    // Mutations are deferred to addPostFrameCallback to avoid "setState during
-    // build" errors from sibling LocationItem rebuilds via useListenable.
-    void syncExpansionState(String? changedCode) {
-      if (changedCode == null) {
-        return;
-      }
-      if (changedCode == location.countryCode) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          userCollapsed.value = {...userCollapsed.value}..remove(location.id);
-        });
-      } else {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          userExpanded.value = {...userExpanded.value}..remove(location.id);
-        });
-      }
-    }
-
-    useValueChanged<String?, void>(connectedLocation?.countryCode, (_, __) {
-      if (showCitiesAndStates) {
-        syncExpansionState(connectedLocation?.countryCode);
-      }
-    });
-
-    useValueChanged<String?, void>(mapSelectedCountryCode, (_, __) {
-      syncExpansionState(mapSelectedCountryCode);
-    });
-
-    // Expansion priority (evaluated in order, first match wins):
-    //   1. Search match          — always expands, overrides everything
-    //   2. Manual user toggle    — userExpanded / userCollapsed wins over auto rules
-    //   3. Map-selected/connected — expand the priority country, collapse all others
     final isExpanded = useMemoized(
       () {
         if (!showCitiesAndStates) {
@@ -138,12 +106,9 @@ class ExpandableLocationItem extends HookConsumerWidget {
           return true;
         }
 
-        // Rule 2: explicit user toggle
-        if (userCollapsed.value.contains(location.id)) {
-          return false;
-        }
-        if (userExpanded.value.contains(location.id)) {
-          return true;
+        // Rule 2: explicit user toggle (valid only for current priority)
+        if (effectiveOverride != null) {
+          return effectiveOverride;
         }
 
         // Rule 3: auto-expand the selected/connected country, collapse the rest
@@ -156,24 +121,15 @@ class ExpandableLocationItem extends HookConsumerWidget {
       [
         query.trim(),
         mapSelectedCountryCode,
-        userExpanded.value,
-        userCollapsed.value,
+        effectiveOverride,
         showCitiesAndStates,
         children,
       ],
     );
 
-    // Toggle manual expansion
     void handleToggleExpanded() {
-      if (isExpanded) {
-        // Collapsing — add to collapsed set, remove from expanded set
-        userCollapsed.value = {...userCollapsed.value, location.id};
-        userExpanded.value = {...userExpanded.value}..remove(location.id);
-      } else {
-        // Expanding — add to expanded set, remove from collapsed set
-        userCollapsed.value = {...userCollapsed.value}..remove(location.id);
-        userExpanded.value = {...userExpanded.value, location.id};
-      }
+      override.value = !isExpanded;
+      overrideForCode.value = mapSelectedCountryCode;
     }
 
     final onTapComputed = useComputedValue(() => vpnStore.isLoading ? null : onTap, [onTap]);

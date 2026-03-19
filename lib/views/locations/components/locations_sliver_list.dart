@@ -53,10 +53,8 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = useLocationListState(ref);
+    final effectivePriorityCountryCode = useEffectivePriorityCountryCode(ref);
     final screenType = useScreenType();
-
-    final effectivePriorityCountryCode = state.effectivePriorityCountryCode;
 
     final priorityIndex = effectivePriorityCountryCode == null
         ? -1
@@ -113,8 +111,6 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
         key: _LocationKey(items[index].countryCode),
         location: items[index],
         onTap: onItemPressed,
-        userExpanded: state.userExpanded,
-        userCollapsed: state.userCollapsed,
         mapSelectedCountryCode: effectivePriorityCountryCode,
       ),
     );
@@ -152,9 +148,9 @@ double _targetOffset(
 /// (after enabling panel scrolling so the panel's reset listener doesn't
 /// fight the programmatic scroll).
 ///
-/// Uses `WidgetsBinding.instance.endOfFrame` to wait for layout passes so
-/// that item heights reflect expansion state changes before computing scroll
-/// offsets.
+/// Waits one frame for layout to settle before computing scroll offsets.
+/// Expansion state is computed synchronously during build (per-item useState),
+/// so no extra frames are needed for deferred mutations.
 Future<void> _scrollToCountry({
   required BuildContext context,
   required String countryCode,
@@ -164,14 +160,7 @@ Future<void> _scrollToCountry({
   required int itemCount,
   required int priorityIndex,
 }) async {
-  // Frame 1: expansion mutations from syncExpansionState fire, triggering a
-  // rebuild for the next frame.
-  await WidgetsBinding.instance.endOfFrame;
-  if (!context.mounted) {
-    return;
-  }
-
-  // Frame 2: the rebuild has laid out with the correct expansion state.
+  // Wait for layout to settle with the correct expansion state.
   await WidgetsBinding.instance.endOfFrame;
   if (!context.mounted) {
     return;
