@@ -50,7 +50,10 @@ class ConnectionTile extends HookConsumerWidget {
             : connectionDisplayStore.displayLocation;
         final parent = connectionDisplayStore.parentLocation;
         final targetLocation = connectionDisplayStore.targetLocation;
-        final isLocationAvailable = connectionDisplayStore.isLocationAvailable;
+        // When showing the connected location, it's always available — the
+        // availability check only applies to the selected/display location.
+        final isLocationAvailable =
+            showConnectedOnly || connectionDisplayStore.isLocationAvailable;
         final ipInfo = connectionDisplayStore.connectionIP;
         final isLoading = connectionDisplayStore.isLoading;
         final intent = connectionDisplayStore.connectionIntent;

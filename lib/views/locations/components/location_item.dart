@@ -119,7 +119,7 @@ class ExpandableLocationItem extends HookConsumerWidget {
         return false;
       },
       [
-        query.trim(),
+        query,
         mapSelectedCountryCode,
         effectiveOverride,
         showCitiesAndStates,
