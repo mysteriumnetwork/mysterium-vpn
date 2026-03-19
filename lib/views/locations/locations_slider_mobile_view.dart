@@ -82,8 +82,8 @@ class LocationsSliderMobileView extends HookConsumerWidget {
                     final selectedLocation = selectedLocationStore.value;
                     final unavailableLocations =
                         ref.read(unavailableLocationsStorePOD).unavailableLocations;
-                    final isSelectedUnavailable = selectedLocation != null &&
-                        unavailableLocations.contains(selectedLocation);
+                    final isSelectedUnavailable =
+                        selectedLocation != null && unavailableLocations.contains(selectedLocation);
                     return Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -174,8 +174,7 @@ class _SelectedLocationBanner extends StatelessWidget {
               Expanded(
                 child: Text(
                   unavailable
-                      ? LocaleKeys.locationUnavailableTitle
-                          .tr(args: [location.getName(context)])
+                      ? LocaleKeys.locationUnavailableTitle.tr(args: [location.getName(context)])
                       : location.getName(context),
                   style: const TextStyle(
                     fontSize: 16,
