@@ -1,4 +1,1 @@
-enum TooltipType {
-  killSwitch,
-  userIntent;
-}
+enum TooltipType { killSwitch, userIntent }

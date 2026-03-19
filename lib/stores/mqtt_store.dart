@@ -16,11 +16,7 @@ part 'mqtt_store.g.dart';
 class MqttStore = _MqttStore with _$MqttStore;
 
 abstract class _MqttStore with Store {
-  _MqttStore({
-    required MQTTService mqtt,
-    required Talker logger,
-  })  : _mqtt = mqtt,
-        _logger = logger;
+  _MqttStore({required MQTTService mqtt, required Talker logger}) : _mqtt = mqtt, _logger = logger;
 
   final MQTTService _mqtt;
   final Talker _logger;

@@ -19,14 +19,11 @@ class HomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authSessionStore = ref.watch(authSessionStorePOD);
     final isLoading = useComputedValue(() => authSessionStore.status == AuthStatus.unknown);
-    useEffect(
-      () {
-        InAppReviewObserver().monitor();
+    useEffect(() {
+      InAppReviewObserver().monitor();
 
-        return null;
-      },
-      [],
-    );
+      return null;
+    }, []);
 
     useHomeAutorun();
 
@@ -40,9 +37,7 @@ class HomePage extends HookConsumerWidget {
             desktop: (BuildContext context) => const HomeDesktopView(),
           ),
           if (isLoading)
-            Positioned.fill(
-              child: LoadingBarrier(color: Theme.of(context).primaryColor),
-            ),
+            Positioned.fill(child: LoadingBarrier(color: Theme.of(context).primaryColor)),
         ],
       ),
     );

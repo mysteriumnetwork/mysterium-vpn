@@ -18,14 +18,11 @@ class LocationsSliverList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SliverList.separated(
-        itemCount: items.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 12),
-        itemBuilder: (_, index) {
-          final item = items[index];
-          return LocationItem(
-            location: item,
-            onTap: onItemPressed,
-          );
-        },
-      );
+    itemCount: items.length,
+    separatorBuilder: (_, _) => const SizedBox(height: 12),
+    itemBuilder: (_, index) {
+      final item = items[index];
+      return LocationItem(location: item, onTap: onItemPressed);
+    },
+  );
 }

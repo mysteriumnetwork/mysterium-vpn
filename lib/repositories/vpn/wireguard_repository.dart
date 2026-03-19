@@ -17,8 +17,8 @@ class WireguardRepository extends BaseVpnRepository {
     required WireguradKeyService wireguradKeyService,
     required super.apiService,
     required super.logger,
-  })  : _service = service,
-        _wireguradKeyService = wireguradKeyService;
+  }) : _service = service,
+       _wireguradKeyService = wireguradKeyService;
 
   final WireguardDart _service;
   final WireguradKeyService _wireguradKeyService;
@@ -70,20 +70,20 @@ class WireguardRepository extends BaseVpnRepository {
   }
 
   @override
-  Future<void> connect({
-    required String config,
-  }) async {
+  Future<void> connect({required String config}) async {
     try {
       final key = await _getWireguradKey();
       final replaced = config.replaceFirst('%private_key%', key.privateKey);
-      await _service.connect(cfg: replaced).timeout(
-        const Duration(seconds: vpnConnectionTimeoutSeconds),
-        onTimeout: () {
-          throw TimeoutException(
-            'Wireguard connection timed out after $vpnConnectionTimeoutSeconds seconds',
+      await _service
+          .connect(cfg: replaced)
+          .timeout(
+            const Duration(seconds: vpnConnectionTimeoutSeconds),
+            onTimeout: () {
+              throw TimeoutException(
+                'Wireguard connection timed out after $vpnConnectionTimeoutSeconds seconds',
+              );
+            },
           );
-        },
-      );
     } on TimeoutException catch (e, stackTrace) {
       logger.handle(e, stackTrace);
       rethrow;
@@ -108,9 +108,8 @@ class WireguardRepository extends BaseVpnRepository {
       _service.checkTunnelConfiguration(bundleId: Env.bundleId, tunnelName: Env.tunnelName);
 
   @override
-  Stream<VpnConnectionStatus> statusStream() => _service.statusStream().map(
-        (status) => VpnConnectionStatus.fromString(status.name),
-      );
+  Stream<VpnConnectionStatus> statusStream() =>
+      _service.statusStream().map((status) => VpnConnectionStatus.fromString(status.name));
 
   @override
   Future<VpnConnectionStatus> currentStatus() async {
@@ -121,10 +120,7 @@ class WireguardRepository extends BaseVpnRepository {
   @override
   Future<void> removeTunnelConfiguration() async {
     try {
-      await _service.removeTunnelConfiguration(
-        bundleId: Env.bundleId,
-        tunnelName: Env.tunnelName,
-      );
+      await _service.removeTunnelConfiguration(bundleId: Env.bundleId, tunnelName: Env.tunnelName);
       logger.info('Wireguard tunnel configuration removed');
     } catch (e) {
       logger.handle(e);

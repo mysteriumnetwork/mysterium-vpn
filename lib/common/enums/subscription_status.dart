@@ -11,10 +11,7 @@ enum SubscriptionStatus {
   notVerified(isError: false, isLoading: false),
   pendingTransaction(isError: false, isLoading: true);
 
-  const SubscriptionStatus({
-    required this.isLoading,
-    required this.isError,
-  });
+  const SubscriptionStatus({required this.isLoading, required this.isError});
 
   final bool isLoading;
   final bool isError;
@@ -22,10 +19,10 @@ enum SubscriptionStatus {
 
 extension PurchaseStatusExtensions on PurchaseStatus {
   SubscriptionStatus get subscriptionStatus => switch (this) {
-        PurchaseStatus.purchased => SubscriptionStatus.purchased,
-        PurchaseStatus.pending => SubscriptionStatus.pending,
-        PurchaseStatus.error => SubscriptionStatus.error,
-        PurchaseStatus.restored => SubscriptionStatus.restored,
-        PurchaseStatus.canceled => SubscriptionStatus.canceled
-      };
+    PurchaseStatus.purchased => SubscriptionStatus.purchased,
+    PurchaseStatus.pending => SubscriptionStatus.pending,
+    PurchaseStatus.error => SubscriptionStatus.error,
+    PurchaseStatus.restored => SubscriptionStatus.restored,
+    PurchaseStatus.canceled => SubscriptionStatus.canceled,
+  };
 }

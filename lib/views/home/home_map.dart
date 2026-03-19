@@ -35,16 +35,12 @@ class HomeMap extends HookConsumerWidget {
       selectedLocationStore.value = null;
     }
 
-    useReaction(
-      () => vpnStore.location,
-      (location) {
-        if (location == null) {
-          return;
-        }
-        handleClearSelectedLocation();
-      },
-      fireImmediately: true,
-    );
+    useReaction(() => vpnStore.location, (location) {
+      if (location == null) {
+        return;
+      }
+      handleClearSelectedLocation();
+    }, fireImmediately: true);
 
     return LocationsMap(
       locations: locations,

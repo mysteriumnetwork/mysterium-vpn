@@ -17,10 +17,10 @@ class RestAuthService extends AuthService {
     required NetworkService networkService,
     required AuthSessionStore authSessionStore,
     required Talker logger,
-  })  : _apiAuth = api.getAuthentication(),
-        _networkService = networkService,
-        _authSessionStore = authSessionStore,
-        _logger = logger {
+  }) : _apiAuth = api.getAuthentication(),
+       _networkService = networkService,
+       _authSessionStore = authSessionStore,
+       _logger = logger {
     _init();
   }
 
@@ -48,10 +48,7 @@ class RestAuthService extends AuthService {
     );
     final response = await _networkService.post(
       '/oauth/token',
-      data: {
-        ...request.toJson(),
-        'device': device.toJson(),
-      },
+      data: {...request.toJson(), 'device': device.toJson()},
       headers: {'content-type': 'application/x-www-form-urlencoded'},
     );
 
@@ -65,16 +62,11 @@ class RestAuthService extends AuthService {
   Future<AuthUser> currentUser() async {
     final response = await _apiAuth.checkAuth();
     final authCheck = response.data!;
-    return AuthUser(
-      userId: authCheck.userId,
-      username: authCheck.username,
-    );
+    return AuthUser(userId: authCheck.userId, username: authCheck.username);
   }
 
   @override
-  Future<TokenResponse> signInComplete({
-    required TokenRequest tokenRequest,
-  }) async {
+  Future<TokenResponse> signInComplete({required TokenRequest tokenRequest}) async {
     try {
       return await signIn(tokenRequest);
     } on ApiException {
@@ -87,10 +79,7 @@ class RestAuthService extends AuthService {
   }
 
   @override
-  Future<String?> signInWithEmail({
-    required String email,
-    required PkcePair pkcePair,
-  }) async {
+  Future<String?> signInWithEmail({required String email, required PkcePair pkcePair}) async {
     try {
       await removeLocalData();
 
@@ -160,10 +149,7 @@ class RestAuthService extends AuthService {
       }
 
       final credential = await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName,
-        ],
+        scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
         webAuthenticationOptions: WebAuthenticationOptions(
           clientId: Env.appleClientId,
           redirectUri: Uri.parse(Env.appleRedirectUri),

@@ -51,9 +51,7 @@ class SharedPreferenceService {
     final languageCode =
         getString(StorageKeys.languageCode.name) ?? PlatformDispatcher.instance.locale;
 
-    return kSupportedLocales.firstWhereOrNull(
-          (e) => e.languageCode == languageCode,
-        ) ??
+    return kSupportedLocales.firstWhereOrNull((e) => e.languageCode == languageCode) ??
         kFallbackLocale;
   }
 
@@ -103,10 +101,8 @@ class SharedPreferenceService {
     return IPType.fromName(ipType);
   }
 
-  Future<void> setPanelState(PanelState state) async => setString(
-        StorageKeys.panelState.name,
-        state.name,
-      );
+  Future<void> setPanelState(PanelState state) async =>
+      setString(StorageKeys.panelState.name, state.name);
 
   PanelState? getPanelState() {
     final panelState = getString(StorageKeys.panelState.name);
@@ -117,10 +113,8 @@ class SharedPreferenceService {
     return PanelState.fromName(panelState);
   }
 
-  Future<void> setPushNotificationsShown({required bool shown}) async => setBool(
-        StorageKeys.pushNotificationsPermissionPromptShown.name,
-        value: shown,
-      );
+  Future<void> setPushNotificationsShown({required bool shown}) async =>
+      setBool(StorageKeys.pushNotificationsPermissionPromptShown.name, value: shown);
 
   bool getPushNotificationsShown() =>
       getBool(StorageKeys.pushNotificationsPermissionPromptShown.name) ?? false;

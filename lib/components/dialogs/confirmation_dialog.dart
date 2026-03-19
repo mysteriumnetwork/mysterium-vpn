@@ -16,20 +16,19 @@ Future<void> shownConfirmationDialog(
   bool dismissible = true,
   String? confirmText,
   String? cancelText,
-}) =>
-    showDialog(
-      context: context,
-      barrierDismissible: dismissible,
-      builder: (context) => _ConfirmDialog(
-        title: title,
-        content: content,
-        onConfirm: onConfirm,
-        icon: icon,
-        confirmText: confirmText,
-        cancelText: cancelText,
-        onCancel: onCancel,
-      ),
-    );
+}) => showDialog(
+  context: context,
+  barrierDismissible: dismissible,
+  builder: (context) => _ConfirmDialog(
+    title: title,
+    content: content,
+    onConfirm: onConfirm,
+    icon: icon,
+    confirmText: confirmText,
+    cancelText: cancelText,
+    onCancel: onCancel,
+  ),
+);
 
 class _ConfirmDialog extends StatelessWidget {
   const _ConfirmDialog({
@@ -50,48 +49,37 @@ class _ConfirmDialog extends StatelessWidget {
   final String? cancelText;
   @override
   Widget build(BuildContext context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        surfaceTintColor: Palette.white,
-        titlePadding: EdgeInsets.only(top: icon != null ? 4 : 30, left: 16, right: 16, bottom: 8),
-        contentPadding: const EdgeInsets.only(top: 4, bottom: 16, left: 16, right: 16),
-        insetPadding: const EdgeInsets.symmetric(horizontal: 15),
-        iconPadding: const EdgeInsets.only(top: 16, bottom: 8),
-        backgroundColor: Palette.white,
-        actionsAlignment: MainAxisAlignment.spaceAround,
-        icon: icon,
-        title: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w800,
-            color: Palette.black,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        actions: [
-          TextButton(
-            style: ButtonStyle(
-              foregroundColor: WidgetStateProperty.all(Palette.lightBlack),
-            ),
-            child: Text(cancelText ?? LocaleKeys.no.tr()),
-            onPressed: () {
-              Navigator.pop(context);
-              onCancel?.call();
-            },
-          ),
-          TextButton(
-            child: Text(confirmText ?? LocaleKeys.yes.tr()),
-            onPressed: () {
-              Navigator.pop(context);
-              onConfirm();
-            },
-          ),
-        ],
-        content: SizedBox(
-          width: getMediaWidth(context) > 750 ? 500 : 300,
-          child: content,
-        ),
-      );
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+    surfaceTintColor: Palette.white,
+    titlePadding: EdgeInsets.only(top: icon != null ? 4 : 30, left: 16, right: 16, bottom: 8),
+    contentPadding: const EdgeInsets.only(top: 4, bottom: 16, left: 16, right: 16),
+    insetPadding: const EdgeInsets.symmetric(horizontal: 15),
+    iconPadding: const EdgeInsets.only(top: 16, bottom: 8),
+    backgroundColor: Palette.white,
+    actionsAlignment: MainAxisAlignment.spaceAround,
+    icon: icon,
+    title: Text(
+      title,
+      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: Palette.black),
+      textAlign: TextAlign.center,
+    ),
+    actions: [
+      TextButton(
+        style: ButtonStyle(foregroundColor: WidgetStateProperty.all(Palette.lightBlack)),
+        child: Text(cancelText ?? LocaleKeys.no.tr()),
+        onPressed: () {
+          Navigator.pop(context);
+          onCancel?.call();
+        },
+      ),
+      TextButton(
+        child: Text(confirmText ?? LocaleKeys.yes.tr()),
+        onPressed: () {
+          Navigator.pop(context);
+          onConfirm();
+        },
+      ),
+    ],
+    content: SizedBox(width: getMediaWidth(context) > 750 ? 500 : 300, child: content),
+  );
 }

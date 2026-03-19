@@ -29,31 +29,24 @@ class NoInternetConnectionDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Stack(
-        clipBehavior: Clip.none,
-        alignment: Alignment.center,
+    clipBehavior: Clip.none,
+    alignment: Alignment.center,
+    children: [
+      Positioned(top: -15, child: SvgIcon(asset: Asset.icons.noInternetConnection)),
+      Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Positioned(
-            top: -15,
-            child: SvgIcon(
-              asset: Asset.icons.noInternetConnection,
-            ),
+          HeaderTitle(text: LocaleKeys.noInternetConnection.tr()),
+          EasyText(LocaleKeys.noInternetConnectionSub.tr(), fontSize: 14).padding(bottom: 30),
+          EasyButton(
+            useSystemColor: false,
+            width: 200,
+            color: Palette.purple,
+            text: LocaleKeys.retryBtn.tr(),
+            onPressed: Beamer.of(context).popRoute,
           ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              HeaderTitle(
-                text: LocaleKeys.noInternetConnection.tr(),
-              ),
-              EasyText(LocaleKeys.noInternetConnectionSub.tr(), fontSize: 14).padding(bottom: 30),
-              EasyButton(
-                useSystemColor: false,
-                width: 200,
-                color: Palette.purple,
-                text: LocaleKeys.retryBtn.tr(),
-                onPressed: Beamer.of(context).popRoute,
-              ),
-            ],
-          ).padding(horizontal: 20, vertical: 40),
         ],
-      );
+      ).padding(horizontal: 20, vertical: 40),
+    ],
+  );
 }

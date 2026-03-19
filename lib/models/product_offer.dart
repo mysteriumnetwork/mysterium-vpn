@@ -22,15 +22,17 @@ abstract class ProductOffer with _$ProductOffer {
 
   factory ProductOffer.fromJson(Map<String, dynamic> json) => _$ProductOfferFromJson(json);
 
-  factory ProductOffer.fromAppStore(SK2SubscriptionOffer offer, AppStoreProduct2Details details) =>
-      ProductOffer(
-        // we cannot have proper filter with null ID because ConfigCat doesn't support null values, and all appstore intro offers have null IDs
-        id: offer.id ?? 'default',
-        price: offer.price,
-        durationUnit: OfferDuration.fromAppStore(offer.period.unit),
-        durationValue: offer.period.value,
-        fullPrice: details.rawPrice,
-      );
+  factory ProductOffer.fromAppStore(
+    SK2SubscriptionOffer offer,
+    AppStoreProduct2Details details,
+  ) => ProductOffer(
+    // we cannot have proper filter with null ID because ConfigCat doesn't support null values, and all appstore intro offers have null IDs
+    id: offer.id ?? 'default',
+    price: offer.price,
+    durationUnit: OfferDuration.fromAppStore(offer.period.unit),
+    durationValue: offer.period.value,
+    fullPrice: details.rawPrice,
+  );
 
   factory ProductOffer.fromGooglePlay(SubscriptionOfferDetailsWrapper offer) {
     final id = offer.offerId ?? 'default';
@@ -46,7 +48,8 @@ abstract class ProductOffer with _$ProductOffer {
       price: price,
       durationUnit: durationUnit,
       durationValue: value,
-      fullPrice: offer.pricingPhases
+      fullPrice:
+          offer.pricingPhases
               .sortedByCompare((it) => it.priceAmountMicros, compareNums)
               .last
               .priceAmountMicros /

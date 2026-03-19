@@ -10,20 +10,19 @@ void useReaction<T>(
   int? delay,
   bool Function(T?, T?)? equals,
   void Function(Object, Reaction)? onError,
-}) =>
-    use(
-      _ReactionHook<T>(
-        function: function,
-        effect: effect,
-        fireImmediately: fireImmediately,
-        keys: keys,
-        delay: delay,
-        context: context,
-        equals: equals,
-        name: name,
-        onError: onError,
-      ),
-    );
+}) => use(
+  _ReactionHook<T>(
+    function: function,
+    effect: effect,
+    fireImmediately: fireImmediately,
+    keys: keys,
+    delay: delay,
+    context: context,
+    equals: equals,
+    name: name,
+    onError: onError,
+  ),
+);
 
 class _ReactionHook<T> extends Hook<void> {
   const _ReactionHook({

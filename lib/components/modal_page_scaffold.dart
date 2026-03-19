@@ -6,10 +6,7 @@ import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 
-Future<T?> showModalPage<T>(
-  BuildContext context, {
-  required WidgetBuilder builder,
-}) async {
+Future<T?> showModalPage<T>(BuildContext context, {required WidgetBuilder builder}) async {
   final screenType = ScreenType.of(context);
   final palette = Theme.of(context).palette;
   if (screenType > ScreenType.mobile) {
@@ -94,10 +91,7 @@ class ModalPageScaffold extends HookWidget {
         appBar: header,
         backgroundColor: Colors.transparent,
         extendBodyBehindAppBar: true,
-        body: Padding(
-          padding: padding,
-          child: child,
-        ),
+        body: Padding(padding: padding, child: child),
       ),
     );
   }
@@ -107,9 +101,9 @@ class ModalPageScaffold extends HookWidget {
     final screenType = getScreenType(size);
     return switch (screenType) {
       ScreenType.mobile => const BorderRadius.only(
-          topLeft: Radius.circular(24),
-          topRight: Radius.circular(24),
-        ),
+        topLeft: Radius.circular(24),
+        topRight: Radius.circular(24),
+      ),
       _ => BorderRadius.circular(24),
     };
   }
@@ -120,15 +114,15 @@ class _Header extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => Align(
-        alignment: Alignment.topRight,
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: IconButton(
-            onPressed: Navigator.of(context).pop,
-            icon: Asset.icons.close3(context).svg(width: 24, height: 24),
-          ),
-        ),
-      );
+    alignment: Alignment.topRight,
+    child: Padding(
+      padding: const EdgeInsets.all(8),
+      child: IconButton(
+        onPressed: Navigator.of(context).pop,
+        icon: Asset.icons.close3(context).svg(width: 24, height: 24),
+      ),
+    ),
+  );
 
   @override
   Size get preferredSize => const Size.fromHeight(64);

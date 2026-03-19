@@ -8,10 +8,8 @@ part 'promotional_content_store.g.dart';
 class PromotionalContentStore = _PromotionalContentStore with _$PromotionalContentStore;
 
 abstract class _PromotionalContentStore with Store {
-  _PromotionalContentStore(
-    this._remoteConfigStore, {
-    DateTime Function()? getCurrentTime,
-  }) : _getCurrentTime = getCurrentTime ?? DateTime.now;
+  _PromotionalContentStore(this._remoteConfigStore, {DateTime Function()? getCurrentTime})
+    : _getCurrentTime = getCurrentTime ?? DateTime.now;
 
   final RemoteConfigStore _remoteConfigStore;
   final DateTime Function() _getCurrentTime;

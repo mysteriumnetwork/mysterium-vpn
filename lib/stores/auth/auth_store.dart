@@ -34,13 +34,13 @@ abstract class _AuthStore with Store {
     required Talker logger,
     required ABTestingStore abTestingStore,
     required DeviceIDStore deviceIDStore,
-  })  : _authService = authService,
-        _authSessionStore = authSessionStore,
-        _appLinks = appLinks,
-        _analyticsStore = analyticsStore,
-        _logger = logger,
-        _abTestingStore = abTestingStore,
-        _deviceIDStore = deviceIDStore {
+  }) : _authService = authService,
+       _authSessionStore = authSessionStore,
+       _appLinks = appLinks,
+       _analyticsStore = analyticsStore,
+       _logger = logger,
+       _abTestingStore = abTestingStore,
+       _deviceIDStore = deviceIDStore {
     refreshTokenCallback = refreshAuthToken;
   }
 
@@ -83,24 +83,20 @@ abstract class _AuthStore with Store {
   Future<void> initAuth() async {
     try {
       email = await _secureStorageService.getLastLoggedInUser();
-      _appLinks.uriLinkStream.listen(
-        (appLink) async {
-          if (_authSessionStore.isAuthenticated) {
-            return;
-          }
-          final storedLink = await _secureStorageService.getAppLink();
-          if (appLink.toString() != storedLink) {
-            await _secureStorageService.saveAppLink(
-              appLink: appLink.toString(),
-            );
+      _appLinks.uriLinkStream.listen((appLink) async {
+        if (_authSessionStore.isAuthenticated) {
+          return;
+        }
+        final storedLink = await _secureStorageService.getAppLink();
+        if (appLink.toString() != storedLink) {
+          await _secureStorageService.saveAppLink(appLink: appLink.toString());
 
-            await verifyMagicLinkAndAuthenticate(appLink);
-          } else {
-            Sentry.captureException(TokenAlreadyUsedException());
-            showSnackbar(LocaleKeys.tokenAlreadyUsed.tr());
-          }
-        },
-      );
+          await verifyMagicLinkAndAuthenticate(appLink);
+        } else {
+          Sentry.captureException(TokenAlreadyUsedException());
+          showSnackbar(LocaleKeys.tokenAlreadyUsed.tr());
+        }
+      });
     } catch (e) {
       _logger.handle(e);
     }
@@ -161,17 +157,11 @@ abstract class _AuthStore with Store {
   }
 
   @action
-  Future<void> authenticate(
-    GrantType grantType,
-    Future<TokenResponse> feature,
-  ) async {
+  Future<void> authenticate(GrantType grantType, Future<TokenResponse> feature) async {
     try {
       authenticateFeature = ObservableFuture(feature);
       final authTokens = await authenticateFeature;
-      await _authSessionStore.setAuthenticated(
-        authTokens!.accessToken,
-        authTokens.refreshToken,
-      );
+      await _authSessionStore.setAuthenticated(authTokens!.accessToken, authTokens.refreshToken);
       _analyticsStore.setLogin(grantType);
     } on ApiException catch (e) {
       showSnackbar(e.message);
@@ -201,25 +191,13 @@ abstract class _AuthStore with Store {
     await _abTestingStore.configFuture;
     await _analyticsStore.setUserId(userId);
     await _analyticsStore.setUserProperty(
-      AnalyticsUserProperty.fromEnum(
-        name: AnalyticsUserPropName.email,
-        value: username,
-      ),
+      AnalyticsUserProperty.fromEnum(name: AnalyticsUserPropName.email, value: username),
     );
-    Sentry.configureScope(
-      (scope) => scope.setUser(
-        SentryUser(
-          id: userId,
-          email: username,
-        ),
-      ),
-    );
+    Sentry.configureScope((scope) => scope.setUser(SentryUser(id: userId, email: username)));
   }
 
   @action
-  Future<void> logout({
-    bool invalidateRemotely = true,
-  }) async {
+  Future<void> logout({bool invalidateRemotely = true}) async {
     logoutFeature = ObservableFuture(_authService.logout(invalidateRemotely: invalidateRemotely));
 
     await logoutFeature;
@@ -235,10 +213,7 @@ abstract class _AuthStore with Store {
     try {
       _authenticatingType = GrantType.email;
       signInFeature = ObservableFuture(
-        _authService.signInWithEmail(
-          email: email,
-          pkcePair: _pkcePair!,
-        ),
+        _authService.signInWithEmail(email: email, pkcePair: _pkcePair!),
       );
       final code = await signInFeature;
       if (code != null) {
@@ -269,9 +244,7 @@ abstract class _AuthStore with Store {
   Future<void> signInWithGoogle() async {
     try {
       _authenticatingType = GrantType.google;
-      signInFeature = ObservableFuture(
-        _authService.signInWithGoogle(),
-      );
+      signInFeature = ObservableFuture(_authService.signInWithGoogle());
       final code = await signInFeature;
       if (code != null) {
         authenticate(
@@ -298,9 +271,7 @@ abstract class _AuthStore with Store {
   Future<void> signInWithApple() async {
     try {
       _authenticatingType = GrantType.apple;
-      signInFeature = ObservableFuture(
-        _authService.signInWithApple(),
-      );
+      signInFeature = ObservableFuture(_authService.signInWithApple());
       final code = await signInFeature;
       if (code != null) {
         authenticate(
@@ -318,8 +289,8 @@ abstract class _AuthStore with Store {
       e is NotAvailableException
           ? showSnackbar('Not available')
           : e is SignInAborted
-              ? showSnackbar('Sign in aborted')
-              : showSnackbar(LocaleKeys.somethingWentWrong.tr());
+          ? showSnackbar('Sign in aborted')
+          : showSnackbar(LocaleKeys.somethingWentWrong.tr());
 
       rethrow;
     }
@@ -349,9 +320,7 @@ abstract class _AuthStore with Store {
 
   Future<void> deleteAccount() async {
     try {
-      deleteAccountFeature = ObservableFuture(
-        _authService.deleteAccount(),
-      );
+      deleteAccountFeature = ObservableFuture(_authService.deleteAccount());
 
       await deleteAccountFeature;
     } catch (e) {
@@ -373,10 +342,7 @@ abstract class _AuthStore with Store {
           refreshToken: refreshToken,
         ),
       );
-      await _authSessionStore.setAuthenticated(
-        authTokens.accessToken,
-        authTokens.refreshToken,
-      );
+      await _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
     } catch (e) {
       final authState = _authSessionStore.status;
       if (authState == AuthStatus.authenticated) {

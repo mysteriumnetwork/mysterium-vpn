@@ -64,11 +64,7 @@ enum _FeatureToggleKey {
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
 
 abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
-  RemoteConfigStoreBase(
-    super.client,
-    super.logger, {
-    bool isDev = false,
-  }) : _isDev = isDev;
+  RemoteConfigStoreBase(super.client, super.logger, {bool isDev = false}) : _isDev = isDev;
 
   final bool _isDev;
 
@@ -311,9 +307,7 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
 
         return keys
             .map(
-              (key) => UserIntent.values.firstWhereOrNull(
-                (it) => it.key == key || it.name == key,
-              ),
+              (key) => UserIntent.values.firstWhereOrNull((it) => it.key == key || it.name == key),
             )
             .nonNulls
             .toSet();
@@ -542,11 +536,7 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
         final raw = config[_FeatureToggleKey.gatewaysSupportingUpgrade.name];
         final decoded = jsonDecode(raw.toString()) as List;
         final keys = decoded.map((it) => it.toString());
-        return keys
-            .map(
-              (key) => key.toLowerCase(),
-            )
-            .toSet();
+        return keys.map((key) => key.toLowerCase()).toSet();
       }
     } catch (e, stack) {
       logger.handle(e, stack);

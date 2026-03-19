@@ -7,13 +7,13 @@ part of 'ip_info.dart';
 // **************************************************************************
 
 _IPInfo _$IPInfoFromJson(Map<String, dynamic> json) => _IPInfo(
-      ip: json['ip'] as String,
-      country: json['country'] as String,
-      city: json['city'] as String,
-    );
+  ip: json['ip'] as String,
+  country: json['country'] as String,
+  city: json['city'] as String,
+);
 
 Map<String, dynamic> _$IPInfoToJson(_IPInfo instance) => <String, dynamic>{
-      'ip': instance.ip,
-      'country': instance.country,
-      'city': instance.city,
-    };
+  'ip': instance.ip,
+  'country': instance.country,
+  'city': instance.city,
+};

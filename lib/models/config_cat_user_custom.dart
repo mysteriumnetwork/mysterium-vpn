@@ -24,15 +24,15 @@ abstract class ConfigCatUserCustom with _$ConfigCatUserCustom {
       _$ConfigCatUserCustomFromJson(json);
 
   factory ConfigCatUserCustom.fromConfigCatUser(ConfigCatUser user) => ConfigCatUserCustom(
-        platform: user.getAttributeOrNull<String>('platform')!,
-        version: user.getAttributeOrNull<String>('version')!,
-        city: user.getAttributeOrNull<String>('city'),
-        subscriptionSource: user.getAttributeOrNull<String>('subscriptionSource'),
-        subscriptionPlan: user.getAttributeOrNull<String>('subscriptionPlan'),
-        expirationDate: user.getAttributeOrNull<String>('expirationDate'),
-        subscriptionDuration: user.getAttributeOrNull<String>('subscriptionDuration'),
-        recurring: user.getAttributeOrNull<String>('recurring'),
-      );
+    platform: user.getAttributeOrNull<String>('platform')!,
+    version: user.getAttributeOrNull<String>('version')!,
+    city: user.getAttributeOrNull<String>('city'),
+    subscriptionSource: user.getAttributeOrNull<String>('subscriptionSource'),
+    subscriptionPlan: user.getAttributeOrNull<String>('subscriptionPlan'),
+    expirationDate: user.getAttributeOrNull<String>('expirationDate'),
+    subscriptionDuration: user.getAttributeOrNull<String>('subscriptionDuration'),
+    recurring: user.getAttributeOrNull<String>('recurring'),
+  );
 
   Map<String, String> toAttributes() {
     final json = toJson();

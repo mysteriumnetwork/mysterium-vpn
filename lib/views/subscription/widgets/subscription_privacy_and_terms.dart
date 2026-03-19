@@ -11,9 +11,7 @@ class SubscriptionPrivacyAndTerms extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final style = theme.textStyles.textSm.regular.copyWith(
-      color: theme.palette.textSecondary,
-    );
+    final style = theme.textStyles.textSm.regular.copyWith(color: theme.palette.textSecondary);
 
     void handleShowPrivacyPolicy() {
       openUrlLink(Uri.parse(privacyPolicyUrl));

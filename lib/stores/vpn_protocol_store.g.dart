@@ -12,19 +12,22 @@ mixin _$VpnProtocolStore on _VpnProtocolStore, Store {
   Computed<ProtocolType>? _$protocolComputed;
 
   @override
-  ProtocolType get protocol => (_$protocolComputed ??=
-          Computed<ProtocolType>(() => super.protocol, name: '_VpnProtocolStore.protocol'))
-      .value;
+  ProtocolType get protocol => (_$protocolComputed ??= Computed<ProtocolType>(
+    () => super.protocol,
+    name: '_VpnProtocolStore.protocol',
+  )).value;
   Computed<bool>? _$isProtocolPickerAvailableComputed;
 
   @override
-  bool get isProtocolPickerAvailable =>
-      (_$isProtocolPickerAvailableComputed ??= Computed<bool>(() => super.isProtocolPickerAvailable,
-              name: '_VpnProtocolStore.isProtocolPickerAvailable'))
-          .value;
+  bool get isProtocolPickerAvailable => (_$isProtocolPickerAvailableComputed ??= Computed<bool>(
+    () => super.isProtocolPickerAvailable,
+    name: '_VpnProtocolStore.isProtocolPickerAvailable',
+  )).value;
 
-  late final _$protocolFutureAtom =
-      Atom(name: '_VpnProtocolStore.protocolFuture', context: context);
+  late final _$protocolFutureAtom = Atom(
+    name: '_VpnProtocolStore.protocolFuture',
+    context: context,
+  );
 
   @override
   ObservableFuture<ProtocolType> get protocolFuture {
@@ -39,16 +42,20 @@ mixin _$VpnProtocolStore on _VpnProtocolStore, Store {
     });
   }
 
-  late final _$getProtocolAsyncAction =
-      AsyncAction('_VpnProtocolStore.getProtocol', context: context);
+  late final _$getProtocolAsyncAction = AsyncAction(
+    '_VpnProtocolStore.getProtocol',
+    context: context,
+  );
 
   @override
   Future<ProtocolType> getProtocol() {
     return _$getProtocolAsyncAction.run(() => super.getProtocol());
   }
 
-  late final _$setProtocolAsyncAction =
-      AsyncAction('_VpnProtocolStore.setProtocol', context: context);
+  late final _$setProtocolAsyncAction = AsyncAction(
+    '_VpnProtocolStore.setProtocol',
+    context: context,
+  );
 
   @override
   Future<void> setProtocol(ProtocolType newProtocol) {

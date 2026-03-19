@@ -1,11 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 class ParentScrollController extends InheritedWidget {
-  const ParentScrollController({
-    required this.controller,
-    required super.child,
-    super.key,
-  });
+  const ParentScrollController({required this.controller, required super.child, super.key});
 
   final ScrollController controller;
 

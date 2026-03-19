@@ -20,16 +20,14 @@ import 'package:mysterium_vpn/views/subscription/widgets/subscription_privacy_an
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> showSubscriptionPlansModalPage(BuildContext context) async {
-  ProviderScope.containerOf(context, listen: false)
-      .read(analyticsStorePOD)
-      .logScreenViewed('subscription_plans_modal')
-      .ignore();
+  ProviderScope.containerOf(
+    context,
+    listen: false,
+  ).read(analyticsStorePOD).logScreenViewed('subscription_plans_modal').ignore();
   await showModal(
     context,
-    builder: (ctx) => Theme(
-      data: DesignSystemTheme.of(context),
-      child: const _SubscriptionPlansModalPage(),
-    ),
+    builder: (ctx) =>
+        Theme(data: DesignSystemTheme.of(context), child: const _SubscriptionPlansModalPage()),
   );
 }
 
@@ -122,26 +120,22 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                                 () => switch (tabController.index) {
                                   1 => monthly,
                                   _ => annual,
-                                }
-                                    .sortedByCompare((it) => it.monthlyValue, compareNumsDesc),
+                                }.sortedByCompare((it) => it.monthlyValue, compareNumsDesc),
                               );
 
                               final productsRef = useRef(products)..value = products;
 
-                              useEffect(
-                                () {
-                                  void listener() {
-                                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                                      selectedProduct.value = productsRef.value.first;
-                                    });
-                                  }
+                              useEffect(() {
+                                void listener() {
+                                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                                    selectedProduct.value = productsRef.value.first;
+                                  });
+                                }
 
-                                  listener();
-                                  tabController.addListener(listener);
-                                  return () => tabController.removeListener(listener);
-                                },
-                                [tabController, selectedProduct, productsRef],
-                              );
+                                listener();
+                                tabController.addListener(listener);
+                                return () => tabController.removeListener(listener);
+                              }, [tabController, selectedProduct, productsRef]);
 
                               return RadioGroup<PurchasableProduct>(
                                 groupValue: selectedProduct.value,
@@ -180,8 +174,9 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                       const SizedBox(height: 32),
                       Text(
                         LocaleKeys.subscriptionAllPlansCompareAll.tr(),
-                        style: theme.textStyles.textMd.medium
-                            .copyWith(color: theme.palette.textPrimary),
+                        style: theme.textStyles.textMd.medium.copyWith(
+                          color: theme.palette.textPrimary,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: theme.spacing.xl3),
@@ -201,10 +196,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                   loading: isLoading.value ? const ButtonLoading() : null,
                   decoration: ButtonDecoration(
                     decorationColor: theme.palette.bgBrandPrimary,
-                    padding: EdgeInsets.symmetric(
-                      vertical: theme.spacing.lg,
-                      horizontal: 18,
-                    ),
+                    padding: EdgeInsets.symmetric(vertical: theme.spacing.lg, horizontal: 18),
                   ),
                   child: Text(
                     (subscriptionStore.isSubscribed ?? false)
@@ -220,9 +212,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                     foregroundColor: theme.palette.textPrimarySelected,
                     textStyle: theme.textStyles.textMd.semibold,
                   ),
-                  child: Text(
-                    LocaleKeys.subscriptionAllPlansCompareAll.tr(),
-                  ),
+                  child: Text(LocaleKeys.subscriptionAllPlansCompareAll.tr()),
                 ),
                 const SubscriptionPrivacyAndTerms(),
               ],
@@ -274,16 +264,10 @@ class _SubscriptionPlans extends HookWidget {
             for (final product in products)
               if (isDesktop)
                 Expanded(
-                  child: _Plan(
-                    value: product,
-                    allProducts: allProducts,
-                  ),
+                  child: _Plan(value: product, allProducts: allProducts),
                 )
               else
-                _Plan(
-                  value: product,
-                  allProducts: allProducts,
-                ),
+                _Plan(value: product, allProducts: allProducts),
           ],
         ),
       ),
@@ -292,10 +276,7 @@ class _SubscriptionPlans extends HookWidget {
 }
 
 class _Plan extends HookWidget {
-  const _Plan({
-    required this.value,
-    required this.allProducts,
-  });
+  const _Plan({required this.value, required this.allProducts});
 
   final PurchasableProduct value;
   final List<PurchasableProduct> allProducts;
@@ -303,8 +284,10 @@ class _Plan extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final store = ProviderScope.containerOf(context, listen: false).read(subscriptionPlansStorePOD);
-    final upgradeStore =
-        ProviderScope.containerOf(context, listen: false).read(subscriptionUpgradeStorePOD);
+    final upgradeStore = ProviderScope.containerOf(
+      context,
+      listen: false,
+    ).read(subscriptionUpgradeStorePOD);
 
     final comparisonProduct = upgradeStore.getComparisonProduct(value, allProducts);
 

@@ -29,14 +29,14 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
         boxShadow: [
           switch (brightness) {
             Brightness.dark => BoxShadow(
-                color: const Color(0xFF090064).withValues(alpha: .2),
-                blurRadius: 100,
-              ),
+              color: const Color(0xFF090064).withValues(alpha: .2),
+              blurRadius: 100,
+            ),
             Brightness.light => BoxShadow(
-                color: Palette.lightBlack.withValues(alpha: .04),
-                blurRadius: 16,
-                offset: const Offset(4, -4),
-              ),
+              color: Palette.lightBlack.withValues(alpha: .04),
+              blurRadius: 16,
+              offset: const Offset(4, -4),
+            ),
           },
         ],
       ),

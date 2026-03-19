@@ -86,10 +86,7 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   @override
   Future<void> openAppNotificationsSettings() async {
-    await AppSettings.openAppSettings(
-      type: AppSettingsType.notification,
-      asAnotherTask: true,
-    );
+    await AppSettings.openAppSettings(type: AppSettingsType.notification, asAnotherTask: true);
   }
 
   @override
@@ -151,10 +148,7 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
           PushNotificationsUser(
             pushNotificationsId: oneSignalId,
             userId: userId,
-            tags: {
-              ...tags,
-              ...subscriptionData,
-            },
+            tags: {...tags, ...subscriptionData},
           ),
         );
       } catch (e) {

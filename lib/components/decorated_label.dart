@@ -15,11 +15,7 @@ class DecoratedLabel extends StatelessWidget {
   final Color color;
   final double radius;
   @override
-  Widget build(BuildContext context) => EasyText(
-        text,
-        color: Palette.white,
-      ).padding(horizontal: 8, vertical: 2).decorated(
-            color: color,
-            borderRadius: BorderRadius.all(Radius.circular(radius)),
-          );
+  Widget build(BuildContext context) => EasyText(text, color: Palette.white)
+      .padding(horizontal: 8, vertical: 2)
+      .decorated(color: color, borderRadius: BorderRadius.all(Radius.circular(radius)));
 }

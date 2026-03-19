@@ -502,7 +502,7 @@ class CodegenLoader extends AssetLoader {
     "discountedPriceLabel": "仅有的",
     "ipPoolLabel": "IP地址池：{ips}",
     "connectToTooltip": "连接到 {countryNum}",
-    "locationItemStatesCount": {"one": "{statesNum} 州", "other": "{statesNum} 个州"}
+    "locationItemStatesCount": {"one": "{statesNum} 州", "other": "{statesNum} 个州"},
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -1040,7 +1040,7 @@ class CodegenLoader extends AssetLoader {
     "discountedPriceLabel": "Sadece",
     "ipPoolLabel": "IP Havuzu: {ips}",
     "connectToTooltip": "{countryNum} ülkesine bağlanın",
-    "locationItemStatesCount": {"one": "{statesNum} Eyalet", "other": "{statesNum} Eyalet"}
+    "locationItemStatesCount": {"one": "{statesNum} Eyalet", "other": "{statesNum} Eyalet"},
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1536,7 +1536,7 @@ class CodegenLoader extends AssetLoader {
     "discountedPriceLabel": "のみ",
     "ipPoolLabel": "IP プール: {ips}",
     "connectToTooltip": "{countryNum}に接続",
-    "locationItemStatesCount": {"one": "{statesNum} 州", "other": "{statesNum} 州"}
+    "locationItemStatesCount": {"one": "{statesNum} 州", "other": "{statesNum} 州"},
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2103,7 +2103,7 @@ class CodegenLoader extends AssetLoader {
     "discountedPriceLabel": "Nur",
     "ipPoolLabel": "IP-Pool: {ips}",
     "connectToTooltip": "Verbindung zu {countryNum} herstellen",
-    "locationItemStatesCount": {"one": "{statesNum} Zustand", "other": "{statesNum} Staaten"}
+    "locationItemStatesCount": {"one": "{statesNum} Zustand", "other": "{statesNum} Staaten"},
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2468,7 +2468,7 @@ class CodegenLoader extends AssetLoader {
     "sendAgain": {
       "one": "Enviar novamente",
       "other": "Enviar novamente ({})",
-      "zero": "Enviar novamente"
+      "zero": "Enviar novamente",
     },
     "sendToUs": "Enviar comentários",
     "serviceUnavailableError":
@@ -2660,7 +2660,7 @@ class CodegenLoader extends AssetLoader {
     "discountedPriceLabel": "Apenas",
     "ipPoolLabel": "Conjunto de IPs: {ips}",
     "connectToTooltip": "Conecte-se a {countryNum}",
-    "locationItemStatesCount": {"one": "{statesNum} Estado", "other": "{statesNum} Estados"}
+    "locationItemStatesCount": {"one": "{statesNum} Estado", "other": "{statesNum} Estados"},
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3204,7 +3204,7 @@ class CodegenLoader extends AssetLoader {
     "discountedPriceLabel": "Only",
     "ipPoolLabel": "IP Pool: {ips}",
     "connectToTooltip": "Connect to {countryNum}",
-    "locationItemStatesCount": {"one": "{statesNum} State", "other": "{statesNum} States"}
+    "locationItemStatesCount": {"one": "{statesNum} State", "other": "{statesNum} States"},
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3572,7 +3572,7 @@ class CodegenLoader extends AssetLoader {
     "sendAgain": {
       "one": "Invia di nuovo",
       "other": "Invia di nuovo ({})",
-      "zero": "Invia di nuovo"
+      "zero": "Invia di nuovo",
     },
     "sendToUs": "Invia feedback",
     "serviceUnavailableError":
@@ -3763,7 +3763,7 @@ class CodegenLoader extends AssetLoader {
     "discountedPriceLabel": "Soltanto",
     "ipPoolLabel": "Pool IP: {ips}",
     "connectToTooltip": "Connettiti a {countryNum}",
-    "locationItemStatesCount": {"one": "{statesNum} Stato", "other": "{statesNum} Stati"}
+    "locationItemStatesCount": {"one": "{statesNum} Stato", "other": "{statesNum} Stati"},
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4136,7 +4136,7 @@ class CodegenLoader extends AssetLoader {
     "sendAgain": {
       "one": "Envoyer à nouveau",
       "other": "Envoyer à nouveau ({})",
-      "zero": "Envoyer à nouveau"
+      "zero": "Envoyer à nouveau",
     },
     "sendToUs": "Envoyer des commentaires",
     "serviceUnavailableError":
@@ -4330,7 +4330,7 @@ class CodegenLoader extends AssetLoader {
     "discountedPriceLabel": "Seulement",
     "ipPoolLabel": "Pool d'adresses IP : {ips}",
     "connectToTooltip": "Se connecter à {countryNum}",
-    "locationItemStatesCount": {"one": "{statesNum} État", "other": "{statesNum} États"}
+    "locationItemStatesCount": {"one": "{statesNum} État", "other": "{statesNum} États"},
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4879,8 +4879,8 @@ class CodegenLoader extends AssetLoader {
     "connectToTooltip": "Terhubung ke {countryNum}",
     "locationItemStatesCount": {
       "one": "{statesNum} Negara Bagian",
-      "other": "{statesNum} Negara Bagian"
-    }
+      "other": "{statesNum} Negara Bagian",
+    },
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5248,7 +5248,7 @@ class CodegenLoader extends AssetLoader {
     "sendAgain": {
       "one": "Enviar de nuevo",
       "other": "Enviar de nuevo ({})",
-      "zero": "Enviar de nuevo"
+      "zero": "Enviar de nuevo",
     },
     "sendToUs": "Enviar comentarios",
     "serviceUnavailableError":
@@ -5439,7 +5439,7 @@ class CodegenLoader extends AssetLoader {
     "discountedPriceLabel": "Solo",
     "ipPoolLabel": "Grupo de IP: {ips}",
     "connectToTooltip": "Conectarse a {countryNum}",
-    "locationItemStatesCount": {"one": "{statesNum} Estado", "other": "{statesNum} Estados"}
+    "locationItemStatesCount": {"one": "{statesNum} Estado", "other": "{statesNum} Estados"},
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5970,7 +5970,7 @@ class CodegenLoader extends AssetLoader {
     "discountedPriceLabel": "فقط",
     "ipPoolLabel": "مجموعة عناوين IP: {ips}",
     "connectToTooltip": "اتصل بـ {countryNum}",
-    "locationItemStatesCount": {"one": "{statesNum} الولاية", "other": "{statesNum} الولايات"}
+    "locationItemStatesCount": {"one": "{statesNum} الولاية", "other": "{statesNum} الولايات"},
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,
@@ -5983,6 +5983,6 @@ class CodegenLoader extends AssetLoader {
     "fr": _fr,
     "id": _id,
     "es": _es,
-    "ar": _ar
+    "ar": _ar,
   };
 }

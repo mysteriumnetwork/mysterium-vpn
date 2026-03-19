@@ -34,28 +34,32 @@ void main() {
     group('WireguradKeyService', () {
       test('getWireguradKey returns existing key available in storage', () async {
         when(mockSecureStorageService.getWireguardPublicKey()).thenAnswer((_) async => 'publicKey');
-        when(mockSecureStorageService.getWireguardPrivateKey())
-            .thenAnswer((_) async => 'privateKey');
+        when(
+          mockSecureStorageService.getWireguardPrivateKey(),
+        ).thenAnswer((_) async => 'privateKey');
         final key = await wireguradKeyService.getWireguradKey();
         expect(key.publicKey, 'publicKey');
         expect(key.privateKey, 'privateKey');
       });
 
       test('getWireguradKey throws exception', () async {
-        when(mockSecureStorageService.getWireguardPublicKey())
-            .thenThrow(Exception('Storage error'));
+        when(
+          mockSecureStorageService.getWireguardPublicKey(),
+        ).thenThrow(Exception('Storage error'));
         when(mockWireguardDart.generateKeyPair()).thenThrow(Exception('Wireguard error'));
         expect(() async => wireguradKeyService.getWireguradKey(), throwsException);
       });
 
       test('regenerateWireguardKeys generates new keys and saves them', () async {
-        when(mockWireguardDart.generateKeyPair())
-            .thenAnswer((_) async => KeyPair('publicKey', 'privateKey'));
+        when(
+          mockWireguardDart.generateKeyPair(),
+        ).thenAnswer((_) async => KeyPair('publicKey', 'privateKey'));
         final key = await wireguradKeyService.regenerateWireguardKeys();
         expect(key.publicKey, 'publicKey');
         expect(key.privateKey, 'privateKey');
-        verify(mockSecureStorageService.saveWireguardPrivateKey(privateKey: 'privateKey'))
-            .called(1);
+        verify(
+          mockSecureStorageService.saveWireguardPrivateKey(privateKey: 'privateKey'),
+        ).called(1);
         verify(mockSecureStorageService.saveWireguardPublicKey(publicKey: 'publicKey')).called(1);
       });
 
@@ -67,16 +71,19 @@ void main() {
       test('getWireguradKey generates new key if no key in storage', () async {
         when(mockSecureStorageService.getWireguardPublicKey()).thenAnswer((_) async => null);
         when(mockSecureStorageService.getWireguardPrivateKey()).thenAnswer((_) async => null);
-        when(mockWireguardDart.generateKeyPair())
-            .thenAnswer((_) async => KeyPair('newPublicKey', 'newPrivateKey'));
+        when(
+          mockWireguardDart.generateKeyPair(),
+        ).thenAnswer((_) async => KeyPair('newPublicKey', 'newPrivateKey'));
 
         final key = await wireguradKeyService.getWireguradKey();
         expect(key.publicKey, 'newPublicKey');
         expect(key.privateKey, 'newPrivateKey');
-        verify(mockSecureStorageService.saveWireguardPrivateKey(privateKey: 'newPrivateKey'))
-            .called(1);
-        verify(mockSecureStorageService.saveWireguardPublicKey(publicKey: 'newPublicKey'))
-            .called(1);
+        verify(
+          mockSecureStorageService.saveWireguardPrivateKey(privateKey: 'newPrivateKey'),
+        ).called(1);
+        verify(
+          mockSecureStorageService.saveWireguardPublicKey(publicKey: 'newPublicKey'),
+        ).called(1);
       });
 
       test('getWireguradKey returns null if no key in storage and generation fails', () async {
@@ -88,16 +95,19 @@ void main() {
       });
 
       test('regenerateWireguardKeys saves new keys', () async {
-        when(mockWireguardDart.generateKeyPair())
-            .thenAnswer((_) async => KeyPair('newPublicKey', 'newPrivateKey'));
+        when(
+          mockWireguardDart.generateKeyPair(),
+        ).thenAnswer((_) async => KeyPair('newPublicKey', 'newPrivateKey'));
 
         final key = await wireguradKeyService.regenerateWireguardKeys();
         expect(key.publicKey, 'newPublicKey');
         expect(key.privateKey, 'newPrivateKey');
-        verify(mockSecureStorageService.saveWireguardPrivateKey(privateKey: 'newPrivateKey'))
-            .called(1);
-        verify(mockSecureStorageService.saveWireguardPublicKey(publicKey: 'newPublicKey'))
-            .called(1);
+        verify(
+          mockSecureStorageService.saveWireguardPrivateKey(privateKey: 'newPrivateKey'),
+        ).called(1);
+        verify(
+          mockSecureStorageService.saveWireguardPublicKey(publicKey: 'newPublicKey'),
+        ).called(1);
       });
     });
   });

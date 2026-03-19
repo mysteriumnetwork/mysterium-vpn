@@ -25,12 +25,8 @@ void main() {
 
   const mockNewYorkIPInfo = IPInfo(ip: 'ip', country: 'US', city: 'new_york');
 
-  UserIntentsStore buildStore() => UserIntentsStore(
-        mockApi,
-        mockRealIPInfo,
-        mockLocationsStore,
-        mockRemoteConfigStore,
-      );
+  UserIntentsStore buildStore() =>
+      UserIntentsStore(mockApi, mockRealIPInfo, mockLocationsStore, mockRemoteConfigStore);
 
   setUp(() {
     mockApi = MockApiService();
@@ -100,10 +96,7 @@ void main() {
       final store = buildStore();
       await store.intentsFuture;
 
-      expect(
-        store.intents,
-        equals({UserIntent.nearestLocation, UserIntent.p2p}),
-      );
+      expect(store.intents, equals({UserIntent.nearestLocation, UserIntent.p2p}));
     });
 
     test('one side empty equals other', () async {

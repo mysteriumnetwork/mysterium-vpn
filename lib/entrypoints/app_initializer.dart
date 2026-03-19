@@ -28,17 +28,17 @@ class AppInitializer {
   Talker logger = Talker();
 
   Widget getApp() => UncontrolledProviderScope(
-        container: providerContainer,
-        child: EasyLocalization(
-          useOnlyLangCode: true,
-          supportedLocales: kSupportedLocales,
-          path: Asset.resources.langs.path,
-          fallbackLocale: kFallbackLocale,
-          startLocale: kFallbackLocale,
-          assetLoader: providerContainer.read(assetsLoaderPOD),
-          child: const MyApp(),
-        ),
-      );
+    container: providerContainer,
+    child: EasyLocalization(
+      useOnlyLangCode: true,
+      supportedLocales: kSupportedLocales,
+      path: Asset.resources.langs.path,
+      fallbackLocale: kFallbackLocale,
+      startLocale: kFallbackLocale,
+      assetLoader: providerContainer.read(assetsLoaderPOD),
+      child: const MyApp(),
+    ),
+  );
 
   Future<void> init() async {
     _configureSystemUI();
@@ -103,13 +103,12 @@ class AppInitializer {
               systemNavigationBarColor: Colors.transparent,
               systemNavigationBarDividerColor: Colors.transparent,
             )
-          : SystemUiOverlayStyle.light.copyWith(
-              statusBarIconBrightness: Brightness.light,
-            ),
+          : SystemUiOverlayStyle.light.copyWith(statusBarIconBrightness: Brightness.light),
     );
-    SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
-    );
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     SystemChrome.setEnabledSystemUIMode(
       Platform.isAndroid ? SystemUiMode.edgeToEdge : SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],

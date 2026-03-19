@@ -24,6 +24,7 @@ import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/pages/static/app_deferred_init.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/ft_checkers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class MyApp extends HookConsumerWidget {
@@ -44,34 +45,25 @@ class MyApp extends HookConsumerWidget {
       ..read(realIPInfoStorePOD)
       ..read(pushNotificationsStorePOD);
 
-    useEffect(
-      () {
-        authSessionStore.initStore().whenComplete(authStore.initAuth);
-        return null;
-      },
-      [authStore, authSessionStore],
-    );
+    useEffect(() {
+      authSessionStore.initStore().whenComplete(authStore.initAuth);
+      return null;
+    }, [authStore, authSessionStore]);
 
-    useReaction(
-      () => authSessionStore.isAuthenticated,
-      (isAuthenticated) async {
-        if (isAuthenticated) {
-          await authStore.fetchAuthUser();
-        }
-      },
-    );
+    useReaction(() => authSessionStore.isAuthenticated, (isAuthenticated) async {
+      if (isAuthenticated) {
+        await authStore.fetchAuthUser();
+      }
+    });
 
     useMQTTService();
     useConfigCatUserUpdater();
     useSubscriptionWatcher();
 
     return ReactionBuilder(
-      builder: (_) => reaction(
-        (_) => authSessionStore.status,
-        (status) {
-          _authenticationReaction(status, routeDelegate, ref);
-        },
-      ),
+      builder: (_) => reaction((_) => authSessionStore.status, (status) {
+        _authenticationReaction(status, routeDelegate, ref);
+      }),
       child: LifecycleListener(
         onThemeChanged: themeStore.updateSystemTheme,
         child: Observer(
@@ -93,14 +85,10 @@ class MyApp extends HookConsumerWidget {
                       localizationsDelegates: context.localizationDelegates,
                       supportedLocales: context.supportedLocales,
                       locale: localStore.currentLocale,
-                      backButtonDispatcher: BeamerBackButtonDispatcher(
-                        delegate: routeDelegate,
-                      ),
+                      backButtonDispatcher: BeamerBackButtonDispatcher(delegate: routeDelegate),
                       builder: (context, child) => ScreenTypeObserver(
                         child: MediaQuery(
-                          data: MediaQuery.of(context).copyWith(
-                            textScaler: TextScaler.noScaling,
-                          ),
+                          data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
                           child: ScrollConfiguration(
                             behavior: ScrollConfiguration.of(context).copyWith(
                               dragDevices: PointerDeviceKind.values.toSet(),
@@ -109,9 +97,7 @@ class MyApp extends HookConsumerWidget {
                               physics: const BouncingScrollPhysics(),
                             ),
                             child: AppDeferredInitWidget(
-                              child: FTCheckers(
-                                child: NetworkLoggerOverlayView(child: child!),
-                              ),
+                              child: FTCheckers(child: NetworkLoggerOverlayView(child: child!)),
                             ),
                           ),
                         ),
@@ -138,8 +124,8 @@ class MyApp extends HookConsumerWidget {
       return;
     }
 
-    await _disposeStore(ref, vpnStorePOD, dispose: (s) => s.disposeStore());
-    await _disposeStore(ref, dnsStorePOD, dispose: (s) => s.disposeStore());
+    await _disposeStore(ref, vpnStorePOD, dispose: (VpnStore s) => s.disposeStore());
+    await _disposeStore(ref, dnsStorePOD, dispose: (DNSStore s) => s.disposeStore());
     _invalidateIfExists(ref, locationsStorePOD);
     _invalidateIfExists(ref, subscriptionStorePOD);
     _invalidateIfExists(ref, recentLocationsStorePOD);
@@ -152,7 +138,7 @@ class MyApp extends HookConsumerWidget {
 
   Future<void> _disposeStore<T>(
     WidgetRef ref,
-    ProviderBase<T> provider, {
+    Provider<T> provider, {
     required Future<void> Function(T store) dispose,
   }) async {
     if (!ref.exists(provider)) {
@@ -162,7 +148,7 @@ class MyApp extends HookConsumerWidget {
     ref.invalidate(provider);
   }
 
-  void _invalidateIfExists(WidgetRef ref, ProviderBase<dynamic> provider) {
+  void _invalidateIfExists(WidgetRef ref, Provider<dynamic> provider) {
     if (ref.exists(provider)) {
       ref.invalidate(provider);
     }

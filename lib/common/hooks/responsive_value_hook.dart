@@ -4,13 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 
-T useResponsiveValue<T>(
-  T fallback, {
-  Size? size,
-  T? mobile,
-  T? tablet,
-  T? desktop,
-}) {
+T useResponsiveValue<T>(T fallback, {Size? size, T? mobile, T? tablet, T? desktop}) {
   final screenType = useScreenType(size);
   final entries = {
     ScreenType.desktop: desktop,

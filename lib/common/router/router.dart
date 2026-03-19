@@ -15,13 +15,13 @@ class BeamerLocations extends BeamLocation<BeamState> {
 
   @override
   List<Pattern> get pathPatterns => [
-        Routes.welcome.path,
-        Routes.main.path,
-        Routes.splash.path,
-        Routes.settings.path,
-        Routes.login.path,
-        Routes.checkYourEmail.path,
-      ];
+    Routes.welcome.path,
+    Routes.main.path,
+    Routes.splash.path,
+    Routes.settings.path,
+    Routes.login.path,
+    Routes.checkYourEmail.path,
+  ];
 
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {

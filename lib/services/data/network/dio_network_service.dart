@@ -3,9 +3,7 @@ import 'package:mysterium_vpn/models/models.dart' as response;
 import 'package:mysterium_vpn/services/services.dart';
 
 class DioNetworkService extends NetworkService {
-  DioNetworkService(
-    this.dio,
-  );
+  DioNetworkService(this.dio);
   final Dio dio;
 
   @override
@@ -18,9 +16,7 @@ class DioNetworkService extends NetworkService {
       endpoint,
       data: data,
       cancelToken: CancelToken(),
-      options: Options(
-        headers: {...dio.options.headers, if (headers != null) ...headers},
-      ),
+      options: Options(headers: {...dio.options.headers, if (headers != null) ...headers}),
     );
 
     return response.Response(
@@ -39,9 +35,7 @@ class DioNetworkService extends NetworkService {
     final res = await dio.get(
       endpoint,
       queryParameters: queryParameters,
-      options: Options(
-        headers: {...dio.options.headers, if (headers != null) ...headers},
-      ),
+      options: Options(headers: {...dio.options.headers, if (headers != null) ...headers}),
       cancelToken: CancelToken(),
     );
 
@@ -54,12 +48,7 @@ class DioNetworkService extends NetworkService {
 
   @override
   Future<response.Response> fetch(String url) async {
-    final res = await dio.fetch(
-      RequestOptions(
-        baseUrl: url,
-        cancelToken: CancelToken(),
-      ),
-    );
+    final res = await dio.fetch(RequestOptions(baseUrl: url, cancelToken: CancelToken()));
 
     return response.Response(
       statusCode: res.statusCode ?? 200,

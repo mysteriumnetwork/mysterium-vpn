@@ -24,20 +24,12 @@ import 'package:talker_dio_logger/talker_dio_logger.dart';
 import 'package:vpn_api/vpn_api.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
-final inAppPurchasePOD = Provider(
-  (ref) => InAppPurchase.instance,
-);
+final inAppPurchasePOD = Provider((ref) => InAppPurchase.instance);
 
-final wireguardServicePOD = Provider(
-  (ref) => WireguardDart(),
-);
-final openVpnServicePOD = Provider(
-  (ref) => OpenVPNDart(),
-);
+final wireguardServicePOD = Provider((ref) => WireguardDart());
+final openVpnServicePOD = Provider((ref) => OpenVPNDart());
 
-final appLinksPOD = Provider(
-  (ref) => AppLinks(),
-);
+final appLinksPOD = Provider((ref) => AppLinks());
 
 final networkServicePOD = Provider<DioNetworkService>((ref) {
   final dio = ref.watch(vpnApiDioPOD);
@@ -51,34 +43,32 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
   final sessionStore = ref.watch(authSessionStorePOD);
   final dio = Dio(options);
 
-  dio.interceptors.addAll(
-    [
-      ConnectionErrorsInterceptor(),
-      InterceptorsWrapper(
-        onRequest: (options, handler) async {
-          if (sessionStore.accessToken != null) {
-            options.headers['Authorization'] = 'Bearer ${sessionStore.accessToken}';
-          }
-          options.headers['Accept-Charset'] = 'utf-8'; // Force UTF-8 encoding
-          return handler.next(options);
-        },
-      ),
-      RefreshTokenInterceptor(dio: dio, logger: logger),
-      RetryRequestInterceptor(dio: dio),
-      if (kDebugMode || Env.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
-      ApiErrorsInterceptor(),
-      if (kDebugMode)
-        TalkerDioLogger(
-          talker: logger,
-          settings: const TalkerDioLoggerSettings(
-            printRequestData: false,
-            printResponseData: false,
-            printErrorData: false,
-          ),
+  dio.interceptors.addAll([
+    ConnectionErrorsInterceptor(),
+    InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        if (sessionStore.accessToken != null) {
+          options.headers['Authorization'] = 'Bearer ${sessionStore.accessToken}';
+        }
+        options.headers['Accept-Charset'] = 'utf-8'; // Force UTF-8 encoding
+        return handler.next(options);
+      },
+    ),
+    RefreshTokenInterceptor(dio: dio, logger: logger),
+    RetryRequestInterceptor(dio: dio),
+    if (kDebugMode || Env.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
+    ApiErrorsInterceptor(),
+    if (kDebugMode)
+      TalkerDioLogger(
+        talker: logger,
+        settings: const TalkerDioLoggerSettings(
+          printRequestData: false,
+          printResponseData: false,
+          printErrorData: false,
         ),
-      if (Env.flavor == Flavor.dev && Env.isAutomated) TestFlagsInterceptor(),
-    ],
-  );
+      ),
+    if (Env.flavor == Flavor.dev && Env.isAutomated) TestFlagsInterceptor(),
+  ]);
 
   return dio;
 });
@@ -125,21 +115,14 @@ final subscriptionServicePOD = Provider<SubscriptionService>((ref) {
   final inAppPurchase = ref.watch(inAppPurchasePOD);
   final logger = ref.watch(loggerPOD);
 
-  return RestSubscriptionService(
-    api: api,
-    inAppPurchase: inAppPurchase,
-    logger: logger,
-  );
+  return RestSubscriptionService(api: api, inAppPurchase: inAppPurchase, logger: logger);
 });
 
 final apiServicePOD = Provider<ApiService>((ref) {
   final api = ref.watch(vpnApiPOD);
   final logger = ref.watch(loggerPOD);
 
-  return RestApiService(
-    api: api,
-    logger: logger,
-  );
+  return RestApiService(api: api, logger: logger);
 });
 
 final externalApiServicePOD = Provider<ExternalApiService>((ref) {
@@ -171,9 +154,7 @@ final authServicePOD = Provider<AuthService>((ref) {
 });
 final loggerPOD = Provider<Talker>((ref) {
   final analyticsStore = ref.watch(analyticsStorePOD);
-  return Talker(
-    observer: CrashlitycsLoggerObserver(analyticsStore: analyticsStore),
-  );
+  return Talker(observer: CrashlitycsLoggerObserver(analyticsStore: analyticsStore));
 });
 
 final remoteConfigClientPOD = Provider<ConfigCatClient>(
@@ -220,12 +201,10 @@ final assetsLoaderPOD = Provider<AssetLoader>((ref) {
 
 final filterServicePOD = Provider<FilterService>((ref) => FilterService());
 
-final locationsServicePOD = Provider<LocationsService>(
-  (ref) {
-    final api = ref.watch(vpnApiPOD);
-    return LocationsService(api.getConnection());
-  },
-);
+final locationsServicePOD = Provider<LocationsService>((ref) {
+  final api = ref.watch(vpnApiPOD);
+  return LocationsService(api.getConnection());
+});
 
 final assetsServicePOD = Provider((_) => const AssetsService());
 

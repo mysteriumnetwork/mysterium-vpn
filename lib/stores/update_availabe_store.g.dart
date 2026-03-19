@@ -12,13 +12,15 @@ mixin _$UpdateAvailableStore on _UpdateAvailableStore, Store {
   Computed<bool>? _$appUpdateAvailableComputed;
 
   @override
-  bool get appUpdateAvailable =>
-      (_$appUpdateAvailableComputed ??= Computed<bool>(() => super.appUpdateAvailable,
-              name: '_UpdateAvailableStore.appUpdateAvailable'))
-          .value;
+  bool get appUpdateAvailable => (_$appUpdateAvailableComputed ??= Computed<bool>(
+    () => super.appUpdateAvailable,
+    name: '_UpdateAvailableStore.appUpdateAvailable',
+  )).value;
 
-  late final _$updateAvailabilityFutureAtom =
-      Atom(name: '_UpdateAvailableStore.updateAvailabilityFuture', context: context);
+  late final _$updateAvailabilityFutureAtom = Atom(
+    name: '_UpdateAvailableStore.updateAvailabilityFuture',
+    context: context,
+  );
 
   @override
   ObservableFuture<UpdateAvailability?> get updateAvailabilityFuture {
@@ -31,14 +33,19 @@ mixin _$UpdateAvailableStore on _UpdateAvailableStore, Store {
   @override
   set updateAvailabilityFuture(ObservableFuture<UpdateAvailability?> value) {
     _$updateAvailabilityFutureAtom.reportWrite(
-        value, _updateAvailabilityFutureIsInitialized ? super.updateAvailabilityFuture : null, () {
-      super.updateAvailabilityFuture = value;
-      _updateAvailabilityFutureIsInitialized = true;
-    });
+      value,
+      _updateAvailabilityFutureIsInitialized ? super.updateAvailabilityFuture : null,
+      () {
+        super.updateAvailabilityFuture = value;
+        _updateAvailabilityFutureIsInitialized = true;
+      },
+    );
   }
 
-  late final _$_getNewVersionStatusAsyncAction =
-      AsyncAction('_UpdateAvailableStore._getNewVersionStatus', context: context);
+  late final _$_getNewVersionStatusAsyncAction = AsyncAction(
+    '_UpdateAvailableStore._getNewVersionStatus',
+    context: context,
+  );
 
   @override
   Future<UpdateAvailability?> _getNewVersionStatus() {

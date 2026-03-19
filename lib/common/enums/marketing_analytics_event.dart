@@ -1,6 +1,1 @@
-enum MarketingAnalyticsEvent {
-  afCompleteRegistration,
-  afLogin,
-  afStartTrial,
-  afSubscribe,
-}
+enum MarketingAnalyticsEvent { afCompleteRegistration, afLogin, afStartTrial, afSubscribe }

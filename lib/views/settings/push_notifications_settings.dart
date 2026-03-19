@@ -25,7 +25,8 @@ class PushNotificationsSetting extends HookConsumerWidget {
 
     return Observer(
       builder: (context) {
-        final visible = pushNotificationsStore.supportsPushNotifications &&
+        final visible =
+            pushNotificationsStore.supportsPushNotifications &&
             authSessionStore.status == AuthStatus.authenticated;
         return Visibility(
           visible: visible,
@@ -34,9 +35,7 @@ class PushNotificationsSetting extends HookConsumerWidget {
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: context.c.isDarkMode ? Palette.darkIndigo : Palette.grayContainer,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(20),
-              ),
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,9 +103,7 @@ class PushNotificationsSetting extends HookConsumerWidget {
         },
       );
     } catch (e) {
-      showSnackbar(
-        LocaleKeys.somethingWentWrong.tr(),
-      );
+      showSnackbar(LocaleKeys.somethingWentWrong.tr());
     }
   }
 }

@@ -12,9 +12,10 @@ mixin _$ThemeStore on _ThemeStore, Store {
   Computed<bool>? _$isDarkModeComputed;
 
   @override
-  bool get isDarkMode => (_$isDarkModeComputed ??=
-          Computed<bool>(() => super.isDarkMode, name: '_ThemeStore.isDarkMode'))
-      .value;
+  bool get isDarkMode => (_$isDarkModeComputed ??= Computed<bool>(
+    () => super.isDarkMode,
+    name: '_ThemeStore.isDarkMode',
+  )).value;
 
   late final _$themeModeAtom = Atom(name: '_ThemeStore.themeMode', context: context);
 
@@ -53,8 +54,10 @@ mixin _$ThemeStore on _ThemeStore, Store {
     return _$setThemeTypeAsyncAction.run(() => super.setThemeType(mode));
   }
 
-  late final _$updateSystemThemeAsyncAction =
-      AsyncAction('_ThemeStore.updateSystemTheme', context: context);
+  late final _$updateSystemThemeAsyncAction = AsyncAction(
+    '_ThemeStore.updateSystemTheme',
+    context: context,
+  );
 
   @override
   Future<void> updateSystemTheme() {

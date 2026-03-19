@@ -1,6 +1,1 @@
-enum ConnectionAction {
-  disconnect,
-  connect,
-  reconnect,
-  refreshIP,
-}
+enum ConnectionAction { disconnect, connect, reconnect, refreshIP }

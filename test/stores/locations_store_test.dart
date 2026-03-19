@@ -39,19 +39,19 @@ void main() {
   late List<VPNLocation> mockDatacenter;
 
   ConnectionLocationCity cityFromLocation(VPNLocation location) => ConnectionLocationCity(
-        city: location.id,
-        total: location.nodeCount ?? 0,
-        translations: location.translations,
-        latitude: location.coordinates?.latitude,
-        longitude: location.coordinates?.longitude,
-      );
+    city: location.id,
+    total: location.nodeCount ?? 0,
+    translations: location.translations,
+    latitude: location.coordinates?.latitude,
+    longitude: location.coordinates?.longitude,
+  );
 
   ConnectionLocation countryFromLocation(VPNLocation location) => ConnectionLocation(
-        country: location.id,
-        total: location.nodeCount ?? 0,
-        translations: location.translations,
-        cities: location.children?.map(cityFromLocation).toList() ?? [],
-      );
+    country: location.id,
+    total: location.nodeCount ?? 0,
+    translations: location.translations,
+    cities: location.children?.map(cityFromLocation).toList() ?? [],
+  );
 
   Response<List<ConnectionLocation>> mockResponse(List<VPNLocation> locations) =>
       Response<List<ConnectionLocation>>(
@@ -88,21 +88,17 @@ void main() {
     when(mockQuery.search).thenReturn('');
     when(mockQuery.searchTrimmed).thenReturn('');
     when(mockRemoteConfigStore.locationsRefreshInterval).thenReturn(const Duration(hours: 1));
-    when(mockApiConnection.connectionLocations(ipType: IPType.datacenter.key)).thenAnswer(
-      (_) async => mockResponse(mockDatacenter),
-    );
-    when(mockApiConnection.connectionLocations(ipType: IPType.residential.key)).thenAnswer(
-      (_) async => mockResponse(mockResidential),
-    );
+    when(
+      mockApiConnection.connectionLocations(ipType: IPType.datacenter.key),
+    ).thenAnswer((_) async => mockResponse(mockDatacenter));
+    when(
+      mockApiConnection.connectionLocations(ipType: IPType.residential.key),
+    ).thenAnswer((_) async => mockResponse(mockResidential));
 
     when(mockLocalDB.getLocations(IPType.datacenter)).thenAnswer((_) async => VPNLocations());
     when(mockLocalDB.getLocations(IPType.residential)).thenAnswer((_) async => VPNLocations());
-    when(mockLocalDB.watchLocations(IPType.datacenter)).thenAnswer(
-      (_) => const Stream.empty(),
-    );
-    when(mockLocalDB.watchLocations(IPType.residential)).thenAnswer(
-      (_) => const Stream.empty(),
-    );
+    when(mockLocalDB.watchLocations(IPType.datacenter)).thenAnswer((_) => const Stream.empty());
+    when(mockLocalDB.watchLocations(IPType.residential)).thenAnswer((_) => const Stream.empty());
     when(
       mockFilterService.filterLocations(
         any,

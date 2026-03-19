@@ -64,19 +64,12 @@ class _DeleteAccountDialog extends HookWidget {
       clipBehavior: Clip.none,
       alignment: Alignment.center,
       children: [
-        Positioned(
-          top: -15,
-          child: SvgIcon(
-            asset: Asset.icons.warning,
-          ),
-        ),
+        Positioned(top: -15, child: SvgIcon(asset: Asset.icons.warning)),
         Observer(
           builder: (context) => Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              HeaderTitle(
-                text: LocaleKeys.deleteAccountQuestion.tr(),
-              ),
+              HeaderTitle(text: LocaleKeys.deleteAccountQuestion.tr()),
               EasyText(
                 LocaleKeys.cancelYourSubsMess.tr(),
                 fontSize: 14,
@@ -84,11 +77,7 @@ class _DeleteAccountDialog extends HookWidget {
                 fontWeight: FontWeight.w700,
                 textAlign: TextAlign.center,
               ).padding(bottom: 30),
-              EasyText(
-                LocaleKeys.typeDelete.tr(),
-                fontSize: 14,
-                maxLines: 3,
-              ).padding(bottom: 10),
+              EasyText(LocaleKeys.typeDelete.tr(), fontSize: 14, maxLines: 3).padding(bottom: 10),
               TextField(
                 style: TextStyle(
                   color: context.c.isDarkMode ? Palette.veryLightGrey : Palette.black,
@@ -111,16 +100,14 @@ class _DeleteAccountDialog extends HookWidget {
                 onTap: () {
                   analyticsStore.logEvent(AnalyticsEvent.deleteAccountInput);
                 },
-                onTapOutside: (_) => FocusScope.of(
-                  context,
-                  createDependency: false,
-                ).unfocus(),
+                onTapOutside: (_) => FocusScope.of(context, createDependency: false).unfocus(),
               ).height(40).padding(bottom: 30),
               EasyButton(
                 useSystemColor: false,
                 width: 160,
                 color: Palette.pink,
-                onPressed: confirmationMessage.value == 'DELETE' &&
+                onPressed:
+                    confirmationMessage.value == 'DELETE' &&
                         authStore.deleteAccountFeature.status != FutureStatus.pending
                     ? () async {
                         analyticsStore.logEvent(AnalyticsEvent.deleteAccountConfirm);
@@ -131,9 +118,7 @@ class _DeleteAccountDialog extends HookWidget {
                             context,
                             LocaleKeys.accountSuccessfullyDeleted.tr(),
                             isDismissible: false,
-                            messages: [
-                              LocaleKeys.redirectToLoginPage.tr(),
-                            ],
+                            messages: [LocaleKeys.redirectToLoginPage.tr()],
                             onConfirm: () async {
                               await vpnStore.disconnectTunnel();
                               authStore.logout();

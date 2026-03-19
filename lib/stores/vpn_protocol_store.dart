@@ -61,22 +61,17 @@ abstract class _VpnProtocolStore with Store {
       }
       final protocol = await _localDB.getProtocolType();
       _analyticsStore.setUserProperty(
-        AnalyticsUserProperty.fromEnum(
-          name: AnalyticsUserPropName.protocol,
-          value: protocol.name,
-        ),
+        AnalyticsUserProperty.fromEnum(name: AnalyticsUserPropName.protocol, value: protocol.name),
       );
       return protocol;
     } catch (e) {
       Sentry.captureException(
         e,
         stackTrace: StackTrace.current,
-        hint: Hint.withMap(
-          {
-            'platform': defaultTargetPlatform.name,
-            'hint': 'Failed to get protocol from local DB',
-          },
-        ),
+        hint: Hint.withMap({
+          'platform': defaultTargetPlatform.name,
+          'hint': 'Failed to get protocol from local DB',
+        }),
       );
       return _defaultProtocol;
     }
@@ -90,25 +85,22 @@ abstract class _VpnProtocolStore with Store {
     try {
       protocolFuture = ObservableFuture.value(newProtocol);
       await _localDB.setProtocolType(newProtocol);
-      _analyticsStore
-          .logEvent(AnalyticsEvent.changeProtocolType, parameters: {'protocol': newProtocol.name});
+      _analyticsStore.logEvent(
+        AnalyticsEvent.changeProtocolType,
+        parameters: {'protocol': newProtocol.name},
+      );
     } catch (e) {
       Sentry.captureException(
         e,
         stackTrace: StackTrace.current,
-        hint: Hint.withMap(
-          {
-            'platform': defaultTargetPlatform.name,
-            'hint': 'Failed to set protocol in local DB',
-          },
-        ),
+        hint: Hint.withMap({
+          'platform': defaultTargetPlatform.name,
+          'hint': 'Failed to set protocol in local DB',
+        }),
       );
       _analyticsStore.logEvent(
         AnalyticsEvent.changeProtocolTypeError,
-        parameters: {
-          'error': e.toString(),
-          'protocol': newProtocol.name,
-        },
+        parameters: {'error': e.toString(), 'protocol': newProtocol.name},
       );
       rethrow;
     }

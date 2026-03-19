@@ -8,11 +8,7 @@ class TestFlagsInterceptor extends InterceptorsWrapper {
     if (options.path.endsWith('/magic-link')) {
       // if the request is for magic link, add quick_auth query parameter to request
       return handler.next(
-        options
-          ..queryParameters = {
-            ...options.queryParameters,
-            'quick_auth': true,
-          },
+        options..queryParameters = {...options.queryParameters, 'quick_auth': true},
       );
     }
 

@@ -25,18 +25,13 @@ class SvgIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => IconButton(
-        visualDensity: visualDensity,
-        style: IconButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          padding: EdgeInsets.zero,
-          tapTargetSize: tapTargetSize,
-        ),
-        onPressed: onPressed,
-        icon: SvgIcon(
-          asset: asset,
-          width: size,
-          height: size,
-          color: color,
-        ),
-      );
+    visualDensity: visualDensity,
+    style: IconButton.styleFrom(
+      backgroundColor: Colors.transparent,
+      padding: EdgeInsets.zero,
+      tapTargetSize: tapTargetSize,
+    ),
+    onPressed: onPressed,
+    icon: SvgIcon(asset: asset, width: size, height: size, color: color),
+  );
 }

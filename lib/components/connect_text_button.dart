@@ -44,8 +44,9 @@ class ConnectTextButton extends HookConsumerWidget {
     final isConnected = useIsLocationConnected(location);
     final textConnect = this.textConnect ?? LocaleKeys.connect.tr();
     final textDisconnect = this.textDisconnect ?? LocaleKeys.disconnect.tr();
-    final buttonFallbackMode =
-        outlinedButton ? AsyncTextButtonMode.outlined : AsyncTextButtonMode.elevated;
+    final buttonFallbackMode = outlinedButton
+        ? AsyncTextButtonMode.outlined
+        : AsyncTextButtonMode.elevated;
     final handleUpgradeSub = useHandleUpgradePlan();
 
     void onPressed() {
@@ -75,8 +76,7 @@ class ConnectTextButton extends HookConsumerWidget {
           mode: switch (mode) {
             _Mode.connected ||
             _Mode.connecting ||
-            _Mode.unsupportedByPlan =>
-              AsyncTextButtonMode.filled,
+            _Mode.unsupportedByPlan => AsyncTextButtonMode.filled,
             _ => buttonFallbackMode,
           },
           onPressed: switch (mode) {

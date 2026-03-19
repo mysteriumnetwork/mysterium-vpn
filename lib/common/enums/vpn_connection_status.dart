@@ -7,6 +7,8 @@ enum VpnConnectionStatus {
   disconnected,
   unknown;
 
-  factory VpnConnectionStatus.fromString(String s) => VpnConnectionStatus.values
-      .firstWhere((v) => v.name == s, orElse: () => VpnConnectionStatus.unknown);
+  factory VpnConnectionStatus.fromString(String s) => VpnConnectionStatus.values.firstWhere(
+    (v) => v.name == s,
+    orElse: () => VpnConnectionStatus.unknown,
+  );
 }

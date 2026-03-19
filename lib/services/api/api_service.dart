@@ -11,7 +11,5 @@ abstract class ApiService {
   Future<bool> getMarketingContactStatus();
   Future<void> disconnect();
   Future<Set<UserIntent>> fetchUserIntents();
-  Future<OpenVpnConnectResponse> fetchOpenVpnConfig({
-    required OpenVpnConnectRequest request,
-  });
+  Future<OpenVpnConnectResponse> fetchOpenVpnConfig({required OpenVpnConnectRequest request});
 }

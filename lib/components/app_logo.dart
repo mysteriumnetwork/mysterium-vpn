@@ -5,10 +5,7 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 
 class AppLogo extends HookWidget {
-  const AppLogo({
-    super.key,
-    this.brightness,
-  });
+  const AppLogo({super.key, this.brightness});
 
   final Brightness? brightness;
 

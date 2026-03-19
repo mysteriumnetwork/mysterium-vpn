@@ -8,10 +8,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
 
 class NetworkLoggerOverlayView extends StatefulHookConsumerWidget {
-  const NetworkLoggerOverlayView({
-    required this.child,
-    super.key,
-  });
+  const NetworkLoggerOverlayView({required this.child, super.key});
 
   final Widget child;
 
@@ -43,9 +40,7 @@ class _NetworkLoggerOverlayViewState extends ConsumerState<NetworkLoggerOverlayV
   @override
   Widget build(BuildContext context) {
     final store = ref.watch(remoteConfigStorePOD);
-    final enableQAHelpers = useComputedValue(
-      () => store.enableQaHelpers,
-    );
+    final enableQAHelpers = useComputedValue(() => store.enableQaHelpers);
     final shouldShowLogger = !kReleaseMode || enableQAHelpers;
 
     if (shouldShowLogger) {

@@ -8,34 +8,18 @@ part 'ab_testing_store.g.dart';
 /// [name]'s are added to user properties to the analytics service.
 /// Properties are sent as strings and converted to snake_case.
 /// The [name] of the event. Should contain 1 to 24 alphanumeric characters or underscores
-enum _ABKey {
-  subscriptionFlow,
-  tunnelConsent,
-}
+enum _ABKey { subscriptionFlow, tunnelConsent }
 
 class ABTestingStore = ABTestingStoreBase with _$ABTestingStore;
 
 abstract class ABTestingStoreBase extends ConfigCatStore with Store {
-  ABTestingStoreBase(
-    super.client,
-    super.logger,
-    this._analytics,
-  ) {
-    reaction(
-      (_) => configFuture,
-      (future) async {
-        await future;
-        asUserProperties.forEach((key, value) async {
-          await _analytics.setUserProperty(
-            AnalyticsUserProperty.fromString(
-              name: key,
-              value: value,
-            ),
-          );
-        });
-      },
-      fireImmediately: true,
-    );
+  ABTestingStoreBase(super.client, super.logger, this._analytics) {
+    reaction((_) => configFuture, (future) async {
+      await future;
+      asUserProperties.forEach((key, value) async {
+        await _analytics.setUserProperty(AnalyticsUserProperty.fromString(name: key, value: value));
+      });
+    }, fireImmediately: true);
   }
 
   final AnalyticsStore _analytics;

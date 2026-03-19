@@ -42,12 +42,7 @@ Future<void> shownInfoDialog(
 }
 
 class _InfoDialog extends HookWidget {
-  const _InfoDialog({
-    required this.title,
-    this.messages,
-    this.onConfirm,
-    this.confirmText,
-  });
+  const _InfoDialog({required this.title, this.messages, this.onConfirm, this.confirmText});
 
   final String title;
   final List<String>? messages;
@@ -56,45 +51,40 @@ class _InfoDialog extends HookWidget {
 
   @override
   Widget build(BuildContext context) => Stack(
-        clipBehavior: Clip.none,
-        alignment: Alignment.center,
+    clipBehavior: Clip.none,
+    alignment: Alignment.center,
+    children: [
+      Positioned(top: -15, child: SvgIcon(asset: Asset.icons.warning)),
+      Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Positioned(
-            top: -15,
-            child: SvgIcon(
-              asset: Asset.icons.warning,
-            ),
+          EasyText(
+            title,
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            maxLines: 3,
+            textAlign: TextAlign.center,
           ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
+          const SizedBox(height: 20),
+          if (messages != null && messages!.isNotEmpty) ...[
+            for (final message in messages!)
               EasyText(
-                title,
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                maxLines: 3,
+                message,
+                fontSize: 14,
+                maxLines: 4,
                 textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              if (messages != null && messages!.isNotEmpty) ...[
-                for (final message in messages!)
-                  EasyText(
-                    message,
-                    fontSize: 14,
-                    maxLines: 4,
-                    textAlign: TextAlign.center,
-                  ).padding(bottom: 6),
-                const SizedBox(height: 30),
-              ],
-              EasyButton(
-                useSystemColor: false,
-                width: 160,
-                color: Palette.pink,
-                onPressed: onConfirm ?? () => Beamer.of(context).popRoute(),
-                text: confirmText ?? LocaleKeys.continueBtn.tr(),
-              ),
-            ],
-          ).padding(horizontal: 20, vertical: 40),
+              ).padding(bottom: 6),
+            const SizedBox(height: 30),
+          ],
+          EasyButton(
+            useSystemColor: false,
+            width: 160,
+            color: Palette.pink,
+            onPressed: onConfirm ?? () => Beamer.of(context).popRoute(),
+            text: confirmText ?? LocaleKeys.continueBtn.tr(),
+          ),
         ],
-      );
+      ).padding(horizontal: 20, vertical: 40),
+    ],
+  );
 }

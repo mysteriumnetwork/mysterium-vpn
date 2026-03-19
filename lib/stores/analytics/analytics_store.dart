@@ -37,10 +37,7 @@ mixin AnalyticsStore {
 
   List<NavigatorObserver> navigationObservers();
 
-  Future<void> logEvent(
-    AnalyticsEvent event, {
-    Map<String, dynamic>? parameters,
-  }) async {
+  Future<void> logEvent(AnalyticsEvent event, {Map<String, dynamic>? parameters}) async {
     _logStreamController.add(
       AnalyticsLogEntry(
         message: event.formattedName,
@@ -54,9 +51,7 @@ mixin AnalyticsStore {
   Future<void> setUserId(String id);
 
   Future<void> setUserProperty(AnalyticsUserProperty property) async {
-    _userPropertiesStreamController.add(
-      property,
-    );
+    _userPropertiesStreamController.add(property);
   }
 
   Future<void> setLogin([GrantType loginMethod = GrantType.email]);
@@ -85,12 +80,9 @@ mixin AnalyticsStore {
   }
 
   Future<void> logLocationsListScroll() async {
-    _debouncer.debounce(
-      () {
-        logEvent(AnalyticsEvent.scrollLocations);
-      },
-      const Duration(milliseconds: 800),
-    );
+    _debouncer.debounce(() {
+      logEvent(AnalyticsEvent.scrollLocations);
+    }, const Duration(milliseconds: 800));
   }
 
   Future<void> logThemeChange(String themeMode) async {
@@ -98,18 +90,12 @@ mixin AnalyticsStore {
   }
 
   Future<void> logLanguageChange(String language) async {
-    logEvent(
-      AnalyticsEvent.setLanguageCode,
-      parameters: {'language': language},
-    );
+    logEvent(AnalyticsEvent.setLanguageCode, parameters: {'language': language});
   }
 
   Future<void> setConsents();
 
-  Future<void> logProductSelected(
-    String productId,
-    List<String> productIds,
-  ) async {
+  Future<void> logProductSelected(String productId, List<String> productIds) async {
     AnalyticsEvent? event;
     if (productId == kAnnualPlan) {
       event = AnalyticsEvent.click1YearPlan;
@@ -119,20 +105,12 @@ mixin AnalyticsStore {
       event = AnalyticsEvent.click6MonthsPlan;
     }
     if (event != null) {
-      logEvent(
-        event,
-        parameters: {
-          'item_ids': productIds,
-        },
-      );
+      logEvent(event, parameters: {'item_ids': productIds});
     }
   }
 
   Future<void> logBannerClose(BannerType banner) async {
-    await logEvent(
-      AnalyticsEvent.bannerClose,
-      parameters: {'banner': banner.name},
-    );
+    await logEvent(AnalyticsEvent.bannerClose, parameters: {'banner': banner.name});
   }
 
   Future<void> logBannerClick(BannerType banner) async {
@@ -140,10 +118,7 @@ mixin AnalyticsStore {
   }
 
   Future<void> logLocationTabOpen(IPType locationType) async {
-    logEvent(
-      AnalyticsEvent.locationsTabOpen,
-      parameters: {'ip_type': locationType.name},
-    );
+    logEvent(AnalyticsEvent.locationsTabOpen, parameters: {'ip_type': locationType.name});
   }
 
   Future<void> logConnect(
@@ -212,8 +187,8 @@ mixin AnalyticsStore {
         'time': time.inSeconds,
         'error': error,
         'error_type': errorType,
-        if (errorCode != null) 'error_code': errorCode,
-        if (errorMessage != null) 'error_message': errorMessage,
+        'error_code': ?errorCode,
+        'error_message': ?errorMessage,
         'protocol': protocol.name,
       },
     );
@@ -247,26 +222,17 @@ mixin AnalyticsStore {
   }
 
   Future<void> logTabChange(IPType type) async {
-    await logEvent(
-      AnalyticsEvent.locationsTabClick,
-      parameters: {'tab': type.name},
-    );
+    await logEvent(AnalyticsEvent.locationsTabClick, parameters: {'tab': type.name});
   }
 
   Future<void> setDeviceInfo() async {}
 
   Future<void> logRateConnnectionClicked(RateConnectionRequestModeEnum mode) async {
-    logEvent(
-      AnalyticsEvent.rateConnectionClicked,
-      parameters: {'mode': mode.name},
-    );
+    logEvent(AnalyticsEvent.rateConnectionClicked, parameters: {'mode': mode.name});
   }
 
   Future<void> logRateConnectionCancel(RateConnectionRequestModeEnum mode) async {
-    logEvent(
-      AnalyticsEvent.rateConnectionCancel,
-      parameters: {'mode': mode.name},
-    );
+    logEvent(AnalyticsEvent.rateConnectionCancel, parameters: {'mode': mode.name});
   }
 
   Future<void> logPaymentSuccess({
@@ -309,10 +275,7 @@ mixin AnalyticsStore {
   }) async {
     await logEvent(
       AnalyticsEvent.subscriptionCancellationSurvey,
-      parameters: {
-        'reasons': reasons.join(','),
-        if (feedback != null) 'feedback': feedback,
-      },
+      parameters: {'reasons': reasons.join(','), 'feedback': ?feedback},
     );
   }
 
@@ -353,10 +316,7 @@ mixin AnalyticsStore {
   }
 
   Future<void> logSubscriptionUpgradeInfoClick(String url) async {
-    await logEvent(
-      AnalyticsEvent.subUpgradeInfoClick,
-      parameters: {'url': url},
-    );
+    await logEvent(AnalyticsEvent.subUpgradeInfoClick, parameters: {'url': url});
   }
 
   Future<void> logPushNotificationsPermissionsChanged({required bool permissionsGranted}) async {

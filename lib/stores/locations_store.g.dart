@@ -12,44 +12,51 @@ mixin _$LocationsStore on _LocationsStore, Store {
   Computed<ObservableFuture<VPNLocations>>? _$locationsFutureComputed;
 
   @override
-  ObservableFuture<VPNLocations> get locationsFuture => (_$locationsFutureComputed ??=
-          Computed<ObservableFuture<VPNLocations>>(() => super.locationsFuture,
-              name: '_LocationsStore.locationsFuture'))
-      .value;
+  ObservableFuture<VPNLocations> get locationsFuture =>
+      (_$locationsFutureComputed ??= Computed<ObservableFuture<VPNLocations>>(
+        () => super.locationsFuture,
+        name: '_LocationsStore.locationsFuture',
+      )).value;
   Computed<Set<String>>? _$countryCodesComputed;
 
   @override
-  Set<String> get countryCodes => (_$countryCodesComputed ??=
-          Computed<Set<String>>(() => super.countryCodes, name: '_LocationsStore.countryCodes'))
-      .value;
+  Set<String> get countryCodes => (_$countryCodesComputed ??= Computed<Set<String>>(
+    () => super.countryCodes,
+    name: '_LocationsStore.countryCodes',
+  )).value;
   Computed<List<VPNLocation>>? _$locationsComputed;
 
   @override
-  List<VPNLocation> get locations => (_$locationsComputed ??=
-          Computed<List<VPNLocation>>(() => super.locations, name: '_LocationsStore.locations'))
-      .value;
+  List<VPNLocation> get locations => (_$locationsComputed ??= Computed<List<VPNLocation>>(
+    () => super.locations,
+    name: '_LocationsStore.locations',
+  )).value;
   Computed<List<VPNLocation>>? _$topLocationsComputed;
 
   @override
-  List<VPNLocation> get topLocations =>
-      (_$topLocationsComputed ??= Computed<List<VPNLocation>>(() => super.topLocations,
-              name: '_LocationsStore.topLocations'))
-          .value;
+  List<VPNLocation> get topLocations => (_$topLocationsComputed ??= Computed<List<VPNLocation>>(
+    () => super.topLocations,
+    name: '_LocationsStore.topLocations',
+  )).value;
   Computed<bool?>? _$isEmptyComputed;
 
   @override
-  bool? get isEmpty =>
-      (_$isEmptyComputed ??= Computed<bool?>(() => super.isEmpty, name: '_LocationsStore.isEmpty'))
-          .value;
+  bool? get isEmpty => (_$isEmptyComputed ??= Computed<bool?>(
+    () => super.isEmpty,
+    name: '_LocationsStore.isEmpty',
+  )).value;
   Computed<List<IPType>>? _$locationTypesComputed;
 
   @override
-  List<IPType> get locationTypes => (_$locationTypesComputed ??=
-          Computed<List<IPType>>(() => super.locationTypes, name: '_LocationsStore.locationTypes'))
-      .value;
+  List<IPType> get locationTypes => (_$locationTypesComputed ??= Computed<List<IPType>>(
+    () => super.locationTypes,
+    name: '_LocationsStore.locationTypes',
+  )).value;
 
-  late final _$_dcLocationsFutureAtom =
-      Atom(name: '_LocationsStore._dcLocationsFuture', context: context);
+  late final _$_dcLocationsFutureAtom = Atom(
+    name: '_LocationsStore._dcLocationsFuture',
+    context: context,
+  );
 
   ObservableFuture<VPNLocations> get dcLocationsFuture {
     _$_dcLocationsFutureAtom.reportRead();
@@ -63,15 +70,20 @@ mixin _$LocationsStore on _LocationsStore, Store {
 
   @override
   set _dcLocationsFuture(ObservableFuture<VPNLocations> value) {
-    _$_dcLocationsFutureAtom
-        .reportWrite(value, __dcLocationsFutureIsInitialized ? super._dcLocationsFuture : null, () {
-      super._dcLocationsFuture = value;
-      __dcLocationsFutureIsInitialized = true;
-    });
+    _$_dcLocationsFutureAtom.reportWrite(
+      value,
+      __dcLocationsFutureIsInitialized ? super._dcLocationsFuture : null,
+      () {
+        super._dcLocationsFuture = value;
+        __dcLocationsFutureIsInitialized = true;
+      },
+    );
   }
 
-  late final _$_residentialLocationsFutureAtom =
-      Atom(name: '_LocationsStore._residentialLocationsFuture', context: context);
+  late final _$_residentialLocationsFutureAtom = Atom(
+    name: '_LocationsStore._residentialLocationsFuture',
+    context: context,
+  );
 
   ObservableFuture<VPNLocations> get residentialLocationsFuture {
     _$_residentialLocationsFutureAtom.reportRead();
@@ -86,11 +98,13 @@ mixin _$LocationsStore on _LocationsStore, Store {
   @override
   set _residentialLocationsFuture(ObservableFuture<VPNLocations> value) {
     _$_residentialLocationsFutureAtom.reportWrite(
-        value, __residentialLocationsFutureIsInitialized ? super._residentialLocationsFuture : null,
-        () {
-      super._residentialLocationsFuture = value;
-      __residentialLocationsFutureIsInitialized = true;
-    });
+      value,
+      __residentialLocationsFutureIsInitialized ? super._residentialLocationsFuture : null,
+      () {
+        super._residentialLocationsFuture = value;
+        __residentialLocationsFutureIsInitialized = true;
+      },
+    );
   }
 
   late final _$_fetchAsyncAction = AsyncAction('_LocationsStore._fetch', context: context);
@@ -114,13 +128,16 @@ mixin _$LocationsStore on _LocationsStore, Store {
     return _$clearAsyncAction.run(() => super.clear());
   }
 
-  late final _$_LocationsStoreActionController =
-      ActionController(name: '_LocationsStore', context: context);
+  late final _$_LocationsStoreActionController = ActionController(
+    name: '_LocationsStore',
+    context: context,
+  );
 
   @override
   Future<void> refreshAll() {
-    final _$actionInfo =
-        _$_LocationsStoreActionController.startAction(name: '_LocationsStore.refreshAll');
+    final _$actionInfo = _$_LocationsStoreActionController.startAction(
+      name: '_LocationsStore.refreshAll',
+    );
     try {
       return super.refreshAll();
     } finally {
@@ -131,7 +148,8 @@ mixin _$LocationsStore on _LocationsStore, Store {
   @override
   void insertInvalidLocations() {
     final _$actionInfo = _$_LocationsStoreActionController.startAction(
-        name: '_LocationsStore.insertInvalidLocations');
+      name: '_LocationsStore.insertInvalidLocations',
+    );
     try {
       return super.insertInvalidLocations();
     } finally {

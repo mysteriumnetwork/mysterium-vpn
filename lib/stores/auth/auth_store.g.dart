@@ -26,8 +26,10 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$_authenticatingTypeAtom =
-      Atom(name: '_AuthStore._authenticatingType', context: context);
+  late final _$_authenticatingTypeAtom = Atom(
+    name: '_AuthStore._authenticatingType',
+    context: context,
+  );
 
   GrantType? get authenticatingType {
     _$_authenticatingTypeAtom.reportRead();
@@ -104,8 +106,10 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$deleteAccountFeatureAtom =
-      Atom(name: '_AuthStore.deleteAccountFeature', context: context);
+  late final _$deleteAccountFeatureAtom = Atom(
+    name: '_AuthStore.deleteAccountFeature',
+    context: context,
+  );
 
   @override
   ObservableFuture<void> get deleteAccountFeature {
@@ -120,8 +124,10 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$authenticateFeatureAtom =
-      Atom(name: '_AuthStore.authenticateFeature', context: context);
+  late final _$authenticateFeatureAtom = Atom(
+    name: '_AuthStore.authenticateFeature',
+    context: context,
+  );
 
   @override
   ObservableFuture<TokenResponse>? get authenticateFeature {
@@ -136,8 +142,10 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$getLastLoggedInUserAsyncAction =
-      AsyncAction('_AuthStore.getLastLoggedInUser', context: context);
+  late final _$getLastLoggedInUserAsyncAction = AsyncAction(
+    '_AuthStore.getLastLoggedInUser',
+    context: context,
+  );
 
   @override
   Future<String?> getLastLoggedInUser() {
@@ -165,13 +173,16 @@ mixin _$AuthStore on _AuthStore, Store {
     return _$authenticateAsyncAction.run(() => super.authenticate(grantType, feature));
   }
 
-  late final _$_initializeAuthenticatedUserAsyncAction =
-      AsyncAction('_AuthStore._initializeAuthenticatedUser', context: context);
+  late final _$_initializeAuthenticatedUserAsyncAction = AsyncAction(
+    '_AuthStore._initializeAuthenticatedUser',
+    context: context,
+  );
 
   @override
   Future<void> _initializeAuthenticatedUser(AuthUser user) {
-    return _$_initializeAuthenticatedUserAsyncAction
-        .run(() => super._initializeAuthenticatedUser(user));
+    return _$_initializeAuthenticatedUserAsyncAction.run(
+      () => super._initializeAuthenticatedUser(user),
+    );
   }
 
   late final _$logoutAsyncAction = AsyncAction('_AuthStore.logout', context: context);
@@ -181,24 +192,30 @@ mixin _$AuthStore on _AuthStore, Store {
     return _$logoutAsyncAction.run(() => super.logout(invalidateRemotely: invalidateRemotely));
   }
 
-  late final _$signInwithEmailAsyncAction =
-      AsyncAction('_AuthStore.signInwithEmail', context: context);
+  late final _$signInwithEmailAsyncAction = AsyncAction(
+    '_AuthStore.signInwithEmail',
+    context: context,
+  );
 
   @override
   Future<String?> signInwithEmail({required String email}) {
     return _$signInwithEmailAsyncAction.run(() => super.signInwithEmail(email: email));
   }
 
-  late final _$signInWithGoogleAsyncAction =
-      AsyncAction('_AuthStore.signInWithGoogle', context: context);
+  late final _$signInWithGoogleAsyncAction = AsyncAction(
+    '_AuthStore.signInWithGoogle',
+    context: context,
+  );
 
   @override
   Future<void> signInWithGoogle() {
     return _$signInWithGoogleAsyncAction.run(() => super.signInWithGoogle());
   }
 
-  late final _$signInWithAppleAsyncAction =
-      AsyncAction('_AuthStore.signInWithApple', context: context);
+  late final _$signInWithAppleAsyncAction = AsyncAction(
+    '_AuthStore.signInWithApple',
+    context: context,
+  );
 
   @override
   Future<void> signInWithApple() {

@@ -14,10 +14,7 @@ import 'package:styled_widget/styled_widget.dart';
 Future<void> showPushNotificationsPermissionDialog(BuildContext context) async {
   await showModal(
     context,
-    builder: (_) => Theme(
-      data: DesignSystemTheme.of(context),
-      child: const _DialogContent(),
-    ),
+    builder: (_) => Theme(data: DesignSystemTheme.of(context), child: const _DialogContent()),
   );
 }
 
@@ -34,10 +31,7 @@ class _DialogContent extends ConsumerWidget {
       body: Padding(
         padding: ModalPadding.insets(
           context,
-          add: const EdgeInsets.symmetric(
-            vertical: 40,
-            horizontal: 40,
-          ),
+          add: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
         ),
         child: Column(
           children: [
@@ -46,18 +40,12 @@ class _DialogContent extends ConsumerWidget {
             const SizedBox(height: 12),
             Text(
               LocaleKeys.pushNotificationsConsentPopupTitle.tr(),
-              style: GoogleFonts.montserrat(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
+              style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
             Text(
               LocaleKeys.pushNotificationsConsentPopupDesc.tr(),
-              style: GoogleFonts.montserrat(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-              ),
+              style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w400),
               textAlign: TextAlign.center,
             ).padding(bottom: 24, top: 12),
             const Spacer(),
@@ -67,9 +55,7 @@ class _DialogContent extends ConsumerWidget {
                 userPreferencesStore: userPreferencesStore,
                 userAllowed: true,
               ),
-              child: Text(
-                LocaleKeys.allowPushNotificationsBtn.tr(),
-              ),
+              child: Text(LocaleKeys.allowPushNotificationsBtn.tr()),
             ).width(double.infinity),
             ButtonSecondary(
               onPressed: () => _completePushNotificationsFlow(
@@ -77,9 +63,7 @@ class _DialogContent extends ConsumerWidget {
                 userPreferencesStore: userPreferencesStore,
                 userAllowed: false,
               ),
-              child: Text(
-                LocaleKeys.notNowBtn.tr(),
-              ),
+              child: Text(LocaleKeys.notNowBtn.tr()),
             ).padding(top: 16).width(double.infinity),
           ],
         ),

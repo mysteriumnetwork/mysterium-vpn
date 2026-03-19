@@ -62,49 +62,44 @@ class VerificationFailedDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SafeArea(
-        top: false,
-        child: Stack(
-          clipBehavior: Clip.none,
-          alignment: Alignment.center,
+    top: false,
+    child: Stack(
+      clipBehavior: Clip.none,
+      alignment: Alignment.center,
+      children: [
+        Positioned(top: -15, child: SvgIcon(asset: asset)),
+        Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Positioned(
-              top: -15,
-              child: SvgIcon(asset: asset),
-            ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
+            HeaderTitle(text: title),
+            EasyText(
+              subtitle,
+              fontSize: 14,
+              maxLines: 4,
+              textAlign: TextAlign.center,
+            ).padding(bottom: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                HeaderTitle(
-                  text: title,
+                EasyButton(
+                  useSystemColor: false,
+                  color: Palette.lightBlack,
+                  text: dismissText ?? LocaleKeys.goBackButton.tr(),
+                  onPressed: onDismiss,
+                  width: 160,
                 ),
-                EasyText(
-                  subtitle,
-                  fontSize: 14,
-                  maxLines: 4,
-                  textAlign: TextAlign.center,
-                ).padding(bottom: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    EasyButton(
-                      useSystemColor: false,
-                      color: Palette.lightBlack,
-                      text: dismissText ?? LocaleKeys.goBackButton.tr(),
-                      onPressed: onDismiss,
-                      width: 160,
-                    ),
-                    EasyButton(
-                      useSystemColor: false,
-                      color: Palette.purple,
-                      text: LocaleKeys.retryBtn.tr(),
-                      onPressed: onRetry,
-                      width: 160,
-                    ),
-                  ],
+                EasyButton(
+                  useSystemColor: false,
+                  color: Palette.purple,
+                  text: LocaleKeys.retryBtn.tr(),
+                  onPressed: onRetry,
+                  width: 160,
                 ),
               ],
-            ).padding(horizontal: 20, top: 40, bottom: 24),
+            ),
           ],
-        ),
-      );
+        ).padding(horizontal: 20, top: 40, bottom: 24),
+      ],
+    ),
+  );
 }

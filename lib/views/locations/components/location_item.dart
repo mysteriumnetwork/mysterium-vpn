@@ -18,11 +18,7 @@ import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class LocationItem extends HookConsumerWidget {
-  const LocationItem({
-    required this.location,
-    required this.onTap,
-    super.key,
-  });
+  const LocationItem({required this.location, required this.onTap, super.key});
 
   final VPNLocation location;
   final void Function(VPNLocation) onTap;
@@ -53,19 +49,16 @@ class LocationItem extends HookConsumerWidget {
       isExpanded.value = !isExpanded.value;
     }
 
-    useEffect(
-      () {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (context.mounted) {
-            isExpanded.value = query.isNotEmpty &&
-                childrenRef.value
-                    .any((it) => it.queried(query, context.locale.languageCode) != null);
-          }
-        });
-        return null;
-      },
-      [query, isExpanded, childrenRef],
-    );
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (context.mounted) {
+          isExpanded.value =
+              query.isNotEmpty &&
+              childrenRef.value.any((it) => it.queried(query, context.locale.languageCode) != null);
+        }
+      });
+      return null;
+    }, [query, isExpanded, childrenRef]);
 
     return Container(
       constraints: const BoxConstraints(minHeight: 64),
@@ -83,13 +76,11 @@ class LocationItem extends HookConsumerWidget {
             onToggleConnectionTap: onTap == null ? null : () => onTap(location),
             label: showCitiesAndStates
                 ? locationHasStates
-                    ? LocaleKeys.locationItemStatesCount.plural(
-                        children.length,
-                        namedArgs: {
-                          'statesNum': children.length.toString(),
-                        },
-                      )
-                    : LocaleKeys.locationItemCityCount.plural(children.length)
+                      ? LocaleKeys.locationItemStatesCount.plural(
+                          children.length,
+                          namedArgs: {'statesNum': children.length.toString()},
+                        )
+                      : LocaleKeys.locationItemCityCount.plural(children.length)
                 : LocaleKeys.locationItemNodeCount.plural(location.nodeCount ?? 0),
             isExpanded: showCitiesAndStates ? isExpanded.value : null,
             flag: location.countryCode,
@@ -109,11 +100,7 @@ class LocationItem extends HookConsumerWidget {
 }
 
 class _ChildLocationItem extends StatelessWidget {
-  const _ChildLocationItem({
-    required this.value,
-    required this.onTap,
-    required this.query,
-  });
+  const _ChildLocationItem({required this.value, required this.onTap, required this.query});
 
   final VPNLocation value;
   final VoidCallback? onTap;
@@ -226,21 +213,14 @@ class _LocationItem extends HookWidget {
                               ),
                             ],
                           ),
-                    style: GoogleFonts.montserrat(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                    ),
+                    style: GoogleFonts.montserrat(fontWeight: FontWeight.w500, fontSize: 14),
                     maxLines: title.hasMultipleWords ? 2 : 1,
                   ),
                   Row(
                     spacing: 8,
                     children: [
                       Flexible(
-                        child: EasyText(
-                          label,
-                          fontSize: 12,
-                          color: theme.palette.subtitleColor,
-                        ),
+                        child: EasyText(label, fontSize: 12, color: theme.palette.subtitleColor),
                       ),
                       if (isExpanded != null)
                         AnimatedRotation(

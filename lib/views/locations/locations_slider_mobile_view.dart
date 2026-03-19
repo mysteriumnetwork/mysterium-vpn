@@ -10,11 +10,7 @@ import 'package:mysterium_vpn/views/locations/locations_view.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class LocationsSliderMobileView extends HookConsumerWidget {
-  const LocationsSliderMobileView({
-    required this.constraints,
-    required this.controller,
-    super.key,
-  });
+  const LocationsSliderMobileView({required this.constraints, required this.controller, super.key});
 
   final BoxConstraints constraints;
   final ScrollController controller;
@@ -24,13 +20,10 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     final analyticsStore = ref.watch(analyticsStorePOD);
     final homeState = ref.watch(homeStateProvider);
 
-    useEffect(
-      () {
-        controller.addListener(analyticsStore.logLocationsListScroll);
-        return () => controller.removeListener(analyticsStore.logLocationsListScroll);
-      },
-      [analyticsStore],
-    );
+    useEffect(() {
+      controller.addListener(analyticsStore.logLocationsListScroll);
+      return () => controller.removeListener(analyticsStore.logLocationsListScroll);
+    }, [analyticsStore]);
 
     void handleTogglePanel() {
       ref.read(homeStateProvider.notifier).togglePanel();
@@ -52,11 +45,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
           sliver: SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             sliver: MultiSliver(
-              children: const [
-                ConnectionTile(),
-                SizedBox(height: 24),
-                LocationsSliverView(),
-              ],
+              children: const [ConnectionTile(), SizedBox(height: 24), LocationsSliverView()],
             ),
           ),
         ),

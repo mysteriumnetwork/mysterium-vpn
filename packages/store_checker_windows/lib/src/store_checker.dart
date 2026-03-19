@@ -11,8 +11,8 @@ typedef GetCurrentPackageFullNameC = Int32 Function(
 typedef GetCurrentPackageFullNameDart = int Function(
     Pointer<Uint32> packageFullNameLength, Pointer<Utf16> packageFullName);
 
-final _getCurrentPackageFullName =
-    _kernel32.lookupFunction<GetCurrentPackageFullNameC, GetCurrentPackageFullNameDart>(
+final _getCurrentPackageFullName = _kernel32
+    .lookupFunction<GetCurrentPackageFullNameC, GetCurrentPackageFullNameDart>(
   'GetCurrentPackageFullName',
 );
 

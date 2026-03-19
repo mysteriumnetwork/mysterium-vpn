@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+// ignore: depend_on_referenced_packages
+import 'package:hooks_riverpod/legacy.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -225,10 +226,8 @@ enum PanelState {
     return PanelState.closed;
   }
 
-  static PanelState fromName(String name) => values.firstWhere(
-        (element) => element.name == name,
-        orElse: () => PanelState.snap,
-      );
+  static PanelState fromName(String name) =>
+      values.firstWhere((element) => element.name == name, orElse: () => PanelState.snap);
 
   final double extent;
 
@@ -249,9 +248,8 @@ enum PanelState {
   }
 }
 
-final homeStateProvider = ChangeNotifierProvider.autoDispose(
-  (ref) {
-    final analyticsStore = ref.watch(analyticsStorePOD);
-    return _HomeState(SharedPreferenceService.instance, analyticsStore);
-  },
-);
+// ignore: deprecated_member_use
+final homeStateProvider = ChangeNotifierProvider.autoDispose((ref) {
+  final analyticsStore = ref.watch(analyticsStorePOD);
+  return _HomeState(SharedPreferenceService.instance, analyticsStore);
+});

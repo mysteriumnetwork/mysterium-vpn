@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/location_marker.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 class LocationMarkersLayer extends HookWidget {
   const LocationMarkersLayer({
@@ -42,8 +43,8 @@ List<Marker> _useLocationMarkers({
   required VPNLocation? connectedLocation,
   required Function(VPNLocation, LatLng)? onLocationPressed,
 }) {
-  final remoteConfigStore = useProvider(remoteConfigStorePOD);
-  final latLngStore = useProvider(latLngStorePOD);
+  final remoteConfigStore = useProvider<RemoteConfigStore>(remoteConfigStorePOD);
+  final latLngStore = useProvider<LatLngStore>(latLngStorePOD);
   final onLocationPressedRef = useRef(onLocationPressed)..value = onLocationPressed;
 
   return useComputedValue<List<Marker>>(
@@ -53,8 +54,9 @@ List<Marker> _useLocationMarkers({
               ...data.where(
                 (it) =>
                     !it.isCountry &&
-                    remoteConfigStore.countriesWithCitiesOnMap
-                        .contains(it.countryCode.toUpperCase()),
+                    remoteConfigStore.countriesWithCitiesOnMap.contains(
+                      it.countryCode.toUpperCase(),
+                    ),
               ),
             }
           : const <VPNLocation>{};
@@ -72,7 +74,7 @@ List<Marker> _useLocationMarkers({
         ...countries.whereNot(
           (it) => it.id == connectedLocation?.id || it.id == selectedLocation?.id,
         ),
-        if (selectedLocation != null) selectedLocation,
+        ?selectedLocation,
         if (connectedLocation != null && connectedLocation != selectedLocation) connectedLocation,
       };
 

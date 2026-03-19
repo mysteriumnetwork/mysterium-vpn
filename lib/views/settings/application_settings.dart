@@ -37,22 +37,17 @@ class ApplicationSettings extends HookConsumerWidget {
         SettingItem(
           asset: Asset.icons.language(context),
           title: LocaleKeys.appLang.tr(),
-          actionWidget: LanguagePicker(
-            store: localeStore,
-            analyticsStore: analyticsStore,
-          ),
+          actionWidget: LanguagePicker(store: localeStore, analyticsStore: analyticsStore),
         ),
         SettingItem(
           asset: Asset.icons.theme(context),
           title: LocaleKeys.theme.tr(),
-          actionWidget: ThemePicker(
-            store: themeStore,
-            analyticsStore: analyticsStore,
-          ),
+          actionWidget: ThemePicker(store: themeStore, analyticsStore: analyticsStore),
         ),
         Builder(
           builder: (context) {
-            final notificationsTitleVisible = (userPreferencesStore.marketingConsent != null ||
+            final notificationsTitleVisible =
+                (userPreferencesStore.marketingConsent != null ||
                     pushNotificationsStore.supportsPushNotifications) &&
                 authSessionStore.status == AuthStatus.authenticated;
             return Visibility(
@@ -61,12 +56,7 @@ class ApplicationSettings extends HookConsumerWidget {
                 LocaleKeys.notificationsSettingTitle.tr(),
                 fontSize: isMobile ? 16 : 14,
                 fontWeight: isMobile ? FontWeight.w600 : FontWeight.w400,
-              ).padding(
-                bottom: 16,
-                left: 20,
-                top: isMobile ? 16 : 30,
-                right: 0,
-              ),
+              ).padding(bottom: 16, left: 20, top: isMobile ? 16 : 30, right: 0),
             );
           },
         ),

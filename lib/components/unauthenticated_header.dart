@@ -35,10 +35,7 @@ class UnauthenticatedHeader extends HookConsumerWidget {
           SvgIconButton(
             asset: Asset.icons.supportLight,
             onPressed: () {
-              handleOnSupportPage(
-                context: context,
-                analyticsStore: ref.read(analyticsStorePOD),
-              );
+              handleOnSupportPage(context: context, analyticsStore: ref.read(analyticsStorePOD));
             },
           ),
         ],

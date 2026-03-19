@@ -30,11 +30,7 @@ class _SubscriptionWatcherHookState extends HookState<void, _SubscriptionWatcher
       onResumed();
     }
 
-    disposer = reaction(
-      (_) => authSessionStore.status,
-      (_) => onResumed(),
-      fireImmediately: false,
-    );
+    disposer = reaction((_) => authSessionStore.status, (_) => onResumed(), fireImmediately: false);
 
     WidgetsBinding.instance.addObserver(this);
   }

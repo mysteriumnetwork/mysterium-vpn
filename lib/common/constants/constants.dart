@@ -15,10 +15,7 @@ final List<Locale> kSupportedLocales = [
   const Locale('id', 'ID'),
   const Locale('it', 'IT'),
   const Locale('ja', 'JP'),
-  const Locale.fromSubtags(
-    languageCode: 'zh',
-    countryCode: 'CN',
-  ),
+  const Locale.fromSubtags(languageCode: 'zh', countryCode: 'CN'),
 ];
 
 const kFallbackLocale = Locale('en', 'US');
@@ -28,11 +25,7 @@ const String kMonthlyPlan = 'plan_monthly';
 const String kAnnualPlan = 'plan_yearly';
 
 const String kPopularPlan = ksemiAnnualPlan;
-List<String> kProductIds = <String>[
-  kMonthlyPlan,
-  ksemiAnnualPlan,
-  kAnnualPlan,
-];
+List<String> kProductIds = <String>[kMonthlyPlan, ksemiAnnualPlan, kAnnualPlan];
 
 //scaffold messenger key used globally
 final GlobalKey<ScaffoldMessengerState> snackbarKey = GlobalKey<ScaffoldMessengerState>();
@@ -45,8 +38,8 @@ const subscriptionInfoOtherUrl = 'https://www.mysteriumvpn.com/subscription-faq'
 final subscriptionInfoUrl = Platform.isIOS || Platform.isMacOS
     ? subscriptionInfoUrlAppStore
     : Platform.isAndroid
-        ? subscriptionInfoUrlGooglePlay
-        : subscriptionInfoOtherUrl;
+    ? subscriptionInfoUrlGooglePlay
+    : subscriptionInfoOtherUrl;
 const windowsGithubDownloadLink =
     'https://github.com/mysteriumnetwork/mysterium-vpn-release/releases/latest/download/MysteriumVPN.msix';
 const String androidBundleId = 'mysteriumvpn';

@@ -2,213 +2,110 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 
 extension $AssetsIconsGenExtensions on $AssetsIconsGen {
-  SvgGenImage accountName(BuildContext context) => _withBrightness(
-        context,
-        light: accountNameLight,
-        dark: accountNameDark,
-      );
+  SvgGenImage accountName(BuildContext context) =>
+      _withBrightness(context, light: accountNameLight, dark: accountNameDark);
 
-  SvgGenImage billing(BuildContext context) => _withBrightness(
-        context,
-        light: billingLight,
-        dark: billingDark,
-      );
+  SvgGenImage billing(BuildContext context) =>
+      _withBrightness(context, light: billingLight, dark: billingDark);
 
-  SvgGenImage city(BuildContext context) => _withBrightness(
-        context,
-        light: cityLight,
-        dark: cityDark,
-      );
+  SvgGenImage city(BuildContext context) =>
+      _withBrightness(context, light: cityLight, dark: cityDark);
 
-  SvgGenImage close(BuildContext context) => _withBrightness(
-        context,
-        light: closeLight,
-        dark: closeDark,
-      );
+  SvgGenImage close(BuildContext context) =>
+      _withBrightness(context, light: closeLight, dark: closeDark);
 
-  SvgGenImage close2(BuildContext context) => _withBrightness(
-        context,
-        light: close2Light,
-        dark: close2Dark,
-      );
+  SvgGenImage close2(BuildContext context) =>
+      _withBrightness(context, light: close2Light, dark: close2Dark);
 
-  SvgGenImage close3(BuildContext context) => _withBrightness(
-        context,
-        light: close3Light,
-        dark: close3Dark,
-      );
+  SvgGenImage close3(BuildContext context) =>
+      _withBrightness(context, light: close3Light, dark: close3Dark);
 
-  SvgGenImage connectPrompt(BuildContext context) => _withBrightness(
-        context,
-        light: connectPromptLight,
-        dark: connectPromptDark,
-      );
+  SvgGenImage connectPrompt(BuildContext context) =>
+      _withBrightness(context, light: connectPromptLight, dark: connectPromptDark);
 
-  SvgGenImage deleteAccount(BuildContext context) => _withBrightness(
-        context,
-        light: deleteAccountLight,
-        dark: deleteAccountDark,
-      );
+  SvgGenImage deleteAccount(BuildContext context) =>
+      _withBrightness(context, light: deleteAccountLight, dark: deleteAccountDark);
 
-  SvgGenImage fix(BuildContext context) => _withBrightness(
-        context,
-        light: fixLight,
-        dark: fixDark,
-      );
+  SvgGenImage fix(BuildContext context) => _withBrightness(context, light: fixLight, dark: fixDark);
 
-  SvgGenImage flashAdaptive(BuildContext context) => _withBrightness(
-        context,
-        light: flashLight,
-        dark: flashDark,
-      );
+  SvgGenImage flashAdaptive(BuildContext context) =>
+      _withBrightness(context, light: flashLight, dark: flashDark);
 
-  SvgGenImage infoCircle(BuildContext context) => _withBrightness(
-        context,
-        light: infoCircleLight,
-        dark: infoCircleDark,
-      );
+  SvgGenImage infoCircle(BuildContext context) =>
+      _withBrightness(context, light: infoCircleLight, dark: infoCircleDark);
 
-  SvgGenImage language(BuildContext context) => _withBrightness(
-        context,
-        light: languageLight,
-        dark: languageDark,
-      );
+  SvgGenImage language(BuildContext context) =>
+      _withBrightness(context, light: languageLight, dark: languageDark);
 
-  SvgGenImage locker(BuildContext context) => _withBrightness(
-        context,
-        light: lockerLight,
-        dark: lockerDark,
-      );
+  SvgGenImage locker(BuildContext context) =>
+      _withBrightness(context, light: lockerLight, dark: lockerDark);
 
-  SvgGenImage navigateBackAdaptive(BuildContext context) => _withBrightness(
-        context,
-        light: navigateBackLight,
-        dark: navigateBackDark,
-      );
+  SvgGenImage navigateBackAdaptive(BuildContext context) =>
+      _withBrightness(context, light: navigateBackLight, dark: navigateBackDark);
 
-  SvgGenImage navigateBackLighter(BuildContext context) => _withBrightness(
-        context,
-        light: navigateBackLightBlack,
-        dark: navigateBackLightGrey,
-      );
+  SvgGenImage navigateBackLighter(BuildContext context) =>
+      _withBrightness(context, light: navigateBackLightBlack, dark: navigateBackLightGrey);
 
-  SvgGenImage protocol(BuildContext context) => _withBrightness(
-        context,
-        light: protocolLight,
-        dark: protocolDark,
-      );
+  SvgGenImage protocol(BuildContext context) =>
+      _withBrightness(context, light: protocolLight, dark: protocolDark);
 
-  SvgGenImage refreshIpSetting(BuildContext context) => _withBrightness(
-        context,
-        light: refreshIpSettingLight,
-        dark: refreshIpSettingDark,
-      );
+  SvgGenImage refreshIpSetting(BuildContext context) =>
+      _withBrightness(context, light: refreshIpSettingLight, dark: refreshIpSettingDark);
 
-  SvgGenImage reportAdaptive(BuildContext context) => _withBrightness(
-        context,
-        light: reportLight,
-        dark: reportDark,
-      );
+  SvgGenImage reportAdaptive(BuildContext context) =>
+      _withBrightness(context, light: reportLight, dark: reportDark);
 
-  SvgGenImage resetAppSetting(BuildContext context) => _withBrightness(
-        context,
-        light: resetAppSettingLight,
-        dark: resetAppSettingDark,
-      );
+  SvgGenImage resetAppSetting(BuildContext context) =>
+      _withBrightness(context, light: resetAppSettingLight, dark: resetAppSettingDark);
 
-  SvgGenImage settingsAdaptive(BuildContext context) => _withBrightness(
-        context,
-        light: settingsLight,
-        dark: settingsDark,
-      );
+  SvgGenImage settingsAdaptive(BuildContext context) =>
+      _withBrightness(context, light: settingsLight, dark: settingsDark);
 
-  SvgGenImage settingsDesktop(BuildContext context) => _withBrightness(
-        context,
-        light: settingsLightDesktop,
-        dark: settingsDarkDesktop,
-      );
+  SvgGenImage settingsDesktop(BuildContext context) =>
+      _withBrightness(context, light: settingsLightDesktop, dark: settingsDarkDesktop);
 
-  SvgGenImage successCup(BuildContext context) => _withBrightness(
-        context,
-        light: successCupLight,
-        dark: successCupDark,
-      );
+  SvgGenImage successCup(BuildContext context) =>
+      _withBrightness(context, light: successCupLight, dark: successCupDark);
 
-  SvgGenImage support(BuildContext context) => _withBrightness(
-        context,
-        light: supportLight,
-        dark: supportDark,
-      );
+  SvgGenImage support(BuildContext context) =>
+      _withBrightness(context, light: supportLight, dark: supportDark);
 
-  SvgGenImage supportDesktop(BuildContext context) => _withBrightness(
-        context,
-        light: supportLightDesktop,
-        dark: supportDarkDesktop,
-      );
+  SvgGenImage supportDesktop(BuildContext context) =>
+      _withBrightness(context, light: supportLightDesktop, dark: supportDarkDesktop);
 
-  SvgGenImage stop(BuildContext context) => _withBrightness(
-        context,
-        light: stopLight,
-        dark: stopDark,
-      );
+  SvgGenImage stop(BuildContext context) =>
+      _withBrightness(context, light: stopLight, dark: stopDark);
 
-  SvgGenImage theme(BuildContext context) => _withBrightness(
-        context,
-        light: themeLight,
-        dark: themeDark,
-      );
+  SvgGenImage theme(BuildContext context) =>
+      _withBrightness(context, light: themeLight, dark: themeDark);
 
-  SvgGenImage thumbsUp(BuildContext context) => _withBrightness(
-        context,
-        light: thumbsUpLight,
-        dark: thumbsUpDark,
-      );
+  SvgGenImage thumbsUp(BuildContext context) =>
+      _withBrightness(context, light: thumbsUpLight, dark: thumbsUpDark);
 
-  SvgGenImage thumbsDown(BuildContext context) => _withBrightness(
-        context,
-        light: thumbsDownLight,
-        dark: thumbsDownDark,
-      );
+  SvgGenImage thumbsDown(BuildContext context) =>
+      _withBrightness(context, light: thumbsDownLight, dark: thumbsDownDark);
 
-  SvgGenImage bestServer(BuildContext context) => _withBrightness(
-        context,
-        light: bestServerLight,
-        dark: bestServerDark,
-      );
+  SvgGenImage bestServer(BuildContext context) =>
+      _withBrightness(context, light: bestServerLight, dark: bestServerDark);
 
-  SvgGenImage emailNotification(BuildContext context) => _withBrightness(
-        context,
-        light: emailNotificationLight,
-        dark: emailNotificationDark,
-      );
+  SvgGenImage emailNotification(BuildContext context) =>
+      _withBrightness(context, light: emailNotificationLight, dark: emailNotificationDark);
 
-  SvgGenImage notification(BuildContext context) => _withBrightness(
-        context,
-        light: notificationLight,
-        dark: notificationDark,
-      );
+  SvgGenImage notification(BuildContext context) =>
+      _withBrightness(context, light: notificationLight, dark: notificationDark);
 }
 
 extension $AssetsImagesGenExtensions on $AssetsImagesGen {
-  AssetGenImage marketingConsent(BuildContext context) => _withBrightness(
-        context,
-        light: marketingConsentLight,
-        dark: marketingConsentDark,
-      );
+  AssetGenImage marketingConsent(BuildContext context) =>
+      _withBrightness(context, light: marketingConsentLight, dark: marketingConsentDark);
 
-  AssetGenImage pnConsent(BuildContext context) => _withBrightness(
-        context,
-        light: pnConsentLight,
-        dark: pnConsentDark,
-      );
+  AssetGenImage pnConsent(BuildContext context) =>
+      _withBrightness(context, light: pnConsentLight, dark: pnConsentDark);
 }
 
 extension $AssetsLogoGenExtensions on $AssetsLogoGen {
-  SvgGenImage logo(BuildContext context) => _withBrightness(
-        context,
-        light: logoBlack,
-        dark: logoWhite,
-      );
+  SvgGenImage logo(BuildContext context) =>
+      _withBrightness(context, light: logoBlack, dark: logoWhite);
 }
 
 extension $ResourcesLangsGenExtensions on $ResourcesLangsGen {

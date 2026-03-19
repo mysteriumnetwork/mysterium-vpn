@@ -30,19 +30,15 @@ class HomeMobileView extends HookConsumerWidget {
     final locationsQueryStore = ref.watch(locationsQueryStorePOD);
     final topSectionHeight = appBarHeight + 40;
 
-    useReaction(
-      () => vpnStore.connectionStatus,
-      (status) {
-        if (status != VpnConnectionStatus.connected) {
-          return;
-        }
+    useReaction(() => vpnStore.connectionStatus, (status) {
+      if (status != VpnConnectionStatus.connected) {
+        return;
+      }
 
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          homeState.collapsePanel();
-        });
-      },
-      keys: [homeState],
-    );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        homeState.collapsePanel();
+      });
+    }, keys: [homeState]);
 
     useReaction(
       () => locationsQueryStore.search,

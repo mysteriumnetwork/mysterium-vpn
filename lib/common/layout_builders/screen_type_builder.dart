@@ -30,32 +30,32 @@ class ScreenTypeLayoutBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ResponsiveLayoutBuilder(
-        screenBreakpoints: breakpoints,
-        builder: (context, sizingInformation) {
-          // If we're at desktop size
-          if (sizingInformation.screenType == ScreenType.desktop) {
-            // If we have supplied the desktop layout then display that
-            if (desktop != null) {
-              return desktop!(context);
-            }
-            // If no desktop layout is supplied we want to check if we have the size below it and display that
-            if (tablet != null) {
-              return tablet!(context);
-            }
-          }
+    screenBreakpoints: breakpoints,
+    builder: (context, sizingInformation) {
+      // If we're at desktop size
+      if (sizingInformation.screenType == ScreenType.desktop) {
+        // If we have supplied the desktop layout then display that
+        if (desktop != null) {
+          return desktop!(context);
+        }
+        // If no desktop layout is supplied we want to check if we have the size below it and display that
+        if (tablet != null) {
+          return tablet!(context);
+        }
+      }
 
-          if (sizingInformation.screenType == ScreenType.tablet) {
-            if (tablet != null) {
-              return tablet!(context);
-            }
-          }
+      if (sizingInformation.screenType == ScreenType.tablet) {
+        if (tablet != null) {
+          return tablet!(context);
+        }
+      }
 
-          if (sizingInformation.screenType == ScreenType.watch && watch != null) {
-            return watch!(context);
-          }
+      if (sizingInformation.screenType == ScreenType.watch && watch != null) {
+        return watch!(context);
+      }
 
-          // If none of the layouts above are supplied or we're on the mobile layout then we show the mobile layout
-          return mobile != null ? mobile!(context) : const SizedBox.shrink();
-        },
-      );
+      // If none of the layouts above are supplied or we're on the mobile layout then we show the mobile layout
+      return mobile != null ? mobile!(context) : const SizedBox.shrink();
+    },
+  );
 }

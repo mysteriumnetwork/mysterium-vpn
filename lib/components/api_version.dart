@@ -26,16 +26,8 @@ class ApiVersion extends HookConsumerWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              EasyText(
-                headerText!,
-                color: Palette.lightBlack,
-                fontSize: 10,
-              ).padding(bottom: 6),
-              EasyText(
-                apiStore.lastHealthcheck!.version,
-                color: Palette.lightBlack,
-                fontSize: 6,
-              ),
+              EasyText(headerText!, color: Palette.lightBlack, fontSize: 10).padding(bottom: 6),
+              EasyText(apiStore.lastHealthcheck!.version, color: Palette.lightBlack, fontSize: 6),
             ],
           ).padding(top: 20);
         }

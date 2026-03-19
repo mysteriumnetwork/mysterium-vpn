@@ -22,17 +22,10 @@ class UnauthenticatedBanner extends HookWidget {
 
     return Banner(
       title: BannerTitle(
-        icon: SvgIcon(
-          asset: Asset.icons.accountNameDark,
-          width: 18,
-          height: 18,
-        ),
+        icon: SvgIcon(asset: Asset.icons.accountNameDark, width: 18, height: 18),
         text: LocaleKeys.unauthenticatedBannerTitle.tr(),
       ),
-      cta: BannerCTA(
-        text: LocaleKeys.unauthenticatedBannerBtn.tr(),
-        onPressed: handlePressed,
-      ),
+      cta: BannerCTA(text: LocaleKeys.unauthenticatedBannerBtn.tr(), onPressed: handlePressed),
       onPressed: handlePressed,
     );
   }

@@ -4,46 +4,41 @@ Future<void> Function({
   VPNLocation? location,
   UserIntent? intent,
   AnalyticsEventSelector? selectEvent,
-}) useHandleToggleConnection() {
+})
+useHandleToggleConnection() {
   final context = useContext();
   final handleSubscribe = useHandleSubscribe();
   final handleSetupTunnel = useHandleSetupTunnel();
 
-  return useCallback(
-    ({
-      VPNLocation? location,
-      UserIntent? intent,
-      AnalyticsEventSelector? selectEvent,
-    }) async {
-      final ref = ProviderScope.containerOf(context, listen: false);
-      final vpnStore = ref.read(vpnStorePOD);
-      final analyticsStore = ref.read(analyticsStorePOD);
+  return useCallback(({
+    VPNLocation? location,
+    UserIntent? intent,
+    AnalyticsEventSelector? selectEvent,
+  }) async {
+    final ref = ProviderScope.containerOf(context, listen: false);
+    final vpnStore = ref.read(vpnStorePOD);
+    final analyticsStore = ref.read(analyticsStorePOD);
 
-      final logEvent =
-          vpnStore.isConnected ? analyticsStore.logDisconnect : analyticsStore.logConnect;
-      logEvent(
-        location,
-        event: selectEvent?.call(vpnStore.isConnected),
-        intent: intent,
-      );
+    final logEvent = vpnStore.isConnected
+        ? analyticsStore.logDisconnect
+        : analyticsStore.logConnect;
+    logEvent(location, event: selectEvent?.call(vpnStore.isConnected), intent: intent);
 
-      try {
-        await vpnStore.manageConnection(location: location, intent: intent);
-      } on AuthenticationRequiredException catch (_) {
-        if (context.mounted) {
-          Beamer.of(context).beamToNamed(Routes.platformLogin.path);
-        }
-      } on SubscriptionRequiredException catch (_) {
-        handleSubscribe();
-      } on TunnelSetupRequiredException catch (_) {
-        final permissionsGiven = await handleSetupTunnel();
-        if (permissionsGiven) {
-          await vpnStore.manageConnection(location: location, intent: intent);
-        }
+    try {
+      await vpnStore.manageConnection(location: location, intent: intent);
+    } on AuthenticationRequiredException catch (_) {
+      if (context.mounted) {
+        Beamer.of(context).beamToNamed(Routes.platformLogin.path);
       }
-    },
-    [handleSubscribe, handleSetupTunnel],
-  );
+    } on SubscriptionRequiredException catch (_) {
+      handleSubscribe();
+    } on TunnelSetupRequiredException catch (_) {
+      final permissionsGiven = await handleSetupTunnel();
+      if (permissionsGiven) {
+        await vpnStore.manageConnection(location: location, intent: intent);
+      }
+    }
+  }, [handleSubscribe, handleSetupTunnel]);
 }
 
 // ignore: avoid_positional_boolean_parameters

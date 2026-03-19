@@ -36,13 +36,10 @@ class LocationsHorizontalList extends HookWidget {
         itemCount: items.length,
         controller: scrollController,
         scrollDirection: Axis.horizontal,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
+        separatorBuilder: (_, _) => const SizedBox(width: 12),
         itemBuilder: (_, index) {
           final item = items[index];
-          return _Item(
-            value: item,
-            onPressed: () => onItemPressed(item),
-          );
+          return _Item(value: item, onPressed: () => onItemPressed(item));
         },
       ),
     );
@@ -64,22 +61,12 @@ class _Container extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasIndicator = useResponsiveValue(
-      false,
-      desktop: true,
-      tablet: true,
-    );
+    final hasIndicator = useResponsiveValue(false, desktop: true, tablet: true);
 
-    Widget child = ConstrainedBox(
-      constraints: constraints,
-      child: this.child,
-    );
+    Widget child = ConstrainedBox(constraints: constraints, child: this.child);
 
     if (hasIndicator) {
-      child = HorizontalScrollIndicator(
-        controller: scrollController,
-        child: child,
-      );
+      child = HorizontalScrollIndicator(controller: scrollController, child: child);
     }
 
     return Column(
@@ -87,11 +74,7 @@ class _Container extends HookWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: 14,
       children: [
-        EasyText(
-          title,
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-        ),
+        EasyText(title, fontSize: 16, fontWeight: FontWeight.w600),
         child,
       ],
     );
@@ -99,10 +82,7 @@ class _Container extends HookWidget {
 }
 
 class _Item extends HookWidget {
-  const _Item({
-    required this.value,
-    required this.onPressed,
-  });
+  const _Item({required this.value, required this.onPressed});
 
   final VPNLocation value;
   final VoidCallback onPressed;
@@ -118,9 +98,7 @@ class _Item extends HookWidget {
       hoverElevation: 0,
       clipBehavior: Clip.hardEdge,
       constraints: BoxConstraints.tight(const Size(210, 64)),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-      ),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
       fillColor: theme.colorScheme.tertiaryContainer,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
@@ -130,10 +108,7 @@ class _Item extends HookWidget {
             value.countryCode,
             size: 24,
             shape: const CircleBorder(
-              side: BorderSide(
-                color: Palette.white,
-                strokeAlign: BorderSide.strokeAlignOutside,
-              ),
+              side: BorderSide(color: Palette.white, strokeAlign: BorderSide.strokeAlignOutside),
             ),
           ),
           Expanded(
@@ -141,11 +116,7 @@ class _Item extends HookWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                EasyText(
-                  value.getName(context),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
+                EasyText(value.getName(context), fontSize: 14, fontWeight: FontWeight.w500),
                 if (value.ipType == IPType.datacenter)
                   EasyText(
                     LocaleKeys.highSpeed.tr(),

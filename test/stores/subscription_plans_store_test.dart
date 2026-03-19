@@ -60,22 +60,17 @@ void main() {
     when(mockRemoteConfigStore.configFuture).thenAnswer((_) => ObservableFuture.value(const {}));
 
     // Default: avoid constructor reaction inside SubscriptionPlansStore triggering refresh().
-    when(mockSubscriptionStore.subscriptionFuture).thenAnswer(
-      (_) => ObservableFuture.value(Subscription.empty()),
-    );
+    when(
+      mockSubscriptionStore.subscriptionFuture,
+    ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
 
-    when(mockSubscriptionStore.subscriptionConfigFuture).thenAnswer(
-      (_) => ObservableFuture.value(MockSubscriptionConfigResponse()),
-    );
+    when(
+      mockSubscriptionStore.subscriptionConfigFuture,
+    ).thenAnswer((_) => ObservableFuture.value(MockSubscriptionConfigResponse()));
 
-    when(mockService.getProductsDetails(any, any)).thenAnswer(
-      (_) async => [
-        planBasicMonthly,
-        planBasicAnnual,
-        planPlusMonthly,
-        planPlusAnnual,
-      ],
-    );
+    when(
+      mockService.getProductsDetails(any, any),
+    ).thenAnswer((_) async => [planBasicMonthly, planBasicAnnual, planPlusMonthly, planPlusAnnual]);
 
     // Default selectors.
     when(mockRemoteConfigStore.planFeatures).thenReturn(const <SubscriptionPlanFeatures>[]);
@@ -95,12 +90,7 @@ void main() {
       expect(products.length, 4);
       expect(
         products,
-        containsAll([
-          planBasicMonthly,
-          planBasicAnnual,
-          planPlusMonthly,
-          planPlusAnnual,
-        ]),
+        containsAll([planBasicMonthly, planBasicAnnual, planPlusMonthly, planPlusAnnual]),
       );
 
       verify(mockService.getProductsDetails(any, any)).called(1);
@@ -113,9 +103,9 @@ void main() {
         mockRemoteConfigStore,
       );
 
-      when(mockSubscriptionStore.subscriptionConfigFuture).thenAnswer(
-        (_) => ObservableFuture.value(null),
-      );
+      when(
+        mockSubscriptionStore.subscriptionConfigFuture,
+      ).thenAnswer((_) => ObservableFuture.value(null));
 
       final products = await store.future;
 
@@ -140,15 +130,7 @@ void main() {
       // access computed to ensure it reads the mocked future
       final result = store.products;
 
-      expect(
-        result,
-        equals([
-          planBasicMonthly,
-          planBasicAnnual,
-          planPlusMonthly,
-          planPlusAnnual,
-        ]),
-      );
+      expect(result, equals([planBasicMonthly, planBasicAnnual, planPlusMonthly, planPlusAnnual]));
     });
 
     test('monthlyProducts returns only monthly duration products', () async {
@@ -165,13 +147,7 @@ void main() {
       // access computed to ensure it reads the mocked future
       final result = store.monthlyProducts;
 
-      expect(
-        result,
-        equals([
-          planBasicMonthly,
-          planPlusMonthly,
-        ]),
-      );
+      expect(result, equals([planBasicMonthly, planPlusMonthly]));
     });
 
     test('annualProducts returns only annual duration products', () async {
@@ -188,13 +164,7 @@ void main() {
       // access computed to ensure it reads the mocked future
       final result = store.annualProducts;
 
-      expect(
-        result,
-        equals([
-          planBasicAnnual,
-          planPlusAnnual,
-        ]),
-      );
+      expect(result, equals([planBasicAnnual, planPlusAnnual]));
     });
 
     test('purchasedProduct returns product matching subscription planId', () async {
@@ -269,8 +239,9 @@ void main() {
 
     test('bestValueProducts returns products marked as best value', () async {
       when(mockRemoteConfigStore.planFeatures).thenReturn([featuresBasic, featuresPlus]);
-      when(mockRemoteConfigStore.plansBestValue)
-          .thenReturn({'plan_yearly_plus', 'plan_yearly_basic'});
+      when(
+        mockRemoteConfigStore.plansBestValue,
+      ).thenReturn({'plan_yearly_plus', 'plan_yearly_basic'});
 
       final store = SubscriptionPlansStore(
         mockService,
@@ -283,13 +254,7 @@ void main() {
       // access computed to ensure it reads the mocked future
       final result = store.bestValueProducts;
 
-      expect(
-        result,
-        equals([
-          planBasicAnnual,
-          planPlusAnnual,
-        ]),
-      );
+      expect(result, equals([planBasicAnnual, planPlusAnnual]));
     });
   });
 }

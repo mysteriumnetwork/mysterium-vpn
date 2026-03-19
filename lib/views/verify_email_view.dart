@@ -56,10 +56,7 @@ class VerifyEmailView extends HookConsumerWidget {
                 Expanded(
                   flex: 2,
                   child: _Excerpt(
-                    items: [
-                      LocaleKeys.linkExpires.tr(),
-                      LocaleKeys.consumeLink.tr(),
-                    ],
+                    items: [LocaleKeys.linkExpires.tr(), LocaleKeys.consumeLink.tr()],
                   ),
                 ),
                 Column(
@@ -91,10 +88,7 @@ class VerifyEmailView extends HookConsumerWidget {
                   ],
                 ),
               ],
-            ).padding(
-              vertical: 20,
-              horizontal: getMediaWidth(context) > 650 ? 60 : 20,
-            ),
+            ).padding(vertical: 20, horizontal: getMediaWidth(context) > 650 ? 60 : 20),
             if (authStore.authenticateFeature?.status == FutureStatus.pending)
               LoadingBarrier(color: theme.primaryColor),
           ],
@@ -103,13 +97,8 @@ class VerifyEmailView extends HookConsumerWidget {
     );
   }
 
-  Future<void> openEmailApp(
-    BuildContext context,
-    AnalyticsStore analyticsStore,
-  ) async {
-    final result = await OpenMailApp.openMailApp(
-      nativePickerTitle: LocaleKeys.selectEmailApp.tr(),
-    );
+  Future<void> openEmailApp(BuildContext context, AnalyticsStore analyticsStore) async {
+    final result = await OpenMailApp.openMailApp(nativePickerTitle: LocaleKeys.selectEmailApp.tr());
     if (!result.didOpen && !result.canOpen && context.mounted) {
       shownNoMailAppDialog(context);
     } else if (!result.didOpen && result.canOpen && context.mounted) {
@@ -158,10 +147,7 @@ class _Subheader extends HookWidget {
           textAlign: TextAlign.center,
         ),
       ),
-      SvgIcon(
-        asset: Asset.images.checkEmail,
-        height: min(120, height * .15),
-      ),
+      SvgIcon(asset: Asset.images.checkEmail, height: min(120, height * .15)),
     ];
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -211,9 +197,7 @@ class _Excerpt extends HookWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       spacing: 8,
-      children: [
-        for (final item in items) _BulletItem(text: item, sizeGroup: sizeGroup),
-      ],
+      children: [for (final item in items) _BulletItem(text: item, sizeGroup: sizeGroup)],
     );
   }
 }
@@ -226,22 +210,19 @@ class _BulletItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Flexible(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            EasyText('•', autoSizeGroup: sizeGroup),
-            const SizedBox(width: 12),
-            Expanded(child: EasyText(text, maxLines: 3, autoSizeGroup: sizeGroup)),
-          ],
-        ),
-      );
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        EasyText('•', autoSizeGroup: sizeGroup),
+        const SizedBox(width: 12),
+        Expanded(child: EasyText(text, maxLines: 3, autoSizeGroup: sizeGroup)),
+      ],
+    ),
+  );
 }
 
 class _ResendButton extends HookWidget {
-  const _ResendButton({
-    required this.onPressed,
-    required this.isLoading,
-  });
+  const _ResendButton({required this.onPressed, required this.isLoading});
 
   final Future<void> Function() onPressed;
   final bool isLoading;

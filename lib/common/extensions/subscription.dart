@@ -20,8 +20,9 @@ extension SubscriptionExtensions on Subscription? {
     String recurring,
     String startDate,
     String active,
-    String expired
-  }) toSubscriptionData() {
+    String expired,
+  })
+  toSubscriptionData() {
     if (this?.planId != null && this?.gatewayName != null) {
       return (
         gateway: this!.gatewayName,

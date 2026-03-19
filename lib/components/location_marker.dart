@@ -24,74 +24,54 @@ class LocationMarker extends StatelessWidget {
 
     final animation = isConnected ? Asset.animations.pulseGreen : Asset.animations.pulsePurple;
 
-    return _Active(
-      animation: animation,
-      onPressed: onPressed,
-    );
+    return _Active(animation: animation, onPressed: onPressed);
   }
 }
 
 class _Inactive extends StatelessWidget {
-  const _Inactive({
-    required this.size,
-    required this.onPressed,
-  });
+  const _Inactive({required this.size, required this.onPressed});
 
   final Size size;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) => _GestureHandler(
-        onPressed: onPressed,
+    onPressed: onPressed,
+    size: size,
+    child: DecoratedBox(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: const Color(0xFFE9EAEB).withValues(alpha: .6),
+      ),
+      child: SizedBox.fromSize(
         size: size,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: const Color(0xFFE9EAEB).withValues(alpha: .6),
-          ),
-          child: SizedBox.fromSize(
-            size: size,
-            child: Center(
-              child: DecoratedBox(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xFF717680),
-                ),
-                child: SizedBox.fromSize(size: size * .5),
-              ),
-            ),
+        child: Center(
+          child: DecoratedBox(
+            decoration: const BoxDecoration(shape: BoxShape.circle, color: Color(0xFF717680)),
+            child: SizedBox.fromSize(size: size * .5),
           ),
         ),
-      );
+      ),
+    ),
+  );
 }
 
 class _Active extends StatelessWidget {
-  const _Active({
-    required this.animation,
-    required this.onPressed,
-  });
+  const _Active({required this.animation, required this.onPressed});
 
   final LottieGenImage animation;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) => _GestureHandler(
-        onPressed: onPressed,
-        size: const Size.square(24),
-        child: animation.lottie(
-          repeat: true,
-          fit: BoxFit.contain,
-          alignment: Alignment.center,
-        ),
-      );
+    onPressed: onPressed,
+    size: const Size.square(24),
+    child: animation.lottie(repeat: true, fit: BoxFit.contain, alignment: Alignment.center),
+  );
 }
 
 class _GestureHandler extends StatelessWidget {
-  const _GestureHandler({
-    required this.onPressed,
-    required this.child,
-    this.size,
-  });
+  const _GestureHandler({required this.onPressed, required this.child, this.size});
 
   final Widget child;
   final VoidCallback onPressed;
@@ -99,29 +79,29 @@ class _GestureHandler extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Stack(
-        children: [
-          IgnorePointer(child: Center(child: child)),
-          Positioned.fill(
-            child: Center(
-              child: SizedBox.fromSize(
-                size: size,
-                child: Material(
-                  type: MaterialType.transparency,
-                  shape: const CircleBorder(),
-                  color: Colors.transparent,
-                  shadowColor: Colors.transparent,
-                  surfaceTintColor: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      HapticFeedback.lightImpact();
-                      onPressed();
-                    },
-                    customBorder: const CircleBorder(),
-                  ),
-                ),
+    children: [
+      IgnorePointer(child: Center(child: child)),
+      Positioned.fill(
+        child: Center(
+          child: SizedBox.fromSize(
+            size: size,
+            child: Material(
+              type: MaterialType.transparency,
+              shape: const CircleBorder(),
+              color: Colors.transparent,
+              shadowColor: Colors.transparent,
+              surfaceTintColor: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  onPressed();
+                },
+                customBorder: const CircleBorder(),
               ),
             ),
           ),
-        ],
-      );
+        ),
+      ),
+    ],
+  );
 }

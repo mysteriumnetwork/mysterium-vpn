@@ -38,11 +38,7 @@ class _ReasonsField extends HookWidget {
 }
 
 class _Item extends StatelessWidget {
-  const _Item({
-    required this.value,
-    required this.isChecked,
-    required this.onPressed,
-  });
+  const _Item({required this.value, required this.isChecked, required this.onPressed});
 
   final String value;
   final bool isChecked;
@@ -62,9 +58,7 @@ class _Item extends StatelessWidget {
                 ? Palette.purple
                 : theme.palette.secondaryColor.withValues(alpha: .2),
           ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
           side: BorderSide(
             color: theme.palette.secondaryColor,
             strokeAlign: BorderSide.strokeAlignCenter,
@@ -78,17 +72,15 @@ class _Item extends StatelessWidget {
 }
 
 class _ReactiveReasonsField extends ReactiveFormField<Set<String>, Set<String>> {
-  _ReactiveReasonsField({
-    required Set<String> items,
-    super.formControlName,
-  }) : super(
-          builder: (field) => _ReasonsField(
-            items: items,
-            selection: field.value ?? <String>{},
-            onSelectionChanged: (value) {
-              field.didChange(value);
-              field.control.markAsDirty();
-            },
-          ),
-        );
+  _ReactiveReasonsField({required Set<String> items, super.formControlName})
+    : super(
+        builder: (field) => _ReasonsField(
+          items: items,
+          selection: field.value ?? <String>{},
+          onSelectionChanged: (value) {
+            field.didChange(value);
+            field.control.markAsDirty();
+          },
+        ),
+      );
 }

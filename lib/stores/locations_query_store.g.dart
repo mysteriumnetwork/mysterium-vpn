@@ -12,9 +12,10 @@ mixin _$LocationsQueryStore on _LocationsQueryStore, Store {
   Computed<String>? _$searchTrimmedComputed;
 
   @override
-  String get searchTrimmed => (_$searchTrimmedComputed ??=
-          Computed<String>(() => super.searchTrimmed, name: '_LocationsQueryStore.searchTrimmed'))
-      .value;
+  String get searchTrimmed => (_$searchTrimmedComputed ??= Computed<String>(
+    () => super.searchTrimmed,
+    name: '_LocationsQueryStore.searchTrimmed',
+  )).value;
 
   late final _$_searchAtom = Atom(name: '_LocationsQueryStore._search', context: context);
 
@@ -56,21 +57,26 @@ mixin _$LocationsQueryStore on _LocationsQueryStore, Store {
     });
   }
 
-  late final _$setIPTypeAsyncAction =
-      AsyncAction('_LocationsQueryStore.setIPType', context: context);
+  late final _$setIPTypeAsyncAction = AsyncAction(
+    '_LocationsQueryStore.setIPType',
+    context: context,
+  );
 
   @override
   Future<void> setIPType(IPType value) {
     return _$setIPTypeAsyncAction.run(() => super.setIPType(value));
   }
 
-  late final _$_LocationsQueryStoreActionController =
-      ActionController(name: '_LocationsQueryStore', context: context);
+  late final _$_LocationsQueryStoreActionController = ActionController(
+    name: '_LocationsQueryStore',
+    context: context,
+  );
 
   @override
   void setSearch(String value, {Duration debounce = const Duration(milliseconds: 500)}) {
-    final _$actionInfo =
-        _$_LocationsQueryStoreActionController.startAction(name: '_LocationsQueryStore.setSearch');
+    final _$actionInfo = _$_LocationsQueryStoreActionController.startAction(
+      name: '_LocationsQueryStore.setSearch',
+    );
     try {
       return super.setSearch(value, debounce: debounce);
     } finally {

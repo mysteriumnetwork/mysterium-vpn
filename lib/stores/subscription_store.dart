@@ -23,18 +23,16 @@ abstract class _SubscriptionStore with Store {
     required SubscriptionService subscriptionService,
     required AuthSessionStore authSessionStore,
     required AnalyticsStore analyticsStore,
-  })  : _subscriptionService = subscriptionService,
-        _authSessionStore = authSessionStore,
-        _analyticsStore = analyticsStore {
-    _authReactionDisposer = reaction<bool>(
-      (_) => _authSessionStore.isAuthenticated,
-      (status) async {
-        if (status) {
-          _subscriptionFuture = ObservableFuture(_fetchSubscription());
-        }
-      },
-      fireImmediately: true,
-    );
+  }) : _subscriptionService = subscriptionService,
+       _authSessionStore = authSessionStore,
+       _analyticsStore = analyticsStore {
+    _authReactionDisposer = reaction<bool>((_) => _authSessionStore.isAuthenticated, (
+      status,
+    ) async {
+      if (status) {
+        _subscriptionFuture = ObservableFuture(_fetchSubscription());
+      }
+    }, fireImmediately: true);
   }
 
   final SubscriptionService _subscriptionService;
@@ -51,8 +49,9 @@ abstract class _SubscriptionStore with Store {
       ObservableFuture(_fetchSubscriptionConfig());
 
   @readonly
-  late ObservableFuture<String?> _otherSubscriberEmailFuture =
-      ObservableFuture(_fetchOtherSubscriber());
+  late ObservableFuture<String?> _otherSubscriberEmailFuture = ObservableFuture(
+    _fetchOtherSubscriber(),
+  );
 
   @readonly
   SubscriptionStatus? _subscriptionStatus;
@@ -79,11 +78,11 @@ abstract class _SubscriptionStore with Store {
 
   @computed
   StoreState get storeState => switch (_subscriptionConfigFuture.status) {
-        FutureStatus.pending => StoreState.loading,
-        FutureStatus.rejected => StoreState.notAvailable,
-        FutureStatus.fulfilled =>
-          _subscriptionConfigFuture.value != null ? StoreState.available : StoreState.notAvailable,
-      };
+    FutureStatus.pending => StoreState.loading,
+    FutureStatus.rejected => StoreState.notAvailable,
+    FutureStatus.fulfilled =>
+      _subscriptionConfigFuture.value != null ? StoreState.available : StoreState.notAvailable,
+  };
 
   @action
   Future<Subscription> _fetchSubscription() async {
@@ -99,8 +98,8 @@ abstract class _SubscriptionStore with Store {
     final userStatus = subscription.active
         ? 'paid'
         : (subscription.expired ?? false)
-            ? 'expired_paid'
-            : 'not_paid';
+        ? 'expired_paid'
+        : 'not_paid';
     _analyticsStore
       ..setUserProperty(
         AnalyticsUserProperty.fromEnum(
@@ -115,10 +114,7 @@ abstract class _SubscriptionStore with Store {
         ),
       )
       ..setUserProperty(
-        AnalyticsUserProperty.fromEnum(
-          name: AnalyticsUserPropName.userStatus,
-          value: userStatus,
-        ),
+        AnalyticsUserProperty.fromEnum(name: AnalyticsUserPropName.userStatus, value: userStatus),
       );
   }
 
@@ -167,9 +163,7 @@ abstract class _SubscriptionStore with Store {
         _subscriptionFuture.value?.active == false ||
         (_subscriptionFuture.value?.isExpired ?? false) ||
         _subscriptionFuture.status == FutureStatus.rejected) {
-      _subscriptionFuture = _subscriptionFuture.replaceOrReset(
-        _fetchSubscription(),
-      );
+      _subscriptionFuture = _subscriptionFuture.replaceOrReset(_fetchSubscription());
     }
 
     return await _subscriptionFuture;
@@ -193,14 +187,9 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<void> refreshAll() async {
-    await Future.wait([
-      refreshSubscriptionConfig(),
-      refreshSubscription(),
-    ]);
+    await Future.wait([refreshSubscriptionConfig(), refreshSubscription()]);
 
-    await Future.wait([
-      refreshOtherSubscriber(),
-    ]);
+    await Future.wait([refreshOtherSubscriber()]);
   }
 
   @action

@@ -4,37 +4,34 @@ FutureOr<void> Function({bool manageSubscription}) useHandleSubscribe() {
   final context = useContext();
   final beamer = Beamer.of(context);
 
-  return useCallback(
-    ({bool manageSubscription = false}) async {
-      final ref = ProviderScope.containerOf(context, listen: false);
-      final sessionStore = ref.read(authSessionStorePOD);
-      final subscriptionStore = ref.read(subscriptionStorePOD);
-      final subscriptionPurchaseStore = ref.read(subscriptionPurchaseStorePOD);
-      final remoteConfigStore = ref.read(remoteConfigStorePOD);
+  return useCallback(({bool manageSubscription = false}) async {
+    final ref = ProviderScope.containerOf(context, listen: false);
+    final sessionStore = ref.read(authSessionStorePOD);
+    final subscriptionStore = ref.read(subscriptionStorePOD);
+    final subscriptionPurchaseStore = ref.read(subscriptionPurchaseStorePOD);
+    final remoteConfigStore = ref.read(remoteConfigStorePOD);
 
-      final accessToken = sessionStore.accessToken;
+    final accessToken = sessionStore.accessToken;
 
-      try {
-        final subscription = await subscriptionStore.subscriptionFuture;
-        if (!context.mounted) {
-          return;
-        }
-        await handleOnBillingPage(
-          context: context,
-          manageSubscriptionPage: remoteConfigStore.manageSubscriptionPage,
-          upgradeSubscriptionPage: remoteConfigStore.upgradeSubscriptionPage,
-          gateway: subscription.gateway,
-          subscriptionActive: subscription.active,
-          accessToken: accessToken,
-          onManageSubscription: subscriptionPurchaseStore.manageSubscription,
-          manageSubscription: manageSubscription,
-        );
-      } on SubscriptionRequiredException catch (_) {
-        // ignore and let the flow continue
+    try {
+      final subscription = await subscriptionStore.subscriptionFuture;
+      if (!context.mounted) {
+        return;
       }
-    },
-    [beamer],
-  );
+      await handleOnBillingPage(
+        context: context,
+        manageSubscriptionPage: remoteConfigStore.manageSubscriptionPage,
+        upgradeSubscriptionPage: remoteConfigStore.upgradeSubscriptionPage,
+        gateway: subscription.gateway,
+        subscriptionActive: subscription.active,
+        accessToken: accessToken,
+        onManageSubscription: subscriptionPurchaseStore.manageSubscription,
+        manageSubscription: manageSubscription,
+      );
+    } on SubscriptionRequiredException catch (_) {
+      // ignore and let the flow continue
+    }
+  }, [beamer]);
 }
 
 FutureOr<void> Function() useHandleUpgradePlan() {
@@ -57,7 +54,8 @@ FutureOr<void> Function() useHandleUpgradePlan() {
       return;
     }
     final gateway = subscription.gateway?.toLowerCase();
-    final supportsUpgrade = remoteConfigStore.gatewaysSupportingUpgrade.contains(gateway) ||
+    final supportsUpgrade =
+        remoteConfigStore.gatewaysSupportingUpgrade.contains(gateway) ||
         isMobilePaymentGateway(gateway);
 
     if (!supportsUpgrade || Platform.isWindows) {
@@ -68,9 +66,7 @@ FutureOr<void> Function() useHandleUpgradePlan() {
         scheme: uri.scheme,
         host: uri.host,
         path: uri.path,
-        queryParameters: {
-          'access_token': token ?? '',
-        },
+        queryParameters: {'access_token': token ?? ''},
       );
 
       openUrlLink(httpsUri).ignore();

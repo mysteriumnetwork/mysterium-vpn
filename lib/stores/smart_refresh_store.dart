@@ -12,11 +12,7 @@ part 'smart_refresh_store.g.dart';
 class SmartRefreshStore = _SmartRefreshStore with _$SmartRefreshStore;
 
 abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserver {
-  _SmartRefreshStore(
-    this._locationsStore,
-    this._subscriptionStore,
-    this._logger,
-  ) {
+  _SmartRefreshStore(this._locationsStore, this._subscriptionStore, this._logger) {
     _init();
   }
 

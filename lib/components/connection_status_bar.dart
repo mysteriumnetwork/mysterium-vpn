@@ -20,11 +20,7 @@ class ConnectionStatusBar extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final horizontalPadding = useResponsiveValue<double>(
-      20,
-      tablet: 30,
-      desktop: 40,
-    );
+    final horizontalPadding = useResponsiveValue<double>(20, tablet: 30, desktop: 40);
 
     final vpnStore = ref.watch(vpnStorePOD);
     final connectionStatus = useComputedValue(() => vpnStore.vpnStatus);
@@ -32,21 +28,14 @@ class ConnectionStatusBar extends HookConsumerWidget {
     final isExpanded = useState(false);
     final statusColor = useConnectionStatusColor();
 
-    final handleToggleExpanded = useMemoized(
-      () {
-        if (connectionStatus != VpnConnectionStatus.connected) {
-          return null;
-        }
-        return () => isExpanded.value = !isExpanded.value;
-      },
-      [connectionStatus, isExpanded],
-    );
+    final handleToggleExpanded = useMemoized(() {
+      if (connectionStatus != VpnConnectionStatus.connected) {
+        return null;
+      }
+      return () => isExpanded.value = !isExpanded.value;
+    }, [connectionStatus, isExpanded]);
 
-    useReaction(
-      () => vpnStore.vpnStatus,
-      (_) => isExpanded.value = false,
-      keys: [isExpanded],
-    );
+    useReaction(() => vpnStore.vpnStatus, (_) => isExpanded.value = false, keys: [isExpanded]);
 
     return RawMaterialButton(
       onPressed: handleToggleExpanded,
@@ -92,9 +81,7 @@ class ConnectionStatusBar extends HookConsumerWidget {
                       right: 0,
                       top: 0,
                       bottom: 0,
-                      child: Center(
-                        child: _ToggleExpandIndicator(value: isExpanded.value),
-                      ),
+                      child: Center(child: _ToggleExpandIndicator(value: isExpanded.value)),
                     ),
                 ],
               ),
@@ -110,10 +97,7 @@ class ConnectionStatusBar extends HookConsumerWidget {
     );
   }
 
-  String _statusText(
-    VpnConnectionStatus connectionStatus,
-    bool isLoading,
-  ) {
+  String _statusText(VpnConnectionStatus connectionStatus, bool isLoading) {
     if (isLoading) {
       return LocaleKeys.gettingIPAddress.tr();
     }
@@ -132,15 +116,15 @@ class ConnectionStatusBar extends HookConsumerWidget {
     }
     return switch (connectionStatus) {
       VpnConnectionStatus.connected => SvgIcon(
-          asset: Asset.icons.killSwitch,
-          height: 16,
-          width: 16,
-        ),
+        asset: Asset.icons.killSwitch,
+        height: 16,
+        width: 16,
+      ),
       VpnConnectionStatus.disconnected => SvgIcon(
-          asset: Asset.icons.lockOpen,
-          height: 14,
-          width: 16,
-        ),
+        asset: Asset.icons.lockOpen,
+        height: 14,
+        width: 16,
+      ),
       VpnConnectionStatus.connecting => const LoadingIndicator(radius: 16),
       VpnConnectionStatus.disconnecting => const LoadingIndicator(radius: 16),
       _ => const SizedBox.shrink(),
@@ -149,18 +133,16 @@ class ConnectionStatusBar extends HookConsumerWidget {
 }
 
 class _ToggleExpandIndicator extends HookWidget {
-  const _ToggleExpandIndicator({
-    required this.value,
-  });
+  const _ToggleExpandIndicator({required this.value});
 
   final bool value;
 
   @override
   Widget build(BuildContext context) => AnimatedRotation(
-        turns: value ? 0.25 : 0.75,
-        duration: const Duration(milliseconds: 200),
-        child: const Icon(Icons.chevron_left, color: Palette.white),
-      );
+    turns: value ? 0.25 : 0.75,
+    duration: const Duration(milliseconds: 200),
+    child: const Icon(Icons.chevron_left, color: Palette.white),
+  );
 }
 
 class _Expanded extends StatelessWidget {
@@ -168,36 +150,32 @@ class _Expanded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Opacity(
-        opacity: .75,
-        child: DefaultTextStyle(
-          style: GoogleFonts.montserrat(
-            color: Palette.white,
-            fontWeight: FontWeight.w400,
-            fontSize: 12,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              spacing: 20,
+    opacity: .75,
+    child: DefaultTextStyle(
+      style: GoogleFonts.montserrat(
+        color: Palette.white,
+        fontWeight: FontWeight.w400,
+        fontSize: 12,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 20,
+          children: [
+            const Divider(height: 1),
+            Row(
+              spacing: 10,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Divider(height: 1),
-                Row(
-                  spacing: 10,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('${LocaleKeys.killSwitchTooltipTitle.tr()}:'),
-                    Flexible(
-                      child: Text(
-                        LocaleKeys.killSwitchTooltipMessage.tr(),
-                      ),
-                    ),
-                  ],
-                ),
+                Text('${LocaleKeys.killSwitchTooltipTitle.tr()}:'),
+                Flexible(child: Text(LocaleKeys.killSwitchTooltipMessage.tr())),
               ],
             ),
-          ),
+          ],
         ),
-      );
+      ),
+    ),
+  );
 }

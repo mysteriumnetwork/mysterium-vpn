@@ -15,23 +15,23 @@ class ResponsiveLayoutBuilder extends StatelessWidget {
     super.key,
   });
   final Widget Function(BuildContext context, ScreenSizeConfiguration screenSizeConfiguration)
-      builder;
+  builder;
   final ScreenBreakpoint? screenBreakpoints;
   final ScreenSizeBreakpoint? screenSizeBreakpoints;
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
-        builder: (context, boxConstraints) => builder(
-          context,
-          ScreenSizeConfiguration(
-            screenType: getScreenType(MediaQuery.of(context).size, screenBreakpoints),
-            sizeType: getSizeType(
-              MediaQuery.of(context).size,
-              screenSizeBreakpoint: screenSizeBreakpoints,
-            ),
-            screenSize: MediaQuery.of(context).size,
-            localWidgetSize: Size(boxConstraints.maxWidth, boxConstraints.maxHeight),
-          ),
+    builder: (context, boxConstraints) => builder(
+      context,
+      ScreenSizeConfiguration(
+        screenType: getScreenType(MediaQuery.of(context).size, screenBreakpoints),
+        sizeType: getSizeType(
+          MediaQuery.of(context).size,
+          screenSizeBreakpoint: screenSizeBreakpoints,
         ),
-      );
+        screenSize: MediaQuery.of(context).size,
+        localWidgetSize: Size(boxConstraints.maxWidth, boxConstraints.maxHeight),
+      ),
+    ),
+  );
 }

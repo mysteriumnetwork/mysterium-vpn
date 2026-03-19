@@ -11,52 +11,47 @@ import 'package:mysterium_vpn/components/dialogs/marketing_consent_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/push_notifications_dialog.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn/stores/user_preferences_store.dart';
 
 void useHomeAutorun() {
   final context = useContext();
-  final vpnStore = useProvider(vpnStorePOD);
-  final userPreferencesStore = useProvider(userPreferencesStorePOD);
-  final authSessionStore = useProvider(authSessionStorePOD);
-  final pushNotificationsStore = useProvider(pushNotificationsStorePOD);
+  final vpnStore = useProvider<VpnStore>(vpnStorePOD);
+  final userPreferencesStore = useProvider<UserPreferencesStore>(userPreferencesStorePOD);
+  final authSessionStore = useProvider<AuthSessionStore>(authSessionStorePOD);
+  final pushNotificationsStore = useProvider<PushNotificationsStore>(pushNotificationsStorePOD);
 
   return useEffect(
     () {
       final controller = StreamController<Future<Object?> Function()>(sync: true);
-      final subscription = controller.stream.asyncMap((it) async {
-        // instead of widget binding addPostFrameCallback
-        // we use microtask (for simplicity) to ensure dialog is shown
-        // after the current frame is rendered
-        await Future.microtask(() {});
-        return it();
-      }).listen((_) {});
+      final subscription = controller.stream
+          .asyncMap((it) async {
+            // instead of widget binding addPostFrameCallback
+            // we use microtask (for simplicity) to ensure dialog is shown
+            // after the current frame is rendered
+            await Future.microtask(() {});
+            return it();
+          })
+          .listen((_) {});
       final disposers = <ReactionDisposer>[
-        autorun(
-          (_) {
-            if (!authSessionStore.isAuthenticated) {
-              return;
-            }
-            final value = userPreferencesStore.nextPromptToShow;
-            if (value == UserPromptType.none) {
-              return;
-            }
+        autorun((_) {
+          if (!authSessionStore.isAuthenticated) {
+            return;
+          }
+          final value = userPreferencesStore.nextPromptToShow;
+          if (value == UserPromptType.none) {
+            return;
+          }
 
-            // Only show dialog if not already shown
-            if (!userPreferencesStore.isPromptShown(value)) {
-              userPreferencesStore.markPromptAsShown(value);
+          // Only show dialog if not already shown
+          if (!userPreferencesStore.isPromptShown(value)) {
+            userPreferencesStore.markPromptAsShown(value);
 
-              if (value case UserPromptType.marketingConsent) {
-                controller.add(
-                  () => showMarketingConsentDialog(context),
-                );
-              } else if (value case UserPromptType.pushNotifications) {
-                controller.add(
-                  () => showPushNotificationsPermissionDialog(context),
-                );
-              }
+            if (value case UserPromptType.marketingConsent) {
+              controller.add(() => showMarketingConsentDialog(context));
+            } else if (value case UserPromptType.pushNotifications) {
+              controller.add(() => showPushNotificationsPermissionDialog(context));
             }
-          },
-        ),
+          }
+        }),
         autorun((_) {
           final error = vpnStore.fetchConfigFuture?.error;
           if (error is DeviceLimitReachedException && !vpnStore.isDeviceLimitErrorShown) {

@@ -14,9 +14,7 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class ProtocolPicker extends ConsumerWidget {
-  const ProtocolPicker({
-    super.key,
-  });
+  const ProtocolPicker({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

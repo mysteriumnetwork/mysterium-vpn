@@ -29,38 +29,31 @@ class NoMailAppDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Stack(
-        clipBehavior: Clip.none,
-        alignment: Alignment.center,
+    clipBehavior: Clip.none,
+    alignment: Alignment.center,
+    children: [
+      Positioned(top: -15, child: SvgIcon(asset: Asset.icons.message)),
+      Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Positioned(
-            top: -15,
-            child: SvgIcon(
-              asset: Asset.icons.message,
-            ),
+          HeaderTitle(text: LocaleKeys.openEmailApp.tr()),
+          EasyText(
+            LocaleKeys.noEmailApp.tr(),
+            fontSize: 14,
+            maxLines: 4,
+            textAlign: TextAlign.center,
+          ).padding(bottom: 30),
+          EasyButton(
+            useSystemColor: false,
+            width: 200,
+            color: Palette.purple,
+            text: LocaleKeys.goBackButton.tr(),
+            onPressed: () {
+              Beamer.of(context).popRoute();
+            },
           ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              HeaderTitle(
-                text: LocaleKeys.openEmailApp.tr(),
-              ),
-              EasyText(
-                LocaleKeys.noEmailApp.tr(),
-                fontSize: 14,
-                maxLines: 4,
-                textAlign: TextAlign.center,
-              ).padding(bottom: 30),
-              EasyButton(
-                useSystemColor: false,
-                width: 200,
-                color: Palette.purple,
-                text: LocaleKeys.goBackButton.tr(),
-                onPressed: () {
-                  Beamer.of(context).popRoute();
-                },
-              ),
-            ],
-          ).padding(horizontal: 20, vertical: 40),
         ],
-      );
+      ).padding(horizontal: 20, vertical: 40),
+    ],
+  );
 }

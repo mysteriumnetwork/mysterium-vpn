@@ -13,28 +13,19 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
   final analyticsStore = ref.read(analyticsStorePOD);
   final authStore = ref.read(authStorePOD);
   return BeamerDelegate(
-    navigatorObservers: [
-      ...analyticsStore.navigationObservers(),
-      SentryNavigatorObserver(),
-    ],
+    navigatorObservers: [...analyticsStore.navigationObservers(), SentryNavigatorObserver()],
     guards: [
       BeamGuard(
-        pathPatterns: [
-          Routes.main.path,
-          Routes.settings.path,
-        ],
+        pathPatterns: [Routes.main.path, Routes.settings.path],
         check: (context, state) => authSessionStore.canBrowseApp,
-        beamToNamed: (_, __) => Routes.platformLogin.path,
+        beamToNamed: (_, _) => Routes.platformLogin.path,
       ),
       BeamGuard(
-        pathPatterns: [
-          Routes.platformLogin.path,
-          Routes.checkYourEmail.path,
-        ],
+        pathPatterns: [Routes.platformLogin.path, Routes.checkYourEmail.path],
         check: (context, state) =>
             authSessionStore.status == AuthStatus.unauthenticated ||
             authStore.authenticateFeature?.status == FutureStatus.pending,
-        beamToNamed: (_, __) => Routes.main.path,
+        beamToNamed: (_, _) => Routes.main.path,
       ),
       BeamGuard(
         pathPatterns: [Routes.emailToken.path],
@@ -44,7 +35,7 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
       BeamGuard(
         pathPatterns: [Routes.splash.path],
         check: (context, state) => authSessionStore.status == AuthStatus.unknown,
-        beamToNamed: (_, __) =>
+        beamToNamed: (_, _) =>
             authSessionStore.canBrowseApp ? Routes.main.path : Routes.platformLogin.path,
       ),
     ],

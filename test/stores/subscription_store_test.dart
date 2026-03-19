@@ -30,12 +30,12 @@ void main() {
   );
 
   vpn_api.SubscriptionConfigResponse config() => vpn_api.SubscriptionConfigResponse(
-        gateways: [],
-        plans: [],
-        countries: [],
-        stripeReturnUrl: '',
-        stripePublishableKey: '',
-      );
+    gateways: [],
+    plans: [],
+    countries: [],
+    stripeReturnUrl: '',
+    stripePublishableKey: '',
+  );
 
   setUp(() {
     mockSubscriptionService = MockSubscriptionService();
@@ -43,8 +43,9 @@ void main() {
     mockAnalyticsStore = MockAnalyticsStore();
 
     when(mockAuthSessionStore.isAuthenticated).thenReturn(false);
-    when(mockSubscriptionService.fetchSubscriptionDetails())
-        .thenAnswer((_) async => subscriptionExpired);
+    when(
+      mockSubscriptionService.fetchSubscriptionDetails(),
+    ).thenAnswer((_) async => subscriptionExpired);
 
     // Make constructor-time config fetch safe/deterministic.
     when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer((_) async => config());

@@ -8,9 +8,7 @@ import 'package:mysterium_vpn/stores/stores.dart';
 
 import 'update_available_store_test.mocks.dart';
 
-@GenerateNiceMocks([
-  MockSpec<RemoteConfigStore>(),
-])
+@GenerateNiceMocks([MockSpec<RemoteConfigStore>()])
 void main() async {
   late UpdateAvailableStore store;
   late MockRemoteConfigStore mockRemoteConfigStore;
@@ -76,54 +74,55 @@ void main() async {
     expect(store.appUpdateAvailable, true);
   });
 
-  test('appUpdateAvailable returns true if newVersionFuture is used and store version is bigger',
-      () {
-    final store = UpdateAvailableStore(
-      mockRemoteConfigStore,
-      BuildInfo(buildNumber: 0, buildVersion: '3.0.0'),
-    );
+  test(
+    'appUpdateAvailable returns true if newVersionFuture is used and store version is bigger',
+    () {
+      final store = UpdateAvailableStore(
+        mockRemoteConfigStore,
+        BuildInfo(buildNumber: 0, buildVersion: '3.0.0'),
+      );
 
-    when(mockRemoteConfigStore.useStoreVersionChecker).thenReturn(true);
-    when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.0');
+      when(mockRemoteConfigStore.useStoreVersionChecker).thenReturn(true);
+      when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.0');
 
-    store.updateAvailabilityFuture = ObservableFuture.value(
-      UpdateAvailability.updateAvailable,
-    );
+      store.updateAvailabilityFuture = ObservableFuture.value(UpdateAvailability.updateAvailable);
 
-    expect(store.appUpdateAvailable, true);
-  });
-
-  test('appUpdateAvailable returns false if newVersionFuture is used and store version is smaller',
-      () {
-    final store = UpdateAvailableStore(
-      mockRemoteConfigStore,
-      BuildInfo(buildNumber: 0, buildVersion: '3.0.0'),
-    );
-
-    when(mockRemoteConfigStore.useStoreVersionChecker).thenReturn(true);
-    when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.0');
-
-    store.updateAvailabilityFuture = ObservableFuture.value(
-      UpdateAvailability.updateNotAvailable,
-    );
-
-    expect(store.appUpdateAvailable, false);
-  });
+      expect(store.appUpdateAvailable, true);
+    },
+  );
 
   test(
-      'appUpdateAvailable returns true if newVersionFuture is used and store version is smaller but CC version is bigger',
-      () {
-    final store = UpdateAvailableStore(
-      mockRemoteConfigStore,
-      BuildInfo(buildNumber: 0, buildVersion: '3.0.0'),
-    );
-    when(mockRemoteConfigStore.useStoreVersionChecker).thenReturn(true);
-    when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('6.0.0');
+    'appUpdateAvailable returns false if newVersionFuture is used and store version is smaller',
+    () {
+      final store = UpdateAvailableStore(
+        mockRemoteConfigStore,
+        BuildInfo(buildNumber: 0, buildVersion: '3.0.0'),
+      );
 
-    store.updateAvailabilityFuture = ObservableFuture.value(
-      UpdateAvailability.updateAvailable,
-    );
+      when(mockRemoteConfigStore.useStoreVersionChecker).thenReturn(true);
+      when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('0.0.0');
 
-    expect(store.appUpdateAvailable, true);
-  });
+      store.updateAvailabilityFuture = ObservableFuture.value(
+        UpdateAvailability.updateNotAvailable,
+      );
+
+      expect(store.appUpdateAvailable, false);
+    },
+  );
+
+  test(
+    'appUpdateAvailable returns true if newVersionFuture is used and store version is smaller but CC version is bigger',
+    () {
+      final store = UpdateAvailableStore(
+        mockRemoteConfigStore,
+        BuildInfo(buildNumber: 0, buildVersion: '3.0.0'),
+      );
+      when(mockRemoteConfigStore.useStoreVersionChecker).thenReturn(true);
+      when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('6.0.0');
+
+      store.updateAvailabilityFuture = ObservableFuture.value(UpdateAvailability.updateAvailable);
+
+      expect(store.appUpdateAvailable, true);
+    },
+  );
 }

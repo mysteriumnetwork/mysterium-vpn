@@ -40,8 +40,9 @@ abstract class _BannersStore with Store {
   };
 
   @readonly
-  late ObservableFuture<List<BannerType>> _shownBanners =
-      ObservableFuture(_localDBService.getShownBanners());
+  late ObservableFuture<List<BannerType>> _shownBanners = ObservableFuture(
+    _localDBService.getShownBanners(),
+  );
 
   @computed
   List<BannerType>? get shown =>

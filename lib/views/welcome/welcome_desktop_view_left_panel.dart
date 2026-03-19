@@ -10,19 +10,15 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class WelcomeDesktopViewLeftPanel extends StatelessWidget {
-  const WelcomeDesktopViewLeftPanel({
-    required this.onSignInPressed,
-    super.key,
-  });
+  const WelcomeDesktopViewLeftPanel({required this.onSignInPressed, super.key});
 
   final VoidCallback onSignInPressed;
 
   @override
-  Widget build(BuildContext context) => Column(
+  Widget build(BuildContext context) =>
+      Column(
         children: [
-          UnauthenticatedHeader(
-            padding: EdgeInsets.only(bottom: getMediaHeight(context) * 0.02),
-          ),
+          UnauthenticatedHeader(padding: EdgeInsets.only(bottom: getMediaHeight(context) * 0.02)),
           const LoginHeadlines().expanded(),
           EasyButton(
             height: 60,
@@ -34,9 +30,7 @@ class WelcomeDesktopViewLeftPanel extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.centerLeft,
-            child: AppVersion(
-              headerText: LocaleKeys.appVersion.tr(),
-            ),
+            child: AppVersion(headerText: LocaleKeys.appVersion.tr()),
           ),
         ],
       ).paddingDirectional(

@@ -52,15 +52,15 @@ class $AssetsAnimationsGen {
 
   /// List of all assets
   List<LottieGenImage> get values => [
-        backgroundElements,
-        circlesGrey,
-        circlesLogo,
-        circlesPurple,
-        pulseGreen,
-        pulsePurple,
-        slideUp,
-        startLogo
-      ];
+    backgroundElements,
+    circlesGrey,
+    circlesLogo,
+    circlesPurple,
+    pulseGreen,
+    pulsePurple,
+    slideUp,
+    startLogo,
+  ];
 }
 
 class $AssetsDataGen {
@@ -151,23 +151,23 @@ class $AssetsGoogleFontsGen {
 
   /// List of all assets
   List<String> get values => [
-        interBlack,
-        interBold,
-        interExtraBold,
-        interExtraLight,
-        interLight,
-        interMedium,
-        interRegular,
-        interSemiBold,
-        interThin,
-        montserratBlack,
-        montserratBold,
-        montserratExtraBold,
-        montserratLight,
-        montserratMedium,
-        montserratRegular,
-        montserratSemiBold
-      ];
+    interBlack,
+    interBold,
+    interExtraBold,
+    interExtraLight,
+    interLight,
+    interMedium,
+    interRegular,
+    interSemiBold,
+    interThin,
+    montserratBlack,
+    montserratBold,
+    montserratExtraBold,
+    montserratLight,
+    montserratMedium,
+    montserratRegular,
+    montserratSemiBold,
+  ];
 }
 
 class $AssetsIconsGen {
@@ -593,116 +593,116 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
-        accountNameDark,
-        accountNameLight,
-        appUpdate,
-        apple,
-        barcode,
-        bestServerDark,
-        bestServerLight,
-        billingDark,
-        billingLight,
-        checkmark,
-        checkmarkGreen,
-        chevronRight,
-        cityConnected,
-        cityDark,
-        cityLight,
-        clear,
-        clockCircle,
-        close2Dark,
-        close2Light,
-        close3Dark,
-        close3Light,
-        closeDark,
-        closeLight,
-        connectPromptDark,
-        connectPromptLight,
-        deleteAccountDark,
-        deleteAccountLight,
-        diamond,
-        download,
-        downloadActive,
-        duration,
-        durationActive,
-        emailNotificationDark,
-        emailNotificationLight,
-        feedback,
-        film,
-        fixDark,
-        fixLight,
-        flash,
-        flashDark,
-        flashLight,
-        globe,
-        google,
-        incognito,
-        infoCircleDark,
-        infoCircleLight,
-        infoOutline,
-        killSwitch,
-        languageDark,
-        languageLight,
-        locationPin,
-        lockOpen,
-        lockerDark,
-        lockerLight,
-        message,
-        navigateBack,
-        navigateBackDark,
-        navigateBackLight,
-        navigateBackLightBlack,
-        navigateBackLightGrey,
-        next,
-        noInternetConnection,
-        nodePowerOff,
-        nodePowerOn,
-        notificationDark,
-        notificationLight,
-        powerConnecting,
-        powerOff,
-        powerOn,
-        protocolDark,
-        protocolLight,
-        refresh,
-        refreshIpSettingDark,
-        refreshIpSettingLight,
-        report,
-        reportDark,
-        reportLight,
-        reportPurple,
-        resetAppSettingDark,
-        resetAppSettingLight,
-        search,
-        settings,
-        settingsDark,
-        settingsDarkDesktop,
-        settingsLight,
-        settingsLightBlack,
-        settingsLightDesktop,
-        shareCircle,
-        speed,
-        stopDark,
-        stopLight,
-        subscription,
-        subscriptionItem,
-        successCupDark,
-        successCupLight,
-        supportDark,
-        supportDarkDesktop,
-        supportLight,
-        supportLightDesktop,
-        tag,
-        themeDark,
-        themeLight,
-        thumbsDownDark,
-        thumbsDownLight,
-        thumbsUpDark,
-        thumbsUpLight,
-        upload,
-        uploadActive,
-        warning
-      ];
+    accountNameDark,
+    accountNameLight,
+    appUpdate,
+    apple,
+    barcode,
+    bestServerDark,
+    bestServerLight,
+    billingDark,
+    billingLight,
+    checkmark,
+    checkmarkGreen,
+    chevronRight,
+    cityConnected,
+    cityDark,
+    cityLight,
+    clear,
+    clockCircle,
+    close2Dark,
+    close2Light,
+    close3Dark,
+    close3Light,
+    closeDark,
+    closeLight,
+    connectPromptDark,
+    connectPromptLight,
+    deleteAccountDark,
+    deleteAccountLight,
+    diamond,
+    download,
+    downloadActive,
+    duration,
+    durationActive,
+    emailNotificationDark,
+    emailNotificationLight,
+    feedback,
+    film,
+    fixDark,
+    fixLight,
+    flash,
+    flashDark,
+    flashLight,
+    globe,
+    google,
+    incognito,
+    infoCircleDark,
+    infoCircleLight,
+    infoOutline,
+    killSwitch,
+    languageDark,
+    languageLight,
+    locationPin,
+    lockOpen,
+    lockerDark,
+    lockerLight,
+    message,
+    navigateBack,
+    navigateBackDark,
+    navigateBackLight,
+    navigateBackLightBlack,
+    navigateBackLightGrey,
+    next,
+    noInternetConnection,
+    nodePowerOff,
+    nodePowerOn,
+    notificationDark,
+    notificationLight,
+    powerConnecting,
+    powerOff,
+    powerOn,
+    protocolDark,
+    protocolLight,
+    refresh,
+    refreshIpSettingDark,
+    refreshIpSettingLight,
+    report,
+    reportDark,
+    reportLight,
+    reportPurple,
+    resetAppSettingDark,
+    resetAppSettingLight,
+    search,
+    settings,
+    settingsDark,
+    settingsDarkDesktop,
+    settingsLight,
+    settingsLightBlack,
+    settingsLightDesktop,
+    shareCircle,
+    speed,
+    stopDark,
+    stopLight,
+    subscription,
+    subscriptionItem,
+    successCupDark,
+    successCupLight,
+    supportDark,
+    supportDarkDesktop,
+    supportLight,
+    supportLightDesktop,
+    tag,
+    themeDark,
+    themeLight,
+    thumbsDownDark,
+    thumbsDownLight,
+    thumbsUpDark,
+    thumbsUpLight,
+    upload,
+    uploadActive,
+    warning,
+  ];
 }
 
 class $AssetsImagesGen {
@@ -717,14 +717,16 @@ class $AssetsImagesGen {
       const SvgGenImage('assets/images/devices_limit.svg', size: Size(149.0, 101.0));
 
   /// File path: assets/images/marketing_consent_dark.png
-  AssetGenImage get marketingConsentDark =>
-      const AssetGenImage('assets/images/marketing_consent_dark.png',
-          size: const Size(576.0, 576.0));
+  AssetGenImage get marketingConsentDark => const AssetGenImage(
+    'assets/images/marketing_consent_dark.png',
+    size: const Size(576.0, 576.0),
+  );
 
   /// File path: assets/images/marketing_consent_light.png
-  AssetGenImage get marketingConsentLight =>
-      const AssetGenImage('assets/images/marketing_consent_light.png',
-          size: const Size(576.0, 576.0));
+  AssetGenImage get marketingConsentLight => const AssetGenImage(
+    'assets/images/marketing_consent_light.png',
+    size: const Size(576.0, 576.0),
+  );
 
   /// File path: assets/images/notifications.svg
   SvgGenImage get notifications =>
@@ -755,25 +757,26 @@ class $AssetsImagesGen {
       const SvgGenImage('assets/images/settings.svg', size: Size(120.0, 120.0));
 
   /// File path: assets/images/subscription_upgrade.png
-  AssetGenImage get subscriptionUpgrade =>
-      const AssetGenImage('assets/images/subscription_upgrade.png',
-          size: const Size(1024.0, 1024.0));
+  AssetGenImage get subscriptionUpgrade => const AssetGenImage(
+    'assets/images/subscription_upgrade.png',
+    size: const Size(1024.0, 1024.0),
+  );
 
   /// List of all assets
   List<dynamic> get values => [
-        checkEmail,
-        devicesLimit,
-        marketingConsentDark,
-        marketingConsentLight,
-        notifications,
-        pnConsentDark,
-        pnConsentLight,
-        purchasePromo,
-        reportDark,
-        reportLight,
-        settings,
-        subscriptionUpgrade
-      ];
+    checkEmail,
+    devicesLimit,
+    marketingConsentDark,
+    marketingConsentLight,
+    notifications,
+    pnConsentDark,
+    pnConsentLight,
+    purchasePromo,
+    reportDark,
+    reportLight,
+    settings,
+    subscriptionUpgrade,
+  ];
 }
 
 class $AssetsLogoGen {
@@ -799,9 +802,10 @@ class $AssetsLogoGen {
       const AssetGenImage('assets/logo/native_splash_logo.png', size: const Size(1280.0, 512.0));
 
   /// File path: assets/logo/native_splash_logo_android12.png
-  AssetGenImage get nativeSplashLogoAndroid12 =>
-      const AssetGenImage('assets/logo/native_splash_logo_android12.png',
-          size: const Size(1152.0, 1152.0));
+  AssetGenImage get nativeSplashLogoAndroid12 => const AssetGenImage(
+    'assets/logo/native_splash_logo_android12.png',
+    size: const Size(1152.0, 1152.0),
+  );
 
   /// Directory path: assets/logo/prod
   $AssetsLogoProdGen get prod => const $AssetsLogoProdGen();
@@ -811,8 +815,14 @@ class $AssetsLogoGen {
       const SvgGenImage('assets/logo/splash_logo.svg', size: Size(320.0, 128.0));
 
   /// List of all assets
-  List<dynamic> get values =>
-      [logoBlack, logoGrey, logoWhite, nativeSplashLogo, nativeSplashLogoAndroid12, splashLogo];
+  List<dynamic> get values => [
+    logoBlack,
+    logoGrey,
+    logoWhite,
+    nativeSplashLogo,
+    nativeSplashLogoAndroid12,
+    splashLogo,
+  ];
 }
 
 class $AssetsMapTilesGen {
@@ -1473,8 +1483,24 @@ class $AssetsMapTilesDark40Gen {
       const AssetGenImage('assets/map_tiles/dark/4/0/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesDark41Gen {
@@ -1545,8 +1571,24 @@ class $AssetsMapTilesDark41Gen {
       const AssetGenImage('assets/map_tiles/dark/4/1/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesDark410Gen {
@@ -1617,8 +1659,24 @@ class $AssetsMapTilesDark410Gen {
       const AssetGenImage('assets/map_tiles/dark/4/10/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesDark411Gen {
@@ -1689,8 +1747,24 @@ class $AssetsMapTilesDark411Gen {
       const AssetGenImage('assets/map_tiles/dark/4/11/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesDark412Gen {
@@ -1761,8 +1835,24 @@ class $AssetsMapTilesDark412Gen {
       const AssetGenImage('assets/map_tiles/dark/4/12/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesDark413Gen {
@@ -1833,8 +1923,24 @@ class $AssetsMapTilesDark413Gen {
       const AssetGenImage('assets/map_tiles/dark/4/13/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesDark414Gen {
@@ -1905,8 +2011,24 @@ class $AssetsMapTilesDark414Gen {
       const AssetGenImage('assets/map_tiles/dark/4/14/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesDark415Gen {
@@ -1977,8 +2099,24 @@ class $AssetsMapTilesDark415Gen {
       const AssetGenImage('assets/map_tiles/dark/4/15/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesDark42Gen {
@@ -2049,8 +2187,24 @@ class $AssetsMapTilesDark42Gen {
       const AssetGenImage('assets/map_tiles/dark/4/2/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesDark43Gen {
@@ -2121,8 +2275,24 @@ class $AssetsMapTilesDark43Gen {
       const AssetGenImage('assets/map_tiles/dark/4/3/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesDark44Gen {
@@ -2193,8 +2363,24 @@ class $AssetsMapTilesDark44Gen {
       const AssetGenImage('assets/map_tiles/dark/4/4/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesDark45Gen {
@@ -2265,8 +2451,24 @@ class $AssetsMapTilesDark45Gen {
       const AssetGenImage('assets/map_tiles/dark/4/5/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesDark46Gen {
@@ -2337,8 +2539,24 @@ class $AssetsMapTilesDark46Gen {
       const AssetGenImage('assets/map_tiles/dark/4/6/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesDark47Gen {
@@ -2409,8 +2627,24 @@ class $AssetsMapTilesDark47Gen {
       const AssetGenImage('assets/map_tiles/dark/4/7/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesDark48Gen {
@@ -2481,8 +2715,24 @@ class $AssetsMapTilesDark48Gen {
       const AssetGenImage('assets/map_tiles/dark/4/8/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesDark49Gen {
@@ -2553,8 +2803,24 @@ class $AssetsMapTilesDark49Gen {
       const AssetGenImage('assets/map_tiles/dark/4/9/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesLight30Gen {
@@ -2937,8 +3203,24 @@ class $AssetsMapTilesLight40Gen {
       const AssetGenImage('assets/map_tiles/light/4/0/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesLight41Gen {
@@ -3009,8 +3291,24 @@ class $AssetsMapTilesLight41Gen {
       const AssetGenImage('assets/map_tiles/light/4/1/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesLight410Gen {
@@ -3081,8 +3379,24 @@ class $AssetsMapTilesLight410Gen {
       const AssetGenImage('assets/map_tiles/light/4/10/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesLight411Gen {
@@ -3153,8 +3467,24 @@ class $AssetsMapTilesLight411Gen {
       const AssetGenImage('assets/map_tiles/light/4/11/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesLight412Gen {
@@ -3225,8 +3555,24 @@ class $AssetsMapTilesLight412Gen {
       const AssetGenImage('assets/map_tiles/light/4/12/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesLight413Gen {
@@ -3297,8 +3643,24 @@ class $AssetsMapTilesLight413Gen {
       const AssetGenImage('assets/map_tiles/light/4/13/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesLight414Gen {
@@ -3369,8 +3731,24 @@ class $AssetsMapTilesLight414Gen {
       const AssetGenImage('assets/map_tiles/light/4/14/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesLight415Gen {
@@ -3441,8 +3819,24 @@ class $AssetsMapTilesLight415Gen {
       const AssetGenImage('assets/map_tiles/light/4/15/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesLight42Gen {
@@ -3513,8 +3907,24 @@ class $AssetsMapTilesLight42Gen {
       const AssetGenImage('assets/map_tiles/light/4/2/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesLight43Gen {
@@ -3585,8 +3995,24 @@ class $AssetsMapTilesLight43Gen {
       const AssetGenImage('assets/map_tiles/light/4/3/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesLight44Gen {
@@ -3657,8 +4083,24 @@ class $AssetsMapTilesLight44Gen {
       const AssetGenImage('assets/map_tiles/light/4/4/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesLight45Gen {
@@ -3729,8 +4171,24 @@ class $AssetsMapTilesLight45Gen {
       const AssetGenImage('assets/map_tiles/light/4/5/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesLight46Gen {
@@ -3801,8 +4259,24 @@ class $AssetsMapTilesLight46Gen {
       const AssetGenImage('assets/map_tiles/light/4/6/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesLight47Gen {
@@ -3873,8 +4347,24 @@ class $AssetsMapTilesLight47Gen {
       const AssetGenImage('assets/map_tiles/light/4/7/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesLight48Gen {
@@ -3945,8 +4435,24 @@ class $AssetsMapTilesLight48Gen {
       const AssetGenImage('assets/map_tiles/light/4/8/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class $AssetsMapTilesLight49Gen {
@@ -4017,8 +4523,24 @@ class $AssetsMapTilesLight49Gen {
       const AssetGenImage('assets/map_tiles/light/4/9/9.png', size: const Size(512.0, 512.0));
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a0, a1, a10, a11, a12, a13, a14, a15, a2, a3, a4, a5, a6, a7, a8, a9];
+  List<AssetGenImage> get values => [
+    a0,
+    a1,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+  ];
 }
 
 class Asset {
@@ -4036,12 +4558,7 @@ class Asset {
 }
 
 class AssetGenImage {
-  const AssetGenImage(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-    this.animation,
-  });
+  const AssetGenImage(this._assetName, {this.size, this.flavors = const {}, this.animation});
 
   final String _assetName;
 
@@ -4102,15 +4619,8 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({
-    AssetBundle? bundle,
-    String? package,
-  }) {
-    return AssetImage(
-      _assetName,
-      bundle: bundle,
-      package: package,
-    );
+  ImageProvider provider({AssetBundle? bundle, String? package}) {
+    return AssetImage(_assetName, bundle: bundle, package: package);
   }
 
   String get path => _assetName;
@@ -4131,17 +4641,10 @@ class AssetGenImageAnimation {
 }
 
 class SvgGenImage {
-  const SvgGenImage(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  }) : _isVecFormat = false;
+  const SvgGenImage(this._assetName, {this.size, this.flavors = const {}}) : _isVecFormat = false;
 
-  const SvgGenImage.vec(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  }) : _isVecFormat = true;
+  const SvgGenImage.vec(this._assetName, {this.size, this.flavors = const {}})
+    : _isVecFormat = true;
 
   final String _assetName;
   final Size? size;
@@ -4171,11 +4674,7 @@ class SvgGenImage {
   }) {
     final _svg.BytesLoader loader;
     if (_isVecFormat) {
-      loader = _vg.AssetBytesLoader(
-        _assetName,
-        assetBundle: bundle,
-        packageName: package,
-      );
+      loader = _vg.AssetBytesLoader(_assetName, assetBundle: bundle, packageName: package);
     } else {
       loader = _svg.SvgAssetLoader(
         _assetName,
@@ -4209,10 +4708,7 @@ class SvgGenImage {
 }
 
 class LottieGenImage {
-  const LottieGenImage(
-    this._assetName, {
-    this.flavors = const {},
-  });
+  const LottieGenImage(this._assetName, {this.flavors = const {}});
 
   final String _assetName;
   final Set<String> flavors;
@@ -4229,11 +4725,7 @@ class LottieGenImage {
     _lottie.LottieImageProviderFactory? imageProviderFactory,
     Key? key,
     AssetBundle? bundle,
-    Widget Function(
-      BuildContext,
-      Widget,
-      _lottie.LottieComposition?,
-    )? frameBuilder,
+    Widget Function(BuildContext, Widget, _lottie.LottieComposition?)? frameBuilder,
     ImageErrorWidgetBuilder? errorBuilder,
     double? width,
     double? height,

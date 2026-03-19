@@ -67,31 +67,31 @@ class EdgeToEdgeScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        backgroundColor: backgroundColor,
-        extendBody: extendBody,
-        extendBodyBehindAppBar: extendBodyBehindAppBar,
-        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-        drawer: drawer,
-        endDrawer: endDrawer,
-        floatingActionButton: floatingActionButton,
-        floatingActionButtonLocation: floatingActionButtonLocation,
-        appBar: appBar != null ? _buildAppBar(context) : null,
-        body: SafeAreaWrapper(
-          applyTop: !extendBodyBehindAppBar,
-          applyBottom: false,
-          customPadding: customPadding,
-          maintainBottomViewPadding: maintainBottomViewPadding,
-          child: body,
-        ),
-        bottomNavigationBar: bottomNavigationBar != null
-            ? SafeAreaWrapper(
-                applyTop: false,
-                applyLeft: false,
-                applyRight: false,
-                child: bottomNavigationBar!,
-              )
-            : null,
-      );
+    backgroundColor: backgroundColor,
+    extendBody: extendBody,
+    extendBodyBehindAppBar: extendBodyBehindAppBar,
+    resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+    drawer: drawer,
+    endDrawer: endDrawer,
+    floatingActionButton: floatingActionButton,
+    floatingActionButtonLocation: floatingActionButtonLocation,
+    appBar: appBar != null ? _buildAppBar(context) : null,
+    body: SafeAreaWrapper(
+      applyTop: !extendBodyBehindAppBar,
+      applyBottom: false,
+      customPadding: customPadding,
+      maintainBottomViewPadding: maintainBottomViewPadding,
+      child: body,
+    ),
+    bottomNavigationBar: bottomNavigationBar != null
+        ? SafeAreaWrapper(
+            applyTop: false,
+            applyLeft: false,
+            applyRight: false,
+            child: bottomNavigationBar!,
+          )
+        : null,
+  );
 
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     final statusBarHeight = EdgeToEdgeHandler.getStatusBarHeight(context);
@@ -129,10 +129,7 @@ class SafeAreaWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (customPadding != null) {
-      return Padding(
-        padding: customPadding!,
-        child: child,
-      );
+      return Padding(padding: customPadding!, child: child);
     }
 
     return SafeArea(
@@ -172,21 +169,21 @@ class EdgeToEdgeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        color: backgroundColor ?? Theme.of(context).appBarTheme.backgroundColor,
-        child: SafeArea(
-          bottom: false,
-          child: AppBar(
-            title: titleWidget ?? (title != null ? Text(title!) : null),
-            actions: actions,
-            leading: leading,
-            automaticallyImplyLeading: automaticallyImplyLeading,
-            backgroundColor: Colors.transparent,
-            elevation: elevation,
-            foregroundColor: foregroundColor,
-            centerTitle: centerTitle,
-          ),
-        ),
-      );
+    color: backgroundColor ?? Theme.of(context).appBarTheme.backgroundColor,
+    child: SafeArea(
+      bottom: false,
+      child: AppBar(
+        title: titleWidget ?? (title != null ? Text(title!) : null),
+        actions: actions,
+        leading: leading,
+        automaticallyImplyLeading: automaticallyImplyLeading,
+        backgroundColor: Colors.transparent,
+        elevation: elevation,
+        foregroundColor: foregroundColor,
+        centerTitle: centerTitle,
+      ),
+    ),
+  );
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -218,23 +215,23 @@ class EdgeToEdgeBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        color: backgroundColor ?? Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-        child: SafeArea(
-          top: false,
-          child: BottomNavigationBar(
-            items: items,
-            currentIndex: currentIndex,
-            onTap: onTap,
-            backgroundColor: Colors.transparent,
-            selectedItemColor: selectedItemColor,
-            unselectedItemColor: unselectedItemColor,
-            type: type,
-            showSelectedLabels: showSelectedLabels,
-            showUnselectedLabels: showUnselectedLabels,
-            elevation: 0,
-          ),
-        ),
-      );
+    color: backgroundColor ?? Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+    child: SafeArea(
+      top: false,
+      child: BottomNavigationBar(
+        items: items,
+        currentIndex: currentIndex,
+        onTap: onTap,
+        backgroundColor: Colors.transparent,
+        selectedItemColor: selectedItemColor,
+        unselectedItemColor: unselectedItemColor,
+        type: type,
+        showSelectedLabels: showSelectedLabels,
+        showUnselectedLabels: showUnselectedLabels,
+        elevation: 0,
+      ),
+    ),
+  );
 }
 
 /// A utility widget for custom content that needs manual inset handling
@@ -274,9 +271,7 @@ class EdgeToEdgeContent extends StatelessWidget {
     }
 
     if (avoidKeyboard) {
-      padding = padding.copyWith(
-        bottom: padding.bottom + viewInsets.bottom,
-      );
+      padding = padding.copyWith(bottom: padding.bottom + viewInsets.bottom);
     }
 
     if (additionalPadding != null) {
@@ -288,10 +283,7 @@ class EdgeToEdgeContent extends StatelessWidget {
       );
     }
 
-    return Padding(
-      padding: padding,
-      child: child,
-    );
+    return Padding(padding: padding, child: child);
   }
 }
 

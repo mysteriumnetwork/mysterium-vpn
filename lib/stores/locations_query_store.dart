@@ -10,19 +10,12 @@ part 'locations_query_store.g.dart';
 class LocationsQueryStore = _LocationsQueryStore with _$LocationsQueryStore;
 
 abstract class _LocationsQueryStore with Store, Disposeable {
-  _LocationsQueryStore(
-    this._prefs,
-    this._analyticsStore,
-    LocaleStore localeStore,
-  ) {
-    _localeReactionDisposer = reaction(
-      (_) => localeStore.currentLocale,
-      (value) {
-        if (_search.trim().isNotEmpty) {
-          setSearch('', debounce: Duration.zero);
-        }
-      },
-    );
+  _LocationsQueryStore(this._prefs, this._analyticsStore, LocaleStore localeStore) {
+    _localeReactionDisposer = reaction((_) => localeStore.currentLocale, (value) {
+      if (_search.trim().isNotEmpty) {
+        setSearch('', debounce: Duration.zero);
+      }
+    });
   }
 
   final SharedPreferenceService _prefs;
@@ -42,13 +35,10 @@ abstract class _LocationsQueryStore with Store, Disposeable {
 
   @action
   void setSearch(String value, {Duration debounce = const Duration(milliseconds: 500)}) {
-    _debouncer.debounce(
-      () async {
-        _search = value;
-        await _analyticsStore.setSearchEvent(_search);
-      },
-      debounce,
-    );
+    _debouncer.debounce(() async {
+      _search = value;
+      await _analyticsStore.setSearchEvent(_search);
+    }, debounce);
   }
 
   @action

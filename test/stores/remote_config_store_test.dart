@@ -30,9 +30,8 @@ void main() {
     configCatUser = ConfigCatUser(identifier: 'mock');
 
     when(ipInfoStore.infoFuture).thenAnswer(
-      (_) => ObservableFuture.value(
-        const IPInfo(ip: '192.168.1.1', country: 'LT', city: 'Vilnius'),
-      ),
+      (_) =>
+          ObservableFuture.value(const IPInfo(ip: '192.168.1.1', country: 'LT', city: 'Vilnius')),
     );
     when(logger.handle(any, any)).thenAnswer((_) async {});
     when(logger.warning(any)).thenAnswer((_) async {});
@@ -55,9 +54,9 @@ void main() {
     test('returns set of strings if key exists and is array', () async {
       store = createStore();
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'cancelSurveyOptions': '["ReasonA", "ReasonB"]'},
-      );
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'cancelSurveyOptions': '["ReasonA", "ReasonB"]'});
       await store.configFuture;
       expect(store.cancelSubscriptionReasonKeys, equals({'ReasonA', 'ReasonB'}));
     });
@@ -65,9 +64,9 @@ void main() {
     test('handles invalid JSON gracefully', () async {
       store = createStore();
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'cancelSurveyOptions': '{not valid json'},
-      );
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'cancelSurveyOptions': '{not valid json'});
       await store.configFuture;
       expect(() => store.cancelSubscriptionReasonKeys, throwsA(isA<MobXCaughtException>()));
     });
@@ -75,11 +74,9 @@ void main() {
     test('handles non-iterable values gracefully', () async {
       store = createStore();
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {
-          'cancelSurveyOptions': '"just a string"',
-        },
-      );
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'cancelSurveyOptions': '"just a string"'});
 
       await store.configFuture;
       expect(store.cancelSubscriptionReasonKeys, isNull);
@@ -91,16 +88,12 @@ void main() {
       store = createStore();
 
       // Simulate config with enableQaHelpers set to true
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'enableQaHelpers': true},
-      );
+      when(client.getAllValues()).thenAnswer((_) async => {'enableQaHelpers': true});
       await store.configFuture;
       expect(store.enableQaHelpers, isTrue);
 
       // Simulate config with enableQaHelpers set to false
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'enableQaHelpers': false},
-      );
+      when(client.getAllValues()).thenAnswer((_) async => {'enableQaHelpers': false});
       // Re-create store to refresh config
       store = createStore();
       await store.configFuture;
@@ -128,27 +121,21 @@ void main() {
     test('returns parsed set if valid JSON array is provided', () async {
       store = createStore();
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'gatewaysSupportingUpgrade': '["stripe", "adyen", "paypal"]'},
-      );
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'gatewaysSupportingUpgrade': '["stripe", "adyen", "paypal"]'});
       await store.configFuture;
-      expect(
-        store.gatewaysSupportingUpgrade,
-        equals({'stripe', 'adyen', 'paypal'}),
-      );
+      expect(store.gatewaysSupportingUpgrade, equals({'stripe', 'adyen', 'paypal'}));
     });
 
     test('lowercases all keys from the array', () async {
       store = createStore();
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'gatewaysSupportingUpgrade': '["Stripe", "ADYEN", "PayPal"]'},
-      );
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'gatewaysSupportingUpgrade': '["Stripe", "ADYEN", "PayPal"]'});
       await store.configFuture;
-      expect(
-        store.gatewaysSupportingUpgrade,
-        equals({'stripe', 'adyen', 'paypal'}),
-      );
+      expect(store.gatewaysSupportingUpgrade, equals({'stripe', 'adyen', 'paypal'}));
     });
 
     test('returns default set if key is not present in config', () async {
@@ -156,44 +143,33 @@ void main() {
 
       when(client.getAllValues()).thenAnswer((_) async => {});
       await store.configFuture;
-      expect(
-        store.gatewaysSupportingUpgrade,
-        equals({'stripe', 'adyen'}),
-      );
+      expect(store.gatewaysSupportingUpgrade, equals({'stripe', 'adyen'}));
     });
 
     test('returns default set if JSON is invalid', () async {
       store = createStore();
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'gatewaysSupportingUpgrade': '{not valid json'},
-      );
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'gatewaysSupportingUpgrade': '{not valid json'});
       await store.configFuture;
-      expect(
-        store.gatewaysSupportingUpgrade,
-        equals({'stripe', 'adyen'}),
-      );
+      expect(store.gatewaysSupportingUpgrade, equals({'stripe', 'adyen'}));
     });
 
     test('returns default set if JSON is not an array', () async {
       store = createStore();
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'gatewaysSupportingUpgrade': '"just a string"'},
-      );
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'gatewaysSupportingUpgrade': '"just a string"'});
       await store.configFuture;
-      expect(
-        store.gatewaysSupportingUpgrade,
-        equals({'stripe', 'adyen'}),
-      );
+      expect(store.gatewaysSupportingUpgrade, equals({'stripe', 'adyen'}));
     });
 
     test('handles empty array gracefully', () async {
       store = createStore();
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'gatewaysSupportingUpgrade': '[]'},
-      );
+      when(client.getAllValues()).thenAnswer((_) async => {'gatewaysSupportingUpgrade': '[]'});
       await store.configFuture;
       expect(store.gatewaysSupportingUpgrade, equals(<String>{}));
     });
@@ -201,14 +177,11 @@ void main() {
     test('handles array with null values gracefully', () async {
       store = createStore();
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'gatewaysSupportingUpgrade': '["stripe", null, "adyen"]'},
-      );
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'gatewaysSupportingUpgrade': '["stripe", null, "adyen"]'});
       await store.configFuture;
-      expect(
-        store.gatewaysSupportingUpgrade,
-        equals({'stripe', 'null', 'adyen'}),
-      );
+      expect(store.gatewaysSupportingUpgrade, equals({'stripe', 'null', 'adyen'}));
     });
   });
 
@@ -217,9 +190,7 @@ void main() {
       store = createStore();
       const testUrl = 'https://example.com/checkout';
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'checkoutWebRedirectUrl': testUrl},
-      );
+      when(client.getAllValues()).thenAnswer((_) async => {'checkoutWebRedirectUrl': testUrl});
       await store.configFuture;
       expect(store.checkoutWebRedirectUrl, equals(Uri.parse(testUrl)));
     });
@@ -238,9 +209,9 @@ void main() {
     test('returns default Uri if URL parsing fails with invalid scheme', () async {
       store = createStore();
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'checkoutWebRedirectUrl': ':::invalid:::'},
-      );
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'checkoutWebRedirectUrl': ':::invalid:::'});
       await store.configFuture;
 
       expect(store.checkoutWebRedirectUrl.path, contains('/checkout/payment-upgrade'));
@@ -250,9 +221,9 @@ void main() {
     test('handles relative path gracefully', () async {
       store = createStore();
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'checkoutWebRedirectUrl': '/checkout/custom'},
-      );
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'checkoutWebRedirectUrl': '/checkout/custom'});
       await store.configFuture;
 
       final uri = store.checkoutWebRedirectUrl;
@@ -263,9 +234,7 @@ void main() {
       store = createStore();
       const testUrl = 'https://api.example.com/v1/checkout/payment';
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'checkoutWebRedirectUrl': testUrl},
-      );
+      when(client.getAllValues()).thenAnswer((_) async => {'checkoutWebRedirectUrl': testUrl});
       await store.configFuture;
 
       final uri = store.checkoutWebRedirectUrl;
@@ -278,9 +247,7 @@ void main() {
       store = createStore();
       const testUrl = 'https://example.com/checkout?token=123&lang=en';
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'checkoutWebRedirectUrl': testUrl},
-      );
+      when(client.getAllValues()).thenAnswer((_) async => {'checkoutWebRedirectUrl': testUrl});
       await store.configFuture;
 
       final uri = store.checkoutWebRedirectUrl;
@@ -293,9 +260,7 @@ void main() {
     test('returns true if config has true value', () async {
       store = createStore();
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'pricingMonthly': true},
-      );
+      when(client.getAllValues()).thenAnswer((_) async => {'pricingMonthly': true});
       await store.configFuture;
       expect(store.pricingMonthly, isTrue);
     });
@@ -303,9 +268,7 @@ void main() {
     test('returns false if config has false value', () async {
       store = createStore();
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'pricingMonthly': false},
-      );
+      when(client.getAllValues()).thenAnswer((_) async => {'pricingMonthly': false});
       await store.configFuture;
       expect(store.pricingMonthly, isFalse);
     });
@@ -321,16 +284,11 @@ void main() {
     test('handles non-boolean values gracefully by type casting', () async {
       store = createStore();
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'pricingMonthly': 'true'},
-      );
+      when(client.getAllValues()).thenAnswer((_) async => {'pricingMonthly': 'true'});
       await store.configFuture;
 
       // This will throw because the string 'true' cannot be cast to bool
-      expect(
-        () => store.pricingMonthly,
-        throwsA(isA<MobXCaughtException>()),
-      );
+      expect(() => store.pricingMonthly, throwsA(isA<MobXCaughtException>()));
     });
 
     test('returns default true when config is empty', () async {
