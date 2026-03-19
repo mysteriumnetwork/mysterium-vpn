@@ -80,6 +80,10 @@ class LocationsSliderMobileView extends HookConsumerWidget {
                 Observer(
                   builder: (context) {
                     final selectedLocation = selectedLocationStore.value;
+                    final unavailableLocations =
+                        ref.read(unavailableLocationsStorePOD).unavailableLocations;
+                    final isSelectedUnavailable = selectedLocation != null &&
+                        unavailableLocations.contains(selectedLocation);
                     return Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -90,17 +94,20 @@ class LocationsSliderMobileView extends HookConsumerWidget {
                         )) ...[
                           _SelectedLocationBanner(
                             location: selectedLocation!,
+                            unavailable: isSelectedUnavailable,
                             onDismiss: () => selectedLocationStore.value = null,
                           ),
                           Transform.translate(
                             offset: const Offset(0, -20),
                             child: ConnectionTile(
                               showConnectedOnly: true,
-                              textConnect: LocaleKeys.switchToLocationBtn.tr(
-                                namedArgs: {
-                                  'switchLocation': selectedLocation.getName(context),
-                                },
-                              ),
+                              textConnect: isSelectedUnavailable
+                                  ? LocaleKeys.locationUnavailableAction.tr()
+                                  : LocaleKeys.switchToLocationBtn.tr(
+                                      namedArgs: {
+                                        'switchLocation': selectedLocation.getName(context),
+                                      },
+                                    ),
                             ),
                           ),
                         ] else if (selectedLocation != null && vpnStore.location != null)
@@ -142,10 +149,12 @@ class _SelectedLocationBanner extends StatelessWidget {
   const _SelectedLocationBanner({
     required this.location,
     required this.onDismiss,
+    this.unavailable = false,
   });
 
   final VPNLocation location;
   final VoidCallback onDismiss;
+  final bool unavailable;
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
@@ -164,7 +173,10 @@ class _SelectedLocationBanner extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  location.getName(context),
+                  unavailable
+                      ? LocaleKeys.locationUnavailableTitle
+                          .tr(args: [location.getName(context)])
+                      : location.getName(context),
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
