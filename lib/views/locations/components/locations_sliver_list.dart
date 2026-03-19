@@ -211,7 +211,11 @@ double _targetOffset(
 /// Scrolls to [countryCode]'s item. On desktop animates; on mobile jumps
 /// (after enabling panel scrolling so the panel's reset listener doesn't
 /// fight the programmatic scroll).
-void _scrollToCountry({
+///
+/// Uses `WidgetsBinding.instance.endOfFrame` to wait for layout passes so
+/// that item heights reflect expansion state changes before computing scroll
+/// offsets.
+Future<void> _scrollToCountry({
   required BuildContext context,
   required String countryCode,
   required GlobalKey? stickyHeaderKey,
@@ -219,47 +223,55 @@ void _scrollToCountry({
   required bool isDesktop,
   required int itemCount,
   required int priorityIndex,
-}) {
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    if (!context.mounted) {
-      return;
-    }
-    final scrollable = Scrollable.maybeOf(context);
-    if (scrollable == null) {
-      return;
-    }
+}) async {
+  // Frame 1: expansion mutations from syncExpansionState fire, triggering a
+  // rebuild for the next frame.
+  await WidgetsBinding.instance.endOfFrame;
+  if (!context.mounted) {
+    return;
+  }
 
-    // On mobile, unlock panel scrolling once so the reset listener doesn't
-    // fight programmatic scrolls and the user can scroll normally afterwards.
-    if (!isDesktop && panelController.isAttached) {
-      panelController.enableScrolling();
-    }
+  // Frame 2: the rebuild has laid out with the correct expansion state.
+  await WidgetsBinding.instance.endOfFrame;
+  if (!context.mounted) {
+    return;
+  }
 
-    // Fast path: item is already built in the widget tree.
-    final ro = _findLocationRenderBox(countryCode);
-    if (ro != null) {
-      _applyScroll(scrollable, ro, stickyHeaderKey, isDesktop);
-      return;
-    }
+  final scrollable = Scrollable.maybeOf(context);
+  if (scrollable == null) {
+    return;
+  }
 
-    // Slow path: item is off-screen. Jump to a proportional estimate so the
-    // lazy list builds it, then refine to the exact position on the next frame.
-    final pos = scrollable.position;
-    final estimated = itemCount == 0
-        ? 0.0
-        : (pos.maxScrollExtent * priorityIndex / itemCount).clamp(0.0, pos.maxScrollExtent);
-    pos.jumpTo(estimated);
+  // On mobile, unlock panel scrolling once so the reset listener doesn't
+  // fight programmatic scrolls and the user can scroll normally afterwards.
+  if (!isDesktop && panelController.isAttached) {
+    panelController.enableScrolling();
+  }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!context.mounted) {
-        return;
-      }
-      final refinedRo = _findLocationRenderBox(countryCode);
-      if (refinedRo != null) {
-        _applyScroll(scrollable, refinedRo, stickyHeaderKey, isDesktop);
-      }
-    });
-  });
+  // Fast path: item is already built in the widget tree.
+  final ro = _findLocationRenderBox(countryCode);
+  if (ro != null) {
+    _applyScroll(scrollable, ro, stickyHeaderKey, isDesktop);
+    return;
+  }
+
+  // Slow path: item is off-screen. Jump to a proportional estimate so the
+  // lazy list builds it, then refine after the next layout pass.
+  final pos = scrollable.position;
+  final estimated = itemCount == 0
+      ? 0.0
+      : (pos.maxScrollExtent * priorityIndex / itemCount).clamp(0.0, pos.maxScrollExtent);
+  pos.jumpTo(estimated);
+
+  await WidgetsBinding.instance.endOfFrame;
+  if (!context.mounted) {
+    return;
+  }
+
+  final refinedRo = _findLocationRenderBox(countryCode);
+  if (refinedRo != null) {
+    _applyScroll(scrollable, refinedRo, stickyHeaderKey, isDesktop);
+  }
 }
 
 /// Scrolls to the exact position of [ro]. Desktop animates, mobile jumps.

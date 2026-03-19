@@ -78,8 +78,8 @@ class LocationItem extends HookConsumerWidget {
       }
     });
 
-    useValueChanged<String?, void>(mapSelectedCountryCode, (newValue, _) {
-      syncExpansionState(newValue);
+    useValueChanged<String?, void>(mapSelectedCountryCode, (_, __) {
+      syncExpansionState(mapSelectedCountryCode);
     });
 
     // Expansion priority (evaluated in order, first match wins):
