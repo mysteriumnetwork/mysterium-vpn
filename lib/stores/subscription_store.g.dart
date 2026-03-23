@@ -28,6 +28,12 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
   StoreState get storeState => (_$storeStateComputed ??=
           Computed<StoreState>(() => super.storeState, name: '_SubscriptionStore.storeState'))
       .value;
+  Computed<bool>? _$canRedeemCodeComputed;
+
+  @override
+  bool get canRedeemCode => (_$canRedeemCodeComputed ??=
+          Computed<bool>(() => super.canRedeemCode, name: '_SubscriptionStore.canRedeemCode'))
+      .value;
 
   late final _$_subscriptionFutureAtom =
       Atom(name: '_SubscriptionStore._subscriptionFuture', context: context);
@@ -175,7 +181,8 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     return '''
 isSubscribed: ${isSubscribed},
 isSubscriptionLoading: ${isSubscriptionLoading},
-storeState: ${storeState}
+storeState: ${storeState},
+canRedeemCode: ${canRedeemCode}
     ''';
   }
 }

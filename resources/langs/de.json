@@ -447,7 +447,7 @@
   "subscriptionPlanPF1Plus": "Sichern Sie 10 Geräte gleichzeitig",
   "subscriptionPlanPF2Plus": "Mehr als 100 unterstützte Länder",
   "subscriptionPlanPF3Plus": "100 Server",
-  "subscriptionPlanPF4Plus": "Mehr als 7.500 Wohn-IPs",
+  "subscriptionPlanPF4Plus": "Mehr als 7.500 IP-Adressen für Privatkunden",
   "subscriptionPlanPF5Plus": "VPN-Protokoll",
   "subscriptionPlanPF6Plus": "Entscheidungen auf Stadtebene",
   "subscriptionPlanMoneyBack": "7-Tage-Geld-zurück-Garantie",
@@ -498,5 +498,7 @@
     "one": "{statesNum} Zustand",
     "other": "{statesNum} Staaten"
   },
-  "switchToLocationBtn": "Wechseln Sie zu {switchLocation}"
+  "switchToLocationBtn": "Wechseln Sie zu {switchLocation}",
+  "redeemDiscountCode": "Gutscheincode einlösen",
+  "couponCodeCopied": "{couponCode} wurde in die Zwischenablage kopiert!"
 }

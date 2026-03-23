@@ -487,7 +487,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "额外的安全保障。它会将您的互联网流量路由到两个不同的 VPN 服务器，对您的数据进行双重加密，并将您的 IP 地址隐藏在第二台服务器之后。",
     "subscriptionPlanResidentialIPsDesc": "伪装成普通家庭用户，让您可以访问流媒体服务并避免 VPN 检测。",
-    "subscriptionPlanCityLevelDesc": "它提供比大多数 VPN 更精确的位置控制，大多数 VPN 通常限制您只能选择整个国家或地区。",
+    "subscriptionPlanCityLevelDesc": "与大多数 VPN 相比，它能提供更精确的位置控制，而大多数 VPN 通常只允许您选择整个国家或地区。",
     "subscriptionPlanMalwareBlockerDesc": "它能在威胁到达您的设备之前将其拦截，从而保护您的设备，并在后台静默运行，不会打扰您。",
     "notNowBtn": "现在不要",
     "viewAllFeaturesBtn": "查看所有功能",
@@ -503,7 +503,9 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "IP地址池：{ips}",
     "connectToTooltip": "连接到 {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} 州", "other": "{statesNum} 个州"},
-    "switchToLocationBtn": "切换到 {switchLocation}"
+    "switchToLocationBtn": "切换到 {switchLocation}",
+    "redeemDiscountCode": "兑换折扣码",
+    "couponCodeCopied": "优惠券代码已复制到剪贴板！"
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -1042,7 +1044,9 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "IP Havuzu: {ips}",
     "connectToTooltip": "{countryNum} ülkesine bağlanın",
     "locationItemStatesCount": {"one": "{statesNum} Eyalet", "other": "{statesNum} Eyalet"},
-    "switchToLocationBtn": "{switchLocation} konumuna geçin"
+    "switchToLocationBtn": "{switchLocation} konumuna geçin",
+    "redeemDiscountCode": "İndirim kodunu kullanın",
+    "couponCodeCopied": "{couponCode} panoya kopyalandı!"
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1540,7 +1544,9 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "IPプール: {ips}",
     "connectToTooltip": "{countryNum}に接続します",
     "locationItemStatesCount": {"one": "{statesNum} 州", "other": "{statesNum} 州"},
-    "switchToLocationBtn": "{switchLocation} に切り替える"
+    "switchToLocationBtn": "{switchLocation}に切り替える",
+    "redeemDiscountCode": "割引コードを引き換える",
+    "couponCodeCopied": ""
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2052,7 +2058,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Plus": "Sichern Sie 10 Geräte gleichzeitig",
     "subscriptionPlanPF2Plus": "Mehr als 100 unterstützte Länder",
     "subscriptionPlanPF3Plus": "100 Server",
-    "subscriptionPlanPF4Plus": "Mehr als 7.500 Wohn-IPs",
+    "subscriptionPlanPF4Plus": "Mehr als 7.500 IP-Adressen für Privatkunden",
     "subscriptionPlanPF5Plus": "VPN-Protokoll",
     "subscriptionPlanPF6Plus": "Entscheidungen auf Stadtebene",
     "subscriptionPlanMoneyBack": "7-Tage-Geld-zurück-Garantie",
@@ -2108,7 +2114,9 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "IP-Pool: {ips}",
     "connectToTooltip": "Verbindung zu {countryNum} herstellen",
     "locationItemStatesCount": {"one": "{statesNum} Zustand", "other": "{statesNum} Staaten"},
-    "switchToLocationBtn": "Wechseln Sie zu {switchLocation}"
+    "switchToLocationBtn": "Wechseln Sie zu {switchLocation}",
+    "redeemDiscountCode": "Gutscheincode einlösen",
+    "couponCodeCopied": "{couponCode} wurde in die Zwischenablage kopiert!"
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2646,7 +2654,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "Camada extra de segurança. Direciona seu tráfego de internet por meio de dois servidores VPN diferentes, criptografando seus dados duas vezes e mascarando seu endereço IP por trás de um segundo servidor.",
     "subscriptionPlanResidentialIPsDesc":
-        "Apresente-se como um usuário doméstico comum, permitindo que você acesse serviços de streaming e evite a detecção por VPN.",
+        "Finja ser um usuário doméstico comum, o que permite acessar serviços de streaming e evitar a detecção por VPN.",
     "subscriptionPlanCityLevelDesc":
         "Oferece um controle de localização mais preciso do que a maioria das VPNs, que normalmente limitam você à seleção de países ou estados inteiros.",
     "subscriptionPlanMalwareBlockerDesc":
@@ -2666,7 +2674,9 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "Conjunto de IPs: {ips}",
     "connectToTooltip": "Conecte-se a {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} Estado", "other": "{statesNum} Estados"},
-    "switchToLocationBtn": "Alternar para {switchLocation}"
+    "switchToLocationBtn": "Alternar para {switchLocation}",
+    "redeemDiscountCode": "Resgatar código de desconto",
+    "couponCodeCopied": "{couponCode} copiado para a área de transferência!"
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3211,7 +3221,9 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "IP Pool: {ips}",
     "connectToTooltip": "Connect to {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} State", "other": "{statesNum} States"},
-    "switchToLocationBtn": "Switch to {switchLocation}"
+    "switchToLocationBtn": "Switch to {switchLocation}",
+    "redeemDiscountCode": "Redeem discount code",
+    "couponCodeCopied": "{couponCode} copied to clipboard!"
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3771,7 +3783,9 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "Pool di indirizzi IP: {ips}",
     "connectToTooltip": "Connettiti a {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} Stato", "other": "{statesNum} Stati"},
-    "switchToLocationBtn": "Passa a {switchLocation}"
+    "switchToLocationBtn": "Passa a {switchLocation}",
+    "redeemDiscountCode": "Riscatta il codice sconto",
+    "couponCodeCopied": "{couponCode} copiato negli appunti!"
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4339,7 +4353,9 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "Pool d'adresses IP : {ips}",
     "connectToTooltip": "Se connecter à {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} État", "other": "{statesNum} États"},
-    "switchToLocationBtn": "Passer à {switchLocation}"
+    "switchToLocationBtn": "Passer à {switchLocation}",
+    "redeemDiscountCode": "Utilisez le code de réduction",
+    "couponCodeCopied": "{couponCode} copié dans le presse-papiers !"
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4890,7 +4906,9 @@ class CodegenLoader extends AssetLoader {
       "one": "{statesNum} Negara Bagian",
       "other": "{statesNum} Negara Bagian"
     },
-    "switchToLocationBtn": "Beralih ke {switchLocation}"
+    "switchToLocationBtn": "Beralih ke {switchLocation}",
+    "redeemDiscountCode": "Tukarkan kode diskon",
+    "couponCodeCopied": "{Kode kupon} disalin ke papan klip!"
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5451,7 +5469,9 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "Grupo de direcciones IP: {ips}",
     "connectToTooltip": "Conéctate a {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} Estado", "other": "{statesNum} Estados"},
-    "switchToLocationBtn": "Cambiar a {switchLocation}"
+    "switchToLocationBtn": "Cambiar a {ubicación del switch}",
+    "redeemDiscountCode": "Canjea el código de descuento",
+    "couponCodeCopied": "¡El código de cupón se copió al portapapeles!"
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5947,7 +5967,7 @@ class CodegenLoader extends AssetLoader {
     "plan_yearly_basic": "السنة السنوية الأساسية",
     "plan_monthly_basic": "اشتراك شهري أساسي",
     "plan_monthly_pro": "برو مونثلي",
-    "plan_yearly_pro": "برو سنوي",
+    "plan_yearly_pro": "برو أنوال",
     "subscriptionUpgrade": "يرقي",
     "plan_2_years_basic": "سنتان أساسيتان",
     "plan_2_years_pro": "محترف لمدة عامين",
@@ -5983,7 +6003,9 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "مجموعة عناوين IP: {ips}",
     "connectToTooltip": "اتصل بـ {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} الولاية", "other": "{statesNum} الولايات"},
-    "switchToLocationBtn": "انتقل إلى {switchLocation}"
+    "switchToLocationBtn": "انتقل إلى {switchLocation}",
+    "redeemDiscountCode": "استخدم رمز الخصم",
+    "couponCodeCopied": "{couponCode} تم نسخه إلى الحافظة!"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

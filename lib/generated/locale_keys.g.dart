@@ -490,4 +490,6 @@ abstract class LocaleKeys {
   static const connectToTooltip = 'connectToTooltip';
   static const locationItemStatesCount = 'locationItemStatesCount';
   static const switchToLocationBtn = 'switchToLocationBtn';
+  static const redeemDiscountCode = 'redeemDiscountCode';
+  static const couponCodeCopied = 'couponCodeCopied';
 }

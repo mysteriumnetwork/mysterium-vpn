@@ -498,5 +498,7 @@
     "one": "{statesNum} 州",
     "other": "{statesNum} 州"
   },
-  "switchToLocationBtn": "{switchLocation} に切り替える"
+  "switchToLocationBtn": "{switchLocation}に切り替える",
+  "redeemDiscountCode": "割引コードを引き換える",
+  "couponCodeCopied": ""
 }
