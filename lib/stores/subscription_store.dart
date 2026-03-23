@@ -23,9 +23,11 @@ abstract class _SubscriptionStore with Store {
     required SubscriptionService subscriptionService,
     required AuthSessionStore authSessionStore,
     required AnalyticsStore analyticsStore,
+    required RemoteConfigStore remoteConfigStore,
   })  : _subscriptionService = subscriptionService,
         _authSessionStore = authSessionStore,
-        _analyticsStore = analyticsStore {
+        _analyticsStore = analyticsStore,
+        _remoteConfigStore = remoteConfigStore {
     _authReactionDisposer = reaction<bool>(
       (_) => _authSessionStore.isAuthenticated,
       (status) async {
@@ -41,7 +43,13 @@ abstract class _SubscriptionStore with Store {
   final AuthSessionStore _authSessionStore;
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
   final AnalyticsStore _analyticsStore;
+  final RemoteConfigStore _remoteConfigStore;
   ReactionDisposer? _authReactionDisposer;
+
+  @visibleForTesting
+  bool testIsIOS = false;
+
+  bool get _isIOS => testIsIOS || Platform.isIOS;
 
   @readonly
   late ObservableFuture<Subscription> _subscriptionFuture = ObservableFuture(_fetchSubscription());
@@ -84,6 +92,21 @@ abstract class _SubscriptionStore with Store {
         FutureStatus.fulfilled =>
           _subscriptionConfigFuture.value != null ? StoreState.available : StoreState.notAvailable,
       };
+
+  @computed
+  bool get canRedeemCode {
+    if (_remoteConfigStore.hideReedemCode) {
+      return false;
+    }
+    if (_isIOS) {
+      final subscription = _subscriptionFuture.value;
+      if (subscription != null && subscription.active) {
+        return subscription.gateway == 'apple';
+      }
+      return true;
+    }
+    return false;
+  }
 
   @action
   Future<Subscription> _fetchSubscription() async {

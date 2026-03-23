@@ -193,11 +193,13 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   final subscriptionService = ref.read(subscriptionServicePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
 
   final store = SubscriptionStore(
     subscriptionService: subscriptionService,
     authSessionStore: authSessionStore,
     analyticsStore: analyticsStore,
+    remoteConfigStore: remoteConfigStore,
   );
   ref.onDispose(store.dispose);
   return store;

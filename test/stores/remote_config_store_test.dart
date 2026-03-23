@@ -289,6 +289,36 @@ void main() {
     });
   });
 
+  group('RemoteConfigStore.hideReedemCode', () {
+    test('returns false if key is not present in config (default)', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      await store.configFuture;
+      expect(store.hideReedemCode, isFalse);
+    });
+
+    test('returns true if config has true value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'hideReedemCode': true},
+      );
+      await store.configFuture;
+      expect(store.hideReedemCode, isTrue);
+    });
+
+    test('returns false if config has false value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'hideReedemCode': false},
+      );
+      await store.configFuture;
+      expect(store.hideReedemCode, isFalse);
+    });
+  });
+
   group('RemoteConfigStore.pricingMonthly', () {
     test('returns true if config has true value', () async {
       store = createStore();

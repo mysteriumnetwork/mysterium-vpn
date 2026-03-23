@@ -28,10 +28,11 @@ Future<void> showSubscriptionUpgradeModalPage(BuildContext context) async {
       .read(analyticsStorePOD)
       .logScreenViewed('subscription_upgrade_modal')
       .ignore();
+  final themeData = DesignSystemTheme.of(context);
   await showModal(
     context,
     builder: (context) => Theme(
-      data: DesignSystemTheme.of(context),
+      data: themeData,
       child: _SubscriptionUpgradeModalPage(
         onShowAllPlansPressed: () => showSubscriptionPlansModalPage(context),
       ),
@@ -239,7 +240,21 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                       ),
                     ),
                     ModalFooter(
+                      spacing: 0,
                       children: [
+                        if (subscriptionStore.canRedeemCode)
+                          ButtonTertiary(
+                            size: ButtonSize.small,
+                            decoration: ButtonDecoration(
+                              foregroundColor: theme.palette.textPrimarySelected,
+                              padding: EdgeInsets.zero,
+                            ),
+                            onPressed: purchaseStore.redeemCode,
+                            child: Text(
+                              LocaleKeys.redeemDiscountCode.tr(),
+                            ),
+                          ),
+                        SizedBox(height: theme.spacing.ms),
                         ButtonPrimary(
                           onPressed: handlePurchase,
                           loading: isLoading.value ? const ButtonLoading() : null,
@@ -256,13 +271,16 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                                 : LocaleKeys.getSubscriptionPlanBtn.tr(args: [planWithDuration]),
                           ),
                         ),
+                        SizedBox(height: theme.spacing.xl),
                         ButtonTertiary(
                           onPressed: handleSeeAllPlans,
                           decoration: ButtonDecoration(
                             foregroundColor: theme.palette.textPrimarySelected,
+                            padding: EdgeInsets.zero,
                           ),
                           child: Text(LocaleKeys.subscriptionUpgradeSeeAllPlans.tr()),
                         ),
+                        SizedBox(height: theme.spacing.xl),
                         const SubscriptionPrivacyAndTerms(),
                       ],
                     ),

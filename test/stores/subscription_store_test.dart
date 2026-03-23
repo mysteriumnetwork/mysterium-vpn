@@ -15,12 +15,14 @@ import 'subscription_store_test.mocks.dart';
   MockSpec<SubscriptionService>(),
   MockSpec<AuthSessionStore>(),
   MockSpec<AnalyticsStore>(),
+  MockSpec<RemoteConfigStore>(),
 ])
 void main() {
   late SubscriptionStore subscriptionStore;
   late MockSubscriptionService mockSubscriptionService;
   late MockAuthSessionStore mockAuthSessionStore;
   late MockAnalyticsStore mockAnalyticsStore;
+  late MockRemoteConfigStore mockRemoteConfigStore;
 
   final subscriptionExpired = Subscription(
     active: false,
@@ -41,7 +43,9 @@ void main() {
     mockSubscriptionService = MockSubscriptionService();
     mockAuthSessionStore = MockAuthSessionStore();
     mockAnalyticsStore = MockAnalyticsStore();
+    mockRemoteConfigStore = MockRemoteConfigStore();
 
+    when(mockRemoteConfigStore.hideReedemCode).thenReturn(false);
     when(mockAuthSessionStore.isAuthenticated).thenReturn(false);
     when(mockSubscriptionService.fetchSubscriptionDetails())
         .thenAnswer((_) async => subscriptionExpired);
@@ -54,6 +58,7 @@ void main() {
       subscriptionService: mockSubscriptionService,
       authSessionStore: mockAuthSessionStore,
       analyticsStore: mockAnalyticsStore,
+      remoteConfigStore: mockRemoteConfigStore,
     );
 
     clearInteractions(mockSubscriptionService);
@@ -174,5 +179,90 @@ void main() {
         verify(mockAnalyticsStore.setUserProperty(any)).called(3);
       },
     );
+
+    group('canRedeemCode', () {
+      test('returns false when hideReedemCode remote config is true', () async {
+        subscriptionStore.testIsIOS = true;
+        when(mockRemoteConfigStore.hideReedemCode).thenReturn(true);
+
+        expect(subscriptionStore.canRedeemCode, isFalse);
+      });
+
+      test('returns false on non-iOS platform', () async {
+        when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+        when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer(
+          (_) async => Subscription.empty(),
+        );
+
+        await subscriptionStore.refreshSubscription();
+
+        expect(subscriptionStore.canRedeemCode, isFalse);
+      });
+
+      test('returns true when no active subscription on iOS', () async {
+        subscriptionStore.testIsIOS = true;
+        when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+        when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer(
+          (_) async => Subscription.empty(),
+        );
+
+        await subscriptionStore.refreshSubscription();
+
+        expect(subscriptionStore.canRedeemCode, isTrue);
+      });
+
+      test('returns true when active subscription with apple gateway on iOS', () async {
+        subscriptionStore.testIsIOS = true;
+        when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+        when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer(
+          (_) async => Subscription(
+            active: true,
+            activeUntil: DateTime.now().add(const Duration(days: 30)),
+            expired: false,
+            recurring: true,
+            gateway: 'apple',
+          ),
+        );
+
+        await subscriptionStore.refreshSubscription();
+
+        expect(subscriptionStore.canRedeemCode, isTrue);
+      });
+
+      test('returns false when active subscription with non-apple gateway on iOS', () async {
+        subscriptionStore.testIsIOS = true;
+        when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+        when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer(
+          (_) async => Subscription(
+            active: true,
+            activeUntil: DateTime.now().add(const Duration(days: 30)),
+            expired: false,
+            recurring: true,
+            gateway: 'stripe',
+          ),
+        );
+
+        await subscriptionStore.refreshSubscription();
+
+        expect(subscriptionStore.canRedeemCode, isFalse);
+      });
+
+      test('returns false when active subscription with null gateway on iOS', () async {
+        subscriptionStore.testIsIOS = true;
+        when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+        when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer(
+          (_) async => Subscription(
+            active: true,
+            activeUntil: DateTime.now().add(const Duration(days: 30)),
+            expired: false,
+            recurring: true,
+          ),
+        );
+
+        await subscriptionStore.refreshSubscription();
+
+        expect(subscriptionStore.canRedeemCode, isFalse);
+      });
+    });
   });
 }

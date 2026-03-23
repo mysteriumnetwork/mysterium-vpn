@@ -498,5 +498,7 @@
     "one": "{statesNum} Negara Bagian",
     "other": "{statesNum} Negara Bagian"
   },
-  "switchToLocationBtn": "Beralih ke {switchLocation}"
+  "switchToLocationBtn": "Beralih ke {switchLocation}",
+  "redeemDiscountCode": "Tukarkan kode diskon",
+  "couponCodeCopied": "{Kode kupon} disalin ke papan klip!"
 }
