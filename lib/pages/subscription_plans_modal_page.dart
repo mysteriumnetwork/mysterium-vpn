@@ -205,7 +205,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                       foregroundColor: theme.palette.textPrimarySelected,
                       padding: EdgeInsets.zero,
                     ),
-                    onPressed: () {},
+                    onPressed: purchaseStore.redeemCode,
                     child: Text(
                       LocaleKeys.redeemDiscountCode.tr(),
                     ),

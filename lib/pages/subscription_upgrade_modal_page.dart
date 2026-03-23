@@ -242,7 +242,7 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                     ModalFooter(
                       spacing: 0,
                       children: [
-                        if (true)
+                        if (subscriptionStore.canRedeemCode)
                           ButtonTertiary(
                             size: ButtonSize.small,
                             decoration: ButtonDecoration(
