@@ -498,5 +498,7 @@
     "one": "{statesNum} Eyalet",
     "other": "{statesNum} Eyalet"
   },
-  "switchToLocationBtn": "{switchLocation} konumuna geçin"
+  "switchToLocationBtn": "{switchLocation} konumuna geçin",
+  "redeemDiscountCode": "İndirim kodunu kullanın",
+  "couponCodeCopied": "{couponCode} panoya kopyalandı!"
 }

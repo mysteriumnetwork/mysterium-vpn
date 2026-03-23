@@ -498,5 +498,7 @@
     "one": "{statesNum} État",
     "other": "{statesNum} États"
   },
-  "switchToLocationBtn": "Passer à {switchLocation}"
+  "switchToLocationBtn": "Passer à {switchLocation}",
+  "redeemDiscountCode": "Utilisez le code de réduction",
+  "couponCodeCopied": "{couponCode} copié dans le presse-papiers !"
 }

@@ -498,5 +498,7 @@
     "one": "{statesNum} Stato",
     "other": "{statesNum} Stati"
   },
-  "switchToLocationBtn": "Passa a {switchLocation}"
+  "switchToLocationBtn": "Passa a {switchLocation}",
+  "redeemDiscountCode": "Riscatta il codice sconto",
+  "couponCodeCopied": "{couponCode} copiato negli appunti!"
 }
