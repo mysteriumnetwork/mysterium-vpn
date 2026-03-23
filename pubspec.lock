@@ -1298,8 +1298,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.0.5"
-      resolved-ref: "59206b886dc969101be0aef62b2fc401680abbba"
+      ref: "0.0.6"
+      resolved-ref: e7d5f621401420216ce5cc9081cbe65d2cf59b0c
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
@@ -1323,10 +1323,10 @@ packages:
     dependency: "direct main"
     description:
       name: onesignal_flutter
-      sha256: "8c365957ac671863bb1fb2d2a9b5278af1090dbe01ee9aa7a1c5d6856d8b3aa7"
+      sha256: "68e53b17b4fb19d5316df1dd446f7511a70655a554c1e24b59a8d1902a3fc34e"
       url: "https://pub.dev"
     source: hosted
-    version: "5.4.1"
+    version: "5.4.5"
   open_mail_app:
     dependency: "direct main"
     description:
