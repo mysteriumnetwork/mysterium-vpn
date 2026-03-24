@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,6 +18,7 @@ import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:talker/talker.dart';
 import 'package:window_manager/window_manager.dart';
@@ -56,6 +58,7 @@ class AppInitializer {
       EasyLocalization.ensureInitialized(),
       LocalDBService.initialize(),
       _initFirebaseSDK(),
+      _initOneSignal(logger),
     ]);
 
     logger = providerContainer.read(loggerPOD);
@@ -72,6 +75,21 @@ class AppInitializer {
       await providerContainer.read(analyticsInitPOD(options).future);
     } catch (e) {
       logger.log('Firebase SDK init error$e');
+    }
+  }
+
+  // ─── OneSignal ─────────────────────────────────────────────────────────────
+  Future<void> _initOneSignal(Talker logger) async {
+    if (!isMobile()) {
+      return;
+    }
+    try {
+      if (kDebugMode) {
+        await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+      }
+      OneSignal.initialize(Env.oneSignalAppId);
+    } catch (e) {
+      logger.log('OneSignal init error (non-fatal): $e');
     }
   }
 
