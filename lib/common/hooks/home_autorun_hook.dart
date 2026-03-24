@@ -87,6 +87,7 @@ void useHomeAutorun() {
                 url: redirectUrl,
                 context: context,
                 isAuthenticated: authSessionStore.isAuthenticated,
+                accessToken: authSessionStore.accessToken,
               );
             } else if (notification.additionalData!.containsKey('coupon_code')) {
               final couponCode = notification.additionalData!['coupon_code'];
