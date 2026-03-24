@@ -249,7 +249,13 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                               foregroundColor: theme.palette.textPrimarySelected,
                               padding: EdgeInsets.zero,
                             ),
-                            onPressed: purchaseStore.redeemCode,
+                            onPressed: () async {
+                              try {
+                                await purchaseStore.redeemCode();
+                              } catch (e) {
+                                showError(e);
+                              }
+                            },
                             child: Text(
                               LocaleKeys.redeemDiscountCode.tr(),
                             ),

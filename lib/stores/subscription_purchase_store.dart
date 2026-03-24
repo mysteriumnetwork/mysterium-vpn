@@ -5,10 +5,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/enums/analytics_event.dart';
-import 'package:mysterium_vpn/common/enums/subscription_status.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/subscription_required_exception.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
@@ -119,9 +117,6 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
       return;
     }
     _analyticsStore.logEvent(AnalyticsEvent.redeemOpen);
-    await InAppPurchase.instance
-        .getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>()
-        .presentCodeRedemptionSheet();
   }
 
   @action

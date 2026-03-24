@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -99,6 +101,14 @@ abstract class _SubscriptionStore with Store {
       return false;
     }
     if (_isIOS) {
+      final iosInfo = Env.deviceInfo;
+      if (iosInfo is! IosDeviceInfo) {
+        return false;
+      }
+      final majorVersion = int.tryParse(iosInfo.systemVersion.split('.').first) ?? 0;
+      if (majorVersion < 14) {
+        return false;
+      }
       final subscription = _subscriptionFuture.value;
       if (subscription != null && subscription.active) {
         return subscription.gateway == 'apple';
