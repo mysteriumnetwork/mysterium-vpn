@@ -59,6 +59,7 @@ enum _FeatureToggleKey {
   gatewaysSupportingUpgrade,
   pricingMonthly,
   countriesWithStates,
+  hideReedemCode,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -576,6 +577,14 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       logger.handle(e, stack);
     }
     return const <String>{};
+  }
+
+  @computed
+  bool get hideReedemCode {
+    if (config.containsKey(_FeatureToggleKey.hideReedemCode.name)) {
+      return config[_FeatureToggleKey.hideReedemCode.name] as bool;
+    }
+    return false;
   }
 
   Map<String, String> get asUserProperties =>

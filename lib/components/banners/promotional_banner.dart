@@ -28,7 +28,11 @@ class PromoBanner extends HookConsumerWidget {
         }
         return Theme(
           data: Theme.of(context).designSystem,
-          child: _Banner(data: banner, isAuthenticated: isAuthenticated),
+          child: _Banner(
+            data: banner,
+            isAuthenticated: isAuthenticated,
+            accessToken: authSessionStore.accessToken,
+          ),
         );
       },
     );
@@ -36,11 +40,11 @@ class PromoBanner extends HookConsumerWidget {
 }
 
 class _Banner extends HookWidget {
-  const _Banner({required this.data, required this.isAuthenticated});
+  const _Banner({required this.data, required this.isAuthenticated, required this.accessToken});
 
   final PromotionalBanner data;
   final bool isAuthenticated;
-
+  final String? accessToken;
   @override
   Widget build(BuildContext context) {
     final icon = useMemoized(() => _buildIcon(data.iconUrl), [data.iconUrl]);
@@ -53,6 +57,7 @@ class _Banner extends HookWidget {
               url: data.redirectUrl!,
               context: context,
               isAuthenticated: isAuthenticated,
+              accessToken: accessToken,
             )
           : null,
     );
@@ -80,7 +85,7 @@ class _Banner extends HookWidget {
       width: 24,
       height: 24,
       fit: BoxFit.contain,
-      errorBuilder: (_, _, _) => defaultIcon,
+      errorBuilder: (_, __, ___) => defaultIcon,
     );
   }
 }

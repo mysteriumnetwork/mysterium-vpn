@@ -352,6 +352,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
     () => super.countriesWithStates,
     name: 'RemoteConfigStoreBase.countriesWithStates',
   )).value;
+  Computed<bool>? _$hideReedemCodeComputed;
+
+  @override
+  bool get hideReedemCode => (_$hideReedemCodeComputed ??= Computed<bool>(
+    () => super.hideReedemCode,
+    name: 'RemoteConfigStoreBase.hideReedemCode',
+  )).value;
 
   @override
   String toString() {
@@ -402,7 +409,8 @@ pushNotifPermissionPromptCooldown: ${pushNotifPermissionPromptCooldown},
 gatewaysSupportingUpgrade: ${gatewaysSupportingUpgrade},
 checkoutWebRedirectUrl: ${checkoutWebRedirectUrl},
 pricingMonthly: ${pricingMonthly},
-countriesWithStates: ${countriesWithStates}
+countriesWithStates: ${countriesWithStates},
+hideReedemCode: ${hideReedemCode}
     ''';
   }
 }

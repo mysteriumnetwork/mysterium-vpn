@@ -498,5 +498,7 @@
     "one": "{statesNum} الولاية",
     "other": "{statesNum} الولايات"
   },
-  "switchToLocationBtn": "انتقل إلى {switchLocation}"
+  "switchToLocationBtn": "انتقل إلى {switchLocation}",
+  "redeemDiscountCode": "استخدم رمز الخصم",
+  "couponCodeCopied": "{couponCode} تم نسخه إلى الحافظة!"
 }

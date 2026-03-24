@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -23,9 +25,11 @@ abstract class _SubscriptionStore with Store {
     required SubscriptionService subscriptionService,
     required AuthSessionStore authSessionStore,
     required AnalyticsStore analyticsStore,
+    required RemoteConfigStore remoteConfigStore,
   }) : _subscriptionService = subscriptionService,
        _authSessionStore = authSessionStore,
-       _analyticsStore = analyticsStore {
+       _analyticsStore = analyticsStore,
+       _remoteConfigStore = remoteConfigStore {
     _authReactionDisposer = reaction<bool>((_) => _authSessionStore.isAuthenticated, (
       status,
     ) async {
@@ -39,7 +43,13 @@ abstract class _SubscriptionStore with Store {
   final AuthSessionStore _authSessionStore;
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
   final AnalyticsStore _analyticsStore;
+  final RemoteConfigStore _remoteConfigStore;
   ReactionDisposer? _authReactionDisposer;
+
+  @visibleForTesting
+  bool testIsIOS = false;
+
+  bool get _isIOS => testIsIOS || Platform.isIOS;
 
   @readonly
   late ObservableFuture<Subscription> _subscriptionFuture = ObservableFuture(_fetchSubscription());
@@ -83,6 +93,29 @@ abstract class _SubscriptionStore with Store {
     FutureStatus.fulfilled =>
       _subscriptionConfigFuture.value != null ? StoreState.available : StoreState.notAvailable,
   };
+
+  @computed
+  bool get canRedeemCode {
+    if (_remoteConfigStore.hideReedemCode) {
+      return false;
+    }
+    if (_isIOS) {
+      final iosInfo = Env.deviceInfo;
+      if (iosInfo is! IosDeviceInfo) {
+        return false;
+      }
+      final majorVersion = int.tryParse(iosInfo.systemVersion.split('.').first) ?? 0;
+      if (majorVersion < 14) {
+        return false;
+      }
+      final subscription = _subscriptionFuture.value;
+      if (subscription != null && subscription.active) {
+        return subscription.gateway == 'apple';
+      }
+      return true;
+    }
+    return false;
+  }
 
   @action
   Future<Subscription> _fetchSubscription() async {

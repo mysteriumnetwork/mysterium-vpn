@@ -24,10 +24,10 @@ Future<void> showSubscriptionPlansModalPage(BuildContext context) async {
     context,
     listen: false,
   ).read(analyticsStorePOD).logScreenViewed('subscription_plans_modal').ignore();
+  final themeData = DesignSystemTheme.of(context);
   await showModal(
     context,
-    builder: (ctx) =>
-        Theme(data: DesignSystemTheme.of(context), child: const _SubscriptionPlansModalPage()),
+    builder: (ctx) => Theme(data: themeData, child: const _SubscriptionPlansModalPage()),
   );
 }
 
@@ -190,7 +190,25 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
               ),
             ),
             ModalFooter(
+              spacing: 0,
               children: [
+                if (subscriptionStore.canRedeemCode)
+                  ButtonTertiary(
+                    size: ButtonSize.small,
+                    decoration: ButtonDecoration(
+                      foregroundColor: theme.palette.textPrimarySelected,
+                      padding: EdgeInsets.zero,
+                    ),
+                    onPressed: () async {
+                      try {
+                        await purchaseStore.redeemCode();
+                      } catch (e) {
+                        showError(e);
+                      }
+                    },
+                    child: Text(LocaleKeys.redeemDiscountCode.tr()),
+                  ),
+                SizedBox(height: theme.spacing.ms),
                 ButtonPrimary(
                   onPressed: handlePurchasePressed,
                   loading: isLoading.value ? const ButtonLoading() : null,
@@ -204,6 +222,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                         : LocaleKeys.subscriptionAllPlansPurchase.tr(),
                   ),
                 ),
+                SizedBox(height: theme.spacing.xl),
                 ButtonTertiary(
                   onPressed: () {
                     scrollController.scrollToKey(tableKey);
@@ -211,9 +230,11 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                   decoration: ButtonDecoration(
                     foregroundColor: theme.palette.textPrimarySelected,
                     textStyle: theme.textStyles.textMd.semibold,
+                    padding: EdgeInsets.zero,
                   ),
                   child: Text(LocaleKeys.subscriptionAllPlansCompareAll.tr()),
                 ),
+                SizedBox(height: theme.spacing.xl),
                 const SubscriptionPrivacyAndTerms(),
               ],
             ),

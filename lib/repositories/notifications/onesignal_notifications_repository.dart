@@ -45,6 +45,13 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
         event.notification.display();
       });
 
+      // Opt-in when permission is granted after login
+      OneSignal.Notifications.addPermissionObserver((granted) {
+        if (granted && !(OneSignal.User.pushSubscription.optedIn ?? false)) {
+          OneSignal.User.pushSubscription.optIn();
+        }
+      });
+
       _observersInitialized = true;
     } finally {
       _isInitializing = false;
@@ -91,11 +98,13 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   @override
   Future<void> login({required String userId, required String userEmail}) async {
-    if (!OneSignal.Notifications.permission) {
-      return;
-    }
     await OneSignal.login(userId);
     await OneSignal.User.addEmail(userEmail);
+    // OneSignal.login() is async - by the time it resolves, SDK permission state is synced
+    await Future.delayed(const Duration(seconds: 1)); // Small delay to ensure state is updated
+    if (OneSignal.Notifications.permission && !(OneSignal.User.pushSubscription.optedIn ?? false)) {
+      OneSignal.User.pushSubscription.optIn();
+    }
     _emitCurrentUser();
   }
 

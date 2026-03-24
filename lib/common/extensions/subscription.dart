@@ -1,3 +1,4 @@
+import 'package:mysterium_vpn/common/extensions/date.dart';
 import 'package:mysterium_vpn/models/models.dart';
 
 typedef SubscriptionData = ({
@@ -27,10 +28,10 @@ extension SubscriptionExtensions on Subscription? {
       return (
         gateway: this!.gatewayName,
         plan: this!.planId!,
-        expirationDate: this!.activeUntil?.toIso8601String() ?? 'null',
+        expirationDate: this!.activeUntil?.toUnixTimestampSeconds() ?? 'null',
         duration: this!.durationInMonthsBasedOnPlanId ?? 'null',
         recurring: this!.recurring?.toString() ?? 'null',
-        startDate: this!.periodStart?.toIso8601String() ?? 'null',
+        startDate: this!.periodStart?.toUnixTimestampSeconds() ?? 'null',
         active: this!.active.toString(),
         expired: this!.expired.toString(),
       );

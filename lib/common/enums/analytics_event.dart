@@ -135,7 +135,9 @@ enum AnalyticsEvent {
   subscriptionVerificationRetryClick,
   subscriptionVerificationRetryCancel,
   pushNotificationReceived,
-  pushNotificationClicked;
+  pushNotificationClicked,
+  redeemCodeOpenSuccess,
+  redeemCodeOpenError;
 
   String get formattedName => name.toSnakeCase;
 }

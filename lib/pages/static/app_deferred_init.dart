@@ -1,16 +1,13 @@
 import 'dart:io';
 import 'dart:isolate';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/pages/static/splash_page.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
@@ -33,9 +30,6 @@ final _appStartupPOD = FutureProvider<void>((ref) async {
       const Duration(seconds: 10),
       onTimeout: () => logger.log('ConfigCat stores init timed out'),
     ),
-    _initOneSignal(
-      logger,
-    ).timeout(const Duration(seconds: 10), onTimeout: () => logger.log('OneSignal init timed out')),
     if (Platform.isWindows) _initWindows(),
   ]);
 
@@ -73,20 +67,6 @@ Future<void> _initLatLngStore(Ref ref, Talker logger) async {
     await latLngStore.countryCoordinatesFuture;
   } catch (e) {
     logger.log('LatLng store init error (non-fatal): $e');
-  }
-}
-
-Future<void> _initOneSignal(Talker logger) async {
-  if (!isMobile()) {
-    return;
-  }
-  try {
-    if (kDebugMode) {
-      await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-    }
-    OneSignal.initialize(Env.oneSignalAppId);
-  } catch (e) {
-    logger.log('OneSignal init error (non-fatal): $e');
   }
 }
 
@@ -158,7 +138,7 @@ class AppDeferredInitWidget extends ConsumerWidget {
     return startup.when(
       loading: () => const SplashPage(),
       data: (_) => child,
-      error: (_, _) => child,
+      error: (_, __) => child,
     );
   }
 }
