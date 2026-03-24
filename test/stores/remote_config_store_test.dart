@@ -268,9 +268,7 @@ void main() {
     test('returns true if config has true value', () async {
       store = createStore();
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'hideReedemCode': true},
-      );
+      when(client.getAllValues()).thenAnswer((_) async => {'hideReedemCode': true});
       await store.configFuture;
       expect(store.hideReedemCode, isTrue);
     });
@@ -278,9 +276,7 @@ void main() {
     test('returns false if config has false value', () async {
       store = createStore();
 
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'hideReedemCode': false},
-      );
+      when(client.getAllValues()).thenAnswer((_) async => {'hideReedemCode': false});
       await store.configFuture;
       expect(store.hideReedemCode, isFalse);
     });

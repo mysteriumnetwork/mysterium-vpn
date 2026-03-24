@@ -14,27 +14,27 @@ import 'package:vpn_api/vpn_api.dart' as vpn_api;
 import 'subscription_store_test.mocks.dart';
 
 IosDeviceInfo _mockIosDeviceInfo({String systemVersion = '17.0'}) => IosDeviceInfo.fromMap({
-      'name': 'Test iPhone',
-      'systemName': 'iOS',
-      'systemVersion': systemVersion,
-      'model': 'iPhone',
-      'modelName': 'iPhone 15',
-      'localizedModel': 'iPhone',
-      'identifierForVendor': 'test-uuid',
-      'freeDiskSize': 0,
-      'totalDiskSize': 0,
-      'isPhysicalDevice': false,
-      'physicalRamSize': 0,
-      'availableRamSize': 0,
-      'isiOSAppOnMac': false,
-      'utsname': {
-        'sysname': 'Darwin',
-        'nodename': 'test',
-        'release': '21.0.0',
-        'version': 'test',
-        'machine': 'iPhone14,2',
-      },
-    });
+  'name': 'Test iPhone',
+  'systemName': 'iOS',
+  'systemVersion': systemVersion,
+  'model': 'iPhone',
+  'modelName': 'iPhone 15',
+  'localizedModel': 'iPhone',
+  'identifierForVendor': 'test-uuid',
+  'freeDiskSize': 0,
+  'totalDiskSize': 0,
+  'isPhysicalDevice': false,
+  'physicalRamSize': 0,
+  'availableRamSize': 0,
+  'isiOSAppOnMac': false,
+  'utsname': {
+    'sysname': 'Darwin',
+    'nodename': 'test',
+    'release': '21.0.0',
+    'version': 'test',
+    'machine': 'iPhone14,2',
+  },
+});
 
 Future<void> _initEnvWithIosVersion(
   MockDeviceInfoPlugin mockPlugin, {
@@ -229,9 +229,9 @@ void main() {
 
       test('returns false on non-iOS platform', () async {
         when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-        when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer(
-          (_) async => Subscription.empty(),
-        );
+        when(
+          mockSubscriptionService.fetchSubscriptionDetails(),
+        ).thenAnswer((_) async => Subscription.empty());
 
         await subscriptionStore.refreshSubscription();
 
@@ -241,9 +241,9 @@ void main() {
       test('returns true when no active subscription on iOS', () async {
         subscriptionStore.testIsIOS = true;
         when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-        when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer(
-          (_) async => Subscription.empty(),
-        );
+        when(
+          mockSubscriptionService.fetchSubscriptionDetails(),
+        ).thenAnswer((_) async => Subscription.empty());
 
         await subscriptionStore.refreshSubscription();
 
@@ -314,9 +314,9 @@ void main() {
         await _initEnvWithIosVersion(mockDeviceInfoPlugin, version: '14.0');
         subscriptionStore.testIsIOS = true;
         when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-        when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer(
-          (_) async => Subscription.empty(),
-        );
+        when(
+          mockSubscriptionService.fetchSubscriptionDetails(),
+        ).thenAnswer((_) async => Subscription.empty());
 
         await subscriptionStore.refreshSubscription();
 
@@ -327,9 +327,9 @@ void main() {
         await _initEnvWithIosVersion(mockDeviceInfoPlugin, version: '18.3.1');
         subscriptionStore.testIsIOS = true;
         when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-        when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer(
-          (_) async => Subscription.empty(),
-        );
+        when(
+          mockSubscriptionService.fetchSubscriptionDetails(),
+        ).thenAnswer((_) async => Subscription.empty());
 
         await subscriptionStore.refreshSubscription();
 
