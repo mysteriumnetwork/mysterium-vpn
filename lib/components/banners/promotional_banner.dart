@@ -85,7 +85,7 @@ class _Banner extends HookWidget {
       width: 24,
       height: 24,
       fit: BoxFit.contain,
-      errorBuilder: (_, __, ___) => defaultIcon,
+      errorBuilder: (_, _, _) => defaultIcon,
     );
   }
 }

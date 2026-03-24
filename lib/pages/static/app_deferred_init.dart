@@ -138,7 +138,7 @@ class AppDeferredInitWidget extends ConsumerWidget {
     return startup.when(
       loading: () => const SplashPage(),
       data: (_) => child,
-      error: (_, __) => child,
+      error: (_, _) => child,
     );
   }
 }
