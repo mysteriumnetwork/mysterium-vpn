@@ -3,9 +3,9 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/pages/subscription_plans_modal_page.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 extension NavigationExtensions on BeamerDelegate {
   /// Navigates based on the given [url], handling internal routes and external links.
@@ -23,6 +23,7 @@ extension NavigationExtensions on BeamerDelegate {
     required String url,
     required bool isAuthenticated,
     required BuildContext context,
+    required String? accessToken,
   }) async {
     final authenticatedRoutes = {
       '/subscribe': () => showSubscriptionPlansModalPage(context),
@@ -53,12 +54,19 @@ extension NavigationExtensions on BeamerDelegate {
     if (uri.scheme != 'http' && uri.scheme != 'https') {
       return;
     }
-
-    // Check if the URL can actually be launched before opening
-    final canLaunch = await canLaunchUrl(uri);
-    if (!canLaunch) {
-      return;
+    final queryParameters = Map<String, String>.from(uri.queryParameters);
+    if (accessToken != null && Env.webAppUrl == uri.host) {
+      queryParameters['access_token'] = accessToken;
     }
+
+    final httpsUri = Uri(
+      scheme: uri.scheme,
+      host: uri.host,
+      path: uri.path,
+      queryParameters: queryParameters,
+    );
+
+    await openUrlLink(httpsUri);
 
     openUrlLink(uri);
   }
