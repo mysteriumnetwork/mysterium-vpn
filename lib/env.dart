@@ -39,10 +39,10 @@ abstract class Env {
   static late final PackageInfo _packageInfo;
   static BuildInfo _buildInfo = BuildInfo(buildNumber: 0, buildVersion: '0.0.0');
   static late final String _userAgent;
-  static late final BaseDeviceInfo _deviceInfo;
-  static late final String _deviceName;
-  static late final String _deviceModel;
-  static late final String _deviceManufacturer;
+  static late BaseDeviceInfo _deviceInfo;
+  static late String _deviceName;
+  static late String _deviceModel;
+  static late String _deviceManufacturer;
 
   static PackageInfo get packageInfo => _packageInfo;
 
