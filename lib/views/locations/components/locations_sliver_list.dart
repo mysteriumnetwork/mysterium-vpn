@@ -111,6 +111,11 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
 
         homeState.lastScrolledCountryCode = effectivePriorityCountryCode;
 
+        final sc = homeState.scrollController;
+        if (sc == null) {
+          return null;
+        }
+
         // Suppress auto-expansion of the target country before scrolling.
         // This ensures the scroll estimate is accurate (all items collapsed).
         // Expansion is restored via onScrollComplete after positioning.
@@ -118,10 +123,6 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
         overridesVersion.value++;
 
         final generation = ++scrollGeneration.value;
-        final sc = homeState.scrollController;
-        if (sc == null) {
-          return null;
-        }
 
         _scrollToCountry(
           context: context,
@@ -206,16 +207,28 @@ Future<void> _scrollToCountry({
     final estimated = itemCount == 0
         ? 0.0
         : (pos.maxScrollExtent * priorityIndex / itemCount).clamp(0.0, pos.maxScrollExtent);
-    scrollController.jumpTo(estimated);
 
-    // Brief real delay so the layout pipeline fully settles after the jump.
-    // endOfFrame alone isn't enough — nested sliver_tools slivers need
-    // extra layout passes before screen coordinates are accurate.
-    await Future<void>.delayed(const Duration(milliseconds: 50));
-    if (!context.mounted || generation != currentGeneration.value) {
-      return;
+    // The proportional estimate can be inaccurate when maxScrollExtent is
+    // inflated by stale cached heights of off-screen items. On smaller
+    // viewports fewer items are built per frame, so a miss is more likely.
+    // Try the estimate first, then shift by one viewport in each direction.
+    final offsets = [
+      estimated,
+      (estimated - pos.viewportDimension).clamp(0.0, pos.maxScrollExtent),
+      (estimated + pos.viewportDimension).clamp(0.0, pos.maxScrollExtent),
+    ];
+
+    for (final offset in offsets) {
+      scrollController.jumpTo(offset);
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      if (!context.mounted || generation != currentGeneration.value) {
+        return;
+      }
+      keyCtx = _LocationKey(countryCode).currentContext;
+      if (keyCtx != null) {
+        break;
+      }
     }
-    keyCtx = _LocationKey(countryCode).currentContext;
   }
   if (keyCtx == null) {
     return;
