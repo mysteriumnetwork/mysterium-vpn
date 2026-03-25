@@ -22,7 +22,7 @@ class LocationsSliverList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SliverList.separated(
     itemCount: items.length,
-    separatorBuilder: (_, __) => const SizedBox(height: 12),
+    separatorBuilder: (_, _) => const SizedBox(height: 12),
     itemBuilder: (_, index) => LocationItem(location: items[index], onTap: onItemPressed),
   );
 }
@@ -150,7 +150,7 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
 
     return SliverList.separated(
       itemCount: items.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      separatorBuilder: (_, _) => const SizedBox(height: 12),
       itemBuilder: (_, index) {
         final cc = items[index].countryCode;
         return ExpandableLocationItem(
