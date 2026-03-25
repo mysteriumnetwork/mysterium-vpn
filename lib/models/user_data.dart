@@ -77,7 +77,7 @@ class UserData {
   @HiveField(14, defaultValue: ProtocolType.wireguard)
   ProtocolType protocolType;
 
-  @HiveField(15, defaultValue: null)
+  @HiveField(15)
   DateTime? pushNotificationsPromptLastShownAt;
 
   @HiveField(16, defaultValue: 0)
