@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/screen_type.dart';
@@ -23,7 +22,7 @@ class LocationsSliverList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SliverList.separated(
     itemCount: items.length,
-    separatorBuilder: (_, _) => const SizedBox(height: 12),
+    separatorBuilder: (_, __) => const SizedBox(height: 12),
     itemBuilder: (_, index) => LocationItem(location: items[index], onTap: onItemPressed),
   );
 }
@@ -81,6 +80,10 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
     final expansionOverrides = useRef<Map<String, bool>>({});
     final overridesVersion = useState(0);
 
+    // Monotonically increasing counter to cancel stale scroll operations.
+    // Each new scroll increments this; in-flight scrolls bail when stale.
+    final scrollGeneration = useRef(0);
+
     // Clear overrides when priority changes (new selection context).
     final prevPriority = useRef(effectivePriorityCountryCode);
     if (prevPriority.value != effectivePriorityCountryCode) {
@@ -107,14 +110,35 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
 
       homeState.lastScrolledCountryCode = effectivePriorityCountryCode;
 
+      final sc = homeState.scrollController;
+      if (sc == null) {
+        return null;
+      }
+
+      // Suppress auto-expansion of the target country before scrolling.
+      // This ensures the scroll estimate is accurate (all items collapsed).
+      // Expansion is restored via onScrollComplete after positioning.
+      expansionOverrides.value = {effectivePriorityCountryCode!: false};
+      overridesVersion.value++;
+
+      final generation = ++scrollGeneration.value;
+
       _scrollToCountry(
         context: context,
-        countryCode: effectivePriorityCountryCode!,
+        countryCode: effectivePriorityCountryCode,
         stickyHeaderKey: stickyHeaderKey,
         panelController: homeState.panelController,
+        scrollController: sc,
         isDesktop: isDesktop,
         itemCount: items.length,
         priorityIndex: priorityIndex,
+        generation: generation,
+        currentGeneration: scrollGeneration,
+        onScrollComplete: () {
+          // Clear the suppression so Rule 3 auto-expands the target.
+          expansionOverrides.value = {};
+          overridesVersion.value++;
+        },
       );
 
       return null;
@@ -126,7 +150,7 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
 
     return SliverList.separated(
       itemCount: items.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 12),
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
       itemBuilder: (_, index) {
         final cc = items[index].countryCode;
         return ExpandableLocationItem(
@@ -148,52 +172,22 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
 // ---------------------------------------------------------------------------
 // Scroll-to-selected helpers
 // ---------------------------------------------------------------------------
-
-/// Finds the RenderBox for a location item by its country code GlobalKey.
-RenderBox? _findLocationRenderBox(String countryCode) {
-  final ctx = _LocationKey(countryCode).currentContext;
-  if (ctx == null) {
-    return null;
-  }
-  final ro = ctx.findRenderObject() as RenderBox?;
-  return (ro != null && ro.attached) ? ro : null;
-}
-
-/// Computes the scroll offset that places [ro] just below the sticky header.
-double _targetOffset(RenderBox ro, ScrollableState scrollable, GlobalKey? stickyHeaderKey) {
-  final viewport = RenderAbstractViewport.of(ro);
-  final hRO = stickyHeaderKey?.currentContext?.findRenderObject();
-  final stickyHeight = hRO is RenderBox && hRO.attached ? hRO.size.height : 0.0;
-  return (viewport.getOffsetToReveal(ro, 0).offset - stickyHeight).clamp(
-    0.0,
-    scrollable.position.maxScrollExtent,
-  );
-}
-
-/// Scrolls to [countryCode]'s item. On desktop animates; on mobile jumps
-/// (after enabling panel scrolling so the panel's reset listener doesn't
-/// fight the programmatic scroll).
-///
-/// Waits one frame for layout to settle before computing scroll offsets.
-/// Expansion state is computed synchronously during build (per-item useState),
-/// so no extra frames are needed for deferred mutations.
 Future<void> _scrollToCountry({
   required BuildContext context,
   required String countryCode,
   required GlobalKey? stickyHeaderKey,
   required PanelController panelController,
+  required ScrollController scrollController,
   required bool isDesktop,
   required int itemCount,
   required int priorityIndex,
+  required int generation,
+  required ObjectRef<int> currentGeneration,
+  required VoidCallback onScrollComplete,
 }) async {
-  // Wait for layout to settle with the correct expansion state.
+  // Wait for the rebuild that collapses all items (expansion suppressed).
   await WidgetsBinding.instance.endOfFrame;
-  if (!context.mounted) {
-    return;
-  }
-
-  final scrollable = Scrollable.maybeOf(context);
-  if (scrollable == null) {
+  if (!context.mounted || !scrollController.hasClients || generation != currentGeneration.value) {
     return;
   }
 
@@ -203,48 +197,72 @@ Future<void> _scrollToCountry({
     panelController.enableScrolling();
   }
 
-  // Fast path: item is already built in the widget tree.
-  final ro = _findLocationRenderBox(countryCode);
-  if (ro != null) {
-    _applyScroll(scrollable, ro, stickyHeaderKey, isDesktop);
+  // If the item isn't built yet (off-screen), jump near it first.
+  var keyCtx = _LocationKey(countryCode).currentContext;
+  if (keyCtx == null) {
+    final pos = scrollController.position;
+    final estimated = itemCount == 0
+        ? 0.0
+        : (pos.maxScrollExtent * priorityIndex / itemCount).clamp(0.0, pos.maxScrollExtent);
+
+    // The proportional estimate can be inaccurate when maxScrollExtent is
+    // inflated by stale cached heights of off-screen items. On smaller
+    // viewports fewer items are built per frame, so a miss is more likely.
+    // Try the estimate first, then shift by one viewport in each direction.
+    final offsets = [
+      estimated,
+      (estimated - pos.viewportDimension).clamp(0.0, pos.maxScrollExtent),
+      (estimated + pos.viewportDimension).clamp(0.0, pos.maxScrollExtent),
+    ];
+
+    for (final offset in offsets) {
+      scrollController.jumpTo(offset);
+      await Future<void>.delayed(const Duration(milliseconds: 200));
+      if (!context.mounted || generation != currentGeneration.value) {
+        return;
+      }
+      keyCtx = _LocationKey(countryCode).currentContext;
+      if (keyCtx != null) {
+        break;
+      }
+    }
+  }
+  if (keyCtx == null) {
     return;
   }
 
-  // Slow path: item is off-screen. Jump to a proportional estimate so the
-  // lazy list builds it, then refine after the next layout pass.
-  final pos = scrollable.position;
-  final estimated = itemCount == 0
-      ? 0.0
-      : (pos.maxScrollExtent * priorityIndex / itemCount).clamp(0.0, pos.maxScrollExtent);
-  pos.jumpTo(estimated);
-
-  await WidgetsBinding.instance.endOfFrame;
-  if (!context.mounted) {
+  // Compute the exact scroll offset using screen coordinates.
+  // This works regardless of how many nested sliver_tools wrappers exist.
+  final itemRO = keyCtx.findRenderObject() as RenderBox?;
+  final headerRO = stickyHeaderKey?.currentContext?.findRenderObject();
+  if (itemRO == null || !itemRO.attached) {
     return;
   }
 
-  final refinedRo = _findLocationRenderBox(countryCode);
-  if (refinedRo != null) {
-    _applyScroll(scrollable, refinedRo, stickyHeaderKey, isDesktop);
-  }
-}
+  final itemScreenY = itemRO.localToGlobal(Offset.zero).dy;
+  final headerBottomScreenY = headerRO is RenderBox && headerRO.attached
+      ? headerRO.localToGlobal(Offset(0, headerRO.size.height)).dy
+      : 0.0;
 
-/// Scrolls to the exact position of [ro]. Desktop animates, mobile jumps.
-void _applyScroll(
-  ScrollableState scrollable,
-  RenderBox ro,
-  GlobalKey? stickyHeaderKey,
-  bool isDesktop,
-) {
-  final target = _targetOffset(ro, scrollable, stickyHeaderKey);
+  final scrollDelta = itemScreenY - headerBottomScreenY;
+  final target = (scrollController.offset + scrollDelta).clamp(
+    0.0,
+    scrollController.position.maxScrollExtent,
+  );
+
   if (isDesktop) {
-    scrollable.position.animateTo(
+    await scrollController.animateTo(
       target,
       duration: const Duration(milliseconds: 450),
       curve: Curves.easeOut,
     );
   } else {
-    scrollable.position.jumpTo(target);
+    scrollController.jumpTo(target);
+  }
+
+  // Scroll complete — restore expansion so the target auto-expands.
+  if (context.mounted && generation == currentGeneration.value) {
+    onScrollComplete();
   }
 }
 

@@ -48,7 +48,7 @@ class ConnectionTile extends HookConsumerWidget {
         final location = showConnectedOnly
             ? (vpnStore.location == VPNLocation.closest ? null : vpnStore.location)
             : connectionDisplayStore.displayLocation;
-        final parent = connectionDisplayStore.parentLocation;
+        final parent = showConnectedOnly ? location : connectionDisplayStore.parentLocation;
         final targetLocation = connectionDisplayStore.targetLocation;
         // When showing the connected location, it's always available — the
         // availability check only applies to the selected/display location.
