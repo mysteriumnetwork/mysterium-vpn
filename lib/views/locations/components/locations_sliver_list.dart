@@ -11,6 +11,15 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/components/location_item.dart';
 
+/// Height of a collapsed [ExpandableLocationItem] (Container minHeight: 64).
+const _kItemHeight = 64.0;
+
+/// Separator between items in the SliverList.
+const _kSeparatorHeight = 12.0;
+
+/// Combined stride per collapsed item (item + separator).
+const _kItemStride = _kItemHeight + _kSeparatorHeight;
+
 /// Lightweight location list without scroll-to-selected or expansion logic.
 /// Used for top locations which are never expandable.
 class LocationsSliverList extends StatelessWidget {
@@ -28,7 +37,19 @@ class LocationsSliverList extends StatelessWidget {
 }
 
 /// Full-featured location list with scroll-to-selected support.
-/// Watches panel state and uses GlobalKeys to scroll to the selected item.
+///
+/// ## Scroll-to-selected strategy
+///
+/// When a country is selected (via map or connection), the list scrolls to it:
+///
+///   1. **Collapse** — suppress the target's auto-expansion so all items have
+///      uniform height, making scroll offsets predictable.
+///   2. **Jump** — compute the target offset deterministically using
+///      [SliverLayoutBuilder]'s `precedingScrollExtent` + `index * stride`.
+///   3. **Fine-tune** — use `localToGlobal` screen coordinates to adjust for
+///      pinned headers. This sidesteps `getOffsetToReveal` which is broken
+///      with nested sliver_tools slivers.
+///   4. **Expand** — restore auto-expansion so the target country opens.
 class ScrollableLocationsSliverList extends HookConsumerWidget {
   const ScrollableLocationsSliverList({
     required this.items,
@@ -40,9 +61,8 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
   final List<VPNLocation> items;
   final void Function(VPNLocation item) onItemPressed;
 
-  /// Key of the pinned header widget sitting above this list. Its height is
-  /// subtracted from the reveal offset so the selected item appears just below
-  /// the header rather than behind it.
+  /// Key of the pinned header above this list. Used to position the selected
+  /// item just below the header via `localToGlobal` screen coordinates.
   final GlobalKey? stickyHeaderKey;
 
   @override
@@ -56,7 +76,6 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
 
     final isDesktop = screenType == ScreenType.desktop;
 
-    // Reactively tracks whether the panel is fully open (animation complete).
     final isPanelFullyOpen = ref.watch(
       homeStateProvider.select((s) {
         final pc = s.panelController;
@@ -69,20 +88,17 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
 
     final homeState = ref.read(homeStateProvider);
 
-    // Track selected location so we can re-scroll on re-selection of the
-    // same country (the priority stays sticky, so we need this as a dep).
     final selectedLocationStore = ref.watch(selectedLocationStorePOD);
     final selectedLocation = useComputedValue(() => selectedLocationStore.value);
     final selectedCC = selectedLocation?.countryCode;
 
-    // Manual expansion overrides lifted to parent so they survive SliverList
-    // recycling (per-item useState is lost when items scroll off-screen).
+    // --- Expansion state ---
     final expansionOverrides = useRef<Map<String, bool>>({});
     final overridesVersion = useState(0);
-
-    // Monotonically increasing counter to cancel stale scroll operations.
-    // Each new scroll increments this; in-flight scrolls bail when stale.
     final scrollGeneration = useRef(0);
+
+    // Captured each layout pass by SliverLayoutBuilder below.
+    final precedingExtent = useRef<double>(0);
 
     // Clear overrides when priority changes (new selection context).
     final prevPriority = useRef(effectivePriorityCountryCode);
@@ -91,6 +107,7 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
       prevPriority.value = effectivePriorityCountryCode;
     }
 
+    // --- Scroll-to-selected effect ---
     useEffect(() {
       if (priorityIndex == -1) {
         return null;
@@ -99,9 +116,7 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
         return null;
       }
 
-      // When there's an active selection, always allow scroll (handles
-      // re-selection of the same country). For connected/connecting-only
-      // changes, use the guard to prevent redundant scrolls.
+      // Allow re-scroll on re-selection; guard redundant connected-only scrolls.
       if (selectedCC == null) {
         if (homeState.lastScrolledCountryCode == effectivePriorityCountryCode) {
           return null;
@@ -115,14 +130,13 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
         return null;
       }
 
-      // Suppress auto-expansion of the target country before scrolling.
-      // This ensures the scroll estimate is accurate (all items collapsed).
-      // Expansion is restored via onScrollComplete after positioning.
+      // Step 1: Collapse the target so all items have uniform height.
       expansionOverrides.value = {effectivePriorityCountryCode!: false};
       overridesVersion.value++;
 
       final generation = ++scrollGeneration.value;
 
+      // Steps 2–4 happen asynchronously.
       _scrollToCountry(
         context: context,
         countryCode: effectivePriorityCountryCode,
@@ -130,12 +144,12 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
         panelController: homeState.panelController,
         scrollController: sc,
         isDesktop: isDesktop,
-        itemCount: items.length,
         priorityIndex: priorityIndex,
+        precedingExtent: precedingExtent,
         generation: generation,
         currentGeneration: scrollGeneration,
-        onScrollComplete: () {
-          // Clear the suppression so Rule 3 auto-expands the target.
+        onComplete: () {
+          // Step 4: Clear suppression → target auto-expands via Rule 3.
           expansionOverrides.value = {};
           overridesVersion.value++;
         },
@@ -144,24 +158,31 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
       return null;
     }, [effectivePriorityCountryCode, isPanelFullyOpen, selectedCC]);
 
-    // Reference overridesVersion so useState triggers rebuilds on toggle.
+    // Force rebuild when overrides change.
     // ignore: unused_local_variable
     final _ = overridesVersion.value;
 
-    return SliverList.separated(
-      itemCount: items.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 12),
-      itemBuilder: (_, index) {
-        final cc = items[index].countryCode;
-        return ExpandableLocationItem(
-          key: _LocationKey(cc),
-          location: items[index],
-          onTap: onItemPressed,
-          mapSelectedCountryCode: effectivePriorityCountryCode,
-          expansionOverride: expansionOverrides.value[cc],
-          onExpansionChanged: (expanded) {
-            expansionOverrides.value = {...expansionOverrides.value, cc: expanded};
-            overridesVersion.value++;
+    // --- Build the list ---
+    return SliverLayoutBuilder(
+      builder: (context, constraints) {
+        precedingExtent.value = constraints.precedingScrollExtent;
+
+        return SliverList.separated(
+          itemCount: items.length,
+          separatorBuilder: (_, _) => const SizedBox(height: _kSeparatorHeight),
+          itemBuilder: (_, index) {
+            final cc = items[index].countryCode;
+            return ExpandableLocationItem(
+              key: _LocationKey(cc),
+              location: items[index],
+              onTap: onItemPressed,
+              mapSelectedCountryCode: effectivePriorityCountryCode,
+              expansionOverride: expansionOverrides.value[cc],
+              onExpansionChanged: (expanded) {
+                expansionOverrides.value = {...expansionOverrides.value, cc: expanded};
+                overridesVersion.value++;
+              },
+            );
           },
         );
       },
@@ -170,8 +191,13 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
 }
 
 // ---------------------------------------------------------------------------
-// Scroll-to-selected helpers
+// Scroll helpers
 // ---------------------------------------------------------------------------
+
+/// Scrolls to [countryCode]'s item in the location list.
+///
+/// Assumes the target item's expansion has already been suppressed (all items
+/// have uniform collapsed height) so offset arithmetic is deterministic.
 Future<void> _scrollToCountry({
   required BuildContext context,
   required String countryCode,
@@ -179,96 +205,83 @@ Future<void> _scrollToCountry({
   required PanelController panelController,
   required ScrollController scrollController,
   required bool isDesktop,
-  required int itemCount,
   required int priorityIndex,
+  required ObjectRef<double> precedingExtent,
   required int generation,
   required ObjectRef<int> currentGeneration,
-  required VoidCallback onScrollComplete,
+  required VoidCallback onComplete,
 }) async {
-  // Wait for the rebuild that collapses all items (expansion suppressed).
+  bool isStale() =>
+      !context.mounted || !scrollController.hasClients || generation != currentGeneration.value;
+
+  // Wait for the rebuild that collapses all items.
   await WidgetsBinding.instance.endOfFrame;
-  if (!context.mounted || !scrollController.hasClients || generation != currentGeneration.value) {
+  if (isStale()) {
     return;
   }
 
-  // On mobile, unlock panel scrolling once so the reset listener doesn't
-  // fight programmatic scrolls and the user can scroll normally afterwards.
   if (!isDesktop && panelController.isAttached) {
     panelController.enableScrolling();
   }
 
-  // If the item isn't built yet (off-screen), jump near it first.
-  var keyCtx = _LocationKey(countryCode).currentContext;
-  if (keyCtx == null) {
-    final pos = scrollController.position;
-    final estimated = itemCount == 0
-        ? 0.0
-        : (pos.maxScrollExtent * priorityIndex / itemCount).clamp(0.0, pos.maxScrollExtent);
+  // Step 2: Bring the item into view.
+  var itemRO = _findItemRenderBox(countryCode);
+  if (itemRO == null) {
+    // Deterministic offset: content before our SliverList + item stride.
+    final roughTarget = precedingExtent.value + priorityIndex * _kItemStride;
+    scrollController.jumpTo(roughTarget.clamp(0.0, scrollController.position.maxScrollExtent));
 
-    // The proportional estimate can be inaccurate when maxScrollExtent is
-    // inflated by stale cached heights of off-screen items. On smaller
-    // viewports fewer items are built per frame, so a miss is more likely.
-    // Try the estimate first, then shift by one viewport in each direction.
-    final offsets = [
-      estimated,
-      (estimated - pos.viewportDimension).clamp(0.0, pos.maxScrollExtent),
-      (estimated + pos.viewportDimension).clamp(0.0, pos.maxScrollExtent),
-    ];
-
-    for (final offset in offsets) {
-      scrollController.jumpTo(offset);
-      await Future<void>.delayed(const Duration(milliseconds: 200));
-      if (!context.mounted || generation != currentGeneration.value) {
-        return;
-      }
-      keyCtx = _LocationKey(countryCode).currentContext;
-      if (keyCtx != null) {
-        break;
-      }
+    await WidgetsBinding.instance.endOfFrame;
+    if (isStale()) {
+      return;
     }
+    itemRO = _findItemRenderBox(countryCode);
   }
-  if (keyCtx == null) {
+  if (itemRO == null) {
     return;
   }
 
-  // Compute the exact scroll offset using screen coordinates.
-  // This works regardless of how many nested sliver_tools wrappers exist.
-  final itemRO = keyCtx.findRenderObject() as RenderBox?;
+  // Step 3: Fine-tune using screen coordinates.
   final headerRO = stickyHeaderKey?.currentContext?.findRenderObject();
-  if (itemRO == null || !itemRO.attached) {
-    return;
-  }
 
   final itemScreenY = itemRO.localToGlobal(Offset.zero).dy;
-  final headerBottomScreenY = headerRO is RenderBox && headerRO.attached
+  final headerBottomY = headerRO is RenderBox && headerRO.attached
       ? headerRO.localToGlobal(Offset(0, headerRO.size.height)).dy
       : 0.0;
 
-  final scrollDelta = itemScreenY - headerBottomScreenY;
-  final target = (scrollController.offset + scrollDelta).clamp(
+  final delta = itemScreenY - headerBottomY;
+  final fineTarget = (scrollController.offset + delta).clamp(
     0.0,
     scrollController.position.maxScrollExtent,
   );
 
   if (isDesktop) {
     await scrollController.animateTo(
-      target,
+      fineTarget,
       duration: const Duration(milliseconds: 450),
       curve: Curves.easeOut,
     );
   } else {
-    scrollController.jumpTo(target);
+    scrollController.jumpTo(fineTarget);
   }
 
-  // Scroll complete — restore expansion so the target auto-expands.
-  if (context.mounted && generation == currentGeneration.value) {
-    onScrollComplete();
+  // Step 4: Restore expansion.
+  if (!isStale()) {
+    onComplete();
   }
 }
 
-// A GlobalKey that uniquely identifies a LocationItem by countryCode.
-// Uses value-based equality so _LocationKey('CA').currentContext finds the
-// registered element even when the String object is not identical.
+/// Returns the [RenderBox] for a location item by country code, or `null` if
+/// the item isn't currently built by the SliverList.
+RenderBox? _findItemRenderBox(String countryCode) {
+  final ro = _LocationKey(countryCode).currentContext?.findRenderObject() as RenderBox?;
+  return (ro != null && ro.attached) ? ro : null;
+}
+
+// ---------------------------------------------------------------------------
+// GlobalKey with value-based equality for finding LocationItems by country.
+// ---------------------------------------------------------------------------
+
 class _LocationKey extends GlobalKey {
   const _LocationKey(this.countryCode) : super.constructor();
   final String countryCode;
