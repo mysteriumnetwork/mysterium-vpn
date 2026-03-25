@@ -220,7 +220,7 @@ Future<void> _scrollToCountry({
 
     for (final offset in offsets) {
       scrollController.jumpTo(offset);
-      await Future<void>.delayed(const Duration(milliseconds: 50));
+      await Future<void>.delayed(const Duration(milliseconds: 200));
       if (!context.mounted || generation != currentGeneration.value) {
         return;
       }
