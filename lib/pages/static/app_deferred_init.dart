@@ -33,9 +33,7 @@ final _appStartupPOD = FutureProvider<void>((ref) async {
     if (Platform.isWindows) _initWindows(),
   ]);
 
-  ref.read(loggerPOD).log(
-        'App fully initialized — ${Env.flavor.name} / ${Env.baseUrl}',
-      );
+  ref.read(loggerPOD).log('App fully initialized — ${Env.flavor.name} / ${Env.baseUrl}');
 });
 
 Future<void> _initRemoteConfig(Ref ref, Talker talker) async {
@@ -91,9 +89,7 @@ Future<void> _nativeWindowsInit() async {
 }
 
 Future<void> _wireguardInitBackground(List<Object> args) async {
-  BackgroundIsolateBinaryMessenger.ensureInitialized(
-    args[0] as RootIsolateToken,
-  );
+  BackgroundIsolateBinaryMessenger.ensureInitialized(args[0] as RootIsolateToken);
   try {
     await WireguardDart().nativeInit();
   } catch (e) {
@@ -102,9 +98,7 @@ Future<void> _wireguardInitBackground(List<Object> args) async {
 }
 
 Future<void> _openvpnInitBackground(List<Object> args) async {
-  BackgroundIsolateBinaryMessenger.ensureInitialized(
-    args[0] as RootIsolateToken,
-  );
+  BackgroundIsolateBinaryMessenger.ensureInitialized(args[0] as RootIsolateToken);
   try {
     await OpenVPNDart().ensureTapDriver();
   } catch (e) {
@@ -144,7 +138,7 @@ class AppDeferredInitWidget extends ConsumerWidget {
     return startup.when(
       loading: () => const SplashPage(),
       data: (_) => child,
-      error: (_, __) => child,
+      error: (_, _) => child,
     );
   }
 }

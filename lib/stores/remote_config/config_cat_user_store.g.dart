@@ -12,9 +12,10 @@ mixin _$ConfigCatUserStore on _ConfigCatUserStore, Store {
   Computed<String?>? _$userComputed;
 
   @override
-  String? get user =>
-      (_$userComputed ??= Computed<String?>(() => super.user, name: '_ConfigCatUserStore.user'))
-          .value;
+  String? get user => (_$userComputed ??= Computed<String?>(
+    () => super.user,
+    name: '_ConfigCatUserStore.user',
+  )).value;
 
   late final _$_futureAtom = Atom(name: '_ConfigCatUserStore._future', context: context);
 

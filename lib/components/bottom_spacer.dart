@@ -6,7 +6,6 @@ class BottomSpacer extends StatelessWidget {
   final double height;
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-        height: MediaQuery.of(context).padding.bottom.clamp(height, double.infinity),
-      );
+  Widget build(BuildContext context) =>
+      SizedBox(height: MediaQuery.of(context).padding.bottom.clamp(height, double.infinity));
 }

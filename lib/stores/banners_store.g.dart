@@ -12,42 +12,47 @@ mixin _$BannersStore on _BannersStore, Store {
   Computed<List<BannerType>?>? _$shownComputed;
 
   @override
-  List<BannerType>? get shown => (_$shownComputed ??=
-          Computed<List<BannerType>?>(() => super.shown, name: '_BannersStore.shown'))
-      .value;
+  List<BannerType>? get shown => (_$shownComputed ??= Computed<List<BannerType>?>(
+    () => super.shown,
+    name: '_BannersStore.shown',
+  )).value;
   Computed<bool>? _$shouldShowSubscriptionBannerComputed;
 
   @override
-  bool get shouldShowSubscriptionBanner => (_$shouldShowSubscriptionBannerComputed ??=
-          Computed<bool>(() => super.shouldShowSubscriptionBanner,
-              name: '_BannersStore.shouldShowSubscriptionBanner'))
-      .value;
+  bool get shouldShowSubscriptionBanner =>
+      (_$shouldShowSubscriptionBannerComputed ??= Computed<bool>(
+        () => super.shouldShowSubscriptionBanner,
+        name: '_BannersStore.shouldShowSubscriptionBanner',
+      )).value;
   Computed<List<BannerType>>? _$mainBannersComputed;
 
   @override
-  List<BannerType> get mainBanners => (_$mainBannersComputed ??=
-          Computed<List<BannerType>>(() => super.mainBanners, name: '_BannersStore.mainBanners'))
-      .value;
+  List<BannerType> get mainBanners => (_$mainBannersComputed ??= Computed<List<BannerType>>(
+    () => super.mainBanners,
+    name: '_BannersStore.mainBanners',
+  )).value;
   Computed<BannerType?>? _$mainBannerComputed;
 
   @override
-  BannerType? get mainBanner => (_$mainBannerComputed ??=
-          Computed<BannerType?>(() => super.mainBanner, name: '_BannersStore.mainBanner'))
-      .value;
+  BannerType? get mainBanner => (_$mainBannerComputed ??= Computed<BannerType?>(
+    () => super.mainBanner,
+    name: '_BannersStore.mainBanner',
+  )).value;
   Computed<List<BannerType>>? _$secondaryBannersComputed;
 
   @override
   List<BannerType> get secondaryBanners =>
-      (_$secondaryBannersComputed ??= Computed<List<BannerType>>(() => super.secondaryBanners,
-              name: '_BannersStore.secondaryBanners'))
-          .value;
+      (_$secondaryBannersComputed ??= Computed<List<BannerType>>(
+        () => super.secondaryBanners,
+        name: '_BannersStore.secondaryBanners',
+      )).value;
   Computed<bool>? _$shouldShowAppUpdateBannerComputed;
 
   @override
-  bool get shouldShowAppUpdateBanner =>
-      (_$shouldShowAppUpdateBannerComputed ??= Computed<bool>(() => super.shouldShowAppUpdateBanner,
-              name: '_BannersStore.shouldShowAppUpdateBanner'))
-          .value;
+  bool get shouldShowAppUpdateBanner => (_$shouldShowAppUpdateBannerComputed ??= Computed<bool>(
+    () => super.shouldShowAppUpdateBanner,
+    name: '_BannersStore.shouldShowAppUpdateBanner',
+  )).value;
 
   late final _$_shownBannersAtom = Atom(name: '_BannersStore._shownBanners', context: context);
 
@@ -63,11 +68,14 @@ mixin _$BannersStore on _BannersStore, Store {
 
   @override
   set _shownBanners(ObservableFuture<List<BannerType>> value) {
-    _$_shownBannersAtom.reportWrite(value, __shownBannersIsInitialized ? super._shownBanners : null,
-        () {
-      super._shownBanners = value;
-      __shownBannersIsInitialized = true;
-    });
+    _$_shownBannersAtom.reportWrite(
+      value,
+      __shownBannersIsInitialized ? super._shownBanners : null,
+      () {
+        super._shownBanners = value;
+        __shownBannersIsInitialized = true;
+      },
+    );
   }
 
   late final _$setShownAsyncAction = AsyncAction('_BannersStore.setShown', context: context);

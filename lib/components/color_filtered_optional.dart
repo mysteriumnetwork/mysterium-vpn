@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ColorFilteredOptional extends StatelessWidget {
-  const ColorFilteredOptional({
-    required this.child,
-    required this.colorFilter,
-    super.key,
-  });
+  const ColorFilteredOptional({required this.child, required this.colorFilter, super.key});
 
   final Widget child;
   final ColorFilter? colorFilter;
@@ -15,9 +11,6 @@ class ColorFilteredOptional extends StatelessWidget {
     if (colorFilter == null) {
       return child;
     }
-    return ColorFiltered(
-      colorFilter: colorFilter!,
-      child: child,
-    );
+    return ColorFiltered(colorFilter: colorFilter!, child: child);
   }
 }

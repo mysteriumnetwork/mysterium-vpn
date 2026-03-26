@@ -11,31 +11,22 @@ class LoginHeadlines extends HookConsumerWidget {
   const LoginHeadlines({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) => FittedBox(
-        fit: BoxFit.scaleDown,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            HeadlineText(
-              text: LocaleKeys.anonymous.tr(),
-              color: Palette.purple,
-            ),
-            HeadlineText(
-              text: LocaleKeys.affordable.tr(),
-            ),
-            HeadlineText(
-              text: LocaleKeys.fast.tr(),
-            ),
-            HeadlineText(
-              text: LocaleKeys.secure.tr(),
-            ),
-            HeadlineText(
-              text: LocaleKeys.loginQuote.tr(),
-              maxLines: 3,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              textAlign: TextAlign.center,
-            ).padding(vertical: getMediaHeight(context) * 0.02),
-          ],
-        ),
-      );
+    fit: BoxFit.scaleDown,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        HeadlineText(text: LocaleKeys.anonymous.tr(), color: Palette.purple),
+        HeadlineText(text: LocaleKeys.affordable.tr()),
+        HeadlineText(text: LocaleKeys.fast.tr()),
+        HeadlineText(text: LocaleKeys.secure.tr()),
+        HeadlineText(
+          text: LocaleKeys.loginQuote.tr(),
+          maxLines: 3,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          textAlign: TextAlign.center,
+        ).padding(vertical: getMediaHeight(context) * 0.02),
+      ],
+    ),
+  );
 }

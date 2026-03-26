@@ -20,28 +20,29 @@ class LocationTypeSwitcher extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-        children: [
-          for (final value in options)
-            Expanded(
-              child: _Item(
-                alignment: MainAxisAlignment.center,
-                onTap: options.length > 1 ? () => onChanged(value) : null,
-                label: switch (value) {
-                  IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
-                  _ => options.length > 1
-                      ? LocaleKeys.ipTypeResidential.tr()
-                      : LocaleKeys.allLocations.tr(),
-                },
-                icon: switch (value) {
-                  IPType.datacenter => SvgIcon(asset: Asset.icons.speed, height: 20),
-                  _ => null,
-                },
-                selected: value == this.value,
-              ),
-            ),
-          if (options.length == 1) const Spacer(),
-        ],
-      );
+    children: [
+      for (final value in options)
+        Expanded(
+          child: _Item(
+            alignment: MainAxisAlignment.center,
+            onTap: options.length > 1 ? () => onChanged(value) : null,
+            label: switch (value) {
+              IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
+              _ =>
+                options.length > 1
+                    ? LocaleKeys.ipTypeResidential.tr()
+                    : LocaleKeys.allLocations.tr(),
+            },
+            icon: switch (value) {
+              IPType.datacenter => SvgIcon(asset: Asset.icons.speed, height: 20),
+              _ => null,
+            },
+            selected: value == this.value,
+          ),
+        ),
+      if (options.length == 1) const Spacer(),
+    ],
+  );
 }
 
 class _Item extends StatelessWidget {
@@ -90,11 +91,7 @@ class _Item extends StatelessWidget {
                 colorDecoration: theme.textTheme.bodyMedium?.color,
               ),
             ),
-            if (icon != null)
-              Padding(
-                padding: const EdgeInsets.only(left: 6),
-                child: icon,
-              ),
+            if (icon != null) Padding(padding: const EdgeInsets.only(left: 6), child: icon),
           ],
         ),
       ),

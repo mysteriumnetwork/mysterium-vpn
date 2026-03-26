@@ -13,21 +13,21 @@ class LoadingBarrier extends StatelessWidget {
   final double radius;
   @override
   Widget build(BuildContext context) => LayoutBuilder(
-        builder: (context, constraints) => Stack(
-          children: <Widget>[
-            ModalBarrier(
-              dismissible: false,
-              color: color.withValues(alpha: 0.8),
-            ).height(constraints.maxHeight),
-            child ??
-                Center(
-                  child: LoadingIndicator(
-                    radius: radius,
-                    message: LocaleKeys.LoggingYouIn.tr(),
-                    messageColor: Palette.pink,
-                  ),
-                ),
-          ],
+    builder: (context, constraints) => Stack(
+      children: <Widget>[
+        ModalBarrier(
+          dismissible: false,
+          color: color.withValues(alpha: 0.8),
         ).height(constraints.maxHeight),
-      );
+        child ??
+            Center(
+              child: LoadingIndicator(
+                radius: radius,
+                message: LocaleKeys.LoggingYouIn.tr(),
+                messageColor: Palette.pink,
+              ),
+            ),
+      ],
+    ).height(constraints.maxHeight),
+  );
 }

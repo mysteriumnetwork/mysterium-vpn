@@ -28,10 +28,7 @@ class AppAlertDialog extends HookWidget {
     final margin = useResponsiveValue<double>(24, tablet: 32, desktop: 36);
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(
-          maxWidth: 720,
-          maxHeight: 720,
-        ),
+        constraints: const BoxConstraints(maxWidth: 720, maxHeight: 720),
         child: Padding(
           padding: EdgeInsets.all(margin),
           child: Material(
@@ -43,7 +40,8 @@ class AppAlertDialog extends HookWidget {
               builder: (context) {
                 final theme = Theme.of(context);
                 return AlertDialog(
-                  title: title ??
+                  title:
+                      title ??
                       (titleText != null
                           ? Text(
                               titleText!,
@@ -52,10 +50,7 @@ class AppAlertDialog extends HookWidget {
                               style: TextStyle(color: theme.textTheme.bodyLarge?.color),
                             )
                           : null),
-                  titleTextStyle: GoogleFonts.montserrat(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20,
-                  ),
+                  titleTextStyle: GoogleFonts.montserrat(fontWeight: FontWeight.w700, fontSize: 20),
                   content: DecoratedBox(
                     decoration: BoxDecoration(
                       border: Border(
@@ -70,9 +65,7 @@ class AppAlertDialog extends HookWidget {
                   titlePadding: titlePadding,
                   insetPadding: EdgeInsets.zero,
                   alignment: Alignment.center,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                   scrollable: scrollable,
                   backgroundColor: theme.palette.tileColor,
                   clipBehavior: Clip.antiAlias,

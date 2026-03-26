@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 class MystNavigationObserver extends RouteObserver<ModalRoute<dynamic>> {
-  MystNavigationObserver({
-    required this.analyticsStore,
-  });
+  MystNavigationObserver({required this.analyticsStore});
   final AnalyticsStore analyticsStore;
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {

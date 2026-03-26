@@ -70,12 +70,14 @@ abstract class _UserIntentsStore with Store {
   }
 
   @readonly
-  late ObservableFuture<Set<UserIntent>> _apiIntentsFuture =
-      ObservableFuture(_apiService.fetchUserIntents());
+  late ObservableFuture<Set<UserIntent>> _apiIntentsFuture = ObservableFuture(
+    _apiService.fetchUserIntents(),
+  );
 
   @readonly
-  late ObservableFuture<Set<UserIntent>> _localIntentsFuture =
-      ObservableFuture(_fetchLocalIntents());
+  late ObservableFuture<Set<UserIntent>> _localIntentsFuture = ObservableFuture(
+    _fetchLocalIntents(),
+  );
 
   @readonly
   late ObservableFuture<Set<UserIntent>> _intentsFuture = ObservableFuture(_fetchIntents());
@@ -104,8 +106,9 @@ abstract class _UserIntentsStore with Store {
 
   Stream<Set<UserIntent>> _watchAPIIntents() async* {
     await _apiIntentsFuture;
-    yield* Stream.periodic(_remoteConfigStore.userIntentsRefreshInterval)
-        .asyncMap((_) => _apiService.fetchUserIntents());
+    yield* Stream.periodic(
+      _remoteConfigStore.userIntentsRefreshInterval,
+    ).asyncMap((_) => _apiService.fetchUserIntents());
   }
 
   Future<void> dispose() async {

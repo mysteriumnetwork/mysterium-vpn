@@ -24,10 +24,10 @@ import 'package:mysterium_vpn/views/subscription/widgets/subscription_privacy_an
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 
 Future<void> showSubscriptionUpgradeModalPage(BuildContext context) async {
-  ProviderScope.containerOf(context, listen: false)
-      .read(analyticsStorePOD)
-      .logScreenViewed('subscription_upgrade_modal')
-      .ignore();
+  ProviderScope.containerOf(
+    context,
+    listen: false,
+  ).read(analyticsStorePOD).logScreenViewed('subscription_upgrade_modal').ignore();
   final themeData = DesignSystemTheme.of(context);
   await showModal(
     context,
@@ -92,9 +92,7 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
 
             // Handle loading state
             if (product == null || subscriptionStatus == FutureStatus.pending) {
-              return const Center(
-                child: LoadingIndicator(),
-              );
+              return const Center(child: LoadingIndicator());
             }
 
             // Handle error state - future was rejected
@@ -129,9 +127,7 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
 
             // Subscription data should be available at this point
             if (subscription == null) {
-              return const Center(
-                child: LoadingIndicator(),
-              );
+              return const Center(child: LoadingIndicator());
             }
             final hasPlan = subscription.active;
             return HookBuilder(
@@ -180,10 +176,12 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                                     ),
                                   ),
                                   title: hasPlan
-                                      ? LocaleKeys.subscriptionUpgradeModalTitle
-                                          .tr(args: [planData.name])
-                                      : LocaleKeys.getSubscriptionModalTitle
-                                          .tr(args: [planWithDuration]),
+                                      ? LocaleKeys.subscriptionUpgradeModalTitle.tr(
+                                          args: [planData.name],
+                                        )
+                                      : LocaleKeys.getSubscriptionModalTitle.tr(
+                                          args: [planWithDuration],
+                                        ),
                                   description: hasPlan
                                       ? LocaleKeys.subscriptionUpgradeModalDescription.tr()
                                       : LocaleKeys.getSubscriptionModalDesc.tr(),
@@ -256,9 +254,7 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                                 showError(e);
                               }
                             },
-                            child: Text(
-                              LocaleKeys.redeemDiscountCode.tr(),
-                            ),
+                            child: Text(LocaleKeys.redeemDiscountCode.tr()),
                           ),
                         SizedBox(height: theme.spacing.ms),
                         ButtonPrimary(

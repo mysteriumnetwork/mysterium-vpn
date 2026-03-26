@@ -31,10 +31,8 @@ class MapConfig with _$MapConfig {
   Map<String, dynamic> toJson() => _$MapConfigToJson(this);
 }
 
-Map<Brightness, String> _tileUrlTemplatesFromJson(Map<String, dynamic> json) => json.map(
-      (key, value) => MapEntry(const BrightnessConverter().fromJson(key), value.toString()),
-    );
+Map<Brightness, String> _tileUrlTemplatesFromJson(Map<String, dynamic> json) =>
+    json.map((key, value) => MapEntry(const BrightnessConverter().fromJson(key), value.toString()));
 
-Map<String, dynamic> _tileUrlTemplatesToJson(Map<Brightness, String> object) => object.map(
-      (key, value) => MapEntry(const BrightnessConverter().toJson(key), value),
-    );
+Map<String, dynamic> _tileUrlTemplatesToJson(Map<Brightness, String> object) =>
+    object.map((key, value) => MapEntry(const BrightnessConverter().toJson(key), value));

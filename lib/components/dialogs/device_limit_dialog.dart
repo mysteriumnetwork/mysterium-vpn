@@ -13,10 +13,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 Future<void> showDeviceLimitDialog(BuildContext context) async {
   await showModal(
     context,
-    builder: (_) => Theme(
-      data: DesignSystemTheme.of(context),
-      child: const _DialogContent(),
-    ),
+    builder: (_) => Theme(data: DesignSystemTheme.of(context), child: const _DialogContent()),
   );
 }
 
@@ -32,10 +29,7 @@ class _DialogContent extends ConsumerWidget {
       final uri = Uri.parse(Env.manageDevicesPage);
       final accessToken = sessionStore.accessToken;
       final queryParameters = (accessToken?.isNotEmpty ?? false)
-          ? {
-              ...uri.queryParameters,
-              'access_token': accessToken,
-            }
+          ? {...uri.queryParameters, 'access_token': accessToken}
           : null;
       final targetUri = Uri(
         scheme: uri.scheme,
@@ -43,10 +37,7 @@ class _DialogContent extends ConsumerWidget {
         path: uri.path,
         queryParameters: queryParameters,
       );
-      openUrlLink(
-        targetUri,
-        mode: LaunchMode.externalApplication,
-      );
+      openUrlLink(targetUri, mode: LaunchMode.externalApplication);
     }
 
     return ModalScaffold(
@@ -55,10 +46,7 @@ class _DialogContent extends ConsumerWidget {
       body: Padding(
         padding: ModalPadding.insets(
           context,
-          add: EdgeInsets.symmetric(
-            vertical: theme.spacing.xl,
-            horizontal: theme.spacing.md,
-          ),
+          add: EdgeInsets.symmetric(vertical: theme.spacing.xl, horizontal: theme.spacing.md),
         ),
         child: Column(
           children: [
@@ -67,28 +55,20 @@ class _DialogContent extends ConsumerWidget {
             Text(
               LocaleKeys.deviceLimitReachedTitle.tr(),
               textAlign: TextAlign.center,
-              style: GoogleFonts.montserrat(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
+              style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.w600),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 40, top: 16),
               child: Text(
                 LocaleKeys.deviceLimitReachedDesc.tr(),
                 textAlign: TextAlign.center,
-                style: GoogleFonts.montserrat(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w400),
               ),
             ),
             const Spacer(),
             ButtonPrimary(
               onPressed: handleOpenDashboard,
-              child: Text(
-                LocaleKeys.deviceLimitReachedOpenDashboard.tr(),
-              ),
+              child: Text(LocaleKeys.deviceLimitReachedOpenDashboard.tr()),
             ),
           ],
         ),

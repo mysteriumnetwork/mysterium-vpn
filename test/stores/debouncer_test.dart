@@ -15,12 +15,9 @@ void main() {
 
     test('executes function after specified duration', () async {
       var executed = false;
-      debouncer.debounce(
-        () {
-          executed = true;
-        },
-        const Duration(milliseconds: 100),
-      );
+      debouncer.debounce(() {
+        executed = true;
+      }, const Duration(milliseconds: 100));
 
       await Future.delayed(const Duration(milliseconds: 150));
       expect(executed, true);
@@ -29,18 +26,12 @@ void main() {
     test('cancels previous timer if called again within duration', () async {
       var executed = false;
       debouncer
-        ..debounce(
-          () {
-            executed = true;
-          },
-          const Duration(milliseconds: 100),
-        )
-        ..debounce(
-          () {
-            executed = true;
-          },
-          const Duration(milliseconds: 100),
-        );
+        ..debounce(() {
+          executed = true;
+        }, const Duration(milliseconds: 100))
+        ..debounce(() {
+          executed = true;
+        }, const Duration(milliseconds: 100));
 
       await Future.delayed(const Duration(milliseconds: 150));
       expect(executed, true);
@@ -49,12 +40,9 @@ void main() {
     test('does not execute function if cancelled before duration', () async {
       var executed = false;
       debouncer
-        ..debounce(
-          () {
-            executed = true;
-          },
-          const Duration(milliseconds: 100),
-        )
+        ..debounce(() {
+          executed = true;
+        }, const Duration(milliseconds: 100))
         ..dispose();
 
       await Future.delayed(const Duration(milliseconds: 150));

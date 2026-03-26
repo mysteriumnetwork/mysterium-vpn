@@ -12,11 +12,7 @@ import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class RecentLocationItem extends HookConsumerWidget {
-  const RecentLocationItem({
-    required this.location,
-    required this.onTap,
-    super.key,
-  });
+  const RecentLocationItem({required this.location, required this.onTap, super.key});
 
   final VPNLocation location;
   final VoidCallback onTap;
@@ -52,9 +48,7 @@ class RecentLocationItem extends HookConsumerWidget {
                     countryName,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: const TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(width: 4),
@@ -64,10 +58,7 @@ class RecentLocationItem extends HookConsumerWidget {
                   size: const Size(90, 30),
                   loadingIndicatorRadius: 15,
                   outlinedButton: true,
-                  fontStyle: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  fontStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                 ),
               ],
             ),

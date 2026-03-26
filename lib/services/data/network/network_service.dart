@@ -14,7 +14,5 @@ abstract class NetworkService {
     Map<String, dynamic>? headers,
   });
 
-  Future<Response> fetch(
-    String url,
-  );
+  Future<Response> fetch(String url);
 }

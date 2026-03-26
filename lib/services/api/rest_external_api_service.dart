@@ -7,10 +7,7 @@ const kFetchIPFallback = 'https://ipinfo.io/json';
 const kFetchIPAddress = 'https://ip.mysterium.network';
 
 class RestExternalApiService with ExternalApiService {
-  const RestExternalApiService(
-    this._networkService,
-    this._logger,
-  );
+  const RestExternalApiService(this._networkService, this._logger);
 
   final NetworkService _networkService;
   final Talker _logger;

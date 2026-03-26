@@ -79,8 +79,9 @@ class ConnectionTile extends HookConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 16),
                   child: _Placeholder(
-                    title:
-                        LocaleKeys.locationUnavailableTitle.tr(args: [location.getName(context)]),
+                    title: LocaleKeys.locationUnavailableTitle.tr(
+                      args: [location.getName(context)],
+                    ),
                     subtitle: LocaleKeys.locationUnavailableSubtitle.tr(),
                     icon: Asset.icons.fix(context),
                   ),
@@ -102,7 +103,8 @@ class ConnectionTile extends HookConsumerWidget {
                 onPressed: onTap,
                 location: showConnectedOnly ? location : targetLocation,
                 size: const Size(double.infinity, 42),
-                textConnect: textConnect ??
+                textConnect:
+                    textConnect ??
                     (targetLocation != location ? LocaleKeys.locationUnavailableAction.tr() : null),
                 textDisconnect: showConnectedOnly ? textConnect : null,
               ),
@@ -126,9 +128,7 @@ class ConnectionTile extends HookConsumerWidget {
 }
 
 class _Card extends HookWidget {
-  const _Card({
-    required this.child,
-  });
+  const _Card({required this.child});
 
   final Widget child;
 
@@ -146,20 +146,13 @@ class _Card extends HookWidget {
         side: BorderSide(color: borderColor),
       ),
       clipBehavior: Clip.hardEdge,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: child,
-      ),
+      child: Padding(padding: const EdgeInsets.all(16), child: child),
     );
   }
 }
 
 class _Placeholder extends StatelessWidget {
-  const _Placeholder({
-    required this.title,
-    required this.subtitle,
-    required this.icon,
-  });
+  const _Placeholder({required this.title, required this.subtitle, required this.icon});
 
   final String title;
   final String subtitle;
@@ -178,16 +171,8 @@ class _Placeholder extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             spacing: 2,
             children: [
-              EasyText(
-                title,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-              EasyText(
-                subtitle,
-                fontSize: 12,
-                color: theme.palette.subtitleColor,
-              ),
+              EasyText(title, fontSize: 18, fontWeight: FontWeight.w500),
+              EasyText(subtitle, fontSize: 12, color: theme.palette.subtitleColor),
             ],
           ),
         ),
@@ -237,28 +222,17 @@ class _Location extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              EasyText(
-                title,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
+              EasyText(title, fontSize: 18, fontWeight: FontWeight.w500),
               if (subtitle != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 2),
                   child: Row(
                     children: [
                       Expanded(
-                        child: EasyText(
-                          subtitle,
-                          fontSize: 12,
-                          color: theme.palette.subtitleColor,
-                        ),
+                        child: EasyText(subtitle, fontSize: 12, color: theme.palette.subtitleColor),
                       ),
                       if (ip != null && isLocationConnected)
-                        _RefreshIpButton(
-                          enabled: ipPoolCount >= 2,
-                          onPressed: onRefreshIPPressed,
-                        ),
+                        _RefreshIpButton(enabled: ipPoolCount >= 2, onPressed: onRefreshIPPressed),
                     ],
                   ),
                 ),
@@ -282,11 +256,7 @@ class _Location extends StatelessWidget {
                                 ),
                               )
                               .separateWith(
-                                Container(
-                                  color: theme.palette.subtitleColor,
-                                  width: 1,
-                                  height: 20,
-                                ),
+                                Container(color: theme.palette.subtitleColor, width: 1, height: 20),
                               ),
                         ],
                       ),
@@ -322,10 +292,7 @@ class _Location extends StatelessWidget {
 }
 
 class _RefreshIpButton extends StatelessWidget {
-  const _RefreshIpButton({
-    required this.enabled,
-    required this.onPressed,
-  });
+  const _RefreshIpButton({required this.enabled, required this.onPressed});
 
   final bool enabled;
   final VoidCallback onPressed;

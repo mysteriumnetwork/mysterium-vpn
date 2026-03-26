@@ -33,10 +33,7 @@ class Banner extends StatelessWidget {
         onPressed: onPressed,
         elevation: 0,
         fillColor: style.backgroundColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: style.borderRadius,
-          side: style.border,
-        ),
+        shape: RoundedRectangleBorder(borderRadius: style.borderRadius, side: style.border),
         child: Stack(
           children: [
             Center(
@@ -49,25 +46,13 @@ class Banner extends StatelessWidget {
                       padding: EdgeInsets.only(right: canDismiss ? 32 : 0),
                       child: title,
                     ),
-                    if (body != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 6),
-                        child: body,
-                      ),
-                    if (cta != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 12),
-                        child: cta,
-                      ),
+                    if (body != null) Padding(padding: const EdgeInsets.only(top: 6), child: body),
+                    if (cta != null) Padding(padding: const EdgeInsets.only(top: 12), child: cta),
                   ],
                 ),
               ),
             ),
-            if (canDismiss)
-              _DismissButton(
-                onPressed: onDismiss,
-                mainBanner: mainBanner,
-              ),
+            if (canDismiss) _DismissButton(onPressed: onDismiss, mainBanner: mainBanner),
           ],
         ),
       ),
@@ -76,10 +61,7 @@ class Banner extends StatelessWidget {
 }
 
 class _DismissButton extends StatelessWidget {
-  const _DismissButton({
-    required this.onPressed,
-    required this.mainBanner,
-  });
+  const _DismissButton({required this.onPressed, required this.mainBanner});
 
   final VoidCallback? onPressed;
   final bool mainBanner;
@@ -100,9 +82,7 @@ class _DismissButton extends StatelessWidget {
                 iconSize: 16,
                 padding: EdgeInsets.zero,
                 visualDensity: VisualDensity.compact,
-                style: IconButton.styleFrom(
-                  backgroundColor: Palette.lightBlack,
-                ),
+                style: IconButton.styleFrom(backgroundColor: Palette.lightBlack),
                 onPressed: onPressed,
                 icon: const Icon(Icons.close_sharp),
               ),
@@ -130,10 +110,7 @@ class _DismissButton extends StatelessWidget {
 }
 
 class _DefaultBannerStyle extends InheritedWidget {
-  const _DefaultBannerStyle({
-    required this.style,
-    required super.child,
-  });
+  const _DefaultBannerStyle({required this.style, required super.child});
 
   final BannerStyle style;
 
@@ -209,16 +186,15 @@ class BannerStyle {
     BorderSide? border,
     BorderRadius? borderRadius,
     EdgeInsets? padding,
-  }) =>
-      BannerStyle(
-        backgroundColor: backgroundColor ?? this.backgroundColor,
-        foregroundColor: foregroundColor ?? this.foregroundColor,
-        ctaBackgroundColor: ctaBackgroundColor ?? this.ctaBackgroundColor,
-        ctaForegroundColor: ctaForegroundColor ?? this.ctaForegroundColor,
-        border: border ?? this.border,
-        borderRadius: borderRadius ?? this.borderRadius,
-        padding: padding ?? this.padding,
-      );
+  }) => BannerStyle(
+    backgroundColor: backgroundColor ?? this.backgroundColor,
+    foregroundColor: foregroundColor ?? this.foregroundColor,
+    ctaBackgroundColor: ctaBackgroundColor ?? this.ctaBackgroundColor,
+    ctaForegroundColor: ctaForegroundColor ?? this.ctaForegroundColor,
+    border: border ?? this.border,
+    borderRadius: borderRadius ?? this.borderRadius,
+    padding: padding ?? this.padding,
+  );
 
   @override
   bool operator ==(Object other) {

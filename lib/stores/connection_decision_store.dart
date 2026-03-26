@@ -14,9 +14,9 @@ abstract class _ConnectionDecisionStore with Store {
     required LocationsStore locationsStore,
     required RecentLocationsStore recentLocationsStore,
     required UserIntentsStore userIntentsStore,
-  })  : _locationsStore = locationsStore,
-        _recentLocationsStore = recentLocationsStore,
-        _userIntentsStore = userIntentsStore;
+  }) : _locationsStore = locationsStore,
+       _recentLocationsStore = recentLocationsStore,
+       _userIntentsStore = userIntentsStore;
 
   final LocationsStore _locationsStore;
   final RecentLocationsStore _recentLocationsStore;

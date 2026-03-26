@@ -21,18 +21,14 @@ class WelcomePage extends HookConsumerWidget {
     final authSessionStore = ref.watch(authSessionStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
 
-    useReaction(
-      () => authSessionStore.authShown,
-      (authShown) {
-        if (authShown) {
-          return;
-        }
-        Future.microtask(() async {
-          authSessionStore.authShown = true;
-        });
-      },
-      fireImmediately: true,
-    );
+    useReaction(() => authSessionStore.authShown, (authShown) {
+      if (authShown) {
+        return;
+      }
+      Future.microtask(() async {
+        authSessionStore.authShown = true;
+      });
+    }, fireImmediately: true);
 
     return ColoredScaffold(
       body: Observer(
@@ -59,9 +55,7 @@ class WelcomePage extends HookConsumerWidget {
               ),
             ),
             if (authStore.authenticateFeature?.status == FutureStatus.pending)
-              const LoadingBarrier(
-                color: Palette.darkBlue,
-              ),
+              const LoadingBarrier(color: Palette.darkBlue),
           ],
         ),
       ),

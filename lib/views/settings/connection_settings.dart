@@ -58,15 +58,13 @@ class ConnectionSettings extends HookConsumerWidget {
                   action: vpnStore.resetAppFuture?.status == FutureStatus.pending || disableSettings
                       ? null
                       : () => _onConfirmResetApp(
-                            context: context,
-                            analyticsStore: analyticsStore,
-                            vpnStore: vpnStore,
-                            handleToggleConnection: handleToggleConnection,
-                          ),
+                          context: context,
+                          analyticsStore: analyticsStore,
+                          vpnStore: vpnStore,
+                          handleToggleConnection: handleToggleConnection,
+                        ),
                   backgroundColor: Palette.purple,
-                  child: Text(
-                    LocaleKeys.resetAppTitle.tr(),
-                  ),
+                  child: Text(LocaleKeys.resetAppTitle.tr()),
                 ),
               ),
             ),
@@ -102,18 +100,18 @@ class ConnectionSettings extends HookConsumerWidget {
                 actionWidget: Observer(
                   builder: (context) =>
                       dnsStore.malwareContentBlockerFuture.status == FutureStatus.pending
-                          ? const LoadingIndicator()
-                          : Switch(
-                              value: dnsStore.malwareContentBlocker,
-                              onChanged: disableSettings
-                                  ? null
-                                  : (val) async {
-                                      await dnsStore.toggleMalwareBlocker();
-                                      analyticsStore.logEvent(
-                                        val ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff,
-                                      );
-                                    },
-                            ),
+                      ? const LoadingIndicator()
+                      : Switch(
+                          value: dnsStore.malwareContentBlocker,
+                          onChanged: disableSettings
+                              ? null
+                              : (val) async {
+                                  await dnsStore.toggleMalwareBlocker();
+                                  analyticsStore.logEvent(
+                                    val ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff,
+                                  );
+                                },
+                        ),
                 ),
               ),
             ),
@@ -126,18 +124,18 @@ class ConnectionSettings extends HookConsumerWidget {
                 actionWidget: Observer(
                   builder: (context) =>
                       dnsStore.notSafeContentBlockerFuture.status == FutureStatus.pending
-                          ? const LoadingIndicator()
-                          : Switch(
-                              value: dnsStore.notSafeContentBlocker,
-                              onChanged: disableSettings
-                                  ? null
-                                  : (val) async {
-                                      await dnsStore.toggleNotSafeContentBlocker();
-                                      analyticsStore.logEvent(
-                                        val ? AnalyticsEvent.nsfwOn : AnalyticsEvent.nsfwOff,
-                                      );
-                                    },
-                            ),
+                      ? const LoadingIndicator()
+                      : Switch(
+                          value: dnsStore.notSafeContentBlocker,
+                          onChanged: disableSettings
+                              ? null
+                              : (val) async {
+                                  await dnsStore.toggleNotSafeContentBlocker();
+                                  analyticsStore.logEvent(
+                                    val ? AnalyticsEvent.nsfwOn : AnalyticsEvent.nsfwOff,
+                                  );
+                                },
+                        ),
                 ),
               ),
             ),
@@ -193,11 +191,7 @@ class ConnectionSettings extends HookConsumerWidget {
         children: [
           Text(
             LocaleKeys.resetAppDialogContent.tr(),
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: Palette.black,
-            ),
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Palette.black),
             maxLines: 4,
             textAlign: TextAlign.center,
           ),
@@ -238,13 +232,8 @@ class ConnectionSettings extends HookConsumerWidget {
       );
       analyticsStore.logEvent(AnalyticsEvent.resetAppSuccess);
     } catch (e, s) {
-      showSnackbar(
-        LocaleKeys.resetAppFailed.tr(),
-      );
-      analyticsStore.logError(
-        err: e,
-        stack: s,
-      );
+      showSnackbar(LocaleKeys.resetAppFailed.tr());
+      analyticsStore.logError(err: e, stack: s);
     }
   }
 }

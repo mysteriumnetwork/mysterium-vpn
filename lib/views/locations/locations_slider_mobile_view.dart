@@ -20,11 +20,7 @@ import 'package:mysterium_vpn/views/locations/locations_view.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class LocationsSliderMobileView extends HookConsumerWidget {
-  const LocationsSliderMobileView({
-    required this.constraints,
-    required this.controller,
-    super.key,
-  });
+  const LocationsSliderMobileView({required this.constraints, required this.controller, super.key});
 
   final BoxConstraints constraints;
   final ScrollController controller;
@@ -36,25 +32,19 @@ class LocationsSliderMobileView extends HookConsumerWidget {
     final vpnStore = ref.watch(vpnStorePOD);
     final panelState = ref.watch(homeStateProvider.select((s) => s.panelState));
 
-    useEffect(
-      () {
-        controller.addListener(analyticsStore.logLocationsListScroll);
-        return () => controller.removeListener(analyticsStore.logLocationsListScroll);
-      },
-      [analyticsStore],
-    );
+    useEffect(() {
+      controller.addListener(analyticsStore.logLocationsListScroll);
+      return () => controller.removeListener(analyticsStore.logLocationsListScroll);
+    }, [analyticsStore]);
 
     // When the panel is not fully open, reset the scroll to the top so the
     // list always starts fresh when the panel is reopened.
-    useEffect(
-      () {
-        if (panelState != PanelState.open && controller.hasClients && controller.offset != 0) {
-          controller.jumpTo(0);
-        }
-        return null;
-      },
-      [panelState],
-    );
+    useEffect(() {
+      if (panelState != PanelState.open && controller.hasClients && controller.offset != 0) {
+        controller.jumpTo(0);
+      }
+      return null;
+    }, [panelState]);
 
     void handleTogglePanel() {
       ref.read(homeStateProvider.notifier).togglePanel();
@@ -80,8 +70,9 @@ class LocationsSliderMobileView extends HookConsumerWidget {
                 Observer(
                   builder: (context) {
                     final selectedLocation = selectedLocationStore.value;
-                    final unavailableLocations =
-                        ref.read(unavailableLocationsStorePOD).unavailableLocations;
+                    final unavailableLocations = ref
+                        .read(unavailableLocationsStorePOD)
+                        .unavailableLocations;
                     final isSelectedUnavailable =
                         selectedLocation != null && unavailableLocations.contains(selectedLocation);
                     return Column(
@@ -158,41 +149,38 @@ class _SelectedLocationBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
-        decoration: BoxDecoration(
-          color: context.c.isDarkMode ? const Color(0xFF6A678E) : const Color(0xFFC6C5D3),
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
+    decoration: BoxDecoration(
+      color: context.c.isDarkMode ? const Color(0xFF6A678E) : const Color(0xFFC6C5D3),
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      ),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
+      child: Row(
+        children: [
+          CircleFlag(location.countryCode, size: 38),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              unavailable
+                  ? LocaleKeys.locationUnavailableTitle.tr(args: [location.getName(context)])
+                  : location.getName(context),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
-          child: Row(
-            children: [
-              CircleFlag(location.countryCode, size: 38),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  unavailable
-                      ? LocaleKeys.locationUnavailableTitle.tr(args: [location.getName(context)])
-                      : location.getName(context),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              IconButton(
-                onPressed: onDismiss,
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(),
-                icon: SvgIcon(
-                  asset: Asset.icons.close3(context),
-                  color: context.c.isDarkMode ? Palette.white : const Color(0xFF6A678E),
-                ),
-              ),
-            ],
+          IconButton(
+            onPressed: onDismiss,
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            icon: SvgIcon(
+              asset: Asset.icons.close3(context),
+              color: context.c.isDarkMode ? Palette.white : const Color(0xFF6A678E),
+            ),
           ),
-        ),
-      );
+        ],
+      ),
+    ),
+  );
 }

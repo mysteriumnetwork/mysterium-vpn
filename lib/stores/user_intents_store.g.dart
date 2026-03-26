@@ -12,15 +12,17 @@ mixin _$UserIntentsStore on _UserIntentsStore, Store {
   Computed<Set<UserIntent>>? _$userIntentsComputed;
 
   @override
-  Set<UserIntent> get userIntents => (_$userIntentsComputed ??=
-          Computed<Set<UserIntent>>(() => super.userIntents, name: '_UserIntentsStore.userIntents'))
-      .value;
+  Set<UserIntent> get userIntents => (_$userIntentsComputed ??= Computed<Set<UserIntent>>(
+    () => super.userIntents,
+    name: '_UserIntentsStore.userIntents',
+  )).value;
   Computed<Set<UserIntent>>? _$intentsComputed;
 
   @override
-  Set<UserIntent> get intents => (_$intentsComputed ??=
-          Computed<Set<UserIntent>>(() => super.intents, name: '_UserIntentsStore.intents'))
-      .value;
+  Set<UserIntent> get intents => (_$intentsComputed ??= Computed<Set<UserIntent>>(
+    () => super.intents,
+    name: '_UserIntentsStore.intents',
+  )).value;
 
   late final _$userIntentAtom = Atom(name: '_UserIntentsStore.userIntent', context: context);
 
@@ -37,8 +39,10 @@ mixin _$UserIntentsStore on _UserIntentsStore, Store {
     });
   }
 
-  late final _$_apiIntentsFutureAtom =
-      Atom(name: '_UserIntentsStore._apiIntentsFuture', context: context);
+  late final _$_apiIntentsFutureAtom = Atom(
+    name: '_UserIntentsStore._apiIntentsFuture',
+    context: context,
+  );
 
   ObservableFuture<Set<UserIntent>> get apiIntentsFuture {
     _$_apiIntentsFutureAtom.reportRead();
@@ -52,15 +56,20 @@ mixin _$UserIntentsStore on _UserIntentsStore, Store {
 
   @override
   set _apiIntentsFuture(ObservableFuture<Set<UserIntent>> value) {
-    _$_apiIntentsFutureAtom
-        .reportWrite(value, __apiIntentsFutureIsInitialized ? super._apiIntentsFuture : null, () {
-      super._apiIntentsFuture = value;
-      __apiIntentsFutureIsInitialized = true;
-    });
+    _$_apiIntentsFutureAtom.reportWrite(
+      value,
+      __apiIntentsFutureIsInitialized ? super._apiIntentsFuture : null,
+      () {
+        super._apiIntentsFuture = value;
+        __apiIntentsFutureIsInitialized = true;
+      },
+    );
   }
 
-  late final _$_localIntentsFutureAtom =
-      Atom(name: '_UserIntentsStore._localIntentsFuture', context: context);
+  late final _$_localIntentsFutureAtom = Atom(
+    name: '_UserIntentsStore._localIntentsFuture',
+    context: context,
+  );
 
   ObservableFuture<Set<UserIntent>> get localIntentsFuture {
     _$_localIntentsFutureAtom.reportRead();
@@ -75,14 +84,19 @@ mixin _$UserIntentsStore on _UserIntentsStore, Store {
   @override
   set _localIntentsFuture(ObservableFuture<Set<UserIntent>> value) {
     _$_localIntentsFutureAtom.reportWrite(
-        value, __localIntentsFutureIsInitialized ? super._localIntentsFuture : null, () {
-      super._localIntentsFuture = value;
-      __localIntentsFutureIsInitialized = true;
-    });
+      value,
+      __localIntentsFutureIsInitialized ? super._localIntentsFuture : null,
+      () {
+        super._localIntentsFuture = value;
+        __localIntentsFutureIsInitialized = true;
+      },
+    );
   }
 
-  late final _$_intentsFutureAtom =
-      Atom(name: '_UserIntentsStore._intentsFuture', context: context);
+  late final _$_intentsFutureAtom = Atom(
+    name: '_UserIntentsStore._intentsFuture',
+    context: context,
+  );
 
   ObservableFuture<Set<UserIntent>> get intentsFuture {
     _$_intentsFutureAtom.reportRead();
@@ -96,11 +110,14 @@ mixin _$UserIntentsStore on _UserIntentsStore, Store {
 
   @override
   set _intentsFuture(ObservableFuture<Set<UserIntent>> value) {
-    _$_intentsFutureAtom
-        .reportWrite(value, __intentsFutureIsInitialized ? super._intentsFuture : null, () {
-      super._intentsFuture = value;
-      __intentsFutureIsInitialized = true;
-    });
+    _$_intentsFutureAtom.reportWrite(
+      value,
+      __intentsFutureIsInitialized ? super._intentsFuture : null,
+      () {
+        super._intentsFuture = value;
+        __intentsFutureIsInitialized = true;
+      },
+    );
   }
 
   @override

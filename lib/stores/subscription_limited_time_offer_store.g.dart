@@ -12,38 +12,43 @@ mixin _$SubscriptionLimitedTimeOfferStore on _SubscriptionLimitedTimeOfferStore,
   Computed<int>? _$discountPercentComputed;
 
   @override
-  int get discountPercent =>
-      (_$discountPercentComputed ??= Computed<int>(() => super.discountPercent,
-              name: '_SubscriptionLimitedTimeOfferStore.discountPercent'))
-          .value;
+  int get discountPercent => (_$discountPercentComputed ??= Computed<int>(
+    () => super.discountPercent,
+    name: '_SubscriptionLimitedTimeOfferStore.discountPercent',
+  )).value;
 
-  late final _$_futureAtom =
-      Atom(name: '_SubscriptionLimitedTimeOfferStore._future', context: context);
+  late final _$_futureAtom = Atom(
+    name: '_SubscriptionLimitedTimeOfferStore._future',
+    context: context,
+  );
 
   ObservableFuture<({DateTime expiryDate, ProductOffer offer, PurchasableProduct product})?>
-      get future {
+  get future {
     _$_futureAtom.reportRead();
     return super._future;
   }
 
   @override
   ObservableFuture<({DateTime expiryDate, ProductOffer offer, PurchasableProduct product})?>
-      get _future => future;
+  get _future => future;
 
   bool __futureIsInitialized = false;
 
   @override
   set _future(
-      ObservableFuture<({DateTime expiryDate, ProductOffer offer, PurchasableProduct product})?>
-          value) {
+    ObservableFuture<({DateTime expiryDate, ProductOffer offer, PurchasableProduct product})?>
+    value,
+  ) {
     _$_futureAtom.reportWrite(value, __futureIsInitialized ? super._future : null, () {
       super._future = value;
       __futureIsInitialized = true;
     });
   }
 
-  late final _$mockOfferAsyncAction =
-      AsyncAction('_SubscriptionLimitedTimeOfferStore.mockOffer', context: context);
+  late final _$mockOfferAsyncAction = AsyncAction(
+    '_SubscriptionLimitedTimeOfferStore.mockOffer',
+    context: context,
+  );
 
   @override
   Future<void> mockOffer() {

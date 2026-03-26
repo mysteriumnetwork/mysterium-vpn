@@ -25,9 +25,7 @@ class _AutorunHookState extends HookState<void, _AutorunHook> {
   }
 
   void scheduleAutorun() {
-    disposer = autorun(
-      (_) => hook.fn(),
-    );
+    disposer = autorun((_) => hook.fn());
   }
 
   @override

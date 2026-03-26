@@ -48,70 +48,40 @@ abstract class _PurchasableProduct with Store {
   @computed
   Money get moneyMonthly {
     if (duration == 1) {
-      return Money.fromNum(
-        productPrice,
-        isoCode: currencyCode,
-      );
+      return Money.fromNum(productPrice, isoCode: currencyCode);
     }
-    return Money.fromNum(
-      monthlyValue,
-      isoCode: currencyCode,
-    );
+    return Money.fromNum(monthlyValue, isoCode: currencyCode);
   }
 
   @computed
   Money get moneyMonthlyBackend {
     if (duration == 1) {
-      return Money.fromNum(
-        planDetails.price.USD,
-        isoCode: usdIsoCode,
-      );
+      return Money.fromNum(planDetails.price.USD, isoCode: usdIsoCode);
     }
-    return Money.fromNum(
-      planDetails.price.USD / duration,
-      isoCode: usdIsoCode,
-    );
+    return Money.fromNum(planDetails.price.USD / duration, isoCode: usdIsoCode);
   }
 
   @computed
   Money get moneyAnnualBackend {
     if (duration == 12) {
-      return Money.fromNum(
-        planDetails.price.USD,
-        isoCode: usdIsoCode,
-      );
+      return Money.fromNum(planDetails.price.USD, isoCode: usdIsoCode);
     }
-    return Money.fromNum(
-      (planDetails.price.USD / duration) * 12,
-      isoCode: usdIsoCode,
-    );
+    return Money.fromNum((planDetails.price.USD / duration) * 12, isoCode: usdIsoCode);
   }
 
   @computed
   Money get moneyAnnual {
     if (duration == 12) {
-      return Money.fromNum(
-        productPrice,
-        isoCode: currencyCode,
-      );
+      return Money.fromNum(productPrice, isoCode: currencyCode);
     }
-    return Money.fromNum(
-      monthlyValue * 12,
-      isoCode: currencyCode,
-    );
+    return Money.fromNum(monthlyValue * 12, isoCode: currencyCode);
   }
 
   @computed
-  Money get money => Money.fromNum(
-        productPrice,
-        isoCode: currencyCode,
-      );
+  Money get money => Money.fromNum(productPrice, isoCode: currencyCode);
 
   @computed
-  Money get backendMoney => Money.fromNum(
-        planDetails.price.USD,
-        isoCode: usdIsoCode,
-      );
+  Money get backendMoney => Money.fromNum(planDetails.price.USD, isoCode: usdIsoCode);
 
   @computed
   int get introductoryDiscountPercentage {
@@ -142,71 +112,64 @@ abstract class _PurchasableProduct with Store {
   int get duration => planDetails.id.contains('monthly')
       ? 1
       : planDetails.id == ksemiAnnualPlan
-          ? 6
-          : 12;
+      ? 6
+      : 12;
 
   @computed
   String get billedPerMonth => LocaleKeys.billedPerMonth.tr(
-        namedArgs: {
-          'amount': monthlyPrice,
-          'period': planDetails.id == kMonthlyPlan
-              ? LocaleKeys.monthly.tr()
-              : planDetails.id == ksemiAnnualPlan
-                  ? LocaleKeys.semiAnnual.tr()
-                  : LocaleKeys.yearly.tr(),
-        },
-      );
+    namedArgs: {
+      'amount': monthlyPrice,
+      'period': planDetails.id == kMonthlyPlan
+          ? LocaleKeys.monthly.tr()
+          : planDetails.id == ksemiAnnualPlan
+          ? LocaleKeys.semiAnnual.tr()
+          : LocaleKeys.yearly.tr(),
+    },
+  );
 
   @computed
   String get billedPerMonthShort => LocaleKeys.billedInTotal.tr(
-        namedArgs: {
-          'amount': monthlyPrice,
-          'period': planDetails.id == kMonthlyPlan
-              ? LocaleKeys.monthly.tr()
-              : planDetails.id == ksemiAnnualPlan
-                  ? LocaleKeys.semiAnnual.tr()
-                  : LocaleKeys.yearly.tr(),
-        },
-      );
+    namedArgs: {
+      'amount': monthlyPrice,
+      'period': planDetails.id == kMonthlyPlan
+          ? LocaleKeys.monthly.tr()
+          : planDetails.id == ksemiAnnualPlan
+          ? LocaleKeys.semiAnnual.tr()
+          : LocaleKeys.yearly.tr(),
+    },
+  );
 
   @computed
   double get monthlyValue => productPrice / duration;
 
   @computed
   String get monthlyPrice => productPrice.pricePerMonth(
-        months: duration,
-        currencySymbol: currencySymbol,
-        currencyCode: currencyCode,
-      );
+    months: duration,
+    currencySymbol: currencySymbol,
+    currencyCode: currencyCode,
+  );
 
   @computed
   String get annualPrice => productPrice.pricePerYear(
-        months: duration,
-        currencySymbol: currencySymbol,
-        currencyCode: currencyCode,
-      );
+    months: duration,
+    currencySymbol: currencySymbol,
+    currencyCode: currencyCode,
+  );
 
   @computed
   bool get isPupular => planDetails.id == kPopularPlan;
 
   @computed
   String get billedInTotal => LocaleKeys.billedInTotal.tr(
-        namedArgs: {
-          'amount': productPrice.price(
-            currencySymbol: currencySymbol,
-            currencyCode: currencyCode,
-          ),
-          'period': planDetails.id == kMonthlyPlan
-              ? LocaleKeys.month.tr()
-              : planDetails.id == ksemiAnnualPlan
-                  ? LocaleKeys.SixMonths.tr()
-                  : LocaleKeys.year.tr(),
-        },
-      );
+    namedArgs: {
+      'amount': productPrice.price(currencySymbol: currencySymbol, currencyCode: currencyCode),
+      'period': planDetails.id == kMonthlyPlan
+          ? LocaleKeys.month.tr()
+          : planDetails.id == ksemiAnnualPlan
+          ? LocaleKeys.SixMonths.tr()
+          : LocaleKeys.year.tr(),
+    },
+  );
 }
 
-enum ProductStatus {
-  purchasable,
-  purchased,
-  pending,
-}
+enum ProductStatus { purchasable, purchased, pending }

@@ -23,9 +23,7 @@ void main() async {
     appRunner: () async {
       _setupErrorHandlers(initializer);
       await initializer.init();
-      initializer.logger.log(
-        'App started in ${Env.flavor.name} mode\nBase URL ${Env.baseUrl}',
-      );
+      initializer.logger.log('App started in ${Env.flavor.name} mode\nBase URL ${Env.baseUrl}');
       runApp(initializer.getApp());
     },
   );

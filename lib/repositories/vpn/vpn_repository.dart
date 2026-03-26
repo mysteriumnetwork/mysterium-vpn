@@ -4,9 +4,7 @@ import 'package:vpn_api/vpn_api.dart';
 
 abstract class VpnRepository {
   Future<void> setupTunnel();
-  Future<void> connect({
-    required String config,
-  });
+  Future<void> connect({required String config});
   Future<bool> disconnect();
   Future<bool> isTunnelConfigured();
   Stream<VpnConnectionStatus> statusStream();

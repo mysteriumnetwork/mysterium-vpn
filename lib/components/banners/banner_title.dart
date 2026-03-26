@@ -6,13 +6,7 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 
 class BannerTitle extends HookWidget {
-  const BannerTitle({
-    required this.text,
-    this.iconAsset,
-    this.iconSize,
-    this.icon,
-    super.key,
-  });
+  const BannerTitle({required this.text, this.iconAsset, this.iconSize, this.icon, super.key});
 
   final String text;
   final SvgGenImage? iconAsset;
@@ -21,26 +15,26 @@ class BannerTitle extends HookWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-        mainAxisSize: MainAxisSize.min,
-        spacing: 6,
-        children: [
-          if (iconAsset != null)
-            SvgIcon(
-              asset: iconAsset!,
-              width: iconSize,
-              height: iconSize,
-              color: BannerStyle.of(context).foregroundColor,
-            )
-          else if (icon != null)
-            icon!,
-          Flexible(
-            child: EasyText(
-              text,
-              fontWeight: FontWeight.w700,
-              fontSize: 14,
-              color: BannerStyle.of(context).foregroundColor,
-            ),
-          ),
-        ],
-      );
+    mainAxisSize: MainAxisSize.min,
+    spacing: 6,
+    children: [
+      if (iconAsset != null)
+        SvgIcon(
+          asset: iconAsset!,
+          width: iconSize,
+          height: iconSize,
+          color: BannerStyle.of(context).foregroundColor,
+        )
+      else
+        ?icon,
+      Flexible(
+        child: EasyText(
+          text,
+          fontWeight: FontWeight.w700,
+          fontSize: 14,
+          color: BannerStyle.of(context).foregroundColor,
+        ),
+      ),
+    ],
+  );
 }

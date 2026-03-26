@@ -69,9 +69,7 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
         purchasedProductId = subscription.storePlanId;
         // Fallback: if storePlanId is missing, derive product id from current plan
         if (purchasedProductId == null || purchasedProductId.isEmpty) {
-          final currentPlan = products.firstWhereOrNull(
-            (plan) => plan.id == subscription.planId,
-          );
+          final currentPlan = products.firstWhereOrNull((plan) => plan.id == subscription.planId);
           purchasedProductId = currentPlan?.productDetails.id;
         }
       }
@@ -336,11 +334,7 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
       _subscriptionError = e;
       _analyticsStore.logEvent(
         AnalyticsEvent.paymentVerificationError,
-        parameters: {
-          'planType': productId,
-          'price': price,
-          'error': e.toString(),
-        },
+        parameters: {'planType': productId, 'price': price, 'error': e.toString()},
       );
       rethrow;
     }

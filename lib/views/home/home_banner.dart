@@ -16,10 +16,7 @@ class HomeBanner extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bannersStore = ref.watch(bannersStorePOD);
     final banner = useComputedValue(() => bannersStore.mainBanner);
-    final maxWidth = useResponsiveValue<double>(
-      double.infinity,
-      desktop: 432,
-    );
+    final maxWidth = useResponsiveValue<double>(double.infinity, desktop: 432);
 
     if (banner == null) {
       return const SizedBox.shrink();

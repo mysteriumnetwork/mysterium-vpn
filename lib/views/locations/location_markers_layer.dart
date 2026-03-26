@@ -59,8 +59,9 @@ List<Marker> _useLocationMarkers({
               ...data.where(
                 (it) =>
                     !it.isCountry &&
-                    remoteConfigStore.countriesWithCitiesOnMap
-                        .contains(it.countryCode.toUpperCase()),
+                    remoteConfigStore.countriesWithCitiesOnMap.contains(
+                      it.countryCode.toUpperCase(),
+                    ),
               ),
             }
           : const <VPNLocation>{};
@@ -80,7 +81,7 @@ List<Marker> _useLocationMarkers({
               it.countryCode == connectedLocation?.countryCode ||
               it.countryCode == selectedLocation?.countryCode,
         ),
-        if (selectedLocation != null) selectedLocation,
+        ?selectedLocation,
         if (connectedLocation != null && connectedLocation != selectedLocation) connectedLocation,
       };
 

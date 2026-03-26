@@ -16,9 +16,7 @@ import 'package:mysterium_vpn/views/settings/action_button.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AppVersionUpdateSetting extends ConsumerWidget {
-  const AppVersionUpdateSetting({
-    super.key,
-  });
+  const AppVersionUpdateSetting({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,9 +31,7 @@ class AppVersionUpdateSetting extends ConsumerWidget {
 
         return RawMaterialButton(
           onPressed: () async {
-            analyticsStore.logEvent(
-              AnalyticsEvent.appVersionSettingClicked,
-            );
+            analyticsStore.logEvent(AnalyticsEvent.appVersionSettingClicked);
             await openAppStorePage();
           },
           elevation: 0,
@@ -52,11 +48,7 @@ class AppVersionUpdateSetting extends ConsumerWidget {
                 CircleAvatar(
                   radius: 17,
                   backgroundColor: Palette.purple,
-                  child: SvgIcon(
-                    asset: Asset.icons.appUpdate,
-                    width: 16,
-                    height: 16,
-                  ),
+                  child: SvgIcon(asset: Asset.icons.appUpdate, width: 16, height: 16),
                 ).padding(right: 10),
                 Expanded(
                   child: EasyText(
@@ -71,10 +63,7 @@ class AppVersionUpdateSetting extends ConsumerWidget {
                     await openAppStorePage();
                   },
                   backgroundColor: Palette.purple,
-                  child: EasyText(
-                    LocaleKeys.updateBtn.tr(),
-                    color: Palette.white,
-                  ),
+                  child: EasyText(LocaleKeys.updateBtn.tr(), color: Palette.white),
                 ),
               ],
             ),
@@ -84,9 +73,7 @@ class AppVersionUpdateSetting extends ConsumerWidget {
     );
   }
 
-  bool shouldShowAppUpdateBanner(
-    RemoteConfigStore remoteConfigStore,
-  ) {
+  bool shouldShowAppUpdateBanner(RemoteConfigStore remoteConfigStore) {
     final latestStableAppVersion = remoteConfigStore.latestStableAppVersion;
     final currentBuildVersion = Env.buildInfo.buildVersion;
 

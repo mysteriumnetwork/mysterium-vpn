@@ -12,38 +12,41 @@ mixin _$SubscriptionUpgradeStore on _SubscriptionUpgradeStore, Store {
   Computed<List<PurchasableProduct>>? _$purchasableProductsComputed;
 
   @override
-  List<PurchasableProduct> get purchasableProducts => (_$purchasableProductsComputed ??=
-          Computed<List<PurchasableProduct>>(() => super.purchasableProducts,
-              name: '_SubscriptionUpgradeStore.purchasableProducts'))
-      .value;
+  List<PurchasableProduct> get purchasableProducts =>
+      (_$purchasableProductsComputed ??= Computed<List<PurchasableProduct>>(
+        () => super.purchasableProducts,
+        name: '_SubscriptionUpgradeStore.purchasableProducts',
+      )).value;
   Computed<PurchasableProduct?>? _$currentProductComputed;
 
   @override
   PurchasableProduct? get currentProduct =>
-      (_$currentProductComputed ??= Computed<PurchasableProduct?>(() => super.currentProduct,
-              name: '_SubscriptionUpgradeStore.currentProduct'))
-          .value;
+      (_$currentProductComputed ??= Computed<PurchasableProduct?>(
+        () => super.currentProduct,
+        name: '_SubscriptionUpgradeStore.currentProduct',
+      )).value;
   Computed<PurchasableProduct?>? _$upgradeProductComputed;
 
   @override
   PurchasableProduct? get upgradeProduct =>
-      (_$upgradeProductComputed ??= Computed<PurchasableProduct?>(() => super.upgradeProduct,
-              name: '_SubscriptionUpgradeStore.upgradeProduct'))
-          .value;
+      (_$upgradeProductComputed ??= Computed<PurchasableProduct?>(
+        () => super.upgradeProduct,
+        name: '_SubscriptionUpgradeStore.upgradeProduct',
+      )).value;
   Computed<int?>? _$upgradeDiscountPercentComputed;
 
   @override
-  int? get upgradeDiscountPercent =>
-      (_$upgradeDiscountPercentComputed ??= Computed<int?>(() => super.upgradeDiscountPercent,
-              name: '_SubscriptionUpgradeStore.upgradeDiscountPercent'))
-          .value;
+  int? get upgradeDiscountPercent => (_$upgradeDiscountPercentComputed ??= Computed<int?>(
+    () => super.upgradeDiscountPercent,
+    name: '_SubscriptionUpgradeStore.upgradeDiscountPercent',
+  )).value;
   Computed<bool>? _$isEligibleForUpgradeComputed;
 
   @override
-  bool get isEligibleForUpgrade =>
-      (_$isEligibleForUpgradeComputed ??= Computed<bool>(() => super.isEligibleForUpgrade,
-              name: '_SubscriptionUpgradeStore.isEligibleForUpgrade'))
-          .value;
+  bool get isEligibleForUpgrade => (_$isEligibleForUpgradeComputed ??= Computed<bool>(
+    () => super.isEligibleForUpgrade,
+    name: '_SubscriptionUpgradeStore.isEligibleForUpgrade',
+  )).value;
 
   @override
   String toString() {

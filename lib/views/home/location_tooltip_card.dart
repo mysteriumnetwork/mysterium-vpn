@@ -6,11 +6,7 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 
 class LocationTooltipCard extends StatelessWidget {
-  const LocationTooltipCard({
-    required this.location,
-    required this.connectedLocation,
-    super.key,
-  });
+  const LocationTooltipCard({required this.location, required this.connectedLocation, super.key});
 
   final VPNLocation location;
   final VPNLocation? connectedLocation;
@@ -31,19 +27,13 @@ class LocationTooltipCard extends StatelessWidget {
             elevation: 2,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
-              side: const BorderSide(
-                color: Color(0xFFD5D7DA),
-                width: 1.5,
-              ),
+              side: const BorderSide(color: Color(0xFFD5D7DA), width: 1.5),
             ),
             child: Padding(
               padding: const EdgeInsets.all(8),
               child: Text(
                 LocaleKeys.connectToTooltip.tr(namedArgs: {'countryNum': locationName}),
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Palette.black,
-                ),
+                style: const TextStyle(fontSize: 12, color: Palette.black),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),

@@ -18,7 +18,5 @@ class AssetsService {
   }
 }
 
-LatLng _parseLatLng(Map<String, dynamic> value) => LatLng(
-      (value['latitude'] as num).toDouble(),
-      (value['longitude'] as num).toDouble(),
-    );
+LatLng _parseLatLng(Map<String, dynamic> value) =>
+    LatLng((value['latitude'] as num).toDouble(), (value['longitude'] as num).toDouble());

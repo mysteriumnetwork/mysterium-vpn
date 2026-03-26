@@ -23,33 +23,26 @@ class SettingItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: context.c.isDarkMode ? Palette.darkIndigo : const Color(0xFFF5F3FD),
-          borderRadius: const BorderRadius.all(
-            Radius.circular(20),
-          ),
-        ),
-        child: Row(
+    width: double.infinity,
+    padding: const EdgeInsets.all(20),
+    decoration: BoxDecoration(
+      color: context.c.isDarkMode ? Palette.darkIndigo : const Color(0xFFF5F3FD),
+      borderRadius: const BorderRadius.all(Radius.circular(20)),
+    ),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SvgIcon(asset: asset).paddingDirectional(end: 20),
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SvgIcon(asset: asset).paddingDirectional(end: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                description ??
-                    EasyText(
-                      title,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
-                    ),
-                if (subtitle != null) subtitle!.padding(top: 4),
-                const SizedBox(height: 8),
-                actionWidget,
-              ],
-            ).expanded(),
+            description ?? EasyText(title, fontWeight: FontWeight.w700, fontSize: 14),
+            if (subtitle != null) subtitle!.padding(top: 4),
+            const SizedBox(height: 8),
+            actionWidget,
           ],
-        ),
-      ).paddingDirectional(bottom: 10, horizontal: 20);
+        ).expanded(),
+      ],
+    ),
+  ).paddingDirectional(bottom: 10, horizontal: 20);
 }

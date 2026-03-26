@@ -40,11 +40,7 @@ class PromoBanner extends HookConsumerWidget {
 }
 
 class _Banner extends HookWidget {
-  const _Banner({
-    required this.data,
-    required this.isAuthenticated,
-    required this.accessToken,
-  });
+  const _Banner({required this.data, required this.isAuthenticated, required this.accessToken});
 
   final PromotionalBanner data;
   final bool isAuthenticated;
@@ -58,21 +54,17 @@ class _Banner extends HookWidget {
       text: data.getLocalizedTitle(context.locale.languageCode),
       onTap: data.redirectUrl != null
           ? () => Beamer.of(context).navigateToUrl(
-                url: data.redirectUrl!,
-                context: context,
-                isAuthenticated: isAuthenticated,
-                accessToken: accessToken,
-              )
+              url: data.redirectUrl!,
+              context: context,
+              isAuthenticated: isAuthenticated,
+              accessToken: accessToken,
+            )
           : null,
     );
   }
 
   Widget _buildIcon(String? iconUrl) {
-    final defaultIcon = Icon(
-      Icons.campaign,
-      size: 24,
-      color: Palette.brand.shade700,
-    );
+    final defaultIcon = Icon(Icons.campaign, size: 24, color: Palette.brand.shade700);
 
     if (iconUrl == null) {
       return defaultIcon;
@@ -93,7 +85,7 @@ class _Banner extends HookWidget {
       width: 24,
       height: 24,
       fit: BoxFit.contain,
-      errorBuilder: (_, __, ___) => defaultIcon,
+      errorBuilder: (_, _, _) => defaultIcon,
     );
   }
 }

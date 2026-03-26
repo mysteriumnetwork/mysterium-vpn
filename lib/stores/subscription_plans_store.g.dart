@@ -13,37 +13,42 @@ mixin _$SubscriptionPlansStore on _SubscriptionPlansStore, Store {
 
   @override
   PurchasableProduct? get purchasedProduct =>
-      (_$purchasedProductComputed ??= Computed<PurchasableProduct?>(() => super.purchasedProduct,
-              name: '_SubscriptionPlansStore.purchasedProduct'))
-          .value;
+      (_$purchasedProductComputed ??= Computed<PurchasableProduct?>(
+        () => super.purchasedProduct,
+        name: '_SubscriptionPlansStore.purchasedProduct',
+      )).value;
   Computed<List<PurchasableProduct>>? _$productsComputed;
 
   @override
   List<PurchasableProduct> get products =>
-      (_$productsComputed ??= Computed<List<PurchasableProduct>>(() => super.products,
-              name: '_SubscriptionPlansStore.products'))
-          .value;
+      (_$productsComputed ??= Computed<List<PurchasableProduct>>(
+        () => super.products,
+        name: '_SubscriptionPlansStore.products',
+      )).value;
   Computed<List<PurchasableProduct>>? _$monthlyProductsComputed;
 
   @override
   List<PurchasableProduct> get monthlyProducts =>
-      (_$monthlyProductsComputed ??= Computed<List<PurchasableProduct>>(() => super.monthlyProducts,
-              name: '_SubscriptionPlansStore.monthlyProducts'))
-          .value;
+      (_$monthlyProductsComputed ??= Computed<List<PurchasableProduct>>(
+        () => super.monthlyProducts,
+        name: '_SubscriptionPlansStore.monthlyProducts',
+      )).value;
   Computed<List<PurchasableProduct>>? _$annualProductsComputed;
 
   @override
   List<PurchasableProduct> get annualProducts =>
-      (_$annualProductsComputed ??= Computed<List<PurchasableProduct>>(() => super.annualProducts,
-              name: '_SubscriptionPlansStore.annualProducts'))
-          .value;
+      (_$annualProductsComputed ??= Computed<List<PurchasableProduct>>(
+        () => super.annualProducts,
+        name: '_SubscriptionPlansStore.annualProducts',
+      )).value;
   Computed<List<PurchasableProduct>>? _$bestValueProductsComputed;
 
   @override
-  List<PurchasableProduct> get bestValueProducts => (_$bestValueProductsComputed ??=
-          Computed<List<PurchasableProduct>>(() => super.bestValueProducts,
-              name: '_SubscriptionPlansStore.bestValueProducts'))
-      .value;
+  List<PurchasableProduct> get bestValueProducts =>
+      (_$bestValueProductsComputed ??= Computed<List<PurchasableProduct>>(
+        () => super.bestValueProducts,
+        name: '_SubscriptionPlansStore.bestValueProducts',
+      )).value;
 
   late final _$_futureAtom = Atom(name: '_SubscriptionPlansStore._future', context: context);
 
@@ -65,13 +70,16 @@ mixin _$SubscriptionPlansStore on _SubscriptionPlansStore, Store {
     });
   }
 
-  late final _$_SubscriptionPlansStoreActionController =
-      ActionController(name: '_SubscriptionPlansStore', context: context);
+  late final _$_SubscriptionPlansStoreActionController = ActionController(
+    name: '_SubscriptionPlansStore',
+    context: context,
+  );
 
   @override
   SubscriptionPlanFeatures findConfig(PurchasableProduct product) {
     final _$actionInfo = _$_SubscriptionPlansStoreActionController.startAction(
-        name: '_SubscriptionPlansStore.findConfig');
+      name: '_SubscriptionPlansStore.findConfig',
+    );
     try {
       return super.findConfig(product);
     } finally {

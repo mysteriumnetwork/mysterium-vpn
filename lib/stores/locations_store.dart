@@ -38,13 +38,11 @@ abstract class _LocationsStore with Store {
     // These watchers are all disposed of in the dispose method to avoid memory leaks.
     _streamSubscriptions = [
       // Watch for changes in residential locations and update the value of observable future.
-      _watch(IPType.residential).listen(
-        (it) => _residentialLocationsFuture = ObservableFuture.value(it),
-      ),
+      _watch(
+        IPType.residential,
+      ).listen((it) => _residentialLocationsFuture = ObservableFuture.value(it)),
       // Watch for changes in datacenter locations and update the value of observable future.
-      _watch(IPType.datacenter).listen(
-        (it) => _dcLocationsFuture = ObservableFuture.value(it),
-      ),
+      _watch(IPType.datacenter).listen((it) => _dcLocationsFuture = ObservableFuture.value(it)),
       // Sets up periodic auto-refresh of location data based on the configured interval.
       // This ensures the app maintains up-to-date location information without user intervention.
       Stream.periodic(_config.locationsRefreshInterval).listen((_) => refresh()),
@@ -65,31 +63,33 @@ abstract class _LocationsStore with Store {
 
   /// Observable future for datacenter locations. By default, it fetches locations from remote API.
   @readonly
-  late ObservableFuture<VPNLocations> _dcLocationsFuture =
-      ObservableFuture(_fetch(IPType.datacenter));
+  late ObservableFuture<VPNLocations> _dcLocationsFuture = ObservableFuture(
+    _fetch(IPType.datacenter),
+  );
 
   /// Observable future for residential locations. By default, it fetches locations from remote API.
   @readonly
-  late ObservableFuture<VPNLocations> _residentialLocationsFuture =
-      ObservableFuture(_fetch(IPType.residential));
+  late ObservableFuture<VPNLocations> _residentialLocationsFuture = ObservableFuture(
+    _fetch(IPType.residential),
+  );
 
   /// Computed observable for the active locations future based on the selected IP type.
   @computed
   ObservableFuture<VPNLocations> get locationsFuture => switch (_query.ipType) {
-        IPType.datacenter => _dcLocationsFuture,
-        _ => _residentialLocationsFuture,
-      };
+    IPType.datacenter => _dcLocationsFuture,
+    _ => _residentialLocationsFuture,
+  };
 
   /// Computed observable for the set of available countries across all locations.
   @computed
   Set<String> get countryCodes => {
-        ...?_dcLocationsFuture.value?.allLocations
-            .where((it) => it.isCountry)
-            .map((it) => it.countryCode),
-        ...?_residentialLocationsFuture.value?.allLocations
-            .where((it) => it.isCountry)
-            .map((it) => it.countryCode),
-      };
+    ...?_dcLocationsFuture.value?.allLocations
+        .where((it) => it.isCountry)
+        .map((it) => it.countryCode),
+    ...?_residentialLocationsFuture.value?.allLocations
+        .where((it) => it.isCountry)
+        .map((it) => it.countryCode),
+  };
 
   /// Computed observable for the list of locations, filtered based on the search keyword.
   @computed
@@ -128,9 +128,9 @@ abstract class _LocationsStore with Store {
 
   @computed
   List<IPType> get locationTypes => [
-        if (_dcLocationsFuture.value?.isNotEmpty ?? false) IPType.datacenter,
-        if (_residentialLocationsFuture.value?.isNotEmpty ?? false) IPType.residential,
-      ];
+    if (_dcLocationsFuture.value?.isNotEmpty ?? false) IPType.datacenter,
+    if (_residentialLocationsFuture.value?.isNotEmpty ?? false) IPType.residential,
+  ];
 
   /// Fetches location data from the backend API for the specified IP type.
   /// It maps the raw API response to the internal `VPNLocations` model, persists it to the local database, and returns the data.
@@ -209,10 +209,8 @@ abstract class _LocationsStore with Store {
   /// If a refresh is already in progress, it waits for the existing future to complete before starting a new one.
   /// This prevents overlapping refresh operations.
   @action
-  Future<void> refreshAll() => Future.wait([
-        refresh(IPType.datacenter),
-        refresh(IPType.residential),
-      ]);
+  Future<void> refreshAll() =>
+      Future.wait([refresh(IPType.datacenter), refresh(IPType.residential)]);
 
   /// Finds a location by its ID, optionally filtering by country code and IP type.
   /// If no exact match is found, it attempts to find a country-level match.
@@ -241,8 +239,9 @@ abstract class _LocationsStore with Store {
     });
 
     // if no city is in our list, we try to find a country
-    return match ??=
-        locations.firstWhereOrNull((it) => it.isCountry && it.countryCode == (countryCode ?? id));
+    return match ??= locations.firstWhereOrNull(
+      (it) => it.isCountry && it.countryCode == (countryCode ?? id),
+    );
   }
 
   /// Finds the closest VPN location based on latency to the user's current region.
@@ -293,19 +292,17 @@ abstract class _LocationsStore with Store {
     final invalidDatacenter = _dcLocationsFuture.value?.copyWith(
       locations: [
         Mocks.createInvalidCountry(ipType: IPType.datacenter),
-        ...?_dcLocationsFuture.value?.locations.map(
-          (it) {
-            if (it.isCountry && it.countryCode == 'US') {
-              return it.copyWith(
-                children: [
-                  Mocks.createInvalidCity(ipType: IPType.datacenter, countryCode: 'US'),
-                  ...?it.children,
-                ],
-              );
-            }
-            return it;
-          },
-        ),
+        ...?_dcLocationsFuture.value?.locations.map((it) {
+          if (it.isCountry && it.countryCode == 'US') {
+            return it.copyWith(
+              children: [
+                Mocks.createInvalidCity(ipType: IPType.datacenter, countryCode: 'US'),
+                ...?it.children,
+              ],
+            );
+          }
+          return it;
+        }),
       ],
     );
 

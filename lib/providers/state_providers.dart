@@ -20,18 +20,16 @@ import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
-final authSessionStorePOD = Provider<AuthSessionStore>(
-  (ref) {
-    final store = AuthSessionStore(
-      secureStorage: SecureStorageService.instance,
-      remoteConfigStore: ref.watch(remoteConfigStorePOD),
-    );
+final authSessionStorePOD = Provider<AuthSessionStore>((ref) {
+  final store = AuthSessionStore(
+    secureStorage: SecureStorageService.instance,
+    remoteConfigStore: ref.watch(remoteConfigStorePOD),
+  );
 
-    ref.onDispose(store.dispose);
+  ref.onDispose(store.dispose);
 
-    return store;
-  },
-);
+  return store;
+});
 
 final authStorePOD = Provider<AuthStore>((ref) {
   final authService = ref.watch(authServicePOD);
@@ -57,10 +55,7 @@ final apiStorePOD = Provider<MqttStore>((ref) {
   final mqttService = ref.watch(vpnApiMQTTPOD);
   final logger = ref.watch(loggerPOD);
 
-  final store = MqttStore(
-    mqtt: mqttService,
-    logger: logger,
-  );
+  final store = MqttStore(mqtt: mqttService, logger: logger);
   ref.onDispose(store.dispose);
 
   return store;
@@ -180,14 +175,12 @@ final recentLocationsStorePOD = Provider<RecentLocationsStore>((ref) {
   return store;
 });
 
-final unavailableLocationsStorePOD = Provider<UnavailableLocationsStore>(
-  (ref) {
-    final store = UnavailableLocationsStore(ref.watch(locationsStorePOD));
-    ref.onDispose(store.dispose);
+final unavailableLocationsStorePOD = Provider<UnavailableLocationsStore>((ref) {
+  final store = UnavailableLocationsStore(ref.watch(locationsStorePOD));
+  ref.onDispose(store.dispose);
 
-    return store;
-  },
-);
+  return store;
+});
 
 final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   final subscriptionService = ref.read(subscriptionServicePOD);
@@ -205,16 +198,14 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   return store;
 });
 
-final analyticsInitPOD = FutureProviderFamily<void, FirebaseOptions?>((ref, options) async {
+final analyticsInitPOD = FutureProvider.family<void, FirebaseOptions?>((ref, options) async {
   if (options == null) {
     return;
   }
-  await Firebase.initializeApp(
-    options: options,
-  );
+  await Firebase.initializeApp(options: options);
 });
 
-final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
+final analyticsStorePOD = Provider<AnalyticsStore>((ref) {
   if (isWindowsOrLinux()) {
     return AnalyticsStoreWindows(
       measurementId: Env.measurementId,
@@ -230,9 +221,19 @@ final analyticsStorePOD = StateProvider<AnalyticsStore>((ref) {
   );
 });
 
-final isAppWindowFocused = StateProvider<bool>((_) => true);
+class IsAppWindowFocusedNotifier extends Notifier<bool> {
+  @override
+  bool build() => true;
 
-final userPreferencesStorePOD = StateProvider<UserPreferencesStore>((ref) {
+  bool get focused => state;
+  set focused(bool value) => state = value;
+}
+
+final isAppWindowFocused = NotifierProvider<IsAppWindowFocusedNotifier, bool>(
+  IsAppWindowFocusedNotifier.new,
+);
+
+final userPreferencesStorePOD = Provider<UserPreferencesStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final realIPInfoStore = ref.watch(realIPInfoStorePOD);
@@ -255,12 +256,7 @@ final configCatUserStorePOD = Provider<ConfigCatUserStore>((ref) {
   final subscriptionStore = ref.watch(subscriptionStorePOD);
   final logger = ref.watch(loggerPOD);
 
-  final store = ConfigCatUserStore(
-    authSessionStore,
-    ipInfoStore,
-    subscriptionStore,
-    logger,
-  );
+  final store = ConfigCatUserStore(authSessionStore, ipInfoStore, subscriptionStore, logger);
 
   ref.onDispose(store.dispose);
 
@@ -270,11 +266,7 @@ final configCatUserStorePOD = Provider<ConfigCatUserStore>((ref) {
 final remoteConfigStorePOD = Provider<RemoteConfigStore>((ref) {
   final client = ref.watch(remoteConfigClientPOD);
   final logger = ref.watch(loggerPOD);
-  return RemoteConfigStore(
-    client,
-    logger,
-    isDev: Env.flavor.isDev,
-  );
+  return RemoteConfigStore(client, logger, isDev: Env.flavor.isDev);
 });
 
 final abTestingStorePOD = Provider<ABTestingStore>((ref) {
@@ -311,9 +303,7 @@ final realIPInfoStorePOD = Provider<RealIPInfoStore>(
   ),
 );
 
-final deviceIDStorePOD = Provider<DeviceIDStore>(
-  (ref) => DeviceIDStore(),
-);
+final deviceIDStorePOD = Provider<DeviceIDStore>((ref) => DeviceIDStore());
 
 final latLngStorePOD = Provider<LatLngStore>((ref) {
   final assetsService = ref.watch(assetsServicePOD);
@@ -322,9 +312,7 @@ final latLngStorePOD = Provider<LatLngStore>((ref) {
 
 final networkStatisticsStorePOD = Provider.autoDispose<NetworkStatisticsStore>((ref) {
   final wireguardService = ref.watch(wireguardServicePOD);
-  return NetworkStatisticsStore(
-    wireguardService,
-  );
+  return NetworkStatisticsStore(wireguardService);
 });
 
 final updateAvailableStorePOD = Provider.autoDispose<UpdateAvailableStore>((ref) {
@@ -332,24 +320,17 @@ final updateAvailableStorePOD = Provider.autoDispose<UpdateAvailableStore>((ref)
   return UpdateAvailableStore(remoteConfigStore, Env.buildInfo);
 });
 
-final userIntentsStorePOD = Provider.autoDispose<UserIntentsStore>(
-  (ref) {
-    final apiService = ref.watch(apiServicePOD);
-    final realIPInfoStore = ref.watch(realIPInfoStorePOD);
-    final locationsStore = ref.watch(locationsStorePOD);
-    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+final userIntentsStorePOD = Provider.autoDispose<UserIntentsStore>((ref) {
+  final apiService = ref.watch(apiServicePOD);
+  final realIPInfoStore = ref.watch(realIPInfoStorePOD);
+  final locationsStore = ref.watch(locationsStorePOD);
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
 
-    final store = UserIntentsStore(
-      apiService,
-      realIPInfoStore,
-      locationsStore,
-      remoteConfigStore,
-    );
+  final store = UserIntentsStore(apiService, realIPInfoStore, locationsStore, remoteConfigStore);
 
-    ref.onDispose(store.dispose);
-    return store;
-  },
-);
+  ref.onDispose(store.dispose);
+  return store;
+});
 
 final dnsStorePOD = Provider<DNSStore>(
   (ref) => DNSStore(
@@ -362,11 +343,8 @@ final dnsStorePOD = Provider<DNSStore>(
 );
 
 final refreshIPStorePOD = Provider<RefreshIPStore>(
-  (ref) => RefreshIPStore(
-    LocalDBService.instance,
-    ref.watch(loggerPOD),
-    ref.watch(authSessionStorePOD),
-  ),
+  (ref) =>
+      RefreshIPStore(LocalDBService.instance, ref.watch(loggerPOD), ref.watch(authSessionStorePOD)),
 );
 
 final subscriptionUpgradeStorePOD = Provider<SubscriptionUpgradeStore>(
@@ -376,9 +354,7 @@ final subscriptionUpgradeStorePOD = Provider<SubscriptionUpgradeStore>(
   ),
 );
 
-final connectionsLimitStorePOD = Provider<ConnectionsLimitStore>(
-  (ref) => ConnectionsLimitStore(),
-);
+final connectionsLimitStorePOD = Provider<ConnectionsLimitStore>((ref) => ConnectionsLimitStore());
 
 final connectionDecisionStorePOD = Provider<ConnectionDecisionStore>(
   (ref) => ConnectionDecisionStore(
@@ -388,30 +364,23 @@ final connectionDecisionStorePOD = Provider<ConnectionDecisionStore>(
   ),
 );
 
-final subscriptionLimitedTimeOfferStorePOD = Provider<SubscriptionLimitedTimeOfferStore>(
-  (ref) {
-    final store = SubscriptionLimitedTimeOfferStore(
-      ref.watch(subscriptionPlansStorePOD),
-      ref.watch(remoteConfigStorePOD),
-    );
+final subscriptionLimitedTimeOfferStorePOD = Provider<SubscriptionLimitedTimeOfferStore>((ref) {
+  final store = SubscriptionLimitedTimeOfferStore(
+    ref.watch(subscriptionPlansStorePOD),
+    ref.watch(remoteConfigStorePOD),
+  );
 
-    ref.onDispose(store.dispose);
+  ref.onDispose(store.dispose);
 
-    return store;
-  },
-);
+  return store;
+});
 
 final vpnProtocolStorePOD = Provider<VpnProtocolStore>((ref) {
   final localDB = LocalDBService.instance;
   final analyticsStore = ref.watch(analyticsStorePOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
-  return VpnProtocolStore(
-    localDB,
-    analyticsStore,
-    remoteConfigStore,
-    authSessionStore,
-  );
+  return VpnProtocolStore(localDB, analyticsStore, remoteConfigStore, authSessionStore);
 });
 
 final connectionDisplayStorePOD = Provider<ConnectionDisplayStore>(
@@ -423,135 +392,106 @@ final connectionDisplayStorePOD = Provider<ConnectionDisplayStore>(
   ),
 );
 
-final subscriptionPlansStorePOD = Provider<SubscriptionPlansStore>(
-  (ref) {
-    final subscriptionService = ref.read(subscriptionServicePOD);
-    final subscriptionStore = ref.watch(subscriptionStorePOD);
-    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+final subscriptionPlansStorePOD = Provider<SubscriptionPlansStore>((ref) {
+  final subscriptionService = ref.read(subscriptionServicePOD);
+  final subscriptionStore = ref.watch(subscriptionStorePOD);
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
 
-    final store = SubscriptionPlansStore(
-      subscriptionService,
-      subscriptionStore,
-      remoteConfigStore,
-    );
+  final store = SubscriptionPlansStore(subscriptionService, subscriptionStore, remoteConfigStore);
 
-    ref.onDispose(store.dispose);
+  ref.onDispose(store.dispose);
 
-    return store;
-  },
-);
+  return store;
+});
 
-final subscriptionPurchaseStorePOD = Provider<SubscriptionPurchaseStore>(
-  (ref) {
-    final inAppPurchase = ref.read(inAppPurchasePOD);
-    final secureStorageService = SecureStorageService.instance;
-    final subscriptionService = ref.read(subscriptionServicePOD);
-    final logger = ref.watch(loggerPOD);
-    final analyticsStore = ref.watch(analyticsStorePOD);
-    final authSessionStore = ref.watch(authSessionStorePOD);
-    final subscriptionStore = ref.watch(subscriptionStorePOD);
-    final subscriptionPlansStore = ref.watch(subscriptionPlansStorePOD);
+final subscriptionPurchaseStorePOD = Provider<SubscriptionPurchaseStore>((ref) {
+  final inAppPurchase = ref.read(inAppPurchasePOD);
+  final secureStorageService = SecureStorageService.instance;
+  final subscriptionService = ref.read(subscriptionServicePOD);
+  final logger = ref.watch(loggerPOD);
+  final analyticsStore = ref.watch(analyticsStorePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
+  final subscriptionStore = ref.watch(subscriptionStorePOD);
+  final subscriptionPlansStore = ref.watch(subscriptionPlansStorePOD);
 
-    final store = SubscriptionPurchaseStore(
-      inAppPurchase,
-      secureStorageService,
-      subscriptionService,
-      logger,
-      analyticsStore,
-      authSessionStore,
-      subscriptionStore,
-      subscriptionPlansStore,
-    );
+  final store = SubscriptionPurchaseStore(
+    inAppPurchase,
+    secureStorageService,
+    subscriptionService,
+    logger,
+    analyticsStore,
+    authSessionStore,
+    subscriptionStore,
+    subscriptionPlansStore,
+  );
 
-    ref.onDispose(store.dispose);
+  ref.onDispose(store.dispose);
 
-    return store;
-  },
-);
+  return store;
+});
 
-final smartRefreshStorePOD = Provider<SmartRefreshStore>(
-  (ref) {
-    final locationsStore = ref.watch(locationsStorePOD);
-    final subscriptionStore = ref.watch(subscriptionStorePOD);
-    final logger = ref.watch(loggerPOD);
+final smartRefreshStorePOD = Provider<SmartRefreshStore>((ref) {
+  final locationsStore = ref.watch(locationsStorePOD);
+  final subscriptionStore = ref.watch(subscriptionStorePOD);
+  final logger = ref.watch(loggerPOD);
 
-    final store = SmartRefreshStore(
-      locationsStore,
-      subscriptionStore,
-      logger,
-    );
+  final store = SmartRefreshStore(locationsStore, subscriptionStore, logger);
 
-    ref.onDispose(store.dispose);
+  ref.onDispose(store.dispose);
 
-    return store;
-  },
-);
+  return store;
+});
 
-final subscriptionConfigStorePOD = Provider<SubscriptionConfigStore>(
-  (ref) {
-    final subscriptionService = ref.read(subscriptionServicePOD);
-    final authSessionStore = ref.watch(authSessionStorePOD);
-    final analyticsStore = ref.watch(analyticsStorePOD);
+final subscriptionConfigStorePOD = Provider<SubscriptionConfigStore>((ref) {
+  final subscriptionService = ref.read(subscriptionServicePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
+  final analyticsStore = ref.watch(analyticsStorePOD);
 
-    final store = SubscriptionConfigStore(
-      authSessionStore,
-      subscriptionService,
-      analyticsStore,
-    );
+  final store = SubscriptionConfigStore(authSessionStore, subscriptionService, analyticsStore);
 
-    ref.onDispose(store.dispose);
+  ref.onDispose(store.dispose);
 
-    return store;
-  },
-);
+  return store;
+});
 
-final subscriptionFeaturesStorePOD = Provider<SubscriptionFeaturesStore>(
-  (ref) {
-    final subscriptionStore = ref.watch(subscriptionStorePOD);
-    final configStore = ref.watch(subscriptionConfigStorePOD);
+final subscriptionFeaturesStorePOD = Provider<SubscriptionFeaturesStore>((ref) {
+  final subscriptionStore = ref.watch(subscriptionStorePOD);
+  final configStore = ref.watch(subscriptionConfigStorePOD);
 
-    final store = SubscriptionFeaturesStore(
-      subscriptionStore,
-      configStore,
-    );
+  final store = SubscriptionFeaturesStore(subscriptionStore, configStore);
 
-    ref.onDispose(store.dispose);
+  ref.onDispose(store.dispose);
 
-    return store;
-  },
-);
+  return store;
+});
 
-final promotionalContentStorePOD = Provider<PromotionalContentStore>(
-  (ref) {
-    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
-    return PromotionalContentStore(remoteConfigStore);
-  },
-);
+final promotionalContentStorePOD = Provider<PromotionalContentStore>((ref) {
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+  return PromotionalContentStore(remoteConfigStore);
+});
 
-final pushNotificationsStorePOD = Provider<PushNotificationsStore>(
-  (ref) {
-    final authSessionStore = ref.watch(authSessionStorePOD);
-    final ipInfoStore = ref.watch(realIPInfoStorePOD);
-    final subscriptionStore = ref.watch(subscriptionStorePOD);
-    final notificationsRepository = ref.watch(pushNotificationsRepositoryPOD);
-    final logger = ref.watch(loggerPOD);
-    final analyticsStore = ref.watch(analyticsStorePOD);
-    final localDb = LocalDBService.instance;
-    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+final pushNotificationsStorePOD = Provider<PushNotificationsStore>((ref) {
+  final authSessionStore = ref.watch(authSessionStorePOD);
+  final ipInfoStore = ref.watch(realIPInfoStorePOD);
+  final subscriptionStore = ref.watch(subscriptionStorePOD);
+  final notificationsRepository = ref.watch(pushNotificationsRepositoryPOD);
+  final logger = ref.watch(loggerPOD);
+  final analyticsStore = ref.watch(analyticsStorePOD);
+  final localDb = LocalDBService.instance;
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
 
-    final store = PushNotificationsStore(
-      authSessionStore,
-      ipInfoStore,
-      subscriptionStore,
-      logger,
-      notificationsRepository,
-      analyticsStore,
-      localDb,
-      remoteConfigStore,
-    );
+  final store = PushNotificationsStore(
+    authSessionStore,
+    ipInfoStore,
+    subscriptionStore,
+    logger,
+    notificationsRepository,
+    analyticsStore,
+    localDb,
+    remoteConfigStore,
+  );
 
-    ref.onDispose(store.dispose);
+  ref.onDispose(store.dispose);
 
-    return store;
-  },
-);
+  return store;
+});

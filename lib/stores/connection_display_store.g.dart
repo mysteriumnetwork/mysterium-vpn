@@ -12,63 +12,67 @@ mixin _$ConnectionDisplayStore on _ConnectionDisplayStore, Store {
   Computed<VPNLocation?>? _$displayLocationComputed;
 
   @override
-  VPNLocation? get displayLocation =>
-      (_$displayLocationComputed ??= Computed<VPNLocation?>(() => super.displayLocation,
-              name: '_ConnectionDisplayStore.displayLocation'))
-          .value;
+  VPNLocation? get displayLocation => (_$displayLocationComputed ??= Computed<VPNLocation?>(
+    () => super.displayLocation,
+    name: '_ConnectionDisplayStore.displayLocation',
+  )).value;
   Computed<VPNLocation?>? _$parentLocationComputed;
 
   @override
-  VPNLocation? get parentLocation =>
-      (_$parentLocationComputed ??= Computed<VPNLocation?>(() => super.parentLocation,
-              name: '_ConnectionDisplayStore.parentLocation'))
-          .value;
+  VPNLocation? get parentLocation => (_$parentLocationComputed ??= Computed<VPNLocation?>(
+    () => super.parentLocation,
+    name: '_ConnectionDisplayStore.parentLocation',
+  )).value;
   Computed<VPNLocation?>? _$targetLocationComputed;
 
   @override
-  VPNLocation? get targetLocation =>
-      (_$targetLocationComputed ??= Computed<VPNLocation?>(() => super.targetLocation,
-              name: '_ConnectionDisplayStore.targetLocation'))
-          .value;
+  VPNLocation? get targetLocation => (_$targetLocationComputed ??= Computed<VPNLocation?>(
+    () => super.targetLocation,
+    name: '_ConnectionDisplayStore.targetLocation',
+  )).value;
   Computed<bool>? _$isLocationAvailableComputed;
 
   @override
-  bool get isLocationAvailable =>
-      (_$isLocationAvailableComputed ??= Computed<bool>(() => super.isLocationAvailable,
-              name: '_ConnectionDisplayStore.isLocationAvailable'))
-          .value;
+  bool get isLocationAvailable => (_$isLocationAvailableComputed ??= Computed<bool>(
+    () => super.isLocationAvailable,
+    name: '_ConnectionDisplayStore.isLocationAvailable',
+  )).value;
   Computed<String?>? _$connectionIPComputed;
 
   @override
-  String? get connectionIP => (_$connectionIPComputed ??=
-          Computed<String?>(() => super.connectionIP, name: '_ConnectionDisplayStore.connectionIP'))
-      .value;
+  String? get connectionIP => (_$connectionIPComputed ??= Computed<String?>(
+    () => super.connectionIP,
+    name: '_ConnectionDisplayStore.connectionIP',
+  )).value;
   Computed<bool>? _$isLoadingComputed;
 
   @override
-  bool get isLoading => (_$isLoadingComputed ??=
-          Computed<bool>(() => super.isLoading, name: '_ConnectionDisplayStore.isLoading'))
-      .value;
+  bool get isLoading => (_$isLoadingComputed ??= Computed<bool>(
+    () => super.isLoading,
+    name: '_ConnectionDisplayStore.isLoading',
+  )).value;
   Computed<bool>? _$isConnectedComputed;
 
   @override
-  bool get isConnected => (_$isConnectedComputed ??=
-          Computed<bool>(() => super.isConnected, name: '_ConnectionDisplayStore.isConnected'))
-      .value;
+  bool get isConnected => (_$isConnectedComputed ??= Computed<bool>(
+    () => super.isConnected,
+    name: '_ConnectionDisplayStore.isConnected',
+  )).value;
   Computed<UserIntent?>? _$connectionIntentComputed;
 
   @override
-  UserIntent? get connectionIntent =>
-      (_$connectionIntentComputed ??= Computed<UserIntent?>(() => super.connectionIntent,
-              name: '_ConnectionDisplayStore.connectionIntent'))
-          .value;
+  UserIntent? get connectionIntent => (_$connectionIntentComputed ??= Computed<UserIntent?>(
+    () => super.connectionIntent,
+    name: '_ConnectionDisplayStore.connectionIntent',
+  )).value;
   Computed<RateConnectionRequestModeEnum?>? _$connectionRatedComputed;
 
   @override
-  RateConnectionRequestModeEnum? get connectionRated => (_$connectionRatedComputed ??=
-          Computed<RateConnectionRequestModeEnum?>(() => super.connectionRated,
-              name: '_ConnectionDisplayStore.connectionRated'))
-      .value;
+  RateConnectionRequestModeEnum? get connectionRated =>
+      (_$connectionRatedComputed ??= Computed<RateConnectionRequestModeEnum?>(
+        () => super.connectionRated,
+        name: '_ConnectionDisplayStore.connectionRated',
+      )).value;
 
   @override
   String toString() {

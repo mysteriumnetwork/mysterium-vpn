@@ -4,11 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 
-enum AsyncTextButtonMode {
-  outlined,
-  filled,
-  elevated;
-}
+enum AsyncTextButtonMode { outlined, filled, elevated }
 
 class AsyncTextButton extends HookWidget {
   const AsyncTextButton({
@@ -39,57 +35,41 @@ class AsyncTextButton extends HookWidget {
 
     return switch (mode) {
       AsyncTextButtonMode.outlined => OutlinedButton(
-          onPressed: onPressed,
-          style: OutlinedButton.styleFrom(
-            padding: const EdgeInsets.all(6),
-            minimumSize: minimumSize,
-            shape: borderRadius == null
-                ? null
-                : RoundedRectangleBorder(
-                    borderRadius: borderRadius!,
-                  ),
-          ),
-          child: child,
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.all(6),
+          minimumSize: minimumSize,
+          shape: borderRadius == null ? null : RoundedRectangleBorder(borderRadius: borderRadius!),
         ),
+        child: child,
+      ),
       AsyncTextButtonMode.filled => FilledButton(
-          onPressed: onPressed,
-          style: FilledButton.styleFrom(
-            padding: isLoading ? null : const EdgeInsets.all(6),
-            minimumSize: minimumSize,
-            shape: borderRadius == null
-                ? null
-                : RoundedRectangleBorder(
-                    borderRadius: borderRadius!,
-                  ),
-          ),
-          child: child,
+        onPressed: onPressed,
+        style: FilledButton.styleFrom(
+          padding: isLoading ? null : const EdgeInsets.all(6),
+          minimumSize: minimumSize,
+          shape: borderRadius == null ? null : RoundedRectangleBorder(borderRadius: borderRadius!),
         ),
+        child: child,
+      ),
       AsyncTextButtonMode.elevated => ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            elevation: 0,
-            padding: const EdgeInsets.all(6),
-            minimumSize: minimumSize,
-            backgroundColor: Palette.purple,
-            foregroundColor: Palette.white,
-            shape: borderRadius == null
-                ? null
-                : RoundedRectangleBorder(
-                    borderRadius: borderRadius!,
-                  ),
-          ),
-          child: child,
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          padding: const EdgeInsets.all(6),
+          minimumSize: minimumSize,
+          backgroundColor: Palette.purple,
+          foregroundColor: Palette.white,
+          shape: borderRadius == null ? null : RoundedRectangleBorder(borderRadius: borderRadius!),
         ),
+        child: child,
+      ),
     };
   }
 }
 
 class _Label extends StatelessWidget {
-  const _Label({
-    required this.text,
-    required this.mode,
-    required this.textScaleGroup,
-  });
+  const _Label({required this.text, required this.mode, required this.textScaleGroup});
 
   final String text;
   final AsyncTextButtonMode mode;
@@ -97,19 +77,19 @@ class _Label extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => AutoSizeText(
-        text,
-        group: textScaleGroup,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          fontSize: switch (mode) {
-            AsyncTextButtonMode.elevated => 14,
-            _ => 12,
-          },
-          fontWeight: switch (mode) {
-            AsyncTextButtonMode.elevated => FontWeight.w600,
-            _ => FontWeight.w500,
-          },
-        ),
-      );
+    text,
+    group: textScaleGroup,
+    maxLines: 1,
+    overflow: TextOverflow.ellipsis,
+    style: TextStyle(
+      fontSize: switch (mode) {
+        AsyncTextButtonMode.elevated => 14,
+        _ => 12,
+      },
+      fontWeight: switch (mode) {
+        AsyncTextButtonMode.elevated => FontWeight.w600,
+        _ => FontWeight.w500,
+      },
+    ),
+  );
 }

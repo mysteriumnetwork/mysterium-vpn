@@ -24,9 +24,7 @@ class LocalDBService {
       ..registerAdapter(const BannerTypeAdapter(typeId: 4))
       ..registerAdapter(const VpnLocationsAdapter(typeId: 5))
       ..registerAdapter(const LatLngAdapter(typeId: 6))
-      ..registerAdapter(
-        const ProtocolTypeAdapter(typeId: 7),
-      );
+      ..registerAdapter(const ProtocolTypeAdapter(typeId: 7));
 
     try {
       await Future.wait([
@@ -43,11 +41,7 @@ class LocalDBService {
       Sentry.captureException(
         e,
         stackTrace: StackTrace.current,
-        hint: Hint.withMap(
-          {
-            'hint': 'Failed to open Hive boxes, deleting and recreating them',
-          },
-        ),
+        hint: Hint.withMap({'hint': 'Failed to open Hive boxes, deleting and recreating them'}),
       );
       await Hive.deleteBoxFromDisk('user_data');
       await Hive.deleteBoxFromDisk('coordinates_data');
@@ -149,19 +143,11 @@ class LocalDBService {
 
   Future<List<BannerType>> getShownBanners() async => (await _loadUserData()).shownBanners;
 
-  Future<List<BannerType>> getMainBanners() async => (await _loadUserData())
-      .shownBanners
-      .where(
-        (it) => it.mainBanner,
-      )
-      .toList();
+  Future<List<BannerType>> getMainBanners() async =>
+      (await _loadUserData()).shownBanners.where((it) => it.mainBanner).toList();
 
-  Future<List<BannerType>> getSecondaryBanners() async => (await _loadUserData())
-      .shownBanners
-      .where(
-        (it) => !it.mainBanner,
-      )
-      .toList();
+  Future<List<BannerType>> getSecondaryBanners() async =>
+      (await _loadUserData()).shownBanners.where((it) => !it.mainBanner).toList();
 
   Future<void> resetShownBanners() async {
     final userData = await _loadUserData();
@@ -203,13 +189,7 @@ class LocalDBService {
   }
 
   Future<void> _setInitUserData(String key) async {
-    await _userBox.put(
-      key,
-      UserData(
-        userId: key,
-        recentVPNLocations: [],
-      ),
-    );
+    await _userBox.put(key, UserData(userId: key, recentVPNLocations: []));
   }
 
   Future<void> setLocations(VPNLocations locations, {required IPType type}) async {
@@ -239,9 +219,7 @@ class LocalDBService {
 
   Map<String, LatLng> getAllCoordinates() {
     final coordinates = _coordinatesBox.toMap();
-    return {
-      for (final entry in coordinates.entries) entry.key.toString(): entry.value,
-    };
+    return {for (final entry in coordinates.entries) entry.key.toString(): entry.value};
   }
 
   Future<bool> getMarketingConsentShown() async {

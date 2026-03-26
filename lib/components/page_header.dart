@@ -13,10 +13,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class PageHeader extends HookConsumerWidget {
-  const PageHeader({
-    required this.headerTitle,
-    super.key,
-  });
+  const PageHeader({required this.headerTitle, super.key});
 
   final String headerTitle;
 
@@ -38,10 +35,7 @@ class PageHeader extends HookConsumerWidget {
           HeaderTitle(text: headerTitle, color: Palette.white),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              AppVersion(),
-              ApiVersion(),
-            ],
+            children: [AppVersion(), ApiVersion()],
           ),
         ],
       ).padding(horizontal: 20),

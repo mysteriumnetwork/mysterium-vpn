@@ -6,9 +6,7 @@ import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
 class CrashlitycsLoggerObserver extends TalkerObserver {
-  const CrashlitycsLoggerObserver({
-    required this.analyticsStore,
-  });
+  const CrashlitycsLoggerObserver({required this.analyticsStore});
 
   final AnalyticsStore analyticsStore;
 
@@ -23,11 +21,7 @@ class CrashlitycsLoggerObserver extends TalkerObserver {
     if (shouldSkipEvent(err.exception)) {
       return;
     }
-    analyticsStore.logError(
-      err: err.error ?? Error(),
-      stack: err.stackTrace,
-      fatal: true,
-    );
+    analyticsStore.logError(err: err.error ?? Error(), stack: err.stackTrace, fatal: true);
   }
 
   @override

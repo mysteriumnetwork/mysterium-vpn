@@ -28,11 +28,7 @@ class UserIntentPicker extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
-    final hasIndicator = useResponsiveValue(
-      false,
-      desktop: true,
-      tablet: true,
-    );
+    final hasIndicator = useResponsiveValue(false, desktop: true, tablet: true);
 
     final child = _List(
       scrollController: scrollController,
@@ -46,10 +42,7 @@ class UserIntentPicker extends HookWidget {
       return child;
     }
 
-    return HorizontalScrollIndicator(
-      controller: scrollController,
-      child: child,
-    );
+    return HorizontalScrollIndicator(controller: scrollController, child: child);
   }
 }
 
@@ -70,47 +63,47 @@ class _List extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 46),
-        child: ListView.separated(
-          controller: scrollController,
-          clipBehavior: hasIndicator ? Clip.hardEdge : Clip.none,
-          scrollDirection: Axis.horizontal,
-          itemCount: items?.length ?? UserIntent.values.length,
-          separatorBuilder: (_, __) => const SizedBox(width: 10),
-          itemBuilder: (context, index) {
-            if (items == null) {
-              final theme = Theme.of(context);
-              return Shimmer.fromColors(
-                baseColor: theme.colorScheme.secondary,
-                highlightColor: theme.colorScheme.secondary.darken(20),
-                child: _Item(
-                  isEnabled: true,
-                  value: UserIntent.nearestLocation,
-                  isSelected: false,
-                  onPressed: () {},
-                ),
-              );
-            }
+    constraints: const BoxConstraints(maxHeight: 46),
+    child: ListView.separated(
+      controller: scrollController,
+      clipBehavior: hasIndicator ? Clip.hardEdge : Clip.none,
+      scrollDirection: Axis.horizontal,
+      itemCount: items?.length ?? UserIntent.values.length,
+      separatorBuilder: (_, _) => const SizedBox(width: 10),
+      itemBuilder: (context, index) {
+        if (items == null) {
+          final theme = Theme.of(context);
+          return Shimmer.fromColors(
+            baseColor: theme.colorScheme.secondary,
+            highlightColor: theme.colorScheme.secondary.darken(20),
+            child: _Item(
+              isEnabled: true,
+              value: UserIntent.nearestLocation,
+              isSelected: false,
+              onPressed: () {},
+            ),
+          );
+        }
 
-            final item = items![index];
-            final isSelected = value == item;
-            return _Item(
-              isEnabled: onChanged != null,
-              value: item,
-              isSelected: isSelected,
-              onPressed: onChanged == null
-                  ? null
-                  : () {
-                      if (isSelected) {
-                        onChanged!(null);
-                      } else {
-                        onChanged!(item);
-                      }
-                    },
-            );
-          },
-        ),
-      );
+        final item = items![index];
+        final isSelected = value == item;
+        return _Item(
+          isEnabled: onChanged != null,
+          value: item,
+          isSelected: isSelected,
+          onPressed: onChanged == null
+              ? null
+              : () {
+                  if (isSelected) {
+                    onChanged!(null);
+                  } else {
+                    onChanged!(item);
+                  }
+                },
+        );
+      },
+    ),
+  );
 }
 
 class _Item extends StatelessWidget {
@@ -141,25 +134,19 @@ class _Item extends StatelessWidget {
       child: ColorFilteredOptional(
         colorFilter: isEnabled
             ? null
-            : ColorFilter.mode(
-                theme.palette.lightTextColor,
-                BlendMode.srcIn,
-              ),
+            : ColorFilter.mode(theme.palette.lightTextColor, BlendMode.srcIn),
         child: Row(
           spacing: 6,
           mainAxisSize: MainAxisSize.min,
           children: [
-            EasyText(
-              switch (value) {
-                UserIntent.bestSpeed => LocaleKeys.userIntentBestSpeed.tr(),
-                UserIntent.lowLatency => LocaleKeys.userIntentLowLatency.tr(),
-                UserIntent.nearestLocation => LocaleKeys.userIntentNearestLocation.tr(),
-                UserIntent.maxPrivacy => LocaleKeys.userIntentMaxPrivacy.tr(),
-                UserIntent.streaming => LocaleKeys.userIntentStreaming.tr(),
-                UserIntent.p2p => LocaleKeys.userIntentP2P.tr(),
-              },
-              color: isSelected ? Colors.white : theme.palette.secondaryColor,
-            ),
+            EasyText(switch (value) {
+              UserIntent.bestSpeed => LocaleKeys.userIntentBestSpeed.tr(),
+              UserIntent.lowLatency => LocaleKeys.userIntentLowLatency.tr(),
+              UserIntent.nearestLocation => LocaleKeys.userIntentNearestLocation.tr(),
+              UserIntent.maxPrivacy => LocaleKeys.userIntentMaxPrivacy.tr(),
+              UserIntent.streaming => LocaleKeys.userIntentStreaming.tr(),
+              UserIntent.p2p => LocaleKeys.userIntentP2P.tr(),
+            }, color: isSelected ? Colors.white : theme.palette.secondaryColor),
             SvgIcon(
               color: isSelected ? Colors.white : theme.palette.highlightColor,
               asset: switch (value) {

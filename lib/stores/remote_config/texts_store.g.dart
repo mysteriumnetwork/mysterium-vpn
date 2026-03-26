@@ -12,9 +12,11 @@ mixin _$TextsStore on _TextsStore, Store {
   Computed<Map<String, Map<String, String>>>? _$textsComputed;
 
   @override
-  Map<String, Map<String, String>> get texts => (_$textsComputed ??=
-          Computed<Map<String, Map<String, String>>>(() => super.texts, name: '_TextsStore.texts'))
-      .value;
+  Map<String, Map<String, String>> get texts =>
+      (_$textsComputed ??= Computed<Map<String, Map<String, String>>>(
+        () => super.texts,
+        name: '_TextsStore.texts',
+      )).value;
 
   @override
   String toString() {

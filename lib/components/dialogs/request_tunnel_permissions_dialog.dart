@@ -15,10 +15,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/consent/agreements.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-Future<bool?> showRequestTunnelPermissionsDialog(
-  BuildContext context,
-  String dialogVariant,
-) async {
+Future<bool?> showRequestTunnelPermissionsDialog(BuildContext context, String dialogVariant) async {
   if (dialogVariant == 'A') {
     return showDialog<bool>(
       context: context,
@@ -31,9 +28,7 @@ Future<bool?> showRequestTunnelPermissionsDialog(
       context: context,
       backgroundColor: Theme.of(context).primaryColor,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(30),
-        ),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
       ),
       builder: (context) => const _RequestTunnelPermissionsOptionB(),
     );
@@ -45,69 +40,60 @@ class _RequestTunnelPermissionsOptionA extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Dialog(
-        backgroundColor: Palette.black,
-        surfaceTintColor: Palette.black,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Container(
-          constraints: const BoxConstraints(
-            maxWidth: 500,
+    backgroundColor: Palette.black,
+    surfaceTintColor: Palette.black,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+    child: Container(
+      constraints: const BoxConstraints(maxWidth: 500),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          EasyText(
+            LocaleKeys.setupTunnerPermissionsDialogTitle.tr(),
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            color: Palette.white,
+          ).padding(bottom: 16),
+          EasyText(
+            LocaleKeys.setupTunnerPermissionsDialogDesc.tr(),
+            fontSize: 14,
+            textAlign: TextAlign.center,
+            maxLines: 4,
+            color: Palette.white,
+          ).padding(bottom: 16),
+          EasyText(
+            LocaleKeys.setupTunnerPermissionsDialogDisclaimer.tr(),
+            fontSize: 14,
+            textAlign: TextAlign.center,
+            color: const Color(0xffC4C1DD),
+            maxLines: 4,
+          ).padding(bottom: 40),
+          EasyButton(
+            useSystemColor: false,
+            width: 160,
+            color: Palette.purple,
+            text: 'Allow',
+            onPressed: () => Navigator.pop(context, true),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              EasyText(
-                LocaleKeys.setupTunnerPermissionsDialogTitle.tr(),
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                color: Palette.white,
-              ).padding(bottom: 16),
-              EasyText(
-                LocaleKeys.setupTunnerPermissionsDialogDesc.tr(),
-                fontSize: 14,
-                textAlign: TextAlign.center,
-                maxLines: 4,
-                color: Palette.white,
-              ).padding(bottom: 16),
-              EasyText(
-                LocaleKeys.setupTunnerPermissionsDialogDisclaimer.tr(),
-                fontSize: 14,
-                textAlign: TextAlign.center,
-                color: const Color(0xffC4C1DD),
-                maxLines: 4,
-              ).padding(bottom: 40),
-              EasyButton(
-                useSystemColor: false,
-                width: 160,
-                color: Palette.purple,
-                text: 'Allow',
-                onPressed: () => Navigator.pop(context, true),
-              ),
-            ],
-          ).padding(horizontal: 20, vertical: 40),
-        ),
-      );
+        ],
+      ).padding(horizontal: 20, vertical: 40),
+    ),
+  );
 }
 
 class _RequestTunnelPermissionsOptionB extends HookConsumerWidget {
   const _RequestTunnelPermissionsOptionB();
 
   @override
-  Widget build(
-    BuildContext context,
-    WidgetRef ref,
-  ) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final height = getMediaHeight(context);
     final analyticsStore = ref.read(analyticsStorePOD);
 
     return Column(
       children: [
-        HeaderTitle(
-          text: LocaleKeys.weNeedPermission.tr(),
-        ).padding(bottom: height * 0.01),
+        HeaderTitle(text: LocaleKeys.weNeedPermission.tr()).padding(bottom: height * 0.01),
         Column(
           children: [
             SvgIcon(asset: Asset.images.settings).padding(bottom: height * 0.02),
@@ -126,9 +112,7 @@ class _RequestTunnelPermissionsOptionB extends HookConsumerWidget {
             ).padding(bottom: height * 0.03),
           ],
         ).scrollable().expanded(),
-        Agreements(
-          analyticsStore: analyticsStore,
-        ).padding(vertical: height * 0.02),
+        Agreements(analyticsStore: analyticsStore).padding(vertical: height * 0.02),
         EasyButton(
           useSystemColor: false,
           color: Palette.purple,
@@ -137,10 +121,7 @@ class _RequestTunnelPermissionsOptionB extends HookConsumerWidget {
             analyticsStore.logEvent(AnalyticsEvent.permissionsAcceptClick);
             Navigator.pop(context, true);
           },
-          child: EasyText(
-            LocaleKeys.acceptAndContinue.tr(),
-            color: Palette.white,
-          ),
+          child: EasyText(LocaleKeys.acceptAndContinue.tr(), color: Palette.white),
         ).padding(bottom: height * 0.045),
       ],
     ).padding(horizontal: 20).height(getMediaHeight(context) * 0.85);

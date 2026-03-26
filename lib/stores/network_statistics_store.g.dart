@@ -12,39 +12,43 @@ mixin _$NetworkStatisticsStore on _NetworkStatisticsStore, Store {
   Computed<DateTime?>? _$latestHandshakeComputed;
 
   @override
-  DateTime? get latestHandshake =>
-      (_$latestHandshakeComputed ??= Computed<DateTime?>(() => super.latestHandshake,
-              name: '_NetworkStatisticsStore.latestHandshake'))
-          .value;
+  DateTime? get latestHandshake => (_$latestHandshakeComputed ??= Computed<DateTime?>(
+    () => super.latestHandshake,
+    name: '_NetworkStatisticsStore.latestHandshake',
+  )).value;
   Computed<int>? _$totalDownloadComputed;
 
   @override
-  int get totalDownload => (_$totalDownloadComputed ??=
-          Computed<int>(() => super.totalDownload, name: '_NetworkStatisticsStore.totalDownload'))
-      .value;
+  int get totalDownload => (_$totalDownloadComputed ??= Computed<int>(
+    () => super.totalDownload,
+    name: '_NetworkStatisticsStore.totalDownload',
+  )).value;
   Computed<int>? _$totalUploadComputed;
 
   @override
-  int get totalUpload => (_$totalUploadComputed ??=
-          Computed<int>(() => super.totalUpload, name: '_NetworkStatisticsStore.totalUpload'))
-      .value;
+  int get totalUpload => (_$totalUploadComputed ??= Computed<int>(
+    () => super.totalUpload,
+    name: '_NetworkStatisticsStore.totalUpload',
+  )).value;
   Computed<double>? _$totalDownloadInMBComputed;
 
   @override
-  double get totalDownloadInMB =>
-      (_$totalDownloadInMBComputed ??= Computed<double>(() => super.totalDownloadInMB,
-              name: '_NetworkStatisticsStore.totalDownloadInMB'))
-          .value;
+  double get totalDownloadInMB => (_$totalDownloadInMBComputed ??= Computed<double>(
+    () => super.totalDownloadInMB,
+    name: '_NetworkStatisticsStore.totalDownloadInMB',
+  )).value;
   Computed<double>? _$totalUploadInMBComputed;
 
   @override
-  double get totalUploadInMB =>
-      (_$totalUploadInMBComputed ??= Computed<double>(() => super.totalUploadInMB,
-              name: '_NetworkStatisticsStore.totalUploadInMB'))
-          .value;
+  double get totalUploadInMB => (_$totalUploadInMBComputed ??= Computed<double>(
+    () => super.totalUploadInMB,
+    name: '_NetworkStatisticsStore.totalUploadInMB',
+  )).value;
 
-  late final _$downloadSpeedAtom =
-      Atom(name: '_NetworkStatisticsStore.downloadSpeed', context: context);
+  late final _$downloadSpeedAtom = Atom(
+    name: '_NetworkStatisticsStore.downloadSpeed',
+    context: context,
+  );
 
   @override
   double get downloadSpeed {
@@ -59,8 +63,10 @@ mixin _$NetworkStatisticsStore on _NetworkStatisticsStore, Store {
     });
   }
 
-  late final _$uploadSpeedAtom =
-      Atom(name: '_NetworkStatisticsStore.uploadSpeed', context: context);
+  late final _$uploadSpeedAtom = Atom(
+    name: '_NetworkStatisticsStore.uploadSpeed',
+    context: context,
+  );
 
   @override
   double get uploadSpeed {
@@ -75,8 +81,10 @@ mixin _$NetworkStatisticsStore on _NetworkStatisticsStore, Store {
     });
   }
 
-  late final _$_tunnelStatisticsAtom =
-      Atom(name: '_NetworkStatisticsStore._tunnelStatistics', context: context);
+  late final _$_tunnelStatisticsAtom = Atom(
+    name: '_NetworkStatisticsStore._tunnelStatistics',
+    context: context,
+  );
 
   TunnelStatistics? get tunnelStatistics {
     _$_tunnelStatisticsAtom.reportRead();
@@ -93,8 +101,10 @@ mixin _$NetworkStatisticsStore on _NetworkStatisticsStore, Store {
     });
   }
 
-  late final _$_getTunnelStatisticsAsyncAction =
-      AsyncAction('_NetworkStatisticsStore._getTunnelStatistics', context: context);
+  late final _$_getTunnelStatisticsAsyncAction = AsyncAction(
+    '_NetworkStatisticsStore._getTunnelStatistics',
+    context: context,
+  );
 
   @override
   Future<void> _getTunnelStatistics() {

@@ -10,9 +10,7 @@ part 'unavailable_locations_store.g.dart';
 class UnavailableLocationsStore = _UnavailableLocationsStore with _$UnavailableLocationsStore;
 
 abstract class _UnavailableLocationsStore with Store, Disposeable {
-  _UnavailableLocationsStore(
-    LocationsStore locationsStore,
-  ) {
+  _UnavailableLocationsStore(LocationsStore locationsStore) {
     _locationsReactionDisposer = reaction(
       (_) => {
         ...?locationsStore.dcLocationsFuture.value?.allLocationsFlattened,
@@ -20,8 +18,9 @@ abstract class _UnavailableLocationsStore with Store, Disposeable {
       },
       equals: (s1, s2) => const SetEquality().equals(s1, s2),
       (available) {
-        _unavailableLocations =
-            _unavailableLocations.where((it) => !available.contains(it)).toSet();
+        _unavailableLocations = _unavailableLocations
+            .where((it) => !available.contains(it))
+            .toSet();
       },
     );
   }

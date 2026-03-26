@@ -7,9 +7,6 @@ class FTCheckers extends StatelessWidget {
 
   final Widget child;
   @override
-  Widget build(BuildContext context) => ServiceAvailabilityChecker(
-        child: MinAppVersionChecker(
-          child: child,
-        ),
-      );
+  Widget build(BuildContext context) =>
+      ServiceAvailabilityChecker(child: MinAppVersionChecker(child: child));
 }

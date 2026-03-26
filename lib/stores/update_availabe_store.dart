@@ -14,9 +14,7 @@ class UpdateAvailableStore = _UpdateAvailableStore with _$UpdateAvailableStore;
 
 abstract class _UpdateAvailableStore with Store {
   _UpdateAvailableStore(this._remoteConfigStore, this._buildInfo) {
-    updateAvailabilityFuture = ObservableFuture(
-      _getNewVersionStatus(),
-    );
+    updateAvailabilityFuture = ObservableFuture(_getNewVersionStatus());
   }
 
   final RemoteConfigStore _remoteConfigStore;
@@ -34,10 +32,7 @@ abstract class _UpdateAvailableStore with Store {
       try {
         return (await InAppUpdate.checkForUpdate()).updateAvailability;
       } catch (e, s) {
-        Sentry.captureException(
-          e,
-          stackTrace: s,
-        );
+        Sentry.captureException(e, stackTrace: s);
         return null;
       }
     }

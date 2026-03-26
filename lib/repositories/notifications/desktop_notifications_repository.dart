@@ -25,10 +25,7 @@ class DesktopNotificationsRepository implements NotificationsRepository {
   }
 
   @override
-  Future<void> login({
-    required String userId,
-    required String userEmail,
-  }) async {
+  Future<void> login({required String userId, required String userEmail}) async {
     // no-op
   }
 

@@ -34,52 +34,45 @@ abstract class _ConfigCatUserStore with Store, Disposeable {
   Future<void> _init() async {
     await _future; // Ensure initial fetch is complete before setting up reactions
     _disposers.addAll([
-      reaction(
-        (_) => _authSessionStore.userFuture.value.toUserData(),
-        (data) async {
-          try {
-            final current = await _future;
-            _future = ObservableFuture.value(
-              current.copyWith(identifier: data.id, email: data.email),
-            );
-          } catch (e, stack) {
-            _logger.handle(e, stack);
-          }
-        },
-      ),
-      reaction(
-        (_) => _ipInfoStore.infoFuture.value.toLocationData(),
-        (data) async {
-          try {
-            final current = await _future;
-            _future = ObservableFuture.value(
-              current.copyWith(
-                country: data.country,
-                custom: current.custom.copyWith(city: data.city),
-              ),
-            );
-          } catch (e, stack) {
-            _logger.handle(e, stack);
-          }
-        },
-      ),
-      reaction(
-        (_) => _subscriptionStore.subscriptionFuture.value.toSubscriptionData(),
-        (data) async {
+      reaction((_) => _authSessionStore.userFuture.value.toUserData(), (data) async {
+        try {
+          final current = await _future;
+          _future = ObservableFuture.value(
+            current.copyWith(identifier: data.id, email: data.email),
+          );
+        } catch (e, stack) {
+          _logger.handle(e, stack);
+        }
+      }),
+      reaction((_) => _ipInfoStore.infoFuture.value.toLocationData(), (data) async {
+        try {
           final current = await _future;
           _future = ObservableFuture.value(
             current.copyWith(
-              custom: current.custom.copyWith(
-                subscriptionPlan: data.plan,
-                subscriptionSource: data.gateway,
-                expirationDate: data.expirationDate,
-                subscriptionDuration: data.duration,
-                recurring: data.recurring,
-              ),
+              country: data.country,
+              custom: current.custom.copyWith(city: data.city),
             ),
           );
-        },
-      ),
+        } catch (e, stack) {
+          _logger.handle(e, stack);
+        }
+      }),
+      reaction((_) => _subscriptionStore.subscriptionFuture.value.toSubscriptionData(), (
+        data,
+      ) async {
+        final current = await _future;
+        _future = ObservableFuture.value(
+          current.copyWith(
+            custom: current.custom.copyWith(
+              subscriptionPlan: data.plan,
+              subscriptionSource: data.gateway,
+              expirationDate: data.expirationDate,
+              subscriptionDuration: data.duration,
+              recurring: data.recurring,
+            ),
+          ),
+        );
+      }),
     ]);
   }
 

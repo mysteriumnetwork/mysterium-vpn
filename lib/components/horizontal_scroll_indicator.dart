@@ -62,20 +62,17 @@ class HorizontalScrollIndicator extends HookWidget {
       }
     }
 
-    useEffect(
-      () {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          /// This is a workaround to force the scroll controller to recalculate. Otherwise, listener is not called on first frame.
-          if (controller.hasClients) {
-            controller
-              ..jumpTo(0.1)
-              ..jumpTo(0);
-          }
-        });
-        return null;
-      },
-      [controller],
-    );
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        /// This is a workaround to force the scroll controller to recalculate. Otherwise, listener is not called on first frame.
+        if (controller.hasClients) {
+          controller
+            ..jumpTo(0.1)
+            ..jumpTo(0);
+        }
+      });
+      return null;
+    }, [controller]);
 
     return Stack(
       key: stackKey,

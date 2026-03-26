@@ -64,8 +64,9 @@ abstract class Env {
     _buildInfo = BuildInfo(
       buildNumber: int.tryParse(_packageInfo.buildNumber) ?? 0,
       buildVersion: _packageInfo.version,
-      installerStore:
-          Platform.isWindows ? getCurrentPackageFullName() : _packageInfo.installerStore,
+      installerStore: Platform.isWindows
+          ? getCurrentPackageFullName()
+          : _packageInfo.installerStore,
     );
     _userAgent = [
       Env.appName,
@@ -121,32 +122,32 @@ abstract class Env {
   }
 
   static Map<String, String> asMap() => {
-        'BASE_URL': baseUrl,
-        'MQTT_URL': mqttUrl,
-        'MQTT_USERNAME': mqttUsername,
-        'MQTT_PASSWORD': mqttPassword,
-        'WEB_APP_URL': webAppUrl,
-        'SENTRY_DSN': sentryDsn,
-        'BILLING_PAGE': manageSubscriptionPage,
-        'UPGRADE_SUBS_PAGE': upgradeSubscriptionPage,
-        'ACCOUNT_NAME': accountName,
-        'APP_NAME': appName,
-        'APPLE_CLIENT_ID': appleClientId,
-        'APPLE_REDIRECT_URI': appleRedirectUri,
-        'TUNNEL_NAME': tunnelName,
-        'REMOTE_CONFIG_SDK_KEY': remoteConfigSdkKey,
-        'AB_TESTING_SDK_KEY': abTestingSdkKey,
-        'TEXTS_SDK_KEY': textsSdkKey,
-        'MEASUREMENT_ID': measurementId,
-        'API_SECRET': apiSecret,
-        'IS_AUTOMATED': isAutomated.toString(),
-        'ENV_APP': flavor.name,
-        'OPENVPN_EXTENSION_ID': openVpnExtensionId,
-        'OPENVPN_EXTENSION_NAME': openVpnExtensionName,
-        'MANAGE_DEVICES_PAGE': manageDevicesPage,
-        'APP_CUSTOM_SCHEME_URL': appCustomSchemeUrl,
-        'ONE_SIGNAL_APP_ID': oneSignalAppId,
-      };
+    'BASE_URL': baseUrl,
+    'MQTT_URL': mqttUrl,
+    'MQTT_USERNAME': mqttUsername,
+    'MQTT_PASSWORD': mqttPassword,
+    'WEB_APP_URL': webAppUrl,
+    'SENTRY_DSN': sentryDsn,
+    'BILLING_PAGE': manageSubscriptionPage,
+    'UPGRADE_SUBS_PAGE': upgradeSubscriptionPage,
+    'ACCOUNT_NAME': accountName,
+    'APP_NAME': appName,
+    'APPLE_CLIENT_ID': appleClientId,
+    'APPLE_REDIRECT_URI': appleRedirectUri,
+    'TUNNEL_NAME': tunnelName,
+    'REMOTE_CONFIG_SDK_KEY': remoteConfigSdkKey,
+    'AB_TESTING_SDK_KEY': abTestingSdkKey,
+    'TEXTS_SDK_KEY': textsSdkKey,
+    'MEASUREMENT_ID': measurementId,
+    'API_SECRET': apiSecret,
+    'IS_AUTOMATED': isAutomated.toString(),
+    'ENV_APP': flavor.name,
+    'OPENVPN_EXTENSION_ID': openVpnExtensionId,
+    'OPENVPN_EXTENSION_NAME': openVpnExtensionName,
+    'MANAGE_DEVICES_PAGE': manageDevicesPage,
+    'APP_CUSTOM_SCHEME_URL': appCustomSchemeUrl,
+    'ONE_SIGNAL_APP_ID': oneSignalAppId,
+  };
 }
 
 enum Flavor {
@@ -157,10 +158,7 @@ enum Flavor {
 
   static Flavor fromEnvironment() {
     const flavor = String.fromEnvironment('ENV_APP');
-    return Flavor.values.firstWhere(
-      (f) => f.name == flavor,
-      orElse: () => Flavor.production,
-    );
+    return Flavor.values.firstWhere((f) => f.name == flavor, orElse: () => Flavor.production);
   }
 
   final String name;
@@ -171,11 +169,7 @@ enum Flavor {
 }
 
 class BuildInfo {
-  BuildInfo({
-    required this.buildNumber,
-    required this.buildVersion,
-    this.installerStore,
-  });
+  BuildInfo({required this.buildNumber, required this.buildVersion, this.installerStore});
 
   final int buildNumber;
   final String buildVersion;

@@ -25,40 +25,34 @@ class SubscriptionBanner extends HookConsumerWidget {
     return Observer(
       builder: (context) => switch (subscriptionStore.subscriptionFuture.status) {
         FutureStatus.pending => Banner(
-            title: BannerTitle(
-              icon: const LoadingIndicator(
-                radius: 16,
-              ),
-              text: LocaleKeys.checkSubsStatusTitle.tr(),
-            ),
-            body: BannerBody(
-              text: LocaleKeys.checkSubsStatusDesc.tr(),
-            ),
+          title: BannerTitle(
+            icon: const LoadingIndicator(radius: 16),
+            text: LocaleKeys.checkSubsStatusTitle.tr(),
           ),
+          body: BannerBody(text: LocaleKeys.checkSubsStatusDesc.tr()),
+        ),
         FutureStatus.rejected => Banner(
-            title: BannerTitle(
-              iconAsset: Asset.icons.infoOutline,
-              text: LocaleKeys.checkSubsStatusFailedTitle.tr(),
-            ),
-            body: BannerBody(
-              text: LocaleKeys.checkSubsStatusFailedDesc.tr(),
-            ),
-            cta: BannerCTA(
-              text: LocaleKeys.retryBtn.tr(),
-              onPressed: subscriptionStore.refreshSubscription,
-            ),
-            onPressed: subscriptionStore.refreshSubscription,
-            style: context.c.isDarkMode ? BannerStyle.warningDark : BannerStyle.warningLight,
+          title: BannerTitle(
+            iconAsset: Asset.icons.infoOutline,
+            text: LocaleKeys.checkSubsStatusFailedTitle.tr(),
           ),
+          body: BannerBody(text: LocaleKeys.checkSubsStatusFailedDesc.tr()),
+          cta: BannerCTA(
+            text: LocaleKeys.retryBtn.tr(),
+            onPressed: subscriptionStore.refreshSubscription,
+          ),
+          onPressed: subscriptionStore.refreshSubscription,
+          style: context.c.isDarkMode ? BannerStyle.warningDark : BannerStyle.warningLight,
+        ),
         FutureStatus.fulfilled => Banner(
-            title: BannerTitle(text: LocaleKeys.noSubscriptionTitle.tr()),
-            cta: BannerCTA(
-              key: K.subscriptionBannerCTA,
-              text: LocaleKeys.noSubscriptionAction.tr(),
-              onPressed: handleSubscribe,
-            ),
+          title: BannerTitle(text: LocaleKeys.noSubscriptionTitle.tr()),
+          cta: BannerCTA(
+            key: K.subscriptionBannerCTA,
+            text: LocaleKeys.noSubscriptionAction.tr(),
             onPressed: handleSubscribe,
-          )
+          ),
+          onPressed: handleSubscribe,
+        ),
       },
     );
   }

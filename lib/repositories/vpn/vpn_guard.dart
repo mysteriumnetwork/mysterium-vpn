@@ -6,8 +6,8 @@ abstract class VpnGuard {
   VpnGuard({
     required SubscriptionStore subscriptionStore,
     required AuthSessionStore authSessionStore,
-  })  : _subscriptionStore = subscriptionStore,
-        _authSessionStore = authSessionStore;
+  }) : _subscriptionStore = subscriptionStore,
+       _authSessionStore = authSessionStore;
   final SubscriptionStore _subscriptionStore;
   final AuthSessionStore _authSessionStore;
 

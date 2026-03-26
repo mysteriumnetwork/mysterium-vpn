@@ -26,20 +26,20 @@ abstract class Subscription with _$Subscription {
   bool get isExpired => activeUntil != null && activeUntil!.isBefore(DateTime.now());
 
   String get gatewayName => switch (gateway?.toLowerCase()) {
-        null => '',
-        'stripe' || 'adyen' => 'Credit Card',
-        'apple' => 'Apple',
-        'google' => 'Google',
-        'paypal' => 'PayPal',
-        'coingate' => 'Crypto',
-        _ => gateway!.capitalize()
-      };
+    null => '',
+    'stripe' || 'adyen' => 'Credit Card',
+    'apple' => 'Apple',
+    'google' => 'Google',
+    'paypal' => 'PayPal',
+    'coingate' => 'Crypto',
+    _ => gateway!.capitalize(),
+  };
 
   bool get isGatewayOnCurrentPlatform => switch (gateway?.toLowerCase()) {
-        'apple' => Platform.isIOS || Platform.isMacOS,
-        'google' => Platform.isAndroid,
-        _ => false,
-      };
+    'apple' => Platform.isIOS || Platform.isMacOS,
+    'google' => Platform.isAndroid,
+    _ => false,
+  };
 
   bool get isGoogleGateway => gateway?.toLowerCase() == 'google';
 

@@ -16,69 +16,58 @@ import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SettingsDesktopLeftPanel extends HookConsumerWidget {
-  const SettingsDesktopLeftPanel({
-    super.key,
-  });
+  const SettingsDesktopLeftPanel({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settingCategory = ref.watch(selectedCategoryProvider);
     final remoteConfig = ref.watch(remoteConfigStorePOD);
-    final enableQaHelpers = useComputedValue(
-      () => remoteConfig.enableQaHelpers,
-    );
+    final enableQaHelpers = useComputedValue(() => remoteConfig.enableQaHelpers);
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        DesktopPageHeader(
-          onPressed: () => handleOnSupportPage(
-            context: context,
-            analyticsStore: ref.read(analyticsStorePOD),
-          ),
-          asset: Asset.icons.reportAdaptive(context),
-        ).padding(bottom: 10),
-        ListView(
-          shrinkWrap: true,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CategoryItem(
-              isSelected: settingCategory == SettingCategory.connection,
-              title: SettingCategory.connection.trKey.tr(),
-              onTap: () => updateSelectedCategory(ref, SettingCategory.connection),
-            ),
-            CategoryItem(
-              isSelected: settingCategory == SettingCategory.preferences,
-              title: SettingCategory.preferences.trKey.tr(),
-              onTap: () => updateSelectedCategory(ref, SettingCategory.preferences),
-            ),
-            CategoryItem(
-              isSelected: settingCategory == SettingCategory.account,
-              title: SettingCategory.account.trKey.tr(),
-              onTap: () => updateSelectedCategory(ref, SettingCategory.account),
-            ),
-            if (enableQaHelpers)
-              CategoryItem(
-                isSelected: settingCategory == SettingCategory.qaToolbox,
-                title: SettingCategory.qaToolbox.trKey,
-                onTap: () => updateSelectedCategory(ref, SettingCategory.qaToolbox),
+            DesktopPageHeader(
+              onPressed: () => handleOnSupportPage(
+                context: context,
+                analyticsStore: ref.read(analyticsStorePOD),
               ),
+              asset: Asset.icons.reportAdaptive(context),
+            ).padding(bottom: 10),
+            ListView(
+              shrinkWrap: true,
+              children: [
+                CategoryItem(
+                  isSelected: settingCategory == SettingCategory.connection,
+                  title: SettingCategory.connection.trKey.tr(),
+                  onTap: () => updateSelectedCategory(ref, SettingCategory.connection),
+                ),
+                CategoryItem(
+                  isSelected: settingCategory == SettingCategory.preferences,
+                  title: SettingCategory.preferences.trKey.tr(),
+                  onTap: () => updateSelectedCategory(ref, SettingCategory.preferences),
+                ),
+                CategoryItem(
+                  isSelected: settingCategory == SettingCategory.account,
+                  title: SettingCategory.account.trKey.tr(),
+                  onTap: () => updateSelectedCategory(ref, SettingCategory.account),
+                ),
+                if (enableQaHelpers)
+                  CategoryItem(
+                    isSelected: settingCategory == SettingCategory.qaToolbox,
+                    title: SettingCategory.qaToolbox.trKey,
+                    onTap: () => updateSelectedCategory(ref, SettingCategory.qaToolbox),
+                  ),
+              ],
+            ).expanded(),
+            AppVersion(headerText: LocaleKeys.appVersion.tr()),
+            ApiVersion(headerText: LocaleKeys.apiVersion.tr()),
           ],
-        ).expanded(),
-        AppVersion(
-          headerText: LocaleKeys.appVersion.tr(),
-        ),
-        ApiVersion(
-          headerText: LocaleKeys.apiVersion.tr(),
-        ),
-      ],
-    ).padding(horizontal: 40, vertical: 40).backgroundColor(
-          context.c.isDarkMode ? Palette.darkIndigo : Palette.grayContainer,
-        );
+        )
+        .padding(horizontal: 40, vertical: 40)
+        .backgroundColor(context.c.isDarkMode ? Palette.darkIndigo : Palette.grayContainer);
   }
 
-  void updateSelectedCategory(
-    WidgetRef ref,
-    SettingCategory category,
-  ) {
-    ref.read(selectedCategoryProvider.notifier).state = category;
+  void updateSelectedCategory(WidgetRef ref, SettingCategory category) {
+    ref.read(selectedCategoryProvider.notifier).category = category;
   }
 }

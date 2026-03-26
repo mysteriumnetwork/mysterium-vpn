@@ -21,10 +21,7 @@ enum AnalyticsUserPropName {
 
 @immutable
 class AnalyticsUserProperty {
-  AnalyticsUserProperty._({
-    required this.rawName,
-    required this.value,
-  }) : setAt = DateTime.now() {
+  AnalyticsUserProperty._({required this.rawName, required this.value}) : setAt = DateTime.now() {
     if (Env.flavor.isDev && rawName.length > 24) {
       debugPrint(
         'Warning: AnalyticsUserProperty name exceeds 24 characters: "$rawName" (${rawName.length} chars)',
@@ -41,21 +38,11 @@ class AnalyticsUserProperty {
   factory AnalyticsUserProperty.fromEnum({
     required AnalyticsUserPropName name,
     required String value,
-  }) =>
-      AnalyticsUserProperty._(
-        rawName: name.formattedName,
-        value: value,
-      );
+  }) => AnalyticsUserProperty._(rawName: name.formattedName, value: value);
 
   /// Factory constructor that creates an AnalyticsUserProperty from a string name
-  factory AnalyticsUserProperty.fromString({
-    required String name,
-    required String value,
-  }) =>
-      AnalyticsUserProperty._(
-        rawName: name,
-        value: value,
-      );
+  factory AnalyticsUserProperty.fromString({required String name, required String value}) =>
+      AnalyticsUserProperty._(rawName: name, value: value);
 
   final String rawName;
   final String value;

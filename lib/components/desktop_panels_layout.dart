@@ -15,12 +15,9 @@ class DesktopPanelsLayout extends StatelessWidget {
   final int rightPanelFlex;
   @override
   Widget build(BuildContext context) => Row(
-        children: [
-          Flexible(flex: leftPanelFlex, child: leftPanel),
-          Flexible(
-            flex: rightPanelFlex,
-            child: rightPanel,
-          ),
-        ],
-      );
+    children: [
+      Flexible(flex: leftPanelFlex, child: leftPanel),
+      Flexible(flex: rightPanelFlex, child: rightPanel),
+    ],
+  );
 }

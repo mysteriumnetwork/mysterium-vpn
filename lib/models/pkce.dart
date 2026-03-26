@@ -14,8 +14,11 @@ class PkcePair {
     final verifier = base64UrlEncode(List.generate(length, (_) => random.nextInt(256)));
     final hash = sha256.convert(ascii.encode(verifier));
 
-    final challenge =
-        base64Url.encode(hash.bytes).replaceAll('=', '').replaceAll('+', '-').replaceAll('/', '_');
+    final challenge = base64Url
+        .encode(hash.bytes)
+        .replaceAll('=', '')
+        .replaceAll('+', '-')
+        .replaceAll('/', '_');
 
     return PkcePair._(verifier, challenge);
   }

@@ -15,19 +15,15 @@ abstract class _AuthSessionStore with Store, Disposeable {
   _AuthSessionStore({
     required SecureStorageService secureStorage,
     required RemoteConfigStore remoteConfigStore,
-  })  : _secureStorage = secureStorage,
-        _remoteConfigStore = remoteConfigStore {
-    _userReactionDisposer = reaction(
-      (_) => user,
-      (user) {
-        if (user != null) {
-          _localDb.setUser(user);
-        } else {
-          _localDb.clearUser();
-        }
-      },
-      fireImmediately: true,
-    );
+  }) : _secureStorage = secureStorage,
+       _remoteConfigStore = remoteConfigStore {
+    _userReactionDisposer = reaction((_) => user, (user) {
+      if (user != null) {
+        _localDb.setUser(user);
+      } else {
+        _localDb.clearUser();
+      }
+    }, fireImmediately: true);
   }
 
   final SecureStorageService _secureStorage;

@@ -28,9 +28,9 @@ class RestSubscriptionService extends SubscriptionService {
     required api.VpnApi api,
     required InAppPurchase inAppPurchase,
     required Talker logger,
-  })  : _apiSubscription = api.getSubscription(),
-        _inAppPurchase = inAppPurchase,
-        _logger = logger;
+  }) : _apiSubscription = api.getSubscription(),
+       _inAppPurchase = inAppPurchase,
+       _logger = logger;
 
   final api.Subscription _apiSubscription;
   final InAppPurchase _inAppPurchase;
@@ -71,21 +71,16 @@ class RestSubscriptionService extends SubscriptionService {
   }
 
   Future<Subscription> fetchActiveSubscription(String planId) async => retry(
-        () async {
-          final subs = await fetchSubscriptionDetails();
-          if (subs.active) {
-            return subs;
-          }
-          throw Exception('Subscription not active');
-        },
-        maxAttempts: 3,
-        delayFactor: const Duration(seconds: 1),
-      ).catchError(
-        (_) => Subscription(
-          planId: planId,
-          active: false,
-        ),
-      );
+    () async {
+      final subs = await fetchSubscriptionDetails();
+      if (subs.active) {
+        return subs;
+      }
+      throw Exception('Subscription not active');
+    },
+    maxAttempts: 3,
+    delayFactor: const Duration(seconds: 1),
+  ).catchError((_) => Subscription(planId: planId, active: false));
 
   @override
   Future<void> subscribeToPackage({
@@ -98,8 +93,8 @@ class RestSubscriptionService extends SubscriptionService {
       if (Platform.isAndroid) {
         GooglePlayPurchaseDetails? details;
         if (purchasedProductId != null) {
-          final androidAddition =
-              _inAppPurchase.getPlatformAddition<InAppPurchaseAndroidPlatformAddition>();
+          final androidAddition = _inAppPurchase
+              .getPlatformAddition<InAppPurchaseAndroidPlatformAddition>();
           final oldPurchases = await androidAddition.queryPastPurchases();
           final oldPurchase = oldPurchases.pastPurchases.where(
             (element) => element.productID == purchasedProductId && element.transactionDate != null,
@@ -125,18 +120,14 @@ class RestSubscriptionService extends SubscriptionService {
           applicationUserName: userId,
         );
       }
-      await _inAppPurchase.buyNonConsumable(
-        purchaseParam: purchaseParam,
-      );
+      await _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
     }
   }
 
-  Future<void> openAndroidManageSubscriptions(
-    String productId,
-  ) async {
+  Future<void> openAndroidManageSubscriptions(String productId) async {
     final info = await PackageInfo.fromPlatform();
     final packageName = info.packageName;
     final url =
@@ -151,13 +142,14 @@ class RestSubscriptionService extends SubscriptionService {
     String? purchasedProductId,
   ) async {
     try {
-      final plans = (subscriptionConfig.plans
-          .map((e) => Platform.isAndroid ? e.googleProductId : e.appleProductId)
-          .nonNulls
-          .toSet())
-        ..removeWhere(
-          (element) => element.isEmpty || element == 'not_supported' || element == 'not_found',
-        );
+      final plans =
+          (subscriptionConfig.plans
+                .map((e) => Platform.isAndroid ? e.googleProductId : e.appleProductId)
+                .nonNulls
+                .toSet())
+            ..removeWhere(
+              (element) => element.isEmpty || element == 'not_supported' || element == 'not_found',
+            );
       final subsConfPlans = subscriptionConfig.plans.where(
         (element) =>
             plans.contains(Platform.isAndroid ? element.googleProductId : element.appleProductId),
@@ -173,9 +165,7 @@ class RestSubscriptionService extends SubscriptionService {
         final offers = <ProductOffer>[];
         if (Platform.isAndroid) {
           final products = storePlans
-              .where(
-                (element) => element.id == plan.googleProductId,
-              )
+              .where((element) => element.id == plan.googleProductId)
               .toList();
           if (products.length > 1) {
             products.sort((a, b) => a.rawPrice.compareTo(b.rawPrice));
@@ -232,8 +222,9 @@ class RestSubscriptionService extends SubscriptionService {
           PurchasableProduct(
             planDetails: plan,
             productDetails: productDetails,
-            status:
-                purchasedProductId == plan.id ? ProductStatus.purchased : ProductStatus.purchasable,
+            status: purchasedProductId == plan.id
+                ? ProductStatus.purchased
+                : ProductStatus.purchasable,
             rawPrice: rawPrice ?? productDetails.rawPrice,
             currencyCode: productDetails.currencyCode,
             currencySymbol: productDetails.currencySymbol,
@@ -310,8 +301,9 @@ class RestSubscriptionService extends SubscriptionService {
       }
 
       final config = res.data!;
-      final gateway =
-          config.gateways.firstWhereOrNull((element) => element.name == getPlatformGateway());
+      final gateway = config.gateways.firstWhereOrNull(
+        (element) => element.name == getPlatformGateway(),
+      );
       if (gateway == null || !gateway.enabled) {
         throw NotAvailableException();
       }

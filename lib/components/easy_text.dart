@@ -41,23 +41,23 @@ class EasyText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MouseRegion(
-        cursor: cursor ?? MouseCursor.defer,
-        child: AutoSizeText(
-          text,
-          group: autoSizeGroup,
-          textAlign: textAlign,
-          overflow: overflow,
-          maxLines: maxLines,
-          minFontSize: minFontSize,
-          style: GoogleFonts.montserrat(
-            decoration: textDecoration,
-            decorationColor: colorDecoration,
-            color: color ?? Theme.of(context).textTheme.bodyLarge?.color ?? Palette.black,
-            fontSize: fontSize ?? 16,
-            letterSpacing: letterSpacing,
-            fontWeight: fontWeight,
-            height: height,
-          ),
-        ),
-      );
+    cursor: cursor ?? MouseCursor.defer,
+    child: AutoSizeText(
+      text,
+      group: autoSizeGroup,
+      textAlign: textAlign,
+      overflow: overflow,
+      maxLines: maxLines,
+      minFontSize: minFontSize,
+      style: GoogleFonts.montserrat(
+        decoration: textDecoration,
+        decorationColor: colorDecoration,
+        color: color ?? Theme.of(context).textTheme.bodyLarge?.color ?? Palette.black,
+        fontSize: fontSize ?? 16,
+        letterSpacing: letterSpacing,
+        fontWeight: fontWeight,
+        height: height,
+      ),
+    ),
+  );
 }

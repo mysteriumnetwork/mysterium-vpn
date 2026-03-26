@@ -2,21 +2,14 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 
-typedef RetryEvaluator = FutureOr<bool> Function(
-  DioException error,
-  int attempt,
-);
+typedef RetryEvaluator = FutureOr<bool> Function(DioException error, int attempt);
 
 /// An interceptor that will try to send failed request again
 class RetryRequestInterceptor extends Interceptor {
   RetryRequestInterceptor({
     required this.dio,
     this.retries = 3,
-    this.retryDelays = const [
-      Duration(seconds: 1),
-      Duration(seconds: 3),
-      Duration(seconds: 5),
-    ],
+    this.retryDelays = const [Duration(seconds: 1), Duration(seconds: 3), Duration(seconds: 5)],
     this.ignoreRetryEvaluatorExceptions = false,
   });
 
@@ -37,10 +30,7 @@ class RetryRequestInterceptor extends Interceptor {
   }
 
   @override
-  Future<dynamic> onError(
-    DioException err,
-    ErrorInterceptorHandler handler,
-  ) async {
+  Future<dynamic> onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.requestOptions.disableRetry) {
       return super.onError(err, handler);
     }

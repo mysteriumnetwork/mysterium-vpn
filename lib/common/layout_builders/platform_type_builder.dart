@@ -23,36 +23,36 @@ class PlatformTypeLayoutBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => PlatformLayoutBuilder(
-        builder: (context, platform) {
-          // If we're at windows platform
-          if (platform == TargetPlatform.windows) {
-            if (windows != null) {
-              return windows!(context);
-            }
-          }
+    builder: (context, platform) {
+      // If we're at windows platform
+      if (platform == TargetPlatform.windows) {
+        if (windows != null) {
+          return windows!(context);
+        }
+      }
 
-          if (platform == TargetPlatform.macOS) {
-            if (macos != null) {
-              return macos!(context);
-            }
-          }
-          if (platform == TargetPlatform.iOS) {
-            if (ios != null) {
-              return ios!(context);
-            }
-          }
-          if (platform == TargetPlatform.android) {
-            if (android != null) {
-              return android!(context);
-            }
-          }
+      if (platform == TargetPlatform.macOS) {
+        if (macos != null) {
+          return macos!(context);
+        }
+      }
+      if (platform == TargetPlatform.iOS) {
+        if (ios != null) {
+          return ios!(context);
+        }
+      }
+      if (platform == TargetPlatform.android) {
+        if (android != null) {
+          return android!(context);
+        }
+      }
 
-          // If none of the layouts above are supplied or we're on the mobile layout then we show the mobile layout
-          return ios != null
-              ? ios!(context)
-              : android != null
-                  ? android!(context)
-                  : const SizedBox.shrink();
-        },
-      );
+      // If none of the layouts above are supplied or we're on the mobile layout then we show the mobile layout
+      return ios != null
+          ? ios!(context)
+          : android != null
+          ? android!(context)
+          : const SizedBox.shrink();
+    },
+  );
 }

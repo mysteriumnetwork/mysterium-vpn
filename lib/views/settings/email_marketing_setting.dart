@@ -25,7 +25,8 @@ class EmailMarketingSetting extends HookConsumerWidget {
     return Observer(
       builder: (context) {
         final shouldShowLoadingIndicator = _shouldShowLoadingIndicator(userPreferencesStore);
-        final visible = userPreferencesStore.marketingConsent != null &&
+        final visible =
+            userPreferencesStore.marketingConsent != null &&
             authSessionStore.status == AuthStatus.authenticated;
         return Visibility(
           visible: visible,
@@ -40,17 +41,13 @@ class EmailMarketingSetting extends HookConsumerWidget {
                       value: userPreferencesStore.marketingConsent!,
                       onChanged: (val) async {
                         try {
-                          await userPreferencesStore.updateMarketingContact(
-                            consent: val,
-                          );
+                          await userPreferencesStore.updateMarketingContact(consent: val);
                           analyticsStore.logEvent(
                             AnalyticsEvent.toggleMarketingConsent,
                             parameters: {'value': val.toString()},
                           );
                         } catch (e) {
-                          showSnackbar(
-                            LocaleKeys.somethingWentWrong.tr(),
-                          );
+                          showSnackbar(LocaleKeys.somethingWentWrong.tr());
                         }
                       },
                     ),
@@ -61,9 +58,7 @@ class EmailMarketingSetting extends HookConsumerWidget {
     );
   }
 
-  bool _shouldShowLoadingIndicator(
-    UserPreferencesStore userPreferencesStore,
-  ) =>
+  bool _shouldShowLoadingIndicator(UserPreferencesStore userPreferencesStore) =>
       userPreferencesStore.updateMarketingConsentFuture.status == FutureStatus.pending ||
       userPreferencesStore.getMarketingConsentFuture?.status == FutureStatus.pending;
 }

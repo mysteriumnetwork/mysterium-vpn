@@ -11,11 +11,7 @@ const _initialRefreshIPConnectionValue = true;
 class RefreshIPStore = _RefreshIPStore with _$RefreshIPStore;
 
 abstract class _RefreshIPStore with Store {
-  _RefreshIPStore(
-    this._localDBService,
-    this._logger,
-    this._authSessionStore,
-  ) {
+  _RefreshIPStore(this._localDBService, this._logger, this._authSessionStore) {
     _authReactionDisposer = reaction<AuthStatus>(
       (_) => _authSessionStore.status,
       (status) {
@@ -56,9 +52,7 @@ abstract class _RefreshIPStore with Store {
   @action
   Future<void> toggleRefreshIPWhenConnecting() async {
     try {
-      await _localDBService.setRefreshIPConnection(
-        refreshIPConnection: !refreshIPConnection,
-      );
+      await _localDBService.setRefreshIPConnection(refreshIPConnection: !refreshIPConnection);
       refreshIPFuture = ObservableFuture.value(!refreshIPConnection);
     } catch (e) {
       _logger.handle(e);

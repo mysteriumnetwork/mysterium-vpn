@@ -53,10 +53,7 @@ class _Unauthenticated extends HookConsumerWidget {
     return SettingItem(
       asset: Asset.icons.accountName(context),
       title: LocaleKeys.accountSignInTitle.tr(),
-      actionWidget: EasyButton(
-        text: LocaleKeys.accountSignIn.tr(),
-        onPressed: handleSignIn,
-      ),
+      actionWidget: EasyButton(text: LocaleKeys.accountSignIn.tr(), onPressed: handleSignIn),
     );
   }
 }
@@ -89,7 +86,7 @@ class _Authenticated extends HookConsumerWidget {
                   final handleSubscribe = useHandleSubscribe();
                   final (notifier, subscribeStatus) = useFutureStatus();
 
-                  useValueChanged<AsyncSnapshot<void>, void>(subscribeStatus, (_, __) {
+                  useValueChanged<AsyncSnapshot<void>, void>(subscribeStatus, (_, _) {
                     if (subscribeStatus.hasError) {
                       showSnackbar(LocaleKeys.somethingWentWrong.tr());
                     }
@@ -97,9 +94,8 @@ class _Authenticated extends HookConsumerWidget {
 
                   Future<void> onSubscribePress() async {
                     await notifier.runAndAwait(
-                      () async => await handleSubscribe(
-                        manageSubscription: subscription?.active ?? false,
-                      ),
+                      () async =>
+                          await handleSubscribe(manageSubscription: subscription?.active ?? false),
                     );
                   }
 
@@ -110,10 +106,7 @@ class _Authenticated extends HookConsumerWidget {
                   if (subscriptionStore.subscriptionFuture.status == FutureStatus.rejected) {
                     return SettingActionButton(
                       action: subscriptionStore.refreshSubscription,
-                      child: EasyText(
-                        LocaleKeys.retryBtn.tr(),
-                        color: Palette.white,
-                      ),
+                      child: EasyText(LocaleKeys.retryBtn.tr(), color: Palette.white),
                     );
                   }
 
@@ -122,10 +115,7 @@ class _Authenticated extends HookConsumerWidget {
                       action: subscribeStatus.isLoading ? null : onSubscribePress,
                       child: subscribeStatus.isLoading
                           ? const LoadingIndicator()
-                          : EasyText(
-                              LocaleKeys.pricingPlanSeePlansBtn.tr(),
-                              color: Palette.white,
-                            ),
+                          : EasyText(LocaleKeys.pricingPlanSeePlansBtn.tr(), color: Palette.white),
                     );
                   }
 
@@ -142,10 +132,7 @@ class _Authenticated extends HookConsumerWidget {
                             analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
                             await onSubscribePress();
                           },
-                          child: EasyText(
-                            LocaleKeys.goToBillingPage.tr(),
-                            color: Palette.white,
-                          ),
+                          child: EasyText(LocaleKeys.goToBillingPage.tr(), color: Palette.white),
                         ),
                         SettingActionButton(
                           action: () async {
@@ -173,10 +160,7 @@ class _Authenticated extends HookConsumerWidget {
                 child: SizedBox(
                   width: double.infinity,
                   child: SettingActionButton(
-                    child: EasyText(
-                      LocaleKeys.logout.tr(),
-                      color: Palette.white,
-                    ),
+                    child: EasyText(LocaleKeys.logout.tr(), color: Palette.white),
                     action: () {
                       analyticsStore.logEvent(AnalyticsEvent.logOutPopup);
                       shownConfirmationDialog(
@@ -216,10 +200,7 @@ class _Authenticated extends HookConsumerWidget {
                 asset: Asset.icons.deleteAccount(context),
                 title: LocaleKeys.cancelMyAccount.tr(),
                 actionWidget: SettingActionButton(
-                  child: EasyText(
-                    LocaleKeys.deleteAccount.tr(),
-                    color: Palette.white,
-                  ),
+                  child: EasyText(LocaleKeys.deleteAccount.tr(), color: Palette.white),
                   action: () {
                     analyticsStore.logEvent(AnalyticsEvent.deleteAccount);
                     shownDeleteAccountDialog(

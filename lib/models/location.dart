@@ -27,8 +27,9 @@ abstract class VPNLocations with _$VPNLocations {
   @override
   late final Set<VPNLocation> allLocations = {...locations, ...topLocations};
   @override
-  late final Set<VPNLocation> allLocationsFlattened =
-      allLocations.flattenBy((it) => it.children ?? const <VPNLocation>[]).toSet();
+  late final Set<VPNLocation> allLocationsFlattened = allLocations
+      .flattenBy((it) => it.children ?? const <VPNLocation>[])
+      .toSet();
   @override
   late final bool isEmpty = allLocations.isEmpty;
 
@@ -59,12 +60,7 @@ abstract class VPNLocation with _$VPNLocation {
     final translations = {
       for (final locale in locales) locale.languageCode.toLowerCase(): code.tr(),
     };
-    return VPNLocation(
-      id: code,
-      ipType: ipType,
-      translations: translations,
-      countryCode: code,
-    );
+    return VPNLocation(id: code, ipType: ipType, translations: translations, countryCode: code);
   }
 
   factory VPNLocation.fromAPICountry(ConnectionLocation response, {required IPType ipType}) =>
@@ -80,11 +76,7 @@ abstract class VPNLocation with _$VPNLocation {
         isAvailable: response.isAvailable ?? true,
       );
 
-  factory VPNLocation.fromAPICity(
-    ConnectionLocationCity response,
-    String country,
-    IPType ipType,
-  ) {
+  factory VPNLocation.fromAPICity(ConnectionLocationCity response, String country, IPType ipType) {
     LatLng? coordinates;
     if (response.latitude != null && response.longitude != null) {
       coordinates = LatLng(response.latitude!.toDouble(), response.longitude!.toDouble());
@@ -138,11 +130,5 @@ Map<String, dynamic> _processRawJson(Map<String, dynamic> raw) {
       for (final locale in kSupportedLocales) locale.languageCode.toLowerCase(): code,
     };
   }
-  return {
-    ...raw,
-    'id': id,
-    'code': code,
-    'countryCode': countryCode,
-    'translations': translations,
-  };
+  return {...raw, 'id': id, 'code': code, 'countryCode': countryCode, 'translations': translations};
 }

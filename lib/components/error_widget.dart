@@ -10,11 +10,7 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class RetryOnErrorWidget extends HookWidget {
-  const RetryOnErrorWidget({
-    required this.error,
-    required this.onRetry,
-    super.key,
-  });
+  const RetryOnErrorWidget({required this.error, required this.onRetry, super.key});
 
   final String error;
   final FutureOr<void> Function() onRetry;

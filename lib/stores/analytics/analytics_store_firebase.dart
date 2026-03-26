@@ -23,9 +23,9 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
     required FirebaseAnalytics analytics,
     required FirebaseCrashlytics crashlytics,
     required DeviceIDStore deviceIDStore,
-  })  : _analytics = analytics,
-        _crashlytics = crashlytics,
-        _deviceIDStore = deviceIDStore {
+  }) : _analytics = analytics,
+       _crashlytics = crashlytics,
+       _deviceIDStore = deviceIDStore {
     setConsents();
     logAppLaunchEvent();
     setDeviceInfo();
@@ -42,24 +42,15 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
     Object? reason,
     bool fatal = false,
   }) async {
-    await _crashlytics.recordError(
-      err,
-      stack,
-      reason: reason,
-      printDetails: true,
-      fatal: fatal,
-    );
+    await _crashlytics.recordError(err, stack, reason: reason, printDetails: true, fatal: fatal);
     super.logError(err: err, stack: stack, reason: reason, fatal: fatal).ignore();
   }
 
   @override
   List<NavigatorObserver> navigationObservers() => [
-        FirebaseAnalyticsObserver(
-          analytics: _analytics,
-          nameExtractor: (settings) => settings.name,
-        ),
-        MystNavigationObserver(analyticsStore: this),
-      ];
+    FirebaseAnalyticsObserver(analytics: _analytics, nameExtractor: (settings) => settings.name),
+    MystNavigationObserver(analyticsStore: this),
+  ];
 
   @override
   @action
@@ -70,22 +61,13 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
 
   @override
   @action
-  Future<void> logEvent(
-    AnalyticsEvent event, {
-    Map<String, dynamic>? parameters,
-  }) async {
+  Future<void> logEvent(AnalyticsEvent event, {Map<String, dynamic>? parameters}) async {
     final eventName = event.formattedName;
-    assert(
-      !reservedGa4Events.contains(event.name),
-      'Event name ${event.name} is reserved by GA4',
-    );
+    assert(!reservedGa4Events.contains(event.name), 'Event name ${event.name} is reserved by GA4');
     if (reservedGa4Events.contains(eventName)) {
       return;
     }
-    assert(
-      eventName.length <= 40,
-      'Event name should be between 1 and 40 characters long',
-    );
+    assert(eventName.length <= 40, 'Event name should be between 1 and 40 characters long');
     assert(
       eventName.isNotEmpty && RegExp(r'^[a-zA-Z][a-zA-Z0-9_]*$').hasMatch(eventName),
       'Event name should start with a letter and contain only letters, numbers, and underscores.',
@@ -113,15 +95,8 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
   @override
   @action
   Future<void> setUserProperty(AnalyticsUserProperty property) async {
-    await _analytics.setUserProperty(
-      name: property.name24chars,
-      value: property.value36chars,
-    );
-    super
-        .setUserProperty(
-          property,
-        )
-        .ignore();
+    await _analytics.setUserProperty(name: property.name24chars, value: property.value36chars);
+    super.setUserProperty(property).ignore();
   }
 
   @override
@@ -157,10 +132,7 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
     try {
       final deviceId = await _deviceIDStore.deviceIdFuture;
       await setUserProperty(
-        AnalyticsUserProperty.fromEnum(
-          name: AnalyticsUserPropName.deviceId,
-          value: deviceId,
-        ),
+        AnalyticsUserProperty.fromEnum(name: AnalyticsUserPropName.deviceId, value: deviceId),
       );
       await setUserProperty(
         AnalyticsUserProperty.fromEnum(

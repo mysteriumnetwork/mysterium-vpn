@@ -92,12 +92,13 @@ class UserData {
   }
 
   List<VPNLocation> get recentLocations => [
-        ...recentLocationCodes.map(VPNLocation.fromCode),
-        ...recentVPNLocations,
-      ].distinctBy((it) => (it.id, it.ipType)).toList();
+    ...recentLocationCodes.map(VPNLocation.fromCode),
+    ...recentVPNLocations,
+  ].distinctBy((it) => (it.id, it.ipType)).toList();
 
   @override
-  String toString() => '''
+  String toString() =>
+      '''
 UserData : 
 userId: $userId,
 subscriptionPlan: $subscriptionPlan,

@@ -18,14 +18,14 @@ class _UseProviderHookState<T> extends HookState<T, _UseProviderHook<T>> {
   @override
   void initHook() {
     super.initHook();
-    _subscription ??= ProviderScope.containerOf(context, listen: false).listen<T>(
-      hook.provider,
-      (previous, next) {
-        setState(() {
-          _value = next;
-        });
-      },
-    );
+    _subscription ??= ProviderScope.containerOf(context, listen: false).listen<T>(hook.provider, (
+      previous,
+      next,
+    ) {
+      setState(() {
+        _value = next;
+      });
+    });
   }
 
   @override

@@ -17,10 +17,7 @@ import 'package:styled_widget/styled_widget.dart';
 Future<void> showMarketingConsentDialog(BuildContext context) async {
   await showModal<void>(
     context,
-    builder: (_) => Theme(
-      data: DesignSystemTheme.of(context),
-      child: const _DialogContent(),
-    ),
+    builder: (_) => Theme(data: DesignSystemTheme.of(context), child: const _DialogContent()),
   );
 }
 
@@ -39,10 +36,7 @@ class _DialogContent extends ConsumerWidget {
       body: Padding(
         padding: ModalPadding.insets(
           context,
-          add: const EdgeInsets.symmetric(
-            vertical: 40,
-            horizontal: 40,
-          ),
+          add: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
         ),
         child: Column(
           key: Keys.marketingConsentDialog,
@@ -53,18 +47,12 @@ class _DialogContent extends ConsumerWidget {
             Asset.images.marketingConsent(context).image(width: 150, height: 150),
             Text(
               LocaleKeys.marketingConsentPopupTitle.tr(),
-              style: GoogleFonts.montserrat(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
+              style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
             Text(
               LocaleKeys.marketingConsentPopupDesc.tr(),
-              style: GoogleFonts.montserrat(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-              ),
+              style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w400),
               textAlign: TextAlign.center,
             ).padding(bottom: 24, top: 12),
             const Spacer(),
@@ -94,26 +82,19 @@ Widget _buildButtonsColumn(BuildContext context, FutureStatus futureStatus, Them
         ButtonPrimary(
           key: Keys.marketingConsentAcceptButton,
           onPressed: () => _updateMarketingConsent(context, consent: true),
-          child: Text(
-            LocaleKeys.signMeUpBtn.tr(),
-          ),
+          child: Text(LocaleKeys.signMeUpBtn.tr()),
         ).width(double.infinity),
         ButtonSecondary(
           key: Keys.marketingConsentDeclineButton,
           onPressed: () => _updateMarketingConsent(context, consent: false),
-          child: Text(
-            LocaleKeys.noThanksBtn.tr(),
-          ),
+          child: Text(LocaleKeys.noThanksBtn.tr()),
         ).padding(top: 16).width(double.infinity),
         if (futureStatus == FutureStatus.rejected)
           Padding(
             padding: const EdgeInsets.only(top: 16),
             child: Text(
               LocaleKeys.somethingWentWrong.tr(),
-              style: TextStyle(
-                color: theme.palette.textErrorPrimary,
-                fontSize: 14,
-              ),
+              style: TextStyle(color: theme.palette.textErrorPrimary, fontSize: 14),
               textAlign: TextAlign.center,
             ),
           ),
@@ -121,52 +102,40 @@ Widget _buildButtonsColumn(BuildContext context, FutureStatus futureStatus, Them
     );
 
 Widget _buildButtonsRow(BuildContext context, FutureStatus futureStatus, ThemeData theme) => Column(
+  children: [
+    Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ButtonSecondary(
-              key: Keys.marketingConsentDeclineButton,
-              onPressed: () => _updateMarketingConsent(context, consent: false),
-              child: Text(
-                LocaleKeys.noThanksBtn.tr(),
-              ),
-            ),
-            SizedBox(width: theme.spacing.md),
-            ButtonPrimary(
-              key: Keys.marketingConsentAcceptButton,
-              onPressed: () => _updateMarketingConsent(context, consent: true),
-              child: Text(
-                LocaleKeys.signMeUpBtn.tr(),
-              ),
-            ),
-          ],
+        ButtonSecondary(
+          key: Keys.marketingConsentDeclineButton,
+          onPressed: () => _updateMarketingConsent(context, consent: false),
+          child: Text(LocaleKeys.noThanksBtn.tr()),
         ),
-        if (futureStatus == FutureStatus.rejected)
-          Padding(
-            padding: EdgeInsets.only(top: theme.spacing.md),
-            child: Text(
-              LocaleKeys.somethingWentWrong.tr(),
-              style: TextStyle(
-                color: theme.palette.textErrorPrimary,
-                fontSize: 14,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
+        SizedBox(width: theme.spacing.md),
+        ButtonPrimary(
+          key: Keys.marketingConsentAcceptButton,
+          onPressed: () => _updateMarketingConsent(context, consent: true),
+          child: Text(LocaleKeys.signMeUpBtn.tr()),
+        ),
       ],
-    );
+    ),
+    if (futureStatus == FutureStatus.rejected)
+      Padding(
+        padding: EdgeInsets.only(top: theme.spacing.md),
+        child: Text(
+          LocaleKeys.somethingWentWrong.tr(),
+          style: TextStyle(color: theme.palette.textErrorPrimary, fontSize: 14),
+          textAlign: TextAlign.center,
+        ),
+      ),
+  ],
+);
 
-Future<void> _updateMarketingConsent(
-  BuildContext context, {
-  required bool consent,
-}) async {
-  await ProviderScope.containerOf(context, listen: false)
-      .read(userPreferencesStorePOD)
-      .updateMarketingContact(
-        consent: consent,
-        fromPopup: true,
-      );
+Future<void> _updateMarketingConsent(BuildContext context, {required bool consent}) async {
+  await ProviderScope.containerOf(
+    context,
+    listen: false,
+  ).read(userPreferencesStorePOD).updateMarketingContact(consent: consent, fromPopup: true);
 
   if (context.mounted) {
     Navigator.of(context).pop();

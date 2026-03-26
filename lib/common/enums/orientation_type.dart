@@ -1,5 +1,1 @@
-enum OrientationType {
-  auto,
-  landscape,
-  portrait,
-}
+enum OrientationType { auto, landscape, portrait }

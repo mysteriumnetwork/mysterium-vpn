@@ -35,24 +35,23 @@ void main() {
 
     // Default auth state: not authenticated
     when(mockAuthSessionStore.isAuthenticated).thenReturn(false);
-    when(mockAuthSessionStore.userFuture).thenAnswer(
-      (_) => ObservableFuture.value(null),
-    );
+    when(mockAuthSessionStore.userFuture).thenAnswer((_) => ObservableFuture.value(null));
 
     when(mockRealIPInfoStore.infoFuture).thenAnswer(
-      (_) => ObservableFuture.value(
-        const IPInfo(city: 'Test City', country: 'Test Country', ip: ''),
-      ),
+      (_) =>
+          ObservableFuture.value(const IPInfo(city: 'Test City', country: 'Test Country', ip: '')),
     );
 
     // Default stubs to prevent null errors during initStore
-    when(mockApiService.createMarketingContact(country: anyNamed('country')))
-        .thenAnswer((_) async => {});
+    when(
+      mockApiService.createMarketingContact(country: anyNamed('country')),
+    ).thenAnswer((_) async => {});
     when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => false);
     when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
     when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 0);
-    when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
-        .thenAnswer((_) async => false);
+    when(
+      mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
+    ).thenAnswer((_) async => false);
 
     store = UserPreferencesStore(
       apiService: mockApiService,
@@ -68,11 +67,9 @@ void main() {
     test('initStore creates marketing contact and gets consent', () async {
       // Mock auth state as authenticated to trigger initStore
       when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-      when(mockAuthSessionStore.userFuture).thenAnswer(
-        (_) => ObservableFuture.value(
-          AuthUser(userId: '1', username: 'test@test.com'),
-        ),
-      );
+      when(
+        mockAuthSessionStore.userFuture,
+      ).thenAnswer((_) => ObservableFuture.value(AuthUser(userId: '1', username: 'test@test.com')));
 
       // Recreate store to trigger auth reaction with new mocks
       store = UserPreferencesStore(
@@ -95,17 +92,16 @@ void main() {
     test('initStore evaluates next prompt to show', () async {
       // Setup authenticated state
       when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-      when(mockAuthSessionStore.userFuture).thenAnswer(
-        (_) => ObservableFuture.value(
-          AuthUser(userId: '1', username: 'test@test.com'),
-        ),
-      );
+      when(
+        mockAuthSessionStore.userFuture,
+      ).thenAnswer((_) => ObservableFuture.value(AuthUser(userId: '1', username: 'test@test.com')));
 
       when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => false);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
       when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
-      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
-          .thenAnswer((_) async => false);
+      when(
+        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
+      ).thenAnswer((_) async => false);
 
       // Recreate store to trigger auth reaction
       store = UserPreferencesStore(
@@ -129,14 +125,13 @@ void main() {
     test('initStore handles errors gracefully', () async {
       // Setup authenticated state
       when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-      when(mockAuthSessionStore.userFuture).thenAnswer(
-        (_) => ObservableFuture.value(
-          AuthUser(userId: '1', username: 'test@test.com'),
-        ),
-      );
+      when(
+        mockAuthSessionStore.userFuture,
+      ).thenAnswer((_) => ObservableFuture.value(AuthUser(userId: '1', username: 'test@test.com')));
 
-      when(mockApiService.createMarketingContact(country: anyNamed('country')))
-          .thenThrow(Exception('Network error'));
+      when(
+        mockApiService.createMarketingContact(country: anyNamed('country')),
+      ).thenThrow(Exception('Network error'));
 
       // Recreate store to trigger auth reaction
       store = UserPreferencesStore(
@@ -284,8 +279,9 @@ void main() {
     });
 
     test('createMarketingContact logs success event', () async {
-      when(mockApiService.createMarketingContact(country: anyNamed('country')))
-          .thenAnswer((_) async => {});
+      when(
+        mockApiService.createMarketingContact(country: anyNamed('country')),
+      ).thenAnswer((_) async => {});
 
       await store.createMarketingContact();
 
@@ -293,8 +289,9 @@ void main() {
     });
 
     test('createMarketingContact logs error event on failure', () async {
-      when(mockApiService.createMarketingContact(country: anyNamed('country')))
-          .thenThrow(Exception('fail'));
+      when(
+        mockApiService.createMarketingContact(country: anyNamed('country')),
+      ).thenThrow(Exception('fail'));
 
       await store.createMarketingContact();
 
@@ -324,14 +321,16 @@ void main() {
       verify(mockLocalDBService.setMarketingConsentShown()).called(1);
     });
 
-    test('updateMarketingContact does not call setMarketingConsentShown when fromPopup is false',
-        () async {
-      when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
+    test(
+      'updateMarketingContact does not call setMarketingConsentShown when fromPopup is false',
+      () async {
+        when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
 
-      await store.updateMarketingContact(consent: true);
+        await store.updateMarketingContact(consent: true);
 
-      verifyNever(mockLocalDBService.setMarketingConsentShown());
-    });
+        verifyNever(mockLocalDBService.setMarketingConsentShown());
+      },
+    );
 
     test('updateMarketingContact does not re-evaluate prompts after setting shown', () async {
       store.nextPromptToShow = UserPromptType.marketingConsent;
@@ -347,10 +346,7 @@ void main() {
     test('updateMarketingContact logs error and rethrows on failure', () async {
       when(mockApiService.updateMarketingContact(consent: false)).thenThrow(Exception('fail'));
 
-      await expectLater(
-        store.updateMarketingContact(consent: false),
-        throwsException,
-      );
+      await expectLater(store.updateMarketingContact(consent: false), throwsException);
 
       verify(
         mockAnalyticsStore.logEvent(
@@ -380,17 +376,16 @@ void main() {
 
     test('getMarketingConsent waits for setMarketingConsentFuture', () async {
       var setCompleted = false;
-      when(mockApiService.createMarketingContact(country: anyNamed('country')))
-          .thenAnswer((_) async => setCompleted = true);
+      when(
+        mockApiService.createMarketingContact(country: anyNamed('country')),
+      ).thenAnswer((_) async => setCompleted = true);
       when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => true);
 
       // Setup authenticated state
       when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-      when(mockAuthSessionStore.userFuture).thenAnswer(
-        (_) => ObservableFuture.value(
-          AuthUser(userId: '1', username: 'test@test.com'),
-        ),
-      );
+      when(
+        mockAuthSessionStore.userFuture,
+      ).thenAnswer((_) => ObservableFuture.value(AuthUser(userId: '1', username: 'test@test.com')));
 
       // Recreate store to trigger auth reaction
       store = UserPreferencesStore(
@@ -437,8 +432,9 @@ void main() {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
       when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
-      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
-          .thenAnswer((_) async => true);
+      when(
+        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
+      ).thenAnswer((_) async => true);
 
       await store.evaluatePromptToShow();
 
@@ -450,8 +446,9 @@ void main() {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => true);
       when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
-      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
-          .thenAnswer((_) async => true);
+      when(
+        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
+      ).thenAnswer((_) async => true);
 
       await store.evaluatePromptToShow();
 
@@ -462,8 +459,9 @@ void main() {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => true);
       when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
-      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
-          .thenAnswer((_) async => false);
+      when(
+        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
+      ).thenAnswer((_) async => false);
 
       await store.evaluatePromptToShow();
 
@@ -474,8 +472,9 @@ void main() {
       store.getMarketingConsentFuture = ObservableFuture.value(true);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => true);
       when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
-      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
-          .thenAnswer((_) async => false);
+      when(
+        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
+      ).thenAnswer((_) async => false);
 
       await store.evaluatePromptToShow();
 
@@ -488,8 +487,9 @@ void main() {
         ..getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
       when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
-      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
-          .thenAnswer((_) async => false);
+      when(
+        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
+      ).thenAnswer((_) async => false);
 
       await store.evaluatePromptToShow();
 
@@ -501,8 +501,9 @@ void main() {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
       when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 2);
-      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
-          .thenAnswer((_) async => false);
+      when(
+        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
+      ).thenAnswer((_) async => false);
 
       await store.evaluatePromptToShow();
 
@@ -513,8 +514,9 @@ void main() {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
       when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 1);
-      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
-          .thenAnswer((_) async => true);
+      when(
+        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
+      ).thenAnswer((_) async => true);
 
       await store.evaluatePromptToShow();
 
@@ -532,8 +534,9 @@ void main() {
 
       when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
       when(mockLocalDBService.setMarketingConsentShown()).thenAnswer((_) async {});
-      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
-          .thenAnswer((_) async => true);
+      when(
+        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
+      ).thenAnswer((_) async => true);
 
       await store.updateMarketingContact(consent: true, fromPopup: true);
 
@@ -548,11 +551,9 @@ void main() {
 
       // Trigger auth state change to authenticate
       when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-      when(mockAuthSessionStore.userFuture).thenAnswer(
-        (_) => ObservableFuture.value(
-          AuthUser(userId: '1', username: 'test@test.com'),
-        ),
-      );
+      when(
+        mockAuthSessionStore.userFuture,
+      ).thenAnswer((_) => ObservableFuture.value(AuthUser(userId: '1', username: 'test@test.com')));
 
       // Recreate store to trigger auth reaction
       final newStore = UserPreferencesStore(
@@ -575,11 +576,9 @@ void main() {
 
       // Trigger auth state change to authenticate
       when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-      when(mockAuthSessionStore.userFuture).thenAnswer(
-        (_) => ObservableFuture.value(
-          AuthUser(userId: '1', username: 'test@test.com'),
-        ),
-      );
+      when(
+        mockAuthSessionStore.userFuture,
+      ).thenAnswer((_) => ObservableFuture.value(AuthUser(userId: '1', username: 'test@test.com')));
 
       // Recreate store to trigger auth reaction
       final newStore = UserPreferencesStore(

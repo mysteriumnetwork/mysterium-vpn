@@ -33,10 +33,7 @@ class SignInView extends HookConsumerWidget {
             children: [
               const UnauthenticatedHeader(),
               Expanded(
-                child: DecoratedBox(
-                  decoration: formDecoration,
-                  child: const SignInForm(),
-                ),
+                child: DecoratedBox(decoration: formDecoration, child: const SignInForm()),
               ),
             ],
           ),

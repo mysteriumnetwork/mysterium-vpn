@@ -8,7 +8,16 @@ import 'package:mysterium_vpn/views/settings/settings_desktop_right_panel.dart';
 
 const _initialCategory = SettingCategory.connection;
 
-final selectedCategoryProvider = StateProvider<SettingCategory>((ref) => _initialCategory);
+class SelectedCategoryNotifier extends Notifier<SettingCategory> {
+  @override
+  SettingCategory build() => _initialCategory;
+  SettingCategory get category => state;
+  set category(SettingCategory value) => state = value;
+}
+
+final selectedCategoryProvider = NotifierProvider<SelectedCategoryNotifier, SettingCategory>(
+  SelectedCategoryNotifier.new,
+);
 
 enum SettingCategory {
   connection(LocaleKeys.connection),
@@ -25,7 +34,7 @@ class SettingsDesktopView extends HookWidget {
 
   @override
   Widget build(BuildContext context) => const DesktopPanelsLayout(
-        leftPanel: SettingsDesktopLeftPanel(),
-        rightPanel: SettingsDesktopRightPanel(),
-      );
+    leftPanel: SettingsDesktopLeftPanel(),
+    rightPanel: SettingsDesktopRightPanel(),
+  );
 }

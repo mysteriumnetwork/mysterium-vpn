@@ -30,25 +30,19 @@ class LocationsSearch extends HookConsumerWidget {
 
     final onChangedRef = useRef(handleSearch)..value = handleSearch;
 
-    useEffect(
-      () {
-        void listener() {
-          onChangedRef.value(controller.text);
-        }
+    useEffect(() {
+      void listener() {
+        onChangedRef.value(controller.text);
+      }
 
-        controller.addListener(listener);
-        return () => controller.removeListener(listener);
-      },
-      [controller, onChangedRef],
-    );
+      controller.addListener(listener);
+      return () => controller.removeListener(listener);
+    }, [controller, onChangedRef]);
 
     return TextField(
       controller: controller,
       autocorrect: false,
-      onTapOutside: (_) => FocusScope.of(
-        context,
-        createDependency: false,
-      ).unfocus(),
+      onTapOutside: (_) => FocusScope.of(context, createDependency: false).unfocus(),
       style: const TextStyle(fontSize: 12),
       decoration: InputDecoration(
         constraints: const BoxConstraints(minHeight: 32),
@@ -66,9 +60,7 @@ class LocationsSearch extends HookConsumerWidget {
 }
 
 class _Button extends HookWidget {
-  const _Button({
-    required this.controller,
-  });
+  const _Button({required this.controller});
 
   final TextEditingController controller;
 

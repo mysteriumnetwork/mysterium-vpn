@@ -12,17 +12,17 @@ mixin _$ABTestingStore on ABTestingStoreBase, Store {
   Computed<String>? _$subscriptionFlowVariantComputed;
 
   @override
-  String get subscriptionFlowVariant =>
-      (_$subscriptionFlowVariantComputed ??= Computed<String>(() => super.subscriptionFlowVariant,
-              name: 'ABTestingStoreBase.subscriptionFlowVariant'))
-          .value;
+  String get subscriptionFlowVariant => (_$subscriptionFlowVariantComputed ??= Computed<String>(
+    () => super.subscriptionFlowVariant,
+    name: 'ABTestingStoreBase.subscriptionFlowVariant',
+  )).value;
   Computed<String>? _$tunnelConsentTypeComputed;
 
   @override
-  String get tunnelConsentType =>
-      (_$tunnelConsentTypeComputed ??= Computed<String>(() => super.tunnelConsentType,
-              name: 'ABTestingStoreBase.tunnelConsentType'))
-          .value;
+  String get tunnelConsentType => (_$tunnelConsentTypeComputed ??= Computed<String>(
+    () => super.tunnelConsentType,
+    name: 'ABTestingStoreBase.tunnelConsentType',
+  )).value;
 
   @override
   String toString() {

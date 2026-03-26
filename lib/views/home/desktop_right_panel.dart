@@ -9,26 +9,26 @@ class HomeDesktopRightPanel extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => LayoutBuilder(
-        builder: (context, constraints) => DecoratedBox(
-          decoration: const BoxDecoration(color: Palette.darkBlue),
-          child: Stack(
-            children: [
-              const HomeConnectionView(),
-              Positioned(
-                bottom: 48,
-                left: 24,
-                right: 24,
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: constraints.maxWidth < 432 ? constraints.maxWidth : 432,
-                    ),
-                    child: const ConnectionTile(),
-                  ),
+    builder: (context, constraints) => DecoratedBox(
+      decoration: const BoxDecoration(color: Palette.darkBlue),
+      child: Stack(
+        children: [
+          const HomeConnectionView(),
+          Positioned(
+            bottom: 48,
+            left: 24,
+            right: 24,
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: constraints.maxWidth < 432 ? constraints.maxWidth : 432,
                 ),
+                child: const ConnectionTile(),
               ),
-            ],
+            ),
           ),
-        ),
-      );
+        ],
+      ),
+    ),
+  );
 }

@@ -13,14 +13,14 @@ class InformationalView extends ConsumerWidget {
   final String translationKey;
   @override
   Widget build(BuildContext context, WidgetRef ref) => BaseLayout(
-        header: BaseAppBar(onBackButtonPressed: context.beamBack),
-        child: Center(
-          child: EasyText(
-            translationKey.tr(),
-            maxLines: 4,
-            color: Palette.purple,
-            textAlign: TextAlign.center,
-          ).paddingDirectional(all: 20),
-        ),
-      );
+    header: BaseAppBar(onBackButtonPressed: context.beamBack),
+    child: Center(
+      child: EasyText(
+        translationKey.tr(),
+        maxLines: 4,
+        color: Palette.purple,
+        textAlign: TextAlign.center,
+      ).paddingDirectional(all: 20),
+    ),
+  );
 }

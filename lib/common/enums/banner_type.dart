@@ -8,11 +8,7 @@ enum BannerType {
   residentialIPs(mainBanner: false),
   tooManyConnections;
 
-  const BannerType({
-    this.isDismissable = true,
-    this.mainBanner = true,
-    this.shouldPersist = true,
-  });
+  const BannerType({this.isDismissable = true, this.mainBanner = true, this.shouldPersist = true});
 
   /// Whether the banner can be dismissed by the user.
   final bool isDismissable;

@@ -48,9 +48,7 @@ class SocialLoginButton extends ConsumerWidget {
               border: isDarkMode ? null : Border.all(),
               borderRadius: const BorderRadius.all(Radius.circular(8)),
             ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             height: 44,
             child: SizedBox(
               width: double.infinity,
@@ -59,11 +57,7 @@ class SocialLoginButton extends ConsumerWidget {
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _SocialLoginIcon(
-                          asset: asset,
-                          height: height,
-                          iconSize: fontSize,
-                        ),
+                        _SocialLoginIcon(asset: asset, height: height, iconSize: fontSize),
                         Flexible(
                           child: EasyText(
                             label,
@@ -83,26 +77,16 @@ class SocialLoginButton extends ConsumerWidget {
 }
 
 class _SocialLoginIcon extends StatelessWidget {
-  const _SocialLoginIcon({
-    required this.asset,
-    required this.height,
-    required this.iconSize,
-  });
+  const _SocialLoginIcon({required this.asset, required this.height, required this.iconSize});
 
   final SvgGenImage asset;
   final double height;
   final double iconSize;
 
   @override
-  Widget build(BuildContext context) => SvgIcon(
-        asset: asset,
-        width: iconSize * (25 / 31),
-        height: iconSize,
-      )
-          .paddingDirectional(
-            bottom: (4 / height) * height,
-            end: 4,
-          )
+  Widget build(BuildContext context) =>
+      SvgIcon(asset: asset, width: iconSize * (25 / 31), height: iconSize)
+          .paddingDirectional(bottom: (4 / height) * height, end: 4)
           .width(_appleIconSizeScale * height)
           .height(height * _appleIconSizeScale + 2);
 }

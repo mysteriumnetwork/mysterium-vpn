@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/components/banners/banner.dart';
 
 class BannerCTA extends StatelessWidget {
-  const BannerCTA({
-    required this.text,
-    required this.onPressed,
-    super.key,
-  });
+  const BannerCTA({required this.text, required this.onPressed, super.key});
 
   final String text;
   final VoidCallback onPressed;

@@ -28,12 +28,7 @@ class NominatimService {
   Future<LatLng?> _fetchCoordinatesFor(String query) async {
     final response = await _dio.get(
       'search',
-      queryParameters: {
-        'q': query,
-        'format': 'jsonv2',
-        'addressdetails': 0,
-        'limit': 1,
-      },
+      queryParameters: {'q': query, 'format': 'jsonv2', 'addressdetails': 0, 'limit': 1},
     );
 
     final payload = response.data;

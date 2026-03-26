@@ -36,18 +36,15 @@ class SignInForm extends HookConsumerWidget {
     });
     final height = getMediaHeight(context);
 
-    useEffect(
-      () {
-        Future.microtask(() async {
-          final email = await store.getLastLoggedInUser();
-          if (!signInForm.control('email').dirty) {
-            signInForm.control('email').value = email;
-          }
-        });
-        return null;
-      },
-      [signInForm, store],
-    );
+    useEffect(() {
+      Future.microtask(() async {
+        final email = await store.getLastLoggedInUser();
+        if (!signInForm.control('email').dirty) {
+          signInForm.control('email').value = email;
+        }
+      });
+      return null;
+    }, [signInForm, store]);
 
     return Observer(
       builder: (context) {
@@ -57,152 +54,146 @@ class SignInForm extends HookConsumerWidget {
           children: [
             ReactiveForm(
               formGroup: signInForm,
-              child: Column(
-                children: [
-                  EasyText(
-                    LocaleKeys.signIn.tr(),
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                  ).padding(bottom: 20),
-                  SocialLoginButton(
-                    onPressed: signInStatus == FutureStatus.pending
-                        ? null
-                        : () {
-                            analyticsStore.logEvent(AnalyticsEvent.appleLogin);
-                            store.signInWithApple();
-                          },
-                    isLoading: signInStatus == FutureStatus.pending &&
-                        store.authenticatingType == GrantType.apple,
-                    asset: Asset.icons.apple,
-                    label: LocaleKeys.continueWithApple.tr(),
-                  ).padding(bottom: 20),
-                  SocialLoginButton(
-                    onPressed: signInStatus == FutureStatus.pending
-                        ? null
-                        : () {
-                            analyticsStore.logEvent(AnalyticsEvent.gLogin);
-                            store.signInWithGoogle();
-                          },
-                    isLoading: signInStatus == FutureStatus.pending &&
-                        store.authenticatingType == GrantType.google,
-                    asset: Asset.icons.google,
-                    label: LocaleKeys.continueWithGoogle.tr(),
-                  ),
-                  Row(
-                    children: [
-                      const Expanded(
-                        child: Divider(
-                          color: Palette.lightBlack,
-                        ),
-                      ),
-                      EasyText(
-                        LocaleKeys.or.tr(),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Palette.lightBlack,
-                      ).padding(horizontal: 8),
-                      const Expanded(
-                        child: Divider(
-                          color: Palette.lightBlack,
-                        ),
-                      ),
-                    ],
-                  ).padding(vertical: height * 0.03),
-                  AutofillGroup(
-                    child: ReactiveTextField(
-                      key: K.loginEmailField,
-                      onTap: (_) {
-                        analyticsStore.logEvent(AnalyticsEvent.emailInput);
-                      },
-                      onTapOutside: (_) => FocusScope.of(
-                        context,
-                        createDependency: false,
-                      ).unfocus(),
-                      decoration: InputDecoration(
-                        labelText: LocaleKeys.email.tr(),
-                        hintText: 'example@example.com',
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      formControlName: 'email',
-                      autofillHints: const [AutofillHints.email],
-                      keyboardType: TextInputType.emailAddress,
-                      onSubmitted: (_) => FocusScope.of(
-                        context,
-                        createDependency: false,
-                      ).unfocus(),
-                      onEditingComplete: (_) => TextInput.finishAutofillContext(),
-                      validationMessages: {
-                        ValidationMessage.required: (_) => LocaleKeys.emailIsRequired.tr(),
-                        ValidationMessage.email: (_) => LocaleKeys.emailIsNotValid.tr(),
-                      },
-                    ).padding(bottom: 10),
-                  ),
-                  ReactiveFormConsumer(
-                    builder: (_, signInForm, child) => EasyButton(
-                      key: K.loginButton,
-                      width: double.infinity,
-                      onPressed: signInStatus != FutureStatus.pending
-                          ? () =>
-                              _onSignInWithEmailPressed(signInForm, context, store, analyticsStore)
-                          : null,
-                      child: signInStatus == FutureStatus.pending &&
-                              store.authenticatingType == GrantType.email
-                          ? const LoadingIndicator()
-                          : EasyText(
-                              LocaleKeys.continueWithEmail.tr(),
-                              color: Palette.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                            ),
-                    ),
-                  ).padding(bottom: height * 0.03),
-                  RichText(
-                    text: TextSpan(
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            fontSize: 14,
+              child:
+                  Column(
+                        children: [
+                          EasyText(
+                            LocaleKeys.signIn.tr(),
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                          ).padding(bottom: 20),
+                          SocialLoginButton(
+                            onPressed: signInStatus == FutureStatus.pending
+                                ? null
+                                : () {
+                                    analyticsStore.logEvent(AnalyticsEvent.appleLogin);
+                                    store.signInWithApple();
+                                  },
+                            isLoading:
+                                signInStatus == FutureStatus.pending &&
+                                store.authenticatingType == GrantType.apple,
+                            asset: Asset.icons.apple,
+                            label: LocaleKeys.continueWithApple.tr(),
+                          ).padding(bottom: 20),
+                          SocialLoginButton(
+                            onPressed: signInStatus == FutureStatus.pending
+                                ? null
+                                : () {
+                                    analyticsStore.logEvent(AnalyticsEvent.gLogin);
+                                    store.signInWithGoogle();
+                                  },
+                            isLoading:
+                                signInStatus == FutureStatus.pending &&
+                                store.authenticatingType == GrantType.google,
+                            asset: Asset.icons.google,
+                            label: LocaleKeys.continueWithGoogle.tr(),
                           ),
-                      children: [
-                        TextSpan(text: '${LocaleKeys.signInDisclaimer.tr()} '),
-                        TextSpan(
-                          text: LocaleKeys.termsAndConditions.tr(),
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                color: Palette.pink,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
+                          Row(
+                            children: [
+                              const Expanded(child: Divider(color: Palette.lightBlack)),
+                              EasyText(
+                                LocaleKeys.or.tr(),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Palette.lightBlack,
+                              ).padding(horizontal: 8),
+                              const Expanded(child: Divider(color: Palette.lightBlack)),
+                            ],
+                          ).padding(vertical: height * 0.03),
+                          AutofillGroup(
+                            child: ReactiveTextField(
+                              key: K.loginEmailField,
+                              onTap: (_) {
+                                analyticsStore.logEvent(AnalyticsEvent.emailInput);
+                              },
+                              onTapOutside: (_) =>
+                                  FocusScope.of(context, createDependency: false).unfocus(),
+                              decoration: InputDecoration(
+                                labelText: LocaleKeys.email.tr(),
+                                hintText: 'example@example.com',
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
                               ),
-                          mouseCursor: WidgetStateMouseCursor.clickable,
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              openUrlLink(Uri.parse(termsOfServiceUrl));
-                              analyticsStore.logEvent(AnalyticsEvent.tcsClickLoginScreen);
-                            },
-                        ),
-                        TextSpan(text: '${LocaleKeys.and.tr()} '),
-                        TextSpan(
-                          text: LocaleKeys.privacyPolicy.tr(),
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                color: Palette.pink,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                          mouseCursor: WidgetStateMouseCursor.clickable,
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              openUrlLink(Uri.parse(privacyPolicyUrl));
-                              analyticsStore.logEvent(AnalyticsEvent.ppClickLoginScreen);
-                            },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              )
-                  .padding(
-                    top: 20,
-                    bottom: 10,
-                    horizontal: getMediaWidth(context) > 650 ? 60 : 20,
-                  )
-                  .scrollable(),
+                              formControlName: 'email',
+                              autofillHints: const [AutofillHints.email],
+                              keyboardType: TextInputType.emailAddress,
+                              onSubmitted: (_) =>
+                                  FocusScope.of(context, createDependency: false).unfocus(),
+                              onEditingComplete: (_) => TextInput.finishAutofillContext(),
+                              validationMessages: {
+                                ValidationMessage.required: (_) => LocaleKeys.emailIsRequired.tr(),
+                                ValidationMessage.email: (_) => LocaleKeys.emailIsNotValid.tr(),
+                              },
+                            ).padding(bottom: 10),
+                          ),
+                          ReactiveFormConsumer(
+                            builder: (_, signInForm, child) => EasyButton(
+                              key: K.loginButton,
+                              width: double.infinity,
+                              onPressed: signInStatus != FutureStatus.pending
+                                  ? () => _onSignInWithEmailPressed(
+                                      signInForm,
+                                      context,
+                                      store,
+                                      analyticsStore,
+                                    )
+                                  : null,
+                              child:
+                                  signInStatus == FutureStatus.pending &&
+                                      store.authenticatingType == GrantType.email
+                                  ? const LoadingIndicator()
+                                  : EasyText(
+                                      LocaleKeys.continueWithEmail.tr(),
+                                      color: Palette.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                            ),
+                          ).padding(bottom: height * 0.03),
+                          RichText(
+                            text: TextSpan(
+                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 14),
+                              children: [
+                                TextSpan(text: '${LocaleKeys.signInDisclaimer.tr()} '),
+                                TextSpan(
+                                  text: LocaleKeys.termsAndConditions.tr(),
+                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    color: Palette.pink,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  mouseCursor: WidgetStateMouseCursor.clickable,
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      openUrlLink(Uri.parse(termsOfServiceUrl));
+                                      analyticsStore.logEvent(AnalyticsEvent.tcsClickLoginScreen);
+                                    },
+                                ),
+                                TextSpan(text: '${LocaleKeys.and.tr()} '),
+                                TextSpan(
+                                  text: LocaleKeys.privacyPolicy.tr(),
+                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    color: Palette.pink,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  mouseCursor: WidgetStateMouseCursor.clickable,
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      openUrlLink(Uri.parse(privacyPolicyUrl));
+                                      analyticsStore.logEvent(AnalyticsEvent.ppClickLoginScreen);
+                                    },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                      .padding(
+                        top: 20,
+                        bottom: 10,
+                        horizontal: getMediaWidth(context) > 650 ? 60 : 20,
+                      )
+                      .scrollable(),
             ),
           ],
         );
@@ -216,12 +207,7 @@ class SignInForm extends HookConsumerWidget {
     AuthStore store,
     AnalyticsStore analyticsStore,
   ) async {
-    analyticsStore.logEvent(
-      AnalyticsEvent.emailLogin,
-      parameters: {
-        'valid': form.valid,
-      },
-    );
+    analyticsStore.logEvent(AnalyticsEvent.emailLogin, parameters: {'valid': form.valid});
     if (!form.valid) {
       form.markAllAsTouched();
       return;

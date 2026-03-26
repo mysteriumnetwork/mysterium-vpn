@@ -143,11 +143,7 @@ class _Body extends HookConsumerWidget {
     }
     if (future.status == FutureStatus.pending) {
       return MultiSliver(
-        children: const [
-          RecentLocationsLoading(),
-          SizedBox(height: 24),
-          LocationsSliverLoading(),
-        ],
+        children: const [RecentLocationsLoading(), SizedBox(height: 24), LocationsSliverLoading()],
       );
     }
 
@@ -216,22 +212,19 @@ class _UserIntent extends HookConsumerWidget {
 }
 
 class _RecentLocations extends StatelessWidget {
-  const _RecentLocations({
-    required this.recentLocations,
-    required this.onLocationTapped,
-  });
+  const _RecentLocations({required this.recentLocations, required this.onLocationTapped});
 
   final List<VPNLocation> recentLocations;
   final void Function(VPNLocation) onLocationTapped;
 
   @override
   Widget build(BuildContext context) => SliverToBoxAdapter(
-        child: LocationsHorizontalList(
-          title: LocaleKeys.recentLocations.tr(),
-          items: recentLocations,
-          onItemPressed: onLocationTapped,
-        ),
-      );
+    child: LocationsHorizontalList(
+      title: LocaleKeys.recentLocations.tr(),
+      items: recentLocations,
+      onItemPressed: onLocationTapped,
+    ),
+  );
 }
 
 class _Locations extends HookConsumerWidget {
@@ -284,10 +277,7 @@ class _Locations extends HookConsumerWidget {
           child: SliverStack(
             children: [
               SliverPositioned.fill(
-                child: LocationsContainer(
-                  key: locationsKey,
-                  locationType: locationType,
-                ),
+                child: LocationsContainer(key: locationsKey, locationType: locationType),
               ),
               SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
@@ -298,10 +288,7 @@ class _Locations extends HookConsumerWidget {
                       _ => LocationsDisclaimer.residential(),
                     },
                     if (topLocations.isNotEmpty)
-                      LocationsSliverList(
-                        items: topLocations,
-                        onItemPressed: onLocationTapped,
-                      ),
+                      LocationsSliverList(items: topLocations, onItemPressed: onLocationTapped),
                     if (topLocations.isNotEmpty && locations.isNotEmpty)
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),

@@ -1,5 +1,1 @@
-enum MessageType {
-  success,
-  error,
-  info,
-}
+enum MessageType { success, error, info }

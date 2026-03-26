@@ -12,9 +12,10 @@ mixin _$DeviceIDStore on _DeviceIDStore, Store {
   Computed<String>? _$deviceIdComputed;
 
   @override
-  String get deviceId => (_$deviceIdComputed ??=
-          Computed<String>(() => super.deviceId, name: '_DeviceIDStore.deviceId'))
-      .value;
+  String get deviceId => (_$deviceIdComputed ??= Computed<String>(
+    () => super.deviceId,
+    name: '_DeviceIDStore.deviceId',
+  )).value;
 
   late final _$deviceIdFutureAtom = Atom(name: '_DeviceIDStore.deviceIdFuture', context: context);
 
@@ -28,11 +29,14 @@ mixin _$DeviceIDStore on _DeviceIDStore, Store {
 
   @override
   set deviceIdFuture(ObservableFuture<String> value) {
-    _$deviceIdFutureAtom
-        .reportWrite(value, _deviceIdFutureIsInitialized ? super.deviceIdFuture : null, () {
-      super.deviceIdFuture = value;
-      _deviceIdFutureIsInitialized = true;
-    });
+    _$deviceIdFutureAtom.reportWrite(
+      value,
+      _deviceIdFutureIsInitialized ? super.deviceIdFuture : null,
+      () {
+        super.deviceIdFuture = value;
+        _deviceIdFutureIsInitialized = true;
+      },
+    );
   }
 
   late final _$getDeviceIdAsyncAction = AsyncAction('_DeviceIDStore.getDeviceId', context: context);

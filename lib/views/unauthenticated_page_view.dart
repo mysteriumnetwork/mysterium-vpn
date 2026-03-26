@@ -5,10 +5,7 @@ import 'package:mysterium_vpn/components/animated_logo_panel.dart';
 import 'package:mysterium_vpn/components/desktop_panels_layout.dart';
 
 class UnauthenticatedPageView extends HookWidget {
-  const UnauthenticatedPageView({
-    required this.child,
-    super.key,
-  });
+  const UnauthenticatedPageView({required this.child, super.key});
 
   final Widget child;
 

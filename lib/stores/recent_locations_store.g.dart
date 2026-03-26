@@ -12,9 +12,10 @@ mixin _$RecentLocationsStore on _RecentLocationsStore, Store {
   Computed<List<VPNLocation>>? _$valueComputed;
 
   @override
-  List<VPNLocation> get value => (_$valueComputed ??=
-          Computed<List<VPNLocation>>(() => super.value, name: '_RecentLocationsStore.value'))
-      .value;
+  List<VPNLocation> get value => (_$valueComputed ??= Computed<List<VPNLocation>>(
+    () => super.value,
+    name: '_RecentLocationsStore.value',
+  )).value;
 
   late final _$_futureAtom = Atom(name: '_RecentLocationsStore._future', context: context);
 

@@ -16,26 +16,24 @@ class UserIntentTooltip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Tooltip(
-        type: TooltipType.userIntent,
-        autoDismissDuration: null,
-        buildEntry: (ctx) => TooltipEntry(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
-          child: _Body(),
-        ),
-        child: SvgIcon(asset: Asset.icons.infoCircle(context)),
-      );
+    type: TooltipType.userIntent,
+    autoDismissDuration: null,
+    buildEntry: (ctx) => TooltipEntry(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
+      child: _Body(),
+    ),
+    child: SvgIcon(asset: Asset.icons.infoCircle(context)),
+  );
 }
 
 class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
-        spacing: 20,
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          for (final value in UserIntent.values) _Item(value: value),
-        ],
-      );
+    spacing: 20,
+    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [for (final value in UserIntent.values) _Item(value: value)],
+  );
 }
 
 class _Item extends StatelessWidget {
@@ -46,10 +44,7 @@ class _Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final textStyle = GoogleFonts.montserrat(
-      fontSize: 12,
-      color: theme.textTheme.bodyLarge?.color,
-    );
+    final textStyle = GoogleFonts.montserrat(fontSize: 12, color: theme.textTheme.bodyLarge?.color);
     return AutoSizeText.rich(
       TextSpan(
         children: [

@@ -7,10 +7,7 @@ import 'package:mysterium_vpn/stores/remote_config/config_cat_user_store.dart';
 import 'package:talker/talker.dart';
 
 abstract class ConfigCatStore with Store {
-  ConfigCatStore(
-    this._client,
-    this.logger,
-  ) {
+  ConfigCatStore(this._client, this.logger) {
     _init();
   }
 

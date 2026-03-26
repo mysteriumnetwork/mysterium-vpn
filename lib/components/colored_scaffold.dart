@@ -13,9 +13,9 @@ class ColoredScaffold extends StatelessWidget {
     this.forceBackgroundColor = false,
     super.key,
   }) : assert(
-          forceBackgroundColor == false || backgroundColor != null,
-          'If forceBackgroundColor is true, backgroundColor must be provided',
-        );
+         forceBackgroundColor == false || backgroundColor != null,
+         'If forceBackgroundColor is true, backgroundColor must be provided',
+       );
 
   final Widget body;
   final bool extendBodyBehindAppBar;
